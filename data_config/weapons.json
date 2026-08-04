@@ -1,0 +1,219 @@
+[
+  {
+    "id": "weapon_void_blade",
+    "display_name": "小飞刃",
+    "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
+    "rarity": "common",
+    "tags": [
+      "weapon",
+      "ranged",
+      "void",
+      "starter"
+    ],
+    "weapon_type": "light",
+    "load_cost": 12,
+    "max_level": 5,
+    "attack_interval_ms": 700,
+    "base_stats": {
+      "ranged_damage": 8,
+      "attack_speed": 0,
+      "crit_chance": 5,
+      "crit_damage": 150,
+      "projectile_count": 1,
+      "pierce_count": 0
+    },
+    "level_upgrades": {
+      "2": [
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        }
+      ],
+      "3": [
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        }
+      ],
+      "4": [
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        }
+      ],
+      "5": [
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        },
+        {
+          "stat": "projectile_count",
+          "value": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "weapon_mutated_cleaver",
+    "display_name": "砍刀",
+    "icon": "res://assets/ui/icons/weapons/weapon_mutated_cleaver.png",
+    "rarity": "common",
+    "tags": [
+      "weapon",
+      "melee",
+      "human",
+      "starter"
+    ],
+    "weapon_type": "light",
+    "load_cost": 10,
+    "max_level": 5,
+    "attack_interval_ms": 650,
+    "base_stats": {
+      "melee_damage": 10,
+      "attack_speed": 0,
+      "crit_chance": 5,
+      "crit_damage": 150,
+      "area_size": 0
+    },
+    "level_upgrades": {
+      "2": [
+        {
+          "stat": "melee_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        }
+      ],
+      "3": [
+        {
+          "stat": "melee_damage",
+          "value": 2
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        }
+      ],
+      "4": [
+        {
+          "stat": "melee_damage",
+          "value": 2
+        },
+        {
+          "stat": "area_size",
+          "value": 10
+        }
+      ],
+      "5": [
+        {
+          "stat": "melee_damage",
+          "value": 4
+        },
+        {
+          "field": "attack_interval_ms",
+          "value": -50
+        },
+        {
+          "stat": "crit_chance",
+          "value": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "weapon_dome_shockwave",
+    "display_name": "穹顶震波器",
+    "icon": "res://assets/ui/icons/weapons/weapon_dome_shockwave.png",
+    "rarity": "common",
+    "tags": [
+      "weapon",
+      "melee",
+      "ranged",
+      "area",
+      "mixed",
+      "void"
+    ],
+    "weapon_type": "medium",
+    "load_cost": 24,
+    "max_level": 5,
+    "attack_interval_ms": 1200,
+    "base_stats": {
+      "melee_damage": 5,
+      "ranged_damage": 5,
+      "damage_percent": 0,
+      "attack_speed": 0,
+      "crit_chance": 3,
+      "crit_damage": 150,
+      "area_size": 20,
+      "duration_percent": 0
+    },
+    "level_upgrades": {
+      "2": [
+        {
+          "stat": "melee_damage",
+          "value": 2
+        },
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        }
+      ],
+      "3": [
+        {
+          "field": "attack_interval_ms",
+          "value": -100
+        },
+        {
+          "stat": "area_size",
+          "value": 10
+        }
+      ],
+      "4": [
+        {
+          "stat": "melee_damage",
+          "value": 2
+        },
+        {
+          "stat": "ranged_damage",
+          "value": 2
+        },
+        {
+          "stat": "duration_percent",
+          "value": 10
+        }
+      ],
+      "5": [
+        {
+          "field": "attack_interval_ms",
+          "value": -100
+        },
+        {
+          "stat": "area_size",
+          "value": 15
+        },
+        {
+          "stat": "damage_percent",
+          "value": 5
+        }
+      ]
+    }
+  }
+]

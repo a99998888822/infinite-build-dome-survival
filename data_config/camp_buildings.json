@@ -1,0 +1,482 @@
+[
+  {
+    "id": "camp_armory_workshop",
+    "name": "军械工坊",
+    "initial_unlocked": true,
+    "type": "human",
+    "role": "武器图鉴解锁、武器基础强化",
+    "description": "锻造、修复各类求生兵器，工匠不断改良武器来适配穹顶外的敌人。",
+    "levels": {
+      "1": [
+        {
+          "unlock": "weapon_pool_basic_melee",
+          "name": "解锁基础近战武器"
+        }
+      ],
+      "2": [
+        {
+          "unlock": "weapon_pool_ranged",
+          "name": "解锁远程武器库"
+        },
+        {
+          "stat": "damage_percent",
+          "value": 4,
+          "name": "全局伤害加成+4%"
+        }
+      ],
+      "3": [
+        {
+          "unlock": "weapon_pool_rare",
+          "name": "解锁稀有武器"
+        },
+        {
+          "stat": "attack_speed",
+          "value": 3,
+          "name": "全局攻击速度+3%"
+        }
+      ],
+      "4": [
+        {
+          "unlock": "special_weapon_slot",
+          "name": "解锁特殊武器槽"
+        }
+      ],
+      "5": [
+        {
+          "unlock": "weapon_blueprint_legendary",
+          "name": "解锁传说武器图纸"
+        },
+        {
+          "stat": "cooldown_reduction",
+          "value": 5,
+          "name": "全局冷却缩减+5%"
+        }
+      ]
+    },
+    "upgrade_options": []
+  },
+  {
+    "id": "camp_relic_archive",
+    "name": "遗物档案馆",
+    "initial_unlocked": true,
+    "type": "mixed",
+    "role": "遗物图鉴解锁、遗物套装预览",
+    "description": "收纳幸存者带回的奇异器物。随着不断收集外来遗物，档案馆深处偶尔传来模糊低语，部分展品轮廓会在无人时微微扭曲。",
+    "levels": {
+      "1": [
+        {
+          "unlock": "relic_pool_common",
+          "name": "解锁全部普通遗物库"
+        }
+      ],
+      "2": [
+        {
+          "unlock": "relic_pool_rare",
+          "name": "解锁全部稀有遗物"
+        }
+      ],
+      "3": [
+        {
+          "unlock": "relic_pool_epic",
+          "name": "解锁全部史诗遗物"
+        }
+      ],
+      "4": [
+        {
+          "stage": "void_corruption",
+          "name": "虚空侵蚀阶段"
+        },
+        {
+          "unlock": "relic_pool_void",
+          "name": "解锁虚空遗物"
+        }
+      ],
+      "5": [
+        {
+          "unlock": "relic_pool_legendary",
+          "name": "解锁全部传说遗物"
+        }
+      ]
+    },
+    "upgrade_options": []
+  },
+  {
+    "id": "camp_blade_arena",
+    "name": "利刃演武场",
+    "initial_unlocked": false,
+    "type": "human",
+    "role": "近战专属营地建筑，解锁近战物理升级选项",
+    "unlock_condition": {
+      "building": "camp_armory_workshop",
+      "level": 1
+    },
+    "description": "穹顶幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。",
+    "levels": {},
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_melee_damage",
+        "name": "近战伤害训练",
+        "stat": "melee_damage",
+        "currency": "global_currency",
+        "cost": 100,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_damage_percent_melee",
+        "name": "近战通用增伤训练",
+        "stat": "damage_percent",
+        "currency": "global_currency",
+        "cost": 200,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_attack_speed_melee",
+        "name": "近战攻速训练",
+        "stat": "attack_speed",
+        "currency": "global_currency",
+        "cost": 200,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_cooldown_melee",
+        "name": "近战冷却训练",
+        "stat": "cooldown_reduction",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_crit_chance_melee",
+        "name": "近战暴击训练",
+        "stat": "crit_chance",
+        "currency": "global_currency",
+        "cost": 300,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_crit_damage_melee",
+        "name": "近战爆伤训练",
+        "stat": "crit_damage",
+        "currency": "global_currency",
+        "cost": 300,
+        "max_level": 5,
+        "value_per_level": 10
+      }
+    ]
+  },
+  {
+    "id": "camp_farstar_range",
+    "name": "远星射靶台",
+    "initial_unlocked": false,
+    "type": "human",
+    "role": "远程专属营地建筑，解锁远程与投射物升级选项",
+    "unlock_condition": {
+      "building": "camp_armory_workshop",
+      "level": 2
+    },
+    "description": "用于训练远程弹道与精准打击的高台。",
+    "levels": {},
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_ranged_damage",
+        "name": "远程伤害训练",
+        "stat": "ranged_damage",
+        "currency": "global_currency",
+        "cost": 100,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_projectile_count",
+        "name": "投射物数量训练",
+        "stat": "projectile_count",
+        "currency": "global_currency",
+        "cost": 2000,
+        "max_level": 3,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_pierce_count",
+        "name": "穿透次数训练",
+        "stat": "pierce_count",
+        "currency": "global_currency",
+        "cost": 1000,
+        "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_area_size_ranged",
+        "name": "远程范围训练",
+        "stat": "area_size",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 5
+      },
+      {
+        "id": "camp_upgrade_duration_ranged",
+        "name": "持续时间训练",
+        "stat": "duration_percent",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 5
+      }
+    ]
+  },
+  {
+    "id": "camp_kin_nursery",
+    "name": "眷族培育栏",
+    "initial_unlocked": false,
+    "type": "mixed",
+    "role": "召唤体系强化",
+    "unlock_condition": {
+      "building": "camp_relic_archive",
+      "level": 2
+    },
+    "description": "驯养、改造协助作战的畸变生物与机械仆从。",
+    "levels": {
+      "1": [
+        {
+          "unlock": "camp_upgrade_summon_damage",
+          "name": "解锁眷族伤害升级选项"
+        }
+      ],
+      "2": [
+        {
+          "unlock": "run_start_random_summon",
+          "name": "开局额外获得一个随机眷族"
+        }
+      ]
+    },
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_summon_damage",
+        "name": "眷族伤害训练",
+        "stat": "summon_damage",
+        "currency": "global_currency",
+        "cost": 150,
+        "max_level": 10,
+        "value_per_level": 1,
+        "required_building_level": 1
+      }
+    ]
+  },
+  {
+    "id": "camp_mutation_laboratory",
+    "name": "畸变研究所",
+    "initial_unlocked": false,
+    "type": "void",
+    "role": "DOT 持续伤害体系强化、解锁腐化类词条",
+    "unlock_condition": {
+      "building": "camp_relic_archive",
+      "level": 4
+    },
+    "description": "研究从迷雾中捕获的畸变躯体。研究员禁止长时间凝视浸泡标本，已有多人报告产生幻听。",
+    "levels": {
+      "1": [
+        {
+          "unlock": "corrupted_affix_pool",
+          "name": "解锁腐化类词条"
+        }
+      ]
+    },
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_area_size_mutation",
+        "name": "畸变范围训练",
+        "stat": "area_size",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 5,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_duration_mutation",
+        "name": "畸变持续训练",
+        "stat": "duration_percent",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 5,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_slow_percent_mutation",
+        "name": "畸变减速训练",
+        "stat": "slow_percent",
+        "currency": "global_currency",
+        "cost": 700,
+        "max_level": 5,
+        "value_per_level": 2,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_control_power_mutation",
+        "name": "畸变控制训练",
+        "stat": "control_power",
+        "currency": "global_currency",
+        "cost": 800,
+        "max_level": 5,
+        "value_per_level": 2,
+        "required_building_level": 1
+      }
+    ]
+  },
+  {
+    "id": "camp_dome_shelter",
+    "name": "穹顶庇护所",
+    "initial_unlocked": true,
+    "type": "human",
+    "role": "生存防御类加成，平衡建筑",
+    "description": "穹顶内最基础的防御与修整设施，为幸存者提供稳定庇护。",
+    "levels": {
+      "1": [
+        {
+          "unlock": "camp_upgrade_max_hp",
+          "name": "解锁最大生命升级选项"
+        },
+        {
+          "unlock": "camp_upgrade_hp_regen",
+          "name": "解锁每秒回血升级选项"
+        },
+        {
+          "unlock": "camp_upgrade_shield",
+          "name": "解锁护盾值升级选项"
+        },
+        {
+          "unlock": "camp_upgrade_armor",
+          "name": "解锁护甲值升级选项"
+        },
+        {
+          "unlock": "camp_upgrade_move_speed",
+          "name": "解锁移动速度升级选项"
+        }
+      ],
+      "2": [
+        {
+          "unlock": "run_start_random_relic",
+          "name": "开局额外获得一件随机遗物"
+        }
+      ]
+    },
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_max_hp",
+        "name": "最大生命训练",
+        "stat": "max_hp",
+        "currency": "global_currency",
+        "cost": 100,
+        "max_level": 10,
+        "value_per_level": 10,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_hp_regen",
+        "name": "每秒回血训练",
+        "stat": "hp_regen",
+        "currency": "global_currency",
+        "cost": 200,
+        "max_level": 5,
+        "value_per_level": 1,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_shield",
+        "name": "护盾训练",
+        "stat": "shield",
+        "currency": "global_currency",
+        "cost": 200,
+        "max_level": 10,
+        "value_per_level": 5,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_armor",
+        "name": "护甲训练",
+        "stat": "armor",
+        "currency": "global_currency",
+        "cost": 300,
+        "max_level": 10,
+        "value_per_level": 5,
+        "required_building_level": 1
+      },
+      {
+        "id": "camp_upgrade_move_speed",
+        "name": "移动速度训练",
+        "stat": "move_speed",
+        "currency": "global_currency",
+        "cost": 300,
+        "max_level": 5,
+        "value_per_level": 5,
+        "required_building_level": 1
+      }
+    ]
+  },
+  {
+    "id": "camp_council_hall",
+    "name": "议事大厅",
+    "initial_unlocked": false,
+    "type": "mixed",
+    "role": "强化套装与通用成长收益",
+    "unlock_condition": {
+      "building": "camp_relic_archive",
+      "level": 1
+    },
+    "description": "幸存者在此交流遗物组合战术。议事厅墙上悬挂的古老图腾，偶尔会随羁绊共鸣微微震颤。",
+    "levels": {},
+    "upgrade_options": [
+      {
+        "id": "camp_upgrade_pickup_radius",
+        "name": "拾取范围训练",
+        "stat": "pickup_radius",
+        "currency": "global_currency",
+        "cost": 100,
+        "max_level": 10,
+        "value_per_level": 10
+      },
+      {
+        "id": "camp_upgrade_exp_gain_percent",
+        "name": "经验获取训练",
+        "stat": "exp_gain_percent",
+        "currency": "global_currency",
+        "cost": 300,
+        "max_level": 10,
+        "value_per_level": 2
+      },
+      {
+        "id": "camp_upgrade_drop_rate_percent",
+        "name": "掉落率训练",
+        "stat": "drop_rate_percent",
+        "currency": "global_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 2
+      },
+      {
+        "id": "camp_upgrade_luck",
+        "name": "幸运训练",
+        "stat": "luck",
+        "currency": "global_currency",
+        "cost": 800,
+        "max_level": 10,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_currency_gain_percent",
+        "name": "货币获取训练",
+        "stat": "currency_gain_percent",
+        "currency": "global_currency",
+        "cost": 400,
+        "max_level": 10,
+        "value_per_level": 3
+      }
+    ]
+  }
+]

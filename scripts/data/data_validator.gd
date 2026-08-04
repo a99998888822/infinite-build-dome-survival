@@ -1,0 +1,393 @@
+﻿extends RefCounted
+class_name DataValidator
+
+const REQUIRED_TABLES: Array[String] = [
+	"weapons",
+	"relics",
+	"bonds",
+	"characters",
+	"enemies",
+	"camp_buildings",
+	"waves",
+	"drop_tables",
+]
+
+const TABLE_REQUIRED_FIELDS: Dictionary = {
+	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "base_stats", "level_upgrades"],
+	"relics": ["id", "display_name", "rarity", "bond_id", "tags", "effects"],
+	"bonds": ["id", "name", "bond_tag", "thresholds"],
+	"characters": ["id", "base_stats", "start_weapons"],
+	"enemies": ["id", "base_stats", "drop_table_id"],
+	"camp_buildings": ["id", "name", "levels", "upgrade_options"],
+	"waves": ["id", "time_start", "time_end", "spawn_groups"],
+	"drop_tables": ["id", "entries"],
+}
+
+const MODIFIER_REQUIRED_FIELDS: Array[String] = [
+	"id",
+	"source_type",
+	"source_id",
+	"target_scope",
+	"stat",
+	"operation",
+	"value",
+	"duration",
+	"stack_rule",
+]
+
+const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
+const VALID_RARITIES: Array[String] = ["common", "rare", "epic", "legendary"]
+
+var errors: Array[String] = []
+var warnings: Array[String] = []
+
+
+func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
+	errors.clear()
+	warnings.clear()
+
+	_validate_required_tables(tables)
+	for table_name in tables.keys():
+		_validate_table(str(table_name), tables[table_name])
+		_validate_integer_values(tables[table_name], str(table_name))
+		_validate_stat_references(tables[table_name], str(table_name))
+
+	_validate_weapon_records(tables.get("weapons", []))
+	_validate_relic_records(tables.get("relics", []), records_by_id)
+	_validate_bond_records(tables.get("bonds", []))
+	_validate_character_records(tables.get("characters", []), records_by_id)
+	_validate_enemy_records(tables.get("enemies", []), records_by_id)
+	_validate_camp_building_records(tables.get("camp_buildings", []), records_by_id)
+	_validate_wave_records(tables.get("waves", []), records_by_id)
+	_validate_drop_table_records(tables.get("drop_tables", []))
+
+	return errors.is_empty()
+
+
+func get_errors() -> Array[String]:
+	return errors.duplicate()
+
+
+func get_warnings() -> Array[String]:
+	return warnings.duplicate()
+
+
+func _validate_required_tables(tables: Dictionary) -> void:
+	for table_name in REQUIRED_TABLES:
+		if not tables.has(table_name):
+			errors.append("Missing loaded config table: %s" % table_name)
+
+
+func _validate_table(table_name: String, records: Variant) -> void:
+	if not (records is Array):
+		errors.append("%s must be an array." % table_name)
+		return
+
+	var seen_ids := {}
+	var required_fields: Array = TABLE_REQUIRED_FIELDS.get(table_name, [])
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		var record_path := "%s[%d]" % [table_name, record_index]
+		if not (record is Dictionary):
+			errors.append("%s must be an object." % record_path)
+			continue
+
+		_validate_required_fields(record, required_fields, record_path)
+		var record_id := str(record.get("id", ""))
+		if record_id.strip_edges().is_empty():
+			errors.append("%s.id cannot be empty." % record_path)
+			continue
+		if seen_ids.has(record_id):
+			errors.append("Duplicate id in %s: %s" % [table_name, record_id])
+		seen_ids[record_id] = true
+
+
+func _validate_required_fields(record: Dictionary, required_fields: Array, path: String) -> void:
+	for field_name in required_fields:
+		if not record.has(field_name):
+			errors.append("Missing required field: %s.%s" % [path, field_name])
+
+
+func _validate_integer_values(value_data: Variant, path: String) -> void:
+	match typeof(value_data):
+		TYPE_DICTIONARY:
+			for key in value_data.keys():
+				_validate_integer_values(value_data[key], "%s.%s" % [path, key])
+		TYPE_ARRAY:
+			for index in value_data.size():
+				_validate_integer_values(value_data[index], "%s[%d]" % [path, index])
+		TYPE_FLOAT:
+			if not is_equal_approx(value_data, roundf(value_data)):
+				errors.append("Numeric config value must be integer: %s = %s" % [path, value_data])
+		TYPE_INT:
+			pass
+		_:
+			pass
+
+
+func _validate_stat_references(value_data: Variant, path: String) -> void:
+	match typeof(value_data):
+		TYPE_DICTIONARY:
+			if value_data.has("stat"):
+				var stat_id := str(value_data["stat"])
+				if not StatDefinitions.has_stat(stat_id):
+					errors.append("Unknown stat reference in %s: %s" % [path, stat_id])
+			for key in value_data.keys():
+				_validate_stat_references(value_data[key], "%s.%s" % [path, key])
+		TYPE_ARRAY:
+			for index in value_data.size():
+				_validate_stat_references(value_data[index], "%s[%d]" % [path, index])
+		_:
+			pass
+
+
+func _validate_weapon_records(records: Array) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "weapons[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_rarity(record, path)
+		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
+		_validate_weapon_level_upgrades(record, path)
+
+
+func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
+	var max_level := int(record.get("max_level", 1))
+	var upgrades: Variant = record.get("level_upgrades", {})
+	if not (upgrades is Dictionary):
+		errors.append("%s.level_upgrades must be an object." % path)
+		return
+	for level_key in upgrades.keys():
+		var level := int(str(level_key))
+		if level < 2 or level > max_level:
+			warnings.append("%s.level_upgrades.%s is outside 2..max_level." % [path, str(level_key)])
+		var upgrade_list: Variant = upgrades[level_key]
+		if not (upgrade_list is Array):
+			errors.append("%s.level_upgrades.%s must be an array." % [path, str(level_key)])
+			continue
+		for upgrade_index in upgrade_list.size():
+			var upgrade: Variant = upgrade_list[upgrade_index]
+			var upgrade_path := "%s.level_upgrades.%s[%d]" % [path, str(level_key), upgrade_index]
+			if not (upgrade is Dictionary):
+				errors.append("%s must be an object." % upgrade_path)
+				continue
+			if not upgrade.has("value"):
+				errors.append("Missing required field: %s.value" % upgrade_path)
+			if not upgrade.has("stat") and not upgrade.has("field"):
+				errors.append("%s must define stat or field." % upgrade_path)
+
+
+func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "relics[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_rarity(record, path)
+		_validate_reference(record, "bond_id", "bonds", records_by_id, path)
+		var effects: Variant = record.get("effects", [])
+		if not (effects is Array):
+			errors.append("%s.effects must be an array." % path)
+			continue
+		for effect_index in effects.size():
+			_validate_modifier_record(effects[effect_index], "%s.effects[%d]" % [path, effect_index])
+
+
+func _validate_modifier_record(effect: Variant, path: String) -> void:
+	if not (effect is Dictionary):
+		errors.append("%s must be an object." % path)
+		return
+	_validate_required_fields(effect, MODIFIER_REQUIRED_FIELDS, path)
+	if effect.has("operation") and not Modifier.is_valid_operation(str(effect["operation"])):
+		errors.append("Invalid modifier operation in %s: %s" % [path, str(effect["operation"])])
+	if effect.has("stack_rule") and not Modifier.is_valid_stack_rule(str(effect["stack_rule"])):
+		errors.append("Invalid modifier stack_rule in %s: %s" % [path, str(effect["stack_rule"])])
+
+
+func _validate_bond_records(records: Array) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "bonds[%d:%s]" % [record_index, str(record.get("id", ""))]
+		var thresholds: Variant = record.get("thresholds", {})
+		if not (thresholds is Dictionary):
+			errors.append("%s.thresholds must be an object." % path)
+			continue
+		for threshold_key in thresholds.keys():
+			var effects: Variant = thresholds[threshold_key]
+			if not (effects is Array):
+				errors.append("%s.thresholds.%s must be an array." % [path, str(threshold_key)])
+				continue
+			for effect_index in effects.size():
+				_validate_bond_effect(effects[effect_index], "%s.thresholds.%s[%d]" % [path, str(threshold_key), effect_index])
+
+
+func _validate_bond_effect(effect: Variant, path: String) -> void:
+	if not (effect is Dictionary):
+		errors.append("%s must be an object." % path)
+		return
+	if effect.has("stat"):
+		if not effect.has("value"):
+			errors.append("Missing required field: %s.value" % path)
+	elif effect.has("effect"):
+		if not effect.has("value"):
+			errors.append("Missing required field: %s.value" % path)
+	else:
+		errors.append("%s must define stat or effect." % path)
+
+
+func _validate_character_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "characters[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
+		var start_weapons: Variant = record.get("start_weapons", [])
+		if not (start_weapons is Array):
+			errors.append("%s.start_weapons must be an array." % path)
+			continue
+		for weapon_index in start_weapons.size():
+			_validate_id_reference(str(start_weapons[weapon_index]), "weapons", records_by_id, "%s.start_weapons[%d]" % [path, weapon_index])
+
+
+func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "enemies[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
+		_validate_reference(record, "drop_table_id", "drop_tables", records_by_id, path)
+
+
+func _validate_camp_building_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "camp_buildings[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_reference(record, "unlock_condition.building", "camp_buildings", records_by_id, path)
+		_validate_camp_levels(record.get("levels", {}), path)
+		var upgrade_options: Variant = record.get("upgrade_options", [])
+		if not (upgrade_options is Array):
+			errors.append("%s.upgrade_options must be an array." % path)
+			continue
+		for option_index in upgrade_options.size():
+			var option: Variant = upgrade_options[option_index]
+			if not (option is Dictionary):
+				errors.append("%s.upgrade_options[%d] must be an object." % [path, option_index])
+				continue
+			_validate_required_fields(option, ["id", "stat", "currency", "cost", "max_level", "value_per_level"], "%s.upgrade_options[%d]" % [path, option_index])
+			if option.has("required_building_level") and int(option["required_building_level"]) < 1:
+				errors.append("%s.upgrade_options[%d].required_building_level must be at least 1." % [path, option_index])
+
+
+func _validate_camp_levels(levels: Variant, path: String) -> void:
+	if not (levels is Dictionary):
+		errors.append("%s.levels must be an object." % path)
+		return
+	for level_key in levels.keys():
+		var level_value := int(str(level_key))
+		if level_value < 1:
+			errors.append("%s.levels contains invalid level key: %s" % [path, str(level_key)])
+		var level_effects: Variant = levels[level_key]
+		if not (level_effects is Array):
+			errors.append("%s.levels.%s must be an array." % [path, str(level_key)])
+			continue
+		for effect_index in level_effects.size():
+			var effect: Variant = level_effects[effect_index]
+			var effect_path := "%s.levels.%s[%d]" % [path, str(level_key), effect_index]
+			if not (effect is Dictionary):
+				errors.append("%s must be an object." % effect_path)
+				continue
+			_validate_camp_level_effect(effect, effect_path)
+
+
+func _validate_camp_level_effect(effect: Dictionary, path: String) -> void:
+	if effect.has("unlock"):
+		var unlock_id := str(effect["unlock"])
+		if not UnlockRegistry.has_unlock(unlock_id):
+			errors.append("Unknown camp unlock in %s: %s" % [path, unlock_id])
+	if effect.has("stage"):
+		var stage_id := str(effect["stage"])
+		if not UnlockRegistry.has_stage(stage_id):
+			warnings.append("Unknown camp stage in %s: %s" % [path, stage_id])
+	if effect.has("stat") and not StatDefinitions.has_stat(str(effect["stat"])):
+		errors.append("Unknown stat in %s: %s" % [path, str(effect["stat"])])
+
+
+func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "waves[%d:%s]" % [record_index, str(record.get("id", ""))]
+		if int(record.get("time_end", 0)) <= int(record.get("time_start", 0)):
+			errors.append("%s.time_end must be greater than time_start." % path)
+		var spawn_groups: Variant = record.get("spawn_groups", [])
+		if not (spawn_groups is Array):
+			errors.append("%s.spawn_groups must be an array." % path)
+			continue
+		for group_index in spawn_groups.size():
+			var group: Variant = spawn_groups[group_index]
+			var group_path := "%s.spawn_groups[%d]" % [path, group_index]
+			if not (group is Dictionary):
+				errors.append("%s must be an object." % group_path)
+				continue
+			_validate_required_fields(group, ["enemy_id", "spawn_interval_ms", "count_per_spawn"], group_path)
+			_validate_reference(group, "enemy_id", "enemies", records_by_id, group_path)
+
+
+func _validate_drop_table_records(records: Array) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "drop_tables[%d:%s]" % [record_index, str(record.get("id", ""))]
+		var entries: Variant = record.get("entries", [])
+		if not (entries is Array):
+			errors.append("%s.entries must be an array." % path)
+			continue
+		for entry_index in entries.size():
+			var entry: Variant = entries[entry_index]
+			var entry_path := "%s.entries[%d]" % [path, entry_index]
+			if not (entry is Dictionary):
+				errors.append("%s must be an object." % entry_path)
+				continue
+			_validate_required_fields(entry, ["type", "amount", "chance_percent"], entry_path)
+			if entry.has("type") and not VALID_DROP_TYPES.has(str(entry["type"])):
+				warnings.append("Unknown drop type in %s: %s" % [entry_path, str(entry["type"])])
+			if int(entry.get("chance_percent", 0)) < 0 or int(entry.get("chance_percent", 0)) > 100:
+				errors.append("%s.chance_percent must be between 0 and 100." % entry_path)
+
+
+func _validate_stat_dictionary(stats: Variant, path: String) -> void:
+	if not (stats is Dictionary):
+		errors.append("%s must be an object." % path)
+		return
+	for stat_id in stats.keys():
+		if not StatDefinitions.has_stat(str(stat_id)):
+			errors.append("Unknown stat key in %s: %s" % [path, str(stat_id)])
+
+
+func _validate_rarity(record: Dictionary, path: String) -> void:
+	if record.has("rarity") and not VALID_RARITIES.has(str(record["rarity"])):
+		warnings.append("Unknown rarity in %s: %s" % [path, str(record["rarity"])])
+
+
+func _validate_reference(record: Dictionary, field_name: String, target_table: String, records_by_id: Dictionary, path: String) -> void:
+	if not record.has(field_name):
+		return
+	_validate_id_reference(str(record[field_name]), target_table, records_by_id, "%s.%s" % [path, field_name])
+
+
+func _validate_id_reference(record_id: String, target_table: String, records_by_id: Dictionary, path: String) -> void:
+	if record_id.strip_edges().is_empty():
+		errors.append("%s cannot be empty." % path)
+		return
+	if not records_by_id.has(target_table) or not records_by_id[target_table].has(record_id):
+		errors.append("Invalid reference in %s: %s not found in %s" % [path, record_id, target_table])
+

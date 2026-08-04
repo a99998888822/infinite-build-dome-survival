@@ -1,0 +1,104 @@
+[
+  {
+    "id": "relic_deep_eye",
+    "display_name": "深海之眼",
+    "rarity": "rare",
+    "bond_id": "bond_chosen",
+    "tags": ["relic", "survival", "deep"],
+    "effects": [
+      {
+        "id": "mod_relic_deep_eye_hp_regen",
+        "source_type": "relic",
+        "source_id": "relic_deep_eye",
+        "target_scope": "player",
+        "stat": "hp_regen",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ]
+  },
+  {
+    "id": "relic_flying_teeth",
+    "display_name": "飞的牙齿",
+    "rarity": "common",
+    "bond_id": "bond_mighty",
+    "tags": ["relic", "melee", "fang"],
+    "effects": [
+      {
+        "id": "mod_relic_flying_teeth_melee_damage",
+        "source_type": "relic",
+        "source_id": "relic_flying_teeth",
+        "target_scope": "player",
+        "stat": "melee_damage",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1,
+        "stack_rule": "unique"
+      },
+      {
+        "id": "mod_relic_flying_teeth_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_flying_teeth",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_percent",
+        "value": 2,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ]
+  },
+  {
+    "id": "relic_flying_feather",
+    "display_name": "飞的羽毛",
+    "rarity": "common",
+    "bond_id": "bond_sharpshooter",
+    "tags": ["relic", "speed", "feather"],
+    "effects": [
+      {
+        "id": "mod_relic_flying_feather_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_flying_feather",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_percent",
+        "value": 5,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ]
+  },
+  {
+    "id": "relic_flying_eye",
+    "display_name": "飞的眼睛",
+    "rarity": "rare",
+    "bond_id": "bond_chosen",
+    "tags": ["relic", "melee", "mystic", "eye"],
+    "effects": [
+      {
+        "id": "mod_relic_flying_eye_melee_damage",
+        "source_type": "relic",
+        "source_id": "relic_flying_eye",
+        "target_scope": "player",
+        "stat": "melee_damage",
+        "operation": "add_flat",
+        "value": 5,
+        "duration": -1,
+        "stack_rule": "unique"
+      },
+      {
+        "id": "mod_relic_flying_eye_divinity",
+        "source_type": "relic",
+        "source_id": "relic_flying_eye",
+        "target_scope": "player",
+        "stat": "divinity",
+        "operation": "add_flat",
+        "value": 5,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ]
+  }
+]

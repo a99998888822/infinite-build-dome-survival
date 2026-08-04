@@ -1,0 +1,71 @@
+[
+  {
+    "id": "bond_mighty",
+    "name": "大力",
+    "bond_tag": "melee",
+    "thresholds": {
+      "2": [
+        { "stat": "melee_damage", "value": 2 }
+      ],
+      "4": [
+        { "stat": "melee_damage", "value": 4 },
+        { "stat": "attack_speed", "value": 10 }
+      ],
+      "6": [
+        { "stat": "melee_damage", "value": 6 },
+        { "stat": "attack_speed", "value": 20 },
+        { "stat": "crit_chance", "value": 5 }
+      ],
+      "7": [
+        { "stat": "melee_damage", "value": 10 },
+        { "stat": "attack_speed", "value": 30 },
+        { "stat": "crit_chance", "value": 10 }
+      ]
+    }
+  },
+  {
+    "id": "bond_sharpshooter",
+    "name": "神射手",
+    "bond_tag": "ranged",
+    "thresholds": {
+      "2": [
+        { "stat": "ranged_damage", "value": 2 }
+      ],
+      "4": [
+        { "stat": "ranged_damage", "value": 4 },
+        { "stat": "attack_speed", "value": 10 }
+      ],
+      "6": [
+        { "stat": "ranged_damage", "value": 6 },
+        { "stat": "attack_speed", "value": 20 },
+        { "stat": "pierce_count", "value": 1 }
+      ],
+      "7": [
+        { "stat": "ranged_damage", "value": 10 },
+        { "stat": "attack_speed", "value": 30 },
+        { "stat": "pierce_count", "value": 2 }
+      ]
+    }
+  },
+  {
+    "id": "bond_chosen",
+    "name": "神选者",
+    "bond_tag": "elect",
+    "thresholds": {
+      "2": [
+        { "stat": "divinity", "value": 10 }
+      ],
+      "4": [
+        { "stat": "divinity", "value": 20 }
+      ],
+      "6": [
+        { "stat": "divinity", "value": 30 },
+        { "effect": "tagged_damage_percent", "target_tags": ["mystic"], "value": 10 }
+      ],
+      "7": [
+        { "stat": "divinity", "value": 40 },
+        { "effect": "tagged_damage_percent", "target_tags": ["mystic"], "value": 20 }
+      ]
+    }
+  }
+]

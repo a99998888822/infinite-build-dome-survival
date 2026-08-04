@@ -1,0 +1,22 @@
+[
+  {
+    "id": "character_void_hunter",
+    "display_name": "初心者",
+    "description": "默认角色。",
+    "enabled": true,
+    "tags": ["character", "starter"],
+    "base_stats": {
+      "max_hp": 100,
+      "hp_regen": 0,
+      "shield": 0,
+      "armor": 0,
+      "move_speed": 180,
+      "load_capacity": 100,
+      "pickup_radius": 80,
+      "humanity": 100,
+      "divinity": 0
+    },
+    "start_weapons": ["weapon_void_blade"],
+    "passive_modifiers": []
+  }
+]
