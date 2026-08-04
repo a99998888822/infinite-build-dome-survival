@@ -20,7 +20,7 @@
 
 | 模块 | 素材ID | 建议路径 | 类型 | 格式 | 内容 | 是否必需 | 是否存在 | 备注 |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| 基础数据/UI兜底 | `placeholder_icon` | `res://assets/ui/icons/placeholder_icon.png` | 图标 | PNG | 通用未知图标，占位用问号/虚空符号 | 是 | 否 | 所有未配置图标的兜底资源 |
+| 基础数据/UI兜底 | `placeholder_icon` | `res://assets/ui/icons/placeholder_icon.png` | 图标 | PNG | 通用未知图标，占位用问号/虚空符号 | 是 | 是 | 所有未配置图标的兜底资源 |
 | 基础数据/UI兜底 | `placeholder_sprite` | `res://assets/sprites/placeholder/placeholder_sprite.png` | 精灵图 | PNG | 通用实体占位，32x32或48x48像素 | 否 | 否 | 角色/敌人/召唤物临时占位 |
 | 基础数据/UI兜底 | `placeholder_projectile` | `res://assets/sprites/placeholder/placeholder_projectile.png` | 精灵图 | PNG | 通用投射物占位，建议16x16像素 | 否 | 否 | 武器投射物临时占位 |
 | 基础数据/UI兜底 | `placeholder_panel_bg` | `res://assets/ui/panels/placeholder_panel_bg.png` | UI背景 | PNG | 简单深色半透明面板背景 | 否 | 否 | 调试面板/弹窗可先用Godot默认StyleBox替代 |
@@ -117,7 +117,7 @@
 
 | 优先级 | 素材ID | 建议路径 | 是否存在 | 说明 |
 | ---- | ---- | ---- | ---- | ---- |
-| P0 | `placeholder_icon` | `res://assets/ui/icons/placeholder_icon.png` | 否 | 所有缺失图标兜底 |
+| P0 | `placeholder_icon` | `res://assets/ui/icons/placeholder_icon.png` | 是 | 所有缺失图标兜底 |
 | P1 | `stat_icon_max_hp` | `res://assets/ui/icons/stats/stat_max_hp.png` | 否 | 常用属性图标 |
 | P1 | `stat_icon_move_speed` | `res://assets/ui/icons/stats/stat_move_speed.png` | 否 | 常用属性图标 |
 | P1 | `stat_icon_melee_damage` | `res://assets/ui/icons/stats/stat_melee_damage.png` | 否 | 常用攻击属性图标 |
@@ -133,7 +133,6 @@
 3. Codex检查文件是否存在后，只更新本表格中的“是否存在”字段。
 4. 如果实际路径与建议路径不同，需要同步更新“建议路径”和相关配置引用。
 5. 如果素材内容发生变化，但文件仍存在，不需要改“是否存在”，只在“备注”中补充版本说明。
-
 
 
 

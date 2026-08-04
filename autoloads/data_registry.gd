@@ -1,5 +1,7 @@
 ﻿extends Node
 
+signal data_ready(load_success: bool)
+
 const PRINT_BOOT_SUMMARY: bool = true
 
 const CONFIG_PATHS: Dictionary = {
@@ -35,7 +37,9 @@ func reload_all() -> bool:
 		_load_table(str(table_name), str(CONFIG_PATHS[table_name]))
 
 	_validate_all_tables()
-	return load_errors.is_empty()
+	var load_success := load_errors.is_empty()
+	data_ready.emit(load_success)
+	return load_success
 
 
 func has_table(table_name: String) -> bool:
@@ -52,6 +56,27 @@ func get_record(table_name: String, record_id: String) -> Dictionary:
 	if not records_by_id.has(table_name):
 		return {}
 	return records_by_id[table_name].get(record_id, {}).duplicate(true)
+
+
+func get_records_by_tag(table_name: String, tag: String) -> Array:
+	var query_tags: Array[String] = [tag]
+	return get_records_by_any_tag(table_name, query_tags)
+
+
+func get_records_by_any_tag(table_name: String, query_tags: Array[String]) -> Array:
+	var result: Array = []
+	for record in get_table(table_name):
+		if _record_has_any_tag(record, query_tags):
+			result.append(record)
+	return result
+
+
+func get_records_by_all_tags(table_name: String, query_tags: Array[String]) -> Array:
+	var result: Array = []
+	for record in get_table(table_name):
+		if _record_has_all_tags(record, query_tags):
+			result.append(record)
+	return result
 
 
 func has_record(table_name: String, record_id: String) -> bool:
@@ -145,3 +170,26 @@ func _validate_all_tables() -> void:
 	load_warnings.append_array(validator.get_warnings())
 	load_errors.append_array(validator.get_errors())
 
+
+func _record_has_any_tag(record: Variant, query_tags: Array[String]) -> bool:
+	if not (record is Dictionary) or query_tags.is_empty():
+		return false
+	var record_tags: Variant = record.get("tags", [])
+	if not (record_tags is Array):
+		return false
+	for tag in query_tags:
+		if record_tags.has(tag):
+			return true
+	return false
+
+
+func _record_has_all_tags(record: Variant, query_tags: Array[String]) -> bool:
+	if not (record is Dictionary) or query_tags.is_empty():
+		return false
+	var record_tags: Variant = record.get("tags", [])
+	if not (record_tags is Array):
+		return false
+	for tag in query_tags:
+		if not record_tags.has(tag):
+			return false
+	return true

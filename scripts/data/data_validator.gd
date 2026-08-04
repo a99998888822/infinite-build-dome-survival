@@ -379,9 +379,22 @@ func _validate_rarity(record: Dictionary, path: String) -> void:
 
 
 func _validate_reference(record: Dictionary, field_name: String, target_table: String, records_by_id: Dictionary, path: String) -> void:
-	if not record.has(field_name):
+	var field_data := _get_field_path_value(record, field_name)
+	if not bool(field_data["found"]):
 		return
-	_validate_id_reference(str(record[field_name]), target_table, records_by_id, "%s.%s" % [path, field_name])
+	_validate_id_reference(str(field_data["value"]), target_table, records_by_id, "%s.%s" % [path, field_name])
+
+
+func _get_field_path_value(record: Dictionary, field_path: String) -> Dictionary:
+	var current_value: Variant = record
+	for field_part in field_path.split("."):
+		if not (current_value is Dictionary):
+			return {"found": false, "value": null}
+		var current_dict: Dictionary = current_value
+		if not current_dict.has(field_part):
+			return {"found": false, "value": null}
+		current_value = current_dict[field_part]
+	return {"found": true, "value": current_value}
 
 
 func _validate_id_reference(record_id: String, target_table: String, records_by_id: Dictionary, path: String) -> void:
@@ -390,4 +403,3 @@ func _validate_id_reference(record_id: String, target_table: String, records_by_
 		return
 	if not records_by_id.has(target_table) or not records_by_id[target_table].has(record_id):
 		errors.append("Invalid reference in %s: %s not found in %s" % [path, record_id, target_table])
-

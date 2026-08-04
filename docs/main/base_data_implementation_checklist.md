@@ -32,8 +32,8 @@
 | 7 | 编写最小校验器 | 已完成 | `scripts/data/data_validator.gd` |
 | 8 | 加入跨表引用校验 | 已完成 | ID引用校验规则与 `scripts/data/unlock_registry.gd` |
 | 9 | 创建测试场景/脚本 | 已完成 | 复用 `scenes/core/bootstrap.tscn` 与 `scripts/core/bootstrap.gd` |
-| 10 | 准备占位素材 | 暂缓 | `assets/ui/icons/placeholder_icon.png`，可后置 |
-| 11 | 验收基础模块 | 未开始 | 启动加载、查询、modifier计算、错误提示全部可用 |
+| 10 | 准备占位素材 | 已完成 | `assets/ui/icons/placeholder_icon.png` |
+| 11 | 验收基础模块 | 已完成 | 启动加载、查询、modifier计算、错误提示全部可用 |
 
 ## 第 1 步：搭建工程目录
 
@@ -248,7 +248,7 @@ res://
 2. 能查询测试角色、武器、遗物、羁绊、敌人、掉落表、波次。
 3. 能输出 `attack_speed=100`、`cooldown_reduction=40`、`armor=100` 的公式检查。
 4. 能打印 `DataRegistry` 的 warnings/errors。
-5. `ModifierStack` 实例计算与 `debug_stat()` 来源链测试后续补充。
+5. 能输出 `ModifierStack` 实例计算与 `debug_stat()` 来源链测试。
 
 ## 第 10 步：准备占位素材
 
@@ -262,7 +262,7 @@ res://
 
 ### 说明
 
-该步骤暂缓，不阻塞基础数值模块开发。正式素材清单见 `docs/asset/base_data_asset_checklist.md`。
+该步骤已完成，当前已提供 `res://assets/ui/icons/placeholder_icon.png` 作为所有缺失图标的兜底资源。正式素材清单见 `docs/asset/base_data_asset_checklist.md`。
 
 ## 第 11 步：验收基础模块
 
@@ -320,11 +320,9 @@ res://
 
 ## 当前进度提醒
 
-当前已完成：第 9 步核心测试入口，已复用 `bootstrap.tscn` 输出基础数据自检。
+当前已完成：基础数值与数据配置模块已通过 Godot 启动自检；已补充 `DataRegistry.data_ready` 信号、tag 查询接口、嵌套引用校验、`ModifierStack` 实例计算与 `debug_stat()` 来源链测试，并已加入 `placeholder_icon` 兜底素材。
 
-下一步建议：补充 `ModifierStack` 实例计算测试与 `debug_stat()` 来源链输出测试，然后在有 Godot 的电脑上执行“换机 Godot 验证步骤”。
-
-
+下一步建议：进入“最小局内闭环”模块，优先实现玩家移动、敌人追踪、基础武器自动攻击、敌人死亡掉落与经验拾取。
 
 
 
