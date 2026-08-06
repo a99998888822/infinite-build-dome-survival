@@ -19,7 +19,7 @@ const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"characters": ["id", "base_stats", "start_weapons"],
 	"enemies": ["id", "base_stats", "drop_table_id"],
 	"camp_buildings": ["id", "name", "levels", "upgrade_options"],
-	"waves": ["id", "time_start", "time_end", "spawn_groups"],
+	"waves": ["id", "duration_seconds", "spawn_groups"],
 	"drop_tables": ["id", "entries"],
 }
 
@@ -107,6 +107,13 @@ func _validate_required_fields(record: Dictionary, required_fields: Array, path:
 	for field_name in required_fields:
 		if not record.has(field_name):
 			errors.append("Missing required field: %s.%s" % [path, field_name])
+
+
+func _validate_bool(record: Dictionary, field_name: String, path: String) -> void:
+	if not record.has(field_name):
+		return
+	if not (record[field_name] is bool):
+		errors.append("%s.%s must be a bool." % [path, field_name])
 
 
 func _validate_non_negative_int(record: Dictionary, field_name: String, path: String) -> void:
@@ -209,6 +216,8 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 		var path := "relics[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
 		_validate_reference(record, "bond_id", "bonds", records_by_id, path)
+		if record.has("max_stack"):
+			_validate_non_negative_int(record, "max_stack", path)
 		var effects: Variant = record.get("effects", [])
 		if not (effects is Array):
 			errors.append("%s.effects must be an array." % path)
@@ -295,6 +304,7 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 		if not (record is Dictionary):
 			continue
 		var path := "camp_buildings[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_bool(record, "initial_unlocked", path)
 		_validate_reference(record, "unlock_condition.building", "camp_buildings", records_by_id, path)
 		_validate_camp_levels(record.get("levels", {}), path)
 		var upgrade_options: Variant = record.get("upgrade_options", [])
@@ -348,14 +358,14 @@ func _validate_camp_level_effect(effect: Dictionary, path: String) -> void:
 
 
 func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:
-	# 波次只校验时间区间和刷怪引用，不关心具体战斗实现。
+	# 波次只校验单波时长和刷怪引用，不关心具体战斗实现。
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
 			continue
 		var path := "waves[%d:%s]" % [record_index, str(record.get("id", ""))]
-		if int(record.get("time_end", 0)) <= int(record.get("time_start", 0)):
-			errors.append("%s.time_end must be greater than time_start." % path)
+		if int(record.get("duration_seconds", 0)) <= 0:
+			errors.append("%s.duration_seconds must be greater than 0." % path)
 		var spawn_groups: Variant = record.get("spawn_groups", [])
 		if not (spawn_groups is Array):
 			errors.append("%s.spawn_groups must be an array." % path)
@@ -368,6 +378,10 @@ func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:
 				continue
 			_validate_required_fields(group, ["enemy_id", "spawn_interval_ms", "count_per_spawn"], group_path)
 			_validate_reference(group, "enemy_id", "enemies", records_by_id, group_path)
+			if int(group.get("spawn_interval_ms", 0)) <= 0:
+				errors.append("%s.spawn_interval_ms must be greater than 0." % group_path)
+			if int(group.get("count_per_spawn", 0)) <= 0:
+				errors.append("%s.count_per_spawn must be greater than 0." % group_path)
 
 
 func _validate_drop_table_records(records: Array) -> void:

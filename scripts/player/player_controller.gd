@@ -77,6 +77,21 @@ func add_runtime_modifiers(modifier_data_list: Array) -> void:
 			add_runtime_modifier(modifier_data)
 
 
+func remove_runtime_modifiers_by_source(source_type: String, source_id: String) -> void:
+	modifier_stack.remove_by_source(source_type, source_id)
+	_update_after_stat_change()
+
+
+func remove_runtime_modifiers_by_source_type(source_type: String) -> void:
+	modifier_stack.remove_by_source_type(source_type)
+	_update_after_stat_change()
+
+
+func clear_runtime_modifiers_by_scope(target_scope: String) -> void:
+	modifier_stack.remove_by_target_scope(target_scope)
+	_update_after_stat_change()
+
+
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat(stat_id, fallback_base_value)
 

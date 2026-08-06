@@ -1,0 +1,242 @@
+# Godot 手动场景搭建与组件排布 Checklist
+
+本文档记录当前项目中需要在 Godot 编辑器里手动检查、替换素材、微调节点或补充布局的事项。代码和配置可以先推进，等具备 Godot 调试条件后，再按本文档逐条操作。
+
+## 1. 操作前准备
+
+1. 使用 Godot 打开项目根目录下的 `project.godot`。
+2. 优先运行 `scenes/core/bootstrap.tscn`。
+3. 确认控制台没有 `validation errors` 或明显脚本报错。
+4. 若启动失败，先暂停场景排布，回到对应模块修复代码或配置。
+
+## 2. 基础设施场景
+
+### 2.1 `scenes/core/bootstrap.tscn`
+
+用途：项目启动、自检入口。
+
+需要操作：
+
+- [ ] 打开场景并确认根节点存在。
+- [ ] 运行该场景，确认控制台能输出各模块自测信息。
+- [ ] 不需要添加美术节点。
+- [ ] 不需要修改节点位置。
+
+注意：
+
+1. 该场景主要用于验证配置、脚本和模块接口。
+2. 后续新增模块时，会继续在 `bootstrap.gd` 中追加自测输出。
+
+## 3. 玩家与角色场景
+
+### 3.1 `scenes/player/player_root.tscn`
+
+用途：玩家实体根场景。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点是 `CharacterBody2D`。
+- [ ] 确认存在 `VisualAnchor`。
+- [ ] 确认 `VisualAnchor/Sprite2D` 存在。
+- [ ] 把玩家正式精灵图挂到 `Sprite2D.texture`。
+- [ ] 检查 `Sprite2D` 的大小、偏移和朝向。
+- [ ] 确认 `PickupArea/CollisionShape2D` 存在。
+- [ ] 根据玩家体型微调主碰撞体大小。
+- [ ] 根据拾取范围确认拾取碰撞体半径是否合理。
+
+不要轻易修改：
+
+1. 根节点类型。
+2. `PickupArea` 节点名。
+3. `VisualAnchor` 节点名。
+
+## 4. 局内武器场景
+
+### 4.1 `scenes/weapons/weapon_loadout.tscn`
+
+用途：武器管理逻辑容器。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点存在。
+- [ ] 确认 `TargetingService` 节点存在或运行时能自动创建。
+- [ ] 不需要摆放美术。
+- [ ] 不需要调整位置。
+
+注意：
+
+1. 武器图标、投射物、刀光、范围特效由素材文件和武器模块使用。
+2. 该场景主要是逻辑容器，不是表现节点。
+
+## 5. 敌人与波次场景
+
+### 5.1 `scenes/enemy/mutated_grub.tscn`
+
+用途：普通小怪实体。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点是 `CharacterBody2D`。
+- [ ] 把敌人正式图片挂到 `Sprite2D.texture`。
+- [ ] 检查敌人图片朝向。
+- [ ] 根据图片大小微调 `Sprite2D.scale`。
+- [ ] 根据敌人体型微调 `CollisionShape2D` 半径。
+- [ ] 运行自测，确认敌人能被实例化。
+
+不要轻易修改：
+
+1. 根节点类型。
+2. `CollisionShape2D` 节点名。
+3. 脚本绑定。
+
+### 5.2 `scenes/pickups/exp_orb.tscn`
+
+用途：经验球拾取物。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点是 `Area2D`。
+- [ ] 把经验球正式图片挂到 `Sprite2D.texture`。
+- [ ] 检查 `CollisionShape2D` 是否覆盖经验球图标。
+- [ ] 运行自测，确认经验球能被统一吸取和结算。
+
+不要轻易修改：
+
+1. 根节点类型。
+2. `CollisionShape2D` 节点名。
+3. 脚本绑定。
+
+### 5.3 `scenes/waves/wave_manager.tscn`
+
+用途：波次管理逻辑容器。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点存在。
+- [ ] 确认 `EnemyRoot` 存在。
+- [ ] 确认 `PickupRoot` 存在。
+- [ ] 不需要摆放美术。
+- [ ] 不需要调整位置。
+
+注意：
+
+1. `EnemyRoot` 用于承载运行时生成的敌人。
+2. `PickupRoot` 用于承载运行时生成的经验球等拾取物。
+
+## 6. 局外营地场景
+
+### 6.1 `scenes/camp/camp_root.tscn`
+
+用途：营地主场景。
+
+当前状态：
+
+1. 已有 `BuildingLayer`。
+2. 已能运行时生成 8 个建筑位。
+3. 还需要你在 Godot 中搭建营地背景和装饰层。
+
+建议节点结构：
+
+```text
+CampRoot
+├─ BackgroundLayer
+│  ├─ GrassSprite
+│  └─ RiverSprite
+├─ PropLayer
+│  ├─ TreeGroup
+│  ├─ RockGroup
+│  ├─ FlowerGroup
+│  └─ Campfire
+├─ BuildingLayer
+└─ UILinkLayer
+```
+
+需要操作：
+
+- [ ] 新增 `BackgroundLayer`。
+- [ ] 在 `BackgroundLayer` 下放置草地素材。
+- [ ] 在 `BackgroundLayer` 下放置河流素材。
+- [ ] 新增 `PropLayer`。
+- [ ] 在 `PropLayer` 下摆放树木、石头、花草。
+- [ ] 在营地中心附近摆放篝火。
+- [ ] 检查 `BuildingLayer` 是否在背景层和装饰层之上。
+- [ ] 运行场景，确认 8 个建筑位正常显示。
+- [ ] 根据实际画面调整 8 个建筑位置。
+
+不要轻易修改：
+
+1. `BuildingLayer` 节点名。
+2. `CampRoot` 脚本绑定。
+
+### 6.2 `scenes/camp/camp_building_slot.tscn`
+
+用途：单个营地建筑位。
+
+当前规则：
+
+1. 未解锁建筑显示 `RuinsSprite2D`。
+2. 已解锁建筑显示 `BuildingSprite2D`。
+3. 初始自带建筑直接显示 `BuildingSprite2D`。
+
+需要操作：
+
+- [ ] 打开场景，确认根节点是 `Area2D`。
+- [ ] 确认 `RuinsSprite2D` 存在。
+- [ ] 确认 `BuildingSprite2D` 存在。
+- [ ] 确认 `CollisionShape2D` 覆盖可点击区域。
+- [ ] 确认 `NameLabel` 位置不遮挡建筑。
+- [ ] 如建筑图较大，微调两个 `Sprite2D` 的 scale。
+- [ ] 如点击范围不合适，微调 `CollisionShape2D` 半径。
+
+不要轻易修改：
+
+1. `RuinsSprite2D` 节点名。
+2. `BuildingSprite2D` 节点名。
+3. `CollisionShape2D` 节点名。
+4. 脚本绑定。
+
+## 7. UI 交互模块场景
+
+当前状态：
+
+1. 已有 UI 模块设计文档。
+2. 还没有正式创建 HUD、弹窗和营地 UI 的 `.tscn`。
+
+后续需要在 Godot 中新建：
+
+- [ ] 战斗 HUD 场景。
+- [ ] 升级三选一弹窗场景。
+- [ ] 武器购买失败提示弹窗。
+- [ ] 结算弹窗。
+- [ ] 营地建筑详情面板。
+- [ ] 暂停菜单。
+
+建议节点结构：
+
+```text
+UIRoot
+├─ HUDLayer
+├─ PopupLayer
+├─ FadeLayer
+└─ DebugLayer
+```
+
+## 8. 当前最需要手动处理的场景
+
+优先级从高到低：
+
+1. `scenes/camp/camp_root.tscn`：搭建草地、河流、树木、石头、花草、篝火。
+2. `scenes/player/player_root.tscn`：替换玩家正式精灵图并检查碰撞。
+3. `scenes/enemy/mutated_grub.tscn`：替换敌人图并检查碰撞。
+4. `scenes/pickups/exp_orb.tscn`：替换经验球图并检查拾取碰撞。
+5. UI 模块相关场景：后续进入 UI 实现时再集中搭建。
+
+## 9. 每次手动调整后的验证
+
+每次完成一批场景调整后，建议执行：
+
+1. 运行 `scenes/core/bootstrap.tscn`。
+2. 看控制台是否存在 failed。
+3. 如果只是图片缺失，确认是否允许占位。
+4. 如果是节点找不到，优先检查节点名是否被改动。
+5. 如果是碰撞异常，优先检查 `CollisionShape2D` 是否存在且启用。

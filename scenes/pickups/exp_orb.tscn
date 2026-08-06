@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://exporbmvp001"]
+
+[ext_resource type="Script" path="res://scripts/pickups/exp_orb.gd" id="1_exp_orb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exp_orb"]
+radius = 10.0
+
+[node name="ExpOrb" type="Area2D"]
+script = ExtResource("1_exp_orb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_exp_orb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.5, 0.95, 1, 1)
+

@@ -4,6 +4,8 @@ const RUN_DATA_SELF_TEST: bool = true
 const RUN_PLAYER_SELF_TEST: bool = true
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player_root.tscn")
 const WEAPON_LOADOUT_SCENE: PackedScene = preload("res://scenes/weapons/weapon_loadout.tscn")
+const WAVE_MANAGER_SCENE: PackedScene = preload("res://scenes/waves/wave_manager.tscn")
+const CAMP_SCENE: PackedScene = preload("res://scenes/camp/camp_root.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
 	"relics",
@@ -29,14 +31,17 @@ func run_data_self_test() -> void:
 	GameGlobal.log_debug("bootstrap runtime ready")
 	var load_success := DataRegistry.reload_all()
 	var modifier_success := _run_modifier_stack_checks()
+	var relic_success := _run_relic_bond_checks()
 	var player_success := _run_player_checks()
 	var weapon_success := _run_weapon_checks()
+	var enemy_wave_success := _run_enemy_wave_checks()
+	var camp_success := _run_camp_meta_checks()
 	_print_table_counts()
 	_print_lookup_checks()
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and player_success and weapon_success:
+	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and camp_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -174,6 +179,28 @@ func _run_modifier_stack_checks() -> bool:
 	return passed
 
 
+func _run_relic_bond_checks() -> bool:
+	print("[Bootstrap] relic bond checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	if player == null:
+		return false
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	player.initialize_from_character("character_void_hunter")
+	var relic_system := RelicBondSystem.new()
+	relic_system.initialize(player)
+	relic_system.set_weapon_ids(player.get_start_weapon_ids())
+	passed = _print_check_result("relic system init", relic_system != null and relic_system.get_total_relic_count() == 0) and passed
+	passed = _print_check_result("relic max_stack zero", int(DataRegistry.get_record("relics", "relic_flying_teeth").get("max_stack", -1)) == 0) and passed
+	passed = _print_check_result("relic add modifier", relic_system.add_relic("relic_flying_teeth") and relic_system.add_relic("relic_flying_eye") and int(player.get_stat("melee_damage")) >= 8) and passed
+	passed = _print_check_result("relic tag count", relic_system.get_bond_tag_count("bond_mighty") == 2) and passed
+	passed = _print_check_result("relic bond threshold", relic_system.get_active_bond_layers("bond_mighty") == 1) and passed
+	passed = _print_check_result("relic stack unlimited", relic_system.can_add_relic("relic_flying_teeth")) and passed
+	player.queue_free()
+	return passed
+
+
 func _run_player_checks() -> bool:
 	if not RUN_PLAYER_SELF_TEST:
 		return true
@@ -211,6 +238,70 @@ func _run_player_checks() -> bool:
 		var dealt_damage := player.take_damage(20, "bootstrap_test")
 		passed = _print_check_result("player armor damage", dealt_damage == 10 and player.current_hp == 90) and passed
 		player.queue_free()
+	return passed
+
+
+func _run_enemy_wave_checks() -> bool:
+	print("[Bootstrap] enemy wave checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	var wave_manager := WAVE_MANAGER_SCENE.instantiate() as WaveManager
+	passed = _print_check_result("enemy wave test scene instantiate", player != null and wave_manager != null) and passed
+	if player == null or wave_manager == null:
+		return false
+
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	add_child(wave_manager)
+	player.initialize_from_character("character_void_hunter")
+	wave_manager.enemy_root = wave_manager.get_node_or_null("EnemyRoot")
+	wave_manager.pickup_root = wave_manager.get_node_or_null("PickupRoot")
+	wave_manager.initialize(player)
+	passed = _print_check_result("enemy config load", DataRegistry.has_record("enemies", "enemy_mutated_grub")) and passed
+	passed = _print_check_result("wave config load", DataRegistry.has_record("waves", "wave_stage_01")) and passed
+	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(1) == 20 and wave_manager.calculate_wave_duration(7) == 50) and passed
+
+	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
+	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == 20) and passed
+	if enemy != null:
+		var previous_hp := player.current_hp
+		enemy._process_contact_damage()
+		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
+		var dealt_damage := enemy.take_damage(999, "bootstrap")
+		passed = _print_check_result("enemy damage and death", dealt_damage > 0 and not enemy.alive) and passed
+
+	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
+	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
+	wave_manager.collect_all_exp_orbs()
+	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 4 and wave_manager.current_gold == 4) and passed
+	var free_shop_count := 0
+	wave_manager.free_shop_requested.connect(func(_level: int) -> void: free_shop_count += 1)
+	wave_manager.add_exp_and_gold(1, 0)
+	passed = _print_check_result("level up free shop trigger", free_shop_count >= 1 and wave_manager.player_level >= 2 and wave_manager.current_exp == 0) and passed
+
+	wave_manager.queue_free()
+	player.queue_free()
+	return passed
+
+
+func _run_camp_meta_checks() -> bool:
+	print("[Bootstrap] camp meta progression checks")
+	var passed := true
+	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 8) and passed
+	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
+	passed = _print_check_result("camp ruins state", CampProgression.get_building_display_state("camp_farstar_range") == "ruins") and passed
+	var camp_root := CAMP_SCENE.instantiate() as CampRoot
+	passed = _print_check_result("camp scene instantiate", camp_root != null) and passed
+	if camp_root != null:
+		add_child(camp_root)
+		passed = _print_check_result("camp scene slot count", camp_root.get_building_slot_count() == DataRegistry.get_record_count("camp_buildings")) and passed
+		passed = _print_check_result("camp scene slot lookup", camp_root.get_building_slot("camp_armory_workshop") != null and camp_root.get_building_slot("camp_farstar_range") != null) and passed
+	CampProgression.set_building_level("camp_armory_workshop", 2)
+	passed = _print_check_result("camp unlock sync", CampProgression.is_building_unlocked("camp_farstar_range")) and passed
+	CampProgression.add_camp_currency(100)
+	passed = _print_check_result("camp upgrade option", CampProgression.purchase_upgrade("camp_upgrade_melee_damage") and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
+	if camp_root != null:
+		camp_root.queue_free()
 	return passed
 
 

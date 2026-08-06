@@ -4,6 +4,7 @@
     "display_name": "深海之眼",
     "rarity": "rare",
     "bond_id": "bond_chosen",
+    "max_stack": 0,
     "tags": ["relic", "survival", "deep"],
     "effects": [
       {
@@ -24,6 +25,7 @@
     "display_name": "飞的牙齿",
     "rarity": "common",
     "bond_id": "bond_mighty",
+    "max_stack": 0,
     "tags": ["relic", "melee", "fang"],
     "effects": [
       {
@@ -55,6 +57,7 @@
     "display_name": "飞的羽毛",
     "rarity": "common",
     "bond_id": "bond_sharpshooter",
+    "max_stack": 0,
     "tags": ["relic", "speed", "feather"],
     "effects": [
       {
@@ -75,6 +78,7 @@
     "display_name": "飞的眼睛",
     "rarity": "rare",
     "bond_id": "bond_chosen",
+    "max_stack": 0,
     "tags": ["relic", "melee", "mystic", "eye"],
     "effects": [
       {

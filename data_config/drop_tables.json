@@ -2,7 +2,7 @@
   {
     "id": "drop_basic_enemy",
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，不直接掉落遗物，5%掉落血包。拾取经验球时同步增加等额基础金币。",
+    "description": "小怪基准掉落：1经验，不直接掉落遗物，5%掉落血包。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -26,7 +26,7 @@
   {
     "id": "drop_elite_enemy",
     "display_name": "精英怪掉落表",
-    "description": "精英怪基准掉落：2经验，5%掉落遗物，20%掉落血包。拾取经验球时同步增加等额基础金币。",
+    "description": "精英怪基准掉落：2经验，5%掉落遗物，20%掉落血包。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -54,7 +54,7 @@
   {
     "id": "drop_boss_enemy",
     "display_name": "BOSS掉落表",
-    "description": "BOSS基准掉落：10经验，100%掉落且只有一个遗物。拾取经验球时同步增加等额基础金币。",
+    "description": "BOSS基准掉落：10经验，100%掉落且只有一个遗物。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -75,3 +75,5 @@
     ]
   }
 ]
+
+

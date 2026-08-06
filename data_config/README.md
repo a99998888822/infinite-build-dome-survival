@@ -72,6 +72,12 @@
 
 运行时由后续“遗物与羁绊模块”补齐 `source_type/source_id/duration/stack_rule/priority` 等上下文字段，并提交给 `ModifierStack` 或 `ExtraEffectRegistry`。
 
+## relics.json 规则
+
+1. `max_stack = 0` 表示该遗物不限制持有数量。
+2. `max_stack = 1` 或更大时，表示单局最多持有对应数量。
+3. 遗物 `effects` 使用统一 modifier 结构，当前模块会直接读取并叠加到玩家。
+
 
 ## waves.json 简写规则
 
@@ -80,26 +86,25 @@
 ```json
 {
   "id": "wave_stage_01",
-  "time_start": 0,
-  "time_end": 10,
+  "duration_seconds": 20,
   "spawn_groups": [
     { "enemy_id": "enemy_mutated_grub", "spawn_interval_ms": 1200, "count_per_spawn": 3 }
   ]
 }
 ```
 
-波次时间规则：第1~5关分别为 `10/15/20/25/30` 秒，之后每关固定 `30` 秒。
+波次时间规则：每波单独计时，时长使用 `min(15 + 5 * wave_index, 50)`，即第1波20秒，第2波25秒，最高50秒。
 
 
 ## drop_tables.json 规则
 
 `drop_tables.json` 使用基准掉落值，运行时再套用玩家当前加成：
 
-1. `exp_orb.amount` 表示基础经验值；“拾取经验球时同步增加等额基础金币”是掉落模块固定代码逻辑，不需要在配置里额外写字段。
+1. `exp_orb.amount` 表示经验球基础经验值；敌人死亡后会掉落经验球。
 2. 经验与金币各自独立受到加成影响：经验读取 `exp_gain_percent`，金币读取 `currency_gain_percent`。
 3. 百分比掉落物使用 `chance_percent`，受到 `drop_rate_percent` 影响，最终概率 = 基础概率 * (1 + drop_rate_percent / 100)。
 4. 最终概率必须限制在0到100之间；BOSS遗物掉落通过 `type = relic`、`amount = 1`、`chance_percent = 100` 表达，运行时代码按“有且只有一个遗物”处理。
-5. 敌人死亡只生成经验球和概率掉落物；金币不直接落地，随经验球拾取同步结算。配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段。
+5. 拾取经验球时同时获得经验和等额基础金币；波次结束后统一吸取并结算场上所有经验球。配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段。
 
 ## camp_buildings.json 结构规则
 

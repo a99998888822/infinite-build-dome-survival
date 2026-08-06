@@ -758,8 +758,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 ```json
 {
   "id": "wave_stage_01",
-  "time_start": 0,
-  "time_end": 10,
+  "duration_seconds": 20,
   "spawn_groups": [
     {
       "enemy_id": "enemy_mutated_grub",
@@ -770,7 +769,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 }
 ```
 
-`waves.json` 只保留刷怪运行必需字段；第1~5关时长分别为 `10/15/20/25/30` 秒，之后每关固定 `30` 秒。
+`waves.json` 只保留刷怪运行必需字段；每波单独计时，时长使用 `min(15 + 5 * wave_index, 50)`，即第1波20秒，第2波25秒，最高50秒。
 
 ### 10.10 drop_tables.json
 
@@ -788,12 +787,13 @@ func find_refs(config_id: String) -> Array[Dictionary]
 
 掉落结算规则：
 
-1. `exp_orb.amount` 是基础经验；拾取经验球时同步增加基础金币是掉落模块固定代码逻辑，不需要配置字段。
+1. `exp_orb.amount` 是经验球基础经验；敌人死亡后掉落经验球。
 2. 经验最终值 = 基础经验 * (1 + `exp_gain_percent` / 100)。
-3. 金币最终值 = 基础金币 * (1 + `currency_gain_percent` / 100)。
-4. 百分比掉落物最终概率 = `chance_percent` * (1 + `drop_rate_percent` / 100)，再限制到0~100。
-5. BOSS遗物掉落使用 `type = relic`、`amount = 1`、`chance_percent = 100` 表达；运行时代码按“有且只有一个遗物”处理。
-6. 配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段，避免数据表冗余。
+3. 拾取经验球时同时获得等额基础金币，金币最终值 = 基础金币 * (1 + `currency_gain_percent` / 100)。
+4. 波次结束后统一吸取并结算场上所有经验球。
+5. 百分比掉落物最终概率 = `chance_percent` * (1 + `drop_rate_percent` / 100)，再限制到0~100。
+6. BOSS遗物掉落使用 `type = relic`、`amount = 1`、`chance_percent = 100` 表达；运行时代码按“有且只有一个遗物”处理。
+7. 配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段，避免数据表冗余。
 
 ## 11. 跨表引用校验
 

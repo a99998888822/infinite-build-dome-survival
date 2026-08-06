@@ -62,6 +62,12 @@ func remove_by_source(source_type: String, source_id: String) -> void:
 			modifiers.remove_at(index)
 
 
+func remove_by_source_type(source_type: String) -> void:
+	for index in range(modifiers.size() - 1, -1, -1):
+		if modifiers[index].source_type == source_type:
+			modifiers.remove_at(index)
+
+
 func remove_by_target_scope(target_scope: String) -> void:
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].target_scope == target_scope:
