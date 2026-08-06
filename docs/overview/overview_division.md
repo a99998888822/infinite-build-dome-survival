@@ -69,7 +69,7 @@ flowchart TD
 
 ### 4.1 基础数值与数据配置模块
 
-建议文档：`base_data_and_modifiers_design.md`
+建议文档：`1-base_data_and_modifiers_design.md`
 
 核心内容：
 1. 通用属性定义：生命、伤害、攻速、移速、暴击、拾取范围、负载上限等。
@@ -95,7 +95,7 @@ flowchart TD
 
 ### 4.3 玩家与角色模块
 
-建议文档：`player_and_character_design.md`
+建议文档：`3-player_and_character_design.md`
 
 核心内容：
 1. 玩家移动、碰撞、受击、死亡、拾取范围。
@@ -108,7 +108,7 @@ flowchart TD
 
 ### 4.4 局内武器系统模块
 
-建议文档：`weapon_loadout_design.md`
+建议文档：`4-weapon_loadout_design.md`
 
 核心内容：
 1. 负载系统：总负载、武器负载、装备、替换、溢出弹窗。
@@ -238,7 +238,7 @@ flowchart TD
 
 ### 4.14 工程基础设施模块
 
-建议文档：`engineering_foundation_design.md`
+建议文档：`2-engineering_foundation_design.md`
 
 核心内容：
 1. Godot目录结构与Autoload列表。
@@ -315,19 +315,21 @@ flowchart TD
 暂不实现：完整6角色、全部6羁绊、7层棱彩实装、无尽模式、复杂裂隙事件、完整图鉴、完整音频分层。
 ## 7. 后续文档产出顺序建议
 
-1. `engineering_foundation_design.md`
-2. `base_data_and_modifiers_design.md`
-3. `weapon_loadout_design.md`
-4. `relic_bond_design.md`
-5. `enemy_wave_design.md`
-6. `run_combat_loop_design.md`
-7. `zone_streak_fortune_design.md`
-8. `camp_meta_progression_design.md`
-9. `ui_flow_design.md`
+1. `1-base_data_and_modifiers_design.md`
+2. `2-engineering_foundation_design.md`
+3. `3-player_and_character_design.md`
+4. `4-weapon_loadout_design.md`
+5. `relic_bond_design.md`
+6. `enemy_wave_design.md`
+7. `run_combat_loop_design.md`
+8. `zone_streak_fortune_design.md`
+9. `camp_meta_progression_design.md`
+10. `ui_flow_design.md`
 10. `save_progress_design.md`
 11. `summon_ally_design.md`
 12. `drop_reward_design.md`
 13. `audio_atmosphere_design.md`
+
 
 
 

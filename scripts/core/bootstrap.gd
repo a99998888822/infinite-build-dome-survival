@@ -1,6 +1,9 @@
 ﻿extends Node
 
 const RUN_DATA_SELF_TEST: bool = true
+const RUN_PLAYER_SELF_TEST: bool = true
+const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player_root.tscn")
+const WEAPON_LOADOUT_SCENE: PackedScene = preload("res://scenes/weapons/weapon_loadout.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
 	"relics",
@@ -19,14 +22,21 @@ func _ready() -> void:
 
 
 func run_data_self_test() -> void:
+	# 启动后只做最小自检，避免把玩法逻辑塞进入口。
 	print("[Bootstrap] data self-test started")
+	GameGlobal.reset_runtime_state()
+	GameGlobal.set_runtime_flag("bootstrap_self_test", true)
+	GameGlobal.log_debug("bootstrap runtime ready")
 	var load_success := DataRegistry.reload_all()
 	var modifier_success := _run_modifier_stack_checks()
+	var player_success := _run_player_checks()
+	var weapon_success := _run_weapon_checks()
 	_print_table_counts()
 	_print_lookup_checks()
 	_print_formula_checks()
+	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success:
+	if load_success and modifier_success and player_success and weapon_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -60,13 +70,26 @@ func _print_formula_checks() -> void:
 	var attack_interval := StatDefinitions.calculate_attack_interval(1.0, 100)
 	var cooldown := StatDefinitions.calculate_cooldown(10.0, 40)
 	var damage_taken_percent := StatDefinitions.calculate_damage_taken_from_armor(100)
+	var attack_radius := StatDefinitions.calculate_attack_radius(100, 40)
+	var finance_interest := StatDefinitions.calculate_finance_interest_gain(101, 5)
 	print("[Bootstrap] formula checks")
 	print("[Bootstrap] - attack_speed=100: 1.00s -> %.2fs" % attack_interval)
 	print("[Bootstrap] - cooldown_reduction=40: 10.00s -> %.2fs" % cooldown)
 	print("[Bootstrap] - armor=100: damage_taken_percent=%d" % int(damage_taken_percent))
+	print("[Bootstrap] - area_size=40: radius 100 -> %d" % int(attack_radius))
+	print("[Bootstrap] - finance=101 interest_rate=5: gain %d" % finance_interest)
+
+
+func _print_engine_checks() -> void:
+	# 确认工程基础设施类 Autoload 已接入且可读取状态。
+	print("[Bootstrap] engine foundation checks")
+	print("[Bootstrap] - GameGlobal mode: %s" % GameGlobal.game_mode)
+	print("[Bootstrap] - GameGlobal bootstrap flag: %s" % str(GameGlobal.get_runtime_flag("bootstrap_self_test", false)))
+	print("[Bootstrap] - ObjectPool ready: %s" % str(ObjectPool != null))
 
 
 func _run_modifier_stack_checks() -> bool:
+	# 用少量样例验证 modifier 叠加、替换、过期和调试输出。
 	print("[Bootstrap] modifier stack checks")
 	var passed := true
 	var stack := ModifierStack.new()
@@ -148,6 +171,117 @@ func _run_modifier_stack_checks() -> bool:
 	print("[Bootstrap] - melee_damage final: %s" % str(melee_debug.get("final_value", 0)))
 	print("[Bootstrap] - melee_damage modifier sources: %d" % int(melee_debug.get("modifiers", []).size()))
 	print("[Bootstrap] - damage_taken_percent armor rate: %s" % str(damage_taken_debug.get("armor_damage_taken_rate", 0)))
+	return passed
+
+
+func _run_player_checks() -> bool:
+	if not RUN_PLAYER_SELF_TEST:
+		return true
+
+	print("[Bootstrap] player checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	passed = _print_check_result("player scene instantiate", player != null) and passed
+
+	if player != null:
+		player.auto_initialize_on_ready = false
+		add_child(player)
+		var initialized := player.initialize_from_character("character_void_hunter")
+		passed = _print_check_result("player initialize character", initialized) and passed
+		passed = _print_check_result("player max_hp", int(player.get_stat("max_hp")) == 100 and player.current_hp == 100) and passed
+		passed = _print_check_result("player move_speed", int(player.get_stat("move_speed")) == 180) and passed
+		passed = _print_check_result("player start weapons", player.get_start_weapon_ids().has("weapon_void_blade")) and passed
+		var pickup_radius := 0.0
+		var pickup_shape := player.get_node_or_null("PickupArea/CollisionShape2D") as CollisionShape2D
+		if pickup_shape != null and pickup_shape.shape is CircleShape2D:
+			pickup_radius = (pickup_shape.shape as CircleShape2D).radius
+		passed = _print_check_result("player pickup radius", is_equal_approx(pickup_radius, 80.0)) and passed
+
+		player.add_runtime_modifier({
+			"id": "mod_test_player_armor",
+			"source_type": "test",
+			"source_id": "bootstrap_player_check",
+			"target_scope": "player",
+			"stat": "armor",
+			"operation": "add_flat",
+			"value": 100,
+			"duration": -1,
+			"stack_rule": "unique",
+		})
+		var dealt_damage := player.take_damage(20, "bootstrap_test")
+		passed = _print_check_result("player armor damage", dealt_damage == 10 and player.current_hp == 90) and passed
+		player.queue_free()
+	return passed
+
+
+func _run_weapon_checks() -> bool:
+	print("[Bootstrap] weapon checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	var loadout := WEAPON_LOADOUT_SCENE.instantiate() as WeaponLoadout
+	passed = _print_check_result("weapon test scene instantiate", player != null and loadout != null) and passed
+	if player == null or loadout == null:
+		return false
+
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	add_child(loadout)
+	player.initialize_from_character("character_void_hunter")
+	var initialized := loadout.initialize(player)
+	passed = _print_check_result("weapon loadout initialize", initialized and loadout.get_weapon_instances().size() == 1) and passed
+	passed = _print_check_result("weapon load cost", loadout.get_total_load_cost() == 12 and loadout.get_load_capacity() == 100) and passed
+
+	var weapon := loadout.get_weapon_instance("weapon_void_blade")
+	passed = _print_check_result("weapon instance lookup", weapon != null) and passed
+	if weapon != null:
+		passed = _print_check_result("weapon config runtime fields", int(weapon.get_hit_radius()) == 10 and int(weapon.get_projectile_speed()) == 500 and int(weapon.get_spread_angle()) == 12) and passed
+		passed = _print_check_result("weapon area_size radius", int(StatDefinitions.calculate_attack_radius(100, 40)) == 140) and passed
+		passed = _print_check_result("weapon attack interval base", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.7)) and passed
+		player.add_runtime_modifier({
+			"id": "mod_test_weapon_attack_speed",
+			"source_type": "test",
+			"source_id": "bootstrap_weapon_check",
+			"target_scope": "player",
+			"stat": "attack_speed",
+			"operation": "add_flat",
+			"value": 100,
+			"duration": -1,
+			"stack_rule": "unique",
+		})
+		passed = _print_check_result("weapon attack_speed interval", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.35)) and passed
+		var upgraded := loadout.upgrade_weapon("weapon_void_blade")
+		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == 10 and weapon.attack_interval_ms == 650) and passed
+		var damage_events := weapon.calculate_damage_events(false)
+		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= 10
+		passed = _print_check_result("weapon damage event", damage_ok) and passed
+
+	var mixed_weapon := WeaponInstance.new()
+	mixed_weapon.initialize("weapon_dome_shockwave", player)
+	var mixed_events := mixed_weapon.calculate_damage_events(false)
+	var mixed_ok := mixed_events.size() == 2 and mixed_events[0].damage_kind == "melee" and mixed_events[1].damage_kind == "ranged"
+	passed = _print_check_result("weapon mixed damage split", mixed_ok) and passed
+	mixed_weapon.weapon_data["use_cooldown_reduction_only"] = true
+	player.add_runtime_modifier({
+		"id": "mod_test_weapon_cooldown",
+		"source_type": "test",
+		"source_id": "bootstrap_weapon_check",
+		"target_scope": "player",
+		"stat": "cooldown_reduction",
+		"operation": "add_flat",
+		"value": 50,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	passed = _print_check_result("weapon cooldown only interval", is_equal_approx(mixed_weapon.get_actual_attack_interval_seconds(), 0.6)) and passed
+
+	var overload_success := loadout.try_buy_weapon("weapon_dome_shockwave")
+	overload_success = overload_success and loadout.try_buy_weapon("weapon_dome_shockwave")
+	overload_success = overload_success and loadout.try_buy_weapon("weapon_dome_shockwave")
+	overload_success = overload_success and not loadout.try_buy_weapon("weapon_dome_shockwave")
+	passed = _print_check_result("weapon purchase load limit", overload_success and loadout.get_total_load_cost() <= loadout.get_load_capacity()) and passed
+
+	loadout.queue_free()
+	player.queue_free()
 	return passed
 
 

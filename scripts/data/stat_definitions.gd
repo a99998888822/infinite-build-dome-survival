@@ -188,7 +188,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "整数百分比范围加成，40表示范围增加40%。"
+		"description": "整数百分比攻击范围加成，统一影响近战、远程、范围武器的命中或影响半径。"
 	},
 	"duration_percent": {
 		"display_name": "持续时间加成",
@@ -269,6 +269,26 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": true,
 		"description": "局内或结算货币获取百分比加成。"
+	},
+	"finance": {
+		"display_name": "理财",
+		"category": CATEGORY_REWARD,
+		"default": 0,
+		"min": 0,
+		"max": 999999999,
+		"is_integer": true,
+		"is_percent": false,
+		"description": "本波开始前存入理财的局内金币本金，第一波不可存入。"
+	},
+	"interest_rate": {
+		"display_name": "利率",
+		"category": CATEGORY_REWARD,
+		"default": 5,
+		"min": 0,
+		"max": 10000,
+		"is_integer": true,
+		"is_percent": true,
+		"description": "整数百分比理财利率，默认5；波次结束收益 = ceil(finance * interest_rate / 100)。"
 	},
 	"load_capacity": {
 		"display_name": "负载上限",
@@ -381,19 +401,35 @@ static func get_stat_ids_by_category(category: String) -> Array[String]:
 
 
 static func calculate_damage_taken_from_armor(armor: float) -> float:
+	# 护甲使用曲线衰减，避免高护甲无限接近 0 伤害。
 	var safe_armor := maxf(armor, 0.0)
 	var damage_taken_percent := ARMOR_K / (ARMOR_K + safe_armor)
 	return maxf(damage_taken_percent * 100.0, MIN_DAMAGE_TAKEN_PERCENT)
 
 
 static func calculate_attack_interval(base_interval: float, attack_speed: float) -> float:
+	# 攻速采用倍率式换算，保持数值直观且便于叠加。
 	var speed_multiplier := maxf(1.0 + attack_speed / 100.0, 0.1)
 	return base_interval / speed_multiplier
 
 
 static func calculate_cooldown(base_cooldown: float, cooldown_reduction: float) -> float:
+	# 冷却缩减按百分比直接缩短基础冷却时间。
 	var reduction_percent := clamp_stat_value("cooldown_reduction", cooldown_reduction)
 	return base_cooldown * maxf(1.0 - reduction_percent / 100.0, 0.0)
+
+
+static func calculate_attack_radius(base_radius: float, area_size: float) -> float:
+	# area_size 是唯一攻击范围加成属性，基础半径只来自武器配置。
+	var radius_percent := clamp_stat_value("area_size", area_size)
+	return maxf(base_radius, 0.0) * maxf(1.0 + radius_percent / 100.0, 0.0)
+
+
+static func calculate_finance_interest_gain(finance: float, interest_rate: float) -> int:
+	# 理财收益向上取整，方便小额本金也能获得清晰反馈。
+	var safe_finance := clamp_stat_value("finance", finance)
+	var safe_rate := clamp_stat_value("interest_rate", interest_rate)
+	return int(ceil(safe_finance * safe_rate / 100.0))
 
 static func get_humanity_stage(humanity: float) -> String:
 	var value := clamp_stat_value("humanity", humanity)

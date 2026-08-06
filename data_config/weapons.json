@@ -14,6 +14,10 @@
     "load_cost": 12,
     "max_level": 5,
     "attack_interval_ms": 700,
+    "hit_radius": 10,
+    "projectile_speed": 500,
+    "spread_angle": 12,
+    "use_cooldown_reduction_only": false,
     "base_stats": {
       "ranged_damage": 8,
       "attack_speed": 0,
@@ -84,6 +88,10 @@
     "load_cost": 10,
     "max_level": 5,
     "attack_interval_ms": 650,
+    "hit_radius": 80,
+    "projectile_speed": 0,
+    "spread_angle": 0,
+    "use_cooldown_reduction_only": false,
     "base_stats": {
       "melee_damage": 10,
       "attack_speed": 0,
@@ -155,6 +163,10 @@
     "load_cost": 24,
     "max_level": 5,
     "attack_interval_ms": 1200,
+    "hit_radius": 120,
+    "projectile_speed": 0,
+    "spread_angle": 0,
+    "use_cooldown_reduction_only": false,
     "base_stats": {
       "melee_damage": 5,
       "ranged_damage": 5,

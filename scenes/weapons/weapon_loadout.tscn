@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://weaponloadoutmvp01"]
+
+[ext_resource type="Script" path="res://scripts/weapons/weapon_loadout.gd" id="1_loadout"]
+[ext_resource type="Script" path="res://scripts/weapons/targeting_service.gd" id="2_targeting"]
+
+[node name="WeaponLoadout" type="Node"]
+script = ExtResource("1_loadout")
+
+[node name="TargetingService" type="Node" parent="."]
+script = ExtResource("2_targeting")

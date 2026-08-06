@@ -13,7 +13,7 @@ const REQUIRED_TABLES: Array[String] = [
 ]
 
 const TABLE_REQUIRED_FIELDS: Dictionary = {
-	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "base_stats", "level_upgrades"],
+	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "hit_radius", "projectile_speed", "spread_angle", "use_cooldown_reduction_only", "base_stats", "level_upgrades"],
 	"relics": ["id", "display_name", "rarity", "bond_id", "tags", "effects"],
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
 	"characters": ["id", "base_stats", "start_weapons"],
@@ -43,6 +43,7 @@ var warnings: Array[String] = []
 
 
 func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
+	# 统一执行基础校验、类型校验和跨表引用校验。
 	errors.clear()
 	warnings.clear()
 
@@ -108,6 +109,17 @@ func _validate_required_fields(record: Dictionary, required_fields: Array, path:
 			errors.append("Missing required field: %s.%s" % [path, field_name])
 
 
+func _validate_non_negative_int(record: Dictionary, field_name: String, path: String) -> void:
+	if not record.has(field_name):
+		return
+	var value := record[field_name]
+	if not (value is int or value is float):
+		errors.append("%s.%s must be a number." % [path, field_name])
+		return
+	if int(value) != value or int(value) < 0:
+		errors.append("%s.%s must be a non-negative integer." % [path, field_name])
+
+
 func _validate_integer_values(value_data: Variant, path: String) -> void:
 	match typeof(value_data):
 		TYPE_DICTIONARY:
@@ -149,7 +161,18 @@ func _validate_weapon_records(records: Array) -> void:
 		var path := "weapons[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
+		_validate_weapon_runtime_fields(record, path)
 		_validate_weapon_level_upgrades(record, path)
+
+
+func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
+	_validate_non_negative_int(record, "load_cost", path)
+	_validate_non_negative_int(record, "attack_interval_ms", path)
+	_validate_non_negative_int(record, "hit_radius", path)
+	_validate_non_negative_int(record, "projectile_speed", path)
+	_validate_non_negative_int(record, "spread_angle", path)
+	if record.has("use_cooldown_reduction_only") and not (record["use_cooldown_reduction_only"] is bool):
+		errors.append("%s.use_cooldown_reduction_only must be a boolean." % path)
 
 
 func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
@@ -195,6 +218,7 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 
 
 func _validate_modifier_record(effect: Variant, path: String) -> void:
+	# 遗物和羁绊使用统一 Modifier 结构，先校验必填字段再校验枚举值。
 	if not (effect is Dictionary):
 		errors.append("%s must be an object." % path)
 		return
@@ -225,6 +249,7 @@ func _validate_bond_records(records: Array) -> void:
 
 
 func _validate_bond_effect(effect: Variant, path: String) -> void:
+	# 羁绊效果支持普通属性与特殊效果两类写法。
 	if not (effect is Dictionary):
 		errors.append("%s must be an object." % path)
 		return
@@ -264,6 +289,7 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 
 
 func _validate_camp_building_records(records: Array, records_by_id: Dictionary) -> void:
+	# 营地建筑既包含等级效果，也包含局外升级项，需分开校验。
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
@@ -286,6 +312,7 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 
 
 func _validate_camp_levels(levels: Variant, path: String) -> void:
+	# levels 的 key 是等级，value 是该等级的效果列表。
 	if not (levels is Dictionary):
 		errors.append("%s.levels must be an object." % path)
 		return
@@ -307,6 +334,7 @@ func _validate_camp_levels(levels: Variant, path: String) -> void:
 
 
 func _validate_camp_level_effect(effect: Dictionary, path: String) -> void:
+	# 建筑等级效果只允许写入已注册的解锁项、阶段标记或属性项。
 	if effect.has("unlock"):
 		var unlock_id := str(effect["unlock"])
 		if not UnlockRegistry.has_unlock(unlock_id):
@@ -320,6 +348,7 @@ func _validate_camp_level_effect(effect: Dictionary, path: String) -> void:
 
 
 func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:
+	# 波次只校验时间区间和刷怪引用，不关心具体战斗实现。
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
@@ -379,6 +408,7 @@ func _validate_rarity(record: Dictionary, path: String) -> void:
 
 
 func _validate_reference(record: Dictionary, field_name: String, target_table: String, records_by_id: Dictionary, path: String) -> void:
+	# 统一处理单字段跨表引用，减少重复校验代码。
 	var field_data := _get_field_path_value(record, field_name)
 	if not bool(field_data["found"]):
 		return
@@ -386,6 +416,7 @@ func _validate_reference(record: Dictionary, field_name: String, target_table: S
 
 
 func _get_field_path_value(record: Dictionary, field_path: String) -> Dictionary:
+	# 支持 a.b.c 形式的嵌套字段读取。
 	var current_value: Variant = record
 	for field_part in field_path.split("."):
 		if not (current_value is Dictionary):

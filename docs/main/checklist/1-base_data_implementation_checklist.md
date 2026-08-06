@@ -1,6 +1,6 @@
 # 基础数值与数据配置模块实施清单
 
-本文档用于跟踪“基础数值与数据配置模块”的工程实施进度。该模块的目标是先完成数据底座，而不是制作正式美术、音频或完整战斗场景。
+本文档用于跟踪“基础数值与数据配置模块”的工程实施进度。该模块已完成结项，当前作为冻结参考版保留，后续仅在需要回溯设计或补充说明时再更新。
 
 ## 总体目标
 
@@ -34,6 +34,13 @@
 | 9 | 创建测试场景/脚本 | 已完成 | 复用 `scenes/core/bootstrap.tscn` 与 `scripts/core/bootstrap.gd` |
 | 10 | 准备占位素材 | 已完成 | `assets/ui/icons/placeholder_icon.png` |
 | 11 | 验收基础模块 | 已完成 | 启动加载、查询、modifier计算、错误提示全部可用 |
+
+## 结项说明
+
+1. 基础数值与数据配置模块已通过 Godot 启动自检。
+2. `DataRegistry`、`DataValidator`、`ModifierStack`、`bootstrap.tscn` 的最小闭环已可用。
+3. 本文档后续默认冻结，仅作为实施记录和回溯依据。
+4. 如后续出现基础规则大改，再单独开新版本实施清单，不直接覆盖当前结项版。
 
 ## 第 1 步：搭建工程目录
 
@@ -83,7 +90,7 @@ res://
 4. 暴击：`crit_chance`、`crit_damage`
 5. 投射物：`projectile_count`、`pierce_count`
 6. 范围与控制：`area_size`、`duration_percent`、`slow_percent`、`control_power`
-7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`
+7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`、`finance`、`interest_rate`
 8. 构筑：`load_capacity`
 9. 召唤：`summon_count`
 10. 精神/外神：`humanity`、`divinity`
@@ -246,7 +253,7 @@ res://
 
 1. 启动后打印配置加载数量。
 2. 能查询测试角色、武器、遗物、羁绊、敌人、掉落表、波次。
-3. 能输出 `attack_speed=100`、`cooldown_reduction=40`、`armor=100` 的公式检查。
+3. 能输出 `attack_speed=100`、`cooldown_reduction=40`、`armor=100`、`area_size=40`、`finance=101 interest_rate=5` 的公式检查。
 4. 能打印 `DataRegistry` 的 warnings/errors。
 5. 能输出 `ModifierStack` 实例计算与 `debug_stat()` 来源链测试。
 
@@ -302,6 +309,8 @@ res://
 1. `attack_speed=100: 1.00s -> 0.50s`。
 2. `cooldown_reduction=40: 10.00s -> 6.00s`。
 3. `armor=100: damage_taken_percent=...`，具体数值由护甲函数决定，但必须大于最低承伤下限。
+4. `area_size=40: radius 100 -> 140`。
+5. `finance=101 interest_rate=5: gain 6`。
 
 ### 4. 检查错误提示
 
@@ -320,11 +329,9 @@ res://
 
 ## 当前进度提醒
 
-当前已完成：基础数值与数据配置模块已通过 Godot 启动自检；已补充 `DataRegistry.data_ready` 信号、tag 查询接口、嵌套引用校验、`ModifierStack` 实例计算与 `debug_stat()` 来源链测试，并已加入 `placeholder_icon` 兜底素材。
+当前状态：基础数值与数据配置模块已结项，本文档已冻结为参考版。
 
 下一步建议：进入“最小局内闭环”模块，优先实现玩家移动、敌人追踪、基础武器自动攻击、敌人死亡掉落与经验拾取。
-
-
 
 
 

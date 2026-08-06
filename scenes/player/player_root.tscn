@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://playerrootmvp001"]
+
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_player"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/player_void_hunter_right_base.png" id="2_sprite"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player_body"]
+radius = 10.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup_area"]
+radius = 80.0
+
+[node name="PlayerRoot" type="CharacterBody2D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 10)
+shape = SubResource("CapsuleShape2D_player_body")
+
+[node name="VisualAnchor" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="VisualAnchor"]
+texture = ExtResource("2_sprite")
+centered = true
+
+[node name="PickupArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_pickup_area")
+
+[node name="WeaponAnchor" type="Node2D" parent="."]
+position = Vector2(10, -4)
