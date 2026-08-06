@@ -1,5 +1,4 @@
 extends Node
-class_name GameGlobal
 
 signal game_mode_changed(previous_mode: String, current_mode: String)
 signal debug_message(message: String)

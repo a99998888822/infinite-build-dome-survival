@@ -1,5 +1,4 @@
 extends Node
-class_name ObjectPool
 
 signal pool_registered(pool_id: String)
 signal pool_spawned(pool_id: String, node: Node)

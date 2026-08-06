@@ -1,4 +1,4 @@
-﻿extends RefCounted
+extends RefCounted
 class_name StatDefinitions
 
 const ARMOR_K: float = 100
@@ -457,8 +457,3 @@ static func _get_stat_property(stat_id: String, property_name: String, default_v
 	if not has_stat(stat_id):
 		return default_value
 	return STAT_DEFINITIONS[stat_id].get(property_name, default_value)
-
-
-
-
-

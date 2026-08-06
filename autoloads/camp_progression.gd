@@ -1,5 +1,4 @@
 extends Node
-class_name CampProgression
 
 signal state_loaded(success: bool)
 signal state_changed
@@ -26,10 +25,10 @@ func _on_data_ready(_load_success: bool) -> void:
 
 func reload_state() -> bool:
 	_reset_state()
-	var loaded_state := _build_default_state()
+	var loaded_state: Dictionary = _build_default_state()
 	if FileAccess.file_exists(SAVE_PATH):
 		var raw_text := FileAccess.get_file_as_string(SAVE_PATH)
-		var parsed := JSON.parse_string(raw_text)
+		var parsed: Variant = JSON.parse_string(raw_text)
 		if parsed is Dictionary:
 			loaded_state = _merge_state(loaded_state, parsed)
 		else:
@@ -97,7 +96,7 @@ func get_building_max_level(building_id: String) -> int:
 	var record := get_building_record(building_id)
 	if record.is_empty():
 		return 1
-	var levels := record.get("levels", {})
+	var levels: Variant = record.get("levels", {})
 	if levels is Dictionary and not levels.is_empty():
 		var max_level := 1
 		for level_key in levels.keys():
@@ -253,7 +252,7 @@ func _build_default_state() -> Dictionary:
 
 
 func _merge_state(default_state: Dictionary, saved_state: Dictionary) -> Dictionary:
-	var merged := default_state.duplicate(true)
+	var merged: Dictionary = default_state.duplicate(true)
 	for key in saved_state.keys():
 		merged[key] = saved_state[key]
 	return merged
@@ -374,7 +373,7 @@ func _effect_to_modifier(effect: Dictionary, source_type: String, source_id: Str
 
 
 func _sanitize_state(raw_state: Dictionary) -> Dictionary:
-	var result := raw_state.duplicate(true)
+	var result: Dictionary = raw_state.duplicate(true)
 	result["building_levels"] = _sanitize_string_int_dictionary(result.get("building_levels", {}))
 	result["upgrade_levels"] = _sanitize_string_int_dictionary(result.get("upgrade_levels", {}))
 	result["unlocks"] = _sanitize_string_bool_dictionary(result.get("unlocks", {}))
@@ -427,8 +426,13 @@ func _reset_state() -> void:
 
 
 func _save_and_notify(_source_id: String) -> void:
+	print("[Debug] _save_and_notify enter: %s" % _source_id)
 	_rebuild_unlocks_cache()
+	print("[Debug] after _rebuild_unlocks_cache")
 	save_state()
+	print("[Debug] after save_state")
 	state_changed.emit()
+	print("[Debug] after state_changed")
 	if not _source_id.is_empty():
 		building_changed.emit(_source_id)
+	print("[Debug] _save_and_notify exit")

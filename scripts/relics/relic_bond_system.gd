@@ -172,9 +172,9 @@ func _apply_relic_effects() -> void:
 	for instance_id in relic_instances.keys():
 		var relic_instance: Dictionary = relic_instances[instance_id]
 		var relic_data: Dictionary = relic_instance.get("relic_data", {})
-	var effects: Variant = relic_data.get("effects", [])
-	if not (effects is Array):
-		continue
+		var effects: Variant = relic_data.get("effects", [])
+		if not (effects is Array):
+			continue
 		for effect_index in range(effects.size()):
 			var effect: Variant = effects[effect_index]
 			if not (effect is Dictionary):
@@ -272,7 +272,7 @@ func _build_bond_modifier_data(effect_data: Dictionary, bond_id: String, bond_na
 
 
 func _build_special_effect_record(effect_data: Dictionary, bond_id: String, bond_name: String, bond_tag: String, threshold_value: int) -> Dictionary:
-	var record := effect_data.duplicate(true)
+	var record: Dictionary = effect_data.duplicate(true)
 	record["bond_id"] = bond_id
 	record["bond_name"] = bond_name
 	record["bond_tag"] = bond_tag

@@ -22,10 +22,10 @@
 | 状态 | 素材名 | 文件名 | 最终路径 | 建议比例/尺寸 | 格式 | 内容说明 | 单提示词 |
 |---|---|---|---|---|---|---|---|
 | 已存在 | 小飞刀图标 | `weapon_void_blade.png` | `assets/ui/icons/weapons/weapon_void_blade.png` | 1:1，128x128 | PNG，透明背景 | `weapon_void_blade` 的 UI 图标 | 生成一张清新干净的中高精度像素风武器图标，武器是一把小飞刀，造型轻巧，银灰色刀身，带一点淡紫色虚空星光纹路，适合轻克苏鲁穹顶生存题材，图标居中，轮廓清晰，小尺寸可读，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
-| 已存在 | 小飞刀投射物 | `projectile_void_blade.png` | `assets/sprites/weapons/projectiles/projectile_void_blade.png` | 1:1，64x64 或 128x128 | PNG，透明背景 | 小飞刀飞行弹体，统一右向朝向，Godot 中按飞行方向旋转 | 生成一张清新干净的中高精度像素风投射物精灵，内容是一把朝右飞行的小飞刀，银灰色刀身，淡紫色虚空尾光，轮廓清晰，适合在 2D 游戏中高速飞行显示，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
 | 已存在 | 砍刀图标 | `weapon_mutated_cleaver.png` | `assets/ui/icons/weapons/weapon_mutated_cleaver.png` | 1:1，128x128 | PNG，透明背景 | `weapon_mutated_cleaver` 的 UI 图标 | 生成一张清新干净的中高精度像素风武器图标，武器是一把短柄砍刀，刀身厚实但不血腥，银灰色金属，浅绿色布条缠绕刀柄，带一点求生工具感，轮廓清晰，小尺寸可读，透明背景，PNG，不要肮脏噪点，不要血迹，不要恐怖腐烂，不要复杂背景，不要文字 |
-| 已存在 | 砍刀挥砍效果 | `effect_cleaver_slash.png` | `assets/sprites/weapons/effects/effect_cleaver_slash.png` | 1:1，256x256 | PNG，透明背景 | 近战武器以玩家为中心的命中范围表现，右向半圆弧刀光 | 生成一张清新干净的中高精度像素风近战挥砍特效，右向半圆形浅绿色弧光，从中心向外展开，适合以玩家为中心播放，边缘有少量柔和像素光点，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
 | 已存在 | 穹顶震波器图标 | `weapon_dome_shockwave.png` | `assets/ui/icons/weapons/weapon_dome_shockwave.png` | 1:1，128x128 | PNG，透明背景 | `weapon_dome_shockwave` 的 UI 图标 | 生成一张清新干净的中高精度像素风武器图标，武器是小型穹顶震波装置，圆形核心，浅绿色金属外壳，中心有淡蓝紫色能量晶体，带少量星光纹路，轻克苏鲁但不恐怖，轮廓清晰，小尺寸可读，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
+| 已存在 | 小飞刀投射物 | `projectile_void_blade.png` | `assets/sprites/weapons/projectiles/projectile_void_blade.png` | 1:1，64x64 或 128x128 | PNG，透明背景 | 小飞刀飞行弹体，统一右向朝向，Godot 中按飞行方向旋转 | 生成一张清新干净的中高精度像素风投射物精灵，内容是一把朝右飞行的小飞刀，银灰色刀身，淡紫色虚空尾光，轮廓清晰，适合在 2D 游戏中高速飞行显示，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
+| 已存在 | 砍刀挥砍效果 | `effect_cleaver_slash.png` | `assets/sprites/weapons/effects/effect_cleaver_slash.png` | 1:1，256x256 | PNG，透明背景 | 近战武器以玩家为中心的命中范围表现，右向半圆弧刀光 | 生成一张清新干净的中高精度像素风近战挥砍特效，右向半圆形浅绿色弧光，从中心向外展开，适合以玩家为中心播放，边缘有少量柔和像素光点，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
 | 已存在 | 穹顶震波效果 | `effect_dome_shockwave.png` | `assets/sprites/weapons/effects/effect_dome_shockwave.png` | 1:1，256x256 | PNG，透明背景 | 范围武器一次性范围伤害表现，以玩家为中心 | 生成一张清新干净的中高精度像素风范围震波特效，圆形扩散波纹，以画面中心为圆心，淡蓝色和浅紫色能量环，带少量星点和穹顶纹理，适合一次性范围伤害，以玩家为中心播放，透明背景，PNG，不要肮脏噪点，不要血腥，不要恐怖腐烂，不要文字 |
 
 ## 3. 可选素材

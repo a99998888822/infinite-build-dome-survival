@@ -188,7 +188,7 @@ func _run_relic_bond_checks() -> bool:
 	player.auto_initialize_on_ready = false
 	add_child(player)
 	player.initialize_from_character("character_void_hunter")
-	var relic_system := RelicBondSystem.new()
+	var relic_system: RelicBondSystem = RelicBondSystem.new()
 	relic_system.initialize(player)
 	relic_system.set_weapon_ids(player.get_start_weapon_ids())
 	passed = _print_check_result("relic system init", relic_system != null and relic_system.get_total_relic_count() == 0) and passed
@@ -298,8 +298,13 @@ func _run_camp_meta_checks() -> bool:
 		passed = _print_check_result("camp scene slot lookup", camp_root.get_building_slot("camp_armory_workshop") != null and camp_root.get_building_slot("camp_farstar_range") != null) and passed
 	CampProgression.set_building_level("camp_armory_workshop", 2)
 	passed = _print_check_result("camp unlock sync", CampProgression.is_building_unlocked("camp_farstar_range")) and passed
+	print("[Debug] before add currency")
 	CampProgression.add_camp_currency(100)
-	passed = _print_check_result("camp upgrade option", CampProgression.purchase_upgrade("camp_upgrade_melee_damage") and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
+	print("[Debug] after add currency")
+	print("[Debug] before purchase upgrade")
+	var purchase_ok := CampProgression.purchase_upgrade("camp_upgrade_melee_damage")
+	print("[Debug] after purchase upgrade: %s" % str(purchase_ok))
+	passed = _print_check_result("camp upgrade option", purchase_ok and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
 	if camp_root != null:
 		camp_root.queue_free()
 	return passed

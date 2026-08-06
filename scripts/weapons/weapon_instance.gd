@@ -105,7 +105,7 @@ func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]
 
 
 func get_projectile_angles() -> Array[float]:
-	var projectile_count := max(1, int(get_stat("projectile_count")))
+	var projectile_count: int = maxi(1, int(get_stat("projectile_count")))
 	var spread_angle := get_spread_angle()
 	var angles: Array[float] = []
 	if projectile_count == 1 or is_zero_approx(spread_angle):

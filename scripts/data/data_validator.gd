@@ -119,7 +119,7 @@ func _validate_bool(record: Dictionary, field_name: String, path: String) -> voi
 func _validate_non_negative_int(record: Dictionary, field_name: String, path: String) -> void:
 	if not record.has(field_name):
 		return
-	var value := record[field_name]
+	var value: Variant = record[field_name]
 	if not (value is int or value is float):
 		errors.append("%s.%s must be a number." % [path, field_name])
 		return
