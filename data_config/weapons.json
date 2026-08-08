@@ -27,7 +27,9 @@
       "pierce_count": 0
     },
     "level_upgrades": {
-      "2": [
+      "2": {
+        "rarity": "uncommon",
+        "effects": [
         {
           "stat": "ranged_damage",
           "value": 2
@@ -36,8 +38,11 @@
           "field": "attack_interval_ms",
           "value": -50
         }
-      ],
-      "3": [
+        ]
+      },
+      "3": {
+        "rarity": "rare",
+        "effects": [
         {
           "stat": "ranged_damage",
           "value": 2
@@ -46,8 +51,11 @@
           "field": "attack_interval_ms",
           "value": -50
         }
-      ],
-      "4": [
+        ]
+      },
+      "4": {
+        "rarity": "epic",
+        "effects": [
         {
           "stat": "ranged_damage",
           "value": 2
@@ -56,8 +64,11 @@
           "field": "attack_interval_ms",
           "value": -50
         }
-      ],
-      "5": [
+        ]
+      },
+      "5": {
+        "rarity": "mythic",
+        "effects": [
         {
           "stat": "ranged_damage",
           "value": 2
@@ -70,7 +81,8 @@
           "stat": "projectile_count",
           "value": 1
         }
-      ]
+        ]
+      }
     }
   },
   {
@@ -100,7 +112,9 @@
       "area_size": 0
     },
     "level_upgrades": {
-      "2": [
+      "2": {
+        "rarity": "uncommon",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 2
@@ -109,8 +123,11 @@
           "field": "attack_interval_ms",
           "value": -50
         }
-      ],
-      "3": [
+        ]
+      },
+      "3": {
+        "rarity": "rare",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 2
@@ -119,8 +136,11 @@
           "field": "attack_interval_ms",
           "value": -50
         }
-      ],
-      "4": [
+        ]
+      },
+      "4": {
+        "rarity": "epic",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 2
@@ -129,8 +149,11 @@
           "stat": "area_size",
           "value": 10
         }
-      ],
-      "5": [
+        ]
+      },
+      "5": {
+        "rarity": "mythic",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 4
@@ -143,7 +166,8 @@
           "stat": "crit_chance",
           "value": 5
         }
-      ]
+        ]
+      }
     }
   },
   {
@@ -178,7 +202,9 @@
       "duration_percent": 0
     },
     "level_upgrades": {
-      "2": [
+      "2": {
+        "rarity": "uncommon",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 2
@@ -187,8 +213,11 @@
           "stat": "ranged_damage",
           "value": 2
         }
-      ],
-      "3": [
+        ]
+      },
+      "3": {
+        "rarity": "rare",
+        "effects": [
         {
           "field": "attack_interval_ms",
           "value": -100
@@ -197,8 +226,11 @@
           "stat": "area_size",
           "value": 10
         }
-      ],
-      "4": [
+        ]
+      },
+      "4": {
+        "rarity": "epic",
+        "effects": [
         {
           "stat": "melee_damage",
           "value": 2
@@ -211,8 +243,11 @@
           "stat": "duration_percent",
           "value": 10
         }
-      ],
-      "5": [
+        ]
+      },
+      "5": {
+        "rarity": "mythic",
+        "effects": [
         {
           "field": "attack_interval_ms",
           "value": -100
@@ -225,7 +260,8 @@
           "stat": "damage_percent",
           "value": 5
         }
-      ]
+        ]
+      }
     }
   }
 ]

@@ -62,6 +62,12 @@ func get_weapon_stat(stat_id: String) -> float:
 	return float(runtime_stats.get(stat_id, StatDefinitions.get_default_value(stat_id)))
 
 
+func get_next_upgrade_rarity() -> String:
+	var next_level := level + 1
+	var upgrade_entry: Dictionary = weapon_data.get("level_upgrades", {}).get(str(next_level), {})
+	return str(upgrade_entry.get("rarity", ""))
+
+
 func get_load_cost() -> int:
 	return int(weapon_data.get("load_cost", 0))
 
@@ -120,7 +126,8 @@ func get_projectile_angles() -> Array[float]:
 
 func _apply_level_upgrades(target_level: int) -> void:
 	var upgrades: Dictionary = weapon_data.get("level_upgrades", {})
-	var upgrade_list: Array = upgrades.get(str(target_level), [])
+	var upgrade_entry: Dictionary = upgrades.get(str(target_level), {})
+	var upgrade_list: Array = upgrade_entry.get("effects", [])
 	for upgrade in upgrade_list:
 		if not (upgrade is Dictionary):
 			continue

@@ -5,6 +5,7 @@
     "description": "默认角色。",
     "enabled": true,
     "tags": ["character", "starter"],
+    "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
     "base_stats": {
       "max_hp": 100,
       "hp_regen": 0,

@@ -370,11 +370,48 @@ func _run_weapon_checks() -> bool:
 	})
 	passed = _print_check_result("weapon cooldown only interval", is_equal_approx(mixed_weapon.get_actual_attack_interval_seconds(), 0.6)) and passed
 
+	var duplicate_purchase_rejected := not loadout.try_buy_weapon("weapon_void_blade")
+	passed = _print_check_result("weapon duplicate purchase rejected", duplicate_purchase_rejected) and passed
 	var overload_success := loadout.try_buy_weapon("weapon_dome_shockwave")
-	overload_success = overload_success and loadout.try_buy_weapon("weapon_dome_shockwave")
-	overload_success = overload_success and loadout.try_buy_weapon("weapon_dome_shockwave")
-	overload_success = overload_success and not loadout.try_buy_weapon("weapon_dome_shockwave")
+	player.add_runtime_modifier({
+		"id": "mod_test_weapon_load_capacity_limit",
+		"source_type": "test",
+		"source_id": "bootstrap_weapon_check",
+		"target_scope": "player",
+		"stat": "load_capacity",
+		"operation": "add_flat",
+		"value": -60,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	overload_success = overload_success and not loadout.try_buy_weapon("weapon_mutated_cleaver")
 	passed = _print_check_result("weapon purchase load limit", overload_success and loadout.get_total_load_cost() <= loadout.get_load_capacity()) and passed
+
+	var shop_generator := ShopOfferGenerator.new()
+	var shop_context := {
+		"owned_weapon_ids": ["weapon_void_blade"],
+		"equipped_weapons": [{"weapon_id": "weapon_void_blade", "level": 2}],
+		"unlocked_weapon_ids": ["weapon_mutated_cleaver", "weapon_dome_shockwave"],
+		"unlocked_relic_ids": ["relic_flying_teeth", "relic_flying_feather", "relic_flying_eye", "relic_void_heart"],
+		"owned_relic_counts": {},
+		"current_load": 12,
+		"load_capacity": 100,
+		"upgrade_miss_count": 0,
+	}
+	var shop_candidates := shop_generator.build_shop_candidate_pool(shop_context)
+	var shop_rarity_weights := shop_generator.get_shop_rarity_weights(100)
+	var shop_context_with_candidates := shop_context.duplicate(true)
+	shop_context_with_candidates["candidate_pool"] = shop_candidates
+	var shop_type_weights := shop_generator.get_shop_type_weights(shop_context_with_candidates)
+	var shop_offers := shop_generator.roll_shop_offers(shop_rarity_weights, shop_type_weights, shop_candidates, 3)
+	var upgrade_offer_count := 0
+	var upgrade_keys := {}
+	for offer in shop_offers:
+		if str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			upgrade_offer_count += 1
+			upgrade_keys[offer.get("offer_id", "")] = true
+	var shop_check := not shop_candidates.is_empty() and not shop_rarity_weights.is_empty() and shop_offers.size() == mini(3, shop_candidates.size()) and upgrade_offer_count <= 1
+	passed = _print_check_result("shop candidate and rarity generation", shop_check) and passed
 
 	loadout.queue_free()
 	player.queue_free()

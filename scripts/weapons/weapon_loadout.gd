@@ -62,6 +62,10 @@ func get_weapon_instance(weapon_id: String) -> WeaponInstance:
 	return null
 
 
+func has_weapon(weapon_id: String) -> bool:
+	return get_weapon_instance(weapon_id) != null
+
+
 func get_weapon_instances() -> Array[WeaponInstance]:
 	var result: Array[WeaponInstance] = []
 	for weapon in weapon_instances:
@@ -95,6 +99,9 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 		return false
 	if not DataRegistry.has_record("weapons", weapon_id):
 		_fail(weapon_id, "missing_weapon_config")
+		return false
+	if has_weapon(weapon_id):
+		_fail(weapon_id, "weapon_already_owned")
 		return false
 	if not can_add_weapon(weapon_id):
 		var reason := "load_capacity_exceeded_on_purchase" if action == "purchase" else "load_capacity_exceeded"

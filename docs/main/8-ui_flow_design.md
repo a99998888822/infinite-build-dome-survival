@@ -152,6 +152,46 @@
 1. 结算后先显示结果，再回营地。
 2. 结果页面只展示汇总，不做复杂动画依赖。
 
+### 7.4 局内商店选项规则
+
+商店只提供三类选项：`new_weapon` 新武器、`relic` 遗物、`weapon_upgrade` 已装备武器的下一等级升级项；不提供单独购买基础属性。免费商店和付费商店共用同一套候选池、稀有度权重、类型权重和去重规则，区别只在于选择后是否扣除局内货币。
+
+遗物、新武器和武器升级共用六档稀有度：`common` 普通白、`uncommon` 优良绿、`rare` 稀有蓝、`epic` 珍贵紫、`mythic` 罕见橙、`legendary` 传说红。新武器使用武器本体 `rarity`；武器升级使用升级项自身 `rarity`，两者不混用。
+
+1. 新武器不可重复获得；已拥有武器不再进入新武器候选池。
+2. 新武器即使当前负载不足也可以刷新，但购买/装备时必须通过负载强校验；剩余负载越低，新武器类型权重越低。
+3. 遗物只从已解锁且未达到 `max_stack` 的列表构建；`max_stack = 0` 表示不限制。
+4. 武器升级只从已装备且未达到 `max_level` 的武器构建，并只生成当前等级的下一等级升级项。
+5. 同一轮商店中，同一把武器的同一级升级项最多出现一次。
+
+稀有度权重函数：
+
+```text
+get_shop_rarity_weights(luck: int) -> Dictionary
+common    = max(20, 100 - floor(luck * 0.30))
+uncommon  = max(25,  55 - floor(luck * 0.10))
+rare      = 25 + floor(luck * 0.20)
+epic      = 10 + floor(luck * 0.12)
+mythic    =  4 + floor(luck * 0.06)
+legendary =  1 + floor(luck * 0.03)
+```
+
+权重示例：
+
+| 幸运 | 白 | 绿 | 蓝 | 紫 | 橙 | 红 |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 100 | 55 | 25 | 10 | 4 | 1 |
+| 50 | 85 | 50 | 35 | 16 | 7 | 2 |
+| 100 | 70 | 45 | 45 | 22 | 10 | 4 |
+| 200 | 40 | 35 | 65 | 34 | 16 | 7 |
+| 300 | 20 | 25 | 85 | 46 | 22 | 10 |
+
+幸运只影响稀有度，不直接指定具体条目。类型权重默认是 `new_weapon = 25`、`relic = 50`、`weapon_upgrade = 25`。剩余负载比例对应新武器权重倍率为：50%以上 1.00、30%~49% 0.70、15%~29% 0.45、1%~14% 0.25、0% 0.15。
+
+武器升级使用轻量保底：连续刷新未出现升级时，`weapon_upgrade_weight = min(100, 25 + upgrade_miss_count * 15)`；出现至少一个升级后清零；没有可升级武器时不累积。
+
+建议接口：`build_shop_candidate_pool(context)`、`get_shop_rarity_weights(luck)`、`get_shop_type_weights(context)`、`roll_shop_offers(rarity_weights, type_weights, candidate_pool, refresh_count)`。刷新时按稀有度、类型、具体条目的顺序抽取，候选桶为空时回退，避免空槽位。
+
 ## 8. 营地 UI
 
 ### 8.1 营地主界面

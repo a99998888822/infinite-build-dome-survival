@@ -100,6 +100,10 @@ func get_start_weapon_ids() -> Array[String]:
 	return start_weapon_ids.duplicate()
 
 
+func get_character_icon_path() -> String:
+	return str(character_data.get("icon", ""))
+
+
 func take_damage(raw_damage: int, source_id: String = "") -> int:
 	# 伤害入口统一经过护甲换算后的 damage_taken_percent。
 	if not alive or raw_damage <= 0 or _invincibility_timer > 0.0:

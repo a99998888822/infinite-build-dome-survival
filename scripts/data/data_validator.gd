@@ -16,7 +16,7 @@ const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "hit_radius", "projectile_speed", "spread_angle", "use_cooldown_reduction_only", "base_stats", "level_upgrades"],
 	"relics": ["id", "display_name", "rarity", "bond_id", "tags", "effects"],
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
-	"characters": ["id", "base_stats", "start_weapons"],
+	"characters": ["id", "icon", "base_stats", "start_weapons"],
 	"enemies": ["id", "base_stats", "drop_table_id"],
 	"camp_buildings": ["id", "name", "levels", "upgrade_options"],
 	"waves": ["id", "duration_seconds", "spawn_groups"],
@@ -36,7 +36,7 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 ]
 
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
-const VALID_RARITIES: Array[String] = ["common", "rare", "epic", "legendary"]
+const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 
 var errors: Array[String] = []
 var warnings: Array[String] = []
@@ -192,20 +192,29 @@ func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
 		var level := int(str(level_key))
 		if level < 2 or level > max_level:
 			warnings.append("%s.level_upgrades.%s is outside 2..max_level." % [path, str(level_key)])
-		var upgrade_list: Variant = upgrades[level_key]
+		var upgrade_entry: Variant = upgrades[level_key]
+		if not (upgrade_entry is Dictionary):
+			errors.append("%s.level_upgrades.%s must be an object with rarity and effects." % [path, str(level_key)])
+			continue
+		var upgrade_path := "%s.level_upgrades.%s" % [path, str(level_key)]
+		if not upgrade_entry.has("rarity"):
+			errors.append("Missing required field: %s.rarity" % upgrade_path)
+		else:
+			_validate_rarity(upgrade_entry, upgrade_path)
+		var upgrade_list: Variant = upgrade_entry.get("effects", [])
 		if not (upgrade_list is Array):
-			errors.append("%s.level_upgrades.%s must be an array." % [path, str(level_key)])
+			errors.append("%s.effects must be an array." % upgrade_path)
 			continue
 		for upgrade_index in upgrade_list.size():
 			var upgrade: Variant = upgrade_list[upgrade_index]
-			var upgrade_path := "%s.level_upgrades.%s[%d]" % [path, str(level_key), upgrade_index]
+			var effect_path := "%s.effects[%d]" % [upgrade_path, upgrade_index]
 			if not (upgrade is Dictionary):
-				errors.append("%s must be an object." % upgrade_path)
+				errors.append("%s must be an object." % effect_path)
 				continue
 			if not upgrade.has("value"):
-				errors.append("Missing required field: %s.value" % upgrade_path)
+				errors.append("Missing required field: %s.value" % effect_path)
 			if not upgrade.has("stat") and not upgrade.has("field"):
-				errors.append("%s must define stat or field." % upgrade_path)
+				errors.append("%s must define stat or field." % effect_path)
 
 
 func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:

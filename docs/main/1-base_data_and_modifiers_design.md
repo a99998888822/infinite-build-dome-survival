@@ -809,6 +809,8 @@ func find_refs(config_id: String) -> Array[Dictionary]
 | 任意表 | `effect_id` | `effects.json` 或内置效果注册表 |
 | 任意表 | `stat` | `stat_definitions.gd` |
 
+`characters.json.icon` 是 Godot 资源路径，不是数据表 ID 引用；角色选择页面、营地角色信息和其他 UI 统一复用该图标。
+
 ### 11.2 校验错误等级
 
 | 等级 | 说明 | 处理方式 |
@@ -825,7 +827,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 1. 从 `DataRegistry.get_weapon(id)` 获取武器基础配置。
 2. 根据 `load_cost` 参与负载计算。
 3. 根据 `base_stats` 初始化武器运行时实例。
-4. 根据 `level_upgrades` 应用武器升级；`stat` 项生成 weapon 来源 modifier，`field` 项修改武器运行时字段。
+4. 根据 `level_upgrades` 应用武器升级；每个目标等级对象包含 `rarity` 和 `effects`，其中 `stat` 项生成 weapon 来源 modifier，`field` 项修改武器运行时字段。
 5. 索敌规则由局内武器模块固定为最近敌人，不从 `weapons.json` 读取。
 
 禁止：
