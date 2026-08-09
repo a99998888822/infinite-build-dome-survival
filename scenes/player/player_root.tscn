@@ -1,32 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://playerrootmvp001"]
+[gd_scene format=3 uid="uid://dni3qchq8ptrc"]
 
-[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/player_void_hunter_right_base.png" id="2_sprite"]
+[ext_resource type="Script" uid="uid://nte7pxrv4fli" path="res://scripts/player/player_controller.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://ck1sd0uyxqrj7" path="res://assets/sprites/player/player_void_hunter_right_base.png" id="2_idle"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player_body"]
-radius = 10.0
-height = 28.0
+radius = 70.0
+height = 246.66666
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_pickup_area"]
-radius = 80.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_en6th"]
+radius = 110.201836
 
-[node name="PlayerRoot" type="CharacterBody2D"]
+[node name="PlayerRoot" type="CharacterBody2D" unique_id=2042939580]
+scale = Vector2(0.3, 0.3)
 script = ExtResource("1_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=338996884]
 position = Vector2(0, 10)
 shape = SubResource("CapsuleShape2D_player_body")
 
-[node name="VisualAnchor" type="Node2D" parent="."]
+[node name="VisualAnchor" type="Node2D" parent="." unique_id=1223510489]
 
-[node name="Sprite2D" type="Sprite2D" parent="VisualAnchor"]
-texture = ExtResource("2_sprite")
-centered = true
+[node name="Sprite2D" type="Sprite2D" parent="VisualAnchor" unique_id=1840109535]
+texture = ExtResource("2_idle")
+hframes = 1
 
-[node name="PickupArea" type="Area2D" parent="."]
+[node name="PickupArea" type="Area2D" parent="." unique_id=335214766]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
-shape = SubResource("CircleShape2D_pickup_area")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea" unique_id=1773685365]
+shape = SubResource("CircleShape2D_en6th")
 
-[node name="WeaponAnchor" type="Node2D" parent="."]
+[node name="WeaponAnchor" type="Node2D" parent="." unique_id=395098020]
 position = Vector2(10, -4)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1934708603]
+top_level = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0

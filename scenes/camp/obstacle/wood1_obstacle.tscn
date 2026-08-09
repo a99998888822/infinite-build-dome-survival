@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bd0102jj5amkt"]
+
+[ext_resource type="Texture2D" uid="uid://d3l2u5ih22gjr" path="res://assets/sprites/camp/wood1.png" id="1_1q4fl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wn00a"]
+size = Vector2(112, 50)
+
+[node name="CampObstacle" type="StaticBody2D" unique_id=430466366]
+scale = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1463058505]
+texture = ExtResource("1_1q4fl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=279547952]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_wn00a")

@@ -1,20 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://mutatedgrubmvp001"]
+[gd_scene format=3 uid="uid://d261uxpw3c6tg"]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://cq1doush47hom" path="res://scripts/enemies/enemy_controller.gd" id="1_enemy"]
+[ext_resource type="Texture2D" uid="uid://tynvqbud3q1q" path="res://assets/sprites/enemies/enemy_mutated_grub.png" id="2_lmowc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy_body"]
-radius = 14.0
+radius = 46.010868
 
-[sub_resource type="Gradient" id="Gradient_enemy_placeholder"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.45, 0.78, 0.62, 1, 0.6, 0.38, 0.82, 1)
-
-[node name="MutatedGrub" type="CharacterBody2D"]
+[node name="MutatedGrub" type="CharacterBody2D" unique_id=82577481]
 script = ExtResource("1_enemy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
 shape = SubResource("CircleShape2D_enemy_body")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=479700477]
 modulate = Color(0.65, 0.9, 0.76, 1)
-
+texture = ExtResource("2_lmowc")

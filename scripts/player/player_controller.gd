@@ -7,10 +7,14 @@ signal start_weapons_changed(weapon_ids: Array[String])
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.25
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
 @export var auto_initialize_on_ready: bool = true
 @export var invincibility_seconds: float = DEFAULT_INVINCIBILITY_SECONDS
+@export var walk_animation_fps: float = 3.5
+@export var walk_frame_count: int = 4
 
 var character_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
@@ -21,13 +25,16 @@ var facing_right: bool = true
 var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
+var _walk_animation_time: float = 0.0
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
 @onready var pickup_shape: CollisionShape2D = get_node_or_null("PickupArea/CollisionShape2D")
+@onready var camera_2d: Camera2D = get_node_or_null("Camera2D")
 
 
 func _ready() -> void:
+	_setup_visuals()
 	if auto_initialize_on_ready:
 		initialize_from_character(character_id)
 
@@ -35,7 +42,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	modifier_stack.tick(delta)
 	_invincibility_timer = maxf(_invincibility_timer - delta, 0.0)
-	_process_movement()
+	_process_movement(delta)
+	_sync_camera()
 
 
 func initialize_from_character(target_character_id: String, outgame_modifiers: Array = [], initial_weapon_ids: Array[String] = []) -> bool:
@@ -135,10 +143,11 @@ func is_alive() -> bool:
 	return alive
 
 
-func _process_movement() -> void:
+func _process_movement(delta: float) -> void:
 	if not alive:
 		velocity = Vector2.ZERO
 		move_and_slide()
+		_apply_idle_visual()
 		return
 
 	var direction := _read_move_input()
@@ -146,6 +155,7 @@ func _process_movement() -> void:
 	if not is_zero_approx(direction.x):
 		_set_facing(direction.x > 0.0)
 	move_and_slide()
+	_update_walk_animation(direction, delta)
 
 
 func _read_move_input() -> Vector2:
@@ -167,6 +177,49 @@ func _set_facing(next_facing_right: bool) -> void:
 		visual_anchor.scale.x = 1.0 if facing_right else -1.0
 	elif sprite != null:
 		sprite.flip_h = not facing_right
+
+
+func _setup_visuals() -> void:
+	if camera_2d != null:
+		camera_2d.make_current()
+	if sprite != null:
+		_apply_idle_visual()
+
+
+func _sync_camera() -> void:
+	if camera_2d != null:
+		camera_2d.global_position = global_position
+
+
+func _update_walk_animation(direction: Vector2, delta: float) -> void:
+	if sprite == null:
+		return
+	if direction.length_squared() <= 0.0:
+		_walk_animation_time = 0.0
+		_apply_idle_visual()
+		return
+	_apply_walk_visual()
+	if walk_frame_count <= 1 or walk_animation_fps <= 0.0:
+		sprite.frame = 0
+		return
+
+	_walk_animation_time += delta
+	var frame_index := int(floorf(_walk_animation_time * walk_animation_fps)) % walk_frame_count
+	sprite.frame = frame_index
+
+
+func _apply_idle_visual() -> void:
+	if sprite == null:
+		return
+	sprite.texture = PLAYER_IDLE_TEXTURE
+	sprite.hframes = 1
+	sprite.frame = 0
+
+
+func _apply_walk_visual() -> void:
+	if sprite != null:
+		sprite.texture = PLAYER_WALK_TEXTURE
+		sprite.hframes = maxi(walk_frame_count, 1)
 
 
 func _resolve_start_weapons(data: Dictionary, override_weapon_ids: Array[String]) -> Array[String]:

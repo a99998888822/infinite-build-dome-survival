@@ -17,10 +17,10 @@
 
 | 状态 | 素材名 | 文件名 | 最终路径 | 建议比例/尺寸 | 格式 | 内容说明 | 单提示词 |
 |---|---|---|---|---|---|---|---|
-| 未存在 | 深海之眼遗物图标 | `relic_deep_eye.png` | `assets/ui/icons/relics/relic_deep_eye.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“深海之眼”的图标，小尺寸可辨识 | 生成一张清新干净的中高精度像素风遗物图标，主题是“深海之眼”，图形为一枚带有柔和蓝绿色光泽的神秘眼睛徽记，周围有少量细小水波与星点，整体简洁、可爱、轻微克苏鲁感，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
-| 未存在 | 飞的牙齿遗物图标 | `relic_flying_teeth.png` | `assets/ui/icons/relics/relic_flying_teeth.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的牙齿”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的牙齿”，图形为一对小巧可爱但带一点野性气息的漂浮牙齿，配浅绿色和淡白色微光，轮廓清楚，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
-| 未存在 | 飞的羽毛遗物图标 | `relic_flying_feather.png` | `assets/ui/icons/relics/relic_flying_feather.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的羽毛”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的羽毛”，图形为一根轻盈漂浮的羽毛，带柔和浅金色和淡青色微光，简洁、优雅、小清新，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
-| 未存在 | 飞的眼睛遗物图标 | `relic_flying_eye.png` | `assets/ui/icons/relics/relic_flying_eye.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的眼睛”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的眼睛”，图形为一颗小巧悬浮的神秘眼球，眼睛边缘有浅蓝紫色微光和一点星尘，风格简洁但带神秘感，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
+| 已存在 | 深海之眼遗物图标 | `relic_deep_eye.png` | `assets/ui/icons/relics/relic_deep_eye.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“深海之眼”的图标，小尺寸可辨识 | 生成一张清新干净的中高精度像素风遗物图标，主题是“深海之眼”，图形为一枚带有柔和蓝绿色光泽的神秘眼睛徽记，周围有少量细小水波与星点，整体简洁、可爱、轻微克苏鲁感，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
+| 已存在 | 飞的牙齿遗物图标 | `relic_flying_teeth.png` | `assets/ui/icons/relics/relic_flying_teeth.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的牙齿”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的牙齿”，图形为一对小巧可爱但带一点野性气息的漂浮牙齿，配浅绿色和淡白色微光，轮廓清楚，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
+| 已存在 | 飞的羽毛遗物图标 | `relic_flying_feather.png` | `assets/ui/icons/relics/relic_flying_feather.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的羽毛”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的羽毛”，图形为一根轻盈漂浮的羽毛，带柔和浅金色和淡青色微光，简洁、优雅、小清新，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
+| 已存在 | 飞的眼睛遗物图标 | `relic_flying_eye.png` | `assets/ui/icons/relics/relic_flying_eye.png` | 1:1，建议 128x128 或 256x256 | PNG，透明背景 | 遗物“飞的眼睛”的图标 | 生成一张清新干净的中高精度像素风遗物图标，主题是“飞的眼睛”，图形为一颗小巧悬浮的神秘眼球，眼睛边缘有浅蓝紫色微光和一点星尘，风格简洁但带神秘感，适合 2D 游戏 UI 小图标，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
 
 ## 3. 可选素材
 
@@ -37,10 +37,10 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `relic_deep_eye` | `icon` | `assets/ui/icons/relics/relic_deep_eye.png` | 未存在 | 需生成正式图标 |
-| `relic_flying_teeth` | `icon` | `assets/ui/icons/relics/relic_flying_teeth.png` | 未存在 | 需生成正式图标 |
-| `relic_flying_feather` | `icon` | `assets/ui/icons/relics/relic_flying_feather.png` | 未存在 | 需生成正式图标 |
-| `relic_flying_eye` | `icon` | `assets/ui/icons/relics/relic_flying_eye.png` | 未存在 | 需生成正式图标 |
+| `relic_deep_eye` | `icon` | `assets/ui/icons/relics/relic_deep_eye.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
+| `relic_flying_teeth` | `icon` | `assets/ui/icons/relics/relic_flying_teeth.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
+| `relic_flying_feather` | `icon` | `assets/ui/icons/relics/relic_flying_feather.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
+| `relic_flying_eye` | `icon` | `assets/ui/icons/relics/relic_flying_eye.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
 
 ## 5. Godot 导入约定
 

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dj3ieu8i5xbgg"]
+
+[ext_resource type="Texture2D" uid="uid://dp5swcv2crixm" path="res://assets/sprites/camp/tree1.png" id="1_yocb6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q8bct"]
+radius = 40.0
+height = 166.0
+
+[node name="CampObstacle" type="StaticBody2D" unique_id=430466366]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1463058505]
+texture = ExtResource("1_yocb6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=279547952]
+position = Vector2(-1, 27)
+shape = SubResource("CapsuleShape2D_q8bct")

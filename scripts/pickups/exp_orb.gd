@@ -19,6 +19,8 @@ func _ready() -> void:
 
 
 func initialize(exp_amount: int) -> void:
+	if not is_in_group("exp_orbs"):
+		add_to_group("exp_orbs")
 	amount = maxi(exp_amount, 0)
 	collected_once = false
 

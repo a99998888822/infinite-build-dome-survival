@@ -9,6 +9,8 @@ const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 
 var state: Dictionary = {}
 var _loaded: bool = false
+var _transient_session_active: bool = false
+var _transient_session_snapshot: Dictionary = {}
 
 
 func _ready() -> void:
@@ -24,6 +26,8 @@ func _on_data_ready(_load_success: bool) -> void:
 
 
 func reload_state() -> bool:
+	if _transient_session_active:
+		return true
 	_reset_state()
 	var loaded_state: Dictionary = _build_default_state()
 	if FileAccess.file_exists(SAVE_PATH):
@@ -42,7 +46,35 @@ func reload_state() -> bool:
 	return true
 
 
+func begin_transient_session() -> void:
+	if _transient_session_active:
+		return
+	_transient_session_snapshot = {
+		"state": state.duplicate(true),
+		"loaded": _loaded,
+	}
+	_transient_session_active = true
+	state = _build_default_state()
+	_sync_unlocks_from_config()
+
+
+func end_transient_session() -> void:
+	if not _transient_session_active:
+		return
+	var snapshot_state: Variant = _transient_session_snapshot.get("state", {})
+	if snapshot_state is Dictionary:
+		state = (snapshot_state as Dictionary).duplicate(true)
+	else:
+		_reset_state()
+	_loaded = bool(_transient_session_snapshot.get("loaded", false))
+	_transient_session_snapshot.clear()
+	_transient_session_active = false
+	state_changed.emit()
+
+
 func save_state() -> bool:
+	if _transient_session_active:
+		return true
 	if state.is_empty():
 		_reset_state()
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -429,7 +461,8 @@ func _save_and_notify(_source_id: String) -> void:
 	print("[Debug] _save_and_notify enter: %s" % _source_id)
 	_rebuild_unlocks_cache()
 	print("[Debug] after _rebuild_unlocks_cache")
-	save_state()
+	if not _transient_session_active:
+		save_state()
 	print("[Debug] after save_state")
 	state_changed.emit()
 	print("[Debug] after state_changed")

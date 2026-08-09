@@ -1,8 +1,109 @@
-[gd_scene load_steps=2 format=3 uid="uid://camprootmvp001"]
+[gd_scene format=3 uid="uid://cwrynp7dba441"]
 
-[ext_resource type="Script" path="res://scripts/camp/camp_root.gd" id="1_root"]
+[ext_resource type="Script" uid="uid://ciyr8fqugbhni" path="res://scripts/camp/camp_root.gd" id="1_root"]
+[ext_resource type="Texture2D" uid="uid://bcg4rjf1gx37w" path="res://assets/sprites/camp/background1.png" id="2_62drx"]
+[ext_resource type="Texture2D" uid="uid://du25xodgdx5xv" path="res://assets/sprites/camp/background2.png" id="3_en853"]
+[ext_resource type="PackedScene" uid="uid://xi88i6ultus7" path="res://scenes/camp/obstacle/stone2_obstacle.tscn" id="4_4xve8"]
+[ext_resource type="PackedScene" uid="uid://6lwnln1q4hv" path="res://scenes/camp/obstacle/tree4_obstacle.tscn" id="4_ua8lk"]
+[ext_resource type="PackedScene" uid="uid://dj3ieu8i5xbgg" path="res://scenes/camp/obstacle/tree1_obstacle.tscn" id="5_4xve8"]
+[ext_resource type="PackedScene" uid="uid://6mg4x2q4npmi" path="res://scenes/camp/obstacle/tree2_obstacle.tscn" id="6_rwtlg"]
+[ext_resource type="PackedScene" uid="uid://b7jb78rm3wxcq" path="res://scenes/camp/obstacle/stone3_obstacle.tscn" id="8_gsppn"]
+[ext_resource type="PackedScene" uid="uid://qjxpngucnf65" path="res://scenes/camp/obstacle/tree7_obstacle.tscn" id="9_005rq"]
+[ext_resource type="PackedScene" uid="uid://bd0102jj5amkt" path="res://scenes/camp/obstacle/wood1_obstacle.tscn" id="10_en6th"]
+[ext_resource type="Texture2D" uid="uid://bk8ccobnk5vnj" path="res://assets/sprites/camp/thicket1.png" id="11_005rq"]
+[ext_resource type="PackedScene" uid="uid://dni3qchq8ptrc" path="res://scenes/player/player_root.tscn" id="12_en6th"]
 
-[node name="CampRoot" type="Node2D"]
+[node name="CampRoot" type="Node2D" unique_id=142779175]
 script = ExtResource("1_root")
 
-[node name="BuildingLayer" type="Node2D" parent="."]
+[node name="BuildingLayer" type="Node2D" parent="." unique_id=864991629]
+
+[node name="BackgroundLayer" type="Node2D" parent="." unique_id=1202559248]
+
+[node name="Background1" type="Sprite2D" parent="BackgroundLayer" unique_id=60901541]
+texture = ExtResource("2_62drx")
+
+[node name="Background6" type="Sprite2D" parent="BackgroundLayer" unique_id=1421001052]
+position = Vector2(512, -512)
+texture = ExtResource("2_62drx")
+
+[node name="Background5" type="Sprite2D" parent="BackgroundLayer" unique_id=1301260738]
+position = Vector2(0, -512)
+texture = ExtResource("2_62drx")
+
+[node name="Background2" type="Sprite2D" parent="BackgroundLayer" unique_id=207233364]
+position = Vector2(512, 0)
+texture = ExtResource("3_en853")
+
+[node name="Background3" type="Sprite2D" parent="BackgroundLayer" unique_id=2094768706]
+position = Vector2(0, 512)
+texture = ExtResource("2_62drx")
+
+[node name="Background4" type="Sprite2D" parent="BackgroundLayer" unique_id=1643801577]
+position = Vector2(512, 512)
+texture = ExtResource("2_62drx")
+
+[node name="Background7" type="Sprite2D" parent="BackgroundLayer" unique_id=2073082919]
+position = Vector2(1024, 0)
+texture = ExtResource("2_62drx")
+
+[node name="Background8" type="Sprite2D" parent="BackgroundLayer" unique_id=734224125]
+position = Vector2(1024, 512)
+texture = ExtResource("2_62drx")
+
+[node name="Background9" type="Sprite2D" parent="BackgroundLayer" unique_id=734207484]
+position = Vector2(1024, -512)
+texture = ExtResource("2_62drx")
+
+[node name="PlayerRoot" parent="." unique_id=2042939580 instance=ExtResource("12_en6th")]
+position = Vector2(432.99997, 81.99999)
+
+[node name="PropLayer" type="Node2D" parent="." unique_id=764768299]
+
+[node name="obstacle_collection" type="Node2D" parent="PropLayer" unique_id=1329400592]
+position = Vector2(-6, -3)
+
+[node name="CampObstacle2" parent="PropLayer/obstacle_collection" unique_id=2006198097 instance=ExtResource("4_4xve8")]
+position = Vector2(286, -157)
+
+[node name="CampObstacle" parent="PropLayer/obstacle_collection" unique_id=430466366 instance=ExtResource("4_ua8lk")]
+position = Vector2(314, -339)
+
+[node name="CampObstacle7" parent="PropLayer/obstacle_collection" unique_id=556345543 instance=ExtResource("5_4xve8")]
+position = Vector2(189, -267)
+
+[node name="CampObstacle3" parent="PropLayer/obstacle_collection" unique_id=906315038 instance=ExtResource("5_4xve8")]
+position = Vector2(470, -339)
+
+[node name="CampObstacle6" parent="PropLayer/obstacle_collection" unique_id=179604913 instance=ExtResource("6_rwtlg")]
+position = Vector2(382, -245)
+
+[node name="CampObstacle5" parent="PropLayer/obstacle_collection" unique_id=1300123726 instance=ExtResource("6_rwtlg")]
+position = Vector2(227, -122)
+
+[node name="CampObstacle4" parent="PropLayer/obstacle_collection" unique_id=1276181089 instance=ExtResource("6_rwtlg")]
+position = Vector2(593, -252)
+
+[node name="CampObstacle12" parent="PropLayer/obstacle_collection" unique_id=1389195329 instance=ExtResource("8_gsppn")]
+position = Vector2(296, -33)
+
+[node name="CampObstacle8" parent="PropLayer/obstacle_collection" unique_id=2023368437 instance=ExtResource("9_005rq")]
+position = Vector2(188, 60)
+scale = Vector2(1e-05, 1e-05)
+
+[node name="CampObstacle9" parent="PropLayer/obstacle_collection" unique_id=496970546 instance=ExtResource("9_005rq")]
+position = Vector2(809, -207.99998)
+scale = Vector2(1.5000001, 1.5000001)
+
+[node name="CampObstacle10" parent="PropLayer/obstacle_collection" unique_id=1205329169 instance=ExtResource("10_en6th")]
+position = Vector2(434, -152)
+
+[node name="sprite_collection" type="Node2D" parent="PropLayer" unique_id=1944167956]
+
+[node name="Thicket1" type="Sprite2D" parent="PropLayer/sprite_collection" unique_id=1616890352]
+position = Vector2(319, -154)
+texture = ExtResource("11_005rq")
+
+[node name="Thicket2" type="Sprite2D" parent="PropLayer/sprite_collection" unique_id=734356020]
+position = Vector2(258, -32)
+texture = ExtResource("11_005rq")

@@ -125,8 +125,11 @@ func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:
 
 
 func collect_all_exp_orbs() -> void:
-	for orb in get_tree().get_nodes_in_group("exp_orbs"):
-		if orb is ExpOrb and orb.is_inside_tree():
+	var exp_orbs: Array[ExpOrb] = []
+	if pickup_root != null:
+		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
+	for orb in exp_orbs:
+		if is_instance_valid(orb) and orb.is_inside_tree():
 			orb.collect()
 
 
@@ -134,6 +137,14 @@ func clear_enemies() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy is EnemyController and enemy.is_inside_tree():
 			enemy.queue_free()
+
+
+func _collect_exp_orbs_recursive(node: Node, result: Array[ExpOrb]) -> void:
+	if node is ExpOrb:
+		result.append(node)
+	for child in node.get_children():
+		if child is Node:
+			_collect_exp_orbs_recursive(child, result)
 
 
 func calculate_wave_duration(wave_index: int) -> int:

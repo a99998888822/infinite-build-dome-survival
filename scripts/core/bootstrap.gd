@@ -272,12 +272,12 @@ func _run_enemy_wave_checks() -> bool:
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
-	wave_manager.collect_all_exp_orbs()
-	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 4 and wave_manager.current_gold == 4) and passed
 	var free_shop_count := 0
 	wave_manager.free_shop_requested.connect(func(_level: int) -> void: free_shop_count += 1)
-	wave_manager.add_exp_and_gold(1, 0)
-	passed = _print_check_result("level up free shop trigger", free_shop_count >= 1 and wave_manager.player_level >= 2 and wave_manager.current_exp == 0) and passed
+	wave_manager.collect_all_exp_orbs()
+	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and free_shop_count >= 1) and passed
+	wave_manager.add_exp_and_gold(10, 0)
+	passed = _print_check_result("level up free shop trigger", free_shop_count >= 2 and wave_manager.player_level >= 3 and wave_manager.current_exp == 0) and passed
 
 	wave_manager.queue_free()
 	player.queue_free()
@@ -287,6 +287,7 @@ func _run_enemy_wave_checks() -> bool:
 func _run_camp_meta_checks() -> bool:
 	print("[Bootstrap] camp meta progression checks")
 	var passed := true
+	CampProgression.begin_transient_session()
 	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 8) and passed
 	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
 	passed = _print_check_result("camp ruins state", CampProgression.get_building_display_state("camp_farstar_range") == "ruins") and passed
@@ -307,6 +308,7 @@ func _run_camp_meta_checks() -> bool:
 	passed = _print_check_result("camp upgrade option", purchase_ok and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
 	if camp_root != null:
 		camp_root.queue_free()
+	CampProgression.end_transient_session()
 	return passed
 
 

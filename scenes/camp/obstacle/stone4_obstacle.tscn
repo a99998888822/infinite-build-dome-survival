@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bc0w4jqxf3ryq"]
+
+[ext_resource type="Texture2D" uid="uid://dern606fdf3gr" path="res://assets/sprites/camp/stone4.png" id="1_u51pv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wn00a"]
+size = Vector2(101, 79)
+
+[node name="CampObstacle" type="StaticBody2D" unique_id=430466366]
+scale = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1463058505]
+texture = ExtResource("1_u51pv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=279547952]
+position = Vector2(-1.5, -3.5)
+shape = SubResource("RectangleShape2D_wn00a")
