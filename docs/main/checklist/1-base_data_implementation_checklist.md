@@ -233,7 +233,7 @@ res://
 3. `enemies.drop_table_id -> drop_tables.id`
 4. `waves.spawn_groups.enemy_id -> enemies.id`
 5. `camp_buildings.levels.*.unlock -> 解锁ID注册表`
-6. `camp_buildings.unlock_condition.building -> camp_buildings.id`
+6. `camp_buildings.unlock_condition.building / camp_buildings.unlock_condition.currency`
 7. `camp_buildings.upgrade_options.required_building_level` 为正整数。
 
 ## 第 9 步：创建测试场景/脚本
@@ -332,7 +332,6 @@ res://
 当前状态：基础数值与数据配置模块已结项，本文档已冻结为参考版。
 
 下一步建议：进入“最小局内闭环”模块，优先实现玩家移动、敌人追踪、基础武器自动攻击、敌人死亡掉落与经验拾取。
-
 
 
 

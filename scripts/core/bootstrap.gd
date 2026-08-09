@@ -272,12 +272,38 @@ func _run_enemy_wave_checks() -> bool:
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
-	var free_shop_count := 0
-	wave_manager.free_shop_requested.connect(func(_level: int) -> void: free_shop_count += 1)
-	wave_manager.collect_all_exp_orbs()
-	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and free_shop_count >= 1) and passed
+	var shared_reward_shop_count := 0
+	wave_manager.shared_reward_shop_requested.connect(func(_level: int) -> void: shared_reward_shop_count += 1)
+	wave_manager.collect_all_reward_pickups()
+	passed = _print_check_result("wave collect reward pickups", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and shared_reward_shop_count >= 1) and passed
+
+	player.add_runtime_modifier({
+		"id": "mod_test_reward_drop_rate",
+		"source_type": "test",
+		"source_id": "bootstrap_reward_check",
+		"target_scope": "player",
+		"stat": "drop_rate_percent",
+		"operation": "add_flat",
+		"value": 2000,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	var reward_system := DropRewardSystem.new()
+	var reward_actions := reward_system.build_drop_actions("drop_basic_enemy", player)
+	var reward_action_types := {}
+	for action in reward_actions:
+		reward_action_types[str(action.get("type", ""))] = true
+	passed = _print_check_result("reward action build", reward_action_types.has("exp_orb") and reward_action_types.has("health_pack")) and passed
+
+	player.take_damage(10, "bootstrap_reward_check")
+	var hp_before_reward := player.current_hp
+	var health_pack := wave_manager.spawn_health_pack(6, player.global_position + Vector2(8, 0))
+	passed = _print_check_result("health pack spawn", health_pack != null) and passed
+	wave_manager.collect_all_reward_pickups()
+	passed = _print_check_result("reward pickup collection", player.current_hp == hp_before_reward + 6 and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= 6 and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
+
 	wave_manager.add_exp_and_gold(10, 0)
-	passed = _print_check_result("level up free shop trigger", free_shop_count >= 2 and wave_manager.player_level >= 3 and wave_manager.current_exp == 0) and passed
+	passed = _print_check_result("level up shared reward/shop trigger", shared_reward_shop_count >= 2 and wave_manager.player_level >= 3 and wave_manager.current_exp == 0) and passed
 
 	wave_manager.queue_free()
 	player.queue_free()
@@ -297,11 +323,11 @@ func _run_camp_meta_checks() -> bool:
 		add_child(camp_root)
 		passed = _print_check_result("camp scene slot count", camp_root.get_building_slot_count() == DataRegistry.get_record_count("camp_buildings")) and passed
 		passed = _print_check_result("camp scene slot lookup", camp_root.get_building_slot("camp_armory_workshop") != null and camp_root.get_building_slot("camp_farstar_range") != null) and passed
-	CampProgression.set_building_level("camp_armory_workshop", 2)
-	passed = _print_check_result("camp unlock sync", CampProgression.is_building_unlocked("camp_farstar_range")) and passed
-	print("[Debug] before add currency")
-	CampProgression.add_camp_currency(100)
-	print("[Debug] after add currency")
+	CampProgression.add_camp_currency(400)
+	var farstar_unlock_ok := CampProgression.purchase_building_unlock("camp_farstar_range")
+	passed = _print_check_result("camp unlock sync", farstar_unlock_ok and CampProgression.is_building_unlocked("camp_farstar_range") and CampProgression.get_building_level("camp_farstar_range") == 1) and passed
+	var building_unlock_ok := CampProgression.purchase_building_unlock("camp_council_hall")
+	passed = _print_check_result("camp currency unlock", building_unlock_ok and CampProgression.is_building_unlocked("camp_council_hall") and CampProgression.get_building_level("camp_council_hall") == 1) and passed
 	print("[Debug] before purchase upgrade")
 	var purchase_ok := CampProgression.purchase_upgrade("camp_upgrade_melee_damage")
 	print("[Debug] after purchase upgrade: %s" % str(purchase_ok))
@@ -413,7 +439,7 @@ func _run_weapon_checks() -> bool:
 			upgrade_offer_count += 1
 			upgrade_keys[offer.get("offer_id", "")] = true
 	var shop_check := not shop_candidates.is_empty() and not shop_rarity_weights.is_empty() and shop_offers.size() == mini(3, shop_candidates.size()) and upgrade_offer_count <= 1
-	passed = _print_check_result("shop candidate and rarity generation", shop_check) and passed
+	passed = _print_check_result("shared reward/shop pool generation", shop_check) and passed
 
 	loadout.queue_free()
 	player.queue_free()

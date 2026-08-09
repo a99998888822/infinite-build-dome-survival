@@ -693,7 +693,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
   "initial_unlocked": false,
   "type": "human",
   "role": "近战专属营地建筑，解锁近战物理升级选项",
-  "unlock_condition": { "building": "camp_armory_workshop", "level": 1 },
+  "unlock_condition": { "currency": "camp_currency", "cost": 120 },
 
   "levels": {},
   "upgrade_options": [
@@ -719,7 +719,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 | `initial_unlocked` | 是否初始自带 |
 | `type` | 建筑性质，例如 `human`、`mixed`、`void` |
 | `role` | 建筑核心定位 |
-| `unlock_condition` | 建筑解锁条件，可选 |
+| `unlock_condition` | 建筑解锁条件，可选，可写前置建筑或局外货币解锁 |
 | `description` | 建筑描述 |
 | `levels` | 建筑等级效果，key 为等级字符串 |
 | `upgrade_options` | 该建筑解锁的局外升级选项 |
@@ -989,7 +989,6 @@ func find_refs(config_id: String) -> Array[Dictionary]
 5. 能打印某个最终属性的来源链。
 6. 业务模块不需要知道 JSON 文件路径，只依赖 `DataRegistry` 接口。
 7. 后续新增武器、遗物、羁绊、营地建筑时，不需要修改基础数据模块核心逻辑。
-
 
 
 

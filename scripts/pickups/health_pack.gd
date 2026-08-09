@@ -1,10 +1,10 @@
 extends Area2D
-class_name ExpOrb
+class_name HealthPack
 
-signal collected(orb: ExpOrb, exp_amount: int, gold_amount: int)
+signal collected(pickup: HealthPack, heal_amount: int)
 
-const DEFAULT_AMOUNT: int = 1
-const DEFAULT_ATTRACT_SPEED: float = 480.0
+const DEFAULT_AMOUNT: int = 3
+const DEFAULT_ATTRACT_SPEED: float = 360.0
 
 @export var amount: int = DEFAULT_AMOUNT
 @export var attract_speed: float = DEFAULT_ATTRACT_SPEED
@@ -12,19 +12,21 @@ const DEFAULT_ATTRACT_SPEED: float = 480.0
 var target_player: PlayerController = null
 var collected_once: bool = false
 
+@onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
+
 
 func _ready() -> void:
-	add_to_group("exp_orbs")
 	add_to_group("reward_pickups")
+	add_to_group("health_packs")
 	body_entered.connect(_on_body_entered)
 
 
-func initialize(exp_amount: int) -> void:
-	if not is_in_group("exp_orbs"):
-		add_to_group("exp_orbs")
+func initialize(heal_amount: int) -> void:
 	if not is_in_group("reward_pickups"):
 		add_to_group("reward_pickups")
-	amount = maxi(exp_amount, 0)
+	if not is_in_group("health_packs"):
+		add_to_group("health_packs")
+	amount = maxi(heal_amount, 0)
 	collected_once = false
 
 
@@ -47,7 +49,10 @@ func collect() -> void:
 	if collected_once:
 		return
 	collected_once = true
-	collected.emit(self, amount, amount)
+	var healed_amount := 0
+	if target_player != null and amount > 0:
+		healed_amount = target_player.heal(amount)
+	collected.emit(self, healed_amount)
 	queue_free()
 
 

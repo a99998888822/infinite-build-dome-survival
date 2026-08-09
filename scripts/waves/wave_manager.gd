@@ -5,11 +5,14 @@ signal wave_started(wave_id: String, duration_seconds: int)
 signal wave_finished(wave_id: String)
 signal exp_changed(current_exp: int, required_exp: int, level: int)
 signal gold_changed(current_gold: int)
+signal shared_reward_shop_requested(level: int)
+# 兼容旧入口，后续可逐步迁移到 shared_reward_shop_requested。
 signal free_shop_requested(level: int)
 
 const DEFAULT_PLAYER_LEVEL: int = 1
 const SPAWN_MIN_DISTANCE: float = 1000.0
 const SPAWN_MAX_DISTANCE: float = 1500.0
+const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 
 @export var auto_start: bool = false
 @export var enemy_root_path: NodePath
@@ -27,8 +30,9 @@ var current_gold: int = 0
 var collected_exp_this_wave: int = 0
 var collected_gold_this_wave: int = 0
 
+var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
+var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var enemy_scene_cache: Dictionary = {}
-var exp_orb_scene: PackedScene = preload("res://scenes/pickups/exp_orb.tscn")
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
 @onready var pickup_root: Node = _get_optional_node(pickup_root_path)
@@ -61,6 +65,7 @@ func initialize(target_player: PlayerController) -> void:
 	current_gold = 0
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
+	reward_snapshot.reset()
 
 
 func _get_optional_node(path: NodePath) -> Node:
@@ -75,6 +80,7 @@ func start_next_wave() -> bool:
 		return false
 	current_wave_index += 1
 	current_wave = waves[current_wave_index]
+	reward_snapshot.reset(str(current_wave.get("id", "")))
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
 	spawn_timers_ms.clear()
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
@@ -89,7 +95,7 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	running = false
-	collect_all_exp_orbs()
+	collect_all_reward_pickups()
 	clear_enemies()
 	wave_finished.emit(str(current_wave.get("id", "")))
 
@@ -113,24 +119,25 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 
 
 func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:
-	var orb := exp_orb_scene.instantiate() as ExpOrb
-	if orb == null:
-		return null
-	pickup_root.add_child(orb)
-	orb.global_position = position
-	orb.initialize(amount)
-	orb.set_target_player(player)
-	orb.collected.connect(_on_exp_orb_collected)
-	return orb
+	return drop_reward_system.spawn_exp_orb(amount, position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
+
+
+func spawn_health_pack(amount: int, position: Vector2) -> HealthPack:
+	return drop_reward_system.spawn_health_pack(amount, position, pickup_root, player, reward_snapshot, Callable(self, "_on_health_pack_collected"))
 
 
 func collect_all_exp_orbs() -> void:
-	var exp_orbs: Array[ExpOrb] = []
+	# 兼容旧调用；当前会收集场上所有奖励拾取物。
+	collect_all_reward_pickups()
+
+
+func collect_all_reward_pickups() -> void:
+	var pickups: Array[Node] = []
 	if pickup_root != null:
-		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
-	for orb in exp_orbs:
-		if is_instance_valid(orb) and orb.is_inside_tree():
-			orb.collect()
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if is_instance_valid(pickup) and pickup.is_inside_tree() and pickup.has_method("collect"):
+			pickup.call("collect")
 
 
 func clear_enemies() -> void:
@@ -139,12 +146,12 @@ func clear_enemies() -> void:
 			enemy.queue_free()
 
 
-func _collect_exp_orbs_recursive(node: Node, result: Array[ExpOrb]) -> void:
-	if node is ExpOrb:
+func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
+	if node.is_in_group("reward_pickups"):
 		result.append(node)
 	for child in node.get_children():
 		if child is Node:
-			_collect_exp_orbs_recursive(child, result)
+			_collect_reward_pickups_recursive(child, result)
 
 
 func calculate_wave_duration(wave_index: int) -> int:
@@ -187,21 +194,26 @@ func get_random_spawn_position() -> Vector2:
 
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
-	var drop_table := DataRegistry.get_record("drop_tables", drop_table_id)
-	if drop_table.is_empty():
-		return
-	for entry in drop_table.get("entries", []):
-		if not (entry is Dictionary):
-			continue
-		var chance := clampf(float(entry.get("chance_percent", 100)), 0.0, 100.0)
-		if randf() * 100.0 > chance:
-			continue
-		if str(entry.get("type", "")) == "exp_orb":
-			spawn_exp_orb(int(entry.get("amount", 0)), death_position)
+	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
+	for action in actions:
+		drop_reward_system.spawn_action(
+			action,
+			death_position,
+			pickup_root,
+			player,
+			reward_snapshot,
+			Callable(self, "_on_exp_orb_collected"),
+			Callable(self, "_on_health_pack_collected")
+		)
 
 
 func _on_exp_orb_collected(orb: ExpOrb, exp_amount: int, gold_amount: int) -> void:
 	add_exp_and_gold(exp_amount, gold_amount)
+	reward_snapshot.record_exp_collection(exp_amount, gold_amount)
+
+
+func _on_health_pack_collected(_pickup: HealthPack, heal_amount: int) -> void:
+	reward_snapshot.record_health_collection(heal_amount)
 
 
 func _apply_percent_bonus(base_amount: int, stat_id: String) -> int:
@@ -213,6 +225,7 @@ func _process_level_ups() -> void:
 	while current_exp >= get_required_exp_for_next_level():
 		current_exp -= get_required_exp_for_next_level()
 		player_level += 1
+		shared_reward_shop_requested.emit(player_level)
 		free_shop_requested.emit(player_level)
 
 
@@ -226,3 +239,7 @@ func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:
 	if loaded_scene != null:
 		enemy_scene_cache[scene_path] = loaded_scene
 	return loaded_scene
+
+
+func get_reward_snapshot() -> Dictionary:
+	return reward_snapshot.to_dictionary()

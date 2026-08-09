@@ -15,7 +15,7 @@
 
 ## 2. 必需素材
 
-> 注：`camp_armory_workshop`、`camp_relic_archive` 等初始自带建筑不需要废墟图，只保留正式建筑素材。
+> 注：`camp_armory_workshop`、`camp_relic_archive`、`camp_dome_shelter` 等初始自带建筑不需要废墟图，只保留正式建筑素材；其余 5 个需要同时准备废墟图和正式建筑图。
 
 | 状态 | 素材名 | 文件名 | 最终路径 | 建议尺寸 | 格式 | 内容说明 | 中文提示词 |
 |---|---|---|---|---|---|---|---|
@@ -33,6 +33,11 @@
 | 未生成 | 畸变研究所建筑 | `camp_mutation_laboratory.png` | `assets/sprites/camp/buildings/unlocked/camp_mutation_laboratory.png` | 256x256 | PNG | 畸变研究所正式建筑外观 | 生成一张像素风建筑图，主题是“畸变研究所”，简洁实验建筑，轻微克系氛围但不恐怖，清新、像素精度中高，PNG，透明背景。 |
 | 未生成 | 穹顶庇护所建筑 | `camp_dome_shelter.png` | `assets/sprites/camp/buildings/unlocked/camp_dome_shelter.png` | 256x256 | PNG | 穹顶庇护所正式建筑外观 | 生成一张像素风建筑图，主题是“穹顶庇护所”，小型圆顶庇护建筑，明亮、清新、适合森林营地，PNG，透明背景。 |
 | 未生成 | 议事大厅建筑 | `camp_council_hall.png` | `assets/sprites/camp/buildings/unlocked/camp_council_hall.png` | 256x256 | PNG | 议事大厅正式建筑外观 | 生成一张像素风建筑图，主题是“议事大厅”，小型公共建筑，清新、安静、适合森林营地，PNG，透明背景。 |
+| 未生成 | 利刃演武场废墟 | `camp_blade_arena_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_blade_arena_ruins.png` | 256x256 | PNG | 利刃演武场未解锁废墟外观 | 生成一张像素风废墟建筑图，主题是“利刃演武场废墟”，保留木桩、石台或兵器架的残破轮廓，整体清新、轻废墟感，不要恐怖化，PNG，透明背景。 |
+| 未生成 | 远星射靶台废墟 | `camp_farstar_range_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_farstar_range_ruins.png` | 256x256 | PNG | 远星射靶台未解锁废墟外观 | 生成一张像素风废墟建筑图，主题是“远星射靶台废墟”，保留高台和靶场残骸的轮廓，整体清新、简洁、轻废墟感，不要恐怖化，PNG，透明背景。 |
+| 未生成 | 眷族培育栏废墟 | `camp_kin_nursery_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_kin_nursery_ruins.png` | 256x256 | PNG | 眷族培育栏未解锁废墟外观 | 生成一张像素风废墟建筑图，主题是“眷族培育栏废墟”，保留培养设施的残破结构和少量机械感，整体清新、不恐怖，PNG，透明背景。 |
+| 未生成 | 畸变研究所废墟 | `camp_mutation_laboratory_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_mutation_laboratory_ruins.png` | 256x256 | PNG | 畸变研究所未解锁废墟外观 | 生成一张像素风废墟建筑图，主题是“畸变研究所废墟”，保留实验建筑的残破轮廓，带轻微克系感但不阴森，整体干净、像素精度中高，PNG，透明背景。 |
+| 未生成 | 议事大厅废墟 | `camp_council_hall_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_council_hall_ruins.png` | 256x256 | PNG | 议事大厅未解锁废墟外观 | 生成一张像素风废墟建筑图，主题是“议事大厅废墟”，保留公共建筑残破结构，整体安静、清新、轻废墟感，PNG，透明背景。 |
 
 ## 3. 可选素材
 

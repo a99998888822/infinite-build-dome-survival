@@ -103,6 +103,14 @@ func get_building_record(building_id: String) -> Dictionary:
 	return DataRegistry.get_record("camp_buildings", building_id)
 
 
+func get_building_unlock_condition(building_id: String) -> Dictionary:
+	var record := get_building_record(building_id)
+	if record.is_empty():
+		return {}
+	var condition: Variant = record.get("unlock_condition", {})
+	return condition if condition is Dictionary else {}
+
+
 func is_building_initially_unlocked(building_id: String) -> bool:
 	var record := get_building_record(building_id)
 	if record.is_empty():
@@ -122,6 +130,33 @@ func get_building_display_state(building_id: String) -> String:
 	if is_building_unlocked(building_id) or is_building_initially_unlocked(building_id):
 		return "unlocked"
 	return "ruins"
+
+
+func can_purchase_building_unlock(building_id: String) -> bool:
+	if is_building_unlocked(building_id) or is_building_initially_unlocked(building_id):
+		return false
+	var condition := get_building_unlock_condition(building_id)
+	if condition.is_empty():
+		return false
+	if condition.has("currency") and str(condition.get("currency", "")) != "camp_currency":
+		return false
+	if not condition.has("cost"):
+		return false
+	return get_camp_currency() >= int(condition.get("cost", 0))
+
+
+func purchase_building_unlock(building_id: String) -> bool:
+	if not can_purchase_building_unlock(building_id):
+		return false
+	var condition := get_building_unlock_condition(building_id)
+	var cost := int(condition.get("cost", 0))
+	set_camp_currency(get_camp_currency() - cost)
+	var building_levels: Dictionary = state.get("building_levels", {})
+	building_levels[building_id] = maxi(int(building_levels.get(building_id, 0)), 1)
+	state["building_levels"] = building_levels
+	_refresh_unlocks()
+	_save_and_notify(building_id)
+	return true
 
 
 func get_building_max_level(building_id: String) -> int:

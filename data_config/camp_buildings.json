@@ -107,8 +107,8 @@
     "type": "human",
     "role": "近战专属营地建筑，解锁近战物理升级选项",
     "unlock_condition": {
-      "building": "camp_armory_workshop",
-      "level": 1
+      "currency": "camp_currency",
+      "cost": 120
     },
     "description": "穹顶幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。",
     "levels": {},
@@ -176,8 +176,8 @@
     "type": "human",
     "role": "远程专属营地建筑，解锁远程与投射物升级选项",
     "unlock_condition": {
-      "building": "camp_armory_workshop",
-      "level": 2
+      "currency": "camp_currency",
+      "cost": 140
     },
     "description": "用于训练远程弹道与精准打击的高台。",
     "levels": {},
@@ -236,8 +236,8 @@
     "type": "mixed",
     "role": "召唤体系强化",
     "unlock_condition": {
-      "building": "camp_relic_archive",
-      "level": 2
+      "currency": "camp_currency",
+      "cost": 160
     },
     "description": "驯养、改造协助作战的畸变生物与机械仆从。",
     "levels": {
@@ -274,8 +274,8 @@
     "type": "void",
     "role": "DOT 持续伤害体系强化、解锁腐化类词条",
     "unlock_condition": {
-      "building": "camp_relic_archive",
-      "level": 4
+      "currency": "camp_currency",
+      "cost": 200
     },
     "description": "研究从迷雾中捕获的畸变躯体。研究员禁止长时间凝视浸泡标本，已有多人报告产生幻听。",
     "levels": {
@@ -426,8 +426,8 @@
     "type": "mixed",
     "role": "强化套装与通用成长收益",
     "unlock_condition": {
-      "building": "camp_relic_archive",
-      "level": 1
+      "currency": "camp_currency",
+      "cost": 100
     },
     "description": "幸存者在此交流遗物组合战术。议事厅墙上悬挂的古老图腾，偶尔会随羁绊共鸣微微震颤。",
     "levels": {},

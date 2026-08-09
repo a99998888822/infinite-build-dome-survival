@@ -1,10 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://weaponloadoutmvp01"]
+[gd_scene format=3 uid="uid://5bg40gkpiymi"]
 
-[ext_resource type="Script" path="res://scripts/weapons/weapon_loadout.gd" id="1_loadout"]
-[ext_resource type="Script" path="res://scripts/weapons/targeting_service.gd" id="2_targeting"]
+[ext_resource type="Script" uid="uid://ds6dxfjrigx1o" path="res://scripts/weapons/weapon_loadout.gd" id="1_loadout"]
+[ext_resource type="Script" uid="uid://dv1sibwy683yl" path="res://scripts/weapons/targeting_service.gd" id="2_targeting"]
 
-[node name="WeaponLoadout" type="Node"]
+[node name="WeaponLoadout" type="Node" unique_id=171954426]
 script = ExtResource("1_loadout")
 
-[node name="TargetingService" type="Node" parent="."]
+[node name="TargetingService" type="Node" parent="." unique_id=261741174]
 script = ExtResource("2_targeting")

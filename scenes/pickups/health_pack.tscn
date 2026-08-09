@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d1gkai3qirghk"]
+
+[ext_resource type="Script" path="res://scripts/pickups/health_pack.gd" id="1_health_pack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pickups/pickup_health_pack.png" id="2_sprite"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_health_pack"]
+radius = 7.0
+
+[node name="HealthPack" type="Area2D"]
+script = ExtResource("1_health_pack")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_health_pack")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.85, 1, 0.8, 1)
+texture = ExtResource("2_sprite")
