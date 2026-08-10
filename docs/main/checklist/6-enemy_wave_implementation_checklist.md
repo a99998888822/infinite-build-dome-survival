@@ -17,7 +17,7 @@
 - [x] 能处理敌人受击与死亡
 - [x] 能在敌人死亡时引用掉落表并掉落经验球
 - [x] 能在波次结束后统一吸取经验球并清场
-- [x] 能在角色升级时触发一次免费商店购买事件
+- [x] 能在角色升级时触发一次共享奖励/商店页事件
 - [x] 能在 `bootstrap.gd` 中打印自测结果
 
 ## 3. 已确认规则
@@ -52,7 +52,7 @@
 [Bootstrap] - enemy damage and death: passed
 [Bootstrap] - enemy drop table link: passed
 [Bootstrap] - wave collect exp orbs: passed
-[Bootstrap] - level up free shop trigger: passed
+[Bootstrap] - shared reward/shop trigger: passed
 ```
 
 ## 6. 后续非阻塞项

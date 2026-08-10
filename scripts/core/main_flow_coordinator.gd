@@ -16,7 +16,8 @@ const STATE_START_PAGE: String = "start_page"
 const STATE_CHARACTER_SELECT: String = "character_select"
 const STATE_BATTLE_PREPARE: String = "battle_prepare"
 const STATE_WAVE_COMBAT: String = "wave_combat"
-const STATE_LEVEL_UP_POPUP: String = "level_up_popup"
+const STATE_SHARED_REWARD_SHOP_POPUP: String = "shared_reward_shop_popup"
+const STATE_LEVEL_UP_POPUP: String = STATE_SHARED_REWARD_SHOP_POPUP
 const STATE_WAVE_END_ABSORB: String = "wave_end_absorb"
 const STATE_INTEREST_SETTLEMENT: String = "interest_settlement"
 const STATE_SHOP_POPUP: String = "shop_popup"
@@ -173,10 +174,10 @@ func finish_current_wave() -> void:
 		_bound_wave_manager.finish_current_wave()
 
 
-func request_level_up_popup(level: int, source: String = "wave_manager") -> void:
+func request_shared_reward_shop_popup(level: int, source: String = "wave_manager") -> void:
 	if current_mode != MODE_BATTLE or battle_resolved or level <= 0:
 		return
-	if current_state == STATE_LEVEL_UP_POPUP:
+	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		if level == _active_level_up_level:
 			return
 		if not _pending_level_up_levels.has(level):
@@ -185,18 +186,22 @@ func request_level_up_popup(level: int, source: String = "wave_manager") -> void
 
 	_active_level_up_level = level
 	_resume_state_after_modal = STATE_INTEREST_SETTLEMENT if _wave_end_ready else current_state
-	_set_state(STATE_LEVEL_UP_POPUP)
-	modal_requested.emit(STATE_LEVEL_UP_POPUP, _build_level_up_payload(level, source, false))
+	_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
+	modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(level, source, false))
 
 
-func close_level_up_popup() -> void:
-	if current_state != STATE_LEVEL_UP_POPUP:
+func request_level_up_popup(level: int, source: String = "wave_manager") -> void:
+	request_shared_reward_shop_popup(level, source)
+
+
+func close_shared_reward_shop_popup() -> void:
+	if current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return
-	modal_closed.emit(STATE_LEVEL_UP_POPUP)
+	modal_closed.emit(STATE_SHARED_REWARD_SHOP_POPUP)
 	if not _pending_level_up_levels.is_empty():
 		var next_level := int(_pending_level_up_levels.pop_front())
 		_active_level_up_level = next_level
-		modal_requested.emit(STATE_LEVEL_UP_POPUP, _build_level_up_payload(next_level, "queued", true))
+		modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(next_level, "queued", true))
 		return
 	_active_level_up_level = 0
 	if _wave_end_ready:
@@ -205,11 +210,15 @@ func close_level_up_popup() -> void:
 		_set_state(_resume_state_after_modal)
 
 
+func close_level_up_popup() -> void:
+	close_shared_reward_shop_popup()
+
+
 func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
-	if current_state != STATE_LEVEL_UP_POPUP and not battle_resolved:
+	if current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
 		_set_state(STATE_INTEREST_SETTLEMENT)
-	elif current_state == STATE_LEVEL_UP_POPUP:
+	elif current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		_resume_state_after_modal = STATE_INTEREST_SETTLEMENT
 
 
@@ -262,6 +271,8 @@ func get_state_snapshot() -> Dictionary:
 		"battle_resolved": battle_resolved,
 		"victory": current_victory,
 		"wave_end_ready": _wave_end_ready,
+		"active_shared_reward_shop_level": _active_level_up_level,
+		"pending_shared_reward_shop_levels": _pending_level_up_levels.duplicate(),
 		"active_level_up_level": _active_level_up_level,
 		"pending_level_up_levels": _pending_level_up_levels.duplicate(),
 	}
@@ -284,7 +295,7 @@ func _on_wave_finished(wave_id: String) -> void:
 
 
 func _on_shared_reward_shop_requested(level: int) -> void:
-	request_level_up_popup(level, "shared_reward_shop_requested")
+	request_shared_reward_shop_popup(level, "shared_reward_shop_requested")
 
 
 func _on_player_died() -> void:
@@ -358,10 +369,14 @@ func _sanitize_string_array(values: Array[String]) -> Array[String]:
 	return result
 
 
-func _build_level_up_payload(level: int, source: String, queued: bool) -> Dictionary:
+func _build_shared_reward_shop_payload(level: int, source: String, queued: bool) -> Dictionary:
 	return {
 		"level": level,
 		"source": source,
 		"queued": queued,
 		"resume_state": _resume_state_after_modal,
 	}
+
+
+func _build_level_up_payload(level: int, source: String, queued: bool) -> Dictionary:
+	return _build_shared_reward_shop_payload(level, source, queued)

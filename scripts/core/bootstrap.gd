@@ -278,8 +278,8 @@ func _run_enemy_wave_checks() -> bool:
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
 	var shared_reward_shop_count := 0
 	wave_manager.shared_reward_shop_requested.connect(func(_level: int) -> void: shared_reward_shop_count += 1)
-	wave_manager.collect_all_reward_pickups()
-	passed = _print_check_result("wave collect reward pickups", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and shared_reward_shop_count >= 1) and passed
+	wave_manager.collect_all_exp_orbs()
+	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and shared_reward_shop_count >= 1) and passed
 
 	player.add_runtime_modifier({
 		"id": "mod_test_reward_drop_rate",
@@ -303,8 +303,8 @@ func _run_enemy_wave_checks() -> bool:
 	var hp_before_reward := player.current_hp
 	var health_pack := wave_manager.spawn_health_pack(6, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("health pack spawn", health_pack != null) and passed
-	wave_manager.collect_all_reward_pickups()
-	passed = _print_check_result("reward pickup collection", player.current_hp == hp_before_reward + 6 and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= 6 and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
+	health_pack.collect()
+	passed = _print_check_result("health pack collection", player.current_hp == hp_before_reward + 6 and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= 6 and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
 
 	wave_manager.add_exp_and_gold(10, 0)
 	passed = _print_check_result("level up shared reward/shop trigger", shared_reward_shop_count >= 2 and wave_manager.player_level >= 3 and wave_manager.current_exp == 0) and passed
@@ -520,9 +520,9 @@ func _run_main_flow_checks() -> bool:
 	var wave_started := flow.request_next_wave()
 	passed = _print_check_result("main flow wave start request", wave_started and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 	wave_manager.add_exp_and_gold(10, 0)
-	passed = _print_check_result("main flow level up popup", flow.get_current_state() == MainFlowCoordinator.STATE_LEVEL_UP_POPUP) and passed
-	passed = _print_check_result("main flow level up dedupe", flow.get_state_snapshot().get("pending_level_up_levels", []).is_empty()) and passed
-	flow.close_level_up_popup()
+	passed = _print_check_result("main flow shared reward/shop popup", flow.get_current_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP) and passed
+	passed = _print_check_result("main flow shared reward/shop dedupe", flow.get_state_snapshot().get("pending_shared_reward_shop_levels", []).is_empty()) and passed
+	flow.close_shared_reward_shop_popup()
 	passed = _print_check_result("main flow resume combat after popup", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.finish_current_wave()

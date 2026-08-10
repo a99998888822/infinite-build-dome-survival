@@ -95,7 +95,8 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	running = false
-	collect_all_reward_pickups()
+	collect_all_exp_orbs()
+	_clear_non_exp_reward_pickups()
 	clear_enemies()
 	wave_finished.emit(str(current_wave.get("id", "")))
 
@@ -127,23 +128,46 @@ func spawn_health_pack(amount: int, position: Vector2) -> HealthPack:
 
 
 func collect_all_exp_orbs() -> void:
-	# 兼容旧调用；当前会收集场上所有奖励拾取物。
-	collect_all_reward_pickups()
+	collect_exp_orbs_in_root(pickup_root)
 
 
 func collect_all_reward_pickups() -> void:
-	var pickups: Array[Node] = []
-	if pickup_root != null:
-		_collect_reward_pickups_recursive(pickup_root, pickups)
-	for pickup in pickups:
-		if is_instance_valid(pickup) and pickup.is_inside_tree() and pickup.has_method("collect"):
-			pickup.call("collect")
+	# 兼容旧调用；当前仅收集经验球。
+	collect_all_exp_orbs()
 
 
 func clear_enemies() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy is EnemyController and enemy.is_inside_tree():
 			enemy.queue_free()
+
+
+func _collect_exp_orbs_recursive(node: Node, result: Array[ExpOrb]) -> void:
+	if node is ExpOrb:
+		result.append(node)
+	for child in node.get_children():
+		if child is Node:
+			_collect_exp_orbs_recursive(child, result)
+
+
+func collect_exp_orbs_in_root(root: Node) -> void:
+	var exp_orbs: Array[ExpOrb] = []
+	if root != null:
+		_collect_exp_orbs_recursive(root, exp_orbs)
+	for orb in exp_orbs:
+		if is_instance_valid(orb) and orb.is_inside_tree():
+			orb.collect()
+
+
+func _clear_non_exp_reward_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if pickup is ExpOrb:
+			continue
+		if is_instance_valid(pickup) and pickup.is_inside_tree():
+			pickup.queue_free()
 
 
 func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
