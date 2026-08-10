@@ -3,6 +3,7 @@
     "id": "weapon_void_blade",
     "display_name": "小飞刃",
     "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
+    "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg",
     "rarity": "common",
     "tags": [
       "weapon",
@@ -89,6 +90,7 @@
     "id": "weapon_mutated_cleaver",
     "display_name": "砍刀",
     "icon": "res://assets/ui/icons/weapons/weapon_mutated_cleaver.png",
+    "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg",
     "rarity": "common",
     "tags": [
       "weapon",
@@ -174,6 +176,7 @@
     "id": "weapon_dome_shockwave",
     "display_name": "穹顶震波器",
     "icon": "res://assets/ui/icons/weapons/weapon_dome_shockwave.png",
+    "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg",
     "rarity": "common",
     "tags": [
       "weapon",

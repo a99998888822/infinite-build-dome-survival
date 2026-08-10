@@ -449,7 +449,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 
 特点：
 1. 武器记录只保留 `id/display_name/icon/rarity/tags/weapon_type/load_cost/max_level/attack_interval_ms/base_stats/level_upgrades` 等运行必要字段；其他实体可按模块保留展示字段。
-2. 不存储玩家是否已解锁，这类状态属于存档。
+2. 不存储玩家个人开放列表；开放状态由营地建筑等级和升级项等级派生。
 3. 可以引用效果定义层中的 modifier 或内联轻量效果。
 
 ### 9.2 效果定义层
@@ -475,7 +475,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 
 特点：
 1. 只定义解锁条件和成长效果。
-2. 玩家实际解锁状态保存在存档。
+2. 玩家实际开放状态由存档中的建筑等级和升级项等级派生，不单独保存解锁列表。
 3. 效果同样通过 modifier 进入属性系统。
 
 ### 9.4 运行曲线层
@@ -701,7 +701,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
       "id": "camp_upgrade_melee_damage",
       "name": "近战伤害训练",
       "stat": "melee_damage",
-      "currency": "global_currency",
+      "currency": "camp_currency",
       "cost": 100,
       "max_level": 20,
       "value_per_level": 1
@@ -739,7 +739,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
   "id": "camp_upgrade_projectile_count",
   "name": "投射物数量训练",
   "stat": "projectile_count",
-  "currency": "global_currency",
+  "currency": "camp_currency",
   "cost": 2000,
   "max_level": 3,
   "value_per_level": 1
@@ -749,7 +749,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 运行时处理规则：
 
 1. 建筑等级效果中的 `stat/value` 由营地模块展开为 `source_type = camp` 的 `Modifier`。
-2. 建筑等级效果中的 `unlock` 写入解锁状态，由存档模块保存。
+2. 建筑等级效果中的 `unlock` 只定义开放规则；存档只保存建筑等级和升级项等级。
 3. `upgrade_options` 只是“可购买升级项定义”，玩家购买等级不写在配置表，写在存档。
 4. 相同升级选项每级花费固定，最终效果 = `value_per_level * 已购买等级`。
 5. 只有 `StatDefinitions` 中存在的 `stat` 才能作为升级选项属性。

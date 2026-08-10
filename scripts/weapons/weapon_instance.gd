@@ -12,6 +12,8 @@ var level: int = 1
 var runtime_stats: Dictionary = {}
 var attack_interval_ms: int = 0
 var attack_timer: float = 0.0
+var _attack_hit_sfx_played: bool = false
+var _projectile_hit_sfx_played: Dictionary = {}
 
 
 func initialize(target_weapon_id: String, player: PlayerController) -> bool:
@@ -27,6 +29,7 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 	runtime_stats = data.get("base_stats", {}).duplicate(true)
 	attack_interval_ms = int(data.get("attack_interval_ms", 1000))
 	attack_timer = 0.0
+	reset_hit_sfx_state()
 	return true
 
 
@@ -40,6 +43,41 @@ func can_attack() -> bool:
 
 func reset_attack_timer() -> void:
 	attack_timer = get_actual_attack_interval_seconds()
+	reset_hit_sfx_state()
+
+
+func reset_hit_sfx_state() -> void:
+	_attack_hit_sfx_played = false
+	_projectile_hit_sfx_played.clear()
+
+
+func get_hit_sfx_path() -> String:
+	return str(weapon_data.get("hit_sfx", ""))
+
+
+func play_attack_hit_sfx() -> bool:
+	if _attack_hit_sfx_played:
+		return false
+	_attack_hit_sfx_played = true
+	AudioManager.play_weapon_hit_sfx(weapon_id, 30)
+	return true
+
+
+func has_played_attack_hit_sfx() -> bool:
+	return _attack_hit_sfx_played
+
+
+func play_projectile_hit_sfx(projectile_id: String) -> bool:
+	var key := projectile_id.strip_edges()
+	if key.is_empty() or _projectile_hit_sfx_played.has(key):
+		return false
+	_projectile_hit_sfx_played[key] = true
+	AudioManager.play_weapon_hit_sfx(weapon_id, 15)
+	return true
+
+
+func has_played_projectile_hit_sfx(projectile_id: String) -> bool:
+	return _projectile_hit_sfx_played.has(projectile_id.strip_edges())
 
 
 func upgrade() -> bool:

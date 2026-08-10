@@ -180,6 +180,8 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "spread_angle", path)
 	if record.has("use_cooldown_reduction_only") and not (record["use_cooldown_reduction_only"] is bool):
 		errors.append("%s.use_cooldown_reduction_only must be a boolean." % path)
+	if record.has("hit_sfx") and not (record["hit_sfx"] is String):
+		errors.append("%s.hit_sfx must be a string resource path." % path)
 
 
 func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
@@ -315,6 +317,7 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 		var path := "camp_buildings[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_bool(record, "initial_unlocked", path)
 		_validate_reference(record, "unlock_condition.building", "camp_buildings", records_by_id, path)
+		_validate_camp_unlock_condition(record.get("unlock_condition", {}), path)
 		_validate_camp_levels(record.get("levels", {}), path)
 		var upgrade_options: Variant = record.get("upgrade_options", [])
 		if not (upgrade_options is Array):
@@ -326,6 +329,7 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 				errors.append("%s.upgrade_options[%d] must be an object." % [path, option_index])
 				continue
 			_validate_required_fields(option, ["id", "stat", "currency", "cost", "max_level", "value_per_level"], "%s.upgrade_options[%d]" % [path, option_index])
+			_validate_camp_currency_field(option, "%s.upgrade_options[%d]" % [path, option_index])
 			if option.has("required_building_level") and int(option["required_building_level"]) < 1:
 				errors.append("%s.upgrade_options[%d].required_building_level must be at least 1." % [path, option_index])
 
@@ -364,6 +368,27 @@ func _validate_camp_level_effect(effect: Dictionary, path: String) -> void:
 			warnings.append("Unknown camp stage in %s: %s" % [path, stage_id])
 	if effect.has("stat") and not StatDefinitions.has_stat(str(effect["stat"])):
 		errors.append("Unknown stat in %s: %s" % [path, str(effect["stat"])])
+
+
+func _validate_camp_unlock_condition(condition: Variant, path: String) -> void:
+	if not (condition is Dictionary):
+		errors.append("%s.unlock_condition must be an object." % path)
+		return
+	if condition.has("currency") and str(condition.get("currency", "")) != "camp_currency":
+		errors.append("%s.unlock_condition.currency must be camp_currency." % path)
+	if condition.has("currency") and not condition.has("cost"):
+		errors.append("%s.unlock_condition.cost is required when currency is set." % path)
+	if condition.has("cost") and not condition.has("currency"):
+		errors.append("%s.unlock_condition.currency is required when cost is set." % path)
+	if condition.has("cost") and int(condition.get("cost", 0)) < 0:
+		errors.append("%s.unlock_condition.cost must be greater than or equal to 0." % path)
+
+
+func _validate_camp_currency_field(record: Dictionary, path: String) -> void:
+	if record.has("currency") and str(record.get("currency", "")) != "camp_currency":
+		errors.append("%s.currency must be camp_currency." % path)
+	if record.has("cost") and int(record.get("cost", 0)) < 0:
+		errors.append("%s.cost must be greater than or equal to 0." % path)
 
 
 func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:

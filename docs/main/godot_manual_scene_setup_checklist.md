@@ -210,12 +210,14 @@ CampRoot
 当前状态：
 
 1. 已有 UI 模块设计文档。
-2. 还没有正式创建 HUD、弹窗和营地 UI 的 `.tscn`。
+2. 已创建奖励 / 商店候选项共用 prefab：`scenes/ui/rewards/reward_option.tscn`。
+3. 还没有正式创建 HUD、完整弹窗页和营地 UI 的 `.tscn`。
 
 后续需要在 Godot 中新建：
 
 - [ ] 战斗 HUD 场景。
 - [ ] 共享奖励/商店页场景。
+- [x] 共享奖励/商店候选项 prefab：`scenes/ui/rewards/reward_option.tscn`。
 - [ ] 武器购买失败提示弹窗。
 - [ ] 营地建筑详情面板。
 - [ ] 暂停菜单。
@@ -229,6 +231,22 @@ UIRoot
 ├─ FadeLayer
 └─ DebugLayer
 ```
+
+奖励 / 商店候选项 prefab 约定：
+
+```text
+RewardOption (PanelContainer + StyleBoxFlat)
+└─ Content (VBoxContainer)
+   ├─ TopRarityLine (ColorRect)
+   ├─ TypeLabel (Label: 武器升级 / 新武器 / 遗物)
+   ├─ IconFrame (PanelContainer)
+   ├─ NameLabel (Label)
+   ├─ DescriptionLabel (Label)
+   ├─ BottomRarityLine (ColorRect)
+   └─ SelectButton (Button: 选择 / 具体花费金额)
+```
+
+通用弹窗底板、奖励/商店页底板和奖励卡底优先使用 Godot `PanelContainer` + `StyleBoxFlat`，MVP 阶段不需要专门的底板 PNG。
 
 ## 8. 当前最需要手动处理的场景
 

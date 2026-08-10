@@ -37,7 +37,7 @@
 
 ## 5. 后续非阻塞项
 
-- [ ] 遗物选择 UI
+- [ ] 遗物选择 UI 复用 `scenes/ui/rewards/reward_option.tscn`
 - [ ] 图鉴界面
 - [ ] 稀有度权重系统
 - [ ] 特殊效果执行器

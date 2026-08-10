@@ -4,8 +4,18 @@ signal state_loaded(success: bool)
 signal state_changed
 signal building_changed(building_id: String)
 
-const SAVE_PATH: String = "user://camp_progression.json"
-const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
+const SCHEMA_VERSION: int = 1
+const PROFILE_ID: String = "profile_01"
+const SAVE_DIR: String = "user://saves"
+const SAVE_PATH: String = "user://saves/profile_01.json"
+const BACKUP_PATH: String = "user://saves/profile_01.backup.json"
+const TEMP_PATH: String = "user://saves/profile_01.tmp.json"
+const LEGACY_SAVE_PATH: String = "user://camp_progression.json"
+const DEFAULT_VOLUME_SETTINGS: Dictionary = {
+	"master_volume": 100,
+	"bgm_volume": 80,
+	"sfx_volume": 90,
+}
 
 var state: Dictionary = {}
 var _loaded: bool = false
@@ -30,13 +40,9 @@ func reload_state() -> bool:
 		return true
 	_reset_state()
 	var loaded_state: Dictionary = _build_default_state()
-	if FileAccess.file_exists(SAVE_PATH):
-		var raw_text := FileAccess.get_file_as_string(SAVE_PATH)
-		var parsed: Variant = JSON.parse_string(raw_text)
-		if parsed is Dictionary:
-			loaded_state = _merge_state(loaded_state, parsed)
-		else:
-			push_warning("[CampProgression] invalid save file, fallback to defaults.")
+	var saved_state: Dictionary = _load_saved_state()
+	if not saved_state.is_empty():
+		loaded_state = _merge_state(loaded_state, saved_state)
 	state = loaded_state
 	_sync_unlocks_from_config()
 	_loaded = true
@@ -77,11 +83,36 @@ func save_state() -> bool:
 		return true
 	if state.is_empty():
 		_reset_state()
-	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if file == null:
-		push_error("[CampProgression] failed to open save file: %s" % SAVE_PATH)
+	if not _ensure_save_directory():
 		return false
-	file.store_string(JSON.stringify(_sanitize_state(state), "  "))
+	var serialized_state := JSON.stringify(_sanitize_state(state), "  ")
+	var temp_file := FileAccess.open(TEMP_PATH, FileAccess.WRITE)
+	if temp_file == null:
+		push_error("[CampProgression] failed to open temp save file: %s" % TEMP_PATH)
+		return false
+	temp_file.store_string(serialized_state)
+	temp_file = null
+	if FileAccess.file_exists(SAVE_PATH):
+		var backup_file := FileAccess.open(BACKUP_PATH, FileAccess.WRITE)
+		if backup_file == null:
+			push_warning("[CampProgression] failed to open backup file: %s" % BACKUP_PATH)
+		else:
+			backup_file.store_string(FileAccess.get_file_as_string(SAVE_PATH))
+			backup_file = null
+		var remove_error := DirAccess.remove_absolute(SAVE_PATH)
+		if remove_error != OK:
+			push_error("[CampProgression] failed to replace save file: %s" % SAVE_PATH)
+			DirAccess.remove_absolute(TEMP_PATH)
+			return false
+	var rename_error := DirAccess.rename_absolute(TEMP_PATH, SAVE_PATH)
+	if rename_error != OK:
+		push_error("[CampProgression] failed to finalize save file: %s" % SAVE_PATH)
+		if FileAccess.file_exists(BACKUP_PATH):
+			var restore_file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+			if restore_file != null:
+				restore_file.store_string(FileAccess.get_file_as_string(BACKUP_PATH))
+		DirAccess.remove_absolute(TEMP_PATH)
+		return false
 	return true
 
 
@@ -150,11 +181,11 @@ func purchase_building_unlock(building_id: String) -> bool:
 		return false
 	var condition := get_building_unlock_condition(building_id)
 	var cost := int(condition.get("cost", 0))
-	set_camp_currency(get_camp_currency() - cost)
+	_set_camp_currency_value(get_camp_currency() - cost)
 	var building_levels: Dictionary = state.get("building_levels", {})
 	building_levels[building_id] = maxi(int(building_levels.get(building_id, 0)), 1)
 	state["building_levels"] = building_levels
-	_refresh_unlocks()
+	_sync_unlocks_from_config()
 	_save_and_notify(building_id)
 	return true
 
@@ -184,7 +215,7 @@ func set_building_level(building_id: String, level: int) -> bool:
 		return true
 	building_levels[building_id] = clamped_level
 	state["building_levels"] = building_levels
-	_refresh_unlocks()
+	_sync_unlocks_from_config()
 	_save_and_notify(building_id)
 	return true
 
@@ -205,15 +236,38 @@ func get_upgrade_option_level(option_id: String) -> int:
 
 func get_upgrade_option_record(option_id: String) -> Dictionary:
 	for record in get_building_records():
+		if not (record is Dictionary):
+			continue
 		for option in record.get("upgrade_options", []):
 			if option is Dictionary and str(option.get("id", "")) == option_id:
 				return option
 	return {}
 
 
+func get_upgrade_option_parent_building_id(option_id: String) -> String:
+	for record in get_building_records():
+		if not (record is Dictionary):
+			continue
+		var building_id := str(record.get("id", ""))
+		if building_id.is_empty():
+			continue
+		for option in record.get("upgrade_options", []):
+			if option is Dictionary and str(option.get("id", "")) == option_id:
+				return building_id
+	return ""
+
+
 func can_purchase_upgrade(option_id: String) -> bool:
 	var option := get_upgrade_option_record(option_id)
 	if option.is_empty():
+		return false
+	var owner_building_id := get_upgrade_option_parent_building_id(option_id)
+	if owner_building_id.is_empty():
+		return false
+	if option.has("currency") and str(option.get("currency", "")) != "camp_currency":
+		return false
+	var required_building_level := int(option.get("required_building_level", 0))
+	if required_building_level > 0 and get_building_level(owner_building_id) < required_building_level:
 		return false
 	var current_level := get_upgrade_option_level(option_id)
 	if current_level >= int(option.get("max_level", 0)):
@@ -226,7 +280,7 @@ func purchase_upgrade(option_id: String) -> bool:
 		return false
 	var option := get_upgrade_option_record(option_id)
 	var cost := int(option.get("cost", 0))
-	set_camp_currency(get_camp_currency() - cost)
+	_set_camp_currency_value(get_camp_currency() - cost)
 	var upgrade_levels: Dictionary = state.get("upgrade_levels", {})
 	upgrade_levels[option_id] = get_upgrade_option_level(option_id) + 1
 	state["upgrade_levels"] = upgrade_levels
@@ -235,11 +289,14 @@ func purchase_upgrade(option_id: String) -> bool:
 
 
 func get_camp_currency() -> int:
-	return int(state.get("camp_currency", 0))
+	var currencies: Variant = state.get("currencies", {})
+	if currencies is Dictionary:
+		return int((currencies as Dictionary).get("camp_currency", 0))
+	return 0
 
 
 func set_camp_currency(amount: int) -> void:
-	state["camp_currency"] = maxi(amount, 0)
+	_set_camp_currency_value(amount)
 	_save_and_notify("camp_currency")
 
 
@@ -247,32 +304,35 @@ func add_camp_currency(amount: int) -> void:
 	set_camp_currency(get_camp_currency() + amount)
 
 
-func get_selected_character_id() -> String:
-	return str(state.get("selected_character_id", DEFAULT_CHARACTER_ID))
+func apply_final_settlement(camp_currency_gain: int) -> void:
+	_set_camp_currency_value(get_camp_currency() + maxi(camp_currency_gain, 0))
+	if not _transient_session_active:
+		save_state()
+	state_changed.emit()
 
 
-func set_selected_character_id(character_id: String) -> void:
-	state["selected_character_id"] = character_id.strip_edges()
-	_save_and_notify("selected_character_id")
+func get_volume_setting(setting_key: String, default_value: int = 100) -> int:
+	var sanitized_key := setting_key.strip_edges()
+	if sanitized_key.is_empty() or not DEFAULT_VOLUME_SETTINGS.has(sanitized_key):
+		return default_value
+	var settings: Dictionary = state.get("settings", {})
+	return int(settings.get(sanitized_key, default_value))
 
 
-func get_selected_start_weapons() -> Array[String]:
-	var result: Array[String] = []
-	for weapon_id in state.get("selected_start_weapons", []):
-		var text_id := str(weapon_id).strip_edges()
-		if not text_id.is_empty():
-			result.append(text_id)
-	return result
+func set_volume_setting(setting_key: String, volume_percent: int) -> void:
+	var sanitized_key := setting_key.strip_edges()
+	if sanitized_key.is_empty() or not DEFAULT_VOLUME_SETTINGS.has(sanitized_key):
+		return
+	var settings: Dictionary = state.get("settings", {})
+	settings[sanitized_key] = clampi(volume_percent, 0, 100)
+	state["settings"] = settings
+	if not _transient_session_active:
+		save_state()
+	state_changed.emit()
 
 
-func set_selected_start_weapons(weapon_ids: Array[String]) -> void:
-	var result: Array[String] = []
-	for weapon_id in weapon_ids:
-		var text_id := weapon_id.strip_edges()
-		if not text_id.is_empty():
-			result.append(text_id)
-	state["selected_start_weapons"] = result
-	_save_and_notify("selected_start_weapons")
+func get_volume_settings() -> Dictionary:
+	return _sanitize_settings_dictionary(state.get("settings", {}))
 
 
 func get_outgame_modifiers() -> Array:
@@ -299,30 +359,68 @@ func get_building_ruins_texture_path(building_id: String) -> String:
 
 func _build_default_state() -> Dictionary:
 	var building_levels: Dictionary = {}
-	var unlocks: Dictionary = {}
 	for record in get_building_records():
 		if not (record is Dictionary):
 			continue
 		var building_id := str(record.get("id", ""))
-		var initial_unlocked := bool(record.get("initial_unlocked", false))
-		building_levels[building_id] = 1 if initial_unlocked else 0
-		unlocks[building_id] = initial_unlocked
+		if building_id.is_empty():
+			continue
+		building_levels[building_id] = 1 if bool(record.get("initial_unlocked", false)) else 0
 	return {
+		"schema_version": SCHEMA_VERSION,
+		"profile_id": PROFILE_ID,
+		"currencies": {
+			"camp_currency": 0,
+		},
 		"building_levels": building_levels,
 		"upgrade_levels": {},
-		"unlocks": unlocks,
-		"camp_currency": 0,
-		"selected_character_id": DEFAULT_CHARACTER_ID,
-		"selected_start_weapons": [],
-		"records": {},
+		"settings": DEFAULT_VOLUME_SETTINGS.duplicate(true),
 	}
+
+
+func _load_saved_state() -> Dictionary:
+	var saved_state := _read_state_file(SAVE_PATH)
+	if saved_state.is_empty():
+		saved_state = _read_state_file(BACKUP_PATH)
+	if saved_state.is_empty() and FileAccess.file_exists(LEGACY_SAVE_PATH):
+		saved_state = _read_state_file(LEGACY_SAVE_PATH)
+	return saved_state
+
+
+func _read_state_file(file_path: String) -> Dictionary:
+	if not FileAccess.file_exists(file_path):
+		return {}
+	var raw_text := FileAccess.get_file_as_string(file_path)
+	var parsed: Variant = JSON.parse_string(raw_text)
+	if parsed is Dictionary:
+		return parsed
+	push_warning("[CampProgression] invalid save file, fallback to defaults: %s" % file_path)
+	return {}
 
 
 func _merge_state(default_state: Dictionary, saved_state: Dictionary) -> Dictionary:
 	var merged: Dictionary = default_state.duplicate(true)
-	for key in saved_state.keys():
-		merged[key] = saved_state[key]
-	return merged
+	if saved_state.has("schema_version"):
+		merged["schema_version"] = int(saved_state.get("schema_version", SCHEMA_VERSION))
+	if saved_state.has("profile_id"):
+		merged["profile_id"] = str(saved_state.get("profile_id", PROFILE_ID))
+	if saved_state.has("building_levels"):
+		var building_levels: Dictionary = merged.get("building_levels", {}).duplicate(true)
+		var saved_building_levels := _sanitize_string_int_dictionary(saved_state.get("building_levels", {}))
+		for key in saved_building_levels.keys():
+			building_levels[key] = int(saved_building_levels[key])
+		merged["building_levels"] = building_levels
+	if saved_state.has("upgrade_levels"):
+		merged["upgrade_levels"] = _sanitize_string_int_dictionary(saved_state.get("upgrade_levels", {}))
+	var currencies: Dictionary = merged.get("currencies", {}).duplicate(true)
+	if saved_state.has("currencies") and saved_state["currencies"] is Dictionary:
+		currencies["camp_currency"] = maxi(int((saved_state["currencies"] as Dictionary).get("camp_currency", currencies.get("camp_currency", 0))), 0)
+	elif saved_state.has("camp_currency"):
+		currencies["camp_currency"] = maxi(int(saved_state.get("camp_currency", 0)), 0)
+	merged["currencies"] = currencies
+	if saved_state.has("settings"):
+		merged["settings"] = _sanitize_settings_dictionary(saved_state.get("settings", {}))
+	return _sanitize_state(merged)
 
 
 func _sync_unlocks_from_config() -> void:
@@ -338,11 +436,10 @@ func _sync_unlocks_from_config() -> void:
 				continue
 			if int(building_levels.get(building_id, 0)) > 0:
 				continue
-			if bool(record.get("initial_unlocked", false)) or _unlock_condition_met(record, building_levels):
+			if _unlock_condition_met(record, building_levels):
 				building_levels[building_id] = 1
 				changed = true
 	state["building_levels"] = building_levels
-	_rebuild_unlocks_cache()
 
 
 func _unlock_condition_met(record: Dictionary, building_levels: Dictionary) -> bool:
@@ -354,35 +451,6 @@ func _unlock_condition_met(record: Dictionary, building_levels: Dictionary) -> b
 		return false
 	var required_level := int(condition.get("level", 1))
 	return int(building_levels.get(building_id, 0)) >= required_level
-
-
-func _refresh_unlocks() -> void:
-	var building_levels: Dictionary = state.get("building_levels", {})
-	for record in get_building_records():
-		if not (record is Dictionary):
-			continue
-		var building_id := str(record.get("id", ""))
-		if building_id.is_empty():
-			continue
-		if int(building_levels.get(building_id, 0)) > 0:
-			continue
-		if _unlock_condition_met(record, building_levels):
-			building_levels[building_id] = 1
-	state["building_levels"] = building_levels
-	_rebuild_unlocks_cache()
-
-
-func _rebuild_unlocks_cache() -> void:
-	var building_levels: Dictionary = state.get("building_levels", {})
-	var unlocks: Dictionary = {}
-	for record in get_building_records():
-		if not (record is Dictionary):
-			continue
-		var building_id := str(record.get("id", ""))
-		if building_id.is_empty():
-			continue
-		unlocks[building_id] = int(building_levels.get(building_id, 0)) > 0
-	state["unlocks"] = unlocks
 
 
 func _collect_building_level_modifiers(record: Dictionary, building_level: int) -> Array:
@@ -440,14 +508,30 @@ func _effect_to_modifier(effect: Dictionary, source_type: String, source_id: Str
 
 
 func _sanitize_state(raw_state: Dictionary) -> Dictionary:
-	var result: Dictionary = raw_state.duplicate(true)
-	result["building_levels"] = _sanitize_string_int_dictionary(result.get("building_levels", {}))
-	result["upgrade_levels"] = _sanitize_string_int_dictionary(result.get("upgrade_levels", {}))
-	result["unlocks"] = _sanitize_string_bool_dictionary(result.get("unlocks", {}))
-	result["camp_currency"] = maxi(int(result.get("camp_currency", 0)), 0)
-	result["selected_character_id"] = str(result.get("selected_character_id", DEFAULT_CHARACTER_ID))
-	result["selected_start_weapons"] = _sanitize_string_array(result.get("selected_start_weapons", []))
-	result["records"] = result.get("records", {}) if result.get("records", {}) is Dictionary else {}
+	var result: Dictionary = {
+		"schema_version": SCHEMA_VERSION,
+		"profile_id": PROFILE_ID,
+		"currencies": {
+			"camp_currency": 0,
+		},
+		"building_levels": {},
+		"upgrade_levels": {},
+		"settings": DEFAULT_VOLUME_SETTINGS.duplicate(true),
+	}
+	if raw_state.has("schema_version"):
+		result["schema_version"] = int(raw_state.get("schema_version", SCHEMA_VERSION))
+	if raw_state.has("profile_id"):
+		result["profile_id"] = str(raw_state.get("profile_id", PROFILE_ID))
+	if raw_state.has("building_levels"):
+		result["building_levels"] = _sanitize_string_int_dictionary(raw_state.get("building_levels", {}))
+	if raw_state.has("upgrade_levels"):
+		result["upgrade_levels"] = _sanitize_string_int_dictionary(raw_state.get("upgrade_levels", {}))
+	if raw_state.has("currencies") and raw_state["currencies"] is Dictionary:
+		result["currencies"]["camp_currency"] = maxi(int((raw_state["currencies"] as Dictionary).get("camp_currency", 0)), 0)
+	elif raw_state.has("camp_currency"):
+		result["currencies"]["camp_currency"] = maxi(int(raw_state.get("camp_currency", 0)), 0)
+	if raw_state.has("settings"):
+		result["settings"] = _sanitize_settings_dictionary(raw_state.get("settings", {}))
 	return result
 
 
@@ -456,51 +540,41 @@ func _sanitize_string_int_dictionary(value: Variant) -> Dictionary:
 	if not (value is Dictionary):
 		return result
 	for key in value.keys():
-		result[str(key)] = int(value[key])
+		result[str(key)] = maxi(int(value[key]), 0)
 	return result
 
 
-func _sanitize_string_bool_dictionary(value: Variant) -> Dictionary:
-	var result: Dictionary = {}
+func _sanitize_settings_dictionary(value: Variant) -> Dictionary:
+	var result: Dictionary = DEFAULT_VOLUME_SETTINGS.duplicate(true)
 	if not (value is Dictionary):
 		return result
-	for key in value.keys():
-		result[str(key)] = bool(value[key])
+	for key in DEFAULT_VOLUME_SETTINGS.keys():
+		if value.has(key):
+			result[key] = clampi(int(value.get(key, result[key])), 0, 100)
 	return result
 
 
-func _sanitize_string_array(value: Variant) -> Array[String]:
-	var result: Array[String] = []
-	if not (value is Array):
-		return result
-	for item in value:
-		var text_id := str(item).strip_edges()
-		if not text_id.is_empty():
-			result.append(text_id)
-	return result
+func _set_camp_currency_value(amount: int) -> void:
+	var currencies: Dictionary = state.get("currencies", {})
+	currencies["camp_currency"] = maxi(amount, 0)
+	state["currencies"] = currencies
+
+
+func _ensure_save_directory() -> bool:
+	var error := DirAccess.make_dir_recursive_absolute(SAVE_DIR)
+	if error != OK and error != ERR_ALREADY_EXISTS:
+		push_error("[CampProgression] failed to create save directory: %s" % SAVE_DIR)
+		return false
+	return true
 
 
 func _reset_state() -> void:
-	state = {
-		"building_levels": {},
-		"upgrade_levels": {},
-		"unlocks": {},
-		"camp_currency": 0,
-		"selected_character_id": DEFAULT_CHARACTER_ID,
-		"selected_start_weapons": [],
-		"records": {},
-	}
+	state = _build_default_state()
 
 
-func _save_and_notify(_source_id: String) -> void:
-	print("[Debug] _save_and_notify enter: %s" % _source_id)
-	_rebuild_unlocks_cache()
-	print("[Debug] after _rebuild_unlocks_cache")
+func _save_and_notify(source_id: String) -> void:
 	if not _transient_session_active:
 		save_state()
-	print("[Debug] after save_state")
 	state_changed.emit()
-	print("[Debug] after state_changed")
-	if not _source_id.is_empty():
-		building_changed.emit(_source_id)
-	print("[Debug] _save_and_notify exit")
+	if not source_id.is_empty() and source_id.begins_with("camp_"):
+		building_changed.emit(source_id)

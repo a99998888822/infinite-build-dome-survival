@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 const RUN_DATA_SELF_TEST: bool = true
 const RUN_PLAYER_SELF_TEST: bool = true
@@ -6,6 +6,8 @@ const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player_root.tscn"
 const WEAPON_LOADOUT_SCENE: PackedScene = preload("res://scenes/weapons/weapon_loadout.tscn")
 const WAVE_MANAGER_SCENE: PackedScene = preload("res://scenes/waves/wave_manager.tscn")
 const CAMP_SCENE: PackedScene = preload("res://scenes/camp/camp_root.tscn")
+const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
+const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
 	"relics",
@@ -36,12 +38,14 @@ func run_data_self_test() -> void:
 	var weapon_success := _run_weapon_checks()
 	var enemy_wave_success := _run_enemy_wave_checks()
 	var camp_success := _run_camp_meta_checks()
+	var ui_success := _run_ui_flow_checks()
+	var main_flow_success := _run_main_flow_checks()
 	_print_table_counts()
 	_print_lookup_checks()
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and camp_success:
+	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and camp_success and ui_success and main_flow_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -316,6 +320,11 @@ func _run_camp_meta_checks() -> bool:
 	CampProgression.begin_transient_session()
 	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 8) and passed
 	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
+	var camp_save_state := CampProgression.get_state()
+	var camp_save_schema_ok := camp_save_state.has("schema_version") and camp_save_state.has("profile_id") and camp_save_state.has("currencies") and camp_save_state.has("settings")
+	camp_save_schema_ok = camp_save_schema_ok and not camp_save_state.has("unlocks") and not camp_save_state.has("records")
+	camp_save_schema_ok = camp_save_schema_ok and not camp_save_state.has("selected_character_id") and not camp_save_state.has("selected_start_weapons")
+	passed = _print_check_result("camp save schema", camp_save_schema_ok) and passed
 	passed = _print_check_result("camp ruins state", CampProgression.get_building_display_state("camp_farstar_range") == "ruins") and passed
 	var camp_root := CAMP_SCENE.instantiate() as CampRoot
 	passed = _print_check_result("camp scene instantiate", camp_root != null) and passed
@@ -328,13 +337,35 @@ func _run_camp_meta_checks() -> bool:
 	passed = _print_check_result("camp unlock sync", farstar_unlock_ok and CampProgression.is_building_unlocked("camp_farstar_range") and CampProgression.get_building_level("camp_farstar_range") == 1) and passed
 	var building_unlock_ok := CampProgression.purchase_building_unlock("camp_council_hall")
 	passed = _print_check_result("camp currency unlock", building_unlock_ok and CampProgression.is_building_unlocked("camp_council_hall") and CampProgression.get_building_level("camp_council_hall") == 1) and passed
-	print("[Debug] before purchase upgrade")
 	var purchase_ok := CampProgression.purchase_upgrade("camp_upgrade_melee_damage")
-	print("[Debug] after purchase upgrade: %s" % str(purchase_ok))
 	passed = _print_check_result("camp upgrade option", purchase_ok and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
 	if camp_root != null:
 		camp_root.queue_free()
 	CampProgression.end_transient_session()
+	return passed
+
+
+func _run_ui_flow_checks() -> bool:
+	print("[Bootstrap] ui flow checks")
+	var passed := true
+	var reward_option := REWARD_OPTION_SCENE.instantiate()
+	passed = _print_check_result("reward option scene instantiate", reward_option != null) and passed
+	if reward_option != null:
+		var sample_offer := {
+			"offer_id": "weapon_upgrade:weapon_void_blade:2",
+			"offer_type": ShopOfferGenerator.OFFER_WEAPON_UPGRADE,
+			"rarity": "rare",
+			"target_id": "weapon_void_blade",
+			"display_name": "虚空刃 升至2级",
+			"load_cost": 12,
+			"to_level": 2,
+			"effects": [],
+		}
+		var free_button_text := reward_option.get_button_text_for_offer(sample_offer, RewardOption.ENTRY_FREE)
+		var shop_button_text := reward_option.get_button_text_for_offer(sample_offer, RewardOption.ENTRY_SHOP, 18)
+		passed = _print_check_result("reward option free button text", free_button_text == "选择") and passed
+		passed = _print_check_result("reward option shop button text", shop_button_text == "18") and passed
+		reward_option.queue_free()
 	return passed
 
 
@@ -378,6 +409,10 @@ func _run_weapon_checks() -> bool:
 		var damage_events := weapon.calculate_damage_events(false)
 		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= 10
 		passed = _print_check_result("weapon damage event", damage_ok) and passed
+		var first_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
+		var second_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
+		var projectile_sfx_once := weapon.get_hit_sfx_path().ends_with("sfx_weapon_void_blade_hit.ogg") and weapon.has_played_projectile_hit_sfx("projectile_1") and second_projectile_sfx_request == false and first_projectile_sfx_request
+		passed = _print_check_result("weapon projectile hit sfx once", projectile_sfx_once) and passed
 
 	var mixed_weapon := WeaponInstance.new()
 	mixed_weapon.initialize("weapon_dome_shockwave", player)
@@ -397,6 +432,10 @@ func _run_weapon_checks() -> bool:
 		"stack_rule": "unique",
 	})
 	passed = _print_check_result("weapon cooldown only interval", is_equal_approx(mixed_weapon.get_actual_attack_interval_seconds(), 0.6)) and passed
+	var first_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
+	var second_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
+	var area_sfx_once := mixed_weapon.get_hit_sfx_path().ends_with("sfx_weapon_dome_shockwave_hit.ogg") and mixed_weapon.has_played_attack_hit_sfx() and second_area_sfx_request == false and first_area_sfx_request
+	passed = _print_check_result("weapon area hit sfx once", area_sfx_once) and passed
 
 	var duplicate_purchase_rejected := not loadout.try_buy_weapon("weapon_void_blade")
 	passed = _print_check_result("weapon duplicate purchase rejected", duplicate_purchase_rejected) and passed
@@ -445,6 +484,69 @@ func _run_weapon_checks() -> bool:
 	player.queue_free()
 	return passed
 
+
+
+
+func _run_main_flow_checks() -> bool:
+	print("[Bootstrap] main flow checks")
+	var passed := true
+
+	var flow := MAIN_FLOW_COORDINATOR_SCENE.instantiate() as MainFlowCoordinator
+	passed = _print_check_result("main flow scene instantiate", flow != null) and passed
+	if flow == null:
+		return false
+
+	add_child(flow)
+	passed = _print_check_result("main flow start page", flow.get_current_mode() == MainFlowCoordinator.MODE_BOOT and flow.get_current_state() == MainFlowCoordinator.STATE_START_PAGE) and passed
+
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	var loadout := WEAPON_LOADOUT_SCENE.instantiate() as WeaponLoadout
+	var wave_manager := WAVE_MANAGER_SCENE.instantiate() as WaveManager
+	passed = _print_check_result("main flow battle context instantiate", player != null and loadout != null and wave_manager != null) and passed
+	if player == null or loadout == null or wave_manager == null:
+		flow.queue_free()
+		return false
+
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	add_child(loadout)
+	add_child(wave_manager)
+	flow.bind_battle_context(player, loadout, wave_manager)
+	flow.enter_battle_selection("character_void_hunter", ["weapon_void_blade"])
+	var selection_ok := flow.confirm_character_selection()
+	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
+	passed = _print_check_result("main flow start weapon sync", player.get_start_weapon_ids().size() == 1 and player.get_start_weapon_ids()[0] == "weapon_void_blade" and loadout.get_weapon_instances().size() == 1) and passed
+
+	var wave_started := flow.request_next_wave()
+	passed = _print_check_result("main flow wave start request", wave_started and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	wave_manager.add_exp_and_gold(10, 0)
+	passed = _print_check_result("main flow level up popup", flow.get_current_state() == MainFlowCoordinator.STATE_LEVEL_UP_POPUP) and passed
+	passed = _print_check_result("main flow level up dedupe", flow.get_state_snapshot().get("pending_level_up_levels", []).is_empty()) and passed
+	flow.close_level_up_popup()
+	passed = _print_check_result("main flow resume combat after popup", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+
+	flow.finish_current_wave()
+	passed = _print_check_result("main flow wave end ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
+	flow.advance_wave_end_phase()
+	passed = _print_check_result("main flow shop step", flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
+	flow.advance_wave_end_phase()
+	passed = _print_check_result("main flow finance step", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
+	flow.advance_wave_end_phase()
+	passed = _print_check_result("main flow next prepare step", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
+
+	flow.present_battle_result(true, {"reason": "bootstrap"})
+	passed = _print_check_result("main flow battle result", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_RESULT and flow.current_victory) and passed
+	flow.confirm_battle_result()
+	passed = _print_check_result("main flow reset after result", flow.get_current_state() == MainFlowCoordinator.STATE_START_PAGE and flow.get_current_mode() == MainFlowCoordinator.MODE_BOOT) and passed
+
+	flow.enter_camp_flow()
+	passed = _print_check_result("main flow camp entry", flow.get_current_state() == MainFlowCoordinator.STATE_CAMP_ENTRY and flow.get_current_mode() == MainFlowCoordinator.MODE_CAMP) and passed
+
+	flow.queue_free()
+	loadout.queue_free()
+	player.queue_free()
+	wave_manager.queue_free()
+	return passed
 
 func _print_check_result(check_name: String, passed: bool) -> bool:
 	if passed:

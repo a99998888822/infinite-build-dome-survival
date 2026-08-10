@@ -1,0 +1,56 @@
+﻿[gd_scene load_steps=2 format=3 uid="uid://rewardoptionmvp001"]
+
+[ext_resource type="Script" path="res://scripts/ui/reward_option.gd" id="1_reward_option"]
+
+[node name="RewardOption" type="PanelContainer"]
+custom_minimum_size = Vector2(180, 320)
+script = ExtResource("1_reward_option")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopRarityLine" type="ColorRect" parent="Content"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+color = Color(0.86, 0.86, 0.86, 1)
+
+[node name="TypeLabel" type="Label" parent="Content"]
+layout_mode = 2
+text = "武器升级"
+horizontal_alignment = 1
+
+[node name="IconFrame" type="PanelContainer" parent="Content"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="IconPlaceholder" type="ColorRect" parent="Content/IconFrame"]
+layout_mode = 2
+color = Color(0.16, 0.22, 0.25, 1)
+
+[node name="IconTexture" type="TextureRect" parent="Content/IconFrame"]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="Content"]
+layout_mode = 2
+text = "奖励名称"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="Content"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+text = "属性描述"
+autowrap_mode = 3
+
+[node name="BottomRarityLine" type="ColorRect" parent="Content"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+color = Color(0.86, 0.86, 0.86, 1)
+
+[node name="SelectButton" type="Button" parent="Content"]
+layout_mode = 2
+text = "选择"
