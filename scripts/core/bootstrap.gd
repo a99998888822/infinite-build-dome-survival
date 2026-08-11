@@ -7,6 +7,12 @@ const WEAPON_LOADOUT_SCENE: PackedScene = preload("res://scenes/weapons/weapon_l
 const WAVE_MANAGER_SCENE: PackedScene = preload("res://scenes/waves/wave_manager.tscn")
 const CAMP_SCENE: PackedScene = preload("res://scenes/camp/camp_root.tscn")
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
+const GAME_ROOT_SCENE: PackedScene = preload("res://scenes/core/game_root.tscn")
+const DEBUG_ROOT_SCENE: PackedScene = preload("res://scenes/core/debug_root.tscn")
+const ZONE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_ui_controller.tscn")
+const ZONE_SELECT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_popup.tscn")
+const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")
+const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_harvest_result_popup.tscn")
 const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
@@ -15,6 +21,7 @@ const TABLE_NAMES: Array[String] = [
 	"characters",
 	"enemies",
 	"camp_buildings",
+	"zones",
 	"waves",
 	"drop_tables",
 ]
@@ -38,6 +45,8 @@ func run_data_self_test() -> void:
 	var weapon_success := _run_weapon_checks()
 	var enemy_wave_success := _run_enemy_wave_checks()
 	var camp_success := _run_camp_meta_checks()
+	var zone_success := _run_zone_state_checks()
+	var zone_ui_success := _run_zone_ui_checks()
 	var ui_success := _run_ui_flow_checks()
 	var main_flow_success := _run_main_flow_checks()
 	_print_table_counts()
@@ -45,7 +54,7 @@ func run_data_self_test() -> void:
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and camp_success and ui_success and main_flow_success:
+	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and camp_success and zone_success and zone_ui_success and ui_success and main_flow_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -64,6 +73,7 @@ func _print_lookup_checks() -> void:
 	_print_lookup_result("bonds", "bond_mighty")
 	_print_lookup_result("characters", "character_void_hunter")
 	_print_lookup_result("enemies", "enemy_mutated_grub")
+	_print_lookup_result("zones", "zone_nearstring_battlefield")
 	_print_lookup_result("drop_tables", "drop_basic_enemy")
 	_print_lookup_result("waves", "wave_stage_01")
 
@@ -95,6 +105,12 @@ func _print_engine_checks() -> void:
 	print("[Bootstrap] - GameGlobal mode: %s" % GameGlobal.game_mode)
 	print("[Bootstrap] - GameGlobal bootstrap flag: %s" % str(GameGlobal.get_runtime_flag("bootstrap_self_test", false)))
 	print("[Bootstrap] - ObjectPool ready: %s" % str(ObjectPool != null))
+	print("[Bootstrap] - GameRoot scene ready: %s" % str(GAME_ROOT_SCENE != null))
+	print("[Bootstrap] - DebugRoot scene ready: %s" % str(DEBUG_ROOT_SCENE != null))
+	print("[Bootstrap] - ZoneUIController scene ready: %s" % str(ZONE_UI_CONTROLLER_SCENE != null))
+	print("[Bootstrap] - ZoneSelectPopup scene ready: %s" % str(ZONE_SELECT_POPUP_SCENE != null))
+	print("[Bootstrap] - ZoneSelectCard scene ready: %s" % str(ZONE_SELECT_CARD_SCENE != null))
+	print("[Bootstrap] - ZoneHarvestResultPopup scene ready: %s" % str(ZONE_HARVEST_RESULT_POPUP_SCENE != null))
 
 
 func _run_modifier_stack_checks() -> bool:
@@ -344,6 +360,77 @@ func _run_camp_meta_checks() -> bool:
 	CampProgression.end_transient_session()
 	return passed
 
+
+
+func _run_zone_state_checks() -> bool:
+	print("[Bootstrap] zone streak fortune checks")
+	var passed := true
+	if not ZoneProgression.has_zone_records():
+		push_error("[Bootstrap] zone table missing")
+		return false
+	var zone_count := ZoneProgression.get_zone_records().size()
+	passed = _print_check_result("zone table count", zone_count >= 3) and passed
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	passed = _print_check_result("zone test player instantiate", player != null) and passed
+	if player == null:
+		return false
+
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	player.initialize_from_character("character_void_hunter")
+	ZoneProgression.reset_state(player)
+
+	var initial_selection := ZoneProgression.select_zone("zone_nearstring_battlefield", 1, player)
+	passed = _print_check_result("zone initial select", bool(initial_selection.get("success", false)) and initial_selection.get("action", "") == "initial" and ZoneProgression.get_current_zone_id() == "zone_nearstring_battlefield" and ZoneProgression.get_current_streak_count() == 1 and ZoneProgression.get_fortune_storage() == 0) and passed
+
+	var stay_selection := ZoneProgression.select_zone("zone_nearstring_battlefield", 2, player)
+	var expected_fortune_gain := ZoneProgression.calculate_fortune_gain(2, 2)
+	passed = _print_check_result("zone stay accumulation", bool(stay_selection.get("success", false)) and stay_selection.get("action", "") == "stay" and int(stay_selection.get("fortune_gain", -1)) == expected_fortune_gain and ZoneProgression.get_current_streak_count() == 2 and ZoneProgression.get_fortune_storage() == expected_fortune_gain) and passed
+	passed = _print_check_result("zone pressure applied", int(player.get_stat("damage_taken_percent")) == 103) and passed
+
+	var runtime_context := ZoneProgression.get_zone_runtime_context()
+	passed = _print_check_result("zone runtime context", int(runtime_context.get("zone_streak_count", 0)) == 2 and int(runtime_context.get("zone_fortune_storage", 0)) == expected_fortune_gain) and passed
+	passed = _print_check_result("zone harvest context", not ZoneProgression.build_harvest_context("zone_meteor_tower").is_empty()) and passed
+
+	var switch_selection := ZoneProgression.select_zone("zone_meteor_tower", 3, player)
+	passed = _print_check_result("zone switch harvest", bool(switch_selection.get("success", false)) and bool(switch_selection.get("harvested", false)) and not switch_selection.get("harvest_payload", {}).is_empty() and ZoneProgression.get_current_zone_id() == "zone_meteor_tower" and ZoneProgression.get_current_streak_count() == 1 and ZoneProgression.get_fortune_storage() == 0 and int(player.get_stat("damage_taken_percent")) == 100) and passed
+	ZoneProgression.acknowledge_harvest_result()
+	passed = _print_check_result("zone harvest acknowledge", not ZoneProgression.is_harvest_pending()) and passed
+
+	ZoneProgression.reset_state(player)
+	player.queue_free()
+	return passed
+
+
+func _run_zone_ui_checks() -> bool:
+	print("[Bootstrap] zone ui checks")
+	var passed := true
+	var controller := ZONE_UI_CONTROLLER_SCENE.instantiate()
+	passed = _print_check_result("zone ui controller instantiate", controller != null) and passed
+	if controller != null:
+		passed = _print_check_result("zone ui controller layer", controller.get_node_or_null("PopupLayer") != null and controller.get_node_or_null("DebugLayer") != null) and passed
+		passed = _print_check_result("zone ui select popup", controller.get_node_or_null("PopupLayer/ZoneSelectPopup") != null) and passed
+		passed = _print_check_result("zone ui harvest popup", controller.get_node_or_null("PopupLayer/ZoneHarvestResultPopup") != null) and passed
+		passed = _print_check_result("zone ui debug panel", controller.get_node_or_null("DebugLayer/ZoneDebugPanel") != null) and passed
+		controller.queue_free()
+
+	var select_popup := ZONE_SELECT_POPUP_SCENE.instantiate()
+	passed = _print_check_result("zone select popup instantiate", select_popup != null and select_popup.get_node_or_null("CenterContainer/MainPanel/Content/ZoneCardGrid") != null) and passed
+	if select_popup != null:
+		select_popup.queue_free()
+	var select_card := ZONE_SELECT_CARD_SCENE.instantiate()
+	passed = _print_check_result("zone select card instantiate", select_card != null and select_card.get_node_or_null("Content/SelectButton") != null) and passed
+	if select_card != null:
+		select_card.queue_free()
+	var harvest_popup := ZONE_HARVEST_RESULT_POPUP_SCENE.instantiate()
+	passed = _print_check_result("zone harvest popup instantiate", harvest_popup != null and harvest_popup.get_node_or_null("CenterContainer/MainPanel/Content/ConfirmButton") != null) and passed
+	if harvest_popup != null:
+		harvest_popup.queue_free()
+	var game_root := GAME_ROOT_SCENE.instantiate() as GameRoot
+	passed = _print_check_result("game root zone ui controller", game_root != null and game_root.get_node_or_null("UiRoot/ZoneUIController") != null) and passed
+	if game_root != null:
+		game_root.queue_free()
+	return passed
 
 func _run_ui_flow_checks() -> bool:
 	print("[Bootstrap] ui flow checks")

@@ -147,7 +147,7 @@ flowchart TD
 
 ### 4.7 区域驻守与福缘收割模块
 
-建议文档：`zone_streak_fortune_design.md`
+建议文档：`13-zone_streak_fortune_design.md`
 
 核心内容：
 1. 休整阶段区域选择：每波结束后进入选区界面，决定下一波驻守区域。
@@ -238,7 +238,7 @@ flowchart TD
 
 ### 4.14 工程基础设施模块
 
-建议文档：`2-engineering_foundation_design.md`
+建议文档：`14-engineering_foundation_design.md`
 
 核心内容：
 1. Godot目录结构与Autoload列表。
@@ -316,18 +316,18 @@ flowchart TD
 ## 7. 后续文档产出顺序建议
 
 1. `1-base_data_and_modifiers_design.md`
-2. `2-engineering_foundation_design.md`
+2. `14-engineering_foundation_design.md`
 3. `3-player_and_character_design.md`
 4. `4-weapon_loadout_design.md`
 5. `relic_bond_design.md`
 6. `enemy_wave_design.md`
 7. `12-run_combat_loop_design.md`
-8. `zone_streak_fortune_design.md`
+8. `13-zone_streak_fortune_design.md`
 9. `7-camp_meta_progression_design.md`
 10. `8-ui_flow_design.md`
 11. `11-save_progress_design.md`
 12. `7-camp_meta_progression_implementation_checklist.md`
-13. `7-camp_meta_progression_asset_checklist.md`
+13. `asset_checklist_summary.md` / `asset_rules_summary.md`
 14. `8-ui_flow_implementation_checklist.md`
 11. `summon_ally_design.md`
 12. `drop_reward_design.md`

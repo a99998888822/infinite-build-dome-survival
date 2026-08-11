@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/zone_harvest_result_popup.gd" id="1_zone_harvest_result_popup"]
+
+[node name="ZoneHarvestResultPopup" type="Control"]
+script = ExtResource("1_zone_harvest_result_popup")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+
+[node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(900, 460)
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/MainPanel"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "福缘收割结果"
+horizontal_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "来源区域"
+autowrap_mode = 3
+
+[node name="RewardLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "获得金币 / 额外候选"
+autowrap_mode = 3
+
+[node name="DetailLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "详细信息"
+autowrap_mode = 3
+
+[node name="ConfirmButton" type="Button" parent="CenterContainer/MainPanel/Content"]
+text = "继续"

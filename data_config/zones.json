@@ -1,0 +1,74 @@
+[
+  {
+    "id": "zone_nearstring_battlefield",
+    "display_name": "近弦战场",
+    "description": "弦线般密集的近战废土，适合近身武器与大力羁绊发育。",
+    "tendency_tags": ["melee"],
+    "enemy_pressure_per_streak": {
+      "max_hp_percent": 10,
+      "damage_percent": 5
+    },
+    "player_pressure_per_streak": {
+      "damage_taken_percent": 3
+    },
+    "fortune_gain": {
+      "start_streak": 2,
+      "base": 10,
+      "per_extra_streak": 8,
+      "wave_bonus": 2
+    },
+    "reward_bias": {
+      "target_pools": ["relic", "bond", "weapon"],
+      "tag_weight_per_streak": 20,
+      "rarity_bonus_per_streak": 2
+    }
+  },
+  {
+    "id": "zone_meteor_tower",
+    "display_name": "流星高塔",
+    "description": "高塔视野开阔，远程弹道更容易获得定向补强。",
+    "tendency_tags": ["ranged"],
+    "enemy_pressure_per_streak": {
+      "max_hp_percent": 8,
+      "damage_percent": 6
+    },
+    "player_pressure_per_streak": {
+      "damage_taken_percent": 2
+    },
+    "fortune_gain": {
+      "start_streak": 2,
+      "base": 10,
+      "per_extra_streak": 8,
+      "wave_bonus": 2
+    },
+    "reward_bias": {
+      "target_pools": ["relic", "bond", "weapon"],
+      "tag_weight_per_streak": 20,
+      "rarity_bonus_per_streak": 2
+    }
+  },
+  {
+    "id": "zone_chosen_land",
+    "display_name": "神选之地",
+    "description": "外神低语徘徊的区域，更容易导向理智、侵蚀与神秘倾向。",
+    "tendency_tags": ["elect", "humanity", "divinity"],
+    "enemy_pressure_per_streak": {
+      "max_hp_percent": 12,
+      "damage_percent": 4
+    },
+    "player_pressure_per_streak": {
+      "damage_taken_percent": 4
+    },
+    "fortune_gain": {
+      "start_streak": 2,
+      "base": 10,
+      "per_extra_streak": 8,
+      "wave_bonus": 2
+    },
+    "reward_bias": {
+      "target_pools": ["relic", "bond", "weapon"],
+      "tag_weight_per_streak": 24,
+      "rarity_bonus_per_streak": 3
+    }
+  }
+]

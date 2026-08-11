@@ -22,6 +22,8 @@ const STATE_WAVE_END_ABSORB: String = "wave_end_absorb"
 const STATE_INTEREST_SETTLEMENT: String = "interest_settlement"
 const STATE_SHOP_POPUP: String = "shop_popup"
 const STATE_FINANCE_POPUP: String = "finance_popup"
+const STATE_ZONE_SELECT: String = "zone_select"
+const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
 const STATE_BATTLE_RESULT: String = "battle_result"
 const STATE_CAMP_ENTRY: String = "camp_entry"
 
@@ -41,6 +43,8 @@ var _resume_state_after_modal: String = STATE_START_PAGE
 var _active_level_up_level: int = 0
 var _pending_level_up_levels: Array[int] = []
 var _wave_end_ready: bool = false
+var _active_zone_selection_wave_number: int = 0
+var _pending_zone_harvest_payload: Dictionary = {}
 
 var _bound_player: PlayerController = null
 var _bound_loadout: WeaponLoadout = null
@@ -53,7 +57,9 @@ func _ready() -> void:
 
 
 func reset_flow() -> void:
+	var previous_player := _bound_player
 	_unbind_battle_context()
+	ZoneProgression.reset_state(previous_player)
 	_bound_camp_root = null
 	current_character_id = ""
 	current_start_weapon_ids.clear()
@@ -68,6 +74,8 @@ func reset_flow() -> void:
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
 	_wave_end_ready = false
+	_active_zone_selection_wave_number = 0
+	_pending_zone_harvest_payload.clear()
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
 	flow_reset.emit()
@@ -214,6 +222,43 @@ func close_level_up_popup() -> void:
 	close_shared_reward_shop_popup()
 
 
+func request_zone_select_popup(source: String = "wave_manager") -> bool:
+	if current_mode != MODE_BATTLE or battle_resolved:
+		return false
+	if not ZoneProgression.has_zone_records():
+		return false
+	_active_zone_selection_wave_number = maxi(current_wave_index + 1, 0)
+	_set_state(STATE_ZONE_SELECT)
+	modal_requested.emit(STATE_ZONE_SELECT, ZoneProgression.build_zone_selection_payload(_active_zone_selection_wave_number))
+	return true
+
+
+func confirm_zone_selection(zone_id: String) -> bool:
+	if current_state != STATE_ZONE_SELECT:
+		return false
+	var selection_result := ZoneProgression.select_zone(zone_id, _active_zone_selection_wave_number, _bound_player)
+	if not bool(selection_result.get("success", false)):
+		return false
+	modal_closed.emit(STATE_ZONE_SELECT)
+	if bool(selection_result.get("harvested", false)):
+		_pending_zone_harvest_payload = (selection_result.get("harvest_payload", {}) as Dictionary).duplicate(true)
+		_set_state(STATE_ZONE_HARVEST_RESULT)
+		modal_requested.emit(STATE_ZONE_HARVEST_RESULT, _pending_zone_harvest_payload.duplicate(true))
+	else:
+		_pending_zone_harvest_payload.clear()
+		_set_state(STATE_BATTLE_PREPARE)
+	return true
+
+
+func close_zone_harvest_result_popup() -> void:
+	if current_state != STATE_ZONE_HARVEST_RESULT:
+		return
+	modal_closed.emit(STATE_ZONE_HARVEST_RESULT)
+	ZoneProgression.acknowledge_harvest_result()
+	_pending_zone_harvest_payload.clear()
+	_set_state(STATE_BATTLE_PREPARE)
+
+
 func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
 	if current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
@@ -231,16 +276,21 @@ func advance_wave_end_phase() -> void:
 		return
 	if current_state == STATE_FINANCE_POPUP:
 		_wave_end_ready = false
+		if request_zone_select_popup():
+			return
 		_set_state(STATE_BATTLE_PREPARE)
 		return
 
 
 func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
+	ZoneProgression.reset_state(_bound_player)
 	battle_resolved = true
 	current_victory = victory
 	current_battle_summary = summary.duplicate(true)
 	_pending_level_up_levels.clear()
 	_wave_end_ready = false
+	_active_zone_selection_wave_number = 0
+	_pending_zone_harvest_payload.clear()
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_BATTLE_RESULT)
 	battle_result_changed.emit(victory, current_battle_summary.duplicate(true))
@@ -275,6 +325,9 @@ func get_state_snapshot() -> Dictionary:
 		"pending_shared_reward_shop_levels": _pending_level_up_levels.duplicate(),
 		"active_level_up_level": _active_level_up_level,
 		"pending_level_up_levels": _pending_level_up_levels.duplicate(),
+		"zone_state": ZoneProgression.get_state_snapshot(),
+		"active_zone_selection_wave_number": _active_zone_selection_wave_number,
+		"pending_zone_harvest_payload": _pending_zone_harvest_payload.duplicate(true),
 	}
 
 

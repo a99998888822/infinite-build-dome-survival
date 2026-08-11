@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 	_process_contact_damage()
 
 
-func initialize(target_enemy_id: String, player: PlayerController = null) -> bool:
+func initialize(target_enemy_id: String, player: PlayerController = null, runtime_modifiers: Array = []) -> bool:
 	var data := DataRegistry.get_record("enemies", target_enemy_id)
 	if data.is_empty():
 		push_error("[EnemyController] missing enemy config: %s" % target_enemy_id)
@@ -55,6 +55,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null) -> boo
 	enemy_id = target_enemy_id
 	enemy_data = data
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
+	_apply_runtime_modifiers(runtime_modifiers)
 	current_hp = int(get_stat("max_hp"))
 	target_player = player
 	alive = true
@@ -66,6 +67,21 @@ func initialize(target_enemy_id: String, player: PlayerController = null) -> boo
 
 func set_target_player(player: PlayerController) -> void:
 	target_player = player
+
+
+func add_runtime_modifier(modifier_data: Dictionary) -> bool:
+	var modifier := modifier_stack.add_modifier_from_dictionary(modifier_data)
+	return modifier != null
+
+
+func add_runtime_modifiers(modifier_data_list: Array) -> void:
+	for modifier_data in modifier_data_list:
+		if modifier_data is Dictionary:
+			add_runtime_modifier(modifier_data)
+
+
+func _apply_runtime_modifiers(modifier_data_list: Array) -> void:
+	add_runtime_modifiers(modifier_data_list)
 
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/game_root.gd" id="1_game_root"]
+[ext_resource type="PackedScene" path="res://scenes/core/main_flow_coordinator.tscn" id="2_main_flow_coordinator"]
+[ext_resource type="PackedScene" path="res://scenes/ui/zones/zone_ui_controller.tscn" id="3_zone_ui_controller"]
+
+[node name="GameRoot" type="Node"]
+script = ExtResource("1_game_root")
+
+[node name="CoreRoot" type="Node" parent="."]
+
+[node name="MainFlowCoordinator" parent="CoreRoot" instance=ExtResource("2_main_flow_coordinator")]
+
+[node name="WorldRoot" type="Node2D" parent="."]
+
+[node name="UiRoot" type="CanvasLayer" parent="."]
+
+[node name="ZoneUIController" parent="UiRoot" instance=ExtResource("3_zone_ui_controller")]
+
+[node name="DebugRoot" type="Node" parent="."]

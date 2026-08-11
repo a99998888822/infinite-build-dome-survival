@@ -114,7 +114,8 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.auto_initialize_on_ready = false
 	enemy_root.add_child(enemy)
 	enemy.global_position = position
-	enemy.initialize(enemy_id, player)
+	var zone_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
+	enemy.initialize(enemy_id, player, zone_modifiers)
 	enemy.died.connect(_on_enemy_died)
 	return enemy
 

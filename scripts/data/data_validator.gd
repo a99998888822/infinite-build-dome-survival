@@ -8,6 +8,7 @@ const REQUIRED_TABLES: Array[String] = [
 	"characters",
 	"enemies",
 	"camp_buildings",
+	"zones",
 	"waves",
 	"drop_tables",
 ]
@@ -19,6 +20,7 @@ const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"characters": ["id", "icon", "base_stats", "start_weapons"],
 	"enemies": ["id", "base_stats", "drop_table_id"],
 	"camp_buildings": ["id", "name", "levels", "upgrade_options"],
+	"zones": ["id", "display_name", "description", "tendency_tags", "enemy_pressure_per_streak", "player_pressure_per_streak", "fortune_gain", "reward_bias"],
 	"waves": ["id", "duration_seconds", "spawn_groups"],
 	"drop_tables": ["id", "entries"],
 }
@@ -37,6 +39,7 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
+const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
 
 var errors: Array[String] = []
 var warnings: Array[String] = []
@@ -58,6 +61,7 @@ func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
 	_validate_bond_records(tables.get("bonds", []))
 	_validate_character_records(tables.get("characters", []), records_by_id)
 	_validate_enemy_records(tables.get("enemies", []), records_by_id)
+	_validate_zone_records(tables.get("zones", []), records_by_id)
 	_validate_camp_building_records(tables.get("camp_buildings", []), records_by_id)
 	_validate_wave_records(tables.get("waves", []), records_by_id)
 	_validate_drop_table_records(tables.get("drop_tables", []))
@@ -114,6 +118,13 @@ func _validate_bool(record: Dictionary, field_name: String, path: String) -> voi
 		return
 	if not (record[field_name] is bool):
 		errors.append("%s.%s must be a bool." % [path, field_name])
+
+
+func _validate_non_empty_text(record: Dictionary, field_name: String, path: String) -> void:
+	if not record.has(field_name):
+		return
+	if str(record.get(field_name, "")).strip_edges().is_empty():
+		errors.append("%s.%s cannot be empty." % [path, field_name])
 
 
 func _validate_non_negative_int(record: Dictionary, field_name: String, path: String) -> void:
@@ -306,6 +317,80 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 		var path := "enemies[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
 		_validate_reference(record, "drop_table_id", "drop_tables", records_by_id, path)
+
+
+func _validate_zone_records(records: Array, records_by_id: Dictionary) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "zones[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_non_empty_text(record, "display_name", path)
+		_validate_non_empty_text(record, "description", path)
+		if record.has("max_streak"):
+			errors.append("%s.max_streak is not allowed because zone streak has no hard cap." % path)
+		_validate_zone_tag_list(record.get("tendency_tags", []), path)
+		_validate_zone_pressure_dictionary(record.get("enemy_pressure_per_streak", {}), path, "enemy_pressure_per_streak")
+		_validate_zone_pressure_dictionary(record.get("player_pressure_per_streak", {}), path, "player_pressure_per_streak")
+		_validate_zone_fortune_gain(record.get("fortune_gain", {}), path)
+		_validate_zone_reward_bias(record.get("reward_bias", {}), path)
+
+
+func _validate_zone_tag_list(tags: Variant, path: String) -> void:
+	if not (tags is Array) or (tags as Array).is_empty():
+		errors.append("%s.tendency_tags must be a non-empty array." % path)
+		return
+	for tag_index in tags.size():
+		var tag_text := str(tags[tag_index]).strip_edges()
+		if tag_text.is_empty():
+			errors.append("%s.tendency_tags[%d] cannot be empty." % [path, tag_index])
+
+
+func _validate_zone_pressure_dictionary(pressure: Variant, path: String, field_name: String) -> void:
+	if not (pressure is Dictionary):
+		errors.append("%s.%s must be an object." % [path, field_name])
+		return
+	if pressure.is_empty():
+		errors.append("%s.%s cannot be empty." % [path, field_name])
+		return
+	for pressure_key in pressure.keys():
+		var pressure_name := str(pressure_key)
+		if pressure_name != "max_hp_percent" and not StatDefinitions.has_stat(pressure_name):
+			errors.append("Unknown zone pressure key in %s.%s: %s" % [path, field_name, pressure_name])
+		var pressure_value := int(pressure[pressure_key])
+		if pressure_value < 0:
+			errors.append("%s.%s.%s must be greater than or equal to 0." % [path, field_name, pressure_name])
+
+
+func _validate_zone_fortune_gain(fortune_gain: Variant, path: String) -> void:
+	if not (fortune_gain is Dictionary):
+		errors.append("%s.fortune_gain must be an object." % path)
+		return
+	_validate_required_fields(fortune_gain, ["start_streak", "base", "per_extra_streak", "wave_bonus"], "%s.fortune_gain" % path)
+	if int(fortune_gain.get("start_streak", 0)) < 2:
+		errors.append("%s.fortune_gain.start_streak must be at least 2." % path)
+	for key_name in ["base", "per_extra_streak", "wave_bonus"]:
+		if int(fortune_gain.get(key_name, 0)) < 0:
+			errors.append("%s.fortune_gain.%s must be greater than or equal to 0." % [path, key_name])
+
+
+func _validate_zone_reward_bias(reward_bias: Variant, path: String) -> void:
+	if not (reward_bias is Dictionary):
+		errors.append("%s.reward_bias must be an object." % path)
+		return
+	_validate_required_fields(reward_bias, ["target_pools", "tag_weight_per_streak", "rarity_bonus_per_streak"], "%s.reward_bias" % path)
+	var target_pools: Variant = reward_bias.get("target_pools", [])
+	if not (target_pools is Array) or (target_pools as Array).is_empty():
+		errors.append("%s.reward_bias.target_pools must be a non-empty array." % path)
+	else:
+		for pool_index in target_pools.size():
+			var pool_name := str(target_pools[pool_index])
+			if not VALID_ZONE_TARGET_POOLS.has(pool_name):
+				errors.append("%s.reward_bias.target_pools[%d] must be one of %s." % [path, pool_index, ", ".join(VALID_ZONE_TARGET_POOLS)])
+	if int(reward_bias.get("tag_weight_per_streak", 0)) < 0:
+		errors.append("%s.reward_bias.tag_weight_per_streak must be greater than or equal to 0." % path)
+	if int(reward_bias.get("rarity_bonus_per_streak", 0)) < 0:
+		errors.append("%s.reward_bias.rarity_bonus_per_streak must be greater than or equal to 0." % path)
 
 
 func _validate_camp_building_records(records: Array, records_by_id: Dictionary) -> void:
