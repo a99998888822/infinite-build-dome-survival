@@ -1,5 +1,4 @@
 extends Node
-class_name ZoneProgression
 
 signal state_changed(state: Dictionary)
 signal zone_selected(zone_id: String, result: Dictionary)
@@ -384,7 +383,7 @@ func _get_reward_bias(zone_record: Dictionary = {}) -> Dictionary:
 	var source_record := zone_record if not zone_record.is_empty() else get_current_zone_record()
 	var reward_bias: Variant = source_record.get("reward_bias", {})
 	if reward_bias is Dictionary:
-		var result := reward_bias.duplicate(true)
+		var result: Dictionary = reward_bias.duplicate(true)
 		if not result.has("target_pools") or (result["target_pools"] is Array and (result["target_pools"] as Array).is_empty()):
 			result["target_pools"] = DEFAULT_TARGET_POOLS.duplicate()
 		return result

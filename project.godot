@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="infinite-build-dome-survival"
-run/main_scene="res://scenes/core/game_root.tscn"
+config/name="InfiniteBuild_DomeSurvival"
+run/main_scene="uid://cwrynp7dba441"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,9 +20,9 @@ config/icon="res://icon.svg"
 DataRegistry="*res://autoloads/data_registry.gd"
 GameGlobal="*res://autoloads/game_global.gd"
 CampProgression="*res://autoloads/camp_progression.gd"
-ZoneProgression="*res://autoloads/zone_progression.gd"
 ObjectPool="*res://autoloads/object_pool.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
+ZoneProgression="*res://autoloads/zone_progression.gd"
 
 [display]
 

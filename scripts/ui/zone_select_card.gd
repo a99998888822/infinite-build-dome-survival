@@ -97,14 +97,14 @@ func _build_card_title() -> String:
 
 func _build_detail_text() -> String:
 	var streak_count := int(zone_data.get("next_streak_count", 0))
-	var enemy_pressure := zone_data.get("enemy_pressure", {})
-	var player_pressure := zone_data.get("player_pressure", {})
+	var enemy_pressure: Variant = zone_data.get("enemy_pressure", {})
+	var player_pressure: Variant = zone_data.get("player_pressure", {})
 	return "连驻层数：%d\n敌方压力：%s\n玩家压力：%s" % [streak_count, _format_dictionary(enemy_pressure), _format_dictionary(player_pressure)]
 
 
 func _build_preview_text() -> String:
 	var expected_fortune_gain := int(zone_data.get("expected_fortune_gain", 0))
-	var harvest_preview := zone_data.get("harvest_preview", {})
+	var harvest_preview: Variant = zone_data.get("harvest_preview", {})
 	if harvest_preview is Dictionary and not (harvest_preview as Dictionary).is_empty():
 		var harvest_text := harvest_preview as Dictionary
 		return "预估福缘：%d\n换区收割：金币 %d / 候选 +%d" % [expected_fortune_gain, int(harvest_text.get("gold_gain", 0)), int(harvest_text.get("extra_offer_count", 0))]

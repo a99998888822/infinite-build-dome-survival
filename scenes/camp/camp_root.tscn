@@ -24,6 +24,9 @@ script = ExtResource("1_root")
 [node name="Background1" type="Sprite2D" parent="BackgroundLayer" unique_id=60901541]
 texture = ExtResource("2_62drx")
 
+[node name="Background10" type="Sprite2D" parent="BackgroundLayer" unique_id=1287319074]
+texture = ExtResource("2_62drx")
+
 [node name="Background6" type="Sprite2D" parent="BackgroundLayer" unique_id=1421001052]
 position = Vector2(512, -512)
 texture = ExtResource("2_62drx")
@@ -57,7 +60,7 @@ position = Vector2(1024, -512)
 texture = ExtResource("2_62drx")
 
 [node name="CampRelicArchive" type="Sprite2D" parent="BackgroundLayer" unique_id=713451741]
-position = Vector2(785, -490)
+position = Vector2(717, -501)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_cy17w")
 
