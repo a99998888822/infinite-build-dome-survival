@@ -1,0 +1,10 @@
+﻿[gd_scene load_steps=3 format=3 uid="uid://summonrootmvp001"]
+
+[ext_resource type="Script" path="res://scripts/summons/summon_root.gd" id="1_summon_root"]
+[ext_resource type="Script" path="res://scripts/weapons/targeting_service.gd" id="2_targeting_service"]
+
+[node name="SummonRoot" type="Node2D"]
+script = ExtResource("1_summon_root")
+
+[node name="TargetingService" type="Node" parent="."]
+script = ExtResource("2_targeting_service")

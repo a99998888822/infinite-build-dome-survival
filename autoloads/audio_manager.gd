@@ -30,7 +30,7 @@ func _ready() -> void:
 	_bgm_player.name = "BgmPlayer"
 	_bgm_player.bus = BUS_BGM
 	add_child(_bgm_player)
-	for index in 8:
+	for index in range(8):
 		var player := AudioStreamPlayer.new()
 		player.name = "SfxPlayer%d" % index
 		player.bus = BUS_SFX

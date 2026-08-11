@@ -286,7 +286,7 @@ func _build_zone_entry(zone_record: Dictionary, wave_number: int) -> Dictionary:
 		"player_pressure": _scale_pressure(zone_record.get("player_pressure_per_streak", {}), next_streak_count),
 		"tag_weight_bonus": next_streak_count * int(reward_bias.get("tag_weight_per_streak", 0)),
 		"rarity_bonus": next_streak_count * int(reward_bias.get("rarity_bonus_per_streak", 0)),
-		"expected_fortune_gain": is_current_zone ? calculate_fortune_gain(wave_number, next_streak_count) : 0,
+		"expected_fortune_gain": calculate_fortune_gain(wave_number, next_streak_count) if is_current_zone else 0,
 		"harvest_preview": _build_harvest_preview(zone_record, is_current_zone),
 	}
 

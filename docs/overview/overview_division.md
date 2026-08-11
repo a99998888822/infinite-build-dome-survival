@@ -18,14 +18,14 @@
 | 局内战斗循环 | 单局状态、时间轴、经验、单局成长、胜负结算 | 18分钟闯关闭环 | 无尽模式、难度曲线、多事件时间轴 |
 | 玩家与角色 | 移动、受击、角色被动、开局配置 | 1名默认角色 | 6名角色、解锁条件、角色特化构筑 |
 | 局内武器系统 | 负载、装备、替换、升级、自动攻击 | 3把基础武器 + 负载替换 | 武器词条、畸变升级、稀有武器池 |
-| 局内遗物与羁绊 | 遗物拾取、羁绊计数、2/3/5层效果、7层限制 | 2套羁绊 + 5层以内 | 6套羁绊、7层棱彩、羁绊主激活切换 |
+| 局内遗物与羁绊 | 遗物拾取、羁绊计数、阈值效果、特殊效果记录 | 3套羁绊 + 2/4/6/7阈值 | 更多羁绊、限制机制、特殊效果实装 |
 | 敌人与波次 | 怪物属性、生成器、AI追踪、碰撞弹开、经验球清算、波次清场 | 普通怪 + 基础波次推进 | 多敌人类型、精英词缀、阶段Boss |
 | 区域驻守与福缘收割 | 休整选区、连驻层数、福缘储备、收割结算、区域奖励倾向 | 3个固定区域 + 基础连驻惩罚 + 货币/定向遗物收割 | 多区域事件、稀有道具、区域词缀、动态风险预览 |
 | 召唤物与友方实体 | 召唤物生成、生命周期、目标选择、伤害归属 | 简单跟随攻击召唤物 | 异位召唤羁绊、镜像、旧日虚影 |
 | 掉落与奖励 | 经验球、局内金币、遗物/武器/商店选项池、最终局外货币结算 | 经验球 + 共享奖励/商店候选 | 稀有度、权重、裂隙奖励、最终结算奖励 |
 | 局外营地与成长 | 营地建筑、升级选项、开放状态派生、存档 | 固定营地界面 + 8个建筑 | 更多建筑、图鉴、展示与扩展路线 |
 | UI交互 | HUD、共享奖励/商店页、负载替换、羁绊面板、营地界面 | 战斗HUD + 共享奖励/商店页 | 完整菜单、营地升级树、结算、图鉴 |
-| 音频与氛围表现 | BGM/SFX管理、克苏鲁氛围反馈、粒子/屏幕后处理 | 基础攻击/拾取/UI音效 | 分层BGM、低语、棱彩羁绊特效 |
+| 音频与氛围表现 | BGM/SFX管理、武器命中音效、音量设置 | 3类BGM + 武器命中音效 | 分层BGM、低语、棱彩羁绊特效 |
 | 存档与本地进度 | 存档读写、版本迁移、局外进度 | JSON本地存档 | 存档校验、备份、版本兼容 |
 | 工程基础设施 | 目录结构、Autoload、对象池、调试工具 | DataRegistry/ObjectPool/GameGlobal | 性能统计、配置热重载、自动化测试 |
 
@@ -111,21 +111,21 @@ flowchart TD
 建议文档：`4-weapon_loadout_design.md`
 
 核心内容：
-1. 负载系统：总负载、武器负载、装备、替换、溢出弹窗。
+1. 负载系统：总负载、武器负载、装备、购买拦截与失败提示。
 2. 武器分类：轻型、中型、重型的定位与基础数值范围。
 3. 自动攻击：冷却、目标选择、投射物/范围伤害/近战判定。
-4. 武器升级：等级、强化路线、满级畸变词条。
+4. 武器升级：等级、固定升级效果、升级选项稀有度。
 5. 武器选项池：出现权重、已装备武器强化、新武器刷新。
 
 优先级：最高。是核心差异化卖点之一。
 
 ### 4.5 局内遗物与羁绊模块
 
-建议文档：`relic_bond_design.md`
+建议文档：`5-relic_bond_design.md`
 
 核心内容：
 1. 遗物数据结构：羁绊标签、稀有度、效果、出现条件。
-2. 羁绊计数：2/3/5层普通效果，多羁绊并存。
+2. 羁绊计数：2/4/6/7阈值效果，多羁绊并存。
 3. 7层羁绊：当前阶段不做额外限制机制，局内凑够层数即生效。
 4. 羁绊效果如何提交到 `ModifierStack`。
 5. 羁绊UI：当前层数、下一档预览、激活中效果展示。
@@ -160,7 +160,7 @@ flowchart TD
 优先级：高。它直接强化“波次之间的策略选择”，建议在基础战斗闭环后、完整羁绊深化前实现。
 ### 4.8 召唤物与友方实体模块
 
-建议文档：`summon_ally_design.md`
+建议文档：`15-summon_ally_design.md`
 
 核心内容：
 1. 召唤物生命周期：生成、跟随、索敌、攻击、消失。
@@ -173,7 +173,7 @@ flowchart TD
 
 ### 4.9 掉落与奖励模块
 
-建议文档：`drop_reward_design.md`
+建议文档：`9-drop_reward_design.md`
 
 核心内容：
 1. 局内掉落：经验球、金币、临时奖励、裂隙奖励。
@@ -190,7 +190,7 @@ flowchart TD
 
 核心内容：
 1. 营地定位：固定2D界面，不做自由建造、生产链和资源采集。
-2. 建筑设计：记忆方碑、武备工坊、遗物陈列架、观星台、治愈篝火。
+2. 建筑设计：军械工坊、遗物档案馆、利刃演武场、远星射靶台、眷族培育栏、畸变研究所、穹顶庇护所、议事大厅。
 3. 营地建筑升级：消耗 `camp_currency`、属性提升、开放后续升级项。
 4. 营地升级项：等级上限、花费、效果映射到局内参数。
 5. 开放内容：武器池、遗物池和槽位优先由建筑等级与升级项等级派生。
@@ -215,8 +215,8 @@ flowchart TD
 建议文档：`10-audio_atmosphere_design.md`
 
 核心内容：
-1. `AudioMixer`：BGM/SFX音量、播放接口、音效去重。
-2. 战斗音效：攻击、命中、拾取、升级、Boss、裂隙。
+1. `AudioManager`：BGM/SFX音量、播放接口、音效去重。
+2. 战斗音效：仅保留武器命中音效；拾取、升级、UI和波次音效暂不做。
 3. 氛围表现：低语、虚空侵蚀、棱彩触发、屏幕震动。
 4. 粒子与后处理：虚空边缘、触手残影、畸变特效。
 5. 资源导入规范：循环BGM、像素特效、音量基准。
@@ -293,7 +293,7 @@ flowchart TD
 
 1. 音频与氛围表现模块
 2. Boss和裂隙事件扩展
-3. 7层棱彩羁绊开放
+3. 羁绊特殊效果与限制机制扩展
 4. 无尽模式与本地纪录
 
 目标：提升完成度和可重复游玩价值。
@@ -306,29 +306,35 @@ flowchart TD
 2. 玩家与角色：1名默认角色。
 3. 局内武器：3把武器，完整负载装备与替换。
 4. 敌人与波次：1种普通怪 + 基础波次推进。
-5. 遗物与羁绊：2套羁绊，只开放2/3/5层。
+5. 遗物与羁绊：3套羁绊，开放2/4/6/7阈值，特殊效果先记录不执行。
 6. 区域驻守与福缘收割：3个固定区域、基础连驻惩罚、换区收割。
 7. 掉落与奖励：经验球、共享奖励/商店候选、局内商店、最终 `camp_currency` 结算。
-8. 局外营地：固定营地界面 + 记忆方碑 + 武备工坊 + 治愈篝火。
+8. 局外营地：固定营地界面 + 8个营地建筑 + 解锁/升级选项。
 9. UI：战斗HUD、共享奖励/商店页、负载替换弹窗、休整选区弹窗、简易结算面板。
 
-暂不实现：完整6角色、全部6羁绊、7层棱彩实装、无尽模式、复杂裂隙事件、完整图鉴、完整音频分层。
-## 7. 后续文档产出顺序建议
+暂不实现：完整6角色、全部6羁绊、复杂限制机制、特殊效果实装、无尽模式、复杂裂隙事件、完整图鉴、完整音频分层。
+## 7. 当前文档索引与同步状态
 
-1. `1-base_data_and_modifiers_design.md`
-2. `14-engineering_foundation_design.md`
-3. `3-player_and_character_design.md`
-4. `4-weapon_loadout_design.md`
-5. `relic_bond_design.md`
-6. `enemy_wave_design.md`
-7. `12-run_combat_loop_design.md`
-8. `13-zone_streak_fortune_design.md`
-9. `7-camp_meta_progression_design.md`
-10. `8-ui_flow_design.md`
-11. `11-save_progress_design.md`
-12. `7-camp_meta_progression_implementation_checklist.md`
-13. `asset_checklist_summary.md` / `asset_rules_summary.md`
-14. `8-ui_flow_implementation_checklist.md`
-11. `summon_ally_design.md`
-12. `drop_reward_design.md`
-13. `10-audio_atmosphere_design.md`
+当前已落盘的主要设计文档与实施清单如下：
+
+| 模块 | 设计文档 | 实施清单 | 状态 |
+| --- | --- | --- | --- |
+| 基础数值与数据配置 | `docs/main/1-base_data_and_modifiers_design.md` | `docs/main/checklist/1-base_data_implementation_checklist.md` | 已通过一次 Godot 启动验证 |
+| 工程基础设施 | `docs/main/14-engineering_foundation_design.md` | `docs/main/checklist/14-engineering_foundation_implementation_checklist.md` | 当前推荐版本；`2-` 文件保留为早期草稿 |
+| 玩家与角色 | `docs/main/3-player_and_character_design.md` | `docs/main/checklist/3-player_character_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局内武器 | `docs/main/4-weapon_loadout_design.md` | `docs/main/checklist/4-weapon_loadout_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局内遗物与羁绊 | `docs/main/5-relic_bond_design.md` | `docs/main/checklist/5-relic_bond_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 敌人与波次 | `docs/main/6-enemy_wave_design.md` | `docs/main/checklist/6-enemy_wave_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局外营地与成长 | `docs/main/7-camp_meta_progression_design.md` | `docs/main/checklist/7-camp_meta_progression_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| UI交互 | `docs/main/8-ui_flow_design.md` | `docs/main/checklist/8-ui_flow_implementation_checklist.md` | 奖励卡骨架已接入，其余 UI 待实现 |
+| 掉落与奖励 | `docs/main/9-drop_reward_design.md` | `docs/main/checklist/9-drop_reward_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 音频与氛围表现 | `docs/main/10-audio_atmosphere_design.md` | `docs/main/checklist/10-audio_atmosphere_implementation_checklist.md` | 代码已接入，待音频素材与 Godot 验证 |
+| 存档与本地进度 | `docs/main/11-save_progress_design.md` | `docs/main/checklist/11-save_progress_implementation_checklist.md` | 设计与清单已完成，待 Godot 验证 |
+| 局内战斗循环与主流程 | `docs/main/12-run_combat_loop_design.md` | `docs/main/checklist/12-run_combat_loop_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 区域驻守与福缘收割 | `docs/main/13-zone_streak_fortune_design.md` | `docs/main/checklist/13-zone_streak_fortune_implementation_checklist.md` | 代码与 UI 骨架已接入，待 Godot 验证 |
+| 召唤物与友方实体 | `docs/main/15-summon_ally_design.md` | `docs/main/checklist/15-summon_ally_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+
+补充说明：
+
+1. `docs/main/2-engineering_foundation_design.md` 与 `docs/main/checklist/2-engineering_foundation_implementation_checklist.md` 是早期工程基础设施草稿，当前以后续的 `14-` 文档为准。
+2. `docs/asset/asset_checklist_summary.md` 与 `docs/asset/asset_rules_summary.md` 是当前统一素材清单与素材规则入口，旧的分模块素材清单已合并。

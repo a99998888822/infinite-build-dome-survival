@@ -315,7 +315,7 @@ final_damage = incoming_damage * damage_taken_from_armor / 100 * other_damage_ta
 | `stack_add` | 可叠加，多份累加 | 击杀叠层、临时增益 |
 | `stack_with_limit` | 可叠加但有上限 | 棱彩羁绊伤害叠层 |
 | `refresh_duration` | 重复获得时刷新持续时间 | debuff/短时buff |
-| `exclusive_group` | 同组互斥，只保留一个 | 7层棱彩主羁绊 |
+| `exclusive_group` | 同组互斥，只保留一个 | 后续特殊机制预留 |
 
 ### 7.5 计算顺序
 
@@ -595,7 +595,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 
 遗物配置规则：
 
-1. `relics.json` 只保留运行必需字段：`id`、`display_name`、`rarity`、`bond_id`、`tags`、`effects`。
+1. `relics.json` 只保留运行必需字段：`id`、`display_name`、`rarity`、`bond_id`、`max_stack`、`tags`、`effects`。
 2. `effects` 直接写标准 `Modifier` 字段，不再额外包一层展示字段。
 3. `description`、`enabled`、`icon` 等展示/控制字段暂不写入，后续如需要再加。
 4. 遗物的羁绊归属通过 `bond_id` 关联。
@@ -606,23 +606,25 @@ func find_refs(config_id: String) -> Array[Dictionary]
 ```json
 {
   "id": "bond_mighty",
-  "display_name": "虚空畸变",
-
+  "name": "大力",
+  "bond_tag": "melee",
   "thresholds": {
-    "2": [{ "stat": "area_size", "operation": "add_percent", "value": 15 }],
-    "3": [{ "stat": "crit_chance", "operation": "add_percent", "value": 10 }],
-    "5": [{ "effect_id": "effect_bleed_on_hit" }],
-    "7": [{ "effect_id": "effect_bond_mighty_7_burst" }]
-  },
-  "prismatic_rules": {
-    "requires_unlock": true,
-    "energy_required": 100,
-    "duration": 12,
-    "cooldown": 30,
-    "exclusive_group": "prismatic_bond"
-  },
-  "tags": ["melee", "burst", "void"],
-  "enabled": true
+    "2": [{ "stat": "melee_damage", "operation": "add_flat", "value": 2 }],
+    "4": [
+      { "stat": "melee_damage", "operation": "add_flat", "value": 4 },
+      { "stat": "attack_speed", "operation": "add_flat", "value": 10 }
+    ],
+    "6": [
+      { "stat": "melee_damage", "operation": "add_flat", "value": 6 },
+      { "stat": "attack_speed", "operation": "add_flat", "value": 20 },
+      { "stat": "crit_chance", "operation": "add_flat", "value": 5 }
+    ],
+    "7": [
+      { "stat": "melee_damage", "operation": "add_flat", "value": 10 },
+      { "stat": "attack_speed", "operation": "add_flat", "value": 30 },
+      { "stat": "crit_chance", "operation": "add_flat", "value": 10 }
+    ]
+  }
 }
 ```
 
@@ -840,7 +842,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 1. 遗物拾取后读取 `bond_id` 并累计羁绊层数。
 2. 羁绊模块从 `bonds.json` 获取阈值效果。
 3. 达到阈值时提交 bond 来源 modifier。
-4. 7层棱彩通过 `prismatic_rules` 控制解锁、装填、互斥与冷却。
+4. 7层阈值与其他阈值一样，局内凑够层数后立即生效；当前不做解锁、装填、互斥切换。
 
 ### 12.3 局外营地与成长模块
 
@@ -976,7 +978,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 | 跨模块直接改属性 | 难以排查数值来源 | 代码规范禁止直接写最终属性，统一走ModifierStack |
 | ID频繁改名 | 存档和引用失效 | 发布后ID不可变，必要时写迁移表 |
 | JSON难维护 | 配置越来越大 | 按模块拆文件，后续可加编辑器工具 |
-| 7层羁绊失控 | 过强、过卡、难平衡 | 通过prismatic_rules配置装填、互斥、冷却、上限 |
+| 7层羁绊失控 | 过强、过卡、难平衡 | 当前只保留直接生效；如后续需要限制，再新增独立限制机制 |
 
 ## 18. 验收标准
 

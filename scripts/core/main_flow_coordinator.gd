@@ -394,6 +394,8 @@ func _unbind_player() -> void:
 func _unbind_wave_manager() -> void:
 	if _bound_wave_manager == null:
 		return
+	if _bound_wave_manager.has_method("clear_battle_entities"):
+		_bound_wave_manager.clear_battle_entities()
 	var wave_started_callable := Callable(self, "_on_wave_started")
 	var wave_finished_callable := Callable(self, "_on_wave_finished")
 	var shared_reward_callable := Callable(self, "_on_shared_reward_shop_requested")

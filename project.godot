@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="InfiniteBuild_DomeSurvival"
+config/name="infinite-build-dome-survival"
 run/main_scene="res://scenes/core/game_root.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"

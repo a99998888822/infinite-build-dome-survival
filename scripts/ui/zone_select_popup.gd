@@ -1,4 +1,4 @@
-﻿extends Control
+extends Control
 class_name ZoneSelectPopup
 
 const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")

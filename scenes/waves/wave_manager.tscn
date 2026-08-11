@@ -1,11 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://wavemanagermvp001"]
+﻿[gd_scene load_steps=3 format=3 uid="uid://wavemanagermvp001"]
 
 [ext_resource type="Script" path="res://scripts/waves/wave_manager.gd" id="1_wave_manager"]
+[ext_resource type="PackedScene" path="res://scenes/summons/summon_root.tscn" id="2_summon_root"]
 
 [node name="WaveManager" type="Node"]
 script = ExtResource("1_wave_manager")
+enemy_root_path = NodePath("EnemyRoot")
+pickup_root_path = NodePath("PickupRoot")
+summon_root_path = NodePath("SummonRoot")
 
 [node name="EnemyRoot" type="Node2D" parent="."]
 
 [node name="PickupRoot" type="Node2D" parent="."]
 
+[node name="SummonRoot" parent="." instance=ExtResource("2_summon_root")]

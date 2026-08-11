@@ -115,3 +115,14 @@
 | 未存在 | 区域图标-神选之地 | `zone_chosen_land.png` | `assets/ui/icons/zones/zone_chosen_land.png` | 1:1, 128x128 / PNG | 生成：简洁的理智/侵蚀倾向图标 / 区域选择页识别 / PNG |
 | 未存在 | 福缘收割提示图标 | `icon_fortune_harvest.png` | `assets/ui/icons/zones/icon_fortune_harvest.png` | 1:1, 128x128 / PNG | 生成：福袋、收割、光点一类提示符号 / 切区收割结果页 / PNG |
 | 未存在 | 区域卡片底纹 | `card_zone_pattern.png` | `assets/ui/panels/zones/card_zone_pattern.png` | 4:5, 512x640 / PNG | 生成：低对比、干净的卡片纹理 / 区域选择页背景强化 / PNG |
+
+## 3. 第15模块：召唤物与友方实体补充
+
+> 详细提示词见 `docs/asset/15-summon_ally_asset_checklist.md`。
+
+| 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
+|---|---|---|---|---|---|
+| 未存在 | 默认眷族幼体单帧 | `summon_kinling_base.png` | `assets/sprites/summons/summon_kinling_base.png` | 128x128 或 256x256 / 1:1 / PNG，透明背景 | 清新干净中高精度像素风友方眷族幼体，小巧可爱，浅绿色或淡蓝色，轻微克苏鲁但不恐怖，透明背景。 |
+| 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | 512x128 / 4帧横向 / PNG，透明背景 | 基于默认眷族幼体生成右向行走4帧横向帧表，动作简单可爱，透明背景。 |
+| 未存在 | 默认眷族幼体攻击特效 | `effect_summon_kinling_hit.png` | `assets/sprites/summons/effects/effect_summon_kinling_hit.png` | 128x128 或 256x256 / 1:1 / PNG，透明背景 | 柔和绿色灵光冲击或小型星点扩散，适合召唤物近战命中特效，透明背景。 |
+| 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | 128x128 / 1:1 / PNG，透明背景 | 默认眷族幼体头像图标，小尺寸可读，清新干净像素风，透明背景。 |

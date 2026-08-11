@@ -17,6 +17,7 @@ const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_re
 @export var auto_start: bool = false
 @export var enemy_root_path: NodePath
 @export var pickup_root_path: NodePath
+@export var summon_root_path: NodePath
 
 var player: PlayerController = null
 var current_wave_index: int = -1
@@ -36,13 +37,19 @@ var enemy_scene_cache: Dictionary = {}
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
 @onready var pickup_root: Node = _get_optional_node(pickup_root_path)
+@onready var summon_root: SummonRoot = _get_optional_node(summon_root_path) as SummonRoot
 
 
 func _ready() -> void:
 	if enemy_root == null:
+		enemy_root = get_node_or_null("EnemyRoot")
+	if pickup_root == null:
+		pickup_root = get_node_or_null("PickupRoot")
+	if enemy_root == null:
 		enemy_root = self
 	if pickup_root == null:
 		pickup_root = self
+	_ensure_summon_root()
 	if auto_start:
 		start_next_wave()
 
@@ -66,6 +73,9 @@ func initialize(target_player: PlayerController) -> void:
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
 	reward_snapshot.reset()
+	clear_battle_entities()
+	if summon_root != null:
+		summon_root.initialize(player)
 
 
 func _get_optional_node(path: NodePath) -> Node:
@@ -96,8 +106,7 @@ func finish_current_wave() -> void:
 		return
 	running = false
 	collect_all_exp_orbs()
-	_clear_non_exp_reward_pickups()
-	clear_enemies()
+	clear_battle_entities()
 	wave_finished.emit(str(current_wave.get("id", "")))
 
 
@@ -118,6 +127,32 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.initialize(enemy_id, player, zone_modifiers)
 	enemy.died.connect(_on_enemy_died)
 	return enemy
+
+
+func spawn_summon(summon_data: Dictionary, position: Vector2 = Vector2.ZERO, use_position: bool = false) -> SummonController:
+	_ensure_summon_root()
+	return summon_root.spawn_summon(summon_data, position, use_position) if summon_root != null else null
+
+
+func spawn_summons(summon_data: Dictionary, base_count: int = 1) -> Array[SummonController]:
+	_ensure_summon_root()
+	if summon_root == null:
+		var empty_result: Array[SummonController] = []
+		return empty_result
+	return summon_root.spawn_summons(summon_data, base_count)
+
+
+func spawn_default_summon(base_count: int = 1) -> SummonController:
+	_ensure_summon_root()
+	return summon_root.spawn_default_summon(base_count) if summon_root != null else null
+
+
+func spawn_default_summons(base_count: int = 1) -> Array[SummonController]:
+	_ensure_summon_root()
+	if summon_root == null:
+		var empty_result: Array[SummonController] = []
+		return empty_result
+	return summon_root.spawn_default_summons(base_count)
 
 
 func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:
@@ -141,6 +176,17 @@ func clear_enemies() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy is EnemyController and enemy.is_inside_tree():
 			enemy.queue_free()
+
+
+func clear_summons() -> void:
+	if summon_root != null:
+		summon_root.clear_summons()
+
+
+func clear_battle_entities() -> void:
+	_clear_non_exp_reward_pickups()
+	clear_enemies()
+	clear_summons()
 
 
 func _collect_exp_orbs_recursive(node: Node, result: Array[ExpOrb]) -> void:
@@ -216,6 +262,20 @@ func get_random_spawn_position() -> Vector2:
 	var angle := randf() * TAU
 	var distance := randf_range(SPAWN_MIN_DISTANCE, SPAWN_MAX_DISTANCE)
 	return origin + Vector2.RIGHT.rotated(angle) * distance
+
+
+func _ensure_summon_root() -> void:
+	if summon_root != null and is_instance_valid(summon_root):
+		return
+	summon_root = _get_optional_node(summon_root_path) as SummonRoot
+	if summon_root != null:
+		return
+	summon_root = get_node_or_null("SummonRoot") as SummonRoot
+	if summon_root != null:
+		return
+	summon_root = SummonRoot.new()
+	summon_root.name = "SummonRoot"
+	add_child(summon_root)
 
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:

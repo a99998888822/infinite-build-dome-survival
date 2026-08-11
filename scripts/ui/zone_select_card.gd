@@ -1,4 +1,4 @@
-﻿extends PanelContainer
+extends PanelContainer
 class_name ZoneSelectCard
 
 signal selected(zone_id: String)
