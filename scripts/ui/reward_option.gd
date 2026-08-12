@@ -119,7 +119,9 @@ func _update_icon(icon_path: String) -> void:
 
 func _build_description_text(offer: Dictionary) -> String:
 	if offer.has("description"):
-		return str(offer.get("description", ""))
+		var description := str(offer.get("description", ""))
+		if not description.is_empty():
+			return description
 	if offer.has("effects"):
 		var effect_texts: Array[String] = []
 		for effect in offer.get("effects", []):
@@ -127,6 +129,14 @@ func _build_description_text(offer: Dictionary) -> String:
 				effect_texts.append(_format_effect(effect))
 		if not effect_texts.is_empty():
 			return "\n".join(effect_texts)
+	if offer.has("runtime_effects"):
+		var runtime_texts: Array[String] = []
+		for effect in offer.get("runtime_effects", []):
+			if effect is Dictionary:
+				var effect_data: Dictionary = effect
+				runtime_texts.append(str(effect_data.get("effect", "runtime_effect")))
+		if not runtime_texts.is_empty():
+			return "；".join(runtime_texts)
 	match str(offer.get("offer_type", "")):
 		"weapon_upgrade":
 			return "提升到 %d 级。" % int(offer.get("to_level", 0))

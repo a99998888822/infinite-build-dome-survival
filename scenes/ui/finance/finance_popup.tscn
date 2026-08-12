@@ -1,0 +1,67 @@
+﻿[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/finance_popup.gd" id="1_finance_popup"]
+
+[node name="FinancePopup" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+script = ExtResource("1_finance_popup")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(620, 500)
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/MainPanel"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "理财操作"
+horizontal_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+autowrap_mode = 3
+
+[node name="HintLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+autowrap_mode = 3
+
+[node name="ButtonGrid" type="GridContainer" parent="CenterContainer/MainPanel/Content"]
+columns = 2
+
+[node name="DepositAllButton" type="Button" parent="CenterContainer/MainPanel/Content/ButtonGrid"]
+text = "全部存入"
+
+[node name="DepositHalfButton" type="Button" parent="CenterContainer/MainPanel/Content/ButtonGrid"]
+text = "存入一半"
+
+[node name="WithdrawAllButton" type="Button" parent="CenterContainer/MainPanel/Content/ButtonGrid"]
+text = "全部取出"
+
+[node name="WithdrawHalfButton" type="Button" parent="CenterContainer/MainPanel/Content/ButtonGrid"]
+text = "取出一半"
+
+[node name="CustomRow" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+theme_override_constants/separation = 8
+
+[node name="CustomLabel" type="Label" parent="CenterContainer/MainPanel/Content/CustomRow"]
+text = "自定义数量"
+
+[node name="AmountEdit" type="LineEdit" parent="CenterContainer/MainPanel/Content/CustomRow"]
+placeholder_text = "输入整数"
+
+[node name="CustomActionRow" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+theme_override_constants/separation = 8
+
+[node name="CustomDepositButton" type="Button" parent="CenterContainer/MainPanel/Content/CustomActionRow"]
+text = "存入自定义"
+
+[node name="CustomWithdrawButton" type="Button" parent="CenterContainer/MainPanel/Content/CustomActionRow"]
+text = "取出自定义"
+
+[node name="SkipButton" type="Button" parent="CenterContainer/MainPanel/Content"]
+text = "跳过"

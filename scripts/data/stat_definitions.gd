@@ -278,7 +278,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 999999999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "本波开始前存入理财的局内金币本金，第一波不可存入。"
+		"description": "每波开始前可存入或取出的局内金币本金。"
 	},
 	"interest_rate": {
 		"display_name": "利率",
@@ -286,9 +286,9 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": 5,
 		"min": 0,
 		"max": 10000,
-		"is_integer": true,
+		"is_integer": false,
 		"is_percent": true,
-		"description": "整数百分比理财利率，默认5；波次结束收益 = ceil(finance * interest_rate / 100)。"
+		"description": "当前有效利率，默认 5；支持 0.2% 和 0.3% 等小数成长，波末利息公式为 ceil(finance * interest_rate / 100)。"
 	},
 	"load_capacity": {
 		"display_name": "负载上限",

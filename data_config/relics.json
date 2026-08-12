@@ -104,5 +104,291 @@
         "stack_rule": "unique"
       }
     ]
+  },
+  {
+    "id": "relic_piggy_bank",
+    "display_name": "猪猪存钱罐",
+    "description": "每波开始自动本金 +10。",
+    "icon": "res://assets/ui/icons/relics/relic_piggy_bank.png",
+    "rarity": "uncommon",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "bank"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "wave_start",
+        "effect": "add_principal_flat",
+        "value": 10,
+        "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_finance_manager",
+    "display_name": "理财经理",
+    "description": "利率 +1%。",
+    "icon": "res://assets/ui/icons/relics/relic_finance_manager.png",
+    "rarity": "uncommon",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "manager"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_finance_manager_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_finance_manager",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_dividend_check",
+    "display_name": "分红支票",
+    "description": "获得时立即结算一次利息。",
+    "icon": "res://assets/ui/icons/relics/relic_dividend_check.png",
+    "rarity": "uncommon",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "dividend"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "settle_interest_once"
+      }
+    ]
+  },
+  {
+    "id": "relic_speculative_chip",
+    "display_name": "投机筹码",
+    "description": "每次利息结算有 55% 概率收益翻倍，45% 概率无利息收益。",
+    "icon": "res://assets/ui/icons/relics/relic_speculative_chip.png",
+    "rarity": "uncommon",
+    "bond_id": "bond_chosen",
+    "max_stack": 1,
+    "tags": [
+      "relic",
+      "finance",
+      "chance"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "interest_settle",
+        "effect": "speculative_interest",
+        "double_chance_percent": 55,
+        "zero_chance_percent": 45
+      }
+    ]
+  },
+  {
+    "id": "relic_fixed_deposit_certificate",
+    "display_name": "定期存单",
+    "description": "获得时本金立刻 +(50*波次)；手动存入本金后必须间隔一回合后才能取出本金。",
+    "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
+    "rarity": "uncommon",
+    "bond_id": "bond_chosen",
+    "max_stack": 1,
+    "tags": [
+      "relic",
+      "finance",
+      "lock"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "add_principal_per_wave",
+        "value_per_wave": 50,
+        "free_principal": true
+      },
+      {
+        "trigger": "deposit",
+        "effect": "lock_principal_for_waves",
+        "waves": 1
+      }
+    ]
+  },
+  {
+    "id": "relic_compound_interest_tome",
+    "display_name": "复利宝典",
+    "description": "每成功结算一次利息，利率 +0.2%。",
+    "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
+    "rarity": "rare",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "growth"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "interest_success",
+        "effect": "add_interest_rate_bonus",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "relic_high_yield_contract",
+    "display_name": "高利契约",
+    "description": "利率 +3%；每波结束时，若本波开始前未手动存入本金，则本波结束无法收获利息。",
+    "icon": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
+    "rarity": "epic",
+    "bond_id": "bond_chosen",
+    "max_stack": 1,
+    "tags": [
+      "relic",
+      "finance",
+      "contract"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_high_yield_contract_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_high_yield_contract",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 3,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "wave_end",
+        "effect": "require_wave_start_deposit_for_interest"
+      }
+    ]
+  },
+  {
+    "id": "relic_periodic_dividend_clock",
+    "display_name": "周期分红钟",
+    "description": "每经过 3 波，自动触发一次利息结算。",
+    "icon": "res://assets/ui/icons/relics/relic_periodic_dividend_clock.png",
+    "rarity": "epic",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "periodic"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "wave_end",
+        "effect": "settle_interest_every_n_waves",
+        "interval_waves": 3
+      }
+    ]
+  },
+  {
+    "id": "relic_goblin_central_bank_printer",
+    "display_name": "哥布林央行印钞机",
+    "description": "利率 +5%；每波开始自动注入你当前持有金币 10% 的免费本金。",
+    "icon": "res://assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
+    "rarity": "mythic",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "printer"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_goblin_central_bank_printer_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_goblin_central_bank_printer",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 5,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "wave_start",
+        "effect": "add_principal_from_gold_percent",
+        "value_percent": 10,
+        "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_perpetual_annuity_scroll",
+    "display_name": "永续年金卷轴",
+    "description": "战斗过程中，每秒按当前理财本金的 0.1% 结算小额利息，向上取整；波次结束仍正常结算全额利息。",
+    "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
+    "rarity": "mythic",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "annuity"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "combat_tick",
+        "effect": "per_second_interest",
+        "principal_percent": 0.1
+      }
+    ]
+  },
+  {
+    "id": "relic_goblin_coin_printer",
+    "display_name": "哥布林印钞机",
+    "description": "每波开局赠送你当前持有金币 10% 比例的本金；每次利息结算后，利率永久 +0.3%。",
+    "icon": "res://assets/ui/icons/relics/relic_goblin_coin_printer.png",
+    "rarity": "mythic",
+    "bond_id": "bond_chosen",
+    "max_stack": 0,
+    "tags": [
+      "relic",
+      "finance",
+      "printer",
+      "growth"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "wave_start",
+        "effect": "add_principal_from_gold_percent",
+        "value_percent": 10,
+        "free_principal": true
+      },
+      {
+        "trigger": "interest_settle",
+        "effect": "add_interest_rate_bonus",
+        "value": 0.3
+      }
+    ]
   }
 ]

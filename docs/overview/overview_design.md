@@ -1,6 +1,6 @@
-# Infinite-Build-Dome-Survival 游戏总览设计
+﻿# Infinite-Build-Dome-Survival 游戏总览设计
 
-本文档只记录当前版本的顶层设计口径，详细字段、场景节点、接口和实现清单以 `docs/main/*.md`、`docs/main/checklist/*.md` 和 `docs/asset/*.md` 为准。
+本文档只记录当前版本的顶层设计口径，详细字段、场景节点、接口和实现清单以 `docs/main/*.md`、`docs/main/checklist/godot_verification_master_checklist.md` 和 `docs/asset/*.md` 为准。
 
 ## 1. 基础信息
 

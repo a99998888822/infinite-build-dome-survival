@@ -1,0 +1,12 @@
+﻿[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/finance_ui_controller.gd" id="1_finance_ui_controller"]
+[ext_resource type="PackedScene" path="res://scenes/ui/finance/finance_popup.tscn" id="2_finance_popup"]
+
+[node name="FinanceUIController" type="Node"]
+script = ExtResource("1_finance_ui_controller")
+
+[node name="PopupLayer" type="CanvasLayer" parent="."]
+layer = 25
+
+[node name="FinancePopup" parent="PopupLayer" instance=ExtResource("2_finance_popup")]

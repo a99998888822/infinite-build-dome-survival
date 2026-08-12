@@ -60,7 +60,10 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"rarity": str(relic_data.get("rarity", "common")),
 			"target_id": relic_id,
 			"display_name": str(relic_data.get("display_name", relic_id)),
+			"description": str(relic_data.get("description", "")),
 			"icon": str(relic_data.get("icon", "")),
+			"effects": (relic_data.get("effects", []) as Array).duplicate(true),
+			"runtime_effects": (relic_data.get("runtime_effects", []) as Array).duplicate(true),
 			"tags": relic_tags,
 		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus))
 

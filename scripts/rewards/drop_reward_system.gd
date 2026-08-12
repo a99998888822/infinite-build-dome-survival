@@ -97,7 +97,11 @@ func spawn_action(
 		"relic":
 			if snapshot != null:
 				snapshot.record_spawned_drop("relic", 1)
-			push_warning("[DropRewardSystem] relic reward requested, but relic pickup scene is not implemented yet.")
+			var relic_id := str(action.get("relic_id", action.get("target_id", "")))
+			if relic_id.is_empty():
+				relic_id = _pick_random_available_relic(player)
+			if relic_id.is_empty() or player == null or not player.has_method("add_relic") or not player.add_relic(relic_id):
+				push_warning("[DropRewardSystem] relic reward failed: %s" % relic_id)
 			return null
 		_:
 			if snapshot != null:
@@ -152,6 +156,23 @@ func spawn_health_pack(
 	if on_collected.is_valid():
 		pack.collected.connect(on_collected)
 	return pack
+
+
+func _pick_random_available_relic(player: PlayerController) -> String:
+	var candidates: Array[String] = []
+	for relic_data in DataRegistry.get_table("relics"):
+		if not (relic_data is Dictionary):
+			continue
+		var relic_record: Dictionary = relic_data
+		var relic_id := str(relic_record.get("id", ""))
+		if relic_id.is_empty():
+			continue
+		if player != null and player.has_method("can_add_relic") and not player.can_add_relic(relic_id):
+			continue
+		candidates.append(relic_id)
+	if candidates.is_empty():
+		return ""
+	return candidates[randi_range(0, candidates.size() - 1)]
 
 
 func collect_reward_pickups(root: Node) -> void:

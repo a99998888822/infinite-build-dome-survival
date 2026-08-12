@@ -45,6 +45,9 @@ var _pending_level_up_levels: Array[int] = []
 var _wave_end_ready: bool = false
 var _active_zone_selection_wave_number: int = 0
 var _pending_zone_harvest_payload: Dictionary = {}
+var _pending_interest_payload: Dictionary = {}
+var _pending_finance_payload: Dictionary = {}
+var _pending_wave_start_after_finance: bool = false
 
 var _bound_player: PlayerController = null
 var _bound_loadout: WeaponLoadout = null
@@ -76,6 +79,9 @@ func reset_flow() -> void:
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
+	_pending_interest_payload.clear()
+	_pending_finance_payload.clear()
+	_pending_wave_start_after_finance = false
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
 	flow_reset.emit()
@@ -173,7 +179,17 @@ func enter_camp_flow(camp_root: CampRoot = null) -> void:
 func request_next_wave() -> bool:
 	if _bound_wave_manager == null:
 		return false
-	return _bound_wave_manager.start_next_wave()
+	if current_mode != MODE_BATTLE or battle_resolved:
+		return false
+	if current_state != STATE_BATTLE_PREPARE:
+		return false
+	if not _has_next_wave():
+		return false
+	_pending_wave_start_after_finance = true
+	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(_get_next_wave_number())
+	_set_state(STATE_FINANCE_POPUP)
+	modal_requested.emit(STATE_FINANCE_POPUP, _pending_finance_payload.duplicate(true))
+	return true
 
 
 func finish_current_wave() -> void:
@@ -214,6 +230,7 @@ func close_shared_reward_shop_popup() -> void:
 	_active_level_up_level = 0
 	if _wave_end_ready:
 		_set_state(STATE_INTEREST_SETTLEMENT)
+		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
 	else:
 		_set_state(_resume_state_after_modal)
 
@@ -227,7 +244,9 @@ func request_zone_select_popup(source: String = "wave_manager") -> bool:
 		return false
 	if not ZoneProgression.has_zone_records():
 		return false
-	_active_zone_selection_wave_number = maxi(current_wave_index + 1, 0)
+	_active_zone_selection_wave_number = _get_next_wave_number()
+	if _active_zone_selection_wave_number <= 1:
+		return false
 	_set_state(STATE_ZONE_SELECT)
 	modal_requested.emit(STATE_ZONE_SELECT, ZoneProgression.build_zone_selection_payload(_active_zone_selection_wave_number))
 	return true
@@ -247,6 +266,7 @@ func confirm_zone_selection(zone_id: String) -> bool:
 	else:
 		_pending_zone_harvest_payload.clear()
 		_set_state(STATE_BATTLE_PREPARE)
+		_start_prepared_wave()
 	return true
 
 
@@ -257,28 +277,61 @@ func close_zone_harvest_result_popup() -> void:
 	ZoneProgression.acknowledge_harvest_result()
 	_pending_zone_harvest_payload.clear()
 	_set_state(STATE_BATTLE_PREPARE)
+	_start_prepared_wave()
+
+
+func submit_finance_operation(action: String, amount: int) -> Dictionary:
+	if current_state != STATE_FINANCE_POPUP or _bound_wave_manager == null:
+		return {"success": false, "reason": "finance_popup_not_active"}
+	var result := _bound_wave_manager.apply_finance_operation(action, amount)
+	if bool(result.get("success", false)) or str(action) == "none":
+		_pending_finance_payload.clear()
+		close_finance_popup()
+	return result
+
+
+func close_finance_popup() -> void:
+	if current_state != STATE_FINANCE_POPUP:
+		return
+	modal_closed.emit(STATE_FINANCE_POPUP)
+	_pending_finance_payload.clear()
+	_wave_end_ready = false
+	if request_zone_select_popup():
+		return
+	if not _start_prepared_wave():
+		_set_state(STATE_BATTLE_PREPARE)
+
+
+func close_interest_settlement() -> void:
+	if current_state != STATE_INTEREST_SETTLEMENT:
+		return
+	modal_closed.emit(STATE_INTEREST_SETTLEMENT)
+	_set_state(STATE_SHOP_POPUP)
 
 
 func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
+	_pending_interest_payload = _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {}
+	_pending_interest_payload["settlement_results"] = _pending_interest_payload.get("last_settlement_results", [])
 	if current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
 		_set_state(STATE_INTEREST_SETTLEMENT)
+		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
 	elif current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		_resume_state_after_modal = STATE_INTEREST_SETTLEMENT
 
 
 func advance_wave_end_phase() -> void:
 	if current_state == STATE_INTEREST_SETTLEMENT:
+		modal_closed.emit(STATE_INTEREST_SETTLEMENT)
 		_set_state(STATE_SHOP_POPUP)
 		return
 	if current_state == STATE_SHOP_POPUP:
-		_set_state(STATE_FINANCE_POPUP)
+		_wave_end_ready = false
+		_pending_interest_payload.clear()
+		_set_state(STATE_BATTLE_PREPARE)
 		return
 	if current_state == STATE_FINANCE_POPUP:
-		_wave_end_ready = false
-		if request_zone_select_popup():
-			return
-		_set_state(STATE_BATTLE_PREPARE)
+		close_finance_popup()
 		return
 
 
@@ -328,7 +381,32 @@ func get_state_snapshot() -> Dictionary:
 		"zone_state": ZoneProgression.get_state_snapshot(),
 		"active_zone_selection_wave_number": _active_zone_selection_wave_number,
 		"pending_zone_harvest_payload": _pending_zone_harvest_payload.duplicate(true),
+		"pending_interest_payload": _pending_interest_payload.duplicate(true),
+		"pending_finance_payload": _pending_finance_payload.duplicate(true),
+		"pending_wave_start_after_finance": _pending_wave_start_after_finance,
+		"finance_state": _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {},
 	}
+
+
+func _get_next_wave_number() -> int:
+	return maxi(current_wave_index + 2, 1)
+
+
+func _has_next_wave() -> bool:
+	return current_wave_index + 1 < DataRegistry.get_table("waves").size()
+
+
+func _start_prepared_wave() -> bool:
+	if not _pending_wave_start_after_finance:
+		return false
+	if _bound_wave_manager == null:
+		_pending_wave_start_after_finance = false
+		return false
+	if _bound_wave_manager.start_next_wave():
+		_pending_wave_start_after_finance = false
+		return true
+	_pending_wave_start_after_finance = false
+	return false
 
 
 func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
@@ -337,6 +415,8 @@ func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 	current_wave_index += 1
 	current_wave_id = wave_id
 	current_wave_duration_seconds = duration_seconds
+	_pending_finance_payload.clear()
+	_pending_wave_start_after_finance = false
 	_set_state(STATE_WAVE_COMBAT)
 
 

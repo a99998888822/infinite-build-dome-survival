@@ -40,6 +40,7 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
+const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = ["on_acquire", "wave_start", "deposit", "wave_end", "interest_settle", "interest_success", "combat_tick"]
 
 var errors: Array[String] = []
 var warnings: Array[String] = []
@@ -147,12 +148,20 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 			for index in value_data.size():
 				_validate_integer_values(value_data[index], "%s[%d]" % [path, index])
 		TYPE_FLOAT:
+			if _allows_fractional_config_value(path):
+				return
 			if not is_equal_approx(value_data, roundf(value_data)):
 				errors.append("Numeric config value must be integer: %s = %s" % [path, value_data])
 		TYPE_INT:
 			pass
 		_:
 			pass
+
+
+func _allows_fractional_config_value(path: String) -> bool:
+	return path.contains(".runtime_effects[") and (
+		path.ends_with(".value") or path.ends_with(".principal_percent")
+	)
 
 
 func _validate_stat_references(value_data: Variant, path: String) -> void:
@@ -246,6 +255,34 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 			continue
 		for effect_index in effects.size():
 			_validate_modifier_record(effects[effect_index], "%s.effects[%d]" % [path, effect_index])
+		var runtime_effects: Variant = record.get("runtime_effects", [])
+		if not (runtime_effects is Array):
+			errors.append("%s.runtime_effects must be an array." % path)
+			continue
+		for runtime_index in runtime_effects.size():
+			_validate_relic_runtime_effect(runtime_effects[runtime_index], "%s.runtime_effects[%d]" % [path, runtime_index])
+
+
+func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
+	if not (effect is Dictionary):
+		errors.append("%s must be an object." % path)
+		return
+	var effect_data: Dictionary = effect
+	_validate_required_fields(effect_data, ["trigger", "effect"], path)
+	if effect_data.has("trigger") and not VALID_RELIC_RUNTIME_TRIGGERS.has(str(effect_data["trigger"])):
+		warnings.append("Unknown relic runtime trigger in %s: %s" % [path, str(effect_data["trigger"])])
+	for key in ["value", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave"]:
+		if not effect_data.has(key):
+			continue
+		if not (effect_data[key] is int or effect_data[key] is float):
+			errors.append("%s.%s must be a number." % [path, key])
+			continue
+		if float(effect_data[key]) < 0.0:
+			errors.append("%s.%s must be greater than or equal to 0." % [path, key])
+	if effect_data.has("waves") and int(effect_data["waves"]) < 0:
+		errors.append("%s.waves must be greater than or equal to 0." % path)
+	if effect_data.has("interval_waves") and int(effect_data["interval_waves"]) <= 0:
+		errors.append("%s.interval_waves must be greater than 0." % path)
 
 
 func _validate_modifier_record(effect: Variant, path: String) -> void:

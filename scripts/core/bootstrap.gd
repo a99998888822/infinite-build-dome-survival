@@ -13,6 +13,8 @@ const ZONE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/zones/zon
 const ZONE_SELECT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_popup.tscn")
 const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")
 const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_harvest_result_popup.tscn")
+const FINANCE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_ui_controller.tscn")
+const FINANCE_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_popup.tscn")
 const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
@@ -50,13 +52,14 @@ func run_data_self_test() -> void:
 	var zone_ui_success := _run_zone_ui_checks()
 	var audio_success := _run_audio_checks()
 	var ui_success := _run_ui_flow_checks()
+	var finance_success := _run_finance_checks()
 	var main_flow_success := _run_main_flow_checks()
 	_print_table_counts()
 	_print_lookup_checks()
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and main_flow_success:
+	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -72,6 +75,7 @@ func _print_lookup_checks() -> void:
 	print("[Bootstrap] lookup checks")
 	_print_lookup_result("weapons", "weapon_void_blade")
 	_print_lookup_result("relics", "relic_flying_teeth")
+	_print_lookup_result("relics", "relic_piggy_bank")
 	_print_lookup_result("bonds", "bond_mighty")
 	_print_lookup_result("characters", "character_void_hunter")
 	_print_lookup_result("enemies", "enemy_mutated_grub")
@@ -652,6 +656,57 @@ func _run_weapon_checks() -> bool:
 
 
 
+func _run_finance_checks() -> bool:
+	print("[Bootstrap] finance checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	var wave_manager := WAVE_MANAGER_SCENE.instantiate() as WaveManager
+	passed = _print_check_result("finance scene instantiate", player != null and wave_manager != null) and passed
+	if player == null or wave_manager == null:
+		return false
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	add_child(wave_manager)
+	player.initialize_from_character("character_void_hunter")
+	wave_manager.initialize(player)
+	wave_manager.add_exp_and_gold(0, 100)
+	var payload := wave_manager.prepare_finance_for_wave(1)
+	passed = _print_check_result("finance payload build", int(payload.get("gold", 0)) == 100 and int(payload.get("principal", 0)) == 0) and passed
+	var deposit_result := wave_manager.apply_finance_operation("deposit", 50)
+	passed = _print_check_result("finance deposit", bool(deposit_result.get("success", false)) and wave_manager.current_gold == 50 and int(wave_manager.get_finance_snapshot().get("principal", 0)) == 50) and passed
+	var over_deposit_result := wave_manager.apply_finance_operation("deposit", 999)
+	passed = _print_check_result("finance reject over deposit", not bool(over_deposit_result.get("success", false)) and str(over_deposit_result.get("reason", "")) == "amount_exceeds_gold") and passed
+	var settle_result := wave_manager.trigger_finance_interest("bootstrap")
+	passed = _print_check_result("finance interest settle", bool(settle_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) > 50) and passed
+	wave_manager.add_relic("relic_piggy_bank")
+	wave_manager.prepare_finance_for_wave(2)
+	passed = _print_check_result("finance piggy relic", int(wave_manager.get_finance_snapshot().get("principal", 0)) >= 60) and passed
+	var dividend_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
+	wave_manager.add_relic("relic_dividend_check")
+	passed = _print_check_result("finance dividend check settle", int(wave_manager.get_finance_snapshot().get("principal", 0)) > dividend_before) and passed
+	wave_manager.add_relic("relic_fixed_deposit_certificate")
+	var fixed_deposit_result := wave_manager.apply_finance_operation("deposit", 1)
+	passed = _print_check_result("finance fixed deposit deposit", bool(fixed_deposit_result.get("success", false))) and passed
+	var locked_withdraw_result := wave_manager.apply_finance_operation("withdraw", 1)
+	passed = _print_check_result("finance fixed deposit lock", not bool(locked_withdraw_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("withdrawable_principal", 0)) == 0) and passed
+	wave_manager.add_relic("relic_compound_interest_tome")
+	var rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	wave_manager.trigger_finance_interest("bootstrap_compound")
+	var rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	passed = _print_check_result("finance compound rate growth", rate_after > rate_before) and passed
+	var finance_popup := FINANCE_POPUP_SCENE.instantiate()
+	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.get_node_or_null("CenterContainer/MainPanel/Content/ButtonGrid/DepositAllButton") != null) and passed
+	if finance_popup != null:
+		finance_popup.queue_free()
+	var finance_controller := FINANCE_UI_CONTROLLER_SCENE.instantiate()
+	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null) and passed
+	if finance_controller != null:
+		finance_controller.queue_free()
+	wave_manager.queue_free()
+	player.queue_free()
+	return passed
+
+
 func _run_main_flow_checks() -> bool:
 	print("[Bootstrap] main flow checks")
 	var passed := true
@@ -682,8 +737,22 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
 	passed = _print_check_result("main flow start weapon sync", player.get_start_weapon_ids().size() == 1 and player.get_start_weapon_ids()[0] == "weapon_void_blade" and loadout.get_weapon_instances().size() == 1) and passed
 
-	var wave_started := flow.request_next_wave()
-	passed = _print_check_result("main flow wave start request", wave_started and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	var finance_requested := flow.request_next_wave()
+	passed = _print_check_result("main flow finance popup", finance_requested and flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
+	var finance_result := flow.submit_finance_operation("none", 0)
+	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
+	passed = _print_check_result("main flow first wave skips zone", flow.get_current_state() != MainFlowCoordinator.STATE_ZONE_SELECT) and passed
+	if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT:
+		var zone_ok := flow.confirm_zone_selection("zone_nearstring_battlefield")
+		passed = _print_check_result("main flow zone select after finance", zone_ok and (flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT or flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT)) and passed
+		if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
+			flow.close_zone_harvest_result_popup()
+			passed = _print_check_result("main flow zone harvest close", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	if flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE:
+		var wave_started := wave_manager.start_next_wave()
+		passed = _print_check_result("main flow wave start request", wave_started and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	else:
+		passed = _print_check_result("main flow wave start request", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 	wave_manager.add_exp_and_gold(10, 0)
 	passed = _print_check_result("main flow shared reward/shop popup", flow.get_current_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP) and passed
 	passed = _print_check_result("main flow shared reward/shop dedupe", flow.get_state_snapshot().get("pending_shared_reward_shop_levels", []).is_empty()) and passed
@@ -694,8 +763,6 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow wave end ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
 	flow.advance_wave_end_phase()
 	passed = _print_check_result("main flow shop step", flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
-	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow finance step", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
 	flow.advance_wave_end_phase()
 	passed = _print_check_result("main flow next prepare step", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
 

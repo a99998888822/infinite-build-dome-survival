@@ -4,6 +4,8 @@ class_name PlayerController
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
 signal died
 signal start_weapons_changed(weapon_ids: Array[String])
+signal relics_changed(relic_ids: Array[String])
+signal relic_added(relic_id: String)
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.25
@@ -18,6 +20,7 @@ const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/play
 
 var character_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
+var relic_system: RelicBondSystem = RelicBondSystem.new()
 var current_hp: int = 0
 var current_shield: int = 0
 var alive: bool = true
@@ -60,6 +63,9 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_apply_modifier_list(outgame_modifiers)
 
 	start_weapon_ids = _resolve_start_weapons(data, initial_weapon_ids)
+	relic_system.clear()
+	relic_system.initialize(self)
+	relic_system.set_weapon_ids(start_weapon_ids)
 	current_hp = int(get_stat("max_hp"))
 	current_shield = int(get_stat("shield"))
 	alive = true
@@ -106,6 +112,38 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 
 func get_start_weapon_ids() -> Array[String]:
 	return start_weapon_ids.duplicate()
+
+
+func add_relic(relic_id: String) -> bool:
+	if not relic_system.add_relic(relic_id):
+		return false
+	relic_added.emit(relic_id)
+	relics_changed.emit(get_relic_ids())
+	return true
+
+
+func can_add_relic(relic_id: String) -> bool:
+	return relic_system.can_add_relic(relic_id)
+
+
+func get_relic_count(relic_id: String) -> int:
+	return relic_system.get_relic_count(relic_id)
+
+
+func get_relic_ids() -> Array[String]:
+	return relic_system.get_relic_ids()
+
+
+func get_relic_counts() -> Dictionary:
+	return relic_system.get_relic_counts()
+
+
+func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]:
+	return relic_system.get_active_relic_runtime_effects(trigger)
+
+
+func sync_relic_weapon_ids(weapon_ids: Array[String]) -> void:
+	relic_system.set_weapon_ids(weapon_ids)
 
 
 func get_character_icon_path() -> String:

@@ -126,3 +126,47 @@
 | 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | 512x128 / 4帧横向 / PNG，透明背景 | 基于默认眷族幼体生成右向行走4帧横向帧表，动作简单可爱，透明背景。 |
 | 未存在 | 默认眷族幼体攻击特效 | `effect_summon_kinling_hit.png` | `assets/sprites/summons/effects/effect_summon_kinling_hit.png` | 128x128 或 256x256 / 1:1 / PNG，透明背景 | 柔和绿色灵光冲击或小型星点扩散，适合召唤物近战命中特效，透明背景。 |
 | 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | 128x128 / 1:1 / PNG，透明背景 | 默认眷族幼体头像图标，小尺寸可读，清新干净像素风，透明背景。 |
+
+## 16. 理财系统与金融遗物美术清单
+
+### 16.1 UI 资源
+
+| 资源 | 用途 | 建议规格 | 备注 |
+|---|---|---|---|
+| `ui_finance_panel_frame` | 理财弹窗主面板装饰 | 9-slice / Godot StyleBox 可替代 | 当前实现先使用 `PanelContainer` |
+| `ui_finance_gold_icon` | 当前金币图标 | 64x64 PNG | 可复用局内金币图标 |
+| `ui_finance_principal_icon` | 本金图标 | 64x64 PNG | 建议金币堆 + 银行章 |
+| `ui_finance_interest_icon` | 利率图标 | 64x64 PNG | 建议百分号 + 金币光效 |
+| `ui_finance_lock_icon` | 本金锁定提示 | 64x64 PNG | 定期存单锁定状态 |
+| `ui_finance_settlement_fx` | 利息结算动效 | Sprite sheet / 粒子 | 金币流入本金池 |
+| `ui_finance_mode_switch_fx` | 理财页开关动效 | 简单淡入/淡出 | 用于波前理财弹窗切换 |
+
+### 16.2 遗物图标
+
+| 遗物ID | 中文名 | 稀有度 | 图像描述 | 路径建议 |
+|---|---|---|---|---|
+| `relic_piggy_bank` | 猪猪存钱罐 | 绿 | 粉色陶瓷小猪存钱罐，背部金币投入口 | `assets/ui/icons/relics/relic_piggy_bank.png` |
+| `relic_finance_manager` | 理财经理 | 绿 | 哥布林带公文包，穿小西装或铁算盘领带 | `assets/ui/icons/relics/relic_finance_manager.png` |
+| `relic_dividend_check` | 分红支票 | 绿 | 烫金纸质支票，边缘带金币纹章 | `assets/ui/icons/relics/relic_dividend_check.png` |
+| `relic_speculative_chip` | 投机筹码 | 绿 | 黑色鎏金筹码，一面金币一面骷髅 | `assets/ui/icons/relics/relic_speculative_chip.png` |
+| `relic_fixed_deposit_certificate` | 定期存单 | 绿 | 冰封银行存单单据，带蓝色封蜡和锁链 | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` |
+| `relic_compound_interest_tome` | 复利宝典 | 蓝 | 金边硬皮金融古书，封面为递增曲线 | `assets/ui/icons/relics/relic_compound_interest_tome.png` |
+| `relic_high_yield_contract` | 高利契约 | 紫 | 沾红墨水的羊皮纸契约，带危险印章 | `assets/ui/icons/relics/relic_high_yield_contract.png` |
+| `relic_periodic_dividend_clock` | 周期分红钟 | 紫 | 黄铜落地摆钟，钟摆是金币 | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` |
+| `relic_goblin_central_bank_printer` | 哥布林央行印钞机 | 橙 | 迷你哥布林金币铸造机，带央行徽章 | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` |
+| `relic_perpetual_annuity_scroll` | 永续年金卷轴 | 橙 | 发光魔法契约卷轴，金币符文环绕 | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` |
+| `relic_goblin_coin_printer` | 哥布林印钞机 | 橙 | 迷你黄铜金币铸造机，喷出金币火花 | `assets/ui/icons/relics/relic_goblin_coin_printer.png` |
+
+### 16.3 动效与音效
+
+| 资源 | 用途 | 建议 |
+|---|---|---|
+| `vfx_finance_deposit_coin_stream` | 存入本金 | 金币从金币栏飞向本金图标 |
+| `vfx_finance_withdraw_coin_stream` | 取出本金 | 金币从本金图标飞回金币栏 |
+| `vfx_interest_settle_burst` | 利息结算 | 金色数字上浮 + 光圈扩散 |
+| `vfx_speculative_double` | 投机筹码翻倍 | 筹码旋转后金光爆开 |
+| `vfx_speculative_zero` | 投机筹码失败 | 筹码暗淡、灰烟散开 |
+| `sfx_finance_deposit` | 存入音效 | 清脆金币入袋声 |
+| `sfx_finance_withdraw` | 取出音效 | 金币倒出声 |
+| `sfx_interest_settle` | 利息结算音效 | 柔和金币叮声 |
+| `sfx_finance_lock` | 本金锁定提示 | 轻微冰封/锁扣声 |

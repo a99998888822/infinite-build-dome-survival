@@ -1,4 +1,4 @@
-# Infinite-Build-Dome-Survival 模块化设计拆分概述
+﻿# Infinite-Build-Dome-Survival 模块化设计拆分概述
 
 本文档用于把 `overview_design.md` 拆分为后续可独立展开的模块设计文档，方便 Godot 工程实现、数据配置、AI协作与迭代排期。当前仅定义模块边界、职责、关键依赖与建议落地顺序；详细字段、类结构、场景节点和接口在后续模块文档中展开。
 
@@ -319,22 +319,22 @@ flowchart TD
 
 | 模块 | 设计文档 | 实施清单 | 状态 |
 | --- | --- | --- | --- |
-| 基础数值与数据配置 | `docs/main/1-base_data_and_modifiers_design.md` | `docs/main/checklist/1-base_data_implementation_checklist.md` | 已通过一次 Godot 启动验证 |
-| 工程基础设施 | `docs/main/14-engineering_foundation_design.md` | `docs/main/checklist/14-engineering_foundation_implementation_checklist.md` | 当前推荐版本；`2-` 文件保留为早期草稿 |
-| 玩家与角色 | `docs/main/3-player_and_character_design.md` | `docs/main/checklist/3-player_character_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 局内武器 | `docs/main/4-weapon_loadout_design.md` | `docs/main/checklist/4-weapon_loadout_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 局内遗物与羁绊 | `docs/main/5-relic_bond_design.md` | `docs/main/checklist/5-relic_bond_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 敌人与波次 | `docs/main/6-enemy_wave_design.md` | `docs/main/checklist/6-enemy_wave_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 局外营地与成长 | `docs/main/7-camp_meta_progression_design.md` | `docs/main/checklist/7-camp_meta_progression_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| UI交互 | `docs/main/8-ui_flow_design.md` | `docs/main/checklist/8-ui_flow_implementation_checklist.md` | 奖励卡骨架已接入，其余 UI 待实现 |
-| 掉落与奖励 | `docs/main/9-drop_reward_design.md` | `docs/main/checklist/9-drop_reward_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 音频与氛围表现 | `docs/main/10-audio_atmosphere_design.md` | `docs/main/checklist/10-audio_atmosphere_implementation_checklist.md` | 代码已接入，待音频素材与 Godot 验证 |
-| 存档与本地进度 | `docs/main/11-save_progress_design.md` | `docs/main/checklist/11-save_progress_implementation_checklist.md` | 设计与清单已完成，待 Godot 验证 |
-| 局内战斗循环与主流程 | `docs/main/12-run_combat_loop_design.md` | `docs/main/checklist/12-run_combat_loop_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
-| 区域驻守与福缘收割 | `docs/main/13-zone_streak_fortune_design.md` | `docs/main/checklist/13-zone_streak_fortune_implementation_checklist.md` | 代码与 UI 骨架已接入，待 Godot 验证 |
-| 召唤物与友方实体 | `docs/main/15-summon_ally_design.md` | `docs/main/checklist/15-summon_ally_implementation_checklist.md` | 代码已接入，待 Godot 验证 |
+| 基础数值与数据配置 | `docs/main/1-base_data_and_modifiers_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 已通过一次 Godot 启动验证 |
+| 工程基础设施 | `docs/main/14-engineering_foundation_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 当前推荐版本；`2-` 文件保留为早期草稿 |
+| 玩家与角色 | `docs/main/3-player_and_character_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局内武器 | `docs/main/4-weapon_loadout_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局内遗物与羁绊 | `docs/main/5-relic_bond_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 敌人与波次 | `docs/main/6-enemy_wave_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 局外营地与成长 | `docs/main/7-camp_meta_progression_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| UI交互 | `docs/main/8-ui_flow_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 奖励卡骨架已接入，其余 UI 待实现 |
+| 掉落与奖励 | `docs/main/9-drop_reward_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 音频与氛围表现 | `docs/main/10-audio_atmosphere_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待音频素材与 Godot 验证 |
+| 存档与本地进度 | `docs/main/11-save_progress_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 设计与清单已完成，待 Godot 验证 |
+| 局内战斗循环与主流程 | `docs/main/12-run_combat_loop_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
+| 区域驻守与福缘收割 | `docs/main/13-zone_streak_fortune_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码与 UI 骨架已接入，待 Godot 验证 |
+| 召唤物与友方实体 | `docs/main/15-summon_ally_design.md` | `docs/main/checklist/godot_verification_master_checklist.md` | 代码已接入，待 Godot 验证 |
 
 补充说明：
 
-1. `docs/main/2-engineering_foundation_design.md` 与 `docs/main/checklist/2-engineering_foundation_implementation_checklist.md` 是早期工程基础设施草稿，当前以后续的 `14-` 文档为准。
+1. `docs/main/2-engineering_foundation_design.md` 与 `docs/main/checklist/godot_verification_master_checklist.md` 是早期工程基础设施草稿，当前以后续的 `14-` 文档为准。
 2. `docs/asset/asset_checklist_summary.md` 与 `docs/asset/asset_rules_summary.md` 是当前统一素材清单与素材规则入口，旧的分模块素材清单已合并。

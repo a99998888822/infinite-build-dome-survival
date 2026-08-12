@@ -116,6 +116,36 @@ func get_relic_ids() -> Array[String]:
 	return result
 
 
+func get_relic_counts() -> Dictionary:
+	var result := {}
+	for relic_id in relic_ids_by_name.keys():
+		result[str(relic_id)] = (relic_ids_by_name[relic_id] as Array).size()
+	return result
+
+
+func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for instance_id in relic_instances.keys():
+		var relic_instance: Dictionary = relic_instances[instance_id]
+		var relic_data: Dictionary = relic_instance.get("relic_data", {})
+		var effects: Variant = relic_data.get("runtime_effects", [])
+		if not (effects is Array):
+			continue
+		for effect_index in range(effects.size()):
+			var effect: Variant = effects[effect_index]
+			if not (effect is Dictionary):
+				continue
+			var effect_data: Dictionary = effect.duplicate(true)
+			var effect_trigger := str(effect_data.get("trigger", ""))
+			if not trigger.is_empty() and effect_trigger != trigger:
+				continue
+			effect_data["relic_id"] = str(relic_instance.get("relic_id", ""))
+			effect_data["relic_instance_id"] = str(instance_id)
+			effect_data["relic_runtime_effect_index"] = effect_index
+			result.append(effect_data)
+	return result
+
+
 func get_bond_tag_count(bond_id: String) -> int:
 	var bond_data := DataRegistry.get_record("bonds", bond_id)
 	if bond_data.is_empty():
@@ -179,7 +209,10 @@ func _apply_relic_effects() -> void:
 			var effect: Variant = effects[effect_index]
 			if not (effect is Dictionary):
 				continue
-			var modifier_data := _build_modifier_data(effect, str(relic_instance.get("relic_id", "")), str(instance_id), effect_index, "relic")
+			var effect_data: Dictionary = effect
+			if not effect_data.has("stat"):
+				continue
+			var modifier_data := _build_modifier_data(effect_data, str(relic_instance.get("relic_id", "")), str(instance_id), effect_index, "relic")
 			owner_player.add_runtime_modifier(modifier_data)
 
 
