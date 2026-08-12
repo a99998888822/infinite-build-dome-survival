@@ -298,10 +298,12 @@ func _run_enemy_wave_checks() -> bool:
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
-	var shared_reward_shop_count := 0
-	wave_manager.shared_reward_shop_requested.connect(func(_level: int) -> void: shared_reward_shop_count += 1)
+	var shared_reward_shop_counter := {"count": 0}
+	wave_manager.shared_reward_shop_requested.connect(func(_level: int) -> void: shared_reward_shop_counter["count"] = int(shared_reward_shop_counter.get("count", 0)) + 1)
+	var expected_collected_exp := 4 + _get_guaranteed_exp_drop_amount("drop_basic_enemy")
 	wave_manager.collect_all_exp_orbs()
-	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == 0 and wave_manager.current_gold == 5 and wave_manager.player_level == 2 and shared_reward_shop_count >= 1) and passed
+	var expected_after_collect := _calculate_level_state_after_exp(expected_collected_exp)
+	passed = _print_check_result("wave collect exp orbs", wave_manager.current_exp == int(expected_after_collect.get("current_exp", 0)) and wave_manager.current_gold == expected_collected_exp and wave_manager.player_level == int(expected_after_collect.get("player_level", 1)) and int(shared_reward_shop_counter.get("count", 0)) >= int(expected_after_collect.get("level_ups", 0))) and passed
 
 	player.add_runtime_modifier({
 		"id": "mod_test_reward_drop_rate",
@@ -329,7 +331,8 @@ func _run_enemy_wave_checks() -> bool:
 	passed = _print_check_result("health pack collection", player.current_hp == hp_before_reward + 6 and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= 6 and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
 
 	wave_manager.add_exp_and_gold(10, 0)
-	passed = _print_check_result("level up shared reward/shop trigger", shared_reward_shop_count >= 2 and wave_manager.player_level >= 3 and wave_manager.current_exp == 0) and passed
+	var expected_after_bonus_exp := _calculate_level_state_after_exp(expected_collected_exp + 10)
+	passed = _print_check_result("level up shared reward/shop trigger", int(shared_reward_shop_counter.get("count", 0)) >= int(expected_after_bonus_exp.get("level_ups", 0)) and wave_manager.player_level == int(expected_after_bonus_exp.get("player_level", 1)) and wave_manager.current_exp == int(expected_after_bonus_exp.get("current_exp", 0))) and passed
 
 	wave_manager.queue_free()
 	player.queue_free()
@@ -517,7 +520,7 @@ func _run_audio_checks() -> bool:
 func _run_ui_flow_checks() -> bool:
 	print("[Bootstrap] ui flow checks")
 	var passed := true
-	var reward_option := REWARD_OPTION_SCENE.instantiate()
+	var reward_option := REWARD_OPTION_SCENE.instantiate() as RewardOption
 	passed = _print_check_result("reward option scene instantiate", reward_option != null) and passed
 	if reward_option != null:
 		var sample_offer := {
@@ -779,6 +782,35 @@ func _run_main_flow_checks() -> bool:
 	player.queue_free()
 	wave_manager.queue_free()
 	return passed
+
+
+func _get_guaranteed_exp_drop_amount(drop_table_id: String) -> int:
+	var drop_table := DataRegistry.get_record("drop_tables", drop_table_id)
+	var total_exp := 0
+	var entries: Array = drop_table.get("entries", [])
+	for entry in entries:
+		if not (entry is Dictionary):
+			continue
+		var entry_data: Dictionary = entry
+		if str(entry_data.get("type", "")) == "exp_orb" and int(entry_data.get("chance_percent", 0)) >= 100:
+			total_exp += maxi(0, int(entry_data.get("amount", 0)))
+	return total_exp
+
+
+func _calculate_level_state_after_exp(total_exp: int) -> Dictionary:
+	var level := WaveManager.DEFAULT_PLAYER_LEVEL
+	var remaining_exp := maxi(total_exp, 0)
+	var level_ups := 0
+	while remaining_exp >= 5 + (level - 1) * 5:
+		remaining_exp -= 5 + (level - 1) * 5
+		level += 1
+		level_ups += 1
+	return {
+		"player_level": level,
+		"current_exp": remaining_exp,
+		"level_ups": level_ups,
+	}
+
 
 func _print_check_result(check_name: String, passed: bool) -> bool:
 	if passed:

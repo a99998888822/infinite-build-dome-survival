@@ -94,7 +94,7 @@ func spawn_summon(summon_data: Dictionary, spawn_position: Vector2 = Vector2.ZER
 	add_child(summon)
 	summon.global_position = spawn_position if use_spawn_position else _get_spawn_position(spawn_index)
 	var runtime_modifiers: Array = []
-	var raw_runtime_modifiers := runtime_data.get("runtime_modifiers", [])
+	var raw_runtime_modifiers: Variant = runtime_data.get("runtime_modifiers", [])
 	if raw_runtime_modifiers is Array:
 		runtime_modifiers = raw_runtime_modifiers
 	if not summon.initialize(owner_player, targeting_service, runtime_data, runtime_modifiers):

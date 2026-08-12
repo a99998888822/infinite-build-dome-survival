@@ -20,11 +20,9 @@ script = ExtResource("1_root")
 [node name="BuildingLayer" type="Node2D" parent="." unique_id=864991629]
 
 [node name="BackgroundLayer" type="Node2D" parent="." unique_id=1202559248]
+z_index = -999
 
 [node name="Background1" type="Sprite2D" parent="BackgroundLayer" unique_id=60901541]
-texture = ExtResource("2_62drx")
-
-[node name="Background10" type="Sprite2D" parent="BackgroundLayer" unique_id=1287319074]
 texture = ExtResource("2_62drx")
 
 [node name="Background6" type="Sprite2D" parent="BackgroundLayer" unique_id=1421001052]
@@ -84,9 +82,6 @@ position = Vector2(189, -267)
 [node name="CampObstacle3" parent="PropLayer/obstacle_collection" unique_id=906315038 instance=ExtResource("5_4xve8")]
 position = Vector2(470, -339)
 
-[node name="CampObstacle6" parent="PropLayer/obstacle_collection" unique_id=179604913 instance=ExtResource("6_rwtlg")]
-position = Vector2(382, -245)
-
 [node name="CampObstacle5" parent="PropLayer/obstacle_collection" unique_id=1300123726 instance=ExtResource("6_rwtlg")]
 position = Vector2(227, -122)
 
@@ -106,6 +101,10 @@ scale = Vector2(1.5000001, 1.5000001)
 
 [node name="CampObstacle10" parent="PropLayer/obstacle_collection" unique_id=1205329169 instance=ExtResource("10_en6th")]
 position = Vector2(434, -152)
+
+[node name="CampObstacle6" parent="PropLayer/obstacle_collection/CampObstacle10" unique_id=179604913 instance=ExtResource("6_rwtlg")]
+position = Vector2(-104, -186)
+scale = Vector2(2, 2)
 
 [node name="sprite_collection" type="Node2D" parent="PropLayer" unique_id=1944167956]
 
