@@ -4,6 +4,7 @@
 > 判定规则：已存在表按当前磁盘文件列出，缺失表按清单目标路径列出；`.import` 和“节点实现/无需 PNG”条目不纳入文件表。
 > 补充说明：第 13 组可选区域素材原文未给固定文件名，此处按 `zones.json` ID 和现有目录规则补了建议命名。
 > 生成日期：2026-08-11。
+> 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
 ## 1. 已存在的素材（37 个）
 
@@ -47,16 +48,10 @@
 | 已存在 | 砍刀图标 | `weapon_mutated_cleaver.png` | `assets/ui/icons/weapons/weapon_mutated_cleaver.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 小飞刀图标 | `weapon_void_blade.png` | `assets/ui/icons/weapons/weapon_void_blade.png` | 128x128 / 1:1 / PNG |  |
 
-## 2. 未存在的必需素材（33 个）
+## 2. 未存在的必需素材（38 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
-| 未存在 | 菜单 BGM | `bgm_menu.ogg` | `assets/audio/bgm/bgm_menu.ogg` | OGG，循环 | 生成：角色选择和通用菜单使用，平静、清新、轻微神秘 / OGG，循环 |
-| 未存在 | 营地 BGM | `bgm_camp.ogg` | `assets/audio/bgm/bgm_camp.ogg` | OGG，循环 | 生成：森林、篝火、河流营地使用，安静舒缓 / OGG，循环 |
-| 未存在 | 战斗 BGM | `bgm_battle.ogg` | `assets/audio/bgm/bgm_battle.ogg` | OGG，循环 | 生成：普通战斗使用，节奏稳定，有轻微紧张感 / OGG，循环 |
-| 未存在 | 小飞刃 `weapon_void_blade` | `sfx_weapon_void_blade_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | OGG/WAV，短音效 | 生成：小型飞刃命中目标的轻锐金属反馈 / OGG/WAV，短音效 |
-| 未存在 | 砍刀 `weapon_mutated_cleaver` | `sfx_weapon_mutated_cleaver_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg` | OGG/WAV，短音效 | 生成：砍刀命中的短促挥砍反馈，不使用血腥撕裂声 / OGG/WAV，短音效 |
-| 未存在 | 穹顶震波器 `weapon_dome_shockwave` | `sfx_weapon_dome_shockwave_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg` | OGG/WAV，短音效 | 生成：圆形能量震波命中的低频能量反馈 / OGG/WAV，短音效 |
 | 未存在 | 军械工坊建筑 | `camp_armory_workshop.png` | `assets/sprites/camp/buildings/unlocked/camp_armory_workshop.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“军械工坊”，小型工匠建筑、木质与金属结合、轮廓清楚、结构简单、清新、适合森林营地。不要脏乱、不要噪点、不要恐怖元素，PNG，透明背景。 |
 | 未存在 | 利刃演武场建筑 | `camp_blade_arena.png` | `assets/sprites/camp/buildings/unlocked/camp_blade_arena.png` | 256x256 / PNG | 生成一张像素风训练场建筑图，主题是“利刃演武场”，小型近战训练设施，木质木桩、石台和简化兵器架，清新、像素精度中高，PNG，透明背景。 |
 | 未存在 | 远星射靶台建筑 | `camp_farstar_range.png` | `assets/sprites/camp/buildings/unlocked/camp_farstar_range.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“远星射靶台”，小型高台和靶场设施，清新、简洁、适合森林营地，PNG，透明背景。 |
@@ -78,13 +73,28 @@
 | 未存在 | 营地入口按钮图标 | `icon_camp_entry.png` | `assets/ui/icons/camp/icon_camp_entry.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示营地入口，主题是营地、篝火或小屋，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | 建筑升级图标 | `icon_building_upgrade.png` | `assets/ui/icons/camp/icon_building_upgrade.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示建筑升级，图形可以是向上箭头、齿轮或星光强化符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | 锁定覆盖层 | `overlay_locked_ruins.png` | `assets/ui/overlays/camp/overlay_locked_ruins.png` | 1:1 或 4:3，建议 512x512 / PNG，透明背景 | 生成一张清新干净的像素风锁定覆盖层素材，表现废墟、封印或锁定状态，适合叠在建筑入口上，透明背景，PNG，不要文字，不要噪点，不要恐怖化表现 |
+| 未存在 | 默认眷族幼体单帧 | `summon_kinling_base.png` | `assets/sprites/summons/summon_kinling_base.png` | PNG，透明背景，128x128 或 256x256，1:1 | 生成一张清新干净的中高精度像素风召唤物单帧图，主题是“友方眷族幼体”，体型小巧可爱，像一只浅绿色或淡蓝色的圆润小生物，带轻微克苏鲁感但不恐怖，可以有小触须、小耳朵或柔和发光眼睛，整体适合森林、篝火、黄昏氛围，不要肮脏环境，不要噪点，不要血腥，不要文字，透明背景，正面略偏右朝向，轮廓清晰，适合游戏内跟随玩家显示。 |
+| 未存在 | 理财弹窗主面板装饰 | `ui_finance_panel_frame.png` | `assets/ui/panels/finance/ui_finance_panel_frame.png` | 9-slice PNG / Godot StyleBox 可替代 | 当前实现先使用 `PanelContainer` |
+| 未存在 | 当前金币图标 | `ui_finance_gold_icon.png` | `assets/ui/icons/finance/ui_finance_gold_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 可复用局内金币图标 |
+| 未存在 | 本金图标 | `ui_finance_principal_icon.png` | `assets/ui/icons/finance/ui_finance_principal_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议金币堆 + 银行章 |
+| 未存在 | 利率图标 | `ui_finance_interest_icon.png` | `assets/ui/icons/finance/ui_finance_interest_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议百分号 + 金币光效 |
+| 未存在 | 本金锁定提示 | `ui_finance_lock_icon.png` | `assets/ui/icons/finance/ui_finance_lock_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 定期存单锁定状态 |
+| 未存在 | 猪猪存钱罐遗物图标 | `relic_piggy_bank.png` | `assets/ui/icons/relics/relic_piggy_bank.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；粉色陶瓷小猪存钱罐，背部金币投入口。 |
+| 未存在 | 理财经理遗物图标 | `relic_finance_manager.png` | `assets/ui/icons/relics/relic_finance_manager.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；哥布林带公文包，穿小西装或铁算盘领带。 |
+| 未存在 | 分红支票遗物图标 | `relic_dividend_check.png` | `assets/ui/icons/relics/relic_dividend_check.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；烫金纸质支票，边缘带金币纹章。 |
+| 未存在 | 投机筹码遗物图标 | `relic_speculative_chip.png` | `assets/ui/icons/relics/relic_speculative_chip.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；黑色鎏金筹码，一面金币一面骷髅。 |
+| 未存在 | 定期存单遗物图标 | `relic_fixed_deposit_certificate.png` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；冰封银行存单单据，带蓝色封蜡和锁链。 |
+| 未存在 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；金边硬皮金融古书，封面为递增曲线。 |
+| 未存在 | 高利契约遗物图标 | `relic_high_yield_contract.png` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；沾红墨水的羊皮纸契约，带危险印章。 |
+| 未存在 | 周期分红钟遗物图标 | `relic_periodic_dividend_clock.png` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；黄铜落地摆钟，钟摆是金币。 |
+| 未存在 | 哥布林央行印钞机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；迷你哥布林金币铸造机，带央行徽章。 |
+| 未存在 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；发光魔法契约卷轴，金币符文环绕。 |
+| 未存在 | 哥布林印钞机遗物图标 | `relic_goblin_coin_printer.png` | `assets/ui/icons/relics/relic_goblin_coin_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；迷你黄铜金币铸造机，喷出金币火花。 |
 
-## 3. 未存在的可选素材（32 个）
+## 3. 未存在的可选素材（29 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
-| 未存在 | 小飞刀命中特效 | `effect_void_blade_hit.png` | `assets/sprites/weapons/effects/effect_void_blade_hit.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风命中特效，小型淡紫色星光爆点，中心明亮，边缘有少量像素粒子，适合飞刀命中敌人时播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
-| 未存在 | 暴击命中特效 | `effect_critical_hit.png` | `assets/sprites/weapons/effects/effect_critical_hit.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风暴击特效，明亮金黄色和淡紫色混合闪光，星形爆点，轮廓清晰，适合 2D 游戏中作为暴击反馈，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
 | 未存在 | 武器商店卡片底图 | `card_weapon_shop_clean.png` | `assets/ui/icons/weapons/card_weapon_shop_clean.png` | 4:5，512x640 / PNG，透明或干净底 | 生成一张清新干净的像素风武器商店卡片底图，适合穹顶生存轻克苏鲁题材，柔和深蓝绿色背景，浅金色边框，中央留出武器图标空间，下方留出名称和数值文本空间，不要文字，不要肮脏噪点，不要血腥恐怖，PNG |
 | 未存在 | 武器负载图标 | `icon_weapon_load.png` | `assets/ui/icons/weapons/icon_weapon_load.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示武器负载，图形是小背包或能量槽，浅绿色和暖黄色配色，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥恐怖 |
 | 未存在 | 武器升级箭头 | `icon_weapon_upgrade.png` | `assets/ui/icons/weapons/icon_weapon_upgrade.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示武器升级，图形是向上箭头和小星光，浅绿色、淡蓝色、暖黄色配色，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥恐怖 |
@@ -93,10 +103,7 @@
 | 未存在 | 大力羁绊徽记 | `bond_mighty.png` | `assets/ui/icons/bonds/bond_mighty.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风羁绊徽记，主题是“大力”，图形偏向肌肉、拳头或重锤的简洁符号，浅红棕与暖金配色，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
 | 未存在 | 神射手羁绊徽记 | `bond_sharpshooter.png` | `assets/ui/icons/bonds/bond_sharpshooter.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风羁绊徽记，主题是“神射手”，图形偏向箭矢、准星或拉弓符号，浅蓝色与金色配色，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
 | 未存在 | 神选者羁绊徽记 | `bond_chosen.png` | `assets/ui/icons/bonds/bond_chosen.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风羁绊徽记，主题是“神选者”，图形偏向第三只眼、星环或虚空纹章，浅紫色与蓝绿色配色，带轻微神秘光芒，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
-| 未存在 | 遗物获得闪光 | `effect_relic_get.png` | `assets/sprites/relics/effects/effect_relic_get.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风获取特效，小型淡金色与浅紫色闪光，星点环绕，适合作为遗物获得时的 UI 反馈，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
 | 未存在 | 天外幼体行走帧表 | `enemy_mutated_grub_walk_right_spritesheet.png` | `assets/sprites/enemies/enemy_mutated_grub_walk_right_spritesheet.png` | 4:1，建议 512x128，4帧，每帧128x128 / PNG，透明背景 | 基于“天外幼体”敌人设计，生成一张清新干净的中高精度像素风右向爬行动画帧表，4帧横向排列，1行4列，每帧尺寸完全一致，小型圆润畸变幼虫怪物，浅紫色触须和蓝绿色微光，动作是轻微蠕动前进，透明背景，PNG，不要肮脏噪点，不要血腥，不要腐烂，不要文字 |
-| 未存在 | 敌人受击闪光 | `effect_enemy_hit.png` | `assets/sprites/enemies/effects/effect_enemy_hit.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风受击特效，小型淡黄色和浅紫色闪光，中心明亮，边缘有少量像素星点，适合敌人受击瞬间播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要文字 |
-| 未存在 | 敌人死亡消散 | `effect_enemy_death.png` | `assets/sprites/enemies/effects/effect_enemy_death.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风敌人死亡消散特效，淡紫色与蓝绿色粒子向外散开，带少量柔和星点，适合 2D 游戏怪物死亡反馈，透明背景，PNG，不要血腥，不要腐烂，不要肮脏噪点，不要文字 |
 | 未存在 | 波次开始提示图标 | `icon_wave_start.png` | `assets/ui/icons/waves/icon_wave_start.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“波次开始”，图形为小旗帜、钟表或向前箭头，淡蓝绿色和暖金配色，轮廓清晰，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
 | 未存在 | 营地 UI 图标 | `icon_camp.png` | `assets/ui/icons/camp/icon_camp.png` | 128x128 / PNG | 生成一个像素风营地图标，主题是“营地 / 篝火 / 小屋”，清新、简洁、透明背景，适合作为 UI 入口按钮。 |
 | 未存在 | 通用关闭按钮 | `icon_close.png` | `assets/ui/icons/system/icon_close.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示关闭，使用简洁叉号或圆角关闭符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
@@ -115,58 +122,33 @@
 | 未存在 | 区域图标-神选之地 | `zone_chosen_land.png` | `assets/ui/icons/zones/zone_chosen_land.png` | 1:1, 128x128 / PNG | 生成：简洁的理智/侵蚀倾向图标 / 区域选择页识别 / PNG |
 | 未存在 | 福缘收割提示图标 | `icon_fortune_harvest.png` | `assets/ui/icons/zones/icon_fortune_harvest.png` | 1:1, 128x128 / PNG | 生成：福袋、收割、光点一类提示符号 / 切区收割结果页 / PNG |
 | 未存在 | 区域卡片底纹 | `card_zone_pattern.png` | `assets/ui/panels/zones/card_zone_pattern.png` | 4:5, 512x640 / PNG | 生成：低对比、干净的卡片纹理 / 区域选择页背景强化 / PNG |
+| 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | PNG，透明背景，512x128，4 帧横向帧表，每帧 128x128 | 基于“友方眷族幼体”的单帧形象，生成一张清新干净的中高精度像素风右向行走帧表，4 帧横向排列，每帧尺寸一致，小生物轻快跳步或摆动触须前进，动作简单可爱，轮廓清晰，不要文字，不要噪点，不要血腥，透明背景，整体保持浅绿色或淡蓝色、柔和发光眼睛、轻微克苏鲁但不恐怖的风格。 |
+| 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | PNG，透明背景，128x128，1:1 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“友方眷族幼体头像”，圆润可爱的小型召唤生物头像，浅绿色或淡蓝色，柔和发光眼睛，轻微克苏鲁元素但不恐怖，图标轮廓清晰，小尺寸可读，不要文字，不要噪点，不要血腥，透明背景。 |
 
-## 3. 第15模块：召唤物与友方实体补充
-
-> 详细提示词见 `docs/asset/15-summon_ally_asset_checklist.md`。
+## 4. 动效与音频（23 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
-| 未存在 | 默认眷族幼体单帧 | `summon_kinling_base.png` | `assets/sprites/summons/summon_kinling_base.png` | 128x128 或 256x256 / 1:1 / PNG，透明背景 | 清新干净中高精度像素风友方眷族幼体，小巧可爱，浅绿色或淡蓝色，轻微克苏鲁但不恐怖，透明背景。 |
-| 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | 512x128 / 4帧横向 / PNG，透明背景 | 基于默认眷族幼体生成右向行走4帧横向帧表，动作简单可爱，透明背景。 |
-| 未存在 | 默认眷族幼体攻击特效 | `effect_summon_kinling_hit.png` | `assets/sprites/summons/effects/effect_summon_kinling_hit.png` | 128x128 或 256x256 / 1:1 / PNG，透明背景 | 柔和绿色灵光冲击或小型星点扩散，适合召唤物近战命中特效，透明背景。 |
-| 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | 128x128 / 1:1 / PNG，透明背景 | 默认眷族幼体头像图标，小尺寸可读，清新干净像素风，透明背景。 |
-
-## 16. 理财系统与金融遗物美术清单
-
-### 16.1 UI 资源
-
-| 资源 | 用途 | 建议规格 | 备注 |
-|---|---|---|---|
-| `ui_finance_panel_frame` | 理财弹窗主面板装饰 | 9-slice / Godot StyleBox 可替代 | 当前实现先使用 `PanelContainer` |
-| `ui_finance_gold_icon` | 当前金币图标 | 64x64 PNG | 可复用局内金币图标 |
-| `ui_finance_principal_icon` | 本金图标 | 64x64 PNG | 建议金币堆 + 银行章 |
-| `ui_finance_interest_icon` | 利率图标 | 64x64 PNG | 建议百分号 + 金币光效 |
-| `ui_finance_lock_icon` | 本金锁定提示 | 64x64 PNG | 定期存单锁定状态 |
-| `ui_finance_settlement_fx` | 利息结算动效 | Sprite sheet / 粒子 | 金币流入本金池 |
-| `ui_finance_mode_switch_fx` | 理财页开关动效 | 简单淡入/淡出 | 用于波前理财弹窗切换 |
-
-### 16.2 遗物图标
-
-| 遗物ID | 中文名 | 稀有度 | 图像描述 | 路径建议 |
-|---|---|---|---|---|
-| `relic_piggy_bank` | 猪猪存钱罐 | 绿 | 粉色陶瓷小猪存钱罐，背部金币投入口 | `assets/ui/icons/relics/relic_piggy_bank.png` |
-| `relic_finance_manager` | 理财经理 | 绿 | 哥布林带公文包，穿小西装或铁算盘领带 | `assets/ui/icons/relics/relic_finance_manager.png` |
-| `relic_dividend_check` | 分红支票 | 绿 | 烫金纸质支票，边缘带金币纹章 | `assets/ui/icons/relics/relic_dividend_check.png` |
-| `relic_speculative_chip` | 投机筹码 | 绿 | 黑色鎏金筹码，一面金币一面骷髅 | `assets/ui/icons/relics/relic_speculative_chip.png` |
-| `relic_fixed_deposit_certificate` | 定期存单 | 绿 | 冰封银行存单单据，带蓝色封蜡和锁链 | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` |
-| `relic_compound_interest_tome` | 复利宝典 | 蓝 | 金边硬皮金融古书，封面为递增曲线 | `assets/ui/icons/relics/relic_compound_interest_tome.png` |
-| `relic_high_yield_contract` | 高利契约 | 紫 | 沾红墨水的羊皮纸契约，带危险印章 | `assets/ui/icons/relics/relic_high_yield_contract.png` |
-| `relic_periodic_dividend_clock` | 周期分红钟 | 紫 | 黄铜落地摆钟，钟摆是金币 | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` |
-| `relic_goblin_central_bank_printer` | 哥布林央行印钞机 | 橙 | 迷你哥布林金币铸造机，带央行徽章 | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` |
-| `relic_perpetual_annuity_scroll` | 永续年金卷轴 | 橙 | 发光魔法契约卷轴，金币符文环绕 | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` |
-| `relic_goblin_coin_printer` | 哥布林印钞机 | 橙 | 迷你黄铜金币铸造机，喷出金币火花 | `assets/ui/icons/relics/relic_goblin_coin_printer.png` |
-
-### 16.3 动效与音效
-
-| 资源 | 用途 | 建议 |
-|---|---|---|
-| `vfx_finance_deposit_coin_stream` | 存入本金 | 金币从金币栏飞向本金图标 |
-| `vfx_finance_withdraw_coin_stream` | 取出本金 | 金币从本金图标飞回金币栏 |
-| `vfx_interest_settle_burst` | 利息结算 | 金色数字上浮 + 光圈扩散 |
-| `vfx_speculative_double` | 投机筹码翻倍 | 筹码旋转后金光爆开 |
-| `vfx_speculative_zero` | 投机筹码失败 | 筹码暗淡、灰烟散开 |
-| `sfx_finance_deposit` | 存入音效 | 清脆金币入袋声 |
-| `sfx_finance_withdraw` | 取出音效 | 金币倒出声 |
-| `sfx_interest_settle` | 利息结算音效 | 柔和金币叮声 |
-| `sfx_finance_lock` | 本金锁定提示 | 轻微冰封/锁扣声 |
+| 未存在 | 菜单 BGM | `bgm_menu.ogg` | `assets/audio/bgm/bgm_menu.ogg` | OGG，循环 | 生成：角色选择和通用菜单使用，平静、清新、轻微神秘 / OGG，循环 |
+| 未存在 | 营地 BGM | `bgm_camp.ogg` | `assets/audio/bgm/bgm_camp.ogg` | OGG，循环 | 生成：森林、篝火、河流营地使用，安静舒缓 / OGG，循环 |
+| 未存在 | 战斗 BGM | `bgm_battle.ogg` | `assets/audio/bgm/bgm_battle.ogg` | OGG，循环 | 生成：普通战斗使用，节奏稳定，有轻微紧张感 / OGG，循环 |
+| 未存在 | 小飞刃 `weapon_void_blade` | `sfx_weapon_void_blade_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | OGG/WAV，短音效 | 生成：小型飞刃命中目标的轻锐金属反馈 / OGG/WAV，短音效 |
+| 未存在 | 砍刀 `weapon_mutated_cleaver` | `sfx_weapon_mutated_cleaver_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg` | OGG/WAV，短音效 | 生成：砍刀命中的短促挥砍反馈，不使用血腥撕裂声 / OGG/WAV，短音效 |
+| 未存在 | 穹顶震波器 `weapon_dome_shockwave` | `sfx_weapon_dome_shockwave_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg` | OGG/WAV，短音效 | 生成：圆形能量震波命中的低频能量反馈 / OGG/WAV，短音效 |
+| 未存在 | 利息结算动效 | `ui_finance_settlement_fx.png` | `assets/ui/effects/finance/ui_finance_settlement_fx.png` | Sprite sheet / 粒子素材，透明背景 | 金币流入本金池 |
+| 未存在 | 理财页开关动效 | `ui_finance_mode_switch_fx.png` | `assets/ui/effects/finance/ui_finance_mode_switch_fx.png` | Sprite sheet / 粒子素材，透明背景 | 用于波前理财弹窗切换 |
+| 未存在 | 小飞刀命中特效 | `effect_void_blade_hit.png` | `assets/sprites/weapons/effects/effect_void_blade_hit.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风命中特效，小型淡紫色星光爆点，中心明亮，边缘有少量像素粒子，适合飞刀命中敌人时播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
+| 未存在 | 暴击命中特效 | `effect_critical_hit.png` | `assets/sprites/weapons/effects/effect_critical_hit.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风暴击特效，明亮金黄色和淡紫色混合闪光，星形爆点，轮廓清晰，适合 2D 游戏中作为暴击反馈，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |
+| 未存在 | 遗物获得闪光 | `effect_relic_get.png` | `assets/sprites/relics/effects/effect_relic_get.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风获取特效，小型淡金色与浅紫色闪光，星点环绕，适合作为遗物获得时的 UI 反馈，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
+| 未存在 | 敌人受击闪光 | `effect_enemy_hit.png` | `assets/sprites/enemies/effects/effect_enemy_hit.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风受击特效，小型淡黄色和浅紫色闪光，中心明亮，边缘有少量像素星点，适合敌人受击瞬间播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要文字 |
+| 未存在 | 敌人死亡消散 | `effect_enemy_death.png` | `assets/sprites/enemies/effects/effect_enemy_death.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风敌人死亡消散特效，淡紫色与蓝绿色粒子向外散开，带少量柔和星点，适合 2D 游戏怪物死亡反馈，透明背景，PNG，不要血腥，不要腐烂，不要肮脏噪点，不要文字 |
+| 未存在 | 默认眷族幼体攻击特效 | `effect_summon_kinling_hit.png` | `assets/sprites/summons/effects/effect_summon_kinling_hit.png` | PNG，透明背景，128x128 或 256x256，1:1 | 生成一张清新干净的中高精度像素风召唤物命中特效，主题是“柔和的绿色灵光冲击”，适合小型友方眷族近距离攻击命中敌人，一瞬间的弧形光波或小型星点扩散，颜色浅绿、青蓝或淡黄，画面干净，不要肮脏环境，不要血腥，不要文字，不要噪点，透明背景。 |
+| 未存在 | 存入本金 | `vfx_finance_deposit_coin_stream.png` | `assets/ui/effects/finance/vfx_finance_deposit_coin_stream.png` | Sprite sheet / 粒子素材，透明背景 | 金币从金币栏飞向本金图标 |
+| 未存在 | 取出本金 | `vfx_finance_withdraw_coin_stream.png` | `assets/ui/effects/finance/vfx_finance_withdraw_coin_stream.png` | Sprite sheet / 粒子素材，透明背景 | 金币从本金图标飞回金币栏 |
+| 未存在 | 利息结算 | `vfx_interest_settle_burst.png` | `assets/ui/effects/finance/vfx_interest_settle_burst.png` | Sprite sheet / 粒子素材，透明背景 | 金色数字上浮 + 光圈扩散 |
+| 未存在 | 投机筹码翻倍 | `vfx_speculative_double.png` | `assets/ui/effects/finance/vfx_speculative_double.png` | Sprite sheet / 粒子素材，透明背景 | 筹码旋转后金光爆开 |
+| 未存在 | 投机筹码失败 | `vfx_speculative_zero.png` | `assets/ui/effects/finance/vfx_speculative_zero.png` | Sprite sheet / 粒子素材，透明背景 | 筹码暗淡、灰烟散开 |
+| 未存在 | 存入音效 | `sfx_finance_deposit.ogg` | `assets/audio/sfx/finance/sfx_finance_deposit.ogg` | OGG/WAV，短音效 | 清脆金币入袋声 |
+| 未存在 | 取出音效 | `sfx_finance_withdraw.ogg` | `assets/audio/sfx/finance/sfx_finance_withdraw.ogg` | OGG/WAV，短音效 | 金币倒出声 |
+| 未存在 | 利息结算音效 | `sfx_interest_settle.ogg` | `assets/audio/sfx/finance/sfx_interest_settle.ogg` | OGG/WAV，短音效 | 柔和金币叮声 |
+| 未存在 | 本金锁定提示 | `sfx_finance_lock.ogg` | `assets/audio/sfx/finance/sfx_finance_lock.ogg` | OGG/WAV，短音效 | 轻微冰封/锁扣声 |
