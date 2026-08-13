@@ -151,7 +151,7 @@ func _build_description_text(offer: Dictionary) -> String:
 func _format_effect(effect: Dictionary) -> String:
 	var stat := str(effect.get("stat", ""))
 	var operation := str(effect.get("operation", ""))
-	var value := effect.get("value", 0)
+	var value: Variant = effect.get("value", 0)
 	if stat.is_empty():
 		return str(effect)
 	return "%s %s %s" % [stat, operation, str(value)]

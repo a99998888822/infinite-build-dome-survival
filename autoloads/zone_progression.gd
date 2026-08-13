@@ -66,7 +66,7 @@ func get_current_zone_tendency_tags() -> Array[String]:
 
 
 func get_current_zone_target_pools() -> Array[String]:
-	return _get_reward_bias().get("target_pools", []).duplicate()
+	return _to_string_array(_get_reward_bias().get("target_pools", []))
 
 
 func get_current_zone_tag_weight_bonus() -> int:
