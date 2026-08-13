@@ -224,7 +224,18 @@ func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[Str
 	var pool_key := str(candidate.get("pool_key", ""))
 	var tags := _to_string_array(candidate.get("tags", []))
 	candidate["weight"] = _calculate_candidate_weight(pool_key, tags, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus)
+	candidate["shop_cost"] = _calculate_shop_cost(candidate)
 	return candidate
+
+
+func _calculate_shop_cost(candidate: Dictionary) -> int:
+	var rarity_index := RARITIES.find(str(candidate.get("rarity", "common")))
+	if rarity_index < 0:
+		rarity_index = 0
+	var base_cost := 15
+	if str(candidate.get("offer_type", "")) == OFFER_WEAPON_UPGRADE:
+		base_cost = 10
+	return base_cost + rarity_index * 5
 
 
 func _calculate_candidate_weight(pool_key: String, tags: Array[String], zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int) -> int:

@@ -1,10 +1,12 @@
-﻿extends Node
+extends Node
 class_name FinanceUIController
 
 const FINANCE_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_popup.tscn")
+const INTEREST_SETTLEMENT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/interest_settlement_popup.tscn")
 
 @onready var popup_layer: CanvasLayer = get_node_or_null("PopupLayer")
 @onready var finance_popup: FinancePopup = get_node_or_null("PopupLayer/FinancePopup")
+@onready var interest_popup: InterestSettlementPopup = get_node_or_null("PopupLayer/InterestSettlementPopup")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 
@@ -25,6 +27,11 @@ func _prepare_layers() -> void:
 		if finance_popup != null:
 			finance_popup.name = "FinancePopup"
 			popup_layer.add_child(finance_popup)
+	if interest_popup == null and popup_layer != null:
+		interest_popup = INTEREST_SETTLEMENT_POPUP_SCENE.instantiate() as InterestSettlementPopup
+		if interest_popup != null:
+			interest_popup.name = "InterestSettlementPopup"
+			popup_layer.add_child(interest_popup)
 
 
 func _bind_to_main_flow() -> void:
@@ -68,16 +75,40 @@ func _find_main_flow_coordinator() -> MainFlowCoordinator:
 
 
 func _on_modal_requested(modal_state: String, payload: Dictionary) -> void:
-	if modal_state != MainFlowCoordinator.STATE_FINANCE_POPUP:
-		return
-	_show_finance_popup(payload)
+	match modal_state:
+		MainFlowCoordinator.STATE_FINANCE_POPUP:
+			_show_finance_popup(payload)
+		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
+			_show_interest_settlement(payload)
+		_:
+			return
 
 
 func _on_modal_closed(modal_state: String) -> void:
-	if modal_state != MainFlowCoordinator.STATE_FINANCE_POPUP:
+	match modal_state:
+		MainFlowCoordinator.STATE_FINANCE_POPUP:
+			if finance_popup != null:
+				finance_popup.hide_popup()
+		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
+			if interest_popup != null:
+				interest_popup.hide_popup()
+		_:
+			return
+
+
+func _show_interest_settlement(payload: Dictionary) -> void:
+	if interest_popup == null:
 		return
-	if finance_popup != null:
-		finance_popup.hide_popup()
+	interest_popup.configure(payload)
+	var confirmed_callable := Callable(self, "_on_interest_confirmed")
+	if not interest_popup.confirmed.is_connected(confirmed_callable):
+		interest_popup.confirmed.connect(confirmed_callable)
+	interest_popup.show_popup()
+
+
+func _on_interest_confirmed() -> void:
+	if _main_flow_coordinator != null:
+		_main_flow_coordinator.close_interest_settlement()
 
 
 func _show_finance_popup(payload: Dictionary) -> void:

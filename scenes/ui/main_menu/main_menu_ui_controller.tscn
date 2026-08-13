@@ -1,0 +1,102 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu_ui_controller.gd" id="1_main_menu"]
+
+[node name="MainMenuUIController" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_main_menu")
+
+[node name="StartPage" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="StartPage"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="StartPage/CenterContainer"]
+custom_minimum_size = Vector2(420, 320)
+
+[node name="Content" type="VBoxContainer" parent="StartPage/CenterContainer/MainPanel"]
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="StartPage/CenterContainer/MainPanel/Content"]
+text = "穹顶求生"
+horizontal_alignment = 1
+
+[node name="StartBattleButton" type="Button" parent="StartPage/CenterContainer/MainPanel/Content"]
+text = "开始战斗"
+custom_minimum_size = Vector2(0, 48)
+
+[node name="CampEntryButton" type="Button" parent="StartPage/CenterContainer/MainPanel/Content"]
+text = "进入营地"
+custom_minimum_size = Vector2(0, 48)
+
+[node name="CharacterSelectPage" type="Control" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="CharacterSelectPage"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="CharacterSelectPage/CenterContainer"]
+custom_minimum_size = Vector2(560, 420)
+
+[node name="Content" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+text = "选择角色"
+horizontal_alignment = 1
+
+[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+theme_override_constants/separation = 8
+
+[node name="ErrorLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+
+[node name="BackButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow"]
+text = "返回"
+size_flags_horizontal = 3
+
+[node name="ConfirmButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow"]
+text = "确认选择"
+disabled = true
+size_flags_horizontal = 3
+
+[node name="BattleResultPanel" type="Control" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="BattleResultPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="BattleResultPanel/CenterContainer"]
+custom_minimum_size = Vector2(420, 260)
+
+[node name="Content" type="VBoxContainer" parent="BattleResultPanel/CenterContainer/MainPanel"]
+theme_override_constants/separation = 14
+
+[node name="ResultTitleLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
+horizontal_alignment = 1
+
+[node name="ResultSummaryLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ResultBackButton" type="Button" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
+text = "返回主界面"
+custom_minimum_size = Vector2(0, 44)

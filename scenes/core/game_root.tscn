@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_root.gd" id="1_game_root"]
 [ext_resource type="PackedScene" path="res://scenes/core/main_flow_coordinator.tscn" id="2_main_flow_coordinator"]
 [ext_resource type="PackedScene" path="res://scenes/ui/zones/zone_ui_controller.tscn" id="3_zone_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/finance/finance_ui_controller.tscn" id="4_finance_ui_controller"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shop/shop_ui_controller.tscn" id="5_shop_ui_controller"]
+[ext_resource type="Script" path="res://scripts/core/game_scene_director.gd" id="6_scene_director"]
+[ext_resource type="PackedScene" path="res://scenes/ui/main_menu/main_menu_ui_controller.tscn" id="7_main_menu_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/camp/camp_ui_controller.tscn" id="8_camp_ui"]
 
 [node name="GameRoot" type="Node"]
 script = ExtResource("1_game_root")
@@ -19,5 +23,14 @@ script = ExtResource("1_game_root")
 [node name="ZoneUIController" parent="UiRoot" instance=ExtResource("3_zone_ui_controller")]
 
 [node name="FinanceUIController" parent="UiRoot" instance=ExtResource("4_finance_ui_controller")]
+
+[node name="ShopUIController" parent="UiRoot" instance=ExtResource("5_shop_ui_controller")]
+
+[node name="MainMenuUIController" parent="UiRoot" instance=ExtResource("7_main_menu_ui")]
+
+[node name="CampUIController" parent="UiRoot" instance=ExtResource("8_camp_ui")]
+
+[node name="SceneDirector" type="Node" parent="."]
+script = ExtResource("6_scene_director")
 
 [node name="DebugRoot" type="Node" parent="."]

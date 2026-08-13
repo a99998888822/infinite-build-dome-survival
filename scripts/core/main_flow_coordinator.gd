@@ -306,7 +306,40 @@ func close_interest_settlement() -> void:
 	if current_state != STATE_INTEREST_SETTLEMENT:
 		return
 	modal_closed.emit(STATE_INTEREST_SETTLEMENT)
+	_pending_interest_payload.clear()
 	_set_state(STATE_SHOP_POPUP)
+	modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
+
+
+func close_shop_popup() -> void:
+	if current_state != STATE_SHOP_POPUP:
+		return
+	modal_closed.emit(STATE_SHOP_POPUP)
+	_wave_end_ready = false
+	_pending_interest_payload.clear()
+	_set_state(STATE_BATTLE_PREPARE)
+
+
+func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
+	if current_state != STATE_SHOP_POPUP and current_state != STATE_SHARED_REWARD_SHOP_POPUP:
+		return {"success": false, "reason": "shop_not_active"}
+	var sanitized_mode := str(mode).strip_edges()
+	var offer_type := str(offer.get("offer_type", ""))
+	var target_id := str(offer.get("target_id", ""))
+	if offer_type.is_empty() or target_id.is_empty():
+		return {"success": false, "reason": "invalid_offer"}
+	if sanitized_mode == "shop" and not _try_pay_shop_cost(offer):
+		return {"success": false, "reason": "insufficient_gold"}
+	var applied := _apply_shop_offer(offer_type, target_id, offer)
+	if not applied:
+		if sanitized_mode == "shop":
+			_refund_shop_cost(offer)
+		return {"success": false, "reason": "purchase_failed"}
+	if sanitized_mode == "free":
+		close_shared_reward_shop_popup()
+	else:
+		close_shop_popup()
+	return {"success": true, "action": "purchase", "offer_id": str(offer.get("offer_id", "")), "offer_type": offer_type, "target_id": target_id}
 
 
 func mark_wave_end_ready() -> void:
@@ -323,7 +356,9 @@ func mark_wave_end_ready() -> void:
 func advance_wave_end_phase() -> void:
 	if current_state == STATE_INTEREST_SETTLEMENT:
 		modal_closed.emit(STATE_INTEREST_SETTLEMENT)
+		_pending_interest_payload.clear()
 		_set_state(STATE_SHOP_POPUP)
+		modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
 		return
 	if current_state == STATE_SHOP_POPUP:
 		_wave_end_ready = false
@@ -340,6 +375,9 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	battle_resolved = true
 	current_victory = victory
 	current_battle_summary = summary.duplicate(true)
+	var settlement_gold := int(current_battle_summary.get("gold", 0))
+	if settlement_gold > 0 and CampProgression != null and CampProgression.has_method("apply_final_settlement"):
+		CampProgression.apply_final_settlement(settlement_gold)
 	_pending_level_up_levels.clear()
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
@@ -424,6 +462,10 @@ func _on_wave_finished(wave_id: String) -> void:
 	if current_mode != MODE_BATTLE or battle_resolved:
 		return
 	current_wave_id = wave_id
+	if not _has_next_wave():
+		var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
+		present_battle_result(true, {"reason": "all_waves_cleared", "gold": gold})
+		return
 	mark_wave_end_ready()
 
 
@@ -432,7 +474,8 @@ func _on_shared_reward_shop_requested(level: int) -> void:
 
 
 func _on_player_died() -> void:
-	present_battle_result(false, {"reason": "player_died"})
+	var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
+	present_battle_result(false, {"reason": "player_died", "gold": gold})
 
 
 func _set_mode(next_mode: String) -> void:
@@ -505,12 +548,90 @@ func _sanitize_string_array(values: Array[String]) -> Array[String]:
 
 
 func _build_shared_reward_shop_payload(level: int, source: String, queued: bool) -> Dictionary:
+	var payload := _build_shop_payload("free", level)
+	payload["source"] = source
+	payload["queued"] = queued
+	payload["resume_state"] = _resume_state_after_modal
+	return payload
+
+
+func _build_shop_payload(mode: String, level: int) -> Dictionary:
+	var context := _build_shop_context()
+	var offers: Array = []
+	if not context.is_empty():
+		var generator := ShopOfferGenerator.new()
+		var candidates := generator.build_shop_candidate_pool(context)
+		var rarity_weights := generator.get_shop_rarity_weights(int(_get_shop_stat("luck")), ZoneProgression.get_current_zone_rarity_bonus())
+		context["candidate_pool"] = candidates
+		var type_weights := generator.get_shop_type_weights(context)
+		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, 3)
 	return {
-		"level": level,
-		"source": source,
-		"queued": queued,
+		"mode": str(mode).strip_edges(),
+		"level": maxi(0, level),
+		"gold": _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0,
+		"offers": offers,
 		"resume_state": _resume_state_after_modal,
 	}
+
+
+func _build_shop_context() -> Dictionary:
+	if _bound_player == null or _bound_loadout == null:
+		return {}
+	var owned_weapon_ids: Array[String] = []
+	var equipped_weapons: Array[Dictionary] = []
+	for weapon in _bound_loadout.get_weapon_instances():
+		owned_weapon_ids.append(weapon.weapon_id)
+		equipped_weapons.append({"weapon_id": weapon.weapon_id, "level": weapon.level})
+	return {
+		"owned_weapon_ids": owned_weapon_ids,
+		"equipped_weapons": equipped_weapons,
+		"unlocked_weapon_ids": [],
+		"unlocked_relic_ids": [],
+		"owned_relic_counts": _bound_player.get_relic_counts(),
+		"current_load": _bound_loadout.get_total_load_cost(),
+		"load_capacity": _bound_loadout.get_load_capacity(),
+		"upgrade_miss_count": 0,
+		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
+		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
+		"zone_tag_weight_bonus": ZoneProgression.get_current_zone_tag_weight_bonus(),
+	}
+
+
+func _get_shop_stat(stat_id: String) -> float:
+	return _bound_player.get_stat(stat_id, 0.0) if _bound_player != null else 0.0
+
+
+func _try_pay_shop_cost(offer: Dictionary) -> bool:
+	var cost := int(offer.get("shop_cost", 0))
+	if cost <= 0:
+		return true
+	if _bound_wave_manager == null or _bound_wave_manager.get_current_gold() < cost:
+		return false
+	return _bound_wave_manager.apply_gold_delta(-cost, "shop_purchase")
+
+
+func _refund_shop_cost(offer: Dictionary) -> void:
+	var cost := int(offer.get("shop_cost", 0))
+	if cost <= 0 or _bound_wave_manager == null:
+		return
+	_bound_wave_manager.apply_gold_delta(cost, "shop_purchase_refund")
+
+
+func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary) -> bool:
+	match offer_type:
+		ShopOfferGenerator.OFFER_RELIC:
+			return _bound_player != null and _bound_player.add_relic(target_id)
+		ShopOfferGenerator.OFFER_NEW_WEAPON:
+			return _bound_loadout != null and _bound_loadout.try_buy_weapon(target_id)
+		ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			if _bound_loadout == null:
+				return false
+			var weapon := _bound_loadout.get_weapon_instance(target_id)
+			if weapon == null or weapon.level != int(offer.get("from_level", 0)):
+				return false
+			return _bound_loadout.upgrade_weapon(target_id)
+		_:
+			return false
 
 
 func _build_level_up_payload(level: int, source: String, queued: bool) -> Dictionary:

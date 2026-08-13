@@ -296,6 +296,17 @@ func trigger_finance_interest(source: String = "manual") -> Dictionary:
 	return finance_system.trigger_manual_interest(source)
 
 
+func process_wave_end_settlements() -> Array[Dictionary]:
+	if finance_system == null:
+		return []
+	return finance_system.process_wave_end_settlements()
+
+
+func tick_finance(delta: float) -> void:
+	if finance_system != null:
+		finance_system.tick(delta)
+
+
 func get_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 	if finance_system == null:
 		return {}

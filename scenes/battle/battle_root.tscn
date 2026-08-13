@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
+[ext_resource type="PackedScene" path="res://scenes/waves/wave_manager.tscn" id="3_wave_manager"]
+[ext_resource type="Script" path="res://scripts/battle/battle_root.gd" id="4_battle_root"]
+[ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="5_battle_hud"]
+
+[node name="BattleRoot" type="Node"]
+script = ExtResource("4_battle_root")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+auto_initialize_on_ready = false
+
+[node name="Loadout" parent="." instance=ExtResource("2_loadout")]
+
+[node name="WaveManager" parent="." instance=ExtResource("3_wave_manager")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("5_battle_hud")
+
+[node name="StatusPanel" type="PanelContainer" parent="HUD"]
+offset_left = 16.0
+offset_top = 16.0
+
+[node name="Content" type="VBoxContainer" parent="HUD/StatusPanel"]
+
+[node name="HpLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
+[node name="ExpLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
+[node name="GoldLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
+[node name="WaveLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
+[node name="PreparePanel" type="PanelContainer" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -50.0
+offset_right = 140.0
+offset_bottom = 50.0
+
+[node name="Content" type="VBoxContainer" parent="HUD/PreparePanel"]
+
+[node name="StartButton" type="Button" parent="HUD/PreparePanel/Content"]
+text = "开始波次"
+custom_minimum_size = Vector2(200, 48)

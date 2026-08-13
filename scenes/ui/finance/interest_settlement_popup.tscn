@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/interest_settlement_popup.gd" id="1_interest_popup"]
+
+[node name="InterestSettlementPopup" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+script = ExtResource("1_interest_popup")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(560, 420)
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/MainPanel"]
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+text = "利息结算"
+horizontal_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+autowrap_mode = 3
+
+[node name="DetailsLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+autowrap_mode = 3
+
+[node name="ConfirmButton" type="Button" parent="CenterContainer/MainPanel/Content"]
+text = "确认"

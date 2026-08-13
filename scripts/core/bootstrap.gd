@@ -15,6 +15,12 @@ const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_
 const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_harvest_result_popup.tscn")
 const FINANCE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_ui_controller.tscn")
 const FINANCE_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_popup.tscn")
+const INTEREST_SETTLEMENT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/interest_settlement_popup.tscn")
+const SHOP_POPUP_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_popup.tscn")
+const SHOP_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_ui_controller.tscn")
+const BATTLE_ROOT_SCENE: PackedScene = preload("res://scenes/battle/battle_root.tscn")
+const MAIN_MENU_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/main_menu/main_menu_ui_controller.tscn")
+const CAMP_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/camp/camp_ui_controller.tscn")
 const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
@@ -535,6 +541,30 @@ func _run_ui_flow_checks() -> bool:
 		passed = _print_check_result("reward option free button text", free_button_text == "选择") and passed
 		passed = _print_check_result("reward option shop button text", shop_button_text == "18") and passed
 		reward_option.queue_free()
+	var interest_popup := INTEREST_SETTLEMENT_POPUP_SCENE.instantiate()
+	passed = _print_check_result("interest settlement popup instantiate", interest_popup != null and interest_popup.get_node_or_null("CenterContainer/MainPanel/Content/ConfirmButton") != null) and passed
+	if interest_popup != null:
+		interest_popup.queue_free()
+	var shop_popup := SHOP_POPUP_SCENE.instantiate()
+	passed = _print_check_result("shop popup instantiate", shop_popup != null and shop_popup.get_node_or_null("CenterContainer/MainPanel/Content/OfferGrid") != null) and passed
+	if shop_popup != null:
+		shop_popup.queue_free()
+	var shop_controller := SHOP_UI_CONTROLLER_SCENE.instantiate()
+	passed = _print_check_result("shop ui controller instantiate", shop_controller != null and shop_controller.get_node_or_null("PopupLayer/ShopPopup") != null) and passed
+	if shop_controller != null:
+		shop_controller.queue_free()
+	var battle_root := BATTLE_ROOT_SCENE.instantiate()
+	passed = _print_check_result("battle root instantiate", battle_root != null and battle_root.get_node_or_null("Player") != null and battle_root.get_node_or_null("Loadout") != null and battle_root.get_node_or_null("WaveManager") != null) and passed
+	if battle_root != null:
+		battle_root.queue_free()
+	var main_menu_controller := MAIN_MENU_UI_CONTROLLER_SCENE.instantiate()
+	passed = _print_check_result("main menu ui controller instantiate", main_menu_controller != null and main_menu_controller.get_node_or_null("StartPage") != null and main_menu_controller.get_node_or_null("CharacterSelectPage") != null and main_menu_controller.get_node_or_null("BattleResultPanel") != null) and passed
+	if main_menu_controller != null:
+		main_menu_controller.queue_free()
+	var camp_ui_controller := CAMP_UI_CONTROLLER_SCENE.instantiate()
+	passed = _print_check_result("camp ui controller instantiate", camp_ui_controller != null and camp_ui_controller.get_node_or_null("MainSplit/BuildingListPanel/BuildingList") != null and camp_ui_controller.get_node_or_null("MainSplit/DetailPanel/DetailContent/UpgradeOptionsList") != null) and passed
+	if camp_ui_controller != null:
+		camp_ui_controller.queue_free()
 	return passed
 
 
@@ -691,9 +721,14 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance fixed deposit lock", not bool(locked_withdraw_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("withdrawable_principal", 0)) == 0) and passed
 	wave_manager.add_relic("relic_compound_interest_tome")
 	var rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
-	wave_manager.trigger_finance_interest("bootstrap_compound")
+	wave_manager.process_wave_end_settlements()
 	var rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
-	passed = _print_check_result("finance compound rate growth", rate_after > rate_before) and passed
+	passed = _print_check_result("finance compound rate growth on wave end", rate_after > rate_before) and passed
+	wave_manager.add_relic("relic_perpetual_annuity_scroll")
+	var annuity_rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	wave_manager.tick_finance(1.0)
+	var annuity_rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	passed = _print_check_result("finance annuity keeps rate growth idle", is_equal_approx(annuity_rate_after, annuity_rate_before)) and passed
 	var finance_popup := FINANCE_POPUP_SCENE.instantiate()
 	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.get_node_or_null("CenterContainer/MainPanel/Content/ButtonGrid/DepositAllButton") != null) and passed
 	if finance_popup != null:
@@ -763,6 +798,8 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow wave end ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
 	flow.advance_wave_end_phase()
 	passed = _print_check_result("main flow shop step", flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
+	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
+	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()
 	passed = _print_check_result("main flow next prepare step", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
 

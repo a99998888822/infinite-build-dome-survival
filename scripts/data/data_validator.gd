@@ -1,4 +1,4 @@
-﻿extends RefCounted
+extends RefCounted
 class_name DataValidator
 
 const REQUIRED_TABLES: Array[String] = [
@@ -41,6 +41,18 @@ const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
 const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = ["on_acquire", "wave_start", "deposit", "wave_end", "interest_settle", "interest_success", "combat_tick"]
+const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
+	"add_principal_flat",
+	"add_principal_from_gold_percent",
+	"add_principal_per_wave",
+	"lock_principal_for_waves",
+	"settle_interest_once",
+	"speculative_interest",
+	"add_interest_rate_bonus",
+	"settle_interest_every_n_waves",
+	"require_wave_start_deposit_for_interest",
+	"per_second_interest",
+]
 
 var errors: Array[String] = []
 var warnings: Array[String] = []
@@ -271,6 +283,8 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 	_validate_required_fields(effect_data, ["trigger", "effect"], path)
 	if effect_data.has("trigger") and not VALID_RELIC_RUNTIME_TRIGGERS.has(str(effect_data["trigger"])):
 		warnings.append("Unknown relic runtime trigger in %s: %s" % [path, str(effect_data["trigger"])])
+	if effect_data.has("effect") and not VALID_RELIC_RUNTIME_EFFECTS.has(str(effect_data["effect"])):
+		warnings.append("Unknown relic runtime effect in %s: %s" % [path, str(effect_data["effect"])])
 	for key in ["value", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave"]:
 		if not effect_data.has(key):
 			continue
