@@ -11,6 +11,10 @@ var _main_flow_coordinator: MainFlowCoordinator = null
 var _interest_notice_panel: PanelContainer = null
 var _interest_notice_label: Label = null
 var _interest_notice_token: int = 0
+var _interest_notice_tween: Tween = null
+
+const INTEREST_NOTICE_VISIBLE_ALPHA: float = 0.82
+const INTEREST_NOTICE_ANIMATION_SECONDS: float = 0.45
 
 
 func _ready() -> void:
@@ -100,8 +104,17 @@ func _show_interest_settlement(payload: Dictionary) -> void:
 	_interest_notice_token += 1
 	var token := _interest_notice_token
 	_interest_notice_label.text = _build_interest_notice_text(payload)
-	_position_interest_notice()
+	_position_interest_notice(0.70)
+	if _interest_notice_tween != null:
+		_interest_notice_tween.kill()
 	_interest_notice_panel.visible = true
+	_interest_notice_panel.modulate.a = 0.0
+	_interest_notice_tween = create_tween()
+	_interest_notice_tween.set_trans(Tween.TRANS_CUBIC)
+	_interest_notice_tween.set_ease(Tween.EASE_OUT)
+	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "modulate:a", INTEREST_NOTICE_VISIBLE_ALPHA, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "anchor_top", 0.30, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "anchor_bottom", 0.30, INTEREST_NOTICE_ANIMATION_SECONDS)
 	await get_tree().create_timer(INTEREST_NOTICE_DURATION).timeout
 	if token != _interest_notice_token:
 		return
@@ -140,54 +153,89 @@ func _ensure_interest_notice() -> void:
 		return
 	_interest_notice_panel = popup_layer.get_node_or_null("InterestNotice") as PanelContainer
 	if _interest_notice_panel != null:
-		_interest_notice_label = _interest_notice_panel.get_node_or_null("Margin/MessageLabel") as Label
+		_interest_notice_label = _interest_notice_panel.get_node_or_null("NoticeContent/MessageLabel") as Label
 		return
 	_interest_notice_panel = PanelContainer.new()
 	_interest_notice_panel.name = "InterestNotice"
 	_interest_notice_panel.visible = false
 	_interest_notice_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.06, 0.08, 0.10, 0.92)
-	style.border_color = Color(0.32, 0.72, 0.68, 0.9)
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(6)
+	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
 	_interest_notice_panel.add_theme_stylebox_override("panel", style)
 	popup_layer.add_child(_interest_notice_panel)
 
-	var margin := MarginContainer.new()
-	margin.name = "Margin"
-	margin.add_theme_constant_override("margin_left", 14)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_right", 14)
-	margin.add_theme_constant_override("margin_bottom", 10)
-	_interest_notice_panel.add_child(margin)
+	var notice_content := VBoxContainer.new()
+	notice_content.name = "NoticeContent"
+	notice_content.add_theme_constant_override("separation", 7)
+	_interest_notice_panel.add_child(notice_content)
+
+	var top_line := ColorRect.new()
+	top_line.name = "TopLine"
+	top_line.custom_minimum_size = Vector2(0.0, 2.0)
+	top_line.color = Color(1.0, 1.0, 1.0, 0.94)
+	notice_content.add_child(top_line)
 
 	_interest_notice_label = Label.new()
 	_interest_notice_label.name = "MessageLabel"
+	_interest_notice_label.custom_minimum_size = Vector2(0.0, 30.0)
 	_interest_notice_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_interest_notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_interest_notice_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	margin.add_child(_interest_notice_label)
+	_interest_notice_label.add_theme_font_size_override("font_size", 18)
+	_interest_notice_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+	_interest_notice_label.add_theme_color_override("font_outline_color", Color(0.02, 0.02, 0.02, 0.9))
+	_interest_notice_label.add_theme_constant_override("outline_size", 3)
+	notice_content.add_child(_interest_notice_label)
+
+	var bottom_line := ColorRect.new()
+	bottom_line.name = "BottomLine"
+	bottom_line.custom_minimum_size = Vector2(0.0, 2.0)
+	bottom_line.color = Color(1.0, 1.0, 1.0, 0.94)
+	notice_content.add_child(bottom_line)
 
 
-func _position_interest_notice() -> void:
+func _position_interest_notice(vertical_ratio: float = 0.30) -> void:
 	if _interest_notice_panel == null or get_viewport() == null:
 		return
-	var viewport_size := get_viewport().get_visible_rect().size
-	var width := maxf(180.0, floor(viewport_size.x * 0.2))
+	var text_width := _get_interest_notice_text_width()
+	var width := clampf(ceil(text_width + 72.0), 240.0, 540.0)
 	_interest_notice_panel.anchor_left = 0.0
-	_interest_notice_panel.anchor_top = 0.5
+	_interest_notice_panel.anchor_top = vertical_ratio
 	_interest_notice_panel.anchor_right = 0.0
-	_interest_notice_panel.anchor_bottom = 0.5
-	_interest_notice_panel.offset_left = 16.0
-	_interest_notice_panel.offset_top = -42.0
-	_interest_notice_panel.offset_right = 16.0 + width
-	_interest_notice_panel.offset_bottom = 42.0
+	_interest_notice_panel.anchor_bottom = vertical_ratio
+	_interest_notice_panel.offset_left = 32.0
+	_interest_notice_panel.offset_top = -26.0
+	_interest_notice_panel.offset_right = 32.0 + width
+	_interest_notice_panel.offset_bottom = 26.0
+
+
+func _get_interest_notice_text_width() -> float:
+	if _interest_notice_label == null:
+		return 0.0
+	var font := _interest_notice_label.get_theme_font("font")
+	if font == null:
+		return _interest_notice_label.get_minimum_size().x
+	var font_size := _interest_notice_label.get_theme_font_size("font_size")
+	return font.get_string_size(_interest_notice_label.text, HORIZONTAL_ALIGNMENT_CENTER, -1.0, font_size).x
 
 
 func _hide_interest_notice() -> void:
 	_interest_notice_token += 1
+	if _interest_notice_tween != null:
+		_interest_notice_tween.kill()
+	if _interest_notice_panel == null:
+		return
+	_interest_notice_tween = create_tween()
+	_interest_notice_tween.set_trans(Tween.TRANS_CUBIC)
+	_interest_notice_tween.set_ease(Tween.EASE_IN)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "modulate:a", 0.0, 0.20)
+	_interest_notice_tween.tween_callback(_finish_hide_interest_notice)
+
+
+func _finish_hide_interest_notice() -> void:
 	if _interest_notice_panel != null:
 		_interest_notice_panel.visible = false
+		_interest_notice_panel.modulate.a = 0.0
 
 
 func _build_interest_notice_text(payload: Dictionary) -> String:

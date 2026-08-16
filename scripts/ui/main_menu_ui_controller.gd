@@ -7,10 +7,14 @@ const MAIN_MENU_BUTTON_TEXTURE_PATH: String = "res://assets/ui/main_menu/button_
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
+var _title_base_position := Vector2.ZERO
 
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
 @onready var title_art: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack/TitleArt")
+@onready var start_battle_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell")
+@onready var camp_entry_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell")
+@onready var quit_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell")
 @onready var start_battle_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/FrameTexture")
 @onready var camp_entry_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/FrameTexture")
 @onready var quit_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/FrameTexture")
@@ -30,6 +34,8 @@ var _selected_character_id: String = ""
 
 func _ready() -> void:
 	_apply_start_page_assets()
+	_setup_start_page_feedback()
+	_setup_menu_atmosphere()
 	if start_battle_button != null and not start_battle_button.pressed.is_connected(_on_start_battle_pressed):
 		start_battle_button.pressed.connect(_on_start_battle_pressed)
 	if camp_entry_button != null and not camp_entry_button.pressed.is_connected(_on_camp_entry_pressed):
@@ -43,6 +49,53 @@ func _ready() -> void:
 	if result_back_button != null and not result_back_button.pressed.is_connected(_on_result_back_pressed):
 		result_back_button.pressed.connect(_on_result_back_pressed)
 	call_deferred("_bind_to_main_flow")
+
+
+func _process(_delta: float) -> void:
+	var time := Time.get_ticks_msec() * 0.001
+	if title_art != null and start_page != null and start_page.visible:
+		var title_offset := sin(time * 1.7) * 4.0
+		title_art.position = _title_base_position + Vector2(0.0, title_offset)
+
+
+func _setup_menu_atmosphere() -> void:
+	if title_art != null:
+		_title_base_position = title_art.position
+
+
+func _setup_start_page_feedback() -> void:
+	_bind_button_feedback(start_battle_button, start_battle_shell)
+	_bind_button_feedback(camp_entry_button, camp_entry_shell)
+	_bind_button_feedback(quit_button, quit_shell)
+
+
+func _bind_button_feedback(button: Button, shell: Control) -> void:
+	if button == null or shell == null:
+		return
+	shell.resized.connect(_center_button_pivot.bind(shell))
+	_center_button_pivot(shell)
+	if not button.mouse_entered.is_connected(_on_menu_button_hovered.bind(shell)):
+		button.mouse_entered.connect(_on_menu_button_hovered.bind(shell))
+	if not button.mouse_exited.is_connected(_on_menu_button_unhovered.bind(shell)):
+		button.mouse_exited.connect(_on_menu_button_unhovered.bind(shell))
+
+
+func _center_button_pivot(shell: Control) -> void:
+	shell.pivot_offset = shell.size * 0.5
+
+
+func _on_menu_button_hovered(shell: Control) -> void:
+	_animate_menu_button(shell, Vector2(1.06, 1.06), Color(1.12, 1.12, 1.04, 1))
+
+
+func _on_menu_button_unhovered(shell: Control) -> void:
+	_animate_menu_button(shell, Vector2.ONE, Color.WHITE)
+
+
+func _animate_menu_button(shell: Control, target_scale: Vector2, target_modulate: Color) -> void:
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property(shell, "scale", target_scale, 0.13)
+	tween.tween_property(shell, "modulate", target_modulate, 0.13)
 
 
 func _bind_to_main_flow() -> void:

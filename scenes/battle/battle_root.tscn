@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
 [ext_resource type="PackedScene" path="res://scenes/waves/wave_manager.tscn" id="3_wave_manager"]
 [ext_resource type="Script" path="res://scripts/battle/battle_root.gd" id="4_battle_root"]
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="5_battle_hud"]
+[ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
+shader = ExtResource("6_modal_backdrop")
 
 [node name="BattleRoot" type="Node"]
 script = ExtResource("4_battle_root")
@@ -16,8 +20,19 @@ auto_initialize_on_ready = false
 
 [node name="WaveManager" parent="." instance=ExtResource("3_wave_manager")]
 
+[node name="ModalBackdrop" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Backdrop" type="ColorRect" parent="ModalBackdrop"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+material = SubResource("ShaderMaterial_modal_backdrop")
+mouse_filter = 2
+
 [node name="HUD" type="CanvasLayer" parent="."]
-layer = 10
+layer = 30
 script = ExtResource("5_battle_hud")
 
 [node name="StatusPanel" type="PanelContainer" parent="HUD"]
@@ -32,4 +47,61 @@ offset_top = 16.0
 
 [node name="GoldLabel" type="Label" parent="HUD/StatusPanel/Content"]
 
+[node name="FinanceLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
 [node name="WaveLabel" type="Label" parent="HUD/StatusPanel/Content"]
+
+[node name="StatsDrawer" type="Control" parent="HUD"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = 16.0
+offset_right = 292.0
+offset_bottom = -16.0
+mouse_filter = 0
+
+[node name="DrawerPanel" type="PanelContainer" parent="HUD/StatsDrawer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+mouse_filter = 0
+
+[node name="DrawerBody" type="HBoxContainer" parent="HUD/StatsDrawer/DrawerPanel"]
+
+[node name="ToggleButton" type="Button" parent="HUD/StatsDrawer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -18.0
+offset_right = 28.0
+offset_bottom = 18.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "▶"
+flat = true
+
+[node name="ContentMargin" type="MarginContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody"]
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin"]
+
+[node name="TitleLabel" type="Label" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content"]
+text = "玩家属性"
+horizontal_alignment = 1
+
+[node name="StatsScroll" type="ScrollContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content"]
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="StatsList" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content/StatsScroll"]
+size_flags_horizontal = 3

@@ -19,19 +19,3 @@ layer = 20
 
 [node name="FadeLayer" type="CanvasLayer" parent="."]
 layer = 30
-
-[node name="DebugLayer" type="CanvasLayer" parent="."]
-layer = 40
-
-[node name="ZoneDebugPanel" type="PanelContainer" parent="DebugLayer"]
-custom_minimum_size = Vector2(260, 120)
-
-[node name="Content" type="VBoxContainer" parent="DebugLayer/ZoneDebugPanel"]
-theme_override_constants/separation = 4
-
-[node name="DebugTitleLabel" type="Label" parent="DebugLayer/ZoneDebugPanel/Content"]
-text = "区域调试"
-
-[node name="ZoneDebugLabel" type="Label" parent="DebugLayer/ZoneDebugPanel/Content"]
-text = "zone=\nstreak=\nfortune=\npending_harvest="
-autowrap_mode = 3

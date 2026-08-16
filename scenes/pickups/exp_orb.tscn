@@ -14,4 +14,5 @@ shape = SubResource("CircleShape2D_exp_orb")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1706070429]
 modulate = Color(0.5, 0.95, 1, 1)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ntmwh")

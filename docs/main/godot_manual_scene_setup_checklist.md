@@ -17,10 +17,10 @@
 
 需要操作：
 
-- [ ] 打开场景并确认根节点存在。
-- [ ] 运行该场景，确认控制台能输出各模块自测信息。
-- [ ] 不需要添加美术节点。
-- [ ] 不需要修改节点位置。
+- [x] 打开场景并确认根节点存在。
+- [x] 运行该场景，确认控制台能输出各模块自测信息。
+- [x] 不需要添加美术节点。
+- [x] 不需要修改节点位置。
 
 注意：
 
@@ -35,14 +35,14 @@
 
 需要操作：
 
-- [ ] 打开场景，确认根节点是 `CharacterBody2D`。
-- [ ] 确认存在 `VisualAnchor`。
-- [ ] 确认 `VisualAnchor/Sprite2D` 存在。
-- [ ] 把玩家正式精灵图挂到 `Sprite2D.texture`。
-- [ ] 检查 `Sprite2D` 的大小、偏移和朝向。
-- [ ] 确认 `PickupArea/CollisionShape2D` 存在。
-- [ ] 根据玩家体型微调主碰撞体大小。
-- [ ] 根据拾取范围确认拾取碰撞体半径是否合理。
+- [x] 打开场景，确认根节点是 `CharacterBody2D`。
+- [x] 确认存在 `VisualAnchor`。
+- [x] 确认 `VisualAnchor/Sprite2D` 存在。
+- [x] 把玩家正式精灵图挂到 `Sprite2D.texture`。
+- [x] 检查 `Sprite2D` 的大小、偏移和朝向。
+- [x] 确认 `PickupArea/CollisionShape2D` 存在。
+- [x] 根据玩家体型微调主碰撞体大小。
+- [x] 根据拾取范围确认拾取碰撞体半径是否合理。
 
 不要轻易修改：
 
@@ -58,10 +58,10 @@
 
 需要操作：
 
-- [ ] 打开场景，确认根节点存在。
-- [ ] 确认 `TargetingService` 节点存在或运行时能自动创建。
-- [ ] 不需要摆放美术。
-- [ ] 不需要调整位置。
+- [x] 打开场景，确认根节点存在。
+- [x] 确认 `TargetingService` 节点存在或运行时能自动创建。
+- [x] 不需要摆放美术。
+- [x] 不需要调整位置。
 
 注意：
 
@@ -76,12 +76,12 @@
 
 需要操作：
 
-- [ ] 打开场景，确认根节点是 `CharacterBody2D`。
-- [ ] 把敌人正式图片挂到 `Sprite2D.texture`。
-- [ ] 检查敌人图片朝向。
-- [ ] 根据图片大小微调 `Sprite2D.scale`。
-- [ ] 根据敌人体型微调 `CollisionShape2D` 半径。
-- [ ] 运行自测，确认敌人能被实例化。
+- [x] 打开场景，确认根节点是 `CharacterBody2D`。
+- [x] 把敌人正式图片挂到 `Sprite2D.texture`。
+- [x] 检查敌人图片朝向。
+- [x] 根据图片大小微调 `Sprite2D.scale`。
+- [x] 根据敌人体型微调 `CollisionShape2D` 半径。
+- [x] 运行自测，确认敌人能被实例化。
 
 不要轻易修改：
 
@@ -95,10 +95,10 @@
 
 需要操作：
 
-- [ ] 打开场景，确认根节点是 `Area2D`。
-- [ ] 把经验球正式图片挂到 `Sprite2D.texture`。
-- [ ] 检查 `CollisionShape2D` 是否覆盖经验球图标。
-- [ ] 运行自测，确认经验球能被统一吸取和结算。
+- [x] 打开场景，确认根节点是 `Area2D`。
+- [x] 把经验球正式图片挂到 `Sprite2D.texture`。
+- [x] 检查 `CollisionShape2D` 是否覆盖经验球图标。
+- [x] 运行自测，确认经验球能被统一吸取和结算。
 
 不要轻易修改：
 
@@ -112,11 +112,11 @@
 
 需要操作：
 
-- [ ] 打开场景，确认根节点存在。
-- [ ] 确认 `EnemyRoot` 存在。
-- [ ] 确认 `PickupRoot` 存在。
-- [ ] 不需要摆放美术。
-- [ ] 不需要调整位置。
+- [x] 打开场景，确认根节点存在。
+- [x] 确认 `EnemyRoot` 存在。
+- [x] 确认 `PickupRoot` 存在。
+- [x] 不需要摆放美术。
+- [x] 不需要调整位置。
 
 注意：
 
@@ -163,15 +163,15 @@ CampRoot
 
 需要操作：
 
-- [ ] 新增 `BackgroundLayer`。
-- [ ] 在 `BackgroundLayer` 下放置草地素材。
-- [ ] 在 `BackgroundLayer` 下放置河流素材。
-- [ ] 新增 `PropLayer`。
-- [ ] 在 `PropLayer` 下摆放树木、石头、花草。
-- [ ] 在营地中心附近摆放篝火。
-- [ ] 检查 `BuildingLayer` 是否在背景层和装饰层之上。
-- [ ] 运行场景，确认 8 个建筑位正常显示。
-- [ ] 根据实际画面调整 8 个建筑位置。
+- [x] 新增 `BackgroundLayer`。
+- [x] 在 `BackgroundLayer` 下放置草地素材。
+- [x] 在 `BackgroundLayer` 下放置河流素材。
+- [x] 新增 `PropLayer`。
+- [x] 在 `PropLayer` 下摆放树木、石头、花草。
+- [x] 在营地中心附近摆放篝火。
+- [x] 检查 `BuildingLayer` 是否在背景层和装饰层之上。
+- [x] 运行场景，确认 8 个建筑位正常显示。
+- [x] 根据实际画面调整 8 个建筑位置。
 
 不要轻易修改：
 
@@ -190,13 +190,13 @@ CampRoot
 
 需要操作：
 
-- [ ] 打开场景，确认根节点是 `Area2D`。
-- [ ] 确认 `RuinsSprite2D` 存在。
-- [ ] 确认 `BuildingSprite2D` 存在。
-- [ ] 确认 `CollisionShape2D` 覆盖可点击区域。
-- [ ] 确认 `NameLabel` 位置不遮挡建筑。
-- [ ] 如建筑图较大，微调两个 `Sprite2D` 的 scale。
-- [ ] 如点击范围不合适，微调 `CollisionShape2D` 半径。
+- [x] 打开场景，确认根节点是 `Area2D`。
+- [x] 确认 `RuinsSprite2D` 存在。
+- [x] 确认 `BuildingSprite2D` 存在。
+- [x] 确认 `CollisionShape2D` 覆盖可点击区域。
+- [x] 确认 `NameLabel` 位置不遮挡建筑。
+- [x] 如建筑图较大，微调两个 `Sprite2D` 的 scale。
+- [x] 如点击范围不合适，微调 `CollisionShape2D` 半径。
 
 不要轻易修改：
 

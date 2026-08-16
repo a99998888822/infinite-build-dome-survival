@@ -11,7 +11,7 @@
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,
-      "move_speed": 200,
+      "move_speed": 240,
       "load_capacity": 100,
       "pickup_radius": 180,
       "humanity": 100,

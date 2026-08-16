@@ -11,6 +11,16 @@
 3. 然后按模块逐个检查 scene、UI、营地、战斗、区域、存档等手工搭建项。  
 4. 最后补齐缺失素材后，再回头复测对应模块。
 
+### 当前验收进度
+
+- [x] 第 1 步：`scenes/core/bootstrap.tscn` 已运行验证，用户确认无问题。
+- [x] 第 2 步：`scenes/core/game_root.tscn` 已运行验证，用户确认无问题。
+- [x] 第 3 步：玩家、武器、敌人、经验球、血包、波次管理器和召唤物场景已完成结构、素材、碰撞及运行时验证，用户确认无问题。
+- [x] 第 4 步：营地场景与建筑位排布验证，已运行确认无问题。
+- [ ] 第 5 步：UI 场景与交互流程验证。
+- [ ] 第 6 步：完整战斗流程验证。
+- [ ] 第 7 步：存档与设置持久化验证。
+
 ## 2. 已完成项：只看结果
 
 这些模块已经完成核心编码，Godot 电脑上主要看启动结果，不需要再重复设计：
@@ -131,6 +141,8 @@
 
 ### 5.3 玩家与角色
 
+当前状态：已完成 Godot 场景与运行验证；正式素材、节点结构、碰撞和拾取范围均已确认无问题。
+
 关注场景：`scenes/player/player_root.tscn`。
 
 你要在 Godot 里做什么：
@@ -209,6 +221,8 @@
 - 没有刷怪区域或碰撞报错。
 
 ### 5.7 局外营地与成长
+
+当前状态：已完成营地场景运行验证；配置加载正常，8 个建筑位生成正常，建筑位节点结构和显示结果无问题。
 
 关注场景：`scenes/camp/camp_root.tscn`、`scenes/camp/camp_building_slot.tscn`。
 
@@ -359,8 +373,8 @@
 2. `game_root.tscn` 主流程和场景树正常。  
 3. 本轮手工调整的 scene 没有新增报错，且视觉/交互结果符合预期。
 
-## 8. ????????????
-> ???????????????????????????????????????????
+## 8. 模块实施清单汇总
+> 以下内容汇总各模块实施清单，作为 Godot 验证与后续回溯的补充参考。
 
 ### 1-base_data_implementation_checklist.md
 # 基础数值与数据配置模块实施清单
@@ -909,12 +923,12 @@ res://
 
 ## 4. UI / 场景骨架待补
 
-- [x] 在 `UiRoot` 下补齐 `HUDLayer`、`PopupLayer`、`FadeLayer`、`DebugLayer` 分层。
+- [x] 在 `UiRoot` 下补齐 `HUDLayer`、`PopupLayer`、`FadeLayer` 分层。
 - [x] 创建 `zone_select_popup.tscn`，用于显示 3 个区域卡和确认按钮。
 - [x] 创建区域卡组件 `ZoneSelectCard`，优先复用 `reward_option.tscn` 的卡片风格。
 - [x] 创建 `zone_harvest_result_popup.tscn`，用于展示换区后的收割结果。
 - [x] 创建轻量 `zone_ui_controller.gd`，监听 `MainFlowCoordinator.modal_requested / modal_closed`。
-- [ ] 如需调试，可后续再独立拆分 `zone_debug_panel.tscn`；当前已在 `ZoneUIController` 里内联调试面板。
+- [x] 已移除 `ZoneUIController` 内联区域调试面板，正式流程只保留区域选择与收割结果 UI。
 - [x] UI 先用 `PanelContainer + StyleBoxFlat` 占位，不新增区域专属美术。
 
 ## 5. 后续扩展
@@ -996,16 +1010,16 @@ res://
 
 ## 3. 待 Godot 验证项
 
-- [ ] 启动 `scenes/core/bootstrap.tscn`
-- [ ] 确认控制台出现 `[Bootstrap] summon checks`
-- [ ] 确认 `summon test scene instantiate` 输出 `passed`
-- [ ] 确认 `summon root initialize` 输出 `passed`
-- [ ] 确认 `summon count bonus` 输出 `passed`
-- [ ] 确认 `summon inherited damage` 输出 `passed`
-- [ ] 确认 `summon attack enemy` 输出 `passed`
-- [ ] 确认 `summon hard cap` 输出 `passed`
-- [ ] 确认 `summon clear battle entities` 输出 `passed`
-- [ ] 确认最终没有新增 `validation errors`
+- [x] 启动 `scenes/core/bootstrap.tscn`
+- [x] 确认控制台出现 `[Bootstrap] summon checks`
+- [x] 确认 `summon test scene instantiate` 输出 `passed`
+- [x] 确认 `summon root initialize` 输出 `passed`
+- [x] 确认 `summon count bonus` 输出 `passed`
+- [x] 确认 `summon inherited damage` 输出 `passed`
+- [x] 确认 `summon attack enemy` 输出 `passed`
+- [x] 确认 `summon hard cap` 输出 `passed`
+- [x] 确认 `summon clear battle entities` 输出 `passed`
+- [x] 确认最终没有新增 `validation errors`
 
 ## 4. 预期控制台片段
 
@@ -1061,8 +1075,8 @@ res://
 
 ## 3. 待你验证事项
 
-- [ ] 在 Godot 中启动项目，确认 Autoload 无报错
-- [ ] 确认 Bootstrap 能正常输出各模块自测结果
+- [x] 在 Godot 中启动项目，确认 Autoload 无报错
+- [x] 确认 Bootstrap 能正常输出各模块自测结果
 
 ## 4. 后续非阻塞事项
 
@@ -1106,8 +1120,8 @@ res://
 
 ## 3. 待你完成事项
 
-- [ ] 在 Godot 中启动项目，确认控制台出现 `[Bootstrap] player checks`
-- [ ] 确认玩家相关自测全部输出 `passed`
+- [x] 在 Godot 中启动项目，确认控制台出现 `[Bootstrap] player checks`
+- [x] 确认玩家相关自测全部输出 `passed`
 - [ ] 生成正式玩家右向基础精灵图
 - [ ] 生成正式玩家右向行走 spritesheet
 - [ ] 生成角色图标，并在角色选择页面复用该图标
@@ -1177,8 +1191,8 @@ res://
 
 ## 3. 待你验证事项
 
-- [ ] 在 Godot 中启动项目，确认控制台出现 `[Bootstrap] weapon checks`
-- [ ] 确认武器相关自测全部输出 `passed`
+- [x] 在 Godot 中启动项目，确认控制台出现 `[Bootstrap] weapon checks`
+- [x] 确认武器相关自测全部输出 `passed`
 - [ ] 若出现配置校验错误，先反馈控制台完整错误信息
 
 ## 4. Godot 启动验证标准

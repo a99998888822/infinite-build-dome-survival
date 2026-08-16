@@ -28,10 +28,10 @@ func configure(zone_entry: Dictionary) -> void:
 
 
 func _prepare_layout() -> void:
-	custom_minimum_size = Vector2(300, 280)
+	custom_minimum_size = Vector2(210, 250)
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	size_flags_vertical = Control.SIZE_EXPAND_FILL
+	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 
 func _refresh_visual() -> void:

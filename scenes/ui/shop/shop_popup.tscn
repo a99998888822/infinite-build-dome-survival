@@ -13,6 +13,7 @@ script = ExtResource("1_shop_popup")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -320.0
 
 [node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(760, 460)

@@ -220,7 +220,8 @@ func _spawn_attack_effect_visual(weapon: WeaponInstance, center_position: Vector
 	visual.top_level = true
 	visual.z_index = 45
 	var safe_direction := direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
-	visual.global_position = center_position + safe_direction * minf(hit_radius * 0.35, 36.0)
+	var anchor_offset := 0.0 if _weapon_has_tag(weapon, "area") else minf(hit_radius * 0.35, 36.0)
+	visual.global_position = center_position + safe_direction * anchor_offset
 	visual.rotation = safe_direction.angle()
 	var texture_size := maxf(texture.get_size().x, 1.0)
 	var target_scale := maxf(EFFECT_MIN_SCALE, hit_radius * 2.0 / texture_size)
@@ -242,6 +243,18 @@ func _load_weapon_texture(weapon: WeaponInstance, field_name: String) -> Texture
 		return null
 	var resource := load(texture_path)
 	return resource as Texture2D
+
+
+func _weapon_has_tag(weapon: WeaponInstance, tag: String) -> bool:
+	if weapon == null:
+		return false
+	var tags: Variant = weapon.weapon_data.get("tags", [])
+	if not (tags is Array):
+		return false
+	for raw_tag in tags:
+		if str(raw_tag) == tag:
+			return true
+	return false
 
 
 func _get_visual_root() -> Node:

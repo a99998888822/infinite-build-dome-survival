@@ -329,8 +329,9 @@ func close_shop_popup() -> void:
 		return
 	modal_closed.emit(STATE_SHOP_POPUP)
 	if _wave_end_ready:
-		_set_state(STATE_INTEREST_SETTLEMENT)
+		# 利息提示只是异步通知，不再作为必须等待的流程状态。
 		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
+		_request_wave_end_finance()
 	else:
 		_set_state(STATE_BATTLE_PREPARE)
 

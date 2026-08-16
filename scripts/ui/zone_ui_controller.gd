@@ -7,11 +7,8 @@ const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zo
 @onready var hud_layer: CanvasLayer = get_node_or_null("HUDLayer")
 @onready var popup_layer: CanvasLayer = get_node_or_null("PopupLayer")
 @onready var fade_layer: CanvasLayer = get_node_or_null("FadeLayer")
-@onready var debug_layer: CanvasLayer = get_node_or_null("DebugLayer")
 @onready var zone_select_popup: ZoneSelectPopup = get_node_or_null("PopupLayer/ZoneSelectPopup")
 @onready var zone_harvest_result_popup: ZoneHarvestResultPopup = get_node_or_null("PopupLayer/ZoneHarvestResultPopup")
-@onready var debug_panel: PanelContainer = get_node_or_null("DebugLayer/ZoneDebugPanel")
-@onready var debug_label: Label = get_node_or_null("DebugLayer/ZoneDebugPanel/Content/ZoneDebugLabel")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 
@@ -19,7 +16,6 @@ var _main_flow_coordinator: MainFlowCoordinator = null
 func _ready() -> void:
 	_prepare_layers()
 	call_deferred("_bind_to_main_flow")
-	_refresh_debug_text()
 
 
 func _prepare_layers() -> void:
@@ -33,10 +29,6 @@ func _prepare_layers() -> void:
 		if zone_harvest_result_popup != null:
 			zone_harvest_result_popup.name = "ZoneHarvestResultPopup"
 			popup_layer.add_child(zone_harvest_result_popup)
-	if debug_panel != null:
-		debug_panel.position = Vector2(16, 16)
-		debug_panel.size = Vector2(260, 120)
-		debug_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func _bind_to_main_flow() -> void:
@@ -50,14 +42,10 @@ func _bind_to_main_flow() -> void:
 	_main_flow_coordinator = coordinator
 	var requested_callable := Callable(self, "_on_modal_requested")
 	var closed_callable := Callable(self, "_on_modal_closed")
-	var zone_state_callable := Callable(self, "_on_zone_state_changed")
 	if not _main_flow_coordinator.modal_requested.is_connected(requested_callable):
 		_main_flow_coordinator.modal_requested.connect(requested_callable)
 	if not _main_flow_coordinator.modal_closed.is_connected(closed_callable):
 		_main_flow_coordinator.modal_closed.connect(closed_callable)
-	if ZoneProgression != null and not ZoneProgression.state_changed.is_connected(zone_state_callable):
-		ZoneProgression.state_changed.connect(zone_state_callable)
-	_refresh_debug_text()
 
 
 func _unbind_main_flow() -> void:
@@ -92,7 +80,6 @@ func _on_modal_requested(modal_state: String, payload: Dictionary) -> void:
 			_show_zone_harvest_result(payload)
 		_:
 			return
-	_refresh_debug_text()
 
 
 func _on_modal_closed(modal_state: String) -> void:
@@ -105,11 +92,6 @@ func _on_modal_closed(modal_state: String) -> void:
 				zone_harvest_result_popup.hide_popup()
 		_:
 			return
-	_refresh_debug_text()
-
-
-func _on_zone_state_changed(_state: Dictionary) -> void:
-	_refresh_debug_text()
 
 
 func _show_zone_select(payload: Dictionary) -> void:
@@ -148,14 +130,3 @@ func _on_zone_selected(zone_id: String) -> void:
 func _on_zone_harvest_confirmed() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.close_zone_harvest_result_popup()
-
-
-func _refresh_debug_text() -> void:
-	if debug_label == null:
-		return
-	var zone_state := ZoneProgression.get_state_snapshot() if ZoneProgression != null else {}
-	var current_zone_id := str(zone_state.get("current_zone_id", ""))
-	var streak_count := int(zone_state.get("streak_count", 0))
-	var fortune_storage := int(zone_state.get("fortune_storage", 0))
-	var pending_harvest := bool(zone_state.get("pending_harvest", false))
-	debug_label.text = "zone=%s\nstreak=%d\nfortune=%d\npending_harvest=%s" % [current_zone_id, streak_count, fortune_storage, str(pending_harvest)]

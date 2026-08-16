@@ -491,10 +491,9 @@ func _run_zone_ui_checks() -> bool:
 	var controller := ZONE_UI_CONTROLLER_SCENE.instantiate()
 	passed = _print_check_result("zone ui controller instantiate", controller != null) and passed
 	if controller != null:
-		passed = _print_check_result("zone ui controller layer", controller.get_node_or_null("PopupLayer") != null and controller.get_node_or_null("DebugLayer") != null) and passed
+		passed = _print_check_result("zone ui controller layer", controller.get_node_or_null("PopupLayer") != null and controller.get_node_or_null("DebugLayer") == null) and passed
 		passed = _print_check_result("zone ui select popup", controller.get_node_or_null("PopupLayer/ZoneSelectPopup") != null) and passed
 		passed = _print_check_result("zone ui harvest popup", controller.get_node_or_null("PopupLayer/ZoneHarvestResultPopup") != null) and passed
-		passed = _print_check_result("zone ui debug panel", controller.get_node_or_null("DebugLayer/ZoneDebugPanel") != null) and passed
 		controller.queue_free()
 
 	var select_popup := ZONE_SELECT_POPUP_SCENE.instantiate()

@@ -2,6 +2,7 @@ extends Control
 class_name ZoneSelectPopup
 
 const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")
+const STATS_DRAWER_RESERVED_WIDTH: float = 336.0
 
 signal zone_selected(zone_id: String)
 
@@ -11,7 +12,7 @@ var selection_payload: Dictionary = {}
 @onready var main_panel: PanelContainer = get_node_or_null("CenterContainer/MainPanel")
 @onready var title_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/TitleLabel")
 @onready var summary_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/SummaryLabel")
-@onready var zone_card_grid: GridContainer = get_node_or_null("CenterContainer/MainPanel/Content/ZoneCardGrid")
+@onready var zone_card_grid: HBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content/ZoneCardGrid")
 @onready var hint_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/HintLabel")
 
 
@@ -36,14 +37,21 @@ func hide_popup() -> void:
 
 func _prepare_layout() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = 0.0
+	offset_bottom = 0.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	if center_container != null:
-		center_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+		center_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		center_container.offset_right = -STATS_DRAWER_RESERVED_WIDTH
+		center_container.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		center_container.grow_vertical = Control.GROW_DIRECTION_BOTH
 	if main_panel != null:
-		main_panel.custom_minimum_size = Vector2(1040, 620)
+		main_panel.custom_minimum_size = Vector2(720, 500)
 		main_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	if zone_card_grid != null:
-		zone_card_grid.columns = 3
+		zone_card_grid.alignment = BoxContainer.ALIGNMENT_CENTER
 
 
 func _refresh_visual() -> void:

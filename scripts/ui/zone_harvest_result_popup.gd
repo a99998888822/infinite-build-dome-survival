@@ -40,6 +40,7 @@ func _prepare_layout() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	if center_container != null:
 		center_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+		center_container.offset_right = -320.0
 	if main_panel != null:
 		main_panel.custom_minimum_size = Vector2(900, 460)
 		main_panel.mouse_filter = Control.MOUSE_FILTER_STOP
