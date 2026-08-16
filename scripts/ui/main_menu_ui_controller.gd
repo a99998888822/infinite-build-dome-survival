@@ -1,12 +1,22 @@
 extends CanvasLayer
 class_name MainMenuUIController
 
+const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
+const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
+const MAIN_MENU_BUTTON_TEXTURE_PATH: String = "res://assets/ui/main_menu/button_main_menu.png"
+
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
 
 @onready var start_page: Control = get_node_or_null("StartPage")
-@onready var start_battle_button: Button = get_node_or_null("StartPage/CenterContainer/MainPanel/Content/StartBattleButton")
-@onready var camp_entry_button: Button = get_node_or_null("StartPage/CenterContainer/MainPanel/Content/CampEntryButton")
+@onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
+@onready var title_art: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack/TitleArt")
+@onready var start_battle_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/FrameTexture")
+@onready var camp_entry_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/FrameTexture")
+@onready var quit_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/FrameTexture")
+@onready var start_battle_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton")
+@onready var camp_entry_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton")
+@onready var quit_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton")
 @onready var character_select_page: Control = get_node_or_null("CharacterSelectPage")
 @onready var character_list: VBoxContainer = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/CharacterList")
 @onready var character_error_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ErrorLabel")
@@ -19,10 +29,13 @@ var _selected_character_id: String = ""
 
 
 func _ready() -> void:
+	_apply_start_page_assets()
 	if start_battle_button != null and not start_battle_button.pressed.is_connected(_on_start_battle_pressed):
 		start_battle_button.pressed.connect(_on_start_battle_pressed)
 	if camp_entry_button != null and not camp_entry_button.pressed.is_connected(_on_camp_entry_pressed):
 		camp_entry_button.pressed.connect(_on_camp_entry_pressed)
+	if quit_button != null and not quit_button.pressed.is_connected(_on_quit_pressed):
+		quit_button.pressed.connect(_on_quit_pressed)
 	if character_back_button != null and not character_back_button.pressed.is_connected(_on_character_back_pressed):
 		character_back_button.pressed.connect(_on_character_back_pressed)
 	if character_confirm_button != null and not character_confirm_button.pressed.is_connected(_on_character_confirm_pressed):
@@ -111,6 +124,11 @@ func _on_camp_entry_pressed() -> void:
 		_main_flow_coordinator.enter_camp_flow()
 
 
+func _on_quit_pressed() -> void:
+	if get_tree() != null:
+		get_tree().quit()
+
+
 func _on_character_back_pressed() -> void:
 	_selected_character_id = ""
 	if _main_flow_coordinator != null and _main_flow_coordinator.get_current_mode() == MainFlowCoordinator.MODE_BATTLE:
@@ -191,3 +209,27 @@ func _refresh_result_text() -> void:
 func _on_result_back_pressed() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.confirm_battle_result()
+
+
+func _apply_start_page_assets() -> void:
+	_ensure_texture(start_page_background, MAIN_MENU_BACKGROUND_TEXTURE_PATH)
+	_ensure_texture(title_art, MAIN_MENU_TITLE_TEXTURE_PATH)
+	_ensure_texture(start_battle_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
+	_ensure_texture(camp_entry_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
+	_ensure_texture(quit_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
+
+
+func _ensure_texture(texture_rect: TextureRect, fallback_path: String) -> void:
+	if texture_rect == null:
+		return
+	if texture_rect.texture == null:
+		texture_rect.texture = _load_menu_texture(fallback_path)
+	if texture_rect.texture != null:
+		texture_rect.visible = true
+
+
+func _load_menu_texture(path: String) -> Texture2D:
+	if not ResourceLoader.exists(path):
+		return null
+	var resource := load(path)
+	return resource as Texture2D

@@ -115,6 +115,11 @@ func get_hit_radius() -> float:
 	return StatDefinitions.calculate_attack_radius(base_radius, get_stat("area_size"))
 
 
+func get_attack_range() -> float:
+	var base_range := float(weapon_data.get("attack_range", weapon_data.get("hit_radius", 0)))
+	return StatDefinitions.calculate_attack_radius(base_range, get_stat("area_size"))
+
+
 func get_projectile_speed() -> float:
 	return float(weapon_data.get("projectile_speed", 0))
 

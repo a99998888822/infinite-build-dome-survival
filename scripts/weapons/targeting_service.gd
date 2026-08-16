@@ -6,13 +6,20 @@ class_name TargetingService
 
 func find_nearest_enemy(origin: Vector2) -> Node2D:
 	# 敌人模块完成前允许返回空，武器逻辑必须能安全跳过攻击。
+	return find_nearest_enemy_in_radius(origin, INF)
+
+
+func find_nearest_enemy_in_radius(origin: Vector2, radius: float) -> Node2D:
 	var nearest_enemy: Node2D = null
 	var nearest_distance_sq := INF
+	var radius_sq := radius * radius
 	for node in get_tree().get_nodes_in_group(enemy_group_name):
 		var enemy := node as Node2D
 		if enemy == null or not enemy.is_inside_tree():
 			continue
 		var distance_sq := origin.distance_squared_to(enemy.global_position)
+		if distance_sq > radius_sq:
+			continue
 		if distance_sq < nearest_distance_sq:
 			nearest_distance_sq = distance_sq
 			nearest_enemy = enemy

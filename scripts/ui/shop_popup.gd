@@ -76,7 +76,7 @@ func _refresh_visual() -> void:
 			continue
 		offer_grid.add_child(card)
 		card.configure(offer, RewardOption.ENTRY_SHOP if mode == ENTRY_SHOP else RewardOption.ENTRY_FREE)
-		var card_callable := Callable(self, "_on_offer_selected").bind(offer)
+		var card_callable := Callable(self, "_on_offer_selected")
 		card.selected.connect(card_callable)
 		_offer_cards.append(card)
 

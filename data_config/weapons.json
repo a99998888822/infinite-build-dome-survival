@@ -4,6 +4,8 @@
     "display_name": "小飞刃",
     "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg",
+    "projectile_texture": "res://assets/sprites/weapons/projectiles/projectile_void_blade.png",
+    "projectile_visual_speed": 400,
     "rarity": "common",
     "tags": [
       "weapon",
@@ -15,12 +17,13 @@
     "load_cost": 12,
     "max_level": 5,
     "attack_interval_ms": 700,
+    "attack_range": 420,
     "hit_radius": 10,
     "projectile_speed": 500,
     "spread_angle": 12,
     "use_cooldown_reduction_only": false,
     "base_stats": {
-      "ranged_damage": 8,
+      "ranged_damage": 10,
       "attack_speed": 0,
       "crit_chance": 5,
       "crit_damage": 150,
@@ -30,6 +33,7 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
+        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
         "effects": [
         {
           "stat": "ranged_damage",
@@ -43,6 +47,7 @@
       },
       "3": {
         "rarity": "rare",
+        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
         "effects": [
         {
           "stat": "ranged_damage",
@@ -56,6 +61,7 @@
       },
       "4": {
         "rarity": "epic",
+        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
         "effects": [
         {
           "stat": "ranged_damage",
@@ -69,6 +75,7 @@
       },
       "5": {
         "rarity": "mythic",
+        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒，并额外发射 1 枚飞刃。",
         "effects": [
         {
           "stat": "ranged_damage",
@@ -91,6 +98,7 @@
     "display_name": "砍刀",
     "icon": "res://assets/ui/icons/weapons/weapon_mutated_cleaver.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg",
+    "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_cleaver_slash.png",
     "rarity": "common",
     "tags": [
       "weapon",
@@ -102,6 +110,7 @@
     "load_cost": 10,
     "max_level": 5,
     "attack_interval_ms": 650,
+    "attack_range": 80,
     "hit_radius": 80,
     "projectile_speed": 0,
     "spread_angle": 0,
@@ -116,6 +125,7 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
+        "description": "砍刀伤害 +2，攻击间隔缩短 0.05 秒。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -129,6 +139,7 @@
       },
       "3": {
         "rarity": "rare",
+        "description": "砍刀伤害 +2，攻击间隔缩短 0.05 秒。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -142,6 +153,7 @@
       },
       "4": {
         "rarity": "epic",
+        "description": "砍刀伤害 +2，攻击范围扩大 10%。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -155,6 +167,7 @@
       },
       "5": {
         "rarity": "mythic",
+        "description": "砍刀伤害 +4，攻击间隔缩短 0.05 秒，暴击率 +5%。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -177,6 +190,7 @@
     "display_name": "穹顶震波器",
     "icon": "res://assets/ui/icons/weapons/weapon_dome_shockwave.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg",
+    "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_dome_shockwave.png",
     "rarity": "common",
     "tags": [
       "weapon",
@@ -190,6 +204,7 @@
     "load_cost": 24,
     "max_level": 5,
     "attack_interval_ms": 1200,
+    "attack_range": 120,
     "hit_radius": 120,
     "projectile_speed": 0,
     "spread_angle": 0,
@@ -207,6 +222,7 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
+        "description": "近战伤害 +2，远程伤害 +2。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -220,6 +236,7 @@
       },
       "3": {
         "rarity": "rare",
+        "description": "攻击间隔缩短 0.1 秒，震波范围扩大 10%。",
         "effects": [
         {
           "field": "attack_interval_ms",
@@ -233,6 +250,7 @@
       },
       "4": {
         "rarity": "epic",
+        "description": "近战伤害 +2，远程伤害 +2，持续效果 +10%。",
         "effects": [
         {
           "stat": "melee_damage",
@@ -250,6 +268,7 @@
       },
       "5": {
         "rarity": "mythic",
+        "description": "攻击间隔缩短 0.1 秒，震波范围扩大 15%，总伤害 +5%。",
         "effects": [
         {
           "field": "attack_interval_ms",

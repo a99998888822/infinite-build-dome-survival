@@ -7,7 +7,7 @@
     "tags": ["enemy", "normal", "melee", "void"],
     "enemy_type": "normal",
     "base_stats": {
-      "max_hp": 20,
+      "max_hp": 10,
       "armor": 0,
       "move_speed": 100,
       "melee_damage": 8

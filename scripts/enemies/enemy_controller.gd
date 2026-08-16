@@ -9,6 +9,8 @@ const DEFAULT_KNOCKBACK_SPEED: float = 450.0
 const DEFAULT_KNOCKBACK_SECONDS: float = 0.18
 const CONTACT_RADIUS: float = 28.0
 const CONTACT_RESET_RADIUS: float = 44.0
+const SEPARATION_RADIUS: float = 58.0
+const SEPARATION_STRENGTH: float = 140.0
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -36,6 +38,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not alive:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		velocity = Vector2.ZERO
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
@@ -113,10 +118,29 @@ func _process_chase() -> void:
 		move_and_slide()
 		return
 	var direction := global_position.direction_to(target_player.global_position)
-	velocity = direction * get_stat("move_speed")
+	var separation := _calculate_enemy_separation()
+	velocity = direction * get_stat("move_speed") + separation * SEPARATION_STRENGTH
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()
+
+
+func _calculate_enemy_separation() -> Vector2:
+	var push := Vector2.ZERO
+	var radius_sq := SEPARATION_RADIUS * SEPARATION_RADIUS
+	for node in get_tree().get_nodes_in_group("enemies"):
+		if node == self:
+			continue
+		var other := node as Node2D
+		if other == null or not other.is_inside_tree():
+			continue
+		var offset := global_position - other.global_position
+		var distance_sq := offset.length_squared()
+		if distance_sq <= 0.01 or distance_sq > radius_sq:
+			continue
+		var distance := sqrt(distance_sq)
+		push += offset.normalized() * (1.0 - distance / SEPARATION_RADIUS)
+	return push.limit_length(1.0)
 
 
 func _process_contact_reset() -> void:

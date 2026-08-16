@@ -24,6 +24,7 @@ static func create(data: Dictionary) -> DamageEvent:
 
 func to_dictionary() -> Dictionary:
 	return {
+		"source_player": source_player,
 		"source_weapon_id": source_weapon_id,
 		"damage": damage,
 		"damage_kind": damage_kind,
@@ -31,6 +32,10 @@ func to_dictionary() -> Dictionary:
 		"tags": tags.duplicate(),
 		"hit_position": hit_position,
 	}
+
+
+func duplicate_event() -> DamageEvent:
+	return DamageEvent.create(to_dictionary())
 
 
 static func _to_string_array(raw_values: Variant) -> Array[String]:

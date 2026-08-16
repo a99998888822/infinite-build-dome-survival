@@ -2,6 +2,7 @@
   {
     "id": "relic_deep_eye",
     "display_name": "深海之眼",
+    "icon": "res://assets/ui/icons/relics/relic_deep_eye.png",
     "rarity": "rare",
     "bond_id": "bond_chosen",
     "max_stack": 0,
@@ -23,6 +24,7 @@
   {
     "id": "relic_flying_teeth",
     "display_name": "飞的牙齿",
+    "icon": "res://assets/ui/icons/relics/relic_flying_teeth.png",
     "rarity": "common",
     "bond_id": "bond_mighty",
     "max_stack": 0,
@@ -55,6 +57,7 @@
   {
     "id": "relic_flying_feather",
     "display_name": "飞的羽毛",
+    "icon": "res://assets/ui/icons/relics/relic_flying_feather.png",
     "rarity": "common",
     "bond_id": "bond_sharpshooter",
     "max_stack": 0,
@@ -76,6 +79,7 @@
   {
     "id": "relic_flying_eye",
     "display_name": "飞的眼睛",
+    "icon": "res://assets/ui/icons/relics/relic_flying_eye.png",
     "rarity": "rare",
     "bond_id": "bond_chosen",
     "max_stack": 0,

@@ -82,6 +82,7 @@ func reset_flow() -> void:
 	_pending_interest_payload.clear()
 	_pending_finance_payload.clear()
 	_pending_wave_start_after_finance = false
+	_set_battle_runtime_paused(false)
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
 	flow_reset.emit()
@@ -123,7 +124,7 @@ func confirm_character_selection() -> bool:
 	_wave_end_ready = false
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_BATTLE_PREPARE)
-	return true
+	return request_next_wave()
 
 
 func bind_battle_context(player: PlayerController, loadout: WeaponLoadout, wave_manager: WaveManager = null) -> void:
@@ -150,11 +151,14 @@ func bind_wave_manager(wave_manager: WaveManager) -> void:
 		return
 	var wave_started_callable := Callable(self, "_on_wave_started")
 	var wave_finished_callable := Callable(self, "_on_wave_finished")
+	var wave_absorb_started_callable := Callable(self, "_on_wave_end_absorb_started")
 	var shared_reward_callable := Callable(self, "_on_shared_reward_shop_requested")
 	if not _bound_wave_manager.wave_started.is_connected(wave_started_callable):
 		_bound_wave_manager.wave_started.connect(wave_started_callable)
 	if not _bound_wave_manager.wave_finished.is_connected(wave_finished_callable):
 		_bound_wave_manager.wave_finished.connect(wave_finished_callable)
+	if not _bound_wave_manager.wave_end_absorb_started.is_connected(wave_absorb_started_callable):
+		_bound_wave_manager.wave_end_absorb_started.connect(wave_absorb_started_callable)
 	if not _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.connect(shared_reward_callable)
 	if not _bound_wave_manager.free_shop_requested.is_connected(shared_reward_callable):
@@ -183,10 +187,15 @@ func request_next_wave() -> bool:
 		return false
 	if current_state != STATE_BATTLE_PREPARE:
 		return false
+	var next_wave_number := _get_next_wave_number()
 	if not _has_next_wave():
 		return false
+	if next_wave_number <= 1:
+		_pending_wave_start_after_finance = true
+		_pending_finance_payload.clear()
+		return _start_prepared_wave()
 	_pending_wave_start_after_finance = true
-	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(_get_next_wave_number())
+	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(next_wave_number)
 	_set_state(STATE_FINANCE_POPUP)
 	modal_requested.emit(STATE_FINANCE_POPUP, _pending_finance_payload.duplicate(true))
 	return true
@@ -201,6 +210,10 @@ func finish_current_wave() -> void:
 func request_shared_reward_shop_popup(level: int, source: String = "wave_manager") -> void:
 	if current_mode != MODE_BATTLE or battle_resolved or level <= 0:
 		return
+	if current_state == STATE_WAVE_END_ABSORB:
+		if not _pending_level_up_levels.has(level):
+			_pending_level_up_levels.append(level)
+		return
 	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		if level == _active_level_up_level:
 			return
@@ -210,6 +223,7 @@ func request_shared_reward_shop_popup(level: int, source: String = "wave_manager
 
 	_active_level_up_level = level
 	_resume_state_after_modal = STATE_INTEREST_SETTLEMENT if _wave_end_ready else current_state
+	_set_battle_runtime_paused(true)
 	_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
 	modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(level, source, false))
 
@@ -229,10 +243,11 @@ func close_shared_reward_shop_popup() -> void:
 		return
 	_active_level_up_level = 0
 	if _wave_end_ready:
-		_set_state(STATE_INTEREST_SETTLEMENT)
-		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
+		_set_battle_runtime_paused(false)
+		_enter_wave_end_shop()
 	else:
 		_set_state(_resume_state_after_modal)
+		_set_battle_runtime_paused(false)
 
 
 func close_level_up_popup() -> void:
@@ -306,18 +321,18 @@ func close_interest_settlement() -> void:
 	if current_state != STATE_INTEREST_SETTLEMENT:
 		return
 	modal_closed.emit(STATE_INTEREST_SETTLEMENT)
-	_pending_interest_payload.clear()
-	_set_state(STATE_SHOP_POPUP)
-	modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
+	_request_wave_end_finance()
 
 
 func close_shop_popup() -> void:
 	if current_state != STATE_SHOP_POPUP:
 		return
 	modal_closed.emit(STATE_SHOP_POPUP)
-	_wave_end_ready = false
-	_pending_interest_payload.clear()
-	_set_state(STATE_BATTLE_PREPARE)
+	if _wave_end_ready:
+		_set_state(STATE_INTEREST_SETTLEMENT)
+		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
+	else:
+		_set_state(STATE_BATTLE_PREPARE)
 
 
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
@@ -346,24 +361,26 @@ func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
 	_pending_interest_payload = _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {}
 	_pending_interest_payload["settlement_results"] = _pending_interest_payload.get("last_settlement_results", [])
-	if current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
-		_set_state(STATE_INTEREST_SETTLEMENT)
-		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
+	if not _pending_level_up_levels.is_empty() and not battle_resolved:
+		var next_level := int(_pending_level_up_levels.pop_front())
+		_active_level_up_level = next_level
+		_resume_state_after_modal = STATE_SHOP_POPUP
+		_set_battle_runtime_paused(true)
+		_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
+		modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(next_level, "wave_end_absorb", false))
+	elif current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
+		_enter_wave_end_shop()
 	elif current_state == STATE_SHARED_REWARD_SHOP_POPUP:
-		_resume_state_after_modal = STATE_INTEREST_SETTLEMENT
+		_resume_state_after_modal = STATE_SHOP_POPUP
 
 
 func advance_wave_end_phase() -> void:
 	if current_state == STATE_INTEREST_SETTLEMENT:
 		modal_closed.emit(STATE_INTEREST_SETTLEMENT)
-		_pending_interest_payload.clear()
-		_set_state(STATE_SHOP_POPUP)
-		modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
+		_request_wave_end_finance()
 		return
 	if current_state == STATE_SHOP_POPUP:
-		_wave_end_ready = false
-		_pending_interest_payload.clear()
-		_set_state(STATE_BATTLE_PREPARE)
+		close_shop_popup()
 		return
 	if current_state == STATE_FINANCE_POPUP:
 		close_finance_popup()
@@ -383,6 +400,7 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
 	_set_mode(MODE_BATTLE)
+	_set_battle_runtime_paused(false)
 	_set_state(STATE_BATTLE_RESULT)
 	battle_result_changed.emit(victory, current_battle_summary.duplicate(true))
 
@@ -447,6 +465,28 @@ func _start_prepared_wave() -> bool:
 	return false
 
 
+func _enter_wave_end_shop() -> void:
+	if current_mode != MODE_BATTLE or battle_resolved:
+		return
+	_set_battle_runtime_paused(false)
+	_set_state(STATE_SHOP_POPUP)
+	modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
+
+
+func _request_wave_end_finance() -> bool:
+	if current_mode != MODE_BATTLE or battle_resolved or _bound_wave_manager == null:
+		return false
+	if not _has_next_wave():
+		return false
+	var next_wave_number := _get_next_wave_number()
+	_pending_interest_payload.clear()
+	_pending_wave_start_after_finance = true
+	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(next_wave_number)
+	_set_state(STATE_FINANCE_POPUP)
+	modal_requested.emit(STATE_FINANCE_POPUP, _pending_finance_payload.duplicate(true))
+	return true
+
+
 func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 	if current_mode != MODE_BATTLE or battle_resolved:
 		return
@@ -455,6 +495,7 @@ func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 	current_wave_duration_seconds = duration_seconds
 	_pending_finance_payload.clear()
 	_pending_wave_start_after_finance = false
+	_set_battle_runtime_paused(false)
 	_set_state(STATE_WAVE_COMBAT)
 
 
@@ -467,6 +508,11 @@ func _on_wave_finished(wave_id: String) -> void:
 		present_battle_result(true, {"reason": "all_waves_cleared", "gold": gold})
 		return
 	mark_wave_end_ready()
+
+
+func _on_wave_end_absorb_started(_wave_id: String) -> void:
+	if current_mode == MODE_BATTLE and not battle_resolved:
+		_set_state(STATE_WAVE_END_ABSORB)
 
 
 func _on_shared_reward_shop_requested(level: int) -> void:
@@ -499,6 +545,10 @@ func _set_state(next_state: String) -> void:
 	state_changed.emit(previous_state, current_state)
 
 
+func _set_battle_runtime_paused(paused: bool) -> void:
+	GameGlobal.set_runtime_flag("battle_runtime_paused", paused)
+
+
 func _unbind_battle_context() -> void:
 	_unbind_player()
 	_unbind_wave_manager()
@@ -526,6 +576,9 @@ func _unbind_wave_manager() -> void:
 		_bound_wave_manager.wave_started.disconnect(wave_started_callable)
 	if _bound_wave_manager.wave_finished.is_connected(wave_finished_callable):
 		_bound_wave_manager.wave_finished.disconnect(wave_finished_callable)
+	var wave_absorb_started_callable := Callable(self, "_on_wave_end_absorb_started")
+	if _bound_wave_manager.wave_end_absorb_started.is_connected(wave_absorb_started_callable):
+		_bound_wave_manager.wave_end_absorb_started.disconnect(wave_absorb_started_callable)
 	if _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.disconnect(shared_reward_callable)
 	if _bound_wave_manager.free_shop_requested.is_connected(shared_reward_callable):

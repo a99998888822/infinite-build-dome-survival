@@ -1,102 +1,297 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bff3u3lony2bv"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu_ui_controller.gd" id="1_main_menu"]
+[ext_resource type="Script" uid="uid://dmtnpk5cdld1w" path="res://scripts/ui/main_menu_ui_controller.gd" id="1_main_menu"]
+[ext_resource type="Texture2D" uid="uid://c8jb5bwuuujb1" path="res://assets/ui/main_menu/button_main_menu.png" id="2_a7kih"]
+[ext_resource type="Texture2D" uid="uid://bsrwgtffh8g3f" path="res://assets/ui/main_menu/title_main_menu.png" id="2_kxa31"]
 
-[node name="MainMenuUIController" type="CanvasLayer"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
+
+[node name="MainMenuUIController" type="CanvasLayer" unique_id=183020204]
 layer = 20
 script = ExtResource("1_main_menu")
 
-[node name="StartPage" type="Control" parent="."]
+[node name="StartPage" type="Control" parent="." unique_id=2047935847]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="CenterContainer" type="CenterContainer" parent="StartPage"]
-anchors_preset = 15
+[node name="FallbackFill" type="ColorRect" parent="StartPage" unique_id=2026924234]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.15, 0.22, 0.22, 1)
 
-[node name="MainPanel" type="PanelContainer" parent="StartPage/CenterContainer"]
-custom_minimum_size = Vector2(420, 320)
-
-[node name="Content" type="VBoxContainer" parent="StartPage/CenterContainer/MainPanel"]
-theme_override_constants/separation = 16
-
-[node name="TitleLabel" type="Label" parent="StartPage/CenterContainer/MainPanel/Content"]
-text = "穹顶求生"
-horizontal_alignment = 1
-
-[node name="StartBattleButton" type="Button" parent="StartPage/CenterContainer/MainPanel/Content"]
-text = "开始战斗"
-custom_minimum_size = Vector2(0, 48)
-
-[node name="CampEntryButton" type="Button" parent="StartPage/CenterContainer/MainPanel/Content"]
-text = "进入营地"
-custom_minimum_size = Vector2(0, 48)
-
-[node name="CharacterSelectPage" type="Control" parent="."]
+[node name="Background" type="TextureRect" parent="StartPage" unique_id=158706256]
 visible = false
-anchors_preset = 15
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DimmingOverlay" type="ColorRect" parent="StartPage" unique_id=34603372]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.08, 0.13, 0.14, 0.22)
+
+[node name="ContentMargin" type="MarginContainer" parent="StartPage" unique_id=778555507]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 42
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 48
+
+[node name="ContentColumn" type="VBoxContainer" parent="StartPage/ContentMargin" unique_id=928923107]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TopSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=757830656]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TitleArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1055827538]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleCenter" type="CenterContainer" parent="StartPage/ContentMargin/ContentColumn/TitleArea" unique_id=52519252]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="CenterContainer" type="CenterContainer" parent="CharacterSelectPage"]
+[node name="TitleStack" type="Control" parent="StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter" unique_id=439048650]
+custom_minimum_size = Vector2(700, 160)
+layout_mode = 2
+
+[node name="TitleArt" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack" unique_id=317699850]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 63.999996
+offset_top = -85.000015
+offset_right = 64.0
+offset_bottom = -85.000015
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+mouse_filter = 2
+texture = ExtResource("2_kxa31")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="MainPanel" type="PanelContainer" parent="CharacterSelectPage/CenterContainer"]
-custom_minimum_size = Vector2(560, 420)
+[node name="MiddleSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=605045204]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Content" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel"]
+[node name="ButtonArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1647143214]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonCenter" type="CenterContainer" parent="StartPage/ContentMargin/ContentColumn/ButtonArea" unique_id=170264243]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ButtonRow" type="VBoxContainer" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter" unique_id=1554262281]
+layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+[node name="StartBattleShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=304726107]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+
+[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell" unique_id=1931168593]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("2_a7kih")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StartBattleButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell" unique_id=1844054139]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -2.0
+offset_right = -5.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
+text = "开始战斗"
+flat = true
+
+[node name="CampEntryShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1695527156]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+
+[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell" unique_id=1702929359]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("2_a7kih")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CampEntryButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell" unique_id=1204232876]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_right = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
+text = "进入营地"
+flat = true
+
+[node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+
+[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell" unique_id=1477197933]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("2_a7kih")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QuitButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell" unique_id=1911587221]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = 1.0
+offset_right = -6.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
+text = "退出"
+flat = true
+
+[node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CharacterSelectPage" type="Control" parent="." unique_id=737550973]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="CharacterSelectPage" unique_id=1475106993]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainPanel" type="PanelContainer" parent="CharacterSelectPage/CenterContainer" unique_id=2081780886]
+custom_minimum_size = Vector2(560, 420)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel" unique_id=397228058]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=358826533]
+layout_mode = 2
 text = "选择角色"
 horizontal_alignment = 1
 
-[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1181950184]
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ErrorLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
-autowrap_mode = 3
+[node name="ErrorLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1989766280]
+layout_mode = 2
 horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="ButtonRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+[node name="ButtonRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=326389748]
+layout_mode = 2
 
-[node name="BackButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow"]
+[node name="BackButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow" unique_id=1456694272]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "返回"
-size_flags_horizontal = 3
 
-[node name="ConfirmButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow"]
-text = "确认选择"
+[node name="ConfirmButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow" unique_id=95926871]
+layout_mode = 2
+size_flags_horizontal = 3
 disabled = true
-size_flags_horizontal = 3
+text = "确认选择"
 
-[node name="BattleResultPanel" type="Control" parent="."]
+[node name="BattleResultPanel" type="Control" parent="." unique_id=2077631280]
 visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="CenterContainer" type="CenterContainer" parent="BattleResultPanel"]
-anchors_preset = 15
+[node name="CenterContainer" type="CenterContainer" parent="BattleResultPanel" unique_id=954575922]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="MainPanel" type="PanelContainer" parent="BattleResultPanel/CenterContainer"]
+[node name="MainPanel" type="PanelContainer" parent="BattleResultPanel/CenterContainer" unique_id=1232233122]
 custom_minimum_size = Vector2(420, 260)
+layout_mode = 2
 
-[node name="Content" type="VBoxContainer" parent="BattleResultPanel/CenterContainer/MainPanel"]
+[node name="Content" type="VBoxContainer" parent="BattleResultPanel/CenterContainer/MainPanel" unique_id=1111589842]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="ResultTitleLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
+[node name="ResultTitleLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=1593405632]
+layout_mode = 2
 horizontal_alignment = 1
 
-[node name="ResultSummaryLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
+[node name="ResultSummaryLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=1167959946]
+layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="ResultBackButton" type="Button" parent="BattleResultPanel/CenterContainer/MainPanel/Content"]
-text = "返回主界面"
+[node name="ResultBackButton" type="Button" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=314160173]
 custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "返回主界面"

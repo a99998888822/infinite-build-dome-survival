@@ -86,6 +86,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"from_level": current_level,
 			"to_level": current_level + 1,
 			"display_name": "%s 升至%d级" % [str(weapon_data.get("display_name", weapon_id)), current_level + 1],
+			"description": str(upgrade_entry.get("description", "")),
 			"icon": str(weapon_data.get("icon", "")),
 			"effects": (upgrade_entry.get("effects", []) as Array).duplicate(true),
 			"tags": upgrade_tags,

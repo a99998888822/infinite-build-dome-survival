@@ -9,6 +9,7 @@ signal relic_added(relic_id: String)
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.25
+const PLAYER_VISUAL_SCALE: float = 0.3
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
 
@@ -43,6 +44,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		velocity = Vector2.ZERO
+		_apply_idle_visual()
+		_sync_camera()
+		return
 	modifier_stack.tick(delta)
 	_invincibility_timer = maxf(_invincibility_timer - delta, 0.0)
 	_process_movement(delta)
@@ -212,7 +218,7 @@ func _read_move_input() -> Vector2:
 func _set_facing(next_facing_right: bool) -> void:
 	facing_right = next_facing_right
 	if visual_anchor != null:
-		visual_anchor.scale.x = 1.0 if facing_right else -1.0
+		visual_anchor.scale = Vector2(PLAYER_VISUAL_SCALE if facing_right else -PLAYER_VISUAL_SCALE, PLAYER_VISUAL_SCALE)
 	elif sprite != null:
 		sprite.flip_h = not facing_right
 
@@ -220,6 +226,8 @@ func _set_facing(next_facing_right: bool) -> void:
 func _setup_visuals() -> void:
 	if camera_2d != null:
 		camera_2d.make_current()
+	if visual_anchor != null:
+		visual_anchor.scale = Vector2(PLAYER_VISUAL_SCALE if facing_right else -PLAYER_VISUAL_SCALE, PLAYER_VISUAL_SCALE)
 	if sprite != null:
 		_apply_idle_visual()
 

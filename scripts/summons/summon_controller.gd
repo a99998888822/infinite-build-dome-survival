@@ -52,6 +52,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not alive:
 		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		velocity = Vector2.ZERO
+		return
 	modifier_stack.tick(delta)
 	if _tick_lifetime(delta):
 		return

@@ -33,21 +33,3 @@ offset_top = 16.0
 [node name="GoldLabel" type="Label" parent="HUD/StatusPanel/Content"]
 
 [node name="WaveLabel" type="Label" parent="HUD/StatusPanel/Content"]
-
-[node name="PreparePanel" type="PanelContainer" parent="HUD"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -140.0
-offset_top = -50.0
-offset_right = 140.0
-offset_bottom = 50.0
-
-[node name="Content" type="VBoxContainer" parent="HUD/PreparePanel"]
-
-[node name="StartButton" type="Button" parent="HUD/PreparePanel/Content"]
-text = "开始波次"
-custom_minimum_size = Vector2(200, 48)

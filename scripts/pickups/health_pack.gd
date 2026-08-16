@@ -35,6 +35,8 @@ func set_target_player(player: PlayerController) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
 	if target_player == null or collected_once:
 		return
 	var pickup_radius := target_player.get_stat("pickup_radius")

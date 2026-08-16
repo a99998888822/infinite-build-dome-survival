@@ -8,12 +8,15 @@ signal gold_changed(current_gold: int)
 signal finance_changed(snapshot: Dictionary)
 signal interest_settled(result: Dictionary)
 signal shared_reward_shop_requested(level: int)
+signal wave_end_absorb_started(wave_id: String)
 # 兼容旧入口，后续可逐步迁移到 shared_reward_shop_requested。
 signal free_shop_requested(level: int)
 
 const DEFAULT_PLAYER_LEVEL: int = 1
-const SPAWN_MIN_DISTANCE: float = 1000.0
-const SPAWN_MAX_DISTANCE: float = 1500.0
+const SPAWN_MIN_DISTANCE: float = 300.0
+const SPAWN_MAX_DISTANCE: float = 600.0
+const SPAWN_SEPARATION_DISTANCE: float = 96.0
+const SPAWN_POSITION_ATTEMPTS: int = 10
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
 
@@ -38,6 +41,8 @@ var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var enemy_scene_cache: Dictionary = {}
+var _pending_wave_end_absorb_count: int = 0
+var _finishing_wave_id: String = ""
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
 @onready var pickup_root: Node = _get_optional_node(pickup_root_path)
@@ -61,6 +66,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not running:
 		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
 	wave_time_left -= delta
 	_process_spawn_timers(delta)
 	if finance_system != null:
@@ -78,6 +85,8 @@ func initialize(target_player: PlayerController) -> void:
 	current_gold = 0
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
+	_pending_wave_end_absorb_count = 0
+	_finishing_wave_id = ""
 	if finance_system != null:
 		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
 		_connect_finance_system()
@@ -117,11 +126,10 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	running = false
-	collect_all_exp_orbs()
+	_finishing_wave_id = str(current_wave.get("id", ""))
+	wave_end_absorb_started.emit(_finishing_wave_id)
 	clear_battle_entities()
-	if finance_system != null:
-		finance_system.process_wave_end_settlements()
-	wave_finished.emit(str(current_wave.get("id", "")))
+	_start_wave_end_exp_absorb()
 
 
 func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyController:
@@ -218,6 +226,40 @@ func collect_exp_orbs_in_root(root: Node) -> void:
 	for orb in exp_orbs:
 		if is_instance_valid(orb) and orb.is_inside_tree():
 			orb.collect()
+
+
+func _start_wave_end_exp_absorb() -> void:
+	var exp_orbs: Array[ExpOrb] = []
+	if pickup_root != null:
+		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
+	_pending_wave_end_absorb_count = 0
+	for orb in exp_orbs:
+		if not is_instance_valid(orb) or not orb.is_inside_tree():
+			continue
+		_pending_wave_end_absorb_count += 1
+		var absorbed_callable := Callable(self, "_on_wave_end_exp_orb_absorbed")
+		if not orb.collected.is_connected(absorbed_callable):
+			orb.collected.connect(absorbed_callable)
+		orb.start_wave_end_collection(player)
+	if _pending_wave_end_absorb_count <= 0:
+		_complete_wave_end_absorb()
+
+
+func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount: int) -> void:
+	if _pending_wave_end_absorb_count <= 0:
+		return
+	_pending_wave_end_absorb_count -= 1
+	if _pending_wave_end_absorb_count <= 0:
+		_complete_wave_end_absorb()
+
+
+func _complete_wave_end_absorb() -> void:
+	_pending_wave_end_absorb_count = 0
+	if finance_system != null:
+		finance_system.process_wave_end_settlements()
+	var finished_wave_id := _finishing_wave_id
+	_finishing_wave_id = ""
+	wave_finished.emit(finished_wave_id)
 
 
 func _clear_non_exp_reward_pickups() -> void:
@@ -375,9 +417,27 @@ func _process_spawn_timers(delta: float) -> void:
 
 func get_random_spawn_position() -> Vector2:
 	var origin := player.global_position if player != null else Vector2.ZERO
-	var angle := randf() * TAU
-	var distance := randf_range(SPAWN_MIN_DISTANCE, SPAWN_MAX_DISTANCE)
-	return origin + Vector2.RIGHT.rotated(angle) * distance
+	var fallback := origin
+	for attempt in range(SPAWN_POSITION_ATTEMPTS):
+		var angle := randf() * TAU
+		var distance := randf_range(SPAWN_MIN_DISTANCE, SPAWN_MAX_DISTANCE)
+		var candidate := origin + Vector2.RIGHT.rotated(angle) * distance
+		if attempt == 0:
+			fallback = candidate
+		if _has_spawn_clearance(candidate):
+			return candidate
+	return fallback
+
+
+func _has_spawn_clearance(candidate: Vector2) -> bool:
+	var min_distance_sq := SPAWN_SEPARATION_DISTANCE * SPAWN_SEPARATION_DISTANCE
+	for node in get_tree().get_nodes_in_group("enemies"):
+		var enemy := node as Node2D
+		if enemy == null or not enemy.is_inside_tree():
+			continue
+		if candidate.distance_squared_to(enemy.global_position) < min_distance_sq:
+			return false
+	return true
 
 
 func _ensure_summon_root() -> void:
@@ -396,10 +456,19 @@ func _ensure_summon_root() -> void:
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
+	if Engine.is_in_physics_frame():
+		call_deferred("_spawn_drop_actions", actions, death_position)
+	else:
+		_spawn_drop_actions(actions, death_position)
+
+
+func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:
+	if pickup_root == null or player == null:
+		return
 	for action in actions:
 		drop_reward_system.spawn_action(
 			action,
-			death_position,
+			drop_position,
 			pickup_root,
 			player,
 			reward_snapshot,

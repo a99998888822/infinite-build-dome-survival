@@ -4,21 +4,21 @@
 [ext_resource type="Texture2D" uid="uid://ck1sd0uyxqrj7" path="res://assets/sprites/player/player_void_hunter_right_base.png" id="2_idle"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player_body"]
-radius = 70.0
-height = 246.66666
+radius = 21.0
+height = 74.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_en6th"]
-radius = 110.201836
+radius = 180.0
 
 [node name="PlayerRoot" type="CharacterBody2D" unique_id=2042939580]
-scale = Vector2(0.3, 0.3)
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=338996884]
-position = Vector2(0, 10)
+position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_player_body")
 
 [node name="VisualAnchor" type="Node2D" parent="." unique_id=1223510489]
+scale = Vector2(0.3, 0.3)
 
 [node name="Sprite2D" type="Sprite2D" parent="VisualAnchor" unique_id=1840109535]
 texture = ExtResource("2_idle")
@@ -30,7 +30,7 @@ hframes = 1
 shape = SubResource("CircleShape2D_en6th")
 
 [node name="WeaponAnchor" type="Node2D" parent="." unique_id=395098020]
-position = Vector2(10, -4)
+position = Vector2(3, -1.2)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1934708603]
 top_level = true

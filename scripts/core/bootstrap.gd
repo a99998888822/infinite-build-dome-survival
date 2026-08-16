@@ -247,14 +247,17 @@ func _run_player_checks() -> bool:
 		add_child(player)
 		var initialized := player.initialize_from_character("character_void_hunter")
 		passed = _print_check_result("player initialize character", initialized) and passed
-		passed = _print_check_result("player max_hp", int(player.get_stat("max_hp")) == 100 and player.current_hp == 100) and passed
-		passed = _print_check_result("player move_speed", int(player.get_stat("move_speed")) == 180) and passed
+		var base_stats: Dictionary = player.character_data.get("base_stats", {})
+		var configured_max_hp := int(base_stats.get("max_hp", player.get_stat("max_hp")))
+		var configured_move_speed := float(base_stats.get("move_speed", player.get_stat("move_speed")))
+		passed = _print_check_result("player max_hp", int(player.get_stat("max_hp")) == configured_max_hp and player.current_hp == configured_max_hp) and passed
+		passed = _print_check_result("player move_speed", is_equal_approx(player.get_stat("move_speed"), configured_move_speed)) and passed
 		passed = _print_check_result("player start weapons", player.get_start_weapon_ids().has("weapon_void_blade")) and passed
 		var pickup_radius := 0.0
 		var pickup_shape := player.get_node_or_null("PickupArea/CollisionShape2D") as CollisionShape2D
 		if pickup_shape != null and pickup_shape.shape is CircleShape2D:
 			pickup_radius = (pickup_shape.shape as CircleShape2D).radius
-		passed = _print_check_result("player pickup radius", is_equal_approx(pickup_radius, 80.0)) and passed
+		passed = _print_check_result("player pickup radius", is_equal_approx(pickup_radius, player.get_stat("pickup_radius"))) and passed
 
 		player.add_runtime_modifier({
 			"id": "mod_test_player_armor",
@@ -267,8 +270,13 @@ func _run_player_checks() -> bool:
 			"duration": -1,
 			"stack_rule": "unique",
 		})
-		var dealt_damage := player.take_damage(20, "bootstrap_test")
-		passed = _print_check_result("player armor damage", dealt_damage == 10 and player.current_hp == 90) and passed
+		var hp_before_damage := player.current_hp
+		var shield_before_damage := player.current_shield
+		var dealt_damage := player.take_damage(1, "bootstrap_test")
+		var expected_shield_after_damage := maxi(shield_before_damage - dealt_damage, 0)
+		var expected_hp_damage := maxi(dealt_damage - shield_before_damage, 0)
+		var expected_hp_after_damage := maxi(hp_before_damage - expected_hp_damage, 0)
+		passed = _print_check_result("player damage flow", player.current_hp == expected_hp_after_damage and player.current_shield == expected_shield_after_damage) and passed
 		player.queue_free()
 	return passed
 
@@ -557,11 +565,13 @@ func _run_ui_flow_checks() -> bool:
 	if shop_controller != null:
 		shop_controller.queue_free()
 	var battle_root := BATTLE_ROOT_SCENE.instantiate()
-	passed = _print_check_result("battle root instantiate", battle_root != null and battle_root.get_node_or_null("Player") != null and battle_root.get_node_or_null("Loadout") != null and battle_root.get_node_or_null("WaveManager") != null) and passed
+	passed = _print_check_result("battle root instantiate", battle_root != null and battle_root.get_node_or_null("Player") != null and battle_root.get_node_or_null("Loadout") != null and battle_root.get_node_or_null("WaveManager") != null and battle_root.get_node_or_null("HUD/PreparePanel") == null) and passed
 	if battle_root != null:
 		battle_root.queue_free()
 	var main_menu_controller := MAIN_MENU_UI_CONTROLLER_SCENE.instantiate()
-	passed = _print_check_result("main menu ui controller instantiate", main_menu_controller != null and main_menu_controller.get_node_or_null("StartPage") != null and main_menu_controller.get_node_or_null("CharacterSelectPage") != null and main_menu_controller.get_node_or_null("BattleResultPanel") != null) and passed
+	var main_menu_has_start_nodes := main_menu_controller != null and main_menu_controller.get_node_or_null("StartPage/Background") != null and main_menu_controller.get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack/TitleArt") != null and main_menu_controller.get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton") != null and main_menu_controller.get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton") != null and main_menu_controller.get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton") != null
+	var main_menu_has_flow_pages := main_menu_controller != null and main_menu_controller.get_node_or_null("CharacterSelectPage") != null and main_menu_controller.get_node_or_null("BattleResultPanel") != null
+	passed = _print_check_result("main menu ui controller instantiate", main_menu_has_start_nodes and main_menu_has_flow_pages) and passed
 	if main_menu_controller != null:
 		main_menu_controller.queue_free()
 	var camp_ui_controller := CAMP_UI_CONTROLLER_SCENE.instantiate()
@@ -591,7 +601,7 @@ func _run_weapon_checks() -> bool:
 	var weapon := loadout.get_weapon_instance("weapon_void_blade")
 	passed = _print_check_result("weapon instance lookup", weapon != null) and passed
 	if weapon != null:
-		passed = _print_check_result("weapon config runtime fields", int(weapon.get_hit_radius()) == 10 and int(weapon.get_projectile_speed()) == 500 and int(weapon.get_spread_angle()) == 12) and passed
+		passed = _print_check_result("weapon config runtime fields", int(weapon.get_attack_range()) == 420 and int(weapon.get_hit_radius()) == 10 and int(weapon.get_projectile_speed()) == 500 and int(weapon.get_spread_angle()) == 12) and passed
 		passed = _print_check_result("weapon area_size radius", int(StatDefinitions.calculate_attack_radius(100, 40)) == 140) and passed
 		passed = _print_check_result("weapon attack interval base", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.7)) and passed
 		player.add_runtime_modifier({
@@ -615,6 +625,23 @@ func _run_weapon_checks() -> bool:
 		var second_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
 		var projectile_sfx_once := weapon.get_hit_sfx_path().ends_with("sfx_weapon_void_blade_hit.ogg") and weapon.has_played_projectile_hit_sfx("projectile_1") and second_projectile_sfx_request == false and first_projectile_sfx_request
 		passed = _print_check_result("weapon projectile hit sfx once", projectile_sfx_once) and passed
+		var attack_target := load("res://scenes/enemy/mutated_grub.tscn").instantiate() as EnemyController
+		if attack_target != null:
+			attack_target.auto_initialize_on_ready = false
+			add_child(attack_target)
+			attack_target.global_position = player.global_position + Vector2(32, 0)
+			attack_target.initialize("enemy_mutated_grub", player)
+			var hp_before_attack := attack_target.current_hp
+			loadout.tick(0.0)
+			var spawned_projectile := false
+			for child in get_children():
+				if child is ProjectileInstance:
+					spawned_projectile = true
+					child.queue_free()
+			passed = _print_check_result("weapon loadout runtime projectile spawn", spawned_projectile and attack_target.current_hp == hp_before_attack) and passed
+			attack_target.queue_free()
+		else:
+			passed = _print_check_result("weapon loadout runtime projectile spawn", false) and passed
 
 	var mixed_weapon := WeaponInstance.new()
 	mixed_weapon.initialize("weapon_dome_shockwave", player)
@@ -737,7 +764,7 @@ func _run_finance_checks() -> bool:
 	if finance_popup != null:
 		finance_popup.queue_free()
 	var finance_controller := FINANCE_UI_CONTROLLER_SCENE.instantiate()
-	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null) and passed
+	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null and finance_controller.get_node_or_null("PopupLayer/InterestSettlementPopup") == null) and passed
 	if finance_controller != null:
 		finance_controller.queue_free()
 	wave_manager.queue_free()
@@ -770,27 +797,11 @@ func _run_main_flow_checks() -> bool:
 	add_child(loadout)
 	add_child(wave_manager)
 	flow.bind_battle_context(player, loadout, wave_manager)
-	flow.enter_battle_selection("character_void_hunter", ["weapon_void_blade"])
+	flow.enter_battle_selection("character_void_hunter")
 	var selection_ok := flow.confirm_character_selection()
-	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
+	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.current_wave_index == 0) and passed
 	passed = _print_check_result("main flow start weapon sync", player.get_start_weapon_ids().size() == 1 and player.get_start_weapon_ids()[0] == "weapon_void_blade" and loadout.get_weapon_instances().size() == 1) and passed
-
-	var finance_requested := flow.request_next_wave()
-	passed = _print_check_result("main flow finance popup", finance_requested and flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
-	var finance_result := flow.submit_finance_operation("none", 0)
-	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
-	passed = _print_check_result("main flow first wave skips zone", flow.get_current_state() != MainFlowCoordinator.STATE_ZONE_SELECT) and passed
-	if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT:
-		var zone_ok := flow.confirm_zone_selection("zone_nearstring_battlefield")
-		passed = _print_check_result("main flow zone select after finance", zone_ok and (flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT or flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT)) and passed
-		if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
-			flow.close_zone_harvest_result_popup()
-			passed = _print_check_result("main flow zone harvest close", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
-	if flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE:
-		var wave_started := wave_manager.start_next_wave()
-		passed = _print_check_result("main flow wave start request", wave_started and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
-	else:
-		passed = _print_check_result("main flow wave start request", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	passed = _print_check_result("main flow first wave auto start", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.get_state_snapshot().get("pending_finance_payload", {}).is_empty()) and passed
 	wave_manager.add_exp_and_gold(10, 0)
 	passed = _print_check_result("main flow shared reward/shop popup", flow.get_current_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP) and passed
 	passed = _print_check_result("main flow shared reward/shop dedupe", flow.get_state_snapshot().get("pending_shared_reward_shop_levels", []).is_empty()) and passed
@@ -798,13 +809,23 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow resume combat after popup", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.finish_current_wave()
-	passed = _print_check_result("main flow wave end ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
-	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow shop step", flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
+	passed = _print_check_result("main flow wave end shop ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow next prepare step", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_PREPARE) and passed
+	passed = _print_check_result("main flow interest notice step", flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
+	flow.advance_wave_end_phase()
+	passed = _print_check_result("main flow finance popup", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
+	var finance_result := flow.submit_finance_operation("none", 0)
+	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
+	passed = _print_check_result("main flow second wave zone select", flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT) and passed
+	if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT:
+		var zone_ok := flow.confirm_zone_selection("zone_nearstring_battlefield")
+		passed = _print_check_result("main flow zone select after finance", zone_ok and (flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT)) and passed
+		if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
+			flow.close_zone_harvest_result_popup()
+			passed = _print_check_result("main flow zone harvest close", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	passed = _print_check_result("main flow wave auto start after zone", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.present_battle_result(true, {"reason": "bootstrap"})
 	passed = _print_check_result("main flow battle result", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_RESULT and flow.current_victory) and passed
