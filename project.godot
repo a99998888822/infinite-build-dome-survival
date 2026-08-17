@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 DataRegistry="*res://autoloads/data_registry.gd"
 GameGlobal="*res://autoloads/game_global.gd"
 CampProgression="*res://autoloads/camp_progression.gd"
-ObjectPool="*res://autoloads/object_pool.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
 ZoneProgression="*res://autoloads/zone_progression.gd"
 

@@ -43,7 +43,21 @@ func hide_popup() -> void:
 
 func show_error(reason: String) -> void:
 	if error_label != null:
-		error_label.text = "购买失败：%s" % reason
+		error_label.text = _translate_purchase_error(reason)
+
+
+func _translate_purchase_error(reason: String) -> String:
+	match reason:
+		"insufficient_gold":
+			return "购买失败 金币不足"
+		"invalid_offer":
+			return "购买失败 无效的选项"
+		"purchase_failed":
+			return "购买失败 升级未生效"
+		"shop_not_active":
+			return "购买失败 商店未开启"
+		_:
+			return "购买失败 请重试"
 
 
 func reset_submission() -> void:
@@ -60,7 +74,7 @@ func _refresh_visual() -> void:
 		title_label.text = "共享奖励" if mode == ENTRY_FREE else "局内商店"
 	if gold_label != null:
 		if mode == ENTRY_SHOP:
-			gold_label.text = "当前金币：%d" % int(payload.get("gold", 0))
+			gold_label.text = "当前金币 %d" % int(payload.get("gold", 0))
 		else:
 			gold_label.text = "免费选择一项奖励"
 	if error_label != null:

@@ -235,7 +235,7 @@ flowchart TD
 - 波次时长
 - 刷怪结束事件
 - 波次结束清理事件
-- `shared_reward_shop_requested` 是升级奖励/商店触发的主信号；旧 `free_shop_requested` 仅做兼容，进入同一弹窗并按等级去重。
+- `shared_reward_shop_requested` 是升级奖励/商店触发的主信号，按等级去重进入同一弹窗。
 
 ### 9.5 来自掉落与奖励模块
 

@@ -29,7 +29,7 @@ var entry_mode: String = ENTRY_FREE
 @onready var icon_texture: TextureRect = get_node_or_null("Content/IconFrame/IconTexture")
 @onready var icon_placeholder: ColorRect = get_node_or_null("Content/IconFrame/IconPlaceholder")
 @onready var name_label: Label = get_node_or_null("Content/NameLabel")
-@onready var description_label: Label = get_node_or_null("Content/DescriptionLabel")
+@onready var description_label: RichTextLabel = get_node_or_null("Content/DescriptionLabel")
 @onready var bottom_rarity_line: ColorRect = get_node_or_null("Content/BottomRarityLine")
 @onready var select_button: Button = get_node_or_null("Content/SelectButton")
 
@@ -118,43 +118,7 @@ func _update_icon(icon_path: String) -> void:
 
 
 func _build_description_text(offer: Dictionary) -> String:
-	if offer.has("description"):
-		var description := str(offer.get("description", ""))
-		if not description.is_empty():
-			return description
-	if offer.has("effects"):
-		var effect_texts: Array[String] = []
-		for effect in offer.get("effects", []):
-			if effect is Dictionary:
-				effect_texts.append(_format_effect(effect))
-		if not effect_texts.is_empty():
-			return "\n".join(effect_texts)
-	if offer.has("runtime_effects"):
-		var runtime_texts: Array[String] = []
-		for effect in offer.get("runtime_effects", []):
-			if effect is Dictionary:
-				var effect_data: Dictionary = effect
-				runtime_texts.append(str(effect_data.get("effect", "runtime_effect")))
-		if not runtime_texts.is_empty():
-			return "；".join(runtime_texts)
-	match str(offer.get("offer_type", "")):
-		"weapon_upgrade":
-			return "提升到 %d 级。" % int(offer.get("to_level", 0))
-		"new_weapon":
-			return "获得新的武器。负载：%d" % int(offer.get("load_cost", 0))
-		"relic":
-			return "获得遗物效果。"
-		_:
-			return ""
-
-
-func _format_effect(effect: Dictionary) -> String:
-	var stat := str(effect.get("stat", ""))
-	var operation := str(effect.get("operation", ""))
-	var value: Variant = effect.get("value", 0)
-	if stat.is_empty():
-		return str(effect)
-	return "%s %s %s" % [stat, operation, str(value)]
+	return str(offer.get("description", ""))
 
 
 func _on_select_button_pressed() -> void:

@@ -17,7 +17,6 @@ const STATE_CHARACTER_SELECT: String = "character_select"
 const STATE_BATTLE_PREPARE: String = "battle_prepare"
 const STATE_WAVE_COMBAT: String = "wave_combat"
 const STATE_SHARED_REWARD_SHOP_POPUP: String = "shared_reward_shop_popup"
-const STATE_LEVEL_UP_POPUP: String = STATE_SHARED_REWARD_SHOP_POPUP
 const STATE_WAVE_END_ABSORB: String = "wave_end_absorb"
 const STATE_INTEREST_SETTLEMENT: String = "interest_settlement"
 const STATE_SHOP_POPUP: String = "shop_popup"
@@ -138,10 +137,6 @@ func bind_battle_context(player: PlayerController, loadout: WeaponLoadout, wave_
 	bind_wave_manager(wave_manager)
 
 
-func unbind_battle_context() -> void:
-	_unbind_battle_context()
-
-
 func bind_wave_manager(wave_manager: WaveManager) -> void:
 	if _bound_wave_manager == wave_manager:
 		return
@@ -161,12 +156,6 @@ func bind_wave_manager(wave_manager: WaveManager) -> void:
 		_bound_wave_manager.wave_end_absorb_started.connect(wave_absorb_started_callable)
 	if not _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.connect(shared_reward_callable)
-	if not _bound_wave_manager.free_shop_requested.is_connected(shared_reward_callable):
-		_bound_wave_manager.free_shop_requested.connect(shared_reward_callable)
-
-
-func unbind_wave_manager() -> void:
-	_unbind_wave_manager()
 
 
 func bind_camp_context(camp_root: CampRoot) -> void:
@@ -228,10 +217,6 @@ func request_shared_reward_shop_popup(level: int, source: String = "wave_manager
 	modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(level, source, false))
 
 
-func request_level_up_popup(level: int, source: String = "wave_manager") -> void:
-	request_shared_reward_shop_popup(level, source)
-
-
 func close_shared_reward_shop_popup() -> void:
 	if current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return
@@ -248,10 +233,6 @@ func close_shared_reward_shop_popup() -> void:
 	else:
 		_set_state(_resume_state_after_modal)
 		_set_battle_runtime_paused(false)
-
-
-func close_level_up_popup() -> void:
-	close_shared_reward_shop_popup()
 
 
 func request_zone_select_popup(source: String = "wave_manager") -> bool:
@@ -331,7 +312,9 @@ func close_shop_popup() -> void:
 	if _wave_end_ready:
 		# 利息提示只是异步通知，不再作为必须等待的流程状态。
 		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
-		_request_wave_end_finance()
+		if not _request_wave_end_finance():
+			_wave_end_ready = false
+			_set_state(STATE_BATTLE_PREPARE)
 	else:
 		_set_state(STATE_BATTLE_PREPARE)
 
@@ -433,8 +416,6 @@ func get_state_snapshot() -> Dictionary:
 		"wave_end_ready": _wave_end_ready,
 		"active_shared_reward_shop_level": _active_level_up_level,
 		"pending_shared_reward_shop_levels": _pending_level_up_levels.duplicate(),
-		"active_level_up_level": _active_level_up_level,
-		"pending_level_up_levels": _pending_level_up_levels.duplicate(),
 		"zone_state": ZoneProgression.get_state_snapshot(),
 		"active_zone_selection_wave_number": _active_zone_selection_wave_number,
 		"pending_zone_harvest_payload": _pending_zone_harvest_payload.duplicate(true),
@@ -582,8 +563,6 @@ func _unbind_wave_manager() -> void:
 		_bound_wave_manager.wave_end_absorb_started.disconnect(wave_absorb_started_callable)
 	if _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.disconnect(shared_reward_callable)
-	if _bound_wave_manager.free_shop_requested.is_connected(shared_reward_callable):
-		_bound_wave_manager.free_shop_requested.disconnect(shared_reward_callable)
 	_bound_wave_manager = null
 
 
@@ -686,7 +665,3 @@ func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary)
 			return _bound_loadout.upgrade_weapon(target_id)
 		_:
 			return false
-
-
-func _build_level_up_payload(level: int, source: String, queued: bool) -> Dictionary:
-	return _build_shared_reward_shop_payload(level, source, queued)

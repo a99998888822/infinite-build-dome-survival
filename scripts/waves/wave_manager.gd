@@ -9,8 +9,6 @@ signal finance_changed(snapshot: Dictionary)
 signal interest_settled(result: Dictionary)
 signal shared_reward_shop_requested(level: int)
 signal wave_end_absorb_started(wave_id: String)
-# 兼容旧入口，后续可逐步迁移到 shared_reward_shop_requested。
-signal free_shop_requested(level: int)
 
 const DEFAULT_PLAYER_LEVEL: int = 1
 const SPAWN_MIN_DISTANCE: float = 300.0
@@ -496,7 +494,6 @@ func _process_level_ups() -> void:
 		current_exp -= get_required_exp_for_next_level()
 		player_level += 1
 		shared_reward_shop_requested.emit(player_level)
-		free_shop_requested.emit(player_level)
 
 
 func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:

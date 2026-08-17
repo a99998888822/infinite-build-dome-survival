@@ -40,18 +40,26 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
-const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = ["on_acquire", "wave_start", "deposit", "wave_end", "interest_settle", "interest_success", "combat_tick"]
+const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = [
+	BattleFinanceSystem.TRIGGER_ON_ACQUIRE,
+	BattleFinanceSystem.TRIGGER_WAVE_START,
+	BattleFinanceSystem.TRIGGER_DEPOSIT,
+	BattleFinanceSystem.TRIGGER_WAVE_END,
+	BattleFinanceSystem.TRIGGER_INTEREST_SETTLE,
+	BattleFinanceSystem.TRIGGER_INTEREST_SUCCESS,
+	BattleFinanceSystem.TRIGGER_COMBAT_TICK,
+]
 const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
-	"add_principal_flat",
-	"add_principal_from_gold_percent",
-	"add_principal_per_wave",
-	"lock_principal_for_waves",
-	"settle_interest_once",
-	"speculative_interest",
-	"add_interest_rate_bonus",
-	"settle_interest_every_n_waves",
-	"require_wave_start_deposit_for_interest",
-	"per_second_interest",
+	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FLAT,
+	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FROM_GOLD_PERCENT,
+	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_PER_WAVE,
+	BattleFinanceSystem.EFFECT_LOCK_PRINCIPAL_FOR_WAVES,
+	BattleFinanceSystem.EFFECT_SETTLE_INTEREST_ONCE,
+	BattleFinanceSystem.EFFECT_SPECULATIVE_INTEREST,
+	BattleFinanceSystem.EFFECT_ADD_INTEREST_RATE_BONUS,
+	BattleFinanceSystem.EFFECT_SETTLE_INTEREST_EVERY_N_WAVES,
+	BattleFinanceSystem.EFFECT_REQUIRE_WAVE_START_DEPOSIT,
+	BattleFinanceSystem.EFFECT_PER_SECOND_INTEREST,
 ]
 
 var errors: Array[String] = []
@@ -199,6 +207,8 @@ func _validate_weapon_records(records: Array) -> void:
 			continue
 		var path := "weapons[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
+		if not record.has("description") or str(record.get("description", "")).strip_edges().is_empty():
+			errors.append("%s.description cannot be empty." % path)
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
 		_validate_weapon_runtime_fields(record, path)
 		_validate_weapon_level_upgrades(record, path)
@@ -236,6 +246,8 @@ func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
 			errors.append("Missing required field: %s.rarity" % upgrade_path)
 		else:
 			_validate_rarity(upgrade_entry, upgrade_path)
+		if not upgrade_entry.has("description") or str(upgrade_entry.get("description", "")).strip_edges().is_empty():
+			errors.append("%s.description cannot be empty." % upgrade_path)
 		var upgrade_list: Variant = upgrade_entry.get("effects", [])
 		if not (upgrade_list is Array):
 			errors.append("%s.effects must be an array." % upgrade_path)
@@ -259,6 +271,8 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 			continue
 		var path := "relics[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
+		if not record.has("description") or str(record.get("description", "")).strip_edges().is_empty():
+			errors.append("%s.description cannot be empty." % path)
 		_validate_reference(record, "bond_id", "bonds", records_by_id, path)
 		if record.has("max_stack"):
 			_validate_non_negative_int(record, "max_stack", path)

@@ -108,10 +108,10 @@ func _build_hint_text() -> String:
 	if not error_message.is_empty():
 		lines.append(error_message)
 	if int(payload.get("locked_until_wave_number", 0)) >= int(payload.get("wave_number", 0)):
-		lines.append("定期存单锁定中：本波暂不可取出本金。")
+		lines.append("本金锁定中 本波暂不可取出")
 	if bool(payload.get("requires_deposit_for_interest", false)):
-		lines.append("高利契约：本波开始前必须存入本金，波末才可收息。")
-	lines.append("可跳过，也可选择一种存入或取出操作。")
+		lines.append("本波开始前需存入本金 否则波末不可收息")
+	lines.append("可跳过 也可选择一种存入或取出操作")
 	return "\n".join(lines)
 
 
@@ -124,17 +124,17 @@ func _get_custom_amount() -> int:
 func _format_error_reason(reason: String) -> String:
 	match reason:
 		"amount_must_be_positive":
-			return "操作失败：请输入大于 0 的整数。"
+			return "操作失败 请输入大于 0 的整数"
 		"amount_exceeds_gold":
-			return "操作失败：存入数量不能超过当前金币。"
+			return "操作失败 存入数量不能超过当前金币"
 		"amount_exceeds_principal_or_locked":
-			return "操作失败：取出数量不能超过可取本金。"
+			return "操作失败 取出数量不能超过可取本金"
 		"gold_delta_failed":
-			return "操作失败：金币变更未成功。"
+			return "操作失败 金币变更未成功"
 		"invalid_action":
-			return "操作失败：未知理财操作。"
+			return "操作失败 未知理财操作"
 		_:
-			return "操作失败：%s。" % reason
+			return "操作失败 请重试"
 
 
 func _on_deposit_all_pressed() -> void:

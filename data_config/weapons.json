@@ -2,6 +2,7 @@
   {
     "id": "weapon_void_blade",
     "display_name": "小飞刃",
+    "description": "获得新的武器 负载 12",
     "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg",
     "projectile_texture": "res://assets/sprites/weapons/projectiles/projectile_void_blade.png",
@@ -33,62 +34,62 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
         "effects": [
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        }
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          }
         ]
       },
       "3": {
         "rarity": "rare",
-        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
         "effects": [
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        }
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          }
         ]
       },
       "4": {
         "rarity": "epic",
-        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒。",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
         "effects": [
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        }
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          }
         ]
       },
       "5": {
         "rarity": "mythic",
-        "description": "飞刃伤害 +2，攻击间隔缩短 0.05 秒，并额外发射 1 枚飞刃。",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]\n投射物数量 [color=#7FD88F]+1[/color]",
         "effects": [
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        },
-        {
-          "stat": "projectile_count",
-          "value": 1
-        }
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          },
+          {
+            "stat": "projectile_count",
+            "value": 1
+          }
         ]
       }
     }
@@ -96,6 +97,7 @@
   {
     "id": "weapon_mutated_cleaver",
     "display_name": "砍刀",
+    "description": "获得新的武器 负载 10",
     "icon": "res://assets/ui/icons/weapons/weapon_mutated_cleaver.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg",
     "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_cleaver_slash.png",
@@ -125,62 +127,62 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "砍刀伤害 +2，攻击间隔缩短 0.05 秒。",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        }
+          {
+            "stat": "melee_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          }
         ]
       },
       "3": {
         "rarity": "rare",
-        "description": "砍刀伤害 +2，攻击间隔缩短 0.05 秒。",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 2
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        }
+          {
+            "stat": "melee_damage",
+            "value": 2
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          }
         ]
       },
       "4": {
         "rarity": "epic",
-        "description": "砍刀伤害 +2，攻击范围扩大 10%。",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n范围加成 [color=#7FD88F]+10%[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 2
-        },
-        {
-          "stat": "area_size",
-          "value": 10
-        }
+          {
+            "stat": "melee_damage",
+            "value": 2
+          },
+          {
+            "stat": "area_size",
+            "value": 10
+          }
         ]
       },
       "5": {
         "rarity": "mythic",
-        "description": "砍刀伤害 +4，攻击间隔缩短 0.05 秒，暴击率 +5%。",
+        "description": "近战伤害 [color=#7FD88F]+4[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]\n暴击率 [color=#7FD88F]+5%[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 4
-        },
-        {
-          "field": "attack_interval_ms",
-          "value": -50
-        },
-        {
-          "stat": "crit_chance",
-          "value": 5
-        }
+          {
+            "stat": "melee_damage",
+            "value": 4
+          },
+          {
+            "field": "attack_interval_ms",
+            "value": -50
+          },
+          {
+            "stat": "crit_chance",
+            "value": 5
+          }
         ]
       }
     }
@@ -188,6 +190,7 @@
   {
     "id": "weapon_dome_shockwave",
     "display_name": "穹顶震波器",
+    "description": "获得新的武器 负载 24",
     "icon": "res://assets/ui/icons/weapons/weapon_dome_shockwave.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg",
     "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_dome_shockwave.png",
@@ -222,66 +225,66 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "近战伤害 +2，远程伤害 +2。",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n远程伤害 [color=#7FD88F]+2[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 2
-        },
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        }
+          {
+            "stat": "melee_damage",
+            "value": 2
+          },
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          }
         ]
       },
       "3": {
         "rarity": "rare",
-        "description": "攻击间隔缩短 0.1 秒，震波范围扩大 10%。",
+        "description": "攻击间隔 [color=#F28B82]-0.1s[/color]\n范围加成 [color=#7FD88F]+10%[/color]",
         "effects": [
-        {
-          "field": "attack_interval_ms",
-          "value": -100
-        },
-        {
-          "stat": "area_size",
-          "value": 10
-        }
+          {
+            "field": "attack_interval_ms",
+            "value": -100
+          },
+          {
+            "stat": "area_size",
+            "value": 10
+          }
         ]
       },
       "4": {
         "rarity": "epic",
-        "description": "近战伤害 +2，远程伤害 +2，持续效果 +10%。",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n远程伤害 [color=#7FD88F]+2[/color]\n持续时间加成 [color=#7FD88F]+10%[/color]",
         "effects": [
-        {
-          "stat": "melee_damage",
-          "value": 2
-        },
-        {
-          "stat": "ranged_damage",
-          "value": 2
-        },
-        {
-          "stat": "duration_percent",
-          "value": 10
-        }
+          {
+            "stat": "melee_damage",
+            "value": 2
+          },
+          {
+            "stat": "ranged_damage",
+            "value": 2
+          },
+          {
+            "stat": "duration_percent",
+            "value": 10
+          }
         ]
       },
       "5": {
         "rarity": "mythic",
-        "description": "攻击间隔缩短 0.1 秒，震波范围扩大 15%，总伤害 +5%。",
+        "description": "攻击间隔 [color=#F28B82]-0.1s[/color]\n范围加成 [color=#7FD88F]+15%[/color]\n伤害加成 [color=#7FD88F]+5%[/color]",
         "effects": [
-        {
-          "field": "attack_interval_ms",
-          "value": -100
-        },
-        {
-          "stat": "area_size",
-          "value": 15
-        },
-        {
-          "stat": "damage_percent",
-          "value": 5
-        }
+          {
+            "field": "attack_interval_ms",
+            "value": -100
+          },
+          {
+            "stat": "area_size",
+            "value": 15
+          },
+          {
+            "stat": "damage_percent",
+            "value": 5
+          }
         ]
       }
     }

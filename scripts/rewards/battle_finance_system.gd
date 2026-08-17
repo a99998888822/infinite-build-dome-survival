@@ -5,6 +5,7 @@ signal finance_changed(snapshot: Dictionary)
 signal interest_settled(result: Dictionary)
 
 const DEFAULT_INTEREST_RATE: float = 5.0
+const MAX_ANNUITY_ACCUMULATED: float = 2.0
 const ACTION_NONE: String = "none"
 const ACTION_DEPOSIT: String = "deposit"
 const ACTION_WITHDRAW: String = "withdraw"
@@ -12,13 +13,6 @@ const SETTLE_WAVE_END: String = "wave_end"
 const SETTLE_MANUAL: String = "manual"
 const SETTLE_PERIODIC: String = "periodic"
 const SETTLE_ANNUITY: String = "annuity"
-
-const RELIC_SPECULATIVE_CHIP: String = "relic_speculative_chip"
-const RELIC_FIXED_DEPOSIT_CERTIFICATE: String = "relic_fixed_deposit_certificate"
-const RELIC_COMPOUND_INTEREST_TOME: String = "relic_compound_interest_tome"
-const RELIC_PERIODIC_DIVIDEND_CLOCK: String = "relic_periodic_dividend_clock"
-const RELIC_PERPETUAL_ANNUITY_SCROLL: String = "relic_perpetual_annuity_scroll"
-const RELIC_GOBLIN_COIN_PRINTER: String = "relic_goblin_coin_printer"
 
 const TRIGGER_WAVE_START: String = "wave_start"
 const TRIGGER_ON_ACQUIRE: String = "on_acquire"
@@ -76,14 +70,23 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 
 
 func tick(delta: float) -> void:
-	var annuity_count := _get_relic_count(RELIC_PERPETUAL_ANNUITY_SCROLL)
-	if player == null or principal <= 0 or annuity_count <= 0:
+	if player == null or principal <= 0:
 		return
-	annuity_timer += maxf(delta, 0.0)
+	var combat_effects := _collect_runtime_effects(TRIGGER_COMBAT_TICK)
+	if combat_effects.is_empty():
+		return
+	annuity_timer = minf(annuity_timer + maxf(delta, 0.0), MAX_ANNUITY_ACCUMULATED)
 	while annuity_timer >= 1.0:
 		annuity_timer -= 1.0
-		for _index in range(annuity_count):
-			settle_interest(SETTLE_ANNUITY)
+		_trigger_combat_tick(combat_effects)
+
+
+func _trigger_combat_tick(combat_effects: Array[Dictionary]) -> void:
+	for effect in combat_effects:
+		match str(effect.get("effect", "")):
+			EFFECT_PER_SECOND_INTEREST:
+				for _index in range(int(effect.get("relic_count", 1))):
+					settle_interest(SETTLE_ANNUITY)
 
 
 func begin_wave(wave_number: int) -> Dictionary:
@@ -145,10 +148,8 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 	last_deposit_wave_number = current_wave_number
 	if not free_principal and reason == "manual":
 		has_deposited_before_current_wave = true
-	if _has_relic(RELIC_FIXED_DEPOSIT_CERTIFICATE) and reason == "manual":
-		var lock_effect := _first_runtime_effect(RELIC_FIXED_DEPOSIT_CERTIFICATE, TRIGGER_DEPOSIT, EFFECT_LOCK_PRINCIPAL_FOR_WAVES)
-		var lock_waves := int(lock_effect.get("waves", 1))
-		locked_until_wave_number = maxi(locked_until_wave_number, current_wave_number + maxi(0, lock_waves - 1))
+	if reason == "manual":
+		_apply_deposit_trigger_effects()
 	_emit_changed()
 	return _build_operation_result(true, ACTION_DEPOSIT, sanitized_amount, reason)
 
@@ -209,12 +210,13 @@ func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
 func process_wave_end_settlements() -> Array[Dictionary]:
 	var results: Array[Dictionary] = []
 	results.append(settle_interest(SETTLE_WAVE_END))
-	var periodic_effect := _first_runtime_effect(RELIC_PERIODIC_DIVIDEND_CLOCK, TRIGGER_WAVE_END, EFFECT_SETTLE_INTEREST_EVERY_N_WAVES)
-	var periodic_interval := int(periodic_effect.get("interval_waves", 3))
-	var periodic_count := _get_relic_count(RELIC_PERIODIC_DIVIDEND_CLOCK)
-	if periodic_count > 0 and periodic_interval > 0 and wave_counter % periodic_interval == 0:
-		for _index in range(periodic_count):
-			results.append(settle_interest(SETTLE_PERIODIC))
+	for effect in _collect_runtime_effects(TRIGGER_WAVE_END):
+		match str(effect.get("effect", "")):
+			EFFECT_SETTLE_INTEREST_EVERY_N_WAVES:
+				var interval := int(effect.get("interval_waves", 3))
+				if interval > 0 and wave_counter % interval == 0:
+					for _index in range(int(effect.get("relic_count", 1))):
+						results.append(settle_interest(SETTLE_PERIODIC))
 	last_settlement_results.clear()
 	for result in results:
 		last_settlement_results.append(result.duplicate(true))
@@ -303,19 +305,28 @@ func _apply_wave_start_relics() -> void:
 					deposit(bonus_principal * relic_count, true, relic_id)
 
 
+func _apply_deposit_trigger_effects() -> void:
+	for effect in _collect_runtime_effects(TRIGGER_DEPOSIT):
+		match str(effect.get("effect", "")):
+			EFFECT_LOCK_PRINCIPAL_FOR_WAVES:
+				var lock_waves := int(effect.get("waves", 1))
+				locked_until_wave_number = maxi(locked_until_wave_number, current_wave_number + maxi(0, lock_waves - 1))
+
+
 func _apply_interest_gain_relics(base_gain: int, source: String, result: Dictionary) -> int:
 	var final_gain := base_gain
-	if _has_relic(RELIC_SPECULATIVE_CHIP):
-		var effect := _first_runtime_effect(RELIC_SPECULATIVE_CHIP, TRIGGER_INTEREST_SETTLE, EFFECT_SPECULATIVE_INTEREST)
-		var double_chance := float(effect.get("double_chance_percent", 55)) / 100.0
-		var roll := _rng.randf()
-		result["speculative_chip_roll"] = roll
-		if roll <= double_chance:
-			final_gain *= 2
-			result["speculative_chip_outcome"] = "double"
-		else:
-			final_gain = 0
-			result["speculative_chip_outcome"] = "zero"
+	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SETTLE):
+		match str(effect.get("effect", "")):
+			EFFECT_SPECULATIVE_INTEREST:
+				var double_chance := float(effect.get("double_chance_percent", 55)) / 100.0
+				var roll := _rng.randf()
+				result["speculative_chip_roll"] = roll
+				if roll <= double_chance:
+					final_gain *= 2
+					result["speculative_chip_outcome"] = "double"
+				else:
+					final_gain = 0
+					result["speculative_chip_outcome"] = "zero"
 	return maxi(0, final_gain)
 
 
@@ -328,27 +339,28 @@ func _is_blocked_by_high_yield_contract(source: String) -> bool:
 func _apply_after_successful_interest_relics(source: String) -> void:
 	if not _is_wave_end_settlement_source(source):
 		return
-	var compounding_count := _get_relic_count(RELIC_COMPOUND_INTEREST_TOME)
-	if compounding_count <= 0:
-		return
-	var effect := _first_runtime_effect(RELIC_COMPOUND_INTEREST_TOME, TRIGGER_INTEREST_SUCCESS, EFFECT_ADD_INTEREST_RATE_BONUS)
-	interest_rate_bonus += float(effect.get("value", 0.0)) * float(compounding_count)
+	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SUCCESS):
+		match str(effect.get("effect", "")):
+			EFFECT_ADD_INTEREST_RATE_BONUS:
+				interest_rate_bonus += float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
 
 
 func _apply_after_interest_settlement_relics(source: String) -> void:
 	if not _is_wave_end_settlement_source(source):
 		return
-	var printer_count := _get_relic_count(RELIC_GOBLIN_COIN_PRINTER)
-	if printer_count <= 0:
-		return
-	var effect := _first_runtime_effect(RELIC_GOBLIN_COIN_PRINTER, TRIGGER_INTEREST_SETTLE, EFFECT_ADD_INTEREST_RATE_BONUS)
-	interest_rate_bonus += float(effect.get("value", 0.0)) * float(printer_count)
+	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SETTLE):
+		match str(effect.get("effect", "")):
+			EFFECT_ADD_INTEREST_RATE_BONUS:
+				interest_rate_bonus += float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
 
 
 func _calculate_gain_for_source(source: String) -> int:
 	if source == SETTLE_ANNUITY:
-		var annuity_effect := _first_runtime_effect(RELIC_PERPETUAL_ANNUITY_SCROLL, TRIGGER_COMBAT_TICK, EFFECT_PER_SECOND_INTEREST)
-		var annuity_percent := float(annuity_effect.get("principal_percent", 0.1))
+		var annuity_percent := 0.1
+		for effect in _collect_runtime_effects(TRIGGER_COMBAT_TICK):
+			if str(effect.get("effect", "")) == EFFECT_PER_SECOND_INTEREST:
+				annuity_percent = float(effect.get("principal_percent", annuity_percent))
+				break
 		return int(ceil(float(principal) * annuity_percent / 100.0))
 	return StatDefinitions.calculate_finance_interest_gain(principal, get_interest_rate())
 
@@ -399,16 +411,6 @@ func _emit_changed() -> void:
 	finance_changed.emit(get_state_snapshot())
 
 
-func _get_relic_count(relic_id: String) -> int:
-	if player == null or not player.has_method("get_relic_count"):
-		return 0
-	return int(player.get_relic_count(relic_id))
-
-
-func _has_relic(relic_id: String) -> bool:
-	return _get_relic_count(relic_id) > 0
-
-
 func _get_relic_runtime_effects(relic_id: String, trigger: String = "") -> Array[Dictionary]:
 	var relic_data := DataRegistry.get_record("relics", relic_id)
 	if relic_data.is_empty():
@@ -427,11 +429,20 @@ func _get_relic_runtime_effects(relic_id: String, trigger: String = "") -> Array
 	return result
 
 
-func _first_runtime_effect(relic_id: String, trigger: String, effect_name: String) -> Dictionary:
-	for effect in _get_relic_runtime_effects(relic_id, trigger):
-		if str(effect.get("effect", "")) == effect_name:
-			return effect
-	return {}
+func _collect_runtime_effects(trigger: String) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if player == null:
+		return result
+	for relic_id in player.get_relic_ids():
+		var relic_count := player.get_relic_count(relic_id)
+		if relic_count <= 0:
+			continue
+		for effect in _get_relic_runtime_effects(relic_id, trigger):
+			var entry := effect.duplicate(true)
+			entry["relic_id"] = relic_id
+			entry["relic_count"] = relic_count
+			result.append(entry)
+	return result
 
 
 func _is_wave_end_settlement_source(source: String) -> bool:

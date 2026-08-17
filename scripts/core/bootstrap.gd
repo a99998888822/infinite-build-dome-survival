@@ -116,7 +116,6 @@ func _print_engine_checks() -> void:
 	print("[Bootstrap] engine foundation checks")
 	print("[Bootstrap] - GameGlobal mode: %s" % GameGlobal.game_mode)
 	print("[Bootstrap] - GameGlobal bootstrap flag: %s" % str(GameGlobal.get_runtime_flag("bootstrap_self_test", false)))
-	print("[Bootstrap] - ObjectPool ready: %s" % str(ObjectPool != null))
 	print("[Bootstrap] - GameRoot scene ready: %s" % str(GAME_ROOT_SCENE != null))
 	print("[Bootstrap] - DebugRoot scene ready: %s" % str(DEBUG_ROOT_SCENE != null))
 	print("[Bootstrap] - ZoneUIController scene ready: %s" % str(ZONE_UI_CONTROLLER_SCENE != null))

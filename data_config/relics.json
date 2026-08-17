@@ -2,6 +2,7 @@
   {
     "id": "relic_deep_eye",
     "display_name": "深海之眼",
+    "description": "每秒回血 [color=#7FD88F]+1[/color]",
     "icon": "res://assets/ui/icons/relics/relic_deep_eye.png",
     "rarity": "rare",
     "bond_id": "bond_chosen",
@@ -24,6 +25,7 @@
   {
     "id": "relic_flying_teeth",
     "display_name": "飞的牙齿",
+    "description": "近战伤害 [color=#7FD88F]+1[/color]\n攻击速度 [color=#7FD88F]+2%[/color]",
     "icon": "res://assets/ui/icons/relics/relic_flying_teeth.png",
     "rarity": "common",
     "bond_id": "bond_mighty",
@@ -57,6 +59,7 @@
   {
     "id": "relic_flying_feather",
     "display_name": "飞的羽毛",
+    "description": "攻击速度 [color=#7FD88F]+5%[/color]",
     "icon": "res://assets/ui/icons/relics/relic_flying_feather.png",
     "rarity": "common",
     "bond_id": "bond_sharpshooter",
@@ -79,6 +82,7 @@
   {
     "id": "relic_flying_eye",
     "display_name": "飞的眼睛",
+    "description": "近战伤害 [color=#7FD88F]+5[/color]\n神性 [color=#7FD88F]+5[/color]",
     "icon": "res://assets/ui/icons/relics/relic_flying_eye.png",
     "rarity": "rare",
     "bond_id": "bond_chosen",
@@ -112,7 +116,7 @@
   {
     "id": "relic_piggy_bank",
     "display_name": "猪猪存钱罐",
-    "description": "每波开始自动本金 +10。",
+    "description": "每波开始 本金 [color=#7FD88F]+10[/color]",
     "icon": "res://assets/ui/icons/relics/relic_piggy_bank.png",
     "rarity": "uncommon",
     "bond_id": "bond_chosen",
@@ -135,7 +139,7 @@
   {
     "id": "relic_finance_manager",
     "display_name": "理财经理",
-    "description": "利率 +1%。",
+    "description": "利率 [color=#7FD88F]+1%[/color]",
     "icon": "res://assets/ui/icons/relics/relic_finance_manager.png",
     "rarity": "uncommon",
     "bond_id": "bond_chosen",
@@ -163,7 +167,7 @@
   {
     "id": "relic_dividend_check",
     "display_name": "分红支票",
-    "description": "获得时立即结算一次利息。",
+    "description": "获得时 立即结算一次利息",
     "icon": "res://assets/ui/icons/relics/relic_dividend_check.png",
     "rarity": "uncommon",
     "bond_id": "bond_chosen",
@@ -184,7 +188,7 @@
   {
     "id": "relic_speculative_chip",
     "display_name": "投机筹码",
-    "description": "每次利息结算有 55% 概率收益翻倍，45% 概率无利息收益。",
+    "description": "利息结算 [color=#7FD88F]55%概率翻倍[/color]\n[color=#F28B82]45%概率无收益[/color]",
     "icon": "res://assets/ui/icons/relics/relic_speculative_chip.png",
     "rarity": "uncommon",
     "bond_id": "bond_chosen",
@@ -207,7 +211,7 @@
   {
     "id": "relic_fixed_deposit_certificate",
     "display_name": "定期存单",
-    "description": "获得时本金立刻 +(50*波次)；手动存入本金后必须间隔一回合后才能取出本金。",
+    "description": "获得时 本金 [color=#7FD88F]+50×波次[/color]\n手动存入后 本波不可取出",
     "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "rarity": "uncommon",
     "bond_id": "bond_chosen",
@@ -235,7 +239,7 @@
   {
     "id": "relic_compound_interest_tome",
     "display_name": "复利宝典",
-    "description": "每成功结算一次利息，利率 +0.2%。",
+    "description": "每次成功结算利息 利率 [color=#7FD88F]+0.2%[/color]",
     "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
     "rarity": "rare",
     "bond_id": "bond_chosen",
@@ -257,7 +261,7 @@
   {
     "id": "relic_high_yield_contract",
     "display_name": "高利契约",
-    "description": "利率 +3%；每波结束时，若本波开始前未手动存入本金，则本波结束无法收获利息。",
+    "description": "利率 [color=#7FD88F]+3%[/color]\n本波开始前未存入 波末不可收息",
     "icon": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
     "rarity": "epic",
     "bond_id": "bond_chosen",
@@ -290,7 +294,7 @@
   {
     "id": "relic_periodic_dividend_clock",
     "display_name": "周期分红钟",
-    "description": "每经过 3 波，自动触发一次利息结算。",
+    "description": "每 3 波 额外触发一次利息结算",
     "icon": "res://assets/ui/icons/relics/relic_periodic_dividend_clock.png",
     "rarity": "epic",
     "bond_id": "bond_chosen",
@@ -312,7 +316,7 @@
   {
     "id": "relic_goblin_central_bank_printer",
     "display_name": "哥布林央行印钞机",
-    "description": "利率 +5%；每波开始自动注入你当前持有金币 10% 的免费本金。",
+    "description": "利率 [color=#7FD88F]+5%[/color]\n每波开始 注入当前金币 [color=#7FD88F]10%[/color] 免费本金",
     "icon": "res://assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
     "rarity": "mythic",
     "bond_id": "bond_chosen",
@@ -347,7 +351,7 @@
   {
     "id": "relic_perpetual_annuity_scroll",
     "display_name": "永续年金卷轴",
-    "description": "战斗过程中，每秒按当前理财本金的 0.1% 结算小额利息，向上取整；波次结束仍正常结算全额利息。",
+    "description": "战斗中 每秒结算本金 [color=#7FD88F]0.1%[/color] 利息\n波末仍正常结算全额利息",
     "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "rarity": "mythic",
     "bond_id": "bond_chosen",
@@ -369,7 +373,7 @@
   {
     "id": "relic_goblin_coin_printer",
     "display_name": "哥布林印钞机",
-    "description": "每波开局赠送你当前持有金币 10% 比例的本金；每次利息结算后，利率永久 +0.3%。",
+    "description": "每波开始 注入当前金币 [color=#7FD88F]10%[/color] 免费本金\n每次利息结算后 利率 [color=#7FD88F]+0.3%[/color]",
     "icon": "res://assets/ui/icons/relics/relic_goblin_coin_printer.png",
     "rarity": "mythic",
     "bond_id": "bond_chosen",

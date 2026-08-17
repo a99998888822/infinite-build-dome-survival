@@ -61,7 +61,7 @@ func _build_details_text() -> String:
 			lines.append("%s：未收息（高利契约）" % source_label)
 			continue
 		if not bool(result_data.get("success", false)):
-			lines.append("%s：未收息（%s）" % [source_label, str(result_data.get("reason", "unknown"))])
+			lines.append("%s：未收息（%s）" % [source_label, _reason_label(str(result_data.get("reason", "unknown")))])
 			continue
 		var gain := int(result_data.get("gain", 0))
 		if gain > 0:
@@ -69,6 +69,18 @@ func _build_details_text() -> String:
 		else:
 			lines.append("%s：无利息收益" % source_label)
 	return "\n".join(lines)
+
+
+func _reason_label(reason: String) -> String:
+	match reason:
+		"no_principal":
+			return "无本金"
+		"high_yield_requires_wave_start_deposit":
+			return "高利契约"
+		"zero_interest_gain":
+			return "无利息收益"
+		_:
+			return "未结算"
 
 
 func _source_label(source: String) -> String:

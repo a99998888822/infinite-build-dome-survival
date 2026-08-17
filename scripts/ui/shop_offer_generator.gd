@@ -39,6 +39,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"display_name": str(weapon_data.get("display_name", weapon_id)),
 			"icon": str(weapon_data.get("icon", "")),
 			"load_cost": int(weapon_data.get("load_cost", 0)),
+			"description": str(weapon_data.get("description", "")),
 			"tags": weapon_tags,
 		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus))
 

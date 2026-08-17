@@ -268,7 +268,7 @@
   "tags": ["relic", "finance", "principal"],
   "effects": [],
   "runtime_effects": [
-    { "trigger": "wave_start", "effect": "add_principal", "value": 10, "free_principal": true }
+    { "trigger": "wave_start", "effect": "add_principal_flat", "value": 10, "free_principal": true }
   ]
 }
 ```
@@ -294,6 +294,6 @@
 ### 11.7 实现备注
 
 - `effects` 只处理 modifier；`runtime_effects` 只作为事件型配置和校验记录。
-- 当前金融执行器优先按遗物 ID 映射实现，后续可把 runtime effect 完全数据驱动化。
+- 金融执行器按“触发点 + effect 类型”通用分发，不再按遗物 ID 特判；遗物仅通过 JSON 声明 runtime_effects，新增效果只需扩展对应 effect 分支。
 - 利率支持小数，便于 0.2% 和 0.3% 成长。
 - “免费本金”不扣除当前金币，但仍计入本金和后续收益。
