@@ -116,7 +116,6 @@ combat_root.tscn
 | `hit_radius` | int | 武器基础命中/影响半径。它不是成长属性，最终攻击范围统一由 `area_size` 加成。 |
 | `projectile_speed` | int | 投射物速度。非远程武器填 `0`。 |
 | `spread_angle` | int | 多投射物散射总角度。单投射物或非远程武器填 `0`。 |
-| `use_cooldown_reduction_only` | bool | 是否只吃 `cooldown_reduction`，不吃 `attack_speed`。 |
 | `base_stats` | Dictionary | 武器自身基础数值，只影响该武器实例。 |
 | `level_upgrades` | Dictionary | 每级升级对象，从 2 级开始配置；对象包含 `rarity` 和 `effects`。 |
 
@@ -179,20 +178,7 @@ combat_root.tscn
 
 1. `attack_speed = 100` 表示攻击速度翻倍。
 2. 武器自身 `base_stats.attack_speed` 与玩家最终 `attack_speed` 相加。
-3. 若武器 `use_cooldown_reduction_only = true`，则不读取 `attack_speed`，改用 `cooldown_reduction` 计算实际间隔。
-4. 攻击间隔应设置最小值保护，避免过高攻速导致性能问题。
-
-### 冷却缩减
-
-```text
-实际冷却 = 基础冷却 * (1 - cooldown_reduction / 100)
-```
-
-说明：
-
-1. 仅 `use_cooldown_reduction_only = true` 的武器读取 `cooldown_reduction`。
-2. 这类武器不吃 `attack_speed` 加成。
-3. 普通自动攻击默认读取 `attack_speed`。
+3. 攻击间隔应设置最小值保护，避免过高攻速导致性能问题。
 
 ### 基础伤害
 
@@ -228,7 +214,7 @@ combat_root.tscn
 2. `crit_damage = 150` 表示暴击造成 150% 伤害。
 3. 暴击随机使用 Godot 普通全局随机即可。
 
-### 范围与持续时间
+### 范围
 
 ```text
 最终攻击范围 = hit_radius * (1 + area_size / 100)
@@ -240,7 +226,6 @@ combat_root.tscn
 2. `area_size` 是唯一攻击范围加成属性；其他基础数据属性不得再控制武器攻击范围。
 3. `hit_radius` 只表示武器配置中的基础半径，不作为可成长属性。
 4. `pickup_radius` 只控制掉落物吸附范围，不参与武器攻击范围计算。
-5. 当前范围武器是一次性伤害，暂不读取 `duration_percent`。
 
 ## 9. 武器升级规则
 
@@ -449,7 +434,6 @@ WeaponEffectRegistry
 1. 启动时能读取全部武器配置且无校验错误。
 2. 玩家初始化后，`WeaponLoadout` 能创建 1 把默认武器。
 3. `attack_speed = 100` 时，普通武器实际攻击间隔正确减半。
-4. `use_cooldown_reduction_only = true` 时，武器只读取冷却缩减，不读取攻速。
 5. 武器升级后，`ranged_damage`、`melee_damage` 或 `attack_interval_ms` 正确变化。
 6. 混伤武器能拆成近战段和远程段两个伤害数字。
 7. 超出负载上限的装备或购买请求必须失败。
@@ -497,10 +481,9 @@ WeaponEffectRegistry
 8. 多投射物采用散射，散射总角度写入 `weapons.json` 的 `spread_angle`。
 9. 暴击随机使用 Godot 普通全局随机。
 10. 混伤武器拆成近战段和远程段两个伤害数字。
-11. `use_cooldown_reduction_only = true` 表示该武器只吃冷却缩减，不吃攻速加成。
-12. `weapon_type` 的 `light`、`medium`、`heavy` 只用于负载展示和 UI 分类。
-13. 武器升级来自局内商店或升级选项，不依赖额外配置解锁条件。
-14. 神秘伤害暂不设定。
+11. `weapon_type` 的 `light`、`medium`、`heavy` 只用于负载展示和 UI 分类。
+12. 武器升级来自局内商店或升级选项，不依赖额外配置解锁条件。
+13. 神秘伤害暂不设定。
 15. `WeaponAnchor` 只用于远程发射点和美术挂点。
 16. 新武器不允许重复获得；已拥有武器不再进入新武器候选池。
 17. 武器升级选项与遗物共用六档稀有度，但使用升级项自身的稀有度，不读取武器本体稀有度。

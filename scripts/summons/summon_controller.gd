@@ -11,7 +11,6 @@ const INHERITED_PLAYER_STATS := {
 	"summon_damage": true,
 	"damage_percent": true,
 	"attack_speed": true,
-	"cooldown_reduction": true,
 	"crit_chance": true,
 	"crit_damage": true,
 	"area_size": true,
@@ -32,7 +31,6 @@ var follow_distance: float = 96.0
 var chase_radius: float = 320.0
 var leash_distance: float = 420.0
 var lifetime_seconds: float = -1.0
-var use_cooldown_reduction_only: bool = false
 var formation_index: int = 0
 var formation_count: int = 1
 
@@ -81,7 +79,6 @@ func initialize(player: PlayerController, service: TargetingService, data: Dicti
 	chase_radius = maxf(float(summon_data.get("chase_radius", chase_radius)), 0.0)
 	leash_distance = maxf(float(summon_data.get("leash_distance", leash_distance)), follow_distance)
 	lifetime_seconds = float(summon_data.get("lifetime_seconds", lifetime_seconds))
-	use_cooldown_reduction_only = bool(summon_data.get("use_cooldown_reduction_only", use_cooldown_reduction_only))
 	formation_index = maxi(0, int(summon_data.get("formation_index", formation_index)))
 	formation_count = maxi(1, int(summon_data.get("formation_count", formation_count)))
 	current_hp = int(get_stat("max_hp"))
@@ -120,8 +117,6 @@ func get_attack_radius() -> float:
 
 func get_actual_attack_interval_seconds() -> float:
 	var base_interval := maxf(float(attack_interval_ms) / 1000.0, MIN_ATTACK_INTERVAL_SECONDS)
-	if use_cooldown_reduction_only:
-		return maxf(StatDefinitions.calculate_cooldown(base_interval, get_stat("cooldown_reduction")), MIN_ATTACK_INTERVAL_SECONDS)
 	return maxf(StatDefinitions.calculate_attack_interval(base_interval, get_stat("attack_speed")), MIN_ATTACK_INTERVAL_SECONDS)
 
 

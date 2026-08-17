@@ -160,6 +160,8 @@ flowchart TD
 | 生存 | `max_hp` | 最大生命 | 玩家/敌人/召唤物 |
 | 生存 | `hp_regen` | 每秒回血 | 玩家/敌人/召唤物 |
 | 生存 | `shield` | 护盾值 | 玩家 |
+| 生存 | `revive_count` | 本局额外复活次数；每次复活消耗 1 次 | 玩家 |
+| 生存 | `on_kill_heal` | 每次击杀敌人后恢复的固定生命值 | 玩家 |
 | 生存 | `armor` | 护甲值，用于通过曲线函数计算受到伤害百分比 | 玩家/敌人/召唤物 |
 | 生存 | `damage_taken_percent` | 受到伤害百分比，由护甲与其他减伤modifier共同影响 | 玩家/敌人/召唤物 |
 | 移动 | `move_speed` | 移动速度 | 玩家/敌人/召唤物 |
@@ -168,14 +170,11 @@ flowchart TD
 | 攻击 | `summon_damage` | 眷族伤害，固定数值加成 | 召唤物/眷族实体 |
 | 攻击 | `damage_percent` | 通用伤害百分比加成，影响近战、远程、眷族等伤害 | 通用 |
 | 攻击 | `attack_speed` | 攻击速度；实际攻击间隔 = 武器固定速率 / (1 + attack_speed / 100)，例如 attack_speed=100 表示加速一倍 | 武器 |
-| 攻击 | `cooldown_reduction` | 冷却缩减 | 武器/技能 |
 | 暴击 | `crit_chance` | 暴击率 | 武器/玩家 |
 | 暴击 | `crit_damage` | 暴击伤害百分比 | 武器/玩家 |
 | 投射物 | `projectile_count` | 投射物数量 | 武器 |
 | 投射物 | `pierce_count` | 穿透次数 | 武器 |
 | 范围与控制 | `area_size` | 攻击范围加成；统一加成近战、远程、范围武器的命中/影响半径 | 武器/领域 |
-| 范围与控制 | `duration_percent` | 持续时间加成 | 领域/状态效果 |
-| 范围与控制 | `slow_percent` | 减速效果 | 状态效果 |
 | 范围与控制 | `control_power` | 控制强度，影响减速、定身等控制效果强度 | 武器/遗物/羁绊 |
 | 掉落与成长 | `pickup_radius` | 拾取范围 | 玩家 |
 | 掉落与成长 | `exp_gain_percent` | 经验获取加成 | 玩家/全局 |
@@ -184,15 +183,17 @@ flowchart TD
 | 掉落与成长 | `currency_gain_percent` | 局内/结算货币获取加成 | 玩家/全局 |
 | 掉落与成长 | `finance` | 理财本金；第 2 波起每波开始前可存入或取出的局内金币本金 | 玩家/全局 |
 | 掉落与成长 | `interest_rate` | 利率；默认 5，波次结束按理财本金结算利息并加入本金 | 玩家/全局 |
+| 掉落与成长 | `shop_price_percent` | 局内商店价格折扣 | 玩家 |
 | 构筑 | `load_capacity` | 玩家负载上限；武器自身负载消耗归属武器模块配置 | 玩家/全局 |
 | 召唤 | `summon_count` | 召唤数量 | 召唤物系统 |
+| 波次 | `enemy_spawn_rate_percent` | 每次刷怪的怪物数量增幅 | 玩家/全局 |
 | 精神/外神 | `humanity` | 理智值/人性，初始满值；值越低，侵蚀度积蓄越快，越过阈值后状态命名更新为“人性”相关阶段 | 玩家/全局 |
 | 精神/外神 | `divinity` | 侵蚀度/神性，初始0；表示与克苏鲁外神的靠近程度，越过阈值后状态命名更新为“神性”相关阶段 | 玩家/全局 |
 
 ### 6.2 属性设计规则
 
 1. 使用 `*_percent` 表示百分比加成，避免和基础值混用。
-2. 最终属性必须设置合理上下限，例如移速、暴击率、冷却缩减。
+2. 最终属性必须设置合理上下限，例如移速、暴击率。
 3. 负面效果也使用同一属性系统，例如降低拾取范围就是 `pickup_radius` 的乘法 modifier。
 4. 临时状态不新增独立字段，优先使用 modifier 的 `duration` 和 `source` 表达。
 5. `armor` 不直接等于减伤比例，需要通过曲线换算为 `damage_taken_percent`，避免高护甲达到100%减伤。
@@ -205,8 +206,7 @@ flowchart TD
 2. 百分比字段直接写百分数整数：`damage_percent = 10` 表示伤害 +10%；`area_size = 40` 表示攻击范围 +40%。
 3. 承伤字段使用“最终承受百分比”：`damage_taken_percent = 89` 表示承受 89% 伤害，即等效 11% 减伤。
 4. 攻速字段使用加速百分比：`attack_speed = 100` 时，实际攻击间隔 = 武器固定速率 / (1 + 100 / 100)。
-5. 冷却缩减字段使用缩短百分比：`cooldown_reduction = 40` 时，原始 10 秒冷却变为 6 秒。
-6. 时间类配置优先使用毫秒整数，例如 `cooldown_ms = 600`、`spawn_interval_ms = 1200`。
+5. 时间类配置优先使用毫秒整数，例如 `cooldown_ms = 600`、`spawn_interval_ms = 1200`。
 
 ### 6.2.2 攻击范围口径
 
@@ -214,7 +214,6 @@ flowchart TD
 2. 所有近战、远程、范围武器的最终攻击范围都使用：`最终攻击范围 = 武器基础半径 * (1 + area_size / 100)`。
 3. 武器配置中的 `hit_radius` 只表示武器自身的基础命中/影响半径，不是可成长属性。
 4. `pickup_radius` 只控制经验球和掉落物吸附范围，不参与任何武器攻击范围计算。
-5. `duration_percent` 只控制持续效果时间，不参与攻击范围计算。
 
 ### 6.2.3 理财与利率
 
@@ -223,6 +222,13 @@ flowchart TD
 3. 本波攻击结束后，只结算利息收益，不自动返还本金；收益按 `ceil(finance * interest_rate / 100)` 计算并加入本金。
 4. `interest_rate` 默认值为 `5`，表示默认利率 5%；该属性允许小数成长以支持复利类遗物。
 5. 理财本金和收益不吃 `currency_gain_percent`，避免金币增益与本金复利形成重复放大。
+
+### 6.2.4 局内触发与商店数值
+
+1. `shop_price_percent` 使用折扣语义：`shop_price_percent = 10` 表示商店价格为 `ceil(基础价格 * 0.9)`；HUD 直接显示为 `10%`。
+2. `revive_count` 是本局可消耗资源；生命归零时优先消耗 1 次，以 50% 最大生命、0 护盾和 1 秒无敌复活，不触发失败结算。
+3. `on_kill_heal` 是固定数值：每次敌人死亡后，玩家恢复该数值生命，最高不超过最大生命。
+4. `enemy_spawn_rate_percent` 使用数量增幅语义：`20` 表示每次刷怪数量为 `ceil(基础数量 * 1.2)`；它只影响 `count_per_spawn`，不缩短刷怪间隔。
 
 ### 6.3 护甲减伤曲线
 
@@ -387,7 +393,7 @@ func debug_stat(stat_id: String) -> Dictionary
 1. 神秘伤害加成：`tagged_damage_percent` + `target_tags: ["mystic"]`。
 2. 对Boss伤害加成：`tagged_damage_percent` + `target_tags: ["boss"]`。
 3. 命中触发流血：后续可扩展 `effect_type: "on_hit_apply_status"`。
-4. 击杀回复生命：后续可扩展 `effect_type: "on_kill_heal"`。
+4. 击杀回复生命：通用常驻数值使用 `on_kill_heal`；带条件、标签或一次性效果仍使用 `extra_effects`。
 
 原则：只有“稳定、通用、常驻、可展示”的数值进入 `StatDefinitions`；条件型、标签型、触发型效果进入 `extra_effects`。
 ## 8. DataRegistry设计
@@ -991,9 +997,6 @@ func find_refs(config_id: String) -> Array[Dictionary]
 5. 能打印某个最终属性的来源链。
 6. 业务模块不需要知道 JSON 文件路径，只依赖 `DataRegistry` 接口。
 7. 后续新增武器、遗物、羁绊、营地建筑时，不需要修改基础数据模块核心逻辑。
-
-
-
 
 
 

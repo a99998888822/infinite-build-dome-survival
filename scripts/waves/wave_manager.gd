@@ -284,7 +284,7 @@ func calculate_wave_duration(wave_index: int) -> int:
 
 
 func get_required_exp_for_next_level() -> int:
-	return 5 + (player_level - 1) * 5
+	return ceili(0.45 * pow(float(player_level) + 1.8, 2.9))
 
 
 func add_exp_and_gold(exp_amount: int, gold_amount: int) -> void:
@@ -409,8 +409,14 @@ func _process_spawn_timers(delta: float) -> void:
 		if spawn_timers_ms[index] > 0.0:
 			continue
 		spawn_timers_ms[index] = float(group.get("spawn_interval_ms", 1000))
-		for count_index in range(int(group.get("count_per_spawn", 1))):
+		var spawn_count := calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1)))
+		for count_index in range(spawn_count):
 			spawn_enemy(str(group.get("enemy_id", "")), get_random_spawn_position())
+
+
+func calculate_enemy_spawn_count(base_count: int) -> int:
+	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
+	return StatDefinitions.calculate_enemy_spawn_count(base_count, spawn_rate_percent)
 
 
 func get_random_spawn_position() -> Vector2:
@@ -453,6 +459,8 @@ func _ensure_summon_root() -> void:
 
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
+	if player != null:
+		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
 	if Engine.is_in_physics_frame():
 		call_deferred("_spawn_drop_actions", actions, death_position)

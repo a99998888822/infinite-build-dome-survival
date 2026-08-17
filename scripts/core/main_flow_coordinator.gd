@@ -41,6 +41,7 @@ var battle_resolved: bool = false
 var _resume_state_after_modal: String = STATE_START_PAGE
 var _active_level_up_level: int = 0
 var _pending_level_up_levels: Array[int] = []
+var _weapon_upgrade_miss_count: int = 0
 var _wave_end_ready: bool = false
 var _active_zone_selection_wave_number: int = 0
 var _pending_zone_harvest_payload: Dictionary = {}
@@ -75,6 +76,7 @@ func reset_flow() -> void:
 	_resume_state_after_modal = STATE_START_PAGE
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
+	_weapon_upgrade_miss_count = 0
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
@@ -416,6 +418,7 @@ func get_state_snapshot() -> Dictionary:
 		"wave_end_ready": _wave_end_ready,
 		"active_shared_reward_shop_level": _active_level_up_level,
 		"pending_shared_reward_shop_levels": _pending_level_up_levels.duplicate(),
+		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
 		"zone_state": ZoneProgression.get_state_snapshot(),
 		"active_zone_selection_wave_number": _active_zone_selection_wave_number,
 		"pending_zone_harvest_payload": _pending_zone_harvest_payload.duplicate(true),
@@ -598,6 +601,7 @@ func _build_shop_payload(mode: String, level: int) -> Dictionary:
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
 		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, 3)
+		_update_weapon_upgrade_miss_count(candidates, offers)
 	return {
 		"mode": str(mode).strip_edges(),
 		"level": maxi(0, level),
@@ -623,11 +627,27 @@ func _build_shop_context() -> Dictionary:
 		"owned_relic_counts": _bound_player.get_relic_counts(),
 		"current_load": _bound_loadout.get_total_load_cost(),
 		"load_capacity": _bound_loadout.get_load_capacity(),
-		"upgrade_miss_count": 0,
+		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
+		"shop_price_percent": _get_shop_stat("shop_price_percent"),
 		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
 		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
 		"zone_tag_weight_bonus": ZoneProgression.get_current_zone_tag_weight_bonus(),
 	}
+
+
+func _update_weapon_upgrade_miss_count(candidates: Array, offers: Array) -> void:
+	var has_upgrade_candidate := false
+	for candidate in candidates:
+		if candidate is Dictionary and str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			has_upgrade_candidate = true
+			break
+	if not has_upgrade_candidate:
+		return
+	for offer in offers:
+		if offer is Dictionary and str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			_weapon_upgrade_miss_count = 0
+			return
+	_weapon_upgrade_miss_count += 1
 
 
 func _get_shop_stat(stat_id: String) -> float:

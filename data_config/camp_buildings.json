@@ -45,11 +45,6 @@
         {
           "unlock": "weapon_blueprint_legendary",
           "name": "解锁传说武器图纸"
-        },
-        {
-          "stat": "cooldown_reduction",
-          "value": 5,
-          "name": "全局冷却缩减+5%"
         }
       ]
     },
@@ -141,15 +136,6 @@
         "value_per_level": 1
       },
       {
-        "id": "camp_upgrade_cooldown_melee",
-        "name": "近战冷却训练",
-        "stat": "cooldown_reduction",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 5,
-        "value_per_level": 1
-      },
-      {
         "id": "camp_upgrade_crit_chance_melee",
         "name": "近战暴击训练",
         "stat": "crit_chance",
@@ -213,15 +199,6 @@
         "id": "camp_upgrade_area_size_ranged",
         "name": "远程范围训练",
         "stat": "area_size",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 10,
-        "value_per_level": 5
-      },
-      {
-        "id": "camp_upgrade_duration_ranged",
-        "name": "持续时间训练",
-        "stat": "duration_percent",
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 10,
@@ -295,26 +272,6 @@
         "cost": 500,
         "max_level": 10,
         "value_per_level": 5,
-        "required_building_level": 1
-      },
-      {
-        "id": "camp_upgrade_duration_mutation",
-        "name": "畸变持续训练",
-        "stat": "duration_percent",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 10,
-        "value_per_level": 5,
-        "required_building_level": 1
-      },
-      {
-        "id": "camp_upgrade_slow_percent_mutation",
-        "name": "畸变减速训练",
-        "stat": "slow_percent",
-        "currency": "camp_currency",
-        "cost": 700,
-        "max_level": 5,
-        "value_per_level": 2,
         "required_building_level": 1
       },
       {

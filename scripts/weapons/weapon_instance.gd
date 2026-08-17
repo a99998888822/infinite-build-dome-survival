@@ -134,8 +134,6 @@ func get_total_pierce_hits() -> int:
 
 func get_actual_attack_interval_seconds() -> float:
 	var base_interval := maxf(float(attack_interval_ms) / 1000.0, MIN_ATTACK_INTERVAL_SECONDS)
-	if bool(weapon_data.get("use_cooldown_reduction_only", false)):
-		return maxf(StatDefinitions.calculate_cooldown(base_interval, get_stat("cooldown_reduction")), MIN_ATTACK_INTERVAL_SECONDS)
 	return maxf(StatDefinitions.calculate_attack_interval(base_interval, get_stat("attack_speed")), MIN_ATTACK_INTERVAL_SECONDS)
 
 

@@ -35,6 +35,8 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"max_hp",
 	"hp_regen",
 	"shield",
+	"revive_count",
+	"on_kill_heal",
 	"armor",
 	"damage_taken_percent",
 	"move_speed",
@@ -43,14 +45,11 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"summon_damage",
 	"damage_percent",
 	"attack_speed",
-	"cooldown_reduction",
 	"crit_chance",
 	"crit_damage",
 	"projectile_count",
 	"pierce_count",
 	"area_size",
-	"duration_percent",
-	"slow_percent",
 	"control_power",
 	"pickup_radius",
 	"exp_gain_percent",
@@ -59,8 +58,10 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"currency_gain_percent",
 	"finance",
 	"interest_rate",
+	"shop_price_percent",
 	"load_capacity",
 	"summon_count",
+	"enemy_spawn_rate_percent",
 	"humanity",
 	"divinity",
 ]
@@ -213,7 +214,7 @@ func _refresh_stats_drawer() -> void:
 		var stat_id := str(stat_id_variant)
 		var value_label := _stat_value_labels[stat_id_variant] as Label
 		if value_label != null:
-			value_label.text = _format_stat_value(stat_id, _player.get_stat(stat_id))
+			value_label.text = _format_stat_value(stat_id, _get_display_stat_value(stat_id))
 		var name_label := _stat_name_labels.get(stat_id_variant, null) as Label
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
@@ -336,6 +337,12 @@ func _get_ordered_stat_ids() -> Array[String]:
 		if not stat_ids.has(stat_id):
 			stat_ids.append(stat_id)
 	return stat_ids
+
+
+func _get_display_stat_value(stat_id: String) -> float:
+	if stat_id == "revive_count":
+		return float(_player.get_remaining_revives())
+	return _player.get_stat(stat_id)
 
 
 func _get_stat_display_name(stat_id: String) -> String:

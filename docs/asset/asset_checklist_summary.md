@@ -98,7 +98,6 @@
 | 未存在 | 武器商店卡片底图 | `card_weapon_shop_clean.png` | `assets/ui/icons/weapons/card_weapon_shop_clean.png` | 4:5，512x640 / PNG，透明或干净底 | 生成一张清新干净的像素风武器商店卡片底图，适合穹顶生存轻克苏鲁题材，柔和深蓝绿色背景，浅金色边框，中央留出武器图标空间，下方留出名称和数值文本空间，不要文字，不要肮脏噪点，不要血腥恐怖，PNG |
 | 未存在 | 武器负载图标 | `icon_weapon_load.png` | `assets/ui/icons/weapons/icon_weapon_load.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示武器负载，图形是小背包或能量槽，浅绿色和暖黄色配色，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥恐怖 |
 | 未存在 | 武器升级箭头 | `icon_weapon_upgrade.png` | `assets/ui/icons/weapons/icon_weapon_upgrade.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示武器升级，图形是向上箭头和小星光，浅绿色、淡蓝色、暖黄色配色，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥恐怖 |
-| 未存在 | 通用冷却型武器标识 | `icon_cooldown_weapon.png` | `assets/ui/icons/weapons/icon_cooldown_weapon.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示冷却型武器，图形是小沙漏或圆形计时符号，淡蓝色和浅紫色发光，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥恐怖 |
 | 未存在 | 羁绊徽记基础底图 | `bond_mark_base.png` | `assets/ui/icons/bonds/bond_mark_base.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 底图，主题是羁绊徽记基础框，图形简洁、圆角、带少量淡金色与浅绿光泽，适合放置羁绊名称和层数，不要文字，不要肮脏噪点，不要血腥，不要复杂背景，透明背景，PNG |
 | 未存在 | 大力羁绊徽记 | `bond_mighty.png` | `assets/ui/icons/bonds/bond_mighty.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风羁绊徽记，主题是“大力”，图形偏向肌肉、拳头或重锤的简洁符号，浅红棕与暖金配色，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
 | 未存在 | 神射手羁绊徽记 | `bond_sharpshooter.png` | `assets/ui/icons/bonds/bond_sharpshooter.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风羁绊徽记，主题是“神射手”，图形偏向箭矢、准星或拉弓符号，浅蓝色与金色配色，轮廓清晰，适合 2D 游戏 UI 小图标，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |

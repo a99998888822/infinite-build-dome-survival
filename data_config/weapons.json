@@ -22,7 +22,6 @@
     "hit_radius": 10,
     "projectile_speed": 500,
     "spread_angle": 12,
-    "use_cooldown_reduction_only": false,
     "base_stats": {
       "ranged_damage": 10,
       "attack_speed": 0,
@@ -34,7 +33,7 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]",
         "effects": [
           {
             "stat": "ranged_damage",
@@ -48,7 +47,7 @@
       },
       "3": {
         "rarity": "rare",
-        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]",
         "effects": [
           {
             "stat": "ranged_damage",
@@ -62,7 +61,7 @@
       },
       "4": {
         "rarity": "epic",
-        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]",
         "effects": [
           {
             "stat": "ranged_damage",
@@ -76,7 +75,7 @@
       },
       "5": {
         "rarity": "mythic",
-        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]\n投射物数量 [color=#7FD88F]+1[/color]",
+        "description": "远程伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]\n投射物数量 [color=#7FD88F]+1[/color]",
         "effects": [
           {
             "stat": "ranged_damage",
@@ -97,7 +96,7 @@
   {
     "id": "weapon_mutated_cleaver",
     "display_name": "砍刀",
-    "description": "获得新的武器 负载 10",
+    "description": "获得新的武器 负载 30",
     "icon": "res://assets/ui/icons/weapons/weapon_mutated_cleaver.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg",
     "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_cleaver_slash.png",
@@ -109,14 +108,13 @@
       "starter"
     ],
     "weapon_type": "light",
-    "load_cost": 10,
+    "load_cost": 30,
     "max_level": 5,
     "attack_interval_ms": 650,
     "attack_range": 120,
     "hit_radius": 80,
     "projectile_speed": 0,
     "spread_angle": 0,
-    "use_cooldown_reduction_only": false,
     "base_stats": {
       "melee_damage": 10,
       "attack_speed": 0,
@@ -127,7 +125,7 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]",
         "effects": [
           {
             "stat": "melee_damage",
@@ -141,7 +139,7 @@
       },
       "3": {
         "rarity": "rare",
-        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]",
         "effects": [
           {
             "stat": "melee_damage",
@@ -169,7 +167,7 @@
       },
       "5": {
         "rarity": "mythic",
-        "description": "近战伤害 [color=#7FD88F]+4[/color]\n攻击间隔 [color=#F28B82]-0.05s[/color]\n暴击率 [color=#7FD88F]+5%[/color]",
+        "description": "近战伤害 [color=#7FD88F]+4[/color]\n攻击间隔 [color=#7FD88F]-0.05s[/color]\n暴击率 [color=#7FD88F]+5%[/color]",
         "effects": [
           {
             "stat": "melee_damage",
@@ -211,7 +209,6 @@
     "hit_radius": 120,
     "projectile_speed": 0,
     "spread_angle": 0,
-    "use_cooldown_reduction_only": false,
     "base_stats": {
       "melee_damage": 5,
       "ranged_damage": 5,
@@ -219,8 +216,7 @@
       "attack_speed": 0,
       "crit_chance": 3,
       "crit_damage": 150,
-      "area_size": 20,
-      "duration_percent": 0
+      "area_size": 20
     },
     "level_upgrades": {
       "2": {
@@ -239,7 +235,7 @@
       },
       "3": {
         "rarity": "rare",
-        "description": "攻击间隔 [color=#F28B82]-0.1s[/color]\n范围加成 [color=#7FD88F]+10%[/color]",
+        "description": "攻击间隔 [color=#7FD88F]-0.1s[/color]\n范围加成 [color=#7FD88F]+10%[/color]",
         "effects": [
           {
             "field": "attack_interval_ms",
@@ -253,7 +249,7 @@
       },
       "4": {
         "rarity": "epic",
-        "description": "近战伤害 [color=#7FD88F]+2[/color]\n远程伤害 [color=#7FD88F]+2[/color]\n持续时间加成 [color=#7FD88F]+10%[/color]",
+        "description": "近战伤害 [color=#7FD88F]+2[/color]\n远程伤害 [color=#7FD88F]+2[/color]",
         "effects": [
           {
             "stat": "melee_damage",
@@ -262,16 +258,12 @@
           {
             "stat": "ranged_damage",
             "value": 2
-          },
-          {
-            "stat": "duration_percent",
-            "value": 10
           }
         ]
       },
       "5": {
         "rarity": "mythic",
-        "description": "攻击间隔 [color=#F28B82]-0.1s[/color]\n范围加成 [color=#7FD88F]+15%[/color]\n伤害加成 [color=#7FD88F]+5%[/color]",
+        "description": "攻击间隔 [color=#7FD88F]-0.1s[/color]\n范围加成 [color=#7FD88F]+15%[/color]\n伤害加成 [color=#7FD88F]+5%[/color]",
         "effects": [
           {
             "field": "attack_interval_ms",

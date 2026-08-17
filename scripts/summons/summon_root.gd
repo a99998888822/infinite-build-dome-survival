@@ -32,7 +32,6 @@ static func get_default_summon_data() -> Dictionary:
 		"chase_radius": 320,
 		"leash_distance": 420,
 		"lifetime_seconds": -1,
-		"use_cooldown_reduction_only": false,
 	}
 
 

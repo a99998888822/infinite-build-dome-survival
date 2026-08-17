@@ -99,13 +99,11 @@ func _print_lookup_result(table_name: String, record_id: String) -> void:
 
 func _print_formula_checks() -> void:
 	var attack_interval := StatDefinitions.calculate_attack_interval(1.0, 100)
-	var cooldown := StatDefinitions.calculate_cooldown(10.0, 40)
 	var damage_taken_percent := StatDefinitions.calculate_damage_taken_from_armor(100)
 	var attack_radius := StatDefinitions.calculate_attack_radius(100, 40)
 	var finance_interest := StatDefinitions.calculate_finance_interest_gain(101, 5)
 	print("[Bootstrap] formula checks")
 	print("[Bootstrap] - attack_speed=100: 1.00s -> %.2fs" % attack_interval)
-	print("[Bootstrap] - cooldown_reduction=40: 10.00s -> %.2fs" % cooldown)
 	print("[Bootstrap] - armor=100: damage_taken_percent=%d" % int(damage_taken_percent))
 	print("[Bootstrap] - area_size=40: radius 100 -> %d" % int(attack_radius))
 	print("[Bootstrap] - finance=101 interest_rate=5: gain %d" % finance_interest)
@@ -276,6 +274,20 @@ func _run_player_checks() -> bool:
 		var expected_hp_damage := maxi(dealt_damage - shield_before_damage, 0)
 		var expected_hp_after_damage := maxi(hp_before_damage - expected_hp_damage, 0)
 		passed = _print_check_result("player damage flow", player.current_hp == expected_hp_after_damage and player.current_shield == expected_shield_after_damage) and passed
+		player._physics_process(1.0)
+		player.add_runtime_modifier({
+			"id": "mod_test_player_revive",
+			"source_type": "test",
+			"source_id": "bootstrap_player_check",
+			"target_scope": "player",
+			"stat": "revive_count",
+			"operation": "add_flat",
+			"value": 1,
+			"duration": -1,
+			"stack_rule": "unique",
+		})
+		player.take_damage(999, "bootstrap_revive_check")
+		passed = _print_check_result("player extra revive", player.alive and player.get_remaining_revives() == 0 and player.current_hp == 5) and passed
 		player.queue_free()
 	return passed
 
@@ -306,8 +318,34 @@ func _run_enemy_wave_checks() -> bool:
 		var previous_hp := player.current_hp
 		enemy._process_contact_damage()
 		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
+		player.add_runtime_modifier({
+			"id": "mod_test_on_kill_heal",
+			"source_type": "test",
+			"source_id": "bootstrap_enemy_wave_check",
+			"target_scope": "player",
+			"stat": "on_kill_heal",
+			"operation": "add_flat",
+			"value": 2,
+			"duration": -1,
+			"stack_rule": "unique",
+		})
+		var hp_before_kill := player.current_hp
 		var dealt_damage := enemy.take_damage(999, "bootstrap")
 		passed = _print_check_result("enemy damage and death", dealt_damage > 0 and not enemy.alive) and passed
+		passed = _print_check_result("enemy kill heal", player.current_hp == mini(int(player.get_stat("max_hp")), hp_before_kill + 2)) and passed
+
+	player.add_runtime_modifier({
+		"id": "mod_test_enemy_spawn_rate",
+		"source_type": "test",
+		"source_id": "bootstrap_enemy_wave_check",
+		"target_scope": "player",
+		"stat": "enemy_spawn_rate_percent",
+		"operation": "add_flat",
+		"value": 20,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	passed = _print_check_result("enemy spawn rate", wave_manager.calculate_enemy_spawn_count(3) == 4) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
@@ -646,19 +684,6 @@ func _run_weapon_checks() -> bool:
 	var mixed_events := mixed_weapon.calculate_damage_events(false)
 	var mixed_ok := mixed_events.size() == 2 and mixed_events[0].damage_kind == "melee" and mixed_events[1].damage_kind == "ranged"
 	passed = _print_check_result("weapon mixed damage split", mixed_ok) and passed
-	mixed_weapon.weapon_data["use_cooldown_reduction_only"] = true
-	player.add_runtime_modifier({
-		"id": "mod_test_weapon_cooldown",
-		"source_type": "test",
-		"source_id": "bootstrap_weapon_check",
-		"target_scope": "player",
-		"stat": "cooldown_reduction",
-		"operation": "add_flat",
-		"value": 50,
-		"duration": -1,
-		"stack_rule": "unique",
-	})
-	passed = _print_check_result("weapon cooldown only interval", is_equal_approx(mixed_weapon.get_actual_attack_interval_seconds(), 0.6)) and passed
 	var first_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
 	var second_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
 	var area_sfx_once := mixed_weapon.get_hit_sfx_path().ends_with("sfx_weapon_dome_shockwave_hit.ogg") and mixed_weapon.has_played_attack_hit_sfx() and second_area_sfx_request == false and first_area_sfx_request
@@ -690,7 +715,8 @@ func _run_weapon_checks() -> bool:
 		"owned_relic_counts": {},
 		"current_load": 12,
 		"load_capacity": 100,
-		"upgrade_miss_count": 0,
+		"weapon_upgrade_miss_count": 0,
+		"shop_price_percent": 20,
 	}
 	var shop_candidates := shop_generator.build_shop_candidate_pool(shop_context)
 	var shop_rarity_weights := shop_generator.get_shop_rarity_weights(100)
@@ -706,6 +732,12 @@ func _run_weapon_checks() -> bool:
 			upgrade_keys[offer.get("offer_id", "")] = true
 	var shop_check := not shop_candidates.is_empty() and not shop_rarity_weights.is_empty() and shop_offers.size() == mini(3, shop_candidates.size()) and upgrade_offer_count <= 1
 	passed = _print_check_result("shared reward/shop pool generation", shop_check) and passed
+	var discounted_weapon_cost := -1
+	for candidate in shop_candidates:
+		if str(candidate.get("target_id", "")) == "weapon_mutated_cleaver":
+			discounted_weapon_cost = int(candidate.get("shop_cost", -1))
+			break
+	passed = _print_check_result("shop price discount", discounted_weapon_cost == 12) and passed
 
 	loadout.queue_free()
 	player.queue_free()

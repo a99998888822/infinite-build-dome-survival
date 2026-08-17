@@ -8,8 +8,8 @@ const OFFER_WEAPON_UPGRADE: String = "weapon_upgrade"
 const RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_NEW_WEAPON: 25,
-	OFFER_RELIC: 50,
-	OFFER_WEAPON_UPGRADE: 25,
+	OFFER_RELIC: 60,
+	OFFER_WEAPON_UPGRADE: 15,
 }
 
 
@@ -22,12 +22,18 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var zone_tendency_tags := _to_string_array(context.get("zone_tendency_tags", []))
 	var zone_target_pools := _to_string_set(context.get("zone_target_pools", []))
 	var zone_tag_weight_bonus := maxi(0, int(context.get("zone_tag_weight_bonus", 0)))
+	var shop_price_percent := float(context.get("shop_price_percent", 0.0))
+	var load_capacity := int(context.get("load_capacity", 0))
+	var current_load := int(context.get("current_load", 0))
 
 	for weapon_data in DataRegistry.get_table("weapons"):
 		var weapon_id := str(weapon_data.get("id", ""))
 		if weapon_id.is_empty() or owned_weapon_ids.has(weapon_id):
 			continue
 		if not unlocked_weapon_ids.is_empty() and not unlocked_weapon_ids.has(weapon_id):
+			continue
+		var weapon_load_cost := int(weapon_data.get("load_cost", 0))
+		if load_capacity > 0 and current_load + weapon_load_cost > load_capacity:
 			continue
 		var weapon_tags := _to_string_array(weapon_data.get("tags", []))
 		candidates.append(_build_candidate_entry({
@@ -41,7 +47,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"load_cost": int(weapon_data.get("load_cost", 0)),
 			"description": str(weapon_data.get("description", "")),
 			"tags": weapon_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
 
 	for relic_data in DataRegistry.get_table("relics"):
 		var relic_id := str(relic_data.get("id", ""))
@@ -66,7 +72,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"effects": (relic_data.get("effects", []) as Array).duplicate(true),
 			"runtime_effects": (relic_data.get("runtime_effects", []) as Array).duplicate(true),
 			"tags": relic_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
 
 	for weapon_data in _get_equipped_weapon_data(context):
 		var weapon_id := str(weapon_data.get("id", ""))
@@ -91,28 +97,32 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"icon": str(weapon_data.get("icon", "")),
 			"effects": (upgrade_entry.get("effects", []) as Array).duplicate(true),
 			"tags": upgrade_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
 
 	return candidates
 
 
-func get_shop_rarity_weights(luck: int, zone_rarity_bonus: int = 0) -> Dictionary:
-	var safe_luck := maxi(0, luck)
-	var weights := {
-		"common": maxi(20, 100 - int(floor(safe_luck * 0.30))),
-		"uncommon": maxi(25, 55 - int(floor(safe_luck * 0.10))),
-		"rare": 25 + int(floor(safe_luck * 0.20)),
-		"epic": 10 + int(floor(safe_luck * 0.12)),
-		"mythic": 4 + int(floor(safe_luck * 0.06)),
-		"legendary": 1 + int(floor(safe_luck * 0.03)),
+func get_shop_rarity_weights(luck: int, _zone_rarity_bonus: int = 0) -> Dictionary:
+	var safe_luck := float(maxi(0, luck))
+	var epic := 25.0 * _diminishing_luck(safe_luck, 173.0, 0.738)
+	var mythic := 12.0 * _diminishing_luck(safe_luck, 1893.0, 0.8)
+	var legendary := 6.0 * _diminishing_luck(safe_luck, 3940.0, 0.8)
+	var rare := 5.0 + 15.0 * _diminishing_luck(safe_luck, 300.0, 0.75)
+	var uncommon := 17.0 + 10.0 * _diminishing_luck(safe_luck, 350.0, 0.7)
+	var uncommon_weight := roundi(uncommon * 100.0)
+	var rare_weight := roundi(rare * 100.0)
+	var epic_weight := roundi(epic * 100.0)
+	var mythic_weight := roundi(mythic * 100.0)
+	var legendary_weight := roundi(legendary * 100.0)
+	var common_weight := maxi(0, 10000 - uncommon_weight - rare_weight - epic_weight - mythic_weight - legendary_weight)
+	return {
+		"common": common_weight,
+		"uncommon": uncommon_weight,
+		"rare": rare_weight,
+		"epic": epic_weight,
+		"mythic": mythic_weight,
+		"legendary": legendary_weight,
 	}
-	var safe_zone_bonus := maxi(0, zone_rarity_bonus)
-	if safe_zone_bonus > 0:
-		weights["rare"] += safe_zone_bonus
-		weights["epic"] += int(ceil(float(safe_zone_bonus) * 0.75))
-		weights["mythic"] += int(ceil(float(safe_zone_bonus) * 0.5))
-		weights["legendary"] += int(ceil(float(safe_zone_bonus) * 0.25))
-	return weights
 
 
 func get_shop_type_weights(context: Dictionary) -> Dictionary:
@@ -139,8 +149,8 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 		weights[OFFER_NEW_WEAPON] = maxi(1, int(ceil(float(weights[OFFER_NEW_WEAPON]) * multiplier)))
 
 	if int(type_counts.get(OFFER_WEAPON_UPGRADE, 0)) > 0:
-		var miss_count := maxi(0, int(context.get("upgrade_miss_count", 0)))
-		weights[OFFER_WEAPON_UPGRADE] = mini(100, 25 + miss_count * 15)
+		var miss_count := maxi(0, int(context.get("weapon_upgrade_miss_count", 0)))
+		weights[OFFER_WEAPON_UPGRADE] = mini(45, 15 + miss_count * 6)
 
 	var zone_target_pools := _to_string_set(context.get("zone_target_pools", []))
 	var zone_tag_weight_bonus := maxi(0, int(context.get("zone_tag_weight_bonus", 0)))
@@ -158,42 +168,44 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		if candidate is Dictionary:
 			remaining.append(candidate.duplicate(true))
 	var offers: Array[Dictionary] = []
-	var used_upgrade_keys := {}
+	var upgrade_selected := false
 
 	for _slot in maxi(0, refresh_count):
 		if remaining.is_empty():
 			break
-		var offer_type := _roll_weighted_key(type_weights)
-		var rarity := _roll_weighted_key(rarity_weights)
-		var candidate := _pick_candidate(remaining, offer_type, rarity, used_upgrade_keys)
-		if candidate.is_empty():
-			candidate = _pick_candidate(remaining, offer_type, "", used_upgrade_keys)
-		if candidate.is_empty():
-			candidate = _pick_candidate(remaining, "", rarity, used_upgrade_keys)
-		if candidate.is_empty():
-			candidate = _pick_weighted_candidate(_filter_available_candidates(remaining, used_upgrade_keys))
+		var available := _filter_available_candidates(remaining, upgrade_selected)
+		available = _filter_candidates_by_rarity_weights(available, rarity_weights)
+		if available.is_empty():
+			break
+		var available_type_weights := _get_available_type_weights(type_weights, available)
+		var offer_type := _roll_weighted_key(available_type_weights)
+		var typed_candidates := _filter_candidates_by_type(available, offer_type)
+		var candidate := _pick_candidate_by_rarity(typed_candidates, rarity_weights)
 		if candidate.is_empty():
 			break
 		if candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE:
-			used_upgrade_keys[_upgrade_key(candidate)] = true
+			upgrade_selected = true
 		remaining.erase(candidate)
 		offers.append(candidate)
 	return offers
 
 
-func _pick_candidate(candidates: Array[Dictionary], offer_type: String, rarity: String, used_upgrade_keys: Dictionary) -> Dictionary:
-	var matches: Array[Dictionary] = []
-	for candidate in candidates:
-		if not offer_type.is_empty() and str(candidate.get("offer_type", "")) != offer_type:
-			continue
-		if not rarity.is_empty() and str(candidate.get("rarity", "")) != rarity:
-			continue
-		if candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE and used_upgrade_keys.has(_upgrade_key(candidate)):
-			continue
-		matches.append(candidate)
-	if matches.is_empty():
+func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Dictionary) -> Dictionary:
+	if candidates.is_empty():
 		return {}
-	return _pick_weighted_candidate(matches)
+	var available_rarity_weights := {}
+	for candidate in candidates:
+		var rarity := str(candidate.get("rarity", "common"))
+		if not available_rarity_weights.has(rarity):
+			available_rarity_weights[rarity] = maxi(0, int(rarity_weights.get(rarity, 0)))
+	var rarity := _roll_weighted_key(available_rarity_weights)
+	if rarity.is_empty():
+		return {}
+	var rarity_candidates: Array[Dictionary] = []
+	for candidate in candidates:
+		if str(candidate.get("rarity", "common")) == rarity:
+			rarity_candidates.append(candidate)
+	return _pick_weighted_candidate(rarity_candidates)
 
 
 func _pick_weighted_candidate(candidates: Array[Dictionary]) -> Dictionary:
@@ -213,31 +225,65 @@ func _pick_weighted_candidate(candidates: Array[Dictionary]) -> Dictionary:
 	return candidates[0]
 
 
-func _filter_available_candidates(candidates: Array[Dictionary], used_upgrade_keys: Dictionary) -> Array[Dictionary]:
+func _filter_available_candidates(candidates: Array[Dictionary], upgrade_selected: bool) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for candidate in candidates:
-		if candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE and used_upgrade_keys.has(_upgrade_key(candidate)):
+		if upgrade_selected and candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE:
 			continue
 		result.append(candidate)
 	return result
 
 
-func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int) -> Dictionary:
+func _get_available_type_weights(type_weights: Dictionary, candidates: Array[Dictionary]) -> Dictionary:
+	var result: Dictionary = {}
+	var counts := _count_offer_types(candidates)
+	for offer_type in type_weights.keys():
+		if int(counts.get(offer_type, 0)) > 0:
+			result[offer_type] = maxi(0, int(type_weights.get(offer_type, 0)))
+	return result
+
+
+func _filter_candidates_by_type(candidates: Array[Dictionary], offer_type: String) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for candidate in candidates:
+		if str(candidate.get("offer_type", "")) == offer_type:
+			result.append(candidate)
+	return result
+
+
+func _filter_candidates_by_rarity_weights(candidates: Array[Dictionary], rarity_weights: Dictionary) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for candidate in candidates:
+		var rarity := str(candidate.get("rarity", "common"))
+		if int(rarity_weights.get(rarity, 0)) > 0:
+			result.append(candidate)
+	return result
+
+
+func _diminishing_luck(luck: float, midpoint: float, exponent: float) -> float:
+	if luck <= 0.0:
+		return 0.0
+	var luck_power := pow(luck, exponent)
+	var midpoint_power := pow(midpoint, exponent)
+	return luck_power / (luck_power + midpoint_power)
+
+
+func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int, shop_price_percent: float) -> Dictionary:
 	var pool_key := str(candidate.get("pool_key", ""))
 	var tags := _to_string_array(candidate.get("tags", []))
 	candidate["weight"] = _calculate_candidate_weight(pool_key, tags, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus)
-	candidate["shop_cost"] = _calculate_shop_cost(candidate)
+	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_percent)
 	return candidate
 
 
-func _calculate_shop_cost(candidate: Dictionary) -> int:
+func _calculate_shop_cost(candidate: Dictionary, shop_price_percent: float) -> int:
 	var rarity_index := RARITIES.find(str(candidate.get("rarity", "common")))
 	if rarity_index < 0:
 		rarity_index = 0
 	var base_cost := 15
 	if str(candidate.get("offer_type", "")) == OFFER_WEAPON_UPGRADE:
 		base_cost = 10
-	return base_cost + rarity_index * 5
+	return StatDefinitions.calculate_shop_cost(base_cost + rarity_index * 5, shop_price_percent)
 
 
 func _calculate_candidate_weight(pool_key: String, tags: Array[String], zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int) -> int:

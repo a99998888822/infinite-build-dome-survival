@@ -106,12 +106,10 @@ func print_boot_summary() -> void:
 		print("[DataRegistry] - %s: %d records" % [table_name, get_record_count(str(table_name))])
 
 	var attack_interval := StatDefinitions.calculate_attack_interval(1.0, 100)
-	var cooldown := StatDefinitions.calculate_cooldown(10.0, 40)
 	var armor_damage_taken := StatDefinitions.calculate_damage_taken_from_armor(100)
 	var attack_radius := StatDefinitions.calculate_attack_radius(100, 40)
 	var finance_interest := StatDefinitions.calculate_finance_interest_gain(101, 5)
 	print("[DataRegistry] stat check: attack_speed=100 => interval %.2fs from 1.00s" % attack_interval)
-	print("[DataRegistry] stat check: cooldown_reduction=40 => cooldown %.2fs from 10.00s" % cooldown)
 	print("[DataRegistry] stat check: armor=100 => damage_taken_percent %d" % int(armor_damage_taken))
 	print("[DataRegistry] stat check: area_size=40 => radius %d from 100" % int(attack_radius))
 	print("[DataRegistry] stat check: finance=101 interest_rate=5 => gain %d" % finance_interest)

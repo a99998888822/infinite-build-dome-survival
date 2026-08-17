@@ -14,7 +14,7 @@ const REQUIRED_TABLES: Array[String] = [
 ]
 
 const TABLE_REQUIRED_FIELDS: Dictionary = {
-	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "attack_range", "hit_radius", "projectile_speed", "spread_angle", "use_cooldown_reduction_only", "base_stats", "level_upgrades"],
+	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "attack_range", "hit_radius", "projectile_speed", "spread_angle", "base_stats", "level_upgrades"],
 	"relics": ["id", "display_name", "rarity", "bond_id", "tags", "effects"],
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
 	"characters": ["id", "icon", "base_stats", "start_weapons"],
@@ -221,8 +221,6 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "hit_radius", path)
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
-	if record.has("use_cooldown_reduction_only") and not (record["use_cooldown_reduction_only"] is bool):
-		errors.append("%s.use_cooldown_reduction_only must be a boolean." % path)
 	if record.has("hit_sfx") and not (record["hit_sfx"] is String):
 		errors.append("%s.hit_sfx must be a string resource path." % path)
 

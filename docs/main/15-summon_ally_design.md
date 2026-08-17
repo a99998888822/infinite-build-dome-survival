@@ -68,9 +68,8 @@ MVP 支持运行时传入召唤配置，由以下模块在后续调用：
 1. MVP 召唤物只做近距离自动攻击，不做投射物。
 2. 召唤物攻击半径由配置中的 `attack_radius` 决定，可被 `area_size` 加成。
 3. 攻击间隔由配置中的 `attack_interval_ms` 决定，默认吃 `attack_speed`。
-4. 若配置 `use_cooldown_reduction_only = true`，则该召唤物只吃 `cooldown_reduction`，不吃 `attack_speed`。
-5. 召唤物基础伤害使用 `summon_damage`，再叠加通用 `damage_percent`。
-6. 暴击使用全局随机，读取玩家暴击率和暴击伤害。
+4. 召唤物基础伤害使用 `summon_damage`，再叠加通用 `damage_percent`。
+5. 暴击使用全局随机，读取玩家暴击率和暴击伤害。
 
 伤害公式：
 
@@ -109,8 +108,7 @@ MVP 使用运行时字典传入配置，后续可以平移到 `summons.json`。
   "follow_distance": 96,
   "chase_radius": 320,
   "leash_distance": 420,
-  "lifetime_seconds": -1,
-  "use_cooldown_reduction_only": false
+  "lifetime_seconds": -1
 }
 ```
 
@@ -126,7 +124,6 @@ MVP 使用运行时字典传入配置，后续可以平移到 `summons.json`。
 | `chase_radius` | int | 否 | 离召唤物多远内会追敌 |
 | `leash_distance` | int | 否 | 离玩家多远后强制回到玩家身边 |
 | `lifetime_seconds` | float | 否 | 生命周期，`-1` 表示随波次持续 |
-| `use_cooldown_reduction_only` | bool | 否 | 是否只吃冷却缩减 |
 
 ## 5. 场景与脚本结构
 
@@ -178,7 +175,7 @@ scenes/summons/summon_unit.tscn
 
 1. `summon_damage` 是召唤物固定伤害加成。
 2. `summon_count` 是额外召唤数量。
-3. `damage_percent`、`attack_speed`、`cooldown_reduction`、`crit_chance`、`crit_damage` 作为通用攻击属性可被召唤物读取。
+3. `damage_percent`、`attack_speed`、`crit_chance`、`crit_damage` 作为通用攻击属性可被召唤物读取。
 4. 所有属性仍通过 `ModifierStack` 计算，不直接改最终数值。
 
 ### 7.2 与武器模块
@@ -251,4 +248,3 @@ scenes/summons/summon_unit.tscn
 1. 模块专用素材清单：`docs/asset/15-summon_ally_asset_checklist.md`。
 2. 全局素材汇总：`docs/asset/asset_checklist_summary.md`。
 3. 当前 MVP 必需素材只有默认眷族幼体单帧；行走帧表、攻击特效和 UI 图标均为可选增强。
-

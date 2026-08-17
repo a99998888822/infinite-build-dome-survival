@@ -17,6 +17,7 @@ const CATEGORY_CONTROL: String = "范围与控制"
 const CATEGORY_REWARD: String = "掉落与成长"
 const CATEGORY_BUILD: String = "构筑"
 const CATEGORY_SUMMON: String = "召唤"
+const CATEGORY_WAVE: String = "波次"
 const CATEGORY_ELDRITCH: String = "精神/外神"
 
 const STAT_DEFINITIONS: Dictionary = {
@@ -49,6 +50,26 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": false,
 		"description": "优先承受伤害的护盾值。"
+	},
+	"revive_count": {
+		"display_name": "额外复活",
+		"category": CATEGORY_SURVIVAL,
+		"default": 0,
+		"min": 0,
+		"max": 99,
+		"is_integer": true,
+		"is_percent": false,
+		"description": "本局额外复活次数；复活后消耗 1 次。"
+	},
+	"on_kill_heal": {
+		"display_name": "击杀回血",
+		"category": CATEGORY_SURVIVAL,
+		"default": 0,
+		"min": 0,
+		"max": 99999,
+		"is_integer": true,
+		"is_percent": false,
+		"description": "每次击杀敌人后恢复的固定生命值。"
 	},
 	"armor": {
 		"display_name": "护甲",
@@ -130,16 +151,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": true,
 		"description": "整数百分比攻速；实际攻击间隔 = 武器固定速率 / (1 + attack_speed / 100)。"
 	},
-	"cooldown_reduction": {
-		"display_name": "冷却缩减",
-		"category": CATEGORY_ATTACK,
-		"default": 0,
-		"min": 0,
-		"max": 80,
-		"is_integer": true,
-		"is_percent": true,
-		"description": "整数百分比冷却缩减；40表示原始10秒冷却变为6秒。"
-	},
 	"crit_chance": {
 		"display_name": "暴击率",
 		"category": CATEGORY_CRITICAL,
@@ -189,26 +200,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": true,
 		"description": "整数百分比攻击范围加成，统一影响近战、远程、范围武器的命中或影响半径。"
-	},
-	"duration_percent": {
-		"display_name": "持续时间加成",
-		"category": CATEGORY_CONTROL,
-		"default": 0,
-		"min": -90,
-		"max": 10000,
-		"is_integer": true,
-		"is_percent": true,
-		"description": "整数百分比持续时间加成，40表示持续时间增加40%。"
-	},
-	"slow_percent": {
-		"display_name": "减速效果",
-		"category": CATEGORY_CONTROL,
-		"default": 0,
-		"min": 0,
-		"max": 95,
-		"is_integer": true,
-		"is_percent": true,
-		"description": "对目标造成的移动速度降低比例。"
 	},
 	"control_power": {
 		"display_name": "控制强度",
@@ -290,6 +281,16 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": true,
 		"description": "当前有效利率，默认 5；支持 0.2% 和 0.3% 等小数成长，波末利息公式为 ceil(finance * interest_rate / 100)。"
 	},
+	"shop_price_percent": {
+		"display_name": "商店折扣",
+		"category": CATEGORY_REWARD,
+		"default": 0,
+		"min": 0,
+		"max": 90,
+		"is_integer": true,
+		"is_percent": true,
+		"description": "局内商店价格折扣；10 表示商店价格降低 10%。"
+	},
 	"load_capacity": {
 		"display_name": "负载上限",
 		"category": CATEGORY_BUILD,
@@ -309,6 +310,16 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": false,
 		"description": "额外召唤物或眷族数量。"
+	},
+	"enemy_spawn_rate_percent": {
+		"display_name": "怪物数量增幅",
+		"category": CATEGORY_WAVE,
+		"default": 0,
+		"min": 0,
+		"max": 300,
+		"is_integer": true,
+		"is_percent": true,
+		"description": "每次刷怪的数量增幅；20 表示每组生成数量增加 20%。"
 	},
 	"humanity": {
 		"display_name": "人性",
@@ -413,12 +424,6 @@ static func calculate_attack_interval(base_interval: float, attack_speed: float)
 	return base_interval / speed_multiplier
 
 
-static func calculate_cooldown(base_cooldown: float, cooldown_reduction: float) -> float:
-	# 冷却缩减按百分比直接缩短基础冷却时间。
-	var reduction_percent := clamp_stat_value("cooldown_reduction", cooldown_reduction)
-	return base_cooldown * maxf(1.0 - reduction_percent / 100.0, 0.0)
-
-
 static func calculate_attack_radius(base_radius: float, area_size: float) -> float:
 	# area_size 是唯一攻击范围加成属性，基础半径只来自武器配置。
 	var radius_percent := clamp_stat_value("area_size", area_size)
@@ -430,6 +435,16 @@ static func calculate_finance_interest_gain(finance: float, interest_rate: float
 	var safe_finance := clamp_stat_value("finance", finance)
 	var safe_rate := clamp_stat_value("interest_rate", interest_rate)
 	return int(ceil(safe_finance * safe_rate / 100.0))
+
+
+static func calculate_shop_cost(base_cost: int, shop_price_percent: float) -> int:
+	var discount_percent := clamp_stat_value("shop_price_percent", shop_price_percent)
+	return maxi(0, int(ceil(float(maxi(0, base_cost)) * (1.0 - discount_percent / 100.0))))
+
+
+static func calculate_enemy_spawn_count(base_count: int, enemy_spawn_rate_percent: float) -> int:
+	var spawn_rate_percent := clamp_stat_value("enemy_spawn_rate_percent", enemy_spawn_rate_percent)
+	return maxi(0, int(ceil(float(maxi(0, base_count)) * (1.0 + spawn_rate_percent / 100.0))))
 
 static func get_humanity_stage(humanity: float) -> String:
 	var value := clamp_stat_value("humanity", humanity)

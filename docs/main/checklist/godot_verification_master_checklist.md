@@ -116,7 +116,7 @@
 
 你要确认：
 - `DataRegistry` 能读完所有配置表。  
-- `attack_speed=100`、`cooldown_reduction=40`、`armor=100`、`area_size=40`、`finance=101 interest_rate=5` 这些公式检查正确。  
+- `attack_speed=100`、`armor=100`、`area_size=40`、`finance=101 interest_rate=5` 这些公式检查正确。
 - `modifier stack` 的加法、百分比、覆盖规则正确。  
 - 没有任何验证错误。
 
@@ -463,16 +463,17 @@ res://
 
 ### 必须包含的属性
 
-1. 生存：`max_hp`、`hp_regen`、`shield`、`armor`、`damage_taken_percent`
+1. 生存：`max_hp`、`hp_regen`、`shield`、`revive_count`、`on_kill_heal`、`armor`、`damage_taken_percent`
 2. 移动：`move_speed`
-3. 攻击：`melee_damage`、`ranged_damage`、`summon_damage`、`damage_percent`、`attack_speed`、`cooldown_reduction`
+3. 攻击：`melee_damage`、`ranged_damage`、`summon_damage`、`damage_percent`、`attack_speed`
 4. 暴击：`crit_chance`、`crit_damage`
 5. 投射物：`projectile_count`、`pierce_count`
-6. 范围与控制：`area_size`、`duration_percent`、`slow_percent`、`control_power`
-7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`、`finance`、`interest_rate`
+6. 范围与控制：`area_size`、`control_power`
+7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`、`finance`、`interest_rate`、`shop_price_percent`
 8. 构筑：`load_capacity`
 9. 召唤：`summon_count`
-10. 精神/外神：`humanity`、`divinity`
+10. 波次：`enemy_spawn_rate_percent`
+11. 精神/外神：`humanity`、`divinity`
 
 ### 验收标准
 
@@ -632,7 +633,7 @@ res://
 
 1. 启动后打印配置加载数量。
 2. 能查询测试角色、武器、遗物、羁绊、敌人、掉落表、波次。
-3. 能输出 `attack_speed=100`、`cooldown_reduction=40`、`armor=100`、`area_size=40`、`finance=101 interest_rate=5` 的公式检查。
+3. 能输出 `attack_speed=100`、`armor=100`、`area_size=40`、`finance=101 interest_rate=5` 的公式检查。
 4. 能打印 `DataRegistry` 的 warnings/errors。
 5. 能输出 `ModifierStack` 实例计算与 `debug_stat()` 来源链测试。
 
@@ -686,10 +687,9 @@ res://
 控制台应能看到以下类型输出：
 
 1. `attack_speed=100: 1.00s -> 0.50s`。
-2. `cooldown_reduction=40: 10.00s -> 6.00s`。
-3. `armor=100: damage_taken_percent=...`，具体数值由护甲函数决定，但必须大于最低承伤下限。
-4. `area_size=40: radius 100 -> 140`。
-5. `finance=101 interest_rate=5: gain 6`。
+2. `armor=100: damage_taken_percent=...`，具体数值由护甲函数决定，但必须大于最低承伤下限。
+3. `area_size=40: radius 100 -> 140`。
+4. `finance=101 interest_rate=5: gain 6`。
 
 ### 4. 检查错误提示
 
@@ -1003,7 +1003,7 @@ res://
 - [x] 召唤物默认环形跟随玩家
 - [x] 召唤物复用 `TargetingService` 查找最近敌人
 - [x] 召唤物在攻击半径内对敌人调用 `take_damage()`
-- [x] 召唤物读取 `summon_damage`、`damage_percent`、`attack_speed`、`cooldown_reduction`、暴击和范围加成
+- [x] 召唤物读取 `summon_damage`、`damage_percent`、`attack_speed`、暴击和范围加成
 - [x] `summon_count` 作为额外召唤数量参与批量生成
 - [x] `SummonRoot.hard_cap` 裁剪最大召唤数量
 - [x] 波次结束和战斗重置会清理召唤物
@@ -1140,6 +1140,7 @@ res://
 [Bootstrap] - player start weapons: passed
 [Bootstrap] - player pickup radius: passed
 [Bootstrap] - player armor damage: passed
+[Bootstrap] - player extra revive: passed
 ```
 
 若以上全部通过，本模块可正式标记为 MVP 结项。
@@ -1183,7 +1184,6 @@ res://
 - [x] 支持购买新武器超载失败
 - [x] 支持武器升级并应用 `stat` 与 `attack_interval_ms`
 - [x] 支持 `attack_speed` 攻击间隔计算
-- [x] 支持 `use_cooldown_reduction_only` 冷却型武器计算
 - [x] 支持近战、远程、混伤拆段伤害计算
 - [x] 支持 `hit_radius` 基础半径、`area_size` 最终范围加成、`projectile_speed`、`spread_angle` 运行字段读取
 - [x] 在 `bootstrap.gd` 中加入武器模块自测
@@ -1210,7 +1210,6 @@ res://
 [Bootstrap] - weapon upgrade: passed
 [Bootstrap] - weapon damage event: passed
 [Bootstrap] - weapon mixed damage split: passed
-[Bootstrap] - weapon cooldown only interval: passed
 [Bootstrap] - weapon purchase load limit: passed
 ```
 
@@ -1341,6 +1340,8 @@ res://
 [Bootstrap] - enemy instantiate: passed
 [Bootstrap] - enemy contact damage knockback: passed
 [Bootstrap] - enemy damage and death: passed
+[Bootstrap] - enemy kill heal: passed
+[Bootstrap] - enemy spawn rate: passed
 [Bootstrap] - enemy drop table link: passed
 [Bootstrap] - wave collect exp orbs: passed
 [Bootstrap] - shared reward/shop trigger: passed

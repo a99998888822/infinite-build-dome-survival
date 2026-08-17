@@ -3,12 +3,15 @@ class_name PlayerController
 
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
 signal died
+signal revived(remaining_revives: int)
 signal start_weapons_changed(weapon_ids: Array[String])
 signal relics_changed(relic_ids: Array[String])
 signal relic_added(relic_id: String)
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.25
+const REVIVE_HEALTH_PERCENT: float = 0.5
+const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const PLAYER_VISUAL_SCALE: float = 0.3
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
@@ -24,11 +27,13 @@ var modifier_stack: ModifierStack = ModifierStack.new()
 var relic_system: RelicBondSystem = RelicBondSystem.new()
 var current_hp: int = 0
 var current_shield: int = 0
+var remaining_revives: int = 0
 var alive: bool = true
 var facing_right: bool = true
 var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
+var _configured_revive_count: int = 0
 var _walk_animation_time: float = 0.0
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
@@ -74,6 +79,8 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	relic_system.set_weapon_ids(start_weapon_ids)
 	current_hp = int(get_stat("max_hp"))
 	current_shield = int(get_stat("shield"))
+	remaining_revives = int(get_stat("revive_count"))
+	_configured_revive_count = remaining_revives
 	alive = true
 	_invincibility_timer = 0.0
 	_update_pickup_radius()
@@ -187,6 +194,10 @@ func is_alive() -> bool:
 	return alive
 
 
+func get_remaining_revives() -> int:
+	return remaining_revives
+
+
 func _process_movement(delta: float) -> void:
 	if not alive:
 		velocity = Vector2.ZERO
@@ -285,6 +296,11 @@ func _apply_modifier_list(modifier_data_list: Array) -> void:
 
 
 func _update_after_stat_change() -> void:
+	var configured_revives := int(get_stat("revive_count"))
+	if configured_revives > _configured_revive_count:
+		remaining_revives += configured_revives - _configured_revive_count
+	_configured_revive_count = configured_revives
+	remaining_revives = mini(remaining_revives, configured_revives)
 	current_hp = mini(current_hp, int(get_stat("max_hp")))
 	current_shield = mini(current_shield, int(get_stat("shield")))
 	_update_pickup_radius()
@@ -304,7 +320,22 @@ func _update_pickup_radius() -> void:
 func _die(source_id: String = "") -> void:
 	if not alive:
 		return
+	if _try_revive():
+		return
 	alive = false
 	velocity = Vector2.ZERO
 	died.emit()
 	print("[PlayerController] player died, source=%s" % source_id)
+
+
+func _try_revive() -> bool:
+	if remaining_revives <= 0:
+		return false
+	remaining_revives -= 1
+	current_hp = maxi(1, int(ceil(float(get_stat("max_hp")) * REVIVE_HEALTH_PERCENT)))
+	current_shield = 0
+	_invincibility_timer = REVIVE_INVINCIBILITY_SECONDS
+	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+	revived.emit(remaining_revives)
+	print("[PlayerController] player revived, remaining=%d" % remaining_revives)
+	return true
