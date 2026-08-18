@@ -112,9 +112,16 @@ func _on_offer_selected(offer: Dictionary) -> void:
 		return
 	var mode := shop_popup.get_mode() if shop_popup != null else ShopPopup.ENTRY_FREE
 	var result := _main_flow_coordinator.submit_shop_purchase(offer, mode)
-	if shop_popup != null and not bool(result.get("success", false)):
+	if shop_popup == null:
+		return
+	if not bool(result.get("success", false)):
 		shop_popup.show_error(str(result.get("reason", "unknown")))
 		shop_popup.reset_submission()
+		return
+	shop_popup.reset_submission()
+	if mode == ShopPopup.ENTRY_SHOP:
+		shop_popup.remove_offer(str(result.get("offer_id", "")))
+		shop_popup.refresh_gold(_main_flow_coordinator.get_current_gold())
 
 
 func _on_stat_preview_requested(offer: Dictionary) -> void:

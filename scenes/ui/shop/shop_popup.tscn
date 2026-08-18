@@ -11,6 +11,12 @@ visible = false
 script = ExtResource("1_shop_popup")
 
 [node name="WeaponStrip" parent="." instance=ExtResource("2_weapon_strip")]
+anchor_left = 0.25
+anchor_right = 0.47
+offset_left = 0.0
+offset_top = 12.0
+offset_right = 0.0
+offset_bottom = 60.0
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15
@@ -34,6 +40,7 @@ horizontal_alignment = 1
 horizontal_alignment = 1
 
 [node name="OfferGrid" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+custom_minimum_size = Vector2(0, 250)
 theme_override_constants/separation = 16
 alignment = 1
 

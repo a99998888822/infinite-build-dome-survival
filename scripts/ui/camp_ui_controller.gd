@@ -7,6 +7,8 @@ var _selected_building_id: String = ""
 
 @onready var currency_label: Label = get_node_or_null("TopBar/CurrencyLabel")
 @onready var back_button: Button = get_node_or_null("TopBar/BackButton")
+@onready var reset_save_button: Button = get_node_or_null("TopBar/ResetSaveButton")
+@onready var clear_save_dialog: ConfirmationDialog = get_node_or_null("ClearSaveDialog")
 @onready var building_list: VBoxContainer = get_node_or_null("MainSplit/BuildingListPanel/BuildingList")
 @onready var detail_title: Label = get_node_or_null("MainSplit/DetailPanel/DetailContent/DetailTitle")
 @onready var detail_level: Label = get_node_or_null("MainSplit/DetailPanel/DetailContent/DetailLevel")
@@ -19,6 +21,10 @@ var _selected_building_id: String = ""
 func _ready() -> void:
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
+	if reset_save_button != null and not reset_save_button.pressed.is_connected(_on_reset_save_pressed):
+		reset_save_button.pressed.connect(_on_reset_save_pressed)
+	if clear_save_dialog != null and not clear_save_dialog.confirmed.is_connected(_on_clear_save_confirmed):
+		clear_save_dialog.confirmed.connect(_on_clear_save_confirmed)
 	if unlock_button != null and not unlock_button.pressed.is_connected(_on_unlock_pressed):
 		unlock_button.pressed.connect(_on_unlock_pressed)
 	if upgrade_building_button != null and not upgrade_building_button.pressed.is_connected(_on_upgrade_building_pressed):
@@ -240,6 +246,17 @@ func _on_upgrade_building_pressed() -> void:
 
 func _on_upgrade_option_pressed(option_id: String) -> void:
 	CampProgression.purchase_upgrade(option_id)
+
+
+func _on_reset_save_pressed() -> void:
+	if clear_save_dialog != null:
+		clear_save_dialog.popup_centered()
+
+
+func _on_clear_save_confirmed() -> void:
+	CampProgression.clear_save_and_refund()
+	_selected_building_id = ""
+	_refresh_all()
 
 
 func _on_back_pressed() -> void:

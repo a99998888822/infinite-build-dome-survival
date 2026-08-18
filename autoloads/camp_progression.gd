@@ -304,6 +304,33 @@ func add_camp_currency(amount: int) -> void:
 	set_camp_currency(get_camp_currency() + amount)
 
 
+func clear_save_and_refund() -> int:
+	var refund := get_camp_currency()
+	for record in get_building_records():
+		if not (record is Dictionary):
+			continue
+		var building_id := str(record.get("id", ""))
+		var building_level := get_building_level(building_id)
+		if building_level > 0 and not bool(record.get("initial_unlocked", false)):
+			var unlock_condition: Variant = record.get("unlock_condition", {})
+			if unlock_condition is Dictionary:
+				refund += int((unlock_condition as Dictionary).get("cost", 0))
+		for option in record.get("upgrade_options", []):
+			if not (option is Dictionary):
+				continue
+			var option_id := str(option.get("id", ""))
+			refund += get_upgrade_option_level(option_id) * int(option.get("cost", 0))
+
+	var settings := (state.get("settings", {}) as Dictionary).duplicate(true)
+	_reset_state()
+	state["settings"] = settings
+	_set_camp_currency_value(refund)
+	if not _transient_session_active:
+		save_state()
+	state_changed.emit()
+	return refund
+
+
 func apply_final_settlement(camp_currency_gain: int) -> void:
 	_set_camp_currency_value(get_camp_currency() + maxi(camp_currency_gain, 0))
 	if not _transient_session_active:

@@ -1,13 +1,23 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/weapon_strip.gd" id="1_weapon_strip"]
 
+[sub_resource type="StyleBoxFlat" id="StripPanelStyle"]
+bg_color = Color(0.02, 0.03, 0.04, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.42, 0.08, 1)
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 4
+
 [node name="WeaponStrip" type="Control"]
 anchors_preset = 10
-anchor_right = 1.0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = -328.0
+anchor_right = 0.28
+offset_right = 0.0
 offset_bottom = 68.0
 script = ExtResource("1_weapon_strip")
 
@@ -15,6 +25,7 @@ script = ExtResource("1_weapon_strip")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StripPanelStyle")
 
 [node name="StripMargin" type="MarginContainer" parent="StripPanel"]
 anchors_preset = 15
@@ -35,6 +46,13 @@ vertical_scroll_mode = 3
 
 [node name="WeaponList" type="HBoxContainer" parent="StripPanel/StripMargin/StripBody/WeaponScroll"]
 theme_override_constants/separation = 8
+
+[node name="LoadLabel" type="Label" parent="StripPanel/StripMargin/StripBody"]
+custom_minimum_size = Vector2(76, 0)
+layout_mode = 2
+horizontal_alignment = 2
+vertical_alignment = 1
+text = "负载0/0"
 
 [node name="WeaponTooltip" type="PanelContainer" parent="."]
 visible = false

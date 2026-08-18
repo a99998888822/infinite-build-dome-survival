@@ -6,17 +6,28 @@ var _weapon_buttons: Array[Button] = []
 var _bond_player: PlayerController = null
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
+@onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
 @onready var weapon_tooltip: PanelContainer = get_node_or_null("WeaponTooltip")
 @onready var weapon_tooltip_label: RichTextLabel = get_node_or_null("WeaponTooltip/TooltipMargin/TooltipLabel")
 
 
 func set_loadout(loadout: WeaponLoadout) -> void:
 	_loadout = loadout
+	_refresh_load_label()
 	_refresh_weapon_strip()
 
 
 func set_bond_player(player: PlayerController) -> void:
 	_bond_player = player
+
+
+func _refresh_load_label() -> void:
+	if load_label == null:
+		return
+	if _loadout == null:
+		load_label.text = "负载0/0"
+		return
+	load_label.text = "负载%d/%d" % [_loadout.get_total_load_cost(), _loadout.get_load_capacity()]
 
 
 func _refresh_weapon_strip() -> void:

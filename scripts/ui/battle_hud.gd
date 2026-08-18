@@ -218,6 +218,24 @@ func _hide_stats_scroll_bars() -> void:
 	stats_scroll.get_v_scroll_bar().visible = false
 
 
+func _input(event: InputEvent) -> void:
+	if stats_scroll == null or not stats_scroll.visible or not event is InputEventMouseButton:
+		return
+	var mouse_event := event as InputEventMouseButton
+	if not mouse_event.pressed or not stats_scroll.get_global_rect().has_point(mouse_event.position):
+		return
+	var target_scroll := stats_scroll.scroll_vertical
+	var max_scroll := int(stats_scroll.get_v_scroll_bar().max_value)
+	if mouse_event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		target_scroll -= 48
+	elif mouse_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		target_scroll += 48
+	else:
+		return
+	stats_scroll.scroll_vertical = clampi(target_scroll, 0, max_scroll)
+	get_viewport().set_input_as_handled()
+
+
 func _refresh_stats_drawer() -> void:
 	_ensure_stat_rows()
 	var preview := _flow.get_stat_preview() if _flow != null else {}

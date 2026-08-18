@@ -216,22 +216,27 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	var damage_percent := get_stat("damage_percent")
 	var attack_kind := get_attack_kind()
 	var has_melee := attack_kind == "melee" or attack_kind == "mixed"
 	var has_ranged := attack_kind == "ranged" or attack_kind == "mixed"
+	var damage_lines: Array[String] = []
 	if has_melee:
-		var melee_damage := maxi(1, int(roundi(get_stat("melee_damage") * (1.0 + damage_percent / 100.0))))
-		lines.append("[color=#F5D76E]\u8fd1\u6218\u4f24\u5bb3[/color] [color=#FFFFFF]%d[/color]" % melee_damage)
+		damage_lines.append("[color=#F5D76E]近战伤害[/color]%s" % _format_damage_source("melee_damage"))
 	if has_ranged:
-		var ranged_damage := maxi(1, int(roundi(get_stat("ranged_damage") * (1.0 + damage_percent / 100.0))))
-		lines.append("[color=#F5D76E]\u8fdc\u7a0b\u4f24\u5bb3[/color] [color=#FFFFFF]%d[/color]" % ranged_damage)
+		damage_lines.append("[color=#F5D76E]远程伤害[/color]%s" % _format_damage_source("ranged_damage"))
+	if not damage_lines.is_empty():
+		lines.append("+".join(damage_lines))
 	var interval := get_actual_attack_interval_seconds()
-	lines.append("[color=#F5D76E]\u653b\u51fb\u95f4\u9694[/color] [color=#FFFFFF]%.2fs[/color]\uff08\u6bcf\u79d2\u7ea6 %.1f \u6b21\uff09" % [interval, 1.0 / interval])
-	lines.append("[color=#F5D76E]\u66b4\u51fb\u7387[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]\u66b4\u51fb\u4f24\u5bb3[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
+	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
+	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
 	if has_ranged:
-		lines.append("[color=#F5D76E]\u6295\u5c04\u7269[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]\u7a7f\u900f[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
-	lines.append("[color=#F5D76E]\u653b\u51fb\u8303\u56f4[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]\u547d\u4e2d\u534a\u5f84[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
-	var load_capacity := int(owner_player.get_stat("load_capacity")) if owner_player != null else 0
-	lines.append("[color=#F5D76E]\u8d1f\u8f7d[/color] [color=#FFFFFF]%d/%d[/color]" % [get_load_cost(), load_capacity])
+		lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]穿透[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
+	lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
+	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	return "\n".join(lines)
+
+
+func _format_damage_source(stat_id: String) -> String:
+	var fixed_damage := int(roundi(get_weapon_stat(stat_id)))
+	var player_bonus := int(roundi((owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)) if owner_player != null else 0.0))
+	return "([color=#FFFFFF]%d[/color]+[color=#7FD88F]%d[/color])" % [fixed_damage, player_bonus]

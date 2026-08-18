@@ -72,6 +72,25 @@ func reset_submission() -> void:
 	_submitted = false
 
 
+func refresh_gold(current_gold: int) -> void:
+	payload["gold"] = current_gold
+	if gold_label != null and get_mode() == ENTRY_SHOP:
+		gold_label.text = "当前金币 %d" % current_gold
+	if weapon_strip != null and _loadout != null:
+		weapon_strip.set_loadout(_loadout)
+
+
+func remove_offer(offer_id: String) -> void:
+	if offer_id.is_empty():
+		return
+	for card in _offer_cards.duplicate():
+		if not is_instance_valid(card) or str(card.offer_data.get("offer_id", "")) != offer_id:
+			continue
+		_offer_cards.erase(card)
+		card.queue_free()
+		return
+
+
 func get_mode() -> String:
 	return str(payload.get("mode", ENTRY_FREE))
 
@@ -101,8 +120,8 @@ func _refresh_visual() -> void:
 		card.set_bond_player(_bond_player)
 		var card_callable := Callable(self, "_on_offer_selected")
 		card.selected.connect(card_callable)
-		card.stat_preview_requested.connect(stat_preview_requested)
-		card.stat_preview_cleared.connect(stat_preview_cleared)
+		card.stat_preview_requested.connect(_on_card_stat_preview_requested)
+		card.stat_preview_cleared.connect(_on_card_stat_preview_cleared)
 		_offer_cards.append(card)
 
 
@@ -111,6 +130,14 @@ func _on_offer_selected(offer: Dictionary) -> void:
 		return
 	_submitted = true
 	offer_selected.emit(offer.duplicate(true))
+
+
+func _on_card_stat_preview_requested(offer: Dictionary) -> void:
+	stat_preview_requested.emit(offer)
+
+
+func _on_card_stat_preview_cleared() -> void:
+	stat_preview_cleared.emit()
 
 
 func _on_skip_pressed() -> void:

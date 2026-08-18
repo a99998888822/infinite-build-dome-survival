@@ -360,8 +360,6 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 		return {"success": false, "reason": "purchase_failed"}
 	if sanitized_mode == "free":
 		close_shared_reward_shop_popup()
-	else:
-		close_shop_popup()
 	return {"success": true, "action": "purchase", "offer_id": str(offer.get("offer_id", "")), "offer_type": offer_type, "target_id": target_id}
 
 
@@ -435,6 +433,10 @@ func get_bound_player() -> PlayerController:
 
 func get_bound_loadout() -> WeaponLoadout:
 	return _bound_loadout
+
+
+func get_current_gold() -> int:
+	return _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
 
 
 func get_current_mode() -> String:
