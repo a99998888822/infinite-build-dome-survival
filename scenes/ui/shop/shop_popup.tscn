@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/shop_popup.gd" id="1_shop_popup"]
+[ext_resource type="PackedScene" path="res://scenes/ui/common/weapon_strip.tscn" id="2_weapon_strip"]
 
 [node name="ShopPopup" type="Control"]
 anchors_preset = 15
@@ -9,11 +10,15 @@ anchor_bottom = 1.0
 visible = false
 script = ExtResource("1_shop_popup")
 
+[node name="WeaponStrip" parent="." instance=ExtResource("2_weapon_strip")]
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 76.0
 offset_right = -320.0
+offset_bottom = -40.0
 
 [node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(760, 460)

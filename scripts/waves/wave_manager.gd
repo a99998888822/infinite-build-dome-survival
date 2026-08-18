@@ -280,7 +280,7 @@ func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
 
 
 func calculate_wave_duration(wave_index: int) -> int:
-	return mini(15 + 5 * wave_index, 50)
+	return mini(30 + 5 * wave_index, 60)
 
 
 func get_required_exp_for_next_level() -> int:
@@ -466,6 +466,18 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 		call_deferred("_spawn_drop_actions", actions, death_position)
 	else:
 		_spawn_drop_actions(actions, death_position)
+	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0
+	if tip_tray_amount > 0:
+		if Engine.is_in_physics_frame():
+			call_deferred("_spawn_tip_tray_drop", tip_tray_amount, death_position)
+		else:
+			_spawn_tip_tray_drop(tip_tray_amount, death_position)
+
+
+func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
+	if amount <= 0 or pickup_root == null or player == null:
+		return
+	drop_reward_system.spawn_exp_orb(amount, drop_position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
 
 
 func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:

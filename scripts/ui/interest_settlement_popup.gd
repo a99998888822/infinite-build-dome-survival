@@ -76,7 +76,7 @@ func _reason_label(reason: String) -> String:
 		"no_principal":
 			return "无本金"
 		"high_yield_requires_wave_start_deposit":
-			return "高利契约"
+			return "高利契约（未达存入门槛）"
 		"zero_interest_gain":
 			return "无利息收益"
 		_:
@@ -89,10 +89,8 @@ func _source_label(source: String) -> String:
 			return "波末结算"
 		"periodic":
 			return "周期分红钟"
-		"annuity":
-			return "永续年金（秒结）"
-		"dividend_check":
-			return "分红支票"
+		"annuity_extra":
+			return "永续年金（追加结算）"
 		_:
 			return "利息结算"
 

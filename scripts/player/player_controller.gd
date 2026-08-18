@@ -123,6 +123,10 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat(stat_id, fallback_base_value)
 
 
+func get_stat_with_extra_modifier(stat_id: String, modifier_data: Dictionary, fallback_base_value: float = 0.0) -> float:
+	return modifier_stack.get_stat_with_extra_modifier(stat_id, modifier_data, fallback_base_value)
+
+
 func get_start_weapon_ids() -> Array[String]:
 	return start_weapon_ids.duplicate()
 

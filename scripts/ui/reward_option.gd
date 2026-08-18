@@ -2,6 +2,8 @@
 class_name RewardOption
 
 signal selected(offer: Dictionary)
+signal stat_preview_requested(offer: Dictionary)
+signal stat_preview_cleared
 
 const ENTRY_FREE: String = "free"
 const ENTRY_SHOP: String = "shop"
@@ -23,6 +25,7 @@ const RARITY_COLORS: Dictionary = {
 
 var offer_data: Dictionary = {}
 var entry_mode: String = ENTRY_FREE
+var _bond_player: PlayerController = null
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
 @onready var type_label: Label = get_node_or_null("Content/TypeLabel")
@@ -32,11 +35,22 @@ var entry_mode: String = ENTRY_FREE
 @onready var description_label: RichTextLabel = get_node_or_null("Content/DescriptionLabel")
 @onready var bottom_rarity_line: ColorRect = get_node_or_null("Content/BottomRarityLine")
 @onready var select_button: Button = get_node_or_null("Content/SelectButton")
+var bond_tooltip: PanelContainer = null
+var bond_tooltip_label: RichTextLabel = null
 
 
 func _ready() -> void:
-	if select_button != null and not select_button.pressed.is_connected(_on_select_button_pressed):
-		select_button.pressed.connect(_on_select_button_pressed)
+	if select_button != null:
+		if not select_button.pressed.is_connected(_on_select_button_pressed):
+			select_button.pressed.connect(_on_select_button_pressed)
+		if not select_button.mouse_entered.is_connected(_on_select_button_mouse_entered):
+			select_button.mouse_entered.connect(_on_select_button_mouse_entered)
+		if not select_button.mouse_exited.is_connected(_on_select_button_mouse_exited):
+			select_button.mouse_exited.connect(_on_select_button_mouse_exited)
+	if not mouse_entered.is_connected(_on_card_mouse_entered):
+		mouse_entered.connect(_on_card_mouse_entered)
+	if not mouse_exited.is_connected(_on_card_mouse_exited):
+		mouse_exited.connect(_on_card_mouse_exited)
 	_refresh_visual()
 
 
@@ -44,6 +58,10 @@ func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int 
 	offer_data = offer.duplicate(true)
 	entry_mode = mode
 	_refresh_visual(explicit_cost)
+
+
+func set_bond_player(player: PlayerController) -> void:
+	_bond_player = player
 
 
 func get_button_text_for_offer(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> String:
@@ -119,6 +137,94 @@ func _update_icon(icon_path: String) -> void:
 
 func _build_description_text(offer: Dictionary) -> String:
 	return str(offer.get("description", ""))
+
+
+func _on_card_mouse_entered() -> void:
+	_show_bond_tooltip()
+
+
+func _on_card_mouse_exited() -> void:
+	_hide_bond_tooltip()
+
+
+func _show_bond_tooltip() -> void:
+	var bond_text := BondDisplay.build_item_bond_text(offer_data, _bond_player.relic_system if _bond_player != null else null)
+	if bond_text.is_empty():
+		_hide_bond_tooltip()
+		return
+	_ensure_bond_tooltip()
+	if bond_tooltip == null or bond_tooltip_label == null:
+		return
+	bond_tooltip_label.text = bond_text
+	bond_tooltip.visible = true
+	bond_tooltip.reset_size()
+	var viewport_rect := get_viewport_rect()
+	var target := global_position + Vector2(0, size.y + 6)
+	if target.x + bond_tooltip.size.x > viewport_rect.size.x:
+		target.x = maxf(viewport_rect.size.x - bond_tooltip.size.x - 8, 0)
+	if target.y + bond_tooltip.size.y > viewport_rect.size.y:
+		target.y = maxf(global_position.y - bond_tooltip.size.y - 6, 0)
+	bond_tooltip.global_position = target
+
+
+func _hide_bond_tooltip() -> void:
+	if bond_tooltip != null:
+		bond_tooltip.visible = false
+
+
+func _ensure_bond_tooltip() -> void:
+	if bond_tooltip != null:
+		return
+	var layer := _get_tooltip_layer()
+	if layer == null:
+		return
+	bond_tooltip = PanelContainer.new()
+	bond_tooltip.name = "BondTooltip"
+	bond_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bond_tooltip.z_index = 100
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.04, 0.05, 0.07, 0.96)
+	panel_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
+	panel_style.set_border_width_all(1)
+	panel_style.set_corner_radius_all(4)
+	bond_tooltip.add_theme_stylebox_override("panel", panel_style)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_bottom", 8)
+	bond_tooltip.add_child(margin)
+	bond_tooltip_label = RichTextLabel.new()
+	bond_tooltip_label.bbcode_enabled = true
+	bond_tooltip_label.fit_content = true
+	bond_tooltip_label.scroll_active = false
+	bond_tooltip_label.custom_minimum_size = Vector2(240, 0)
+	margin.add_child(bond_tooltip_label)
+	layer.add_child(bond_tooltip)
+
+
+func _get_tooltip_layer() -> CanvasLayer:
+	var current: Node = self
+	while current != null:
+		if current is CanvasLayer:
+			return current as CanvasLayer
+		current = current.get_parent()
+	return null
+
+
+func _exit_tree() -> void:
+	if bond_tooltip != null and is_instance_valid(bond_tooltip):
+		bond_tooltip.queue_free()
+	bond_tooltip = null
+	bond_tooltip_label = null
+
+
+func _on_select_button_mouse_entered() -> void:
+	stat_preview_requested.emit(offer_data.duplicate(true))
+
+
+func _on_select_button_mouse_exited() -> void:
+	stat_preview_cleared.emit()
 
 
 func _on_select_button_pressed() -> void:

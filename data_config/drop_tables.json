@@ -19,7 +19,7 @@
       {
         "type": "health_pack",
         "amount": 1,
-        "chance_percent": 5
+        "chance_percent": 2
       }
     ]
   },

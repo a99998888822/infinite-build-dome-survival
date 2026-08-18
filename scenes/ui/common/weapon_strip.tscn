@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/weapon_strip.gd" id="1_weapon_strip"]
+
+[node name="WeaponStrip" type="Control"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -328.0
+offset_bottom = 68.0
+script = ExtResource("1_weapon_strip")
+
+[node name="StripPanel" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="StripMargin" type="MarginContainer" parent="StripPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="StripBody" type="HBoxContainer" parent="StripPanel/StripMargin"]
+theme_override_constants/separation = 8
+
+[node name="WeaponScroll" type="ScrollContainer" parent="StripPanel/StripMargin/StripBody"]
+size_flags_horizontal = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 3
+
+[node name="WeaponList" type="HBoxContainer" parent="StripPanel/StripMargin/StripBody/WeaponScroll"]
+theme_override_constants/separation = 8
+
+[node name="WeaponTooltip" type="PanelContainer" parent="."]
+visible = false
+mouse_filter = 2
+z_index = 10
+
+[node name="TooltipMargin" type="MarginContainer" parent="WeaponTooltip"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="TooltipLabel" type="RichTextLabel" parent="WeaponTooltip/TooltipMargin"]
+bbcode_enabled = true
+fit_content = true
+custom_minimum_size = Vector2(300, 0)
+mouse_filter = 2

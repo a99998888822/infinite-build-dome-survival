@@ -85,7 +85,7 @@ res://
 
 1. 场景：`bootstrap.tscn`、`player_root.tscn`、`enemy_basic.tscn`
 2. 脚本：`bootstrap.gd`、`player_controller.gd`、`enemy_ai.gd`
-3. 配置：`weapon_void_blade`、`relic_flying_teeth`、`camp_armory_workshop`
+3. 配置：`weapon_void_blade`、`relic_finance_manager`、`camp_armory_workshop`
 
 ### 4.3 命名约束
 

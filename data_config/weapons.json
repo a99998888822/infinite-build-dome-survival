@@ -8,12 +8,8 @@
     "projectile_texture": "res://assets/sprites/weapons/projectiles/projectile_void_blade.png",
     "projectile_visual_speed": 400,
     "rarity": "common",
-    "tags": [
-      "weapon",
-      "ranged",
-      "void",
-      "starter"
-    ],
+    "attack_kind": "ranged",
+    "tags": [],
     "weapon_type": "light",
     "load_cost": 12,
     "max_level": 5,
@@ -101,12 +97,8 @@
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg",
     "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_cleaver_slash.png",
     "rarity": "common",
-    "tags": [
-      "weapon",
-      "melee",
-      "human",
-      "starter"
-    ],
+    "attack_kind": "melee",
+    "tags": [],
     "weapon_type": "light",
     "load_cost": 30,
     "max_level": 5,
@@ -193,14 +185,9 @@
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg",
     "attack_effect_texture": "res://assets/sprites/weapons/effects/effect_dome_shockwave.png",
     "rarity": "common",
-    "tags": [
-      "weapon",
-      "melee",
-      "ranged",
-      "area",
-      "mixed",
-      "void"
-    ],
+    "attack_kind": "mixed",
+    "attack_effect_anchor": "center",
+    "tags": [],
     "weapon_type": "medium",
     "load_cost": 24,
     "max_level": 5,

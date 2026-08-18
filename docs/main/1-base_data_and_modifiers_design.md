@@ -133,7 +133,7 @@ flowchart TD
 | 类型 | 格式 | 示例 |
 | ---- | ---- | ---- |
 | 武器 | `weapon_*` | `weapon_void_blade` |
-| 遗物 | `relic_*` | `relic_deep_eye` |
+| 遗物 | `relic_*` | `relic_finance_manager` |
 | 羁绊 | `bond_*` | `bond_void_mutation` |
 | 角色 | `character_*` | `character_void_hunter` |
 | 敌人 | `enemy_*` | `enemy_mutated_grub` |
@@ -522,7 +522,8 @@ func find_refs(config_id: String) -> Array[Dictionary]
   "display_name": "小飞刃",
   "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
   "rarity": "common",
-  "tags": ["weapon", "ranged", "void", "starter"],
+  "attack_kind": "ranged",
+  "tags": [],
   "weapon_type": "light",
   "load_cost": 12,
   "max_level": 5,
@@ -557,42 +558,29 @@ func find_refs(config_id: String) -> Array[Dictionary]
 4. `level_upgrades` 的 key 为目标等级；`stat` 修改进入属性系统，`field` 修改武器自身字段。
 5. 武器索敌规则不进入配置表，局内武器模块默认按最近敌人索敌。
 6. 投射物/攻击模式暂不配置化，后续如武器差异变复杂，再由局内武器模块单独设计。
+7. `attack_kind` 表示攻击模式：`melee`/`ranged`/`mixed`；武器不再用 `tags` 表达攻击模式。
 
 ### 10.3 relics.json
 
 ```json
 {
-  "id": "relic_flying_teeth",
-  "display_name": "飞的牙齿",
-  "rarity": "common",
-  "bond_id": "bond_mighty",
-  "tags": ["relic", "melee", "fang"],
+  "id": "relic_finance_manager",
+  "display_name": "理财经理",
+  "rarity": "uncommon",
+  "tags": [],
   "effects": [
     {
-      "id": "mod_relic_flying_teeth_melee_damage",
+      "id": "mod_relic_finance_manager_interest_rate",
       "source_type": "relic",
-      "source_id": "relic_flying_teeth",
+      "source_id": "relic_finance_manager",
       "target_scope": "player",
-      "stat": "melee_damage",
+      "stat": "interest_rate",
       "operation": "add_flat",
       "value": 1,
       "duration": -1,
       "stack_rule": "unique",
       "priority": 600,
-      "tags": ["relic", "melee"]
-    },
-    {
-      "id": "mod_relic_flying_teeth_attack_speed",
-      "source_type": "relic",
-      "source_id": "relic_flying_teeth",
-      "target_scope": "player",
-      "stat": "attack_speed",
-      "operation": "add_percent",
-      "value": 2,
-      "duration": -1,
-      "stack_rule": "unique",
-      "priority": 600,
-      "tags": ["relic", "melee"]
+      "tags": ["relic", "finance"]
     }
   ]
 }
@@ -604,7 +592,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 1. `relics.json` 只保留运行必需字段：`id`、`display_name`、`rarity`、`bond_id`、`max_stack`、`tags`、`effects`。
 2. `effects` 直接写标准 `Modifier` 字段，不再额外包一层展示字段。
 3. `description`、`enabled`、`icon` 等展示/控制字段暂不写入，后续如需要再加。
-4. 遗物的羁绊归属通过 `bond_id` 关联。
+4. 遗物的羁绊归属通过 `bond_id` 关联；仅持有羁绊的遗物在 `tags` 中保留对应羁绊标签（如 `elect`），其余武器/遗物 `tags` 为空。
 5. 遗物增益遵循整数数值规则，所有百分比仍使用整数。
 
 ### 10.4 bonds.json

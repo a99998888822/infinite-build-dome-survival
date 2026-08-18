@@ -46,6 +46,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"icon": str(weapon_data.get("icon", "")),
 			"load_cost": int(weapon_data.get("load_cost", 0)),
 			"description": str(weapon_data.get("description", "")),
+			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": weapon_tags,
 		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
 
@@ -69,6 +70,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"display_name": str(relic_data.get("display_name", relic_id)),
 			"description": str(relic_data.get("description", "")),
 			"icon": str(relic_data.get("icon", "")),
+			"bond_id": str(relic_data.get("bond_id", "")),
 			"effects": (relic_data.get("effects", []) as Array).duplicate(true),
 			"runtime_effects": (relic_data.get("runtime_effects", []) as Array).duplicate(true),
 			"tags": relic_tags,
@@ -96,6 +98,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"description": str(upgrade_entry.get("description", "")),
 			"icon": str(weapon_data.get("icon", "")),
 			"effects": (upgrade_entry.get("effects", []) as Array).duplicate(true),
+			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": upgrade_tags,
 		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
 

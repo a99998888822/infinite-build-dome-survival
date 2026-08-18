@@ -108,10 +108,25 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `relic_deep_eye` | `icon` | `assets/ui/icons/relics/relic_deep_eye.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
-| `relic_flying_teeth` | `icon` | `assets/ui/icons/relics/relic_flying_teeth.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
-| `relic_flying_feather` | `icon` | `assets/ui/icons/relics/relic_flying_feather.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
-| `relic_flying_eye` | `icon` | `assets/ui/icons/relics/relic_flying_eye.png` | 已存在 | 已放入目标路径，等待 Godot 导入验证 |
+| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_flyer_ad` | `icon` | `assets/ui/icons/relics/relic_flyer_ad.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_merger_reorg` | `icon` | `assets/ui/icons/relics/relic_merger_reorg.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_private_army` | `icon` | `assets/ui/icons/relics/relic_private_army.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_periodic_dividend_clock` | `icon` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_divine_fusion` | `icon` | `assets/ui/icons/relics/relic_divine_fusion.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 未存在 | 还没有生成或未放入目标路径 |
 
 ### 5. Godot 导入约定
 

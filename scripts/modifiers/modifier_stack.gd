@@ -89,6 +89,18 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return _calculate_regular_stat(stat_id, fallback_base_value)
 
 
+func get_stat_with_extra_modifier(stat_id: String, modifier_data: Dictionary, fallback_base_value: float = 0.0) -> float:
+	var extra := Modifier.from_dictionary(modifier_data)
+	if extra == null or not extra.validate().is_empty():
+		return get_stat(stat_id, fallback_base_value)
+	modifiers.append(extra)
+	_sort_modifiers()
+	var result := get_stat(stat_id, fallback_base_value)
+	modifiers.erase(extra)
+	_sort_modifiers()
+	return result
+
+
 func get_all_modifiers(stat_id: String = "") -> Array[Modifier]:
 	var result: Array[Modifier] = []
 	for modifier in modifiers:

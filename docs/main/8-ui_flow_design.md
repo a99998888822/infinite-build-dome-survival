@@ -219,6 +219,22 @@ legendary =  1 + floor(luck * 0.03)
 
 建议接口：`build_shop_candidate_pool(context)`、`get_shop_rarity_weights(luck)`、`get_shop_type_weights(context)`、`roll_shop_offers(rarity_weights, type_weights, candidate_pool, refresh_count)`。刷新时按稀有度、类型、具体条目的顺序抽取，候选桶为空时回退，避免空槽位。
 
+### 7.5 奖励悬停属性预览
+
+作用：悬停共享奖励/商店购买选项的“选择/购买”按钮时，右侧属性栏展示该奖励生效后的属性值，用于在购买前预览加成效果。
+
+规则：
+
+1. 只对 `relic` 遗物选项生效；`new_weapon` 新武器与 `weapon_upgrade` 武器升级不产生属性栏预览。
+2. 只预览属性栏中真实存在的属性；遗物的非属性类加成（如理财本金、利息结算、特殊被动等 `runtime_effects`）不预览。
+3. 预览值计算：对遗物 `effects` 中每个带 `stat` 的修饰器，使用修饰器栈的非破坏性“预演”接口（`get_stat_with_extra_modifier`）在现有属性值上追加该修饰器后重新计算，保证 `add_flat`、`add_percent`、`multiply` 等运算与真实生效一致。
+4. 渲染：命中属性行的数值替换为预览值，颜色沿用文本增益色 `#7FD88F`（绿）；若预览值低于当前值，使用损失色 `#F28B82`（红）。
+5. 鼠标移出按钮、切换选项、关闭弹窗时立即清空预览，恢复普通数值与颜色。
+6. 升级奖励（共享奖励）与商店购买共用同一套预览逻辑。
+
+数据流：`RewardOption` 按钮 hover 信号 → `ShopPopup` 转发 → `ShopUIController` → `MainFlowCoordinator` 暂存 `_stat_preview` → `BattleHud._refresh_stats_drawer` 每帧读取并渲染。
+
+
 ## 8. 营地 UI
 
 ### 8.1 营地主界面

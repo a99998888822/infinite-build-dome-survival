@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/esc_overlay.gd" id="1_esc_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/ui/common/weapon_strip.tscn" id="2_weapon_strip"]
+
+[sub_resource type="StyleBoxFlat" id="RelicPanelStyle"]
+bg_color = Color(0.02, 0.03, 0.04, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.42, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+content_margin_left = 18
+content_margin_top = 14
+content_margin_right = 18
+content_margin_bottom = 12
+
+[node name="EscOverlay" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+script = ExtResource("1_esc_overlay")
+
+[node name="WeaponStrip" parent="." instance=ExtResource("2_weapon_strip")]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 76.0
+offset_right = -320.0
+offset_bottom = -40.0
+
+[node name="RelicPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(760, 460)
+theme_override_styles/panel = SubResource("RelicPanelStyle")
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/RelicPanel"]
+theme_override_constants/separation = 10
+
+[node name="TitleRow" type="HBoxContainer" parent="CenterContainer/RelicPanel/Content"]
+theme_override_constants/separation = 12
+
+[node name="BackButton" type="Button" parent="CenterContainer/RelicPanel/Content/TitleRow"]
+custom_minimum_size = Vector2(0, 34)
+flat = true
+theme_override_colors/font_color = Color(0.91, 0.86, 0.75, 1)
+theme_override_font_sizes/font_size = 16
+text = "⬅ 返回"
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/RelicPanel/Content/TitleRow"]
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.91, 0.86, 0.75, 1)
+theme_override_font_sizes/font_size = 22
+text = "遗物清单"
+horizontal_alignment = 1
+
+[node name="TotalLabel" type="Label" parent="CenterContainer/RelicPanel/Content/TitleRow"]
+custom_minimum_size = Vector2(90, 0)
+theme_override_colors/font_color = Color(0.75, 0.78, 0.82, 1)
+theme_override_font_sizes/font_size = 15
+text = "共 0 个"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RelicScroll" type="ScrollContainer" parent="CenterContainer/RelicPanel/Content"]
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 1
+
+[node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
+columns = 6
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="HintLabel" type="Label" parent="CenterContainer/RelicPanel/Content"]
+theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)
+theme_override_font_sizes/font_size = 13
+text = "再次按 ESC 或点击返回按钮关闭"
+horizontal_alignment = 1
+
+[node name="RelicTooltip" type="PanelContainer" parent="."]
+visible = false
+mouse_filter = 2
+z_index = 10
+
+[node name="TooltipMargin" type="MarginContainer" parent="RelicTooltip"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="TooltipLabel" type="RichTextLabel" parent="RelicTooltip/TooltipMargin"]
+bbcode_enabled = true
+fit_content = true
+custom_minimum_size = Vector2(300, 0)
+mouse_filter = 2

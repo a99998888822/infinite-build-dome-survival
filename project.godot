@@ -28,6 +28,10 @@ ZoneProgression="*res://autoloads/zone_progression.gd"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[gui]
+
+theme/custom="res://assets/font/theme_global.tres"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

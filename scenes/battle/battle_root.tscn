@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/battle/battle_root.gd" id="4_battle_root"]
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="5_battle_hud"]
 [ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
+[ext_resource type="PackedScene" path="res://scenes/ui/esc/esc_overlay.tscn" id="7_esc_overlay"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
@@ -32,7 +33,7 @@ material = SubResource("ShaderMaterial_modal_backdrop")
 mouse_filter = 2
 
 [node name="HUD" type="CanvasLayer" parent="."]
-layer = 30
+layer = 24
 script = ExtResource("5_battle_hud")
 
 [node name="StatusPanel" type="PanelContainer" parent="HUD"]
@@ -105,3 +106,8 @@ vertical_scroll_mode = 3
 
 [node name="StatsList" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content/StatsScroll"]
 size_flags_horizontal = 3
+
+[node name="EscLayer" type="CanvasLayer" parent="."]
+layer = 26
+
+[node name="EscOverlay" parent="EscLayer" instance=ExtResource("7_esc_overlay")]

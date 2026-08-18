@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="creative-medium" content="interactive-prototype" />
+  <title>深渊金库 · Abyssal Vault</title>
+  <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=VT323&family=UnifrakturCook:wght@700&display=swap" />
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg-deep: #0d1410;
+      --bg-panel: #141e18;
+      --bg-panel-light: #1d2a22;
+      --border-brass-dark: #5a4410;
+      --border-brass: #8b6914;
+      --border-brass-light: #c9a227;
+      --text-cream: #e8dcc4;
+      --text-dim: #8a8070;
+      --acid-green: #7cb342;
+      --acide-green-bright: #aed581;
+      --blood-red: #8b2500;
+      --tentacle-dark: #1a3a2a;
+      --tentacle-mid: #2d5a3d;
+      --gold-coin: #d4a843;
+      --gold-coin-dark: #9e7b2c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body, #root {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background: var(--bg-deep);
+      font-family: 'VT323', monospace;
+      color: var(--text-cream);
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 像素化字体渲染 */
+    .pixel-font {
+      font-family: 'Press Start 2P', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .vt-font {
+      font-family: 'VT323', monospace;
+    }
+
+    /* ===== 背景纹理：不可名状的蠕动 ===== */
+    .bg-wrapper {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-stone {
+      position: absolute;
+      inset: 0;
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(45, 90, 61, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(90, 68, 16, 0.12) 0%, transparent 50%),
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
+    }
+
+    .bg-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='64' height='64' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: noiseShift 8s steps(8) infinite;
+    }
+
+    @keyframes noiseShift {
+      0% { transform: translate(0, 0); }
+      12.5% { transform: translate(-2px, 1px); }
+      25% { transform: translate(1px, -2px); }
+      37.5% { transform: translate(-1px, 2px); }
+      50% { transform: translate(2px, 1px); }
+      62.5% { transform: translate(-2px, -1px); }
+      75% { transform: translate(1px, 2px); }
+      87.5% { transform: translate(-1px, -2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* ===== 主容器 ===== */
+    .vault-container {
+      position: relative;
+      z-index: 1;
+      width: 640px;
+      max-width: 95vw;
+      padding: 4px;
+    }
+
+    /* 像素边框 */
+    .pixel-border {
+      position: relative;
+      background: var(--bg-panel);
+      border: 4px solid var(--border-brass);
+      box-shadow:
+        inset 0 0 0 2px var(--bg-panel),
+        inset 0 0 0 4px var(--border-brass-dark),
+        0 0 0 2px var(--border-brass-dark),
+        0 8px 0 rgba(0,0,0,0.4);
+    }
+
+    .pixel-border-inner {
+      border: 2px solid var(--border-brass-dark);
+      box-shadow: inset 0 0 0 2px var(--bg-panel-light);
+    }
+
+    /* ===== 标题 ===== */
+    .title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 24px 12px;
+      position: relative;
+    }
+
+    .title-bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: var(--border-brass-dark);
+      box-shadow: 0 2px 0 var(--border-brass);
+    }
+
+    .title-text {
+      font-family: 'UnifrakturCook', serif;
+      font-size: 32px;
+      color: var(--border-brass-light);
+      text-shadow:
+        2px 2px 0 var(--border-brass-dark),
+        0 0 12px rgba(201, 162, 39, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .title-sub {
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      color: var(--text-dim);
+      letter-spacing: 4px;
+      margin-top: -4px;
+    }
+
+    .title-icon {
+      width: 24px;
+      height: 24px;
+      image-rendering: pixelated;
+    }
+
+    /* ===== 主内容区 ===== */
+    .main-content {
+      padding: 28px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ===== 本金显示面板 ===== */
+    .principal-panel {
+      position: relative;
+      background: var(--bg-panel-light);
+      border: 3px solid var(--border-brass-dark);
+      box-shadow:
+        inset 0 0 0 1px var(--border-brass),
+        inset 0 4px 8px rgba(0,0,0,0.3);
+      padding: 24px 28px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .principal-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .principal-amount {
+      font-family: 'VT323', monospace;
+      font-size: 56px;
+      line-height: 1;
+      color: var(--gold-coin);
+      text-shadow:
+        2px 2px 0 var(--gold-coin-dark),
+        4px 4px 0 rgba(0,0,0,0.4);
+      letter-spacing: 2px;
+      font-weight: bold;
+      transition: transform 0.1s;
+    }
+
+    .principal-amount.bump {
+      animation: numberBump 0.4s ease-out;
+    }
+
+    @keyframes numberBump {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.12); color: var(--border-brass-light); }
+      100% { transform: scale(1); }
+    }
+
+    .coin-icon {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+      vertical-align: middle;
+      image-rendering: pixelated;
+    }
+
+    /* ===== 数据行 ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: var(--bg-panel);
+      border: 2px solid var(--border-brass-dark);
+      box-shadow: inset 0 0 0 1px var(--border-brass);
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-family: 'VT323', monospace;
+      font-size: 28px;
+      color: var(--acid-green);
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      font-weight: bold;
+    }
+
+    .stat-value.rate {
+      color: var(--border-brass-light);
+    }
+
+    /* ===== 按钮行 ===== */
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .pixel-btn {
+      position: relative;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 16px 12px;
+      border: none;
+      cursor: pointer;
+      color: var(--text-cream);
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+      transition: transform 0.05s, filter 0.1s;
+      user-select: none;
+    }
+
+    .pixel-btn:active {
+      transform: translateY(2px);
+    }
+
+    .pixel-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+
+    .pixel-btn.deposit {
+      background: var(--acid-green);
+      border: 3px solid #4a7c1a;
+      box-shadow:
+        inset -2px -2px 0 #4a7c1a,
+        inset 2px 2px 0 #aed581,
+        0 4px 0 #33551a;
+      color: #0d1410;
+      text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .pixel-btn.deposit:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+
+    .pixel-btn.deposit:active:not(:disabled) {
+      box-shadow:
+        inset 2px 2px 0 #4a7c1a,
+        inset -2px -2px 0 #aed581,
+        0 2px 0 #33551a;
+    }
+
+    .pixel-btn.withdraw {
+      background: var(--blood-red);
+      border: 3px solid #5c1a00;
+      box-shadow:
+        inset -2px -2px 0 #5c1a00,
+        inset 2px 2px 0 #c94a1a,
+        0 4px 0 #3d1000;
+    }
+
+    .pixel-btn.withdraw:hover:not(:disabled) {
+      filter: brightness(1.15);
+    }
+
+    .pixel-btn.withdraw:active:not(:disabled) {
+      box-shadow:
+        inset 2px 2px 0 #5c1a00,
+        inset -2px -2px 0 #c94a1a,
+        0 2px 0 #3d1000;
+    }
+
+    /* ===== 动画舞台 ===== */
+    .anim-stage {
+      position: relative;
+      height: 100px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* 钞票 - 像素风 */
+    .pixel-bill {
+      position: absolute;
+      width: 60px;
+      height: 32px;
+      image-rendering: pixelated;
+    }
+
+    /* 像素手 */
+    .pixel-hand {
+      position: absolute;
+      width: 48px;
+      height: 56px;
+      image-rendering: pixelated;
+    }
+
+    /* 存入动画 */
+    @keyframes depositBill {
+      0%   { left: -80px; opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { left: calc(50% - 30px); opacity: 1; }
+      100% { left: calc(50% - 30px); opacity: 0; transform: scale(0.8) translateY(-10px); }
+    }
+
+    @keyframes depositHand {
+      0%   { left: -120px; top: 20px; }
+      30%  { left: calc(50% - 60px); top: 20px; }
+      60%  { left: calc(50% - 60px); top: 20px; }
+      100% { left: -120px; top: 20px; }
+    }
+
+    /* 取出动画 */
+    @keyframes withdrawBill {
+      0%   { left: calc(50% - 30px); opacity: 0; transform: translateY(-10px); }
+      15%  { opacity: 1; transform: translateY(0); }
+      85%  { left: -80px; opacity: 1; }
+      100% { left: -80px; opacity: 0; }
+    }
+
+    @keyframes withdrawHand {
+      0%   { right: -120px; top: 20px; transform: scaleX(-1); }
+      30%  { right: calc(50% - 60px); top: 20px; transform: scaleX(-1); }
+      60%  { right: calc(50% - 60px); top: 20px; transform: scaleX(-1); }
+      100% { right: -120px; top: 20px; transform: scaleX(-1); }
+    }
+
+    .anim-deposit .bill {
+      animation: depositBill 1.2s ease-in-out forwards;
+      top: 34px;
+    }
+
+    .anim-deposit .hand {
+      animation: depositHand 1.2s ease-in-out forwards;
+    }
+
+    .anim-withdraw .bill {
+      animation: withdrawBill 1.2s ease-in-out forwards;
+      top: 34px;
+    }
+
+    .anim-withdraw .hand {
+      animation: withdrawHand 1.2s ease-in-out forwards;
+    }
+
+    /* ===== 触手装饰 ===== */
+    .tentacle-corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+    }
+
+    .tentacle-tl {
+      top: -2px;
+      left: -2px;
+      transform: rotate(0deg);
+    }
+
+    .tentacle-tr {
+      top: -2px;
+      right: -2px;
+      transform: rotate(90deg);
+    }
+
+    .tentacle-bl {
+      bottom: -2px;
+      left: -2px;
+      transform: rotate(-90deg);
+    }
+
+    .tentacle-br {
+      bottom: -2px;
+      right: -2px;
+      transform: rotate(180deg);
+    }
+
+    .tentacle-sway {
+      animation: tentacleSway 6s ease-in-out infinite;
+    }
+
+    .tentacle-sway.delay1 { animation-delay: -1.5s; }
+    .tentacle-sway.delay2 { animation-delay: -3s; }
+    .tentacle-sway.delay3 { animation-delay: -4.5s; }
+
+    @keyframes tentacleSway {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(3deg) scale(1.02); }
+    }
+
+    /* 覆盖各角的旋转变换 */
+    .tentacle-tr .tentacle-sway { animation-name: tentacleSwayTR; }
+    .tentacle-bl .tentacle-sway { animation-name: tentacleSwayBL; }
+    .tentacle-br .tentacle-sway { animation-name: tentacleSwayBR; }
+
+    @keyframes tentacleSwayTR {
+      0%, 100% { transform: rotate(90deg) scale(1); }
+      50% { transform: rotate(93deg) scale(1.02); }
+    }
+    @keyframes tentacleSwayBL {
+      0%, 100% { transform: rotate(-90deg) scale(1); }
+      50% { transform: rotate(-87deg) scale(1.02); }
+    }
+    @keyframes tentacleSwayBR {
+      0%, 100% { transform: rotate(180deg) scale(1); }
+      50% { transform: rotate(183deg) scale(1.02); }
+    }
+
+    /* ===== 金额输入弹窗 ===== */
+    .input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: -4px;
+    }
+
+    .amount-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .amount-input {
+      font-family: 'VT323', monospace;
+      font-size: 24px;
+      color: var(--gold-coin);
+      background: var(--bg-deep);
+      border: 2px solid var(--border-brass-dark);
+      box-shadow: inset 0 0 0 1px var(--border-brass);
+      padding: 8px 12px 8px 36px;
+      width: 160px;
+      text-align: center;
+      outline: none;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+    }
+
+    .amount-input:focus {
+      border-color: var(--border-brass-light);
+      box-shadow: inset 0 0 0 1px var(--border-brass-light), 0 0 8px rgba(201, 162, 39, 0.3);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 10px;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+    }
+
+    .quick-amounts {
+      display: flex;
+      gap: 6px;
+    }
+
+    .quick-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      padding: 6px 8px;
+      background: var(--bg-panel-light);
+      color: var(--text-cream);
+      border: 2px solid var(--border-brass-dark);
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    .quick-btn:hover {
+      background: var(--border-brass-dark);
+      border-color: var(--border-brass-light);
+    }
+
+    .quick-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* ===== 底部提示 ===== */
+    .footer-note {
+      text-align: center;
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      font-style: italic;
+      opacity: 0.8;
+    }
+
+    .glitch-text {
+      animation: glitchFlicker 4s infinite;
+    }
+
+    @keyframes glitchFlicker {
+      0%, 90%, 100% { opacity: 0.8; }
+      91% { opacity: 0.3; color: var(--acid-green); }
+      92% { opacity: 0.8; }
+      94% { opacity: 0.5; color: var(--blood-red); }
+      95% { opacity: 0.8; }
+    }
+
+    /* ===== 硬币粒子 ===== */
+    .coin-particle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      animation: coinFloat 0.8s ease-out forwards;
+    }
+
+    @keyframes coinFloat {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-40px) scale(0.5); opacity: 0; }
+    }
+
+    /* 输入数字消除spinner */
+    .amount-input::-webkit-outer-spin-button,
+    .amount-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .amount-input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useRef, useEffect, useCallback } = React;
+
+    // ===== 像素图标组件（SVG绘制，保持像素感） =====
+
+    // 像素金币图标
+    function CoinIcon({ className = '', size = 20 }) {
+      return (
+        <svg
+          className={className}
+          width={size}
+          height={size}
+          viewBox="0 0 16 16"
+          shapeRendering="crispEdges"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* 外圈深色 */}
+          <rect x="3" y="1" width="10" height="1" fill="#7a5c1e" />
+          <rect x="2" y="2" width="1" height="1" fill="#7a5c1e" />
+          <rect x="13" y="2" width="1" height="1" fill="#7a5c1e" />
+          <rect x="1" y="3" width="1" height="10" fill="#7a5c1e" />
+          <rect x="14" y="3" width="1" height="10" fill="#7a5c1e" />
+          <rect x="2" y="13" width="1" height="1" fill="#7a5c1e" />
+          <rect x="13" y="13" width="1" height="1" fill="#7a5c1e" />
+          <rect x="3" y="14" width="10" height="1" fill="#7a5c1e" />
+          {/* 金色主体 */}
+          <rect x="3" y="2" width="10" height="1" fill="#d4a843" />
+          <rect x="2" y="3" width="1" height="10" fill="#d4a843" />
+          <rect x="3" y="13" width="10" height="1" fill="#d4a843" />
+          <rect x="13" y="3" width="1" height="10" fill="#d4a843" />
+          <rect x="4" y="3" width="8" height="10" fill="#e8c155" />
+          {/* 高光 */}
+          <rect x="5" y="4" width="2" height="2" fill="#f0d878" />
+          <rect x="4" y="5" width="1" height="1" fill="#f0d878" />
+          {/* 字符$ */}
+          <rect x="7" y="5" width="2" height="1" fill="#9e7b2c" />
+          <rect x="6" y="6" width="1" height="1" fill="#9e7b2c" />
+          <rect x="8" y="6" width="1" height="1" fill="#9e7b2c" />
+          <rect x="7" y="7" width="2" height="1" fill="#9e7b2c" />
+          <rect x="6" y="8" width="1" height="1" fill="#9e7b2c" />
+          <rect x="8" y="8" width="1" height="1" fill="#9e7b2c" />
+          <rect x="7" y="9" width="2" height="1" fill="#9e7b2c" />
+          {/* 阴影 */}
+          <rect x="11" y="11" width="1" height="1" fill="#b89230" />
+          <rect x="10" y="12" width="2" height="1" fill="#b89230" />
+        </svg>
+      );
+    }
+
+    // 像素钞票
+    function PixelBill({ className = '' }) {
+      return (
+        <svg
+          className={className}
+          width="60"
+          height="32"
+          viewBox="0 0 30 16"
+          shapeRendering="crispEdges"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ width: '60px', height: '32px' }}
+        >
+          {/* 边框深色 */}
+          <rect x="0" y="1" width="30" height="1" fill="#2a5a3a" />
+          <rect x="0" y="14" width="30" height="1" fill="#2a5a3a" />
+          <rect x="0" y="1" width="1" height="14" fill="#2a5a3a" />
+          <rect x="29" y="1" width="1" height="14" fill="#2a5a3a" />
+          {/* 主体绿色 */}
+          <rect x="1" y="2" width="28" height="12" fill="#4a7c5a" />
+          {/* 装饰纹样 */}
+          <rect x="2" y="3" width="3" height="1" fill="#2a5a3a" />
+          <rect x="25" y="3" width="3" height="1" fill="#2a5a3a" />
+          <rect x="2" y="12" width="3" height="1" fill="#2a5a3a" />
+          <rect x="25" y="12" width="3" height="1" fill="#2a5a3a" />
+          <rect x="3" y="4" width="1" height="8" fill="#2a5a3a" />
+          <rect x="26" y="4" width="1" height="8" fill="#2a5a3a" />
+          {/* 中心圆形印章 */}
+          <rect x="12" y="5" width="6" height="1" fill="#6b9e7a" />
+          <rect x="11" y="6" width="8" height="4" fill="#6b9e7a" />
+          <rect x="12" y="10" width="6" height="1" fill="#6b9e7a" />
+          {/* 印章里的触手符号 */}
+          <rect x="14" y="7" width="2" height="2" fill="#2a5a3a" />
+          <rect x="13" y="7" width="1" height="1" fill="#2a5a3a" />
+          <rect x="16" y="7" width="1" height="1" fill="#2a5a3a" />
+          <rect x="14" y="6" width="2" height="1" fill="#2a5a3a" />
+          <rect x="14" y="9" width="2" height="1" fill="#2a5a3a" />
+          {/* 数字100 */}
+          <rect x="5" y="6" width="1" height="4" fill="#e8dcc4" />
+          <rect x="6" y="5" width="1" height="1" fill="#e8dcc4" />
+          <rect x="6" y="10" width="1" height="1" fill="#e8dcc4" />
+          <rect x="7" y="6" width="1" height="4" fill="#e8dcc4" />
+          <rect x="8" y="5" width="1" height="1" fill="#e8dcc4" />
+          <rect x="8" y="10" width="1" height="1" fill="#e8dcc4" />
+          <rect x="9" y="6" width="1" height="4" fill="#e8dcc4" />
+          {/* 右侧数字 */}
+          <rect x="20" y="6" width="1" height="4" fill="#e8dcc4" />
+          <rect x="21" y="5" width="1" height="1" fill="#e8dcc4" />
+          <rect x="21" y="10" width="1" height="1" fill="#e8dcc4" />
+          <rect x="22" y="6" width="1" height="4" fill="#e8dcc4" />
+          <rect x="23" y="5" width="1" height="1" fill="#e8dcc4" />
+          <rect x="23" y="10" width="1" height="1" fill="#e8dcc4" />
+          <rect x="24" y="6" width="1" height="4" fill="#e8dcc4" />
+          {/* 高光 */}
+          <rect x="1" y="2" width="28" height="1" fill="#6b9e7a" />
+        </svg>
+      );
+    }
+
+    // 像素手（按压姿势）
+    function PixelHand({ className = '' }) {
+      return (
+        <svg
+          className={className}
+          width="48"
+          height="56"
+          viewBox="0 0 24 28"
+          shapeRendering="crispEdges"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ width: '48px', height: '56px' }}
+        >
+          {/* 手腕/袖口 */}
+          <rect x="7" y="22" width="10" height="6" fill="#3a2818" />
+          <rect x="6" y="23" width="1" height="4" fill="#3a2818" />
+          <rect x="17" y="23" width="1" height="4" fill="#3a2818" />
+          <rect x="7" y="22" width="10" height="1" fill="#5a3820" />
+          {/* 手掌 */}
+          <rect x="5" y="14" width="14" height="9" fill="#c49a6c" />
+          <rect x="4" y="15" width="1" height="7" fill="#c49a6c" />
+          <rect x="19" y="15" width="1" height="7" fill="#c49a6c" />
+          {/* 手掌阴影 */}
+          <rect x="5" y="21" width="14" height="2" fill="#a67c50" />
+          <rect x="16" y="15" width="3" height="6" fill="#b6895a" />
+          {/* 拇指 */}
+          <rect x="2" y="17" width="3" height="5" fill="#c49a6c" />
+          <rect x="3" y="16" width="1" height="1" fill="#c49a6c" />
+          <rect x="2" y="21" width="3" height="1" fill="#a67c50" />
+          {/* 食指（伸向前方按压） */}
+          <rect x="6" y="6" width="3" height="9" fill="#c49a6c" />
+          <rect x="6" y="5" width="3" height="1" fill="#d4a87c" />
+          <rect x="6" y="4" width="2" height="1" fill="#c49a6c" />
+          {/* 中指 */}
+          <rect x="10" y="8" width="3" height="7" fill="#c49a6c" />
+          <rect x="10" y="7" width="3" height="1" fill="#d4a87c" />
+          {/* 无名指 */}
+          <rect x="14" y="9" width="3" height="6" fill="#c49a6c" />
+          <rect x="14" y="8" width="3" height="1" fill="#d4a87c" />
+          {/* 小指 */}
+          <rect x="18" y="11" width="2" height="4" fill="#c49a6c" />
+          <rect x="18" y="10" width="2" height="1" fill="#d4a87c" />
+          {/* 手指关节阴影 */}
+          <rect x="6" y="10" width="3" height="1" fill="#b6895a" />
+          <rect x="10" y="11" width="3" height="1" fill="#b6895a" />
+          <rect x="14" y="12" width="3" height="1" fill="#b6895a" />
+          {/* 指甲 */}
+          <rect x="6" y="4" width="2" height="1" fill="#e8c8a0" />
+          <rect x="10" y="7" width="2" height="1" fill="#e8c8a0" />
+          <rect x="14" y="8" width="2" height="1" fill="#e8c8a0" />
+          {/* 手掌纹理 */}
+          <rect x="8" y="17" width="1" height="3" fill="#b6895a" />
+          <rect x="11" y="17" width="1" height="3" fill="#b6895a" />
+        </svg>
+      );
+    }
+
+    // 像素触手（角落装饰）
+    function TentacleCorner({ className = '' }) {
+      return (
+        <svg
+          className={className}
+          width="60"
+          height="60"
+          viewBox="0 0 30 30"
+          shapeRendering="crispEdges"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* 触手1 - 最粗 */}
+          <rect x="0" y="0" width="14" height="4" fill="#1a3a2a" />
+          <rect x="0" y="4" width="12" height="3" fill="#1a3a2a" />
+          <rect x="0" y="7" width="10" height="3" fill="#1a3a2a" />
+          <rect x="0" y="10" width="8" height="3" fill="#1a3a2a" />
+          <rect x="0" y="13" width="6" height="3" fill="#1a3a2a" />
+          <rect x="0" y="16" width="4" height="2" fill="#1a3a2a" />
+          <rect x="0" y="18" width="2" height="2" fill="#1a3a2a" />
+          {/* 触手高光 */}
+          <rect x="2" y="0" width="10" height="1" fill="#2d5a3d" />
+          <rect x="2" y="4" width="8" height="1" fill="#2d5a3d" />
+          <rect x="2" y="7" width="6" height="1" fill="#2d5a3d" />
+          {/* 吸盘 */}
+          <rect x="4" y="2" width="2" height="2" fill="#3d7a4d" />
+          <rect x="8" y="2" width="2" height="2" fill="#3d7a4d" />
+          <rect x="3" y="5" width="2" height="2" fill="#3d7a4d" />
+          <rect x="7" y="5" width="2" height="2" fill="#3d7a4d" />
+          <rect x="4" y="8" width="2" height="2" fill="#3d7a4d" />
+          {/* 触手2 - 较细，弯曲 */}
+          <rect x="0" y="0" width="4" height="10" fill="#1a3a2a" />
+          <rect x="4" y="9" width="3" height="3" fill="#1a3a2a" />
+          <rect x="7" y="10" width="3" height="3" fill="#1a3a2a" />
+          <rect x="10" y="11" width="3" height="2" fill="#1a3a2a" />
+          <rect x="13" y="11" width="2" height="2" fill="#1a3a2a" />
+          <rect x="15" y="11" width="2" height="1" fill="#1a3a2a" />
+          {/* 触手2高光 */}
+          <rect x="1" y="1" width="1" height="8" fill="#2d5a3d" />
+          {/* 触手2吸盘 */}
+          <rect x="2" y="3" width="1" height="1" fill="#3d7a4d" />
+          <rect x="2" y="6" width="1" height="1" fill="#3d7a4d" />
+          <rect x="5" y="10" width="1" height="1" fill="#3d7a4d" />
+          <rect x="8" y="11" width="1" height="1" fill="#3d7a4d" />
+          {/* 触手3 - 细短 */}
+          <rect x="0" y="12" width="3" height="6" fill="#1a3a2a" />
+          <rect x="3" y="16" width="2" height="2" fill="#1a3a2a" />
+          <rect x="5" y="17" width="2" height="1" fill="#1a3a2a" />
+        </svg>
+      );
+    }
+
+    // 古神之眼符号（标题装饰）
+    function ElderSignIcon({ className = '', size = 24 }) {
+      return (
+        <svg
+          className={className}
+          width={size}
+          height={size}
+          viewBox="0 0 16 16"
+          shapeRendering="crispEdges"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* 外菱形 */}
+          <rect x="7" y="1" width="2" height="1" fill="#c9a227" />
+          <rect x="6" y="2" width="4" height="1" fill="#c9a227" />
+          <rect x="5" y="3" width="6" height="1" fill="#c9a227" />
+          <rect x="4" y="4" width="8" height="1" fill="#c9a227" />
+          <rect x="3" y="5" width="10" height="6" fill="#c9a227" />
+          <rect x="4" y="11" width="8" height="1" fill="#c9a227" />
+          <rect x="5" y="12" width="6" height="1" fill="#c9a227" />
+          <rect x="6" y="13" width="4" height="1" fill="#c9a227" />
+          <rect x="7" y="14" width="2" height="1" fill="#c9a227" />
+          {/* 内填充 */}
+          <rect x="7" y="2" width="2" height="1" fill="#8b6914" />
+          <rect x="6" y="3" width="4" height="1" fill="#8b6914" />
+          <rect x="5" y="4" width="6" height="1" fill="#8b6914" />
+          <rect x="4" y="5" width="8" height="6" fill="#8b6914" />
+          <rect x="5" y="11" width="6" height="1" fill="#8b6914" />
+          <rect x="6" y="12" width="4" height="1" fill="#8b6914" />
+          <rect x="7" y="13" width="2" height="1" fill="#8b6914" />
+          {/* 中心眼睛 */}
+          <rect x="7" y="6" width="2" height="1" fill="#1a3a2a" />
+          <rect x="6" y="7" width="4" height="2" fill="#1a3a2a" />
+          <rect x="7" y="9" width="2" height="1" fill="#1a3a2a" />
+          {/* 瞳孔 */}
+          <rect x="7" y="7" width="2" height="2" fill="#7cb342" />
+          {/* 瞳孔高光 */}
+          <rect x="7" y="7" width="1" height="1" fill="#aed581" />
+        </svg>
+      );
+    }
+
+    // ===== 主应用组件 =====
+    function App() {
+      const [principal, setPrincipal] = useState(1000);
+      const [amount, setAmount] = useState(100);
+      const [rate] = useState(5); // 固定利率 5%
+      const [animType, setAnimType] = useState(null); // 'deposit' | 'withdraw' | null
+      const [animKey, setAnimKey] = useState(0);
+      const [bumpKey, setBumpKey] = useState(0);
+      const [particles, setParticles] = useState([]);
+      const [isAnimating, setIsAnimating] = useState(false);
+      const panelRef = useRef(null);
+
+      const interest = Math.floor(principal * rate / 100);
+
+      const playAnimation = useCallback((type) => {
+        if (isAnimating) return;
+        setIsAnimating(true);
+        setAnimType(type);
+        setAnimKey(prev => prev + 1);
+
+        // 动画进行到一半时更新数值
+        const updateDelay = type === 'deposit' ? 800 : 600;
+        setTimeout(() => {
+          if (type === 'deposit') {
+            setPrincipal(prev => prev + amount);
+            setBumpKey(prev => prev + 1);
+            // 生成金币粒子
+            spawnCoins();
+          } else {
+            setPrincipal(prev => Math.max(0, prev - amount));
+            setBumpKey(prev => prev + 1);
+          }
+        }, updateDelay);
+
+        // 动画结束
+        setTimeout(() => {
+          setAnimType(null);
+          setIsAnimating(false);
+        }, 1200);
+      }, [amount, isAnimating]);
+
+      const spawnCoins = () => {
+        const newParticles = [];
+        for (let i = 0; i < 5; i++) {
+          newParticles.push({
+            id: Date.now() + i,
+            left: 40 + Math.random() * 20 + '%',
+            delay: Math.random() * 200,
+          });
+        }
+        setParticles(prev => [...prev, ...newParticles]);
+        setTimeout(() => {
+          setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+        }, 1000);
+      };
+
+      const handleDeposit = () => {
+        if (amount <= 0 || isAnimating) return;
+        playAnimation('deposit');
+      };
+
+      const handleWithdraw = () => {
+        if (amount <= 0 || amount > principal || isAnimating) return;
+        playAnimation('withdraw');
+      };
+
+      const setQuickAmount = (val) => {
+        setAmount(val);
+      };
+
+      return (
+        <>
+          {/* 背景 */}
+          <div className="bg-wrapper">
+            <div className="bg-stone"></div>
+            <div className="bg-noise"></div>
+          </div>
+
+          {/* 主容器 */}
+          <div className="vault-container">
+            {/* 触手装饰 - 四角 */}
+            <div className="tentacle-corner tentacle-tl">
+              <div className="tentacle-sway">
+                <TentacleCorner />
+              </div>
+            </div>
+            <div className="tentacle-corner tentacle-tr">
+              <div className="tentacle-sway delay1">
+                <TentacleCorner />
+              </div>
+            </div>
+            <div className="tentacle-corner tentacle-bl">
+              <div className="tentacle-sway delay2">
+                <TentacleCorner />
+              </div>
+            </div>
+            <div className="tentacle-corner tentacle-br">
+              <div className="tentacle-sway delay3">
+                <TentacleCorner />
+              </div>
+            </div>
+
+            {/* 主面板 */}
+            <div className="pixel-border">
+              {/* 标题栏 */}
+              <div className="title-bar">
+                <ElderSignIcon size={28} />
+                <div style={{ textAlign: 'center' }}>
+                  <div className="title-text">深渊金库</div>
+                  <div className="title-sub">ABYSSAL VAULT</div>
+                </div>
+                <ElderSignIcon size={28} />
+              </div>
+
+              {/* 主内容 */}
+              <div className="main-content">
+                {/* 动画舞台 */}
+                <div className="anim-stage">
+                  {animType && (
+                    <div key={animKey} className={`anim-${animType}`}>
+                      <div className="hand"><PixelHand /></div>
+                      <div className="bill"><PixelBill /></div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 本金面板 */}
+                <div className="principal-panel" ref={panelRef}>
+                  {/* 金币粒子 */}
+                  {particles.map(p => (
+                    <div
+                      key={p.id}
+                      className="coin-particle"
+                      style={{ left: p.left, animationDelay: `${p.delay}ms` }}
+                    >
+                      <CoinIcon size={12} />
+                    </div>
+                  ))}
+
+                  <div className="principal-label">理财本金 · PRINCIPAL</div>
+                  <div key={bumpKey} className="principal-amount bump">
+                    <CoinIcon className="coin-icon" size={28} />
+                    {principal.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* 数据行 */}
+                <div className="stats-row">
+                  <div className="stat-box">
+                    <div className="stat-label">年利率</div>
+                    <div className="stat-value rate">{rate}.00%</div>
+                  </div>
+                  <div className="stat-box">
+                    <div className="stat-label">预计利息</div>
+                    <div className="stat-value">
+                      <CoinIcon size={14} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 4 }} />
+                      {interest.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 金额输入 */}
+                <div className="input-row">
+                  <div className="amount-input-wrap">
+                    <CoinIcon className="input-icon" size={18} />
+                    <input
+                      type="number"
+                      className="amount-input"
+                      value={amount}
+                      onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
+                      min="0"
+                      step="10"
+                    />
+                  </div>
+                  <div className="quick-amounts">
+                    <button className="quick-btn" onClick={() => setQuickAmount(50)}>+50</button>
+                    <button className="quick-btn" onClick={() => setQuickAmount(100)}>+100</button>
+                    <button className="quick-btn" onClick={() => setQuickAmount(500)}>+500</button>
+                  </div>
+                </div>
+
+                {/* 按钮行 */}
+                <div className="button-row">
+                  <button
+                    className="pixel-btn deposit"
+                    onClick={handleDeposit}
+                    disabled={amount <= 0 || isAnimating}
+                  >
+                    ▼ 存入
+                  </button>
+                  <button
+                    className="pixel-btn withdraw"
+                    onClick={handleWithdraw}
+                    disabled={amount <= 0 || amount > principal || isAnimating}
+                  >
+                    ▲ 取出
+                  </button>
+                </div>
+
+                {/* 底部提示 */}
+                <div className="footer-note glitch-text">
+                  "祂注视着每一笔交易... 利息是献祭的一部分"
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    // 渲染
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+
+    // 宣告可升级
+    function announceUpgrade() {
+      window.parent.postMessage({ type: 'miaoda:upgrade:available', kind: 'interactive-prototype' }, '*');
+    }
+    announceUpgrade();
+    if (document.readyState !== 'complete') {
+      window.addEventListener('load', announceUpgrade, { once: true });
+    }
+  </script>
+</body>
+</html>

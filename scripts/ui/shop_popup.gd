@@ -3,6 +3,8 @@ class_name ShopPopup
 
 signal offer_selected(offer: Dictionary)
 signal skipped
+signal stat_preview_requested(offer: Dictionary)
+signal stat_preview_cleared
 
 const ENTRY_FREE: String = "free"
 const ENTRY_SHOP: String = "shop"
@@ -11,12 +13,15 @@ const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward
 var payload: Dictionary = {}
 var _offer_cards: Array[RewardOption] = []
 var _submitted: bool = false
+var _loadout: WeaponLoadout = null
+var _bond_player: PlayerController = null
 
 @onready var title_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/TitleLabel")
 @onready var gold_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/GoldLabel")
 @onready var error_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/ErrorLabel")
 @onready var offer_grid: HBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferGrid")
 @onready var skip_button: Button = get_node_or_null("CenterContainer/MainPanel/Content/SkipButton")
+@onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 
 
 func _ready() -> void:
@@ -34,10 +39,13 @@ func configure(next_payload: Dictionary) -> void:
 func show_popup() -> void:
 	visible = true
 	_refresh_visual()
+	if weapon_strip != null and _loadout != null:
+		weapon_strip.set_loadout(_loadout)
 
 
 func hide_popup() -> void:
 	visible = false
+	stat_preview_cleared.emit()
 	_clear_cards()
 
 
@@ -90,8 +98,11 @@ func _refresh_visual() -> void:
 			continue
 		offer_grid.add_child(card)
 		card.configure(offer, RewardOption.ENTRY_SHOP if mode == ENTRY_SHOP else RewardOption.ENTRY_FREE)
+		card.set_bond_player(_bond_player)
 		var card_callable := Callable(self, "_on_offer_selected")
 		card.selected.connect(card_callable)
+		card.stat_preview_requested.connect(stat_preview_requested)
+		card.stat_preview_cleared.connect(stat_preview_cleared)
 		_offer_cards.append(card)
 
 
@@ -114,3 +125,18 @@ func _clear_cards() -> void:
 		if is_instance_valid(card):
 			card.queue_free()
 	_offer_cards.clear()
+
+
+func set_loadout(loadout: WeaponLoadout) -> void:
+	_loadout = loadout
+	if weapon_strip != null:
+		weapon_strip.set_loadout(loadout)
+
+
+func set_bond_player(player: PlayerController) -> void:
+	_bond_player = player
+	if weapon_strip != null:
+		weapon_strip.set_bond_player(player)
+	for card in _offer_cards:
+		if is_instance_valid(card):
+			card.set_bond_player(player)

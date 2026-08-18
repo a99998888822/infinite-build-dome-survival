@@ -44,19 +44,19 @@
 
 ```json
 {
-  "id": "relic_flying_teeth",
-  "display_name": "飞的牙齿",
-  "rarity": "common",
-  "bond_id": "bond_mighty",
-  "tags": ["relic", "melee", "fang"],
+  "id": "relic_finance_manager",
+  "display_name": "理财经理",
+  "rarity": "uncommon",
+  "bond_id": "bond_chosen",
+  "tags": ["relic", "finance", "manager"],
   "max_stack": 0,
   "effects": [
     {
-      "id": "mod_relic_flying_teeth_melee_damage",
+      "id": "mod_relic_finance_manager_interest_rate",
       "source_type": "relic",
-      "source_id": "relic_flying_teeth",
+      "source_id": "relic_finance_manager",
       "target_scope": "player",
-      "stat": "melee_damage",
+      "stat": "interest_rate",
       "operation": "add_flat",
       "value": 1,
       "duration": -1,
@@ -102,13 +102,20 @@
 | `bond_tag` | String | 是 | 计数标签 |
 | `thresholds` | Dictionary | 是 | 各层级生效效果 |
 
-## 5. 羁绊统计规则
+## 5. 羁绊归属与统计规则
 
-1. 羁绊统计来源为：**武器 tags + 遗物 tags**。
-2. 只统计标签命中的总数量，不区分来源。
-3. 同一件武器或遗物可同时贡献多个不同标签。
+1. 只有高稀有度（史诗/`epic`、罕见/`mythic`、传说/`legendary`）的武器与遗物才会配置 `bond_id`；普通/优良/稀有不携带羁绊。
+2. 羁绊统计来源为**已持有且配置了 `bond_id` 的武器与遗物**，每件按 `bond_id` 计 1 层，不再按标签统计。
+3. 同一羁绊由多件物品共同累计层数。
 4. 羁绊层数按阈值判定：达到 2、4、6、7 层时依次生效对应效果。
 5. 局内只要凑够阈值，效果立即生效，不需要额外确认。
+6. `data_validator` 会校验：`bond_id` 只能出现在 epic/mythic/legendary 稀有度上，且必须引用 bonds 表中的 id。
+
+### 5.1 羁绊展示
+
+1. 武器条、遗物清单、升级奖励/商店卡片 hover 时，若该物品配置了 `bond_id`，在提示中追加一行“羁绊：xxx（当前 N 层）”；无 `bond_id` 则不展示。
+2. 战斗 HUD 右上角（属性栏左侧）展示一个羁绊图标：仅当存在任一已激活羁绊时出现，取配置表中第一个持有数大于 0 的羁绊。
+3. hover 图标弹出层级小窗：标题为“羁绊名（当前 N）”，每个阈值一行；已解锁层白色、未解锁层灰色，内容为该层的具体属性效果。
 
 ## 6. 遗物重复与上限
 
@@ -154,11 +161,11 @@
 
 ```json
 {
-  "id": "mod_relic_flying_teeth_melee_damage",
+  "id": "mod_relic_finance_manager_interest_rate",
   "source_type": "relic",
-  "source_id": "relic_flying_teeth",
+  "source_id": "relic_finance_manager",
   "target_scope": "player",
-  "stat": "melee_damage",
+  "stat": "interest_rate",
   "operation": "add_flat",
   "value": 1,
   "duration": -1,
@@ -228,10 +235,10 @@
 1. 本金与局内金币分离：存入会扣除当前金币并增加本金，取出会减少本金并返还金币。
 2. 每次弹窗只执行一种操作：存入、取出或跳过。
 3. 快捷操作包括：全部存入、存入一半、全部取出、取出一半。
-4. 自定义输入必须为非负整数；不可存入超过当前金币的数量，不可取出超过可取本金的数量，最终由理财系统统一校验。
+4. 自定义输入必须为非负整数；不可存入超过当前金币的数量，不可取出超过本金的数量，最终由理财系统统一校验。
 5. 利息公式：`ceil(principal * interest_rate / 100)`。
 6. 波末默认进行一次全额利息结算，收益加入本金。
-7. 部分遗物可以触发额外结算、战斗中小额结算、锁定本金或永久提高利率。
+7. 部分遗物可以触发额外结算、战斗中小额结算或永久提高利率。
 
 ### 11.3 运行状态字段
 
@@ -242,7 +249,6 @@
 | `interest_rate_bonus` | 由复利类遗物产生的局内永久利率成长 |
 | `current_wave_number` | 当前理财操作对应波次 |
 | `last_deposit_wave_number` | 最近一次存入本金的波次 |
-| `locked_until_wave_number` | 本金锁定到指定波次，含该波不可取出 |
 | `has_deposited_before_current_wave` | 本波开战前是否发生过存入，用于高利契约 |
 | `finance_stage_prepared` | 主流程是否已提前打开下一波理财页 |
 
@@ -263,33 +269,41 @@
 {
   "id": "relic_piggy_bank",
   "display_name": "猪猪存钱罐",
-  "rarity": "uncommon",
+  "rarity": "common",
   "max_stack": 0,
-  "tags": ["relic", "finance", "principal"],
+  "tags": [],
   "effects": [],
   "runtime_effects": [
-    { "trigger": "wave_start", "effect": "add_principal_flat", "value": 10, "free_principal": true }
+    { "trigger": "wave_start", "effect": "add_principal_flat", "value": 15, "free_principal": true }
   ]
 }
 ```
 
-支持的触发点：`on_acquire`、`wave_start`、`deposit`、`wave_end`、`interest_settle`、`interest_success`、`combat_tick`。
+支持的触发点：`on_acquire`、`wave_start`、`deposit`、`wave_end`、`interest_settle`、`interest_success`、`principal_zero`、`derived`、`enemy_kill`。
 
 ### 11.6 理财遗物清单
 
 | 遗物 | 稀有度 | 堆叠 | 效果 |
 |---|---|---:|---|
-| 猪猪存钱罐 | 绿 | 无限 | 每波开始自动本金 +10 |
-| 理财经理 | 绿 | 无限 | 利率 +1% |
-| 分红支票 | 绿 | 无限 | 获得时立即结算一次利息 |
-| 投机筹码 | 绿 | 1 | 每次利息结算 55% 翻倍，45% 无收益 |
-| 定期存单 | 绿 | 1 | 本金立刻 +(50*波次)，手动存入后本波不可取出、下一波可取 |
-| 复利宝典 | 蓝 | 无限 | 每成功结算一次利息，利率 +0.2% |
-| 高利契约 | 紫 | 1 | 利率 +3%；若本波开始前未存入，波末不能收息 |
-| 周期分红钟 | 紫 | 无限 | 每 3 波额外触发一次利息结算 |
-| 哥布林央行印钞机 | 橙 | 无限 | 利率 +5%；每波开始注入当前金币 10% 的免费本金 |
-| 永续年金卷轴 | 橙 | 无限 | 战斗中每秒按本金 0.1% 结算小额利息，波末仍正常结算 |
-| 哥布林印钞机 | 橙 | 无限 | 每波开始注入当前金币 10% 的免费本金；每次利息结算后利率永久 +0.3% |
+| 猪猪存钱罐 | 白 | 无限 | 每波开始自动本金 + 15 |
+| 理财经理 | 白 | 无限 | 利率 + 1% |
+| 分红支票 | 绿 | 无限 | 每次结算利息的时候有20%的概率翻倍，不给保底 |
+| 定期存单 | 绿 | 无限 | 本金立刻 + （50*波次） |
+| 传单广告 | 绿 | 上限3 | 商店折扣 + 8% |
+| 钢铁保险柜 | 蓝 | 无限 | 每 100 本金 +1 护甲 |
+| 量化操盘 | 蓝 | 无限 | 每 50 本金 +1 攻速 |
+| 恶意收购 | 蓝 | 无限 | 每 200 本金提供通用伤害加成 + 1% |
+| 吸金罗盘 | 蓝 | 无限 | 拾取范围 +40；金币获取 +5% |
+| 小费托盘 | 蓝 | 无限 | 击杀敌人时 10% 概率额外掉落 1 经验球 |
+| 复利宝典 | 紫 | 无限 | 每成功结算一次利息，利率 + 0.2% |
+| 高利契约 | 紫 | 1 | 利率 + 4%；但是每波结束时，若你回合开始前未存入本金（至少50），则当前回合结束时无法收获利息 |
+| 并购重组 | 紫 | 1 | 负载上限 + 10；每 500 本金再 + 5 |
+| 私人武装 | 紫 | 1 | 召唤数量 + 1；每 3 波消耗当前本金 5% 作为军费 |
+| 周期分红钟 | 紫 | 无限 | 每经过 3 波，自动触发一次利息结算 |
+| 神性融合 | 橙 | 无限 | 每 5 侵蚀度提供利率 + 1%；每波开始时侵蚀度 + 1 |
+| 哥布林金币铸造机 | 橙 | 1 | 利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金 |
+| 永续年金卷轴 | 橙 | 无限 | 每个回合结息次数 + 1 |
+| 破产重组 | 红 | 1 | 本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1 |
 
 ### 11.7 实现备注
 
@@ -297,3 +311,4 @@
 - 金融执行器按“触发点 + effect 类型”通用分发，不再按遗物 ID 特判；遗物仅通过 JSON 声明 runtime_effects，新增效果只需扩展对应 effect 分支。
 - 利率支持小数，便于 0.2% 和 0.3% 成长。
 - “免费本金”不扣除当前金币，但仍计入本金和后续收益。
+- 高利契约的存入门槛 由 `runtime_effects` 的 `minimum_deposit` 配置（默认P），仅统计本波开始前的玩家手动存入金额。

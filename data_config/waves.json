@@ -1,28 +1,6 @@
 [
   {
     "id": "wave_stage_01",
-    "duration_seconds": 20,
-    "spawn_groups": [
-      {
-        "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
-      }
-    ]
-  },
-  {
-    "id": "wave_stage_02",
-    "duration_seconds": 25,
-    "spawn_groups": [
-      {
-        "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
-      }
-    ]
-  },
-  {
-    "id": "wave_stage_03",
     "duration_seconds": 30,
     "spawn_groups": [
       {
@@ -33,7 +11,7 @@
     ]
   },
   {
-    "id": "wave_stage_04",
+    "id": "wave_stage_02",
     "duration_seconds": 35,
     "spawn_groups": [
       {
@@ -44,7 +22,7 @@
     ]
   },
   {
-    "id": "wave_stage_05",
+    "id": "wave_stage_03",
     "duration_seconds": 40,
     "spawn_groups": [
       {
@@ -55,7 +33,7 @@
     ]
   },
   {
-    "id": "wave_stage_06",
+    "id": "wave_stage_04",
     "duration_seconds": 45,
     "spawn_groups": [
       {
@@ -66,8 +44,30 @@
     ]
   },
   {
-    "id": "wave_stage_07",
+    "id": "wave_stage_05",
     "duration_seconds": 50,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_06",
+    "duration_seconds": 55,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_07",
+    "duration_seconds": 60,
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
@@ -78,7 +78,7 @@
   },
   {
     "id": "wave_stage_08",
-    "duration_seconds": 50,
+    "duration_seconds": 60,
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
@@ -89,7 +89,7 @@
   },
   {
     "id": "wave_stage_09",
-    "duration_seconds": 50,
+    "duration_seconds": 60,
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
@@ -100,7 +100,117 @@
   },
   {
     "id": "wave_stage_10",
-    "duration_seconds": 50,
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_11",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_12",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_13",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_14",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_15",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_16",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_17",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_18",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_19",
+    "duration_seconds": 60,
+    "spawn_groups": [
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1200,
+        "count_per_spawn": 3
+      }
+    ]
+  },
+  {
+    "id": "wave_stage_20",
+    "duration_seconds": 60,
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",

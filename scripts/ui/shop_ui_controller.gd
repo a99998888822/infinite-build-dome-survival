@@ -87,6 +87,10 @@ func _on_modal_closed(modal_state: String) -> void:
 func _show_shop_popup(payload: Dictionary) -> void:
 	if shop_popup == null:
 		return
+	if _main_flow_coordinator != null:
+		shop_popup.set_loadout(_main_flow_coordinator.get_bound_loadout())
+	if _main_flow_coordinator != null:
+		shop_popup.set_bond_player(_main_flow_coordinator.get_bound_player())
 	shop_popup.configure(payload)
 	var selected_callable := Callable(self, "_on_offer_selected")
 	var skipped_callable := Callable(self, "_on_skipped")
@@ -94,6 +98,12 @@ func _show_shop_popup(payload: Dictionary) -> void:
 		shop_popup.offer_selected.connect(selected_callable)
 	if not shop_popup.skipped.is_connected(skipped_callable):
 		shop_popup.skipped.connect(skipped_callable)
+	var preview_requested_callable := Callable(self, "_on_stat_preview_requested")
+	var preview_cleared_callable := Callable(self, "_on_stat_preview_cleared")
+	if not shop_popup.stat_preview_requested.is_connected(preview_requested_callable):
+		shop_popup.stat_preview_requested.connect(preview_requested_callable)
+	if not shop_popup.stat_preview_cleared.is_connected(preview_cleared_callable):
+		shop_popup.stat_preview_cleared.connect(preview_cleared_callable)
 	shop_popup.show_popup()
 
 
@@ -105,6 +115,16 @@ func _on_offer_selected(offer: Dictionary) -> void:
 	if shop_popup != null and not bool(result.get("success", false)):
 		shop_popup.show_error(str(result.get("reason", "unknown")))
 		shop_popup.reset_submission()
+
+
+func _on_stat_preview_requested(offer: Dictionary) -> void:
+	if _main_flow_coordinator != null:
+		_main_flow_coordinator.set_stat_preview_from_offer(offer)
+
+
+func _on_stat_preview_cleared() -> void:
+	if _main_flow_coordinator != null:
+		_main_flow_coordinator.clear_stat_preview()
 
 
 func _on_skipped() -> void:

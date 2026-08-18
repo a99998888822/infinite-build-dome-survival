@@ -80,7 +80,7 @@ func _print_table_counts() -> void:
 func _print_lookup_checks() -> void:
 	print("[Bootstrap] lookup checks")
 	_print_lookup_result("weapons", "weapon_void_blade")
-	_print_lookup_result("relics", "relic_flying_teeth")
+	_print_lookup_result("relics", "relic_finance_manager")
 	_print_lookup_result("relics", "relic_piggy_bank")
 	_print_lookup_result("bonds", "bond_mighty")
 	_print_lookup_result("characters", "character_void_hunter")
@@ -221,11 +221,12 @@ func _run_relic_bond_checks() -> bool:
 	relic_system.initialize(player)
 	relic_system.set_weapon_ids(player.get_start_weapon_ids())
 	passed = _print_check_result("relic system init", relic_system != null and relic_system.get_total_relic_count() == 0) and passed
-	passed = _print_check_result("relic max_stack zero", int(DataRegistry.get_record("relics", "relic_flying_teeth").get("max_stack", -1)) == 0) and passed
-	passed = _print_check_result("relic add modifier", relic_system.add_relic("relic_flying_teeth") and relic_system.add_relic("relic_flying_eye") and int(player.get_stat("melee_damage")) >= 8) and passed
-	passed = _print_check_result("relic tag count", relic_system.get_bond_tag_count("bond_mighty") == 2) and passed
-	passed = _print_check_result("relic bond threshold", relic_system.get_active_bond_layers("bond_mighty") == 1) and passed
-	passed = _print_check_result("relic stack unlimited", relic_system.can_add_relic("relic_flying_teeth")) and passed
+	passed = _print_check_result("relic max_stack zero", int(DataRegistry.get_record("relics", "relic_piggy_bank").get("max_stack", -1)) == 0) and passed
+	passed = _print_check_result("relic add modifier", relic_system.add_relic("relic_finance_manager") and int(player.get_stat("interest_rate")) == 6) and passed
+	passed = _print_check_result("bond count zero without bond relic", relic_system.get_bond_count("bond_chosen") == 0) and passed
+	passed = _print_check_result("bond count stays zero without bond relic", relic_system.add_relic("relic_high_yield_contract") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
+	passed = _print_check_result("bond count still zero after second relic", relic_system.add_relic("relic_goblin_central_bank_printer") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
+	passed = _print_check_result("relic stack unlimited", relic_system.can_add_relic("relic_piggy_bank")) and passed
 	player.queue_free()
 	return passed
 
@@ -310,7 +311,7 @@ func _run_enemy_wave_checks() -> bool:
 	wave_manager.initialize(player)
 	passed = _print_check_result("enemy config load", DataRegistry.has_record("enemies", "enemy_mutated_grub")) and passed
 	passed = _print_check_result("wave config load", DataRegistry.has_record("waves", "wave_stage_01")) and passed
-	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(1) == 20 and wave_manager.calculate_wave_duration(7) == 50) and passed
+	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(0) == 30 and wave_manager.calculate_wave_duration(6) == 60) and passed
 
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
 	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == 20) and passed
@@ -711,7 +712,7 @@ func _run_weapon_checks() -> bool:
 		"owned_weapon_ids": ["weapon_void_blade"],
 		"equipped_weapons": [{"weapon_id": "weapon_void_blade", "level": 2}],
 		"unlocked_weapon_ids": ["weapon_mutated_cleaver", "weapon_dome_shockwave"],
-		"unlocked_relic_ids": ["relic_flying_teeth", "relic_flying_feather", "relic_flying_eye", "relic_void_heart"],
+		"unlocked_relic_ids": ["relic_piggy_bank", "relic_finance_manager", "relic_dividend_check"],
 		"owned_relic_counts": {},
 		"current_load": 12,
 		"load_capacity": 100,
@@ -773,24 +774,34 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance piggy relic", int(wave_manager.get_finance_snapshot().get("principal", 0)) >= 60) and passed
 	var dividend_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
 	wave_manager.add_relic("relic_dividend_check")
-	passed = _print_check_result("finance dividend check settle", int(wave_manager.get_finance_snapshot().get("principal", 0)) > dividend_before) and passed
+	var dividend_settle := wave_manager.trigger_finance_interest("bootstrap_dividend")
+	passed = _print_check_result("finance dividend check settle", bool(dividend_settle.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) > dividend_before) and passed
 	wave_manager.add_relic("relic_fixed_deposit_certificate")
 	var fixed_deposit_result := wave_manager.apply_finance_operation("deposit", 1)
 	passed = _print_check_result("finance fixed deposit deposit", bool(fixed_deposit_result.get("success", false))) and passed
-	var locked_withdraw_result := wave_manager.apply_finance_operation("withdraw", 1)
-	passed = _print_check_result("finance fixed deposit lock", not bool(locked_withdraw_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("withdrawable_principal", 0)) == 0) and passed
+	var fixed_deposit_withdraw_result := wave_manager.apply_finance_operation("withdraw", 1)
+	passed = _print_check_result("finance fixed deposit withdraw", bool(fixed_deposit_withdraw_result.get("success", false))) and passed
 	wave_manager.add_relic("relic_compound_interest_tome")
 	var rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	wave_manager.process_wave_end_settlements()
 	var rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	passed = _print_check_result("finance compound rate growth on wave end", rate_after > rate_before) and passed
 	wave_manager.add_relic("relic_perpetual_annuity_scroll")
-	var annuity_rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
-	wave_manager.tick_finance(1.0)
-	var annuity_rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
-	passed = _print_check_result("finance annuity keeps rate growth idle", is_equal_approx(annuity_rate_after, annuity_rate_before)) and passed
+	var annuity_principal_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
+	var annuity_results := wave_manager.process_wave_end_settlements()
+	passed = _print_check_result("finance annuity extra settlement", annuity_results.size() >= 2 and int(wave_manager.get_finance_snapshot().get("principal", 0)) > annuity_principal_before) and passed
+	wave_manager.add_relic("relic_high_yield_contract")
+	wave_manager.prepare_finance_for_wave(3)
+	var blocked_settle_results := wave_manager.process_wave_end_settlements()
+	var blocked_settle_result: Dictionary = blocked_settle_results[0] if not blocked_settle_results.is_empty() else {}
+	passed = _print_check_result("finance high yield blocks below threshold", bool(blocked_settle_result.get("blocked", false))) and passed
+	var threshold_deposit_result := wave_manager.apply_finance_operation("deposit", 50)
+	passed = _print_check_result("finance high yield threshold deposit", bool(threshold_deposit_result.get("success", false))) and passed
+	var threshold_settle_results := wave_manager.process_wave_end_settlements()
+	var threshold_settle_result: Dictionary = threshold_settle_results[0] if not threshold_settle_results.is_empty() else {}
+	passed = _print_check_result("finance high yield passes at threshold", bool(threshold_settle_result.get("success", false)) and not bool(threshold_settle_result.get("blocked", false))) and passed
 	var finance_popup := FINANCE_POPUP_SCENE.instantiate()
-	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.get_node_or_null("CenterContainer/MainPanel/Content/ButtonGrid/DepositAllButton") != null) and passed
+	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.get_node_or_null("MainPanel/Content/ActionRow/DepositButton") != null) and passed
 	if finance_popup != null:
 		finance_popup.queue_free()
 	var finance_controller := FINANCE_UI_CONTROLLER_SCENE.instantiate()

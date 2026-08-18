@@ -20,6 +20,7 @@ const STATE_SHARED_REWARD_SHOP_POPUP: String = "shared_reward_shop_popup"
 const STATE_WAVE_END_ABSORB: String = "wave_end_absorb"
 const STATE_INTEREST_SETTLEMENT: String = "interest_settlement"
 const STATE_SHOP_POPUP: String = "shop_popup"
+const STATE_ESC_OVERLAY: String = "esc_overlay"
 const STATE_FINANCE_POPUP: String = "finance_popup"
 const STATE_ZONE_SELECT: String = "zone_select"
 const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
@@ -48,6 +49,7 @@ var _pending_zone_harvest_payload: Dictionary = {}
 var _pending_interest_payload: Dictionary = {}
 var _pending_finance_payload: Dictionary = {}
 var _pending_wave_start_after_finance: bool = false
+var _stat_preview: Dictionary = {}
 
 var _bound_player: PlayerController = null
 var _bound_loadout: WeaponLoadout = null
@@ -83,6 +85,7 @@ func reset_flow() -> void:
 	_pending_interest_payload.clear()
 	_pending_finance_payload.clear()
 	_pending_wave_start_after_finance = false
+	_stat_preview.clear()
 	_set_battle_runtime_paused(false)
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
@@ -321,6 +324,25 @@ func close_shop_popup() -> void:
 		_set_state(STATE_BATTLE_PREPARE)
 
 
+func request_esc_overlay() -> void:
+	if current_mode != MODE_BATTLE or battle_resolved:
+		return
+	if current_state != STATE_WAVE_COMBAT and current_state != STATE_BATTLE_PREPARE:
+		return
+	_resume_state_after_modal = current_state
+	_set_battle_runtime_paused(true)
+	_set_state(STATE_ESC_OVERLAY)
+	modal_requested.emit(STATE_ESC_OVERLAY, {})
+
+
+func close_esc_overlay() -> void:
+	if current_state != STATE_ESC_OVERLAY:
+		return
+	modal_closed.emit(STATE_ESC_OVERLAY)
+	_set_state(_resume_state_after_modal)
+	_set_battle_runtime_paused(false)
+
+
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	if current_state != STATE_SHOP_POPUP and current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return {"success": false, "reason": "shop_not_active"}
@@ -393,6 +415,26 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 
 func confirm_battle_result() -> void:
 	enter_start_page()
+
+
+func set_stat_preview_from_offer(offer: Dictionary) -> void:
+	_stat_preview = StatPreviewBuilder.build_offer_stat_preview(offer, _bound_player)
+
+
+func clear_stat_preview() -> void:
+	_stat_preview.clear()
+
+
+func get_stat_preview() -> Dictionary:
+	return _stat_preview.duplicate(true)
+
+
+func get_bound_player() -> PlayerController:
+	return _bound_player
+
+
+func get_bound_loadout() -> WeaponLoadout:
+	return _bound_loadout
 
 
 func get_current_mode() -> String:

@@ -11,22 +11,31 @@ var _stat_value_labels: Dictionary = {}
 var _stat_name_labels: Dictionary = {}
 var _stat_info_buttons: Dictionary = {}
 var _damage_tooltip_panel: PanelContainer = null
+var _bond_indicator: Button = null
+var _bond_indicator_placeholder: PanelContainer = null
+var _bond_indicator_label: Label = null
+var _bond_tooltip_panel: PanelContainer = null
+var _displayed_bond_id: String = ""
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
 const DRAWER_CLOSED_LEFT := -28.0
 const DRAWER_CLOSED_RIGHT := 292.0
 const DRAWER_ANIMATION_SECONDS := 0.18
+const STAT_PREVIEW_GAIN_COLOR := Color(0.498, 0.847, 0.561, 1.0)
+const STAT_PREVIEW_LOSS_COLOR := Color(0.949, 0.545, 0.510, 1.0)
 const ELDRITCH_NAMING_THRESHOLD := 60.0
 const DRAWER_LOCKED_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_ESC_OVERLAY,
 ]
 const DRAWER_AUTO_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 	MainFlowCoordinator.STATE_ZONE_SELECT,
 	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
@@ -110,6 +119,7 @@ func _refresh_all() -> void:
 		return
 	_refresh_labels()
 	_refresh_stats_drawer()
+	_refresh_bond_indicator()
 	_refresh_visibility()
 
 
@@ -210,11 +220,19 @@ func _hide_stats_scroll_bars() -> void:
 
 func _refresh_stats_drawer() -> void:
 	_ensure_stat_rows()
+	var preview := _flow.get_stat_preview() if _flow != null else {}
 	for stat_id_variant in _stat_value_labels:
 		var stat_id := str(stat_id_variant)
 		var value_label := _stat_value_labels[stat_id_variant] as Label
 		if value_label != null:
-			value_label.text = _format_stat_value(stat_id, _get_display_stat_value(stat_id))
+			if preview.has(stat_id):
+				var preview_value := float(preview[stat_id])
+				var current_value := _get_display_stat_value(stat_id)
+				value_label.text = _format_stat_value(stat_id, preview_value)
+				value_label.add_theme_color_override("font_color", STAT_PREVIEW_GAIN_COLOR if preview_value >= current_value else STAT_PREVIEW_LOSS_COLOR)
+			else:
+				value_label.text = _format_stat_value(stat_id, _get_display_stat_value(stat_id))
+				value_label.remove_theme_color_override("font_color")
 		var name_label := _stat_name_labels.get(stat_id_variant, null) as Label
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
@@ -360,3 +378,133 @@ func _format_stat_value(stat_id: String, value: float) -> String:
 	if is_equal_approx(value, roundf(value)):
 		return "%d%%" % roundi(value) if StatDefinitions.is_percent_stat(stat_id) else "%d" % roundi(value)
 	return "%.2f%%" % value if StatDefinitions.is_percent_stat(stat_id) else "%.2f" % value
+
+
+func _refresh_bond_indicator() -> void:
+	if _flow == null or _flow.get_current_state() != MainFlowCoordinator.STATE_WAVE_COMBAT:
+		_displayed_bond_id = ""
+		_hide_bond_tooltip()
+		if _bond_indicator != null:
+			_bond_indicator.visible = false
+		return
+	var bond_id := _get_displayed_bond_id()
+	_displayed_bond_id = bond_id
+	if bond_id.is_empty():
+		_hide_bond_tooltip()
+		if _bond_indicator != null:
+			_bond_indicator.visible = false
+		return
+	_ensure_bond_indicator()
+	_update_bond_indicator_visual(bond_id)
+	_bond_indicator.visible = true
+
+
+func _get_displayed_bond_id() -> String:
+	if _player == null:
+		return ""
+	for bond in DataRegistry.get_table("bonds"):
+		if not (bond is Dictionary):
+			continue
+		var bond_id := str(bond.get("id", ""))
+		if bond_id.is_empty():
+			continue
+		if _player.relic_system.get_bond_count(bond_id) > 0:
+			return bond_id
+	return ""
+
+
+func _ensure_bond_indicator() -> void:
+	if _bond_indicator != null:
+		return
+	_bond_indicator = Button.new()
+	_bond_indicator.name = "BondIndicator"
+	_bond_indicator.flat = true
+	_bond_indicator.focus_mode = Control.FOCUS_NONE
+	_bond_indicator.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_bond_indicator.anchor_left = 1.0
+	_bond_indicator.anchor_right = 1.0
+	_bond_indicator.anchor_top = 0.0
+	_bond_indicator.anchor_bottom = 0.0
+	_bond_indicator.offset_left = -380.0
+	_bond_indicator.offset_top = 16.0
+	_bond_indicator.offset_right = -336.0
+	_bond_indicator.offset_bottom = 60.0
+	_bond_indicator.visible = false
+	_bond_indicator_placeholder = PanelContainer.new()
+	_bond_indicator_placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_bond_indicator_placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var placeholder_style := StyleBoxFlat.new()
+	placeholder_style.bg_color = Color(0.06, 0.07, 0.09, 0.95)
+	placeholder_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
+	placeholder_style.set_border_width_all(2)
+	placeholder_style.set_corner_radius_all(8)
+	_bond_indicator_placeholder.add_theme_stylebox_override("panel", placeholder_style)
+	_bond_indicator.add_child(_bond_indicator_placeholder)
+	_bond_indicator_label = Label.new()
+	_bond_indicator_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_bond_indicator_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_bond_indicator_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_bond_indicator_label.add_theme_font_size_override("font_size", 24)
+	_bond_indicator_label.add_theme_color_override("font_color", Color(0.96, 0.84, 0.45, 1.0))
+	_bond_indicator_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bond_indicator.add_child(_bond_indicator_label)
+	_bond_indicator.mouse_entered.connect(_show_bond_tooltip)
+	_bond_indicator.mouse_exited.connect(_hide_bond_tooltip)
+	add_child(_bond_indicator)
+
+
+func _update_bond_indicator_visual(bond_id: String) -> void:
+	if _bond_indicator_label == null:
+		return
+	var first_char := BondDisplay.get_bond_name(bond_id).substr(0, 1)
+	if _bond_indicator_label.text != first_char:
+		_bond_indicator_label.text = first_char
+
+
+func _show_bond_tooltip() -> void:
+	if _displayed_bond_id.is_empty() or _player == null:
+		return
+	_hide_bond_tooltip()
+	_bond_tooltip_panel = PanelContainer.new()
+	_bond_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bond_tooltip_panel.z_index = 100
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.04, 0.05, 0.07, 0.96)
+	panel_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
+	panel_style.set_border_width_all(1)
+	panel_style.set_corner_radius_all(4)
+	_bond_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(_bond_tooltip_panel)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 8)
+	margin.add_theme_constant_override("margin_top", 5)
+	margin.add_theme_constant_override("margin_right", 8)
+	margin.add_theme_constant_override("margin_bottom", 5)
+	_bond_tooltip_panel.add_child(margin)
+	var label := RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.custom_minimum_size = Vector2(220, 0)
+	label.text = BondDisplay.build_bond_tooltip_text(_displayed_bond_id, _player.relic_system)
+	margin.add_child(label)
+	call_deferred("_position_bond_tooltip", _bond_tooltip_panel)
+
+
+func _position_bond_tooltip(tooltip_panel: PanelContainer) -> void:
+	if not is_instance_valid(tooltip_panel):
+		return
+	var viewport_size := get_viewport().get_visible_rect().size
+	var tooltip_position := Vector2.ZERO
+	if _bond_indicator != null:
+		var indicator_rect := _bond_indicator.get_global_rect()
+		tooltip_position = indicator_rect.position + Vector2(-tooltip_panel.size.x - 8.0, 0.0)
+	tooltip_position.x = maxf(tooltip_position.x, 4.0)
+	tooltip_position.y = clampf(tooltip_position.y, 4.0, viewport_size.y - tooltip_panel.size.y - 4.0)
+	tooltip_panel.position = tooltip_position
+
+
+func _hide_bond_tooltip() -> void:
+	if _bond_tooltip_panel != null:
+		_bond_tooltip_panel.queue_free()
+		_bond_tooltip_panel = null

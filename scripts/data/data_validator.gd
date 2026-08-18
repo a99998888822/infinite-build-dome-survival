@@ -15,7 +15,7 @@ const REQUIRED_TABLES: Array[String] = [
 
 const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "attack_range", "hit_radius", "projectile_speed", "spread_angle", "base_stats", "level_upgrades"],
-	"relics": ["id", "display_name", "rarity", "bond_id", "tags", "effects"],
+	"relics": ["id", "display_name", "rarity", "tags", "effects"],
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
 	"characters": ["id", "icon", "base_stats", "start_weapons"],
 	"enemies": ["id", "base_stats", "drop_table_id"],
@@ -39,6 +39,7 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
+const BOND_ALLOWED_RARITIES: Array[String] = ["epic", "mythic", "legendary"]
 const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
 const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = [
 	BattleFinanceSystem.TRIGGER_ON_ACQUIRE,
@@ -47,19 +48,26 @@ const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = [
 	BattleFinanceSystem.TRIGGER_WAVE_END,
 	BattleFinanceSystem.TRIGGER_INTEREST_SETTLE,
 	BattleFinanceSystem.TRIGGER_INTEREST_SUCCESS,
-	BattleFinanceSystem.TRIGGER_COMBAT_TICK,
+	BattleFinanceSystem.TRIGGER_PRINCIPAL_ZERO,
+	BattleFinanceSystem.TRIGGER_DERIVED,
+	BattleFinanceSystem.TRIGGER_ENEMY_KILL,
 ]
 const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FLAT,
 	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FROM_GOLD_PERCENT,
 	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_PER_WAVE,
-	BattleFinanceSystem.EFFECT_LOCK_PRINCIPAL_FOR_WAVES,
 	BattleFinanceSystem.EFFECT_SETTLE_INTEREST_ONCE,
-	BattleFinanceSystem.EFFECT_SPECULATIVE_INTEREST,
+	BattleFinanceSystem.EFFECT_DIVIDEND_DOUBLE,
 	BattleFinanceSystem.EFFECT_ADD_INTEREST_RATE_BONUS,
 	BattleFinanceSystem.EFFECT_SETTLE_INTEREST_EVERY_N_WAVES,
+	BattleFinanceSystem.EFFECT_EXTRA_SETTLEMENT_PER_WAVE,
+	BattleFinanceSystem.EFFECT_CONSUME_PRINCIPAL_PERCENT_EVERY_N_WAVES,
 	BattleFinanceSystem.EFFECT_REQUIRE_WAVE_START_DEPOSIT,
-	BattleFinanceSystem.EFFECT_PER_SECOND_INTEREST,
+	BattleFinanceSystem.EFFECT_ADD_DIVINITY,
+	BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PRINCIPAL,
+	BattleFinanceSystem.EFFECT_DERIVED_INTEREST_FROM_DIVINITY,
+	BattleFinanceSystem.EFFECT_BANKRUPTCY_RECOVERY,
+	BattleFinanceSystem.EFFECT_TIP_TRAY_DROP,
 ]
 
 var errors: Array[String] = []
@@ -77,7 +85,7 @@ func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
 		_validate_integer_values(tables[table_name], str(table_name))
 		_validate_stat_references(tables[table_name], str(table_name))
 
-	_validate_weapon_records(tables.get("weapons", []))
+	_validate_weapon_records(tables.get("weapons", []), records_by_id)
 	_validate_relic_records(tables.get("relics", []), records_by_id)
 	_validate_bond_records(tables.get("bonds", []))
 	_validate_character_records(tables.get("characters", []), records_by_id)
@@ -200,13 +208,14 @@ func _validate_stat_references(value_data: Variant, path: String) -> void:
 			pass
 
 
-func _validate_weapon_records(records: Array) -> void:
+func _validate_weapon_records(records: Array, records_by_id: Dictionary) -> void:
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
 			continue
 		var path := "weapons[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
+		_validate_bond_rarity_rule(record, path, records_by_id)
 		if not record.has("description") or str(record.get("description", "")).strip_edges().is_empty():
 			errors.append("%s.description cannot be empty." % path)
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
@@ -271,7 +280,7 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 		_validate_rarity(record, path)
 		if not record.has("description") or str(record.get("description", "")).strip_edges().is_empty():
 			errors.append("%s.description cannot be empty." % path)
-		_validate_reference(record, "bond_id", "bonds", records_by_id, path)
+		_validate_bond_rarity_rule(record, path, records_by_id)
 		if record.has("max_stack"):
 			_validate_non_negative_int(record, "max_stack", path)
 		var effects: Variant = record.get("effects", [])
@@ -288,6 +297,19 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 			_validate_relic_runtime_effect(runtime_effects[runtime_index], "%s.runtime_effects[%d]" % [path, runtime_index])
 
 
+func _validate_bond_rarity_rule(record: Dictionary, path: String, records_by_id: Dictionary) -> void:
+	# 羁绊只允许出现在高稀有度（史诗/罕见/传说）的武器与遗物上。
+	_validate_reference(record, "bond_id", "bonds", records_by_id, path)
+	if not record.has("bond_id"):
+		return
+	var bond_id := str(record.get("bond_id", "")).strip_edges()
+	if bond_id.is_empty():
+		return
+	var rarity := str(record.get("rarity", ""))
+	if not BOND_ALLOWED_RARITIES.has(rarity):
+		errors.append("%s.bond_id is only allowed on epic or higher rarity (current: %s)" % [path, rarity])
+
+
 func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 	if not (effect is Dictionary):
 		errors.append("%s must be an object." % path)
@@ -298,7 +320,7 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 		warnings.append("Unknown relic runtime trigger in %s: %s" % [path, str(effect_data["trigger"])])
 	if effect_data.has("effect") and not VALID_RELIC_RUNTIME_EFFECTS.has(str(effect_data["effect"])):
 		warnings.append("Unknown relic runtime effect in %s: %s" % [path, str(effect_data["effect"])])
-	for key in ["value", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave"]:
+	for key in ["value", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave", "chance_percent", "gold_multiplier", "divisor", "per_unit", "amount", "minimum_deposit"]:
 		if not effect_data.has(key):
 			continue
 		if not (effect_data[key] is int or effect_data[key] is float):

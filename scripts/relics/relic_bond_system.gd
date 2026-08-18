@@ -146,15 +146,12 @@ func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]
 	return result
 
 
-func get_bond_tag_count(bond_id: String) -> int:
+func get_bond_count(bond_id: String) -> int:
 	var bond_data := DataRegistry.get_record("bonds", bond_id)
 	if bond_data.is_empty():
 		return 0
-	var bond_tag := str(bond_data.get("bond_tag", ""))
-	if bond_tag.is_empty():
-		return 0
-	var counts := _collect_tag_counts()
-	return int(counts.get(bond_tag, 0))
+	var counts := _collect_bond_counts()
+	return int(counts.get(bond_id, 0))
 
 
 func get_active_bond_layers(bond_id: String) -> int:
@@ -165,10 +162,7 @@ func get_active_thresholds(bond_id: String) -> Array[int]:
 	var bond_data := DataRegistry.get_record("bonds", bond_id)
 	if bond_data.is_empty():
 		return []
-	var bond_tag := str(bond_data.get("bond_tag", ""))
-	if bond_tag.is_empty():
-		return []
-	var bond_count := get_bond_tag_count(bond_id)
+	var bond_count := get_bond_count(bond_id)
 	var thresholds: Variant = bond_data.get("thresholds", {})
 	if not (thresholds is Dictionary):
 		return []
@@ -217,7 +211,7 @@ func _apply_relic_effects() -> void:
 
 
 func _apply_bond_effects() -> void:
-	var counts := _collect_tag_counts()
+	var counts := _collect_bond_counts()
 	var bonds := DataRegistry.get_table("bonds")
 	if bonds.is_empty():
 		return
@@ -228,7 +222,7 @@ func _apply_bond_effects() -> void:
 		var bond_id := str(bond_data.get("id", ""))
 		var bond_name := str(bond_data.get("name", ""))
 		var bond_tag := str(bond_data.get("bond_tag", ""))
-		var bond_count := int(counts.get(bond_tag, 0))
+		var bond_count := int(counts.get(bond_id, 0))
 		var thresholds: Variant = bond_data.get("thresholds", {})
 		if not (thresholds is Dictionary):
 			continue
@@ -313,24 +307,23 @@ func _build_special_effect_record(effect_data: Dictionary, bond_id: String, bond
 	return record
 
 
-func _collect_tag_counts() -> Dictionary:
+func _collect_bond_counts() -> Dictionary:
 	var counts: Dictionary = {}
 	for weapon_id in weapon_ids:
 		var weapon_data := DataRegistry.get_record("weapons", weapon_id)
-		_accumulate_tags(counts, weapon_data.get("tags", []))
+		_accumulate_bond_id(counts, weapon_data.get("bond_id", ""))
 	for instance_id in relic_instances.keys():
 		var relic_instance: Dictionary = relic_instances[instance_id]
 		var relic_data: Dictionary = relic_instance.get("relic_data", {})
-		_accumulate_tags(counts, relic_data.get("tags", []))
+		_accumulate_bond_id(counts, relic_data.get("bond_id", ""))
 	return counts
 
 
-func _accumulate_tags(counts: Dictionary, tags_data: Variant) -> void:
-	if not (tags_data is Array):
+func _accumulate_bond_id(counts: Dictionary, bond_id_value: Variant) -> void:
+	var bond_id := str(bond_id_value).strip_edges()
+	if bond_id.is_empty():
 		return
-	for tag in tags_data:
-		var tag_id := str(tag)
-		counts[tag_id] = int(counts.get(tag_id, 0)) + 1
+	counts[bond_id] = int(counts.get(bond_id, 0)) + 1
 
 
 func _clear_owner_effects(source_type: String) -> void:

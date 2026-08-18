@@ -1,137 +1,18 @@
 [
   {
-    "id": "relic_deep_eye",
-    "display_name": "深海之眼",
-    "description": "每秒回血 [color=#7FD88F]+1[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_deep_eye.png",
-    "rarity": "rare",
-    "bond_id": "bond_chosen",
-    "max_stack": 0,
-    "tags": ["relic", "survival", "deep"],
-    "effects": [
-      {
-        "id": "mod_relic_deep_eye_hp_regen",
-        "source_type": "relic",
-        "source_id": "relic_deep_eye",
-        "target_scope": "player",
-        "stat": "hp_regen",
-        "operation": "add_flat",
-        "value": 1,
-        "duration": -1,
-        "stack_rule": "unique"
-      }
-    ]
-  },
-  {
-    "id": "relic_flying_teeth",
-    "display_name": "飞的牙齿",
-    "description": "近战伤害 [color=#7FD88F]+1[/color]\n攻击速度 [color=#7FD88F]+2%[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_flying_teeth.png",
-    "rarity": "common",
-    "bond_id": "bond_mighty",
-    "max_stack": 0,
-    "tags": ["relic", "melee", "fang"],
-    "effects": [
-      {
-        "id": "mod_relic_flying_teeth_melee_damage",
-        "source_type": "relic",
-        "source_id": "relic_flying_teeth",
-        "target_scope": "player",
-        "stat": "melee_damage",
-        "operation": "add_flat",
-        "value": 1,
-        "duration": -1,
-        "stack_rule": "unique"
-      },
-      {
-        "id": "mod_relic_flying_teeth_attack_speed",
-        "source_type": "relic",
-        "source_id": "relic_flying_teeth",
-        "target_scope": "player",
-        "stat": "attack_speed",
-        "operation": "add_percent",
-        "value": 2,
-        "duration": -1,
-        "stack_rule": "unique"
-      }
-    ]
-  },
-  {
-    "id": "relic_flying_feather",
-    "display_name": "飞的羽毛",
-    "description": "攻击速度 [color=#7FD88F]+5%[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_flying_feather.png",
-    "rarity": "common",
-    "bond_id": "bond_sharpshooter",
-    "max_stack": 0,
-    "tags": ["relic", "speed", "feather"],
-    "effects": [
-      {
-        "id": "mod_relic_flying_feather_attack_speed",
-        "source_type": "relic",
-        "source_id": "relic_flying_feather",
-        "target_scope": "player",
-        "stat": "attack_speed",
-        "operation": "add_percent",
-        "value": 5,
-        "duration": -1,
-        "stack_rule": "unique"
-      }
-    ]
-  },
-  {
-    "id": "relic_flying_eye",
-    "display_name": "飞的眼睛",
-    "description": "近战伤害 [color=#7FD88F]+5[/color]\n神性 [color=#7FD88F]+5[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_flying_eye.png",
-    "rarity": "rare",
-    "bond_id": "bond_chosen",
-    "max_stack": 0,
-    "tags": ["relic", "melee", "mystic", "eye"],
-    "effects": [
-      {
-        "id": "mod_relic_flying_eye_melee_damage",
-        "source_type": "relic",
-        "source_id": "relic_flying_eye",
-        "target_scope": "player",
-        "stat": "melee_damage",
-        "operation": "add_flat",
-        "value": 5,
-        "duration": -1,
-        "stack_rule": "unique"
-      },
-      {
-        "id": "mod_relic_flying_eye_divinity",
-        "source_type": "relic",
-        "source_id": "relic_flying_eye",
-        "target_scope": "player",
-        "stat": "divinity",
-        "operation": "add_flat",
-        "value": 5,
-        "duration": -1,
-        "stack_rule": "unique"
-      }
-    ]
-  },
-  {
     "id": "relic_piggy_bank",
     "display_name": "猪猪存钱罐",
-    "description": "每波开始 本金 [color=#7FD88F]+10[/color]",
+    "description": "每波开始自动本金 + 15",
     "icon": "res://assets/ui/icons/relics/relic_piggy_bank.png",
-    "rarity": "uncommon",
-    "bond_id": "bond_chosen",
+    "rarity": "common",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "bank"
-    ],
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
         "trigger": "wave_start",
         "effect": "add_principal_flat",
-        "value": 10,
+        "value": 15,
         "free_principal": true
       }
     ]
@@ -139,16 +20,11 @@
   {
     "id": "relic_finance_manager",
     "display_name": "理财经理",
-    "description": "利率 [color=#7FD88F]+1%[/color]",
+    "description": "利率 + 1%",
     "icon": "res://assets/ui/icons/relics/relic_finance_manager.png",
-    "rarity": "uncommon",
-    "bond_id": "bond_chosen",
+    "rarity": "common",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "manager"
-    ],
+    "tags": [],
     "effects": [
       {
         "id": "mod_relic_finance_manager_interest_rate",
@@ -167,60 +43,28 @@
   {
     "id": "relic_dividend_check",
     "display_name": "分红支票",
-    "description": "获得时 立即结算一次利息",
+    "description": "每次结算利息的时候有20%的概率翻倍，不给保底",
     "icon": "res://assets/ui/icons/relics/relic_dividend_check.png",
     "rarity": "uncommon",
-    "bond_id": "bond_chosen",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "dividend"
-    ],
-    "effects": [],
-    "runtime_effects": [
-      {
-        "trigger": "on_acquire",
-        "effect": "settle_interest_once"
-      }
-    ]
-  },
-  {
-    "id": "relic_speculative_chip",
-    "display_name": "投机筹码",
-    "description": "利息结算 [color=#7FD88F]55%概率翻倍[/color]\n[color=#F28B82]45%概率无收益[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_speculative_chip.png",
-    "rarity": "uncommon",
-    "bond_id": "bond_chosen",
-    "max_stack": 1,
-    "tags": [
-      "relic",
-      "finance",
-      "chance"
-    ],
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
         "trigger": "interest_settle",
-        "effect": "speculative_interest",
-        "double_chance_percent": 55,
-        "zero_chance_percent": 45
+        "effect": "dividend_double",
+        "double_chance_percent": 20
       }
     ]
   },
   {
     "id": "relic_fixed_deposit_certificate",
     "display_name": "定期存单",
-    "description": "获得时 本金 [color=#7FD88F]+50×波次[/color]\n手动存入后 本波不可取出",
+    "description": "本金立刻 + （50*波次）",
     "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "rarity": "uncommon",
-    "bond_id": "bond_chosen",
-    "max_stack": 1,
-    "tags": [
-      "relic",
-      "finance",
-      "lock"
-    ],
+    "max_stack": 0,
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
@@ -228,27 +72,149 @@
         "effect": "add_principal_per_wave",
         "value_per_wave": 50,
         "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_flyer_ad",
+    "display_name": "传单广告",
+    "description": "商店折扣 + 8%",
+    "icon": "res://assets/ui/icons/relics/relic_flyer_ad.png",
+    "rarity": "uncommon",
+    "max_stack": 3,
+    "tags": [],
+    "effects": [
+      {
+        "id": "mod_relic_flyer_ad_shop_price_percent",
+        "source_type": "relic",
+        "source_id": "relic_flyer_ad",
+        "target_scope": "player",
+        "stat": "shop_price_percent",
+        "operation": "add_flat",
+        "value": 8,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_steel_vault",
+    "display_name": "钢铁保险柜",
+    "description": "每 100 本金 +1 护甲",
+    "icon": "res://assets/ui/icons/relics/relic_steel_vault.png",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "armor",
+        "divisor": 100,
+        "per_unit": 1
+      }
+    ]
+  },
+  {
+    "id": "relic_quant_trading",
+    "display_name": "量化操盘",
+    "description": "每 50 本金 +1 攻速",
+    "icon": "res://assets/ui/icons/relics/relic_quant_trading.png",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "attack_speed",
+        "divisor": 50,
+        "per_unit": 1
+      }
+    ]
+  },
+  {
+    "id": "relic_hostile_takeover",
+    "display_name": "恶意收购",
+    "description": "每 200 本金提供通用伤害加成 + 1%",
+    "icon": "res://assets/ui/icons/relics/relic_hostile_takeover.png",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "damage_percent",
+        "divisor": 200,
+        "per_unit": 1
+      }
+    ]
+  },
+  {
+    "id": "relic_gold_compass",
+    "display_name": "吸金罗盘",
+    "description": "拾取范围 +40；金币获取 +5%",
+    "icon": "res://assets/ui/icons/relics/relic_gold_compass.png",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [
+      {
+        "id": "mod_relic_gold_compass_pickup_radius",
+        "source_type": "relic",
+        "source_id": "relic_gold_compass",
+        "target_scope": "player",
+        "stat": "pickup_radius",
+        "operation": "add_flat",
+        "value": 40,
+        "duration": -1,
+        "stack_rule": "unique"
       },
       {
-        "trigger": "deposit",
-        "effect": "lock_principal_for_waves",
-        "waves": 1
+        "id": "mod_relic_gold_compass_currency_gain_percent",
+        "source_type": "relic",
+        "source_id": "relic_gold_compass",
+        "target_scope": "player",
+        "stat": "currency_gain_percent",
+        "operation": "add_flat",
+        "value": 5,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_tip_tray",
+    "display_name": "小费托盘",
+    "description": "击杀敌人时 10% 概率额外掉落 1 经验球",
+    "icon": "res://assets/ui/icons/relics/relic_tip_tray.png",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "enemy_kill",
+        "effect": "tip_tray_drop",
+        "chance_percent": 10,
+        "amount": 1
       }
     ]
   },
   {
     "id": "relic_compound_interest_tome",
     "display_name": "复利宝典",
-    "description": "每次成功结算利息 利率 [color=#7FD88F]+0.2%[/color]",
+    "description": "每成功结算一次利息，利率 + 0.2%",
     "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
-    "rarity": "rare",
-    "bond_id": "bond_chosen",
+    "rarity": "epic",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "growth"
-    ],
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
@@ -261,16 +227,11 @@
   {
     "id": "relic_high_yield_contract",
     "display_name": "高利契约",
-    "description": "利率 [color=#7FD88F]+3%[/color]\n本波开始前未存入 波末不可收息",
+    "description": "利率 + 4%；但是每波结束时，若你回合开始前未存入本金（至少50），则当前回合结束时无法收获利息",
     "icon": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
     "rarity": "epic",
-    "bond_id": "bond_chosen",
     "max_stack": 1,
-    "tags": [
-      "relic",
-      "finance",
-      "contract"
-    ],
+    "tags": [],
     "effects": [
       {
         "id": "mod_relic_high_yield_contract_interest_rate",
@@ -279,7 +240,7 @@
         "target_scope": "player",
         "stat": "interest_rate",
         "operation": "add_flat",
-        "value": 3,
+        "value": 4,
         "duration": -1,
         "stack_rule": "unique"
       }
@@ -287,23 +248,80 @@
     "runtime_effects": [
       {
         "trigger": "wave_end",
-        "effect": "require_wave_start_deposit_for_interest"
+        "effect": "require_wave_start_deposit_for_interest",
+        "minimum_deposit": 50
+      }
+    ]
+  },
+  {
+    "id": "relic_merger_reorg",
+    "display_name": "并购重组",
+    "description": "负载上限 + 10；每 500 本金再 + 5",
+    "icon": "res://assets/ui/icons/relics/relic_merger_reorg.png",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": [],
+    "effects": [
+      {
+        "id": "mod_relic_merger_reorg_load_capacity",
+        "source_type": "relic",
+        "source_id": "relic_merger_reorg",
+        "target_scope": "player",
+        "stat": "load_capacity",
+        "operation": "add_flat",
+        "value": 10,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "load_capacity",
+        "divisor": 500,
+        "per_unit": 5
+      }
+    ]
+  },
+  {
+    "id": "relic_private_army",
+    "display_name": "私人武装",
+    "description": "召唤数量 + 1；每 3 波消耗当前本金 5% 作为军费",
+    "icon": "res://assets/ui/icons/relics/relic_private_army.png",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": [],
+    "effects": [
+      {
+        "id": "mod_relic_private_army_summon_count",
+        "source_type": "relic",
+        "source_id": "relic_private_army",
+        "target_scope": "player",
+        "stat": "summon_count",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1,
+        "stack_rule": "unique"
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "wave_end",
+        "effect": "consume_principal_percent_every_n_waves",
+        "interval_waves": 3,
+        "value_percent": 5
       }
     ]
   },
   {
     "id": "relic_periodic_dividend_clock",
     "display_name": "周期分红钟",
-    "description": "每 3 波 额外触发一次利息结算",
+    "description": "每经过 3 波，自动触发一次利息结算",
     "icon": "res://assets/ui/icons/relics/relic_periodic_dividend_clock.png",
     "rarity": "epic",
-    "bond_id": "bond_chosen",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "periodic"
-    ],
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
@@ -314,18 +332,36 @@
     ]
   },
   {
+    "id": "relic_divine_fusion",
+    "display_name": "神性融合",
+    "description": "每 5 侵蚀度提供利率 + 1%；每波开始时侵蚀度 + 1",
+    "icon": "res://assets/ui/icons/relics/relic_divine_fusion.png",
+    "rarity": "mythic",
+    "max_stack": 0,
+    "tags": [],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "wave_start",
+        "effect": "add_divinity",
+        "value": 1
+      },
+      {
+        "trigger": "derived",
+        "effect": "derived_interest_from_divinity",
+        "divisor": 5,
+        "per_unit": 1
+      }
+    ]
+  },
+  {
     "id": "relic_goblin_central_bank_printer",
-    "display_name": "哥布林央行印钞机",
-    "description": "利率 [color=#7FD88F]+5%[/color]\n每波开始 注入当前金币 [color=#7FD88F]10%[/color] 免费本金",
+    "display_name": "哥布林金币铸造机",
+    "description": "利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金",
     "icon": "res://assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
     "rarity": "mythic",
-    "bond_id": "bond_chosen",
-    "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "printer"
-    ],
+    "max_stack": 1,
+    "tags": [],
     "effects": [
       {
         "id": "mod_relic_goblin_central_bank_printer_interest_rate",
@@ -351,51 +387,33 @@
   {
     "id": "relic_perpetual_annuity_scroll",
     "display_name": "永续年金卷轴",
-    "description": "战斗中 每秒结算本金 [color=#7FD88F]0.1%[/color] 利息\n波末仍正常结算全额利息",
+    "description": "每个回合结息次数 + 1",
     "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "rarity": "mythic",
-    "bond_id": "bond_chosen",
     "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "annuity"
-    ],
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
-        "trigger": "combat_tick",
-        "effect": "per_second_interest",
-        "principal_percent": 0.1
+        "trigger": "wave_end",
+        "effect": "extra_settlement_per_wave"
       }
     ]
   },
   {
-    "id": "relic_goblin_coin_printer",
-    "display_name": "哥布林印钞机",
-    "description": "每波开始 注入当前金币 [color=#7FD88F]10%[/color] 免费本金\n每次利息结算后 利率 [color=#7FD88F]+0.3%[/color]",
-    "icon": "res://assets/ui/icons/relics/relic_goblin_coin_printer.png",
-    "rarity": "mythic",
-    "bond_id": "bond_chosen",
-    "max_stack": 0,
-    "tags": [
-      "relic",
-      "finance",
-      "printer",
-      "growth"
-    ],
+    "id": "relic_bankruptcy_reorg",
+    "display_name": "破产重组",
+    "description": "本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1",
+    "icon": "res://assets/ui/icons/relics/relic_bankruptcy_reorg.png",
+    "rarity": "legendary",
+    "max_stack": 1,
+    "tags": [],
     "effects": [],
     "runtime_effects": [
       {
-        "trigger": "wave_start",
-        "effect": "add_principal_from_gold_percent",
-        "value_percent": 10,
-        "free_principal": true
-      },
-      {
-        "trigger": "interest_settle",
-        "effect": "add_interest_rate_bonus",
-        "value": 0.3
+        "trigger": "principal_zero",
+        "effect": "bankruptcy_recovery",
+        "gold_multiplier": 2
       }
     ]
   }

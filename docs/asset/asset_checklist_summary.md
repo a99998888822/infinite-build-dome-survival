@@ -6,7 +6,7 @@
 > 生成日期：2026-08-11。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
-## 1. 已存在的素材（37 个）
+## 1. 已存在的素材（33 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
@@ -40,10 +40,6 @@
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | placeholder_icon | `placeholder_icon.png` | `assets/ui/icons/placeholder_icon.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 深海之眼遗物图标 | `relic_deep_eye.png` | `assets/ui/icons/relics/relic_deep_eye.png` | 128x128 / 1:1 / PNG |  |
-| 已存在 | 飞的眼睛遗物图标 | `relic_flying_eye.png` | `assets/ui/icons/relics/relic_flying_eye.png` | 128x128 / 1:1 / PNG |  |
-| 已存在 | 飞的羽毛遗物图标 | `relic_flying_feather.png` | `assets/ui/icons/relics/relic_flying_feather.png` | 128x128 / 1:1 / PNG |  |
-| 已存在 | 飞的牙齿遗物图标 | `relic_flying_teeth.png` | `assets/ui/icons/relics/relic_flying_teeth.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 穹顶震波器图标 | `weapon_dome_shockwave.png` | `assets/ui/icons/weapons/weapon_dome_shockwave.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 砍刀图标 | `weapon_mutated_cleaver.png` | `assets/ui/icons/weapons/weapon_mutated_cleaver.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 小飞刀图标 | `weapon_void_blade.png` | `assets/ui/icons/weapons/weapon_void_blade.png` | 128x128 / 1:1 / PNG |  |
@@ -79,17 +75,25 @@
 | 未存在 | 本金图标 | `ui_finance_principal_icon.png` | `assets/ui/icons/finance/ui_finance_principal_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议金币堆 + 银行章 |
 | 未存在 | 利率图标 | `ui_finance_interest_icon.png` | `assets/ui/icons/finance/ui_finance_interest_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议百分号 + 金币光效 |
 | 未存在 | 本金锁定提示 | `ui_finance_lock_icon.png` | `assets/ui/icons/finance/ui_finance_lock_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 定期存单锁定状态 |
-| 未存在 | 猪猪存钱罐遗物图标 | `relic_piggy_bank.png` | `assets/ui/icons/relics/relic_piggy_bank.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；粉色陶瓷小猪存钱罐，背部金币投入口。 |
-| 未存在 | 理财经理遗物图标 | `relic_finance_manager.png` | `assets/ui/icons/relics/relic_finance_manager.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；哥布林带公文包，穿小西装或铁算盘领带。 |
-| 未存在 | 分红支票遗物图标 | `relic_dividend_check.png` | `assets/ui/icons/relics/relic_dividend_check.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；烫金纸质支票，边缘带金币纹章。 |
-| 未存在 | 投机筹码遗物图标 | `relic_speculative_chip.png` | `assets/ui/icons/relics/relic_speculative_chip.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；黑色鎏金筹码，一面金币一面骷髅。 |
-| 未存在 | 定期存单遗物图标 | `relic_fixed_deposit_certificate.png` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；冰封银行存单单据，带蓝色封蜡和锁链。 |
-| 未存在 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；金边硬皮金融古书，封面为递增曲线。 |
-| 未存在 | 高利契约遗物图标 | `relic_high_yield_contract.png` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；沾红墨水的羊皮纸契约，带危险印章。 |
-| 未存在 | 周期分红钟遗物图标 | `relic_periodic_dividend_clock.png` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；黄铜落地摆钟，钟摆是金币。 |
-| 未存在 | 哥布林央行印钞机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；迷你哥布林金币铸造机，带央行徽章。 |
-| 未存在 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；发光魔法契约卷轴，金币符文环绕。 |
-| 未存在 | 哥布林印钞机遗物图标 | `relic_goblin_coin_printer.png` | `assets/ui/icons/relics/relic_goblin_coin_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；迷你黄铜金币铸造机，喷出金币火花。 |
+| 未存在 | 猪猪存钱罐遗物图标 | `relic_piggy_bank.png` | `assets/ui/icons/relics/relic_piggy_bank.png` | 128x128 / 1:1 / PNG，透明背景 | 白稀有度；猪猪存钱罐主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 理财经理遗物图标 | `relic_finance_manager.png` | `assets/ui/icons/relics/relic_finance_manager.png` | 128x128 / 1:1 / PNG，透明背景 | 白稀有度；理财经理主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 分红支票遗物图标 | `relic_dividend_check.png` | `assets/ui/icons/relics/relic_dividend_check.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；分红支票主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 定期存单遗物图标 | `relic_fixed_deposit_certificate.png` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；定期存单主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 传单广告遗物图标 | `relic_flyer_ad.png` | `assets/ui/icons/relics/relic_flyer_ad.png` | 128x128 / 1:1 / PNG，透明背景 | 绿稀有度；传单广告主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 钢铁保险柜遗物图标 | `relic_steel_vault.png` | `assets/ui/icons/relics/relic_steel_vault.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；钢铁保险柜主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 量化操盘遗物图标 | `relic_quant_trading.png` | `assets/ui/icons/relics/relic_quant_trading.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；量化操盘主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 恶意收购遗物图标 | `relic_hostile_takeover.png` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；恶意收购主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 吸金罗盘遗物图标 | `relic_gold_compass.png` | `assets/ui/icons/relics/relic_gold_compass.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；吸金罗盘主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 小费托盘遗物图标 | `relic_tip_tray.png` | `assets/ui/icons/relics/relic_tip_tray.png` | 128x128 / 1:1 / PNG，透明背景 | 蓝稀有度；小费托盘主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；复利宝典主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 高利契约遗物图标 | `relic_high_yield_contract.png` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；高利契约主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 并购重组遗物图标 | `relic_merger_reorg.png` | `assets/ui/icons/relics/relic_merger_reorg.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；并购重组主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 私人武装遗物图标 | `relic_private_army.png` | `assets/ui/icons/relics/relic_private_army.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；私人武装主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 周期分红钟遗物图标 | `relic_periodic_dividend_clock.png` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；周期分红钟主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 神性融合遗物图标 | `relic_divine_fusion.png` | `assets/ui/icons/relics/relic_divine_fusion.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；神性融合主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 哥布林金币铸造机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；哥布林金币铸造机主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；永续年金卷轴主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 破产重组遗物图标 | `relic_bankruptcy_reorg.png` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 128x128 / 1:1 / PNG，透明背景 | 红稀有度；破产重组主题图标，像素风，轮廓清晰，透明背景。 |
 
 ## 3. 未存在的可选素材（29 个）
 
