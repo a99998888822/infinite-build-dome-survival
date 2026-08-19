@@ -11,7 +11,6 @@ const BUILDING_POSITIONS: Dictionary = {
 	"camp_blade_arena": Vector2(120.0, -140.0),
 	"camp_farstar_range": Vector2(320.0, -50.0),
 	"camp_kin_nursery": Vector2(-280.0, 150.0),
-	"camp_mutation_laboratory": Vector2(-60.0, 170.0),
 	"camp_dome_shelter": Vector2(140.0, 150.0),
 	"camp_council_hall": Vector2(330.0, 150.0),
 }

@@ -8,7 +8,9 @@ var _selected_building_id: String = ""
 @onready var currency_label: Label = get_node_or_null("TopBar/CurrencyLabel")
 @onready var back_button: Button = get_node_or_null("TopBar/BackButton")
 @onready var reset_save_button: Button = get_node_or_null("TopBar/ResetSaveButton")
+@onready var reset_upgrades_button: Button = get_node_or_null("TopBar/ResetUpgradesButton")
 @onready var clear_save_dialog: ConfirmationDialog = get_node_or_null("ClearSaveDialog")
+@onready var reset_upgrades_dialog: ConfirmationDialog = get_node_or_null("ResetUpgradesDialog")
 @onready var building_list: VBoxContainer = get_node_or_null("MainSplit/BuildingListPanel/BuildingList")
 @onready var detail_title: Label = get_node_or_null("MainSplit/DetailPanel/DetailContent/DetailTitle")
 @onready var detail_level: Label = get_node_or_null("MainSplit/DetailPanel/DetailContent/DetailLevel")
@@ -23,8 +25,12 @@ func _ready() -> void:
 		back_button.pressed.connect(_on_back_pressed)
 	if reset_save_button != null and not reset_save_button.pressed.is_connected(_on_reset_save_pressed):
 		reset_save_button.pressed.connect(_on_reset_save_pressed)
+	if reset_upgrades_button != null and not reset_upgrades_button.pressed.is_connected(_on_reset_upgrades_pressed):
+		reset_upgrades_button.pressed.connect(_on_reset_upgrades_pressed)
 	if clear_save_dialog != null and not clear_save_dialog.confirmed.is_connected(_on_clear_save_confirmed):
 		clear_save_dialog.confirmed.connect(_on_clear_save_confirmed)
+	if reset_upgrades_dialog != null and not reset_upgrades_dialog.confirmed.is_connected(_on_reset_upgrades_confirmed):
+		reset_upgrades_dialog.confirmed.connect(_on_reset_upgrades_confirmed)
 	if unlock_button != null and not unlock_button.pressed.is_connected(_on_unlock_pressed):
 		unlock_button.pressed.connect(_on_unlock_pressed)
 	if upgrade_building_button != null and not upgrade_building_button.pressed.is_connected(_on_upgrade_building_pressed):
@@ -192,8 +198,9 @@ func _refresh_detail() -> void:
 			upgrade_building_button.visible = false
 		else:
 			upgrade_building_button.visible = true
-			upgrade_building_button.text = "升级建筑（Lv.%d → Lv.%d）" % [level, level + 1]
-			upgrade_building_button.disabled = false
+			var upgrade_cost := CampProgression.get_building_upgrade_cost(building_id, level + 1)
+			upgrade_building_button.text = "升级建筑（Lv.%d → Lv.%d，%d 营地币）" % [level, level + 1, upgrade_cost]
+			upgrade_building_button.disabled = not CampProgression.can_purchase_building_upgrade(building_id)
 	_rebuild_upgrade_options(building_id)
 
 
@@ -208,15 +215,15 @@ func _rebuild_upgrade_options(building_id: String) -> void:
 		var option_name := str(option.get("name", option_id))
 		var current_level := CampProgression.get_upgrade_option_level(option_id)
 		var max_level := int(option.get("max_level", 1))
-		var cost := int(option.get("cost", 0))
-		var required_level := int(option.get("required_building_level", 0))
+		var cost := CampProgression.get_upgrade_cost(option_id)
+		var required_level := int(option.get("required_building_level", 1))
 		var row := HBoxContainer.new()
 		var info_label := Label.new()
 		info_label.text = "%s（Lv.%d/%d）" % [option_name, current_level, max_level]
 		info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var buy_button := Button.new()
 		var requirement_ok := required_level <= 0 or CampProgression.get_building_level(building_id) >= required_level
-		buy_button.text = "购买（%d）" % cost
+		buy_button.text = "购买（%d 营地币）" % cost
 		buy_button.disabled = not CampProgression.can_purchase_upgrade(option_id)
 		if not requirement_ok:
 			buy_button.text = "需建筑 Lv.%d" % required_level
@@ -251,6 +258,16 @@ func _on_upgrade_option_pressed(option_id: String) -> void:
 func _on_reset_save_pressed() -> void:
 	if clear_save_dialog != null:
 		clear_save_dialog.popup_centered()
+
+
+func _on_reset_upgrades_pressed() -> void:
+	if reset_upgrades_dialog != null:
+		reset_upgrades_dialog.popup_centered()
+
+
+func _on_reset_upgrades_confirmed() -> void:
+	CampProgression.reset_upgrade_options_and_refund()
+	_refresh_all()
 
 
 func _on_clear_save_confirmed() -> void:

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/shop/shop_ui_controller.tscn" id="5_shop_ui_controller"]
 [ext_resource type="Script" path="res://scripts/core/game_scene_director.gd" id="6_scene_director"]
 [ext_resource type="PackedScene" path="res://scenes/ui/main_menu/main_menu_ui_controller.tscn" id="7_main_menu_ui"]
-[ext_resource type="PackedScene" path="res://scenes/ui/camp/camp_ui_controller.tscn" id="8_camp_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/camp/camp_blueprint_ui_controller.tscn" id="8_camp_ui"]
 
 [node name="GameRoot" type="Node"]
 script = ExtResource("1_game_root")
@@ -28,7 +28,7 @@ script = ExtResource("1_game_root")
 
 [node name="MainMenuUIController" parent="UiRoot" instance=ExtResource("7_main_menu_ui")]
 
-[node name="CampUIController" parent="UiRoot" instance=ExtResource("8_camp_ui")]
+[node name="CampBlueprintUIController" parent="UiRoot" instance=ExtResource("8_camp_ui")]
 
 [node name="SceneDirector" type="Node" parent="."]
 script = ExtResource("6_scene_director")

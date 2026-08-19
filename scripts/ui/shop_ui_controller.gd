@@ -94,10 +94,13 @@ func _show_shop_popup(payload: Dictionary) -> void:
 	shop_popup.configure(payload)
 	var selected_callable := Callable(self, "_on_offer_selected")
 	var skipped_callable := Callable(self, "_on_skipped")
+	var refresh_requested_callable := Callable(self, "_on_refresh_requested")
 	if not shop_popup.offer_selected.is_connected(selected_callable):
 		shop_popup.offer_selected.connect(selected_callable)
 	if not shop_popup.skipped.is_connected(skipped_callable):
 		shop_popup.skipped.connect(skipped_callable)
+	if not shop_popup.refresh_requested.is_connected(refresh_requested_callable):
+		shop_popup.refresh_requested.connect(refresh_requested_callable)
 	var preview_requested_callable := Callable(self, "_on_stat_preview_requested")
 	var preview_cleared_callable := Callable(self, "_on_stat_preview_cleared")
 	if not shop_popup.stat_preview_requested.is_connected(preview_requested_callable):
@@ -132,6 +135,16 @@ func _on_stat_preview_requested(offer: Dictionary) -> void:
 func _on_stat_preview_cleared() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.clear_stat_preview()
+
+
+func _on_refresh_requested() -> void:
+	if _main_flow_coordinator == null:
+		return
+	var result := _main_flow_coordinator.request_shop_refresh()
+	if shop_popup == null:
+		return
+	if not bool(result.get("success", false)):
+		shop_popup.show_error(str(result.get("reason", "unknown")))
 
 
 func _on_skipped() -> void:

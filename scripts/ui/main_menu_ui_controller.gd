@@ -4,10 +4,30 @@ class_name MainMenuUIController
 const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
 const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
 const MAIN_MENU_BUTTON_TEXTURE_PATH: String = "res://assets/ui/main_menu/button_main_menu.png"
+const HINT_MESSAGES: Array[String] = [
+	"Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn",
+	"在拉莱耶的宅邸中，长眠的克拉斯托弗候汝入梦",
+	"永恒长眠的并非亡者，奇妙的万古之中，即便死亡亦会消逝",
+	"穹顶之下，古神注视着你……",
+	"按下「开始战斗」，直面怪物的视线",
+	"不要抬头看……不要去数星星……",
+	"它们从深处苏醒，穹顶只是一道脆弱的屏障",
+]
+const HINT_COLORS: Array[Color] = [
+	Color("#6e9d91"),
+	Color("#a884b5"),
+	Color("#7087a8"),
+	Color("#b69a65"),
+]
+const HINT_INTERVAL := 4.5
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
 var _title_base_position := Vector2.ZERO
+var _button_feedback_tweens: Dictionary = {}
+var _button_shake_tweens: Dictionary = {}
+var _hint_index := 0
+var _hint_elapsed := 0.0
 
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
@@ -21,6 +41,7 @@ var _title_base_position := Vector2.ZERO
 @onready var start_battle_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton")
 @onready var camp_entry_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton")
 @onready var quit_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton")
+@onready var hint_label: Label = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/MenuHintLabel")
 @onready var character_select_page: Control = get_node_or_null("CharacterSelectPage")
 @onready var character_list: VBoxContainer = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/CharacterList")
 @onready var character_error_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ErrorLabel")
@@ -51,16 +72,19 @@ func _ready() -> void:
 	call_deferred("_bind_to_main_flow")
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var time := Time.get_ticks_msec() * 0.001
 	if title_art != null and start_page != null and start_page.visible:
 		var title_offset := sin(time * 1.7) * 4.0
 		title_art.position = _title_base_position + Vector2(0.0, title_offset)
+		_update_hint_effect(delta, time)
 
 
 func _setup_menu_atmosphere() -> void:
 	if title_art != null:
 		_title_base_position = title_art.position
+	if hint_label != null and not HINT_MESSAGES.is_empty():
+		hint_label.text = HINT_MESSAGES[_hint_index]
 
 
 func _setup_start_page_feedback() -> void:
@@ -86,16 +110,52 @@ func _center_button_pivot(shell: Control) -> void:
 
 func _on_menu_button_hovered(shell: Control) -> void:
 	_animate_menu_button(shell, Vector2(1.06, 1.06), Color(1.12, 1.12, 1.04, 1))
+	var old_shake_tween: Tween = _button_shake_tweens.get(shell)
+	if old_shake_tween != null:
+		old_shake_tween.kill()
+	var shake_tween := create_tween()
+	shake_tween.tween_property(shell, "rotation", deg_to_rad(-1.2), 0.055)
+	shake_tween.tween_property(shell, "rotation", deg_to_rad(1.2), 0.09)
+	shake_tween.tween_property(shell, "rotation", deg_to_rad(-0.8), 0.075)
+	shake_tween.tween_property(shell, "rotation", deg_to_rad(0.0), 0.065)
+	shake_tween.set_loops()
+	_button_shake_tweens[shell] = shake_tween
 
 
 func _on_menu_button_unhovered(shell: Control) -> void:
 	_animate_menu_button(shell, Vector2.ONE, Color.WHITE)
+	var shake_tween: Tween = _button_shake_tweens.get(shell)
+	if shake_tween != null:
+		shake_tween.kill()
+	_button_shake_tweens.erase(shell)
+	var reset_tween := create_tween()
+	reset_tween.tween_property(shell, "rotation", 0.0, 0.1)
 
 
 func _animate_menu_button(shell: Control, target_scale: Vector2, target_modulate: Color) -> void:
+	var old_tween: Tween = _button_feedback_tweens.get(shell)
+	if old_tween != null:
+		old_tween.kill()
 	var tween := create_tween().set_parallel(true)
 	tween.tween_property(shell, "scale", target_scale, 0.13)
 	tween.tween_property(shell, "modulate", target_modulate, 0.13)
+	_button_feedback_tweens[shell] = tween
+
+
+func _update_hint_effect(delta: float, time: float) -> void:
+	if hint_label == null or HINT_MESSAGES.is_empty():
+		return
+	_hint_elapsed += delta
+	if _hint_elapsed >= HINT_INTERVAL:
+		_hint_elapsed = 0.0
+		_hint_index = (_hint_index + 1) % HINT_MESSAGES.size()
+		hint_label.text = HINT_MESSAGES[_hint_index]
+	var color_index := _hint_index % HINT_COLORS.size()
+	var color := HINT_COLORS[color_index]
+	var color_next := HINT_COLORS[(color_index + 1) % HINT_COLORS.size()]
+	var color_mix := (sin(time * 0.75) + 1.0) * 0.5
+	var flicker := 0.84 + sin(time * 19.0) * 0.08 + sin(time * 47.0) * 0.04
+	hint_label.modulate = Color(color.lerp(color_next, color_mix), clampf(flicker, 0.62, 1.0))
 
 
 func _bind_to_main_flow() -> void:

@@ -153,6 +153,23 @@ func get_building_level(building_id: String) -> int:
 	return int(state.get("building_levels", {}).get(building_id, 0))
 
 
+func has_unlock(unlock_id: String) -> bool:
+	for record in get_building_records():
+		if not (record is Dictionary):
+			continue
+		var building_level := get_building_level(str(record.get("id", "")))
+		var levels: Variant = record.get("levels", {})
+		if not (levels is Dictionary):
+			continue
+		for level_key in levels.keys():
+			if int(str(level_key)) > building_level:
+				continue
+			for effect in levels[level_key]:
+				if effect is Dictionary and str(effect.get("unlock", "")) == unlock_id:
+					return true
+	return false
+
+
 func is_building_unlocked(building_id: String) -> bool:
 	return get_building_level(building_id) > 0
 
@@ -203,6 +220,26 @@ func get_building_max_level(building_id: String) -> int:
 	return 1
 
 
+func get_building_upgrade_cost(building_id: String, target_level: int = -1) -> int:
+	var record := get_building_record(building_id)
+	if record.is_empty():
+		return 0
+	var current_level := get_building_level(building_id)
+	var resolved_target_level := target_level if target_level > 0 else current_level + 1
+	var costs: Variant = record.get("building_upgrade_costs", {})
+	if costs is Dictionary:
+		return maxi(0, int((costs as Dictionary).get(str(resolved_target_level), 0)))
+	return 0
+
+
+func can_purchase_building_upgrade(building_id: String) -> bool:
+	var current_level := get_building_level(building_id)
+	var max_level := get_building_max_level(building_id)
+	if current_level <= 0 or current_level >= max_level:
+		return false
+	return get_camp_currency() >= get_building_upgrade_cost(building_id, current_level + 1)
+
+
 func set_building_level(building_id: String, level: int) -> bool:
 	var record := get_building_record(building_id)
 	if record.is_empty():
@@ -227,11 +264,24 @@ func upgrade_building(building_id: String) -> bool:
 	var max_level := get_building_max_level(building_id)
 	if current_level >= max_level:
 		return false
+	var cost := get_building_upgrade_cost(building_id, current_level + 1)
+	if get_camp_currency() < cost:
+		return false
+	_set_camp_currency_value(get_camp_currency() - cost)
 	return set_building_level(building_id, current_level + 1)
 
 
 func get_upgrade_option_level(option_id: String) -> int:
 	return int(state.get("upgrade_levels", {}).get(option_id, 0))
+
+
+func get_upgrade_cost(option_id: String, target_level: int = -1) -> int:
+	var option := get_upgrade_option_record(option_id)
+	if option.is_empty():
+		return 0
+	var current_level := get_upgrade_option_level(option_id)
+	var resolved_target_level := target_level if target_level > 0 else current_level + 1
+	return maxi(0, int(option.get("cost", 0))) * maxi(1, resolved_target_level)
 
 
 func get_upgrade_option_record(option_id: String) -> Dictionary:
@@ -266,26 +316,45 @@ func can_purchase_upgrade(option_id: String) -> bool:
 		return false
 	if option.has("currency") and str(option.get("currency", "")) != "camp_currency":
 		return false
-	var required_building_level := int(option.get("required_building_level", 0))
+	var required_building_level := int(option.get("required_building_level", 1))
 	if required_building_level > 0 and get_building_level(owner_building_id) < required_building_level:
 		return false
 	var current_level := get_upgrade_option_level(option_id)
 	if current_level >= int(option.get("max_level", 0)):
 		return false
-	return get_camp_currency() >= int(option.get("cost", 0))
+	return get_camp_currency() >= get_upgrade_cost(option_id)
 
 
 func purchase_upgrade(option_id: String) -> bool:
 	if not can_purchase_upgrade(option_id):
 		return false
 	var option := get_upgrade_option_record(option_id)
-	var cost := int(option.get("cost", 0))
+	var cost := get_upgrade_cost(option_id)
 	_set_camp_currency_value(get_camp_currency() - cost)
 	var upgrade_levels: Dictionary = state.get("upgrade_levels", {})
 	upgrade_levels[option_id] = get_upgrade_option_level(option_id) + 1
 	state["upgrade_levels"] = upgrade_levels
 	_save_and_notify(option_id)
 	return true
+
+
+func reset_upgrade_options_and_refund() -> int:
+	var refund := 0
+	var upgrade_levels: Dictionary = state.get("upgrade_levels", {})
+	for record in get_building_records():
+		if not (record is Dictionary):
+			continue
+		for option in record.get("upgrade_options", []):
+			if not (option is Dictionary):
+				continue
+			var option_id := str(option.get("id", ""))
+			var option_level := int(upgrade_levels.get(option_id, 0))
+			for purchased_level in range(1, option_level + 1):
+				refund += get_upgrade_cost(option_id, purchased_level)
+	state["upgrade_levels"] = {}
+	_set_camp_currency_value(get_camp_currency() + refund)
+	_save_and_notify("reset_upgrade_options")
+	return refund
 
 
 func get_camp_currency() -> int:
@@ -311,15 +380,22 @@ func clear_save_and_refund() -> int:
 			continue
 		var building_id := str(record.get("id", ""))
 		var building_level := get_building_level(building_id)
-		if building_level > 0 and not bool(record.get("initial_unlocked", false)):
+		if building_level > 0:
 			var unlock_condition: Variant = record.get("unlock_condition", {})
-			if unlock_condition is Dictionary:
+			if not bool(record.get("initial_unlocked", false)) and unlock_condition is Dictionary:
 				refund += int((unlock_condition as Dictionary).get("cost", 0))
+			var building_upgrade_costs: Variant = record.get("building_upgrade_costs", {})
+			if building_upgrade_costs is Dictionary:
+				for level_key in (building_upgrade_costs as Dictionary).keys():
+					if int(str(level_key)) <= building_level:
+						refund += int((building_upgrade_costs as Dictionary).get(level_key, 0))
 		for option in record.get("upgrade_options", []):
 			if not (option is Dictionary):
 				continue
 			var option_id := str(option.get("id", ""))
-			refund += get_upgrade_option_level(option_id) * int(option.get("cost", 0))
+			var option_level := get_upgrade_option_level(option_id)
+			for purchased_level in range(1, option_level + 1):
+				refund += get_upgrade_cost(option_id, purchased_level)
 
 	var settings := (state.get("settings", {}) as Dictionary).duplicate(true)
 	_reset_state()

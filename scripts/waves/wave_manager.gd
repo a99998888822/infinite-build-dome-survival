@@ -15,6 +15,13 @@ const SPAWN_MIN_DISTANCE: float = 300.0
 const SPAWN_MAX_DISTANCE: float = 600.0
 const SPAWN_SEPARATION_DISTANCE: float = 96.0
 const SPAWN_POSITION_ATTEMPTS: int = 10
+const WAVE_HP_GROWTH_RATE: float = 0.207
+const WAVE_DAMAGE_GROWTH_PERCENT: float = 7.0
+const WAVE_SPAWN_COUNT_GROWTH_PERCENT: float = 4.0
+const WAVE_SPAWN_INTERVAL_GROWTH_PERCENT: float = 3.0
+const WAVE_ARMOR_GROWTH: float = 2.0
+const ZONE_SPAWN_COUNT_GROWTH_PERCENT: float = 6.0
+const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
 
@@ -79,6 +86,8 @@ func initialize(target_player: PlayerController) -> void:
 	current_wave_index = -1
 	running = false
 	player_level = DEFAULT_PLAYER_LEVEL
+	if CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
+		player_level += 2
 	current_exp = 0
 	current_gold = 0
 	collected_exp_this_wave = 0
@@ -143,8 +152,9 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.auto_initialize_on_ready = false
 	enemy_root.add_child(enemy)
 	enemy.global_position = position
-	var zone_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
-	enemy.initialize(enemy_id, player, zone_modifiers)
+	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
+	runtime_modifiers.append_array(_build_wave_enemy_modifiers())
+	enemy.initialize(enemy_id, player, runtime_modifiers)
 	enemy.died.connect(_on_enemy_died)
 	return enemy
 
@@ -408,7 +418,7 @@ func _process_spawn_timers(delta: float) -> void:
 		spawn_timers_ms[index] -= delta * 1000.0
 		if spawn_timers_ms[index] > 0.0:
 			continue
-		spawn_timers_ms[index] = float(group.get("spawn_interval_ms", 1000))
+		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
 		var spawn_count := calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1)))
 		for count_index in range(spawn_count):
 			spawn_enemy(str(group.get("enemy_id", "")), get_random_spawn_position())
@@ -416,7 +426,39 @@ func _process_spawn_timers(delta: float) -> void:
 
 func calculate_enemy_spawn_count(base_count: int) -> int:
 	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
-	return StatDefinitions.calculate_enemy_spawn_count(base_count, spawn_rate_percent)
+	var wave_multiplier := 1.0 + WAVE_SPAWN_COUNT_GROWTH_PERCENT * float(maxi(current_wave_index, 0)) / 100.0
+	var streak_multiplier := 1.0 + ZONE_SPAWN_COUNT_GROWTH_PERCENT * float(ZoneProgression.get_effective_streak()) / 100.0
+	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * wave_multiplier * streak_multiplier)))
+	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent)
+
+
+func calculate_spawn_interval(base_interval_ms: float) -> float:
+	var wave_growth := WAVE_SPAWN_INTERVAL_GROWTH_PERCENT * float(maxi(current_wave_index, 0)) / 100.0
+	var zone_growth := ZoneProgression.get_enemy_pressure_per_streak("spawn_interval_percent") * float(ZoneProgression.get_effective_streak()) / 100.0
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) / (1.0 + wave_growth + zone_growth))
+
+
+func _build_wave_enemy_modifiers() -> Array[Dictionary]:
+	var modifiers: Array[Dictionary] = []
+	var wave_step := float(maxi(current_wave_index, 0))
+	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + WAVE_HP_GROWTH_RATE, wave_step)))
+	modifiers.append(_build_wave_modifier("melee_damage", Modifier.OPERATION_ADD_PERCENT, WAVE_DAMAGE_GROWTH_PERCENT * wave_step))
+	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, WAVE_ARMOR_GROWTH * wave_step))
+	return modifiers
+
+
+func _build_wave_modifier(stat_id: String, operation: String, value: float) -> Dictionary:
+	return {
+		"id": "wave_%d_%s" % [current_wave_index + 1, stat_id],
+		"source_type": "wave",
+		"source_id": str(current_wave.get("id", "")),
+		"target_scope": "enemy",
+		"stat": stat_id,
+		"operation": operation,
+		"value": value,
+		"duration": Modifier.PERMANENT_DURATION,
+		"stack_rule": Modifier.STACK_RULE_UNIQUE,
+	}
 
 
 func get_random_spawn_position() -> Vector2:

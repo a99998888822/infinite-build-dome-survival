@@ -6,7 +6,9 @@
     "tendency_tags": ["melee"],
     "enemy_pressure_per_streak": {
       "max_hp_percent": 10,
-      "damage_percent": 5
+      "damage_percent": 5,
+      "armor_flat": 3,
+      "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {
       "damage_taken_percent": 3
@@ -30,7 +32,9 @@
     "tendency_tags": ["ranged"],
     "enemy_pressure_per_streak": {
       "max_hp_percent": 8,
-      "damage_percent": 6
+      "damage_percent": 6,
+      "armor_flat": 3,
+      "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {
       "damage_taken_percent": 2
@@ -54,7 +58,9 @@
     "tendency_tags": ["elect", "humanity", "divinity"],
     "enemy_pressure_per_streak": {
       "max_hp_percent": 12,
-      "damage_percent": 4
+      "damage_percent": 4,
+      "armor_flat": 3,
+      "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {
       "damage_taken_percent": 4

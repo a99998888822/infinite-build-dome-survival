@@ -3,6 +3,7 @@ class_name ShopPopup
 
 signal offer_selected(offer: Dictionary)
 signal skipped
+signal refresh_requested
 signal stat_preview_requested(offer: Dictionary)
 signal stat_preview_cleared
 
@@ -21,12 +22,15 @@ var _bond_player: PlayerController = null
 @onready var error_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/ErrorLabel")
 @onready var offer_grid: HBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferGrid")
 @onready var skip_button: Button = get_node_or_null("CenterContainer/MainPanel/Content/SkipButton")
+@onready var refresh_button: Button = get_node_or_null("CenterContainer/MainPanel/Content/RefreshButton")
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 
 
 func _ready() -> void:
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
+	if refresh_button != null and not refresh_button.pressed.is_connected(_on_refresh_pressed):
+		refresh_button.pressed.connect(_on_refresh_pressed)
 	hide_popup()
 
 
@@ -64,6 +68,8 @@ func _translate_purchase_error(reason: String) -> String:
 			return "购买失败 升级未生效"
 		"shop_not_active":
 			return "购买失败 商店未开启"
+		"insufficient_gold_for_refresh":
+			return "刷新失败 金币不足"
 		_:
 			return "购买失败 请重试"
 
@@ -76,6 +82,7 @@ func refresh_gold(current_gold: int) -> void:
 	payload["gold"] = current_gold
 	if gold_label != null and get_mode() == ENTRY_SHOP:
 		gold_label.text = "当前金币 %d" % current_gold
+	_update_refresh_button()
 	if weapon_strip != null and _loadout != null:
 		weapon_strip.set_loadout(_loadout)
 
@@ -106,6 +113,7 @@ func _refresh_visual() -> void:
 			gold_label.text = "免费选择一项奖励"
 	if error_label != null:
 		error_label.text = ""
+	_update_refresh_button()
 	_clear_cards()
 	if offer_grid == null:
 		return
@@ -145,6 +153,21 @@ func _on_skip_pressed() -> void:
 		return
 	_submitted = true
 	skipped.emit()
+
+
+func _on_refresh_pressed() -> void:
+	if _submitted:
+		return
+	refresh_requested.emit()
+
+
+func _update_refresh_button() -> void:
+	if refresh_button == null:
+		return
+	var refresh_cost := int(payload.get("refresh_cost", 0))
+	var current_gold := int(payload.get("gold", 0))
+	refresh_button.text = "刷新（%d 金币）" % refresh_cost
+	refresh_button.disabled = refresh_cost <= 0 or current_gold < refresh_cost
 
 
 func _clear_cards() -> void:

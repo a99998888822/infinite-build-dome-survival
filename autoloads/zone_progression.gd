@@ -138,6 +138,17 @@ func build_enemy_pressure_modifiers() -> Array[Dictionary]:
 	return _build_pressure_modifiers(get_current_zone_record().get("enemy_pressure_per_streak", {}), "enemy")
 
 
+func get_effective_streak() -> int:
+	return maxi(streak_count - 1, 0)
+
+
+func get_enemy_pressure_per_streak(field_name: String, fallback: int = 0) -> int:
+	var pressure := get_current_zone_record().get("enemy_pressure_per_streak", {})
+	if not (pressure is Dictionary):
+		return fallback
+	return int(pressure.get(field_name, fallback))
+
+
 func build_player_pressure_modifiers() -> Array[Dictionary]:
 	return _build_pressure_modifiers(get_current_zone_record().get("player_pressure_per_streak", {}), "player")
 
@@ -320,7 +331,7 @@ func _build_pressure_modifiers(pressure_data: Variant, target_scope: String) -> 
 	var modifiers: Array[Dictionary] = []
 	if not (pressure_data is Dictionary):
 		return modifiers
-	var effective_streak := maxi(streak_count - 1, 0)
+	var effective_streak := get_effective_streak()
 	if effective_streak <= 0:
 		return modifiers
 
@@ -342,9 +353,11 @@ func _build_pressure_modifier(field_name: String, value: int, target_scope: Stri
 	if field_name == "max_hp_percent":
 		modifier_stat = "max_hp"
 		modifier_operation = Modifier.OPERATION_ADD_PERCENT
-	elif field_name == "damage_percent":
-		modifier_stat = "damage_percent"
+	elif field_name == "armor_flat":
+		modifier_stat = "armor"
 		modifier_operation = Modifier.OPERATION_ADD_FLAT
+	elif field_name == "spawn_interval_percent":
+		return {}
 	elif not StatDefinitions.has_stat(modifier_stat):
 		return {}
 	return {

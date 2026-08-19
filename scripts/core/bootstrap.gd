@@ -739,6 +739,21 @@ func _run_weapon_checks() -> bool:
 			discounted_weapon_cost = int(candidate.get("shop_cost", -1))
 			break
 	passed = _print_check_result("shop price discount", discounted_weapon_cost == 12) and passed
+	var bucket_context := shop_context.duplicate(true)
+	bucket_context["owned_rarity_counts"] = {"common": 5}
+	var bucket_candidates := shop_generator.build_shop_candidate_pool(bucket_context)
+	var baseline_relic_cost := -1
+	var bucket_relic_cost := -1
+	for candidate in shop_candidates:
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "common":
+			baseline_relic_cost = int(candidate.get("shop_cost", -1))
+			break
+	for candidate in bucket_candidates:
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "common":
+			bucket_relic_cost = int(candidate.get("shop_cost", -1))
+			break
+	passed = _print_check_result("relic rarity bucket baseline", baseline_relic_cost == 12) and passed
+	passed = _print_check_result("relic rarity bucket price step", bucket_relic_cost == 24) and passed
 
 	loadout.queue_free()
 	player.queue_free()
@@ -851,6 +866,12 @@ func _run_main_flow_checks() -> bool:
 
 	flow.finish_current_wave()
 	passed = _print_check_result("main flow wave end shop ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
+	passed = _print_check_result("shop refresh cost wave1", flow.get_shop_refresh_cost() == 4) and passed
+	var refresh_rejected := flow.request_shop_refresh()
+	passed = _print_check_result("shop refresh reject no gold", not bool(refresh_rejected.get("success", false))) and passed
+	wave_manager.apply_gold_delta(20, "bootstrap")
+	var refresh_result := flow.request_shop_refresh()
+	passed = _print_check_result("shop refresh pay and double cost", bool(refresh_result.get("success", false)) and wave_manager.get_current_gold() == 16 and flow.get_shop_refresh_cost() == 8) and passed
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()

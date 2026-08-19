@@ -22,10 +22,19 @@ text = "返回主界面"
 [node name="ResetSaveButton" type="Button" parent="TopBar"]
 text = "清除存档并返还货币"
 
+[node name="ResetUpgradesButton" type="Button" parent="TopBar"]
+text = "重置属性升级并返还货币"
+
 [node name="ClearSaveDialog" type="ConfirmationDialog" parent="."]
 title = "清除存档"
 dialog_text = "将清除全部局外进度，并返还已经花费的营地币。是否继续？"
 ok_button_text = "清除并返还"
+cancel_button_text = "取消"
+
+[node name="ResetUpgradesDialog" type="ConfirmationDialog" parent="."]
+title = "重置属性升级"
+dialog_text = "将重置所有已购买的属性升级，并返还对应营地币；建筑解锁和建筑等级不会改变。是否继续？"
+ok_button_text = "重置并返还"
 cancel_button_text = "取消"
 
 [node name="MainSplit" type="HBoxContainer" parent="."]

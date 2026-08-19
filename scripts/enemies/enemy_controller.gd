@@ -11,6 +11,11 @@ const CONTACT_RADIUS: float = 28.0
 const CONTACT_RESET_RADIUS: float = 44.0
 const SEPARATION_RADIUS: float = 58.0
 const SEPARATION_STRENGTH: float = 140.0
+const DAMAGE_NUMBER_FONT_SIZE: int = 12
+const DAMAGE_NUMBER_SIZE: Vector2 = Vector2(44.0, 18.0)
+const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -28.0)
+const DAMAGE_NUMBER_RISE: float = 30.0
+const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.55
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -99,9 +104,58 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var final_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	current_hp = maxi(current_hp - final_damage, 0)
+	_spawn_damage_number(final_damage)
 	if current_hp <= 0:
 		_die(source_id)
 	return final_damage
+
+
+func _spawn_damage_number(final_damage: int) -> void:
+	var damage_number := Label.new()
+	damage_number.name = "DamageNumber"
+	damage_number.text = str(final_damage)
+	damage_number.size = DAMAGE_NUMBER_SIZE
+	damage_number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	damage_number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	damage_number.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	damage_number.z_index = 100
+	damage_number.pivot_offset = DAMAGE_NUMBER_SIZE * 0.5
+	damage_number.scale = Vector2(0.8, 0.8)
+	damage_number.modulate.a = 0.0
+	damage_number.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
+	damage_number.add_theme_color_override("font_color", _get_damage_number_color(final_damage))
+	damage_number.add_theme_color_override("font_outline_color", Color(0.02, 0.02, 0.03, 0.9))
+	damage_number.add_theme_constant_override("outline_size", 2)
+
+	var damage_number_parent := get_parent()
+	if damage_number_parent == null or not damage_number_parent.is_inside_tree():
+		return
+	damage_number_parent.add_child(damage_number)
+	damage_number.global_position = global_position + DAMAGE_NUMBER_OFFSET - DAMAGE_NUMBER_SIZE * 0.5
+
+	var target_position := damage_number.global_position + Vector2(0.0, -DAMAGE_NUMBER_RISE)
+	var tween := damage_number.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(damage_number, "global_position", target_position, DAMAGE_NUMBER_ANIMATION_SECONDS)
+	tween.tween_property(damage_number, "modulate:a", 1.0, 0.08)
+	tween.tween_property(damage_number, "scale", Vector2.ONE, 0.12)
+	tween.chain().tween_property(damage_number, "modulate:a", 0.0, 0.22).set_delay(0.18)
+	tween.chain().tween_callback(damage_number.queue_free)
+
+
+func _get_damage_number_color(final_damage: int) -> Color:
+	var digit_count := str(absi(final_damage)).length()
+	if digit_count <= 2:
+		return Color(0.64, 0.64, 0.64, 1.0)
+	if digit_count == 3:
+		return Color(0.95, 0.95, 0.95, 1.0)
+	if digit_count == 4:
+		return Color(0.31, 0.72, 0.94, 1.0)
+	if digit_count == 5:
+		return Color(1.0, 0.78, 0.28, 1.0)
+	if digit_count == 6:
+		return Color(1.0, 0.57, 0.12, 1.0)
+	return Color(0.95, 0.20, 0.20, 1.0)
 
 
 func is_alive() -> bool:
@@ -155,7 +209,8 @@ func _process_contact_damage() -> void:
 		return
 	if global_position.distance_to(target_player.global_position) > CONTACT_RADIUS:
 		return
-	var damage := int(get_stat("melee_damage"))
+	var base_damage := get_stat("melee_damage")
+	var damage := int(roundf(base_damage * (1.0 + get_stat("damage_percent") / 100.0)))
 	if damage <= 0:
 		return
 	target_player.take_damage(damage, enemy_id)

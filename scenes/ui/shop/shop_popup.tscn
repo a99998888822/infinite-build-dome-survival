@@ -50,3 +50,6 @@ horizontal_alignment = 1
 
 [node name="SkipButton" type="Button" parent="CenterContainer/MainPanel/Content"]
 text = "跳过"
+
+[node name="RefreshButton" type="Button" parent="CenterContainer/MainPanel/Content"]
+text = "刷新"

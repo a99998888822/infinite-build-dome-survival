@@ -44,6 +44,15 @@ for line_no, line in enumerate(text.splitlines(), 1):
 
 When writing automation scripts from PowerShell, keep the script source ASCII-only whenever possible. Build Chinese strings using Unicode escapes or copy them from previously decoded UTF-8 file content; never manually retype long Chinese rows inside a PowerShell here-string.
 
+PowerShell Compatibility Notes:
+
+- This environment may use Windows PowerShell 5.x, which does not support Bash-style heredocs such as `<<'PATCH'`. To invoke `apply_patch`, use a tool-native patch call when available; otherwise write the patch to a UTF-8 temporary file and pipe it with `Get-Content -Raw -Encoding UTF8 <file> | apply_patch`.
+- Do not use Bash operators such as `||` or `&&` in PowerShell commands. Check `$LASTEXITCODE` or `$?` explicitly, for example: `$result = rg 'pattern' .; if ($LASTEXITCODE -ne 0) { 'NONE' }`.
+- Do not assume `godot` or `godot4` is installed. Probe with `Get-Command godot -ErrorAction SilentlyContinue` and `Get-Command godot4 -ErrorAction SilentlyContinue`; report `GODOT_NOT_FOUND` instead of treating the missing executable as a project failure.
+- Avoid PowerShell here-strings for commands containing Chinese or other non-ASCII literals, even when the destination file is UTF-8. Prefer a small `apply_patch` edit, an ASCII-only script with `\uXXXX` escapes, or a temporary script written with explicit UTF-8 encoding.
+- When a multiline patch fails with a PowerShell parser error, do not retry the same `<<...` syntax. Switch immediately to `@' ... '@ | apply_patch` or a UTF-8 temporary patch file, and keep the patch content separate from the command string.
+- For verification commands that intentionally return a non-zero status, capture the result and normalize the status before running subsequent checks; do not chain them with Bash syntax.
+
 Godot-specific notes:
 
 - Keep `.gd`, `.tscn`, `.tres`, `.json`, and `.md` files UTF-8 encoded.

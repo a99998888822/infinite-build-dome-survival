@@ -50,6 +50,8 @@ var _pending_interest_payload: Dictionary = {}
 var _pending_finance_payload: Dictionary = {}
 var _pending_wave_start_after_finance: bool = false
 var _stat_preview: Dictionary = {}
+var _active_shop_offer_ids: Array[String] = []
+var _wave_refresh_count: int = 0
 
 var _bound_player: PlayerController = null
 var _bound_loadout: WeaponLoadout = null
@@ -86,6 +88,8 @@ func reset_flow() -> void:
 	_pending_finance_payload.clear()
 	_pending_wave_start_after_finance = false
 	_stat_preview.clear()
+	_active_shop_offer_ids.clear()
+	_wave_refresh_count = 0
 	_set_battle_runtime_paused(false)
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
@@ -128,7 +132,11 @@ func confirm_character_selection() -> bool:
 	_wave_end_ready = false
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_BATTLE_PREPARE)
-	return request_next_wave()
+	var started := request_next_wave()
+	if started and CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
+		request_shared_reward_shop_popup(2, "camp_start_level")
+		request_shared_reward_shop_popup(3, "camp_start_level")
+	return started
 
 
 func bind_battle_context(player: PlayerController, loadout: WeaponLoadout, wave_manager: WaveManager = null) -> void:
@@ -439,6 +447,30 @@ func get_current_gold() -> int:
 	return _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
 
 
+func get_shop_refresh_cost() -> int:
+	var wave_number := maxi(current_wave_index + 1, 1)
+	var refresh_term := 3 + wave_number
+	return int(ceil(float(refresh_term) * pow(2.0, float(_wave_refresh_count))))
+
+
+func request_shop_refresh() -> Dictionary:
+	if current_state != STATE_SHOP_POPUP and current_state != STATE_SHARED_REWARD_SHOP_POPUP:
+		return {"success": false, "reason": "shop_not_active"}
+	var cost := get_shop_refresh_cost()
+	if _bound_wave_manager == null or _bound_wave_manager.get_current_gold() < cost:
+		return {"success": false, "reason": "insufficient_gold_for_refresh"}
+	if not _bound_wave_manager.apply_gold_delta(-cost, "shop_refresh"):
+		return {"success": false, "reason": "insufficient_gold_for_refresh"}
+	_wave_refresh_count += 1
+	var payload: Dictionary = {}
+	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
+		payload = _build_shared_reward_shop_payload(_active_level_up_level, "refresh", false, _active_shop_offer_ids)
+	else:
+		payload = _build_shop_payload("shop", 0, _active_shop_offer_ids)
+	modal_requested.emit(current_state, payload)
+	return {"success": true, "cost": cost, "refresh_count": _wave_refresh_count}
+
+
 func get_current_mode() -> String:
 	return current_mode
 
@@ -520,6 +552,7 @@ func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 	if current_mode != MODE_BATTLE or battle_resolved:
 		return
 	current_wave_index += 1
+	_wave_refresh_count = 0
 	current_wave_id = wave_id
 	current_wave_duration_seconds = duration_seconds
 	_pending_finance_payload.clear()
@@ -627,31 +660,50 @@ func _sanitize_string_array(values: Array[String]) -> Array[String]:
 	return result
 
 
-func _build_shared_reward_shop_payload(level: int, source: String, queued: bool) -> Dictionary:
-	var payload := _build_shop_payload("free", level)
+func _build_shared_reward_shop_payload(level: int, source: String, queued: bool, exclude_offer_ids: Array = []) -> Dictionary:
+	var payload := _build_shop_payload("free", level, exclude_offer_ids)
 	payload["source"] = source
 	payload["queued"] = queued
 	payload["resume_state"] = _resume_state_after_modal
 	return payload
 
 
-func _build_shop_payload(mode: String, level: int) -> Dictionary:
+func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []) -> Dictionary:
 	var context := _build_shop_context()
 	var offers: Array = []
 	if not context.is_empty():
 		var generator := ShopOfferGenerator.new()
 		var candidates := generator.build_shop_candidate_pool(context)
+		var exclude_set := {}
+		for exclude_id in exclude_offer_ids:
+			var exclude_text := str(exclude_id).strip_edges()
+			if not exclude_text.is_empty():
+				exclude_set[exclude_text] = true
+		if not exclude_set.is_empty():
+			var filtered_candidates: Array[Dictionary] = []
+			for candidate in candidates:
+				if not exclude_set.has(str(candidate.get("offer_id", ""))):
+					filtered_candidates.append(candidate)
+			candidates = filtered_candidates
 		var rarity_weights := generator.get_shop_rarity_weights(int(_get_shop_stat("luck")), ZoneProgression.get_current_zone_rarity_bonus())
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
 		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, 3)
 		_update_weapon_upgrade_miss_count(candidates, offers)
+	_active_shop_offer_ids.clear()
+	for offer in offers:
+		if offer is Dictionary:
+			var active_offer_id := str(offer.get("offer_id", ""))
+			if not active_offer_id.is_empty():
+				_active_shop_offer_ids.append(active_offer_id)
 	return {
 		"mode": str(mode).strip_edges(),
 		"level": maxi(0, level),
 		"gold": _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0,
 		"offers": offers,
 		"resume_state": _resume_state_after_modal,
+		"refresh_cost": get_shop_refresh_cost(),
+		"refresh_count": _wave_refresh_count,
 	}
 
 
@@ -663,12 +715,28 @@ func _build_shop_context() -> Dictionary:
 	for weapon in _bound_loadout.get_weapon_instances():
 		owned_weapon_ids.append(weapon.weapon_id)
 		equipped_weapons.append({"weapon_id": weapon.weapon_id, "level": weapon.level})
+	var owned_rarity_counts := {}
+	var relic_counts := _bound_player.get_relic_counts()
+	for relic_id in relic_counts.keys():
+		var relic_data := DataRegistry.get_record("relics", str(relic_id))
+		if relic_data.is_empty():
+			continue
+		var relic_rarity := str(relic_data.get("rarity", "common"))
+		var relic_owned_count := int(relic_counts.get(relic_id, 0))
+		owned_rarity_counts[relic_rarity] = int(owned_rarity_counts.get(relic_rarity, 0)) + relic_owned_count
+	for weapon in _bound_loadout.get_weapon_instances():
+		var weapon_data := DataRegistry.get_record("weapons", weapon.weapon_id)
+		if weapon_data.is_empty():
+			continue
+		var weapon_rarity := str(weapon_data.get("rarity", "common"))
+		owned_rarity_counts[weapon_rarity] = int(owned_rarity_counts.get(weapon_rarity, 0)) + 1
 	return {
 		"owned_weapon_ids": owned_weapon_ids,
 		"equipped_weapons": equipped_weapons,
 		"unlocked_weapon_ids": [],
 		"unlocked_relic_ids": [],
 		"owned_relic_counts": _bound_player.get_relic_counts(),
+		"owned_rarity_counts": owned_rarity_counts,
 		"current_load": _bound_loadout.get_total_load_cost(),
 		"load_capacity": _bound_loadout.get_load_capacity(),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,

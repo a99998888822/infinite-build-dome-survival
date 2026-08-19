@@ -52,13 +52,11 @@
 | 未存在 | 利刃演武场建筑 | `camp_blade_arena.png` | `assets/sprites/camp/buildings/unlocked/camp_blade_arena.png` | 256x256 / PNG | 生成一张像素风训练场建筑图，主题是“利刃演武场”，小型近战训练设施，木质木桩、石台和简化兵器架，清新、像素精度中高，PNG，透明背景。 |
 | 未存在 | 远星射靶台建筑 | `camp_farstar_range.png` | `assets/sprites/camp/buildings/unlocked/camp_farstar_range.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“远星射靶台”，小型高台和靶场设施，清新、简洁、适合森林营地，PNG，透明背景。 |
 | 未存在 | 眷族培育栏建筑 | `camp_kin_nursery.png` | `assets/sprites/camp/buildings/unlocked/camp_kin_nursery.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“眷族培育栏”，简化的生物培养设施，带轻微机械感但不恐怖，适合清新森林营地，PNG，透明背景。 |
-| 未存在 | 畸变研究所建筑 | `camp_mutation_laboratory.png` | `assets/sprites/camp/buildings/unlocked/camp_mutation_laboratory.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“畸变研究所”，简洁实验建筑，轻微克系氛围但不恐怖，清新、像素精度中高，PNG，透明背景。 |
 | 未存在 | 穹顶庇护所建筑 | `camp_dome_shelter.png` | `assets/sprites/camp/buildings/unlocked/camp_dome_shelter.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“穹顶庇护所”，小型圆顶庇护建筑，明亮、清新、适合森林营地，PNG，透明背景。 |
 | 未存在 | 议事大厅建筑 | `camp_council_hall.png` | `assets/sprites/camp/buildings/unlocked/camp_council_hall.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“议事大厅”，小型公共建筑，清新、安静、适合森林营地，PNG，透明背景。 |
 | 未存在 | 利刃演武场废墟 | `camp_blade_arena_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_blade_arena_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“利刃演武场废墟”，保留木桩、石台或兵器架的残破轮廓，整体清新、轻废墟感，不要恐怖化，PNG，透明背景。 |
 | 未存在 | 远星射靶台废墟 | `camp_farstar_range_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_farstar_range_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“远星射靶台废墟”，保留高台和靶场残骸的轮廓，整体清新、简洁、轻废墟感，不要恐怖化，PNG，透明背景。 |
 | 未存在 | 眷族培育栏废墟 | `camp_kin_nursery_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_kin_nursery_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“眷族培育栏废墟”，保留培养设施的残破结构和少量机械感，整体清新、不恐怖，PNG，透明背景。 |
-| 未存在 | 畸变研究所废墟 | `camp_mutation_laboratory_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_mutation_laboratory_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“畸变研究所废墟”，保留实验建筑的残破轮廓，带轻微克系感但不阴森，整体干净、像素精度中高，PNG，透明背景。 |
 | 未存在 | 议事大厅废墟 | `camp_council_hall_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_council_hall_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“议事大厅废墟”，保留公共建筑残破结构，整体安静、清新、轻废墟感，PNG，透明背景。 |
 | 未存在 | HUD 经验图标 | `icon_hud_exp.png` | `assets/ui/icons/hud/icon_hud_exp.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示经验或升级进度，图形可以是小星点、经验瓶或进度符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 金币图标 | `icon_hud_coin.png` | `assets/ui/icons/hud/icon_hud_coin.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示金币，图形简洁、偏暖金色，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |

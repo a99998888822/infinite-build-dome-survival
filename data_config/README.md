@@ -135,7 +135,6 @@
 | `camp_blade_arena` | 利刃演武场 | 近战专属升级选项 |
 | `camp_farstar_range` | 远星射靶台 | 远程与投射物升级选项 |
 | `camp_kin_nursery` | 眷族培育栏 | 召唤体系强化 |
-| `camp_mutation_laboratory` | 畸变研究所 | DOT、腐化词条、控制类升级选项 |
 | `camp_dome_shelter` | 穹顶庇护所 | 生存防御类加成 |
 | `camp_council_hall` | 议事大厅 | 套装、拾取、经验、掉落与货币成长 |
 
@@ -157,7 +156,6 @@
 ## 注意
 
 当前配置是“工程测试示例”，不是正式策划表。后续实现武器、遗物、敌人等模块时，可以迁移、扩展或替换这些示例。
-
 
 
 

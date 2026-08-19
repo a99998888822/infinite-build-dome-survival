@@ -11,6 +11,14 @@ const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_RELIC: 60,
 	OFFER_WEAPON_UPGRADE: 15,
 }
+const RELIC_RARITY_STEPS: Dictionary = {
+	"common": 3,
+	"uncommon": 4,
+	"rare": 5,
+	"epic": 6,
+	"mythic": 8,
+	"legendary": 10,
+}
 
 
 func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
@@ -25,6 +33,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var shop_price_percent := float(context.get("shop_price_percent", 0.0))
 	var load_capacity := int(context.get("load_capacity", 0))
 	var current_load := int(context.get("current_load", 0))
+	var owned_rarity_counts: Dictionary = context.get("owned_rarity_counts", {})
 
 	for weapon_data in DataRegistry.get_table("weapons"):
 		var weapon_id := str(weapon_data.get("id", ""))
@@ -61,11 +70,13 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		if max_stack > 0 and owned_count >= max_stack:
 			continue
 		var relic_tags := _to_string_array(relic_data.get("tags", []))
+		var relic_rarity := str(relic_data.get("rarity", "common"))
 		candidates.append(_build_candidate_entry({
 			"offer_id": "relic:%s" % relic_id,
 			"offer_type": OFFER_RELIC,
 			"pool_key": "relic",
-			"rarity": str(relic_data.get("rarity", "common")),
+			"rarity": relic_rarity,
+			"rarity_bucket_count": int(owned_rarity_counts.get(relic_rarity, 0)),
 			"target_id": relic_id,
 			"display_name": str(relic_data.get("display_name", relic_id)),
 			"description": str(relic_data.get("description", "")),
@@ -284,8 +295,13 @@ func _calculate_shop_cost(candidate: Dictionary, shop_price_percent: float) -> i
 	if rarity_index < 0:
 		rarity_index = 0
 	var base_cost := 15
-	if str(candidate.get("offer_type", "")) == OFFER_WEAPON_UPGRADE:
+	var offer_type := str(candidate.get("offer_type", ""))
+	if offer_type == OFFER_WEAPON_UPGRADE:
 		base_cost = 10
+	elif offer_type == OFFER_RELIC:
+		var rarity := str(candidate.get("rarity", "common"))
+		var step := int(RELIC_RARITY_STEPS.get(rarity, 3))
+		base_cost += step * maxi(0, int(candidate.get("rarity_bucket_count", 0)))
 	return StatDefinitions.calculate_shop_cost(base_cost + rarity_index * 5, shop_price_percent)
 
 

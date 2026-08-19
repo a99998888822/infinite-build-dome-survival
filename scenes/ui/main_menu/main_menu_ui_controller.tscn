@@ -253,6 +253,17 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "退出"
 flat = true
 
+[node name="MenuHintLabel" type="Label" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1917742012]
+custom_minimum_size = Vector2(520, 38)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.45, 0.65, 0.61, 0.9)
+theme_override_font_sizes/font_size = 11
+text = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2

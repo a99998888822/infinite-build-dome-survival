@@ -441,7 +441,8 @@ func _validate_zone_pressure_dictionary(pressure: Variant, path: String, field_n
 		return
 	for pressure_key in pressure.keys():
 		var pressure_name := str(pressure_key)
-		if pressure_name != "max_hp_percent" and not StatDefinitions.has_stat(pressure_name):
+		var is_special_pressure := pressure_name in ["max_hp_percent", "armor_flat", "spawn_interval_percent"]
+		if not is_special_pressure and not StatDefinitions.has_stat(pressure_name):
 			errors.append("Unknown zone pressure key in %s.%s: %s" % [path, field_name, pressure_name])
 		var pressure_value := int(pressure[pressure_key])
 		if pressure_value < 0:
