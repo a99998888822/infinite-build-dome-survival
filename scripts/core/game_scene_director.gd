@@ -53,9 +53,14 @@ func _get_game_root() -> GameRoot:
 func _on_mode_changed(previous_mode: String, current_mode: String) -> void:
 	match current_mode:
 		MainFlowCoordinator.MODE_BATTLE:
+			_teardown_camp()
 			_compose_battle()
 		MainFlowCoordinator.MODE_CAMP:
+			_teardown_battle()
 			_compose_camp()
+		MainFlowCoordinator.MODE_TALENTS:
+			_teardown_battle()
+			_teardown_camp()
 		MainFlowCoordinator.MODE_BOOT:
 			_teardown_battle()
 			_teardown_camp()

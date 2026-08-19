@@ -3,7 +3,6 @@ class_name EscOverlay
 
 signal back_pressed
 
-const NUMBER_FONT_PATH: String = "res://assets/font/VT323-Regular.ttf"
 const RELIC_GRID_COLUMNS: int = 6
 const RELIC_CELL_SIZE: Vector2 = Vector2(64, 64)
 const RARITY_ORDER: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
@@ -132,9 +131,6 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		badge.add_theme_color_override("font_color", Color.WHITE)
 		badge.add_theme_font_size_override("font_size", 16)
-		var number_font := load(NUMBER_FONT_PATH)
-		if number_font is Font:
-			badge.add_theme_font_override("font", number_font)
 		badge.add_theme_constant_override("outline_size", 3)
 		badge.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.06, 0.95))
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE

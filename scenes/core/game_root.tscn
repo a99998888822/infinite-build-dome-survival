@@ -1,36 +1,36 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://o1x8f72ibk31"]
 
-[ext_resource type="Script" path="res://scripts/core/game_root.gd" id="1_game_root"]
-[ext_resource type="PackedScene" path="res://scenes/core/main_flow_coordinator.tscn" id="2_main_flow_coordinator"]
+[ext_resource type="Script" uid="uid://buh6h8q038euv" path="res://scripts/core/game_root.gd" id="1_game_root"]
+[ext_resource type="PackedScene" uid="uid://cwyeliqbcbcce" path="res://scenes/core/main_flow_coordinator.tscn" id="2_main_flow_coordinator"]
 [ext_resource type="PackedScene" path="res://scenes/ui/zones/zone_ui_controller.tscn" id="3_zone_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/finance/finance_ui_controller.tscn" id="4_finance_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/shop/shop_ui_controller.tscn" id="5_shop_ui_controller"]
-[ext_resource type="Script" path="res://scripts/core/game_scene_director.gd" id="6_scene_director"]
-[ext_resource type="PackedScene" path="res://scenes/ui/main_menu/main_menu_ui_controller.tscn" id="7_main_menu_ui"]
+[ext_resource type="Script" uid="uid://dg1bicx0skopw" path="res://scripts/core/game_scene_director.gd" id="6_scene_director"]
+[ext_resource type="PackedScene" uid="uid://bff3u3lony2bv" path="res://scenes/ui/main_menu/main_menu_ui_controller.tscn" id="7_main_menu_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/camp/camp_blueprint_ui_controller.tscn" id="8_camp_ui"]
 
-[node name="GameRoot" type="Node"]
+[node name="GameRoot" type="Node" unique_id=2024538272]
 script = ExtResource("1_game_root")
 
-[node name="CoreRoot" type="Node" parent="."]
+[node name="CoreRoot" type="Node" parent="." unique_id=504456494]
 
-[node name="MainFlowCoordinator" parent="CoreRoot" instance=ExtResource("2_main_flow_coordinator")]
+[node name="MainFlowCoordinator" parent="CoreRoot" unique_id=1130531068 instance=ExtResource("2_main_flow_coordinator")]
 
-[node name="WorldRoot" type="Node2D" parent="."]
+[node name="WorldRoot" type="Node2D" parent="." unique_id=1769638026]
 
-[node name="UiRoot" type="CanvasLayer" parent="."]
+[node name="UiRoot" type="CanvasLayer" parent="." unique_id=628517737]
 
-[node name="ZoneUIController" parent="UiRoot" instance=ExtResource("3_zone_ui_controller")]
+[node name="ZoneUIController" parent="UiRoot" unique_id=1050399002 instance=ExtResource("3_zone_ui_controller")]
 
-[node name="FinanceUIController" parent="UiRoot" instance=ExtResource("4_finance_ui_controller")]
+[node name="FinanceUIController" parent="UiRoot" unique_id=1759311192 instance=ExtResource("4_finance_ui_controller")]
 
-[node name="ShopUIController" parent="UiRoot" instance=ExtResource("5_shop_ui_controller")]
+[node name="ShopUIController" parent="UiRoot" unique_id=1809794240 instance=ExtResource("5_shop_ui_controller")]
 
-[node name="MainMenuUIController" parent="UiRoot" instance=ExtResource("7_main_menu_ui")]
+[node name="MainMenuUIController" parent="UiRoot" unique_id=1070979558 instance=ExtResource("7_main_menu_ui")]
 
-[node name="CampBlueprintUIController" parent="UiRoot" instance=ExtResource("8_camp_ui")]
+[node name="CampBlueprintUIController" parent="UiRoot" unique_id=1405809523 instance=ExtResource("8_camp_ui")]
 
-[node name="SceneDirector" type="Node" parent="."]
+[node name="SceneDirector" type="Node" parent="." unique_id=1066441752]
 script = ExtResource("6_scene_director")
 
-[node name="DebugRoot" type="Node" parent="."]
+[node name="DebugRoot" type="Node" parent="." unique_id=736260553]

@@ -19,7 +19,7 @@ const HINT_COLORS: Array[Color] = [
 	Color("#7087a8"),
 	Color("#b69a65"),
 ]
-const HINT_INTERVAL := 4.5
+const HINT_INTERVAL := 9.0
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
@@ -59,8 +59,8 @@ func _ready() -> void:
 	_setup_menu_atmosphere()
 	if start_battle_button != null and not start_battle_button.pressed.is_connected(_on_start_battle_pressed):
 		start_battle_button.pressed.connect(_on_start_battle_pressed)
-	if camp_entry_button != null and not camp_entry_button.pressed.is_connected(_on_camp_entry_pressed):
-		camp_entry_button.pressed.connect(_on_camp_entry_pressed)
+	if camp_entry_button != null and not camp_entry_button.pressed.is_connected(_on_talents_pressed):
+		camp_entry_button.pressed.connect(_on_talents_pressed)
 	if quit_button != null and not quit_button.pressed.is_connected(_on_quit_pressed):
 		quit_button.pressed.connect(_on_quit_pressed)
 	if character_back_button != null and not character_back_button.pressed.is_connected(_on_character_back_pressed):
@@ -154,8 +154,8 @@ func _update_hint_effect(delta: float, time: float) -> void:
 	var color := HINT_COLORS[color_index]
 	var color_next := HINT_COLORS[(color_index + 1) % HINT_COLORS.size()]
 	var color_mix := (sin(time * 0.75) + 1.0) * 0.5
-	var flicker := 0.84 + sin(time * 19.0) * 0.08 + sin(time * 47.0) * 0.04
-	hint_label.modulate = Color(color.lerp(color_next, color_mix), clampf(flicker, 0.62, 1.0))
+	var flicker := 0.90 + sin(time * 1.2) * 0.04 + sin(time * 2.7) * 0.02
+	hint_label.modulate = Color(color.lerp(color_next, color_mix), clampf(flicker, 0.82, 1.0))
 
 
 func _bind_to_main_flow() -> void:
@@ -232,9 +232,29 @@ func _on_start_battle_pressed() -> void:
 		character_select_page.visible = true
 
 
-func _on_camp_entry_pressed() -> void:
-	if _main_flow_coordinator != null:
-		_main_flow_coordinator.enter_camp_flow()
+func _on_talents_pressed() -> void:
+	if _main_flow_coordinator == null:
+		_main_flow_coordinator = _find_main_flow_coordinator()
+	if _main_flow_coordinator == null:
+		return
+	_main_flow_coordinator.enter_talents_flow()
+	var game_root: GameRoot = null
+	if get_tree() != null:
+		game_root = get_tree().current_scene as GameRoot
+	if game_root == null:
+		return
+	var talents_ui := game_root.get_node_or_null("UiRoot/CampBlueprintUIController") as CampBlueprintUIController
+	if talents_ui != null:
+		talents_ui.show_talents_page()
+
+
+func show_start_page() -> void:
+	if character_select_page != null:
+		character_select_page.visible = false
+	if battle_result_panel != null:
+		battle_result_panel.visible = false
+	if start_page != null:
+		start_page.visible = true
 
 
 func _on_quit_pressed() -> void:

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dmtnpk5cdld1w" path="res://scripts/ui/main_menu_ui_controller.gd" id="1_main_menu"]
 [ext_resource type="Texture2D" uid="uid://c8jb5bwuuujb1" path="res://assets/ui/main_menu/button_main_menu.png" id="2_a7kih"]
 [ext_resource type="Texture2D" uid="uid://bsrwgtffh8g3f" path="res://assets/ui/main_menu/title_main_menu.png" id="2_kxa31"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
 
 [node name="MainMenuUIController" type="CanvasLayer" unique_id=183020204]
@@ -40,7 +41,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 color = Color(0.08, 0.13, 0.14, 0.22)
 
-[node name="TopRule" type="ColorRect" parent="StartPage"]
+[node name="TopRule" type="ColorRect" parent="StartPage" unique_id=620922937]
 layout_mode = 0
 anchor_left = 0.5
 anchor_right = 0.5
@@ -52,7 +53,7 @@ grow_horizontal = 2
 mouse_filter = 2
 color = Color(0.85, 0.72, 0.32, 0.58)
 
-[node name="VersionLabel" type="Label" parent="StartPage"]
+[node name="VersionLabel" type="Label" parent="StartPage" unique_id=1796183719]
 layout_mode = 0
 anchor_left = 1.0
 anchor_top = 1.0
@@ -62,7 +63,6 @@ offset_left = -224.0
 offset_top = -31.0
 offset_right = -44.0
 offset_bottom = -14.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.77, 0.84, 0.78, 0.48)
 theme_override_font_sizes/font_size = 10
 text = "版本：v.0106.260816"
@@ -116,21 +116,6 @@ texture = ExtResource("2_kxa31")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Tagline" type="Label" parent="StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack"]
-layout_mode = 0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -34.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.77, 0.88, 0.84, 0.9)
-theme_override_font_sizes/font_size = 15
-text = "在最后的庇护所，抵御入侵"
-horizontal_alignment = 1
-
 [node name="MiddleSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=605045204]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
@@ -168,10 +153,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_top = -1.0
-offset_right = -3.0
-offset_bottom = -1.0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = -1.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -204,9 +189,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -3.0
-offset_top = -1.0
+offset_top = 2.0
 offset_right = -3.0
-offset_bottom = -1.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -217,7 +202,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
-text = "进入营地"
+text = "天赋"
 flat = true
 
 [node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
@@ -238,8 +223,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_right = -3.0
+offset_left = -2.0
+offset_top = 1.0
+offset_right = -2.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -256,8 +243,9 @@ flat = true
 [node name="MenuHintLabel" type="Label" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1917742012]
 custom_minimum_size = Vector2(520, 38)
 layout_mode = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.45, 0.65, 0.61, 0.9)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 11
 text = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn"
 horizontal_alignment = 1

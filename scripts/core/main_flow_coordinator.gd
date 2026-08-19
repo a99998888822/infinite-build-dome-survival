@@ -11,6 +11,7 @@ signal flow_reset
 const MODE_BOOT: String = "boot"
 const MODE_BATTLE: String = "battle"
 const MODE_CAMP: String = "camp"
+const MODE_TALENTS: String = "talents"
 
 const STATE_START_PAGE: String = "start_page"
 const STATE_CHARACTER_SELECT: String = "character_select"
@@ -26,6 +27,7 @@ const STATE_ZONE_SELECT: String = "zone_select"
 const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
 const STATE_BATTLE_RESULT: String = "battle_result"
 const STATE_CAMP_ENTRY: String = "camp_entry"
+const STATE_TALENTS: String = "talents"
 
 var current_mode: String = MODE_BOOT
 var current_state: String = STATE_START_PAGE
@@ -180,6 +182,11 @@ func enter_camp_flow(camp_root: CampRoot = null) -> void:
 		bind_camp_context(camp_root)
 	_set_mode(MODE_CAMP)
 	_set_state(STATE_CAMP_ENTRY)
+
+
+func enter_talents_flow() -> void:
+	_set_mode(MODE_TALENTS)
+	_set_state(STATE_TALENTS)
 
 
 func request_next_wave() -> bool:

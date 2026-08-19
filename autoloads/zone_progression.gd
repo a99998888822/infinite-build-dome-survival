@@ -143,7 +143,7 @@ func get_effective_streak() -> int:
 
 
 func get_enemy_pressure_per_streak(field_name: String, fallback: int = 0) -> int:
-	var pressure := get_current_zone_record().get("enemy_pressure_per_streak", {})
+	var pressure: Dictionary = get_current_zone_record().get("enemy_pressure_per_streak", {})
 	if not (pressure is Dictionary):
 		return fallback
 	return int(pressure.get(field_name, fallback))
