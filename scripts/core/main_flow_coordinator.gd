@@ -37,6 +37,7 @@ var current_wave_duration_seconds: int = 0
 var current_character_id: String = ""
 var current_start_weapon_ids: Array[String] = []
 var current_outgame_modifiers: Array = []
+var current_difficulty_id: String = "standard"
 var current_battle_summary: Dictionary = {}
 var current_victory: bool = false
 var battle_resolved: bool = false
@@ -73,6 +74,7 @@ func reset_flow() -> void:
 	current_character_id = ""
 	current_start_weapon_ids.clear()
 	current_outgame_modifiers.clear()
+	current_difficulty_id = "standard"
 	current_wave_index = -1
 	current_wave_id = ""
 	current_wave_duration_seconds = 0
@@ -102,10 +104,13 @@ func enter_start_page() -> void:
 	reset_flow()
 
 
-func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[String] = [], outgame_modifiers: Array = []) -> void:
+func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[String] = [], outgame_modifiers: Array = [], difficulty_id: String = "standard") -> void:
 	current_character_id = _sanitize_text(character_id)
 	current_start_weapon_ids = _sanitize_string_array(start_weapon_ids)
 	current_outgame_modifiers = outgame_modifiers.duplicate(true)
+	current_difficulty_id = _sanitize_text(difficulty_id)
+	if current_difficulty_id.is_empty():
+		current_difficulty_id = "standard"
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_CHARACTER_SELECT)
 

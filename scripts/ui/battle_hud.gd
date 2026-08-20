@@ -22,6 +22,11 @@ const DRAWER_OPEN_RIGHT := 0.0
 const DRAWER_CLOSED_LEFT := -28.0
 const DRAWER_CLOSED_RIGHT := 292.0
 const DRAWER_ANIMATION_SECONDS := 0.18
+const MODAL_SAFE_EDGE_MARGIN := 16.0
+const MODAL_FALLBACK_LEFT := 220.0
+const MODAL_FALLBACK_TOP := 112.0
+const MODAL_FALLBACK_RIGHT_OPEN := 336.0
+const MODAL_FALLBACK_RIGHT_CLOSED := 44.0
 const STAT_PREVIEW_GAIN_COLOR := Color(0.498, 0.847, 0.561, 1.0)
 const STAT_PREVIEW_LOSS_COLOR := Color(0.949, 0.545, 0.510, 1.0)
 const ELDRITCH_NAMING_THRESHOLD := 60.0
@@ -75,6 +80,7 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"divinity",
 ]
 
+@onready var status_panel: PanelContainer = get_node_or_null("StatusPanel")
 @onready var hp_label: Label = get_node_or_null("StatusPanel/Content/HpLabel")
 @onready var exp_label: Label = get_node_or_null("StatusPanel/Content/ExpLabel")
 @onready var gold_label: Label = get_node_or_null("StatusPanel/Content/GoldLabel")
@@ -143,6 +149,39 @@ func _refresh_labels() -> void:
 		var wave_number := _wave_manager.current_wave_index + 1
 		var time_left := maxf(_wave_manager.wave_time_left, 0.0)
 		wave_label.text = "第 %d 波  剩余 %.1f 秒" % [wave_number, time_left]
+
+
+func get_modal_safe_rect() -> Rect2:
+	var viewport := get_viewport()
+	if viewport == null:
+		return Rect2()
+	var viewport_size := viewport.get_visible_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var left := minf(MODAL_FALLBACK_LEFT, viewport_size.x * 0.18)
+	var top := minf(MODAL_FALLBACK_TOP, viewport_size.y * 0.18)
+	if status_panel != null:
+		var status_rect := status_panel.get_global_rect()
+		if status_rect.size.x > 0.0 and status_rect.size.y > 0.0:
+			left = maxf(left, status_rect.end.x + MODAL_SAFE_EDGE_MARGIN)
+			top = maxf(top, status_rect.end.y + MODAL_SAFE_EDGE_MARGIN)
+	var state := _flow.get_current_state() if _flow != null else ""
+	var right := MODAL_FALLBACK_RIGHT_CLOSED
+	if _drawer_open or DRAWER_AUTO_OPEN_STATES.has(state):
+		right = MODAL_FALLBACK_RIGHT_OPEN
+	if stats_drawer != null:
+		var drawer_rect := stats_drawer.get_global_rect()
+		if drawer_rect.size.x > 0.0 and drawer_rect.position.x < viewport_size.x:
+			var drawer_reserved_right := viewport_size.x - drawer_rect.position.x + MODAL_SAFE_EDGE_MARGIN
+			right = maxf(right, drawer_reserved_right)
+	var safe_left := clampf(left, 0.0, viewport_size.x)
+	var safe_top := clampf(top, 0.0, viewport_size.y)
+	var safe_right := clampf(right, 0.0, viewport_size.x - safe_left)
+	var bottom := MODAL_SAFE_EDGE_MARGIN
+	return Rect2(
+		Vector2(safe_left, safe_top),
+		Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - bottom, 0.0))
+	)
 
 
 func _refresh_visibility() -> void:

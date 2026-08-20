@@ -272,7 +272,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="MainPanel" type="PanelContainer" parent="CharacterSelectPage/CenterContainer" unique_id=2081780886]
-custom_minimum_size = Vector2(560, 420)
+custom_minimum_size = Vector2(900, 650)
 layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel" unique_id=397228058]
@@ -281,12 +281,86 @@ theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=358826533]
 layout_mode = 2
-text = "选择角色"
+text = "战斗准备"
 horizontal_alignment = 1
 
-[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1181950184]
+[node name="SelectionBody" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1181950184]
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CharacterDetails" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="CharacterHeader" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterIcon" type="TextureRect" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CharacterName" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "请选择角色"
+vertical_alignment = 1
+
+[node name="CharacterDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+layout_mode = 2
+autowrap_mode = 3
+text = "选择左侧角色查看基础属性、初始武器与特性。"
+
+[node name="StatsLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+layout_mode = 2
+autowrap_mode = 3
+text = "基础属性\n—"
+
+[node name="WeaponLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+layout_mode = 2
+autowrap_mode = 3
+text = "初始武器\n—"
+
+[node name="PassiveLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+layout_mode = 2
+autowrap_mode = 3
+text = "角色特性\n—"
+
+[node name="DifficultyRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="DifficultyTitle" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow"]
+layout_mode = 2
+text = "难度"
+
+[node name="DifficultyOption" type="OptionButton" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 0
+popup/item_0/text = "标准"
+popup/item_0/id = 0
+popup/item_0/metadata = "standard"
+popup/item_1/text = "困难"
+popup/item_1/id = 1
+popup/item_1/metadata = "hard"
+popup/item_2/text = "梦魇"
+popup/item_2/id = 2
+popup/item_2/metadata = "nightmare"
+
+[node name="DifficultyDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+layout_mode = 2
+autowrap_mode = 3
+text = "标准战局：推荐首次体验，完整展现穹顶生存流程。"
 
 [node name="ErrorLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1989766280]
 layout_mode = 2
@@ -299,13 +373,13 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow" unique_id=1456694272]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "返回"
+text = "返回主界面"
 
 [node name="ConfirmButton" type="Button" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow" unique_id=95926871]
 layout_mode = 2
 size_flags_horizontal = 3
 disabled = true
-text = "确认选择"
+text = "继续"
 
 [node name="BattleResultPanel" type="Control" parent="." unique_id=2077631280]
 visible = false

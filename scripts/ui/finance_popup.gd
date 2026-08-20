@@ -17,6 +17,9 @@ var amount: int = 0
 var is_animating: bool = false
 var _amount_initialized: bool = false
 var _animation_token: int = 0
+var _safe_rect: Rect2 = Rect2()
+var _input_blocker: ColorRect = null
+var _show_tween: Tween = null
 
 @onready var main_panel: PanelContainer = $MainPanel
 @onready var title_label: Label = $MainPanel/Content/Header/TitleRow/TitleGroup/TitleLabel
@@ -38,8 +41,14 @@ var _animation_token: int = 0
 
 
 func _ready() -> void:
+	_ensure_input_blocker()
 	_connect_buttons()
 	_start_tentacle_animation()
+	if get_viewport() != null:
+		var viewport_callable := Callable(self, "_on_viewport_resized")
+		if not get_viewport().size_changed.is_connected(viewport_callable):
+			get_viewport().size_changed.connect(viewport_callable)
+	_layout_popup()
 	hide_popup()
 	_refresh_visual()
 	_refresh_footer_color()
@@ -64,25 +73,213 @@ func show_error(reason: String) -> void:
 	is_animating = false
 	error_message = _format_error_reason(reason)
 	_refresh_visual()
+	if hint_label != null:
+		var base_position := hint_label.position
+		var shake := create_tween()
+		shake.tween_property(hint_label, "position", base_position + Vector2(-4.0, 0.0), 0.04)
+		shake.tween_property(hint_label, "position", base_position + Vector2(4.0, 0.0), 0.08)
+		shake.tween_property(hint_label, "position", base_position, 0.06)
+
+
+func set_safe_rect(next_rect: Rect2) -> void:
+	_safe_rect = next_rect
+	_layout_popup()
 
 
 func show_popup() -> void:
+	_layout_popup()
 	visible = true
-	modulate.a = 0.0
+	if _input_blocker != null:
+		_input_blocker.visible = true
+	if main_panel != null:
+		main_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+		main_panel.pivot_offset = main_panel.size * 0.5
+		main_panel.modulate.a = 0.0
+		main_panel.scale = Vector2(0.96, 0.96)
+	if _show_tween != null:
+		_show_tween.kill()
+	_show_tween = create_tween().set_parallel(true)
+	_show_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_show_tween.tween_property(main_panel, "modulate:a", 1.0, 0.24)
+	_show_tween.tween_property(main_panel, "scale", Vector2.ONE, 0.30)
 	_refresh_visual()
-	var fade_tween := create_tween()
-	fade_tween.set_trans(Tween.TRANS_QUAD)
-	fade_tween.set_ease(Tween.EASE_OUT)
-	fade_tween.tween_property(self, "modulate:a", 1.0, 0.22)
 	if amount_edit != null:
-		amount_edit.grab_focus()
-		amount_edit.select_all()
+		get_tree().create_timer(0.28).timeout.connect(func() -> void:
+			if visible and not is_animating:
+				amount_edit.grab_focus()
+				amount_edit.select_all()
+		)
 
 
 func hide_popup() -> void:
+	if _show_tween != null:
+		_show_tween.kill()
+		_show_tween = null
 	visible = false
 	is_animating = false
 	_animation_token += 1
+	if _input_blocker != null:
+		_input_blocker.visible = false
+	if main_panel != null:
+		main_panel.modulate.a = 1.0
+		main_panel.scale = Vector2.ONE
+
+
+func _ensure_input_blocker() -> void:
+	if _input_blocker != null:
+		return
+	_input_blocker = ColorRect.new()
+	_input_blocker.name = "InputBlocker"
+	_input_blocker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_input_blocker.color = Color(0.0, 0.0, 0.0, 0.0)
+	_input_blocker.mouse_filter = Control.MOUSE_FILTER_STOP
+	_input_blocker.visible = false
+	add_child(_input_blocker)
+	move_child(_input_blocker, 1)
+
+
+func _on_viewport_resized() -> void:
+	_layout_popup()
+
+
+func _layout_popup() -> void:
+	if main_panel == null or get_viewport() == null:
+		return
+	var viewport_size := get_viewport().get_visible_rect().size
+	var safe := _safe_rect
+	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
+		safe = _build_fallback_safe_rect(viewport_size)
+	var compact := safe.size.y < 620.0 or safe.size.x < 620.0
+	_apply_compact_layout(compact)
+	var panel_width := clampf(safe.size.x - 16.0, 440.0, 640.0)
+	var panel_height := clampf(safe.size.y - 16.0, 420.0, 650.0)
+	if safe.size.x < 456.0:
+		panel_width = safe.size.x
+	if safe.size.y < 436.0:
+		panel_height = safe.size.y
+	panel_width = minf(panel_width, viewport_size.x)
+	panel_height = minf(panel_height, viewport_size.y)
+	var panel_size := Vector2(maxf(panel_width, 0.0), maxf(panel_height, 0.0))
+	var panel_position := safe.position + (safe.size - panel_size) * 0.5
+	main_panel.anchor_left = 0.0
+	main_panel.anchor_top = 0.0
+	main_panel.anchor_right = 0.0
+	main_panel.anchor_bottom = 0.0
+	main_panel.position = panel_position
+	main_panel.size = panel_size
+	_layout_corner_decorations()
+
+
+func _apply_compact_layout(compact: bool) -> void:
+	var content := get_node_or_null("MainPanel/Content") as VBoxContainer
+	var title_row := get_node_or_null("MainPanel/Content/Header/TitleRow") as Control
+	var header_line := get_node_or_null("MainPanel/Content/Header/HeaderLine") as Control
+	var rate_panel := get_node_or_null("MainPanel/Content/StatsRow/RatePanel") as Control
+	var interest_panel := get_node_or_null("MainPanel/Content/StatsRow/InterestPanel") as Control
+	var action_row := get_node_or_null("MainPanel/Content/ActionRow") as Control
+	var deposit := get_node_or_null("MainPanel/Content/ActionRow/DepositButton") as Control
+	var withdraw := get_node_or_null("MainPanel/Content/ActionRow/WithdrawButton") as Control
+	var title_label_node := get_node_or_null("MainPanel/Content/Header/TitleRow/TitleGroup/TitleLabel") as Label
+	var subtitle_label_node := get_node_or_null("MainPanel/Content/Header/TitleRow/TitleGroup/SubtitleLabel") as Label
+	var principal_label_node := get_node_or_null("MainPanel/Content/PrincipalPanel/PrincipalContent/PrincipalLabel") as Label
+	var principal_value_node := get_node_or_null("MainPanel/Content/PrincipalPanel/PrincipalContent/PrincipalValue") as Label
+	var rate_value_node := get_node_or_null("MainPanel/Content/StatsRow/RatePanel/StatContent/RateValue") as Label
+	var interest_value_node := get_node_or_null("MainPanel/Content/StatsRow/InterestPanel/StatContent/InterestValue") as Label
+	var deposit_node := deposit as Button
+	var withdraw_node := withdraw as Button
+	if content != null:
+		content.add_theme_constant_override("separation", 7 if compact else 14)
+	if main_panel != null:
+		var panel_style := main_panel.get_theme_stylebox("panel")
+		if panel_style is StyleBox:
+			var compact_style := (panel_style as StyleBox).duplicate()
+			if compact_style is StyleBoxFlat:
+				var flat_style := compact_style as StyleBoxFlat
+				flat_style.content_margin_left = 14.0 if compact else 24.0
+				flat_style.content_margin_right = 14.0 if compact else 24.0
+				flat_style.content_margin_top = 12.0 if compact else 20.0
+				flat_style.content_margin_bottom = 12.0 if compact else 20.0
+				main_panel.add_theme_stylebox_override("panel", flat_style)
+	if title_row != null:
+		title_row.custom_minimum_size.y = 58.0 if compact else 68.0
+	if header_line != null:
+		header_line.custom_minimum_size.y = 2.0 if compact else 3.0
+	if animation_stage != null:
+		animation_stage.custom_minimum_size.y = 68.0 if compact else 96.0
+	if principal_panel != null:
+		principal_panel.custom_minimum_size.y = 78.0 if compact else 96.0
+	if rate_panel != null:
+		rate_panel.custom_minimum_size.y = 62.0 if compact else 76.0
+	if interest_panel != null:
+		interest_panel.custom_minimum_size.y = 62.0 if compact else 76.0
+	if amount_edit != null:
+		amount_edit.custom_minimum_size = Vector2(140.0, 40.0 if compact else 44.0)
+	if action_row != null:
+		action_row.add_theme_constant_override("separation", 12 if compact else 18)
+	if deposit != null:
+		deposit.custom_minimum_size.y = 48.0 if compact else 56.0
+	if withdraw != null:
+		withdraw.custom_minimum_size.y = 48.0 if compact else 56.0
+	if skip_button != null:
+		skip_button.custom_minimum_size.y = 24.0 if compact else 28.0
+	if title_label_node != null:
+		title_label_node.add_theme_font_size_override("font_size", 26 if compact else 32)
+	if subtitle_label_node != null:
+		subtitle_label_node.add_theme_font_size_override("font_size", 15 if compact else 18)
+	if principal_label_node != null:
+		principal_label_node.add_theme_font_size_override("font_size", 14 if compact else 16)
+	if principal_value_node != null:
+		principal_value_node.add_theme_font_size_override("font_size", 38 if compact else 48)
+	if rate_value_node != null:
+		rate_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
+	if interest_value_node != null:
+		interest_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
+	if deposit_node != null:
+		deposit_node.add_theme_font_size_override("font_size", 18 if compact else 22)
+	if withdraw_node != null:
+		withdraw_node.add_theme_font_size_override("font_size", 18 if compact else 22)
+	if footer_note != null:
+		footer_note.add_theme_font_size_override("font_size", 13 if compact else 15)
+
+
+func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var left := minf(220.0, viewport_size.x * 0.18)
+	var right := minf(336.0, viewport_size.x * 0.30)
+	var top := minf(112.0, viewport_size.y * 0.18)
+	var bottom := 16.0
+	var safe_left := clampf(left, 0.0, viewport_size.x)
+	var safe_top := clampf(top, 0.0, viewport_size.y)
+	var safe_right := clampf(right, 0.0, viewport_size.x - safe_left)
+	return Rect2(
+		Vector2(safe_left, safe_top),
+		Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - bottom, 0.0))
+	)
+
+
+func _layout_corner_decorations() -> void:
+	if main_panel == null:
+		return
+	var corners := [
+		$CornerTopLeft,
+		$CornerTopRight,
+		$CornerBottomLeft,
+		$CornerBottomRight,
+	]
+	var positions := [
+		main_panel.position + Vector2(-6.0, -6.0),
+		main_panel.position + Vector2(main_panel.size.x - 42.0, -6.0),
+		main_panel.position + Vector2(-6.0, main_panel.size.y - 42.0),
+		main_panel.position + Vector2(main_panel.size.x - 42.0, main_panel.size.y - 42.0),
+	]
+	for index in corners.size():
+		var corner := corners[index] as Control
+		if corner == null:
+			continue
+		corner.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		corner.position = positions[index]
+		corner.size = Vector2(48.0, 48.0)
 
 
 func _connect_buttons() -> void:
@@ -151,15 +348,15 @@ func _build_hint_text(gold: int, principal: int) -> String:
 func _refresh_footer_color() -> void:
 	if footer_note == null:
 		return
-	var phase := fmod(Time.get_ticks_msec() / 1000.0, 6.0) / 6.0
+	var phase := fmod(Time.get_ticks_msec() / 1000.0, 4.0) / 4.0
 	var color := Color(0.47, 0.70, 0.26, 1.0)
-	if phase < 0.333:
-		color = Color(0.47, 0.70, 0.26, 1.0).lerp(Color(0.68, 0.34, 0.86, 1.0), phase * 3.0)
-	elif phase < 0.666:
-		color = Color(0.68, 0.34, 0.86, 1.0).lerp(Color(0.88, 0.20, 0.24, 1.0), (phase - 0.333) * 3.0)
-	else:
-		color = Color(0.88, 0.20, 0.24, 1.0).lerp(Color(0.47, 0.70, 0.26, 1.0), (phase - 0.666) * 3.0)
-	footer_note.add_theme_color_override("font_color", color)
+	var alpha := 0.82
+	if phase >= 0.90 and phase < 0.925:
+		alpha = 0.32
+	elif phase >= 0.94 and phase < 0.955:
+		color = Color(0.68, 0.34, 0.86, 1.0)
+		alpha = 0.58
+	footer_note.add_theme_color_override("font_color", Color(color.r, color.g, color.b, alpha))
 
 
 func _start_tentacle_animation() -> void:

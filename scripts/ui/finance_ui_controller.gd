@@ -19,6 +19,10 @@ const INTEREST_NOTICE_ANIMATION_SECONDS: float = 0.45
 
 func _ready() -> void:
 	_prepare_layers()
+	if get_viewport() != null:
+		var viewport_callable := Callable(self, "_on_viewport_size_changed")
+		if not get_viewport().size_changed.is_connected(viewport_callable):
+			get_viewport().size_changed.connect(viewport_callable)
 	call_deferred("_bind_to_main_flow")
 
 
@@ -104,17 +108,18 @@ func _show_interest_settlement(payload: Dictionary) -> void:
 	_interest_notice_token += 1
 	var token := _interest_notice_token
 	_interest_notice_label.text = _build_interest_notice_text(payload)
-	_position_interest_notice(0.70)
+	_position_interest_notice(0.78)
 	if _interest_notice_tween != null:
 		_interest_notice_tween.kill()
 	_interest_notice_panel.visible = true
 	_interest_notice_panel.modulate.a = 0.0
-	_interest_notice_tween = create_tween()
+	var target_position := _interest_notice_panel.position
+	_interest_notice_panel.position = target_position + Vector2(0.0, 12.0)
+	_interest_notice_tween = create_tween().set_parallel(true)
 	_interest_notice_tween.set_trans(Tween.TRANS_CUBIC)
 	_interest_notice_tween.set_ease(Tween.EASE_OUT)
-	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "modulate:a", INTEREST_NOTICE_VISIBLE_ALPHA, INTEREST_NOTICE_ANIMATION_SECONDS)
-	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "anchor_top", 0.30, INTEREST_NOTICE_ANIMATION_SECONDS)
-	_interest_notice_tween.parallel().tween_property(_interest_notice_panel, "anchor_bottom", 0.30, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "modulate:a", INTEREST_NOTICE_VISIBLE_ALPHA, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "position", target_position, INTEREST_NOTICE_ANIMATION_SECONDS)
 	await get_tree().create_timer(INTEREST_NOTICE_DURATION).timeout
 	if token != _interest_notice_token:
 		return
@@ -126,6 +131,7 @@ func _show_interest_settlement(payload: Dictionary) -> void:
 func _show_finance_popup(payload: Dictionary) -> void:
 	if finance_popup == null:
 		return
+	finance_popup.set_safe_rect(_get_finance_safe_rect())
 	finance_popup.configure(payload)
 	var operation_callable := Callable(self, "_on_finance_operation_submitted")
 	var skipped_callable := Callable(self, "_on_finance_skipped")
@@ -146,6 +152,50 @@ func _on_finance_operation_submitted(action: String, amount: int) -> void:
 func _on_finance_skipped() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.submit_finance_operation("none", 0)
+
+
+func _on_viewport_size_changed() -> void:
+	var safe_rect := _get_finance_safe_rect()
+	if finance_popup != null and finance_popup.visible:
+		finance_popup.set_safe_rect(safe_rect)
+	if _interest_notice_panel != null and _interest_notice_panel.visible:
+		_position_interest_notice()
+
+
+func _get_finance_safe_rect() -> Rect2:
+	var battle_hud := _find_battle_hud()
+	if battle_hud != null and battle_hud.has_method("get_modal_safe_rect"):
+		return battle_hud.get_modal_safe_rect()
+	var viewport_size := get_viewport().get_visible_rect().size if get_viewport() != null else Vector2(1280, 720)
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var left := minf(220.0, viewport_size.x * 0.18)
+	var right := minf(336.0, viewport_size.x * 0.30)
+	var top := minf(112.0, viewport_size.y * 0.18)
+	var bottom := 16.0
+	var safe_left := clampf(left, 0.0, viewport_size.x)
+	var safe_top := clampf(top, 0.0, viewport_size.y)
+	var safe_right := clampf(right, 0.0, viewport_size.x - safe_left)
+	return Rect2(
+		Vector2(safe_left, safe_top),
+		Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - bottom, 0.0))
+	)
+
+
+func _find_battle_hud() -> BattleHud:
+	var current: Node = self
+	var game_root: GameRoot = null
+	while current != null:
+		if current is GameRoot:
+			game_root = current as GameRoot
+			break
+		current = current.get_parent()
+	if game_root == null:
+		return null
+	var scene_director := game_root.get_node_or_null("SceneDirector") as GameSceneDirector
+	if scene_director == null or scene_director.battle_root == null:
+		return null
+	return scene_director.battle_root.get_node_or_null("HUD") as BattleHud
 
 
 func _ensure_interest_notice() -> void:
@@ -194,19 +244,27 @@ func _ensure_interest_notice() -> void:
 	notice_content.add_child(bottom_line)
 
 
-func _position_interest_notice(vertical_ratio: float = 0.30) -> void:
+func _position_interest_notice(vertical_ratio: float = 0.78) -> void:
 	if _interest_notice_panel == null or get_viewport() == null:
 		return
+	var safe_rect := _get_finance_safe_rect()
+	if safe_rect.size.x <= 0.0 or safe_rect.size.y <= 0.0:
+		return
 	var text_width := _get_interest_notice_text_width()
-	var width := clampf(ceil(text_width + 72.0), 240.0, 540.0)
+	var desired_width := clampf(ceil(text_width + 72.0), 240.0, 540.0)
+	var width := minf(desired_width, safe_rect.size.x)
+	var notice_height := minf(56.0, safe_rect.size.y)
+	var target_x := safe_rect.position.x + maxf((safe_rect.size.x - width) * 0.5, 0.0)
+	var target_y := safe_rect.position.y + safe_rect.size.y * clampf(vertical_ratio, 0.25, 0.90) - notice_height * 0.5
+	target_y = clampf(target_y, safe_rect.position.y, safe_rect.end.y - notice_height)
 	_interest_notice_panel.anchor_left = 0.0
-	_interest_notice_panel.anchor_top = vertical_ratio
+	_interest_notice_panel.anchor_top = 0.0
 	_interest_notice_panel.anchor_right = 0.0
-	_interest_notice_panel.anchor_bottom = vertical_ratio
-	_interest_notice_panel.offset_left = 32.0
-	_interest_notice_panel.offset_top = -26.0
-	_interest_notice_panel.offset_right = 32.0 + width
-	_interest_notice_panel.offset_bottom = 26.0
+	_interest_notice_panel.anchor_bottom = 0.0
+	_interest_notice_panel.offset_left = target_x
+	_interest_notice_panel.offset_top = target_y
+	_interest_notice_panel.offset_right = target_x + width
+	_interest_notice_panel.offset_bottom = target_y + notice_height
 
 
 func _get_interest_notice_text_width() -> float:
