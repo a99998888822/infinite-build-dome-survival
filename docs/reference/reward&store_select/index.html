@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="creative-medium" content="interactive-prototype" />
+  <title>穹顶求生 · 升级奖励</title>
+  <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=UnifrakturCook:wght@700&family=Press+Start+2P&family=VT323&display=swap" />
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/miaoda/coding-unpkg-sdk/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script>
+    // 强制 Babel 使用 classic JSX runtime，匹配 UMD 版 React
+    if (window.Babel) {
+      Babel.registerPreset('react-classic', {
+        presets: [
+          [Babel.availablePresets['env'], { targets: { esmodules: false } }],
+          [Babel.availablePresets['react'], { runtime: 'classic' }],
+        ],
+      });
+    }
+  </script>
+  <style>
+    /* ============================================
+       穹顶求生 · 升级奖励 / 商店 UI
+       克苏鲁像素风 - 暗绿/深褐/古铜/暗紫
+       ============================================ */
+
+    :root {
+      --bg-deep: #0f130a;
+      --bg-dark: #1a1f15;
+      --bg-panel: #252c1c;
+      --bg-card: #2d3623;
+      --bg-card-hover: #374228;
+      --border-dark: #3d3318;
+      --border-mid: #5a4a2a;
+      --border-light: #8a7540;
+      --text-main: #d4c896;
+      --text-dim: #8a7f5a;
+      --text-dark: #5c5438;
+      --accent-green: #7cb342;
+      --accent-green-dim: #558b2f;
+      --accent-gold: #c68c3b;
+      --accent-gold-dim: #8b6914;
+      --accent-purple: #9c27b0;
+      --accent-purple-dim: #6a1b9a;
+      --accent-red: #b7410e;
+      --accent-teal: #4db6ac;
+      --hp-red: #c0392b;
+      --shield-blue: #2980b9;
+      --exp-cyan: #16a085;
+      --coin-gold: #daa520;
+      --scanline: rgba(0, 0, 0, 0.15);
+      --glow-green: rgba(124, 179, 66, 0.4);
+      --glow-gold: rgba(198, 140, 59, 0.4);
+      --glow-purple: rgba(156, 39, 176, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'VT323', monospace;
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-size: 16px;
+      user-select: none;
+      -webkit-font-smoothing: none;
+      font-smooth: never;
+    }
+
+    #root {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* ========== CRT 扫描线 ========== */
+    .crt-scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        var(--scanline) 2px,
+        var(--scanline) 4px
+      );
+      animation: scanlineFlicker 8s infinite;
+    }
+
+    @keyframes scanlineFlicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+      52% { opacity: 1; }
+      54% { opacity: 0.9; }
+    }
+
+    .crt-flicker {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%);
+      animation: crtVignette 6s ease-in-out infinite;
+    }
+
+    @keyframes crtVignette {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* ========== 背景纹理 ========== */
+    .bg-texture {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(60, 80, 30, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(80, 40, 90, 0.15) 0%, transparent 50%),
+        linear-gradient(180deg, var(--bg-deep) 0%, #0a0d07 100%);
+    }
+
+    /* ========== 雾气粒子 ========== */
+    .fog-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .fog-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 179, 66, 0.08) 0%, transparent 70%);
+      filter: blur(10px);
+      animation: fogFloat linear infinite;
+    }
+
+    @keyframes fogFloat {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-20vh) translateX(50px); opacity: 0; }
+    }
+
+    /* ========== 主布局 ========== */
+    .app-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-template-columns: 1fr 280px;
+      grid-template-areas:
+        "topbar topbar"
+        "main sidebar";
+      padding: 16px;
+      gap: 16px;
+      min-width: 1100px;
+      overflow: hidden;
+    }
+
+    /* ========== 像素边框工具类 ========== */
+    .pixel-border {
+      position: relative;
+      border: 3px solid var(--border-mid);
+      background: var(--bg-panel);
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 0 0 1px var(--border-dark),
+        0 4px 0 var(--bg-deep),
+        0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .pixel-border::before,
+    .pixel-border::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--border-light);
+    }
+
+    .pixel-border::before {
+      top: -3px;
+      left: -3px;
+      box-shadow:
+        calc(100% + 6px - 8px) 0 0 var(--border-light),
+        0 calc(100% + 6px - 8px) 0 var(--border-light),
+        calc(100% + 6px - 8px) calc(100% + 6px - 8px) 0 var(--border-light);
+    }
+
+    /* ========== 顶部武器条 ========== */
+    .weapon-bar-section {
+      grid-area: topbar;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .weapon-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      background: var(--bg-panel);
+      position: relative;
+    }
+
+    .weapon-slot {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .weapon-slot.equipped {
+      background: rgba(124, 179, 66, 0.15);
+      border: 2px solid var(--accent-green);
+      box-shadow: 0 0 12px var(--glow-green), inset 0 0 8px rgba(124, 179, 66, 0.2);
+    }
+
+    .weapon-slot:not(.equipped) {
+      opacity: 0.6;
+      border: 2px solid var(--border-dark);
+    }
+
+    .weapon-slot:hover:not(.equipped) {
+      opacity: 0.9;
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+    }
+
+    .weapon-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .weapon-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--text-dim);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .weapon-slot.equipped .weapon-name {
+      color: var(--accent-green);
+    }
+
+    /* 武器条触手装饰 */
+    .tentacle-deco-left,
+    .tentacle-deco-right {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 80px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .tentacle-deco-left { left: -30px; }
+    .tentacle-deco-right { right: -30px; transform: translateY(-50%) scaleX(-1); }
+
+    /* 负载条 */
+    .load-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 8px;
+      padding-left: 16px;
+      border-left: 2px solid var(--border-dark);
+      min-width: 110px;
+    }
+
+    .load-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .load-value {
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+    }
+
+    .pixel-progress {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-dark);
+      border: 2px solid var(--border-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pixel-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-green-dim), var(--accent-green));
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .pixel-progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ========== 主内容区 ========== */
+    .main-content {
+      grid-area: main;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-title {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 42px;
+      color: var(--text-main);
+      text-shadow: 0 0 20px rgba(198, 140, 59, 0.3), 3px 3px 0 var(--bg-deep);
+      margin-bottom: 8px;
+      letter-spacing: 4px;
+      text-align: center;
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border: 2px solid var(--border-mid);
+      background: var(--bg-dark);
+    }
+
+    .mode-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      padding: 8px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-gold);
+      color: var(--bg-deep);
+      text-shadow: none;
+    }
+
+    .mode-btn:hover:not(.active) {
+      background: var(--bg-card);
+      color: var(--text-main);
+    }
+
+    /* 卡片区域 */
+    .cards-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 28px;
+    }
+
+    .reward-card {
+      flex: 1;
+      min-width: 180px;
+      max-width: 210px;
+      background: var(--bg-card);
+      border: 3px solid var(--border-mid);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: cardSlideIn 0.5s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 4px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .reward-card:nth-child(1) { animation-delay: 0.1s; }
+    .reward-card:nth-child(2) { animation-delay: 0.2s; }
+    .reward-card:nth-child(3) { animation-delay: 0.3s; }
+    .reward-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes cardSlideIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reward-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 8px 0 rgba(0, 0, 0, 0.5),
+        0 0 20px var(--card-glow, var(--glow-green));
+      border-color: var(--card-border, var(--accent-green));
+      animation: cardPixelShake 0.3s ease infinite;
+    }
+
+    @keyframes cardPixelShake {
+      0%, 100% { transform: translateY(-4px) translateX(0); }
+      25% { transform: translateY(-4px) translateX(1px); }
+      75% { transform: translateY(-4px) translateX(-1px); }
+    }
+
+    .reward-card.purchased {
+      opacity: 0.5;
+      filter: grayscale(0.5);
+      cursor: not-allowed;
+    }
+
+    .reward-card.purchased:hover {
+      transform: none;
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 4px 0 rgba(0, 0, 0, 0.5);
+      animation: none;
+      border-color: var(--border-mid);
+    }
+
+    /* 卡片类型 - 新武器 */
+    .reward-card.type-weapon {
+      --card-glow: var(--glow-green);
+      --card-border: var(--accent-green);
+    }
+
+    /* 卡片类型 - 武器升级 */
+    .reward-card.type-upgrade {
+      --card-glow: var(--glow-gold);
+      --card-border: var(--accent-gold);
+    }
+
+    /* 卡片类型 - 遗物 */
+    .reward-card.type-relic {
+      --card-glow: var(--glow-purple);
+      --card-border: var(--accent-purple);
+    }
+
+    /* 类型角标 */
+    .type-badge {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      padding: 4px 8px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--bg-deep);
+      letter-spacing: 0.5px;
+      z-index: 2;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    .type-weapon .type-badge { background: var(--accent-green); box-shadow: 0 0 8px var(--glow-green); }
+    .type-upgrade .type-badge { background: var(--accent-gold); box-shadow: 0 0 8px var(--glow-gold); }
+    .type-relic .type-badge { background: var(--accent-purple); color: #fff; box-shadow: 0 0 8px var(--glow-purple); }
+
+    @keyframes badgePulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    /* 卡片顶部icon */
+    .card-icon-area {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+      border-bottom: 2px solid var(--border-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-icon-area::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, var(--card-glow) 0%, transparent 70%);
+      opacity: 0.3;
+    }
+
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      position: relative;
+      z-index: 1;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* 诡异微光 */
+    .eerie-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      background: radial-gradient(circle at 50% 30%, var(--card-glow) 0%, transparent 60%);
+      pointer-events: none;
+      animation: eerieGlow 4s ease-in-out infinite;
+      animation-delay: var(--glow-delay, 0s);
+    }
+
+    @keyframes eerieGlow {
+      0%, 80%, 100% { opacity: 0; }
+      90% { opacity: 0.3; }
+    }
+
+    /* 卡片内容 */
+    .card-body {
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      line-height: 1.4;
+      letter-spacing: 0.5px;
+    }
+
+    .card-desc {
+      font-family: 'VT323', monospace;
+      font-size: 15px;
+      color: var(--text-dim);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .card-desc .stat-highlight {
+      color: var(--accent-green);
+    }
+
+    .card-bottom {
+      margin-top: 10px;
+    }
+
+    .pixel-btn {
+      width: 100%;
+      padding: 8px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--bg-deep);
+      background: var(--accent-gold);
+      border: 2px solid var(--border-dark);
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.1s ease;
+      box-shadow: 0 3px 0 var(--border-dark);
+      position: relative;
+      text-align: center;
+    }
+
+    .pixel-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 0 var(--border-dark);
+      filter: brightness(1.1);
+    }
+
+    .pixel-btn:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 var(--border-dark);
+    }
+
+    .pixel-btn:disabled {
+      background: var(--text-dark);
+      color: var(--text-dim);
+      cursor: not-allowed;
+      box-shadow: 0 3px 0 var(--border-dark);
+    }
+
+    .pixel-btn.green { background: var(--accent-green); }
+    .pixel-btn.purple { background: var(--accent-purple); color: #fff; }
+    .pixel-btn.dim { background: var(--bg-card); color: var(--text-dim); border-color: var(--border-dark); }
+
+    .price-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .coin-icon {
+      width: 10px;
+      height: 10px;
+      background: var(--coin-gold);
+      border-radius: 50%;
+      box-shadow: inset -2px -2px 0 #8b6914;
+    }
+
+    /* 底部按钮区 */
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .action-btn {
+      padding: 10px 24px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 3px solid var(--border-mid);
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: all 0.15s ease;
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 4px 0 rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 6px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .action-btn:active {
+      transform: translateY(2px);
+      box-shadow:
+        inset 0 0 0 1px var(--border-dark),
+        0 2px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .refresh-icon {
+      display: inline-block;
+      font-size: 14px;
+      transition: transform 0.5s ease;
+    }
+
+    .action-btn:hover .refresh-icon {
+      transform: rotate(180deg);
+    }
+
+    .refresh-spinning .refresh-icon {
+      animation: spin 0.6s linear;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== 右侧属性栏 ========== */
+    .stats-sidebar {
+      grid-area: sidebar;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-panel);
+      overflow: hidden;
+    }
+
+    .stats-header {
+      padding: 14px 16px;
+      border-bottom: 3px solid var(--border-mid);
+      background: var(--bg-dark);
+      position: relative;
+      text-align: center;
+    }
+
+    .stats-header::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, var(--accent-purple) 30%, transparent 70%);
+      border-radius: 50%;
+      animation: eyeBlink 4s ease-in-out infinite;
+    }
+
+    @keyframes eyeBlink {
+      0%, 45%, 55%, 100% { transform: translateY(-50%) scaleY(1); opacity: 0.8; }
+      50% { transform: translateY(-50%) scaleY(0.1); opacity: 0.3; }
+    }
+
+    .stats-title {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 22px;
+      color: var(--accent-gold);
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 var(--bg-deep);
+    }
+
+    .stats-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-mid) var(--bg-dark);
+    }
+
+    .stats-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .stats-list::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    .stats-list::-webkit-scrollbar-thumb {
+      background: var(--border-mid);
+      border: 1px solid var(--border-dark);
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-dark);
+      transition: background 0.2s ease;
+    }
+
+    .stat-item:hover {
+      background: rgba(124, 179, 66, 0.08);
+    }
+
+    .stat-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: var(--accent-green);
+      font-weight: bold;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .stat-value.flash {
+      animation: statFlash 0.6s ease;
+    }
+
+    @keyframes statFlash {
+      0% { color: var(--accent-gold); transform: scale(1.2); }
+      100% { color: var(--accent-green); transform: scale(1); }
+    }
+
+    .stat-value.gold { color: var(--accent-gold); }
+    .stat-value.purple { color: var(--accent-purple); }
+    .stat-value.red { color: #e74c3c; }
+    .stat-value.blue { color: var(--shield-blue); }
+    .stat-value.teal { color: var(--accent-teal); }
+
+    /* ========== 四角触手装饰 ========== */
+    .corner-tentacle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.7;
+    }
+
+    .corner-tl { top: -10px; left: -10px; }
+    .corner-tr { top: -10px; right: -10px; transform: scaleX(-1); }
+    .corner-bl { bottom: -10px; left: -10px; transform: scaleY(-1); }
+    .corner-br { bottom: -10px; right: -10px; transform: scale(-1, -1); }
+
+    .tentacle-svg {
+      width: 140px;
+      height: 140px;
+      animation: tentacleWave 6s ease-in-out infinite;
+      transform-origin: top left;
+    }
+
+    .corner-tr .tentacle-svg,
+    .corner-br .tentacle-svg {
+      transform-origin: top right;
+    }
+
+    .corner-bl .tentacle-svg {
+      transform-origin: bottom left;
+    }
+
+    @keyframes tentacleWave {
+      0%, 100% { transform: rotate(0deg) skewX(0deg); }
+      25% { transform: rotate(2deg) skewX(1deg); }
+      50% { transform: rotate(0deg) skewX(0deg); }
+      75% { transform: rotate(-2deg) skewX(-1deg); }
+    }
+
+    /* ========== 底部诡异提示 ========== */
+    .creepy-tip {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      color: var(--text-dark);
+      letter-spacing: 2px;
+      z-index: 5;
+      font-style: italic;
+      animation: tipFlicker 5s ease-in-out infinite;
+    }
+
+    @keyframes tipFlicker {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ========== 符文闪烁 ========== */
+    .rune-float {
+      position: fixed;
+      pointer-events: none;
+      z-index: 3;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      color: var(--accent-purple);
+      opacity: 0;
+      animation: runeFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes runeFloat {
+      0%, 100% { opacity: 0; transform: translateY(0); }
+      50% { opacity: 0.4; transform: translateY(-10px); }
+    }
+
+    /* ========== 金币粒子 ========== */
+    .coin-particle {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--coin-gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 0 6px var(--coin-gold);
+      animation: coinBurst 0.8s ease-out forwards;
+    }
+
+    @keyframes coinBurst {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+    }
+
+    /* ========== 武器tooltip ========== */
+    .weapon-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-dark);
+      border: 2px solid var(--border-mid);
+      padding: 8px 12px;
+      white-space: nowrap;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .weapon-slot:hover .weapon-tooltip {
+      opacity: 1;
+    }
+
+    .tooltip-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+    }
+
+    .tooltip-stat {
+      font-family: 'VT323', monospace;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* ========== 符文分隔线 ========== */
+    .rune-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 4px 0 16px;
+      color: var(--border-mid);
+      font-size: 10px;
+      letter-spacing: 4px;
+    }
+
+    .rune-divider::before,
+    .rune-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-mid);
+      max-width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- CRT 扫描线 -->
+  <div class="crt-scanlines"></div>
+  <div class="crt-flicker"></div>
+
+  <!-- 背景纹理 -->
+  <div class="bg-texture"></div>
+
+  <!-- 雾气粒子容器 -->
+  <div class="fog-particles" id="fogParticles"></div>
+
+  <!-- 四角触手 -->
+  <div class="corner-tentacle corner-tl">
+    <svg class="tentacle-svg" viewBox="0 0 140 140" fill="none">
+      <!-- 主触手 -->
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#3d5a2a" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#558b2f" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <!-- 吸盘 -->
+      <circle cx="18" cy="30" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="22" cy="55" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="28" cy="80" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="38" cy="100" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <!-- 次触手 -->
+      <path d="M0,20 Q15,35 20,55 Q22,70 15,85" 
+            stroke="#3d5a2a" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M10,0 Q25,10 35,30 Q40,45 35,60" 
+            stroke="#3d5a2a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="25" r="2" fill="#2a3d1f"/>
+      <circle cx="33" cy="45" r="2.5" fill="#2a3d1f"/>
+    </svg>
+  </div>
+
+  <div class="corner-tentacle corner-tr">
+    <svg class="tentacle-svg" viewBox="0 0 140 140" fill="none">
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#3d5a2a" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#558b2f" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <circle cx="18" cy="30" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="22" cy="55" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="28" cy="80" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="38" cy="100" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <path d="M0,20 Q15,35 20,55 Q22,70 15,85" 
+            stroke="#3d5a2a" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M10,0 Q25,10 35,30 Q40,45 35,60" 
+            stroke="#3d5a2a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="25" r="2" fill="#2a3d1f"/>
+      <circle cx="33" cy="45" r="2.5" fill="#2a3d1f"/>
+    </svg>
+  </div>
+
+  <div class="corner-tentacle corner-bl">
+    <svg class="tentacle-svg" viewBox="0 0 140 140" fill="none">
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#3d5a2a" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#558b2f" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <circle cx="18" cy="30" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="22" cy="55" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="28" cy="80" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="38" cy="100" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <path d="M0,20 Q15,35 20,55 Q22,70 15,85" 
+            stroke="#3d5a2a" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M10,0 Q25,10 35,30 Q40,45 35,60" 
+            stroke="#3d5a2a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="25" r="2" fill="#2a3d1f"/>
+      <circle cx="33" cy="45" r="2.5" fill="#2a3d1f"/>
+    </svg>
+  </div>
+
+  <div class="corner-tentacle corner-br">
+    <svg class="tentacle-svg" viewBox="0 0 140 140" fill="none">
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#3d5a2a" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M0,0 Q30,20 25,60 Q20,90 40,110 Q50,120 45,135" 
+            stroke="#558b2f" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <circle cx="18" cy="30" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="22" cy="55" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="28" cy="80" r="4" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <circle cx="38" cy="100" r="3" fill="#2a3d1f" stroke="#1a2510" stroke-width="1"/>
+      <path d="M0,20 Q15,35 20,55 Q22,70 15,85" 
+            stroke="#3d5a2a" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M10,0 Q25,10 35,30 Q40,45 35,60" 
+            stroke="#3d5a2a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="25" r="2" fill="#2a3d1f"/>
+      <circle cx="33" cy="45" r="2.5" fill="#2a3d1f"/>
+    </svg>
+  </div>
+
+  <!-- 漂浮符文 -->
+  <div class="rune-float" style="top: 20%; left: 5%; animation-delay: 0s;">卍</div>
+  <div class="rune-float" style="top: 60%; left: 8%; animation-delay: 2s;">ᛟ</div>
+  <div class="rune-float" style="top: 35%; right: 290px; animation-delay: 4s;">✦</div>
+  <div class="rune-float" style="top: 75%; right: 300px; animation-delay: 1s;">◈</div>
+  <div class="rune-float" style="top: 15%; left: 40%; animation-delay: 3s;">⚝</div>
+
+  <!-- 底部诡异提示 -->
+  <div class="creepy-tip">...他们在穹顶之外凝视着你...</div>
+
+  <script type="text/babel" data-presets="react-classic" src="app.jsx"></script>
+</body>
+</html>

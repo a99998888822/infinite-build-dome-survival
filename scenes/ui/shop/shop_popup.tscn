@@ -1,55 +1,257 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/shop_popup.gd" id="1_shop_popup"]
 [ext_resource type="PackedScene" path="res://scenes/ui/common/weapon_strip.tscn" id="2_weapon_strip"]
+[ext_resource type="Texture2D" path="res://assets/ui/finance/finance_coin.svg" id="3_coin"]
+
+[sub_resource type="StyleBoxFlat" id="StyleMain"]
+bg_color = Color(0.0627451, 0.109804, 0.0862745, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.545098, 0.411765, 0.0784314, 1)
+content_margin_left = 22.0
+content_margin_top = 18.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleTabNormal"]
+bg_color = Color(0.0862745, 0.129412, 0.101961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.290196, 0.25098, 0.141176, 1)
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleTabActive"]
+bg_color = Color(0.705882, 0.52549, 0.254902, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.909804, 0.760784, 0.396078, 1)
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleAction"]
+bg_color = Color(0.0980392, 0.14902, 0.113725, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.486275, 0.376471, 0.160784, 1)
+content_margin_left = 14.0
+content_margin_top = 7.0
+content_margin_right = 14.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleActionHover"]
+bg_color = Color(0.160784, 0.227451, 0.160784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.788235, 0.635294, 0.152941, 1)
+content_margin_left = 14.0
+content_margin_top = 7.0
+content_margin_right = 14.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleGold"]
+bg_color = Color(0.0352941, 0.0705882, 0.054902, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.486275, 0.376471, 0.160784, 1)
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleLine"]
+bg_color = Color(0.486275, 0.376471, 0.160784, 1)
 
 [node name="ShopPopup" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 visible = false
 script = ExtResource("1_shop_popup")
 
-[node name="WeaponStrip" parent="." instance=ExtResource("2_weapon_strip")]
-anchor_left = 0.25
-anchor_right = 0.47
-offset_left = 0.0
-offset_top = 12.0
-offset_right = 0.0
-offset_bottom = 60.0
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 76.0
-offset_right = -320.0
-offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.00784314, 0.0156863, 0.0117647, 0.72)
+mouse_filter = 1
+
+[node name="CoinParticles" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="WeaponStrip" parent="." instance=ExtResource("2_weapon_strip")]
+layout_mode = 0
+anchors_preset = 10
+anchor_left = 0.20
+anchor_right = 0.68
+offset_top = 14.0
+offset_bottom = 76.0
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+anchors_preset = 0
+mouse_filter = 2
 
 [node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(760, 460)
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleMain")
+mouse_filter = 0
 
 [node name="Content" type="VBoxContainer" parent="CenterContainer/MainPanel"]
-theme_override_constants/separation = 12
+layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
-text = "局内商店"
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
+theme_override_colors/font_shadow_color = Color(0.18, 0.12, 0.03, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 30
+text = "升级奖励"
 horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
 
-[node name="GoldLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+[node name="ModeTabs" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="RewardTab" type="Button" parent="CenterContainer/MainPanel/Content/ModeTabs"]
+custom_minimum_size = Vector2(128, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleTabNormal")
+theme_override_styles/hover = SubResource("StyleTabNormal")
+text = "升级奖励"
+mouse_filter = 2
+focus_mode = 0
+
+[node name="ShopTab" type="Button" parent="CenterContainer/MainPanel/Content/ModeTabs"]
+custom_minimum_size = Vector2(128, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleTabNormal")
+theme_override_styles/hover = SubResource("StyleTabNormal")
+text = "商店"
+mouse_filter = 2
+focus_mode = 0
+
+[node name="InfoRow" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="GoldLabel" type="Label" parent="CenterContainer/MainPanel/Content/InfoRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
+theme_override_font_sizes/font_size = 16
+text = "免费选择一项奖励"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="OfferGrid" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
-custom_minimum_size = Vector2(0, 250)
-theme_override_constants/separation = 16
+[node name="Divider" type="ColorRect" parent="CenterContainer/MainPanel/Content"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.486275, 0.376471, 0.160784, 1)
+mouse_filter = 2
+
+[node name="OfferScroll" type="ScrollContainer" parent="CenterContainer/MainPanel/Content"]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 3
+mouse_filter = 1
+
+[node name="OfferGrid" type="HBoxContainer" parent="CenterContainer/MainPanel/Content/OfferScroll"]
+layout_mode = 2
+theme_override_constants/separation = 14
 alignment = 1
 
 [node name="ErrorLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.545098, 0.509804, 1)
+theme_override_font_sizes/font_size = 14
+text = ""
 autowrap_mode = 3
 horizontal_alignment = 1
+mouse_filter = 2
 
-[node name="SkipButton" type="Button" parent="CenterContainer/MainPanel/Content"]
+[node name="Footer" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="SkipButton" type="Button" parent="CenterContainer/MainPanel/Content/Footer"]
+custom_minimum_size = Vector2(116, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.831373, 0.784314, 0.635294, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleAction")
+theme_override_styles/hover = SubResource("StyleActionHover")
 text = "跳过"
+mouse_default_cursor_shape = 2
 
-[node name="RefreshButton" type="Button" parent="CenterContainer/MainPanel/Content"]
-text = "刷新"
+[node name="RefreshButton" type="Button" parent="CenterContainer/MainPanel/Content/Footer"]
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.831373, 0.784314, 0.635294, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleAction")
+theme_override_styles/hover = SubResource("StyleActionHover")
+text = "↻  刷新"
+mouse_default_cursor_shape = 2
+
+[node name="GoldPill" type="PanelContainer" parent="CenterContainer/MainPanel/Content/Footer"]
+custom_minimum_size = Vector2(126, 42)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleGold")
+
+[node name="GoldPillLabel" type="Label" parent="CenterContainer/MainPanel/Content/Footer/GoldPill"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.909804, 0.760784, 0.396078, 1)
+theme_override_font_sizes/font_size = 15
+text = "金币 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2

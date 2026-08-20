@@ -7,10 +7,16 @@ const SHOP_POPUP_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_popup.t
 @onready var shop_popup: ShopPopup = get_node_or_null("PopupLayer/ShopPopup")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
+var _viewport_size_callable: Callable = Callable()
 
 
 func _ready() -> void:
 	_prepare_layers()
+	_viewport_size_callable = Callable(self, "_on_viewport_size_changed")
+	var viewport := get_viewport()
+	if viewport != null and not viewport.size_changed.is_connected(_viewport_size_callable):
+		viewport.size_changed.connect(_viewport_size_callable)
+	_on_viewport_size_changed()
 	call_deferred("_bind_to_main_flow")
 
 
@@ -18,7 +24,7 @@ func _prepare_layers() -> void:
 	if popup_layer == null:
 		popup_layer = CanvasLayer.new()
 		popup_layer.name = "PopupLayer"
-		popup_layer.layer = 26
+		popup_layer.layer = 27
 		add_child(popup_layer)
 	if shop_popup == null and popup_layer != null:
 		shop_popup = SHOP_POPUP_SCENE.instantiate() as ShopPopup
@@ -91,6 +97,7 @@ func _show_shop_popup(payload: Dictionary) -> void:
 		shop_popup.set_loadout(_main_flow_coordinator.get_bound_loadout())
 	if _main_flow_coordinator != null:
 		shop_popup.set_bond_player(_main_flow_coordinator.get_bound_player())
+	shop_popup.set_safe_rect(_get_shop_safe_rect())
 	shop_popup.configure(payload)
 	var selected_callable := Callable(self, "_on_offer_selected")
 	var skipped_callable := Callable(self, "_on_skipped")
@@ -135,6 +142,45 @@ func _on_stat_preview_requested(offer: Dictionary) -> void:
 func _on_stat_preview_cleared() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.clear_stat_preview()
+
+
+func _on_viewport_size_changed() -> void:
+	if shop_popup != null:
+		shop_popup.set_safe_rect(_get_shop_safe_rect())
+
+
+func _get_shop_safe_rect() -> Rect2:
+	var battle_hud := _find_battle_hud()
+	if battle_hud != null and battle_hud.has_method("get_modal_safe_rect"):
+		return battle_hud.get_modal_safe_rect()
+	var viewport := get_viewport()
+	var viewport_size := viewport.get_visible_rect().size if viewport != null else Vector2(1280, 720)
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var left := minf(220.0, viewport_size.x * 0.18)
+	var right := minf(336.0, viewport_size.x * 0.30)
+	var top := minf(112.0, viewport_size.y * 0.18)
+	var bottom := 16.0
+	var safe_left := clampf(left, 0.0, viewport_size.x)
+	var safe_top := clampf(top, 0.0, viewport_size.y)
+	var safe_right := clampf(right, 0.0, viewport_size.x - safe_left)
+	return Rect2(Vector2(safe_left, safe_top), Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - bottom, 0.0)))
+
+
+func _find_battle_hud() -> BattleHud:
+	var current: Node = self
+	var game_root: GameRoot = null
+	while current != null:
+		if current is GameRoot:
+			game_root = current as GameRoot
+			break
+		current = current.get_parent()
+	if game_root == null:
+		return null
+	var scene_director := game_root.get_node_or_null("SceneDirector") as GameSceneDirector
+	if scene_director == null or scene_director.battle_root == null:
+		return null
+	return scene_director.battle_root.get_node_or_null("HUD") as BattleHud
 
 
 func _on_refresh_requested() -> void:

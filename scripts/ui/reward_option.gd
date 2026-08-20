@@ -1,4 +1,4 @@
-﻿extends PanelContainer
+extends PanelContainer
 class_name RewardOption
 
 signal selected(offer: Dictionary)
@@ -7,6 +7,7 @@ signal stat_preview_cleared
 
 const ENTRY_FREE: String = "free"
 const ENTRY_SHOP: String = "shop"
+const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
 
 const OFFER_TYPE_TITLES: Dictionary = {
 	"weapon_upgrade": "武器升级",
@@ -15,20 +16,31 @@ const OFFER_TYPE_TITLES: Dictionary = {
 }
 
 const RARITY_COLORS: Dictionary = {
-	"common": Color(0.86, 0.86, 0.86, 1.0),
-	"uncommon": Color(0.35, 0.92, 0.45, 1.0),
-	"rare": Color(0.35, 0.62, 1.0, 1.0),
-	"epic": Color(0.72, 0.42, 1.0, 1.0),
-	"mythic": Color(1.0, 0.58, 0.22, 1.0),
-	"legendary": Color(1.0, 0.24, 0.22, 1.0),
+	"common": Color(0.74, 0.72, 0.62, 1.0),
+	"uncommon": Color(0.42, 0.78, 0.32, 1.0),
+	"rare": Color(0.37, 0.63, 0.92, 1.0),
+	"epic": Color(0.72, 0.34, 0.84, 1.0),
+	"mythic": Color(0.91, 0.59, 0.22, 1.0),
+	"legendary": Color(0.91, 0.28, 0.24, 1.0),
+}
+
+const TYPE_COLORS: Dictionary = {
+	"weapon_upgrade": Color(0.82, 0.63, 0.25, 1.0),
+	"new_weapon": Color(0.49, 0.78, 0.29, 1.0),
+	"relic": Color(0.76, 0.30, 0.82, 1.0),
 }
 
 var offer_data: Dictionary = {}
 var entry_mode: String = ENTRY_FREE
 var _bond_player: PlayerController = null
+var _hovered: bool = false
+var _interaction_locked: bool = false
+var _animation_tween: Tween = null
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
-@onready var type_label: Label = get_node_or_null("Content/TypeLabel")
+@onready var type_badge: PanelContainer = get_node_or_null("Content/TypeBadge")
+@onready var type_label: Label = get_node_or_null("Content/TypeBadge/TypeLabel")
+@onready var icon_frame: PanelContainer = get_node_or_null("Content/IconFrame")
 @onready var icon_texture: TextureRect = get_node_or_null("Content/IconFrame/IconTexture")
 @onready var icon_placeholder: ColorRect = get_node_or_null("Content/IconFrame/IconPlaceholder")
 @onready var name_label: Label = get_node_or_null("Content/NameLabel")
@@ -57,11 +69,53 @@ func _ready() -> void:
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
 	offer_data = offer.duplicate(true)
 	entry_mode = mode
+	_interaction_locked = false
 	_refresh_visual(explicit_cost)
 
 
 func set_bond_player(player: PlayerController) -> void:
 	_bond_player = player
+
+
+func set_compact(compact: bool) -> void:
+	custom_minimum_size = Vector2(180.0, 320.0) if compact else Vector2(220.0, 360.0)
+	if icon_frame != null:
+		icon_frame.custom_minimum_size.y = 84.0 if compact else 104.0
+	if description_label != null:
+		description_label.custom_minimum_size.y = 84.0 if compact else 104.0
+	if select_button != null:
+		select_button.custom_minimum_size.y = 38.0 if compact else 42.0
+
+
+func set_interaction_locked(locked: bool) -> void:
+	_interaction_locked = locked
+	if select_button != null:
+		select_button.disabled = locked
+
+
+func animate_in(index: int = 0) -> void:
+	if not is_inside_tree():
+		return
+	if _animation_tween != null:
+		_animation_tween.kill()
+	pivot_offset = size * 0.5
+	modulate.a = 0.0
+	scale = Vector2(0.94, 0.94)
+	_animation_tween = create_tween().set_parallel(true)
+	_animation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_animation_tween.tween_property(self, "modulate:a", 1.0, 0.24).set_delay(index * 0.08)
+	_animation_tween.tween_property(self, "scale", Vector2.ONE, 0.30).set_delay(index * 0.08)
+
+
+func play_claim_animation() -> void:
+	if _animation_tween != null:
+		_animation_tween.kill()
+	set_interaction_locked(true)
+	_animation_tween = create_tween().set_parallel(true)
+	_animation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_animation_tween.tween_property(self, "modulate:a", 0.0, 0.20)
+	_animation_tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.20)
+	_animation_tween.chain().tween_callback(queue_free)
 
 
 func get_button_text_for_offer(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> String:
@@ -87,32 +141,73 @@ func get_color_for_rarity(rarity: String) -> Color:
 func _refresh_visual(explicit_cost: int = -1) -> void:
 	var rarity := str(offer_data.get("rarity", "common"))
 	var rarity_color := get_color_for_rarity(rarity)
+	var offer_type := str(offer_data.get("offer_type", ""))
+	var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
 	_update_panel_style(rarity_color)
 	_update_rarity_lines(rarity_color)
-
+	_update_type_style(type_color)
 	if type_label != null:
-		type_label.text = get_title_for_offer_type(str(offer_data.get("offer_type", "")))
-		type_label.add_theme_color_override("font_color", rarity_color)
+		type_label.text = get_title_for_offer_type(offer_type)
+		type_label.add_theme_color_override("font_color", type_color)
 	if name_label != null:
 		name_label.text = str(offer_data.get("display_name", offer_data.get("target_id", "")))
 	if description_label != null:
 		description_label.text = _build_description_text(offer_data)
 	if select_button != null:
 		select_button.text = get_button_text_for_offer(offer_data, entry_mode, explicit_cost)
+		select_button.icon = COIN_TEXTURE if entry_mode == ENTRY_SHOP else null
+		select_button.expand_icon = entry_mode == ENTRY_SHOP
+		_update_button_style(type_color)
 	_update_icon(str(offer_data.get("icon", "")))
 
 
 func _update_panel_style(rarity_color: Color) -> void:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.04, 0.08, 0.10, 0.88)
+	style.bg_color = Color(0.04, 0.08, 0.06, 0.96)
 	style.border_color = rarity_color
 	style.set_border_width_all(2)
-	style.set_corner_radius_all(8)
-	style.content_margin_left = 10
-	style.content_margin_top = 10
-	style.content_margin_right = 10
-	style.content_margin_bottom = 10
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 12.0
+	style.content_margin_top = 10.0
+	style.content_margin_right = 12.0
+	style.content_margin_bottom = 10.0
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.38)
+	style.shadow_size = 5
 	add_theme_stylebox_override("panel", style)
+
+
+func _update_type_style(type_color: Color) -> void:
+	if type_badge == null:
+		return
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(type_color.r * 0.22, type_color.g * 0.22, type_color.b * 0.22, 0.98)
+	style.border_color = type_color
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 8.0
+	style.content_margin_top = 3.0
+	style.content_margin_right = 8.0
+	style.content_margin_bottom = 3.0
+	type_badge.add_theme_stylebox_override("panel", style)
+
+
+func _update_button_style(type_color: Color) -> void:
+	if select_button == null:
+		return
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(type_color.r * 0.35, type_color.g * 0.35, type_color.b * 0.35, 1.0)
+	normal.border_color = type_color
+	normal.set_border_width_all(2)
+	normal.border_width_bottom = 4
+	normal.content_margin_left = 8.0
+	normal.content_margin_top = 6.0
+	normal.content_margin_right = 8.0
+	normal.content_margin_bottom = 6.0
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color(type_color.r * 0.50, type_color.g * 0.50, type_color.b * 0.50, 1.0)
+	select_button.add_theme_stylebox_override("normal", normal)
+	select_button.add_theme_stylebox_override("hover", hover)
+	select_button.add_theme_stylebox_override("pressed", hover)
 
 
 func _update_rarity_lines(rarity_color: Color) -> void:
@@ -140,10 +235,21 @@ func _build_description_text(offer: Dictionary) -> String:
 
 
 func _on_card_mouse_entered() -> void:
+	if _interaction_locked:
+		return
+	_hovered = true
+	pivot_offset = size * 0.5
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", Vector2(1.025, 1.025), 0.12)
 	_show_bond_tooltip()
 
 
 func _on_card_mouse_exited() -> void:
+	_hovered = false
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.12)
 	_hide_bond_tooltip()
 
 
@@ -186,7 +292,7 @@ func _ensure_bond_tooltip() -> void:
 	panel_style.bg_color = Color(0.04, 0.05, 0.07, 0.96)
 	panel_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
 	panel_style.set_border_width_all(1)
-	panel_style.set_corner_radius_all(4)
+	panel_style.set_corner_radius_all(0)
 	bond_tooltip.add_theme_stylebox_override("panel", panel_style)
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 10)
@@ -220,6 +326,8 @@ func _exit_tree() -> void:
 
 
 func _on_select_button_mouse_entered() -> void:
+	if _interaction_locked:
+		return
 	stat_preview_requested.emit(offer_data.duplicate(true))
 
 
@@ -228,4 +336,6 @@ func _on_select_button_mouse_exited() -> void:
 
 
 func _on_select_button_pressed() -> void:
+	if _interaction_locked:
+		return
 	selected.emit(offer_data.duplicate(true))
