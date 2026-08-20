@@ -1,0 +1,33 @@
+assets/ui/finance/finance_hand.svg
+  s_92312247aeec6f::t_ccf086ca55a5e1 13,19,23,33,42
+scenes/ui/finance/finance_popup.tscn
+  s_92312247aeec6f::t_0554daae63f428 174-176
+scenes/ui/main_menu/main_menu_ui_controller.tscn
+  s_92312247aeec6f::t_55224c41468b7f 275,284,287,291-364,376,382
+scripts/core/main_flow_coordinator.gd
+  s_92312247aeec6f::t_dbe4277f980776 40,77,107,111-113
+scripts/ui/battle_hud.gd
+  s_92312247aeec6f::t_fedfb0d85b6a0b 25-29,83,154-186
+scripts/ui/finance_popup.gd
+  s_92312247aeec6f::t_91d57b1d80b544 20-22,44,47-51,76-86,90,92-104,107-111,115-117,121-282,351,353-359
+scripts/ui/finance_ui_controller.gd
+  s_92312247aeec6f::t_255557838594d9 22-25,111,116-118,121-122,134,157-200,247,250-252,254-259,261,263-267
+scripts/ui/main_menu_ui_controller.gd
+  s_92312247aeec6f::t_9e936cbee0aa1f 26-27,48-64,244-245,287,300-319,323,325-514,521-527,531,538-542,544-547,549-555,558-559,561-563,565,567-768,770-835
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "3c762e540917b2897c12b54adab722b27507e05a",
+  "prompts": {},
+  "sessions": {
+    "s_92312247aeec6f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a01d1a-bf00-7381-89df-97a79848c4b8",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
