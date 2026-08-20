@@ -83,7 +83,7 @@ offset_bottom = 18.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 16
-text = "▶"
+text = ">"
 flat = true
 
 [node name="ContentMargin" type="MarginContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody"]

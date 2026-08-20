@@ -72,6 +72,7 @@ var _hint_elapsed := 0.0
 
 
 func _ready() -> void:
+	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
 	_setup_start_page_feedback()
 	_setup_menu_atmosphere()
@@ -348,16 +349,16 @@ func _setup_role_select_runtime_ui() -> void:
 
 	var background := ColorRect.new()
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	background.color = Color("#07120c")
+	background.color = Color("#061009")
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	runtime.add_child(background)
 
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 36)
-	margin.add_theme_constant_override("margin_top", 20)
-	margin.add_theme_constant_override("margin_right", 36)
-	margin.add_theme_constant_override("margin_bottom", 20)
+	margin.add_theme_constant_override("margin_left", 24)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_right", 24)
+	margin.add_theme_constant_override("margin_bottom", 8)
 	runtime.add_child(margin)
 
 	var page_column := VBoxContainer.new()
@@ -365,13 +366,13 @@ func _setup_role_select_runtime_ui() -> void:
 	margin.add_child(page_column)
 
 	var header := VBoxContainer.new()
-	header.custom_minimum_size = Vector2(0, 104)
+	header.custom_minimum_size = Vector2(0, 68)
 	header.alignment = BoxContainer.ALIGNMENT_CENTER
 	page_column.add_child(header)
 	var title := Label.new()
 	title.text = "选择角色"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 34)
+	title.add_theme_font_size_override("font_size", 36)
 	title.add_theme_color_override("font_color", Color("#c49a4a"))
 	title.add_theme_color_override("font_shadow_color", Color("#000000"))
 	title.add_theme_constant_override("shadow_offset_x", 2)
@@ -390,7 +391,8 @@ func _setup_role_select_runtime_ui() -> void:
 	page_column.add_child(body)
 
 	var survivor_panel := _make_role_panel("SURVIVORS")
-	survivor_panel.custom_minimum_size = Vector2(230, 0)
+	survivor_panel.custom_minimum_size = Vector2(240, 0)
+	survivor_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	body.add_child(survivor_panel)
 	var survivor_content := survivor_panel.get_node("Body") as VBoxContainer
 	var survivor_scroll := ScrollContainer.new()
@@ -472,6 +474,7 @@ func _setup_role_select_runtime_ui() -> void:
 	var difficulty_panel := _make_role_panel("DIFFICULTY")
 	difficulty_panel.name = "DifficultyPanel"
 	difficulty_panel.custom_minimum_size = Vector2(270, 0)
+	difficulty_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	body.add_child(difficulty_panel)
 	var difficulty_content := difficulty_panel.get_node("Body") as VBoxContainer
 	difficulty_list = VBoxContainer.new()
@@ -481,18 +484,20 @@ func _setup_role_select_runtime_ui() -> void:
 	difficulty_description_label = Label.new()
 	difficulty_description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	difficulty_description_label.add_theme_color_override("font_color", Color("#9eab91"))
+	difficulty_description_label.visible = false
 	difficulty_content.add_child(difficulty_description_label)
 
 	var footer := HBoxContainer.new()
-	footer.custom_minimum_size = Vector2(0, 48)
+	footer.custom_minimum_size = Vector2(0, 34)
 	page_column.add_child(footer)
 	character_back_button = _make_role_button("← 返回主界")
+	character_back_button.custom_minimum_size = Vector2(136, 34)
 	footer.add_child(character_back_button)
 	var footer_spacer := Control.new()
 	footer_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	footer.add_child(footer_spacer)
-	character_confirm_button = _make_role_button("继续  ▶")
-	character_confirm_button.custom_minimum_size = Vector2(170, 44)
+	character_confirm_button = _make_role_button("继续  >")
+	character_confirm_button.custom_minimum_size = Vector2(136, 34)
 	footer.add_child(character_confirm_button)
 	character_error_label = Label.new()
 	character_error_label.visible = false
@@ -504,6 +509,7 @@ func _setup_role_select_runtime_ui() -> void:
 	character_transition_overlay.color = Color("#030805")
 	character_transition_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	character_transition_overlay.visible = false
+	character_transition_overlay.z_index = 2
 	runtime.add_child(character_transition_overlay)
 	character_transition_label = Label.new()
 	character_transition_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -512,6 +518,24 @@ func _setup_role_select_runtime_ui() -> void:
 	character_transition_label.add_theme_font_size_override("font_size", 32)
 	character_transition_label.add_theme_color_override("font_color", Color("#c49a4a"))
 	character_transition_overlay.add_child(character_transition_label)
+	_add_role_select_scanlines(runtime)
+
+
+func _add_role_select_scanlines(runtime: Control) -> void:
+	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
+	scanline_image.fill(Color.TRANSPARENT)
+	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.10))
+	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.10))
+	var scanlines := TextureRect.new()
+	scanlines.texture = ImageTexture.create_from_image(scanline_image)
+	scanlines.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	scanlines.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	scanlines.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	scanlines.stretch_mode = TextureRect.STRETCH_TILE
+	scanlines.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	scanlines.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scanlines.z_index = 1
+	runtime.add_child(scanlines)
 
 func _rebuild_character_list() -> void:
 	if character_list == null:
@@ -541,6 +565,10 @@ func _rebuild_character_list() -> void:
 %s" % [str(record.get("display_name", character_id)), "初始角色" if record.get("tags", []).has("starter") else "可用角色"])
 		button.custom_minimum_size = Vector2(0, 68)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		var icon_path := str(record.get("icon", ""))
+		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+			button.icon = load(icon_path) as Texture2D
+			button.add_theme_constant_override("icon_max_width", 42)
 		button.set_meta("character_id", character_id)
 		button.pressed.connect(_on_character_selected.bind(character_id))
 		button.mouse_entered.connect(_on_character_button_hovered.bind(button))
@@ -641,6 +669,11 @@ func _make_stat_row(label_text: String, value: float, cap: float, color: Color) 
 	tween.tween_property(bar, "value", value, 0.32)
 	return row
 
+func _format_number(value: float) -> String:
+	if is_equal_approx(value, roundf(value)):
+		return "%d" % int(value)
+	return "%.2f" % value
+
 func _build_weapon_cards(weapon_ids: Variant) -> void:
 	if not (weapon_ids is Array) or weapon_ids.is_empty():
 		weapon_list.add_child(_make_info_card("暂无初始武器", "本局将从基础配置开始。"))
@@ -668,9 +701,9 @@ func _build_weapon_cards(weapon_ids: Variant) -> void:
 		name_label.text = str(weapon.get("display_name", weapon_id))
 		name_label.add_theme_color_override("font_color", Color("#d6c68e"))
 		info.add_child(name_label)
-		var stats := weapon.get("base_stats", {})
+		var stats: Dictionary = weapon.get("base_stats", {})
 		var kind := "混合" if weapon.get("attack_kind", "") == "mixed" else ("远程" if weapon.get("attack_kind", "") == "ranged" else "近战")
-		var damage := stats.get("ranged_damage", stats.get("melee_damage", 0))
+		var damage: float = float(stats.get("ranged_damage", stats.get("melee_damage", 0)))
 		var detail := Label.new()
 		detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		detail.text = "%s · 伤害 %s · 间隔 %.2fs · 负载 %d" % [kind, _format_number(damage), float(weapon.get("attack_interval_ms", 0)) / 1000.0, int(weapon.get("load_cost", 0))]

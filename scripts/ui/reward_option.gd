@@ -38,6 +38,7 @@ var _interaction_locked: bool = false
 var _animation_tween: Tween = null
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
+@onready var content: VBoxContainer = get_node_or_null("Content")
 @onready var type_badge: PanelContainer = get_node_or_null("Content/TypeBadge")
 @onready var type_label: Label = get_node_or_null("Content/TypeBadge/TypeLabel")
 @onready var icon_frame: PanelContainer = get_node_or_null("Content/IconFrame")
@@ -78,13 +79,21 @@ func set_bond_player(player: PlayerController) -> void:
 
 
 func set_compact(compact: bool) -> void:
-	custom_minimum_size = Vector2(180.0, 320.0) if compact else Vector2(220.0, 360.0)
+	custom_minimum_size = Vector2(180.0, 272.0) if compact else Vector2(220.0, 360.0)
+	if content != null:
+		content.add_theme_constant_override("separation", 6 if compact else 8)
+	if type_badge != null:
+		type_badge.custom_minimum_size.y = 22.0 if compact else 28.0
+	if type_label != null:
+		type_label.add_theme_font_size_override("font_size", 12 if compact else 13)
 	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 84.0 if compact else 104.0
+		icon_frame.custom_minimum_size.y = 64.0 if compact else 104.0
+	if name_label != null:
+		name_label.add_theme_font_size_override("font_size", 14 if compact else 16)
 	if description_label != null:
-		description_label.custom_minimum_size.y = 84.0 if compact else 104.0
+		description_label.custom_minimum_size.y = 54.0 if compact else 104.0
 	if select_button != null:
-		select_button.custom_minimum_size.y = 38.0 if compact else 42.0
+		select_button.custom_minimum_size.y = 34.0 if compact else 42.0
 
 
 func set_interaction_locked(locked: bool) -> void:

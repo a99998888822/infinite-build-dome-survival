@@ -150,6 +150,7 @@ mouse_filter = 2
 
 [node name="ModeTabs" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
 layout_mode = 2
+visible = false
 theme_override_constants/separation = 0
 alignment = 1
 
@@ -239,7 +240,7 @@ theme_override_colors/font_color = Color(0.831373, 0.784314, 0.635294, 1)
 theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleAction")
 theme_override_styles/hover = SubResource("StyleActionHover")
-text = "↻  刷新"
+text = "刷新"
 mouse_default_cursor_shape = 2
 
 [node name="GoldPill" type="PanelContainer" parent="CenterContainer/MainPanel/Content/Footer"]

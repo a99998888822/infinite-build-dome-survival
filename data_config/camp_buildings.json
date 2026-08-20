@@ -415,26 +415,6 @@
         {
           "unlock": "camp_upgrade_dome_shelter",
           "name": "解锁属性购买升级"
-        },
-        {
-          "unlock": "camp_upgrade_max_hp",
-          "name": "解锁最大生命升级选项"
-        },
-        {
-          "unlock": "camp_upgrade_hp_regen",
-          "name": "解锁每秒回血升级选项"
-        },
-        {
-          "unlock": "camp_upgrade_shield",
-          "name": "解锁护盾值升级选项"
-        },
-        {
-          "unlock": "camp_upgrade_armor",
-          "name": "解锁护甲值升级选项"
-        },
-        {
-          "unlock": "camp_upgrade_move_speed",
-          "name": "解锁移动速度升级选项"
         }
       ],
       "2": [

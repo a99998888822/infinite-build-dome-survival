@@ -120,41 +120,58 @@ func _build_interface() -> void:
 	left_column.add_theme_constant_override("separation", 6)
 	left_panel.add_child(left_column)
 	left_column.add_child(_make_header("营地建筑", "固定设施与成长入口"))
+	var building_scroll := ScrollContainer.new()
+	building_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	building_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	building_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	left_column.add_child(building_scroll)
+	var building_content := MarginContainer.new()
+	building_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	building_content.add_theme_constant_override("margin_left", 3)
+	building_content.add_theme_constant_override("margin_right", 3)
+	building_content.add_theme_constant_override("margin_top", 3)
+	building_content.add_theme_constant_override("margin_bottom", 3)
+	building_scroll.add_child(building_content)
 	_building_list = VBoxContainer.new()
+	_building_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_building_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_building_list.add_theme_constant_override("separation", 7)
-	left_column.add_child(_building_list)
+	building_content.add_child(_building_list)
 	var right_column := VBoxContainer.new()
 	right_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right_column.add_theme_constant_override("separation", 10)
 	body.add_child(right_column)
-
 	var upper := HBoxContainer.new()
 	upper.custom_minimum_size.y = 170
+	upper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	upper.add_theme_constant_override("separation", 12)
 	right_column.add_child(upper)
 	var detail_panel := _make_panel(PANEL_GREEN, PANEL_GOLD, 2)
-	detail_panel.custom_minimum_size.x = 0
 	detail_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail_panel.size_flags_stretch_ratio = 3.0
 	upper.add_child(detail_panel)
 	_detail_panel = VBoxContainer.new()
+	_detail_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail_panel.add_theme_constant_override("separation", 8)
 	detail_panel.add_child(_detail_panel)
 	var summary_panel := _make_panel(Color("#15120f"), PANEL_GOLD, 2)
-	summary_panel.custom_minimum_size.x = 310
+	summary_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	summary_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	summary_panel.size_flags_stretch_ratio = 2.0
 	upper.add_child(summary_panel)
-	var summary_column := VBoxContainer.new()
-	summary_panel.add_child(summary_column)
-	summary_column.add_child(_make_header("属性总览", "已应用的营地成长"))
+	var summary_content := VBoxContainer.new()
+	summary_panel.add_child(summary_content)
+	summary_content.add_child(_make_header("属性总览", "已应用的营地成长"))
 	_summary_grid = GridContainer.new()
 	_summary_grid.columns = 2
 	_summary_grid.add_theme_constant_override("h_separation", 8)
 	_summary_grid.add_theme_constant_override("v_separation", 8)
-	summary_column.add_child(_summary_grid)
+	summary_content.add_child(_summary_grid)
 
 	var options_panel := _make_panel(Color("#0d1513"), PANEL_GOLD, 2)
-	options_panel.custom_minimum_size.y = 330
+	options_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	options_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right_column.add_child(options_panel)
 	var options_column := VBoxContainer.new()
@@ -185,6 +202,24 @@ func _build_interface() -> void:
 	_flash_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_flash_overlay.modulate.a = 0.0
 	add_child(_flash_overlay)
+	_add_scanline_overlay()
+
+
+func _add_scanline_overlay() -> void:
+	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
+	scanline_image.fill(Color.TRANSPARENT)
+	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.16))
+	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.16))
+	var scanlines := TextureRect.new()
+	scanlines.texture = ImageTexture.create_from_image(scanline_image)
+	scanlines.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	scanlines.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	scanlines.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	scanlines.stretch_mode = TextureRect.STRETCH_TILE
+	scanlines.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	scanlines.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scanlines.z_index = 1
+	add_child(scanlines)
 
 
 func _make_header(title_text: String, subtitle: String) -> VBoxContainer:
@@ -363,6 +398,7 @@ func _refresh_buildings() -> void:
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 		var button := _make_button("", GREEN if unlocked else MUTED)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.custom_minimum_size.y = 48
 		button.add_theme_font_size_override("font_size", 12)
 		button.disabled = false

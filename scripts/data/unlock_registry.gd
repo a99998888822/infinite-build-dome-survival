@@ -28,11 +28,6 @@ const BUILDING_UNLOCKS: Array[String] = [
 	"camp_upgrade_council_hall",
 	"camp_upgrade_summon_damage",
 	"run_start_random_summon",
-	"camp_upgrade_max_hp",
-	"camp_upgrade_hp_regen",
-	"camp_upgrade_shield",
-	"camp_upgrade_armor",
-	"camp_upgrade_move_speed",
 	"run_start_random_relic",
 	"run_start_double_level",
 ]

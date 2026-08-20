@@ -2,6 +2,7 @@ extends Node
 class_name ShopUIController
 
 const SHOP_POPUP_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_popup.tscn")
+const SHOP_POPUP_LAYER: int = 23
 
 @onready var popup_layer: CanvasLayer = get_node_or_null("PopupLayer")
 @onready var shop_popup: ShopPopup = get_node_or_null("PopupLayer/ShopPopup")
@@ -24,8 +25,9 @@ func _prepare_layers() -> void:
 	if popup_layer == null:
 		popup_layer = CanvasLayer.new()
 		popup_layer.name = "PopupLayer"
-		popup_layer.layer = 27
 		add_child(popup_layer)
+	if popup_layer != null:
+		popup_layer.layer = SHOP_POPUP_LAYER
 	if shop_popup == null and popup_layer != null:
 		shop_popup = SHOP_POPUP_SCENE.instantiate() as ShopPopup
 		if shop_popup != null:
@@ -157,7 +159,7 @@ func _get_shop_safe_rect() -> Rect2:
 	var viewport_size := viewport.get_visible_rect().size if viewport != null else Vector2(1280, 720)
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
-	var left := minf(220.0, viewport_size.x * 0.18)
+	var left := 16.0
 	var right := minf(336.0, viewport_size.x * 0.30)
 	var top := minf(112.0, viewport_size.y * 0.18)
 	var bottom := 16.0

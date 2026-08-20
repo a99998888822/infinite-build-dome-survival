@@ -21,6 +21,7 @@ var _bond_player: PlayerController = null
 var _safe_rect: Rect2 = Rect2()
 var _show_tween: Tween = null
 var _feedback_tween: Tween = null
+var _scanline_overlay: TextureRect = null
 
 @onready var backdrop: ColorRect = get_node_or_null("Backdrop")
 @onready var coin_particles: Control = get_node_or_null("CoinParticles")
@@ -28,8 +29,6 @@ var _feedback_tween: Tween = null
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
 @onready var main_panel: PanelContainer = get_node_or_null("CenterContainer/MainPanel")
 @onready var title_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/TitleLabel")
-@onready var reward_tab: Button = get_node_or_null("CenterContainer/MainPanel/Content/ModeTabs/RewardTab")
-@onready var shop_tab: Button = get_node_or_null("CenterContainer/MainPanel/Content/ModeTabs/ShopTab")
 @onready var gold_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/InfoRow/GoldLabel")
 @onready var offer_scroll: ScrollContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll")
 @onready var offer_grid: HBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll/OfferGrid")
@@ -41,6 +40,7 @@ var _feedback_tween: Tween = null
 
 
 func _ready() -> void:
+	_create_scanline_overlay()
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
 	if refresh_button != null and not refresh_button.pressed.is_connected(_on_refresh_pressed):
@@ -122,6 +122,7 @@ func show_error(reason: String) -> void:
 	if error_label == null:
 		return
 	error_label.text = _translate_purchase_error(reason)
+	error_label.visible = true
 	var base_position := error_label.position
 	var tween := create_tween()
 	tween.tween_property(error_label, "position", base_position + Vector2(-4.0, 0.0), 0.04)
@@ -180,10 +181,10 @@ func _refresh_visual() -> void:
 	var mode := get_mode()
 	if title_label != null:
 		title_label.text = "升级奖励" if mode == ENTRY_FREE else "局内商店"
-	_update_mode_tabs(mode)
 	_update_gold_labels(int(payload.get("gold", 0)))
 	if error_label != null:
 		error_label.text = ""
+		error_label.visible = false
 	_update_refresh_button()
 	_clear_cards()
 	if offer_grid == null:
@@ -209,31 +210,6 @@ func _refresh_visual() -> void:
 		index += 1
 
 
-func _update_mode_tabs(mode: String) -> void:
-	var reward_active := mode == ENTRY_FREE
-	_set_tab_visual(reward_tab, reward_active)
-	_set_tab_visual(shop_tab, not reward_active)
-
-
-func _set_tab_visual(button: Button, active: bool) -> void:
-	if button == null:
-		return
-	var base := button.get_theme_stylebox("normal")
-	if base == null:
-		return
-	var style := base.duplicate() as StyleBoxFlat
-	if active:
-		style.bg_color = Color(0.705882, 0.52549, 0.254902, 1.0)
-		style.border_color = Color(0.909804, 0.760784, 0.396078, 1.0)
-		button.add_theme_color_override("font_color", Color(0.08, 0.10, 0.07, 1.0))
-	else:
-		style.bg_color = Color(0.0862745, 0.129412, 0.101961, 1.0)
-		style.border_color = Color(0.290196, 0.25098, 0.141176, 1.0)
-		button.add_theme_color_override("font_color", Color(0.72, 0.68, 0.56, 1.0))
-	button.add_theme_stylebox_override("normal", style)
-	button.add_theme_stylebox_override("hover", style)
-
-
 func _update_gold_labels(current_gold: int) -> void:
 	if gold_label != null:
 		gold_label.text = "金币 %d" % current_gold if get_mode() == ENTRY_SHOP else "免费选择一项奖励"
@@ -248,7 +224,7 @@ func _update_refresh_button() -> void:
 		return
 	var refresh_cost := int(payload.get("refresh_cost", 0))
 	var current_gold := int(payload.get("gold", 0))
-	refresh_button.text = "↻  刷新（%d）" % refresh_cost if refresh_cost > 0 else "↻  刷新"
+	refresh_button.text = "刷新 ￥%d" % refresh_cost if refresh_cost > 0 else "刷新"
 	refresh_button.disabled = _submitted or _refreshing or refresh_cost <= 0 or current_gold < refresh_cost
 
 
@@ -344,16 +320,28 @@ func _layout_popup() -> void:
 	center_container.anchor_bottom = 0.0
 	center_container.position = safe.position
 	center_container.size = safe.size
+	var compact := safe.size.x < 760.0 or safe.size.y < 620.0
+	if offer_scroll != null:
+		offer_scroll.custom_minimum_size.y = 272.0 if compact else 350.0
+	for card in _offer_cards:
+		if is_instance_valid(card):
+			card.set_compact(compact)
 	if main_panel != null:
 		main_panel.custom_minimum_size = Vector2(maxf(safe.size.x - 12.0, 0.0), maxf(safe.size.y - 12.0, 0.0))
 	if weapon_strip != null:
-		weapon_strip.position.y = 14.0
+		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
+		weapon_strip.anchor_left = 0.0
+		weapon_strip.anchor_top = 0.0
+		weapon_strip.anchor_right = 0.0
+		weapon_strip.anchor_bottom = 0.0
+		weapon_strip.position = Vector2(safe.get_center().x - strip_width * 0.5, 14.0)
+		weapon_strip.size = Vector2(strip_width, 62.0)
 
 
 func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
-	var left := minf(220.0, viewport_size.x * 0.18)
+	var left := 16.0
 	var right := minf(336.0, viewport_size.x * 0.30)
 	var top := minf(112.0, viewport_size.y * 0.18)
 	var bottom := 16.0
@@ -368,6 +356,25 @@ func _is_compact_layout() -> bool:
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return true
 	return safe.size.x < 760.0 or safe.size.y < 620.0
+
+
+func _create_scanline_overlay() -> void:
+	if _scanline_overlay != null:
+		return
+	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
+	scanline_image.fill(Color.TRANSPARENT)
+	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.16))
+	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.16))
+	_scanline_overlay = TextureRect.new()
+	_scanline_overlay.texture = ImageTexture.create_from_image(scanline_image)
+	_scanline_overlay.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	_scanline_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_scanline_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_scanline_overlay.stretch_mode = TextureRect.STRETCH_TILE
+	_scanline_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_scanline_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_scanline_overlay.z_index = 1
+	add_child(_scanline_overlay)
 
 
 func _spawn_coin_particles(source_position: Vector2) -> void:

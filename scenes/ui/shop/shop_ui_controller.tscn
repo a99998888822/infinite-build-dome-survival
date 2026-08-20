@@ -7,6 +7,6 @@
 script = ExtResource("1_shop_ui_controller")
 
 [node name="PopupLayer" type="CanvasLayer" parent="."]
-layer = 27
+layer = 23
 
 [node name="ShopPopup" parent="PopupLayer" instance=ExtResource("2_shop_popup")]

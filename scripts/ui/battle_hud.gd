@@ -23,7 +23,6 @@ const DRAWER_CLOSED_LEFT := -28.0
 const DRAWER_CLOSED_RIGHT := 292.0
 const DRAWER_ANIMATION_SECONDS := 0.18
 const MODAL_SAFE_EDGE_MARGIN := 16.0
-const MODAL_FALLBACK_LEFT := 220.0
 const MODAL_FALLBACK_TOP := 112.0
 const MODAL_FALLBACK_RIGHT_OPEN := 336.0
 const MODAL_FALLBACK_RIGHT_CLOSED := 44.0
@@ -158,13 +157,8 @@ func get_modal_safe_rect() -> Rect2:
 	var viewport_size := viewport.get_visible_rect().size
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
-	var left := minf(MODAL_FALLBACK_LEFT, viewport_size.x * 0.18)
+	var left := MODAL_SAFE_EDGE_MARGIN
 	var top := minf(MODAL_FALLBACK_TOP, viewport_size.y * 0.18)
-	if status_panel != null:
-		var status_rect := status_panel.get_global_rect()
-		if status_rect.size.x > 0.0 and status_rect.size.y > 0.0:
-			left = maxf(left, status_rect.end.x + MODAL_SAFE_EDGE_MARGIN)
-			top = maxf(top, status_rect.end.y + MODAL_SAFE_EDGE_MARGIN)
 	var state := _flow.get_current_state() if _flow != null else ""
 	var right := MODAL_FALLBACK_RIGHT_CLOSED
 	if _drawer_open or DRAWER_AUTO_OPEN_STATES.has(state):
@@ -219,7 +213,7 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 
 	_drawer_open = open
 	if drawer_toggle_button != null:
-		drawer_toggle_button.text = "▶" if open else "◀"
+		drawer_toggle_button.text = ">" if open else "<"
 
 	var target_left := DRAWER_OPEN_LEFT if open else DRAWER_CLOSED_LEFT
 	var target_right := DRAWER_OPEN_RIGHT if open else DRAWER_CLOSED_RIGHT
