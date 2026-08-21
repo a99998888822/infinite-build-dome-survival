@@ -1,0 +1,165 @@
+docs/main/1-base_data_and_modifiers_design.md
+  s_c4f1b57bf975fc::t_692ae9b6551f06 302,594,597
+  s_7494d70359fcb5::t_f108953e7eac9a 192,202,263,265-267
+  s_c4f1b57bf975fc::t_b7d6d14912dc89 182,793-795
+scripts/weapons/weapon_loadout.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 154-156,171-174,243-262
+  s_7494d70359fcb5::t_106d7cb0240df3 263-264
+todo.md
+  s_7494d70359fcb5::t_b5e53dd9e76283 41-44
+scripts/ui/zone_select_card.gd
+  s_7494d70359fcb5::t_7647dc5e9054a9 19,33-40
+  s_7494d70359fcb5::t_718d34ddecdd04 61
+  s_7494d70359fcb5::t_d7c5cfd1278075 6-12,14-18,20-22,45-51,60,62-84,86,90-99,105,107-109,115,118,121,124,130-131,133-139,141,146-169,177-209,283-284
+  s_7494d70359fcb5::t_582ec41b4360ce 41-42
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_d46514a7ab5689::t_e7d7b1d7b151bd 169-172,177,518,520,522-534,536-537,539,544,550-556
+  s_7494d70359fcb5::t_7647dc5e9054a9 491-496,590-592,598-606
+  s_7494d70359fcb5::t_5893150a5388ae 33-34,212,387,389-397,490,638,644-645,667-669,674-676,680,682-685,689,691-694,699,702,720-773
+  s_7494d70359fcb5::t_f418f30271bd1f 557-558,607-608
+scripts/pickups/exp_orb.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 17-18,45-46,59-67,76-77
+docs/asset/asset_checklist_summary.md
+  s_7494d70359fcb5::t_7647dc5e9054a9 133-134,138
+  s_7494d70359fcb5::t_4ecdf6df6dfdea 139-149
+  s_7494d70359fcb5::t_f108953e7eac9a 95-98
+scripts/ui/shop_popup.gd
+  s_7494d70359fcb5::t_718d34ddecdd04 337
+  s_7494d70359fcb5::t_701703d316ea06 319-322
+  s_7494d70359fcb5::t_1592f0f28c38ba 330
+scripts/weapons/weapon_instance.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 17-18,56-57,67,71,82-83,86,91-93,95,97,99
+  s_7494d70359fcb5::t_0da778a506d9c7 19-20,58-59,94,96,98,100
+  s_7494d70359fcb5::t_5ba1200d439bae 101-103
+scripts/core/main_flow_coordinator.gd
+  s_7494d70359fcb5::t_97cec7b79ad2e4 338-339
+autoloads/audio_manager.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 78-83,91-92
+  s_7494d70359fcb5::t_7647dc5e9054a9 15
+  s_7494d70359fcb5::t_1618c869f9895e 13-14,16-22,84-90
+scripts/ui/interest_settlement_popup.gd
+  s_7494d70359fcb5::t_8c6fe7a53cbd4c 4-11,15-22,24-26,34-36,48-51,54-77,81-85,87-149,153,157-168,170-174,176-178,192,194-205,212,214-234,240-251,253,256,259-261,263-267,294-326,328-331
+  s_7494d70359fcb5::t_2ed1144d87245e 169,175,179-191
+  s_7494d70359fcb5::t_7647dc5e9054a9 206-211
+scenes/ui/finance/finance_ui_controller.tscn
+  s_7494d70359fcb5::t_d01c9fcacd8860 1,5,14-15
+scenes/enemy/mutated_grub.tscn
+  s_7494d70359fcb5::t_db8758250f5c37 7,19
+  s_7494d70359fcb5::t_f11403e70cb5d9 10-11
+scripts/ui/esc_overlay.gd
+  s_7494d70359fcb5::t_2ed1144d87245e 24,169-172,262-267
+  s_7494d70359fcb5::t_bd578dc5038a2a 10,29
+  s_7494d70359fcb5::t_7647dc5e9054a9 158-159
+  s_7494d70359fcb5::t_87fe9b5aaac560 8-9,23,25-26,38,43-107,117-139,141-156,168,258-260,271-298
+  s_7494d70359fcb5::t_d94ed4f594532b 140
+  s_7494d70359fcb5::t_99a2e1208ff3f8 299-300
+scripts/enemies/enemy_controller.gd
+  s_7494d70359fcb5::t_0da778a506d9c7 146
+  s_d46514a7ab5689::t_81a865879ae7d0 12-13,167
+  s_7494d70359fcb5::t_e2c2b1451d3034 18-23,39,107,114,120-145,147-154,261
+  s_7494d70359fcb5::t_580fd2ff7c6aea 10-11,218
+docs/asset/asset_rules_summary.md
+  s_7494d70359fcb5::t_f108953e7eac9a 130-133
+scripts/data/data_validator.gd
+  s_c4f1b57bf975fc::t_55633ef41c988c 65,67
+data_config/bonds.json
+  s_c4f1b57bf975fc::t_e052179b3218d7 8-11,14-21,24-35,38-49,59-62,65-72,75-86,89-100,110-113,116-119,122-132,135-145,148-153
+scripts/ui/finance_ui_controller.gd
+  s_7494d70359fcb5::t_1618c869f9895e 5,14,48,110-111,118-120,123-127,136-138,188-190,193,202,205,246-258
+  s_7494d70359fcb5::t_fa185915257738 15,109,121-122,128,132,135,139-141
+  s_7494d70359fcb5::t_21e7035a110a4e 129-131,133-134
+  s_7494d70359fcb5::t_a724d676481dab 106-107
+  s_d46514a7ab5689::t_54edba06bb58d2 8,294-295
+  s_7494d70359fcb5::t_718d34ddecdd04 207
+  s_7494d70359fcb5::t_4605601d22d57b 6,13,16,47,149-153,181,186-187,191-192,194-201,203-204,206,208-209,259-260
+scripts/core/bootstrap.gd
+  s_7494d70359fcb5::t_1618c869f9895e 823
+scripts/ui/battle_hud.gd
+  s_7494d70359fcb5::t_27081d54ec1481 141,144,159,168-170
+  s_c4f1b57bf975fc::t_6a072ad5bb7466 454,457
+  s_d46514a7ab5689::t_94b596f54af983 368-370,385-386,414,417-418,420-421,424
+  s_7494d70359fcb5::t_e2c2b1451d3034 18-19,97,112-113,130,136-140,142-143,145-158,160-167,171-188
+  s_c4f1b57bf975fc::t_f259f0923272eb 189-190
+assets/font/theme_global.tres
+  s_d46514a7ab5689::t_87ab7d97d816b5 6
+  s_d46514a7ab5689::t_81a865879ae7d0 3
+scripts/player/player_controller.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 181,189-194
+  s_7494d70359fcb5::t_2e77496430afa9 195-196
+scripts/waves/wave_manager.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 208
+  s_7494d70359fcb5::t_f8843165214b53 20-21
+scripts/ui/finance_popup.gd
+  s_d46514a7ab5689::t_81a865879ae7d0 13,164-165,222-223,240,243,246
+  s_d46514a7ab5689::t_fe33d43f8cafaa 193-195,252-255
+  s_7494d70359fcb5::t_701703d316ea06 166
+docs/main/13-zone_streak_fortune_design.md
+  s_c4f1b57bf975fc::t_6a072ad5bb7466 163,168
+data_config/relics.json
+  s_c4f1b57bf975fc::t_e052179b3218d7 9-11,29-31,41,53-55,72-74,92-94,104,116-118,137-139,158-160,179-181,191,201,213-215,233-235,252-254,264,282-284,294,314-316,326,345-347,357-558,566-568,573,578,591-593,603,622-624,640-642
+scripts/battle/battle_root.gd
+  s_7494d70359fcb5::t_87fe9b5aaac560 67-70
+theme_capital_and_survival.md
+  s_7494d70359fcb5::t_258ab8f6a3aaf6 54
+  s_7494d70359fcb5::t_9b985e8d7d35ce 35-53,55-57
+scripts/rewards/battle_finance_system.gd
+  s_c4f1b57bf975fc::t_97497e21599113 36,38,52,74,259-262,325-327,335-339,341,434-437
+  s_c4f1b57bf975fc::t_7e25975fbdeec7 442,445-446,449-450,455
+scripts/weapons/projectile_instance.gd
+  s_7494d70359fcb5::t_e2c2b1451d3034 85,87-88,95-114
+  s_7494d70359fcb5::t_7ec39c80a9582f 115-116
+scripts/ui/zone_harvest_result_popup.gd
+  s_7494d70359fcb5::t_8c6fe7a53cbd4c 4-11,15-20,25,35,49-75,77-82,86-96,103,105-106,108,110-140,149,188-201,208-217,219,222-223,244-277,281-284
+  s_7494d70359fcb5::t_2ed1144d87245e 21,36,76,156-187,202-207
+scripts/ui/zone_select_popup.gd
+  s_7494d70359fcb5::t_d7c5cfd1278075 6-12,17-20,24,33,40,45-65,69-77,89-90,95,97-127,148,151,154,156-157,160,163,171-189,195,202-214
+  s_7494d70359fcb5::t_7647dc5e9054a9 152-153,155
+scripts/data/stat_definitions.gd
+  s_c4f1b57bf975fc::t_ac75d05368ec3b 138-139,244-253,345,352
+scripts/relics/relic_bond_system.gd
+  s_c4f1b57bf975fc::t_c3b210cc85e5b5 266
+scripts/ui/main_menu_ui_controller.gd
+  s_c4f1b57bf975fc::t_58d1d646bf332c 637
+data_config/README.md
+  s_c4f1b57bf975fc::t_75cbc00907b9b2 115-117
+data_config/drop_tables.json
+  s_c4f1b57bf975fc::t_e841266fc4dd9a 5
+docs/main/9-drop_reward_design.md
+  s_c4f1b57bf975fc::t_5d530219e659fb 83-84
+scenes/player/player_root.tscn
+  s_7494d70359fcb5::t_5639b7d278b88e 14-15
+scripts/pickups/health_pack.gd
+  s_c4f1b57bf975fc::t_acd5e26225adcb 56-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "2c6701452b28b83a09d556b61747d2de5858e022",
+  "prompts": {},
+  "sessions": {
+    "s_7494d70359fcb5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02234-164c-7922-8e03-0295de1ab27d",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_c4f1b57bf975fc": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0222e-aaef-7120-ac70-a0d41800be45",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d46514a7ab5689": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a01858-f568-7250-ad89-f28873578e1f",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
