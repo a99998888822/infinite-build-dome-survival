@@ -11,6 +11,8 @@ height = 74.0
 radius = 180.0
 
 [node name="PlayerRoot" type="CharacterBody2D" unique_id=2042939580]
+collision_layer = 1
+collision_mask = 2
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=338996884]

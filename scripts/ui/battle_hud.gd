@@ -9,13 +9,14 @@ var _drawer_locked_open: bool = false
 var _drawer_tween: Tween = null
 var _stat_value_labels: Dictionary = {}
 var _stat_name_labels: Dictionary = {}
-var _stat_info_buttons: Dictionary = {}
 var _damage_tooltip_panel: PanelContainer = null
 var _bond_indicator: Button = null
 var _bond_indicator_placeholder: PanelContainer = null
 var _bond_indicator_label: Label = null
 var _bond_tooltip_panel: PanelContainer = null
 var _displayed_bond_id: String = ""
+var _danger_overlay: ColorRect = null
+var _wave_toast: Label = null
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
@@ -93,6 +94,7 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 
 
 func _ready() -> void:
+	_ensure_feedback_ui()
 	if drawer_toggle_button != null and not drawer_toggle_button.pressed.is_connected(_on_drawer_toggle_pressed):
 		drawer_toggle_button.pressed.connect(_on_drawer_toggle_pressed)
 	_hide_stats_scroll_bars()
@@ -107,6 +109,8 @@ func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_mana
 	_flow = flow
 	_player = player
 	_wave_manager = wave_manager
+	if _wave_manager != null and not _wave_manager.wave_finished.is_connected(_on_wave_finished_feedback):
+		_wave_manager.wave_finished.connect(_on_wave_finished_feedback)
 	if _flow != null and not _flow.state_changed.is_connected(_on_flow_state_changed):
 		_flow.state_changed.connect(_on_flow_state_changed)
 	_set_drawer_locked_open(false)
@@ -123,9 +127,65 @@ func _refresh_all() -> void:
 	if _player == null or _wave_manager == null or _flow == null:
 		return
 	_refresh_labels()
+	_refresh_battle_feedback()
 	_refresh_stats_drawer()
 	_refresh_bond_indicator()
 	_refresh_visibility()
+
+
+func _ensure_feedback_ui() -> void:
+	_danger_overlay = ColorRect.new()
+	_danger_overlay.name = "DangerEdgeOverlay"
+	_danger_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_danger_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_danger_overlay.z_index = -10
+	_danger_overlay.visible = false
+	var shader := Shader.new()
+	shader.code = "shader_type canvas_item; void fragment() { vec2 edge = min(UV, vec2(1.0) - UV); float d = min(edge.x, edge.y); float alpha = (1.0 - smoothstep(0.0, 0.18, d)) * 0.62; COLOR = vec4(0.35, 0.0, 0.0, alpha); }"
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	_danger_overlay.material = material
+	add_child(_danger_overlay)
+
+	_wave_toast = Label.new()
+	_wave_toast.name = "WaveEndToast"
+	_wave_toast.text = "\u767d\u5929\u5230\u4e86\uff0c\u6682\u65f6\u5b89\u5168\u4e86..."
+	_wave_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_wave_toast.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_wave_toast.position = Vector2(-180.0, -96.0)
+	_wave_toast.size = Vector2(360.0, 36.0)
+	_wave_toast.modulate.a = 0.0
+	_wave_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_wave_toast.z_index = 20
+	add_child(_wave_toast)
+
+
+func _refresh_battle_feedback() -> void:
+	if _danger_overlay == null or _player == null:
+		return
+	var hp_ratio := float(_player.current_hp) / maxf(float(_player.get_stat("max_hp")), 1.0)
+	_danger_overlay.visible = hp_ratio < 0.3 and not bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
+	var danger_strength := clampf((0.3 - hp_ratio) / 0.3, 0.15, 1.0)
+	var pulse := 0.88 + 0.12 * sin(Time.get_ticks_msec() / 420.0)
+	_danger_overlay.modulate.a = danger_strength * pulse
+
+
+func show_wave_end_toast() -> void:
+	if _wave_toast == null:
+		return
+	_wave_toast.position.y = -72.0
+	_wave_toast.modulate.a = 0.0
+	var tween := create_tween()
+	tween.tween_property(_wave_toast, "position:y", -128.0, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(_wave_toast, "modulate:a", 1.0, 0.18)
+	tween.tween_interval(1.2)
+	tween.tween_property(_wave_toast, "modulate:a", 0.0, 0.4)
+
+
+func _on_wave_finished_feedback(_wave_id: String) -> void:
+	if AudioManager != null:
+		AudioManager.play_wave_end_sfx()
+	show_wave_end_toast()
 
 
 func _refresh_labels() -> void:
@@ -305,9 +365,9 @@ func _ensure_stat_rows() -> void:
 		row.add_child(name_label)
 
 		if stat_id == "armor":
-			var info_button := _create_stat_info_button()
-			row.add_child(info_button)
-			_stat_info_buttons[stat_id] = info_button
+			name_label.mouse_default_cursor_shape = Control.CURSOR_HELP
+			name_label.mouse_entered.connect(_show_damage_tooltip.bind(name_label))
+			name_label.mouse_exited.connect(_hide_damage_tooltip)
 			var spacer := Control.new()
 			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_child(spacer)
@@ -322,32 +382,8 @@ func _ensure_stat_rows() -> void:
 		_stat_name_labels[stat_id] = name_label
 
 
-func _create_stat_info_button() -> Button:
-	var info_button := Button.new()
-	info_button.custom_minimum_size = Vector2(13.0, 13.0)
-	info_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	info_button.focus_mode = Control.FOCUS_NONE
-	info_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	info_button.text = "?"
-	info_button.tooltip_text = ""
-	info_button.add_theme_font_size_override("font_size", 8)
-	var normal_style := StyleBoxFlat.new()
-	normal_style.bg_color = Color(0.20, 0.22, 0.25, 0.95)
-	normal_style.border_color = Color(1.0, 1.0, 1.0, 0.75)
-	normal_style.set_border_width_all(1)
-	normal_style.set_corner_radius_all(6)
-	var hover_style := normal_style.duplicate()
-	hover_style.bg_color = Color(0.35, 0.38, 0.42, 1.0)
-	info_button.add_theme_stylebox_override("normal", normal_style)
-	info_button.add_theme_stylebox_override("hover", hover_style)
-	info_button.add_theme_color_override("font_color", Color.WHITE)
-	info_button.add_theme_color_override("font_hover_color", Color.WHITE)
-	info_button.mouse_entered.connect(_show_damage_tooltip.bind(info_button))
-	info_button.mouse_exited.connect(_hide_damage_tooltip)
-	return info_button
 
-
-func _show_damage_tooltip(info_button: Button) -> void:
+func _show_damage_tooltip(anchor_control: Control) -> void:
 	_hide_damage_tooltip()
 	_damage_tooltip_panel = PanelContainer.new()
 	_damage_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -375,17 +411,17 @@ func _show_damage_tooltip(info_button: Button) -> void:
 	var damage_taken_percent := _format_stat_value("damage_taken_percent", _player.get_stat("damage_taken_percent"))
 	label.text = "[color=#FFFFFF]受到 [/color][color=#FFF0A6]%s[/color][color=#FFFFFF] 的伤害[/color]" % damage_taken_percent
 	margin.add_child(label)
-	call_deferred("_position_damage_tooltip", info_button, _damage_tooltip_panel)
+	call_deferred("_position_damage_tooltip", anchor_control, _damage_tooltip_panel)
 
 
-func _position_damage_tooltip(info_button: Button, tooltip_panel: PanelContainer) -> void:
-	if not is_instance_valid(info_button) or not is_instance_valid(tooltip_panel):
+func _position_damage_tooltip(anchor_control: Control, tooltip_panel: PanelContainer) -> void:
+	if not is_instance_valid(anchor_control) or not is_instance_valid(tooltip_panel):
 		return
-	var button_rect := info_button.get_global_rect()
-	var tooltip_position := button_rect.position + Vector2(button_rect.size.x + 8.0, -4.0)
+	var anchor_rect := anchor_control.get_global_rect()
+	var tooltip_position := anchor_rect.position + Vector2(anchor_rect.size.x + 8.0, -4.0)
 	var viewport_size := get_viewport().get_visible_rect().size
 	if tooltip_position.x + tooltip_panel.size.x > viewport_size.x:
-		tooltip_position.x = button_rect.position.x - tooltip_panel.size.x - 8.0
+		tooltip_position.x = anchor_rect.position.x - tooltip_panel.size.x - 8.0
 	tooltip_position.y = clampf(tooltip_position.y, 4.0, viewport_size.y - tooltip_panel.size.y - 4.0)
 	tooltip_panel.position = tooltip_position
 
@@ -415,11 +451,10 @@ func _get_display_stat_value(stat_id: String) -> float:
 
 
 func _get_stat_display_name(stat_id: String) -> String:
-	var eldritch_name_changed := _player != null and _player.get_stat("divinity") > ELDRITCH_NAMING_THRESHOLD
-	if stat_id == "humanity":
+		if stat_id == "humanity":
 		return "人性" if eldritch_name_changed else "理智值"
 	if stat_id == "divinity":
-		return "神性" if eldritch_name_changed else "侵蚀度"
+		return "侵蚀度"
 	return StatDefinitions.get_display_name(stat_id)
 
 

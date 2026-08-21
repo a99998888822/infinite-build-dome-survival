@@ -53,7 +53,9 @@ func collect() -> void:
 	collected_once = true
 	var healed_amount := 0
 	if target_player != null and amount > 0:
-		healed_amount = target_player.heal(amount)
+		var heal_plus := target_player.get_stat("health_pack_heal_plus")
+		var adjusted_amount := maxi(0, amount + int(roundf(heal_plus)))
+		healed_amount = target_player.heal(adjusted_amount)
 	collected.emit(self, healed_amount)
 	queue_free()
 

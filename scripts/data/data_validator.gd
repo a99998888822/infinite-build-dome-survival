@@ -34,7 +34,6 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 	"operation",
 	"value",
 	"duration",
-	"stack_rule",
 ]
 
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
@@ -63,9 +62,9 @@ const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_EXTRA_SETTLEMENT_PER_WAVE,
 	BattleFinanceSystem.EFFECT_CONSUME_PRINCIPAL_PERCENT_EVERY_N_WAVES,
 	BattleFinanceSystem.EFFECT_REQUIRE_WAVE_START_DEPOSIT,
-	BattleFinanceSystem.EFFECT_ADD_DIVINITY,
+	BattleFinanceSystem.EFFECT_ADD_EROSION,
 	BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PRINCIPAL,
-	BattleFinanceSystem.EFFECT_DERIVED_INTEREST_FROM_DIVINITY,
+	BattleFinanceSystem.EFFECT_DERIVED_INTEREST_FROM_EROSION,
 	BattleFinanceSystem.EFFECT_BANKRUPTCY_RECOVERY,
 	BattleFinanceSystem.EFFECT_TIP_TRAY_DROP,
 ]

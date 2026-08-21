@@ -14,6 +14,8 @@ var target_player: PlayerController = null
 var collected_once: bool = false
 var force_collecting: bool = false
 var forced_attract_speed: float = WAVE_END_ATTRACT_SPEED
+var _collection_time: float = 0.0
+var _collection_start: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -40,6 +42,8 @@ func start_wave_end_collection(player: PlayerController) -> void:
 	target_player = player
 	force_collecting = true
 	forced_attract_speed = WAVE_END_ATTRACT_SPEED
+	_collection_time = 0.0
+	_collection_start = global_position
 
 
 func _physics_process(delta: float) -> void:
@@ -52,7 +56,15 @@ func _physics_process(delta: float) -> void:
 	if distance_to_player > pickup_radius:
 		return
 	var speed := forced_attract_speed if force_collecting else attract_speed
-	global_position = global_position.move_toward(target_player.global_position, speed * delta)
+	if force_collecting:
+		_collection_time += delta
+		var target_position := target_player.global_position
+		var next_position := global_position.move_toward(target_position, speed * delta)
+		var arc := sin(clampf(_collection_time * 5.0, 0.0, PI)) * 18.0
+		global_position = next_position + Vector2(0.0, -arc)
+		rotation += delta * 8.0
+	else:
+		global_position = global_position.move_toward(target_player.global_position, speed * delta)
 	if global_position.distance_to(target_player.global_position) <= 16.0:
 		collect()
 
@@ -61,6 +73,8 @@ func collect() -> void:
 	if collected_once:
 		return
 	collected_once = true
+	if AudioManager != null:
+		AudioManager.play_exp_orb_collect_sfx()
 	collected.emit(self, amount, amount)
 	queue_free()
 

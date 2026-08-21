@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://tynvqbud3q1q" path="res://assets/sprites/enemies/enemy_mutated_grub.png" id="2_lmowc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy_body"]
-radius = 14.4
+radius = 21.6
 
 [node name="MutatedGrub" type="CharacterBody2D" unique_id=82577481]
+collision_layer = 2
+collision_mask = 1
 script = ExtResource("1_enemy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
@@ -14,5 +16,5 @@ shape = SubResource("CircleShape2D_enemy_body")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479700477]
 modulate = Color(0.65, 0.9, 0.76, 1)
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.45, 0.45)
 texture = ExtResource("2_lmowc")

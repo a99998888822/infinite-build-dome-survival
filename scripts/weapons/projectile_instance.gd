@@ -82,12 +82,36 @@ func _on_body_entered(body: Node) -> void:
 		return
 	hit_targets[target_key] = true
 	damage_event.hit_position = enemy.global_position
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id)
+	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null:
+		if weapon.register_hit_feedback_frame(true):
+			_spawn_hit_sparks(enemy.global_position)
 		weapon.play_projectile_hit_sfx(projectile_id)
 	remaining_hits -= 1
 	if remaining_hits <= 0:
 		_destroy()
+
+
+func _spawn_hit_sparks(hit_position: Vector2) -> void:
+	var particles := CPUParticles2D.new()
+	particles.name = "HitSparks"
+	particles.top_level = true
+	particles.global_position = hit_position
+	particles.z_index = 80
+	particles.amount = 10
+	particles.lifetime = 0.22
+	particles.one_shot = true
+	particles.explosiveness = 1.0
+	particles.direction = Vector2.RIGHT
+	particles.spread = 180.0
+	particles.initial_velocity_min = 70.0
+	particles.initial_velocity_max = 150.0
+	particles.scale_amount_min = 1.0
+	particles.scale_amount_max = 2.0
+	particles.color = Color(1.0, 0.68, 0.16, 1.0)
+	get_parent().add_child(particles)
+	particles.finished.connect(particles.queue_free)
+	particles.restart()
 
 
 func _destroy() -> void:

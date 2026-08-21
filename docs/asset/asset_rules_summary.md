@@ -127,6 +127,10 @@
 | `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 未存在 | 还没有生成或未放入目标路径 |
 | `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 未存在 | 还没有生成或未放入目标路径 |
 | `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_medical_cutback` | `icon` | `assets/ui/icons/relics/relic_medical_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_welfare_cutback` | `icon` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 未存在 | 还没有生成或未放入目标路径 |
 
 ### 5. Godot 导入约定
 

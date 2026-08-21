@@ -135,8 +135,8 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "伤害加成",
 		"category": CATEGORY_ATTACK,
 		"default": 0,
-		"min": -95,
-		"max": 10000,
+		"min": -99999,
+		"max": 99999,
 		"is_integer": true,
 		"is_percent": true,
 		"description": "通用伤害百分比加成，影响近战、远程、眷族等伤害。"
@@ -241,6 +241,16 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": true,
 		"description": "局内掉落概率百分比加成。"
 	},
+	"health_pack_heal_plus": {
+		"display_name": "血包恢复量加成",
+		"category": CATEGORY_REWARD,
+		"default": 0,
+		"min": -99999,
+		"max": 99999,
+		"is_integer": true,
+		"is_percent": false,
+		"description": "血包拾取后的固定生命恢复量加成，可为负，不影响血包掉落概率。"
+	},
 	"luck": {
 		"display_name": "幸运",
 		"category": CATEGORY_REWARD,
@@ -332,14 +342,14 @@ const STAT_DEFINITIONS: Dictionary = {
 		"description": "理智值/人性，初始满值；越低，侵蚀度积蓄越快。"
 	},
 	"divinity": {
-		"display_name": "神性",
+		"display_name": "侵蚀度",
 		"category": CATEGORY_ELDRITCH,
 		"default": DEFAULT_DIVINITY,
 		"min": 0,
 		"max": 100,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "侵蚀度/神性，初始为0；表示与克苏鲁外神的靠近程度。"
+		"description": "侵蚀度，初始为0；表示与克苏鲁外神的靠近程度。"
 	}
 }
 

@@ -820,7 +820,7 @@ func _run_finance_checks() -> bool:
 	if finance_popup != null:
 		finance_popup.queue_free()
 	var finance_controller := FINANCE_UI_CONTROLLER_SCENE.instantiate()
-	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null and finance_controller.get_node_or_null("PopupLayer/InterestSettlementPopup") == null) and passed
+	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null and finance_controller.get_node_or_null("PopupLayer/InterestSettlementPopup") != null) and passed
 	if finance_controller != null:
 		finance_controller.queue_free()
 	wave_manager.queue_free()

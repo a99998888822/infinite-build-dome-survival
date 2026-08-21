@@ -6,7 +6,9 @@
     "icon": "res://assets/ui/icons/relics/relic_piggy_bank.png",
     "rarity": "common",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -24,7 +26,9 @@
     "icon": "res://assets/ui/icons/relics/relic_finance_manager.png",
     "rarity": "common",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_finance_manager_interest_rate",
@@ -34,8 +38,7 @@
         "stat": "interest_rate",
         "operation": "add_flat",
         "value": 1,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": []
@@ -47,7 +50,9 @@
     "icon": "res://assets/ui/icons/relics/relic_dividend_check.png",
     "rarity": "uncommon",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -64,7 +69,9 @@
     "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "rarity": "uncommon",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -82,7 +89,9 @@
     "icon": "res://assets/ui/icons/relics/relic_flyer_ad.png",
     "rarity": "uncommon",
     "max_stack": 3,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_flyer_ad_shop_price_percent",
@@ -92,8 +101,7 @@
         "stat": "shop_price_percent",
         "operation": "add_flat",
         "value": 8,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": []
@@ -105,7 +113,9 @@
     "icon": "res://assets/ui/icons/relics/relic_steel_vault.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -124,7 +134,9 @@
     "icon": "res://assets/ui/icons/relics/relic_quant_trading.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -143,7 +155,9 @@
     "icon": "res://assets/ui/icons/relics/relic_hostile_takeover.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -162,7 +176,9 @@
     "icon": "res://assets/ui/icons/relics/relic_gold_compass.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_gold_compass_pickup_radius",
@@ -172,8 +188,7 @@
         "stat": "pickup_radius",
         "operation": "add_flat",
         "value": 40,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       },
       {
         "id": "mod_relic_gold_compass_currency_gain_percent",
@@ -183,8 +198,7 @@
         "stat": "currency_gain_percent",
         "operation": "add_flat",
         "value": 5,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": []
@@ -196,7 +210,9 @@
     "icon": "res://assets/ui/icons/relics/relic_tip_tray.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -214,7 +230,9 @@
     "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -231,7 +249,9 @@
     "icon": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
     "rarity": "epic",
     "max_stack": 1,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_high_yield_contract_interest_rate",
@@ -241,8 +261,7 @@
         "stat": "interest_rate",
         "operation": "add_flat",
         "value": 4,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": [
@@ -260,7 +279,9 @@
     "icon": "res://assets/ui/icons/relics/relic_merger_reorg.png",
     "rarity": "epic",
     "max_stack": 1,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_merger_reorg_load_capacity",
@@ -270,8 +291,7 @@
         "stat": "load_capacity",
         "operation": "add_flat",
         "value": 10,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": [
@@ -291,7 +311,9 @@
     "icon": "res://assets/ui/icons/relics/relic_private_army.png",
     "rarity": "epic",
     "max_stack": 1,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_private_army_summon_count",
@@ -301,8 +323,7 @@
         "stat": "summon_count",
         "operation": "add_flat",
         "value": 1,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": [
@@ -321,7 +342,9 @@
     "icon": "res://assets/ui/icons/relics/relic_periodic_dividend_clock.png",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -332,23 +355,227 @@
     ]
   },
   {
+    "id": "relic_medical_cutback",
+    "display_name": "医疗削减方案",
+    "description": "获得时：本金 +150；利率 +2%；回血 -1；血包恢复量 -2",
+    "icon": "res://assets/ui/icons/relics/relic_medical_cutback.png",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": [
+      "finance",
+      "surplus_value"
+    ],
+    "bond_id": "bond_surplus_value",
+    "effects": [
+      {
+        "id": "mod_relic_medical_cutback_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_medical_cutback",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 2,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_medical_cutback_hp_regen",
+        "source_type": "relic",
+        "source_id": "relic_medical_cutback",
+        "target_scope": "player",
+        "stat": "hp_regen",
+        "operation": "add_flat",
+        "value": -1,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_medical_cutback_health_pack_heal_plus",
+        "source_type": "relic",
+        "source_id": "relic_medical_cutback",
+        "target_scope": "player",
+        "stat": "health_pack_heal_plus",
+        "operation": "add_flat",
+        "value": -2,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "add_principal_flat",
+        "value": 150,
+        "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_welfare_cutback",
+    "display_name": "福利削减方案",
+    "description": "获得时：本金 +150；利率 +2%；最大生命值 -8；护甲 +30",
+    "icon": "res://assets/ui/icons/relics/relic_welfare_cutback.png",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": [
+      "finance",
+      "surplus_value"
+    ],
+    "bond_id": "bond_surplus_value",
+    "effects": [
+      {
+        "id": "mod_relic_welfare_cutback_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_welfare_cutback",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 2,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_welfare_cutback_max_hp",
+        "source_type": "relic",
+        "source_id": "relic_welfare_cutback",
+        "target_scope": "player",
+        "stat": "max_hp",
+        "operation": "add_flat",
+        "value": -8,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_welfare_cutback_armor",
+        "source_type": "relic",
+        "source_id": "relic_welfare_cutback",
+        "target_scope": "player",
+        "stat": "armor",
+        "operation": "add_flat",
+        "value": 30,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "add_principal_flat",
+        "value": 150,
+        "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_annual_leave_cutback",
+    "display_name": "年假削减方案",
+    "description": "获得时：本金 +100；利率 +2%；攻击速度 -12",
+    "icon": "res://assets/ui/icons/relics/relic_annual_leave_cutback.png",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": [
+      "finance",
+      "surplus_value"
+    ],
+    "bond_id": "bond_surplus_value",
+    "effects": [
+      {
+        "id": "mod_relic_annual_leave_cutback_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_annual_leave_cutback",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 2,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_annual_leave_cutback_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_annual_leave_cutback",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_flat",
+        "value": -12,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "add_principal_flat",
+        "value": 100,
+        "free_principal": true
+      }
+    ]
+  },
+  {
+    "id": "relic_salary_adjustment",
+    "display_name": "薪酬调整方案",
+    "description": "获得时：本金 +80；利率 +1%；金币获取 -20%；商店价格 +20%",
+    "icon": "res://assets/ui/icons/relics/relic_salary_adjustment.png",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": [
+      "finance",
+      "surplus_value"
+    ],
+    "bond_id": "bond_surplus_value",
+    "effects": [
+      {
+        "id": "mod_relic_salary_adjustment_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_salary_adjustment",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_salary_adjustment_currency_gain_percent",
+        "source_type": "relic",
+        "source_id": "relic_salary_adjustment",
+        "target_scope": "player",
+        "stat": "currency_gain_percent",
+        "operation": "add_flat",
+        "value": -20,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_salary_adjustment_shop_price_percent",
+        "source_type": "relic",
+        "source_id": "relic_salary_adjustment",
+        "target_scope": "player",
+        "stat": "shop_price_percent",
+        "operation": "add_flat",
+        "value": -20,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "on_acquire",
+        "effect": "add_principal_flat",
+        "value": 80,
+        "free_principal": true
+      }
+    ]
+  },
+  {
     "id": "relic_divine_fusion",
     "display_name": "神性融合",
     "description": "每 5 侵蚀度提供利率 + 1%；每波开始时侵蚀度 + 1",
     "icon": "res://assets/ui/icons/relics/relic_divine_fusion.png",
     "rarity": "mythic",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
         "trigger": "wave_start",
-        "effect": "add_divinity",
+        "effect": "add_erosion",
         "value": 1
       },
       {
         "trigger": "derived",
-        "effect": "derived_interest_from_divinity",
+        "effect": "derived_interest_from_erosion",
         "divisor": 5,
         "per_unit": 1
       }
@@ -361,7 +588,9 @@
     "icon": "res://assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
     "rarity": "mythic",
     "max_stack": 1,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [
       {
         "id": "mod_relic_goblin_central_bank_printer_interest_rate",
@@ -371,8 +600,7 @@
         "stat": "interest_rate",
         "operation": "add_flat",
         "value": 5,
-        "duration": -1,
-        "stack_rule": "unique"
+        "duration": -1
       }
     ],
     "runtime_effects": [
@@ -391,7 +619,9 @@
     "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "rarity": "mythic",
     "max_stack": 0,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {
@@ -407,7 +637,9 @@
     "icon": "res://assets/ui/icons/relics/relic_bankruptcy_reorg.png",
     "rarity": "legendary",
     "max_stack": 1,
-    "tags": [],
+    "tags": [
+      "finance"
+    ],
     "effects": [],
     "runtime_effects": [
       {

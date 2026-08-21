@@ -64,7 +64,10 @@ func _apply_esc_overlay_visibility(state: String) -> void:
 	var should_show := state == MainFlowCoordinator.STATE_ESC_OVERLAY
 	if should_show and _main_flow_coordinator != null and esc_overlay.has_method("configure"):
 		esc_overlay.configure(_main_flow_coordinator.get_bound_player(), _main_flow_coordinator.get_bound_loadout())
-	esc_overlay.visible = should_show
+	if should_show:
+		esc_overlay.show_overlay()
+	else:
+		esc_overlay.hide_overlay()
 
 
 func _on_esc_back_pressed() -> void:

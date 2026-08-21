@@ -30,6 +30,8 @@ var _flash_overlay: ColorRect
 var _flicker_time := 0.0
 var _last_currency := -1
 var _button_tweens: Dictionary = {}
+var _upgrade_toast: Label = null
+var _currency_tween: Tween = null
 
 
 func _ready() -> void:
@@ -164,11 +166,15 @@ func _build_interface() -> void:
 	var summary_content := VBoxContainer.new()
 	summary_panel.add_child(summary_content)
 	summary_content.add_child(_make_header("属性总览", "已应用的营地成长"))
+	var summary_scroll := ScrollContainer.new()
+	summary_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	summary_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	summary_content.add_child(summary_scroll)
 	_summary_grid = GridContainer.new()
 	_summary_grid.columns = 2
 	_summary_grid.add_theme_constant_override("h_separation", 8)
 	_summary_grid.add_theme_constant_override("v_separation", 8)
-	summary_content.add_child(_summary_grid)
+	summary_scroll.add_child(_summary_grid)
 
 	var options_panel := _make_panel(Color("#0d1513"), PANEL_GOLD, 2)
 	options_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -203,6 +209,7 @@ func _build_interface() -> void:
 	_flash_overlay.modulate.a = 0.0
 	add_child(_flash_overlay)
 	_add_scanline_overlay()
+	_ensure_upgrade_toast()
 
 
 func _add_scanline_overlay() -> void:
@@ -377,8 +384,17 @@ func _refresh_currency() -> void:
 	if _currency_label == null:
 		return
 	var value := CampProgression.get_camp_currency()
+	var changed := _last_currency >= 0 and value != _last_currency
 	_currency_label.text = "营地币：%d" % value
-	_currency_label.add_theme_color_override("font_color", GOLD_BRIGHT if value != _last_currency else GOLD)
+	_currency_label.add_theme_color_override("font_color", GOLD_BRIGHT if changed else GOLD)
+	if changed:
+		if _currency_tween != null and _currency_tween.is_valid():
+			_currency_tween.kill()
+		_currency_label.pivot_offset = _currency_label.size * 0.5
+		_currency_tween = create_tween()
+		_currency_tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		_currency_tween.tween_property(_currency_label, "scale", Vector2(1.12, 1.12), 0.12)
+		_currency_tween.tween_property(_currency_label, "scale", Vector2.ONE, 0.18)
 	_last_currency = value
 
 
@@ -471,6 +487,13 @@ func _refresh_detail() -> void:
 			_detail_effects.add_child(effects)
 	var action_row := HBoxContainer.new()
 	_detail_panel.add_child(action_row)
+	_animate_detail_reveal()
+	if unlocked and level >= max_level:
+		var max_label := Label.new()
+		max_label.text = "已达最高等级"
+		max_label.add_theme_color_override("font_color", GOLD_BRIGHT)
+		max_label.add_theme_font_size_override("font_size", 12)
+		_detail_panel.add_child(max_label)
 	if not unlocked:
 		var unlock_condition: Variant = record.get("unlock_condition", {})
 		var unlock_cost := int((unlock_condition as Dictionary).get("cost", 0)) if unlock_condition is Dictionary else 0
@@ -492,28 +515,45 @@ func _refresh_summary() -> void:
 	for child in _summary_grid.get_children():
 		child.queue_free()
 	var modifiers := CampProgression.get_outgame_modifiers()
-	var totals := {}
+	var totals: Dictionary = {}
 	for modifier in modifiers:
-		if modifier is Dictionary:
-			var stat := str(modifier.get("stat", ""))
-			totals[stat] = float(totals.get(stat, 0.0)) + float(modifier.get("value", 0.0))
-	var shown := 0
-	for stat in ["damage_percent", "attack_speed", "melee_damage", "ranged_damage", "max_hp", "armor", "luck", "drop_rate_percent"]:
-		if not totals.has(stat) or is_zero_approx(float(totals[stat])):
+		if not (modifier is Dictionary):
 			continue
-		var label := Label.new()
+		var stat := str(modifier.get("stat", ""))
+		if stat.is_empty() or not StatDefinitions.has_stat(stat):
+			continue
+		var value := float(modifier.get("value", 0.0))
+		if is_zero_approx(value):
+			continue
+		totals[stat] = float(totals.get(stat, 0.0)) + value
+	var shown := 0
+	var stat_ids: Array[String] = []
+	for stat in totals.keys():
+		stat_ids.append(str(stat))
+	stat_ids.sort()
+	for stat in stat_ids:
 		var value := float(totals[stat])
-		var sign := "+" if value > 0.0 else ""
-		label.text = "%s  %s%s" % [StatDefinitions.get_display_name(stat), sign, str(value)]
+		var label := Label.new()
+		label.text = "%s  %s" % [StatDefinitions.get_display_name(stat), _format_summary_value(stat, value)]
 		label.add_theme_color_override("font_color", GOLD_BRIGHT)
+		label.tooltip_text = StatDefinitions.get_description(stat)
 		_summary_grid.add_child(label)
 		shown += 1
 	if shown == 0:
 		var empty := Label.new()
-		empty.text = "尚无已应用属性"
+		empty.text = "\u5c1a\u65e0\u5df2\u5e94\u7528\u5c5e\u6027"
 		empty.add_theme_color_override("font_color", MUTED)
 		empty.add_theme_font_size_override("font_size", 11)
 		_summary_grid.add_child(empty)
+
+
+func _format_summary_value(stat: String, value: float) -> String:
+	var sign := "+" if value >= 0.0 else ""
+	if StatDefinitions.is_percent_stat(stat):
+		return "%s%.2f%%" % [sign, value]
+	if StatDefinitions.is_integer_stat(stat):
+		return "%s%d" % [sign, roundi(value)]
+	return "%s%.2f" % [sign, value]
 
 
 func _refresh_options() -> void:
@@ -547,10 +587,23 @@ func _refresh_options() -> void:
 		group_title.add_theme_font_size_override("font_size", 12)
 		group.add_child(group_title)
 		for option in options:
-			group.add_child(_make_option_row(building_id, option))
+			var option_row := _make_option_row(building_id, option)
+			group.add_child(option_row)
+			_animate_option_row(option_row, total)
 			total += 1
 		_options_list.add_child(group)
 	_options_count_label.text = "已解锁 %d 项" % total
+
+
+func _animate_option_row(option_row: Control, index: int) -> void:
+	if option_row == null:
+		return
+	option_row.modulate.a = 0.0
+	option_row.position.x += 8.0
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(option_row, "modulate:a", 1.0, 0.18).set_delay(index * 0.035)
+	tween.parallel().tween_property(option_row, "position:x", option_row.position.x - 8.0, 0.22).set_delay(index * 0.035)
 
 
 func _is_upgrade_option_unlocked(building_level: int, option: Dictionary) -> bool:
@@ -582,12 +635,14 @@ func _make_option_row(building_id: String, option: Dictionary) -> Control:
 	info.add_child(progress)
 	var progress_bar := ProgressBar.new()
 	progress_bar.max_value = max_level
-	progress_bar.value = current
+	progress_bar.value = 0.0
 	progress_bar.show_percentage = false
 	progress_bar.custom_minimum_size = Vector2(0, 5)
 	progress_bar.add_theme_stylebox_override("background", _progress_style(Color("#080b09"), Color("#4d442c")))
 	progress_bar.add_theme_stylebox_override("fill", _progress_style(GREEN.lerp(GOLD, 0.35), GOLD))
 	info.add_child(progress_bar)
+	var progress_tween := create_tween()
+	progress_tween.tween_property(progress_bar, "value", current, 0.34).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	line.add_child(info)
 	var buy := _make_compact_button("购买 %d" % CampProgression.get_upgrade_cost(option_id), GOLD)
 	buy.custom_minimum_size = Vector2(68, 24)
@@ -609,29 +664,42 @@ func _progress_style(color: Color, border: Color) -> StyleBoxFlat:
 func _on_building_selected(building_id: String) -> void:
 	_selected_building_id = building_id
 	_refresh_all()
+	_animate_detail_reveal()
+	if AudioManager != null:
+		AudioManager.play_ui_sfx("modal_open")
 
 
 func _on_unlock_pressed(source_button: Button) -> void:
 	if CampProgression.purchase_building_unlock(_selected_building_id):
-		_play_purchase_feedback(source_button)
+		_play_purchase_feedback(source_button, "建筑已解锁")
+	else:
+		_play_purchase_error(source_button)
 
 
 func _on_building_upgrade_pressed(source_button: Button) -> void:
+	var old_level := CampProgression.get_building_level(_selected_building_id)
 	if CampProgression.upgrade_building(_selected_building_id):
-		_play_purchase_feedback(source_button)
+		var new_level := CampProgression.get_building_level(_selected_building_id)
+		_play_purchase_feedback(source_button, "Lv.%d  →  Lv.%d" % [old_level, new_level])
+	else:
+		_play_purchase_error(source_button)
 
 
 func _on_option_pressed(option_id: String, source_button: Button) -> void:
+	var old_level := CampProgression.get_upgrade_option_level(option_id)
 	if CampProgression.purchase_upgrade(option_id):
-		_play_purchase_feedback(source_button)
+		var new_level := CampProgression.get_upgrade_option_level(option_id)
+		_play_purchase_feedback(source_button, "属性升级  Lv.%d  →  Lv.%d" % [old_level, new_level])
+	else:
+		_play_purchase_error(source_button)
 
 
 func _on_reset_pressed(source_button: Button) -> void:
 	CampProgression.reset_upgrade_options_and_refund()
-	_play_purchase_feedback(source_button)
+	_play_purchase_feedback(source_button, "升级已重置")
 
 
-func _play_purchase_feedback(source_button: Control) -> void:
+func _play_purchase_feedback(source_button: Control, message: String = "升级已生效") -> void:
 	if _flash_overlay != null:
 		_flash_overlay.modulate.a = 0.22
 	var origin := source_button.get_global_rect().get_center()
@@ -649,6 +717,60 @@ func _play_purchase_feedback(source_button: Control) -> void:
 		tween.tween_property(coin, "position", target, 0.34 + index * 0.02).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tween.tween_property(coin, "modulate:a", 0.0, 0.16)
 		tween.tween_callback(coin.queue_free)
+	_show_upgrade_toast(message, origin)
+	if AudioManager != null:
+		AudioManager.play_ui_sfx("purchase_success")
+
+
+func _play_purchase_error(source_button: Control) -> void:
+	var tween := create_tween()
+	tween.tween_property(source_button, "position:x", source_button.position.x - 4.0, 0.04)
+	tween.tween_property(source_button, "position:x", source_button.position.x + 4.0, 0.08)
+	tween.tween_property(source_button, "position:x", source_button.position.x, 0.06)
+	if AudioManager != null:
+		AudioManager.play_ui_sfx("purchase_error")
+
+
+func _ensure_upgrade_toast() -> void:
+	if _upgrade_toast != null:
+		return
+	_upgrade_toast = Label.new()
+	_upgrade_toast.name = "UpgradeToast"
+	_upgrade_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_upgrade_toast.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_upgrade_toast.add_theme_color_override("font_color", GOLD_BRIGHT)
+	_upgrade_toast.add_theme_color_override("font_outline_color", Color(0.02, 0.04, 0.025, 0.95))
+	_upgrade_toast.add_theme_constant_override("outline_size", 3)
+	_upgrade_toast.add_theme_font_size_override("font_size", 18)
+	_upgrade_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_upgrade_toast.modulate.a = 0.0
+	_upgrade_toast.size = Vector2(320, 32)
+	add_child(_upgrade_toast)
+
+
+func _show_upgrade_toast(message: String, origin: Vector2) -> void:
+	if _upgrade_toast == null:
+		return
+	_upgrade_toast.text = message
+	_upgrade_toast.position = origin - Vector2(_upgrade_toast.size.x * 0.5, 42.0)
+	_upgrade_toast.modulate.a = 0.0
+	_upgrade_toast.scale = Vector2(0.88, 0.88)
+	_upgrade_toast.pivot_offset = _upgrade_toast.size * 0.5
+	var tween := create_tween().set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_upgrade_toast, "position:y", _upgrade_toast.position.y - 24.0, 0.42)
+	tween.tween_property(_upgrade_toast, "modulate:a", 1.0, 0.16)
+	tween.tween_property(_upgrade_toast, "scale", Vector2.ONE, 0.22)
+	tween.chain().tween_property(_upgrade_toast, "modulate:a", 0.0, 0.35).set_delay(0.5)
+
+
+func _animate_detail_reveal() -> void:
+	if _detail_panel == null:
+		return
+	_detail_panel.modulate.a = 0.0
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_detail_panel, "modulate:a", 1.0, 0.24)
 
 
 func _on_back_pressed() -> void:

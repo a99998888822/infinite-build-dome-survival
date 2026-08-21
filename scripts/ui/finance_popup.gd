@@ -10,6 +10,7 @@ const ACTION_WITHDRAW: String = "withdraw"
 const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
 const BILL_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_bill.svg")
 const HAND_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_hand.svg")
+const NUMERIC_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
 
 var payload: Dictionary = {}
 var error_message: String = ""
@@ -160,7 +161,9 @@ func _layout_popup() -> void:
 	panel_width = minf(panel_width, viewport_size.x)
 	panel_height = minf(panel_height, viewport_size.y)
 	var panel_size := Vector2(maxf(panel_width, 0.0), maxf(panel_height, 0.0))
-	var panel_position := safe.position + (safe.size - panel_size) * 0.5
+	var panel_position := Vector2(safe.position.x + (safe.size.x - panel_size.x) * 0.5, safe.position.y + 92.0)
+	if panel_position.y + panel_size.y > safe.end.y:
+		panel_position.y = maxf(safe.position.y, safe.end.y - panel_size.y)
 	main_panel.anchor_left = 0.0
 	main_panel.anchor_top = 0.0
 	main_panel.anchor_right = 0.0
@@ -187,6 +190,9 @@ func _apply_compact_layout(compact: bool) -> void:
 	var interest_value_node := get_node_or_null("MainPanel/Content/StatsRow/InterestPanel/StatContent/InterestValue") as Label
 	var deposit_node := deposit as Button
 	var withdraw_node := withdraw as Button
+	var quick_50_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick50") as Button
+	var quick_100_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick100") as Button
+	var quick_500_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick500") as Button
 	if content != null:
 		content.add_theme_constant_override("separation", 7 if compact else 14)
 	if main_panel != null:
@@ -213,6 +219,8 @@ func _apply_compact_layout(compact: bool) -> void:
 	if interest_panel != null:
 		interest_panel.custom_minimum_size.y = 62.0 if compact else 76.0
 	if amount_edit != null:
+		amount_edit.add_theme_font_override("font", NUMERIC_FONT)
+		amount_edit.add_theme_font_size_override("font_size", 24 if compact else 28)
 		amount_edit.custom_minimum_size = Vector2(140.0, 40.0 if compact else 44.0)
 	if action_row != null:
 		action_row.add_theme_constant_override("separation", 12 if compact else 18)
@@ -229,15 +237,22 @@ func _apply_compact_layout(compact: bool) -> void:
 	if principal_label_node != null:
 		principal_label_node.add_theme_font_size_override("font_size", 14 if compact else 16)
 	if principal_value_node != null:
+		principal_value_node.add_theme_font_override("font", NUMERIC_FONT)
 		principal_value_node.add_theme_font_size_override("font_size", 38 if compact else 48)
 	if rate_value_node != null:
+		rate_value_node.add_theme_font_override("font", NUMERIC_FONT)
 		rate_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
 	if interest_value_node != null:
+		interest_value_node.add_theme_font_override("font", NUMERIC_FONT)
 		interest_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
 	if deposit_node != null:
 		deposit_node.add_theme_font_size_override("font_size", 18 if compact else 22)
 	if withdraw_node != null:
 		withdraw_node.add_theme_font_size_override("font_size", 18 if compact else 22)
+	for quick_button in [quick_50_node, quick_100_node, quick_500_node]:
+		if quick_button != null:
+			quick_button.add_theme_font_override("font", NUMERIC_FONT)
+			quick_button.add_theme_font_size_override("font_size", 18 if compact else 22)
 	if footer_note != null:
 		footer_note.add_theme_font_size_override("font_size", 13 if compact else 15)
 

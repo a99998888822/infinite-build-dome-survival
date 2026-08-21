@@ -3,7 +3,6 @@ class_name WeaponStrip
 
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
-var _bond_player: PlayerController = null
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -15,10 +14,6 @@ func set_loadout(loadout: WeaponLoadout) -> void:
 	_loadout = loadout
 	_refresh_load_label()
 	_refresh_weapon_strip()
-
-
-func set_bond_player(player: PlayerController) -> void:
-	_bond_player = player
 
 
 func _refresh_load_label() -> void:
@@ -60,9 +55,6 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button) -> void
 	if weapon_tooltip == null or weapon_tooltip_label == null:
 		return
 	var tooltip_text := weapon.build_full_stats_text()
-	var bond_text := BondDisplay.build_item_bond_text(weapon.weapon_data, _bond_player.relic_system if _bond_player != null else null)
-	if not bond_text.is_empty():
-		tooltip_text += "\n\n" + bond_text
 	weapon_tooltip_label.text = tooltip_text
 	weapon_tooltip.visible = true
 	weapon_tooltip.reset_size()

@@ -178,11 +178,20 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 	current_shield -= shield_damage
 	current_hp = maxi(current_hp - (final_damage - shield_damage), 0)
 	_invincibility_timer = invincibility_seconds
+	_apply_damage_flash()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 
 	if current_hp <= 0:
 		_die(source_id)
 	return final_damage
+
+
+func _apply_damage_flash() -> void:
+	if sprite == null:
+		return
+	sprite.modulate = Color(1.0, 0.25, 0.25, 1.0)
+	var tween := create_tween()
+	tween.tween_property(sprite, "modulate", Color.WHITE, 0.16)
 
 
 func heal(amount: int) -> int:

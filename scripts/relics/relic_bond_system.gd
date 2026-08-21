@@ -263,7 +263,7 @@ func _build_modifier_data(effect_data: Dictionary, source_id: String, instance_i
 		"operation": str(effect_data.get("operation", Modifier.OPERATION_ADD_FLAT)),
 		"value": float(effect_data.get("value", 0)),
 		"duration": float(effect_data.get("duration", Modifier.PERMANENT_DURATION)),
-		"stack_rule": str(effect_data.get("stack_rule", Modifier.STACK_RULE_UNIQUE)),
+		"stack_rule": str(effect_data.get("stack_rule", Modifier.STACK_RULE_STACK_ADD)),
 		"priority": int(effect_data.get("priority", Modifier.DEFAULT_PRIORITY)),
 		"tags": ["relic", source_id],
 		"metadata": {

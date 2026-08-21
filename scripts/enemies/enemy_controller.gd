@@ -7,15 +7,20 @@ signal contact_damaged(player: PlayerController, damage: int)
 const DEFAULT_ENEMY_ID: String = "enemy_mutated_grub"
 const DEFAULT_KNOCKBACK_SPEED: float = 450.0
 const DEFAULT_KNOCKBACK_SECONDS: float = 0.18
-const CONTACT_RADIUS: float = 28.0
-const CONTACT_RESET_RADIUS: float = 44.0
-const SEPARATION_RADIUS: float = 58.0
-const SEPARATION_STRENGTH: float = 140.0
-const DAMAGE_NUMBER_FONT_SIZE: int = 12
+const CONTACT_RADIUS: float = 52.0
+const CONTACT_RESET_RADIUS: float = 68.0
+const DAMAGE_NUMBER_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
+const DAMAGE_NUMBER_FONT_SIZE: int = 16
 const DAMAGE_NUMBER_SIZE: Vector2 = Vector2(44.0, 18.0)
 const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -28.0)
 const DAMAGE_NUMBER_RISE: float = 30.0
 const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.55
+const HIT_KNOCKBACK_SPEED: float = 180.0
+const HIT_KNOCKBACK_SECONDS: float = 0.1
+const HIT_FLASH_SECONDS: float = 0.1
+const CRITICAL_FLASH_SECONDS: float = 0.18
+const HIT_SHAKE_ANGLE: float = 0.08
+const DEATH_FADE_SECONDS: float = 0.2
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -31,6 +36,7 @@ var has_contact_damaged: bool = false
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
+var _visual_tween: Tween = null
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -98,16 +104,52 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat(stat_id, fallback_base_value)
 
 
-func take_damage(raw_damage: int, source_id: String = "") -> int:
+func take_damage(raw_damage: int, source_id: String = "", is_critical: bool = false, hit_direction: Vector2 = Vector2.ZERO) -> int:
 	if not alive or raw_damage <= 0:
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var final_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	current_hp = maxi(current_hp - final_damage, 0)
 	_spawn_damage_number(final_damage)
+	_apply_hit_feedback(is_critical, hit_direction)
 	if current_hp <= 0:
 		_die(source_id)
 	return final_damage
+
+
+func _apply_hit_feedback(is_critical: bool, hit_direction: Vector2) -> void:
+	if sprite == null:
+		return
+	if _visual_tween != null and _visual_tween.is_valid():
+		_visual_tween.kill()
+	sprite.modulate = Color(1.0, 0.78, 0.25, 1.0) if is_critical else Color(0.88, 0.94, 1.0, 1.0)
+	sprite.rotation = randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
+	_visual_tween = create_tween()
+	_visual_tween.tween_property(sprite, "modulate", Color.WHITE, CRITICAL_FLASH_SECONDS if is_critical else HIT_FLASH_SECONDS)
+	_visual_tween.parallel().tween_property(sprite, "rotation", 0.0, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if not hit_direction.is_zero_approx():
+		_apply_weapon_knockback(hit_direction)
+
+
+func _apply_weapon_knockback(hit_direction: Vector2) -> void:
+	_knockback_velocity = hit_direction.normalized() * HIT_KNOCKBACK_SPEED
+	velocity = _knockback_velocity
+	_knockback_timer = maxf(_knockback_timer, HIT_KNOCKBACK_SECONDS)
+
+
+func fade_out_and_free() -> void:
+	if not is_inside_tree():
+		return
+	if sprite == null:
+		queue_free()
+		return
+	set_physics_process(false)
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, "modulate:a", 0.0, DEATH_FADE_SECONDS)
+	tween.tween_property(sprite, "scale", sprite.scale * 0.82, DEATH_FADE_SECONDS)
+	tween.set_parallel(false)
+	tween.tween_callback(queue_free)
 
 
 func _spawn_damage_number(final_damage: int) -> void:
@@ -122,6 +164,7 @@ func _spawn_damage_number(final_damage: int) -> void:
 	damage_number.pivot_offset = DAMAGE_NUMBER_SIZE * 0.5
 	damage_number.scale = Vector2(0.8, 0.8)
 	damage_number.modulate.a = 0.0
+	damage_number.add_theme_font_override("font", DAMAGE_NUMBER_FONT)
 	damage_number.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
 	damage_number.add_theme_color_override("font_color", _get_damage_number_color(final_damage))
 	damage_number.add_theme_color_override("font_outline_color", Color(0.02, 0.02, 0.03, 0.9))
@@ -172,29 +215,10 @@ func _process_chase() -> void:
 		move_and_slide()
 		return
 	var direction := global_position.direction_to(target_player.global_position)
-	var separation := _calculate_enemy_separation()
-	velocity = direction * get_stat("move_speed") + separation * SEPARATION_STRENGTH
+	velocity = direction * get_stat("move_speed")
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()
-
-
-func _calculate_enemy_separation() -> Vector2:
-	var push := Vector2.ZERO
-	var radius_sq := SEPARATION_RADIUS * SEPARATION_RADIUS
-	for node in get_tree().get_nodes_in_group("enemies"):
-		if node == self:
-			continue
-		var other := node as Node2D
-		if other == null or not other.is_inside_tree():
-			continue
-		var offset := global_position - other.global_position
-		var distance_sq := offset.length_squared()
-		if distance_sq <= 0.01 or distance_sq > radius_sq:
-			continue
-		var distance := sqrt(distance_sq)
-		push += offset.normalized() * (1.0 - distance / SEPARATION_RADIUS)
-	return push.limit_length(1.0)
 
 
 func _process_contact_reset() -> void:
@@ -234,4 +258,4 @@ func _die(source_id: String = "") -> void:
 	alive = false
 	velocity = Vector2.ZERO
 	died.emit(self, get_drop_table_id(), global_position)
-	queue_free()
+	fade_out_and_free()

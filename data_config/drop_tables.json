@@ -2,7 +2,7 @@
   {
     "id": "drop_basic_enemy",
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，不直接掉落遗物，5%掉落血包。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "小怪基准掉落：1经验，不直接掉落遗物，2%掉落血包。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",

@@ -17,8 +17,8 @@ const SPAWN_SEPARATION_DISTANCE: float = 96.0
 const SPAWN_POSITION_ATTEMPTS: int = 10
 const WAVE_HP_GROWTH_RATE: float = 0.207
 const WAVE_DAMAGE_GROWTH_PERCENT: float = 7.0
-const WAVE_SPAWN_COUNT_GROWTH_PERCENT: float = 4.0
-const WAVE_SPAWN_INTERVAL_GROWTH_PERCENT: float = 3.0
+const WAVE_SPAWN_COUNT_GROWTH_PERCENT: float = 8.0
+const WAVE_SPAWN_INTERVAL_GROWTH_PERCENT: float = 6.0
 const WAVE_ARMOR_GROWTH: float = 2.0
 const ZONE_SPAWN_COUNT_GROWTH_PERCENT: float = 6.0
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
@@ -205,7 +205,7 @@ func collect_all_reward_pickups() -> void:
 func clear_enemies() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy is EnemyController and enemy.is_inside_tree():
-			enemy.queue_free()
+			enemy.fade_out_and_free()
 
 
 func clear_summons() -> void:

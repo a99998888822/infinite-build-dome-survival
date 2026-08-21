@@ -80,6 +80,8 @@
 
 ### 4.4 波次局内快照结构
 
+血包规则：掉落表中的 `amount` 为血包基础恢复量。玩家拾取时读取 `health_pack_heal_plus`，最终恢复量按 `amount + health_pack_heal_plus` 计算，低于0时按0处理；`drop_rate_percent` 只影响血包是否掉落，不影响恢复量。
+
 建议在每波结束时输出如下局内快照。该快照只服务于 UI 和下一波流程，不写入存档：
 
 ```json

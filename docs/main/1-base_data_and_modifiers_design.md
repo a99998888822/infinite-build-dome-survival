@@ -179,6 +179,7 @@ flowchart TD
 | 掉落与成长 | `pickup_radius` | 拾取范围 | 玩家 |
 | 掉落与成长 | `exp_gain_percent` | 经验获取加成 | 玩家/全局 |
 | 掉落与成长 | `drop_rate_percent` | 掉落率加成 | 全局 |
+| 掉落与成长 | `health_pack_heal_plus` | 血包固定恢复量加成；可为负，不影响血包掉落概率 | 玩家/全局 |
 | 掉落与成长 | `luck` | 幸运，影响稀有遗物、稀有升级选项、额外掉落等概率 | 玩家/全局 |
 | 掉落与成长 | `currency_gain_percent` | 局内/结算货币获取加成 | 玩家/全局 |
 | 掉落与成长 | `finance` | 理财本金；第 2 波起每波开始前可存入或取出的局内金币本金 | 玩家/全局 |
@@ -188,7 +189,7 @@ flowchart TD
 | 召唤 | `summon_count` | 召唤数量 | 召唤物系统 |
 | 波次 | `enemy_spawn_rate_percent` | 每次刷怪的怪物数量增幅 | 玩家/全局 |
 | 精神/外神 | `humanity` | 理智值/人性，初始满值；值越低，侵蚀度积蓄越快，越过阈值后状态命名更新为“人性”相关阶段 | 玩家/全局 |
-| 精神/外神 | `divinity` | 侵蚀度/神性，初始0；表示与克苏鲁外神的靠近程度，越过阈值后状态命名更新为“神性”相关阶段 | 玩家/全局 |
+| 精神/外神 | `divinity` | 侵蚀度，初始0；表示与克苏鲁外神的靠近程度 | 玩家/全局 |
 
 ### 6.2 属性设计规则
 
@@ -198,6 +199,7 @@ flowchart TD
 4. 临时状态不新增独立字段，优先使用 modifier 的 `duration` 和 `source` 表达。
 5. `armor` 不直接等于减伤比例，需要通过曲线换算为 `damage_taken_percent`，避免高护甲达到100%减伤。
 6. 武器自身负载消耗不进入通用属性表，放在局内武器模块的 `load_cost` 配置与负载计算中处理。
+7. 血包恢复量使用 `health_pack_heal_plus` 单独计算，不与 `hp_regen` 或 `drop_rate_percent` 混用。
 
 
 ### 6.2.1 整数数值约定
@@ -258,11 +260,11 @@ final_damage = incoming_damage * damage_taken_from_armor / 100 * other_damage_ta
 
 最终结果仍需经过 `MIN_DAMAGE_TAKEN_PERCENT` clamp，确保受到伤害百分比不会降到0。
 
-### 6.4 人性与神性规则
+### 6.4 人性与侵蚀度规则
 
-1. `humanity` 初始为满值，代表玩家作为“人”的稳定程度；越低，`divinity` 积蓄速度越快。
-2. `divinity` 初始为0，代表克苏鲁外神侵蚀或靠近程度；越高，越容易触发强力但危险的外神化效果。
-3. 当 `humanity` 或 `divinity` 越过关键阈值时，只更新状态阶段、UI称谓和可触发效果，不应临时新增一套独立属性系统。
+1. `humanity` 初始为满值，代表玩家作为“人”的稳定程度；越低，侵蚀度积蓄速度越快。
+2. `divinity` 是侵蚀度的内部属性 ID，初始为0；越高，越容易触发强力但危险的外神化效果。
+3. 当 `humanity` 或侵蚀度越过关键阈值时，只更新状态阶段、UI称谓和可触发效果，不应临时新增一套独立属性系统。
 4. 阈值、阶段名、侵蚀速度公式后续在遗物/羁绊或克苏鲁氛围模块中详细设计；基础数值模块只保留字段与计算入口。
 
 ## 7. ModifierStack设计
@@ -297,7 +299,7 @@ final_damage = incoming_damage * damage_taken_from_armor / 100 * other_damage_ta
 | `operation` | string | 是 | 叠加方式 |
 | `value` | number | 是 | 数值 |
 | `duration` | number | 是 | 持续时间，`-1`代表永久直到移除 |
-| `stack_rule` | string | 是 | 堆叠规则 |
+| `stack_rule` | string | 否 | 堆叠规则；理财遗物省略时默认按持有数量叠加 |
 | `priority` | int | 否 | 计算优先级 |
 | `tags` | array | 否 | 查询和调试用标签 |
 
@@ -589,10 +591,10 @@ func find_refs(config_id: String) -> Array[Dictionary]
 
 遗物配置规则：
 
-1. `relics.json` 只保留运行必需字段：`id`、`display_name`、`rarity`、`bond_id`、`max_stack`、`tags`、`effects`。
+1. `relics.json` 只保留运行必需字段：`id`、`display_name`、`rarity`、`bond_id`、`max_stack`、`tags`、`effects`。理财遗物的 `effects` 不要求填写 `stack_rule`；未填写时按持有数量叠加。
 2. `effects` 直接写标准 `Modifier` 字段，不再额外包一层展示字段。
 3. `description`、`enabled`、`icon` 等展示/控制字段暂不写入，后续如需要再加。
-4. 遗物的羁绊归属通过 `bond_id` 关联；仅持有羁绊的遗物在 `tags` 中保留对应羁绊标签（如 `elect`），其余武器/遗物 `tags` 为空。
+4. 遗物的羁绊归属通过 `bond_id` 关联；理财遗物统一使用 `finance` 分类标签；尚未接入羁绊的遗物不填写 `bond_id`。
 5. 遗物增益遵循整数数值规则，所有百分比仍使用整数。
 
 ### 10.4 bonds.json
@@ -788,8 +790,9 @@ func find_refs(config_id: String) -> Array[Dictionary]
 3. 拾取经验球时同时获得等额基础金币，金币最终值 = 基础金币 * (1 + `currency_gain_percent` / 100)。
 4. 波次结束后统一吸取并结算场上所有经验球。
 5. 百分比掉落物最终概率 = `chance_percent` * (1 + `drop_rate_percent` / 100)，再限制到0~100。
-6. BOSS遗物掉落使用 `type = relic`、`amount = 1`、`chance_percent = 100` 表达；运行时代码按“有且只有一个遗物”处理。
-7. 配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段，避免数据表冗余。
+6. 血包最终恢复量 = `amount` + `health_pack_heal_plus`，最终恢复量低于0时按0处理。
+7. BOSS遗物掉落使用 `type = relic`、`amount = 1`、`chance_percent = 100` 表达；运行时代码按“有且只有一个遗物”处理。
+8. 配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段，避免数据表冗余。
 
 ## 11. 跨表引用校验
 

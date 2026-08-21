@@ -151,7 +151,9 @@ func _apply_melee_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> b
 		if enemy == null or not enemy.is_alive():
 			continue
 		visual_direction = owner_player.global_position.direction_to(enemy.global_position)
-		enemy.take_damage(damage_event.damage, damage_event.source_weapon_id)
+		enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, visual_direction)
+		if weapon.register_hit_feedback_frame(false):
+			_spawn_hit_sparks(enemy.global_position)
 		damaged = true
 	if damaged:
 		weapon.play_attack_hit_sfx()
@@ -166,7 +168,10 @@ func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> 
 		return false
 	if weapon.get_projectile_speed() > 0.0:
 		return _spawn_projectiles(weapon, damage_event, enemy.global_position, attack_range)
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id)
+	var hit_direction := owner_player.global_position.direction_to(enemy.global_position)
+	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, hit_direction)
+	if weapon.register_hit_feedback_frame(false):
+		_spawn_hit_sparks(enemy.global_position)
 	weapon.play_attack_hit_sfx()
 	return true
 
@@ -233,6 +238,28 @@ func _spawn_attack_effect_visual(weapon: WeaponInstance, center_position: Vector
 	tween.tween_property(visual, "modulate:a", 0.0, ATTACK_EFFECT_SECONDS).set_delay(ATTACK_EFFECT_SECONDS * 0.35)
 	tween.set_parallel(false)
 	tween.tween_callback(Callable(visual, "queue_free"))
+
+
+func _spawn_hit_sparks(hit_position: Vector2) -> void:
+	var particles := CPUParticles2D.new()
+	particles.name = "HitSparks"
+	particles.top_level = true
+	particles.global_position = hit_position
+	particles.z_index = 80
+	particles.amount = 10
+	particles.lifetime = 0.22
+	particles.one_shot = true
+	particles.explosiveness = 1.0
+	particles.direction = Vector2.RIGHT
+	particles.spread = 180.0
+	particles.initial_velocity_min = 70.0
+	particles.initial_velocity_max = 150.0
+	particles.scale_amount_min = 1.0
+	particles.scale_amount_max = 2.0
+	particles.color = Color(1.0, 0.68, 0.16, 1.0)
+	_get_visual_root().add_child(particles)
+	particles.finished.connect(particles.queue_free)
+	particles.restart()
 
 
 func _load_weapon_texture(weapon: WeaponInstance, field_name: String) -> Texture2D:

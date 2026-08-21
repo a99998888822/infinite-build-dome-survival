@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/finance_ui_controller.gd" id="1_finance_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/finance/finance_popup.tscn" id="2_finance_popup"]
+[ext_resource type="PackedScene" path="res://scenes/ui/finance/interest_settlement_popup.tscn" id="3_interest_popup"]
 
 [node name="FinanceUIController" type="Node"]
 script = ExtResource("1_finance_ui_controller")
@@ -10,3 +11,5 @@ script = ExtResource("1_finance_ui_controller")
 layer = 25
 
 [node name="FinancePopup" parent="PopupLayer" instance=ExtResource("2_finance_popup")]
+
+[node name="InterestSettlementPopup" parent="PopupLayer" instance=ExtResource("3_interest_popup")]

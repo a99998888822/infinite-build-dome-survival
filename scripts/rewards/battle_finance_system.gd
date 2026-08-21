@@ -33,9 +33,9 @@ const EFFECT_SETTLE_INTEREST_EVERY_N_WAVES: String = "settle_interest_every_n_wa
 const EFFECT_EXTRA_SETTLEMENT_PER_WAVE: String = "extra_settlement_per_wave"
 const EFFECT_CONSUME_PRINCIPAL_PERCENT_EVERY_N_WAVES: String = "consume_principal_percent_every_n_waves"
 const EFFECT_REQUIRE_WAVE_START_DEPOSIT: String = "require_wave_start_deposit_for_interest"
-const EFFECT_ADD_DIVINITY: String = "add_divinity"
+const EFFECT_ADD_EROSION: String = "add_erosion"
 const EFFECT_DERIVED_STAT_FROM_PRINCIPAL: String = "derived_stat_from_principal"
-const EFFECT_DERIVED_INTEREST_FROM_DIVINITY: String = "derived_interest_from_divinity"
+const EFFECT_DERIVED_INTEREST_FROM_EROSION: String = "derived_interest_from_erosion"
 const EFFECT_BANKRUPTCY_RECOVERY: String = "bankruptcy_recovery"
 const EFFECT_TIP_TRAY_DROP: String = "tip_tray_drop"
 
@@ -49,7 +49,7 @@ var last_deposit_wave_number: int = 0
 var has_deposited_before_current_wave: bool = false
 var wave_start_deposit_amount: int = 0
 var has_principal_ever: bool = false
-var divinity_bonus: float = 0.0
+var erosion_bonus: float = 0.0
 var _bankruptcy_triggered: bool = false
 var last_settlement_result: Dictionary = {}
 var last_settlement_results: Array[Dictionary] = []
@@ -71,7 +71,7 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	has_deposited_before_current_wave = false
 	wave_start_deposit_amount = 0
 	has_principal_ever = false
-	divinity_bonus = 0.0
+	erosion_bonus = 0.0
 	_bankruptcy_triggered = false
 	last_settlement_result.clear()
 	last_settlement_results.clear()
@@ -256,6 +256,10 @@ func on_relic_added(relic_id: String) -> void:
 			EFFECT_SETTLE_INTEREST_ONCE:
 				trigger_manual_interest(relic_id)
 				handled = true
+			EFFECT_ADD_PRINCIPAL_FLAT:
+				principal += int(effect.get("value", 0))
+				handled = true
+				_emit_changed()
 			EFFECT_ADD_PRINCIPAL_PER_WAVE:
 				principal += int(effect.get("value_per_wave", 0)) * maxi(1, current_wave_number)
 				handled = true
@@ -318,9 +322,9 @@ func _apply_wave_start_relics() -> void:
 				EFFECT_ADD_PRINCIPAL_FROM_GOLD_PERCENT:
 					var bonus_principal := int(ceil(float(get_current_gold()) * float(effect.get("value_percent", 0)) / 100.0))
 					deposit(bonus_principal * relic_count, true, relic_id)
-				EFFECT_ADD_DIVINITY:
-					divinity_bonus += float(effect.get("value", 1)) * float(relic_count)
-					_refresh_divinity_bonus()
+				EFFECT_ADD_EROSION:
+					erosion_bonus += float(effect.get("value", 1)) * float(relic_count)
+					_refresh_erosion_bonus()
 
 
 func _apply_interest_gain_relics(base_gain: int, source: String, result: Dictionary) -> int:
@@ -328,11 +332,13 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SETTLE):
 		match str(effect.get("effect", "")):
 			EFFECT_DIVIDEND_DOUBLE:
-				var double_chance := float(effect.get("double_chance_percent", 20)) / 100.0
-				if _rng.randf() < double_chance:
-					var stack_count := int(effect.get("relic_count", 1))
-					final_gain = int(ceil(float(final_gain) * float(stack_count + 1)))
+				var dividend_chance := float(effect.get("double_chance_percent", 20)) / 100.0
+				var stack_count := maxi(1, int(effect.get("relic_count", 1)))
+				var dividend_multiplier := stack_count + 1
+				if _rng.randf() < dividend_chance:
+					final_gain = int(ceil(float(final_gain) * float(dividend_multiplier)))
 					result["dividend_double_triggered"] = true
+					result["dividend_multiplier"] = dividend_multiplier
 	return maxi(0, final_gain)
 
 
@@ -425,28 +431,28 @@ func _refresh_derived_stats() -> void:
 					var derived_value := int(floor(float(principal) / float(divisor))) * per_unit * relic_count
 					if derived_value > 0:
 						player.add_runtime_modifier(_build_derived_modifier(relic_id, stat_id, derived_value))
-				EFFECT_DERIVED_INTEREST_FROM_DIVINITY:
-					var divinity_divisor := maxi(1, int(effect.get("divisor", 5)))
-					var divinity_per_unit := maxi(1, int(effect.get("per_unit", 1)))
-					var derived_rate := int(floor(player.get_stat("divinity") / float(divinity_divisor))) * divinity_per_unit * relic_count
+				EFFECT_DERIVED_INTEREST_FROM_EROSION:
+					var erosion_divisor := maxi(1, int(effect.get("divisor", 5)))
+					var erosion_per_unit := maxi(1, int(effect.get("per_unit", 1)))
+					var derived_rate := int(floor(player.get_stat("divinity") / float(erosion_divisor))) * erosion_per_unit * relic_count
 					if derived_rate > 0:
 						player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", derived_rate))
 
 
-func _refresh_divinity_bonus() -> void:
+func _refresh_erosion_bonus() -> void:
 	if player == null:
 		return
-	player.remove_runtime_modifiers_by_source("finance_divinity", "divine_fusion")
-	if divinity_bonus <= 0.0:
+	player.remove_runtime_modifiers_by_source("finance_erosion", "divine_fusion")
+	if erosion_bonus <= 0.0:
 		return
 	player.add_runtime_modifier({
-		"id": "divine_fusion_divinity",
-		"source_type": "finance_divinity",
+		"id": "divine_fusion_erosion",
+		"source_type": "finance_erosion",
 		"source_id": "divine_fusion",
 		"target_scope": "player",
 		"stat": "divinity",
 		"operation": Modifier.OPERATION_ADD_FLAT,
-		"value": divinity_bonus,
+		"value": erosion_bonus,
 		"duration": Modifier.PERMANENT_DURATION,
 		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
 	})

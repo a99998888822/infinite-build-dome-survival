@@ -5,6 +5,9 @@ signal back_pressed
 
 const RELIC_GRID_COLUMNS: int = 6
 const RELIC_CELL_SIZE: Vector2 = Vector2(64, 64)
+const MODAL_SAFE_EDGE_MARGIN: float = 16.0
+const MODAL_FALLBACK_TOP: float = 112.0
+const MODAL_FALLBACK_RIGHT: float = 336.0
 const RARITY_ORDER: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.86, 0.86, 0.86, 1.0),
@@ -17,8 +20,13 @@ const RARITY_COLORS: Dictionary = {
 
 var _player: PlayerController = null
 var _relic_cells: Array[Control] = []
+var _relic_tweens: Dictionary = {}
+var _relic_pulse_tweens: Dictionary = {}
+var _backdrop: ColorRect = null
+var _show_tween: Tween = null
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
+@onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
 @onready var relic_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll/RelicGrid")
 @onready var total_label: Label = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/TotalLabel")
 @onready var back_button: Button = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/BackButton")
@@ -27,21 +35,128 @@ var _relic_cells: Array[Control] = []
 
 
 func _ready() -> void:
+	_ensure_backdrop()
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
 		relic_grid.columns = RELIC_GRID_COLUMNS
+	if get_viewport() != null:
+		var viewport_callable := Callable(self, "_on_viewport_resized")
+		if not get_viewport().size_changed.is_connected(viewport_callable):
+			get_viewport().size_changed.connect(viewport_callable)
+	_layout_overlay()
+
+
+func show_overlay() -> void:
+	_layout_overlay()
+	visible = true
+	if center_container == null:
+		return
+	center_container.pivot_offset = center_container.size * 0.5
+	center_container.modulate.a = 0.0
+	center_container.scale = Vector2(0.96, 0.96)
+	if weapon_strip != null:
+		weapon_strip.modulate.a = 0.0
+	if _backdrop != null:
+		_backdrop.modulate.a = 0.0
+	if _show_tween != null and _show_tween.is_valid():
+		_show_tween.kill()
+	_show_tween = create_tween()
+	_show_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if _backdrop != null:
+		_show_tween.tween_property(_backdrop, "modulate:a", 1.0, 0.20)
+	_show_tween.parallel().tween_property(center_container, "modulate:a", 1.0, 0.24)
+	_show_tween.parallel().tween_property(center_container, "scale", Vector2.ONE, 0.32)
+	if weapon_strip != null:
+		_show_tween.parallel().tween_property(weapon_strip, "modulate:a", 1.0, 0.22).set_delay(0.10)
+	if AudioManager != null:
+		AudioManager.play_ui_sfx("modal_open")
+
+
+func hide_overlay() -> void:
+	if not visible:
+		return
+	if _show_tween != null and _show_tween.is_valid():
+		_show_tween.kill()
+	_show_tween = create_tween()
+	_show_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	if _backdrop != null:
+		_show_tween.tween_property(_backdrop, "modulate:a", 0.0, 0.16)
+	if center_container != null:
+		_show_tween.parallel().tween_property(center_container, "modulate:a", 0.0, 0.16)
+	_show_tween.tween_callback(func() -> void:
+		visible = false
+		if center_container != null:
+			center_container.modulate.a = 1.0
+			center_container.scale = Vector2.ONE
+		if weapon_strip != null:
+			weapon_strip.modulate.a = 1.0
+	)
+
+
+func _ensure_backdrop() -> void:
+	if _backdrop != null:
+		return
+	_backdrop = ColorRect.new()
+	_backdrop.name = "EscBackdrop"
+	_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_backdrop.color = Color(0.01, 0.015, 0.02, 0.82)
+	_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_backdrop.z_index = -5
+	add_child(_backdrop)
+	move_child(_backdrop, 0)
 
 
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
 		weapon_strip.set_loadout(loadout)
-		weapon_strip.set_bond_player(player)
 	_refresh_relic_list()
 
 
+func _on_viewport_resized() -> void:
+	_layout_overlay()
+
+
+func _layout_overlay() -> void:
+	if get_viewport() == null:
+		return
+	var safe := _get_modal_safe_rect()
+	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
+		return
+	if center_container != null:
+		center_container.anchor_left = 0.0
+		center_container.anchor_top = 0.0
+		center_container.anchor_right = 0.0
+		center_container.anchor_bottom = 0.0
+		center_container.position = safe.position
+		center_container.size = safe.size
+	if weapon_strip != null:
+		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
+		weapon_strip.anchor_left = 0.0
+		weapon_strip.anchor_top = 0.0
+		weapon_strip.anchor_right = 0.0
+		weapon_strip.anchor_bottom = 0.0
+		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + 18.0)
+		weapon_strip.size = Vector2(strip_width, 62.0)
+
+
+func _get_modal_safe_rect() -> Rect2:
+	var battle_hud := get_node_or_null("../../HUD") as BattleHud
+	if battle_hud != null and battle_hud.has_method("get_modal_safe_rect"):
+		return battle_hud.get_modal_safe_rect()
+	var viewport_size := get_viewport().get_visible_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var safe_left := MODAL_SAFE_EDGE_MARGIN
+	var safe_top := minf(MODAL_FALLBACK_TOP, viewport_size.y * 0.18)
+	var safe_right := minf(MODAL_FALLBACK_RIGHT, viewport_size.x * 0.30)
+	return Rect2(Vector2(safe_left, safe_top), Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - MODAL_SAFE_EDGE_MARGIN, 0.0)))
+
+
 func _on_back_pressed() -> void:
+	if AudioManager != null:
+		AudioManager.play_ui_sfx("modal_close")
 	back_pressed.emit()
 
 
@@ -50,6 +165,11 @@ func _refresh_relic_list() -> void:
 		if is_instance_valid(cell):
 			cell.queue_free()
 	_relic_cells.clear()
+	_relic_tweens.clear()
+	for pulse in _relic_pulse_tweens.values():
+		if pulse is Tween and pulse.is_valid():
+			pulse.kill()
+	_relic_pulse_tweens.clear()
 	if relic_grid == null:
 		return
 	var counts := _player.get_relic_counts() if _player != null else {}
@@ -135,10 +255,47 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		badge.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.06, 0.95))
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(badge)
-	cell.mouse_entered.connect(_show_relic_tooltip.bind(relic_data, cell))
-	cell.mouse_exited.connect(_hide_relic_tooltip)
+	cell.pivot_offset = RELIC_CELL_SIZE * 0.5
+	cell.mouse_entered.connect(_on_relic_cell_hovered.bind(cell, relic_data))
+	cell.mouse_exited.connect(_on_relic_cell_unhovered.bind(cell))
 	_relic_cells.append(cell)
+	if RARITY_ORDER.find(rarity) >= RARITY_ORDER.find("epic"):
+		var pulse := create_tween().set_loops()
+		pulse.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		pulse.tween_property(cell, "modulate", Color(1.08, 1.04, 0.92, 1.0), 1.2)
+		pulse.tween_property(cell, "modulate", Color.WHITE, 1.2)
+		_relic_pulse_tweens[cell] = pulse
 	return cell
+
+
+func _on_relic_cell_hovered(cell: Control, relic_data: Dictionary) -> void:
+	if cell == null:
+		return
+	var old_tween: Tween = _relic_tweens.get(cell)
+	if old_tween != null and old_tween.is_valid():
+		old_tween.kill()
+	var rarity := str(relic_data.get("rarity", "common"))
+	var rarity_color: Color = RARITY_COLORS.get(rarity, Color.WHITE)
+	cell.modulate = Color(1.12, 1.08, 0.94, 1.0)
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(cell, "scale", Vector2(1.08, 1.08), 0.12)
+	_relic_tweens[cell] = tween
+	_show_relic_tooltip(relic_data, cell)
+
+
+func _on_relic_cell_unhovered(cell: Control) -> void:
+	_hide_relic_tooltip()
+	if cell == null:
+		return
+	var old_tween: Tween = _relic_tweens.get(cell)
+	if old_tween != null and old_tween.is_valid():
+		old_tween.kill()
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(cell, "scale", Vector2.ONE, 0.12)
+	tween.parallel().tween_property(cell, "modulate", Color.WHITE, 0.12)
+	_relic_tweens[cell] = tween
 
 
 func _show_relic_tooltip(relic_data: Dictionary, anchor_cell: Control) -> void:

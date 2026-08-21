@@ -10,6 +10,16 @@ const VOLUME_SETTING_BY_BUS: Dictionary = {
 	"BGM": "bgm_volume",
 	"SFX": "sfx_volume",
 }
+const UI_SFX_PATHS: Dictionary = {
+	"modal_open": "res://assets/audio/sfx/ui/sfx_ui_modal_open.ogg",
+	"modal_close": "res://assets/audio/sfx/ui/sfx_ui_modal_close.ogg",
+	"confirm": "res://assets/audio/sfx/ui/sfx_ui_confirm.ogg",
+	"zone_select": "res://assets/audio/sfx/ui/sfx_ui_zone_select.ogg",
+	"reward_reveal": "res://assets/audio/sfx/ui/sfx_ui_reward_reveal.ogg",
+	"interest_reveal": "res://assets/audio/sfx/finance/sfx_interest_settle.ogg",
+	"purchase_success": "res://assets/audio/sfx/ui/sfx_ui_purchase_success.ogg",
+	"purchase_error": "res://assets/audio/sfx/ui/sfx_ui_purchase_error.ogg",
+}
 const DEFAULT_BGM_PATHS: Dictionary = {
 	"menu": "res://assets/audio/bgm/bgm_menu.ogg",
 	"camp": "res://assets/audio/bgm/bgm_camp.ogg",
@@ -63,6 +73,21 @@ func stop_bgm() -> void:
 	if _bgm_player != null:
 		_bgm_player.stop()
 	current_bgm_id = ""
+
+
+func play_exp_orb_collect_sfx() -> bool:
+	return play_sfx_path("res://assets/audio/sfx/pickups/sfx_exp_orb_collect.ogg", 35, "exp_orb_collect")
+
+
+func play_wave_end_sfx() -> bool:
+	return play_sfx_path("res://assets/audio/sfx/ui/sfx_wave_end_safe.ogg", 0, "wave_end_safe")
+
+
+func play_ui_sfx(sfx_id: String, minimum_interval_ms: int = 45) -> bool:
+	var path := str(UI_SFX_PATHS.get(sfx_id.strip_edges(), ""))
+	if path.is_empty():
+		return false
+	return play_sfx_path(path, minimum_interval_ms, "ui_" + sfx_id.strip_edges())
 
 
 func play_weapon_hit_sfx(weapon_id: String, minimum_interval_ms: int = 0) -> bool:

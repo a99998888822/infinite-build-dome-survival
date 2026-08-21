@@ -160,12 +160,12 @@ MVP 先做 3 个固定区域，全部默认开放。区域名称可调整，但 
 |---|---|---|---|
 | `zone_nearstring_battlefield` | 近弦战场 | `melee` | 更容易追近战遗物、近战羁绊、近战武器或近战武器升级 |
 | `zone_meteor_tower` | 流星高塔 | `ranged` | 更容易追远程遗物、远程羁绊、远程武器或远程武器升级 |
-| `zone_chosen_land` | 神选之地 | `elect`、`humanity`、`divinity` | 更容易追神选者、理智/人性、侵蚀度/神性相关构筑 |
+| `zone_chosen_land` | 神选之地 | `elect`、`humanity`、`divinity` | 更容易追神选者、理智/人性、侵蚀度相关构筑 |
 
 说明：
 
 1. `melee`、`ranged`、`elect` 可直接对应当前已有武器、遗物、羁绊标签。
-2. `humanity`、`divinity` 对应基础数值模块里的理智/人性、侵蚀度/神性属性。
+2. `humanity`、`divinity` 对应基础数值模块里的理智/人性、侵蚀度属性。
 3. 区域不等于地图场景，MVP 只是休整期选择项。
 4. 后续可以扩展更多区域，例如生存、防御、召唤、经济、控制类区域。
 

@@ -112,8 +112,9 @@
 1. `exp_orb.amount` 表示经验球基础经验值；敌人死亡后会掉落经验球。
 2. 经验与金币各自独立受到加成影响：经验读取 `exp_gain_percent`，金币读取 `currency_gain_percent`。
 3. 百分比掉落物使用 `chance_percent`，受到 `drop_rate_percent` 影响，最终概率 = 基础概率 * (1 + drop_rate_percent / 100)。
-4. 最终概率必须限制在0到100之间；BOSS遗物掉落通过 `type = relic`、`amount = 1`、`chance_percent = 100` 表达，运行时代码按“有且只有一个遗物”处理。
-5. 拾取经验球时同时获得经验和等额基础金币；波次结束后统一吸取并结算场上所有经验球。配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段。
+4. 血包的 `amount` 表示基础恢复量；拾取后的最终恢复量 = 基础恢复量 + `health_pack_heal_plus`，该属性不影响血包掉落概率。
+5. 最终概率必须限制在0到100之间；BOSS遗物掉落通过 `type = relic`、`amount = 1`、`chance_percent = 100` 表达，运行时代码按“有且只有一个遗物”处理。
+6. 拾取经验球时同时获得经验和等额基础金币；波次结束后统一吸取并结算场上所有经验球。配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段。
 
 ## camp_buildings.json 结构规则
 

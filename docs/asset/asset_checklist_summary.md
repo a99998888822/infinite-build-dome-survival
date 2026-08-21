@@ -92,6 +92,10 @@
 | 未存在 | 哥布林金币铸造机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；哥布林金币铸造机主题图标，像素风，轮廓清晰，透明背景。 |
 | 未存在 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 128x128 / 1:1 / PNG，透明背景 | 橙稀有度；永续年金卷轴主题图标，像素风，轮廓清晰，透明背景。 |
 | 未存在 | 破产重组遗物图标 | `relic_bankruptcy_reorg.png` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 128x128 / 1:1 / PNG，透明背景 | 红稀有度；破产重组主题图标，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 医疗削减方案遗物图标 | `relic_medical_cutback.png` | `assets/ui/icons/relics/relic_medical_cutback.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；盖着红章、被裁去福利条款的医疗报销单，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 福利削减方案遗物图标 | `relic_welfare_cutback.png` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；被剪去彩带、盖着“优化福利”印章的员工福利手册，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 年假削减方案遗物图标 | `relic_annual_leave_cutback.png` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；被撕掉休假页、排满加班日期的年度排班表，像素风，轮廓清晰，透明背景。 |
+| 未存在 | 薪酬调整方案遗物图标 | `relic_salary_adjustment.png` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 128x128 / 1:1 / PNG，透明背景 | 紫稀有度；薪资条上覆盖“结构性调整”红章的工资单，像素风，轮廓清晰，透明背景。 |
 
 ## 3. 未存在的可选素材（29 个）
 
@@ -126,10 +130,23 @@
 | 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | PNG，透明背景，512x128，4 帧横向帧表，每帧 128x128 | 基于“友方眷族幼体”的单帧形象，生成一张清新干净的中高精度像素风右向行走帧表，4 帧横向排列，每帧尺寸一致，小生物轻快跳步或摆动触须前进，动作简单可爱，轮廓清晰，不要文字，不要噪点，不要血腥，透明背景，整体保持浅绿色或淡蓝色、柔和发光眼睛、轻微克苏鲁但不恐怖的风格。 |
 | 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | PNG，透明背景，128x128，1:1 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“友方眷族幼体头像”，圆润可爱的小型召唤生物头像，浅绿色或淡蓝色，柔和发光眼睛，轻微克苏鲁元素但不恐怖，图标轮廓清晰，小尺寸可读，不要文字，不要噪点，不要血腥，透明背景。 |
 
-## 4. 动效与音频（23 个）
+## 4. 动效与音频（35 个）
+
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
+| 未存在 | UI 弹窗关闭音效 | `sfx_ui_modal_close.ogg` | `assets/audio/sfx/ui/sfx_ui_modal_close.ogg` | OGG/WAV，短音效 | 比打开音效更轻、更短的收束提示音 |
+| 未存在 | UI 弹窗打开音效 | `sfx_ui_modal_open.ogg` | `assets/audio/sfx/ui/sfx_ui_modal_open.ogg` | OGG/WAV，短音效 | 深沉、克制的面板展开提示音，适合区域、ESC、营地详情等弹窗 |
+| 未存在 | UI 确认音效 | `sfx_ui_confirm.ogg` | `assets/audio/sfx/ui/sfx_ui_confirm.ogg` | OGG/WAV，短音效 | 清晰短促的确认反馈，不要过亮 |
+| 未存在 | 区域选择音效 | `sfx_ui_zone_select.ogg` | `assets/audio/sfx/ui/sfx_ui_zone_select.ogg` | OGG/WAV，短音效 | 带有方向感和轻微能量感的区域确认音 |
+| 未存在 | 奖励揭示音效 | `sfx_ui_reward_reveal.ogg` | `assets/audio/sfx/ui/sfx_ui_reward_reveal.ogg` | OGG/WAV，短音效 | 金色奖励出现时的短促上扬提示音 |
+| 未存在 | UI 购买成功音效 | `sfx_ui_purchase_success.ogg` | `assets/audio/sfx/ui/sfx_ui_purchase_success.ogg` | OGG/WAV，短音效 | 营地升级或购买成功的金币确认声 |
+| 未存在 | UI 购买失败音效 | `sfx_ui_purchase_error.ogg` | `assets/audio/sfx/ui/sfx_ui_purchase_error.ogg` | OGG/WAV，短音效 | 低调、短促的错误提示音，不要刺耳 |
+| 未存在 | 经验球吸取音效 | `sfx_exp_orb_collect.ogg` | `assets/audio/sfx/pickups/sfx_exp_orb_collect.ogg` | OGG/WAV，短音效 | 清脆、轻盈、带一点星光感的经验吸取提示音，支持高频重复播放 |
+| 未存在 | 波次结束安全提示音 | `sfx_wave_end_safe.ogg` | `assets/audio/sfx/ui/sfx_wave_end_safe.ogg` | OGG/WAV，短音效 | 温和舒缓的安全阶段提示音，避免过强警报感 |
+| 未存在 | 武器命中橙黄色像素火花 | 无需文件，使用 CPUParticles2D | 节点实现 | 橙黄色像素颗粒四散炸开，单次生命周期约 0.2 秒 |
+| 未存在 | 低血量暗红边缘渐变 | 无需文件，使用 CanvasItem Shader | 节点实现 | 玩家生命低于 30% 时显示，随生命比例增强并缓慢呼吸 |
+| 未存在 | 波末经验球汇聚轨迹 | 无需文件，使用 ExpOrb 动画 | 节点实现 | 经验球带轻微弧线、旋转并向玩家汇聚 |
 | 未存在 | 菜单 BGM | `bgm_menu.ogg` | `assets/audio/bgm/bgm_menu.ogg` | OGG，循环 | 生成：角色选择和通用菜单使用，平静、清新、轻微神秘 / OGG，循环 |
 | 未存在 | 营地 BGM | `bgm_camp.ogg` | `assets/audio/bgm/bgm_camp.ogg` | OGG，循环 | 生成：森林、篝火、河流营地使用，安静舒缓 / OGG，循环 |
 | 未存在 | 战斗 BGM | `bgm_battle.ogg` | `assets/audio/bgm/bgm_battle.ogg` | OGG，循环 | 生成：普通战斗使用，节奏稳定，有轻微紧张感 / OGG，循环 |

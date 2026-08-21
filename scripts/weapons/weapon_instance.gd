@@ -14,6 +14,10 @@ var attack_interval_ms: int = 0
 var attack_timer: float = 0.0
 var _attack_hit_sfx_played: bool = false
 var _projectile_hit_sfx_played: Dictionary = {}
+var _last_attack_feedback_frame: int = -1
+var _last_projectile_feedback_frame: int = -1
+var _last_attack_visual_frame: int = -1
+var _last_projectile_visual_frame: int = -1
 
 
 func initialize(target_weapon_id: String, player: PlayerController) -> bool:
@@ -49,6 +53,10 @@ func reset_attack_timer() -> void:
 func reset_hit_sfx_state() -> void:
 	_attack_hit_sfx_played = false
 	_projectile_hit_sfx_played.clear()
+	_last_attack_feedback_frame = -1
+	_last_projectile_feedback_frame = -1
+	_last_attack_visual_frame = -1
+	_last_projectile_visual_frame = -1
 
 
 func get_hit_sfx_path() -> String:
@@ -56,9 +64,11 @@ func get_hit_sfx_path() -> String:
 
 
 func play_attack_hit_sfx() -> bool:
+	var frame := Engine.get_physics_frames()
 	if _attack_hit_sfx_played:
 		return false
 	_attack_hit_sfx_played = true
+	_last_attack_feedback_frame = frame
 	AudioManager.play_weapon_hit_sfx(weapon_id, 30)
 	return true
 
@@ -69,10 +79,25 @@ func has_played_attack_hit_sfx() -> bool:
 
 func play_projectile_hit_sfx(projectile_id: String) -> bool:
 	var key := projectile_id.strip_edges()
-	if key.is_empty() or _projectile_hit_sfx_played.has(key):
+	var frame := Engine.get_physics_frames()
+	if key.is_empty() or _projectile_hit_sfx_played.has(key) or _last_projectile_feedback_frame == frame:
 		return false
 	_projectile_hit_sfx_played[key] = true
+	_last_projectile_feedback_frame = frame
 	AudioManager.play_weapon_hit_sfx(weapon_id, 15)
+	return true
+
+
+func register_hit_feedback_frame(is_projectile: bool) -> bool:
+	var frame := Engine.get_physics_frames()
+	if is_projectile:
+		if _last_projectile_visual_frame == frame:
+			return false
+		_last_projectile_visual_frame = frame
+		return true
+	if _last_attack_visual_frame == frame:
+		return false
+	_last_attack_visual_frame = frame
 	return true
 
 

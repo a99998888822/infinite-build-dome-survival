@@ -296,8 +296,6 @@ func set_loadout(loadout: WeaponLoadout) -> void:
 
 func set_bond_player(player: PlayerController) -> void:
 	_bond_player = player
-	if weapon_strip != null:
-		weapon_strip.set_bond_player(player)
 	for card in _offer_cards:
 		if is_instance_valid(card):
 			card.set_bond_player(player)
@@ -318,8 +316,10 @@ func _layout_popup() -> void:
 	center_container.anchor_top = 0.0
 	center_container.anchor_right = 0.0
 	center_container.anchor_bottom = 0.0
-	center_container.position = safe.position
-	center_container.size = safe.size
+	var panel_width := minf(maxf(safe.size.x - 24.0, 0.0), 980.0)
+	var panel_height := minf(maxf(safe.size.y - 104.0, 0.0), 620.0)
+	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + 92.0)
+	center_container.size = Vector2(panel_width, panel_height)
 	var compact := safe.size.x < 760.0 or safe.size.y < 620.0
 	if offer_scroll != null:
 		offer_scroll.custom_minimum_size.y = 272.0 if compact else 350.0
@@ -327,14 +327,14 @@ func _layout_popup() -> void:
 		if is_instance_valid(card):
 			card.set_compact(compact)
 	if main_panel != null:
-		main_panel.custom_minimum_size = Vector2(maxf(safe.size.x - 12.0, 0.0), maxf(safe.size.y - 12.0, 0.0))
+		main_panel.custom_minimum_size = Vector2(panel_width, panel_height)
 	if weapon_strip != null:
 		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
-		weapon_strip.position = Vector2(safe.get_center().x - strip_width * 0.5, 14.0)
+		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + 18.0)
 		weapon_strip.size = Vector2(strip_width, 62.0)
 
 
