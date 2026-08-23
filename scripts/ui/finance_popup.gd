@@ -11,6 +11,8 @@ const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.sv
 const BILL_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_bill.svg")
 const HAND_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_hand.svg")
 const NUMERIC_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
+const MODAL_TOP_OFFSET: float = 90.0
+const MODAL_BOTTOM_MARGIN: float = 14.0
 
 var payload: Dictionary = {}
 var error_message: String = ""
@@ -39,6 +41,7 @@ var _show_tween: Tween = null
 @onready var animation_stage: Control = $MainPanel/Content/AnimationStage
 @onready var principal_panel: PanelContainer = $MainPanel/Content/PrincipalPanel
 @onready var coin_particles: Control = $CoinParticles
+@onready var backdrop: Panel = $Backdrop
 
 
 func _ready() -> void:
@@ -90,6 +93,8 @@ func set_safe_rect(next_rect: Rect2) -> void:
 func show_popup() -> void:
 	_layout_popup()
 	visible = true
+	if backdrop != null:
+		backdrop.visible = true
 	if _input_blocker != null:
 		_input_blocker.visible = true
 	if main_panel != null:
@@ -119,6 +124,8 @@ func hide_popup() -> void:
 	visible = false
 	is_animating = false
 	_animation_token += 1
+	if backdrop != null:
+		backdrop.visible = false
 	if _input_blocker != null:
 		_input_blocker.visible = false
 	if main_panel != null:
@@ -153,7 +160,7 @@ func _layout_popup() -> void:
 	var compact := safe.size.y < 620.0 or safe.size.x < 620.0
 	_apply_compact_layout(compact)
 	var panel_width := clampf(safe.size.x - 16.0, 440.0, 640.0)
-	var panel_height := clampf(safe.size.y - 16.0, 420.0, 650.0)
+	var panel_height := clampf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 420.0, 650.0)
 	if safe.size.x < 456.0:
 		panel_width = safe.size.x
 	if safe.size.y < 436.0:
@@ -161,7 +168,7 @@ func _layout_popup() -> void:
 	panel_width = minf(panel_width, viewport_size.x)
 	panel_height = minf(panel_height, viewport_size.y)
 	var panel_size := Vector2(maxf(panel_width, 0.0), maxf(panel_height, 0.0))
-	var panel_position := Vector2(safe.position.x + (safe.size.x - panel_size.x) * 0.5, safe.position.y + 92.0)
+	var panel_position := Vector2(safe.position.x + (safe.size.x - panel_size.x) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
 	if panel_position.y + panel_size.y > safe.end.y:
 		panel_position.y = maxf(safe.position.y, safe.end.y - panel_size.y)
 	main_panel.anchor_left = 0.0
@@ -170,6 +177,14 @@ func _layout_popup() -> void:
 	main_panel.anchor_bottom = 0.0
 	main_panel.position = panel_position
 	main_panel.size = panel_size
+	if get_node_or_null("Backdrop") != null:
+		var backdrop := get_node("Backdrop") as Control
+		backdrop.anchor_left = 0.0
+		backdrop.anchor_top = 0.0
+		backdrop.anchor_right = 0.0
+		backdrop.anchor_bottom = 0.0
+		backdrop.position = Vector2.ZERO
+		backdrop.size = Vector2(safe.end.x, viewport_size.y)
 	_layout_corner_decorations()
 
 
@@ -260,9 +275,9 @@ func _apply_compact_layout(compact: bool) -> void:
 func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
-	var left := minf(220.0, viewport_size.x * 0.18)
+	var left := 16.0
 	var right := minf(336.0, viewport_size.x * 0.30)
-	var top := minf(112.0, viewport_size.y * 0.18)
+	var top := 16.0
 	var bottom := 16.0
 	var safe_left := clampf(left, 0.0, viewport_size.x)
 	var safe_top := clampf(top, 0.0, viewport_size.y)

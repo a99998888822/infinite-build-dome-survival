@@ -50,6 +50,7 @@ func run_data_self_test() -> void:
 	var modifier_success := _run_modifier_stack_checks()
 	var relic_success := _run_relic_bond_checks()
 	var player_success := _run_player_checks()
+	var survival_relic_success := _run_survival_relic_checks()
 	var weapon_success := _run_weapon_checks()
 	var enemy_wave_success := _run_enemy_wave_checks()
 	var summon_success := _run_summon_checks()
@@ -65,7 +66,7 @@ func run_data_self_test() -> void:
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and relic_success and player_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success:
+	if load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
@@ -157,6 +158,8 @@ func _run_modifier_stack_checks() -> bool:
 		"stack_rule": "unique",
 	})
 	passed = _print_check_result("melee_damage add_flat/add_percent", is_equal_approx(stack.get_stat("melee_damage"), 23.0)) and passed
+	var shop_offer_count_ok := StatDefinitions.calculate_shop_offer_count(3, 2.0) == 5 and StatDefinitions.calculate_shop_offer_count(3, -999.0) == 2
+	passed = _print_check_result("shop offer count bonus and minimum", shop_offer_count_ok) and passed
 
 	stack.add_modifier_from_dictionary({
 		"id": "mod_test_move_speed_1",
@@ -290,6 +293,70 @@ func _run_player_checks() -> bool:
 		player.take_damage(999, "bootstrap_revive_check")
 		passed = _print_check_result("player extra revive", player.alive and player.get_remaining_revives() == 0 and player.current_hp == 5) and passed
 		player.queue_free()
+	return passed
+
+
+func _run_survival_relic_checks() -> bool:
+	if not RUN_PLAYER_SELF_TEST:
+		return true
+
+	print("[Bootstrap] survival relic checks")
+	var passed := true
+	var player := PLAYER_SCENE.instantiate() as PlayerController
+	passed = _print_check_result("survival relic scene instantiate", player != null) and passed
+	if player == null:
+		return false
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	passed = _print_check_result("survival relic player initialize", player.initialize_from_character("character_void_hunter")) and passed
+
+	var base_max_hp := int(player.get_stat("max_hp"))
+	var base_armor := player.get_stat("armor")
+	var base_move_speed := player.get_stat("move_speed")
+	passed = _print_check_result("survival relic flat stats", player.add_relic("relic_worn_hemostatic_cloth") and int(player.get_stat("max_hp")) == base_max_hp + 3) and passed
+	passed = _print_check_result("survival relic negative movement", player.add_relic("relic_load_iron_bracer") and is_equal_approx(player.get_stat("move_speed"), base_move_speed - 5.0)) and passed
+
+	passed = _print_check_result("survival relic low hp armor", player.add_relic("relic_broken_crystal")) and passed
+	player.take_damage(6, "bootstrap_relic_check")
+	passed = _print_check_result("survival relic low hp condition", player.get_stat("armor") >= base_armor + 15.0) and passed
+	player.heal(99)
+	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 8.0)) and passed
+
+	passed = _print_check_result("survival relic shield start", player.add_relic("relic_dead_shield_badge")) and passed
+	player.current_shield = 0
+	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
+	passed = _print_check_result("survival relic shield granted", player.current_shield == 15) and passed
+
+	passed = _print_check_result("survival relic shield regen add", player.add_relic("relic_barrier_crystal")) and passed
+	player.current_shield = 0
+	player._physics_process(1.0)
+	passed = _print_check_result("survival relic shield regen", player.current_shield >= 2) and passed
+
+	passed = _print_check_result("survival relic low sanity movement", player.add_relic("relic_lost_wayfarer_greave")) and passed
+	player.add_runtime_modifier({
+		"id": "mod_bootstrap_low_humanity",
+		"source_type": "test",
+		"source_id": "survival_relic_check",
+		"target_scope": "player",
+		"stat": "humanity",
+		"operation": "add_flat",
+		"value": -50,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	passed = _print_check_result("survival relic conditional movement", is_equal_approx(player.get_stat("move_speed"), base_move_speed + 7.0)) and passed
+
+	passed = _print_check_result("survival relic wave end trigger", player.add_relic("relic_vitality_potion")) and passed
+	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
+	passed = _print_check_result("survival relic wave end stat", player.get_stat("divinity") >= 1.0) and passed
+
+	passed = _print_check_result("survival relic revive trigger", player.add_relic("relic_costly_seed_of_life")) and passed
+	player.take_damage(999, "bootstrap_relic_revive_check")
+	passed = _print_check_result("survival relic revive effect", player.alive and player.get_stat("divinity") >= 21.0) and passed
+
+	passed = _print_check_result("survival relic derived stat", player.add_relic("relic_chain_of_hardship")) and passed
+	passed = _print_check_result("survival relic derived armor", player.get_stat("armor") >= 16.0) and passed
+	player.queue_free()
 	return passed
 
 
@@ -559,8 +626,7 @@ func _run_audio_checks() -> bool:
 	passed = _print_check_result("audio manager autoload", AudioManager != null) and passed
 	passed = _print_check_result("audio sfx bus", AudioServer.get_bus_index(AudioManager.BUS_SFX) >= 0) and passed
 	var bgm_played := AudioManager.play_bgm("menu")
-	passed = _print_check_result("audio bgm missing fallback", bgm_played == false and AudioManager.current_bgm_id == "menu") and passed
-	AudioManager.stop_bgm()
+	passed = _print_check_result("audio menu bgm playback", bgm_played and AudioManager.current_bgm_id == "menu") and passed
 	var weapon_sfx_played := AudioManager.play_weapon_hit_sfx("weapon_void_blade", 0)
 	passed = _print_check_result("weapon hit sfx missing fallback", weapon_sfx_played == false) and passed
 	AudioManager.set_bus_volume(AudioManager.BUS_SFX, 90, false)
@@ -724,14 +790,15 @@ func _run_weapon_checks() -> bool:
 	var shop_context_with_candidates := shop_context.duplicate(true)
 	shop_context_with_candidates["candidate_pool"] = shop_candidates
 	var shop_type_weights := shop_generator.get_shop_type_weights(shop_context_with_candidates)
-	var shop_offers := shop_generator.roll_shop_offers(shop_rarity_weights, shop_type_weights, shop_candidates, 3)
+	var default_shop_offer_count := StatDefinitions.calculate_shop_offer_count(MainFlowCoordinator.BASE_SHOP_OFFER_COUNT, 0.0)
+	var shop_offers := shop_generator.roll_shop_offers(shop_rarity_weights, shop_type_weights, shop_candidates, default_shop_offer_count)
 	var upgrade_offer_count := 0
 	var upgrade_keys := {}
 	for offer in shop_offers:
 		if str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
 			upgrade_offer_count += 1
 			upgrade_keys[offer.get("offer_id", "")] = true
-	var shop_check := not shop_candidates.is_empty() and not shop_rarity_weights.is_empty() and shop_offers.size() == mini(3, shop_candidates.size()) and upgrade_offer_count <= 1
+	var shop_check := not shop_candidates.is_empty() and not shop_rarity_weights.is_empty() and shop_offers.size() == mini(default_shop_offer_count, shop_candidates.size()) and upgrade_offer_count <= 1
 	passed = _print_check_result("shared reward/shop pool generation", shop_check) and passed
 	var discounted_weapon_cost := -1
 	for candidate in shop_candidates:
@@ -858,6 +925,30 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.current_wave_index == 0) and passed
 	passed = _print_check_result("main flow start weapon sync", player.get_start_weapon_ids().size() == 1 and player.get_start_weapon_ids()[0] == "weapon_void_blade" and loadout.get_weapon_instances().size() == 1) and passed
 	passed = _print_check_result("main flow first wave auto start", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.get_state_snapshot().get("pending_finance_payload", {}).is_empty()) and passed
+	var default_shop_payload := flow._build_shop_payload("free", 1)
+	var default_shop_offers: Array = default_shop_payload.get("offers", [])
+	var offer_bonus_applied := player.add_runtime_modifier({
+		"id": "mod_test_shop_offer_count",
+		"source_type": "test",
+		"source_id": "bootstrap_shop_offer_count",
+		"target_scope": "player",
+		"stat": "shop_offer_count_bonus",
+		"operation": "add_flat",
+		"value": 2,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	var expanded_shop_payload := flow._build_shop_payload("free", 1)
+	var expanded_shop_offers: Array = expanded_shop_payload.get("offers", [])
+	var shop_offer_count_payload_ok := (
+		offer_bonus_applied
+		and int(default_shop_payload.get("offer_count", -1)) == MainFlowCoordinator.BASE_SHOP_OFFER_COUNT
+		and default_shop_offers.size() == MainFlowCoordinator.BASE_SHOP_OFFER_COUNT
+		and int(expanded_shop_payload.get("offer_count", -1)) == MainFlowCoordinator.BASE_SHOP_OFFER_COUNT + 2
+		and expanded_shop_offers.size() == MainFlowCoordinator.BASE_SHOP_OFFER_COUNT + 2
+	)
+	passed = _print_check_result("main flow shop offer count bonus", shop_offer_count_payload_ok) and passed
+	player.remove_runtime_modifiers_by_source("test", "bootstrap_shop_offer_count")
 	wave_manager.add_exp_and_gold(10, 0)
 	passed = _print_check_result("main flow shared reward/shop popup", flow.get_current_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP) and passed
 	passed = _print_check_result("main flow shared reward/shop dedupe", flow.get_state_snapshot().get("pending_shared_reward_shop_levels", []).is_empty()) and passed
@@ -875,9 +966,7 @@ func _run_main_flow_checks() -> bool:
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow interest notice step", flow.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT) and passed
-	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow finance popup", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
+	passed = _print_check_result("main flow shop to finance order", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
 	var finance_result := flow.submit_finance_operation("none", 0)
 	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
 	passed = _print_check_result("main flow second wave zone select", flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT) and passed

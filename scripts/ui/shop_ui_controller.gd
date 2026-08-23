@@ -9,6 +9,7 @@ const SHOP_POPUP_LAYER: int = 23
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _viewport_size_callable: Callable = Callable()
+var _applied_safe_rect: Rect2 = Rect2()
 
 
 func _ready() -> void:
@@ -19,6 +20,11 @@ func _ready() -> void:
 		viewport.size_changed.connect(_viewport_size_callable)
 	_on_viewport_size_changed()
 	call_deferred("_bind_to_main_flow")
+
+
+func _process(_delta: float) -> void:
+	if shop_popup != null and shop_popup.visible:
+		_apply_shop_safe_rect()
 
 
 func _prepare_layers() -> void:
@@ -99,7 +105,7 @@ func _show_shop_popup(payload: Dictionary) -> void:
 		shop_popup.set_loadout(_main_flow_coordinator.get_bound_loadout())
 	if _main_flow_coordinator != null:
 		shop_popup.set_bond_player(_main_flow_coordinator.get_bound_player())
-	shop_popup.set_safe_rect(_get_shop_safe_rect())
+	_apply_shop_safe_rect(true)
 	shop_popup.configure(payload)
 	var selected_callable := Callable(self, "_on_offer_selected")
 	var skipped_callable := Callable(self, "_on_skipped")
@@ -147,8 +153,17 @@ func _on_stat_preview_cleared() -> void:
 
 
 func _on_viewport_size_changed() -> void:
-	if shop_popup != null:
-		shop_popup.set_safe_rect(_get_shop_safe_rect())
+	_apply_shop_safe_rect(true)
+
+
+func _apply_shop_safe_rect(force: bool = false) -> void:
+	if shop_popup == null:
+		return
+	var next_rect := _get_shop_safe_rect()
+	if not force and next_rect == _applied_safe_rect:
+		return
+	_applied_safe_rect = next_rect
+	shop_popup.set_safe_rect(next_rect)
 
 
 func _get_shop_safe_rect() -> Rect2:
@@ -161,7 +176,7 @@ func _get_shop_safe_rect() -> Rect2:
 		return Rect2()
 	var left := 16.0
 	var right := minf(336.0, viewport_size.x * 0.30)
-	var top := minf(112.0, viewport_size.y * 0.18)
+	var top := 16.0
 	var bottom := 16.0
 	var safe_left := clampf(left, 0.0, viewport_size.x)
 	var safe_top := clampf(top, 0.0, viewport_size.y)

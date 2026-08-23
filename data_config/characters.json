@@ -6,6 +6,8 @@
     "enabled": true,
     "tags": ["character", "starter"],
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
+    "display_sprite": "res://assets/sprites/player/player_void_hunter_right_base.png",
+    "display_stats": ["max_hp", "move_speed", "load_capacity", "humanity", "divinity"],
     "base_stats": {
       "max_hp": 10,
       "hp_regen": 0,
@@ -17,7 +19,7 @@
       "humanity": 100,
       "divinity": 0
     },
-    "start_weapons": ["weapon_void_blade"],
+    "start_weapons": ["weapon_dome_shockwave"],
     "passive_modifiers": []
   }
 ]

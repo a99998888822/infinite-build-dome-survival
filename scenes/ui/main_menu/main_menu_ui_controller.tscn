@@ -154,9 +154,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -1.0
-offset_top = 2.0
 offset_right = -1.0
-offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -189,9 +187,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -3.0
-offset_top = 2.0
 offset_right = -3.0
-offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -224,9 +220,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -2.0
-offset_top = 1.0
 offset_right = -2.0
-offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
@@ -288,79 +282,79 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody"]
+[node name="CharacterList" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody" unique_id=876509448]
 custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CharacterDetails" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody"]
+[node name="CharacterDetails" type="VBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody" unique_id=1430321590]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="CharacterHeader" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+[node name="CharacterHeader" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails" unique_id=470071624]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="CharacterIcon" type="TextureRect" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader"]
+[node name="CharacterIcon" type="TextureRect" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader" unique_id=603598546]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CharacterName" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader"]
+[node name="CharacterName" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader" unique_id=845007984]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "请选择角色"
 vertical_alignment = 1
 
-[node name="CharacterDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+[node name="CharacterDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails" unique_id=757832907]
 layout_mode = 2
-autowrap_mode = 3
 text = "选择左侧角色查看基础属性、初始武器与特性。"
-
-[node name="StatsLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
-layout_mode = 2
 autowrap_mode = 3
-text = "基础属性\n—"
 
-[node name="WeaponLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+[node name="StatsLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails" unique_id=333760154]
 layout_mode = 2
+text = "基础属性
+—"
 autowrap_mode = 3
-text = "初始武器\n—"
 
-[node name="PassiveLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails"]
+[node name="WeaponLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails" unique_id=674085375]
 layout_mode = 2
+text = "初始武器
+—"
 autowrap_mode = 3
-text = "角色特性\n—"
 
-[node name="DifficultyRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+[node name="PassiveLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails" unique_id=2049229086]
+layout_mode = 2
+text = "角色特性
+—"
+autowrap_mode = 3
+
+[node name="DifficultyRow" type="HBoxContainer" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1330147333]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="DifficultyTitle" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow"]
+[node name="DifficultyTitle" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow" unique_id=801327217]
 layout_mode = 2
 text = "难度"
 
-[node name="DifficultyOption" type="OptionButton" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow"]
+[node name="DifficultyOption" type="OptionButton" parent="CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow" unique_id=1300778233]
 layout_mode = 2
 size_flags_horizontal = 3
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "标准"
 popup/item_0/id = 0
-popup/item_0/metadata = "standard"
 popup/item_1/text = "困难"
 popup/item_1/id = 1
-popup/item_1/metadata = "hard"
 popup/item_2/text = "梦魇"
 popup/item_2/id = 2
-popup/item_2/metadata = "nightmare"
 
-[node name="DifficultyDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content"]
+[node name="DifficultyDescription" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1553356729]
 layout_mode = 2
-autowrap_mode = 3
 text = "标准战局：推荐首次体验，完整展现穹顶生存流程。"
+autowrap_mode = 3
 
 [node name="ErrorLabel" type="Label" parent="CharacterSelectPage/CenterContainer/MainPanel/Content" unique_id=1989766280]
 layout_mode = 2

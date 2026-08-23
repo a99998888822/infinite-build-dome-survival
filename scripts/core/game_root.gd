@@ -2,12 +2,17 @@ extends Node
 class_name GameRoot
 
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
+const ANDROID_CONTENT_SCALE_SIZE := Vector2i(1280, 720)
 
 var core_root: Node = null
 var world_root: Node2D = null
 var ui_root: CanvasLayer = null
 var debug_root: Node = null
 var _main_flow_coordinator: MainFlowCoordinator = null
+
+
+func _enter_tree() -> void:
+	_configure_android_content_scale()
 
 
 func _ready() -> void:
@@ -20,6 +25,45 @@ func _ready() -> void:
 	GameGlobal.set_game_mode("game")
 	GameGlobal.set_runtime_flag("game_root_ready", true)
 	GameGlobal.log_debug("game root ready")
+
+
+func _configure_android_content_scale() -> void:
+	if not OS.has_feature("android"):
+		return
+	var window := get_window()
+	if window == null:
+		return
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+	window.content_scale_size = ANDROID_CONTENT_SCALE_SIZE
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_handle_android_back_request()
+
+
+func _handle_android_back_request() -> void:
+	var flow := get_main_flow_coordinator()
+	if flow == null:
+		return
+	match flow.get_current_state():
+		MainFlowCoordinator.STATE_WAVE_COMBAT, MainFlowCoordinator.STATE_BATTLE_PREPARE:
+			flow.request_esc_overlay()
+		MainFlowCoordinator.STATE_ESC_OVERLAY:
+			flow.close_esc_overlay()
+		MainFlowCoordinator.STATE_SHOP_POPUP:
+			flow.close_shop_popup()
+		MainFlowCoordinator.STATE_FINANCE_POPUP:
+			flow.submit_finance_operation("none", 0)
+		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
+			flow.close_interest_settlement()
+		MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
+			flow.close_zone_harvest_result_popup()
+		MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_CAMP_ENTRY, MainFlowCoordinator.STATE_BATTLE_RESULT:
+			flow.enter_start_page()
+		MainFlowCoordinator.STATE_START_PAGE:
+			get_tree().quit()
 
 
 func get_main_flow_coordinator() -> MainFlowCoordinator:

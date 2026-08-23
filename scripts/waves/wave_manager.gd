@@ -124,6 +124,10 @@ func start_next_wave() -> bool:
 		spawn_timers_ms.append(0.0)
 	if finance_system != null and int(finance_system.get_state_snapshot().get("current_wave_number", 0)) < current_wave_index + 1:
 		finance_system.begin_wave(current_wave_index + 1)
+	if player != null and player.is_alive():
+		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
+	if player != null and player.is_alive():
+		player.heal(int(player.get_stat("max_hp")))
 	running = true
 	wave_started.emit(str(current_wave.get("id", "")), int(current_wave.get("duration_seconds", 0)))
 	return true
@@ -263,8 +267,7 @@ func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount:
 
 func _complete_wave_end_absorb() -> void:
 	_pending_wave_end_absorb_count = 0
-	if finance_system != null:
-		finance_system.process_wave_end_settlements()
+	process_wave_end_settlements()
 	var finished_wave_id := _finishing_wave_id
 	_finishing_wave_id = ""
 	wave_finished.emit(finished_wave_id)
@@ -347,9 +350,12 @@ func trigger_finance_interest(source: String = "manual") -> Dictionary:
 
 
 func process_wave_end_settlements() -> Array[Dictionary]:
-	if finance_system == null:
-		return []
-	return finance_system.process_wave_end_settlements()
+	var results: Array[Dictionary] = []
+	if finance_system != null:
+		results = finance_system.process_wave_end_settlements()
+	if player != null and player.is_alive():
+		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
+	return results
 
 
 func tick_finance(delta: float) -> void:

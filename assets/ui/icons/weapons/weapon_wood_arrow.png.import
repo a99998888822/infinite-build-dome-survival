@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxbgsy5xfrgym"
-path="res://.godot/imported/projectile_void_blade.png-9b9a19abfa5ce55c69b9e944e3f0ad18.ctex"
+uid="uid://bto7kp64n43yy"
+path="res://.godot/imported/weapon_wood_arrow.png-9b530798663e162b345cf0968722d021.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/weapons/projectiles/projectile_void_blade.png"
-dest_files=["res://.godot/imported/projectile_void_blade.png-9b9a19abfa5ce55c69b9e944e3f0ad18.ctex"]
+source_file="res://assets/ui/icons/weapons/weapon_wood_arrow.png"
+dest_files=["res://.godot/imported/weapon_wood_arrow.png-9b530798663e162b345cf0968722d021.ctex"]
 
 [params]
 

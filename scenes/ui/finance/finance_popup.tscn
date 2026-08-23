@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/finance/finance_tentacle.svg" id="6_tentacle"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBackdrop"]
-bg_color = Color(0.05098, 0.07843, 0.062745, 0.0)
+bg_color = Color(0.0156863, 0.0235294, 0.0196078, 0.72)
 
 [sub_resource type="StyleBoxFlat" id="StylePanel"]
 bg_color = Color(0.0784314, 0.117647, 0.0941176, 0.98)

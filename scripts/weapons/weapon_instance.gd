@@ -207,7 +207,8 @@ func _apply_level_upgrades(target_level: int) -> void:
 
 
 func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEvent:
-	var base_damage := get_stat("melee_damage") if damage_kind == DAMAGE_KIND_MELEE else get_stat("ranged_damage")
+	var damage_stat_id := "melee_damage" if damage_kind == DAMAGE_KIND_MELEE else "ranged_damage"
+	var base_damage := _get_damage_component_base(damage_stat_id)
 	var damage := base_damage * (1.0 + get_stat("damage_percent") / 100.0)
 	var critical := force_critical or randf() * 100.0 < get_stat("crit_chance")
 	if critical:
@@ -221,6 +222,15 @@ func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEve
 		"tags": _get_tags(),
 		"hit_position": owner_player.global_position if owner_player != null else Vector2.ZERO,
 	})
+
+
+func _get_damage_component_base(stat_id: String) -> float:
+	var weapon_base := get_weapon_stat(stat_id)
+	if get_attack_kind() != "mixed" or owner_player == null:
+		return get_stat(stat_id)
+	# 混合武器的每个伤害来源只继承玩家对应属性的 50%。
+	var player_bonus := owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)
+	return weapon_base + player_bonus * 0.5
 
 
 func get_attack_kind() -> String:
@@ -264,4 +274,6 @@ func build_full_stats_text() -> String:
 func _format_damage_source(stat_id: String) -> String:
 	var fixed_damage := int(roundi(get_weapon_stat(stat_id)))
 	var player_bonus := int(roundi((owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)) if owner_player != null else 0.0))
+	if get_attack_kind() == "mixed":
+		player_bonus = int(roundi(float(player_bonus) * 0.5))
 	return "([color=#FFFFFF]%d[/color]+[color=#7FD88F]%d[/color])" % [fixed_damage, player_bonus]

@@ -1,6 +1,6 @@
-[gd_resource type="Theme" load_steps=2 format=3]
+[gd_resource type="Theme" format=3 uid="uid://35q30jdee5xr"]
 
-[ext_resource type="FontFile" path="res://assets/font/IPix-pixel_font.ttf" id="1_ipix"]
+[ext_resource type="FontFile" uid="uid://hoei64hqfsnq" path="res://assets/font/IPix-pixel_font.ttf" id="1_ipix"]
 
 [resource]
 default_font = ExtResource("1_ipix")

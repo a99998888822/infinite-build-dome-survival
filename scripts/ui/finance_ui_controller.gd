@@ -4,8 +4,10 @@ class_name FinanceUIController
 const FINANCE_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_popup.tscn")
 const INTEREST_SETTLEMENT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/interest_settlement_popup.tscn")
 const WEAPON_STRIP_SCENE: PackedScene = preload("res://scenes/ui/common/weapon_strip.tscn")
-const INTEREST_NOTICE_DURATION: float = 2.5
+const INTEREST_NOTICE_DURATION: float = 2.0
 const NUMERIC_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
+const WEAPON_STRIP_TOP_OFFSET: float = 12.0
+const WEAPON_STRIP_HEIGHT: float = 62.0
 
 @onready var popup_layer: CanvasLayer = get_node_or_null("PopupLayer")
 @onready var finance_popup: FinancePopup = get_node_or_null("PopupLayer/FinancePopup")
@@ -15,6 +17,7 @@ var _interest_popup: InterestSettlementPopup = null
 var _interest_popup_token: int = 0
 
 var _main_flow_coordinator: MainFlowCoordinator = null
+var _applied_safe_rect: Rect2 = Rect2()
 var _interest_notice_panel: PanelContainer = null
 var _interest_notice_label: Label = null
 var _interest_notice_token: int = 0
@@ -33,6 +36,11 @@ func _ready() -> void:
 	call_deferred("_bind_to_main_flow")
 
 
+func _process(_delta: float) -> void:
+	if finance_popup != null and finance_popup.visible:
+		_apply_finance_safe_rect()
+
+
 func _prepare_layers() -> void:
 	if popup_layer == null:
 		popup_layer = CanvasLayer.new()
@@ -46,6 +54,7 @@ func _prepare_layers() -> void:
 			popup_layer.add_child(finance_popup)
 	_ensure_finance_weapon_strip()
 	_ensure_interest_popup()
+	_ensure_interest_notice()
 
 
 func _bind_to_main_flow() -> void:
@@ -63,6 +72,9 @@ func _bind_to_main_flow() -> void:
 		_main_flow_coordinator.modal_requested.connect(requested_callable)
 	if not _main_flow_coordinator.modal_closed.is_connected(closed_callable):
 		_main_flow_coordinator.modal_closed.connect(closed_callable)
+	var interest_notice_callable := Callable(self, "_on_interest_notice_requested")
+	if not _main_flow_coordinator.interest_notice_requested.is_connected(interest_notice_callable):
+		_main_flow_coordinator.interest_notice_requested.connect(interest_notice_callable)
 
 
 func _unbind_main_flow() -> void:
@@ -74,6 +86,9 @@ func _unbind_main_flow() -> void:
 		_main_flow_coordinator.modal_requested.disconnect(requested_callable)
 	if _main_flow_coordinator.modal_closed.is_connected(closed_callable):
 		_main_flow_coordinator.modal_closed.disconnect(closed_callable)
+	var interest_notice_callable := Callable(self, "_on_interest_notice_requested")
+	if _main_flow_coordinator.interest_notice_requested.is_connected(interest_notice_callable):
+		_main_flow_coordinator.interest_notice_requested.disconnect(interest_notice_callable)
 	_main_flow_coordinator = null
 
 
@@ -93,7 +108,7 @@ func _on_modal_requested(modal_state: String, payload: Dictionary) -> void:
 		MainFlowCoordinator.STATE_FINANCE_POPUP:
 			_show_finance_popup(payload)
 		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
-			_show_interest_settlement(payload)
+			_show_interest_notice(payload)
 		_:
 			return
 
@@ -114,33 +129,36 @@ func _on_modal_closed(modal_state: String) -> void:
 			return
 
 
-func _show_interest_settlement(payload: Dictionary) -> void:
-	_ensure_interest_popup()
-	if _interest_popup == null:
+func _on_interest_notice_requested(payload: Dictionary) -> void:
+	_show_interest_notice(payload)
+
+
+func _show_interest_notice(payload: Dictionary) -> void:
+	_ensure_interest_notice()
+	if _interest_notice_panel == null or _interest_notice_label == null:
 		return
-	_interest_popup_token += 1
-	var token := _interest_popup_token
-	_interest_popup.configure(payload)
-	var confirmed_callable := Callable(self, "_on_interest_popup_confirmed")
-	if not _interest_popup.confirmed.is_connected(confirmed_callable):
-		_interest_popup.confirmed.connect(confirmed_callable)
-	_interest_popup.show_popup()
-	get_tree().create_timer(3.0).timeout.connect(func() -> void:
-		if token != _interest_popup_token:
-			return
-		if is_instance_valid(_interest_popup) and _interest_popup.visible:
-			_interest_popup.hide_popup()
-		if _main_flow_coordinator != null and _main_flow_coordinator.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
-			_main_flow_coordinator.close_interest_settlement()
-	)
-
-
-func _on_interest_popup_confirmed() -> void:
-	_interest_popup_token += 1
-	if _interest_popup != null:
-		_interest_popup.hide_popup()
-	if _main_flow_coordinator != null and _main_flow_coordinator.get_current_state() == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
-		_main_flow_coordinator.close_interest_settlement()
+	_interest_notice_token += 1
+	if _interest_notice_tween != null and _interest_notice_tween.is_valid():
+		_interest_notice_tween.kill()
+	_interest_notice_label.text = _build_interest_notice_text(payload)
+	_position_interest_notice()
+	var target_top := _interest_notice_panel.offset_top
+	var target_bottom := _interest_notice_panel.offset_bottom
+	_interest_notice_panel.offset_top += 48.0
+	_interest_notice_panel.offset_bottom += 48.0
+	_interest_notice_panel.visible = true
+	_interest_notice_panel.modulate.a = 0.0
+	_interest_notice_tween = create_tween()
+	_interest_notice_tween.set_trans(Tween.TRANS_CUBIC)
+	_interest_notice_tween.set_ease(Tween.EASE_OUT)
+	_interest_notice_tween.set_parallel(true)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "modulate:a", INTEREST_NOTICE_VISIBLE_ALPHA, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "offset_top", target_top, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "offset_bottom", target_bottom, INTEREST_NOTICE_ANIMATION_SECONDS)
+	_interest_notice_tween.set_parallel(false)
+	_interest_notice_tween.tween_interval(INTEREST_NOTICE_DURATION)
+	_interest_notice_tween.tween_property(_interest_notice_panel, "modulate:a", 0.0, 0.24)
+	_interest_notice_tween.tween_callback(_finish_hide_interest_notice)
 
 
 func _show_finance_popup(payload: Dictionary) -> void:
@@ -150,8 +168,7 @@ func _show_finance_popup(payload: Dictionary) -> void:
 	if _finance_weapon_strip != null:
 		_finance_weapon_strip.visible = true
 		_finance_weapon_strip.set_loadout(_main_flow_coordinator.get_bound_loadout() if _main_flow_coordinator != null else null)
-		_layout_finance_weapon_strip()
-	finance_popup.set_safe_rect(_get_finance_safe_rect())
+	_apply_finance_safe_rect(true)
 	finance_popup.configure(payload)
 	var operation_callable := Callable(self, "_on_finance_operation_submitted")
 	var skipped_callable := Callable(self, "_on_finance_skipped")
@@ -175,12 +192,23 @@ func _on_finance_skipped() -> void:
 
 
 func _on_viewport_size_changed() -> void:
-	var safe_rect := _get_finance_safe_rect()
 	if finance_popup != null and finance_popup.visible:
-		finance_popup.set_safe_rect(safe_rect)
-	_layout_finance_weapon_strip()
+		_apply_finance_safe_rect(true)
+	else:
+		_layout_finance_weapon_strip()
 	if _interest_notice_panel != null and _interest_notice_panel.visible:
 		_position_interest_notice()
+
+
+func _apply_finance_safe_rect(force: bool = false) -> void:
+	if finance_popup == null:
+		return
+	var next_rect := _get_finance_safe_rect()
+	if not force and next_rect == _applied_safe_rect:
+		return
+	_applied_safe_rect = next_rect
+	finance_popup.set_safe_rect(next_rect)
+	_layout_finance_weapon_strip()
 
 
 func _ensure_finance_weapon_strip() -> void:
@@ -194,6 +222,11 @@ func _ensure_finance_weapon_strip() -> void:
 	_finance_weapon_strip.name = "FinanceWeaponStrip"
 	_finance_weapon_strip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_finance_weapon_strip.visible = false
+	_finance_weapon_strip.z_index = 1
+	if finance_popup != null:
+		var finance_main_panel := finance_popup.get_node_or_null("MainPanel") as Control
+		if finance_main_panel != null:
+			finance_main_panel.z_index = 2
 	popup_layer.add_child(_finance_weapon_strip)
 
 
@@ -204,19 +237,19 @@ func _layout_finance_weapon_strip() -> void:
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return
 	var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
-	_finance_weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + 18.0)
-	_finance_weapon_strip.size = Vector2(strip_width, 62.0)
+	_finance_weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
+	_finance_weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
 
 func _get_finance_safe_rect() -> Rect2:
-	var battle_hud := _find_battle_hud()
+	var battle_hud: BattleHud = _find_battle_hud()
 	if battle_hud != null and battle_hud.has_method("get_modal_safe_rect"):
 		return battle_hud.get_modal_safe_rect()
 	var viewport_size := get_viewport().get_visible_rect().size if get_viewport() != null else Vector2(1280, 720)
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
-	var left := minf(220.0, viewport_size.x * 0.18)
+	var left := 16.0
 	var right := minf(336.0, viewport_size.x * 0.30)
-	var top := minf(112.0, viewport_size.y * 0.18)
+	var top := 16.0
 	var bottom := 16.0
 	var safe_left := clampf(left, 0.0, viewport_size.x)
 	var safe_top := clampf(top, 0.0, viewport_size.y)
@@ -269,6 +302,7 @@ func _ensure_interest_notice() -> void:
 	_interest_notice_panel.name = "InterestNotice"
 	_interest_notice_panel.visible = false
 	_interest_notice_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_interest_notice_panel.z_index = 10
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
 	_interest_notice_panel.add_theme_stylebox_override("panel", style)
@@ -292,7 +326,7 @@ func _ensure_interest_notice() -> void:
 	_interest_notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_interest_notice_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_interest_notice_label.add_theme_font_override("font", NUMERIC_FONT)
-	_interest_notice_label.add_theme_font_size_override("font_size", 22)
+	_interest_notice_label.add_theme_font_size_override("font_size", 11)
 	_interest_notice_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
 	_interest_notice_label.add_theme_color_override("font_outline_color", Color(0.02, 0.02, 0.02, 0.9))
 	_interest_notice_label.add_theme_constant_override("outline_size", 3)
@@ -305,7 +339,7 @@ func _ensure_interest_notice() -> void:
 	notice_content.add_child(bottom_line)
 
 
-func _position_interest_notice(vertical_ratio: float = 0.78) -> void:
+func _position_interest_notice(vertical_ratio: float = 0.70) -> void:
 	if _interest_notice_panel == null or get_viewport() == null:
 		return
 	var safe_rect := _get_finance_safe_rect()
@@ -313,9 +347,9 @@ func _position_interest_notice(vertical_ratio: float = 0.78) -> void:
 		return
 	var text_width := _get_interest_notice_text_width()
 	var desired_width := clampf(ceil(text_width + 72.0), 240.0, 540.0)
-	var width := minf(desired_width, safe_rect.size.x)
+	var width := minf(desired_width, maxf(safe_rect.size.x - 36.0, 0.0))
 	var notice_height := minf(56.0, safe_rect.size.y)
-	var target_x := safe_rect.position.x + maxf((safe_rect.size.x - width) * 0.5, 0.0)
+	var target_x := safe_rect.position.x + 18.0
 	var target_y := safe_rect.position.y + safe_rect.size.y * clampf(vertical_ratio, 0.25, 0.90) - notice_height * 0.5
 	target_y = clampf(target_y, safe_rect.position.y, safe_rect.end.y - notice_height)
 	_interest_notice_panel.anchor_left = 0.0

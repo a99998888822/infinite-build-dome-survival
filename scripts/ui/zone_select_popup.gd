@@ -2,7 +2,10 @@ extends Control
 class_name ZoneSelectPopup
 
 const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")
-const STATS_DRAWER_RESERVED_WIDTH: float = 336.0
+const PANEL_WIDTH: float = 700.0
+const PANEL_HEIGHT: float = 500.0
+const MODAL_SIDE_MARGIN: float = 24.0
+const MODAL_VERTICAL_MARGIN: float = 16.0
 const GOLD := Color("#d3a637")
 const GOLD_BRIGHT := Color("#ffe18a")
 const PANEL_GREEN := Color("#0d1c14")
@@ -18,6 +21,7 @@ var _backdrop: ColorRect = null
 var _accent_line: ColorRect = null
 var _show_tween: Tween = null
 var _selection_locked := false
+var _safe_rect: Rect2 = Rect2()
 
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
 @onready var main_panel: PanelContainer = get_node_or_null("CenterContainer/MainPanel")
@@ -31,6 +35,10 @@ var _selection_locked := false
 func _ready() -> void:
 	_prepare_layout()
 	_ensure_visual_layers()
+	if get_viewport() != null:
+		var viewport_callable := Callable(self, "_on_viewport_resized")
+		if not get_viewport().size_changed.is_connected(viewport_callable):
+			get_viewport().size_changed.connect(viewport_callable)
 	hide_popup()
 	_refresh_visual()
 
@@ -39,6 +47,12 @@ func configure(payload: Dictionary) -> void:
 	selection_payload = payload.duplicate(true)
 	_selection_locked = false
 	_refresh_visual()
+
+
+func set_safe_rect(next_rect: Rect2) -> void:
+	_safe_rect = next_rect
+	_prepare_layout()
+	_ensure_visual_layers()
 
 
 func show_popup() -> void:
@@ -84,15 +98,31 @@ func _prepare_layout() -> void:
 	offset_right = 0.0
 	offset_bottom = 0.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	var viewport_size := _get_viewport_size()
+	var safe := _get_safe_rect(viewport_size)
 	if center_container != null:
-		center_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		center_container.offset_top = 18.0
-		center_container.offset_bottom = -18.0
-		center_container.offset_right = -STATS_DRAWER_RESERVED_WIDTH
-		center_container.grow_horizontal = Control.GROW_DIRECTION_BOTH
-		center_container.grow_vertical = Control.GROW_DIRECTION_BOTH
+		var usable_position := safe.position + Vector2(MODAL_SIDE_MARGIN, MODAL_VERTICAL_MARGIN)
+		var usable_size := Vector2(
+			maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0),
+			maxf(safe.size.y - MODAL_VERTICAL_MARGIN * 2.0, 0.0)
+		)
+		center_container.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		center_container.anchor_left = 0.0
+		center_container.anchor_top = 0.0
+		center_container.anchor_right = 0.0
+		center_container.anchor_bottom = 0.0
+		center_container.offset_left = usable_position.x
+		center_container.offset_top = usable_position.y
+		center_container.offset_right = usable_position.x + usable_size.x
+		center_container.offset_bottom = usable_position.y + usable_size.y
+		center_container.grow_horizontal = Control.GROW_DIRECTION_END
+		center_container.grow_vertical = Control.GROW_DIRECTION_END
 	if main_panel != null:
-		main_panel.custom_minimum_size = Vector2(800, 520)
+		var available_width := maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0)
+		var panel_width := minf(PANEL_WIDTH, available_width)
+		var available_height := maxf(safe.size.y - MODAL_VERTICAL_MARGIN * 2.0, 0.0)
+		var panel_height := minf(PANEL_HEIGHT, available_height)
+		main_panel.custom_minimum_size = Vector2(panel_width, panel_height)
 		main_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 		main_panel.add_theme_stylebox_override("panel", _make_panel_style())
 	if content != null:
@@ -125,6 +155,45 @@ func _ensure_visual_layers() -> void:
 		_accent_line.color = GOLD
 		content.add_child(_accent_line)
 		content.move_child(_accent_line, 1)
+	if _backdrop != null and get_viewport() != null:
+		var viewport_size := _get_viewport_size()
+		var safe := _get_safe_rect(viewport_size)
+		_backdrop.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		_backdrop.anchor_left = 0.0
+		_backdrop.anchor_top = 0.0
+		_backdrop.anchor_right = 0.0
+		_backdrop.anchor_bottom = 0.0
+		_backdrop.offset_left = 0.0
+		_backdrop.offset_top = 0.0
+		_backdrop.offset_right = safe.end.x
+		_backdrop.offset_bottom = viewport_size.y
+
+
+func _on_viewport_resized() -> void:
+	_prepare_layout()
+	_ensure_visual_layers()
+
+
+func _get_safe_rect(viewport_size: Vector2) -> Rect2:
+	if _safe_rect.size.x > 0.0 and _safe_rect.size.y > 0.0:
+		return _safe_rect
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Rect2()
+	var safe_left := 16.0
+	var safe_right := minf(336.0, viewport_size.x * 0.30)
+	var safe_top := 16.0
+	var safe_bottom := 16.0
+	return Rect2(
+		Vector2(safe_left, safe_top),
+		Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - safe_bottom, 0.0))
+	)
+
+
+func _get_viewport_size() -> Vector2:
+	var viewport := get_viewport()
+	if viewport == null:
+		return Vector2.ZERO
+	return Vector2(viewport.size)
 
 
 func _refresh_visual() -> void:

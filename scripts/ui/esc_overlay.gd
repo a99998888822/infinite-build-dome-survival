@@ -6,8 +6,12 @@ signal back_pressed
 const RELIC_GRID_COLUMNS: int = 6
 const RELIC_CELL_SIZE: Vector2 = Vector2(64, 64)
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
-const MODAL_FALLBACK_TOP: float = 112.0
+const MODAL_FALLBACK_TOP: float = 16.0
 const MODAL_FALLBACK_RIGHT: float = 336.0
+const MODAL_TOP_OFFSET: float = 90.0
+const MODAL_BOTTOM_MARGIN: float = 14.0
+const WEAPON_STRIP_TOP_OFFSET: float = 12.0
+const WEAPON_STRIP_HEIGHT: float = 62.0
 const RARITY_ORDER: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.86, 0.86, 0.86, 1.0),
@@ -129,16 +133,23 @@ func _layout_overlay() -> void:
 		center_container.anchor_top = 0.0
 		center_container.anchor_right = 0.0
 		center_container.anchor_bottom = 0.0
-		center_container.position = safe.position
-		center_container.size = safe.size
+		center_container.position = safe.position + Vector2(0.0, MODAL_TOP_OFFSET)
+		center_container.size = Vector2(safe.size.x, minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)))
+	if _backdrop != null:
+		_backdrop.anchor_left = 0.0
+		_backdrop.anchor_top = 0.0
+		_backdrop.anchor_right = 0.0
+		_backdrop.anchor_bottom = 0.0
+		_backdrop.position = Vector2.ZERO
+		_backdrop.size = Vector2(safe.end.x, get_viewport().get_visible_rect().size.y)
 	if weapon_strip != null:
 		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
-		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + 18.0)
-		weapon_strip.size = Vector2(strip_width, 62.0)
+		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
+		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
 
 
 func _get_modal_safe_rect() -> Rect2:
@@ -215,12 +226,18 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 			icon_rect.texture = texture
 			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			icon_rect.anchor_left = 0.1
+			icon_rect.anchor_top = 0.1
+			icon_rect.anchor_right = 0.9
+			icon_rect.anchor_bottom = 0.9
 			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			cell.add_child(icon_rect)
 	else:
 		var placeholder := PanelContainer.new()
-		placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		placeholder.anchor_left = 0.1
+		placeholder.anchor_top = 0.1
+		placeholder.anchor_right = 0.9
+		placeholder.anchor_bottom = 0.9
 		placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var style := StyleBoxFlat.new()
 		style.bg_color = RARITY_COLORS.get(rarity, RARITY_COLORS["common"])

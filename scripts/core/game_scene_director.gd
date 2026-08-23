@@ -67,8 +67,12 @@ func _on_mode_changed(previous_mode: String, current_mode: String) -> void:
 
 
 func _compose_battle() -> void:
-	if battle_root != null or _main_flow_coordinator == null:
+	if _main_flow_coordinator == null:
 		return
+	if battle_root != null:
+		if is_instance_valid(battle_root):
+			return
+		battle_root = null
 	var game_root := _get_game_root()
 	if game_root == null:
 		return
@@ -77,8 +81,12 @@ func _compose_battle() -> void:
 
 
 func _compose_camp() -> void:
-	if camp_root != null or _main_flow_coordinator == null:
+	if _main_flow_coordinator == null:
 		return
+	if camp_root != null:
+		if is_instance_valid(camp_root):
+			return
+		camp_root = null
 	var game_root := _get_game_root()
 	if game_root == null:
 		return

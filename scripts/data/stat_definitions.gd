@@ -35,9 +35,9 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "每秒回血",
 		"category": CATEGORY_SURVIVAL,
 		"default": 0,
-		"min": 0,
+		"min": -9999,
 		"max": 9999,
-		"is_integer": true,
+		"is_integer": false,
 		"is_percent": false,
 		"description": "每秒恢复的生命值。"
 	},
@@ -50,6 +50,16 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": false,
 		"description": "优先承受伤害的护盾值。"
+	},
+	"shield_regen": {
+		"display_name": "每秒护盾",
+		"category": CATEGORY_SURVIVAL,
+		"default": 0,
+		"min": 0,
+		"max": 99999,
+		"is_integer": false,
+		"is_percent": false,
+		"description": "每秒生成的护盾值；没有护盾上限时可持续累积。"
 	},
 	"revive_count": {
 		"display_name": "额外复活",
@@ -75,11 +85,10 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "护甲",
 		"category": CATEGORY_SURVIVAL,
 		"default": 0,
-		"min": 0,
 		"max": 99999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "通过曲线函数换算为受到伤害百分比，护甲越高边际收益越低。"
+		"description": "通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。"
 	},
 	"damage_taken_percent": {
 		"display_name": "受到伤害百分比",
@@ -301,6 +310,16 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": true,
 		"description": "局内商店价格折扣；10 表示商店价格降低 10%。"
 	},
+	"shop_offer_count_bonus": {
+		"display_name": "商店选择数量加成",
+		"category": CATEGORY_REWARD,
+		"default": 0,
+		"min": -1,
+		"max": 99,
+		"is_integer": true,
+		"is_percent": false,
+		"description": "共享奖励和局内商店的候选数量加成；基础候选数为 3，最终候选数始终至少为 2。"
+	},
 	"load_capacity": {
 		"display_name": "负载上限",
 		"category": CATEGORY_BUILD,
@@ -335,21 +354,17 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "人性",
 		"category": CATEGORY_ELDRITCH,
 		"default": DEFAULT_HUMANITY,
-		"min": 0,
-		"max": 100,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "理智值/人性，初始满值；越低，侵蚀度积蓄越快。"
+		"description": "理智值/人性，初始为100；不设上限和下限，越低时侵蚀度积蓄越快。"
 	},
 	"divinity": {
 		"display_name": "侵蚀度",
 		"category": CATEGORY_ELDRITCH,
 		"default": DEFAULT_DIVINITY,
-		"min": 0,
-		"max": 100,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "侵蚀度，初始为0；表示与克苏鲁外神的靠近程度。"
+		"description": "侵蚀度，初始为0；不设上限和下限，表示与克苏鲁外神的靠近程度。"
 	}
 }
 
@@ -422,10 +437,12 @@ static func get_stat_ids_by_category(category: String) -> Array[String]:
 
 
 static func calculate_damage_taken_from_armor(armor: float) -> float:
-	# 护甲使用曲线衰减，避免高护甲无限接近 0 伤害。
-	var safe_armor := maxf(armor, 0.0)
-	var damage_taken_percent := ARMOR_K / (ARMOR_K + safe_armor)
-	return maxf(damage_taken_percent * 100.0, MIN_DAMAGE_TAKEN_PERCENT)
+	# 正护甲减伤，负护甲增伤；接近 -ARMOR_K 时封顶，避免除零和无限伤害。
+	var denominator := ARMOR_K + armor
+	if denominator <= 0.0:
+		return get_max_value("damage_taken_percent")
+	var damage_taken_percent := ARMOR_K / denominator * 100.0
+	return clampf(damage_taken_percent, MIN_DAMAGE_TAKEN_PERCENT, get_max_value("damage_taken_percent"))
 
 
 static func calculate_attack_interval(base_interval: float, attack_speed: float) -> float:
@@ -450,6 +467,12 @@ static func calculate_finance_interest_gain(finance: float, interest_rate: float
 static func calculate_shop_cost(base_cost: int, shop_price_percent: float) -> int:
 	var discount_percent := clamp_stat_value("shop_price_percent", shop_price_percent)
 	return maxi(0, int(ceil(float(maxi(0, base_cost)) * (1.0 - discount_percent / 100.0))))
+
+
+static func calculate_shop_offer_count(base_count: int, shop_offer_count_bonus: float) -> int:
+	var safe_base_count := maxi(0, base_count)
+	var safe_bonus := roundi(clamp_stat_value("shop_offer_count_bonus", shop_offer_count_bonus))
+	return maxi(2, safe_base_count + safe_bonus)
 
 
 static func calculate_enemy_spawn_count(base_count: int, enemy_spawn_rate_percent: float) -> int:

@@ -176,7 +176,7 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 	return weights
 
 
-func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidate_pool: Array, refresh_count: int) -> Array[Dictionary]:
+func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidate_pool: Array, offer_count: int) -> Array[Dictionary]:
 	var remaining: Array[Dictionary] = []
 	for candidate in candidate_pool:
 		if candidate is Dictionary:
@@ -184,7 +184,7 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 	var offers: Array[Dictionary] = []
 	var upgrade_selected := false
 
-	for _slot in maxi(0, refresh_count):
+	for _slot in maxi(0, offer_count):
 		if remaining.is_empty():
 			break
 		var available := _filter_available_candidates(remaining, upgrade_selected)

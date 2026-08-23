@@ -48,25 +48,11 @@
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
-| 未存在 | 军械工坊建筑 | `camp_armory_workshop.png` | `assets/sprites/camp/buildings/unlocked/camp_armory_workshop.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“军械工坊”，小型工匠建筑、木质与金属结合、轮廓清楚、结构简单、清新、适合森林营地。不要脏乱、不要噪点、不要恐怖元素，PNG，透明背景。 |
-| 未存在 | 利刃演武场建筑 | `camp_blade_arena.png` | `assets/sprites/camp/buildings/unlocked/camp_blade_arena.png` | 256x256 / PNG | 生成一张像素风训练场建筑图，主题是“利刃演武场”，小型近战训练设施，木质木桩、石台和简化兵器架，清新、像素精度中高，PNG，透明背景。 |
-| 未存在 | 远星射靶台建筑 | `camp_farstar_range.png` | `assets/sprites/camp/buildings/unlocked/camp_farstar_range.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“远星射靶台”，小型高台和靶场设施，清新、简洁、适合森林营地，PNG，透明背景。 |
-| 未存在 | 眷族培育栏建筑 | `camp_kin_nursery.png` | `assets/sprites/camp/buildings/unlocked/camp_kin_nursery.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“眷族培育栏”，简化的生物培养设施，带轻微机械感但不恐怖，适合清新森林营地，PNG，透明背景。 |
-| 未存在 | 穹顶庇护所建筑 | `camp_dome_shelter.png` | `assets/sprites/camp/buildings/unlocked/camp_dome_shelter.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“穹顶庇护所”，小型圆顶庇护建筑，明亮、清新、适合森林营地，PNG，透明背景。 |
-| 未存在 | 议事大厅建筑 | `camp_council_hall.png` | `assets/sprites/camp/buildings/unlocked/camp_council_hall.png` | 256x256 / PNG | 生成一张像素风建筑图，主题是“议事大厅”，小型公共建筑，清新、安静、适合森林营地，PNG，透明背景。 |
-| 未存在 | 利刃演武场废墟 | `camp_blade_arena_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_blade_arena_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“利刃演武场废墟”，保留木桩、石台或兵器架的残破轮廓，整体清新、轻废墟感，不要恐怖化，PNG，透明背景。 |
-| 未存在 | 远星射靶台废墟 | `camp_farstar_range_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_farstar_range_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“远星射靶台废墟”，保留高台和靶场残骸的轮廓，整体清新、简洁、轻废墟感，不要恐怖化，PNG，透明背景。 |
-| 未存在 | 眷族培育栏废墟 | `camp_kin_nursery_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_kin_nursery_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“眷族培育栏废墟”，保留培养设施的残破结构和少量机械感，整体清新、不恐怖，PNG，透明背景。 |
-| 未存在 | 议事大厅废墟 | `camp_council_hall_ruins.png` | `assets/sprites/camp/buildings/ruins/camp_council_hall_ruins.png` | 256x256 / PNG | 生成一张像素风废墟建筑图，主题是“议事大厅废墟”，保留公共建筑残破结构，整体安静、清新、轻废墟感，PNG，透明背景。 |
-| 未存在 | HUD 经验图标 | `icon_hud_exp.png` | `assets/ui/icons/hud/icon_hud_exp.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示经验或升级进度，图形可以是小星点、经验瓶或进度符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 金币图标 | `icon_hud_coin.png` | `assets/ui/icons/hud/icon_hud_coin.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示金币，图形简洁、偏暖金色，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 负载图标 | `icon_hud_load.png` | `assets/ui/icons/hud/icon_hud_load.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示武器负载或容量，图形可以是小背包、能量槽或秤重符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 波次图标 | `icon_hud_wave_time.png` | `assets/ui/icons/hud/icon_hud_wave_time.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示波次计时，图形可以是小沙漏或计时圆环，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 武器图标 | `icon_hud_weapon.png` | `assets/ui/icons/hud/icon_hud_weapon.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示当前装备武器，图形可以是简化武器轮廓或小武器槽，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 羁绊图标 | `icon_hud_relic.png` | `assets/ui/icons/hud/icon_hud_relic.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示遗物或羁绊统计，图形可以是小徽记或简化符文，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
-| 未存在 | 营地入口按钮图标 | `icon_camp_entry.png` | `assets/ui/icons/camp/icon_camp_entry.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示营地入口，主题是营地、篝火或小屋，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
-| 未存在 | 建筑升级图标 | `icon_building_upgrade.png` | `assets/ui/icons/camp/icon_building_upgrade.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示建筑升级，图形可以是向上箭头、齿轮或星光强化符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
-| 未存在 | 锁定覆盖层 | `overlay_locked_ruins.png` | `assets/ui/overlays/camp/overlay_locked_ruins.png` | 1:1 或 4:3，建议 512x512 / PNG，透明背景 | 生成一张清新干净的像素风锁定覆盖层素材，表现废墟、封印或锁定状态，适合叠在建筑入口上，透明背景，PNG，不要文字，不要噪点，不要恐怖化表现 |
 | 未存在 | 默认眷族幼体单帧 | `summon_kinling_base.png` | `assets/sprites/summons/summon_kinling_base.png` | PNG，透明背景，128x128 或 256x256，1:1 | 生成一张清新干净的中高精度像素风召唤物单帧图，主题是“友方眷族幼体”，体型小巧可爱，像一只浅绿色或淡蓝色的圆润小生物，带轻微克苏鲁感但不恐怖，可以有小触须、小耳朵或柔和发光眼睛，整体适合森林、篝火、黄昏氛围，不要肮脏环境，不要噪点，不要血腥，不要文字，透明背景，正面略偏右朝向，轮廓清晰，适合游戏内跟随玩家显示。 |
 | 未存在 | 理财弹窗主面板装饰 | `ui_finance_panel_frame.png` | `assets/ui/panels/finance/ui_finance_panel_frame.png` | 9-slice PNG / Godot StyleBox 可替代 | 当前实现先使用 `PanelContainer` |
 | 未存在 | 当前金币图标 | `ui_finance_gold_icon.png` | `assets/ui/icons/finance/ui_finance_gold_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 可复用局内金币图标 |

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="creative-medium" content="interactive-prototype" />
+<title>深渊幸存者 — 像素克苏鲁生存战斗</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0a0c08;
+    overflow: hidden;
+    font-family: 'Press Start 2P', monospace;
+    color: #e8e4d4;
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    user-select: none;
+  }
+  #game-wrap {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+  canvas#game {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  /* CRT 扫描线 & 暗角 */
+  #crt-overlay {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.15) 0px,
+        rgba(0,0,0,0.15) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    mix-blend-mode: multiply;
+    z-index: 50;
+    animation: crtFlicker 4s infinite;
+  }
+  @keyframes crtFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.92; }
+    51% { opacity: 0.98; }
+    52% { opacity: 0.9; }
+  }
+  /* ===== UI 叠加层 ===== */
+  .ui-layer {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+    text-shadow: 2px 2px 0 #000;
+  }
+
+  /* 左上：生命 + 护甲 */
+  #top-left {
+    top: 18px; left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .level-badge {
+    font-size: 11px;
+    color: #d4a84a;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bar-icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+  }
+  .bar-outer {
+    position: relative;
+    width: 220px;
+    height: 18px;
+    border: 2px solid #1a1c16;
+    box-shadow:
+      inset 1px 1px 0 rgba(255,255,255,0.15),
+      inset -1px -1px 0 rgba(0,0,0,0.5),
+      2px 2px 0 #000;
+    background: #0f110d;
+  }
+  .bar-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    transition: width 0.25s ease-out;
+  }
+  .bar-fill.hp { background: linear-gradient(to bottom, #e04a4a 0%, #c43a3a 50%, #8a2222 100%); }
+  .bar-fill.shield { background: linear-gradient(to bottom, #8a6ab0 0%, #6b4a8f 50%, #3e2a5a 100%); }
+  .bar-fill.shine::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px; right: 2px;
+    height: 3px;
+    background: rgba(255,255,255,0.35);
+  }
+  .bar-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    color: #fff;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .bar-flash { animation: barFlash 0.3s ease-out; }
+  @keyframes barFlash {
+    0% { filter: brightness(2); }
+    100% { filter: brightness(1); }
+  }
+  .num-pop { animation: numPop 0.4s ease-out; }
+  @keyframes numPop {
+    0% { transform: translate(-50%, -50%) scale(1.4); color: #ffe04a; }
+    100% { transform: translate(-50%, -50%) scale(1); color: #fff; }
+  }
+
+  /* 右上：金币 + 本金 */
+  #top-right {
+    top: 18px; left: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 10px;
+  }
+  .gold-row, .bank-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #d4a84a;
+    letter-spacing: 1px;
+  }
+  .bank-row { color: #b8963a; }
+  .coin-icon, .bank-icon {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+  }
+  .gold-num.bump { animation: goldBump 0.4s ease-out; }
+  @keyframes goldBump {
+    0% { transform: scale(1.3); color: #ffe06a; }
+    100% { transform: scale(1); color: #d4a84a; }
+  }
+  .float-text {
+    position: absolute;
+    font-size: 9px;
+    color: #ffe04a;
+    pointer-events: none;
+    animation: floatUp 1s ease-out forwards;
+    text-shadow: 2px 2px 0 #000;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-30px); opacity: 0; }
+  }
+
+  /* 顶部中央：波次倒计时 */
+  #wave-center {
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 18px;
+    background: rgba(10, 12, 8, 0.72);
+    border: 2px solid #3a3c2e;
+    box-shadow: 2px 2px 0 #000, inset 1px 1px 0 rgba(255,255,255,0.08);
+  }
+  .wave-label {
+    font-size: 10px;
+    color: #a8a494;
+    letter-spacing: 2px;
+  }
+  .wave-timer {
+    font-size: 18px;
+    color: #e8d24a;
+    letter-spacing: 2px;
+    transition: color 0.3s;
+  }
+  .wave-timer.warn {
+    color: #e04040;
+    animation: pulseWarn 0.8s infinite;
+  }
+  @keyframes pulseWarn {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.12); filter: brightness(1.4); }
+  }
+  .wave-name {
+    font-size: 8px;
+    color: #6b8a6f;
+    letter-spacing: 1px;
+  }
+
+  /* 底部：经验条 */
+  #exp-bar-wrap {
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .exp-text {
+    font-size: 10px;
+    color: #8fd36f;
+    letter-spacing: 1px;
+  }
+  .exp-outer {
+    position: relative;
+    width: 100%;
+    height: 16px;
+    border: 2px solid #1a1c16;
+    box-shadow:
+      inset 1px 1px 0 rgba(255,255,255,0.12),
+      inset -1px -1px 0 rgba(0,0,0,0.5),
+      2px 2px 0 #000;
+    background: #0f110d;
+    overflow: hidden;
+  }
+  .exp-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: linear-gradient(to bottom, #8fe07a 0%, #6fd36f 50%, #3e9a4a 100%);
+    transition: width 0.3s ease-out;
+  }
+  .exp-fill::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.25) 50%,
+      transparent 100%
+    );
+    animation: expShine 2s linear infinite;
+    background-size: 60px 100%;
+  }
+  @keyframes expShine {
+    0% { background-position: -60px 0; }
+    100% { background-position: calc(100% + 60px) 0; }
+  }
+  .levelup-flash {
+    position: absolute; inset: 0;
+    background: rgba(200, 255, 180, 0.8);
+    animation: levelupFlash 0.6s ease-out forwards;
+    pointer-events: none;
+    z-index: 30;
+  }
+  @keyframes levelupFlash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* 古神之眼 — 四个角落 */
+  .elder-eye {
+    position: absolute;
+    width: 28px; height: 28px;
+    opacity: 0.08;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .elder-eye.tl { top: 12px; left: calc(50% - 260px); }
+  .elder-eye.tr { top: 12px; right: calc(30% - 220px); }
+  .elder-eye.bl { bottom: 14%; left: 12%; }
+  .elder-eye.br { bottom: 14%; right: 12%; }
+  .elder-eye svg { width: 100%; height: 100%; }
+  .elder-eye.blink .pupil {
+    animation: eyeBlink 3s ease-in-out;
+  }
+  @keyframes eyeBlink {
+    0%, 100% { transform: scaleY(1); }
+    45%, 55% { transform: scaleY(0.05); }
+  }
+
+  /* 提示 */
+  #hint {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: #5a5c52;
+    letter-spacing: 2px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* 波次切换震动 */
+  .shake { animation: screenShake 0.35s ease-out; }
+  @keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 2px); }
+    40% { transform: translate(3px, -3px); }
+    60% { transform: translate(-2px, 3px); }
+    80% { transform: translate(2px, -1px); }
+  }
+</style>
+</head>
+<body>
+<div id="game-wrap">
+  <canvas id="game"></canvas>
+
+  <!-- UI 叠加层 -->
+  <div class="ui-layer" id="top-left">
+    <div class="level-badge" id="levelBadge">Lv.1</div>
+    <div class="bar-row">
+      <canvas class="bar-icon" id="heartIcon" width="20" height="20"></canvas>
+      <div class="bar-outer">
+        <div class="bar-fill hp shine" id="hpFill" style="width:100%"></div>
+        <div class="bar-text" id="hpText">100/100</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <canvas class="bar-icon" id="shieldIcon" width="20" height="20"></canvas>
+      <div class="bar-outer">
+        <div class="bar-fill shield shine" id="shieldFill" style="width:0%"></div>
+        <div class="bar-text" id="shieldText">0/50</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-layer" id="wave-center">
+    <div class="wave-label" id="waveLabel">第 1 波</div>
+    <div class="wave-timer" id="waveTimer">60s</div>
+    <div class="wave-name">深渊入侵</div>
+  </div>
+
+  <div class="ui-layer" id="top-right">
+    <div class="gold-row">
+      <canvas class="coin-icon" id="coinIcon" width="16" height="16"></canvas>
+      <span>金币：<span class="gold-num" id="goldNum">0</span></span>
+    </div>
+    <div class="bank-row">
+      <canvas class="bank-icon" id="bankIcon" width="16" height="16"></canvas>
+      <span>本金：<span id="bankNum">3,000</span></span>
+    </div>
+  </div>
+
+  <div class="ui-layer" id="exp-bar-wrap">
+    <div class="exp-text" id="expText">等级 1　经验 0/10</div>
+    <div class="exp-outer">
+      <div class="exp-fill" id="expFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- 古神之眼 -->
+  <div class="elder-eye tl" id="eyeTL">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5" fill="#6b8a6f"/><circle class="pupil" cx="12" cy="12" r="3.5" fill="#1a1c10"/></svg>
+  </div>
+  <div class="elder-eye tr" id="eyeTR">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5" fill="#6b8a6f"/><circle class="pupil" cx="12" cy="12" r="3.5" fill="#1a1c10"/></svg>
+  </div>
+  <div class="elder-eye bl" id="eyeBL">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5" fill="#6b4a8f"/><circle class="pupil" cx="12" cy="12" r="3.5" fill="#1a0a20"/></svg>
+  </div>
+  <div class="elder-eye br" id="eyeBR">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5" fill="#6b4a8f"/><circle class="pupil" cx="12" cy="12" r="3.5" fill="#1a0a20"/></svg>
+  </div>
+
+  <div id="hint">WASD 移动　自动攻击</div>
+
+  <!-- CRT 后效 -->
+  <div id="crt-overlay"></div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

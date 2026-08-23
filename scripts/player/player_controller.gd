@@ -4,6 +4,7 @@ class_name PlayerController
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
 signal died
 signal revived(remaining_revives: int)
+signal shield_broken
 signal start_weapons_changed(weapon_ids: Array[String])
 signal relics_changed(relic_ids: Array[String])
 signal relic_added(relic_id: String)
@@ -35,6 +36,12 @@ var start_weapon_ids: Array[String] = []
 var _invincibility_timer: float = 0.0
 var _configured_revive_count: int = 0
 var _walk_animation_time: float = 0.0
+var _held_move_keys: Dictionary = {}
+var _mobile_move_direction := Vector2.ZERO
+var _hp_regen_remainder: float = 0.0
+var _shield_regen_remainder: float = 0.0
+var _relic_runtime_sequence: int = 0
+var _refreshing_relic_dynamic_effects: bool = false
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -43,9 +50,27 @@ var _walk_animation_time: float = 0.0
 
 
 func _ready() -> void:
+	_clear_move_input()
 	_setup_visuals()
 	if auto_initialize_on_ready:
 		initialize_from_character(character_id)
+
+
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey:
+		return
+	var key_event := event as InputEventKey
+	if key_event.echo:
+		return
+	var is_pressed := key_event.pressed
+	for key_code in [KEY_A, KEY_LEFT, KEY_D, KEY_RIGHT, KEY_W, KEY_UP, KEY_S, KEY_DOWN]:
+		if key_event.keycode == key_code or key_event.physical_keycode == key_code:
+			_held_move_keys[key_code] = is_pressed
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		_clear_move_input()
 
 
 func _physics_process(delta: float) -> void:
@@ -56,6 +81,7 @@ func _physics_process(delta: float) -> void:
 		return
 	modifier_stack.tick(delta)
 	_invincibility_timer = maxf(_invincibility_timer - delta, 0.0)
+	_process_regeneration(delta)
 	_process_movement(delta)
 	_sync_camera()
 
@@ -83,6 +109,11 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_configured_revive_count = remaining_revives
 	alive = true
 	_invincibility_timer = 0.0
+	_hp_regen_remainder = 0.0
+	_shield_regen_remainder = 0.0
+	_relic_runtime_sequence = 0
+	_refreshing_relic_dynamic_effects = false
+	_clear_move_input()
 	_update_pickup_radius()
 
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
@@ -91,6 +122,10 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 
 
 func add_runtime_modifier(modifier_data: Dictionary) -> bool:
+	var stat_id := str(modifier_data.get("stat", ""))
+	var value := float(modifier_data.get("value", 0.0))
+	if value > 0.0 and _is_stat_increase_blocked(stat_id):
+		return false
 	var modifier := modifier_stack.add_modifier_from_dictionary(modifier_data)
 	if modifier == null:
 		return false
@@ -134,6 +169,8 @@ func get_start_weapon_ids() -> Array[String]:
 func add_relic(relic_id: String) -> bool:
 	if not relic_system.add_relic(relic_id):
 		return false
+	_refresh_relic_dynamic_effects()
+	_process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_ON_ACQUIRE)
 	relic_added.emit(relic_id)
 	relics_changed.emit(get_relic_ids())
 	return true
@@ -159,6 +196,17 @@ func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]
 	return relic_system.get_active_relic_runtime_effects(trigger)
 
 
+func _is_stat_increase_blocked(stat_id: String) -> bool:
+	if stat_id.is_empty():
+		return false
+	for effect in get_active_relic_runtime_effects():
+		if str(effect.get("effect", "")) != BattleFinanceSystem.EFFECT_BLOCK_STAT_INCREASE:
+			continue
+		if str(effect.get("stat", "")) == stat_id:
+			return true
+	return false
+
+
 func sync_relic_weapon_ids(weapon_ids: Array[String]) -> void:
 	relic_system.set_weapon_ids(weapon_ids)
 
@@ -174,12 +222,17 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var final_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
+	var had_shield := current_shield > 0
 	var shield_damage := mini(current_shield, final_damage)
 	current_shield -= shield_damage
 	current_hp = maxi(current_hp - (final_damage - shield_damage), 0)
 	_invincibility_timer = invincibility_seconds
 	_apply_damage_flash()
+	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+	if had_shield and current_shield <= 0:
+		shield_broken.emit()
+		_process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_SHIELD_BREAK)
 
 	if current_hp <= 0:
 		_die(source_id)
@@ -199,8 +252,37 @@ func heal(amount: int) -> int:
 		return 0
 	var old_hp := current_hp
 	current_hp = mini(current_hp + amount, int(get_stat("max_hp")))
+	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	return current_hp - old_hp
+
+
+func restore_full_health() -> int:
+	if not alive:
+		return 0
+	var max_hp := int(get_stat("max_hp"))
+	var old_hp := current_hp
+	current_hp = max_hp
+	_hp_regen_remainder = 0.0
+	_refresh_relic_dynamic_effects()
+	hp_changed.emit(current_hp, max_hp, current_shield)
+	return current_hp - old_hp
+
+
+func grant_shield(amount: int) -> int:
+	if not alive or amount <= 0:
+		return 0
+	var old_shield := current_shield
+	current_shield += amount
+	var shield_capacity := int(get_stat("shield"))
+	if shield_capacity > 0:
+		current_shield = mini(current_shield, shield_capacity)
+	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+	return current_shield - old_shield
+
+
+func process_relic_runtime_trigger(trigger: String) -> void:
+	_process_relic_runtime_trigger(trigger)
 
 
 func is_alive() -> bool:
@@ -219,6 +301,11 @@ func _process_movement(delta: float) -> void:
 		return
 
 	var direction := _read_move_input()
+	if direction.is_zero_approx():
+		velocity = Vector2.ZERO
+		move_and_slide()
+		_update_walk_animation(Vector2.ZERO, delta)
+		return
 	velocity = direction * get_stat("move_speed")
 	if not is_zero_approx(direction.x):
 		_set_facing(direction.x > 0.0)
@@ -227,16 +314,53 @@ func _process_movement(delta: float) -> void:
 
 
 func _read_move_input() -> Vector2:
-	var direction := Vector2.ZERO
-	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+	var direction := _mobile_move_direction
+	if bool(_held_move_keys.get(KEY_A, false)) or bool(_held_move_keys.get(KEY_LEFT, false)):
 		direction.x -= 1.0
-	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+	if bool(_held_move_keys.get(KEY_D, false)) or bool(_held_move_keys.get(KEY_RIGHT, false)):
 		direction.x += 1.0
-	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+	if bool(_held_move_keys.get(KEY_W, false)) or bool(_held_move_keys.get(KEY_UP, false)):
 		direction.y -= 1.0
-	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+	if bool(_held_move_keys.get(KEY_S, false)) or bool(_held_move_keys.get(KEY_DOWN, false)):
 		direction.y += 1.0
 	return direction.normalized() if direction.length_squared() > 1.0 else direction
+
+
+func set_mobile_move_direction(direction: Vector2) -> void:
+	_mobile_move_direction = direction.limit_length(1.0)
+
+
+func _clear_move_input() -> void:
+	_held_move_keys.clear()
+	_mobile_move_direction = Vector2.ZERO
+
+
+func _process_regeneration(delta: float) -> void:
+	if not alive or delta <= 0.0:
+		return
+	var max_hp := int(get_stat("max_hp"))
+	if current_hp < max_hp:
+		_hp_regen_remainder += maxf(get_stat("hp_regen"), 0.0) * delta
+		var hp_amount := floori(_hp_regen_remainder)
+		if hp_amount > 0:
+			_hp_regen_remainder -= float(hp_amount)
+			heal(hp_amount)
+	else:
+		_hp_regen_remainder = 0.0
+
+	var shield_regen := maxf(get_stat("shield_regen"), 0.0)
+	if shield_regen <= 0.0:
+		_shield_regen_remainder = 0.0
+		return
+	var shield_capacity := int(get_stat("shield"))
+	if shield_capacity > 0 and current_shield >= shield_capacity:
+		_shield_regen_remainder = 0.0
+		return
+	_shield_regen_remainder += shield_regen * delta
+	var shield_amount := floori(_shield_regen_remainder)
+	if shield_amount > 0:
+		_shield_regen_remainder -= float(shield_amount)
+		grant_shield(shield_amount)
 
 
 func _set_facing(next_facing_right: bool) -> void:
@@ -315,9 +439,93 @@ func _update_after_stat_change() -> void:
 	_configured_revive_count = configured_revives
 	remaining_revives = mini(remaining_revives, configured_revives)
 	current_hp = mini(current_hp, int(get_stat("max_hp")))
-	current_shield = mini(current_shield, int(get_stat("shield")))
+	var shield_capacity := int(get_stat("shield"))
+	if shield_capacity > 0:
+		current_shield = mini(current_shield, shield_capacity)
 	_update_pickup_radius()
+	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+
+
+func _refresh_relic_dynamic_effects() -> void:
+	if _refreshing_relic_dynamic_effects:
+		return
+	_refreshing_relic_dynamic_effects = true
+	modifier_stack.remove_by_source_type("relic_dynamic")
+	for effect in get_active_relic_runtime_effects(BattleFinanceSystem.TRIGGER_DYNAMIC):
+		var effect_type := str(effect.get("effect", ""))
+		var target_stat := str(effect.get("stat", effect.get("target_stat", "")))
+		if not StatDefinitions.has_stat(target_stat):
+			continue
+		var active := false
+		if effect_type == BattleFinanceSystem.EFFECT_CONDITIONAL_STAT:
+			active = _is_relic_condition_active(effect)
+		elif effect_type == BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT:
+			active = true
+		if not active:
+			continue
+		var value := float(effect.get("value", 0.0))
+		if effect_type == BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT:
+			var source_stat := str(effect.get("source_stat", ""))
+			if not StatDefinitions.has_stat(source_stat):
+				continue
+			var divisor := maxf(float(effect.get("divisor", 1.0)), 0.0001)
+			var per_unit := float(effect.get("per_unit", 1.0))
+			value = floorf(get_stat(source_stat) / divisor) * per_unit
+		if is_zero_approx(value):
+			continue
+		var instance_id := str(effect.get("relic_instance_id", "relic"))
+		var effect_index := int(effect.get("relic_runtime_effect_index", 0))
+		modifier_stack.add_modifier_from_dictionary({
+			"id": "relic_dynamic_%s_%d" % [instance_id, effect_index],
+			"source_type": "relic_dynamic",
+			"source_id": instance_id,
+			"target_scope": "player",
+			"stat": target_stat,
+			"operation": Modifier.OPERATION_ADD_FLAT,
+			"value": value,
+			"duration": Modifier.PERMANENT_DURATION,
+			"stack_rule": Modifier.STACK_RULE_UNIQUE,
+		})
+	_refreshing_relic_dynamic_effects = false
+
+
+func _is_relic_condition_active(effect: Dictionary) -> bool:
+	var condition := str(effect.get("condition", ""))
+	var threshold := float(effect.get("threshold", 0.0))
+	match condition:
+		"hp_percent_below":
+			var max_hp := maxf(float(get_stat("max_hp")), 1.0)
+			return float(current_hp) / max_hp * 100.0 < threshold
+		"humanity_below":
+			return get_stat("humanity") < threshold
+	return false
+
+
+func _process_relic_runtime_trigger(trigger: String) -> void:
+	for effect in get_active_relic_runtime_effects(trigger):
+		var effect_type := str(effect.get("effect", ""))
+		match effect_type:
+			BattleFinanceSystem.EFFECT_ADD_STAT:
+				var target_stat := str(effect.get("stat", ""))
+				if not StatDefinitions.has_stat(target_stat):
+					continue
+				_relic_runtime_sequence += 1
+				add_runtime_modifier({
+					"id": "relic_runtime_%d" % _relic_runtime_sequence,
+					"source_type": "relic_runtime",
+					"source_id": str(effect.get("relic_instance_id", "")),
+					"target_scope": "player",
+					"stat": target_stat,
+					"operation": str(effect.get("operation", Modifier.OPERATION_ADD_FLAT)),
+					"value": float(effect.get("value", 0.0)),
+					"duration": Modifier.PERMANENT_DURATION,
+					"stack_rule": Modifier.STACK_RULE_STACK_ADD,
+				})
+			BattleFinanceSystem.EFFECT_GRANT_SHIELD:
+				grant_shield(int(effect.get("value", 0)))
+			BattleFinanceSystem.EFFECT_HEAL:
+				heal(int(effect.get("value", 0)))
 
 
 func _update_pickup_radius() -> void:
@@ -350,5 +558,6 @@ func _try_revive() -> bool:
 	_invincibility_timer = REVIVE_INVINCIBILITY_SECONDS
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	revived.emit(remaining_revives)
+	_process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_ON_REVIVE)
 	print("[PlayerController] player revived, remaining=%d" % remaining_revives)
 	return true

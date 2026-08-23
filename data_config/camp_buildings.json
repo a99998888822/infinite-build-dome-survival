@@ -5,7 +5,7 @@
     "initial_unlocked": true,
     "type": "human",
     "role": "武器图鉴解锁、武器基础强化",
-    "description": "锻造、修复各类求生兵器，工匠不断改良武器来适配穹顶外的敌人。",
+    "description": "锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。",
     "building_upgrade_costs": {
       "2": 200,
       "3": 400,
@@ -96,7 +96,7 @@
         "currency": "camp_currency",
         "cost": 400,
         "max_level": 5,
-        "value_per_level": 10,
+        "value_per_level": 3,
         "required_building_level": 2
       },
       {
@@ -117,7 +117,7 @@
     "initial_unlocked": true,
     "type": "mixed",
     "role": "遗物图鉴解锁、遗物套装预览",
-    "description": "收纳幸存者带回的奇异器物。随着不断收集外来遗物，档案馆深处偶尔传来模糊低语，部分展品轮廓会在无人时微微扭曲。",
+    "description": "收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。",
     "building_upgrade_costs": {
       "2": 200,
       "3": 400,
@@ -209,7 +209,7 @@
       "4": 900,
       "5": 1500
     },
-    "description": "穹顶幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。",
+    "description": "幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。",
     "levels": {
       "1": [
         {
@@ -271,7 +271,7 @@
     "name": "远星射靶台",
     "initial_unlocked": false,
     "type": "human",
-    "role": "远程专属营地建筑，解锁远程与投射物升级选项",
+    "role": "远程专属营地建筑，解锁远程与投射物相关升级选项",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 140
@@ -345,6 +345,7 @@
     "initial_unlocked": false,
     "type": "mixed",
     "role": "召唤体系强化",
+    "description": "驯养、改造协助作战的生物与机械仆从。",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 160
@@ -355,7 +356,6 @@
       "4": 1200,
       "5": 2200
     },
-    "description": "驯养、改造协助作战的畸变生物与机械仆从。",
     "levels": {
       "1": [
         {
@@ -399,11 +399,11 @@
     "initial_unlocked": false,
     "type": "human",
     "role": "生存防御类加成，平衡建筑",
+    "description": "穹顶内最基础的防御与修整设施，为幸存者提供稳定庇护。",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 180
     },
-    "description": "穹顶内最基础的防御与修整设施，为幸存者提供稳定庇护。",
     "building_upgrade_costs": {
       "2": 400,
       "3": 800,
@@ -503,6 +503,7 @@
     "initial_unlocked": false,
     "type": "mixed",
     "role": "强化套装与通用成长收益",
+    "description": "幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 100
@@ -513,7 +514,6 @@
       "4": 1100,
       "5": 2000
     },
-    "description": "幸存者在此交流遗物组合战术。议事厅墙上悬挂的古老图腾，偶尔会随羁绊共鸣微微震颤。",
     "levels": {
       "1": [
         {
@@ -599,6 +599,15 @@
         "currency": "camp_currency",
         "cost": 800,
         "max_level": 5,
+        "value_per_level": 1
+      },
+      {
+        "id": "camp_upgrade_shop_offer_count",
+        "name": "商店选项扩容",
+        "stat": "shop_offer_count_bonus",
+        "currency": "camp_currency",
+        "cost": 1200,
+        "max_level": 2,
         "value_per_level": 1
       },
       {

@@ -1,11 +1,11 @@
 [
   {
     "id": "weapon_void_blade",
-    "display_name": "小飞刃",
-    "description": "获得新的武器 负载 12",
-    "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
+    "display_name": "木质弓箭",
+    "description": "简单的木质弓箭，射速较快",
+    "icon": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
     "hit_sfx": "res://assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg",
-    "projectile_texture": "res://assets/sprites/weapons/projectiles/projectile_void_blade.png",
+    "projectile_texture": "res://assets/sprites/weapons/projectiles/projectile_wood_arrow.png",
     "projectile_visual_speed": 400,
     "rarity": "common",
     "attack_kind": "ranged",

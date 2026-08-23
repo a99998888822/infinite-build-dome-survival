@@ -186,8 +186,8 @@ combat_root.tscn
 近战基础伤害 = 武器 melee_damage + 玩家 melee_damage
 远程基础伤害 = 武器 ranged_damage + 玩家 ranged_damage
 眷族基础伤害 = 武器 summon_damage + 玩家 summon_damage
-混合武器近战段 = 武器 melee_damage + 玩家 melee_damage
-混合武器远程段 = 武器 ranged_damage + 玩家 ranged_damage
+混合武器近战段 = 武器 melee_damage + 0.5 * 玩家 melee_damage
+混合武器远程段 = 武器 ranged_damage + 0.5 * 玩家 ranged_damage
 ```
 
 ### 通用伤害加成

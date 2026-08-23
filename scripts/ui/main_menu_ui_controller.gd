@@ -4,6 +4,7 @@ class_name MainMenuUIController
 const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
 const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
 const MAIN_MENU_BUTTON_TEXTURE_PATH: String = "res://assets/ui/main_menu/button_main_menu.png"
+const ROLE_SELECT_BACKDROP_SCRIPT: Script = preload("res://scripts/ui/role_select_backdrop.gd")
 const HINT_MESSAGES: Array[String] = [
 	"Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn",
 	"在拉莱耶的宅邸中，长眠的克拉斯托弗候汝入梦",
@@ -28,6 +29,9 @@ var _selected_difficulty_id: String = "standard"
 var _title_base_position := Vector2.ZERO
 var _button_feedback_tweens: Dictionary = {}
 var _button_shake_tweens: Dictionary = {}
+var _role_button_tweens: Dictionary = {}
+var _character_icon_tween: Tween = null
+var _role_select_was_visible := false
 var _hint_index := 0
 var _hint_elapsed := 0.0
 
@@ -51,8 +55,6 @@ var _hint_elapsed := 0.0
 @onready var passive_list: VBoxContainer = null
 @onready var difficulty_list: VBoxContainer = null
 @onready var character_details_scroll: ScrollContainer = null
-@onready var character_transition_overlay: ColorRect = null
-@onready var character_transition_label: Label = null
 @onready var character_list: VBoxContainer = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterList")
 @onready var character_icon: TextureRect = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader/CharacterIcon")
 @onready var character_name_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader/CharacterName")
@@ -69,6 +71,8 @@ var _hint_elapsed := 0.0
 @onready var result_title_label: Label = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultTitleLabel")
 @onready var result_summary_label: Label = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultSummaryLabel")
 @onready var result_back_button: Button = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultBackButton")
+
+var role_select_backdrop: Control = null
 
 
 func _ready() -> void:
@@ -228,12 +232,16 @@ func _refresh_visibility() -> void:
 		return
 	var mode := flow.get_current_mode()
 	var state := flow.get_current_state()
+	var showing_character_select := mode == MainFlowCoordinator.MODE_BATTLE and state == MainFlowCoordinator.STATE_CHARACTER_SELECT
 	if start_page != null:
 		start_page.visible = mode == MainFlowCoordinator.MODE_BOOT
 	if character_select_page != null:
-		character_select_page.visible = mode == MainFlowCoordinator.MODE_BATTLE and state == MainFlowCoordinator.STATE_CHARACTER_SELECT
+		character_select_page.visible = showing_character_select
 	if battle_result_panel != null:
 		battle_result_panel.visible = mode == MainFlowCoordinator.MODE_BATTLE and state == MainFlowCoordinator.STATE_BATTLE_RESULT
+	if showing_character_select and not _role_select_was_visible:
+		_animate_character_page_in()
+	_role_select_was_visible = showing_character_select
 	if character_select_page != null and character_select_page.visible:
 		_rebuild_character_list()
 	if battle_result_panel != null and battle_result_panel.visible:
@@ -246,6 +254,7 @@ func _on_start_battle_pressed() -> void:
 	_selected_difficulty_id = "standard"
 	if character_error_label != null:
 		character_error_label.text = ""
+		character_error_label.visible = false
 	if start_page != null:
 		start_page.visible = false
 	if character_select_page != null:
@@ -270,8 +279,12 @@ func _on_talents_pressed() -> void:
 
 
 func show_start_page() -> void:
+	if character_error_label != null:
+		character_error_label.text = ""
+		character_error_label.visible = false
 	if character_select_page != null:
 		character_select_page.visible = false
+	_role_select_was_visible = false
 	if battle_result_panel != null:
 		battle_result_panel.visible = false
 	if start_page != null:
@@ -300,21 +313,7 @@ func _on_character_confirm_pressed() -> void:
 		return
 	if character_confirm_button != null:
 		character_confirm_button.disabled = true
-	if character_transition_overlay == null:
-		_confirm_character_selection_now()
-		return
-	character_transition_overlay.visible = true
-	character_transition_overlay.modulate.a = 0.0
-	if character_transition_label != null:
-		character_transition_label.text = "进入战斗"
-		character_transition_label.modulate.a = 0.0
-	var transition := create_tween()
-	transition.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	transition.tween_property(character_transition_overlay, "modulate:a", 1.0, 0.20)
-	if character_transition_label != null:
-		transition.parallel().tween_property(character_transition_label, "modulate:a", 1.0, 0.18)
-	transition.tween_interval(0.45)
-	transition.tween_callback(_confirm_character_selection_now)
+	_confirm_character_selection_now()
 
 
 func _confirm_character_selection_now() -> void:
@@ -329,8 +328,7 @@ func _confirm_character_selection_now() -> void:
 			character_error_label.visible = true
 		if character_confirm_button != null:
 			character_confirm_button.disabled = false
-		if character_transition_overlay != null:
-			character_transition_overlay.visible = false
+		return
 
 
 func _setup_role_select_runtime_ui() -> void:
@@ -347,10 +345,11 @@ func _setup_role_select_runtime_ui() -> void:
 	runtime.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	character_select_page.add_child(runtime)
 
-	var background := ColorRect.new()
+	var background := ROLE_SELECT_BACKDROP_SCRIPT.new() as Control
+	background.name = "Backdrop"
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	background.color = Color("#061009")
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	role_select_backdrop = background
 	runtime.add_child(background)
 
 	var margin := MarginContainer.new()
@@ -358,7 +357,7 @@ func _setup_role_select_runtime_ui() -> void:
 	margin.add_theme_constant_override("margin_left", 24)
 	margin.add_theme_constant_override("margin_top", 8)
 	margin.add_theme_constant_override("margin_right", 24)
-	margin.add_theme_constant_override("margin_bottom", 8)
+	margin.add_theme_constant_override("margin_bottom", 18)
 	runtime.add_child(margin)
 
 	var page_column := VBoxContainer.new()
@@ -366,14 +365,15 @@ func _setup_role_select_runtime_ui() -> void:
 	margin.add_child(page_column)
 
 	var header := VBoxContainer.new()
-	header.custom_minimum_size = Vector2(0, 68)
+	header.custom_minimum_size = Vector2(0, 74)
 	header.alignment = BoxContainer.ALIGNMENT_CENTER
+	header.add_theme_constant_override("separation", 2)
 	page_column.add_child(header)
 	var title := Label.new()
 	title.text = "选择角色"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 36)
-	title.add_theme_color_override("font_color", Color("#c49a4a"))
+	title.add_theme_font_size_override("font_size", 30)
+	title.add_theme_color_override("font_color", Color("#ffe18a"))
 	title.add_theme_color_override("font_shadow_color", Color("#000000"))
 	title.add_theme_constant_override("shadow_offset_x", 2)
 	title.add_theme_constant_override("shadow_offset_y", 2)
@@ -382,7 +382,7 @@ func _setup_role_select_runtime_ui() -> void:
 	subtitle.text = "SELECT SURVIVOR"
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.add_theme_font_size_override("font_size", 11)
-	subtitle.add_theme_color_override("font_color", Color("#6e9d91"))
+	subtitle.add_theme_color_override("font_color", Color("#8dbda0"))
 	header.add_child(subtitle)
 
 	var body := HBoxContainer.new()
@@ -395,7 +395,7 @@ func _setup_role_select_runtime_ui() -> void:
 	survivor_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	body.add_child(survivor_panel)
 	var survivor_content := survivor_panel.get_node("Body") as VBoxContainer
-	var survivor_scroll := ScrollContainer.new()
+	var survivor_scroll := TouchScrollContainer.new()
 	survivor_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	survivor_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	survivor_content.add_child(survivor_scroll)
@@ -411,20 +411,27 @@ func _setup_role_select_runtime_ui() -> void:
 	body.add_child(center_column)
 
 	var summary := PanelContainer.new()
-	summary.custom_minimum_size = Vector2(0, 178)
-	summary.add_theme_stylebox_override("panel", _make_role_style(Color("#102116"), Color("#385843"), 2, 2))
+	summary.custom_minimum_size = Vector2(0, 128)
+	summary.add_theme_stylebox_override("panel", _make_role_style(Color("#15120f"), Color("#8d6818"), 2, 0))
 	center_column.add_child(summary)
+	var summary_stack := VBoxContainer.new()
+	summary_stack.add_theme_constant_override("separation", 0)
+	summary.add_child(summary_stack)
 	var summary_body := HBoxContainer.new()
 	summary_body.name = "Body"
 	summary_body.add_theme_constant_override("separation", 12)
-	summary.add_child(summary_body)
+	summary_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	summary_stack.add_child(summary_body)
 	character_icon = TextureRect.new()
-	character_icon.custom_minimum_size = Vector2(132, 132)
+	character_icon.custom_minimum_size = Vector2(78, 78)
+	character_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	character_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	character_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	character_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	summary_body.add_child(character_icon)
 	var character_info := VBoxContainer.new()
 	character_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	character_info.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	character_info.add_theme_constant_override("separation", 5)
 	summary_body.add_child(character_info)
 	character_name_label = Label.new()
@@ -441,15 +448,35 @@ func _setup_role_select_runtime_ui() -> void:
 	character_description_label.add_theme_color_override("font_color", Color("#c5b887"))
 	character_info.add_child(character_description_label)
 
-	character_details_scroll = ScrollContainer.new()
+	var details_frame := PanelContainer.new()
+	details_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var frame_padding := 12
+	var details_frame_style := _make_role_style(Color("#0b1510"), Color("#8d6818"), 2, 0)
+	details_frame_style.content_margin_left = frame_padding
+	details_frame_style.content_margin_top = frame_padding
+	details_frame_style.content_margin_right = frame_padding
+	details_frame_style.content_margin_bottom = frame_padding
+	details_frame.add_theme_stylebox_override("panel", details_frame_style)
+	center_column.add_child(details_frame)
+	character_details_scroll = TouchScrollContainer.new()
+	character_details_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	character_details_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	character_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	character_details_scroll.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c13"), Color("#385843"), 2, 3))
-	center_column.add_child(character_details_scroll)
+	character_details_scroll.clip_contents = true
+	details_frame.add_child(character_details_scroll)
+	var details_scroll_content := VBoxContainer.new()
+	details_scroll_content.name = "DetailsScrollContent"
+	details_scroll_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	character_details_scroll.add_child(details_scroll_content)
+	var details_padding := 8
+	var details_top_spacer := Control.new()
+	details_top_spacer.custom_minimum_size = Vector2(0, details_padding)
+	details_top_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	details_scroll_content.add_child(details_top_spacer)
 	var details_panel := PanelContainer.new()
 	details_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	details_panel.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c13"), Color("#385843"), 2, 3))
-	character_details_scroll.add_child(details_panel)
+	details_panel.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c13"), Color("#59441f"), 1, 0))
+	details_scroll_content.add_child(details_panel)
 	var details_content := VBoxContainer.new()
 	details_content.name = "DetailsContent"
 	details_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -470,6 +497,10 @@ func _setup_role_select_runtime_ui() -> void:
 	passive_list = VBoxContainer.new()
 	passive_list.add_theme_constant_override("separation", 6)
 	details_content.add_child(passive_list)
+	var details_bottom_spacer := Control.new()
+	details_bottom_spacer.custom_minimum_size = Vector2(0, details_padding)
+	details_bottom_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	details_scroll_content.add_child(details_bottom_spacer)
 
 	var difficulty_panel := _make_role_panel("DIFFICULTY")
 	difficulty_panel.name = "DifficultyPanel"
@@ -490,42 +521,26 @@ func _setup_role_select_runtime_ui() -> void:
 	var footer := HBoxContainer.new()
 	footer.custom_minimum_size = Vector2(0, 34)
 	page_column.add_child(footer)
-	character_back_button = _make_role_button("← 返回主界")
-	character_back_button.custom_minimum_size = Vector2(136, 34)
+	character_back_button = _make_role_button("◀ 返回主界面")
+	character_back_button.custom_minimum_size = Vector2(160, 34)
 	footer.add_child(character_back_button)
 	var footer_spacer := Control.new()
 	footer_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	footer.add_child(footer_spacer)
-	character_confirm_button = _make_role_button("继续  >")
+	character_confirm_button = _make_role_button("继续 ▶")
 	character_confirm_button.custom_minimum_size = Vector2(136, 34)
 	footer.add_child(character_confirm_button)
 	character_error_label = Label.new()
 	character_error_label.visible = false
 	page_column.add_child(character_error_label)
-
-	character_transition_overlay = ColorRect.new()
-	character_transition_overlay.name = "TransitionOverlay"
-	character_transition_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	character_transition_overlay.color = Color("#030805")
-	character_transition_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	character_transition_overlay.visible = false
-	character_transition_overlay.z_index = 2
-	runtime.add_child(character_transition_overlay)
-	character_transition_label = Label.new()
-	character_transition_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	character_transition_label.text = "进入战斗"
-	character_transition_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	character_transition_label.add_theme_font_size_override("font_size", 32)
-	character_transition_label.add_theme_color_override("font_color", Color("#c49a4a"))
-	character_transition_overlay.add_child(character_transition_label)
 	_add_role_select_scanlines(runtime)
 
 
 func _add_role_select_scanlines(runtime: Control) -> void:
 	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
 	scanline_image.fill(Color.TRANSPARENT)
-	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.10))
-	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.10))
+	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.045))
+	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.045))
 	var scanlines := TextureRect.new()
 	scanlines.texture = ImageTexture.create_from_image(scanline_image)
 	scanlines.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
@@ -571,8 +586,6 @@ func _rebuild_character_list() -> void:
 			button.add_theme_constant_override("icon_max_width", 42)
 		button.set_meta("character_id", character_id)
 		button.pressed.connect(_on_character_selected.bind(character_id))
-		button.mouse_entered.connect(_on_character_button_hovered.bind(button))
-		button.mouse_exited.connect(_on_character_button_unhovered.bind(button))
 		character_list.add_child(button)
 	if first_character_id.is_empty():
 		if character_error_label != null:
@@ -581,6 +594,25 @@ func _rebuild_character_list() -> void:
 		return
 	_build_difficulty_list()
 	_on_character_selected(first_character_id)
+	call_deferred("_animate_role_select_entries")
+
+func _animate_role_select_entries() -> void:
+	var containers: Array = [character_list, difficulty_list]
+	for container_variant in containers:
+		var container := container_variant as VBoxContainer
+		if container == null:
+			continue
+		for index in container.get_child_count():
+			var button := container.get_child(index) as Button
+			if button == null:
+				continue
+			button.pivot_offset = button.size * 0.5
+			button.modulate.a = 0.0
+			button.scale = Vector2(0.96, 0.96)
+			var tween := create_tween().set_parallel(true)
+			tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			tween.tween_property(button, "modulate:a", 1.0, 0.22).set_delay(float(index) * 0.045)
+			tween.tween_property(button, "scale", Vector2.ONE, 0.26).set_delay(float(index) * 0.045)
 
 func _on_character_selected(character_id: String) -> void:
 	if character_id == _selected_character_id and not _selected_character_record.is_empty():
@@ -625,19 +657,22 @@ func _refresh_character_details(record: Dictionary) -> void:
 	character_name_label.text = str(record.get("display_name", record.get("id", "未知角色")))
 	character_title_label.text = "STARTER SURVIVOR · 初始角色" if record.get("tags", []).has("starter") else "SURVIVOR · 可用角色"
 	character_description_label.text = str(record.get("description", "暂无角色描述"))
-	var icon_path := str(record.get("icon", ""))
-	character_icon.texture = load(icon_path) as Texture2D if not icon_path.is_empty() else null
-	_build_stat_rows(record.get("base_stats", {}))
+	var display_sprite_path := str(record.get("display_sprite", ""))
+	character_icon.texture = load(display_sprite_path) as Texture2D if not display_sprite_path.is_empty() and ResourceLoader.exists(display_sprite_path) else null
+	_build_stat_rows(record.get("base_stats", {}), record.get("display_stats", []))
 	_build_weapon_cards(record.get("start_weapons", []))
 	_build_passive_cards(record.get("passive_modifiers", []))
 
-func _build_stat_rows(stats: Variant) -> void:
+func _build_stat_rows(stats: Variant, display_stat_ids: Variant = []) -> void:
 	if not (stats is Dictionary):
 		return
-	var names := {"max_hp": "生命值", "hp_regen": "生命回复", "shield": "护盾", "armor": "护甲", "move_speed": "移动速度", "load_capacity": "负载上限", "pickup_radius": "拾取范围", "humanity": "人性", "divinity": "侵蚀度"}
+	var names := {"max_hp": "生命值", "hp_regen": "生命回复", "shield": "护盾", "armor": "护甲", "move_speed": "移动速度", "load_capacity": "负载上限", "pickup_radius": "拾取范围", "humanity": "理智值", "divinity": "侵蚀度"}
 	var caps := {"max_hp": 20.0, "hp_regen": 10.0, "shield": 20.0, "armor": 20.0, "move_speed": 360.0, "load_capacity": 150.0, "pickup_radius": 240.0, "humanity": 100.0, "divinity": 100.0}
 	var colors := {"max_hp": Color("#c85f52"), "hp_regen": Color("#d38b61"), "shield": Color("#72a9c8"), "armor": Color("#9c87c7"), "move_speed": Color("#6d9bc8"), "load_capacity": Color("#c49a4a"), "pickup_radius": Color("#73ad79"), "humanity": Color("#82b878"), "divinity": Color("#a979bd")}
-	for stat_id in ["max_hp", "hp_regen", "shield", "armor", "move_speed", "load_capacity", "pickup_radius", "humanity", "divinity"]:
+	var default_stat_order: Array[String] = ["max_hp", "hp_regen", "shield", "armor", "move_speed", "load_capacity", "pickup_radius", "humanity", "divinity"]
+	var stat_order: Array = display_stat_ids if display_stat_ids is Array else default_stat_order
+	for stat_id_variant in stat_order:
+		var stat_id := str(stat_id_variant)
 		if stats.has(stat_id):
 			stats_list.add_child(_make_stat_row(str(names.get(stat_id, stat_id)), float(stats[stat_id]), float(caps.get(stat_id, 100.0)), colors.get(stat_id, Color("#c49a4a"))))
 
@@ -684,7 +719,7 @@ func _build_weapon_cards(weapon_ids: Variant) -> void:
 			weapon_list.add_child(_make_info_card(str(weapon_id), "武器配置缺失"))
 			continue
 		var card := PanelContainer.new()
-		card.add_theme_stylebox_override("panel", _make_role_style(Color("#17291e"), Color("#385843"), 2, 4))
+		card.add_theme_stylebox_override("panel", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
 		var body := HBoxContainer.new()
 		body.add_theme_constant_override("separation", 10)
 		var icon := TextureRect.new()
@@ -728,16 +763,19 @@ func _build_passive_cards(passives: Variant) -> void:
 
 func _make_info_card(title_text: String, body_text: String) -> Control:
 	var card := PanelContainer.new()
-	card.add_theme_stylebox_override("panel", _make_role_style(Color("#17291e"), Color("#385843"), 2, 4))
+	card.add_theme_stylebox_override("panel", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
 	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 4)
 	var title := Label.new()
 	title.text = title_text
-	title.add_theme_color_override("font_color", Color("#d6c68e"))
+	title.add_theme_color_override("font_color", Color("#d3a637"))
+	title.add_theme_font_size_override("font_size", 11)
 	content.add_child(title)
 	var body := Label.new()
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.text = body_text
-	body.add_theme_color_override("font_color", Color("#9eab91"))
+	body.add_theme_color_override("font_color", Color("#a9a184"))
+	body.add_theme_font_size_override("font_size", 11)
 	content.add_child(body)
 	card.add_child(content)
 	return card
@@ -773,9 +811,9 @@ func _refresh_difficulty_button_states() -> void:
 		var button := child as Button
 		var selected := str(button.get_meta("difficulty_id", "")) == _selected_difficulty_id
 		var color: Color = button.get_meta("difficulty_color", Color("#385843"))
-		button.add_theme_stylebox_override("normal", _make_role_style(Color("#263c28") if selected else Color("#17291e"), color if selected else Color("#385843"), 2, 4))
-		button.add_theme_stylebox_override("hover", _make_role_style(Color("#243a2a"), color, 2, 4))
-		button.add_theme_stylebox_override("pressed", _make_role_style(Color("#2b4930"), color.lightened(0.12), 2, 4))
+		button.add_theme_stylebox_override("normal", _make_role_style(Color("#2c2817") if selected else Color("#111b16"), color if selected else Color("#59441f"), 2 if selected else 1, 0))
+		button.add_theme_stylebox_override("hover", _make_role_style(Color("#473616") if selected else Color("#2b3020"), color.lightened(0.12), 2, 0))
+		button.add_theme_stylebox_override("pressed", _make_role_style(Color("#473616"), color.lightened(0.12), 1, 0, true))
 
 func _refresh_character_button_states() -> void:
 	if character_list == null:
@@ -785,86 +823,141 @@ func _refresh_character_button_states() -> void:
 			continue
 		var button := child as Button
 		var selected := str(button.get_meta("character_id", "")) == _selected_character_id
-		button.add_theme_stylebox_override("normal", _make_role_style(Color("#263c28") if selected else Color("#16271d"), Color("#a8d96f") if selected else Color("#385843"), 2, 4))
+		var normal_background := Color("#2c2817") if selected else Color("#111b16")
+		var normal_border := Color("#ffe18a") if selected else Color("#59441f")
+		button.add_theme_stylebox_override("normal", _make_role_style(normal_background, normal_border, 2 if selected else 1, 0))
+		button.add_theme_stylebox_override("hover", _make_role_style(Color("#473616") if selected else Color("#2b3020"), Color("#ffe18a"), 2, 0))
 
 func _on_character_button_hovered(button: Button) -> void:
-	if button == null:
+	if button == null or button.disabled:
 		return
+	var old_tween: Tween = _role_button_tweens.get(button)
+	if old_tween != null:
+		old_tween.kill()
 	button.pivot_offset = button.size * 0.5
-	var tween := create_tween()
+	var tween := create_tween().set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(button, "scale", Vector2(1.015, 1.015), 0.1)
+	tween.tween_property(button, "modulate", Color(1.06, 1.04, 0.96, 1.0), 0.1)
+	_role_button_tweens[button] = tween
 
 func _on_character_button_unhovered(button: Button) -> void:
 	if button == null:
 		return
+	var old_tween: Tween = _role_button_tweens.get(button)
+	if old_tween != null:
+		old_tween.kill()
 	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(button, "scale", Vector2.ONE, 0.1)
+	tween.tween_property(button, "modulate", Color.WHITE, 0.1)
+	_role_button_tweens[button] = tween
 
 func _animate_character_page_in() -> void:
 	if character_select_page == null:
 		return
-	character_select_page.modulate.a = 0.0
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(character_select_page, "modulate:a", 1.0, 0.32)
+	var runtime := character_select_page.get_node_or_null("RoleSelectRuntime") as Control
+	if runtime != null:
+		runtime.pivot_offset = runtime.size * 0.5
+		runtime.modulate.a = 0.0
+		runtime.scale = Vector2(0.985, 0.985)
+		var runtime_tween := create_tween().set_parallel(true)
+		runtime_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		runtime_tween.tween_property(runtime, "modulate:a", 1.0, 0.34)
+		runtime_tween.tween_property(runtime, "scale", Vector2.ONE, 0.42)
+	else:
+		character_select_page.modulate.a = 0.0
+		var page_tween := create_tween()
+		page_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		page_tween.tween_property(character_select_page, "modulate:a", 1.0, 0.32)
 
 func _animate_character_details() -> void:
 	if character_name_label == null:
 		return
+	if _character_icon_tween != null:
+		_character_icon_tween.kill()
 	character_name_label.modulate.a = 0.0
 	character_description_label.modulate.a = 0.0
 	var tween := create_tween().set_parallel(true)
 	tween.tween_property(character_name_label, "modulate:a", 1.0, 0.2)
 	tween.tween_property(character_description_label, "modulate:a", 1.0, 0.28).set_delay(0.06)
 	if character_icon != null:
+		character_icon.pivot_offset = character_icon.size * 0.5
 		character_icon.modulate.a = 0.0
+		character_icon.scale = Vector2(0.90, 0.90)
 		tween.tween_property(character_icon, "modulate:a", 1.0, 0.24)
+		tween.tween_property(character_icon, "scale", Vector2.ONE, 0.30)
+		tween.chain().tween_callback(_start_character_icon_breathing)
+
+func _start_character_icon_breathing() -> void:
+	if character_icon == null or not is_instance_valid(character_icon):
+		return
+	if _character_icon_tween != null:
+		_character_icon_tween.kill()
+	_character_icon_tween = create_tween().set_loops()
+	_character_icon_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_character_icon_tween.tween_property(character_icon, "scale", Vector2(1.015, 1.015), 1.05)
+	_character_icon_tween.tween_property(character_icon, "scale", Vector2.ONE, 1.05)
 
 func _make_role_panel(title_text: String) -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", _make_role_style(Color("#102116"), Color("#385843"), 2, 2))
+	panel.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c14"), Color("#8d6818"), 2, 0))
 	var column := VBoxContainer.new()
 	column.name = "Body"
-	column.add_theme_constant_override("separation", 8)
+	column.add_theme_constant_override("separation", 7)
 	panel.add_child(column)
 	if not title_text.is_empty():
 		var title := Label.new()
 		title.text = title_text
-		title.custom_minimum_size = Vector2(0, 30)
-		title.add_theme_color_override("font_color", Color("#c49a4a"))
-		title.add_theme_font_size_override("font_size", 13)
+		title.custom_minimum_size = Vector2(0, 26)
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		title.add_theme_color_override("font_color", Color("#ffe18a"))
+		title.add_theme_font_size_override("font_size", 12)
 		column.add_child(title)
+		var rule := ColorRect.new()
+		rule.custom_minimum_size = Vector2(0, 1)
+		rule.color = Color("#8d6818")
+		column.add_child(rule)
 	return panel
 
 func _make_role_section_title(text: String) -> Label:
 	var label := Label.new()
 	label.text = text
-	label.add_theme_color_override("font_color", Color("#c49a4a"))
-	label.add_theme_font_size_override("font_size", 13)
+	label.add_theme_color_override("font_color", Color("#d3a637"))
+	label.add_theme_font_size_override("font_size", 12)
 	return label
 
 func _make_role_button(text: String) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_color_override("font_color", Color("#d6c68e"))
-	button.add_theme_color_override("font_hover_color", Color("#f1df9e"))
-	button.add_theme_color_override("font_pressed_color", Color("#e8f0d8"))
-	button.add_theme_stylebox_override("normal", _make_role_style(Color("#16271d"), Color("#385843"), 2, 4))
-	button.add_theme_stylebox_override("hover", _make_role_style(Color("#243a2a"), Color("#72a85b"), 2, 4))
-	button.add_theme_stylebox_override("pressed", _make_role_style(Color("#2b4930"), Color("#a8d96f"), 2, 4))
+	button.add_theme_font_size_override("font_size", 12)
+	button.add_theme_color_override("font_color", Color("#d9d0af"))
+	button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
+	button.add_theme_color_override("font_pressed_color", Color("#f1df9e"))
+	button.add_theme_stylebox_override("normal", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
+	button.add_theme_stylebox_override("hover", _make_role_style(Color("#2b3020"), Color("#ffe18a"), 2, 0))
+	button.add_theme_stylebox_override("pressed", _make_role_style(Color("#473616"), Color("#d3a637"), 1, 0, true))
+	button.add_theme_stylebox_override("disabled", _make_role_style(Color("#121513"), Color("#454238"), 1, 0))
+	button.mouse_entered.connect(_on_character_button_hovered.bind(button))
+	button.mouse_exited.connect(_on_character_button_unhovered.bind(button))
 	return button
 
-func _make_role_style(background: Color, border: Color, border_width: int, radius: int) -> StyleBoxFlat:
+func _make_role_style(background: Color, border: Color, border_width: int, radius: int, pressed: bool = false) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(border_width)
 	style.set_corner_radius_all(radius)
+	style.border_color = border.darkened(0.12) if pressed else border
+	style.shadow_color = border.darkened(0.72) if not pressed and border_width > 0 else Color(0.0, 0.0, 0.0, 0.0)
+	style.shadow_size = 4 if not pressed and border_width > 0 else 0
+	style.shadow_offset = Vector2(2, 2) if border_width > 0 else Vector2.ZERO
 	style.content_margin_left = 10.0
-	style.content_margin_top = 8.0
+	style.content_margin_top = 7.0 if not pressed else 8.0
 	style.content_margin_right = 10.0
-	style.content_margin_bottom = 8.0
+	style.content_margin_bottom = 7.0 if not pressed else 6.0
 	return style
 
 func _refresh_result_text() -> void:

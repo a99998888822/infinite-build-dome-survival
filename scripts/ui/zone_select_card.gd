@@ -83,12 +83,12 @@ func set_interaction_locked(locked: bool) -> void:
 
 
 func _prepare_layout() -> void:
-	custom_minimum_size = Vector2(226, 274)
+	custom_minimum_size = Vector2(184, 262)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	if content != null:
-		content.custom_minimum_size = Vector2(226, 274)
+		content.custom_minimum_size = Vector2(184, 262)
 		content.add_theme_constant_override("separation", 6)
 	if _status_label == null and content != null:
 		_status_label = Label.new()
@@ -273,9 +273,22 @@ func _get_zone_tint() -> Color:
 func _format_dictionary(value_data: Variant) -> String:
 	if not (value_data is Dictionary) or (value_data as Dictionary).is_empty():
 		return "无"
+	var label_overrides := {
+		"max_hp_percent": "生命",
+		"armor_flat": "护甲",
+		"spawn_interval_percent": "刷怪频率",
+		"damage_taken_percent": "承伤",
+	}
 	var parts: Array[String] = []
-	for key_variant in (value_data as Dictionary).keys():
-		parts.append("%s %s" % [str(key_variant), str((value_data as Dictionary)[key_variant])])
+	var keys: Array = (value_data as Dictionary).keys()
+	keys.sort()
+	for key_variant in keys:
+		var stat_id := str(key_variant)
+		var amount := int((value_data as Dictionary)[key_variant])
+		var label := str(label_overrides.get(stat_id, StatDefinitions.get_display_name(stat_id)))
+		var sign := "+" if amount > 0 else ""
+		var suffix := "%" if stat_id.ends_with("_percent") or StatDefinitions.is_percent_stat(stat_id) else ""
+		parts.append("%s %s%d%s" % [label, sign, amount, suffix])
 	return ", ".join(parts)
 
 

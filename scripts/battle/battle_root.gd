@@ -6,11 +6,13 @@ class_name BattleRoot
 @onready var wave_manager: WaveManager = get_node_or_null("WaveManager")
 @onready var hud: CanvasLayer = get_node_or_null("HUD")
 @onready var esc_overlay: EscOverlay = get_node_or_null("EscLayer/EscOverlay")
+@onready var mobile_joystick: MobileJoystick = get_node_or_null("MobileControls/MobileJoystick")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 
 
 func _ready() -> void:
+	_bind_mobile_joystick()
 	_bind_to_flow()
 
 
@@ -23,6 +25,8 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if OS.has_feature("android"):
+		return
 	if _main_flow_coordinator == null:
 		return
 	if not (event is InputEventKey):
@@ -52,10 +56,36 @@ func _bind_to_flow() -> void:
 	if esc_overlay != null and not esc_overlay.back_pressed.is_connected(_on_esc_back_pressed):
 		esc_overlay.back_pressed.connect(_on_esc_back_pressed)
 	_apply_esc_overlay_visibility(coordinator.get_current_state())
+	_apply_mobile_controls(coordinator.get_current_state())
 
 
 func _on_flow_state_changed(_previous_state: String, current_state: String) -> void:
 	_apply_esc_overlay_visibility(current_state)
+	_apply_mobile_controls(current_state)
+
+
+func _bind_mobile_joystick() -> void:
+	if mobile_joystick == null:
+		return
+	if not mobile_joystick.direction_changed.is_connected(_on_mobile_joystick_direction_changed):
+		mobile_joystick.direction_changed.connect(_on_mobile_joystick_direction_changed)
+	mobile_joystick.set_touch_blocker_root(hud)
+	mobile_joystick.set_mobile_input_enabled(false)
+
+
+func _apply_mobile_controls(state: String) -> void:
+	var should_enable := OS.has_feature("mobile") and state == MainFlowCoordinator.STATE_WAVE_COMBAT
+	if mobile_joystick != null:
+		mobile_joystick.set_mobile_input_enabled(should_enable)
+	if not should_enable and player != null:
+		player.set_mobile_move_direction(Vector2.ZERO)
+
+
+func _on_mobile_joystick_direction_changed(direction: Vector2) -> void:
+	if player == null:
+		return
+	var can_move := _main_flow_coordinator != null and _main_flow_coordinator.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
+	player.set_mobile_move_direction(direction if can_move else Vector2.ZERO)
 
 
 func _apply_esc_overlay_visibility(state: String) -> void:

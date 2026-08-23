@@ -22,6 +22,9 @@ const TRIGGER_INTEREST_SUCCESS: String = "interest_success"
 const TRIGGER_PRINCIPAL_ZERO: String = "principal_zero"
 const TRIGGER_DERIVED: String = "derived"
 const TRIGGER_ENEMY_KILL: String = "enemy_kill"
+const TRIGGER_DYNAMIC: String = "dynamic"
+const TRIGGER_ON_REVIVE: String = "on_revive"
+const TRIGGER_SHIELD_BREAK: String = "shield_break"
 
 const EFFECT_ADD_PRINCIPAL_FLAT: String = "add_principal_flat"
 const EFFECT_ADD_PRINCIPAL_FROM_GOLD_PERCENT: String = "add_principal_from_gold_percent"
@@ -38,6 +41,12 @@ const EFFECT_DERIVED_STAT_FROM_PRINCIPAL: String = "derived_stat_from_principal"
 const EFFECT_DERIVED_INTEREST_FROM_EROSION: String = "derived_interest_from_erosion"
 const EFFECT_BANKRUPTCY_RECOVERY: String = "bankruptcy_recovery"
 const EFFECT_TIP_TRAY_DROP: String = "tip_tray_drop"
+const EFFECT_ADD_STAT: String = "add_stat"
+const EFFECT_GRANT_SHIELD: String = "grant_shield"
+const EFFECT_HEAL: String = "heal"
+const EFFECT_CONDITIONAL_STAT: String = "conditional_stat"
+const EFFECT_DERIVED_STAT_FROM_PLAYER_STAT: String = "derived_stat_from_player_stat"
+const EFFECT_BLOCK_STAT_INCREASE: String = "block_stat_increase"
 
 var player: PlayerController = null
 var principal: int = 0

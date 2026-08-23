@@ -10,7 +10,7 @@
       "max_hp": 10,
       "armor": 0,
       "move_speed": 100,
-      "melee_damage": 8
+      "melee_damage": 3
     },
     "ai_type": "chase_player",
     "scene": "res://scenes/enemy/mutated_grub.tscn",

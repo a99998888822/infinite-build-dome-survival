@@ -5,6 +5,7 @@ signal bgm_changed(bgm_id: String)
 const BUS_MASTER: String = "Master"
 const BUS_BGM: String = "BGM"
 const BUS_SFX: String = "SFX"
+const BGM_PLAYBACK_GAIN_DB: float = 12.0
 const VOLUME_SETTING_BY_BUS: Dictionary = {
 	"Master": "master_volume",
 	"BGM": "bgm_volume",
@@ -22,7 +23,7 @@ const UI_SFX_PATHS: Dictionary = {
 }
 const DEFAULT_BGM_PATHS: Dictionary = {
 	"menu": "res://assets/audio/bgm/bgm_menu.ogg",
-	"camp": "res://assets/audio/bgm/bgm_camp.ogg",
+	"camp": "res://assets/audio/bgm/bgm_menu.ogg",
 	"battle": "res://assets/audio/bgm/bgm_battle.ogg",
 }
 
@@ -39,6 +40,7 @@ func _ready() -> void:
 	_bgm_player = AudioStreamPlayer.new()
 	_bgm_player.name = "BgmPlayer"
 	_bgm_player.bus = BUS_BGM
+	_bgm_player.volume_db = BGM_PLAYBACK_GAIN_DB
 	add_child(_bgm_player)
 	for index in range(8):
 		var player := AudioStreamPlayer.new()
@@ -51,8 +53,12 @@ func _ready() -> void:
 
 func play_bgm(bgm_id: String) -> bool:
 	var sanitized_id := bgm_id.strip_edges()
-	if sanitized_id.is_empty() or sanitized_id == current_bgm_id:
-		return not sanitized_id.is_empty()
+	if sanitized_id.is_empty() or _bgm_player == null:
+		return false
+	if sanitized_id == current_bgm_id:
+		if not _bgm_player.playing:
+			_bgm_player.play()
+		return true
 	var path := str(DEFAULT_BGM_PATHS.get(sanitized_id, ""))
 	if path.is_empty() or not ResourceLoader.exists(path):
 		current_bgm_id = sanitized_id

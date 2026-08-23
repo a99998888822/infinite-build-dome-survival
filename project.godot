@@ -28,6 +28,10 @@ ZoneProgression="*res://autoloads/zone_progression.gd"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+
 [gui]
 
 theme/custom="res://assets/font/theme_global.tres"
@@ -41,3 +45,4 @@ theme/custom="res://assets/font/theme_global.tres"
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

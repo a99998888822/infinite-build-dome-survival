@@ -6,7 +6,7 @@ signal weapon_upgraded(weapon_id: String, level: int)
 signal equip_failed(weapon_id: String, reason: String)
 
 const ATTACK_EFFECT_SECONDS: float = 0.18
-const PROJECTILE_VISUAL_SCALE: float = 0.32
+const PROJECTILE_VISUAL_SCALE: float = 1.0
 const EFFECT_MIN_SCALE: float = 0.35
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
 
@@ -128,6 +128,11 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 	if weapon == null or owner_player == null or targeting_service == null:
 		return false
+	if weapon.get_attack_kind() == "mixed" and is_zero_approx(weapon.get_projectile_speed()):
+		var mixed_attacked := _apply_mixed_damage(weapon)
+		if mixed_attacked:
+			weapon.reset_attack_timer()
+		return mixed_attacked
 	var attacked := false
 	var damage_events := weapon.calculate_damage_events(false)
 	for damage_event in damage_events:
@@ -139,6 +144,55 @@ func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 	if attacked:
 		weapon.reset_attack_timer()
 	return attacked
+
+
+func _apply_mixed_damage(weapon: WeaponInstance) -> bool:
+	var damage_events := weapon.calculate_damage_events(false)
+	var melee_event: DamageEvent = null
+	var ranged_event: DamageEvent = null
+	for damage_event in damage_events:
+		if damage_event.damage_kind == WeaponInstance.DAMAGE_KIND_MELEE:
+			melee_event = damage_event
+		elif damage_event.damage_kind == WeaponInstance.DAMAGE_KIND_RANGED:
+			ranged_event = damage_event
+	if melee_event == null and ranged_event == null:
+		return false
+
+	var attack_range := weapon.get_attack_range()
+	var hit_enemies := targeting_service.find_enemies_in_radius(owner_player.global_position, attack_range)
+	var damaged := false
+	var visual_direction := Vector2.RIGHT if owner_player.facing_right else Vector2.LEFT
+	var last_hit_position := owner_player.global_position
+	# 目标范围由武器的攻击形态决定；melee/ranged 仅表示伤害组件来源。
+	for enemy_node in hit_enemies:
+		var enemy := enemy_node as EnemyController
+		if enemy == null or not enemy.is_alive():
+			continue
+		var total_damage := 0
+		var damage_components: Array[int] = []
+		var is_critical := false
+		if melee_event != null:
+			total_damage += melee_event.damage
+			damage_components.append(melee_event.damage)
+			is_critical = melee_event.is_critical
+		if ranged_event != null:
+			total_damage += ranged_event.damage
+			damage_components.append(ranged_event.damage)
+			is_critical = is_critical or ranged_event.is_critical
+		if total_damage <= 0:
+			continue
+		visual_direction = owner_player.global_position.direction_to(enemy.global_position)
+		enemy.take_damage(total_damage, weapon.weapon_id, is_critical, visual_direction, damage_components)
+		last_hit_position = enemy.global_position
+		damaged = true
+
+	if not damaged:
+		return false
+	if weapon.register_hit_feedback_frame(false):
+		_spawn_hit_sparks(last_hit_position, visual_direction)
+	weapon.play_attack_hit_sfx()
+	_spawn_attack_effect_visual(weapon, owner_player.global_position, attack_range, visual_direction)
+	return true
 
 
 func _apply_melee_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> bool:
@@ -153,7 +207,7 @@ func _apply_melee_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> b
 		visual_direction = owner_player.global_position.direction_to(enemy.global_position)
 		enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, visual_direction)
 		if weapon.register_hit_feedback_frame(false):
-			_spawn_hit_sparks(enemy.global_position)
+			_spawn_hit_sparks(enemy.global_position, visual_direction)
 		damaged = true
 	if damaged:
 		weapon.play_attack_hit_sfx()
@@ -171,7 +225,7 @@ func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> 
 	var hit_direction := owner_player.global_position.direction_to(enemy.global_position)
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, hit_direction)
 	if weapon.register_hit_feedback_frame(false):
-		_spawn_hit_sparks(enemy.global_position)
+		_spawn_hit_sparks(enemy.global_position, hit_direction)
 	weapon.play_attack_hit_sfx()
 	return true
 
@@ -240,26 +294,8 @@ func _spawn_attack_effect_visual(weapon: WeaponInstance, center_position: Vector
 	tween.tween_callback(Callable(visual, "queue_free"))
 
 
-func _spawn_hit_sparks(hit_position: Vector2) -> void:
-	var particles := CPUParticles2D.new()
-	particles.name = "HitSparks"
-	particles.top_level = true
-	particles.global_position = hit_position
-	particles.z_index = 80
-	particles.amount = 10
-	particles.lifetime = 0.22
-	particles.one_shot = true
-	particles.explosiveness = 1.0
-	particles.direction = Vector2.RIGHT
-	particles.spread = 180.0
-	particles.initial_velocity_min = 70.0
-	particles.initial_velocity_max = 150.0
-	particles.scale_amount_min = 1.0
-	particles.scale_amount_max = 2.0
-	particles.color = Color(1.0, 0.68, 0.16, 1.0)
-	_get_visual_root().add_child(particles)
-	particles.finished.connect(particles.queue_free)
-	particles.restart()
+func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:
+	HitParticleBurst.spawn(_get_visual_root(), hit_position, burst_direction)
 
 
 func _load_weapon_texture(weapon: WeaponInstance, field_name: String) -> Texture2D:

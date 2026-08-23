@@ -50,6 +50,9 @@ const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = [
 	BattleFinanceSystem.TRIGGER_PRINCIPAL_ZERO,
 	BattleFinanceSystem.TRIGGER_DERIVED,
 	BattleFinanceSystem.TRIGGER_ENEMY_KILL,
+	BattleFinanceSystem.TRIGGER_DYNAMIC,
+	BattleFinanceSystem.TRIGGER_ON_REVIVE,
+	BattleFinanceSystem.TRIGGER_SHIELD_BREAK,
 ]
 const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FLAT,
@@ -67,6 +70,12 @@ const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_DERIVED_INTEREST_FROM_EROSION,
 	BattleFinanceSystem.EFFECT_BANKRUPTCY_RECOVERY,
 	BattleFinanceSystem.EFFECT_TIP_TRAY_DROP,
+	BattleFinanceSystem.EFFECT_ADD_STAT,
+	BattleFinanceSystem.EFFECT_GRANT_SHIELD,
+	BattleFinanceSystem.EFFECT_HEAL,
+	BattleFinanceSystem.EFFECT_CONDITIONAL_STAT,
+	BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT,
+	BattleFinanceSystem.EFFECT_BLOCK_STAT_INCREASE,
 ]
 
 var errors: Array[String] = []
@@ -170,6 +179,8 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 	match typeof(value_data):
 		TYPE_DICTIONARY:
 			for key in value_data.keys():
+				if str(key) == "value" and value_data.has("stat") and not StatDefinitions.is_integer_stat(str(value_data.get("stat", ""))):
+					continue
 				_validate_integer_values(value_data[key], "%s.%s" % [path, key])
 		TYPE_ARRAY:
 			for index in value_data.size():
@@ -325,8 +336,11 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 		if not (effect_data[key] is int or effect_data[key] is float):
 			errors.append("%s.%s must be a number." % [path, key])
 			continue
-		if float(effect_data[key]) < 0.0:
+		if float(effect_data[key]) < 0.0 and not (key == "value" and str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_ADD_STAT):
 			errors.append("%s.%s must be greater than or equal to 0." % [path, key])
+	for stat_key in ["stat", "source_stat", "target_stat"]:
+		if effect_data.has(stat_key) and not StatDefinitions.has_stat(str(effect_data.get(stat_key, ""))):
+			errors.append("Unknown stat reference in %s.%s: %s" % [path, stat_key, str(effect_data.get(stat_key, ""))])
 	if effect_data.has("waves") and int(effect_data["waves"]) < 0:
 		errors.append("%s.waves must be greater than or equal to 0." % path)
 	if effect_data.has("interval_waves") and int(effect_data["interval_waves"]) <= 0:
@@ -385,6 +399,17 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 		if not (record is Dictionary):
 			continue
 		var path := "characters[%d:%s]" % [record_index, str(record.get("id", ""))]
+		if record.has("display_sprite") and not (record["display_sprite"] is String):
+			errors.append("%s.display_sprite must be a string resource path." % path)
+		if record.has("display_stats"):
+			var display_stats: Variant = record["display_stats"]
+			if not (display_stats is Array):
+				errors.append("%s.display_stats must be an array." % path)
+			else:
+				for stat_index in display_stats.size():
+					var stat_id := str(display_stats[stat_index])
+					if stat_id.is_empty() or not StatDefinitions.has_stat(stat_id):
+						errors.append("Unknown display stat in %s.display_stats[%d]: %s" % [path, stat_index, stat_id])
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
 		var start_weapons: Variant = record.get("start_weapons", [])
 		if not (start_weapons is Array):

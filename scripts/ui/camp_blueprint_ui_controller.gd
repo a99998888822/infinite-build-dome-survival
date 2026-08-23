@@ -13,6 +13,9 @@ const MUTED := Color("#827a61")
 const GREEN := Color("#70bf7d")
 const RED := Color("#bd6a62")
 const CYAN := Color("#8dbda0")
+const TALENT_STATS_WITHOUT_PERCENT_SUFFIX: Dictionary = {
+	"attack_speed": true,
+}
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_building_id := ""
@@ -32,6 +35,7 @@ var _last_currency := -1
 var _button_tweens: Dictionary = {}
 var _upgrade_toast: Label = null
 var _currency_tween: Tween = null
+var _skip_next_option_animation := false
 
 
 func _ready() -> void:
@@ -91,7 +95,7 @@ func _build_interface() -> void:
 	_currency_label = Label.new()
 	_currency_label.custom_minimum_size.x = 190
 	_currency_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_currency_label.add_theme_font_size_override("font_size", 18)
+	_currency_label.add_theme_font_size_override("font_size", 16)
 	top_row.add_child(_currency_label)
 	var title := Label.new()
 	title.text = "营地搭建"
@@ -99,14 +103,16 @@ func _build_interface() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.add_theme_color_override("font_color", GOLD_BRIGHT)
-	title.add_theme_font_size_override("font_size", 27)
+	title.add_theme_font_size_override("font_size", 23)
 	top_row.add_child(title)
 	var back_button := _make_compact_button("返回主界面", GREEN)
 	back_button.custom_minimum_size = Vector2(120, 32)
+	back_button.add_theme_font_size_override("font_size", 10)
 	back_button.pressed.connect(_on_back_pressed)
 	top_row.add_child(back_button)
 	var reset_button := _make_compact_button("重置升级", RED)
 	reset_button.custom_minimum_size = Vector2(98, 32)
+	reset_button.add_theme_font_size_override("font_size", 10)
 	reset_button.pressed.connect(_on_reset_pressed.bind(reset_button))
 	top_row.add_child(reset_button)
 
@@ -122,7 +128,7 @@ func _build_interface() -> void:
 	left_column.add_theme_constant_override("separation", 6)
 	left_panel.add_child(left_column)
 	left_column.add_child(_make_header("营地建筑", "固定设施与成长入口"))
-	var building_scroll := ScrollContainer.new()
+	var building_scroll := TouchScrollContainer.new()
 	building_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	building_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	building_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
@@ -165,15 +171,15 @@ func _build_interface() -> void:
 	upper.add_child(summary_panel)
 	var summary_content := VBoxContainer.new()
 	summary_panel.add_child(summary_content)
-	summary_content.add_child(_make_header("属性总览", "已应用的营地成长"))
-	var summary_scroll := ScrollContainer.new()
+	summary_content.add_child(_make_header("属性总览", "已应用的营地成长", 16, 9))
+	var summary_scroll := TouchScrollContainer.new()
 	summary_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	summary_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	summary_content.add_child(summary_scroll)
 	_summary_grid = GridContainer.new()
 	_summary_grid.columns = 2
-	_summary_grid.add_theme_constant_override("h_separation", 8)
-	_summary_grid.add_theme_constant_override("v_separation", 8)
+	_summary_grid.add_theme_constant_override("h_separation", 6)
+	_summary_grid.add_theme_constant_override("v_separation", 5)
 	summary_scroll.add_child(_summary_grid)
 
 	var options_panel := _make_panel(Color("#0d1513"), PANEL_GOLD, 2)
@@ -192,7 +198,7 @@ func _build_interface() -> void:
 	_options_count_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_options_count_label.add_theme_color_override("font_color", MUTED)
 	options_header.add_child(_options_count_label)
-	var scroll := ScrollContainer.new()
+	var scroll := TouchScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
@@ -229,18 +235,18 @@ func _add_scanline_overlay() -> void:
 	add_child(scanlines)
 
 
-func _make_header(title_text: String, subtitle: String) -> VBoxContainer:
+func _make_header(title_text: String, subtitle: String, title_font_size: int = 18, subtitle_font_size: int = 11) -> VBoxContainer:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 2)
 	var title := Label.new()
 	title.text = title_text
 	title.add_theme_color_override("font_color", GOLD_BRIGHT)
-	title.add_theme_font_size_override("font_size", 18)
+	title.add_theme_font_size_override("font_size", title_font_size)
 	column.add_child(title)
 	var sub := Label.new()
 	sub.text = subtitle
 	sub.add_theme_color_override("font_color", MUTED)
-	sub.add_theme_font_size_override("font_size", 11)
+	sub.add_theme_font_size_override("font_size", subtitle_font_size)
 	column.add_child(sub)
 	return column
 
@@ -271,7 +277,7 @@ func _make_button(text_value: String, accent: Color) -> Button:
 	button.add_theme_color_override("font_hover_color", GOLD_BRIGHT)
 	button.add_theme_stylebox_override("normal", _button_style(Color("#17211d"), accent, 1))
 	button.add_theme_stylebox_override("hover", _button_style(Color("#2b3020"), GOLD_BRIGHT, 2))
-	button.add_theme_stylebox_override("pressed", _button_style(Color("#473616"), GOLD_BRIGHT, 2))
+	button.add_theme_stylebox_override("pressed", _button_style(Color("#473616"), GOLD_BRIGHT, 1, true))
 	button.add_theme_stylebox_override("disabled", _button_style(Color("#121513"), Color("#454238"), 1))
 	_bind_button_feedback(button)
 	return button
@@ -313,27 +319,38 @@ func _make_compact_button(text_value: String, accent: Color) -> Button:
 	button.add_theme_font_size_override("font_size", 11)
 	button.add_theme_stylebox_override("normal", _compact_button_style(Color("#17211d"), accent, 1))
 	button.add_theme_stylebox_override("hover", _compact_button_style(Color("#2b3020"), GOLD_BRIGHT, 2))
-	button.add_theme_stylebox_override("pressed", _compact_button_style(Color("#473616"), GOLD_BRIGHT, 2))
+	button.add_theme_stylebox_override("pressed", _compact_button_style(Color("#473616"), GOLD_BRIGHT, 1, true))
 	button.add_theme_stylebox_override("disabled", _compact_button_style(Color("#121513"), Color("#454238"), 1))
 	return button
 
 
-func _button_style(color: Color, border: Color, width: int) -> StyleBoxFlat:
+func _button_style(color: Color, border: Color, width: int, pressed: bool = false) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
-	style.border_color = border
-	style.set_border_width_all(width)
-	style.set_corner_radius_all(1)
-	style.content_margin_left = 10
+	var light_edge := border.lightened(0.22)
+	var dark_edge := color.darkened(0.70)
+	style.border_color = dark_edge if pressed else light_edge
+	style.border_width_left = width
+	style.border_width_top = width
+	style.border_width_right = 0
+	style.border_width_bottom = 0
+	style.shadow_color = light_edge if pressed else dark_edge
+	style.shadow_size = width
+	style.shadow_offset = Vector2(width, width)
+	style.set_corner_radius_all(0)
+	style.anti_aliasing = false
+	style.content_margin_left = 10 + (width if pressed else 0)
 	style.content_margin_right = 10
+	style.content_margin_top = width if pressed else 0
+	style.content_margin_bottom = 0
 	return style
 
 
-func _compact_button_style(color: Color, border: Color, width: int) -> StyleBoxFlat:
-	var style := _button_style(color, border, width)
-	style.content_margin_left = 7
+func _compact_button_style(color: Color, border: Color, width: int, pressed: bool = false) -> StyleBoxFlat:
+	var style := _button_style(color, border, width, pressed)
+	style.content_margin_left = 7 + (width if pressed else 0)
 	style.content_margin_right = 7
-	style.content_margin_top = 3
+	style.content_margin_top = 3 + (width if pressed else 0)
 	style.content_margin_bottom = 3
 	return style
 
@@ -368,16 +385,18 @@ func show_talents_page() -> void:
 
 
 func _on_camp_state_changed() -> void:
+	var skip_option_animation := _skip_next_option_animation
+	_skip_next_option_animation = false
 	if visible:
-		_refresh_all()
+		_refresh_all(not skip_option_animation)
 
 
-func _refresh_all() -> void:
+func _refresh_all(animate_option_rows: bool = true) -> void:
 	_refresh_currency()
 	_refresh_buildings()
 	_refresh_detail()
 	_refresh_summary()
-	_refresh_options()
+	_refresh_options(animate_option_rows)
 
 
 func _refresh_currency() -> void:
@@ -536,6 +555,7 @@ func _refresh_summary() -> void:
 		var label := Label.new()
 		label.text = "%s  %s" % [StatDefinitions.get_display_name(stat), _format_summary_value(stat, value)]
 		label.add_theme_color_override("font_color", GOLD_BRIGHT)
+		label.add_theme_font_size_override("font_size", 13)
 		label.tooltip_text = StatDefinitions.get_description(stat)
 		_summary_grid.add_child(label)
 		shown += 1
@@ -543,20 +563,34 @@ func _refresh_summary() -> void:
 		var empty := Label.new()
 		empty.text = "\u5c1a\u65e0\u5df2\u5e94\u7528\u5c5e\u6027"
 		empty.add_theme_color_override("font_color", MUTED)
-		empty.add_theme_font_size_override("font_size", 11)
+		empty.add_theme_font_size_override("font_size", 10)
 		_summary_grid.add_child(empty)
 
 
 func _format_summary_value(stat: String, value: float) -> String:
+	return _format_modifier_value(stat, value)
+
+
+func _format_upgrade_effect(option: Dictionary) -> String:
+	var stat := str(option.get("stat", ""))
+	var stat_name := StatDefinitions.get_display_name(stat) if StatDefinitions.has_stat(stat) else stat
+	return "每级 %s%s" % [stat_name, _format_modifier_value(stat, float(option.get("value_per_level", 0.0)))]
+
+
+func _format_modifier_value(stat: String, value: float) -> String:
 	var sign := "+" if value >= 0.0 else ""
-	if StatDefinitions.is_percent_stat(stat):
-		return "%s%.2f%%" % [sign, value]
-	if StatDefinitions.is_integer_stat(stat):
-		return "%s%d" % [sign, roundi(value)]
-	return "%s%.2f" % [sign, value]
+	var suffix := "%" if StatDefinitions.is_percent_stat(stat) and not TALENT_STATS_WITHOUT_PERCENT_SUFFIX.has(stat) else ""
+	return "%s%s%s" % [sign, _format_compact_number(value), suffix]
 
 
-func _refresh_options() -> void:
+func _format_compact_number(value: float) -> String:
+	var rounded_value := roundi(value)
+	if is_equal_approx(value, float(rounded_value)):
+		return "%d" % rounded_value
+	return "%.2f" % value
+
+
+func _refresh_options(animate_rows: bool = true) -> void:
 	if _options_list == null:
 		return
 	for child in _options_list.get_children():
@@ -589,7 +623,8 @@ func _refresh_options() -> void:
 		for option in options:
 			var option_row := _make_option_row(building_id, option)
 			group.add_child(option_row)
-			_animate_option_row(option_row, total)
+			if animate_rows:
+				_animate_option_row(option_row, total)
 			total += 1
 		_options_list.add_child(group)
 	_options_count_label.text = "已解锁 %d 项" % total
@@ -612,12 +647,13 @@ func _is_upgrade_option_unlocked(building_level: int, option: Dictionary) -> boo
 
 func _make_option_row(building_id: String, option: Dictionary) -> Control:
 	var row := PanelContainer.new()
-	row.add_theme_stylebox_override("panel", _button_style(Color("#111714"), Color("#59441f"), 1))
+	row.add_theme_stylebox_override("panel", _option_row_style())
 	var line := HBoxContainer.new()
 	line.add_theme_constant_override("separation", 8)
 	row.add_child(line)
 	var info := VBoxContainer.new()
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info.add_theme_constant_override("separation", 3)
 	var option_id := str(option.get("id", ""))
 	var current := CampProgression.get_upgrade_option_level(option_id)
 	var max_level := int(option.get("max_level", 1))
@@ -628,7 +664,7 @@ func _make_option_row(building_id: String, option: Dictionary) -> Control:
 	name_label.add_theme_font_size_override("font_size", 11)
 	info.add_child(name_label)
 	var progress := Label.new()
-	progress.text = "Lv.%d / %d    每级 +%s" % [current, max_level, str(option.get("value_per_level", 0))]
+	progress.text = "Lv.%d / %d    %s" % [current, max_level, _format_upgrade_effect(option)]
 	progress.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	progress.add_theme_color_override("font_color", GOLD)
 	progress.add_theme_font_size_override("font_size", 10)
@@ -645,11 +681,25 @@ func _make_option_row(building_id: String, option: Dictionary) -> Control:
 	progress_tween.tween_property(progress_bar, "value", current, 0.34).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	line.add_child(info)
 	var buy := _make_compact_button("购买 %d" % CampProgression.get_upgrade_cost(option_id), GOLD)
-	buy.custom_minimum_size = Vector2(68, 24)
+	buy.custom_minimum_size = Vector2(68, 26)
+	buy.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	buy.disabled = not CampProgression.can_purchase_upgrade(option_id)
 	buy.pressed.connect(_on_option_pressed.bind(option_id, buy))
 	line.add_child(buy)
 	return row
+
+
+func _option_row_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#111714")
+	style.border_color = Color("#59441f")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(1)
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 5
+	style.content_margin_bottom = 5
+	return style
 
 
 func _progress_style(color: Color, border: Color) -> StyleBoxFlat:
@@ -695,28 +745,30 @@ func _on_option_pressed(option_id: String, source_button: Button) -> void:
 
 
 func _on_reset_pressed(source_button: Button) -> void:
+	_skip_next_option_animation = true
 	CampProgression.reset_upgrade_options_and_refund()
-	_play_purchase_feedback(source_button, "升级已重置")
+	_play_purchase_feedback(source_button, "升级已重置", false)
 
 
-func _play_purchase_feedback(source_button: Control, message: String = "升级已生效") -> void:
+func _play_purchase_feedback(source_button: Control, message: String = "升级已生效", show_coin_particles: bool = true) -> void:
 	if _flash_overlay != null:
 		_flash_overlay.modulate.a = 0.22
 	var origin := source_button.get_global_rect().get_center()
-	for index in range(9):
-		var coin := Label.new()
-		coin.text = "●"
-		coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		coin.add_theme_color_override("font_color", GOLD_BRIGHT)
-		coin.add_theme_font_size_override("font_size", 10 + (index % 3) * 2)
-		coin.position = origin + Vector2((index - 4) * 2, (index % 3 - 1) * 2)
-		add_child(coin)
-		var target := origin + Vector2((index - 4) * 15, -34.0 - (index % 3) * 13)
-		var tween := create_tween()
-		tween.set_parallel(false)
-		tween.tween_property(coin, "position", target, 0.34 + index * 0.02).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(coin, "modulate:a", 0.0, 0.16)
-		tween.tween_callback(coin.queue_free)
+	if show_coin_particles:
+		for index in range(9):
+			var coin := Label.new()
+			coin.text = "●"
+			coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			coin.add_theme_color_override("font_color", GOLD_BRIGHT)
+			coin.add_theme_font_size_override("font_size", 10 + (index % 3) * 2)
+			coin.position = origin + Vector2((index - 4) * 2, (index % 3 - 1) * 2)
+			add_child(coin)
+			var target := origin + Vector2((index - 4) * 15, -34.0 - (index % 3) * 13)
+			var tween := create_tween()
+			tween.set_parallel(false)
+			tween.tween_property(coin, "position", target, 0.34 + index * 0.02).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			tween.tween_property(coin, "modulate:a", 0.0, 0.16)
+			tween.tween_callback(coin.queue_free)
 	_show_upgrade_toast(message, origin)
 	if AudioManager != null:
 		AudioManager.play_ui_sfx("purchase_success")
@@ -740,11 +792,11 @@ func _ensure_upgrade_toast() -> void:
 	_upgrade_toast.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_upgrade_toast.add_theme_color_override("font_color", GOLD_BRIGHT)
 	_upgrade_toast.add_theme_color_override("font_outline_color", Color(0.02, 0.04, 0.025, 0.95))
-	_upgrade_toast.add_theme_constant_override("outline_size", 3)
-	_upgrade_toast.add_theme_font_size_override("font_size", 18)
+	_upgrade_toast.add_theme_constant_override("outline_size", 1)
+	_upgrade_toast.add_theme_font_size_override("font_size", 9)
 	_upgrade_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_upgrade_toast.modulate.a = 0.0
-	_upgrade_toast.size = Vector2(320, 32)
+	_upgrade_toast.size = Vector2(220, 20)
 	add_child(_upgrade_toast)
 
 
@@ -752,16 +804,16 @@ func _show_upgrade_toast(message: String, origin: Vector2) -> void:
 	if _upgrade_toast == null:
 		return
 	_upgrade_toast.text = message
-	_upgrade_toast.position = origin - Vector2(_upgrade_toast.size.x * 0.5, 42.0)
+	_upgrade_toast.position = origin - Vector2(_upgrade_toast.size.x * 0.5, 32.0)
 	_upgrade_toast.modulate.a = 0.0
-	_upgrade_toast.scale = Vector2(0.88, 0.88)
+	_upgrade_toast.scale = Vector2(0.94, 0.94)
 	_upgrade_toast.pivot_offset = _upgrade_toast.size * 0.5
 	var tween := create_tween().set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(_upgrade_toast, "position:y", _upgrade_toast.position.y - 24.0, 0.42)
-	tween.tween_property(_upgrade_toast, "modulate:a", 1.0, 0.16)
-	tween.tween_property(_upgrade_toast, "scale", Vector2.ONE, 0.22)
-	tween.chain().tween_property(_upgrade_toast, "modulate:a", 0.0, 0.35).set_delay(0.5)
+	tween.tween_property(_upgrade_toast, "position:y", _upgrade_toast.position.y - 16.0, 0.30)
+	tween.tween_property(_upgrade_toast, "modulate:a", 1.0, 0.12)
+	tween.tween_property(_upgrade_toast, "scale", Vector2.ONE, 0.15)
+	tween.chain().tween_property(_upgrade_toast, "modulate:a", 0.0, 0.22).set_delay(0.42)
 
 
 func _animate_detail_reveal() -> void:

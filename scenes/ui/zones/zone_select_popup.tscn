@@ -8,7 +8,7 @@ script = ExtResource("1_zone_select_popup")
 [node name="CenterContainer" type="CenterContainer" parent="."]
 
 [node name="MainPanel" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(720, 500)
+custom_minimum_size = Vector2(700, 500)
 
 [node name="Content" type="VBoxContainer" parent="CenterContainer/MainPanel"]
 theme_override_constants/separation = 12
@@ -26,7 +26,7 @@ vertical_alignment = 1
 
 [node name="ZoneCardGrid" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
 alignment = 1
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 
 [node name="HintLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
 text = "同一区域会继续积累福缘；切换区域会触发收割。"

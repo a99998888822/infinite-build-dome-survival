@@ -11,7 +11,7 @@ script = ExtResource("1_zone_ui_controller")
 layer = 10
 
 [node name="PopupLayer" type="CanvasLayer" parent="."]
-layer = 20
+layer = 25
 
 [node name="ZoneSelectPopup" parent="PopupLayer" instance=ExtResource("2_zone_select_popup")]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -7,12 +7,78 @@
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="5_battle_hud"]
 [ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
 [ext_resource type="PackedScene" path="res://scenes/ui/esc/esc_overlay.tscn" id="7_esc_overlay"]
+[ext_resource type="Script" path="res://scripts/battle/battle_environment.gd" id="8_battle_environment"]
+[ext_resource type="Shader" path="res://shaders/battle/abyss_floor.gdshader" id="9_abyss_floor"]
+[ext_resource type="Shader" path="res://shaders/battle/crt_ambience.gdshader" id="10_crt_ambience"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_hp.png" id="11_hud_hp"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_shield.png" id="12_hud_shield"]
+[ext_resource type="Texture2D" path="res://assets/ui/finance/finance_coin.svg" id="13_finance_coin"]
+[ext_resource type="Texture2D" path="res://assets/ui/finance/finance_bill.svg" id="14_finance_bill"]
+[ext_resource type="PackedScene" path="res://scenes/ui/mobile/mobile_joystick.tscn" id="15_mobile_joystick"]
+[ext_resource type="Script" path="res://scripts/ui/touch_scroll_container.gd" id="16_touch_scroll"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_abyss_floor"]
+shader = ExtResource("9_abyss_floor")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_ambience"]
+shader = ExtResource("10_crt_ambience")
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
+bg_color = Color(0.035, 0.049, 0.031, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.235, 0.274, 0.184, 0.94)
+content_margin_left = 12.0
+content_margin_top = 7.0
+content_margin_right = 12.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_bar_background"]
+bg_color = Color(0.025, 0.033, 0.022, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.015, 0.02, 0.012, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_hp_fill"]
+bg_color = Color(0.73, 0.122, 0.105, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.29, 0.24, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_shield_fill"]
+bg_color = Color(0.285, 0.2, 0.47, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.64, 0.47, 0.83, 0.46)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_exp_fill"]
+bg_color = Color(0.24, 0.6, 0.25, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.68, 0.94, 0.49, 0.48)
+
 [node name="BattleRoot" type="Node"]
 script = ExtResource("4_battle_root")
+
+[node name="BattleEnvironment" type="CanvasLayer" parent="."]
+layer = -4
+script = ExtResource("8_battle_environment")
+
+[node name="Floor" type="ColorRect" parent="BattleEnvironment"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+material = SubResource("ShaderMaterial_abyss_floor")
+mouse_filter = 2
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 auto_initialize_on_ready = false
@@ -20,6 +86,18 @@ auto_initialize_on_ready = false
 [node name="Loadout" parent="." instance=ExtResource("2_loadout")]
 
 [node name="WaveManager" parent="." instance=ExtResource("3_wave_manager")]
+
+[node name="BattleAmbience" type="CanvasLayer" parent="."]
+layer = 19
+
+[node name="CrtOverlay" type="ColorRect" parent="BattleAmbience"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+material = SubResource("ShaderMaterial_crt_ambience")
+mouse_filter = 2
 
 [node name="ModalBackdrop" type="CanvasLayer" parent="."]
 layer = 20
@@ -36,21 +114,192 @@ mouse_filter = 2
 layer = 24
 script = ExtResource("5_battle_hud")
 
-[node name="StatusPanel" type="PanelContainer" parent="HUD"]
-offset_left = 16.0
+[node name="StatusPanel" type="Control" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopLeft" type="VBoxContainer" parent="HUD/StatusPanel"]
+offset_left = 18.0
 offset_top = 16.0
+theme_override_constants/separation = 7
 
-[node name="Content" type="VBoxContainer" parent="HUD/StatusPanel"]
+[node name="LevelLabel" type="Label" parent="HUD/StatusPanel/TopLeft"]
+theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Lv. 1"
 
-[node name="HpLabel" type="Label" parent="HUD/StatusPanel/Content"]
+[node name="HpRow" type="HBoxContainer" parent="HUD/StatusPanel/TopLeft"]
+theme_override_constants/separation = 8
 
-[node name="ExpLabel" type="Label" parent="HUD/StatusPanel/Content"]
+[node name="Icon" type="TextureRect" parent="HUD/StatusPanel/TopLeft/HpRow"]
+custom_minimum_size = Vector2(20, 20)
+texture = ExtResource("11_hud_hp")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="GoldLabel" type="Label" parent="HUD/StatusPanel/Content"]
+[node name="HpBar" type="ProgressBar" parent="HUD/StatusPanel/TopLeft/HpRow"]
+custom_minimum_size = Vector2(220, 19)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_background")
+theme_override_styles/fill = SubResource("StyleBox_hp_fill")
 
-[node name="FinanceLabel" type="Label" parent="HUD/StatusPanel/Content"]
+[node name="Text" type="Label" parent="HUD/StatusPanel/TopLeft/HpRow/HpBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="WaveLabel" type="Label" parent="HUD/StatusPanel/Content"]
+[node name="ShieldRow" type="HBoxContainer" parent="HUD/StatusPanel/TopLeft"]
+theme_override_constants/separation = 8
+
+[node name="Icon" type="TextureRect" parent="HUD/StatusPanel/TopLeft/ShieldRow"]
+custom_minimum_size = Vector2(20, 20)
+texture = ExtResource("12_hud_shield")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ShieldBar" type="ProgressBar" parent="HUD/StatusPanel/TopLeft/ShieldRow"]
+custom_minimum_size = Vector2(220, 19)
+max_value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_background")
+theme_override_styles/fill = SubResource("StyleBox_shield_fill")
+
+[node name="Text" type="Label" parent="HUD/StatusPanel/TopLeft/ShieldRow/ShieldBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "0/0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WavePanel" type="PanelContainer" parent="HUD/StatusPanel"]
+anchors_preset = 10
+anchor_right = 0.5
+grow_horizontal = 0
+offset_left = -65.0
+offset_top = 14.0
+offset_right = 65.0
+offset_bottom = 88.0
+theme_override_styles/panel = SubResource("StyleBox_wave_panel")
+
+[node name="Content" type="VBoxContainer" parent="HUD/StatusPanel/WavePanel"]
+alignment = 1
+theme_override_constants/separation = 2
+
+[node name="WaveLabel" type="Label" parent="HUD/StatusPanel/WavePanel/Content"]
+theme_override_colors/font_color = Color(0.64, 0.65, 0.56, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "第 1 波"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="HUD/StatusPanel/WavePanel/Content"]
+theme_override_colors/font_color = Color(0.89, 0.8, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 21
+text = "60s"
+horizontal_alignment = 1
+
+[node name="EconomyOverlay" type="CanvasLayer" parent="."]
+layer = 27
+
+[node name="EconomyPanel" type="VBoxContainer" parent="EconomyOverlay"]
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 5
+
+[node name="GoldRow" type="HBoxContainer" parent="EconomyOverlay/EconomyPanel"]
+custom_minimum_size = Vector2(0, 20)
+theme_override_constants/separation = 8
+
+[node name="Icon" type="TextureRect" parent="EconomyOverlay/EconomyPanel/GoldRow"]
+custom_minimum_size = Vector2(18, 18)
+texture = ExtResource("13_finance_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="EconomyOverlay/EconomyPanel/GoldRow"]
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "金币：0"
+vertical_alignment = 1
+
+[node name="FinanceRow" type="HBoxContainer" parent="EconomyOverlay/EconomyPanel"]
+custom_minimum_size = Vector2(0, 20)
+theme_override_constants/separation = 8
+
+[node name="Icon" type="TextureRect" parent="EconomyOverlay/EconomyPanel/FinanceRow"]
+custom_minimum_size = Vector2(18, 18)
+texture = ExtResource("14_finance_bill")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="EconomyOverlay/EconomyPanel/FinanceRow"]
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.66, 0.54, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+text = "本金：0"
+vertical_alignment = 1
+
+[node name="ExpPanel" type="VBoxContainer" parent="HUD/StatusPanel"]
+anchors_preset = 12
+anchor_left = 0.15
+anchor_top = 1.0
+anchor_right = 0.85
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+offset_top = -60.0
+offset_bottom = -22.0
+theme_override_constants/separation = 5
+
+[node name="ExpLabel" type="Label" parent="HUD/StatusPanel/ExpPanel"]
+theme_override_colors/font_color = Color(0.48, 0.78, 0.37, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "等级 1  经验 0/0"
+horizontal_alignment = 1
+
+[node name="ExpBar" type="ProgressBar" parent="HUD/StatusPanel/ExpPanel"]
+custom_minimum_size = Vector2(0, 9)
+size_flags_horizontal = 3
+max_value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBox_bar_background")
+theme_override_styles/fill = SubResource("StyleBox_exp_fill")
 
 [node name="StatsDrawer" type="Control" parent="HUD"]
 anchors_preset = 6
@@ -104,9 +353,15 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 2
 mouse_filter = 1
+script = ExtResource("16_touch_scroll")
 
 [node name="StatsList" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content/StatsScroll"]
 size_flags_horizontal = 3
+
+[node name="MobileControls" type="CanvasLayer" parent="."]
+layer = 25
+
+[node name="MobileJoystick" parent="MobileControls" instance=ExtResource("15_mobile_joystick")]
 
 [node name="EscLayer" type="CanvasLayer" parent="."]
 layer = 26

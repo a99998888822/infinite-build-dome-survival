@@ -155,6 +155,7 @@
 5. 选择后立即关闭或刷新为下一组内容。
 6. 页面大面板不依赖专门底板 PNG，优先使用 Godot `PanelContainer`、`MarginContainer`、`VBoxContainer` / `HBoxContainer` 与 `Theme` / `StyleBoxFlat` 搭建。
 7. 免费奖励和商店购买共用第九模块的奖励选项 prefab；按钮文本由入口决定，免费升级奖励显示“选择”，商店购买显示已应用 `shop_price_percent` 折扣后的具体花费金额。
+8. 每次打开页面的候选目标数为 `max(2, 3 + round(shop_offer_count_bonus))`；该整数属性同时影响免费升级奖励和付费商店。横向候选区必须支持超过 3 项时滚动查看，候选池不足时只展示实际可生成的去重项。
 
 ### 7.2 武器购买失败弹窗
 
@@ -182,6 +183,8 @@
 商店只提供三类选项：`new_weapon` 新武器、`relic` 遗物、`weapon_upgrade` 已装备武器的下一等级升级项；不提供单独购买基础属性。免费奖励入口和付费商店入口共用同一套候选池、稀有度权重、类型权重和去重规则，区别只在于选择后是否扣除局内货币。
 
 `shop_price_percent` 只作用于付费商店候选的价格，计算为 `ceil(基础价格 * (1 - shop_price_percent / 100))`，并在属性面板显示折扣百分比；免费奖励不受影响。
+
+`shop_offer_count_bonus` 不影响价格与权重，只决定每次抽取的候选目标数：`max(2, 3 + round(shop_offer_count_bonus))`。它与共享奖励入口共用同一数值，因此 `shop_offer_count_bonus = 2` 时，免费升级奖励页和付费商店页都会尝试展示 5 项。
 
 遗物、新武器和武器升级共用六档稀有度：`common` 普通白、`uncommon` 优良绿、`rare` 稀有蓝、`epic` 珍贵紫、`mythic` 罕见橙、`legendary` 传说红。新武器使用武器本体 `rarity`；武器升级使用升级项自身 `rarity`，两者不混用。
 
@@ -217,7 +220,7 @@ legendary =  1 + floor(luck * 0.03)
 
 武器升级使用轻量保底：连续刷新未出现升级时，`weapon_upgrade_weight = min(100, 25 + upgrade_miss_count * 15)`；出现至少一个升级后清零；没有可升级武器时不累积。
 
-建议接口：`build_shop_candidate_pool(context)`、`get_shop_rarity_weights(luck)`、`get_shop_type_weights(context)`、`roll_shop_offers(rarity_weights, type_weights, candidate_pool, refresh_count)`。刷新时按稀有度、类型、具体条目的顺序抽取，候选桶为空时回退，避免空槽位。
+建议接口：`build_shop_candidate_pool(context)`、`get_shop_rarity_weights(luck)`、`get_shop_type_weights(context)`、`roll_shop_offers(rarity_weights, type_weights, candidate_pool, offer_count)`。刷新时按稀有度、类型、具体条目的顺序抽取，候选桶为空时回退，避免空槽位。
 
 ### 7.5 奖励悬停属性预览
 
@@ -237,7 +240,7 @@ legendary =  1 + floor(luck * 0.03)
 
 ### 7.6 商店/共享奖励页刷新
 
-作用：升级奖励页与局内商店页允许付费刷新当前三个选项，避免同一波次内可选池长期固定。
+作用：升级奖励页与局内商店页允许付费刷新当前候选项，避免同一波次内可选池长期固定。
 
 规则：
 
@@ -250,8 +253,8 @@ legendary =  1 + floor(luck * 0.03)
 
 3. 当前波次取本局实际波号（第 1 波为 1），随波次线性增长；本波已刷新次数每次刷新 + 1，按 2 的指数增长，形成前缓后陡的价格曲线。
 4. 刷新次数在本波开始时清零；同波内的升级奖励页与波末商店页共用同一个刷新计数。
-5. 刷新会重新抽取三个选项，并排除当前已展示的三个 `offer_id`，避免刷出与当前完全相同的一组。
-6. 升级奖励页（共享奖励）与局内商店页都允许付费刷新；升级奖励首次三选一仍然免费，付费只用于刷新。
+5. 刷新会按照本次 `max(2, 3 + round(shop_offer_count_bonus))` 的目标数重新抽取选项，并排除当前已展示的全部 `offer_id`，避免刷出与当前完全相同的一组。
+6. 升级奖励页（共享奖励）与局内商店页都允许付费刷新；升级奖励首次候选组仍然免费，付费只用于刷新。
 7. 免费奖励与商店购买共用同一刷新服务，刷新费用一律从局内金币扣除。
 
 刷新价格示例（第 1~5 次刷新）：

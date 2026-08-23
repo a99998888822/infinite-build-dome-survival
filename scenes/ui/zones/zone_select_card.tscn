@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://scripts/ui/zone_select_card.gd" id="1_zone_select_card"]
 
 [node name="ZoneSelectCard" type="PanelContainer"]
-custom_minimum_size = Vector2(210, 250)
+custom_minimum_size = Vector2(184, 262)
 script = ExtResource("1_zone_select_card")
 
 [node name="Content" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(210, 250)
+custom_minimum_size = Vector2(184, 262)
 theme_override_constants/separation = 4
 
 [node name="TopTintLine" type="ColorRect" parent="Content"]

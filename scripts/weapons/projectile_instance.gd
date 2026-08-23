@@ -2,6 +2,7 @@ extends Area2D
 class_name ProjectileInstance
 
 const DEFAULT_HIT_RADIUS: float = 6.0
+const ENEMY_COLLISION_LAYER: int = 2
 
 var projectile_id: String = ""
 var weapon: WeaponInstance = null
@@ -37,7 +38,7 @@ func initialize(
 	active = true
 
 	collision_layer = 0
-	collision_mask = 1
+	collision_mask = ENEMY_COLLISION_LAYER
 	monitoring = true
 	monitorable = false
 
@@ -85,33 +86,15 @@ func _on_body_entered(body: Node) -> void:
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null:
 		if weapon.register_hit_feedback_frame(true):
-			_spawn_hit_sparks(enemy.global_position)
+			_spawn_hit_sparks(enemy.global_position, direction)
 		weapon.play_projectile_hit_sfx(projectile_id)
 	remaining_hits -= 1
 	if remaining_hits <= 0:
 		_destroy()
 
 
-func _spawn_hit_sparks(hit_position: Vector2) -> void:
-	var particles := CPUParticles2D.new()
-	particles.name = "HitSparks"
-	particles.top_level = true
-	particles.global_position = hit_position
-	particles.z_index = 80
-	particles.amount = 10
-	particles.lifetime = 0.22
-	particles.one_shot = true
-	particles.explosiveness = 1.0
-	particles.direction = Vector2.RIGHT
-	particles.spread = 180.0
-	particles.initial_velocity_min = 70.0
-	particles.initial_velocity_max = 150.0
-	particles.scale_amount_min = 1.0
-	particles.scale_amount_max = 2.0
-	particles.color = Color(1.0, 0.68, 0.16, 1.0)
-	get_parent().add_child(particles)
-	particles.finished.connect(particles.queue_free)
-	particles.restart()
+func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:
+	HitParticleBurst.spawn(get_parent(), hit_position, burst_direction)
 
 
 func _destroy() -> void:

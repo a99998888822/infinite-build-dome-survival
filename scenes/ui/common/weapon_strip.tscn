@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/weapon_strip.gd" id="1_weapon_strip"]
+[ext_resource type="Script" path="res://scripts/ui/touch_scroll_container.gd" id="2_touch_scroll"]
 
 [sub_resource type="StyleBoxFlat" id="StripPanelStyle"]
 bg_color = Color(0.02, 0.03, 0.04, 0.94)
@@ -43,6 +44,7 @@ theme_override_constants/separation = 8
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 3
+script = ExtResource("2_touch_scroll")
 
 [node name="WeaponList" type="HBoxContainer" parent="StripPanel/StripMargin/StripBody/WeaponScroll"]
 theme_override_constants/separation = 8

@@ -1,43 +1,49 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://c2wgrchuhb5jv"]
 
-[ext_resource type="Script" path="res://scripts/ui/camp_ui_controller.gd" id="1_camp_ui"]
+[ext_resource type="Script" uid="uid://ddrp0ohesut7d" path="res://scripts/ui/camp_ui_controller.gd" id="1_camp_ui"]
 
-[node name="CampUIController" type="CanvasLayer"]
+[node name="CampUIController" type="CanvasLayer" unique_id=992010570]
 layer = 21
 visible = false
 script = ExtResource("1_camp_ui")
 
-[node name="TopBar" type="HBoxContainer" parent="."]
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=632583646]
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 800.0
 offset_bottom = 56.0
 theme_override_constants/separation = 16
 
-[node name="CurrencyLabel" type="Label" parent="TopBar"]
+[node name="CurrencyLabel" type="Label" parent="TopBar" unique_id=1815313217]
+layout_mode = 2
 
-[node name="BackButton" type="Button" parent="TopBar"]
+[node name="BackButton" type="Button" parent="TopBar" unique_id=1508394029]
+layout_mode = 2
 text = "返回主界面"
 
-[node name="ResetSaveButton" type="Button" parent="TopBar"]
+[node name="ResetSaveButton" type="Button" parent="TopBar" unique_id=1359170715]
+layout_mode = 2
 text = "清除存档并返还货币"
 
-[node name="ResetUpgradesButton" type="Button" parent="TopBar"]
+[node name="ResetUpgradesButton" type="Button" parent="TopBar" unique_id=2031410073]
+layout_mode = 2
 text = "重置属性升级并返还货币"
 
-[node name="ClearSaveDialog" type="ConfirmationDialog" parent="."]
+[node name="ClearSaveDialog" type="ConfirmationDialog" parent="." unique_id=1002231805]
 title = "清除存档"
-dialog_text = "将清除全部局外进度，并返还已经花费的营地币。是否继续？"
 ok_button_text = "清除并返还"
+dialog_text = "将清除全部局外进度，并返还已经花费的营地币。是否继续？"
 cancel_button_text = "取消"
 
-[node name="ResetUpgradesDialog" type="ConfirmationDialog" parent="."]
+[node name="ResetUpgradesDialog" type="ConfirmationDialog" parent="." unique_id=555495822]
+oversampling_override = 1.0
 title = "重置属性升级"
-dialog_text = "将重置所有已购买的属性升级，并返还对应营地币；建筑解锁和建筑等级不会改变。是否继续？"
+size = Vector2i(688, 100)
 ok_button_text = "重置并返还"
+dialog_text = "将重置所有已购买的属性升级，并返还对应营地币；建筑解锁和建筑等级不会改变。是否继续？"
 cancel_button_text = "取消"
 
-[node name="MainSplit" type="HBoxContainer" parent="."]
+[node name="MainSplit" type="HBoxContainer" parent="." unique_id=1070275963]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,34 +53,45 @@ offset_right = -16.0
 offset_bottom = -16.0
 theme_override_constants/separation = 16
 
-[node name="BuildingListPanel" type="PanelContainer" parent="MainSplit"]
+[node name="BuildingListPanel" type="PanelContainer" parent="MainSplit" unique_id=556845328]
 custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
 
-[node name="BuildingList" type="VBoxContainer" parent="MainSplit/BuildingListPanel"]
+[node name="BuildingList" type="VBoxContainer" parent="MainSplit/BuildingListPanel" unique_id=587579413]
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="DetailPanel" type="PanelContainer" parent="MainSplit"]
+[node name="DetailPanel" type="PanelContainer" parent="MainSplit" unique_id=548537417]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DetailContent" type="VBoxContainer" parent="MainSplit/DetailPanel"]
+[node name="DetailContent" type="VBoxContainer" parent="MainSplit/DetailPanel" unique_id=903285559]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="DetailTitle" type="Label" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="DetailTitle" type="Label" parent="MainSplit/DetailPanel/DetailContent" unique_id=1552844407]
+layout_mode = 2
 horizontal_alignment = 1
 
-[node name="DetailLevel" type="Label" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="DetailLevel" type="Label" parent="MainSplit/DetailPanel/DetailContent" unique_id=1989333713]
+layout_mode = 2
 
-[node name="DetailDesc" type="Label" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="DetailDesc" type="Label" parent="MainSplit/DetailPanel/DetailContent" unique_id=753617093]
+layout_mode = 2
 autowrap_mode = 3
 
-[node name="UnlockButton" type="Button" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="UnlockButton" type="Button" parent="MainSplit/DetailPanel/DetailContent" unique_id=1813386735]
 visible = false
+layout_mode = 2
 
-[node name="UpgradeBuildingButton" type="Button" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="UpgradeBuildingButton" type="Button" parent="MainSplit/DetailPanel/DetailContent" unique_id=1573291941]
 visible = false
+layout_mode = 2
 
-[node name="UpgradeOptionsTitle" type="Label" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="UpgradeOptionsTitle" type="Label" parent="MainSplit/DetailPanel/DetailContent" unique_id=154563898]
+layout_mode = 2
 text = "升级选项"
 
-[node name="UpgradeOptionsList" type="VBoxContainer" parent="MainSplit/DetailPanel/DetailContent"]
+[node name="UpgradeOptionsList" type="VBoxContainer" parent="MainSplit/DetailPanel/DetailContent" unique_id=611642300]
+layout_mode = 2
 theme_override_constants/separation = 6

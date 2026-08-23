@@ -34,16 +34,22 @@ var offer_data: Dictionary = {}
 var entry_mode: String = ENTRY_FREE
 var _bond_player: PlayerController = null
 var _hovered: bool = false
+var _button_hovered: bool = false
 var _interaction_locked: bool = false
 var _animation_tween: Tween = null
+var _icon_float_tween: Tween = null
+var _rarity_glow_material: ShaderMaterial = null
+var _compact_layout: bool = false
+var _layout_width: float = 0.0
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
 @onready var content: VBoxContainer = get_node_or_null("Content")
-@onready var type_badge: PanelContainer = get_node_or_null("Content/TypeBadge")
-@onready var type_label: Label = get_node_or_null("Content/TypeBadge/TypeLabel")
+@onready var type_badge: PanelContainer = get_node_or_null("Content/IconFrame/IconOverlay/TypeBadge")
+@onready var type_label: Label = get_node_or_null("Content/IconFrame/IconOverlay/TypeBadge/TypeLabel")
 @onready var icon_frame: PanelContainer = get_node_or_null("Content/IconFrame")
-@onready var icon_texture: TextureRect = get_node_or_null("Content/IconFrame/IconTexture")
+@onready var icon_texture: TextureRect = get_node_or_null("Content/IconFrame/IconVisual/IconTexture")
 @onready var icon_placeholder: ColorRect = get_node_or_null("Content/IconFrame/IconPlaceholder")
+@onready var rarity_glow: ColorRect = get_node_or_null("Content/IconFrame/RarityGlow")
 @onready var name_label: Label = get_node_or_null("Content/NameLabel")
 @onready var description_label: RichTextLabel = get_node_or_null("Content/DescriptionLabel")
 @onready var bottom_rarity_line: ColorRect = get_node_or_null("Content/BottomRarityLine")
@@ -53,6 +59,7 @@ var bond_tooltip_label: RichTextLabel = null
 
 
 func _ready() -> void:
+	_prepare_rarity_glow()
 	if select_button != null:
 		if not select_button.pressed.is_connected(_on_select_button_pressed):
 			select_button.pressed.connect(_on_select_button_pressed)
@@ -70,6 +77,8 @@ func _ready() -> void:
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
 	offer_data = offer.duplicate(true)
 	entry_mode = mode
+	_hovered = false
+	_button_hovered = false
 	_interaction_locked = false
 	_refresh_visual(explicit_cost)
 
@@ -79,21 +88,37 @@ func set_bond_player(player: PlayerController) -> void:
 
 
 func set_compact(compact: bool) -> void:
-	custom_minimum_size = Vector2(180.0, 272.0) if compact else Vector2(220.0, 360.0)
+	_compact_layout = compact
+	_update_card_minimum_size()
 	if content != null:
 		content.add_theme_constant_override("separation", 6 if compact else 8)
 	if type_badge != null:
-		type_badge.custom_minimum_size.y = 22.0 if compact else 28.0
+		type_badge.custom_minimum_size = Vector2(50.0, 18.0 if compact else 20.0)
 	if type_label != null:
-		type_label.add_theme_font_size_override("font_size", 12 if compact else 13)
+		type_label.add_theme_font_size_override("font_size", 8 if compact else 9)
 	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 64.0 if compact else 104.0
+		icon_frame.custom_minimum_size.y = 88.0 if compact else 104.0
 	if name_label != null:
-		name_label.add_theme_font_size_override("font_size", 14 if compact else 16)
+		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
-		description_label.custom_minimum_size.y = 54.0 if compact else 104.0
+		description_label.custom_minimum_size.y = 82.0 if compact else 104.0
 	if select_button != null:
-		select_button.custom_minimum_size.y = 34.0 if compact else 42.0
+		select_button.custom_minimum_size.y = 32.0 if compact else 42.0
+
+
+func set_fill_width(fill_width: bool) -> void:
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL if fill_width else Control.SIZE_SHRINK_CENTER
+
+
+func set_layout_width(width: float) -> void:
+	_layout_width = maxf(width, 0.0)
+	_update_card_minimum_size()
+
+
+func _update_card_minimum_size() -> void:
+	var base_width := 180.0 if _compact_layout else 220.0
+	var base_height := 272.0 if _compact_layout else 360.0
+	custom_minimum_size = Vector2(maxf(base_width, _layout_width), base_height)
 
 
 func set_interaction_locked(locked: bool) -> void:
@@ -154,20 +179,31 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 	var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
 	_update_panel_style(rarity_color)
 	_update_rarity_lines(rarity_color)
+	_update_rarity_glow(rarity_color)
 	_update_type_style(type_color)
 	if type_label != null:
 		type_label.text = get_title_for_offer_type(offer_type)
 		type_label.add_theme_color_override("font_color", type_color)
+	_update_type_badge_layout(offer_type)
 	if name_label != null:
 		name_label.text = str(offer_data.get("display_name", offer_data.get("target_id", "")))
+		name_label.add_theme_color_override("font_color", rarity_color)
+		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
 		description_label.text = _build_description_text(offer_data)
 	if select_button != null:
 		select_button.text = get_button_text_for_offer(offer_data, entry_mode, explicit_cost)
 		select_button.icon = COIN_TEXTURE if entry_mode == ENTRY_SHOP else null
 		select_button.expand_icon = entry_mode == ENTRY_SHOP
-		_update_button_style(type_color)
+		_update_button_style(rarity_color)
 	_update_icon(str(offer_data.get("icon", "")))
+
+
+func _get_name_font_size() -> int:
+	var base_size := 8 if _compact_layout else 9
+	if str(offer_data.get("offer_type", "")) == "relic":
+		return roundi(float(base_size) * 1.2)
+	return base_size
 
 
 func _update_panel_style(rarity_color: Color) -> void:
@@ -200,23 +236,51 @@ func _update_type_style(type_color: Color) -> void:
 	type_badge.add_theme_stylebox_override("panel", style)
 
 
-func _update_button_style(type_color: Color) -> void:
+func _update_type_badge_layout(offer_type: String) -> void:
+	if type_badge == null:
+		return
+	var badge_width := 32.0
+	if offer_type == "new_weapon":
+		badge_width = 42.0
+	elif offer_type == "weapon_upgrade":
+		badge_width = 50.0
+	type_badge.offset_right = badge_width
+	type_badge.custom_minimum_size.x = badge_width
+
+
+func _update_button_style(rarity_color: Color) -> void:
 	if select_button == null:
 		return
-	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color(type_color.r * 0.35, type_color.g * 0.35, type_color.b * 0.35, 1.0)
-	normal.border_color = type_color
-	normal.set_border_width_all(2)
-	normal.border_width_bottom = 4
-	normal.content_margin_left = 8.0
-	normal.content_margin_top = 6.0
-	normal.content_margin_right = 8.0
-	normal.content_margin_bottom = 6.0
-	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color(type_color.r * 0.50, type_color.g * 0.50, type_color.b * 0.50, 1.0)
+	var normal := _talent_button_style(Color(0.09, 0.13, 0.11, 1.0), rarity_color, 1)
+	var hover := _talent_button_style(Color(0.18, 0.20, 0.14, 1.0), rarity_color.lightened(0.12), 2)
+	var pressed := _talent_button_style(Color(0.24, 0.18, 0.08, 1.0), rarity_color, 1, true)
+	var disabled := _talent_button_style(Color(0.07, 0.08, 0.07, 1.0), Color(0.27, 0.26, 0.22, 1.0), 1)
 	select_button.add_theme_stylebox_override("normal", normal)
 	select_button.add_theme_stylebox_override("hover", hover)
-	select_button.add_theme_stylebox_override("pressed", hover)
+	select_button.add_theme_stylebox_override("pressed", pressed)
+	select_button.add_theme_stylebox_override("disabled", disabled)
+
+
+func _talent_button_style(color: Color, border: Color, width: int, pressed: bool = false) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	var light_edge := border.lightened(0.22)
+	var dark_edge := color.darkened(0.70)
+	style.border_color = dark_edge if pressed else light_edge
+	style.border_width_left = width
+	style.border_width_top = width
+	style.border_width_right = 0
+	style.border_width_bottom = 0
+	style.shadow_color = light_edge if pressed else dark_edge
+	style.shadow_size = width
+	style.shadow_offset = Vector2(width, width)
+	style.set_corner_radius_all(0)
+	style.anti_aliasing = false
+	style.content_margin_left = 10 + (width if pressed else 0)
+	style.content_margin_right = 10
+	style.content_margin_top = width if pressed else 0
+	style.content_margin_bottom = 0
+	return style
 
 
 func _update_rarity_lines(rarity_color: Color) -> void:
@@ -227,6 +291,7 @@ func _update_rarity_lines(rarity_color: Color) -> void:
 
 
 func _update_icon(icon_path: String) -> void:
+	_stop_icon_float()
 	var loaded_texture: Texture2D = null
 	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
 		var resource := load(icon_path)
@@ -237,6 +302,55 @@ func _update_icon(icon_path: String) -> void:
 		icon_texture.visible = loaded_texture != null
 	if icon_placeholder != null:
 		icon_placeholder.visible = loaded_texture == null
+	if loaded_texture != null:
+		call_deferred("_start_icon_float")
+
+
+func _prepare_rarity_glow() -> void:
+	if rarity_glow == null:
+		return
+	var base_material := rarity_glow.material as ShaderMaterial
+	if base_material == null:
+		return
+	_rarity_glow_material = base_material.duplicate() as ShaderMaterial
+	rarity_glow.material = _rarity_glow_material
+
+
+func _update_rarity_glow(rarity_color: Color) -> void:
+	if rarity_glow == null:
+		return
+	if _rarity_glow_material == null:
+		_prepare_rarity_glow()
+	if _rarity_glow_material == null:
+		return
+	_rarity_glow_material.set_shader_parameter("glow_color", rarity_color)
+	_rarity_glow_material.set_shader_parameter("intensity", 0.18)
+
+
+func _start_icon_float() -> void:
+	if icon_texture == null or not icon_texture.visible or not is_inside_tree():
+		return
+	_stop_icon_float()
+	var base_top := icon_texture.offset_top
+	var base_bottom := icon_texture.offset_bottom
+	_icon_float_tween = create_tween()
+	_icon_float_tween.set_loops()
+	_icon_float_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_icon_float_tween.tween_property(icon_texture, "offset_top", base_top - 2.5, 1.05)
+	_icon_float_tween.parallel().tween_property(icon_texture, "offset_bottom", base_bottom - 2.5, 1.05)
+	_icon_float_tween.tween_property(icon_texture, "offset_top", base_top + 2.5, 1.20)
+	_icon_float_tween.parallel().tween_property(icon_texture, "offset_bottom", base_bottom + 2.5, 1.20)
+	_icon_float_tween.tween_property(icon_texture, "offset_top", base_top, 1.05)
+	_icon_float_tween.parallel().tween_property(icon_texture, "offset_bottom", base_bottom, 1.05)
+
+
+func _stop_icon_float() -> void:
+	if _icon_float_tween != null:
+		_icon_float_tween.kill()
+		_icon_float_tween = null
+	if icon_texture != null:
+		icon_texture.offset_top = 0.0
+		icon_texture.offset_bottom = 0.0
 
 
 func _build_description_text(offer: Dictionary) -> String:
@@ -252,6 +366,7 @@ func _on_card_mouse_entered() -> void:
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(1.025, 1.025), 0.12)
 	_show_bond_tooltip()
+	stat_preview_requested.emit(offer_data.duplicate(true))
 
 
 func _on_card_mouse_exited() -> void:
@@ -260,6 +375,12 @@ func _on_card_mouse_exited() -> void:
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.12)
 	_hide_bond_tooltip()
+	call_deferred("_clear_stat_preview_if_not_hovered")
+
+
+func _clear_stat_preview_if_not_hovered() -> void:
+	if not _hovered and not _button_hovered:
+		stat_preview_cleared.emit()
 
 
 func _show_bond_tooltip() -> void:
@@ -328,6 +449,7 @@ func _get_tooltip_layer() -> CanvasLayer:
 
 
 func _exit_tree() -> void:
+	_stop_icon_float()
 	if bond_tooltip != null and is_instance_valid(bond_tooltip):
 		bond_tooltip.queue_free()
 	bond_tooltip = null
@@ -337,11 +459,14 @@ func _exit_tree() -> void:
 func _on_select_button_mouse_entered() -> void:
 	if _interaction_locked:
 		return
-	stat_preview_requested.emit(offer_data.duplicate(true))
+	_button_hovered = true
+	if not _hovered:
+		stat_preview_requested.emit(offer_data.duplicate(true))
 
 
 func _on_select_button_mouse_exited() -> void:
-	stat_preview_cleared.emit()
+	_button_hovered = false
+	call_deferred("_clear_stat_preview_if_not_hovered")
 
 
 func _on_select_button_pressed() -> void:

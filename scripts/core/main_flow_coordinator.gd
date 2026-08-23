@@ -5,6 +5,7 @@ signal mode_changed(previous_mode: String, current_mode: String)
 signal state_changed(previous_state: String, current_state: String)
 signal modal_requested(modal_state: String, payload: Dictionary)
 signal modal_closed(modal_state: String)
+signal interest_notice_requested(payload: Dictionary)
 signal battle_result_changed(victory: bool, summary: Dictionary)
 signal flow_reset
 
@@ -28,6 +29,7 @@ const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
 const STATE_BATTLE_RESULT: String = "battle_result"
 const STATE_CAMP_ENTRY: String = "camp_entry"
 const STATE_TALENTS: String = "talents"
+const BASE_SHOP_OFFER_COUNT: int = 3
 
 var current_mode: String = MODE_BOOT
 var current_state: String = STATE_START_PAGE
@@ -97,6 +99,7 @@ func reset_flow() -> void:
 	_set_battle_runtime_paused(false)
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
+	_sync_bgm_for_flow()
 	flow_reset.emit()
 
 
@@ -236,7 +239,7 @@ func request_shared_reward_shop_popup(level: int, source: String = "wave_manager
 		return
 
 	_active_level_up_level = level
-	_resume_state_after_modal = STATE_INTEREST_SETTLEMENT if _wave_end_ready else current_state
+	_resume_state_after_modal = STATE_SHOP_POPUP if _wave_end_ready else current_state
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
 	modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(level, source, false))
@@ -245,6 +248,7 @@ func request_shared_reward_shop_popup(level: int, source: String = "wave_manager
 func close_shared_reward_shop_popup() -> void:
 	if current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return
+	_restore_player_full_health()
 	modal_closed.emit(STATE_SHARED_REWARD_SHOP_POPUP)
 	if not _pending_level_up_levels.is_empty():
 		var next_level := int(_pending_level_up_levels.pop_front())
@@ -335,9 +339,7 @@ func close_shop_popup() -> void:
 		return
 	modal_closed.emit(STATE_SHOP_POPUP)
 	if _wave_end_ready:
-		_set_battle_runtime_paused(true)
-		_set_state(STATE_INTEREST_SETTLEMENT)
-		modal_requested.emit(STATE_INTEREST_SETTLEMENT, _pending_interest_payload.duplicate(true))
+		_request_wave_end_finance()
 	else:
 		_set_state(STATE_BATTLE_PREPARE)
 
@@ -489,6 +491,12 @@ func get_current_state() -> String:
 	return current_state
 
 
+func get_zone_selection_payload() -> Dictionary:
+	if current_state != STATE_ZONE_SELECT or _active_zone_selection_wave_number <= 0:
+		return {}
+	return ZoneProgression.build_zone_selection_payload(_active_zone_selection_wave_number)
+
+
 func get_state_snapshot() -> Dictionary:
 	return {
 		"mode": current_mode,
@@ -542,6 +550,7 @@ func _enter_wave_end_shop() -> void:
 	_set_battle_runtime_paused(false)
 	_set_state(STATE_SHOP_POPUP)
 	modal_requested.emit(STATE_SHOP_POPUP, _build_shop_payload("shop", 0))
+	interest_notice_requested.emit(_pending_interest_payload.duplicate(true))
 
 
 func _request_wave_end_finance() -> bool:
@@ -553,6 +562,7 @@ func _request_wave_end_finance() -> bool:
 	_pending_interest_payload.clear()
 	_pending_wave_start_after_finance = true
 	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(next_wave_number)
+	_set_battle_runtime_paused(true)
 	_set_state(STATE_FINANCE_POPUP)
 	modal_requested.emit(STATE_FINANCE_POPUP, _pending_finance_payload.duplicate(true))
 	return true
@@ -574,6 +584,7 @@ func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 func _on_wave_finished(wave_id: String) -> void:
 	if current_mode != MODE_BATTLE or battle_resolved:
 		return
+	_restore_player_full_health()
 	current_wave_id = wave_id
 	if not _has_next_wave():
 		var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
@@ -596,6 +607,11 @@ func _on_player_died() -> void:
 	present_battle_result(false, {"reason": "player_died", "gold": gold})
 
 
+func _restore_player_full_health() -> void:
+	if _bound_player != null and _bound_player.is_alive():
+		_bound_player.restore_full_health()
+
+
 func _set_mode(next_mode: String) -> void:
 	var sanitized_mode := _sanitize_text(next_mode)
 	if sanitized_mode.is_empty() or current_mode == sanitized_mode:
@@ -614,7 +630,17 @@ func _set_state(next_state: String) -> void:
 	var previous_state := current_state
 	current_state = sanitized_state
 	GameGlobal.set_runtime_flag("main_flow_state", current_state)
+	_sync_bgm_for_flow()
 	state_changed.emit(previous_state, current_state)
+
+
+func _sync_bgm_for_flow() -> void:
+	if AudioManager == null:
+		return
+	var bgm_id := "menu"
+	if current_mode == MODE_BATTLE and current_state != STATE_CHARACTER_SELECT:
+		bgm_id = "battle"
+	AudioManager.play_bgm(bgm_id)
 
 
 func _set_battle_runtime_paused(paused: bool) -> void:
@@ -681,6 +707,7 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []) -> Dictionary:
 	var context := _build_shop_context()
 	var offers: Array = []
+	var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus"))
 	if not context.is_empty():
 		var generator := ShopOfferGenerator.new()
 		var candidates := generator.build_shop_candidate_pool(context)
@@ -698,7 +725,7 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		var rarity_weights := generator.get_shop_rarity_weights(int(_get_shop_stat("luck")), ZoneProgression.get_current_zone_rarity_bonus())
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
-		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, 3)
+		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count)
 		_update_weapon_upgrade_miss_count(candidates, offers)
 	_active_shop_offer_ids.clear()
 	for offer in offers:
@@ -711,6 +738,7 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		"level": maxi(0, level),
 		"gold": _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0,
 		"offers": offers,
+		"offer_count": offer_count,
 		"resume_state": _resume_state_after_modal,
 		"refresh_cost": get_shop_refresh_cost(),
 		"refresh_count": _wave_refresh_count,

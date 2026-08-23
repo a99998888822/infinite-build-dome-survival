@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/esc_overlay.gd" id="1_esc_overlay"]
 [ext_resource type="PackedScene" path="res://scenes/ui/common/weapon_strip.tscn" id="2_weapon_strip"]
+[ext_resource type="Script" path="res://scripts/ui/touch_scroll_container.gd" id="3_touch_scroll"]
 
 [sub_resource type="StyleBoxFlat" id="RelicPanelStyle"]
 bg_color = Color(0.02, 0.03, 0.04, 0.98)
@@ -74,6 +75,7 @@ vertical_alignment = 1
 size_flags_vertical = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 1
+script = ExtResource("3_touch_scroll")
 
 [node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
 columns = 6

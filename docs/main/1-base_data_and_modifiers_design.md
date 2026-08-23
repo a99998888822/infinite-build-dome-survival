@@ -185,6 +185,7 @@ flowchart TD
 | 掉落与成长 | `finance` | 理财本金；第 2 波起每波开始前可存入或取出的局内金币本金 | 玩家/全局 |
 | 掉落与成长 | `interest_rate` | 利率；默认 5，波次结束按理财本金结算利息并加入本金 | 玩家/全局 |
 | 掉落与成长 | `shop_price_percent` | 局内商店价格折扣 | 玩家 |
+| 掉落与成长 | `shop_offer_count_bonus` | 商店选择数量加成；同时影响升级奖励和局内商店，基础 3 项，最终至少 2 项 | 玩家 |
 | 构筑 | `load_capacity` | 玩家负载上限；武器自身负载消耗归属武器模块配置 | 玩家/全局 |
 | 召唤 | `summon_count` | 召唤数量 | 召唤物系统 |
 | 波次 | `enemy_spawn_rate_percent` | 每次刷怪的怪物数量增幅 | 玩家/全局 |
@@ -228,18 +229,21 @@ flowchart TD
 ### 6.2.4 局内触发与商店数值
 
 1. `shop_price_percent` 使用折扣语义：`shop_price_percent = 10` 表示商店价格为 `ceil(基础价格 * 0.9)`；HUD 直接显示为 `10%`。
-2. `revive_count` 是本局可消耗资源；生命归零时优先消耗 1 次，以 50% 最大生命、0 护盾和 1 秒无敌复活，不触发失败结算。
-3. `on_kill_heal` 是固定数值：每次敌人死亡后，玩家恢复该数值生命，最高不超过最大生命。
-4. `enemy_spawn_rate_percent` 使用数量增幅语义：`20` 表示每次刷怪数量为 `ceil(基础数量 * 1.2)`；它只影响 `count_per_spawn`，不缩短刷怪间隔。
+2. `shop_offer_count_bonus` 是整数候选数加成，同时作用于升级奖励和局内商店。候选目标数为 `max(2, 3 + round(shop_offer_count_bonus))`；例如加成为 `2` 时展示 5 项，负值不会使目标数低于 2。
+3. `revive_count` 是本局可消耗资源；生命归零时优先消耗 1 次，以 50% 最大生命、0 护盾和 1 秒无敌复活，不触发失败结算。
+4. `on_kill_heal` 是固定数值：每次敌人死亡后，玩家恢复该数值生命，最高不超过最大生命。
+5. `enemy_spawn_rate_percent` 使用数量增幅语义：`20` 表示每次刷怪数量为 `ceil(基础数量 * 1.2)`；它只影响 `count_per_spawn`，不缩短刷怪间隔。
 
 ### 6.3 护甲减伤曲线
 
 护甲用于计算受到伤害百分比，推荐公式：
 
 ```text
-damage_taken_from_armor = 100 * ARMOR_K / (ARMOR_K + max(armor, 0))
+damage_taken_from_armor = 100 * ARMOR_K / (ARMOR_K + armor)
 final_damage = incoming_damage * damage_taken_from_armor / 100 * other_damage_taken_percent / 100
 ```
+
+正护甲降低受到的伤害，负护甲提高受到的伤害；当护甲接近或低于 `-ARMOR_K` 时，受到伤害百分比按系统上限处理，避免除零。
 
 建议初始常量：
 
@@ -988,8 +992,6 @@ func find_refs(config_id: String) -> Array[Dictionary]
 5. 能打印某个最终属性的来源链。
 6. 业务模块不需要知道 JSON 文件路径，只依赖 `DataRegistry` 接口。
 7. 后续新增武器、遗物、羁绊、营地建筑时，不需要修改基础数据模块核心逻辑。
-
-
 
 
 
