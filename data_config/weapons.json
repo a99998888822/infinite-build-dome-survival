@@ -19,7 +19,7 @@
     "projectile_speed": 500,
     "spread_angle": 12,
     "base_stats": {
-      "ranged_damage": 10,
+      "ranged_damage": 5,
       "attack_speed": 0,
       "crit_chance": 5,
       "crit_damage": 150,

@@ -5,6 +5,9 @@ const DEFAULT_HIT_RADIUS: float = 6.0
 const ENEMY_COLLISION_LAYER: int = 2
 const TERRAIN_COLLISION_LAYER: int = 4
 const TRAIL_INTERVAL_SECONDS: float = 0.035
+const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
+const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
 
 var projectile_id: String = ""
 var weapon: WeaponInstance = null
@@ -83,10 +86,9 @@ func _physics_process(delta: float) -> void:
 func _on_body_entered(body: Node) -> void:
 	if not active:
 		return
-	var terrain := body as DestructibleTestArea
-	if terrain != null:
+	if body.get_script() == DESTRUCTIBLE_TEST_AREA_SCRIPT:
 		damage_event.hit_position = global_position
-		if terrain.destroy_point(global_position):
+		if bool(body.call("destroy_point", global_position)):
 			_spawn_terrain_sparks(global_position, direction)
 		_destroy()
 		return
@@ -110,15 +112,15 @@ func _on_body_entered(body: Node) -> void:
 
 func _emit_trail() -> void:
 	var color_override := weapon.get_rarity_color() if weapon != null else Color.TRANSPARENT
-	ParticleWorld.emit_profile(get_parent(), "projectile_trail", global_position, -direction, 1.0, color_override)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "projectile_trail", global_position, -direction, 1.0, color_override)
 
 
 func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:
-	HitParticleBurst.spawn(get_parent(), hit_position, burst_direction)
+	HIT_PARTICLE_BURST_SCRIPT.spawn(get_parent(), hit_position, burst_direction)
 
 
 func _spawn_terrain_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:
-	ParticleWorld.emit_profile(get_parent(), "impact_terrain", hit_position, burst_direction)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "impact_terrain", hit_position, burst_direction)
 
 
 func _destroy() -> void:

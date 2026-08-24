@@ -1,19 +1,21 @@
 extends Node2D
-class_name ParticleWorld
+
+const PARTICLE_EVENT_SCRIPT = preload("res://scripts/effects/particle_event.gd")
+const PARTICLE_WORLD_PATH: String = "res://scripts/effects/particle_world.gd"
 
 const MAX_PARTICLES: int = 900
 const PROFILE_DEFINITIONS: Dictionary = {
 	"impact_green": {
-		"count": 14,
-		"speed": Vector2(60.0, 170.0),
+		"count": 26,
+		"speed": Vector2(72.0, 205.0),
 		"gravity": Vector2(0.0, 1.0),
-		"gravity_strength": Vector2(55.0, 120.0),
-		"drag": Vector2(35.0, 80.0),
-		"size_min": Vector2(4.0, 4.0),
-		"size_max": Vector2(7.0, 8.0),
-		"lifetime": Vector2(0.34, 0.58),
+		"gravity_strength": Vector2(55.0, 135.0),
+		"drag": Vector2(30.0, 76.0),
+		"size_min": Vector2(5.0, 5.0),
+		"size_max": Vector2(9.0, 10.0),
+		"lifetime": Vector2(0.36, 0.62),
 		"spread_radians": PI * 0.72,
-		"initial_radius": 3.0,
+		"initial_radius": 4.5,
 		"alpha": 1.0,
 		"colors": [
 			Color(0.17, 0.38, 0.27, 1.0),
@@ -75,8 +77,8 @@ static func emit_profile(
 	direction: Vector2 = Vector2.ZERO,
 	intensity: float = 1.0,
 	color_override: Color = Color.TRANSPARENT
-) -> ParticleWorld:
-	var event := ParticleEvent.create({
+) -> Node2D:
+	var event: Variant = PARTICLE_EVENT_SCRIPT.create({
 		"profile_id": profile_id,
 		"global_position": global_position,
 		"direction": direction,
@@ -86,39 +88,48 @@ static func emit_profile(
 	return emit(parent, event)
 
 
-static func emit(parent: Node, event: ParticleEvent) -> ParticleWorld:
+static func emit(parent: Node, event: Variant) -> Node2D:
 	if parent == null or event == null:
 		return null
-	var world := _find_world(parent)
+	var world: Node2D = _find_world(parent)
 	if world == null:
-		world = ParticleWorld.new()
+		var world_script: Script = load(PARTICLE_WORLD_PATH)
+		world = world_script.new() as Node2D
 		world.name = "ParticleWorld"
 		world.z_index = 80
 		parent.add_child(world)
-	world.emit_event(event)
+	world.call("emit_event", event)
 	return world
 
 
-static func _find_world(parent: Node) -> ParticleWorld:
+static func _find_world(parent: Node) -> Node2D:
 	var current: Node = parent
 	while current != null:
-		if current is ParticleWorld:
-			return current as ParticleWorld
-		var child := current.get_node_or_null("ParticleWorld") as ParticleWorld
-		if child != null:
+		if _is_particle_world(current):
+			return current as Node2D
+		var child := current.get_node_or_null("ParticleWorld") as Node2D
+		if child != null and _is_particle_world(child):
 			return child
 		current = current.get_parent()
 	return null
 
 
-func emit_event(event: ParticleEvent) -> void:
-	if event.profile_id.is_empty() or not PROFILE_DEFINITIONS.has(event.profile_id):
+static func _is_particle_world(node: Node) -> bool:
+	var script: Script = node.get_script()
+	return script != null and script.resource_path == PARTICLE_WORLD_PATH
+
+
+func emit_event(event: Variant) -> void:
+	var profile_id: String = str(event.get("profile_id"))
+	if profile_id.is_empty() or not PROFILE_DEFINITIONS.has(profile_id):
 		return
-	var profile: Dictionary = PROFILE_DEFINITIONS[event.profile_id]
-	var intensity := maxf(event.intensity, 0.05)
+	var profile: Dictionary = PROFILE_DEFINITIONS[profile_id]
+	var intensity: float = maxf(float(event.get("intensity")), 0.05)
 	var count := maxi(1, int(roundi(float(profile["count"]) * intensity)))
-	var base_direction := event.direction.normalized() if not event.direction.is_zero_approx() else Vector2.ZERO
-	var position := to_local(event.global_position)
+	var event_direction: Vector2 = event.get("direction")
+	var base_direction: Vector2 = event_direction.normalized() if not event_direction.is_zero_approx() else Vector2.ZERO
+	var event_position: Vector2 = event.get("global_position")
+	var position: Vector2 = to_local(event_position)
 	for index in count:
 		if _particles.size() >= MAX_PARTICLES:
 			break
@@ -136,7 +147,8 @@ func emit_event(event: ParticleEvent) -> void:
 			float(_random.randi_range(int(size_min.y), int(size_max.y)))
 		)
 		var particle_lifetime := _random.randf_range(lifetime_range.x, lifetime_range.y)
-		var particle_color := _resolve_color(profile, event.color_override)
+		var event_color: Color = event.get("color_override")
+		var particle_color := _resolve_color(profile, event_color)
 		_particles.append({
 			"position": position + direction * _random.randf_range(0.0, float(profile["initial_radius"])),
 			"velocity": direction * _random.randf_range(speed_range.x, speed_range.y),

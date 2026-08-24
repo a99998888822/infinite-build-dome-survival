@@ -7,6 +7,7 @@ signal equip_failed(weapon_id: String, reason: String)
 
 const PROJECTILE_VISUAL_SCALE: float = 1.0
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
+const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
 
 var owner_player: PlayerController = null
 var weapon_instances: Array[WeaponInstance] = []
@@ -188,7 +189,7 @@ func _spawn_projectile(weapon: WeaponInstance, damage_event: DamageEvent, direct
 
 
 func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:
-	HitParticleBurst.spawn(_get_visual_root(), hit_position, burst_direction)
+	HIT_PARTICLE_BURST_SCRIPT.spawn(_get_visual_root(), hit_position, burst_direction)
 
 
 func _load_weapon_texture(weapon: WeaponInstance, field_name: String) -> Texture2D:

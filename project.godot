@@ -28,10 +28,6 @@ ZoneProgression="*res://autoloads/zone_progression.gd"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-[input_devices]
-
-pointing/emulate_mouse_from_touch=true
-
 [gui]
 
 theme/custom="res://assets/font/theme_global.tres"
