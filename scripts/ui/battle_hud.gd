@@ -327,7 +327,7 @@ func _sync_vitals(animate: bool) -> void:
 	if _player == null:
 		return
 	var max_hp := maxi(int(_player.get_stat("max_hp")), 1)
-	var max_shield := maxi(int(_player.get_stat("shield")), _player.current_shield)
+	var max_shield := maxi(_player.current_shield_capacity, _player.current_shield)
 	var current_hp := clampi(_player.current_hp, 0, max_hp)
 	var current_shield := clampi(_player.current_shield, 0, max_shield)
 	if level_label != null:

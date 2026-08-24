@@ -17,6 +17,7 @@ const SPAWN_SEPARATION_DISTANCE: float = 96.0
 const SPAWN_POSITION_ATTEMPTS: int = 10
 const WAVE_HP_GROWTH_RATE: float = 0.207
 const WAVE_DAMAGE_GROWTH_PERCENT: float = 7.0
+const WAVE_MOVE_SPEED_GROWTH_PERCENT: float = 1.0
 const WAVE_SPAWN_COUNT_GROWTH_PERCENT: float = 8.0
 const WAVE_SPAWN_INTERVAL_GROWTH_PERCENT: float = 6.0
 const WAVE_ARMOR_GROWTH: float = 2.0
@@ -125,6 +126,7 @@ func start_next_wave() -> bool:
 	if finance_system != null and int(finance_system.get_state_snapshot().get("current_wave_number", 0)) < current_wave_index + 1:
 		finance_system.begin_wave(current_wave_index + 1)
 	if player != null and player.is_alive():
+		player.reset_wave_shield()
 		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
 	if player != null and player.is_alive():
 		player.heal(int(player.get_stat("max_hp")))
@@ -449,6 +451,7 @@ func _build_wave_enemy_modifiers() -> Array[Dictionary]:
 	var wave_step := float(maxi(current_wave_index, 0))
 	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + WAVE_HP_GROWTH_RATE, wave_step)))
 	modifiers.append(_build_wave_modifier("melee_damage", Modifier.OPERATION_ADD_PERCENT, WAVE_DAMAGE_GROWTH_PERCENT * wave_step))
+	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, WAVE_MOVE_SPEED_GROWTH_PERCENT * wave_step))
 	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, WAVE_ARMOR_GROWTH * wave_step))
 	return modifiers
 

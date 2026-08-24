@@ -323,14 +323,16 @@ func _run_survival_relic_checks() -> bool:
 	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 8.0)) and passed
 
 	passed = _print_check_result("survival relic shield start", player.add_relic("relic_dead_shield_badge")) and passed
-	player.current_shield = 0
+	player.reset_wave_shield()
 	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
-	passed = _print_check_result("survival relic shield granted", player.current_shield == 15) and passed
+	passed = _print_check_result("survival relic shield granted", player.current_shield == 10 and player.current_shield_capacity == 10) and passed
 
 	passed = _print_check_result("survival relic shield regen add", player.add_relic("relic_barrier_crystal")) and passed
-	player.current_shield = 0
+	player.reset_wave_shield()
 	player._physics_process(1.0)
-	passed = _print_check_result("survival relic shield regen", player.current_shield >= 2) and passed
+	passed = _print_check_result("survival relic shield regen", player.current_shield == 0 and player.current_shield_capacity == 0) and passed
+	player._physics_process(1.0)
+	passed = _print_check_result("survival relic shield regen after two seconds", player.current_shield == 1 and player.current_shield_capacity == 1) and passed
 
 	passed = _print_check_result("survival relic low sanity movement", player.add_relic("relic_lost_wayfarer_greave")) and passed
 	player.add_runtime_modifier({
@@ -383,6 +385,7 @@ func _run_enemy_wave_checks() -> bool:
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
 	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == 20) and passed
 	if enemy != null:
+		passed = _print_check_result("enemy wave move speed modifier", enemy.get_stat("move_speed") >= 100.0 and enemy.get_stat("move_speed") <= 130.0) and passed
 		var previous_hp := player.current_hp
 		enemy._process_contact_damage()
 		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
@@ -614,7 +617,7 @@ func _run_zone_ui_checks() -> bool:
 	if harvest_popup != null:
 		harvest_popup.queue_free()
 	var game_root := GAME_ROOT_SCENE.instantiate() as GameRoot
-	passed = _print_check_result("game root zone ui controller", game_root != null and game_root.get_node_or_null("UiRoot/ZoneUIController") != null) and passed
+	passed = _print_check_result("game root zone ui controller removed", game_root != null and game_root.get_node_or_null("UiRoot/ZoneUIController") == null) and passed
 	if game_root != null:
 		game_root.queue_free()
 	return passed
@@ -746,19 +749,8 @@ func _run_weapon_checks() -> bool:
 		else:
 			passed = _print_check_result("weapon loadout runtime projectile spawn", false) and passed
 
-	var mixed_weapon := WeaponInstance.new()
-	mixed_weapon.initialize("weapon_dome_shockwave", player)
-	var mixed_events := mixed_weapon.calculate_damage_events(false)
-	var mixed_ok := mixed_events.size() == 2 and mixed_events[0].damage_kind == "melee" and mixed_events[1].damage_kind == "ranged"
-	passed = _print_check_result("weapon mixed damage split", mixed_ok) and passed
-	var first_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
-	var second_area_sfx_request := mixed_weapon.play_attack_hit_sfx()
-	var area_sfx_once := mixed_weapon.get_hit_sfx_path().ends_with("sfx_weapon_dome_shockwave_hit.ogg") and mixed_weapon.has_played_attack_hit_sfx() and second_area_sfx_request == false and first_area_sfx_request
-	passed = _print_check_result("weapon area hit sfx once", area_sfx_once) and passed
-
 	var duplicate_purchase_rejected := not loadout.try_buy_weapon("weapon_void_blade")
 	passed = _print_check_result("weapon duplicate purchase rejected", duplicate_purchase_rejected) and passed
-	var overload_success := loadout.try_buy_weapon("weapon_dome_shockwave")
 	player.add_runtime_modifier({
 		"id": "mod_test_weapon_load_capacity_limit",
 		"source_type": "test",
@@ -766,18 +758,18 @@ func _run_weapon_checks() -> bool:
 		"target_scope": "player",
 		"stat": "load_capacity",
 		"operation": "add_flat",
-		"value": -60,
+		"value": -80,
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	overload_success = overload_success and not loadout.try_buy_weapon("weapon_mutated_cleaver")
-	passed = _print_check_result("weapon purchase load limit", overload_success and loadout.get_total_load_cost() <= loadout.get_load_capacity()) and passed
+	var load_capacity_rejected := not loadout.can_add_weapon("weapon_void_blade")
+	passed = _print_check_result("weapon load capacity check", load_capacity_rejected and loadout.get_total_load_cost() <= loadout.get_load_capacity()) and passed
 
 	var shop_generator := ShopOfferGenerator.new()
 	var shop_context := {
 		"owned_weapon_ids": ["weapon_void_blade"],
 		"equipped_weapons": [{"weapon_id": "weapon_void_blade", "level": 2}],
-		"unlocked_weapon_ids": ["weapon_mutated_cleaver", "weapon_dome_shockwave"],
+		"unlocked_weapon_ids": ["weapon_void_blade"],
 		"unlocked_relic_ids": ["relic_piggy_bank", "relic_finance_manager", "relic_dividend_check"],
 		"owned_relic_counts": {},
 		"current_load": 12,
@@ -802,12 +794,12 @@ func _run_weapon_checks() -> bool:
 	passed = _print_check_result("shared reward/shop pool generation", shop_check) and passed
 	var discounted_weapon_cost := -1
 	for candidate in shop_candidates:
-		if str(candidate.get("target_id", "")) == "weapon_mutated_cleaver":
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE and str(candidate.get("target_id", "")) == "weapon_void_blade":
 			discounted_weapon_cost = int(candidate.get("shop_cost", -1))
 			break
-	passed = _print_check_result("shop price discount", discounted_weapon_cost == 12) and passed
+	passed = _print_check_result("weapon upgrade shop price", discounted_weapon_cost == 16) and passed
 	var bucket_context := shop_context.duplicate(true)
-	bucket_context["owned_rarity_counts"] = {"common": 5}
+	bucket_context["owned_relic_counts"] = {"relic_piggy_bank": 5}
 	var bucket_candidates := shop_generator.build_shop_candidate_pool(bucket_context)
 	var baseline_relic_cost := -1
 	var bucket_relic_cost := -1
@@ -819,8 +811,17 @@ func _run_weapon_checks() -> bool:
 		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "common":
 			bucket_relic_cost = int(candidate.get("shop_cost", -1))
 			break
-	passed = _print_check_result("relic rarity bucket baseline", baseline_relic_cost == 12) and passed
-	passed = _print_check_result("relic rarity bucket price step", bucket_relic_cost == 24) and passed
+	passed = _print_check_result("relic global count baseline", baseline_relic_cost == 12) and passed
+	passed = _print_check_result("relic global count price step", bucket_relic_cost == 16) and passed
+	var epic_context := shop_context.duplicate(true)
+	epic_context["owned_relic_counts"] = {"relic_compound_interest_tome": 2}
+	var epic_candidates := shop_generator.build_shop_candidate_pool(epic_context)
+	var epic_relic_cost := -1
+	for candidate in epic_candidates:
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "epic":
+			epic_relic_cost = int(candidate.get("shop_cost", -1))
+			break
+	passed = _print_check_result("epic relic rarity weighted price", epic_relic_cost == 30) and passed
 
 	loadout.queue_free()
 	player.queue_free()
@@ -962,21 +963,14 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("shop refresh reject no gold", not bool(refresh_rejected.get("success", false))) and passed
 	wave_manager.apply_gold_delta(20, "bootstrap")
 	var refresh_result := flow.request_shop_refresh()
-	passed = _print_check_result("shop refresh pay and double cost", bool(refresh_result.get("success", false)) and wave_manager.get_current_gold() == 16 and flow.get_shop_refresh_cost() == 8) and passed
+	passed = _print_check_result("shop refresh pay and weighted cost", bool(refresh_result.get("success", false)) and wave_manager.get_current_gold() == 10 and flow.get_shop_refresh_cost() == 10) and passed
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()
 	passed = _print_check_result("main flow shop to finance order", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
 	var finance_result := flow.submit_finance_operation("none", 0)
 	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
-	passed = _print_check_result("main flow second wave zone select", flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT) and passed
-	if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_SELECT:
-		var zone_ok := flow.confirm_zone_selection("zone_nearstring_battlefield")
-		passed = _print_check_result("main flow zone select after finance", zone_ok and (flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT or flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT)) and passed
-		if flow.get_current_state() == MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
-			flow.close_zone_harvest_result_popup()
-			passed = _print_check_result("main flow zone harvest close", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
-	passed = _print_check_result("main flow wave auto start after zone", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	passed = _print_check_result("main flow wave auto start after finance", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.present_battle_result(true, {"reason": "bootstrap"})
 	passed = _print_check_result("main flow battle result", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_RESULT and flow.current_victory) and passed

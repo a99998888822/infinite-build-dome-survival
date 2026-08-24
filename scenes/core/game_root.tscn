@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://buh6h8q038euv" path="res://scripts/core/game_root.gd" id="1_game_root"]
 [ext_resource type="PackedScene" uid="uid://cwyeliqbcbcce" path="res://scenes/core/main_flow_coordinator.tscn" id="2_main_flow_coordinator"]
-[ext_resource type="PackedScene" path="res://scenes/ui/zones/zone_ui_controller.tscn" id="3_zone_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/finance/finance_ui_controller.tscn" id="4_finance_ui_controller"]
 [ext_resource type="PackedScene" path="res://scenes/ui/shop/shop_ui_controller.tscn" id="5_shop_ui_controller"]
 [ext_resource type="Script" uid="uid://dg1bicx0skopw" path="res://scripts/core/game_scene_director.gd" id="6_scene_director"]
@@ -19,8 +18,6 @@ script = ExtResource("1_game_root")
 [node name="WorldRoot" type="Node2D" parent="." unique_id=1769638026]
 
 [node name="UiRoot" type="CanvasLayer" parent="." unique_id=628517737]
-
-[node name="ZoneUIController" parent="UiRoot" unique_id=1050399002 instance=ExtResource("3_zone_ui_controller")]
 
 [node name="FinanceUIController" parent="UiRoot" unique_id=1759311192 instance=ExtResource("4_finance_ui_controller")]
 

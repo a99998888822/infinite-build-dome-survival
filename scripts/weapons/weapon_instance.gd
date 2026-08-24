@@ -1,8 +1,15 @@
 extends RefCounted
 class_name WeaponInstance
 
-const DAMAGE_KIND_MELEE: String = "melee"
 const DAMAGE_KIND_RANGED: String = "ranged"
+const RARITY_COLORS: Dictionary = {
+	"common": Color(0.43, 0.72, 0.48, 1.0),
+	"uncommon": Color(0.34, 0.82, 0.78, 1.0),
+	"rare": Color(0.34, 0.55, 0.95, 1.0),
+	"epic": Color(0.72, 0.42, 0.94, 1.0),
+	"mythic": Color(1.0, 0.54, 0.25, 1.0),
+	"legendary": Color(1.0, 0.82, 0.28, 1.0),
+}
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
 
 var weapon_id: String = ""
@@ -164,15 +171,7 @@ func get_actual_attack_interval_seconds() -> float:
 
 func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]:
 	var events: Array[DamageEvent] = []
-	var attack_kind := get_attack_kind()
-	if attack_kind == "mixed":
-		events.append(_build_damage_event(DAMAGE_KIND_MELEE, force_critical))
-		events.append(_build_damage_event(DAMAGE_KIND_RANGED, force_critical))
-		return events
-	if attack_kind == "melee":
-		events.append(_build_damage_event(DAMAGE_KIND_MELEE, force_critical))
-		return events
-	if attack_kind == "ranged":
+	if get_attack_kind() == "ranged":
 		events.append(_build_damage_event(DAMAGE_KIND_RANGED, force_critical))
 	return events
 
@@ -207,7 +206,7 @@ func _apply_level_upgrades(target_level: int) -> void:
 
 
 func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEvent:
-	var damage_stat_id := "melee_damage" if damage_kind == DAMAGE_KIND_MELEE else "ranged_damage"
+	var damage_stat_id := "ranged_damage"
 	var base_damage := _get_damage_component_base(damage_stat_id)
 	var damage := base_damage * (1.0 + get_stat("damage_percent") / 100.0)
 	var critical := force_critical or randf() * 100.0 < get_stat("crit_chance")
@@ -225,19 +224,22 @@ func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEve
 
 
 func _get_damage_component_base(stat_id: String) -> float:
-	var weapon_base := get_weapon_stat(stat_id)
-	if get_attack_kind() != "mixed" or owner_player == null:
-		return get_stat(stat_id)
-	# 混合武器的每个伤害来源只继承玩家对应属性的 50%。
-	var player_bonus := owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)
-	return weapon_base + player_bonus * 0.5
+	return get_stat(stat_id)
 
 
 func get_attack_kind() -> String:
-	var kind := str(weapon_data.get("attack_kind", ""))
-	if kind != "ranged" and kind != "mixed":
-		kind = "melee"
-	return kind
+	return "ranged"
+
+
+func get_visual_rarity() -> String:
+	var base_rarity := str(weapon_data.get("rarity", "common"))
+	var level_entry: Dictionary = weapon_data.get("level_upgrades", {}).get(str(level), {})
+	var level_rarity := str(level_entry.get("rarity", ""))
+	return level_rarity if not level_rarity.is_empty() else base_rarity
+
+
+func get_rarity_color() -> Color:
+	return RARITY_COLORS.get(get_visual_rarity(), RARITY_COLORS["common"])
 
 
 func _get_tags() -> Array[String]:
@@ -251,21 +253,12 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	var attack_kind := get_attack_kind()
-	var has_melee := attack_kind == "melee" or attack_kind == "mixed"
-	var has_ranged := attack_kind == "ranged" or attack_kind == "mixed"
-	var damage_lines: Array[String] = []
-	if has_melee:
-		damage_lines.append("[color=#F5D76E]近战伤害[/color]%s" % _format_damage_source("melee_damage"))
-	if has_ranged:
-		damage_lines.append("[color=#F5D76E]远程伤害[/color]%s" % _format_damage_source("ranged_damage"))
-	if not damage_lines.is_empty():
-		lines.append("+".join(damage_lines))
+	var damage_line := "[color=#F5D76E]远程伤害[/color]%s" % _format_damage_source("ranged_damage")
+	lines.append(damage_line)
 	var interval := get_actual_attack_interval_seconds()
 	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	if has_ranged:
-		lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]穿透[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
+	lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]穿透[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
 	lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	return "\n".join(lines)
@@ -274,6 +267,4 @@ func build_full_stats_text() -> String:
 func _format_damage_source(stat_id: String) -> String:
 	var fixed_damage := int(roundi(get_weapon_stat(stat_id)))
 	var player_bonus := int(roundi((owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)) if owner_player != null else 0.0))
-	if get_attack_kind() == "mixed":
-		player_bonus = int(roundi(float(player_bonus) * 0.5))
 	return "([color=#FFFFFF]%d[/color]+[color=#7FD88F]%d[/color])" % [fixed_damage, player_bonus]

@@ -353,6 +353,9 @@ func _build_pressure_modifier(field_name: String, value: int, target_scope: Stri
 	if field_name == "max_hp_percent":
 		modifier_stat = "max_hp"
 		modifier_operation = Modifier.OPERATION_ADD_PERCENT
+	elif field_name == "move_speed_percent":
+		modifier_stat = "move_speed"
+		modifier_operation = Modifier.OPERATION_ADD_PERCENT
 	elif field_name == "armor_flat":
 		modifier_stat = "armor"
 		modifier_operation = Modifier.OPERATION_ADD_FLAT

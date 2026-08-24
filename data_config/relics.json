@@ -726,17 +726,17 @@
   {
     "id": "relic_dead_shield_badge",
     "display_name": "死寂护盾徽章",
-    "description": "战斗开局生成 15 点护盾",
+    "description": "战斗开局生成 10 点护盾",
     "icon": "res://assets/ui/icons/relics/relic_dead_shield_badge.png",
     "icon_description": "哑光灰色金属胸针",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["survival"],
     "effects": [
-      {"id": "mod_relic_dead_shield_badge_shield", "source_type": "relic", "source_id": "relic_dead_shield_badge", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 15, "duration": -1}
+      {"id": "mod_relic_dead_shield_badge_shield", "source_type": "relic", "source_id": "relic_dead_shield_badge", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 10, "duration": -1}
     ],
     "runtime_effects": [
-      {"trigger": "wave_start", "effect": "grant_shield", "value": 15}
+      {"trigger": "wave_start", "effect": "grant_shield", "value": 10}
     ]
   },
   {
@@ -821,14 +821,14 @@
   {
     "id": "relic_barrier_crystal",
     "display_name": "屏障结晶",
-    "description": "每秒生成 2 点护盾；侵蚀度 + 5",
+    "description": "每两秒生成 1 点护盾；侵蚀度 + 5",
     "icon": "res://assets/ui/icons/relics/relic_barrier_crystal.png",
     "icon_description": "边角缺损、萦绕暗色烟气的菱形晶体",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_barrier_crystal_shield_regen", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 2, "duration": -1},
+      {"id": "mod_relic_barrier_crystal_shield_regen", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 0.5, "duration": -1},
       {"id": "mod_relic_barrier_crystal_divinity", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": []
@@ -996,7 +996,7 @@
   {
     "id": "relic_void_tentacle",
     "display_name": "虚空触手",
-    "description": "开局护盾 + 20；每秒护盾 + 5；护盾被击碎时恢复 3 生命值并增加 1 点侵蚀度",
+    "description": "开局护盾 + 20；每秒护盾 + 1；且护盾被击碎时恢复 3 生命值并增加 1 点侵蚀度",
     "icon": "res://assets/ui/icons/relics/relic_void_tentacle.png",
     "icon_description": "内部不断翻滚混沌雾气的一截章鱼触手",
     "rarity": "mythic",
@@ -1004,7 +1004,7 @@
     "tags": ["survival", "eldritch"],
     "effects": [
       {"id": "mod_relic_void_tentacle_shield", "source_type": "relic", "source_id": "relic_void_tentacle", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 20, "duration": -1},
-      {"id": "mod_relic_void_tentacle_shield_regen", "source_type": "relic", "source_id": "relic_void_tentacle", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 5, "duration": -1}
+      {"id": "mod_relic_void_tentacle_shield_regen", "source_type": "relic", "source_id": "relic_void_tentacle", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 1, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_start", "effect": "grant_shield", "value": 20},

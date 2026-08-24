@@ -66,9 +66,9 @@ func configure(next_payload: Dictionary) -> void:
 	payload = next_payload.duplicate(true)
 	error_message = ""
 	_amount_initialized = false
-	amount = int(payload.get("gold", 0))
+	amount = 0
 	if amount_edit != null:
-		amount_edit.text = str(amount)
+		amount_edit.text = "0"
 	_amount_initialized = true
 	_refresh_visual()
 
@@ -110,11 +110,7 @@ func show_popup() -> void:
 	_show_tween.tween_property(main_panel, "scale", Vector2.ONE, 0.30)
 	_refresh_visual()
 	if amount_edit != null:
-		get_tree().create_timer(0.28).timeout.connect(func() -> void:
-			if visible and not is_animating:
-				amount_edit.grab_focus()
-				amount_edit.select_all()
-		)
+		amount_edit.release_focus()
 
 
 func hide_popup() -> void:
@@ -321,12 +317,12 @@ func _connect_buttons() -> void:
 		withdraw_button.pressed.connect(_on_withdraw_pressed)
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
-	if quick_50_button != null and not quick_50_button.pressed.is_connected(_on_quick_amount_pressed.bind(50)):
-		quick_50_button.pressed.connect(_on_quick_amount_pressed.bind(50))
-	if quick_100_button != null and not quick_100_button.pressed.is_connected(_on_quick_amount_pressed.bind(100)):
-		quick_100_button.pressed.connect(_on_quick_amount_pressed.bind(100))
-	if quick_500_button != null and not quick_500_button.pressed.is_connected(_on_quick_amount_pressed.bind(500)):
-		quick_500_button.pressed.connect(_on_quick_amount_pressed.bind(500))
+	if quick_50_button != null and not quick_50_button.pressed.is_connected(_on_quick_amount_pressed.bind(4)):
+		quick_50_button.pressed.connect(_on_quick_amount_pressed.bind(4))
+	if quick_100_button != null and not quick_100_button.pressed.is_connected(_on_quick_amount_pressed.bind(2)):
+		quick_100_button.pressed.connect(_on_quick_amount_pressed.bind(2))
+	if quick_500_button != null and not quick_500_button.pressed.is_connected(_on_quick_amount_pressed.bind(1)):
+		quick_500_button.pressed.connect(_on_quick_amount_pressed.bind(1))
 
 
 func _refresh_visual() -> void:
@@ -334,6 +330,7 @@ func _refresh_visual() -> void:
 	var principal := int(payload.get("principal", 0))
 	var rate := float(payload.get("interest_rate", 0.0))
 	var interest := int(payload.get("estimated_interest", 0))
+	_refresh_quick_amounts(gold)
 	if title_label != null:
 		title_label.text = "深渊金库"
 	if principal_value != null:
@@ -357,6 +354,17 @@ func _refresh_visual() -> void:
 		quick_100_button.disabled = is_animating
 	if quick_500_button != null:
 		quick_500_button.disabled = is_animating
+
+
+func _refresh_quick_amounts(gold: int) -> void:
+	var quarter_amount := floori(float(gold) / 4.0)
+	var half_amount := floori(float(gold) / 2.0)
+	if quick_50_button != null:
+		quick_50_button.text = "+%s" % _format_number(quarter_amount)
+	if quick_100_button != null:
+		quick_100_button.text = "+%s" % _format_number(half_amount)
+	if quick_500_button != null:
+		quick_500_button.text = "+%s" % _format_number(gold)
 
 
 func _build_hint_text(gold: int, principal: int) -> String:
@@ -432,10 +440,11 @@ func _on_amount_changed(value: String) -> void:
 	_refresh_visual()
 
 
-func _on_quick_amount_pressed(value: int) -> void:
+func _on_quick_amount_pressed(divisor: int) -> void:
 	if is_animating:
 		return
-	amount = maxi(0, amount + value)
+	var gold := int(payload.get("gold", 0))
+	amount = gold if divisor <= 1 else floori(float(gold) / float(divisor))
 	amount_edit.text = str(amount)
 	_refresh_visual()
 

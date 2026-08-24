@@ -11,16 +11,6 @@ const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_RELIC: 60,
 	OFFER_WEAPON_UPGRADE: 15,
 }
-const RELIC_RARITY_STEPS: Dictionary = {
-	"common": 3,
-	"uncommon": 4,
-	"rare": 5,
-	"epic": 6,
-	"mythic": 8,
-	"legendary": 10,
-}
-
-
 func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
 	var owned_weapon_ids := _to_string_set(context.get("owned_weapon_ids", []))
@@ -33,7 +23,16 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var shop_price_percent := float(context.get("shop_price_percent", 0.0))
 	var load_capacity := int(context.get("load_capacity", 0))
 	var current_load := int(context.get("current_load", 0))
-	var owned_rarity_counts: Dictionary = context.get("owned_rarity_counts", {})
+	var owned_relic_rarity_counts: Dictionary = {}
+	var total_relic_count := 0
+	for owned_relic_id in relic_counts.keys():
+		var owned_relic_data := DataRegistry.get_record("relics", str(owned_relic_id))
+		if owned_relic_data.is_empty():
+			continue
+		var owned_relic_rarity := str(owned_relic_data.get("rarity", "common"))
+		var owned_relic_amount := int(relic_counts.get(owned_relic_id, 0))
+		total_relic_count += owned_relic_amount
+		owned_relic_rarity_counts[owned_relic_rarity] = int(owned_relic_rarity_counts.get(owned_relic_rarity, 0)) + owned_relic_amount
 
 	for weapon_data in DataRegistry.get_table("weapons"):
 		var weapon_id := str(weapon_data.get("id", ""))
@@ -76,7 +75,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"offer_type": OFFER_RELIC,
 			"pool_key": "relic",
 			"rarity": relic_rarity,
-			"rarity_bucket_count": int(owned_rarity_counts.get(relic_rarity, 0)),
+			"total_relic_count": total_relic_count,
+			"relic_rarity_count": int(owned_relic_rarity_counts.get(relic_rarity, 0)),
 			"target_id": relic_id,
 			"display_name": str(relic_data.get("display_name", relic_id)),
 			"description": str(relic_data.get("description", "")),
@@ -299,9 +299,9 @@ func _calculate_shop_cost(candidate: Dictionary, shop_price_percent: float) -> i
 	if offer_type == OFFER_WEAPON_UPGRADE:
 		base_cost = 10
 	elif offer_type == OFFER_RELIC:
-		var rarity := str(candidate.get("rarity", "common"))
-		var step := int(RELIC_RARITY_STEPS.get(rarity, 3))
-		base_cost += step * maxi(0, int(candidate.get("rarity_bucket_count", 0)))
+		base_cost += maxi(0, int(candidate.get("total_relic_count", 0)))
+		if rarity_index > 2:
+			base_cost += maxi(0, int(candidate.get("relic_rarity_count", 0))) * 3 * (rarity_index - 2)
 	return StatDefinitions.calculate_shop_cost(base_cost + rarity_index * 5, shop_price_percent)
 
 

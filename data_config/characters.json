@@ -19,7 +19,7 @@
       "humanity": 100,
       "divinity": 0
     },
-    "start_weapons": ["weapon_dome_shockwave"],
+    "start_weapons": ["weapon_void_blade"],
     "passive_modifiers": []
   }
 ]

@@ -28,6 +28,7 @@ var modifier_stack: ModifierStack = ModifierStack.new()
 var relic_system: RelicBondSystem = RelicBondSystem.new()
 var current_hp: int = 0
 var current_shield: int = 0
+var current_shield_capacity: int = 0
 var remaining_revives: int = 0
 var alive: bool = true
 var facing_right: bool = true
@@ -104,7 +105,8 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	relic_system.initialize(self)
 	relic_system.set_weapon_ids(start_weapon_ids)
 	current_hp = int(get_stat("max_hp"))
-	current_shield = int(get_stat("shield"))
+	current_shield = 0
+	current_shield_capacity = 0
 	remaining_revives = int(get_stat("revive_count"))
 	_configured_revive_count = remaining_revives
 	alive = true
@@ -216,16 +218,19 @@ func get_character_icon_path() -> String:
 
 
 func take_damage(raw_damage: int, source_id: String = "") -> int:
-	# 伤害入口统一经过护甲换算后的 damage_taken_percent。
+	# 护盾优先承伤且不受护甲影响；只有穿透护盾的生命伤害经过护甲换算。
 	if not alive or raw_damage <= 0 or _invincibility_timer > 0.0:
 		return 0
 
-	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
-	var final_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var had_shield := current_shield > 0
-	var shield_damage := mini(current_shield, final_damage)
+	var shield_damage := mini(current_shield, raw_damage)
 	current_shield -= shield_damage
-	current_hp = maxi(current_hp - (final_damage - shield_damage), 0)
+	var remaining_damage := raw_damage - shield_damage
+	var health_damage := 0
+	if remaining_damage > 0:
+		var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
+		health_damage = maxi(1, int(roundi(float(remaining_damage) * damage_taken_percent / 100.0)))
+	current_hp = maxi(current_hp - health_damage, 0)
 	_invincibility_timer = invincibility_seconds
 	_apply_damage_flash()
 	_refresh_relic_dynamic_effects()
@@ -236,7 +241,7 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 
 	if current_hp <= 0:
 		_die(source_id)
-	return final_damage
+	return shield_damage + health_damage
 
 
 func _apply_damage_flash() -> void:
@@ -273,12 +278,17 @@ func grant_shield(amount: int) -> int:
 	if not alive or amount <= 0:
 		return 0
 	var old_shield := current_shield
+	current_shield_capacity += amount
 	current_shield += amount
-	var shield_capacity := int(get_stat("shield"))
-	if shield_capacity > 0:
-		current_shield = mini(current_shield, shield_capacity)
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	return current_shield - old_shield
+
+
+func reset_wave_shield() -> void:
+	current_shield = 0
+	current_shield_capacity = 0
+	_shield_regen_remainder = 0.0
+	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 
 
 func process_relic_runtime_trigger(trigger: String) -> void:
@@ -352,8 +362,7 @@ func _process_regeneration(delta: float) -> void:
 	if shield_regen <= 0.0:
 		_shield_regen_remainder = 0.0
 		return
-	var shield_capacity := int(get_stat("shield"))
-	if shield_capacity > 0 and current_shield >= shield_capacity:
+	if current_shield_capacity > 0 and current_shield >= current_shield_capacity:
 		_shield_regen_remainder = 0.0
 		return
 	_shield_regen_remainder += shield_regen * delta
@@ -439,9 +448,6 @@ func _update_after_stat_change() -> void:
 	_configured_revive_count = configured_revives
 	remaining_revives = mini(remaining_revives, configured_revives)
 	current_hp = mini(current_hp, int(get_stat("max_hp")))
-	var shield_capacity := int(get_stat("shield"))
-	if shield_capacity > 0:
-		current_shield = mini(current_shield, shield_capacity)
 	_update_pickup_radius()
 	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)

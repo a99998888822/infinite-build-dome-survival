@@ -5,9 +5,7 @@ signal weapon_equipped(weapon_id: String)
 signal weapon_upgraded(weapon_id: String, level: int)
 signal equip_failed(weapon_id: String, reason: String)
 
-const ATTACK_EFFECT_SECONDS: float = 0.18
 const PROJECTILE_VISUAL_SCALE: float = 1.0
-const EFFECT_MIN_SCALE: float = 0.35
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
 
 var owner_player: PlayerController = null
@@ -128,91 +126,14 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 	if weapon == null or owner_player == null or targeting_service == null:
 		return false
-	if weapon.get_attack_kind() == "mixed" and is_zero_approx(weapon.get_projectile_speed()):
-		var mixed_attacked := _apply_mixed_damage(weapon)
-		if mixed_attacked:
-			weapon.reset_attack_timer()
-		return mixed_attacked
 	var attacked := false
 	var damage_events := weapon.calculate_damage_events(false)
 	for damage_event in damage_events:
-		match damage_event.damage_kind:
-			WeaponInstance.DAMAGE_KIND_MELEE:
-				attacked = _apply_melee_damage(weapon, damage_event) or attacked
-			WeaponInstance.DAMAGE_KIND_RANGED:
-				attacked = _apply_ranged_damage(weapon, damage_event) or attacked
+		if damage_event.damage_kind == WeaponInstance.DAMAGE_KIND_RANGED:
+			attacked = _apply_ranged_damage(weapon, damage_event) or attacked
 	if attacked:
 		weapon.reset_attack_timer()
 	return attacked
-
-
-func _apply_mixed_damage(weapon: WeaponInstance) -> bool:
-	var damage_events := weapon.calculate_damage_events(false)
-	var melee_event: DamageEvent = null
-	var ranged_event: DamageEvent = null
-	for damage_event in damage_events:
-		if damage_event.damage_kind == WeaponInstance.DAMAGE_KIND_MELEE:
-			melee_event = damage_event
-		elif damage_event.damage_kind == WeaponInstance.DAMAGE_KIND_RANGED:
-			ranged_event = damage_event
-	if melee_event == null and ranged_event == null:
-		return false
-
-	var attack_range := weapon.get_attack_range()
-	var hit_enemies := targeting_service.find_enemies_in_radius(owner_player.global_position, attack_range)
-	var damaged := false
-	var visual_direction := Vector2.RIGHT if owner_player.facing_right else Vector2.LEFT
-	var last_hit_position := owner_player.global_position
-	# 目标范围由武器的攻击形态决定；melee/ranged 仅表示伤害组件来源。
-	for enemy_node in hit_enemies:
-		var enemy := enemy_node as EnemyController
-		if enemy == null or not enemy.is_alive():
-			continue
-		var total_damage := 0
-		var damage_components: Array[int] = []
-		var is_critical := false
-		if melee_event != null:
-			total_damage += melee_event.damage
-			damage_components.append(melee_event.damage)
-			is_critical = melee_event.is_critical
-		if ranged_event != null:
-			total_damage += ranged_event.damage
-			damage_components.append(ranged_event.damage)
-			is_critical = is_critical or ranged_event.is_critical
-		if total_damage <= 0:
-			continue
-		visual_direction = owner_player.global_position.direction_to(enemy.global_position)
-		enemy.take_damage(total_damage, weapon.weapon_id, is_critical, visual_direction, damage_components)
-		last_hit_position = enemy.global_position
-		damaged = true
-
-	if not damaged:
-		return false
-	if weapon.register_hit_feedback_frame(false):
-		_spawn_hit_sparks(last_hit_position, visual_direction)
-	weapon.play_attack_hit_sfx()
-	_spawn_attack_effect_visual(weapon, owner_player.global_position, attack_range, visual_direction)
-	return true
-
-
-func _apply_melee_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> bool:
-	var attack_range := weapon.get_attack_range()
-	var hit_enemies := targeting_service.find_enemies_in_radius(owner_player.global_position, attack_range)
-	var damaged := false
-	var visual_direction := Vector2.RIGHT if owner_player == null or owner_player.facing_right else Vector2.LEFT
-	for enemy_node in hit_enemies:
-		var enemy := enemy_node as EnemyController
-		if enemy == null or not enemy.is_alive():
-			continue
-		visual_direction = owner_player.global_position.direction_to(enemy.global_position)
-		enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, visual_direction)
-		if weapon.register_hit_feedback_frame(false):
-			_spawn_hit_sparks(enemy.global_position, visual_direction)
-		damaged = true
-	if damaged:
-		weapon.play_attack_hit_sfx()
-		_spawn_attack_effect_visual(weapon, owner_player.global_position, attack_range, visual_direction)
-	return damaged
 
 
 func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> bool:
@@ -220,14 +141,9 @@ func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> 
 	var enemy := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, attack_range) as EnemyController
 	if enemy == null or not enemy.is_alive():
 		return false
-	if weapon.get_projectile_speed() > 0.0:
-		return _spawn_projectiles(weapon, damage_event, enemy.global_position, attack_range)
-	var hit_direction := owner_player.global_position.direction_to(enemy.global_position)
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, hit_direction)
-	if weapon.register_hit_feedback_frame(false):
-		_spawn_hit_sparks(enemy.global_position, hit_direction)
-	weapon.play_attack_hit_sfx()
-	return true
+	if weapon.get_projectile_speed() <= 0.0:
+		return false
+	return _spawn_projectiles(weapon, damage_event, enemy.global_position, attack_range)
 
 
 func _spawn_projectiles(weapon: WeaponInstance, damage_event: DamageEvent, target_position: Vector2, attack_range: float) -> bool:
@@ -269,29 +185,6 @@ func _spawn_projectile(weapon: WeaponInstance, damage_event: DamageEvent, direct
 	return initialized
 
 
-func _spawn_attack_effect_visual(weapon: WeaponInstance, center_position: Vector2, hit_radius: float, direction: Vector2) -> void:
-	var texture := _load_weapon_texture(weapon, "attack_effect_texture")
-	if texture == null:
-		return
-	var visual := Sprite2D.new()
-	visual.texture = texture
-	visual.centered = true
-	visual.top_level = true
-	visual.z_index = 45
-	var safe_direction := direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
-	var anchor_offset := 0.0 if str(weapon.weapon_data.get("attack_effect_anchor", "")) == "center" else minf(hit_radius * 0.35, 36.0)
-	visual.global_position = center_position + safe_direction * anchor_offset
-	visual.rotation = safe_direction.angle()
-	var texture_size := maxf(texture.get_size().x, 1.0)
-	var target_scale := maxf(EFFECT_MIN_SCALE, hit_radius * 2.0 / texture_size)
-	visual.scale = Vector2.ONE * target_scale * 0.72
-	_get_visual_root().add_child(visual)
-	var tween := create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(visual, "scale", Vector2.ONE * target_scale, ATTACK_EFFECT_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(visual, "modulate:a", 0.0, ATTACK_EFFECT_SECONDS).set_delay(ATTACK_EFFECT_SECONDS * 0.35)
-	tween.set_parallel(false)
-	tween.tween_callback(Callable(visual, "queue_free"))
 
 
 func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:

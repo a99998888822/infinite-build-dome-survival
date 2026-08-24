@@ -33,15 +33,11 @@
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 玩家右向基础单帧 | `player_void_hunter_right_base.png` | `assets/sprites/player/player_void_hunter_right_base.png` | 256x256 / 1:1 / PNG |  |
 | 已存在 | 玩家右向行走帧表 | `player_void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/player_void_hunter_walk_right_spritesheet.png` | 1024x256 / 4:1 / PNG |  |
-| 已存在 | 砍刀挥砍效果 | `effect_cleaver_slash.png` | `assets/sprites/weapons/effects/effect_cleaver_slash.png` | 256x256 / 1:1 / PNG |  |
-| 已存在 | 穹顶震波效果 | `effect_dome_shockwave.png` | `assets/sprites/weapons/effects/effect_dome_shockwave.png` | 256x256 / 1:1 / PNG |  |
 | 已存在 | 小飞刀投射物 | `projectile_void_blade.png` | `assets/sprites/weapons/projectiles/projectile_void_blade.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | placeholder_icon | `placeholder_icon.png` | `assets/ui/icons/placeholder_icon.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 穹顶震波器图标 | `weapon_dome_shockwave.png` | `assets/ui/icons/weapons/weapon_dome_shockwave.png` | 128x128 / 1:1 / PNG |  |
-| 已存在 | 砍刀图标 | `weapon_mutated_cleaver.png` | `assets/ui/icons/weapons/weapon_mutated_cleaver.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 小飞刀图标 | `weapon_void_blade.png` | `assets/ui/icons/weapons/weapon_void_blade.png` | 128x128 / 1:1 / PNG |  |
 
 ## 2. 未存在的必需素材（38 个）
@@ -137,8 +133,6 @@
 | 未存在 | 营地 BGM | `bgm_camp.ogg` | `assets/audio/bgm/bgm_camp.ogg` | OGG，循环 | 生成：森林、篝火、河流营地使用，安静舒缓 / OGG，循环 |
 | 未存在 | 战斗 BGM | `bgm_battle.ogg` | `assets/audio/bgm/bgm_battle.ogg` | OGG，循环 | 生成：普通战斗使用，节奏稳定，有轻微紧张感 / OGG，循环 |
 | 未存在 | 小飞刃 `weapon_void_blade` | `sfx_weapon_void_blade_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | OGG/WAV，短音效 | 生成：小型飞刃命中目标的轻锐金属反馈 / OGG/WAV，短音效 |
-| 未存在 | 砍刀 `weapon_mutated_cleaver` | `sfx_weapon_mutated_cleaver_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_mutated_cleaver_hit.ogg` | OGG/WAV，短音效 | 生成：砍刀命中的短促挥砍反馈，不使用血腥撕裂声 / OGG/WAV，短音效 |
-| 未存在 | 穹顶震波器 `weapon_dome_shockwave` | `sfx_weapon_dome_shockwave_hit.ogg` | `assets/audio/sfx/weapons/sfx_weapon_dome_shockwave_hit.ogg` | OGG/WAV，短音效 | 生成：圆形能量震波命中的低频能量反馈 / OGG/WAV，短音效 |
 | 未存在 | 利息结算动效 | `ui_finance_settlement_fx.png` | `assets/ui/effects/finance/ui_finance_settlement_fx.png` | Sprite sheet / 粒子素材，透明背景 | 金币流入本金池 |
 | 未存在 | 理财页开关动效 | `ui_finance_mode_switch_fx.png` | `assets/ui/effects/finance/ui_finance_mode_switch_fx.png` | Sprite sheet / 粒子素材，透明背景 | 用于波前理财弹窗切换 |
 | 未存在 | 小飞刀命中特效 | `effect_void_blade_hit.png` | `assets/sprites/weapons/effects/effect_void_blade_hit.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风命中特效，小型淡紫色星光爆点，中心明亮，边缘有少量像素粒子，适合飞刀命中敌人时播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要复杂背景，不要文字 |

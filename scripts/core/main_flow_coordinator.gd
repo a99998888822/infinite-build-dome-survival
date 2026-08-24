@@ -57,6 +57,7 @@ var _pending_wave_start_after_finance: bool = false
 var _stat_preview: Dictionary = {}
 var _active_shop_offer_ids: Array[String] = []
 var _wave_refresh_count: int = 0
+var _total_refresh_count: int = 0
 
 var _bound_player: PlayerController = null
 var _bound_loadout: WeaponLoadout = null
@@ -96,6 +97,7 @@ func reset_flow() -> void:
 	_stat_preview.clear()
 	_active_shop_offer_ids.clear()
 	_wave_refresh_count = 0
+	_total_refresh_count = 0
 	_set_battle_runtime_paused(false)
 	_set_mode(MODE_BOOT)
 	_set_state(STATE_START_PAGE)
@@ -321,8 +323,6 @@ func close_finance_popup() -> void:
 	modal_closed.emit(STATE_FINANCE_POPUP)
 	_pending_finance_payload.clear()
 	_wave_end_ready = false
-	if request_zone_select_popup():
-		return
 	if not _start_prepared_wave():
 		_set_state(STATE_BATTLE_PREPARE)
 
@@ -461,8 +461,10 @@ func get_current_gold() -> int:
 
 func get_shop_refresh_cost() -> int:
 	var wave_number := maxi(current_wave_index + 1, 1)
-	var refresh_term := 3 + wave_number
-	return int(ceil(float(refresh_term) * pow(2.0, float(_wave_refresh_count))))
+	var first_refresh_cost := 3.0 + float(wave_number) * 0.5 + float(_total_refresh_count) * 0.25
+	var in_wave_refresh_count := float(_wave_refresh_count)
+	var in_wave_growth := in_wave_refresh_count * 4.0 + in_wave_refresh_count * in_wave_refresh_count * 2.0
+	return int(ceil(first_refresh_cost + in_wave_growth))
 
 
 func request_shop_refresh() -> Dictionary:
@@ -474,13 +476,14 @@ func request_shop_refresh() -> Dictionary:
 	if not _bound_wave_manager.apply_gold_delta(-cost, "shop_refresh"):
 		return {"success": false, "reason": "insufficient_gold_for_refresh"}
 	_wave_refresh_count += 1
+	_total_refresh_count += 1
 	var payload: Dictionary = {}
 	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		payload = _build_shared_reward_shop_payload(_active_level_up_level, "refresh", false, _active_shop_offer_ids)
 	else:
 		payload = _build_shop_payload("shop", 0, _active_shop_offer_ids)
 	modal_requested.emit(current_state, payload)
-	return {"success": true, "cost": cost, "refresh_count": _wave_refresh_count}
+	return {"success": true, "cost": cost, "refresh_count": _wave_refresh_count, "total_refresh_count": _total_refresh_count}
 
 
 func get_current_mode() -> String:
@@ -742,6 +745,7 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		"resume_state": _resume_state_after_modal,
 		"refresh_cost": get_shop_refresh_cost(),
 		"refresh_count": _wave_refresh_count,
+		"total_refresh_count": _total_refresh_count,
 	}
 
 
@@ -753,28 +757,13 @@ func _build_shop_context() -> Dictionary:
 	for weapon in _bound_loadout.get_weapon_instances():
 		owned_weapon_ids.append(weapon.weapon_id)
 		equipped_weapons.append({"weapon_id": weapon.weapon_id, "level": weapon.level})
-	var owned_rarity_counts := {}
 	var relic_counts := _bound_player.get_relic_counts()
-	for relic_id in relic_counts.keys():
-		var relic_data := DataRegistry.get_record("relics", str(relic_id))
-		if relic_data.is_empty():
-			continue
-		var relic_rarity := str(relic_data.get("rarity", "common"))
-		var relic_owned_count := int(relic_counts.get(relic_id, 0))
-		owned_rarity_counts[relic_rarity] = int(owned_rarity_counts.get(relic_rarity, 0)) + relic_owned_count
-	for weapon in _bound_loadout.get_weapon_instances():
-		var weapon_data := DataRegistry.get_record("weapons", weapon.weapon_id)
-		if weapon_data.is_empty():
-			continue
-		var weapon_rarity := str(weapon_data.get("rarity", "common"))
-		owned_rarity_counts[weapon_rarity] = int(owned_rarity_counts.get(weapon_rarity, 0)) + 1
 	return {
 		"owned_weapon_ids": owned_weapon_ids,
 		"equipped_weapons": equipped_weapons,
 		"unlocked_weapon_ids": [],
 		"unlocked_relic_ids": [],
 		"owned_relic_counts": _bound_player.get_relic_counts(),
-		"owned_rarity_counts": owned_rarity_counts,
 		"current_load": _bound_loadout.get_total_load_cost(),
 		"load_capacity": _bound_loadout.get_load_capacity(),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,

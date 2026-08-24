@@ -16,7 +16,7 @@
 
 | 文件 | 用途 | 示例ID |
 | ---- | ---- | ---- |
-| `weapons.json` | 武器静态配置 | `weapon_void_blade` / `weapon_mutated_cleaver` / `weapon_dome_shockwave` |
+| `weapons.json` | 武器静态配置 | `weapon_void_blade` |
 | `relics.json` | 遗物静态配置 | `relic_piggy_bank` / `relic_finance_manager` / `relic_dividend_check` |
 | `bonds.json` | 羁绊阈值与额外效果配置 | `bond_mighty` / `bond_sharpshooter` / `bond_chosen` |
 | `characters.json` | 角色基础属性、开局武器 | `character_void_hunter` |

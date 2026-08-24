@@ -8,6 +8,7 @@
       "max_hp_percent": 10,
       "damage_percent": 5,
       "armor_flat": 3,
+      "move_speed_percent": 1,
       "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {
@@ -34,6 +35,7 @@
       "max_hp_percent": 8,
       "damage_percent": 6,
       "armor_flat": 3,
+      "move_speed_percent": 1,
       "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {
@@ -60,6 +62,7 @@
       "max_hp_percent": 12,
       "damage_percent": 4,
       "armor_flat": 3,
+      "move_speed_percent": 1,
       "spawn_interval_percent": 4
     },
     "player_pressure_per_streak": {

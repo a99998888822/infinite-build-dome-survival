@@ -18,8 +18,9 @@ const DAMAGE_NUMBER_SIZE: Vector2 = Vector2(76.0, 34.0)
 const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -36.0)
 const DAMAGE_NUMBER_RISE: float = 42.0
 const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.62
-const HIT_KNOCKBACK_SPEED: float = 180.0
-const HIT_KNOCKBACK_SECONDS: float = 0.1
+const HIT_KNOCKBACK_SPEED: float = 60.0
+const HIT_KNOCKBACK_SECONDS: float = 0.06
+const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
 const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
@@ -283,7 +284,9 @@ func _process_chase() -> void:
 		move_and_slide()
 		return
 	var direction := global_position.direction_to(target_player.global_position)
-	velocity = direction * get_stat("move_speed")
+	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", get_stat("move_speed")))
+	var move_speed := minf(get_stat("move_speed"), base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
+	velocity = direction * move_speed
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()

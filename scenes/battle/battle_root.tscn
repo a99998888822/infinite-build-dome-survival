@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" path="res://assets/ui/finance/finance_bill.svg" id="14_finance_bill"]
 [ext_resource type="PackedScene" path="res://scenes/ui/mobile/mobile_joystick.tscn" id="15_mobile_joystick"]
 [ext_resource type="Script" path="res://scripts/ui/touch_scroll_container.gd" id="16_touch_scroll"]
+[ext_resource type="Script" path="res://scripts/effects/particle_world.gd" id="17_particle_world"]
+[ext_resource type="Script" path="res://scripts/terrain/destructible_test_area.gd" id="18_destructible_test_area"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
@@ -79,6 +81,15 @@ grow_horizontal = 2
 grow_vertical = 2
 material = SubResource("ShaderMaterial_abyss_floor")
 mouse_filter = 2
+
+[node name="ParticleWorld" type="Node2D" parent="."]
+z_index = 80
+script = ExtResource("17_particle_world")
+
+[node name="DestructibleTestArea" type="StaticBody2D" parent="."]
+position = Vector2(256, 0)
+z_index = 30
+script = ExtResource("18_destructible_test_area")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 auto_initialize_on_ready = false

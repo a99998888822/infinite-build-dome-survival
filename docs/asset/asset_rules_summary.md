@@ -69,8 +69,6 @@
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
 | `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_void_blade.png` | 已存在 | 需生成或放入正式图标 |
-| `weapon_mutated_cleaver` | `icon` | `assets/ui/icons/weapons/weapon_mutated_cleaver.png` | 已存在 | 需生成或放入正式图标 |
-| `weapon_dome_shockwave` | `icon` | `assets/ui/icons/weapons/weapon_dome_shockwave.png` | 已存在 | 需生成或放入正式图标 |
 
 ### 5. Godot 导入与裁剪约定
 
