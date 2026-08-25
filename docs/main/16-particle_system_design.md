@@ -126,6 +126,21 @@ position
 6. 粒子生命周期结束后从缓冲区移除或回收到对象池。
 7. 战斗暂停时停止模拟，不清除尚未结束的粒子。
 
+### 4.3 动态效果运行时
+
+粒子不直接读取角色或武器属性，而是由 `EffectContext` 合并角色、武器等级、附魔、晶石和卷轴的效果修改器，再交给动态发射器运行。玩法参数与表现参数分离：伤害、范围、持续时间和连锁次数在效果创建时确定；粒子速率、速度、颜色、发光和扰动可在运行时刷新。
+
+```text
+属性/附魔/晶石/卷轴
+  -> EffectContext + EffectModifier
+  -> ParticleEmitterRuntime / EffectRuntime
+  -> ParticleWorld
+```
+
+运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`pierce_count` 只通过实际命中次数触发命中特效，`area_size` 控制效果范围与粒子散布，`control_power` 由具体效果绑定控制强度或连锁参数。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
+
+当前编码阶段先实现 `EffectContext`、`EffectModifier`、`EffectParameterResolver`、`ParticleEmitterRuntime` 和 `ParticleMotionBehavior`，并将木箭拖尾迁移到动态发射器；火焰、爆炸和闪电在此基础上扩展。
+
 ## 5. 与现有武器系统的接口
 
 ### 5.1 投射物
@@ -179,3 +194,13 @@ MVP 暂不实现：
 ## 9. 最终版本期望
 
 最终粒子系统应成为一个按事件驱动的表现层：同一攻击事件可以同时驱动投射物拖尾、命中碎片、爆炸烟尘、元素粒子和材质反应粒子；粒子拥有有限的碰撞和材质标签，可与场景破坏系统交换事件，但仍与伤害结算解耦。系统最终支持对象池、分块更新、GPU 辅助绘制、元素附魔预设、屏幕空间后处理和可回放的确定性随机种子。
+
+## 10. Current MVP Implementation
+
+- Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the `lightning` effect.
+- Fire uses scattered seeds and `FirePatch`: the pool lasts about two seconds, while burning damage is an independent enemy status.
+- Explosion uses particle flash, debris and radial secondary damage, and can call terrain radius destruction.
+- Lightning is sampled into particles: white core, blue branches and pale-yellow sparks; it supports short flash, chaining and burning detonation.
+- `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
+- Enchantment scrolls, energy gems and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
+- This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.

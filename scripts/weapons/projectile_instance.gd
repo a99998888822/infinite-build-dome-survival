@@ -8,6 +8,8 @@ const TRAIL_INTERVAL_SECONDS: float = 0.035
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
+const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const COMBAT_EFFECT_WORLD_SCRIPT = preload("res://scripts/effects/combat_effect_world.gd")
 
 var projectile_id: String = ""
 var weapon: WeaponInstance = null
@@ -18,7 +20,7 @@ var remaining_distance: float = 0.0
 var remaining_hits: int = 1
 var hit_targets: Dictionary = {}
 var active: bool = false
-var _trail_timer: float = 0.0
+var _trail_emitter: Node2D = null
 
 
 func initialize(
@@ -42,7 +44,6 @@ func initialize(
 	remaining_distance = maxf(max_distance, 1.0)
 	remaining_hits = maxi(weapon.get_total_pierce_hits(), 1)
 	active = true
-	_trail_timer = 0.0
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -63,6 +64,13 @@ func initialize(
 		sprite.rotation = direction.angle()
 		add_child(sprite)
 
+	var trail_context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "projectile_trail")
+	_trail_emitter = PARTICLE_WORLD_SCRIPT.create_emitter(self, "projectile_trail", trail_context, {
+		"motion_type": "attached",
+		"particle_rate": 1.0 / TRAIL_INTERVAL_SECONDS,
+		"direction": -direction,
+	})
+
 	body_entered.connect(_on_body_entered)
 	return true
 
@@ -75,10 +83,6 @@ func _physics_process(delta: float) -> void:
 	var step := speed * delta
 	global_position += direction * step
 	remaining_distance -= step
-	_trail_timer -= delta
-	if _trail_timer <= 0.0:
-		_emit_trail()
-		_trail_timer = TRAIL_INTERVAL_SECONDS
 	if remaining_distance <= 0.0:
 		_destroy()
 
@@ -90,6 +94,7 @@ func _on_body_entered(body: Node) -> void:
 		damage_event.hit_position = global_position
 		if bool(body.call("destroy_point", global_position)):
 			_spawn_terrain_sparks(global_position, direction)
+		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, global_position, direction, body)
 		_destroy()
 		return
 	var enemy := body as EnemyController
@@ -101,6 +106,7 @@ func _on_body_entered(body: Node) -> void:
 	hit_targets[target_key] = true
 	damage_event.hit_position = enemy.global_position
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
+	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, global_position, direction, enemy)
 	if weapon != null:
 		if weapon.register_hit_feedback_frame(true):
 			_spawn_hit_sparks(enemy.global_position, direction)
@@ -108,11 +114,6 @@ func _on_body_entered(body: Node) -> void:
 	remaining_hits -= 1
 	if remaining_hits <= 0:
 		_destroy()
-
-
-func _emit_trail() -> void:
-	var color_override := weapon.get_rarity_color() if weapon != null else Color.TRANSPARENT
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "projectile_trail", global_position, -direction, 1.0, color_override)
 
 
 func _spawn_hit_sparks(hit_position: Vector2, burst_direction: Vector2 = Vector2.ZERO) -> void:

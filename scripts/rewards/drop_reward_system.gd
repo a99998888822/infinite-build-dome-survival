@@ -3,7 +3,8 @@ class_name DropRewardSystem
 
 const EXP_ORB_SCENE: PackedScene = preload("res://scenes/pickups/exp_orb.tscn")
 const HEALTH_PACK_SCENE: PackedScene = preload("res://scenes/pickups/health_pack.tscn")
-const VALID_DROP_TYPES: Array[String] = ["exp_orb", "health_pack", "relic"]
+const AUGMENTATION_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/augmentation_pickup.tscn")
+const VALID_DROP_TYPES: Array[String] = ["exp_orb", "health_pack", "relic", "augmentation"]
 
 
 func build_drop_actions(drop_table_id: String, player: PlayerController = null) -> Array[Dictionary]:
@@ -94,6 +95,10 @@ func spawn_action(
 			return spawn_exp_orb(amount, position, pickup_root, player, snapshot, on_exp_collected)
 		"health_pack":
 			return spawn_health_pack(amount, position, pickup_root, player, snapshot, on_health_collected)
+		"augmentation":
+			var entry: Dictionary = action.get("entry", {})
+			var augmentation_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
+			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot)
 		"relic":
 			if snapshot != null:
 				snapshot.record_spawned_drop("relic", 1)
@@ -156,6 +161,28 @@ func spawn_health_pack(
 	if on_collected.is_valid():
 		pack.collected.connect(on_collected)
 	return pack
+
+
+func spawn_augmentation(
+	augmentation_id: String,
+	amount: int,
+	position: Vector2,
+	pickup_root: Node,
+	player: PlayerController,
+	snapshot: RewardSnapshot = null
+) -> AugmentationPickup:
+	if pickup_root == null or player == null or augmentation_id.is_empty():
+		return null
+	var pickup := AUGMENTATION_PICKUP_SCENE.instantiate() as AugmentationPickup
+	if pickup == null:
+		return null
+	pickup_root.add_child(pickup)
+	pickup.global_position = position
+	pickup.initialize(augmentation_id, maxi(amount, 1))
+	pickup.set_target_player(player)
+	if snapshot != null:
+		snapshot.record_spawned_drop("augmentation", 1)
+	return pickup
 
 
 func _pick_random_available_relic(player: PlayerController) -> String:

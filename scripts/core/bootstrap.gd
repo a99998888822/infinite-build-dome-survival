@@ -32,6 +32,7 @@ const TABLE_NAMES: Array[String] = [
 	"zones",
 	"waves",
 	"drop_tables",
+	"augmentations",
 ]
 
 
@@ -88,6 +89,7 @@ func _print_lookup_checks() -> void:
 	_print_lookup_result("enemies", "enemy_mutated_grub")
 	_print_lookup_result("zones", "zone_nearstring_battlefield")
 	_print_lookup_result("drop_tables", "drop_basic_enemy")
+	_print_lookup_result("augmentations", "scroll_fire")
 	_print_lookup_result("waves", "wave_stage_01")
 
 

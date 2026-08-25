@@ -4,10 +4,19 @@
     "display_name": "初心者",
     "description": "默认角色",
     "enabled": true,
-    "tags": ["character", "starter"],
+    "tags": [
+      "character",
+      "starter"
+    ],
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
     "display_sprite": "res://assets/sprites/player/player_void_hunter_right_base.png",
-    "display_stats": ["max_hp", "move_speed", "load_capacity", "humanity", "divinity"],
+    "display_stats": [
+      "max_hp",
+      "move_speed",
+      "load_capacity",
+      "humanity",
+      "divinity"
+    ],
     "base_stats": {
       "max_hp": 10,
       "hp_regen": 0,
@@ -19,7 +28,15 @@
       "humanity": 100,
       "divinity": 0
     },
-    "start_weapons": ["weapon_void_blade"],
-    "passive_modifiers": []
+    "start_weapons": [
+      "weapon_void_blade"
+    ],
+    "passive_modifiers": [],
+    "start_weapon_attachments": [
+      {
+        "weapon_id": "weapon_void_blade",
+        "item_id": "scroll_lightning"
+      }
+    ]
   }
 ]

@@ -14,4 +14,5 @@ static func create(data: Dictionary) -> Dictionary:
 		"color_override": data.get("color_override", Color.TRANSPARENT),
 		"source_id": str(data.get("source_id", "")),
 		"tags": tags,
+		"parameters": data.get("parameters", {}).duplicate(true),
 	}

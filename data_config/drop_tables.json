@@ -20,6 +20,18 @@
         "type": "health_pack",
         "amount": 1,
         "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_fire",
+        "amount": 1,
+        "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "gem_sun_core",
+        "amount": 1,
+        "chance_percent": 1
       }
     ]
   },
@@ -48,6 +60,24 @@
         "type": "health_pack",
         "amount": 1,
         "chance_percent": 20
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_explosion",
+        "amount": 1,
+        "chance_percent": 5
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lightning",
+        "amount": 1,
+        "chance_percent": 3
+      },
+      {
+        "type": "augmentation",
+        "item_id": "gem_sun_core",
+        "amount": 1,
+        "chance_percent": 2
       }
     ]
   },
@@ -71,9 +101,37 @@
         "type": "relic",
         "amount": 1,
         "chance_percent": 100
+      },
+      {
+        "type": "augmentation",
+        "item_id": "gem_storm_core",
+        "amount": 1,
+        "chance_percent": 25
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_fire",
+        "amount": 1,
+        "chance_percent": 10
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_explosion",
+        "amount": 1,
+        "chance_percent": 20
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lightning",
+        "amount": 1,
+        "chance_percent": 15
+      },
+      {
+        "type": "augmentation",
+        "item_id": "wizard_scroll_chain_mastery",
+        "amount": 1,
+        "chance_percent": 15
       }
     ]
   }
 ]
-
-

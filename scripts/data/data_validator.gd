@@ -11,6 +11,7 @@ const REQUIRED_TABLES: Array[String] = [
 	"zones",
 	"waves",
 	"drop_tables",
+	"augmentations",
 ]
 
 const TABLE_REQUIRED_FIELDS: Dictionary = {
@@ -23,6 +24,7 @@ const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"zones": ["id", "display_name", "description", "tendency_tags", "enemy_pressure_per_streak", "player_pressure_per_streak", "fortune_gain", "reward_bias"],
 	"waves": ["id", "duration_seconds", "spawn_groups"],
 	"drop_tables": ["id", "entries"],
+	"augmentations": ["id", "display_name", "category", "rarity", "effect_ids", "modifiers"],
 }
 
 const MODIFIER_REQUIRED_FIELDS: Array[String] = [
@@ -36,7 +38,7 @@ const MODIFIER_REQUIRED_FIELDS: Array[String] = [
 	"duration",
 ]
 
-const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack"]
+const VALID_DROP_TYPES: Array[String] = ["exp_orb", "relic", "health_pack", "augmentation"]
 const VALID_RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const BOND_ALLOWED_RARITIES: Array[String] = ["epic", "mythic", "legendary"]
 const VALID_ZONE_TARGET_POOLS: Array[String] = ["relic", "bond", "weapon"]
@@ -101,7 +103,8 @@ func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
 	_validate_zone_records(tables.get("zones", []), records_by_id)
 	_validate_camp_building_records(tables.get("camp_buildings", []), records_by_id)
 	_validate_wave_records(tables.get("waves", []), records_by_id)
-	_validate_drop_table_records(tables.get("drop_tables", []))
+	_validate_drop_table_records(tables.get("drop_tables", []), records_by_id)
+	_validate_augmentation_records(tables.get("augmentations", []))
 
 	return errors.is_empty()
 
@@ -197,9 +200,9 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 
 
 func _allows_fractional_config_value(path: String) -> bool:
-	return path.contains(".runtime_effects[") and (
+	return (path.contains(".runtime_effects[") and (
 		path.ends_with(".value") or path.ends_with(".principal_percent")
-	)
+	)) or path.contains("augmentations[") and path.contains(".modifiers[") and path.ends_with(".value")
 
 
 func _validate_stat_references(value_data: Variant, path: String) -> void:
@@ -240,6 +243,7 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "hit_radius", path)
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
+	_validate_non_negative_int(record, "attachment_slots", path)
 	if record.has("hit_sfx") and not (record["hit_sfx"] is String):
 		errors.append("%s.hit_sfx must be a string resource path." % path)
 
@@ -417,6 +421,19 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 			continue
 		for weapon_index in start_weapons.size():
 			_validate_id_reference(str(start_weapons[weapon_index]), "weapons", records_by_id, "%s.start_weapons[%d]" % [path, weapon_index])
+	var start_attachments: Variant = record.get("start_weapon_attachments", [])
+	if not (start_attachments is Array):
+		errors.append("%s.start_weapon_attachments must be an array." % path)
+	else:
+		for attachment_index in start_attachments.size():
+			var attachment: Variant = start_attachments[attachment_index]
+			var attachment_path := "%s.start_weapon_attachments[%d]" % [path, attachment_index]
+			if not (attachment is Dictionary):
+				errors.append("%s must be an object." % attachment_path)
+				continue
+			_validate_required_fields(attachment, ["weapon_id", "item_id"], attachment_path)
+			_validate_id_reference(attachment, "weapon_id", "weapons", records_by_id, attachment_path)
+			_validate_id_reference(attachment, "item_id", "augmentations", records_by_id, attachment_path)
 
 
 func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
@@ -614,7 +631,29 @@ func _validate_wave_records(records: Array, records_by_id: Dictionary) -> void:
 				errors.append("%s.count_per_spawn must be greater than 0." % group_path)
 
 
-func _validate_drop_table_records(records: Array) -> void:
+func _validate_augmentation_records(records: Array) -> void:
+	for record_index in records.size():
+		var record: Variant = records[record_index]
+		if not (record is Dictionary):
+			continue
+		var path := "augmentations[%d:%s]" % [record_index, str(record.get("id", ""))]
+		_validate_rarity(record, path)
+		if record.has("effect_ids") and not (record["effect_ids"] is Array):
+			errors.append("%s.effect_ids must be an array." % path)
+		var modifiers: Variant = record.get("modifiers", [])
+		if not (modifiers is Array):
+			errors.append("%s.modifiers must be an array." % path)
+			continue
+		for modifier_index in modifiers.size():
+			var modifier := modifiers[modifier_index]
+			if not (modifier is Dictionary):
+				errors.append("%s.modifiers[%d] must be an object." % [path, modifier_index])
+				continue
+			if str(modifier.get("channel", "")).is_empty():
+				errors.append("%s.modifiers[%d].channel cannot be empty." % [path, modifier_index])
+
+
+func _validate_drop_table_records(records: Array, records_by_id: Dictionary) -> void:
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
@@ -635,6 +674,12 @@ func _validate_drop_table_records(records: Array) -> void:
 				warnings.append("Unknown drop type in %s: %s" % [entry_path, str(entry["type"])])
 			if int(entry.get("chance_percent", 0)) < 0 or int(entry.get("chance_percent", 0)) > 100:
 				errors.append("%s.chance_percent must be between 0 and 100." % entry_path)
+			if str(entry.get("type", "")) == "augmentation":
+				var item_id := str(entry.get("item_id", entry.get("augmentation_id", "")))
+				if item_id.is_empty():
+					errors.append("%s requires item_id for augmentation drops." % entry_path)
+				elif not records_by_id.get("augmentations", {}).has(item_id):
+					errors.append("Unknown augmentation reference in %s: %s" % [entry_path, item_id])
 
 
 func _validate_stat_dictionary(stats: Variant, path: String) -> void:

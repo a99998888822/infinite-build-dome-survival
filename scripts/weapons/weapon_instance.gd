@@ -17,6 +17,11 @@ var weapon_data: Dictionary = {}
 var owner_player: PlayerController = null
 var level: int = 1
 var runtime_stats: Dictionary = {}
+var effect_ids: Array[String] = []
+var effect_modifiers: Array[Dictionary] = []
+var _base_effect_ids: Array[String] = []
+var _base_effect_modifiers: Array[Dictionary] = []
+var _attached_item_instance: Dictionary = {}
 var attack_interval_ms: int = 0
 var attack_timer: float = 0.0
 var _attack_hit_sfx_played: bool = false
@@ -38,6 +43,19 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 	owner_player = player
 	level = 1
 	runtime_stats = data.get("base_stats", {}).duplicate(true)
+	_base_effect_ids.clear()
+	var raw_effect_ids: Variant = data.get("effects", [])
+	if raw_effect_ids is Array:
+		for effect_id in raw_effect_ids:
+			_base_effect_ids.append(str(effect_id))
+	_base_effect_modifiers.clear()
+	var raw_effect_modifiers: Variant = data.get("effect_modifiers", [])
+	if raw_effect_modifiers is Array:
+		for modifier in raw_effect_modifiers:
+			if modifier is Dictionary:
+				_base_effect_modifiers.append(modifier.duplicate(true))
+	_attached_item_instance.clear()
+	_reset_effect_runtime()
 	attack_interval_ms = int(data.get("attack_interval_ms", 1000))
 	attack_timer = 0.0
 	reset_hit_sfx_state()
@@ -130,6 +148,101 @@ func get_stat(stat_id: String) -> float:
 
 func get_weapon_stat(stat_id: String) -> float:
 	return float(runtime_stats.get(stat_id, StatDefinitions.get_default_value(stat_id)))
+
+
+func get_effect_ids() -> Array[String]:
+	return effect_ids.duplicate()
+
+
+func has_effect(effect_id: String) -> bool:
+	return effect_ids.has(effect_id.strip_edges())
+
+
+func add_effect_by_id(effect_id: String) -> bool:
+	var normalized_id := effect_id.strip_edges()
+	if normalized_id.is_empty() or effect_ids.has(normalized_id):
+		return false
+	effect_ids.append(normalized_id)
+	return true
+
+
+func get_attachment_slot_count() -> int:
+	return maxi(0, int(weapon_data.get("attachment_slots", 0)))
+
+
+func has_attachment_slot() -> bool:
+	return get_attachment_slot_count() > 0
+
+
+func get_attached_item_instance() -> Dictionary:
+	return _attached_item_instance.duplicate(true)
+
+
+func attach_item_instance(item_instance: Dictionary) -> bool:
+	if not has_attachment_slot() or item_instance.is_empty():
+		return false
+	var item_instance_id := str(item_instance.get("item_instance_id", ""))
+	if item_instance_id.is_empty():
+		return false
+	_reset_effect_runtime()
+	_attached_item_instance = item_instance.duplicate(true)
+	for effect_id in item_instance.get("effect_ids", []):
+		add_effect_by_id(str(effect_id))
+	for modifier in item_instance.get("modifiers", []):
+		if modifier is Dictionary:
+			var modifier_data: Dictionary = modifier.duplicate(true)
+			modifier_data["source_id"] = item_instance_id
+			add_effect_modifier(modifier_data)
+	return true
+
+
+func detach_item_instance() -> Dictionary:
+	var detached := _attached_item_instance.duplicate(true)
+	_attached_item_instance.clear()
+	_reset_effect_runtime()
+	return detached
+
+
+func add_augmentation(augmentation_id: String) -> bool:
+	if not has_attachment_slot():
+		return false
+	var augmentation := DataRegistry.get_record("augmentations", augmentation_id)
+	if augmentation.is_empty():
+		return false
+	var legacy_item := {
+		"item_instance_id": "legacy_%s" % augmentation_id,
+		"base_item_id": augmentation_id,
+		"display_name": str(augmentation.get("display_name", augmentation_id)),
+		"effect_ids": augmentation.get("effect_ids", []).duplicate(),
+		"modifiers": augmentation.get("modifiers", []).duplicate(true),
+	}
+	return attach_item_instance(legacy_item)
+
+
+func _reset_effect_runtime() -> void:
+	effect_ids = _base_effect_ids.duplicate()
+	effect_modifiers = _base_effect_modifiers.duplicate(true)
+
+
+func add_effect_modifier(modifier_data: Dictionary) -> void:
+	if str(modifier_data.get("channel", "")).is_empty():
+		return
+	effect_modifiers.append(modifier_data.duplicate(true))
+
+
+func remove_effect_modifiers_by_source(source_id: String) -> void:
+	for index in range(effect_modifiers.size() - 1, -1, -1):
+		if str(effect_modifiers[index].get("source_id", "")) == source_id:
+			effect_modifiers.remove_at(index)
+
+
+func get_effect_modifiers(effect_id: String = "") -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for modifier in effect_modifiers:
+		var modifier_effect_id := str(modifier.get("effect_id", "*"))
+		if effect_id.is_empty() or modifier_effect_id == "*" or modifier_effect_id == effect_id:
+			result.append(modifier.duplicate(true))
+	return result
 
 
 func get_next_upgrade_rarity() -> String:
@@ -261,6 +374,12 @@ func build_full_stats_text() -> String:
 	lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]穿透[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
 	lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
+	if has_attachment_slot():
+		var attachment := get_attached_item_instance()
+		var attachment_name := "空槽"
+		if not attachment.is_empty():
+			attachment_name = str(attachment.get("display_name", attachment.get("base_item_id", "已装填")))
+		lines.append("[color=#F5D76E]附加槽[/color] [color=#FFFFFF]%s[/color]" % attachment_name)
 	return "\n".join(lines)
 
 

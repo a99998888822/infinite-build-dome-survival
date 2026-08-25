@@ -16,6 +16,7 @@ const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const PLAYER_VISUAL_SCALE: float = 0.3
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
+const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
 @export var auto_initialize_on_ready: bool = true
@@ -26,6 +27,7 @@ const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/play
 var character_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
 var relic_system: RelicBondSystem = RelicBondSystem.new()
+var item_inventory: ItemInventory = ITEM_INVENTORY_SCRIPT.new()
 var current_hp: int = 0
 var current_shield: int = 0
 var current_shield_capacity: int = 0
@@ -101,6 +103,8 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_apply_modifier_list(outgame_modifiers)
 
 	start_weapon_ids = _resolve_start_weapons(data, initial_weapon_ids)
+	item_inventory.clear()
+	_initialize_starting_items(data)
 	relic_system.clear()
 	relic_system.initialize(self)
 	relic_system.set_weapon_ids(start_weapon_ids)
@@ -162,6 +166,24 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 
 func get_stat_with_extra_modifier(stat_id: String, modifier_data: Dictionary, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat_with_extra_modifier(stat_id, modifier_data, fallback_base_value)
+
+
+func get_item_inventory() -> ItemInventory:
+	return item_inventory
+
+
+func _initialize_starting_items(data: Dictionary) -> void:
+	var raw_attachments: Variant = data.get("start_weapon_attachments", [])
+	if not (raw_attachments is Array):
+		return
+	for attachment in raw_attachments:
+		if not (attachment is Dictionary):
+			continue
+		var weapon_id := str(attachment.get("weapon_id", ""))
+		var item_id := str(attachment.get("item_id", ""))
+		if weapon_id.is_empty() or item_id.is_empty() or not start_weapon_ids.has(weapon_id):
+			continue
+		item_inventory.add_item_from_base(item_id, "starter", weapon_id)
 
 
 func get_start_weapon_ids() -> Array[String]:

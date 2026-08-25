@@ -24,6 +24,7 @@ const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
 const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
+const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -39,6 +40,11 @@ var target_player: PlayerController = null
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _contact_damage_cooldown: float = 0.0
+var _burning_remaining: float = 0.0
+var _burn_tick_timer: float = 0.0
+var _burn_damage_per_tick: float = 0.0
+var _burn_source_id: String = ""
+var _burn_visual_timer: float = 0.0
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
@@ -60,6 +66,9 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 	_contact_damage_cooldown = maxf(_contact_damage_cooldown - delta, 0.0)
+	_process_burning(delta)
+	if not alive:
+		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
 		velocity = _knockback_velocity
@@ -86,6 +95,11 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_knockback_timer = 0.0
 	_knockback_velocity = Vector2.ZERO
 	_contact_damage_cooldown = 0.0
+	_burning_remaining = 0.0
+	_burn_tick_timer = 0.0
+	_burn_damage_per_tick = 0.0
+	_burn_source_id = ""
+	_burn_visual_timer = 0.0
 	return true
 
 
@@ -110,6 +124,45 @@ func _apply_runtime_modifiers(modifier_data_list: Array) -> void:
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat(stat_id, fallback_base_value)
+
+
+func apply_burning(duration: float, damage_per_tick: float, source_id: String = "") -> void:
+	if not alive:
+		return
+	_burning_remaining = maxf(_burning_remaining, duration)
+	_burn_damage_per_tick = maxf(_burn_damage_per_tick, damage_per_tick)
+	_burn_source_id = source_id if not source_id.is_empty() else _burn_source_id
+	_burn_tick_timer = minf(_burn_tick_timer, 0.12) if _burn_tick_timer > 0.0 else 0.12
+
+
+func has_status(status_id: String) -> bool:
+	return status_id == "burning" and _burning_remaining > 0.0
+
+
+func clear_burning() -> void:
+	_burning_remaining = 0.0
+	_burn_tick_timer = 0.0
+	_burn_damage_per_tick = 0.0
+	_burn_source_id = ""
+	_burn_visual_timer = 0.0
+
+
+func _process_burning(delta: float) -> void:
+	if _burning_remaining <= 0.0:
+		return
+	_burning_remaining = maxf(_burning_remaining - delta, 0.0)
+	_burn_tick_timer -= delta
+	_burn_visual_timer -= delta
+	if _burn_visual_timer <= 0.0:
+		_burn_visual_timer = 0.08
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_spark", global_position + Vector2(0.0, -12.0), Vector2.UP, 0.55)
+	if _burn_tick_timer > 0.0:
+		return
+	_burn_tick_timer = 0.25
+	var damage := maxi(1, int(roundi(_burn_damage_per_tick)))
+	take_damage(damage, _burn_source_id, false, Vector2.ZERO)
+	if _burning_remaining <= 0.0:
+		clear_burning()
 
 
 func take_damage(

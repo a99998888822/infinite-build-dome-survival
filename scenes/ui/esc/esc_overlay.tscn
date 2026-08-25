@@ -72,6 +72,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="RelicScroll" type="ScrollContainer" parent="CenterContainer/RelicPanel/Content"]
+custom_minimum_size = Vector2(0, 188)
 size_flags_vertical = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 1
@@ -82,10 +83,38 @@ columns = 6
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 
+[node name="ItemTitleRow" type="HBoxContainer" parent="CenterContainer/RelicPanel/Content"]
+theme_override_constants/separation = 12
+
+[node name="ItemTitleLabel" type="Label" parent="CenterContainer/RelicPanel/Content/ItemTitleRow"]
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.91, 0.86, 0.75, 1)
+theme_override_font_sizes/font_size = 17
+text = "物品栏"
+
+[node name="ItemTotalLabel" type="Label" parent="CenterContainer/RelicPanel/Content/ItemTitleRow"]
+custom_minimum_size = Vector2(90, 0)
+theme_override_colors/font_color = Color(0.75, 0.78, 0.82, 1)
+theme_override_font_sizes/font_size = 14
+text = "共 0 件"
+horizontal_alignment = 2
+
+[node name="ItemScroll" type="ScrollContainer" parent="CenterContainer/RelicPanel/Content"]
+custom_minimum_size = Vector2(0, 112)
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 1
+script = ExtResource("3_touch_scroll")
+
+[node name="ItemGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll"]
+columns = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
 [node name="HintLabel" type="Label" parent="CenterContainer/RelicPanel/Content"]
 theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)
 theme_override_font_sizes/font_size = 13
-text = "再次按 ESC 或点击返回按钮关闭"
+text = "将物品栏中的卷轴或晶石拖到武器条，可装填或替换；再次按 ESC 返回"
 horizontal_alignment = 1
 
 [node name="RelicTooltip" type="PanelContainer" parent="."]

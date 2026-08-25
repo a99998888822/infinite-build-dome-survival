@@ -62,6 +62,20 @@ func destroy_point(global_position: Vector2) -> bool:
 	return true
 
 
+func destroy_radius(global_position: Vector2, radius: float) -> int:
+	var destroyed := 0
+	var safe_radius := maxf(radius, CELL_SIZE * 0.5)
+	for cell_key in _cells.keys():
+		var cell: Vector2i = cell_key
+		if str(_cells[cell]).is_empty():
+			continue
+		if _cell_center(cell).distance_to(to_local(global_position)) > safe_radius:
+			continue
+		if destroy_point(to_global(_cell_center(cell))):
+			destroyed += 1
+	return destroyed
+
+
 func _local_to_cell(local_position: Vector2) -> Vector2i:
 	return Vector2i(
 		floori((local_position.x - GRID_ORIGIN.x) / CELL_SIZE),

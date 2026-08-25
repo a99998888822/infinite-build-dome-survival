@@ -24,6 +24,7 @@ const RARITY_COLORS: Dictionary = {
 
 var _player: PlayerController = null
 var _relic_cells: Array[Control] = []
+var _item_cards: Array[Control] = []
 var _relic_tweens: Dictionary = {}
 var _relic_pulse_tweens: Dictionary = {}
 var _backdrop: ColorRect = null
@@ -36,6 +37,8 @@ var _show_tween: Tween = null
 @onready var back_button: Button = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/BackButton")
 @onready var relic_tooltip: PanelContainer = get_node_or_null("RelicTooltip")
 @onready var relic_tooltip_label: RichTextLabel = get_node_or_null("RelicTooltip/TooltipMargin/TooltipLabel")
+@onready var item_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/ItemScroll/ItemGrid")
+@onready var item_total_label: Label = get_node_or_null("CenterContainer/RelicPanel/Content/ItemTitleRow/ItemTotalLabel")
 
 
 func _ready() -> void:
@@ -44,6 +47,8 @@ func _ready() -> void:
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
 		relic_grid.columns = RELIC_GRID_COLUMNS
+	if item_grid != null:
+		item_grid.columns = 4
 	if get_viewport() != null:
 		var viewport_callable := Callable(self, "_on_viewport_resized")
 		if not get_viewport().size_changed.is_connected(viewport_callable):
@@ -114,8 +119,38 @@ func _ensure_backdrop() -> void:
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout)
+		weapon_strip.set_loadout(loadout, true)
+	if is_instance_valid(_player) and _player.get_item_inventory() != null:
+		var inventory := _player.get_item_inventory()
+		if not inventory.items_changed.is_connected(_on_item_inventory_changed):
+			inventory.items_changed.connect(_on_item_inventory_changed)
 	_refresh_relic_list()
+	_refresh_item_list()
+
+
+func _on_item_inventory_changed() -> void:
+	_refresh_item_list()
+
+
+func _refresh_item_list() -> void:
+	for card in _item_cards:
+		if is_instance_valid(card):
+			card.queue_free()
+	_item_cards.clear()
+	if item_grid == null:
+		return
+	var items: Array[Dictionary] = []
+	if is_instance_valid(_player) and _player.get_item_inventory() != null:
+		items = _player.get_item_inventory().get_items()
+	for item in items:
+		var card := preload("res://scripts/ui/item_inventory_card.gd").new() as ItemInventoryCard
+		if card == null:
+			continue
+		card.configure(item, true)
+		item_grid.add_child(card)
+		_item_cards.append(card)
+	if item_total_label != null:
+		item_total_label.text = "共 %d 件" % items.size()
 
 
 func _on_viewport_resized() -> void:

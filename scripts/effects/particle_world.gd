@@ -1,7 +1,9 @@
 extends Node2D
 
 const PARTICLE_EVENT_SCRIPT = preload("res://scripts/effects/particle_event.gd")
+const PARTICLE_EMITTER_RUNTIME_SCRIPT = preload("res://scripts/effects/particle_emitter_runtime.gd")
 const PARTICLE_WORLD_PATH: String = "res://scripts/effects/particle_world.gd"
+const PARTICLE_LIGHT_FIELD_PATH: String = "res://scripts/effects/particle_light_field.gd"
 
 const MAX_PARTICLES: int = 900
 const PROFILE_DEFINITIONS: Dictionary = {
@@ -59,6 +61,128 @@ const PROFILE_DEFINITIONS: Dictionary = {
 			Color(0.46, 0.46, 0.38, 1.0),
 		],
 	},
+
+	"fire_flame": {
+		"count": 5,
+		"speed": Vector2(18.0, 76.0),
+		"gravity": Vector2(0.0, -1.0),
+		"gravity_strength": Vector2(24.0, 68.0),
+		"drag": Vector2(12.0, 34.0),
+		"size_min": Vector2(3.0, 4.0),
+		"size_max": Vector2(7.0, 11.0),
+		"lifetime": Vector2(0.18, 0.42),
+		"spread_radians": PI,
+		"initial_radius": 12.0,
+		"alpha": 0.90,
+		"shape": "circle",
+		"glow": 1.4,
+		"light_color": Color(1.0, 0.22, 0.04, 1.0),
+		"light_energy": 0.42,
+		"light_radius": 52.0,
+		"colors": [Color(1.0, 0.22, 0.02, 1.0), Color(1.0, 0.55, 0.04, 1.0), Color(1.0, 0.88, 0.20, 1.0)],
+	},
+	"fire_spark": {
+		"count": 7,
+		"speed": Vector2(36.0, 110.0),
+		"gravity": Vector2(0.0, 1.0),
+		"gravity_strength": Vector2(30.0, 90.0),
+		"drag": Vector2(24.0, 56.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(4.0, 4.0),
+		"lifetime": Vector2(0.16, 0.34),
+		"spread_radians": TAU,
+		"initial_radius": 7.0,
+		"alpha": 0.95,
+		"shape": "circle",
+		"glow": 1.8,
+		"colors": [Color(1.0, 0.78, 0.22, 1.0), Color(1.0, 0.45, 0.06, 1.0)],
+	},
+	"explosion_flash": {
+		"count": 18,
+		"speed": Vector2(18.0, 46.0),
+		"gravity": Vector2.ZERO,
+		"gravity_strength": Vector2.ZERO,
+		"drag": Vector2(42.0, 80.0),
+		"size_min": Vector2(5.0, 5.0),
+		"size_max": Vector2(13.0, 13.0),
+		"lifetime": Vector2(0.12, 0.24),
+		"spread_radians": TAU,
+		"initial_radius": 8.0,
+		"alpha": 0.92,
+		"shape": "circle",
+		"glow": 2.8,
+		"light_color": Color(1.0, 0.74, 0.25, 1.0),
+		"light_energy": 1.2,
+		"light_radius": 120.0,
+		"colors": [Color.WHITE, Color(1.0, 0.84, 0.36, 1.0), Color(1.0, 0.38, 0.08, 1.0)],
+	},
+	"explosion_debris": {
+		"count": 28,
+		"speed": Vector2(70.0, 210.0),
+		"gravity": Vector2(0.0, 1.0),
+		"gravity_strength": Vector2(120.0, 240.0),
+		"drag": Vector2(20.0, 64.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(7.0, 7.0),
+		"lifetime": Vector2(0.25, 0.58),
+		"spread_radians": TAU,
+		"initial_radius": 9.0,
+		"alpha": 0.9,
+		"shape": "square",
+		"glow": 0.8,
+		"colors": [Color(0.34, 0.24, 0.16, 1.0), Color(0.68, 0.40, 0.16, 1.0), Color(0.92, 0.66, 0.28, 1.0)],
+	},
+	"lightning_core": {
+		"count": 3,
+		"speed": Vector2(10.0, 54.0),
+		"gravity": Vector2.ZERO,
+		"gravity_strength": Vector2.ZERO,
+		"drag": Vector2(80.0, 150.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(5.0, 5.0),
+		"lifetime": Vector2(0.06, 0.13),
+		"spread_radians": TAU,
+		"initial_radius": 3.0,
+		"alpha": 1.0,
+		"shape": "circle",
+		"glow": 3.5,
+		"light_color": Color(0.72, 0.88, 1.0, 1.0),
+		"light_energy": 2.0,
+		"light_radius": 88.0,
+		"colors": [Color.WHITE, Color(0.90, 0.96, 1.0, 1.0)],
+	},
+	"lightning_blue": {
+		"count": 4,
+		"speed": Vector2(20.0, 96.0),
+		"gravity": Vector2.ZERO,
+		"gravity_strength": Vector2.ZERO,
+		"drag": Vector2(80.0, 140.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(4.0, 6.0),
+		"lifetime": Vector2(0.09, 0.18),
+		"spread_radians": TAU,
+		"initial_radius": 4.0,
+		"alpha": 0.86,
+		"shape": "circle",
+		"glow": 2.4,
+		"colors": [Color(0.12, 0.50, 1.0, 1.0), Color(0.34, 0.76, 1.0, 1.0), Color(0.16, 0.32, 0.92, 1.0)],
+	},
+	"lightning_spark": {
+		"count": 2,
+		"speed": Vector2(45.0, 150.0),
+		"gravity": Vector2(0.0, 1.0),
+		"gravity_strength": Vector2(10.0, 40.0),
+		"drag": Vector2(40.0, 90.0),
+		"size_min": Vector2(1.0, 1.0),
+		"size_max": Vector2(3.0, 3.0),
+		"lifetime": Vector2(0.08, 0.20),
+		"spread_radians": TAU,
+		"initial_radius": 3.0,
+		"alpha": 1.0,
+		"shape": "circle",
+		"glow": 2.2,
+		"colors": [Color(1.0, 0.96, 0.72, 1.0), Color(1.0, 0.78, 0.36, 1.0)],
+	},
 }
 
 var _particles: Array[Dictionary] = []
@@ -76,7 +200,8 @@ static func emit_profile(
 	global_position: Vector2,
 	direction: Vector2 = Vector2.ZERO,
 	intensity: float = 1.0,
-	color_override: Color = Color.TRANSPARENT
+	color_override: Color = Color.TRANSPARENT,
+	parameters: Dictionary = {}
 ) -> Node2D:
 	var event: Variant = PARTICLE_EVENT_SCRIPT.create({
 		"profile_id": profile_id,
@@ -84,6 +209,7 @@ static func emit_profile(
 		"direction": direction,
 		"intensity": intensity,
 		"color_override": color_override,
+		"parameters": parameters.duplicate(true),
 	})
 	return emit(parent, event)
 
@@ -100,6 +226,29 @@ static func emit(parent: Node, event: Variant) -> Node2D:
 		parent.add_child(world)
 	world.call("emit_event", event)
 	return world
+
+
+static func create_emitter(
+	parent: Node,
+	profile_id: String,
+	context: Variant = null,
+	options: Dictionary = {}
+) -> Node2D:
+	if parent == null:
+		return null
+	var world: Node2D = _find_world(parent)
+	if world == null:
+		var world_script: Script = load(PARTICLE_WORLD_PATH)
+		world = world_script.new() as Node2D
+		world.name = "ParticleWorld"
+		world.z_index = 80
+		parent.add_child(world)
+	var emitter := PARTICLE_EMITTER_RUNTIME_SCRIPT.new() as Node2D
+	if emitter == null:
+		return null
+	parent.add_child(emitter)
+	emitter.call("configure", world, profile_id, context, options)
+	return emitter
 
 
 static func _find_world(parent: Node) -> Node2D:
@@ -125,7 +274,9 @@ func emit_event(event: Variant) -> void:
 		return
 	var profile: Dictionary = PROFILE_DEFINITIONS[profile_id]
 	var intensity: float = maxf(float(event.get("intensity")), 0.05)
-	var count := maxi(1, int(roundi(float(profile["count"]) * intensity)))
+	var parameters: Dictionary = event.get("parameters", {})
+	var count_multiplier := maxf(float(parameters.get("count_multiplier", 1.0)), 0.0)
+	var count := maxi(1, int(roundi(float(profile["count"]) * intensity * count_multiplier)))
 	var event_direction: Vector2 = event.get("direction")
 	var base_direction: Vector2 = event_direction.normalized() if not event_direction.is_zero_approx() else Vector2.ZERO
 	var event_position: Vector2 = event.get("global_position")
@@ -142,25 +293,60 @@ func emit_event(event: Variant) -> void:
 		var size_min: Vector2 = profile["size_min"]
 		var size_max: Vector2 = profile["size_max"]
 		var lifetime_range: Vector2 = profile["lifetime"]
+		var speed_multiplier := maxf(float(parameters.get("speed_multiplier", 1.0)), 0.0)
+		var size_multiplier := maxf(float(parameters.get("size_multiplier", 1.0)), 0.0)
+		var lifetime_multiplier := maxf(float(parameters.get("lifetime_multiplier", 1.0)), 0.01)
+		var gravity_multiplier := maxf(float(parameters.get("gravity_multiplier", 1.0)), 0.0)
+		var drag_multiplier := maxf(float(parameters.get("drag_multiplier", 1.0)), 0.0)
+		var alpha_multiplier := maxf(float(parameters.get("alpha_multiplier", 1.0)), 0.0)
+		var glow_multiplier := maxf(float(parameters.get("glow_multiplier", 1.0)), 0.0)
 		var size := Vector2(
 			float(_random.randi_range(int(size_min.x), int(size_max.x))),
 			float(_random.randi_range(int(size_min.y), int(size_max.y)))
-		)
-		var particle_lifetime := _random.randf_range(lifetime_range.x, lifetime_range.y)
+		) * size_multiplier
+		var particle_lifetime := _random.randf_range(lifetime_range.x, lifetime_range.y) * lifetime_multiplier
 		var event_color: Color = event.get("color_override")
 		var particle_color := _resolve_color(profile, event_color)
 		_particles.append({
 			"position": position + direction * _random.randf_range(0.0, float(profile["initial_radius"])),
-			"velocity": direction * _random.randf_range(speed_range.x, speed_range.y),
-			"gravity": Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y)),
-			"drag": _random.randf_range(drag_range.x, drag_range.y),
+			"velocity": direction * _random.randf_range(speed_range.x, speed_range.y) * speed_multiplier,
+			"gravity": Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier),
+			"drag": _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier,
 			"rotation": _random.randf_range(-0.35, 0.35),
 			"spin": _random.randf_range(-5.0, 5.0),
 			"size": size,
 			"color": particle_color,
 			"lifetime": particle_lifetime,
+			"alpha_multiplier": alpha_multiplier,
+			"glow": float(profile.get("glow", 0.0)) * glow_multiplier,
+			"shape": str(profile.get("shape", "square")),
 		})
+	_emit_profile_light(profile, event_position, intensity)
 	queue_redraw()
+
+
+func _emit_profile_light(profile: Dictionary, event_position: Vector2, intensity: float) -> void:
+	var light_energy := float(profile.get("light_energy", 0.0)) * intensity
+	if light_energy <= 0.0:
+		return
+	var field := _find_light_field()
+	if field != null:
+		field.call("add_light", event_position, profile.get("light_color", Color.WHITE), light_energy, float(profile.get("light_radius", 64.0)))
+
+
+func _find_light_field() -> Node:
+	var parent := get_parent()
+	if parent == null:
+		return null
+	var direct := parent.get_node_or_null("ParticleLightField")
+	if direct != null and direct.has_method("add_light"):
+		return direct
+	var root := get_tree().current_scene if get_tree() != null else null
+	if root != null:
+		var found := root.find_child("ParticleLightField", true, false)
+		if found != null and found.has_method("add_light"):
+			return found
+	return null
 
 
 func _resolve_color(profile: Dictionary, color_override: Color) -> Color:
@@ -203,9 +389,16 @@ func _draw() -> void:
 		var lifetime := maxf(float(particle["lifetime"]), 0.01)
 		var fade := clampf(1.0 - float(particle.get("age", 0.0)) / lifetime, 0.0, 1.0)
 		var color: Color = particle["color"]
-		color.a *= fade * fade
+		color.a *= fade * fade * float(particle.get("alpha_multiplier", 1.0))
 		var position: Vector2 = particle["position"]
 		var size: Vector2 = particle["size"]
+		var glow := float(particle.get("glow", 0.0))
 		draw_set_transform(position.round(), float(particle["rotation"]), Vector2.ONE)
-		draw_rect(Rect2(-size * 0.5, size), color)
+		if glow > 0.0:
+			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
+			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35), glow_color)
+		if str(particle.get("shape", "square")) == "circle":
+			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * 0.5, color)
+		else:
+			draw_rect(Rect2(-size * 0.5, size), color)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

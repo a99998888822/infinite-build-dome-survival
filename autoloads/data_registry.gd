@@ -14,6 +14,7 @@ const CONFIG_PATHS: Dictionary = {
 	"zones": "res://data_config/zones.json",
 	"waves": "res://data_config/waves.json",
 	"drop_tables": "res://data_config/drop_tables.json",
+	"augmentations": "res://data_config/augmentations.json",
 }
 
 var tables: Dictionary = {}

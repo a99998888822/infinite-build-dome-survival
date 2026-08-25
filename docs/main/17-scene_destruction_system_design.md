@@ -196,3 +196,11 @@ MVP 暂不实现：
 ## 11. 最终版本期望
 
 最终系统应以分块像素材质网格为核心，支持固体、液体、气体和温度状态的局部模拟；攻击、粒子、材质反应和掉落通过事件互相连接。玩家可以用不同武器挖洞、点燃、冻结、融化、腐蚀或改变地形，场景结果可由种子确定性重演，并根据设备性能自动调整模拟分辨率和更新预算。
+
+## 12. Current MVP Integration
+
+- Wood arrows still only target enemies; terrain is damaged only when the flying projectile actually collides with it.
+- Explosion enchantments call `destroy_radius`, clearing test-area cells and disabling their collision shapes.
+- Fire pools affect entity status only and do not spread through neighboring terrain cells yet.
+- `DropRewardSystem` spawns scroll, gem and wizard-scroll pickups; pickup applies the item to the current first weapon.
+- Liquid, gas, temperature diffusion and pixel-material reactions remain final-version chunk simulation work.

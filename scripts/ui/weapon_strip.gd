@@ -1,8 +1,11 @@
 extends Control
 class_name WeaponStrip
 
+const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
+
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
+var _attachment_editing_enabled: bool = false
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -10,8 +13,13 @@ var _weapon_buttons: Array[Button] = []
 @onready var weapon_tooltip_label: RichTextLabel = get_node_or_null("WeaponTooltip/TooltipMargin/TooltipLabel")
 
 
-func set_loadout(loadout: WeaponLoadout) -> void:
+func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false) -> void:
+	if _loadout != null and _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
+		_loadout.weapon_attachment_changed.disconnect(_on_weapon_attachment_changed)
 	_loadout = loadout
+	_attachment_editing_enabled = allow_attachment_editing
+	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
+		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
 	_refresh_load_label()
 	_refresh_weapon_strip()
 
@@ -33,22 +41,35 @@ func _refresh_weapon_strip() -> void:
 	if weapon_list == null or _loadout == null:
 		return
 	for weapon in _loadout.get_weapon_instances():
-		var button := Button.new()
-		button.flat = true
-		button.custom_minimum_size = Vector2(44, 44)
-		button.focus_mode = Control.FOCUS_NONE
-		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		var button := WEAPON_SLOT_BUTTON_SCRIPT.new() as WeaponSlotButton
+		if button == null:
+			continue
+		button.configure(weapon, _attachment_editing_enabled)
 		var icon_path := str(weapon.weapon_data.get("icon", ""))
 		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
 			var texture := load(icon_path)
 			if texture is Texture2D:
 				button.icon = texture
 				button.expand_icon = true
-				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+				button.icon_max_width = 34
+		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
+			button.item_drop_requested.connect(_on_item_drop_requested)
 		weapon_list.add_child(button)
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		button.mouse_exited.connect(_hide_weapon_tooltip)
 		_weapon_buttons.append(button)
+
+
+func _on_item_drop_requested(weapon_id: String, item_instance_id: String) -> void:
+	if not _attachment_editing_enabled or _loadout == null:
+		return
+	if _loadout.attach_item_to_weapon(weapon_id, item_instance_id):
+		_refresh_weapon_strip()
+
+
+func _on_weapon_attachment_changed(_weapon_id: String, _item_instance_id: String) -> void:
+	_refresh_weapon_strip()
 
 
 func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button) -> void:

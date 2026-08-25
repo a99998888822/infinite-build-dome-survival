@@ -6,6 +6,7 @@ var drop_table_id: String = ""
 var spawned_exp_orbs: int = 0
 var spawned_health_packs: int = 0
 var spawned_relics: int = 0
+var spawned_augmentations: int = 0
 var spawned_unknown: int = 0
 var collected_exp_orbs: int = 0
 var collected_health_packs: int = 0
@@ -22,6 +23,7 @@ func reset(next_wave_id: String = "", next_drop_table_id: String = "") -> void:
 	spawned_exp_orbs = 0
 	spawned_health_packs = 0
 	spawned_relics = 0
+	spawned_augmentations = 0
 	spawned_unknown = 0
 	collected_exp_orbs = 0
 	collected_health_packs = 0
@@ -41,6 +43,8 @@ func record_spawned_drop(drop_type: String, quantity: int = 1) -> void:
 			spawned_health_packs += safe_quantity
 		"relic":
 			spawned_relics += safe_quantity
+		"augmentation":
+			spawned_augmentations += safe_quantity
 		_:
 			spawned_unknown += safe_quantity
 
@@ -71,6 +75,7 @@ func to_dictionary() -> Dictionary:
 		"spawned_exp_orbs": spawned_exp_orbs,
 		"spawned_health_packs": spawned_health_packs,
 		"spawned_relics": spawned_relics,
+		"spawned_augmentations": spawned_augmentations,
 		"spawned_unknown": spawned_unknown,
 		"collected_exp_orbs": collected_exp_orbs,
 		"collected_health_packs": collected_health_packs,
