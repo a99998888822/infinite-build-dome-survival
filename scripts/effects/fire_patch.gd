@@ -45,12 +45,12 @@ func _physics_process(delta: float) -> void:
 	_tick_timer -= delta
 	_visual_timer -= delta
 	if _visual_timer <= 0.0:
-		var emission_multiplier := _context.get_resolved_parameter("particle_rate", 1.0) if _context != null else 1.0
+		var emission_multiplier: float = _context.get_resolved_parameter("particle_rate", 1.0) if _context != null else 1.0
 		_visual_timer = 0.055 / maxf(emission_multiplier, 0.2)
 		var intensity := 0.8
 		if _context != null:
 			intensity = maxf(_context.get_resolved_parameter("intensity_multiplier", 1.0), 0.2)
-		var flame_color := _context.get_tinted_color(Color(1.0, 0.55, 0.10, 1.0)) if _context != null else Color.TRANSPARENT
+		var flame_color: Color = _context.get_tinted_color(Color(1.0, 0.55, 0.10, 1.0)) if _context != null else Color.TRANSPARENT
 		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_flame", global_position + Vector2(randf_range(-18.0, 18.0), randf_range(-5.0, 5.0)), Vector2.UP, intensity, flame_color, {
 			"count_multiplier": _context.get_resolved_parameter("count_multiplier", 1.0) if _context != null else 1.0,
 			"speed_multiplier": _context.get_resolved_parameter("speed_multiplier", 1.0) if _context != null else 1.0,
@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 			"glow_multiplier": _context.get_resolved_parameter("glow_multiplier", 1.0) if _context != null else 1.0,
 		})
 	if _tick_timer <= 0.0:
-		var interval := _context.get_resolved_parameter("tick_interval", 0.25) if _context != null else 0.25
+		var interval: float = _context.get_resolved_parameter("tick_interval", 0.25) if _context != null else 0.25
 		_tick_timer = maxf(interval, 0.08)
 		_apply_tick_damage()
 	if _remaining <= 0.0:

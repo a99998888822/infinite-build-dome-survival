@@ -58,3 +58,11 @@ Godot-specific notes:
 - Keep `.gd`, `.tscn`, `.tres`, `.json`, and `.md` files UTF-8 encoded.
 - Do not hand-create `.gd.uid` files unless Godot itself generated them or the project already follows that convention.
 - Preserve existing line endings unless a formatter or project convention says otherwise.
+
+## Godot Headless Debugging
+
+- For Godot script, scene, autoload, or runtime changes, automatically use headless validation when Godot is available.
+- Locate `godot.exe`/`godot4.exe`, then run:
+  `godot.exe --headless --editor --path <project> --quit`
+  and, when runtime behavior matters, the Bootstrap or main scene with `--headless --path <project> --scene <scene> --quit-after 120`.
+- Check output for Parse/Compile/SCRIPT ERROR, validation warnings/errors, and self-test failures. Report `GODOT_NOT_FOUND` if no executable is available.

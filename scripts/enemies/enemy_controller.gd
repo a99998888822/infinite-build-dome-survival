@@ -25,6 +25,7 @@ const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const LIGHTNING_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/lightning_status_visual.gd")
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -35,6 +36,7 @@ var enemy_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
 var current_hp: int = 0
 var alive: bool = true
+var has_contact_damaged: bool = false
 var target_player: PlayerController = null
 
 var _knockback_timer: float = 0.0
@@ -48,6 +50,7 @@ var _burn_visual_timer: float = 0.0
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
+var _lightning_visual: Node2D = null
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -95,6 +98,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_knockback_timer = 0.0
 	_knockback_velocity = Vector2.ZERO
 	_contact_damage_cooldown = 0.0
+	has_contact_damaged = false
 	_burning_remaining = 0.0
 	_burn_tick_timer = 0.0
 	_burn_damage_per_tick = 0.0
@@ -145,6 +149,15 @@ func clear_burning() -> void:
 	_burn_damage_per_tick = 0.0
 	_burn_source_id = ""
 	_burn_visual_timer = 0.0
+
+
+func apply_lightning_visual(duration: float = 0.65) -> void:
+	if not alive:
+		return
+	if is_instance_valid(_lightning_visual):
+		_lightning_visual.call("refresh", duration)
+		return
+	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration)
 
 
 func _process_burning(delta: float) -> void:
@@ -370,6 +383,7 @@ func _process_contact_damage() -> void:
 	var dealt_damage := target_player.take_damage(damage, enemy_id)
 	_contact_damage_cooldown = CONTACT_DAMAGE_COOLDOWN_SECONDS
 	if dealt_damage > 0:
+		has_contact_damaged = true
 		contact_damaged.emit(target_player, dealt_damage)
 	_apply_contact_knockback()
 

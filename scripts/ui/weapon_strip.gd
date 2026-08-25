@@ -52,7 +52,7 @@ func _refresh_weapon_strip() -> void:
 				button.icon = texture
 				button.expand_icon = true
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-				button.icon_max_width = 34
+				button.add_theme_constant_override("icon_max_width", 34)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
 		weapon_list.add_child(button)

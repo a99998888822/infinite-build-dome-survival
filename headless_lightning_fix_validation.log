@@ -1,0 +1,433 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 1 records
+[DataRegistry] - relics: 73 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 1 records
+[DataRegistry] - enemies: 1 records
+[DataRegistry] - camp_buildings: 7 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 6 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[Bootstrap] data self-test started
+[GameGlobal] bootstrap runtime ready
+[Bootstrap] modifier stack checks
+[Bootstrap] - melee_damage add_flat/add_percent: passed
+[Bootstrap] - shop offer count bonus and minimum: passed
+[Bootstrap] - replace_same_source: passed
+[Bootstrap] - temporary modifier tick expiry: passed
+[Bootstrap] - debug_stat source chain: passed
+[Bootstrap] - melee_damage final: 23.0
+[Bootstrap] - melee_damage modifier sources: 2
+[Bootstrap] - damage_taken_percent armor rate: 50.0
+[Bootstrap] relic bond checks
+[Bootstrap] - relic system init: passed
+[Bootstrap] - relic max_stack zero: passed
+[Bootstrap] - relic add modifier: passed
+[Bootstrap] - bond count zero without bond relic: passed
+[Bootstrap] - bond count stays zero without bond relic: passed
+[Bootstrap] - bond count still zero after second relic: passed
+[Bootstrap] - relic stack unlimited: passed
+[Bootstrap] player checks
+[Bootstrap] - player scene instantiate: passed
+[Bootstrap] - player initialize character: passed
+[Bootstrap] - player max_hp: passed
+[Bootstrap] - player move_speed: passed
+[Bootstrap] - player start weapons: passed
+[Bootstrap] - player pickup radius: passed
+[Bootstrap] - player damage flow: passed
+[PlayerController] player revived, remaining=0
+[Bootstrap] - player extra revive: passed
+[Bootstrap] survival relic checks
+[Bootstrap] - survival relic scene instantiate: passed
+[Bootstrap] - survival relic player initialize: passed
+[Bootstrap] - survival relic flat stats: passed
+[Bootstrap] - survival relic negative movement: passed
+[Bootstrap] - survival relic low hp armor: passed
+[Bootstrap] - survival relic low hp condition: passed
+[Bootstrap] - survival relic condition clears: passed
+[Bootstrap] - survival relic shield start: passed
+[Bootstrap] - survival relic shield granted: passed
+[Bootstrap] - survival relic shield regen add: passed
+[Bootstrap] - survival relic shield regen: passed
+[Bootstrap] - survival relic shield regen after two seconds: passed
+[Bootstrap] - survival relic low sanity movement: passed
+ERROR: [Bootstrap] - survival relic conditional movement: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_survival_relic_checks (res://scripts/core/bootstrap.gd:351)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:54)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - survival relic wave end trigger: passed
+[Bootstrap] - survival relic wave end stat: passed
+[Bootstrap] - survival relic revive trigger: passed
+[PlayerController] player revived, remaining=0
+[Bootstrap] - survival relic revive effect: passed
+[Bootstrap] - survival relic derived stat: passed
+[Bootstrap] - survival relic derived armor: passed
+[Bootstrap] weapon checks
+[Bootstrap] - weapon test scene instantiate: passed
+[Bootstrap] - weapon loadout initialize: passed
+[Bootstrap] - weapon load cost: passed
+[Bootstrap] - weapon instance lookup: passed
+[Bootstrap] - weapon config runtime fields: passed
+[Bootstrap] - weapon area_size radius: passed
+[Bootstrap] - weapon attack interval base: passed
+[Bootstrap] - weapon attack_speed interval: passed
+ERROR: [Bootstrap] - weapon upgrade: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_weapon_checks (res://scripts/core/bootstrap.gd:728)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:55)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+ERROR: [Bootstrap] - weapon damage event: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_weapon_checks (res://scripts/core/bootstrap.gd:731)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:55)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - weapon projectile hit sfx once: passed
+[Bootstrap] - weapon loadout runtime projectile spawn: passed
+WARNING: [WeaponLoadout] weapon_void_blade failed: weapon_already_owned
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _fail (res://scripts/weapons/weapon_loadout.gd:285)
+       [1] _equip_weapon_internal (res://scripts/weapons/weapon_loadout.gd:171)
+       [2] try_buy_weapon (res://scripts/weapons/weapon_loadout.gd:46)
+       [3] _run_weapon_checks (res://scripts/core/bootstrap.gd:754)
+       [4] run_data_self_test (res://scripts/core/bootstrap.gd:55)
+       [5] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - weapon duplicate purchase rejected: passed
+[Bootstrap] - weapon load capacity check: passed
+[Bootstrap] - shared reward/shop pool generation: passed
+[Bootstrap] - weapon upgrade shop price: passed
+[Bootstrap] - relic global count baseline: passed
+[Bootstrap] - relic global count price step: passed
+ERROR: [Bootstrap] - epic relic rarity weighted price: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_weapon_checks (res://scripts/core/bootstrap.gd:826)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:55)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] enemy wave checks
+[Bootstrap] - enemy wave test scene instantiate: passed
+[Bootstrap] - enemy config load: passed
+[Bootstrap] - wave config load: passed
+[Bootstrap] - wave duration formula: passed
+WARNING: Modifier source_id cannot be empty: wave_0_max_hp
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:387)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_melee_damage
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:387)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_move_speed
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:387)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_armor
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:387)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+ERROR: [Bootstrap] - enemy instantiate: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:388)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - enemy wave move speed modifier: passed
+[Bootstrap] - enemy contact damage knockback: passed
+[Bootstrap] - enemy damage and death: passed
+[Bootstrap] - enemy kill heal: passed
+[Bootstrap] - enemy spawn rate: passed
+[Bootstrap] - enemy drop table link: passed
+ERROR: [Bootstrap] - wave collect exp orbs: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:430)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - reward action build: passed
+[Bootstrap] - health pack spawn: passed
+ERROR: [Bootstrap] - health pack collection: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:455)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+ERROR: [Bootstrap] - level up shared reward/shop trigger: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_enemy_wave_checks (res://scripts/core/bootstrap.gd:459)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:56)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] summon checks
+[Bootstrap] - summon test scene instantiate: passed
+[Bootstrap] - summon root initialize: passed
+[Bootstrap] - summon count bonus: passed
+[Bootstrap] - summon inherited damage: passed
+WARNING: Modifier source_id cannot be empty: wave_0_max_hp
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_summon_checks (res://scripts/core/bootstrap.gd:510)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:57)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_melee_damage
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_summon_checks (res://scripts/core/bootstrap.gd:510)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:57)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_move_speed
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_summon_checks (res://scripts/core/bootstrap.gd:510)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:57)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+WARNING: Modifier source_id cannot be empty: wave_0_armor
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] add_modifier (res://scripts/modifiers/modifier_stack.gd:34)
+       [1] add_modifier_from_dictionary (res://scripts/modifiers/modifier_stack.gd:48)
+       [2] add_runtime_modifier (res://scripts/enemies/enemy_controller.gd:115)
+       [3] add_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:122)
+       [4] _apply_runtime_modifiers (res://scripts/enemies/enemy_controller.gd:126)
+       [5] initialize (res://scripts/enemies/enemy_controller.gd:94)
+       [6] spawn_enemy (res://scripts/waves/wave_manager.gd:163)
+       [7] _run_summon_checks (res://scripts/core/bootstrap.gd:510)
+       [8] run_data_self_test (res://scripts/core/bootstrap.gd:57)
+       [9] _ready (res://scripts/core/bootstrap.gd:41)
+ERROR: [Bootstrap] - summon attack enemy: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_summon_checks (res://scripts/core/bootstrap.gd:512)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:57)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - summon hard cap: passed
+[Bootstrap] - summon clear battle entities: passed
+[Bootstrap] camp meta progression checks
+ERROR: [Bootstrap] - camp config load: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_camp_meta_checks (res://scripts/core/bootstrap.gd:530)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:58)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - camp state init: passed
+[Bootstrap] - camp save schema: passed
+[Bootstrap] - camp ruins state: passed
+[Bootstrap] - camp scene instantiate: passed
+[Bootstrap] - camp scene slot count: passed
+[Bootstrap] - camp scene slot lookup: passed
+[Bootstrap] - camp unlock sync: passed
+[Bootstrap] - camp currency unlock: passed
+ERROR: [Bootstrap] - camp upgrade option: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_camp_meta_checks (res://scripts/core/bootstrap.gd:550)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:58)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] zone streak fortune checks
+[Bootstrap] - zone table count: passed
+[Bootstrap] - zone test player instantiate: passed
+[Bootstrap] - zone initial select: passed
+[Bootstrap] - zone stay accumulation: passed
+[Bootstrap] - zone pressure applied: passed
+[Bootstrap] - zone runtime context: passed
+[Bootstrap] - zone harvest context: passed
+[Bootstrap] - zone switch harvest: passed
+[Bootstrap] - zone harvest acknowledge: passed
+[Bootstrap] zone ui checks
+[Bootstrap] - zone ui controller instantiate: passed
+[Bootstrap] - zone ui controller layer: passed
+[Bootstrap] - zone ui select popup: passed
+[Bootstrap] - zone ui harvest popup: passed
+[Bootstrap] - zone select popup instantiate: passed
+[Bootstrap] - zone select card instantiate: passed
+[Bootstrap] - zone harvest popup instantiate: passed
+[Bootstrap] - game root zone ui controller removed: passed
+[Bootstrap] audio checks
+[Bootstrap] - audio manager autoload: passed
+[Bootstrap] - audio sfx bus: passed
+[Bootstrap] - audio menu bgm playback: passed
+[Bootstrap] - weapon hit sfx missing fallback: passed
+[Bootstrap] - audio volume set fallback: passed
+[Bootstrap] ui flow checks
+[Bootstrap] - reward option scene instantiate: passed
+[Bootstrap] - reward option free button text: passed
+[Bootstrap] - reward option shop button text: passed
+[Bootstrap] - interest settlement popup instantiate: passed
+ERROR: [Bootstrap] - shop popup instantiate: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_ui_flow_checks (res://scripts/core/bootstrap.gd:668)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:62)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - shop ui controller instantiate: passed
+[Bootstrap] - battle root instantiate: passed
+[Bootstrap] - main menu ui controller instantiate: passed
+[Bootstrap] - camp ui controller instantiate: passed
+[Bootstrap] finance checks
+[Bootstrap] - finance scene instantiate: passed
+[Bootstrap] - finance payload build: passed
+[Bootstrap] - finance deposit: passed
+[Bootstrap] - finance reject over deposit: passed
+[Bootstrap] - finance interest settle: passed
+[Bootstrap] - finance piggy relic: passed
+[Bootstrap] - finance dividend check settle: passed
+[Bootstrap] - finance fixed deposit deposit: passed
+[Bootstrap] - finance fixed deposit withdraw: passed
+[Bootstrap] - finance compound rate growth on wave end: passed
+[Bootstrap] - finance annuity extra settlement: passed
+[Bootstrap] - finance high yield blocks below threshold: passed
+[Bootstrap] - finance high yield threshold deposit: passed
+[Bootstrap] - finance high yield passes at threshold: passed
+[Bootstrap] - finance popup instantiate: passed
+[Bootstrap] - finance ui controller instantiate: passed
+[Bootstrap] main flow checks
+[Bootstrap] - main flow scene instantiate: passed
+[Bootstrap] - main flow start page: passed
+[Bootstrap] - main flow battle context instantiate: passed
+[Bootstrap] - main flow character selection: passed
+[Bootstrap] - main flow start weapon sync: passed
+[Bootstrap] - main flow first wave auto start: passed
+[Bootstrap] - main flow shop offer count bonus: passed
+[Bootstrap] - main flow shared reward/shop popup: passed
+[Bootstrap] - main flow shared reward/shop dedupe: passed
+[Bootstrap] - main flow resume combat after popup: passed
+[Bootstrap] - main flow wave end shop ready: passed
+[Bootstrap] - shop refresh cost wave1: passed
+[Bootstrap] - shop refresh reject no gold: passed
+ERROR: [Bootstrap] - shop refresh pay and weighted cost: failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _print_check_result (res://scripts/core/bootstrap.gd:1024)
+       [1] _run_main_flow_checks (res://scripts/core/bootstrap.gd:968)
+       [2] run_data_self_test (res://scripts/core/bootstrap.gd:64)
+       [3] _ready (res://scripts/core/bootstrap.gd:41)
+[Bootstrap] - main flow shop reject invalid offer: passed
+[Bootstrap] - main flow shop to finance order: passed
+[Bootstrap] - main flow finance submit: passed
+[Bootstrap] - main flow wave auto start after finance: passed
+[Bootstrap] - main flow battle result: passed
+[Bootstrap] - main flow reset after result: passed
+[Bootstrap] - main flow camp entry: passed
+[Bootstrap] config table counts
+[Bootstrap] - weapons: 1
+[Bootstrap] - relics: 73
+[Bootstrap] - bonds: 4
+[Bootstrap] - characters: 1
+[Bootstrap] - enemies: 1
+[Bootstrap] - camp_buildings: 7
+[Bootstrap] - zones: 3
+[Bootstrap] - waves: 20
+[Bootstrap] - drop_tables: 3
+[Bootstrap] - augmentations: 6
+[Bootstrap] lookup checks
+[Bootstrap] - found weapons.weapon_void_blade
+[Bootstrap] - found relics.relic_finance_manager
+[Bootstrap] - found relics.relic_piggy_bank
+[Bootstrap] - found bonds.bond_mighty
+[Bootstrap] - found characters.character_void_hunter
+[Bootstrap] - found enemies.enemy_mutated_grub
+[Bootstrap] - found zones.zone_nearstring_battlefield
+[Bootstrap] - found drop_tables.drop_basic_enemy
+[Bootstrap] - found augmentations.scroll_fire
+[Bootstrap] - found waves.wave_stage_01
+[Bootstrap] formula checks
+[Bootstrap] - attack_speed=100: 1.00s -> 0.50s
+[Bootstrap] - armor=100: damage_taken_percent=50
+[Bootstrap] - area_size=40: radius 100 -> 140
+[Bootstrap] - finance=101 interest_rate=5: gain 6
+[Bootstrap] engine foundation checks
+[Bootstrap] - GameGlobal mode: camp
+[Bootstrap] - GameGlobal bootstrap flag: true
+[Bootstrap] - GameRoot scene ready: true
+[Bootstrap] - DebugRoot scene ready: true
+[Bootstrap] - ZoneUIController scene ready: true
+[Bootstrap] - ZoneSelectPopup scene ready: true
+[Bootstrap] - ZoneSelectCard scene ready: true
+[Bootstrap] - ZoneHarvestResultPopup scene ready: true
+[Bootstrap] validation warnings: 0
+[Bootstrap] validation errors: 0
+ERROR: [Bootstrap] data self-test failed with 0 data errors
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] run_data_self_test (res://scripts/core/bootstrap.gd:73)
+       [1] _ready (res://scripts/core/bootstrap.gd:41)

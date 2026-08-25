@@ -125,18 +125,18 @@ func _get_parameter(channel: String, fallback: float) -> float:
 
 
 func _get_source_id() -> String:
-	if _context != null:
-		return str(_context.get("source_weapon_id", ""))
+	var effect_context: EffectContext = _context as EffectContext
+	if effect_context != null:
+		return effect_context.source_weapon_id
 	return ""
 
 
 func _get_tags() -> Array[String]:
 	var result: Array[String] = []
-	if _context != null:
-		var raw_tags: Variant = _context.get("tags", [])
-		if raw_tags is Array:
-			for tag in raw_tags:
-				result.append(str(tag))
+	var effect_context: EffectContext = _context as EffectContext
+	if effect_context != null:
+		for tag in effect_context.tags:
+			result.append(tag)
 	return result
 
 

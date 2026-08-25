@@ -202,7 +202,9 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 func _allows_fractional_config_value(path: String) -> bool:
 	return (path.contains(".runtime_effects[") and (
 		path.ends_with(".value") or path.ends_with(".principal_percent")
-	)) or path.contains("augmentations[") and path.contains(".modifiers[") and path.ends_with(".value")
+	)) or path.contains("augmentations[") and path.contains(".modifiers[") and (
+		path.ends_with(".value") or path.contains(".value[")
+	)
 
 
 func _validate_stat_references(value_data: Variant, path: String) -> void:
@@ -340,7 +342,11 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 		if not (effect_data[key] is int or effect_data[key] is float):
 			errors.append("%s.%s must be a number." % [path, key])
 			continue
-		if float(effect_data[key]) < 0.0 and not (key == "value" and str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_ADD_STAT):
+		var allows_negative_value: bool = key == "value" and str(effect_data.get("effect", "")) in [
+			BattleFinanceSystem.EFFECT_ADD_STAT,
+			BattleFinanceSystem.EFFECT_CONDITIONAL_STAT,
+		]
+		if float(effect_data[key]) < 0.0 and not allows_negative_value:
 			errors.append("%s.%s must be greater than or equal to 0." % [path, key])
 	for stat_key in ["stat", "source_stat", "target_stat"]:
 		if effect_data.has(stat_key) and not StatDefinitions.has_stat(str(effect_data.get(stat_key, ""))):
@@ -421,19 +427,19 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 			continue
 		for weapon_index in start_weapons.size():
 			_validate_id_reference(str(start_weapons[weapon_index]), "weapons", records_by_id, "%s.start_weapons[%d]" % [path, weapon_index])
-	var start_attachments: Variant = record.get("start_weapon_attachments", [])
-	if not (start_attachments is Array):
-		errors.append("%s.start_weapon_attachments must be an array." % path)
-	else:
-		for attachment_index in start_attachments.size():
-			var attachment: Variant = start_attachments[attachment_index]
-			var attachment_path := "%s.start_weapon_attachments[%d]" % [path, attachment_index]
-			if not (attachment is Dictionary):
-				errors.append("%s must be an object." % attachment_path)
-				continue
-			_validate_required_fields(attachment, ["weapon_id", "item_id"], attachment_path)
-			_validate_id_reference(attachment, "weapon_id", "weapons", records_by_id, attachment_path)
-			_validate_id_reference(attachment, "item_id", "augmentations", records_by_id, attachment_path)
+		var start_attachments: Variant = record.get("start_weapon_attachments", [])
+		if not (start_attachments is Array):
+			errors.append("%s.start_weapon_attachments must be an array." % path)
+		else:
+			for attachment_index in start_attachments.size():
+				var attachment: Variant = start_attachments[attachment_index]
+				var attachment_path := "%s.start_weapon_attachments[%d]" % [path, attachment_index]
+				if not (attachment is Dictionary):
+					errors.append("%s must be an object." % attachment_path)
+					continue
+				_validate_required_fields(attachment, ["weapon_id", "item_id"], attachment_path)
+				_validate_reference(attachment, "weapon_id", "weapons", records_by_id, attachment_path)
+				_validate_reference(attachment, "item_id", "augmentations", records_by_id, attachment_path)
 
 
 func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
@@ -482,7 +488,7 @@ func _validate_zone_pressure_dictionary(pressure: Variant, path: String, field_n
 		return
 	for pressure_key in pressure.keys():
 		var pressure_name := str(pressure_key)
-		var is_special_pressure := pressure_name in ["max_hp_percent", "armor_flat", "spawn_interval_percent"]
+		var is_special_pressure := pressure_name in ["max_hp_percent", "move_speed_percent", "armor_flat", "spawn_interval_percent"]
 		if not is_special_pressure and not StatDefinitions.has_stat(pressure_name):
 			errors.append("Unknown zone pressure key in %s.%s: %s" % [path, field_name, pressure_name])
 		var pressure_value := int(pressure[pressure_key])
@@ -645,7 +651,7 @@ func _validate_augmentation_records(records: Array) -> void:
 			errors.append("%s.modifiers must be an array." % path)
 			continue
 		for modifier_index in modifiers.size():
-			var modifier := modifiers[modifier_index]
+			var modifier: Variant = modifiers[modifier_index]
 			if not (modifier is Dictionary):
 				errors.append("%s.modifiers[%d] must be an object." % [path, modifier_index])
 				continue

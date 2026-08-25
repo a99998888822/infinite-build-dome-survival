@@ -106,7 +106,7 @@ func apply_augmentation(augmentation_id: String) -> bool:
 		return false
 	for item in owner_player.item_inventory.get_available_items():
 		if str(item.get("base_item_id", "")) == augmentation_id:
-		return attach_item_to_weapon(weapon_instances[0].weapon_id, str(item.get("item_instance_id", "")))
+			return attach_item_to_weapon(weapon_instances[0].weapon_id, str(item.get("item_instance_id", "")))
 	return false
 
 

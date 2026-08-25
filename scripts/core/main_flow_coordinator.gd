@@ -129,7 +129,7 @@ func confirm_character_selection() -> bool:
 		current_character_id = PlayerController.DEFAULT_CHARACTER_ID
 
 	var player_ok := _bound_player.initialize_from_character(current_character_id, current_outgame_modifiers, current_start_weapon_ids)
-	var loadout_ok := _bound_loadout.initialize(_bound_player)
+	var loadout_ok: bool = _bound_loadout.initialize(_bound_player)
 	if _bound_wave_manager != null:
 		_bound_wave_manager.initialize(_bound_player)
 
@@ -818,7 +818,7 @@ func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary)
 		ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
 			if _bound_loadout == null:
 				return false
-			var weapon := _bound_loadout.get_weapon_instance(target_id)
+			var weapon: WeaponInstance = _bound_loadout.get_weapon_instance(target_id)
 			if weapon == null or weapon.level != int(offer.get("from_level", 0)):
 				return false
 			return _bound_loadout.upgrade_weapon(target_id)

@@ -31,7 +31,7 @@ func _detonate() -> void:
 	})
 	var radius := maxf(context.get_resolved_parameter("radius", 48.0) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
-	var flash_color := context.get_tinted_color(Color(1.0, 0.74, 0.25, 1.0))
+	var flash_color: Color = context.get_tinted_color(Color(1.0, 0.74, 0.25, 1.0))
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_flash", _hit_position, Vector2.ZERO, 1.0, flash_color, {
 		"count_multiplier": context.get_resolved_parameter("count_multiplier", 1.0),
 		"speed_multiplier": context.get_resolved_parameter("speed_multiplier", 1.0),

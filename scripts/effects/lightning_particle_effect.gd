@@ -59,6 +59,7 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event)
 	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
+	current.apply_lightning_visual(0.7)
 	if _remaining_jumps <= 0:
 		queue_free()
 		return
@@ -103,10 +104,10 @@ func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
 			"alpha_multiplier": _context.get_resolved_parameter("alpha_multiplier", 1.0),
 			"glow_multiplier": _context.get_resolved_parameter("glow_multiplier", 1.0),
 		}
-		var blue_color := _context.get_tinted_color(Color(0.24, 0.68, 1.0, 1.0))
-		var core_color := _context.get_tinted_color(Color.WHITE)
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "lightning_blue", point, bolt_direction, 0.9, blue_color, common_parameters)
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "lightning_core", point, bolt_direction, 0.72, core_color, common_parameters)
+		var blue_color: Color = _context.get_tinted_color(Color(0.24, 0.68, 1.0, 1.0))
+		var core_color: Color = Color.WHITE
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "lightning_blue", point, bolt_direction, 0.55, blue_color, common_parameters)
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "lightning_core", point, bolt_direction, 1.0, core_color, common_parameters)
 		if index % 2 == 0:
 			PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "lightning_spark", point, bolt_direction, 0.7, Color.TRANSPARENT, common_parameters)
 		previous = point

@@ -200,7 +200,13 @@ MVP 暂不实现：
 - Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the `lightning` effect.
 - Fire uses scattered seeds and `FirePatch`: the pool lasts about two seconds, while burning damage is an independent enemy status.
 - Explosion uses particle flash, debris and radial secondary damage, and can call terrain radius destruction.
-- Lightning is sampled into particles: white core, blue branches and pale-yellow sparks; it supports short flash, chaining and burning detonation.
+- Lightning is sampled into particles: a dominant white core, restrained cold-blue branches and white/blue sparks; yellow particles are intentionally excluded. On hit, a short-lived set of warped white-blue filaments attaches to the enemy as a readable paralysis cue.
 - `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
 - Enchantment scrolls, energy gems and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
 - This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.
+
+### 10.1 Lightning visual reference
+
+- External reference: [Noita Wiki 中文](https://noita.wiki.gg/zh)
+- The reference is used for visual direction only: thin irregular lightning strands, a bright white electrical core, restrained blue secondary color, a burst of sparks on impact, and a temporary crawling/warped paralysis silhouette around the struck enemy.
+- Do not copy Noita assets or implementation. Keep this project's effect event-driven, pixel-readable, bounded by the existing particle budget, and independent from damage/collision logic.
