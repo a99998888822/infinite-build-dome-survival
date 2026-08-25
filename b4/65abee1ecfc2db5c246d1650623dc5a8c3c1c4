@@ -1,0 +1,130 @@
+scripts/ui/weapon_strip.gd
+  s_a3c9a2e4c843c4::t_fd6ee4740b6a68 4-5,8,16-18,20-22,44-47,54-57,64-72
+  s_a3c9a2e4c843c4::t_0a13fccf9ec58d 73-74
+scripts/effects/effect_parameter_resolver.gd
+  s_a3c9a2e4c843c4::t_7c59fe7e5da312 1-37
+scripts/items/item_inventory.gd
+  s_a3c9a2e4c843c4::t_1ce9add340b0b3 1-120
+scripts/effects/combat_effect_world.gd
+  s_a3c9a2e4c843c4::t_95d0508ba37225 1-24
+scenes/pickups/augmentation_pickup.tscn
+  s_a3c9a2e4c843c4::t_85f07ce97aa13f 1-12
+docs/main/16-particle_system_design.md
+  s_a3c9a2e4c843c4::t_23a99db70440a8 197-206
+  s_a3c9a2e4c843c4::t_a9313a5bc2b72c 129-143
+scenes/battle/battle_root.tscn
+  s_a3c9a2e4c843c4::t_bf61f51afd644a 20,86-88
+  s_a3c9a2e4c843c4::t_774563226ddc29 89
+scripts/player/player_controller.gd
+  s_a3c9a2e4c843c4::t_f96677e75340dd 19,30,106-107,171-186
+  s_a3c9a2e4c843c4::t_b8960ad3d87399 187-188
+scripts/weapons/weapon_loadout.gd
+  s_a3c9a2e4c843c4::t_c4a522f6106278 7,20,51-110,182-185
+scripts/effects/effect_context.gd
+  s_a3c9a2e4c843c4::t_707f299af95aa3 67-82
+  s_a3c9a2e4c843c4::t_87d8fc19d5e561 1-66,83-106
+scenes/ui/esc/esc_overlay.tscn
+  s_a3c9a2e4c843c4::t_cdc30da40c144b 75,86-113,117
+scripts/pickups/augmentation_pickup.gd
+  s_a3c9a2e4c843c4::t_85f07ce97aa13f 1-3,5-64,66,74,76-89
+  s_a3c9a2e4c843c4::t_57a6926866e0b4 4,65,67-73,75
+docs/main/17-scene_destruction_system_design.md
+  s_a3c9a2e4c843c4::t_23a99db70440a8 199-206
+scripts/effects/fire_patch.gd
+  s_a3c9a2e4c843c4::t_95d0508ba37225 1-47,50-52,57,60-86
+  s_a3c9a2e4c843c4::t_952456076e2f7d 48-49,55-56,58-59
+  s_a3c9a2e4c843c4::t_707f299af95aa3 53-54
+scripts/effects/particle_emitter_runtime.gd
+  s_a3c9a2e4c843c4::t_7c59fe7e5da312 32,52-115
+  s_a3c9a2e4c843c4::t_f046916d8a6169 1-31,33-51,116-146
+scripts/enemies/enemy_controller.gd
+  s_a3c9a2e4c843c4::t_f207d292581bf9 43-46,69-71,98-101,129-146,148-154,159-165
+  s_a3c9a2e4c843c4::t_3080f9132a015c 27,47,102,147,155-158
+  s_a3c9a2e4c843c4::t_8e831025049bd6 166-167
+scripts/effects/explosion_effect.gd
+  s_a3c9a2e4c843c4::t_95d0508ba37225 1-33,41-74
+  s_a3c9a2e4c843c4::t_707f299af95aa3 34-35
+  s_a3c9a2e4c843c4::t_952456076e2f7d 36-40
+scripts/effects/fire_seed.gd
+  s_a3c9a2e4c843c4::t_95d0508ba37225 1-51
+scripts/ui/item_inventory_card.gd
+  s_a3c9a2e4c843c4::t_0e1f289da7923b 1-23,28-63
+  s_a3c9a2e4c843c4::t_7c54c958f704ff 24-27
+data_config/augmentations.json
+  s_a3c9a2e4c843c4::t_3d06473d2044cc 29-45,76-92,117-133,164-180,211-227,258-274
+  s_a3c9a2e4c843c4::t_2696cb0d835415 1-28,46-75,93-116,134-163,181-210,228-257,275-278
+scripts/effects/particle_light_field.gd
+  s_a3c9a2e4c843c4::t_32e72ab1868975 1-53
+docs/main/4-weapon_loadout_design.md
+  s_a3c9a2e4c843c4::t_319969d4dea8e5 484-490
+scripts/rewards/reward_snapshot.gd
+  s_a3c9a2e4c843c4::t_54d586d0558430 9,26,46-47,78
+data_config/weapons.json
+  s_a3c9a2e4c843c4::t_2696cb0d835415 90
+  s_a3c9a2e4c843c4::t_cb1d1ab4ae63ad 91
+scripts/weapons/projectile_instance.gd
+  s_a3c9a2e4c843c4::t_9fa468f44aa2f9 12,23,67-73,97,109
+  s_a3c9a2e4c843c4::t_b0db9f8299f5b0 11
+scripts/effects/particle_world.gd
+  s_a3c9a2e4c843c4::t_f378d4655a20f0 6,64-185,237-238,248,302,306-307,312-314,320-322,324,328-351,392,395,397-403
+  s_a3c9a2e4c843c4::t_9da6c9368beab8 203-204,212
+  s_a3c9a2e4c843c4::t_5994095c372955 4,231-236,239-247,249-253,277-279,296-301
+data_config/characters.json
+  s_a3c9a2e4c843c4::t_cb1d1ab4ae63ad 7-10,13-19,31-40
+scripts/weapons/weapon_instance.gd
+  s_a3c9a2e4c843c4::t_9fa468f44aa2f9 20,47-49,153-168,183,192-193,195
+  s_a3c9a2e4c843c4::t_774cabde170980 22-24,46,50-58,169-182,184-191,194,196-247,377-382
+  s_a3c9a2e4c843c4::t_8e5ce971cb189c 21
+scripts/terrain/destructible_test_area.gd
+  s_a3c9a2e4c843c4::t_8a8d3187fdc803 65-78
+scripts/effects/effect_modifier.gd
+  s_a3c9a2e4c843c4::t_87d8fc19d5e561 1-23
+scripts/data/data_validator.gd
+  s_a3c9a2e4c843c4::t_2b77783e3f4c13 203,205
+  s_a3c9a2e4c843c4::t_78160631eea4c9 246,424-436
+  s_a3c9a2e4c843c4::t_4eb7095e3aab4d 14,27,41,106-107,634-653
+  s_a3c9a2e4c843c4::t_d7327aa541b2c2 654-656
+  s_a3c9a2e4c843c4::t_679f526a906d17 677-682
+scripts/rewards/drop_reward_system.gd
+  s_a3c9a2e4c843c4::t_54d586d0558430 6-7,98-101,166-185
+  s_a3c9a2e4c843c4::t_ec63535210cd49 186-187
+scripts/effects/lightning_particle_effect.gd
+  s_a3c9a2e4c843c4::t_7b4f3e33792748 99
+  s_a3c9a2e4c843c4::t_952456076e2f7d 100,102-103
+  s_a3c9a2e4c843c4::t_95d0508ba37225 1-27,29-97,101,104,110,112
+  s_a3c9a2e4c843c4::t_4e9c2759da22dc 28
+  s_a3c9a2e4c843c4::t_45e4a181bc7bdf 98,105,111
+  s_a3c9a2e4c843c4::t_707f299af95aa3 106-109
+data_config/drop_tables.json
+  s_a3c9a2e4c843c4::t_d184cd4a16f674 29-34,69-80,110-133
+  s_a3c9a2e4c843c4::t_2696cb0d835415 23-28,63-68,104-109
+autoloads/data_registry.gd
+  s_a3c9a2e4c843c4::t_4eb7095e3aab4d 17
+scripts/ui/esc_overlay.gd
+  s_a3c9a2e4c843c4::t_c4a522f6106278 27,40-41,50-51,122,124-126,128-142,144-153
+  s_a3c9a2e4c843c4::t_4f978835d1f132 123,143
+scripts/ui/weapon_slot_button.gd
+  s_a3c9a2e4c843c4::t_0e1f289da7923b 1-54
+scripts/core/bootstrap.gd
+  s_a3c9a2e4c843c4::t_4eb7095e3aab4d 35,92
+scripts/effects/particle_event.gd
+  s_a3c9a2e4c843c4::t_2fe695e7284e49 17
+scripts/effects/particle_motion_behavior.gd
+  s_a3c9a2e4c843c4::t_dfdb60aab16303 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b465abee1ecfc2db5c246d1650623dc5a8c3c1c4",
+  "prompts": {},
+  "sessions": {
+    "s_a3c9a2e4c843c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03333-78e4-7bf3-b544-fe1b0be691c0",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
