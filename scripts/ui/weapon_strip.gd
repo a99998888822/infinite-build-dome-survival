@@ -45,13 +45,17 @@ func _refresh_weapon_strip() -> void:
 		if button == null:
 			continue
 		button.configure(weapon, _attachment_editing_enabled)
+		button.custom_minimum_size = Vector2(44.0, 44.0)
+		button.flat = true
+		button.text = ""
+		button.tooltip_text = ""
 		var icon_path := str(weapon.weapon_data.get("icon", ""))
 		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
 			var texture := load(icon_path)
 			if texture is Texture2D:
 				button.icon = texture
 				button.expand_icon = true
-				button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				button.add_theme_constant_override("icon_max_width", 34)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)

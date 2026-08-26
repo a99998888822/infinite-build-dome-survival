@@ -106,7 +106,7 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 		"alpha_multiplier": _context.get_resolved_parameter("alpha_multiplier", 1.0),
 		"distance_multiplier": _context.get_resolved_parameter("area_size_multiplier", 1.0),
 	}
-	var intensity := _context.get_resolved_parameter("area_size_multiplier", 1.0)
+	var intensity: float = float(_context.get_resolved_parameter("area_size_multiplier", 1.0))
 	PARTICLE_WORLD_SCRIPT.emit_profile(_parent_root, "lightning_flash", hit_position, Vector2.ZERO, intensity, Color.WHITE, context_parameters)
 	PARTICLE_WORLD_SCRIPT.emit_profile(_parent_root, "lightning_impact", hit_position, burst_direction, intensity, Color.WHITE, context_parameters)
 

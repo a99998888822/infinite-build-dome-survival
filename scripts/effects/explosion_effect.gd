@@ -50,7 +50,7 @@ func _detonate() -> void:
 
 
 func _build_particle_parameters(context: RefCounted, radius: float) -> Dictionary:
-	var area_size_multiplier := context.get_resolved_parameter("area_size_multiplier", 1.0)
+	var area_size_multiplier: float = float(context.get_resolved_parameter("area_size_multiplier", 1.0))
 	var particle_rate := maxf(context.get_resolved_parameter("particle_rate", 1.0), 0.0)
 	return {
 		"count_multiplier": context.get_resolved_parameter("count_multiplier", 1.0) * particle_rate,
