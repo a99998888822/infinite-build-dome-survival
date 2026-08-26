@@ -104,12 +104,13 @@ func _on_body_entered(body: Node) -> void:
 	if hit_targets.has(target_key):
 		return
 	hit_targets[target_key] = true
-	damage_event.hit_position = enemy.global_position
+	var enemy_hit_position := enemy.global_position
+	damage_event.hit_position = enemy_hit_position
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
-	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, global_position, direction, enemy)
+	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy)
 	if weapon != null:
 		if weapon.register_hit_feedback_frame(true):
-			_spawn_hit_sparks(enemy.global_position, direction)
+			_spawn_hit_sparks(enemy_hit_position, direction)
 		weapon.play_projectile_hit_sfx(projectile_id)
 	remaining_hits -= 1
 	if remaining_hits <= 0:

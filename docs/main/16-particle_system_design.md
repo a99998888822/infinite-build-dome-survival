@@ -1,8 +1,23 @@
 # 粒子表现系统模块设计
 
-本文档定义基于现有命中粒子效果扩展的战斗粒子表现系统。目标是先统一投射物、射线、爆炸和实体攻击的视觉事件，再逐步增加拖尾、材质粒子和粒子交互；MVP 不追求完整的 Noita 像素物理，而优先保证像素风格统一、可配置、可控性能和容易扩展。
+本文档定义基于 Noita 中文站资料方向的战斗粒子表现系统：以“法术组合 + 粒子群表现 + 材料/场景反应”作为统一设计语言，覆盖投射物、射线、爆炸、实体、元素附魔、状态效果和场景破坏。MVP 不复制 Noita 的素材或实现，也不直接实现完整像素物理，而是先建立可运行、事件驱动、粒子可组合的基础。
 
 当前已落地：ParticleEvent、ParticleWorld、impact_green、projectile_trail、impact_terrain，以及按武器当前稀有度着色的木箭拖尾。
+
+## 0. Noita 中文站整体参考基线
+
+本模块的视觉和运行时设计整体参考 Noita 中文站中关于法术、投射物、材料反应、元素状态和粒子表现的组织方式，而不是只参考闪电：
+
+1. **法术组合**：武器负责发射载体，附魔/晶石/术士卷轴负责追加效果、参数和视觉标签；粒子系统读取最终 EffectContext，不把附魔硬编码进单个投射物。
+2. **投射物表现**：投射物由本体、拖尾、命中爆发和后续元素事件组合而成；飞行中的粒子只表现运动，不承担伤害碰撞。
+3. **射线表现**：射线不是一条静态线，而是由沿路径采样的细小发光粒子连续聚合，带有抖动、分叉、衰减和命中爆发。
+4. **爆炸表现**：爆炸由瞬时核心、向外扩散的亮粒子、碎片、烟尘和材质反应共同组成；范围伤害、场景破坏和视觉粒子分层处理。
+5. **元素状态**：火焰、闪电等状态由持续生成的粒子群表现，并可影响敌人状态、背景染色、发光层和其他效果；状态本身不直接等同于一张贴图。
+6. **材料与场景反应**：MVP 使用独立的场景破坏与效果事件模拟材料反应；最终版本再扩展液体、气体、粉末和燃烧传播等像素级材料系统。
+7. **像素可读性**：优先使用少量高对比、短生命周期、具有方向性的方块/像素粒子，避免大面积平滑线条和连续几何体掩盖粒子结构。
+8. **性能边界**：所有效果都必须接受粒子预算、发射频率、可见范围和优先级裁剪；命中核心粒子优先于拖尾、烟尘和远处装饰粒子。
+
+参考入口：Noita Wiki 中文站（仅作机制与视觉方向参考，不复制素材、数据或代码）：https://noita.wiki.gg/zh
 
 ## 1. 模块目标
 
@@ -198,15 +213,24 @@ MVP 暂不实现：
 ## 10. Current MVP Implementation
 
 - Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the `lightning` effect.
-- Fire uses scattered seeds and `FirePatch`: the pool lasts about two seconds, while burning damage is an independent enemy status.
-- Explosion uses particle flash, debris and radial secondary damage, and can call terrain radius destruction.
-- Lightning is sampled into particles: a dominant white core, restrained cold-blue branches and white/blue sparks; yellow particles are intentionally excluded. On hit, a short-lived set of warped white-blue filaments attaches to the enemy as a readable paralysis cue.
+- Fire uses invisible scattered seed logic and `FirePatch` collision; its visible seeds, embers and ground fire are all emitted particles. The pool distributes flame clusters across an elliptical footprint instead of drawing a pool shape, lasts about two seconds, and burning damage is an independent enemy status.
+- Explosion uses particle flash, outward wave particles and debris; every visible layer receives the resolved effect parameters. Explosion damage falloff is configurable and defaults to 0.0 for fixed damage inside the radius, while terrain destruction returns material types so soil, wood and stone can emit different debris particles.
+- Lightning is triggered only after a projectile hits an enemy: the first target is the impact source, and a lethal projectile hit still allows the chain to search for the next live enemy.
+- Lightning paths use dense, short-lived particle dashes: a white core strand plus a pale-blue companion strand, with no static line drawing.
+- Each chained hit emits a white flash, radial white sparks and a particle-only caterpillar-like paralysis visual; the gameplay stun is a separate short-lived enemy status.
 - `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
 - Enchantment scrolls, energy gems and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
+- Each dropped lightning scroll rolls independent instance parameters: `chain_count` 2–5 follow-up transfers, `chain_interval` 0.04–0.10 seconds, and `stun_duration` 0.45–1.10 seconds; the starter scroll remains fixed at 3, 0.06 seconds and 0.70 seconds.
 - This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.
 
-### 10.1 Lightning visual reference
+### 10.1 Noita 中文站整体对标清单
 
-- External reference: [Noita Wiki 中文](https://noita.wiki.gg/zh)
-- The reference is used for visual direction only: thin irregular lightning strands, a bright white electrical core, restrained blue secondary color, a burst of sparks on impact, and a temporary crawling/warped paralysis silhouette around the struck enemy.
-- Do not copy Noita assets or implementation. Keep this project's effect event-driven, pixel-readable, bounded by the existing particle budget, and independent from damage/collision logic.
+- **投射物**：本体 + 短拖尾 + 命中粒子 + 附魔事件；附魔只有在命中有效目标后生效。
+- **射线**：由连续发光粒子段组成，粒子沿路径采样并带有不规则偏移，不使用单条静态线替代。
+- **火焰**：由多层橙/红/黄粒子、上升运动、短寿命、局部光照和背景染色组合成火焰形状；火焰池与燃烧状态分离。
+- **爆炸**：由白色/暖色核心粒子、碎片、烟尘、冲击方向和范围反应组成；视觉、伤害、场景破坏分别处理。
+- **闪电**：由白色核心粒子段和淡蓝伴随粒子段连接敌人；命中点使用白色径向粒子爆发；麻痹状态使用跟随敌人的环绕粒子，并由独立状态控制短暂停止移动。掉落卷轴的连锁次数、传递间隔和麻痹时间按实例独立随机。
+- **实体**：实体拥有独立生命周期和粒子发射器，可追加跟随、围绕、返回等运动行为。
+- **材料反应**：最终版本允许粒子标签与材料系统交换事件；MVP 保持场景破坏系统独立，避免把伤害碰撞写入粒子层。
+
+所有参考仅用于机制拆解、视觉语言和验收标准，不复制 Noita 的素材、实现或数据。

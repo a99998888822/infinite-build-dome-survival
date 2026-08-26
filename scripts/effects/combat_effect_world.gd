@@ -20,5 +20,5 @@ static func trigger_weapon_impact(
 		FIRE_SEED_SCRIPT.spawn(parent, hit_position, weapon, damage_event, direction)
 	if weapon.has_method("has_effect") and weapon.has_effect("explosion"):
 		EXPLOSION_EFFECT_SCRIPT.spawn(parent, hit_position, weapon, damage_event)
-	if weapon.has_method("has_effect") and weapon.has_effect("lightning"):
+	if body is EnemyController and weapon.has_method("has_effect") and weapon.has_effect("lightning"):
 		LIGHTNING_EFFECT_SCRIPT.spawn(parent, hit_position, body, weapon, damage_event, direction)

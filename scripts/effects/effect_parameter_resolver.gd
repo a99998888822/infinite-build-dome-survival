@@ -19,6 +19,15 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 	context.parameters["intensity_multiplier"] = 1.0
 	context.parameters["glow_multiplier"] = 1.0
 	if weapon != null:
+		var attached_item: Dictionary = weapon.get_attached_item_instance() if weapon.has_method("get_attached_item_instance") else {}
+		var effect_parameters: Variant = attached_item.get("effect_parameters", {})
+		if effect_parameters is Dictionary:
+			for channel in effect_parameters.keys():
+				context.parameters[str(channel)] = effect_parameters[channel]
+		var rolled_parameters: Variant = attached_item.get("rolled_parameters", {})
+		if rolled_parameters is Dictionary:
+			for channel in rolled_parameters.keys():
+				context.parameters[str(channel)] = rolled_parameters[channel]
 		context.source_weapon_id = str(weapon.weapon_id)
 		var raw_tags: Variant = weapon.weapon_data.get("tags", [])
 		if raw_tags is Array:

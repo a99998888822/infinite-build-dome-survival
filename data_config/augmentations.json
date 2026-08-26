@@ -55,6 +55,9 @@
     "effect_ids": [
       "explosion"
     ],
+    "effect_parameters": {
+      "damage_falloff": 0.0
+    },
     "modifiers": [
       {
         "effect_id": "explosion",
@@ -96,19 +99,18 @@
   {
     "id": "scroll_lightning",
     "display_name": "闪电附魔卷轴",
-    "description": "发射瞬时闪电，并可在敌人之间连锁。",
+    "description": "命中后释放闪电。基础为连续传递3次、间隔0.06秒、麻痹0.70秒；掉落实例会独立随机。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
       "lightning"
     ],
+    "effect_parameters": {
+      "chain_count": 3,
+      "chain_interval": 0.06,
+      "stun_duration": 0.7
+    },
     "modifiers": [
-      {
-        "effect_id": "lightning",
-        "channel": "chain_count",
-        "operation": "add_flat",
-        "value": 1
-      },
       {
         "effect_id": "lightning",
         "channel": "glow_multiplier",
@@ -131,6 +133,26 @@
           1.0,
           1.0
         ]
+      }
+    ],
+    "instance_parameter_ranges": [
+      {
+        "channel": "chain_count",
+        "min": 2,
+        "max": 5,
+        "step": 1
+      },
+      {
+        "channel": "chain_interval",
+        "min": 0.04,
+        "max": 0.10,
+        "step": 0.01
+      },
+      {
+        "channel": "stun_duration",
+        "min": 0.45,
+        "max": 1.10,
+        "step": 0.05
       }
     ]
   },

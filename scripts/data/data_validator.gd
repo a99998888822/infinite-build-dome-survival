@@ -204,6 +204,8 @@ func _allows_fractional_config_value(path: String) -> bool:
 		path.ends_with(".value") or path.ends_with(".principal_percent")
 	)) or path.contains("augmentations[") and path.contains(".modifiers[") and (
 		path.ends_with(".value") or path.contains(".value[")
+	) or path.contains("augmentations[") and (
+		path.contains(".effect_parameters.") or path.contains(".instance_parameter_ranges[")
 	)
 
 
@@ -646,6 +648,14 @@ func _validate_augmentation_records(records: Array) -> void:
 		_validate_rarity(record, path)
 		if record.has("effect_ids") and not (record["effect_ids"] is Array):
 			errors.append("%s.effect_ids must be an array." % path)
+		var effect_parameters: Variant = record.get("effect_parameters", {})
+		if not (effect_parameters is Dictionary):
+			errors.append("%s.effect_parameters must be an object." % path)
+		var instance_parameter_ranges: Variant = record.get("instance_parameter_ranges", [])
+		if not (instance_parameter_ranges is Array):
+			errors.append("%s.instance_parameter_ranges must be an array." % path)
+		else:
+			_validate_instance_parameter_ranges(instance_parameter_ranges, path)
 		var modifiers: Variant = record.get("modifiers", [])
 		if not (modifiers is Array):
 			errors.append("%s.modifiers must be an array." % path)
@@ -657,6 +667,35 @@ func _validate_augmentation_records(records: Array) -> void:
 				continue
 			if str(modifier.get("channel", "")).is_empty():
 				errors.append("%s.modifiers[%d].channel cannot be empty." % [path, modifier_index])
+
+
+func _validate_instance_parameter_ranges(ranges: Array, path: String) -> void:
+	for range_index in ranges.size():
+		var range_data: Variant = ranges[range_index]
+		var range_path := "%s.instance_parameter_ranges[%d]" % [path, range_index]
+		if not (range_data is Dictionary):
+			errors.append("%s must be an object." % range_path)
+			continue
+		_validate_required_fields(range_data, ["channel", "min", "max", "step"], range_path)
+		if str(range_data.get("channel", "")).strip_edges().is_empty():
+			errors.append("%s.channel cannot be empty." % range_path)
+		var has_valid_numbers := true
+		for field_name in ["min", "max", "step"]:
+			if not range_data.has(field_name):
+				continue
+			var field_value: Variant = range_data[field_name]
+			if not (field_value is int or field_value is float):
+				errors.append("%s.%s must be a number." % [range_path, field_name])
+				has_valid_numbers = false
+		if not has_valid_numbers:
+			continue
+		var minimum := float(range_data["min"])
+		var maximum := float(range_data["max"])
+		var step := float(range_data["step"])
+		if minimum > maximum:
+			errors.append("%s.min must be less than or equal to max." % range_path)
+		if step <= 0.0:
+			errors.append("%s.step must be greater than 0." % range_path)
 
 
 func _validate_drop_table_records(records: Array, records_by_id: Dictionary) -> void:

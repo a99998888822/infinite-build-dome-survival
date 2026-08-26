@@ -200,7 +200,7 @@ MVP 暂不实现：
 ## 12. Current MVP Integration
 
 - Wood arrows still only target enemies; terrain is damaged only when the flying projectile actually collides with it.
-- Explosion enchantments call `destroy_radius`, clearing test-area cells and disabling their collision shapes.
+- Explosion enchantments call `destroy_radius_with_materials`, clearing test-area cells and disabling their collision shapes; the returned soil, wood and stone records drive material-specific debris particles.
 - Fire pools affect entity status only and do not spread through neighboring terrain cells yet.
 - `DropRewardSystem` spawns scroll, gem and wizard-scroll pickups; pickup applies the item to the current first weapon.
 - Liquid, gas, temperature diffusion and pixel-material reactions remain final-version chunk simulation work.

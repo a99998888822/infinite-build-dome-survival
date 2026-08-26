@@ -47,6 +47,20 @@ func _get_drag_data(_position: Vector2) -> Variant:
 	}
 
 
+func _append_rolled_parameter_lines(lines: Array[String]) -> void:
+	var rolled_parameters: Variant = item_instance.get("rolled_parameters", {})
+	if not (rolled_parameters is Dictionary) or rolled_parameters.is_empty():
+		rolled_parameters = item_instance.get("effect_parameters", {})
+	if not (rolled_parameters is Dictionary):
+		return
+	if rolled_parameters.has("chain_count"):
+		lines.append("连续传递：%d 次" % int(rolled_parameters["chain_count"]))
+	if rolled_parameters.has("chain_interval"):
+		lines.append("传递间隔：%.2f 秒" % float(rolled_parameters["chain_interval"]))
+	if rolled_parameters.has("stun_duration"):
+		lines.append("麻痹时间：%.2f 秒" % float(rolled_parameters["stun_duration"]))
+
+
 func _build_tooltip() -> String:
 	var lines: Array[String] = []
 	lines.append(str(item_instance.get("display_name", item_instance.get("base_item_id", "物品"))))
@@ -57,6 +71,7 @@ func _build_tooltip() -> String:
 	var equipped_weapon_id := str(item_instance.get("equipped_weapon_id", ""))
 	if not equipped_weapon_id.is_empty():
 		lines.append("Equipped weapon: %s" % equipped_weapon_id)
+	_append_rolled_parameter_lines(lines)
 	for modifier in item_instance.get("modifiers", []):
 		if modifier is Dictionary:
 			lines.append("%s %s %s" % [str(modifier.get("channel", "")), str(modifier.get("operation", "")), str(modifier.get("value", ""))])

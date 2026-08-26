@@ -4,6 +4,7 @@ class_name FirePatch
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 
 var _context: RefCounted = null
+var _radius: float = 30.0
 var _remaining: float = 2.0
 var _tick_timer: float = 0.0
 var _visual_timer: float = 0.0
@@ -21,6 +22,7 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted) ->
 	var radius := 30.0
 	if context != null:
 		radius *= maxf(context.get_resolved_parameter("area_size_multiplier", 1.0), 0.25)
+	patch._radius = radius
 	var collision_shape := CollisionShape2D.new()
 	var circle := CircleShape2D.new()
 	circle.radius = radius
@@ -51,20 +53,31 @@ func _physics_process(delta: float) -> void:
 		if _context != null:
 			intensity = maxf(_context.get_resolved_parameter("intensity_multiplier", 1.0), 0.2)
 		var flame_color: Color = _context.get_tinted_color(Color(1.0, 0.55, 0.10, 1.0)) if _context != null else Color.TRANSPARENT
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_flame", global_position + Vector2(randf_range(-18.0, 18.0), randf_range(-5.0, 5.0)), Vector2.UP, intensity, flame_color, {
+		var common_parameters := {
 			"count_multiplier": _context.get_resolved_parameter("count_multiplier", 1.0) if _context != null else 1.0,
 			"speed_multiplier": _context.get_resolved_parameter("speed_multiplier", 1.0) if _context != null else 1.0,
 			"size_multiplier": _context.get_resolved_parameter("size_multiplier", 1.0) if _context != null else 1.0,
 			"lifetime_multiplier": _context.get_resolved_parameter("lifetime_multiplier", 1.0) if _context != null else 1.0,
 			"alpha_multiplier": _context.get_resolved_parameter("alpha_multiplier", 1.0) if _context != null else 1.0,
 			"glow_multiplier": _context.get_resolved_parameter("glow_multiplier", 1.0) if _context != null else 1.0,
-		})
+		}
+		var flame_burst_count := clampi(int(ceil(_radius / 24.0)), 2, 5)
+		for index in flame_burst_count:
+			PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_pool_flame", _random_pool_position(), Vector2.UP, intensity, flame_color, common_parameters)
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_pool_ember", _random_pool_position(), Vector2.UP, intensity, flame_color, common_parameters)
 	if _tick_timer <= 0.0:
 		var interval: float = _context.get_resolved_parameter("tick_interval", 0.25) if _context != null else 0.25
 		_tick_timer = maxf(interval, 0.08)
 		_apply_tick_damage()
 	if _remaining <= 0.0:
 		queue_free()
+
+
+func _random_pool_position() -> Vector2:
+	var angle := randf_range(0.0, TAU)
+	var radial := sqrt(randf()) * _radius
+	var footprint := Vector2(cos(angle) * radial, sin(angle) * radial * 0.34)
+	return global_position + footprint
 
 
 func _apply_tick_damage() -> void:

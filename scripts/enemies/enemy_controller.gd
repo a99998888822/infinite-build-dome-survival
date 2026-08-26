@@ -24,6 +24,7 @@ const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
 const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
+const LIGHTNING_STUN_MAX_SECONDS: float = 3.0
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const LIGHTNING_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/lightning_status_visual.gd")
 
@@ -47,6 +48,7 @@ var _burn_tick_timer: float = 0.0
 var _burn_damage_per_tick: float = 0.0
 var _burn_source_id: String = ""
 var _burn_visual_timer: float = 0.0
+var _stunned_remaining: float = 0.0
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
@@ -71,6 +73,10 @@ func _physics_process(delta: float) -> void:
 	_contact_damage_cooldown = maxf(_contact_damage_cooldown - delta, 0.0)
 	_process_burning(delta)
 	if not alive:
+		return
+	_stunned_remaining = maxf(_stunned_remaining - delta, 0.0)
+	if _stunned_remaining > 0.0:
+		velocity = Vector2.ZERO
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
@@ -104,6 +110,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_burn_damage_per_tick = 0.0
 	_burn_source_id = ""
 	_burn_visual_timer = 0.0
+	_stunned_remaining = 0.0
 	return true
 
 
@@ -140,7 +147,11 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 
 
 func has_status(status_id: String) -> bool:
-	return status_id == "burning" and _burning_remaining > 0.0
+	if status_id == "burning":
+		return _burning_remaining > 0.0
+	if status_id == "stunned" or status_id == "paralyzed":
+		return _stunned_remaining > 0.0
+	return false
 
 
 func clear_burning() -> void:
@@ -158,6 +169,13 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 		_lightning_visual.call("refresh", duration)
 		return
 	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration)
+
+
+func apply_lightning_stun(duration: float = 0.65) -> void:
+	if not alive:
+		return
+	_stunned_remaining = maxf(_stunned_remaining, minf(duration, LIGHTNING_STUN_MAX_SECONDS))
+	apply_lightning_visual(duration)
 
 
 func _process_burning(delta: float) -> void:

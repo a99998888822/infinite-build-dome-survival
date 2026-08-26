@@ -63,17 +63,25 @@ func destroy_point(global_position: Vector2) -> bool:
 
 
 func destroy_radius(global_position: Vector2, radius: float) -> int:
-	var destroyed := 0
+	return destroy_radius_with_materials(global_position, radius).size()
+
+
+func destroy_radius_with_materials(global_position: Vector2, radius: float) -> Array[Dictionary]:
+	var destroyed_materials: Array[Dictionary] = []
 	var safe_radius := maxf(radius, CELL_SIZE * 0.5)
 	for cell_key in _cells.keys():
 		var cell: Vector2i = cell_key
-		if str(_cells[cell]).is_empty():
+		var material_id := str(_cells[cell])
+		if material_id.is_empty():
 			continue
 		if _cell_center(cell).distance_to(to_local(global_position)) > safe_radius:
 			continue
 		if destroy_point(to_global(_cell_center(cell))):
-			destroyed += 1
-	return destroyed
+			destroyed_materials.append({
+				"material_id": material_id,
+				"position": to_global(_cell_center(cell)),
+			})
+	return destroyed_materials
 
 
 func _local_to_cell(local_position: Vector2) -> Vector2i:
