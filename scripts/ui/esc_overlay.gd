@@ -29,6 +29,7 @@ var _relic_tweens: Dictionary = {}
 var _relic_pulse_tweens: Dictionary = {}
 var _backdrop: ColorRect = null
 var _show_tween: Tween = null
+var _item_tooltip_panel: PanelContainer = null
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
@@ -85,6 +86,7 @@ func show_overlay() -> void:
 func hide_overlay() -> void:
 	if not visible:
 		return
+	_hide_item_tooltip()
 	if _show_tween != null and _show_tween.is_valid():
 		_show_tween.kill()
 	_show_tween = create_tween()
@@ -133,6 +135,7 @@ func _on_item_inventory_changed() -> void:
 
 
 func _refresh_item_list() -> void:
+	_hide_item_tooltip()
 	for card in _item_cards:
 		if is_instance_valid(card):
 			card.queue_free()
@@ -147,10 +150,68 @@ func _refresh_item_list() -> void:
 		if card == null:
 			continue
 		card.configure(item, true)
+		card.item_tooltip_requested.connect(_show_item_tooltip)
+		card.item_tooltip_hidden.connect(_hide_item_tooltip)
 		item_grid.add_child(card)
 		_item_cards.append(card)
 	if item_total_label != null:
 		item_total_label.text = "共 %d 件" % items.size()
+
+
+func _show_item_tooltip(anchor_card: ItemInventoryCard, bbcode_text: String) -> void:
+	_hide_item_tooltip()
+	if anchor_card == null or bbcode_text.is_empty():
+		return
+	_item_tooltip_panel = PanelContainer.new()
+	_item_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip_panel.z_index = 120
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.035, 0.045, 0.07, 0.98)
+	panel_style.border_color = Color(0.72, 0.78, 0.92, 0.92)
+	panel_style.set_border_width_all(1)
+	panel_style.set_corner_radius_all(4)
+	_item_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(_item_tooltip_panel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_bottom", 8)
+	_item_tooltip_panel.add_child(margin)
+
+	var label := RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(280.0, 0.0)
+	label.add_theme_font_size_override("normal_font_size", 16)
+	label.add_theme_constant_override("line_separation", 2)
+	label.text = bbcode_text
+	margin.add_child(label)
+	call_deferred("_position_item_tooltip", anchor_card, _item_tooltip_panel)
+
+
+func _position_item_tooltip(anchor_card: ItemInventoryCard, tooltip_panel: PanelContainer) -> void:
+	if not is_instance_valid(anchor_card) or not is_instance_valid(tooltip_panel):
+		return
+	var anchor_rect := anchor_card.get_global_rect()
+	var viewport_size := get_viewport().get_visible_rect().size
+	var target := anchor_rect.position + Vector2(anchor_rect.size.x + 8.0, -4.0)
+	if target.x + tooltip_panel.size.x > viewport_size.x:
+		target.x = anchor_rect.position.x - tooltip_panel.size.x - 8.0
+	if target.y + tooltip_panel.size.y > viewport_size.y:
+		target.y = anchor_rect.end.y - tooltip_panel.size.y
+	target.x = clampf(target.x, 4.0, maxf(4.0, viewport_size.x - tooltip_panel.size.x - 4.0))
+	target.y = clampf(target.y, 4.0, maxf(4.0, viewport_size.y - tooltip_panel.size.y - 4.0))
+	tooltip_panel.global_position = target
+
+
+func _hide_item_tooltip() -> void:
+	if _item_tooltip_panel != null:
+		_item_tooltip_panel.queue_free()
+		_item_tooltip_panel = null
 
 
 func _on_viewport_resized() -> void:

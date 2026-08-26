@@ -5,6 +5,9 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
+const CHAIN_DISPLAY_ECHO_DELAY: float = 0.08
+const CHAIN_CONTROL_POINT_JITTER: float = 18.0
+
 var _parent_root: Node = null
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -13,6 +16,8 @@ var _context: RefCounted = null
 var _visited: Dictionary = {}
 var _remaining_jumps: int = 0
 var _jump_radius: float = 170.0
+var _pending_display_echoes: int = 0
+var _chain_finished: bool = false
 
 
 static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2) -> void:
@@ -40,11 +45,11 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 
 func _strike_chain(target: Node, from_position: Vector2) -> void:
 	if _weapon == null or _damage_event == null:
-		queue_free()
+		_finish_chain()
 		return
 	var current := target as EnemyController
 	if current == null:
-		queue_free()
+		_finish_chain()
 		return
 	var key := current.get_instance_id()
 	if _visited.has(key):
@@ -64,7 +69,7 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
 	if _remaining_jumps <= 0:
-		queue_free()
+		_finish_chain()
 		return
 	_remaining_jumps -= 1
 	_schedule_next(current.global_position)
@@ -72,11 +77,11 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 
 func _schedule_next(origin: Vector2) -> void:
 	if _remaining_jumps <= 0:
-		queue_free()
+		_finish_chain()
 		return
 	var next_target := _find_nearest_enemy(origin)
 	if next_target == null:
-		queue_free()
+		_finish_chain()
 		return
 	var chain_interval := clampf(_context.get_resolved_parameter("chain_interval", 0.06), 0.01, 0.5)
 	get_tree().create_timer(chain_interval).timeout.connect(Callable(self, "_strike_chain").bind(next_target, origin))
@@ -112,6 +117,18 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 
 
 func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
+	_emit_bolt_pulse(start_position, end_position)
+	_pending_display_echoes += 1
+	get_tree().create_timer(CHAIN_DISPLAY_ECHO_DELAY).timeout.connect(Callable(self, "_emit_bolt_echo").bind(start_position, end_position))
+
+
+func _emit_bolt_echo(start_position: Vector2, end_position: Vector2) -> void:
+	_pending_display_echoes = maxi(_pending_display_echoes - 1, 0)
+	_emit_bolt_pulse(start_position, end_position)
+	_try_finish_chain()
+
+
+func _emit_bolt_pulse(start_position: Vector2, end_position: Vector2) -> void:
 	var distance := start_position.distance_to(end_position)
 	if distance <= 1.0:
 		return
@@ -135,6 +152,16 @@ func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
 				_emit_filament(sample_start, segment_direction, strand_index)
 
 
+func _finish_chain() -> void:
+	_chain_finished = true
+	_try_finish_chain()
+
+
+func _try_finish_chain() -> void:
+	if _chain_finished and _pending_display_echoes <= 0:
+		queue_free()
+
+
 func _build_bolt_control_points(
 	start_position: Vector2,
 	end_position: Vector2,
@@ -148,7 +175,7 @@ func _build_bolt_control_points(
 	for control_index in range(1, control_count):
 		var t := float(control_index) / float(control_count)
 		var envelope := sin(t * PI)
-		var offset := randf_range(-10.0, 10.0) * envelope
+		var offset := randf_range(-CHAIN_CONTROL_POINT_JITTER, CHAIN_CONTROL_POINT_JITTER) * envelope
 		control_points.append(start_position.lerp(end_position, t) + perpendicular * offset)
 	control_points.append(end_position)
 	return control_points

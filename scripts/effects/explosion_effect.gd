@@ -5,6 +5,8 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
 
+const BASE_DAMAGE_RADIUS: float = 96.0
+
 const MATERIAL_PARTICLE_PROFILES: Dictionary = {
 	"soil": "explosion_soil_debris",
 	"wood": "explosion_wood_debris",
@@ -33,15 +35,18 @@ func _detonate() -> void:
 		return
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion", {
 		"damage": maxf(float(_damage_event.damage) * 0.8, 1.0),
-		"radius": 48.0,
+		"radius": BASE_DAMAGE_RADIUS,
 		"damage_falloff": 0.0,
 	})
-	var radius := maxf(context.get_resolved_parameter("radius", 48.0) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
+	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)
 	var flash_color: Color = context.get_tinted_color(Color(1.0, 0.74, 0.25, 1.0))
+	var hot_flash_color: Color = context.get_tinted_color(Color(1.0, 0.93, 0.68, 1.0))
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_flash", _hit_position, Vector2.ZERO, 1.0, flash_color, particle_parameters)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_hot_flash", _hit_position, Vector2.ZERO, 1.0, hot_flash_color, particle_parameters)
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_wave", _hit_position, Vector2.ZERO, 1.0, flash_color, particle_parameters)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_spark", _hit_position, Vector2.ZERO, 1.0, flash_color, particle_parameters)
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_debris", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
@@ -59,7 +64,7 @@ func _build_particle_parameters(context: RefCounted, radius: float) -> Dictionar
 		"lifetime_multiplier": context.get_resolved_parameter("lifetime_multiplier", 1.0),
 		"alpha_multiplier": context.get_resolved_parameter("alpha_multiplier", 1.0),
 		"glow_multiplier": context.get_resolved_parameter("glow_multiplier", 1.0),
-		"distance_multiplier": radius / 48.0,
+		"distance_multiplier": radius / BASE_DAMAGE_RADIUS,
 	}
 
 

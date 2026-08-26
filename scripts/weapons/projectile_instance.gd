@@ -5,6 +5,7 @@ const DEFAULT_HIT_RADIUS: float = 6.0
 const ENEMY_COLLISION_LAYER: int = 2
 const TERRAIN_COLLISION_LAYER: int = 4
 const TRAIL_INTERVAL_SECONDS: float = 0.035
+const ENABLE_ENEMY_HIT_GREEN_PARTICLES: bool = false
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
@@ -109,7 +110,7 @@ func _on_body_entered(body: Node) -> void:
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy)
 	if weapon != null:
-		if weapon.register_hit_feedback_frame(true):
+		if ENABLE_ENEMY_HIT_GREEN_PARTICLES and weapon.register_hit_feedback_frame(true):
 			_spawn_hit_sparks(enemy_hit_position, direction)
 		weapon.play_projectile_hit_sfx(projectile_id)
 	remaining_hits -= 1
