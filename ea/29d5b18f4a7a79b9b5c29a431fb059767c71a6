@@ -1,0 +1,66 @@
+docs/main/16-particle_system_design.md
+  s_a3c9a2e4c843c4::t_f3ca687ac74887 216
+  s_a3c9a2e4c843c4::t_8ee8535d6c6fce 3,7-21,217-220,223,226-234,236
+data_config/augmentations.json
+  s_a3c9a2e4c843c4::t_a0fcfbab02436e 58-60,102,108-112,137-156
+docs/main/17-scene_destruction_system_design.md
+  s_a3c9a2e4c843c4::t_fe26909cd3039e 203
+scripts/data/data_validator.gd
+  s_a3c9a2e4c843c4::t_d3f2e49cd45019 207-208,651-658,672-700
+scripts/effects/combat_effect_world.gd
+  s_a3c9a2e4c843c4::t_a204d5b3b1f01a 23
+scripts/effects/effect_parameter_resolver.gd
+  s_a3c9a2e4c843c4::t_3dfb08eb72454f 22-30
+scripts/effects/explosion_effect.gd
+  s_a3c9a2e4c843c4::t_4cf5ff8bd8d9cc 8-13,37,41,43-56,58,62-63,66,81-82,86-87,90,92-100,102-115
+scripts/effects/fire_patch.gd
+  s_a3c9a2e4c843c4::t_8bbd6178ee984e 7,25,56,63-67,76-82
+scripts/effects/lightning_particle_effect.gd
+  s_a3c9a2e4c843c4::t_b4422348c19ec4 19-20,31,33,38,51,54-57,59-60,70-77,81-82,99-113,116-168
+scripts/effects/lightning_status_visual.gd
+  s_469e87afd9f399::t_e8f950e4ed079c 3-6,9,19,25,45-64
+scripts/effects/particle_world.gd
+  s_a3c9a2e4c843c4::t_0bb8874c5429b9 84-118,154-173,190-237,286-368,491-496,499-502,505,508,515,593-597
+scripts/enemies/enemy_controller.gd
+  s_469e87afd9f399::t_589c603ba04852 27,51,77-80,113,150-154,174-180
+scripts/items/item_inventory.gd
+  s_a3c9a2e4c843c4::t_749a3cb956e145 10-14,42,44,109-135,144-149
+scripts/terrain/destructible_test_area.gd
+  s_a3c9a2e4c843c4::t_6889b0adeb5bd7 66-70,74-75,80-84
+scripts/ui/item_inventory_card.gd
+  s_a3c9a2e4c843c4::t_ef17920ce361e3 50-63,74
+scripts/weapons/projectile_instance.gd
+  s_441d30358017cf::t_8bd7c03809bf50 107-108,110,113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "ea29d5b18f4a7a79b9b5c29a431fb059767c71a6",
+  "prompts": {},
+  "sessions": {
+    "s_441d30358017cf": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03bf7-7f3b-71d3-87b9-94f0ee23ede9",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_469e87afd9f399": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03900-ea5f-7a33-8dc9-142337bb33de",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a3c9a2e4c843c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03333-78e4-7bf3-b544-fe1b0be691c0",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
