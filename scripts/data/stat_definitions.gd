@@ -190,16 +190,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": false,
 		"description": "一次攻击产生的投射物数量。"
 	},
-	"pierce_count": {
-		"display_name": "穿透次数",
-		"category": CATEGORY_PROJECTILE,
-		"default": 0,
-		"min": 0,
-		"max": 999,
-		"is_integer": true,
-		"is_percent": false,
-		"description": "投射物可额外穿透的目标数量。"
-	},
 	"area_size": {
 		"display_name": "范围加成",
 		"category": CATEGORY_CONTROL,

@@ -9,6 +9,7 @@ signal weapon_attachment_changed(weapon_id: String, item_instance_id: String)
 const PROJECTILE_VISUAL_SCALE: float = 1.0
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
+const ATTACHABLE_ITEM_CATEGORIES: Array[String] = ["enchantment_scroll", "energy_gem", "wizard_scroll"]
 
 var owner_player: PlayerController = null
 var weapon_instances: Array[WeaponInstance] = []
@@ -65,6 +66,10 @@ func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
 		return false
 	var item := owner_player.item_inventory.find_item(item_instance_id)
 	if item.is_empty():
+		return false
+	if not ATTACHABLE_ITEM_CATEGORIES.has(str(item.get("category", ""))):
+		return false
+	if not weapon.get_attached_item_instance().is_empty():
 		return false
 	var equipped_weapon_id := str(item.get("equipped_weapon_id", ""))
 	var source_weapon: WeaponInstance = null
@@ -225,6 +230,28 @@ func _spawn_projectiles(weapon: WeaponInstance, damage_event: DamageEvent, targe
 func _spawn_projectile(weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2, attack_range: float) -> bool:
 	if owner_player == null:
 		return false
+	return _spawn_projectile_from(
+		weapon,
+		damage_event,
+		direction,
+		attack_range,
+		owner_player.global_position,
+		{},
+		0
+	)
+
+
+func _spawn_projectile_from(
+	weapon: WeaponInstance,
+	damage_event: DamageEvent,
+	direction: Vector2,
+	attack_range: float,
+	start_position: Vector2,
+	ignored_target_ids: Dictionary = {},
+	split_depth: int = 0
+) -> bool:
+	if owner_player == null:
+		return false
 	var texture := _load_weapon_texture(weapon, "projectile_texture")
 	var projectile := PROJECTILE_INSTANCE_SCRIPT.new() as ProjectileInstance
 	if projectile == null:
@@ -239,11 +266,14 @@ func _spawn_projectile(weapon: WeaponInstance, damage_event: DamageEvent, direct
 		weapon,
 		damage_event.duplicate_event(),
 		projectile_id,
-		owner_player.global_position,
+		start_position,
 		direction,
 		attack_range,
 		texture,
-		PROJECTILE_VISUAL_SCALE
+		PROJECTILE_VISUAL_SCALE,
+		Callable(self, "_spawn_projectile_from"),
+		ignored_target_ids,
+		split_depth
 	)
 	if not initialized:
 		projectile.queue_free()

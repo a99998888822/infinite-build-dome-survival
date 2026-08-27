@@ -173,7 +173,6 @@ flowchart TD
 | 暴击 | `crit_chance` | 暴击率 | 武器/玩家 |
 | 暴击 | `crit_damage` | 暴击伤害百分比 | 武器/玩家 |
 | 投射物 | `projectile_count` | 投射物数量 | 武器 |
-| 投射物 | `pierce_count` | 穿透次数 | 武器 |
 | 范围与控制 | `area_size` | 攻击范围加成；统一加成近战、远程、范围武器的命中/影响半径 | 武器/领域 |
 | 范围与控制 | `control_power` | 控制强度，影响减速、定身等控制效果强度 | 武器/遗物/羁绊 |
 | 掉落与成长 | `pickup_radius` | 拾取范围 | 玩家 |
@@ -539,8 +538,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
     "attack_speed": 0,
     "crit_chance": 5,
     "crit_damage": 150,
-    "projectile_count": 1,
-    "pierce_count": 0
+    "projectile_count": 1
   },
   "level_upgrades": {
     "2": [

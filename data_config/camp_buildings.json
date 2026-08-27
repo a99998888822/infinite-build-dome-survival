@@ -311,15 +311,6 @@
         "value_per_level": 1
       },
       {
-        "id": "camp_upgrade_pierce_count",
-        "name": "穿透次数训练",
-        "stat": "pierce_count",
-        "currency": "camp_currency",
-        "cost": 1000,
-        "max_level": 5,
-        "value_per_level": 1
-      },
-      {
         "id": "camp_upgrade_area_size_ranged",
         "name": "远程范围训练",
         "stat": "area_size",

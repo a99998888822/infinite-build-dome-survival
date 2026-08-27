@@ -45,7 +45,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return false
 	if str(data.get("type", "")) != "augmentation_item":
 		return false
-	return weapon.has_attachment_slot()
+	return weapon.has_attachment_slot() and weapon.get_attached_item_instance().is_empty()
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:

@@ -273,9 +273,6 @@ func get_spread_angle() -> float:
 	return float(weapon_data.get("spread_angle", 0))
 
 
-func get_total_pierce_hits() -> int:
-	return int(get_stat("pierce_count")) + 1
-
 
 func get_actual_attack_interval_seconds() -> float:
 	var base_interval := maxf(float(attack_interval_ms) / 1000.0, MIN_ATTACK_INTERVAL_SECONDS)
@@ -371,7 +368,7 @@ func build_full_stats_text() -> String:
 	var interval := get_actual_attack_interval_seconds()
 	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]穿透[/color] [color=#FFFFFF]%d[/color]" % [maxi(1, int(get_stat("projectile_count"))), int(get_stat("pierce_count"))])
+	lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]" % maxi(1, int(get_stat("projectile_count"))))
 	lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	if has_attachment_slot():

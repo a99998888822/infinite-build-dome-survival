@@ -79,10 +79,6 @@
         {
           "stat": "attack_speed",
           "value": 20
-        },
-        {
-          "stat": "pierce_count",
-          "value": 1
         }
       ],
       "7": [
@@ -93,10 +89,6 @@
         {
           "stat": "attack_speed",
           "value": 30
-        },
-        {
-          "stat": "pierce_count",
-          "value": 2
         }
       ]
     }

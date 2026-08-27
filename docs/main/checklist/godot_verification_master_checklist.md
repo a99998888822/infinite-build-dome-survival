@@ -467,7 +467,7 @@ res://
 2. 移动：`move_speed`
 3. 攻击：`melee_damage`、`ranged_damage`、`summon_damage`、`damage_percent`、`attack_speed`
 4. 暴击：`crit_chance`、`crit_damage`
-5. 投射物：`projectile_count`、`pierce_count`
+5. 投射物：`projectile_count`
 6. 范围与控制：`area_size`、`control_power`
 7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`、`finance`、`interest_rate`、`shop_price_percent`
 8. 构筑：`load_capacity`
@@ -733,7 +733,7 @@ res://
 3. 敌人受击音效绑定到具体武器。
 4. 近战和范围武器每次攻击最多播放一次命中音效。
 5. 远程武器每个投射物最多播放一次命中音效。
-6. 穿透投射物后续命中不重复播放。
+6. 同一投射物后续命中不重复播放。
 7. 缺少音频素材时静默降级。
 
 ## 3. 配置任务

@@ -152,9 +152,11 @@ position
   -> ParticleWorld
 ```
 
-运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`pierce_count` 只通过实际命中次数触发命中特效，`area_size` 控制效果范围与粒子散布，`control_power` 由具体效果绑定控制强度或连锁参数。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
+运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`area_size` 控制效果范围与粒子散布，`control_power` 由具体效果绑定控制强度或连锁参数；穿透与分裂属于投射物附魔行为，不属于角色属性。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
 
 当前编码阶段先实现 `EffectContext`、`EffectModifier`、`EffectParameterResolver`、`ParticleEmitterRuntime` 和 `ParticleMotionBehavior`，并将木箭拖尾迁移到动态发射器；火焰、爆炸和闪电在此基础上扩展。
+
+MVP 附魔卷轴：`scroll_split` 在命中敌人后生成有限数量子投射物，子投射物只分裂一次并优先寻找未命中的敌人；`scroll_pierce` 通过 `extra_target_hits` 提供投射物级后续命中次数。两者均由物品实例参数驱动，不再依赖角色全局投射物属性。
 
 ## 5. 与现有武器系统的接口
 
@@ -214,6 +216,8 @@ MVP 暂不实现：
 
 - Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the `lightning` effect.
 - Fire uses invisible scattered seed logic and `FirePatch` collision; its visible seeds, embers and ground fire are all emitted particles. The pool distributes flame clusters across an elliptical footprint instead of drawing a pool shape, lasts about two seconds, and burning damage is an independent enemy status.
+- `FirePatch` is logic-only: it has no `_draw()` flame geometry. Each pool uses four low-rate child emitters for base flame, tongues, hot core and embers, all rendered by the shared `ParticleWorld`.
+- Fire particles use a shared active-particle budget (`MAX_FIRE_PARTICLES`) and pool-level light refresh, avoiding one light source per particle and preventing stacked fire pools from flooding the frame.
 - Explosion uses particle flash, outward wave particles and debris; every visible layer receives the resolved effect parameters. Explosion damage falloff is configurable and defaults to 0.0 for fixed damage inside the radius, while terrain destruction returns material types so soil, wood and stone can emit different debris particles.
 - Lightning is triggered only after a projectile hits an enemy: the first target is the impact source, and a lethal projectile hit still allows the chain to search for the next live enemy.
 - Lightning paths use dense, short-lived particle dashes: a white core strand plus a pale-blue companion strand, with no static line drawing.

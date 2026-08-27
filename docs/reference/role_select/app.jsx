@@ -406,7 +406,7 @@ const characters = [
     title: 'MARCUS · THE VETERAN',
     desc: '前穹顶守卫军中士，在第三次深渊潮汐中失去了整个小队。他握紧生锈的步枪，誓要查清穹顶之下的真相。',
     stats: { hp: 120, dmg: 15, atkSpd: 50, moveSpd: 50, luck: 25 },
-    weapon: { name: '军用步枪', desc: '远程，中等射速，穿透1个敌人', icon: 'rifle' },
+    weapon: { name: '军用步枪', desc: '远程，中等射速，稳定射击', icon: 'rifle' },
     traits: [
       { name: '战场直觉', desc: '血量低于30%时伤害+30%', icon: 'instinct' },
       { name: '弹药专家', desc: '远程武器弹药+2', icon: 'ammo' },

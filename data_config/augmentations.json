@@ -145,13 +145,13 @@
       {
         "channel": "chain_interval",
         "min": 0.04,
-        "max": 0.10,
+        "max": 0.1,
         "step": 0.01
       },
       {
         "channel": "stun_duration",
         "min": 0.45,
-        "max": 1.10,
+        "max": 1.1,
         "step": 0.05
       }
     ]
@@ -294,6 +294,93 @@
           1.0,
           1.0
         ]
+      }
+    ]
+  },
+  {
+    "id": "scroll_split",
+    "display_name": "分裂附魔卷轴",
+    "description": "命中敌人后分裂为多支子箭，子箭优先飞向尚未命中的敌人。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": [
+      "split"
+    ],
+    "effect_parameters": {
+      "child_count": 3,
+      "spread_angle": 36
+    },
+    "modifiers": [
+      {
+        "effect_id": "split",
+        "channel": "child_count",
+        "operation": "multiply",
+        "value": 1.1
+      },
+      {
+        "effect_id": "split",
+        "channel": "visual.color",
+        "operation": "tint",
+        "value": [
+          1.0,
+          0.76,
+          0.94,
+          1.0
+        ]
+      }
+    ],
+    "instance_parameter_ranges": [
+      {
+        "channel": "child_count",
+        "min": 2,
+        "max": 4,
+        "step": 1
+      },
+      {
+        "channel": "spread_angle",
+        "min": 24,
+        "max": 48,
+        "step": 6
+      }
+    ]
+  },
+  {
+    "id": "scroll_pierce",
+    "display_name": "穿透附魔卷轴",
+    "description": "投射物命中目标后仍可继续飞行，可额外命中多个敌人。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": [
+      "pierce"
+    ],
+    "effect_parameters": {
+      "extra_target_hits": 2
+    },
+    "modifiers": [
+      {
+        "effect_id": "pierce",
+        "channel": "glow_multiplier",
+        "operation": "multiply",
+        "value": 1.15
+      },
+      {
+        "effect_id": "pierce",
+        "channel": "visual.color",
+        "operation": "tint",
+        "value": [
+          0.74,
+          0.94,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "instance_parameter_ranges": [
+      {
+        "channel": "extra_target_hits",
+        "min": 1,
+        "max": 3,
+        "step": 1
       }
     ]
   }

@@ -8,7 +8,6 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 	context.effect_id = effect_id
 	context.parameters = base_parameters.duplicate(true)
 	context.parameters["projectile_count"] = _get_weapon_stat(weapon, "projectile_count", 1.0)
-	context.parameters["pierce_count"] = _get_weapon_stat(weapon, "pierce_count", 0.0)
 	context.parameters["area_size_multiplier"] = 1.0 + _get_weapon_stat(weapon, "area_size", 0.0) / 100.0
 	context.parameters["control_power"] = _get_weapon_stat(weapon, "control_power", 0.0)
 	context.parameters["speed_multiplier"] = 1.0

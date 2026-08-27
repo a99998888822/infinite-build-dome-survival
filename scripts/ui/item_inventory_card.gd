@@ -34,11 +34,15 @@ const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
 	"explosion": "爆炸",
 	"lightning": "闪电",
+	"split": "分裂",
+	"pierce": "穿透",
 }
 const EFFECT_COLOR_CODES: Dictionary = {
 	"fire": "#FFAA61",
 	"explosion": "#FFD89E",
 	"lightning": "#BFE8FF",
+	"split": "#FF9ED7",
+	"pierce": "#9EDBFF",
 }
 const MODIFIER_LABELS: Dictionary = {
 	"damage": "伤害",
@@ -51,6 +55,9 @@ const MODIFIER_LABELS: Dictionary = {
 	"chain_count": "连续传递",
 	"jump_radius": "连锁范围",
 	"detonate_burning": "燃烧引爆",
+	"child_count": "分裂数量",
+	"spread_angle": "分裂角度",
+	"extra_target_hits": "额外命中",
 }
 
 signal item_tooltip_requested(anchor_card: ItemInventoryCard, bbcode_text: String)
@@ -110,6 +117,12 @@ func _append_rolled_parameter_lines(lines: Array[String]) -> void:
 		lines.append("[color=#F5D76E]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color]" % float(rolled_parameters["chain_interval"]))
 	if rolled_parameters.has("stun_duration"):
 		lines.append("[color=#F5D76E]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color]" % float(rolled_parameters["stun_duration"]))
+	if rolled_parameters.has("child_count"):
+		lines.append("[color=#F5D76E]分裂子箭：[/color][color=#7FD88F]%d 支[/color]" % int(rolled_parameters["child_count"]))
+	if rolled_parameters.has("spread_angle"):
+		lines.append("[color=#F5D76E]分裂角度：[/color][color=#7FD88F]%d°[/color]" % int(rolled_parameters["spread_angle"]))
+	if rolled_parameters.has("extra_target_hits"):
+		lines.append("[color=#F5D76E]额外命中：[/color][color=#7FD88F]%d 个目标[/color]" % int(rolled_parameters["extra_target_hits"]))
 
 
 func _build_tooltip() -> String:
@@ -177,7 +190,7 @@ func _format_modifier(modifier: Dictionary) -> String:
 		var percent := (number - 1.0) * 100.0
 		return _format_colored_value(label, _format_signed_number(percent) + "%", percent)
 	if operation == "add_flat":
-		var suffix := " 秒" if channel == "burn_duration" else " 次" if channel == "chain_count" else ""
+		var suffix := " 秒" if channel == "burn_duration" else " 次" if channel in ["chain_count", "child_count", "extra_target_hits"] else "°" if channel == "spread_angle" else ""
 		return _format_colored_value(label, _format_signed_number(number) + suffix, number)
 	if operation == "override":
 		return "[color=#F5D76E]%s：[/color][color=#7FD88F]%.2f[/color]" % [label, number]
@@ -204,5 +217,9 @@ func _get_visual_color_name(effect_id: String) -> String:
 			return "暖金色"
 		"lightning":
 			return "冰蓝色"
+		"split":
+			return "粉白色"
+		"pierce":
+			return "浅蓝色"
 		_:
 			return "自定义色彩"

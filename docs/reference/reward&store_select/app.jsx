@@ -294,7 +294,7 @@ function IconBow({ size = 36 }) {
 // 武器数据
 // ============================================
 const weapons = [
-  { id: 'rifle', name: '军用步枪', icon: IconRifle, equipped: true, damage: 20, fireRate: '中', special: '穿透+1' },
+  { id: 'rifle', name: '军用步枪', icon: IconRifle, equipped: true, damage: 20, fireRate: '中', special: '精准射击' },
   { id: 'dagger', name: '锈蚀匕首', icon: IconDagger, equipped: false, damage: 15, fireRate: '快', special: '流血效果' },
   { id: 'tome', name: '符文法典', icon: IconTome, equipped: false, damage: 25, fireRate: '慢', special: '魔法伤害' },
   { id: 'tentacle', name: '异化触手', icon: IconTentacle, equipped: false, damage: 18, fireRate: '中', special: '范围攻击' },
@@ -313,7 +313,6 @@ const initialStats = [
   { id: 'meleeCritDmg', name: '近战爆伤', value: 20, suffix: '%', color: 'red' },
   { id: 'rangedDmg', name: '远程伤害', value: 12, suffix: '', color: 'green' },
   { id: 'projCount', name: '投射物数量', value: 1, suffix: '', color: 'gold' },
-  { id: 'pierce', name: '穿透次数', value: 2, suffix: '', color: 'gold' },
   { id: 'rangedRange', name: '远程范围', value: 15, suffix: '%', color: 'teal' },
   { id: 'kinDmg', name: '眷族伤害', value: 8, suffix: '', color: 'purple' },
   { id: 'maxHp', name: '最大生命', value: 50, suffix: '', color: 'red' },
@@ -349,10 +348,10 @@ const cardTemplates = [
     typeLabel: '武器升级',
     name: '军用步枪 · 强化',
     icon: IconRifleUpgrade,
-    desc: '伤害+8，攻速+15%，弹匣容量+5，穿透+1',
+    desc: '伤害+8，攻速+15%，弹匣容量+5',
     priceReward: '选择',
     priceShop: 300,
-    statMap: { rangedDmg: 8, meleeSpeed: 15, pierce: 1 },
+    statMap: { rangedDmg: 8, meleeSpeed: 15 },
   },
   {
     id: 'old-god-eye',

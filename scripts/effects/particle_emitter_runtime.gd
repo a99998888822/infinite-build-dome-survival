@@ -63,6 +63,10 @@ func set_color_override(color: Color) -> void:
 		_options["color_override"] = color
 
 
+func set_spawn_extent_multiplier(value: float) -> void:
+	_options["spawn_extent_multiplier"] = maxf(value, 0.0)
+
+
 func stop() -> void:
 	_active = false
 
@@ -92,7 +96,7 @@ func _emit_particle() -> void:
 	if _world == null:
 		return
 	var color_override := Color.TRANSPARENT
-	if _context != null and _context.has_method("get_resolved_color"):
+	if bool(_options.get("use_context_color", true)) and _context != null and _context.has_method("get_resolved_color"):
 		color_override = _context.get_resolved_color(Color.TRANSPARENT)
 	if color_override.a <= 0.0:
 		color_override = _options.get("color_override", Color.TRANSPARENT)
@@ -113,6 +117,8 @@ func _emit_particle() -> void:
 			"drag_multiplier": _get_parameter("drag_multiplier", 1.0),
 			"alpha_multiplier": _get_parameter("alpha_multiplier", 1.0),
 			"glow_multiplier": _get_parameter("glow_multiplier", 1.0),
+			"spawn_extent_multiplier": float(_options.get("spawn_extent_multiplier", 1.0)),
+			"color_tint": _options.get("color_tint", Color.WHITE),
 		},
 	})
 	_world.call("emit_event", event)

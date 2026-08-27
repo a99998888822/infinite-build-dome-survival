@@ -130,12 +130,14 @@ combat_root.tscn
 2. 从 `WeaponAnchor` 或玩家位置发射投射物。
 3. 伤害主属性读取 `ranged_damage`。
 4. 投射物数量受 `projectile_count` 影响。
-5. 穿透次数受 `pierce_count` 影响。
+5. 穿透能力只由穿透附魔卷轴提供。
 6. 投射物速度读取武器配置 `projectile_speed`。
 7. 投射物基础命中半径读取武器配置 `hit_radius`，最终攻击范围只受 `area_size` 加成。
 8. 多投射物采用散射，散射总角度读取武器配置 `spread_angle`。
-9. 投射物不配置生命周期；命中敌人且穿透耗尽、或碰到战斗边界时消失。
-10. `pierce_count = 1` 表示额外穿透 1 个敌人，即总共可命中 2 个敌人。
+9. 投射物不配置生命周期；默认命中敌人后消失，装填穿透附魔后可继续命中目标；碰到战斗边界时消失。
+10. 穿透卷轴通过 `extra_target_hits` 配置额外命中目标数。
+
+分裂卷轴在首次命中敌人后生成 `child_count` 支子投射物，使用 `spread_angle` 控制散射角度；每支子投射物不再继续分裂，并优先寻找本次分裂批次尚未命中的敌人。
 
 
 ### 召唤武器
@@ -289,19 +291,18 @@ combat_root.tscn
 
 ### `Projectile`
 
-职责：承载远程攻击的移动、命中与穿透。
+职责：承载远程攻击的移动、命中与附魔行为。
 
 关键字段：
 
 1. `damage_event: DamageEvent`
 2. `direction: Vector2`
-3. `remaining_pierce: int`
-4. `source_weapon_id: String`
+3. `source_weapon_id: String`
 
 MVP 默认值：
 
 1. 投射物速度：读取武器配置 `projectile_speed`。
-2. 投射物最大存在时间：不配置；命中后穿透耗尽或碰到战斗边界时消失。
+2. 投射物最大存在时间：不配置；默认命中一个目标后消失，只有装填穿透附魔后才允许继续命中目标。
 3. 基础命中半径：读取武器配置 `hit_radius`；最终命中半径只受 `area_size` 加成。
 4. 多投射物散射：读取武器配置 `spread_angle`。
 
@@ -459,8 +460,8 @@ WeaponEffectRegistry
 3. 近战武器和范围武器都以玩家当前位置为中心计算范围。
 4. 近战、范围、远程武器的基础命中/影响半径都写入 `weapons.json` 的 `hit_radius`，所有攻击范围加成只使用 `area_size`。
 5. 远程投射物速度写入 `weapons.json` 的 `projectile_speed`。
-6. 投射物生命周期不配置，命中后穿透耗尽或碰到边界时消失。
-7. `pierce_count = 1` 表示额外穿透 1 个敌人，总共可命中 2 个敌人。
+6. 投射物生命周期不配置；默认命中后消失，穿透卷轴可延长其目标命中次数，碰到边界时消失。
+7. 投射物默认只命中一个目标；穿透卷轴通过 `extra_target_hits` 增加后续命中次数。
 8. 多投射物采用散射，散射总角度写入 `weapons.json` 的 `spread_angle`。
 9. 暴击随机使用 Godot 普通全局随机。
 10. 混伤武器拆成近战段和远程段两个伤害数字。

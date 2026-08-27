@@ -126,7 +126,7 @@ func _roll_instance_parameters(base_data: Dictionary, source_id: String) -> Dict
 		if step > 0.0:
 			value = minimum + roundf((value - minimum) / step) * step
 		value = clampf(value, minimum, maximum)
-		if channel == "chain_count":
+		if channel in ["chain_count", "child_count", "extra_target_hits"]:
 			result[channel] = int(roundf(value))
 		else:
 			result[channel] = value

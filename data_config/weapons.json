@@ -23,8 +23,7 @@
       "attack_speed": 0,
       "crit_chance": 5,
       "crit_damage": 150,
-      "projectile_count": 1,
-      "pierce_count": 0
+      "projectile_count": 1
     },
     "level_upgrades": {
       "2": {

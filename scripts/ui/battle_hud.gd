@@ -89,7 +89,6 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"crit_chance",
 	"crit_damage",
 	"projectile_count",
-	"pierce_count",
 	"area_size",
 	"control_power",
 	"pickup_radius",

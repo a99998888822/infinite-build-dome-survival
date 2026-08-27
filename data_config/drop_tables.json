@@ -2,7 +2,7 @@
   {
     "id": "drop_basic_enemy",
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，不直接掉落遗物，2%掉落血包、火焰附魔卷轴或爆炸附魔卷轴，1%掉落太阳能量晶石。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "小怪基准掉落：1经验，2%血包，2%火焰附魔卷轴，2%爆炸附魔卷轴，1%太阳能量晶石，1%分裂附魔卷轴，1%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -38,13 +38,25 @@
         "item_id": "gem_sun_core",
         "amount": 1,
         "chance_percent": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_split",
+        "amount": 1,
+        "chance_percent": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_pierce",
+        "amount": 1,
+        "chance_percent": 1
       }
     ]
   },
   {
     "id": "drop_elite_enemy",
     "display_name": "精英怪掉落表",
-    "description": "精英怪基准掉落：2经验，5%掉落遗物，20%掉落血包。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "精英怪基准掉落：2经验，5%遗物，20%血包，5%爆炸附魔卷轴，3%闪电附魔卷轴，2%太阳能量晶石，4%分裂附魔卷轴，4%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -84,13 +96,25 @@
         "item_id": "gem_sun_core",
         "amount": 1,
         "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_split",
+        "amount": 1,
+        "chance_percent": 4
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_pierce",
+        "amount": 1,
+        "chance_percent": 4
       }
     ]
   },
   {
     "id": "drop_boss_enemy",
     "display_name": "BOSS掉落表",
-    "description": "BOSS基准掉落：10经验，100%掉落且只有一个遗物。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "BOSS基准掉落：10经验，100%遗物，25%风暴能量晶石，10%火焰附魔卷轴，20%爆炸附魔卷轴，15%闪电附魔卷轴，15%术士卷轴，12%分裂附魔卷轴，12%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -137,6 +161,18 @@
         "item_id": "wizard_scroll_chain_mastery",
         "amount": 1,
         "chance_percent": 15
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_split",
+        "amount": 1,
+        "chance_percent": 12
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_pierce",
+        "amount": 1,
+        "chance_percent": 12
       }
     ]
   }

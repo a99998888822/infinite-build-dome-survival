@@ -144,7 +144,7 @@ func _refresh_item_list() -> void:
 		return
 	var items: Array[Dictionary] = []
 	if is_instance_valid(_player) and _player.get_item_inventory() != null:
-		items = _player.get_item_inventory().get_items()
+		items = _player.get_item_inventory().get_available_items()
 	for item in items:
 		var card := preload("res://scripts/ui/item_inventory_card.gd").new() as ItemInventoryCard
 		if card == null:
