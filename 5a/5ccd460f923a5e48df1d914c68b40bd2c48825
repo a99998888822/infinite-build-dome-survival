@@ -1,0 +1,96 @@
+scripts/weapons/weapon_instance.gd
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 371
+scripts/ui/item_inventory_card.gd
+  s_a3c9a2e4c843c4::t_cf05660d8436e3 37-38,44-45,58-60,120-125,193,220-223
+scripts/ui/weapon_slot_button.gd
+  s_a3c9a2e4c843c4::t_02efca11bf7c65 48
+docs/reference/role_select/app.jsx
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 409
+scripts/weapons/projectile_instance.gd
+  s_a3c9a2e4c843c4::t_3934cf7cb3b90d 140
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 21-24,38-41,52-55,124,129-130,134-139,141-150,152-154,159,163-171,182-184,186-187,189-204
+  s_a3c9a2e4c843c4::t_ab01cc882f1b7b 56,122-123,151,155-158,160-162,172-181,185,188,205-206
+docs/main/4-weapon_loadout_design.md
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 294,300,305,463-464
+  s_a3c9a2e4c843c4::t_e8f5fcfbbd0000 133,137-140
+docs/reference/reward&store_select/app.jsx
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 297,351,354
+scripts/ui/weapon_strip.gd
+  s_a3c9a2e4c843c4::t_c05d4dec6b01b0 86-87
+  s_a3c9a2e4c843c4::t_e658efc82561e2 83-85
+  s_a3c9a2e4c843c4::t_9ab90d8c222a40 88-90
+docs/main/1-base_data_and_modifiers_design.md
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 541
+docs/main/checklist/godot_verification_master_checklist.md
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 470,736
+scripts/effects/particle_emitter_runtime.gd
+  s_a3c9a2e4c843c4::t_b8b09ff753f943 99
+  s_a3c9a2e4c843c4::t_fde8164f6decaa 121
+  s_a3c9a2e4c843c4::t_384babf24e9bbb 66-69,120
+docs/main/16-particle_system_design.md
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 155
+  s_a3c9a2e4c843c4::t_2e4c74a14fbcc6 219-220
+  s_469e87afd9f399::t_a462177b7f6c4d 159-160
+scripts/items/item_inventory.gd
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 129
+data_config/drop_tables.json
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 41-52,59,99-110,117,164-175
+  s_a3c9a2e4c843c4::t_102532dd3905de 5
+scripts/effects/particle_world.gd
+  s_a3c9a2e4c843c4::t_82be440a6d5eef 57,64,123,125-143,145-182
+  s_a3c9a2e4c843c4::t_acc0a40b6c0417 598,636,686,691-697
+  s_a3c9a2e4c843c4::t_c295125a3385cd 589-597,599-600,617,638
+  s_a3c9a2e4c843c4::t_c7495f9e436508 124,144,194-195
+  s_a3c9a2e4c843c4::t_a11910f9806677 264,284,479
+  s_a3c9a2e4c843c4::t_ef470a81dadde4 100,119
+  s_a3c9a2e4c843c4::t_1ef31db235e52f 9,493,585-588,624-630,641,654,656-657,717-718
+  s_a3c9a2e4c843c4::t_5b840d1cf6377d 54-56
+  s_a3c9a2e4c843c4::t_d9990edff7e0ff 58-63
+  s_a3c9a2e4c843c4::t_2a558cf8c5cbca 46-53
+scripts/weapons/weapon_loadout.gd
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 233-252,269,273-276
+  s_a3c9a2e4c843c4::t_b89b74fcaeeaea 12,70-73,232
+  s_a3c9a2e4c843c4::t_51bef15482d64b 231
+data_config/augmentations.json
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 148,154,299-315,317-385
+  s_a3c9a2e4c843c4::t_4beda6d17b163d 316
+data_config/weapons.json
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 26
+scripts/effects/fire_patch.gd
+  s_a3c9a2e4c843c4::t_33bcbc065117fa 167-168,186-188,218-219
+  s_a3c9a2e4c843c4::t_339ff58e0b14c0 21,70,79,133,145-165,169-180,199
+  s_a3c9a2e4c843c4::t_b8b09ff753f943 166
+docs/main/10-audio_atmosphere_design.md
+  s_a3c9a2e4c843c4::t_f96ec26118c76f 94,114
+  s_a3c9a2e4c843c4::t_91aa5934a07d3f 146
+scenes/ui/common/weapon_strip.tscn
+  s_a3c9a2e4c843c4::t_450f8bec4cb3b9 61,77
+scenes/ui/esc/esc_overlay.tscn
+  s_a3c9a2e4c843c4::t_7f8a665a05405f 117
+scripts/ui/esc_overlay.gd
+  s_a3c9a2e4c843c4::t_abfef2f30cbc5c 147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "5a5ccd460f923a5e48df1d914c68b40bd2c48825",
+  "prompts": {},
+  "sessions": {
+    "s_469e87afd9f399": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03900-ea5f-7a33-8dc9-142337bb33de",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a3c9a2e4c843c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03333-78e4-7bf3-b544-fe1b0be691c0",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
