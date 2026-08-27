@@ -2,7 +2,7 @@
   {
     "id": "drop_basic_enemy",
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，2%血包，2%火焰附魔卷轴，2%爆炸附魔卷轴，1%太阳能量晶石，1%分裂附魔卷轴，1%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "小怪基准掉落：1经验，2%血包，2%火焰附魔卷轴，2%爆炸附魔卷轴，1%闪电附魔卷轴，1%太阳能量晶石，1%分裂附魔卷轴，1%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -32,6 +32,12 @@
         "item_id": "scroll_explosion",
         "amount": 1,
         "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lightning",
+        "amount": 1,
+        "chance_percent": 1
       },
       {
         "type": "augmentation",

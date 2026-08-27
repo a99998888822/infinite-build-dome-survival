@@ -2,17 +2,24 @@ extends Control
 class_name WeaponStrip
 
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
+const ATTACHMENT_ROW_HEIGHT: float = 24.0
 
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
 var _attachment_editing_enabled: bool = false
 var _hovered_weapon_button: WeaponSlotButton = null
-var _tooltip_attachment_button: Button = null
+var _tooltip_attachment_rows: Array[Dictionary] = []
+var _tooltip_weapon_id: String = ""
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
 @onready var weapon_tooltip: PanelContainer = get_node_or_null("WeaponTooltip")
 @onready var weapon_tooltip_label: RichTextLabel = get_node_or_null("WeaponTooltip/TooltipMargin/TooltipLabel")
+
+
+func _ready() -> void:
+	if weapon_tooltip != null:
+		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false) -> void:
@@ -74,8 +81,24 @@ func _on_item_drop_requested(weapon_id: String, item_instance_id: String) -> voi
 		_refresh_weapon_strip()
 
 
-func _on_weapon_attachment_changed(_weapon_id: String, _item_instance_id: String) -> void:
+func _on_weapon_attachment_changed(weapon_id: String, _item_instance_id: String) -> void:
+	var should_restore_tooltip := weapon_tooltip != null and weapon_tooltip.visible and _tooltip_weapon_id == weapon_id
 	_refresh_weapon_strip()
+	if should_restore_tooltip:
+		call_deferred("_restore_weapon_tooltip", weapon_id)
+
+
+func _restore_weapon_tooltip(weapon_id: String) -> void:
+	if _loadout == null:
+		return
+	var weapon := _loadout.get_weapon_instance(weapon_id)
+	if weapon == null:
+		return
+	for button in _weapon_buttons:
+		var weapon_button := button as WeaponSlotButton
+		if weapon_button != null and weapon_button.weapon != null and weapon_button.weapon.weapon_id == weapon_id:
+			_show_weapon_tooltip(weapon, weapon_button)
+			return
 
 
 func _process(_delta: float) -> void:
@@ -93,63 +116,86 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button) -> void
 		return
 	_hide_weapon_tooltip()
 	_hovered_weapon_button = anchor_button as WeaponSlotButton
-	weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_PASS
-	weapon_tooltip_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	_tooltip_weapon_id = weapon.weapon_id
+	weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weapon_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var attached_items := weapon.get_attached_item_instances()
+	var can_detach_attachment := _attachment_editing_enabled and not attached_items.is_empty()
 	weapon_tooltip_label.text = weapon.build_full_stats_text()
 	weapon_tooltip.visible = true
 	weapon_tooltip.reset_size()
-	if _attachment_editing_enabled and not weapon.get_attached_item_instance().is_empty():
-		_create_tooltip_attachment_button(weapon.weapon_id)
+	if can_detach_attachment:
+		for slot_index in range(attached_items.size()):
+			var item_instance_id := str(attached_items[slot_index].get("item_instance_id", ""))
+			if not item_instance_id.is_empty():
+				_tooltip_attachment_rows.append({
+					"item_instance_id": item_instance_id,
+					"slot_index": slot_index,
+					"slot_count": weapon.get_attachment_slot_count(),
+				})
+		_update_tooltip_attachment_rows()
+		call_deferred("_update_tooltip_attachment_rows")
 	var viewport_rect := get_viewport_rect()
 	var target := Vector2.ZERO
 	if anchor_button != null:
-		target = anchor_button.global_position + Vector2(0, anchor_button.size.y + 6)
+		target = anchor_button.global_position + Vector2(0, anchor_button.size.y - 2)
 	if target.x + weapon_tooltip.size.x > viewport_rect.size.x:
 		target.x = maxf(viewport_rect.size.x - weapon_tooltip.size.x - 8, 0)
 	if target.y + weapon_tooltip.size.y > viewport_rect.size.y and anchor_button != null:
-		target.y = maxf(anchor_button.global_position.y - weapon_tooltip.size.y - 6, 0)
+		target.y = maxf(anchor_button.global_position.y - weapon_tooltip.size.y + 2, 0)
 	weapon_tooltip.global_position = target
 
 
-func _create_tooltip_attachment_button(weapon_id: String) -> void:
-	_tooltip_attachment_button = Button.new()
-	_tooltip_attachment_button.mouse_filter = Control.MOUSE_FILTER_STOP
-	_tooltip_attachment_button.focus_mode = Control.FOCUS_NONE
-	_tooltip_attachment_button.tooltip_text = "右键卸下此附魔"
-	_tooltip_attachment_button.gui_input.connect(_on_tooltip_attachment_gui_input.bind(weapon_id, _tooltip_attachment_button))
-	var empty_style := StyleBoxEmpty.new()
-	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
-		_tooltip_attachment_button.add_theme_stylebox_override(state, empty_style)
-	weapon_tooltip_label.add_child(_tooltip_attachment_button)
-	_tooltip_attachment_button.position = Vector2(0.0, maxf(weapon_tooltip_label.size.y - 30.0, 0.0))
-	_tooltip_attachment_button.size = Vector2(maxf(weapon_tooltip_label.size.x, 280.0), 30.0)
-	call_deferred("_position_tooltip_attachment_button")
-
-
-func _position_tooltip_attachment_button() -> void:
-	if _tooltip_attachment_button == null or not is_instance_valid(_tooltip_attachment_button):
-		return
+func _update_tooltip_attachment_rows() -> void:
 	if weapon_tooltip_label == null:
 		return
-	_tooltip_attachment_button.position = Vector2(0.0, maxf(weapon_tooltip_label.size.y - 30.0, 0.0))
-	_tooltip_attachment_button.size = Vector2(maxf(weapon_tooltip_label.size.x, 280.0), 30.0)
+	for attachment_row in _tooltip_attachment_rows:
+		var slot_index := int(attachment_row.get("slot_index", 0))
+		var slot_count := int(attachment_row.get("slot_count", 1))
+		var content_height := minf(weapon_tooltip_label.size.y, float(weapon_tooltip_label.get_content_height()))
+		attachment_row["rect"] = Rect2(
+			Vector2(0.0, maxf(content_height - ATTACHMENT_ROW_HEIGHT * float(slot_count - slot_index), 0.0)),
+			Vector2(maxf(weapon_tooltip_label.size.x, 1.0), ATTACHMENT_ROW_HEIGHT)
+		)
 
 
-func _on_tooltip_attachment_gui_input(event: InputEvent, weapon_id: String, _button: Button) -> void:
-	if not _attachment_editing_enabled or _loadout == null:
+func _input(event: InputEvent) -> void:
+	if weapon_tooltip == null or not weapon_tooltip.visible:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		var detached := _loadout.detach_item_from_weapon(weapon_id)
-		if detached.is_empty():
+	if not (event is InputEventMouseButton):
+		return
+	var mouse_event := event as InputEventMouseButton
+	if mouse_event.button_index != MOUSE_BUTTON_RIGHT or not mouse_event.pressed:
+		return
+	if not weapon_tooltip.get_global_rect().has_point(mouse_event.position):
+		return
+	print("[WeaponStrip] tooltip right-click: editable=%s rows=%d" % [_attachment_editing_enabled, _tooltip_attachment_rows.size()])
+	if not _attachment_editing_enabled or weapon_tooltip_label == null:
+		return
+	var local_mouse_position := mouse_event.position - weapon_tooltip_label.global_position
+	for attachment_row in _tooltip_attachment_rows:
+		var row_rect: Rect2 = attachment_row.get("rect", Rect2())
+		if row_rect.has_point(local_mouse_position):
+			_detach_tooltip_attachment(_tooltip_weapon_id, str(attachment_row.get("item_instance_id", "")))
 			return
-		_hide_weapon_tooltip()
-		get_viewport().set_input_as_handled()
+
+
+func _detach_tooltip_attachment(weapon_id: String, item_instance_id: String) -> void:
+	print("[WeaponStrip] detach request: weapon=%s item=%s editable=%s has_loadout=%s" % [weapon_id, item_instance_id, _attachment_editing_enabled, _loadout != null])
+	if not _attachment_editing_enabled or _loadout == null:
+		print("[WeaponStrip] detach rejected before loadout call.")
+		return
+	var detached := _loadout.detach_item_from_weapon(weapon_id, item_instance_id)
+	if detached.is_empty():
+		print("[WeaponStrip] detach failed: loadout returned no item.")
+		return
+	print("[WeaponStrip] detach succeeded: item=%s" % str(detached.get("item_instance_id", "")))
+	get_viewport().set_input_as_handled()
 
 
 func _hide_weapon_tooltip() -> void:
-	if _tooltip_attachment_button != null and is_instance_valid(_tooltip_attachment_button):
-		_tooltip_attachment_button.free()
-	_tooltip_attachment_button = null
+	_tooltip_attachment_rows.clear()
+	_tooltip_weapon_id = ""
 	if weapon_tooltip != null:
 		weapon_tooltip.visible = false
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE

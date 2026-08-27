@@ -32,17 +32,6 @@
         "channel": "particle_rate",
         "operation": "multiply",
         "value": 1.2
-      },
-      {
-        "effect_id": "fire",
-        "channel": "visual.color",
-        "operation": "tint",
-        "value": [
-          1.0,
-          0.82,
-          0.55,
-          1.0
-        ]
       }
     ]
   },
@@ -82,6 +71,18 @@
         "channel": "count_multiplier",
         "operation": "multiply",
         "value": 1.15
+      },
+      {
+        "effect_id": "explosion",
+        "channel": "speed_multiplier",
+        "operation": "multiply",
+        "value": 0.5
+      },
+      {
+        "effect_id": "explosion",
+        "channel": "lifetime_multiplier",
+        "operation": "multiply",
+        "value": 2.0
       },
       {
         "effect_id": "explosion",

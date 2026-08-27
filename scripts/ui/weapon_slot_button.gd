@@ -30,11 +30,8 @@ func _refresh_text() -> void:
 	if slot_count <= 0:
 		text = weapon_name
 		return
-	var attached := weapon.get_attached_item_instance()
-	var attachment_name := "空槽"
-	if not attached.is_empty():
-		attachment_name = str(attached.get("display_name", attached.get("base_item_id", "已装填")))
-	text = "%s\n[%s]" % [weapon_name, attachment_name]
+	var attached_count := weapon.get_attached_item_instances().size()
+	text = "%s\n[附魔 %d/%d]" % [weapon_name, attached_count, slot_count]
 	tooltip_text = weapon.build_full_stats_text()
 
 
@@ -45,7 +42,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return false
 	if str(data.get("type", "")) != "augmentation_item":
 		return false
-	return weapon.has_attachment_slot() and weapon.get_attached_item_instance().is_empty()
+	return weapon.has_available_attachment_slot()
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:

@@ -146,9 +146,10 @@ func _create_particle_emitters() -> void:
 	if not _flame_emitters.is_empty():
 		return
 	var extent_multiplier := _get_particle_extent_multiplier()
-	_flame_emitters.append(_create_emitter("fire_pool_base", 6.0, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_tongue", 4.0, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_core", 4.5, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_base", 5.5, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_flame", 2.4, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_tongue", 6.0, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_core", 5.0, extent_multiplier))
 	_flame_emitters.append(_create_emitter("fire_pool_ember", 2.0, extent_multiplier))
 	var configured_emitters: Array[Node2D] = []
 	for emitter in _flame_emitters:

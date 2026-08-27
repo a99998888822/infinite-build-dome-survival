@@ -96,10 +96,17 @@ func clear_equipped_weapon(item_instance_id: String) -> bool:
 
 
 func get_equipped_item_for_weapon(weapon_id: String) -> Dictionary:
+	var items := get_equipped_items_for_weapon(weapon_id)
+	return items[0] if not items.is_empty() else {}
+
+
+func get_equipped_items_for_weapon(weapon_id: String) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
 	for item in _items:
 		if str(item.get("equipped_weapon_id", "")) == weapon_id:
-			return item.duplicate(true)
-	return {}
+			result.append(item.duplicate(true))
+	result.sort_custom(Callable(self, "_compare_acquired_order"))
+	return result
 
 
 func get_item_count(include_equipped: bool = true) -> int:

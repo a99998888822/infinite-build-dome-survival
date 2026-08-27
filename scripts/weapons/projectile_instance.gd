@@ -152,7 +152,7 @@ func _spawn_split_projectiles(hit_position: Vector2) -> void:
 	var spread_angle := maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0)
 	var inherited_targets := hit_targets.duplicate()
 	var reserved_targets := inherited_targets.duplicate()
-	var split_color := context.get_tinted_color(Color(1.0, 0.62, 0.9, 1.0))
+	var split_color: Color = context.get_tinted_color(Color(1.0, 0.62, 0.9, 1.0))
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "projectile_split", hit_position, direction, 1.0, split_color, {
 		"count_multiplier": context.get_resolved_parameter("count_multiplier", 1.0),
 		"glow_multiplier": context.get_resolved_parameter("glow_multiplier", 1.0),

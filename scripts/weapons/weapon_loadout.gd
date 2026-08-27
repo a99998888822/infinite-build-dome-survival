@@ -52,9 +52,9 @@ func remove_weapon(weapon_id: String) -> void:
 		if weapon_instances[index].weapon_id != weapon_id:
 			continue
 		var removed_weapon := weapon_instances[index]
-		var attached_item := removed_weapon.get_attached_item_instance()
-		if owner_player != null and owner_player.item_inventory != null and not attached_item.is_empty():
-			owner_player.item_inventory.clear_equipped_weapon(str(attached_item.get("item_instance_id", "")))
+		if owner_player != null and owner_player.item_inventory != null:
+			for attached_item in removed_weapon.get_attached_item_instances():
+				owner_player.item_inventory.clear_equipped_weapon(str(attached_item.get("item_instance_id", "")))
 		weapon_instances.remove_at(index)
 
 
@@ -62,43 +62,47 @@ func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
 	if owner_player == null or owner_player.item_inventory == null:
 		return false
 	var weapon := get_weapon_instance(weapon_id)
-	if weapon == null or not weapon.has_attachment_slot():
+	if weapon == null or not weapon.has_available_attachment_slot():
 		return false
 	var item := owner_player.item_inventory.find_item(item_instance_id)
 	if item.is_empty():
 		return false
 	if not ATTACHABLE_ITEM_CATEGORIES.has(str(item.get("category", ""))):
 		return false
-	if not weapon.get_attached_item_instance().is_empty():
-		return false
 	var equipped_weapon_id := str(item.get("equipped_weapon_id", ""))
+	if equipped_weapon_id == weapon_id:
+		return false
 	var source_weapon: WeaponInstance = null
+	var detached_source_item: Dictionary = {}
 	if not equipped_weapon_id.is_empty() and equipped_weapon_id != weapon_id:
 		source_weapon = get_weapon_instance(equipped_weapon_id)
 		if source_weapon != null:
-			source_weapon.detach_item_instance()
+			detached_source_item = source_weapon.detach_item_instance(item_instance_id)
+			if detached_source_item.is_empty():
+				return false
 			weapon_attachment_changed.emit(equipped_weapon_id, "")
 		owner_player.item_inventory.clear_equipped_weapon(item_instance_id)
-	item["equipped_weapon_id"] = weapon_id
-	var previous_item := weapon.get_attached_item_instance()
 	if not weapon.attach_item_instance(item):
+		if source_weapon != null and not detached_source_item.is_empty():
+			source_weapon.attach_item_instance(detached_source_item)
 		return false
-	if not previous_item.is_empty():
-		owner_player.item_inventory.clear_equipped_weapon(str(previous_item.get("item_instance_id", "")))
 	if not owner_player.item_inventory.set_equipped_weapon(item_instance_id, weapon_id):
-		weapon.detach_item_instance()
+		weapon.detach_item_instance(item_instance_id)
+		if source_weapon != null and not detached_source_item.is_empty():
+			source_weapon.attach_item_instance(detached_source_item)
+			owner_player.item_inventory.set_equipped_weapon(item_instance_id, equipped_weapon_id)
 		return false
 	weapon_attachment_changed.emit(weapon_id, item_instance_id)
 	return true
 
 
-func detach_item_from_weapon(weapon_id: String) -> Dictionary:
+func detach_item_from_weapon(weapon_id: String, item_instance_id: String = "") -> Dictionary:
 	if owner_player == null or owner_player.item_inventory == null:
 		return {}
 	var weapon := get_weapon_instance(weapon_id)
 	if weapon == null:
 		return {}
-	var detached := weapon.detach_item_instance()
+	var detached := weapon.detach_item_instance(item_instance_id)
 	if detached.is_empty():
 		return {}
 	owner_player.item_inventory.clear_equipped_weapon(str(detached.get("item_instance_id", "")))
@@ -185,9 +189,9 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 		_fail(weapon_id, "initialize_failed")
 		return false
 	if owner_player.item_inventory != null:
-		var starting_item := owner_player.item_inventory.get_equipped_item_for_weapon(weapon_id)
-		if not starting_item.is_empty():
-			weapon.attach_item_instance(starting_item)
+		for starting_item in owner_player.item_inventory.get_equipped_items_for_weapon(weapon_id):
+			if not weapon.attach_item_instance(starting_item):
+				owner_player.item_inventory.clear_equipped_weapon(str(starting_item.get("item_instance_id", "")))
 	weapon_instances.append(weapon)
 	weapon_equipped.emit(weapon_id)
 	return true
