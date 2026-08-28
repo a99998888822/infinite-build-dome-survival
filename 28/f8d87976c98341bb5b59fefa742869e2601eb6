@@ -1,0 +1,45 @@
+scripts/effects/particle_world.gd
+  s_a3c9a2e4c843c4::t_8984175b67444d 609,617-618,623,646,648
+  s_a3c9a2e4c843c4::t_24b4a157b04bbf 17,71-72,77,98-99,107,130-131,158-159,167,187-188,196,217,224,249,266,277,322-323,352-353,368-369,384-385,400-401,422-423,450,464,608,610-616,619-622,624-630,638-642,657-660,695-704,746-754
+  s_a3c9a2e4c843c4::t_c195f0cb93e7bc 83-90,115-122,143-150,172-179,201-208,228-235
+docs/main/16-particle_system_design.md
+  s_a3c9a2e4c843c4::t_8984175b67444d 234-236
+scripts/effects/combat_effect_world.gd
+  s_a3c9a2e4c843c4::t_e1c963c9d9a633 19-25
+scripts/weapons/projectile_instance.gd
+  s_af646453b6ef27::t_ad54cd7f6a5b51 137-144,150-154,158
+scripts/effects/effect_parameter_resolver.gd
+  s_a3c9a2e4c843c4::t_318ee0d0b81ac2 6,23-24,43
+scripts/effects/explosion_effect.gd
+  s_a3c9a2e4c843c4::t_38bc243cce94eb 19,22,30,42
+scripts/effects/fire_seed.gd
+  s_a3c9a2e4c843c4::t_695c24854f1c5a 21,31
+scripts/effects/lightning_particle_effect.gd
+  s_a3c9a2e4c843c4::t_f8a077debb58ff 15,24,33,42,70-71
+scripts/weapons/weapon_instance.gd
+  s_a3c9a2e4c843c4::t_bee74f7fd79d16 161-174,283,287-292
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "28f8d87976c98341bb5b59fefa742869e2601eb6",
+  "prompts": {},
+  "sessions": {
+    "s_a3c9a2e4c843c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03333-78e4-7bf3-b544-fe1b0be691c0",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_af646453b6ef27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a04635-a2b2-7c50-80ff-edd0bb42aaba",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
