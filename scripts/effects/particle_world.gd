@@ -14,7 +14,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity_strength": Vector2(55.0, 135.0),
 		"drag": Vector2(30.0, 76.0),
 		"size_min": Vector2(5.0, 5.0),
-		"size_max": Vector2(9.0, 10.0),
+		"size_max": Vector2(9.0, 9.0),
 		"lifetime": Vector2(0.36, 0.62),
 		"spread_radians": PI * 0.72,
 		"initial_radius": 4.5,
@@ -42,25 +42,6 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"alpha": 0.62,
 		"colors": [Color(0.43, 0.72, 0.48, 1.0)],
 	},
-	"projectile_split": {
-		"count": 12,
-		"speed": Vector2(36.0, 96.0),
-		"gravity": Vector2.ZERO,
-		"gravity_strength": Vector2.ZERO,
-		"drag": Vector2(24.0, 58.0),
-		"size_min": Vector2(2.0, 2.0),
-		"size_max": Vector2(4.0, 5.0),
-		"lifetime": Vector2(0.16, 0.30),
-		"spread_radians": TAU,
-		"initial_radius": 3.0,
-		"alpha": 0.92,
-		"shape": "circle",
-		"glow": 1.15,
-		"light_color": Color(1.0, 0.66, 0.92, 1.0),
-		"light_energy": 0.22,
-		"light_radius": 48.0,
-		"colors": [Color.WHITE, Color(1.0, 0.58, 0.86, 1.0), Color(0.76, 0.42, 1.0, 1.0)],
-	},
 	"impact_terrain": {
 		"count": 9,
 		"speed": Vector2(28.0, 92.0),
@@ -87,18 +68,26 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, -1.0),
 		"gravity_strength": Vector2(24.0, 68.0),
 		"drag": Vector2(12.0, 34.0),
-		"size_min": Vector2(3.0, 4.0),
-		"size_max": Vector2(7.0, 11.0),
+		"size_min": Vector2(3.0, 3.0),
+		"size_max": Vector2(7.0, 7.0),
 		"lifetime": Vector2(0.18, 0.42),
 		"spread_radians": PI,
 		"initial_radius": 12.0,
 		"alpha": 0.90,
-		"shape": "circle",
+		"shape": "square",
 		"glow": 1.4,
 		"light_color": Color(1.0, 0.22, 0.04, 1.0),
 		"light_energy": 0.0,
 		"light_radius": 52.0,
 		"colors": [Color(1.0, 0.22, 0.02, 1.0), Color(1.0, 0.55, 0.04, 1.0), Color(1.0, 0.88, 0.20, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 32.0,
+		"fire_height": 42.0,
+		"fire_edge_power": 0.85,
+		"fire_center_lifetime": Vector2(0.45, 0.75),
+		"fire_edge_lifetime": Vector2(0.18, 0.35),
+		"fire_mid_color": Color(1.0, 0.66, 0.06, 1.0),
+		"fire_end_color": Color(1.0, 0.94, 0.62, 1.0),
 	},
 	"fire_pool_flame": {
 		"count": 2,
@@ -106,8 +95,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, -1.0),
 		"gravity_strength": Vector2(16.0, 46.0),
 		"drag": Vector2(12.0, 30.0),
-		"size_min": Vector2(6.0, 14.0),
-		"size_max": Vector2(12.0, 30.0),
+		"size_min": Vector2(6.0, 6.0),
+		"size_max": Vector2(12.0, 12.0),
 		"lifetime": Vector2(0.30, 0.62),
 		"spread_radians": PI * 0.30,
 		"initial_radius": 4.0,
@@ -115,7 +104,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spawn_extent": Vector2(32.0, 3.0),
 		"alpha": 0.94,
 		"rotation_jitter": 0.16,
-		"shape": "flame",
+		"shape": "square",
 		"glow": 0.58,
 		"glow_shape": "streak",
 		"light_color": Color(1.0, 0.24, 0.04, 1.0),
@@ -123,6 +112,14 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"light_radius": 42.0,
 		"colors": [Color(0.76, 0.05, 0.01, 1.0), Color(1.0, 0.16, 0.01, 1.0), Color(1.0, 0.38, 0.01, 1.0)],
 		"end_colors": [Color(1.0, 0.28, 0.01, 1.0), Color(1.0, 0.58, 0.02, 1.0), Color(1.0, 0.82, 0.16, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 32.0,
+		"fire_height": 42.0,
+		"fire_edge_power": 0.85,
+		"fire_center_lifetime": Vector2(0.45, 0.75),
+		"fire_edge_lifetime": Vector2(0.18, 0.35),
+		"fire_mid_color": Color(1.0, 0.66, 0.06, 1.0),
+		"fire_end_color": Color(1.0, 0.94, 0.62, 1.0),
 	},
 	"fire_pool_base": {
 		"count": 5,
@@ -130,8 +127,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, -1.0),
 		"gravity_strength": Vector2(3.0, 16.0),
 		"drag": Vector2(18.0, 38.0),
-		"size_min": Vector2(8.0, 1.0),
-		"size_max": Vector2(22.0, 4.0),
+		"size_min": Vector2(4.0, 4.0),
+		"size_max": Vector2(8.0, 8.0),
 		"lifetime": Vector2(0.30, 0.55),
 		"spread_radians": PI * 0.16,
 		"initial_radius": 2.0,
@@ -143,6 +140,14 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"glow_shape": "streak",
 		"colors": [Color(0.52, 0.02, 0.005, 1.0), Color(0.76, 0.05, 0.005, 1.0), Color(0.96, 0.12, 0.01, 1.0)],
 		"end_colors": [Color(0.90, 0.10, 0.01, 1.0), Color(1.0, 0.24, 0.01, 1.0), Color(1.0, 0.46, 0.02, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 34.0,
+		"fire_height": 34.0,
+		"fire_edge_power": 0.8,
+		"fire_center_lifetime": Vector2(0.40, 0.62),
+		"fire_edge_lifetime": Vector2(0.16, 0.30),
+		"fire_mid_color": Color(1.0, 0.58, 0.03, 1.0),
+		"fire_end_color": Color(1.0, 0.86, 0.34, 1.0),
 	},
 	"fire_pool_tongue": {
 		"count": 3,
@@ -150,8 +155,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, -1.0),
 		"gravity_strength": Vector2(34.0, 84.0),
 		"drag": Vector2(20.0, 46.0),
-		"size_min": Vector2(4.0, 11.0),
-		"size_max": Vector2(9.0, 28.0),
+		"size_min": Vector2(4.0, 4.0),
+		"size_max": Vector2(9.0, 9.0),
 		"lifetime": Vector2(0.26, 0.58),
 		"spread_radians": PI * 0.23,
 		"initial_radius": 3.0,
@@ -159,11 +164,19 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spawn_extent": Vector2(34.0, 4.0),
 		"alpha": 0.95,
 		"rotation_jitter": 0.16,
-		"shape": "flame",
+		"shape": "square",
 		"glow": 0.68,
 		"glow_shape": "streak",
 		"colors": [Color(1.0, 0.14, 0.01, 1.0), Color(1.0, 0.32, 0.01, 1.0), Color(1.0, 0.56, 0.02, 1.0)],
 		"end_colors": [Color(1.0, 0.44, 0.01, 1.0), Color(1.0, 0.70, 0.04, 1.0), Color(1.0, 0.92, 0.24, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 34.0,
+		"fire_height": 58.0,
+		"fire_edge_power": 0.9,
+		"fire_center_lifetime": Vector2(0.48, 0.78),
+		"fire_edge_lifetime": Vector2(0.18, 0.34),
+		"fire_mid_color": Color(1.0, 0.68, 0.05, 1.0),
+		"fire_end_color": Color(1.0, 0.96, 0.68, 1.0),
 	},
 	"fire_pool_core": {
 		"count": 3,
@@ -171,8 +184,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, -1.0),
 		"gravity_strength": Vector2(18.0, 56.0),
 		"drag": Vector2(18.0, 42.0),
-		"size_min": Vector2(3.0, 7.0),
-		"size_max": Vector2(7.0, 18.0),
+		"size_min": Vector2(3.0, 3.0),
+		"size_max": Vector2(7.0, 7.0),
 		"lifetime": Vector2(0.18, 0.38),
 		"spread_radians": PI * 0.16,
 		"initial_radius": 2.0,
@@ -180,11 +193,19 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spawn_extent": Vector2(26.0, 3.0),
 		"alpha": 0.98,
 		"rotation_jitter": 0.12,
-		"shape": "flame",
+		"shape": "square",
 		"glow": 0.92,
 		"glow_shape": "streak",
 		"colors": [Color(1.0, 0.62, 0.04, 1.0), Color(1.0, 0.84, 0.20, 1.0), Color(1.0, 0.98, 0.74, 1.0)],
 		"end_colors": [Color(1.0, 0.28, 0.01, 1.0), Color(1.0, 0.52, 0.02, 1.0), Color(1.0, 0.80, 0.10, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 26.0,
+		"fire_height": 48.0,
+		"fire_edge_power": 0.95,
+		"fire_center_lifetime": Vector2(0.42, 0.66),
+		"fire_edge_lifetime": Vector2(0.14, 0.28),
+		"fire_mid_color": Color(1.0, 0.76, 0.12, 1.0),
+		"fire_end_color": Color(1.0, 0.98, 0.78, 1.0),
 	},
 	"fire_pool_ember": {
 		"count": 2,
@@ -193,17 +214,25 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity_strength": Vector2(6.0, 22.0),
 		"drag": Vector2(18.0, 42.0),
 		"size_min": Vector2(1.0, 1.0),
-		"size_max": Vector2(3.0, 4.0),
+		"size_max": Vector2(3.0, 3.0),
 		"lifetime": Vector2(0.26, 0.56),
 		"spread_radians": PI * 0.8,
 		"initial_radius": 3.0,
 		"spawn_shape": "ellipse",
 		"spawn_extent": Vector2(32.0, 4.0),
 		"alpha": 0.96,
-		"shape": "circle",
+		"shape": "square",
 		"glow": 1.0,
 		"colors": [Color(1.0, 0.94, 0.36, 1.0), Color(1.0, 0.62, 0.04, 1.0)],
 		"end_colors": [Color(1.0, 0.30, 0.01, 1.0), Color(0.78, 0.06, 0.01, 1.0)],
+		"fire_distribution": "triangle",
+		"fire_half_width": 32.0,
+		"fire_height": 66.0,
+		"fire_edge_power": 1.0,
+		"fire_center_lifetime": Vector2(0.40, 0.68),
+		"fire_edge_lifetime": Vector2(0.14, 0.26),
+		"fire_mid_color": Color(1.0, 0.76, 0.12, 1.0),
+		"fire_end_color": Color(1.0, 0.95, 0.62, 1.0),
 	},
 	"fire_spark": {
 		"count": 7,
@@ -217,41 +246,9 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spread_radians": TAU,
 		"initial_radius": 7.0,
 		"alpha": 0.95,
-		"shape": "circle",
+		"shape": "square",
 		"glow": 1.8,
 		"colors": [Color(1.0, 0.78, 0.22, 1.0), Color(1.0, 0.45, 0.06, 1.0)],
-	},
-	"explosion_flash": {
-		"count": 22,
-		"speed": Vector2(18.0, 46.0),
-		"gravity": Vector2.ZERO,
-		"gravity_strength": Vector2.ZERO,
-		"drag": Vector2(42.0, 80.0),
-		"size_min": Vector2(5.0, 5.0),
-		"size_max": Vector2(13.0, 13.0),
-		"lifetime": Vector2(0.12, 0.24),
-		"spread_radians": TAU,
-		"initial_radius": 8.0,
-		"alpha": 0.92,
-		"shape": "circle",
-		"glow": 2.8,
-		"colors": [Color.WHITE, Color(1.0, 0.84, 0.36, 1.0), Color(1.0, 0.38, 0.08, 1.0)],
-	},
-	"explosion_hot_flash": {
-		"count": 8,
-		"speed": Vector2(2.0, 12.0),
-		"gravity": Vector2.ZERO,
-		"gravity_strength": Vector2.ZERO,
-		"drag": Vector2(46.0, 90.0),
-		"size_min": Vector2(5.0, 5.0),
-		"size_max": Vector2(11.0, 11.0),
-		"lifetime": Vector2(0.16, 0.30),
-		"spread_radians": TAU,
-		"initial_radius": 3.0,
-		"alpha": 1.0,
-		"shape": "circle",
-		"glow": 3.2,
-		"colors": [Color(1.0, 0.96, 0.76, 1.0), Color(1.0, 0.82, 0.34, 1.0)],
 	},
 	"explosion_wave": {
 		"count": 30,
@@ -266,7 +263,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spread_radians": TAU,
 		"initial_radius": 3.0,
 		"alpha": 0.95,
-		"shape": "circle",
+		"shape": "square",
 		"glow": 2.2,
 		"colors": [Color.WHITE, Color(1.0, 0.88, 0.42, 1.0), Color(1.0, 0.48, 0.08, 1.0)],
 	},
@@ -277,7 +274,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity_strength": Vector2(8.0, 38.0),
 		"drag": Vector2(0.0, 0.0),
 		"size_min": Vector2(2.0, 2.0),
-		"size_max": Vector2(5.0, 6.0),
+		"size_max": Vector2(5.0, 5.0),
 		"lifetime": Vector2(0.18, 0.38),
 		"travel_distance": Vector2(180.0, 280.0),
 		"spread_radians": TAU,
@@ -322,8 +319,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, 1.0),
 		"gravity_strength": Vector2(90.0, 190.0),
 		"drag": Vector2(14.0, 46.0),
-		"size_min": Vector2(2.0, 1.0),
-		"size_max": Vector2(8.0, 3.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(8.0, 8.0),
 		"lifetime": Vector2(0.22, 0.48),
 		"spread_radians": TAU,
 		"initial_radius": 4.0,
@@ -352,8 +349,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2.ZERO,
 		"gravity_strength": Vector2.ZERO,
 		"drag": Vector2(36.0, 72.0),
-		"size_min": Vector2(2.0, 4.0),
-		"size_max": Vector2(4.0, 10.0),
+		"size_min": Vector2(3.0, 3.0),
+		"size_max": Vector2(6.0, 6.0),
 		"lifetime": Vector2(0.20, 0.36),
 		"spread_radians": TAU,
 		"initial_radius": 2.0,
@@ -368,8 +365,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2.ZERO,
 		"gravity_strength": Vector2.ZERO,
 		"drag": Vector2(40.0, 84.0),
-		"size_min": Vector2(2.0, 5.0),
-		"size_max": Vector2(4.0, 12.0),
+		"size_min": Vector2(3.0, 3.0),
+		"size_max": Vector2(6.0, 6.0),
 		"lifetime": Vector2(0.24, 0.42),
 		"spread_radians": TAU,
 		"initial_radius": 3.0,
@@ -384,8 +381,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2(0.0, 1.0),
 		"gravity_strength": Vector2(10.0, 40.0),
 		"drag": Vector2(30.0, 70.0),
-		"size_min": Vector2(2.0, 3.0),
-		"size_max": Vector2(3.0, 8.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(3.0, 3.0),
 		"lifetime": Vector2(0.28, 0.52),
 		"spread_radians": TAU,
 		"initial_radius": 4.0,
@@ -400,8 +397,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2.ZERO,
 		"gravity_strength": Vector2.ZERO,
 		"drag": Vector2(80.0, 140.0),
-		"size_min": Vector2(3.0, 1.0),
-		"size_max": Vector2(6.0, 1.0),
+		"size_min": Vector2(3.0, 3.0),
+		"size_max": Vector2(6.0, 6.0),
 		"lifetime": Vector2(0.34, 0.56),
 		"spread_radians": 0.0,
 		"initial_radius": 0.0,
@@ -422,8 +419,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity": Vector2.ZERO,
 		"gravity_strength": Vector2.ZERO,
 		"drag": Vector2(80.0, 140.0),
-		"size_min": Vector2(5.0, 1.0),
-		"size_max": Vector2(10.0, 2.0),
+		"size_min": Vector2(5.0, 5.0),
+		"size_max": Vector2(10.0, 10.0),
 		"lifetime": Vector2(0.30, 0.50),
 		"spread_radians": 0.0,
 		"initial_radius": 0.0,
@@ -450,7 +447,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"spread_radians": TAU,
 		"initial_radius": 2.0,
 		"alpha": 1.0,
-		"shape": "circle",
+		"shape": "square",
 		"glow": 2.4,
 		"light_color": Color.WHITE,
 		"light_energy": 1.0,
@@ -464,7 +461,7 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"gravity_strength": Vector2(10.0, 55.0),
 		"drag": Vector2(0.0, 0.0),
 		"size_min": Vector2(2.0, 2.0),
-		"size_max": Vector2(5.0, 6.0),
+		"size_max": Vector2(5.0, 5.0),
 		"lifetime": Vector2(0.18, 0.38),
 		"travel_distance": Vector2(100.0, 200.0),
 		"spread_radians": TAU,
@@ -608,12 +605,29 @@ func emit_event(event: Variant) -> void:
 		var particle_lifetime := _random.randf_range(lifetime_range.x, lifetime_range.y) * lifetime_multiplier
 		var particle_speed := _random.randf_range(speed_range.x, speed_range.y) * speed_multiplier
 		var spawn_position := position
-		var spawn_shape := str(profile.get("spawn_shape", ""))
-		if spawn_shape == "ellipse":
-			var spawn_extent: Vector2 = profile.get("spawn_extent", Vector2.ZERO)
-			var spawn_angle := _random.randf_range(0.0, TAU)
-			var spawn_radius := sqrt(_random.randf())
-			spawn_position += Vector2(cos(spawn_angle) * spawn_extent.x, sin(spawn_angle) * spawn_extent.y) * spawn_radius * spawn_extent_multiplier
+		var fire_edge_ratio := 0.0
+		var fire_allowed_height := 0.0
+		var is_fire_particle := str(profile.get("fire_distribution", "")) == "triangle"
+		if is_fire_particle:
+			var fire_half_width := maxf(float(profile.get("fire_half_width", 32.0)) * spawn_extent_multiplier, 1.0)
+			var fire_height := maxf(float(profile.get("fire_height", 48.0)) * spawn_extent_multiplier, 1.0)
+			var fire_edge_power := maxf(float(profile.get("fire_edge_power", 0.85)), 0.1)
+			var fire_x := _random.randf_range(-fire_half_width, fire_half_width)
+			fire_edge_ratio = pow(absf(fire_x) / fire_half_width, fire_edge_power)
+			fire_allowed_height = maxf(fire_height * (1.0 - fire_edge_ratio), 4.0)
+			spawn_position += Vector2(fire_x, -_random.randf_range(0.0, minf(3.0, fire_allowed_height)))
+			var center_lifetime: Vector2 = profile.get("fire_center_lifetime", lifetime_range)
+			var edge_lifetime: Vector2 = profile.get("fire_edge_lifetime", lifetime_range)
+			particle_lifetime = lerpf(_random.randf_range(center_lifetime.x, center_lifetime.y), _random.randf_range(edge_lifetime.x, edge_lifetime.y), fire_edge_ratio) * lifetime_multiplier
+			particle_speed *= lerpf(1.12, 0.72, fire_edge_ratio)
+			particle_lifetime = minf(particle_lifetime, fire_allowed_height / maxf(particle_speed, 1.0) * 1.35)
+		else:
+			var spawn_shape := str(profile.get("spawn_shape", ""))
+			if spawn_shape == "ellipse":
+				var spawn_extent: Vector2 = profile.get("spawn_extent", Vector2.ZERO)
+				var spawn_angle := _random.randf_range(0.0, TAU)
+				var spawn_radius := sqrt(_random.randf())
+				spawn_position += Vector2(cos(spawn_angle) * spawn_extent.x, sin(spawn_angle) * spawn_extent.y) * spawn_radius * spawn_extent_multiplier
 		var travel_distance: Vector2 = profile.get("travel_distance", Vector2.ZERO)
 		if travel_distance.x > 0.0 or travel_distance.y > 0.0:
 			var distance_multiplier := maxf(float(parameters.get("distance_multiplier", 1.0)), 0.0)
@@ -621,11 +635,17 @@ func emit_event(event: Variant) -> void:
 			particle_speed = desired_distance / maxf(particle_lifetime, 0.01)
 		var particle_color := _resolve_color(profile, event_color, color_tint)
 		var particle_end_color := _resolve_color(profile, event_color, color_tint, "end_colors") if profile.has("end_colors") else particle_color
+		var particle_mid_color := particle_color
+		var particle_final_color := particle_end_color
+		if is_fire_particle:
+			particle_mid_color = _resolve_special_color(profile, "fire_mid_color", color_tint, particle_color)
+			particle_final_color = _resolve_special_color(profile, "fire_end_color", color_tint, Color(1.0, 0.96, 0.68, 1.0))
 		var particle_rotation := _random.randf_range(-rotation_jitter, rotation_jitter)
 		if align_to_direction and not base_direction.is_zero_approx():
 			particle_rotation = base_direction.angle() + _random.randf_range(-rotation_jitter, rotation_jitter)
+		var initial_offset := Vector2.ZERO if is_fire_particle else direction * _random.randf_range(0.0, float(profile["initial_radius"]))
 		_particles.append({
-			"position": spawn_position + direction * _random.randf_range(0.0, float(profile["initial_radius"])),
+			"position": spawn_position + initial_offset,
 			"velocity": direction * particle_speed,
 			"gravity": Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier),
 			"drag": _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier,
@@ -634,6 +654,10 @@ func emit_event(event: Variant) -> void:
 			"size": size,
 			"color": particle_color,
 			"end_color": particle_end_color,
+			"mid_color": particle_mid_color,
+			"final_color": particle_final_color,
+			"fire_edge_ratio": fire_edge_ratio,
+			"fire_particle": is_fire_particle,
 			"lifetime": particle_lifetime,
 			"alpha_multiplier": alpha_multiplier,
 			"glow": float(profile.get("glow", 0.0)) * glow_multiplier,
@@ -666,6 +690,16 @@ func _find_light_field() -> Node:
 		if found != null and found.has_method("add_light"):
 			return found
 	return null
+
+
+func _resolve_special_color(profile: Dictionary, color_key: String, color_tint: Color, fallback: Color) -> Color:
+	var color: Color = profile.get(color_key, fallback)
+	return Color(
+		clampf(color.r * color_tint.r, 0.0, 1.0),
+		clampf(color.g * color_tint.g, 0.0, 1.0),
+		clampf(color.b * color_tint.b, 0.0, 1.0),
+		color.a * color_tint.a
+	)
 
 
 func _resolve_color(profile: Dictionary, color_override: Color, color_tint: Color = Color.WHITE, color_key: String = "colors") -> Color:
@@ -709,7 +743,15 @@ func _draw() -> void:
 		var fade := 1.0 - age_ratio
 		var color: Color = particle["color"]
 		var end_color: Color = particle["end_color"] if particle.has("end_color") else color
-		color = color.lerp(end_color, age_ratio)
+		if bool(particle.get("fire_particle", false)):
+			var mid_color: Color = particle.get("mid_color", end_color)
+			var final_color: Color = particle.get("final_color", end_color)
+			if age_ratio < 0.45:
+				color = color.lerp(mid_color, age_ratio / 0.45)
+			else:
+				color = mid_color.lerp(final_color, (age_ratio - 0.45) / 0.55)
+		else:
+			color = color.lerp(end_color, age_ratio)
 		color.a *= fade * fade * float(particle.get("alpha_multiplier", 1.0))
 		var position: Vector2 = particle["position"]
 		var size: Vector2 = particle["size"]

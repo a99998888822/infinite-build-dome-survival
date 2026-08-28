@@ -18,7 +18,7 @@ var _field_strength: float = 1.0
 var _trail_timer: float = 0.0
 
 
-static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2) -> void:
+static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null:
 		return
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "fire", {
@@ -28,7 +28,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"tick_interval": 0.25,
 		"patch_duration": 2.0,
 		"seed_count": 3.0,
-	})
+	}, attachment_item_id)
 	var seed_count := maxi(2, int(roundi(context.get_resolved_parameter("seed_count", 3.0) + context.get_resolved_parameter("projectile_count", 1.0))))
 	var visual_seed_count := mini(seed_count, MAX_VISUAL_SEEDS_PER_IMPACT)
 	var field_strength := float(seed_count) / float(visual_seed_count)

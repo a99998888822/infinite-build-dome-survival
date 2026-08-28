@@ -134,30 +134,32 @@ func _on_body_entered(body: Node) -> void:
 func _get_target_hit_limit() -> int:
 	if weapon == null or not weapon.has_effect("pierce"):
 		return 1
-	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "pierce", {
-		"extra_target_hits": 0.0,
-	})
-	var extra_hits := clampi(int(roundi(context.get_resolved_parameter("extra_target_hits", 0.0))), 0, 32)
-	return maxi(1, 1 + extra_hits)
+	var extra_hits := 0
+	for pierce_instance in weapon.get_effect_instances("pierce"):
+		var item_instance_id := str(pierce_instance.get("item_instance_id", ""))
+		var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "pierce", {
+			"extra_target_hits": 0.0,
+		}, item_instance_id)
+		extra_hits += clampi(int(roundi(context.get_resolved_parameter("extra_target_hits", 0.0))), 0, 32)
+	return maxi(1, 1 + mini(extra_hits, 32))
 
 
 func _spawn_split_projectiles(hit_position: Vector2) -> void:
 	if not _spawn_projectile_callback.is_valid() or weapon == null:
 		return
+	for split_instance in weapon.get_effect_instances("split"):
+		_spawn_split_projectiles_for_item(hit_position, str(split_instance.get("item_instance_id", "")))
+
+
+func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id: String) -> void:
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "split", {
 		"child_count": 3.0,
 		"spread_angle": 36.0,
-	})
+	}, attachment_item_id)
 	var child_count := clampi(int(roundi(context.get_resolved_parameter("child_count", 3.0))), 1, 8)
 	var spread_angle := maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0)
 	var inherited_targets := hit_targets.duplicate()
 	var reserved_targets := inherited_targets.duplicate()
-	var split_color: Color = context.get_tinted_color(Color(1.0, 0.62, 0.9, 1.0))
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "projectile_split", hit_position, direction, 1.0, split_color, {
-		"count_multiplier": context.get_resolved_parameter("count_multiplier", 1.0),
-		"glow_multiplier": context.get_resolved_parameter("glow_multiplier", 1.0),
-	})
-
 	var child_directions: Array[Vector2] = []
 	var child_targets: Array[EnemyController] = []
 	for child_index in range(child_count):

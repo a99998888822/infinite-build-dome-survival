@@ -317,17 +317,6 @@
         "channel": "child_count",
         "operation": "multiply",
         "value": 1.1
-      },
-      {
-        "effect_id": "split",
-        "channel": "visual.color",
-        "operation": "tint",
-        "value": [
-          1.0,
-          0.76,
-          0.94,
-          1.0
-        ]
       }
     ],
     "instance_parameter_ranges": [

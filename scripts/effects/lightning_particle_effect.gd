@@ -12,6 +12,7 @@ var _parent_root: Node = null
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _direction: Vector2 = Vector2.RIGHT
+var _attachment_item_id: String = ""
 var _context: RefCounted = null
 var _visited: Dictionary = {}
 var _remaining_jumps: int = 0
@@ -20,7 +21,7 @@ var _pending_display_echoes: int = 0
 var _chain_finished: bool = false
 
 
-static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2) -> void:
+static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2, attachment_item_id: String = "") -> void:
 	var first_enemy := first_body as EnemyController
 	if parent == null or weapon == null or damage_event == null or first_enemy == null:
 		return
@@ -29,6 +30,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._parent_root = parent
 	effect._weapon = weapon
 	effect._damage_event = damage_event
+	effect._attachment_item_id = attachment_item_id
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
 		"damage": maxf(float(damage_event.damage) * 0.55, 1.0),
@@ -37,7 +39,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 		"jump_radius": 170.0,
 		"stun_duration": 0.7,
 		"detonate_burning": 1.0,
-	})
+	}, effect._attachment_item_id)
 	effect._remaining_jumps = maxi(0, int(roundi(effect._context.get_resolved_parameter("chain_count", 3.0) + effect._context.get_resolved_parameter("control_power", 0.0) / 10.0)))
 	effect._jump_radius = maxf(effect._context.get_resolved_parameter("jump_radius", 170.0) * effect._context.get_resolved_parameter("area_size_multiplier", 1.0), 32.0)
 	effect.call_deferred("_strike_chain", first_enemy, hit_position)
@@ -65,7 +67,8 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 	current.apply_lightning_stun(_context.get_resolved_parameter("stun_duration", 0.7))
 	if current.has_status("burning") and _context.get_resolved_parameter("detonate_burning", 1.0) > 0.0:
 		current.clear_burning()
-		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event)
+		for explosion_instance in _weapon.get_effect_instances("explosion"):
+			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
 	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
 	if _remaining_jumps <= 0:

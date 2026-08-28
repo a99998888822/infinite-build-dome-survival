@@ -3,7 +3,7 @@ extends RefCounted
 const EFFECT_CONTEXT_SCRIPT = preload("res://scripts/effects/effect_context.gd")
 
 
-static func build_weapon_context(weapon: Variant, effect_id: String, base_parameters: Dictionary = {}) -> RefCounted:
+static func build_weapon_context(weapon: Variant, effect_id: String, base_parameters: Dictionary = {}, attachment_item_id: String = "") -> RefCounted:
 	var context := EFFECT_CONTEXT_SCRIPT.new()
 	context.effect_id = effect_id
 	context.parameters = base_parameters.duplicate(true)
@@ -20,6 +20,8 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 	if weapon != null:
 		var attached_items: Array = weapon.get_attached_item_instances() if weapon.has_method("get_attached_item_instances") else []
 		for attached_item in attached_items:
+			if not attachment_item_id.is_empty() and str(attached_item.get("item_instance_id", "")) != attachment_item_id:
+				continue
 			if not (attached_item is Dictionary):
 				continue
 			var effect_parameters: Variant = attached_item.get("effect_parameters", {})
@@ -38,7 +40,7 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 		if weapon.has_method("get_rarity_color"):
 			context.color_override = weapon.get_rarity_color()
 		if weapon.has_method("get_effect_modifiers"):
-			context.add_modifiers(weapon.get_effect_modifiers(effect_id))
+			context.add_modifiers(weapon.get_effect_modifiers(effect_id, attachment_item_id))
 	return context
 
 

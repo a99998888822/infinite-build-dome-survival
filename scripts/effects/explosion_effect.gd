@@ -16,9 +16,10 @@ const MATERIAL_PARTICLE_PROFILES: Dictionary = {
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _hit_position: Vector2 = Vector2.ZERO
+var _attachment_item_id: String = ""
 
 
-static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent) -> void:
+static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
 	var effect := ExplosionEffect.new()
@@ -26,6 +27,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._hit_position = hit_position
+	effect._attachment_item_id = attachment_item_id
 	effect.call_deferred("_detonate")
 
 
@@ -37,7 +39,7 @@ func _detonate() -> void:
 		"damage": maxf(float(_damage_event.damage) * 0.8, 1.0),
 		"radius": BASE_DAMAGE_RADIUS,
 		"damage_falloff": 0.0,
-	})
+	}, _attachment_item_id)
 	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)

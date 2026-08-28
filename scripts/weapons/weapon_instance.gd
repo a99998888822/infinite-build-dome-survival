@@ -158,6 +158,20 @@ func has_effect(effect_id: String) -> bool:
 	return effect_ids.has(effect_id.strip_edges())
 
 
+func get_effect_instances(effect_id: String) -> Array[Dictionary]:
+	var normalized_id := effect_id.strip_edges()
+	var result: Array[Dictionary] = []
+	if normalized_id.is_empty():
+		return result
+	if _base_effect_ids.has(normalized_id):
+		result.append({"item_instance_id": "__base_effect__"})
+	for item_instance in _attached_item_instances:
+		var raw_effect_ids: Variant = item_instance.get("effect_ids", [])
+		if raw_effect_ids is Array and raw_effect_ids.has(normalized_id):
+			result.append(item_instance.duplicate(true))
+	return result
+
+
 func add_effect_by_id(effect_id: String) -> bool:
 	var normalized_id := effect_id.strip_edges()
 	if normalized_id.is_empty() or effect_ids.has(normalized_id):
@@ -266,12 +280,16 @@ func remove_effect_modifiers_by_source(source_id: String) -> void:
 			effect_modifiers.remove_at(index)
 
 
-func get_effect_modifiers(effect_id: String = "") -> Array[Dictionary]:
+func get_effect_modifiers(effect_id: String = "", source_id: String = "") -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for modifier in effect_modifiers:
 		var modifier_effect_id := str(modifier.get("effect_id", "*"))
-		if effect_id.is_empty() or modifier_effect_id == "*" or modifier_effect_id == effect_id:
-			result.append(modifier.duplicate(true))
+		var modifier_source_id := str(modifier.get("source_id", ""))
+		if not effect_id.is_empty() and modifier_effect_id != "*" and modifier_effect_id != effect_id:
+			continue
+		if not source_id.is_empty() and modifier_source_id != source_id and modifier_source_id != "":
+			continue
+		result.append(modifier.duplicate(true))
 	return result
 
 
