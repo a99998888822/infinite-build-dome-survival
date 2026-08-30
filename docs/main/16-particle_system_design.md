@@ -8,9 +8,9 @@
 
 本模块的视觉和运行时设计整体参考 Noita 中文站中关于法术、投射物、材料反应、元素状态和粒子表现的组织方式，而不是只参考闪电：
 
-1. **法术组合**：武器负责发射载体，附魔/晶石/术士卷轴负责追加效果、参数和视觉标签；粒子系统读取最终 EffectContext，不把附魔硬编码进单个投射物。
+1. **法术组合**：武器负责发射载体，附魔/术士卷轴负责追加效果、参数和视觉标签；粒子系统读取最终 EffectContext，不把附魔硬编码进单个投射物。
 2. **投射物表现**：投射物由本体、拖尾、命中爆发和后续元素事件组合而成；飞行中的粒子只表现运动，不承担伤害碰撞。
-3. **射线表现**：射线不是一条静态线，而是由沿路径采样的细小发光粒子连续聚合，带有抖动、分叉、衰减和命中爆发。
+3. **射线表现**：射线使用带有抖动、分叉和衰减的随机路径，并沿控制点段绘制小型方形粒子；命中爆发仍由粒子系统表现，路径采样不创建独立粒子对象。
 4. **爆炸表现**：爆炸由瞬时核心、向外扩散的亮粒子、碎片、烟尘和材质反应共同组成；范围伤害、场景破坏和视觉粒子分层处理。
 5. **元素状态**：火焰、闪电等状态由持续生成的粒子群表现，并可影响敌人状态、背景染色、发光层和其他效果；状态本身不直接等同于一张贴图。
 6. **材料与场景反应**：MVP 使用独立的场景破坏与效果事件模拟材料反应；最终版本再扩展液体、气体、粉末和燃烧传播等像素级材料系统。
@@ -58,11 +58,12 @@ MVP 应保留这套实现的优点，不立即改成大量 GPUParticles2D 节点
 | impact_green | 木箭命中敌人 | 绿色方块向攻击方向爆散 |
 | impact_terrain | 木箭命中墙体 | 土石碎片，速度较低，重力更明显 |
 | projectile_trail | 木箭飞行 | 少量短命淡色方块，不参与伤害 |
-| beam_core | 射线主体预留 | 由线段或窄矩形绘制，不做材质交互 |
-| explosion_debris | 爆炸碎片预留 | 多方向碎片，数量受爆炸强度限制 |
+| beam_core | 射线主体预留 | 由小型方形粒子绘制，不做材质交互 |
+| explosion_burst | 爆炸附魔 | 同尺寸小方块向四周散开，无重力下坠 |
+| electric_spark | 电火花附魔 | 命中点旋转黄色虚线圈，延迟落下高空闪电 |
 | entity_spawn | 实体生成 | 环绕生成点的短时环形粒子 |
 
-MVP 实际优先完成 impact_green、impact_terrain 和 projectile_trail；其余预设只要求配置结构和调用接口稳定。
+MVP 实际优先完成 impact_green、impact_terrain、projectile_trail、explosion_burst 和 electric_spark；其余预设只要求配置结构和调用接口稳定。
 
 ### 3.3 粒子配置结构
 
@@ -143,10 +144,10 @@ position
 
 ### 4.3 动态效果运行时
 
-粒子不直接读取角色或武器属性，而是由 `EffectContext` 合并角色、武器等级、附魔、晶石和卷轴的效果修改器，再交给动态发射器运行。玩法参数与表现参数分离：伤害、范围、持续时间和连锁次数在效果创建时确定；粒子速率、速度、颜色、发光和扰动可在运行时刷新。
+粒子不直接读取角色或武器属性，而是由 `EffectContext` 合并角色、武器等级、附魔和卷轴的效果修改器，再交给动态发射器运行。玩法参数与表现参数分离：伤害、范围、持续时间和连锁次数在效果创建时确定；粒子速率、速度、颜色、发光和扰动可在运行时刷新。
 
 ```text
-属性/附魔/晶石/卷轴
+属性/附魔/卷轴
   -> EffectContext + EffectModifier
   -> ParticleEmitterRuntime / EffectRuntime
   -> ParticleWorld
@@ -166,13 +167,17 @@ ProjectileInstance 在命中敌人或场景时发送 attack_hit_enemy 或 attack
 
 ### 5.2 射线
 
-射线 MVP 只需要发送 beam_started、beam_hit 和 beam_ended。主体由 BeamRenderer 绘制，末端命中仍由 ParticleWorld 负责。射线沿途粒子必须设置数量上限，不能为每个采样点创建独立 Node2D。
+射线 MVP 只需要发送 beam_started、beam_hit 和 beam_ended。主体由轻量路径节点绘制小型方形粒子，末端命中仍由 ParticleWorld 负责。射线沿途采样只写入共享路径数组，不能为每个采样点创建独立 Node2D。
 
 ### 5.3 爆炸
 
 爆炸系统发送 explosion_started，并提供半径、方向和强度。ParticleWorld 负责闪光、碎片、烟尘和冲击环；伤害和场景破坏由其他模块处理。
 
-### 5.4 实体
+### 5.4 电火花附魔
+
+ProjectileInstance 命中敌人或场景后发送电火花效果事件。效果节点固定保存命中点，在 `0.5` 秒预警窗口内绘制旋转的黄色虚线圆圈；延迟结束后在圆心触发一次从 `260px` 高度落下的闪电像素路径，并重新查询圆圈范围内的敌人造成伤害。闪电路径复用闪电附魔的随机控制点和小型方块采样逻辑。
+
+### 5.5 实体
 
 实体类武器只发送 entity_spawned、entity_hit 和 entity_expired。实体自身可持有一个或多个 emitter 配置，但不能直接访问全局绘制缓冲区。
 
@@ -218,23 +223,26 @@ MVP 暂不实现：
 - Fire uses invisible scattered seed logic and `FirePatch` collision; its visible seeds, embers and ground fire are all emitted particles. The pool distributes flame clusters across an elliptical footprint instead of drawing a pool shape, lasts about two seconds, and burning damage is an independent enemy status.
 - `FirePatch` is logic-only: it has no `_draw()` flame geometry. Each pool uses four low-rate child emitters for base flame, tongues, hot core and embers, all rendered by the shared `ParticleWorld`.
 - Fire particles use a shared active-particle budget (`MAX_FIRE_PARTICLES`) and pool-level light refresh, avoiding one light source per particle and preventing stacked fire pools from flooding the frame.
-- Explosion uses particle flash, outward wave particles and debris; every visible layer receives the resolved effect parameters. Explosion damage falloff is configurable and defaults to 0.0 for fixed damage inside the radius, while terrain destruction returns material types so soil, wood and stone can emit different debris particles.
+- Explosion uses one unified `explosion_burst` profile: identical `4x4` square particles (96 base particles) are born at the exact explosion center and spread in all directions with zero gravity, zero drag and no falling debris. Explosion damage falloff is configurable and defaults to 0.0 for fixed damage inside the radius; terrain destruction can add one secondary burst at the same center.
 - Lightning is triggered only after a projectile hits an enemy: the first target is the impact source, and a lethal projectile hit still allows the chain to search for the next live enemy.
-- Lightning paths use dense, short-lived particle dashes: a white core strand plus a pale-blue companion strand, with no static line drawing.
+- Lightning paths use short-lived randomized white pixel arcs: 24-pixel control points, densely sampled small rectangular particles with per-particle random rotation and subtle white glows; no continuous line geometry is drawn, and hit flashes and sparks remain ParticleWorld effects.
+- Split child projectiles have no trail and do not create projectile-trail emitters.
 - Each chained hit emits a white flash, radial white sparks and a particle-only caterpillar-like paralysis visual; the gameplay stun is a separate short-lived enemy status.
 - `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
-- Enchantment scrolls, energy gems and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
+- Enchantment scrolls and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
 - Each dropped lightning scroll rolls independent instance parameters: `chain_count` 2–5 follow-up transfers, `chain_interval` 0.04–0.10 seconds, and `stun_duration` 0.45–1.10 seconds; the starter scroll remains fixed at 3, 0.06 seconds and 0.70 seconds.
+- The `scroll_electric_spark` enchantment marks the projectile impact position with a rotating yellow dashed ring, waits 0.5 seconds, then calls a high-altitude pixel lightning strike and damages enemies inside the marked radius.
 - This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.
 
 ### 10.1 Noita 中文站整体对标清单
 
 - **投射物**：本体 + 短拖尾 + 命中粒子 + 附魔事件；附魔只有在命中有效目标后生效。
-- **射线**：由连续发光粒子段组成，粒子沿路径采样并带有不规则偏移，不使用单条静态线替代。
+- **射线**：沿 24 像素控制点以约 3.25 像素间隔绘制带微抖动和随机旋转的白色小型像素矩形，叠加低透明度白色光晕，不绘制连续线段；命中点继续使用粒子爆发。
 - **火焰**：由多层橙/红/黄正方形粒子、上升运动、短寿命、局部光照和背景染色组合成火焰形状；火焰池与燃烧状态分离。
 - **火焰池 MVP**：发射器只在地面附近生成正方形粒子；横向位置决定可达到的最大高度与寿命，中心粒子上升更高、边缘粒子更快消散；颜色按橙色→黄色→黄白色三阶段渐变，不绘制三角形或其他火焰几何体。
-- **爆炸**：由白色/暖色正方形粒子、碎片、烟尘、冲击方向和范围反应组成；视觉、伤害、场景破坏分别处理。
-- **闪电**：由白色核心粒子段和淡蓝伴随粒子段连接敌人；命中点使用白色径向粒子爆发；麻痹状态使用跟随敌人的环绕粒子，并由独立状态控制短暂停止移动。掉落卷轴的连锁次数、传递间隔和麻痹时间按实例独立随机。
+- **爆炸**：由同尺寸的 `4x4` 小型方形粒子从爆炸中心向四周散开，基础数量为 96，不使用重力、阻力或下坠碎片；视觉、伤害、场景破坏分别处理。
+- **闪电**：由白色小型像素矩形沿随机路径连接敌人，粒子带随机旋转和轻微白色发光以打散虚线观感；命中点使用白色径向粒子爆发；麻痹状态使用跟随敌人的环绕粒子，并由独立状态控制短暂停止移动。掉落卷轴的连锁次数、传递间隔和麻痹时间按实例独立随机。
+- **电火花**：命中点先显示旋转的黄色虚线圆圈，延迟 0.5 秒后从较高位置劈下参考闪电附魔的白色像素闪电；落雷路径上部和下部较窄、中段较宽，并在圆圈范围内造成伤害。
 - **实体**：实体拥有独立生命周期和粒子发射器，可追加跟随、围绕、返回等运动行为。
 - **材料反应**：最终版本允许粒子标签与材料系统交换事件；MVP 保持场景破坏系统独立，避免把伤害碰撞写入粒子层。
 

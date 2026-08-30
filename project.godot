@@ -26,7 +26,8 @@ WindowSettings="*res://autoloads/window_settings.gd"
 
 [display]
 
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [gui]
 

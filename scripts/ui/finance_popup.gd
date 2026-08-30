@@ -13,6 +13,7 @@ const HAND_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_hand.sv
 const NUMERIC_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
 const MODAL_TOP_OFFSET: float = 90.0
 const MODAL_BOTTOM_MARGIN: float = 14.0
+const NORMAL_CONTENT_MINIMUM_HEIGHT: float = 668.0
 
 var payload: Dictionary = {}
 var error_message: String = ""
@@ -153,10 +154,11 @@ func _layout_popup() -> void:
 	var safe := _safe_rect
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		safe = _build_fallback_safe_rect(viewport_size)
-	var compact := safe.size.y < 620.0 or safe.size.x < 620.0
+	var available_panel_height := maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)
+	var compact := safe.size.x < 620.0 or available_panel_height < NORMAL_CONTENT_MINIMUM_HEIGHT
 	_apply_compact_layout(compact)
 	var panel_width := clampf(safe.size.x - 16.0, 440.0, 640.0)
-	var panel_height := clampf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 420.0, 650.0)
+	var panel_height := clampf(available_panel_height, 420.0, 650.0)
 	if safe.size.x < 456.0:
 		panel_width = safe.size.x
 	if safe.size.y < 436.0:

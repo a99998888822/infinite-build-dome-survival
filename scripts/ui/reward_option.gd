@@ -8,6 +8,9 @@ signal stat_preview_cleared
 const ENTRY_FREE: String = "free"
 const ENTRY_SHOP: String = "shop"
 const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
+const NORMAL_MINIMUM_HEIGHT: float = 360.0
+const COMPACT_MINIMUM_HEIGHT: float = 272.0
+const SMALL_MINIMUM_HEIGHT: float = 216.0
 
 const OFFER_TYPE_TITLES: Dictionary = {
 	"weapon_upgrade": "武器升级",
@@ -40,6 +43,7 @@ var _animation_tween: Tween = null
 var _icon_float_tween: Tween = null
 var _rarity_glow_material: ShaderMaterial = null
 var _compact_layout: bool = false
+var _small_layout: bool = false
 var _layout_width: float = 0.0
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
@@ -89,21 +93,32 @@ func set_bond_player(player: PlayerController) -> void:
 
 func set_compact(compact: bool) -> void:
 	_compact_layout = compact
-	_update_card_minimum_size()
+	_small_layout = false
+	_apply_layout_density()
+
+
+func set_available_height(available_height: float) -> void:
+	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT
+	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT
+	_apply_layout_density()
+
+
+func _apply_layout_density() -> void:
 	if content != null:
-		content.add_theme_constant_override("separation", 6 if compact else 8)
+		content.add_theme_constant_override("separation", 4 if _small_layout else (6 if _compact_layout else 8))
 	if type_badge != null:
-		type_badge.custom_minimum_size = Vector2(50.0, 18.0 if compact else 20.0)
+		type_badge.custom_minimum_size = Vector2(50.0, 16.0 if _small_layout else (18.0 if _compact_layout else 20.0))
 	if type_label != null:
-		type_label.add_theme_font_size_override("font_size", 8 if compact else 9)
+		type_label.add_theme_font_size_override("font_size", 7 if _small_layout else (8 if _compact_layout else 9))
 	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 88.0 if compact else 104.0
+		icon_frame.custom_minimum_size.y = 60.0 if _small_layout else (88.0 if _compact_layout else 104.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
-		description_label.custom_minimum_size.y = 82.0 if compact else 104.0
+		description_label.custom_minimum_size.y = 52.0 if _small_layout else (82.0 if _compact_layout else 104.0)
 	if select_button != null:
-		select_button.custom_minimum_size.y = 32.0 if compact else 42.0
+		select_button.custom_minimum_size.y = 28.0 if _small_layout else (32.0 if _compact_layout else 42.0)
+	_update_card_minimum_size()
 
 
 func set_fill_width(fill_width: bool) -> void:
@@ -116,8 +131,8 @@ func set_layout_width(width: float) -> void:
 
 
 func _update_card_minimum_size() -> void:
-	var base_width := 180.0 if _compact_layout else 220.0
-	var base_height := 272.0 if _compact_layout else 360.0
+	var base_width := 160.0 if _small_layout else (180.0 if _compact_layout else 220.0)
+	var base_height := SMALL_MINIMUM_HEIGHT if _small_layout else (COMPACT_MINIMUM_HEIGHT if _compact_layout else NORMAL_MINIMUM_HEIGHT)
 	custom_minimum_size = Vector2(maxf(base_width, _layout_width), base_height)
 
 
@@ -200,7 +215,7 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 
 
 func _get_name_font_size() -> int:
-	var base_size := 8 if _compact_layout else 9
+	var base_size := 7 if _small_layout else (8 if _compact_layout else 9)
 	if str(offer_data.get("offer_type", "")) == "relic":
 		return roundi(float(base_size) * 1.2)
 	return base_size

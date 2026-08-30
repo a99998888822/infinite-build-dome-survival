@@ -4,6 +4,7 @@ class_name CombatEffectWorld
 const FIRE_SEED_SCRIPT = preload("res://scripts/effects/fire_seed.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const LIGHTNING_EFFECT_SCRIPT = preload("res://scripts/effects/lightning_particle_effect.gd")
+const ELECTRIC_SPARK_EFFECT_SCRIPT = preload("res://scripts/effects/electric_spark_effect.gd")
 
 
 static func trigger_weapon_impact(
@@ -20,6 +21,8 @@ static func trigger_weapon_impact(
 		FIRE_SEED_SCRIPT.spawn(parent, hit_position, weapon, damage_event, direction, str(fire_instance.get("item_instance_id", "")))
 	for explosion_instance in weapon.get_effect_instances("explosion"):
 		EXPLOSION_EFFECT_SCRIPT.spawn(parent, hit_position, weapon, damage_event, str(explosion_instance.get("item_instance_id", "")))
+	for spark_instance in weapon.get_effect_instances("electric_spark"):
+		ELECTRIC_SPARK_EFFECT_SCRIPT.spawn(parent, hit_position, weapon, damage_event, str(spark_instance.get("item_instance_id", "")))
 	if body is EnemyController:
 		for lightning_instance in weapon.get_effect_instances("lightning"):
 			LIGHTNING_EFFECT_SCRIPT.spawn(parent, hit_position, body, weapon, damage_event, direction, str(lightning_instance.get("item_instance_id", "")))

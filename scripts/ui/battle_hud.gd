@@ -538,7 +538,10 @@ func get_modal_safe_rect() -> Rect2:
 	var viewport := get_viewport()
 	if viewport == null:
 		return Rect2()
-	var viewport_size := Vector2(viewport.size)
+	# HUD controls are positioned in the stretched logical canvas.  Using the
+	# physical window size here makes modal panels too tall whenever it differs
+	# from the 1152x648 design canvas.
+	var viewport_size := viewport.get_visible_rect().size
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
 	var left := MODAL_SAFE_EDGE_MARGIN

@@ -18,6 +18,7 @@ const WEAPON_STRIP_TOP_OFFSET: float = 12.0
 const WEAPON_STRIP_HEIGHT: float = 62.0
 const OFFER_LAYOUT_SLOTS: int = 3
 const DRAWER_RESERVED_RIGHT: float = 336.0
+const MAX_PANEL_HEIGHT: float = 620.0
 
 var payload: Dictionary = {}
 var _offer_cards: Array[RewardOption] = []
@@ -196,7 +197,6 @@ func _refresh_visual() -> void:
 	_clear_cards()
 	if offer_grid == null:
 		return
-	var compact := _is_compact_layout()
 	var index := 0
 	for offer in payload.get("offers", []):
 		if not (offer is Dictionary):
@@ -206,7 +206,7 @@ func _refresh_visual() -> void:
 			continue
 		offer_grid.add_child(card)
 		card.configure(offer, RewardOption.ENTRY_SHOP if mode == ENTRY_SHOP else RewardOption.ENTRY_FREE)
-		card.set_compact(compact)
+		card.set_available_height(RewardOption.COMPACT_MINIMUM_HEIGHT)
 		card.set_fill_width(false)
 		card.set_bond_player(_bond_player)
 		card.selected.connect(_on_offer_selected)
@@ -338,18 +338,11 @@ func _layout_popup() -> void:
 	center_container.anchor_bottom = 0.0
 	center_container.clip_contents = true
 	var panel_width := minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), 980.0)
-	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), 500.0)
+	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_HEIGHT)
 	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
 	center_container.size = Vector2(panel_width, panel_height)
-	var compact := safe.size.x < 760.0 or safe.size.y < 620.0
 	if offer_scroll != null:
-		# Reserve space for the title, error message, footer, and panel margins.
-		# The footer must remain inside the logical viewport after viewport scaling.
-		var offer_height := clampf(panel_height - 250.0, 120.0, 300.0)
-		offer_scroll.custom_minimum_size.y = offer_height
-	for card in _offer_cards:
-		if is_instance_valid(card):
-			card.set_compact(compact)
+		offer_scroll.custom_minimum_size.y = 0.0
 	if main_panel != null:
 		main_panel.custom_minimum_size = Vector2(panel_width, panel_height)
 	if backdrop != null:
@@ -390,7 +383,9 @@ func _fit_offer_grid() -> void:
 	var separation := float(offer_grid.get_theme_constant("separation"))
 	var slot_count := maxi(cards.size(), OFFER_LAYOUT_SLOTS)
 	var slot_width := maxf((scroll_width - separation * float(slot_count - 1)) / float(slot_count), 0.0)
+	var available_height := offer_scroll.size.y
 	for card in cards:
+		card.set_available_height(available_height)
 		card.set_layout_width(slot_width)
 	offer_grid.alignment = BoxContainer.ALIGNMENT_CENTER
 	offer_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL

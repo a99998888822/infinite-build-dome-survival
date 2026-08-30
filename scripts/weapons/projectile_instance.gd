@@ -75,12 +75,13 @@ func initialize(
 		sprite.rotation = direction.angle()
 		add_child(sprite)
 
-	var trail_context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "projectile_trail")
-	_trail_emitter = PARTICLE_WORLD_SCRIPT.create_emitter(self, "projectile_trail", trail_context, {
-		"motion_type": "attached",
-		"particle_rate": 1.0 / TRAIL_INTERVAL_SECONDS,
-		"direction": -direction,
-	})
+	if _split_depth == 0:
+		var trail_context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "projectile_trail")
+		_trail_emitter = PARTICLE_WORLD_SCRIPT.create_emitter(self, "projectile_trail", trail_context, {
+			"motion_type": "attached",
+			"particle_rate": 1.0 / TRAIL_INTERVAL_SECONDS,
+			"direction": -direction,
+		})
 
 	body_entered.connect(_on_body_entered)
 	return true
@@ -96,7 +97,6 @@ func _physics_process(delta: float) -> void:
 	remaining_distance -= step
 	if remaining_distance <= 0.0:
 		_destroy()
-
 
 func _on_body_entered(body: Node) -> void:
 	if not active:

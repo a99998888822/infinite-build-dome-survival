@@ -27,13 +27,13 @@ const RARITY_COLOR_CODES: Dictionary = {
 }
 const CATEGORY_LABELS: Dictionary = {
 	"enchantment_scroll": "附魔卷轴",
-	"energy_gem": "能量晶石",
 	"wizard_scroll": "术士卷轴",
 }
 const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
 	"explosion": "爆炸",
 	"lightning": "闪电",
+	"electric_spark": "电火花",
 	"split": "分裂",
 	"pierce": "穿透",
 }
@@ -41,6 +41,7 @@ const EFFECT_COLOR_CODES: Dictionary = {
 	"fire": "#FFAA61",
 	"explosion": "#FFD89E",
 	"lightning": "#BFE8FF",
+	"electric_spark": "#FFD15C",
 	"split": "#FF9ED7",
 	"pierce": "#9EDBFF",
 }
@@ -217,6 +218,8 @@ func _get_visual_color_name(effect_id: String) -> String:
 			return "暖金色"
 		"lightning":
 			return "冰蓝色"
+		"electric_spark":
+			return "电光黄色"
 		"split":
 			return "粉白色"
 		"pierce":

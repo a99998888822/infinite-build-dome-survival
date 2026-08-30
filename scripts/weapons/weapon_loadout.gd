@@ -9,7 +9,7 @@ signal weapon_attachment_changed(weapon_id: String, item_instance_id: String)
 const PROJECTILE_VISUAL_SCALE: float = 1.0
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
-const ATTACHABLE_ITEM_CATEGORIES: Array[String] = ["enchantment_scroll", "energy_gem", "wizard_scroll"]
+const ATTACHABLE_ITEM_CATEGORIES: Array[String] = ["enchantment_scroll", "wizard_scroll"]
 
 var owner_player: PlayerController = null
 var weapon_instances: Array[WeaponInstance] = []

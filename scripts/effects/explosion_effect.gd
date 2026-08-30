@@ -7,12 +7,6 @@ const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructibl
 
 const BASE_DAMAGE_RADIUS: float = 96.0
 
-const MATERIAL_PARTICLE_PROFILES: Dictionary = {
-	"soil": "explosion_soil_debris",
-	"wood": "explosion_wood_debris",
-	"stone": "explosion_stone_debris",
-}
-
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _hit_position: Vector2 = Vector2.ZERO
@@ -43,9 +37,7 @@ func _detonate() -> void:
 	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)
-	var flash_color: Color = context.get_tinted_color(Color(1.0, 0.74, 0.25, 1.0))
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_spark", _hit_position, Vector2.ZERO, 1.0, flash_color, particle_parameters)
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_debris", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
 	_emit_material_debris(destroyed_materials, particle_parameters)
@@ -53,12 +45,11 @@ func _detonate() -> void:
 
 
 func _build_particle_parameters(context: RefCounted, radius: float) -> Dictionary:
-	var area_size_multiplier: float = float(context.get_resolved_parameter("area_size_multiplier", 1.0))
 	var particle_rate := maxf(context.get_resolved_parameter("particle_rate", 1.0), 0.0)
 	return {
 		"count_multiplier": context.get_resolved_parameter("count_multiplier", 1.0) * particle_rate,
 		"speed_multiplier": context.get_resolved_parameter("speed_multiplier", 1.0),
-		"size_multiplier": context.get_resolved_parameter("size_multiplier", 1.0) * area_size_multiplier,
+		"size_multiplier": context.get_resolved_parameter("size_multiplier", 1.0),
 		"lifetime_multiplier": context.get_resolved_parameter("lifetime_multiplier", 1.0),
 		"alpha_multiplier": context.get_resolved_parameter("alpha_multiplier", 1.0),
 		"glow_multiplier": context.get_resolved_parameter("glow_multiplier", 1.0),
@@ -106,13 +97,8 @@ func _damage_terrain(radius: float) -> Array[Dictionary]:
 
 
 func _emit_material_debris(destroyed_materials: Array[Dictionary], particle_parameters: Dictionary) -> void:
-	for material_data in destroyed_materials:
-		var material_id := str(material_data.get("material_id", "soil"))
-		var profile_id := str(MATERIAL_PARTICLE_PROFILES.get(material_id, MATERIAL_PARTICLE_PROFILES["soil"]))
-		var material_position: Vector2 = material_data.get("position", _hit_position)
-		var debris_direction := _hit_position.direction_to(material_position)
-		if debris_direction.is_zero_approx():
-			debris_direction = Vector2.UP
-		var material_parameters := particle_parameters.duplicate(true)
-		material_parameters["count_multiplier"] = float(material_parameters.get("count_multiplier", 1.0)) * 0.35
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), profile_id, material_position, debris_direction, 0.8, Color.TRANSPARENT, material_parameters)
+	if destroyed_materials.is_empty():
+		return
+	var material_parameters := particle_parameters.duplicate(true)
+	material_parameters["count_multiplier"] = float(material_parameters.get("count_multiplier", 1.0)) * minf(float(destroyed_materials.size()) * 0.08, 0.5)
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, material_parameters)

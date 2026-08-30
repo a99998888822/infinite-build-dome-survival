@@ -126,7 +126,7 @@ MVP 支持三种形状：
 2. 在 BattleRoot 下新增 DestructibleTerrain 节点。
 3. 第一张测试地图只放置有限数量的 soil、wood、stone 分块。
 4. 将现有 ProjectileInstance 的碰撞查询扩展为敌人或地形二选一。
-5. 破坏后由 ParticleWorld 使用 impact_terrain 或 explosion_debris 预设表现碎片。
+5. 破坏后由 ParticleWorld 使用 impact_terrain 或 explosion_burst 预设表现碎片。
 6. 初期不改写营地障碍物场景，战斗可破坏地形使用独立的战斗地图数据。
 
 ## 6. MVP 材质规则
@@ -158,7 +158,7 @@ MVP 不把每个地形单元都设计成掉落源，只在以下情况生成掉�
 2. 破坏特殊材质块。
 3. 破坏预设宝箱或矿脉节点。
 
-地形碎屑属于视觉粒子，不进入拾取系统；能量晶石、术士卷轴等正式掉落由 DestructionSystem 发出统一的 drop_requested 事件，再由现有 DropRewardSystem 决定实例化哪种拾取物。
+地形碎屑属于视觉粒子，不进入拾取系统；术士卷轴等正式掉落由 DestructionSystem 发出统一的 drop_requested 事件，再由现有 DropRewardSystem 决定实例化哪种拾取物。
 
 ## 8. 性能与安全边界
 

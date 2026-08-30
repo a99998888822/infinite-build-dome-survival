@@ -105,9 +105,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 63.999996
-offset_top = -85.000015
+offset_top = -55.000015
 offset_right = 64.0
-offset_bottom = -85.000015
+offset_bottom = -55.000015
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.8, 0.8)
@@ -133,7 +133,7 @@ anchor_bottom = 1.0
 
 [node name="ButtonRow" type="VBoxContainer" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter" unique_id=1554262281]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="StartBattleShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=304726107]
 custom_minimum_size = Vector2(150, 42)
@@ -267,9 +267,21 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "退出"
 flat = true
 
-[node name="MenuHintLabel" type="Label" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1917742012]
-custom_minimum_size = Vector2(520, 38)
+[node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MenuHintLabel" type="Label" parent="StartPage/ContentMargin/ContentColumn/BottomSpacer" unique_id=1917742012]
+custom_minimum_size = Vector2(520, 38)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.45, 0.65, 0.61, 0.9)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
@@ -278,11 +290,6 @@ text = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
-size_flags_vertical = 3
 
 [node name="CharacterSelectPage" type="Control" parent="." unique_id=737550973]
 visible = false
