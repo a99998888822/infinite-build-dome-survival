@@ -201,6 +201,39 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "天赋"
 flat = true
 
+[node name="SettingsShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow"]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+
+[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("2_a7kih")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SettingsButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
+text = "设置"
+flat = true
+
 [node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
 custom_minimum_size = Vector2(150, 42)
 layout_mode = 2

@@ -131,8 +131,8 @@ func set_bus_volume(bus_name: String, volume_percent: int, persist: bool = true)
 
 func _apply_saved_volume_settings() -> void:
 	_apply_bus_volume(BUS_MASTER, CampProgression.get_volume_setting("master_volume", 100))
-	_apply_bus_volume(BUS_BGM, CampProgression.get_volume_setting("bgm_volume", 80))
-	_apply_bus_volume(BUS_SFX, CampProgression.get_volume_setting("sfx_volume", 90))
+	_apply_bus_volume(BUS_BGM, CampProgression.get_volume_setting("bgm_volume", 100))
+	_apply_bus_volume(BUS_SFX, CampProgression.get_volume_setting("sfx_volume", 100))
 
 
 func _apply_bus_volume(bus_name: String, volume_percent: int) -> void:

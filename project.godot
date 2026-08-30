@@ -22,11 +22,11 @@ GameGlobal="*res://autoloads/game_global.gd"
 CampProgression="*res://autoloads/camp_progression.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
 ZoneProgression="*res://autoloads/zone_progression.gd"
+WindowSettings="*res://autoloads/window_settings.gd"
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/mode="viewport"
 
 [gui]
 

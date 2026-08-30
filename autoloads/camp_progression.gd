@@ -13,8 +13,8 @@ const TEMP_PATH: String = "user://saves/profile_01.tmp.json"
 const LEGACY_SAVE_PATH: String = "user://camp_progression.json"
 const DEFAULT_VOLUME_SETTINGS: Dictionary = {
 	"master_volume": 100,
-	"bgm_volume": 80,
-	"sfx_volume": 90,
+	"bgm_volume": 100,
+	"sfx_volume": 100,
 }
 
 var state: Dictionary = {}

@@ -338,12 +338,15 @@ func _layout_popup() -> void:
 	center_container.anchor_bottom = 0.0
 	center_container.clip_contents = true
 	var panel_width := minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), 980.0)
-	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), 620.0)
+	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), 500.0)
 	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
 	center_container.size = Vector2(panel_width, panel_height)
 	var compact := safe.size.x < 760.0 or safe.size.y < 620.0
 	if offer_scroll != null:
-		offer_scroll.custom_minimum_size.y = 272.0 if compact else 350.0
+		# Reserve space for the title, error message, footer, and panel margins.
+		# The footer must remain inside the logical viewport after viewport scaling.
+		var offer_height := clampf(panel_height - 250.0, 120.0, 300.0)
+		offer_scroll.custom_minimum_size.y = offer_height
 	for card in _offer_cards:
 		if is_instance_valid(card):
 			card.set_compact(compact)

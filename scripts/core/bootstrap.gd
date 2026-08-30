@@ -634,7 +634,7 @@ func _run_audio_checks() -> bool:
 	passed = _print_check_result("audio menu bgm playback", bgm_played and AudioManager.current_bgm_id == "menu") and passed
 	var weapon_sfx_played := AudioManager.play_weapon_hit_sfx("weapon_void_blade", 0)
 	passed = _print_check_result("weapon hit sfx missing fallback", weapon_sfx_played == false) and passed
-	AudioManager.set_bus_volume(AudioManager.BUS_SFX, 90, false)
+	AudioManager.set_bus_volume(AudioManager.BUS_SFX, 100, false)
 	passed = _print_check_result("audio volume set fallback", AudioServer.get_bus_index(AudioManager.BUS_SFX) >= 0) and passed
 	return passed
 

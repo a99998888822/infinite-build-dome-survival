@@ -6,7 +6,12 @@
       {
         "enemy_id": "enemy_mutated_grub",
         "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "count_per_spawn": 6
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1800,
+        "count_per_spawn": 4
       }
     ]
   },
@@ -16,8 +21,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1185,
+        "count_per_spawn": 6
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1775,
+        "count_per_spawn": 4
       }
     ]
   },
@@ -27,8 +37,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1170,
+        "count_per_spawn": 6
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1750,
+        "count_per_spawn": 4
       }
     ]
   },
@@ -38,8 +53,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1155,
+        "count_per_spawn": 7
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1725,
+        "count_per_spawn": 4
       }
     ]
   },
@@ -49,8 +69,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1140,
+        "count_per_spawn": 7
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1700,
+        "count_per_spawn": 5
       }
     ]
   },
@@ -60,8 +85,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1125,
+        "count_per_spawn": 7
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1675,
+        "count_per_spawn": 5
       }
     ]
   },
@@ -71,8 +101,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1110,
+        "count_per_spawn": 8
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1650,
+        "count_per_spawn": 5
       }
     ]
   },
@@ -82,8 +117,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1095,
+        "count_per_spawn": 8
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1625,
+        "count_per_spawn": 5
       }
     ]
   },
@@ -93,8 +133,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1080,
+        "count_per_spawn": 8
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1600,
+        "count_per_spawn": 6
       }
     ]
   },
@@ -104,8 +149,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1065,
+        "count_per_spawn": 9
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1575,
+        "count_per_spawn": 6
       }
     ]
   },
@@ -115,8 +165,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1050,
+        "count_per_spawn": 9
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1550,
+        "count_per_spawn": 6
       }
     ]
   },
@@ -126,8 +181,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1035,
+        "count_per_spawn": 9
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1525,
+        "count_per_spawn": 6
       }
     ]
   },
@@ -137,8 +197,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1020,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1500,
+        "count_per_spawn": 7
       }
     ]
   },
@@ -148,8 +213,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 1005,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1475,
+        "count_per_spawn": 7
       }
     ]
   },
@@ -159,8 +229,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 990,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1450,
+        "count_per_spawn": 7
       }
     ]
   },
@@ -170,8 +245,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 975,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1425,
+        "count_per_spawn": 7
       }
     ]
   },
@@ -181,8 +261,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 960,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1400,
+        "count_per_spawn": 8
       }
     ]
   },
@@ -192,8 +277,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 945,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1375,
+        "count_per_spawn": 8
       }
     ]
   },
@@ -203,8 +293,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 930,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1350,
+        "count_per_spawn": 8
       }
     ]
   },
@@ -214,8 +309,13 @@
     "spawn_groups": [
       {
         "enemy_id": "enemy_mutated_grub",
-        "spawn_interval_ms": 1200,
-        "count_per_spawn": 3
+        "spawn_interval_ms": 915,
+        "count_per_spawn": 10
+      },
+      {
+        "enemy_id": "enemy_mutated_grub",
+        "spawn_interval_ms": 1325,
+        "count_per_spawn": 8
       }
     ]
   }
