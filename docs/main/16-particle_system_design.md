@@ -230,7 +230,7 @@ MVP 暂不实现：
 - Each chained hit emits a white flash, radial white sparks and a particle-only caterpillar-like paralysis visual; the gameplay stun is a separate short-lived enemy status.
 - `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
 - Enchantment scrolls and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
-- Each dropped lightning scroll rolls independent instance parameters: `chain_count` 2–5 follow-up transfers, `chain_interval` 0.04–0.10 seconds, and `stun_duration` 0.45–1.10 seconds; the starter scroll remains fixed at 3, 0.06 seconds and 0.70 seconds.
+- Each dropped lightning scroll rolls independent instance parameters: `chain_count` 2–5 follow-up transfers, `chain_interval` 0.08–0.16 seconds, and `stun_duration` 0.45–1.10 seconds; the starter scroll remains fixed at 3, 0.10 seconds and 0.70 seconds.
 - The `scroll_electric_spark` enchantment marks the projectile impact position with a rotating yellow dashed ring, waits 0.5 seconds, then calls a high-altitude pixel lightning strike and damages enemies inside the marked radius.
 - This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.
 

@@ -100,7 +100,7 @@
   {
     "id": "scroll_lightning",
     "display_name": "闪电附魔卷轴",
-    "description": "命中后释放闪电。基础为连续传递3次、间隔0.06秒、麻痹0.70秒；掉落实例会独立随机。",
+    "description": "命中后释放闪电。基础为连续传递3次、间隔0.10秒、麻痹0.70秒；掉落实例会独立随机。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
@@ -108,7 +108,7 @@
     ],
     "effect_parameters": {
       "chain_count": 3,
-      "chain_interval": 0.06,
+      "chain_interval": 0.10,
       "stun_duration": 0.7
     },
     "modifiers": [
@@ -145,8 +145,8 @@
       },
       {
         "channel": "chain_interval",
-        "min": 0.04,
-        "max": 0.1,
+        "min": 0.08,
+        "max": 0.16,
         "step": 0.01
       },
       {

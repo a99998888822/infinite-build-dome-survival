@@ -5,10 +5,10 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
-const CHAIN_DISPLAY_ECHO_DELAY: float = 0.08
+const CHAIN_DISPLAY_ECHO_DELAY: float = 0.12
 const CHAIN_CONTROL_POINT_SPACING: float = 24.0
 const CHAIN_CONTROL_POINT_JITTER: float = 26.0
-const BOLT_PULSE_LIFETIME: float = 0.26
+const BOLT_PULSE_LIFETIME: float = 0.38
 const BOLT_CORE_PARTICLE_SIZE: Vector2 = Vector2(4.0, 2.0)
 const BOLT_COMPANION_PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
 const BOLT_GLOW_PARTICLE_SIZE: float = 5.0
@@ -52,7 +52,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
 		"damage": maxf(float(damage_event.damage) * 0.55, 1.0),
 		"chain_count": 3.0,
-		"chain_interval": 0.06,
+		"chain_interval": 0.10,
 		"jump_radius": 170.0,
 		"stun_duration": 0.7,
 		"detonate_burning": 1.0,
@@ -136,7 +136,7 @@ func _schedule_next(origin: Vector2) -> void:
 	if next_target == null:
 		_finish_chain()
 		return
-	var chain_interval := clampf(_context.get_resolved_parameter("chain_interval", 0.06), 0.01, 0.5)
+	var chain_interval := clampf(_context.get_resolved_parameter("chain_interval", 0.10), 0.02, 0.5)
 	get_tree().create_timer(chain_interval).timeout.connect(Callable(self, "_strike_chain").bind(next_target, origin))
 
 

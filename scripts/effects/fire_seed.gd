@@ -42,8 +42,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		seed._field_strength = field_strength
 		seed._land_position = hit_position + Vector2.from_angle(randf_range(0.0, TAU)) * randf_range(8.0, 34.0)
 		var launch_direction := safe_direction.rotated(randf_range(-PI * 0.8, PI * 0.8))
-		seed._velocity = launch_direction * randf_range(30.0, 92.0) + Vector2(0.0, -randf_range(12.0, 52.0))
-		seed._lifetime = randf_range(0.16, 0.30)
+		seed._velocity = launch_direction * randf_range(30.0, 92.0) + Vector2(0.0, -randf_range(80.0, 180.0))
+		seed._lifetime = randf_range(0.34, 0.56)
 
 
 func _process(delta: float) -> void:

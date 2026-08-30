@@ -91,13 +91,13 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 	"fire_pool_flame": {
 		"count": 2,
-		"speed": Vector2(12.0, 48.0),
+		"speed": Vector2(26.0, 76.0),
 		"gravity": Vector2(0.0, -1.0),
-		"gravity_strength": Vector2(16.0, 46.0),
+		"gravity_strength": Vector2(20.0, 60.0),
 		"drag": Vector2(12.0, 30.0),
 		"size_min": Vector2(6.0, 6.0),
 		"size_max": Vector2(12.0, 12.0),
-		"lifetime": Vector2(0.30, 0.62),
+		"lifetime": Vector2(0.38, 0.78),
 		"spread_radians": PI * 0.30,
 		"initial_radius": 4.0,
 		"spawn_shape": "ellipse",
@@ -114,7 +114,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"end_colors": [Color(1.0, 0.28, 0.01, 1.0), Color(1.0, 0.58, 0.02, 1.0), Color(1.0, 0.82, 0.16, 1.0)],
 		"fire_distribution": "triangle",
 		"fire_half_width": 32.0,
-		"fire_height": 42.0,
+		"fire_height": 90.0,
+		"fire_rise_multiplier": 2.2,
 		"fire_edge_power": 0.85,
 		"fire_center_lifetime": Vector2(0.45, 0.75),
 		"fire_edge_lifetime": Vector2(0.18, 0.35),
@@ -123,13 +124,13 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 	"fire_pool_base": {
 		"count": 5,
-		"speed": Vector2(4.0, 18.0),
+		"speed": Vector2(8.0, 30.0),
 		"gravity": Vector2(0.0, -1.0),
-		"gravity_strength": Vector2(3.0, 16.0),
+		"gravity_strength": Vector2(6.0, 26.0),
 		"drag": Vector2(18.0, 38.0),
 		"size_min": Vector2(4.0, 4.0),
 		"size_max": Vector2(8.0, 8.0),
-		"lifetime": Vector2(0.30, 0.55),
+		"lifetime": Vector2(0.34, 0.66),
 		"spread_radians": PI * 0.16,
 		"initial_radius": 2.0,
 		"spawn_shape": "ellipse",
@@ -142,7 +143,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"end_colors": [Color(0.90, 0.10, 0.01, 1.0), Color(1.0, 0.24, 0.01, 1.0), Color(1.0, 0.46, 0.02, 1.0)],
 		"fire_distribution": "triangle",
 		"fire_half_width": 34.0,
-		"fire_height": 34.0,
+		"fire_height": 64.0,
+		"fire_rise_multiplier": 1.8,
 		"fire_edge_power": 0.8,
 		"fire_center_lifetime": Vector2(0.40, 0.62),
 		"fire_edge_lifetime": Vector2(0.16, 0.30),
@@ -151,13 +153,13 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 	"fire_pool_tongue": {
 		"count": 3,
-		"speed": Vector2(18.0, 62.0),
+		"speed": Vector2(32.0, 96.0),
 		"gravity": Vector2(0.0, -1.0),
-		"gravity_strength": Vector2(34.0, 84.0),
+		"gravity_strength": Vector2(42.0, 100.0),
 		"drag": Vector2(20.0, 46.0),
 		"size_min": Vector2(4.0, 4.0),
 		"size_max": Vector2(9.0, 9.0),
-		"lifetime": Vector2(0.26, 0.58),
+		"lifetime": Vector2(0.34, 0.78),
 		"spread_radians": PI * 0.23,
 		"initial_radius": 3.0,
 		"spawn_shape": "ellipse",
@@ -171,7 +173,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"end_colors": [Color(1.0, 0.44, 0.01, 1.0), Color(1.0, 0.70, 0.04, 1.0), Color(1.0, 0.92, 0.24, 1.0)],
 		"fire_distribution": "triangle",
 		"fire_half_width": 34.0,
-		"fire_height": 58.0,
+		"fire_height": 120.0,
+		"fire_rise_multiplier": 2.5,
 		"fire_edge_power": 0.9,
 		"fire_center_lifetime": Vector2(0.48, 0.78),
 		"fire_edge_lifetime": Vector2(0.18, 0.34),
@@ -180,13 +183,13 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 	"fire_pool_core": {
 		"count": 3,
-		"speed": Vector2(12.0, 46.0),
+		"speed": Vector2(24.0, 74.0),
 		"gravity": Vector2(0.0, -1.0),
-		"gravity_strength": Vector2(18.0, 56.0),
+		"gravity_strength": Vector2(26.0, 70.0),
 		"drag": Vector2(18.0, 42.0),
 		"size_min": Vector2(3.0, 3.0),
 		"size_max": Vector2(7.0, 7.0),
-		"lifetime": Vector2(0.18, 0.38),
+		"lifetime": Vector2(0.28, 0.58),
 		"spread_radians": PI * 0.16,
 		"initial_radius": 2.0,
 		"spawn_shape": "ellipse",
@@ -200,7 +203,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"end_colors": [Color(1.0, 0.28, 0.01, 1.0), Color(1.0, 0.52, 0.02, 1.0), Color(1.0, 0.80, 0.10, 1.0)],
 		"fire_distribution": "triangle",
 		"fire_half_width": 26.0,
-		"fire_height": 48.0,
+		"fire_height": 92.0,
+		"fire_rise_multiplier": 2.2,
 		"fire_edge_power": 0.95,
 		"fire_center_lifetime": Vector2(0.42, 0.66),
 		"fire_edge_lifetime": Vector2(0.14, 0.28),
@@ -209,13 +213,13 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 	"fire_pool_ember": {
 		"count": 2,
-		"speed": Vector2(10.0, 38.0),
+		"speed": Vector2(20.0, 62.0),
 		"gravity": Vector2(0.0, -1.0),
-		"gravity_strength": Vector2(6.0, 22.0),
+		"gravity_strength": Vector2(10.0, 30.0),
 		"drag": Vector2(18.0, 42.0),
 		"size_min": Vector2(1.0, 1.0),
 		"size_max": Vector2(3.0, 3.0),
-		"lifetime": Vector2(0.26, 0.56),
+		"lifetime": Vector2(0.34, 0.74),
 		"spread_radians": PI * 0.8,
 		"initial_radius": 3.0,
 		"spawn_shape": "ellipse",
@@ -227,7 +231,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"end_colors": [Color(1.0, 0.30, 0.01, 1.0), Color(0.78, 0.06, 0.01, 1.0)],
 		"fire_distribution": "triangle",
 		"fire_half_width": 32.0,
-		"fire_height": 66.0,
+		"fire_height": 128.0,
+		"fire_rise_multiplier": 2.4,
 		"fire_edge_power": 1.0,
 		"fire_center_lifetime": Vector2(0.40, 0.68),
 		"fire_edge_lifetime": Vector2(0.14, 0.26),
@@ -266,7 +271,8 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"shape": "square",
 		"rotation_jitter": 0.0,
 		"spin": Vector2.ZERO,
-		"glow": 0.0,
+		"glow": 0.45,
+		"glow_shape": "circle",
 		"colors": [Color(1.0, 0.78, 0.22, 1.0)],
 	},
 	"lightning_core": {
@@ -491,6 +497,7 @@ func emit_event(event: Variant) -> void:
 		var fire_edge_ratio := 0.0
 		var fire_allowed_height := 0.0
 		var is_fire_particle := str(profile.get("fire_distribution", "")) == "triangle"
+		var fire_rise_multiplier := maxf(float(profile.get("fire_rise_multiplier", 1.0)), 1.0)
 		if is_fire_particle:
 			var fire_half_width := maxf(float(profile.get("fire_half_width", 32.0)) * spawn_extent_multiplier, 1.0)
 			var fire_height := maxf(float(profile.get("fire_height", 48.0)) * spawn_extent_multiplier, 1.0)
@@ -527,9 +534,12 @@ func emit_event(event: Variant) -> void:
 		if align_to_direction and not base_direction.is_zero_approx():
 			particle_rotation = base_direction.angle() + _random.randf_range(-rotation_jitter, rotation_jitter)
 		var initial_offset := Vector2.ZERO if is_fire_particle else direction * _random.randf_range(0.0, float(profile["initial_radius"]))
+		var particle_velocity := direction * particle_speed
+		if is_fire_particle:
+			particle_velocity.y -= maxf(-particle_velocity.y, 0.0) * (fire_rise_multiplier - 1.0)
 		_particles.append({
 			"position": spawn_position + initial_offset,
-			"velocity": direction * particle_speed,
+			"velocity": particle_velocity,
 			"gravity": Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier),
 			"drag": _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier,
 			"rotation": particle_rotation,
