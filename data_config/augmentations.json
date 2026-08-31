@@ -1,7 +1,7 @@
 [
   {
     "id": "scroll_fire",
-    "display_name": "火焰附魔卷轴",
+    "display_name": "火焰",
     "description": "命中后散落火焰种子，形成持续火焰池并施加燃烧。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
@@ -38,7 +38,7 @@
   },
   {
     "id": "scroll_explosion",
-    "display_name": "爆炸附魔卷轴",
+    "display_name": "爆裂",
     "description": "命中时引发范围爆炸和场景破坏。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -101,7 +101,7 @@
   },
   {
     "id": "scroll_lightning",
-    "display_name": "闪电附魔卷轴",
+    "display_name": "闪电",
     "description": "命中后释放闪电。基础为连续传递3次、间隔0.10秒、麻痹0.70秒；掉落实例会独立随机。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -162,7 +162,7 @@
   },
   {
     "id": "scroll_electric_spark",
-    "display_name": "电火花附魔卷轴",
+    "display_name": "电火花",
     "description": "命中后在落点留下旋转的黄色虚线圆圈，延迟0.5秒后从高空劈下闪电，在圆圈范围内造成伤害。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -208,7 +208,7 @@
   },
   {
     "id": "wizard_scroll_chain_mastery",
-    "display_name": "术士卷轴：连锁主宰",
+    "display_name": "连锁主宰",
     "description": "闪电可连锁更多目标，并引爆燃烧效果。",
     "category": "wizard_scroll",
     "rarity": "legendary",
@@ -256,7 +256,7 @@
   },
   {
     "id": "scroll_split",
-    "display_name": "分裂附魔卷轴",
+    "display_name": "分裂",
     "description": "命中敌人后分裂为多支子箭，子箭优先飞向尚未命中的敌人。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -293,7 +293,7 @@
   },
   {
     "id": "scroll_pierce",
-    "display_name": "穿透附魔卷轴",
+    "display_name": "穿透",
     "description": "投射物命中目标后仍可继续飞行，可额外命中多个敌人。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -334,7 +334,7 @@
   },
   {
     "id": "scroll_ice",
-    "display_name": "冰冻附魔卷轴",
+    "display_name": "冰冻",
     "description": "命中点生成寒冰领域，对范围内敌人造成一次伤害并减速。",
     "category": "enchantment_scroll",
     "rarity": "rare",

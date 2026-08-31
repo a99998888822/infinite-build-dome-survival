@@ -636,7 +636,7 @@ func _refresh_options(animate_rows: bool = true) -> void:
 		group_title.add_theme_font_size_override("font_size", 12)
 		group.add_child(group_title)
 		for option in options:
-			var option_row := _make_option_row(building_id, option)
+			var option_row := _make_option_row(building_id, option, animate_rows)
 			group.add_child(option_row)
 			if animate_rows:
 				_animate_option_row(option_row, total)
@@ -664,7 +664,7 @@ func _is_building_hidden(building_id: String) -> bool:
 	return HIDDEN_BUILDING_IDS.has(building_id)
 
 
-func _make_option_row(building_id: String, option: Dictionary) -> Control:
+func _make_option_row(building_id: String, option: Dictionary, animate_progress: bool = true) -> Control:
 	var row := PanelContainer.new()
 	row.add_theme_stylebox_override("panel", _option_row_style())
 	var line := HBoxContainer.new()
@@ -696,8 +696,11 @@ func _make_option_row(building_id: String, option: Dictionary) -> Control:
 	progress_bar.add_theme_stylebox_override("background", _progress_style(Color("#080b09"), Color("#4d442c")))
 	progress_bar.add_theme_stylebox_override("fill", _progress_style(GREEN.lerp(GOLD, 0.35), GOLD))
 	info.add_child(progress_bar)
-	var progress_tween := create_tween()
-	progress_tween.tween_property(progress_bar, "value", current, 0.34).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if animate_progress:
+		var progress_tween := create_tween()
+		progress_tween.tween_property(progress_bar, "value", current, 0.34).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	else:
+		progress_bar.value = current
 	line.add_child(info)
 	var buy := _make_compact_button("购买 %d" % CampProgression.get_upgrade_cost(option_id), GOLD)
 	buy.custom_minimum_size = Vector2(68, 26)
@@ -756,10 +759,16 @@ func _on_building_upgrade_pressed(source_button: Button) -> void:
 
 func _on_option_pressed(option_id: String, source_button: Button) -> void:
 	var old_level := CampProgression.get_upgrade_option_level(option_id)
+	if not CampProgression.can_purchase_upgrade(option_id):
+		_play_purchase_error(source_button)
+		return
+	# The state change rebuilds the option list; keep its existing rows visually stable.
+	_skip_next_option_animation = true
 	if CampProgression.purchase_upgrade(option_id):
 		var new_level := CampProgression.get_upgrade_option_level(option_id)
-		_play_purchase_feedback(source_button, "属性升级  Lv.%d  →  Lv.%d" % [old_level, new_level])
+		_play_purchase_feedback(source_button, "属性升级  Lv.%d  →  Lv.%d" % [old_level, new_level], true, false)
 	else:
+		_skip_next_option_animation = false
 		_play_purchase_error(source_button)
 
 
@@ -769,8 +778,8 @@ func _on_reset_pressed(source_button: Button) -> void:
 	_play_purchase_feedback(source_button, "升级已重置", false)
 
 
-func _play_purchase_feedback(source_button: Control, message: String = "升级已生效", show_coin_particles: bool = true) -> void:
-	if _flash_overlay != null:
+func _play_purchase_feedback(source_button: Control, message: String = "升级已生效", show_coin_particles: bool = true, show_page_flash: bool = true) -> void:
+	if show_page_flash and _flash_overlay != null:
 		_flash_overlay.modulate.a = 0.22
 	var origin := source_button.get_global_rect().get_center()
 	if show_coin_particles:

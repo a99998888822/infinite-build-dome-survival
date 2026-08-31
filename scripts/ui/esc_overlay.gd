@@ -312,6 +312,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 	var cell := Button.new()
 	cell.flat = true
 	cell.custom_minimum_size = RELIC_CELL_SIZE
+	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cell.focus_mode = Control.FOCUS_NONE
 	cell.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var icon_path := str(relic_data.get("icon", ""))

@@ -78,14 +78,14 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	item_instance = next_item.duplicate(true)
 	drag_enabled = allow_drag
 	custom_minimum_size = Vector2(128.0, 58.0)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_NONE
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if drag_enabled else Control.CURSOR_ARROW
 	flat = false
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_update_icon(str(item_instance.get("icon", "")))
 	var item_name := str(item_instance.get("display_name", "物品"))
-	var equipped_weapon_id := str(item_instance.get("equipped_weapon_id", ""))
-	text = "%s\n%s" % [item_name, "已装填" if not equipped_weapon_id.is_empty() else "可装填"]
+	text = item_name
 	tooltip_text = ""
 	var rarity_color: Color = RARITY_COLORS.get(str(item_instance.get("rarity", "common")), Color.WHITE)
 	add_theme_color_override("font_color", rarity_color)
@@ -158,11 +158,6 @@ func _build_tooltip() -> String:
 	var effect_names := _get_effect_names()
 	if not effect_names.is_empty():
 		lines.append("[color=#F5D76E]附加效果：[/color][color=#BFD8FF]%s[/color]" % effect_names)
-	var equipped_weapon_id := str(item_instance.get("equipped_weapon_id", ""))
-	lines.append("[color=#F5D76E]装备状态：[/color][color=%s]%s[/color]" % [
-		"#7FD88F" if not equipped_weapon_id.is_empty() else "#C7D3E4",
-		"已装填" if not equipped_weapon_id.is_empty() else "未装填",
-	])
 	_append_rolled_parameter_lines(lines)
 	for modifier in item_instance.get("modifiers", []):
 		if modifier is Dictionary:

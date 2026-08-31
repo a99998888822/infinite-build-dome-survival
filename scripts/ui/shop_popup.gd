@@ -16,7 +16,8 @@ const MODAL_BOTTOM_MARGIN: float = 14.0
 const MODAL_SIDE_MARGIN: float = 44.0
 const WEAPON_STRIP_TOP_OFFSET: float = 12.0
 const WEAPON_STRIP_HEIGHT: float = 62.0
-const OFFER_LAYOUT_SLOTS: int = 3
+const OFFER_LAYOUT_COLUMNS: int = 4
+const OFFER_VISIBLE_ROWS: int = 2
 const DRAWER_RESERVED_RIGHT: float = 336.0
 const MAX_PANEL_HEIGHT: float = 620.0
 
@@ -39,7 +40,7 @@ var _scanline_overlay: TextureRect = null
 @onready var title_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/TitleRow/TitleLabel")
 @onready var gold_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/SubtitleRow/GoldLabel")
 @onready var offer_scroll: ScrollContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll")
-@onready var offer_grid: HBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll/OfferGrid")
+@onready var offer_grid: GridContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll/OfferGrid")
 @onready var error_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/ErrorLabel")
 @onready var skip_button: Button = get_node_or_null("CenterContainer/MainPanel/Content/Footer/SkipButton")
 @onready var refresh_button: Button = get_node_or_null("CenterContainer/MainPanel/Content/Footer/RefreshButton")
@@ -57,10 +58,10 @@ func _ready() -> void:
 			get_viewport().size_changed.connect(viewport_callable)
 	if offer_scroll != null:
 		offer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		offer_scroll.get_v_scroll_bar().visible = false
+		offer_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	if offer_grid != null:
 		offer_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		offer_grid.alignment = BoxContainer.ALIGNMENT_CENTER
+		offer_grid.columns = OFFER_LAYOUT_COLUMNS
 	_update_skip_button()
 	_layout_popup()
 	hide_popup()
@@ -221,7 +222,12 @@ func _refresh_visual() -> void:
 
 func _update_gold_labels(current_gold: int) -> void:
 	if gold_label != null:
-		gold_label.text = "金币 %d" % current_gold if get_mode() == ENTRY_SHOP else "免费选择一项奖励"
+		var show_gold := get_mode() == ENTRY_SHOP
+		var subtitle_row := gold_label.get_parent() as Control
+		if subtitle_row != null:
+			subtitle_row.visible = show_gold
+		if show_gold:
+			gold_label.text = "金币 %d" % current_gold
 
 
 func _update_refresh_button() -> void:
@@ -380,14 +386,14 @@ func _fit_offer_grid() -> void:
 			cards.append(child as RewardOption)
 	if cards.is_empty():
 		return
-	var separation := float(offer_grid.get_theme_constant("separation"))
-	var slot_count := maxi(cards.size(), OFFER_LAYOUT_SLOTS)
-	var slot_width := maxf((scroll_width - separation * float(slot_count - 1)) / float(slot_count), 0.0)
+	var separation := float(offer_grid.get_theme_constant("h_separation"))
+	var row_separation := float(offer_grid.get_theme_constant("v_separation"))
+	var slot_width := maxf((scroll_width - separation * float(OFFER_LAYOUT_COLUMNS - 1)) / float(OFFER_LAYOUT_COLUMNS), 0.0)
 	var available_height := offer_scroll.size.y
+	var card_height := maxf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS), 0.0)
 	for card in cards:
-		card.set_available_height(available_height)
+		card.set_available_size(slot_width, card_height)
 		card.set_layout_width(slot_width)
-	offer_grid.alignment = BoxContainer.ALIGNMENT_CENTER
 	offer_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# The scroll container supplies the width. Do not feed the current width
 	# back into the panel's minimum-size calculation.

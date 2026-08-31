@@ -80,6 +80,7 @@ script = ExtResource("3_touch_scroll")
 
 [node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
 columns = 6
+size_flags_horizontal = 3
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 
@@ -108,6 +109,7 @@ script = ExtResource("3_touch_scroll")
 
 [node name="ItemGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll"]
 columns = 4
+size_flags_horizontal = 3
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 

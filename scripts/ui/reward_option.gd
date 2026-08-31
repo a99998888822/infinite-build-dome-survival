@@ -10,7 +10,7 @@ const ENTRY_SHOP: String = "shop"
 const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
 const NORMAL_MINIMUM_HEIGHT: float = 360.0
 const COMPACT_MINIMUM_HEIGHT: float = 272.0
-const SMALL_MINIMUM_HEIGHT: float = 216.0
+const SMALL_MINIMUM_HEIGHT: float = 156.0
 
 const OFFER_TYPE_TITLES: Dictionary = {
 	"weapon_upgrade": "武器升级",
@@ -40,6 +40,7 @@ var _hovered: bool = false
 var _button_hovered: bool = false
 var _interaction_locked: bool = false
 var _animation_tween: Tween = null
+var _hover_tween: Tween = null
 var _icon_float_tween: Tween = null
 var _rarity_glow_material: ShaderMaterial = null
 var _compact_layout: bool = false
@@ -103,21 +104,34 @@ func set_available_height(available_height: float) -> void:
 	_apply_layout_density()
 
 
+func set_available_size(available_width: float, available_height: float) -> void:
+	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT or available_width < 180.0
+	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT or available_width < 220.0
+	_apply_layout_density()
+
+
 func _apply_layout_density() -> void:
+	if not offer_data.is_empty():
+		_update_panel_style(get_color_for_rarity(str(offer_data.get("rarity", "common"))))
 	if content != null:
-		content.add_theme_constant_override("separation", 4 if _small_layout else (6 if _compact_layout else 8))
+		content.add_theme_constant_override("separation", 3 if _small_layout else (6 if _compact_layout else 8))
 	if type_badge != null:
-		type_badge.custom_minimum_size = Vector2(50.0, 16.0 if _small_layout else (18.0 if _compact_layout else 20.0))
+		type_badge.custom_minimum_size = Vector2(28.0, 12.0 if _small_layout else (18.0 if _compact_layout else 20.0))
 	if type_label != null:
-		type_label.add_theme_font_size_override("font_size", 7 if _small_layout else (8 if _compact_layout else 9))
+		type_label.add_theme_font_size_override("font_size", 9)
+	if not offer_data.is_empty():
+		var offer_type := str(offer_data.get("offer_type", ""))
+		var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
+		_update_type_style(type_color)
+		_update_type_badge_layout(offer_type)
 	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 60.0 if _small_layout else (88.0 if _compact_layout else 104.0)
+		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (88.0 if _compact_layout else 104.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
-		description_label.custom_minimum_size.y = 52.0 if _small_layout else (82.0 if _compact_layout else 104.0)
+		description_label.custom_minimum_size.y = 34.0 if _small_layout else (82.0 if _compact_layout else 104.0)
 	if select_button != null:
-		select_button.custom_minimum_size.y = 28.0 if _small_layout else (32.0 if _compact_layout else 42.0)
+		select_button.custom_minimum_size.y = 24.0
 	_update_card_minimum_size()
 
 
@@ -133,7 +147,9 @@ func set_layout_width(width: float) -> void:
 func _update_card_minimum_size() -> void:
 	var base_width := 160.0 if _small_layout else (180.0 if _compact_layout else 220.0)
 	var base_height := SMALL_MINIMUM_HEIGHT if _small_layout else (COMPACT_MINIMUM_HEIGHT if _compact_layout else NORMAL_MINIMUM_HEIGHT)
-	custom_minimum_size = Vector2(maxf(base_width, _layout_width), base_height)
+	# The popup owns the available width. Never let an extra card expand it.
+	var width := _layout_width if _layout_width > 0.0 else base_width
+	custom_minimum_size = Vector2(width, base_height)
 
 
 func set_interaction_locked(locked: bool) -> void:
@@ -210,6 +226,10 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 		select_button.text = get_button_text_for_offer(offer_data, entry_mode, explicit_cost)
 		select_button.icon = COIN_TEXTURE if entry_mode == ENTRY_SHOP else null
 		select_button.expand_icon = entry_mode == ENTRY_SHOP
+		if entry_mode == ENTRY_SHOP:
+			select_button.add_theme_constant_override("icon_max_width", 11)
+		else:
+			select_button.remove_theme_constant_override("icon_max_width")
 		_update_button_style(rarity_color)
 	_update_icon(str(offer_data.get("icon", "")))
 
@@ -217,7 +237,7 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 func _get_name_font_size() -> int:
 	var base_size := 7 if _small_layout else (8 if _compact_layout else 9)
 	if str(offer_data.get("offer_type", "")) == "relic":
-		return roundi(float(base_size) * 1.2)
+		return 10
 	return base_size
 
 
@@ -227,10 +247,10 @@ func _update_panel_style(rarity_color: Color) -> void:
 	style.border_color = rarity_color
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(0)
-	style.content_margin_left = 12.0
-	style.content_margin_top = 10.0
-	style.content_margin_right = 12.0
-	style.content_margin_bottom = 10.0
+	style.content_margin_left = 6.0 if _small_layout else 12.0
+	style.content_margin_top = 4.0 if _small_layout else 10.0
+	style.content_margin_right = 6.0 if _small_layout else 12.0
+	style.content_margin_bottom = 4.0 if _small_layout else 10.0
 	style.shadow_color = Color(0.0, 0.0, 0.0, 0.38)
 	style.shadow_size = 5
 	add_theme_stylebox_override("panel", style)
@@ -244,17 +264,17 @@ func _update_type_style(type_color: Color) -> void:
 	style.border_color = type_color
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(0)
-	style.content_margin_left = 8.0
-	style.content_margin_top = 3.0
-	style.content_margin_right = 8.0
-	style.content_margin_bottom = 3.0
+	style.content_margin_left = 2.0 if _small_layout else 8.0
+	style.content_margin_top = 0.0 if _small_layout else 3.0
+	style.content_margin_right = 2.0 if _small_layout else 8.0
+	style.content_margin_bottom = 0.0 if _small_layout else 3.0
 	type_badge.add_theme_stylebox_override("panel", style)
 
 
 func _update_type_badge_layout(offer_type: String) -> void:
 	if type_badge == null:
 		return
-	var badge_width := 32.0
+	var badge_width := 28.0
 	if offer_type == "new_weapon":
 		badge_width = 42.0
 	elif offer_type == "weapon_upgrade":
@@ -373,24 +393,42 @@ func _build_description_text(offer: Dictionary) -> String:
 
 
 func _on_card_mouse_entered() -> void:
-	if _interaction_locked:
-		return
-	_hovered = true
-	pivot_offset = size * 0.5
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", Vector2(1.025, 1.025), 0.12)
-	_show_bond_tooltip()
-	stat_preview_requested.emit(offer_data.duplicate(true))
+	_set_card_hovered(true)
 
 
 func _on_card_mouse_exited() -> void:
-	_hovered = false
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", Vector2.ONE, 0.12)
-	_hide_bond_tooltip()
-	call_deferred("_clear_stat_preview_if_not_hovered")
+	call_deferred("_refresh_card_hover_from_pointer")
+
+
+func _refresh_card_hover_from_pointer() -> void:
+	var pointer_inside := Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position())
+	_set_card_hovered(pointer_inside)
+
+
+func _set_card_hovered(hovered: bool) -> void:
+	if _hovered == hovered:
+		return
+	if _interaction_locked and hovered:
+		return
+	_hovered = hovered
+	if _hover_tween != null and _hover_tween.is_valid():
+		_hover_tween.kill()
+	_hover_tween = create_tween()
+	_hover_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if _hovered:
+		z_index = 10
+		pivot_offset = size * 0.5
+		_hover_tween.tween_property(self, "scale", Vector2(1.025, 1.025), 0.12)
+		_show_bond_tooltip()
+		stat_preview_requested.emit(offer_data.duplicate(true))
+	else:
+		_hover_tween.tween_property(self, "scale", Vector2.ONE, 0.12)
+		_hover_tween.tween_callback(func() -> void:
+			if not _hovered:
+				z_index = 0
+		)
+		_hide_bond_tooltip()
+		call_deferred("_clear_stat_preview_if_not_hovered")
 
 
 func _clear_stat_preview_if_not_hovered() -> void:
@@ -475,13 +513,12 @@ func _on_select_button_mouse_entered() -> void:
 	if _interaction_locked:
 		return
 	_button_hovered = true
-	if not _hovered:
-		stat_preview_requested.emit(offer_data.duplicate(true))
+	_set_card_hovered(true)
 
 
 func _on_select_button_mouse_exited() -> void:
 	_button_hovered = false
-	call_deferred("_clear_stat_preview_if_not_hovered")
+	call_deferred("_refresh_card_hover_from_pointer")
 
 
 func _on_select_button_pressed() -> void:

@@ -28,6 +28,7 @@ var _trail_emitter: Node2D = null
 var _plasma_contact_started: bool = false
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
+var _plasma_rotation: float = 0.0
 
 
 func initialize(
@@ -61,6 +62,7 @@ func initialize(
 	_plasma_contact_started = false
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
+	_plasma_rotation = direction.angle()
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -98,8 +100,10 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	if _is_plasma_projectile() and _plasma_contact_started:
-		_process_plasma_contact(delta)
+	if _is_plasma_projectile():
+		_plasma_rotation += float(weapon.weapon_data.get("plasma_rotation_speed", 4.0)) * delta
+		if _plasma_contact_started:
+			_process_plasma_contact(delta)
 		queue_redraw()
 	var step := speed * delta
 	global_position += direction * step
@@ -197,18 +201,33 @@ func _process_plasma_tick() -> void:
 func _draw() -> void:
 	if not _is_plasma_projectile():
 		return
-	var pulse := 1.0 + sin(Time.get_ticks_msec() * 0.018) * 0.08
-	draw_circle(Vector2.ZERO, 11.0 * pulse, Color(0.55, 0.86, 1.0, 0.16))
-	draw_circle(Vector2.ZERO, 7.0 * pulse, Color.WHITE)
-	draw_circle(Vector2.ZERO, 4.0, Color(0.82, 0.96, 1.0, 1.0))
-	for arc_index in range(5):
-		var start := float(arc_index) * TAU / 5.0 + Time.get_ticks_msec() * 0.0008
+	var time := Time.get_ticks_msec() * 0.001
+	var base_radius := maxf(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), 8.0)
+	var pulse := 1.0 + sin(time * 11.0) * 0.09
+	var jitter := Vector2(sin(time * 31.0), cos(time * 37.0)) * base_radius * 0.045
+	draw_circle(jitter, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))
+	draw_circle(jitter, base_radius * pulse, Color(0.55, 0.86, 1.0, 0.24))
+	draw_circle(jitter, base_radius * 0.62 * pulse, Color(0.88, 0.97, 1.0, 0.96))
+	draw_circle(jitter, base_radius * 0.32, Color(0.58, 0.90, 1.0, 1.0))
+	var arc_count := clampi(int(weapon.weapon_data.get("plasma_arc_count", 4)), 2, 8)
+	var arc_segments := clampi(int(weapon.weapon_data.get("plasma_arc_segments", 12)), 8, 24)
+	var arc_jitter := maxf(float(weapon.weapon_data.get("plasma_arc_jitter", 3.0)), 0.0)
+	for arc_index in range(arc_count):
+		var arc_phase := float(arc_index) * TAU / float(arc_count)
+		var ring_rotation := _plasma_rotation * (1.0 + float(arc_index) * 0.08) + arc_phase
+		var major_radius := base_radius * (1.02 + sin(time * 4.0 + arc_phase) * 0.10)
+		var minor_radius := major_radius * (0.38 + 0.10 * sin(time * 3.0 + arc_phase * 1.7))
 		var points := PackedVector2Array()
-		for point_index in range(5):
-			var ratio := float(point_index) / 4.0
-			var radius := 9.0 + sin(Time.get_ticks_msec() * 0.02 + float(arc_index * 7 + point_index)) * 2.0
-			points.append(Vector2.from_angle(start + ratio * 0.86) * radius)
-		draw_polyline(points, Color(0.72, 0.93, 1.0, 0.92), 1.5, true)
+		for point_index in range(arc_segments + 1):
+			var ratio := float(point_index) / float(arc_segments)
+			var angle := ratio * TAU
+			var radial_noise := sin(time * 29.0 + arc_phase * 5.0 + float(point_index) * 4.7) * arc_jitter
+			var tangent_noise := sin(time * 37.0 + arc_phase * 3.0 + float(point_index) * 8.3) * arc_jitter * 0.34
+			var point := Vector2(cos(angle) * (major_radius + radial_noise), sin(angle) * (minor_radius + radial_noise * 0.45))
+			point += Vector2(-sin(angle), cos(angle)) * tangent_noise
+			points.append(jitter + point.rotated(ring_rotation))
+		draw_polyline(points, Color(0.28, 0.72, 1.0, 0.24), 4.0, true)
+		draw_polyline(points, Color(0.82, 0.96, 1.0, 0.96), 1.5, true)
 
 
 func _get_target_hit_limit() -> int:

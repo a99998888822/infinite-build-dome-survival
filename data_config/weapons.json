@@ -106,8 +106,8 @@
     "max_level": 5,
     "attack_interval_ms": 1500,
     "attack_range": 460,
-    "hit_radius": 12,
-    "projectile_speed": 100,
+    "hit_radius": 36,
+    "projectile_speed": 140,
     "spread_angle": 0,
     "projectile_behavior": "plasma",
     "plasma_tick_interval": 0.1,
@@ -120,7 +120,12 @@
     },
     "level_upgrades": {},
     "attachment_slots": 2,
-    "plasma_contact_speed": 10,
-    "plasma_damage_radius": 48
+    "plasma_contact_speed": 80,
+    "plasma_damage_radius": 112,
+    "plasma_visual_radius": 24,
+    "plasma_rotation_speed": 5.5,
+    "plasma_arc_count": 4,
+    "plasma_arc_segments": 16,
+    "plasma_arc_jitter": 4.5
   }
 ]
