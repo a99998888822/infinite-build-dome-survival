@@ -1,0 +1,66 @@
+data_config/camp_buildings.json
+  s_d918eddc95739e::t_96c50beec52fe1 107,484
+  s_d918eddc95739e::t_de13db7b2b92e8 88-89,98-99,108-109,190,309-310,426,434,436,444-446,455-456,466,474-475,485-486
+data_config/augmentations.json
+  s_d918eddc95739e::t_eec148e602102e 113,338
+  s_d918eddc95739e::t_fbe05cf55a62c9 36-37,99-100,160-161,206-207,254-255,291-292,332-333,367-368
+  s_d918eddc95739e::t_86182924b2b68c 334-337,339-366
+scripts/battle/battle_root.gd
+  s_d918eddc95739e::t_44dc5d643483e9 12-13,17,22-43,133-139
+  s_d918eddc95739e::t_c57784e92db765 140-141
+scripts/core/game_scene_director.gd
+  s_d918eddc95739e::t_44dc5d643483e9 102-103
+scripts/enemies/enemy_controller.gd
+  s_d918eddc95739e::t_1b308fed34c11a 52-53,80-82,119-120,156-162,164-165,389-390
+scripts/pickups/augmentation_pickup.gd
+  s_d918eddc95739e::t_4fdbe891db1d8c 24,33-38,48,93-105,108-110
+autoloads/camp_progression.gd
+  s_d918eddc95739e::t_34555366765a22 593,607
+scripts/effects/ice_field_effect.gd
+  s_d918eddc95739e::t_eec148e602102e 31
+  s_d918eddc95739e::t_86182924b2b68c 3-30,32-67
+  s_d918eddc95739e::t_6b3a05d011550c 1-2
+scripts/core/game_root.gd
+  s_d918eddc95739e::t_ee311796b0ce92 29
+  s_d918eddc95739e::t_44dc5d643483e9 6,13-16,91-94,114-138
+  s_d918eddc95739e::t_96fc47a43f9c27 139-140
+data_config/weapons.json
+  s_d918eddc95739e::t_86182924b2b68c 91-95,97-109,111-112,114-121
+  s_d918eddc95739e::t_fbe05cf55a62c9 96
+  s_d918eddc95739e::t_eec148e602102e 110,113,122-124
+scripts/effects/fire_patch.gd
+  s_d918eddc95739e::t_49f0bed2f63c3e 67,209-210
+scripts/effects/particle_world.gd
+  s_d918eddc95739e::t_91a727778c4271 278-296
+scripts/ui/item_inventory_card.gd
+  s_d918eddc95739e::t_4fdbe891db1d8c 63,84-85,97-110
+scripts/debug/ui_visual_audit.gd
+  s_d918eddc95739e::t_7a64e72869cf33 146-147
+scripts/weapons/projectile_instance.gd
+  s_d918eddc95739e::t_eec148e602102e 28,61,101,151,153-154,167,170-188,190,192
+  s_d918eddc95739e::t_1b308fed34c11a 29-30,62-63,102-103,113-115,146-150,152,155-166,168-169,189,191,193-213
+scenes/pickups/augmentation_pickup.tscn
+  s_d918eddc95739e::t_4fdbe891db1d8c 6
+scripts/effects/combat_effect_world.gd
+  s_d918eddc95739e::t_86182924b2b68c 8,27-28
+data_config/drop_tables.json
+  s_d918eddc95739e::t_a208d04eb4e890 59-64,123-128,194-199
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_d918eddc95739e::t_a820bac3d47ada 19-21,394,397,400,429-437,442-443,465,521-522,617-618,663-666,735
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "3311824b3a0f633925fe692bd13fbf17a5b25d62",
+  "prompts": {},
+  "sessions": {
+    "s_d918eddc95739e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05597-61d5-7910-949f-a7847f426042",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
