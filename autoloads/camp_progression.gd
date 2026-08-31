@@ -590,7 +590,7 @@ func _collect_upgrade_option_modifiers(record: Dictionary) -> Array:
 			continue
 		var effect := {
 			"stat": str(option.get("stat", "")),
-			"value": int(option.get("value_per_level", 0)) * option_level,
+			"value": float(option.get("value_per_level", 0.0)) * option_level,
 		}
 		modifiers.append(_effect_to_modifier(effect, "camp", "%s_%s" % [building_id, option_id]))
 	return modifiers
@@ -604,7 +604,7 @@ func _effect_to_modifier(effect: Dictionary, source_type: String, source_id: Str
 		"target_scope": "player",
 		"stat": str(effect.get("stat", "")),
 		"operation": "add_flat",
-		"value": int(effect.get("value", 0)),
+		"value": float(effect.get("value", 0.0)),
 		"duration": -1,
 		"stack_rule": "unique",
 	}

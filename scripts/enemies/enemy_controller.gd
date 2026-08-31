@@ -49,6 +49,8 @@ var _burn_damage_per_tick: float = 0.0
 var _burn_source_id: String = ""
 var _burn_visual_timer: float = 0.0
 var _stunned_remaining: float = 0.0
+var _slowed_remaining: float = 0.0
+var _slow_multiplier: float = 1.0
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
@@ -75,6 +77,9 @@ func _physics_process(delta: float) -> void:
 	if not alive:
 		return
 	_stunned_remaining = maxf(_stunned_remaining - delta, 0.0)
+	_slowed_remaining = maxf(_slowed_remaining - delta, 0.0)
+	if _slowed_remaining <= 0.0:
+		_slow_multiplier = 1.0
 	if _stunned_remaining > 0.0:
 		velocity = Vector2.ZERO
 		return
@@ -111,6 +116,8 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_burn_source_id = ""
 	_burn_visual_timer = 0.0
 	_stunned_remaining = 0.0
+	_slowed_remaining = 0.0
+	_slow_multiplier = 1.0
 	return true
 
 
@@ -146,7 +153,16 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 	_burn_tick_timer = minf(_burn_tick_timer, 0.12) if _burn_tick_timer > 0.0 else 0.12
 
 
+func apply_slow(duration: float, multiplier: float) -> void:
+	if not alive:
+		return
+	_slowed_remaining = maxf(_slowed_remaining, duration)
+	_slow_multiplier = minf(_slow_multiplier, clampf(multiplier, 0.05, 1.0))
+
+
 func has_status(status_id: String) -> bool:
+	if status_id == "slowed":
+		return _slowed_remaining > 0.0
 	if status_id == "burning":
 		return _burning_remaining > 0.0
 	if status_id == "stunned" or status_id == "paralyzed":
@@ -370,6 +386,8 @@ func _process_chase() -> void:
 	var direction := global_position.direction_to(target_player.global_position)
 	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", get_stat("move_speed")))
 	var move_speed := minf(get_stat("move_speed"), base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
+	if _slowed_remaining > 0.0:
+		move_speed *= _slow_multiplier
 	velocity = direction * move_speed
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0

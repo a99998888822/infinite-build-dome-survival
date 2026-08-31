@@ -64,7 +64,7 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 	patch._collision_shape.shape = circle
 	patch.add_child(patch._collision_shape)
 	patch.collision_layer = 0
-	patch.collision_mask = 3
+	patch.collision_mask = 2
 	patch.monitoring = true
 	patch.monitorable = false
 	patch._create_particle_emitters()
@@ -206,6 +206,8 @@ func _refresh_field_light() -> void:
 	if parent == null:
 		return
 	var light_field := parent.get_node_or_null("ParticleLightField")
+	if light_field == null and get_tree() != null and get_tree().current_scene != null:
+		light_field = get_tree().current_scene.find_child("ParticleLightField", true, false)
 	if light_field == null or not light_field.has_method("add_light"):
 		return
 	var energy := clampf(0.22 + sqrt(_stack_strength) * 0.06, 0.22, 0.46)
@@ -234,6 +236,3 @@ func _apply_tick_damage() -> void:
 			if enemy.is_alive():
 				enemy.apply_burning(burn_duration, burn_damage, "fire_patch")
 				enemy.take_damage(damage, "fire_patch", false, Vector2.ZERO)
-		elif body is PlayerController:
-			var player := body as PlayerController
-			player.take_damage(damage, "fire_patch")

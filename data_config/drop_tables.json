@@ -56,6 +56,12 @@
         "item_id": "scroll_pierce",
         "amount": 1,
         "chance_percent": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_ice",
+        "amount": 1,
+        "chance_percent": 1
       }
     ]
   },
@@ -114,6 +120,12 @@
         "item_id": "scroll_pierce",
         "amount": 1,
         "chance_percent": 4
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_ice",
+        "amount": 1,
+        "chance_percent": 3
       }
     ]
   },
@@ -179,6 +191,12 @@
         "item_id": "scroll_pierce",
         "amount": 1,
         "chance_percent": 12
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_ice",
+        "amount": 1,
+        "chance_percent": 10
       }
     ]
   }

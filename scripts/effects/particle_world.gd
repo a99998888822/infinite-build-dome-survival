@@ -275,6 +275,25 @@ const PROFILE_DEFINITIONS: Dictionary = {
 		"glow_shape": "circle",
 		"colors": [Color(1.0, 0.78, 0.22, 1.0)],
 	},
+	"ice_burst": {
+		"count": 28,
+		"speed": Vector2(24.0, 78.0),
+		"gravity": Vector2.ZERO,
+		"gravity_strength": Vector2.ZERO,
+		"drag": Vector2(22.0, 48.0),
+		"size_min": Vector2(2.0, 2.0),
+		"size_max": Vector2(5.0, 5.0),
+		"lifetime": Vector2(0.28, 0.58),
+		"travel_distance": Vector2(22.0, 68.0),
+		"spread_radians": TAU,
+		"initial_radius": 8.0,
+		"alpha": 0.95,
+		"shape": "square",
+		"rotation_jitter": 0.35,
+		"spin": Vector2(-2.0, 2.0),
+		"glow": 0.85,
+		"colors": [Color.WHITE, Color(0.78, 0.94, 1.0, 1.0), Color(0.48, 0.78, 1.0, 1.0)],
+	},
 	"lightning_core": {
 		"count": 3,
 		"speed": Vector2(24.0, 72.0),
@@ -659,23 +678,6 @@ func _draw() -> void:
 				draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35), glow_color)
 		if str(particle.get("shape", "square")) == "circle":
 			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * 0.5, color)
-		elif str(particle.get("shape", "square")) == "flame":
-			_draw_flame_particle(size, color)
 		else:
 			draw_rect(Rect2(-size * 0.5, size), color)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-
-
-func _draw_flame_particle(size: Vector2, color: Color) -> void:
-	var half_width := maxf(size.x * 0.5, 0.5)
-	var height := maxf(size.y, 1.0)
-	var points := PackedVector2Array([
-		Vector2(-half_width, height * 0.5),
-		Vector2(half_width, height * 0.5),
-		Vector2(half_width * 0.72, height * 0.04),
-		Vector2(half_width * 0.38, -height * 0.22),
-		Vector2(half_width * 0.10, -height * 0.5),
-		Vector2(-half_width * 0.28, -height * 0.16),
-		Vector2(-half_width * 0.66, height * 0.08),
-	])
-	draw_colored_polygon(points, color)

@@ -21,6 +21,7 @@ var target_player: PlayerController = null
 var collected_once: bool = false
 var _display_color: Color = Color.WHITE
 var _rotation_time: float = 0.0
+var _icon_sprite: Sprite2D = null
 
 
 func _ready() -> void:
@@ -29,6 +30,12 @@ func _ready() -> void:
 	collision_layer = 0
 	collision_mask = 1
 	body_entered.connect(_on_body_entered)
+	_icon_sprite = Sprite2D.new()
+	_icon_sprite.name = "IconSprite"
+	_icon_sprite.z_index = 1
+	_icon_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_icon_sprite.centered = true
+	add_child(_icon_sprite)
 	queue_redraw()
 
 
@@ -38,6 +45,7 @@ func initialize(target_augmentation_id: String, pickup_amount: int = 1) -> void:
 	collected_once = false
 	var data := DataRegistry.get_record("augmentations", augmentation_id)
 	_display_color = RARITY_COLORS.get(str(data.get("rarity", "common")), Color.WHITE)
+	_update_icon(str(data.get("icon", "")))
 	queue_redraw()
 
 
@@ -82,8 +90,21 @@ func _on_body_entered(body: Node) -> void:
 		collect()
 
 
+func _update_icon(icon_path: String) -> void:
+	if _icon_sprite == null:
+		return
+	_icon_sprite.texture = null
+	_icon_sprite.visible = false
+	if icon_path.is_empty() or not ResourceLoader.exists(icon_path):
+		return
+	var resource := load(icon_path)
+	if resource is Texture2D:
+		_icon_sprite.texture = resource as Texture2D
+		_icon_sprite.visible = true
+
+
 func _draw() -> void:
 	var pulse := 1.0 + sin(_rotation_time * 7.0) * 0.10
-	draw_circle(Vector2.ZERO, 10.0 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.14))
-	draw_circle(Vector2.ZERO, 6.5 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.85))
-	draw_colored_polygon(PackedVector2Array([Vector2(0, -7), Vector2(6, 0), Vector2(0, 7), Vector2(-6, 0)]), Color.WHITE)
+	draw_circle(Vector2.ZERO, 20.0 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.14))
+	draw_circle(Vector2.ZERO, 13.0 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.85))
+	draw_colored_polygon(PackedVector2Array([Vector2(0, -14), Vector2(12, 0), Vector2(0, 14), Vector2(-12, 0)]), Color.WHITE)

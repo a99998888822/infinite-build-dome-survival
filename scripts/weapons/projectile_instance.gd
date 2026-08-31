@@ -25,6 +25,9 @@ var _has_split: bool = false
 var hit_targets: Dictionary = {}
 var active: bool = false
 var _trail_emitter: Node2D = null
+var _plasma_contact_started: bool = false
+var _plasma_tick_timer: float = 0.0
+var _plasma_tick_count: int = 0
 
 
 func initialize(
@@ -55,6 +58,9 @@ func initialize(
 	_split_depth = maxi(split_depth, 0)
 	_has_split = false
 	active = true
+	_plasma_contact_started = false
+	_plasma_tick_timer = 0.0
+	_plasma_tick_count = 0
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -92,6 +98,9 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	if _is_plasma_projectile() and _plasma_contact_started:
+		_process_plasma_contact(delta)
+		queue_redraw()
 	var step := speed * delta
 	global_position += direction * step
 	remaining_distance -= step
@@ -100,6 +109,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if not active:
+		return
+	if _is_plasma_projectile() and body is EnemyController:
+		_start_plasma_contact(body as EnemyController)
 		return
 	if body.get_script() == DESTRUCTIBLE_TEST_AREA_SCRIPT:
 		damage_event.hit_position = global_position
@@ -129,6 +141,74 @@ func _on_body_entered(body: Node) -> void:
 	remaining_target_hits -= 1
 	if remaining_target_hits <= 0:
 		_destroy()
+
+
+func _is_plasma_projectile() -> bool:
+	return weapon != null and str(weapon.weapon_data.get("projectile_behavior", "")) == "plasma"
+
+
+func _start_plasma_contact(enemy: EnemyController) -> void:
+	if enemy == null or not enemy.is_alive() or _plasma_contact_started:
+		return
+	_plasma_contact_started = true
+	speed = maxf(float(weapon.weapon_data.get("plasma_contact_speed", 10.0)), 1.0)
+	monitoring = false
+	_plasma_tick_timer = 0.0
+	_process_plasma_tick()
+
+
+func _process_plasma_contact(delta: float) -> void:
+	_plasma_tick_timer -= delta
+	if _plasma_tick_timer <= 0.0:
+		_process_plasma_tick()
+
+
+func _process_plasma_tick() -> void:
+	if _plasma_tick_count >= 5:
+		_destroy()
+		return
+	var radius := maxf(float(weapon.weapon_data.get("plasma_damage_radius", 48.0)), 8.0)
+	var shape := CircleShape2D.new()
+	shape.radius = radius
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, global_position)
+	query.collision_mask = ENEMY_COLLISION_LAYER
+	query.collide_with_bodies = true
+	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
+	var damaged_ids: Dictionary = {}
+	for result in results:
+		var enemy := result.get("collider") as EnemyController
+		if enemy == null or not enemy.is_alive() or damaged_ids.has(enemy.get_instance_id()):
+			continue
+		damaged_ids[enemy.get_instance_id()] = true
+		var tick_event := damage_event.duplicate_event()
+		tick_event.hit_position = enemy.global_position
+		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
+		var effect_event := tick_event.duplicate_event()
+		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * 0.2)))
+		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
+	_plasma_tick_count += 1
+	_plasma_tick_timer = maxf(float(weapon.weapon_data.get("plasma_tick_interval", 0.1)), 0.01)
+	if _plasma_tick_count >= 5:
+		_destroy()
+
+
+func _draw() -> void:
+	if not _is_plasma_projectile():
+		return
+	var pulse := 1.0 + sin(Time.get_ticks_msec() * 0.018) * 0.08
+	draw_circle(Vector2.ZERO, 11.0 * pulse, Color(0.55, 0.86, 1.0, 0.16))
+	draw_circle(Vector2.ZERO, 7.0 * pulse, Color.WHITE)
+	draw_circle(Vector2.ZERO, 4.0, Color(0.82, 0.96, 1.0, 1.0))
+	for arc_index in range(5):
+		var start := float(arc_index) * TAU / 5.0 + Time.get_ticks_msec() * 0.0008
+		var points := PackedVector2Array()
+		for point_index in range(5):
+			var ratio := float(point_index) / 4.0
+			var radius := 9.0 + sin(Time.get_ticks_msec() * 0.02 + float(arc_index * 7 + point_index)) * 2.0
+			points.append(Vector2.from_angle(start + ratio * 0.86) * radius)
+		draw_polyline(points, Color(0.72, 0.93, 1.0, 0.92), 1.5, true)
 
 
 func _get_target_hit_limit() -> int:

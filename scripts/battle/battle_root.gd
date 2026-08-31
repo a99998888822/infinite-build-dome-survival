@@ -9,11 +9,36 @@ class_name BattleRoot
 @onready var mobile_joystick: MobileJoystick = get_node_or_null("MobileControls/MobileJoystick")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
+var _low_resolution_world_parent: Node2D = null
+var _low_resolution_world_nodes: Array[Node] = []
 
 
 func _ready() -> void:
+	_attach_world_nodes_to_low_resolution_viewport()
 	_bind_mobile_joystick()
 	_bind_to_flow()
+
+
+func _attach_world_nodes_to_low_resolution_viewport() -> void:
+	var game_root := _find_game_root()
+	if game_root == null:
+		return
+	_low_resolution_world_parent = game_root.get_world_viewport_root()
+	if _low_resolution_world_parent == null:
+		return
+	for node in [get_node_or_null("ParticleLightField"), get_node_or_null("ParticleWorld"), get_node_or_null("DestructibleTestArea"), player, loadout, wave_manager]:
+		if node == null or node.get_parent() == _low_resolution_world_parent:
+			continue
+		_low_resolution_world_nodes.append(node)
+		node.reparent(_low_resolution_world_parent, false)
+
+
+func restore_world_nodes() -> void:
+	for node in _low_resolution_world_nodes:
+		if is_instance_valid(node) and node.get_parent() != self:
+			node.reparent(self, false)
+	_low_resolution_world_nodes.clear()
+	_low_resolution_world_parent = null
 
 
 func _process(delta: float) -> void:
@@ -103,6 +128,15 @@ func _apply_esc_overlay_visibility(state: String) -> void:
 func _on_esc_back_pressed() -> void:
 	if _main_flow_coordinator != null:
 		_main_flow_coordinator.close_esc_overlay()
+
+
+func _find_game_root() -> GameRoot:
+	var current: Node = self
+	while current != null:
+		if current is GameRoot:
+			return current as GameRoot
+		current = current.get_parent()
+	return null
 
 
 func _find_main_flow_coordinator() -> MainFlowCoordinator:

@@ -16,6 +16,9 @@ const CYAN := Color("#8dbda0")
 const TALENT_STATS_WITHOUT_PERCENT_SUFFIX: Dictionary = {
 	"attack_speed": true,
 }
+const HIDDEN_BUILDING_IDS: Dictionary = {
+	"camp_kin_nursery": true,
+}
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_building_id := ""
@@ -388,13 +391,13 @@ func _on_camp_state_changed() -> void:
 	var skip_option_animation := _skip_next_option_animation
 	_skip_next_option_animation = false
 	if visible:
-		_refresh_all(not skip_option_animation)
+		_refresh_all(not skip_option_animation, false)
 
 
-func _refresh_all(animate_option_rows: bool = true) -> void:
+func _refresh_all(animate_option_rows: bool = true, animate_detail: bool = true) -> void:
 	_refresh_currency()
 	_refresh_buildings()
-	_refresh_detail()
+	_refresh_detail(animate_detail)
 	_refresh_summary()
 	_refresh_options(animate_option_rows)
 
@@ -423,12 +426,21 @@ func _refresh_buildings() -> void:
 	for child in _building_list.get_children():
 		child.queue_free()
 	var records := CampProgression.get_building_records()
-	if _selected_building_id.is_empty() and not records.is_empty():
-		_selected_building_id = str(records[0].get("id", ""))
+	var first_visible_building_id := ""
+	for record in records:
+		if record is Dictionary:
+			var record_id := str(record.get("id", ""))
+			if not _is_building_hidden(record_id):
+				first_visible_building_id = record_id
+				break
+	if _selected_building_id.is_empty() or _is_building_hidden(_selected_building_id):
+		_selected_building_id = first_visible_building_id
 	for record in records:
 		if not (record is Dictionary):
 			continue
 		var building_id := str(record.get("id", ""))
+		if _is_building_hidden(building_id):
+			continue
 		var level := CampProgression.get_building_level(building_id)
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 		var button := _make_button("", GREEN if unlocked else MUTED)
@@ -450,7 +462,7 @@ func _refresh_buildings() -> void:
 		_building_list.add_child(button)
 
 
-func _refresh_detail() -> void:
+func _refresh_detail(animate_reveal: bool = true) -> void:
 	if _detail_panel == null:
 		return
 	for child in _detail_panel.get_children():
@@ -506,7 +518,8 @@ func _refresh_detail() -> void:
 			_detail_effects.add_child(effects)
 	var action_row := HBoxContainer.new()
 	_detail_panel.add_child(action_row)
-	_animate_detail_reveal()
+	if animate_reveal:
+		_animate_detail_reveal()
 	if unlocked and level >= max_level:
 		var max_label := Label.new()
 		max_label.text = "已达最高等级"
@@ -601,6 +614,8 @@ func _refresh_options(animate_rows: bool = true) -> void:
 		if not (record is Dictionary):
 			continue
 		var building_id := str(record.get("id", ""))
+		if _is_building_hidden(building_id):
+			continue
 		var building_level := CampProgression.get_building_level(building_id)
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 		if not unlocked:
@@ -643,6 +658,10 @@ func _animate_option_row(option_row: Control, index: int) -> void:
 
 func _is_upgrade_option_unlocked(building_level: int, option: Dictionary) -> bool:
 	return building_level >= int(option.get("required_building_level", 1))
+
+
+func _is_building_hidden(building_id: String) -> bool:
+	return HIDDEN_BUILDING_IDS.has(building_id)
 
 
 func _make_option_row(building_id: String, option: Dictionary) -> Control:
@@ -713,7 +732,7 @@ func _progress_style(color: Color, border: Color) -> StyleBoxFlat:
 
 func _on_building_selected(building_id: String) -> void:
 	_selected_building_id = building_id
-	_refresh_all()
+	_refresh_all(true, false)
 	_animate_detail_reveal()
 	if AudioManager != null:
 		AudioManager.play_ui_sfx("modal_open")

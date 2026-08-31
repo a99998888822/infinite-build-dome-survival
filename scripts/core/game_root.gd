@@ -3,12 +3,17 @@ class_name GameRoot
 
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
 const ANDROID_CONTENT_SCALE_SIZE := Vector2i(1280, 720)
+const WORLD_RENDER_SIZE := Vector2i(800, 450)
 
 var core_root: Node = null
 var world_root: Node2D = null
 var ui_root: CanvasLayer = null
 var debug_root: Node = null
 var _main_flow_coordinator: MainFlowCoordinator = null
+var _world_viewport_layer: CanvasLayer = null
+var _world_viewport_container: SubViewportContainer = null
+var _world_viewport: SubViewport = null
+var _world_viewport_root: Node2D = null
 
 
 func _enter_tree() -> void:
@@ -21,6 +26,7 @@ func _ready() -> void:
 	world_root = _ensure_child("WorldRoot", Node2D.new()) as Node2D
 	ui_root = _ensure_child("UiRoot", CanvasLayer.new()) as CanvasLayer
 	debug_root = _ensure_child("DebugRoot", Node.new())
+	_setup_world_viewport()
 	_ensure_main_flow_coordinator()
 	GameGlobal.set_game_mode("game")
 	GameGlobal.set_runtime_flag("game_root_ready", true)
@@ -82,6 +88,10 @@ func get_ui_root() -> CanvasLayer:
 	return ui_root
 
 
+func get_world_viewport_root() -> Node2D:
+	return _world_viewport_root if _world_viewport_root != null else world_root
+
+
 func get_debug_root() -> Node:
 	return debug_root
 
@@ -99,6 +109,33 @@ func add_to_world(node: Node) -> bool:
 func add_to_ui(node: Node) -> bool:
 	# 供界面模块把界面节点挂到 UI 层。
 	return _attach_node(node, ui_root)
+
+
+func _setup_world_viewport() -> void:
+	if _world_viewport_root != null and is_instance_valid(_world_viewport_root):
+		return
+	_world_viewport_layer = CanvasLayer.new()
+	_world_viewport_layer.name = "WorldViewportLayer"
+	_world_viewport_layer.layer = -3
+	add_child(_world_viewport_layer)
+	_world_viewport_container = SubViewportContainer.new()
+	_world_viewport_container.name = "WorldViewportContainer"
+	_world_viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_world_viewport_container.stretch = true
+	_world_viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_world_viewport_container.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_world_viewport_layer.add_child(_world_viewport_container)
+	_world_viewport = SubViewport.new()
+	_world_viewport.name = "WorldViewport"
+	_world_viewport.size = WORLD_RENDER_SIZE
+	_world_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	_world_viewport.transparent_bg = true
+	_world_viewport.handle_input_locally = false
+	_world_viewport_container.add_child(_world_viewport)
+	_world_viewport_root = Node2D.new()
+	_world_viewport_root.name = "WorldViewportRoot"
+	_world_viewport.add_child(_world_viewport_root)
+
 
 
 func _ensure_main_flow_coordinator() -> MainFlowCoordinator:

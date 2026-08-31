@@ -143,6 +143,8 @@ func _capture_battle_pages(game_root: GameRoot) -> void:
 		battle_root.set_process(false)
 		for runtime_node_name in ["Player", "Loadout", "WaveManager"]:
 			var runtime_node := battle_root.get_node_or_null(runtime_node_name)
+			if runtime_node == null:
+				runtime_node = game_root.get_world_viewport_root().get_node_or_null(runtime_node_name)
 			if runtime_node != null:
 				runtime_node.set_process(false)
 	if not flow.confirm_character_selection():

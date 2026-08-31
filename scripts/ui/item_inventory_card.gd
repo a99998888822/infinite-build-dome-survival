@@ -60,6 +60,7 @@ const MODIFIER_LABELS: Dictionary = {
 	"spread_angle": "分裂角度",
 	"extra_target_hits": "额外命中",
 }
+const INVENTORY_ICON_MAX_WIDTH: int = 26
 
 signal item_tooltip_requested(anchor_card: ItemInventoryCard, bbcode_text: String)
 signal item_tooltip_hidden
@@ -80,6 +81,8 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	focus_mode = Control.FOCUS_NONE
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if drag_enabled else Control.CURSOR_ARROW
 	flat = false
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_update_icon(str(item_instance.get("icon", "")))
 	var item_name := str(item_instance.get("display_name", "物品"))
 	var equipped_weapon_id := str(item_instance.get("equipped_weapon_id", ""))
 	text = "%s\n%s" % [item_name, "已装填" if not equipped_weapon_id.is_empty() else "可装填"]
@@ -89,6 +92,20 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	add_theme_color_override("font_hover_color", rarity_color.lightened(0.16))
 	add_theme_color_override("font_outline_color", Color(0.01, 0.01, 0.02, 0.95))
 	add_theme_constant_override("outline_size", 3)
+
+
+func _update_icon(icon_path: String) -> void:
+	icon = null
+	if icon_path.is_empty() or not ResourceLoader.exists(icon_path):
+		return
+	var resource := load(icon_path)
+	if not resource is Texture2D:
+		return
+	icon = resource as Texture2D
+	expand_icon = true
+	icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	alignment = HORIZONTAL_ALIGNMENT_LEFT
+	add_theme_constant_override("icon_max_width", INVENTORY_ICON_MAX_WIDTH)
 
 
 func _get_drag_data(_position: Vector2) -> Variant:

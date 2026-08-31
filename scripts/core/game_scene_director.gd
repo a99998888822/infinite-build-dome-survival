@@ -99,6 +99,8 @@ func _teardown_battle() -> void:
 	if battle_root == null:
 		return
 	if is_instance_valid(battle_root):
+		if battle_root.has_method("restore_world_nodes"):
+			battle_root.restore_world_nodes()
 		battle_root.queue_free()
 	battle_root = null
 
