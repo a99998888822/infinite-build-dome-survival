@@ -1,0 +1,135 @@
+scripts/ui/esc_overlay.gd
+  s_d918eddc95739e::t_26dcdd9018a047 36,52-54,398,410
+scripts/ui/weapon_strip.gd
+  s_d918eddc95739e::t_15b0a88f222f79 86,89,92,101,115,139-141
+scripts/weapons/projectile_instance.gd
+  s_d918eddc95739e::t_15b0a88f222f79 84,103,151-156,159,162-163,173,176-188,208
+AGENTS.md
+  s_d918eddc95739e::t_cff00e87f720e9 51-61,75
+assets/ui/icons/relics/relic_amulet_of_humanity.png.import
+  s_558321609fdae8::t_20a0925a318b18 1-40
+assets/ui/icons/relics/relic_annual_leave_cutback.png.import
+  s_558321609fdae8::t_fef13797f6ef71 1-40
+assets/ui/icons/relics/relic_bankruptcy_reorg.png.import
+  s_558321609fdae8::t_fd30cc4315d4a4 1-40
+assets/ui/icons/relics/relic_barrier_crystal.png.import
+  s_558321609fdae8::t_1b84c7ee98c6c9 1-40
+assets/ui/icons/relics/relic_berserker_copper_badge.png.import
+  s_558321609fdae8::t_46a9ed2ac7fea9 1-40
+assets/ui/icons/relics/relic_black_spot_eagle_eye.png.import
+  s_558321609fdae8::t_8c5577c7ad46bc 1-40
+assets/ui/icons/relics/relic_brass_pocket_watch.png.import
+  s_558321609fdae8::t_5472f2e60a8cf3 1-40
+assets/ui/icons/relics/relic_chain_of_hardship.png.import
+  s_558321609fdae8::t_5670fe6914c3f2 1-40
+assets/ui/icons/relics/relic_compound_interest_tome.png.import
+  s_558321609fdae8::t_5997c60cb9093e 1-40
+assets/ui/icons/relics/relic_corroded_blowpipe.png.import
+  s_558321609fdae8::t_ec17f8ba483cf2 1-40
+assets/ui/icons/relics/relic_costly_seed_of_life.png.import
+  s_558321609fdae8::t_eae87eaa6ec4cb 1-40
+assets/ui/icons/relics/relic_cultic_holy_shield.png.import
+  s_558321609fdae8::t_d8286fbf8f50bd 1-40
+assets/ui/icons/relics/relic_defiled_blessing_coin.png.import
+  s_558321609fdae8::t_ee3e94c8bc321e 1-40
+assets/ui/icons/relics/relic_divine_fusion.png.import
+  s_558321609fdae8::t_18b442aa167fe7 1-40
+assets/ui/icons/relics/relic_executioner_bracer.png.import
+  s_558321609fdae8::t_363150c9fade7e 1-40
+assets/ui/icons/relics/relic_expanded_backpack_strap.png.import
+  s_558321609fdae8::t_cb214b610b7f69 1-40
+assets/ui/icons/relics/relic_flesh_pauldron.png.import
+  s_558321609fdae8::t_035b9c11aeaa7f 1-40
+assets/ui/icons/relics/relic_gale_roulette.png.import
+  s_558321609fdae8::t_6fc63653994d51 1-40
+assets/ui/icons/relics/relic_gift_mark.png.import
+  s_558321609fdae8::t_3128f91ffa09e1 1-40
+assets/ui/icons/relics/relic_goblin_central_bank_printer.png.import
+  s_558321609fdae8::t_7a77470e6d8fb7 1-40
+assets/ui/icons/relics/relic_gold_compass.png.import
+  s_558321609fdae8::t_679151460c5e1e 1-40
+assets/ui/icons/relics/relic_gold_digger_gloves.png.import
+  s_558321609fdae8::t_c8babb23bfab8e 1-40
+assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png.import
+  s_558321609fdae8::t_d682719b507343 1-40
+assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png.import
+  s_558321609fdae8::t_4a4bae6ee6afcb 1-40
+assets/ui/icons/relics/relic_high_yield_contract.png.import
+  s_558321609fdae8::t_540d8b05f005b7 1-40
+assets/ui/icons/relics/relic_holy_silver_cup.png.import
+  s_558321609fdae8::t_c2da49b7ae4248 1-40
+assets/ui/icons/relics/relic_hostile_takeover.png.import
+  s_558321609fdae8::t_48e43f8c983faf 1-40
+assets/ui/icons/relics/relic_incomplete_divination_dice.png.import
+  s_558321609fdae8::t_1a2ae152d68322 1-40
+assets/ui/icons/relics/relic_judgment_eye_pendant.png.import
+  s_558321609fdae8::t_3f7ed978237ac6 1-40
+assets/ui/icons/relics/relic_lost_wayfarer_greave.png.import
+  s_558321609fdae8::t_8c6be0ed18ee4b 1-40
+assets/ui/icons/relics/relic_medical_cutback.png.import
+  s_558321609fdae8::t_ffddb982291f8b 1-40
+assets/ui/icons/relics/relic_merger_reorg.png.import
+  s_558321609fdae8::t_059eb73def3080 1-40
+assets/ui/icons/relics/relic_nightmare_healing_urn.png.import
+  s_558321609fdae8::t_4a66b01ed09b68 1-40
+assets/ui/icons/relics/relic_pain_vessel.png.import
+  s_558321609fdae8::t_ace614d3a93d5c 1-40
+assets/ui/icons/relics/relic_periodic_dividend_clock.png.import
+  s_558321609fdae8::t_65a9dab608319b 1-40
+assets/ui/icons/relics/relic_perpetual_annuity_scroll.png.import
+  s_558321609fdae8::t_f5dd566a2ad7b5 1-40
+assets/ui/icons/relics/relic_private_army.png.import
+  s_558321609fdae8::t_c3ff6979f0199a 1-40
+assets/ui/icons/relics/relic_quant_trading.png.import
+  s_558321609fdae8::t_73ac1b6a9b6c30 1-40
+assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png.import
+  s_558321609fdae8::t_d69077333175a6 1-40
+assets/ui/icons/relics/relic_salary_adjustment.png.import
+  s_558321609fdae8::t_06dd0a7dbe5325 1-40
+assets/ui/icons/relics/relic_shadowless_greave.png.import
+  s_558321609fdae8::t_3865fc5061c48e 1-40
+assets/ui/icons/relics/relic_soul_keeper_face_stone.png.import
+  s_558321609fdae8::t_5afa64964d9fc8 1-40
+assets/ui/icons/relics/relic_split_crystal_warhead.png.import
+  s_558321609fdae8::t_0caa0d1b1c5160 1-40
+assets/ui/icons/relics/relic_stargazers_lens.png.import
+  s_558321609fdae8::t_494b46883a77e8 1-40
+assets/ui/icons/relics/relic_suffering_carapace.png.import
+  s_558321609fdae8::t_16c48c8e69db50 1-40
+assets/ui/icons/relics/relic_tip_tray.png.import
+  s_558321609fdae8::t_afb8c4d577dcca 1-40
+assets/ui/icons/relics/relic_travelers_ledger.png.import
+  s_558321609fdae8::t_4b2411fa4a740a 1-40
+assets/ui/icons/relics/relic_true_silver_armor.png.import
+  s_558321609fdae8::t_25fb269aea26f8 1-40
+assets/ui/icons/relics/relic_void_storage_casket.png.import
+  s_558321609fdae8::t_de243ed9626a20 1-40
+assets/ui/icons/relics/relic_void_tentacle.png.import
+  s_558321609fdae8::t_2b37e93dc17532 1-40
+assets/ui/icons/relics/relic_welfare_cutback.png.import
+  s_558321609fdae8::t_ff0a17e824735d 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "6e090b9083ef74744e6747064e3f66648540955c",
+  "prompts": {},
+  "sessions": {
+    "s_558321609fdae8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0571e-2568-7123-8ae6-7aee361f359c",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d918eddc95739e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05597-61d5-7910-949f-a7847f426042",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
