@@ -142,6 +142,7 @@ mouse_filter = 2
 [node name="SubtitleRow" type="HBoxContainer" parent="CenterContainer/MainPanel/Content"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
+visible = false
 alignment = 2
 mouse_filter = 2
 
@@ -193,6 +194,7 @@ mouse_filter = 2
 custom_minimum_size = Vector2(0, 350)
 layout_mode = 2
 size_flags_vertical = 3
+clip_contents = false
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 3
 mouse_filter = 1
@@ -201,9 +203,10 @@ script = ExtResource("3_touch_scroll")
 [node name="OfferGrid" type="GridContainer" parent="CenterContainer/MainPanel/Content/OfferScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
+clip_contents = false
 columns = 4
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 18
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 14
 
 [node name="ErrorLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
 custom_minimum_size = Vector2(0, 24)

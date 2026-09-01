@@ -59,7 +59,9 @@ text = "负载0/0"
 [node name="WeaponTooltip" type="PanelContainer" parent="."]
 visible = false
 mouse_filter = 0
-z_index = 10
+# Weapon details must stay above hovered relic cards and their enlarged visuals.
+z_as_relative = false
+z_index = 4096
 
 [node name="TooltipMargin" type="MarginContainer" parent="WeaponTooltip"]
 anchors_preset = 15

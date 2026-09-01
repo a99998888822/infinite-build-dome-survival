@@ -64,14 +64,18 @@ func initialize(
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
-	monitoring = true
-	monitorable = false
+	# Split projectiles can be initialized from body_entered while physics queries
+	# are flushing; defer all Area2D state changes until that flush is complete.
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", false)
 
 	var shape := CircleShape2D.new()
 	shape.radius = maxf(weapon.get_hit_radius(), DEFAULT_HIT_RADIUS)
 	var collision_shape := CollisionShape2D.new()
 	collision_shape.shape = shape
+	collision_shape.disabled = true
 	add_child(collision_shape)
+	collision_shape.set_deferred("disabled", false)
 
 	if texture != null:
 		var sprite := Sprite2D.new()

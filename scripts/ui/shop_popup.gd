@@ -37,6 +37,7 @@ var _scanline_overlay: TextureRect = null
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
 @onready var main_panel: PanelContainer = get_node_or_null("CenterContainer/MainPanel")
+@onready var content: VBoxContainer = get_node_or_null("CenterContainer/MainPanel/Content")
 @onready var title_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/TitleRow/TitleLabel")
 @onready var gold_label: Label = get_node_or_null("CenterContainer/MainPanel/Content/SubtitleRow/GoldLabel")
 @onready var offer_scroll: ScrollContainer = get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll")
@@ -59,9 +60,13 @@ func _ready() -> void:
 	if offer_scroll != null:
 		offer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		offer_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		# Hovered cards grow slightly beyond their grid cell. Let the card's z_index
+		# control overlap instead of clipping the enlarged edge at the scroll viewport.
+		offer_scroll.clip_contents = false
 	if offer_grid != null:
 		offer_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		offer_grid.columns = OFFER_LAYOUT_COLUMNS
+		offer_grid.clip_contents = false
 	_update_skip_button()
 	_layout_popup()
 	hide_popup()
@@ -220,14 +225,13 @@ func _refresh_visual() -> void:
 	call_deferred("_fit_offer_grid")
 
 
-func _update_gold_labels(current_gold: int) -> void:
+func _update_gold_labels(_current_gold: int) -> void:
 	if gold_label != null:
-		var show_gold := get_mode() == ENTRY_SHOP
 		var subtitle_row := gold_label.get_parent() as Control
 		if subtitle_row != null:
-			subtitle_row.visible = show_gold
-		if show_gold:
-			gold_label.text = "金币 %d" % current_gold
+			# Keep reward and shop title blocks at the same height. Gold remains
+			# in the payload for purchase and refresh checks, but is not displayed.
+			subtitle_row.visible = false
 
 
 func _update_refresh_button() -> void:
@@ -342,13 +346,17 @@ func _layout_popup() -> void:
 	center_container.anchor_top = 0.0
 	center_container.anchor_right = 0.0
 	center_container.anchor_bottom = 0.0
-	center_container.clip_contents = true
+	# A hovered card is intentionally drawn slightly beyond its layout bounds.
+	center_container.clip_contents = false
 	var panel_width := minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), 980.0)
 	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_HEIGHT)
 	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
 	center_container.size = Vector2(panel_width, panel_height)
 	if offer_scroll != null:
-		offer_scroll.custom_minimum_size.y = 0.0
+		var content_width := maxf(panel_width - 44.0, 0.0)
+		offer_scroll.custom_minimum_size = Vector2(content_width, 0.0)
+		if content != null:
+			content.custom_minimum_size.x = content_width
 	if main_panel != null:
 		main_panel.custom_minimum_size = Vector2(panel_width, panel_height)
 	if backdrop != null:
@@ -376,7 +384,7 @@ func _fit_offer_grid() -> void:
 	if center_container != null and center_container.size.x > 0.0:
 		# Keep the grid inside the panel's content width. Using the current
 		# scroll width alone can create a self-reinforcing oversized minimum.
-		var panel_content_width := maxf(center_container.size.x - 52.0, 0.0)
+		var panel_content_width := maxf(center_container.size.x - 44.0, 0.0)
 		scroll_width = panel_content_width if scroll_width <= 0.0 else minf(scroll_width, panel_content_width)
 	if scroll_width <= 0.0:
 		return
@@ -457,9 +465,9 @@ func _create_scanline_overlay() -> void:
 
 
 func _spawn_coin_particles(source_position: Vector2) -> void:
-	if get_mode() != ENTRY_SHOP or coin_particles == null or gold_label == null:
+	if get_mode() != ENTRY_SHOP or coin_particles == null or title_label == null:
 		return
-	var target := gold_label.get_global_rect().get_center()
+	var target := title_label.get_global_rect().get_center()
 	for index in range(7):
 		var coin := TextureRect.new()
 		coin.texture = COIN_TEXTURE

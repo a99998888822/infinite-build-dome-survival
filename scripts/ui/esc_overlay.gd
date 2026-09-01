@@ -4,7 +4,7 @@ class_name EscOverlay
 signal back_pressed
 
 const RELIC_GRID_COLUMNS: int = 6
-const RELIC_CELL_SIZE: Vector2 = Vector2(64, 64)
+const RELIC_CELL_SIZE: Vector2 = Vector2(48, 48)
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
 const MODAL_FALLBACK_RIGHT: float = 336.0
@@ -49,11 +49,15 @@ func _ready() -> void:
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
 		relic_grid.columns = RELIC_GRID_COLUMNS
+		relic_grid.add_theme_constant_override("h_separation", 10)
+		relic_grid.add_theme_constant_override("v_separation", 10)
 		relic_grid.clip_contents = false
 	if relic_scroll != null:
 		relic_scroll.clip_contents = false
 	if item_grid != null:
 		item_grid.columns = 4
+		item_grid.add_theme_constant_override("h_separation", 10)
+		item_grid.add_theme_constant_override("v_separation", 10)
 	if get_viewport() != null:
 		var viewport_callable := Callable(self, "_on_viewport_resized")
 		if not get_viewport().size_changed.is_connected(viewport_callable):
@@ -316,7 +320,9 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 	var cell := Button.new()
 	cell.flat = true
 	cell.custom_minimum_size = RELIC_CELL_SIZE
-	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cell.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	cell.size = RELIC_CELL_SIZE
 	cell.focus_mode = Control.FOCUS_NONE
 	cell.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var icon_path := str(relic_data.get("icon", ""))
@@ -327,18 +333,12 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 			icon_rect.texture = texture
 			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon_rect.anchor_left = 0.1
-			icon_rect.anchor_top = 0.1
-			icon_rect.anchor_right = 0.9
-			icon_rect.anchor_bottom = 0.9
+			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			cell.add_child(icon_rect)
 	else:
 		var placeholder := PanelContainer.new()
-		placeholder.anchor_left = 0.1
-		placeholder.anchor_top = 0.1
-		placeholder.anchor_right = 0.9
-		placeholder.anchor_bottom = 0.9
+		placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var style := StyleBoxFlat.new()
 		style.bg_color = RARITY_COLORS.get(rarity, RARITY_COLORS["common"])
@@ -361,15 +361,15 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		badge.anchor_top = 1.0
 		badge.anchor_right = 1.0
 		badge.anchor_bottom = 1.0
-		badge.offset_left = -20.0
-		badge.offset_top = -22.0
-		badge.offset_right = -4.0
-		badge.offset_bottom = -4.0
+		badge.offset_left = -14.0
+		badge.offset_top = -14.0
+		badge.offset_right = -2.0
+		badge.offset_bottom = -2.0
 		badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		badge.add_theme_color_override("font_color", Color.WHITE)
-		badge.add_theme_font_size_override("font_size", 16)
-		badge.add_theme_constant_override("outline_size", 3)
+		badge.add_theme_font_size_override("font_size", 9)
+		badge.add_theme_constant_override("outline_size", 2)
 		badge.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.06, 0.95))
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(badge)

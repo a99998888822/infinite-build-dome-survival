@@ -250,6 +250,20 @@ func _run_player_checks() -> bool:
 		add_child(player)
 		var initialized := player.initialize_from_character("character_void_hunter")
 		passed = _print_check_result("player initialize character", initialized) and passed
+		var talent_shield_modifier := {
+			"id": "mod_bootstrap_talent_shield",
+			"source_type": "camp",
+			"source_id": "bootstrap_talent_shield",
+			"target_scope": "player",
+			"stat": "shield",
+			"operation": "add_flat",
+			"value": 3,
+			"duration": -1,
+			"stack_rule": "unique",
+		}
+		initialized = player.initialize_from_character("character_void_hunter", [talent_shield_modifier])
+		player.reset_wave_shield()
+		passed = _print_check_result("talent shield at wave start", initialized and player.current_shield == 3 and player.current_shield_capacity == 3) and passed
 		var base_stats: Dictionary = player.character_data.get("base_stats", {})
 		var configured_max_hp := int(base_stats.get("max_hp", player.get_stat("max_hp")))
 		var configured_move_speed := float(base_stats.get("move_speed", player.get_stat("move_speed")))

@@ -46,6 +46,7 @@ var _rarity_glow_material: ShaderMaterial = null
 var _compact_layout: bool = false
 var _small_layout: bool = false
 var _layout_width: float = 0.0
+var _layout_height: float = 0.0
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
 @onready var content: VBoxContainer = get_node_or_null("Content")
@@ -99,12 +100,14 @@ func set_compact(compact: bool) -> void:
 
 
 func set_available_height(available_height: float) -> void:
+	_layout_height = maxf(available_height, 0.0)
 	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT
 	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT
 	_apply_layout_density()
 
 
 func set_available_size(available_width: float, available_height: float) -> void:
+	_layout_height = maxf(available_height, 0.0)
 	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT or available_width < 180.0
 	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT or available_width < 220.0
 	_apply_layout_density()
@@ -114,7 +117,7 @@ func _apply_layout_density() -> void:
 	if not offer_data.is_empty():
 		_update_panel_style(get_color_for_rarity(str(offer_data.get("rarity", "common"))))
 	if content != null:
-		content.add_theme_constant_override("separation", 3 if _small_layout else (6 if _compact_layout else 8))
+		content.add_theme_constant_override("separation", 5 if _small_layout else (8 if _compact_layout else 10))
 	if type_badge != null:
 		type_badge.custom_minimum_size = Vector2(28.0, 12.0 if _small_layout else (18.0 if _compact_layout else 20.0))
 	if type_label != null:
@@ -129,9 +132,13 @@ func _apply_layout_density() -> void:
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
-		description_label.custom_minimum_size.y = 34.0 if _small_layout else (82.0 if _compact_layout else 104.0)
+		# Leave a little more room below the description so the action stays
+		# visually clear while keeping the button higher in the card.
+		description_label.custom_minimum_size.y = 28.0 if _small_layout else (76.0 if _compact_layout else 98.0)
 	if select_button != null:
-		select_button.custom_minimum_size.y = 24.0
+		select_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		select_button.custom_minimum_size = _get_select_button_size()
+		select_button.add_theme_font_size_override("font_size", 10)
 	_update_card_minimum_size()
 
 
@@ -149,7 +156,16 @@ func _update_card_minimum_size() -> void:
 	var base_height := SMALL_MINIMUM_HEIGHT if _small_layout else (COMPACT_MINIMUM_HEIGHT if _compact_layout else NORMAL_MINIMUM_HEIGHT)
 	# The popup owns the available width. Never let an extra card expand it.
 	var width := _layout_width if _layout_width > 0.0 else base_width
-	custom_minimum_size = Vector2(width, base_height)
+	var height := _layout_height if _layout_height > 0.0 else base_height
+	custom_minimum_size = Vector2(width, height)
+	if select_button != null:
+		select_button.custom_minimum_size = _get_select_button_size()
+
+
+func _get_select_button_size() -> Vector2:
+	var card_width := _layout_width if _layout_width > 0.0 else (160.0 if _small_layout else (180.0 if _compact_layout else 220.0))
+	var content_width := maxf(card_width - (12.0 if _small_layout else 24.0), 0.0)
+	return Vector2(content_width * 0.8, 19.2)
 
 
 func set_interaction_locked(locked: bool) -> void:
@@ -235,10 +251,8 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 
 
 func _get_name_font_size() -> int:
-	var base_size := 7 if _small_layout else (8 if _compact_layout else 9)
-	if str(offer_data.get("offer_type", "")) == "relic":
-		return 10
-	return base_size
+	# Keep relic, new-weapon, and weapon-upgrade titles at the same visual size.
+	return 10
 
 
 func _update_panel_style(rarity_color: Color) -> void:
@@ -248,9 +262,9 @@ func _update_panel_style(rarity_color: Color) -> void:
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(0)
 	style.content_margin_left = 6.0 if _small_layout else 12.0
-	style.content_margin_top = 4.0 if _small_layout else 10.0
+	style.content_margin_top = 6.0 if _small_layout else 14.0
 	style.content_margin_right = 6.0 if _small_layout else 12.0
-	style.content_margin_bottom = 4.0 if _small_layout else 10.0
+	style.content_margin_bottom = 6.0 if _small_layout else 12.0
 	style.shadow_color = Color(0.0, 0.0, 0.0, 0.38)
 	style.shadow_size = 5
 	add_theme_stylebox_override("panel", style)

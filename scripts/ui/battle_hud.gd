@@ -495,16 +495,30 @@ func _apply_combat_layout() -> void:
 		wave_panel.size = wave_size
 		wave_panel.custom_minimum_size = wave_size
 	if economy_panel != null:
-		var economy_width := clampf(viewport_width * 0.20, 170.0, 220.0)
-		var economy_position := weapon_strip_rect.position + Vector2(weapon_strip_rect.size.x + 12.0, (weapon_strip_rect.size.y - 52.0) * 0.5)
-		if economy_position.x + economy_width > viewport_width - 12.0:
-			economy_position.x = maxf(12.0, weapon_strip_rect.position.x - economy_width - 12.0)
+		var economy_size := Vector2(clampf(viewport_width * 0.20, 170.0, 220.0), 52.0)
+		var viewport_rect := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
+		var gap := 12.0
+		var candidate_positions: Array[Vector2] = [
+			Vector2(weapon_strip_rect.end.x + gap, weapon_strip_rect.position.y + (weapon_strip_rect.size.y - economy_size.y) * 0.5),
+			Vector2(weapon_strip_rect.position.x - economy_size.x - gap, weapon_strip_rect.position.y + (weapon_strip_rect.size.y - economy_size.y) * 0.5),
+			Vector2(weapon_strip_rect.position.x + (weapon_strip_rect.size.x - economy_size.x) * 0.5, weapon_strip_rect.end.y + gap),
+			Vector2(weapon_strip_rect.position.x + (weapon_strip_rect.size.x - economy_size.x) * 0.5, weapon_strip_rect.position.y - economy_size.y - gap),
+		]
+		var economy_position: Vector2 = candidate_positions[0]
+		for candidate in candidate_positions:
+			var candidate_rect := Rect2(candidate, economy_size)
+			if viewport_rect.encloses(candidate_rect) and not candidate_rect.intersects(weapon_strip_rect):
+				economy_position = candidate
+				break
+		# On narrow windows, keep the panel visible while preserving a gap from the strip.
+		economy_position.x = clampf(economy_position.x, 8.0, maxf(8.0, viewport_rect.size.x - economy_size.x - 8.0))
+		economy_position.y = clampf(economy_position.y, 8.0, maxf(8.0, viewport_rect.size.y - economy_size.y - 8.0))
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
 		economy_panel.anchor_right = 0.0
 		economy_panel.anchor_bottom = 0.0
 		economy_panel.position = economy_position
-		economy_panel.size = Vector2(economy_width, 52.0)
+		economy_panel.size = economy_size
 	if exp_panel != null:
 		if OS.has_feature("mobile"):
 			exp_panel.anchor_left = 0.28

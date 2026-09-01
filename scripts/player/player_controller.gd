@@ -45,6 +45,7 @@ var _hp_regen_remainder: float = 0.0
 var _shield_regen_remainder: float = 0.0
 var _relic_runtime_sequence: int = 0
 var _refreshing_relic_dynamic_effects: bool = false
+var _initial_wave_shield: int = 0
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -101,6 +102,10 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
+	# Camp talents contribute to the shield granted at the start of every wave.
+	# Capture this before relic modifiers are added so relic wave-start rewards
+	# continue to be applied separately.
+	_initial_wave_shield = maxi(0, int(roundf(get_stat("shield"))))
 
 	start_weapon_ids = _resolve_start_weapons(data, initial_weapon_ids)
 	item_inventory.clear()
@@ -307,8 +312,8 @@ func grant_shield(amount: int) -> int:
 
 
 func reset_wave_shield() -> void:
-	current_shield = 0
-	current_shield_capacity = 0
+	current_shield = _initial_wave_shield
+	current_shield_capacity = _initial_wave_shield
 	_shield_regen_remainder = 0.0
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 

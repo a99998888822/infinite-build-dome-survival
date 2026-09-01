@@ -58,7 +58,6 @@ func _damage_enemies() -> void:
 func _draw() -> void:
 	var fade := 1.0 - clampf(_elapsed / _lifetime, 0.0, 1.0)
 	draw_circle(Vector2.ZERO, _radius, Color(0.55, 0.86, 1.0, 0.10 * fade))
-	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 32, Color(0.78, 0.95, 1.0, 0.8 * fade), 2.0, true)
 	for index in range(12):
 		var angle := float(index) * TAU / 12.0 + _elapsed * (0.8 if index % 2 == 0 else -0.55)
 		var distance := _radius * (0.58 + 0.14 * sin(_elapsed * 4.0 + index))

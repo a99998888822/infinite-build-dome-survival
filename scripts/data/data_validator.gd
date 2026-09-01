@@ -206,7 +206,9 @@ func _allows_fractional_config_value(path: String) -> bool:
 		path.ends_with(".value") or path.contains(".value[")
 	) or path.contains("augmentations[") and (
 		path.contains(".effect_parameters.") or path.contains(".instance_parameter_ranges[")
-	)
+	) or path.contains("weapons[") and path.ends_with(".plasma_tick_interval") or path.contains("weapons[") and (
+		path.ends_with(".plasma_rotation_speed") or path.ends_with(".plasma_arc_jitter")
+	) or path.contains("camp_buildings[") and path.contains(".upgrade_options[") and path.ends_with(".value_per_level")
 
 
 func _validate_stat_references(value_data: Variant, path: String) -> void:

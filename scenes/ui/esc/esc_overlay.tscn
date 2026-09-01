@@ -81,8 +81,8 @@ script = ExtResource("3_touch_scroll")
 [node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
 columns = 6
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
 
 [node name="ItemTitleRow" type="HBoxContainer" parent="CenterContainer/RelicPanel/Content"]
 theme_override_constants/separation = 12
@@ -110,8 +110,8 @@ script = ExtResource("3_touch_scroll")
 [node name="ItemGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll"]
 columns = 4
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
 
 [node name="HintLabel" type="Label" parent="CenterContainer/RelicPanel/Content"]
 theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)

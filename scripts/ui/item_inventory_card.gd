@@ -60,7 +60,8 @@ const MODIFIER_LABELS: Dictionary = {
 	"spread_angle": "分裂角度",
 	"extra_target_hits": "额外命中",
 }
-const INVENTORY_ICON_MAX_WIDTH: int = 26
+const INVENTORY_ICON_SIZE: Vector2 = Vector2(48.0, 48.0)
+const INVENTORY_ICON_MAX_WIDTH: int = 44
 
 signal item_tooltip_requested(anchor_card: ItemInventoryCard, bbcode_text: String)
 signal item_tooltip_hidden
@@ -77,21 +78,17 @@ func _ready() -> void:
 func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	item_instance = next_item.duplicate(true)
 	drag_enabled = allow_drag
-	custom_minimum_size = Vector2(128.0, 58.0)
-	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	custom_minimum_size = INVENTORY_ICON_SIZE
+	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	size = INVENTORY_ICON_SIZE
 	focus_mode = Control.FOCUS_NONE
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if drag_enabled else Control.CURSOR_ARROW
 	flat = false
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_update_icon(str(item_instance.get("icon", "")))
-	var item_name := str(item_instance.get("display_name", "物品"))
-	text = item_name
+	text = ""
 	tooltip_text = ""
-	var rarity_color: Color = RARITY_COLORS.get(str(item_instance.get("rarity", "common")), Color.WHITE)
-	add_theme_color_override("font_color", rarity_color)
-	add_theme_color_override("font_hover_color", rarity_color.lightened(0.16))
-	add_theme_color_override("font_outline_color", Color(0.01, 0.01, 0.02, 0.95))
-	add_theme_constant_override("outline_size", 3)
 
 
 func _update_icon(icon_path: String) -> void:
@@ -103,19 +100,25 @@ func _update_icon(icon_path: String) -> void:
 		return
 	icon = resource as Texture2D
 	expand_icon = true
-	icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	alignment = HORIZONTAL_ALIGNMENT_LEFT
+	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_theme_constant_override("icon_max_width", INVENTORY_ICON_MAX_WIDTH)
 
 
 func _get_drag_data(_position: Vector2) -> Variant:
 	if not drag_enabled or item_instance.is_empty():
 		return null
-	var preview := Label.new()
-	preview.text = str(item_instance.get("display_name", "物品"))
-	preview.add_theme_color_override("font_color", RARITY_COLORS.get(str(item_instance.get("rarity", "common")), Color.WHITE))
-	preview.add_theme_color_override("font_outline_color", Color.BLACK)
-	preview.add_theme_constant_override("outline_size", 3)
+	var preview := TextureRect.new()
+	var icon_path := str(item_instance.get("icon", ""))
+	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+		var resource := load(icon_path)
+		if resource is Texture2D:
+			preview.texture = resource as Texture2D
+	preview.custom_minimum_size = INVENTORY_ICON_SIZE
+	preview.size = INVENTORY_ICON_SIZE
+	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_drag_preview(preview)
 	return {
 		"type": "augmentation_item",
