@@ -25,7 +25,6 @@ var _has_split: bool = false
 var hit_targets: Dictionary = {}
 var active: bool = false
 var _trail_emitter: Node2D = null
-var _plasma_contact_started: bool = false
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
 var _plasma_rotation: float = 0.0
@@ -59,7 +58,6 @@ func initialize(
 	_split_depth = maxi(split_depth, 0)
 	_has_split = false
 	active = true
-	_plasma_contact_started = false
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
 	_plasma_rotation = direction.angle()
@@ -83,7 +81,7 @@ func initialize(
 		sprite.rotation = direction.angle()
 		add_child(sprite)
 
-	if _split_depth == 0:
+	if _split_depth == 0 and not _is_plasma_projectile():
 		var trail_context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "projectile_trail")
 		_trail_emitter = PARTICLE_WORLD_SCRIPT.create_emitter(self, "projectile_trail", trail_context, {
 			"motion_type": "attached",
@@ -102,8 +100,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if _is_plasma_projectile():
 		_plasma_rotation += float(weapon.weapon_data.get("plasma_rotation_speed", 4.0)) * delta
-		if _plasma_contact_started:
-			_process_plasma_contact(delta)
+		_process_plasma_contact(delta)
 		queue_redraw()
 	var step := speed * delta
 	global_position += direction * step
@@ -115,7 +112,6 @@ func _on_body_entered(body: Node) -> void:
 	if not active:
 		return
 	if _is_plasma_projectile() and body is EnemyController:
-		_start_plasma_contact(body as EnemyController)
 		return
 	if body.get_script() == DESTRUCTIBLE_TEST_AREA_SCRIPT:
 		damage_event.hit_position = global_position
@@ -151,26 +147,20 @@ func _is_plasma_projectile() -> bool:
 	return weapon != null and str(weapon.weapon_data.get("projectile_behavior", "")) == "plasma"
 
 
-func _start_plasma_contact(enemy: EnemyController) -> void:
-	if enemy == null or not enemy.is_alive() or _plasma_contact_started:
-		return
-	_plasma_contact_started = true
-	speed = maxf(float(weapon.weapon_data.get("plasma_contact_speed", 10.0)), 1.0)
-	monitoring = false
-	_plasma_tick_timer = 0.0
-	_process_plasma_tick()
-
-
 func _process_plasma_contact(delta: float) -> void:
+	var enemies := _query_plasma_enemies()
+	if enemies.is_empty():
+		speed = maxf(weapon.get_projectile_speed(), 1.0)
+		_plasma_tick_timer = 0.0
+		return
+	speed = maxf(float(weapon.weapon_data.get("plasma_contact_speed", 80.0)), 1.0)
 	_plasma_tick_timer -= delta
 	if _plasma_tick_timer <= 0.0:
-		_process_plasma_tick()
+		_process_plasma_tick(enemies)
 
 
-func _process_plasma_tick() -> void:
-	if _plasma_tick_count >= 5:
-		_destroy()
-		return
+func _query_plasma_enemies() -> Array[EnemyController]:
+	var enemies: Array[EnemyController] = []
 	var radius := maxf(float(weapon.weapon_data.get("plasma_damage_radius", 48.0)), 8.0)
 	var shape := CircleShape2D.new()
 	shape.radius = radius
@@ -180,12 +170,23 @@ func _process_plasma_tick() -> void:
 	query.collision_mask = ENEMY_COLLISION_LAYER
 	query.collide_with_bodies = true
 	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
-	var damaged_ids: Dictionary = {}
+	var found_ids: Dictionary = {}
 	for result in results:
 		var enemy := result.get("collider") as EnemyController
-		if enemy == null or not enemy.is_alive() or damaged_ids.has(enemy.get_instance_id()):
+		if enemy == null or not enemy.is_alive() or found_ids.has(enemy.get_instance_id()):
 			continue
-		damaged_ids[enemy.get_instance_id()] = true
+		found_ids[enemy.get_instance_id()] = true
+		enemies.append(enemy)
+	return enemies
+
+
+func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
+	if _plasma_tick_count >= 5:
+		_destroy()
+		return
+	for enemy in enemies:
+		if enemy == null or not enemy.is_alive():
+			continue
 		var tick_event := damage_event.duplicate_event()
 		tick_event.hit_position = enemy.global_position
 		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
@@ -204,11 +205,10 @@ func _draw() -> void:
 	var time := Time.get_ticks_msec() * 0.001
 	var base_radius := maxf(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), 8.0)
 	var pulse := 1.0 + sin(time * 11.0) * 0.09
-	var jitter := Vector2(sin(time * 31.0), cos(time * 37.0)) * base_radius * 0.045
+	var jitter := Vector2(sin(time * 31.0), cos(time * 37.0)) * base_radius * 0.12
 	draw_circle(jitter, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))
 	draw_circle(jitter, base_radius * pulse, Color(0.55, 0.86, 1.0, 0.24))
 	draw_circle(jitter, base_radius * 0.62 * pulse, Color(0.88, 0.97, 1.0, 0.96))
-	draw_circle(jitter, base_radius * 0.32, Color(0.58, 0.90, 1.0, 1.0))
 	var arc_count := clampi(int(weapon.weapon_data.get("plasma_arc_count", 4)), 2, 8)
 	var arc_segments := clampi(int(weapon.weapon_data.get("plasma_arc_segments", 12)), 8, 24)
 	var arc_jitter := maxf(float(weapon.weapon_data.get("plasma_arc_jitter", 3.0)), 0.0)

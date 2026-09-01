@@ -48,7 +48,17 @@ PowerShell Compatibility Notes:
 
 - This environment may use Windows PowerShell 5.x, which does not support Bash-style heredocs such as `<<'PATCH'`. To invoke `apply_patch`, use a tool-native patch call when available; otherwise write the patch to a UTF-8 temporary file and pipe it with `Get-Content -Raw -Encoding UTF8 <file> | apply_patch`.
 - Do not use Bash operators such as `||` or `&&` in PowerShell commands. Check `$LASTEXITCODE` or `$?` explicitly, for example: `$result = rg 'pattern' .; if ($LASTEXITCODE -ne 0) { 'NONE' }`.
-- Do not assume `godot` or `godot4` is installed. Probe with `Get-Command godot -ErrorAction SilentlyContinue` and `Get-Command godot4 -ErrorAction SilentlyContinue`; report `GODOT_NOT_FOUND` instead of treating the missing executable as a project failure.
+- Do not assume `godot` or `godot4` is installed. Probe with `Get-Command godot -ErrorAction SilentlyContinue` and `Get-Command godot4 -ErrorAction SilentlyContinue`.
+- If PATH probing does not find Godot, check running processes, common install directories, and desktop/start-menu shortcuts. Resolve `.lnk` targets instead of searching only for directly named executables; for example:
+  ```powershell
+  $shortcut = 'C:\Users\<user>\Desktop\Godot*.lnk'
+  $shell = New-Object -ComObject WScript.Shell
+  Get-ChildItem -Path $shortcut -File -ErrorAction SilentlyContinue | ForEach-Object {
+      $link = $shell.CreateShortcut($_.FullName)
+      $link.TargetPath
+  }
+  ```
+- Verify that the resolved target exists, then use its absolute path for headless validation. Report `GODOT_NOT_FOUND` only after PATH, process, common-directory, and shortcut checks all fail; do not treat a missing shell command alone as proof that Godot is unavailable.
 - Avoid PowerShell here-strings for commands containing Chinese or other non-ASCII literals, even when the destination file is UTF-8. Prefer a small `apply_patch` edit, an ASCII-only script with `\uXXXX` escapes, or a temporary script written with explicit UTF-8 encoding.
 - When a multiline patch fails with a PowerShell parser error, do not retry the same `<<...` syntax. Switch immediately to `@' ... '@ | apply_patch` or a UTF-8 temporary patch file, and keep the patch content separate from the command string.
 - For verification commands that intentionally return a non-zero status, capture the result and normalize the status before running subsequent checks; do not chain them with Bash syntax.
@@ -62,7 +72,7 @@ Godot-specific notes:
 ## Godot Headless Debugging
 
 - For Godot script, scene, autoload, or runtime changes, automatically use headless validation when Godot is available.
-- Locate `godot.exe`/`godot4.exe`, then run:
+- Locate `godot.exe`/`godot4.exe` using PATH probing first, then resolve desktop/start-menu `.lnk` shortcuts when necessary. Use the discovered absolute executable path to run:
   `godot.exe --headless --editor --path <project> --quit`
   and, when runtime behavior matters, the Bootstrap or main scene with `--headless --path <project> --scene <scene> --quit-after 120`.
 - Check output for Parse/Compile/SCRIPT ERROR, validation warnings/errors, and self-test failures. Report `GODOT_NOT_FOUND` if no executable is available.

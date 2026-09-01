@@ -33,6 +33,7 @@ var _item_tooltip_panel: PanelContainer = null
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
+@onready var relic_scroll: ScrollContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll")
 @onready var relic_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll/RelicGrid")
 @onready var total_label: Label = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/TotalLabel")
 @onready var back_button: Button = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/BackButton")
@@ -48,6 +49,9 @@ func _ready() -> void:
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
 		relic_grid.columns = RELIC_GRID_COLUMNS
+		relic_grid.clip_contents = false
+	if relic_scroll != null:
+		relic_scroll.clip_contents = false
 	if item_grid != null:
 		item_grid.columns = 4
 	if get_viewport() != null:
@@ -391,6 +395,7 @@ func _on_relic_cell_hovered(cell: Control, relic_data: Dictionary) -> void:
 	var rarity := str(relic_data.get("rarity", "common"))
 	var rarity_color: Color = RARITY_COLORS.get(rarity, Color.WHITE)
 	cell.modulate = Color(1.12, 1.08, 0.94, 1.0)
+	cell.z_index = 30
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(cell, "scale", Vector2(1.08, 1.08), 0.12)
@@ -402,6 +407,7 @@ func _on_relic_cell_unhovered(cell: Control) -> void:
 	_hide_relic_tooltip()
 	if cell == null:
 		return
+	cell.z_index = 0
 	var old_tween: Tween = _relic_tweens.get(cell)
 	if old_tween != null and old_tween.is_valid():
 		old_tween.kill()

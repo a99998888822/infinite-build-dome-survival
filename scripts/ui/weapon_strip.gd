@@ -83,12 +83,13 @@ func _on_item_drop_requested(weapon_id: String, item_instance_id: String) -> voi
 
 func _on_weapon_attachment_changed(weapon_id: String, _item_instance_id: String) -> void:
 	var should_restore_tooltip := weapon_tooltip != null and weapon_tooltip.visible and _tooltip_weapon_id == weapon_id
+	var preserved_tooltip_position := weapon_tooltip.global_position if should_restore_tooltip else Vector2.ZERO
 	_refresh_weapon_strip()
 	if should_restore_tooltip:
-		call_deferred("_restore_weapon_tooltip", weapon_id)
+		call_deferred("_restore_weapon_tooltip", weapon_id, preserved_tooltip_position)
 
 
-func _restore_weapon_tooltip(weapon_id: String) -> void:
+func _restore_weapon_tooltip(weapon_id: String, preserved_position: Vector2) -> void:
 	if _loadout == null:
 		return
 	var weapon := _loadout.get_weapon_instance(weapon_id)
@@ -97,7 +98,7 @@ func _restore_weapon_tooltip(weapon_id: String) -> void:
 	for button in _weapon_buttons:
 		var weapon_button := button as WeaponSlotButton
 		if weapon_button != null and weapon_button.weapon != null and weapon_button.weapon.weapon_id == weapon_id:
-			_show_weapon_tooltip(weapon, weapon_button)
+			_show_weapon_tooltip(weapon, weapon_button, preserved_position, true)
 			return
 
 
@@ -111,7 +112,7 @@ func _process(_delta: float) -> void:
 		_hide_weapon_tooltip()
 
 
-func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button) -> void:
+func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserved_position: Vector2 = Vector2.ZERO, keep_position: bool = false) -> void:
 	if weapon_tooltip == null or weapon_tooltip_label == null or weapon == null:
 		return
 	_hide_weapon_tooltip()
@@ -135,6 +136,9 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button) -> void
 				})
 		_update_tooltip_attachment_rows()
 		call_deferred("_update_tooltip_attachment_rows")
+	if keep_position:
+		weapon_tooltip.global_position = preserved_position
+		return
 	var viewport_rect := get_viewport_rect()
 	var target := Vector2.ZERO
 	if anchor_button != null:
