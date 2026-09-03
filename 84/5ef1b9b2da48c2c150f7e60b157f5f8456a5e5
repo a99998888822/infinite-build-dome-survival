@@ -1,0 +1,59 @@
+scripts/core/bootstrap.gd
+  s_1995e803c2ae33::t_440b1a5352bb76 813-820
+  s_1995e803c2ae33::t_5f558402384790 458,470,752-756,860,864,866-870
+  s_1995e803c2ae33::t_ecb7d5b4b8d226 856
+  s_1995e803c2ae33::t_240be6a71af7fe 369,406-407,533,551,570-571,691,1057-1060
+  s_1995e803c2ae33::t_ece337571fae03 41-43,46,72-73,76-77
+  s_1995e803c2ae33::t_90fae00f61bb18 469,471,565,751,757,759,871,1012-1013,1015,1056
+scripts/rewards/drop_reward_system.gd
+  s_1995e803c2ae33::t_ece337571fae03 39,45-48,108-109
+scripts/battle/battle_root.gd
+  s_1995e803c2ae33::t_fb3b56b71f46f8 22-25
+scripts/ui/finance_ui_controller.gd
+  s_1995e803c2ae33::t_ec994f1fa10b65 7,26-27,66-71,73-74
+scripts/ui/camp_ui_controller.gd
+  s_1995e803c2ae33::t_ec994f1fa10b65 4-5,9-10,50-55,57-58
+scripts/ui/shop_offer_generator.gd
+  s_1995e803c2ae33::t_440b1a5352bb76 119,132,140-153
+scripts/core/game_root.gd
+  s_1995e803c2ae33::t_a611c9264a3265 166
+  s_1995e803c2ae33::t_fb3b56b71f46f8 162,164-165,167,173-178
+  s_1995e803c2ae33::t_c2d19c9a00b647 179-180
+scripts/ui/zone_ui_controller.gd
+  s_1995e803c2ae33::t_ec994f1fa10b65 6,16-17,62-67,69-70
+scripts/core/game_scene_director.gd
+  s_1995e803c2ae33::t_ec994f1fa10b65 6,11-12,22-27,29-30
+  s_1995e803c2ae33::t_fb3b56b71f46f8 90-93,107-112
+scripts/core/main_flow_coordinator.gd
+  s_1995e803c2ae33::t_2ffd5015a25cfe 59,100,372-380,383,385,388,390,393,744,750
+scripts/ui/shop_ui_controller.gd
+  s_1995e803c2ae33::t_ec994f1fa10b65 6,14-15,50-55,57-58
+scripts/waves/wave_manager.gd
+  s_1995e803c2ae33::t_240be6a71af7fe 463-465,469
+  s_1995e803c2ae33::t_ece337571fae03 163-166,573
+scripts/debug/ui_visual_audit.gd
+  s_1995e803c2ae33::t_6cdf1fd5eaf22d 159
+  s_1995e803c2ae33::t_725530fdf1b808 411-430,438-441
+  s_1995e803c2ae33::t_6d92d23aa6dd28 437
+  s_1995e803c2ae33::t_ece337571fae03 410
+assets/sprites/enemies/enemy_mutated_grub_standing_16.png.import
+  s_1995e803c2ae33::t_7c97bc1c9a9328 1-40
+assets/sprites/player/player_void_hunter_standing_32.png.import
+  s_1995e803c2ae33::t_680d81ede62a21 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "845ef1b9b2da48c2c150f7e60b157f5f8456a5e5",
+  "prompts": {},
+  "sessions": {
+    "s_1995e803c2ae33": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a064ff-7259-7f22-8818-997755d476d2",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
