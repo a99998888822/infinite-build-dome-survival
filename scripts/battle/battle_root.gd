@@ -19,6 +19,10 @@ func _ready() -> void:
 	_bind_to_flow()
 
 
+func _exit_tree() -> void:
+	restore_world_nodes()
+
+
 func _attach_world_nodes_to_low_resolution_viewport() -> void:
 	var game_root := _find_game_root()
 	if game_root == null:

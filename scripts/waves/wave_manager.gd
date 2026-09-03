@@ -160,7 +160,10 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.global_position = position
 	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
 	runtime_modifiers.append_array(_build_wave_enemy_modifiers())
-	enemy.initialize(enemy_id, player, runtime_modifiers)
+	if not enemy.initialize(enemy_id, player, runtime_modifiers):
+		push_error("[WaveManager] enemy initialization failed: %s" % enemy_id)
+		enemy.queue_free()
+		return null
 	enemy.died.connect(_on_enemy_died)
 	return enemy
 
@@ -457,10 +460,13 @@ func _build_wave_enemy_modifiers() -> Array[Dictionary]:
 
 
 func _build_wave_modifier(stat_id: String, operation: String, value: float) -> Dictionary:
+	var source_id := str(current_wave.get("id", ""))
+	if source_id.is_empty():
+		source_id = "wave_%d" % (current_wave_index + 1)
 	return {
 		"id": "wave_%d_%s" % [current_wave_index + 1, stat_id],
 		"source_type": "wave",
-		"source_id": str(current_wave.get("id", "")),
+		"source_id": source_id,
 		"target_scope": "enemy",
 		"stat": stat_id,
 		"operation": operation,
@@ -564,6 +570,7 @@ func _process_level_ups() -> void:
 	while current_exp >= get_required_exp_for_next_level():
 		current_exp -= get_required_exp_for_next_level()
 		player_level += 1
+		reward_snapshot.record_level_up()
 		shared_reward_shop_requested.emit(player_level)
 
 

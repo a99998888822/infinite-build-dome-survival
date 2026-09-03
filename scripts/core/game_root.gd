@@ -159,11 +159,23 @@ func _ensure_main_flow_coordinator() -> MainFlowCoordinator:
 
 func _ensure_child(child_name: String, fallback_node: Node) -> Node:
 	var existing := get_node_or_null(child_name)
-	if existing is Node:
+	if existing != null and _is_expected_child_type(existing, fallback_node):
 		return existing
+	if existing != null:
+		push_error("[GameRoot] child '%s' has an incompatible type: %s" % [child_name, existing.get_class()])
+		remove_child(existing)
+		existing.queue_free()
 	fallback_node.name = child_name
 	add_child(fallback_node)
 	return fallback_node
+
+
+func _is_expected_child_type(existing: Node, fallback_node: Node) -> bool:
+	if fallback_node is CanvasLayer:
+		return existing is CanvasLayer
+	if fallback_node is Node2D:
+		return existing is Node2D
+	return existing is Node
 
 
 func _attach_node(node: Node, target_parent: Node) -> bool:

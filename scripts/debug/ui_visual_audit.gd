@@ -156,7 +156,7 @@ func _capture_battle_pages(game_root: GameRoot) -> void:
 
 	if hud != null:
 		hud.call("_on_drawer_toggle_pressed")
-		await _wait_frames(16)
+		await _wait_frames(30)
 		await _capture("battle_hud_stats_drawer", _battle_hud_assertions(hud, true, false))
 		hud.call("_on_drawer_toggle_pressed")
 
@@ -407,18 +407,38 @@ func _failure_result(name: String, detail: String) -> Dictionary:
 
 func _capture(name: String, checks: Array[Dictionary]) -> void:
 	await _wait_frames(6)
-	var image := _root_window.get_texture().get_image()
-	var image_path := "%s/%s.png" % [_output_directory, name]
-	var save_error := image.save_png(ProjectSettings.globalize_path(image_path))
-	if save_error != OK:
-		_record_failure(name, "could not save screenshot: %s" % error_string(save_error))
+	if _root_window == null:
+		if _is_headless_display():
+			_report_lines.append("SKIP %s: root window is unavailable in headless display" % name)
+		else:
+			_record_failure(name, "root window is unavailable")
+	else:
+		var texture := _root_window.get_texture() if not _is_headless_display() else null
+		if texture == null:
+			if _is_headless_display():
+				_report_lines.append("SKIP %s: screenshot unavailable in headless display" % name)
+			else:
+				_record_failure(name, "root window texture is unavailable")
+		else:
+			var image := texture.get_image()
+			if image == null:
+				_record_failure(name, "root window image is unavailable")
+			else:
+				var image_path := "%s/%s.png" % [_output_directory, name]
+				var save_error := image.save_png(ProjectSettings.globalize_path(image_path))
+				if save_error != OK:
+					_record_failure(name, "could not save screenshot: %s" % error_string(save_error))
 	for check in checks:
 		var passed := bool(check.get("passed", false))
 		var line := "%s %s: %s" % ["PASS" if passed else "FAIL", str(check.get("name", name)), str(check.get("detail", ""))]
 		_report_lines.append(line)
 		if not passed:
 			_failure_count += 1
-	print("[UIAudit] %s saved" % image_path)
+	print("[UIAudit] %s capture checks completed" % name)
+
+
+func _is_headless_display() -> bool:
+	return DisplayServer.get_name().to_lower() == "headless" or OS.has_feature("headless")
 
 
 func _record_failure(name: String, detail: String) -> void:

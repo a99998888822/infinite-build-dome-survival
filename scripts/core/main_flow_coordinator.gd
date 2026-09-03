@@ -56,6 +56,7 @@ var _pending_finance_payload: Dictionary = {}
 var _pending_wave_start_after_finance: bool = false
 var _stat_preview: Dictionary = {}
 var _active_shop_offer_ids: Array[String] = []
+var _active_shop_offers: Dictionary = {}
 var _wave_refresh_count: int = 0
 var _total_refresh_count: int = 0
 
@@ -96,6 +97,7 @@ func reset_flow() -> void:
 	_pending_wave_start_after_finance = false
 	_stat_preview.clear()
 	_active_shop_offer_ids.clear()
+	_active_shop_offers.clear()
 	_wave_refresh_count = 0
 	_total_refresh_count = 0
 	_set_battle_runtime_paused(false)
@@ -367,20 +369,28 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	if current_state != STATE_SHOP_POPUP and current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return {"success": false, "reason": "shop_not_active"}
 	var sanitized_mode := str(mode).strip_edges()
-	var offer_type := str(offer.get("offer_type", ""))
-	var target_id := str(offer.get("target_id", ""))
+	var expected_mode := "shop" if current_state == STATE_SHOP_POPUP else "free"
+	if sanitized_mode != expected_mode:
+		return {"success": false, "reason": "invalid_shop_mode"}
+	var offer_id := str(offer.get("offer_id", "")).strip_edges()
+	if offer_id.is_empty() or not _active_shop_offers.has(offer_id):
+		return {"success": false, "reason": "invalid_offer"}
+	var canonical_offer: Dictionary = _active_shop_offers.get(offer_id, {})
+	var offer_type := str(canonical_offer.get("offer_type", ""))
+	var target_id := str(canonical_offer.get("target_id", ""))
 	if offer_type.is_empty() or target_id.is_empty():
 		return {"success": false, "reason": "invalid_offer"}
-	if sanitized_mode == "shop" and not _try_pay_shop_cost(offer):
+	if sanitized_mode == "shop" and not _try_pay_shop_cost(canonical_offer):
 		return {"success": false, "reason": "insufficient_gold"}
-	var applied := _apply_shop_offer(offer_type, target_id, offer)
+	var applied := _apply_shop_offer(offer_type, target_id, canonical_offer)
 	if not applied:
 		if sanitized_mode == "shop":
-			_refund_shop_cost(offer)
+			_refund_shop_cost(canonical_offer)
 		return {"success": false, "reason": "purchase_failed"}
+	_active_shop_offers.erase(offer_id)
 	if sanitized_mode == "free":
 		close_shared_reward_shop_popup()
-	return {"success": true, "action": "purchase", "offer_id": str(offer.get("offer_id", "")), "offer_type": offer_type, "target_id": target_id}
+	return {"success": true, "action": "purchase", "offer_id": offer_id, "offer_type": offer_type, "target_id": target_id}
 
 
 func mark_wave_end_ready() -> void:
@@ -731,11 +741,13 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count)
 		_update_weapon_upgrade_miss_count(candidates, offers)
 	_active_shop_offer_ids.clear()
+	_active_shop_offers.clear()
 	for offer in offers:
 		if offer is Dictionary:
 			var active_offer_id := str(offer.get("offer_id", ""))
 			if not active_offer_id.is_empty():
 				_active_shop_offer_ids.append(active_offer_id)
+				_active_shop_offers[active_offer_id] = offer.duplicate(true)
 	return {
 		"mode": str(mode).strip_edges(),
 		"level": maxi(0, level),

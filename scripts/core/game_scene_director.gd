@@ -3,10 +3,13 @@ class_name GameSceneDirector
 
 const BATTLE_ROOT_SCENE: PackedScene = preload("res://scenes/battle/battle_root.tscn")
 const CAMP_SCENE: PackedScene = preload("res://scenes/camp/camp_root.tscn")
+const MAX_BIND_ATTEMPTS: int = 30
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var battle_root: Node = null
 var camp_root: CampRoot = null
+var _bind_attempts: int = 0
+var _bind_failure_reported: bool = false
 
 
 func _ready() -> void:
@@ -16,8 +19,15 @@ func _ready() -> void:
 func _bind_to_main_flow() -> void:
 	var coordinator := _find_main_flow_coordinator()
 	if coordinator == null:
-		call_deferred("_bind_to_main_flow")
+		_bind_attempts += 1
+		if _bind_attempts < MAX_BIND_ATTEMPTS:
+			call_deferred("_bind_to_main_flow")
+		elif not _bind_failure_reported:
+			_bind_failure_reported = true
+			push_error("[GameSceneDirector] main flow coordinator unavailable after %d attempts." % MAX_BIND_ATTEMPTS)
 		return
+	_bind_attempts = 0
+	_bind_failure_reported = false
 	if _main_flow_coordinator == coordinator:
 		return
 	_unbind_main_flow()
@@ -77,7 +87,10 @@ func _compose_battle() -> void:
 	if game_root == null:
 		return
 	battle_root = BATTLE_ROOT_SCENE.instantiate()
-	game_root.add_to_world(battle_root)
+	if not game_root.add_to_world(battle_root):
+		push_error("[GameSceneDirector] failed to attach battle root to world.")
+		battle_root.queue_free()
+		battle_root = null
 
 
 func _compose_camp() -> void:
@@ -91,7 +104,12 @@ func _compose_camp() -> void:
 	if game_root == null:
 		return
 	camp_root = CAMP_SCENE.instantiate() as CampRoot
-	game_root.add_to_world(camp_root)
+	if camp_root == null or not game_root.add_to_world(camp_root):
+		push_error("[GameSceneDirector] failed to attach camp root to world.")
+		if camp_root != null:
+			camp_root.queue_free()
+		camp_root = null
+		return
 	_main_flow_coordinator.bind_camp_context(camp_root)
 
 

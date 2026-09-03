@@ -1,9 +1,13 @@
 extends CanvasLayer
 class_name CampUIController
 
+const MAX_BIND_ATTEMPTS: int = 30
+
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _camp_root: CampRoot = null
 var _selected_building_id: String = ""
+var _bind_attempts: int = 0
+var _bind_failure_reported: bool = false
 
 @onready var currency_label: Label = get_node_or_null("TopBar/CurrencyLabel")
 @onready var back_button: Button = get_node_or_null("TopBar/BackButton")
@@ -43,8 +47,15 @@ func _ready() -> void:
 func _bind_to_main_flow() -> void:
 	var coordinator := _find_main_flow_coordinator()
 	if coordinator == null:
-		call_deferred("_bind_to_main_flow")
+		_bind_attempts += 1
+		if _bind_attempts < MAX_BIND_ATTEMPTS:
+			call_deferred("_bind_to_main_flow")
+		elif not _bind_failure_reported:
+			_bind_failure_reported = true
+			push_error("[CampUIController] main flow coordinator unavailable after %d attempts." % MAX_BIND_ATTEMPTS)
 		return
+	_bind_attempts = 0
+	_bind_failure_reported = false
 	if _main_flow_coordinator == coordinator:
 		return
 	_unbind_main_flow()

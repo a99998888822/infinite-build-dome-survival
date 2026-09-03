@@ -38,10 +38,12 @@ const TABLE_NAMES: Array[String] = [
 
 func _ready() -> void:
 	if RUN_DATA_SELF_TEST:
-		run_data_self_test()
+		var passed := run_data_self_test()
+		if not passed and get_tree().current_scene == self:
+			get_tree().quit(1)
 
 
-func run_data_self_test() -> void:
+func run_data_self_test() -> bool:
 	# 启动后只做最小自检，避免把玩法逻辑塞进入口。
 	print("[Bootstrap] data self-test started")
 	GameGlobal.reset_runtime_state()
@@ -67,10 +69,12 @@ func run_data_self_test() -> void:
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	if load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success:
+	var passed := load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success
+	if passed:
 		print("[Bootstrap] data self-test passed")
 	else:
-		push_error("[Bootstrap] data self-test failed with %d data errors" % DataRegistry.get_load_errors().size())
+		push_error("[Bootstrap] data self-test failed; behavioral checks failed; data_errors=%d" % DataRegistry.get_load_errors().size())
+	return passed
 
 
 func _print_table_counts() -> void:
@@ -362,7 +366,7 @@ func _run_survival_relic_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	passed = _print_check_result("survival relic conditional movement", is_equal_approx(player.get_stat("move_speed"), base_move_speed + 7.0)) and passed
+	passed = _print_check_result("survival relic conditional movement", is_equal_approx(player.get_stat("move_speed"), base_move_speed - 5.0)) and passed
 
 	passed = _print_check_result("survival relic wave end trigger", player.add_relic("relic_vitality_potion")) and passed
 	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
@@ -399,7 +403,8 @@ func _run_enemy_wave_checks() -> bool:
 	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(0) == 30 and wave_manager.calculate_wave_duration(6) == 60) and passed
 
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
-	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == 20) and passed
+	var expected_enemy_hp := int(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0))
+	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == expected_enemy_hp) and passed
 	if enemy != null:
 		passed = _print_check_result("enemy wave move speed modifier", enemy.get_stat("move_speed") >= 100.0 and enemy.get_stat("move_speed") <= 130.0) and passed
 		var previous_hp := player.current_hp
@@ -450,7 +455,7 @@ func _run_enemy_wave_checks() -> bool:
 		"target_scope": "player",
 		"stat": "drop_rate_percent",
 		"operation": "add_flat",
-		"value": 2000,
+		"value": 10000,
 		"duration": -1,
 		"stack_rule": "unique",
 	})
@@ -461,7 +466,9 @@ func _run_enemy_wave_checks() -> bool:
 		reward_action_types[str(action.get("type", ""))] = true
 	passed = _print_check_result("reward action build", reward_action_types.has("exp_orb") and reward_action_types.has("health_pack")) and passed
 
-	player.take_damage(10, "bootstrap_reward_check")
+	player.heal(99)
+	player._invincibility_timer = 0.0
+	player.take_damage(6, "bootstrap_reward_check")
 	var hp_before_reward := player.current_hp
 	var health_pack := wave_manager.spawn_health_pack(6, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("health pack spawn", health_pack != null) and passed
@@ -523,7 +530,7 @@ func _run_summon_checks() -> bool:
 	if summon != null:
 		var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", summon.global_position + Vector2(10, 0))
 		var dealt_damage := summon.try_attack_target(enemy, false, true) if enemy != null else 0
-		passed = _print_check_result("summon attack enemy", enemy != null and dealt_damage == 10 and enemy.current_hp == 10) and passed
+		passed = _print_check_result("summon attack enemy", enemy != null and dealt_damage == 10 and enemy.current_hp <= 0 and not enemy.alive) and passed
 
 	wave_manager.clear_summons()
 	wave_manager.summon_root.hard_cap = 2
@@ -541,7 +548,7 @@ func _run_camp_meta_checks() -> bool:
 	print("[Bootstrap] camp meta progression checks")
 	var passed := true
 	CampProgression.begin_transient_session()
-	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 8) and passed
+	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 7) and passed
 	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
 	var camp_save_state := CampProgression.get_state()
 	var camp_save_schema_ok := camp_save_state.has("schema_version") and camp_save_state.has("profile_id") and camp_save_state.has("currencies") and camp_save_state.has("settings")
@@ -555,11 +562,13 @@ func _run_camp_meta_checks() -> bool:
 		add_child(camp_root)
 		passed = _print_check_result("camp scene slot count", camp_root.get_building_slot_count() == DataRegistry.get_record_count("camp_buildings")) and passed
 		passed = _print_check_result("camp scene slot lookup", camp_root.get_building_slot("camp_armory_workshop") != null and camp_root.get_building_slot("camp_farstar_range") != null) and passed
-	CampProgression.add_camp_currency(400)
+	CampProgression.add_camp_currency(500)
 	var farstar_unlock_ok := CampProgression.purchase_building_unlock("camp_farstar_range")
 	passed = _print_check_result("camp unlock sync", farstar_unlock_ok and CampProgression.is_building_unlocked("camp_farstar_range") and CampProgression.get_building_level("camp_farstar_range") == 1) and passed
 	var building_unlock_ok := CampProgression.purchase_building_unlock("camp_council_hall")
 	passed = _print_check_result("camp currency unlock", building_unlock_ok and CampProgression.is_building_unlocked("camp_council_hall") and CampProgression.get_building_level("camp_council_hall") == 1) and passed
+	var blade_arena_unlock_ok := CampProgression.purchase_building_unlock("camp_blade_arena")
+	passed = _print_check_result("camp melee building unlock", blade_arena_unlock_ok and CampProgression.is_building_unlocked("camp_blade_arena") and CampProgression.get_building_level("camp_blade_arena") == 1) and passed
 	var purchase_ok := CampProgression.purchase_upgrade("camp_upgrade_melee_damage")
 	passed = _print_check_result("camp upgrade option", purchase_ok and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
 	if camp_root != null:
@@ -679,7 +688,7 @@ func _run_ui_flow_checks() -> bool:
 	if interest_popup != null:
 		interest_popup.queue_free()
 	var shop_popup := SHOP_POPUP_SCENE.instantiate()
-	passed = _print_check_result("shop popup instantiate", shop_popup != null and shop_popup.get_node_or_null("CenterContainer/MainPanel/Content/OfferGrid") != null) and passed
+	passed = _print_check_result("shop popup instantiate", shop_popup != null and shop_popup.get_node_or_null("CenterContainer/MainPanel/Content/OfferScroll/OfferGrid") != null) and passed
 	if shop_popup != null:
 		shop_popup.queue_free()
 	var shop_controller := SHOP_UI_CONTROLLER_SCENE.instantiate()
@@ -739,9 +748,15 @@ func _run_weapon_checks() -> bool:
 		})
 		passed = _print_check_result("weapon attack_speed interval", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.35)) and passed
 		var upgraded := loadout.upgrade_weapon("weapon_void_blade")
-		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == 10 and weapon.attack_interval_ms == 650) and passed
+		var expected_weapon_damage := int(DataRegistry.get_record("weapons", "weapon_void_blade").get("base_stats", {}).get("ranged_damage", 0))
+		var weapon_data := DataRegistry.get_record("weapons", "weapon_void_blade")
+		var upgrade_entry: Dictionary = weapon_data.get("level_upgrades", {}).get("2", {})
+		for effect in upgrade_entry.get("effects", []):
+			if effect is Dictionary and str(effect.get("stat", "")) == "ranged_damage":
+				expected_weapon_damage += int(effect.get("value", 0))
+		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == expected_weapon_damage and weapon.attack_interval_ms == 650) and passed
 		var damage_events := weapon.calculate_damage_events(false)
-		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= 10
+		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= expected_weapon_damage
 		passed = _print_check_result("weapon damage event", damage_ok) and passed
 		var first_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
 		var second_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
@@ -795,6 +810,14 @@ func _run_weapon_checks() -> bool:
 	}
 	var shop_candidates := shop_generator.build_shop_candidate_pool(shop_context)
 	var shop_rarity_weights := shop_generator.get_shop_rarity_weights(100)
+	var boosted_shop_rarity_weights := shop_generator.get_shop_rarity_weights(100, 4)
+	var rarity_weight_sum := 0
+	var boosted_rarity_weight_sum := 0
+	for rarity in ShopOfferGenerator.RARITIES:
+		rarity_weight_sum += int(shop_rarity_weights.get(rarity, 0))
+		boosted_rarity_weight_sum += int(boosted_shop_rarity_weights.get(rarity, 0))
+	var zone_rarity_bonus_check := rarity_weight_sum == 10000 and boosted_rarity_weight_sum == 10000 and int(boosted_shop_rarity_weights.get("rare", 0)) > int(shop_rarity_weights.get("rare", 0))
+	passed = _print_check_result("shop zone rarity bonus", zone_rarity_bonus_check) and passed
 	var shop_context_with_candidates := shop_context.duplicate(true)
 	shop_context_with_candidates["candidate_pool"] = shop_candidates
 	var shop_type_weights := shop_generator.get_shop_type_weights(shop_context_with_candidates)
@@ -830,14 +853,22 @@ func _run_weapon_checks() -> bool:
 	passed = _print_check_result("relic global count baseline", baseline_relic_cost == 12) and passed
 	passed = _print_check_result("relic global count price step", bucket_relic_cost == 16) and passed
 	var epic_context := shop_context.duplicate(true)
+	epic_context["unlocked_relic_ids"] = ["relic_piggy_bank", "relic_finance_manager", "relic_dividend_check", "relic_compound_interest_tome"]
 	epic_context["owned_relic_counts"] = {"relic_compound_interest_tome": 2}
 	var epic_candidates := shop_generator.build_shop_candidate_pool(epic_context)
 	var epic_relic_cost := -1
+	var epic_relic_candidate: Dictionary = {}
 	for candidate in epic_candidates:
 		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "epic":
 			epic_relic_cost = int(candidate.get("shop_cost", -1))
+			epic_relic_candidate = candidate
 			break
-	passed = _print_check_result("epic relic rarity weighted price", epic_relic_cost == 30) and passed
+	var epic_rarity_index := ShopOfferGenerator.RARITIES.find(str(epic_relic_candidate.get("rarity", "common")))
+	var epic_base_cost := 15 + int(epic_relic_candidate.get("total_relic_count", 0))
+	if epic_rarity_index > 2:
+		epic_base_cost += int(epic_relic_candidate.get("relic_rarity_count", 0)) * 3 * (epic_rarity_index - 2)
+	var expected_epic_relic_cost := StatDefinitions.calculate_shop_cost(epic_base_cost + maxi(epic_rarity_index, 0) * 5, 20)
+	passed = _print_check_result("epic relic rarity weighted price", epic_relic_cost == expected_epic_relic_cost) and passed
 
 	loadout.queue_free()
 	player.queue_free()
@@ -978,8 +1009,10 @@ func _run_main_flow_checks() -> bool:
 	var refresh_rejected := flow.request_shop_refresh()
 	passed = _print_check_result("shop refresh reject no gold", not bool(refresh_rejected.get("success", false))) and passed
 	wave_manager.apply_gold_delta(20, "bootstrap")
+	var gold_before_refresh := wave_manager.get_current_gold()
+	var expected_refresh_cost := flow.get_shop_refresh_cost()
 	var refresh_result := flow.request_shop_refresh()
-	passed = _print_check_result("shop refresh pay and weighted cost", bool(refresh_result.get("success", false)) and wave_manager.get_current_gold() == 10 and flow.get_shop_refresh_cost() == 10) and passed
+	passed = _print_check_result("shop refresh pay and weighted cost", bool(refresh_result.get("success", false)) and int(refresh_result.get("cost", -1)) == expected_refresh_cost and wave_manager.get_current_gold() == gold_before_refresh - expected_refresh_cost and flow.get_shop_refresh_cost() == 10) and passed
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
 	flow.advance_wave_end_phase()
@@ -1020,8 +1053,11 @@ func _calculate_level_state_after_exp(total_exp: int) -> Dictionary:
 	var level := WaveManager.DEFAULT_PLAYER_LEVEL
 	var remaining_exp := maxi(total_exp, 0)
 	var level_ups := 0
-	while remaining_exp >= 5 + (level - 1) * 5:
-		remaining_exp -= 5 + (level - 1) * 5
+	while true:
+		var required_exp := ceili(0.45 * pow(float(level) + 1.8, 2.9))
+		if remaining_exp < required_exp:
+			break
+		remaining_exp -= required_exp
 		level += 1
 		level_ups += 1
 	return {

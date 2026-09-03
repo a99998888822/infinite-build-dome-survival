@@ -36,13 +36,16 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 		if amount <= 0 and drop_type == "relic":
 			amount = 1
 
-		actions.append({
+		var action := {
 			"type": drop_type,
 			"amount": amount,
 			"chance_percent": base_chance,
 			"adjusted_chance_percent": adjusted_chance,
 			"entry": entry.duplicate(true),
-		})
+		}
+		if drop_type == "relic":
+			action["relic_id"] = str(entry.get("relic_id", entry.get("target_id", "")))
+		actions.append(action)
 	return actions
 
 
@@ -102,7 +105,8 @@ func spawn_action(
 		"relic":
 			if snapshot != null:
 				snapshot.record_spawned_drop("relic", 1)
-			var relic_id := str(action.get("relic_id", action.get("target_id", "")))
+			var entry: Dictionary = action.get("entry", {})
+			var relic_id := str(action.get("relic_id", action.get("target_id", entry.get("relic_id", entry.get("target_id", "")))))
 			if relic_id.is_empty():
 				relic_id = _pick_random_available_relic(player)
 			if relic_id.is_empty() or player == null or not player.has_method("add_relic") or not player.add_relic(relic_id):

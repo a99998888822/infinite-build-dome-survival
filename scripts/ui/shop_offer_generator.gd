@@ -116,7 +116,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	return candidates
 
 
-func get_shop_rarity_weights(luck: int, _zone_rarity_bonus: int = 0) -> Dictionary:
+func get_shop_rarity_weights(luck: int, zone_rarity_bonus: int = 0) -> Dictionary:
 	var safe_luck := float(maxi(0, luck))
 	var epic := 25.0 * _diminishing_luck(safe_luck, 173.0, 0.738)
 	var mythic := 12.0 * _diminishing_luck(safe_luck, 1893.0, 0.8)
@@ -129,7 +129,7 @@ func get_shop_rarity_weights(luck: int, _zone_rarity_bonus: int = 0) -> Dictiona
 	var mythic_weight := roundi(mythic * 100.0)
 	var legendary_weight := roundi(legendary * 100.0)
 	var common_weight := maxi(0, 10000 - uncommon_weight - rare_weight - epic_weight - mythic_weight - legendary_weight)
-	return {
+	var rarity_weights := {
 		"common": common_weight,
 		"uncommon": uncommon_weight,
 		"rare": rare_weight,
@@ -137,6 +137,20 @@ func get_shop_rarity_weights(luck: int, _zone_rarity_bonus: int = 0) -> Dictiona
 		"mythic": mythic_weight,
 		"legendary": legendary_weight,
 	}
+	var promotion_budget := mini(common_weight, maxi(0, zone_rarity_bonus) * 100)
+	if promotion_budget <= 0:
+		return rarity_weights
+	var promoted_rarity_total := rare_weight + epic_weight + mythic_weight + legendary_weight
+	if promoted_rarity_total <= 0:
+		return rarity_weights
+	rarity_weights["common"] -= promotion_budget
+	var distributed_budget := 0
+	for rarity in ["rare", "epic", "mythic", "legendary"]:
+		var source_weight := int(rarity_weights.get(rarity, 0))
+		var rarity_budget := promotion_budget - distributed_budget if rarity == "legendary" else mini(source_weight, int(floor(float(promotion_budget) * float(source_weight) / float(promoted_rarity_total))))
+		rarity_weights[rarity] += rarity_budget
+		distributed_budget += rarity_budget
+	return rarity_weights
 
 
 func get_shop_type_weights(context: Dictionary) -> Dictionary:

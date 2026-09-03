@@ -3,6 +3,7 @@ class_name ZoneUIController
 
 const ZONE_SELECT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_popup.tscn")
 const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_harvest_result_popup.tscn")
+const MAX_BIND_ATTEMPTS: int = 30
 
 @onready var hud_layer: CanvasLayer = get_node_or_null("HUDLayer")
 @onready var popup_layer: CanvasLayer = get_node_or_null("PopupLayer")
@@ -12,6 +13,8 @@ const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zo
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _applied_safe_rect: Rect2 = Rect2()
+var _bind_attempts: int = 0
+var _bind_failure_reported: bool = false
 
 
 func _ready() -> void:
@@ -56,8 +59,15 @@ func _prepare_layers() -> void:
 func _bind_to_main_flow() -> void:
 	var coordinator := _find_main_flow_coordinator()
 	if coordinator == null:
-		call_deferred("_bind_to_main_flow")
+		_bind_attempts += 1
+		if _bind_attempts < MAX_BIND_ATTEMPTS:
+			call_deferred("_bind_to_main_flow")
+		elif not _bind_failure_reported:
+			_bind_failure_reported = true
+			push_error("[ZoneUIController] main flow coordinator unavailable after %d attempts." % MAX_BIND_ATTEMPTS)
 		return
+	_bind_attempts = 0
+	_bind_failure_reported = false
 	if _main_flow_coordinator == coordinator:
 		return
 	_unbind_main_flow()
