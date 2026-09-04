@@ -1,0 +1,66 @@
+scripts/data/stat_definitions.gd
+  s_0d8b001c49aef8::t_fc50271470ca21 455,458-461
+  s_0d8b001c49aef8::t_fc6c8b998767d0 194,201-211,462
+docs/main/checklist/godot_verification_master_checklist.md
+  s_0d8b001c49aef8::t_fc50271470ca21 691-693,1190
+docs/main/16-particle_system_design.md
+  s_0d8b001c49aef8::t_c1d0ef585888e2 156
+scripts/weapons/projectile_instance.gd
+  s_0d8b001c49aef8::t_fc50271470ca21 168,210
+data_config/README.md
+  s_0d8b001c49aef8::t_e5e5dbdd68b419 64-65
+data_config/camp_buildings.json
+  s_0d8b001c49aef8::t_1b0bf06573a6e9 315,322-330
+docs/main/1-base_data_and_modifiers_design.md
+  s_0d8b001c49aef8::t_8c503056dface1 176-177,209,214,216-221
+docs/main/4-weapon_loadout_design.md
+  s_0d8b001c49aef8::t_651609b5bf6f16 116,135,205-207,212-216,309,464
+docs/main/7-camp_meta_progression_design.md
+  s_0d8b001c49aef8::t_1605087756999d 159
+enemy_mutated_grub_16.png.import
+  s_f0b66c3e436332::t_9356f301562a07 5-6,13-14
+player_void_hunter_right_base_32.png.import
+  s_f0b66c3e436332::t_5ab18b68ccc5a0 1-40
+scripts/effects/effect_parameter_resolver.gd
+  s_0d8b001c49aef8::t_5d5ad621e9f696 11-12
+scripts/effects/electric_spark_effect.gd
+  s_0d8b001c49aef8::t_a3b059b034dca8 40
+scripts/effects/explosion_effect.gd
+  s_0d8b001c49aef8::t_17a59cea5e723d 37
+scripts/effects/fire_patch.gd
+  s_0d8b001c49aef8::t_0cc16aac05b231 78
+scripts/effects/ice_field_effect.gd
+  s_0d8b001c49aef8::t_c549295e3d703f 28
+scripts/effects/lightning_particle_effect.gd
+  s_0d8b001c49aef8::t_525a22d7ebb8ab 61,165,167
+scripts/ui/battle_hud.gd
+  s_0d8b001c49aef8::t_ff5699972dd116 93,836,838-839
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_0d8b001c49aef8::t_6ed82e9622d8df 595
+scripts/ui/zone_select_card.gd
+  s_0d8b001c49aef8::t_fe7cc357d77fa9 290
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "6329ae2e0b85343b3df10e5f90da3b5a62c74fb1",
+  "prompts": {},
+  "sessions": {
+    "s_0d8b001c49aef8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06a69-f385-7c52-871b-9dfb611452e8",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_f0b66c3e436332": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06b9c-02c5-7841-8a38-d187d6f2535f",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
