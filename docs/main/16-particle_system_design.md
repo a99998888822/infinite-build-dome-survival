@@ -153,7 +153,7 @@ position
   -> ParticleWorld
 ```
 
-运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`area_size` 控制效果范围与粒子散布，`control_power` 由具体效果绑定控制强度或连锁参数；穿透与分裂属于投射物附魔行为，不属于角色属性。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
+运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`area_size` 控制攻击距离，`damage_area_size` 仅由指定范围伤害效果用于控制影响范围与相关视觉大小，`control_power` 由具体效果绑定控制强度或连锁参数；穿透与分裂属于投射物附魔行为，不属于角色属性。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
 
 当前编码阶段先实现 `EffectContext`、`EffectModifier`、`EffectParameterResolver`、`ParticleEmitterRuntime` 和 `ParticleMotionBehavior`，并将木箭拖尾迁移到动态发射器；火焰、爆炸和闪电在此基础上扩展。
 

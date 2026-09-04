@@ -191,14 +191,24 @@ const STAT_DEFINITIONS: Dictionary = {
 		"description": "一次攻击产生的投射物数量。"
 	},
 	"area_size": {
-		"display_name": "范围加成",
+		"display_name": "攻击距离",
 		"category": CATEGORY_CONTROL,
 		"default": 0,
 		"min": -90,
 		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "整数百分比攻击范围加成，统一影响近战、远程、范围武器的命中或影响半径。"
+		"description": "整数百分比攻击距离加成，决定武器能够攻击到多远的怪物。"
+	},
+	"damage_area_size": {
+		"display_name": "伤害范围",
+		"category": CATEGORY_CONTROL,
+		"default": 0,
+		"min": -90,
+		"max": 10000,
+		"is_integer": true,
+		"is_percent": true,
+		"description": "整数百分比范围伤害加成，影响指定范围伤害的影响半径与对应视觉大小。"
 	},
 	"control_power": {
 		"display_name": "控制强度",
@@ -442,8 +452,13 @@ static func calculate_attack_interval(base_interval: float, attack_speed: float)
 
 
 static func calculate_attack_radius(base_radius: float, area_size: float) -> float:
-	# area_size 是唯一攻击范围加成属性，基础半径只来自武器配置。
+	# area_size 只控制攻击距离，基础距离来自武器配置。
 	var radius_percent := clamp_stat_value("area_size", area_size)
+	return maxf(base_radius, 0.0) * maxf(1.0 + radius_percent / 100.0, 0.0)
+
+
+static func calculate_damage_area_radius(base_radius: float, damage_area_size: float) -> float:
+	var radius_percent := clamp_stat_value("damage_area_size", damage_area_size)
 	return maxf(base_radius, 0.0) * maxf(1.0 + radius_percent / 100.0, 0.0)
 
 

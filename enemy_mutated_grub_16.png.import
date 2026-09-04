@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj8vcgm1caaxy"
-path="res://.godot/imported/enemy_mutated_grub_standing_16.png-92aec5e7f3f657d54ae73aaa0f42b206.ctex"
+uid="uid://dxjh3j23o4muj"
+path="res://.godot/imported/enemy_mutated_grub_16.png-1abeae67877b35519bf52eee375f0260.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/enemies/enemy_mutated_grub_standing_16.png"
-dest_files=["res://.godot/imported/enemy_mutated_grub_standing_16.png-92aec5e7f3f657d54ae73aaa0f42b206.ctex"]
+source_file="res://enemy_mutated_grub_16.png"
+dest_files=["res://.godot/imported/enemy_mutated_grub_16.png-1abeae67877b35519bf52eee375f0260.ctex"]
 
 [params]
 

@@ -592,8 +592,7 @@ func _format_upgrade_effect(option: Dictionary) -> String:
 
 func _format_modifier_value(stat: String, value: float) -> String:
 	var sign := "+" if value >= 0.0 else ""
-	var suffix := "%" if StatDefinitions.is_percent_stat(stat) and not TALENT_STATS_WITHOUT_PERCENT_SUFFIX.has(stat) else ""
-	return "%s%s%s" % [sign, _format_compact_number(value), suffix]
+	return "%s%s" % [sign, _format_compact_number(value)]
 
 
 func _format_compact_number(value: float) -> String:

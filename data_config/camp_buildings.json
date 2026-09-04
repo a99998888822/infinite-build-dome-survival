@@ -312,12 +312,21 @@
       },
       {
         "id": "camp_upgrade_area_size_ranged",
-        "name": "远程范围训练",
+        "name": "攻击距离训练",
         "stat": "area_size",
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 10,
         "value_per_level": 5
+      },
+      {
+        "id": "camp_upgrade_damage_area_size",
+        "name": "伤害范围训练",
+        "stat": "damage_area_size",
+        "currency": "camp_currency",
+        "cost": 500,
+        "max_level": 5,
+        "value_per_level": 2
       },
       {
         "id": "camp_upgrade_control_power_ranged",

@@ -58,7 +58,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 		"detonate_burning": 1.0,
 	}, effect._attachment_item_id)
 	effect._remaining_jumps = maxi(0, int(roundi(effect._context.get_resolved_parameter("chain_count", 3.0) + effect._context.get_resolved_parameter("control_power", 0.0) / 10.0)))
-	effect._jump_radius = maxf(effect._context.get_resolved_parameter("jump_radius", 170.0) * effect._context.get_resolved_parameter("area_size_multiplier", 1.0), 32.0)
+	effect._jump_radius = maxf(effect._context.get_resolved_parameter("jump_radius", 170.0) * effect._context.get_resolved_parameter("attack_range_multiplier", 1.0), 32.0)
 	effect.call_deferred("_strike_chain", first_enemy, hit_position)
 
 
@@ -162,9 +162,9 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 		"lifetime_multiplier": _context.get_resolved_parameter("lifetime_multiplier", 1.0),
 		"glow_multiplier": _context.get_resolved_parameter("glow_multiplier", 1.0),
 		"alpha_multiplier": _context.get_resolved_parameter("alpha_multiplier", 1.0),
-		"distance_multiplier": _context.get_resolved_parameter("area_size_multiplier", 1.0),
+		"distance_multiplier": _context.get_resolved_parameter("attack_range_multiplier", 1.0),
 	}
-	var intensity: float = float(_context.get_resolved_parameter("area_size_multiplier", 1.0))
+	var intensity: float = float(_context.get_resolved_parameter("attack_range_multiplier", 1.0))
 	PARTICLE_WORLD_SCRIPT.emit_profile(_parent_root, "lightning_flash", hit_position, Vector2.ZERO, intensity, Color.WHITE, context_parameters)
 	PARTICLE_WORLD_SCRIPT.emit_profile(_parent_root, "lightning_impact", hit_position, burst_direction, intensity, Color.WHITE, context_parameters)
 

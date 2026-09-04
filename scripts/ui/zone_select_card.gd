@@ -287,8 +287,7 @@ func _format_dictionary(value_data: Variant) -> String:
 		var amount := int((value_data as Dictionary)[key_variant])
 		var label := str(label_overrides.get(stat_id, StatDefinitions.get_display_name(stat_id)))
 		var sign := "+" if amount > 0 else ""
-		var suffix := "%" if stat_id.ends_with("_percent") or StatDefinitions.is_percent_stat(stat_id) else ""
-		parts.append("%s %s%d%s" % [label, sign, amount, suffix])
+		parts.append("%s %s%d" % [label, sign, amount])
 	return ", ".join(parts)
 
 

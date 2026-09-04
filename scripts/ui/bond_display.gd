@@ -78,8 +78,6 @@ static func _build_single_effect_text(effect: Dictionary) -> String:
 
 
 static func _format_effect_value(stat_id: String, value: float) -> String:
-	if StatDefinitions.is_percent_stat(stat_id):
-		return _format_percent(value)
 	if is_equal_approx(value, roundf(value)):
 		return "%d" % roundi(value)
 	return "%.2f" % value

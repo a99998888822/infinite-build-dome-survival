@@ -688,8 +688,9 @@ res://
 
 1. `attack_speed=100: 1.00s -> 0.50s`。
 2. `armor=100: damage_taken_percent=...`，具体数值由护甲函数决定，但必须大于最低承伤下限。
-3. `area_size=40: radius 100 -> 140`。
-4. `finance=101 interest_rate=5: gain 6`。
+3. `area_size=40: attack distance 100 -> 140`。
+4. `damage_area_size=10: damage radius 100 -> 110`，且属性栏显示为 `10` 而不是 `10%`。
+5. `finance=101 interest_rate=5: gain 6`。
 
 ### 4. 检查错误提示
 
@@ -1186,6 +1187,7 @@ res://
 - [x] 支持 `attack_speed` 攻击间隔计算
 - [x] 支持近战、远程、混伤拆段伤害计算
 - [x] 支持 `hit_radius` 基础半径、`area_size` 最终范围加成、`projectile_speed`、`spread_angle` 运行字段读取
+- [x] 支持 `damage_area_size` 对电浆球、电火花、火焰、冰冻、爆裂的伤害范围/视觉大小加成，并排除木质弓箭与闪电链
 - [x] 在 `bootstrap.gd` 中加入武器模块自测
 
 ## 3. 待你验证事项

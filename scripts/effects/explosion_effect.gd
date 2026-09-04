@@ -34,7 +34,7 @@ func _detonate() -> void:
 		"radius": BASE_DAMAGE_RADIUS,
 		"damage_falloff": 0.0,
 	}, _attachment_item_id)
-	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("area_size_multiplier", 1.0), 12.0)
+	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)

@@ -113,7 +113,7 @@ combat_root.tscn
 | `load_cost` | int | 武器负载消耗，属于武器系统，不进入基础属性表。 |
 | `max_level` | int | 单局内最大等级。 |
 | `attack_interval_ms` | int | 武器基础攻击间隔，单位毫秒。 |
-| `hit_radius` | int | 武器基础命中/影响半径。它不是成长属性，最终攻击范围统一由 `area_size` 加成。 |
+| `hit_radius` | int | 武器基础命中判定半径；它不是范围伤害半径。攻击距离由武器攻击距离字段与 `area_size` 决定。 |
 | `projectile_speed` | int | 投射物速度。非远程武器填 `0`。 |
 | `spread_angle` | int | 多投射物散射总角度。单投射物或非远程武器填 `0`。 |
 | `base_stats` | Dictionary | 武器自身基础数值，只影响该武器实例。 |
@@ -132,7 +132,7 @@ combat_root.tscn
 4. 投射物数量受 `projectile_count` 影响。
 5. 穿透能力只由穿透附魔卷轴提供。
 6. 投射物速度读取武器配置 `projectile_speed`。
-7. 投射物基础命中半径读取武器配置 `hit_radius`，最终攻击范围只受 `area_size` 加成。
+7. 远程武器寻找目标的最终攻击距离只受 `area_size` 加成；范围伤害半径另由 `damage_area_size` 处理。
 8. 多投射物采用散射，散射总角度读取武器配置 `spread_angle`。
 9. 投射物不配置生命周期；默认命中敌人后消失，装填穿透附魔后可继续命中目标；碰到战斗边界时消失。
 10. 穿透卷轴通过 `extra_target_hits` 配置额外命中目标数。
@@ -202,15 +202,18 @@ combat_root.tscn
 ### 范围
 
 ```text
-最终攻击范围 = hit_radius * (1 + area_size / 100)
+最终攻击距离 = attack_range * (1 + area_size / 100)
+
+最终伤害范围 = base_damage_radius * (1 + damage_area_size / 100)
 ```
 
 说明：
 
-1. `area_size = 40` 表示近战、远程、范围武器的攻击范围都增加 40%。
-2. `area_size` 是唯一攻击范围加成属性；其他基础数据属性不得再控制武器攻击范围。
-3. `hit_radius` 只表示武器配置中的基础半径，不作为可成长属性。
-4. `pickup_radius` 只控制掉落物吸附范围，不参与武器攻击范围计算。
+1. `area_size = 40` 表示武器攻击距离增加 40%，即能攻击到更远的怪物。
+2. `damage_area_size = 10` 表示指定范围伤害的半径和视觉大小增加 10%。
+3. `area_size` 不得用于扩大电浆球、电火花、火焰、冰冻或爆裂的伤害区域。
+4. 木质弓箭与闪电链不受 `damage_area_size` 影响。
+5. `pickup_radius` 只控制掉落物吸附范围。
 
 ## 9. 武器升级规则
 
@@ -303,7 +306,7 @@ MVP 默认值：
 
 1. 投射物速度：读取武器配置 `projectile_speed`。
 2. 投射物最大存在时间：不配置；默认命中一个目标后消失，只有装填穿透附魔后才允许继续命中目标。
-3. 基础命中半径：读取武器配置 `hit_radius`；最终命中半径只受 `area_size` 加成。
+3. 基础攻击距离读取武器配置；最终攻击距离只受 `area_size` 加成。范围伤害效果的半径单独使用 `damage_area_size`。
 4. 多投射物散射：读取武器配置 `spread_angle`。
 
 ### `DamageEvent`
@@ -458,7 +461,7 @@ WeaponEffectRegistry
 1. MVP 只做“能加载、能升级、能算伤害”。
 2. 负载必须强校验；购买新武器后若超过负载上限，则不允许购买。
 3. 近战武器和范围武器都以玩家当前位置为中心计算范围。
-4. 近战、范围、远程武器的基础命中/影响半径都写入 `weapons.json` 的 `hit_radius`，所有攻击范围加成只使用 `area_size`。
+4. 近战、范围、远程武器的基础攻击距离写入武器配置并由 `area_size` 加成；范围伤害基础半径由具体武器/附魔效果定义并由 `damage_area_size` 加成。
 5. 远程投射物速度写入 `weapons.json` 的 `projectile_speed`。
 6. 投射物生命周期不配置；默认命中后消失，穿透卷轴可延长其目标命中次数，碰到边界时消失。
 7. 投射物默认只命中一个目标；穿透卷轴通过 `extra_target_hits` 增加后续命中次数。

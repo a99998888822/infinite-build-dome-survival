@@ -90,6 +90,7 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"crit_damage",
 	"projectile_count",
 	"area_size",
+	"damage_area_size",
 	"control_power",
 	"pickup_radius",
 	"exp_gain_percent",
@@ -832,10 +833,10 @@ func _get_stat_display_name(stat_id: String) -> String:
 
 func _format_stat_value(stat_id: String, value: float) -> String:
 	if StatDefinitions.is_integer_stat(stat_id):
-		return "%d%%" % roundi(value) if StatDefinitions.is_percent_stat(stat_id) else "%d" % roundi(value)
+		return "%d" % roundi(value)
 	if is_equal_approx(value, roundf(value)):
-		return "%d%%" % roundi(value) if StatDefinitions.is_percent_stat(stat_id) else "%d" % roundi(value)
-	return "%.2f%%" % value if StatDefinitions.is_percent_stat(stat_id) else "%.2f" % value
+		return "%d" % roundi(value)
+	return "%.2f" % value
 
 
 func _refresh_bond_indicator() -> void:

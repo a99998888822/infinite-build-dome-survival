@@ -75,7 +75,7 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 static func _resolve_radius(context: RefCounted) -> float:
 	var radius := 30.0
 	if context != null:
-		radius *= maxf(context.get_resolved_parameter("area_size_multiplier", 1.0), 0.25)
+		radius *= maxf(context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 0.25)
 	return minf(radius, MAX_FIELD_RADIUS)
 
 

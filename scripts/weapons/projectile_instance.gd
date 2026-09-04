@@ -165,7 +165,7 @@ func _process_plasma_contact(delta: float) -> void:
 
 func _query_plasma_enemies() -> Array[EnemyController]:
 	var enemies: Array[EnemyController] = []
-	var radius := maxf(float(weapon.weapon_data.get("plasma_damage_radius", 48.0)), 8.0)
+	var radius := maxf(StatDefinitions.calculate_damage_area_radius(float(weapon.weapon_data.get("plasma_damage_radius", 48.0)), weapon.get_stat("damage_area_size")), 8.0)
 	var shape := CircleShape2D.new()
 	shape.radius = radius
 	var query := PhysicsShapeQueryParameters2D.new()
@@ -207,7 +207,7 @@ func _draw() -> void:
 	if not _is_plasma_projectile():
 		return
 	var time := Time.get_ticks_msec() * 0.001
-	var base_radius := maxf(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), 8.0)
+	var base_radius := maxf(StatDefinitions.calculate_damage_area_radius(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), weapon.get_stat("damage_area_size")), 8.0)
 	var pulse := 1.0 + sin(time * 11.0) * 0.09
 	var jitter := Vector2(sin(time * 31.0), cos(time * 37.0)) * base_radius * 0.12
 	draw_circle(jitter, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))

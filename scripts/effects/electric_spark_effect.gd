@@ -37,7 +37,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"radius": DEFAULT_RADIUS,
 		"strike_height": DEFAULT_STRIKE_HEIGHT,
 	}, attachment_item_id)
-	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("area_size_multiplier", 1.0), 18.0)
+	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 18.0)
 	effect.global_position = hit_position
 	effect.call_deferred("_arm")
 
