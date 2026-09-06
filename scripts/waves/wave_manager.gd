@@ -212,7 +212,7 @@ func collect_all_reward_pickups() -> void:
 
 
 func clear_enemies() -> void:
-	for enemy in get_tree().get_nodes_in_group("enemies"):
+	for enemy in EnemyRegistry.get_registered_enemies():
 		if enemy is EnemyController and enemy.is_inside_tree():
 			enemy.fade_out_and_free()
 

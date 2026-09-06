@@ -23,6 +23,7 @@ CampProgression="*res://autoloads/camp_progression.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
 ZoneProgression="*res://autoloads/zone_progression.gd"
 WindowSettings="*res://autoloads/window_settings.gd"
+EnemyRegistry="*res://scripts/enemies/enemy_registry.gd"
 
 [display]
 

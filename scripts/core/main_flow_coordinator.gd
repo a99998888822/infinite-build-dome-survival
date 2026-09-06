@@ -778,6 +778,7 @@ func _build_shop_context() -> Dictionary:
 		"owned_relic_counts": _bound_player.get_relic_counts(),
 		"current_load": _bound_loadout.get_total_load_cost(),
 		"load_capacity": _bound_loadout.get_load_capacity(),
+		"luck": _get_shop_stat("luck"),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
 		"shop_price_percent": _get_shop_stat("shop_price_percent"),
 		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),

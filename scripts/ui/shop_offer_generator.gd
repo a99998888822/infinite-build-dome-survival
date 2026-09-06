@@ -6,11 +6,23 @@ const OFFER_RELIC: String = "relic"
 const OFFER_WEAPON_UPGRADE: String = "weapon_upgrade"
 
 const RARITIES: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
+const RARITY_LUCK_REQUIREMENTS: Dictionary = {
+	"common": 0,
+	"uncommon": 0,
+	"rare": 0,
+	"epic": 40,
+	"mythic": 150,
+	"legendary": 350,
+}
+const WEAPON_UPGRADE_MISS_WEIGHT: int = 2
+const WEAPON_UPGRADE_WEIGHT_CAP: int = 20
 const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_NEW_WEAPON: 25,
 	OFFER_RELIC: 60,
-	OFFER_WEAPON_UPGRADE: 15,
+	OFFER_WEAPON_UPGRADE: 8,
 }
+
+
 func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
 	var owned_weapon_ids := _to_string_set(context.get("owned_weapon_ids", []))
@@ -23,6 +35,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var shop_price_percent := float(context.get("shop_price_percent", 0.0))
 	var load_capacity := int(context.get("load_capacity", 0))
 	var current_load := int(context.get("current_load", 0))
+	var luck := maxi(0, int(context.get("luck", 0)))
 	var owned_relic_rarity_counts: Dictionary = {}
 	var total_relic_count := 0
 	for owned_relic_id in relic_counts.keys():
@@ -96,12 +109,15 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		var upgrade_entry: Dictionary = weapon_data.get("level_upgrades", {}).get(str(current_level + 1), {})
 		if upgrade_entry.is_empty():
 			continue
+		var upgrade_rarity := str(upgrade_entry.get("rarity", "common"))
+		if luck < get_rarity_luck_requirement(upgrade_rarity):
+			continue
 		var upgrade_tags := _to_string_array(weapon_data.get("tags", []))
 		candidates.append(_build_candidate_entry({
 			"offer_id": "weapon_upgrade:%s:%d" % [weapon_id, current_level + 1],
 			"offer_type": OFFER_WEAPON_UPGRADE,
 			"pool_key": "weapon",
-			"rarity": str(upgrade_entry.get("rarity", "common")),
+			"rarity": upgrade_rarity,
 			"target_id": weapon_id,
 			"from_level": current_level,
 			"to_level": current_level + 1,
@@ -116,13 +132,17 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	return candidates
 
 
+func get_rarity_luck_requirement(rarity: String) -> int:
+	return maxi(0, int(RARITY_LUCK_REQUIREMENTS.get(rarity, 0)))
+
+
 func get_shop_rarity_weights(luck: int, zone_rarity_bonus: int = 0) -> Dictionary:
 	var safe_luck := float(maxi(0, luck))
-	var epic := 25.0 * _diminishing_luck(safe_luck, 173.0, 0.738)
-	var mythic := 12.0 * _diminishing_luck(safe_luck, 1893.0, 0.8)
-	var legendary := 6.0 * _diminishing_luck(safe_luck, 3940.0, 0.8)
-	var rare := 5.0 + 15.0 * _diminishing_luck(safe_luck, 300.0, 0.75)
-	var uncommon := 17.0 + 10.0 * _diminishing_luck(safe_luck, 350.0, 0.7)
+	var uncommon := 17.0 - 7.0 * _threshold_ramp(safe_luck, 40.0, 240.0, 1.0)
+	var rare := 5.0 - 2.0 * _threshold_ramp(safe_luck, 40.0, 420.0, 1.25)
+	var epic := 32.0 * _threshold_ramp(safe_luck, 40.0, 260.0, 1.15)
+	var mythic := 25.0 * _threshold_ramp(safe_luck, 150.0, 220.0, 1.4)
+	var legendary := 15.0 * _threshold_ramp(safe_luck, 350.0, 180.0, 2.1)
 	var uncommon_weight := roundi(uncommon * 100.0)
 	var rare_weight := roundi(rare * 100.0)
 	var epic_weight := roundi(epic * 100.0)
@@ -140,14 +160,22 @@ func get_shop_rarity_weights(luck: int, zone_rarity_bonus: int = 0) -> Dictionar
 	var promotion_budget := mini(common_weight, maxi(0, zone_rarity_bonus) * 100)
 	if promotion_budget <= 0:
 		return rarity_weights
-	var promoted_rarity_total := rare_weight + epic_weight + mythic_weight + legendary_weight
+	var promotable_rarities: Array[String] = []
+	var promoted_rarity_total := 0
+	for rarity in ["rare", "epic", "mythic", "legendary"]:
+		var source_weight := int(rarity_weights.get(rarity, 0))
+		if source_weight <= 0:
+			continue
+		promotable_rarities.append(rarity)
+		promoted_rarity_total += source_weight
 	if promoted_rarity_total <= 0:
 		return rarity_weights
 	rarity_weights["common"] -= promotion_budget
 	var distributed_budget := 0
-	for rarity in ["rare", "epic", "mythic", "legendary"]:
+	for rarity_index in promotable_rarities.size():
+		var rarity := promotable_rarities[rarity_index]
 		var source_weight := int(rarity_weights.get(rarity, 0))
-		var rarity_budget := promotion_budget - distributed_budget if rarity == "legendary" else mini(source_weight, int(floor(float(promotion_budget) * float(source_weight) / float(promoted_rarity_total))))
+		var rarity_budget := promotion_budget - distributed_budget if rarity_index == promotable_rarities.size() - 1 else int(floor(float(promotion_budget) * float(source_weight) / float(promoted_rarity_total)))
 		rarity_weights[rarity] += rarity_budget
 		distributed_budget += rarity_budget
 	return rarity_weights
@@ -178,13 +206,13 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 
 	if int(type_counts.get(OFFER_WEAPON_UPGRADE, 0)) > 0:
 		var miss_count := maxi(0, int(context.get("weapon_upgrade_miss_count", 0)))
-		weights[OFFER_WEAPON_UPGRADE] = mini(45, 15 + miss_count * 6)
+		weights[OFFER_WEAPON_UPGRADE] = mini(WEAPON_UPGRADE_WEIGHT_CAP, int(BASE_TYPE_WEIGHTS[OFFER_WEAPON_UPGRADE]) + miss_count * WEAPON_UPGRADE_MISS_WEIGHT)
 
 	var zone_target_pools := _to_string_set(context.get("zone_target_pools", []))
 	var zone_tag_weight_bonus := maxi(0, int(context.get("zone_tag_weight_bonus", 0)))
 	if zone_target_pools.has("weapon"):
 		weights[OFFER_NEW_WEAPON] += zone_tag_weight_bonus
-		weights[OFFER_WEAPON_UPGRADE] += maxi(1, int(ceil(float(zone_tag_weight_bonus) * 0.5)))
+		weights[OFFER_WEAPON_UPGRADE] = mini(WEAPON_UPGRADE_WEIGHT_CAP, int(weights[OFFER_WEAPON_UPGRADE]) + maxi(1, int(ceil(float(zone_tag_weight_bonus) * 0.5))))
 	if zone_target_pools.has("relic"):
 		weights[OFFER_RELIC] += zone_tag_weight_bonus
 	return weights
@@ -288,12 +316,12 @@ func _filter_candidates_by_rarity_weights(candidates: Array[Dictionary], rarity_
 	return result
 
 
-func _diminishing_luck(luck: float, midpoint: float, exponent: float) -> float:
-	if luck <= 0.0:
+func _threshold_ramp(luck: float, start: float, duration: float, power: float) -> float:
+	if luck <= start:
 		return 0.0
-	var luck_power := pow(luck, exponent)
-	var midpoint_power := pow(midpoint, exponent)
-	return luck_power / (luck_power + midpoint_power)
+	if duration <= 0.0 or luck >= start + duration:
+		return 1.0
+	return pow(clampf((luck - start) / duration, 0.0, 1.0), maxf(power, 0.01))
 
 
 func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int, shop_price_percent: float) -> Dictionary:

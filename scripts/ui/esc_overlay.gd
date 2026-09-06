@@ -3,7 +3,6 @@ class_name EscOverlay
 
 signal back_pressed
 
-const RELIC_GRID_COLUMNS: int = 6
 const RELIC_CELL_SIZE: Vector2 = Vector2(48, 48)
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
@@ -30,6 +29,8 @@ var _relic_pulse_tweens: Dictionary = {}
 var _backdrop: ColorRect = null
 var _show_tween: Tween = null
 var _item_tooltip_panel: PanelContainer = null
+var _grid_layout_retry_pending: bool = false
+var _grid_layout_retry_in_progress: bool = false
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
@@ -48,16 +49,16 @@ func _ready() -> void:
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
-		relic_grid.columns = RELIC_GRID_COLUMNS
 		relic_grid.add_theme_constant_override("h_separation", 10)
 		relic_grid.add_theme_constant_override("v_separation", 10)
 		relic_grid.clip_contents = false
+		_update_relic_grid_columns()
 	if relic_scroll != null:
 		relic_scroll.clip_contents = false
 	if item_grid != null:
-		item_grid.columns = 4
 		item_grid.add_theme_constant_override("h_separation", 10)
 		item_grid.add_theme_constant_override("v_separation", 10)
+		_update_item_grid_columns()
 	if get_viewport() != null:
 		var viewport_callable := Callable(self, "_on_viewport_resized")
 		if not get_viewport().size_changed.is_connected(viewport_callable):
@@ -66,8 +67,8 @@ func _ready() -> void:
 
 
 func show_overlay() -> void:
-	_layout_overlay()
 	visible = true
+	_layout_overlay()
 	if center_container == null:
 		return
 	center_container.pivot_offset = center_container.size * 0.5
@@ -224,6 +225,8 @@ func _hide_item_tooltip() -> void:
 
 func _on_viewport_resized() -> void:
 	_layout_overlay()
+	_update_relic_grid_columns()
+	_update_item_grid_columns()
 
 
 func _layout_overlay() -> void:
@@ -254,6 +257,52 @@ func _layout_overlay() -> void:
 		weapon_strip.anchor_bottom = 0.0
 		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
 		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
+	_update_relic_grid_columns()
+	_update_item_grid_columns()
+
+
+func _update_relic_grid_columns() -> void:
+	if relic_grid == null or not visible:
+		return
+	var relic_scroll := relic_grid.get_parent() as Control
+	if relic_scroll == null or relic_scroll.size.x <= 0.0:
+		_queue_grid_layout_retry()
+		return
+	var separation := float(relic_grid.get_theme_constant("h_separation"))
+	var column_count := maxi(1, int(floor((relic_scroll.size.x + separation) / (RELIC_CELL_SIZE.x + separation))))
+	relic_grid.columns = column_count
+
+
+func _update_item_grid_columns() -> void:
+	if item_grid == null or not visible:
+		return
+	var item_scroll := item_grid.get_parent() as Control
+	if item_scroll == null or item_scroll.size.x <= 0.0:
+		_queue_grid_layout_retry()
+		return
+	var separation := float(item_grid.get_theme_constant("h_separation"))
+	var cell_width := 48.0
+	var column_count := maxi(1, int(floor((item_scroll.size.x + separation) / (cell_width + separation))))
+	item_grid.columns = column_count
+
+
+func _queue_grid_layout_retry() -> void:
+	if not visible or _grid_layout_retry_pending or _grid_layout_retry_in_progress:
+		return
+	_grid_layout_retry_pending = true
+	call_deferred("_retry_grid_layout_columns")
+
+
+func _retry_grid_layout_columns() -> void:
+	_grid_layout_retry_pending = false
+	if not visible:
+		return
+	# A single retry is enough to catch the normal Control layout pass. If the
+	# overlay is still not laid out, the next viewport resize/show will retry.
+	_grid_layout_retry_in_progress = true
+	_update_relic_grid_columns()
+	_update_item_grid_columns()
+	_grid_layout_retry_in_progress = false
 
 
 func _get_modal_safe_rect() -> Rect2:

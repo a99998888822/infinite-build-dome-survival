@@ -209,10 +209,10 @@ func _draw() -> void:
 	var time := Time.get_ticks_msec() * 0.001
 	var base_radius := maxf(StatDefinitions.calculate_damage_area_radius(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), weapon.get_stat("damage_area_size")), 8.0)
 	var pulse := 1.0 + sin(time * 11.0) * 0.09
-	var jitter := Vector2(sin(time * 31.0), cos(time * 37.0)) * base_radius * 0.12
-	draw_circle(jitter, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))
-	draw_circle(jitter, base_radius * pulse, Color(0.55, 0.86, 1.0, 0.24))
-	draw_circle(jitter, base_radius * 0.62 * pulse, Color(0.88, 0.97, 1.0, 0.96))
+	# Keep the projectile body centered so its flight remains a clean straight line.
+	draw_circle(Vector2.ZERO, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))
+	draw_circle(Vector2.ZERO, base_radius * pulse, Color(0.55, 0.86, 1.0, 0.24))
+	draw_circle(Vector2.ZERO, base_radius * 0.62 * pulse, Color(0.88, 0.97, 1.0, 0.96))
 	var arc_count := clampi(int(weapon.weapon_data.get("plasma_arc_count", 4)), 2, 8)
 	var arc_segments := clampi(int(weapon.weapon_data.get("plasma_arc_segments", 12)), 8, 24)
 	var arc_jitter := maxf(float(weapon.weapon_data.get("plasma_arc_jitter", 3.0)), 0.0)
@@ -222,14 +222,17 @@ func _draw() -> void:
 		var major_radius := base_radius * (1.02 + sin(time * 4.0 + arc_phase) * 0.10)
 		var minor_radius := major_radius * (0.38 + 0.10 * sin(time * 3.0 + arc_phase * 1.7))
 		var points := PackedVector2Array()
+		# Each bolt is an open, uneven arc rather than a closed ring.
+		var arc_span := PI * (0.62 + 0.12 * sin(time * 2.7 + arc_phase))
+		var arc_start := -arc_span * 0.5 + 0.22 * sin(time * 3.3 + arc_phase * 2.0)
 		for point_index in range(arc_segments + 1):
 			var ratio := float(point_index) / float(arc_segments)
-			var angle := ratio * TAU
+			var angle := arc_start + ratio * arc_span
 			var radial_noise := sin(time * 29.0 + arc_phase * 5.0 + float(point_index) * 4.7) * arc_jitter
 			var tangent_noise := sin(time * 37.0 + arc_phase * 3.0 + float(point_index) * 8.3) * arc_jitter * 0.34
 			var point := Vector2(cos(angle) * (major_radius + radial_noise), sin(angle) * (minor_radius + radial_noise * 0.45))
 			point += Vector2(-sin(angle), cos(angle)) * tangent_noise
-			points.append(jitter + point.rotated(ring_rotation))
+			points.append(point.rotated(ring_rotation))
 		draw_polyline(points, Color(0.28, 0.72, 1.0, 0.24), 4.0, true)
 		draw_polyline(points, Color(0.82, 0.96, 1.0, 0.96), 1.5, true)
 
@@ -256,11 +259,13 @@ func _spawn_split_projectiles(hit_position: Vector2) -> void:
 
 func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id: String) -> void:
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "split", {
-		"child_count": 3.0,
+		"child_count": 2.0,
 		"spread_angle": 36.0,
+		"damage_multiplier": 0.6,
 	}, attachment_item_id)
-	var child_count := clampi(int(roundi(context.get_resolved_parameter("child_count", 3.0))), 1, 8)
+	var child_count := clampi(int(roundi(context.get_resolved_parameter("child_count", 2.0))), 1, 8)
 	var spread_angle := maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0)
+	var child_damage_multiplier := maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0)
 	var inherited_targets := hit_targets.duplicate()
 	var reserved_targets := inherited_targets.duplicate()
 	var child_directions: Array[Vector2] = []
@@ -284,9 +289,14 @@ func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id
 			if assigned_target == null or int(reserved_target_id) != assigned_target.get_instance_id():
 				child_ignored_targets[reserved_target_id] = true
 		var launch_position := hit_position + child_directions[child_index] * maxf(weapon.get_hit_radius(), DEFAULT_HIT_RADIUS)
-		_spawn_projectile_callback.call(
+		var child_damage_event := damage_event.duplicate_event()
+		child_damage_event.damage = maxi(1, int(roundi(float(child_damage_event.damage) * child_damage_multiplier)))
+		# body_entered can run while Godot is flushing physics queries. Defer the
+		# whole child creation so Area2D and CollisionShape2D state changes happen
+		# after the physics query completes.
+		_spawn_projectile_callback.call_deferred(
 			weapon,
-			damage_event.duplicate_event(),
+			child_damage_event,
 			child_directions[child_index],
 			maxf(weapon.get_attack_range(), remaining_distance),
 			launch_position,
@@ -298,7 +308,7 @@ func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id
 func _find_split_target(origin: Vector2, excluded_targets: Dictionary) -> EnemyController:
 	var nearest: EnemyController = null
 	var nearest_distance := INF
-	for node in get_tree().get_nodes_in_group("enemies"):
+	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if enemy == null or not enemy.is_alive() or excluded_targets.has(enemy.get_instance_id()):
 			continue

@@ -61,9 +61,15 @@ var _lightning_visual: Node2D = null
 
 func _ready() -> void:
 	add_to_group("enemies")
+	EnemyRegistry.register_enemy(self)
 	_capture_base_sprite_modulate()
 	if auto_initialize_on_ready:
 		initialize(enemy_id)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(EnemyRegistry):
+		EnemyRegistry.unregister_enemy(self)
 
 
 func _physics_process(delta: float) -> void:
@@ -184,7 +190,7 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 	if is_instance_valid(_lightning_visual):
 		_lightning_visual.call("refresh", duration)
 		return
-	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration)
+	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration, LIGHTNING_STATUS_VISUAL_SCRIPT)
 
 
 func apply_lightning_stun(duration: float = 0.65) -> void:

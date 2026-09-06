@@ -10,10 +10,9 @@ var _duration: float = 0.65
 var _elapsed: float = 0.0
 
 
-static func attach(parent: Node2D, duration: float = 0.65) -> Node2D:
-	if parent == null:
+static func attach(parent: Node2D, duration: float, visual_script: Script) -> Node2D:
+	if parent == null or visual_script == null:
 		return null
-	var visual_script: Script = load("res://scripts/effects/lightning_status_visual.gd") as Script
 	var visual: Node2D = visual_script.new() as Node2D
 	parent.add_child(visual)
 	visual.set("_duration", maxf(duration, 0.15))

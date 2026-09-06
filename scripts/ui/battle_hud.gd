@@ -707,9 +707,8 @@ func _refresh_stats_drawer() -> void:
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
 			if stat_id == "armor":
-				var tooltip_text := _get_damage_tooltip_text()
-				if name_label.tooltip_text != tooltip_text:
-					name_label.tooltip_text = tooltip_text
+				# Use the custom tooltip panel below; the built-in tooltip would show a duplicate.
+				name_label.tooltip_text = ""
 
 
 func _ensure_stat_rows() -> void:
@@ -730,7 +729,7 @@ func _ensure_stat_rows() -> void:
 		if stat_id == "armor":
 			name_label.mouse_filter = Control.MOUSE_FILTER_STOP
 			name_label.mouse_default_cursor_shape = Control.CURSOR_HELP
-			name_label.tooltip_text = _get_damage_tooltip_text()
+			name_label.tooltip_text = ""
 			name_label.mouse_entered.connect(_show_damage_tooltip.bind(name_label))
 			name_label.mouse_exited.connect(_hide_damage_tooltip)
 			var spacer := Control.new()
@@ -749,9 +748,9 @@ func _ensure_stat_rows() -> void:
 
 func _get_damage_tooltip_text() -> String:
 	if _player == null:
-		return "护甲减免后的当前承伤百分比"
+		return "护甲减免后，承受xx%的伤害"
 	var damage_taken_percent := _format_stat_value("damage_taken_percent", _player.get_stat("damage_taken_percent"))
-	return "护甲减免后，玩家当前承受 %s 的伤害" % damage_taken_percent
+	return "护甲减免后，承受%s%%的伤害" % damage_taken_percent
 
 
 

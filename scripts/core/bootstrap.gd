@@ -405,6 +405,7 @@ func _run_enemy_wave_checks() -> bool:
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
 	var expected_enemy_hp := int(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0))
 	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == expected_enemy_hp) and passed
+	passed = _print_check_result("enemy registry register", enemy != null and EnemyRegistry.get_registered_enemies().has(enemy)) and passed
 	if enemy != null:
 		passed = _print_check_result("enemy wave move speed modifier", enemy.get_stat("move_speed") >= 100.0 and enemy.get_stat("move_speed") <= 130.0) and passed
 		var previous_hp := player.current_hp
@@ -811,16 +812,40 @@ func _run_weapon_checks() -> bool:
 	var shop_candidates := shop_generator.build_shop_candidate_pool(shop_context)
 	var shop_rarity_weights := shop_generator.get_shop_rarity_weights(100)
 	var boosted_shop_rarity_weights := shop_generator.get_shop_rarity_weights(100, 4)
+	var locked_rarity_zone_weights := shop_generator.get_shop_rarity_weights(0, 4)
+	var epic_threshold_weights := shop_generator.get_shop_rarity_weights(40)
+	var mythic_threshold_weights := shop_generator.get_shop_rarity_weights(150)
+	var legendary_threshold_weights := shop_generator.get_shop_rarity_weights(350)
+	var epic_after_threshold_weights := shop_generator.get_shop_rarity_weights(41)
+	var mythic_after_threshold_weights := shop_generator.get_shop_rarity_weights(151)
+	var legendary_after_threshold_weights := shop_generator.get_shop_rarity_weights(360)
 	var rarity_weight_sum := 0
 	var boosted_rarity_weight_sum := 0
 	for rarity in ShopOfferGenerator.RARITIES:
 		rarity_weight_sum += int(shop_rarity_weights.get(rarity, 0))
 		boosted_rarity_weight_sum += int(boosted_shop_rarity_weights.get(rarity, 0))
-	var zone_rarity_bonus_check := rarity_weight_sum == 10000 and boosted_rarity_weight_sum == 10000 and int(boosted_shop_rarity_weights.get("rare", 0)) > int(shop_rarity_weights.get("rare", 0))
+	var zone_rarity_bonus_check := rarity_weight_sum == 10000 and boosted_rarity_weight_sum == 10000 and int(boosted_shop_rarity_weights.get("rare", 0)) > int(shop_rarity_weights.get("rare", 0)) and int(locked_rarity_zone_weights.get("epic", 0)) == 0 and int(locked_rarity_zone_weights.get("mythic", 0)) == 0 and int(locked_rarity_zone_weights.get("legendary", 0)) == 0
 	passed = _print_check_result("shop zone rarity bonus", zone_rarity_bonus_check) and passed
+	var rarity_luck_gate_check := (
+		int(shop_generator.get_shop_rarity_weights(39).get("epic", 0)) == 0
+		and int(epic_threshold_weights.get("epic", 0)) == 0
+		and int(epic_after_threshold_weights.get("epic", 0)) > 0
+		and int(epic_threshold_weights.get("mythic", 0)) == 0
+		and int(mythic_threshold_weights.get("mythic", 0)) == 0
+		and int(mythic_after_threshold_weights.get("mythic", 0)) > 0
+		and int(mythic_threshold_weights.get("legendary", 0)) == 0
+		and int(legendary_threshold_weights.get("legendary", 0)) == 0
+		and int(legendary_after_threshold_weights.get("legendary", 0)) > 0
+	)
+	passed = _print_check_result("shop rarity luck gates", rarity_luck_gate_check) and passed
 	var shop_context_with_candidates := shop_context.duplicate(true)
 	shop_context_with_candidates["candidate_pool"] = shop_candidates
 	var shop_type_weights := shop_generator.get_shop_type_weights(shop_context_with_candidates)
+	var maximum_upgrade_weight_context := shop_context_with_candidates.duplicate(true)
+	maximum_upgrade_weight_context["weapon_upgrade_miss_count"] = 99
+	var maximum_upgrade_type_weights := shop_generator.get_shop_type_weights(maximum_upgrade_weight_context)
+	var weapon_upgrade_weight_check := int(shop_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 8 and int(maximum_upgrade_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 20
+	passed = _print_check_result("weapon upgrade lower pity weights", weapon_upgrade_weight_check) and passed
 	var default_shop_offer_count := StatDefinitions.calculate_shop_offer_count(MainFlowCoordinator.BASE_SHOP_OFFER_COUNT, 0.0)
 	var shop_offers := shop_generator.roll_shop_offers(shop_rarity_weights, shop_type_weights, shop_candidates, default_shop_offer_count)
 	var upgrade_offer_count := 0
@@ -837,6 +862,34 @@ func _run_weapon_checks() -> bool:
 			discounted_weapon_cost = int(candidate.get("shop_cost", -1))
 			break
 	passed = _print_check_result("weapon upgrade shop price", discounted_weapon_cost == 16) and passed
+	var locked_epic_upgrade_context := shop_context.duplicate(true)
+	locked_epic_upgrade_context["equipped_weapons"] = [{"weapon_id": "weapon_void_blade", "level": 3}]
+	locked_epic_upgrade_context["luck"] = 39
+	var unlocked_epic_upgrade_context := locked_epic_upgrade_context.duplicate(true)
+	unlocked_epic_upgrade_context["luck"] = 40
+	var locked_mythic_upgrade_context := shop_context.duplicate(true)
+	locked_mythic_upgrade_context["equipped_weapons"] = [{"weapon_id": "weapon_void_blade", "level": 4}]
+	locked_mythic_upgrade_context["luck"] = 149
+	var unlocked_mythic_upgrade_context := locked_mythic_upgrade_context.duplicate(true)
+	unlocked_mythic_upgrade_context["luck"] = 150
+	var locked_epic_upgrade_absent := true
+	for candidate in shop_generator.build_shop_candidate_pool(locked_epic_upgrade_context):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			locked_epic_upgrade_absent = false
+	var unlocked_epic_upgrade_found := false
+	for candidate in shop_generator.build_shop_candidate_pool(unlocked_epic_upgrade_context):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE and int(candidate.get("to_level", 0)) == 4:
+			unlocked_epic_upgrade_found = true
+	var locked_mythic_upgrade_absent := true
+	var unlocked_mythic_upgrade_found := false
+	for candidate in shop_generator.build_shop_candidate_pool(locked_mythic_upgrade_context):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			locked_mythic_upgrade_absent = false
+	for candidate in shop_generator.build_shop_candidate_pool(unlocked_mythic_upgrade_context):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE and int(candidate.get("to_level", 0)) == 5:
+			unlocked_mythic_upgrade_found = true
+	var weapon_upgrade_luck_gate_check := locked_epic_upgrade_absent and unlocked_epic_upgrade_found and locked_mythic_upgrade_absent and unlocked_mythic_upgrade_found
+	passed = _print_check_result("weapon upgrade luck gates", weapon_upgrade_luck_gate_check) and passed
 	var bucket_context := shop_context.duplicate(true)
 	bucket_context["owned_relic_counts"] = {"relic_piggy_bank": 5}
 	var bucket_candidates := shop_generator.build_shop_candidate_pool(bucket_context)

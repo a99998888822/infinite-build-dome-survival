@@ -13,7 +13,7 @@ func find_nearest_enemy_in_radius(origin: Vector2, radius: float) -> Node2D:
 	var nearest_enemy: Node2D = null
 	var nearest_distance_sq := INF
 	var radius_sq := radius * radius
-	for node in get_tree().get_nodes_in_group(enemy_group_name):
+	for node in _get_enemy_candidates():
 		var enemy := node as Node2D
 		if enemy == null or not enemy.is_inside_tree():
 			continue
@@ -29,8 +29,14 @@ func find_nearest_enemy_in_radius(origin: Vector2, radius: float) -> Node2D:
 func find_enemies_in_radius(origin: Vector2, radius: float) -> Array[Node2D]:
 	var result: Array[Node2D] = []
 	var radius_sq := radius * radius
-	for node in get_tree().get_nodes_in_group(enemy_group_name):
+	for node in _get_enemy_candidates():
 		var enemy := node as Node2D
 		if enemy != null and enemy.is_inside_tree() and origin.distance_squared_to(enemy.global_position) <= radius_sq:
 			result.append(enemy)
 	return result
+
+
+func _get_enemy_candidates() -> Array[Node]:
+	if enemy_group_name == "enemies":
+		return EnemyRegistry.get_registered_enemies()
+	return get_tree().get_nodes_in_group(enemy_group_name)

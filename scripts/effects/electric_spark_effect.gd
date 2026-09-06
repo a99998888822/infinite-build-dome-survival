@@ -7,7 +7,8 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ACTIVATION_DELAY_SECONDS: float = 0.5
 const RING_FADE_SECONDS: float = 0.28
 const DEFAULT_RADIUS: float = 20.0
-const DEFAULT_STRIKE_HEIGHT: float = 260.0
+const DAMAGE_RADIUS_MULTIPLIER: float = 1.5
+const DEFAULT_STRIKE_HEIGHT: float = 182.0
 const PARTICLE_ROWS: int = 3
 const PARTICLES_PER_ROW: int = 8
 const BODY_RADIUS: Vector2 = Vector2(23.0, 14.0)
@@ -19,8 +20,11 @@ var _hit_position: Vector2 = Vector2.ZERO
 var _attachment_item_id: String = ""
 var _context: RefCounted = null
 var _radius: float = DEFAULT_RADIUS
+var _ring_radius: float = DEFAULT_RADIUS
 var _elapsed: float = 0.0
 var _struck: bool = false
+var _strike_landed: bool = false
+var _ring_fade_start_elapsed: float = 0.0
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
@@ -37,7 +41,12 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"radius": DEFAULT_RADIUS,
 		"strike_height": DEFAULT_STRIKE_HEIGHT,
 	}, attachment_item_id)
-	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 18.0)
+	effect._ring_radius = maxf(
+		effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS)
+			* effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0),
+		18.0,
+	)
+	effect._radius = effect._ring_radius * DAMAGE_RADIUS_MULTIPLIER
 	effect.global_position = hit_position
 	effect.call_deferred("_arm")
 
@@ -61,7 +70,7 @@ func _process(delta: float) -> void:
 	if not _struck and _elapsed >= ACTIVATION_DELAY_SECONDS:
 		_struck = true
 		_trigger_strike()
-	if _struck and _elapsed >= ACTIVATION_DELAY_SECONDS + RING_FADE_SECONDS:
+	if _strike_landed and _elapsed >= _ring_fade_start_elapsed + RING_FADE_SECONDS:
 		queue_free()
 		return
 	queue_redraw()
@@ -69,40 +78,36 @@ func _process(delta: float) -> void:
 
 func _trigger_strike() -> void:
 	if _context == null or _weapon == null or _damage_event == null:
+		_on_ground_strike_landed()
 		return
 	var strike_height := maxf(_context.get_resolved_parameter("strike_height", DEFAULT_STRIKE_HEIGHT), 96.0)
-	LIGHTNING_EFFECT_SCRIPT.spawn_ground_strike(get_parent(), _hit_position, _weapon, _damage_event, _attachment_item_id, strike_height)
-	_damage_enemies()
+	var strike_effect := LIGHTNING_EFFECT_SCRIPT.spawn_ground_strike(
+		get_parent(),
+		_hit_position,
+		_weapon,
+		_damage_event,
+		_attachment_item_id,
+		strike_height,
+		_radius,
+	)
+	if strike_effect == null:
+		_on_ground_strike_landed()
+		return
+	strike_effect.ground_strike_landed.connect(_on_ground_strike_landed, CONNECT_ONE_SHOT)
 
 
-func _damage_enemies() -> void:
-	var space_state := get_world_2d().direct_space_state
-	var shape := CircleShape2D.new()
-	shape.radius = _radius
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
-	query.transform = Transform2D(0.0, _hit_position)
-	query.collision_mask = 2
-	query.collide_with_bodies = true
-	var results := space_state.intersect_shape(query, 64)
-	var damaged_ids: Dictionary = {}
-	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
-	for result in results:
-		var enemy := result.get("collider") as EnemyController
-		if enemy == null or not enemy.is_alive() or damaged_ids.has(enemy.get_instance_id()):
-			continue
-		damaged_ids[enemy.get_instance_id()] = true
-		var hit_direction := _hit_position.direction_to(enemy.global_position)
-		if hit_direction.is_zero_approx():
-			hit_direction = Vector2.DOWN
-		enemy.take_damage(damage, _damage_event.source_weapon_id, _damage_event.is_critical, hit_direction)
+func _on_ground_strike_landed() -> void:
+	if _strike_landed:
+		return
+	_strike_landed = true
+	_ring_fade_start_elapsed = _elapsed
 
 
 func _draw() -> void:
 	var fade := 1.0
-	if _struck:
-		fade = 1.0 - clampf((_elapsed - ACTIVATION_DELAY_SECONDS) / RING_FADE_SECONDS, 0.0, 1.0)
-	var radius_scale := _radius / DEFAULT_RADIUS
+	if _strike_landed:
+		fade = 1.0 - clampf((_elapsed - _ring_fade_start_elapsed) / RING_FADE_SECONDS, 0.0, 1.0)
+	var radius_scale := _ring_radius / DEFAULT_RADIUS
 	for row_index in PARTICLE_ROWS:
 		var row_phase := float(row_index) * 1.9
 		for particle_index in PARTICLES_PER_ROW:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3ot0cyof1iq"
-path="res://.godot/imported/player_void_hunter_standing_32.png-28b2c5cf613101e338460aaf05bd4524.ctex"
+uid="uid://dv4e6xdjpvrfq"
+path="res://.godot/imported/enemy_void_crawler_idle.png-3ed5f6b54c150b4a3420ec05e2d4fb98.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/player_void_hunter_standing_32.png"
-dest_files=["res://.godot/imported/player_void_hunter_standing_32.png-28b2c5cf613101e338460aaf05bd4524.ctex"]
+source_file="res://assets/sprites/enemies/enemy_void_crawler_idle.png"
+dest_files=["res://.godot/imported/enemy_void_crawler_idle.png-3ed5f6b54c150b4a3420ec05e2d4fb98.ctex"]
 
 [params]
 
