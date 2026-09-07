@@ -4,6 +4,7 @@ class_name DamageEvent
 var source_player: PlayerController = null
 var source_weapon_id: String = ""
 var damage: int = 0
+var original_damage: int = 0
 var damage_kind: String = ""
 var is_critical: bool = false
 var tags: Array[String] = []
@@ -15,6 +16,7 @@ static func create(data: Dictionary) -> DamageEvent:
 	event.source_player = data.get("source_player", null)
 	event.source_weapon_id = str(data.get("source_weapon_id", ""))
 	event.damage = int(data.get("damage", 0))
+	event.original_damage = int(data.get("original_damage", event.damage))
 	event.damage_kind = str(data.get("damage_kind", ""))
 	event.is_critical = bool(data.get("is_critical", false))
 	event.tags = _to_string_array(data.get("tags", []))
@@ -27,6 +29,7 @@ func to_dictionary() -> Dictionary:
 		"source_player": source_player,
 		"source_weapon_id": source_weapon_id,
 		"damage": damage,
+		"original_damage": original_damage,
 		"damage_kind": damage_kind,
 		"is_critical": is_critical,
 		"tags": tags.duplicate(),

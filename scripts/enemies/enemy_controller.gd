@@ -25,8 +25,8 @@ const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
 const LIGHTNING_STUN_MAX_SECONDS: float = 3.0
-const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const LIGHTNING_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/lightning_status_visual.gd")
+const ENEMY_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/enemy_status_visual.gd")
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -46,11 +46,16 @@ var _contact_damage_cooldown: float = 0.0
 var _burning_remaining: float = 0.0
 var _burn_tick_timer: float = 0.0
 var _burn_damage_per_tick: float = 0.0
+var _burn_damage_remainder: float = 0.0
 var _burn_source_id: String = ""
-var _burn_visual_timer: float = 0.0
 var _stunned_remaining: float = 0.0
 var _slowed_remaining: float = 0.0
 var _slow_multiplier: float = 1.0
+var _wet_remaining: float = 0.0
+var _wet_slow_multiplier: float = 1.0
+var _frozen_remaining: float = 0.0
+var _light_remaining: float = 0.0
+var _blinded_remaining: float = 0.0
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
@@ -63,6 +68,9 @@ func _ready() -> void:
 	add_to_group("enemies")
 	EnemyRegistry.register_enemy(self)
 	_capture_base_sprite_modulate()
+	var status_visual := ENEMY_STATUS_VISUAL_SCRIPT.new()
+	status_visual.name = "EnemyStatusVisual"
+	add_child(status_visual)
 	if auto_initialize_on_ready:
 		initialize(enemy_id)
 
@@ -84,9 +92,15 @@ func _physics_process(delta: float) -> void:
 		return
 	_stunned_remaining = maxf(_stunned_remaining - delta, 0.0)
 	_slowed_remaining = maxf(_slowed_remaining - delta, 0.0)
+	_wet_remaining = maxf(_wet_remaining - delta, 0.0)
+	_frozen_remaining = maxf(_frozen_remaining - delta, 0.0)
+	_light_remaining = maxf(_light_remaining - delta, 0.0)
+	_blinded_remaining = maxf(_blinded_remaining - delta, 0.0)
+	if _wet_remaining <= 0.0:
+		_wet_slow_multiplier = 1.0
 	if _slowed_remaining <= 0.0:
 		_slow_multiplier = 1.0
-	if _stunned_remaining > 0.0:
+	if _stunned_remaining > 0.0 or _frozen_remaining > 0.0 or _blinded_remaining > 0.0:
 		velocity = Vector2.ZERO
 		return
 	if _knockback_timer > 0.0:
@@ -119,11 +133,16 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_burning_remaining = 0.0
 	_burn_tick_timer = 0.0
 	_burn_damage_per_tick = 0.0
+	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
-	_burn_visual_timer = 0.0
 	_stunned_remaining = 0.0
 	_slowed_remaining = 0.0
 	_slow_multiplier = 1.0
+	_wet_remaining = 0.0
+	_wet_slow_multiplier = 1.0
+	_frozen_remaining = 0.0
+	_light_remaining = 0.0
+	_blinded_remaining = 0.0
 	return true
 
 
@@ -156,7 +175,7 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 	_burning_remaining = maxf(_burning_remaining, duration)
 	_burn_damage_per_tick = maxf(_burn_damage_per_tick, damage_per_tick)
 	_burn_source_id = source_id if not source_id.is_empty() else _burn_source_id
-	_burn_tick_timer = minf(_burn_tick_timer, 0.12) if _burn_tick_timer > 0.0 else 0.12
+	_burn_tick_timer = minf(_burn_tick_timer, 0.5) if _burn_tick_timer > 0.0 else 0.5
 
 
 func apply_slow(duration: float, multiplier: float) -> void:
@@ -166,9 +185,55 @@ func apply_slow(duration: float, multiplier: float) -> void:
 	_slow_multiplier = minf(_slow_multiplier, clampf(multiplier, 0.05, 1.0))
 
 
+func apply_wet(duration: float = 3.0, slow_multiplier: float = 0.8) -> void:
+	if not alive:
+		return
+	_wet_remaining = maxf(_wet_remaining, duration)
+	_wet_slow_multiplier = minf(_wet_slow_multiplier, clampf(slow_multiplier, 0.05, 1.0))
+
+
+func clear_wet() -> void:
+	_wet_remaining = 0.0
+	_wet_slow_multiplier = 1.0
+
+
+func apply_freeze(duration: float = 1.0) -> void:
+	if not alive:
+		return
+	_frozen_remaining = maxf(_frozen_remaining, minf(duration, 3.0))
+
+
+func apply_light(duration: float = 5.0) -> void:
+	if not alive:
+		return
+	_light_remaining = maxf(_light_remaining, minf(duration, 10.0))
+
+
+func clear_light() -> void:
+	_light_remaining = 0.0
+
+
+func apply_blind(duration: float = 2.0) -> void:
+	if not alive:
+		return
+	_blinded_remaining = maxf(_blinded_remaining, minf(duration, 5.0))
+
+
+func clear_blind() -> void:
+	_blinded_remaining = 0.0
+
+
 func has_status(status_id: String) -> bool:
 	if status_id == "slowed":
 		return _slowed_remaining > 0.0
+	if status_id == "wet":
+		return _wet_remaining > 0.0
+	if status_id == "frozen":
+		return _frozen_remaining > 0.0
+	if status_id == "light":
+		return _light_remaining > 0.0
+	if status_id == "dark" or status_id == "blinded":
+		return _blinded_remaining > 0.0
 	if status_id == "burning":
 		return _burning_remaining > 0.0
 	if status_id == "stunned" or status_id == "paralyzed":
@@ -180,8 +245,8 @@ func clear_burning() -> void:
 	_burning_remaining = 0.0
 	_burn_tick_timer = 0.0
 	_burn_damage_per_tick = 0.0
+	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
-	_burn_visual_timer = 0.0
 
 
 func apply_lightning_visual(duration: float = 0.65) -> void:
@@ -205,15 +270,14 @@ func _process_burning(delta: float) -> void:
 		return
 	_burning_remaining = maxf(_burning_remaining - delta, 0.0)
 	_burn_tick_timer -= delta
-	_burn_visual_timer -= delta
-	if _burn_visual_timer <= 0.0:
-		_burn_visual_timer = 0.08
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_spark", global_position + Vector2(0.0, -12.0), Vector2.UP, 0.55)
 	if _burn_tick_timer > 0.0:
 		return
-	_burn_tick_timer = 0.25
-	var damage := maxi(1, int(roundi(_burn_damage_per_tick)))
-	take_damage(damage, _burn_source_id, false, Vector2.ZERO)
+	_burn_tick_timer = 0.5
+	_burn_damage_remainder += _burn_damage_per_tick
+	var damage := int(floor(_burn_damage_remainder))
+	_burn_damage_remainder -= float(damage)
+	if damage > 0:
+		take_damage(damage, _burn_source_id, false, Vector2.ZERO)
 	if _burning_remaining <= 0.0:
 		clear_burning()
 
@@ -228,7 +292,11 @@ func take_damage(
 	if not alive or raw_damage <= 0:
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
-	var final_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
+	var light_multiplier := 1.0
+	if _light_remaining > 0.0:
+		light_multiplier = 2.0
+		clear_light()
+	var final_damage := maxi(1, int(roundi(float(raw_damage) * light_multiplier * damage_taken_percent / 100.0)))
 	current_hp = maxi(current_hp - final_damage, 0)
 	if damage_components.is_empty():
 		_spawn_damage_number(final_damage, is_critical)
@@ -394,6 +462,8 @@ func _process_chase() -> void:
 	var move_speed := minf(get_stat("move_speed"), base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
 	if _slowed_remaining > 0.0:
 		move_speed *= _slow_multiplier
+	if _wet_remaining > 0.0:
+		move_speed *= _wet_slow_multiplier
 	velocity = direction * move_speed
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0

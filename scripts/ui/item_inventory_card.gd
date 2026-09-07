@@ -31,9 +31,13 @@ const CATEGORY_LABELS: Dictionary = {
 }
 const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
+	"water": "水",
 	"explosion": "爆炸",
 	"lightning": "闪电",
 	"electric_spark": "电火花",
+	"ice": "冰冻",
+	"light_sword": "光辉剑",
+	"black_hole": "黑洞",
 	"split": "分裂",
 	"pierce": "穿透",
 }
@@ -44,10 +48,17 @@ const EFFECT_COLOR_CODES: Dictionary = {
 	"electric_spark": "#FFD15C",
 	"split": "#FF9ED7",
 	"pierce": "#9EDBFF",
+	"light_sword": "#FFFFFF",
+	"black_hole": "#9A9AA5",
 }
 const MODIFIER_LABELS: Dictionary = {
 	"damage": "伤害",
 	"burn_duration": "燃烧时间",
+	"burn_tick_damage": "燃烧伤害",
+	"wet_duration": "打湿时间",
+	"wet_slow_multiplier": "打湿移速倍率",
+	"damage_multiplier": "范围伤害倍率",
+	"freeze_duration": "冻结时间",
 	"glow_multiplier": "辉光强度",
 	"particle_rate": "粒子发射",
 	"count_multiplier": "粒子数量",

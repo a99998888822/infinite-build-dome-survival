@@ -29,6 +29,24 @@
       },
       {
         "type": "augmentation",
+        "item_id": "scroll_water",
+        "amount": 1,
+        "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_light_sword",
+        "amount": 1,
+        "chance_percent": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_black_hole",
+        "amount": 1,
+        "chance_percent": 1
+      },
+      {
+        "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
         "chance_percent": 2
@@ -99,6 +117,24 @@
       },
       {
         "type": "augmentation",
+        "item_id": "scroll_water",
+        "amount": 1,
+        "chance_percent": 3
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_light_sword",
+        "amount": 1,
+        "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_black_hole",
+        "amount": 1,
+        "chance_percent": 2
+      },
+      {
+        "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
         "chance_percent": 3
@@ -161,6 +197,24 @@
         "item_id": "scroll_fire",
         "amount": 1,
         "chance_percent": 10
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_water",
+        "amount": 1,
+        "chance_percent": 10
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_light_sword",
+        "amount": 1,
+        "chance_percent": 5
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_black_hole",
+        "amount": 1,
+        "chance_percent": 5
       },
       {
         "type": "augmentation",

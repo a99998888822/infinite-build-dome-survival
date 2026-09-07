@@ -1,0 +1,129 @@
+extends Node2D
+class_name LightSwordEffect
+
+const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+
+const DEFAULT_RADIUS: float = 78.0
+const DEFAULT_DELAY: float = 0.5
+const DEFAULT_FALL_SECONDS: float = 0.16
+const DEFAULT_LIGHT_DURATION: float = 5.0
+
+var _weapon: WeaponInstance = null
+var _damage_event: DamageEvent = null
+var _context: RefCounted = null
+var _radius: float = DEFAULT_RADIUS
+var _delay: float = DEFAULT_DELAY
+var _fall_seconds: float = DEFAULT_FALL_SECONDS
+var _light_duration: float = DEFAULT_LIGHT_DURATION
+var _elapsed: float = 0.0
+var _landed: bool = false
+
+
+static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
+	if parent == null or weapon == null or damage_event == null:
+		return
+	var effect := LightSwordEffect.new()
+	parent.add_child(effect)
+	effect.global_position = hit_position
+	effect._weapon = weapon
+	effect._damage_event = damage_event
+	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "light_sword", {
+		"damage_multiplier": 0.9,
+		"radius": DEFAULT_RADIUS,
+		"delay": DEFAULT_DELAY,
+		"fall_seconds": DEFAULT_FALL_SECONDS,
+		"light_duration": DEFAULT_LIGHT_DURATION,
+	}, attachment_item_id)
+	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 20.0)
+	effect._delay = maxf(effect._context.get_resolved_parameter("delay", DEFAULT_DELAY), 0.05)
+	effect._fall_seconds = maxf(effect._context.get_resolved_parameter("fall_seconds", DEFAULT_FALL_SECONDS), 0.05)
+	effect._light_duration = maxf(effect._context.get_resolved_parameter("light_duration", DEFAULT_LIGHT_DURATION), 0.1)
+	effect.call_deferred("_arm")
+
+
+func _ready() -> void:
+	z_index = 82
+	queue_redraw()
+
+
+func _arm() -> void:
+	queue_redraw()
+
+
+func _process(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	_elapsed += delta
+	if not _landed and _elapsed >= _delay:
+		_land()
+	if _landed and _elapsed >= _delay + _fall_seconds + 0.28:
+		queue_free()
+		return
+	queue_redraw()
+
+
+func _land() -> void:
+	if _landed or _context == null or _damage_event == null:
+		return
+	_landed = true
+	var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _context.get_resolved_parameter("damage_multiplier", 0.9))))
+	var shape := CircleShape2D.new()
+	shape.radius = _radius
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, global_position)
+	query.collision_mask = 2
+	query.collide_with_bodies = true
+	var handled: Dictionary = {}
+	for result in get_world_2d().direct_space_state.intersect_shape(query, 64):
+		var enemy := result.get("collider") as EnemyController
+		if enemy == null or not enemy.is_alive() or handled.has(enemy.get_instance_id()):
+			continue
+		handled[enemy.get_instance_id()] = true
+		var had_dark := enemy.has_status("dark")
+		if had_dark:
+			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
+				"parent": get_parent(),
+				"hit_position": enemy.global_position,
+				"source_id": _damage_event.source_weapon_id,
+				"light_duration": _light_duration,
+			})
+		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
+		if not had_dark:
+			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
+				"parent": get_parent(),
+				"hit_position": enemy.global_position,
+				"source_id": _damage_event.source_weapon_id,
+				"light_duration": _light_duration,
+			})
+
+
+func _draw() -> void:
+	var sword_position := Vector2(0.0, -190.0)
+	if _elapsed >= _delay:
+		var fall_progress := clampf((_elapsed - _delay) / _fall_seconds, 0.0, 1.0)
+		sword_position.y = lerpf(-190.0, -18.0, fall_progress)
+	if not _landed:
+		_draw_sword(sword_position)
+	else:
+		var fade := 1.0 - clampf((_elapsed - _delay - _fall_seconds) / 0.28, 0.0, 1.0)
+		draw_circle(Vector2.ZERO, _radius * 0.72, Color(1.0, 1.0, 1.0, 0.10 * fade))
+		for index in range(8):
+			var angle := float(index) * TAU / 8.0
+			draw_line(Vector2.from_angle(angle) * (_radius * 0.42), Vector2.from_angle(angle) * (_radius * 0.92), Color(1.0, 1.0, 1.0, 0.65 * fade), 2.0, true)
+
+
+func _draw_sword(position: Vector2) -> void:
+	var blade := PackedVector2Array([
+		position + Vector2(-7.0, 44.0),
+		position + Vector2(7.0, 44.0),
+		position + Vector2(4.0, -34.0),
+		position + Vector2(0.0, -58.0),
+		position + Vector2(-4.0, -34.0),
+	])
+	draw_colored_polygon(blade, Color.WHITE)
+	draw_polyline(blade + PackedVector2Array([blade[0]]), Color(0.78, 0.92, 1.0, 1.0), 1.5, true)
+	draw_line(position + Vector2(-18.0, 48.0), position + Vector2(18.0, 48.0), Color.WHITE, 5.0, true)
+	draw_line(position + Vector2(0.0, 49.0), position + Vector2(0.0, 70.0), Color.WHITE, 4.0, true)
+	draw_circle(position + Vector2(0.0, 76.0), 5.0, Color.WHITE)

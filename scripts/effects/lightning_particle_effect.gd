@@ -6,6 +6,7 @@ signal ground_strike_landed
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
 const CHAIN_DISPLAY_ECHO_DELAY: float = 0.12
 const CHAIN_CONTROL_POINT_SPACING: float = 24.0
@@ -27,7 +28,7 @@ const GROUND_STRIKE_IMPACT_RING_START_RADIUS: float = 7.0
 const DEFAULT_CHAIN_COUNT: float = 1.0
 const DEFAULT_CHAIN_INTERVAL: float = 0.10
 const DEFAULT_JUMP_RADIUS: float = 170.0
-const DEFAULT_STUN_DURATION: float = 0.7
+const DEFAULT_STUN_DURATION: float = 0.5
 
 var _parent_root: Node = null
 var _weapon: WeaponInstance = null
@@ -132,13 +133,20 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 		return
 	_emit_bolt(from_position, current.global_position)
 	_emit_hit_burst(current.global_position, from_position.direction_to(current.global_position))
-	current.apply_lightning_stun(_get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION))
+	var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(current, "electric", {
+		"parent": _parent_root,
+		"hit_position": current.global_position,
+		"source_id": _damage_event.source_weapon_id,
+		"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+	})
 	if current.has_status("burning") and _get_cached_parameter("detonate_burning", 1.0) > 0.0:
 		current.clear_burning()
 		for explosion_instance in _weapon.get_effect_instances("explosion"):
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
+	if bool(reaction_result.get("extra_trigger", false)):
+		_remaining_jumps += 1
 	if _remaining_jumps <= 0:
 		_finish_chain()
 		return
@@ -208,6 +216,17 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		)
 		if dealt_damage > 0:
 			_emit_hit_burst(enemy.global_position, hit_direction)
+		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "electric", {
+			"parent": _parent_root,
+			"hit_position": enemy.global_position,
+			"source_id": _damage_event.source_weapon_id,
+			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+		})
+		if bool(reaction_result.get("extra_trigger", false)):
+			var extra_damage := enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
+			if extra_damage > 0:
+				_emit_hit_burst(enemy.global_position, hit_direction)
+			_emit_bolt(ground_position + Vector2.UP * _get_cached_parameter("strike_height", 182.0), ground_position)
 
 
 func _schedule_next(origin: Vector2) -> void:

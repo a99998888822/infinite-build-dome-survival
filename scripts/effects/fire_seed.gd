@@ -23,8 +23,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		return
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "fire", {
 		"damage": maxf(float(damage_event.damage) * 0.35, 1.0),
-		"burn_damage": maxf(float(damage_event.damage) * 0.18, 1.0),
-		"burn_duration": 2.4,
+		"original_damage": float(damage_event.original_damage),
+		"burn_duration": 3.0,
 		"tick_interval": 0.25,
 		"patch_duration": 2.0,
 		"seed_count": 3.0,

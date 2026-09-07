@@ -3,6 +3,7 @@ class_name IceFieldEffect
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -53,7 +54,14 @@ func _damage_enemies() -> void:
 		if enemy == null or not enemy.is_alive():
 			continue
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
-		enemy.apply_slow(_context.get_resolved_parameter("duration", 1.8), _context.get_resolved_parameter("slow_multiplier", 0.45))
+		ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "ice", {
+			"parent": get_parent(),
+			"hit_position": enemy.global_position,
+			"source_id": _damage_event.source_weapon_id,
+			"slow_duration": _context.get_resolved_parameter("duration", 1.8),
+			"slow_multiplier": _context.get_resolved_parameter("slow_multiplier", 0.45),
+			"freeze_duration": _context.get_resolved_parameter("freeze_duration", 1.0),
+		})
 
 func _draw() -> void:
 	var fade := 1.0 - clampf(_elapsed / _lifetime, 0.0, 1.0)

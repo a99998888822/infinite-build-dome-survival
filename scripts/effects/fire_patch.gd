@@ -2,6 +2,7 @@ extends Area2D
 class_name FirePatch
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
 const MERGE_DISTANCE: float = 64.0
 const MAX_ACTIVE_FIELDS: int = 6
@@ -223,16 +224,19 @@ func _get_flame_color_tint() -> Color:
 
 
 func _apply_tick_damage() -> void:
-	var damage := 2
-	var burn_damage := 1.0
-	var burn_duration := 2.0
+	var original_damage := 0.0
+	var burn_duration := 3.0
 	if _context != null:
-		damage = maxi(1, int(roundi(_context.get_resolved_parameter("damage", 2.0) * _stack_strength)))
-		burn_damage = maxf(_context.get_resolved_parameter("burn_damage", 1.0), 1.0)
-		burn_duration = maxf(_context.get_resolved_parameter("burn_duration", 2.0), 0.2)
+		original_damage = maxf(_context.get_resolved_parameter("original_damage", _context.get_resolved_parameter("damage", 0.0)), 0.0)
+		burn_duration = maxf(_context.get_resolved_parameter("burn_duration", 3.0), 0.2)
 	for body in get_overlapping_bodies():
 		if body is EnemyController:
 			var enemy := body as EnemyController
 			if enemy.is_alive():
-				enemy.apply_burning(burn_duration, burn_damage, "fire_patch")
-				enemy.take_damage(damage, "fire_patch", false, Vector2.ZERO)
+				ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "fire", {
+					"parent": get_parent(),
+					"hit_position": enemy.global_position,
+					"source_id": "fire_patch",
+					"original_damage": original_damage,
+					"burn_duration": burn_duration,
+				})

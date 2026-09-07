@@ -1,5 +1,65 @@
 [
   {
+    "id": "scroll_water",
+    "display_name": "水流",
+    "description": "命中后释放蓝白水流波浪，对中等范围敌人造成伤害并打湿；可与火、冰、电产生元素反应。",
+    "category": "enchantment_scroll",
+    "rarity": "uncommon",
+    "effect_ids": [
+      "water"
+    ],
+    "effect_parameters": {
+      "radius": 92.0,
+      "duration": 0.42,
+      "damage_multiplier": 0.55,
+      "wet_duration": 3.0,
+      "wet_slow_multiplier": 0.8
+    },
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_water.svg"
+  },
+  {
+    "id": "scroll_light_sword",
+    "display_name": "光辉剑",
+    "description": "命中后召唤纯白大剑，延迟0.5秒从天空落下，对范围内敌人造成伤害并施加感光。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": [
+      "light_sword"
+    ],
+    "effect_parameters": {
+      "radius": 78.0,
+      "delay": 0.5,
+      "fall_seconds": 0.16,
+      "damage_multiplier": 0.9,
+      "light_duration": 5.0
+    },
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_light_sword.svg"
+  },
+  {
+    "id": "scroll_black_hole",
+    "display_name": "黑洞",
+    "description": "吸附中等范围内敌人，造成范围伤害并施加致盲。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": [
+      "black_hole"
+    ],
+    "effect_parameters": {
+      "radius": 100.0,
+      "duration": 0.85,
+      "pull_speed": 150.0,
+      "damage_multiplier": 0.65,
+      "dark_duration": 2.0
+    },
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_black_hole.svg"
+  },
+  {
     "id": "scroll_fire",
     "display_name": "火焰",
     "description": "命中后散落火焰种子，形成持续火焰池并施加燃烧。",
@@ -102,7 +162,7 @@
   {
     "id": "scroll_lightning",
     "display_name": "闪电",
-    "description": "命中后释放闪电链，对当前目标和范围内另一个目标造成伤害；基础间隔0.10秒、麻痹0.70秒。",
+    "description": "命中后释放闪电链，对当前目标和范围内另一个目标造成伤害；基础间隔0.10秒、麻痹0.50秒。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
@@ -111,7 +171,7 @@
     "effect_parameters": {
       "chain_count": 1,
       "chain_interval": 0.1,
-      "stun_duration": 0.7
+      "stun_duration": 0.5
     },
     "modifiers": [
       {
@@ -154,7 +214,7 @@
       {
         "channel": "stun_duration",
         "min": 0.45,
-        "max": 1.1,
+        "max": 0.8,
         "step": 0.05
       }
     ],
@@ -345,7 +405,8 @@
     "effect_parameters": {
       "radius": 64,
       "duration": 1.8,
-      "slow_multiplier": 0.45
+      "slow_multiplier": 0.45,
+      "freeze_duration": 1.0
     },
     "modifiers": [
       {
