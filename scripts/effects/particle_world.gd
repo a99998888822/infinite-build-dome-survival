@@ -400,6 +400,9 @@ const PROFILE_DEFINITIONS: Dictionary = {
 }
 
 var _particles: Array[Dictionary] = []
+var _particle_pool: Array[Dictionary] = []
+var _light_field: Node = null
+var _emitter_pool: Array[Node2D] = []
 var _random := RandomNumberGenerator.new()
 
 
@@ -457,11 +460,13 @@ static func create_emitter(
 		world.name = "ParticleWorld"
 		world.z_index = 80
 		parent.add_child(world)
+	if world.has_method("acquire_emitter"):
+		return world.call("acquire_emitter", parent, profile_id, context, options) as Node2D
 	var emitter := PARTICLE_EMITTER_RUNTIME_SCRIPT.new() as Node2D
 	if emitter == null:
 		return null
 	parent.add_child(emitter)
-	emitter.call("configure", world, profile_id, context, options)
+	emitter.call("configure", world, profile_id, context, options, parent)
 	return emitter
 
 
@@ -572,26 +577,30 @@ func emit_event(event: Variant) -> void:
 		var particle_velocity := direction * particle_speed
 		if is_fire_particle:
 			particle_velocity.y -= maxf(-particle_velocity.y, 0.0) * (fire_rise_multiplier - 1.0)
-		_particles.append({
-			"position": spawn_position + initial_offset,
-			"velocity": particle_velocity,
-			"gravity": Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier),
-			"drag": _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier,
-			"rotation": particle_rotation,
-			"spin": _random.randf_range(spin_range.x, spin_range.y),
-			"size": size,
-			"color": particle_color,
-			"end_color": particle_end_color,
-			"mid_color": particle_mid_color,
-			"final_color": particle_final_color,
-			"fire_edge_ratio": fire_edge_ratio,
-			"fire_particle": is_fire_particle,
-			"lifetime": particle_lifetime,
-			"alpha_multiplier": alpha_multiplier,
-			"glow": float(profile.get("glow", 0.0)) * glow_multiplier,
-			"glow_shape": str(profile.get("glow_shape", "circle")),
-			"shape": str(profile.get("shape", "square")),
-		})
+		var particle: Dictionary = {}
+		if not _particle_pool.is_empty():
+			particle = _particle_pool.pop_back()
+		particle.clear()
+		particle["position"] = spawn_position + initial_offset
+		particle["velocity"] = particle_velocity
+		particle["gravity"] = Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier)
+		particle["drag"] = _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier
+		particle["rotation"] = particle_rotation
+		particle["spin"] = _random.randf_range(spin_range.x, spin_range.y)
+		particle["size"] = size
+		particle["color"] = particle_color
+		particle["end_color"] = particle_end_color
+		particle["mid_color"] = particle_mid_color
+		particle["final_color"] = particle_final_color
+		particle["fire_edge_ratio"] = fire_edge_ratio
+		particle["fire_particle"] = is_fire_particle
+		particle["lifetime"] = particle_lifetime
+		particle["alpha_multiplier"] = alpha_multiplier
+		particle["glow"] = float(profile.get("glow", 0.0)) * glow_multiplier
+		particle["glow_shape"] = str(profile.get("glow_shape", "circle"))
+		particle["shape"] = str(profile.get("shape", "square"))
+		particle["age"] = 0.0
+		_particles.append(particle)
 	_emit_profile_light(profile, event_position, intensity)
 	queue_redraw()
 
@@ -605,19 +614,33 @@ func _emit_profile_light(profile: Dictionary, event_position: Vector2, intensity
 		field.call("add_light", event_position, profile.get("light_color", Color.WHITE), light_energy, float(profile.get("light_radius", 64.0)))
 
 
-func _find_light_field() -> Node:
-	var parent := get_parent()
+static func find_light_field(parent: Node) -> Node:
 	if parent == null:
 		return null
-	var direct := parent.get_node_or_null("ParticleLightField")
-	if direct != null and direct.has_method("add_light"):
-		return direct
-	var root := get_tree().current_scene if get_tree() != null else null
-	if root != null:
-		var found := root.find_child("ParticleLightField", true, false)
-		if found != null and found.has_method("add_light"):
-			return found
+	var current: Node = parent
+	while current != null:
+		var direct := current.get_node_or_null("ParticleLightField")
+		if direct != null and direct.has_method("add_light"):
+			return direct
+		current = current.get_parent()
+	var tree := parent.get_tree()
+	if tree != null:
+		var registered := tree.get_first_node_in_group("particle_light_field")
+		if registered != null and registered.has_method("add_light"):
+			return registered
+		var root := tree.current_scene
+		if root != null:
+			var found := root.find_child("ParticleLightField", true, false)
+			if found != null and found.has_method("add_light"):
+				return found
 	return null
+
+
+func _find_light_field() -> Node:
+	if _light_field != null and is_instance_valid(_light_field) and _light_field.has_method("add_light"):
+		return _light_field
+	_light_field = find_light_field(self)
+	return _light_field
 
 
 func _resolve_special_color(profile: Dictionary, color_key: String, color_tint: Color, fallback: Color) -> Color:
@@ -661,7 +684,36 @@ func _process(delta: float) -> void:
 		_particles[index] = particle
 		if float(particle["age"]) >= float(particle["lifetime"]):
 			_particles.remove_at(index)
+			_particle_pool.append(particle)
 	queue_redraw()
+
+
+func acquire_emitter(owner_node: Node, profile_id: String, context: Variant = null, options: Dictionary = {}) -> Node2D:
+	var emitter: Node2D = _emitter_pool.pop_back() if not _emitter_pool.is_empty() else null
+	if emitter == null:
+		emitter = PARTICLE_EMITTER_RUNTIME_SCRIPT.new() as Node2D
+	if emitter == null:
+		return null
+	# Emitters are children of the shared world, so effects do not add one
+	# runtime node below every projectile/field. The owner is tracked by the
+	# runtime to preserve attached motion and release it when the owner exits.
+	if emitter.get_parent() == null:
+		add_child(emitter)
+	elif emitter.get_parent() != self:
+		emitter.reparent(self, false)
+	var owner_node_2d: Node2D = owner_node as Node2D if is_instance_valid(owner_node) else null
+	emitter.global_position = owner_node_2d.global_position if owner_node_2d != null else global_position
+	emitter.call("configure", self, profile_id, context, options, owner_node)
+	return emitter
+
+
+func release_emitter(emitter: Node2D) -> void:
+	if emitter == null or not is_instance_valid(emitter) or emitter.get_parent() != self:
+		return
+	emitter.call("release_to_pool")
+	emitter.hide()
+	remove_child(emitter)
+	_emitter_pool.append(emitter)
 
 
 func _draw() -> void:

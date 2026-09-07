@@ -55,6 +55,12 @@ var _ground_strike_damage_radius: float = 0.0
 var _ground_strike_position: Vector2 = Vector2.ZERO
 var _ground_strike_impact_age: float = -1.0
 var _ground_strike_damage_applied: bool = false
+var _light_field: Node = null
+
+
+func _exit_tree() -> void:
+	if EffectScheduler != null and EffectScheduler.has_method("cancel_owner"):
+		EffectScheduler.cancel_owner(self)
 
 
 static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2, attachment_item_id: String = "") -> void:
@@ -238,7 +244,7 @@ func _schedule_next(origin: Vector2) -> void:
 		_finish_chain()
 		return
 	var chain_interval := clampf(_get_cached_parameter("chain_interval", DEFAULT_CHAIN_INTERVAL), 0.02, 0.5)
-	get_tree().create_timer(chain_interval).timeout.connect(Callable(self, "_strike_chain").bind(next_target, origin))
+	EffectScheduler.schedule(chain_interval, Callable(self, "_strike_chain").bind(next_target, origin), self)
 
 
 func _find_farthest_enemy(origin: Vector2) -> EnemyController:
@@ -277,7 +283,7 @@ func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
 		_emit_bolt_pulse(start_position, end_position, chain_index)
 	for echo_index in range(1, _display_echo_count):
 		_pending_display_echoes += 1
-		get_tree().create_timer(CHAIN_DISPLAY_ECHO_DELAY * float(echo_index)).timeout.connect(Callable(self, "_emit_bolt_echo").bind(start_position, end_position))
+		EffectScheduler.schedule(CHAIN_DISPLAY_ECHO_DELAY * float(echo_index), Callable(self, "_emit_bolt_echo").bind(start_position, end_position), self)
 
 
 func _emit_bolt_echo(start_position: Vector2, end_position: Vector2) -> void:
@@ -353,9 +359,9 @@ func _emit_bolt_pulse(start_position: Vector2, end_position: Vector2, path_index
 func _emit_bolt_light(global_position: Vector2, distance: float, glow_multiplier: float) -> void:
 	if _parent_root == null:
 		return
-	var field := _parent_root.get_node_or_null("ParticleLightField")
-	if field == null and get_tree() != null and get_tree().current_scene != null:
-		field = get_tree().current_scene.find_child("ParticleLightField", true, false)
+	if _light_field == null or not is_instance_valid(_light_field) or not _light_field.has_method("add_light"):
+		_light_field = PARTICLE_WORLD_SCRIPT.find_light_field(_parent_root)
+	var field := _light_field
 	if field != null and field.has_method("add_light"):
 		field.call("add_light", global_position, Color(0.74, 0.90, 1.0, 1.0), 0.18 * glow_multiplier, clampf(distance * 0.42, 36.0, 130.0), BOLT_PULSE_LIFETIME)
 

@@ -24,6 +24,7 @@ AudioManager="*res://autoloads/audio_manager.gd"
 ZoneProgression="*res://autoloads/zone_progression.gd"
 WindowSettings="*res://autoloads/window_settings.gd"
 EnemyRegistry="*res://scripts/enemies/enemy_registry.gd"
+EffectScheduler="*res://scripts/effects/effect_scheduler.gd"
 
 [display]
 

@@ -20,6 +20,7 @@ var _stack_strength: float = 1.0
 var _source_weapon_id: String = ""
 var _collision_shape: CollisionShape2D = null
 var _flame_emitters: Array[Node2D] = []
+var _light_field: Node = null
 
 
 static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, field_strength: float = 1.0) -> FirePatch:
@@ -203,12 +204,9 @@ func _build_particle_parameters() -> Dictionary:
 
 
 func _refresh_field_light() -> void:
-	var parent := get_parent()
-	if parent == null:
-		return
-	var light_field := parent.get_node_or_null("ParticleLightField")
-	if light_field == null and get_tree() != null and get_tree().current_scene != null:
-		light_field = get_tree().current_scene.find_child("ParticleLightField", true, false)
+	if _light_field == null or not is_instance_valid(_light_field) or not _light_field.has_method("add_light"):
+		_light_field = PARTICLE_WORLD_SCRIPT.find_light_field(self)
+	var light_field := _light_field
 	if light_field == null or not light_field.has_method("add_light"):
 		return
 	var energy := clampf(0.22 + sqrt(_stack_strength) * 0.06, 0.22, 0.46)

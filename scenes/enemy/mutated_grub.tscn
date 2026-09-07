@@ -1,19 +1,22 @@
 [gd_scene format=3 uid="uid://d261uxpw3c6tg"]
 
 [ext_resource type="Script" uid="uid://cq1doush47hom" path="res://scripts/enemies/enemy_controller.gd" id="1_enemy"]
-[ext_resource type="Texture2D" uid="uid://tynvqbud3q1q" path="res://assets/sprites/enemies/enemy_mutated_grub.png" id="2_lmowc"]
+[ext_resource type="Texture2D" uid="uid://mhhgeitwaewk" path="res://assets/sprites/enemies/enemy_gloom_mite_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://djmqmp0fup5qi" path="res://assets/sprites/enemies/enemy_gloom_mite_move.png" id="3_move"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy_body"]
-radius = 11.045361
+radius = 18.027756
 
 [node name="MutatedGrub" type="CharacterBody2D" unique_id=82577481]
 collision_layer = 2
 script = ExtResource("1_enemy")
+idle_texture = ExtResource("2_idle")
+move_texture = ExtResource("3_move")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
 shape = SubResource("CircleShape2D_enemy_body")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479700477]
 modulate = Color(0.65, 0.9, 0.76, 1)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("2_lmowc")
+scale = Vector2(3, 3)
+texture = ExtResource("2_idle")

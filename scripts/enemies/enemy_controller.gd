@@ -25,13 +25,16 @@ const HIT_FLASH_SECONDS: float = 0.1
 const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
 const LIGHTNING_STUN_MAX_SECONDS: float = 3.0
-const LIGHTNING_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/lightning_status_visual.gd")
-const ENEMY_STATUS_VISUAL_SCRIPT = preload("res://scripts/effects/enemy_status_visual.gd")
+const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/lightning_status_visual.gd")
+const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
 @export var knockback_speed: float = DEFAULT_KNOCKBACK_SPEED
 @export var knockback_seconds: float = DEFAULT_KNOCKBACK_SECONDS
+@export var idle_texture: Texture2D
+@export var move_texture: Texture2D
+@export var move_frame_duration: float = 0.14
 
 var enemy_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
@@ -60,6 +63,9 @@ var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
 var _lightning_visual: Node2D = null
+var _is_move_animation_active: bool = false
+var _move_animation_frame: int = 0
+var _move_animation_timer: float = 0.0
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -67,8 +73,11 @@ var _lightning_visual: Node2D = null
 func _ready() -> void:
 	add_to_group("enemies")
 	EnemyRegistry.register_enemy(self)
+	if idle_texture == null and sprite != null:
+		idle_texture = sprite.texture
+	_set_movement_visual(false, 0.0)
 	_capture_base_sprite_modulate()
-	var status_visual := ENEMY_STATUS_VISUAL_SCRIPT.new()
+	var status_visual: Node = ENEMY_STATUS_VISUAL_SCRIPT.new()
 	status_visual.name = "EnemyStatusVisual"
 	add_child(status_visual)
 	if auto_initialize_on_ready:
@@ -82,9 +91,11 @@ func _exit_tree() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not alive:
+		_set_movement_visual(false, delta)
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		velocity = Vector2.ZERO
+		_set_movement_visual(false, delta)
 		return
 	_contact_damage_cooldown = maxf(_contact_damage_cooldown - delta, 0.0)
 	_process_burning(delta)
@@ -102,11 +113,13 @@ func _physics_process(delta: float) -> void:
 		_slow_multiplier = 1.0
 	if _stunned_remaining > 0.0 or _frozen_remaining > 0.0 or _blinded_remaining > 0.0:
 		velocity = Vector2.ZERO
+		_set_movement_visual(false, delta)
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
 		velocity = _knockback_velocity
 		move_and_slide()
+		_set_movement_visual(true, delta)
 		return
 	if _process_contact_recovery():
 		return
@@ -115,7 +128,7 @@ func _physics_process(delta: float) -> void:
 
 
 func initialize(target_enemy_id: String, player: PlayerController = null, runtime_modifiers: Array = []) -> bool:
-	var data := DataRegistry.get_record("enemies", target_enemy_id)
+	var data: Dictionary = DataRegistry.get_record("enemies", target_enemy_id)
 	if data.is_empty():
 		push_error("[EnemyController] missing enemy config: %s" % target_enemy_id)
 		return false
@@ -151,7 +164,7 @@ func set_target_player(player: PlayerController) -> void:
 
 
 func add_runtime_modifier(modifier_data: Dictionary) -> bool:
-	var modifier := modifier_stack.add_modifier_from_dictionary(modifier_data)
+	var modifier: Modifier = modifier_stack.add_modifier_from_dictionary(modifier_data)
 	return modifier != null
 
 
@@ -456,6 +469,7 @@ func _process_chase() -> void:
 	if target_player == null or not target_player.alive:
 		velocity = Vector2.ZERO
 		move_and_slide()
+		_set_movement_visual(false, get_physics_process_delta_time())
 		return
 	var direction := global_position.direction_to(target_player.global_position)
 	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", get_stat("move_speed")))
@@ -468,6 +482,7 @@ func _process_chase() -> void:
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()
+	_set_movement_visual(true, get_physics_process_delta_time())
 
 
 func _process_contact_recovery() -> bool:
@@ -480,7 +495,38 @@ func _process_contact_recovery() -> bool:
 		direction = Vector2.RIGHT
 	velocity = direction.normalized() * CONTACT_RECOVERY_SPEED
 	move_and_slide()
+	_set_movement_visual(true, get_physics_process_delta_time())
 	return true
+
+
+func _set_movement_visual(is_moving: bool, delta: float) -> void:
+	if sprite == null:
+		return
+	var can_animate_movement := is_moving and move_texture != null and move_texture.get_width() >= 3
+	if not can_animate_movement:
+		if _is_move_animation_active or sprite.texture != idle_texture:
+			sprite.texture = idle_texture
+			sprite.hframes = 1
+			sprite.frame = 0
+			_is_move_animation_active = false
+			_move_animation_frame = 0
+			_move_animation_timer = 0.0
+		return
+
+	if not _is_move_animation_active:
+		sprite.texture = move_texture
+		sprite.hframes = 3
+		sprite.frame = 0
+		_is_move_animation_active = true
+		_move_animation_frame = 0
+		_move_animation_timer = 0.0
+
+	_move_animation_timer += delta
+	var frame_duration := maxf(move_frame_duration, 0.01)
+	while _move_animation_timer >= frame_duration:
+		_move_animation_timer -= frame_duration
+		_move_animation_frame = (_move_animation_frame + 1) % sprite.hframes
+		sprite.frame = _move_animation_frame
 
 
 func _process_contact_damage() -> void:
