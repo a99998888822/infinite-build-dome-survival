@@ -1,0 +1,108 @@
+scripts/effects/enemy_status_visual.gd
+  s_b2a97cec39d054::t_f15db882ecc3e9 1-7,9-21,23-42,45-54,72,80-81,96,105
+  s_b2a97cec39d054::t_5fe7c649524f4d 8,22,43-44,55-70,73,109-111,123,129
+  s_b2a97cec39d054::t_675dafee373044 71,74-79,82-95,97-104,106-108,112-122,124-128,130-131
+scripts/effects/fire_patch.gd
+  s_b2a97cec39d054::t_8db9aa37413a0c 236-242
+  s_b2a97cec39d054::t_e9cd788dda35eb 5,227-228,230-231
+data_config/augmentations.json
+  s_b2a97cec39d054::t_c0a4015323f7fb 5,12-14,20
+  s_b2a97cec39d054::t_9cd29cbee10e7c 165
+  s_b2a97cec39d054::t_8db9aa37413a0c 2-4,6-11,15-19,21-22,26,28,30-31,37-39,41-42,46,48,50-51,57-59,61,174,217,408-409
+  s_b2a97cec39d054::t_90af15760401f6 23-25
+  s_b2a97cec39d054::t_cb972f99e9b2f0 27
+  s_b2a97cec39d054::t_6f3d9dd7cf9907 29
+  s_b2a97cec39d054::t_916723e879f2ac 32-36
+  s_b2a97cec39d054::t_57fa5aac2e836a 40
+  s_b2a97cec39d054::t_dc19cacdd7455e 43-45
+  s_b2a97cec39d054::t_dbba5ce783ea92 47
+  s_b2a97cec39d054::t_241a6182aabee4 49
+  s_b2a97cec39d054::t_af88db3f124e97 52-56
+  s_b2a97cec39d054::t_4d78f69b99b6da 60
+scripts/effects/ice_field_effect.gd
+  s_b2a97cec39d054::t_e9cd788dda35eb 6,57-64
+scripts/ui/item_inventory_card.gd
+  s_b2a97cec39d054::t_8db9aa37413a0c 34,38-40,51-52,57-59,61
+  s_b2a97cec39d054::t_c0a4015323f7fb 60
+scripts/weapons/weapon_instance.gd
+  s_b2a97cec39d054::t_8db9aa37413a0c 377
+scripts/effects/lightning_particle_effect.gd
+  s_b2a97cec39d054::t_c8efa257ca111a 229
+  s_b2a97cec39d054::t_e9cd788dda35eb 9,31,136-141,148-149,219-228
+scripts/effects/water_wave_effect.gd
+  s_b2a97cec39d054::t_c0a4015323f7fb 1-79,82-123
+  s_b2a97cec39d054::t_ee9592d495b8dd 80-81
+assets/ui/icons/augmentations/scroll_water.svg.import
+  s_b2a97cec39d054::t_583a848c0a3728 1-43
+scripts/effects/combat_effect_world.gd
+  s_b2a97cec39d054::t_c0a4015323f7fb 9,25-26
+  s_b2a97cec39d054::t_e9cd788dda35eb 12,32-34,44-55
+  s_b2a97cec39d054::t_fa87b8457c1593 10-11
+  s_b2a97cec39d054::t_bea4457ba6d62f 27-29
+  s_5f87b73364eda1::t_37985232795224 30
+scripts/effects/particle_world.gd
+  s_b2a97cec39d054::t_9cd29cbee10e7c 297-312
+scripts/enemies/enemy_controller.gd
+  s_b2a97cec39d054::t_e9cd788dda35eb 141-145,178
+  s_b2a97cec39d054::t_f15db882ecc3e9 29,49,54-58,71-73,95-96,136,188-225,229-236,248,275-280,295-299,465-466
+  s_b2a97cec39d054::t_c8efa257ca111a 99-100
+  s_b2a97cec39d054::t_6e1dc46eba0492 97-98
+  s_5f87b73364eda1::t_660d8a043856c6 103
+theme_capital_and_survival.md
+  s_d918eddc95739e::t_aaac6c16889a8d 3,5,7,9,11,13,15-25,27,29-31,33,35,37,39-42,44,46,48-55,57,59-134
+scripts/effects/element_reaction_resolver.gd
+  s_b2a97cec39d054::t_c8efa257ca111a 67,99-108
+  s_b2a97cec39d054::t_82b84f301c7a95 1-66,68-98
+data_config/drop_tables.json
+  s_b2a97cec39d054::t_9cd29cbee10e7c 32-47,118-135,201-218
+  s_b2a97cec39d054::t_aaf4aaf35003e0 30-31
+scripts/effects/water_wave_effect.gd.uid
+  s_b2a97cec39d054::t_583a848c0a3728 1
+scripts/effects/fire_seed.gd
+  s_b2a97cec39d054::t_e9cd788dda35eb 26-27
+assets/ui/icons/augmentations/scroll_water.svg
+  s_b2a97cec39d054::t_c0a4015323f7fb 1,3
+  s_b2a97cec39d054::t_81ada78ffe839b 2
+scripts/weapons/damage_event.gd
+  s_b2a97cec39d054::t_82b84f301c7a95 7,19,32
+assets/ui/icons/augmentations/scroll_black_hole.svg
+  s_5f87b73364eda1::t_0f95325ad1fc3e 1-5
+assets/ui/icons/augmentations/scroll_light_sword.svg
+  s_5f87b73364eda1::t_762498f23c409a 1-5
+scripts/effects/black_hole_effect.gd
+  s_5f87b73364eda1::t_3c7828fdd16966 1-113
+scripts/effects/light_sword_effect.gd
+  s_5f87b73364eda1::t_ca1abcdbafdcd4 1-129
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "3860b221eaaa21ca2cf9804f6815e17d969bc6c8",
+  "prompts": {},
+  "sessions": {
+    "s_5f87b73364eda1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07ba7-a189-7dc3-ae56-8430a0a2dfba",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b2a97cec39d054": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a079b5-5783-7a70-b08d-57ea39212632",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d918eddc95739e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05597-61d5-7910-949f-a7847f426042",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
