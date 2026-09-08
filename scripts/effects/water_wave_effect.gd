@@ -4,10 +4,10 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
-const DEFAULT_RADIUS: float = 92.0
-const DEFAULT_DURATION: float = 0.42
+const DEFAULT_RADIUS: float = 132.0
+const DEFAULT_DURATION: float = 0.52
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
-const WAVE_SEGMENTS: int = 48
+const WAVE_SEGMENTS: int = 64
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -99,25 +99,36 @@ func _draw() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
 	var expansion := smoothstep(0.0, 1.0, progress)
 	var radius := maxf(_radius * expansion, 1.0)
-	var fade := 1.0 - progress * 0.72
+	var fade := 1.0 - progress * 0.78
 	for wave_index in range(3):
-		var wave_radius := radius * (0.82 + float(wave_index) * 0.09)
+		var wave_radius := radius * (0.78 + float(wave_index) * 0.105)
 		var wave_phase := _phase + float(wave_index) * 1.7 + progress * (2.4 + float(wave_index) * 0.8)
-		var points := _build_wave_points(wave_radius, wave_phase, wave_index)
-		var blue_alpha := fade * (0.68 if wave_index != 1 else 0.42)
-		var white_alpha := fade * (0.82 if wave_index == 1 else 0.52)
-		draw_polyline(points, Color(0.18, 0.62, 1.0, blue_alpha), 3.0 if wave_index == 1 else 2.0, true)
-		draw_polyline(points, Color(0.84, 0.96, 1.0, white_alpha), 1.1, true)
+		var band_width := radius * (0.11 if wave_index == 1 else 0.085)
+		var outer_radius := wave_radius + band_width * 0.5
+		var inner_radius := maxf(wave_radius - band_width * 0.5, 1.0)
+		var points := _build_wave_band_points(outer_radius, inner_radius, wave_phase, wave_index)
+		var blue_alpha := fade * (0.48 if wave_index != 1 else 0.62)
+		var white_alpha := fade * (0.36 if wave_index != 1 else 0.52)
+		draw_colored_polygon(points, Color(0.12, 0.56, 1.0, blue_alpha))
+		var highlight_points := _build_wave_band_points(outer_radius - band_width * 0.18, inner_radius + band_width * 0.18, wave_phase + 0.18, wave_index)
+		draw_colored_polygon(highlight_points, Color(0.78, 0.95, 1.0, white_alpha))
 	if progress < 0.48:
-		draw_circle(Vector2.ZERO, radius * 0.12, Color(0.55, 0.88, 1.0, fade * 0.24))
+		var center_radius := radius * (0.12 + 0.08 * (1.0 - progress / 0.48))
+		draw_circle(Vector2.ZERO, center_radius, Color(0.55, 0.88, 1.0, fade * 0.30))
 
 
-func _build_wave_points(radius: float, phase: float, wave_index: int) -> PackedVector2Array:
+func _build_wave_band_points(outer_radius: float, inner_radius: float, phase: float, wave_index: int) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	for index in range(WAVE_SEGMENTS + 1):
 		var ratio := float(index) / float(WAVE_SEGMENTS)
 		var angle := ratio * TAU
-		var ripple := sin(angle * (3.0 + wave_index) + phase) * (2.0 + wave_index * 1.2)
-		var point_radius := radius + ripple
-		points.append(Vector2.from_angle(angle) * point_radius)
+		var ripple := sin(angle * (3.0 + wave_index) + phase) * (outer_radius * (0.025 + float(wave_index) * 0.006))
+		var secondary_ripple := cos(angle * (6.0 + wave_index * 2.0) - phase * 0.7) * (outer_radius * 0.012)
+		points.append(Vector2.from_angle(angle) * (outer_radius + ripple + secondary_ripple))
+	for index in range(WAVE_SEGMENTS, -1, -1):
+		var ratio := float(index) / float(WAVE_SEGMENTS)
+		var angle := ratio * TAU
+		var ripple := sin(angle * (3.0 + wave_index) + phase) * (inner_radius * (0.025 + float(wave_index) * 0.006))
+		var secondary_ripple := cos(angle * (6.0 + wave_index * 2.0) - phase * 0.7) * (inner_radius * 0.012)
+		points.append(Vector2.from_angle(angle) * (inner_radius + ripple + secondary_ripple))
 	return points

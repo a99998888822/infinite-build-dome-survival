@@ -63,7 +63,9 @@ func _get_body_radius() -> float:
 		return maxf((collision_shape.shape as CircleShape2D).radius, 4.0)
 	var sprite := _enemy.get_node_or_null("Sprite2D") as Sprite2D
 	if sprite != null and sprite.texture != null:
-		return maxf(maxf(sprite.texture.get_width() * absf(sprite.scale.x), sprite.texture.get_height() * absf(sprite.scale.y)) * 0.5, 4.0)
+		var frame_width := float(sprite.texture.get_width()) / float(maxi(sprite.hframes, 1))
+		var frame_height := float(sprite.texture.get_height()) / float(maxi(sprite.vframes, 1))
+		return maxf(maxf(frame_width * absf(sprite.scale.x), frame_height * absf(sprite.scale.y)) * 0.5, 4.0)
 	return 10.0
 
 

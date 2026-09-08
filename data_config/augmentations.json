@@ -9,8 +9,8 @@
       "water"
     ],
     "effect_parameters": {
-      "radius": 92.0,
-      "duration": 0.42,
+      "radius": 132.0,
+      "duration": 0.52,
       "damage_multiplier": 0.55,
       "wet_duration": 3.0,
       "wet_slow_multiplier": 0.8
@@ -31,7 +31,8 @@
     "effect_parameters": {
       "radius": 78.0,
       "delay": 0.5,
-      "fall_seconds": 0.16,
+      "fall_seconds": 0.22,
+      "dissolve_seconds": 0.75,
       "damage_multiplier": 0.9,
       "light_duration": 5.0
     },
@@ -395,7 +396,7 @@
   },
   {
     "id": "scroll_ice",
-    "display_name": "冰冻",
+    "display_name": "结霜",
     "description": "命中点生成寒冰领域，对范围内敌人造成一次伤害并减速。",
     "category": "enchantment_scroll",
     "rarity": "rare",
