@@ -1,0 +1,33 @@
+scripts/effects/enemy_status_visual.gd
+  s_b2a97cec39d054::t_0bd6c77298f257 66-68
+scripts/effects/water_wave_effect.gd
+  s_b2a97cec39d054::t_74d7e9da13ea42 7-8,10,102,104,106-114,116-117,120,125-133
+scenes/enemy/mutated_grub.tscn
+  s_5f87b73364eda1::t_5eb45df9743521 21-22
+scripts/effects/light_sword_effect.gd
+  s_5f87b73364eda1::t_a0edf11a311c21 9-10,19,22,39,45,63-65,67,111-114,116,118-120,127-151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "404b671d89e46d7a381bae6b0a0affcf9240bd26",
+  "prompts": {},
+  "sessions": {
+    "s_5f87b73364eda1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07ba7-a189-7dc3-ae56-8430a0a2dfba",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b2a97cec39d054": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a079b5-5783-7a70-b08d-57ea39212632",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
