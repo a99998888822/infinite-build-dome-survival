@@ -1,10 +1,8 @@
 extends Node2D
 
-const PARTICLE_ROWS: int = 3
-const PARTICLES_PER_ROW: int = 8
-const BODY_RADIUS: Vector2 = Vector2(23.0, 14.0)
-const PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
+const ORBIT_PARTICLES: int = 8
 
+var _enemy: Node = null
 var _remaining: float = 0.65
 var _duration: float = 0.65
 var _elapsed: float = 0.0
@@ -26,7 +24,8 @@ func refresh(duration: float = 0.65) -> void:
 
 
 func _ready() -> void:
-	z_index = 20
+	z_index = 100
+	_enemy = get_parent()
 	position = Vector2.ZERO
 	queue_redraw()
 
@@ -42,22 +41,21 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var fade: float = clampf(_remaining / maxf(_duration, 0.01), 0.0, 1.0)
-	for row_index in PARTICLE_ROWS:
-		var row_phase: float = float(row_index) * 1.9
-		for particle_index in PARTICLES_PER_ROW:
-			var ratio: float = float(particle_index) / float(PARTICLES_PER_ROW)
-			var orbit_angle: float = _elapsed * (5.0 + float(row_index) * 0.7) + ratio * TAU + row_phase
-			var wave: float = sin(_elapsed * 13.0 + ratio * 15.0 + row_phase) * 2.8
-			var particle_position := Vector2(
-				cos(orbit_angle) * (BODY_RADIUS.x + wave),
-				sin(orbit_angle) * (BODY_RADIUS.y + wave * 0.45),
-			)
-			var tangent := Vector2(-sin(orbit_angle), cos(orbit_angle)).angle()
-			var particle_alpha: float = (0.55 + 0.45 * sin(_elapsed * 18.0 + ratio * TAU + row_phase)) * fade
-			var blue_color := Color(0.20, 0.55, 1.0, particle_alpha * 0.72)
-			var white_color := Color(0.88, 0.97, 1.0, particle_alpha)
-			draw_set_transform(particle_position.round(), tangent, Vector2.ONE)
-			draw_circle(Vector2.ZERO, 3.2, Color(0.25, 0.62, 1.0, particle_alpha * 0.12))
-			draw_rect(Rect2(-PARTICLE_SIZE * 0.5, PARTICLE_SIZE), blue_color)
-			draw_rect(Rect2(-Vector2(2.0, 0.8), Vector2(4.0, 1.6)), white_color)
+	var body_radius := 10.0
+	if _enemy != null:
+		var collision_shape := _enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
+		if collision_shape != null and collision_shape.shape is CircleShape2D:
+			body_radius = (collision_shape.shape as CircleShape2D).radius
+	var center := Vector2(0.0, -body_radius - 10.0)
+	var orbit_radius := clampf(body_radius * 0.48, 7.0, 12.0)
+	var orbit_x := orbit_radius * 1.35
+	var orbit_y := orbit_radius * 0.62
+	draw_set_transform(center, 0.0, Vector2(1.35, 0.65))
+	draw_circle(Vector2.ZERO, orbit_radius + 4.0, Color(0.15, 0.48, 1.0, 0.12 * fade))
+	draw_arc(Vector2.ZERO, orbit_radius, _elapsed * 5.0, _elapsed * 5.0 + TAU, 32, Color(0.25, 0.68, 1.0, 0.9 * fade), 2.2, true)
+	draw_arc(Vector2.ZERO, orbit_radius + 2.0, -_elapsed * 3.2, -_elapsed * 3.2 + PI * 0.65, 20, Color(0.80, 0.95, 1.0, 0.9 * fade), 1.6, true)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	for index in ORBIT_PARTICLES:
+		var angle := _elapsed * 5.0 + float(index) * TAU / float(ORBIT_PARTICLES)
+		var point := center + Vector2(cos(angle) * orbit_x, sin(angle) * orbit_y)
+		draw_circle(point, 2.0, Color(0.70, 0.92, 1.0, fade))

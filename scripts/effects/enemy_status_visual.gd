@@ -1,7 +1,7 @@
 extends Node2D
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
-const FOOT_FLAME_INTERVAL: float = 0.08
+const FOOT_FLAME_INTERVAL: float = 0.16
 
 var _foot_flame_timer: float = 0.0
 var _enemy: Node = null
@@ -26,10 +26,14 @@ func _process(delta: float) -> void:
 			_foot_flame_timer = FOOT_FLAME_INTERVAL
 			var parent := _enemy.get_parent()
 			if parent != null:
-				PARTICLE_WORLD_SCRIPT.emit_profile(parent, "fire_flame", _enemy.global_position + Vector2(0.0, 12.0), Vector2.UP, 1.25, Color.TRANSPARENT, {
-					"count_multiplier": 2.4,
+				var flame_color := Color.WHITE if _enemy.has_status("holy_flame") else Color.TRANSPARENT
+				var flame_parameters := {
+					"count_multiplier": 0.7,
 					"spawn_extent_multiplier": 0.62,
-				})
+					"fire_white": _enemy.has_status("holy_flame"),
+					"fire_dark": _enemy.has_status("dark_flame"),
+				}
+				PARTICLE_WORLD_SCRIPT.emit_profile(parent, "fire_flame", _enemy.global_position + Vector2(0.0, 12.0), Vector2.UP, 0.75, flame_color, flame_parameters)
 	else:
 		_foot_flame_timer = 0.0
 	queue_redraw()

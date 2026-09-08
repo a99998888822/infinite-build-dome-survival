@@ -133,8 +133,8 @@ func _on_body_entered(body: Node) -> void:
 	hit_targets[target_key] = true
 	var enemy_hit_position := enemy.global_position
 	damage_event.hit_position = enemy_hit_position
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy)
+	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null and weapon.has_effect("split") and _split_depth == 0 and not _has_split:
 		_has_split = true
 		_spawn_split_projectiles(enemy_hit_position)
@@ -193,10 +193,10 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 			continue
 		var tick_event := damage_event.duplicate_event()
 		tick_event.hit_position = enemy.global_position
-		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
 		var effect_event := tick_event.duplicate_event()
 		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * 0.2)))
 		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
+		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
 	_plasma_tick_count += 1
 	_plasma_tick_timer = maxf(float(weapon.weapon_data.get("plasma_tick_interval", 0.1)), 0.01)
 	if _plasma_tick_count >= 5:

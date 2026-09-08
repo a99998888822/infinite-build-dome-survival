@@ -4,7 +4,7 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
-const DEFAULT_RADIUS: float = 132.0
+const DEFAULT_RADIUS: float = 66.0
 const DEFAULT_DURATION: float = 0.52
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
 const WAVE_SEGMENTS: int = 64
@@ -89,6 +89,8 @@ func _apply_wave() -> void:
 			"parent": get_parent(),
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
+			"damage": _damage_event.damage,
+			"original_damage": _damage_event.original_damage,
 			"wet_duration": wet_duration,
 			"wet_slow_multiplier": wet_slow_multiplier,
 		})
@@ -100,35 +102,28 @@ func _draw() -> void:
 	var expansion := smoothstep(0.0, 1.0, progress)
 	var radius := maxf(_radius * expansion, 1.0)
 	var fade := 1.0 - progress * 0.78
-	for wave_index in range(3):
-		var wave_radius := radius * (0.78 + float(wave_index) * 0.105)
-		var wave_phase := _phase + float(wave_index) * 1.7 + progress * (2.4 + float(wave_index) * 0.8)
-		var band_width := radius * (0.11 if wave_index == 1 else 0.085)
-		var outer_radius := wave_radius + band_width * 0.5
-		var inner_radius := maxf(wave_radius - band_width * 0.5, 1.0)
-		var points := _build_wave_band_points(outer_radius, inner_radius, wave_phase, wave_index)
-		var blue_alpha := fade * (0.48 if wave_index != 1 else 0.62)
-		var white_alpha := fade * (0.36 if wave_index != 1 else 0.52)
-		draw_colored_polygon(points, Color(0.12, 0.56, 1.0, blue_alpha))
-		var highlight_points := _build_wave_band_points(outer_radius - band_width * 0.18, inner_radius + band_width * 0.18, wave_phase + 0.18, wave_index)
-		draw_colored_polygon(highlight_points, Color(0.78, 0.95, 1.0, white_alpha))
-	if progress < 0.48:
-		var center_radius := radius * (0.12 + 0.08 * (1.0 - progress / 0.48))
-		draw_circle(Vector2.ZERO, center_radius, Color(0.55, 0.88, 1.0, fade * 0.30))
+	var band_width := clampf(radius * 0.14, 5.0, 18.0)
+	var phase := _phase + _elapsed * 5.0
+	var outer_points := _build_ripple_points(radius, phase)
+	var inner_points := _build_ripple_points(maxf(radius - band_width, 1.0), phase + 0.12)
+	var band_points := PackedVector2Array()
+	for point in outer_points:
+		band_points.append(point)
+	for index in range(inner_points.size() - 1, -1, -1):
+		band_points.append(inner_points[index])
+	draw_colored_polygon(band_points, Color(0.08, 0.50, 0.94, fade * 0.72))
+	draw_polyline(outer_points, Color(0.72, 0.95, 1.0, fade * 0.92), clampf(radius * 0.025, 1.5, 3.0), false)
+	draw_polyline(inner_points, Color(0.10, 0.40, 0.84, fade * 0.88), clampf(radius * 0.018, 1.0, 2.0), false)
+	draw_circle(Vector2.ZERO, clampf(radius * 0.06, 2.0, 8.0), Color(0.35, 0.78, 1.0, fade * 0.42))
 
 
-func _build_wave_band_points(outer_radius: float, inner_radius: float, phase: float, wave_index: int) -> PackedVector2Array:
+func _build_ripple_points(radius: float, phase: float) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	for index in range(WAVE_SEGMENTS + 1):
-		var ratio := float(index) / float(WAVE_SEGMENTS)
-		var angle := ratio * TAU
-		var ripple := sin(angle * (3.0 + wave_index) + phase) * (outer_radius * (0.025 + float(wave_index) * 0.006))
-		var secondary_ripple := cos(angle * (6.0 + wave_index * 2.0) - phase * 0.7) * (outer_radius * 0.012)
-		points.append(Vector2.from_angle(angle) * (outer_radius + ripple + secondary_ripple))
-	for index in range(WAVE_SEGMENTS, -1, -1):
-		var ratio := float(index) / float(WAVE_SEGMENTS)
-		var angle := ratio * TAU
-		var ripple := sin(angle * (3.0 + wave_index) + phase) * (inner_radius * (0.025 + float(wave_index) * 0.006))
-		var secondary_ripple := cos(angle * (6.0 + wave_index * 2.0) - phase * 0.7) * (inner_radius * 0.012)
-		points.append(Vector2.from_angle(angle) * (inner_radius + ripple + secondary_ripple))
+		var angle := float(index) / float(WAVE_SEGMENTS) * TAU
+		var ripple := sin(angle * 7.0 + phase) * radius * 0.035
+		ripple += cos(angle * 13.0 - phase * 0.7) * radius * 0.018
+		var point := Vector2.from_angle(angle) * maxf(radius + ripple, 1.0)
+		# Small coordinate steps keep the ring crisp in the pixel-art render.
+		points.append((point / 2.0).round() * 2.0)
 	return points

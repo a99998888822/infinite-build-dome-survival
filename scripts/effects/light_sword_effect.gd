@@ -3,6 +3,7 @@ class_name LightSwordEffect
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+const LIGHT_REFLECTION_EFFECT_SCRIPT = preload("res://scripts/effects/light_reflection_effect.gd")
 
 const DEFAULT_RADIUS: float = 78.0
 const DEFAULT_DELAY: float = 0.5
@@ -90,20 +91,30 @@ func _land() -> void:
 		handled[enemy.get_instance_id()] = true
 		var had_dark := enemy.has_status("dark")
 		if had_dark:
-			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
+			var dark_reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
 				"parent": get_parent(),
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"light_duration": _light_duration,
 			})
+			if bool(dark_reaction_result.get("light_freeze", false)):
+				LIGHT_REFLECTION_EFFECT_SCRIPT.spawn(get_parent(), enemy.global_position, _get_reflection_direction(enemy), _damage_event)
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
 		if not had_dark:
-			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
+			var light_reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
 				"parent": get_parent(),
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"light_duration": _light_duration,
 			})
+			if bool(light_reaction_result.get("light_freeze", false)):
+				LIGHT_REFLECTION_EFFECT_SCRIPT.spawn(get_parent(), enemy.global_position, _get_reflection_direction(enemy), _damage_event)
+
+
+func _get_reflection_direction(enemy: EnemyController) -> Vector2:
+	if _damage_event != null and _damage_event.source_player != null:
+		return _damage_event.source_player.global_position.direction_to(enemy.global_position)
+	return global_position.direction_to(enemy.global_position)
 
 
 func _draw() -> void:

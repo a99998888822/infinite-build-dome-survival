@@ -479,12 +479,38 @@ static func _find_world(parent: Node) -> Node2D:
 		if child != null and _is_particle_world(child):
 			return child
 		current = current.get_parent()
+	var render_world := find_render_world(parent)
+	if render_world != null:
+		var shared_world := render_world.get_node_or_null("ParticleWorld") as Node2D
+		if shared_world != null and _is_particle_world(shared_world):
+			return shared_world
 	return null
 
 
 static func _is_particle_world(node: Node) -> bool:
 	var script: Script = node.get_script()
 	return script != null and script.resource_path == PARTICLE_WORLD_PATH
+
+
+static func find_render_world(parent: Node) -> Node2D:
+	if parent == null:
+		return null
+	var current: Node = parent
+	while current != null:
+		if current.is_in_group("combat_render_world"):
+			return current as Node2D
+		current = current.get_parent()
+	var tree := parent.get_tree()
+	if tree != null:
+		var registered := tree.get_first_node_in_group("combat_render_world")
+		if registered is Node2D and is_instance_valid(registered) and not registered.is_queued_for_deletion():
+			return registered as Node2D
+		var root := tree.current_scene
+		if root != null:
+			var found := root.find_child("CombatRenderWorld", true, false)
+			if found is Node2D and is_instance_valid(found) and not found.is_queued_for_deletion():
+				return found as Node2D
+	return null
 
 
 func emit_event(event: Variant) -> void:
@@ -568,8 +594,17 @@ func emit_event(event: Variant) -> void:
 		var particle_mid_color := particle_color
 		var particle_final_color := particle_end_color
 		if is_fire_particle:
-			particle_mid_color = _resolve_special_color(profile, "fire_mid_color", color_tint, particle_color)
-			particle_final_color = _resolve_special_color(profile, "fire_end_color", color_tint, Color(1.0, 0.96, 0.68, 1.0))
+			if bool(parameters.get("fire_white", false)):
+				particle_color = Color.WHITE
+				particle_mid_color = Color.WHITE
+				particle_final_color = Color.WHITE
+			elif bool(parameters.get("fire_dark", false)):
+				particle_color = Color(0.005, 0.005, 0.008, 1.0)
+				particle_mid_color = particle_color
+				particle_final_color = particle_color
+			else:
+				particle_mid_color = _resolve_special_color(profile, "fire_mid_color", color_tint, particle_color)
+				particle_final_color = _resolve_special_color(profile, "fire_end_color", color_tint, Color(1.0, 0.96, 0.68, 1.0))
 		var particle_rotation := _random.randf_range(-rotation_jitter, rotation_jitter)
 		if align_to_direction and not base_direction.is_zero_approx():
 			particle_rotation = base_direction.angle() + _random.randf_range(-rotation_jitter, rotation_jitter)

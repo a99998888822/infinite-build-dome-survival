@@ -51,6 +51,8 @@ var _burn_tick_timer: float = 0.0
 var _burn_damage_per_tick: float = 0.0
 var _burn_damage_remainder: float = 0.0
 var _burn_source_id: String = ""
+var _holy_flame: bool = false
+var _dark_flame: bool = false
 var _stunned_remaining: float = 0.0
 var _slowed_remaining: float = 0.0
 var _slow_multiplier: float = 1.0
@@ -148,6 +150,8 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_burn_damage_per_tick = 0.0
 	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
+	_holy_flame = false
+	_dark_flame = false
 	_stunned_remaining = 0.0
 	_slowed_remaining = 0.0
 	_slow_multiplier = 1.0
@@ -182,12 +186,14 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat(stat_id, fallback_base_value)
 
 
-func apply_burning(duration: float, damage_per_tick: float, source_id: String = "") -> void:
+func apply_burning(duration: float, damage_per_tick: float, source_id: String = "", holy_flame: bool = false, dark_flame: bool = false) -> void:
 	if not alive:
 		return
 	_burning_remaining = maxf(_burning_remaining, duration)
 	_burn_damage_per_tick = maxf(_burn_damage_per_tick, damage_per_tick)
 	_burn_source_id = source_id if not source_id.is_empty() else _burn_source_id
+	_holy_flame = _holy_flame or holy_flame or _light_remaining > 0.0
+	_dark_flame = _dark_flame or dark_flame
 	_burn_tick_timer = minf(_burn_tick_timer, 0.5) if _burn_tick_timer > 0.0 else 0.5
 
 
@@ -220,6 +226,8 @@ func apply_light(duration: float = 5.0) -> void:
 	if not alive:
 		return
 	_light_remaining = maxf(_light_remaining, minf(duration, 10.0))
+	if _burning_remaining > 0.0:
+		_holy_flame = true
 
 
 func clear_light() -> void:
@@ -249,6 +257,10 @@ func has_status(status_id: String) -> bool:
 		return _blinded_remaining > 0.0
 	if status_id == "burning":
 		return _burning_remaining > 0.0
+	if status_id == "holy_flame":
+		return _burning_remaining > 0.0 and _holy_flame
+	if status_id == "dark_flame":
+		return _burning_remaining > 0.0 and _dark_flame
 	if status_id == "stunned" or status_id == "paralyzed":
 		return _stunned_remaining > 0.0
 	return false
@@ -260,6 +272,17 @@ func clear_burning() -> void:
 	_burn_damage_per_tick = 0.0
 	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
+	_holy_flame = false
+	_dark_flame = false
+
+
+func apply_knockback(hit_direction: Vector2, speed: float, duration: float) -> void:
+	if not alive:
+		return
+	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
+	_knockback_velocity = safe_direction * maxf(speed, 1.0)
+	velocity = _knockback_velocity
+	_knockback_timer = maxf(_knockback_timer, maxf(duration, 0.05))
 
 
 func apply_lightning_visual(duration: float = 0.65) -> void:
@@ -289,6 +312,8 @@ func _process_burning(delta: float) -> void:
 	_burn_damage_remainder += _burn_damage_per_tick
 	var damage := int(floor(_burn_damage_remainder))
 	_burn_damage_remainder -= float(damage)
+	if _holy_flame:
+		damage = maxi(1, int(roundi(float(damage) * 2.0))) if damage > 0 else 0
 	if damage > 0:
 		take_damage(damage, _burn_source_id, false, Vector2.ZERO)
 	if _burning_remaining <= 0.0:
@@ -308,7 +333,8 @@ func take_damage(
 	var light_multiplier := 1.0
 	if _light_remaining > 0.0:
 		light_multiplier = 2.0
-		clear_light()
+		if not _holy_flame:
+			clear_light()
 	var final_damage := maxi(1, int(roundi(float(raw_damage) * light_multiplier * damage_taken_percent / 100.0)))
 	current_hp = maxi(current_hp - final_damage, 0)
 	if damage_components.is_empty():
@@ -375,8 +401,11 @@ func _capture_base_sprite_modulate() -> void:
 
 
 func _apply_weapon_knockback(hit_direction: Vector2) -> void:
-	_knockback_velocity = hit_direction.normalized() * HIT_KNOCKBACK_SPEED
-	velocity = _knockback_velocity
+	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
+	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED
+	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
+		_knockback_velocity = regular_velocity
+		velocity = _knockback_velocity
 	_knockback_timer = maxf(_knockback_timer, HIT_KNOCKBACK_SECONDS)
 
 

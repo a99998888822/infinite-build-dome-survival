@@ -7,6 +7,7 @@ const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_
 const MERGE_DISTANCE: float = 64.0
 const MAX_ACTIVE_FIELDS: int = 6
 const MAX_FIELD_RADIUS: float = 58.0
+const MAX_WIND_FIELD_RADIUS: float = 96.0
 const LIGHT_REFRESH_SECONDS: float = 0.22
 const LIGHT_DURATION_SECONDS: float = 0.26
 
@@ -136,6 +137,27 @@ func _absorb_seed(patch_position: Vector2, context: RefCounted, field_strength: 
 	_emit_ignition_burst(patch_position, field_strength)
 
 
+func expand_from_wind(radius_multiplier: float = 1.35) -> void:
+	var safe_multiplier := maxf(radius_multiplier, 1.0)
+	_radius = minf(MAX_WIND_FIELD_RADIUS, maxf(_radius, _radius * safe_multiplier))
+	_base_radius = maxf(_base_radius, _radius)
+	_update_collision_radius()
+	_update_particle_extent()
+	_emit_ignition_burst(global_position, 0.8)
+
+
+static func expand_nearby_fields(center: Vector2, search_radius: float, radius_multiplier: float) -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return
+	for node in tree.get_nodes_in_group("fire_patches"):
+		var patch := node as FirePatch
+		if patch == null or not is_instance_valid(patch) or patch._remaining <= 0.0:
+			continue
+		if patch.global_position.distance_to(center) <= search_radius + patch._radius:
+			patch.expand_from_wind(radius_multiplier)
+
+
 func _update_collision_radius() -> void:
 	if _collision_shape == null:
 		return
@@ -148,11 +170,11 @@ func _create_particle_emitters() -> void:
 	if not _flame_emitters.is_empty():
 		return
 	var extent_multiplier := _get_particle_extent_multiplier()
-	_flame_emitters.append(_create_emitter("fire_pool_base", 5.5, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_flame", 2.4, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_tongue", 6.0, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_core", 5.0, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_ember", 2.0, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_base", 1.8, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_flame", 0.8, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_tongue", 1.5, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_core", 1.2, extent_multiplier))
+	_flame_emitters.append(_create_emitter("fire_pool_ember", 0.5, extent_multiplier))
 	var configured_emitters: Array[Node2D] = []
 	for emitter in _flame_emitters:
 		if emitter != null:

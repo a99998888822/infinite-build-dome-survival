@@ -36,6 +36,7 @@ const EFFECT_LABELS: Dictionary = {
 	"lightning": "闪电",
 	"electric_spark": "电火花",
 	"ice": "冰冻",
+	"wind": "风刃",
 	"light_sword": "光辉剑",
 	"black_hole": "黑洞",
 	"split": "分裂",
@@ -70,6 +71,11 @@ const MODIFIER_LABELS: Dictionary = {
 	"child_count": "分裂数量",
 	"spread_angle": "分裂角度",
 	"extra_target_hits": "额外命中",
+	"knockback_speed": "击退力度",
+	"knockback_duration": "击退时间",
+	"field_radius_multiplier": "场地扩张",
+	"wet_propagation_radius": "打湿传播范围",
+	"wet_propagation_limit": "打湿传播数量",
 }
 const INVENTORY_ICON_SIZE: Vector2 = Vector2(48.0, 48.0)
 const INVENTORY_ICON_MAX_WIDTH: int = 44

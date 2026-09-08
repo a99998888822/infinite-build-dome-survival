@@ -4,6 +4,7 @@ class_name IceFieldEffect
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+const LIGHT_REFLECTION_EFFECT_SCRIPT = preload("res://scripts/effects/light_reflection_effect.gd")
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -31,6 +32,16 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 1.0)
 	effect._damage_enemies()
 
+
+func _ready() -> void:
+	if not is_in_group("ice_fields"):
+		add_to_group("ice_fields")
+
+
+func expand_from_wind(radius_multiplier: float = 1.35) -> void:
+	_radius = minf(128.0, maxf(_radius, _radius * maxf(radius_multiplier, 1.0)))
+	queue_redraw()
+
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
@@ -53,8 +64,7 @@ func _damage_enemies() -> void:
 		var enemy := result.get("collider") as EnemyController
 		if enemy == null or not enemy.is_alive():
 			continue
-		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
-		ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "ice", {
+		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "ice", {
 			"parent": get_parent(),
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
@@ -62,6 +72,10 @@ func _damage_enemies() -> void:
 			"slow_multiplier": _context.get_resolved_parameter("slow_multiplier", 0.45),
 			"freeze_duration": _context.get_resolved_parameter("freeze_duration", 1.0),
 		})
+		if bool(reaction_result.get("light_freeze", false)):
+			var reflection_direction := _damage_event.source_player.global_position.direction_to(enemy.global_position) if _damage_event.source_player != null else global_position.direction_to(enemy.global_position)
+			LIGHT_REFLECTION_EFFECT_SCRIPT.spawn(get_parent(), enemy.global_position, reflection_direction, _damage_event)
+		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
 
 func _draw() -> void:
 	var fade := 1.0 - clampf(_elapsed / _lifetime, 0.0, 1.0)

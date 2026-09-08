@@ -8,6 +8,7 @@ const DEFAULT_RADIUS: float = 100.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_PULL_SPEED: float = 150.0
 const DEFAULT_DARK_DURATION: float = 2.0
+const ABSORBING_RAYS: int = 18
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -104,10 +105,53 @@ func _collect_targets() -> void:
 func _draw() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
 	var fade := 0.35 + 0.65 * (1.0 - progress)
-	draw_circle(Vector2.ZERO, _radius, Color(0.08, 0.06, 0.14, 0.10 * fade))
-	draw_circle(Vector2.ZERO, _radius * 0.22, Color(0.01, 0.01, 0.02, 0.96 * fade))
-	for index in range(3):
-		var ring_radius := _radius * (0.38 + float(index) * 0.17)
-		var start_angle := _elapsed * (2.0 + float(index) * 0.55) + float(index) * 1.4
-		draw_arc(Vector2.ZERO, ring_radius, start_angle, start_angle + PI * 1.45, 28, Color(0.42, 0.34, 0.62, 0.72 * fade), 2.0, true)
-		draw_arc(Vector2.ZERO, ring_radius, start_angle + PI, start_angle + PI * 2.45, 28, Color(0.12, 0.10, 0.20, 0.8 * fade), 2.0, true)
+	var core_radius := _radius * 0.17
+	var core_scale := Vector2(1.35, 0.72)
+	_draw_accretion_rings(fade)
+	_draw_absorbing_segments(core_radius, fade)
+	draw_set_transform(Vector2.ZERO, 0.0, core_scale)
+	draw_circle(Vector2.ZERO, core_radius * 1.55, Color(0.20, 0.16, 0.30, 0.16 * fade))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	draw_set_transform(Vector2.ZERO, 0.0, core_scale)
+	draw_circle(Vector2.ZERO, core_radius + 3.0, Color(0.08, 0.06, 0.12, 0.24 * fade))
+	draw_circle(Vector2.ZERO, core_radius, Color(0.005, 0.005, 0.008, 0.99 * fade))
+	draw_arc(Vector2.ZERO, core_radius * 1.12, 0.0, TAU, 32, Color(0.42, 0.36, 0.56, 0.72 * fade), 2.0, false)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func _draw_accretion_rings(fade: float) -> void:
+	var ring_scale := Vector2(1.35, 0.48)
+	var ring_radius := _radius * 0.38
+	draw_set_transform(Vector2.ZERO, _elapsed * 0.18, ring_scale)
+	draw_arc(Vector2.ZERO, ring_radius, 0.0, TAU, 48, Color(0.04, 0.34, 0.58, 0.26 * fade), 5.0, false)
+	draw_arc(Vector2.ZERO, ring_radius * 0.82, 0.0, TAU, 40, Color(0.18, 0.48, 0.72, 0.22 * fade), 3.0, false)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func _draw_absorbing_segments(core_radius: float, fade: float) -> void:
+	var outer_radius := _radius * 0.94
+	var inner_radius := core_radius * 1.55
+	for index in ABSORBING_RAYS:
+		var ratio := float(index) / float(ABSORBING_RAYS)
+		var speed := 0.54 + fmod(float(index), 4.0) * 0.07
+		var phase := fmod(_elapsed * speed + ratio * 1.18, 1.18) - 0.16
+		for carriage in 2:
+			var segment_start := phase + float(carriage) * 0.23
+			var segment_end := segment_start + 0.13
+			if segment_end < 0.0 or segment_start > 1.0:
+				continue
+			var angle := ratio * TAU + _elapsed * 0.75 + float(index % 3) * 0.08
+			var points := PackedVector2Array()
+			for sample in 4:
+				var sample_ratio := float(sample) / 3.0
+				var travel := clampf(lerpf(segment_start, segment_end, sample_ratio), 0.0, 1.0)
+				var point := _get_absorbing_path_point(angle, travel, outer_radius, inner_radius)
+				points.append((point / 2.0).round() * 2.0)
+			var alpha := (0.60 + 0.35 * sin(_elapsed * 8.0 + index)) * fade
+			draw_polyline(points, Color(0.92, 0.96, 1.0, alpha), 1.5, false)
+
+
+func _get_absorbing_path_point(angle: float, travel: float, outer_radius: float, inner_radius: float) -> Vector2:
+	var radius := lerpf(outer_radius, inner_radius, travel)
+	var curved_angle := angle - travel * 0.72
+	return Vector2.from_angle(curved_angle) * radius

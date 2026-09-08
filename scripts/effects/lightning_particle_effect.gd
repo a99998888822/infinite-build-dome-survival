@@ -39,6 +39,7 @@ var _context: RefCounted = null
 var _resolved_parameters: Dictionary = {}
 var _visited: Dictionary = {}
 var _remaining_jumps: int = 0
+var _chain_selection_step: int = 0
 var _jump_radius: float = 170.0
 var _pending_display_echoes: int = 0
 var _chain_finished: bool = false
@@ -67,6 +68,9 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	var first_enemy := first_body as EnemyController
 	if parent == null or weapon == null or damage_event == null or first_enemy == null:
 		return
+	var visual_parent := PARTICLE_WORLD_SCRIPT.find_render_world(parent)
+	if visual_parent != null:
+		parent = visual_parent
 	var effect := LightningParticleEffect.new()
 	parent.add_child(effect)
 	effect._parent_root = parent
@@ -83,7 +87,8 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 		"detonate_burning": 1.0,
 	}, effect._attachment_item_id)
 	effect._cache_resolved_parameters()
-	effect._remaining_jumps = maxi(0, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
+	effect._remaining_jumps = maxi(2, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
+	effect._chain_selection_step = 0
 	effect._jump_radius = maxf(effect._get_cached_parameter("jump_radius", DEFAULT_JUMP_RADIUS) * effect._get_cached_parameter("attack_range_multiplier", 1.0), 32.0)
 	effect.call_deferred("_strike_chain", first_enemy, hit_position)
 
@@ -91,6 +96,9 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", strike_height: float = 182.0, damage_radius: float = 20.0) -> LightningParticleEffect:
 	if parent == null or weapon == null or damage_event == null:
 		return null
+	var visual_parent := PARTICLE_WORLD_SCRIPT.find_render_world(parent)
+	if visual_parent != null:
+		parent = visual_parent
 	var effect := LightningParticleEffect.new()
 	parent.add_child(effect)
 	effect._parent_root = parent
@@ -113,6 +121,7 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "electric_spark", {
 		"damage": maxf(float(damage_event.damage) * 0.72, 1.0),
 		"strike_height": strike_height,
+		"detonate_burning": 1.0,
 	}, effect._attachment_item_id)
 	effect._cache_resolved_parameters()
 	effect._chain_finished = true
@@ -144,9 +153,9 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 		"hit_position": current.global_position,
 		"source_id": _damage_event.source_weapon_id,
 		"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+		"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 	})
-	if current.has_status("burning") and _get_cached_parameter("detonate_burning", 1.0) > 0.0:
-		current.clear_burning()
+	if bool(reaction_result.get("burning_detonated", false)):
 		for explosion_instance in _weapon.get_effect_instances("explosion"):
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
@@ -227,7 +236,11 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
 			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 		})
+		if bool(reaction_result.get("burning_detonated", false)):
+			for explosion_instance in _weapon.get_effect_instances("explosion"):
+				EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
 		if bool(reaction_result.get("extra_trigger", false)):
 			var extra_damage := enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
 			if extra_damage > 0:
@@ -239,10 +252,11 @@ func _schedule_next(origin: Vector2) -> void:
 	if _remaining_jumps <= 0:
 		_finish_chain()
 		return
-	var next_target := _find_farthest_enemy(origin)
+	var next_target := _find_farthest_enemy(origin) if _chain_selection_step == 0 else _find_random_enemy()
 	if next_target == null:
 		_finish_chain()
 		return
+	_chain_selection_step += 1
 	var chain_interval := clampf(_get_cached_parameter("chain_interval", DEFAULT_CHAIN_INTERVAL), 0.02, 0.5)
 	EffectScheduler.schedule(chain_interval, Callable(self, "_strike_chain").bind(next_target, origin), self)
 
@@ -260,6 +274,17 @@ func _find_farthest_enemy(origin: Vector2) -> EnemyController:
 			farthest_distance = distance
 			farthest = enemy
 	return farthest
+
+
+func _find_random_enemy() -> EnemyController:
+	var candidates: Array[EnemyController] = []
+	for node in EnemyRegistry.get_registered_enemies():
+		var enemy := node as EnemyController
+		if enemy != null and enemy.is_alive() and not _visited.has(enemy.get_instance_id()):
+			candidates.append(enemy)
+	if candidates.is_empty():
+		return null
+	return candidates[randi_range(0, candidates.size() - 1)]
 
 
 func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:

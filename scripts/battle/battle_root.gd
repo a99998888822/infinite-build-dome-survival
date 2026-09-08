@@ -30,7 +30,7 @@ func _attach_world_nodes_to_low_resolution_viewport() -> void:
 	_low_resolution_world_parent = game_root.get_world_viewport_root()
 	if _low_resolution_world_parent == null:
 		return
-	for node in [get_node_or_null("ParticleLightField"), get_node_or_null("ParticleWorld"), get_node_or_null("DestructibleTestArea"), player, loadout, wave_manager]:
+	for node in [get_node_or_null("CombatRenderWorld"), get_node_or_null("DestructibleTestArea"), player, loadout, wave_manager]:
 		if node == null or node.get_parent() == _low_resolution_world_parent:
 			continue
 		_low_resolution_world_nodes.append(node)

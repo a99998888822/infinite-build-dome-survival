@@ -429,5 +429,31 @@
       }
     ],
     "icon": "res://assets/ui/icons/augmentations/scroll_ice.png"
+  },
+  {
+    "id": "scroll_wind",
+    "display_name": "风刃",
+    "description": "命中后释放青白月牙风刃，大幅击退敌人；可扩大火焰池与冰霜领域，并将打湿传播给附近敌人。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": [
+      "wind"
+    ],
+    "effect_parameters": {
+      "damage_multiplier": 0.7,
+      "knockback_speed": 900.0,
+      "knockback_duration": 0.34,
+      "blade_speed": 480.0,
+      "blade_lifetime": 0.46,
+      "field_search_radius": 18.0,
+      "field_radius_multiplier": 1.35,
+      "wet_propagation_radius": 92.0,
+      "wet_propagation_limit": 4.0,
+      "wet_duration": 3.0,
+      "wet_slow_multiplier": 0.8
+    },
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_wind.svg"
   }
 ]

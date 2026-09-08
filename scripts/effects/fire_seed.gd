@@ -6,7 +6,7 @@ const FIRE_PATCH_SCRIPT = preload("res://scripts/effects/fire_patch.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
 const MAX_VISUAL_SEEDS_PER_IMPACT: int = 4
-const TRAIL_INTERVAL_SECONDS: float = 0.07
+const TRAIL_INTERVAL_SECONDS: float = 0.14
 
 var _velocity: Vector2 = Vector2.ZERO
 var _elapsed: float = 0.0
@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 	if _trail_timer <= 0.0:
 		_trail_timer = TRAIL_INTERVAL_SECONDS
 		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_spark", global_position, _velocity, 0.35, Color.TRANSPARENT, {
-			"count_multiplier": 0.75,
+			"count_multiplier": 0.35,
 			"lifetime_multiplier": 0.75,
 		})
 	if _elapsed >= _lifetime:

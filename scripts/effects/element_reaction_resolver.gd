@@ -20,6 +20,8 @@ const DEFAULT_ICE_SLOW_MULTIPLIER: float = 0.45
 const DEFAULT_STUN_DURATION: float = 0.5
 const DEFAULT_LIGHT_DURATION: float = 5.0
 const DEFAULT_DARK_DURATION: float = 2.0
+const DEFAULT_STEAM_DAMAGE_MULTIPLIER: float = 1.15
+const DARK_FLAME_DURATION: float = 10.0
 
 
 static func apply_element(enemy: Node, element_id: String, reaction_data: Dictionary = {}) -> Dictionary:
@@ -28,6 +30,10 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 		"extra_trigger": false,
 		"neutralized": false,
 		"wet_consumed": false,
+		"steam_damage": 0,
+		"light_freeze": false,
+		"burning_detonated": false,
+		"reaction_id": "",
 	}
 	if enemy == null or not is_instance_valid(enemy) or not enemy.has_method("is_alive") or not enemy.is_alive():
 		return result
@@ -38,9 +44,20 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 	match element_id:
 		ELEMENT_WATER:
 			if enemy.has_status("burning"):
-				enemy.clear_burning()
+				var steam_damage := _get_steam_damage(reaction_data)
 				_emit_steam(parent, hit_position)
-				result["neutralized"] = true
+				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
+				enemy.take_damage(
+					steam_damage,
+					source_id,
+					false,
+					hit_position.direction_to(enemy.global_position),
+					[original_damage, maxi(steam_damage - original_damage, 0)],
+				)
+				result["steam_damage"] = steam_damage
+				if not enemy.has_status("dark_flame"):
+					enemy.clear_burning()
+					result["neutralized"] = true
 			else:
 				enemy.apply_wet(
 					maxf(float(reaction_data.get("wet_duration", DEFAULT_WET_DURATION)), 0.1),
@@ -48,20 +65,34 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				)
 		ELEMENT_FIRE:
 			if enemy.has_status("wet"):
+				var steam_damage := _get_steam_damage(reaction_data)
 				enemy.clear_wet()
 				_emit_steam(parent, hit_position)
+				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
+				enemy.take_damage(
+					steam_damage,
+					source_id,
+					false,
+					hit_position.direction_to(enemy.global_position),
+					[original_damage, maxi(steam_damage - original_damage, 0)],
+				)
+				result["steam_damage"] = steam_damage
 				result["neutralized"] = true
 				result["wet_consumed"] = true
 			else:
 				var original_damage := maxf(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))), 0.0)
 				var tick_damage := float(reaction_data.get("burn_tick_damage", original_damage * DEFAULT_BURN_TICK_DAMAGE_PERCENT))
+				var is_dark_flame: bool = enemy.has_status("dark")
 				enemy.apply_burning(
-					maxf(float(reaction_data.get("burn_duration", DEFAULT_BURN_DURATION)), 0.1),
+					DARK_FLAME_DURATION if is_dark_flame else maxf(float(reaction_data.get("burn_duration", DEFAULT_BURN_DURATION)), 0.1),
 					maxf(tick_damage, 0.0),
 					source_id,
+					enemy.has_status("light"),
+					is_dark_flame,
 				)
 		ELEMENT_ICE:
 			if enemy.has_status("wet"):
+				result["light_freeze"] = enemy.has_status("light")
 				enemy.clear_wet()
 				enemy.apply_freeze(maxf(float(reaction_data.get("freeze_duration", DEFAULT_FREEZE_DURATION)), 0.1))
 				_emit_ice_crystal(parent, hit_position)
@@ -73,7 +104,11 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				)
 		ELEMENT_ELECTRIC:
 			enemy.apply_lightning_stun(maxf(float(reaction_data.get("stun_duration", DEFAULT_STUN_DURATION)), 0.1))
-			if enemy.has_status("wet"):
+			if enemy.has_status("burning") and float(reaction_data.get("detonate_burning", 0.0)) > 0.0:
+				enemy.clear_burning()
+				result["burning_detonated"] = true
+				result["reaction_id"] = "thunder_fire_blast"
+			elif enemy.has_status("wet"):
 				enemy.clear_wet()
 				result["extra_trigger"] = true
 				result["wet_consumed"] = true
@@ -83,6 +118,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				result["neutralized"] = true
 			else:
 				enemy.apply_light(maxf(float(reaction_data.get("light_duration", DEFAULT_LIGHT_DURATION)), 0.1))
+				result["light_freeze"] = enemy.has_status("frozen")
 		ELEMENT_DARK:
 			if enemy.has_status("light"):
 				enemy.clear_light()
@@ -96,6 +132,11 @@ static func _emit_steam(parent: Node, hit_position: Vector2) -> void:
 	if parent == null or not is_instance_valid(parent):
 		return
 	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "steam_burst", hit_position, Vector2.UP, 1.0)
+
+
+static func _get_steam_damage(reaction_data: Dictionary) -> int:
+	var original_damage := maxf(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))), 0.0)
+	return maxi(1, int(roundi(original_damage * float(reaction_data.get("steam_damage_multiplier", DEFAULT_STEAM_DAMAGE_MULTIPLIER)))))
 
 
 static func _emit_ice_crystal(parent: Node, hit_position: Vector2) -> void:
