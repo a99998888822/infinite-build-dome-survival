@@ -12,7 +12,7 @@
       "radius": 132.0,
       "duration": 0.52,
       "damage_multiplier": 0.55,
-      "wet_duration": 3.0,
+      "wet_duration": 5.0,
       "wet_slow_multiplier": 0.8
     },
     "instance_parameter_ranges": [],
@@ -69,6 +69,9 @@
     "effect_ids": [
       "fire"
     ],
+    "effect_parameters": {
+      "patch_duration": 3.0
+    },
     "modifiers": [
       {
         "effect_id": "fire",
@@ -405,7 +408,7 @@
     ],
     "effect_parameters": {
       "radius": 64,
-      "duration": 1.8,
+      "duration": 3.0,
       "slow_multiplier": 0.45,
       "freeze_duration": 1.0
     },

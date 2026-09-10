@@ -204,7 +204,7 @@ func apply_slow(duration: float, multiplier: float) -> void:
 	_slow_multiplier = minf(_slow_multiplier, clampf(multiplier, 0.05, 1.0))
 
 
-func apply_wet(duration: float = 3.0, slow_multiplier: float = 0.8) -> void:
+func apply_wet(duration: float = 5.0, slow_multiplier: float = 0.8) -> void:
 	if not alive:
 		return
 	_wet_remaining = maxf(_wet_remaining, duration)

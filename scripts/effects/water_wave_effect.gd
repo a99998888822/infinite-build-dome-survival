@@ -37,7 +37,7 @@ static func spawn(
 		"radius": DEFAULT_RADIUS,
 		"duration": DEFAULT_DURATION,
 		"damage_multiplier": DEFAULT_DAMAGE_MULTIPLIER,
-		"wet_duration": 3.0,
+		"wet_duration": 5.0,
 		"wet_slow_multiplier": 0.8,
 	}, attachment_item_id)
 	effect._radius = maxf(
@@ -77,7 +77,7 @@ func _apply_wave() -> void:
 	query.collide_with_bodies = true
 	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
 	var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _context.get_resolved_parameter("damage_multiplier", DEFAULT_DAMAGE_MULTIPLIER))))
-	var wet_duration: float = _context.get_resolved_parameter("wet_duration", 3.0)
+	var wet_duration: float = _context.get_resolved_parameter("wet_duration", 5.0)
 	var wet_slow_multiplier: float = _context.get_resolved_parameter("wet_slow_multiplier", 0.8)
 	var handled: Dictionary = {}
 	for result in results:

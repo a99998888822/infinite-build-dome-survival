@@ -10,12 +10,12 @@ const ELEMENT_ELECTRIC: String = "electric"
 const ELEMENT_LIGHT: String = "light"
 const ELEMENT_DARK: String = "dark"
 
-const DEFAULT_WET_DURATION: float = 3.0
+const DEFAULT_WET_DURATION: float = 5.0
 const DEFAULT_WET_SLOW_MULTIPLIER: float = 0.8
 const DEFAULT_BURN_DURATION: float = 3.0
 const DEFAULT_BURN_TICK_DAMAGE_PERCENT: float = 0.10
 const DEFAULT_FREEZE_DURATION: float = 1.0
-const DEFAULT_ICE_SLOW_DURATION: float = 1.8
+const DEFAULT_ICE_SLOW_DURATION: float = 3.0
 const DEFAULT_ICE_SLOW_MULTIPLIER: float = 0.45
 const DEFAULT_STUN_DURATION: float = 0.5
 const DEFAULT_LIGHT_DURATION: float = 5.0

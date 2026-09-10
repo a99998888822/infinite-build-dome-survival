@@ -83,7 +83,7 @@ static func _resolve_radius(context: RefCounted) -> float:
 
 
 static func _resolve_duration(context: RefCounted) -> float:
-	return maxf(context.get_resolved_parameter("patch_duration", 2.0), 0.2) if context != null else 2.0
+	return maxf(context.get_resolved_parameter("patch_duration", 3.0), 0.2) if context != null else 3.0
 
 
 static func _get_source_weapon_id(context: RefCounted) -> String:

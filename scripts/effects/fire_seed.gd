@@ -26,7 +26,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"original_damage": float(damage_event.original_damage),
 		"burn_duration": 3.0,
 		"tick_interval": 0.25,
-		"patch_duration": 2.0,
+		"patch_duration": 3.0,
 		"seed_count": 3.0,
 	}, attachment_item_id)
 	var seed_count := maxi(2, int(roundi(context.get_resolved_parameter("seed_count", 3.0) + context.get_resolved_parameter("projectile_count", 1.0))))

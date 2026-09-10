@@ -24,11 +24,11 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
 		"damage": maxf(float(damage_event.damage) * 0.35, 1.0),
 		"radius": 64.0,
-		"duration": 1.8,
+		"duration": 3.0,
 		"slow_multiplier": 0.45,
 	}, attachment_item_id)
 	effect._radius = maxf(effect._context.get_resolved_parameter("radius", 64.0) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 16.0)
-	effect._lifetime = maxf(effect._context.get_resolved_parameter("duration", 1.8), 0.2)
+	effect._lifetime = maxf(effect._context.get_resolved_parameter("duration", 3.0), 0.2)
 	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 1.0)
 	effect._damage_enemies()
 
@@ -68,7 +68,7 @@ func _damage_enemies() -> void:
 			"parent": get_parent(),
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
-			"slow_duration": _context.get_resolved_parameter("duration", 1.8),
+			"slow_duration": _context.get_resolved_parameter("duration", 3.0),
 			"slow_multiplier": _context.get_resolved_parameter("slow_multiplier", 0.45),
 			"freeze_duration": _context.get_resolved_parameter("freeze_duration", 1.0),
 		})
