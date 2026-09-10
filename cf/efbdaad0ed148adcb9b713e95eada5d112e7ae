@@ -1,0 +1,28 @@
+scripts/effects/ice_field_effect.gd
+  h_ae0329d199c6f5 27,31,71
+data_config/augmentations.json
+  h_ae0329d199c6f5 15,72-74,411
+scripts/effects/fire_seed.gd
+  h_ae0329d199c6f5 29
+scripts/effects/water_wave_effect.gd
+  h_ae0329d199c6f5 40,80
+scripts/effects/element_reaction_resolver.gd
+  h_ae0329d199c6f5 13,18
+scripts/effects/fire_patch.gd
+  h_ae0329d199c6f5 86
+scripts/enemies/enemy_controller.gd
+  h_ae0329d199c6f5 207
+todo.md
+  h_ae0329d199c6f5 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "cfefbdaad0ed148adcb9b713e95eada5d112e7ae",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
