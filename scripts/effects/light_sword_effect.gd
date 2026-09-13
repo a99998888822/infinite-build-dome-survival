@@ -22,6 +22,7 @@ var _light_duration: float = DEFAULT_LIGHT_DURATION
 var _elapsed: float = 0.0
 var _strike_started: bool = false
 var _landed: bool = false
+var _ground_cracks: Array[PackedVector2Array] = []
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
@@ -75,7 +76,8 @@ func _land() -> void:
 	if _landed or _context == null or _damage_event == null:
 		return
 	_landed = true
-	var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _context.get_resolved_parameter("damage_multiplier", 0.9))))
+	_build_ground_cracks()
+	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.9))
 	var shape := CircleShape2D.new()
 	shape.radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()
@@ -128,11 +130,8 @@ func _draw() -> void:
 	else:
 		var dissolve_progress := clampf((_elapsed - _delay - _fall_seconds) / _dissolve_seconds, 0.0, 1.0)
 		var fade := 1.0 - dissolve_progress
+		_draw_ground_cracks(fade)
 		_draw_sword(Vector2(0.0, -38.0), fade, true)
-		draw_circle(Vector2.ZERO, _radius * 0.72, Color(1.0, 1.0, 1.0, 0.10 * fade))
-		for index in range(8):
-			var angle := float(index) * TAU / 8.0
-			draw_line(Vector2.from_angle(angle) * (_radius * 0.42), Vector2.from_angle(angle) * (_radius * 0.92), Color(1.0, 1.0, 1.0, 0.65 * fade), 2.0, true)
 
 
 func _draw_sword(position: Vector2, alpha: float = 1.0, embedded: bool = false) -> void:
@@ -157,6 +156,41 @@ func _draw_sword(position: Vector2, alpha: float = 1.0, embedded: bool = false) 
 		])
 	draw_colored_polygon(blade, color)
 	draw_polyline(blade + PackedVector2Array([blade[0]]), edge_color, 1.5, true)
-	draw_line(position + Vector2(-18.0, blade_start_y), position + Vector2(18.0, blade_start_y), color, 5.0, true)
-	draw_line(position + Vector2(0.0, blade_start_y - 1.0), position + Vector2(0.0, blade_start_y - 23.0), color, 4.0, true)
-	draw_circle(position + Vector2(0.0, blade_start_y - 29.0), 5.0, color)
+	draw_line(position + Vector2(-12.0, blade_start_y), position + Vector2(12.0, blade_start_y), color, 3.0, true)
+	draw_line(position + Vector2(0.0, blade_start_y - 1.0), position + Vector2(0.0, blade_start_y - 15.0), color, 3.0, true)
+	draw_circle(position + Vector2(0.0, blade_start_y - 19.0), 3.5, color)
+
+
+func _build_ground_cracks() -> void:
+	_ground_cracks.clear()
+	var crack_count := 7
+	for index in crack_count:
+		var angle := randf_range(0.0, TAU)
+		var direction := Vector2.from_angle(angle)
+		var start := direction * randf_range(3.0, 9.0)
+		var length := randf_range(22.0, 52.0)
+		var points := PackedVector2Array([start])
+		var current := start
+		var steps := randi_range(2, 4)
+		for step in steps:
+			var bend := direction.rotated(randf_range(-0.42, 0.42))
+			current += bend * (length / float(steps)) * randf_range(0.78, 1.08)
+			points.append(current)
+		_ground_cracks.append(points)
+		if index < 3:
+			var branch_start := points[randi_range(1, points.size() - 1)]
+			var branch_direction := direction.rotated(randf_range(-1.15, 1.15))
+			_ground_cracks.append(PackedVector2Array([
+				branch_start,
+				branch_start + branch_direction * randf_range(10.0, 22.0),
+			]))
+
+
+func _draw_ground_cracks(alpha: float) -> void:
+	var shadow := Color(0.05, 0.10, 0.14, 0.78 * alpha)
+	var edge := Color(0.38, 0.58, 0.66, 0.62 * alpha)
+	for crack in _ground_cracks:
+		if crack.size() < 2:
+			continue
+		draw_polyline(crack, shadow, 3.0, true)
+		draw_polyline(crack, edge, 1.0, true)

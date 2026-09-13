@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 		rotation += delta * 8.0
 	else:
 		global_position = global_position.move_toward(target_player.global_position, speed * delta)
-	if global_position.distance_to(target_player.global_position) <= 16.0:
+	if global_position.distance_to(target_player.global_position) <= 8.0:
 		collect()
 
 

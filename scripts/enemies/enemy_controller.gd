@@ -11,6 +11,7 @@ const CONTACT_RADIUS: float = 52.0
 const CONTACT_RESET_RADIUS: float = 68.0
 const CONTACT_DAMAGE_COOLDOWN_SECONDS: float = 0.55
 const CONTACT_RECOVERY_SPEED: float = 180.0
+const CHASE_ACCELERATION: float = 900.0
 const DAMAGE_NUMBER_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
 const DAMAGE_NUMBER_FONT_SIZE: int = 18
 const DAMAGE_NUMBER_CRITICAL_FONT_SIZE: int = 22
@@ -45,6 +46,7 @@ var target_player: PlayerController = null
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
+var _knockback_deceleration: float = 0.0
 var _contact_damage_cooldown: float = 0.0
 var _burning_remaining: float = 0.0
 var _burn_tick_timer: float = 0.0
@@ -119,7 +121,8 @@ func _physics_process(delta: float) -> void:
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
-		velocity = _knockback_velocity
+		velocity = velocity.move_toward(Vector2.ZERO, _knockback_deceleration * delta)
+		_knockback_velocity = velocity
 		move_and_slide()
 		_set_movement_visual(true, delta)
 		return
@@ -143,6 +146,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	alive = true
 	_knockback_timer = 0.0
 	_knockback_velocity = Vector2.ZERO
+	_knockback_deceleration = 0.0
 	_contact_damage_cooldown = 0.0
 	has_contact_damaged = false
 	_burning_remaining = 0.0
@@ -282,7 +286,9 @@ func apply_knockback(hit_direction: Vector2, speed: float, duration: float) -> v
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	_knockback_velocity = safe_direction * maxf(speed, 1.0)
 	velocity = _knockback_velocity
-	_knockback_timer = maxf(_knockback_timer, maxf(duration, 0.05))
+	var safe_duration := maxf(duration, 0.05)
+	_knockback_deceleration = _knockback_velocity.length() / safe_duration
+	_knockback_timer = maxf(_knockback_timer, safe_duration)
 
 
 func apply_lightning_visual(duration: float = 0.65) -> void:
@@ -331,18 +337,21 @@ func take_damage(
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var light_multiplier := 1.0
+	var light_doubled := false
 	if _light_remaining > 0.0:
 		light_multiplier = 2.0
+		light_doubled = true
 		if not _holy_flame:
 			clear_light()
-	var final_damage := maxi(1, int(roundi(float(raw_damage) * light_multiplier * damage_taken_percent / 100.0)))
+	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
+	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	current_hp = maxi(current_hp - final_damage, 0)
 	if damage_components.is_empty():
-		_spawn_damage_number(final_damage, is_critical)
+		_spawn_damage_number(final_damage, is_critical, 0, 1, light_doubled, pre_light_damage)
 	else:
 		var display_components := _split_damage_for_display(final_damage, damage_components)
 		for index in range(display_components.size()):
-			_spawn_damage_number(display_components[index], is_critical, index, display_components.size())
+			_spawn_damage_number(display_components[index], is_critical, index, display_components.size(), light_doubled, display_components[index] / 2)
 	_apply_hit_feedback(hit_direction)
 	if current_hp <= 0:
 		_die(source_id)
@@ -406,7 +415,9 @@ func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
 		_knockback_velocity = regular_velocity
 		velocity = _knockback_velocity
-	_knockback_timer = maxf(_knockback_timer, HIT_KNOCKBACK_SECONDS)
+		var safe_duration := maxf(HIT_KNOCKBACK_SECONDS, 0.05)
+		_knockback_deceleration = _knockback_velocity.length() / safe_duration
+		_knockback_timer = maxf(_knockback_timer, safe_duration)
 
 
 func fade_out_and_free() -> void:
@@ -430,11 +441,13 @@ func _spawn_damage_number(
 	final_damage: int,
 	is_critical: bool = false,
 	display_index: int = 0,
-	display_count: int = 1
+	display_count: int = 1,
+	light_doubled: bool = false,
+	light_base_damage: int = 0
 ) -> void:
 	var damage_number := Label.new()
 	damage_number.name = "DamageNumber"
-	damage_number.text = str(final_damage)
+	damage_number.text = (str(light_base_damage if light_base_damage > 0 else final_damage) + "x2") if light_doubled else str(final_damage)
 	damage_number.size = DAMAGE_NUMBER_SIZE
 	damage_number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	damage_number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -507,7 +520,8 @@ func _process_chase() -> void:
 		move_speed *= _slow_multiplier
 	if _wet_remaining > 0.0:
 		move_speed *= _wet_slow_multiplier
-	velocity = direction * move_speed
+	var target_velocity := direction * move_speed
+	velocity = velocity.move_toward(target_velocity, CHASE_ACCELERATION * get_physics_process_delta_time())
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()
@@ -583,7 +597,9 @@ func _apply_contact_knockback() -> void:
 		direction = Vector2.RIGHT
 	_knockback_velocity = direction.normalized() * knockback_speed
 	velocity = _knockback_velocity
-	_knockback_timer = knockback_seconds
+	var safe_duration := maxf(knockback_seconds, 0.05)
+	_knockback_deceleration = _knockback_velocity.length() / safe_duration
+	_knockback_timer = safe_duration
 
 
 func _die(source_id: String = "") -> void:

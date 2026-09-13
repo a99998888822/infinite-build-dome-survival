@@ -22,7 +22,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
-		"damage": maxf(float(damage_event.damage) * 0.35, 1.0),
+		"damage": maxf(damage_event.get_elemental_base_damage() * 0.35, 1.0),
 		"radius": 64.0,
 		"duration": 3.0,
 		"slow_multiplier": 0.45,

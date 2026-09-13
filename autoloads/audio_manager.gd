@@ -21,6 +21,13 @@ const UI_SFX_PATHS: Dictionary = {
 	"purchase_success": "res://assets/audio/sfx/ui/sfx_ui_purchase_success.ogg",
 	"purchase_error": "res://assets/audio/sfx/ui/sfx_ui_purchase_error.ogg",
 }
+const ENCHANTMENT_SFX_PATHS: Dictionary = {
+	"lightning": [
+		"res://assets/audio/sfx/effects/lighting_1.wav",
+		"res://assets/audio/sfx/effects/lighting_2.wav",
+	],
+	"electric_spark": ["res://assets/audio/sfx/effects/thunder_1.wav"],
+}
 const DEFAULT_BGM_PATHS: Dictionary = {
 	"menu": "res://assets/audio/bgm/bgm_menu.ogg",
 	"camp": "res://assets/audio/bgm/bgm_menu.ogg",
@@ -32,6 +39,7 @@ var _bgm_player: AudioStreamPlayer = null
 var _sfx_players: Array[AudioStreamPlayer] = []
 var _sfx_cursor: int = 0
 var _last_sfx_time_ms: Dictionary = {}
+var _last_enchantment_sfx_frame: Dictionary = {}
 
 
 func _ready() -> void:
@@ -99,6 +107,21 @@ func play_ui_sfx(sfx_id: String, minimum_interval_ms: int = 45) -> bool:
 func play_weapon_hit_sfx(weapon_id: String, minimum_interval_ms: int = 0) -> bool:
 	var weapon_data := DataRegistry.get_record("weapons", weapon_id)
 	return play_sfx_path(str(weapon_data.get("hit_sfx", "")), minimum_interval_ms, weapon_id)
+
+
+func play_enchantment_sfx(enchantment_id: String) -> bool:
+	var key := enchantment_id.strip_edges()
+	var paths: Array = ENCHANTMENT_SFX_PATHS.get(key, [])
+	if paths.is_empty():
+		return false
+	var frame := Engine.get_process_frames()
+	if int(_last_enchantment_sfx_frame.get(key, -1)) == frame:
+		return false
+	var path := str(paths[randi_range(0, paths.size() - 1)])
+	var played := play_sfx_path(path, 0, "enchantment_" + key)
+	if played:
+		_last_enchantment_sfx_frame[key] = frame
+	return played
 
 
 func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_key: String = "") -> bool:

@@ -321,7 +321,7 @@
   {
     "id": "scroll_split",
     "display_name": "分裂",
-    "description": "命中敌人后分裂为2支子投射物，子箭伤害降低40%，并优先飞向尚未命中的敌人。",
+    "description": "每次命中后生成2支子箭，子箭伤害降低40%，并优先飞向尚未命中的敌人。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [

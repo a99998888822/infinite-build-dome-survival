@@ -375,6 +375,7 @@ func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEve
 		"source_weapon_id": weapon_id,
 		"damage": maxi(1, int(roundi(damage))),
 		"original_damage": maxi(1, int(roundi(damage))),
+		"element_damage_bonus": maxi(0, int(roundi(get_stat("element_damage")))),
 		"damage_kind": damage_kind,
 		"is_critical": critical,
 		"tags": _get_tags(),

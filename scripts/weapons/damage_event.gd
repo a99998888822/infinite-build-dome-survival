@@ -5,6 +5,7 @@ var source_player: PlayerController = null
 var source_weapon_id: String = ""
 var damage: int = 0
 var original_damage: int = 0
+var element_damage_bonus: int = 0
 var damage_kind: String = ""
 var is_critical: bool = false
 var tags: Array[String] = []
@@ -17,6 +18,7 @@ static func create(data: Dictionary) -> DamageEvent:
 	event.source_weapon_id = str(data.get("source_weapon_id", ""))
 	event.damage = int(data.get("damage", 0))
 	event.original_damage = int(data.get("original_damage", event.damage))
+	event.element_damage_bonus = maxi(0, int(data.get("element_damage_bonus", 0)))
 	event.damage_kind = str(data.get("damage_kind", ""))
 	event.is_critical = bool(data.get("is_critical", false))
 	event.tags = _to_string_array(data.get("tags", []))
@@ -30,6 +32,7 @@ func to_dictionary() -> Dictionary:
 		"source_weapon_id": source_weapon_id,
 		"damage": damage,
 		"original_damage": original_damage,
+		"element_damage_bonus": element_damage_bonus,
 		"damage_kind": damage_kind,
 		"is_critical": is_critical,
 		"tags": tags.duplicate(),
@@ -39,6 +42,14 @@ func to_dictionary() -> Dictionary:
 
 func duplicate_event() -> DamageEvent:
 	return DamageEvent.create(to_dictionary())
+
+
+func get_elemental_base_damage() -> float:
+	return maxf(float(original_damage) + float(element_damage_bonus), 0.0)
+
+
+func get_elemental_damage(multiplier: float) -> int:
+	return maxi(1, int(roundi(get_elemental_base_damage() * maxf(multiplier, 0.0))))
 
 
 static func _to_string_array(raw_values: Variant) -> Array[String]:

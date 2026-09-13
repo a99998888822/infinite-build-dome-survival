@@ -20,7 +20,7 @@ const DEFAULT_ICE_SLOW_MULTIPLIER: float = 0.45
 const DEFAULT_STUN_DURATION: float = 0.5
 const DEFAULT_LIGHT_DURATION: float = 5.0
 const DEFAULT_DARK_DURATION: float = 2.0
-const DEFAULT_STEAM_DAMAGE_MULTIPLIER: float = 1.15
+const DEFAULT_STEAM_DAMAGE_MULTIPLIER: float = 1.5
 const DARK_FLAME_DURATION: float = 10.0
 
 
@@ -47,12 +47,13 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				var steam_damage := _get_steam_damage(reaction_data)
 				_emit_steam(parent, hit_position)
 				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
+				var damage_components: Array[int] = [original_damage, maxi(steam_damage - original_damage, 0)]
 				enemy.take_damage(
 					steam_damage,
 					source_id,
 					false,
 					hit_position.direction_to(enemy.global_position),
-					[original_damage, maxi(steam_damage - original_damage, 0)],
+					damage_components,
 				)
 				result["steam_damage"] = steam_damage
 				if not enemy.has_status("dark_flame"):
@@ -69,16 +70,26 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				enemy.clear_wet()
 				_emit_steam(parent, hit_position)
 				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
+				var damage_components: Array[int] = [original_damage, maxi(steam_damage - original_damage, 0)]
 				enemy.take_damage(
 					steam_damage,
 					source_id,
 					false,
 					hit_position.direction_to(enemy.global_position),
-					[original_damage, maxi(steam_damage - original_damage, 0)],
+					damage_components,
 				)
 				result["steam_damage"] = steam_damage
-				result["neutralized"] = true
 				result["wet_consumed"] = true
+				if enemy.has_status("dark"):
+					enemy.apply_burning(
+						DARK_FLAME_DURATION,
+						maxf(float(reaction_data.get("burn_tick_damage", original_damage * DEFAULT_BURN_TICK_DAMAGE_PERCENT)), 0.0),
+						source_id,
+						false,
+						true,
+					)
+				else:
+					result["neutralized"] = true
 			else:
 				var original_damage := maxf(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))), 0.0)
 				var tick_damage := float(reaction_data.get("burn_tick_damage", original_damage * DEFAULT_BURN_TICK_DAMAGE_PERCENT))

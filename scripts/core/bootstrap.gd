@@ -56,7 +56,6 @@ func run_data_self_test() -> bool:
 	var survival_relic_success := _run_survival_relic_checks()
 	var weapon_success := _run_weapon_checks()
 	var enemy_wave_success := _run_enemy_wave_checks()
-	var summon_success := _run_summon_checks()
 	var camp_success := _run_camp_meta_checks()
 	var zone_success := _run_zone_state_checks()
 	var zone_ui_success := _run_zone_ui_checks()
@@ -69,7 +68,7 @@ func run_data_self_test() -> bool:
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	var passed := load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and summon_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success
+	var passed := load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success
 	if passed:
 		print("[Bootstrap] data self-test passed")
 	else:
@@ -138,8 +137,10 @@ func _run_modifier_stack_checks() -> bool:
 		"max_hp": 100,
 		"move_speed": 180,
 		"melee_damage": 10,
+		"element_damage": 5,
 		"armor": 100,
 	})
+	passed = _print_check_result("element_damage definition", StatDefinitions.has_stat("element_damage") and is_equal_approx(stack.get_stat("element_damage"), 5.0)) and passed
 
 	stack.add_modifier_from_dictionary({
 		"id": "mod_test_melee_flat",
@@ -485,71 +486,11 @@ func _run_enemy_wave_checks() -> bool:
 	return passed
 
 
-func _run_summon_checks() -> bool:
-	print("[Bootstrap] summon checks")
-	var passed := true
-	var player := PLAYER_SCENE.instantiate() as PlayerController
-	var wave_manager := WAVE_MANAGER_SCENE.instantiate() as WaveManager
-	passed = _print_check_result("summon test scene instantiate", player != null and wave_manager != null) and passed
-	if player == null or wave_manager == null:
-		return false
-
-	player.auto_initialize_on_ready = false
-	add_child(player)
-	add_child(wave_manager)
-	player.initialize_from_character("character_void_hunter")
-	wave_manager.initialize(player)
-	passed = _print_check_result("summon root initialize", wave_manager.summon_root != null and wave_manager.summon_root.owner_player == player) and passed
-
-	player.add_runtime_modifier({
-		"id": "mod_test_summon_damage",
-		"source_type": "test",
-		"source_id": "bootstrap_summon_check",
-		"target_scope": "player",
-		"stat": "summon_damage",
-		"operation": "add_flat",
-		"value": 6,
-		"duration": -1,
-		"stack_rule": "unique",
-	})
-	player.add_runtime_modifier({
-		"id": "mod_test_summon_count",
-		"source_type": "test",
-		"source_id": "bootstrap_summon_check",
-		"target_scope": "player",
-		"stat": "summon_count",
-		"operation": "add_flat",
-		"value": 2,
-		"duration": -1,
-		"stack_rule": "unique",
-	})
-
-	var summons := wave_manager.spawn_default_summons(1)
-	passed = _print_check_result("summon count bonus", summons.size() == 3 and wave_manager.summon_root.get_active_summon_count() == 3) and passed
-	var summon := summons[0] if not summons.is_empty() else null
-	passed = _print_check_result("summon inherited damage", summon != null and int(summon.get_stat("summon_damage")) == 10) and passed
-	if summon != null:
-		var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", summon.global_position + Vector2(10, 0))
-		var dealt_damage := summon.try_attack_target(enemy, false, true) if enemy != null else 0
-		passed = _print_check_result("summon attack enemy", enemy != null and dealt_damage == 10 and enemy.current_hp <= 0 and not enemy.alive) and passed
-
-	wave_manager.clear_summons()
-	wave_manager.summon_root.hard_cap = 2
-	var capped_summons := wave_manager.spawn_default_summons(1)
-	passed = _print_check_result("summon hard cap", capped_summons.size() == 2 and wave_manager.summon_root.get_active_summon_count() == 2) and passed
-	wave_manager.clear_battle_entities()
-	passed = _print_check_result("summon clear battle entities", wave_manager.summon_root.get_active_summon_count() == 0) and passed
-
-	wave_manager.queue_free()
-	player.queue_free()
-	return passed
-
-
 func _run_camp_meta_checks() -> bool:
 	print("[Bootstrap] camp meta progression checks")
 	var passed := true
 	CampProgression.begin_transient_session()
-	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 7) and passed
+	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 6) and passed
 	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
 	var camp_save_state := CampProgression.get_state()
 	var camp_save_schema_ok := camp_save_state.has("schema_version") and camp_save_state.has("profile_id") and camp_save_state.has("currencies") and camp_save_state.has("settings")
@@ -566,6 +507,8 @@ func _run_camp_meta_checks() -> bool:
 	CampProgression.add_camp_currency(500)
 	var farstar_unlock_ok := CampProgression.purchase_building_unlock("camp_farstar_range")
 	passed = _print_check_result("camp unlock sync", farstar_unlock_ok and CampProgression.is_building_unlocked("camp_farstar_range") and CampProgression.get_building_level("camp_farstar_range") == 1) and passed
+	var element_upgrade := CampProgression.get_upgrade_option_record("camp_upgrade_element_damage")
+	passed = _print_check_result("camp element damage upgrade config", str(element_upgrade.get("stat", "")) == "element_damage" and int(element_upgrade.get("value_per_level", 0)) == 1) and passed
 	var building_unlock_ok := CampProgression.purchase_building_unlock("camp_council_hall")
 	passed = _print_check_result("camp currency unlock", building_unlock_ok and CampProgression.is_building_unlocked("camp_council_hall") and CampProgression.get_building_level("camp_council_hall") == 1) and passed
 	var blade_arena_unlock_ok := CampProgression.purchase_building_unlock("camp_blade_arena")

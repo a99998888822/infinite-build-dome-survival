@@ -57,7 +57,7 @@ func _damage_sweep() -> void:
 		if angle < _sweep_start or angle > sweep_angle:
 			continue
 		_hit_targets[enemy.get_instance_id()] = true
-		var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _damage_multiplier)))
+		var damage := _damage_event.get_elemental_damage(_damage_multiplier)
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, offset)
 
 

@@ -16,7 +16,6 @@ const CATEGORY_PROJECTILE: String = "投射物"
 const CATEGORY_CONTROL: String = "范围与控制"
 const CATEGORY_REWARD: String = "掉落与成长"
 const CATEGORY_BUILD: String = "构筑"
-const CATEGORY_SUMMON: String = "召唤"
 const CATEGORY_WAVE: String = "波次"
 const CATEGORY_ELDRITCH: String = "精神/外神"
 
@@ -29,7 +28,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 99999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "角色、敌人或召唤物的最大生命值。"
+		"description": "角色或敌人的最大生命值。"
 	},
 	"hp_regen": {
 		"display_name": "每秒回血",
@@ -130,15 +129,15 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": false,
 		"description": "远程伤害固定数值加成。"
 	},
-	"summon_damage": {
-		"display_name": "眷族伤害",
+	"element_damage": {
+		"display_name": "元素伤害",
 		"category": CATEGORY_ATTACK,
 		"default": 0,
 		"min": 0,
 		"max": 999999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "召唤物或眷族实体伤害固定数值加成。"
+		"description": "元素附魔及元素反应造成的固定伤害加成。"
 	},
 	"damage_percent": {
 		"display_name": "伤害加成",
@@ -148,7 +147,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 99999,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "通用伤害百分比加成，影响近战、远程、眷族等伤害。"
+		"description": "通用伤害百分比加成，影响近战和远程伤害。"
 	},
 	"attack_speed": {
 		"display_name": "攻击速度",
@@ -329,16 +328,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_integer": true,
 		"is_percent": false,
 		"description": "玩家可装备武器的总负载上限。"
-	},
-	"summon_count": {
-		"display_name": "召唤数量",
-		"category": CATEGORY_SUMMON,
-		"default": 0,
-		"min": 0,
-		"max": 999,
-		"is_integer": true,
-		"is_percent": false,
-		"description": "额外召唤物或眷族数量。"
 	},
 	"enemy_spawn_rate_percent": {
 		"display_name": "怪物数量增幅",

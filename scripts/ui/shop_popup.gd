@@ -181,9 +181,8 @@ func remove_offer(offer_id: String) -> void:
 	for card in _offer_cards.duplicate():
 		if not is_instance_valid(card) or str(card.offer_data.get("offer_id", "")) != offer_id:
 			continue
-		_offer_cards.erase(card)
 		_spawn_coin_particles(card.get_global_rect().get_center())
-		card.play_claim_animation()
+		card.play_claim_animation(true)
 		return
 
 

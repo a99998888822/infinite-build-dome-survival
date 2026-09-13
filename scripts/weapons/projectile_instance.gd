@@ -133,11 +133,12 @@ func _on_body_entered(body: Node) -> void:
 	hit_targets[target_key] = true
 	var enemy_hit_position := enemy.global_position
 	damage_event.hit_position = enemy_hit_position
-	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy)
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
-	if weapon != null and weapon.has_effect("split") and _split_depth == 0 and not _has_split:
+	var split_root := weapon != null and weapon.has_effect("split") and _split_depth == 0 and not _has_split
+	if split_root:
 		_has_split = true
 		_spawn_split_projectiles(enemy_hit_position)
+	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy, split_root)
+	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null:
 		if ENABLE_ENEMY_HIT_GREEN_PARTICLES and weapon.register_hit_feedback_frame(true):
 			_spawn_hit_sparks(enemy_hit_position, direction)

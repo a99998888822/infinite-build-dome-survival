@@ -23,11 +23,8 @@ const BUILDING_UNLOCKS: Array[String] = [
 	"camp_upgrade_relic_archive",
 	"camp_upgrade_blade_arena",
 	"camp_upgrade_farstar_range",
-	"camp_upgrade_kin_nursery",
 	"camp_upgrade_dome_shelter",
 	"camp_upgrade_council_hall",
-	"camp_upgrade_summon_damage",
-	"run_start_random_summon",
 	"run_start_random_relic",
 	"run_start_double_level",
 ]

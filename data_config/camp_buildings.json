@@ -302,6 +302,15 @@
         "value_per_level": 1
       },
       {
+        "id": "camp_upgrade_element_damage",
+        "name": "元素伤害训练",
+        "stat": "element_damage",
+        "currency": "camp_currency",
+        "cost": 250,
+        "max_level": 10,
+        "value_per_level": 1
+      },
+      {
         "id": "camp_upgrade_projectile_count",
         "name": "投射物数量训练",
         "stat": "projectile_count",
@@ -336,60 +345,6 @@
         "cost": 600,
         "max_level": 5,
         "value_per_level": 2
-      }
-    ]
-  },
-  {
-    "id": "camp_kin_nursery",
-    "name": "眷族培育栏",
-    "initial_unlocked": false,
-    "type": "mixed",
-    "role": "召唤体系强化",
-    "description": "驯养、改造协助作战的生物与机械仆从。",
-    "unlock_condition": {
-      "currency": "camp_currency",
-      "cost": 160
-    },
-    "building_upgrade_costs": {
-      "2": 350,
-      "3": 700,
-      "4": 1200,
-      "5": 2200
-    },
-    "levels": {
-      "1": [
-        {
-          "unlock": "camp_upgrade_kin_nursery",
-          "name": "解锁属性购买升级"
-        }
-      ],
-      "2": [
-        {
-          "unlock": "run_start_random_summon",
-          "name": "开局额外获得一个随机眷族"
-        }
-      ]
-    },
-    "upgrade_options": [
-      {
-        "id": "camp_upgrade_summon_damage",
-        "name": "眷族伤害训练",
-        "stat": "summon_damage",
-        "currency": "camp_currency",
-        "cost": 150,
-        "max_level": 10,
-        "value_per_level": 1,
-        "required_building_level": 1
-      },
-      {
-        "id": "camp_upgrade_summon_count",
-        "name": "眷族扩编训练",
-        "stat": "summon_count",
-        "currency": "camp_currency",
-        "cost": 1200,
-        "max_level": 3,
-        "value_per_level": 1,
-        "required_building_level": 1
       }
     ]
   },

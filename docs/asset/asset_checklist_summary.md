@@ -49,7 +49,6 @@
 | 未存在 | HUD 波次图标 | `icon_hud_wave_time.png` | `assets/ui/icons/hud/icon_hud_wave_time.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示波次计时，图形可以是小沙漏或计时圆环，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 武器图标 | `icon_hud_weapon.png` | `assets/ui/icons/hud/icon_hud_weapon.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示当前装备武器，图形可以是简化武器轮廓或小武器槽，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | HUD 羁绊图标 | `icon_hud_relic.png` | `assets/ui/icons/hud/icon_hud_relic.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示遗物或羁绊统计，图形可以是小徽记或简化符文，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
-| 未存在 | 默认眷族幼体单帧 | `summon_kinling_base.png` | `assets/sprites/summons/summon_kinling_base.png` | PNG，透明背景，128x128 或 256x256，1:1 | 生成一张清新干净的中高精度像素风召唤物单帧图，主题是“友方眷族幼体”，体型小巧可爱，像一只浅绿色或淡蓝色的圆润小生物，带轻微克苏鲁感但不恐怖，可以有小触须、小耳朵或柔和发光眼睛，整体适合森林、篝火、黄昏氛围，不要肮脏环境，不要噪点，不要血腥，不要文字，透明背景，正面略偏右朝向，轮廓清晰，适合游戏内跟随玩家显示。 |
 | 未存在 | 理财弹窗主面板装饰 | `ui_finance_panel_frame.png` | `assets/ui/panels/finance/ui_finance_panel_frame.png` | 9-slice PNG / Godot StyleBox 可替代 | 当前实现先使用 `PanelContainer` |
 | 未存在 | 当前金币图标 | `ui_finance_gold_icon.png` | `assets/ui/icons/finance/ui_finance_gold_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 可复用局内金币图标 |
 | 未存在 | 本金图标 | `ui_finance_principal_icon.png` | `assets/ui/icons/finance/ui_finance_principal_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议金币堆 + 银行章 |
@@ -109,8 +108,6 @@
 | 未存在 | 区域图标-神选之地 | `zone_chosen_land.png` | `assets/ui/icons/zones/zone_chosen_land.png` | 1:1, 128x128 / PNG | 生成：简洁的理智/侵蚀倾向图标 / 区域选择页识别 / PNG |
 | 未存在 | 福缘收割提示图标 | `icon_fortune_harvest.png` | `assets/ui/icons/zones/icon_fortune_harvest.png` | 1:1, 128x128 / PNG | 生成：福袋、收割、光点一类提示符号 / 切区收割结果页 / PNG |
 | 未存在 | 区域卡片底纹 | `card_zone_pattern.png` | `assets/ui/panels/zones/card_zone_pattern.png` | 4:5, 512x640 / PNG | 生成：低对比、干净的卡片纹理 / 区域选择页背景强化 / PNG |
-| 未存在 | 默认眷族幼体右向行走帧表 | `summon_kinling_walk_right_spritesheet.png` | `assets/sprites/summons/summon_kinling_walk_right_spritesheet.png` | PNG，透明背景，512x128，4 帧横向帧表，每帧 128x128 | 基于“友方眷族幼体”的单帧形象，生成一张清新干净的中高精度像素风右向行走帧表，4 帧横向排列，每帧尺寸一致，小生物轻快跳步或摆动触须前进，动作简单可爱，轮廓清晰，不要文字，不要噪点，不要血腥，透明背景，整体保持浅绿色或淡蓝色、柔和发光眼睛、轻微克苏鲁但不恐怖的风格。 |
-| 未存在 | 默认眷族幼体 UI 图标 | `icon_summon_kinling.png` | `assets/ui/icons/summons/icon_summon_kinling.png` | PNG，透明背景，128x128，1:1 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“友方眷族幼体头像”，圆润可爱的小型召唤生物头像，浅绿色或淡蓝色，柔和发光眼睛，轻微克苏鲁元素但不恐怖，图标轮廓清晰，小尺寸可读，不要文字，不要噪点，不要血腥，透明背景。 |
 
 ## 4. 动效与音频（35 个）
 
@@ -140,7 +137,6 @@
 | 未存在 | 遗物获得闪光 | `effect_relic_get.png` | `assets/sprites/relics/effects/effect_relic_get.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风获取特效，小型淡金色与浅紫色闪光，星点环绕，适合作为遗物获得时的 UI 反馈，透明背景，PNG，不要肮脏噪点，不要血腥，不要复杂背景，不要文字 |
 | 未存在 | 敌人受击闪光 | `effect_enemy_hit.png` | `assets/sprites/enemies/effects/effect_enemy_hit.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风受击特效，小型淡黄色和浅紫色闪光，中心明亮，边缘有少量像素星点，适合敌人受击瞬间播放，透明背景，PNG，不要血腥，不要肮脏噪点，不要文字 |
 | 未存在 | 敌人死亡消散 | `effect_enemy_death.png` | `assets/sprites/enemies/effects/effect_enemy_death.png` | 1:1，建议 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风敌人死亡消散特效，淡紫色与蓝绿色粒子向外散开，带少量柔和星点，适合 2D 游戏怪物死亡反馈，透明背景，PNG，不要血腥，不要腐烂，不要肮脏噪点，不要文字 |
-| 未存在 | 默认眷族幼体攻击特效 | `effect_summon_kinling_hit.png` | `assets/sprites/summons/effects/effect_summon_kinling_hit.png` | PNG，透明背景，128x128 或 256x256，1:1 | 生成一张清新干净的中高精度像素风召唤物命中特效，主题是“柔和的绿色灵光冲击”，适合小型友方眷族近距离攻击命中敌人，一瞬间的弧形光波或小型星点扩散，颜色浅绿、青蓝或淡黄，画面干净，不要肮脏环境，不要血腥，不要文字，不要噪点，透明背景。 |
 | 未存在 | 存入本金 | `vfx_finance_deposit_coin_stream.png` | `assets/ui/effects/finance/vfx_finance_deposit_coin_stream.png` | Sprite sheet / 粒子素材，透明背景 | 金币从金币栏飞向本金图标 |
 | 未存在 | 取出本金 | `vfx_finance_withdraw_coin_stream.png` | `assets/ui/effects/finance/vfx_finance_withdraw_coin_stream.png` | Sprite sheet / 粒子素材，透明背景 | 金币从本金图标飞回金币栏 |
 | 未存在 | 利息结算 | `vfx_interest_settle_burst.png` | `assets/ui/effects/finance/vfx_interest_settle_burst.png` | Sprite sheet / 粒子素材，透明背景 | 金色数字上浮 + 光圈扩散 |

@@ -116,7 +116,6 @@ flowchart TD
 1. 业务模块通过 `DataRegistry.get_weapon(id)` 等接口查询。
 2. 查询返回数据副本或只读结构，业务模块不能直接写入缓存。
 3. 业务模块根据配置中的 `effects` 创建 modifier。
-4. modifier 提交给角色、武器、召唤物或全局战斗上下文的 `ModifierStack`。
 5. 需要最终属性时，通过 `ModifierStack.get_stat(stat_id)` 查询。
 
 ### 4.3 调试阶段
@@ -157,18 +156,13 @@ flowchart TD
 
 | 分类 | 属性ID | 含义 | 适用对象 |
 | ---- | ---- | ---- | ---- |
-| 生存 | `max_hp` | 最大生命 | 玩家/敌人/召唤物 |
-| 生存 | `hp_regen` | 每秒回血 | 玩家/敌人/召唤物 |
 | 生存 | `shield` | 护盾值 | 玩家 |
 | 生存 | `revive_count` | 本局额外复活次数；每次复活消耗 1 次 | 玩家 |
 | 生存 | `on_kill_heal` | 每次击杀敌人后恢复的固定生命值 | 玩家 |
-| 生存 | `armor` | 护甲值，用于通过曲线函数计算受到伤害百分比 | 玩家/敌人/召唤物 |
-| 生存 | `damage_taken_percent` | 受到伤害百分比，由护甲与其他减伤modifier共同影响 | 玩家/敌人/召唤物 |
-| 移动 | `move_speed` | 移动速度 | 玩家/敌人/召唤物 |
 | 攻击 | `melee_damage` | 近战伤害，固定数值加成 | 近战武器/近战效果 |
 | 攻击 | `ranged_damage` | 远程伤害，固定数值加成 | 远程武器/投射物效果 |
-| 攻击 | `summon_damage` | 眷族伤害，固定数值加成 | 召唤物/眷族实体 |
-| 攻击 | `damage_percent` | 通用伤害百分比加成，影响近战、远程、眷族等伤害 | 通用 |
+| 攻击 | `element_damage` | 元素伤害，固定数值加成 | 火、水、冰、雷、风、光、暗及爆炸等元素附魔与元素反应 |
+| 攻击 | `damage_percent` | 通用伤害百分比加成，影响近战和远程伤害 | 通用 |
 | 攻击 | `attack_speed` | 攻击速度；实际攻击间隔 = 武器固定速率 / (1 + attack_speed / 100)，例如 attack_speed=100 表示加速一倍 | 武器 |
 | 暴击 | `crit_chance` | 暴击率 | 武器/玩家 |
 | 暴击 | `crit_damage` | 暴击伤害百分比 | 武器/玩家 |
@@ -187,7 +181,6 @@ flowchart TD
 | 掉落与成长 | `shop_price_percent` | 局内商店价格折扣 | 玩家 |
 | 掉落与成长 | `shop_offer_count_bonus` | 商店选择数量加成；同时影响升级奖励和局内商店，基础 3 项，最终至少 2 项 | 玩家 |
 | 构筑 | `load_capacity` | 玩家负载上限；武器自身负载消耗归属武器模块配置 | 玩家/全局 |
-| 召唤 | `summon_count` | 召唤数量 | 召唤物系统 |
 | 波次 | `enemy_spawn_rate_percent` | 每次刷怪的怪物数量增幅 | 玩家/全局 |
 | 精神/外神 | `humanity` | 理智值/人性，初始满值；值越低，侵蚀度积蓄越快，越过阈值后状态命名更新为“人性”相关阶段 | 玩家/全局 |
 | 精神/外神 | `divinity` | 侵蚀度，初始0；表示与克苏鲁外神的靠近程度 | 玩家/全局 |
@@ -300,7 +293,6 @@ final_damage = incoming_damage * damage_taken_from_armor / 100 * other_damage_ta
 | `id` | string | 是 | modifier唯一ID |
 | `source_type` | string | 是 | 来源类型：weapon/relic/bond/camp/debuff等 |
 | `source_id` | string | 是 | 来源配置ID |
-| `target_scope` | string | 是 | 作用范围：player/weapon/global/enemy/summon等 |
 | `stat` | string | 是 | 影响的属性ID |
 | `operation` | string | 是 | 叠加方式 |
 | `value` | number | 是 | 数值 |
@@ -862,13 +854,8 @@ func find_refs(config_id: String) -> Array[Dictionary]
 3. 难度曲线可以为敌人提交临时或全局 modifier。
 4. 敌人死亡通过 `drop_table_id` 查询掉落表。
 
-### 12.5 召唤物模块
 
 使用方式：
-1. 召唤物可以复用敌人/友方实体基础属性字段。
-2. 眷族/召唤物固定伤害加成统一来自 `summon_damage`，百分比增伤仍走 `damage_percent`。
-3. 召唤数量上限由 `summon_count` 和 hard cap 控制。
-4. 召唤物来源必须记录为 weapon/relic/bond，方便结算统计。
 
 ### 12.6 UI模块
 
@@ -949,7 +936,6 @@ func find_refs(config_id: String) -> Array[Dictionary]
 2. 击杀触发。
 3. 周期触发。
 4. 条件触发。
-5. 召唤实体。
 6. 施加debuff。
 
 ### 16.2 localization.json
@@ -993,9 +979,6 @@ func find_refs(config_id: String) -> Array[Dictionary]
 5. 能打印某个最终属性的来源链。
 6. 业务模块不需要知道 JSON 文件路径，只依赖 `DataRegistry` 接口。
 7. 后续新增武器、遗物、羁绊、营地建筑时，不需要修改基础数据模块核心逻辑。
-
-
-
 
 
 

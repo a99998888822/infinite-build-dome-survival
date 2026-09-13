@@ -188,15 +188,20 @@ func animate_in(index: int = 0) -> void:
 	_animation_tween.tween_property(self, "scale", Vector2.ONE, 0.30).set_delay(index * 0.08)
 
 
-func play_claim_animation() -> void:
+func play_claim_animation(preserve_slot: bool = false) -> void:
 	if _animation_tween != null:
 		_animation_tween.kill()
 	set_interaction_locked(true)
+	if preserve_slot:
+		# Keep this Control in the container so later purchases do not shift
+		# the remaining offers into a different slot.
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_animation_tween = create_tween().set_parallel(true)
 	_animation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_animation_tween.tween_property(self, "modulate:a", 0.0, 0.20)
 	_animation_tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.20)
-	_animation_tween.chain().tween_callback(queue_free)
+	if not preserve_slot:
+		_animation_tween.chain().tween_callback(queue_free)
 
 
 func get_button_text_for_offer(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> String:

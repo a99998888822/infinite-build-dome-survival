@@ -71,7 +71,8 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	player = target_player
 	_gold_getter = gold_getter
 	_gold_delta_applier = gold_delta_applier
-	principal = 0
+	# Camp talent "理财" is the starting principal granted at run start.
+	principal = maxi(0, int(roundf(player.get_stat("finance", 0.0)))) if player != null else 0
 	interest_rate_bonus = 0.0
 	wave_counter = 0
 	current_wave_number = 0

@@ -11,9 +11,11 @@ var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _hit_position: Vector2 = Vector2.ZERO
 var _attachment_item_id: String = ""
+var _damage_multiplier_override: float = -1.0
+var _radius_override: float = -1.0
 
 
-static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
+static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", damage_multiplier_override: float = -1.0, radius_override: float = -1.0) -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
 	var effect := ExplosionEffect.new()
@@ -22,6 +24,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._damage_event = damage_event
 	effect._hit_position = hit_position
 	effect._attachment_item_id = attachment_item_id
+	effect._damage_multiplier_override = damage_multiplier_override
+	effect._radius_override = radius_override
 	effect.call_deferred("_detonate")
 
 
@@ -30,8 +34,8 @@ func _detonate() -> void:
 		queue_free()
 		return
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion", {
-		"damage": maxf(float(_damage_event.damage) * 0.8, 1.0),
-		"radius": BASE_DAMAGE_RADIUS,
+		"damage": maxf(_damage_event.get_elemental_base_damage() * (0.8 if _damage_multiplier_override <= 0.0 else _damage_multiplier_override), 1.0),
+		"radius": BASE_DAMAGE_RADIUS if _radius_override <= 0.0 else _radius_override,
 		"damage_falloff": 0.0,
 	}, _attachment_item_id)
 	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.0)

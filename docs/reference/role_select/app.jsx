@@ -173,7 +173,6 @@ const AugustAvatar = ({ size = 40 }) => (
   </svg>
 );
 
-// 眷族混血 · 赛恩 - 半人半异形
 const SainAvatar = ({ size = 40 }) => (
   <svg viewBox="0 0 16 16" width={size} height={size} shapeRendering="crispEdges">
     {/* 头发（深色凌乱） */}
@@ -438,19 +437,6 @@ const characters = [
       { name: '深渊共鸣', desc: '每持有1件遗物，伤害+3%', icon: 'resonance' },
     ],
     Avatar: AugustAvatar,
-  },
-  {
-    id: 'sain',
-    name: '眷族混血 · 赛恩',
-    title: 'SAIN · THE HALFBLOOD',
-    desc: '母亲是人类，父亲是……不该存在的东西。他的左眼在黑暗中会发出幽绿的光，穹顶之下的存在似乎对他低语着什么。',
-    stats: { hp: 110, dmg: 12, atkSpd: 55, moveSpd: 55, luck: 55 },
-    weapon: { name: '异化触手', desc: '近战，范围攻击，攻击时有几率使敌人减速', icon: 'tentacle' },
-    traits: [
-      { name: '深渊血统', desc: '击杀敌人有5%几率召唤眷族助战', icon: 'bloodline' },
-      { name: '不可名状之躯', desc: '受到致命伤害时有20%几率保留1点生命（每局限1次）', icon: 'unnameable' },
-    ],
-    Avatar: SainAvatar,
   },
 ];
 

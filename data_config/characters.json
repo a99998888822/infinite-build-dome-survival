@@ -35,11 +35,15 @@
     "start_weapon_attachments": [
       {
         "weapon_id": "weapon_void_blade",
+        "item_id": "wizard_scroll_chain_mastery"
+      },
+      {
+        "weapon_id": "weapon_void_blade",
         "item_id": "scroll_split"
       },
       {
         "weapon_id": "weapon_void_blade",
-        "item_id": "scroll_electric_spark"
+        "item_id": "scroll_lightning"
       }
     ]
   }

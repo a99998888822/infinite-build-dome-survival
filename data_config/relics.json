@@ -307,25 +307,14 @@
   {
     "id": "relic_private_army",
     "display_name": "私人武装",
-    "description": "召唤数量 + 1；每 3 波消耗当前本金 5% 作为军费",
+    "description": "每 3 波消耗当前本金 5% 作为军费",
     "icon": "res://assets/ui/icons/relics/relic_private_army.png",
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
       "finance"
     ],
-    "effects": [
-      {
-        "id": "mod_relic_private_army_summon_count",
-        "source_type": "relic",
-        "source_id": "relic_private_army",
-        "target_scope": "player",
-        "stat": "summon_count",
-        "operation": "add_flat",
-        "value": 1,
-        "duration": -1
-      }
-    ],
+    "effects": [],
     "runtime_effects": [
       {
         "trigger": "wave_end",

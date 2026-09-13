@@ -69,7 +69,7 @@ func _process(delta: float) -> void:
 func _collect_targets() -> void:
 	if _context == null or _damage_event == null:
 		return
-	var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _context.get_resolved_parameter("damage_multiplier", 0.65))))
+	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.65))
 	var shape := CircleShape2D.new()
 	shape.radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()

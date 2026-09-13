@@ -15,7 +15,6 @@
 
 - [x] 第 1 步：`scenes/core/bootstrap.tscn` 已运行验证，用户确认无问题。
 - [x] 第 2 步：`scenes/core/game_root.tscn` 已运行验证，用户确认无问题。
-- [x] 第 3 步：玩家、武器、敌人、经验球、血包、波次管理器和召唤物场景已完成结构、素材、碰撞及运行时验证，用户确认无问题。
 - [x] 第 4 步：营地场景与建筑位排布验证，已运行确认无问题。
 - [ ] 第 5 步：UI 场景与交互流程验证。
 - [ ] 第 6 步：完整战斗流程验证。
@@ -34,7 +33,6 @@
 - `11-save_progress_implementation_checklist.md`：存档与本地进度已接入。  
 - `12-run_combat_loop_implementation_checklist.md`：主流程协调器、战斗循环、结算顺序、胜负页已接入。  
 - `14-engineering_foundation_implementation_checklist.md`：工程基础设施主场景骨架已接入。  
-- `15-summon_ally_implementation_checklist.md`：召唤物主链路已接入。
 
 这些模块的共同判定标准：
 
@@ -62,7 +60,6 @@
 - `player checks`  
 - `weapon checks`  
 - `enemy wave checks`  
-- `summon checks`  
 - `camp meta progression checks`  
 - `zone streak fortune checks`  
 - `zone ui checks`  
@@ -207,7 +204,6 @@
 你要在 Godot 里做什么：
 1. 打开敌人场景，确认根节点、碰撞体、精灵都正常。  
 2. 打开经验球场景，确认可拾取区域正常。  
-3. 打开波次管理器，确认 `EnemyRoot`、`PickupRoot`、`SummonRoot` 存在。  
 4. 在运行中确认敌人会追踪、碰撞、弹开、掉经验球。
 
 预期：
@@ -326,20 +322,11 @@
 - 区域切换和收割结果能弹出。  
 - 连驻和 debuff 不会乱清。
 
-### 5.13 召唤物与友方实体
 
-关注场景：`scenes/summons/summon_root.tscn`、`scenes/summons/summon_unit.tscn`。
 
 你要确认：
-- 召唤物根场景能实例化。  
-- 召唤物会绑定玩家。  
-- 召唤物会追踪最近敌人。  
-- 召唤物数量上限裁剪正常。  
-- 波次结束会清理召唤物。
 
 通过标准：
-- `summon checks` 通过。  
-- 召唤物和敌人交互正常。
 
 ## 6. 手工场景搭建总表
 
@@ -358,7 +345,7 @@
 - `scenes/weapons/weapon_loadout.tscn`：只看逻辑容器，不摆美术。  
 - `scenes/enemy/mutated_grub.tscn`：替换敌人图，调整朝向和碰撞。  
 - `scenes/pickups/exp_orb.tscn`：替换经验球图，确认拾取范围。  
-- `scenes/waves/wave_manager.tscn`：确认敌人根、掉落根、召唤根都在。  
+- `scenes/waves/wave_manager.tscn`：确认敌人根和掉落根都在。
 - `scenes/camp/camp_root.tscn`：搭背景、树木、石头、花草、篝火。  
 - `scenes/camp/camp_building_slot.tscn`：确认废墟 / 建筑切换。  
 - `scenes/ui/zones/zone_select_popup.tscn`：区域选择页。  
@@ -465,13 +452,11 @@ res://
 
 1. 生存：`max_hp`、`hp_regen`、`shield`、`revive_count`、`on_kill_heal`、`armor`、`damage_taken_percent`
 2. 移动：`move_speed`
-3. 攻击：`melee_damage`、`ranged_damage`、`summon_damage`、`damage_percent`、`attack_speed`
 4. 暴击：`crit_chance`、`crit_damage`
 5. 投射物：`projectile_count`
 6. 范围与控制：`area_size`、`control_power`
 7. 掉落与成长：`pickup_radius`、`exp_gain_percent`、`drop_rate_percent`、`luck`、`currency_gain_percent`、`finance`、`interest_rate`、`shop_price_percent`
 8. 构筑：`load_capacity`
-9. 召唤：`summon_count`
 10. 波次：`enemy_spawn_rate_percent`
 11. 精神/外神：`humanity`、`divinity`
 
@@ -977,82 +962,6 @@ res://
 本模块在代码层的结项条件是：根场景可加载、主入口可切换、基础容器可复用、自检可输出。
 
 
-### 15-summon_ally_implementation_checklist.md
-# 15-召唤物与友方实体模块实施清单
-
-> 当前已完成 MVP 代码接入；本机暂无 Godot 运行环境，启动验证留给具备 Godot 的电脑执行。
-
-本清单对应 `docs/main/15-summon_ally_design.md`。本模块当前目标是：能生成、能跟随、能索敌、能攻击、能清理。
-
-## 1. 当前完成项
-
-- [x] 新增召唤物详细设计文档：`docs/main/15-summon_ally_design.md`
-- [x] 新增召唤物实体脚本：`scripts/summons/summon_controller.gd`
-- [x] 新增召唤物管理根脚本：`scripts/summons/summon_root.gd`
-- [x] 新增召唤物实体场景：`scenes/summons/summon_unit.tscn`
-- [x] 新增召唤物管理根场景：`scenes/summons/summon_root.tscn`
-- [x] 在 `scenes/waves/wave_manager.tscn` 中接入 `SummonRoot`
-- [x] 在 `scripts/waves/wave_manager.gd` 中接入召唤物生成、批量生成和清理接口
-- [x] 在 `scripts/core/main_flow_coordinator.gd` 的战斗解绑阶段调用 `clear_battle_entities()`
-- [x] 在 `scripts/core/bootstrap.gd` 中增加召唤物控制台自测
-- [x] 新增召唤物素材清单：`docs/asset/15-summon_ally_asset_checklist.md`
-
-## 2. 当前代码能力
-
-- [x] 召唤物绑定玩家 `owner_player`
-- [x] 召唤物加入 `summons` 和 `friendly_entities` 分组
-- [x] 召唤物默认环形跟随玩家
-- [x] 召唤物复用 `TargetingService` 查找最近敌人
-- [x] 召唤物在攻击半径内对敌人调用 `take_damage()`
-- [x] 召唤物读取 `summon_damage`、`damage_percent`、`attack_speed`、暴击和范围加成
-- [x] `summon_count` 作为额外召唤数量参与批量生成
-- [x] `SummonRoot.hard_cap` 裁剪最大召唤数量
-- [x] 波次结束和战斗重置会清理召唤物
-
-## 3. 待 Godot 验证项
-
-- [x] 启动 `scenes/core/bootstrap.tscn`
-- [x] 确认控制台出现 `[Bootstrap] summon checks`
-- [x] 确认 `summon test scene instantiate` 输出 `passed`
-- [x] 确认 `summon root initialize` 输出 `passed`
-- [x] 确认 `summon count bonus` 输出 `passed`
-- [x] 确认 `summon inherited damage` 输出 `passed`
-- [x] 确认 `summon attack enemy` 输出 `passed`
-- [x] 确认 `summon hard cap` 输出 `passed`
-- [x] 确认 `summon clear battle entities` 输出 `passed`
-- [x] 确认最终没有新增 `validation errors`
-
-## 4. 预期控制台片段
-
-```text
-[Bootstrap] summon checks
-[Bootstrap] - summon test scene instantiate: passed
-[Bootstrap] - summon root initialize: passed
-[Bootstrap] - summon count bonus: passed
-[Bootstrap] - summon inherited damage: passed
-[Bootstrap] - summon attack enemy: passed
-[Bootstrap] - summon hard cap: passed
-[Bootstrap] - summon clear battle entities: passed
-```
-
-## 5. 后续非阻塞项
-
-- [ ] 在具备 Godot 的电脑上补召唤物素材后，给 `summon_unit.tscn` 的 `Sprite2D` 绑定正式图片
-- [ ] 若后续召唤物类型增多，新增 `data_config/summons.json` 并接入 `DataRegistry`
-- [ ] 召唤类武器确定后，由武器模块调用 `WaveManager.spawn_summons()`
-- [ ] 遗物或羁绊特殊效果执行器完成后，再调用 `WaveManager.spawn_summons()`
-- [ ] 营地 `run_start_random_summon` 触发器完成后，再调用 `WaveManager.spawn_default_summons()` 或随机召唤池
-- [ ] 若需要召唤物可受击，后续给敌人 AI 增加友方实体目标选择
-- [ ] 若需要展示召唤物状态，后续在 HUD 增加召唤物数量或简化图标
-
-## 6. 结项判断
-
-1. Bootstrap 召唤物自测全部通过。
-2. 召唤物能生成并对敌人造成伤害。
-3. `summon_damage` 与 `summon_count` 的运行效果符合设计。
-4. 波次结束和战斗重置不会残留召唤物。
-5. 缺少召唤物美术素材时，不影响核心逻辑运行。
-
 
 ### 2-engineering_foundation_implementation_checklist.md
 # 工程基础设施模块实施 Checklist
@@ -1332,6 +1241,13 @@ res://
 3. 若 `validation errors` 或敌人与波次检查出现 failed，则先暂停后续模块，回到本模块修复。
 
 ## 5. 建议自测输出
+
+## 5A. 元素伤害
+
+- [ ] `element_damage` 已在属性定义、Modifier 和 HUD 中可见。
+- [ ] 远星射靶台的“元素伤害训练”可购买并正确增加属性。
+- [ ] 火、水、冰、雷、风、爆炸、光剑、黑洞附魔均按“原始攻击伤害 + element_damage”计算。
+- [ ] 元素反应与持续伤害不会重复叠加元素伤害。
 
 ```text
 [Bootstrap] enemy wave checks

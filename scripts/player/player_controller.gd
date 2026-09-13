@@ -10,7 +10,7 @@ signal relics_changed(relic_ids: Array[String])
 signal relic_added(relic_id: String)
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
-const DEFAULT_INVINCIBILITY_SECONDS: float = 0.25
+const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const PLAYER_VISUAL_SCALE: float = 0.21

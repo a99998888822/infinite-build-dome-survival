@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene load_steps=29 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -18,14 +18,17 @@
 [ext_resource type="Script" path="res://scripts/ui/touch_scroll_container.gd" id="16_touch_scroll"]
 [ext_resource type="Script" path="res://scripts/effects/particle_world.gd" id="17_particle_world"]
 [ext_resource type="Script" path="res://scripts/effects/particle_light_field.gd" id="19_particle_light_field"]
-[ext_resource type="Script" path="res://scripts/terrain/destructible_test_area.gd" id="18_destructible_test_area"]
 [ext_resource type="Script" path="res://scripts/effects/combat_render_world.gd" id="20_combat_render_world"]
+[ext_resource type="Script" path="res://scripts/battle/battle_backdrop.gd" id="21_battle_backdrop"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_abyss_floor"]
 shader = ExtResource("9_abyss_floor")
+shader_parameter/time_seconds = 0.0
+shader_parameter/wave_index = 1.0
+shader_parameter/danger_level = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_ambience"]
 shader = ExtResource("10_crt_ambience")
@@ -88,6 +91,10 @@ mouse_filter = 2
 z_index = 0
 script = ExtResource("20_combat_render_world")
 
+[node name="Backdrop" type="Node2D" parent="CombatRenderWorld"]
+z_index = -30
+script = ExtResource("21_battle_backdrop")
+
 [node name="ParticleLightField" type="Node2D" parent="CombatRenderWorld"]
 z_index = 15
 script = ExtResource("19_particle_light_field")
@@ -95,11 +102,6 @@ script = ExtResource("19_particle_light_field")
 [node name="ParticleWorld" type="Node2D" parent="CombatRenderWorld"]
 z_index = 80
 script = ExtResource("17_particle_world")
-
-[node name="DestructibleTestArea" type="StaticBody2D" parent="."]
-position = Vector2(256, 0)
-z_index = 30
-script = ExtResource("18_destructible_test_area")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 auto_initialize_on_ready = false

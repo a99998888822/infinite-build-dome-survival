@@ -399,8 +399,27 @@ const PROFILE_DEFINITIONS: Dictionary = {
 	},
 }
 
-var _particles: Array[Dictionary] = []
-var _particle_pool: Array[Dictionary] = []
+var _particle_order: Array[int] = []
+var _free_particle_slots: Array[int] = []
+var _particle_active: PackedByteArray = PackedByteArray()
+var _particle_positions: PackedVector2Array = PackedVector2Array()
+var _particle_velocities: PackedVector2Array = PackedVector2Array()
+var _particle_gravities: PackedVector2Array = PackedVector2Array()
+var _particle_sizes: PackedVector2Array = PackedVector2Array()
+var _particle_colors: PackedColorArray = PackedColorArray()
+var _particle_end_colors: PackedColorArray = PackedColorArray()
+var _particle_mid_colors: PackedColorArray = PackedColorArray()
+var _particle_final_colors: PackedColorArray = PackedColorArray()
+var _particle_ages: PackedFloat32Array = PackedFloat32Array()
+var _particle_lifetimes: PackedFloat32Array = PackedFloat32Array()
+var _particle_drags: PackedFloat32Array = PackedFloat32Array()
+var _particle_rotations: PackedFloat32Array = PackedFloat32Array()
+var _particle_spins: PackedFloat32Array = PackedFloat32Array()
+var _particle_alpha_multipliers: PackedFloat32Array = PackedFloat32Array()
+var _particle_glows: PackedFloat32Array = PackedFloat32Array()
+var _particle_fire_flags: PackedByteArray = PackedByteArray()
+var _particle_glow_streak_flags: PackedByteArray = PackedByteArray()
+var _particle_circle_flags: PackedByteArray = PackedByteArray()
 var _light_field: Node = null
 var _emitter_pool: Array[Node2D] = []
 var _random := RandomNumberGenerator.new()
@@ -522,7 +541,7 @@ func emit_event(event: Variant) -> void:
 	var parameters: Dictionary = event.get("parameters", {})
 	var count_multiplier := maxf(float(parameters.get("count_multiplier", 1.0)), 0.0)
 	var count := maxi(1, int(roundi(float(profile["count"]) * intensity * count_multiplier)))
-	count = mini(count, maxi(MAX_PARTICLES - _particles.size(), 0))
+	count = mini(count, maxi(MAX_PARTICLES - _particle_order.size(), 0))
 	var speed_multiplier := maxf(float(parameters.get("speed_multiplier", 1.0)), 0.0)
 	var size_multiplier := maxf(float(parameters.get("size_multiplier", 1.0)), 0.0)
 	var lifetime_multiplier := maxf(float(parameters.get("lifetime_multiplier", 1.0)), 0.01)
@@ -541,7 +560,7 @@ func emit_event(event: Variant) -> void:
 	var event_position: Vector2 = event.get("global_position")
 	var position: Vector2 = to_local(event_position)
 	for index in count:
-		if _particles.size() >= MAX_PARTICLES:
+		if _particle_order.size() >= MAX_PARTICLES:
 			break
 		var direction := Vector2.from_angle(_random.randf_range(0.0, TAU))
 		if not base_direction.is_zero_approx():
@@ -612,30 +631,25 @@ func emit_event(event: Variant) -> void:
 		var particle_velocity := direction * particle_speed
 		if is_fire_particle:
 			particle_velocity.y -= maxf(-particle_velocity.y, 0.0) * (fire_rise_multiplier - 1.0)
-		var particle: Dictionary = {}
-		if not _particle_pool.is_empty():
-			particle = _particle_pool.pop_back()
-		particle.clear()
-		particle["position"] = spawn_position + initial_offset
-		particle["velocity"] = particle_velocity
-		particle["gravity"] = Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier)
-		particle["drag"] = _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier
-		particle["rotation"] = particle_rotation
-		particle["spin"] = _random.randf_range(spin_range.x, spin_range.y)
-		particle["size"] = size
-		particle["color"] = particle_color
-		particle["end_color"] = particle_end_color
-		particle["mid_color"] = particle_mid_color
-		particle["final_color"] = particle_final_color
-		particle["fire_edge_ratio"] = fire_edge_ratio
-		particle["fire_particle"] = is_fire_particle
-		particle["lifetime"] = particle_lifetime
-		particle["alpha_multiplier"] = alpha_multiplier
-		particle["glow"] = float(profile.get("glow", 0.0)) * glow_multiplier
-		particle["glow_shape"] = str(profile.get("glow_shape", "circle"))
-		particle["shape"] = str(profile.get("shape", "square"))
-		particle["age"] = 0.0
-		_particles.append(particle)
+		var slot := _acquire_particle_slot()
+		_particle_positions[slot] = spawn_position + initial_offset
+		_particle_velocities[slot] = particle_velocity
+		_particle_gravities[slot] = Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier)
+		_particle_drags[slot] = _random.randf_range(drag_range.x, drag_range.y) * drag_multiplier
+		_particle_rotations[slot] = particle_rotation
+		_particle_spins[slot] = _random.randf_range(spin_range.x, spin_range.y)
+		_particle_sizes[slot] = size
+		_particle_colors[slot] = particle_color
+		_particle_end_colors[slot] = particle_end_color
+		_particle_mid_colors[slot] = particle_mid_color
+		_particle_final_colors[slot] = particle_final_color
+		_particle_ages[slot] = 0.0
+		_particle_lifetimes[slot] = particle_lifetime
+		_particle_alpha_multipliers[slot] = alpha_multiplier
+		_particle_glows[slot] = float(profile.get("glow", 0.0)) * glow_multiplier
+		_particle_fire_flags[slot] = 1 if is_fire_particle else 0
+		_particle_glow_streak_flags[slot] = 1 if str(profile.get("glow_shape", "circle")) == "streak" else 0
+		_particle_circle_flags[slot] = 1 if str(profile.get("shape", "square")) == "circle" else 0
 	_emit_profile_light(profile, event_position, intensity)
 	queue_redraw()
 
@@ -707,19 +721,18 @@ func _resolve_color(profile: Dictionary, color_override: Color, color_tint: Colo
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	for index in range(_particles.size() - 1, -1, -1):
-		var particle := _particles[index]
-		var velocity: Vector2 = particle["velocity"]
-		velocity = velocity.move_toward(Vector2.ZERO, float(particle["drag"]) * delta)
-		velocity += particle["gravity"] * delta
-		particle["velocity"] = velocity
-		particle["position"] = particle["position"] + velocity * delta
-		particle["rotation"] = float(particle["rotation"]) + float(particle["spin"]) * delta
-		particle["age"] = float(particle.get("age", 0.0)) + delta
-		_particles[index] = particle
-		if float(particle["age"]) >= float(particle["lifetime"]):
-			_particles.remove_at(index)
-			_particle_pool.append(particle)
+	for order_index in range(_particle_order.size() - 1, -1, -1):
+		var slot := _particle_order[order_index]
+		var velocity := _particle_velocities[slot]
+		velocity = velocity.move_toward(Vector2.ZERO, _particle_drags[slot] * delta)
+		velocity += _particle_gravities[slot] * delta
+		_particle_velocities[slot] = velocity
+		_particle_positions[slot] += velocity * delta
+		_particle_rotations[slot] += _particle_spins[slot] * delta
+		_particle_ages[slot] += delta
+		if _particle_ages[slot] >= _particle_lifetimes[slot]:
+			_particle_order.remove_at(order_index)
+			_release_particle_slot(slot)
 	queue_redraw()
 
 
@@ -751,35 +764,72 @@ func release_emitter(emitter: Node2D) -> void:
 	_emitter_pool.append(emitter)
 
 
+func _acquire_particle_slot() -> int:
+	var slot := -1
+	if not _free_particle_slots.is_empty():
+		slot = _free_particle_slots.pop_back()
+	else:
+		slot = _particle_positions.size()
+		_particle_positions.append(Vector2.ZERO)
+		_particle_velocities.append(Vector2.ZERO)
+		_particle_gravities.append(Vector2.ZERO)
+		_particle_sizes.append(Vector2.ZERO)
+		_particle_colors.append(Color.TRANSPARENT)
+		_particle_end_colors.append(Color.TRANSPARENT)
+		_particle_mid_colors.append(Color.TRANSPARENT)
+		_particle_final_colors.append(Color.TRANSPARENT)
+		_particle_ages.append(0.0)
+		_particle_lifetimes.append(0.0)
+		_particle_drags.append(0.0)
+		_particle_rotations.append(0.0)
+		_particle_spins.append(0.0)
+		_particle_alpha_multipliers.append(1.0)
+		_particle_glows.append(0.0)
+		_particle_fire_flags.append(0)
+		_particle_glow_streak_flags.append(0)
+		_particle_circle_flags.append(0)
+		_particle_active.append(0)
+	_particle_active[slot] = 1
+	_particle_order.append(slot)
+	return slot
+
+
+func _release_particle_slot(slot: int) -> void:
+	if slot < 0 or slot >= _particle_active.size() or _particle_active[slot] == 0:
+		return
+	_particle_active[slot] = 0
+	_free_particle_slots.append(slot)
+
+
 func _draw() -> void:
-	for particle in _particles:
-		var lifetime := maxf(float(particle["lifetime"]), 0.01)
-		var age_ratio := clampf(float(particle.get("age", 0.0)) / lifetime, 0.0, 1.0)
+	for slot in _particle_order:
+		var lifetime := maxf(_particle_lifetimes[slot], 0.01)
+		var age_ratio := clampf(_particle_ages[slot] / lifetime, 0.0, 1.0)
 		var fade := 1.0 - age_ratio
-		var color: Color = particle["color"]
-		var end_color: Color = particle["end_color"] if particle.has("end_color") else color
-		if bool(particle.get("fire_particle", false)):
-			var mid_color: Color = particle.get("mid_color", end_color)
-			var final_color: Color = particle.get("final_color", end_color)
+		var color := _particle_colors[slot]
+		var end_color := _particle_end_colors[slot]
+		if _particle_fire_flags[slot] != 0:
+			var mid_color := _particle_mid_colors[slot]
+			var final_color := _particle_final_colors[slot]
 			if age_ratio < 0.45:
 				color = color.lerp(mid_color, age_ratio / 0.45)
 			else:
 				color = mid_color.lerp(final_color, (age_ratio - 0.45) / 0.55)
 		else:
 			color = color.lerp(end_color, age_ratio)
-		color.a *= fade * fade * float(particle.get("alpha_multiplier", 1.0))
-		var position: Vector2 = particle["position"]
-		var size: Vector2 = particle["size"]
-		var glow := float(particle.get("glow", 0.0))
-		draw_set_transform(position.round(), float(particle["rotation"]), Vector2.ONE)
+		color.a *= fade * fade * _particle_alpha_multipliers[slot]
+		var position := _particle_positions[slot]
+		var size := _particle_sizes[slot]
+		var glow := _particle_glows[slot]
+		draw_set_transform(position.round(), _particle_rotations[slot], Vector2.ONE)
 		if glow > 0.0:
 			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
-			if str(particle.get("glow_shape", "circle")) == "streak":
+			if _particle_glow_streak_flags[slot] != 0:
 				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35))
 				draw_rect(Rect2(-glow_size * 0.5, glow_size), glow_color)
 			else:
 				draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35), glow_color)
-		if str(particle.get("shape", "square")) == "circle":
+		if _particle_circle_flags[slot] != 0:
 			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * 0.5, color)
 		else:
 			draw_rect(Rect2(-size * 0.5, size), color)

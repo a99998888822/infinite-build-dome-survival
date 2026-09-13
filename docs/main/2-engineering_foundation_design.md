@@ -138,7 +138,6 @@ res://
 2. `enemy_root.tscn`：敌人实体根节点。
 3. `weapon_root.tscn`：武器或武器管理器根节点。
 4. `drop_root.tscn`：经验球、金币、血包等掉落物根节点。
-5. `summon_root.tscn`：召唤物与友方实体根节点。
 
 ### 7.3 场景层次原则
 

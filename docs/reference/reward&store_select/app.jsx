@@ -314,7 +314,6 @@ const initialStats = [
   { id: 'rangedDmg', name: '远程伤害', value: 12, suffix: '', color: 'green' },
   { id: 'projCount', name: '投射物数量', value: 1, suffix: '', color: 'gold' },
   { id: 'rangedRange', name: '远程范围', value: 15, suffix: '%', color: 'teal' },
-  { id: 'kinDmg', name: '眷族伤害', value: 8, suffix: '', color: 'purple' },
   { id: 'maxHp', name: '最大生命', value: 50, suffix: '', color: 'red' },
   { id: 'hpRegen', name: '每秒回血', value: 2, suffix: '', color: 'green' },
   { id: 'shield', name: '护盾', value: 20, suffix: '', color: 'blue' },

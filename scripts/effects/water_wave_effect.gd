@@ -4,7 +4,7 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
-const DEFAULT_RADIUS: float = 66.0
+const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.52
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
 const WAVE_SEGMENTS: int = 64
@@ -76,7 +76,7 @@ func _apply_wave() -> void:
 	query.collision_mask = 2
 	query.collide_with_bodies = true
 	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
-	var damage := maxi(1, int(roundi(float(_damage_event.original_damage) * _context.get_resolved_parameter("damage_multiplier", DEFAULT_DAMAGE_MULTIPLIER))))
+	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", DEFAULT_DAMAGE_MULTIPLIER))
 	var wet_duration: float = _context.get_resolved_parameter("wet_duration", 5.0)
 	var wet_slow_multiplier: float = _context.get_resolved_parameter("wet_slow_multiplier", 0.8)
 	var handled: Dictionary = {}
@@ -90,7 +90,7 @@ func _apply_wave() -> void:
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
 			"damage": _damage_event.damage,
-			"original_damage": _damage_event.original_damage,
+			"original_damage": _damage_event.get_elemental_base_damage(),
 			"wet_duration": wet_duration,
 			"wet_slow_multiplier": wet_slow_multiplier,
 		})
@@ -107,11 +107,20 @@ func _draw() -> void:
 	var outer_points := _build_ripple_points(radius, phase)
 	var inner_points := _build_ripple_points(maxf(radius - band_width, 1.0), phase + 0.12)
 	var band_points := PackedVector2Array()
-	for point in outer_points:
-		band_points.append(point)
-	for index in range(inner_points.size() - 1, -1, -1):
+	# _build_ripple_points() includes a duplicate closing point for line
+	# rendering. Exclude it from the filled polygon to avoid degenerate
+	# triangles during CanvasItem triangulation.
+	for index in range(maxi(outer_points.size() - 1, 0)):
+		band_points.append(outer_points[index])
+	for index in range(inner_points.size() - 2, -1, -1):
 		band_points.append(inner_points[index])
-	draw_colored_polygon(band_points, Color(0.08, 0.50, 0.94, fade * 0.72))
+	# At the first frame the ripple radius is clamped to 1 px. The pixel
+	# quantization in _build_ripple_points() then collapses many vertices onto
+	# the same coordinates, producing a degenerate/self-intersecting polygon
+	# that CanvasItem cannot triangulate. Keep the outline/circle visible, but
+	# wait until the band has expanded enough before filling it.
+	if radius >= 8.0 and band_points.size() >= 6:
+		draw_colored_polygon(band_points, Color(0.08, 0.50, 0.94, fade * 0.72))
 	draw_polyline(outer_points, Color(0.72, 0.95, 1.0, fade * 0.92), clampf(radius * 0.025, 1.5, 3.0), false)
 	draw_polyline(inner_points, Color(0.10, 0.40, 0.84, fade * 0.88), clampf(radius * 0.018, 1.0, 2.0), false)
 	draw_circle(Vector2.ZERO, clampf(radius * 0.06, 2.0, 8.0), Color(0.35, 0.78, 1.0, fade * 0.42))

@@ -16,9 +16,6 @@ const CYAN := Color("#8dbda0")
 const TALENT_STATS_WITHOUT_PERCENT_SUFFIX: Dictionary = {
 	"attack_speed": true,
 }
-const HIDDEN_BUILDING_IDS: Dictionary = {
-	"camp_kin_nursery": true,
-}
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_building_id := ""
@@ -39,6 +36,7 @@ var _button_tweens: Dictionary = {}
 var _upgrade_toast: Label = null
 var _currency_tween: Tween = null
 var _skip_next_option_animation := false
+var _finance_tooltip_panel: PanelContainer = null
 
 
 func _ready() -> void:
@@ -395,6 +393,7 @@ func _on_camp_state_changed() -> void:
 
 
 func _refresh_all(animate_option_rows: bool = true, animate_detail: bool = true) -> void:
+	_hide_finance_tooltip()
 	_refresh_currency()
 	_refresh_buildings()
 	_refresh_detail(animate_detail)
@@ -430,20 +429,18 @@ func _refresh_buildings() -> void:
 	for record in records:
 		if record is Dictionary:
 			var record_id := str(record.get("id", ""))
-			if not _is_building_hidden(record_id):
-				first_visible_building_id = record_id
-				break
-	if _selected_building_id.is_empty() or _is_building_hidden(_selected_building_id):
+			first_visible_building_id = record_id
+			break
+	if _selected_building_id.is_empty():
 		_selected_building_id = first_visible_building_id
 	for record in records:
 		if not (record is Dictionary):
 			continue
 		var building_id := str(record.get("id", ""))
-		if _is_building_hidden(building_id):
-			continue
 		var level := CampProgression.get_building_level(building_id)
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 		var button := _make_button("", GREEN if unlocked else MUTED)
+		button.set_meta("building_id", building_id)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.custom_minimum_size.y = 48
@@ -460,6 +457,23 @@ func _refresh_buildings() -> void:
 			button.add_theme_stylebox_override("normal", _button_style(Color("#10110e"), Color("#4f493c"), 1))
 		button.pressed.connect(_on_building_selected.bind(building_id))
 		_building_list.add_child(button)
+
+
+func _refresh_building_selection_visuals() -> void:
+	if _building_list == null:
+		return
+	for child in _building_list.get_children():
+		if not (child is Button):
+			continue
+		var button := child as Button
+		var building_id := str(button.get_meta("building_id", ""))
+		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
+		if building_id == _selected_building_id:
+			button.add_theme_stylebox_override("normal", _button_style(Color("#2c2817"), GOLD_BRIGHT, 2))
+		elif unlocked:
+			button.add_theme_stylebox_override("normal", _button_style(Color("#14231a"), GREEN, 1))
+		else:
+			button.add_theme_stylebox_override("normal", _button_style(Color("#10110e"), Color("#4f493c"), 1))
 
 
 func _refresh_detail(animate_reveal: bool = true) -> void:
@@ -613,8 +627,6 @@ func _refresh_options(animate_rows: bool = true) -> void:
 		if not (record is Dictionary):
 			continue
 		var building_id := str(record.get("id", ""))
-		if _is_building_hidden(building_id):
-			continue
 		var building_level := CampProgression.get_building_level(building_id)
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 		if not unlocked:
@@ -659,10 +671,6 @@ func _is_upgrade_option_unlocked(building_level: int, option: Dictionary) -> boo
 	return building_level >= int(option.get("required_building_level", 1))
 
 
-func _is_building_hidden(building_id: String) -> bool:
-	return HIDDEN_BUILDING_IDS.has(building_id)
-
-
 func _make_option_row(building_id: String, option: Dictionary, animate_progress: bool = true) -> Control:
 	var row := PanelContainer.new()
 	row.add_theme_stylebox_override("panel", _option_row_style())
@@ -681,6 +689,10 @@ func _make_option_row(building_id: String, option: Dictionary, animate_progress:
 	name_label.add_theme_color_override("font_color", TEXT)
 	name_label.add_theme_font_size_override("font_size", 11)
 	info.add_child(name_label)
+	if str(option.get("stat", "")) == "finance":
+		var finance_tip := "理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。" % int(option.get("value_per_level", 0))
+		row.mouse_entered.connect(_show_finance_tooltip.bind(row, finance_tip))
+		row.mouse_exited.connect(_hide_finance_tooltip)
 	var progress := Label.new()
 	progress.text = "Lv.%d / %d    %s" % [current, max_level, _format_upgrade_effect(option)]
 	progress.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -710,6 +722,50 @@ func _make_option_row(building_id: String, option: Dictionary, animate_progress:
 	return row
 
 
+func _show_finance_tooltip(anchor: Control, text: String) -> void:
+	_hide_finance_tooltip()
+	_finance_tooltip_panel = PanelContainer.new()
+	_finance_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_finance_tooltip_panel.z_index = 100
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.03, 0.05, 0.04, 0.5)
+	style.border_color = Color(CYAN, 0.8)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(2)
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 6
+	style.content_margin_bottom = 6
+	_finance_tooltip_panel.add_theme_stylebox_override("panel", style)
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(260, 0)
+	label.add_theme_color_override("font_color", TEXT)
+	label.add_theme_font_size_override("font_size", 11)
+	_finance_tooltip_panel.add_child(label)
+	add_child(_finance_tooltip_panel)
+	call_deferred("_position_finance_tooltip", anchor)
+
+
+func _position_finance_tooltip(anchor: Control) -> void:
+	if _finance_tooltip_panel == null or not is_instance_valid(anchor):
+		return
+	var viewport_size := get_viewport_rect().size
+	var target := anchor.get_global_rect().position + Vector2(anchor.size.x + 8.0, 0.0)
+	if target.x + _finance_tooltip_panel.size.x > viewport_size.x:
+		target.x = anchor.get_global_rect().position.x - _finance_tooltip_panel.size.x - 8.0
+	target.x = clampf(target.x, 4.0, maxf(4.0, viewport_size.x - _finance_tooltip_panel.size.x - 4.0))
+	target.y = clampf(target.y, 4.0, maxf(4.0, viewport_size.y - _finance_tooltip_panel.size.y - 4.0))
+	_finance_tooltip_panel.global_position = target
+
+
+func _hide_finance_tooltip() -> void:
+	if _finance_tooltip_panel != null and is_instance_valid(_finance_tooltip_panel):
+		_finance_tooltip_panel.queue_free()
+	_finance_tooltip_panel = null
+
+
 func _option_row_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("#111714")
@@ -734,7 +790,8 @@ func _progress_style(color: Color, border: Color) -> StyleBoxFlat:
 
 func _on_building_selected(building_id: String) -> void:
 	_selected_building_id = building_id
-	_refresh_all(true, false)
+	_refresh_building_selection_visuals()
+	_refresh_detail(false)
 	_animate_detail_reveal()
 	if AudioManager != null:
 		AudioManager.play_ui_sfx("modal_open")

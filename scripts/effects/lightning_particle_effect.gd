@@ -78,19 +78,23 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._damage_event = damage_event
 	effect._attachment_item_id = attachment_item_id
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
+	# Resolve all lightning modifiers together so Chain Mastery strengthens the
+	# existing chain instead of spawning a second independent chain.
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
-		"damage": maxf(float(damage_event.damage) * 0.55, 1.0),
+		"damage": maxf(damage_event.get_elemental_base_damage() * 0.55, 1.0),
 		"chain_count": DEFAULT_CHAIN_COUNT,
 		"chain_interval": DEFAULT_CHAIN_INTERVAL,
 		"jump_radius": DEFAULT_JUMP_RADIUS,
 		"stun_duration": DEFAULT_STUN_DURATION,
 		"detonate_burning": 1.0,
-	}, effect._attachment_item_id)
+	}, "")
 	effect._cache_resolved_parameters()
 	effect._remaining_jumps = maxi(2, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
 	effect._chain_selection_step = 0
 	effect._jump_radius = maxf(effect._get_cached_parameter("jump_radius", DEFAULT_JUMP_RADIUS) * effect._get_cached_parameter("attack_range_multiplier", 1.0), 32.0)
-	effect.call_deferred("_strike_chain", first_enemy, hit_position)
+	# Bind an instance id instead of the enemy object itself. Enemies can be
+	# freed while the delayed chain hop is waiting in EffectScheduler.
+	effect.call_deferred("_strike_chain", first_enemy.get_instance_id(), hit_position)
 
 
 static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", strike_height: float = 182.0, damage_radius: float = 20.0) -> LightningParticleEffect:
@@ -119,7 +123,7 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	effect._control_point_spacing = GROUND_STRIKE_CONTROL_POINT_SPACING
 	effect._control_point_envelope_power = 0.65
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "electric_spark", {
-		"damage": maxf(float(damage_event.damage) * 0.72, 1.0),
+		"damage": maxf(damage_event.get_elemental_base_damage() * 0.72, 1.0),
 		"strike_height": strike_height,
 		"detonate_burning": 1.0,
 	}, effect._attachment_item_id)
@@ -129,11 +133,11 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	return effect
 
 
-func _strike_chain(target: Node, from_position: Vector2) -> void:
+func _strike_chain(target_id: int, from_position: Vector2) -> void:
 	if _weapon == null or _damage_event == null:
 		_finish_chain()
 		return
-	var current := target as EnemyController
+	var current := instance_from_id(target_id) as EnemyController
 	if current == null:
 		_finish_chain()
 		return
@@ -156,8 +160,7 @@ func _strike_chain(target: Node, from_position: Vector2) -> void:
 		"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 	})
 	if bool(reaction_result.get("burning_detonated", false)):
-		for explosion_instance in _weapon.get_effect_instances("explosion"):
-			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
+		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0)
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
 	if bool(reaction_result.get("extra_trigger", false)):
@@ -239,8 +242,7 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 		})
 		if bool(reaction_result.get("burning_detonated", false)):
-			for explosion_instance in _weapon.get_effect_instances("explosion"):
-				EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, str(explosion_instance.get("item_instance_id", "")))
+			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0)
 		if bool(reaction_result.get("extra_trigger", false)):
 			var extra_damage := enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
 			if extra_damage > 0:
@@ -252,13 +254,15 @@ func _schedule_next(origin: Vector2) -> void:
 	if _remaining_jumps <= 0:
 		_finish_chain()
 		return
-	var next_target := _find_farthest_enemy(origin) if _chain_selection_step == 0 else _find_random_enemy()
+	# Every hop is measured from the previous target. Do not fall back to a
+	# global random enemy when the local chain radius contains no candidates.
+	var next_target := _find_farthest_enemy(origin) if _chain_selection_step == 0 else _find_random_enemy(origin)
 	if next_target == null:
 		_finish_chain()
 		return
 	_chain_selection_step += 1
 	var chain_interval := clampf(_get_cached_parameter("chain_interval", DEFAULT_CHAIN_INTERVAL), 0.02, 0.5)
-	EffectScheduler.schedule(chain_interval, Callable(self, "_strike_chain").bind(next_target, origin), self)
+	EffectScheduler.schedule(chain_interval, Callable(self, "_strike_chain").bind(next_target.get_instance_id(), origin), self)
 
 
 func _find_farthest_enemy(origin: Vector2) -> EnemyController:
@@ -276,11 +280,12 @@ func _find_farthest_enemy(origin: Vector2) -> EnemyController:
 	return farthest
 
 
-func _find_random_enemy() -> EnemyController:
+func _find_random_enemy(origin: Vector2) -> EnemyController:
 	var candidates: Array[EnemyController] = []
+	var jump_radius_squared := _jump_radius * _jump_radius
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
-		if enemy != null and enemy.is_alive() and not _visited.has(enemy.get_instance_id()):
+		if enemy != null and enemy.is_alive() and not _visited.has(enemy.get_instance_id()) and origin.distance_squared_to(enemy.global_position) <= jump_radius_squared:
 			candidates.append(enemy)
 	if candidates.is_empty():
 		return null

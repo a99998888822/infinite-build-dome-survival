@@ -22,32 +22,41 @@ static func trigger_weapon_impact(
 	damage_event: DamageEvent,
 	hit_position: Vector2,
 	direction: Vector2 = Vector2.RIGHT,
-	body: Node = null
+	body: Node = null,
+	skip_lightning: bool = false
 ) -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
 	var visual_parent := _get_visual_parent(parent)
-	for water_instance in weapon.get_effect_instances("water"):
-		WATER_WAVE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(water_instance.get("item_instance_id", "")))
-	for light_sword_instance in weapon.get_effect_instances("light_sword"):
-		LIGHT_SWORD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(light_sword_instance.get("item_instance_id", "")))
-	for black_hole_instance in weapon.get_effect_instances("black_hole"):
-		BLACK_HOLE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(black_hole_instance.get("item_instance_id", "")))
-	for fire_instance in weapon.get_effect_instances("fire"):
+	if not weapon.get_effect_instances("water").is_empty():
+		WATER_WAVE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
+	if not weapon.get_effect_instances("light_sword").is_empty():
+		_apply_element(body, "light", visual_parent, damage_event, hit_position)
+		LIGHT_SWORD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
+	if not weapon.get_effect_instances("black_hole").is_empty():
+		_apply_element(body, "dark", visual_parent, damage_event, hit_position)
+		BLACK_HOLE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
+	if not weapon.get_effect_instances("fire").is_empty():
 		var fire_result := _apply_element(body, "fire", visual_parent, damage_event, hit_position)
 		if not bool(fire_result.get("neutralized", false)):
-			FIRE_SEED_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, direction, str(fire_instance.get("item_instance_id", "")))
-	for explosion_instance in weapon.get_effect_instances("explosion"):
-		EXPLOSION_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(explosion_instance.get("item_instance_id", "")))
-	for spark_instance in weapon.get_effect_instances("electric_spark"):
-		ELECTRIC_SPARK_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(spark_instance.get("item_instance_id", "")))
-	for ice_instance in weapon.get_effect_instances("ice"):
-		ICE_FIELD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, str(ice_instance.get("item_instance_id", "")))
+			FIRE_SEED_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, direction)
+	if not weapon.get_effect_instances("explosion").is_empty():
+		EXPLOSION_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
+	if not weapon.get_effect_instances("electric_spark").is_empty():
+		if AudioManager != null:
+			AudioManager.play_enchantment_sfx("electric_spark")
+		ELECTRIC_SPARK_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
+	if not weapon.get_effect_instances("ice").is_empty():
+		ICE_FIELD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if body is EnemyController:
-		for lightning_instance in weapon.get_effect_instances("lightning"):
-			LIGHTNING_EFFECT_SCRIPT.spawn(visual_parent, hit_position, body, weapon, damage_event, direction, str(lightning_instance.get("item_instance_id", "")))
-		for wind_instance in weapon.get_effect_instances("wind"):
-			_apply_wind(visual_parent, body, weapon, damage_event, hit_position, direction, str(wind_instance.get("item_instance_id", "")))
+		if not skip_lightning and not weapon.get_effect_instances("lightning").is_empty():
+			if AudioManager != null:
+				AudioManager.play_enchantment_sfx("lightning")
+			# Lightning is one combined hit effect. Modifiers from attached
+			# lightning items (for example Chain Mastery) are resolved together.
+			LIGHTNING_EFFECT_SCRIPT.spawn(visual_parent, hit_position, body, weapon, damage_event, direction)
+		if not weapon.get_effect_instances("wind").is_empty():
+			_apply_wind(visual_parent, body, weapon, damage_event, hit_position, direction, "")
 
 
 static func _get_visual_parent(parent: Node) -> Node:
@@ -63,7 +72,8 @@ static func _apply_element(enemy: Node, element_id: String, parent: Node, damage
 		"hit_position": hit_position,
 		"source_id": damage_event.source_weapon_id,
 		"damage": damage_event.damage,
-		"original_damage": damage_event.original_damage,
+		"original_damage": damage_event.get_elemental_base_damage(),
+		"element_damage_bonus": damage_event.element_damage_bonus,
 		"source_player": damage_event.source_player,
 	})
 
@@ -87,9 +97,9 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 		away_direction = damage_event.source_player.global_position.direction_to(enemy.global_position)
 	if away_direction.is_zero_approx():
 		away_direction = Vector2.RIGHT
-	WIND_BLADE_EFFECT_SCRIPT.spawn(parent, hit_position, away_direction, context.get_resolved_parameter("blade_speed", 480.0), context.get_resolved_parameter("blade_lifetime", 0.46))
+	WIND_BLADE_EFFECT_SCRIPT.spawn(parent, hit_position, away_direction, context.get_resolved_parameter("blade_speed", 480.0), context.get_resolved_parameter("blade_lifetime", 0.46), weapon, damage_event, enemy.get_instance_id())
 	enemy.apply_knockback(away_direction, context.get_resolved_parameter("knockback_speed", 900.0), context.get_resolved_parameter("knockback_duration", 0.34))
-	var wind_damage := maxi(1, int(roundi(float(damage_event.original_damage) * context.get_resolved_parameter("damage_multiplier", 0.7))))
+	var wind_damage := damage_event.get_elemental_damage(context.get_resolved_parameter("damage_multiplier", 0.7))
 	enemy.take_damage(wind_damage, damage_event.source_weapon_id, false, away_direction)
 	var search_radius := maxf(context.get_resolved_parameter("field_search_radius", 18.0), 0.0)
 	var field_multiplier := maxf(context.get_resolved_parameter("field_radius_multiplier", 1.35), 1.0)
