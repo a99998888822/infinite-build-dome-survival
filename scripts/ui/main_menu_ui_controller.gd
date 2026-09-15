@@ -337,36 +337,36 @@ func _create_settings_ui() -> void:
 	_settings_panel.add_theme_stylebox_override("panel", _make_settings_panel_style())
 	overlay.add_child(_settings_panel)
 	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 18)
+	content.add_theme_constant_override("separation", 12)
 	_settings_panel.add_child(content)
 	var title := Label.new()
 	title.text = "设置"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_color_override("font_color", Color("#ffe18a"))
-	title.add_theme_font_size_override("font_size", 26)
+	title.add_theme_font_size_override("font_size", 22)
 	content.add_child(title)
 	_music_slider = _make_volume_row(content, "背景音乐", 100)
 	_sfx_slider = _make_volume_row(content, "音效", 100)
 	var resolution_row := HBoxContainer.new()
-	resolution_row.add_theme_constant_override("separation", 16)
+	resolution_row.add_theme_constant_override("separation", 12)
 	content.add_child(resolution_row)
 	var resolution_label := _make_settings_label("界面分辨率")
-	resolution_label.custom_minimum_size = Vector2(150, 42)
+	resolution_label.custom_minimum_size = Vector2(150, 36)
 	resolution_row.add_child(resolution_label)
 	_resolution_option = OptionButton.new()
-	_resolution_option.custom_minimum_size = Vector2(300, 42)
+	_resolution_option.custom_minimum_size = Vector2(300, 36)
 	resolution_row.add_child(_resolution_option)
 	if WindowSettings != null:
 		for size in WindowSettings.get_resolution_presets():
 			_resolution_option.add_item("%d × %d" % [size.x, size.y])
 	_resolution_option.item_selected.connect(_on_resolution_selected)
 	var fullscreen_row := HBoxContainer.new()
-	fullscreen_row.add_theme_constant_override("separation", 16)
+	fullscreen_row.add_theme_constant_override("separation", 12)
 	content.add_child(fullscreen_row)
 	var fullscreen_title := _make_settings_label("全屏：")
-	fullscreen_title.custom_minimum_size = Vector2(150, 42)
+	fullscreen_title.custom_minimum_size = Vector2(150, 36)
 	fullscreen_title.add_theme_color_override("font_color", Color("#ffe18a"))
-	fullscreen_title.add_theme_font_size_override("font_size", 18)
+	fullscreen_title.add_theme_font_size_override("font_size", 16)
 	fullscreen_row.add_child(fullscreen_title)
 	var fullscreen_group := ButtonGroup.new()
 	_fullscreen_yes_button = _make_fullscreen_option("是", fullscreen_group)
@@ -374,19 +374,50 @@ func _create_settings_ui() -> void:
 	fullscreen_row.add_child(_fullscreen_yes_button)
 	fullscreen_row.add_child(_fullscreen_no_button)
 	_display_settings_note = _make_settings_label("")
-	_display_settings_note.custom_minimum_size = Vector2(0, 38)
+	_display_settings_note.custom_minimum_size = Vector2(0, 32)
 	_display_settings_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_display_settings_note.add_theme_color_override("font_color", Color("#e3b65c"))
-	_display_settings_note.add_theme_font_size_override("font_size", 13)
+	_display_settings_note.add_theme_font_size_override("font_size", 11)
 	content.add_child(_display_settings_note)
+	var credit_row := HBoxContainer.new()
+	credit_row.add_theme_constant_override("separation", 12)
+	content.add_child(credit_row)
+	var credit_title := _make_settings_label("Credit")
+	credit_title.custom_minimum_size = Vector2(150, 42)
+	credit_title.add_theme_color_override("font_color", Color("#ffe18a"))
+	credit_title.add_theme_font_size_override("font_size", 14)
+	credit_row.add_child(credit_title)
+	var credit_area := PanelContainer.new()
+	credit_area.custom_minimum_size = Vector2(300, 42)
+	credit_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	credit_area.add_theme_stylebox_override("panel", _make_credit_area_style())
+	credit_row.add_child(credit_area)
+	var credit_scroll := ScrollContainer.new()
+	credit_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	credit_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	credit_scroll.custom_minimum_size = Vector2(0, 42)
+	credit_area.add_child(credit_scroll)
+	var credit_text := Label.new()
+	credit_text.text = "Ark Pixel Font | SIL Open Font License 1.1"
+	credit_text.custom_minimum_size = Vector2(0, 42)
+	credit_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	credit_text.add_theme_color_override("font_color", Color("#d9d0af"))
+	credit_text.add_theme_font_size_override("font_size", 10)
+	credit_scroll.add_child(credit_text)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	content.add_child(spacer)
+	var font_credit := Label.new()
+	font_credit.text = "字体：Ark Pixel Font｜SIL Open Font License 1.1"
+	font_credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	font_credit.add_theme_color_override("font_color", Color("#778979"))
+	font_credit.add_theme_font_size_override("font_size", 10)
+	content.add_child(font_credit)
 	var back_button := Button.new()
 	back_button.text = "返回"
-	back_button.custom_minimum_size = Vector2(180, 46)
+	back_button.custom_minimum_size = Vector2(180, 40)
 	back_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	back_button.add_theme_font_size_override("font_size", 16)
+	back_button.add_theme_font_size_override("font_size", 14)
 	back_button.add_theme_color_override("font_color", Color("#d9d0af"))
 	back_button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
 	back_button.add_theme_stylebox_override("normal", _make_settings_button_style(Color("#111b16"), Color("#59441f")))
@@ -400,18 +431,18 @@ func _make_volume_row(parent: VBoxContainer, title_text: String, default_value: 
 	row.add_theme_constant_override("separation", 16)
 	parent.add_child(row)
 	var label := _make_settings_label(title_text)
-	label.custom_minimum_size = Vector2(150, 42)
+	label.custom_minimum_size = Vector2(150, 36)
 	row.add_child(label)
 	var slider := HSlider.new()
 	slider.min_value = 0.0
 	slider.max_value = 100.0
 	slider.step = 1.0
 	slider.value = default_value
-	slider.custom_minimum_size = Vector2(300, 42)
+	slider.custom_minimum_size = Vector2(300, 36)
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(slider)
 	var value_label := _make_settings_label("100%")
-	value_label.custom_minimum_size = Vector2(70, 42)
+	value_label.custom_minimum_size = Vector2(70, 36)
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	row.add_child(value_label)
 	slider.value_changed.connect(_on_volume_slider_changed.bind(slider, value_label, title_text))
@@ -426,7 +457,7 @@ func _make_settings_label(text_value: String) -> Label:
 	label.text = text_value
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_color_override("font_color", Color("#d9d0af"))
-	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_font_size_override("font_size", 14)
 	return label
 
 func _make_settings_panel_style() -> StyleBoxFlat:
@@ -443,14 +474,24 @@ func _make_settings_panel_style() -> StyleBoxFlat:
 	style.shadow_size = 12
 	return style
 
+func _make_credit_area_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#28382f")
+	style.border_color = Color("#536b59")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(3)
+	style.content_margin_left = 10.0
+	style.content_margin_right = 10.0
+	return style
+
 func _make_settings_button_style(background: Color, border: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(3)
-	style.content_margin_top = 8.0
-	style.content_margin_bottom = 8.0
+	style.content_margin_top = 6.0
+	style.content_margin_bottom = 6.0
 	return style
 
 func _on_settings_pressed() -> void:
@@ -556,9 +597,9 @@ func _make_fullscreen_option(text_value: String, group: ButtonGroup) -> Button:
 	button.text = "○ %s" % text_value
 	button.toggle_mode = true
 	button.button_group = group
-	button.custom_minimum_size = Vector2(124, 44)
+	button.custom_minimum_size = Vector2(124, 36)
 	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_font_size_override("font_size", 18)
+	button.add_theme_font_size_override("font_size", 14)
 	button.add_theme_color_override("font_color", Color("#a9a184"))
 	button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
 	button.add_theme_color_override("font_pressed_color", Color("#ffe18a"))
