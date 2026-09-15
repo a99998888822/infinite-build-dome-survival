@@ -47,6 +47,10 @@ var _display_settings_note: Label = null
 var _settings_tween: Tween = null
 
 const SETTINGS_PANEL_SIZE := Vector2(620, 430)
+const SETTINGS_ROW_HEIGHT := 36.0
+const SETTINGS_TITLE_WIDTH := 150.0
+const SETTINGS_TITLE_FONT_SIZE := 14
+const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
@@ -350,8 +354,7 @@ func _create_settings_ui() -> void:
 	var resolution_row := HBoxContainer.new()
 	resolution_row.add_theme_constant_override("separation", 12)
 	content.add_child(resolution_row)
-	var resolution_label := _make_settings_label("界面分辨率")
-	resolution_label.custom_minimum_size = Vector2(150, 36)
+	var resolution_label := _make_settings_title("界面分辨率")
 	resolution_row.add_child(resolution_label)
 	_resolution_option = OptionButton.new()
 	_resolution_option.custom_minimum_size = Vector2(300, 36)
@@ -363,10 +366,7 @@ func _create_settings_ui() -> void:
 	var fullscreen_row := HBoxContainer.new()
 	fullscreen_row.add_theme_constant_override("separation", 12)
 	content.add_child(fullscreen_row)
-	var fullscreen_title := _make_settings_label("全屏：")
-	fullscreen_title.custom_minimum_size = Vector2(150, 36)
-	fullscreen_title.add_theme_color_override("font_color", Color("#ffe18a"))
-	fullscreen_title.add_theme_font_size_override("font_size", 16)
+	var fullscreen_title := _make_settings_title("全屏：")
 	fullscreen_row.add_child(fullscreen_title)
 	var fullscreen_group := ButtonGroup.new()
 	_fullscreen_yes_button = _make_fullscreen_option("是", fullscreen_group)
@@ -374,32 +374,29 @@ func _create_settings_ui() -> void:
 	fullscreen_row.add_child(_fullscreen_yes_button)
 	fullscreen_row.add_child(_fullscreen_no_button)
 	_display_settings_note = _make_settings_label("")
-	_display_settings_note.custom_minimum_size = Vector2(0, 32)
 	_display_settings_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_display_settings_note.add_theme_color_override("font_color", Color("#e3b65c"))
 	_display_settings_note.add_theme_font_size_override("font_size", 11)
+	_display_settings_note.visible = false
 	content.add_child(_display_settings_note)
 	var credit_row := HBoxContainer.new()
 	credit_row.add_theme_constant_override("separation", 12)
 	content.add_child(credit_row)
-	var credit_title := _make_settings_label("Credit")
-	credit_title.custom_minimum_size = Vector2(150, 42)
-	credit_title.add_theme_color_override("font_color", Color("#ffe18a"))
-	credit_title.add_theme_font_size_override("font_size", 14)
+	var credit_title := _make_settings_title("Credit")
 	credit_row.add_child(credit_title)
 	var credit_area := PanelContainer.new()
-	credit_area.custom_minimum_size = Vector2(300, 42)
+	credit_area.custom_minimum_size = Vector2(300, SETTINGS_ROW_HEIGHT)
 	credit_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	credit_area.add_theme_stylebox_override("panel", _make_credit_area_style())
 	credit_row.add_child(credit_area)
 	var credit_scroll := ScrollContainer.new()
 	credit_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	credit_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
-	credit_scroll.custom_minimum_size = Vector2(0, 42)
+	credit_scroll.custom_minimum_size = Vector2(0, SETTINGS_ROW_HEIGHT)
 	credit_area.add_child(credit_scroll)
 	var credit_text := Label.new()
 	credit_text.text = "Ark Pixel Font | SIL Open Font License 1.1"
-	credit_text.custom_minimum_size = Vector2(0, 42)
+	credit_text.custom_minimum_size = Vector2(0, SETTINGS_ROW_HEIGHT)
 	credit_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	credit_text.add_theme_color_override("font_color", Color("#d9d0af"))
 	credit_text.add_theme_font_size_override("font_size", 10)
@@ -407,12 +404,6 @@ func _create_settings_ui() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	content.add_child(spacer)
-	var font_credit := Label.new()
-	font_credit.text = "字体：Ark Pixel Font｜SIL Open Font License 1.1"
-	font_credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	font_credit.add_theme_color_override("font_color", Color("#778979"))
-	font_credit.add_theme_font_size_override("font_size", 10)
-	content.add_child(font_credit)
 	var back_button := Button.new()
 	back_button.text = "返回"
 	back_button.custom_minimum_size = Vector2(180, 40)
@@ -430,8 +421,7 @@ func _make_volume_row(parent: VBoxContainer, title_text: String, default_value: 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 16)
 	parent.add_child(row)
-	var label := _make_settings_label(title_text)
-	label.custom_minimum_size = Vector2(150, 36)
+	var label := _make_settings_title(title_text)
 	row.add_child(label)
 	var slider := HSlider.new()
 	slider.min_value = 0.0
@@ -456,8 +446,14 @@ func _make_settings_label(text_value: String) -> Label:
 	var label := Label.new()
 	label.text = text_value
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_color_override("font_color", Color("#d9d0af"))
-	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_color_override("font_color", SETTINGS_TITLE_COLOR)
+	label.add_theme_font_size_override("font_size", SETTINGS_TITLE_FONT_SIZE)
+	return label
+
+
+func _make_settings_title(text_value: String) -> Label:
+	var label := _make_settings_label(text_value)
+	label.custom_minimum_size = Vector2(SETTINGS_TITLE_WIDTH, SETTINGS_ROW_HEIGHT)
 	return label
 
 func _make_settings_panel_style() -> StyleBoxFlat:
@@ -564,7 +560,9 @@ func _sync_window_settings_controls() -> void:
 		return
 	var fullscreen := WindowSettings.is_fullscreen()
 	if _display_settings_note != null:
-		if WindowSettings.is_embedded():
+		var is_embedded := WindowSettings.is_embedded()
+		_display_settings_note.visible = is_embedded
+		if is_embedded:
 			_display_settings_note.text = "编辑器嵌入运行时不支持调整窗口尺寸或全屏；当前设置会保存，请关闭编辑器的“嵌入游戏”后运行"
 		else:
 			_display_settings_note.text = ""

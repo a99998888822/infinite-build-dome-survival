@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://35q30jdee5xr"]
 
-[ext_resource type="FontFile" uid="uid://hptucygmevr" path="res://assets/font/ark-pixel-16px-monospaced-zh_cn.otf" id="1_ark_pixel"]
+[ext_resource type="FontFile" uid="uid://bfxfilck5hu16" path="res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf" id="1_ark_pixel"]
 
 [resource]
 default_font = ExtResource("1_ark_pixel")
