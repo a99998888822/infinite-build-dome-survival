@@ -1,0 +1,58 @@
+scripts/core/main_flow_coordinator.gd
+  s_e459c8c014e144::t_3761d81aaf1702 784,810-813
+  s_e459c8c014e144::t_ddc095c270d09f 814-815
+scripts/data/data_validator.gd
+  s_e459c8c014e144::t_ffe7ee244cc7d6 205-206
+data_config/relics.json
+  s_e459c8c014e144::t_ce8cd8555a89ea 25,40,49,112,125,154,167,330,349,376,386,402,429,439,498,515,543,551,569,688,696,749,756,780,787,798,805,861,877,884-885,940,947,957,967,1218,1311,1320,1344,1351-1352
+scripts/ui/shop_offer_generator.gd
+  s_e459c8c014e144::t_94e5ef039a5dc8 35,72,101,130,327-338,342,346,358
+  s_707575f09e2d1c::t_514a9d919e10ab 143
+  s_707575f09e2d1c::t_f5a3612a730078 144-145
+  s_707575f09e2d1c::t_10f3258dd3c6c5 141-142
+artifacts/plot_luck_design.py
+  s_707575f09e2d1c::t_15e68c3d68698d 1-40,46-84,87-113,115-129,131-184,186-217,219-222
+  s_707575f09e2d1c::t_f5a3612a730078 44-45,130,185
+  s_707575f09e2d1c::t_514a9d919e10ab 43,85-86,114
+  s_707575f09e2d1c::t_10f3258dd3c6c5 41-42,218
+augmentations_list.md
+  s_e459c8c014e144::t_906187dc447c75 4-5,7-8,10,16-18,20-21,32,36,38-39,43-44,48-49,70,81,83
+scripts/core/bootstrap.gd
+  s_e459c8c014e144::t_f86bb2cd7bc69b 962-969,972-993
+  s_e459c8c014e144::t_3860fcb6a39aae 235,342,382-388,390-396,398-404,891-892
+  s_e459c8c014e144::t_ffe7ee244cc7d6 389,397,970-971
+  s_707575f09e2d1c::t_514a9d919e10ab 786
+artifacts/luck_design.png.import
+  s_707575f09e2d1c::t_b71e3394656b45 1-40
+scripts/data/stat_definitions.gd
+  s_e459c8c014e144::t_429b1077f88c18 306,310,462-473
+scripts/player/player_controller.gd
+  s_e459c8c014e144::t_6a2c09a5841f85 16,46,126,179-198,322,403-413,415,417-421,437-445
+  s_e459c8c014e144::t_2d0f8a3caf67dd 446-447
+scripts/rewards/battle_finance_system.gd
+  s_e459c8c014e144::t_821941ed367fd6 439-442,445-448,471,479
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e4660f6d04e9c6bca913888d58fb00285fe25f5e",
+  "prompts": {},
+  "sessions": {
+    "s_707575f09e2d1c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a97f-0f8b-7591-92e4-a8f01a7cffba",
+        "model": "deepseek/deepseek-v4-flash"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e459c8c014e144": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a7fa-46d6-7c01-bd6d-938278f1ad61",
+        "model": "deepseek/deepseek-v4-flash"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
