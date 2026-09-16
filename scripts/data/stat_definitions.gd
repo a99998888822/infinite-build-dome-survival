@@ -303,11 +303,11 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "商店折扣",
 		"category": CATEGORY_REWARD,
 		"default": 0,
-		"min": 0,
+		"min": -100,
 		"max": 90,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "局内商店价格折扣；10 表示商店价格降低 10%。"
+		"description": "局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。"
 	},
 	"shop_offer_count_bonus": {
 		"display_name": "商店选择数量加成",
@@ -459,8 +459,18 @@ static func calculate_finance_interest_gain(finance: float, interest_rate: float
 
 
 static func calculate_shop_cost(base_cost: int, shop_price_percent: float) -> int:
-	var discount_percent := clamp_stat_value("shop_price_percent", shop_price_percent)
-	return maxi(0, int(ceil(float(maxi(0, base_cost)) * (1.0 - discount_percent / 100.0))))
+	return calculate_shop_cost_from_discounts(base_cost, [shop_price_percent])
+
+
+static func calculate_shop_cost_from_discounts(base_cost: int, discount_layers: Array) -> int:
+	# 折扣逐层乘算：两层 8% 折扣得到 0.92 * 0.92 = 84.64%，负折扣表示涨价。
+	if base_cost <= 0:
+		return 0
+	var price := float(base_cost)
+	for discount_layer in discount_layers:
+		var discount_percent := clamp_stat_value("shop_price_percent", float(discount_layer))
+		price *= maxf(1.0 - discount_percent / 100.0, 0.0)
+	return maxi(1, int(ceil(price)))
 
 
 static func calculate_shop_offer_count(base_count: int, shop_offer_count_bonus: float) -> int:

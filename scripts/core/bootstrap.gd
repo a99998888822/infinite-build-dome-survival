@@ -232,7 +232,7 @@ func _run_relic_bond_checks() -> bool:
 	relic_system.set_weapon_ids(player.get_start_weapon_ids())
 	passed = _print_check_result("relic system init", relic_system != null and relic_system.get_total_relic_count() == 0) and passed
 	passed = _print_check_result("relic max_stack zero", int(DataRegistry.get_record("relics", "relic_piggy_bank").get("max_stack", -1)) == 0) and passed
-	passed = _print_check_result("relic add modifier", relic_system.add_relic("relic_finance_manager") and int(player.get_stat("interest_rate")) == 6) and passed
+	passed = _print_check_result("relic add modifier interest rate 6.5", relic_system.add_relic("relic_finance_manager") and is_equal_approx(player.get_stat("interest_rate"), 6.5)) and passed
 	passed = _print_check_result("bond count zero without bond relic", relic_system.get_bond_count("bond_chosen") == 0) and passed
 	passed = _print_check_result("bond count stays zero without bond relic", relic_system.add_relic("relic_high_yield_contract") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
 	passed = _print_check_result("bond count still zero after second relic", relic_system.add_relic("relic_goblin_central_bank_printer") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
@@ -339,7 +339,7 @@ func _run_survival_relic_checks() -> bool:
 
 	passed = _print_check_result("survival relic low hp armor", player.add_relic("relic_broken_crystal")) and passed
 	player.take_damage(6, "bootstrap_relic_check")
-	passed = _print_check_result("survival relic low hp condition", player.get_stat("armor") >= base_armor + 15.0) and passed
+	passed = _print_check_result("survival relic low hp condition", is_equal_approx(player.get_stat("armor"), base_armor + 33.0)) and passed
 	player.heal(99)
 	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 8.0)) and passed
 
@@ -379,6 +379,29 @@ func _run_survival_relic_checks() -> bool:
 
 	passed = _print_check_result("survival relic derived stat", player.add_relic("relic_chain_of_hardship")) and passed
 	passed = _print_check_result("survival relic derived armor", player.get_stat("armor") >= 16.0) and passed
+
+	var armor_before_greave := player.get_stat("armor")
+	var greave_added := player.add_relic("relic_shadowless_greave")
+	var expected_greave_armor := floorf(player.get_stat("move_speed") / 10.0)
+	passed = _print_check_result("survival relic move speed armor", greave_added and is_equal_approx(player.get_stat("armor") - armor_before_greave, expected_greave_armor)) and passed
+
+	var hp_before_drain := player.current_hp
+	var hp_regen_before_drain := player.get_stat("hp_regen")
+	player.add_runtime_modifier({
+		"id": "mod_bootstrap_negative_regen",
+		"source_type": "test",
+		"source_id": "survival_relic_check",
+		"target_scope": "player",
+		"stat": "hp_regen",
+		"operation": "add_flat",
+		"value": -(hp_regen_before_drain + 2.0),
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	var net_hp_regen := player.get_stat("hp_regen")
+	var expected_drain := floori(-net_hp_regen) if net_hp_regen < 0.0 else 0
+	player._physics_process(1.0)
+	passed = _print_check_result("survival relic negative regen drains", expected_drain > 0 and player.current_hp == hp_before_drain - expected_drain) and passed
 	player.queue_free()
 	return passed
 
@@ -760,7 +783,7 @@ func _run_weapon_checks() -> bool:
 	var mythic_threshold_weights := shop_generator.get_shop_rarity_weights(150)
 	var legendary_threshold_weights := shop_generator.get_shop_rarity_weights(350)
 	var epic_after_threshold_weights := shop_generator.get_shop_rarity_weights(41)
-	var mythic_after_threshold_weights := shop_generator.get_shop_rarity_weights(151)
+	var mythic_after_threshold_weights := shop_generator.get_shop_rarity_weights(155)
 	var legendary_after_threshold_weights := shop_generator.get_shop_rarity_weights(360)
 	var rarity_weight_sum := 0
 	var boosted_rarity_weight_sum := 0
@@ -865,6 +888,8 @@ func _run_weapon_checks() -> bool:
 		epic_base_cost += int(epic_relic_candidate.get("relic_rarity_count", 0)) * 3 * (epic_rarity_index - 2)
 	var expected_epic_relic_cost := StatDefinitions.calculate_shop_cost(epic_base_cost + maxi(epic_rarity_index, 0) * 5, 20)
 	passed = _print_check_result("epic relic rarity weighted price", epic_relic_cost == expected_epic_relic_cost) and passed
+	passed = _print_check_result("shop discount layers multiply", StatDefinitions.calculate_shop_cost_from_discounts(100, [8]) == 92 and StatDefinitions.calculate_shop_cost_from_discounts(100, [8, 8]) == 85) and passed
+	passed = _print_check_result("shop discount negative layer raises price", StatDefinitions.calculate_shop_cost_from_discounts(100, [-20]) == 120) and passed
 
 	loadout.queue_free()
 	player.queue_free()
@@ -934,6 +959,38 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance ui controller instantiate", finance_controller != null and finance_controller.get_node_or_null("PopupLayer/FinancePopup") != null and finance_controller.get_node_or_null("PopupLayer/InterestSettlementPopup") != null) and passed
 	if finance_controller != null:
 		finance_controller.queue_free()
+
+	wave_manager.add_relic("relic_flyer_ad")
+	wave_manager.add_relic("relic_flyer_ad")
+	var flyer_layers := player.get_shop_price_discount_layers()
+	passed = _print_check_result("finance flyer ad discount layers", flyer_layers.size() == 2 and is_equal_approx(flyer_layers[0], 8.0) and is_equal_approx(flyer_layers[1], 8.0) and StatDefinitions.calculate_shop_cost_from_discounts(100, flyer_layers) == 85) and passed
+
+	var armor_before_derived := player.get_stat("armor")
+	var damage_before_derived := player.get_stat("damage_percent")
+	wave_manager.add_relic("relic_steel_vault")
+	wave_manager.add_relic("relic_hostile_takeover")
+	wave_manager.prepare_finance_for_wave(9)
+	var derived_principal := int(wave_manager.get_finance_snapshot().get("principal", 0))
+	passed = _print_check_result("finance steel vault principal armor", derived_principal >= 50 and is_equal_approx(player.get_stat("armor") - armor_before_derived, floorf(float(derived_principal) / 50.0))) and passed
+	passed = _print_check_result("finance hostile takeover damage percent", is_equal_approx(player.get_stat("damage_percent") - damage_before_derived, floorf(float(derived_principal) / 100.0))) and passed
+
+	wave_manager.add_relic("relic_divine_fusion")
+	player.add_runtime_modifier({
+		"id": "mod_bootstrap_divinity_seed",
+		"source_type": "test",
+		"source_id": "finance_check",
+		"target_scope": "player",
+		"stat": "divinity",
+		"operation": "add_flat",
+		"value": 12.0,
+		"duration": -1,
+		"stack_rule": "unique",
+	})
+	var rate_before_divine := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	wave_manager.prepare_finance_for_wave(10)
+	var expected_divine_rate := floorf(player.get_stat("divinity") / 5.0) * 0.5
+	passed = _print_check_result("finance divine fusion fractional rate", expected_divine_rate > 0.0 and is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, expected_divine_rate)) and passed
+
 	wave_manager.queue_free()
 	player.queue_free()
 	return passed

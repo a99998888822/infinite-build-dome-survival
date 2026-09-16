@@ -781,6 +781,7 @@ func _build_shop_context() -> Dictionary:
 		"luck": _get_shop_stat("luck"),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
 		"shop_price_percent": _get_shop_stat("shop_price_percent"),
+		"shop_price_discounts": _get_shop_discount_layers(),
 		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
 		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
 		"zone_tag_weight_bonus": ZoneProgression.get_current_zone_tag_weight_bonus(),
@@ -804,6 +805,12 @@ func _update_weapon_upgrade_miss_count(candidates: Array, offers: Array) -> void
 
 func _get_shop_stat(stat_id: String) -> float:
 	return _bound_player.get_stat(stat_id, 0.0) if _bound_player != null else 0.0
+
+
+func _get_shop_discount_layers() -> Array[float]:
+	if _bound_player == null:
+		return []
+	return _bound_player.get_shop_price_discount_layers()
 
 
 func _try_pay_shop_cost(offer: Dictionary) -> bool:

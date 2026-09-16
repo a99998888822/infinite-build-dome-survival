@@ -436,16 +436,16 @@ func _refresh_derived_stats() -> void:
 					var stat_id := str(effect.get("stat", ""))
 					if not StatDefinitions.has_stat(stat_id):
 						continue
-					var divisor := maxi(1, int(effect.get("divisor", 100)))
-					var per_unit := maxi(1, int(effect.get("per_unit", 1)))
-					var derived_value := int(floor(float(principal) / float(divisor))) * per_unit * relic_count
-					if derived_value > 0:
+					var divisor := maxf(1.0, float(effect.get("divisor", 100)))
+					var per_unit := maxf(0.0, float(effect.get("per_unit", 1)))
+					var derived_value := floorf(float(principal) / divisor) * per_unit * float(relic_count)
+					if derived_value > 0.0:
 						player.add_runtime_modifier(_build_derived_modifier(relic_id, stat_id, derived_value))
 				EFFECT_DERIVED_INTEREST_FROM_EROSION:
-					var erosion_divisor := maxi(1, int(effect.get("divisor", 5)))
-					var erosion_per_unit := maxi(1, int(effect.get("per_unit", 1)))
-					var derived_rate := int(floor(player.get_stat("divinity") / float(erosion_divisor))) * erosion_per_unit * relic_count
-					if derived_rate > 0:
+					var erosion_divisor := maxf(1.0, float(effect.get("divisor", 5)))
+					var erosion_per_unit := maxf(0.0, float(effect.get("per_unit", 1)))
+					var derived_rate := floorf(player.get_stat("divinity") / erosion_divisor) * erosion_per_unit * float(relic_count)
+					if derived_rate > 0.0:
 						player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", derived_rate))
 
 
@@ -468,7 +468,7 @@ func _refresh_erosion_bonus() -> void:
 	})
 
 
-func _build_derived_modifier(relic_id: String, stat_id: String, value: int) -> Dictionary:
+func _build_derived_modifier(relic_id: String, stat_id: String, value: float) -> Dictionary:
 	return {
 		"id": "derived_%s_%s" % [relic_id, stat_id],
 		"source_type": "finance_derived",
@@ -476,7 +476,7 @@ func _build_derived_modifier(relic_id: String, stat_id: String, value: int) -> D
 		"target_scope": "player",
 		"stat": stat_id,
 		"operation": Modifier.OPERATION_ADD_FLAT,
-		"value": float(value),
+		"value": value,
 		"duration": Modifier.PERMANENT_DURATION,
 		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
 	}

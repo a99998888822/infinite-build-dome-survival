@@ -13,6 +13,7 @@ const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
+const REGEN_DRAIN_MIN_HP: int = 1
 const PLAYER_VISUAL_SCALE: float = 0.21
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
@@ -42,6 +43,7 @@ var _walk_animation_time: float = 0.0
 var _held_move_keys: Dictionary = {}
 var _mobile_move_direction := Vector2.ZERO
 var _hp_regen_remainder: float = 0.0
+var _hp_drain_remainder: float = 0.0
 var _shield_regen_remainder: float = 0.0
 var _relic_runtime_sequence: int = 0
 var _refreshing_relic_dynamic_effects: bool = false
@@ -121,6 +123,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	alive = true
 	_invincibility_timer = 0.0
 	_hp_regen_remainder = 0.0
+	_hp_drain_remainder = 0.0
 	_shield_regen_remainder = 0.0
 	_relic_runtime_sequence = 0
 	_refreshing_relic_dynamic_effects = false
@@ -171,6 +174,26 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 
 func get_stat_with_extra_modifier(stat_id: String, modifier_data: Dictionary, fallback_base_value: float = 0.0) -> float:
 	return modifier_stack.get_stat_with_extra_modifier(stat_id, modifier_data, fallback_base_value)
+
+
+func get_shop_price_discount_layers() -> Array[float]:
+	# 商店价格折扣逐层乘算：每个遗物/营地加成各占一层。
+	var layers: Array[float] = []
+	var modifiers := modifier_stack.get_all_modifiers("shop_price_percent")
+	for modifier in modifiers:
+		if modifier == null:
+			continue
+		if modifier.operation != Modifier.OPERATION_ADD_FLAT:
+			# 出现非加算修饰时退回整体数值，避免静默丢失效果。
+			var aggregate := get_stat("shop_price_percent")
+			return [aggregate] if not is_zero_approx(aggregate) else []
+	var base_value := modifier_stack.get_base_stat("shop_price_percent", 0.0)
+	if not is_zero_approx(base_value):
+		layers.append(base_value)
+	for modifier in modifiers:
+		if modifier != null and not is_zero_approx(modifier.value):
+			layers.append(modifier.value)
+	return layers
 
 
 func get_item_inventory() -> ItemInventory:
@@ -296,6 +319,7 @@ func restore_full_health() -> int:
 	var old_hp := current_hp
 	current_hp = max_hp
 	_hp_regen_remainder = 0.0
+	_hp_drain_remainder = 0.0
 	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, max_hp, current_shield)
 	return current_hp - old_hp
@@ -376,14 +400,25 @@ func _process_regeneration(delta: float) -> void:
 	if not alive or delta <= 0.0:
 		return
 	var max_hp := int(get_stat("max_hp"))
-	if current_hp < max_hp:
-		_hp_regen_remainder += maxf(get_stat("hp_regen"), 0.0) * delta
-		var hp_amount := floori(_hp_regen_remainder)
-		if hp_amount > 0:
-			_hp_regen_remainder -= float(hp_amount)
-			heal(hp_amount)
+	var hp_regen := get_stat("hp_regen")
+	if hp_regen >= 0.0:
+		_hp_drain_remainder = 0.0
+		if current_hp < max_hp:
+			_hp_regen_remainder += hp_regen * delta
+			var hp_amount := floori(_hp_regen_remainder)
+			if hp_amount > 0:
+				_hp_regen_remainder -= float(hp_amount)
+				heal(hp_amount)
+		else:
+			_hp_regen_remainder = 0.0
 	else:
+		# 负回血：持续流失生命值，不经过护盾与护甲，且不会致死。
 		_hp_regen_remainder = 0.0
+		_hp_drain_remainder += -hp_regen * delta
+		var drain_amount := floori(_hp_drain_remainder)
+		if drain_amount > 0:
+			_hp_drain_remainder -= float(drain_amount)
+			_apply_regen_drain(drain_amount)
 
 	var shield_regen := maxf(get_stat("shield_regen"), 0.0)
 	if shield_regen <= 0.0:
@@ -397,6 +432,17 @@ func _process_regeneration(delta: float) -> void:
 	if shield_amount > 0:
 		_shield_regen_remainder -= float(shield_amount)
 		grant_shield(shield_amount)
+
+
+func _apply_regen_drain(amount: int) -> void:
+	if not alive or amount <= 0:
+		return
+	var next_hp := maxi(current_hp - amount, REGEN_DRAIN_MIN_HP)
+	if next_hp == current_hp:
+		return
+	current_hp = next_hp
+	_refresh_relic_dynamic_effects()
+	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 
 
 func _set_facing(next_facing_right: bool) -> void:

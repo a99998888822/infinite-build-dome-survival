@@ -32,7 +32,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var zone_tendency_tags := _to_string_array(context.get("zone_tendency_tags", []))
 	var zone_target_pools := _to_string_set(context.get("zone_target_pools", []))
 	var zone_tag_weight_bonus := maxi(0, int(context.get("zone_tag_weight_bonus", 0)))
-	var shop_price_percent := float(context.get("shop_price_percent", 0.0))
+	var shop_price_discounts := _read_shop_price_discounts(context)
 	var load_capacity := int(context.get("load_capacity", 0))
 	var current_load := int(context.get("current_load", 0))
 	var luck := maxi(0, int(context.get("luck", 0)))
@@ -69,7 +69,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"description": str(weapon_data.get("description", "")),
 			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": weapon_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_discounts))
 
 	for relic_data in DataRegistry.get_table("relics"):
 		var relic_id := str(relic_data.get("id", ""))
@@ -98,7 +98,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"effects": (relic_data.get("effects", []) as Array).duplicate(true),
 			"runtime_effects": (relic_data.get("runtime_effects", []) as Array).duplicate(true),
 			"tags": relic_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_discounts))
 
 	for weapon_data in _get_equipped_weapon_data(context):
 		var weapon_id := str(weapon_data.get("id", ""))
@@ -127,7 +127,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"effects": (upgrade_entry.get("effects", []) as Array).duplicate(true),
 			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": upgrade_tags,
-		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_percent))
+		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_discounts))
 
 	return candidates
 
@@ -138,11 +138,11 @@ func get_rarity_luck_requirement(rarity: String) -> int:
 
 func get_shop_rarity_weights(luck: int, zone_rarity_bonus: int = 0) -> Dictionary:
 	var safe_luck := float(maxi(0, luck))
-	var uncommon := 17.0 - 7.0 * _threshold_ramp(safe_luck, 40.0, 240.0, 1.0)
-	var rare := 5.0 - 2.0 * _threshold_ramp(safe_luck, 40.0, 420.0, 1.25)
-	var epic := 32.0 * _threshold_ramp(safe_luck, 40.0, 260.0, 1.15)
-	var mythic := 25.0 * _threshold_ramp(safe_luck, 150.0, 220.0, 1.4)
-	var legendary := 15.0 * _threshold_ramp(safe_luck, 350.0, 180.0, 2.1)
+	var uncommon := 17.0 - 2.0 * _threshold_ramp(safe_luck, 0.0, 240.0, 1.0)
+	var rare := 5.0 + 25.0 * _threshold_ramp(safe_luck, 0.0, 240.0, 0.8)
+	var epic := 25.0 * _threshold_ramp(safe_luck, 40.0, 260.0, 1.15)
+	var mythic := 15.0 * _threshold_ramp(safe_luck, 150.0, 220.0, 1.4)
+	var legendary := 5.0 * _threshold_ramp(safe_luck, 350.0, 180.0, 2.1)
 	var uncommon_weight := roundi(uncommon * 100.0)
 	var rare_weight := roundi(rare * 100.0)
 	var epic_weight := roundi(epic * 100.0)
@@ -324,15 +324,26 @@ func _threshold_ramp(luck: float, start: float, duration: float, power: float) -
 	return pow(clampf((luck - start) / duration, 0.0, 1.0), maxf(power, 0.01))
 
 
-func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int, shop_price_percent: float) -> Dictionary:
+func _read_shop_price_discounts(context: Dictionary) -> Array[float]:
+	# shop_price_discounts 为逐层折扣；兼容只提供单个 shop_price_percent 的旧上下文。
+	var raw_layers: Variant = context.get("shop_price_discounts", [])
+	var discounts: Array[float] = []
+	if raw_layers is Array and not (raw_layers as Array).is_empty():
+		for layer in raw_layers:
+			discounts.append(float(layer))
+		return discounts
+	return [float(context.get("shop_price_percent", 0.0))]
+
+
+func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int, shop_price_discounts: Array[float]) -> Dictionary:
 	var pool_key := str(candidate.get("pool_key", ""))
 	var tags := _to_string_array(candidate.get("tags", []))
 	candidate["weight"] = _calculate_candidate_weight(pool_key, tags, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus)
-	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_percent)
+	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_discounts)
 	return candidate
 
 
-func _calculate_shop_cost(candidate: Dictionary, shop_price_percent: float) -> int:
+func _calculate_shop_cost(candidate: Dictionary, shop_price_discounts: Array[float]) -> int:
 	var rarity_index := RARITIES.find(str(candidate.get("rarity", "common")))
 	if rarity_index < 0:
 		rarity_index = 0
@@ -344,7 +355,7 @@ func _calculate_shop_cost(candidate: Dictionary, shop_price_percent: float) -> i
 		base_cost += maxi(0, int(candidate.get("total_relic_count", 0)))
 		if rarity_index > 2:
 			base_cost += maxi(0, int(candidate.get("relic_rarity_count", 0))) * 3 * (rarity_index - 2)
-	return StatDefinitions.calculate_shop_cost(base_cost + rarity_index * 5, shop_price_percent)
+	return StatDefinitions.calculate_shop_cost_from_discounts(base_cost + rarity_index * 5, shop_price_discounts)
 
 
 func _calculate_candidate_weight(pool_key: String, tags: Array[String], zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int) -> int:

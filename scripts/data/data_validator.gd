@@ -202,6 +202,8 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 func _allows_fractional_config_value(path: String) -> bool:
 	return (path.contains(".runtime_effects[") and (
 		path.ends_with(".value") or path.ends_with(".principal_percent")
+	)) or (path.contains(".runtime_effects[") and (
+		path.ends_with(".per_unit") or path.ends_with(".divisor")
 	)) or path.contains("augmentations[") and path.contains(".modifiers[") and (
 		path.ends_with(".value") or path.contains(".value[")
 	) or path.contains("augmentations[") and (
