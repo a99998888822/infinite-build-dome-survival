@@ -296,7 +296,9 @@ func _battle_hud_assertions(hud: Node, drawer_open: bool, drawer_required: bool)
 		return [_failure_result("battle_hud", "HUD is missing")]
 	var results: Array[Dictionary] = [
 		_assert_control_in_viewport("battle_hud_status", hud.get_node_or_null("StatusPanel") as Control),
-		_assert_control_in_viewport("battle_hud_economy", hud.get_node_or_null("../EconomyOverlay/EconomyPanel") as Control),
+		_assert_control_in_viewport("battle_hud_economy", hud.get_node_or_null("../BattleTopBar/EconomyPanel") as Control),
+		_assert_control_in_viewport("battle_hud_baike", hud.get_node_or_null("../BattleTopBar/TopRightActions/BaikeButton") as Control),
+		_assert_control_in_viewport("battle_hud_plugin", hud.get_node_or_null("../BattleTopBar/TopRightActions/PluginButton") as Control),
 		_assert_control_in_viewport("battle_hud_drawer_toggle", hud.get_node_or_null("StatsDrawer/ToggleButton") as Control),
 	]
 	if drawer_open:

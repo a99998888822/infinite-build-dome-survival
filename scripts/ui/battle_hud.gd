@@ -36,6 +36,12 @@ const DRAWER_OPEN_RIGHT := 0.0
 const DRAWER_CLOSED_LEFT := -28.0
 const DRAWER_CLOSED_RIGHT := 292.0
 const DRAWER_ANIMATION_SECONDS := 0.18
+const TOP_BAR_HEIGHT := 56.0
+const TOP_BAR_MARGIN := 12.0
+const TOP_BAR_GAP := 12.0
+const TOP_BAR_ACTIONS_WIDTH := 70.0
+const MODAL_ECONOMY_WIDTH := 190.0
+const WAVE_PANEL_SIZE := Vector2(112.0, 44.0)
 const MODAL_SAFE_EDGE_MARGIN := 16.0
 const MODAL_FALLBACK_TOP := 16.0
 const MODAL_FALLBACK_RIGHT_OPEN := 336.0
@@ -70,6 +76,13 @@ const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 	MainFlowCoordinator.STATE_ZONE_SELECT,
 	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
+]
+const TOP_BAR_TIMER_HIDDEN_STATES: Array[String] = [
+	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
+	MainFlowCoordinator.STATE_SHOP_POPUP,
+	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_ESC_OVERLAY,
+	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 ]
 const STAT_DISPLAY_ORDER: Array[String] = [
 	"max_hp",
@@ -114,12 +127,13 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 @onready var hp_label: Label = get_node_or_null("StatusPanel/TopLeft/HpRow/HpBar/Text")
 @onready var shield_bar: ProgressBar = get_node_or_null("StatusPanel/TopLeft/ShieldRow/ShieldBar")
 @onready var shield_label: Label = get_node_or_null("StatusPanel/TopLeft/ShieldRow/ShieldBar/Text")
-@onready var wave_panel: PanelContainer = get_node_or_null("StatusPanel/WavePanel")
-@onready var wave_label: Label = get_node_or_null("StatusPanel/WavePanel/Content/WaveLabel")
-@onready var wave_timer_label: Label = get_node_or_null("StatusPanel/WavePanel/Content/TimerLabel")
-@onready var economy_panel: VBoxContainer = get_node_or_null("../EconomyOverlay/EconomyPanel")
-@onready var gold_label: Label = get_node_or_null("../EconomyOverlay/EconomyPanel/GoldRow/Label")
-@onready var finance_label: Label = get_node_or_null("../EconomyOverlay/EconomyPanel/FinanceRow/Label")
+@onready var battle_top_bar: CanvasLayer = get_node_or_null("../BattleTopBar")
+@onready var wave_panel: PanelContainer = get_node_or_null("../BattleTopBar/WavePanel")
+@onready var wave_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/WaveLabel")
+@onready var wave_timer_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/TimerLabel")
+@onready var economy_panel: HBoxContainer = get_node_or_null("../BattleTopBar/EconomyPanel")
+@onready var gold_label: Label = get_node_or_null("../BattleTopBar/EconomyPanel/GoldRow/Label")
+@onready var finance_label: Label = get_node_or_null("../BattleTopBar/EconomyPanel/FinanceRow/Label")
 @onready var exp_panel: VBoxContainer = get_node_or_null("StatusPanel/ExpPanel")
 @onready var exp_label: Label = get_node_or_null("StatusPanel/ExpPanel/ExpLabel")
 @onready var exp_bar: ProgressBar = get_node_or_null("StatusPanel/ExpPanel/ExpBar")
@@ -477,47 +491,39 @@ func _apply_combat_layout() -> void:
 		return
 	var viewport_width := get_viewport().get_visible_rect().size.x
 	var bar_width := clampf(viewport_width * 0.26, 144.0, 220.0)
-	var weapon_strip_rect := _get_weapon_strip_rect()
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
 	if shield_bar != null:
 		shield_bar.custom_minimum_size.x = bar_width
 	if wave_panel != null:
-		var wave_size := Vector2(116.0, 68.0)
 		wave_panel.anchor_left = 0.0
 		wave_panel.anchor_top = 0.0
 		wave_panel.anchor_right = 0.0
 		wave_panel.anchor_bottom = 0.0
 		wave_panel.position = Vector2(
-			(viewport_width - wave_size.x) * 0.5,
-			weapon_strip_rect.position.y + (weapon_strip_rect.size.y - wave_size.y) * 0.5
+			(viewport_width - WAVE_PANEL_SIZE.x) * 0.5,
+			(TOP_BAR_HEIGHT - WAVE_PANEL_SIZE.y) * 0.5
 		)
-		wave_panel.size = wave_size
-		wave_panel.custom_minimum_size = wave_size
+		wave_panel.size = WAVE_PANEL_SIZE
+		wave_panel.custom_minimum_size = WAVE_PANEL_SIZE
 	if economy_panel != null:
-		var economy_size := Vector2(clampf(viewport_width * 0.20, 170.0, 220.0), 52.0)
-		var viewport_rect := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
-		var gap := 12.0
-		var candidate_positions: Array[Vector2] = [
-			Vector2(weapon_strip_rect.end.x + gap, weapon_strip_rect.position.y + (weapon_strip_rect.size.y - economy_size.y) * 0.5),
-			Vector2(weapon_strip_rect.position.x - economy_size.x - gap, weapon_strip_rect.position.y + (weapon_strip_rect.size.y - economy_size.y) * 0.5),
-			Vector2(weapon_strip_rect.position.x + (weapon_strip_rect.size.x - economy_size.x) * 0.5, weapon_strip_rect.end.y + gap),
-			Vector2(weapon_strip_rect.position.x + (weapon_strip_rect.size.x - economy_size.x) * 0.5, weapon_strip_rect.position.y - economy_size.y - gap),
-		]
-		var economy_position: Vector2 = candidate_positions[0]
-		for candidate in candidate_positions:
-			var candidate_rect := Rect2(candidate, economy_size)
-			if viewport_rect.encloses(candidate_rect) and not candidate_rect.intersects(weapon_strip_rect):
-				economy_position = candidate
-				break
-		# On narrow windows, keep the panel visible while preserving a gap from the strip.
-		economy_position.x = clampf(economy_position.x, 8.0, maxf(8.0, viewport_rect.size.x - economy_size.x - 8.0))
-		economy_position.y = clampf(economy_position.y, 8.0, maxf(8.0, viewport_rect.size.y - economy_size.y - 8.0))
+		var wave_right := (viewport_width + WAVE_PANEL_SIZE.x) * 0.5
+		var actions_left := viewport_width - TOP_BAR_MARGIN - TOP_BAR_ACTIONS_WIDTH
+		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
+		var economy_left := wave_right + TOP_BAR_GAP
+		var economy_width := clampf(viewport_width * 0.20, 150.0, 220.0)
+		if timer_hidden:
+			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0))
+			economy_left = actions_left - TOP_BAR_GAP - economy_width
+		else:
+			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
+			economy_width = minf(economy_width, available_width)
+		var economy_size := Vector2(economy_width, 32.0)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
 		economy_panel.anchor_right = 0.0
 		economy_panel.anchor_bottom = 0.0
-		economy_panel.position = economy_position
+		economy_panel.position = Vector2(economy_left, (TOP_BAR_HEIGHT - economy_size.y) * 0.5)
 		economy_panel.size = economy_size
 	if exp_panel != null:
 		if OS.has_feature("mobile"):
@@ -582,10 +588,10 @@ func get_modal_safe_rect() -> Rect2:
 func _refresh_visibility() -> void:
 	if _flow == null:
 		visible = false
+		if battle_top_bar != null:
+			battle_top_bar.visible = false
 		if status_panel != null:
 			status_panel.visible = false
-		if economy_panel != null:
-			economy_panel.visible = false
 		return
 	var in_battle := _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE
 	var state := _flow.get_current_state()
@@ -595,10 +601,12 @@ func _refresh_visibility() -> void:
 		visible = false
 	else:
 		visible = true
+	if battle_top_bar != null:
+		battle_top_bar.visible = in_battle and not _flow.battle_resolved and state != MainFlowCoordinator.STATE_BATTLE_RESULT
+	if wave_panel != null:
+		wave_panel.visible = battle_top_bar != null and battle_top_bar.visible and not TOP_BAR_TIMER_HIDDEN_STATES.has(state)
 	if status_panel != null:
 		status_panel.visible = visible and not STATUS_HIDDEN_MODAL_STATES.has(state)
-	if economy_panel != null:
-		economy_panel.visible = in_battle and not _flow.battle_resolved and state != MainFlowCoordinator.STATE_BATTLE_RESULT
 
 
 func _on_drawer_toggle_pressed() -> void:

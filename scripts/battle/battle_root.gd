@@ -1,6 +1,8 @@
 extends Node
 class_name BattleRoot
 
+const PLAYER_START_POSITION := Vector2.ZERO
+
 @onready var player: PlayerController = get_node_or_null("Player")
 @onready var loadout: WeaponLoadout = get_node_or_null("Loadout")
 @onready var wave_manager: WaveManager = get_node_or_null("WaveManager")
@@ -14,6 +16,8 @@ var _low_resolution_world_nodes: Array[Node] = []
 
 
 func _ready() -> void:
+	if player != null:
+		player.position = PLAYER_START_POSITION
 	_attach_world_nodes_to_low_resolution_viewport()
 	_bind_mobile_joystick()
 	_bind_to_flow()

@@ -410,9 +410,6 @@ func _process_regeneration(delta: float) -> void:
 	if shield_regen <= 0.0:
 		_shield_regen_remainder = 0.0
 		return
-	if current_shield_capacity > 0 and current_shield >= current_shield_capacity:
-		_shield_regen_remainder = 0.0
-		return
 	_shield_regen_remainder += shield_regen * delta
 	var shield_amount := floori(_shield_regen_remainder)
 	if shield_amount > 0:

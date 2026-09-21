@@ -354,6 +354,8 @@ func _run_survival_relic_checks() -> bool:
 	passed = _print_check_result("survival relic shield regen", player.current_shield == 0 and player.current_shield_capacity == 0) and passed
 	player._physics_process(1.0)
 	passed = _print_check_result("survival relic shield regen after two seconds", player.current_shield == 1 and player.current_shield_capacity == 1) and passed
+	player._physics_process(2.0)
+	passed = _print_check_result("survival relic shield regen continues while full", player.current_shield == 2 and player.current_shield_capacity == 2) and passed
 
 	passed = _print_check_result("survival relic low sanity movement", player.add_relic("relic_lost_wayfarer_greave")) and passed
 	player.add_runtime_modifier({

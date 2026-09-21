@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -8,7 +8,7 @@
 [ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
 [ext_resource type="PackedScene" path="res://scenes/ui/esc/esc_overlay.tscn" id="7_esc_overlay"]
 [ext_resource type="Script" path="res://scripts/battle/battle_environment.gd" id="8_battle_environment"]
-[ext_resource type="Shader" path="res://shaders/battle/abyss_floor.gdshader" id="9_abyss_floor"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/background-stone-brick-floor.png" id="9_stone_floor"]
 [ext_resource type="Shader" path="res://shaders/battle/crt_ambience.gdshader" id="10_crt_ambience"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_hp.png" id="11_hud_hp"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_shield.png" id="12_hud_shield"]
@@ -19,15 +19,24 @@
 [ext_resource type="Script" path="res://scripts/effects/particle_world.gd" id="17_particle_world"]
 [ext_resource type="Script" path="res://scripts/effects/particle_light_field.gd" id="19_particle_light_field"]
 [ext_resource type="Script" path="res://scripts/effects/combat_render_world.gd" id="20_combat_render_world"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/background-sky-Recovered.png" id="21_battle_sky"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-baike.png" id="22_icon_baike"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-plugin.png" id="23_icon_plugin"]
+[ext_resource type="Script" path="res://scripts/battle/horizon_sea.gd" id="24_horizon_sea"]
+[ext_resource type="Shader" path="res://shaders/battle/wet_stone_floor.gdshader" id="25_wet_stone_floor"]
+[ext_resource type="Shader" path="res://shaders/battle/horizon_sea.gdshader" id="26_horizon_sea"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_abyss_floor"]
-shader = ExtResource("9_abyss_floor")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_ambience"]
 shader = ExtResource("10_crt_ambience")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wet_stone_floor"]
+shader = ExtResource("25_wet_stone_floor")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_horizon_sea"]
+shader = ExtResource("26_horizon_sea")
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
 bg_color = Color(0.035, 0.049, 0.031, 0.9)
@@ -36,10 +45,10 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.235, 0.274, 0.184, 0.94)
-content_margin_left = 12.0
-content_margin_top = 7.0
-content_margin_right = 12.0
-content_margin_bottom = 7.0
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_bar_background"]
 bg_color = Color(0.025, 0.033, 0.022, 0.98)
@@ -74,18 +83,82 @@ script = ExtResource("4_battle_root")
 layer = -4
 script = ExtResource("8_battle_environment")
 
-[node name="Floor" type="ColorRect" parent="BattleEnvironment"]
+[node name="FloorBase" type="ColorRect" parent="BattleEnvironment"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-material = SubResource("ShaderMaterial_abyss_floor")
 mouse_filter = 2
+color = Color(0.008, 0.045, 0.047, 1)
+
+[node name="BattleSky" type="CanvasLayer" parent="."]
+layer = -2
+
+[node name="Sky" type="TextureRect" parent="BattleSky"]
+texture_filter = 1
+anchor_right = 1.0
+offset_top = 56.0
+offset_bottom = 128.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("21_battle_sky")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="TopEdgeHighlight" type="ColorRect" parent="BattleSky"]
+anchor_right = 1.0
+offset_top = 56.0
+offset_bottom = 58.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.32, 0.22, 0.08, 0.72)
+
+[node name="TopEdgeShadow" type="ColorRect" parent="BattleSky"]
+anchor_right = 1.0
+offset_top = 58.0
+offset_bottom = 65.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="BottomEdgeGlow" type="ColorRect" parent="BattleSky"]
+anchor_right = 1.0
+offset_top = 124.0
+offset_bottom = 130.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.42, 0.13, 0.07, 0.34)
+
+[node name="BottomEdgeShadow" type="ColorRect" parent="BattleSky"]
+anchor_right = 1.0
+offset_top = 128.0
+offset_bottom = 138.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.58)
 
 [node name="CombatRenderWorld" type="Node2D" parent="."]
 z_index = 0
 script = ExtResource("20_combat_render_world")
+
+[node name="StoneBrickFloor" type="Sprite2D" parent="CombatRenderWorld"]
+texture_filter = 1
+position = Vector2(0, -38.5)
+z_index = -100
+material = SubResource("ShaderMaterial_wet_stone_floor")
+texture = ExtResource("9_stone_floor")
+
+[node name="HorizonSea" type="Node2D" parent="CombatRenderWorld"]
+z_index = -98
+top_level = true
+script = ExtResource("24_horizon_sea")
+
+[node name="SeaBand" type="ColorRect" parent="CombatRenderWorld/HorizonSea"]
+offset_right = 800.0
+offset_bottom = 82.0
+material = SubResource("ShaderMaterial_horizon_sea")
+mouse_filter = 2
 
 [node name="ParticleLightField" type="Node2D" parent="CombatRenderWorld"]
 z_index = 15
@@ -126,7 +199,7 @@ material = SubResource("ShaderMaterial_modal_backdrop")
 mouse_filter = 2
 
 [node name="HUD" type="CanvasLayer" parent="."]
-layer = 24
+layer = 29
 script = ExtResource("5_battle_hud")
 
 [node name="StatusPanel" type="Control" parent="HUD"]
@@ -212,81 +285,117 @@ text = "0/0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WavePanel" type="PanelContainer" parent="HUD/StatusPanel"]
-anchors_preset = 10
-anchor_right = 0.5
-grow_horizontal = 0
-offset_left = -65.0
-offset_top = 14.0
-offset_right = 65.0
-offset_bottom = 88.0
+[node name="BattleTopBar" type="CanvasLayer" parent="."]
+layer = 28
+
+[node name="BattleTopBarBackground" type="CanvasLayer" parent="."]
+layer = 21
+
+[node name="Background" type="ColorRect" parent="BattleTopBarBackground"]
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.004, 0.006, 0.004, 1)
+
+[node name="WavePanel" type="PanelContainer" parent="BattleTopBar"]
+offset_left = 520.0
+offset_top = 6.0
+offset_right = 632.0
+offset_bottom = 50.0
 theme_override_styles/panel = SubResource("StyleBox_wave_panel")
 
-[node name="Content" type="VBoxContainer" parent="HUD/StatusPanel/WavePanel"]
+[node name="Content" type="VBoxContainer" parent="BattleTopBar/WavePanel"]
 alignment = 1
-theme_override_constants/separation = 2
+theme_override_constants/separation = 0
 
-[node name="WaveLabel" type="Label" parent="HUD/StatusPanel/WavePanel/Content"]
+[node name="WaveLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
 theme_override_colors/font_color = Color(0.64, 0.65, 0.56, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 9
 text = "第 1 波"
 horizontal_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="HUD/StatusPanel/WavePanel/Content"]
+[node name="TimerLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
 theme_override_colors/font_color = Color(0.89, 0.8, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 21
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 17
 text = "60s"
 horizontal_alignment = 1
 
-[node name="EconomyOverlay" type="CanvasLayer" parent="."]
-layer = 27
-
-[node name="EconomyPanel" type="VBoxContainer" parent="EconomyOverlay"]
+[node name="EconomyPanel" type="HBoxContainer" parent="BattleTopBar"]
 mouse_filter = 2
 alignment = 1
+theme_override_constants/separation = 12
+
+[node name="GoldRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
+custom_minimum_size = Vector2(0, 20)
+size_flags_horizontal = 3
 theme_override_constants/separation = 5
 
-[node name="GoldRow" type="HBoxContainer" parent="EconomyOverlay/EconomyPanel"]
-custom_minimum_size = Vector2(0, 20)
-theme_override_constants/separation = 8
-
-[node name="Icon" type="TextureRect" parent="EconomyOverlay/EconomyPanel/GoldRow"]
+[node name="Icon" type="TextureRect" parent="BattleTopBar/EconomyPanel/GoldRow"]
 custom_minimum_size = Vector2(18, 18)
 texture = ExtResource("13_finance_coin")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="EconomyOverlay/EconomyPanel/GoldRow"]
+[node name="Label" type="Label" parent="BattleTopBar/EconomyPanel/GoldRow"]
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 text = "金币：0"
 vertical_alignment = 1
 
-[node name="FinanceRow" type="HBoxContainer" parent="EconomyOverlay/EconomyPanel"]
+[node name="FinanceRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
 custom_minimum_size = Vector2(0, 20)
-theme_override_constants/separation = 8
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
 
-[node name="Icon" type="TextureRect" parent="EconomyOverlay/EconomyPanel/FinanceRow"]
+[node name="Icon" type="TextureRect" parent="BattleTopBar/EconomyPanel/FinanceRow"]
 custom_minimum_size = Vector2(18, 18)
 texture = ExtResource("14_finance_bill")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="EconomyOverlay/EconomyPanel/FinanceRow"]
+[node name="Label" type="Label" parent="BattleTopBar/EconomyPanel/FinanceRow"]
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.66, 0.54, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 text = "本金：0"
 vertical_alignment = 1
+
+[node name="TopRightActions" type="HBoxContainer" parent="BattleTopBar"]
+texture_filter = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -82.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 44.0
+grow_horizontal = 0
+theme_override_constants/separation = 6
+
+[node name="BaikeButton" type="TextureButton" parent="BattleTopBar/TopRightActions"]
+custom_minimum_size = Vector2(32, 32)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("22_icon_baike")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PluginButton" type="TextureButton" parent="BattleTopBar/TopRightActions"]
+custom_minimum_size = Vector2(32, 32)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("23_icon_plugin")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="ExpPanel" type="VBoxContainer" parent="HUD/StatusPanel"]
 anchors_preset = 12
@@ -323,7 +432,7 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -28.0
-offset_top = 16.0
+offset_top = 56.0
 offset_right = 292.0
 offset_bottom = -16.0
 mouse_filter = 0
