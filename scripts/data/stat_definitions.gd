@@ -38,7 +38,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 9999,
 		"is_integer": false,
 		"is_percent": false,
-		"description": "每秒恢复的生命值。"
+		"description": "每秒恢复的生命值；负值会抵扣正向回血，战斗结算时以 0 为下限（不会掉血），面板仍显示真实数值。"
 	},
 	"shield": {
 		"display_name": "护盾",

@@ -119,7 +119,7 @@ MVP 不需要 `settlement_id`，也不做结算去重。
   "rarity": "rare",
   "target_id": "weapon_void_blade",
   "display_name": "虚空刃 升至2级",
-  "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
+  "icon": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
   "load_cost": 12,
   "from_level": 1,
   "to_level": 2,

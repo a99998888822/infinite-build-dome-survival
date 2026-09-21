@@ -2,6 +2,7 @@
 
 > 本文档汇总原分模块 asset checklist 中的美术规范、Godot 导入约定、复用规则和不制作决策。
 > 具体素材条目、路径、尺寸和提示词以 `docs/asset/asset_checklist_summary.md` 为唯一来源。
+> 判定说明：下列“当前配置引用检查”表已按磁盘实况核对（2026-09-21），状态以 `assets/` 下实际文件为准。
 
 ## 玩家与角色模块素材生成 Checklist
 
@@ -68,7 +69,11 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_void_blade.png` | 已存在 | 需生成或放入正式图标 |
+| `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 已存在 | 64x64；配置 `display_name` 为“木质弓箭”，`weapon_void_blade` 是遗留 ID（按设计保留，不再重命名） |
+| `weapon_void_blade` | `projectile_texture` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 已存在 | 24x24；投射物贴图 |
+| `weapon_void_blade` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
+| `weapon_plasma_cannon` | `icon` | `assets/ui/icons/weapons/weapon_plasma_cannon.png` | 已存在 | 32x32 |
+| `weapon_plasma_cannon` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
 
 ### 5. Godot 导入与裁剪约定
 
@@ -106,33 +111,34 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_flyer_ad` | `icon` | `assets/ui/icons/relics/relic_flyer_ad.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_merger_reorg` | `icon` | `assets/ui/icons/relics/relic_merger_reorg.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_private_army` | `icon` | `assets/ui/icons/relics/relic_private_army.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_periodic_dividend_clock` | `icon` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_divine_fusion` | `icon` | `assets/ui/icons/relics/relic_divine_fusion.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_medical_cutback` | `icon` | `assets/ui/icons/relics/relic_medical_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_welfare_cutback` | `icon` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 未存在 | 还没有生成或未放入目标路径 |
-| `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 未存在 | 还没有生成或未放入目标路径 |
+| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_flyer_ad` | `icon` | `assets/ui/icons/relics/relic_flyer_ad.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_merger_reorg` | `icon` | `assets/ui/icons/relics/relic_merger_reorg.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_periodic_dividend_clock` | `icon` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_divine_fusion` | `icon` | `assets/ui/icons/relics/relic_divine_fusion.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_medical_cutback` | `icon` | `assets/ui/icons/relics/relic_medical_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_welfare_cutback` | `icon` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+
+> 说明：上表只覆盖原列表中的 22 个遗物图标；完整 72 条遗物图标以 `docs/asset/asset_checklist_summary.md` 为准，状态与尺寸已按磁盘实况更新。
 
 ### 5. Godot 导入约定
 
-1. 遗物图标统一使用 `128x128` 或 `256x256` PNG，透明背景。
+1. 遗物图标统一使用 PNG，透明背景；当前工程内实际为 `32x32`，如后续重出高清版本再按 `128x128` 或 `256x256` 制作。
 2. 羁绊徽记统一使用 `128x128` PNG，便于在 UI 面板中缩放。
 3. 遗物奖励卡面统一复用第九模块 `reward_option.tscn`，MVP 阶段不需要单独卡底图。
 4. 当前 MVP 只要求遗物图标可用，羁绊徽记可暂空。
@@ -316,8 +322,9 @@
 
 ### 5. 放置目录
 
-1. BGM：`assets/audio/bgm/`
-2. 武器命中音效：`assets/audio/sfx/weapons/`
+1. BGM：`assets/audio/bgm/`（已存在：`bgm_menu.ogg`、`bgm_battle.ogg`）
+2. 环境音效：`assets/audio/sfx/effects/`（已存在：`lighting_1.wav`、`lighting_2.wav`、`thunder_1.wav`）
+3. 武器命中音效：`assets/audio/sfx/weapons/`（目标目录，尚未创建）
 
 ### 6. 状态字段说明
 

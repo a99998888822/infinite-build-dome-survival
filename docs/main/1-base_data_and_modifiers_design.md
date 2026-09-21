@@ -520,7 +520,7 @@ func find_refs(config_id: String) -> Array[Dictionary]
 {
   "id": "weapon_void_blade",
   "display_name": "小飞刃",
-  "icon": "res://assets/ui/icons/weapons/weapon_void_blade.png",
+  "icon": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
   "rarity": "common",
   "attack_kind": "ranged",
   "tags": [],

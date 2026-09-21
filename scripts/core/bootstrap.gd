@@ -385,8 +385,8 @@ func _run_survival_relic_checks() -> bool:
 	var expected_greave_armor := floorf(player.get_stat("move_speed") / 10.0)
 	passed = _print_check_result("survival relic move speed armor", greave_added and is_equal_approx(player.get_stat("armor") - armor_before_greave, expected_greave_armor)) and passed
 
-	var hp_before_drain := player.current_hp
-	var hp_regen_before_drain := player.get_stat("hp_regen")
+	var hp_before_negative_regen := player.current_hp
+	var hp_regen_before_negative := player.get_stat("hp_regen")
 	player.add_runtime_modifier({
 		"id": "mod_bootstrap_negative_regen",
 		"source_type": "test",
@@ -394,14 +394,14 @@ func _run_survival_relic_checks() -> bool:
 		"target_scope": "player",
 		"stat": "hp_regen",
 		"operation": "add_flat",
-		"value": -(hp_regen_before_drain + 2.0),
+		"value": -(hp_regen_before_negative + 2.0),
 		"duration": -1,
 		"stack_rule": "unique",
 	})
 	var net_hp_regen := player.get_stat("hp_regen")
-	var expected_drain := floori(-net_hp_regen) if net_hp_regen < 0.0 else 0
+	passed = _print_check_result("survival relic negative regen keeps true value", net_hp_regen < 0.0 and is_equal_approx(net_hp_regen, -2.0)) and passed
 	player._physics_process(1.0)
-	passed = _print_check_result("survival relic negative regen drains", expected_drain > 0 and player.current_hp == hp_before_drain - expected_drain) and passed
+	passed = _print_check_result("survival relic negative regen does not drain", player.current_hp == hp_before_negative_regen) and passed
 	player.queue_free()
 	return passed
 

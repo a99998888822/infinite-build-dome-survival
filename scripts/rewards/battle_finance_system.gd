@@ -34,7 +34,6 @@ const EFFECT_DIVIDEND_DOUBLE: String = "dividend_double"
 const EFFECT_ADD_INTEREST_RATE_BONUS: String = "add_interest_rate_bonus"
 const EFFECT_SETTLE_INTEREST_EVERY_N_WAVES: String = "settle_interest_every_n_waves"
 const EFFECT_EXTRA_SETTLEMENT_PER_WAVE: String = "extra_settlement_per_wave"
-const EFFECT_CONSUME_PRINCIPAL_PERCENT_EVERY_N_WAVES: String = "consume_principal_percent_every_n_waves"
 const EFFECT_REQUIRE_WAVE_START_DEPOSIT: String = "require_wave_start_deposit_for_interest"
 const EFFECT_ADD_EROSION: String = "add_erosion"
 const EFFECT_DERIVED_STAT_FROM_PRINCIPAL: String = "derived_stat_from_principal"
@@ -225,22 +224,8 @@ func process_wave_end_settlements() -> Array[Dictionary]:
 	last_settlement_results.clear()
 	for result in results:
 		last_settlement_results.append(result.duplicate(true))
-	_apply_wave_end_principal_costs()
 	_emit_changed()
 	return results
-
-
-func _apply_wave_end_principal_costs() -> void:
-	# 私人武装：每 N 波按百分比扣除当前本金作为军费。
-	for effect in _collect_runtime_effects(TRIGGER_WAVE_END):
-		if str(effect.get("effect", "")) != EFFECT_CONSUME_PRINCIPAL_PERCENT_EVERY_N_WAVES:
-			continue
-		var interval := int(effect.get("interval_waves", 3))
-		if interval <= 0 or wave_counter % interval != 0:
-			continue
-		var percent := float(effect.get("value_percent", 5))
-		var cost := int(ceil(float(principal) * percent / 100.0))
-		principal = maxi(0, principal - cost)
 
 
 func trigger_manual_interest(source: String = SETTLE_MANUAL) -> Dictionary:

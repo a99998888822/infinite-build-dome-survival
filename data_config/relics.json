@@ -305,26 +305,6 @@
     ]
   },
   {
-    "id": "relic_private_army",
-    "display_name": "私人武装",
-    "description": "每 3 波消耗当前本金 5% 作为军费",
-    "icon": "res://assets/ui/icons/relics/relic_private_army.png",
-    "rarity": "epic",
-    "max_stack": 1,
-    "tags": [
-      "finance"
-    ],
-    "effects": [],
-    "runtime_effects": [
-      {
-        "trigger": "wave_end",
-        "effect": "consume_principal_percent_every_n_waves",
-        "interval_waves": 3,
-        "value_percent": 5
-      }
-    ]
-  },
-  {
     "id": "relic_periodic_dividend_clock",
     "display_name": "周期分红钟",
     "description": "每经过 3 波，额外触发一次利息结算",
