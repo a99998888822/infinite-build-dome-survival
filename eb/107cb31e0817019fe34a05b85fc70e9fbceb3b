@@ -1,0 +1,45 @@
+scripts/data/stat_definitions.gd
+  s_e459c8c014e144::t_cc0ef1fbc042a9 41
+scripts/core/bootstrap.gd
+  s_e459c8c014e144::t_d92933b5548215 402
+  s_e459c8c014e144::t_9aba14b3663104 388-389,397
+  s_e459c8c014e144::t_0b696df053a1c9 404
+scripts/player/player_controller.gd
+  s_e459c8c014e144::t_d9b2fff92c064d 399
+  s_e459c8c014e144::t_8762d7b3d9e8d7 400-405
+docs/asset/asset_checklist_summary.md
+  s_e459c8c014e144::t_29534449255ce6 130
+  s_8f3ccbb9c379cf::t_562798206b1365 4-5,7-9,12,42-128,145,175,192,194,212-214
+docs/asset/asset_rules_summary.md
+  s_8f3ccbb9c379cf::t_48c3c30be4bb99 5,72-76,114-137,141,325-327
+docs/main/1-base_data_and_modifiers_design.md
+  s_8f3ccbb9c379cf::t_d7dcd36432183d 523
+docs/main/10-audio_atmosphere_design.md
+  s_8f3ccbb9c379cf::t_f6aaa90aa1a07f 90-91
+docs/main/9-drop_reward_design.md
+  s_8f3ccbb9c379cf::t_b72f887117abd0 122
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "eb107cb31e0817019fe34a05b85fc70e9fbceb3b",
+  "prompts": {},
+  "sessions": {
+    "s_8f3ccbb9c379cf": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad0a-3ed5-7283-9274-e590dd337090",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e459c8c014e144": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a7fa-46d6-7c01-bd6d-938278f1ad61",
+        "model": "deepseek/deepseek-v4-flash"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
