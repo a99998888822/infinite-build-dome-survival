@@ -49,6 +49,16 @@ static func build_bond_tooltip_text(bond_id: String, relic_system: RelicBondSyst
 	return "\n".join(lines)
 
 
+static func build_bond_reference_text(bond_data: Dictionary) -> String:
+	var lines: Array[String] = []
+	var thresholds: Dictionary = bond_data.get("thresholds", {})
+	var keys := thresholds.keys()
+	keys.sort_custom(func(a, b): return int(str(a)) < int(str(b)))
+	for key in keys:
+		lines.append("%d 件：%s" % [int(str(key)), _build_threshold_effects_text(thresholds[key])])
+	return "\n\n".join(lines)
+
+
 static func _build_threshold_effects_text(effects: Variant) -> String:
 	var parts: Array[String] = []
 	if effects is Array:

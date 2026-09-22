@@ -58,10 +58,14 @@ func _handle_android_back_request() -> void:
 			flow.request_esc_overlay()
 		MainFlowCoordinator.STATE_ESC_OVERLAY:
 			flow.close_esc_overlay()
+		MainFlowCoordinator.STATE_BATTLE_UTILITY:
+			flow.close_battle_utility()
 		MainFlowCoordinator.STATE_SHOP_POPUP:
 			flow.close_shop_popup()
 		MainFlowCoordinator.STATE_FINANCE_POPUP:
-			flow.submit_finance_operation("none", 0)
+			var finance := find_child("FinancePopup", true, false) as FinancePopup
+			if finance != null:
+				finance.handle_back_request()
 		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
 			flow.close_interest_settlement()
 		MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:

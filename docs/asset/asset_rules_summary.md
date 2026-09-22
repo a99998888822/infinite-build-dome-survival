@@ -25,8 +25,8 @@
 
 | 文件 | 当前检查结果 | 建议 |
 |---|---|---|
-| `assets/sprites/player/player_void_hunter_right_base.png` | 已存在，尺寸 256x256，透明背景正常，风格可用 | 作为基础单帧可直接使用 |
-| `assets/sprites/player/player_void_hunter_walk_right_spritesheet.png` | 已存在，尺寸 1024x256，透明背景，当前为 4 帧版本 | 可用，后续若要严格 6 帧可再重出 |
+| `assets/sprites/player/void_hunter_idle_right.png` | 已存在，尺寸 256x256，透明背景正常，风格可用 | 当前正式待机素材 |
+| `assets/sprites/player/void_hunter_walk_right_spritesheet.png` | 已存在，尺寸 1024x256，透明背景，当前为 4 帧版本 | 当前正式行走素材 |
 
 ### 5. Godot 导入与裁剪约定
 

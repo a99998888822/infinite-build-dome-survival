@@ -93,7 +93,7 @@ func _find_main_flow_coordinator() -> MainFlowCoordinator:
 
 func _on_modal_requested(modal_state: String, payload: Dictionary) -> void:
 	match modal_state:
-		MainFlowCoordinator.STATE_SHOP_POPUP, MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP:
+		MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP:
 			_show_shop_popup(payload)
 		_:
 			return

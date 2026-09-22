@@ -13,6 +13,12 @@ const RARITY_COLORS: Dictionary = {
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
 
 var weapon_id: String = ""
+static var _next_instance_id: int = 1
+var instance_id: String = ""
+var trade_base_basis: int = -1
+var trade_upgrade_basis: Dictionary = {}
+# Reserved for earned, instance-bound titles; combat title scoring is a later feature.
+var battle_title: Dictionary = {}
 var weapon_data: Dictionary = {}
 var owner_player: PlayerController = null
 var level: int = 1
@@ -39,6 +45,11 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 		return false
 
 	weapon_id = target_weapon_id
+	instance_id = "weapon_%d" % _next_instance_id
+	_next_instance_id += 1
+	trade_base_basis = -1
+	trade_upgrade_basis.clear()
+	battle_title.clear()
 	weapon_data = data
 	owner_player = player
 	level = 1
@@ -232,6 +243,20 @@ func detach_item_instance(item_instance_id: String = "") -> Dictionary:
 	_attached_item_instances.remove_at(target_index)
 	_rebuild_attachment_effects()
 	return detached
+
+
+func move_attachment_instance(item_instance_id: String, target_index: int) -> bool:
+	if target_index < 0 or target_index >= _attached_item_instances.size():
+		return false
+	for index in _attached_item_instances.size():
+		if str(_attached_item_instances[index].get("item_instance_id", "")) == item_instance_id:
+			if index != target_index:
+				var item := _attached_item_instances[index]
+				_attached_item_instances.remove_at(index)
+				_attached_item_instances.insert(target_index, item)
+				_rebuild_attachment_effects()
+			return true
+	return false
 
 
 func add_augmentation(augmentation_id: String) -> bool:

@@ -5,6 +5,7 @@ signal weapon_equipped(weapon_id: String)
 signal weapon_upgraded(weapon_id: String, level: int)
 signal equip_failed(weapon_id: String, reason: String)
 signal weapon_attachment_changed(weapon_id: String, item_instance_id: String)
+signal loadout_changed
 
 const PROJECTILE_VISUAL_SCALE: float = 1.0
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
@@ -49,14 +50,58 @@ func try_buy_weapon(weapon_id: String) -> bool:
 
 
 func remove_weapon(weapon_id: String) -> void:
-	for index in range(weapon_instances.size() - 1, -1, -1):
-		if weapon_instances[index].weapon_id != weapon_id:
-			continue
-		var removed_weapon := weapon_instances[index]
-		if owner_player != null and owner_player.item_inventory != null:
-			for attached_item in removed_weapon.get_attached_item_instances():
-				owner_player.item_inventory.clear_equipped_weapon(str(attached_item.get("item_instance_id", "")))
-		weapon_instances.remove_at(index)
+	var removed := take_weapon_for_trade(weapon_id)
+	if removed != null:
+		finish_weapon_removal(removed)
+
+
+func take_weapon_for_trade(weapon_id: String) -> WeaponInstance:
+	var weapon := get_weapon_instance(weapon_id)
+	if weapon != null:
+		weapon_instances.erase(weapon)
+	return weapon
+
+
+func restore_traded_weapon(weapon: WeaponInstance, index: int) -> void:
+	weapon_instances.insert(clampi(index, 0, weapon_instances.size()), weapon)
+
+
+func finish_weapon_removal(weapon: WeaponInstance) -> void:
+	if owner_player != null and owner_player.item_inventory != null:
+		for item in weapon.get_attached_item_instances():
+			owner_player.item_inventory.clear_equipped_weapon(str(item.get("item_instance_id", "")))
+	_notify_loadout_changed()
+
+
+func _notify_loadout_changed() -> void:
+	if owner_player != null:
+		var ids: Array[String] = []
+		for weapon in weapon_instances:
+			ids.append(weapon.weapon_id)
+		owner_player.sync_relic_weapon_ids(ids)
+	loadout_changed.emit()
+
+
+func request_manual_attachment(weapon_id: String, item_instance_id: String) -> bool:
+	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+		return false
+	return attach_item_to_weapon(weapon_id, item_instance_id)
+
+
+func request_manual_detachment(weapon_id: String, item_instance_id: String) -> Dictionary:
+	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+		return {}
+	return detach_item_from_weapon(weapon_id, item_instance_id)
+
+
+func request_manual_attachment_move(weapon_id: String, item_instance_id: String, target_index: int) -> bool:
+	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+		return false
+	var weapon := get_weapon_instance(weapon_id)
+	if weapon == null or not weapon.move_attachment_instance(item_instance_id, target_index):
+		return false
+	weapon_attachment_changed.emit(weapon_id, item_instance_id)
+	return true
 
 
 func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
@@ -86,6 +131,7 @@ func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
 	if not weapon.attach_item_instance(item):
 		if source_weapon != null and not detached_source_item.is_empty():
 			source_weapon.attach_item_instance(detached_source_item)
+			owner_player.item_inventory.set_equipped_weapon(item_instance_id, equipped_weapon_id)
 		return false
 	if not owner_player.item_inventory.set_equipped_weapon(item_instance_id, weapon_id):
 		weapon.detach_item_instance(item_instance_id)
@@ -127,6 +173,7 @@ func upgrade_weapon(weapon_id: String) -> bool:
 	var upgraded := weapon.upgrade()
 	if upgraded:
 		weapon_upgraded.emit(weapon_id, weapon.level)
+		_notify_loadout_changed()
 	return upgraded
 
 
@@ -195,6 +242,7 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 				owner_player.item_inventory.clear_equipped_weapon(str(starting_item.get("item_instance_id", "")))
 	weapon_instances.append(weapon)
 	weapon_equipped.emit(weapon_id)
+	_notify_loadout_changed()
 	return true
 
 

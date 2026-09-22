@@ -64,6 +64,9 @@ var last_settlement_results: Array[Dictionary] = []
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _gold_getter: Callable = Callable()
 var _gold_delta_applier: Callable = Callable()
+var _started_wave_number: int = 0
+var manual_operation_used: bool = false
+var last_manual_operation: Dictionary = {}
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
@@ -75,6 +78,9 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	interest_rate_bonus = 0.0
 	wave_counter = 0
 	current_wave_number = 0
+	_started_wave_number = 0
+	manual_operation_used = false
+	last_manual_operation.clear()
 	last_action_wave_number = 0
 	last_deposit_wave_number = 0
 	has_deposited_before_current_wave = false
@@ -93,11 +99,26 @@ func tick(_delta: float) -> void:
 	pass
 
 
-func begin_wave(wave_number: int) -> Dictionary:
+func prepare_wave(wave_number: int) -> Dictionary:
+	if wave_number <= current_wave_number:
+		return build_finance_popup_payload("preparation")
 	current_wave_number = maxi(1, wave_number)
-	wave_counter += 1
 	has_deposited_before_current_wave = false
 	wave_start_deposit_amount = 0
+	manual_operation_used = false
+	last_manual_operation.clear()
+	_emit_changed()
+	return build_finance_popup_payload("preparation")
+
+
+func begin_wave(wave_number: int) -> Dictionary:
+	prepare_wave(wave_number)
+	if wave_number <= _started_wave_number:
+		return build_finance_popup_payload("wave_start")
+	_started_wave_number = wave_number
+	wave_counter += 1
+	# Preparatory deposits survive the start; gifts use the final carried gold.
+	has_deposited_before_current_wave = wave_start_deposit_amount >= _get_wave_deposit_requirement()
 	_apply_wave_start_relics()
 	_emit_changed()
 	return build_finance_popup_payload("wave_start")
@@ -106,6 +127,8 @@ func begin_wave(wave_number: int) -> Dictionary:
 func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 	return {
 		"source": source,
+		"manual_operation_used": manual_operation_used,
+		"last_manual_operation": last_manual_operation.duplicate(true),
 		"wave_number": current_wave_number,
 		"gold": get_current_gold(),
 		"principal": principal,
@@ -124,11 +147,18 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 func apply_finance_operation(action: String, amount: int) -> Dictionary:
 	var sanitized_action := str(action).strip_edges()
 	var sanitized_amount := maxi(0, amount)
+	if sanitized_action in [ACTION_DEPOSIT, ACTION_WITHDRAW]:
+		if manual_operation_used:
+			return _build_operation_result(false, sanitized_action, sanitized_amount, "bank_operation_used")
+		# Reserve before callbacks can re-enter the bank; release on failure.
+		manual_operation_used = true
+		var result := deposit(sanitized_amount) if sanitized_action == ACTION_DEPOSIT else withdraw(sanitized_amount)
+		manual_operation_used = bool(result.get("success", false))
+		if manual_operation_used:
+			last_manual_operation = result.duplicate(true)
+		_emit_changed()
+		return result
 	match sanitized_action:
-		ACTION_DEPOSIT:
-			return deposit(sanitized_amount)
-		ACTION_WITHDRAW:
-			return withdraw(sanitized_amount)
 		ACTION_NONE, "":
 			var result := _build_operation_result(true, ACTION_NONE, 0, "no_operation")
 			_emit_changed()

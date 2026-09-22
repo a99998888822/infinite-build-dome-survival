@@ -77,7 +77,7 @@ func _refresh_weapon_strip() -> void:
 func _on_item_drop_requested(weapon_id: String, item_instance_id: String) -> void:
 	if not _attachment_editing_enabled or _loadout == null:
 		return
-	if _loadout.attach_item_to_weapon(weapon_id, item_instance_id):
+	if _loadout.request_manual_attachment(weapon_id, item_instance_id):
 		_refresh_weapon_strip()
 
 
@@ -189,7 +189,7 @@ func _detach_tooltip_attachment(weapon_id: String, item_instance_id: String) -> 
 	if not _attachment_editing_enabled or _loadout == null:
 		print("[WeaponStrip] detach rejected before loadout call.")
 		return
-	var detached := _loadout.detach_item_from_weapon(weapon_id, item_instance_id)
+	var detached := _loadout.request_manual_detachment(weapon_id, item_instance_id)
 	if detached.is_empty():
 		print("[WeaponStrip] detach failed: loadout returned no item.")
 		return

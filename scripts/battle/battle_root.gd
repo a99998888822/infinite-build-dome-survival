@@ -8,6 +8,7 @@ const PLAYER_START_POSITION := Vector2.ZERO
 @onready var wave_manager: WaveManager = get_node_or_null("WaveManager")
 @onready var hud: CanvasLayer = get_node_or_null("HUD")
 @onready var esc_overlay: EscOverlay = get_node_or_null("EscLayer/EscOverlay")
+@onready var utility_overlay: BattleUtilityOverlay = get_node_or_null("BattleUtilityOverlay")
 @onready var mobile_joystick: MobileJoystick = get_node_or_null("MobileControls/MobileJoystick")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
@@ -77,6 +78,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_main_flow_coordinator.request_esc_overlay()
 	elif state == MainFlowCoordinator.STATE_ESC_OVERLAY:
 		_main_flow_coordinator.close_esc_overlay()
+	elif state == MainFlowCoordinator.STATE_BATTLE_UTILITY:
+		_main_flow_coordinator.close_battle_utility()
 
 
 func _bind_to_flow() -> void:
@@ -85,6 +88,8 @@ func _bind_to_flow() -> void:
 		return
 	_main_flow_coordinator = coordinator
 	coordinator.bind_battle_context(player, loadout, wave_manager)
+	if utility_overlay != null:
+		utility_overlay.bind_flow(coordinator)
 	if hud != null and hud.has_method("bind_context"):
 		hud.bind_context(coordinator, player, wave_manager)
 	if not coordinator.state_changed.is_connected(_on_flow_state_changed):

@@ -33,8 +33,8 @@
 | 已存在 | wood2 | `wood2.png` | `assets/sprites/camp/wood2.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 经验球 | `pickup_exp_orb.png` | `assets/sprites/pickups/pickup_exp_orb.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 玩家右向基础单帧 | `player_void_hunter_right_base.png` | `assets/sprites/player/player_void_hunter_right_base.png` | 256x256 / 1:1 / PNG |  |
-| 已存在 | 玩家右向行走帧表 | `player_void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/player_void_hunter_walk_right_spritesheet.png` | 1024x256 / 4:1 / PNG |  |
+| 已存在 | 玩家右向基础单帧 | `void_hunter_idle_right.png` | `assets/sprites/player/void_hunter_idle_right.png` | 256x256 / 1:1 / PNG |  |
+| 已存在 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/void_hunter_walk_right_spritesheet.png` | 1024x256 / 4:1 / PNG |  |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
@@ -112,8 +112,8 @@
 | 已存在 | 磨损格斗拳套遗物图标 | `relic_worn_fighting_gloves.png` | `assets/ui/icons/relics/relic_worn_fighting_gloves.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | 磨损的止血布条遗物图标 | `relic_worn_hemostatic_cloth.png` | `assets/ui/icons/relics/relic_worn_hemostatic_cloth.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
-| 已存在 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG |  |
-| 已存在 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG |  |
+| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
+| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 火焰卷轴图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 16x16 / 1:1 / PNG |  |

@@ -4,6 +4,7 @@ class_name EscOverlay
 signal back_pressed
 
 const RELIC_CELL_SIZE: Vector2 = Vector2(48, 48)
+const GRID_EDGE_PADDING := 4
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
 const MODAL_FALLBACK_RIGHT: float = 336.0
@@ -35,12 +36,13 @@ var _grid_layout_retry_in_progress: bool = false
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
 @onready var relic_scroll: ScrollContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll")
-@onready var relic_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll/RelicGrid")
+@onready var relic_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/RelicScroll/GridMargin/RelicGrid")
 @onready var total_label: Label = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/TotalLabel")
 @onready var back_button: Button = get_node_or_null("CenterContainer/RelicPanel/Content/TitleRow/BackButton")
 @onready var relic_tooltip: PanelContainer = get_node_or_null("RelicTooltip")
 @onready var relic_tooltip_label: RichTextLabel = get_node_or_null("RelicTooltip/TooltipMargin/TooltipLabel")
-@onready var item_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/ItemScroll/ItemGrid")
+@onready var item_scroll: ScrollContainer = get_node_or_null("CenterContainer/RelicPanel/Content/ItemScroll")
+@onready var item_grid: GridContainer = get_node_or_null("CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid")
 @onready var item_total_label: Label = get_node_or_null("CenterContainer/RelicPanel/Content/ItemTitleRow/ItemTotalLabel")
 
 
@@ -54,7 +56,10 @@ func _ready() -> void:
 		relic_grid.clip_contents = false
 		_update_relic_grid_columns()
 	if relic_scroll != null:
-		relic_scroll.clip_contents = false
+		relic_scroll.clip_contents = true
+	for scroll in [relic_scroll, item_scroll]:
+		if scroll != null:
+			scroll.resized.connect(_queue_grid_layout_retry)
 	if item_grid != null:
 		item_grid.add_theme_constant_override("h_separation", 10)
 		item_grid.add_theme_constant_override("v_separation", 10)
@@ -69,6 +74,7 @@ func _ready() -> void:
 func show_overlay() -> void:
 	visible = true
 	_layout_overlay()
+	_queue_grid_layout_retry()
 	if center_container == null:
 		return
 	center_container.pivot_offset = center_container.size * 0.5
@@ -130,7 +136,7 @@ func _ensure_backdrop() -> void:
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout, true)
+		weapon_strip.set_loadout(loadout, false)
 	if is_instance_valid(_player) and _player.get_item_inventory() != null:
 		var inventory := _player.get_item_inventory()
 		if not inventory.items_changed.is_connected(_on_item_inventory_changed):
@@ -158,13 +164,14 @@ func _refresh_item_list() -> void:
 		var card := preload("res://scripts/ui/item_inventory_card.gd").new() as ItemInventoryCard
 		if card == null:
 			continue
-		card.configure(item, true)
+		card.configure(item, false)
 		card.item_tooltip_requested.connect(_show_item_tooltip)
 		card.item_tooltip_hidden.connect(_hide_item_tooltip)
 		item_grid.add_child(card)
 		_item_cards.append(card)
 	if item_total_label != null:
 		item_total_label.text = "共 %d 件" % items.size()
+	_queue_grid_layout_retry()
 
 
 func _show_item_tooltip(anchor_card: ItemInventoryCard, bbcode_text: String) -> void:
@@ -241,7 +248,23 @@ func _layout_overlay() -> void:
 		center_container.anchor_right = 0.0
 		center_container.anchor_bottom = 0.0
 		center_container.position = safe.position + Vector2(0.0, MODAL_TOP_OFFSET)
-		center_container.size = Vector2(safe.size.x, minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)))
+		var target_size := Vector2(safe.size.x, minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)))
+		var panel := center_container.get_node("RelicPanel") as PanelContainer
+		var panel_size := Vector2(minf(760.0, safe.size.x), target_size.y)
+		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
+		var content := panel.get_node("Content") as VBoxContainer
+		content.add_theme_constant_override("separation", 6 if compact else 10)
+		var title := content.get_node("TitleRow/TitleLabel") as Label
+		title.add_theme_font_size_override("font_size", 18 if compact else 22)
+		back_button.text = "返回" if compact else "⬅ 返回"
+		back_button.add_theme_font_size_override("font_size", 14 if compact else 16)
+		back_button.custom_minimum_size = Vector2(60.0, 28.0) if compact else Vector2(90.0, 34.0)
+		total_label.custom_minimum_size.x = back_button.custom_minimum_size.x
+		var hint := content.get_node("HintLabel") as Label
+		hint.text = "仅供查看 · ESC 返回" if compact else "此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回"
+		panel.custom_minimum_size = panel_size
+		panel.size = panel_size
+		center_container.size = target_size
 	if _backdrop != null:
 		_backdrop.anchor_left = 0.0
 		_backdrop.anchor_top = 0.0
@@ -262,28 +285,28 @@ func _layout_overlay() -> void:
 
 
 func _update_relic_grid_columns() -> void:
-	if relic_grid == null or not visible:
-		return
-	var relic_scroll := relic_grid.get_parent() as Control
-	if relic_scroll == null or relic_scroll.size.x <= 0.0:
-		_queue_grid_layout_retry()
-		return
-	var separation := float(relic_grid.get_theme_constant("h_separation"))
-	var column_count := maxi(1, int(floor((relic_scroll.size.x + separation) / (RELIC_CELL_SIZE.x + separation))))
-	relic_grid.columns = column_count
+	_update_grid_columns(relic_grid, relic_scroll, RELIC_CELL_SIZE.x)
 
 
 func _update_item_grid_columns() -> void:
-	if item_grid == null or not visible:
+	_update_grid_columns(item_grid, item_scroll, ItemInventoryCard.INVENTORY_ICON_SIZE.x)
+
+
+func _update_grid_columns(grid: GridContainer, scroll: ScrollContainer, cell_width: float) -> void:
+	if grid == null or scroll == null or not visible:
 		return
-	var item_scroll := item_grid.get_parent() as Control
-	if item_scroll == null or item_scroll.size.x <= 0.0:
+	if scroll.size.x <= 0.0:
 		_queue_grid_layout_retry()
 		return
-	var separation := float(item_grid.get_theme_constant("h_separation"))
-	var cell_width := 48.0
-	var column_count := maxi(1, int(floor((item_scroll.size.x + separation) / (cell_width + separation))))
-	item_grid.columns = column_count
+	# Match the reserved scrollbar gutter on the left for stable side padding.
+	# The grid starts at the left inset; unused row space stays on the right.
+	var gutter := ceili(scroll.get_v_scroll_bar().get_combined_minimum_size().x)
+	var margin := grid.get_parent() as MarginContainer
+	margin.add_theme_constant_override("margin_left", gutter + GRID_EDGE_PADDING)
+	margin.add_theme_constant_override("margin_right", GRID_EDGE_PADDING)
+	var available := maxf(scroll.size.x - 2.0 * gutter - 2.0 * GRID_EDGE_PADDING, 0.0)
+	var separation := float(grid.get_theme_constant("h_separation"))
+	grid.columns = maxi(1, floori((available + separation) / (cell_width + separation)))
 
 
 func _queue_grid_layout_retry() -> void:
@@ -297,11 +320,10 @@ func _retry_grid_layout_columns() -> void:
 	_grid_layout_retry_pending = false
 	if not visible:
 		return
-	# A single retry is enough to catch the normal Control layout pass. If the
-	# overlay is still not laid out, the next viewport resize/show will retry.
+	# Wrapped labels can briefly report an oversized minimum before their width
+	# settles. Reapply the panel bounds as well as the grid columns afterwards.
 	_grid_layout_retry_in_progress = true
-	_update_relic_grid_columns()
-	_update_item_grid_columns()
+	_layout_overlay()
 	_grid_layout_retry_in_progress = false
 
 
@@ -350,6 +372,7 @@ func _refresh_relic_list() -> void:
 		relic_grid.add_child(_create_relic_cell(relic_id, count))
 	if total_label != null:
 		total_label.text = "共 %d 个" % total
+	_queue_grid_layout_retry()
 
 
 func _compare_relics(a: String, b: String) -> bool:

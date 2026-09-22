@@ -40,7 +40,7 @@ offset_right = -320.0
 offset_bottom = -40.0
 
 [node name="RelicPanel" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(760, 460)
+custom_minimum_size = Vector2(0, 0)
 theme_override_styles/panel = SubResource("RelicPanelStyle")
 
 [node name="Content" type="VBoxContainer" parent="CenterContainer/RelicPanel"]
@@ -72,15 +72,21 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="RelicScroll" type="ScrollContainer" parent="CenterContainer/RelicPanel/Content"]
-custom_minimum_size = Vector2(0, 188)
+custom_minimum_size = Vector2(0, 56)
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 1
+vertical_scroll_mode = 4
 script = ExtResource("3_touch_scroll")
 
-[node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
-columns = 6
+[node name="GridMargin" type="MarginContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll"]
 size_flags_horizontal = 3
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="RelicGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/RelicScroll/GridMargin"]
+columns = 1
+size_flags_horizontal = 0
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
@@ -101,22 +107,28 @@ text = "共 0 件"
 horizontal_alignment = 2
 
 [node name="ItemScroll" type="ScrollContainer" parent="CenterContainer/RelicPanel/Content"]
-custom_minimum_size = Vector2(0, 112)
+custom_minimum_size = Vector2(0, 56)
 size_flags_vertical = 3
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 1
+vertical_scroll_mode = 4
 script = ExtResource("3_touch_scroll")
 
-[node name="ItemGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll"]
-columns = 4
+[node name="GridMargin" type="MarginContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll"]
 size_flags_horizontal = 3
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ItemGrid" type="GridContainer" parent="CenterContainer/RelicPanel/Content/ItemScroll/GridMargin"]
+columns = 1
+size_flags_horizontal = 0
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
 [node name="HintLabel" type="Label" parent="CenterContainer/RelicPanel/Content"]
+autowrap_mode = 3
 theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)
 theme_override_font_sizes/font_size = 13
-text = "将物品栏中的卷轴或晶石拖到有空槽的武器；满槽需先右键卸下；再次按 ESC 返回"
+text = "此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回"
 horizontal_alignment = 1
 
 [node name="RelicTooltip" type="PanelContainer" parent="."]

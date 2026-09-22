@@ -118,7 +118,7 @@ func start_next_wave() -> bool:
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
 	for group in spawn_groups:
 		spawn_timers_ms.append(0.0)
-	if finance_system != null and int(finance_system.get_state_snapshot().get("current_wave_number", 0)) < current_wave_index + 1:
+	if finance_system != null:
 		finance_system.begin_wave(current_wave_index + 1)
 	if player != null and player.is_alive():
 		player.reset_wave_shield()
@@ -346,7 +346,7 @@ func get_finance_snapshot() -> Dictionary:
 func prepare_finance_for_wave(wave_number: int) -> Dictionary:
 	if finance_system == null:
 		return {}
-	return finance_system.begin_wave(wave_number)
+	return finance_system.prepare_wave(wave_number)
 
 
 func add_relic(relic_id: String) -> bool:

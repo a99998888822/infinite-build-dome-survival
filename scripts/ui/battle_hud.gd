@@ -11,14 +11,13 @@ var _stat_value_labels: Dictionary = {}
 var _stat_name_labels: Dictionary = {}
 var _damage_tooltip_panel: PanelContainer = null
 var _bond_indicator: Button = null
-var _bond_indicator_placeholder: PanelContainer = null
-var _bond_indicator_label: Label = null
 var _bond_tooltip_panel: PanelContainer = null
 var _displayed_bond_id: String = ""
 var _wave_toast: Label = null
 var _resource_pop: Label = null
 var _resource_pop_tween: Tween = null
-var _stats_scanline_overlay: TextureRect = null
+var _drawer_audio: AudioStreamPlayer = null
+var _drawer_scroll_hint: Label = null
 var _progress_tweens: Dictionary = {}
 var _pulse_tweens: Dictionary = {}
 var _last_hp: int = -1
@@ -30,18 +29,28 @@ var _last_exp_required: int = -1
 var _last_level: int = -1
 var _last_gold: int = -1
 var _last_finance_principal: int = -1
+var _vitals_frame: Panel
+var _experience_frame: Panel
+var _bond_row: HBoxContainer
+var _bond_buttons: Dictionary = {}
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
 const DRAWER_CLOSED_LEFT := -28.0
 const DRAWER_CLOSED_RIGHT := 292.0
-const DRAWER_ANIMATION_SECONDS := 0.18
+const DRAWER_ANIMATION_SECONDS := 0.36
+const DRAWER_CLOSE_SECONDS := 0.32
+const DRAWER_SKIN = preload("res://scripts/ui/stats_drawer_skin.gd")
+const DRAWER_HANDLE: Texture2D = preload("res://assets/ui/stats_drawer/stats_leather_handle.png")
+const DRAWER_OPEN_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_open.wav")
+const DRAWER_CLOSE_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_close.wav")
+const DRAWER_TEXT_COLOR := Color(0.91, 0.86, 0.70)
 const TOP_BAR_HEIGHT := 56.0
 const TOP_BAR_MARGIN := 12.0
 const TOP_BAR_GAP := 12.0
-const TOP_BAR_ACTIONS_WIDTH := 70.0
+const TOP_BAR_ACTIONS_WIDTH := 86.0
 const MODAL_ECONOMY_WIDTH := 190.0
-const WAVE_PANEL_SIZE := Vector2(112.0, 44.0)
+const WAVE_PANEL_SIZE := Vector2(136.0, 48.0)
 const MODAL_SAFE_EDGE_MARGIN := 16.0
 const MODAL_FALLBACK_TOP := 16.0
 const MODAL_FALLBACK_RIGHT_OPEN := 336.0
@@ -131,7 +140,9 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 @onready var wave_panel: PanelContainer = get_node_or_null("../BattleTopBar/WavePanel")
 @onready var wave_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/WaveLabel")
 @onready var wave_timer_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/TimerLabel")
-@onready var economy_panel: HBoxContainer = get_node_or_null("../BattleTopBar/EconomyPanel")
+@onready var economy_panel: VBoxContainer = get_node_or_null("../BattleTopBar/EconomyPanel")
+@onready var encyclopedia_button: TextureButton = get_node_or_null("../BattleTopBar/TopRightActions/BaikeButton")
+@onready var settings_button: TextureButton = get_node_or_null("../BattleTopBar/TopRightActions/PluginButton")
 @onready var gold_label: Label = get_node_or_null("../BattleTopBar/EconomyPanel/GoldRow/Label")
 @onready var finance_label: Label = get_node_or_null("../BattleTopBar/EconomyPanel/FinanceRow/Label")
 @onready var exp_panel: VBoxContainer = get_node_or_null("StatusPanel/ExpPanel")
@@ -146,7 +157,8 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 
 func _ready() -> void:
 	_ensure_feedback_ui()
-	_create_stats_scanline_overlay()
+	_style_combat_hud()
+	_create_stats_drawer_skin()
 	_bind_viewport_resize()
 	_apply_combat_layout()
 	if drawer_toggle_button != null and not drawer_toggle_button.pressed.is_connected(_on_drawer_toggle_pressed):
@@ -157,24 +169,146 @@ func _ready() -> void:
 	_set_modal_backdrop_visible(false)
 
 
-func _create_stats_scanline_overlay() -> void:
-	if _stats_scanline_overlay != null or stats_drawer == null:
+func _hud_frame_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.027, 0.044, 0.039, 0.94)
+	style.border_color = Color(0.34, 0.36, 0.25, 0.95)
+	style.set_border_width_all(1)
+	return style
+
+
+func _style_combat_hud() -> void:
+	_vitals_frame = Panel.new()
+	_vitals_frame.name = "VitalsFrame"
+	_vitals_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_vitals_frame.add_theme_stylebox_override("panel", _hud_frame_style())
+	status_panel.add_child(_vitals_frame)
+	status_panel.move_child(_vitals_frame, 0)
+	_experience_frame = Panel.new()
+	_experience_frame.name = "ExperienceFrame"
+	_experience_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_experience_frame.add_theme_stylebox_override("panel", _hud_frame_style())
+	status_panel.add_child(_experience_frame)
+	status_panel.move_child(_experience_frame, 0)
+	top_left.add_theme_constant_override("separation", 2)
+	level_label.visible = false
+	for label in [hp_label, shield_label, gold_label, finance_label]:
+		label.add_theme_font_size_override("font_size", 14)
+		label.add_theme_constant_override("outline_size", 2)
+	wave_label.add_theme_font_size_override("font_size", 12)
+	wave_timer_label.add_theme_font_size_override("font_size", 22)
+	wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.86, 0.65))
+	gold_label.add_theme_color_override("font_color", Color(0.89, 0.76, 0.45))
+	finance_label.add_theme_color_override("font_color", Color(0.65, 0.8, 0.67))
+	exp_label.add_theme_font_size_override("font_size", 12)
+	exp_label.add_theme_color_override("font_color", Color(0.72, 0.83, 0.62))
+	exp_panel.add_theme_constant_override("separation", 2)
+	exp_bar.custom_minimum_size.y = 8
+	for button in [encyclopedia_button, settings_button]:
+		button.custom_minimum_size = Vector2(40, 40)
+		button.mouse_entered.connect(func() -> void: button.modulate = Color(1.2, 1.16, 1.03))
+		button.mouse_exited.connect(func() -> void: button.modulate = Color.WHITE)
+		button.button_down.connect(func() -> void: button.modulate = Color(0.76, 0.84, 0.75))
+		button.button_up.connect(func() -> void: button.modulate = Color.WHITE)
+	encyclopedia_button.pressed.connect(_on_encyclopedia_pressed)
+	settings_button.pressed.connect(_on_settings_pressed)
+	encyclopedia_button.tooltip_text = "游戏百科"
+	settings_button.tooltip_text = "游戏设置"
+	drawer_toggle_button.tooltip_text = "展开 / 收起玩家属性"
+
+
+func _on_encyclopedia_pressed() -> void:
+	if _flow != null:
+		_flow.request_battle_utility("encyclopedia")
+
+
+func _on_settings_pressed() -> void:
+	if _flow != null:
+		_flow.request_battle_utility("settings")
+
+
+func _create_stats_drawer_skin() -> void:
+	if stats_drawer == null:
 		return
-	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
-	scanline_image.fill(Color.TRANSPARENT)
-	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.08))
-	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.08))
-	_stats_scanline_overlay = TextureRect.new()
-	_stats_scanline_overlay.name = "StatsScanlineOverlay"
-	_stats_scanline_overlay.texture = ImageTexture.create_from_image(scanline_image)
-	_stats_scanline_overlay.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	_stats_scanline_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_stats_scanline_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_stats_scanline_overlay.stretch_mode = TextureRect.STRETCH_TILE
-	_stats_scanline_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_stats_scanline_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_stats_scanline_overlay.z_index = 1
-	stats_drawer.add_child(_stats_scanline_overlay)
+	var panel := stats_drawer.get_node("DrawerPanel") as PanelContainer
+	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var skin := Control.new()
+	skin.name = "WoodAndChainSkin"
+	skin.set_script(DRAWER_SKIN)
+	stats_drawer.add_child(skin)
+	stats_drawer.move_child(skin, 0)
+	skin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	skin.offset_left = 28.0
+	stats_drawer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var content := stats_scroll.get_parent() as VBoxContainer
+	content.add_theme_constant_override("separation", 8)
+	var title := content.get_node("TitleLabel") as Label
+	title.custom_minimum_size = Vector2(108.0, 26.0)
+	title.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	title.add_theme_font_size_override("font_size", 16)
+	title.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
+	title.add_theme_constant_override("outline_size", 2)
+	var title_style := StyleBoxFlat.new()
+	title_style.bg_color = Color(0.09, 0.08, 0.055, 0.86)
+	title_style.border_color = Color(0.48, 0.41, 0.26, 0.85)
+	title_style.set_border_width_all(1)
+	title.add_theme_stylebox_override("normal", title_style)
+	stats_list.add_theme_constant_override("separation", 2)
+	_drawer_scroll_hint = Label.new()
+	_drawer_scroll_hint.name = "ScrollHint"
+	_drawer_scroll_hint.custom_minimum_size.y = 16.0
+	_drawer_scroll_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_drawer_scroll_hint.add_theme_font_size_override("font_size", 12)
+	_drawer_scroll_hint.add_theme_color_override("font_color", Color(0.64, 0.62, 0.50))
+	_drawer_scroll_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content.add_child(_drawer_scroll_hint)
+	stats_scroll.get_v_scroll_bar().changed.connect(_update_drawer_scroll_hint)
+	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_drawer_scroll_hint())
+	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+		drawer_toggle_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	drawer_toggle_button.flat = false
+	drawer_toggle_button.offset_top = -22.0
+	drawer_toggle_button.offset_bottom = 22.0
+	drawer_toggle_button.add_theme_font_size_override("font_size", 14)
+	drawer_toggle_button.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
+	drawer_toggle_button.add_theme_color_override("font_disabled_color", Color(0.65, 0.63, 0.52))
+	drawer_toggle_button.add_theme_constant_override("outline_size", 3)
+	var handle := TextureRect.new()
+	handle.name = "LeatherPullHandle"
+	handle.texture = DRAWER_HANDLE
+	handle.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	handle.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	handle.show_behind_parent = true
+	drawer_toggle_button.add_child(handle)
+	# The rivet sits over the board, while the loose end stays visible when closed.
+	handle.anchor_top = 0.5
+	handle.anchor_bottom = 0.5
+	handle.offset_left = 4.0
+	handle.offset_right = 68.0
+	handle.offset_top = -20.0
+	handle.offset_bottom = 20.0
+	drawer_toggle_button.mouse_entered.connect(func() -> void: handle.modulate = Color(1.2, 1.15, 1.0))
+	drawer_toggle_button.mouse_exited.connect(func() -> void: handle.modulate = Color.WHITE)
+	_drawer_audio = AudioStreamPlayer.new()
+	_drawer_audio.name = "DrawerChainAudio"
+	_drawer_audio.bus = AudioManager.BUS_SFX
+	_drawer_audio.process_mode = Node.PROCESS_MODE_ALWAYS
+	_drawer_audio.volume_db = -2.0
+	add_child(_drawer_audio)
+
+
+func _update_drawer_scroll_hint() -> void:
+	if _drawer_scroll_hint == null:
+		return
+	var bar := stats_scroll.get_v_scroll_bar()
+	var maximum := maxf(bar.max_value - bar.page, 0.0)
+	if maximum <= 0.0:
+		_drawer_scroll_hint.text = ""
+	elif bar.value >= maximum - 1.0:
+		_drawer_scroll_hint.text = "已到底部 · 向上滚动"
+	else:
+		_drawer_scroll_hint.text = "拖动查看更多" if OS.has_feature("mobile") else "滚轮查看更多"
 
 
 func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_manager: WaveManager) -> void:
@@ -348,7 +482,9 @@ func _sync_vitals(animate: bool) -> void:
 	if hp_label != null:
 		hp_label.text = "%d/%d" % [current_hp, max_hp]
 	if shield_label != null:
-		shield_label.text = "%d/%d" % [current_shield, max_shield]
+		shield_label.text = "%d/%d" % [current_shield, max_shield] if current_shield > 0 else "0/0"
+		var shield_row := shield_bar.get_parent() as Control
+		shield_row.modulate.a = 1.0 if current_shield > 0 else 0.5
 	if _last_hp != current_hp or _last_max_hp != max_hp:
 		_set_progress_value(hp_bar, float(current_hp) * 100.0 / float(max_hp), animate)
 		if animate and _last_hp >= 0:
@@ -483,6 +619,10 @@ func _bind_viewport_resize() -> void:
 
 
 func _on_viewport_resized() -> void:
+	if _flow != null and _flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP:
+		var compact := get_viewport().get_visible_rect().size.x < 1000
+		_set_drawer_locked_open(not compact)
+		_set_drawer_open(not compact, false)
 	call_deferred("_apply_combat_layout")
 
 
@@ -490,7 +630,11 @@ func _apply_combat_layout() -> void:
 	if get_viewport() == null:
 		return
 	var viewport_width := get_viewport().get_visible_rect().size.x
-	var bar_width := clampf(viewport_width * 0.26, 144.0, 220.0)
+	var bar_width := clampf(viewport_width * 0.24, 120.0, 226.0)
+	var timer_size := WAVE_PANEL_SIZE if viewport_width >= 800.0 else Vector2(112, 48)
+	top_left.position = Vector2(18, 6)
+	_vitals_frame.position = Vector2(10, 2)
+	_vitals_frame.size = Vector2(bar_width + 44, 52)
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
 	if shield_bar != null:
@@ -501,24 +645,29 @@ func _apply_combat_layout() -> void:
 		wave_panel.anchor_right = 0.0
 		wave_panel.anchor_bottom = 0.0
 		wave_panel.position = Vector2(
-			(viewport_width - WAVE_PANEL_SIZE.x) * 0.5,
-			(TOP_BAR_HEIGHT - WAVE_PANEL_SIZE.y) * 0.5
+			(viewport_width - timer_size.x) * 0.5,
+			(TOP_BAR_HEIGHT - timer_size.y) * 0.5
 		)
-		wave_panel.size = WAVE_PANEL_SIZE
-		wave_panel.custom_minimum_size = WAVE_PANEL_SIZE
+		wave_panel.custom_minimum_size = timer_size
+		wave_panel.size = timer_size
+	var actions := encyclopedia_button.get_parent() as Control
+	actions.offset_left = -TOP_BAR_MARGIN - TOP_BAR_ACTIONS_WIDTH
+	actions.offset_right = -TOP_BAR_MARGIN
+	actions.offset_top = 8.0
+	actions.offset_bottom = 48.0
 	if economy_panel != null:
-		var wave_right := (viewport_width + WAVE_PANEL_SIZE.x) * 0.5
+		var wave_right := (viewport_width + timer_size.x) * 0.5
 		var actions_left := viewport_width - TOP_BAR_MARGIN - TOP_BAR_ACTIONS_WIDTH
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
-		var economy_width := clampf(viewport_width * 0.20, 150.0, 220.0)
+		var economy_width := 168.0
 		if timer_hidden:
 			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0))
 			economy_left = actions_left - TOP_BAR_GAP - economy_width
 		else:
 			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
 			economy_width = minf(economy_width, available_width)
-		var economy_size := Vector2(economy_width, 32.0)
+		var economy_size := Vector2(economy_width, 44.0)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
 		economy_panel.anchor_right = 0.0
@@ -531,6 +680,12 @@ func _apply_combat_layout() -> void:
 		else:
 			exp_panel.anchor_left = 0.10 if viewport_width < 720.0 else 0.15
 		exp_panel.anchor_right = 0.90 if viewport_width < 720.0 else 0.85
+		exp_panel.offset_top = -39.0
+		exp_panel.offset_bottom = -10.0
+		_experience_frame.position = Vector2(viewport_width * exp_panel.anchor_left - 10, get_viewport().get_visible_rect().size.y - 43)
+		_experience_frame.size = Vector2(viewport_width * (exp_panel.anchor_right - exp_panel.anchor_left) + 20, 37)
+	if _bond_row != null:
+		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 75)
 
 
 func _get_weapon_strip_rect() -> Rect2:
@@ -568,7 +723,8 @@ func get_modal_safe_rect() -> Rect2:
 	var top := minf(MODAL_FALLBACK_TOP, viewport_size.y * 0.18)
 	var state := _flow.get_current_state() if _flow != null else ""
 	var right := MODAL_FALLBACK_RIGHT_CLOSED
-	if _drawer_open or DRAWER_AUTO_OPEN_STATES.has(state):
+	var compact_finance := state == MainFlowCoordinator.STATE_FINANCE_POPUP and viewport_size.x < 1000
+	if _drawer_open or (DRAWER_AUTO_OPEN_STATES.has(state) and not compact_finance):
 		right = MODAL_FALLBACK_RIGHT_OPEN
 	if stats_drawer != null:
 		var drawer_rect := stats_drawer.get_global_rect()
@@ -595,6 +751,9 @@ func _refresh_visibility() -> void:
 		return
 	var in_battle := _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE
 	var state := _flow.get_current_state()
+	var utility_available := state in [MainFlowCoordinator.STATE_WAVE_COMBAT, MainFlowCoordinator.STATE_BATTLE_PREPARE]
+	encyclopedia_button.disabled = not utility_available
+	settings_button.disabled = not utility_available
 	if not in_battle or _flow.battle_resolved:
 		visible = false
 	elif state == MainFlowCoordinator.STATE_BATTLE_RESULT:
@@ -616,10 +775,13 @@ func _on_drawer_toggle_pressed() -> void:
 
 
 func _on_flow_state_changed(_previous_state: String, current_state: String) -> void:
-	var lock_drawer_open := DRAWER_LOCKED_OPEN_STATES.has(current_state)
+	var compact_finance := current_state == MainFlowCoordinator.STATE_FINANCE_POPUP and get_viewport().get_visible_rect().size.x < 1000
+	var lock_drawer_open := DRAWER_LOCKED_OPEN_STATES.has(current_state) and not compact_finance
 	_set_drawer_locked_open(lock_drawer_open)
-	_set_modal_backdrop_visible(lock_drawer_open)
-	if DRAWER_AUTO_OPEN_STATES.has(current_state):
+	_set_modal_backdrop_visible(lock_drawer_open or compact_finance)
+	if compact_finance:
+		_set_drawer_open(false, false)
+	elif DRAWER_AUTO_OPEN_STATES.has(current_state):
 		_set_drawer_open(true, true)
 	elif current_state == MainFlowCoordinator.STATE_WAVE_COMBAT:
 		_set_drawer_open(false, true)
@@ -628,8 +790,15 @@ func _on_flow_state_changed(_previous_state: String, current_state: String) -> v
 	call_deferred("_apply_combat_layout")
 
 
+func is_stats_drawer_open() -> bool:
+	return _drawer_open
+
+
 func _set_drawer_open(open: bool, animated: bool) -> void:
 	if stats_drawer == null:
+		return
+	# Flow transitions can request the same target repeatedly. Do not restart sound or motion.
+	if animated and open == _drawer_open:
 		return
 
 	_drawer_open = open
@@ -643,16 +812,28 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 		_drawer_tween = null
 
 	if not animated:
+		if _drawer_audio != null:
+			_drawer_audio.stop()
 		stats_drawer.offset_left = target_left
 		stats_drawer.offset_right = target_right
 		_refresh_visibility()
 		return
 
-	_drawer_tween = create_tween()
-	_drawer_tween.set_trans(Tween.TRANS_CUBIC)
-	_drawer_tween.set_ease(Tween.EASE_OUT)
-	_drawer_tween.parallel().tween_property(stats_drawer, "offset_left", target_left, DRAWER_ANIMATION_SECONDS)
-	_drawer_tween.parallel().tween_property(stats_drawer, "offset_right", target_right, DRAWER_ANIMATION_SECONDS)
+	_hide_damage_tooltip()
+	var full_duration := DRAWER_ANIMATION_SECONDS if open else DRAWER_CLOSE_SECONDS
+	var remaining := clampf(absf(target_left - stats_drawer.offset_left) / 292.0, 0.0, 1.0)
+	var duration := lerpf(0.18, full_duration, remaining)
+	if _drawer_audio != null:
+		_drawer_audio.stop()
+		_drawer_audio.stream = DRAWER_OPEN_SOUND if open else DRAWER_CLOSE_SOUND
+		_drawer_audio.pitch_scale = full_duration / duration
+		_drawer_audio.play()
+	_drawer_tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_drawer_tween.set_trans(Tween.TRANS_SINE)
+	_drawer_tween.set_ease(Tween.EASE_IN_OUT)
+	_drawer_tween.parallel().tween_property(stats_drawer, "offset_left", target_left, duration)
+	_drawer_tween.parallel().tween_property(stats_drawer, "offset_right", target_right, duration)
+	_drawer_tween.finished.connect(func() -> void: _drawer_tween = null)
 	_refresh_visibility()
 
 
@@ -670,18 +851,19 @@ func _set_modal_backdrop_visible(is_visible: bool) -> void:
 func _hide_stats_scroll_bars() -> void:
 	if stats_scroll == null:
 		return
-	stats_scroll.get_h_scroll_bar().visible = false
-	stats_scroll.get_v_scroll_bar().visible = false
+	stats_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	stats_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
 
 func _input(event: InputEvent) -> void:
-	if stats_scroll == null or not stats_scroll.visible or not event is InputEventMouseButton:
+	if not visible or not _drawer_open or stats_scroll == null or not stats_scroll.is_visible_in_tree() or not event is InputEventMouseButton:
 		return
 	var mouse_event := event as InputEventMouseButton
 	if not mouse_event.pressed or not stats_scroll.get_global_rect().has_point(mouse_event.position):
 		return
 	var target_scroll := stats_scroll.scroll_vertical
-	var max_scroll := int(stats_scroll.get_v_scroll_bar().max_value)
+	var bar := stats_scroll.get_v_scroll_bar()
+	var max_scroll := maxi(roundi(bar.max_value - bar.page), 0)
 	if mouse_event.button_index == MOUSE_BUTTON_WHEEL_UP:
 		target_scroll -= 48
 	elif mouse_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
@@ -704,15 +886,16 @@ func _refresh_stats_drawer() -> void:
 				var current_value := _get_display_stat_value(stat_id)
 				value_label.text = _format_stat_value(stat_id, preview_value)
 				if is_equal_approx(preview_value, current_value):
-					value_label.remove_theme_color_override("font_color")
+					value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 				else:
 					value_label.add_theme_color_override("font_color", STAT_PREVIEW_GAIN_COLOR if preview_value > current_value else STAT_PREVIEW_LOSS_COLOR)
 			else:
 				value_label.text = _format_stat_value(stat_id, _get_display_stat_value(stat_id))
-				value_label.remove_theme_color_override("font_color")
+				value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		var name_label := _stat_name_labels.get(stat_id_variant, null) as Label
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
+			name_label.tooltip_text = name_label.text
 			if stat_id == "armor":
 				# Use the custom tooltip panel below; the built-in tooltip would show a duplicate.
 				name_label.tooltip_text = ""
@@ -727,10 +910,30 @@ func _ensure_stat_rows() -> void:
 			continue
 		var row := HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.custom_minimum_size.y = 28.0
+		row.add_theme_constant_override("separation", 6)
+		var backing := PanelContainer.new()
+		backing.mouse_filter = Control.MOUSE_FILTER_PASS
+		var row_style := StyleBoxFlat.new()
+		row_style.bg_color = Color(0.055, 0.05, 0.037, 0.55 if _stat_value_labels.size() % 2 == 0 else 0.34)
+		row_style.border_color = Color(0.40, 0.36, 0.25, 0.35)
+		row_style.border_width_bottom = 1
+		row_style.content_margin_left = 5.0
+		row_style.content_margin_right = 5.0
+		backing.add_theme_stylebox_override("panel", row_style)
+		backing.add_child(row)
 
 		var name_label := Label.new()
 		name_label.text = _get_stat_display_name(stat_id)
-		name_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN if stat_id == "armor" else Control.SIZE_EXPAND_FILL
+		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		name_label.add_theme_font_size_override("font_size", 14)
+		if name_label.text.length() > 7:
+			name_label.add_theme_font_size_override("font_size", 12)
+		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
+		name_label.add_theme_constant_override("outline_size", 2)
+		name_label.tooltip_text = name_label.text
+		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
 		row.add_child(name_label)
 
 		if stat_id == "armor":
@@ -739,16 +942,16 @@ func _ensure_stat_rows() -> void:
 			name_label.tooltip_text = ""
 			name_label.mouse_entered.connect(_show_damage_tooltip.bind(name_label))
 			name_label.mouse_exited.connect(_hide_damage_tooltip)
-			var spacer := Control.new()
-			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			row.add_child(spacer)
 
 		var value_label := Label.new()
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		value_label.custom_minimum_size = Vector2(80.0, 0.0)
+		value_label.custom_minimum_size = Vector2(58.0, 0.0)
+		value_label.add_theme_font_size_override("font_size", 14)
+		value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
+		value_label.add_theme_constant_override("outline_size", 2)
 
 		row.add_child(value_label)
-		stats_list.add_child(row)
+		stats_list.add_child(backing)
 		_stat_value_labels[stat_id] = value_label
 		_stat_name_labels[stat_id] = name_label
 
@@ -849,81 +1052,46 @@ func _refresh_bond_indicator() -> void:
 	if _flow == null or _flow.get_current_state() != MainFlowCoordinator.STATE_WAVE_COMBAT:
 		_displayed_bond_id = ""
 		_hide_bond_tooltip()
-		if _bond_indicator != null:
-			_bond_indicator.visible = false
+		if _bond_row != null:
+			_bond_row.visible = false
 		return
-	var bond_id := _get_displayed_bond_id()
-	_displayed_bond_id = bond_id
-	if bond_id.is_empty():
-		_hide_bond_tooltip()
-		if _bond_indicator != null:
-			_bond_indicator.visible = false
-		return
-	_ensure_bond_indicator()
-	_update_bond_indicator_visual(bond_id)
-	_bond_indicator.visible = true
-
-
-func _get_displayed_bond_id() -> String:
-	if _player == null:
-		return ""
+	if _bond_row == null:
+		_bond_row = HBoxContainer.new()
+		_bond_row.name = "BondRow"
+		_bond_row.add_theme_constant_override("separation", 6)
+		_bond_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_bond_row)
+		call_deferred("_apply_combat_layout")
+	_bond_row.visible = true
 	for bond in DataRegistry.get_table("bonds"):
 		if not (bond is Dictionary):
 			continue
 		var bond_id := str(bond.get("id", ""))
 		if bond_id.is_empty():
 			continue
-		if _player.relic_system.get_bond_count(bond_id) > 0:
-			return bond_id
-	return ""
+		var count := _player.relic_system.get_bond_count(bond_id)
+		if not _bond_buttons.has(bond_id):
+			var button := Button.new()
+			button.name = bond_id
+			button.focus_mode = Control.FOCUS_NONE
+			button.custom_minimum_size = Vector2(86, 26)
+			button.add_theme_font_size_override("font_size", 12)
+			button.add_theme_stylebox_override("normal", _hud_frame_style())
+			button.mouse_entered.connect(_inspect_bond.bind(bond_id, button))
+			button.mouse_exited.connect(_hide_bond_tooltip)
+			button.pressed.connect(_inspect_bond.bind(bond_id, button))
+			_bond_row.add_child(button)
+			_bond_buttons[bond_id] = button
+		var indicator := _bond_buttons[bond_id] as Button
+		indicator.visible = count > 0
+		indicator.text = "%s %d" % [BondDisplay.get_bond_name(bond_id), count]
+		indicator.modulate = Color.WHITE if count >= 2 else Color(0.75, 0.8, 0.72)
 
 
-func _ensure_bond_indicator() -> void:
-	if _bond_indicator != null:
-		return
-	_bond_indicator = Button.new()
-	_bond_indicator.name = "BondIndicator"
-	_bond_indicator.flat = true
-	_bond_indicator.focus_mode = Control.FOCUS_NONE
-	_bond_indicator.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_bond_indicator.anchor_left = 1.0
-	_bond_indicator.anchor_right = 1.0
-	_bond_indicator.anchor_top = 0.0
-	_bond_indicator.anchor_bottom = 0.0
-	_bond_indicator.offset_left = -380.0
-	_bond_indicator.offset_top = 16.0
-	_bond_indicator.offset_right = -336.0
-	_bond_indicator.offset_bottom = 60.0
-	_bond_indicator.visible = false
-	_bond_indicator_placeholder = PanelContainer.new()
-	_bond_indicator_placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_bond_indicator_placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var placeholder_style := StyleBoxFlat.new()
-	placeholder_style.bg_color = Color(0.06, 0.07, 0.09, 0.95)
-	placeholder_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
-	placeholder_style.set_border_width_all(2)
-	placeholder_style.set_corner_radius_all(8)
-	_bond_indicator_placeholder.add_theme_stylebox_override("panel", placeholder_style)
-	_bond_indicator.add_child(_bond_indicator_placeholder)
-	_bond_indicator_label = Label.new()
-	_bond_indicator_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_bond_indicator_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_bond_indicator_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_bond_indicator_label.add_theme_font_size_override("font_size", 24)
-	_bond_indicator_label.add_theme_color_override("font_color", Color(0.96, 0.84, 0.45, 1.0))
-	_bond_indicator_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_bond_indicator.add_child(_bond_indicator_label)
-	_bond_indicator.mouse_entered.connect(_show_bond_tooltip)
-	_bond_indicator.mouse_exited.connect(_hide_bond_tooltip)
-	add_child(_bond_indicator)
-
-
-func _update_bond_indicator_visual(bond_id: String) -> void:
-	if _bond_indicator_label == null:
-		return
-	var first_char := BondDisplay.get_bond_name(bond_id).substr(0, 1)
-	if _bond_indicator_label.text != first_char:
-		_bond_indicator_label.text = first_char
+func _inspect_bond(bond_id: String, indicator: Button) -> void:
+	_displayed_bond_id = bond_id
+	_bond_indicator = indicator
+	_show_bond_tooltip()
 
 
 func _show_bond_tooltip() -> void:
@@ -963,7 +1131,7 @@ func _position_bond_tooltip(tooltip_panel: PanelContainer) -> void:
 	var tooltip_position := Vector2.ZERO
 	if _bond_indicator != null:
 		var indicator_rect := _bond_indicator.get_global_rect()
-		tooltip_position = indicator_rect.position + Vector2(-tooltip_panel.size.x - 8.0, 0.0)
+		tooltip_position = indicator_rect.position - Vector2(0.0, tooltip_panel.size.y + 8.0)
 	tooltip_position.x = maxf(tooltip_position.x, 4.0)
 	tooltip_position.y = clampf(tooltip_position.y, 4.0, viewport_size.y - tooltip_panel.size.y - 4.0)
 	tooltip_panel.position = tooltip_position

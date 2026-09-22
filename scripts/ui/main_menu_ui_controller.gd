@@ -493,6 +493,7 @@ func _make_settings_button_style(background: Color, border: Color) -> StyleBoxFl
 func _on_settings_pressed() -> void:
 	if _settings_panel == null:
 		return
+	_load_settings_values()
 	var overlay := _settings_panel.get_parent() as Control
 	if overlay == null:
 		return
@@ -580,9 +581,9 @@ func _load_settings_values() -> void:
 	var music_value := CampProgression.get_volume_setting("bgm_volume", 100)
 	var sfx_value := CampProgression.get_volume_setting("sfx_volume", 100)
 	if _music_slider != null:
-		_music_slider.value = music_value
+		_music_slider.set_value_no_signal(music_value)
 	if _sfx_slider != null:
-		_sfx_slider.value = sfx_value
+		_sfx_slider.set_value_no_signal(sfx_value)
 	if _music_value_label != null:
 		_music_value_label.text = "%d%%" % music_value
 	if _sfx_value_label != null:

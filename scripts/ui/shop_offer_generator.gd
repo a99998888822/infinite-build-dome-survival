@@ -264,6 +264,48 @@ func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Di
 	return _pick_weighted_candidate(rarity_candidates)
 
 
+func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = []) -> Array[Dictionary]:
+	# Paid shelves can exceed the number of distinct relics. Prefer distinct
+	# products first, then refill stackable stock. Free reward rolls stay unchanged.
+	var stock: Array[Dictionary] = []
+	for candidate in candidates:
+		if int(rarity_weights.get(str(candidate.get("rarity", "common")), 0)) > 0:
+			stock.append(candidate)
+	var available: Array[Dictionary] = []
+	for candidate in stock:
+		if not previous_ids.has(str(candidate.get("offer_id", ""))):
+			available.append(candidate)
+	var result: Array[Dictionary] = []
+	var upgrade_selected := false
+	for slot in count:
+		if available.is_empty():
+			available = stock.duplicate()
+		if available.is_empty():
+			break
+		var kind := _roll_weighted_key(_get_available_type_weights(type_weights, available))
+		var chosen := _pick_candidate_by_rarity(_filter_candidates_by_type(available, kind), rarity_weights)
+		if chosen.is_empty():
+			break
+		available.erase(chosen)
+		var entry := chosen.duplicate(true)
+		entry["candidate_id"] = str(chosen.get("offer_id", ""))
+		entry["offer_id"] = "shelf:%d:%d" % [generation, slot]
+		entry["purchased"] = false
+		result.append(entry)
+		var remove_from_stock := str(chosen.get("offer_type", "")) != OFFER_RELIC
+		if not remove_from_stock:
+			var relic := DataRegistry.get_record("relics", str(chosen.get("target_id", "")))
+			remove_from_stock = int(relic.get("max_stack", 0)) > 0
+		if remove_from_stock:
+			stock.erase(chosen)
+		if str(chosen.get("offer_type", "")) == OFFER_WEAPON_UPGRADE:
+			upgrade_selected = true
+		if upgrade_selected:
+			stock = _filter_available_candidates(stock, true)
+			available = _filter_available_candidates(available, true)
+	return result
+
+
 func _pick_weighted_candidate(candidates: Array[Dictionary]) -> Dictionary:
 	if candidates.is_empty():
 		return {}

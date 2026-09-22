@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvwp4m1xws4bv"
-path="res://.godot/imported/player_void_hunter_walk_right_spritesheet - 副本.png-ce9024f21b017fc273f66e8b5f9e3284.ctex"
+uid="uid://cuwms4cqm5p8x"
+path="res://.godot/imported/stats_wood_tile.png-c8de0715708117a8b480bf49ddaf1bae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/player_void_hunter_walk_right_spritesheet - 副本.png"
-dest_files=["res://.godot/imported/player_void_hunter_walk_right_spritesheet - 副本.png-ce9024f21b017fc273f66e8b5f9e3284.ctex"]
+source_file="res://assets/ui/stats_drawer/stats_wood_tile.png"
+dest_files=["res://.godot/imported/stats_wood_tile.png-c8de0715708117a8b480bf49ddaf1bae.ctex"]
 
 [params]
 

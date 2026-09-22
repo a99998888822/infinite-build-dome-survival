@@ -14,8 +14,8 @@ const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const PLAYER_VISUAL_SCALE: float = 0.21
-const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_right_base.png")
-const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/player_void_hunter_walk_right_spritesheet.png")
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/void_hunter_idle_right.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/void_hunter_walk_right_spritesheet.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bao154460ukvr"
-path="res://.godot/imported/player_void_hunter_right_base - 副本.png-432897131aa2b4faaf35e50b5d24c39c.ctex"
+uid="uid://uyaqqd1xli0o"
+path="res://.godot/imported/ruin_low_wall_01.png-46865818d6c041fa3aae2895f65dd5bf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/player_void_hunter_right_base - 副本.png"
-dest_files=["res://.godot/imported/player_void_hunter_right_base - 副本.png-432897131aa2b4faaf35e50b5d24c39c.ctex"]
+source_file="res://assets/sprites/background/wetland/ruin_low_wall_01.png"
+dest_files=["res://.godot/imported/ruin_low_wall_01.png-46865818d6c041fa3aae2895f65dd5bf.ctex"]
 
 [params]
 

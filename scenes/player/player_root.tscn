@@ -1,7 +1,14 @@
 [gd_scene format=3 uid="uid://dni3qchq8ptrc"]
 
 [ext_resource type="Script" uid="uid://nte7pxrv4fli" path="res://scripts/player/player_controller.gd" id="1_player"]
-[ext_resource type="Texture2D" uid="uid://ck1sd0uyxqrj7" path="res://assets/sprites/player/player_void_hunter_right_base.png" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://bao154460ukvr" path="res://assets/sprites/player/void_hunter_idle_right.png" id="2_idle"]
+[ext_resource type="Script" path="res://scripts/player/player_ground_marker.gd" id="3_marker"]
+[ext_resource type="Script" path="res://scripts/player/player_visibility_glow.gd" id="4_glow"]
+[ext_resource type="Shader" path="res://shaders/player/visibility_glow.gdshader" id="5_glow_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_player_glow"]
+resource_local_to_scene = true
+shader = ExtResource("5_glow_shader")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player_body"]
 radius = 8.4
@@ -20,6 +27,19 @@ shape = SubResource("CapsuleShape2D_player_body")
 
 [node name="VisualAnchor" type="Node2D" parent="." unique_id=1223510489]
 scale = Vector2(0.21, 0.21)
+
+[node name="GroundMarker" type="Node2D" parent="."]
+script = ExtResource("3_marker")
+
+[node name="VisibilityGlow" type="ColorRect" parent="."]
+z_index = -2
+material = SubResource("ShaderMaterial_player_glow")
+offset_left = -52.0
+offset_top = -56.0
+offset_right = 52.0
+offset_bottom = 56.0
+mouse_filter = 2
+script = ExtResource("4_glow")
 
 [node name="Sprite2D" type="Sprite2D" parent="VisualAnchor" unique_id=1840109535]
 texture = ExtResource("2_idle")

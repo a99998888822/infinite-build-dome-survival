@@ -1,577 +1,476 @@
 extends Control
 class_name FinancePopup
 
-signal operation_submitted(action: String, amount: int)
-signal skipped
-
-const ACTION_NONE: String = "none"
-const ACTION_DEPOSIT: String = "deposit"
-const ACTION_WITHDRAW: String = "withdraw"
-const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
-const BILL_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_bill.svg")
-const HAND_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_hand.svg")
-const NUMERIC_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
-const MODAL_TOP_OFFSET: float = 90.0
-const MODAL_BOTTOM_MARGIN: float = 14.0
-const NORMAL_CONTENT_MINIMUM_HEIGHT: float = 668.0
-
+const BOARD: Texture2D = preload("res://assets/ui/finance/finance_board.png")
+var flow: MainFlowCoordinator
 var payload: Dictionary = {}
-var error_message: String = ""
-var amount: int = 0
-var is_animating: bool = false
-var _amount_initialized: bool = false
-var _animation_token: int = 0
-var _safe_rect: Rect2 = Rect2()
-var _input_blocker: ColorRect = null
-var _show_tween: Tween = null
-
-@onready var main_panel: PanelContainer = $MainPanel
-@onready var title_label: Label = $MainPanel/Content/Header/TitleRow/TitleGroup/TitleLabel
-@onready var principal_value: Label = $MainPanel/Content/PrincipalPanel/PrincipalContent/PrincipalValue
-@onready var rate_value: Label = $MainPanel/Content/StatsRow/RatePanel/StatContent/RateValue
-@onready var interest_value: Label = $MainPanel/Content/StatsRow/InterestPanel/StatContent/InterestValue
-@onready var amount_edit: LineEdit = $MainPanel/Content/InputRow/AmountEdit
-@onready var deposit_button: Button = $MainPanel/Content/ActionRow/DepositButton
-@onready var withdraw_button: Button = $MainPanel/Content/ActionRow/WithdrawButton
-@onready var skip_button: Button = $MainPanel/Content/SkipButton
-@onready var quick_50_button: Button = $MainPanel/Content/InputRow/QuickAmounts/Quick50
-@onready var quick_100_button: Button = $MainPanel/Content/InputRow/QuickAmounts/Quick100
-@onready var quick_500_button: Button = $MainPanel/Content/InputRow/QuickAmounts/Quick500
-@onready var hint_label: Label = $MainPanel/Content/HintLabel
-@onready var footer_note: Label = $MainPanel/Content/FooterNote
-@onready var animation_stage: Control = $MainPanel/Content/AnimationStage
-@onready var principal_panel: PanelContainer = $MainPanel/Content/PrincipalPanel
-@onready var coin_particles: Control = $CoinParticles
-@onready var backdrop: Panel = $Backdrop
+var main_panel: Panel
+var portrait: BankCounterPortrait
+var shop_grid: VirtualShopGrid
+var workbench: EnchantmentWorkbench
+var amount_input: LineEdit
+var bank_confirm: Button
+var start_button: Button
+var _title: Label
+var _summary: Label
+var _bank: ScrollContainer
+var _bank_form: VBoxContainer
+var _receipt: Label
+var _contract: Label
+var _deposit: Button
+var _withdraw: Button
+var _tabs: HBoxContainer
+var _tab_buttons: Dictionary = {}
+var _shop: Control
+var _enchant_scroll: ScrollContainer
+var _stock: Label
+var _refresh: Button
+var _feedback: Label
+var _sale_layer: Control
+var _sale_box: PanelContainer
+var _sale_text: RichTextLabel
+var _sale_confirm: Button
+var _quote: Dictionary = {}
+var _tooltip: PanelContainer
+var _tooltip_text: RichTextLabel
+var _active_tab := "shop"
+var _bank_action := "deposit"
+var _generation := -1
+var _safe_rect := Rect2(16, 72, 800, 520)
+var _compact := false
+var _notice_timer: Timer
+var _sale_icon: TextureRect
+var _sale_items: HBoxContainer
 
 
 func _ready() -> void:
-	_ensure_input_blocker()
-	_connect_buttons()
-	_start_tentacle_animation()
-	if get_viewport() != null:
-		var viewport_callable := Callable(self, "_on_viewport_resized")
-		if not get_viewport().size_changed.is_connected(viewport_callable):
-			get_viewport().size_changed.connect(viewport_callable)
-	_layout_popup()
-	hide_popup()
-	_refresh_visual()
-	_refresh_footer_color()
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_build()
+	_notice_timer = Timer.new()
+	_notice_timer.one_shot = true
+	_notice_timer.wait_time = 3.0
+	_notice_timer.timeout.connect(func():
+		if get_viewport().get_visible_rect().size.y < 480:
+			_summary.show()
+			_feedback.hide()
+	)
+	add_child(_notice_timer)
+	_layout()
 
 
-func _process(_delta: float) -> void:
-	_refresh_footer_color()
+func bind_flow(coordinator: MainFlowCoordinator) -> void:
+	flow = coordinator
+	shop_grid.flow = flow
+	workbench.flow = flow
 
 
 func configure(next_payload: Dictionary) -> void:
-	payload = next_payload.duplicate(true)
-	error_message = ""
-	_amount_initialized = false
-	amount = 0
-	if amount_edit != null:
-		amount_edit.text = "0"
-	_amount_initialized = true
-	_refresh_visual()
-
-
-func show_error(reason: String) -> void:
-	is_animating = false
-	error_message = _format_error_reason(reason)
-	_refresh_visual()
-	if hint_label != null:
-		var base_position := hint_label.position
-		var shake := create_tween()
-		shake.tween_property(hint_label, "position", base_position + Vector2(-4.0, 0.0), 0.04)
-		shake.tween_property(hint_label, "position", base_position + Vector2(4.0, 0.0), 0.08)
-		shake.tween_property(hint_label, "position", base_position, 0.06)
-
-
-func set_safe_rect(next_rect: Rect2) -> void:
-	_safe_rect = next_rect
-	_layout_popup()
+	payload = next_payload
+	var generation := int(payload.get("offer_generation", 0))
+	var new_shelf := generation != _generation
+	_generation = generation
+	if new_shelf:
+		shop_grid.set_offers(payload.get("offers", []), true)
+	else:
+		shop_grid.refresh_availability()
+	_summary.text = "随身 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
+	_refresh_bank()
+	var remaining := 0
+	for offer in shop_grid.offers:
+		if not bool(offer.get("purchased", false)): remaining += 1
+	_stock.text = "剩余 %d / %d 件" % [remaining, shop_grid.offers.size()]
+	_refresh.text = "刷新 · %d 金币" % int(payload.get("refresh_cost", 0))
+	_refresh.disabled = int(payload.get("gold", 0)) < int(payload.get("refresh_cost", 0))
+	workbench.refresh()
+	if new_shelf:
+		var settled := 0
+		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
+		_feedback.text = "本波结息 +%d 本金 · 准备完成后开始下一波" % settled if settled > 0 else "准备完成后，点击开始下一波。"
+		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
 
 
 func show_popup() -> void:
-	_layout_popup()
-	visible = true
-	if backdrop != null:
-		backdrop.visible = true
-	if _input_blocker != null:
-		_input_blocker.visible = true
-	if main_panel != null:
-		main_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-		main_panel.pivot_offset = main_panel.size * 0.5
-		main_panel.modulate.a = 0.0
-		main_panel.scale = Vector2(0.96, 0.96)
-	if _show_tween != null:
-		_show_tween.kill()
-	_show_tween = create_tween().set_parallel(true)
-	_show_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_show_tween.tween_property(main_panel, "modulate:a", 1.0, 0.24)
-	_show_tween.tween_property(main_panel, "scale", Vector2.ONE, 0.30)
-	_refresh_visual()
-	if amount_edit != null:
-		amount_edit.release_focus()
+	_sale_layer.hide()
+	_tooltip.hide()
+	show()
+	_layout()
 
 
 func hide_popup() -> void:
-	if _show_tween != null:
-		_show_tween.kill()
-		_show_tween = null
-	visible = false
-	is_animating = false
-	_animation_token += 1
-	if backdrop != null:
-		backdrop.visible = false
-	if _input_blocker != null:
-		_input_blocker.visible = false
-	if main_panel != null:
-		main_panel.modulate.a = 1.0
-		main_panel.scale = Vector2.ONE
+	hide()
+	_sale_layer.hide()
+	_tooltip.hide()
+	if flow != null: flow.clear_stat_preview()
 
 
-func _ensure_input_blocker() -> void:
-	if _input_blocker != null:
-		return
-	_input_blocker = ColorRect.new()
-	_input_blocker.name = "InputBlocker"
-	_input_blocker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_input_blocker.color = Color(0.0, 0.0, 0.0, 0.0)
-	_input_blocker.mouse_filter = Control.MOUSE_FILTER_STOP
-	_input_blocker.visible = false
-	add_child(_input_blocker)
-	move_child(_input_blocker, 1)
+func set_safe_rect(rect: Rect2) -> void:
+	_safe_rect = rect
+	if main_panel != null: _layout()
 
 
-func _on_viewport_resized() -> void:
-	_layout_popup()
+func show_error(code: String) -> void:
+	_feedback_message(FinanceUIStyle.reason(code), false)
 
 
-func _layout_popup() -> void:
-	if main_panel == null or get_viewport() == null:
-		return
-	var viewport_size := get_viewport().get_visible_rect().size
-	var safe := _safe_rect
-	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
-		safe = _build_fallback_safe_rect(viewport_size)
-	var available_panel_height := maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)
-	var compact := safe.size.x < 620.0 or available_panel_height < NORMAL_CONTENT_MINIMUM_HEIGHT
-	_apply_compact_layout(compact)
-	var panel_width := clampf(safe.size.x - 16.0, 440.0, 640.0)
-	var panel_height := clampf(available_panel_height, 420.0, 650.0)
-	if safe.size.x < 456.0:
-		panel_width = safe.size.x
-	if safe.size.y < 436.0:
-		panel_height = safe.size.y
-	panel_width = minf(panel_width, viewport_size.x)
-	panel_height = minf(panel_height, viewport_size.y)
-	var panel_size := Vector2(maxf(panel_width, 0.0), maxf(panel_height, 0.0))
-	var panel_position := Vector2(safe.position.x + (safe.size.x - panel_size.x) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
-	if panel_position.y + panel_size.y > safe.end.y:
-		panel_position.y = maxf(safe.position.y, safe.end.y - panel_size.y)
-	main_panel.anchor_left = 0.0
-	main_panel.anchor_top = 0.0
-	main_panel.anchor_right = 0.0
-	main_panel.anchor_bottom = 0.0
-	main_panel.position = panel_position
-	main_panel.size = panel_size
-	if get_node_or_null("Backdrop") != null:
-		var backdrop := get_node("Backdrop") as Control
-		backdrop.anchor_left = 0.0
-		backdrop.anchor_top = 0.0
-		backdrop.anchor_right = 0.0
-		backdrop.anchor_bottom = 0.0
-		backdrop.position = Vector2.ZERO
-		backdrop.size = Vector2(safe.end.x, viewport_size.y)
-	_layout_corner_decorations()
-
-
-func _apply_compact_layout(compact: bool) -> void:
-	var content := get_node_or_null("MainPanel/Content") as VBoxContainer
-	var title_row := get_node_or_null("MainPanel/Content/Header/TitleRow") as Control
-	var header_line := get_node_or_null("MainPanel/Content/Header/HeaderLine") as Control
-	var rate_panel := get_node_or_null("MainPanel/Content/StatsRow/RatePanel") as Control
-	var interest_panel := get_node_or_null("MainPanel/Content/StatsRow/InterestPanel") as Control
-	var action_row := get_node_or_null("MainPanel/Content/ActionRow") as Control
-	var deposit := get_node_or_null("MainPanel/Content/ActionRow/DepositButton") as Control
-	var withdraw := get_node_or_null("MainPanel/Content/ActionRow/WithdrawButton") as Control
-	var title_label_node := get_node_or_null("MainPanel/Content/Header/TitleRow/TitleGroup/TitleLabel") as Label
-	var subtitle_label_node := get_node_or_null("MainPanel/Content/Header/TitleRow/TitleGroup/SubtitleLabel") as Label
-	var principal_label_node := get_node_or_null("MainPanel/Content/PrincipalPanel/PrincipalContent/PrincipalLabel") as Label
-	var principal_value_node := get_node_or_null("MainPanel/Content/PrincipalPanel/PrincipalContent/PrincipalValue") as Label
-	var rate_value_node := get_node_or_null("MainPanel/Content/StatsRow/RatePanel/StatContent/RateValue") as Label
-	var interest_value_node := get_node_or_null("MainPanel/Content/StatsRow/InterestPanel/StatContent/InterestValue") as Label
-	var deposit_node := deposit as Button
-	var withdraw_node := withdraw as Button
-	var quick_50_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick50") as Button
-	var quick_100_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick100") as Button
-	var quick_500_node := get_node_or_null("MainPanel/Content/InputRow/QuickAmounts/Quick500") as Button
-	if content != null:
-		content.add_theme_constant_override("separation", 7 if compact else 14)
-	if main_panel != null:
-		var panel_style := main_panel.get_theme_stylebox("panel")
-		if panel_style is StyleBox:
-			var compact_style := (panel_style as StyleBox).duplicate()
-			if compact_style is StyleBoxFlat:
-				var flat_style := compact_style as StyleBoxFlat
-				flat_style.content_margin_left = 14.0 if compact else 24.0
-				flat_style.content_margin_right = 14.0 if compact else 24.0
-				flat_style.content_margin_top = 12.0 if compact else 20.0
-				flat_style.content_margin_bottom = 12.0 if compact else 20.0
-				main_panel.add_theme_stylebox_override("panel", flat_style)
-	if title_row != null:
-		title_row.custom_minimum_size.y = 58.0 if compact else 68.0
-	if header_line != null:
-		header_line.custom_minimum_size.y = 2.0 if compact else 3.0
-	if animation_stage != null:
-		animation_stage.custom_minimum_size.y = 68.0 if compact else 96.0
-	if principal_panel != null:
-		principal_panel.custom_minimum_size.y = 78.0 if compact else 96.0
-	if rate_panel != null:
-		rate_panel.custom_minimum_size.y = 62.0 if compact else 76.0
-	if interest_panel != null:
-		interest_panel.custom_minimum_size.y = 62.0 if compact else 76.0
-	if amount_edit != null:
-		amount_edit.add_theme_font_override("font", NUMERIC_FONT)
-		amount_edit.add_theme_font_size_override("font_size", 24 if compact else 28)
-		amount_edit.custom_minimum_size = Vector2(140.0, 40.0 if compact else 44.0)
-	if action_row != null:
-		action_row.add_theme_constant_override("separation", 12 if compact else 18)
-	if deposit != null:
-		deposit.custom_minimum_size.y = 48.0 if compact else 56.0
-	if withdraw != null:
-		withdraw.custom_minimum_size.y = 48.0 if compact else 56.0
-	if skip_button != null:
-		skip_button.custom_minimum_size.y = 24.0 if compact else 28.0
-	if title_label_node != null:
-		title_label_node.add_theme_font_size_override("font_size", 26 if compact else 32)
-	if subtitle_label_node != null:
-		subtitle_label_node.add_theme_font_size_override("font_size", 15 if compact else 18)
-	if principal_label_node != null:
-		principal_label_node.add_theme_font_size_override("font_size", 14 if compact else 16)
-	if principal_value_node != null:
-		principal_value_node.add_theme_font_override("font", NUMERIC_FONT)
-		principal_value_node.add_theme_font_size_override("font_size", 38 if compact else 48)
-	if rate_value_node != null:
-		rate_value_node.add_theme_font_override("font", NUMERIC_FONT)
-		rate_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
-	if interest_value_node != null:
-		interest_value_node.add_theme_font_override("font", NUMERIC_FONT)
-		interest_value_node.add_theme_font_size_override("font_size", 26 if compact else 34)
-	if deposit_node != null:
-		deposit_node.add_theme_font_size_override("font_size", 18 if compact else 22)
-	if withdraw_node != null:
-		withdraw_node.add_theme_font_size_override("font_size", 18 if compact else 22)
-	for quick_button in [quick_50_node, quick_100_node, quick_500_node]:
-		if quick_button != null:
-			quick_button.add_theme_font_override("font", NUMERIC_FONT)
-			quick_button.add_theme_font_size_override("font_size", 18 if compact else 22)
-	if footer_note != null:
-		footer_note.add_theme_font_size_override("font_size", 13 if compact else 15)
-
-
-func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:
-	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
-		return Rect2()
-	var left := 16.0
-	var right := minf(336.0, viewport_size.x * 0.30)
-	var top := 16.0
-	var bottom := 16.0
-	var safe_left := clampf(left, 0.0, viewport_size.x)
-	var safe_top := clampf(top, 0.0, viewport_size.y)
-	var safe_right := clampf(right, 0.0, viewport_size.x - safe_left)
-	return Rect2(
-		Vector2(safe_left, safe_top),
-		Vector2(maxf(viewport_size.x - safe_left - safe_right, 0.0), maxf(viewport_size.y - safe_top - bottom, 0.0))
+func _build() -> void:
+	main_panel = Panel.new()
+	main_panel.name = "MainPanel"
+	main_panel.add_theme_stylebox_override("panel", FinanceUIStyle.box("292b20", "9c9169", 0))
+	add_child(main_panel)
+	var board := NinePatchRect.new()
+	board.texture = BOARD
+	board.patch_margin_left = 16
+	board.patch_margin_top = 16
+	board.patch_margin_right = 16
+	board.patch_margin_bottom = 16
+	board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	board.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	main_panel.add_child(board)
+	_title = _label("理财·购买·附魔", main_panel, 22, FinanceUIStyle.TEXT)
+	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
+	_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_bank = preload("res://scripts/ui/touch_scroll_container.gd").new()
+	FinanceUIStyle.scroll(_bank)
+	main_panel.add_child(_bank)
+	var bank_body := VBoxContainer.new()
+	bank_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bank_body.add_theme_constant_override("separation", 8)
+	_bank.add_child(bank_body)
+	var motto := _label("哥布林银行 · 每波限办一次", bank_body, 13, FinanceUIStyle.GOLD)
+	motto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	portrait = BankCounterPortrait.new()
+	portrait.custom_minimum_size.y = 132
+	bank_body.add_child(portrait)
+	_bank_form = VBoxContainer.new()
+	_bank_form.add_theme_constant_override("separation", 8)
+	bank_body.add_child(_bank_form)
+	var actions := HBoxContainer.new()
+	_bank_form.add_child(actions)
+	_deposit = _button("存入本金", actions)
+	_deposit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_deposit.pressed.connect(_choose_bank_action.bind("deposit"))
+	_withdraw = _button("取出本金", actions)
+	_withdraw.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_withdraw.pressed.connect(_choose_bank_action.bind("withdraw"))
+	amount_input = LineEdit.new()
+	amount_input.placeholder_text = "输入金额"
+	amount_input.max_length = 12
+	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
+	amount_input.add_theme_font_size_override("font_size", 14)
+	amount_input.add_theme_stylebox_override("normal", FinanceUIStyle.box("1c251e", "626b4e", 6))
+	amount_input.add_theme_color_override("font_color", FinanceUIStyle.TEXT)
+	_bank_form.add_child(amount_input)
+	amount_input.text_submitted.connect(func(_value): _submit_bank())
+	var shortcuts := HBoxContainer.new()
+	_bank_form.add_child(shortcuts)
+	for portion in [0.25, 0.5, 1.0]:
+		var quick := _button("全部" if portion == 1.0 else ("1/2" if portion == 0.5 else "1/4"), shortcuts)
+		quick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		quick.pressed.connect(func(): amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion)))
+	bank_confirm = _button("确认存入", _bank_form)
+	bank_confirm.pressed.connect(_submit_bank)
+	_receipt = _label("", bank_body, 14, FinanceUIStyle.GREEN)
+	_receipt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_contract = _label("", bank_body, 12, FinanceUIStyle.MUTED)
+	_contract.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_tabs = HBoxContainer.new()
+	_tabs.add_theme_constant_override("separation", 8)
+	main_panel.add_child(_tabs)
+	for entry in [["bank", "理财"], ["shop", "购买"], ["enchant", "附魔"]]:
+		var tab := _button(entry[1], _tabs)
+		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tab.pressed.connect(_select_tab.bind(entry[0]))
+		_tab_buttons[entry[0]] = tab
+	_shop = Control.new()
+	main_panel.add_child(_shop)
+	shop_grid = VirtualShopGrid.new()
+	_shop.add_child(shop_grid)
+	shop_grid.purchase_requested.connect(_buy)
+	shop_grid.preview_requested.connect(func(offer):
+		if flow != null: flow.set_stat_preview_from_offer(offer)
 	)
+	shop_grid.preview_cleared.connect(func():
+		if flow != null: flow.clear_stat_preview()
+	)
+	_stock = _label("", _shop, 12, FinanceUIStyle.MUTED)
+	_refresh = _button("刷新", _shop)
+	_refresh.pressed.connect(_refresh_shop)
+	_enchant_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
+	FinanceUIStyle.scroll(_enchant_scroll)
+	main_panel.add_child(_enchant_scroll)
+	workbench = EnchantmentWorkbench.new()
+	workbench.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	workbench.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_enchant_scroll.add_child(workbench)
+	workbench.sale_requested.connect(_open_sale)
+	workbench.feedback_requested.connect(_feedback_message)
+	workbench.tooltip_requested.connect(_show_tooltip)
+	workbench.tooltip_hidden.connect(func(): _tooltip.hide())
+	_feedback = _label("", main_panel, 12, FinanceUIStyle.MUTED)
+	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	start_button = _button("开始下一波", main_panel)
+	FinanceUIStyle.button(start_button, true)
+	start_button.pressed.connect(func():
+		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
+	)
+	_build_sale_dialog()
+	_tooltip = PanelContainer.new()
+	_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231cf5", "98956a", 12))
+	_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tooltip.z_index = 20
+	main_panel.add_child(_tooltip)
+	_tooltip_text = RichTextLabel.new()
+	_tooltip_text.bbcode_enabled = true
+	_tooltip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tooltip_text.add_theme_font_size_override("normal_font_size", 12)
+	_tooltip.add_child(_tooltip_text)
+	_tooltip.hide()
 
 
-func _layout_corner_decorations() -> void:
-	if main_panel == null:
-		return
-	var corners := [
-		$CornerTopLeft,
-		$CornerTopRight,
-		$CornerBottomLeft,
-		$CornerBottomRight,
-	]
-	var positions := [
-		main_panel.position + Vector2(-6.0, -6.0),
-		main_panel.position + Vector2(main_panel.size.x - 42.0, -6.0),
-		main_panel.position + Vector2(-6.0, main_panel.size.y - 42.0),
-		main_panel.position + Vector2(main_panel.size.x - 42.0, main_panel.size.y - 42.0),
-	]
-	for index in corners.size():
-		var corner := corners[index] as Control
-		if corner == null:
-			continue
-		corner.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-		corner.position = positions[index]
-		corner.size = Vector2(48.0, 48.0)
+func _build_sale_dialog() -> void:
+	_sale_layer = Control.new()
+	_sale_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	main_panel.add_child(_sale_layer)
+	var dimmer := ColorRect.new()
+	dimmer.color = Color(0.025, 0.04, 0.03, 0.88)
+	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_sale_layer.add_child(dimmer)
+	_sale_box = PanelContainer.new()
+	_sale_box.add_theme_stylebox_override("panel", FinanceUIStyle.box("2d3427", "ab9b6a", 18))
+	_sale_layer.add_child(_sale_box)
+	var body := VBoxContainer.new()
+	body.add_theme_constant_override("separation", 12)
+	_sale_box.add_child(body)
+	var sale_heading := HBoxContainer.new()
+	sale_heading.add_theme_constant_override("separation", 12)
+	body.add_child(sale_heading)
+	_sale_icon = TextureRect.new()
+	_sale_icon.custom_minimum_size = Vector2(44, 44)
+	_sale_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_sale_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	sale_heading.add_child(_sale_icon)
+	_label("确认出售", sale_heading, 20, FinanceUIStyle.GOLD)
+	_sale_text = RichTextLabel.new()
+	_sale_text.bbcode_enabled = true
+	_sale_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_sale_text.add_theme_color_override("default_color", FinanceUIStyle.TEXT)
+	_sale_text.add_theme_font_size_override("normal_font_size", 14)
+	body.add_child(_sale_text)
+	_sale_items = HBoxContainer.new()
+	_sale_items.add_theme_constant_override("separation", 8)
+	body.add_child(_sale_items)
+	var actions := HBoxContainer.new()
+	body.add_child(actions)
+	var cancel := _button("取消", actions)
+	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cancel.pressed.connect(func(): _sale_layer.hide())
+	_sale_confirm = _button("确认出售", actions)
+	_sale_confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_sale_confirm.pressed.connect(_confirm_sale)
+	_sale_layer.hide()
 
 
-func _connect_buttons() -> void:
-	if amount_edit != null and not amount_edit.text_changed.is_connected(_on_amount_changed):
-		amount_edit.text_changed.connect(_on_amount_changed)
-	if deposit_button != null and not deposit_button.pressed.is_connected(_on_deposit_pressed):
-		deposit_button.pressed.connect(_on_deposit_pressed)
-	if withdraw_button != null and not withdraw_button.pressed.is_connected(_on_withdraw_pressed):
-		withdraw_button.pressed.connect(_on_withdraw_pressed)
-	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
-		skip_button.pressed.connect(_on_skip_pressed)
-	if quick_50_button != null and not quick_50_button.pressed.is_connected(_on_quick_amount_pressed.bind(4)):
-		quick_50_button.pressed.connect(_on_quick_amount_pressed.bind(4))
-	if quick_100_button != null and not quick_100_button.pressed.is_connected(_on_quick_amount_pressed.bind(2)):
-		quick_100_button.pressed.connect(_on_quick_amount_pressed.bind(2))
-	if quick_500_button != null and not quick_500_button.pressed.is_connected(_on_quick_amount_pressed.bind(1)):
-		quick_500_button.pressed.connect(_on_quick_amount_pressed.bind(1))
+func _layout() -> void:
+	main_panel.position = _safe_rect.position
+	main_panel.size = _safe_rect.size
+	var w := main_panel.size.x
+	var h := main_panel.size.y
+	_compact = w < 700
+	var short_window := get_viewport().get_visible_rect().size.y < 480
+	FinanceUIStyle.label(_title, 18 if short_window else 22)
+	_place(_title, Rect2(20, 6 if short_window else 12, w - 40, 26 if short_window else 30))
+	_place(_summary, Rect2(20, 32 if short_window else 46, w - 40, 18 if short_window else 22))
+	var body_y := 54.0 if short_window else 78.0
+	var body_bottom := h - (46.0 if short_window else 60.0)
+	var bank_width := 226.0
+	var work_x := 20.0 if _compact else 20.0 + bank_width + 16.0
+	var work_w := w - work_x - 20.0
+	_place(_tabs, Rect2(work_x, body_y, work_w, 28 if short_window else 30))
+	var content_y := body_y + (34.0 if short_window else 40.0)
+	var content_h := maxf(24, body_bottom - content_y)
+	_place(_bank, Rect2(20, content_y if _compact else body_y, w - 40 if _compact else bank_width, content_h if _compact else body_bottom - body_y))
+	_place(_shop, Rect2(work_x, content_y, work_w, content_h))
+	_place(_enchant_scroll, Rect2(work_x, content_y, work_w, content_h))
+	workbench.custom_minimum_size.y = 296
+	_place(shop_grid, Rect2(0, 0, work_w, maxf(16, content_h if short_window else content_h - 38)))
+	_place(_stock, Rect2(144 if short_window else 0, content_h + 8 if short_window else content_h - 30, maxf(40, work_w - 286) if short_window else maxf(40, work_w - 140), 28))
+	_place(_refresh, Rect2(0 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
+	_place(_feedback, Rect2(20, h - 50, maxf(50, w - 188), 38))
+	_feedback.visible = not short_window
+	_summary.show()
+	_place(start_button, Rect2(w - 154, h - 38 if short_window else h - 50, 134, 30 if short_window else 36))
+	var sale_size := Vector2(minf(420, w - 32), minf(360, h - 32))
+	_place(_sale_box, Rect2((Vector2(w, h) - sale_size) * 0.5, sale_size))
+	if not _compact and _active_tab == "bank": _active_tab = "shop"
+	_select_tab(_active_tab)
 
 
-func _refresh_visual() -> void:
-	var gold := int(payload.get("gold", 0))
-	var principal := int(payload.get("principal", 0))
-	var rate := float(payload.get("interest_rate", 0.0))
-	var interest := int(payload.get("estimated_interest", 0))
-	_refresh_quick_amounts(gold)
-	if title_label != null:
-		title_label.text = "深渊金库"
-	if principal_value != null:
-		principal_value.text = _format_number(principal)
-	if rate_value != null:
-		rate_value.text = "%.1f%%" % rate
-	if interest_value != null:
-		interest_value.text = _format_number(interest)
-	if hint_label != null:
-		hint_label.text = _build_hint_text(gold, principal)
-	var valid_amount := amount > 0
-	if deposit_button != null:
-		deposit_button.disabled = is_animating or not valid_amount or amount > gold
-	if withdraw_button != null:
-		withdraw_button.disabled = is_animating or not valid_amount or amount > principal
-	if skip_button != null:
-		skip_button.disabled = is_animating
-	if quick_50_button != null:
-		quick_50_button.disabled = is_animating
-	if quick_100_button != null:
-		quick_100_button.disabled = is_animating
-	if quick_500_button != null:
-		quick_500_button.disabled = is_animating
+func _select_tab(tab: String) -> void:
+	_active_tab = tab
+	_bank.visible = not _compact or tab == "bank"
+	_shop.visible = tab == "shop"
+	_enchant_scroll.visible = tab == "enchant"
+	for key in _tab_buttons:
+		var button: Button = _tab_buttons[key]
+		button.visible = key != "bank" or _compact
+		FinanceUIStyle.button(button, key == tab)
+	if _tooltip != null: _tooltip.hide()
+	if flow != null: flow.clear_stat_preview()
 
 
-func _refresh_quick_amounts(gold: int) -> void:
-	var quarter_amount := floori(float(gold) / 4.0)
-	var half_amount := floori(float(gold) / 2.0)
-	if quick_50_button != null:
-		quick_50_button.text = "+%s" % _format_number(quarter_amount)
-	if quick_100_button != null:
-		quick_100_button.text = "+%s" % _format_number(half_amount)
-	if quick_500_button != null:
-		quick_500_button.text = "+%s" % _format_number(gold)
-
-
-func _build_hint_text(gold: int, principal: int) -> String:
-	if not error_message.is_empty():
-		return error_message
-	if gold <= 0 and principal <= 0:
-		return "当前没有可操作的金币或本金"
-	if amount > gold and amount > principal:
-		return "存入不得超过当前金币，取出不得超过理财本金"
-	if amount > gold:
-		return "存入金额超过当前金币"
-	if amount > principal:
-		return "取出金额超过理财本金"
+func _refresh_bank() -> void:
+	var locked := bool(payload.get("manual_operation_used", false))
+	_bank_form.visible = not locked
+	_receipt.visible = locked
+	if locked:
+		var last: Dictionary = payload.get("last_manual_operation", {})
+		_receipt.text = "本波已%s %d 金币\n下波可再次办理存取。" % ["存入" if str(last.get("action", "")) == "deposit" else "取出", int(last.get("amount", 0))]
+	_choose_bank_action(_bank_action)
+	_contract.text = "每波只能存或取一次。\n买卖与附魔不受此限制。"
 	if bool(payload.get("requires_deposit_for_interest", false)):
-		return "本波开始前需存入至少 %d 本金以获取利息" % int(payload.get("deposit_requirement", 50))
-	return ""
+		_contract.text = "存款契约：%d / %d\n%s" % [int(payload.get("wave_start_deposit_amount", 0)), int(payload.get("deposit_requirement", 0)), "已满足本波结息条件" if bool(payload.get("has_deposited_before_current_wave", false)) else "本波存入达到要求后才可结息"]
 
 
-func _refresh_footer_color() -> void:
-	if footer_note == null:
+func _choose_bank_action(action: String) -> void:
+	_bank_action = action
+	FinanceUIStyle.button(_deposit, action == "deposit")
+	FinanceUIStyle.button(_withdraw, action == "withdraw")
+	bank_confirm.text = "确认存入" if action == "deposit" else "确认取出"
+	_withdraw.disabled = int(payload.get("principal", 0)) <= 0
+	bank_confirm.disabled = bool(payload.get("manual_operation_used", false)) or int(payload.get("gold" if action == "deposit" else "principal", 0)) <= 0
+
+
+func _submit_bank() -> void:
+	if flow == null: return
+	var value := amount_input.text.strip_edges()
+	if not value.is_valid_int() or value.to_int() <= 0:
+		show_error("amount_must_be_positive")
 		return
-	var phase := fmod(Time.get_ticks_msec() / 1000.0, 4.0) / 4.0
-	var color := Color(0.47, 0.70, 0.26, 1.0)
-	var alpha := 0.82
-	if phase >= 0.90 and phase < 0.925:
-		alpha = 0.32
-	elif phase >= 0.94 and phase < 0.955:
-		color = Color(0.68, 0.34, 0.86, 1.0)
-		alpha = 0.58
-	footer_note.add_theme_color_override("font_color", Color(color.r, color.g, color.b, alpha))
+	var result := flow.submit_finance_operation(_bank_action, value.to_int())
+	if bool(result.get("success", false)):
+		portrait.react(_bank_action, int(result.get("amount", 0)), int(result.get("source_balance_before", 0)))
+		_feedback_message("存取已完成。仍可购买、出售和配置附魔。", true)
+	else: show_error(str(result.get("reason", "")))
 
 
-func _start_tentacle_animation() -> void:
-	var corners := [
-		$CornerTopLeft,
-		$CornerTopRight,
-		$CornerBottomLeft,
-		$CornerBottomRight,
-	]
-	for index in corners.size():
-		var corner := corners[index] as Control
-		if corner == null:
-			continue
-		var sway := create_tween().set_loops()
-		sway.set_trans(Tween.TRANS_SINE)
-		sway.set_ease(Tween.EASE_IN_OUT)
-		sway.tween_property(corner, "scale", Vector2(1.02, 1.02), 3.0).set_delay(index * 0.6)
-		sway.tween_property(corner, "scale", Vector2.ONE, 3.0)
+func _buy(offer: Dictionary) -> void:
+	if flow == null: return
+	var result := flow.submit_shop_purchase(offer, "shop")
+	if bool(result.get("success", false)): _feedback_message("已购买：" + str(offer.get("display_name", "")), true)
+	else: show_error(str(result.get("reason", "")))
 
 
-func _format_error_reason(reason: String) -> String:
-	match reason:
-		"amount_must_be_positive":
-			return "操作失败 请输入大于 0 的整数"
-		"amount_exceeds_gold":
-			return "操作失败 存入数量不能超过当前金币"
-		"amount_exceeds_principal":
-			return "操作失败 取出数量不能超过理财本金"
-		"gold_delta_failed":
-			return "操作失败 金币变更未成功"
-		"invalid_action":
-			return "操作失败 未知理财操作"
-		_:
-			return "操作失败 请重试"
+func _refresh_shop() -> void:
+	if flow == null: return
+	var result := flow.request_shop_refresh()
+	if bool(result.get("success", false)): _feedback_message("货架已刷新。", true)
+	else: show_error(str(result.get("reason", "")))
 
 
-func _on_amount_changed(value: String) -> void:
-	if not _amount_initialized:
+func _open_sale(kind: String, id: String) -> void:
+	_quote = flow.get_inventory_sale_quote(kind, id)
+	if not bool(_quote.get("success", false)):
+		show_error(str(_quote.get("reason", "")))
 		return
-	var sanitized := value.strip_edges()
-	amount = maxi(0, int(sanitized) if sanitized.is_valid_int() else 0)
-	error_message = ""
-	_refresh_visual()
+	_tooltip.hide()
+	_sale_icon.texture = FinanceUIStyle.item_icon(str(_quote.get("icon", "")))
+	for child in _sale_items.get_children():
+		_sale_items.remove_child(child)
+		child.queue_free()
+	_sale_items.visible = kind == "weapon" and not (_quote.get("returned_ids", []) as Array).is_empty()
+	if _sale_items.visible:
+		_label("归还背包", _sale_items, 12, FinanceUIStyle.MUTED)
+		for returned_id in _quote.get("returned_ids", []):
+			var returned_item := flow.get_bound_player().item_inventory.find_item(str(returned_id))
+			var icon := TextureRect.new()
+			icon.custom_minimum_size = Vector2(30, 30)
+			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon.texture = FinanceUIStyle.item_icon(str(returned_item.get("icon", "")))
+			icon.tooltip_text = str(returned_item.get("display_name", ""))
+			_sale_items.add_child(icon)
+	var lines: Array[String] = ["[b]%s[/b]" % str(_quote.get("display_name", ""))]
+	if kind == "weapon":
+		lines.append("武器等级：%d\n基础回收：%d\n升级回收：%d" % [int(_quote.get("level", 1)), int(_quote.get("base_value", 0)), int(_quote.get("upgrade_value", 0))])
+		if int(_quote.get("title_bonus", 0)) > 0: lines.append("称号「%s」加价：%d" % [str(_quote.get("title", "")), int(_quote.get("title_bonus", 0))])
+		var returned: Array = _quote.get("returned_items", [])
+		lines.append("附魔将归还背包：" + ("、".join(returned) if not returned.is_empty() else "无"))
+	else:
+		var detail := ItemInventoryCard.new()
+		detail.item_instance = flow.get_bound_player().item_inventory.find_item(id)
+		lines.append(detail._build_tooltip())
+		detail.free()
+	lines.append("\n[color=#D4BC81]获得 %d 随身金币[/color]" % int(_quote.get("total", 0)))
+	_sale_text.text = "\n\n".join(lines)
+	_sale_confirm.text = "出售 · %d 金币" % int(_quote.get("total", 0))
+	_sale_layer.show()
+	_sale_confirm.grab_focus()
 
 
-func _on_quick_amount_pressed(divisor: int) -> void:
-	if is_animating:
-		return
-	var gold := int(payload.get("gold", 0))
-	amount = gold if divisor <= 1 else floori(float(gold) / float(divisor))
-	amount_edit.text = str(amount)
-	_refresh_visual()
+func _confirm_sale() -> void:
+	if not _sale_layer.visible or _quote.is_empty(): return
+	var result := flow.submit_inventory_sale(str(_quote.get("kind", "")), str(_quote.get("target_id", "")), str(_quote.get("quote_token", "")))
+	_sale_layer.hide()
+	_quote.clear()
+	if bool(result.get("success", false)): _feedback_message("已出售，获得 %d 金币。" % int(result.get("gold_gained", 0)), true)
+	else: show_error(str(result.get("reason", "")))
 
 
-func _on_deposit_pressed() -> void:
-	if is_animating or amount <= 0:
-		return
-	if amount > int(payload.get("gold", 0)):
-		error_message = "存入金额不能超过当前金币"
-		_refresh_visual()
-		return
-	_play_operation_animation(ACTION_DEPOSIT, amount)
+func _show_tooltip(content: String) -> void:
+	if _sale_layer.visible: return
+	_tooltip_text.text = content
+	var tooltip_size := Vector2(minf(310, main_panel.size.x - 24), minf(200, main_panel.size.y * 0.45))
+	var point := get_global_mouse_position() - main_panel.global_position + Vector2(14, 14)
+	point.x = clampf(point.x, 12, main_panel.size.x - tooltip_size.x - 12)
+	point.y = clampf(point.y, 12, main_panel.size.y - tooltip_size.y - 12)
+	_place(_tooltip, Rect2(point, tooltip_size))
+	_tooltip.show()
 
 
-func _on_withdraw_pressed() -> void:
-	if is_animating or amount <= 0:
-		return
-	if amount > int(payload.get("principal", 0)):
-		error_message = "取出金额不能超过理财本金"
-		_refresh_visual()
-		return
-	_play_operation_animation(ACTION_WITHDRAW, amount)
+func _feedback_message(message: String, success: bool) -> void:
+	_feedback.text = message
+	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GREEN if success else Color("e1a184"))
+	if get_viewport().get_visible_rect().size.y < 480:
+		_summary.hide()
+		_place(_feedback, Rect2(20, 32, main_panel.size.x - 40, 18))
+		_feedback.show()
+		_notice_timer.start()
 
 
-func _on_skip_pressed() -> void:
-	if is_animating:
-		return
-	skipped.emit()
+func handle_back_request() -> bool:
+	if not visible or flow == null or flow.get_current_state() != MainFlowCoordinator.STATE_FINANCE_POPUP:
+		return false
+	if _sale_layer.visible:
+		_sale_layer.hide()
+	else:
+		_tooltip.hide()
+		flow.request_esc_overlay()
+	return true
 
 
-func _play_operation_animation(action: String, operation_amount: int) -> void:
-	is_animating = true
-	error_message = ""
-	_animation_token += 1
-	var token := _animation_token
-	_refresh_visual()
-	var bill := TextureRect.new()
-	bill.texture = BILL_TEXTURE
-	bill.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	bill.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	bill.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	bill.custom_minimum_size = Vector2(60.0, 32.0)
-	bill.size = Vector2(60.0, 32.0)
-	var stage_width := animation_stage.size.x
-	var center_bill := Vector2(stage_width * 0.5 - 30.0, 34.0)
-	bill.position = Vector2(-80.0, 34.0) if action == ACTION_DEPOSIT else center_bill
-	animation_stage.add_child(bill)
-	var hand := TextureRect.new()
-	hand.texture = HAND_TEXTURE
-	hand.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	hand.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	hand.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	hand.size = Vector2(48.0, 56.0)
-	var center_hand := Vector2(stage_width * 0.5 - 60.0, 20.0)
-	hand.position = Vector2(-120.0, 20.0) if action == ACTION_DEPOSIT else Vector2(stage_width + 72.0, 20.0)
-	if action == ACTION_WITHDRAW:
-		hand.flip_h = true
-	hand.modulate.a = 0.0
-	animation_stage.add_child(hand)
-	var target_bill := center_bill + Vector2(0.0, -10.0) if action == ACTION_DEPOSIT else Vector2(-80.0, 34.0)
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.set_ease(Tween.EASE_IN_OUT)
-	var final_hand_position := Vector2(-120.0, 20.0) if action == ACTION_DEPOSIT else Vector2(stage_width + 72.0, 20.0)
-	tween.parallel().tween_property(bill, "position", target_bill, 1.02).set_delay(0.18)
-	tween.parallel().tween_property(bill, "modulate:a", 1.0, 0.18)
-	tween.parallel().tween_property(bill, "modulate:a", 0.0, 0.18).set_delay(1.02)
-	tween.parallel().tween_property(bill, "scale", Vector2(0.8, 0.8), 0.18).set_delay(1.02)
-	tween.parallel().tween_property(hand, "modulate:a", 0.85, 0.18).set_delay(0.12)
-	tween.parallel().tween_property(hand, "position", center_hand, 0.36).set_delay(0.12)
-	tween.parallel().tween_property(hand, "position", final_hand_position, 0.36).set_delay(0.60)
-	tween.parallel().tween_property(hand, "modulate:a", 0.0, 0.18).set_delay(1.02)
-	tween.tween_callback(func() -> void:
-		bill.queue_free()
-		hand.queue_free()
-		if token != _animation_token:
-			return
-		_spawn_coins(action)
-		principal_value.pivot_offset = principal_value.size * 0.5
-		var bump := create_tween()
-		bump.set_trans(Tween.TRANS_BACK)
-		bump.set_ease(Tween.EASE_OUT)
-		bump.tween_property(principal_value, "scale", Vector2(1.12, 1.12), 0.12)
-		bump.tween_property(principal_value, "scale", Vector2.ONE, 0.18)
-		get_tree().create_timer(0.16).timeout.connect(func() -> void:
-			if token == _animation_token:
-				operation_submitted.emit(action, operation_amount)
-				is_animating = false
-				_refresh_visual()
-		)
-	)
-
-func _spawn_coins(action: String) -> void:
-	if action != ACTION_DEPOSIT:
-		return
-	var principal_rect := principal_panel.get_global_rect()
-	for index in range(5):
-		var coin := TextureRect.new()
-		coin.texture = COIN_TEXTURE
-		coin.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		coin.size = Vector2(12.0, 12.0)
-		coin.position = Vector2(
-			principal_rect.position.x + principal_rect.size.x * randf_range(0.4, 0.6),
-			principal_rect.position.y + principal_rect.size.y * 0.55,
-		)
-		coin.modulate.a = 0.0
-		coin_particles.add_child(coin)
-		var target := coin.position + Vector2(randf_range(-32.0, 32.0), randf_range(-36.0, -12.0))
-		var tween := create_tween()
-		tween.set_trans(Tween.TRANS_QUAD)
-		tween.set_ease(Tween.EASE_OUT)
-		tween.set_parallel()
-		tween.tween_property(coin, "position", target, 0.42)
-		tween.tween_property(coin, "modulate:a", 1.0, 0.08)
-		tween.chain().tween_property(coin, "modulate:a", 0.0, 0.24)
-		tween.tween_callback(coin.queue_free)
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and not event.echo and event.is_action_pressed("ui_cancel") and handle_back_request():
+		get_viewport().set_input_as_handled()
 
 
-func _format_number(value: int) -> String:
-	var digits := str(absi(value))
-	var grouped := ""
-	while digits.length() > 3:
-		grouped = "," + digits.substr(digits.length() - 3) + grouped
-		digits = digits.substr(0, digits.length() - 3)
-	grouped = digits + grouped
-	return ("-" if value < 0 else "") + grouped
+func _label(caption: String, parent: Control, font_size: int, color: Color) -> Label:
+	var control := Label.new()
+	control.text = caption
+	FinanceUIStyle.label(control, font_size, color)
+	parent.add_child(control)
+	return control
+
+
+func _button(caption: String, parent: Control) -> Button:
+	var control := Button.new()
+	control.text = caption
+	control.custom_minimum_size.y = 28
+	FinanceUIStyle.button(control)
+	parent.add_child(control)
+	return control
+
+
+func _place(control: Control, rect: Rect2) -> void:
+	control.position = rect.position
+	control.size = rect.size

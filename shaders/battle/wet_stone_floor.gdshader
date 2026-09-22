@@ -1,6 +1,9 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+#include "res://shaders/battle/horizon_depth.gdshaderinc"
+
+uniform float environment_time = 0.0;
 uniform vec3 wet_tint : source_color = vec3(0.025, 0.145, 0.150);
 uniform vec3 water_highlight : source_color = vec3(0.155, 0.390, 0.365);
 uniform vec3 moss_tint : source_color = vec3(0.285, 0.405, 0.120);
@@ -30,7 +33,7 @@ float value_noise(vec2 value) {
 
 float ripple_ring(vec2 uv, vec2 center, float phase) {
 	vec2 delta = (uv - center) * vec2(1.0, 1.85);
-	float cycle = fract(TIME * 0.105 + phase);
+	float cycle = fract(environment_time * 0.105 + phase);
 	float radius = mix(0.012, 0.115, cycle);
 	float ring_distance = abs(length(delta) - radius);
 	float ring = 1.0 - smoothstep(0.0015, 0.0045, ring_distance);
@@ -60,7 +63,7 @@ void fragment() {
 	vec3 wet_color = texel.rgb * 0.52 + wet_tint * 0.48;
 	vec3 color = mix(texel.rgb, wet_color, wetness * wet_strength);
 
-	float horizontal_glint = 1.0 - smoothstep(0.0, 0.95, abs(sin(pixel.x * 0.072 + TIME * 0.38 + broad_noise * 7.0)));
+	float horizontal_glint = 1.0 - smoothstep(0.0, 0.95, abs(sin(pixel.x * 0.072 + environment_time * 0.38 + broad_noise * 7.0)));
 	float glint_row = step(0.9, fract((pixel.y + floor(broad_noise * 13.0)) / 11.0));
 	float glint_break = step(0.63, hash21(floor(pixel / vec2(18.0, 5.0))));
 	float glint = horizontal_glint * glint_row * glint_break * wetness * 0.11;
@@ -84,5 +87,5 @@ void fragment() {
 	ripples = clamp(ripples, 0.0, 1.0) * wetness;
 	color = mix(color, water_highlight, ripples * 0.36);
 
-	COLOR = vec4(color, texel.a);
+	COLOR = vec4(horizon_haze(color, SCREEN_UV), texel.a);
 }

@@ -62,6 +62,21 @@ func get_items() -> Array[Dictionary]:
 	return result
 
 
+func take_unequipped_item_for_trade(item_instance_id: String) -> Dictionary:
+	for index in _items.size():
+		var item: Dictionary = _items[index]
+		if str(item.get("item_instance_id", "")) == item_instance_id:
+			if not str(item.get("equipped_weapon_id", "")).is_empty():
+				return {}
+			_items.remove_at(index)
+			return item
+	return {}
+
+
+func restore_traded_item(item: Dictionary) -> void:
+	_items.append(item)
+
+
 func get_available_items() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for item in _items:

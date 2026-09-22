@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=38 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -22,9 +22,15 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-sky-Recovered.png" id="21_battle_sky"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-baike.png" id="22_icon_baike"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-plugin.png" id="23_icon_plugin"]
-[ext_resource type="Script" path="res://scripts/battle/horizon_sea.gd" id="24_horizon_sea"]
+[ext_resource type="Script" path="res://scripts/battle/wetland_backdrop.gd" id="24_wetland"]
 [ext_resource type="Shader" path="res://shaders/battle/wet_stone_floor.gdshader" id="25_wet_stone_floor"]
-[ext_resource type="Shader" path="res://shaders/battle/horizon_sea.gdshader" id="26_horizon_sea"]
+[ext_resource type="Script" path="res://scripts/battle/distant_ruins.gd" id="26_ruins"]
+[ext_resource type="Script" path="res://scripts/ui/battle_utility_overlay.gd" id="27_utility"]
+[ext_resource type="Script" path="res://scripts/battle/wetland_horizon_fold.gd" id="28_horizon_fold"]
+[ext_resource type="Shader" path="res://shaders/battle/horizon_sky.gdshader" id="29_horizon_sky"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_horizon_sky"]
+shader = ExtResource("29_horizon_sky")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
@@ -34,9 +40,6 @@ shader = ExtResource("10_crt_ambience")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wet_stone_floor"]
 shader = ExtResource("25_wet_stone_floor")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_horizon_sea"]
-shader = ExtResource("26_horizon_sea")
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
 bg_color = Color(0.035, 0.049, 0.031, 0.9)
@@ -97,6 +100,7 @@ layer = -2
 
 [node name="Sky" type="TextureRect" parent="BattleSky"]
 texture_filter = 1
+material = SubResource("ShaderMaterial_horizon_sky")
 anchor_right = 1.0
 offset_top = 56.0
 offset_bottom = 128.0
@@ -123,6 +127,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.5)
 
 [node name="BottomEdgeGlow" type="ColorRect" parent="BattleSky"]
+visible = false
 anchor_right = 1.0
 offset_top = 124.0
 offset_bottom = 130.0
@@ -131,6 +136,7 @@ mouse_filter = 2
 color = Color(0.42, 0.13, 0.07, 0.34)
 
 [node name="BottomEdgeShadow" type="ColorRect" parent="BattleSky"]
+visible = false
 anchor_right = 1.0
 offset_top = 128.0
 offset_bottom = 138.0
@@ -138,27 +144,33 @@ grow_horizontal = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.58)
 
+[node name="DistantRuins" type="Node2D" parent="BattleSky"]
+texture_filter = 1
+script = ExtResource("26_ruins")
+
 [node name="CombatRenderWorld" type="Node2D" parent="."]
 z_index = 0
 script = ExtResource("20_combat_render_world")
 
+[node name="BattleUtilityOverlay" type="CanvasLayer" parent="."]
+layer = 30
+script = ExtResource("27_utility")
+
+[node name="Backdrop" type="Node2D" parent="CombatRenderWorld"]
+z_index = -110
+script = ExtResource("24_wetland")
+
 [node name="StoneBrickFloor" type="Sprite2D" parent="CombatRenderWorld"]
 texture_filter = 1
-position = Vector2(0, -38.5)
+position = Vector2(0, -24.64)
+scale = Vector2(0.64, 0.64)
 z_index = -100
 material = SubResource("ShaderMaterial_wet_stone_floor")
 texture = ExtResource("9_stone_floor")
 
-[node name="HorizonSea" type="Node2D" parent="CombatRenderWorld"]
-z_index = -98
-top_level = true
-script = ExtResource("24_horizon_sea")
-
-[node name="SeaBand" type="ColorRect" parent="CombatRenderWorld/HorizonSea"]
-offset_right = 800.0
-offset_bottom = 82.0
-material = SubResource("ShaderMaterial_horizon_sea")
-mouse_filter = 2
+[node name="HorizonFold" type="Node2D" parent="CombatRenderWorld"]
+z_index = -105
+script = ExtResource("28_horizon_fold")
 
 [node name="ParticleLightField" type="Node2D" parent="CombatRenderWorld"]
 z_index = 15
@@ -216,6 +228,7 @@ offset_top = 16.0
 theme_override_constants/separation = 7
 
 [node name="LevelLabel" type="Label" parent="HUD/StatusPanel/TopLeft"]
+visible = false
 theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
 theme_override_constants/outline_size = 3
@@ -325,10 +338,10 @@ theme_override_font_sizes/font_size = 17
 text = "60s"
 horizontal_alignment = 1
 
-[node name="EconomyPanel" type="HBoxContainer" parent="BattleTopBar"]
+[node name="EconomyPanel" type="VBoxContainer" parent="BattleTopBar"]
 mouse_filter = 2
 alignment = 1
-theme_override_constants/separation = 12
+theme_override_constants/separation = 2
 
 [node name="GoldRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
 custom_minimum_size = Vector2(0, 20)
@@ -432,9 +445,9 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -28.0
-offset_top = 56.0
+offset_top = 72.0
 offset_right = 292.0
-offset_bottom = -16.0
+offset_bottom = -56.0
 mouse_filter = 0
 
 [node name="DrawerPanel" type="PanelContainer" parent="HUD/StatsDrawer"]
@@ -461,10 +474,10 @@ flat = true
 
 [node name="ContentMargin" type="MarginContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody"]
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 30
 
 [node name="Content" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin"]
 
@@ -475,7 +488,7 @@ horizontal_alignment = 1
 [node name="StatsScroll" type="ScrollContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content"]
 size_flags_vertical = 3
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 2
+vertical_scroll_mode = 3
 mouse_filter = 1
 script = ExtResource("16_touch_scroll")
 

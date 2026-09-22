@@ -9,7 +9,7 @@
       "starter"
     ],
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
-    "display_sprite": "res://assets/sprites/player/player_void_hunter_right_base.png",
+    "display_sprite": "res://assets/sprites/player/void_hunter_idle_right.png",
     "display_stats": [
       "max_hp",
       "move_speed",

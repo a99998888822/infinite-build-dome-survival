@@ -314,10 +314,10 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_REWARD,
 		"default": 0,
 		"min": -1,
-		"max": 99,
+		"max": INF,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "共享奖励和局内商店的候选数量加成；基础候选数为 3，最终候选数始终至少为 2。"
+		"description": "共享奖励和局内商店的候选数量加成，无上限；购买货架至少 3 件，升级奖励沿用原有数量规则。"
 	},
 	"load_capacity": {
 		"display_name": "负载上限",

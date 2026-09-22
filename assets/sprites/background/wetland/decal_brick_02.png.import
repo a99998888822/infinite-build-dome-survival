@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0c28xtagxl76"
-path="res://.godot/imported/finance_elder_sign.svg-b9b59a261677fa287d9822d1f4d9ed71.ctex"
+uid="uid://cls1oqxnkbf71"
+path="res://.godot/imported/decal_brick_02.png-538fd62ec600a00172fab025bd530b14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/finance/finance_elder_sign.svg"
-dest_files=["res://.godot/imported/finance_elder_sign.svg-b9b59a261677fa287d9822d1f4d9ed71.ctex"]
+source_file="res://assets/sprites/background/wetland/decal_brick_02.png"
+dest_files=["res://.godot/imported/decal_brick_02.png-538fd62ec600a00172fab025bd530b14.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

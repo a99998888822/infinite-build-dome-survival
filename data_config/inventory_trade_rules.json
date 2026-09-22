@@ -1,0 +1,7 @@
+{
+  "weapon_sell_ratio": 0.5,
+  "upgrade_sell_ratio": 0.5,
+  "enchantment_sell_ratio": 0.5,
+  "enchantment_base_value": 15,
+  "rarity_value_step": 5
+}

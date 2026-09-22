@@ -916,15 +916,23 @@ func _run_finance_checks() -> bool:
 	wave_manager.add_exp_and_gold(0, 100)
 	var payload := wave_manager.prepare_finance_for_wave(1)
 	passed = _print_check_result("finance payload build", int(payload.get("gold", 0)) == 100 and int(payload.get("principal", 0)) == 0) and passed
+	var failed_deposit := wave_manager.apply_finance_operation("deposit", 999)
+	passed = _print_check_result("finance failed attempt preserves opportunity", not bool(failed_deposit.get("success", false)) and not wave_manager.finance_system.manual_operation_used) and passed
 	var deposit_result := wave_manager.apply_finance_operation("deposit", 50)
 	passed = _print_check_result("finance deposit", bool(deposit_result.get("success", false)) and wave_manager.current_gold == 50 and int(wave_manager.get_finance_snapshot().get("principal", 0)) == 50) and passed
 	var over_deposit_result := wave_manager.apply_finance_operation("deposit", 999)
-	passed = _print_check_result("finance reject over deposit", not bool(over_deposit_result.get("success", false)) and str(over_deposit_result.get("reason", "")) == "amount_exceeds_gold") and passed
+	passed = _print_check_result("finance one operation per preparation", not bool(over_deposit_result.get("success", false)) and str(over_deposit_result.get("reason", "")) == "bank_operation_used") and passed
 	var settle_result := wave_manager.trigger_finance_interest("bootstrap")
 	passed = _print_check_result("finance interest settle", bool(settle_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) > 50) and passed
 	wave_manager.add_relic("relic_piggy_bank")
+	var principal_before_prepare := wave_manager.finance_system.principal
 	wave_manager.prepare_finance_for_wave(2)
+	passed = _print_check_result("finance preparation defers wave start effects", wave_manager.finance_system.principal == principal_before_prepare) and passed
+	wave_manager.finance_system.begin_wave(2)
 	passed = _print_check_result("finance piggy relic", int(wave_manager.get_finance_snapshot().get("principal", 0)) >= 60) and passed
+	var principal_after_start := wave_manager.finance_system.principal
+	wave_manager.finance_system.begin_wave(2)
+	passed = _print_check_result("finance wave start effects exactly once", wave_manager.finance_system.principal == principal_after_start) and passed
 	var dividend_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
 	wave_manager.add_relic("relic_dividend_check")
 	var dividend_settle := wave_manager.trigger_finance_interest("bootstrap_dividend")
@@ -933,7 +941,7 @@ func _run_finance_checks() -> bool:
 	var fixed_deposit_result := wave_manager.apply_finance_operation("deposit", 1)
 	passed = _print_check_result("finance fixed deposit deposit", bool(fixed_deposit_result.get("success", false))) and passed
 	var fixed_deposit_withdraw_result := wave_manager.apply_finance_operation("withdraw", 1)
-	passed = _print_check_result("finance fixed deposit withdraw", bool(fixed_deposit_withdraw_result.get("success", false))) and passed
+	passed = _print_check_result("finance cannot withdraw after deposit", not bool(fixed_deposit_withdraw_result.get("success", false)) and str(fixed_deposit_withdraw_result.get("reason", "")) == "bank_operation_used") and passed
 	wave_manager.add_relic("relic_compound_interest_tome")
 	var rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	wave_manager.process_wave_end_settlements()
@@ -948,13 +956,17 @@ func _run_finance_checks() -> bool:
 	var blocked_settle_results := wave_manager.process_wave_end_settlements()
 	var blocked_settle_result: Dictionary = blocked_settle_results[0] if not blocked_settle_results.is_empty() else {}
 	passed = _print_check_result("finance high yield blocks below threshold", bool(blocked_settle_result.get("blocked", false))) and passed
+	wave_manager.apply_gold_delta(1, "bootstrap_threshold_fixture")
 	var threshold_deposit_result := wave_manager.apply_finance_operation("deposit", 50)
 	passed = _print_check_result("finance high yield threshold deposit", bool(threshold_deposit_result.get("success", false))) and passed
+	wave_manager.finance_system.begin_wave(3)
+	passed = _print_check_result("finance preparation deposit survives wave start", wave_manager.finance_system.wave_start_deposit_amount == 50 and wave_manager.finance_system.has_deposited_before_current_wave) and passed
 	var threshold_settle_results := wave_manager.process_wave_end_settlements()
 	var threshold_settle_result: Dictionary = threshold_settle_results[0] if not threshold_settle_results.is_empty() else {}
 	passed = _print_check_result("finance high yield passes at threshold", bool(threshold_settle_result.get("success", false)) and not bool(threshold_settle_result.get("blocked", false))) and passed
-	var finance_popup := FINANCE_POPUP_SCENE.instantiate()
-	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.get_node_or_null("MainPanel/Content/ActionRow/DepositButton") != null) and passed
+	var finance_popup := FINANCE_POPUP_SCENE.instantiate() as FinancePopup
+	add_child(finance_popup)
+	passed = _print_check_result("finance popup instantiate", finance_popup != null and finance_popup.bank_confirm != null and finance_popup.shop_grid != null and finance_popup.workbench != null and finance_popup.start_button != null) and passed
 	if finance_popup != null:
 		finance_popup.queue_free()
 	var finance_controller := FINANCE_UI_CONTROLLER_SCENE.instantiate()
@@ -972,6 +984,7 @@ func _run_finance_checks() -> bool:
 	wave_manager.add_relic("relic_steel_vault")
 	wave_manager.add_relic("relic_hostile_takeover")
 	wave_manager.prepare_finance_for_wave(9)
+	wave_manager.finance_system.begin_wave(9)
 	var derived_principal := int(wave_manager.get_finance_snapshot().get("principal", 0))
 	passed = _print_check_result("finance steel vault principal armor", derived_principal >= 50 and is_equal_approx(player.get_stat("armor") - armor_before_derived, floorf(float(derived_principal) / 50.0))) and passed
 	passed = _print_check_result("finance hostile takeover damage percent", is_equal_approx(player.get_stat("damage_percent") - damage_before_derived, floorf(float(derived_principal) / 100.0))) and passed
@@ -990,6 +1003,7 @@ func _run_finance_checks() -> bool:
 	})
 	var rate_before_divine := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	wave_manager.prepare_finance_for_wave(10)
+	wave_manager.finance_system.begin_wave(10)
 	var expected_divine_rate := floorf(player.get_stat("divinity") / 5.0) * 0.5
 	passed = _print_check_result("finance divine fusion fractional rate", expected_divine_rate > 0.0 and is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, expected_divine_rate)) and passed
 
@@ -1059,7 +1073,7 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow resume combat after popup", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.finish_current_wave()
-	passed = _print_check_result("main flow wave end shop ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_SHOP_POPUP) and passed
+	passed = _print_check_result("main flow unified preparation ready", flow.get_state_snapshot().get("wave_end_ready", false) == true and flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
 	passed = _print_check_result("shop refresh cost wave1", flow.get_shop_refresh_cost() == 4) and passed
 	var refresh_rejected := flow.request_shop_refresh()
 	passed = _print_check_result("shop refresh reject no gold", not bool(refresh_rejected.get("success", false))) and passed
@@ -1070,11 +1084,11 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("shop refresh pay and weighted cost", bool(refresh_result.get("success", false)) and int(refresh_result.get("cost", -1)) == expected_refresh_cost and wave_manager.get_current_gold() == gold_before_refresh - expected_refresh_cost and flow.get_shop_refresh_cost() == 10) and passed
 	var invalid_purchase := flow.submit_shop_purchase({}, "shop")
 	passed = _print_check_result("main flow shop reject invalid offer", not bool(invalid_purchase.get("success", false))) and passed
-	flow.advance_wave_end_phase()
-	passed = _print_check_result("main flow shop to finance order", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
-	var finance_result := flow.submit_finance_operation("none", 0)
+	var finance_result := flow.submit_finance_operation("deposit", 1)
 	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
-	passed = _print_check_result("main flow wave auto start after finance", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
+	passed = _print_check_result("main flow banking stays in preparation", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
+	flow.close_finance_popup()
+	passed = _print_check_result("main flow explicit next wave starts combat", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.present_battle_result(true, {"reason": "bootstrap"})
 	passed = _print_check_result("main flow battle result", flow.get_current_state() == MainFlowCoordinator.STATE_BATTLE_RESULT and flow.current_victory) and passed
