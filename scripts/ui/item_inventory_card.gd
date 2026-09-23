@@ -42,16 +42,8 @@ const EFFECT_LABELS: Dictionary = {
 	"split": "分裂",
 	"pierce": "穿透",
 }
-const EFFECT_COLOR_CODES: Dictionary = {
-	"fire": "#FFAA61",
-	"explosion": "#FFD89E",
-	"lightning": "#BFE8FF",
-	"electric_spark": "#FFD15C",
-	"split": "#FF9ED7",
-	"pierce": "#9EDBFF",
-	"light_sword": "#FFFFFF",
-	"black_hole": "#9A9AA5",
-}
+const TOOLTIP_LABEL_COLOR := "#C7D3E4"
+const TOOLTIP_VALUE_COLOR := "#BFD8FF"
 const MODIFIER_LABELS: Dictionary = {
 	"damage": "伤害",
 	"burn_duration": "燃烧时间",
@@ -150,17 +142,17 @@ func _append_rolled_parameter_lines(lines: Array[String]) -> void:
 	if not (rolled_parameters is Dictionary):
 		return
 	if rolled_parameters.has("chain_count"):
-		lines.append("[color=#F5D76E]连续传递：[/color][color=#7FD88F]%d 次[/color]" % int(rolled_parameters["chain_count"]))
+		lines.append("[color=%s]连续传递：[/color][color=#7FD88F]%d 次[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["chain_count"])])
 	if rolled_parameters.has("chain_interval"):
-		lines.append("[color=#F5D76E]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color]" % float(rolled_parameters["chain_interval"]))
+		lines.append("[color=%s]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color]" % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["chain_interval"])])
 	if rolled_parameters.has("stun_duration"):
-		lines.append("[color=#F5D76E]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color]" % float(rolled_parameters["stun_duration"]))
+		lines.append("[color=%s]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color]" % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["stun_duration"])])
 	if rolled_parameters.has("child_count"):
-		lines.append("[color=#F5D76E]分裂子箭：[/color][color=#7FD88F]%d 支[/color]" % int(rolled_parameters["child_count"]))
+		lines.append("[color=%s]分裂子箭：[/color][color=#7FD88F]%d 支[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["child_count"])])
 	if rolled_parameters.has("spread_angle"):
-		lines.append("[color=#F5D76E]分裂角度：[/color][color=#7FD88F]%d°[/color]" % int(rolled_parameters["spread_angle"]))
+		lines.append("[color=%s]分裂角度：[/color][color=#7FD88F]%d°[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["spread_angle"])])
 	if rolled_parameters.has("extra_target_hits"):
-		lines.append("[color=#F5D76E]额外命中：[/color][color=#7FD88F]%d 个目标[/color]" % int(rolled_parameters["extra_target_hits"]))
+		lines.append("[color=%s]额外命中：[/color][color=#7FD88F]%d 个目标[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["extra_target_hits"])])
 
 
 func _build_tooltip() -> String:
@@ -177,7 +169,7 @@ func _build_tooltip() -> String:
 		lines.append("[color=#FFFFFF]%s[/color]" % description)
 	var effect_names := _get_effect_names()
 	if not effect_names.is_empty():
-		lines.append("[color=#F5D76E]附加效果：[/color][color=#BFD8FF]%s[/color]" % effect_names)
+		lines.append("[color=%s]附加效果：[/color][color=%s]%s[/color]" % [TOOLTIP_LABEL_COLOR, TOOLTIP_VALUE_COLOR, effect_names])
 	_append_rolled_parameter_lines(lines)
 	for modifier in item_instance.get("modifiers", []):
 		if modifier is Dictionary:
@@ -208,16 +200,17 @@ func _format_modifier(modifier: Dictionary) -> String:
 	var operation := str(modifier.get("operation", ""))
 	var effect_id := str(modifier.get("effect_id", ""))
 	if channel == "visual.color":
-		return "[color=#F5D76E]粒子颜色：[/color][color=%s]%s[/color]" % [
-			str(EFFECT_COLOR_CODES.get(effect_id, "#BFD8FF")),
+		return "[color=%s]粒子颜色：[/color][color=%s]%s[/color]" % [
+			TOOLTIP_LABEL_COLOR,
+			TOOLTIP_VALUE_COLOR,
 			_get_visual_color_name(effect_id),
 		]
 	if channel == "detonate_burning":
-		return "[color=#F5D76E]燃烧引爆：[/color][color=#7FD88F]已启用[/color]"
+		return "[color=%s]燃烧引爆：[/color][color=#7FD88F]已启用[/color]" % TOOLTIP_LABEL_COLOR
 	var label := str(MODIFIER_LABELS.get(channel, "效果强化"))
 	var value: Variant = modifier.get("value", 0.0)
 	if not (value is int or value is float):
-		return "[color=#F5D76E]%s：[/color][color=#7FD88F]已生效[/color]" % label
+		return "[color=%s]%s：[/color][color=#7FD88F]已生效[/color]" % [TOOLTIP_LABEL_COLOR, label]
 	var number := float(value)
 	if operation == "multiply":
 		var percent := (number - 1.0) * 100.0
@@ -226,13 +219,13 @@ func _format_modifier(modifier: Dictionary) -> String:
 		var suffix := " 秒" if channel == "burn_duration" else " 次" if channel in ["chain_count", "child_count", "extra_target_hits"] else "°" if channel == "spread_angle" else ""
 		return _format_colored_value(label, _format_signed_number(number) + suffix, number)
 	if operation == "override":
-		return "[color=#F5D76E]%s：[/color][color=#7FD88F]%.2f[/color]" % [label, number]
-	return "[color=#F5D76E]%s：[/color][color=#7FD88F]已生效[/color]" % label
+		return "[color=%s]%s：[/color][color=#7FD88F]%.2f[/color]" % [TOOLTIP_LABEL_COLOR, label, number]
+	return "[color=%s]%s：[/color][color=#7FD88F]已生效[/color]" % [TOOLTIP_LABEL_COLOR, label]
 
 
 func _format_colored_value(label: String, value_text: String, number: float) -> String:
 	var color := "#7FD88F" if number >= 0.0 else "#FF827A"
-	return "[color=#F5D76E]%s：[/color][color=%s]%s[/color]" % [label, color, value_text]
+	return "[color=%s]%s：[/color][color=%s]%s[/color]" % [TOOLTIP_LABEL_COLOR, label, color, value_text]
 
 
 func _format_signed_number(number: float) -> String:

@@ -85,7 +85,7 @@ func _ready() -> void:
 	_move_right.tooltip_text = "将选中的已装备附魔后移一格"
 	_move_right.pressed.connect(_move_selected.bind(1))
 	_sell_item = _button("出售附魔", actions)
-	_sell_item.pressed.connect(func(): sale_requested.emit("enchantment", selected_item_id))
+	_sell_item.pressed.connect(_sell_selected_item)
 	resized.connect(_layout_inventory)
 
 
@@ -176,7 +176,9 @@ func _update_selection() -> void:
 	_apply.text = "卸下附魔" if same_weapon else ("转移至此武器" if not equipped.is_empty() else "装备至此武器")
 	_apply.disabled = item.is_empty() or current == null or (not same_weapon and not current.has_available_attachment_slot())
 	_apply.tooltip_text = "当前武器没有空槽，请先卸下附魔" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
-	_sell_item.disabled = item.is_empty() or not equipped.is_empty()
+	var sale_quote := flow.get_inventory_sale_quote("enchantment", selected_item_id) if not item.is_empty() and equipped.is_empty() else {}
+	_sell_item.text = "出售附魔(%d)" % int(sale_quote.get("total", 0)) if bool(sale_quote.get("success", false)) else "出售附魔"
+	_sell_item.disabled = item.is_empty() or not equipped.is_empty() or not bool(sale_quote.get("success", false))
 	_sell_item.tooltip_text = "先卸下，再出售" if not equipped.is_empty() else ""
 	var selected_index := -1
 	var attached := current.get_attached_item_instances() if current != null else []
@@ -196,6 +198,17 @@ func _apply_selected() -> void:
 	var item := flow.get_bound_player().item_inventory.find_item(selected_item_id)
 	var same_weapon := str(item.get("equipped_weapon_id", "")) == selected_weapon_id
 	_operate("detach" if same_weapon else "attach", selected_weapon_id, selected_item_id)
+
+
+func _sell_selected_item() -> void:
+	if flow == null or selected_item_id.is_empty():
+		return
+	var quote := flow.get_inventory_sale_quote("enchantment", selected_item_id)
+	if not bool(quote.get("success", false)):
+		feedback_requested.emit(FinanceUIStyle.reason(str(quote.get("reason", ""))), false)
+		return
+	var result := flow.submit_inventory_sale("enchantment", selected_item_id, str(quote.get("quote_token", "")))
+	feedback_requested.emit("已出售，获得 %d 金币。" % int(result.get("gold_gained", 0)), true) if bool(result.get("success", false)) else feedback_requested.emit(FinanceUIStyle.reason(str(result.get("reason", ""))), false)
 
 
 func _drop_item(weapon_id: String, item_id: String) -> void:
