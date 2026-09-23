@@ -1,0 +1,245 @@
+scripts/data/stat_definitions.gd
+  s_e459c8c014e144::t_e8fd3a6bcd40de 317,320
+assets/audio/sfx/environment/water_drop.wav.import
+  s_b26ecb89787365::t_eb9742faca78cc 1-24
+assets/audio/sfx/environment/wet_step_01.wav.import
+  s_b26ecb89787365::t_5213d25ea288f7 1-24
+assets/audio/sfx/environment/wet_step_02.wav.import
+  s_b26ecb89787365::t_22d940dce808f4 1-24
+assets/audio/sfx/ui/bank_deposit.wav.import
+  s_b26ecb89787365::t_2bf15077e07cd6 1-24
+assets/audio/sfx/ui/bank_withdraw.wav.import
+  s_b26ecb89787365::t_2ae38673144de1 1-24
+assets/audio/sfx/ui/stats_chain_close.wav.import
+  s_b26ecb89787365::t_f6fff5b0b2bc0b 1-24
+assets/audio/sfx/ui/stats_chain_open.wav.import
+  s_b26ecb89787365::t_e8a9475c036f27 1-24
+assets/sprites/background/wetland/decal_brick_01.png.import
+  s_b26ecb89787365::t_77fb6bb218eacd 5-6,13-14
+assets/sprites/background/wetland/decal_brick_02.png.import
+  s_b26ecb89787365::t_fe3d086f291a85 5-6,13-14
+assets/sprites/background/wetland/decal_crack_01.png.import
+  s_b26ecb89787365::t_6a1b60ed6a2f21 5-6,13-14
+assets/sprites/background/wetland/decal_crack_02.png.import
+  s_b26ecb89787365::t_3ce3d5a3b9691d 1-40
+assets/sprites/background/wetland/decal_crack_03.png.import
+  s_b26ecb89787365::t_ba3f1288d83171 1-40
+assets/sprites/background/wetland/decal_moss_01.png.import
+  s_b26ecb89787365::t_cf4bdf17cbf86b 1-40
+assets/sprites/background/wetland/decal_moss_02.png.import
+  s_b26ecb89787365::t_034e5bad266898 1-40
+assets/sprites/background/wetland/decal_rubble_01.png.import
+  s_b26ecb89787365::t_b617b81fe9e430 1-40
+assets/sprites/background/wetland/decal_rubble_02.png.import
+  s_b26ecb89787365::t_9e247ada3d629d 1-40
+assets/sprites/background/wetland/fx_wet_ripple.png.import
+  s_b26ecb89787365::t_43f4fda60a5e55 1-40
+assets/sprites/background/wetland/ruin_broken_pillar.png.import
+  s_b26ecb89787365::t_6c544e1f0b7cd8 1-40
+assets/sprites/background/wetland/ruin_low_wall_01.png.import
+  s_b26ecb89787365::t_4dbe59bbd3fe71 1-40
+assets/sprites/background/wetland/ruin_low_wall_02.png.import
+  s_b26ecb89787365::t_48bb7858a3d7b0 1-40
+assets/sprites/player/void_hunter_idle_right.png.import
+  s_b26ecb89787365::t_699c561daef8ed 6,13-14
+assets/sprites/player/void_hunter_walk_right_spritesheet.png.import
+  s_b26ecb89787365::t_a32552362ea614 6,13-14
+assets/ui/finance/bank_counter_desk.png.import
+  s_b26ecb89787365::t_3b17ef295c8c15 1-40
+assets/ui/finance/finance_board.png.import
+  s_b26ecb89787365::t_e163caeae65b9a 1-40
+assets/ui/finance/goblin_banker_states.png.import
+  s_b26ecb89787365::t_18dfcc217e0b66 1-40
+assets/ui/icons/hud/icon_hud_relics.png.import
+  s_b26ecb89787365::t_7a15b2e5a1afb4 1-40
+assets/ui/icons/hud/icon_hud_stats.png.import
+  s_b26ecb89787365::t_fd95e4101a79ab 1-40
+assets/ui/stats_drawer/stats_board_blank.png.import
+  s_b26ecb89787365::t_8a686daa619d92 1-40
+assets/ui/stats_drawer/stats_board_bottom.png.import
+  s_b26ecb89787365::t_d39c0301d33079 1-40
+assets/ui/stats_drawer/stats_board_top.png.import
+  s_b26ecb89787365::t_8af3cd102c8b56 1-40
+assets/ui/stats_drawer/stats_leather_handle.png.import
+  s_b26ecb89787365::t_ad348d4eedd3f0 1-40
+assets/ui/stats_drawer/stats_rail_left.png.import
+  s_b26ecb89787365::t_d39afb6ba17c55 1-40
+assets/ui/stats_drawer/stats_rail_right.png.import
+  s_b26ecb89787365::t_f9158168b916a0 1-40
+assets/ui/stats_drawer/stats_wood_tile.png.import
+  s_b26ecb89787365::t_2881b1af486224 1-40
+data_config/characters.json
+  s_b26ecb89787365::t_d49c07f763d66e 12
+data_config/inventory_trade_rules.json
+  s_b26ecb89787365::t_3c87f8ef9b648a 1-7
+docs/asset/asset_checklist_summary.md
+  s_8f3ccbb9c379cf::t_2f0194839be2eb 36-37,115-116
+docs/asset/battle_environment_refresh.md
+  s_b26ecb89787365::t_e818ea083d13c8 1-84
+docs/asset/finance_preparation_refresh.md
+  s_b26ecb89787365::t_34403482cd1590 1-57
+docs/asset/stats_drawer_refresh.md
+  s_b26ecb89787365::t_37bf2fd2b523aa 1-46
+scenes/battle/battle_root.tscn
+  s_b26ecb89787365::t_49d3a7886a28de 1,25,27-33,103,130,139,147-150,155-162,165-166,171-173,231,341,344,448,450,477-480,491
+scenes/tests/finance_preparation_test.tscn
+  s_b26ecb89787365::t_178c6a9008a457 1-6
+scenes/ui/esc/esc_overlay.tscn
+  s_b26ecb89787365::t_3bb893e0225aee 43,75,77,79,82,84-89,110,113,116,118-123,128,131
+scenes/ui/finance/finance_popup.tscn
+  s_b26ecb89787365::t_5f2ece4459c1fc 1-2,5,12
+scripts/battle/battle_environment.gd
+  s_b26ecb89787365::t_6dfceeb7e8d5e5 11-14,22-24,28-29,39,49-52,55-56,69-76
+scripts/battle/battle_root.gd
+  s_b26ecb89787365::t_fe473d30af62d8 11,81-82,91-92
+scripts/battle/distant_ruins.gd
+  s_b26ecb89787365::t_856a482789c62e 1-66
+scripts/battle/distant_ruins.gd.uid
+  s_b26ecb89787365::t_adcb288d4f98c0 1
+scripts/battle/wetland_backdrop.gd
+  s_b26ecb89787365::t_efae74800e5910 1-244
+scripts/battle/wetland_backdrop.gd.uid
+  s_b26ecb89787365::t_cd034838840565 1
+scripts/battle/wetland_horizon_fold.gd
+  s_b26ecb89787365::t_6425a5dc62faae 1-64
+scripts/core/bootstrap.gd
+  s_b26ecb89787365::t_9cfe87714a2075 919-920,924,928,930-931,933-935,944,959,962-963,967-969,987,1006,1076,1087,1089-1091
+scripts/core/main_flow_coordinator.gd
+  s_b26ecb89787365::t_f377a8e15e319a 11,27,64-67,109-110,226,319-324,326-328,333,335,361,363,366,376-396,402,405,416-419,421,427,429-435,437-439,442-443,532,537,539,547-557,625,636,639,783-785,794,803-806,812-814,818,893-1002
+scripts/items/item_inventory.gd
+  s_b26ecb89787365::t_590023cc7785b1 65-79
+scripts/player/player_controller.gd
+  s_38e1ebf7bfb35e::t_2946afb119bf14 17-18
+scripts/player/player_ground_marker.gd
+  s_b26ecb89787365::t_316136f8be89c3 1-12
+scripts/player/player_ground_marker.gd.uid
+  s_b26ecb89787365::t_fd9a8382571a16 1
+scripts/player/player_visibility_glow.gd
+  s_b26ecb89787365::t_cd988fcc9cc5a1 1-14
+scripts/player/player_visibility_glow.gd.uid
+  s_b26ecb89787365::t_854ea6b79c0633 1
+scripts/rewards/battle_finance_system.gd
+  s_b26ecb89787365::t_198d9e73d747ad 67-69,81-83,102-104,108-121,130-131,150-160
+scripts/rewards/inventory_trade_service.gd
+  s_b26ecb89787365::t_a77c895bfc4048 1-62
+scripts/rewards/inventory_trade_service.gd.uid
+  s_b26ecb89787365::t_e503b7ce4a24b3 1
+scripts/tests/finance_preparation_test.gd
+  s_b26ecb89787365::t_118934a9936c41 1-326
+scripts/tests/finance_preparation_test.gd.uid
+  s_b26ecb89787365::t_f51c1f0db186c3 1
+scripts/ui/bank_counter_portrait.gd
+  s_b26ecb89787365::t_73c3fcfb8a4b4c 1-60
+scripts/ui/bank_counter_portrait.gd.uid
+  s_b26ecb89787365::t_c290328d7789c0 1
+scripts/ui/battle_hud.gd
+  s_b26ecb89787365::t_bfced65799b996 19-20,32-35,41-47,51,53,143-145,160-161,172-302,304-311,485-487,622-625,633-637,648-649,651-657,659,663,670,683-688,726-727,754-756,778-779,781-784,793-796,800-802,815-816,822-836,854-855,859,865-866,889,894,898,913-924,928-936,948-951,954,1055-1056,1058-1065,1072-1094,1134
+scripts/ui/battle_utility_overlay.gd
+  s_b26ecb89787365::t_501342e4809510 1-318
+scripts/ui/bond_display.gd
+  s_b26ecb89787365::t_83fe36cd0523df 52-61
+scripts/ui/enchantment_slot_card.gd
+  s_b26ecb89787365::t_e1c577f0cb7be3 1-90
+scripts/ui/enchantment_slot_card.gd.uid
+  s_b26ecb89787365::t_e90d5c3fa39272 1
+scripts/ui/enchantment_workbench.gd
+  s_b26ecb89787365::t_1d017517d75056 1-273
+scripts/ui/enchantment_workbench.gd.uid
+  s_b26ecb89787365::t_9ac6fe77f9ec77 1
+scripts/ui/esc_overlay.gd
+  s_b26ecb89787365::t_1f281048973d2e 7,39,44-45,59-62,77,139,167,174,251-267,288,292-296,298,301-309,323-324,326,375
+scripts/ui/finance_popup.gd
+  s_b26ecb89787365::t_49fd15bc72a701 4-5,7-43,47-59,62-65,69-90,94-97,101-191,193-330,332,335-341,344-348,350-354,357-361,364-368,371-374,376-476
+scripts/ui/finance_ui_controller.gd
+  s_b26ecb89787365::t_d111f2d4e94a98 4-9,13,16,20-21,23-38,43-44,47-50,53-61,64-66,69-92
+scripts/ui/finance_ui_style.gd
+  s_b26ecb89787365::t_7a4d24851b0887 1-77
+scripts/ui/finance_ui_style.gd.uid
+  s_b26ecb89787365::t_16e99588baeb2b 1
+scripts/ui/main_menu_ui_controller.gd
+  s_b26ecb89787365::t_fa9c3aa4c8974f 496,584,586
+scripts/ui/preparation_offer_card.gd
+  s_b26ecb89787365::t_9a266fe6da2799 1-90
+scripts/ui/preparation_offer_card.gd.uid
+  s_b26ecb89787365::t_c6e9a6181b6ad9 1
+scripts/ui/shop_offer_generator.gd
+  s_b26ecb89787365::t_24e5c18c80725e 267-308
+scripts/ui/shop_ui_controller.gd
+  s_b26ecb89787365::t_a111eebb389ab2 96
+scripts/ui/stats_drawer_skin.gd
+  s_b26ecb89787365::t_4df7381be775b0 1-42
+scripts/ui/stats_drawer_skin.gd.uid
+  s_b26ecb89787365::t_b522e7bb4510fd 1
+scripts/ui/virtual_shop_grid.gd
+  s_b26ecb89787365::t_6c01fa5520433e 1-104
+scripts/ui/virtual_shop_grid.gd.uid
+  s_b26ecb89787365::t_1cc0ae12d671e7 1
+scripts/ui/weapon_strip.gd
+  s_b26ecb89787365::t_b3fe314c664b66 80,192
+scripts/weapons/weapon_loadout.gd
+  s_b26ecb89787365::t_060e81764e1779 8,53-104,134,176,245
+shaders/battle/crt_ambience.gdshader
+  s_b26ecb89787365::t_ff4f0fd2ffdaaa 9,14
+shaders/battle/horizon_depth.gdshaderinc
+  s_b26ecb89787365::t_d7556f34e70e85 1-12
+shaders/battle/horizon_depth.gdshaderinc.uid
+  s_b26ecb89787365::t_3429195a2af807 1
+shaders/battle/horizon_sky.gdshader
+  s_b26ecb89787365::t_caf05190af339b 1-13
+shaders/battle/wet_stone_floor.gdshader
+  s_b26ecb89787365::t_34a9eb72b58da1 4-6,36,66,90
+shaders/battle/wetland_decal_depth.gdshader
+  s_b26ecb89787365::t_9351faa3e7e7f9 1-12
+shaders/battle/wetland_decal_depth.gdshader.uid
+  s_b26ecb89787365::t_14b89cd340c2bf 1
+shaders/battle/wetland_ground.gdshader
+  s_b26ecb89787365::t_f6df633a3b72c0 1-39
+shaders/battle/wetland_ground.gdshader.uid
+  s_b26ecb89787365::t_c1a37f11d7f733 1
+shaders/battle/wetland_horizon.gdshaderinc
+  s_b26ecb89787365::t_745e3c46ecf356 1-43
+shaders/player/visibility_glow.gdshader
+  s_b26ecb89787365::t_7cff73b9c3852c 1-19
+shaders/player/visibility_glow.gdshader.uid
+  s_b26ecb89787365::t_cb9ff18eca43fe 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e12ffffb6502beaab152d4458867de3bc737f3c1",
+  "prompts": {},
+  "sessions": {
+    "s_38e1ebf7bfb35e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c495-4183-7921-b144-2af84c7f679a",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8f3ccbb9c379cf": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad0a-3ed5-7283-9274-e590dd337090",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b26ecb89787365": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-f6fe-7830-b9f5-0fdda1c11c07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e459c8c014e144": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a7fa-46d6-7c01-bd6d-938278f1ad61",
+        "model": "deepseek/deepseek-v4-flash"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
