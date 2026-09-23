@@ -28,6 +28,7 @@ static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed
 	if ignored_target_id > 0:
 		effect._hit_targets[ignored_target_id] = true
 	effect.rotation = effect._direction.angle()
+	AudioManager.play_enchantment_sfx("wind")
 
 
 func _process(delta: float) -> void:

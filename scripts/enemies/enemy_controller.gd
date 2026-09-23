@@ -61,6 +61,8 @@ var _slow_multiplier: float = 1.0
 var _wet_remaining: float = 0.0
 var _wet_slow_multiplier: float = 1.0
 var _frozen_remaining: float = 0.0
+var _thaw_reaction_data: Dictionary = {}
+var _light_freeze_reacted: bool = false
 var _light_remaining: float = 0.0
 var _blinded_remaining: float = 0.0
 var _visual_tween: Tween = null
@@ -108,7 +110,7 @@ func _physics_process(delta: float) -> void:
 	_stunned_remaining = maxf(_stunned_remaining - delta, 0.0)
 	_slowed_remaining = maxf(_slowed_remaining - delta, 0.0)
 	_wet_remaining = maxf(_wet_remaining - delta, 0.0)
-	_frozen_remaining = maxf(_frozen_remaining - delta, 0.0)
+	_process_freeze(delta)
 	_light_remaining = maxf(_light_remaining - delta, 0.0)
 	_blinded_remaining = maxf(_blinded_remaining - delta, 0.0)
 	if _wet_remaining <= 0.0:
@@ -116,8 +118,11 @@ func _physics_process(delta: float) -> void:
 	if _slowed_remaining <= 0.0:
 		_slow_multiplier = 1.0
 	if _stunned_remaining > 0.0 or _frozen_remaining > 0.0 or _blinded_remaining > 0.0:
+		_on_control_interrupted()
 		velocity = Vector2.ZERO
 		_set_movement_visual(false, delta)
+		return
+	if _process_special_behavior(delta):
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
@@ -130,6 +135,14 @@ func _physics_process(delta: float) -> void:
 		return
 	_process_chase()
 	_process_contact_damage()
+
+
+func _process_special_behavior(_delta: float) -> bool:
+	return false
+
+
+func _on_control_interrupted() -> void:
+	pass
 
 
 func initialize(target_enemy_id: String, player: PlayerController = null, runtime_modifiers: Array = []) -> bool:
@@ -162,6 +175,8 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_wet_remaining = 0.0
 	_wet_slow_multiplier = 1.0
 	_frozen_remaining = 0.0
+	_thaw_reaction_data.clear()
+	_light_freeze_reacted = false
 	_light_remaining = 0.0
 	_blinded_remaining = 0.0
 	return true
@@ -196,8 +211,12 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 	_burning_remaining = maxf(_burning_remaining, duration)
 	_burn_damage_per_tick = maxf(_burn_damage_per_tick, damage_per_tick)
 	_burn_source_id = source_id if not source_id.is_empty() else _burn_source_id
-	_holy_flame = _holy_flame or holy_flame or _light_remaining > 0.0
-	_dark_flame = _dark_flame or dark_flame
+	if dark_flame:
+		_dark_flame = true
+		_holy_flame = false
+	elif holy_flame or _light_remaining > 0.0:
+		_holy_flame = true
+		_dark_flame = false
 	_burn_tick_timer = minf(_burn_tick_timer, 0.5) if _burn_tick_timer > 0.0 else 0.5
 
 
@@ -220,10 +239,39 @@ func clear_wet() -> void:
 	_wet_slow_multiplier = 1.0
 
 
-func apply_freeze(duration: float = 1.0) -> void:
+func apply_freeze(duration: float = 1.0, thaw_reaction_data: Dictionary = {}) -> void:
 	if not alive:
 		return
+	if _frozen_remaining <= 0.0:
+		_light_freeze_reacted = false
 	_frozen_remaining = maxf(_frozen_remaining, minf(duration, 3.0))
+	_slowed_remaining = 0.0
+	_slow_multiplier = 1.0
+	_thaw_reaction_data = thaw_reaction_data.duplicate()
+
+
+func _process_freeze(delta: float) -> void:
+	if _frozen_remaining <= 0.0:
+		return
+	_frozen_remaining = maxf(_frozen_remaining - delta, 0.0)
+	if _frozen_remaining > 0.0:
+		return
+	_light_freeze_reacted = false
+	if not _thaw_reaction_data.is_empty():
+		var data := _thaw_reaction_data.duplicate()
+		_thaw_reaction_data.clear()
+		data["parent"] = get_parent()
+		data["hit_position"] = global_position
+		var resolver: Script = load("res://scripts/effects/element_reaction_resolver.gd")
+		resolver.apply_element(self, "water", data)
+		resolver.emit_feedback(get_parent(), "thaw", global_position)
+
+
+func claim_light_reflection() -> bool:
+	if not has_status("frozen") or not has_status("light") or _light_freeze_reacted:
+		return false
+	_light_freeze_reacted = true
+	return true
 
 
 func apply_light(duration: float = 5.0) -> void:
@@ -232,16 +280,23 @@ func apply_light(duration: float = 5.0) -> void:
 	_light_remaining = maxf(_light_remaining, minf(duration, 10.0))
 	if _burning_remaining > 0.0:
 		_holy_flame = true
+		_dark_flame = false
 
 
 func clear_light() -> void:
 	_light_remaining = 0.0
+	_light_freeze_reacted = false
+	_holy_flame = false
 
 
 func apply_blind(duration: float = 2.0) -> void:
 	if not alive:
 		return
 	_blinded_remaining = maxf(_blinded_remaining, minf(duration, 5.0))
+	if _burning_remaining > 0.0:
+		_burning_remaining = maxf(_burning_remaining, 10.0)
+		_dark_flame = true
+		_holy_flame = false
 
 
 func clear_blind() -> void:
@@ -321,7 +376,8 @@ func _process_burning(delta: float) -> void:
 	if _holy_flame:
 		damage = maxi(1, int(roundi(float(damage) * 2.0))) if damage > 0 else 0
 	if damage > 0:
-		take_damage(damage, _burn_source_id, false, Vector2.ZERO)
+		# Holy burning already includes its 2x bonus; light must not square it.
+		take_damage(damage, _burn_source_id, false, Vector2.ZERO, [], not _holy_flame)
 	if _burning_remaining <= 0.0:
 		clear_burning()
 
@@ -331,14 +387,15 @@ func take_damage(
 	source_id: String = "",
 	is_critical: bool = false,
 	hit_direction: Vector2 = Vector2.ZERO,
-	damage_components: Array[int] = []
+	damage_components: Array[int] = [],
+	allow_light_bonus: bool = true
 ) -> int:
 	if not alive or raw_damage <= 0:
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var light_multiplier := 1.0
 	var light_doubled := false
-	if _light_remaining > 0.0:
+	if allow_light_bonus and _light_remaining > 0.0:
 		light_multiplier = 2.0
 		light_doubled = true
 		if not _holy_flame:
@@ -393,7 +450,8 @@ func _apply_hit_feedback(hit_direction: Vector2) -> void:
 	_capture_base_sprite_modulate()
 	if _visual_tween != null and _visual_tween.is_valid():
 		_visual_tween.kill()
-	sprite.modulate = Color.WHITE
+	# The untinted sprite still needs a visible brightness pulse on impact.
+	sprite.modulate = Color(1.35, 1.35, 1.35, _base_sprite_modulate.a)
 	sprite.rotation = randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
 	_visual_tween = create_tween()
 	_visual_tween.tween_property(sprite, "modulate", _base_sprite_modulate, HIT_FLASH_SECONDS)

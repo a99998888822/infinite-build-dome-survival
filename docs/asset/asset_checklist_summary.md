@@ -6,10 +6,12 @@
 > 补充说明：第 13 组可选区域素材原文未给固定文件名，此处按 `zones.json` ID 和现有目录规则补了建议命名。
 > 尺寸说明：已存在条目的尺寸列按磁盘 PNG 实际像素读取；遗物图标当前实际为 `32x32`（原清单按 `128x128` 规划）。
 > 生成日期：2026-09-21。
+> 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；原 SVG 保留，附魔配置已改用 PNG。
+> 2026-09-23：新增直接像素绘制的裂甲奔袭者，六组动作共 23 帧；登记 7 张 256 帧尺寸展示图、6 张 128 帧尺寸战斗图与 1 张冲刺路径 PNG。约 10% 克苏鲁元素；战斗帧表已接入精英场景，游戏内路径采用相同参数的 30% 红色矩形绘制。详见 [制作说明](elite_rusher_assets.md)。
 > 磁盘核对：`assets/` 下 PNG + 音频共 118 个，已全部登记在第 1 节与第 4 节（2026-09-21 已清理 5 个冗余文件）。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
-## 1. 已存在的素材（113 个）
+## 1. 已存在的素材（131 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
@@ -114,8 +116,26 @@
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
 | 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
 | 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |
+| 已存在 | 裂甲奔袭者基准造型 | `enemy_rift_rusher_reference.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_reference.png` | 256x256 / RGBA PNG | 原创厚甲四足怪，约 10% 克苏鲁元素；直接像素绘制 |
+| 已存在 | 裂甲奔袭者待机展示帧 | `enemy_rift_rusher_idle.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_idle.png` | 1024x256 / 4 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
+| 已存在 | 裂甲奔袭者移动展示帧 | `enemy_rift_rusher_move.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_move.png` | 1536x256 / 6 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
+| 已存在 | 裂甲奔袭者蓄力展示帧 | `enemy_rift_rusher_windup.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_windup.png` | 768x256 / 3 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
+| 已存在 | 裂甲奔袭者冲刺展示帧 | `enemy_rift_rusher_dash.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_dash.png` | 512x256 / 2 帧 / RGBA PNG | 位移由运行代码控制 |
+| 已存在 | 裂甲奔袭者收招展示帧 | `enemy_rift_rusher_recover.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_recover.png` | 768x256 / 3 帧 / RGBA PNG | 刹停、回弹、恢复站姿 |
+| 已存在 | 裂甲奔袭者死亡展示帧 | `enemy_rift_rusher_death.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_death.png` | 1280x256 / 5 帧 / RGBA PNG | 无血腥，淡出由运行代码控制 |
+| 已存在 | 裂甲奔袭者战斗待机 | `enemy_rift_rusher_idle.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_idle.png` | 512x128 / 4 帧 / RGBA PNG | 原生 128 帧，共享 23 色，硬透明 |
+| 已存在 | 裂甲奔袭者战斗移动 | `enemy_rift_rusher_move.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_move.png` | 768x128 / 6 帧 / RGBA PNG | 原生 128 帧，共享 23 色，硬透明 |
+| 已存在 | 裂甲奔袭者战斗蓄力 | `enemy_rift_rusher_windup.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_windup.png` | 384x128 / 3 帧 / RGBA PNG | 0.8 秒，末帧保持 |
+| 已存在 | 裂甲奔袭者战斗冲刺 | `enemy_rift_rusher_dash.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_dash.png` | 256x128 / 2 帧 / RGBA PNG | 右向短冲刺，左向翻转 |
+| 已存在 | 裂甲奔袭者战斗收招 | `enemy_rift_rusher_recover.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_recover.png` | 384x128 / 3 帧 / RGBA PNG | 收招总时长 0.5 秒 |
+| 已存在 | 裂甲奔袭者战斗死亡 | `enemy_rift_rusher_death.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_death.png` | 640x128 / 5 帧 / RGBA PNG | 不循环，不烘焙全身淡出 |
+| 已存在 | 精英冲刺红色路径 | `elite_rusher_dash_path.png` | `assets/sprites/effects/telegraphs/elite_rusher_dash_path.png` | 304x64 / RGBA PNG | 红色 30% 不透明度，alpha 77；直角矩形，无箭头、无圆角；240 像素行程，半宽 32，另有 SVG 源图 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
+| 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距；原 SVG 保留 |
+| 已接入 | 光辉剑附魔图标 | `scroll_light_sword.png` | `assets/ui/icons/augmentations/scroll_light_sword.png` | 16x16 / 1:1 / RGBA PNG | 下落的白色大剑；至少 1 像素透明边距；原 SVG 保留 |
+| 已接入 | 水流附魔图标 | `scroll_water.png` | `assets/ui/icons/augmentations/scroll_water.png` | 16x16 / 1:1 / RGBA PNG | 蓝白卷浪；至少 1 像素透明边距；原 SVG 保留 |
+| 已接入 | 风刃附魔图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 16x16 / 1:1 / RGBA PNG | 青白月牙风刃；至少 1 像素透明边距；原 SVG 保留 |
 | 已存在 | 火焰卷轴图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 结霜卷轴图标 | `scroll_ice.png` | `assets/ui/icons/augmentations/scroll_ice.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 连锁主宰卷轴图标 | `scroll_lightning.png` | `assets/ui/icons/augmentations/scroll_lightning.png` | 16x16 / 1:1 / PNG |  |

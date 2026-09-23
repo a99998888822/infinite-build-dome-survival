@@ -137,12 +137,14 @@ func _on_body_entered(body: Node) -> void:
 	if split_root:
 		_has_split = true
 		_spawn_split_projectiles(enemy_hit_position)
+	AudioManager.begin_combat_audio()
 	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy, split_root)
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null:
 		if ENABLE_ENEMY_HIT_GREEN_PARTICLES and weapon.register_hit_feedback_frame(true):
 			_spawn_hit_sparks(enemy_hit_position, direction)
 		weapon.play_projectile_hit_sfx(projectile_id)
+	AudioManager.end_combat_audio()
 	remaining_target_hits -= 1
 	if remaining_target_hits <= 0:
 		_destroy()
@@ -189,6 +191,8 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 	if _plasma_tick_count >= 5:
 		_destroy()
 		return
+	var contacted := false
+	AudioManager.begin_combat_audio()
 	for enemy in enemies:
 		if enemy == null or not enemy.is_alive():
 			continue
@@ -198,6 +202,11 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * 0.2)))
 		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
 		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
+		contacted = true
+	if contacted:
+		# One cue for the contact batch, never one per victim in the area.
+		AudioManager.play_weapon_hit_sfx(weapon.weapon_id)
+	AudioManager.end_combat_audio()
 	_plasma_tick_count += 1
 	_plasma_tick_timer = maxf(float(weapon.weapon_data.get("plasma_tick_interval", 0.1)), 0.01)
 	if _plasma_tick_count >= 5:

@@ -960,7 +960,7 @@ func _get_damage_tooltip_text() -> String:
 	if _player == null:
 		return "护甲减免后，承受xx%的伤害"
 	var damage_taken_percent := _format_stat_value("damage_taken_percent", _player.get_stat("damage_taken_percent"))
-	return "护甲减免后，承受%s%%的伤害" % damage_taken_percent
+	return "护甲减免后，承受%s的伤害" % damage_taken_percent
 
 
 
@@ -1026,9 +1026,8 @@ func _get_ordered_stat_ids() -> Array[String]:
 
 
 func _get_display_stat_value(stat_id: String) -> float:
-	if stat_id == "revive_count":
-		return float(_player.get_remaining_revives())
-	return _player.get_stat(stat_id)
+	var finance := _wave_manager.finance_system if _wave_manager != null else null
+	return StatPreviewBuilder.get_display_stat_value(_player, stat_id, finance)
 
 
 func _get_stat_display_name(stat_id: String) -> String:
@@ -1041,11 +1040,10 @@ func _get_stat_display_name(stat_id: String) -> String:
 
 
 func _format_stat_value(stat_id: String, value: float) -> String:
-	if StatDefinitions.is_integer_stat(stat_id):
-		return "%d" % roundi(value)
-	if is_equal_approx(value, roundf(value)):
-		return "%d" % roundi(value)
-	return "%.2f" % value
+	var text_value := "%.2f" % value
+	if (StatDefinitions.is_integer_stat(stat_id) and stat_id != "shop_price_percent") or is_equal_approx(value, roundf(value)):
+		text_value = "%d" % roundi(value)
+	return text_value + ("%" if StatDefinitions.is_percent_stat(stat_id) else "")
 
 
 func _refresh_bond_indicator() -> void:

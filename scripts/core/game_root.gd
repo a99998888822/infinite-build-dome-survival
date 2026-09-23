@@ -3,7 +3,6 @@ class_name GameRoot
 
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
 const ANDROID_CONTENT_SCALE_SIZE := Vector2i(1280, 720)
-const WORLD_RENDER_SIZE := Vector2i(800, 450)
 
 var core_root: Node = null
 var world_root: Node2D = null
@@ -126,12 +125,16 @@ func _setup_world_viewport() -> void:
 	_world_viewport_container.name = "WorldViewportContainer"
 	_world_viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_world_viewport_container.stretch = true
+	_world_viewport_container.stretch_shrink = 1
 	_world_viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_world_viewport_container.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_world_viewport_layer.add_child(_world_viewport_container)
 	_world_viewport = SubViewport.new()
 	_world_viewport.name = "WorldViewport"
-	_world_viewport.size = WORLD_RENDER_SIZE
+	# Render at the container's full size; sample pixel sprites before compositing.
+	_world_viewport.size = Vector2i(get_viewport().get_visible_rect().size)
+	_world_viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	_world_viewport.snap_2d_transforms_to_pixel = true
 	_world_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	_world_viewport.transparent_bg = true
 	_world_viewport.handle_input_locally = false

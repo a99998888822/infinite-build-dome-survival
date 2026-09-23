@@ -9,6 +9,7 @@ signal finance_changed(snapshot: Dictionary)
 signal interest_settled(result: Dictionary)
 signal shared_reward_shop_requested(level: int)
 signal wave_end_absorb_started(wave_id: String)
+signal relic_choice_requested(reward_id: String)
 
 const DEFAULT_PLAYER_LEVEL: int = 1
 const SPAWN_MIN_DISTANCE: float = 300.0
@@ -41,6 +42,7 @@ var current_exp: int = 0
 var current_gold: int = 0
 var collected_exp_this_wave: int = 0
 var collected_gold_this_wave: int = 0
+var _reward_remainders: Dictionary = {}
 
 var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
@@ -48,6 +50,16 @@ var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var enemy_scene_cache: Dictionary = {}
 var _pending_wave_end_absorb_count: int = 0
 var _finishing_wave_id: String = ""
+var _pending_reward_batches: Array[Dictionary] = []
+var _elite_profile: Dictionary = {}
+var _elite_spawn_schedule: Array[float] = []
+var _elite_planned_count: int = 0
+var _elite_expected_count: float = 0.0
+var _elite_quota_rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _elite_spawned_count: int = 0
+var _elite_spawn_deadline: float = 0.0
+var _elite_erosion_snapshot: float = 0.0
+var _pending_relic_choices: Dictionary = {}
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
 @onready var pickup_root: Node = _get_optional_node(pickup_root_path)
@@ -72,7 +84,8 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	wave_time_left -= delta
-	_process_spawn_timers(delta)
+	if wave_time_left > 0.0:
+		_process_spawn_timers(delta)
 	if finance_system != null:
 		finance_system.tick(delta)
 	if wave_time_left <= 0.0:
@@ -88,15 +101,26 @@ func initialize(target_player: PlayerController) -> void:
 		player_level += 2
 	current_exp = 0
 	current_gold = 0
+	_reward_remainders.clear()
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
 	_pending_wave_end_absorb_count = 0
 	_finishing_wave_id = ""
+	_pending_reward_batches.clear()
+	_elite_spawn_schedule.clear()
+	_elite_planned_count = 0
+	_elite_expected_count = 0.0
+	_elite_quota_rng.randomize()
+	_elite_spawned_count = 0
+	_pending_relic_choices.clear()
+	if not drop_reward_system.relic_choice_collected.is_connected(_on_relic_choice_collected):
+		drop_reward_system.relic_choice_collected.connect(_on_relic_choice_collected)
 	if finance_system != null:
 		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
 		_connect_finance_system()
 	_connect_player_relic_signal()
 	reward_snapshot.reset()
+	drop_reward_system.begin_wave()
 	clear_battle_entities()
 
 
@@ -113,6 +137,7 @@ func start_next_wave() -> bool:
 	current_wave_index += 1
 	current_wave = waves[current_wave_index]
 	reward_snapshot.reset(str(current_wave.get("id", "")))
+	drop_reward_system.begin_wave()
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
 	spawn_timers_ms.clear()
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
@@ -125,6 +150,7 @@ func start_next_wave() -> bool:
 		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
 	if player != null and player.is_alive():
 		player.heal(int(player.get_stat("max_hp")))
+	_initialize_elite_schedule()
 	running = true
 	wave_started.emit(str(current_wave.get("id", "")), int(current_wave.get("duration_seconds", 0)))
 	return true
@@ -134,8 +160,11 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	running = false
+	# Include deaths deferred from this frame before clearing or settling rewards.
+	_flush_pending_reward_batches()
 	_finishing_wave_id = str(current_wave.get("id", ""))
 	wave_end_absorb_started.emit(_finishing_wave_id)
+	collect_all_relic_pickups()
 	clear_battle_entities()
 	_start_wave_end_exp_absorb()
 
@@ -176,8 +205,17 @@ func collect_all_exp_orbs() -> void:
 
 
 func collect_all_reward_pickups() -> void:
-	# 兼容旧调用；当前仅收集经验球。
+	collect_all_relic_pickups()
 	collect_all_exp_orbs()
+
+
+func collect_all_relic_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if is_instance_valid(pickup) and pickup is RelicPickup and not pickup.is_queued_for_deletion():
+			pickup.collect()
 
 
 func clear_enemies() -> void:
@@ -187,6 +225,8 @@ func clear_enemies() -> void:
 
 
 func clear_battle_entities() -> void:
+	_pending_reward_batches.clear()
+	_elite_spawn_schedule.clear()
 	_clear_non_exp_reward_pickups()
 	clear_enemies()
 
@@ -247,6 +287,9 @@ func _clear_non_exp_reward_pickups() -> void:
 		_collect_reward_pickups_recursive(pickup_root, pickups)
 	for pickup in pickups:
 		if pickup is ExpOrb:
+			continue
+		# A failed grant stays visible for retry; successful ones already queue_free.
+		if pickup is RelicPickup and not _finishing_wave_id.is_empty() and not pickup.collected_once:
 			continue
 		if is_instance_valid(pickup) and pickup.is_inside_tree():
 			pickup.queue_free()
@@ -395,7 +438,75 @@ func _process_spawn_timers(delta: float) -> void:
 		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
 		var spawn_count := calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1)))
 		for count_index in range(spawn_count):
-			spawn_enemy(str(group.get("enemy_id", "")), get_random_spawn_position())
+			var id := str(group.get("enemy_id", ""))
+			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
+			var replace_with_elite := not replacement.is_empty() and _is_elite_spawn_due()
+			if replace_with_elite:
+				id = replacement
+			var spawned := spawn_enemy(id, get_random_spawn_position())
+			if replace_with_elite and spawned != null:
+				_elite_spawned_count += 1
+				_elite_spawn_schedule.pop_front()
+
+
+func _initialize_elite_schedule() -> void:
+	_elite_profile = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
+	_elite_erosion_snapshot = maxf(0.0, player.get_stat("divinity") if player != null else 0.0)
+	_elite_expected_count = calculate_miniboss_expected_count(current_wave_index + 1, _elite_erosion_snapshot)
+	_elite_planned_count = _sample_miniboss_quota(_elite_expected_count)
+	_elite_spawned_count = 0
+	_elite_spawn_schedule.clear()
+	var duration := float(current_wave.get("duration_seconds", 0))
+	# Reserve enough time for the warning to finish before the halfway mark.
+	_elite_spawn_deadline = maxf(0.0, duration * minf(50.0, float(_elite_profile.get("spawn_window_percent", 50))) / 100.0 - float(_elite_profile.get("spawn_warning_ms", 750)) / 1000.0)
+	var first := minf(float(_elite_profile.get("spawn_first_ms", 5000)) / 1000.0, _elite_spawn_deadline * 0.5)
+	for index in _elite_planned_count:
+		_elite_spawn_schedule.append(first + (_elite_spawn_deadline - first) * float(index) / float(_elite_planned_count))
+
+
+func calculate_miniboss_expected_count(wave_number: int, erosion: float) -> float:
+	if wave_number <= 1:
+		return 0.0
+	var profile: Dictionary = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
+	var cap := maxi(0, int(profile.get("quota_cap", 3)))
+	var base := float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 10)))
+	var erosion_ratio := clampf(erosion / maxf(1.0, float(profile.get("erosion_bonus_full_at", 100))), 0.0, 1.0)
+	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 50))) / 100.0
+	return minf(base * (1.0 + bonus), float(cap))
+
+
+func _sample_miniboss_quota(expected_count: float) -> int:
+	# Sample once at wave start: adjacent integers preserve E[N] without large spikes.
+	var whole := floori(expected_count)
+	var fraction := expected_count - float(whole)
+	if fraction <= 0.0:
+		return whole
+	return whole + (1 if _elite_quota_rng.randf() < fraction else 0)
+
+
+func _is_elite_spawn_due() -> bool:
+	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
+	if elapsed >= _elite_spawn_deadline:
+		_elite_spawn_schedule.clear()
+		return false
+	return not _elite_spawn_schedule.is_empty() and elapsed >= _elite_spawn_schedule[0]
+
+
+func get_miniboss_spawn_snapshot() -> Dictionary:
+	return {"expected": _elite_expected_count, "planned": _elite_planned_count, "spawned": _elite_spawned_count, "erosion": _elite_erosion_snapshot, "spawn_deadline": _elite_spawn_deadline, "schedule": _elite_spawn_schedule.duplicate()}
+
+
+func _on_relic_choice_collected(reward_id: String) -> void:
+	_pending_relic_choices[reward_id] = true
+	relic_choice_requested.emit(reward_id)
+
+
+func complete_relic_choice(reward_id: String, selected: bool) -> void:
+	if not _pending_relic_choices.has(reward_id):
+		return
+	_pending_relic_choices.erase(reward_id)
+	if selected:
+		reward_snapshot.selected_relics += 1
 
 
 func calculate_enemy_spawn_count(base_count: int) -> int:
@@ -469,7 +580,8 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
 	if Engine.is_in_physics_frame():
-		call_deferred("_spawn_drop_actions", actions, death_position)
+		_pending_reward_batches.append({"actions": actions, "position": death_position})
+		call_deferred("_flush_pending_reward_batches")
 	else:
 		_spawn_drop_actions(actions, death_position)
 	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0
@@ -484,6 +596,13 @@ func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
 	if amount <= 0 or pickup_root == null or player == null:
 		return
 	drop_reward_system.spawn_exp_orb(amount, drop_position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
+
+
+func _flush_pending_reward_batches() -> void:
+	var batches := _pending_reward_batches.duplicate()
+	_pending_reward_batches.clear()
+	for batch in batches:
+		_spawn_drop_actions(batch.actions, batch.position)
 
 
 func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:
@@ -511,8 +630,13 @@ func _on_health_pack_collected(_pickup: HealthPack, heal_amount: int) -> void:
 
 
 func _apply_percent_bonus(base_amount: int, stat_id: String) -> int:
+	if base_amount <= 0:
+		return 0
 	var bonus := player.get_stat(stat_id) if player != null else StatDefinitions.get_default_value(stat_id)
-	return maxi(0, int(roundi(float(base_amount) * (1.0 + bonus / 100.0))))
+	var accumulated := float(base_amount) * maxf(0.0, 1.0 + bonus / 100.0) + float(_reward_remainders.get(stat_id, 0.0))
+	var whole_amount := floori(accumulated + 0.00000001)
+	_reward_remainders[stat_id] = maxf(0.0, accumulated - float(whole_amount))
+	return whole_amount
 
 
 func _process_level_ups() -> void:
@@ -536,4 +660,6 @@ func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:
 
 
 func get_reward_snapshot() -> Dictionary:
-	return reward_snapshot.to_dictionary()
+	var snapshot := reward_snapshot.to_dictionary()
+	snapshot["elite_relics_dropped"] = drop_reward_system.get_elite_relics_dropped_this_wave()
+	return snapshot

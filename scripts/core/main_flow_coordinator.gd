@@ -49,6 +49,9 @@ var battle_resolved: bool = false
 var _resume_state_after_modal: String = STATE_START_PAGE
 var _active_level_up_level: int = 0
 var _pending_level_up_levels: Array[int] = []
+var _pending_relic_choices: Array[String] = []
+var _active_relic_choice: String = ""
+var _relic_choice_selected: bool = false
 var _weapon_upgrade_miss_count: int = 0
 var _wave_end_ready: bool = false
 var _active_zone_selection_wave_number: int = 0
@@ -94,6 +97,9 @@ func reset_flow() -> void:
 	_resume_state_after_modal = STATE_START_PAGE
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
+	_pending_relic_choices.clear()
+	_active_relic_choice = ""
+	_relic_choice_selected = false
 	_weapon_upgrade_miss_count = 0
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
@@ -191,6 +197,8 @@ func bind_wave_manager(wave_manager: WaveManager) -> void:
 		_bound_wave_manager.wave_end_absorb_started.connect(wave_absorb_started_callable)
 	if not _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.connect(shared_reward_callable)
+	if not _bound_wave_manager.relic_choice_requested.is_connected(_on_relic_choice_requested):
+		_bound_wave_manager.relic_choice_requested.connect(_on_relic_choice_requested)
 
 
 func bind_camp_context(camp_root: CampRoot) -> void:
@@ -256,7 +264,14 @@ func request_shared_reward_shop_popup(level: int, source: String = "wave_manager
 func close_shared_reward_shop_popup() -> void:
 	if current_state != STATE_SHARED_REWARD_SHOP_POPUP:
 		return
-	_restore_player_full_health()
+	if _active_relic_choice.is_empty():
+		_restore_player_full_health()
+	elif _bound_wave_manager != null:
+		_bound_wave_manager.complete_relic_choice(_active_relic_choice, _relic_choice_selected)
+	_active_relic_choice = ""
+	_relic_choice_selected = false
+	_active_shop_offers.clear()
+	_active_shop_offer_ids.clear()
 	modal_closed.emit(STATE_SHARED_REWARD_SHOP_POPUP)
 	if not _pending_level_up_levels.is_empty():
 		var next_level := int(_pending_level_up_levels.pop_front())
@@ -264,12 +279,45 @@ func close_shared_reward_shop_popup() -> void:
 		modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(next_level, "queued", true))
 		return
 	_active_level_up_level = 0
+	if _open_next_relic_choice():
+		return
 	if _wave_end_ready:
 		_set_battle_runtime_paused(false)
-		_enter_wave_end_shop()
+		_finish_wave_rewards()
 	else:
 		_set_state(_resume_state_after_modal)
 		_set_battle_runtime_paused(false)
+
+
+func _on_relic_choice_requested(reward_id: String) -> void:
+	if current_mode != MODE_BATTLE or battle_resolved or reward_id.is_empty():
+		return
+	if reward_id == _active_relic_choice or _pending_relic_choices.has(reward_id):
+		return
+	_pending_relic_choices.append(reward_id)
+	if current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE] and not _transaction_busy:
+		_resume_state_after_modal = current_state
+		_open_next_relic_choice()
+
+
+func _open_next_relic_choice() -> bool:
+	if _pending_relic_choices.is_empty() or battle_resolved:
+		return false
+	_active_relic_choice = _pending_relic_choices.pop_front()
+	_relic_choice_selected = false
+	_active_level_up_level = 0
+	_set_battle_runtime_paused(true)
+	_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
+	modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(0, "miniboss_relic", true))
+	return true
+
+
+func _finish_wave_rewards() -> void:
+	if not _has_next_wave():
+		var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
+		present_battle_result(true, {"reason": "all_waves_cleared", "gold": gold})
+	else:
+		_enter_wave_end_shop()
 
 
 func request_zone_select_popup(source: String = "wave_manager") -> bool:
@@ -438,6 +486,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	_transaction_busy = false
 	clear_stat_preview()
 	if sanitized_mode == "free":
+		_relic_choice_selected = not _active_relic_choice.is_empty()
 		close_shared_reward_shop_popup()
 	else:
 		_notify_preparation_changed()
@@ -448,6 +497,10 @@ func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
 	_pending_interest_payload = _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {}
 	_pending_interest_payload["settlement_results"] = _pending_interest_payload.get("last_settlement_results", [])
+	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
+		_resume_state_after_modal = STATE_SHOP_POPUP
+		return
+	_resume_state_after_modal = STATE_SHOP_POPUP
 	if not _pending_level_up_levels.is_empty() and not battle_resolved:
 		var next_level := int(_pending_level_up_levels.pop_front())
 		_active_level_up_level = next_level
@@ -455,10 +508,10 @@ func mark_wave_end_ready() -> void:
 		_set_battle_runtime_paused(true)
 		_set_state(STATE_SHARED_REWARD_SHOP_POPUP)
 		modal_requested.emit(STATE_SHARED_REWARD_SHOP_POPUP, _build_shared_reward_shop_payload(next_level, "wave_end_absorb", false))
-	elif current_state != STATE_SHARED_REWARD_SHOP_POPUP and not battle_resolved:
-		_enter_wave_end_shop()
-	elif current_state == STATE_SHARED_REWARD_SHOP_POPUP:
-		_resume_state_after_modal = STATE_SHOP_POPUP
+	elif _open_next_relic_choice():
+		return
+	elif not battle_resolved:
+		_finish_wave_rewards()
 
 
 func advance_wave_end_phase() -> void:
@@ -483,6 +536,9 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	if settlement_gold > 0 and CampProgression != null and CampProgression.has_method("apply_final_settlement"):
 		CampProgression.apply_final_settlement(settlement_gold)
 	_pending_level_up_levels.clear()
+	_pending_relic_choices.clear()
+	_active_relic_choice = ""
+	_relic_choice_selected = false
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
@@ -497,7 +553,9 @@ func confirm_battle_result() -> void:
 
 
 func set_stat_preview_from_offer(offer: Dictionary) -> void:
-	_stat_preview = StatPreviewBuilder.build_offer_stat_preview(offer, _bound_player)
+	var finance := _bound_wave_manager.finance_system if _bound_wave_manager != null else null
+	var cost := 0 if current_state == STATE_SHARED_REWARD_SHOP_POPUP else int(offer.get("shop_cost", 0))
+	_stat_preview = StatPreviewBuilder.build_offer_stat_preview(offer, _bound_player, finance, cost)
 
 
 func clear_stat_preview() -> void:
@@ -658,10 +716,6 @@ func _on_wave_finished(wave_id: String) -> void:
 		return
 	_restore_player_full_health()
 	current_wave_id = wave_id
-	if not _has_next_wave():
-		var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
-		present_battle_result(true, {"reason": "all_waves_cleared", "gold": gold})
-		return
 	mark_wave_end_ready()
 
 
@@ -751,6 +805,8 @@ func _unbind_wave_manager() -> void:
 		_bound_wave_manager.wave_end_absorb_started.disconnect(wave_absorb_started_callable)
 	if _bound_wave_manager.shared_reward_shop_requested.is_connected(shared_reward_callable):
 		_bound_wave_manager.shared_reward_shop_requested.disconnect(shared_reward_callable)
+	if _bound_wave_manager.relic_choice_requested.is_connected(_on_relic_choice_requested):
+		_bound_wave_manager.relic_choice_requested.disconnect(_on_relic_choice_requested)
 	_bound_wave_manager = null
 
 
@@ -773,12 +829,16 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 	payload["source"] = source
 	payload["queued"] = queued
 	payload["resume_state"] = _resume_state_after_modal
+	if not _active_relic_choice.is_empty():
+		payload["title"] = "小 Boss 遗物奖励"
+		payload["choice_id"] = _active_relic_choice
 	return payload
 
 
 func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []) -> Dictionary:
 	var context := _build_shop_context()
 	var offers: Array = []
+	var relic_only := mode == "free" and not _active_relic_choice.is_empty()
 	var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus"))
 	_shop_generation += 1
 	if mode == "shop":
@@ -786,9 +846,15 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 	if not context.is_empty():
 		var generator := ShopOfferGenerator.new()
 		var candidates := generator.build_shop_candidate_pool(context)
+		if relic_only:
+			var relic_candidates: Array[Dictionary] = []
+			for candidate in candidates:
+				if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC:
+					relic_candidates.append(candidate)
+			candidates = relic_candidates
 		var exclude_set := {}
 		for exclude_id in exclude_offer_ids:
-			var exclude_text := str(exclude_id).strip_edges()
+			var exclude_text := str(_active_shop_offers.get(str(exclude_id), {}).get("base_offer_id", exclude_id)).strip_edges()
 			if not exclude_text.is_empty():
 				exclude_set[exclude_text] = true
 		if mode == "free" and not exclude_set.is_empty():
@@ -804,11 +870,15 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 			offers = generator.roll_paid_offers(rarity_weights, type_weights, candidates, offer_count, _shop_generation, exclude_offer_ids)
 		else:
 			offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count)
-		_update_weapon_upgrade_miss_count(candidates, offers)
+		if not relic_only:
+			_update_weapon_upgrade_miss_count(candidates, offers)
 	_active_shop_offer_ids.clear()
 	_active_shop_offers.clear()
 	for offer in offers:
 		if offer is Dictionary:
+			if relic_only:
+				offer["base_offer_id"] = str(offer.get("offer_id", ""))
+				offer["offer_id"] = "%s:%d:%s" % [_active_relic_choice, _shop_generation, offer["base_offer_id"]]
 			if mode == "shop" and str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
 				var weapon := _bound_loadout.get_weapon_instance(str(offer.get("target_id", "")))
 				if weapon != null: offer["weapon_instance_id"] = weapon.instance_id

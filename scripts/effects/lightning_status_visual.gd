@@ -1,6 +1,7 @@
 extends Node2D
 
 const ORBIT_PARTICLES: int = 8
+const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
 var _enemy: Node = null
 var _remaining: float = 0.65
@@ -31,6 +32,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
 	_elapsed += delta
 	_remaining -= delta
 	if _remaining <= 0.0:
@@ -50,12 +53,9 @@ func _draw() -> void:
 	var orbit_radius := clampf(body_radius * 0.48, 7.0, 12.0)
 	var orbit_x := orbit_radius * 1.35
 	var orbit_y := orbit_radius * 0.62
-	draw_set_transform(center, 0.0, Vector2(1.35, 0.65))
-	draw_circle(Vector2.ZERO, orbit_radius + 4.0, Color(0.15, 0.48, 1.0, 0.12 * fade))
-	draw_arc(Vector2.ZERO, orbit_radius, _elapsed * 5.0, _elapsed * 5.0 + TAU, 32, Color(0.25, 0.68, 1.0, 0.9 * fade), 2.2, true)
-	draw_arc(Vector2.ZERO, orbit_radius + 2.0, -_elapsed * 3.2, -_elapsed * 3.2 + PI * 0.65, 20, Color(0.80, 0.95, 1.0, 0.9 * fade), 1.6, true)
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	for index in ORBIT_PARTICLES:
 		var angle := _elapsed * 5.0 + float(index) * TAU / float(ORBIT_PARTICLES)
 		var point := center + Vector2(cos(angle) * orbit_x, sin(angle) * orbit_y)
-		draw_circle(point, 2.0, Color(0.70, 0.92, 1.0, fade))
+		PIXEL.block(self, point, Vector2(2, 2), Color(0.70, 0.92, 1.0, fade))
+		if index % 3 == 0:
+			PIXEL.line(self, point, point + Vector2(4, -2), Color(0.37, 0.71, 0.91, fade))

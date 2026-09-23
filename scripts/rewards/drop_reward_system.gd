@@ -1,10 +1,54 @@
 extends RefCounted
 class_name DropRewardSystem
+signal relic_choice_collected(reward_id: String)
 
 const EXP_ORB_SCENE: PackedScene = preload("res://scenes/pickups/exp_orb.tscn")
 const HEALTH_PACK_SCENE: PackedScene = preload("res://scenes/pickups/health_pack.tscn")
 const AUGMENTATION_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/augmentation_pickup.tscn")
+const RELIC_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/relic_pickup.tscn")
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "health_pack", "relic", "augmentation"]
+const DEFAULT_ELITE_RELIC_DECAY_FACTOR: float = 0.5
+
+var _elite_relics_dropped_this_wave: int = 0
+var _reward_generation: int = 0
+var _next_elite_reward_id: int = 0
+var _resolved_elite_rewards: Dictionary = {}
+var _choice_tokens: Dictionary = {}
+var _next_choice_id: int = 0
+
+
+func begin_wave() -> void:
+	_elite_relics_dropped_this_wave = 0
+	_reward_generation += 1
+	_next_elite_reward_id = 0
+	_resolved_elite_rewards.clear()
+	_choice_tokens.clear()
+
+
+func get_elite_relics_dropped_this_wave() -> int:
+	return _elite_relics_dropped_this_wave
+
+
+func get_elite_relic_drop_chance(chance_before_decay: float, decay_factor: float = DEFAULT_ELITE_RELIC_DECAY_FACTOR) -> float:
+	# Cap the fully modified chance first, so high bonuses cannot cancel the decay.
+	return clampf(chance_before_decay, 0.0, 100.0) * pow(clampf(decay_factor, 0.0, 1.0), _elite_relics_dropped_this_wave)
+
+
+func _roll_drop_chance(chance_percent: float) -> bool:
+	return chance_percent >= 100.0 or (chance_percent > 0.0 and randf() * 100.0 < chance_percent)
+
+
+func _resolve_elite_relic_roll(action: Dictionary) -> bool:
+	# Resolve immediately before spawning. Uncollected drops already count.
+	if int(action.get("reward_generation", -1)) != _reward_generation:
+		return false
+	var reward_id := int(action.get("elite_reward_id", -1))
+	if reward_id < 0 or _resolved_elite_rewards.has(reward_id):
+		return false
+	_resolved_elite_rewards[reward_id] = true
+	var chance := get_elite_relic_drop_chance(float(action.get("chance_before_elite_decay", 0.0)), float(action.get("elite_relic_decay_factor", DEFAULT_ELITE_RELIC_DECAY_FACTOR)))
+	action["adjusted_chance_percent"] = chance
+	return _roll_drop_chance(chance)
 
 
 func build_drop_actions(drop_table_id: String, player: PlayerController = null) -> Array[Dictionary]:
@@ -15,6 +59,7 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 		return actions
 
 	var drop_rate_bonus := _get_player_stat(player, "drop_rate_percent")
+	var is_elite_table := (drop_table.get("tags", []) as Array).has("elite")
 	for entry in drop_table.get("entries", []):
 		if not (entry is Dictionary):
 			continue
@@ -27,7 +72,8 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 
 		var base_chance := clampf(float(entry.get("chance_percent", 100.0)), 0.0, 100.0)
 		var adjusted_chance := clampf(base_chance * (1.0 + drop_rate_bonus / 100.0), 0.0, 100.0)
-		if adjusted_chance <= 0.0 or randf() * 100.0 > adjusted_chance:
+		var is_elite_relic := is_elite_table and drop_type == "relic"
+		if adjusted_chance <= 0.0 or (not is_elite_relic and not _roll_drop_chance(adjusted_chance)):
 			continue
 
 		var amount := maxi(0, int(entry.get("amount", 0)))
@@ -45,6 +91,14 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 		}
 		if drop_type == "relic":
 			action["relic_id"] = str(entry.get("relic_id", entry.get("target_id", "")))
+		if is_elite_relic:
+			# This action is a pending chance, not a guaranteed relic reward.
+			action["elite_relic_reward"] = true
+			action["reward_generation"] = _reward_generation
+			action["elite_reward_id"] = _next_elite_reward_id
+			action["chance_before_elite_decay"] = adjusted_chance
+			action["elite_relic_decay_factor"] = float(drop_table.get("elite_relic_decay_percent", DEFAULT_ELITE_RELIC_DECAY_FACTOR * 100.0)) / 100.0
+			_next_elite_reward_id += 1
 		actions.append(action)
 	return actions
 
@@ -103,20 +157,36 @@ func spawn_action(
 			var augmentation_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
 			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot)
 		"relic":
+			if not is_instance_valid(pickup_root) or not is_instance_valid(player):
+				return null
+			var is_elite_relic := bool(action.get("elite_relic_reward", false))
+			if is_elite_relic and not _resolve_elite_relic_roll(action):
+				return null
+			var token := "relic_choice_%d_%d" % [_reward_generation, _next_choice_id]
+			_next_choice_id += 1
+			_choice_tokens[token] = false
+			var pickup := RELIC_PICKUP_SCENE.instantiate() as RelicPickup
+			pickup.initialize_choice(player, _claim_relic_choice.bind(token), snapshot)
+			pickup_root.add_child(pickup)
+			pickup.global_position = position
+			if is_elite_relic:
+				_elite_relics_dropped_this_wave += 1
 			if snapshot != null:
 				snapshot.record_spawned_drop("relic", 1)
-			var entry: Dictionary = action.get("entry", {})
-			var relic_id := str(action.get("relic_id", action.get("target_id", entry.get("relic_id", entry.get("target_id", "")))))
-			if relic_id.is_empty():
-				relic_id = _pick_random_available_relic(player)
-			if relic_id.is_empty() or player == null or not player.has_method("add_relic") or not player.add_relic(relic_id):
-				push_warning("[DropRewardSystem] relic reward failed: %s" % relic_id)
-			return null
+			return pickup
 		_:
 			if snapshot != null:
 				snapshot.record_spawned_drop("unknown", 1)
 			push_warning("[DropRewardSystem] unknown reward type: %s" % drop_type)
 			return null
+
+
+func _claim_relic_choice(token: String) -> bool:
+	if not _choice_tokens.has(token) or bool(_choice_tokens[token]):
+		return false
+	_choice_tokens[token] = true
+	relic_choice_collected.emit(token)
+	return true
 
 
 func spawn_exp_orb(
@@ -187,23 +257,6 @@ func spawn_augmentation(
 	if snapshot != null:
 		snapshot.record_spawned_drop("augmentation", 1)
 	return pickup
-
-
-func _pick_random_available_relic(player: PlayerController) -> String:
-	var candidates: Array[String] = []
-	for relic_data in DataRegistry.get_table("relics"):
-		if not (relic_data is Dictionary):
-			continue
-		var relic_record: Dictionary = relic_data
-		var relic_id := str(relic_record.get("id", ""))
-		if relic_id.is_empty():
-			continue
-		if player != null and player.has_method("can_add_relic") and not player.can_add_relic(relic_id):
-			continue
-		candidates.append(relic_id)
-	if candidates.is_empty():
-		return ""
-	return candidates[randi_range(0, candidates.size() - 1)]
 
 
 func collect_reward_pickups(root: Node) -> void:

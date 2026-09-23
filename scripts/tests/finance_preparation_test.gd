@@ -79,10 +79,12 @@ func _run() -> void:
 	await get_tree().create_timer(.3).timeout
 	await capture("01_purchase_1152")
 	await _test_finance_esc_round_trip(game)
+	_test_withdrawal_limits()
 	_test_bank_and_trades()
 	await frames(10)
 	popup._select_tab("enchant")
 	await frames(10)
+	await _test_inventory_inspection()
 	await capture("02_enchantment_1152")
 	popup._open_sale("weapon", "weapon_plasma_cannon")
 	await frames()
@@ -160,6 +162,92 @@ func _test_finance_esc_round_trip(game: GameRoot) -> void:
 		check(flow.current_state == flow.STATE_FINANCE_POPUP, "Escape key repeat does not reopen inspection")
 	popup.amount_input.release_focus()
 	popup._select_tab("shop")
+
+
+func _test_withdrawal_limits() -> void:
+	var finance := manager.finance_system
+	var initial_principal := finance.principal
+	var initial_gold := manager.current_gold
+	var had_principal := finance.has_principal_ever
+	finance.principal = 120
+	popup.configure(flow.get_preparation_payload())
+	popup._choose_bank_action("withdraw")
+	for amount in [121, 999999999999]:
+		popup.amount_input.text = str(amount)
+		popup.amount_input.text_changed.emit(popup.amount_input.text)
+		check(popup.bank_confirm.disabled, "overdraft disables confirmation " + str(amount))
+		popup.amount_input.text_submitted.emit(popup.amount_input.text)
+		var result := flow.submit_finance_operation("withdraw", amount)
+		check(not result.success and result.reason == "amount_exceeds_principal", "authoritative overdraft rejected " + str(amount))
+		check(finance.principal == 120 and manager.current_gold == initial_gold and not finance.manual_operation_used, "overdraft preserves money and banking opportunity")
+	var stale := flow.get_preparation_payload().duplicate(true)
+	stale["principal"] = 1000
+	popup.configure(stale)
+	popup.amount_input.text = "500"
+	popup._submit_bank()
+	check(finance.principal == 120 and manager.current_gold == initial_gold and not finance.manual_operation_used, "stale displayed balance cannot mint gold")
+	popup.configure(flow.get_preparation_payload())
+	popup.amount_input.text = "120"
+	popup.amount_input.text_changed.emit("120")
+	check(not popup.bank_confirm.disabled, "exact principal can be withdrawn")
+	popup._submit_bank()
+	check(finance.principal == 0 and manager.current_gold == initial_gold + 120 and finance.manual_operation_used, "withdrawal conserves total gold and principal")
+	popup._submit_bank()
+	check(manager.current_gold == initial_gold + 120 and finance.principal == 0, "repeated withdrawal cannot mint gold")
+	# Restore the fixture before the existing deposit/trading sequence.
+	finance.principal = initial_principal
+	finance.has_principal_ever = had_principal
+	finance.manual_operation_used = false
+	finance.last_manual_operation.clear()
+	manager.apply_gold_delta(initial_gold - manager.current_gold, "test_restore")
+	popup.configure(flow.get_preparation_payload())
+	popup.amount_input.clear()
+	popup._choose_bank_action("deposit")
+
+
+func _test_inventory_inspection() -> void:
+	var spare := player.item_inventory.add_item_from_base("scroll_fire", "test")
+	var spare_id := str(spare.get("item_instance_id", ""))
+	popup.workbench.refresh()
+	await frames()
+	var visible_ids: Array[String] = []
+	var target: EnchantmentInventoryCard
+	for card in popup.workbench._inventory.get_children():
+		if not card is EnchantmentInventoryCard: continue
+		visible_ids.append(str(card.item_instance.get("item_instance_id", "")))
+		if str(card.item_instance.get("item_instance_id", "")) == spare_id: target = card
+	var unequipped_ids: Array[String] = []
+	for item in player.item_inventory.get_items():
+		if str(item.get("equipped_weapon_id", "")).is_empty(): unequipped_ids.append(str(item.get("item_instance_id", "")))
+	check(visible_ids == unequipped_ids and target != null, "backpack shows only unequipped instances")
+	if target == null: return
+	popup._tooltip.hide()
+	await _hover_control(target)
+	check(not popup._tooltip.visible, "card hover does not show enchantment details")
+	await _hover_control(target._inspect)
+	check(popup._tooltip.visible and popup._tooltip_text.text.contains(str(spare.get("display_name", ""))), "magnifier hover shows exact enchantment details")
+	check(popup._tooltip_text.size.y >= popup._tooltip_text.get_content_height(), "enchantment details fit without clipping")
+	await capture("02_enchantment_detail")
+	await _hover_control(popup._title)
+	check(not popup._tooltip.visible, "leaving magnifier hides details")
+	var weapon := loadout.get_weapon_instance(popup.workbench.selected_weapon_id)
+	check(flow.submit_enchantment_operation("attach", weapon.weapon_id, spare_id).success, "equip backpack instance")
+	var still_in_backpack := false
+	for card in popup.workbench._inventory.get_children():
+		if card is EnchantmentInventoryCard and str(card.item_instance.get("item_instance_id", "")) == spare_id: still_in_backpack = true
+	check(not still_in_backpack, "equipping immediately removes instance from backpack")
+	check(flow.submit_enchantment_operation("detach", weapon.weapon_id, spare_id).success, "unequip returns instance to backpack")
+	var returned := false
+	for card in popup.workbench._inventory.get_children():
+		if card is EnchantmentInventoryCard and str(card.item_instance.get("item_instance_id", "")) == spare_id: returned = true
+	check(returned, "detached instance is visible again")
+
+
+func _hover_control(control: Control) -> void:
+	var motion := InputEventMouseMotion.new()
+	motion.position = control.get_global_rect().get_center()
+	Input.parse_input_event(motion)
+	await frames(3)
 
 
 func _test_bank_and_trades() -> void:
@@ -299,6 +387,13 @@ func _test_resolutions(hud: BattleHud) -> void:
 				popup._enchant_scroll.scroll_vertical = 99999
 				await frames()
 				check(popup._enchant_scroll.get_global_rect().intersects(popup.workbench._apply.get_global_rect()), "enchant controls reachable " + str(resolution))
+				for card in popup.workbench._inventory.get_children():
+					if not card is EnchantmentInventoryCard: continue
+					await _hover_control(card._inspect)
+					check(popup._tooltip.visible and popup._tooltip_text.size.y >= popup._tooltip_text.get_content_height(), "magnifier details fit " + str(resolution))
+					await capture("detail_" + str(resolution.x))
+					await _hover_control(popup._title)
+					break
 				popup._enchant_scroll.scroll_vertical = 0
 			await capture("layout_" + str(resolution.x) + "_" + tab)
 		if resolution.x < 1000:

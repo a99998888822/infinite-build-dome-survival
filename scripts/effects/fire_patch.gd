@@ -71,7 +71,7 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 	patch.monitoring = true
 	patch.monitorable = false
 	patch._create_particle_emitters()
-	patch._emit_ignition_burst(patch_position, field_strength)
+	patch._emit_ignition_burst(patch_position, field_strength, context)
 	return patch
 
 
@@ -129,17 +129,17 @@ func _absorb_seed(patch_position: Vector2, context: RefCounted, field_strength: 
 	_stack_strength += maxf(field_strength, 0.05)
 	_remaining = maxf(_remaining, incoming_duration)
 	_base_radius = maxf(_base_radius, incoming_radius)
-	_radius = minf(MAX_FIELD_RADIUS, maxf(_radius, maxf(incoming_radius + distance * 0.45, _base_radius + sqrt(_stack_strength) * 3.6)))
+	_radius = maxf(_radius, minf(MAX_FIELD_RADIUS, maxf(incoming_radius + distance * 0.45, _base_radius + sqrt(_stack_strength) * 3.6)))
 	if _source_weapon_id.is_empty():
 		_source_weapon_id = _get_source_weapon_id(context)
 	_update_collision_radius()
 	_update_particle_extent()
-	_emit_ignition_burst(patch_position, field_strength)
+	_emit_ignition_burst(patch_position, field_strength, context)
 
 
 func expand_from_wind(radius_multiplier: float = 1.35) -> void:
 	var safe_multiplier := maxf(radius_multiplier, 1.0)
-	_radius = minf(MAX_WIND_FIELD_RADIUS, maxf(_radius, _radius * safe_multiplier))
+	_radius = maxf(_radius, minf(MAX_WIND_FIELD_RADIUS, _radius * safe_multiplier))
 	_base_radius = maxf(_base_radius, _radius)
 	_update_collision_radius()
 	_update_particle_extent()
@@ -205,7 +205,11 @@ func _get_particle_extent_multiplier() -> float:
 	return clampf(_radius / 30.0, 0.75, 1.8)
 
 
-func _emit_ignition_burst(burst_position: Vector2, field_strength: float) -> void:
+func _emit_ignition_burst(burst_position: Vector2, field_strength: float, source_context: RefCounted = null) -> void:
+	var audio_impact: RefCounted = source_context.get_meta("combat_audio_impact", null) if source_context != null else null
+	AudioManager.begin_combat_audio(audio_impact)
+	AudioManager.play_enchantment_sfx("fire")
+	AudioManager.end_combat_audio()
 	var intensity := clampf(0.45 + sqrt(maxf(field_strength, 0.05)) * 0.16, 0.45, 1.0)
 	var parameters := _build_particle_parameters()
 	parameters["color_tint"] = _get_flame_color_tint()
@@ -244,6 +248,7 @@ func _get_flame_color_tint() -> Color:
 
 
 func _apply_tick_damage() -> void:
+	AudioManager.begin_combat_audio()
 	var original_damage := 0.0
 	var burn_duration := 3.0
 	if _context != null:
@@ -260,3 +265,4 @@ func _apply_tick_damage() -> void:
 					"original_damage": original_damage,
 					"burn_duration": burn_duration,
 				})
+	AudioManager.end_combat_audio()

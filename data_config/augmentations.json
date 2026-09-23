@@ -17,7 +17,7 @@
     },
     "instance_parameter_ranges": [],
     "modifiers": [],
-    "icon": "res://assets/ui/icons/augmentations/scroll_water.svg"
+    "icon": "res://assets/ui/icons/augmentations/scroll_water.png"
   },
   {
     "id": "scroll_light_sword",
@@ -38,7 +38,7 @@
     },
     "instance_parameter_ranges": [],
     "modifiers": [],
-    "icon": "res://assets/ui/icons/augmentations/scroll_light_sword.svg"
+    "icon": "res://assets/ui/icons/augmentations/scroll_light_sword.png"
   },
   {
     "id": "scroll_black_hole",
@@ -58,7 +58,7 @@
     },
     "instance_parameter_ranges": [],
     "modifiers": [],
-    "icon": "res://assets/ui/icons/augmentations/scroll_black_hole.svg"
+    "icon": "res://assets/ui/icons/augmentations/scroll_black_hole.png"
   },
   {
     "id": "scroll_fire",
@@ -273,7 +273,7 @@
   {
     "id": "wizard_scroll_chain_mastery",
     "display_name": "连锁主宰",
-    "description": "闪电可连锁更多目标，并引爆燃烧效果。",
+    "description": "闪电链额外连接1个目标，闪电伤害提高20%；打湿目标额外承受一次电击。",
     "category": "wizard_scroll",
     "rarity": "legendary",
     "effect_ids": [
@@ -284,13 +284,13 @@
         "effect_id": "lightning",
         "channel": "chain_count",
         "operation": "add_flat",
-        "value": 3
+        "value": 1
       },
       {
         "effect_id": "lightning",
-        "channel": "detonate_burning",
-        "operation": "override",
-        "value": 1.0
+        "channel": "damage",
+        "operation": "multiply",
+        "value": 1.2
       },
       {
         "effect_id": "lightning",
@@ -400,7 +400,7 @@
   {
     "id": "scroll_ice",
     "display_name": "结霜",
-    "description": "命中点生成寒冰领域，对范围内敌人造成一次伤害并减速。",
+    "description": "命中点生成寒冰领域，每个敌人首次接触时受到一次伤害并减速；可被风扩大，与打湿相遇冻结1秒，解冻后恢复打湿。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
@@ -457,6 +457,6 @@
     },
     "instance_parameter_ranges": [],
     "modifiers": [],
-    "icon": "res://assets/ui/icons/augmentations/scroll_wind.svg"
+    "icon": "res://assets/ui/icons/augmentations/scroll_wind.png"
   }
 ]

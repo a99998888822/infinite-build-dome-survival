@@ -74,7 +74,7 @@ func configure(next_payload: Dictionary) -> void:
 		shop_grid.set_offers(payload.get("offers", []), true)
 	else:
 		shop_grid.refresh_availability()
-	_summary.text = "随身 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
+	_summary.text = "金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
 	_refresh_bank()
 	var remaining := 0
 	for offer in shop_grid.offers:
@@ -167,9 +167,13 @@ func _build() -> void:
 	for portion in [0.25, 0.5, 1.0]:
 		var quick := _button("全部" if portion == 1.0 else ("1/2" if portion == 0.5 else "1/4"), shortcuts)
 		quick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		quick.pressed.connect(func(): amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion)))
+		quick.pressed.connect(func():
+			amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion))
+			_update_bank_confirm()
+		)
 	bank_confirm = _button("确认存入", _bank_form)
 	bank_confirm.pressed.connect(_submit_bank)
+	amount_input.text_changed.connect(func(_value): _update_bank_confirm())
 	_receipt = _label("", bank_body, 14, FinanceUIStyle.GREEN)
 	_receipt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_contract = _label("", bank_body, 12, FinanceUIStyle.MUTED)
@@ -222,6 +226,7 @@ func _build() -> void:
 	main_panel.add_child(_tooltip)
 	_tooltip_text = RichTextLabel.new()
 	_tooltip_text.bbcode_enabled = true
+	_tooltip_text.scroll_active = false
 	_tooltip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_tooltip_text.add_theme_font_size_override("normal_font_size", 12)
 	_tooltip.add_child(_tooltip_text)
@@ -314,7 +319,7 @@ func _select_tab(tab: String) -> void:
 	for key in _tab_buttons:
 		var button: Button = _tab_buttons[key]
 		button.visible = key != "bank" or _compact
-		FinanceUIStyle.button(button, key == tab)
+		FinanceUIStyle.tab(button, key == tab)
 	if _tooltip != null: _tooltip.hide()
 	if flow != null: flow.clear_stat_preview()
 
@@ -338,16 +343,35 @@ func _choose_bank_action(action: String) -> void:
 	FinanceUIStyle.button(_withdraw, action == "withdraw")
 	bank_confirm.text = "确认存入" if action == "deposit" else "确认取出"
 	_withdraw.disabled = int(payload.get("principal", 0)) <= 0
-	bank_confirm.disabled = bool(payload.get("manual_operation_used", false)) or int(payload.get("gold" if action == "deposit" else "principal", 0)) <= 0
+	_update_bank_confirm()
+
+
+func _bank_amount_error() -> String:
+	if bool(payload.get("manual_operation_used", false)):
+		return "bank_operation_used"
+	var value := amount_input.text.strip_edges()
+	if not value.is_valid_int() or value.to_int() <= 0:
+		return "amount_must_be_positive"
+	var balance := int(payload.get("gold" if _bank_action == "deposit" else "principal", 0))
+	if value.to_int() > balance:
+		return "amount_exceeds_gold" if _bank_action == "deposit" else "amount_exceeds_principal"
+	return ""
+
+
+func _update_bank_confirm() -> void:
+	var error := _bank_amount_error()
+	bank_confirm.disabled = not error.is_empty()
+	bank_confirm.tooltip_text = FinanceUIStyle.reason(error) if not error.is_empty() else ""
+	amount_input.add_theme_color_override("font_color", Color("e1a184") if error.begins_with("amount_exceeds") else FinanceUIStyle.TEXT)
 
 
 func _submit_bank() -> void:
 	if flow == null: return
-	var value := amount_input.text.strip_edges()
-	if not value.is_valid_int() or value.to_int() <= 0:
-		show_error("amount_must_be_positive")
+	var error := _bank_amount_error()
+	if not error.is_empty():
+		show_error(error)
 		return
-	var result := flow.submit_finance_operation(_bank_action, value.to_int())
+	var result := flow.submit_finance_operation(_bank_action, amount_input.text.strip_edges().to_int())
 	if bool(result.get("success", false)):
 		portrait.react(_bank_action, int(result.get("amount", 0)), int(result.get("source_balance_before", 0)))
 		_feedback_message("存取已完成。仍可购买、出售和配置附魔。", true)
@@ -401,7 +425,7 @@ func _open_sale(kind: String, id: String) -> void:
 		detail.item_instance = flow.get_bound_player().item_inventory.find_item(id)
 		lines.append(detail._build_tooltip())
 		detail.free()
-	lines.append("\n[color=#D4BC81]获得 %d 随身金币[/color]" % int(_quote.get("total", 0)))
+	lines.append("\n[color=#D4BC81]获得 %d 金币[/color]" % int(_quote.get("total", 0)))
 	_sale_text.text = "\n\n".join(lines)
 	_sale_confirm.text = "出售 · %d 金币" % int(_quote.get("total", 0))
 	_sale_layer.show()
@@ -420,7 +444,7 @@ func _confirm_sale() -> void:
 func _show_tooltip(content: String) -> void:
 	if _sale_layer.visible: return
 	_tooltip_text.text = content
-	var tooltip_size := Vector2(minf(310, main_panel.size.x - 24), minf(200, main_panel.size.y * 0.45))
+	var tooltip_size := Vector2(minf(310, main_panel.size.x - 24), minf(240, main_panel.size.y - 24))
 	var point := get_global_mouse_position() - main_panel.global_position + Vector2(14, 14)
 	point.x = clampf(point.x, 12, main_panel.size.x - tooltip_size.x - 12)
 	point.y = clampf(point.y, 12, main_panel.size.y - tooltip_size.y - 12)

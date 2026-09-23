@@ -10,6 +10,8 @@ var spawned_augmentations: int = 0
 var spawned_unknown: int = 0
 var collected_exp_orbs: int = 0
 var collected_health_packs: int = 0
+var collected_relics: int = 0
+var selected_relics: int = 0
 var exp_gained: int = 0
 var gold_gained: int = 0
 var health_restored: int = 0
@@ -27,6 +29,8 @@ func reset(next_wave_id: String = "", next_drop_table_id: String = "") -> void:
 	spawned_unknown = 0
 	collected_exp_orbs = 0
 	collected_health_packs = 0
+	collected_relics = 0
+	selected_relics = 0
 	exp_gained = 0
 	gold_gained = 0
 	health_restored = 0
@@ -79,6 +83,8 @@ func to_dictionary() -> Dictionary:
 		"spawned_unknown": spawned_unknown,
 		"collected_exp_orbs": collected_exp_orbs,
 		"collected_health_packs": collected_health_packs,
+		"collected_relics": collected_relics,
+		"selected_relics": selected_relics,
 		"exp_gained": exp_gained,
 		"gold_gained": gold_gained,
 		"health_restored": health_restored,

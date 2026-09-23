@@ -67,10 +67,15 @@ var _gold_delta_applier: Callable = Callable()
 var _started_wave_number: int = 0
 var manual_operation_used: bool = false
 var last_manual_operation: Dictionary = {}
+var _emitting_changed: bool = false
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
+	if is_instance_valid(player) and player.stats_changed.is_connected(_on_player_stats_changed):
+		player.stats_changed.disconnect(_on_player_stats_changed)
 	player = target_player
+	if player != null:
+		player.stats_changed.connect(_on_player_stats_changed)
 	_gold_getter = gold_getter
 	_gold_delta_applier = gold_delta_applier
 	# Camp talent "理财" is the starting principal granted at run start.
@@ -91,6 +96,26 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	last_settlement_result.clear()
 	last_settlement_results.clear()
 	_rng.randomize()
+	_emit_changed()
+
+
+func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 0) -> BattleFinanceSystem:
+	var preview := BattleFinanceSystem.new()
+	preview.player = preview_player
+	for field in ["principal", "interest_rate_bonus", "wave_counter", "current_wave_number", "last_action_wave_number", "last_deposit_wave_number", "has_deposited_before_current_wave", "wave_start_deposit_amount", "has_principal_ever", "erosion_bonus", "_bankruptcy_triggered", "_started_wave_number", "manual_operation_used"]:
+		preview.set(field, get(field))
+	preview._rng.state = _rng.state
+	var preview_gold := {"value": maxi(0, get_current_gold() - maxi(0, purchase_cost))}
+	preview._gold_getter = func(): return int(preview_gold.value)
+	preview._gold_delta_applier = func(delta: int, _reason: String):
+		preview_gold.value += delta
+		return true
+	preview_player.stats_changed.connect(preview._on_player_stats_changed)
+	preview_player.relic_added.connect(preview.on_relic_added)
+	return preview
+
+
+func _on_player_stats_changed() -> void:
 	_emit_changed()
 
 
@@ -370,12 +395,10 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 func _is_blocked_by_high_yield_contract(source: String) -> bool:
 	if not _has_wave_end_deposit_requirement() or has_deposited_before_current_wave:
 		return false
-	return source == SETTLE_WAVE_END or source == SETTLE_PERIODIC
+	return _is_wave_end_settlement_source(source)
 
 
-func _apply_after_successful_interest_relics(source: String) -> void:
-	if not _is_wave_end_settlement_source(source):
-		return
+func _apply_after_successful_interest_relics(_source: String) -> void:
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SUCCESS):
 		match str(effect.get("effect", "")):
 			EFFECT_ADD_INTEREST_RATE_BONUS:
@@ -429,22 +452,28 @@ func _apply_gold_delta(delta: int, reason: String) -> bool:
 
 
 func _emit_changed() -> void:
+	if _emitting_changed:
+		return
+	_emitting_changed = true
 	if player != null:
+		player.begin_modifier_update()
 		if principal > 0:
 			has_principal_ever = true
 		_refresh_derived_stats()
 		_check_bankruptcy_trigger()
+		player.end_modifier_update()
 	finance_changed.emit(get_state_snapshot())
+	_emitting_changed = false
 
 
 func _refresh_derived_stats() -> void:
 	if player == null:
 		return
+	player.remove_runtime_modifiers_by_source_type("finance_derived")
 	for relic_id in player.get_relic_ids():
 		var relic_count := player.get_relic_count(relic_id)
 		if relic_count <= 0:
 			continue
-		player.remove_runtime_modifiers_by_source("finance_derived", relic_id)
 		for effect in _get_relic_runtime_effects(relic_id, TRIGGER_DERIVED):
 			match str(effect.get("effect", "")):
 				EFFECT_DERIVED_STAT_FROM_PRINCIPAL:
@@ -467,8 +496,10 @@ func _refresh_derived_stats() -> void:
 func _refresh_erosion_bonus() -> void:
 	if player == null:
 		return
+	player.begin_modifier_update()
 	player.remove_runtime_modifiers_by_source("finance_erosion", "divine_fusion")
 	if erosion_bonus <= 0.0:
+		player.end_modifier_update()
 		return
 	player.add_runtime_modifier({
 		"id": "divine_fusion_erosion",
@@ -481,6 +512,7 @@ func _refresh_erosion_bonus() -> void:
 		"duration": Modifier.PERMANENT_DURATION,
 		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
 	})
+	player.end_modifier_update()
 
 
 func _build_derived_modifier(relic_id: String, stat_id: String, value: float) -> Dictionary:
@@ -556,7 +588,7 @@ func _collect_runtime_effects(trigger: String) -> Array[Dictionary]:
 
 
 func _is_wave_end_settlement_source(source: String) -> bool:
-	return source == SETTLE_WAVE_END or source == SETTLE_PERIODIC
+	return source in [SETTLE_WAVE_END, SETTLE_PERIODIC, SETTLE_ANNUITY_EXTRA]
 
 
 func _get_wave_deposit_requirement() -> int:

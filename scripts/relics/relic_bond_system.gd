@@ -183,11 +183,15 @@ func get_active_special_effects() -> Array[Dictionary]:
 
 
 func refresh_effects() -> void:
+	if owner_player != null:
+		owner_player.begin_modifier_update()
 	_clear_owner_effects("relic")
 	_clear_owner_effects("bond")
 	active_special_effects.clear()
 	_apply_relic_effects()
 	_apply_bond_effects()
+	if owner_player != null:
+		owner_player.end_modifier_update()
 
 
 func _apply_relic_effects() -> void:

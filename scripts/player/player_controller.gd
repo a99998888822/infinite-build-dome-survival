@@ -8,14 +8,15 @@ signal shield_broken
 signal start_weapons_changed(weapon_ids: Array[String])
 signal relics_changed(relic_ids: Array[String])
 signal relic_added(relic_id: String)
+signal stats_changed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
-const PLAYER_VISUAL_SCALE: float = 0.21
-const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/void_hunter_idle_right.png")
-const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/void_hunter_walk_right_spritesheet.png")
+const PLAYER_VISUAL_SCALE: float = 1.0
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_idle_right.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
@@ -46,6 +47,8 @@ var _shield_regen_remainder: float = 0.0
 var _relic_runtime_sequence: int = 0
 var _refreshing_relic_dynamic_effects: bool = false
 var _initial_wave_shield: int = 0
+var _modifier_update_depth: int = 0
+var _modifiers_before_update: Dictionary = {}
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -135,7 +138,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 func add_runtime_modifier(modifier_data: Dictionary) -> bool:
 	var stat_id := str(modifier_data.get("stat", ""))
 	var value := float(modifier_data.get("value", 0.0))
-	if value > 0.0 and _is_stat_increase_blocked(stat_id):
+	if value > 0.0 and _is_stat_increase_blocked(stat_id) and not _is_existing_modifier_rebuild(modifier_data):
 		return false
 	var modifier := modifier_stack.add_modifier_from_dictionary(modifier_data)
 	if modifier == null:
@@ -191,6 +194,54 @@ func get_shop_price_discount_layers() -> Array[float]:
 		if modifier != null and not is_zero_approx(modifier.value):
 			layers.append(modifier.value)
 	return layers
+
+
+func get_effective_shop_discount() -> float:
+	return (1.0 - StatDefinitions.calculate_shop_price_multiplier(get_shop_price_discount_layers())) * 100.0
+
+
+func begin_modifier_update() -> void:
+	if _modifier_update_depth == 0:
+		_modifiers_before_update.clear()
+		for modifier in modifier_stack.modifiers:
+			_modifiers_before_update[modifier.id] = modifier.to_dictionary()
+	_modifier_update_depth += 1
+
+
+func end_modifier_update() -> void:
+	assert(_modifier_update_depth > 0)
+	_modifier_update_depth -= 1
+	if _modifier_update_depth == 0:
+		_modifiers_before_update.clear()
+		_update_after_stat_change()
+
+
+func _is_existing_modifier_rebuild(data: Dictionary) -> bool:
+	var previous: Dictionary = _modifiers_before_update.get(str(data.get("id", "")), {})
+	return not previous.is_empty() and previous.get("stat") == data.get("stat") \
+		and previous.get("operation") == data.get("operation") \
+		and is_equal_approx(float(previous.get("value", 0.0)), float(data.get("value", 0.0)))
+
+
+func create_stat_preview_copy() -> PlayerController:
+	# Detached from the scene tree: no movement, pickups, or live UI signals.
+	var preview := PlayerController.new()
+	preview.auto_initialize_on_ready = false
+	preview.modifier_stack.base_stats = modifier_stack.base_stats.duplicate(true)
+	preview.modifier_stack.modifiers = modifier_stack.get_all_modifiers()
+	preview.current_hp = current_hp
+	preview.current_shield = current_shield
+	preview.current_shield_capacity = current_shield_capacity
+	preview.remaining_revives = remaining_revives
+	preview._configured_revive_count = _configured_revive_count
+	preview._relic_runtime_sequence = _relic_runtime_sequence
+	preview.alive = alive
+	preview.relic_system.owner_player = preview
+	preview.relic_system.weapon_ids = relic_system.weapon_ids.duplicate()
+	preview.relic_system.relic_instances = relic_system.relic_instances.duplicate(true)
+	preview.relic_system.relic_ids_by_name = relic_system.relic_ids_by_name.duplicate(true)
+	preview.relic_system.instance_sequence = relic_system.instance_sequence
+	return preview
 
 
 func get_item_inventory() -> ItemInventory:
@@ -431,12 +482,14 @@ func _setup_visuals() -> void:
 	if visual_anchor != null:
 		visual_anchor.scale = Vector2(PLAYER_VISUAL_SCALE if facing_right else -PLAYER_VISUAL_SCALE, PLAYER_VISUAL_SCALE)
 	if sprite != null:
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_apply_idle_visual()
 
 
 func _sync_camera() -> void:
 	if camera_2d != null:
-		camera_2d.global_position = global_position
+		# Snap the view only; physics keeps its subpixel movement precision.
+		camera_2d.global_position = global_position.round()
 
 
 func _update_walk_animation(direction: Vector2, delta: float) -> void:
@@ -487,23 +540,32 @@ func _apply_modifier_list(modifier_data_list: Array) -> void:
 
 
 func _update_after_stat_change() -> void:
+	# Revive-count refresh is intentional gameplay; only HP and derived stats
+	# wait for the complete modifier set, so transient max-HP loss cannot hurt.
 	var configured_revives := int(get_stat("revive_count"))
 	if configured_revives > _configured_revive_count:
 		remaining_revives += configured_revives - _configured_revive_count
 	_configured_revive_count = configured_revives
 	remaining_revives = mini(remaining_revives, configured_revives)
+	if _modifier_update_depth > 0:
+		return
 	current_hp = mini(current_hp, int(get_stat("max_hp")))
 	_update_pickup_radius()
 	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+	stats_changed.emit()
 
 
 func _refresh_relic_dynamic_effects() -> void:
-	if _refreshing_relic_dynamic_effects:
+	if _refreshing_relic_dynamic_effects or _modifier_update_depth > 0:
 		return
 	_refreshing_relic_dynamic_effects = true
+	var previous_values := {}
+	for modifier in modifier_stack.get_all_modifiers():
+		if modifier.source_type == "relic_dynamic":
+			previous_values[modifier.id] = modifier.value
 	modifier_stack.remove_by_source_type("relic_dynamic")
-	for effect in get_active_relic_runtime_effects(BattleFinanceSystem.TRIGGER_DYNAMIC):
+	for effect in _get_ordered_dynamic_effects():
 		var effect_type := str(effect.get("effect", ""))
 		var target_stat := str(effect.get("stat", effect.get("target_stat", "")))
 		if not StatDefinitions.has_stat(target_stat):
@@ -523,12 +585,15 @@ func _refresh_relic_dynamic_effects() -> void:
 			var divisor := maxf(float(effect.get("divisor", 1.0)), 0.0001)
 			var per_unit := float(effect.get("per_unit", 1.0))
 			value = floorf(get_stat(source_stat) / divisor) * per_unit
-		if is_zero_approx(value):
-			continue
 		var instance_id := str(effect.get("relic_instance_id", "relic"))
 		var effect_index := int(effect.get("relic_runtime_effect_index", 0))
+		var modifier_id := "relic_dynamic_%s_%d" % [instance_id, effect_index]
+		if _is_stat_increase_blocked(target_stat):
+			value = minf(value, float(previous_values.get(modifier_id, 0.0)))
+		if is_zero_approx(value):
+			continue
 		modifier_stack.add_modifier_from_dictionary({
-			"id": "relic_dynamic_%s_%d" % [instance_id, effect_index],
+			"id": modifier_id,
 			"source_type": "relic_dynamic",
 			"source_id": instance_id,
 			"target_scope": "player",
@@ -539,6 +604,48 @@ func _refresh_relic_dynamic_effects() -> void:
 			"stack_rule": Modifier.STACK_RULE_UNIQUE,
 		})
 	_refreshing_relic_dynamic_effects = false
+
+
+func _get_ordered_dynamic_effects() -> Array[Dictionary]:
+	# Resolve all contributions to a source stat before any dependent stat.
+	var groups := {}
+	var dependencies := {}
+	for effect in get_active_relic_runtime_effects(BattleFinanceSystem.TRIGGER_DYNAMIC):
+		var kind := str(effect.get("effect", ""))
+		if kind not in [BattleFinanceSystem.EFFECT_CONDITIONAL_STAT, BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT]:
+			continue
+		var target := str(effect.get("stat", effect.get("target_stat", "")))
+		if not groups.has(target):
+			groups[target] = []
+			dependencies[target] = []
+		groups[target].append(effect)
+		var source := str(effect.get("source_stat", ""))
+		if str(effect.get("condition", "")) == "humanity_below":
+			source = "humanity"
+		elif str(effect.get("condition", "")) == "hp_percent_below":
+			source = "max_hp"
+		if not source.is_empty():
+			dependencies[target].append(source)
+	var ordered: Array[Dictionary] = []
+	var pending: Array = groups.keys()
+	pending.sort()
+	while not pending.is_empty():
+		var progressed := false
+		for target in pending.duplicate():
+			var ready := true
+			for source in dependencies[target]:
+				if pending.has(source):
+					ready = false
+			if not ready:
+				continue
+			for effect in groups[target]:
+				ordered.append(effect)
+			pending.erase(target)
+			progressed = true
+		if not progressed:
+			push_warning("Cyclic relic stat dependencies: %s" % str(pending))
+			break
+	return ordered
 
 
 func _is_relic_condition_active(effect: Dictionary) -> bool:

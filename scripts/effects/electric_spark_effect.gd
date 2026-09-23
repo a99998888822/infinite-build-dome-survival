@@ -55,6 +55,7 @@ func _arm() -> void:
 	if _context == null:
 		queue_free()
 		return
+	AudioManager.play_combat_sfx("spark_charge")
 	queue_redraw()
 
 

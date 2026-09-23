@@ -27,14 +27,14 @@ static func trigger_weapon_impact(
 ) -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
+	AudioManager.begin_combat_audio()
 	var visual_parent := _get_visual_parent(parent)
 	if not weapon.get_effect_instances("water").is_empty():
 		WATER_WAVE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if not weapon.get_effect_instances("light_sword").is_empty():
-		_apply_element(body, "light", visual_parent, damage_event, hit_position)
+		# Light is applied by the sword when it lands, after its impact damage.
 		LIGHT_SWORD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if not weapon.get_effect_instances("black_hole").is_empty():
-		_apply_element(body, "dark", visual_parent, damage_event, hit_position)
 		BLACK_HOLE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if not weapon.get_effect_instances("fire").is_empty():
 		var fire_result := _apply_element(body, "fire", visual_parent, damage_event, hit_position)
@@ -43,20 +43,17 @@ static func trigger_weapon_impact(
 	if not weapon.get_effect_instances("explosion").is_empty():
 		EXPLOSION_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if not weapon.get_effect_instances("electric_spark").is_empty():
-		if AudioManager != null:
-			AudioManager.play_enchantment_sfx("electric_spark")
 		ELECTRIC_SPARK_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if not weapon.get_effect_instances("ice").is_empty():
 		ICE_FIELD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event)
 	if body is EnemyController:
 		if not skip_lightning and not weapon.get_effect_instances("lightning").is_empty():
-			if AudioManager != null:
-				AudioManager.play_enchantment_sfx("lightning")
 			# Lightning is one combined hit effect. Modifiers from attached
 			# lightning items (for example Chain Mastery) are resolved together.
 			LIGHTNING_EFFECT_SCRIPT.spawn(visual_parent, hit_position, body, weapon, damage_event, direction)
 		if not weapon.get_effect_instances("wind").is_empty():
 			_apply_wind(visual_parent, body, weapon, damage_event, hit_position, direction, "")
+	AudioManager.end_combat_audio()
 
 
 static func _get_visual_parent(parent: Node) -> Node:
@@ -75,6 +72,7 @@ static func _apply_element(enemy: Node, element_id: String, parent: Node, damage
 		"original_damage": damage_event.get_elemental_base_damage(),
 		"element_damage_bonus": damage_event.element_damage_bonus,
 		"source_player": damage_event.source_player,
+		"damage_event": damage_event,
 	})
 
 
@@ -111,15 +109,22 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 	if enemy.has_status("wet"):
 		var propagation_radius := maxf(context.get_resolved_parameter("wet_propagation_radius", 92.0), 0.0)
 		var propagation_limit := clampi(int(roundi(context.get_resolved_parameter("wet_propagation_limit", 4.0))), 0, 16)
+		if propagation_limit == 0:
+			return
 		var propagated := 0
 		for node in EnemyRegistry.get_registered_enemies():
 			var other := node as EnemyController
 			if other == null or other == enemy or not other.is_alive() or enemy.global_position.distance_to(other.global_position) > propagation_radius:
 				continue
-			other.apply_wet(
-				maxf(context.get_resolved_parameter("wet_duration", 3.0), 0.1),
-				clampf(context.get_resolved_parameter("wet_slow_multiplier", 0.8), 0.05, 1.0),
-			)
+			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(other, "water", {
+				"parent": parent, "hit_position": other.global_position,
+				"source_id": damage_event.source_weapon_id,
+				"original_damage": damage_event.get_elemental_base_damage(),
+				"damage_event": damage_event,
+				"wet_duration": maxf(context.get_resolved_parameter("wet_duration", 3.0), 0.1),
+				"wet_slow_multiplier": clampf(context.get_resolved_parameter("wet_slow_multiplier", 0.8), 0.05, 1.0),
+			})
+			ELEMENT_REACTION_RESOLVER_SCRIPT.emit_feedback(parent, "wet_spread", enemy.global_position, {"target": other.global_position})
 			propagated += 1
 			if propagated >= propagation_limit:
 				break

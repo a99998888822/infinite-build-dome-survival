@@ -15,6 +15,7 @@ const BOLT_PULSE_LIFETIME: float = 0.38
 const BOLT_CORE_PARTICLE_SIZE: Vector2 = Vector2(4.0, 2.0)
 const BOLT_COMPANION_PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
 const BOLT_GLOW_PARTICLE_SIZE: float = 5.0
+const CHAIN_GLOW_RADIUS_MULTIPLIER: float = 0.5
 const BOLT_PARTICLE_SPACING: float = 3.25
 const BOLT_MICRO_JITTER: float = 2.2
 const GROUND_STRIKE_ECHO_COUNT: int = 2
@@ -57,6 +58,7 @@ var _ground_strike_position: Vector2 = Vector2.ZERO
 var _ground_strike_impact_age: float = -1.0
 var _ground_strike_damage_applied: bool = false
 var _light_field: Node = null
+var _audio_impact: RefCounted = null
 
 
 func _exit_tree() -> void:
@@ -78,6 +80,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._damage_event = damage_event
 	effect._attachment_item_id = attachment_item_id
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
+	effect._audio_impact = AudioManager.current_combat_audio()
 	# Resolve all lightning modifiers together so Chain Mastery strengthens the
 	# existing chain instead of spawning a second independent chain.
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
@@ -89,12 +92,13 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 		"detonate_burning": 1.0,
 	}, "")
 	effect._cache_resolved_parameters()
-	effect._remaining_jumps = maxi(2, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
+	# chain_count means additional victims after the directly struck target.
+	effect._remaining_jumps = 1 + maxi(0, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
 	effect._chain_selection_step = 0
 	effect._jump_radius = maxf(effect._get_cached_parameter("jump_radius", DEFAULT_JUMP_RADIUS) * effect._get_cached_parameter("attack_range_multiplier", 1.0), 32.0)
 	# Bind an instance id instead of the enemy object itself. Enemies can be
 	# freed while the delayed chain hop is waiting in EffectScheduler.
-	effect.call_deferred("_strike_chain", first_enemy.get_instance_id(), hit_position)
+	EffectScheduler.schedule(0.0, Callable(effect, "_strike_chain").bind(first_enemy.get_instance_id(), hit_position), effect)
 
 
 static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", strike_height: float = 182.0, damage_radius: float = 20.0) -> LightningParticleEffect:
@@ -129,7 +133,7 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	}, effect._attachment_item_id)
 	effect._cache_resolved_parameters()
 	effect._chain_finished = true
-	effect.call_deferred("_strike_ground", ground_position)
+	EffectScheduler.schedule(0.0, Callable(effect, "_strike_ground").bind(ground_position), effect)
 	return effect
 
 
@@ -151,6 +155,9 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 		_schedule_next(current.global_position)
 		return
 	_emit_bolt(from_position, current.global_position)
+	AudioManager.begin_combat_audio(_audio_impact)
+	_audio_impact = null # Later hops are separate contacts with their own reactions.
+	AudioManager.play_enchantment_sfx("lightning")
 	_emit_hit_burst(current.global_position, from_position.direction_to(current.global_position))
 	var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(current, "electric", {
 		"parent": _parent_root,
@@ -160,11 +167,13 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 		"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 	})
 	if bool(reaction_result.get("burning_detonated", false)):
-		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0)
+		AudioManager.mark_combat_reaction("thunder_fire")
+		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
 	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
 	if bool(reaction_result.get("extra_trigger", false)):
-		_remaining_jumps += 1
+		current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
+	AudioManager.end_combat_audio()
 	if _remaining_jumps <= 0:
 		_finish_chain()
 		return
@@ -183,7 +192,10 @@ func _strike_ground(ground_position: Vector2) -> void:
 	_emit_hit_burst(ground_position, Vector2.DOWN)
 	if not _ground_strike_damage_applied:
 		_ground_strike_damage_applied = true
+		AudioManager.begin_combat_audio()
+		AudioManager.play_enchantment_sfx("electric_spark")
 		_damage_ground_enemies(ground_position)
+		AudioManager.end_combat_audio()
 	ground_strike_landed.emit()
 	_try_finish_chain()
 
@@ -226,6 +238,14 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			hit_direction = Vector2.DOWN
 		var strike_damage_event := _damage_event.duplicate_event()
 		strike_damage_event.hit_position = enemy.global_position
+		# Capture the reaction on contact, including a lethal first strike.
+		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "electric", {
+			"parent": _parent_root,
+			"hit_position": enemy.global_position,
+			"source_id": _damage_event.source_weapon_id,
+			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
+		})
 		var dealt_damage := enemy.take_damage(
 			damage,
 			strike_damage_event.source_weapon_id,
@@ -234,15 +254,9 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		)
 		if dealt_damage > 0:
 			_emit_hit_burst(enemy.global_position, hit_direction)
-		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "electric", {
-			"parent": _parent_root,
-			"hit_position": enemy.global_position,
-			"source_id": _damage_event.source_weapon_id,
-			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
-			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
-		})
 		if bool(reaction_result.get("burning_detonated", false)):
-			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0)
+			AudioManager.mark_combat_reaction("thunder_fire")
+			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 		if bool(reaction_result.get("extra_trigger", false)):
 			var extra_damage := enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
 			if extra_damage > 0:
@@ -299,6 +313,7 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 		"size_multiplier": _get_cached_parameter("size_multiplier", 1.0),
 		"lifetime_multiplier": _get_cached_parameter("lifetime_multiplier", 1.0),
 		"glow_multiplier": _get_cached_parameter("glow_multiplier", 1.0),
+		"glow_radius_multiplier": 1.0 if _is_ground_strike else CHAIN_GLOW_RADIUS_MULTIPLIER,
 		"alpha_multiplier": _get_cached_parameter("alpha_multiplier", 1.0),
 		"distance_multiplier": _get_cached_parameter("attack_range_multiplier", 1.0),
 	}
@@ -393,7 +408,10 @@ func _emit_bolt_light(global_position: Vector2, distance: float, glow_multiplier
 		_light_field = PARTICLE_WORLD_SCRIPT.find_light_field(_parent_root)
 	var field := _light_field
 	if field != null and field.has_method("add_light"):
-		field.call("add_light", global_position, Color(0.74, 0.90, 1.0, 1.0), 0.18 * glow_multiplier, clampf(distance * 0.42, 36.0, 130.0), BOLT_PULSE_LIFETIME)
+		var glow_radius := clampf(distance * 0.42, 36.0, 130.0)
+		if not _is_ground_strike:
+			glow_radius *= CHAIN_GLOW_RADIUS_MULTIPLIER
+		field.call("add_light", global_position, Color(0.74, 0.90, 1.0, 1.0), 0.18 * glow_multiplier, glow_radius, BOLT_PULSE_LIFETIME)
 
 
 func _finish_chain() -> void:
@@ -518,7 +536,7 @@ func _draw() -> void:
 			clampf(base_particle_size.x * float(pulse["size_multiplier"]), 2.0, 5.0),
 			clampf(base_particle_size.y * float(pulse["size_multiplier"]), 1.5, 4.0)
 		)
-		var glow_size := clampf(float(pulse["glow_size"]) * float(pulse["size_multiplier"]), 3.0, 10.0)
+		var glow_size := clampf(float(pulse["glow_size"]) * float(pulse["size_multiplier"]), 3.0, 10.0) * CHAIN_GLOW_RADIUS_MULTIPLIER
 		var rotations: PackedFloat32Array = pulse.get("rotations", PackedFloat32Array())
 		for point_index in points.size():
 			var point: Vector2 = points[point_index]

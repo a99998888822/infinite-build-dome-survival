@@ -455,6 +455,22 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 		var path := "enemies[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
 		_validate_reference(record, "drop_table_id", "drop_tables", records_by_id, path)
+		if record.has("elite_replacement_id"):
+			_validate_reference(record, "elite_replacement_id", "enemies", records_by_id, path)
+		if record.has("elite_profile"):
+			var profile: Variant = record["elite_profile"]
+			if not (profile is Dictionary):
+				errors.append("%s.elite_profile must be an object." % path)
+				continue
+			for field in ["hp_multiplier", "armor_multiplier", "spawn_warning_ms", "first_dash_delay_ms", "windup_ms", "dash_ms", "recover_ms", "cooldown_ms", "dash_distance", "dash_half_width", "expectation_wave_divisor", "erosion_bonus_full_at", "quota_cap"]:
+				if not profile.has(field) or not (profile[field] is int or profile[field] is float) or float(profile[field]) <= 0.0:
+					errors.append("%s.elite_profile.%s must be positive." % [path, field])
+			if not profile.has("erosion_bonus_max_percent"):
+				errors.append("%s.elite_profile.erosion_bonus_max_percent is required." % path)
+			_validate_non_negative_int(profile, "erosion_bonus_max_percent", "%s.elite_profile" % path)
+			_validate_non_negative_int(profile, "quota_cap", "%s.elite_profile" % path)
+			if float(profile.get("spawn_window_percent", 50)) <= 0.0 or float(profile.get("spawn_window_percent", 50)) > 50.0:
+				errors.append("%s.elite_profile.spawn_window_percent must be in (0, 50]." % path)
 
 
 func _validate_zone_records(records: Array, records_by_id: Dictionary) -> void:
@@ -707,6 +723,10 @@ func _validate_drop_table_records(records: Array, records_by_id: Dictionary) -> 
 		if not (record is Dictionary):
 			continue
 		var path := "drop_tables[%d:%s]" % [record_index, str(record.get("id", ""))]
+		if record.has("elite_relic_decay_percent"):
+			var decay: Variant = record["elite_relic_decay_percent"]
+			if not (decay is int or decay is float) or not is_finite(float(decay)) or float(decay) < 0.0 or float(decay) > 100.0 or float(decay) != floorf(float(decay)):
+				errors.append("%s.elite_relic_decay_percent must be an integer between 0 and 100." % path)
 		var entries: Variant = record.get("entries", [])
 		if not (entries is Array):
 			errors.append("%s.entries must be an array." % path)

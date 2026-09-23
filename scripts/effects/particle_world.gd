@@ -417,6 +417,7 @@ var _particle_rotations: PackedFloat32Array = PackedFloat32Array()
 var _particle_spins: PackedFloat32Array = PackedFloat32Array()
 var _particle_alpha_multipliers: PackedFloat32Array = PackedFloat32Array()
 var _particle_glows: PackedFloat32Array = PackedFloat32Array()
+var _particle_glow_radius_multipliers: PackedFloat32Array = PackedFloat32Array()
 var _particle_fire_flags: PackedByteArray = PackedByteArray()
 var _particle_glow_streak_flags: PackedByteArray = PackedByteArray()
 var _particle_circle_flags: PackedByteArray = PackedByteArray()
@@ -541,7 +542,9 @@ func emit_event(event: Variant) -> void:
 	var parameters: Dictionary = event.get("parameters", {})
 	var count_multiplier := maxf(float(parameters.get("count_multiplier", 1.0)), 0.0)
 	var count := maxi(1, int(roundi(float(profile["count"]) * intensity * count_multiplier)))
-	count = mini(count, maxi(MAX_PARTICLES - _particle_order.size(), 0))
+	# Reserve capacity for impacts; persistent flames and trails yield first.
+	var particle_limit := MAX_PARTICLES - 180 if profile_id.begins_with("fire_") or profile_id == "projectile_trail" else MAX_PARTICLES
+	count = mini(count, maxi(particle_limit - _particle_order.size(), 0))
 	var speed_multiplier := maxf(float(parameters.get("speed_multiplier", 1.0)), 0.0)
 	var size_multiplier := maxf(float(parameters.get("size_multiplier", 1.0)), 0.0)
 	var lifetime_multiplier := maxf(float(parameters.get("lifetime_multiplier", 1.0)), 0.01)
@@ -549,6 +552,7 @@ func emit_event(event: Variant) -> void:
 	var drag_multiplier := maxf(float(parameters.get("drag_multiplier", 1.0)), 0.0)
 	var alpha_multiplier := maxf(float(parameters.get("alpha_multiplier", 1.0)), 0.0)
 	var glow_multiplier := maxf(float(parameters.get("glow_multiplier", 1.0)), 0.0)
+	var glow_radius_multiplier := maxf(float(parameters.get("glow_radius_multiplier", 1.0)), 0.0)
 	var spawn_extent_multiplier := maxf(float(parameters.get("spawn_extent_multiplier", 1.0)), 0.0)
 	var event_color: Color = event.get("color_override")
 	var color_tint: Color = parameters.get("color_tint", Color.WHITE)
@@ -647,20 +651,21 @@ func emit_event(event: Variant) -> void:
 		_particle_lifetimes[slot] = particle_lifetime
 		_particle_alpha_multipliers[slot] = alpha_multiplier
 		_particle_glows[slot] = float(profile.get("glow", 0.0)) * glow_multiplier
+		_particle_glow_radius_multipliers[slot] = glow_radius_multiplier
 		_particle_fire_flags[slot] = 1 if is_fire_particle else 0
 		_particle_glow_streak_flags[slot] = 1 if str(profile.get("glow_shape", "circle")) == "streak" else 0
 		_particle_circle_flags[slot] = 1 if str(profile.get("shape", "square")) == "circle" else 0
-	_emit_profile_light(profile, event_position, intensity)
+	_emit_profile_light(profile, event_position, intensity, glow_radius_multiplier)
 	queue_redraw()
 
 
-func _emit_profile_light(profile: Dictionary, event_position: Vector2, intensity: float) -> void:
+func _emit_profile_light(profile: Dictionary, event_position: Vector2, intensity: float, glow_radius_multiplier: float) -> void:
 	var light_energy := float(profile.get("light_energy", 0.0)) * intensity
 	if light_energy <= 0.0:
 		return
 	var field := _find_light_field()
 	if field != null:
-		field.call("add_light", event_position, profile.get("light_color", Color.WHITE), light_energy, float(profile.get("light_radius", 64.0)))
+		field.call("add_light", event_position, profile.get("light_color", Color.WHITE), light_energy, float(profile.get("light_radius", 64.0)) * glow_radius_multiplier)
 
 
 static func find_light_field(parent: Node) -> Node:
@@ -785,6 +790,7 @@ func _acquire_particle_slot() -> int:
 		_particle_spins.append(0.0)
 		_particle_alpha_multipliers.append(1.0)
 		_particle_glows.append(0.0)
+		_particle_glow_radius_multipliers.append(1.0)
 		_particle_fire_flags.append(0)
 		_particle_glow_streak_flags.append(0)
 		_particle_circle_flags.append(0)
@@ -821,14 +827,15 @@ func _draw() -> void:
 		var position := _particle_positions[slot]
 		var size := _particle_sizes[slot]
 		var glow := _particle_glows[slot]
+		var glow_radius_multiplier := _particle_glow_radius_multipliers[slot]
 		draw_set_transform(position.round(), _particle_rotations[slot], Vector2.ONE)
 		if glow > 0.0:
 			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
 			if _particle_glow_streak_flags[slot] != 0:
-				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35))
+				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35)) * glow_radius_multiplier
 				draw_rect(Rect2(-glow_size * 0.5, glow_size), glow_color)
 			else:
-				draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35), glow_color)
+				draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35) * glow_radius_multiplier, glow_color)
 		if _particle_circle_flags[slot] != 0:
 			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * 0.5, color)
 		else:

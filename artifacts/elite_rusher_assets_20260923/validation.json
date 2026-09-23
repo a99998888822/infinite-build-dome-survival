@@ -1,0 +1,265 @@
+{
+  "status": "passed",
+  "native_frame_size": [
+    128,
+    128
+  ],
+  "total_frames": 23,
+  "shared_palette_colors": 23,
+  "binary_alpha": true,
+  "checks": [
+    {
+      "action": "idle",
+      "frame": 0,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "idle",
+      "frame": 1,
+      "bbox": [
+        21,
+        21,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "idle",
+      "frame": 2,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "idle",
+      "frame": 3,
+      "bbox": [
+        21,
+        23,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 0,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 1,
+      "bbox": [
+        21,
+        21,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 2,
+      "bbox": [
+        21,
+        20,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 3,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 4,
+      "bbox": [
+        21,
+        23,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "move",
+      "frame": 5,
+      "bbox": [
+        21,
+        24,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "windup",
+      "frame": 0,
+      "bbox": [
+        20,
+        24,
+        108,
+        103
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "windup",
+      "frame": 1,
+      "bbox": [
+        20,
+        26,
+        108,
+        104
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "windup",
+      "frame": 2,
+      "bbox": [
+        19,
+        28,
+        108,
+        104
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "dash",
+      "frame": 0,
+      "bbox": [
+        22,
+        28,
+        115,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "dash",
+      "frame": 1,
+      "bbox": [
+        22,
+        29,
+        115,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "recover",
+      "frame": 0,
+      "bbox": [
+        23,
+        27,
+        109,
+        104
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "recover",
+      "frame": 1,
+      "bbox": [
+        22,
+        24,
+        109,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "recover",
+      "frame": 2,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "death",
+      "frame": 0,
+      "bbox": [
+        21,
+        22,
+        108,
+        102
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "death",
+      "frame": 1,
+      "bbox": [
+        21,
+        29,
+        107,
+        104
+      ],
+      "visible_colors": 23
+    },
+    {
+      "action": "death",
+      "frame": 2,
+      "bbox": [
+        21,
+        36,
+        106,
+        105
+      ],
+      "visible_colors": 21
+    },
+    {
+      "action": "death",
+      "frame": 3,
+      "bbox": [
+        21,
+        43,
+        106,
+        108
+      ],
+      "visible_colors": 21
+    },
+    {
+      "action": "death",
+      "frame": 4,
+      "bbox": [
+        21,
+        50,
+        105,
+        113
+      ],
+      "visible_colors": 20
+    }
+  ]
+}

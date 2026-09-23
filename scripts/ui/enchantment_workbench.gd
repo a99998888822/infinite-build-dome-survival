@@ -49,11 +49,11 @@ func _ready() -> void:
 	_sell_weapon = _button("出售武器", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
-	slot_scroll.custom_minimum_size.y = 84
+	slot_scroll.custom_minimum_size.y = 44
 	slot_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	add_child(slot_scroll)
 	_slots = HBoxContainer.new()
-	_slots.add_theme_constant_override("separation", 8)
+	_slots.add_theme_constant_override("separation", 4)
 	slot_scroll.add_child(_slots)
 	_title = Label.new()
 	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -86,11 +86,12 @@ func _ready() -> void:
 	_move_right.pressed.connect(_move_selected.bind(1))
 	_sell_item = _button("出售附魔", actions)
 	_sell_item.pressed.connect(func(): sale_requested.emit("enchantment", selected_item_id))
-	resized.connect(func(): _inventory.columns = 2 if size.x >= 430 else 1)
+	resized.connect(_layout_inventory)
 
 
 func refresh() -> void:
 	if flow == null or _weapon_row == null: return
+	tooltip_hidden.emit()
 	var loadout := flow.get_bound_loadout()
 	var player := flow.get_bound_player()
 	if loadout == null or player == null: return
@@ -123,7 +124,7 @@ func refresh() -> void:
 			if index > 0:
 				var arrow := Label.new()
 				arrow.text = "→"
-				FinanceUIStyle.label(arrow, 14, FinanceUIStyle.GOLD)
+				FinanceUIStyle.label(arrow, 12, FinanceUIStyle.GOLD)
 				_slots.add_child(arrow)
 			var item: Dictionary = attached[index] if index < attached.size() else {}
 			var slot := EnchantmentSlotCard.new()
@@ -139,16 +140,15 @@ func refresh() -> void:
 		_title.text = "附魔背包 · 槽位从左至右排列，可拖动或前后移位"
 		_title.tooltip_text = "称号：" + str(current.battle_title.get("display_name", "")) if not str(current.battle_title.get("display_name", "")).is_empty() else "选中已装备附魔后，可卸下或调整顺序。"
 	_clear(_inventory)
-	_inventory.columns = 2 if size.x >= 430 else 1
+	_layout_inventory()
 	for item in player.item_inventory.get_items():
-		var card := _item_card(item, _inventory, 160)
-		var equipped := str(item.get("equipped_weapon_id", ""))
-		var owner := loadout.get_weapon_instance(equipped)
-		card.text += "\n" + ("未装备" if owner == null else "已装：" + str(owner.weapon_data.get("display_name", "")))
+		if not str(item.get("equipped_weapon_id", "")).is_empty(): continue
+		var card := _item_card(item, _inventory)
 		card.pressed.connect(_select_item.bind(str(item.get("item_instance_id", ""))))
 	if _inventory.get_child_count() == 0:
+		_inventory.columns = 1
 		var empty := Label.new()
-		empty.text = "暂无附魔 · 战斗中拾取后可在此配置"
+		empty.text = "暂无未装备附魔 · 卸下或拾取后会显示在这里"
 		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		FinanceUIStyle.label(empty, 12, FinanceUIStyle.MUTED)
 		_inventory.add_child(empty)
@@ -184,7 +184,6 @@ func _update_selection() -> void:
 		if str(attached[index].get("item_instance_id", "")) == selected_item_id: selected_index = index
 	_move_left.disabled = selected_index <= 0
 	_move_right.disabled = selected_index < 0 or selected_index >= attached.size() - 1
-	if selected_index >= 0: _selection.text += " · 槽位 %02d" % (selected_index + 1)
 	for container in [_inventory, _slots]:
 		for child in container.get_children():
 			if child is EnchantmentSlotCard:
@@ -240,19 +239,17 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 	feedback_requested.emit(message if success else FinanceUIStyle.reason(str(result.get("reason", ""))), success)
 
 
-func _item_card(item: Dictionary, parent: Control, width: float) -> ItemInventoryCard:
-	var card := ItemInventoryCard.new()
+func _layout_inventory() -> void:
+	var usable := maxf(1, size.x - 16)
+	_inventory.columns = maxi(1, floori((usable + 8) / (EnchantmentInventoryCard.CARD_SIZE.x + 8)))
+	if _inventory.get_child_count() == 1 and _inventory.get_child(0) is Label:
+		_inventory.columns = 1
+
+
+func _item_card(item: Dictionary, parent: Control) -> ItemInventoryCard:
+	var card := EnchantmentInventoryCard.new()
 	parent.add_child(card)
 	card.configure(item, true)
-	card.custom_minimum_size = Vector2(width, 42)
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	card.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	card.add_theme_constant_override("icon_max_width", 28)
-	card.text = str(item.get("display_name", "附魔"))
-	card.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	card.focus_mode = Control.FOCUS_ALL
-	FinanceUIStyle.button(card)
 	card.item_tooltip_requested.connect(func(_anchor, content): tooltip_requested.emit(content))
 	card.item_tooltip_hidden.connect(func(): tooltip_hidden.emit())
 	return card

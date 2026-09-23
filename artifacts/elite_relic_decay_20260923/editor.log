@@ -1,0 +1,811 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Cannot open file 'res://.godot/imported/ark-pixel-12px-monospaced-zh_cn.otf-67457498407c3785d012d9f77e2048f3.fontdata'.
+   at: load (core/io/resource_format_binary.cpp:1156)
+ERROR: Failed loading resource: res://.godot/imported/ark-pixel-12px-monospaced-zh_cn.otf-67457498407c3785d012d9f77e2048f3.fontdata.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Failed loading resource: res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: res://assets/font/theme_global.tres:6 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+ERROR: res://assets/font/theme_global.tres:6 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+ERROR: Failed loading resource: res://assets/font/theme_global.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Error loading custom project theme 'res://assets/font/theme_global.tres'
+   at: initialize_theme (scene/theme/theme_db.cpp:74)
+[   0% ] first_scan_filesystem | Started 项目初始化 (5 steps)
+[   0% ] first_scan_filesystem | 正在扫描文件结构……
+[  16% ] first_scan_filesystem | 正在加载全局类名……
+[  33% ] first_scan_filesystem | 正在校验 GDExtension……
+[  50% ] first_scan_filesystem | 正在创建自动加载脚本……
+ERROR: res://scenes/waves/wave_manager.tscn:1 - Parse Error: Expected '['.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+[  66% ] first_scan_filesystem | 正在初始化插件……
+[  83% ] first_scan_filesystem | 正在启动文件扫描……
+[ DONE ] first_scan_filesystem
+
+ERROR: res://scenes/waves/wave_manager.tscn:1 - Parse Error: Expected '['.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+[   0% ] update_scripts_classes | Started 正在注册全局类…… (116 steps)
+[   0% ] update_scripts_classes | 
+[   0% ] update_scripts_classes | 
+[   1% ] update_scripts_classes | 
+[   2% ] update_scripts_classes | 
+[   3% ] update_scripts_classes | WindowSettingsManager
+[   4% ] update_scripts_classes | 
+[   5% ] update_scripts_classes | 
+[   5% ] update_scripts_classes | 
+[   6% ] update_scripts_classes | BattleEnvironment
+[   7% ] update_scripts_classes | BattleRoot
+[   8% ] update_scripts_classes | 
+[   9% ] update_scripts_classes | HorizonSea
+[  10% ] update_scripts_classes | WetlandBackdrop
+[  11% ] update_scripts_classes | WetlandHorizonFold
+[  11% ] update_scripts_classes | CampBuildingSlot
+[  12% ] update_scripts_classes | CampRoot
+[  13% ] update_scripts_classes | 
+[  14% ] update_scripts_classes | GameRoot
+[  15% ] update_scripts_classes | GameSceneDirector
+[  16% ] update_scripts_classes | MainFlowCoordinator
+[  17% ] update_scripts_classes | DataValidator
+[  17% ] update_scripts_classes | StatDefinitions
+[  18% ] update_scripts_classes | UnlockRegistry
+[  19% ] update_scripts_classes | 
+[  20% ] update_scripts_classes | BlackHoleEffect
+[  21% ] update_scripts_classes | CombatEffectWorld
+[  22% ] update_scripts_classes | CombatRenderWorld
+[  23% ] update_scripts_classes | EffectContext
+[  23% ] update_scripts_classes | 
+[  24% ] update_scripts_classes | 
+[  25% ] update_scripts_classes | 
+[  26% ] update_scripts_classes | ElectricSparkEffect
+[  27% ] update_scripts_classes | ElementReactionResolver
+[  28% ] update_scripts_classes | 
+[  29% ] update_scripts_classes | 
+[  29% ] update_scripts_classes | ExplosionEffect
+[  30% ] update_scripts_classes | FirePatch
+[  31% ] update_scripts_classes | FireSeed
+[  32% ] update_scripts_classes | HitParticleBurst
+[  33% ] update_scripts_classes | IceFieldEffect
+[  34% ] update_scripts_classes | LightningParticleEffect
+[  35% ] update_scripts_classes | 
+[  35% ] update_scripts_classes | LightReflectionEffect
+[  36% ] update_scripts_classes | LightSwordEffect
+[  37% ] update_scripts_classes | ParticleEmitterRuntime
+[  38% ] update_scripts_classes | 
+[  39% ] update_scripts_classes | ParticleLightField
+[  40% ] update_scripts_classes | ParticleMotionBehavior
+[  41% ] update_scripts_classes | 
+[  41% ] update_scripts_classes | 
+[  42% ] update_scripts_classes | 
+[  43% ] update_scripts_classes | WaterWaveEffect
+[  44% ] update_scripts_classes | WindBladeEffect
+[  45% ] update_scripts_classes | EnemyController
+[  46% ] update_scripts_classes | 
+[  47% ] update_scripts_classes | ItemInventory
+[  47% ] update_scripts_classes | Modifier
+[  48% ] update_scripts_classes | ModifierStack
+[  49% ] update_scripts_classes | AugmentationPickup
+[  50% ] update_scripts_classes | ExpOrb
+[  51% ] update_scripts_classes | HealthPack
+[  52% ] update_scripts_classes | PlayerController
+[  52% ] update_scripts_classes | 
+[  53% ] update_scripts_classes | 
+[  54% ] update_scripts_classes | RelicBondSystem
+[  55% ] update_scripts_classes | BattleFinanceSystem
+[  56% ] update_scripts_classes | DropRewardSystem
+[  57% ] update_scripts_classes | InventoryTradeService
+[  58% ] update_scripts_classes | RewardSnapshot
+[  58% ] update_scripts_classes | DestructibleTestArea
+[  59% ] update_scripts_classes | 
+[  60% ] update_scripts_classes | 
+[  61% ] update_scripts_classes | 
+[  62% ] update_scripts_classes | 
+[  63% ] update_scripts_classes | 
+[  64% ] update_scripts_classes | 
+[  64% ] update_scripts_classes | 
+[  65% ] update_scripts_classes | BankCounterPortrait
+[  66% ] update_scripts_classes | BattleHud
+[  67% ] update_scripts_classes | BattleUtilityOverlay
+[  68% ] update_scripts_classes | BondDisplay
+[  69% ] update_scripts_classes | CampBlueprintUIController
+[  70% ] update_scripts_classes | CampUIController
+[  70% ] update_scripts_classes | EnchantmentInventoryCard
+[  71% ] update_scripts_classes | EnchantmentSlotCard
+[  72% ] update_scripts_classes | EnchantmentWorkbench
+[  73% ] update_scripts_classes | EscOverlay
+[  74% ] update_scripts_classes | FinancePopup
+[  75% ] update_scripts_classes | FinanceUIController
+[  76% ] update_scripts_classes | FinanceUIStyle
+[  76% ] update_scripts_classes | InterestSettlementPopup
+[  77% ] update_scripts_classes | ItemInventoryCard
+[  78% ] update_scripts_classes | MainMenuUIController
+[  79% ] update_scripts_classes | MobileJoystick
+[  80% ] update_scripts_classes | PreparationOfferCard
+[  81% ] update_scripts_classes | RewardOption
+[  82% ] update_scripts_classes | RoleSelectBackdrop
+[  82% ] update_scripts_classes | ShopOfferGenerator
+[  83% ] update_scripts_classes | ShopPopup
+[  84% ] update_scripts_classes | ShopUIController
+[  85% ] update_scripts_classes | 
+[  86% ] update_scripts_classes | StatPreviewBuilder
+[  87% ] update_scripts_classes | TouchScrollContainer
+[  88% ] update_scripts_classes | VirtualShopGrid
+[  88% ] update_scripts_classes | WeaponSlotButton
+[  89% ] update_scripts_classes | WeaponStrip
+[  90% ] update_scripts_classes | ZoneHarvestResultPopup
+[  91% ] update_scripts_classes | ZoneSelectCard
+[  92% ] update_scripts_classes | ZoneSelectPopup
+[  93% ] update_scripts_classes | ZoneUIController
+[  94% ] update_scripts_classes | WaveManager
+[  94% ] update_scripts_classes | DamageEvent
+[  95% ] update_scripts_classes | ProjectileInstance
+[  96% ] update_scripts_classes | TargetingService
+[  97% ] update_scripts_classes | WeaponInstance
+[  98% ] update_scripts_classes | WeaponLoadout
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started 正在扫描动作…… (222 steps)
+[   0% ] _update_scan_actions | bgm_battle.ogg
+[   0% ] _update_scan_actions | bgm_menu.ogg
+[   0% ] _update_scan_actions | black_hole_01.wav
+[   1% ] _update_scan_actions | electric_spark_01.wav
+[   1% ] _update_scan_actions | explosion_01.wav
+[   2% ] _update_scan_actions | fire_01.wav
+[   2% ] _update_scan_actions | ice_01.wav
+[   3% ] _update_scan_actions | lightning_01.wav
+[   3% ] _update_scan_actions | light_sword_01.wav
+[   4% ] _update_scan_actions | plasma_hit_01.wav
+[   4% ] _update_scan_actions | reaction_cancel_01.wav
+[   4% ] _update_scan_actions | reaction_conduct_01.wav
+[   5% ] _update_scan_actions | reaction_dark_flame_01.wav
+[   5% ] _update_scan_actions | reaction_freeze_01.wav
+[   6% ] _update_scan_actions | reaction_holy_01.wav
+[   6% ] _update_scan_actions | reaction_ice_expand_01.wav
+[   7% ] _update_scan_actions | reaction_reflection_01.wav
+[   7% ] _update_scan_actions | reaction_steam_01.wav
+[   8% ] _update_scan_actions | reaction_thaw_01.wav
+[   8% ] _update_scan_actions | reaction_thunder_fire_01.wav
+[   8% ] _update_scan_actions | reaction_wet_spread_01.wav
+[   9% ] _update_scan_actions | spark_charge_01.wav
+[   9% ] _update_scan_actions | water_01.wav
+[  10% ] _update_scan_actions | wind_01.wav
+[  10% ] _update_scan_actions | wood_arrow_01.wav
+[  11% ] _update_scan_actions | lighting_1.wav
+[  11% ] _update_scan_actions | lighting_2.wav
+[  12% ] _update_scan_actions | thunder_1.wav
+[  12% ] _update_scan_actions | water_drop.wav
+[  13% ] _update_scan_actions | wet_step_01.wav
+[  13% ] _update_scan_actions | wet_step_02.wav
+[  13% ] _update_scan_actions | bank_deposit.wav
+[  14% ] _update_scan_actions | bank_withdraw.wav
+[  14% ] _update_scan_actions | stats_chain_close.wav
+[  15% ] _update_scan_actions | stats_chain_open.wav
+[  15% ] _update_scan_actions | ark-pixel-12px-monospaced-zh_cn.otf
+[  16% ] _update_scan_actions | ark-pixel-16px-monospaced-zh_cn.otf
+[  16% ] _update_scan_actions | IPix-pixel_font.ttf
+[  17% ] _update_scan_actions | TerrarumSansBitmap.woff2
+[  17% ] _update_scan_actions | VT323-Regular.ttf
+[  17% ] _update_scan_actions | decal_brick_01.png
+[  18% ] _update_scan_actions | decal_brick_02.png
+[  18% ] _update_scan_actions | decal_crack_01.png
+[  19% ] _update_scan_actions | decal_crack_02.png
+[  19% ] _update_scan_actions | decal_crack_03.png
+[  20% ] _update_scan_actions | decal_moss_01.png
+[  20% ] _update_scan_actions | decal_moss_02.png
+[  21% ] _update_scan_actions | decal_rubble_01.png
+[  21% ] _update_scan_actions | decal_rubble_02.png
+[  21% ] _update_scan_actions | fx_wet_ripple.png
+[  22% ] _update_scan_actions | ruin_broken_pillar.png
+[  22% ] _update_scan_actions | ruin_low_wall_01.png
+[  23% ] _update_scan_actions | ruin_low_wall_02.png
+[  23% ] _update_scan_actions | background-icon-baike.png
+[  24% ] _update_scan_actions | background-icon-plugin.png
+[  24% ] _update_scan_actions | background-porperty-bar.png
+[  25% ] _update_scan_actions | background-sky-Recovered.png
+[  25% ] _update_scan_actions | background-stone-brick-floor.png
+[  26% ] _update_scan_actions | background-stone-piller1.png
+[  26% ] _update_scan_actions | background-stone-piller2.png
+[  26% ] _update_scan_actions | camp_relic_archive.png
+[  27% ] _update_scan_actions | background1.png
+[  27% ] _update_scan_actions | background2.png
+[  28% ] _update_scan_actions | stone1.png
+[  28% ] _update_scan_actions | stone2.png
+[  29% ] _update_scan_actions | stone3.png
+[  29% ] _update_scan_actions | stone4.png
+[  30% ] _update_scan_actions | thicket1.png
+[  30% ] _update_scan_actions | tree1.png
+[  30% ] _update_scan_actions | tree1_shader.png
+[  31% ] _update_scan_actions | tree2.png
+[  31% ] _update_scan_actions | tree3.png
+[  32% ] _update_scan_actions | tree4.png
+[  32% ] _update_scan_actions | tree5.png
+[  33% ] _update_scan_actions | tree6.png
+[  33% ] _update_scan_actions | tree7.png
+[  34% ] _update_scan_actions | tree8.png
+[  34% ] _update_scan_actions | wood1.png
+[  34% ] _update_scan_actions | wood2.png
+[  35% ] _update_scan_actions | elite_rusher_dash_path.png
+[  35% ] _update_scan_actions | elite_rusher_dash_path.svg
+[  36% ] _update_scan_actions | enemy_rift_rusher_dash.png
+[  36% ] _update_scan_actions | enemy_rift_rusher_death.png
+[  37% ] _update_scan_actions | enemy_rift_rusher_idle.png
+[  37% ] _update_scan_actions | enemy_rift_rusher_move.png
+[  38% ] _update_scan_actions | enemy_rift_rusher_recover.png
+[  38% ] _update_scan_actions | enemy_rift_rusher_windup.png
+[  39% ] _update_scan_actions | enemy_gloom_mite_idle.png
+[  39% ] _update_scan_actions | enemy_gloom_mite_move.png
+[  39% ] _update_scan_actions | enemy_rift_rusher_dash.png
+[  40% ] _update_scan_actions | enemy_rift_rusher_death.png
+[  40% ] _update_scan_actions | enemy_rift_rusher_idle.png
+[  41% ] _update_scan_actions | enemy_rift_rusher_move.png
+[  41% ] _update_scan_actions | enemy_rift_rusher_recover.png
+[  42% ] _update_scan_actions | enemy_rift_rusher_reference.png
+[  42% ] _update_scan_actions | enemy_rift_rusher_windup.png
+[  43% ] _update_scan_actions | enemy_gloom_mite_idle.png
+[  43% ] _update_scan_actions | enemy_gloom_mite_idle_legacy.png
+[  43% ] _update_scan_actions | enemy_gloom_mite_move.png
+[  44% ] _update_scan_actions | enemy_gloom_mite_move_legacy.png
+[  44% ] _update_scan_actions | pickup_exp_orb.png
+[  45% ] _update_scan_actions | pickup_health_pack.png
+[  45% ] _update_scan_actions | void_hunter_idle_right.png
+[  46% ] _update_scan_actions | void_hunter_walk_right_spritesheet.png
+[  46% ] _update_scan_actions | player_void_hunter_right_base.png
+[  47% ] _update_scan_actions | player_void_hunter_walk_right_spritesheet.png
+[  47% ] _update_scan_actions | void_hunter_idle_right.png
+[  47% ] _update_scan_actions | void_hunter_walk_right_spritesheet.png
+[  48% ] _update_scan_actions | projectile_wood_arrow.png
+[  48% ] _update_scan_actions | bank_counter_desk.png
+[  49% ] _update_scan_actions | finance_bill.svg
+[  49% ] _update_scan_actions | finance_board.png
+[  50% ] _update_scan_actions | finance_coin.svg
+[  50% ] _update_scan_actions | goblin_banker_states.png
+[  51% ] _update_scan_actions | inspect_enchantment.svg
+[  51% ] _update_scan_actions | scroll_black_hole.png
+[  52% ] _update_scan_actions | scroll_black_hole.svg
+[  52% ] _update_scan_actions | scroll_explosion.png
+[  52% ] _update_scan_actions | scroll_fire.png
+[  53% ] _update_scan_actions | scroll_ice.png
+[  53% ] _update_scan_actions | scroll_lightning.png
+[  54% ] _update_scan_actions | scroll_light_sword.png
+[  54% ] _update_scan_actions | scroll_light_sword.svg
+[  55% ] _update_scan_actions | scroll_pierce.png
+[  55% ] _update_scan_actions | scroll_split.png
+[  56% ] _update_scan_actions | scroll_water.png
+[  56% ] _update_scan_actions | scroll_water.svg
+[  56% ] _update_scan_actions | scroll_wind.png
+[  57% ] _update_scan_actions | scroll_wind.svg
+[  57% ] _update_scan_actions | icon_void_hunter.png
+[  58% ] _update_scan_actions | icon_hud_hp.png
+[  58% ] _update_scan_actions | icon_hud_relics.png
+[  59% ] _update_scan_actions | icon_hud_shield.png
+[  59% ] _update_scan_actions | icon_hud_stats.png
+[  60% ] _update_scan_actions | relic_amulet_of_humanity.png
+[  60% ] _update_scan_actions | relic_annual_leave_cutback.png
+[  60% ] _update_scan_actions | relic_bankruptcy_reorg.png
+[  61% ] _update_scan_actions | relic_barrier_crystal.png
+[  61% ] _update_scan_actions | relic_berserker_copper_badge.png
+[  62% ] _update_scan_actions | relic_black_spot_eagle_eye.png
+[  62% ] _update_scan_actions | relic_blocking_counterweight.png
+[  63% ] _update_scan_actions | relic_bloodstained_belt.png
+[  63% ] _update_scan_actions | relic_brass_pocket_watch.png
+[  64% ] _update_scan_actions | relic_broken_crystal.png
+[  64% ] _update_scan_actions | relic_chain_of_hardship.png
+[  65% ] _update_scan_actions | relic_compound_interest_tome.png
+[  65% ] _update_scan_actions | relic_corroded_blowpipe.png
+[  65% ] _update_scan_actions | relic_costly_seed_of_life.png
+[  66% ] _update_scan_actions | relic_cracked_stone_bullet.png
+[  66% ] _update_scan_actions | relic_cultic_holy_shield.png
+[  67% ] _update_scan_actions | relic_dead_shield_badge.png
+[  67% ] _update_scan_actions | relic_defiled_blessing_coin.png
+[  68% ] _update_scan_actions | relic_dividend_check.png
+[  68% ] _update_scan_actions | relic_divine_fusion.png
+[  69% ] _update_scan_actions | relic_executioner_bracer.png
+[  69% ] _update_scan_actions | relic_expanded_backpack_strap.png
+[  69% ] _update_scan_actions | relic_finance_manager.png
+[  70% ] _update_scan_actions | relic_fixed_deposit_certificate.png
+[  70% ] _update_scan_actions | relic_flesh_pauldron.png
+[  71% ] _update_scan_actions | relic_flyer_ad.png
+[  71% ] _update_scan_actions | relic_gale_roulette.png
+[  72% ] _update_scan_actions | relic_gift_mark.png
+[  72% ] _update_scan_actions | relic_goblin_central_bank_printer.png
+[  73% ] _update_scan_actions | relic_gold_compass.png
+[  73% ] _update_scan_actions | relic_gold_digger_gloves.png
+[  73% ] _update_scan_actions | relic_guarding_heart_copper_mirror.png
+[  74% ] _update_scan_actions | relic_harvest_sacrificial_vessel.png
+[  74% ] _update_scan_actions | relic_hasty_spring_trigger.png
+[  75% ] _update_scan_actions | relic_high_yield_contract.png
+[  75% ] _update_scan_actions | relic_holy_silver_cup.png
+[  76% ] _update_scan_actions | relic_hostile_takeover.png
+[  76% ] _update_scan_actions | relic_incomplete_divination_dice.png
+[  77% ] _update_scan_actions | relic_judgment_eye_pendant.png
+[  77% ] _update_scan_actions | relic_load_iron_bracer.png
+[  78% ] _update_scan_actions | relic_lost_wayfarer_greave.png
+[  78% ] _update_scan_actions | relic_medical_cutback.png
+[  78% ] _update_scan_actions | relic_merger_reorg.png
+[  79% ] _update_scan_actions | relic_nightmare_healing_urn.png
+[  79% ] _update_scan_actions | relic_pain_vessel.png
+[  80% ] _update_scan_actions | relic_periodic_dividend_clock.png
+[  80% ] _update_scan_actions | relic_perpetual_annuity_scroll.png
+[  81% ] _update_scan_actions | relic_piggy_bank.png
+[  81% ] _update_scan_actions | relic_poison_mist_pouch.png
+[  82% ] _update_scan_actions | relic_prison_copper_anklet.png
+[  82% ] _update_scan_actions | relic_pungent_sachet.png
+[  82% ] _update_scan_actions | relic_quant_trading.png
+[  83% ] _update_scan_actions | relic_reincarnation_hellfire_candle.png
+[  83% ] _update_scan_actions | relic_rough_grinding_lens.png
+[  84% ] _update_scan_actions | relic_salary_adjustment.png
+[  84% ] _update_scan_actions | relic_shadowless_greave.png
+[  85% ] _update_scan_actions | relic_soul_keeper_face_stone.png
+[  85% ] _update_scan_actions | relic_split_crystal_warhead.png
+[  86% ] _update_scan_actions | relic_stargazers_lens.png
+[  86% ] _update_scan_actions | relic_steel_vault.png
+[  86% ] _update_scan_actions | relic_suffering_carapace.png
+[  87% ] _update_scan_actions | relic_tip_tray.png
+[  87% ] _update_scan_actions | relic_travelers_ledger.png
+[  88% ] _update_scan_actions | relic_tremor_grip.png
+[  88% ] _update_scan_actions | relic_true_silver_armor.png
+[  89% ] _update_scan_actions | relic_turtle_shell_pendant.png
+[  89% ] _update_scan_actions | relic_vitality_potion.png
+[  90% ] _update_scan_actions | relic_void_storage_casket.png
+[  90% ] _update_scan_actions | relic_void_tentacle.png
+[  91% ] _update_scan_actions | relic_welfare_cutback.png
+[  91% ] _update_scan_actions | relic_worn_fighting_gloves.png
+[  91% ] _update_scan_actions | relic_worn_hemostatic_cloth.png
+[  92% ] _update_scan_actions | weapon_plasma_cannon.png
+[  92% ] _update_scan_actions | weapon_wood_arrow.png
+[  93% ] _update_scan_actions | placeholder_icon.png
+[  93% ] _update_scan_actions | bg_main_menu.png
+[  94% ] _update_scan_actions | bg_main_menu_back.png
+[  94% ] _update_scan_actions | bg_main_menu_backup.png
+[  95% ] _update_scan_actions | button_main_menu.png
+[  95% ] _update_scan_actions | title_main_menu.png
+[  95% ] _update_scan_actions | stats_board_blank.png
+[  96% ] _update_scan_actions | stats_board_bottom.png
+[  96% ] _update_scan_actions | stats_board_top.png
+[  97% ] _update_scan_actions | stats_leather_handle.png
+[  97% ] _update_scan_actions | stats_rail_left.png
+[  98% ] _update_scan_actions | stats_rail_right.png
+[  98% ] _update_scan_actions | stats_wood_tile.png
+[  99% ] _update_scan_actions | icon.svg
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started 正在导入或重新导入资产 (197 steps)
+[   0% ] reimport | 正在准备重新导入文件……
+[   0% ] reimport | 正在准备重新导入文件……
+[   1% ] reimport | 正在准备重新导入文件……
+[   1% ] reimport | 正在准备重新导入文件……
+[   2% ] reimport | 正在准备重新导入文件……
+[   2% ] reimport | 正在准备重新导入文件……
+[   3% ] reimport | 正在准备重新导入文件……
+[   3% ] reimport | 正在准备重新导入文件……
+[   4% ] reimport | 正在准备重新导入文件……
+[   4% ] reimport | 正在准备重新导入文件……
+[   5% ] reimport | 正在准备重新导入文件……
+[   5% ] reimport | 正在准备重新导入文件……
+[   6% ] reimport | 正在准备重新导入文件……
+[   6% ] reimport | 正在准备重新导入文件……
+[   7% ] reimport | 正在准备重新导入文件……
+[   7% ] reimport | 正在准备重新导入文件……
+[   8% ] reimport | 正在准备重新导入文件……
+[   8% ] reimport | 正在准备重新导入文件……
+[   9% ] reimport | 正在准备重新导入文件……
+[   9% ] reimport | 正在准备重新导入文件……
+[  10% ] reimport | 正在准备重新导入文件……
+[  10% ] reimport | 正在准备重新导入文件……
+[  11% ] reimport | 正在准备重新导入文件……
+[  11% ] reimport | 正在准备重新导入文件……
+[  12% ] reimport | 正在准备重新导入文件……
+[  12% ] reimport | 正在准备重新导入文件……
+[  13% ] reimport | 正在准备重新导入文件……
+[  13% ] reimport | 正在准备重新导入文件……
+[  14% ] reimport | 正在准备重新导入文件……
+[  14% ] reimport | 正在准备重新导入文件……
+[  15% ] reimport | 正在准备重新导入文件……
+[  15% ] reimport | 正在准备重新导入文件……
+[  16% ] reimport | 正在准备重新导入文件……
+[  16% ] reimport | 正在准备重新导入文件……
+[  17% ] reimport | 正在准备重新导入文件……
+[  17% ] reimport | 正在准备重新导入文件……
+[  18% ] reimport | 正在准备重新导入文件……
+[  18% ] reimport | 正在准备重新导入文件……
+[  19% ] reimport | 正在准备重新导入文件……
+[  19% ] reimport | 正在准备重新导入文件……
+[  20% ] reimport | 正在准备重新导入文件……
+[  20% ] reimport | 正在准备重新导入文件……
+[  21% ] reimport | 正在准备重新导入文件……
+[  21% ] reimport | 正在准备重新导入文件……
+[  22% ] reimport | 正在准备重新导入文件……
+[  22% ] reimport | 正在准备重新导入文件……
+[  23% ] reimport | 正在准备重新导入文件……
+[  23% ] reimport | 正在准备重新导入文件……
+[  24% ] reimport | 正在准备重新导入文件……
+[  24% ] reimport | 正在准备重新导入文件……
+[  25% ] reimport | 正在准备重新导入文件……
+[  25% ] reimport | 正在准备重新导入文件……
+[  26% ] reimport | 正在准备重新导入文件……
+[  26% ] reimport | 正在准备重新导入文件……
+[  27% ] reimport | 正在准备重新导入文件……
+[  27% ] reimport | 正在准备重新导入文件……
+[  28% ] reimport | 正在准备重新导入文件……
+[  28% ] reimport | 正在准备重新导入文件……
+[  29% ] reimport | 正在准备重新导入文件……
+[  29% ] reimport | 正在准备重新导入文件……
+[  30% ] reimport | 正在准备重新导入文件……
+[  30% ] reimport | 正在准备重新导入文件……
+[  31% ] reimport | 正在准备重新导入文件……
+[  31% ] reimport | 正在准备重新导入文件……
+[  32% ] reimport | 正在准备重新导入文件……
+[  32% ] reimport | 正在准备重新导入文件……
+[  33% ] reimport | 正在准备重新导入文件……
+[  33% ] reimport | 正在准备重新导入文件……
+[  34% ] reimport | 正在准备重新导入文件……
+[  34% ] reimport | 正在准备重新导入文件……
+[  35% ] reimport | 正在准备重新导入文件……
+[  35% ] reimport | 正在准备重新导入文件……
+[  36% ] reimport | 正在准备重新导入文件……
+[  36% ] reimport | 正在准备重新导入文件……
+[  37% ] reimport | 正在准备重新导入文件……
+[  37% ] reimport | 正在准备重新导入文件……
+[  38% ] reimport | 正在准备重新导入文件……
+[  38% ] reimport | 正在准备重新导入文件……
+[  39% ] reimport | 正在准备重新导入文件……
+[  39% ] reimport | 正在准备重新导入文件……
+[  40% ] reimport | 正在准备重新导入文件……
+[  40% ] reimport | 正在准备重新导入文件……
+[  41% ] reimport | 正在准备重新导入文件……
+[  41% ] reimport | 正在准备重新导入文件……
+[  42% ] reimport | 正在准备重新导入文件……
+[  42% ] reimport | 正在准备重新导入文件……
+[  43% ] reimport | 正在准备重新导入文件……
+[  43% ] reimport | 正在准备重新导入文件……
+[  44% ] reimport | 正在准备重新导入文件……
+[  44% ] reimport | 正在准备重新导入文件……
+[  45% ] reimport | 正在准备重新导入文件……
+[  45% ] reimport | 正在准备重新导入文件……
+[  46% ] reimport | 正在准备重新导入文件……
+[  46% ] reimport | 正在准备重新导入文件……
+[  47% ] reimport | 正在准备重新导入文件……
+[  47% ] reimport | 正在准备重新导入文件……
+[  48% ] reimport | 正在准备重新导入文件……
+[  48% ] reimport | 正在准备重新导入文件……
+[  49% ] reimport | 正在准备重新导入文件……
+[  50% ] reimport | 正在准备重新导入文件……
+[  50% ] reimport | 正在准备重新导入文件……
+[  51% ] reimport | 正在准备重新导入文件……
+[  51% ] reimport | 正在准备重新导入文件……
+[  52% ] reimport | 正在准备重新导入文件……
+[  52% ] reimport | 正在准备重新导入文件……
+[  53% ] reimport | 正在准备重新导入文件……
+[  53% ] reimport | 正在准备重新导入文件……
+[  54% ] reimport | 正在准备重新导入文件……
+[  54% ] reimport | 正在准备重新导入文件……
+[  55% ] reimport | 正在准备重新导入文件……
+[  55% ] reimport | 正在准备重新导入文件……
+[  56% ] reimport | 正在准备重新导入文件……
+[  56% ] reimport | 正在准备重新导入文件……
+[  57% ] reimport | 正在准备重新导入文件……
+[  57% ] reimport | 正在准备重新导入文件……
+[  58% ] reimport | 正在准备重新导入文件……
+[  58% ] reimport | 正在准备重新导入文件……
+[  59% ] reimport | 正在准备重新导入文件……
+[  59% ] reimport | 正在准备重新导入文件……
+[  60% ] reimport | 正在准备重新导入文件……
+[  60% ] reimport | 正在准备重新导入文件……
+[  61% ] reimport | 正在准备重新导入文件……
+[  61% ] reimport | 正在准备重新导入文件……
+[  62% ] reimport | 正在准备重新导入文件……
+[  62% ] reimport | 正在准备重新导入文件……
+[  63% ] reimport | 正在准备重新导入文件……
+[  63% ] reimport | 正在准备重新导入文件……
+[  64% ] reimport | 正在准备重新导入文件……
+[  64% ] reimport | 正在准备重新导入文件……
+[  65% ] reimport | 正在准备重新导入文件……
+[  65% ] reimport | 正在准备重新导入文件……
+[  66% ] reimport | 正在准备重新导入文件……
+[  66% ] reimport | 正在准备重新导入文件……
+[  67% ] reimport | 正在准备重新导入文件……
+[  67% ] reimport | 正在准备重新导入文件……
+[  68% ] reimport | 正在准备重新导入文件……
+[  68% ] reimport | 正在准备重新导入文件……
+[  69% ] reimport | 正在准备重新导入文件……
+[  69% ] reimport | 正在准备重新导入文件……
+[  70% ] reimport | 正在准备重新导入文件……
+[  70% ] reimport | 正在准备重新导入文件……
+[  71% ] reimport | 正在准备重新导入文件……
+[  71% ] reimport | 正在准备重新导入文件……
+[  72% ] reimport | 正在准备重新导入文件……
+[  72% ] reimport | 正在准备重新导入文件……
+[  73% ] reimport | 正在准备重新导入文件……
+[  73% ] reimport | 正在准备重新导入文件……
+[  74% ] reimport | 正在准备重新导入文件……
+[  74% ] reimport | 正在准备重新导入文件……
+[  75% ] reimport | 正在准备重新导入文件……
+[  75% ] reimport | 正在准备重新导入文件……
+[  76% ] reimport | 正在准备重新导入文件……
+[  76% ] reimport | 正在准备重新导入文件……
+[  77% ] reimport | 正在准备重新导入文件……
+[  77% ] reimport | 正在准备重新导入文件……
+[  78% ] reimport | 正在准备重新导入文件……
+[  78% ] reimport | 正在准备重新导入文件……
+[  79% ] reimport | 正在准备重新导入文件……
+[  79% ] reimport | 正在准备重新导入文件……
+[  80% ] reimport | 正在准备重新导入文件……
+[  80% ] reimport | 正在准备重新导入文件……
+[  81% ] reimport | 正在准备重新导入文件……
+[  81% ] reimport | 正在准备重新导入文件……
+[  82% ] reimport | 正在准备重新导入文件……
+[  82% ] reimport | 正在准备重新导入文件……
+[  83% ] reimport | 正在准备重新导入文件……
+[  83% ] reimport | 正在准备重新导入文件……
+[  84% ] reimport | 正在准备重新导入文件……
+[  84% ] reimport | 正在准备重新导入文件……
+[  85% ] reimport | 正在准备重新导入文件……
+[  85% ] reimport | 正在准备重新导入文件……
+[  86% ] reimport | 正在准备重新导入文件……
+[  86% ] reimport | 正在准备重新导入文件……
+[  87% ] reimport | 正在准备重新导入文件……
+[  87% ] reimport | 正在准备重新导入文件……
+[  88% ] reimport | 正在准备重新导入文件……
+[  88% ] reimport | 正在准备重新导入文件……
+[  89% ] reimport | 正在准备重新导入文件……
+[  89% ] reimport | 正在准备重新导入文件……
+[  90% ] reimport | 正在准备重新导入文件……
+[  90% ] reimport | 正在准备重新导入文件……
+[  91% ] reimport | 正在准备重新导入文件……
+[  91% ] reimport | 正在准备重新导入文件……
+[  92% ] reimport | 正在准备重新导入文件……
+[  92% ] reimport | 正在准备重新导入文件……
+[  93% ] reimport | 正在准备重新导入文件……
+[  93% ] reimport | 正在准备重新导入文件……
+[  94% ] reimport | 正在准备重新导入文件……
+[  94% ] reimport | 正在准备重新导入文件……
+[  95% ] reimport | 正在准备重新导入文件……
+[  95% ] reimport | 正在准备重新导入文件……
+[  96% ] reimport | 正在准备重新导入文件……
+[  96% ] reimport | 正在准备重新导入文件……
+[  97% ] reimport | 正在准备重新导入文件……
+[  97% ] reimport | 正在准备重新导入文件……
+[  98% ] reimport | 正在准备重新导入文件……
+[  98% ] reimport | 正在准备重新导入文件……
+[   0% ] reimport | 正在执行重新导入的前置操作……
+[   0% ] reimport | VT323-Regular.ttf
+[   0% ] reimport | TerrarumSansBitmap.woff2
+[   1% ] reimport | IPix-pixel_font.ttf
+[   1% ] reimport | ark-pixel-16px-monospaced-zh_cn.otf
+[   2% ] reimport | ark-pixel-12px-monospaced-zh_cn.otf
+[   2% ] reimport | VT323-Regular.ttf
+[   3% ] reimport | TerrarumSansBitmap.woff2
+[   3% ] reimport | VT323-Regular.ttf
+[   4% ] reimport | TerrarumSansBitmap.woff2
+[   4% ] reimport | IPix-pixel_font.ttf
+[   5% ] reimport | ark-pixel-16px-monospaced-zh_cn.otf
+[   5% ] reimport | ark-pixel-12px-monospaced-zh_cn.otf
+[   6% ] reimport | bgm_menu.ogg
+[   6% ] reimport | bgm_battle.ogg
+[   7% ] reimport | relic_defiled_blessing_coin.png
+[   7% ] reimport | relic_dividend_check.png
+[   8% ] reimport | relic_divine_fusion.png
+[   8% ] reimport | relic_executioner_bracer.png
+[   9% ] reimport | relic_expanded_backpack_strap.png
+[   9% ] reimport | relic_finance_manager.png
+[  10% ] reimport | relic_fixed_deposit_certificate.png
+[  10% ] reimport | relic_flesh_pauldron.png
+[  11% ] reimport | relic_flyer_ad.png
+[  11% ] reimport | relic_gale_roulette.png
+[  12% ] reimport | relic_gift_mark.png
+[  12% ] reimport | relic_goblin_central_bank_printer.png
+[  13% ] reimport | relic_gold_compass.png
+[  13% ] reimport | relic_load_iron_bracer.png
+[  14% ] reimport | relic_judgment_eye_pendant.png
+[  14% ] reimport | relic_incomplete_divination_dice.png
+[  15% ] reimport | relic_gold_digger_gloves.png
+[  15% ] reimport | relic_guarding_heart_copper_mirror.png
+[  16% ] reimport | relic_harvest_sacrificial_vessel.png
+[  16% ] reimport | relic_hasty_spring_trigger.png
+[  17% ] reimport | relic_high_yield_contract.png
+[  17% ] reimport | relic_holy_silver_cup.png
+[  18% ] reimport | relic_hostile_takeover.png
+[  18% ] reimport | scroll_wind.png
+[  19% ] reimport | scroll_wind.svg
+[  19% ] reimport | icon_void_hunter.png
+[  20% ] reimport | icon_hud_hp.png
+[  20% ] reimport | icon_hud_relics.png
+[  21% ] reimport | icon_hud_shield.png
+[  21% ] reimport | icon_hud_stats.png
+[  22% ] reimport | relic_amulet_of_humanity.png
+[  22% ] reimport | relic_annual_leave_cutback.png
+[  23% ] reimport | relic_bankruptcy_reorg.png
+[  23% ] reimport | relic_barrier_crystal.png
+[  24% ] reimport | relic_berserker_copper_badge.png
+[  24% ] reimport | relic_black_spot_eagle_eye.png
+[  25% ] reimport | relic_blocking_counterweight.png
+[  25% ] reimport | relic_bloodstained_belt.png
+[  26% ] reimport | relic_brass_pocket_watch.png
+[  26% ] reimport | relic_broken_crystal.png
+[  27% ] reimport | relic_chain_of_hardship.png
+[  27% ] reimport | relic_compound_interest_tome.png
+[  28% ] reimport | relic_corroded_blowpipe.png
+[  28% ] reimport | relic_costly_seed_of_life.png
+[  29% ] reimport | relic_cracked_stone_bullet.png
+[  29% ] reimport | relic_cultic_holy_shield.png
+[  30% ] reimport | relic_dead_shield_badge.png
+[  30% ] reimport | relic_true_silver_armor.png
+[  31% ] reimport | relic_turtle_shell_pendant.png
+[  31% ] reimport | relic_vitality_potion.png
+[  32% ] reimport | relic_void_storage_casket.png
+[  32% ] reimport | relic_void_tentacle.png
+[  33% ] reimport | relic_welfare_cutback.png
+[  33% ] reimport | relic_worn_fighting_gloves.png
+[  34% ] reimport | relic_worn_hemostatic_cloth.png
+[  34% ] reimport | weapon_plasma_cannon.png
+[  35% ] reimport | weapon_wood_arrow.png
+[  35% ] reimport | placeholder_icon.png
+[  36% ] reimport | bg_main_menu.png
+[  36% ] reimport | bg_main_menu_back.png
+[  37% ] reimport | bg_main_menu_backup.png
+[  37% ] reimport | button_main_menu.png
+[  38% ] reimport | title_main_menu.png
+[  38% ] reimport | stats_board_blank.png
+[  39% ] reimport | stats_board_bottom.png
+[  39% ] reimport | stats_board_top.png
+[  40% ] reimport | stats_leather_handle.png
+[  40% ] reimport | stats_rail_left.png
+[  41% ] reimport | stats_rail_right.png
+[  41% ] reimport | stats_wood_tile.png
+[  42% ] reimport | icon.svg
+[  42% ] reimport | relic_lost_wayfarer_greave.png
+[  43% ] reimport | relic_medical_cutback.png
+[  43% ] reimport | relic_merger_reorg.png
+[  44% ] reimport | relic_nightmare_healing_urn.png
+[  44% ] reimport | relic_pain_vessel.png
+[  45% ] reimport | relic_periodic_dividend_clock.png
+[  45% ] reimport | relic_perpetual_annuity_scroll.png
+[  46% ] reimport | relic_piggy_bank.png
+[  46% ] reimport | relic_poison_mist_pouch.png
+[  47% ] reimport | relic_prison_copper_anklet.png
+[  47% ] reimport | relic_pungent_sachet.png
+[  48% ] reimport | relic_quant_trading.png
+[  48% ] reimport | relic_reincarnation_hellfire_candle.png
+[  49% ] reimport | relic_rough_grinding_lens.png
+[  50% ] reimport | relic_salary_adjustment.png
+[  50% ] reimport | relic_shadowless_greave.png
+[  51% ] reimport | relic_soul_keeper_face_stone.png
+[  51% ] reimport | relic_split_crystal_warhead.png
+[  52% ] reimport | relic_stargazers_lens.png
+[  52% ] reimport | relic_steel_vault.png
+[  53% ] reimport | relic_suffering_carapace.png
+[  53% ] reimport | relic_tip_tray.png
+[  54% ] reimport | relic_travelers_ledger.png
+[  54% ] reimport | relic_tremor_grip.png
+[  55% ] reimport | background1.png
+[  55% ] reimport | background2.png
+[  56% ] reimport | stone1.png
+[  56% ] reimport | stone2.png
+[  57% ] reimport | stone3.png
+[  57% ] reimport | stone4.png
+[  58% ] reimport | thicket1.png
+[  58% ] reimport | tree1.png
+[  59% ] reimport | tree1_shader.png
+[  59% ] reimport | tree2.png
+[  60% ] reimport | tree3.png
+[  60% ] reimport | tree4.png
+[  61% ] reimport | tree5.png
+[  61% ] reimport | tree6.png
+[  62% ] reimport | tree7.png
+[  62% ] reimport | tree8.png
+[  63% ] reimport | wood1.png
+[  63% ] reimport | wood2.png
+[  64% ] reimport | elite_rusher_dash_path.png
+[  64% ] reimport | elite_rusher_dash_path.svg
+[  65% ] reimport | enemy_rift_rusher_dash.png
+[  65% ] reimport | decal_brick_01.png
+[  66% ] reimport | decal_brick_02.png
+[  66% ] reimport | decal_crack_01.png
+[  67% ] reimport | decal_crack_02.png
+[  67% ] reimport | decal_crack_03.png
+[  68% ] reimport | decal_moss_01.png
+[  68% ] reimport | decal_moss_02.png
+[  69% ] reimport | decal_rubble_01.png
+[  69% ] reimport | decal_rubble_02.png
+[  70% ] reimport | fx_wet_ripple.png
+[  70% ] reimport | ruin_broken_pillar.png
+[  71% ] reimport | ruin_low_wall_01.png
+[  71% ] reimport | ruin_low_wall_02.png
+[  72% ] reimport | background-icon-baike.png
+[  72% ] reimport | background-icon-plugin.png
+[  73% ] reimport | background-porperty-bar.png
+[  73% ] reimport | background-sky-Recovered.png
+[  74% ] reimport | background-stone-brick-floor.png
+[  74% ] reimport | background-stone-piller1.png
+[  75% ] reimport | background-stone-piller2.png
+[  75% ] reimport | camp_relic_archive.png
+[  76% ] reimport | void_hunter_idle_right.png
+[  76% ] reimport | void_hunter_walk_right_spritesheet.png
+[  77% ] reimport | projectile_wood_arrow.png
+[  77% ] reimport | bank_counter_desk.png
+[  78% ] reimport | finance_bill.svg
+[  78% ] reimport | finance_board.png
+[  79% ] reimport | finance_coin.svg
+[  79% ] reimport | goblin_banker_states.png
+[  80% ] reimport | inspect_enchantment.svg
+[  80% ] reimport | scroll_black_hole.png
+[  81% ] reimport | scroll_black_hole.svg
+[  81% ] reimport | scroll_explosion.png
+[  82% ] reimport | scroll_fire.png
+[  82% ] reimport | scroll_ice.png
+[  83% ] reimport | scroll_lightning.png
+[  83% ] reimport | scroll_light_sword.png
+[  84% ] reimport | scroll_light_sword.svg
+[  84% ] reimport | scroll_pierce.png
+[  85% ] reimport | scroll_split.png
+[  85% ] reimport | scroll_water.png
+[  86% ] reimport | scroll_water.svg
+[  86% ] reimport | enemy_rift_rusher_death.png
+[  87% ] reimport | enemy_rift_rusher_idle.png
+[  87% ] reimport | enemy_rift_rusher_move.png
+[  88% ] reimport | enemy_rift_rusher_recover.png
+[  88% ] reimport | enemy_rift_rusher_windup.png
+[  89% ] reimport | enemy_gloom_mite_idle.png
+[  89% ] reimport | enemy_gloom_mite_move.png
+[  90% ] reimport | enemy_rift_rusher_dash.png
+[  90% ] reimport | enemy_rift_rusher_death.png
+[  91% ] reimport | enemy_rift_rusher_idle.png
+[  91% ] reimport | enemy_rift_rusher_move.png
+[  92% ] reimport | player_void_hunter_walk_right_spritesheet.png
+[  92% ] reimport | player_void_hunter_right_base.png
+[  93% ] reimport | pickup_health_pack.png
+[  93% ] reimport | pickup_exp_orb.png
+[  94% ] reimport | VT323-Regular.ttf
+[  94% ] reimport | TerrarumSansBitmap.woff2
+[  95% ] reimport | IPix-pixel_font.ttf
+[  95% ] reimport | ark-pixel-16px-monospaced-zh_cn.otf
+[  96% ] reimport | ark-pixel-12px-monospaced-zh_cn.otf
+[  96% ] reimport | bgm_menu.ogg
+[  97% ] reimport | bgm_battle.ogg
+[  97% ] reimport | relic_defiled_blessing_coin.png
+[  98% ] reimport | relic_dividend_check.png
+[  98% ] reimport | relic_divine_fusion.png
+[  99% ] reimport | 正在结束资产导入……
+[ DONE ] reimport
+
+[   0% ] reimport | Started 正在导入或重新导入资产 (197 steps)
+[   0% ] reimport | 正在执行重新导入的后置操作……
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started 正在加载编辑器 (5 steps)
+[   0% ] loading_editor_layout | 正在加载编辑器布局……
+[  16% ] loading_editor_layout | 正在加载停靠面板……
+[ DONE ] loading_editor_layout
+
+ERROR: Cannot load shader: res://shaders/player/visibility_glow.gdshader
+   at: load (scene/resources/shader_resource_format.cpp:43)
+ERROR: Failed loading resource: res://shaders/player/visibility_glow.gdshader.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Cannot load shader: res://shaders/ui/modal_backdrop.gdshader
+   at: load (scene/resources/shader_resource_format.cpp:43)
+ERROR: Failed loading resource: res://shaders/ui/modal_backdrop.gdshader.
+   at: _load (core/io/resource_loader.cpp:317)
+SCRIPT ERROR: Parse Error: Preload file "res://shaders/battle/wetland_ground.gdshader" does not exist.
+   at: GDScript::reload (res://scripts/battle/wetland_backdrop.gd:6)
+SCRIPT ERROR: Parse Error: Preload file "res://shaders/battle/wetland_decal_depth.gdshader" does not exist.
+   at: GDScript::reload (res://scripts/battle/wetland_backdrop.gd:7)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/battle/battle_environment.gd:0)
+ERROR: Failed to load script "res://scripts/battle/battle_environment.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+ERROR: Cannot load shader: res://shaders/battle/crt_ambience.gdshader
+   at: load (scene/resources/shader_resource_format.cpp:43)
+ERROR: Failed loading resource: res://shaders/battle/crt_ambience.gdshader.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Cannot load shader: res://shaders/battle/wet_stone_floor.gdshader
+   at: load (scene/resources/shader_resource_format.cpp:43)
+ERROR: Failed loading resource: res://shaders/battle/wet_stone_floor.gdshader.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Cannot load shader: res://shaders/battle/horizon_sky.gdshader
+   at: load (scene/resources/shader_resource_format.cpp:43)
+ERROR: Failed loading resource: res://shaders/battle/horizon_sky.gdshader.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Plugin is not attached to debugger.
+   at: is_active (editor/debugger/editor_debugger_plugin.cpp:102)

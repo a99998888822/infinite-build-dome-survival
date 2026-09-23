@@ -30,6 +30,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"seed_count": 3.0,
 	}, attachment_item_id)
 	var seed_count := maxi(2, int(roundi(context.get_resolved_parameter("seed_count", 3.0) + context.get_resolved_parameter("projectile_count", 1.0))))
+	context.set_meta("combat_audio_impact", AudioManager.current_combat_audio())
 	var visual_seed_count := mini(seed_count, MAX_VISUAL_SEEDS_PER_IMPACT)
 	var field_strength := float(seed_count) / float(visual_seed_count)
 	var safe_direction := direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT

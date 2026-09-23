@@ -1,11 +1,15 @@
 extends Node2D
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
+const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
 const FOOT_FLAME_INTERVAL: float = 0.16
 
 var _foot_flame_timer: float = 0.0
 var _enemy: Node = null
 var _elapsed: float = 0.0
+var _draw_frame: int = -1
+var _draw_status_mask: int = -1
 
 
 func _ready() -> void:
@@ -20,7 +24,7 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_elapsed += delta
-	if _enemy.has_status("burning"):
+	if _enemy.has_status("burning") and not _enemy.has_status("holy_flame") and not _enemy.has_status("dark_flame"):
 		_foot_flame_timer -= delta
 		if _foot_flame_timer <= 0.0:
 			_foot_flame_timer = FOOT_FLAME_INTERVAL
@@ -28,7 +32,7 @@ func _process(delta: float) -> void:
 			if parent != null:
 				var flame_color := Color.WHITE if _enemy.has_status("holy_flame") else Color.TRANSPARENT
 				var flame_parameters := {
-					"count_multiplier": 0.7,
+					"count_multiplier": 0.35,
 					"spawn_extent_multiplier": 0.62,
 					"fire_white": _enemy.has_status("holy_flame"),
 					"fire_dark": _enemy.has_status("dark_flame"),
@@ -36,7 +40,17 @@ func _process(delta: float) -> void:
 				PARTICLE_WORLD_SCRIPT.emit_profile(parent, "fire_flame", _enemy.global_position + Vector2(0.0, 12.0), Vector2.UP, 0.75, flame_color, flame_parameters)
 	else:
 		_foot_flame_timer = 0.0
-	queue_redraw()
+	# The silhouettes animate at 12 fps. Redraw immediately for status changes,
+	# but avoid rebuilding identical pixel polygons every render frame.
+	var next_frame := int(_elapsed * 12.0)
+	var mask := 0
+	var statuses := ["wet", "light", "dark", "frozen", "slowed", "holy_flame", "dark_flame"]
+	for index in statuses.size():
+		if _enemy.has_status(statuses[index]): mask |= 1 << index
+	if next_frame != _draw_frame or mask != _draw_status_mask:
+		_draw_frame = next_frame
+		_draw_status_mask = mask
+		queue_redraw()
 
 
 func _draw() -> void:
@@ -57,6 +71,11 @@ func _draw() -> void:
 		icon_index += 1
 	if _enemy.has_status("frozen"):
 		_draw_frozen_crystals(_get_body_radius())
+	elif _enemy.has_status("slowed"):
+		for side in [-1, 1]:
+			PIXEL.line(self, Vector2(side * 7, 12), Vector2(side * 14, 12), Color(0.48, 0.73, 0.79, 0.75))
+	if _enemy.has_status("holy_flame") or _enemy.has_status("dark_flame"):
+		_draw_transformed_flame(_enemy.has_status("holy_flame"))
 
 
 func _get_body_radius() -> float:
@@ -115,23 +134,34 @@ func _draw_dark_eye(center: Vector2, icon_radius: float) -> void:
 
 
 func _draw_frozen_crystals(body_radius: float) -> void:
-	var pillar_count := 8
-	var ring_radius := body_radius * 1.12
-	var pillar_width := clampf(body_radius * 0.24, 2.0, 5.0)
-	var pillar_height := clampf(body_radius * 0.78, 7.0, 18.0)
-	for index in range(pillar_count):
-		var angle := float(index) * TAU / float(pillar_count)
-		var center := Vector2(cos(angle) * ring_radius, sin(angle) * ring_radius * 0.72)
-		var width_scale := 0.82 + float(index % 3) * 0.12
-		var height_scale := 0.86 + float(index % 2) * 0.16
-		var width := pillar_width * width_scale
-		var height := pillar_height * height_scale
-		var points := PackedVector2Array([
-			center + Vector2(-width * 0.5, height * 0.5),
-			center + Vector2(-width * 0.38, -height * 0.24),
-			center + Vector2(0.0, -height * 0.5),
-			center + Vector2(width * 0.38, -height * 0.24),
-			center + Vector2(width * 0.5, height * 0.5),
-		])
-		draw_colored_polygon(points, Color(0.54, 0.86, 1.0, 0.72))
-		draw_polyline(points + PackedVector2Array([points[0]]), Color(0.88, 0.98, 1.0, 0.94), 1.0, true)
+	var width := clampf(body_radius * 1.10, 15.0, 25.0)
+	var shell := PackedVector2Array([
+		Vector2(-width, 12), Vector2(-width - 3, -4), Vector2(-width * 0.55, -24),
+		Vector2(width * 0.45, -29), Vector2(width + 3, -7), Vector2(width, 14), Vector2(-width, 12),
+	])
+	# Transparent central pane keeps the monster readable inside the ice.
+	PIXEL.polygon(self, shell, Color(0.30, 0.71, 0.87, 0.13))
+	PIXEL.path(self, shell, Color(0.69, 0.95, 0.98, 0.92), 2)
+	PIXEL.polygon(self, PackedVector2Array([shell[0], shell[1], shell[2], Vector2(-width * 0.65, 8)]), Color(0.25, 0.63, 0.79, 0.5))
+	PIXEL.polygon(self, PackedVector2Array([shell[3], shell[4], shell[5], Vector2(width * 0.65, 1)]), Color(0.57, 0.85, 0.95, 0.38))
+	for side in [-1.0, 1.0]:
+		SHAPES.shard(self, Vector2(side * width, 11), Vector2(side * 0.3, -1), 17, 4)
+		PIXEL.path(self, PackedVector2Array([Vector2(side * width, -12), Vector2(side * (width - 5), -6), Vector2(side * (width - 2), 1)]), Color(0.81, 0.99, 1.0, 0.78), 2)
+	PIXEL.line(self, Vector2(-width, 14), Vector2(width, 14), Color(0.37, 0.72, 0.83, 0.92), 4)
+
+
+func _draw_transformed_flame(holy: bool) -> void:
+	var clock := floorf(_elapsed * 12.0) / 12.0
+	for index in range(3):
+		var side := float(index - 1)
+		var height := 17.0 if index == 1 else 32.0 + sin(clock * 6 + index * 2) * 5.0
+		SHAPES.flame(self, Vector2(side * 16, 18), height, 11 if holy else 13, clock * (6 if holy else -5) + index * 2, holy)
+	if holy:
+		SHAPES.star(self, Vector2(0, -33), 6 + sin(clock * 3), Color(1.0, 0.88, 0.44, 0.92))
+		for side in [-1.0, 1.0]:
+			PIXEL.line(self, Vector2(side * 10, -28), Vector2(side * 17, -24), Color(0.96, 0.69, 0.21, 0.8), 2)
+	else:
+		for index in range(3):
+			var age := fmod(clock * 0.75 + index * 0.33, 1.0)
+			var ember := Vector2(sin(age * 6 + index * 2) * 22, 10 - age * 38)
+			PIXEL.block(self, ember, Vector2(2, 4), Color(0.60, 0.44, 0.85, (1.0 - age) * 0.8))

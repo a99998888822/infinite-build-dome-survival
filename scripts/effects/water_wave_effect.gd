@@ -3,11 +3,11 @@ class_name WaterWaveEffect
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.52
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
-const WAVE_SEGMENTS: int = 64
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -17,6 +17,8 @@ var _duration: float = DEFAULT_DURATION
 var _elapsed: float = 0.0
 var _damage_applied: bool = false
 var _phase: float = 0.0
+var _visual_detail: int = 2
+var _splash_layer: Node2D
 
 
 static func spawn(
@@ -31,6 +33,7 @@ static func spawn(
 	var effect := WaterWaveEffect.new()
 	parent.add_child(effect)
 	effect.global_position = hit_position
+	effect._visual_detail = PIXEL.register(effect, "water")
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "water", {
@@ -47,11 +50,13 @@ static func spawn(
 	)
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
 	effect._phase = randf_range(0.0, TAU)
-	effect.call_deferred("_apply_wave")
+	# Water is an immediate contact effect, before ice in the impact dispatcher.
+	effect._apply_wave()
 
 
 func _ready() -> void:
-	z_index = 80
+	z_index = -8
+	_splash_layer = PIXEL.layer(self, 80, _draw_splashes)
 	queue_redraw()
 
 
@@ -60,6 +65,7 @@ func _process(delta: float) -> void:
 		return
 	_elapsed += delta
 	queue_redraw()
+	_splash_layer.queue_redraw()
 	if _elapsed >= _duration:
 		queue_free()
 
@@ -68,6 +74,8 @@ func _apply_wave() -> void:
 	if _damage_applied or _context == null or _damage_event == null:
 		return
 	_damage_applied = true
+	AudioManager.begin_combat_audio()
+	AudioManager.play_enchantment_sfx("water")
 	var shape := CircleShape2D.new()
 	shape.radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()
@@ -75,7 +83,7 @@ func _apply_wave() -> void:
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = 2
 	query.collide_with_bodies = true
-	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
+	var results := get_world_2d().direct_space_state.intersect_shape(query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
 	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", DEFAULT_DAMAGE_MULTIPLIER))
 	var wet_duration: float = _context.get_resolved_parameter("wet_duration", 5.0)
 	var wet_slow_multiplier: float = _context.get_resolved_parameter("wet_slow_multiplier", 0.8)
@@ -93,46 +101,52 @@ func _apply_wave() -> void:
 			"original_damage": _damage_event.get_elemental_base_damage(),
 			"wet_duration": wet_duration,
 			"wet_slow_multiplier": wet_slow_multiplier,
+			"damage_event": _damage_event,
 		})
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
+	AudioManager.end_combat_audio()
 
 
 func _draw() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var expansion := smoothstep(0.0, 1.0, progress)
-	var radius := maxf(_radius * expansion, 1.0)
-	var fade := 1.0 - progress * 0.78
-	var band_width := clampf(radius * 0.14, 5.0, 18.0)
-	var phase := _phase + _elapsed * 5.0
-	var outer_points := _build_ripple_points(radius, phase)
-	var inner_points := _build_ripple_points(maxf(radius - band_width, 1.0), phase + 0.12)
-	var band_points := PackedVector2Array()
-	# _build_ripple_points() includes a duplicate closing point for line
-	# rendering. Exclude it from the filled polygon to avoid degenerate
-	# triangles during CanvasItem triangulation.
-	for index in range(maxi(outer_points.size() - 1, 0)):
-		band_points.append(outer_points[index])
-	for index in range(inner_points.size() - 2, -1, -1):
-		band_points.append(inner_points[index])
-	# At the first frame the ripple radius is clamped to 1 px. The pixel
-	# quantization in _build_ripple_points() then collapses many vertices onto
-	# the same coordinates, producing a degenerate/self-intersecting polygon
-	# that CanvasItem cannot triangulate. Keep the outline/circle visible, but
-	# wait until the band has expanded enough before filling it.
-	if radius >= 8.0 and band_points.size() >= 6:
-		draw_colored_polygon(band_points, Color(0.08, 0.50, 0.94, fade * 0.72))
-	draw_polyline(outer_points, Color(0.72, 0.95, 1.0, fade * 0.92), clampf(radius * 0.025, 1.5, 3.0), false)
-	draw_polyline(inner_points, Color(0.10, 0.40, 0.84, fade * 0.88), clampf(radius * 0.018, 1.0, 2.0), false)
-	draw_circle(Vector2.ZERO, clampf(radius * 0.06, 2.0, 8.0), Color(0.35, 0.78, 1.0, fade * 0.42))
+	var radius := maxf(_radius * smoothstep(0.0, 1.0, progress), 2.0)
+	var fade := 1.0 - smoothstep(0.56, 1.0, progress)
+	var clock := floorf(_elapsed * 18.0) / 18.0
+	# The damage is immediate: briefly mark its full footprint from the first frame.
+	if progress < 0.22 and _visual_detail > 0:
+		for index in range(12):
+			var start := float(index) * TAU / 12.0 + _phase
+			PIXEL.arc(self, _radius, start, start + 0.12, Color(0.17, 0.37, 0.46, (1.0 - progress / 0.22) * 0.34))
+	var count := 18 if _visual_detail == 2 else (12 if _visual_detail == 1 else 8)
+	for index in range(count):
+		var start := float(index) * TAU / float(count) + _phase * 0.08
+		var arc_length := TAU / float(count) * (0.48 + float(index % 3) * 0.07)
+		var ripple := sin(start * 7.0 + _phase + clock * 4.0) * radius * 0.024
+		var crest := radius + ripple
+		PIXEL.arc(self, maxf(crest - 3.0, 2.0), start, start + arc_length, Color(0.10, 0.29, 0.40, fade * 0.72), 4)
+		PIXEL.arc(self, crest, start, start + arc_length, Color(0.25, 0.61, 0.73, fade * 0.82), 2)
+		if index % 2 == 0 and _visual_detail > 0:
+			PIXEL.arc(self, crest + 1.0, start + 0.04, start + arc_length * 0.5, Color(0.65, 0.85, 0.86, fade * 0.85), 2)
+			if radius > 12.0:
+				var foam := Vector2.from_angle(start + arc_length * 0.5) * (crest - 2.0)
+				PIXEL.block(self, foam, Vector2(4, 2), Color(0.52, 0.79, 0.83, fade * 0.8))
+		if _visual_detail == 2 and radius > 24.0 and index % 3 == 0:
+			PIXEL.arc(self, radius * 0.77, start + 0.14, start + 0.26, Color(0.14, 0.39, 0.48, fade * 0.55), 2)
 
 
-func _build_ripple_points(radius: float, phase: float) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	for index in range(WAVE_SEGMENTS + 1):
-		var angle := float(index) / float(WAVE_SEGMENTS) * TAU
-		var ripple := sin(angle * 7.0 + phase) * radius * 0.035
-		ripple += cos(angle * 13.0 - phase * 0.7) * radius * 0.018
-		var point := Vector2.from_angle(angle) * maxf(radius + ripple, 1.0)
-		# Small coordinate steps keep the ring crisp in the pixel-art render.
-		points.append((point / 2.0).round() * 2.0)
-	return points
+func _draw_splashes() -> void:
+	if _visual_detail == 0:
+		return
+	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
+	var count := 9 if _visual_detail == 2 else 4
+	for index in range(count):
+		var start := float(index % 3) * 0.07
+		var age := (progress - start) / 0.76
+		if age < 0.0 or age >= 1.0:
+			continue
+		var angle := float(index) * 2.399 + _phase
+		var distance := _radius * (0.12 + age * (0.62 + float(index % 2) * 0.14))
+		var point := Vector2.from_angle(angle) * distance
+		point.y -= sin(age * PI) * (9.0 + float(index % 3) * 4.0)
+		var fade := 1.0 - smoothstep(0.5, 1.0, age)
+		PIXEL.block(_splash_layer, point, Vector2(2, 4 if age < 0.5 else 2), Color(0.4, 0.72, 0.8, fade * 0.9))

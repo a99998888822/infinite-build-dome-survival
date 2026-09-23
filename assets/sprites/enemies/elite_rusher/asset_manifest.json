@@ -1,0 +1,123 @@
+{
+  "asset_id": "enemy_rift_rusher",
+  "method": "original direct pixel drawing with Pillow; no model/API",
+  "source_script": "scripts/tools/build_elite_rusher_assets.py",
+  "native_frame_size": [
+    128,
+    128
+  ],
+  "master_frame_size": [
+    256,
+    256
+  ],
+  "native_anchor": [
+    64,
+    84
+  ],
+  "native_sprite_offset": [
+    0,
+    -20
+  ],
+  "outline": "#141B1E",
+  "palette": {
+    "ink": "#141B1E",
+    "crease": "#233334",
+    "deep": "#2B4443",
+    "body_dark": "#354B49",
+    "body": "#516B60",
+    "body_light": "#799079",
+    "shell_dark": "#3D5550",
+    "shell_low": "#526A57",
+    "shell": "#708363",
+    "shell_light": "#95A078",
+    "shell_high": "#B5BA8B",
+    "shell_glint": "#D1D2A0",
+    "bone_dark": "#827B61",
+    "bone_mid": "#B4AA80",
+    "bone": "#D8CEA0",
+    "bone_light": "#EFE3B7",
+    "eye_dark": "#594A32",
+    "eye": "#DA9A52",
+    "eye_light": "#F9D18B",
+    "gill": "#9D7361",
+    "gill_dark": "#654E46",
+    "eldritch": "#92B4A3",
+    "eldritch_dark": "#4B7F79",
+    "toe": "#A9B29A"
+  },
+  "actions": {
+    "idle": {
+      "count": 4,
+      "durations": [
+        240,
+        200,
+        240,
+        200
+      ],
+      "loop": true
+    },
+    "move": {
+      "count": 6,
+      "durations": [
+        110,
+        110,
+        110,
+        110,
+        110,
+        110
+      ],
+      "loop": true
+    },
+    "windup": {
+      "count": 3,
+      "durations": [
+        160,
+        180,
+        460
+      ],
+      "loop": false
+    },
+    "dash": {
+      "count": 2,
+      "durations": [
+        100,
+        100
+      ],
+      "loop": true
+    },
+    "recover": {
+      "count": 3,
+      "durations": [
+        160,
+        160,
+        180
+      ],
+      "loop": false
+    },
+    "death": {
+      "count": 5,
+      "durations": [
+        100,
+        110,
+        120,
+        140,
+        400
+      ],
+      "loop": false
+    }
+  },
+  "telegraph": {
+    "path": "assets/sprites/effects/telegraphs/elite_rusher_dash_path.png",
+    "size": [
+      304,
+      64
+    ],
+    "alpha_byte": 77,
+    "opacity": 0.3,
+    "shape": "rectangle",
+    "arrows": false,
+    "center_travel_px": 240,
+    "half_width_px": 32
+  },
+  "integration": "not yet wired to enemy scenes or gameplay"
+}

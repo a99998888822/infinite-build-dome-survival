@@ -2,8 +2,7 @@ extends Node
 
 ## Lightweight scheduler for short-lived combat-effect callbacks.
 ##
-## It intentionally follows SceneTree.create_timer()'s default behavior:
-## idle-time processing, process-always semantics, and insertion-order expiry.
+## Combat callbacks follow battle pause. UI callers may opt into process-always.
 ## Keeping the callbacks here avoids creating one SceneTreeTimer object per
 ## lightning-chain hop or display echo.
 
@@ -11,6 +10,7 @@ var _remaining: PackedFloat32Array = PackedFloat32Array()
 var _owner_ids: PackedInt64Array = PackedInt64Array()
 var _task_ids: PackedInt64Array = PackedInt64Array()
 var _active: PackedByteArray = PackedByteArray()
+var _run_when_paused: PackedByteArray = PackedByteArray()
 var _callbacks: Array[Callable] = []
 var _free_slots: Array[int] = []
 var _order: Array[int] = []
@@ -21,7 +21,7 @@ func _enter_tree() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
-func schedule(delay: float, callback: Callable, owner: Object = null) -> int:
+func schedule(delay: float, callback: Callable, owner: Object = null, run_when_paused: bool = false) -> int:
 	if not callback.is_valid():
 		return 0
 	var slot := -1
@@ -33,6 +33,7 @@ func schedule(delay: float, callback: Callable, owner: Object = null) -> int:
 		_owner_ids.append(0)
 		_task_ids.append(0)
 		_active.append(0)
+		_run_when_paused.append(0)
 		_callbacks.append(Callable())
 	var task_id := _next_task_id
 	_next_task_id += 1
@@ -42,6 +43,7 @@ func schedule(delay: float, callback: Callable, owner: Object = null) -> int:
 	_owner_ids[slot] = owner.get_instance_id() if owner != null and is_instance_valid(owner) else 0
 	_task_ids[slot] = task_id
 	_active[slot] = 1
+	_run_when_paused[slot] = 1 if run_when_paused else 0
 	_callbacks[slot] = callback
 	_order.append(slot)
 	return task_id
@@ -79,6 +81,9 @@ func _process(delta: float) -> void:
 		var owner := instance_from_id(owner_id) if owner_id != 0 else null
 		if owner_id != 0 and (not is_instance_valid(owner) or (owner is Node and (owner as Node).is_queued_for_deletion())):
 			_release_slot(slot)
+			continue
+		if _run_when_paused[slot] == 0 and (get_tree().paused or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))):
+			order_index += 1
 			continue
 		_remaining[slot] -= delta
 		if _remaining[slot] > 0.0:

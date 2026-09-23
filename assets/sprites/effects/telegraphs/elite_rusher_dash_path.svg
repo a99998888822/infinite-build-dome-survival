@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="304" height="64" viewBox="0 0 304 64">
+  <title>Elite rusher dash telegraph</title>
+  <desc>Rectangular dash warning: 240 pixel center travel plus 32 pixel end margins, 64 pixel width, red fill at 30 percent opacity. Square corners and no arrows.</desc>
+  <rect x="0" y="0" width="304" height="64" fill="#FF3B30" fill-opacity="0.3"/>
+</svg>

@@ -21,9 +21,13 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 	if weapon != null:
 		var attached_items: Array = weapon.get_attached_item_instances() if weapon.has_method("get_attached_item_instances") else []
 		for attached_item in attached_items:
+			if not (attached_item is Dictionary):
+				continue
 			if not attachment_item_id.is_empty() and str(attached_item.get("item_instance_id", "")) != attachment_item_id:
 				continue
-			if not (attached_item is Dictionary):
+			# Base/rolled values belong to this effect only. Cross-effect bonuses
+			# are explicitly scoped modifiers, resolved below by the weapon.
+			if not effect_id in attached_item.get("effect_ids", []):
 				continue
 			var effect_parameters: Variant = attached_item.get("effect_parameters", {})
 			if effect_parameters is Dictionary:

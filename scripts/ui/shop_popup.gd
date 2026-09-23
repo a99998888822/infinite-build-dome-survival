@@ -193,7 +193,7 @@ func get_mode() -> String:
 func _refresh_visual() -> void:
 	var mode := get_mode()
 	if title_label != null:
-		title_label.text = "升级奖励" if mode == ENTRY_FREE else "局内商店"
+		title_label.text = str(payload.get("title", "升级奖励" if mode == ENTRY_FREE else "局内商店"))
 	_update_gold_labels(int(payload.get("gold", 0)))
 	if error_label != null:
 		error_label.text = ""

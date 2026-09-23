@@ -36,6 +36,21 @@ static func label(control: Label, font_size: int = 14, color: Color = TEXT) -> v
 	control.add_theme_color_override("font_color", color)
 
 
+static func tab(control: Button, selected: bool) -> void:
+	button(control)
+	var normal := box("cfb477" if selected else "20271f", "f1d797" if selected else "626b4e", 5)
+	normal.border_width_bottom = 3 if selected else 1
+	control.add_theme_stylebox_override("normal", normal)
+	control.add_theme_stylebox_override("hover", box("dfc58b" if selected else "3b4732", "f1d797" if selected else "92996a", 5))
+	control.add_theme_stylebox_override("hover_pressed", box("dfc58b" if selected else "3b4732", "f1d797" if selected else "92996a", 5))
+	control.add_theme_stylebox_override("pressed", normal)
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+		control.add_theme_color_override(state, Color("25291c") if selected else MUTED)
+	control.add_theme_font_size_override("font_size", 14)
+	control.toggle_mode = true
+	control.set_pressed_no_signal(selected)
+
+
 static func scroll(control: ScrollContainer) -> void:
 	control.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	control.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_RESERVE
@@ -49,7 +64,7 @@ static func reason(code: String) -> String:
 	return str({
 		"bank_operation_used": "本波已办理存取，下波恢复。",
 		"amount_must_be_positive": "请输入大于 0 的整数。",
-		"amount_exceeds_gold": "存入金额超过随身金币。",
+		"amount_exceeds_gold": "存入金额超过金币余额。",
 		"amount_exceeds_principal": "取出金额超过本金。",
 		"invalid_action": "请选择存入或取出。",
 		"insufficient_gold": "金币不足",

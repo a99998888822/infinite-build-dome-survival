@@ -74,14 +74,14 @@
 |名称|稀有度|icon描述|效果|上限|羁绊|备注|
 |-|-|-|-|-|
 | 淘金者的手套 | 白 | 破旧皮革手套，指尖沾金色碎屑 | 拾取范围 + 10；经验获取 + 8 | 无上限 |  | 文件：`relic_gold_digger_gloves.png` |
-| 残缺的占卜骰子 | 白 | 磨损的六面骨骰，部分刻度模糊 | 幸运 + 6；掉落率 + 5 | 无上限 |  | 文件：`relic_incomplete_divination_dice.png` |
+| 残缺的占卜骰子 | 白 | 磨损的六面骨骰，部分刻度模糊 | 幸运 + 9；掉落率 + 5 | 无上限 |  | 文件：`relic_incomplete_divination_dice.png` |
 | 商旅账本 | 绿 | 泛黄皮面账本，写满记账笔记 | 金币获取 + 10；获取时，本金 + 20；负载 - 5 | 无上限 |  | 文件：`relic_travelers_ledger.png` |
-| 被亵渎的祈福铜钱 | 绿 | 泛黄皮面账本，写满记账笔记 | 幸运 + 12；理智值 - 3 | 无上限 |  | 文件：`relic_defiled_blessing_coin.png` |
+| 被亵渎的祈福铜钱 | 绿 | 泛黄皮面账本，写满记账笔记 | 幸运 + 18；理智值 - 3 | 无上限 |  | 文件：`relic_defiled_blessing_coin.png` |
 | 扩容背包束带 | 绿 | 粗麻布束带，缝有多只小布袋 | 负载 + 10；移动速度 -12； 拾取范围 - 10 | 无上限 |  | 文件：`relic_expanded_backpack_strap.png` |
-| 观星者的镜片 | 蓝 | 一块弧形银色碎镜片，镜中倒映扭曲星辰 | 幸运 + 12；经验获取 + 12；掉落率 + 12；理智值 - 5 | 无上限 |  | 文件：`relic_stargazers_lens.png` |
+| 观星者的镜片 | 蓝 | 一块弧形银色碎镜片，镜中倒映扭曲星辰 | 幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5 | 无上限 |  | 文件：`relic_stargazers_lens.png` |
 | 丰收的牺牲祭器 | 蓝 | 古朴陶瓮，内壁残留暗色痕迹 | 金币获取 + 10；经验获取 + 10；最大生命值 -5 | 无上限 |  | 文件：`relic_harvest_sacrificial_vessel.png` |
 | 人性护符 | 蓝 | 古朴陶瓮，内壁残留暗色痕迹 | 理智值 + 10； 幸运 - 5 | 无上限 |  | 文件：`relic_amulet_of_humanity.png` |
-| 馈赠印记 | 紫 | 皮肤样式的烙印图标，淡紫光晕 | 幸运 + 28；侵蚀度 + 10 | 无上限 |  | 文件：`relic_gift_mark.png` |
-| 虚空收纳匣 | 紫 | 半透明悬浮的立方体匣子，内部漆黑 | 幸运 + 12；负载 + 10；拾取范围 + 10；侵蚀度 + 10 | 无上限 |  | 文件：`relic_void_storage_casket.png` |
-| 轮回业火之烛 | 橙 | 幽蓝摇曳的蜡烛，火焰不消耗蜡油 | 幸运 + 50；经验获取 + 35；理智值无法再回复；侵蚀度每回合 + 1 | 无上限 |  | 文件：`relic_reincarnation_hellfire_candle.png` |
-| 守心铜鉴 | 紫 | 小型青铜手镜，镜面清澈 | 幸运 + 12；理智值每回合 + 1；金币获取 + 35 | 无上限 |  | 文件：`relic_guarding_heart_copper_mirror.png` |
+| 馈赠印记 | 紫 | 皮肤样式的烙印图标，淡紫光晕 | 幸运 + 42；侵蚀度 + 10 | 无上限 |  | 文件：`relic_gift_mark.png` |
+| 虚空收纳匣 | 紫 | 半透明悬浮的立方体匣子，内部漆黑 | 幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 10 | 无上限 |  | 文件：`relic_void_storage_casket.png` |
+| 轮回业火之烛 | 橙 | 幽蓝摇曳的蜡烛，火焰不消耗蜡油 | 幸运 + 75；经验获取 + 35；理智值无法再回复；侵蚀度每回合 + 1 | 无上限 |  | 文件：`relic_reincarnation_hellfire_candle.png` |
+| 守心铜鉴 | 紫 | 小型青铜手镜，镜面清澈 | 幸运 + 18；理智值每回合 + 1；金币获取 + 35 | 无上限 |  | 文件：`relic_guarding_heart_copper_mirror.png` |

@@ -679,14 +679,14 @@
   {
     "id": "relic_vitality_potion",
     "display_name": "生命力药瓶",
-    "description": "每秒回血 + 1；每波过后，侵蚀度 + 1",
+    "description": "每秒回血 + 0.5；每波过后，侵蚀度 + 1",
     "icon": "res://assets/ui/icons/relics/relic_vitality_potion.png",
     "icon_description": "晃动时漂浮血色气泡的玻璃药罐",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_vitality_potion_hp_regen", "source_type": "relic", "source_id": "relic_vitality_potion", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1, "duration": -1}
+      {"id": "mod_relic_vitality_potion_hp_regen", "source_type": "relic", "source_id": "relic_vitality_potion", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.5, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "divinity", "value": 1}
@@ -711,7 +711,7 @@
   {
     "id": "relic_turtle_shell_pendant",
     "display_name": "龟壳吊坠",
-    "description": "护甲 + 10；最大生命值 + 1",
+    "description": "护甲 + 10；最大生命值 + 2",
     "icon": "res://assets/ui/icons/relics/relic_turtle_shell_pendant.png",
     "icon_description": "带着细小虫洞纹路的老旧龟壳挂坠",
     "rarity": "uncommon",
@@ -719,7 +719,7 @@
     "tags": ["survival"],
     "effects": [
       {"id": "mod_relic_turtle_shell_pendant_armor", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 1, "duration": -1}
+      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 2, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1288,7 +1288,7 @@
   {
     "id": "relic_stargazers_lens",
     "display_name": "观星者的镜片",
-    "description": "幸运 + 12；经验获取 + 12；掉落率 + 12；理智值 - 5",
+    "description": "幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5",
     "icon": "res://assets/ui/icons/relics/relic_stargazers_lens.png",
     "icon_description": "一块弧形银色碎镜片，镜中倒映扭曲星辰",
     "rarity": "rare",
@@ -1297,7 +1297,7 @@
     "effects": [
       {"id": "mod_relic_stargazers_lens_exp_gain_percent", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "exp_gain_percent", "operation": "add_flat", "value": 12, "duration": -1},
       {"id": "mod_relic_stargazers_lens_drop_rate_percent", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "drop_rate_percent", "operation": "add_flat", "value": 12, "duration": -1},
-      {"id": "mod_relic_stargazers_lens_luck", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 12, "duration": -1},
+      {"id": "mod_relic_stargazers_lens_luck", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
       {"id": "mod_relic_stargazers_lens_humanity", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -5, "duration": -1}
     ],
     "runtime_effects": []

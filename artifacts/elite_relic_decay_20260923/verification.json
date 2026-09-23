@@ -1,0 +1,21 @@
+{
+  "utf8_and_text_checks": "passed",
+  "json_parse": "passed",
+  "scene_change": "BOM removal only",
+  "telegraph": {
+    "size": [
+      304,
+      64
+    ],
+    "rgba": [
+      255,
+      59,
+      48,
+      77
+    ],
+    "shape": "rectangle",
+    "arrows": false
+  },
+  "elite_checks": 34,
+  "relic_checks": 50
+}

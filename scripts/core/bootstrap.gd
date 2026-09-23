@@ -624,8 +624,9 @@ func _run_audio_checks() -> bool:
 	passed = _print_check_result("audio sfx bus", AudioServer.get_bus_index(AudioManager.BUS_SFX) >= 0) and passed
 	var bgm_played := AudioManager.play_bgm("menu")
 	passed = _print_check_result("audio menu bgm playback", bgm_played and AudioManager.current_bgm_id == "menu") and passed
-	var weapon_sfx_played := AudioManager.play_weapon_hit_sfx("weapon_void_blade", 0)
-	passed = _print_check_result("weapon hit sfx missing fallback", weapon_sfx_played == false) and passed
+	var weapon_sfx_path := str(DataRegistry.get_record("weapons", "weapon_void_blade").get("hit_sfx", ""))
+	passed = _print_check_result("weapon hit sfx resource", ResourceLoader.exists(weapon_sfx_path)) and passed
+	passed = _print_check_result("unknown weapon sfx fallback", not AudioManager.play_weapon_hit_sfx("missing_audio_test_weapon", 0)) and passed
 	AudioManager.set_bus_volume(AudioManager.BUS_SFX, 100, false)
 	passed = _print_check_result("audio volume set fallback", AudioServer.get_bus_index(AudioManager.BUS_SFX) >= 0) and passed
 	return passed
@@ -729,7 +730,7 @@ func _run_weapon_checks() -> bool:
 		passed = _print_check_result("weapon damage event", damage_ok) and passed
 		var first_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
 		var second_projectile_sfx_request := weapon.play_projectile_hit_sfx("projectile_1")
-		var projectile_sfx_once := weapon.get_hit_sfx_path().ends_with("sfx_weapon_void_blade_hit.ogg") and weapon.has_played_projectile_hit_sfx("projectile_1") and second_projectile_sfx_request == false and first_projectile_sfx_request
+		var projectile_sfx_once := ResourceLoader.exists(weapon.get_hit_sfx_path()) and weapon.has_played_projectile_hit_sfx("projectile_1") and second_projectile_sfx_request == false and first_projectile_sfx_request
 		passed = _print_check_result("weapon projectile hit sfx once", projectile_sfx_once) and passed
 		var attack_target := load("res://scenes/enemy/mutated_grub.tscn").instantiate() as EnemyController
 		if attack_target != null:
@@ -990,6 +991,7 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance hostile takeover damage percent", is_equal_approx(player.get_stat("damage_percent") - damage_before_derived, floorf(float(derived_principal) / 100.0))) and passed
 
 	wave_manager.add_relic("relic_divine_fusion")
+	var rate_before_divine := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	player.add_runtime_modifier({
 		"id": "mod_bootstrap_divinity_seed",
 		"source_type": "test",
@@ -1001,7 +1003,7 @@ func _run_finance_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	var rate_before_divine := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	passed = _print_check_result("finance divine fusion updates immediately", is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, 1.0)) and passed
 	wave_manager.prepare_finance_for_wave(10)
 	wave_manager.finance_system.begin_wave(10)
 	var expected_divine_rate := floorf(player.get_stat("divinity") / 5.0) * 0.5

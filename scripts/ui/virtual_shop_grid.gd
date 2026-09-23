@@ -4,14 +4,15 @@ class_name VirtualShopGrid
 signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
-const CARD_HEIGHT := 144.0
-const GAP := 12.0
+const CARD_HEIGHT := 132.0
+const CARD_MIN_WIDTH := 136.0
+const GAP := 8.0
 var offers: Array = []
 var flow: MainFlowCoordinator
 var scroll: ScrollContainer
 var canvas: Control
 var _pool: Array[PreparationOfferCard] = []
-var _columns := 2
+var _columns := 3
 var _last_start := -1
 var _logical_focus := 0
 
@@ -46,7 +47,7 @@ func _layout() -> void:
 	if scroll == null:
 		return
 	var usable := maxf(100.0, size.x - 16.0)
-	_columns = maxi(1, floori((usable + GAP) / (210.0 + GAP)))
+	_columns = clampi(floori((usable + GAP) / (CARD_MIN_WIDTH + GAP)), 1, 3)
 	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (CARD_HEIGHT + GAP) - GAP)
 	_last_start = -1
 	_refresh_pool(true)

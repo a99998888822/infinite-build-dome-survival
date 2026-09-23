@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/elite_rusher.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="body"]
+radius = 30.0
+
+[node name="EliteRusher" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1")
+enemy_id = "enemy_elite_rusher"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -20)
+texture_filter = 1

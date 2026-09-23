@@ -4,6 +4,7 @@ class_name ExplosionEffect
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
+const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.gd")
 
 const BASE_DAMAGE_RADIUS: float = 96.0
 
@@ -13,9 +14,11 @@ var _hit_position: Vector2 = Vector2.ZERO
 var _attachment_item_id: String = ""
 var _damage_multiplier_override: float = -1.0
 var _radius_override: float = -1.0
+var _reaction_id: String = ""
+var _audio_impact: RefCounted = null
 
 
-static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", damage_multiplier_override: float = -1.0, radius_override: float = -1.0) -> void:
+static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", damage_multiplier_override: float = -1.0, radius_override: float = -1.0, reaction_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
 	var effect := ExplosionEffect.new()
@@ -26,14 +29,16 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._attachment_item_id = attachment_item_id
 	effect._damage_multiplier_override = damage_multiplier_override
 	effect._radius_override = radius_override
-	effect.call_deferred("_detonate")
+	effect._reaction_id = reaction_id
+	effect._audio_impact = AudioManager.current_combat_audio()
+	EffectScheduler.schedule(0.0, Callable(effect, "_detonate"), effect)
 
 
 func _detonate() -> void:
 	if _weapon == null or _damage_event == null:
 		queue_free()
 		return
-	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion", {
+	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion" if _reaction_id.is_empty() else _reaction_id, {
 		"damage": maxf(_damage_event.get_elemental_base_damage() * (0.8 if _damage_multiplier_override <= 0.0 else _damage_multiplier_override), 1.0),
 		"radius": BASE_DAMAGE_RADIUS if _radius_override <= 0.0 else _radius_override,
 		"damage_falloff": 0.0,
@@ -41,10 +46,17 @@ func _detonate() -> void:
 	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
+	AudioManager.begin_combat_audio(_audio_impact)
+	if _reaction_id.is_empty():
+		AudioManager.play_enchantment_sfx("explosion")
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
+	else:
+		AudioManager.play_reaction_sfx(_reaction_id)
+		REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
 	_emit_material_debris(destroyed_materials, particle_parameters)
+	AudioManager.end_combat_audio()
 	queue_free()
 
 
@@ -70,7 +82,7 @@ func _damage_enemies(radius: float, damage: int, damage_falloff: float) -> void:
 	query.transform = Transform2D(0.0, _hit_position)
 	query.collision_mask = 2
 	query.collide_with_bodies = true
-	var results := space_state.intersect_shape(query, 64)
+	var results := space_state.intersect_shape(query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
 	for result in results:
 		var enemy := result.get("collider") as EnemyController
 		if enemy == null or not enemy.is_alive():

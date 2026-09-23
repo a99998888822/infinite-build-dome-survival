@@ -466,11 +466,15 @@ static func calculate_shop_cost_from_discounts(base_cost: int, discount_layers: 
 	# 折扣逐层乘算：两层 8% 折扣得到 0.92 * 0.92 = 84.64%，负折扣表示涨价。
 	if base_cost <= 0:
 		return 0
-	var price := float(base_cost)
+	return maxi(1, int(ceil(float(base_cost) * calculate_shop_price_multiplier(discount_layers))))
+
+
+static func calculate_shop_price_multiplier(discount_layers: Array) -> float:
+	var multiplier := 1.0
 	for discount_layer in discount_layers:
 		var discount_percent := clamp_stat_value("shop_price_percent", float(discount_layer))
-		price *= maxf(1.0 - discount_percent / 100.0, 0.0)
-	return maxi(1, int(ceil(price)))
+		multiplier *= maxf(1.0 - discount_percent / 100.0, 0.0)
+	return multiplier
 
 
 static func calculate_shop_offer_count(base_count: int, shop_offer_count_bonus: float) -> int:
