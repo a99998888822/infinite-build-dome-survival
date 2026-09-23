@@ -1,0 +1,457 @@
+scripts/data/stat_definitions.gd
+  s_e459c8c014e144::t_a300c5d5892519 469-473,476-477
+artifacts/elite_pickups_20260923/bootstrap.log
+  s_b11938437a28ec::t_f0361622a406db 1-264
+artifacts/elite_pickups_20260923/bootstrap_console.log
+  s_b11938437a28ec::t_1b4c6ba2d5ca76 1-264
+artifacts/elite_pickups_20260923/editor.log
+  s_b11938437a28ec::t_85d5056d4916d9 1-27
+artifacts/elite_pickups_20260923/editor_final.log
+  s_b11938437a28ec::t_026018acbb3b4a 1-25
+artifacts/elite_pickups_20260923/elite_console.log
+  s_b11938437a28ec::t_8bfab2942b7291 1-89
+artifacts/elite_pickups_20260923/elite_tests.log
+  s_b11938437a28ec::t_141b46990deb32 1-84
+artifacts/elite_pickups_20260923/preview.log
+  s_b11938437a28ec::t_770993e51ce2f7 1-20
+artifacts/elite_pickups_20260923/relic_console.log
+  s_b11938437a28ec::t_1f797b1e799d18 1-75
+artifacts/elite_pickups_20260923/relic_regression.log
+  s_b11938437a28ec::t_d0637a8e1d665f 1-70
+artifacts/elite_pickups_20260923/render_preview.gd
+  s_b11938437a28ec::t_ec322eb9399210 1-55
+artifacts/elite_pickups_20260923/render_preview.tscn
+  s_b11938437a28ec::t_6b525a0524127e 1-4
+artifacts/elite_relic_decay_20260923/bootstrap.log
+  s_b11938437a28ec::t_31711be368e7f5 1-264
+artifacts/elite_relic_decay_20260923/bootstrap_baseline.log
+  s_b11938437a28ec::t_6c8261c1d38ddb 1-264
+artifacts/elite_relic_decay_20260923/editor.log
+  s_b11938437a28ec::t_9985a6bac09baf 1-811
+artifacts/elite_relic_decay_20260923/editor_final.log
+  s_b11938437a28ec::t_aaaec80d7242d2 1-22
+artifacts/elite_relic_decay_20260923/elite_relic_decay.log
+  s_b11938437a28ec::t_1417595d7e3b26 1-60
+artifacts/elite_relic_decay_20260923/relic_consistency.log
+  s_b11938437a28ec::t_e780ea9ccc57da 1-70
+artifacts/elite_relic_decay_20260923/verification.json
+  s_b11938437a28ec::t_8602336f9d8daa 1-21
+artifacts/elite_rusher_assets_20260923/attack_preview_manifest.json
+  s_b11938437a28ec::t_10299be3965ecd 1-16
+artifacts/elite_rusher_assets_20260923/elite_rusher_attack_review.html
+  s_b11938437a28ec::t_930f0e13df476c 1-40
+artifacts/elite_rusher_assets_20260923/godot_import.log
+  s_b11938437a28ec::t_d62d696894163f 1-73
+artifacts/elite_rusher_assets_20260923/godot_resource_check.log
+  s_b11938437a28ec::t_3c0256d8bf5852 1-3
+artifacts/elite_rusher_assets_20260923/validation.json
+  s_b11938437a28ec::t_58df316fc534ba 1-265
+artifacts/main_menu_preview_v1/.gdignore
+  s_d238a604a063a4::t_ef4ebd1298804c 1
+artifacts/main_menu_preview_v1/art-direction.md
+  s_d238a604a063a4::t_b6a4932108ccbd 1-33
+artifacts/main_menu_preview_v1/build_preview.py
+  s_d238a604a063a4::t_63fe09dfb04338 1-172
+artifacts/main_menu_preview_v2/.gdignore
+  s_d238a604a063a4::t_982350def71b53 1
+artifacts/main_menu_preview_v2/art-direction.md
+  s_d238a604a063a4::t_e791130c93f23a 1-42
+artifacts/main_menu_preview_v2/draw_background.py
+  s_d238a604a063a4::t_0d2c100a13c57a 1-431
+artifacts/main_menu_preview_v2/provenance.json
+  s_d238a604a063a4::t_8875bf8f59b47b 1-25
+artifacts/main_menu_title_change/.gdignore
+  s_243ef24cb13f26::t_06a4daf5e4541a 1
+artifacts/main_menu_title_change/editor.log
+  s_d238a604a063a4::t_c04f7f104eb5e6 1-21
+artifacts/main_menu_title_change/render_title.py
+  s_243ef24cb13f26::t_6a25bdd5f66220 1-41
+artifacts/miniboss_choices_20260923/bootstrap.log
+  s_b11938437a28ec::t_04823f0ed088d1 1-264
+artifacts/miniboss_choices_20260923/bootstrap_console.log
+  s_b11938437a28ec::t_f4ca7044a6806e 1-268
+artifacts/miniboss_choices_20260923/choices.log
+  s_b11938437a28ec::t_baeb93970a5bb4 1-44
+artifacts/miniboss_choices_20260923/editor.log
+  s_b11938437a28ec::t_d6f0dcdfed543c 1-26
+artifacts/miniboss_choices_20260923/editor_final.log
+  s_b11938437a28ec::t_086e7ee85d98b6 1-21
+artifacts/miniboss_choices_20260923/finance.log
+  s_b11938437a28ec::t_413b773ac0841f 1-170
+artifacts/miniboss_choices_20260923/finance_console.log
+  s_b11938437a28ec::t_cff6fcd9409a66 1-178
+artifacts/miniboss_choices_20260923/spawn_and_decay.log
+  s_b11938437a28ec::t_3817818bb1a367 1-79
+artifacts/miniboss_choices_20260923/visual.log
+  s_b11938437a28ec::t_aabeeec1c7841a 1-45
+artifacts/miniboss_expectation_20260923/bootstrap.log
+  s_b11938437a28ec::t_228e4a19933227 1-264
+artifacts/miniboss_expectation_20260923/choices.log
+  s_b11938437a28ec::t_c34eda64c1817e 1-44
+artifacts/miniboss_expectation_20260923/editor.log
+  s_b11938437a28ec::t_24118f2736aa5d 1-22
+artifacts/miniboss_expectation_20260923/spawn_and_decay.log
+  s_b11938437a28ec::t_823d120e90eb39 1-92
+artifacts/relic_audit_20260922/audit_engine.log
+  s_b11938437a28ec::t_ed544f1e5ff9df 1-42
+artifacts/relic_audit_20260922/bootstrap_engine.log
+  s_b11938437a28ec::t_1ac6f731c3fd45 1-262
+artifacts/relic_audit_20260922/editor_engine.log
+  s_b11938437a28ec::t_d0f0a22cf1a676 1-16
+artifacts/relic_fixes_20260923/bootstrap.log
+  s_b11938437a28ec::t_554b1201e133f4 1-263
+artifacts/relic_fixes_20260923/editor_final.log
+  s_b11938437a28ec::t_8d1f48cbae777a 1-25
+artifacts/relic_fixes_20260923/finance_preparation.log
+  s_b11938437a28ec::t_ff47a399af6da0 1-170
+artifacts/relic_fixes_20260923/relic_test.log
+  s_b11938437a28ec::t_54db786c646f72 1-70
+assets/audio/sfx/combat/black_hole_01.wav.import
+  s_c453c1ab7252f5::t_1685d6fb980972 1-24
+assets/audio/sfx/combat/electric_spark_01.wav.import
+  s_c453c1ab7252f5::t_75fc40fac731f9 1-24
+assets/audio/sfx/combat/explosion_01.wav.import
+  s_c453c1ab7252f5::t_4f20363c82ebfd 1-24
+assets/audio/sfx/combat/fire_01.wav.import
+  s_c453c1ab7252f5::t_2f1e996cb6d2c2 1-24
+assets/audio/sfx/combat/ice_01.wav.import
+  s_c453c1ab7252f5::t_f93c9975f858a3 1-24
+assets/audio/sfx/combat/light_sword_01.wav.import
+  s_e79df6621ce6e2::t_6fe551d58c9020 1-24
+assets/audio/sfx/combat/lightning_01.wav.import
+  s_e79df6621ce6e2::t_dbbc46dec561bf 1-24
+assets/audio/sfx/combat/plasma_hit_01.wav.import
+  s_e79df6621ce6e2::t_b4a13d08dbb3f5 1-24
+assets/audio/sfx/combat/reaction_cancel_01.wav.import
+  s_e79df6621ce6e2::t_917fea97b76d08 1-24
+assets/audio/sfx/combat/reaction_conduct_01.wav.import
+  s_e79df6621ce6e2::t_fa8dce52249a93 1-24
+assets/audio/sfx/combat/reaction_dark_flame_01.wav.import
+  s_c453c1ab7252f5::t_58e1aedb7f1c42 1-24
+assets/audio/sfx/combat/reaction_freeze_01.wav.import
+  s_c453c1ab7252f5::t_53ac18fb1cda4f 1-24
+assets/audio/sfx/combat/reaction_holy_01.wav.import
+  s_c453c1ab7252f5::t_0703b87218fcac 1-24
+assets/audio/sfx/combat/reaction_ice_expand_01.wav.import
+  s_c453c1ab7252f5::t_de9debc5f66c7b 1-24
+assets/audio/sfx/combat/reaction_reflection_01.wav.import
+  s_c453c1ab7252f5::t_159f52b566e594 1-24
+assets/audio/sfx/combat/reaction_steam_01.wav.import
+  s_c453c1ab7252f5::t_a9edd46d369b69 1-24
+assets/audio/sfx/combat/reaction_thaw_01.wav.import
+  s_c453c1ab7252f5::t_6c2904d1b431b1 1-24
+assets/audio/sfx/combat/reaction_thunder_fire_01.wav.import
+  s_c453c1ab7252f5::t_602614d8e078e4 1-24
+assets/audio/sfx/combat/reaction_wet_spread_01.wav.import
+  s_c453c1ab7252f5::t_98a3d8b3607978 1-24
+assets/audio/sfx/combat/spark_charge_01.wav.import
+  s_c453c1ab7252f5::t_7665b2b95634f7 1-24
+assets/audio/sfx/combat/water_01.wav.import
+  s_c453c1ab7252f5::t_670af95bf479cd 1-24
+assets/audio/sfx/combat/wind_01.wav.import
+  s_c453c1ab7252f5::t_9c78f34f2c44ab 1-24
+assets/audio/sfx/combat/wood_arrow_01.wav.import
+  s_c453c1ab7252f5::t_70f20abbdc4cd5 1-24
+assets/sprites/effects/telegraphs/elite_rusher_dash_path.svg
+  s_b11938437a28ec::t_dec51b0c0fd599 1-5
+assets/sprites/enemies/combat/enemy_gloom_mite_idle.png.import
+  s_c453c1ab7252f5::t_82b118198820eb 1-40
+assets/sprites/enemies/combat/enemy_gloom_mite_move.png.import
+  s_c453c1ab7252f5::t_26d5187648dfa1 1-40
+assets/sprites/enemies/elite_rusher/asset_manifest.json
+  s_b11938437a28ec::t_7fabb623bea1f4 1-123
+assets/sprites/enemies/elite_rusher/elite_rusher_sprite_frames.tres
+  s_b11938437a28ec::t_4c6d50c933be64 1-202
+assets/sprites/player/combat/void_hunter_idle_right.png.import
+  s_c453c1ab7252f5::t_3dbef52998ffc1 1-40
+assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png.import
+  s_c453c1ab7252f5::t_e26469160e8e3b 1-40
+assets/ui/finance/inspect_enchantment.svg
+  s_c453c1ab7252f5::t_10e73a4efcee50 1-4
+assets/ui/finance/inspect_enchantment.svg.import
+  s_c453c1ab7252f5::t_eb9377eb47eb72 1-43
+assets/ui/main_menu/README.md
+  s_d238a604a063a4::t_b49c73b9120fca 8
+autoloads/audio_manager.gd
+  s_e79df6621ce6e2::t_169d7f2a49c8cf 4,9-15,43-50,54-55,58,73-184,232-236,241-254,256-257,259-299
+data_config/augmentations.json
+  s_243ef24cb13f26::t_b4844d3c955089 20,41,61,276,287,291-293,403,460
+data_config/drop_tables.json
+  s_b11938437a28ec::t_bdeae371810ad6 95-96,112
+data_config/enemies.json
+  s_b11938437a28ec::t_f2273c98ff7fb9 9,19-50
+data_config/relics.json
+  s_b11938437a28ec::t_fb69010c13a159 682,689,714,722,1291,1300
+data_config/weapons.json
+  s_e79df6621ce6e2::t_653b14f02ff529 7-8,98-99
+docs/asset/asset_checklist_summary.md
+  s_b11938437a28ec::t_3be48724ba93d9 9-10,14,119-132,135-138
+docs/asset/asset_rules_summary.md
+  s_b11938437a28ec::t_989ef4ad74e8a4 28-29,39,158-159
+docs/asset/combat_audio.md
+  s_e79df6621ce6e2::t_64f6125ae4b32f 1-95
+docs/asset/combat_sprite_clarity.md
+  s_c453c1ab7252f5::t_9b3cbbb2e70b9a 1-51
+docs/asset/element_reactions.md
+  s_e79df6621ce6e2::t_74cb687ed51c4c 1-59
+docs/asset/elite_rusher_assets.md
+  s_b11938437a28ec::t_ee96f304baef01 1-114
+docs/asset/finance_preparation_refresh.md
+  s_c453c1ab7252f5::t_648ae5b37e2425 8,14,26-30,58-59
+docs/asset/pixel_combat_effects.md
+  s_243ef24cb13f26::t_fcada22768bf23 1-39
+docs/asset/stats_drawer_refresh.md
+  s_b26ecb89787365::t_446092b3f3ae69 18-23
+docs/main/18-humanity_erosion_gameplay_design.md
+  s_b11938437a28ec::t_37bf3fcc7dac78 1-515
+docs/main/checklist/elite_relic_decay_2026-09-23.md
+  s_b11938437a28ec::t_c5ae36b339fdd5 1-72
+docs/main/checklist/relic_effect_consistency_audit_2026-09-22.md
+  s_b11938437a28ec::t_69d268f20bf5c4 1-186
+docs/main/checklist/relic_effect_fixes_2026-09-23.md
+  s_b11938437a28ec::t_4a7f73737d32c5 1-56
+project.godot
+  s_c453c1ab7252f5::t_ad5ac07a368495 45
+scenes/enemy/elite_rusher.tscn
+  s_b11938437a28ec::t_76058f7c22b24f 1-19
+scenes/enemy/mutated_grub.tscn
+  s_c453c1ab7252f5::t_45c130dcba9385 4-5
+scenes/pickups/relic_pickup.tscn
+  s_b11938437a28ec::t_05502c1d22000b 1-12
+scenes/player/player_root.tscn
+  s_c453c1ab7252f5::t_751efc8af8de1f 4,44
+scenes/tests/combat_audio_reaction_test.tscn
+  s_e79df6621ce6e2::t_9cfbbf86bbf4ab 1-6
+scenes/tests/combat_audio_test.tscn
+  s_e79df6621ce6e2::t_00c3e582314f82 1-6
+scenes/tests/element_reaction_test.tscn
+  s_243ef24cb13f26::t_4bc8ebfad563dc 1-6
+scenes/tests/elite_relic_decay_test.tscn
+  s_b11938437a28ec::t_51a50a5a3642aa 1-6
+scenes/tests/miniboss_choice_test.tscn
+  s_b11938437a28ec::t_c7566248ef2455 1-4
+scenes/tests/pixel_combat_effect_test.tscn
+  s_243ef24cb13f26::t_b9839e883cba31 1-6
+scenes/tests/relic_consistency_test.tscn
+  s_b11938437a28ec::t_24f3a6e62efb33 1-6
+scenes/waves/wave_manager.tscn
+  s_b11938437a28ec::t_8377dfcd7cb171 1
+scripts/audio/combat_audio_impact.gd
+  s_e79df6621ce6e2::t_72294438f93749 1-38
+scripts/audio/combat_sound_library.gd
+  s_e79df6621ce6e2::t_e0517bab27e244 1-28
+scripts/audio/combat_sound_library.gd.uid
+  s_c453c1ab7252f5::t_34da3605b58e05 1
+scripts/core/bootstrap.gd
+  s_e79df6621ce6e2::t_cb3f580bdd1585 627-629,733,994,1006
+scripts/core/game_root.gd
+  s_c453c1ab7252f5::t_71d6fa76ed8a47 128,134-137
+scripts/core/main_flow_coordinator.gd
+  s_b11938437a28ec::t_6d0c2ddbd6d81f 52-54,100-102,200-201,267-274,282-283,286,292-322,489,500-503,511-514,539-541,556-558,808-809,832-834,841,849-854,857,873-874,879-881
+scripts/data/data_validator.gd
+  s_b11938437a28ec::t_cc34905df4736d 458-473,726-729
+scripts/effects/black_hole_effect.gd
+  s_e79df6621ce6e2::t_d3d1c6f0ece86c 6,22-24,33,35,53,58-59,61-62,77,118-175
+scripts/effects/combat_effect_world.gd
+  s_e79df6621ce6e2::t_20bcd13a47b31e 30,35,56,75,112-113,119-127
+scripts/effects/effect_parameter_resolver.gd
+  s_243ef24cb13f26::t_9579f2b65255cb 24-25,28-30
+scripts/effects/effect_scheduler.gd
+  s_243ef24cb13f26::t_c1cf0663f101de 5,13,24,36,46,85-87
+scripts/effects/electric_spark_effect.gd
+  s_e79df6621ce6e2::t_d22618aff93aa9 58
+scripts/effects/element_reaction_resolver.gd
+  s_e79df6621ce6e2::t_9f299770c9b1b0 4-5,41,46-47,66-68,113,115,130,135,142,145-156,163,172-184,186-187
+scripts/effects/element_reaction_visual.gd
+  s_e79df6621ce6e2::t_12edefd92b6e85 1-226
+scripts/effects/enemy_status_visual.gd
+  s_e79df6621ce6e2::t_b9285ba039b11d 4-5,11-12,27,35,43-53,74-78,137-167
+scripts/effects/explosion_effect.gd
+  s_e79df6621ce6e2::t_99b0c43efec433 7,17-18,21,32-34,41,49-55,59,85
+scripts/effects/fire_patch.gd
+  s_e79df6621ce6e2::t_39f9a02204281b 74,132,137,142,208-212,251,268
+scripts/effects/fire_seed.gd
+  s_e79df6621ce6e2::t_b718eb55ffe87f 33
+scripts/effects/ice_field_effect.gd
+  s_e79df6621ce6e2::t_b9d42c81fd9823 7,15-17,35-38,40,44,50-56,63-66,72,80,84,86-87,94-95,98,102-112
+scripts/effects/light_reflection_effect.gd
+  s_e79df6621ce6e2::t_a0fc9e65928f17 7-8,18-19,28-30,34,59,75,78-89,91-92
+scripts/effects/light_sword_effect.gd
+  s_e79df6621ce6e2::t_a1a59e55a0e7e3 6,25-26,36,57,77,84-85,96,103,108,112,117,119,123,125-196,198-207,212-218
+scripts/effects/lightning_particle_effect.gd
+  s_e79df6621ce6e2::t_cf3e0d66aa4a3d 18,61,83,95-96,101,136,158-160,170-171,175-176,195-196,198,241-248,258-259,316,411-414,539
+scripts/effects/lightning_status_visual.gd
+  s_243ef24cb13f26::t_eeeeb0cb7fb9e9 4,35-36,59-61
+scripts/effects/particle_world.gd
+  s_243ef24cb13f26::t_00807009270a63 420,545-547,555,654,658,662,668,793,830,835,838
+scripts/effects/pixel_effect_draw.gd
+  s_243ef24cb13f26::t_5e9902eeeee4ce 1-100
+scripts/effects/pixel_effect_draw.gd.uid
+  s_243ef24cb13f26::t_8a70b9916205fb 1
+scripts/effects/reaction_pixel_shapes.gd
+  s_e79df6621ce6e2::t_1ddfaa35afe9da 1-61
+scripts/effects/reaction_pixel_shapes.gd.uid
+  s_e79df6621ce6e2::t_8d443d1a1f6375 1
+scripts/effects/water_wave_effect.gd
+  s_e79df6621ce6e2::t_53e4cade9d86f5 6,20-21,36,53-54,58-59,68,77-78,86,104,107,112-134,137-152
+scripts/effects/wind_blade_effect.gd
+  s_e79df6621ce6e2::t_972bffb9906336 31
+scripts/enemies/elite_rusher.gd
+  s_b11938437a28ec::t_e75edebdb1014d 1-237
+scripts/enemies/elite_rusher.gd.uid
+  s_b11938437a28ec::t_747e7bd8956d6f 1
+scripts/enemies/enemy_controller.gd
+  s_b11938437a28ec::t_5772f8f1796590 64-65,113,121,125-126,140-147,178-179,214-219,242,245-246,248-274,283,288-289,296-299,379-380,390-391,398,453-454
+scripts/pickups/relic_pickup.gd
+  s_b11938437a28ec::t_538c8a6eb60e46 1-79
+scripts/pickups/relic_pickup.gd.uid
+  s_b11938437a28ec::t_6b2dcc0e4631d9 1
+scripts/player/player_controller.gd
+  s_b11938437a28ec::t_e07486140928f2 11,17-19,50-51,141,199-246,485,491-492,543-544,550-551,556,560,563-566,568,590-594,596,609-650
+scripts/relics/relic_bond_system.gd
+  s_b11938437a28ec::t_8efedfd867e01b 186-187,193-194
+scripts/rewards/battle_finance_system.gd
+  s_b11938437a28ec::t_0e36ef9dbab873 70,74-75,77-78,102-121,398,401,455-457,459,464,466,472,499,502,515,591
+scripts/rewards/drop_reward_system.gd
+  s_b11938437a28ec::t_89ef1ef4a85d81 3,8,10-51,62,75-76,94-101,160-173,176,184-191
+scripts/rewards/reward_snapshot.gd
+  s_b11938437a28ec::t_e1e65ddbc5867a 13-14,32-33,86-87
+scripts/tests/combat_audio_reaction_test.gd
+  s_e79df6621ce6e2::t_e31951fbcf8ce8 1-198
+scripts/tests/combat_audio_reaction_test.gd.uid
+  s_e79df6621ce6e2::t_633219cd4d6e34 1
+scripts/tests/combat_audio_test.gd
+  s_e79df6621ce6e2::t_8338976fbc0d3d 1-135
+scripts/tests/combat_audio_test.gd.uid
+  s_e79df6621ce6e2::t_41e0e11b4c4f6e 1
+scripts/tests/element_reaction_test.gd
+  s_243ef24cb13f26::t_4edc995a32adcd 1-210
+scripts/tests/elite_relic_decay_test.gd
+  s_b11938437a28ec::t_8e0d700328678c 1-220
+scripts/tests/elite_relic_decay_test.gd.uid
+  s_b11938437a28ec::t_ddcfb75b2c51cc 1
+scripts/tests/finance_preparation_test.gd
+  s_b11938437a28ec::t_0a9f9a195332d1 82,87,167-252,390-396
+scripts/tests/miniboss_choice_test.gd
+  s_b11938437a28ec::t_4a2cd462cfcf2c 1-138
+scripts/tests/miniboss_choice_test.gd.uid
+  s_b11938437a28ec::t_60ae8a74ddf23d 1
+scripts/tests/pixel_combat_effect_test.gd
+  s_243ef24cb13f26::t_6143154d504150 1-159
+scripts/tests/pixel_combat_effect_test.gd.uid
+  s_243ef24cb13f26::t_47f356cc6fecc1 1
+scripts/tests/relic_consistency_test.gd
+  s_b11938437a28ec::t_63fb0f4d9515ab 1-269
+scripts/tests/relic_consistency_test.gd.uid
+  s_b11938437a28ec::t_461a0f5ff9278c 1
+scripts/tools/build_combat_audio.py
+  s_e79df6621ce6e2::t_d7ed0eab0b722f 1-263
+scripts/tools/build_combat_sprites.py
+  s_c453c1ab7252f5::t_2dcf3161c9c30d 1-105
+scripts/tools/build_elite_attack_preview.py
+  s_b11938437a28ec::t_9cb79aa79581a8 1-209
+scripts/tools/build_elite_rusher_assets.py
+  s_b11938437a28ec::t_0fc3b9507916dc 1-404
+scripts/ui/battle_hud.gd
+  s_b11938437a28ec::t_a9c6df83c8475f 963,1029-1030,1043-1046
+scripts/ui/enchantment_inventory_card.gd
+  s_c453c1ab7252f5::t_5c68f09889ba44 1-66
+scripts/ui/enchantment_inventory_card.gd.uid
+  s_c453c1ab7252f5::t_a28d1cf4027684 1
+scripts/ui/enchantment_slot_card.gd
+  s_c453c1ab7252f5::t_9881648fa01652 14,18-22,26,39,44,46,55
+scripts/ui/enchantment_workbench.gd
+  s_c453c1ab7252f5::t_7d4abf812dd0ce 52,56,89,94,127,143,145-146,149,151,242-250
+scripts/ui/finance_popup.gd
+  s_c453c1ab7252f5::t_eb24e37f53c138 77,170-173,176,229,322,346,349-351,354-372,374,428,447
+scripts/ui/finance_ui_style.gd
+  s_b11938437a28ec::t_d670795ea11708 39-53,67
+scripts/ui/preparation_offer_card.gd
+  s_c453c1ab7252f5::t_ce7ce0937dc4aa 9,18,21,24,26-27,30-47,49,60-62,65,67-71,76,78,80,85-86,89,91-92,113-122
+scripts/ui/shop_popup.gd
+  s_b11938437a28ec::t_bbfd503bd80ad7 196
+scripts/ui/stat_preview_builder.gd
+  s_b11938437a28ec::t_82dc5760258ec7 7,9,11-12,14-24,28-42
+scripts/ui/virtual_shop_grid.gd
+  s_c453c1ab7252f5::t_872095123cd853 7-9,15,50
+scripts/waves/wave_manager.gd
+  s_b11938437a28ec::t_18ecc99b68c576 12,45,53-62,87-88,104,109-117,123,140,153,163-164,167,208,212-220,228-229,291-293,441-509,583-584,601-607,633-634,636-639,663-665
+scripts/weapons/projectile_instance.gd
+  s_e79df6621ce6e2::t_712aab2d684519 140,147,194-195,205-209
+scripts/weapons/weapon_instance.gd
+  s_b11938437a28ec::t_c70377b31eb606 366
+todo.md
+  s_38e1ebf7bfb35e::t_59e46f284c9b66 31-33,36-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "45127c802728bbdd7d0d90cf7670cefac79d7527",
+  "prompts": {},
+  "sessions": {
+    "s_243ef24cb13f26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cbf9-050c-7dd2-b00c-0af5a10ce723",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_38e1ebf7bfb35e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c495-4183-7921-b144-2af84c7f679a",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b26ecb89787365": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-f6fe-7830-b9f5-0fdda1c11c07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_c453c1ab7252f5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c99b-c335-7413-86cc-5ffc2a086a65",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d238a604a063a4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cc14-48a0-7c50-8b45-c6ab669a4f79",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e459c8c014e144": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0a7fa-46d6-7c01-bd6d-938278f1ad61",
+        "model": "deepseek/deepseek-v4-flash"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e79df6621ce6e2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ccf5-dfc5-7273-8101-137d06dcfe59",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
