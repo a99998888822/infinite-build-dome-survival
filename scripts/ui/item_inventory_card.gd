@@ -33,8 +33,8 @@ const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
 	"water": "水",
 	"explosion": "爆炸",
-	"lightning": "闪电",
-	"electric_spark": "电火花",
+	"lightning": "电火花",
+	"electric_spark": "落雷",
 	"ice": "冰冻",
 	"wind": "风刃",
 	"light_sword": "光辉剑",
@@ -148,7 +148,7 @@ func _append_rolled_parameter_lines(lines: Array[String]) -> void:
 	if rolled_parameters.has("stun_duration"):
 		lines.append("[color=%s]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color]" % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["stun_duration"])])
 	if rolled_parameters.has("child_count"):
-		lines.append("[color=%s]分裂子箭：[/color][color=#7FD88F]%d 支[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["child_count"])])
+		lines.append("[color=%s]分裂子弹：[/color][color=#7FD88F]%d 枚[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["child_count"])])
 	if rolled_parameters.has("spread_angle"):
 		lines.append("[color=%s]分裂角度：[/color][color=#7FD88F]%d°[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["spread_angle"])])
 	if rolled_parameters.has("extra_target_hits"):

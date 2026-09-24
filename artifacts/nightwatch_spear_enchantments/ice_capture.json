@@ -1,0 +1,49 @@
+{
+  "checks": 6,
+  "child_events": [],
+  "child_impacts": 0,
+  "child_launches": 0,
+  "enchantments": [
+    "scroll_ice"
+  ],
+  "events": [
+    {
+      "frame": 23,
+      "main_hits": 3
+    },
+    {
+      "frame": 56,
+      "main_hits": 3
+    },
+    {
+      "frame": 89,
+      "main_hits": 3
+    }
+  ],
+  "failures": 0,
+  "fps": 30,
+  "frames": 108,
+  "main_impacts": 9,
+  "observed_status": {
+    "0:slowed": true,
+    "1:slowed": true,
+    "2:slowed": true,
+    "3:slowed": true,
+    "4:slowed": true
+  },
+  "prototype": true,
+  "target_hp": [
+    1928,
+    1913,
+    1928,
+    1985,
+    1985,
+    2000,
+    2000,
+    2000,
+    2000,
+    2000,
+    2000
+  ],
+  "variant": "ice"
+}

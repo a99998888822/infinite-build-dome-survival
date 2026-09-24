@@ -1,0 +1,887 @@
+{
+  "assumptions": {
+    "principal": 500,
+    "base_rate": 5,
+    "starting_humanity": 100,
+    "combat_simulated": false,
+    "additional_deposits": 0,
+    "purchase_costs_included": false,
+    "normal_interest_ceil": true,
+    "humanity_fraction_accumulated": true,
+    "post_wave_sanity_loss": true
+  },
+  "scenarios": {
+    "baseline": {
+      "5": {
+        "principal": 640,
+        "humanity": 100.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "10": {
+        "principal": 819,
+        "humanity": 100.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "15": {
+        "principal": 1047,
+        "humanity": 100.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "19": {
+        "principal": 1274,
+        "humanity": 100.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      }
+    },
+    "one_finance_manager": {
+      "5": {
+        "principal": 687,
+        "humanity": 100.0,
+        "nominal_rate": 6.5,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "10": {
+        "principal": 944,
+        "humanity": 100.0,
+        "nominal_rate": 6.5,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "15": {
+        "principal": 1297,
+        "humanity": 100.0,
+        "nominal_rate": 6.5,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "19": {
+        "principal": 1670,
+        "humanity": 100.0,
+        "nominal_rate": 6.5,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      }
+    },
+    "two_finance_managers": {
+      "5": {
+        "principal": 737,
+        "humanity": 100.0,
+        "nominal_rate": 8.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "10": {
+        "principal": 1085,
+        "humanity": 100.0,
+        "nominal_rate": 8.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "15": {
+        "principal": 1597,
+        "humanity": 100.0,
+        "nominal_rate": 8.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "19": {
+        "principal": 2175,
+        "humanity": 100.0,
+        "nominal_rate": 8.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      }
+    },
+    "sleepless_original": {
+      "5": {
+        "principal": 690,
+        "humanity": 85.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 86.96
+      },
+      "10": {
+        "principal": 917,
+        "humanity": 70.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 76.92
+      },
+      "15": {
+        "principal": 1180,
+        "humanity": 55.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 68.97
+      },
+      "19": {
+        "principal": 1418,
+        "humanity": 43.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 63.69
+      }
+    },
+    "sleepless_proposed": {
+      "5": {
+        "principal": 753,
+        "humanity": 85.0,
+        "nominal_rate": 9.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 86.96
+      },
+      "10": {
+        "principal": 1081,
+        "humanity": 70.0,
+        "nominal_rate": 9.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 76.92
+      },
+      "15": {
+        "principal": 1493,
+        "humanity": 55.0,
+        "nominal_rate": 9.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 68.97
+      },
+      "19": {
+        "principal": 1887,
+        "humanity": 43.0,
+        "nominal_rate": 9.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 63.69
+      }
+    },
+    "frenzy_original": {
+      "5": {
+        "principal": 637,
+        "humanity": 95.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 10.0,
+        "retained_interest": 95.24
+      },
+      "10": {
+        "principal": 802,
+        "humanity": 90.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 20.0,
+        "retained_interest": 90.91
+      },
+      "15": {
+        "principal": 999,
+        "humanity": 85.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 30.0,
+        "retained_interest": 86.96
+      },
+      "19": {
+        "principal": 1184,
+        "humanity": 81.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 38.0,
+        "retained_interest": 84.03
+      }
+    },
+    "frenzy_proposed": {
+      "5": {
+        "principal": 634,
+        "humanity": 90.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 5.0,
+        "retained_interest": 90.91
+      },
+      "10": {
+        "principal": 788,
+        "humanity": 80.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 10.0,
+        "retained_interest": 83.33
+      },
+      "15": {
+        "principal": 963,
+        "humanity": 70.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 15.0,
+        "retained_interest": 76.92
+      },
+      "19": {
+        "principal": 1118,
+        "humanity": 62.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 19.0,
+        "retained_interest": 72.46
+      }
+    },
+    "frenzy_original_annuity": {
+      "5": {
+        "principal": 802,
+        "humanity": 90.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 20.0,
+        "retained_interest": 90.91
+      },
+      "10": {
+        "principal": 1234,
+        "humanity": 80.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 40.0,
+        "retained_interest": 83.33
+      },
+      "15": {
+        "principal": 1834,
+        "humanity": 70.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 60.0,
+        "retained_interest": 76.92
+      },
+      "19": {
+        "principal": 2464,
+        "humanity": 62.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 76.0,
+        "retained_interest": 72.46
+      }
+    },
+    "frenzy_proposed_annuity": {
+      "5": {
+        "principal": 788,
+        "humanity": 80.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 10.0,
+        "retained_interest": 83.33
+      },
+      "10": {
+        "principal": 1158,
+        "humanity": 60.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 20.0,
+        "retained_interest": 71.43
+      },
+      "15": {
+        "principal": 1616,
+        "humanity": 40.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 30.0,
+        "retained_interest": 62.5
+      },
+      "19": {
+        "principal": 2048,
+        "humanity": 24.0,
+        "nominal_rate": 5.0,
+        "damage_bonus": 38.0,
+        "retained_interest": 56.82
+      }
+    },
+    "compendium": {
+      "5": {
+        "principal": 652,
+        "humanity": 100.0,
+        "nominal_rate": 6.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "10": {
+        "principal": 892,
+        "humanity": 100.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "15": {
+        "principal": 1277,
+        "humanity": 100.0,
+        "nominal_rate": 8.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "19": {
+        "principal": 1760,
+        "humanity": 100.0,
+        "nominal_rate": 8.8,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      }
+    },
+    "compendium_annuity": {
+      "5": {
+        "principal": 892,
+        "humanity": 100.0,
+        "nominal_rate": 7.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "10": {
+        "principal": 1915,
+        "humanity": 100.0,
+        "nominal_rate": 9.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "15": {
+        "principal": 4931,
+        "humanity": 100.0,
+        "nominal_rate": 11.0,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      },
+      "19": {
+        "principal": 11956,
+        "humanity": 100.0,
+        "nominal_rate": 12.6,
+        "damage_bonus": 0.0,
+        "retained_interest": 100.0
+      }
+    }
+  },
+  "current_relic_count": 77,
+  "current_relics": [
+    {
+      "id": "relic_piggy_bank",
+      "display_name": "猪猪存钱罐",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "每波开始自动本金 + 15"
+    },
+    {
+      "id": "relic_finance_manager",
+      "display_name": "理财经理",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "利率 + 1.5%"
+    },
+    {
+      "id": "relic_dividend_check",
+      "display_name": "分红支票",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "每次结算利息的时候有20%的概率翻倍"
+    },
+    {
+      "id": "relic_fixed_deposit_certificate",
+      "display_name": "定期存单",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "本金立刻 + （50*波次）"
+    },
+    {
+      "id": "relic_flyer_ad",
+      "display_name": "传单广告",
+      "rarity": "uncommon",
+      "max_stack": 3,
+      "description": "商店折扣 + 8%"
+    },
+    {
+      "id": "relic_steel_vault",
+      "display_name": "钢铁保险柜",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "每 50 本金 +1 护甲"
+    },
+    {
+      "id": "relic_quant_trading",
+      "display_name": "量化操盘",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "每 50 本金 +1 攻速"
+    },
+    {
+      "id": "relic_hostile_takeover",
+      "display_name": "恶意收购",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "每 100 本金提供通用伤害加成 + 1%"
+    },
+    {
+      "id": "relic_gold_compass",
+      "display_name": "吸金罗盘",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "拾取范围 +40；金币获取 +5%"
+    },
+    {
+      "id": "relic_tip_tray",
+      "display_name": "小费托盘",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "击杀敌人时 10% 概率额外掉落 1 经验球"
+    },
+    {
+      "id": "relic_compound_interest_tome",
+      "display_name": "复利宝典",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "每成功结算一次利息，利率 + 0.2%"
+    },
+    {
+      "id": "relic_high_yield_contract",
+      "display_name": "高利契约",
+      "rarity": "epic",
+      "max_stack": 1,
+      "description": "利率 + 4%；但是每波结束时，若你回合开始前未存入本金（至少50），则当前回合结束时无法收获利息"
+    },
+    {
+      "id": "relic_merger_reorg",
+      "display_name": "并购重组",
+      "rarity": "epic",
+      "max_stack": 1,
+      "description": "负载上限 + 10；每 500 本金再 + 5"
+    },
+    {
+      "id": "relic_periodic_dividend_clock",
+      "display_name": "周期分红钟",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "每经过 3 波，额外触发一次利息结算"
+    },
+    {
+      "id": "relic_medical_cutback",
+      "display_name": "医疗削减方案",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "获得时：本金 +150；利率 +2%；回血 -0.5；血包恢复量 -1"
+    },
+    {
+      "id": "relic_welfare_cutback",
+      "display_name": "福利削减方案",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "获得时：本金 +150；利率 +2%；最大生命值 -5；护甲 - 10"
+    },
+    {
+      "id": "relic_annual_leave_cutback",
+      "display_name": "年假削减方案",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "获得时：本金 +100；利率 +2%；攻击速度 -12"
+    },
+    {
+      "id": "relic_salary_adjustment",
+      "display_name": "薪酬调整方案",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "获得时：本金 +100；利率 +2%；金币获取 -20%；商店价格 +20%"
+    },
+    {
+      "id": "relic_divine_fusion",
+      "display_name": "神性融合",
+      "rarity": "mythic",
+      "max_stack": 0,
+      "description": "每 5 侵蚀度提供利率 + 0.5%；每波开始时侵蚀度 + 1"
+    },
+    {
+      "id": "relic_goblin_central_bank_printer",
+      "display_name": "哥布林金币铸造机",
+      "rarity": "mythic",
+      "max_stack": 1,
+      "description": "利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金"
+    },
+    {
+      "id": "relic_perpetual_annuity_scroll",
+      "display_name": "永续年金卷轴",
+      "rarity": "mythic",
+      "max_stack": 1,
+      "description": "每个回合结息次数 + 1；每局最多持有 1 件"
+    },
+    {
+      "id": "relic_bankruptcy_reorg",
+      "display_name": "破产重组",
+      "rarity": "legendary",
+      "max_stack": 1,
+      "description": "本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1"
+    },
+    {
+      "id": "relic_worn_hemostatic_cloth",
+      "display_name": "磨损的止血布条",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "最大生命值 + 3"
+    },
+    {
+      "id": "relic_load_iron_bracer",
+      "display_name": "负重铁皮护腕",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "护甲 + 8；移动速度 - 5"
+    },
+    {
+      "id": "relic_pungent_sachet",
+      "display_name": "刺鼻香包",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "每秒回血 + 0.2；理智值 + 1"
+    },
+    {
+      "id": "relic_broken_crystal",
+      "display_name": "残破晶石",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "生命值低于 50% 时，护甲 + 25"
+    },
+    {
+      "id": "relic_vitality_potion",
+      "display_name": "生命力药瓶",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "每秒回血 + 0.5；每波过后，侵蚀度 + 1"
+    },
+    {
+      "id": "relic_dead_shield_badge",
+      "display_name": "死寂护盾徽章",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "战斗开局生成 10 点护盾"
+    },
+    {
+      "id": "relic_turtle_shell_pendant",
+      "display_name": "龟壳吊坠",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "护甲 + 10；最大生命值 + 2"
+    },
+    {
+      "id": "relic_prison_copper_anklet",
+      "display_name": "监狱铜制脚环",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "最大生命值 + 3；移动速度 + 10；理智值 - 5"
+    },
+    {
+      "id": "relic_brass_pocket_watch",
+      "display_name": "黄铜怀表",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "护甲 + 8；理智值 + 2"
+    },
+    {
+      "id": "relic_flesh_pauldron",
+      "display_name": "血肉肩甲",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "最大生命值 + 5、护甲 + 15；每秒回血 - 0.2；侵蚀度 + 2；理智值 - 2"
+    },
+    {
+      "id": "relic_nightmare_healing_urn",
+      "display_name": "梦魇治愈圣壶",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "每秒回血 + 0.8；每波过后，理智值 - 1"
+    },
+    {
+      "id": "relic_barrier_crystal",
+      "display_name": "屏障结晶",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "每两秒生成 1 点护盾；侵蚀度 + 5"
+    },
+    {
+      "id": "relic_cultic_holy_shield",
+      "display_name": "密教圣盾",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "护甲 + 20；侵蚀度 + 5"
+    },
+    {
+      "id": "relic_lost_wayfarer_greave",
+      "display_name": "迷途者胫环",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "护甲 + 8；移动速度 + 12；理智值低于 60 后，移动速度 - 12"
+    },
+    {
+      "id": "relic_soul_keeper_face_stone",
+      "display_name": "守魂人面石雕",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "生命值 + 5；侵蚀度每有一点，理智值也获得同等数值"
+    },
+    {
+      "id": "relic_pain_vessel",
+      "display_name": "苦痛祭皿",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "每秒回血 + 0.8；最大生命值 - 1；理智值 - 3"
+    },
+    {
+      "id": "relic_true_silver_armor",
+      "display_name": "真银护甲",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "最大生命值 + 10；护甲 + 5；理智值 + 2"
+    },
+    {
+      "id": "relic_holy_silver_cup",
+      "display_name": "圣质银杯",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "每秒回血 + 3；利率 - 1%"
+    },
+    {
+      "id": "relic_suffering_carapace",
+      "display_name": "受难甲壳",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "最大生命值 + 12；护甲 + 8；移动速度 - 15"
+    },
+    {
+      "id": "relic_costly_seed_of_life",
+      "display_name": "代价生命之种",
+      "rarity": "mythic",
+      "max_stack": 1,
+      "description": "每秒回血 + 1；复活次数 + 1；复活之后侵蚀度 + 20"
+    },
+    {
+      "id": "relic_shadowless_greave",
+      "display_name": "无影遁形胫甲",
+      "rarity": "mythic",
+      "max_stack": 1,
+      "description": "移动速度 + 32；每10点移速提供护甲+1"
+    },
+    {
+      "id": "relic_chain_of_hardship",
+      "display_name": "苦难前行之枷锁",
+      "rarity": "mythic",
+      "max_stack": 0,
+      "description": "护甲 + 15；每点侵蚀度提供 1 点护甲"
+    },
+    {
+      "id": "relic_void_tentacle",
+      "display_name": "虚空触手",
+      "rarity": "mythic",
+      "max_stack": 0,
+      "description": "开局护盾 + 20；每秒护盾 + 1；且护盾被击碎时恢复 3 生命值并增加 1 点侵蚀度"
+    },
+    {
+      "id": "relic_worn_fighting_gloves",
+      "display_name": "磨损格斗拳套",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "近战伤害 + 1；护甲 - 3"
+    },
+    {
+      "id": "relic_cracked_stone_bullet",
+      "display_name": "裂痕石子弹",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "远程伤害 + 1；拾取范围 - 10"
+    },
+    {
+      "id": "relic_hasty_spring_trigger",
+      "display_name": "急促弹簧扳机",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "攻击速度 + 8；移动速度 - 5"
+    },
+    {
+      "id": "relic_rough_grinding_lens",
+      "display_name": "粗糙研磨透镜",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "暴击几率 + 3；暴击伤害 + 10"
+    },
+    {
+      "id": "relic_blocking_counterweight",
+      "display_name": "阻滞配重石",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "控制强度 + 6"
+    },
+    {
+      "id": "relic_bloodstained_belt",
+      "display_name": "嗜血皮带",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "近战伤害 + 3；每秒回血 - 0.5"
+    },
+    {
+      "id": "relic_poison_mist_pouch",
+      "display_name": "毒雾投囊",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "远程伤害 + 3；每秒回血 - 0.5"
+    },
+    {
+      "id": "relic_tremor_grip",
+      "display_name": "震颤握柄",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "攻击速度 + 18；通用伤害 - 5"
+    },
+    {
+      "id": "relic_black_spot_eagle_eye",
+      "display_name": "黑斑鹰眼水晶",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "暴击几率 + 7"
+    },
+    {
+      "id": "relic_berserker_copper_badge",
+      "display_name": "狂战士铜质徽章",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "近战伤害 + 8；护甲 - 10"
+    },
+    {
+      "id": "relic_corroded_blowpipe",
+      "display_name": "蚀腐吹管",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "远程伤害 + 6；最大生命 - 3"
+    },
+    {
+      "id": "relic_gale_roulette",
+      "display_name": "疾风轮盘",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "攻击速度 + 30；近战伤害 - 2；远程伤害 - 2"
+    },
+    {
+      "id": "relic_executioner_bracer",
+      "display_name": "屠戮者臂铠",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "近战伤害 + 10；移速 - 20"
+    },
+    {
+      "id": "relic_judgment_eye_pendant",
+      "display_name": "裁决之眼吊坠",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "暴击几率 + 12、暴击伤害 + 35；通用伤害 - 12"
+    },
+    {
+      "id": "relic_split_crystal_warhead",
+      "display_name": "分裂晶石弹头",
+      "rarity": "mythic",
+      "max_stack": 0,
+      "description": "投射物数量 + 1；通用伤害 - 30"
+    },
+    {
+      "id": "relic_gold_digger_gloves",
+      "display_name": "淘金者的手套",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "拾取范围 + 10；经验获取 + 8"
+    },
+    {
+      "id": "relic_incomplete_divination_dice",
+      "display_name": "残缺的占卜骰子",
+      "rarity": "common",
+      "max_stack": 0,
+      "description": "幸运 + 9；掉落率 + 5"
+    },
+    {
+      "id": "relic_travelers_ledger",
+      "display_name": "商旅账本",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "金币获取 + 10；获取时本金 + 20；负载 - 5"
+    },
+    {
+      "id": "relic_defiled_blessing_coin",
+      "display_name": "被亵渎的祈福铜钱",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "幸运 + 18；理智值 - 3"
+    },
+    {
+      "id": "relic_expanded_backpack_strap",
+      "display_name": "扩容背包束带",
+      "rarity": "uncommon",
+      "max_stack": 0,
+      "description": "负载 + 10；移动速度 - 12；拾取范围 - 10"
+    },
+    {
+      "id": "relic_stargazers_lens",
+      "display_name": "观星者的镜片",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5"
+    },
+    {
+      "id": "relic_harvest_sacrificial_vessel",
+      "display_name": "丰收的牺牲祭器",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "金币获取 + 10；经验获取 + 10；最大生命值 - 5"
+    },
+    {
+      "id": "relic_amulet_of_humanity",
+      "display_name": "人性护符",
+      "rarity": "rare",
+      "max_stack": 0,
+      "description": "理智值 + 10；幸运 - 5"
+    },
+    {
+      "id": "relic_gift_mark",
+      "display_name": "馈赠印记",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "幸运 + 42；侵蚀度 + 10"
+    },
+    {
+      "id": "relic_void_storage_casket",
+      "display_name": "虚空收纳匣",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 10"
+    },
+    {
+      "id": "relic_reincarnation_hellfire_candle",
+      "display_name": "轮回业火之烛",
+      "rarity": "mythic",
+      "max_stack": 0,
+      "description": "幸运 + 75；经验获取 + 35；理智值无法再回复；侵蚀度每波 + 1"
+    },
+    {
+      "id": "relic_guarding_heart_copper_mirror",
+      "display_name": "守心铜鉴",
+      "rarity": "epic",
+      "max_stack": 0,
+      "description": "幸运 + 18；理智值每波 + 1；金币获取 + 20%"
+    },
+    {
+      "id": "relic_sleepless_ledger",
+      "display_name": "无眠账簿",
+      "rarity": "rare",
+      "max_stack": 1,
+      "description": "利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件"
+    },
+    {
+      "id": "relic_frenzied_dividend",
+      "display_name": "狂热分红",
+      "rarity": "epic",
+      "max_stack": 1,
+      "description": "每次成功收到利息后，通用伤害 + 1%，理智值 - 2；每局最多持有 1 件"
+    },
+    {
+      "id": "relic_gilded_trigger",
+      "display_name": "镀金扳机",
+      "rarity": "rare",
+      "max_stack": 1,
+      "description": "通用伤害 + 25%；理智值 - 20；每局最多持有 1 件"
+    },
+    {
+      "id": "relic_runaway_amplifier",
+      "display_name": "失控增幅器",
+      "rarity": "epic",
+      "max_stack": 1,
+      "description": "通用伤害 + 35%；每波结束理智值 - 2，触发前理智低于0时改为 - 5；每局最多持有 1 件"
+    },
+    {
+      "id": "relic_lucid_vow",
+      "display_name": "清醒誓言",
+      "rarity": "rare",
+      "max_stack": 1,
+      "description": "每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件"
+    }
+  ]
+}

@@ -21,6 +21,7 @@
 | `bonds.json` | 羁绊阈值与额外效果配置 | `bond_mighty` / `bond_sharpshooter` / `bond_chosen` |
 | `characters.json` | 角色基础属性、开局武器 | `character_void_hunter` |
 | `enemies.json` | 敌人基础属性、AI类型、掉落表引用 | `enemy_mutated_grub` |
+| `erosion_pressure_rules.json` | 波初侵蚀对所有怪物生命、攻击、护甲的独立乘区；每100侵蚀增加 +180% / +90% / +135%，超过100继续线性增长 | `erosion_enemy_stats` |
 | `camp_buildings.json` | 营地建筑等级效果与升级选项配置 | `camp_armory_workshop` / `camp_relic_archive` / `camp_dome_shelter` |
 | `waves.json` | 波次刷怪配置 | `wave_stage_01` |
 | `drop_tables.json` | 掉落表配置 | `drop_basic_enemy` / `drop_elite_enemy` / `drop_boss_enemy` |
@@ -53,17 +54,22 @@
 
 ## weapons.json 规则
 
-1. `weapons.json` 只保留运行和UI最小必要字段，不写 `description`、`enabled`、空 `effects` 等冗余字段。
+1. `weapons.json` 保留运行与 UI 必要字段；`description` 必填，用于商店和图鉴展示。
 2. 武器基础攻击间隔使用 `attack_interval_ms`，单位为毫秒整数；例如 `700` 表示0.7秒。
 3. 武器稀有度使用 `rarity`，当前白色/普通武器写 `common`。
 4. 武器图标使用 `icon`，素材未完成时可先写占位路径。
 5. 武器升级使用 `level_upgrades`：`stat` 表示属性升级，`field` 表示武器自身字段升级。
 6. 每个 `level_upgrades` 目标等级使用对象结构：`rarity` 表示升级选项稀有度，`effects` 保存具体升级效果。
-7. 索敌规则不写入配置，局内武器模块默认按最近敌人索敌。
-8. 投射物/攻击模式暂不配置化，等武器差异变复杂后再单独设计。
+7. 普通直线投射物按最近敌人索敌；榴弹选择密集怪群，秘仪书在椭圆领域内随机点名，钱袋均匀环射。
+8. `projectile_behavior` 区分普通弹体、`plasma`、`grenade`、`ritual_domain` 和 `coin`；`attack_kind=element` 使用元素武器伤害。
 9. `area_size` 只表示武器攻击距离/索敌距离；`damage_area_size` 只表示指定范围伤害的半径与视觉大小。
-10. 木质弓箭与闪电链不受 `damage_area_size` 影响；电浆球、电火花、火焰、冰冻、爆裂受其影响；`pickup_radius` 只控制掉落物吸附。
+10. 木质弓箭与电火花连锁不受 `damage_area_size` 影响；电浆球、落雷、火焰、冰冻、爆裂受其影响；`pickup_radius` 只控制掉落物吸附。
+    电浆炮的 `hit_radius` 是球体显示、接触灼击、物理碰撞和属性栏共用的基础半径，默认12像素，受 `damage_area_size` 缩放，最低4像素；`area_size` 只扩大射程。旧 `plasma_damage_radius`／`plasma_visual_radius` 已移除，接地电弧不参与伤害判定。
 11. `hit_sfx` 是可选的武器命中音效路径；音频缺失时静默处理，不影响伤害逻辑。
+12. 秘仪书的 `attack_range`、`domain_minor_axis` 分别为椭圆的水平和垂直半轴，均受 `area_size` 加成；`projectile_count` 对应每轮不同目标的点名数量。
+13. 钱袋原生伤害为 `等级基础伤害 + 角色远程伤害×player_damage_coefficient + principal_damage_coefficient×sqrt(max(当前本金, 0))`，再计算通用增伤、暴击和取整；本金只读。`volley_rotation_degrees` 决定每轮环射的角度偏移。
+14. 当前负载：木弓12、钱袋14、秘仪书18、电浆炮24、榴弹炮25，总计93；升级不增加负载，同种武器不可重复装备。长期按轻型12～14、中型16～18、重型24～25扩展武器池，支持100负载下4～8件的配装目标，当前正式种类上限仍为5件。
+15. 木弓2～5级每级增加1点远程基础伤害、缩短50毫秒间隔，不再在五级自动增加箭矢。电浆炮2～5级每级增加2点灼击基础伤害，发射间隔、灼击间隔和接触半径不变；每次灼击触发的附魔使用20%的完整元素伤害基数，延迟至具体效果结算时取整。
 
 ## bonds.json 简写规则
 
@@ -158,6 +164,3 @@
 ## 注意
 
 当前配置是“工程测试示例”，不是正式策划表。后续实现武器、遗物、敌人等模块时，可以迁移、扩展或替换这些示例。
-
-
-

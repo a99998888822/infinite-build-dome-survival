@@ -1,0 +1,63 @@
+{
+  "attacks": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "checks": 7,
+  "damage": 10,
+  "failures": 0,
+  "fps": 30,
+  "frames": 168,
+  "hits": [
+    {
+      "damage": 10,
+      "frame": 11,
+      "target": 179818205349,
+      "volley": 0
+    },
+    {
+      "damage": 10,
+      "frame": 35,
+      "target": 179616878761,
+      "volley": 1
+    },
+    {
+      "damage": 10,
+      "frame": 59,
+      "target": 179818205349,
+      "volley": 2
+    },
+    {
+      "damage": 10,
+      "frame": 83,
+      "target": 179918868646,
+      "volley": 3
+    },
+    {
+      "damage": 10,
+      "frame": 107,
+      "target": 180220858521,
+      "volley": 4
+    },
+    {
+      "damage": 10,
+      "frame": 131,
+      "target": 179717542070,
+      "volley": 5
+    },
+    {
+      "damage": 10,
+      "frame": 155,
+      "target": 179918868646,
+      "volley": 6
+    }
+  ],
+  "principal": 0.0,
+  "prototype": true,
+  "variant": "tome"
+}

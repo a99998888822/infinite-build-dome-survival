@@ -7,6 +7,7 @@ const REQUIRED_TABLES: Array[String] = [
 	"bonds",
 	"characters",
 	"enemies",
+	"erosion_pressure_rules",
 	"camp_buildings",
 	"zones",
 	"waves",
@@ -20,6 +21,7 @@ const TABLE_REQUIRED_FIELDS: Dictionary = {
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
 	"characters": ["id", "icon", "base_stats", "start_weapons"],
 	"enemies": ["id", "base_stats", "drop_table_id"],
+	"erosion_pressure_rules": ["id", "erosion_full_at", "max_hp_bonus_percent", "damage_bonus_percent", "armor_bonus_percent"],
 	"camp_buildings": ["id", "name", "levels", "upgrade_options"],
 	"zones": ["id", "display_name", "description", "tendency_tags", "enemy_pressure_per_streak", "player_pressure_per_streak", "fortune_gain", "reward_bias"],
 	"waves": ["id", "duration_seconds", "spawn_groups"],
@@ -99,6 +101,7 @@ func validate_all(tables: Dictionary, records_by_id: Dictionary) -> bool:
 	_validate_bond_records(tables.get("bonds", []))
 	_validate_character_records(tables.get("characters", []), records_by_id)
 	_validate_enemy_records(tables.get("enemies", []), records_by_id)
+	_validate_erosion_pressure_records(tables.get("erosion_pressure_rules", []))
 	_validate_zone_records(tables.get("zones", []), records_by_id)
 	_validate_camp_building_records(tables.get("camp_buildings", []), records_by_id)
 	_validate_wave_records(tables.get("waves", []), records_by_id)
@@ -199,6 +202,10 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 
 
 func _allows_fractional_config_value(path: String) -> bool:
+	if path.begins_with("weapons[") and path.ends_with(".principal_damage_coefficient"):
+		return true
+	if path.begins_with("weapons[") and (path.ends_with(".grenade_flight_seconds") or path.ends_with(".player_damage_coefficient") or path.ends_with(".grenade_split_radius_multiplier") or path.ends_with(".grenade_split_flight_seconds")):
+		return true
 	return (path.contains(".runtime_effects[") and (
 		path.ends_with(".value") or path.ends_with(".principal_percent")
 	)) or (path.contains(".runtime_effects[") and (
@@ -251,6 +258,25 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
 	_validate_non_negative_int(record, "attachment_slots", path)
+	if str(record.get("projectile_behavior", "")) == "ritual_domain":
+		_validate_non_negative_int(record, "domain_minor_axis", path)
+		if str(record.get("attack_kind", "")) != "element" or float(record.get("domain_minor_axis", 0)) <= 0 or float(record.get("attack_range", 0)) <= 0:
+			errors.append("%s requires elemental damage and positive ellipse axes." % path)
+	if str(record.get("projectile_behavior", "")) == "coin":
+		for field in ["player_damage_coefficient", "principal_damage_coefficient", "volley_rotation_degrees"]:
+			var value: Variant = record.get(field)
+			if not (value is int or value is float) or float(value) < 0.0:
+				errors.append("%s.%s must be a non-negative number." % [path, field])
+		if str(record.get("attack_kind", "")) != "ranged" or float(record.get("projectile_speed", 0)) <= 0:
+			errors.append("%s requires ranged damage and positive projectile speed." % path)
+	if str(record.get("projectile_behavior", "")) == "grenade":
+		for field in ["grenade_flight_seconds", "grenade_blast_radius", "player_damage_coefficient", "grenade_split_radius_multiplier", "grenade_split_flight_seconds", "grenade_split_arc_height"]:
+			var value: Variant = record.get(field)
+			if not (value is int or value is float) or float(value) <= 0.0:
+				errors.append("%s.%s must be a positive number." % [path, field])
+		var unsupported: Variant = record.get("unsupported_effects", [])
+		if not (unsupported is Array) or not unsupported.has("pierce") or unsupported.has("split"):
+			errors.append("%s must reject pierce and support split for grenades." % path)
 	if record.has("hit_sfx") and not (record["hit_sfx"] is String):
 		errors.append("%s.hit_sfx must be a string resource path." % path)
 
@@ -341,18 +367,24 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 		warnings.append("Unknown relic runtime trigger in %s: %s" % [path, str(effect_data["trigger"])])
 	if effect_data.has("effect") and not VALID_RELIC_RUNTIME_EFFECTS.has(str(effect_data["effect"])):
 		warnings.append("Unknown relic runtime effect in %s: %s" % [path, str(effect_data["effect"])])
-	for key in ["value", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave", "chance_percent", "gold_multiplier", "divisor", "per_unit", "amount", "minimum_deposit"]:
+	for key in ["value", "else_value", "threshold", "value_percent", "double_chance_percent", "zero_chance_percent", "principal_percent", "value_per_wave", "chance_percent", "gold_multiplier", "divisor", "per_unit", "amount", "minimum_deposit"]:
 		if not effect_data.has(key):
 			continue
 		if not (effect_data[key] is int or effect_data[key] is float):
 			errors.append("%s.%s must be a number." % [path, key])
 			continue
-		var allows_negative_value: bool = key == "value" and str(effect_data.get("effect", "")) in [
+		var allows_negative_value: bool = key == "threshold" or (key in ["value", "else_value"] and str(effect_data.get("effect", "")) in [
 			BattleFinanceSystem.EFFECT_ADD_STAT,
 			BattleFinanceSystem.EFFECT_CONDITIONAL_STAT,
-		]
+		])
 		if float(effect_data[key]) < 0.0 and not allows_negative_value:
 			errors.append("%s.%s must be greater than or equal to 0." % [path, key])
+	if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_ADD_STAT and effect_data.has("condition"):
+		_validate_required_fields(effect_data, ["value", "threshold"], path)
+		if str(effect_data.condition) not in ["humanity_below", "hp_percent_below"]:
+			errors.append("%s.condition is not a supported stat condition." % path)
+	if effect_data.has("else_value") and not effect_data.has("condition"):
+		errors.append("%s.else_value requires a condition." % path)
 	for stat_key in ["stat", "source_stat", "target_stat"]:
 		if effect_data.has(stat_key) and not StatDefinitions.has_stat(str(effect_data.get(stat_key, ""))):
 			errors.append("Unknown stat reference in %s.%s: %s" % [path, stat_key, str(effect_data.get(stat_key, ""))])
@@ -471,6 +503,21 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 			_validate_non_negative_int(profile, "quota_cap", "%s.elite_profile" % path)
 			if float(profile.get("spawn_window_percent", 50)) <= 0.0 or float(profile.get("spawn_window_percent", 50)) > 50.0:
 				errors.append("%s.elite_profile.spawn_window_percent must be in (0, 50]." % path)
+
+
+func _validate_erosion_pressure_records(records: Array) -> void:
+	var found := false
+	for record in records:
+		if not (record is Dictionary):
+			continue
+		var path := "erosion_pressure_rules[%s]" % str(record.get("id", ""))
+		found = found or str(record.get("id", "")) == "erosion_enemy_stats"
+		for field in ["erosion_full_at", "max_hp_bonus_percent", "damage_bonus_percent", "armor_bonus_percent"]:
+			_validate_non_negative_int(record, field, path)
+		if (record.get("erosion_full_at") is int or record.get("erosion_full_at") is float) and float(record.erosion_full_at) <= 0.0:
+			errors.append("%s.erosion_full_at must be positive." % path)
+	if not found:
+		errors.append("Missing erosion_pressure_rules.erosion_enemy_stats record.")
 
 
 func _validate_zone_records(records: Array, records_by_id: Dictionary) -> void:

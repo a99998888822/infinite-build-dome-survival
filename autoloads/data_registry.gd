@@ -10,6 +10,7 @@ const CONFIG_PATHS: Dictionary = {
 	"bonds": "res://data_config/bonds.json",
 	"characters": "res://data_config/characters.json",
 	"enemies": "res://data_config/enemies.json",
+	"erosion_pressure_rules": "res://data_config/erosion_pressure_rules.json",
 	"camp_buildings": "res://data_config/camp_buildings.json",
 	"zones": "res://data_config/zones.json",
 	"waves": "res://data_config/waves.json",

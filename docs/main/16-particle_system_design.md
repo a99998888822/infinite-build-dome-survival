@@ -60,7 +60,7 @@ MVP 应保留这套实现的优点，不立即改成大量 GPUParticles2D 节点
 | projectile_trail | 木箭飞行 | 少量短命淡色方块，不参与伤害 |
 | beam_core | 射线主体预留 | 由小型方形粒子绘制，不做材质交互 |
 | explosion_burst | 爆炸附魔 | 同尺寸小方块向四周散开，无重力下坠 |
-| electric_spark | 电火花附魔 | 命中点旋转黄色虚线圈，延迟落下高空闪电 |
+| electric_spark | 落雷附魔 | 命中点旋转黄色虚线圈，延迟落下高空闪电 |
 | entity_spawn | 实体生成 | 环绕生成点的短时环形粒子 |
 
 MVP 实际优先完成 impact_green、impact_terrain、projectile_trail、explosion_burst 和 electric_spark；其余预设只要求配置结构和调用接口稳定。
@@ -153,9 +153,9 @@ position
   -> ParticleWorld
 ```
 
-运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`area_size` 控制攻击距离，`damage_area_size` 仅由指定范围伤害效果用于控制影响范围与相关视觉大小，`control_power` 由具体效果绑定控制强度或连锁参数；穿透与分裂属于投射物附魔行为，不属于角色属性。粒子本身不承担伤害碰撞；回旋、火焰池、闪电连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
+运动行为采用可插拔模式，MVP 先支持 `attached`、`linear`、`boomerang` 和 `orbit`。`projectile_count` 控制独立投射物/发射器数量，`area_size` 控制攻击距离，`damage_area_size` 仅由指定范围伤害效果用于控制影响范围与相关视觉大小，`control_power` 由具体效果绑定控制强度或连锁参数；穿透与分裂属于投射物附魔行为，不属于角色属性。粒子本身不承担伤害碰撞；回旋、火焰池、电火花连锁等效果由独立运行时处理，ParticleWorld 只负责动态视觉。
 
-当前编码阶段先实现 `EffectContext`、`EffectModifier`、`EffectParameterResolver`、`ParticleEmitterRuntime` 和 `ParticleMotionBehavior`，并将木箭拖尾迁移到动态发射器；火焰、爆炸和闪电在此基础上扩展。
+当前编码阶段先实现 `EffectContext`、`EffectModifier`、`EffectParameterResolver`、`ParticleEmitterRuntime` 和 `ParticleMotionBehavior`，并将木箭拖尾迁移到动态发射器；火焰、爆炸和电火花在此基础上扩展。
 
 MVP 附魔卷轴：`scroll_split` 在命中敌人后生成有限数量子投射物，子投射物只分裂一次并优先寻找未命中的敌人；`scroll_pierce` 通过 `extra_target_hits` 提供投射物级后续命中次数。两者均由物品实例参数驱动，不再依赖角色全局投射物属性。
 
@@ -173,13 +173,21 @@ ProjectileInstance 在命中敌人或场景时发送 attack_hit_enemy 或 attack
 
 爆炸系统发送 explosion_started，并提供半径、方向和强度。ParticleWorld 负责闪光、碎片、烟尘和冲击环；伤害和场景破坏由其他模块处理。
 
-### 5.4 电火花附魔
+### 5.4 落雷附魔
 
-ProjectileInstance 命中敌人或场景后发送电火花效果事件。效果节点固定保存命中点，在 `0.5` 秒预警窗口内绘制旋转的黄色虚线圆圈；延迟结束后在圆心触发一次从 `260px` 高度落下的闪电像素路径，并重新查询圆圈范围内的敌人造成伤害。闪电路径复用闪电附魔的随机控制点和小型方块采样逻辑。
+ProjectileInstance 命中敌人或场景后发送落雷效果事件。效果节点固定保存命中点，在 `0.5` 秒预警窗口内绘制旋转的黄色虚线圆圈；延迟结束后在圆心触发一次从 `260px` 高度落下的闪电像素路径，并重新查询圆圈范围内的敌人造成伤害。闪电路径复用电火花附魔的随机控制点和小型方块采样逻辑。
 
 ### 5.5 实体
 
 实体类武器只发送 entity_spawned、entity_hit 和 entity_expired。实体自身可持有一个或多个 emitter 配置，但不能直接访问全局绘制缓冲区。
+
+### 5.6 电浆炮球状闪电
+
+电浆弹体由 `plasma_ball_visual.gd` 负责绘制。球体使用逐像素、横纵对称的圆形遮罩，固定轮廓内有四档蓝白色能量团流动和明灭，外沿有少量短促的方形电火花。不使用偏心暗面、法线光照、镜面高光或球面电弧。16帧发光内核纹理由代码生成并共享缓存，遮罩每帧一致，避免脉动时变形。球体、物理碰撞、灼击查询和属性栏统一读取 `WeaponInstance.get_hit_radius()`：基础半径来自 `hit_radius=12`，受 `damage_area_size` 缩放，最低4像素，默认显示直径仍为24像素。接地电弧的落点范围、抖动幅度和闪回节奏沿用上一版，起点位于小球边缘。
+
+少量电弧由球面连接至地面，地面单独绘制椭圆投影、微弱蓝光和落点亮粒。每条电弧以0.32秒为周期：首次闪现、短暂熄灭、同一落点再次闪现，然后淡出；路径以每秒24次的节奏抖动。落点在一次周期内固定于世界坐标，球体继续飞行时电弧会拉伸。地面层为5，球体跟随投射物层级50。
+
+保留 `plasma_arc_count`、`plasma_arc_segments` 和 `plasma_arc_jitter` 配置入口；移除球面电弧后，旧 `plasma_rotation_speed` 字段不再参与绘制。旧的112像素伤害半径及独立 `plasma_damage_radius`／`plasma_visual_radius` 配置已移除。球体与怪物碰撞体接触时才减速并开始灼击；每次灼击只命中当时接触的敌人，离开后停止，重新接触可以继续剩余次数。保留0.1秒间隔、每颗最多5次、原有单次伤害和附魔派发。视觉时钟随战斗暂停；电弧、光晕和投影不扩大接触范围。
 
 ## 6. 性能与约束
 
@@ -219,19 +227,19 @@ MVP 暂不实现：
 
 ## 10. Current MVP Implementation
 
-- Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the `lightning` effect.
+- Wood-arrow impact events enter `CombatEffectWorld`; the starter wood arrow has the 电火花 (`lightning`) effect.
 - Fire uses invisible scattered seed logic and `FirePatch` collision; its visible seeds, embers and ground fire are all emitted particles. The pool distributes flame clusters across an elliptical footprint instead of drawing a pool shape, lasts about two seconds, and burning damage is an independent enemy status.
 - `FirePatch` is logic-only: it has no `_draw()` flame geometry. Each pool uses four low-rate child emitters for base flame, tongues, hot core and embers, all rendered by the shared `ParticleWorld`.
 - Fire particles use a shared active-particle budget (`MAX_FIRE_PARTICLES`) and pool-level light refresh, avoiding one light source per particle and preventing stacked fire pools from flooding the frame.
 - Explosion uses one unified `explosion_burst` profile: identical `4x4` square particles (96 base particles) are born at the exact explosion center and spread in all directions with zero gravity, zero drag and no falling debris. Explosion damage falloff is configurable and defaults to 0.0 for fixed damage inside the radius; terrain destruction can add one secondary burst at the same center.
-- Lightning is triggered only after a projectile hits an enemy: the first target is the impact source, and a lethal projectile hit still allows the chain to search for the next live enemy.
+- 电火花 (`lightning`) is triggered only after a projectile hits an enemy: the first target is the impact source, and a lethal projectile hit still allows the chain to search for the next live enemy.
 - Lightning paths use short-lived randomized white pixel arcs: 24-pixel control points, densely sampled small rectangular particles with per-particle random rotation and subtle white glows; no continuous line geometry is drawn, and hit flashes and sparks remain ParticleWorld effects.
 - Split child projectiles have no trail and do not create projectile-trail emitters.
 - Each chained hit emits a white flash, radial white sparks and a particle-only caterpillar-like paralysis visual; the gameplay stun is a separate short-lived enemy status.
 - `ParticleLightField` provides short-lived background tint and glow; `EffectContext` can modify emission, size, speed, glow and damage.
 - Enchantment scrolls and wizard scrolls live in `augmentations.json`, use `EffectModifier`, and use the existing `drop_rate_percent` formula.
-- The base `scroll_lightning` enchantment links the hit target to exactly one additional live target; its `chain_interval` is 0.10 seconds and its stun duration is 0.70 seconds. The separate `wizard_scroll_chain_mastery` can still extend the chain through its existing modifier.
-- The `scroll_electric_spark` enchantment marks the projectile impact position with a rotating yellow dashed ring, waits 0.5 seconds, then calls a high-altitude pixel lightning strike and damages enemies inside the marked radius.
+- The base 电火花 (`scroll_lightning`) enchantment links the hit target to exactly one additional live target; its `chain_interval` is 0.10 seconds and its stun duration is 0.70 seconds. The separate `wizard_scroll_chain_mastery` can still extend the chain through its existing modifier.
+- The 落雷 (`scroll_electric_spark`) enchantment marks the projectile impact position with a rotating yellow dashed ring, waits 0.5 seconds, then calls a high-altitude pixel lightning strike and damages enemies inside the marked radius.
 - This is an executable MVP, not full Noita pixel physics: particles do not own collision, and terrain destruction remains a separate system.
 
 ### 10.1 Noita 中文站整体对标清单
@@ -241,8 +249,8 @@ MVP 暂不实现：
 - **火焰**：由多层橙/红/黄正方形粒子、上升运动、短寿命、局部光照和背景染色组合成火焰形状；火焰池与燃烧状态分离。
 - **火焰池 MVP**：发射器只在地面附近生成正方形粒子；横向位置决定可达到的最大高度与寿命，中心粒子上升更高、边缘粒子更快消散；颜色按橙色→黄色→黄白色三阶段渐变，不绘制三角形或其他火焰几何体。
 - **爆炸**：由同尺寸的 `4x4` 小型方形粒子从爆炸中心向四周散开，基础数量为 96，不使用重力、阻力或下坠碎片；视觉、伤害、场景破坏分别处理。
-- **闪电**：由白色小型像素矩形沿随机路径连接敌人，粒子带随机旋转和轻微白色发光以打散虚线观感；命中点使用白色径向粒子爆发；麻痹状态使用跟随敌人的环绕粒子，并由独立状态控制短暂停止移动。掉落卷轴的连锁次数、传递间隔和麻痹时间按实例独立随机。
-- **电火花**：命中点先显示旋转的黄色虚线圆圈，延迟 0.5 秒后从较高位置劈下参考闪电附魔的白色像素闪电；落雷路径上部和下部较窄、中段较宽，并在圆圈范围内造成伤害。
+- **电火花**：由白色小型像素矩形沿随机路径连接敌人，粒子带随机旋转和轻微白色发光以打散虚线观感；命中点使用白色径向粒子爆发；麻痹状态使用跟随敌人的环绕粒子，并由独立状态控制短暂停止移动。掉落卷轴的连锁次数、传递间隔和麻痹时间按实例独立随机。
+- **落雷**：命中点先显示旋转的黄色虚线圆圈，延迟 0.5 秒后从较高位置劈下参考电火花附魔的白色像素闪电；落雷路径上部和下部较窄、中段较宽，并在圆圈范围内造成伤害。
 - **实体**：实体拥有独立生命周期和粒子发射器，可追加跟随、围绕、返回等运动行为。
 - **材料反应**：最终版本允许粒子标签与材料系统交换事件；MVP 保持场景破坏系统独立，避免把伤害碰撞写入粒子层。
 

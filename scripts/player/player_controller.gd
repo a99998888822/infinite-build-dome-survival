@@ -661,7 +661,17 @@ func _is_relic_condition_active(effect: Dictionary) -> bool:
 
 
 func _process_relic_runtime_trigger(trigger: String) -> void:
-	for effect in get_active_relic_runtime_effects(trigger):
+	var effects := get_active_relic_runtime_effects(trigger)
+	var values: Array[float] = []
+	# Resolve conditional amounts before any effect changes the triggering stats.
+	for effect in effects:
+		var value := float(effect.get("value", 0.0))
+		if str(effect.get("effect", "")) == BattleFinanceSystem.EFFECT_ADD_STAT and effect.has("condition"):
+			if not _is_relic_condition_active(effect):
+				value = float(effect.get("else_value", 0.0))
+		values.append(value)
+	for index in effects.size():
+		var effect: Dictionary = effects[index]
 		var effect_type := str(effect.get("effect", ""))
 		match effect_type:
 			BattleFinanceSystem.EFFECT_ADD_STAT:
@@ -676,7 +686,7 @@ func _process_relic_runtime_trigger(trigger: String) -> void:
 					"target_scope": "player",
 					"stat": target_stat,
 					"operation": str(effect.get("operation", Modifier.OPERATION_ADD_FLAT)),
-					"value": float(effect.get("value", 0.0)),
+					"value": values[index],
 					"duration": Modifier.PERMANENT_DURATION,
 					"stack_rule": Modifier.STACK_RULE_STACK_ADD,
 				})

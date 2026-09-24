@@ -1,0 +1,10 @@
+{
+  "editor_script_errors": 0,
+  "test_checks": 64,
+  "test_failures": 0,
+  "capture_production": true,
+  "capture_valid": true,
+  "attacks": 10,
+  "hits": 10,
+  "known_exit_resource_warnings": true
+}

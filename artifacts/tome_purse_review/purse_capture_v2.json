@@ -1,0 +1,109 @@
+{
+  "attacks": [
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  "checks": 10,
+  "damage": 10,
+  "failures": 0,
+  "fps": 30,
+  "frames": 168,
+  "hits": [
+    {
+      "damage": 10,
+      "frame": 25,
+      "target": 180489293970,
+      "volley": 0
+    },
+    {
+      "damage": 10,
+      "frame": 25,
+      "target": 180086640802,
+      "volley": 0
+    },
+    {
+      "damage": 10,
+      "frame": 25,
+      "target": 179683987630,
+      "volley": 0
+    },
+    {
+      "damage": 10,
+      "frame": 58,
+      "target": 180187304095,
+      "volley": 1
+    },
+    {
+      "damage": 10,
+      "frame": 58,
+      "target": 179784650927,
+      "volley": 1
+    },
+    {
+      "damage": 10,
+      "frame": 58,
+      "target": 180589957249,
+      "volley": 1
+    },
+    {
+      "damage": 10,
+      "frame": 91,
+      "target": 180690620546,
+      "volley": 2
+    },
+    {
+      "damage": 10,
+      "frame": 91,
+      "target": 180287967384,
+      "volley": 2
+    },
+    {
+      "damage": 10,
+      "frame": 91,
+      "target": 179885314220,
+      "volley": 2
+    },
+    {
+      "damage": 10,
+      "frame": 124,
+      "target": 180791283839,
+      "volley": 3
+    },
+    {
+      "damage": 10,
+      "frame": 124,
+      "target": 179985977511,
+      "volley": 3
+    },
+    {
+      "damage": 10,
+      "frame": 124,
+      "target": 180388630661,
+      "volley": 3
+    },
+    {
+      "damage": 10,
+      "frame": 157,
+      "target": 179683987630,
+      "volley": 4
+    },
+    {
+      "damage": 10,
+      "frame": 157,
+      "target": 180489293970,
+      "volley": 4
+    },
+    {
+      "damage": 10,
+      "frame": 157,
+      "target": 180086640802,
+      "volley": 4
+    }
+  ],
+  "principal": 400.0,
+  "prototype": true,
+  "variant": "purse"
+}

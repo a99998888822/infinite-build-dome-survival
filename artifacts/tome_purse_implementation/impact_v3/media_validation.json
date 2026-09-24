@@ -1,0 +1,26 @@
+{
+  "tome": {
+    "frames": 160,
+    "duration_ms": 8000,
+    "size": [
+      640,
+      540
+    ]
+  },
+  "impact_detail": {
+    "frames": 43,
+    "duration_ms": 2150,
+    "size": [
+      384,
+      384
+    ],
+    "speed": 0.5,
+    "scale": 3,
+    "source_crop": [
+      548,
+      392,
+      676,
+      520
+    ]
+  }
+}

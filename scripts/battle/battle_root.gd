@@ -100,8 +100,11 @@ func _bind_to_flow() -> void:
 	_apply_mobile_controls(coordinator.get_current_state())
 
 
-func _on_flow_state_changed(_previous_state: String, current_state: String) -> void:
-	_apply_esc_overlay_visibility(current_state)
+func _on_flow_state_changed(previous_state: String, current_state: String) -> void:
+	var settings_over_esc := current_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and _main_flow_coordinator.get_battle_display_state() == MainFlowCoordinator.STATE_ESC_OVERLAY
+	var returning_to_esc := previous_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and current_state == MainFlowCoordinator.STATE_ESC_OVERLAY
+	if not settings_over_esc and not returning_to_esc:
+		_apply_esc_overlay_visibility(current_state)
 	_apply_mobile_controls(current_state)
 
 

@@ -21,9 +21,9 @@ ASSET = ROOT / "assets/audio/sfx/combat"
 SPECS = [
     ("wood_arrow", "木质弓箭命中", "武器", 1, -7, 65, 3, 2, .035),
     ("plasma_hit", "电浆炮接触", "武器", 1, -10, 160, 2, 2, .025),
-    ("lightning", "闪电 · 电弧跳跃", "附魔", 1, -10, 110, 2, 1, .035),
-    ("spark_charge", "电火花 · 蓄能", "附魔", 1, -17, 350, 1, 0, 0),
-    ("electric_spark", "电火花 · 落雷", "附魔", 1, -9, 200, 2, 2, .02),
+    ("lightning", "电火花 · 噼啪电弧", "附魔", 1, -8, 75, 3, 1, .035),
+    ("spark_charge", "落雷 · 蓄能", "附魔", 1, -19, 350, 1, 0, 0),
+    ("electric_spark", "落雷 · 雷击轰鸣", "附魔", 1, -5, 260, 3, 2, .015),
     ("fire", "火焰 · 引燃", "附魔", 1, -12, 260, 2, 1, .035),
     ("explosion", "爆炸 · 短冲击", "附魔", 1, -10, 230, 2, 2, .035),
     ("water", "水流 · 泼溅", "附魔", 1, -11, 180, 2, 1, .035),
@@ -37,12 +37,16 @@ SPECS = [
     ("reaction_holy", "光火 · 神圣火焰", "联动", 1, -13, 450, 1, 2, .015),
     ("reaction_dark_flame", "暗火 · 暗焰", "联动", 1, -14, 500, 1, 2, .02),
     ("reaction_cancel", "光暗 · 湮灭", "联动", 1, -12, 350, 1, 2, .02),
-    ("reaction_conduct", "水电 · 导电", "联动", 1, -14, 240, 1, 2, .035),
-    ("reaction_thunder_fire", "雷火 · 引爆", "联动", 1, -10, 300, 2, 2, .025),
+    ("reaction_conduct", "电火花 × 水 · 导电爆裂", "联动", 1, -10, 160, 2, 2, .035),
+    ("reaction_thunder_fire", "电火花 × 火 · 雷火引爆", "联动", 1, -8, 300, 2, 2, .025),
+    ("reaction_conduct_strike", "落雷 × 水 · 导电雷鸣", "联动", 1, -5, 260, 3, 2, .015),
+    ("reaction_thunder_fire_strike", "落雷 × 火 · 雷火轰鸣", "联动", 1, -5, 260, 3, 2, .015),
     ("reaction_wet_spread", "风水 · 扩散", "联动", 1, -16, 350, 1, 0, .03),
     ("reaction_ice_expand", "风冰 · 霜线推进", "联动", 1, -15, 350, 1, 1, .02),
     ("reaction_reflection", "光冰 · 棱镜反射", "联动", 1, -12, 450, 1, 2, .015),
 ]
+# All landing variants share one cooldown and voice budget, including reactions.
+THUNDER_CUES = {"electric_spark", "reaction_conduct_strike", "reaction_thunder_fire_strike"}
 
 
 class Synth:
@@ -76,6 +80,47 @@ class Synth:
         for start, gain in [(.028,.23),(.071,.13),(.115,.06)]:
             self.grit(650, 4500, .01, gain*scale, start)
 
+    def crackle(self, scale=1, start=0):
+        # Irregular groups of dry electrical snaps, not a pitched laser glide.
+        for onset, weight in [(0, 1), (.041, .85), (.093, .9), (.156, .65), (.218, .5), (.279, .3)]:
+            at = start + onset
+            self.grit(750, 7200, .005, .48*weight*scale, at, attack=.0002)
+            self.grit(340, 1900, .010, .16*weight*scale, at, attack=.0004)
+            for _ in range(3):
+                self.grit(1800, 9200, self.rng.uniform(.0008, .0032),
+                          self.rng.uniform(.12, .28)*weight*scale,
+                          at+self.rng.uniform(.002, .023), attack=.00015)
+        # Quiet electrical grain bridges the snaps without becoming white hiss.
+        gate = (.5+.5*np.sin(2*np.pi*83*self.t))**5
+        self.x += .045*scale*self.noise(1400, 6100)*gate*self.env(.13, start)
+
+    def thunder(self):
+        # Close lightning crack -> chest-weight pressure -> rolling thunder.
+        # The body is mostly turbulent noise: a falling sine alone sounds like a kick.
+        self.grit(1400, 8500, .011, .52, attack=.0003)
+        self.grit(400, 3400, .058, .48, start=.005, attack=.001)
+        self.grit(70, 520, .20, .72, attack=.004)
+        self.grit(38, 150, .34, .65, start=.014, attack=.009)
+        self.tone(66, .17, .18, start=.008, end=52, glide=.09)
+        self.grit(120, 1400, .19, .26, start=.035, attack=.017)
+        # Overlapping, increasingly distant rolls give a long but receding tail.
+        for at, weight, high in [(.10, .24, 680), (.24, .20, 430), (.43, .14, 290), (.68, .09, 190)]:
+            roll = self.noise(40, high)
+            wobble = .65+.35*np.sin(2*np.pi*(5.3*self.t+.8*self.t*self.t))**2
+            self.x += weight*roll*wobble*self.env(.27, at, attack=.035)
+        # Diffuse early reflections, then dark reverberation; no obvious repeat.
+        dry = self.x.copy()
+        wet = np.zeros_like(dry)
+        for delay, gain in [(.031, .15), (.053, -.12), (.087, .10), (.139, .08), (.211, -.055)]:
+            offset = round(delay*RATE)
+            wet[offset:] += gain*dry[:-offset]
+        ir_t = np.arange(round(.78*RATE))/RATE
+        impulse = self.rng.normal(size=len(ir_t))*np.exp(-ir_t/.17)*(1-np.exp(-ir_t/.028))
+        impulse = signal.sosfilt(signal.butter(2, 1250, fs=RATE, output="sos"), impulse)
+        impulse /= max(np.linalg.norm(impulse), 1e-9)
+        wet += .11*signal.fftconvolve(dry, impulse)[:len(dry)]
+        self.x += wet
+
     def crystal(self, scale=1, spread=1):
         for i, freq in enumerate([1050, 1713, 2497, 3431]):
             self.tone(freq*spread, .06+i*.022, scale*.18/(1+i*.5), i*.013)
@@ -90,8 +135,10 @@ class Synth:
 
 def synthesize(key, variant):
     seed = int.from_bytes(hashlib.sha256(f"{key}:{variant}:v1".encode()).digest()[:4], "little")
-    duration = {"wood_arrow":.19, "lightning":.23, "spark_charge":.48,
-                "electric_spark":.49, "black_hole":.76, "light_sword":.48,
+    duration = {"wood_arrow":.19, "lightning":.36, "spark_charge":.48,
+                "electric_spark":1.72, "reaction_conduct_strike":1.72,
+                "reaction_thunder_fire_strike":1.88, "reaction_thunder_fire":.65,
+                "reaction_conduct":.39, "black_hole":.76, "light_sword":.48,
                 "reaction_dark_flame":.62, "reaction_reflection":.53,
                 "reaction_cancel":.43}.get(key, .39)
     s = Synth(duration, seed)
@@ -108,20 +155,29 @@ def synthesize(key, variant):
         s.grit(260,2600,.072,.22)
         s.x += .12*np.sin(2*np.pi*530*s.t + 2*np.sin(2*np.pi*73*s.t))*s.env(.09)
     elif key == "lightning":
-        s.arc()
-        s.tone(180,.03,.16)
+        s.crackle()
     elif key == "spark_charge":
-        ramp = np.sin(np.pi*np.minimum(s.t/.5,1))**.7
-        f = 360 + 1050*(s.t/.5)**1.5
-        phase = 2*np.pi*np.cumsum(f)/RATE
-        s.x += .18*np.sin(phase+1.3*np.sin(phase*.51))*ramp
-        s.x += .10*s.noise(1200,4000)*ramp*(.55+.45*np.sin(2*np.pi*31*s.t))
-    elif key in ("electric_spark", "reaction_thunder_fire", "explosion"):
-        if key != "explosion": s.arc(.85)
+        progress = np.clip(s.t/.48, 0, 1)
+        ramp = progress**1.5*(1-np.exp(-s.t/.025))
+        ramp *= np.clip((.48-s.t)/.025, 0, 1)
+        s.x += (.20*s.noise(180, 1300)*(1-progress)+.10*s.noise(1600, 5500)*progress)*ramp
+        s.x += .04*s.noise(700, 3200)*ramp*(.5+.5*np.sin(2*np.pi*47*s.t))**3
+    elif key in THUNDER_CUES:
+        s.thunder()
+        if key == "reaction_conduct_strike":
+            s.crackle(.40, start=.035)
+            s.grit(1800, 6000, .08, .10, start=.09)
+        elif key == "reaction_thunder_fire_strike":
+            s.grit(90, 1600, .24, .27, start=.06, attack=.018)
+            s.crackle(.25, start=.11)
+    elif key == "reaction_thunder_fire":
+        s.crackle(.70)
+        s.grit(70, 800, .14, .48, start=.012, attack=.004)
+        s.grit(180, 2300, .10, .25, start=.043)
+    elif key == "explosion":
         s.tone(150*v,.095,.60,end=49,glide=.024)
         s.grit(65,900,.10,.35)
         s.grit(1000,5000,.020,.18)
-        if key == "reaction_thunder_fire": s.grit(150,2300,.065,.24,start=.043)
     elif key in ("fire", "reaction_dark_flame"):
         s.grit(80,1500,.13,.36,attack=.009)
         for start in [.01,.066,.14,.21]: s.grit(1200,4300,.007,.09,start)
@@ -163,9 +219,8 @@ def synthesize(key, variant):
         s.tone(720,.065,.26,end=65,glide=.06)
         s.grit(1400,4500,.012,.15,start=.088)
     elif key == "reaction_conduct":
-        s.arc(.55)
-        s.tone(310,.063,.25,end=100)
-        s.tone(640,.04,.13,start=.06,end=270)
+        s.crackle(.95)
+        s.grit(450, 2400, .055, .12, start=.025)
     else:
         raise ValueError(key)
     # DC rejection, soft transient saturation, bounded peak and click-free endpoints.
@@ -211,22 +266,23 @@ def build_review(folder, profiles, audio):
         x=audio[key][v]*10**(profiles[key]["gain_db"]/20)
         at=round(start*RATE); mix[at:at+len(x)] += x
     write_wav(folder/"combat_sequence.wav",mix)
-    spark = np.zeros(RATE*2)
+    spark = np.zeros(round(RATE*(.6+len(audio["electric_spark"][0])/RATE+.25)))
     for start,key in [(0.1,"spark_charge"),(.6,"electric_spark")]:
         x=audio[key][0]*10**(profiles[key]["gain_db"]/20)
         at=round(start*RATE); spark[at:at+len(x)] += x
     write_wav(folder/"spark_charge_and_strike.wav",spark)
-    page = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>战斗音效 · 第一版试听</title>
+    page = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>战斗音效 · 当前试听</title>
 <style>body{margin:0;background:#171b1c;color:#e5dbc9;font:16px/1.65 system-ui}main{max-width:1140px;margin:auto;padding:36px 28px}h1{font-size:30px}h2{margin-top:38px}p{color:#b6b5a8}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}article{padding:18px;background:#292822;border:1px solid #4f4a3e;border-radius:9px}h3{margin:3px 0 8px;font-size:18px}small{color:#9cc0ad}audio{width:100%;height:38px;margin:4px 0}button{padding:9px 16px;margin:4px;border:1px solid #72694c;border-radius:5px;background:#35372d;color:#eee;cursor:pointer}header{border-bottom:1px solid #504b3d;padding-bottom:20px}</style>
-<main><header><small>ORIGINAL PROCEDURAL SFX · 48 kHz / 16-bit PCM / MONO</small><h1>战斗音效 · 第一版试听</h1>
+<main><header><small>ORIGINAL PROCEDURAL SFX · 48 kHz / 16-bit PCM / MONO</small><h1>战斗音效 · 当前试听</h1>
 <p>短促的材质撞击与元素音色，少量空腔、颤动用于黑洞和暗焰。全部由程序合成，无外部采样。此页可离线使用。</p>
-<p>已精简为 23 类、23 个正式音效，每类一个播放器。游戏播放时保留小幅音高随机变化；电火花的蓄能与落雷仍是两个独立阶段。</p>
+<p>共 @@CUE_COUNT@@ 类正式音效，每类一个播放器。电火花为密集噼啪电弧；落雷为近处雷击与低沉滚雷，蓄能和雷击分开播放。水、火联动各有保留落雷轰鸣的组合音。</p>
 <p>单项展示素材原始音量；游戏还会按表中增益降低音量、限制重复与并发。原版电音保持原始音量，仅供音色对照，不是等响度测评。</p></header>
-<h2>组合试听</h2><section><article><h3>电火花：蓄能 → 0.5 秒后落雷</h3><audio controls src="@@SPARK@@"></audio></article><article><h3>连续交战 · 合成示意</h3><p>按游戏增益拼接，非实机录音；不含背景音乐。</p><audio controls src="@@MIX@@"></audio></article></section>
+<h2>组合试听</h2><section><article><h3>落雷：蓄能 → 0.5 秒后落雷</h3><audio controls src="@@SPARK@@"></audio></article><article><h3>连续交战 · 合成示意</h3><p>按游戏增益拼接，非实机录音；不含背景音乐。</p><audio controls src="@@MIX@@"></audio></article></section>
 <h2>新音效</h2><nav><button onclick="filter('')">全部</button><button onclick="filter('武器')">武器</button><button onclick="filter('附魔')">附魔</button><button onclick="filter('联动')">联动</button></nav><section id="sounds">@@CARDS@@</section>
-<h2>原版电音</h2><section>@@OLD@@</section><p>审阅重点：木箭是否够实、不像敲水鼓；闪电和电火花是否好区分；冰与光是否刺耳；连续播放是否疲劳。</p></main>
+<h2>原版电音</h2><section>@@OLD@@</section><p>审阅重点：木箭是否够实、不像敲水鼓；电火花和落雷是否好区分；冰与光是否刺耳；连续播放是否疲劳。</p></main>
 <script>function filter(k){document.querySelectorAll('#sounds article').forEach(e=>e.hidden=!!k&&e.dataset.kind!==k)}document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')document.querySelectorAll('audio').forEach(a=>{if(a!==e.target)a.pause()})},true)</script></html>'''
     page=page.replace("@@SPARK@@",data_uri(folder/"spark_charge_and_strike.wav")).replace("@@MIX@@",data_uri(folder/"combat_sequence.wav")).replace("@@CARDS@@","".join(items)).replace("@@OLD@@","".join(old))
+    page=page.replace("@@CUE_COUNT@@",str(len(SPECS)))
     (folder/"combat_audio_review.html").write_text(page,encoding="utf-8")
 
 
@@ -244,6 +300,8 @@ def main():
             report.append({"file":path.name,"seconds":len(x)/RATE,"peak_db":round(20*np.log10(max(abs(x))),2),
                            "rms_db":round(20*np.log10(np.sqrt(np.mean(x*x))),2),"end_sample":float(x[-1])})
         profiles[key]={"paths":paths,"gain_db":gain,"cooldown_ms":cooldown,"max_voices":voices,"priority":priority,"pitch_spread":pitch}
+        if key in THUNDER_CUES:
+            profiles[key]["voice_group"] = "thunder_landing"
     # Preloads also make every WAV an explicit export dependency.
     catalogue="extends RefCounted\n\n# Generated by scripts/tools/build_combat_audio.py. Tune profiles there.\nconst PROFILES: Dictionary = {\n"
     for key,profile in profiles.items():
@@ -252,7 +310,10 @@ def main():
         catalogue+='\t'+json.dumps(key)+': {"streams": ['+stream_text+'], '+json.dumps(fields)[1:] + ",\n"
     catalogue+="}\n"
     target=ROOT/"scripts/audio/combat_sound_library.gd"
-    target.parent.mkdir(parents=True,exist_ok=True); target.write_text(catalogue,encoding="utf-8")
+    target.parent.mkdir(parents=True,exist_ok=True)
+    newline = "\r\n" if target.exists() and b"\r\n" in target.read_bytes() else "\n"
+    with target.open("w", encoding="utf-8", newline="") as output:
+        output.write(catalogue.replace("\n", newline))
     if args.review_dir:
         build_review(args.review_dir,profiles,audio)
         (args.review_dir/"audio_metrics.json").write_text(json.dumps(report,indent=2),encoding="utf-8")

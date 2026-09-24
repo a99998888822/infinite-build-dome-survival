@@ -6,6 +6,7 @@ signal weapon_upgraded(weapon_id: String, level: int)
 signal equip_failed(weapon_id: String, reason: String)
 signal weapon_attachment_changed(weapon_id: String, item_instance_id: String)
 signal loadout_changed
+signal weapon_fired(weapon_id: String, count: int)
 
 const PROJECTILE_VISUAL_SCALE: float = 1.0
 const PROJECTILE_INSTANCE_SCRIPT: Script = preload("res://scripts/weapons/projectile_instance.gd")
@@ -14,9 +15,11 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const ATTACHABLE_ITEM_CATEGORIES: Array[String] = ["enchantment_scroll", "wizard_scroll"]
 
 var owner_player: PlayerController = null
+var finance_system: BattleFinanceSystem = null
 var weapon_instances: Array[WeaponInstance] = []
 var targeting_service: TargetingService = null
 var _projectile_sequence: int = 0
+var _ritual_domains: Dictionary = {}
 
 
 func _ready() -> void:
@@ -28,8 +31,11 @@ func _ready() -> void:
 		add_child(targeting_service)
 
 
-func initialize(player: PlayerController) -> bool:
+func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> bool:
+	for previous in weapon_instances:
+		_clear_weapon_runtime(previous)
 	owner_player = player
+	finance_system = bank
 	weapon_instances.clear()
 	if owner_player == null:
 		push_error("[WeaponLoadout] missing owner player.")
@@ -59,6 +65,7 @@ func take_weapon_for_trade(weapon_id: String) -> WeaponInstance:
 	var weapon := get_weapon_instance(weapon_id)
 	if weapon != null:
 		weapon_instances.erase(weapon)
+		_clear_weapon_runtime(weapon)
 	return weapon
 
 
@@ -114,6 +121,8 @@ func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
 	if item.is_empty():
 		return false
 	if not ATTACHABLE_ITEM_CATEGORIES.has(str(item.get("category", ""))):
+		return false
+	if not weapon.get_attachment_incompatibility(item).is_empty():
 		return false
 	var equipped_weapon_id := str(item.get("equipped_weapon_id", ""))
 	if equipped_weapon_id == weapon_id:
@@ -211,7 +220,11 @@ func get_load_capacity() -> int:
 
 
 func tick(delta: float) -> void:
+	if not is_instance_valid(owner_player) or not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
 	for weapon in weapon_instances:
+		if weapon.is_ritual_tome():
+			_ensure_ritual_domain(weapon)
 		weapon.tick(delta)
 		if weapon.can_attack():
 			_try_attack_with_weapon(weapon)
@@ -236,6 +249,7 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 	if not weapon.initialize(weapon_id, owner_player):
 		_fail(weapon_id, "initialize_failed")
 		return false
+	weapon.principal_getter = Callable(self, "get_current_principal")
 	if owner_player.item_inventory != null:
 		for starting_item in owner_player.item_inventory.get_equipped_items_for_weapon(weapon_id):
 			if not weapon.attach_item_instance(starting_item):
@@ -246,9 +260,26 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 	return true
 
 
+func get_current_principal() -> float:
+	return float(finance_system.principal) if finance_system != null else 0.0
+
+
 func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 	if weapon == null or owner_player == null or targeting_service == null:
 		return false
+	if not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return false
+	if weapon.is_ritual_tome():
+		var domain := _ensure_ritual_domain(weapon)
+		if domain.try_attack():
+			weapon.reset_attack_timer()
+			weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+			return true
+		return false
+	if weapon.is_coin_purse():
+		return _fire_coins(weapon)
+	if weapon.is_grenade():
+		return _fire_grenades(weapon)
 	var attacked := false
 	var damage_events := weapon.calculate_damage_events(false)
 	for damage_event in damage_events:
@@ -257,6 +288,59 @@ func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 	if attacked:
 		weapon.reset_attack_timer()
 	return attacked
+
+
+func _ensure_ritual_domain(weapon: WeaponInstance) -> RitualDomain:
+	var cached: Variant = _ritual_domains.get(weapon.instance_id)
+	if is_instance_valid(cached) and not cached.cancelled:
+		return cached as RitualDomain
+	var domain := RitualDomain.new()
+	_get_visual_root().add_child(domain)
+	domain.initialize(weapon)
+	_ritual_domains[weapon.instance_id] = domain
+	return domain
+
+
+func _clear_weapon_runtime(weapon: WeaponInstance) -> void:
+	_ritual_domains.erase(weapon.instance_id)
+	if not is_inside_tree():
+		return
+	for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
+		if effect.weapon == weapon:
+			effect.cancel()
+
+
+func _fire_coins(weapon: WeaponInstance) -> bool:
+	# The purse intentionally sprays radially, independent of nearest-target aiming.
+	var count := maxi(1, int(weapon.get_stat("projectile_count")))
+	var shared_hits: Dictionary = {}
+	var origin := owner_player.global_position + Vector2(0, -12)
+	var rotation_step := deg_to_rad(float(weapon.weapon_data.get("volley_rotation_degrees", 30)))
+	for index in count:
+		var direction := Vector2.RIGHT.rotated(TAU * index / float(count) + rotation_step * weapon.volley_index)
+		var coin := CoinProjectile.new()
+		_get_visual_root().add_child(coin)
+		coin.initialize(weapon, weapon.calculate_damage_events()[0], origin, direction, shared_hits)
+		coin.age = index * 0.04
+	weapon.volley_index += 1
+	weapon.reset_attack_timer()
+	weapon_fired.emit(weapon.weapon_id, count)
+	return true
+
+
+func _fire_grenades(weapon: WeaponInstance) -> bool:
+	var count := maxi(1, int(weapon.get_stat("projectile_count")))
+	var targets := targeting_service.find_cluster_targets(owner_player.global_position, weapon.get_attack_range(), weapon.get_grenade_blast_radius(), count)
+	if targets.is_empty():
+		return false
+	for target in targets:
+		var grenade := GrenadeProjectile.new()
+		_get_visual_root().add_child(grenade)
+		# Each grenade rolls independently, then shares that roll across its victims.
+		grenade.initialize(weapon, weapon.calculate_damage_events()[0], owner_player.global_position, target)
+	weapon.reset_attack_timer()
+	AudioManager.play_sfx_path(str(weapon.weapon_data.get("launch_sfx", "")), 100, "grenade_launch")
+	return true
 
 
 func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> bool:

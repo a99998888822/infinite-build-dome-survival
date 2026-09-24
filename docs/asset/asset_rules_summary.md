@@ -72,7 +72,9 @@
 | `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 已存在 | 64x64；配置 `display_name` 为“木质弓箭”，`weapon_void_blade` 是遗留 ID（按设计保留，不再重命名） |
 | `weapon_void_blade` | `projectile_texture` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 已存在 | 24x24；投射物贴图 |
 | `weapon_void_blade` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
-| `weapon_plasma_cannon` | `icon` | `assets/ui/icons/weapons/weapon_plasma_cannon.png` | 已存在 | 32x32 |
+| `weapon_plasma_cannon` | `icon` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 已接入 | 64x64；蓝青双导轨新版 |
+| `weapon_iron_grenade_cannon` | `icon` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 已接入 | 64x64；铸铁与黄铜 |
+| `weapon_iron_grenade_cannon` | `launch_sfx` | `assets/audio/sfx/combat/grenade_launch_01.wav` | 已接入 | 本地合成，单声道 44.1 kHz；100ms 发射去重 |
 | `weapon_plasma_cannon` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
 
 ### 5. Godot 导入与裁剪约定

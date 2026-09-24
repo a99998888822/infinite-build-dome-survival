@@ -1,0 +1,11 @@
+{
+  "editor_script_errors": 0,
+  "headless_passed": true,
+  "production_capture_passed": true,
+  "pause_verified": true,
+  "core_scale": 0.5,
+  "default_core_diameter_px": 24,
+  "surface_arcs": false,
+  "ground_discharge_preserved": true,
+  "known_exit_cleanup_warnings": true
+}

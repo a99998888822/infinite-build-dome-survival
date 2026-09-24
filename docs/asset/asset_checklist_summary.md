@@ -113,6 +113,11 @@
 | 已存在 | 虚空触手遗物图标 | `relic_void_tentacle.png` | `assets/ui/icons/relics/relic_void_tentacle.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | 磨损格斗拳套遗物图标 | `relic_worn_fighting_gloves.png` | `assets/ui/icons/relics/relic_worn_fighting_gloves.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | 磨损的止血布条遗物图标 | `relic_worn_hemostatic_cloth.png` | `assets/ui/icons/relics/relic_worn_hemostatic_cloth.png` | 32x32 / 1:1 / PNG |  |
+| 已存在 | 无眠账簿遗物图标 | `relic_sleepless_ledger.png` | `assets/ui/icons/relics/relic_sleepless_ledger.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
+| 已存在 | 狂热分红遗物图标 | `relic_frenzied_dividend.png` | `assets/ui/icons/relics/relic_frenzied_dividend.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
+| 已存在 | 镀金扳机遗物图标 | `relic_gilded_trigger.png` | `assets/ui/icons/relics/relic_gilded_trigger.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
+| 已存在 | 失控增幅器遗物图标 | `relic_runaway_amplifier.png` | `assets/ui/icons/relics/relic_runaway_amplifier.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
+| 已存在 | 清醒誓言遗物图标 | `relic_lucid_vow.png` | `assets/ui/icons/relics/relic_lucid_vow.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
 | 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
 | 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |
@@ -141,7 +146,8 @@
 | 已存在 | 连锁主宰卷轴图标 | `scroll_lightning.png` | `assets/ui/icons/augmentations/scroll_lightning.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 穿透卷轴图标 | `scroll_pierce.png` | `assets/ui/icons/augmentations/scroll_pierce.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 分裂卷轴图标 | `scroll_split.png` | `assets/ui/icons/augmentations/scroll_split.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 电浆炮武器图标 | `weapon_plasma_cannon.png` | `assets/ui/icons/weapons/weapon_plasma_cannon.png` | 32x32 / 1:1 / PNG |  |
+| 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版保留 |
+| 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 64x64 / 1:1 / RGBA PNG | 铸铁炮管、黄铜箍、木柄 |
 | 已存在 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 64x64 / 1:1 / PNG |  |
 | 已存在 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1920x1080 / 16:9 / PNG |  |
 | 已存在 | 主菜单按钮底图 | `button_main_menu.png` | `assets/ui/main_menu/button_main_menu.png` | 600x186 / PNG |  |
@@ -229,6 +235,6 @@
 | 未存在 | 取出音效 | `sfx_finance_withdraw.ogg` | `assets/audio/sfx/finance/sfx_finance_withdraw.ogg` | OGG/WAV，短音效 | 金币倒出声 |
 | 未存在 | 利息结算音效 | `sfx_interest_settle.ogg` | `assets/audio/sfx/finance/sfx_interest_settle.ogg` | OGG/WAV，短音效 | 柔和金币叮声 |
 | 未存在 | 本金锁定提示 | `sfx_finance_lock.ogg` | `assets/audio/sfx/finance/sfx_finance_lock.ogg` | OGG/WAV，短音效 | 轻微冰封/锁扣声 |
-| 已存在 | 闪电附魔音效 1 | `lighting_1.wav` | `assets/audio/sfx/effects/lighting_1.wav` | WAV | lightning 附魔随机音效 |
-| 已存在 | 闪电附魔音效 2 | `lighting_2.wav` | `assets/audio/sfx/effects/lighting_2.wav` | WAV | lightning 附魔随机音效 |
-| 已存在 | 电火花附魔音效 | `thunder_1.wav` | `assets/audio/sfx/effects/thunder_1.wav` | WAV | electric_spark 附魔音效 |
+| 已存在 | 电火花附魔音效 1 | `lighting_1.wav` | `assets/audio/sfx/effects/lighting_1.wav` | WAV | lightning 附魔随机音效 |
+| 已存在 | 电火花附魔音效 2 | `lighting_2.wav` | `assets/audio/sfx/effects/lighting_2.wav` | WAV | lightning 附魔随机音效 |
+| 已存在 | 落雷附魔音效 | `thunder_1.wav` | `assets/audio/sfx/effects/thunder_1.wav` | WAV | electric_spark 附魔音效 |

@@ -12,7 +12,7 @@ func _init() -> void:
 		rules = parsed
 
 
-func quote_weapon(weapon: WeaponInstance) -> Dictionary:
+func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary:
 	if weapon == null:
 		return {}
 	var rarity := maxi(0, RARITIES.find(str(weapon.weapon_data.get("rarity", "common"))))
@@ -31,7 +31,7 @@ func quote_weapon(weapon: WeaponInstance) -> Dictionary:
 	for item in weapon.get_attached_item_instances():
 		returned_items.append(str(item.get("display_name", "")))
 		returned_ids.append(str(item.get("item_instance_id", "")))
-	return _with_token({
+	return _with_humanity({
 		"kind": "weapon", "target_id": weapon.weapon_id, "instance_id": weapon.instance_id,
 		"display_name": str(weapon.weapon_data.get("display_name", weapon.weapon_id)),
 		"level": weapon.level, "icon": str(weapon.weapon_data.get("icon", "")),
@@ -39,22 +39,31 @@ func quote_weapon(weapon: WeaponInstance) -> Dictionary:
 		"base_value": base_value, "upgrade_value": upgrade_value, "title_bonus": title_bonus,
 		"total": base_value + upgrade_value + title_bonus,
 		"returned_items": returned_items, "returned_ids": returned_ids,
-	})
+	}, humanity)
 
 
-func quote_item(item: Dictionary) -> Dictionary:
+func quote_item(item: Dictionary, humanity: float = 100.0) -> Dictionary:
 	if item.is_empty():
 		return {}
 	var rarity := maxi(0, RARITIES.find(str(item.get("rarity", "common"))))
 	var basis := int(rules.get("enchantment_base_value", 15)) + rarity * int(rules.get("rarity_value_step", 5))
 	var total := floori(float(basis) * float(rules.get("enchantment_sell_ratio", 0.5)))
-	return _with_token({
+	return _with_humanity({
 		"kind": "enchantment", "target_id": str(item.get("item_instance_id", "")),
 		"display_name": str(item.get("display_name", "")), "icon": str(item.get("icon", "")),
 		"description": str(item.get("description", "")),
 		"rolled_parameters": item.get("rolled_parameters", {}).duplicate(true),
 		"equipped_weapon_id": str(item.get("equipped_weapon_id", "")), "total": total,
-	})
+	}, humanity)
+
+
+func _with_humanity(quote: Dictionary, humanity: float) -> Dictionary:
+	var neutral := int(quote.get("total", 0))
+	quote["total_without_humanity"] = neutral
+	quote["humanity"] = humanity
+	quote["total"] = floori(float(neutral) * float(HumanityEconomy.get_multipliers(humanity).sale))
+	quote["humanity_loss"] = neutral - int(quote.total)
+	return _with_token(quote)
 
 
 func _with_token(quote: Dictionary) -> Dictionary:

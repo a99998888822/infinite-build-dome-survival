@@ -129,6 +129,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"tags": upgrade_tags,
 		}, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus, shop_price_discounts))
 
+	for candidate in candidates:
+		HumanityEconomy.reprice_offer(candidate, float(context.get("humanity", 100)))
 	return candidates
 
 
@@ -381,11 +383,16 @@ func _build_candidate_entry(candidate: Dictionary, zone_tendency_tags: Array[Str
 	var pool_key := str(candidate.get("pool_key", ""))
 	var tags := _to_string_array(candidate.get("tags", []))
 	candidate["weight"] = _calculate_candidate_weight(pool_key, tags, zone_tendency_tags, zone_target_pools, zone_tag_weight_bonus)
+	candidate["shop_price_basis"] = _calculate_shop_basis(candidate, shop_price_discounts)
 	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_discounts)
 	return candidate
 
 
 func _calculate_shop_cost(candidate: Dictionary, shop_price_discounts: Array[float]) -> int:
+	return maxi(1, ceili(_calculate_shop_basis(candidate, shop_price_discounts)))
+
+
+func _calculate_shop_basis(candidate: Dictionary, shop_price_discounts: Array[float]) -> float:
 	var rarity_index := RARITIES.find(str(candidate.get("rarity", "common")))
 	if rarity_index < 0:
 		rarity_index = 0
@@ -397,7 +404,7 @@ func _calculate_shop_cost(candidate: Dictionary, shop_price_discounts: Array[flo
 		base_cost += maxi(0, int(candidate.get("total_relic_count", 0)))
 		if rarity_index > 2:
 			base_cost += maxi(0, int(candidate.get("relic_rarity_count", 0))) * 3 * (rarity_index - 2)
-	return StatDefinitions.calculate_shop_cost_from_discounts(base_cost + rarity_index * 5, shop_price_discounts)
+	return float(base_cost + rarity_index * 5) * StatDefinitions.calculate_shop_price_multiplier(shop_price_discounts)
 
 
 func _calculate_candidate_weight(pool_key: String, tags: Array[String], zone_tendency_tags: Array[String], zone_target_pools: Dictionary, zone_tag_weight_bonus: int) -> int:

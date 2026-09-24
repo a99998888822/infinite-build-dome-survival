@@ -176,10 +176,18 @@ func _update_selection() -> void:
 	_apply.text = "卸下附魔" if same_weapon else ("转移至此武器" if not equipped.is_empty() else "装备至此武器")
 	_apply.disabled = item.is_empty() or current == null or (not same_weapon and not current.has_available_attachment_slot())
 	_apply.tooltip_text = "当前武器没有空槽，请先卸下附魔" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
+	if current != null and not same_weapon:
+		var incompatibility := current.get_attachment_incompatibility(item)
+		if not incompatibility.is_empty():
+			_apply.disabled = true
+			_apply.tooltip_text = incompatibility
+			_selection.text += " · " + incompatibility
 	var sale_quote := flow.get_inventory_sale_quote("enchantment", selected_item_id) if not item.is_empty() and equipped.is_empty() else {}
 	_sell_item.text = "出售附魔(%d)" % int(sale_quote.get("total", 0)) if bool(sale_quote.get("success", false)) else "出售附魔"
 	_sell_item.disabled = item.is_empty() or not equipped.is_empty() or not bool(sale_quote.get("success", false))
 	_sell_item.tooltip_text = "先卸下，再出售" if not equipped.is_empty() else ""
+	if bool(sale_quote.get("success", false)):
+		_sell_item.tooltip_text = HumanityEconomy.sale_tooltip(sale_quote)
 	var selected_index := -1
 	var attached := current.get_attached_item_instances() if current != null else []
 	for index in attached.size():

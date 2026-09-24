@@ -1,0 +1,75 @@
+{
+	"checks": 5,
+	"damage": 14,
+	"events": [
+		{
+			"event": "start",
+			"frame": 11,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 23,
+			"hits": 2
+		},
+		{
+			"event": "start",
+			"frame": 44,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 56,
+			"hits": 2
+		},
+		{
+			"event": "start",
+			"frame": 77,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 89,
+			"hits": 3
+		},
+		{
+			"event": "start",
+			"frame": 110,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 122,
+			"hits": 2
+		},
+		{
+			"event": "start",
+			"frame": 143,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 155,
+			"hits": 2
+		},
+		{
+			"event": "start",
+			"frame": 176,
+			"target": 175170916515
+		},
+		{
+			"event": "finish",
+			"frame": 188,
+			"hits": 2
+		}
+	],
+	"failures": 0,
+	"fps": 30,
+	"frames": 198,
+	"interval": 1.1,
+	"prototype": true,
+	"reach": 220,
+	"scripted_player_movement": true,
+	"variant": "kite",
+	"width": 28
+}

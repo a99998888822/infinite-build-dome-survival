@@ -137,7 +137,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 999999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "元素附魔及元素反应造成的固定伤害加成。"
+		"description": "元素武器、元素附魔及元素反应造成的固定伤害加成。"
 	},
 	"damage_percent": {
 		"display_name": "伤害加成",
@@ -147,7 +147,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 99999,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "通用伤害百分比加成，影响近战和远程伤害。"
+		"description": "通用伤害百分比加成，影响近战、远程和元素武器伤害。"
 	},
 	"attack_speed": {
 		"display_name": "攻击速度",
@@ -345,7 +345,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": DEFAULT_HUMANITY,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "理智值/人性，初始为100；不设上限和下限，越低时侵蚀度积蓄越快。"
+		"description": "理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。"
 	},
 	"divinity": {
 		"display_name": "侵蚀度",
@@ -353,7 +353,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": DEFAULT_DIVINITY,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "侵蚀度，初始为0；不设上限和下限，表示与克苏鲁外神的靠近程度。"
+		"description": "提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；战斗压力加成有上限。"
 	}
 }
 

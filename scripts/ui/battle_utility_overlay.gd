@@ -18,9 +18,14 @@ var _entry_details: RichTextLabel
 var _records: Array[Dictionary] = []
 var _volume_controls: Dictionary = {}
 var _resolution: OptionButton
-var _fullscreen: CheckButton
+var _fullscreen_yes: Button
+var _fullscreen_no: Button
 var _display_note: Label
 var _close_button: Button
+var _settings_footer: HBoxContainer
+var _return_button: Button
+var _menu_button: Button
+var _showing_settings: bool = false
 
 
 func _ready() -> void:
@@ -58,6 +63,7 @@ func _ready() -> void:
 	header.add_child(_close_button)
 	_build_encyclopedia(content)
 	_build_settings(content)
+	_build_settings_footer(content)
 	get_viewport().size_changed.connect(_layout)
 	WindowSettings.settings_changed.connect(_sync_display_settings)
 	_layout()
@@ -78,9 +84,16 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 	if state != MainFlowCoordinator.STATE_BATTLE_UTILITY:
 		return
 	var is_encyclopedia := str(payload.get("page", "")) == "encyclopedia"
-	_title.text = "游戏百科" if is_encyclopedia else "游戏设置"
+	_showing_settings = not is_encyclopedia
+	_title.text = "游戏百科" if is_encyclopedia else "设置"
+	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if is_encyclopedia else HORIZONTAL_ALIGNMENT_CENTER
+	_title.add_theme_color_override("font_color", SettingsUIStyle.GOLD)
+	_close_button.visible = is_encyclopedia
 	_encyclopedia.visible = is_encyclopedia
 	_settings.visible = not is_encyclopedia
+	_settings_footer.visible = not is_encyclopedia
+	if _showing_settings:
+		_panel.add_theme_stylebox_override("panel", SettingsUIStyle.panel())
 	if is_encyclopedia:
 		_refresh_entries()
 	else:
@@ -88,7 +101,10 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 		_sync_display_settings()
 	visible = true
 	_layout()
-	_close_button.grab_focus()
+	if is_encyclopedia:
+		_close_button.grab_focus()
+	else:
+		_return_button.grab_focus()
 	AudioManager.play_ui_sfx("modal_open")
 
 
@@ -119,7 +135,8 @@ func _input(event: InputEvent) -> void:
 
 func _layout() -> void:
 	var viewport_size := get_viewport().get_visible_rect().size
-	var panel_size := Vector2(minf(800, viewport_size.x - 32), minf(520, viewport_size.y - 88))
+	var target_size := Vector2(620, 454) if _showing_settings else Vector2(800, 520)
+	var panel_size := Vector2(minf(target_size.x, viewport_size.x - 32), minf(target_size.y, viewport_size.y - 88))
 	_panel.position = Vector2((viewport_size.x - panel_size.x) * 0.5, 64 + (viewport_size.y - 80 - panel_size.y) * 0.5)
 	_panel.size = panel_size
 	_entries.custom_minimum_size.x = clampf(panel_size.x * 0.28, 144, 216)
@@ -242,40 +259,99 @@ func _build_settings(parent: VBoxContainer) -> void:
 	parent.add_child(_settings)
 	var content := VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.add_theme_constant_override("separation", 18)
+	content.add_theme_constant_override("separation", 12)
 	_settings.add_child(content)
 	_add_volume_control(content, "背景音乐", AudioManager.BUS_BGM, "bgm_volume")
 	_add_volume_control(content, "音效", AudioManager.BUS_SFX, "sfx_volume")
-	var resolution_label := Label.new()
-	resolution_label.text = "窗口分辨率"
-	content.add_child(resolution_label)
+	var resolution_row := _settings_row(content, "界面分辨率")
 	_resolution = OptionButton.new()
 	_resolution.name = "Resolution"
-	_resolution.custom_minimum_size.y = 32
+	_resolution.custom_minimum_size.y = 36
+	_resolution.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	SettingsUIStyle.apply_button(_resolution)
 	for resolution in WindowSettings.get_resolution_presets():
 		_resolution.add_item("%d × %d" % [resolution.x, resolution.y])
 	_resolution.item_selected.connect(func(index: int) -> void: WindowSettings.set_resolution_index(index))
-	content.add_child(_resolution)
-	_fullscreen = CheckButton.new()
-	_fullscreen.name = "Fullscreen"
-	_fullscreen.text = "全屏显示"
-	_fullscreen.toggled.connect(func(enabled: bool) -> void: WindowSettings.set_fullscreen(enabled))
-	content.add_child(_fullscreen)
+	resolution_row.add_child(_resolution)
+	var fullscreen_row := _settings_row(content, "全屏：")
+	var group := ButtonGroup.new()
+	_fullscreen_yes = _fullscreen_option(fullscreen_row, group, true)
+	_fullscreen_no = _fullscreen_option(fullscreen_row, group, false)
+	var credit_row := _settings_row(content, "Credit")
+	var credit := PanelContainer.new()
+	credit.custom_minimum_size.y = 36
+	credit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	credit.add_theme_stylebox_override("panel", SettingsUIStyle.credit())
+	credit_row.add_child(credit)
+	var credit_text := Label.new()
+	credit_text.text = "Ark Pixel Font | SIL Open Font License 1.1"
+	credit_text.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	credit_text.add_theme_font_size_override("font_size", 10)
+	credit_text.add_theme_color_override("font_color", SettingsUIStyle.TEXT)
+	credit.add_child(credit_text)
 	_display_note = Label.new()
 	_display_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_display_note.add_theme_color_override("font_color", Color("#a8b6a5"))
+	_display_note.add_theme_color_override("font_color", SettingsUIStyle.TEXT)
+	_display_note.add_theme_font_size_override("font_size", 12)
 	content.add_child(_display_note)
 
 
-func _add_volume_control(parent: VBoxContainer, title: String, bus: String, key: String) -> void:
-	var group := VBoxContainer.new()
-	parent.add_child(group)
-	var label := Label.new()
-	label.text = title
-	group.add_child(label)
+func _settings_row(parent: VBoxContainer, title: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
-	group.add_child(row)
+	parent.add_child(row)
+	var label := Label.new()
+	label.text = title
+	label.custom_minimum_size = Vector2(120, 36)
+	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_color_override("font_color", SettingsUIStyle.TEXT)
+	row.add_child(label)
+	return row
+
+
+func _fullscreen_option(row: HBoxContainer, group: ButtonGroup, enabled: bool) -> Button:
+	var button := Button.new()
+	button.name = "FullscreenYes" if enabled else "FullscreenNo"
+	button.toggle_mode = true
+	button.button_group = group
+	button.custom_minimum_size = Vector2(124, 36)
+	SettingsUIStyle.apply_button(button)
+	button.pressed.connect(func() -> void: WindowSettings.set_fullscreen(enabled))
+	row.add_child(button)
+	return button
+
+
+func _build_settings_footer(parent: VBoxContainer) -> void:
+	_settings_footer = HBoxContainer.new()
+	_settings_footer.name = "SettingsActions"
+	_settings_footer.alignment = BoxContainer.ALIGNMENT_CENTER
+	_settings_footer.add_theme_constant_override("separation", 16)
+	parent.add_child(_settings_footer)
+	_return_button = Button.new()
+	_return_button.name = "ReturnButton"
+	_return_button.text = "返回"
+	_return_button.custom_minimum_size = Vector2(180, 40)
+	SettingsUIStyle.apply_button(_return_button)
+	_return_button.pressed.connect(_close)
+	_settings_footer.add_child(_return_button)
+	_menu_button = Button.new()
+	_menu_button.name = "MainMenuButton"
+	_menu_button.text = "返回主菜单"
+	_menu_button.tooltip_text = "结束当前战局，返回主菜单。"
+	_menu_button.custom_minimum_size = Vector2(180, 40)
+	SettingsUIStyle.apply_button(_menu_button)
+	_menu_button.pressed.connect(_return_to_main_menu)
+	_settings_footer.add_child(_menu_button)
+
+
+func _return_to_main_menu() -> void:
+	AudioManager.play_ui_sfx("modal_close")
+	if is_instance_valid(_flow):
+		_flow.return_to_main_menu_from_settings()
+
+
+func _add_volume_control(parent: VBoxContainer, title: String, bus: String, key: String) -> void:
+	var row := _settings_row(parent, title)
 	var slider := HSlider.new()
 	slider.name = bus + "Volume"
 	slider.min_value = 0
@@ -287,6 +363,8 @@ func _add_volume_control(parent: VBoxContainer, title: String, bus: String, key:
 	var percentage := Label.new()
 	percentage.custom_minimum_size.x = 56
 	percentage.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	percentage.add_theme_font_size_override("font_size", 14)
+	percentage.add_theme_color_override("font_color", SettingsUIStyle.TEXT)
 	row.add_child(percentage)
 	slider.value_changed.connect(func(value: float) -> void:
 		percentage.text = "%d%%" % roundi(value)
@@ -305,14 +383,19 @@ func _sync_audio_settings() -> void:
 
 func _sync_display_settings() -> void:
 	_resolution.select(WindowSettings.get_resolution_index())
-	_fullscreen.set_pressed_no_signal(WindowSettings.is_fullscreen())
+	var fullscreen := WindowSettings.is_fullscreen()
+	_fullscreen_yes.set_pressed_no_signal(fullscreen)
+	_fullscreen_no.set_pressed_no_signal(not fullscreen)
+	_fullscreen_yes.text = "● 是" if fullscreen else "○ 是"
+	_fullscreen_no.text = "○ 否" if fullscreen else "● 否"
 	var embedded := WindowSettings.is_embedded()
 	var mobile := OS.has_feature("mobile")
 	_resolution.disabled = embedded or mobile or WindowSettings.is_fullscreen()
-	_fullscreen.disabled = embedded or mobile
+	_fullscreen_yes.disabled = embedded or mobile
+	_fullscreen_no.disabled = embedded or mobile
 	if embedded:
 		_display_note.text = "调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。"
 	elif mobile:
 		_display_note.text = "当前设备使用系统屏幕尺寸。音量修改会自动保存。"
 	else:
-		_display_note.text = "修改立即生效并自动保存。按 Esc 或“返回战斗”继续游戏。"
+		_display_note.text = "修改立即生效并自动保存。按 Esc 或“返回”回到原界面。"

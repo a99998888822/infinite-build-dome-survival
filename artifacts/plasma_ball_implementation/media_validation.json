@@ -1,0 +1,18 @@
+{
+  "full": {
+    "frames": 160,
+    "duration_ms": 8000,
+    "size": [
+      640,
+      540
+    ]
+  },
+  "detail": {
+    "frames": 54,
+    "duration_ms": 1820,
+    "size": [
+      384,
+      384
+    ]
+  }
+}

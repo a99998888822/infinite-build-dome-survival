@@ -1096,7 +1096,7 @@ res://
 - [x] 支持 `attack_speed` 攻击间隔计算
 - [x] 支持近战、远程、混伤拆段伤害计算
 - [x] 支持 `hit_radius` 基础半径、`area_size` 最终范围加成、`projectile_speed`、`spread_angle` 运行字段读取
-- [x] 支持 `damage_area_size` 对电浆球、电火花、火焰、冰冻、爆裂的伤害范围/视觉大小加成，并排除木质弓箭与闪电链
+- [x] 支持 `damage_area_size` 对电浆球、落雷、火焰、冰冻、爆裂的伤害范围/视觉大小加成，并排除木质弓箭与电火花连锁
 - [x] 在 `bootstrap.gd` 中加入武器模块自测
 
 ## 3. 待你验证事项

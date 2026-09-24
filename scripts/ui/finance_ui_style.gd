@@ -75,11 +75,13 @@ static func reason(code: String) -> String:
 		"upgrade_no_longer_available": "升级条件已改变",
 		"relic_stack_limit": "遗物已达叠加上限",
 		"attachment_failed": "无法配置：请检查武器空槽和附魔归属。",
+		"incompatible_enchantment": "此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。",
 		"enchantment_page_required": "请在理财页面调整附魔或出售物品。",
 		"last_weapon": "至少保留一把武器，最后一把不可出售。",
 		"detach_before_sale": "已装备的附魔需要先卸下。",
 		"item_not_found": "物品已不存在，请重新选择。",
 		"sale_quote_changed": "物品或报价已变化，请重新确认。",
+		"shop_price_changed": "理智变化后价格已更新，请查看新价格再购买。",
 		"transaction_busy": "操作正在处理。",
 		"sale_failed": "出售失败，物品已恢复。",
 	}.get(code, "操作未成功，请重试。"))

@@ -1,0 +1,133 @@
+{
+  "attachments": [],
+  "contacts": [
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 10,
+      "target": 178190815368
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 35,
+      "target": 177586835624
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 60,
+      "target": 177788162206
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 85,
+      "target": 178392141952
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 110,
+      "target": 178895458411
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 135,
+      "target": 177486172333
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 160,
+      "target": 178593468536
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 185,
+      "target": 177687498917
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 210,
+      "target": 178794795102
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 235,
+      "target": 177385508922
+    }
+  ],
+  "critical_chance_override": 0,
+  "enemy_count": 18,
+  "fps": 30,
+  "frames": 240,
+  "kills": 10,
+  "launches": [
+    {
+      "count": 1,
+      "frame": 10,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 35,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 60,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 85,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 110,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 135,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 160,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 185,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 210,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 235,
+      "weapon": "weapon_kunyu_ritual_tome"
+    }
+  ],
+  "max_player_movement": 187.199905395508,
+  "moving_enemies": true,
+  "native_enemy_stats": true,
+  "player_health_override": 1000,
+  "principal": 0.0,
+  "production": true,
+  "valid": true,
+  "variant": "tome",
+  "weapons": [
+    "weapon_kunyu_ritual_tome"
+  ]
+}

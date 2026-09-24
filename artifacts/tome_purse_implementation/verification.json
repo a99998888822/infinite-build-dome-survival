@@ -1,0 +1,30 @@
+{
+  "weapon_checks": 64,
+  "regression_checks": 87,
+  "captures": {
+    "tome": {
+      "production": true,
+      "frames": 240,
+      "fps": 30,
+      "principal": 0.0,
+      "kills": 10,
+      "valid": true
+    },
+    "purse": {
+      "production": true,
+      "frames": 240,
+      "fps": 30,
+      "principal": 400.0,
+      "kills": 9,
+      "valid": true
+    },
+    "combined": {
+      "production": true,
+      "frames": 240,
+      "fps": 30,
+      "principal": 400.0,
+      "kills": 18,
+      "valid": true
+    }
+  }
+}

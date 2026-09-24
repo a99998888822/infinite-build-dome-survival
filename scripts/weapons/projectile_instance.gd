@@ -1,16 +1,20 @@
 extends Area2D
 class_name ProjectileInstance
 
+signal plasma_target_hit(target: EnemyController, damage: int)
+
 const DEFAULT_HIT_RADIUS: float = 6.0
 const ENEMY_COLLISION_LAYER: int = 2
 const TERRAIN_COLLISION_LAYER: int = 4
 const TRAIL_INTERVAL_SECONDS: float = 0.035
 const ENABLE_ENEMY_HIT_GREEN_PARTICLES: bool = false
+const PLASMA_ENCHANTMENT_DAMAGE_SCALE: float = 0.2
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const COMBAT_EFFECT_WORLD_SCRIPT = preload("res://scripts/effects/combat_effect_world.gd")
+const PLASMA_VISUAL_SCRIPT = preload("res://scripts/effects/plasma_ball_visual.gd")
 
 var projectile_id: String = ""
 var weapon: WeaponInstance = null
@@ -27,7 +31,8 @@ var active: bool = false
 var _trail_emitter: Node2D = null
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
-var _plasma_rotation: float = 0.0
+var _plasma_visual: Node2D = null
+var _hit_shape: CircleShape2D = null
 
 
 func initialize(
@@ -60,7 +65,6 @@ func initialize(
 	active = true
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
-	_plasma_rotation = direction.angle()
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -70,14 +74,19 @@ func initialize(
 	set_deferred("monitorable", false)
 
 	var shape := CircleShape2D.new()
-	shape.radius = maxf(weapon.get_hit_radius(), DEFAULT_HIT_RADIUS)
+	shape.radius = weapon.get_hit_radius() if _is_plasma_projectile() else maxf(weapon.get_hit_radius(), DEFAULT_HIT_RADIUS)
+	_hit_shape = shape
 	var collision_shape := CollisionShape2D.new()
 	collision_shape.shape = shape
 	collision_shape.disabled = true
 	add_child(collision_shape)
 	collision_shape.set_deferred("disabled", false)
 
-	if texture != null:
+	if _is_plasma_projectile():
+		_plasma_visual = PLASMA_VISUAL_SCRIPT.new()
+		add_child(_plasma_visual)
+		_plasma_visual.initialize(weapon, projectile_id)
+	elif texture != null:
 		var sprite := Sprite2D.new()
 		sprite.texture = texture
 		sprite.centered = true
@@ -103,9 +112,9 @@ func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	if _is_plasma_projectile():
-		_plasma_rotation += float(weapon.weapon_data.get("plasma_rotation_speed", 4.0)) * delta
+		if _plasma_visual != null:
+			_plasma_visual.advance(delta)
 		_process_plasma_contact(delta)
-		queue_redraw()
 	var step := speed * delta
 	global_position += direction * step
 	remaining_distance -= step
@@ -168,11 +177,11 @@ func _process_plasma_contact(delta: float) -> void:
 
 func _query_plasma_enemies() -> Array[EnemyController]:
 	var enemies: Array[EnemyController] = []
-	var radius := maxf(StatDefinitions.calculate_damage_area_radius(float(weapon.weapon_data.get("plasma_damage_radius", 48.0)), weapon.get_stat("damage_area_size")), 8.0)
-	var shape := CircleShape2D.new()
-	shape.radius = radius
+	if _hit_shape == null:
+		_hit_shape = CircleShape2D.new()
+	_hit_shape.radius = weapon.get_hit_radius()
 	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
+	query.shape = _hit_shape
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = ENEMY_COLLISION_LAYER
 	query.collide_with_bodies = true
@@ -199,9 +208,13 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 		var tick_event := damage_event.duplicate_event()
 		tick_event.hit_position = enemy.global_position
 		var effect_event := tick_event.duplicate_event()
-		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * 0.2)))
+		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * PLASMA_ENCHANTMENT_DAMAGE_SCALE)))
+		# Elemental effects and reactions use original damage plus the elemental
+		# bonus, not damage. Keep their shared scale through delayed event copies.
+		effect_event.elemental_damage_scale *= PLASMA_ENCHANTMENT_DAMAGE_SCALE
 		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
 		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
+		plasma_target_hit.emit(enemy, tick_event.damage)
 		contacted = true
 	if contacted:
 		# One cue for the contact batch, never one per victim in the area.
@@ -211,40 +224,6 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 	_plasma_tick_timer = maxf(float(weapon.weapon_data.get("plasma_tick_interval", 0.1)), 0.01)
 	if _plasma_tick_count >= 5:
 		_destroy()
-
-
-func _draw() -> void:
-	if not _is_plasma_projectile():
-		return
-	var time := Time.get_ticks_msec() * 0.001
-	var base_radius := maxf(StatDefinitions.calculate_damage_area_radius(float(weapon.weapon_data.get("plasma_visual_radius", 11.0)), weapon.get_stat("damage_area_size")), 8.0)
-	var pulse := 1.0 + sin(time * 11.0) * 0.09
-	# Keep the projectile body centered so its flight remains a clean straight line.
-	draw_circle(Vector2.ZERO, base_radius * 1.42 * pulse, Color(0.36, 0.78, 1.0, 0.10))
-	draw_circle(Vector2.ZERO, base_radius * pulse, Color(0.55, 0.86, 1.0, 0.24))
-	draw_circle(Vector2.ZERO, base_radius * 0.62 * pulse, Color(0.88, 0.97, 1.0, 0.96))
-	var arc_count := clampi(int(weapon.weapon_data.get("plasma_arc_count", 4)), 2, 8)
-	var arc_segments := clampi(int(weapon.weapon_data.get("plasma_arc_segments", 12)), 8, 24)
-	var arc_jitter := maxf(float(weapon.weapon_data.get("plasma_arc_jitter", 3.0)), 0.0)
-	for arc_index in range(arc_count):
-		var arc_phase := float(arc_index) * TAU / float(arc_count)
-		var ring_rotation := _plasma_rotation * (1.0 + float(arc_index) * 0.08) + arc_phase
-		var major_radius := base_radius * (1.02 + sin(time * 4.0 + arc_phase) * 0.10)
-		var minor_radius := major_radius * (0.38 + 0.10 * sin(time * 3.0 + arc_phase * 1.7))
-		var points := PackedVector2Array()
-		# Each bolt is an open, uneven arc rather than a closed ring.
-		var arc_span := PI * (0.62 + 0.12 * sin(time * 2.7 + arc_phase))
-		var arc_start := -arc_span * 0.5 + 0.22 * sin(time * 3.3 + arc_phase * 2.0)
-		for point_index in range(arc_segments + 1):
-			var ratio := float(point_index) / float(arc_segments)
-			var angle := arc_start + ratio * arc_span
-			var radial_noise := sin(time * 29.0 + arc_phase * 5.0 + float(point_index) * 4.7) * arc_jitter
-			var tangent_noise := sin(time * 37.0 + arc_phase * 3.0 + float(point_index) * 8.3) * arc_jitter * 0.34
-			var point := Vector2(cos(angle) * (major_radius + radial_noise), sin(angle) * (minor_radius + radial_noise * 0.45))
-			point += Vector2(-sin(angle), cos(angle)) * tangent_noise
-			points.append(point.rotated(ring_rotation))
-		draw_polyline(points, Color(0.28, 0.72, 1.0, 0.24), 4.0, true)
-		draw_polyline(points, Color(0.82, 0.96, 1.0, 0.96), 1.5, true)
 
 
 func _get_target_hit_limit() -> int:

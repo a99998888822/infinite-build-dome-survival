@@ -1,0 +1,93 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 5 records
+[DataRegistry] - relics: 72 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 1 records
+[DataRegistry] - enemies: 2 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 12 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+PASS both weapons start through real selection flow
+PASS load and attachment slots integrate
+PASS native tome is ten elemental damage
+PASS native purse has three four-damage coins at zero principal
+PASS purse reads live bank balance rather than starting finance talent
+PASS purse combines ranged and sqrt principal before percent and final rounding
+PASS elemental bonus enters tome and attachment basis exactly once
+PASS both support critical scaling before rounding
+PASS next shot reflects changed principal
+PASS details show live principal and elemental damage type
+PASS attack speed applies to both
+PASS attack range scales ellipse and coin travel
+PASS damage area does not silently change domain targeting
+PASS withdrawing bank balance immediately removes principal scaling
+PASS ellipse checks axes and diagonal rather than bounding rectangle
+PASS one native tick hits exactly one in-domain target
+PASS approved domain follows player with unchanged particle counts
+PASS pause freezes domain, damage and cooldown
+PASS empty domain consumes no attack
+PASS scroll_split attaches to weapon_kunyu_ritual_tome
+PASS scroll_fire attaches to weapon_kunyu_ritual_tome
+PASS tome split plus fire affects three distinct contacts
+PASS tome native and split contacts stay inside domain
+PASS extra tome projectiles reserve unique targets without repeat damage
+PASS real loadout emits three coins spaced 120 degrees
+PASS next volley rotates thirty degrees
+PASS swept coins do not tunnel or repeat a same-volley contact
+PASS scroll_pierce attaches to weapon_rentier_purse
+PASS pierce processes ordered contacts in one large frame
+PASS incompatible pierce transfer preserves its purse owner
+PASS scroll_split attaches to weapon_rentier_purse
+PASS scroll_fire attaches to weapon_rentier_purse
+PASS lethal purse hit still launches two split coins
+PASS split coins deal sixty percent damage and carry fire
+PASS split coins stop at one generation
+PASS firing and split never spend principal
+PASS coin expires at actual range without overshoot
+PASS pause freezes coin position and spin
+PASS wave cleanup immediately cancels projectiles and domain
+PASS next combat tick recreates persistent domain
+PASS trade removes live domain weapon
+PASS trade rollback restores operational domain
+PASS both upgrade through level 2
+PASS both upgrade through level 3
+PASS both upgrade through level 4
+PASS both upgrade through level 5
+PASS level five gains persist and max level is enforced
+PASS both enter shared shop and reward pool
+PASS candidate filtering respects remaining load
+PASS owned weapons offer upgrades instead of duplicates
+PASS sale quote includes implemented upgrades
+PASS real wave end opens preparation finance
+PASS finance attaches an element to weapon_kunyu_ritual_tome
+PASS real sale credits the quoted value for weapon_kunyu_ritual_tome
+PASS sale returns the attachment and removes the weapon
+PASS real purchase deducts cost and equips weapon_kunyu_ritual_tome
+PASS real purchase applies next-level upgrade
+PASS finance attaches an element to weapon_rentier_purse
+PASS real sale credits the quoted value for weapon_rentier_purse
+PASS sale returns the attachment and removes the weapon
+PASS real purchase deducts cost and equips weapon_rentier_purse
+PASS real purchase applies next-level upgrade
+PASS finance authority rejects tome pierce
+PASS return to menu removes weapon runtime nodes
+TOME_PURSE_COMPLETE checks=64 failures=0
+WARNING: 1 RID of type "Canvas" was leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+WARNING: 1 RID of type "CanvasItem" was leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

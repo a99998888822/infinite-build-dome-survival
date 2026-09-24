@@ -10,6 +10,8 @@ signal battle_result_changed(victory: bool, summary: Dictionary)
 signal flow_reset
 signal preparation_changed(payload: Dictionary)
 
+var _economy_refresh_queued := false
+
 const MODE_BOOT: String = "boot"
 const MODE_BATTLE: String = "battle"
 const MODE_CAMP: String = "camp"
@@ -47,6 +49,9 @@ var current_victory: bool = false
 var battle_resolved: bool = false
 
 var _resume_state_after_modal: String = STATE_START_PAGE
+var _utility_resume_state: String = STATE_START_PAGE
+var _utility_resume_paused: bool = false
+var _utility_page: String = ""
 var _active_level_up_level: int = 0
 var _pending_level_up_levels: Array[int] = []
 var _pending_relic_choices: Array[String] = []
@@ -95,6 +100,9 @@ func reset_flow() -> void:
 	current_victory = false
 	battle_resolved = false
 	_resume_state_after_modal = STATE_START_PAGE
+	_utility_resume_state = STATE_START_PAGE
+	_utility_resume_paused = false
+	_utility_page = ""
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
 	_pending_relic_choices.clear()
@@ -145,7 +153,7 @@ func confirm_character_selection() -> bool:
 		current_character_id = PlayerController.DEFAULT_CHARACTER_ID
 
 	var player_ok := _bound_player.initialize_from_character(current_character_id, current_outgame_modifiers, current_start_weapon_ids)
-	var loadout_ok: bool = _bound_loadout.initialize(_bound_player)
+	var loadout_ok: bool = _bound_loadout.initialize(_bound_player, _bound_wave_manager.finance_system if _bound_wave_manager != null else null)
 	if _bound_wave_manager != null:
 		_bound_wave_manager.initialize(_bound_player)
 
@@ -175,6 +183,8 @@ func bind_battle_context(player: PlayerController, loadout: WeaponLoadout, wave_
 		var player_callable := Callable(self, "_on_player_died")
 		if not _bound_player.died.is_connected(player_callable):
 			_bound_player.died.connect(player_callable)
+		if not _bound_player.stats_changed.is_connected(_queue_economy_refresh):
+			_bound_player.stats_changed.connect(_queue_economy_refresh)
 	bind_wave_manager(wave_manager)
 
 
@@ -425,25 +435,53 @@ func close_esc_overlay() -> void:
 	_set_state(_resume_state_after_modal)
 
 
+func can_open_battle_utility(page: String) -> bool:
+	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
+		return false
+	if page == "settings":
+		return current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE, STATE_ESC_OVERLAY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_SHOP_POPUP]
+	return page == "encyclopedia" and current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE]
+
+
+func get_battle_display_state() -> String:
+	return _utility_resume_state if current_state == STATE_BATTLE_UTILITY else current_state
+
+
 func request_battle_utility(page: String) -> void:
-	if current_mode != MODE_BATTLE or battle_resolved:
+	if not can_open_battle_utility(page):
 		return
-	if page not in ["encyclopedia", "settings"]:
-		return
-	if current_state not in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE]:
-		return
-	_resume_state_after_modal = current_state
+	# Keep the underlying reward/ESC return state intact when stacking settings.
+	_utility_resume_state = current_state
+	_utility_resume_paused = bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
+	_utility_page = page
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_BATTLE_UTILITY)
-	modal_requested.emit(STATE_BATTLE_UTILITY, {"page": page})
+	modal_requested.emit(STATE_BATTLE_UTILITY, {"page": page, "return_state": _utility_resume_state})
 
 
 func close_battle_utility() -> void:
 	if current_state != STATE_BATTLE_UTILITY:
 		return
+	var resume_state := _utility_resume_state
+	var resume_paused := _utility_resume_paused
 	modal_closed.emit(STATE_BATTLE_UTILITY)
-	_set_state(_resume_state_after_modal)
-	_set_battle_runtime_paused(false)
+	_utility_page = ""
+	_set_state(resume_state)
+	_set_battle_runtime_paused(resume_paused)
+
+
+func return_to_main_menu_from_settings() -> void:
+	if current_state != STATE_BATTLE_UTILITY or _utility_page != "settings" or _transaction_busy:
+		return
+	battle_resolved = true
+	if _bound_wave_manager != null:
+		_bound_wave_manager.running = false
+		_bound_wave_manager.drop_reward_system.begin_wave()
+		_bound_wave_manager.clear_battle_entities()
+	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_ESC_OVERLAY]:
+		modal_closed.emit(modal)
+	# Abandon the run without invoking victory/loss settlement or granting choices.
+	reset_flow()
 
 
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
@@ -457,6 +495,12 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	if offer_id.is_empty() or not _active_shop_offers.has(offer_id):
 		return {"success": false, "reason": "invalid_offer"}
 	var canonical_offer: Dictionary = _active_shop_offers.get(offer_id, {})
+	if sanitized_mode == "shop":
+		var shown_cost := int(offer.get("shop_cost", 0))
+		HumanityEconomy.reprice_offer(canonical_offer, _get_shop_stat("humanity"))
+		if shown_cost != int(canonical_offer.get("shop_cost", 0)):
+			_notify_preparation_changed()
+			return {"success": false, "reason": "shop_price_changed"}
 	var offer_type := str(canonical_offer.get("offer_type", ""))
 	var target_id := str(canonical_offer.get("target_id", ""))
 	if offer_type.is_empty() or target_id.is_empty():
@@ -785,6 +829,8 @@ func _unbind_player() -> void:
 	var player_callable := Callable(self, "_on_player_died")
 	if _bound_player.died.is_connected(player_callable):
 		_bound_player.died.disconnect(player_callable)
+	if _bound_player.stats_changed.is_connected(_queue_economy_refresh):
+		_bound_player.stats_changed.disconnect(_queue_economy_refresh)
 	_bound_player = null
 
 
@@ -919,6 +965,7 @@ func _build_shop_context() -> Dictionary:
 		"luck": _get_shop_stat("luck"),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
 		"shop_price_percent": _get_shop_stat("shop_price_percent"),
+		"humanity": _get_shop_stat("humanity"),
 		"shop_price_discounts": _get_shop_discount_layers(),
 		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
 		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
@@ -962,6 +1009,8 @@ func _try_pay_shop_cost(offer: Dictionary) -> bool:
 
 func get_preparation_payload() -> Dictionary:
 	var payload := _bound_wave_manager.get_finance_popup_payload("preparation") if _bound_wave_manager != null else {}
+	for offer in _preparation_offers:
+		HumanityEconomy.reprice_offer(offer, _get_shop_stat("humanity"))
 	payload["offers"] = _preparation_offers
 	payload["offer_generation"] = _shop_generation
 	payload["refresh_cost"] = get_shop_refresh_cost()
@@ -972,6 +1021,39 @@ func get_preparation_payload() -> Dictionary:
 func _notify_preparation_changed() -> void:
 	if current_state == STATE_FINANCE_POPUP:
 		preparation_changed.emit(get_preparation_payload())
+
+
+func _queue_economy_refresh() -> void:
+	if current_state != STATE_FINANCE_POPUP or _transaction_busy or _economy_refresh_queued:
+		return
+	_economy_refresh_queued = true
+	_refresh_economy_ui.call_deferred()
+
+
+func _refresh_economy_ui() -> void:
+	_economy_refresh_queued = false
+	_notify_preparation_changed()
+
+
+func get_bank_stat_preview(action: String, amount: int) -> String:
+	if _bound_player == null or _bound_wave_manager == null or _bound_wave_manager.finance_system == null:
+		return ""
+	var preview_player := _bound_player.create_stat_preview_copy()
+	var finance := _bound_wave_manager.finance_system
+	var preview := finance.create_preview_copy(preview_player)
+	var result := preview.apply_finance_operation(action, amount)
+	var lines: Array[String] = []
+	if bool(result.get("success", false)):
+		lines.append("办理后本金：%d → %d" % [finance.principal, preview.principal])
+		for stat_id in ["armor", "attack_speed", "damage_percent", "load_capacity"]:
+			var before := _bound_player.get_stat(stat_id)
+			var after := preview_player.get_stat(stat_id)
+			if not is_equal_approx(before, after):
+				var name := str(StatDefinitions.get_stat_definition(stat_id).get("display_name", stat_id))
+				var unit := "%" if stat_id == "damage_percent" else ""
+				lines.append("%s：%s%s → %s%s" % [name, HumanityEconomy.number(before), unit, HumanityEconomy.number(after), unit])
+	preview_player.free()
+	return "\n".join(lines)
 
 
 func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) -> String:
@@ -1003,6 +1085,11 @@ func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) ->
 func submit_enchantment_operation(action: String, weapon_id: String, item_id: String, target_index: int = -1) -> Dictionary:
 	if current_state != STATE_FINANCE_POPUP or _bound_loadout == null or _transaction_busy:
 		return {"success": false, "reason": "enchantment_page_required"}
+	if action == "attach" and _bound_player != null:
+		var weapon := _bound_loadout.get_weapon_instance(weapon_id)
+		var item := _bound_player.item_inventory.find_item(item_id)
+		if weapon != null and not weapon.get_attachment_incompatibility(item).is_empty():
+			return {"success": false, "reason": "incompatible_enchantment"}
 	_transaction_busy = true
 	var success := false
 	if action == "attach":
@@ -1024,12 +1111,12 @@ func get_inventory_sale_quote(kind: String, target_id: String) -> Dictionary:
 	if kind == "weapon":
 		if _bound_loadout.get_weapon_instances().size() <= 1:
 			return {"success": false, "reason": "last_weapon"}
-		quote = _trade_service.quote_weapon(_bound_loadout.get_weapon_instance(target_id))
+		quote = _trade_service.quote_weapon(_bound_loadout.get_weapon_instance(target_id), _bound_player.get_stat("humanity"))
 	elif kind == "enchantment":
 		var item := _bound_player.item_inventory.find_item(target_id)
 		if not str(item.get("equipped_weapon_id", "")).is_empty():
 			return {"success": false, "reason": "detach_before_sale"}
-		quote = _trade_service.quote_item(item)
+		quote = _trade_service.quote_item(item, _bound_player.get_stat("humanity"))
 	if quote.is_empty():
 		return {"success": false, "reason": "item_not_found"}
 	quote["success"] = true

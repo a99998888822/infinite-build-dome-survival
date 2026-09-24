@@ -584,10 +584,10 @@
   {
     "id": "relic_perpetual_annuity_scroll",
     "display_name": "永续年金卷轴",
-    "description": "每个回合结息次数 + 1",
+    "description": "每个回合结息次数 + 1；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "rarity": "mythic",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": [
       "finance"
     ],
@@ -775,14 +775,14 @@
   {
     "id": "relic_nightmare_healing_urn",
     "display_name": "梦魇治愈圣壶",
-    "description": "每秒回血 + 0.5；每波过后，理智值 - 1",
+    "description": "每秒回血 + 0.8；每波过后，理智值 - 1",
     "icon": "res://assets/ui/icons/relics/relic_nightmare_healing_urn.png",
     "icon_description": "壶口飘出朦胧黑雾的青铜水壶",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_nightmare_healing_urn_hp_regen", "source_type": "relic", "source_id": "relic_nightmare_healing_urn", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.5, "duration": -1}
+      {"id": "mod_relic_nightmare_healing_urn_hp_regen", "source_type": "relic", "source_id": "relic_nightmare_healing_urn", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.8, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": -1}
@@ -1386,7 +1386,7 @@
   {
     "id": "relic_guarding_heart_copper_mirror",
     "display_name": "守心铜鉴",
-    "description": "幸运 + 18；理智值每波 + 1；金币获取 + 35",
+    "description": "幸运 + 18；理智值每波 + 1；金币获取 + 20%",
     "icon": "res://assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
     "icon_description": "小型青铜手镜，镜面清澈",
     "rarity": "epic",
@@ -1394,10 +1394,88 @@
     "tags": ["reward", "eldritch", "finance"],
     "effects": [
       {"id": "mod_relic_guarding_heart_copper_mirror_luck", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
-      {"id": "mod_relic_guarding_heart_copper_mirror_currency_gain_percent", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "currency_gain_percent", "operation": "add_flat", "value": 35, "duration": -1}
+      {"id": "mod_relic_guarding_heart_copper_mirror_currency_gain_percent", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "currency_gain_percent", "operation": "add_flat", "value": 20, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": 1}
+    ]
+  },
+  {
+    "id": "relic_sleepless_ledger",
+    "display_name": "无眠账簿",
+    "description": "利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_sleepless_ledger.png",
+    "icon_description": "摊开的深蓝账簿，书页中央嵌着一只睁开的眼，红色书签垂下",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": ["finance", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_sleepless_ledger_interest_rate", "source_type": "relic", "source_id": "relic_sleepless_ledger", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": 4, "duration": -1}
+    ],
+    "runtime_effects": [
+      {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": -3}
+    ]
+  },
+  {
+    "id": "relic_frenzied_dividend",
+    "display_name": "狂热分红",
+    "description": "每次成功收到利息后，通用伤害 + 1%，理智值 - 2；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_frenzied_dividend.png",
+    "icon_description": "盖着猩红封蜡的分红信封，上沿露出两枚金币",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": ["finance", "offense", "eldritch"],
+    "effects": [],
+    "runtime_effects": [
+      {"trigger": "interest_success", "effect": "add_stat", "stat": "damage_percent", "value": 1},
+      {"trigger": "interest_success", "effect": "add_stat", "stat": "humanity", "value": -2}
+    ]
+  },
+  {
+    "id": "relic_gilded_trigger",
+    "display_name": "镀金扳机",
+    "description": "通用伤害 + 25%；理智值 - 20；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_gilded_trigger.png",
+    "icon_description": "金色弯钩扳机装在短铁座上，露出暗紫色轴心",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": ["offense", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_gilded_trigger_damage", "source_type": "relic", "source_id": "relic_gilded_trigger", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 25, "duration": -1},
+      {"id": "mod_relic_gilded_trigger_humanity", "source_type": "relic", "source_id": "relic_gilded_trigger", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -20, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_runaway_amplifier",
+    "display_name": "失控增幅器",
+    "description": "通用伤害 + 35%；每波结束理智值 - 2，触发前理智低于0时改为 - 5；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_runaway_amplifier.png",
+    "icon_description": "铜制三角支架包住开裂紫晶，两侧装着小电极",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": ["offense", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_runaway_amplifier_damage", "source_type": "relic", "source_id": "relic_runaway_amplifier", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 35, "duration": -1}
+    ],
+    "runtime_effects": [
+      {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "condition": "humanity_below", "threshold": 0, "value": -5, "else_value": -2}
+    ]
+  },
+  {
+    "id": "relic_lucid_vow",
+    "display_name": "清醒誓言",
+    "description": "每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_lucid_vow.png",
+    "icon_description": "水滴形银色护符，嵌着清澈青色宝石和一枚细小银翼",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": ["survival", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_lucid_vow_damage", "source_type": "relic", "source_id": "relic_lucid_vow", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -8, "duration": -1}
+    ],
+    "runtime_effects": [
+      {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": 2}
     ]
   }
 ]

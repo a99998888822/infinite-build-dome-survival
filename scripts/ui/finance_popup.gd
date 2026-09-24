@@ -13,6 +13,8 @@ var bank_confirm: Button
 var start_button: Button
 var _title: Label
 var _summary: Label
+var _economy: Label
+var _bank_preview: Label
 var _bank: ScrollContainer
 var _bank_form: VBoxContainer
 var _receipt: Label
@@ -75,6 +77,13 @@ func configure(next_payload: Dictionary) -> void:
 	else:
 		shop_grid.refresh_availability()
 	_summary.text = "金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
+	var humanity := float(payload.get("humanity", 100))
+	_economy.text = HumanityEconomy.describe(humanity)
+	_economy.tooltip_text = HumanityEconomy.tooltip(humanity)
+	var nominal := int(payload.get("nominal_estimated_interest", 0))
+	var retention := float(payload.get("interest_multiplier", 1.0))
+	_summary.tooltip_text = "单次基础预计：应得 %d，理智损耗 %s，预计入账 %d。\n实际利率 %s%%；未入账小数 %s。\n不含随机翻倍和后续额外结息。\n%s" % [nominal, HumanityEconomy.number(nominal * (1.0 - retention)), int(payload.get("estimated_interest", 0)), HumanityEconomy.number(float(payload.get("interest_rate", 0)) * retention), "%.3f" % float(payload.get("interest_remainder", 0)), HumanityEconomy.describe(humanity)]
+	_economy.tooltip_text += "\n" + _summary.tooltip_text
 	_refresh_bank()
 	var remaining := 0
 	for offer in shop_grid.offers:
@@ -129,6 +138,7 @@ func _build() -> void:
 	main_panel.add_child(board)
 	_title = _label("理财·购买·附魔", main_panel, 22, FinanceUIStyle.TEXT)
 	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
+	_summary.mouse_filter = Control.MOUSE_FILTER_PASS
 	_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_bank = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.scroll(_bank)
@@ -142,6 +152,10 @@ func _build() -> void:
 	portrait = BankCounterPortrait.new()
 	portrait.custom_minimum_size.y = 132
 	bank_body.add_child(portrait)
+	_economy = _label("", bank_body, 12, FinanceUIStyle.MUTED)
+	_economy.name = "HumanityEconomySummary"
+	_economy.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_economy.mouse_filter = Control.MOUSE_FILTER_PASS
 	_bank_form = VBoxContainer.new()
 	_bank_form.add_theme_constant_override("separation", 8)
 	bank_body.add_child(_bank_form)
@@ -171,6 +185,9 @@ func _build() -> void:
 			amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion))
 			_update_bank_confirm()
 		)
+	_bank_preview = _label("", _bank_form, 12, FinanceUIStyle.GOLD)
+	_bank_preview.name = "PrincipalStatPreview"
+	_bank_preview.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bank_confirm = _button("确认存入", _bank_form)
 	bank_confirm.pressed.connect(_submit_bank)
 	amount_input.text_changed.connect(func(_value): _update_bank_confirm())
@@ -295,6 +312,7 @@ func _layout() -> void:
 	var content_y := body_y + (34.0 if short_window else 40.0)
 	var content_h := maxf(24, body_bottom - content_y)
 	_place(_bank, Rect2(20, content_y if _compact else body_y, w - 40 if _compact else bank_width, content_h if _compact else body_bottom - body_y))
+	_update_portrait_visibility()
 	_place(_shop, Rect2(work_x, content_y, work_w, content_h))
 	_place(_enchant_scroll, Rect2(work_x, content_y, work_w, content_h))
 	workbench.custom_minimum_size.y = 296
@@ -363,6 +381,21 @@ func _update_bank_confirm() -> void:
 	bank_confirm.disabled = not error.is_empty()
 	bank_confirm.tooltip_text = FinanceUIStyle.reason(error) if not error.is_empty() else ""
 	amount_input.add_theme_color_override("font_color", Color("e1a184") if error.begins_with("amount_exceeds") else FinanceUIStyle.TEXT)
+	_bank_preview.text = flow.get_bank_stat_preview(_bank_action, amount_input.text.to_int()) if error.is_empty() and flow != null else ""
+	_bank_preview.visible = not _bank_preview.text.is_empty()
+	_update_portrait_visibility()
+	if _bank_preview.visible:
+		_reveal_bank_preview.call_deferred()
+
+
+func _update_portrait_visibility() -> void:
+	# Give the consequences room while an amount is being considered.
+	portrait.visible = _bank.size.y >= 320 and not _bank_preview.visible
+
+
+func _reveal_bank_preview() -> void:
+	if _bank_preview.is_visible_in_tree():
+		_bank.ensure_control_visible(_bank_preview)
 
 
 func _submit_bank() -> void:
@@ -425,6 +458,7 @@ func _open_sale(kind: String, id: String) -> void:
 		detail.item_instance = flow.get_bound_player().item_inventory.find_item(id)
 		lines.append(detail._build_tooltip())
 		detail.free()
+	lines.append(HumanityEconomy.sale_tooltip(_quote))
 	lines.append("\n[color=#D4BC81]获得 %d 金币[/color]" % int(_quote.get("total", 0)))
 	_sale_text.text = "\n\n".join(lines)
 	_sale_confirm.text = "出售 · %d 金币" % int(_quote.get("total", 0))
@@ -479,7 +513,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _label(caption: String, parent: Control, font_size: int, color: Color) -> Label:
-	var control := Label.new()
+	var control := WrappedTooltipLabel.new()
 	control.text = caption
 	FinanceUIStyle.label(control, font_size, color)
 	parent.add_child(control)

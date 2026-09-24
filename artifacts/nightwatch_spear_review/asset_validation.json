@@ -1,0 +1,20 @@
+{
+  "source": "local authored pixel art; no model/API",
+  "icon": "assets\\ui\\icons\\weapons\\weapon_nightwatch_spear.png",
+  "world": "assets\\sprites\\weapons\\weapon_nightwatch_spear.png",
+  "icon_size": [
+    64,
+    64
+  ],
+  "alpha": [
+    0,
+    255
+  ],
+  "bounds": [
+    4,
+    4,
+    61,
+    61
+  ],
+  "status": "review prototype"
+}

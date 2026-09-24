@@ -721,7 +721,7 @@ func get_modal_safe_rect() -> Rect2:
 		return Rect2()
 	var left := MODAL_SAFE_EDGE_MARGIN
 	var top := minf(MODAL_FALLBACK_TOP, viewport_size.y * 0.18)
-	var state := _flow.get_current_state() if _flow != null else ""
+	var state := _flow.get_battle_display_state() if _flow != null else ""
 	var right := MODAL_FALLBACK_RIGHT_CLOSED
 	var compact_finance := state == MainFlowCoordinator.STATE_FINANCE_POPUP and viewport_size.x < 1000
 	if _drawer_open or (DRAWER_AUTO_OPEN_STATES.has(state) and not compact_finance):
@@ -750,10 +750,9 @@ func _refresh_visibility() -> void:
 			status_panel.visible = false
 		return
 	var in_battle := _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE
-	var state := _flow.get_current_state()
-	var utility_available := state in [MainFlowCoordinator.STATE_WAVE_COMBAT, MainFlowCoordinator.STATE_BATTLE_PREPARE]
-	encyclopedia_button.disabled = not utility_available
-	settings_button.disabled = not utility_available
+	var state := _flow.get_battle_display_state()
+	encyclopedia_button.disabled = not _flow.can_open_battle_utility("encyclopedia")
+	settings_button.disabled = not _flow.can_open_battle_utility("settings")
 	if not in_battle or _flow.battle_resolved:
 		visible = false
 	elif state == MainFlowCoordinator.STATE_BATTLE_RESULT:
@@ -775,6 +774,8 @@ func _on_drawer_toggle_pressed() -> void:
 
 
 func _on_flow_state_changed(_previous_state: String, current_state: String) -> void:
+	if _flow != null:
+		current_state = _flow.get_battle_display_state()
 	var compact_finance := current_state == MainFlowCoordinator.STATE_FINANCE_POPUP and get_viewport().get_visible_rect().size.x < 1000
 	var lock_drawer_open := DRAWER_LOCKED_OPEN_STATES.has(current_state) and not compact_finance
 	_set_drawer_locked_open(lock_drawer_open)
@@ -896,6 +897,12 @@ func _refresh_stats_drawer() -> void:
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
 			name_label.tooltip_text = name_label.text
+			if stat_id == "divinity":
+				name_label.tooltip_text = StatDefinitions.get_description(stat_id)
+			if stat_id == "humanity":
+				name_label.tooltip_text = HumanityEconomy.tooltip(_get_display_stat_value(stat_id))
+				if preview.has(stat_id):
+					name_label.tooltip_text += "\n获得后：" + HumanityEconomy.describe(float(preview[stat_id]))
 			if stat_id == "armor":
 				# Use the custom tooltip panel below; the built-in tooltip would show a duplicate.
 				name_label.tooltip_text = ""
@@ -923,7 +930,7 @@ func _ensure_stat_rows() -> void:
 		backing.add_theme_stylebox_override("panel", row_style)
 		backing.add_child(row)
 
-		var name_label := Label.new()
+		var name_label := WrappedTooltipLabel.new()
 		name_label.text = _get_stat_display_name(stat_id)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -933,6 +940,11 @@ func _ensure_stat_rows() -> void:
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		name_label.add_theme_constant_override("outline_size", 2)
 		name_label.tooltip_text = name_label.text
+		if stat_id == "divinity":
+			name_label.tooltip_text = StatDefinitions.get_description(stat_id)
+		if stat_id == "humanity":
+			name_label.tooltip_text = HumanityEconomy.tooltip(_get_display_stat_value(stat_id))
+			name_label.mouse_default_cursor_shape = Control.CURSOR_HELP
 		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
 		row.add_child(name_label)
 

@@ -50,6 +50,7 @@ const EFFECT_BLOCK_STAT_INCREASE: String = "block_stat_increase"
 var player: PlayerController = null
 var principal: int = 0
 var interest_rate_bonus: float = 0.0
+var interest_remainder: float = 0.0
 var wave_counter: int = 0
 var current_wave_number: int = 0
 var last_action_wave_number: int = 0
@@ -81,6 +82,7 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	# Camp talent "理财" is the starting principal granted at run start.
 	principal = maxi(0, int(roundf(player.get_stat("finance", 0.0)))) if player != null else 0
 	interest_rate_bonus = 0.0
+	interest_remainder = 0.0
 	wave_counter = 0
 	current_wave_number = 0
 	_started_wave_number = 0
@@ -102,7 +104,7 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 0) -> BattleFinanceSystem:
 	var preview := BattleFinanceSystem.new()
 	preview.player = preview_player
-	for field in ["principal", "interest_rate_bonus", "wave_counter", "current_wave_number", "last_action_wave_number", "last_deposit_wave_number", "has_deposited_before_current_wave", "wave_start_deposit_amount", "has_principal_ever", "erosion_bonus", "_bankruptcy_triggered", "_started_wave_number", "manual_operation_used"]:
+	for field in ["principal", "interest_rate_bonus", "interest_remainder", "wave_counter", "current_wave_number", "last_action_wave_number", "last_deposit_wave_number", "has_deposited_before_current_wave", "wave_start_deposit_amount", "has_principal_ever", "erosion_bonus", "_bankruptcy_triggered", "_started_wave_number", "manual_operation_used"]:
 		preview.set(field, get(field))
 	preview._rng.state = _rng.state
 	var preview_gold := {"value": maxi(0, get_current_gold() - maxi(0, purchase_cost))}
@@ -159,6 +161,10 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 		"principal": principal,
 		"interest_rate": get_interest_rate(),
 		"estimated_interest": get_estimated_interest(),
+		"nominal_estimated_interest": get_nominal_estimated_interest(),
+		"humanity": get_humanity(),
+		"interest_multiplier": get_interest_multiplier(),
+		"interest_remainder": interest_remainder,
 		"can_withdraw": principal > 0,
 		"last_deposit_wave_number": last_deposit_wave_number,
 		"has_high_yield_contract": _has_wave_end_deposit_requirement(),
@@ -246,7 +252,14 @@ func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
 		return result
 
 	var base_gain := _calculate_gain_for_source(source)
-	var final_gain := _apply_interest_gain_relics(base_gain, source, result)
+	var nominal_gain := _apply_interest_gain_relics(base_gain, source, result)
+	var exact_gain := float(nominal_gain) * float(result["interest_multiplier"])
+	var accrued := exact_gain + interest_remainder
+	var final_gain := floori(accrued + 0.000000001)
+	interest_remainder = maxf(0.0, accrued - float(final_gain))
+	result["nominal_gain"] = nominal_gain
+	result["humanity_loss"] = float(nominal_gain) - exact_gain
+	result["interest_remainder"] = interest_remainder
 	result["success"] = true
 	result["gain"] = final_gain
 	if final_gain <= 0:
@@ -331,7 +344,19 @@ func get_interest_rate() -> float:
 
 
 func get_estimated_interest() -> int:
+	return floori(float(get_nominal_estimated_interest()) * get_interest_multiplier() + interest_remainder + 0.000000001)
+
+
+func get_nominal_estimated_interest() -> int:
 	return StatDefinitions.calculate_finance_interest_gain(principal, get_interest_rate())
+
+
+func get_humanity() -> float:
+	return player.get_stat("humanity", 100.0) if player != null else 100.0
+
+
+func get_interest_multiplier() -> float:
+	return float(HumanityEconomy.get_multipliers(get_humanity()).interest)
 
 
 func get_current_gold() -> int:
@@ -346,6 +371,10 @@ func get_state_snapshot() -> Dictionary:
 		"interest_rate": get_interest_rate(),
 		"interest_rate_bonus": interest_rate_bonus,
 		"estimated_interest": get_estimated_interest(),
+		"nominal_estimated_interest": get_nominal_estimated_interest(),
+		"humanity": get_humanity(),
+		"interest_multiplier": get_interest_multiplier(),
+		"interest_remainder": interest_remainder,
 		"wave_counter": wave_counter,
 		"current_wave_number": current_wave_number,
 		"last_action_wave_number": last_action_wave_number,
@@ -403,6 +432,10 @@ func _apply_after_successful_interest_relics(_source: String) -> void:
 		match str(effect.get("effect", "")):
 			EFFECT_ADD_INTEREST_RATE_BONUS:
 				interest_rate_bonus += float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
+	if player != null:
+		player.begin_modifier_update()
+		player.process_relic_runtime_trigger(TRIGGER_INTEREST_SUCCESS)
+		player.end_modifier_update()
 
 
 
@@ -419,6 +452,8 @@ func _build_settlement_result(source: String) -> Dictionary:
 		"principal_before": principal,
 		"interest_rate": get_interest_rate(),
 		"base_gain": _calculate_gain_for_source(source),
+		"humanity": get_humanity(),
+		"interest_multiplier": get_interest_multiplier(),
 		"gain": 0,
 		"principal_after": principal,
 		"reason": "",

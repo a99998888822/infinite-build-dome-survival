@@ -163,7 +163,9 @@ func flush_combat_audio(force: bool = false) -> void:
 				if cue_order != order or impact.suppressed_cues.has(cue):
 					continue
 				var gain := REACTION_WEAPON_GAIN_DB if is_weapon and impact.has_reaction else 0.0
-				_play_combat_sfx_now(cue, int(request.interval_ms), gain)
+				var resolved_cue: String = impact.resolve_cue(cue)
+				if not resolved_cue.is_empty():
+					_play_combat_sfx_now(resolved_cue, int(request.interval_ms), gain)
 
 
 func _request_combat_sfx(cue_id: String, minimum_interval_ms: int, is_weapon: bool) -> bool:
@@ -257,7 +259,8 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 	if profile.is_empty():
 		return false
 	var interval := maxi(int(profile.cooldown_ms), minimum_interval_ms)
-	if _combat_clock_ms - float(_combat_last_ms.get(cue_id, -10000.0)) < interval:
+	var voice_group := str(profile.get("voice_group", cue_id))
+	if _combat_clock_ms - float(_combat_last_ms.get(voice_group, -10000.0)) < interval:
 		return false
 	var priority := int(profile.priority)
 	# Reserve four voices for weapon impacts / landings / reactions. A burst
@@ -274,7 +277,7 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 	for player in _combat_players:
 		if player.playing:
 			active += 1
-			if str(player.get_meta("cue_id", "")) == cue_id:
+			if str(player.get_meta("voice_group", "")) == voice_group:
 				voices += 1
 		elif available == null:
 			available = player
@@ -290,8 +293,9 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 	var spread := float(profile.pitch_spread)
 	available.pitch_scale = _combat_rng.randf_range(1.0 - spread, 1.0 + spread)
 	available.set_meta("cue_id", cue_id)
+	available.set_meta("voice_group", voice_group)
 	available.play()
-	_combat_last_ms[cue_id] = _combat_clock_ms
+	_combat_last_ms[voice_group] = _combat_clock_ms
 	_combat_last_variant[cue_id] = variant
 	burst.count = int(burst.count) + 1
 	_combat_bursts[lane] = burst

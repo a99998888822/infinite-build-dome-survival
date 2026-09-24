@@ -1,0 +1,26 @@
+{
+  "tome": {
+    "frames": 160,
+    "duration_ms": 8000,
+    "size": [
+      640,
+      540
+    ]
+  },
+  "combined": {
+    "frames": 160,
+    "duration_ms": 8000,
+    "size": [
+      640,
+      540
+    ]
+  },
+  "purse": {
+    "frames": 160,
+    "duration_ms": 8000,
+    "size": [
+      640,
+      540
+    ]
+  }
+}

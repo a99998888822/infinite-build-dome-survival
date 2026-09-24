@@ -173,7 +173,7 @@ func _test_collision_and_events() -> void:
 	manager.initialize(player)
 	manager._elite_quota_rng.seed = 20260923
 	var rng_before := manager._elite_quota_rng.state
-	for row in [[1, 1000, 0.0], [2, 0, 0.2], [5, 0, 0.5], [10, 0, 1.0], [15, 0, 1.5], [20, 0, 2.0], [10, 50, 1.25], [20, 50, 2.5], [10, 100, 1.5], [20, 1000, 3.0], [3, -20, 0.3]]:
+	for row in [[1, 1000, 0.0], [2, 0, 0.2], [5, 0, 0.5], [10, 0, 1.0], [15, 0, 1.5], [20, 0, 2.0], [10, 50, 1.5], [20, 50, 3.0], [10, 100, 2.0], [20, 1000, 3.0], [3, -20, 0.3]]:
 		check(is_equal_approx(manager.calculate_miniboss_expected_count(row[0], row[1]), row[2]), "expectation wave=%s erosion=%s" % [row[0], row[1]])
 	check(manager._elite_quota_rng.state == rng_before, "expectation preview does not consume quota RNG")
 	for expected in [0.0, 1.0, 2.0, 3.0]:

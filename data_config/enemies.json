@@ -20,7 +20,7 @@
   {
     "id": "enemy_elite_rusher",
     "display_name": "裂甲奔袭者",
-    "description": "大体型冲刺小Boss，生命为同波普通怪的20倍，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加50%，单波最多3只；波初按期望抽取数量，仅前半段生成。蓄力显示30%红色直角矩形路径；遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。",
+    "description": "大体型冲刺小Boss，生命为同波普通怪的20倍，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加100%，单波最多3只；波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。蓄力显示30%红色直角矩形路径；遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。",
     "enabled": true,
     "tags": ["enemy", "elite", "melee", "void"],
     "enemy_type": "elite",
@@ -45,7 +45,7 @@
       "spawn_window_percent": 50,
       "expectation_wave_divisor": 10,
       "erosion_bonus_full_at": 100,
-      "erosion_bonus_max_percent": 50,
+      "erosion_bonus_max_percent": 100,
       "quota_cap": 3
     }
   }

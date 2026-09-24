@@ -1,0 +1,256 @@
+{
+  "attachments": [
+    "weapon_kunyu_ritual_tome:scroll_split",
+    "weapon_kunyu_ritual_tome:scroll_fire",
+    "weapon_rentier_purse:scroll_split",
+    "weapon_rentier_purse:scroll_fire"
+  ],
+  "contacts": [
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 10,
+      "target": 178979344487
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 10,
+      "target": 178375364743
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 10,
+      "target": 177771384993
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 18,
+      "target": 177972711575
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 20,
+      "target": 177368731828
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 22,
+      "target": 178073374868
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 22,
+      "target": 177872048284
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 23,
+      "target": 177469395012
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 25,
+      "target": 179080007776
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 35,
+      "target": 179080007776
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 35,
+      "target": 178375364743
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 35,
+      "target": 178073374868
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 50,
+      "target": 177670721700
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 51,
+      "target": 177771384993
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 52,
+      "target": 177570058403
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 60,
+      "target": 178677354612
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 60,
+      "target": 177469395012
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 60,
+      "target": 177872048284
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 82,
+      "target": 178274701434
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 84,
+      "target": 178476028022
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 85,
+      "target": 178576691319
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 85,
+      "target": 178878681194
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 85,
+      "target": 178576691319
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 85,
+      "target": 178476028022
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 110,
+      "target": 178778017903
+    },
+    {
+      "child": true,
+      "damage": 6,
+      "frame": 110,
+      "target": 178174038157
+    },
+    {
+      "child": false,
+      "damage": 10,
+      "frame": 135,
+      "target": 178174038157
+    }
+  ],
+  "critical_chance_override": 0,
+  "enemy_count": 18,
+  "fps": 30,
+  "frames": 240,
+  "kills": 18,
+  "launches": [
+    {
+      "count": 1,
+      "frame": 10,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 3,
+      "frame": 10,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 1,
+      "frame": 35,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 3,
+      "frame": 44,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 1,
+      "frame": 60,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 3,
+      "frame": 78,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 1,
+      "frame": 85,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 1,
+      "frame": 110,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 3,
+      "frame": 112,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 1,
+      "frame": 135,
+      "weapon": "weapon_kunyu_ritual_tome"
+    },
+    {
+      "count": 3,
+      "frame": 146,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 3,
+      "frame": 180,
+      "weapon": "weapon_rentier_purse"
+    },
+    {
+      "count": 3,
+      "frame": 214,
+      "weapon": "weapon_rentier_purse"
+    }
+  ],
+  "max_player_movement": 187.199905395508,
+  "moving_enemies": true,
+  "native_enemy_stats": true,
+  "player_health_override": 1000,
+  "principal": 400.0,
+  "production": true,
+  "valid": true,
+  "variant": "combined",
+  "weapons": [
+    "weapon_kunyu_ritual_tome",
+    "weapon_rentier_purse"
+  ]
+}

@@ -457,38 +457,13 @@ func _make_settings_title(text_value: String) -> Label:
 	return label
 
 func _make_settings_panel_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#111b16")
-	style.border_color = Color("#d3a637")
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(6)
-	style.content_margin_left = 28.0
-	style.content_margin_right = 28.0
-	style.content_margin_top = 24.0
-	style.content_margin_bottom = 24.0
-	style.shadow_color = Color(0, 0, 0, 0.65)
-	style.shadow_size = 12
-	return style
+	return SettingsUIStyle.panel()
 
 func _make_credit_area_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#28382f")
-	style.border_color = Color("#536b59")
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(3)
-	style.content_margin_left = 10.0
-	style.content_margin_right = 10.0
-	return style
+	return SettingsUIStyle.credit()
 
 func _make_settings_button_style(background: Color, border: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background
-	style.border_color = border
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(3)
-	style.content_margin_top = 6.0
-	style.content_margin_bottom = 6.0
-	return style
+	return SettingsUIStyle.button(background, border)
 
 func _on_settings_pressed() -> void:
 	if _settings_panel == null:
@@ -1056,6 +1031,9 @@ func _build_weapon_cards(weapon_ids: Variant) -> void:
 		var stats: Dictionary = weapon.get("base_stats", {})
 		var kind := "混合" if weapon.get("attack_kind", "") == "mixed" else ("远程" if weapon.get("attack_kind", "") == "ranged" else "近战")
 		var damage: float = float(stats.get("ranged_damage", stats.get("melee_damage", 0)))
+		if weapon.get("attack_kind", "") == "element":
+			kind = "元素"
+			damage = float(stats.get("element_damage", 0))
 		var detail := Label.new()
 		detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		detail.text = "%s · 伤害 %s · 间隔 %.2fs · 负载 %d" % [kind, _format_number(damage), float(weapon.get("attack_interval_ms", 0)) / 1000.0, int(weapon.get("load_cost", 0))]

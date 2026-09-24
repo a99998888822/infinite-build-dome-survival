@@ -59,6 +59,7 @@ var _elite_quota_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _elite_spawned_count: int = 0
 var _elite_spawn_deadline: float = 0.0
 var _elite_erosion_snapshot: float = 0.0
+var _wave_erosion_pressure: Dictionary = {}
 var _pending_relic_choices: Dictionary = {}
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
@@ -112,6 +113,8 @@ func initialize(target_player: PlayerController) -> void:
 	_elite_expected_count = 0.0
 	_elite_quota_rng.randomize()
 	_elite_spawned_count = 0
+	_elite_erosion_snapshot = 0.0
+	_wave_erosion_pressure = calculate_enemy_erosion_pressure(0.0)
 	_pending_relic_choices.clear()
 	if not drop_reward_system.relic_choice_collected.is_connected(_on_relic_choice_collected):
 		drop_reward_system.relic_choice_collected.connect(_on_relic_choice_collected)
@@ -150,6 +153,7 @@ func start_next_wave() -> bool:
 		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
 	if player != null and player.is_alive():
 		player.heal(int(player.get_stat("max_hp")))
+	_wave_erosion_pressure = calculate_enemy_erosion_pressure(player.get_stat("divinity") if player != null else 0.0)
 	_initialize_elite_schedule()
 	running = true
 	wave_started.emit(str(current_wave.get("id", "")), int(current_wave.get("duration_seconds", 0)))
@@ -184,6 +188,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.global_position = position
 	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
 	runtime_modifiers.append_array(_build_wave_enemy_modifiers())
+	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
 	if not enemy.initialize(enemy_id, player, runtime_modifiers):
 		push_error("[WaveManager] enemy initialization failed: %s" % enemy_id)
 		enemy.queue_free()
@@ -225,6 +230,11 @@ func clear_enemies() -> void:
 
 
 func clear_battle_entities() -> void:
+	if is_inside_tree():
+		for grenade in get_tree().get_nodes_in_group("grenade_projectiles"):
+			grenade.cancel()
+		for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
+			effect.cancel()
 	_pending_reward_batches.clear()
 	_elite_spawn_schedule.clear()
 	_clear_non_exp_reward_pickups()
@@ -451,7 +461,7 @@ func _process_spawn_timers(delta: float) -> void:
 
 func _initialize_elite_schedule() -> void:
 	_elite_profile = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
-	_elite_erosion_snapshot = maxf(0.0, player.get_stat("divinity") if player != null else 0.0)
+	_elite_erosion_snapshot = float(_wave_erosion_pressure.get("erosion", 0.0))
 	_elite_expected_count = calculate_miniboss_expected_count(current_wave_index + 1, _elite_erosion_snapshot)
 	_elite_planned_count = _sample_miniboss_quota(_elite_expected_count)
 	_elite_spawned_count = 0
@@ -471,7 +481,7 @@ func calculate_miniboss_expected_count(wave_number: int, erosion: float) -> floa
 	var cap := maxi(0, int(profile.get("quota_cap", 3)))
 	var base := float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 10)))
 	var erosion_ratio := clampf(erosion / maxf(1.0, float(profile.get("erosion_bonus_full_at", 100))), 0.0, 1.0)
-	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 50))) / 100.0
+	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 100))) / 100.0
 	return minf(base * (1.0 + bonus), float(cap))
 
 
@@ -521,6 +531,43 @@ func calculate_spawn_interval(base_interval_ms: float) -> float:
 	var wave_growth := WAVE_SPAWN_INTERVAL_GROWTH_PERCENT * float(maxi(current_wave_index, 0)) / 100.0
 	var zone_growth := ZoneProgression.get_enemy_pressure_per_streak("spawn_interval_percent") * float(ZoneProgression.get_effective_streak()) / 100.0
 	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) / (1.0 + wave_growth + zone_growth))
+
+
+func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:
+	var rules := DataRegistry.get_record("erosion_pressure_rules", "erosion_enemy_stats")
+	# The configured reference value calibrates growth; it is not an upper limit.
+	var ratio := maxf(0.0, erosion) / maxf(1.0, float(rules.get("erosion_full_at", 100)))
+	return {
+		"erosion": maxf(0.0, erosion),
+		"max_hp_multiplier": 1.0 + ratio * float(rules.get("max_hp_bonus_percent", 180)) / 100.0,
+		"damage_multiplier": 1.0 + ratio * float(rules.get("damage_bonus_percent", 90)) / 100.0,
+		"armor_multiplier": 1.0 + ratio * float(rules.get("armor_bonus_percent", 135)) / 100.0,
+	}
+
+
+func get_enemy_erosion_snapshot() -> Dictionary:
+	return _wave_erosion_pressure.duplicate(true)
+
+
+func _build_erosion_enemy_modifiers() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var factors := {
+		"max_hp": float(_wave_erosion_pressure.get("max_hp_multiplier", 1.0)),
+		"armor": float(_wave_erosion_pressure.get("armor_multiplier", 1.0)),
+		"melee_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+		"ranged_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+		"element_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+	}
+	for stat in factors:
+		if is_equal_approx(float(factors[stat]), 1.0):
+			continue
+		result.append({
+			"id": "erosion_enemy_" + stat, "source_type": "erosion", "source_id": "wave_start",
+			"target_scope": "enemy", "stat": stat, "operation": Modifier.OPERATION_MULTIPLY,
+			"value": factors[stat], "duration": Modifier.PERMANENT_DURATION,
+			"stack_rule": Modifier.STACK_RULE_UNIQUE,
+		})
+	return result
 
 
 func _build_wave_enemy_modifiers() -> Array[Dictionary]:

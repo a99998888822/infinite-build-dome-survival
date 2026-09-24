@@ -1,0 +1,221 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+Using "default" pen tablet driver...
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+Loading resource: res://assets/font/theme_global.tres remapped: res://assets/font/theme_global.tres
+Loading resource: res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf remapped: res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf
+Loading resource: res://.godot/imported/ark-pixel-12px-monospaced-zh_cn.otf-67457498407c3785d012d9f77e2048f3.fontdata remapped: res://.godot/imported/ark-pixel-12px-monospaced-zh_cn.otf-67457498407c3785d012d9f77e2048f3.fontdata
+Completed load for: 'res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf' remapped 'res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf' at thread -1
+Completed load for: 'res://assets/font/theme_global.tres' remapped 'res://assets/font/theme_global.tres' at thread -1
+CORE API HASH: 2004498165
+EDITOR API HASH: 1696660745
+SceneTreeFTI: traversal method DEFAULT
+Loading resource: res://autoloads/data_registry.gd remapped: res://autoloads/data_registry.gd
+Loading resource: res://assets/sprites/player/combat/void_hunter_idle_right.png remapped: res://assets/sprites/player/combat/void_hunter_idle_right.png
+Loading resource: res://.godot/imported/void_hunter_idle_right.png-e47564c00795dba04352803dcbf3a4b7.ctex remapped: res://.godot/imported/void_hunter_idle_right.png-e47564c00795dba04352803dcbf3a4b7.ctex
+Completed load for: 'res://assets/sprites/player/combat/void_hunter_idle_right.png' remapped 'res://assets/sprites/player/combat/void_hunter_idle_right.png' at thread -1
+Loading resource: res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png remapped: res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png
+Loading resource: res://.godot/imported/void_hunter_walk_right_spritesheet.png-1e63a35f02b5757356797646ec56fdda.ctex remapped: res://.godot/imported/void_hunter_walk_right_spritesheet.png-1e63a35f02b5757356797646ec56fdda.ctex
+Completed load for: 'res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png' remapped 'res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png' at thread -1
+Completed load for: 'res://autoloads/data_registry.gd' remapped 'res://autoloads/data_registry.gd' at thread -1
+Loading resource: res://autoloads/camp_progression.gd remapped: res://autoloads/camp_progression.gd
+Completed load for: 'res://autoloads/camp_progression.gd' remapped 'res://autoloads/camp_progression.gd' at thread -1
+Loading resource: res://autoloads/audio_manager.gd remapped: res://autoloads/audio_manager.gd
+Loading resource: res://assets/audio/sfx/combat/wood_arrow_01.wav remapped: res://assets/audio/sfx/combat/wood_arrow_01.wav
+Loading resource: res://.godot/imported/wood_arrow_01.wav-cdc347317541a3529e2a39c677af4747.sample remapped: res://.godot/imported/wood_arrow_01.wav-cdc347317541a3529e2a39c677af4747.sample
+Completed load for: 'res://assets/audio/sfx/combat/wood_arrow_01.wav' remapped 'res://assets/audio/sfx/combat/wood_arrow_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/plasma_hit_01.wav remapped: res://assets/audio/sfx/combat/plasma_hit_01.wav
+Loading resource: res://.godot/imported/plasma_hit_01.wav-59350b0846c89dc91de8713707e9da13.sample remapped: res://.godot/imported/plasma_hit_01.wav-59350b0846c89dc91de8713707e9da13.sample
+Completed load for: 'res://assets/audio/sfx/combat/plasma_hit_01.wav' remapped 'res://assets/audio/sfx/combat/plasma_hit_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/lightning_01.wav remapped: res://assets/audio/sfx/combat/lightning_01.wav
+Loading resource: res://.godot/imported/lightning_01.wav-cd7db387ffae6bf6630c6ba57c2784cb.sample remapped: res://.godot/imported/lightning_01.wav-cd7db387ffae6bf6630c6ba57c2784cb.sample
+Completed load for: 'res://assets/audio/sfx/combat/lightning_01.wav' remapped 'res://assets/audio/sfx/combat/lightning_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/spark_charge_01.wav remapped: res://assets/audio/sfx/combat/spark_charge_01.wav
+Loading resource: res://.godot/imported/spark_charge_01.wav-e647cc55eccf1d290a19b6f690800ee6.sample remapped: res://.godot/imported/spark_charge_01.wav-e647cc55eccf1d290a19b6f690800ee6.sample
+Completed load for: 'res://assets/audio/sfx/combat/spark_charge_01.wav' remapped 'res://assets/audio/sfx/combat/spark_charge_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/electric_spark_01.wav remapped: res://assets/audio/sfx/combat/electric_spark_01.wav
+Loading resource: res://.godot/imported/electric_spark_01.wav-38ca126eafcf7a6b598d444c8d1212b2.sample remapped: res://.godot/imported/electric_spark_01.wav-38ca126eafcf7a6b598d444c8d1212b2.sample
+Completed load for: 'res://assets/audio/sfx/combat/electric_spark_01.wav' remapped 'res://assets/audio/sfx/combat/electric_spark_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/fire_01.wav remapped: res://assets/audio/sfx/combat/fire_01.wav
+Loading resource: res://.godot/imported/fire_01.wav-7493124943213e24309a3683493def94.sample remapped: res://.godot/imported/fire_01.wav-7493124943213e24309a3683493def94.sample
+Completed load for: 'res://assets/audio/sfx/combat/fire_01.wav' remapped 'res://assets/audio/sfx/combat/fire_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/explosion_01.wav remapped: res://assets/audio/sfx/combat/explosion_01.wav
+Loading resource: res://.godot/imported/explosion_01.wav-0b8b4d10100da3b68598e8ab6f9b5b92.sample remapped: res://.godot/imported/explosion_01.wav-0b8b4d10100da3b68598e8ab6f9b5b92.sample
+Completed load for: 'res://assets/audio/sfx/combat/explosion_01.wav' remapped 'res://assets/audio/sfx/combat/explosion_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/water_01.wav remapped: res://assets/audio/sfx/combat/water_01.wav
+Loading resource: res://.godot/imported/water_01.wav-9b19588c120043e767002e74a98acd08.sample remapped: res://.godot/imported/water_01.wav-9b19588c120043e767002e74a98acd08.sample
+Completed load for: 'res://assets/audio/sfx/combat/water_01.wav' remapped 'res://assets/audio/sfx/combat/water_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/ice_01.wav remapped: res://assets/audio/sfx/combat/ice_01.wav
+Loading resource: res://.godot/imported/ice_01.wav-e0275dad369db482b04ba84c29c1fea0.sample remapped: res://.godot/imported/ice_01.wav-e0275dad369db482b04ba84c29c1fea0.sample
+Completed load for: 'res://assets/audio/sfx/combat/ice_01.wav' remapped 'res://assets/audio/sfx/combat/ice_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/wind_01.wav remapped: res://assets/audio/sfx/combat/wind_01.wav
+Loading resource: res://.godot/imported/wind_01.wav-c536f7dbebfde370463fb3350fc8853e.sample remapped: res://.godot/imported/wind_01.wav-c536f7dbebfde370463fb3350fc8853e.sample
+Completed load for: 'res://assets/audio/sfx/combat/wind_01.wav' remapped 'res://assets/audio/sfx/combat/wind_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/light_sword_01.wav remapped: res://assets/audio/sfx/combat/light_sword_01.wav
+Loading resource: res://.godot/imported/light_sword_01.wav-53205df2db061fcfa12b926ae22f0c20.sample remapped: res://.godot/imported/light_sword_01.wav-53205df2db061fcfa12b926ae22f0c20.sample
+Completed load for: 'res://assets/audio/sfx/combat/light_sword_01.wav' remapped 'res://assets/audio/sfx/combat/light_sword_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/black_hole_01.wav remapped: res://assets/audio/sfx/combat/black_hole_01.wav
+Loading resource: res://.godot/imported/black_hole_01.wav-0c813b07685f338a97b180ae31b8b9f4.sample remapped: res://.godot/imported/black_hole_01.wav-0c813b07685f338a97b180ae31b8b9f4.sample
+Completed load for: 'res://assets/audio/sfx/combat/black_hole_01.wav' remapped 'res://assets/audio/sfx/combat/black_hole_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_steam_01.wav remapped: res://assets/audio/sfx/combat/reaction_steam_01.wav
+Loading resource: res://.godot/imported/reaction_steam_01.wav-f12fb2360281766e1d8e2d72f74a5030.sample remapped: res://.godot/imported/reaction_steam_01.wav-f12fb2360281766e1d8e2d72f74a5030.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_steam_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_steam_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_freeze_01.wav remapped: res://assets/audio/sfx/combat/reaction_freeze_01.wav
+Loading resource: res://.godot/imported/reaction_freeze_01.wav-730fafa98dd5e6d259b62f430f033d9a.sample remapped: res://.godot/imported/reaction_freeze_01.wav-730fafa98dd5e6d259b62f430f033d9a.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_freeze_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_freeze_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_thaw_01.wav remapped: res://assets/audio/sfx/combat/reaction_thaw_01.wav
+Loading resource: res://.godot/imported/reaction_thaw_01.wav-9a50419686e0bdb16374c39115624d72.sample remapped: res://.godot/imported/reaction_thaw_01.wav-9a50419686e0bdb16374c39115624d72.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_thaw_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_thaw_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_holy_01.wav remapped: res://assets/audio/sfx/combat/reaction_holy_01.wav
+Loading resource: res://.godot/imported/reaction_holy_01.wav-0fd8844dec3eba4710a86f8ccc4f622e.sample remapped: res://.godot/imported/reaction_holy_01.wav-0fd8844dec3eba4710a86f8ccc4f622e.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_holy_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_holy_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_dark_flame_01.wav remapped: res://assets/audio/sfx/combat/reaction_dark_flame_01.wav
+Loading resource: res://.godot/imported/reaction_dark_flame_01.wav-a0190159cdef955f1e48eabeeac50ca7.sample remapped: res://.godot/imported/reaction_dark_flame_01.wav-a0190159cdef955f1e48eabeeac50ca7.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_dark_flame_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_dark_flame_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_cancel_01.wav remapped: res://assets/audio/sfx/combat/reaction_cancel_01.wav
+Loading resource: res://.godot/imported/reaction_cancel_01.wav-0dfc2809444d1deee8b93d37d615062f.sample remapped: res://.godot/imported/reaction_cancel_01.wav-0dfc2809444d1deee8b93d37d615062f.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_cancel_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_cancel_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_conduct_01.wav remapped: res://assets/audio/sfx/combat/reaction_conduct_01.wav
+Loading resource: res://.godot/imported/reaction_conduct_01.wav-8245fae9fded35bcc4704c13174d5f8a.sample remapped: res://.godot/imported/reaction_conduct_01.wav-8245fae9fded35bcc4704c13174d5f8a.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_conduct_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_conduct_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_thunder_fire_01.wav remapped: res://assets/audio/sfx/combat/reaction_thunder_fire_01.wav
+Loading resource: res://.godot/imported/reaction_thunder_fire_01.wav-bc648d6b7c8f815bc698a00ebc9de421.sample remapped: res://.godot/imported/reaction_thunder_fire_01.wav-bc648d6b7c8f815bc698a00ebc9de421.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_thunder_fire_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_thunder_fire_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_conduct_strike_01.wav remapped: res://assets/audio/sfx/combat/reaction_conduct_strike_01.wav
+Loading resource: res://.godot/imported/reaction_conduct_strike_01.wav-f0650fb8f94edb1f797362f2b1a8e63f.sample remapped: res://.godot/imported/reaction_conduct_strike_01.wav-f0650fb8f94edb1f797362f2b1a8e63f.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_conduct_strike_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_conduct_strike_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_thunder_fire_strike_01.wav remapped: res://assets/audio/sfx/combat/reaction_thunder_fire_strike_01.wav
+Loading resource: res://.godot/imported/reaction_thunder_fire_strike_01.wav-4bc09219dfdc8a7664b88e6f55816fa6.sample remapped: res://.godot/imported/reaction_thunder_fire_strike_01.wav-4bc09219dfdc8a7664b88e6f55816fa6.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_thunder_fire_strike_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_thunder_fire_strike_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_wet_spread_01.wav remapped: res://assets/audio/sfx/combat/reaction_wet_spread_01.wav
+Loading resource: res://.godot/imported/reaction_wet_spread_01.wav-5cac95716517f94271cdf74ebf99a031.sample remapped: res://.godot/imported/reaction_wet_spread_01.wav-5cac95716517f94271cdf74ebf99a031.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_wet_spread_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_wet_spread_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_ice_expand_01.wav remapped: res://assets/audio/sfx/combat/reaction_ice_expand_01.wav
+Loading resource: res://.godot/imported/reaction_ice_expand_01.wav-9040bcb3e5f0b2060fba3d701d647035.sample remapped: res://.godot/imported/reaction_ice_expand_01.wav-9040bcb3e5f0b2060fba3d701d647035.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_ice_expand_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_ice_expand_01.wav' at thread -1
+Loading resource: res://assets/audio/sfx/combat/reaction_reflection_01.wav remapped: res://assets/audio/sfx/combat/reaction_reflection_01.wav
+Loading resource: res://.godot/imported/reaction_reflection_01.wav-0a45bb8504446d8160f1e412397879d7.sample remapped: res://.godot/imported/reaction_reflection_01.wav-0a45bb8504446d8160f1e412397879d7.sample
+Completed load for: 'res://assets/audio/sfx/combat/reaction_reflection_01.wav' remapped 'res://assets/audio/sfx/combat/reaction_reflection_01.wav' at thread -1
+Completed load for: 'res://autoloads/audio_manager.gd' remapped 'res://autoloads/audio_manager.gd' at thread -1
+Loading resource: res://autoloads/zone_progression.gd remapped: res://autoloads/zone_progression.gd
+Completed load for: 'res://autoloads/zone_progression.gd' remapped 'res://autoloads/zone_progression.gd' at thread -1
+Loading resource: res://autoloads/window_settings.gd remapped: res://autoloads/window_settings.gd
+Completed load for: 'res://autoloads/window_settings.gd' remapped 'res://autoloads/window_settings.gd' at thread -1
+Loading resource: res://scripts/enemies/enemy_registry.gd remapped: res://scripts/enemies/enemy_registry.gd
+Completed load for: 'res://scripts/enemies/enemy_registry.gd' remapped 'res://scripts/enemies/enemy_registry.gd' at thread -1
+Loading resource: res://scripts/effects/effect_scheduler.gd remapped: res://scripts/effects/effect_scheduler.gd
+Completed load for: 'res://scripts/effects/effect_scheduler.gd' remapped 'res://scripts/effects/effect_scheduler.gd' at thread -1
+Loaded system CA certificates
+Loading resource: res://scenes/tests/plasma_contact_test.tscn remapped: res://scenes/tests/plasma_contact_test.tscn
+Loading resource: res://scripts/tests/plasma_contact_test.gd remapped: res://scripts/tests/plasma_contact_test.gd
+Loading resource: res://assets/font/VT323-Regular.ttf remapped: res://assets/font/VT323-Regular.ttf
+Loading resource: res://.godot/imported/VT323-Regular.ttf-b984a932aadd2533911db9f8a8b5b288.fontdata remapped: res://.godot/imported/VT323-Regular.ttf-b984a932aadd2533911db9f8a8b5b288.fontdata
+Completed load for: 'res://assets/font/VT323-Regular.ttf' remapped 'res://assets/font/VT323-Regular.ttf' at thread -1
+Completed load for: 'res://scripts/tests/plasma_contact_test.gd' remapped 'res://scripts/tests/plasma_contact_test.gd' at thread -1
+Completed load for: 'res://scenes/tests/plasma_contact_test.tscn' remapped 'res://scenes/tests/plasma_contact_test.tscn' at thread -1
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 5 records
+[DataRegistry] - relics: 77 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 1 records
+[DataRegistry] - enemies: 2 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 12 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS native plasma contact radius is twelve pixels
+PASS native visible core and physical collider match
+PASS old aura and ground discharge footprint deal no remote damage
+PASS distant enemies do not trigger contact slowdown
+PASS half pixel outside visible contact stays unharmed
+PASS visible edge contact starts one tick and slows the ball
+PASS no second tick before the contact interval
+PASS continued contact deals the next tick after 0.1 seconds
+PASS leaving contact stops ticks and restores flight speed
+PASS diagonal outside contact is not a bounding-box hit
+PASS diagonal recontact resumes the remaining ticks
+PASS five total contact ticks retain the original damage and lifetime limit
+PASS expired ball cannot add a sixth tick
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS a batch hits every touching enemy and excludes nearby noncontacts
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS live damage-area growth updates visible core and collision together
+PASS attack range expands travel without secretly expanding contact
+PASS expanded visible edge deals contact damage
+PASS minimum-radius clamp is shared instead of keeping a larger invisible collider
+PASS minimum-radius edge still rejects noncontact
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS real moving projectile starts damage only after the visible surfaces touch
+PASS pause freezes contact damage, movement and visual clock
+PASS item details read the shared twelve-pixel contact radius
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS plasma keeps full direct damage but explosion scales original plus elemental bonus to twenty percent
+PASS five delayed explosions retain their scale even after the plasma ball expires
+PASS plasma enchantment scaling does not mutate the source or later direct ticks
+Loading resource: res://scenes/enemy/mutated_grub.tscn remapped: res://scenes/enemy/mutated_grub.tscn
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex remapped: res://.godot/imported/enemy_gloom_mite_idle.png-65cedcb515a8e2322e25b19425b7ecca.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png' at thread -1
+Loading resource: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png remapped: res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png
+Loading resource: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex remapped: res://.godot/imported/enemy_gloom_mite_move.png-5cafdb24f819617c7d8e8691970ea4bb.ctex
+Completed load for: 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' remapped 'res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png' at thread -1
+Completed load for: 'res://scenes/enemy/mutated_grub.tscn' remapped 'res://scenes/enemy/mutated_grub.tscn' at thread -1
+PASS lightning also receives the scaled base rather than full original damage
+PASS small elemental components combine before scaling and final rounding; event copies preserve the scale
+PASS ordinary weapon elemental damage retains its original scale
+PLASMA_CONTACT_TEST checks=28 failures=0

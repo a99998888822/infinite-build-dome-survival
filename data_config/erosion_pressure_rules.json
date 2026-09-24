@@ -1,0 +1,11 @@
+[
+  {
+    "id": "erosion_enemy_stats",
+    "display_name": "侵蚀敌人属性压力",
+    "description": "波初读取侵蚀，所有怪物的生命、攻击和护甲获得独立乘区加成；每100侵蚀分别增加180%、90%、135%，超过100继续线性增长，不封顶。",
+    "erosion_full_at": 100,
+    "max_hp_bonus_percent": 180,
+    "damage_bonus_percent": 90,
+    "armor_bonus_percent": 135
+  }
+]

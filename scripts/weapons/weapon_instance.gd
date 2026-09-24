@@ -2,6 +2,7 @@ extends RefCounted
 class_name WeaponInstance
 
 const DAMAGE_KIND_RANGED: String = "ranged"
+const DAMAGE_KIND_ELEMENT: String = "element"
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.43, 0.72, 0.48, 1.0),
 	"uncommon": Color(0.34, 0.82, 0.78, 1.0),
@@ -11,6 +12,7 @@ const RARITY_COLORS: Dictionary = {
 	"legendary": Color(1.0, 0.82, 0.28, 1.0),
 }
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
+const EFFECT_PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
 var weapon_id: String = ""
 static var _next_instance_id: int = 1
@@ -21,6 +23,7 @@ var trade_upgrade_basis: Dictionary = {}
 var battle_title: Dictionary = {}
 var weapon_data: Dictionary = {}
 var owner_player: PlayerController = null
+var principal_getter: Callable = Callable()
 var level: int = 1
 var runtime_stats: Dictionary = {}
 var effect_ids: Array[String] = []
@@ -30,6 +33,8 @@ var _base_effect_modifiers: Array[Dictionary] = []
 var _attached_item_instances: Array[Dictionary] = []
 var attack_interval_ms: int = 0
 var attack_timer: float = 0.0
+var volley_index: int = 0
+var grenade_blast_radius: float = 0.0
 var _attack_hit_sfx_played: bool = false
 var _projectile_hit_sfx_played: Dictionary = {}
 var _last_attack_feedback_frame: int = -1
@@ -69,6 +74,8 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 	_reset_effect_runtime()
 	attack_interval_ms = int(data.get("attack_interval_ms", 1000))
 	attack_timer = 0.0
+	volley_index = 0
+	grenade_blast_radius = float(data.get("grenade_blast_radius", 0.0))
 	reset_hit_sfx_state()
 	return true
 
@@ -215,7 +222,7 @@ func get_attached_item_instances() -> Array[Dictionary]:
 
 
 func attach_item_instance(item_instance: Dictionary) -> bool:
-	if not has_available_attachment_slot() or item_instance.is_empty():
+	if not has_available_attachment_slot() or item_instance.is_empty() or not get_attachment_incompatibility(item_instance).is_empty():
 		return false
 	var item_instance_id := str(item_instance.get("item_instance_id", ""))
 	if item_instance_id.is_empty():
@@ -226,6 +233,13 @@ func attach_item_instance(item_instance: Dictionary) -> bool:
 	_attached_item_instances.append(item_instance.duplicate(true))
 	_rebuild_attachment_effects()
 	return true
+
+
+func get_attachment_incompatibility(item: Dictionary) -> String:
+	for effect_id in item.get("effect_ids", []):
+		if effect_id in weapon_data.get("unsupported_effects", []):
+			return "此武器暂不支持%s附魔" % ("穿透" if effect_id == "pierce" else str(effect_id))
+	return ""
 
 
 func detach_item_instance(item_instance_id: String = "") -> Dictionary:
@@ -330,6 +344,9 @@ func get_load_cost() -> int:
 
 func get_hit_radius() -> float:
 	var base_radius := float(weapon_data.get("hit_radius", 0))
+	if str(weapon_data.get("projectile_behavior", "")) == "plasma":
+		# One radius owns the plasma core, contact query, collider and item details.
+		return maxf(StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size")), 4.0)
 	return StatDefinitions.calculate_attack_radius(base_radius, get_stat("area_size"))
 
 
@@ -340,6 +357,79 @@ func get_attack_range() -> float:
 
 func get_projectile_speed() -> float:
 	return float(weapon_data.get("projectile_speed", 0))
+
+
+func is_grenade() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "grenade"
+
+
+func is_ritual_tome() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "ritual_domain"
+
+
+func is_coin_purse() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "coin"
+
+
+func get_domain_axes() -> Vector2:
+	return Vector2(get_attack_range(), StatDefinitions.calculate_attack_radius(float(weapon_data.get("domain_minor_axis", 145)), get_stat("area_size")))
+
+
+func get_principal_damage_bonus() -> float:
+	return float(weapon_data.get("principal_damage_coefficient", 0.0)) * sqrt(get_current_principal())
+
+
+func get_current_principal() -> float:
+	# The finance stat is a starting talent, not the live bank balance.
+	return maxf(0.0, float(principal_getter.call())) if principal_getter.is_valid() else 0.0
+
+
+func get_base_attack_damage() -> float:
+	var stat_id := "element_damage" if get_attack_kind() == DAMAGE_KIND_ELEMENT else "ranged_damage"
+	return _get_damage_component_base(stat_id) + get_principal_damage_bonus()
+
+
+func get_split_profiles() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for item in get_effect_instances("split"):
+		var context := EFFECT_PARAMETERS.build_weapon_context(self, "split", {
+			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.6,
+		}, str(item.get("item_instance_id", "")))
+		result.append({"child_count": clampi(roundi(context.get_resolved_parameter("child_count", 2.0)), 1, 8),
+			"spread_angle": maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0),
+			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0)})
+	return result
+
+
+func get_pierce_hit_limit() -> int:
+	var extra := 0
+	for item in get_effect_instances("pierce"):
+		var context := EFFECT_PARAMETERS.build_weapon_context(self, "pierce", {"extra_target_hits": 0.0}, str(item.get("item_instance_id", "")))
+		extra += clampi(roundi(context.get_resolved_parameter("extra_target_hits", 0.0)), 0, 32)
+	return 1 + mini(extra, 32)
+
+
+func get_grenade_blast_radius() -> float:
+	return maxf(1.0, grenade_blast_radius * (1.0 + get_stat("damage_area_size") / 100.0))
+
+
+func get_grenade_split_profiles() -> Array[Dictionary]:
+	var profiles: Array[Dictionary] = []
+	if not is_grenade():
+		return profiles
+	for item in get_effect_instances("split"):
+		var context := EFFECT_PARAMETERS.build_weapon_context(self, "split", {
+			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.6,
+		}, str(item.get("item_instance_id", "")))
+		profiles.append({
+			"child_count": clampi(roundi(context.get_resolved_parameter("child_count", 2.0)), 1, 8),
+			"spread_angle": maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0),
+			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0),
+			"radius_multiplier": maxf(float(weapon_data.get("grenade_split_radius_multiplier", 0.5)), 0.01),
+			"flight_seconds": maxf(float(weapon_data.get("grenade_split_flight_seconds", 0.32)), 0.01),
+			"arc_height": maxf(float(weapon_data.get("grenade_split_arc_height", 32)), 0.0),
+		})
+	return profiles
 
 
 func get_spread_angle() -> float:
@@ -354,8 +444,8 @@ func get_actual_attack_interval_seconds() -> float:
 
 func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]:
 	var events: Array[DamageEvent] = []
-	if get_attack_kind() == "ranged":
-		events.append(_build_damage_event(DAMAGE_KIND_RANGED, force_critical))
+	if get_attack_kind() in [DAMAGE_KIND_RANGED, DAMAGE_KIND_ELEMENT]:
+		events.append(_build_damage_event(get_attack_kind(), force_critical))
 	return events
 
 
@@ -386,11 +476,12 @@ func _apply_level_upgrades(target_level: int) -> void:
 			runtime_stats[stat_id] = StatDefinitions.clamp_stat_value(stat_id, get_weapon_stat(stat_id) + value)
 		elif str(upgrade.get("field", "")) == "attack_interval_ms":
 			attack_interval_ms = maxi(1, attack_interval_ms + value)
+		elif str(upgrade.get("field", "")) == "grenade_blast_radius":
+			grenade_blast_radius = maxf(1.0, grenade_blast_radius + value)
 
 
 func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEvent:
-	var damage_stat_id := "ranged_damage"
-	var base_damage := _get_damage_component_base(damage_stat_id)
+	var base_damage := get_base_attack_damage()
 	var damage := base_damage * (1.0 + get_stat("damage_percent") / 100.0)
 	var critical := force_critical or randf() * 100.0 < get_stat("crit_chance")
 	if critical:
@@ -400,7 +491,8 @@ func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEve
 		"source_weapon_id": weapon_id,
 		"damage": maxi(1, int(roundi(damage))),
 		"original_damage": maxi(1, int(roundi(damage))),
-		"element_damage_bonus": maxi(0, int(roundi(get_stat("element_damage")))),
+		# Elemental native attacks already include this bonus; attachments must not add it twice.
+		"element_damage_bonus": 0 if damage_kind == DAMAGE_KIND_ELEMENT else maxi(0, int(roundi(get_stat("element_damage")))),
 		"damage_kind": damage_kind,
 		"is_critical": critical,
 		"tags": _get_tags(),
@@ -409,11 +501,15 @@ func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEve
 
 
 func _get_damage_component_base(stat_id: String) -> float:
-	return get_stat(stat_id)
+	var coefficient := float(weapon_data.get("player_damage_coefficient", 1.0))
+	if is_equal_approx(coefficient, 1.0):
+		return get_stat(stat_id)
+	var player_bonus := owner_player.get_stat(stat_id) if is_instance_valid(owner_player) else 0.0
+	return maxf(0.0, get_weapon_stat(stat_id) + player_bonus * coefficient)
 
 
 func get_attack_kind() -> String:
-	return "ranged"
+	return str(weapon_data.get("attack_kind", DAMAGE_KIND_RANGED))
 
 
 func get_visual_rarity() -> String:
@@ -438,13 +534,39 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	var damage_line := "[color=#F5D76E]远程伤害[/color]%s" % _format_damage_source("ranged_damage")
+	var element_attack := get_attack_kind() == DAMAGE_KIND_ELEMENT
+	var damage_line := "[color=#F5D76E]%s伤害[/color]%s" % ["元素" if element_attack else "远程", _format_damage_source("element_damage" if element_attack else "ranged_damage")]
 	lines.append(damage_line)
+	if is_coin_purse():
+		var principal := get_current_principal()
+		lines.append("[color=#F5D76E]本金增伤[/color] +%s（%s×√%s，不消耗本金）" % [str(snappedf(get_principal_damage_bonus(), 0.1)), str(weapon_data.get("principal_damage_coefficient", 0.3)), str(snappedf(maxf(principal, 0.0), 0.1))])
+	if is_coin_purse() or is_ritual_tome():
+		lines.append("[color=#F5D76E]非暴击伤害[/color] %d（含通用增伤，护甲减免前）" % maxi(1, roundi(get_base_attack_damage() * (1.0 + get_stat("damage_percent") / 100.0))))
 	var interval := get_actual_attack_interval_seconds()
 	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]" % maxi(1, int(get_stat("projectile_count"))))
-	lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
+	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["每轮点名" if is_ritual_tome() else "投射物", maxi(1, int(get_stat("projectile_count")))])
+	if is_grenade():
+		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), str(snappedf(get_grenade_blast_radius(), 0.1))])
+		lines.append("[color=#F5D76E]飞行时间[/color] %.2fs · 固定落点" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
+		var damage := maxi(1, roundi(_get_damage_component_base("ranged_damage") * (1.0 + get_stat("damage_percent") / 100.0)))
+		lines.append("[color=#F5D76E]非暴击伤害[/color] %d（护甲减免前）" % damage)
+		lines.append("每个受击目标分别触发命中附魔；支持分裂，不支持穿透。")
+		for profile in get_grenade_split_profiles():
+			lines.append("[color=#F5D76E]集束分裂[/color] 每个目标 %d 枚 · 伤害 %d%% · 半径 %s · 飞行 %.2fs" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100), str(snappedf(get_grenade_blast_radius() * float(profile.radius_multiplier), 0.1)), float(profile.flight_seconds)])
+		if has_effect("split"):
+			lines.append("子榴弹排除主爆炸已命中目标，仍触发其他附魔；只分裂一代。")
+	elif is_ritual_tome():
+		var axes := get_domain_axes()
+		lines.append("[color=#F5D76E]领域半轴[/color] %d × %d（受攻击范围加成）" % [roundi(axes.x), roundi(axes.y)])
+		lines.append("随机点名领域内不同目标；分裂不越出领域，不支持穿透。")
+	else:
+		lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
+	if is_coin_purse():
+		lines.append("每轮均匀环射，方向逐轮偏转30°；同轮金币与分裂弹不重复命中同一敌人。")
+	if is_coin_purse() or is_ritual_tome():
+		for profile in get_split_profiles():
+			lines.append("[color=#F5D76E]分裂[/color] 每次主命中追加 %d 个 · 伤害 %d%% · 只分裂一代" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	if has_attachment_slot():
 		var attachments := get_attached_item_instances()
@@ -460,4 +582,7 @@ func build_full_stats_text() -> String:
 func _format_damage_source(stat_id: String) -> String:
 	var fixed_damage := int(roundi(get_weapon_stat(stat_id)))
 	var player_bonus := int(roundi((owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)) if owner_player != null else 0.0))
+	var coefficient := float(weapon_data.get("player_damage_coefficient", 1.0))
+	if not is_equal_approx(coefficient, 1.0):
+		return " %s（%d + %d×%s）" % [str(snappedf(_get_damage_component_base(stat_id), 0.1)), fixed_damage, player_bonus, str(coefficient)]
 	return "([color=#FFFFFF]%d[/color]+[color=#7FD88F]%d[/color])" % [fixed_damage, player_bonus]

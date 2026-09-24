@@ -181,7 +181,22 @@ func _run() -> void:
 	reset_audio()
 	spark._process(0.51)
 	await drain()
-	check(heard.has("reaction_conduct") and not heard.has("electric_spark"), "later wet landing substitutes conduction without replaying charge")
+	check(heard.has("reaction_conduct_strike") and not heard.has("reaction_conduct") and not heard.has("electric_spark") and not heard.has("spark_charge"), "later wet landing retains thunder inside its combined cue without replaying charge")
+
+	await prepare(["scroll_electric_spark"], [Vector2.ZERO, Vector2(10, 0)])
+	enemies[0].apply_wet(5.0, 0.8)
+	enemies[1].apply_burning(3.0, 10.0, "audio_test")
+	hit(enemies[0])
+	for child in host.get_children():
+		if child is ElectricSparkEffect:
+			spark = child
+			spark.set_process(false)
+	await drain()
+	reset_audio()
+	spark._process(0.51)
+	await drain()
+	check(heard.count("reaction_thunder_fire_strike") == 1 and not heard.has("reaction_conduct_strike") and not heard.has("electric_spark") and not heard.has("reaction_thunder_fire"), "mixed wet and burning victims produce one combined thunder-fire landing")
+	check(not enemies[0].has_status("wet") and not enemies[1].has_status("burning") and enemies[0].current_hp < 9900 and enemies[1].current_hp < 10000, "choosing one landing sound preserves both victims' reactions and damage")
 
 	await prepare(["scroll_water", "scroll_ice"])
 	hit(enemies[0])

@@ -1,0 +1,35 @@
+{
+  "contact_checks": 22,
+  "contact_failures": 0,
+  "combat_audio_checks": 39,
+  "combat_audio_failures": 0,
+  "production_capture_passed": true,
+  "pause_verified": true,
+  "verified_hit_events": 20,
+  "maximum_surface_gap_px": -0.0277252197265625,
+  "first_contact_frame": 71,
+  "target_final_hp": [
+    760,
+    1000,
+    1000
+  ],
+  "known_exit_cleanup_warnings": true,
+  "media": {
+    "full": {
+      "frames": 160,
+      "duration_ms": 8000,
+      "size": [
+        640,
+        540
+      ]
+    },
+    "detail": {
+      "frames": 75,
+      "duration_ms": 2520,
+      "size": [
+        384,
+        384
+      ]
+    }
+  }
+}

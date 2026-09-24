@@ -80,7 +80,7 @@ func _ready() -> void:
 	description_margin.add_child(_description)
 	var footer := HBoxContainer.new()
 	body.add_child(footer)
-	_price = Label.new()
+	_price = WrappedTooltipLabel.new()
 	_price.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_price.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	FinanceUIStyle.label(_price, 11, FinanceUIStyle.GOLD)
@@ -121,10 +121,12 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	panel.border_color = Color("576048").lerp(rarity_color, 0.55)
 	add_theme_stylebox_override("panel", panel)
 	var cost := int(offer.get("shop_cost", 0))
-	_price.text = "%d 金币" % cost
+	_price.text = "%s 金币" % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))
+	_price.mouse_filter = Control.MOUSE_FILTER_PASS
+	_price.tooltip_text = HumanityEconomy.purchase_tooltip(offer)
 	buy_button.disabled = not unavailable.is_empty()
 	buy_button.text = "购买" if unavailable.is_empty() else ("已购买" if unavailable == "already_purchased" else "不可购买")
-	buy_button.tooltip_text = "" if unavailable.is_empty() else FinanceUIStyle.reason(unavailable)
+	buy_button.tooltip_text = HumanityEconomy.purchase_tooltip(offer) if unavailable.is_empty() else FinanceUIStyle.reason(unavailable)
 	if unavailable == "insufficient_gold":
 		buy_button.text = "差 %d" % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE

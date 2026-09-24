@@ -6,6 +6,8 @@ var source_weapon_id: String = ""
 var damage: int = 0
 var original_damage: int = 0
 var element_damage_bonus: int = 0
+# Scale the complete elemental base before the effect's final rounding.
+var elemental_damage_scale: float = 1.0
 var damage_kind: String = ""
 var is_critical: bool = false
 var tags: Array[String] = []
@@ -19,6 +21,7 @@ static func create(data: Dictionary) -> DamageEvent:
 	event.damage = int(data.get("damage", 0))
 	event.original_damage = int(data.get("original_damage", event.damage))
 	event.element_damage_bonus = maxi(0, int(data.get("element_damage_bonus", 0)))
+	event.elemental_damage_scale = maxf(float(data.get("elemental_damage_scale", 1.0)), 0.0)
 	event.damage_kind = str(data.get("damage_kind", ""))
 	event.is_critical = bool(data.get("is_critical", false))
 	event.tags = _to_string_array(data.get("tags", []))
@@ -33,6 +36,7 @@ func to_dictionary() -> Dictionary:
 		"damage": damage,
 		"original_damage": original_damage,
 		"element_damage_bonus": element_damage_bonus,
+		"elemental_damage_scale": elemental_damage_scale,
 		"damage_kind": damage_kind,
 		"is_critical": is_critical,
 		"tags": tags.duplicate(),
@@ -45,7 +49,7 @@ func duplicate_event() -> DamageEvent:
 
 
 func get_elemental_base_damage() -> float:
-	return maxf(float(original_damage) + float(element_damage_bonus), 0.0)
+	return maxf(float(original_damage) + float(element_damage_bonus), 0.0) * elemental_damage_scale
 
 
 func get_elemental_damage(multiplier: float) -> int:

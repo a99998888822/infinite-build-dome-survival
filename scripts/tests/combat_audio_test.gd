@@ -25,7 +25,7 @@ func _run() -> void:
 		for stream: AudioStreamWAV in profile.streams:
 			assets_count += 1
 			assets_valid = assets_valid and stream != null and stream.mix_rate == 48000 and not stream.stereo and stream.loop_mode == AudioStreamWAV.LOOP_DISABLED and stream.get_length() > 0.1
-	check(assets_valid and assets_count == 23, "each cue imports one of 23 non-looping mono WAVs at 48 kHz")
+	check(assets_valid and assets_count == 25, "each cue imports one of 25 non-looping mono WAVs at 48 kHz")
 	check(AudioServer.get_bus_send(AudioServer.get_bus_index("CombatSFX")) == "SFX", "combat follows existing SFX volume setting")
 	check(AudioServer.get_bus_effect_count(AudioServer.get_bus_index("CombatSFX")) == 2, "combat compressor and limiter installed")
 	check(AudioManager.play_weapon_hit_sfx("weapon_void_blade"), "bow configured hit plays")
@@ -66,6 +66,16 @@ func _run() -> void:
 		AudioManager._process(.56)
 		AudioManager.play_combat_sfx("black_hole")
 	check(heard.count("black_hole") == 1, "long cue cannot stack beyond voice limit")
+	reset_audio()
+	check(AudioManager.play_combat_sfx("electric_spark"), "ordinary thunder starts")
+	AudioManager._process(.12)
+	check(not AudioManager.play_combat_sfx("reaction_conduct_strike"), "reaction variant cannot bypass thunder cooldown")
+	AudioManager._process(.15)
+	check(AudioManager.play_combat_sfx("reaction_conduct_strike"), "later wet thunder can overlap the first tail")
+	AudioManager._process(.27)
+	check(AudioManager.play_combat_sfx("reaction_thunder_fire_strike"), "fire thunder shares the third landing voice")
+	AudioManager._process(.27)
+	check(not AudioManager.play_combat_sfx("electric_spark") and heard.size() == 3, "all thunder variants share a three-voice cap without stealing tails")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	check(not AudioManager.play_combat_sfx("electric_spark"), "pause suppresses new combat sounds")
 	AudioManager._process(.5)
@@ -127,9 +137,11 @@ func _run() -> void:
 	reset_audio()
 	ExplosionEffect.spawn(host, Vector2.ZERO, weapon, event, "", 1.8, 72, "thunder_fire")
 	await frames()
+	AudioManager.flush_combat_audio(true)
 	check(heard.count("reaction_thunder_fire") == 1 and not heard.has("explosion"), "thunder-fire explosion uses only its combined cue")
 	host.queue_free()
 	await frames()
 	AudioManager.stop_combat_sfx()
+	await get_tree().create_timer(0.1).timeout
 	print("COMBAT_AUDIO_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures > 0 else 0)

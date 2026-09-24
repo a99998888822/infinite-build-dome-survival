@@ -1,0 +1,130 @@
+{
+  "utf8_files_checked": 34,
+  "text_problems": [],
+  "logs": {
+    "humanity_final.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready",
+        "HUMANITY_ECONOMY_COMPLETE checks=50 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "visual_final.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready",
+        "HUMANITY_ECONOMY_COMPLETE checks=50 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "visual_final_errors.log": {
+      "script_errors": [],
+      "completion": [],
+      "cleanup_messages": [
+        "WARNING: 1 RID of type \"Canvas\" was leaked.",
+        "WARNING: 1 RID of type \"CanvasItem\" was leaked.",
+        "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ]
+    },
+    "finance_final.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready",
+        "FINANCE_PREPARATION_DONE failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "bootstrap_final.log": {
+      "script_errors": [],
+      "completion": [
+        "[Bootstrap] validation warnings: 0",
+        "[Bootstrap] validation errors: 0",
+        "[Bootstrap] data self-test passed"
+      ],
+      "cleanup_messages": []
+    },
+    "main_final.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready"
+      ],
+      "cleanup_messages": []
+    },
+    "editor_workspace_final.log": {
+      "script_errors": [],
+      "completion": [],
+      "cleanup_messages": []
+    },
+    "balance_relics.log": {
+      "script_errors": [],
+      "completion": [
+        "RELIC_TEST_COMPLETE checks=70 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "balance_humanity.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready",
+        "HUMANITY_ECONOMY_COMPLETE checks=50 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "balance_bootstrap.log": {
+      "script_errors": [],
+      "completion": [
+        "[Bootstrap] validation warnings: 0",
+        "[Bootstrap] validation errors: 0",
+        "[Bootstrap] data self-test passed"
+      ],
+      "cleanup_messages": []
+    },
+    "balance_workspace_editor.log": {
+      "script_errors": [],
+      "completion": [],
+      "cleanup_messages": []
+    },
+    "implementation_editor.log": {
+      "script_errors": [],
+      "completion": [],
+      "cleanup_messages": []
+    },
+    "implementation_erosion.log": {
+      "script_errors": [],
+      "completion": [
+        "EROSION_PRESSURE_COMPLETE checks=61 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "implementation_relics.log": {
+      "script_errors": [],
+      "completion": [
+        "RELIC_TEST_COMPLETE checks=113 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "implementation_humanity.log": {
+      "script_errors": [],
+      "completion": [
+        "[GameGlobal] game root ready",
+        "HUMANITY_ECONOMY_COMPLETE checks=50 failures=0"
+      ],
+      "cleanup_messages": []
+    },
+    "implementation_bootstrap.log": {
+      "script_errors": [],
+      "completion": [
+        "[Bootstrap] validation warnings: 0",
+        "[Bootstrap] validation errors: 0",
+        "[Bootstrap] data self-test passed"
+      ],
+      "cleanup_messages": []
+    },
+    "implementation_workspace_editor.log": {
+      "script_errors": [],
+      "completion": [],
+      "cleanup_messages": []
+    }
+  }
+}

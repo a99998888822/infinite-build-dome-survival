@@ -1,0 +1,163 @@
+{
+  "checks": 9,
+  "child_events": [
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    },
+    {
+      "damage": 8,
+      "depth": 1,
+      "element_base": 8,
+      "forward": true
+    }
+  ],
+  "child_impacts": 18,
+  "child_launches": 18,
+  "enchantments": [
+    "scroll_split",
+    "scroll_lightning"
+  ],
+  "events": [
+    {
+      "frame": 23,
+      "main_hits": 3
+    },
+    {
+      "frame": 56,
+      "main_hits": 3
+    },
+    {
+      "frame": 89,
+      "main_hits": 3
+    }
+  ],
+  "failures": 0,
+  "fps": 30,
+  "frames": 108,
+  "main_impacts": 9,
+  "observed_status": {
+    "0:stunned": true,
+    "1:stunned": true,
+    "2:stunned": true,
+    "3:stunned": true,
+    "4:stunned": true,
+    "5:stunned": true,
+    "6:stunned": true,
+    "7:stunned": true,
+    "8:stunned": true
+  },
+  "prototype": true,
+  "target_hp": [
+    1910,
+    1934,
+    1934,
+    1964,
+    1964,
+    1936,
+    1944,
+    1924,
+    1932,
+    2000,
+    2000
+  ],
+  "variant": "split_lightning"
+}

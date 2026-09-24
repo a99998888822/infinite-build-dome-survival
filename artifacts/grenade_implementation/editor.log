@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Unable to open Android 'build-tools' directory.
+[   0% ] first_scan_filesystem | Started 项目初始化 (5 steps)
+[   0% ] first_scan_filesystem | 正在扫描文件结构……
+[  16% ] first_scan_filesystem | 正在加载全局类名……
+[  33% ] first_scan_filesystem | 正在校验 GDExtension……
+[  50% ] first_scan_filesystem | 正在创建自动加载脚本……
+[  66% ] first_scan_filesystem | 正在初始化插件……
+[  83% ] first_scan_filesystem | 正在启动文件扫描……
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started 正在注册全局类…… (9 steps)
+[   0% ] update_scripts_classes | MainFlowCoordinator
+[  10% ] update_scripts_classes | DataValidator
+[  20% ] update_scripts_classes | EnchantmentWorkbench
+[  30% ] update_scripts_classes | FinanceUIStyle
+[  40% ] update_scripts_classes | WaveManager
+[  50% ] update_scripts_classes | GrenadeProjectile
+[  60% ] update_scripts_classes | TargetingService
+[  70% ] update_scripts_classes | WeaponInstance
+[  80% ] update_scripts_classes | WeaponLoadout
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started 正在扫描动作…… (3 steps)
+[   0% ] _update_scan_actions | grenade_launch_01.wav
+[  25% ] _update_scan_actions | weapon_iron_grenade_cannon.png
+[  50% ] _update_scan_actions | weapon_plasma_cannon_v2.png
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started 正在导入或重新导入资产 (3 steps)
+[   0% ] reimport | 正在准备重新导入文件……
+[  25% ] reimport | 正在准备重新导入文件……
+[  50% ] reimport | 正在准备重新导入文件……
+[   0% ] reimport | 正在执行重新导入的前置操作……
+[   0% ] reimport | weapon_iron_grenade_cannon.png
+[  25% ] reimport | weapon_plasma_cannon_v2.png
+[  50% ] reimport | grenade_launch_01.wav
+[  75% ] reimport | 正在结束资产导入……
+[ DONE ] reimport
+
+[   0% ] reimport | Started 正在导入或重新导入资产 (3 steps)
+[   0% ] reimport | 正在执行重新导入的后置操作……
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started 正在加载编辑器 (5 steps)
+[   0% ] loading_editor_layout | 正在加载编辑器布局……
+[  16% ] loading_editor_layout | 正在加载停靠面板……
+[ DONE ] loading_editor_layout
+

@@ -1,0 +1,45 @@
+{
+	"attack_interval": 1.8,
+	"critical_chance_override": 0,
+	"enchantments": [],
+	"events": [
+		{
+			"event": "launch",
+			"frame": 10
+		},
+		{
+			"event": "detonation",
+			"frame": 24,
+			"hits": 4
+		},
+		{
+			"event": "launch",
+			"frame": 64
+		},
+		{
+			"event": "detonation",
+			"frame": 78,
+			"hits": 4
+		},
+		{
+			"event": "launch",
+			"frame": 118
+		},
+		{
+			"event": "detonation",
+			"frame": 132,
+			"hits": 4
+		},
+		{
+			"event": "launch",
+			"frame": 172
+		}
+	],
+	"flight_seconds": 0.45,
+	"fps": 30,
+	"frames": 180,
+	"level": 1,
+	"stationary_targets": true,
+	"target_hp": 1000,
+	"weapon": "weapon_iron_grenade_cannon"
+}

@@ -1,0 +1,93 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 2 records
+[DataRegistry] - relics: 72 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 1 records
+[DataRegistry] - enemies: 2 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 12 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS project configuration validates
+PASS ground reward is a choice token, no immediate relic
+PASS ground token immediately consumes a decay tier
+PASS same-frame second roll already uses 50 percent
+PASS successful action cannot replay
+PASS failed action cannot reroll
+PASS token collects exactly once
+PASS collection queues a choice without auto-grant
+PASS collection does not decay twice
+PASS ground token advances tier 2
+PASS ground token advances tier 3
+PASS ground token advances tier 4
+PASS bonus cap precedes decay
+PASS other sources do not change elite decay
+PASS non-relic probability unchanged: exp_orb
+PASS non-relic probability unchanged: health_pack
+PASS non-relic probability unchanged: augmentation
+PASS next wave resets decay
+PASS old queued actions and ground tokens cannot leak into new run
+PASS wave end flushes last-frame drop into pending choice
+PASS wave snapshot separates drops and collections
+PASS repeated finish does not duplicate choice
+PASS new run discards pending choices
+PASS elite has 20 times normal same-wave HP
+PASS wave armor doubles after growth
+PASS armor affects actual damage reduction
+PASS normal enemy data remains independent
+PASS spawn warning cannot be attacked
+PASS spawn warning completes
+PASS telegraph locks direction
+PASS 800ms windup starts dash
+PASS dash travels 240 pixels in 400ms
+PASS recovery returns to chase
+PASS freeze cancels skill
+PASS pause freezes skill clock
+PASS cleanup cancels elite without rewards
+PASS expectation wave=1 erosion=1000
+PASS expectation wave=2 erosion=0
+PASS expectation wave=5 erosion=0
+PASS expectation wave=10 erosion=0
+PASS expectation wave=15 erosion=0
+PASS expectation wave=20 erosion=0
+PASS expectation wave=10 erosion=50
+PASS expectation wave=20 erosion=50
+PASS expectation wave=10 erosion=100
+PASS expectation wave=20 erosion=1000
+PASS expectation wave=3 erosion=-20
+PASS expectation preview does not consume quota RNG
+PASS integer expectation has no count variance: 0.0
+PASS integer expectation has no count variance: 1.0
+PASS integer expectation has no count variance: 2.0
+PASS integer expectation has no count variance: 3.0
+PASS integer quotas do not consume randomness
+PASS 10000 samples preserve mean and adjacent counts: 0.2
+PASS 10000 samples preserve mean and adjacent counts: 0.5
+PASS 10000 samples preserve mean and adjacent counts: 1.25
+PASS 10000 samples preserve mean and adjacent counts: 1.5
+PASS 10000 samples preserve mean and adjacent counts: 2.5
+PASS wave start samples and fixes total and schedule
+PASS reading schedule does not reroll quota
+PASS warning completes before halfway
+PASS warning completes before halfway
+PASS all planned minibosses appear in first half without requiring kills
+PASS second half never creates another miniboss or rerolls quota
+PASS lag crossing deadline drops expired schedule instead of late catch-up
+PASS configured decay is half per ground drop
+PASS decay config validates 0
+PASS decay config validates 50
+PASS decay config validates 100
+PASS decay config validates -1
+PASS decay config validates 101
+PASS decay config validates 0.5
+PASS decay config validates invalid
+ELITE_RELIC_DECAY_COMPLETE checks=73 failures=0

@@ -165,8 +165,8 @@
   },
   {
     "id": "scroll_lightning",
-    "display_name": "闪电",
-    "description": "命中后释放闪电链，对当前目标和范围内另一个目标造成伤害；基础间隔0.10秒、麻痹0.50秒。",
+    "display_name": "电火花",
+    "description": "命中后释放电火花连锁，对当前目标和范围内另一个目标造成伤害；基础间隔0.10秒、麻痹0.50秒。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
@@ -226,7 +226,7 @@
   },
   {
     "id": "scroll_electric_spark",
-    "display_name": "电火花",
+    "display_name": "落雷",
     "description": "命中后在落点留下旋转的黄色虚线圆圈，延迟0.5秒后从高空劈下闪电，在圆圈范围内造成伤害。",
     "category": "enchantment_scroll",
     "rarity": "rare",
@@ -273,7 +273,7 @@
   {
     "id": "wizard_scroll_chain_mastery",
     "display_name": "连锁主宰",
-    "description": "闪电链额外连接1个目标，闪电伤害提高20%；打湿目标额外承受一次电击。",
+    "description": "电火花连锁额外连接1个目标，电火花伤害提高20%；打湿目标额外承受一次电击。",
     "category": "wizard_scroll",
     "rarity": "legendary",
     "effect_ids": [
@@ -321,7 +321,7 @@
   {
     "id": "scroll_split",
     "display_name": "分裂",
-    "description": "每次命中后生成2支子箭，子箭伤害降低40%，并优先飞向尚未命中的敌人。",
+    "description": "生成基础2枚、伤害为原伤害60%的子弹，优先攻击尚未命中的敌人；子弹不再分裂。榴弹炮对每个主爆炸命中目标生成小榴弹，爆炸半径减半。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": [
