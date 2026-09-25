@@ -118,6 +118,9 @@
 | 已存在 | 镀金扳机遗物图标 | `relic_gilded_trigger.png` | `assets/ui/icons/relics/relic_gilded_trigger.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
 | 已存在 | 失控增幅器遗物图标 | `relic_runaway_amplifier.png` | `assets/ui/icons/relics/relic_runaway_amplifier.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
 | 已存在 | 清醒誓言遗物图标 | `relic_lucid_vow.png` | `assets/ui/icons/relics/relic_lucid_vow.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
+| 已接入 | 金币心脏遗物图标 | `relic_coin_heart.png` | `assets/ui/icons/relics/relic_coin_heart.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
+| 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
+| 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
 | 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
 | 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |

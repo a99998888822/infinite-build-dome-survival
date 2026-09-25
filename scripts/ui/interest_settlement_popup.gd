@@ -256,12 +256,16 @@ func _build_detail_lines() -> Array[String]:
 		var result_data := result as Dictionary
 		var source_label := _source_label(str(result_data.get("source", "")))
 		if bool(result_data.get("blocked", false)):
-			lines.append("⛓ %s：未收息（高利契约）" % source_label)
+			lines.append("⛓ %s：未收息（条件未满足）" % source_label)
 		elif not bool(result_data.get("success", false)):
 			lines.append("· %s：未收息（%s）" % [source_label, _reason_label(str(result_data.get("reason", "unknown")))])
 		else:
 			var gain := int(result_data.get("gain", 0))
-			lines.append("✦ %s：+%d 利息（利率 %.1f%%）" % [source_label, gain, float(result_data.get("interest_rate", 0.0))])
+			lines.append("✦ %s：+%d 金币（利率 %.1f%%）" % [source_label, gain, float(result_data.get("interest_rate", 0.0))])
+			if bool(result_data.get("dividend_double_triggered", false)):
+				lines.append("分红支票：本次 %d 倍结算" % int(result_data.get("dividend_multiplier", 2)))
+	if not lines.is_empty():
+		lines.append("利息自动加入随身金币，本金保持不变。")
 	if lines.is_empty():
 		lines.append("本波没有利息结算记录。")
 	return lines
@@ -271,8 +275,6 @@ func _reason_label(reason: String) -> String:
 	match reason:
 		"no_principal":
 			return "无本金"
-		"high_yield_requires_wave_start_deposit":
-			return "高利契约（未达存入门槛）"
 		"zero_interest_gain":
 			return "无利息收益"
 		_:

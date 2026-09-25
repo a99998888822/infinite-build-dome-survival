@@ -141,7 +141,7 @@ func _test_elite() -> void:
 	elite.start_dash()
 	elite.apply_freeze(1.0)
 	elite._physics_process(0.01)
-	check(elite.skill_state == "chase", "freeze cancels skill")
+	check(elite.skill_state == "windup" and elite._frozen_remaining < 0.1, "resisted freeze briefly pauses but preserves skill")
 	elite._frozen_remaining = 0.0
 	elite.start_dash()
 	var clock_before := elite._state_time

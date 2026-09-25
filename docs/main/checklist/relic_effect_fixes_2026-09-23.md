@@ -51,6 +51,6 @@
 - [x] UTF-8、替换字符/连续问号乱码检查及 `git diff --check` 通过；保留修改前的行尾格式。
 - [x] 全部运行测试在独立项目副本、独立用户目录 `CodexRelicFix20260923` 中执行，避免影响现有游戏进度。
 
-日志：[专项回归](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_fixes_20260923/relic_test.log)、[Bootstrap](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_fixes_20260923/bootstrap.log)、[准备界面](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_fixes_20260923/finance_preparation.log)、[最终编辑器检查](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_fixes_20260923/editor_final.log)。
+专项回归、Bootstrap、准备界面与编辑器检查的原始日志已清理，修复与验证结论保留在本文。
 
 复运行命令：在隔离副本使用 Godot `--headless --path <副本目录> --scene res://scenes/tests/relic_consistency_test.tscn --quit-after 120`。测试以 `RELIC_TEST_COMPLETE checks=50 failures=0` 和退出码0为成功标志。

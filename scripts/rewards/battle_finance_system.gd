@@ -3,6 +3,7 @@ class_name BattleFinanceSystem
 
 signal finance_changed(snapshot: Dictionary)
 signal interest_settled(result: Dictionary)
+signal activity_recorded(entry: Dictionary)
 
 const DEFAULT_INTEREST_RATE: float = 5.0
 const ACTION_NONE: String = "none"
@@ -25,6 +26,7 @@ const TRIGGER_ENEMY_KILL: String = "enemy_kill"
 const TRIGGER_DYNAMIC: String = "dynamic"
 const TRIGGER_ON_REVIVE: String = "on_revive"
 const TRIGGER_SHIELD_BREAK: String = "shield_break"
+const TRIGGER_LETHAL_DAMAGE: String = "lethal_damage"
 
 const EFFECT_ADD_PRINCIPAL_FLAT: String = "add_principal_flat"
 const EFFECT_ADD_PRINCIPAL_FROM_GOLD_PERCENT: String = "add_principal_from_gold_percent"
@@ -34,7 +36,7 @@ const EFFECT_DIVIDEND_DOUBLE: String = "dividend_double"
 const EFFECT_ADD_INTEREST_RATE_BONUS: String = "add_interest_rate_bonus"
 const EFFECT_SETTLE_INTEREST_EVERY_N_WAVES: String = "settle_interest_every_n_waves"
 const EFFECT_EXTRA_SETTLEMENT_PER_WAVE: String = "extra_settlement_per_wave"
-const EFFECT_REQUIRE_WAVE_START_DEPOSIT: String = "require_wave_start_deposit_for_interest"
+const EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT: String = "interest_rate_on_wave_deposit"
 const EFFECT_ADD_EROSION: String = "add_erosion"
 const EFFECT_DERIVED_STAT_FROM_PRINCIPAL: String = "derived_stat_from_principal"
 const EFFECT_DERIVED_INTEREST_FROM_EROSION: String = "derived_interest_from_erosion"
@@ -46,6 +48,7 @@ const EFFECT_HEAL: String = "heal"
 const EFFECT_CONDITIONAL_STAT: String = "conditional_stat"
 const EFFECT_DERIVED_STAT_FROM_PLAYER_STAT: String = "derived_stat_from_player_stat"
 const EFFECT_BLOCK_STAT_INCREASE: String = "block_stat_increase"
+const EFFECT_PRINCIPAL_REVIVE: String = "principal_revive"
 
 var player: PlayerController = null
 var principal: int = 0
@@ -69,14 +72,23 @@ var _started_wave_number: int = 0
 var manual_operation_used: bool = false
 var last_manual_operation: Dictionary = {}
 var _emitting_changed: bool = false
+var _settling_interest: bool = false
+var _journal_ready: bool = false
+var _last_activity_rate: float = DEFAULT_INTEREST_RATE
+var _principal_revive_uses: Dictionary = {}
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
+	_journal_ready = false
+	_settling_interest = false
 	if is_instance_valid(player) and player.stats_changed.is_connected(_on_player_stats_changed):
 		player.stats_changed.disconnect(_on_player_stats_changed)
+	if is_instance_valid(player) and player.lethal_damage.is_connected(_on_player_lethal_damage):
+		player.lethal_damage.disconnect(_on_player_lethal_damage)
 	player = target_player
 	if player != null:
 		player.stats_changed.connect(_on_player_stats_changed)
+		player.lethal_damage.connect(_on_player_lethal_damage)
 	_gold_getter = gold_getter
 	_gold_delta_applier = gold_delta_applier
 	# Camp talent "理财" is the starting principal granted at run start.
@@ -95,10 +107,14 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	has_principal_ever = false
 	erosion_bonus = 0.0
 	_bankruptcy_triggered = false
+	_principal_revive_uses.clear()
 	last_settlement_result.clear()
 	last_settlement_results.clear()
 	_rng.randomize()
 	_emit_changed()
+	_last_activity_rate = get_interest_rate()
+	_journal_ready = true
+	_record_activity("initial", "开局本金 %d，利率 %s%%" % [principal, HumanityEconomy.number(get_interest_rate())])
 
 
 func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 0) -> BattleFinanceSystem:
@@ -107,12 +123,14 @@ func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 
 	for field in ["principal", "interest_rate_bonus", "interest_remainder", "wave_counter", "current_wave_number", "last_action_wave_number", "last_deposit_wave_number", "has_deposited_before_current_wave", "wave_start_deposit_amount", "has_principal_ever", "erosion_bonus", "_bankruptcy_triggered", "_started_wave_number", "manual_operation_used"]:
 		preview.set(field, get(field))
 	preview._rng.state = _rng.state
+	preview._principal_revive_uses = _principal_revive_uses.duplicate(true)
 	var preview_gold := {"value": maxi(0, get_current_gold() - maxi(0, purchase_cost))}
 	preview._gold_getter = func(): return int(preview_gold.value)
 	preview._gold_delta_applier = func(delta: int, _reason: String):
 		preview_gold.value += delta
 		return true
 	preview_player.stats_changed.connect(preview._on_player_stats_changed)
+	preview_player.lethal_damage.connect(preview._on_player_lethal_damage)
 	preview_player.relic_added.connect(preview.on_relic_added)
 	return preview
 
@@ -148,6 +166,9 @@ func begin_wave(wave_number: int) -> Dictionary:
 	has_deposited_before_current_wave = wave_start_deposit_amount >= _get_wave_deposit_requirement()
 	_apply_wave_start_relics()
 	_emit_changed()
+	if _get_wave_deposit_requirement() > 0:
+		var contract_text := "高利契约：已满足存款条件，本波利率额外 +%s 个百分点" % HumanityEconomy.number(_get_wave_deposit_bonus_rate()) if has_deposited_before_current_wave else "高利契约：未满足存入 %d 金币条件，本波无额外加息，仍按原利率结息" % _get_wave_deposit_requirement()
+		_record_activity("relic_condition", contract_text)
 	return build_finance_popup_payload("wave_start")
 
 
@@ -165,10 +186,12 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 		"humanity": get_humanity(),
 		"interest_multiplier": get_interest_multiplier(),
 		"interest_remainder": interest_remainder,
+		"principal_revive": get_principal_revive_state(),
 		"can_withdraw": principal > 0,
 		"last_deposit_wave_number": last_deposit_wave_number,
-		"has_high_yield_contract": _has_wave_end_deposit_requirement(),
-		"requires_deposit_for_interest": _has_wave_end_deposit_requirement(),
+		"has_high_yield_contract": _get_wave_deposit_requirement() > 0,
+		"deposit_bonus_rate": _get_wave_deposit_bonus_rate(),
+		"deposit_bonus_active": _get_wave_deposit_requirement() > 0 and has_deposited_before_current_wave,
 		"deposit_requirement": _get_wave_deposit_requirement(),
 		"wave_start_deposit_amount": wave_start_deposit_amount,
 		"has_deposited_before_current_wave": has_deposited_before_current_wave,
@@ -209,9 +232,13 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 		if not _apply_gold_delta(-sanitized_amount, "finance_deposit"):
 			return _build_operation_result(false, ACTION_DEPOSIT, sanitized_amount, "gold_delta_failed")
 	principal += sanitized_amount
+	var text := "存入 %d 金币，本金 %d → %d" % [sanitized_amount, principal - sanitized_amount, principal]
+	if free_principal:
+		text = "%s：本金 +%d（当前 %d）" % [_relic_name(reason), sanitized_amount, principal]
+	_record_activity("relic_principal" if free_principal else "deposit", text)
 	last_action_wave_number = current_wave_number
 	last_deposit_wave_number = current_wave_number
-	if not free_principal and reason == "manual":
+	if not free_principal and reason == "manual" and _started_wave_number < current_wave_number:
 		wave_start_deposit_amount += sanitized_amount
 		has_deposited_before_current_wave = wave_start_deposit_amount >= _get_wave_deposit_requirement()
 	_emit_changed()
@@ -229,32 +256,31 @@ func withdraw(amount: int) -> Dictionary:
 	if not _apply_gold_delta(sanitized_amount, "finance_withdraw"):
 		principal += sanitized_amount
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "gold_delta_failed")
+	_record_activity("withdraw", "取出 %d 金币，本金 %d → %d" % [sanitized_amount, principal + sanitized_amount, principal])
 	_emit_changed()
 	return _build_operation_result(true, ACTION_WITHDRAW, sanitized_amount, "manual")
 
 
 func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
 	var result := _build_settlement_result(source)
+	if _settling_interest:
+		result["reason"] = "settlement_busy"
+		return result
+	_settling_interest = true
 	if principal <= 0:
 		result["reason"] = "no_principal"
 		result["principal_after"] = principal
 		last_settlement_result = result.duplicate(true)
+		_record_interest_result(result)
 		interest_settled.emit(result.duplicate(true))
 		_emit_changed()
+		_settling_interest = false
 		return result
-	if _is_blocked_by_high_yield_contract(source):
-		result["blocked"] = true
-		result["reason"] = "high_yield_requires_wave_start_deposit"
-		result["principal_after"] = principal
-		last_settlement_result = result.duplicate(true)
-		interest_settled.emit(result.duplicate(true))
-		_emit_changed()
-		return result
-
 	var base_gain := _calculate_gain_for_source(source)
 	var nominal_gain := _apply_interest_gain_relics(base_gain, source, result)
 	var exact_gain := float(nominal_gain) * float(result["interest_multiplier"])
-	var accrued := exact_gain + interest_remainder
+	var previous_remainder := interest_remainder
+	var accrued := exact_gain + previous_remainder
 	var final_gain := floori(accrued + 0.000000001)
 	interest_remainder = maxf(0.0, accrued - float(final_gain))
 	result["nominal_gain"] = nominal_gain
@@ -265,14 +291,27 @@ func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
 	if final_gain <= 0:
 		result["reason"] = "zero_interest_gain"
 	else:
-		principal += final_gain
-		result["reason"] = "interest_collected"
-		_apply_after_successful_interest_relics(source)
+		# Interest is spendable gold. Principal only grows through deposits or gifts.
+		if _apply_gold_delta(final_gain, "finance_interest"):
+			result["reason"] = "interest_collected"
+			result["gold_after"] = get_current_gold()
+			_record_interest_result(result)
+			_apply_after_successful_interest_relics(source)
+		else:
+			interest_remainder = previous_remainder
+			result["interest_remainder"] = previous_remainder
+			result["success"] = false
+			result["gain"] = 0
+			result["reason"] = "gold_delta_failed"
+	if str(result["reason"]) != "interest_collected":
+		_record_interest_result(result)
 	result["principal_after"] = principal
+	result["gold_after"] = get_current_gold()
 	result["interest_rate_after"] = get_interest_rate()
 	last_settlement_result = result.duplicate(true)
 	interest_settled.emit(result.duplicate(true))
 	_emit_changed()
+	_settling_interest = false
 	return result
 
 
@@ -320,11 +359,15 @@ func on_relic_added(relic_id: String) -> void:
 				trigger_manual_interest(relic_id)
 				handled = true
 			EFFECT_ADD_PRINCIPAL_FLAT:
-				principal += int(effect.get("value", 0))
+				var amount := int(effect.get("value", 0))
+				principal += amount
+				_record_activity("relic_principal", "%s：本金 +%d（当前 %d）" % [_relic_name(relic_id), amount, principal])
 				handled = true
 				_emit_changed()
 			EFFECT_ADD_PRINCIPAL_PER_WAVE:
-				principal += int(effect.get("value_per_wave", 0)) * maxi(1, current_wave_number)
+				var amount := int(effect.get("value_per_wave", 0)) * maxi(1, current_wave_number)
+				principal += amount
+				_record_activity("relic_principal", "%s：本金 +%d（当前 %d）" % [_relic_name(relic_id), amount, principal])
 				handled = true
 				_emit_changed()
 	if not handled:
@@ -365,6 +408,42 @@ func get_current_gold() -> int:
 	return 0
 
 
+func get_principal_revive_state() -> Dictionary:
+	for effect in _collect_runtime_effects(TRIGGER_LETHAL_DAMAGE):
+		if str(effect.get("effect", "")) != EFFECT_PRINCIPAL_REVIVE:
+			continue
+		var relic_id := str(effect.get("relic_id", ""))
+		var required := maxi(0, int(effect.get("minimum_principal", 0)))
+		var cost := maxi(0, int(effect.get("principal_cost", 0)))
+		var used := int(_principal_revive_uses.get(relic_id, 0))
+		var remaining := maxi(0, int(effect.get("max_uses", 1)) - used)
+		return {
+			"relic_id": relic_id,
+			"display_name": str(DataRegistry.get_record("relics", relic_id).get("display_name", relic_id)),
+			"minimum_principal": required, "principal_cost": cost,
+			"health_percent": float(effect.get("health_percent", 50)),
+			"remaining_uses": remaining,
+			"available": remaining > 0 and principal >= maxi(required, cost),
+		}
+	return {}
+
+
+func _on_player_lethal_damage() -> void:
+	if not is_instance_valid(player) or not player.is_alive() or player.current_hp > 0:
+		return
+	var protection := get_principal_revive_state()
+	if not bool(protection.get("available", false)):
+		return
+	var relic_id := str(protection.relic_id)
+	# Reserve the one-shot charge before any synchronous stat/UI callbacks.
+	_principal_revive_uses[relic_id] = int(_principal_revive_uses.get(relic_id, 0)) + 1
+	principal -= int(protection.principal_cost)
+	_record_activity("relic_principal", "%s：复活消耗 %d 本金，剩余 %d" % [protection.display_name, protection.principal_cost, principal])
+	# This is an expense, not a withdrawal: no gold credit or manual action used.
+	_emit_changed()
+	player.revive_from_lethal_damage(float(protection.health_percent))
+
+
 func get_state_snapshot() -> Dictionary:
 	return {
 		"principal": principal,
@@ -382,8 +461,11 @@ func get_state_snapshot() -> Dictionary:
 		"has_deposited_before_current_wave": has_deposited_before_current_wave,
 		"wave_start_deposit_amount": wave_start_deposit_amount,
 		"deposit_requirement": _get_wave_deposit_requirement(),
+		"deposit_bonus_rate": _get_wave_deposit_bonus_rate(),
+		"deposit_bonus_active": _get_wave_deposit_requirement() > 0 and has_deposited_before_current_wave,
 		"last_settlement_result": last_settlement_result.duplicate(true),
 		"last_settlement_results": _duplicate_result_array(last_settlement_results),
+		"principal_revive": get_principal_revive_state(),
 	}
 
 
@@ -421,18 +503,20 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 	return maxi(0, final_gain)
 
 
-func _is_blocked_by_high_yield_contract(source: String) -> bool:
-	if not _has_wave_end_deposit_requirement() or has_deposited_before_current_wave:
-		return false
-	return _is_wave_end_settlement_source(source)
-
-
 func _apply_after_successful_interest_relics(_source: String) -> void:
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SUCCESS):
 		match str(effect.get("effect", "")):
 			EFFECT_ADD_INTEREST_RATE_BONUS:
-				interest_rate_bonus += float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
+				var growth := float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
+				interest_rate_bonus += growth
+				_record_activity("relic_growth", "%s：收到利息，利率成长 +%s 个百分点" % [_relic_name(str(effect.get("relic_id", ""))), HumanityEconomy.number(growth)])
 	if player != null:
+		for effect in player.get_active_relic_runtime_effects(TRIGGER_INTEREST_SUCCESS):
+			if str(effect.get("effect", "")) == EFFECT_ADD_STAT:
+				var amount := float(effect.get("value", 0))
+				var stat_id := str(effect.get("stat", ""))
+				var unit := "%" if StatDefinitions.is_percent_stat(stat_id) else ""
+				_record_activity("relic_growth", "%s：%s %s%s%s" % [_relic_name(str(effect.get("relic_id", ""))), StatDefinitions.get_display_name(stat_id), "+" if amount >= 0 else "", HumanityEconomy.number(amount), unit])
 		player.begin_modifier_update()
 		player.process_relic_runtime_trigger(TRIGGER_INTEREST_SUCCESS)
 		player.end_modifier_update()
@@ -450,6 +534,9 @@ func _build_settlement_result(source: String) -> Dictionary:
 		"source": source,
 		"wave_number": current_wave_number,
 		"principal_before": principal,
+		"gold_before": get_current_gold(),
+		"gold_after": get_current_gold(),
+		"destination": "gold",
 		"interest_rate": get_interest_rate(),
 		"base_gain": _calculate_gain_for_source(source),
 		"humanity": get_humanity(),
@@ -497,6 +584,10 @@ func _emit_changed() -> void:
 		_refresh_derived_stats()
 		_check_bankruptcy_trigger()
 		player.end_modifier_update()
+	var rate := get_interest_rate()
+	if _journal_ready and not is_equal_approx(rate, _last_activity_rate):
+		_record_activity("rate", "有效利率：%s%% → %s%%" % [HumanityEconomy.number(_last_activity_rate), HumanityEconomy.number(rate)])
+	_last_activity_rate = rate
 	finance_changed.emit(get_state_snapshot())
 	_emitting_changed = false
 
@@ -504,6 +595,11 @@ func _emit_changed() -> void:
 func _refresh_derived_stats() -> void:
 	if player == null:
 		return
+	has_deposited_before_current_wave = wave_start_deposit_amount >= _get_wave_deposit_requirement()
+	var previous_values := {}
+	for modifier in player.modifier_stack.get_all_modifiers():
+		if modifier.source_type == "finance_derived":
+			previous_values[modifier.id] = modifier.value
 	player.remove_runtime_modifiers_by_source_type("finance_derived")
 	for relic_id in player.get_relic_ids():
 		var relic_count := player.get_relic_count(relic_id)
@@ -511,14 +607,21 @@ func _refresh_derived_stats() -> void:
 			continue
 		for effect in _get_relic_runtime_effects(relic_id, TRIGGER_DERIVED):
 			match str(effect.get("effect", "")):
+				EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
+					if wave_start_deposit_amount >= int(effect.get("minimum_deposit", 50)):
+						var deposit_rate := float(effect.get("value", 0.0)) * float(relic_count)
+						player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", deposit_rate))
 				EFFECT_DERIVED_STAT_FROM_PRINCIPAL:
 					var stat_id := str(effect.get("stat", ""))
 					if not StatDefinitions.has_stat(stat_id):
 						continue
 					var divisor := maxf(1.0, float(effect.get("divisor", 100)))
-					var per_unit := maxf(0.0, float(effect.get("per_unit", 1)))
+					var per_unit := float(effect.get("per_unit", 1))
 					var derived_value := floorf(float(principal) / divisor) * per_unit * float(relic_count)
-					if derived_value > 0.0:
+					if player._is_stat_increase_blocked(stat_id):
+						var modifier_id := "derived_%s_%s" % [relic_id, stat_id]
+						derived_value = minf(derived_value, float(previous_values.get(modifier_id, 0.0)))
+					if not is_zero_approx(derived_value):
 						player.add_runtime_modifier(_build_derived_modifier(relic_id, stat_id, derived_value))
 				EFFECT_DERIVED_INTEREST_FROM_EROSION:
 					var erosion_divisor := maxf(1.0, float(effect.get("divisor", 5)))
@@ -571,7 +674,9 @@ func _check_bankruptcy_trigger() -> void:
 		if str(effect.get("effect", "")) != EFFECT_BANKRUPTCY_RECOVERY:
 			continue
 		var multiplier := maxi(1, int(effect.get("gold_multiplier", 2)))
-		principal += get_current_gold() * multiplier
+		var recovery := get_current_gold() * multiplier
+		principal += recovery
+		_record_activity("relic_principal", "破产重组：本金 +%d（当前 %d），复活次数 +1" % [recovery, principal])
 		player.add_runtime_modifier({
 			"id": "bankruptcy_recovery_revive",
 			"source_type": "finance_recovery",
@@ -586,6 +691,45 @@ func _check_bankruptcy_trigger() -> void:
 		_bankruptcy_triggered = true
 		_refresh_derived_stats()
 		break
+
+
+func _record_activity(kind: String, text: String, details: Dictionary = {}) -> void:
+	if not _journal_ready:
+		return
+	activity_recorded.emit({"wave": maxi(1, current_wave_number), "kind": kind, "text": text, "details": details.duplicate(true)})
+
+
+func _relic_name(relic_id: String) -> String:
+	return str(DataRegistry.get_record("relics", relic_id).get("display_name", "本金赠予"))
+
+
+func _record_interest_result(result: Dictionary) -> void:
+	var label := "额外结息"
+	match str(result.get("source", "")):
+		SETTLE_WAVE_END: label = "波末结息"
+		SETTLE_PERIODIC: label = "周期分红钟·额外结息"
+		SETTLE_ANNUITY_EXTRA: label = "永续年金·额外结息"
+		_:
+			var relic_data := DataRegistry.get_record("relics", str(result.get("source", "")))
+			if not relic_data.is_empty():
+				label = "%s·额外结息" % str(relic_data.get("display_name", "遗物"))
+	var text := ""
+	if not bool(result.get("success", false)) or bool(result.get("blocked", false)):
+		var reason := str(result.get("reason", ""))
+		var reason_text := "条件未满足" if bool(result.get("blocked", false)) else "未结算"
+		if reason == "no_principal": reason_text = "无本金"
+		elif reason == "gold_delta_failed": reason_text = "金币入账失败"
+		text = "%s：未收到利息（%s）" % [label, reason_text]
+	else:
+		text = "%s：利息 +%d 金币（本金 %d，利率 %s%%）" % [label, int(result.get("gain", 0)), int(result.get("principal_before", principal)), HumanityEconomy.number(float(result.get("interest_rate", 0)))]
+		if bool(result.get("dividend_double_triggered", false)):
+			text += "；分红支票触发 %d 倍结算" % int(result.get("dividend_multiplier", 2))
+		var loss := float(result.get("humanity_loss", 0))
+		if loss > 0.0001:
+			text += "；利息因理智减少 %s 金币" % HumanityEconomy.number(loss)
+		if int(result.get("gain", 0)) == 0:
+			text += "；收益不足 1 金币，小数留待后续结算" if float(result.get("interest_remainder", 0)) > 0 else "；本次无利息收益"
+	_record_activity("interest", text, result)
 
 
 func _get_relic_runtime_effects(relic_id: String, trigger: String = "") -> Array[Dictionary]:
@@ -622,18 +766,18 @@ func _collect_runtime_effects(trigger: String) -> Array[Dictionary]:
 	return result
 
 
-func _is_wave_end_settlement_source(source: String) -> bool:
-	return source in [SETTLE_WAVE_END, SETTLE_PERIODIC, SETTLE_ANNUITY_EXTRA]
-
-
 func _get_wave_deposit_requirement() -> int:
 	if player == null:
 		return 0
-	for effect in _collect_runtime_effects(TRIGGER_WAVE_END):
-		if str(effect.get("effect", "")) == EFFECT_REQUIRE_WAVE_START_DEPOSIT:
+	for effect in _collect_runtime_effects(TRIGGER_DERIVED):
+		if str(effect.get("effect", "")) == EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
 			return maxi(1, int(effect.get("minimum_deposit", 50)))
 	return 0
 
 
-func _has_wave_end_deposit_requirement() -> bool:
-	return _get_wave_deposit_requirement() > 0
+func _get_wave_deposit_bonus_rate() -> float:
+	var bonus := 0.0
+	for effect in _collect_runtime_effects(TRIGGER_DERIVED):
+		if str(effect.get("effect", "")) == EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
+			bonus += float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
+	return bonus

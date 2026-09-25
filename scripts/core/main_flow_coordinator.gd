@@ -70,6 +70,7 @@ var _active_shop_offers: Dictionary = {}
 var _wave_refresh_count: int = 0
 var _total_refresh_count: int = 0
 var _shop_generation: int = 0
+var _paid_purchase_count: int = 0
 var _preparation_offers: Array = []
 var _transaction_busy: bool = false
 var _trade_service := InventoryTradeService.new()
@@ -120,6 +121,7 @@ func reset_flow() -> void:
 	_active_shop_offers.clear()
 	_wave_refresh_count = 0
 	_total_refresh_count = 0
+	_paid_purchase_count = 0
 	_preparation_offers.clear()
 	_transaction_busy = false
 	_set_battle_runtime_paused(false)
@@ -163,6 +165,7 @@ func confirm_character_selection() -> bool:
 	battle_resolved = false
 	current_victory = false
 	current_battle_summary.clear()
+	_paid_purchase_count = 0
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
 	_wave_end_ready = false
@@ -497,7 +500,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	var canonical_offer: Dictionary = _active_shop_offers.get(offer_id, {})
 	if sanitized_mode == "shop":
 		var shown_cost := int(offer.get("shop_cost", 0))
-		HumanityEconomy.reprice_offer(canonical_offer, _get_shop_stat("humanity"))
+		ShopPricing.apply(canonical_offer, _build_shop_context())
 		if shown_cost != int(canonical_offer.get("shop_cost", 0)):
 			_notify_preparation_changed()
 			return {"success": false, "reason": "shop_price_changed"}
@@ -527,6 +530,8 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 				bought_weapon.trade_upgrade_basis[bought_weapon.level] = int(canonical_offer.get("shop_cost", 0))
 	_active_shop_offers.erase(offer_id)
 	canonical_offer["purchased"] = true
+	if sanitized_mode == "shop" and offer_type in [ShopOfferGenerator.OFFER_NEW_WEAPON, ShopOfferGenerator.OFFER_RELIC]:
+		_paid_purchase_count += 1
 	_transaction_busy = false
 	clear_stat_preview()
 	if sanitized_mode == "free":
@@ -620,6 +625,10 @@ func get_bound_loadout() -> WeaponLoadout:
 
 func get_current_gold() -> int:
 	return _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
+
+
+func get_economy_journal() -> EconomyJournal:
+	return _bound_wave_manager.economy_journal if _bound_wave_manager != null else null
 
 
 func get_shop_refresh_cost() -> int:
@@ -773,6 +782,8 @@ func _on_shared_reward_shop_requested(level: int) -> void:
 
 
 func _on_player_died() -> void:
+	if _bound_wave_manager != null:
+		_bound_wave_manager.record_wave_income(false)
 	var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
 	present_battle_result(false, {"reason": "player_died", "gold": gold})
 
@@ -967,6 +978,9 @@ func _build_shop_context() -> Dictionary:
 		"shop_price_percent": _get_shop_stat("shop_price_percent"),
 		"humanity": _get_shop_stat("humanity"),
 		"shop_price_discounts": _get_shop_discount_layers(),
+		"shop_wave_number": maxi(1, current_wave_index + 1),
+		"paid_purchase_count": _paid_purchase_count,
+		"wave_gold_earned": _bound_wave_manager.collected_gold_this_wave if _bound_wave_manager != null else 0,
 		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
 		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
 		"zone_tag_weight_bonus": ZoneProgression.get_current_zone_tag_weight_bonus(),
@@ -1009,8 +1023,9 @@ func _try_pay_shop_cost(offer: Dictionary) -> bool:
 
 func get_preparation_payload() -> Dictionary:
 	var payload := _bound_wave_manager.get_finance_popup_payload("preparation") if _bound_wave_manager != null else {}
+	var pricing_context := _build_shop_context()
 	for offer in _preparation_offers:
-		HumanityEconomy.reprice_offer(offer, _get_shop_stat("humanity"))
+		ShopPricing.apply(offer, pricing_context)
 	payload["offers"] = _preparation_offers
 	payload["offer_generation"] = _shop_generation
 	payload["refresh_cost"] = get_shop_refresh_cost()
@@ -1021,6 +1036,15 @@ func get_preparation_payload() -> Dictionary:
 func _notify_preparation_changed() -> void:
 	if current_state == STATE_FINANCE_POPUP:
 		preparation_changed.emit(get_preparation_payload())
+	elif current_state == STATE_SHOP_POPUP:
+		var offers: Array = []
+		var context := _build_shop_context()
+		for id in _active_shop_offer_ids:
+			if _active_shop_offers.has(id):
+				var offer: Dictionary = _active_shop_offers[id]
+				ShopPricing.apply(offer, context)
+				offers.append(offer)
+		modal_requested.emit(STATE_SHOP_POPUP, {"mode": "shop", "offers": offers, "gold": get_current_gold(), "refresh_cost": get_shop_refresh_cost()})
 
 
 func _queue_economy_refresh() -> void:
@@ -1045,13 +1069,23 @@ func get_bank_stat_preview(action: String, amount: int) -> String:
 	var lines: Array[String] = []
 	if bool(result.get("success", false)):
 		lines.append("办理后本金：%d → %d" % [finance.principal, preview.principal])
-		for stat_id in ["armor", "attack_speed", "damage_percent", "load_capacity"]:
+		if not is_equal_approx(finance.get_interest_rate(), preview.get_interest_rate()):
+			lines.append("利率：%s%% → %s%%" % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])
+		for stat_id in ["max_hp", "armor", "attack_speed", "damage_percent", "load_capacity", "currency_gain_percent", "humanity"]:
 			var before := _bound_player.get_stat(stat_id)
 			var after := preview_player.get_stat(stat_id)
 			if not is_equal_approx(before, after):
 				var name := str(StatDefinitions.get_stat_definition(stat_id).get("display_name", stat_id))
-				var unit := "%" if stat_id == "damage_percent" else ""
+				var unit := "%" if stat_id in ["damage_percent", "currency_gain_percent"] else ""
 				lines.append("%s：%s%s → %s%s" % [name, HumanityEconomy.number(before), unit, HumanityEconomy.number(after), unit])
+		if _bound_player.current_hp != preview_player.current_hp:
+			lines.append("当前生命：%d → %d" % [_bound_player.current_hp, preview_player.current_hp])
+		if not is_equal_approx(_bound_player.get_stat("humanity"), preview_player.get_stat("humanity")):
+			lines.append("办理后" + HumanityEconomy.describe(preview_player.get_stat("humanity")))
+		var protection_before := finance.get_principal_revive_state()
+		var protection_after := preview.get_principal_revive_state()
+		if not protection_before.is_empty() and protection_before.available != protection_after.get("available", false):
+			lines.append("%s：%s → %s" % [protection_before.display_name, FinanceUIStyle.principal_revive_status(protection_before), FinanceUIStyle.principal_revive_status(protection_after)])
 	preview_player.free()
 	return "\n".join(lines)
 

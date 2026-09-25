@@ -2,6 +2,7 @@ extends RefCounted
 class_name WeaponInstance
 
 const DAMAGE_KIND_RANGED: String = "ranged"
+const DAMAGE_KIND_MELEE: String = "melee"
 const DAMAGE_KIND_ELEMENT: String = "element"
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.43, 0.72, 0.48, 1.0),
@@ -371,6 +372,17 @@ func is_coin_purse() -> bool:
 	return str(weapon_data.get("projectile_behavior", "")) == "coin"
 
 
+func is_meteor_flail() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "meteor_flail"
+
+
+func get_damage_stat_id() -> String:
+	match get_attack_kind():
+		DAMAGE_KIND_MELEE: return "melee_damage"
+		DAMAGE_KIND_ELEMENT: return "element_damage"
+	return "ranged_damage"
+
+
 func get_domain_axes() -> Vector2:
 	return Vector2(get_attack_range(), StatDefinitions.calculate_attack_radius(float(weapon_data.get("domain_minor_axis", 145)), get_stat("area_size")))
 
@@ -385,8 +397,7 @@ func get_current_principal() -> float:
 
 
 func get_base_attack_damage() -> float:
-	var stat_id := "element_damage" if get_attack_kind() == DAMAGE_KIND_ELEMENT else "ranged_damage"
-	return _get_damage_component_base(stat_id) + get_principal_damage_bonus()
+	return _get_damage_component_base(get_damage_stat_id()) + get_principal_damage_bonus()
 
 
 func get_split_profiles() -> Array[Dictionary]:
@@ -444,7 +455,7 @@ func get_actual_attack_interval_seconds() -> float:
 
 func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]:
 	var events: Array[DamageEvent] = []
-	if get_attack_kind() in [DAMAGE_KIND_RANGED, DAMAGE_KIND_ELEMENT]:
+	if get_attack_kind() in [DAMAGE_KIND_RANGED, DAMAGE_KIND_ELEMENT, DAMAGE_KIND_MELEE]:
 		events.append(_build_damage_event(get_attack_kind(), force_critical))
 	return events
 
@@ -534,8 +545,8 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	var element_attack := get_attack_kind() == DAMAGE_KIND_ELEMENT
-	var damage_line := "[color=#F5D76E]%s伤害[/color]%s" % ["元素" if element_attack else "远程", _format_damage_source("element_damage" if element_attack else "ranged_damage")]
+	var damage_label := "近战" if get_attack_kind() == DAMAGE_KIND_MELEE else ("元素" if get_attack_kind() == DAMAGE_KIND_ELEMENT else "远程")
+	var damage_line := "[color=#F5D76E]%s伤害[/color]%s" % [damage_label, _format_damage_source(get_damage_stat_id())]
 	lines.append(damage_line)
 	if is_coin_purse():
 		var principal := get_current_principal()
@@ -545,7 +556,7 @@ func build_full_stats_text() -> String:
 	var interval := get_actual_attack_interval_seconds()
 	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["每轮点名" if is_ritual_tome() else "投射物", maxi(1, int(get_stat("projectile_count")))])
+	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["主挥击次数" if is_meteor_flail() else ("每轮点名" if is_ritual_tome() else "投射物"), maxi(1, int(get_stat("projectile_count")))])
 	if is_grenade():
 		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), str(snappedf(get_grenade_blast_radius(), 0.1))])
 		lines.append("[color=#F5D76E]飞行时间[/color] %.2fs · 固定落点" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
@@ -556,6 +567,15 @@ func build_full_stats_text() -> String:
 			lines.append("[color=#F5D76E]集束分裂[/color] 每个目标 %d 枚 · 伤害 %d%% · 半径 %s · 飞行 %.2fs" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100), str(snappedf(get_grenade_blast_radius() * float(profile.radius_multiplier), 0.1)), float(profile.flight_seconds)])
 		if has_effect("split"):
 			lines.append("子榴弹排除主爆炸已命中目标，仍触发其他附魔；只分裂一代。")
+	elif is_meteor_flail():
+		var multiplier := float(weapon_data.get("flail_outer_multiplier", 1.5))
+		var damage := get_base_attack_damage() * (1.0 + get_stat("damage_percent") / 100.0)
+		lines.append("[color=#F5D76E]锤头伸展[/color] %d · 前方140° · 命中半径 %d" % [roundi(get_attack_range()), roundi(get_hit_radius())])
+		lines.append("[color=#F5D76E]近圈 / 外圈伤害[/color] %d / %d（非暴击、护甲减免前）" % [maxi(1, roundi(damage)), maxi(1, roundi(roundi(damage) * multiplier))])
+		lines.append("伸展至%d%%距离后伤害为%d%%；锁定方向，锤头接触命中，锁链无伤害。" % [roundi(float(weapon_data.get("flail_outer_threshold", 0.8)) * 100), roundi(multiplier * 100)])
+		for profile in get_split_profiles():
+			lines.append("[color=#F5D76E]分裂追击[/color] 首次主命中追加 %d 次 · 伤害 %d%% · 每轮只追加一代" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
+		lines.append("每次挥击对同一目标命中一次；各次命中触发元素附魔，不支持穿透。")
 	elif is_ritual_tome():
 		var axes := get_domain_axes()
 		lines.append("[color=#F5D76E]领域半轴[/color] %d × %d（受攻击范围加成）" % [roundi(axes.x), roundi(axes.y)])

@@ -2,6 +2,8 @@ extends EnemyController
 class_name EliteRusher
 
 const FRAMES: SpriteFrames = preload("res://assets/sprites/enemies/elite_rusher/elite_rusher_sprite_frames.tres")
+const BODY_SCALE := 0.7
+const CONTROL_MULTIPLIER := 0.1
 
 var skill_state: String = "spawn"
 var _state_time: float = 0.0
@@ -132,8 +134,17 @@ func cancel_skill() -> void:
 
 
 func _on_control_interrupted() -> void:
-	if skill_state in ["windup", "dash", "recover"]:
-		cancel_skill()
+	# Briefly pause the current action; resistance must not turn a short stun into
+	# cancelling an entire dash and restarting its six-second cooldown.
+	pass
+
+
+func get_control_multiplier() -> float:
+	return CONTROL_MULTIPLIER
+
+
+func can_be_pushed_by_wind() -> bool:
+	return false
 
 
 func _try_dash_damage(from_distance: float, to_distance: float) -> void:
@@ -230,8 +241,10 @@ func _draw() -> void:
 		draw_rect(Rect2(-half_width, -half_width, float(_profile.get("dash_distance", 240)) + half_width * 2.0, half_width * 2.0), Color(1.0, 59.0 / 255.0, 48.0 / 255.0, 0.3))
 		draw_set_transform(Vector2.ZERO)
 	if skill_state == "spawn":
-		draw_rect(Rect2(-32, -20, 64, 40), Color(0.8, 0.65, 0.35, 0.3))
+		draw_rect(Rect2(Vector2(-32, -20) * BODY_SCALE, Vector2(64, 40) * BODY_SCALE), Color(0.8, 0.65, 0.35, 0.3))
 	else:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE * BODY_SCALE)
 		draw_rect(Rect2(-26, -72, 52, 4), Color("243232"))
 		draw_rect(Rect2(-26, -72, 52 * clampf(float(current_hp) / maxf(get_stat("max_hp"), 1.0), 0.0, 1.0), 4), Color("dbc584"))
 		draw_colored_polygon(PackedVector2Array([Vector2(0, -83), Vector2(4, -79), Vector2(0, -75), Vector2(-4, -79)]), Color("dbc584"))
+		draw_set_transform(Vector2.ZERO)

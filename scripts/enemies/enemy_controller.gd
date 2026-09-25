@@ -3,6 +3,7 @@ class_name EnemyController
 
 signal died(enemy: EnemyController, drop_table_id: String, global_position: Vector2)
 signal contact_damaged(player: PlayerController, damage: int)
+signal damage_received(source_id: String, damage: int)
 
 const DEFAULT_ENEMY_ID: String = "enemy_mutated_grub"
 const DEFAULT_KNOCKBACK_SPEED: float = 450.0
@@ -223,15 +224,17 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 func apply_slow(duration: float, multiplier: float) -> void:
 	if not alive:
 		return
-	_slowed_remaining = maxf(_slowed_remaining, duration)
-	_slow_multiplier = minf(_slow_multiplier, clampf(multiplier, 0.05, 1.0))
+	var susceptibility := get_control_multiplier()
+	_slowed_remaining = maxf(_slowed_remaining, duration * susceptibility)
+	_slow_multiplier = minf(_slow_multiplier, lerpf(1.0, clampf(multiplier, 0.05, 1.0), susceptibility))
 
 
 func apply_wet(duration: float = 5.0, slow_multiplier: float = 0.8) -> void:
 	if not alive:
 		return
-	_wet_remaining = maxf(_wet_remaining, duration)
-	_wet_slow_multiplier = minf(_wet_slow_multiplier, clampf(slow_multiplier, 0.05, 1.0))
+	var susceptibility := get_control_multiplier()
+	_wet_remaining = maxf(_wet_remaining, duration * susceptibility)
+	_wet_slow_multiplier = minf(_wet_slow_multiplier, lerpf(1.0, clampf(slow_multiplier, 0.05, 1.0), susceptibility))
 
 
 func clear_wet() -> void:
@@ -244,7 +247,7 @@ func apply_freeze(duration: float = 1.0, thaw_reaction_data: Dictionary = {}) ->
 		return
 	if _frozen_remaining <= 0.0:
 		_light_freeze_reacted = false
-	_frozen_remaining = maxf(_frozen_remaining, minf(duration, 3.0))
+	_frozen_remaining = maxf(_frozen_remaining, minf(duration, 3.0) * get_control_multiplier())
 	_slowed_remaining = 0.0
 	_slow_multiplier = 1.0
 	_thaw_reaction_data = thaw_reaction_data.duplicate()
@@ -292,7 +295,7 @@ func clear_light() -> void:
 func apply_blind(duration: float = 2.0) -> void:
 	if not alive:
 		return
-	_blinded_remaining = maxf(_blinded_remaining, minf(duration, 5.0))
+	_blinded_remaining = maxf(_blinded_remaining, minf(duration, 5.0) * get_control_multiplier())
 	if _burning_remaining > 0.0:
 		_burning_remaining = maxf(_burning_remaining, 10.0)
 		_dark_flame = true
@@ -335,13 +338,21 @@ func clear_burning() -> void:
 	_dark_flame = false
 
 
+func get_control_multiplier() -> float:
+	return 1.0
+
+
+func can_be_pushed_by_wind() -> bool:
+	return true
+
+
 func apply_knockback(hit_direction: Vector2, speed: float, duration: float) -> void:
 	if not alive:
 		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
-	_knockback_velocity = safe_direction * maxf(speed, 1.0)
+	_knockback_velocity = safe_direction * maxf(speed, 1.0) * get_control_multiplier()
 	velocity = _knockback_velocity
-	var safe_duration := maxf(duration, 0.05)
+	var safe_duration := maxf(duration, 0.05) * get_control_multiplier()
 	_knockback_deceleration = _knockback_velocity.length() / safe_duration
 	_knockback_timer = maxf(_knockback_timer, safe_duration)
 
@@ -358,8 +369,9 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 func apply_lightning_stun(duration: float = 0.65) -> void:
 	if not alive:
 		return
-	_stunned_remaining = maxf(_stunned_remaining, minf(duration, LIGHTNING_STUN_MAX_SECONDS))
-	apply_lightning_visual(duration)
+	var resisted_duration := minf(duration, LIGHTNING_STUN_MAX_SECONDS) * get_control_multiplier()
+	_stunned_remaining = maxf(_stunned_remaining, resisted_duration)
+	apply_lightning_visual(resisted_duration)
 
 
 func _process_burning(delta: float) -> void:
@@ -403,6 +415,8 @@ func take_damage(
 	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	current_hp = maxi(current_hp - final_damage, 0)
+	# One notification after mitigation, shared by direct hits, effects and burn ticks.
+	damage_received.emit(source_id, final_damage)
 	if damage_components.is_empty():
 		_spawn_damage_number(final_damage, is_critical, 0, 1, light_doubled, pre_light_damage)
 	else:
@@ -469,11 +483,11 @@ func _capture_base_sprite_modulate() -> void:
 
 func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
-	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED
+	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED * get_control_multiplier()
 	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
 		_knockback_velocity = regular_velocity
 		velocity = _knockback_velocity
-		var safe_duration := maxf(HIT_KNOCKBACK_SECONDS, 0.05)
+		var safe_duration := maxf(HIT_KNOCKBACK_SECONDS, 0.05) * get_control_multiplier()
 		_knockback_deceleration = _knockback_velocity.length() / safe_duration
 		_knockback_timer = maxf(_knockback_timer, safe_duration)
 
@@ -653,9 +667,9 @@ func _apply_contact_knockback() -> void:
 	var direction := target_player.global_position.direction_to(global_position)
 	if direction.is_zero_approx():
 		direction = Vector2.RIGHT
-	_knockback_velocity = direction.normalized() * knockback_speed
+	_knockback_velocity = direction.normalized() * knockback_speed * get_control_multiplier()
 	velocity = _knockback_velocity
-	var safe_duration := maxf(knockback_seconds, 0.05)
+	var safe_duration := maxf(knockback_seconds, 0.05) * get_control_multiplier()
 	_knockback_deceleration = _knockback_velocity.length() / safe_duration
 	_knockback_timer = safe_duration
 

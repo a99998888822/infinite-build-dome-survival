@@ -312,7 +312,7 @@ func _run_player_checks() -> bool:
 			"stack_rule": "unique",
 		})
 		player.take_damage(999, "bootstrap_revive_check")
-		passed = _print_check_result("player extra revive", player.alive and player.get_remaining_revives() == 0 and player.current_hp == 5) and passed
+		passed = _print_check_result("player extra revive", player.alive and player.get_remaining_revives() == 0 and player.current_hp == ceili(configured_max_hp * 0.5)) and passed
 		player.queue_free()
 	return passed
 
@@ -334,10 +334,11 @@ func _run_survival_relic_checks() -> bool:
 	var base_max_hp := int(player.get_stat("max_hp"))
 	var base_armor := player.get_stat("armor")
 	var base_move_speed := player.get_stat("move_speed")
-	passed = _print_check_result("survival relic flat stats", player.add_relic("relic_worn_hemostatic_cloth") and int(player.get_stat("max_hp")) == base_max_hp + 3) and passed
+	passed = _print_check_result("survival relic flat stats", player.add_relic("relic_worn_hemostatic_cloth") and int(player.get_stat("max_hp")) == base_max_hp + 4) and passed
 	passed = _print_check_result("survival relic negative movement", player.add_relic("relic_load_iron_bracer") and is_equal_approx(player.get_stat("move_speed"), base_move_speed - 5.0)) and passed
 
 	passed = _print_check_result("survival relic low hp armor", player.add_relic("relic_broken_crystal")) and passed
+	player.restore_full_health()
 	player.take_damage(6, "bootstrap_relic_check")
 	passed = _print_check_result("survival relic low hp condition", is_equal_approx(player.get_stat("armor"), base_armor + 33.0)) and passed
 	player.heal(99)
@@ -495,12 +496,13 @@ func _run_enemy_wave_checks() -> bool:
 
 	player.heal(99)
 	player._invincibility_timer = 0.0
-	player.take_damage(6, "bootstrap_reward_check")
+	player.take_damage(player.current_hp - 1, "bootstrap_reward_check")
 	var hp_before_reward := player.current_hp
+	var expected_pack_heal := mini(6, int(player.get_stat("max_hp")) - hp_before_reward)
 	var health_pack := wave_manager.spawn_health_pack(6, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("health pack spawn", health_pack != null) and passed
 	health_pack.collect()
-	passed = _print_check_result("health pack collection", player.current_hp == hp_before_reward + 6 and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= 6 and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
+	passed = _print_check_result("health pack collection", expected_pack_heal > 0 and player.current_hp == hp_before_reward + expected_pack_heal and int(wave_manager.get_reward_snapshot().get("health_restored", 0)) >= expected_pack_heal and int(wave_manager.get_reward_snapshot().get("spawned_health_packs", 0)) >= 1) and passed
 
 	wave_manager.add_exp_and_gold(10, 0)
 	var expected_after_bonus_exp := _calculate_level_state_after_exp(expected_collected_exp + 10)
@@ -861,6 +863,7 @@ func _run_weapon_checks() -> bool:
 	passed = _print_check_result("weapon upgrade luck gates", weapon_upgrade_luck_gate_check) and passed
 	var bucket_context := shop_context.duplicate(true)
 	bucket_context["owned_relic_counts"] = {"relic_piggy_bank": 5}
+	bucket_context["paid_purchase_count"] = 5
 	var bucket_candidates := shop_generator.build_shop_candidate_pool(bucket_context)
 	var baseline_relic_cost := -1
 	var bucket_relic_cost := -1
@@ -872,8 +875,8 @@ func _run_weapon_checks() -> bool:
 		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "common":
 			bucket_relic_cost = int(candidate.get("shop_cost", -1))
 			break
-	passed = _print_check_result("relic global count baseline", baseline_relic_cost == 12) and passed
-	passed = _print_check_result("relic global count price step", bucket_relic_cost == 16) and passed
+	passed = _print_check_result("relic purchase count baseline", baseline_relic_cost == 12) and passed
+	passed = _print_check_result("relic paid purchase count price step", bucket_relic_cost == 16) and passed
 	var epic_context := shop_context.duplicate(true)
 	epic_context["unlocked_relic_ids"] = ["relic_piggy_bank", "relic_finance_manager", "relic_dividend_check", "relic_compound_interest_tome"]
 	epic_context["owned_relic_counts"] = {"relic_compound_interest_tome": 2}
@@ -886,11 +889,8 @@ func _run_weapon_checks() -> bool:
 			epic_relic_candidate = candidate
 			break
 	var epic_rarity_index := ShopOfferGenerator.RARITIES.find(str(epic_relic_candidate.get("rarity", "common")))
-	var epic_base_cost := 15 + int(epic_relic_candidate.get("total_relic_count", 0))
-	if epic_rarity_index > 2:
-		epic_base_cost += int(epic_relic_candidate.get("relic_rarity_count", 0)) * 3 * (epic_rarity_index - 2)
-	var expected_epic_relic_cost := StatDefinitions.calculate_shop_cost(epic_base_cost + maxi(epic_rarity_index, 0) * 5, 20)
-	passed = _print_check_result("epic relic rarity weighted price", epic_relic_cost == expected_epic_relic_cost) and passed
+	var expected_epic_relic_cost := StatDefinitions.calculate_shop_cost(15 + maxi(epic_rarity_index, 0) * 5, 20)
+	passed = _print_check_result("epic relic ownership does not add another price surcharge", epic_relic_cost == expected_epic_relic_cost) and passed
 	passed = _print_check_result("shop discount layers multiply", StatDefinitions.calculate_shop_cost_from_discounts(100, [8]) == 92 and StatDefinitions.calculate_shop_cost_from_discounts(100, [8, 8]) == 85) and passed
 	passed = _print_check_result("shop discount negative layer raises price", StatDefinitions.calculate_shop_cost_from_discounts(100, [-20]) == 120) and passed
 
@@ -924,7 +924,7 @@ func _run_finance_checks() -> bool:
 	var over_deposit_result := wave_manager.apply_finance_operation("deposit", 999)
 	passed = _print_check_result("finance one operation per preparation", not bool(over_deposit_result.get("success", false)) and str(over_deposit_result.get("reason", "")) == "bank_operation_used") and passed
 	var settle_result := wave_manager.trigger_finance_interest("bootstrap")
-	passed = _print_check_result("finance interest settle", bool(settle_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) > 50) and passed
+	passed = _print_check_result("finance interest credits gold", bool(settle_result.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) == 50 and wave_manager.current_gold == 53) and passed
 	wave_manager.add_relic("relic_piggy_bank")
 	var principal_before_prepare := wave_manager.finance_system.principal
 	wave_manager.prepare_finance_for_wave(2)
@@ -937,7 +937,7 @@ func _run_finance_checks() -> bool:
 	var dividend_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
 	wave_manager.add_relic("relic_dividend_check")
 	var dividend_settle := wave_manager.trigger_finance_interest("bootstrap_dividend")
-	passed = _print_check_result("finance dividend check settle", bool(dividend_settle.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) > dividend_before) and passed
+	passed = _print_check_result("finance dividend check settle", bool(dividend_settle.get("success", false)) and int(wave_manager.get_finance_snapshot().get("principal", 0)) == dividend_before and int(dividend_settle.get("gold_after", 0)) - int(dividend_settle.get("gold_before", 0)) == int(dividend_settle.get("gain", 0)) and int(dividend_settle.get("gain", 0)) > 0) and passed
 	wave_manager.add_relic("relic_fixed_deposit_certificate")
 	var fixed_deposit_result := wave_manager.apply_finance_operation("deposit", 1)
 	passed = _print_check_result("finance fixed deposit deposit", bool(fixed_deposit_result.get("success", false))) and passed
@@ -951,15 +951,17 @@ func _run_finance_checks() -> bool:
 	wave_manager.add_relic("relic_perpetual_annuity_scroll")
 	var annuity_principal_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
 	var annuity_results := wave_manager.process_wave_end_settlements()
-	passed = _print_check_result("finance annuity extra settlement", annuity_results.size() >= 2 and int(wave_manager.get_finance_snapshot().get("principal", 0)) > annuity_principal_before) and passed
+	passed = _print_check_result("finance annuity extra settlement", annuity_results.size() >= 2 and int(wave_manager.get_finance_snapshot().get("principal", 0)) == annuity_principal_before and int(annuity_results[-1].get("gold_after", 0)) > int(annuity_results[0].get("gold_before", 0))) and passed
 	wave_manager.add_relic("relic_high_yield_contract")
 	wave_manager.prepare_finance_for_wave(3)
-	var blocked_settle_results := wave_manager.process_wave_end_settlements()
-	var blocked_settle_result: Dictionary = blocked_settle_results[0] if not blocked_settle_results.is_empty() else {}
-	passed = _print_check_result("finance high yield blocks below threshold", bool(blocked_settle_result.get("blocked", false))) and passed
+	var base_settle_results := wave_manager.process_wave_end_settlements()
+	var base_settle_result: Dictionary = base_settle_results[0] if not base_settle_results.is_empty() else {}
+	passed = _print_check_result("finance high yield preserves interest below threshold", bool(base_settle_result.get("success", false)) and not bool(base_settle_result.get("blocked", false))) and passed
+	var rate_before_deposit := wave_manager.finance_system.get_interest_rate()
 	wave_manager.apply_gold_delta(1, "bootstrap_threshold_fixture")
 	var threshold_deposit_result := wave_manager.apply_finance_operation("deposit", 50)
 	passed = _print_check_result("finance high yield threshold deposit", bool(threshold_deposit_result.get("success", false))) and passed
+	passed = _print_check_result("finance high yield adds six points at threshold", is_equal_approx(wave_manager.finance_system.get_interest_rate(), rate_before_deposit + 6.0)) and passed
 	wave_manager.finance_system.begin_wave(3)
 	passed = _print_check_result("finance preparation deposit survives wave start", wave_manager.finance_system.wave_start_deposit_amount == 50 and wave_manager.finance_system.has_deposited_before_current_wave) and passed
 	var threshold_settle_results := wave_manager.process_wave_end_settlements()

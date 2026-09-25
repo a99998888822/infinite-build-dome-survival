@@ -86,7 +86,7 @@ func _run() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	water.call("_process", 0.23)
 	check(water.is_queued_for_deletion(), "water lifetime")
-	await setup([Vector2(180, 0), Vector2(225, 0)], {"radius": 132.0})
+	await setup([Vector2(125, 0), Vector2(180, 0)], {"radius": 132.0})
 	weapon.runtime_stats["damage_area_size"] = 50.0
 	spawn_effect("water_wave")
 	await frames()

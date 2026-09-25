@@ -33,6 +33,9 @@ var _vitals_frame: Panel
 var _experience_frame: Panel
 var _bond_row: HBoxContainer
 var _bond_buttons: Dictionary = {}
+var _weapon_damage_meter: Control
+var _economy_log: EconomyLogPanel
+var _economy_log_layer: CanvasLayer
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
@@ -41,6 +44,7 @@ const DRAWER_CLOSED_RIGHT := 292.0
 const DRAWER_ANIMATION_SECONDS := 0.36
 const DRAWER_CLOSE_SECONDS := 0.32
 const DRAWER_SKIN = preload("res://scripts/ui/stats_drawer_skin.gd")
+const WEAPON_DAMAGE_METER = preload("res://scripts/ui/weapon_damage_meter.gd")
 const DRAWER_HANDLE: Texture2D = preload("res://assets/ui/stats_drawer/stats_leather_handle.png")
 const DRAWER_OPEN_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_open.wav")
 const DRAWER_CLOSE_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_close.wav")
@@ -128,6 +132,11 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 	"humanity",
 	"divinity",
 ]
+const MAIN_STAT_IDS: Array[String] = [
+	"max_hp", "hp_regen", "armor", "shield_regen", "move_speed", "damage_percent",
+	"melee_damage", "ranged_damage", "element_damage", "attack_speed", "crit_chance",
+	"crit_damage", "projectile_count", "area_size", "damage_area_size", "control_power",
+]
 
 @onready var status_panel: Control = get_node_or_null("StatusPanel")
 @onready var top_left: VBoxContainer = get_node_or_null("StatusPanel/TopLeft")
@@ -157,7 +166,16 @@ const STAT_DISPLAY_ORDER: Array[String] = [
 
 func _ready() -> void:
 	_ensure_feedback_ui()
+	_economy_log_layer = CanvasLayer.new()
+	_economy_log_layer.name = "EconomyLogLayer"
+	_economy_log_layer.layer = 31
+	add_child(_economy_log_layer)
+	_economy_log = EconomyLogPanel.new()
+	_economy_log_layer.add_child(_economy_log)
 	_style_combat_hud()
+	_weapon_damage_meter = WEAPON_DAMAGE_METER.new()
+	_weapon_damage_meter.name = "WeaponDamageMeter"
+	status_panel.add_child(_weapon_damage_meter)
 	_create_stats_drawer_skin()
 	_bind_viewport_resize()
 	_apply_combat_layout()
@@ -241,27 +259,24 @@ func _create_stats_drawer_skin() -> void:
 	skin.offset_left = 28.0
 	stats_drawer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var content := stats_scroll.get_parent() as VBoxContainer
-	content.add_theme_constant_override("separation", 8)
-	var title := content.get_node("TitleLabel") as Label
-	title.custom_minimum_size = Vector2(108.0, 26.0)
-	title.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	title.add_theme_font_size_override("font_size", 16)
-	title.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-	title.add_theme_constant_override("outline_size", 2)
-	var title_style := StyleBoxFlat.new()
-	title_style.bg_color = Color(0.09, 0.08, 0.055, 0.86)
-	title_style.border_color = Color(0.48, 0.41, 0.26, 0.85)
-	title_style.set_border_width_all(1)
-	title.add_theme_stylebox_override("normal", title_style)
-	stats_list.add_theme_constant_override("separation", 2)
+	content.add_theme_constant_override("separation", 4)
+	stats_list.add_theme_constant_override("separation", 8)
 	_drawer_scroll_hint = Label.new()
 	_drawer_scroll_hint.name = "ScrollHint"
-	_drawer_scroll_hint.custom_minimum_size.y = 16.0
+	_drawer_scroll_hint.custom_minimum_size.y = 12.0
 	_drawer_scroll_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_drawer_scroll_hint.add_theme_font_size_override("font_size", 12)
+	_drawer_scroll_hint.add_theme_font_size_override("font_size", 10)
 	_drawer_scroll_hint.add_theme_color_override("font_color", Color(0.64, 0.62, 0.50))
 	_drawer_scroll_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content.add_child(_drawer_scroll_hint)
+	# Keep the hint in the lower board margin, outside the symmetric list area.
+	stats_drawer.add_child(_drawer_scroll_hint)
+	_drawer_scroll_hint.anchor_top = 1.0
+	_drawer_scroll_hint.anchor_right = 1.0
+	_drawer_scroll_hint.anchor_bottom = 1.0
+	_drawer_scroll_hint.offset_left = 72.0
+	_drawer_scroll_hint.offset_right = -44.0
+	_drawer_scroll_hint.offset_top = -28.0
+	_drawer_scroll_hint.offset_bottom = -16.0
 	stats_scroll.get_v_scroll_bar().changed.connect(_update_drawer_scroll_hint)
 	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_drawer_scroll_hint())
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
@@ -303,6 +318,7 @@ func _update_drawer_scroll_hint() -> void:
 		return
 	var bar := stats_scroll.get_v_scroll_bar()
 	var maximum := maxf(bar.max_value - bar.page, 0.0)
+	_drawer_scroll_hint.visible = maximum > 1.0
 	if maximum <= 0.0:
 		_drawer_scroll_hint.text = ""
 	elif bar.value >= maximum - 1.0:
@@ -318,6 +334,8 @@ func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_mana
 	_flow = flow
 	_player = player
 	_wave_manager = wave_manager
+	_economy_log.bind_journal(wave_manager.economy_journal if wave_manager != null else null)
+	_weapon_damage_meter.bind_context(wave_manager, flow.get_bound_loadout() if flow != null else null)
 	_connect_combat_signals()
 	if _flow != null and not _flow.state_changed.is_connected(_on_flow_state_changed):
 		_flow.state_changed.connect(_on_flow_state_changed)
@@ -627,6 +645,8 @@ func _on_viewport_resized() -> void:
 
 
 func _apply_combat_layout() -> void:
+	if _economy_log != null:
+		_economy_log.apply_layout()
 	if get_viewport() == null:
 		return
 	var viewport_width := get_viewport().get_visible_rect().size.x
@@ -635,6 +655,8 @@ func _apply_combat_layout() -> void:
 	top_left.position = Vector2(18, 6)
 	_vitals_frame.position = Vector2(10, 2)
 	_vitals_frame.size = Vector2(bar_width + 44, 52)
+	_weapon_damage_meter.position = Vector2(10, 62)
+	_weapon_damage_meter.size.x = (bar_width + 44) * 0.5
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
 	if shield_bar != null:
@@ -742,6 +764,7 @@ func get_modal_safe_rect() -> Rect2:
 
 
 func _refresh_visibility() -> void:
+	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP]
 	if _flow == null:
 		visible = false
 		if battle_top_bar != null:
@@ -822,7 +845,7 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 
 	_hide_damage_tooltip()
 	var full_duration := DRAWER_ANIMATION_SECONDS if open else DRAWER_CLOSE_SECONDS
-	var remaining := clampf(absf(target_left - stats_drawer.offset_left) / 292.0, 0.0, 1.0)
+	var remaining := clampf(absf(target_left - stats_drawer.offset_left) / DRAWER_CLOSED_RIGHT, 0.0, 1.0)
 	var duration := lerpf(0.18, full_duration, remaining)
 	if _drawer_audio != null:
 		_drawer_audio.stop()
@@ -912,19 +935,25 @@ func _ensure_stat_rows() -> void:
 	if stats_list == null or not _stat_value_labels.is_empty():
 		return
 
+	var main_rows := _create_stat_section("MainStats", false)
+	var special_rows := _create_stat_section("SpecialStats", true)
+	var ordered_ids := MAIN_STAT_IDS.duplicate()
 	for stat_id in _get_ordered_stat_ids():
+		if not ordered_ids.has(stat_id):
+			ordered_ids.append(stat_id)
+	for stat_id in ordered_ids:
 		if stat_id == "damage_taken_percent" or stat_id == "shield" or stat_id == "finance":
 			continue
 		var row := HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.custom_minimum_size.y = 28.0
-		row.add_theme_constant_override("separation", 6)
+		row.custom_minimum_size.y = 14.0
+		row.add_theme_constant_override("separation", 3)
 		var backing := PanelContainer.new()
+		backing.name = stat_id
+		backing.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		backing.mouse_filter = Control.MOUSE_FILTER_PASS
-		var row_style := StyleBoxFlat.new()
-		row_style.bg_color = Color(0.055, 0.05, 0.037, 0.55 if _stat_value_labels.size() % 2 == 0 else 0.34)
-		row_style.border_color = Color(0.40, 0.36, 0.25, 0.35)
-		row_style.border_width_bottom = 1
+		# Lettering sits directly on the original wood, without stacked row cards.
+		var row_style := StyleBoxEmpty.new()
 		row_style.content_margin_left = 5.0
 		row_style.content_margin_right = 5.0
 		backing.add_theme_stylebox_override("panel", row_style)
@@ -934,11 +963,10 @@ func _ensure_stat_rows() -> void:
 		name_label.text = _get_stat_display_name(stat_id)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		name_label.add_theme_font_size_override("font_size", 14)
-		if name_label.text.length() > 7:
-			name_label.add_theme_font_size_override("font_size", 12)
+		name_label.add_theme_font_size_override("font_size", 11)
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-		name_label.add_theme_constant_override("outline_size", 2)
+		name_label.add_theme_constant_override("outline_size", 1)
+		name_label.add_theme_color_override("font_outline_color", Color("241e15"))
 		name_label.tooltip_text = name_label.text
 		if stat_id == "divinity":
 			name_label.tooltip_text = StatDefinitions.get_description(stat_id)
@@ -957,15 +985,39 @@ func _ensure_stat_rows() -> void:
 
 		var value_label := Label.new()
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		value_label.custom_minimum_size = Vector2(58.0, 0.0)
-		value_label.add_theme_font_size_override("font_size", 14)
+		value_label.custom_minimum_size = Vector2(44.0, 0.0)
+		value_label.add_theme_font_size_override("font_size", 11)
 		value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-		value_label.add_theme_constant_override("outline_size", 2)
+		value_label.add_theme_constant_override("outline_size", 1)
+		value_label.add_theme_color_override("font_outline_color", Color("241e15"))
 
 		row.add_child(value_label)
-		stats_list.add_child(backing)
+		var rows := main_rows if MAIN_STAT_IDS.has(stat_id) else special_rows
+		rows.add_child(backing)
 		_stat_value_labels[stat_id] = value_label
 		_stat_name_labels[stat_id] = name_label
+
+
+func _create_stat_section(section_name: String, special: bool) -> VBoxContainer:
+	var section := PanelContainer.new()
+	section.name = section_name
+	section.mouse_filter = Control.MOUSE_FILTER_PASS
+	stats_list.add_child(section)
+	var style := StyleBoxFlat.new()
+	# A light patina and a recessed horizontal seam separate the lower region.
+	# Both sections retain the grain of the single board underneath.
+	style.bg_color = Color(0.12, 0.18, 0.14, 0.12) if special else Color.TRANSPARENT
+	style.border_color = Color(0.12, 0.10, 0.06, 0.68)
+	style.border_width_top = 2 if special else 0
+	style.content_margin_left = 4
+	style.content_margin_right = 2
+	style.content_margin_top = 8 if special else 3
+	style.content_margin_bottom = 3
+	section.add_theme_stylebox_override("panel", style)
+	var rows := VBoxContainer.new()
+	rows.add_theme_constant_override("separation", 1)
+	section.add_child(rows)
+	return rows
 
 
 func _get_damage_tooltip_text() -> String:

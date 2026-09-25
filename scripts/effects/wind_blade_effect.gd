@@ -55,8 +55,9 @@ func _damage_path_enemies() -> void:
 		if global_position.distance_squared_to(enemy.global_position) > radius_squared:
 			continue
 		_hit_targets[enemy.get_instance_id()] = true
-		enemy.apply_knockback(_direction, 900.0, 0.34)
-		enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction)
+		if enemy.can_be_pushed_by_wind():
+			enemy.apply_knockback(_direction, 900.0, 0.34)
+		enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 
 
 func _draw() -> void:

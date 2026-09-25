@@ -22,6 +22,9 @@ func make_player() -> PlayerController:
 	add_child(p)
 	p.set_physics_process(false)
 	p.initialize_from_character("character_void_hunter")
+	# Fixed health fixture for relic interactions; actual level growth has its own suite.
+	p.modifier_stack.set_base_stat("max_hp", 10)
+	p.restore_full_health()
 	return p
 
 
@@ -49,6 +52,8 @@ func _run() -> void:
 	_test_projectiles()
 	_test_interest()
 	_test_confirmed_balance()
+	_test_limited_conversion_relics()
+	_test_lethal_shield_break()
 	_test_sanity_tradeoff_relics()
 	_test_conditional_event_validation()
 	_test_sanity_and_dependencies()
@@ -63,7 +68,7 @@ func _test_config_and_health() -> void:
 	p.add_relic("relic_vitality_potion")
 	check(is_equal_approx(p.get_stat("hp_regen"), 0.5), "MD vitality regen 0.5")
 	p.add_relic("relic_turtle_shell_pendant")
-	check(p.get_stat("max_hp") == 12, "MD turtle max HP +2")
+	check(p.get_stat("max_hp") == 13, "MD turtle max HP +3")
 	p.add_relic("relic_stargazers_lens")
 	check(p.get_stat("luck") == 18, "MD stargazer luck +18")
 	p.free()
@@ -71,22 +76,22 @@ func _test_config_and_health() -> void:
 	p.add_relic("relic_worn_hemostatic_cloth")
 	p.restore_full_health()
 	p.add_relic("relic_piggy_bank")
-	check(p.current_hp == 13 and p.get_stat("max_hp") == 13, "relic rebuild preserves full HP")
+	check(p.current_hp == 14 and p.get_stat("max_hp") == 14, "relic rebuild preserves full HP")
 	p.sync_relic_weapon_ids(p.get_start_weapon_ids())
-	check(p.current_hp == 13, "weapon refresh preserves HP")
+	check(p.current_hp == 14, "weapon refresh preserves HP")
 	p.current_hp = 8
 	p.add_relic("relic_finance_manager")
 	check(p.current_hp == 8, "rebuild never heals injured player")
 	p.restore_full_health()
 	p.add_relic("relic_welfare_cutback")
-	check(p.current_hp == 8 and p.get_stat("max_hp") == 8, "real max HP loss clamps to final cap")
+	check(p.current_hp == 11 and p.get_stat("max_hp") == 11, "real max HP loss clamps to final cap")
 	p.free()
 	p = make_player()
 	p.add_relic("relic_costly_seed_of_life")
 	p.take_damage(999)
 	check(p.remaining_revives == 0 and p.get_stat("divinity") == 20, "seed consumes revive and adds erosion")
 	p.add_relic("relic_piggy_bank")
-	check(p.remaining_revives == 1, "DESIGN seed refresh restores spent revive")
+	check(p.remaining_revives == 0, "relic rebuild never restores a spent seed revive")
 	p.free()
 
 
@@ -97,7 +102,7 @@ func _test_projectiles() -> void:
 		weapon.initialize(weapon_id, p)
 		for count in range(1, 4):
 			check(weapon.get_projectile_angles().size() == count, "projectile count %s %d" % [weapon_id, count])
-			p.add_relic("relic_split_crystal_warhead")
+			modify(p, "projectile_count", count)
 		p.free()
 	var p := make_player()
 	var weapon := WeaponInstance.new()
@@ -117,6 +122,7 @@ func _test_interest() -> void:
 		p.add_relic("relic_perpetual_annuity_scroll")
 		check(not p.add_relic("relic_perpetual_annuity_scroll"), "annuity rejects a second copy")
 		p.add_relic("relic_periodic_dividend_clock")
+		p.add_relic("relic_frenzied_dividend")
 		bank.begin_wave(1)
 		bank.begin_wave(2)
 		bank.prepare_wave(3)
@@ -126,28 +132,30 @@ func _test_interest() -> void:
 		var results := bank.process_wave_end_settlements()
 		var correct := results.size() == 3
 		for result in results:
-			correct = correct and (bool(result.blocked) if deposited < 50 else int(result.gain) > 0)
-		check(correct, "contract covers normal periodic and single annuity settlements deposit=%d" % deposited)
-		check(is_equal_approx(bank.interest_rate_bonus, 0.0 if deposited < 50 else 0.6), "tome grows once per successful settlement deposit=%d" % deposited)
+			correct = correct and not bool(result.blocked) and int(result.gain) > 0
+		check(correct, "contract always preserves normal periodic and annuity interest deposit=%d" % deposited)
+		check(is_equal_approx(float(results[0].interest_rate), 6.0 if deposited < 50 else 12.0), "contract grants six rate points only at the deposit threshold")
+		check(is_equal_approx(bank.interest_rate_bonus, 0.6), "tome grows once per successful settlement deposit=%d" % deposited)
+		check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 94, "all positive settlements apply frenzy growth and cost deposit=%d" % deposited)
 		if deposited == 0:
 			var manual := bank.trigger_manual_interest()
-			check(manual.gain > 0 and not manual.blocked and is_equal_approx(bank.interest_rate_bonus, 0.2), "manual interest outside wave-end restriction grows tome")
+			check(manual.gain > 0 and not manual.blocked and is_equal_approx(bank.interest_rate_bonus, 0.8), "manual positive interest also grows tome")
 		p.free()
 	var p := make_player()
 	var bank := make_finance(p)
 	p.add_relic("relic_divine_fusion")
 	bank.deposit(1000, true)
 	modify(p, "divinity", 5)
-	check(is_equal_approx(bank.get_interest_rate(), 5.5), "fusion updates immediately after player erosion")
-	check(bank.settle_interest().gain == 55, "first settlement uses current fusion rate")
+	check(is_equal_approx(bank.get_interest_rate(), 7.5), "fusion combines two base points with immediate erosion scaling")
+	check(bank.settle_interest().gain == 75, "first settlement uses current fusion rate")
 	p.add_relic("relic_compound_interest_tome")
 	bank.settle_interest()
-	check(is_equal_approx(StatPreviewBuilder.get_display_stat_value(p, "interest_rate", bank), 5.7), "HUD rate includes tome and fusion")
+	check(is_equal_approx(StatPreviewBuilder.get_display_stat_value(p, "interest_rate", bank), 8.7), "HUD rate includes static and growing tome plus fusion")
 	p.add_relic("relic_void_tentacle")
 	p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
 	modify(p, "divinity", 9)
 	p.take_damage(20)
-	check(p.get_stat("divinity") == 10 and is_equal_approx(bank.get_interest_rate(), 6.2), "shield-break erosion refreshes fusion immediately")
+	check(p.get_stat("divinity") == 10 and is_equal_approx(bank.get_interest_rate(), 9.2), "shield-break erosion refreshes fusion immediately")
 	p.free()
 
 
@@ -187,20 +195,81 @@ func _test_confirmed_balance() -> void:
 	bank.deposit(500, true)
 	p.add_relic("relic_perpetual_annuity_scroll")
 	var results := bank.process_wave_end_settlements()
-	check(results.size() == 2 and results[0].gain == 25 and results[1].gain == 26, "second annuity payout uses sanity lost after first payout")
-	check(p.get_stat("damage_percent") == 2 and p.get_stat("humanity") == 96, "two successful payouts grant damage two and sanity minus four")
+	check(results.size() == 2 and results[0].gain == 25 and results[1].gain == 24 and bank.principal == 500, "second annuity payout uses unchanged principal and sanity lost after first payout")
+	check(p.get_stat("damage_percent") == 4 and p.get_stat("humanity") == 96, "two successful payouts grant damage four and sanity minus four")
 	bank.trigger_manual_interest()
-	check(p.get_stat("damage_percent") == 3 and p.get_stat("humanity") == 94, "manual positive settlement triggers frenzy once")
+	check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 94, "manual positive settlement triggers frenzy once")
 	p.add_relic("relic_high_yield_contract")
 	bank.process_wave_end_settlements()
-	check(p.get_stat("damage_percent") == 3 and p.get_stat("humanity") == 94, "blocked settlements grant no frenzy growth or cost")
+	check(p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == 90, "unqualified contract still permits positive settlements and frenzy")
 	bank.principal = 1
 	bank.interest_remainder = 0
 	modify(p, "humanity", -300)
 	var zero_gain := bank.trigger_manual_interest()
-	check(zero_gain.gain == 0 and p.get_stat("damage_percent") == 3 and p.get_stat("humanity") == -206, "zero integer payout accrues fractions without triggering frenzy")
+	check(zero_gain.gain == 0 and p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == -210, "zero integer payout accrues fractions without triggering frenzy")
 	var candidates := ShopOfferGenerator.new().build_shop_candidate_pool({"owned_relic_counts": p.get_relic_counts()})
 	check(candidates.all(func(offer): return str(offer.get("target_id", "")) not in ["relic_frenzied_dividend", "relic_perpetual_annuity_scroll"]), "capped relics leave the candidate pool")
+	p.free()
+
+
+func _test_limited_conversion_relics() -> void:
+	var ids := ["relic_divine_fusion", "relic_soul_keeper_face_stone", "relic_guarding_heart_copper_mirror", "relic_reincarnation_hellfire_candle"]
+	var generator := ShopOfferGenerator.new()
+	for id in ids:
+		var p := make_player()
+		var bank := make_finance(p)
+		check(generator.build_shop_candidate_pool({}).any(func(offer): return offer.get("target_id", "") == id), id + " available before acquisition")
+		check(p.add_relic(id), id + " accepts first copy")
+		var before := snapshot(p, bank)
+		check(not p.add_relic(id) and p.get_relic_count(id) == 1 and snapshot(p, bank) == before, id + " rejects duplicates without changing effects")
+		var pool := generator.build_shop_candidate_pool({"owned_relic_counts": p.get_relic_counts()})
+		check(pool.all(func(offer): return offer.get("target_id", "") != id), id + " removed from shop and reward candidates")
+		check(StatPreviewBuilder.build_offer_stat_preview({"offer_type": "relic", "target_id": id}, p, bank).is_empty(), id + " capped preview cannot add another contribution")
+		p.free()
+
+
+func _test_lethal_shield_break() -> void:
+	for row in [[6, 2, 8], [5, 1, 8], [10, 1, 10]]:
+		var p := make_player()
+		p.add_relic("relic_void_tentacle")
+		p.current_hp = row[0]
+		p.current_shield = 1
+		p.take_damage(row[1], "nonlethal_shield_break")
+		check(p.alive and p.current_hp == row[2] and p.current_shield == 0 and p.get_stat("divinity") == 1, "nonlethal shield break heals, caps at max HP and adds erosion " + str(row))
+		p.free()
+	for copies in [1, 2]:
+		var p := make_player()
+		for i in copies: p.add_relic("relic_void_tentacle")
+		p.current_shield = 1
+		p.take_damage(999, "lethal_shield_break")
+		check(not p.alive and p.current_hp == 0 and p.get_stat("divinity") == copies, "lethal break cannot revive even with multiple tentacles copies=%d" % copies)
+		check(p.heal(3) == 0 and p.current_hp == 0, "ordinary healing cannot revive a dead player")
+		p.free()
+	var p := make_player()
+	var bank := make_finance(p)
+	for id in ["relic_void_tentacle", "relic_costly_seed_of_life", "relic_golden_sarcophagus"]: p.add_relic(id)
+	bank.deposit(1000, true)
+	p.current_shield = 1
+	p.take_damage(999, "shield_break_seed")
+	check(p.alive and p.current_hp == 5 and p.remaining_revives == 0 and bank.principal == 1000 and p.get_stat("divinity") == 21, "lethal break consumes normal revive and applies break plus revive erosion")
+	p._invincibility_timer = 0.0
+	p._process_regeneration(1.0)
+	p.take_damage(999, "shield_break_coffin")
+	check(p.alive and p.current_hp == 5 and bank.principal == 500 and p.get_stat("divinity") == 42 and bank.get_principal_revive_state().remaining_uses == 0, "regenerated shield cannot bypass paid coffin or revive erosion")
+	p._invincibility_timer = 0.0
+	p._process_regeneration(1.0)
+	p.take_damage(999, "shield_break_no_revives")
+	check(not p.alive and p.current_hp == 0 and bank.principal == 500 and p.get_stat("divinity") == 43, "regenerated shield cannot save player after all revives are spent")
+	p.free()
+	p = make_player()
+	bank = make_finance(p)
+	for id in ["relic_void_tentacle", "relic_coin_heart", "relic_hoarders_ring", "relic_golden_sarcophagus"]: p.add_relic(id)
+	bank.deposit(1000, true)
+	p.restore_full_health()
+	p.current_shield = 1
+	p.take_damage(999, "shield_break_principal_attributes")
+	check(p.alive and p.current_hp == 8 and p.get_stat("max_hp") == 15 and bank.principal == 500, "lethal break restores post-payment maximum health through coffin")
+	check(p.get_stat("currency_gain_percent") == 10 and p.get_stat("humanity") == 98 and p.get_stat("divinity") == 1, "coffin following shield break updates revised ring tiers and retains erosion cost")
 	p.free()
 
 
@@ -214,7 +283,7 @@ func _test_sanity_tradeoff_relics() -> void:
 		check(p.add_relic(id) and not p.add_relic(id), "%s accepts only one copy" % id)
 	candidates = generator.build_shop_candidate_pool({"owned_relic_counts": p.get_relic_counts()})
 	check(candidates.all(func(offer): return offer.get("target_id", "") not in ids), "three owned tradeoff relics leave shop pool")
-	check(p.get_stat("damage_percent") == 52 and p.get_stat("humanity") == 80, "tradeoff relic damage bonuses use additive damage stat")
+	check(p.get_stat("damage_percent") == 57 and p.get_stat("humanity") == 80, "tradeoff relic damage bonuses use additive damage stat")
 	p.free()
 	p = make_player()
 	var bank := make_finance(p)
@@ -228,11 +297,11 @@ func _test_sanity_tradeoff_relics() -> void:
 	p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
 	check(p.get_stat("humanity") == 80, "trigger sanity cost is not repeated at wave end")
 	p.free()
-	for row in [[100, 98, 96], [0, -2, -7], [-1, -6, -11]]:
+	for row in [[100, 97, 94], [0, -3, -8], [-1, -6, -11]]:
 		p = make_player()
 		modify(p, "humanity", float(row[0]) - 100.0)
 		p.add_relic("relic_runaway_amplifier")
-		check(p.get_stat("damage_percent") == 35 and p.get_stat("humanity") == row[0], "amplifier grants damage without acquisition decay at %s" % row[0])
+		check(p.get_stat("damage_percent") == 40 and p.get_stat("humanity") == row[0], "amplifier grants damage without acquisition decay at %s" % row[0])
 		p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
 		check(p.get_stat("humanity") == row[1], "amplifier first wave uses pre-trigger sanity at %s" % row[0])
 		p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
@@ -247,9 +316,15 @@ func _test_sanity_tradeoff_relics() -> void:
 				if reversed: order.reverse()
 				for id in order: p.add_relic(id)
 				p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
-				var expected: int = starting_sanity - (5 if starting_sanity < 0 else 2) + (-3 if companion == "relic_sleepless_ledger" else 2)
+				var expected: int = starting_sanity - (5 if starting_sanity < 0 else 3) + (-3 if companion == "relic_sleepless_ledger" else 2)
 				check(p.get_stat("humanity") == expected, "wave-end condition snapshot companion=%s sanity=%s reversed=%s" % [companion, starting_sanity, reversed])
 				p.free()
+	p = make_player()
+	p.add_relic("relic_runaway_amplifier")
+	p.add_relic("relic_lucid_vow")
+	for i in 5: p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
+	check(p.get_stat("damage_percent") == 32 and p.get_stat("humanity") == 95, "vow offsets only part of amplifier decay while retaining thirty-two damage")
+	p.free()
 	p = make_player()
 	modify(p, "humanity", -101)
 	p.add_relic("relic_lucid_vow")
@@ -266,7 +341,7 @@ func _test_sanity_tradeoff_relics() -> void:
 	check(p.get_stat("humanity") == 102, "candle blocks subsequent vow recovery")
 	p.free()
 	var effect: Dictionary = DataRegistry.get_record("relics", "relic_runaway_amplifier").runtime_effects[0]
-	check(effect.value == -5 and effect.else_value == -2, "condition execution preserves shared relic definition")
+	check(effect.value == -5 and effect.else_value == -3, "condition execution preserves shared relic definition")
 
 
 func _test_conditional_event_validation() -> void:
@@ -322,9 +397,9 @@ func _test_sanity_and_dependencies() -> void:
 		modify(p, "humanity", -50)
 		modify(p, "divinity", 20)
 		for id in ids: p.add_relic(id)
-		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 284 and p.get_stat("armor") == 36, "dependency order independent " + str(ids))
+		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 290 and p.get_stat("armor") == 41, "dependency order independent " + str(ids))
 		modify(p, "divinity", 0)
-		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 272 and p.get_stat("armor") == 35, "dependency change recalculates condition and armor")
+		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 272 and p.get_stat("armor") == 39, "dependency change recalculates condition and armor")
 		p.free()
 
 
@@ -335,16 +410,17 @@ func _test_reward_remainders() -> void:
 	p.add_relic("relic_gold_compass")
 	p.add_relic("relic_gold_digger_gloves")
 	for i in 100: manager.add_exp_and_gold(1, 1)
-	check(manager.collected_gold_this_wave == 105 and manager.collected_exp_this_wave == 108, "100 small pickups retain +5% gold and +8% XP")
+	check(manager.collected_gold_this_wave == 110 and manager.collected_exp_this_wave == 108, "100 small pickups retain +10% gold and +8% XP")
 	manager.free()
 	manager = WaveManager.new()
 	manager.player = p
 	p.add_relic("relic_salary_adjustment")
 	for i in 100: manager.add_exp_and_gold(1, 1)
-	check(manager.current_gold == 85, "100 pickups retain net -15% gold penalty")
+	check(manager.current_gold == 100, "compass offsets the salary gold penalty")
 	manager.free()
 	manager = WaveManager.new()
 	manager.player = p
+	modify(p, "currency_gain_percent", -15)
 	manager.add_exp_and_gold(1, 1)
 	manager.collected_gold_this_wave = 0
 	for i in 19: manager.add_exp_and_gold(1, 1)
@@ -394,7 +470,7 @@ func _test_previews() -> void:
 	check(is_equal_approx(p.get_effective_shop_discount(), 15.36), "display two discounts as 15.36%")
 	check(StatDefinitions.calculate_shop_cost_from_discounts(10000, p.get_shop_price_discount_layers()) == 8464, "discount display and price use same multiplier")
 	p.add_relic("relic_salary_adjustment")
-	check(is_equal_approx(p.get_effective_shop_discount(), -1.568), "display combined discount and surcharge")
+	check(is_equal_approx(p.get_effective_shop_discount(), 6.896), "display combined discount and surcharge")
 	var hud := BattleHud.new()
 	check(hud._format_stat_value("shop_price_percent", 15.36) == "15.36%", "fractional discount display format")
 	hud.free()

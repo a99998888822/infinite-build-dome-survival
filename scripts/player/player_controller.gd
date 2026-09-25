@@ -4,6 +4,7 @@ class_name PlayerController
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
 signal died
 signal revived(remaining_revives: int)
+signal lethal_damage
 signal shield_broken
 signal start_weapons_changed(weapon_ids: Array[String])
 signal relics_changed(relic_ids: Array[String])
@@ -11,6 +12,7 @@ signal relic_added(relic_id: String)
 signal stats_changed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
+const MAX_HP_PER_LEVEL: int = 1
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
@@ -49,6 +51,7 @@ var _refreshing_relic_dynamic_effects: bool = false
 var _initial_wave_shield: int = 0
 var _modifier_update_depth: int = 0
 var _modifiers_before_update: Dictionary = {}
+var _resolving_death: bool = false
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -102,6 +105,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 
 	character_id = target_character_id
 	character_data = data
+	modifier_stack.remove_by_source("level", "run_level")
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
@@ -127,12 +131,29 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_shield_regen_remainder = 0.0
 	_relic_runtime_sequence = 0
 	_refreshing_relic_dynamic_effects = false
+	_resolving_death = false
 	_clear_move_input()
 	_update_pickup_radius()
 
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	start_weapons_changed.emit(start_weapon_ids.duplicate())
 	return true
+
+
+func set_run_level(level: int) -> void:
+	# Replace the total contribution, so refreshes never duplicate level growth.
+	# Growing maximum HP does not heal; wave start still restores full health.
+	add_runtime_modifier({
+		"id": "mod_player_level_max_hp",
+		"source_type": "level",
+		"source_id": "run_level",
+		"target_scope": "player",
+		"stat": "max_hp",
+		"operation": Modifier.OPERATION_ADD_FLAT,
+		"value": maxi(0, level - 1) * MAX_HP_PER_LEVEL,
+		"duration": Modifier.PERMANENT_DURATION,
+		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
+	})
 
 
 func add_runtime_modifier(modifier_data: Dictionary) -> bool:
@@ -317,7 +338,7 @@ func get_character_icon_path() -> String:
 
 func take_damage(raw_damage: int, source_id: String = "") -> int:
 	# 护盾优先承伤且不受护甲影响；只有穿透护盾的生命伤害经过护甲换算。
-	if not alive or raw_damage <= 0 or _invincibility_timer > 0.0:
+	if not alive or _resolving_death or raw_damage <= 0 or _invincibility_timer > 0.0:
 		return 0
 
 	var had_shield := current_shield > 0
@@ -351,7 +372,9 @@ func _apply_damage_flash() -> void:
 
 
 func heal(amount: int) -> int:
-	if not alive or amount <= 0:
+	# Ordinary healing cannot undo lethal damage while death is being resolved.
+	# Revives restore HP through revive_from_lethal_damage instead.
+	if not alive or current_hp <= 0 or amount <= 0:
 		return 0
 	var old_hp := current_hp
 	current_hp = mini(current_hp + amount, int(get_stat("max_hp")))
@@ -540,15 +563,15 @@ func _apply_modifier_list(modifier_data_list: Array) -> void:
 
 
 func _update_after_stat_change() -> void:
-	# Revive-count refresh is intentional gameplay; only HP and derived stats
-	# wait for the complete modifier set, so transient max-HP loss cannot hurt.
+	# Compare completed modifier sets. A rebuild must not grant spent revives
+	# when an existing relic is temporarily removed and reapplied.
+	if _modifier_update_depth > 0:
+		return
 	var configured_revives := int(get_stat("revive_count"))
 	if configured_revives > _configured_revive_count:
 		remaining_revives += configured_revives - _configured_revive_count
 	_configured_revive_count = configured_revives
 	remaining_revives = mini(remaining_revives, configured_revives)
-	if _modifier_update_depth > 0:
-		return
 	current_hp = mini(current_hp, int(get_stat("max_hp")))
 	_update_pickup_radius()
 	_refresh_relic_dynamic_effects()
@@ -707,24 +730,36 @@ func _update_pickup_radius() -> void:
 
 
 func _die(source_id: String = "") -> void:
-	if not alive:
+	if not alive or _resolving_death:
 		return
+	_resolving_death = true
 	if _try_revive():
+		_resolving_death = false
 		return
-	alive = false
-	velocity = Vector2.ZERO
-	died.emit()
-	print("[PlayerController] player died, source=%s" % source_id)
+	# Paid protection is a fallback after ordinary revive charges are exhausted.
+	lethal_damage.emit()
+	if current_hp <= 0:
+		alive = false
+		velocity = Vector2.ZERO
+		died.emit()
+		print("[PlayerController] player died, source=%s" % source_id)
+	_resolving_death = false
 
 
 func _try_revive() -> bool:
 	if remaining_revives <= 0:
 		return false
 	remaining_revives -= 1
-	current_hp = maxi(1, int(ceil(float(get_stat("max_hp")) * REVIVE_HEALTH_PERCENT)))
+	return revive_from_lethal_damage(REVIVE_HEALTH_PERCENT * 100.0)
+
+
+func revive_from_lethal_damage(health_percent: float) -> bool:
+	if not alive or current_hp > 0 or health_percent <= 0.0:
+		return false
+	current_hp = maxi(1, ceili(get_stat("max_hp") * clampf(health_percent / 100.0, 0.0, 1.0)))
 	current_shield = 0
 	_invincibility_timer = REVIVE_INVINCIBILITY_SECONDS
-	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
+	_update_after_stat_change()
 	revived.emit(remaining_revives)
 	_process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_ON_REVIVE)
 	print("[PlayerController] player revived, remaining=%d" % remaining_revives)

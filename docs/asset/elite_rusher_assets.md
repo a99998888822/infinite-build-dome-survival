@@ -10,7 +10,7 @@
 - 制作源为 `scripts/tools/build_elite_rusher_assets.py`，使用 Pillow 按手写像素图形、色块和动作姿态绘制。普通怪与玩家图片仅用于预览中的尺寸对比，不采样进新角色。
 - 已制作独立冲刺路径 SVG 与 PNG，PNG 所有像素 alpha 为 77（8 位通道对 30% 的近似），四角完整，无箭头或镂空。
 - 已生成 Godot `SpriteFrames` 资源，包含全部动画、帧区域、循环和帧时长；已由 `EliteRusher` 驱动实际角色动作。
-- 预览图、逐帧联系表、动作 GIF 和结构校验报告位于 `artifacts/elite_rusher_assets_20260923/`。
+- 最新实机效果见 `artifacts/reviews/effects/elite.gif`；原逐帧联系表和历史校验日志已清理。
 - 新增攻击专项演示：`elite_rusher_attack.gif` 为正常速度，`elite_rusher_attack_slow.gif` 为半速，`elite_rusher_attack_keyframes.png` 为完整分镜，`elite_rusher_attack_review.html` 可暂停、拖动时间轴、慢放和左右翻转。演示组合既有帧表与固定红色预警路径，冲刺 240 像素；尚不是游戏碰撞/伤害实现。
 
 ## 造型
@@ -107,7 +107,7 @@ Death: exactly 5 frames; legs fold, body settles to the ground, eye light fades;
 - [x] 红色路径 PNG 所有像素 alpha 为 77，SVG 为 0.3；直角矩形、无箭头，贴图仅有一层填充。
 - [x] 所有正式 PNG 已存入工程。
 - [x] Godot 4.7.2 隔离项目导入通过，`SpriteFrames` 六组动画、23 帧纹理和路径 PNG 加载通过；日志位于同一预览目录。
-- [x] 已接入敌人场景，验证移动距离、方向锁定、撞墙和矩形扫掠伤害；游戏内渲染预览见 `artifacts/elite_pickups_20260923/engine_preview.png`。
+- [x] 已接入敌人场景，验证移动距离、方向锁定、撞墙和矩形扫掠伤害；游戏内渲染预览见 `artifacts/reviews/effects/elite.gif`。
 
 重新制作：`python scripts/tools/build_elite_rusher_assets.py`。
 

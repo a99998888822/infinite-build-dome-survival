@@ -109,9 +109,10 @@ func _run() -> void:
 	finance.principal = 600
 	finance.interest_remainder = 0
 	check(finance.get_estimated_interest() == 40, "600 principal and 10 percent predicts 40")
+	var gold_before_interest := manager.get_current_gold()
 	var settlement := finance.settle_interest()
 	check(settlement.gain == 40 and settlement.nominal_gain == 60 and is_equal_approx(float(settlement.humanity_loss), 20), "actual payout and explanation match")
-	check(finance.principal == 640, "net payout enters principal")
+	check(finance.principal == 600 and manager.get_current_gold() == gold_before_interest + 40, "net payout enters gold without growing principal")
 	set_stat(player, "humanity", -100)
 	var accumulated := 0
 	finance.interest_remainder = 0

@@ -5,6 +5,7 @@ const BOARD: Texture2D = preload("res://assets/ui/finance/finance_board.png")
 var flow: MainFlowCoordinator
 var payload: Dictionary = {}
 var main_panel: Panel
+var economy_log: EconomyLogPanel
 var portrait: BankCounterPortrait
 var shop_grid: VirtualShopGrid
 var workbench: EnchantmentWorkbench
@@ -14,8 +15,10 @@ var start_button: Button
 var _title: Label
 var _summary: Label
 var _economy: Label
+var _principal_protection: Label
 var _bank_preview: Label
 var _bank: ScrollContainer
+var _bank_header: VBoxContainer
 var _bank_form: VBoxContainer
 var _receipt: Label
 var _contract: Label
@@ -69,6 +72,7 @@ func bind_flow(coordinator: MainFlowCoordinator) -> void:
 
 func configure(next_payload: Dictionary) -> void:
 	payload = next_payload
+	economy_log.bind_journal(flow.get_economy_journal() if flow != null else null)
 	var generation := int(payload.get("offer_generation", 0))
 	var new_shelf := generation != _generation
 	_generation = generation
@@ -80,6 +84,11 @@ func configure(next_payload: Dictionary) -> void:
 	var humanity := float(payload.get("humanity", 100))
 	_economy.text = HumanityEconomy.describe(humanity)
 	_economy.tooltip_text = HumanityEconomy.tooltip(humanity)
+	var protection: Dictionary = payload.get("principal_revive", {})
+	_principal_protection.visible = not protection.is_empty()
+	if not protection.is_empty():
+		_principal_protection.text = "%s：%s" % [protection.display_name, FinanceUIStyle.principal_revive_status(protection)]
+		_principal_protection.tooltip_text = "已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。" % [int(protection.principal_cost), HumanityEconomy.number(float(protection.health_percent))]
 	var nominal := int(payload.get("nominal_estimated_interest", 0))
 	var retention := float(payload.get("interest_multiplier", 1.0))
 	_summary.tooltip_text = "单次基础预计：应得 %d，理智损耗 %s，预计入账 %d。\n实际利率 %s%%；未入账小数 %s。\n不含随机翻倍和后续额外结息。\n%s" % [nominal, HumanityEconomy.number(nominal * (1.0 - retention)), int(payload.get("estimated_interest", 0)), HumanityEconomy.number(float(payload.get("interest_rate", 0)) * retention), "%.3f" % float(payload.get("interest_remainder", 0)), HumanityEconomy.describe(humanity)]
@@ -95,7 +104,7 @@ func configure(next_payload: Dictionary) -> void:
 	if new_shelf:
 		var settled := 0
 		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
-		_feedback.text = "本波结息 +%d 本金 · 准备完成后开始下一波" % settled if settled > 0 else "准备完成后，点击开始下一波。"
+		_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % settled if settled > 0 else "准备完成后，点击开始下一波。"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
 
 
@@ -143,19 +152,27 @@ func _build() -> void:
 	_bank = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.scroll(_bank)
 	main_panel.add_child(_bank)
+	_bank_header = VBoxContainer.new()
+	_bank_header.add_theme_constant_override("separation", 8)
+	main_panel.add_child(_bank_header)
 	var bank_body := VBoxContainer.new()
 	bank_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bank_body.add_theme_constant_override("separation", 8)
 	_bank.add_child(bank_body)
-	var motto := _label("哥布林银行 · 每波限办一次", bank_body, 13, FinanceUIStyle.GOLD)
+	var motto := _label("哥布林银行 · 每波限办一次", _bank_header, 13, FinanceUIStyle.GOLD)
 	motto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	portrait = BankCounterPortrait.new()
 	portrait.custom_minimum_size.y = 132
-	bank_body.add_child(portrait)
+	_bank_header.add_child(portrait)
 	_economy = _label("", bank_body, 12, FinanceUIStyle.MUTED)
 	_economy.name = "HumanityEconomySummary"
 	_economy.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_economy.mouse_filter = Control.MOUSE_FILTER_PASS
+	_principal_protection = _label("", bank_body, 12, FinanceUIStyle.GOLD)
+	_principal_protection.name = "PrincipalReviveStatus"
+	_principal_protection.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_principal_protection.mouse_filter = Control.MOUSE_FILTER_PASS
+	_principal_protection.hide()
 	_bank_form = VBoxContainer.new()
 	_bank_form.add_theme_constant_override("separation", 8)
 	bank_body.add_child(_bank_form)
@@ -235,6 +252,9 @@ func _build() -> void:
 	start_button.pressed.connect(func():
 		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
 	)
+	economy_log = EconomyLogPanel.new()
+	economy_log.name = "FinanceLog"
+	main_panel.add_child(economy_log)
 	_build_sale_dialog()
 	_tooltip = PanelContainer.new()
 	_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231cf5", "98956a", 12))
@@ -311,18 +331,27 @@ func _layout() -> void:
 	_place(_tabs, Rect2(work_x, body_y, work_w, 28 if short_window else 30))
 	var content_y := body_y + (34.0 if short_window else 40.0)
 	var content_h := maxf(24, body_bottom - content_y)
-	_place(_bank, Rect2(20, content_y if _compact else body_y, w - 40 if _compact else bank_width, content_h if _compact else body_bottom - body_y))
-	_update_portrait_visibility()
+	var bank_rect := Rect2(20, content_y if _compact else body_y, w - 40 if _compact else bank_width, content_h if _compact else body_bottom - body_y)
+	# Pin the banker above the scrollable form: amount previews must neither
+	# hide the portrait nor scroll it away when their text grows.
+	portrait.visible = bank_rect.size.y >= 320
+	if portrait.visible:
+		_place(_bank_header, Rect2(bank_rect.position, Vector2(bank_rect.size.x, 160)))
+		bank_rect.position.y += 168
+		bank_rect.size.y -= 168
+	_place(_bank, bank_rect)
 	_place(_shop, Rect2(work_x, content_y, work_w, content_h))
 	_place(_enchant_scroll, Rect2(work_x, content_y, work_w, content_h))
 	workbench.custom_minimum_size.y = 296
 	_place(shop_grid, Rect2(0, 0, work_w, maxf(16, content_h if short_window else content_h - 38)))
-	_place(_stock, Rect2(144 if short_window else 0, content_h + 8 if short_window else content_h - 30, maxf(40, work_w - 286) if short_window else maxf(40, work_w - 140), 28))
-	_place(_refresh, Rect2(0 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
-	_place(_feedback, Rect2(20, h - 50, maxf(50, w - 188), 38))
+	_place(_stock, Rect2(208 if short_window else 0, content_h + 8 if short_window else content_h - 30, maxf(40, work_w - 350) if short_window else maxf(40, work_w - 140), 28))
+	_place(_refresh, Rect2(64 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
+	_place(_feedback, Rect2(84, h - 50, maxf(50, w - 252), 38))
 	_feedback.visible = not short_window
 	_summary.show()
 	_place(start_button, Rect2(w - 154, h - 38 if short_window else h - 50, 134, 30 if short_window else 36))
+	_place(economy_log, Rect2(Vector2.ZERO, main_panel.size))
+	economy_log.apply_finance_layout(Rect2(20, body_y, w - 40, body_bottom - body_y), Rect2(20, start_button.position.y, 52, start_button.size.y))
 	var sale_size := Vector2(minf(420, w - 32), minf(360, h - 32))
 	_place(_sale_box, Rect2((Vector2(w, h) - sale_size) * 0.5, sale_size))
 	if not _compact and _active_tab == "bank": _active_tab = "shop"
@@ -332,6 +361,7 @@ func _layout() -> void:
 func _select_tab(tab: String) -> void:
 	_active_tab = tab
 	_bank.visible = not _compact or tab == "bank"
+	_bank_header.visible = _bank.visible and portrait.visible
 	_shop.visible = tab == "shop"
 	_enchant_scroll.visible = tab == "enchant"
 	for key in _tab_buttons:
@@ -351,8 +381,11 @@ func _refresh_bank() -> void:
 		_receipt.text = "本波已%s %d 金币\n下波可再次办理存取。" % ["存入" if str(last.get("action", "")) == "deposit" else "取出", int(last.get("amount", 0))]
 	_choose_bank_action(_bank_action)
 	_contract.text = "每波只能存或取一次。\n买卖与附魔不受此限制。"
-	if bool(payload.get("requires_deposit_for_interest", false)):
-		_contract.text = "存款契约：%d / %d\n%s" % [int(payload.get("wave_start_deposit_amount", 0)), int(payload.get("deposit_requirement", 0)), "已满足本波结息条件" if bool(payload.get("has_deposited_before_current_wave", false)) else "本波存入达到要求后才可结息"]
+	if bool(payload.get("has_high_yield_contract", false)):
+		var bonus := float(payload.get("deposit_bonus_rate", 0.0))
+		var bonus_text := HumanityEconomy.number(bonus)
+		var status := "本波利率已 +%s 个百分点" % bonus_text if bool(payload.get("deposit_bonus_active", false)) else "达标后利率 +%s 个百分点；未达标仍正常结息" % bonus_text
+		_contract.text = "高利契约：手动存入 %d / %d\n%s" % [int(payload.get("wave_start_deposit_amount", 0)), int(payload.get("deposit_requirement", 0)), status]
 
 
 func _choose_bank_action(action: String) -> void:
@@ -383,14 +416,8 @@ func _update_bank_confirm() -> void:
 	amount_input.add_theme_color_override("font_color", Color("e1a184") if error.begins_with("amount_exceeds") else FinanceUIStyle.TEXT)
 	_bank_preview.text = flow.get_bank_stat_preview(_bank_action, amount_input.text.to_int()) if error.is_empty() and flow != null else ""
 	_bank_preview.visible = not _bank_preview.text.is_empty()
-	_update_portrait_visibility()
 	if _bank_preview.visible:
 		_reveal_bank_preview.call_deferred()
-
-
-func _update_portrait_visibility() -> void:
-	# Give the consequences room while an amount is being considered.
-	portrait.visible = _bank.size.y >= 320 and not _bank_preview.visible
 
 
 func _reveal_bank_preview() -> void:

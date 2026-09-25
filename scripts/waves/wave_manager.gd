@@ -10,6 +10,7 @@ signal interest_settled(result: Dictionary)
 signal shared_reward_shop_requested(level: int)
 signal wave_end_absorb_started(wave_id: String)
 signal relic_choice_requested(reward_id: String)
+signal weapon_damage_changed
 
 const DEFAULT_PLAYER_LEVEL: int = 1
 const SPAWN_MIN_DISTANCE: float = 300.0
@@ -42,9 +43,12 @@ var current_exp: int = 0
 var current_gold: int = 0
 var collected_exp_this_wave: int = 0
 var collected_gold_this_wave: int = 0
+var weapon_damage_this_wave: Dictionary = {}
 var _reward_remainders: Dictionary = {}
 
 var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
+var economy_journal: EconomyJournal = EconomyJournal.new()
+var _wave_income_recorded: bool = false
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var enemy_scene_cache: Dictionary = {}
@@ -95,16 +99,22 @@ func _process(delta: float) -> void:
 
 func initialize(target_player: PlayerController) -> void:
 	player = target_player
+	economy_journal.clear()
+	_wave_income_recorded = false
 	current_wave_index = -1
 	running = false
 	player_level = DEFAULT_PLAYER_LEVEL
 	if CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
 		player_level += 2
+	if player != null:
+		player.set_run_level(player_level)
 	current_exp = 0
 	current_gold = 0
 	_reward_remainders.clear()
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
+	weapon_damage_this_wave.clear()
+	weapon_damage_changed.emit()
 	_pending_wave_end_absorb_count = 0
 	_finishing_wave_id = ""
 	_pending_reward_batches.clear()
@@ -119,8 +129,8 @@ func initialize(target_player: PlayerController) -> void:
 	if not drop_reward_system.relic_choice_collected.is_connected(_on_relic_choice_collected):
 		drop_reward_system.relic_choice_collected.connect(_on_relic_choice_collected)
 	if finance_system != null:
-		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
 		_connect_finance_system()
+		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
 	_connect_player_relic_signal()
 	reward_snapshot.reset()
 	drop_reward_system.begin_wave()
@@ -138,7 +148,12 @@ func start_next_wave() -> bool:
 	if current_wave_index + 1 >= waves.size():
 		return false
 	current_wave_index += 1
+	collected_exp_this_wave = 0
+	collected_gold_this_wave = 0
+	_wave_income_recorded = false
 	current_wave = waves[current_wave_index]
+	weapon_damage_this_wave.clear()
+	weapon_damage_changed.emit()
 	reward_snapshot.reset(str(current_wave.get("id", "")))
 	drop_reward_system.begin_wave()
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
@@ -194,7 +209,15 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 		enemy.queue_free()
 		return null
 	enemy.died.connect(_on_enemy_died)
+	enemy.damage_received.connect(_on_enemy_damage_received)
 	return enemy
+
+
+func _on_enemy_damage_received(source_id: String, damage: int) -> void:
+	if not running or damage <= 0 or not DataRegistry.has_record("weapons", source_id):
+		return
+	weapon_damage_this_wave[source_id] = int(weapon_damage_this_wave.get(source_id, 0)) + damage
+	weapon_damage_changed.emit()
 
 
 func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:
@@ -285,10 +308,18 @@ func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount:
 
 func _complete_wave_end_absorb() -> void:
 	_pending_wave_end_absorb_count = 0
+	record_wave_income()
 	process_wave_end_settlements()
 	var finished_wave_id := _finishing_wave_id
 	_finishing_wave_id = ""
 	wave_finished.emit(finished_wave_id)
+
+
+func record_wave_income(completed: bool = true) -> void:
+	if _wave_income_recorded or current_wave_index < 0:
+		return
+	_wave_income_recorded = true
+	economy_journal.append({"wave": current_wave_index + 1, "kind": "wave_income", "text": "战斗获得 %d 金币%s" % [collected_gold_this_wave, "" if completed else "（本波未完成）"], "gold": collected_gold_this_wave})
 
 
 func _clear_non_exp_reward_pickups() -> void:
@@ -422,6 +453,8 @@ func _on_player_relic_added(relic_id: String) -> void:
 func _connect_finance_system() -> void:
 	if finance_system == null:
 		return
+	if not finance_system.activity_recorded.is_connected(economy_journal.append):
+		finance_system.activity_recorded.connect(economy_journal.append)
 	var changed_callable := Callable(self, "_on_finance_changed")
 	var settled_callable := Callable(self, "_on_interest_settled")
 	if not finance_system.finance_changed.is_connected(changed_callable):
@@ -690,6 +723,8 @@ func _process_level_ups() -> void:
 	while current_exp >= get_required_exp_for_next_level():
 		current_exp -= get_required_exp_for_next_level()
 		player_level += 1
+		if player != null:
+			player.set_run_level(player_level)
 		reward_snapshot.record_level_up()
 		shared_reward_shop_requested.emit(player_level)
 

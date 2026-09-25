@@ -1,0 +1,746 @@
+[
+	{
+		"buttons": [
+			{
+				"caption": "开始战斗",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "天赋",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "设置",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell/SettingsButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "退出",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton",
+				"size": "(150.0, 42.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "01_menu",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": "开始战斗",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "天赋",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "设置",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell/SettingsButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "退出",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton",
+				"size": "(150.0, 42.0)"
+			},
+			{
+				"caption": "1152 × 648",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/SettingsOverlay/SettingsPanel/@VBoxContainer@149/@HBoxContainer@159/@OptionButton@171",
+				"size": "(300.0, 36.0)"
+			},
+			{
+				"caption": "○ 是",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/SettingsOverlay/SettingsPanel/@VBoxContainer@149/@HBoxContainer@172/@Button@174",
+				"size": "(124.0, 36.0)"
+			},
+			{
+				"caption": "● 否",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/SettingsOverlay/SettingsPanel/@VBoxContainer@149/@HBoxContainer@172/@Button@175",
+				"size": "(124.0, 36.0)"
+			},
+			{
+				"caption": "返回",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/SettingsOverlay/SettingsPanel/@VBoxContainer@149/@Button@185",
+				"size": "(180.0, 40.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "02_menu_settings",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": "初心者\n初始角色",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@110/@PanelContainer@113/Body/@ScrollContainer@116/@VBoxContainer@117/@Button@251",
+				"size": "(220.0, 68.0)"
+			},
+			{
+				"caption": "STANDARD  标准\n标准战局，无额外修正。",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@110/DifficultyPanel/Body/DifficultyList/@Button@252",
+				"size": "(250.0, 76.0)"
+			},
+			{
+				"caption": "HARD  困难\n敌人更凶猛，适合熟悉基础玩法后的挑战。",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@110/DifficultyPanel/Body/DifficultyList/@Button@253",
+				"size": "(250.0, 76.0)"
+			},
+			{
+				"caption": "NIGHTMARE  梦魇\n高压挑战，容错率很低。",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@110/DifficultyPanel/Body/DifficultyList/@Button@254",
+				"size": "(250.0, 76.0)"
+			},
+			{
+				"caption": "◀ 返回主界面",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@142/@Button@143",
+				"size": "(160.0, 34.0)"
+			},
+			{
+				"caption": "继续 ▶",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/MainMenuUIController/CharacterSelectPage/RoleSelectRuntime/@MarginContainer@105/@VBoxContainer@106/@HBoxContainer@142/@Button@145",
+				"size": "(136.0, 34.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "03_character",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": "返回主界面",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@PanelContainer@188/@HBoxContainer@189/@Button@192",
+				"size": "(120.0, 38.0)"
+			},
+			{
+				"caption": "重置升级",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@PanelContainer@188/@HBoxContainer@189/@Button@193",
+				"size": "(98.0, 38.0)"
+			},
+			{
+				"caption": "⌂  军械工坊\n    Lv.1",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@286",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "⌂  遗物档案馆\n    Lv.1",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@287",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "⌂  利刃演武场\n    未解锁",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@288",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "⌂  远星射靶台\n    未解锁",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@289",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "⌂  穹顶庇护所\n    未解锁",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@290",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "⌂  议事大厅\n    未解锁",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@PanelContainer@195/@VBoxContainer@196/@ScrollContainer@202/@MarginContainer@203/@VBoxContainer@204/@Button@291",
+				"size": "(204.0, 48.0)"
+			},
+			{
+				"caption": "升级至 Lv.2（200 营地币）",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/CampBlueprintUIController/@MarginContainer@186/@VBoxContainer@187/@HBoxContainer@194/@VBoxContainer@205/@HBoxContainer@206/@PanelContainer@207/@VBoxContainer@208/@HBoxContainer@303/@Button@304",
+				"size": "(153.0, 18.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "04_talents",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": "<",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "05_battle",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": ">",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "06_stats",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": ">",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "存入本金",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@32/@Button@33",
+				"size": "(111.0, 28.0)"
+			},
+			{
+				"caption": "取出本金",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@32/@Button@34",
+				"size": "(111.0, 28.0)"
+			},
+			{
+				"caption": "1/4",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@37",
+				"size": "(72.0, 28.0)"
+			},
+			{
+				"caption": "1/2",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@38",
+				"size": "(73.0, 28.0)"
+			},
+			{
+				"caption": "全部",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@39",
+				"size": "(73.0, 28.0)"
+			},
+			{
+				"caption": "确认存入",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@Button@41",
+				"size": "(226.0, 28.0)"
+			},
+			{
+				"caption": "购买",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@HBoxContainer@44/@Button@46",
+				"size": "(319.0, 30.0)"
+			},
+			{
+				"caption": "附魔",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@HBoxContainer@44/@Button@47",
+				"size": "(319.0, 30.0)"
+			},
+			{
+				"caption": "购买",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Control@48/@Control@49/@ScrollContainer@52/@Control@53/@PanelContainer@734/@VBoxContainer@735/@HBoxContainer@747/@Button@749",
+				"size": "(58.0, 26.0)"
+			},
+			{
+				"caption": "购买",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Control@48/@Control@49/@ScrollContainer@52/@Control@53/@PanelContainer@750/@VBoxContainer@751/@HBoxContainer@763/@Button@765",
+				"size": "(58.0, 26.0)"
+			},
+			{
+				"caption": "购买",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Control@48/@Control@49/@ScrollContainer@52/@Control@53/@PanelContainer@766/@VBoxContainer@767/@HBoxContainer@779/@Button@781",
+				"size": "(58.0, 26.0)"
+			},
+			{
+				"caption": "刷新 · 4 金币",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Control@48/@Button@55",
+				"size": "(136.0, 28.0)"
+			},
+			{
+				"caption": "开始下一波",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Button@84",
+				"size": "(134.0, 36.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "07_finance_shop",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": ">",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "存入本金",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@32/@Button@33",
+				"size": "(111.0, 28.0)"
+			},
+			{
+				"caption": "取出本金",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@32/@Button@34",
+				"size": "(111.0, 28.0)"
+			},
+			{
+				"caption": "1/4",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@37",
+				"size": "(72.0, 28.0)"
+			},
+			{
+				"caption": "1/2",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@38",
+				"size": "(73.0, 28.0)"
+			},
+			{
+				"caption": "全部",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@HBoxContainer@36/@Button@39",
+				"size": "(73.0, 28.0)"
+			},
+			{
+				"caption": "确认存入",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@23/@VBoxContainer@25/@VBoxContainer@31/@Button@41",
+				"size": "(226.0, 28.0)"
+			},
+			{
+				"caption": "购买",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@HBoxContainer@44/@Button@46",
+				"size": "(319.0, 30.0)"
+			},
+			{
+				"caption": "附魔",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@HBoxContainer@44/@Button@47",
+				"size": "(319.0, 30.0)"
+			},
+			{
+				"caption": "木质弓箭\n[附魔 3/3]",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@62/@HBoxContainer@63/@Button@782",
+				"size": "(180.0, 46.0)"
+			},
+			{
+				"caption": "食利者钱袋\n[附魔 0/3]",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@62/@HBoxContainer@63/@Button@783",
+				"size": "(180.0, 46.0)"
+			},
+			{
+				"caption": "坤舆秘仪书\n[附魔 0/3]",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@62/@HBoxContainer@63/@Button@784",
+				"size": "(180.0, 46.0)"
+			},
+			{
+				"caption": "出售武器",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@HBoxContainer@64/@Button@67",
+				"size": "(58.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@70/@HBoxContainer@71/@Button@785",
+				"size": "(68.0, 41.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@70/@HBoxContainer@71/@Button@792",
+				"size": "(68.0, 41.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@70/@HBoxContainer@71/@Button@799",
+				"size": "(68.0, 41.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@805",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@810",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@815",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@820",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@825",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@830",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@835",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@840",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@845",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@850",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@855",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@ScrollContainer@75/@GridContainer@76/@Button@860",
+				"size": "(112.0, 28.0)"
+			},
+			{
+				"caption": "装备至此武器",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@HBoxContainer@78/@Button@79",
+				"size": "(472.0, 28.0)"
+			},
+			{
+				"caption": "← 前移",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@HBoxContainer@78/@Button@80",
+				"size": "(52.0, 28.0)"
+			},
+			{
+				"caption": "后移 →",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@HBoxContainer@78/@Button@81",
+				"size": "(52.0, 28.0)"
+			},
+			{
+				"caption": "出售附魔",
+				"disabled": true,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@ScrollContainer@58/@VBoxContainer@59/@HBoxContainer@78/@Button@82",
+				"size": "(58.0, 28.0)"
+			},
+			{
+				"caption": "开始下一波",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/FinanceUIController/PopupLayer/FinancePopup/MainPanel/@Button@84",
+				"size": "(134.0, 36.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "08_enchant",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": ">",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/WeaponStrip/StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList/@Button@865",
+				"size": "(44.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/WeaponStrip/StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList/@Button@866",
+				"size": "(44.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/WeaponStrip/StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList/@Button@867",
+				"size": "(44.0, 44.0)"
+			},
+			{
+				"caption": "⬅ 返回",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/TitleRow/BackButton",
+				"size": "(90.0, 34.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@868",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@869",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@870",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@871",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@872",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@873",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@874",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@875",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@876",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@877",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@878",
+				"size": "(48.0, 48.0)"
+			},
+			{
+				"caption": "",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/EscLayer/EscOverlay/CenterContainer/RelicPanel/Content/ItemScroll/GridMargin/ItemGrid/@Button@879",
+				"size": "(48.0, 48.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "09_inventory",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	},
+	{
+		"buttons": [
+			{
+				"caption": ">",
+				"disabled": false,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/HUD/StatsDrawer/ToggleButton",
+				"size": "(28.0, 44.0)"
+			},
+			{
+				"caption": "",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/BaikeButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "",
+				"disabled": true,
+				"node": "/root/GameRoot/WorldRoot/BattleRoot/BattleTopBar/TopRightActions/PluginButton",
+				"size": "(40.0, 40.0)"
+			},
+			{
+				"caption": "选择此区域",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/ZoneSelectPopup/CenterContainer/MainPanel/Content/ZoneCardGrid/@PanelContainer@882/Content/SelectButton",
+				"size": "(184.0, 22.0)"
+			},
+			{
+				"caption": "选择此区域",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/ZoneSelectPopup/CenterContainer/MainPanel/Content/ZoneCardGrid/@PanelContainer@883/Content/SelectButton",
+				"size": "(184.0, 22.0)"
+			},
+			{
+				"caption": "选择此区域",
+				"disabled": false,
+				"node": "/root/GameRoot/UiRoot/ZoneSelectPopup/CenterContainer/MainPanel/Content/ZoneCardGrid/@PanelContainer@884/Content/SelectButton",
+				"size": "(184.0, 22.0)"
+			}
+		],
+		"capture": "(768, 432)",
+		"logical": "(1280.0, 720.0)",
+		"page": "10_zone",
+		"viewport": "(960, 432)",
+		"window": "(960, 432)"
+	}
+]

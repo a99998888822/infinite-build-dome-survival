@@ -517,8 +517,8 @@ WeaponEffectRegistry
 - 攻速只缩短发射间隔；攻击距离只影响索敌；伤害范围只放大爆炸。数值及升级后的半径显示于武器详情。
 - 暂停冻结飞行和爆炸动画。波末、返回主菜单和战局清理会立即取消 `grenade_projectiles`，不会在下一波继续爆炸。
 - 两把炮使用已确认的新图标；榴弹、影子、金色落点与爆炸采用像素绘制，不占用新的场景贴图。
-- 专项场景：`scenes/tests/grenade_weapon_test.tscn`；真实运行截图与验证日志：`artifacts/grenade_implementation/`。
-- 正式分裂的运行录制入口为 `scenes/tests/grenade_attack_capture.tscn -- --variant=split`，不再注入预览逻辑；正式分裂验证产物保存在 `artifacts/grenade_split_implementation/`。
+- 专项场景：`scenes/tests/grenade_weapon_test.tscn`；正式爆炸实录：`artifacts/reviews/weapons/grenade.gif`。
+- 正式分裂的运行录制入口为 `scenes/tests/grenade_attack_capture.tscn -- --variant=split`，不再注入预览逻辑；实录保存在 `artifacts/reviews/weapons/grenade_split.gif`。
 
 ## 21. 坤舆秘仪书与食利者钱袋正式实现
 
@@ -544,7 +544,7 @@ WeaponEffectRegistry
 - 元素附魔在原生伤害前派发，避免原生致死吞掉火焰、分裂等效果。分裂伤害、原始伤害和元素附加基数同步缩放。
 - 暂停冻结冷却、领域粒子、金币位置和旋转。波末清理取消 `weapon_runtime_effects`；进入下一波时重建领域；卸下、出售和返回主菜单时取消所属武器效果，避免遗留伤害。
 - 详情显示元素伤害类型、实时本金加成、非暴击伤害、领域半轴、点名／投射物数量及分裂参数。附魔槽、升级与售价沿用统一 UI。
-- 自动验证入口：`scenes/tests/tome_purse_weapon_test.tscn`。正式实录入口：`scenes/tests/tome_purse_live_capture.tscn`，通过 `--variant=tome|purse|combined` 选择；产物位于 `artifacts/tome_purse_implementation/`。实录使用正式武器和移动怪物，固定演示遭遇以避免奖励弹窗打断，钱袋演示本金 400。
+- 自动验证入口：`scenes/tests/tome_purse_weapon_test.tscn`。正式实录入口：`scenes/tests/tome_purse_live_capture.tscn`，通过 `--variant=tome|purse|combined` 选择；保留的单武器实录为 `artifacts/reviews/weapons/tome.mp4` 与 `artifacts/reviews/weapons/purse.mp4`。实录使用正式武器和移动怪物，固定演示遭遇以避免奖励弹窗打断，钱袋演示本金 400。
 
 ## 22. 武器负载与成长调整（2026-09-24）
 
@@ -562,3 +562,17 @@ WeaponEffectRegistry
 - 电浆炮补齐2～5级升级内容，使用现有商店、奖励、升级和出售流程；不修改球体半径、接触判定、弹速或每球最多5轮灼击。五级打满同一目标的条件输出为100/1.50≈66.67/秒，实战受接触时长影响。
 - 电浆炮每轮的附魔伤害基数为 `(original_damage + element_damage_bonus) × 0.2`，通过 `DamageEvent.elemental_damage_scale` 保留浮点精度和延迟复制语义，再由具体附魔按倍率计算并最终取整（沿用最低1伤害规则）。原生接触伤害不缩放；闪电、爆炸、火焰及元素反应共用此基数。其他武器事件默认倍率1，不改变现有伤害。
 - 验证入口：`scenes/tests/weapon_balance_test.tscn`、`scenes/tests/plasma_contact_test.tscn`，并回归榴弹炮、秘仪书／钱袋和战斗音效测试。
+
+## 23. 流星摆锤正式实现（2026-09-25）
+
+- 使用已审阅的铸铁锤头、锁链、握柄和图标。武器仅在攻击时出现，锁链只作视觉连接，不造成伤害；每次锁定最近敌人方向，左右交替扫过前方140°。
+- 负载18，附魔槽3，最高5级，近战基础伤害依次为22／27／32／37／42，额外增加角色近战伤害×1.2；随后计算通用增伤、暴击和敌方护甲。基础攻击间隔1.50秒。
+- 锤头最大伸展144，接触半径16；随挥击先伸展再收回。伸展至80%距离后，该次命中伤害为150%（一级无加成：近圈22、外圈33）。攻击距离同步缩放伸展轨迹和锤头；攻速同步缩放蓄力、挥击和收招。
+- 仅锤头扫过实际敌人碰撞体时命中；每次挥击对同一敌人最多命中一次，沿途可以命中多个敌人。弧线细分后使用胶囊查询，防止低帧率漏判；墙体阻挡命中。
+- 额外投射物转为错开的额外主挥击。分裂卷轴在本轮首次主命中后，默认追加2次、60%伤害的追击，读取卷轴实际数量和倍率；追击可再次命中同一敌人但不会继续分裂。多张分裂卷轴累加，整轮只触发一代。
+- 每个主击和追击的受击目标分别触发元素附魔；分裂和外圈倍率同时作用于完整元素伤害基数，保留浮点数到附魔最终取整。追击单独判定暴击。穿透不兼容，界面拒绝装填并提示原因。
+- 暂停冻结动作和命中，死亡、出售、波末与返回菜单清理武器运行节点。收招后的装饰方粒不占用下一次攻击。
+- 注册至统一商店／奖励、装备、升级、附魔与出售流程。当前共有6把正式武器，总负载111，100负载需要搭配取舍，最多同时装备其中5把。
+- 电浆炮初始品质由史诗改为稀有：零幸运时史诗权重为0，因此此前无法刷新；稀有品质允许正常开局出现。购买基础价格随品质采用现有定价，升级品质及接触伤害参数保持原配置。
+- 专项验证：`scenes/tests/meteor_flail_test.tscn`；实机录制：`scenes/tests/meteor_flail_live_capture.tscn`，参数 `--variant=base|split|split_lightning|split_fire`。验证／录制追加 `--transient-session`，在自动加载阶段即隔离存档。
+- 实录产物为 `artifacts/reviews/weapons/meteor_flail.gif` 与 `artifacts/reviews/weapons/meteor_flail_enchantments.gif`。使用正式 GameRoot、自动索敌、移动敌人和附魔；为观察连续追击，演示敌人血量设为240、玩家最大生命设为1000、暴击设为0。动图只裁剪、加标题，不重绘攻击效果。

@@ -181,6 +181,6 @@ P1 表示建议优先修复的核心收益丢失、额外收益或状态错误�
 - [ ] 未逐一人工观看游戏窗口或图标；展示结论基于当前 UI 数据源、格式化代码和预览函数运行结果。
 - [ ] 未穷举所有堆叠数量、全部获取顺序和其他系统的任意组合；“无独立差异”不作这类保证。
 
-复现与验证日志：[专项审计记录](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_audit_20260922/audit_engine.log)、[Bootstrap 记录](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_audit_20260922/bootstrap_engine.log)、[最终编辑器检查](D:/project/useless/resources/infinite-build-dome-survival/artifacts/relic_audit_20260922/editor_engine.log)。
+专项审计、Bootstrap 与编辑器检查的原始日志已清理，审计结论保留在本文。
 
 **建议执行顺序**：先处理 R06/R07 的全量重建副作用，再处理 R01/R02/R04/R12 的收益问题，随后统一理智与派生计算（R08—R11）、结息来源（R05）、预览与面板（U01—U03），最后按确定的策划基准统一 D01—D08 和 S01—S08 文案。

@@ -3,6 +3,7 @@ extends Node2D
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
+const FROST = preload("res://scripts/effects/frost_pattern.gd")
 const FOOT_FLAME_INTERVAL: float = 0.16
 
 var _foot_flame_timer: float = 0.0
@@ -72,8 +73,7 @@ func _draw() -> void:
 	if _enemy.has_status("frozen"):
 		_draw_frozen_crystals(_get_body_radius())
 	elif _enemy.has_status("slowed"):
-		for side in [-1, 1]:
-			PIXEL.line(self, Vector2(side * 7, 12), Vector2(side * 14, 12), Color(0.48, 0.73, 0.79, 0.75))
+		FROST.draw_crystal(self, Vector2(0, 12), _get_body_radius() * 1.1, 1.0, 0.72, PI / 6, 0.46)
 	if _enemy.has_status("holy_flame") or _enemy.has_status("dark_flame"):
 		_draw_transformed_flame(_enemy.has_status("holy_flame"))
 

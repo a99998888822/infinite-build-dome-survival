@@ -69,7 +69,7 @@ func _process(delta: float) -> void:
 	for enemy in _targets:
 		if enemy == null or not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta)
+		enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta * enemy.get_control_multiplier())
 	if _elapsed >= _duration:
 		queue_free()
 		return

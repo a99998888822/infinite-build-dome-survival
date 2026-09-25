@@ -65,10 +65,10 @@
   {
     "id": "relic_fixed_deposit_certificate",
     "display_name": "定期存单",
-    "description": "本金立刻 + （50*波次）",
+    "description": "获得时：本金 +（20×当前波次）；最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "rarity": "uncommon",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": [
       "finance"
     ],
@@ -77,7 +77,7 @@
       {
         "trigger": "on_acquire",
         "effect": "add_principal_per_wave",
-        "value_per_wave": 50,
+        "value_per_wave": 20,
         "free_principal": true
       }
     ]
@@ -172,7 +172,7 @@
   {
     "id": "relic_gold_compass",
     "display_name": "吸金罗盘",
-    "description": "拾取范围 +40；金币获取 +5%",
+    "description": "拾取范围 +40；金币获取 +10%",
     "icon": "res://assets/ui/icons/relics/relic_gold_compass.png",
     "rarity": "rare",
     "max_stack": 0,
@@ -197,7 +197,7 @@
         "target_scope": "player",
         "stat": "currency_gain_percent",
         "operation": "add_flat",
-        "value": 5,
+        "value": 10,
         "duration": -1
       }
     ],
@@ -206,7 +206,7 @@
   {
     "id": "relic_tip_tray",
     "display_name": "小费托盘",
-    "description": "击杀敌人时 10% 概率额外掉落 1 经验球",
+    "description": "击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验1和基础金币1",
     "icon": "res://assets/ui/icons/relics/relic_tip_tray.png",
     "rarity": "rare",
     "max_stack": 0,
@@ -226,14 +226,25 @@
   {
     "id": "relic_compound_interest_tome",
     "display_name": "复利宝典",
-    "description": "每成功结算一次利息，利率 + 0.2%",
+    "description": "利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
     "rarity": "epic",
     "max_stack": 0,
     "tags": [
       "finance"
     ],
-    "effects": [],
+    "effects": [
+      {
+        "id": "mod_relic_compound_interest_tome_interest_rate",
+        "source_type": "relic",
+        "source_id": "relic_compound_interest_tome",
+        "target_scope": "player",
+        "stat": "interest_rate",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      }
+    ],
     "runtime_effects": [
       {
         "trigger": "interest_success",
@@ -245,30 +256,20 @@
   {
     "id": "relic_high_yield_contract",
     "display_name": "高利契约",
-    "description": "利率 + 4%；但是每波结束时，若你回合开始前未存入本金（至少50），则当前回合结束时无法收获利息",
+    "description": "本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
       "finance"
     ],
-    "effects": [
-      {
-        "id": "mod_relic_high_yield_contract_interest_rate",
-        "source_type": "relic",
-        "source_id": "relic_high_yield_contract",
-        "target_scope": "player",
-        "stat": "interest_rate",
-        "operation": "add_flat",
-        "value": 4,
-        "duration": -1
-      }
-    ],
+    "effects": [],
     "runtime_effects": [
       {
-        "trigger": "wave_end",
-        "effect": "require_wave_start_deposit_for_interest",
-        "minimum_deposit": 50
+        "trigger": "derived",
+        "effect": "interest_rate_on_wave_deposit",
+        "minimum_deposit": 50,
+        "value": 6
       }
     ]
   },
@@ -379,7 +380,7 @@
   {
     "id": "relic_welfare_cutback",
     "display_name": "福利削减方案",
-    "description": "获得时：本金 +150；利率 +2%；最大生命值 -5；护甲 - 10",
+    "description": "获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5",
     "icon": "res://assets/ui/icons/relics/relic_welfare_cutback.png",
     "rarity": "epic",
     "max_stack": 0,
@@ -406,7 +407,7 @@
         "target_scope": "player",
         "stat": "max_hp",
         "operation": "add_flat",
-        "value": -5,
+        "value": -3,
         "duration": -1
       },
       {
@@ -416,7 +417,7 @@
         "target_scope": "player",
         "stat": "armor",
         "operation": "add_flat",
-        "value": -10,
+        "value": -5,
         "duration": -1
       }
     ],
@@ -475,7 +476,7 @@
   {
     "id": "relic_salary_adjustment",
     "display_name": "薪酬调整方案",
-    "description": "获得时：本金 +100；利率 +2%；金币获取 -20%；商店价格 +20%",
+    "description": "获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%",
     "icon": "res://assets/ui/icons/relics/relic_salary_adjustment.png",
     "rarity": "epic",
     "max_stack": 0,
@@ -502,7 +503,7 @@
         "target_scope": "player",
         "stat": "currency_gain_percent",
         "operation": "add_flat",
-        "value": -20,
+        "value": -10,
         "duration": -1
       },
       {
@@ -512,7 +513,7 @@
         "target_scope": "player",
         "stat": "shop_price_percent",
         "operation": "add_flat",
-        "value": -20,
+        "value": -10,
         "duration": -1
       }
     ],
@@ -528,14 +529,16 @@
   {
     "id": "relic_divine_fusion",
     "display_name": "神性融合",
-    "description": "每 5 侵蚀度提供利率 + 0.5%；每波开始时侵蚀度 + 1",
+    "description": "利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_divine_fusion.png",
     "rarity": "mythic",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": [
       "finance"
     ],
-    "effects": [],
+    "effects": [
+      {"id": "mod_relic_divine_fusion_interest_rate", "source_type": "relic", "source_id": "relic_divine_fusion", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": 2, "duration": -1}
+    ],
     "runtime_effects": [
       {
         "trigger": "wave_start",
@@ -621,14 +624,14 @@
   {
     "id": "relic_worn_hemostatic_cloth",
     "display_name": "磨损的止血布条",
-    "description": "最大生命值 + 3",
+    "description": "最大生命值 + 4",
     "icon": "res://assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
     "icon_description": "边缘起毛、沾有干涸血迹的粗纱布",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["survival"],
     "effects": [
-      {"id": "mod_relic_worn_hemostatic_cloth_max_hp", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 3, "duration": -1}
+      {"id": "mod_relic_worn_hemostatic_cloth_max_hp", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -695,23 +698,38 @@
   {
     "id": "relic_dead_shield_badge",
     "display_name": "死寂护盾徽章",
-    "description": "战斗开局生成 10 点护盾",
+    "description": "每波开始生成10点护盾",
     "icon": "res://assets/ui/icons/relics/relic_dead_shield_badge.png",
     "icon_description": "哑光灰色金属胸针",
     "rarity": "uncommon",
     "max_stack": 0,
-    "tags": ["survival"],
+    "tags": [
+      "survival"
+    ],
     "effects": [
-      {"id": "mod_relic_dead_shield_badge_shield", "source_type": "relic", "source_id": "relic_dead_shield_badge", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 10, "duration": -1}
+      {
+        "id": "mod_relic_dead_shield_badge_shield",
+        "source_type": "relic",
+        "source_id": "relic_dead_shield_badge",
+        "target_scope": "player",
+        "stat": "shield",
+        "operation": "add_flat",
+        "value": 10,
+        "duration": -1
+      }
     ],
     "runtime_effects": [
-      {"trigger": "wave_start", "effect": "grant_shield", "value": 10}
+      {
+        "trigger": "wave_start",
+        "effect": "grant_shield",
+        "value": 10
+      }
     ]
   },
   {
     "id": "relic_turtle_shell_pendant",
     "display_name": "龟壳吊坠",
-    "description": "护甲 + 10；最大生命值 + 2",
+    "description": "护甲 + 10；最大生命值 + 3",
     "icon": "res://assets/ui/icons/relics/relic_turtle_shell_pendant.png",
     "icon_description": "带着细小虫洞纹路的老旧龟壳挂坠",
     "rarity": "uncommon",
@@ -719,7 +737,7 @@
     "tags": ["survival"],
     "effects": [
       {"id": "mod_relic_turtle_shell_pendant_armor", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 2, "duration": -1}
+      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 3, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -806,14 +824,14 @@
   {
     "id": "relic_cultic_holy_shield",
     "display_name": "密教圣盾",
-    "description": "护甲 + 20；侵蚀度 + 5",
+    "description": "护甲 + 30；侵蚀度 + 5",
     "icon": "res://assets/ui/icons/relics/relic_cultic_holy_shield.png",
     "icon_description": "刻印扭曲触手符文的银色金属牌",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_cultic_holy_shield_armor", "source_type": "relic", "source_id": "relic_cultic_holy_shield", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 20, "duration": -1},
+      {"id": "mod_relic_cultic_holy_shield_armor", "source_type": "relic", "source_id": "relic_cultic_holy_shield", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 30, "duration": -1},
       {"id": "mod_relic_cultic_holy_shield_divinity", "source_type": "relic", "source_id": "relic_cultic_holy_shield", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": []
@@ -821,28 +839,57 @@
   {
     "id": "relic_lost_wayfarer_greave",
     "display_name": "迷途者胫环",
-    "description": "护甲 + 8；移动速度 + 12；理智值低于 60 后，移动速度 - 12",
+    "description": "护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成",
     "icon": "res://assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
     "icon_description": "缠绕细小触须纹路的银质腿环",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": ["survival", "movement", "eldritch"],
+    "tags": [
+      "survival",
+      "movement",
+      "eldritch"
+    ],
     "effects": [
-      {"id": "mod_relic_lost_wayfarer_greave_armor", "source_type": "relic", "source_id": "relic_lost_wayfarer_greave", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 8, "duration": -1},
-      {"id": "mod_relic_lost_wayfarer_greave_move_speed", "source_type": "relic", "source_id": "relic_lost_wayfarer_greave", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": 12, "duration": -1}
+      {
+        "id": "mod_relic_lost_wayfarer_greave_armor",
+        "source_type": "relic",
+        "source_id": "relic_lost_wayfarer_greave",
+        "target_scope": "player",
+        "stat": "armor",
+        "operation": "add_flat",
+        "value": 12,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_lost_wayfarer_greave_move_speed",
+        "source_type": "relic",
+        "source_id": "relic_lost_wayfarer_greave",
+        "target_scope": "player",
+        "stat": "move_speed",
+        "operation": "add_flat",
+        "value": 18,
+        "duration": -1
+      }
     ],
     "runtime_effects": [
-      {"trigger": "dynamic", "effect": "conditional_stat", "condition": "humanity_below", "threshold": 60, "stat": "move_speed", "value": -12}
+      {
+        "trigger": "dynamic",
+        "effect": "conditional_stat",
+        "condition": "humanity_below",
+        "threshold": 60,
+        "stat": "move_speed",
+        "value": -18
+      }
     ]
   },
   {
     "id": "relic_soul_keeper_face_stone",
     "display_name": "守魂人面石雕",
-    "description": "生命值 + 5；侵蚀度每有一点，理智值也获得同等数值",
+    "description": "最大生命值 + 5；每点侵蚀度提供 1 点理智值；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
     "icon_description": "人脸神情哀伤、表面渗出水珠的小型石像",
     "rarity": "epic",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": ["survival", "eldritch"],
     "effects": [
       {"id": "mod_relic_soul_keeper_face_stone_max_hp", "source_type": "relic", "source_id": "relic_soul_keeper_face_stone", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 5, "duration": -1}
@@ -854,14 +901,14 @@
   {
     "id": "relic_pain_vessel",
     "display_name": "苦痛祭皿",
-    "description": "每秒回血 + 0.8；最大生命值 - 1；理智值 - 3",
+    "description": "每秒回血 + 1.2；最大生命值 - 1；理智值 - 3",
     "icon": "res://assets/ui/icons/relics/relic_pain_vessel.png",
     "icon_description": "盆内漂浮细碎黑雾的金色圆盘",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.8, "duration": -1},
+      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1.2, "duration": -1},
       {"id": "mod_relic_pain_vessel_max_hp", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -1, "duration": -1},
       {"id": "mod_relic_pain_vessel_humanity", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -3, "duration": -1}
     ],
@@ -886,14 +933,14 @@
   {
     "id": "relic_holy_silver_cup",
     "display_name": "圣质银杯",
-    "description": "每秒回血 + 3；利率 - 1%",
+    "description": "每秒回血 + 1.5；利率 - 1 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_holy_silver_cup.png",
     "icon_description": "杯身雕刻人形纹路、盛放澄澈净水的银杯",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "finance"],
     "effects": [
-      {"id": "mod_relic_holy_silver_cup_hp_regen", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 3, "duration": -1},
+      {"id": "mod_relic_holy_silver_cup_hp_regen", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1.5, "duration": -1},
       {"id": "mod_relic_holy_silver_cup_interest_rate", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": -1, "duration": -1}
     ],
     "runtime_effects": []
@@ -917,18 +964,44 @@
   {
     "id": "relic_costly_seed_of_life",
     "display_name": "代价生命之种",
-    "description": "每秒回血 + 1；复活次数 + 1；复活之后侵蚀度 + 20",
+    "description": "每秒回血 +1；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_costly_seed_of_life.png",
     "icon_description": "外壳通透、胚芽不停蠕动的奇异种子",
     "rarity": "mythic",
     "max_stack": 1,
-    "tags": ["survival", "eldritch"],
+    "tags": [
+      "survival",
+      "eldritch"
+    ],
     "effects": [
-      {"id": "mod_relic_costly_seed_of_life_hp_regen", "source_type": "relic", "source_id": "relic_costly_seed_of_life", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1, "duration": -1},
-      {"id": "mod_relic_costly_seed_of_life_revive_count", "source_type": "relic", "source_id": "relic_costly_seed_of_life", "target_scope": "player", "stat": "revive_count", "operation": "add_flat", "value": 1, "duration": -1}
+      {
+        "id": "mod_relic_costly_seed_of_life_hp_regen",
+        "source_type": "relic",
+        "source_id": "relic_costly_seed_of_life",
+        "target_scope": "player",
+        "stat": "hp_regen",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_costly_seed_of_life_revive_count",
+        "source_type": "relic",
+        "source_id": "relic_costly_seed_of_life",
+        "target_scope": "player",
+        "stat": "revive_count",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      }
     ],
     "runtime_effects": [
-      {"trigger": "on_revive", "effect": "add_stat", "stat": "divinity", "value": 20}
+      {
+        "trigger": "on_revive",
+        "effect": "add_stat",
+        "stat": "divinity",
+        "value": 20
+      }
     ]
   },
   {
@@ -966,7 +1039,7 @@
   {
     "id": "relic_void_tentacle",
     "display_name": "虚空触手",
-    "description": "开局护盾 + 20；每秒护盾 + 1；且护盾被击碎时恢复 3 生命值并增加 1 点侵蚀度",
+    "description": "每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值",
     "icon": "res://assets/ui/icons/relics/relic_void_tentacle.png",
     "icon_description": "内部不断翻滚混沌雾气的一截章鱼触手",
     "rarity": "mythic",
@@ -1148,16 +1221,35 @@
   {
     "id": "relic_gale_roulette",
     "display_name": "疾风轮盘",
-    "description": "攻击速度 + 30；近战伤害 - 2；远程伤害 - 2",
+    "description": "攻击速度 +30%；通用伤害 -8%",
     "icon": "res://assets/ui/icons/relics/relic_gale_roulette.png",
     "icon_description": "内壁附着粘液的空心骨管",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": ["combat"],
+    "tags": [
+      "combat"
+    ],
     "effects": [
-      {"id": "mod_relic_gale_roulette_attack_speed", "source_type": "relic", "source_id": "relic_gale_roulette", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 30, "duration": -1},
-      {"id": "mod_relic_gale_roulette_melee_damage", "source_type": "relic", "source_id": "relic_gale_roulette", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": -2, "duration": -1},
-      {"id": "mod_relic_gale_roulette_ranged_damage", "source_type": "relic", "source_id": "relic_gale_roulette", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": -2, "duration": -1}
+      {
+        "id": "mod_relic_gale_roulette_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_gale_roulette",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_flat",
+        "value": 30,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_gale_roulette_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_gale_roulette",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": -8,
+        "duration": -1
+      }
     ],
     "runtime_effects": []
   },
@@ -1179,31 +1271,72 @@
   {
     "id": "relic_judgment_eye_pendant",
     "display_name": "裁决之眼吊坠",
-    "description": "暴击几率 + 12、暴击伤害 + 35；通用伤害 - 12",
+    "description": "暴击几率 +12 个百分点；暴击伤害 +35 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_judgment_eye_pendant.png",
     "icon_description": "内嵌眼球结晶的银挂坠",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": ["combat", "critical"],
+    "tags": [
+      "combat",
+      "critical"
+    ],
     "effects": [
-      {"id": "mod_relic_judgment_eye_pendant_crit_chance", "source_type": "relic", "source_id": "relic_judgment_eye_pendant", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 12, "duration": -1},
-      {"id": "mod_relic_judgment_eye_pendant_crit_damage", "source_type": "relic", "source_id": "relic_judgment_eye_pendant", "target_scope": "player", "stat": "crit_damage", "operation": "add_flat", "value": 35, "duration": -1},
-      {"id": "mod_relic_judgment_eye_pendant_damage_percent", "source_type": "relic", "source_id": "relic_judgment_eye_pendant", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -12, "duration": -1}
+      {
+        "id": "mod_relic_judgment_eye_pendant_crit_chance",
+        "source_type": "relic",
+        "source_id": "relic_judgment_eye_pendant",
+        "target_scope": "player",
+        "stat": "crit_chance",
+        "operation": "add_flat",
+        "value": 12,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_judgment_eye_pendant_crit_damage",
+        "source_type": "relic",
+        "source_id": "relic_judgment_eye_pendant",
+        "target_scope": "player",
+        "stat": "crit_damage",
+        "operation": "add_flat",
+        "value": 35,
+        "duration": -1
+      }
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_split_crystal_warhead",
     "display_name": "分裂晶石弹头",
-    "description": "投射物数量 + 1；通用伤害 - 30",
+    "description": "投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_split_crystal_warhead.png",
     "icon_description": "多边棱角的结晶子弹",
     "rarity": "mythic",
-    "max_stack": 0,
-    "tags": ["combat", "projectile"],
+    "max_stack": 1,
+    "tags": [
+      "combat",
+      "projectile"
+    ],
     "effects": [
-      {"id": "mod_relic_split_crystal_warhead_projectile_count", "source_type": "relic", "source_id": "relic_split_crystal_warhead", "target_scope": "player", "stat": "projectile_count", "operation": "add_flat", "value": 1, "duration": -1},
-      {"id": "mod_relic_split_crystal_warhead_damage_percent", "source_type": "relic", "source_id": "relic_split_crystal_warhead", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -30, "duration": -1}
+      {
+        "id": "mod_relic_split_crystal_warhead_projectile_count",
+        "source_type": "relic",
+        "source_id": "relic_split_crystal_warhead",
+        "target_scope": "player",
+        "stat": "projectile_count",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_split_crystal_warhead_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_split_crystal_warhead",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": -15,
+        "duration": -1
+      }
     ],
     "runtime_effects": []
   },
@@ -1305,16 +1438,46 @@
   {
     "id": "relic_harvest_sacrificial_vessel",
     "display_name": "丰收的牺牲祭器",
-    "description": "金币获取 + 10；经验获取 + 10；最大生命值 - 5",
+    "description": "金币获取 +15%；经验获取 +15%；最大生命值 -2",
     "icon": "res://assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
     "icon_description": "古朴陶瓮，内壁残留暗色痕迹",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": ["reward", "survival"],
+    "tags": [
+      "reward",
+      "survival"
+    ],
     "effects": [
-      {"id": "mod_relic_harvest_sacrificial_vessel_currency_gain_percent", "source_type": "relic", "source_id": "relic_harvest_sacrificial_vessel", "target_scope": "player", "stat": "currency_gain_percent", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_harvest_sacrificial_vessel_exp_gain_percent", "source_type": "relic", "source_id": "relic_harvest_sacrificial_vessel", "target_scope": "player", "stat": "exp_gain_percent", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_harvest_sacrificial_vessel_max_hp", "source_type": "relic", "source_id": "relic_harvest_sacrificial_vessel", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -5, "duration": -1}
+      {
+        "id": "mod_relic_harvest_sacrificial_vessel_currency_gain_percent",
+        "source_type": "relic",
+        "source_id": "relic_harvest_sacrificial_vessel",
+        "target_scope": "player",
+        "stat": "currency_gain_percent",
+        "operation": "add_flat",
+        "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_harvest_sacrificial_vessel_exp_gain_percent",
+        "source_type": "relic",
+        "source_id": "relic_harvest_sacrificial_vessel",
+        "target_scope": "player",
+        "stat": "exp_gain_percent",
+        "operation": "add_flat",
+        "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_harvest_sacrificial_vessel_max_hp",
+        "source_type": "relic",
+        "source_id": "relic_harvest_sacrificial_vessel",
+        "target_scope": "player",
+        "stat": "max_hp",
+        "operation": "add_flat",
+        "value": -2,
+        "duration": -1
+      }
     ],
     "runtime_effects": []
   },
@@ -1351,7 +1514,7 @@
   {
     "id": "relic_void_storage_casket",
     "display_name": "虚空收纳匣",
-    "description": "幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 10",
+    "description": "幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 5",
     "icon": "res://assets/ui/icons/relics/relic_void_storage_casket.png",
     "icon_description": "半透明悬浮的立方体匣子，内部漆黑",
     "rarity": "epic",
@@ -1361,18 +1524,18 @@
       {"id": "mod_relic_void_storage_casket_luck", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
       {"id": "mod_relic_void_storage_casket_load_capacity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": 10, "duration": -1},
       {"id": "mod_relic_void_storage_casket_pickup_radius", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_void_storage_casket_divinity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 10, "duration": -1}
+      {"id": "mod_relic_void_storage_casket_divinity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_reincarnation_hellfire_candle",
     "display_name": "轮回业火之烛",
-    "description": "幸运 + 75；经验获取 + 35；理智值无法再回复；侵蚀度每波 + 1",
+    "description": "幸运 + 75；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
     "icon_description": "幽蓝摇曳的蜡烛，火焰不消耗蜡油",
     "rarity": "mythic",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": ["reward", "eldritch"],
     "effects": [
       {"id": "mod_relic_reincarnation_hellfire_candle_luck", "source_type": "relic", "source_id": "relic_reincarnation_hellfire_candle", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 75, "duration": -1},
@@ -1386,11 +1549,11 @@
   {
     "id": "relic_guarding_heart_copper_mirror",
     "display_name": "守心铜鉴",
-    "description": "幸运 + 18；理智值每波 + 1；金币获取 + 20%",
+    "description": "幸运 + 18；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
     "icon_description": "小型青铜手镜，镜面清澈",
     "rarity": "epic",
-    "max_stack": 0,
+    "max_stack": 1,
     "tags": ["reward", "eldritch", "finance"],
     "effects": [
       {"id": "mod_relic_guarding_heart_copper_mirror_luck", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
@@ -1419,7 +1582,7 @@
   {
     "id": "relic_frenzied_dividend",
     "display_name": "狂热分红",
-    "description": "每次成功收到利息后，通用伤害 + 1%，理智值 - 2；每局最多持有 1 件",
+    "description": "每次成功收到利息后，通用伤害 + 2%，理智值 - 2；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_frenzied_dividend.png",
     "icon_description": "盖着猩红封蜡的分红信封，上沿露出两枚金币",
     "rarity": "epic",
@@ -1427,7 +1590,7 @@
     "tags": ["finance", "offense", "eldritch"],
     "effects": [],
     "runtime_effects": [
-      {"trigger": "interest_success", "effect": "add_stat", "stat": "damage_percent", "value": 1},
+      {"trigger": "interest_success", "effect": "add_stat", "stat": "damage_percent", "value": 2},
       {"trigger": "interest_success", "effect": "add_stat", "stat": "humanity", "value": -2}
     ]
   },
@@ -1449,17 +1612,17 @@
   {
     "id": "relic_runaway_amplifier",
     "display_name": "失控增幅器",
-    "description": "通用伤害 + 35%；每波结束理智值 - 2，触发前理智低于0时改为 - 5；每局最多持有 1 件",
+    "description": "通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_runaway_amplifier.png",
     "icon_description": "铜制三角支架包住开裂紫晶，两侧装着小电极",
     "rarity": "epic",
     "max_stack": 1,
     "tags": ["offense", "eldritch"],
     "effects": [
-      {"id": "mod_relic_runaway_amplifier_damage", "source_type": "relic", "source_id": "relic_runaway_amplifier", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 35, "duration": -1}
+      {"id": "mod_relic_runaway_amplifier_damage", "source_type": "relic", "source_id": "relic_runaway_amplifier", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 40, "duration": -1}
     ],
     "runtime_effects": [
-      {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "condition": "humanity_below", "threshold": 0, "value": -5, "else_value": -2}
+      {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "condition": "humanity_below", "threshold": 0, "value": -5, "else_value": -3}
     ]
   },
   {
@@ -1476,6 +1639,49 @@
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": 2}
+    ]
+  },
+  {
+    "id": "relic_coin_heart",
+    "display_name": "金币心脏",
+    "description": "每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_coin_heart.png",
+    "icon_description": "金币嵌入金属心脏，中央留一枚暗红心核",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": ["finance", "survival"],
+    "effects": [],
+    "runtime_effects": [
+      {"trigger": "derived", "effect": "derived_stat_from_principal", "stat": "max_hp", "divisor": 100, "per_unit": 1}
+    ]
+  },
+  {
+    "id": "relic_hoarders_ring",
+    "display_name": "囤积者戒指",
+    "description": "每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_hoarders_ring.png",
+    "icon_description": "爪形镶座紧扣金币，币面刻着紫色眼睛",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": ["finance", "reward", "eldritch"],
+    "effects": [],
+    "runtime_effects": [
+      {"trigger": "derived", "effect": "derived_stat_from_principal", "stat": "currency_gain_percent", "divisor": 500, "per_unit": 10},
+      {"trigger": "derived", "effect": "derived_stat_from_principal", "stat": "humanity", "divisor": 500, "per_unit": -2}
+    ]
+  },
+  {
+    "id": "relic_golden_sarcophagus",
+    "display_name": "黄金棺椁",
+    "description": "已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件",
+    "icon": "res://assets/ui/icons/relics/relic_golden_sarcophagus.png",
+    "icon_description": "厚金棺盖以金币封印，缝隙透出一线青光",
+    "rarity": "mythic",
+    "max_stack": 1,
+    "tags": ["finance", "survival", "eldritch"],
+    "effects": [],
+    "runtime_effects": [
+      {"trigger": "lethal_damage", "effect": "principal_revive", "minimum_principal": 1000, "principal_cost": 500, "health_percent": 50, "max_uses": 1}
     ]
   }
 ]

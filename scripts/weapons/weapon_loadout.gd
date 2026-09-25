@@ -269,6 +269,21 @@ func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 		return false
 	if not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if weapon.is_meteor_flail():
+		# Only one attack sequence per instance, including split follow-throughs.
+		for active in get_tree().get_nodes_in_group("meteor_flails"):
+			if active.weapon == weapon and active.is_swinging():
+				return false
+		var target := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, weapon.get_attack_range() + weapon.get_hit_radius()) as EnemyController
+		if target == null or not target.is_alive():
+			return false
+		var flail := MeteorFlail.new()
+		_get_visual_root().add_child(flail)
+		flail.initialize(weapon, owner_player.global_position.direction_to(target.global_position))
+		weapon.volley_index += 1
+		weapon.reset_attack_timer()
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		return true
 	if weapon.is_ritual_tome():
 		var domain := _ensure_ritual_domain(weapon)
 		if domain.try_attack():

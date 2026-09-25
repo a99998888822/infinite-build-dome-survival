@@ -5,6 +5,7 @@ const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
 const GROUP := "element_reaction_cues"
 const MAX_CUES := 96
+const STEAM_SCALE := 0.6
 var kind := ""
 var elapsed := 0.0
 var duration := 0.6
@@ -60,27 +61,20 @@ func _draw() -> void:
 
 
 func _draw_steam(t: float, fade: float) -> void:
-	# Three curled columns billow outward, leaving an opening over the face.
+	# Faceted, uneven puffs retain the old smoke silhouette, without side streaks.
+	# Scale positions and radii before pixel snapping to preserve crisp pixels.
 	for index in range(3 if detail > 0 else 2):
 		var age := clampf((t - index * 0.07) * 1.18, 0.0, 1.0)
 		var x := (index - 1) * (14.0 + age * 14.0)
-		var center := Vector2(x, -10.0 - age * (42.0 + index * 7.0))
-		var radius := 8.0 + sin(age * PI * 0.8) * 8.0
+		var center := Vector2(x, -10.0 - age * (42.0 + index * 7.0)) * STEAM_SCALE
+		var radius := lerpf(3.0, 19.0, age) * STEAM_SCALE
 		var cloud := PackedVector2Array()
 		for point in range(17):
 			var angle := point * TAU / 16.0
 			var lobe := 1.0 + 0.18 * sin(angle * 5.0 + index)
-			cloud.append(center + Vector2(cos(angle) * radius * lobe, sin(angle) * radius * 0.80 * lobe))
+			cloud.append(center + Vector2(cos(angle), sin(angle) * 0.80) * radius * lobe)
 		PIXEL.polygon(self, cloud, Color(0.45, 0.59, 0.59, fade * 0.48))
 		PIXEL.path(self, cloud, Color(0.84, 0.91, 0.86, fade * 0.84), 2)
-		var curl := PackedVector2Array()
-		for point in range(13):
-			var angle := float(point) * TAU / 12.0 + age * 2.0
-			curl.append(center + Vector2.from_angle(angle) * radius * (0.65 - point * 0.036))
-		PIXEL.path(self, curl, Color(0.95, 0.97, 0.88, fade * 0.78), 2)
-	if t < 0.45:
-		for side in [-1.0, 1.0]:
-			PIXEL.path(self, PackedVector2Array([Vector2(side * 8, 10), Vector2(side * 17, -5), Vector2(side * 22, -24)]), Color(0.79, 0.89, 0.85, fade * 0.9), 2)
 
 
 func _draw_freeze(t: float, fade: float) -> void:

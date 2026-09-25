@@ -2,7 +2,7 @@
   {
     "id": "character_void_hunter",
     "display_name": "初心者",
-    "description": "默认角色",
+    "description": "初始最大生命 5；每升一级，最大生命 +1（升级不回复生命）。",
     "enabled": true,
     "tags": [
       "character",
@@ -18,7 +18,7 @@
       "divinity"
     ],
     "base_stats": {
-      "max_hp": 10,
+      "max_hp": 5,
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,

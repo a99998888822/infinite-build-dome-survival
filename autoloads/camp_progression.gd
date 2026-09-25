@@ -11,6 +11,15 @@ const SAVE_PATH: String = "user://saves/profile_01.json"
 const BACKUP_PATH: String = "user://saves/profile_01.backup.json"
 const TEMP_PATH: String = "user://saves/profile_01.tmp.json"
 const LEGACY_SAVE_PATH: String = "user://camp_progression.json"
+# Removed duplicate purchase routes. Keep their historical prices for refunds.
+const RETIRED_UPGRADE_OPTIONS: Dictionary = {
+	"camp_upgrade_damage_percent_melee": {"cost": 200, "max_level": 5},
+	"camp_upgrade_attack_speed_melee": {"cost": 200, "max_level": 5},
+	"camp_upgrade_crit_chance_melee": {"cost": 300, "max_level": 5},
+	"camp_upgrade_crit_damage_melee": {"cost": 300, "max_level": 5},
+	"camp_upgrade_luck": {"cost": 800, "max_level": 10},
+	"camp_upgrade_relic_drop_rate": {"cost": 500, "max_level": 5},
+}
 const DEFAULT_VOLUME_SETTINGS: Dictionary = {
 	"master_volume": 100,
 	"bgm_volume": 100,
@@ -24,6 +33,10 @@ var _transient_session_snapshot: Dictionary = {}
 
 
 func _ready() -> void:
+	# Opt-in test/capture sessions must be isolated before autoload save migration.
+	if OS.get_cmdline_user_args().has("--transient-session"):
+		begin_transient_session()
+		return
 	_reset_state()
 	if DataRegistry.has_table("camp_buildings"):
 		reload_state()
@@ -635,7 +648,24 @@ func _sanitize_state(raw_state: Dictionary) -> Dictionary:
 		result["currencies"]["camp_currency"] = maxi(int(raw_state.get("camp_currency", 0)), 0)
 	if raw_state.has("settings"):
 		result["settings"] = _sanitize_settings_dictionary(raw_state.get("settings", {}))
+	_refund_retired_upgrade_options(result)
 	return result
+
+
+func _refund_retired_upgrade_options(migrated: Dictionary) -> void:
+	var levels: Dictionary = migrated.get("upgrade_levels", {})
+	var refund := 0
+	for option_id in RETIRED_UPGRADE_OPTIONS:
+		if not levels.has(option_id):
+			continue
+		var old_option: Dictionary = RETIRED_UPGRADE_OPTIONS[option_id]
+		var purchased_levels := clampi(int(levels[option_id]), 0, int(old_option.max_level))
+		for purchased_level in range(1, purchased_levels + 1):
+			refund += int(old_option.cost) * purchased_level
+		levels.erase(option_id)
+	# Erasing the legacy IDs makes repeated loads/saves idempotent. Remaining
+	# upgrades keep their levels; removed upgrades return their full purchase cost.
+	migrated["currencies"]["camp_currency"] += refund
 
 
 func _sanitize_string_int_dictionary(value: Variant) -> Dictionary:

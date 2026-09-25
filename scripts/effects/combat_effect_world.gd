@@ -96,9 +96,10 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 	if away_direction.is_zero_approx():
 		away_direction = Vector2.RIGHT
 	WIND_BLADE_EFFECT_SCRIPT.spawn(parent, hit_position, away_direction, context.get_resolved_parameter("blade_speed", 480.0), context.get_resolved_parameter("blade_lifetime", 0.46), weapon, damage_event, enemy.get_instance_id())
-	enemy.apply_knockback(away_direction, context.get_resolved_parameter("knockback_speed", 900.0), context.get_resolved_parameter("knockback_duration", 0.34))
+	if enemy.can_be_pushed_by_wind():
+		enemy.apply_knockback(away_direction, context.get_resolved_parameter("knockback_speed", 900.0), context.get_resolved_parameter("knockback_duration", 0.34))
 	var wind_damage := damage_event.get_elemental_damage(context.get_resolved_parameter("damage_multiplier", 0.7))
-	enemy.take_damage(wind_damage, damage_event.source_weapon_id, false, away_direction)
+	enemy.take_damage(wind_damage, damage_event.source_weapon_id, false, away_direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 	var search_radius := maxf(context.get_resolved_parameter("field_search_radius", 18.0), 0.0)
 	var field_multiplier := maxf(context.get_resolved_parameter("field_radius_multiplier", 1.35), 1.0)
 	FIRE_PATCH_SCRIPT.expand_nearby_fields(enemy.global_position, search_radius, field_multiplier)

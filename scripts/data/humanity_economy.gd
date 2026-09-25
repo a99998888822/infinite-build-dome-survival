@@ -45,10 +45,16 @@ static func price_text(actual: int, neutral: int) -> String:
 
 
 static func purchase_tooltip(offer: Dictionary) -> String:
-	return "购买价格：%s 金币\n括号为不计理智的价格与理智价差。\n%s" % [
+	var text := "购买价格：%s 金币\n括号为不计理智的价格与理智价差。\n%s" % [
 		price_text(int(offer.get("shop_cost", 0)), int(offer.get("shop_cost_without_humanity", offer.get("shop_cost", 0)))),
 		describe(float(offer.get("humanity", 100))),
 	]
+	var parts: Dictionary = offer.get("price_breakdown", {})
+	if not parts.is_empty():
+		text += "\n折扣与理智修正前：基础 %d + 波次 %d + 购买次数 %d + 本波收入 %d。" % [parts.base, parts.wave, parts.purchases, parts.income]
+		if str(offer.get("offer_type", "")) in ["new_weapon", "relic"]:
+			text += "\n本波战斗金币 %d；每 200 金币附加 1，最多为基础、波次和购买次数合计的 10%%。" % int(parts.wave_gold)
+	return text
 
 
 static func sale_tooltip(quote: Dictionary) -> String:

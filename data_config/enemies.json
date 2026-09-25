@@ -39,7 +39,7 @@
       "recover_ms": 500,
       "cooldown_ms": 6000,
       "dash_distance": 240,
-      "dash_half_width": 32,
+      "dash_half_width": 22.4,
       "dash_damage_percent": 120,
       "spawn_first_ms": 5000,
       "spawn_window_percent": 50,

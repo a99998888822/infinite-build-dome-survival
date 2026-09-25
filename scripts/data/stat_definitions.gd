@@ -297,7 +297,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 10000,
 		"is_integer": false,
 		"is_percent": true,
-		"description": "当前有效利率，默认 5；支持 0.2% 和 0.3% 等小数成长，波末利息公式为 ceil(finance * interest_rate / 100)。"
+		"description": "当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。"
 	},
 	"shop_price_percent": {
 		"display_name": "商店折扣",
@@ -353,7 +353,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": DEFAULT_DIVINITY,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；战斗压力加成有上限。"
+		"description": "提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。"
 	}
 }
 

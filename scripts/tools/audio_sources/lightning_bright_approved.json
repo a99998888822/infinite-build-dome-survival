@@ -1,0 +1,9 @@
+{
+  "approved_direction": "1",
+  "review_sha256": "593d86ebde635ea26b2605fea3ff5dfb956eacabe93b6de4847f6b5fd74d381f",
+  "start_sample": 12000,
+  "end_sample_exclusive": 25440,
+  "compensated_preview_gain_db": -10,
+  "master_sha256": "e82e6f7b72c2c359d91dbb36b29cf47fbcce322e2ca2ddf9df0ba47a784d2747",
+  "review_file_archived_name": "direction_1_preview.wav"
+}

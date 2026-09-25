@@ -180,16 +180,6 @@
         "max_level": 10,
         "value_per_level": 1,
         "required_building_level": 2
-      },
-      {
-        "id": "camp_upgrade_relic_drop_rate",
-        "name": "遗物搜寻训练",
-        "stat": "drop_rate_percent",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 5,
-        "value_per_level": 1,
-        "required_building_level": 2
       }
     ]
   },
@@ -227,42 +217,6 @@
         "cost": 100,
         "max_level": 5,
         "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_damage_percent_melee",
-        "name": "近战通用增伤训练",
-        "stat": "damage_percent",
-        "currency": "camp_currency",
-        "cost": 200,
-        "max_level": 5,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_attack_speed_melee",
-        "name": "近战攻速训练",
-        "stat": "attack_speed",
-        "currency": "camp_currency",
-        "cost": 200,
-        "max_level": 5,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_crit_chance_melee",
-        "name": "近战暴击训练",
-        "stat": "crit_chance",
-        "currency": "camp_currency",
-        "cost": 300,
-        "max_level": 5,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_crit_damage_melee",
-        "name": "近战爆伤训练",
-        "stat": "crit_damage",
-        "currency": "camp_currency",
-        "cost": 300,
-        "max_level": 5,
-        "value_per_level": 10
       }
     ]
   },
@@ -397,7 +351,7 @@
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 5,
-        "value_per_level": 0.2,
+        "value_per_level": 0.1,
         "required_building_level": 1
       },
       {
@@ -510,15 +464,6 @@
         "cost": 500,
         "max_level": 10,
         "value_per_level": 2
-      },
-      {
-        "id": "camp_upgrade_luck",
-        "name": "幸运训练",
-        "stat": "luck",
-        "currency": "camp_currency",
-        "cost": 800,
-        "max_level": 10,
-        "value_per_level": 1
       },
       {
         "id": "camp_upgrade_currency_gain_percent",

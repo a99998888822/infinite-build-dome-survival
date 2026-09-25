@@ -474,16 +474,12 @@ flat = true
 
 [node name="ContentMargin" type="MarginContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody"]
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 42
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 42
-theme_override_constants/margin_bottom = 30
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 32
 
 [node name="Content" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin"]
-
-[node name="TitleLabel" type="Label" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content"]
-text = "玩家属性"
-horizontal_alignment = 1
 
 [node name="StatsScroll" type="ScrollContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content"]
 size_flags_vertical = 3
@@ -494,6 +490,8 @@ script = ExtResource("16_touch_scroll")
 
 [node name="StatsList" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content/StatsScroll"]
 size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
 
 [node name="MobileControls" type="CanvasLayer" parent="."]
 layer = 25

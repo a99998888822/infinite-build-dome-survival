@@ -7,6 +7,16 @@ const GOLD := Color("c5a16a")
 const GREEN := Color("a9c498")
 
 
+static func principal_revive_status(state: Dictionary) -> String:
+	if state.is_empty():
+		return "未持有"
+	if int(state.get("remaining_uses", 0)) <= 0:
+		return "本局已使用"
+	if bool(state.get("available", false)):
+		return "可触发（消耗%d本金）" % int(state.get("principal_cost", 0))
+	return "本金不足（需%d）" % int(state.get("minimum_principal", 0))
+
+
 static func box(fill: String = "232a21", edge: String = "576048", margin: int = 8) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(fill)

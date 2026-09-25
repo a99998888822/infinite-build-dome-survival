@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全音效试听 · 决策清单</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#111916;color:#e8eee7;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}button,select{cursor:pointer}button{background:#2a4033;color:#e4f0df;border:1px solid #536c54;border-radius:7px;padding:8px 13px}button:hover{background:#38513e}button:disabled{opacity:.4;cursor:default}.ghost{background:#1a2921;border-color:#3c5142}input,select,textarea{color:#e6eee4;background:#17241c;border:1px solid #47604c;border-radius:6px;padding:8px 10px}textarea{resize:vertical;min-height:90px;width:100%}input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #b4d79a;outline-offset:2px}main{max-width:1180px;margin:auto;padding:40px 26px 80px}.eyebrow{font-size:12px;letter-spacing:2px;color:#a4c3a7}h1{font-size:35px;line-height:1.25;margin:12px 0 18px}header p{color:#b5c5b5;max-width:870px}.counts{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}.count{background:#213026;border:1px solid #3b5040;padding:10px 16px;border-radius:8px}.count strong{font-size:24px;color:#d5e6be;margin-right:8px}.count small{font-size:13px;color:#b4c6b3}.toolbar{position:sticky;top:0;z-index:5;padding:16px 0;background:#111916f5;border-top:1px solid #344a3b;border-bottom:1px solid #344a3b;backdrop-filter:blur(10px)}.filters,.playback,.exports{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.filters{margin-bottom:12px}#search{flex:1;min-width:220px}.playback label{display:flex;gap:8px;align-items:center;color:#b8cdb8}#volume{width:100px;padding:0;accent-color:#b2d793}.summary{display:flex;justify-content:space-between;gap:12px;color:#a8bda9;font-size:13px;padding:10px 0 0}#now-playing{color:#d7e8bd}#storage-message{font-size:12px;color:#9eb59f}.exports{padding:20px 0 10px}.exports button{font-size:13px}#status-message{min-height:26px;color:#d4dbb7;font-size:13px;margin:8px 0}.sound-card{border:1px solid #374d3d;border-radius:12px;background:#19261e;margin:18px 0;padding:19px 22px}.sound-card.playing{border-color:#b2d793;box-shadow:0 0 0 1px #b2d793}.sound-card[data-decision=modify]{border-left:4px solid #d7ad6c}.sound-card[data-decision=keep]{border-left:4px solid #80b184}.identity{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;margin-bottom:10px}.number{color:#d9e8bd;letter-spacing:1px;font-weight:700}.tag{color:#a8cbb3}.state{border:1px solid #405b49;border-radius:4px;padding:1px 7px;color:#b4c8b8}.state.legacy{color:#c4bc9d;border-color:#625b41}.state.missing{color:#e2bb8e;border-color:#72583c}.heard{margin-left:auto;color:#98ad9d}.card-main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:30px}h2{font-size:21px;line-height:1.4;margin:0 0 8px}.sound p{margin:7px 0 12px;color:#b5c6b8;font-size:14px}.sound .uses{color:#d0d9b6;font-size:12px}.player{display:flex;gap:10px;align-items:center;margin-top:15px}audio{width:100%;min-width:0;height:38px}.repeat{font-size:12px;white-space:nowrap;padding:8px}.decision label{display:block;font-size:12px;color:#a9bfae;margin-bottom:5px}.decision select{width:100%;margin-bottom:9px}.resource{margin-top:13px;font-size:12px;color:#96ae9c}.resource summary{cursor:pointer}.resource p{font-size:12px;margin:6px 0}.filepath{overflow-wrap:anywhere;font-family:ui-monospace,monospace}.unavailable{color:#bda784;border:1px dashed #69573d;padding:10px;width:100%;font-size:13px;border-radius:6px}.empty{padding:35px;text-align:center;color:#a4b8a7}.footnote{margin-top:30px;padding-top:20px;border-top:1px solid #344b3a;color:#96af9d;font-size:13px}#copy-area{width:100%;min-height:180px}a{color:#c4dcae}[hidden]{display:none!important}@media(max-width:850px){.card-main{grid-template-columns:1fr;gap:18px}.decision{display:grid;grid-template-columns:150px 1fr;gap:5px 12px}.decision label:nth-of-type(1){grid-column:1;grid-row:1}.decision select{grid-column:1;grid-row:2;margin:0;align-self:start}.decision label:nth-of-type(2){grid-column:2;grid-row:1}.decision textarea{grid-column:2;grid-row:2;min-height:75px}.toolbar{position:static}}@media(max-width:550px){main{padding:27px 14px 55px}h1{font-size:28px}.sound-card{padding:16px}.player{flex-wrap:wrap}.repeat{width:100%}.decision{display:block}.decision select{margin-bottom:10px}.counts{gap:7px}.count{padding:7px 10px}.count strong{font-size:21px}.summary{display:block}.filters select{flex:1;min-width:140px}.playback{gap:8px}.playback label{font-size:12px}button{padding:8px 10px}}
+</style>
+</head>
+<body><main>
+<header><div class="eyebrow">SOUND LIBRARY / REVIEW & DECISIONS</div><h1>全音效试听 · 由你决定怎么改</h1><p>收录项目现有音效，包含武器、附魔、元素联动、界面、环境及旧版备用。每个资源只列一次；共用音效会标出用途。背景音乐已排除。</p>
+<div class="counts"><div class="count"><strong>@@PLAYABLE@@</strong><small>段可试听</small></div><div class="count"><strong>@@ACTIVE@@</strong><small>当前使用</small></div><div class="count"><strong>@@LEGACY@@</strong><small>旧版备用</small></div><div class="count"><strong>@@MISSING@@</strong><small>缺少文件</small></div></div></header>
+<div class="toolbar"><div class="filters"><input id="search" type="search" placeholder="搜索名称、编号、用途或文件名" aria-label="搜索音效"><select id="category" aria-label="按用途筛选"><option value="">全部用途</option>@@CATEGORIES@@</select><select id="availability" aria-label="按使用状态筛选"><option value="playable">有音频（@@PLAYABLE@@）</option><option value="active">当前使用（@@ACTIVE@@）</option><option value="legacy">旧版备用（@@LEGACY@@）</option><option value="missing">缺失文件（@@MISSING@@）</option><option value="all">全部记录</option></select><select id="decision-filter" aria-label="按我的决定筛选"><option value="all">全部决定</option><option value="pending">未决定</option><option value="keep">保留</option><option value="modify">需要修改</option><option value="unheard">还未试听</option></select></div>
+<div class="playback"><button id="play-list">连播当前列表</button><button id="stop" class="ghost">停止播放</button><select id="mix-mode" aria-label="试听音量模式"><option value="game">按游戏单项音量</option><option value="raw">素材原始音量</option></select><label>试听音量 <input id="volume" type="range" min="0" max="100" value="100" aria-label="试听总音量"><output id="volume-label">100%</output></label></div>
+<div class="summary"><span id="visible-count"></span><span id="progress"></span><span id="now-playing" aria-live="polite">尚未播放</span></div></div>
+<div class="exports"><button id="export-md" class="ghost">导出决策清单</button><button id="copy" class="ghost">复制决策清单</button><button id="export-json" class="ghost">备份记录 JSON</button><button id="import-json" class="ghost">导入记录</button><button id="show-missing" class="ghost">查看缺失文件</button><span id="storage-message">决定与备注仅保存在本机</span><input id="import-file" type="file" accept=".json,application/json" hidden></div>
+<div id="status-message" role="status" aria-live="polite"></div><textarea id="copy-area" readonly hidden aria-label="可复制的决策清单"></textarea>
+<section id="sounds">@@CARDS@@</section><div id="empty" class="empty" hidden>当前筛选下没有音效。</div>
+<footer class="footnote"><p>使用方法：先试听，在右侧选择“保留”或“需要修改”，写下希望怎样改，最后导出或复制决策清单。试听和填写记录不会修改游戏资源。</p><p>默认套用各音效的游戏单项增益，便于判断音量；也可以切换素材原始音量。这里没有加入战斗总线压缩、随机音高或现场叠加，不是实机混音录音。各音效未做响度归一化；备用素材按原始音量试听。</p><p>短音效可用“连听 3 次”。一次只播放一段，连播之间留有间隔。页面可离线使用；换浏览器或移动文件前，可备份记录 JSON。</p></footer>
+</main>
+<script id="review-data" type="application/json">@@DATA@@</script>
+<script>
+"use strict";
+const data = JSON.parse(document.getElementById("review-data").textContent);
+const entries = data.entries;
+const byNumber = new Map(entries.map(e => [e.number, e]));
+const $ = id => document.getElementById(id);
+const KEY = data.storage_key || "dome-survival-all-sfx-decisions-v1";
+const cards = new Map([...document.querySelectorAll(".sound-card")].map(c => [c.dataset.number,c]));
+const decisions = Object.create(null);
+let queue = [], timer = null, active = null, expected = null, generation = 0;
+const allowed = new Set(["pending","keep","modify"]);
+function decision(entry) { return decisions[entry.path] || {decision:"pending", note:"", heard:false}; }
+function notify(message) { $("status-message").textContent = message; }
+function restore(records) {
+  if (!records || typeof records !== "object" || Array.isArray(records)) throw new Error("记录格式无效");
+  let count = 0;
+  for (const e of entries) {
+    const r = records[e.path];
+    if (!r || typeof r !== "object") continue;
+    decisions[e.path] = {decision:allowed.has(r.decision) ? r.decision : "pending", note:typeof r.note === "string" ? r.note.slice(0,10000) : "", heard:r.heard === true};
+    count++;
+  }
+  return count;
+}
+function persist() {
+  try { localStorage.setItem(KEY,JSON.stringify({version:1,records:decisions})); $("storage-message").textContent = "决定与备注已保存在本机"; }
+  catch (_) { $("storage-message").textContent = "本机保存不可用，请导出清单或 JSON 备份"; }
+}
+try { const previous = localStorage.getItem(KEY); if (previous) { const saved=JSON.parse(previous); if(saved.version===1) restore(saved.records); } }
+catch (_) { $("storage-message").textContent = "本机记录未加载，可使用 JSON 导入与备份"; }
+function showDecision(entry) {
+  const card=cards.get(entry.number), d=decision(entry);
+  card.querySelector(".decision-select").value=d.decision;
+  card.querySelector("textarea").value=d.note;
+  card.dataset.decision=d.decision;
+  card.querySelector(".heard").textContent=entry.exists ? (d.heard ? "已试听" : "未试听") : "无法试听";
+}
+function stats() {
+  const playable=entries.filter(e=>e.exists);
+  const heard=playable.filter(e=>decision(e).heard).length;
+  const reviewed=playable.filter(e=>decision(e).decision!=="pending").length;
+  const changes=entries.filter(e=>decision(e).decision==="modify").length;
+  $("progress").textContent=`已听 ${heard}/${playable.length} · 已决定 ${reviewed}/${playable.length} · 待修改 ${changes}`;
+}
+function visible() { return entries.filter(e=>!cards.get(e.number).hidden); }
+function matches(e) {
+  const q=$("search").value.trim().toLocaleLowerCase(), cat=$("category").value, view=$("availability").value, choice=$("decision-filter").value;
+  if (cat && e.category!==cat) return false;
+  if (view==="playable" && !e.exists) return false;
+  if (view==="revised" && !e.revised) return false;
+  if (!["all","playable","revised"].includes(view) && e.status!==view) return false;
+  const d=decision(e);
+  if (choice==="unheard" && (!e.exists || d.heard)) return false;
+  if (!["all","unheard"].includes(choice) && d.decision!==choice) return false;
+  return !q || [e.number,e.title,e.path,e.description,...e.uses].join(" ").toLocaleLowerCase().includes(q);
+}
+function applyFilters() {
+  for(const e of entries) cards.get(e.number).hidden=!matches(e);
+  const rows=visible(), playable=rows.filter(e=>e.exists).length;
+  $("visible-count").textContent=`当前 ${rows.length} 项 · ${playable} 段可播放`;
+  $("empty").hidden=rows.length>0;
+  $("play-list").disabled=playable===0;
+  stats();
+}
+function volumeFor(e,audio=null) {
+  const db=audio?.dataset.before ? Number(audio.dataset.gain) : e.gain_db;
+  const gain=$("mix-mode").value==="game" && Number.isFinite(db) ? 10**(db/20) : 1;
+  return Math.min(1,Math.max(0,Number($("volume").value)/100*gain));
+}
+function setVolumes() {
+  for(const e of entries) for(const audio of cards.get(e.number).querySelectorAll("audio")) audio.volume=volumeFor(e,audio);
+  $("volume-label").textContent=$("volume").value+"%";
+}
+function cancelQueue() { generation++; clearTimeout(timer); timer=null; queue=[]; expected=null; }
+function stopAll(message="已停止") {
+  cancelQueue(); active=null;
+  for(const card of cards.values()) { for(const audio of card.querySelectorAll("audio")) audio.pause(); card.classList.remove("playing"); }
+  $("now-playing").textContent=message;
+}
+async function next() {
+  if(!queue.length) { active=null; $("now-playing").textContent="连播完成"; return; }
+  const number=queue.shift(), e=byNumber.get(number), card=cards.get(number), audio=card.querySelector("audio");
+  const token=generation;
+  active=audio; expected=audio; audio.currentTime=0; audio.volume=volumeFor(e);
+  try { await audio.play(); }
+  catch (_) { if(token===generation) { stopAll("播放未开始"); notify(`无法播放 ${number}，请点击该音效的播放按钮。`); } }
+}
+function startQueue(numbers) {
+  stopAll(); queue=numbers.filter(n=>byNumber.get(n)?.exists);
+  if(queue.length) next();
+}
+for(const e of entries) {
+  const card=cards.get(e.number), select=card.querySelector(".decision-select"), textarea=card.querySelector("textarea"), audios=[...card.querySelectorAll("audio")];
+  showDecision(e);
+  const update=()=>{ decisions[e.path]={...decision(e),decision:select.value,note:textarea.value}; card.dataset.decision=select.value; persist(); stats(); };
+  select.addEventListener("change",()=>{update();applyFilters();}); textarea.addEventListener("input",update);
+  if(!audios.length) continue;
+  card.querySelector(".repeat").addEventListener("click",()=>startQueue([e.number,e.number,e.number]));
+  for(const audio of audios) {
+  audio.addEventListener("play",()=>{
+    if(expected!==audio) cancelQueue();
+    expected=null; active=audio;
+    for(const other of cards.values()) { for(const a of other.querySelectorAll("audio")) if(a!==audio) a.pause(); other.classList.toggle("playing",other.contains(audio)); }
+    audio.volume=volumeFor(e,audio);
+    if(!audio.dataset.before) {decisions[e.path]={...decision(e),heard:true}; card.querySelector(".heard").textContent="已试听"; persist(); stats();}
+    $("now-playing").textContent=`正在播放 ${e.number} · ${audio.dataset.before?"修改前 · ":""}${e.title}`;
+  });
+  audio.addEventListener("ended",()=>{
+    card.classList.remove("playing");
+    if(active!==audio) return;
+    if(queue.length) { const token=generation; timer=setTimeout(()=>{if(token===generation) next();},550); }
+    else { active=null; $("now-playing").textContent=`已播放 ${e.number} · ${e.title}`; }
+  });
+  audio.addEventListener("pause",()=>{if(active===audio && !audio.ended) {cancelQueue(); active=null; card.classList.remove("playing"); $("now-playing").textContent=`已暂停 ${e.number}`;}});
+  audio.addEventListener("error",()=>{if(active===audio) stopAll("音频载入失败"); notify(`${e.number} 音频载入失败。`);});
+  }
+}
+for(const id of ["search","category","availability","decision-filter"]) $(id).addEventListener(id==="search"?"input":"change",()=>{stopAll();applyFilters();});
+$("mix-mode").addEventListener("change",setVolumes); $("volume").addEventListener("input",setVolumes);
+$("play-list").addEventListener("click",()=>startQueue(visible().filter(e=>e.exists).map(e=>e.number)));
+$("stop").addEventListener("click",()=>stopAll());
+$("show-missing").addEventListener("click",()=>{stopAll();$("availability").value="missing";$("category").value="";$("decision-filter").value="all";$("search").value="";applyFilters();});
+function exportData() {
+  return {version:1,created:new Date().toISOString(),source_snapshot:data.created,scope:data.scope || "项目音效，不含背景音乐",records:Object.fromEntries(entries.map(e=>[e.path,{...decision(e),number:e.number,title:e.title,category:e.category,source_sha256:e.sha256,exists:e.exists}]))};
+}
+function exportMarkdown() {
+  const reviewed=entries.filter(e=>decision(e).decision!=="pending" || decision(e).note.trim());
+  const lines=["# "+(data.review_title || "音效审阅决策"), "", `导出时间：${new Date().toLocaleString("zh-CN")}`, "范围："+(data.scope || "项目音效，不含背景音乐。"), ""];
+  if(!reviewed.length) lines.push("尚未填写决定或备注。");
+  for(const e of reviewed) {
+    const d=decision(e), label={pending:"未决定",keep:"保留",modify:"需要修改"}[d.decision];
+    lines.push(`## ${e.number} · ${e.title}`, "", `决定：${label}`, `资源：${e.path}`, `资源状态：${e.exists?"有音频":"文件缺失"}`, "", "修改方向 / 备注：", d.note.trim() || "（未填写）", "");
+  }
+  return lines.join("\n");
+}
+function download(name,text,mime) {
+  const url=URL.createObjectURL(new Blob([text],{type:mime})), anchor=document.createElement("a");
+  anchor.href=url; anchor.download=name; document.body.append(anchor); anchor.click(); anchor.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("export-md").addEventListener("click",()=>download((data.export_basename || "音效决策清单")+".md",exportMarkdown(),"text/markdown;charset=utf-8"));
+$("export-json").addEventListener("click",()=>download((data.export_basename || "音效决策备份")+".json",JSON.stringify(exportData(),null,2),"application/json;charset=utf-8"));
+$("copy").addEventListener("click",async()=>{
+  const text=exportMarkdown();
+  try { await navigator.clipboard.writeText(text); notify("决策清单已复制，可粘贴回对话。"); }
+  catch (_) { $("copy-area").hidden=false; $("copy-area").value=text; $("copy-area").focus(); $("copy-area").select(); notify("请按 Ctrl+C 复制下方清单。"); }
+});
+$("import-json").addEventListener("click",()=>$("import-file").click());
+$("import-file").addEventListener("change",async event=>{
+  const input=event.target, file=input.files[0]; if(!file) return;
+  try {
+    if(file.size>5000000) throw new Error("记录文件过大");
+    const payload=JSON.parse(await file.text()); if(payload.version!==1) throw new Error("不支持的记录版本");
+    const count=restore(payload.records); entries.forEach(showDecision); persist(); applyFilters(); notify(`已导入 ${count} 项匹配记录。`);
+  } catch(error) { notify("导入失败："+error.message); }
+  input.value="";
+});
+setVolumes(); applyFilters();
+window.SfxReview={exportData,exportMarkdown,applyFilters,startQueue,stopAll};
+</script>
+</body></html>

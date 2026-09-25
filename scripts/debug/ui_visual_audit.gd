@@ -220,7 +220,9 @@ func _capture_popup_pages(game_root: GameRoot) -> void:
 			"principal": 480,
 			"interest_rate": 12.5,
 			"estimated_interest": 60,
-			"requires_deposit_for_interest": true,
+			"has_high_yield_contract": true,
+			"deposit_bonus_rate": 6,
+			"deposit_bonus_active": false,
 			"deposit_requirement": 50,
 		})
 		finance_popup.call("show_popup")

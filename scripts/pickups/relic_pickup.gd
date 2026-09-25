@@ -2,6 +2,7 @@ extends Area2D
 class_name RelicPickup
 
 signal collected(pickup: RelicPickup)
+const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
 var target_player: PlayerController = null
 var collected_once: bool = false
@@ -64,16 +65,31 @@ func _on_body_entered(body: Node) -> void:
 
 
 func _draw() -> void:
-	# A gold reliquary pedestal distinguishes relics from scrolls and XP orbs.
-	var lift := Vector2(0, -4.0 + sin(_age * 3.0) * 2.0)
-	draw_rect(Rect2(-20, 11, 40, 6), Color(0.08, 0.06, 0.12, 0.65))
-	draw_colored_polygon(PackedVector2Array([Vector2(-20, 5), Vector2(0, -7), Vector2(20, 5), Vector2(0, 17)]), Color("8b692d"))
-	draw_colored_polygon(PackedVector2Array([Vector2(-16, 5), Vector2(0, -4), Vector2(16, 5), Vector2(0, 13)]), Color("ead391"))
-	draw_rect(Rect2(Vector2(-18, -29) + lift, Vector2(36, 36)), Color(0.77, 0.53, 0.94, 0.18))
-	# Three tablets communicate a choice instead of a predetermined relic.
+	var pulse := 0.5 + 0.5 * sin(_age * 2.6)
+	draw_set_transform(Vector2(0, 11))
+	PIXEL.ellipse(self, Vector2(24, 8), Color(0.025, 0.045, 0.04, 0.7))
+	PIXEL.arc(self, 25, 0.15, PI - 0.15, Color(0.62, 0.49, 0.24, 0.45 + pulse * 0.2), 2, Vector2(1, 0.32))
+	PIXEL.arc(self, 25, PI + 0.15, TAU - 0.15, Color(0.86, 0.75, 0.42, 0.45 + pulse * 0.2), 2, Vector2(1, 0.32))
+	# A hovering, brass-bound reliquary with a luminous seal and carved lid.
+	draw_set_transform(Vector2(0, -5 + roundf(sin(_age * 2.6) * 2)))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-19,-22), Vector2(13,-25), Vector2(22,-17), Vector2(20,6), Vector2(-12,10), Vector2(-21,2)]), Color("161e1b"))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-18,-11), Vector2(11,-14), Vector2(11,6), Vector2(-17,7)]), Color("34453b"))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(11,-14), Vector2(20,-18), Vector2(18,2), Vector2(11,6)]), Color("172b2a"))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-20,-19), Vector2(10,-23), Vector2(22,-17), Vector2(11,-11), Vector2(-19,-8)]), Color("b29352"))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-15,-18), Vector2(9,-21), Vector2(16,-17), Vector2(9,-14), Vector2(-14,-12)]), Color("4b6555"))
+	PIXEL.path(self, PackedVector2Array([Vector2(-20,-8), Vector2(11,-11), Vector2(22,-17)]), Color("ffe7a4"), 2)
+	PIXEL.path(self, PackedVector2Array([Vector2(-18,-7), Vector2(-18,7), Vector2(11,7), Vector2(19,2), Vector2(20,-12)]), Color("8e723e"), 3)
+	for x in [-12, 6]:
+		PIXEL.line(self, Vector2(x,-10), Vector2(x,6), Color("d5b574"), 3)
+		PIXEL.block(self, Vector2(x,3), Vector2(2,2), Color("fff0bd"))
+	# The split seal opens into three glints: this pickup still grants a choice.
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-3,-9),Vector2(2,-4),Vector2(-3,2),Vector2(-8,-4)]), Color("e5c77f"))
+	PIXEL.polygon(self, PackedVector2Array([Vector2(-3,-7),Vector2(0,-4),Vector2(-3,0),Vector2(-6,-4)]), Color("73d6b5"))
+	PIXEL.block(self, Vector2(-3,-4), Vector2(2,2), Color("e5fff0"))
 	for index in 3:
-		var x := -15.0 + float(index) * 9.0
-		draw_rect(Rect2(Vector2(x, -23 - (3 if index == 1 else 0)) + lift, Vector2(12, 23)), Color("ffe5a4"))
-		draw_rect(Rect2(Vector2(x + 2, -21 - (3 if index == 1 else 0)) + lift, Vector2(8, 19)), Color("756084"))
-	draw_rect(Rect2(Vector2(-22, -18) + lift, Vector2(3, 3)), Color("ffe5a4"))
-	draw_rect(Rect2(Vector2(20, -8) + lift, Vector2(3, 3)), Color("ffe5a4"))
+		var age := fmod(_age * 0.35 + index / 3.0, 1.0)
+		var point := Vector2((index - 1) * 13 + sin(age * TAU + index) * 3, -25 - age * 18)
+		var alpha := sin(age * PI) * 0.9
+		PIXEL.line(self, point - Vector2(3,0), point + Vector2(3,0), Color(0.97,0.88,0.57,alpha), 2)
+		PIXEL.line(self, point - Vector2(0,4), point + Vector2(0,4), Color(0.97,0.95,0.77,alpha), 2)
+	draw_set_transform(Vector2.ZERO)

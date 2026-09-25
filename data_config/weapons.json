@@ -93,7 +93,7 @@
     "icon": "res://assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
     "hit_sfx": "res://assets/audio/sfx/combat/plasma_hit_01.wav",
     "hit_sfx_cue": "plasma_hit",
-    "rarity": "epic",
+    "rarity": "rare",
     "attack_kind": "ranged",
     "tags": [
       "electric",
@@ -224,6 +224,37 @@
       "3": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 1}]},
       "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 1}]},
       "5": {"rarity": "mythic", "description": "远程基础伤害 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 1}]}
+    },
+    "attachment_slots": 3
+  },
+  {
+    "id": "weapon_meteor_flail",
+    "display_name": "流星摆锤",
+    "description": "蓄力时锁定最近敌人的方向，左右交替向前挥出流星锤；仅攻击期间显示武器。\n近战伤害：22＋角色近战伤害×1.2；基础间隔：1.50秒。\n锤头最大伸展距离：144；挥击角度：140°。只有锤头接触造成伤害，锁链不造成伤害，每次挥击对每个目标命中一次。\n锤头伸展至80%攻击距离后，命中伤害提高至150%。负载：18；附魔槽：3。\n分裂：主挥击首次命中后追加弱化挥击，每个分裂默认追加2次、伤害60%，只追加一代；各次命中均触发元素附魔。额外投射物转为额外主挥击；不支持穿透。",
+    "icon": "res://assets/ui/icons/weapons/weapon_meteor_flail.png",
+    "hit_sfx": "res://assets/audio/sfx/combat/meteor_flail_hit.wav",
+    "rarity": "rare",
+    "attack_kind": "melee",
+    "tags": ["heavy"],
+    "weapon_type": "heavy",
+    "load_cost": 18,
+    "max_level": 5,
+    "attack_interval_ms": 1500,
+    "attack_range": 144,
+    "hit_radius": 16,
+    "projectile_speed": 0,
+    "spread_angle": 0,
+    "projectile_behavior": "meteor_flail",
+    "player_damage_coefficient": 1.2,
+    "flail_outer_threshold": 0.8,
+    "flail_outer_multiplier": 1.5,
+    "unsupported_effects": ["pierce"],
+    "base_stats": {"melee_damage": 22, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
+    "level_upgrades": {
+      "2": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]},
+      "3": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]},
+      "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]}
     },
     "attachment_slots": 3
   }

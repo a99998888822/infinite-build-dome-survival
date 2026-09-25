@@ -5,6 +5,7 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
+const FROST = preload("res://scripts/effects/frost_pattern.gd")
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -98,15 +99,15 @@ func _damage_enemies() -> void:
 	AudioManager.end_combat_audio()
 
 func _draw() -> void:
-	var fade := 1.0 - clampf(_elapsed / _lifetime, 0.0, 1.0)
-	PIXEL.ellipse(self, Vector2.ONE * _radius, Color(0.16, 0.39, 0.51, 0.10 * fade))
-	# Stationary dendritic frost distinguishes a live ice field from a water ring.
-	for index in range(8):
-		var angle := index * TAU / 8.0 + 0.2
-		var axis := Vector2.from_angle(angle)
-		var side := axis.orthogonal()
-		var tip := axis * _radius * (0.82 + float(index % 2) * 0.08)
-		PIXEL.line(self, axis * _radius * 0.2, tip, Color(0.42, 0.72, 0.83, fade * 0.55), 2)
-		for branch in [-1.0, 1.0]:
-			PIXEL.line(self, tip - axis * 9, tip - axis * 18 + side * branch * 8, Color(0.58, 0.86, 0.92, fade * 0.7), 2)
-		PIXEL.arc(self, _radius, angle, angle + 0.16, Color(0.40, 0.77, 0.91, fade * 0.6), 2)
+	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
+	var fade := 1.0 - smoothstep(0.64, 1.0, progress)
+	var growth := smoothstep(0.0, 0.42, _elapsed)
+	PIXEL.ellipse(self, Vector2.ONE * _radius * growth, Color(0.24, 0.51, 0.63, 0.12 * fade))
+	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0)
+	for index in 6:
+		var angle := index * TAU / 6.0
+		var center := Vector2.from_angle(angle) * _radius * 0.67
+		var small_growth := smoothstep(0.12 + (index % 2) * 0.07, 0.60, _elapsed)
+		FROST.draw_crystal(self, center, _radius * 0.23, small_growth, fade * 0.82, angle + PI / 6)
+		var sparkle := 0.35 + 0.35 * sin(_elapsed * 4.0 + index * 1.7)
+		PIXEL.block(self, center + Vector2(3, -3), Vector2(2, 2), Color(0.85, 0.97, 1.0, sparkle * fade * small_growth))

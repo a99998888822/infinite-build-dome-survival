@@ -57,6 +57,7 @@ const VALID_RELIC_RUNTIME_TRIGGERS: Array[String] = [
 	BattleFinanceSystem.TRIGGER_DYNAMIC,
 	BattleFinanceSystem.TRIGGER_ON_REVIVE,
 	BattleFinanceSystem.TRIGGER_SHIELD_BREAK,
+	BattleFinanceSystem.TRIGGER_LETHAL_DAMAGE,
 ]
 const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_ADD_PRINCIPAL_FLAT,
@@ -67,7 +68,7 @@ const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_ADD_INTEREST_RATE_BONUS,
 	BattleFinanceSystem.EFFECT_SETTLE_INTEREST_EVERY_N_WAVES,
 	BattleFinanceSystem.EFFECT_EXTRA_SETTLEMENT_PER_WAVE,
-	BattleFinanceSystem.EFFECT_REQUIRE_WAVE_START_DEPOSIT,
+	BattleFinanceSystem.EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT,
 	BattleFinanceSystem.EFFECT_ADD_EROSION,
 	BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PRINCIPAL,
 	BattleFinanceSystem.EFFECT_DERIVED_INTEREST_FROM_EROSION,
@@ -79,6 +80,7 @@ const VALID_RELIC_RUNTIME_EFFECTS: Array[String] = [
 	BattleFinanceSystem.EFFECT_CONDITIONAL_STAT,
 	BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT,
 	BattleFinanceSystem.EFFECT_BLOCK_STAT_INCREASE,
+	BattleFinanceSystem.EFFECT_PRINCIPAL_REVIVE,
 ]
 
 var errors: Array[String] = []
@@ -202,6 +204,10 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 
 
 func _allows_fractional_config_value(path: String) -> bool:
+	if path.begins_with("weapons[") and (path.ends_with(".flail_outer_threshold") or path.ends_with(".flail_outer_multiplier")):
+		return true
+	if path.begins_with("enemies[") and path.ends_with(".elite_profile.dash_half_width"):
+		return true
 	if path.begins_with("weapons[") and path.ends_with(".principal_damage_coefficient"):
 		return true
 	if path.begins_with("weapons[") and (path.ends_with(".grenade_flight_seconds") or path.ends_with(".player_damage_coefficient") or path.ends_with(".grenade_split_radius_multiplier") or path.ends_with(".grenade_split_flight_seconds")):
@@ -258,6 +264,14 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
 	_validate_non_negative_int(record, "attachment_slots", path)
+	if str(record.get("projectile_behavior", "")) == "meteor_flail":
+		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0:
+			errors.append("%s requires melee damage and positive flail reach/head radius." % path)
+		var threshold := float(record.get("flail_outer_threshold", 0))
+		if threshold <= 0 or threshold > 1 or float(record.get("flail_outer_multiplier", 0)) < 1:
+			errors.append("%s requires an outer threshold in (0,1] and a multiplier >= 1." % path)
+		if not "pierce" in record.get("unsupported_effects", []):
+			errors.append("%s must reject pierce for contact sweeps." % path)
 	if str(record.get("projectile_behavior", "")) == "ritual_domain":
 		_validate_non_negative_int(record, "domain_minor_axis", path)
 		if str(record.get("attack_kind", "")) != "element" or float(record.get("domain_minor_axis", 0)) <= 0 or float(record.get("attack_range", 0)) <= 0:
@@ -373,7 +387,7 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 		if not (effect_data[key] is int or effect_data[key] is float):
 			errors.append("%s.%s must be a number." % [path, key])
 			continue
-		var allows_negative_value: bool = key == "threshold" or (key in ["value", "else_value"] and str(effect_data.get("effect", "")) in [
+		var allows_negative_value: bool = key == "threshold" or (key == "per_unit" and str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PRINCIPAL) or (key in ["value", "else_value"] and str(effect_data.get("effect", "")) in [
 			BattleFinanceSystem.EFFECT_ADD_STAT,
 			BattleFinanceSystem.EFFECT_CONDITIONAL_STAT,
 		])
@@ -385,6 +399,25 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 			errors.append("%s.condition is not a supported stat condition." % path)
 	if effect_data.has("else_value") and not effect_data.has("condition"):
 		errors.append("%s.else_value requires a condition." % path)
+	if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
+		_validate_required_fields(effect_data, ["minimum_deposit", "value"], path)
+		_validate_non_negative_int(effect_data, "minimum_deposit", path)
+		if (effect_data.get("minimum_deposit") is int or effect_data.get("minimum_deposit") is float) and float(effect_data.minimum_deposit) <= 0.0:
+			errors.append("%s.minimum_deposit must be positive." % path)
+		if str(effect_data.get("trigger", "")) != BattleFinanceSystem.TRIGGER_DERIVED:
+			errors.append("%s requires the derived trigger." % path)
+	if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_PRINCIPAL_REVIVE:
+		_validate_required_fields(effect_data, ["minimum_principal", "principal_cost", "health_percent", "max_uses"], path)
+		for field in ["minimum_principal", "principal_cost", "health_percent", "max_uses"]:
+			_validate_non_negative_int(effect_data, field, path)
+			if (effect_data.get(field) is int or effect_data.get(field) is float) and float(effect_data[field]) <= 0.0:
+				errors.append("%s.%s must be positive." % [path, field])
+		if str(effect_data.get("trigger", "")) != BattleFinanceSystem.TRIGGER_LETHAL_DAMAGE:
+			errors.append("%s requires the lethal_damage trigger." % path)
+		if (effect_data.get("health_percent") is int or effect_data.get("health_percent") is float) and float(effect_data.health_percent) > 100.0:
+			errors.append("%s.health_percent must not exceed 100." % path)
+		if (effect_data.get("minimum_principal") is int or effect_data.get("minimum_principal") is float) and (effect_data.get("principal_cost") is int or effect_data.get("principal_cost") is float) and float(effect_data.minimum_principal) < float(effect_data.principal_cost):
+			errors.append("%s.minimum_principal must cover principal_cost." % path)
 	for stat_key in ["stat", "source_stat", "target_stat"]:
 		if effect_data.has(stat_key) and not StatDefinitions.has_stat(str(effect_data.get(stat_key, ""))):
 			errors.append("Unknown stat reference in %s.%s: %s" % [path, stat_key, str(effect_data.get(stat_key, ""))])
@@ -597,6 +630,7 @@ func _validate_zone_reward_bias(reward_bias: Variant, path: String) -> void:
 
 func _validate_camp_building_records(records: Array, records_by_id: Dictionary) -> void:
 	# 营地建筑既包含等级效果，也包含局外升级项，需分开校验。
+	var upgrade_stats: Dictionary = {}
 	for record_index in records.size():
 		var record: Variant = records[record_index]
 		if not (record is Dictionary):
@@ -617,6 +651,13 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 				continue
 			_validate_required_fields(option, ["id", "stat", "currency", "cost", "max_level", "value_per_level"], "%s.upgrade_options[%d]" % [path, option_index])
 			_validate_camp_currency_field(option, "%s.upgrade_options[%d]" % [path, option_index])
+			var stat_id := str(option.get("stat", ""))
+			var option_path := "%s.upgrade_options[%d]" % [path, option_index]
+			if not stat_id.is_empty():
+				if upgrade_stats.has(stat_id):
+					errors.append("%s duplicates upgrade stat '%s' already defined at %s." % [option_path, stat_id, upgrade_stats[stat_id]])
+				else:
+					upgrade_stats[stat_id] = option_path
 			if option.has("required_building_level") and int(option["required_building_level"]) < 1:
 				errors.append("%s.upgrade_options[%d].required_building_level must be at least 1." % [path, option_index])
 

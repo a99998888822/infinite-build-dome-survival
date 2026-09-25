@@ -13,7 +13,8 @@ const REACTION_WEAPON_GAIN_DB: float = -5.0
 const MAX_PENDING_AUDIO_IMPACTS: int = 256
 const COMBAT_VOICES: int = 12
 const COMBAT_DETAIL_VOICES: int = 8
-const BGM_PLAYBACK_GAIN_DB: float = 12.0
+# Full music volume now matches the previous 50% setting (about -6 dB).
+const BGM_PLAYBACK_GAIN_DB: float = 6.0
 const VOLUME_SETTING_BY_BUS: Dictionary = {
 	"Master": "master_volume",
 	"BGM": "bgm_volume",
@@ -169,6 +170,8 @@ func flush_combat_audio(force: bool = false) -> void:
 
 
 func _request_combat_sfx(cue_id: String, minimum_interval_ms: int, is_weapon: bool) -> bool:
+	if COMBAT_LIBRARY.DISABLED_CUES.has(cue_id):
+		return false
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)) or not COMBAT_LIBRARY.PROFILES.has(cue_id):
 		return false
 	var impact := current_combat_audio()
@@ -253,6 +256,8 @@ func play_combat_sfx(cue_id: String, minimum_interval_ms: int = 0) -> bool:
 
 
 func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_offset_db: float = 0.0) -> bool:
+	if COMBAT_LIBRARY.DISABLED_CUES.has(cue_id):
+		return false
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
 	var profile: Dictionary = COMBAT_LIBRARY.PROFILES.get(cue_id, {})
@@ -304,6 +309,8 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 
 
 func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_key: String = "") -> bool:
+	if COMBAT_LIBRARY.DISABLED_PATHS.has(resource_path):
+		return false
 	if resource_path.is_empty() or not ResourceLoader.exists(resource_path) or _sfx_players.is_empty():
 		return false
 	var key := dedupe_key if not dedupe_key.is_empty() else resource_path

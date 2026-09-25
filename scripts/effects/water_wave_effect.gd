@@ -8,6 +8,7 @@ const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.52
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
+const SIZE_MULTIPLIER: float = 0.7
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -47,7 +48,7 @@ static func spawn(
 		effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS)
 			* effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0),
 		32.0,
-	)
+	) * SIZE_MULTIPLIER
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
 	effect._phase = randf_range(0.0, TAU)
 	# Water is an immediate contact effect, before ice in the impact dispatcher.
@@ -109,29 +110,60 @@ func _apply_wave() -> void:
 
 func _draw() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var radius := maxf(_radius * smoothstep(0.0, 1.0, progress), 2.0)
-	var fade := 1.0 - smoothstep(0.56, 1.0, progress)
-	var clock := floorf(_elapsed * 18.0) / 18.0
-	# The damage is immediate: briefly mark its full footprint from the first frame.
-	if progress < 0.22 and _visual_detail > 0:
-		for index in range(12):
-			var start := float(index) * TAU / 12.0 + _phase
-			PIXEL.arc(self, _radius, start, start + 0.12, Color(0.17, 0.37, 0.46, (1.0 - progress / 0.22) * 0.34))
-	var count := 18 if _visual_detail == 2 else (12 if _visual_detail == 1 else 8)
-	for index in range(count):
-		var start := float(index) * TAU / float(count) + _phase * 0.08
-		var arc_length := TAU / float(count) * (0.48 + float(index % 3) * 0.07)
-		var ripple := sin(start * 7.0 + _phase + clock * 4.0) * radius * 0.024
-		var crest := radius + ripple
-		PIXEL.arc(self, maxf(crest - 3.0, 2.0), start, start + arc_length, Color(0.10, 0.29, 0.40, fade * 0.72), 4)
-		PIXEL.arc(self, crest, start, start + arc_length, Color(0.25, 0.61, 0.73, fade * 0.82), 2)
-		if index % 2 == 0 and _visual_detail > 0:
-			PIXEL.arc(self, crest + 1.0, start + 0.04, start + arc_length * 0.5, Color(0.65, 0.85, 0.86, fade * 0.85), 2)
-			if radius > 12.0:
-				var foam := Vector2.from_angle(start + arc_length * 0.5) * (crest - 2.0)
-				PIXEL.block(self, foam, Vector2(4, 2), Color(0.52, 0.79, 0.83, fade * 0.8))
-		if _visual_detail == 2 and radius > 24.0 and index % 3 == 0:
-			PIXEL.arc(self, radius * 0.77, start + 0.14, start + 0.26, Color(0.14, 0.39, 0.48, fade * 0.55), 2)
+	var fade := 1.0 - smoothstep(0.55, 1.0, progress)
+	# Damage is immediate over a circle. Show that full surface from the first
+	# frame; only currents inside it grow and curl, never the damage footprint.
+	_draw_surface(progress, fade)
+	# Broad S-shaped wave fronts travel across the surface. Leave open water
+	# between crests so the silhouette reads as flowing water at normal scale.
+	var width := clampf(_radius * 0.09, 4.0, 8.0)
+	var orientation := _phase * 0.18
+	for stream in range(3 if _visual_detail > 0 else 2):
+		var ribbon := PackedVector2Array()
+		var foam := PackedVector2Array()
+		var row := (float(stream) - 1.0) * 0.43
+		for index in range(29):
+			var u := float(index) / 28.0
+			var x := lerpf(-0.78, 0.78, u)
+			var bend := sin(u * TAU * 1.12 - progress * 6.5 + stream * 0.85)
+			var y := row + (progress - 0.35) * 0.38 + bend * 0.12
+			var point := (Vector2(x, y) * _radius).rotated(orientation)
+			point = point.limit_length(maxf(_radius - width - 2.0, 0.0))
+			ribbon.append(point)
+			var lip := point + Vector2(0, -width * 0.45).rotated(orientation)
+			foam.append(lip.limit_length(maxf(_radius - 3.0, 0.0)))
+		PIXEL.path(self, ribbon, Color(0.035, 0.20, 0.29, fade * 0.78), width + 4.0)
+		PIXEL.path(self, ribbon, Color(0.12, 0.49, 0.65, fade * 0.91), width)
+		PIXEL.path(self, foam, Color(0.38, 0.77, 0.84, fade * 0.9), 2)
+		# Broken foam highlights move along the crest rather than outlining it.
+		for index in range(3, foam.size() - 2):
+			if posmod(index + stream * 3 - int(progress * 14.0), 11) < 4:
+				PIXEL.line(self, foam[index - 1], foam[index], Color(0.77, 0.95, 0.94, fade * 0.92), 2)
+		if _visual_detail > 0:
+			var head := ribbon[ribbon.size() - 4]
+			var curl := PackedVector2Array()
+			for index in range(13):
+				var u := float(index) / 12.0
+				var angle := -PI * 0.1 - u * PI * 1.55
+				var curl_point := head + (Vector2(cos(angle), sin(angle)) * _radius * 0.12 * (1.0 - u * 0.72)).rotated(orientation)
+				curl.append(curl_point.limit_length(maxf(_radius - 4.0, 0.0)))
+			PIXEL.path(self, curl, Color(0.25, 0.65, 0.77, fade * 0.9), 4)
+			PIXEL.path(self, curl, Color(0.65, 0.91, 0.92, fade * 0.92), 2)
+
+
+func _draw_surface(progress: float, fade: float) -> void:
+	PIXEL.ellipse(self, Vector2.ONE * _radius, Color(0.09, 0.42, 0.59, 0.22 * fade))
+	var edge := PackedVector2Array()
+	for index in range(49):
+		var angle := float(index) * TAU / 48.0
+		var inward_ripple := (0.5 + 0.5 * sin(angle * 6.0 - progress * 8.0 + _phase)) * 0.8
+		edge.append(Vector2.from_angle(angle) * maxf(_radius - 2.0 - inward_ripple, 0.0))
+	PIXEL.path(self, edge, Color(0.09, 0.38, 0.55, 0.38 * fade), 4)
+	PIXEL.path(self, edge, Color(0.34, 0.73, 0.84, 0.50 * fade), 2)
+	# Short foamy crests follow the boundary; they do not replace the currents.
+	for index in 3:
+		var angle := index * TAU / 3.0 - progress * 1.3 + _phase
+		PIXEL.arc(self, maxf(_radius - 2.0, 0.0), angle, angle + 0.40, Color(0.69, 0.93, 0.95, 0.78 * fade), 2)
 
 
 func _draw_splashes() -> void:
@@ -147,6 +179,6 @@ func _draw_splashes() -> void:
 		var angle := float(index) * 2.399 + _phase
 		var distance := _radius * (0.12 + age * (0.62 + float(index % 2) * 0.14))
 		var point := Vector2.from_angle(angle) * distance
-		point.y -= sin(age * PI) * (9.0 + float(index % 3) * 4.0)
+		point.y -= sin(age * PI) * (9.0 + float(index % 3) * 4.0) * SIZE_MULTIPLIER
 		var fade := 1.0 - smoothstep(0.5, 1.0, age)
 		PIXEL.block(_splash_layer, point, Vector2(2, 4 if age < 0.5 else 2), Color(0.4, 0.72, 0.8, fade * 0.9))

@@ -17,18 +17,18 @@
 
 | 验证 | 结果 | 日志 |
 | --- | --- | --- |
-| 编辑器导入与脚本检查 | 通过，无Parse／Compile／SCRIPT ERROR | `artifacts/weapon_balance_20260924/editor.log` |
-| 负载、购买边界、升级候选与成长 | 70项通过 | `artifacts/weapon_balance_20260924/balance.log` |
-| 电浆接触与附魔缩放 | 28项通过 | `artifacts/weapon_balance_20260924/plasma.log` |
-| 榴弹原生伤害、分裂与附魔 | 87项通过 | `artifacts/weapon_balance_20260924/grenade.log` |
-| 秘仪书与钱袋战斗、交易 | 64项通过 | `artifacts/weapon_balance_20260924/tome_purse.log` |
-| 战斗音效 | 39项通过 | `artifacts/weapon_balance_20260924/audio.log` |
-| Bootstrap启动自检 | 通过，数据校验警告0、错误0 | `artifacts/weapon_balance_20260924/bootstrap.log` |
+| 编辑器导入与脚本检查 | 通过，无Parse／Compile／SCRIPT ERROR | 原日志已清理 |
+| 负载、购买边界、升级候选与成长 | 70项通过 | 原日志已清理 |
+| 电浆接触与附魔缩放 | 28项通过 | 原日志已清理 |
+| 榴弹原生伤害、分裂与附魔 | 87项通过 | 原日志已清理 |
+| 秘仪书与钱袋战斗、交易 | 64项通过 | 原日志已清理 |
+| 战斗音效 | 39项通过 | 原日志已清理 |
+| Bootstrap启动自检 | 通过，数据校验警告0、错误0 | 原日志已清理 |
 
 专项检查合计288项通过。另通过`git diff --check`和严格UTF-8解码检查，未发现替换字符或连续问号乱码。
 
 音效测试在延迟爆炸之后显式结算待播放队列，再检查合成音效；电浆与音效测试结束前等待已停止的音频释放，最终两份日志不再报告音频资源占用。
 
-编辑器仍提示Android build-tools目录缺失；完整场景测试退出时仍有Canvas／ObjectDB资源释放警告，Bootstrap退出时仍有资源占用提示。旧的`artifacts/plasma_ball_implementation/contact_v4/`日志已存在同类退出提示；本轮未将其记作脚本或数值断言失败，也未修改游戏的全局资源清理机制。
+编辑器仍提示Android build-tools目录缺失；完整场景测试退出时仍有Canvas／ObjectDB资源释放警告，Bootstrap退出时仍有资源占用提示。之前的电浆接触验证已有同类退出提示；本轮未将其记作脚本或数值断言失败，也未修改游戏的全局资源清理机制。
 
 本轮结论是配置、计算和流程验证通过；新数值仍需要长局实战调参，未据此宣称各武器最终强度已经完全平衡。
