@@ -77,7 +77,7 @@ Godot 4.7.2，使用隔离工程和独立存档目录 `CodexEliteRewards20260923
 | 准备界面回归 | `FINANCE_PREPARATION_DONE failures=0` |
 | 游戏引擎实际渲染 | 已检查复用的遗物选择弹窗 |
 
-期望规则更新的导入、生成/掉落、奖励选择和 Bootstrap 验证均已执行。部分测试退出时仍有资源清理提示；运行断言均通过，不能将所有引擎日志描述为完全无错误。原始日志和旧截图已清理，小 Boss 与掉落实录见 `artifacts/reviews/effects/elite.gif`。
+期望规则更新的导入、生成/掉落、奖励选择和 Bootstrap 验证均已执行。部分测试退出时仍有资源清理提示；运行断言均通过，不能将所有引擎日志描述为完全无错误。原始日志、旧截图和旧四足造型录像已清理，当前小 Boss 与掉落实录见 `artifacts/reviews/effects/iron_knight/game.gif`。
 
 ## 后续平衡与其余方案
 

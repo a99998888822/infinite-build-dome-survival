@@ -2,6 +2,8 @@
 
 > 2026-09-27 更新：五笔正式交易已接入触发、执行及动态奖励；详见 [实现清单](../main/checklist/goblin_trades_2026-09-27.md)。下文记录早期素材审阅阶段，独立视觉场景仍只用于预览素材。当前长条款支持内部滚动，已获得强力刷新时刷新按钮显示动态彩色边框和文字。
 
+清理后仅保留 `artifacts/reviews/ui/goblin_trade/` 中的 `five_trades_overview.png`、`small_terms.png` 和 `strong_refresh_button.gif`。下述历史素材演出可重建，旧GIF、MP4、混音、逐帧图与分轮次截图不再常驻保存。
+
 状态：小窗口哥布林可见性修复已接入正式理财页。交易演出为独立审阅场景，等待视觉审阅后再设计具体交易内容。
 
 ## 本次范围

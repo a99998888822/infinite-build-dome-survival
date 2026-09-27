@@ -547,6 +547,7 @@ func mark_wave_end_ready() -> void:
 	_wave_end_ready = true
 	_pending_interest_payload = _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {}
 	_pending_interest_payload["settlement_results"] = _pending_interest_payload.get("last_settlement_results", [])
+	_pending_interest_payload["combat_gold_earned"] = _bound_wave_manager.collected_gold_this_wave if _bound_wave_manager != null else 0
 	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		_resume_state_after_modal = STATE_SHOP_POPUP
 		return
@@ -667,6 +668,7 @@ func request_shop_refresh() -> Dictionary:
 		_bound_wave_manager.goblin_trades.strong_refresh = false
 		_bound_wave_manager.finance_system.record_trade_activity("强力刷新已使用：幸运+100，保底史诗遗物。")
 		payload["refresh_cost"] = get_shop_refresh_cost()
+	cancel_goblin_trade()
 	_transaction_busy = false
 	clear_stat_preview()
 	if current_state == STATE_FINANCE_POPUP:
@@ -1041,6 +1043,7 @@ func get_preparation_payload() -> Dictionary:
 	payload["offer_generation"] = _shop_generation
 	payload["refresh_cost"] = get_shop_refresh_cost()
 	payload["settlement_results"] = _pending_interest_payload.get("settlement_results", [])
+	payload["combat_gold_earned"] = _pending_interest_payload.get("combat_gold_earned", 0)
 	if _bound_wave_manager != null:
 		payload["goblin_trade"] = _bound_wave_manager.goblin_trades.offer.duplicate(true)
 		payload["strong_refresh"] = has_strong_refresh()

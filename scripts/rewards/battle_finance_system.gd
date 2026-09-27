@@ -78,9 +78,11 @@ var _settling_interest: bool = false
 var _journal_ready: bool = false
 var _last_activity_rate: float = DEFAULT_INTEREST_RATE
 var _principal_revive_uses: Dictionary = {}
+var _run_serial := 0
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
+	_run_serial += 1
 	_journal_ready = false
 	_settling_interest = false
 	if is_instance_valid(player) and player.stats_changed.is_connected(_on_player_stats_changed):
@@ -283,8 +285,9 @@ func record_trade_activity(text: String) -> void:
 	_record_activity("goblin_trade", text)
 
 
-func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
+func settle_interest(source: String = SETTLE_WAVE_END, source_relic_id: String = "") -> Dictionary:
 	var result := _build_settlement_result(source)
+	result["source_relic_id"] = source_relic_id
 	if _settling_interest:
 		result["reason"] = "settlement_busy"
 		return result
@@ -318,7 +321,7 @@ func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:
 			result["reason"] = "interest_collected"
 			result["gold_after"] = get_current_gold()
 			_record_interest_result(result)
-			_apply_after_successful_interest_relics(source)
+			_apply_after_successful_interest_relics(source, result)
 		else:
 			interest_remainder = previous_remainder
 			result["interest_remainder"] = previous_remainder
@@ -346,10 +349,10 @@ func process_wave_end_settlements() -> Array[Dictionary]:
 				var interval := int(effect.get("interval_waves", 3))
 				if interval > 0 and wave_counter % interval == 0:
 					for _index in range(int(effect.get("relic_count", 1))):
-						results.append(settle_interest(SETTLE_PERIODIC))
+						results.append(settle_interest(SETTLE_PERIODIC, str(effect.get("relic_id", ""))))
 			EFFECT_EXTRA_SETTLEMENT_PER_WAVE:
 				for _index in range(int(effect.get("relic_count", 1))):
-					results.append(settle_interest(SETTLE_ANNUITY_EXTRA))
+					results.append(settle_interest(SETTLE_ANNUITY_EXTRA, str(effect.get("relic_id", ""))))
 	last_settlement_results.clear()
 	for result in results:
 		last_settlement_results.append(result.duplicate(true))
@@ -522,16 +525,20 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 					final_gain = int(ceil(float(final_gain) * float(dividend_multiplier)))
 					result["dividend_double_triggered"] = true
 					result["dividend_multiplier"] = dividend_multiplier
+					result["dividend_relic_id"] = str(effect.get("relic_id", ""))
 	return maxi(0, final_gain)
 
 
-func _apply_after_successful_interest_relics(_source: String) -> void:
+func _apply_after_successful_interest_relics(_source: String, result: Dictionary) -> void:
+	var growth_events: Array[Dictionary] = []
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SUCCESS):
 		match str(effect.get("effect", "")):
 			EFFECT_ADD_INTEREST_RATE_BONUS:
 				var growth := float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
 				interest_rate_bonus += growth
+				growth_events.append({"relic_id": str(effect.get("relic_id", "")), "delta": growth})
 				_record_activity("relic_growth", "%s：收到利息，利率成长 +%s 个百分点" % [_relic_name(str(effect.get("relic_id", ""))), HumanityEconomy.number(growth)])
+	result["rate_growth_events"] = growth_events
 	if player != null:
 		for effect in player.get_active_relic_runtime_effects(TRIGGER_INTEREST_SUCCESS):
 			if str(effect.get("effect", "")) == EFFECT_ADD_STAT:
@@ -551,6 +558,7 @@ func _calculate_gain_for_source(_source: String) -> int:
 
 func _build_settlement_result(source: String) -> Dictionary:
 	return {
+		"settlement_id": "%d:%d:%d" % [get_instance_id(), _run_serial, current_wave_number],
 		"success": false,
 		"blocked": false,
 		"source": source,

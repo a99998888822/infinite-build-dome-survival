@@ -105,6 +105,7 @@ func offer_only(id: String) -> Dictionary:
 		"gold": manager.current_gold, "principal": manager.finance_system.principal, "sanity": manager.player.get_stat("humanity"), "struggling": true})
 	trades.config.trades = definitions
 	popup.configure(flow.get_preparation_payload())
+	popup.interest_arrival.skip()
 	if popup.trade_presentation != null:
 		popup.trade_presentation.sound_enabled = false
 		popup.trade_presentation.seek(20)
@@ -116,6 +117,7 @@ func advance_preparation() -> void:
 	manager.set_process(false)
 	flow.finish_current_wave()
 	await frames(12)
+	popup.interest_arrival.skip()
 
 
 func capture(name: String) -> void:
@@ -185,6 +187,13 @@ func _test_live_flow() -> void:
 	popup = game.find_child("FinancePopup", true, false) as FinancePopup
 	check(not manager.goblin_trades.offer.is_empty() and popup.trade_presentation.is_active(), "combat telemetry automatically opens a live trade")
 	check(manager.goblin_trades.pressure_snapshot.struggling, "wave-end healing does not erase pressure snapshot")
+	var pending_token := str(manager.goblin_trades.offer.token)
+	manager.apply_gold_delta(-manager.current_gold, "test")
+	check(not flow.request_shop_refresh().success and str(manager.goblin_trades.offer.token) == pending_token, "failed refresh retains the live offer token")
+	manager.apply_gold_delta(260, "test")
+	check(flow.request_shop_refresh().success and manager.goblin_trades.offer.is_empty() and not popup.trade_presentation.is_active(), "successful refresh cancels the live offer and its UI")
+	check(not flow.accept_goblin_trade(pending_token).success, "offer cancelled by refresh cannot be accepted with a stale token")
+	manager.apply_gold_delta(260 - manager.current_gold, "test")
 	var offer := offer_only("strong_refresh")
 	check(offer.body == "存入 260 金币，获得 1 次免费的强力刷新", "all-in offer displays the requested concrete amount and free refresh")
 	await check_offer_layout(true, "strong refresh")
@@ -203,6 +212,8 @@ func _test_live_flow() -> void:
 	get_tree().root.size = Vector2i(1152, 768)
 	get_tree().root.content_scale_size = Vector2i(1152, 768)
 	await frames(8)
+	popup.trade_presentation.seek(0)
+	check(not popup.trade_presentation._yes.disabled, "can accept before goblin finishes speaking")
 	popup.trade_presentation._yes.pressed.emit()
 	check(manager.current_gold == 0 and manager.finance_system.principal == 260, "accept deposits instead of destroying the gold")
 	check(manager.finance_system.manual_operation_used and flow.has_strong_refresh(), "deposit consumes bank allowance and awards persistent refresh")

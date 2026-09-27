@@ -4,21 +4,24 @@
 
 | 目录 | 保留内容 |
 | --- | --- |
-| [previews/water](previews/water/README.md) | 已接入的单圈水流原始设计稿与历史边界检查；当前正式效果见 reviews/effects/water.gif。 |
 | [previews/main_menu](previews/main_menu/README.md) | 待接入的主菜单像素背景、透明菜单层、合成预览和绘图源文件。 |
-| [previews/iron_knight](previews/iron_knight/README.md) | 已确认并接入的全钢甲巨盾骑士美术稿：六组透明动画、宽站姿与完整迈步；[正式战斗录像](reviews/effects/iron_knight/)。 |
+| [previews/iron_knight](previews/iron_knight/README.md) | 安装工具依赖的六组已确认透明图集及参数清单；美术模拟与联系表可重建，不保留重复成品。 |
 | [previews/nightwatch_spear](previews/nightwatch_spear/README.md) | 未接入正式武器池的长枪动作、判定和附魔原型。 |
 | [previews/range_relics](previews/range_relics/README.md) | 已接入的10件距离与范围遗物图标总览与属性说明；独立图标统一存放在正式资源目录。实机审阅见 [reviews/ui/range_relics](reviews/ui/range_relics/)。 |
-| [reviews/effects](reviews/effects/) | 小 Boss 与掉落、当前单圈水流实录；最新[远景入水、电浆贴地、结霜投影对比](reviews/effects/grounding/)覆盖当前调整。两组水流组合动图保留作反应参考，其中水流主体是旧版。 |
+| [reviews/effects](reviews/effects/) | 当前钢甲骑士、遗物掉落、单圈水流实录，以及[远景入水、电浆贴地、结霜对比](reviews/effects/grounding/)。旧四足怪录像、水流草稿与旧版组合动图已清理。 |
 | [reviews/weapons](reviews/weapons/) | 榴弹炮、流星锤、电浆炮、秘仪书和钱袋的代表性正式实录。 |
-| [reviews/ui](reviews/ui/) | 属性栏、伤害统计、经济日志、设置和天赋的代表截图；最新[哥布林银行](reviews/ui/goblin_bank.png)与[属性提示](reviews/ui/stat_tooltips.png)，[逐项审阅截图](reviews/ui/bank_hud_review/)覆盖文案、悬停与底部间距。 |
+| [reviews/ui](reviews/ui/) | 经济日志、设置、天赋、难度、遗物与属性范围的必要验证图；交易和结息仅保留最新代表成品。 |
 | [reports/android](reports/android/README.md) | Android 适配评估、控件测量和现行界面的桌面模拟截图。 |
 | [reports/balance_verification.md](reports/balance_verification.md) | 附魔掉率、稀有度槽数、三档难度与无天赋开局实测；含最新选择界面和战斗截图。 |
 | [reports/audio_release.json](reports/audio_release.json) | 已确认的 34 项音效资源、增益及哈希；32 项保留、2 项停播。验证结果见 [audio_validation.json](reports/audio_validation.json)。 |
 
-常用入口：[正式单圈水流](reviews/effects/water.gif) · [汽化／冻结／导电／风吹扩散](reviews/effects/water_reactions.gif) · [落雷／光剑／黑洞／爆裂](reviews/effects/water_combinations.gif) · [小 Boss 与掉落](reviews/effects/elite.gif) · [属性栏](reviews/ui/stats.png)。
+常用入口：[正式单圈水流](reviews/effects/water.gif) · [钢甲骑士](reviews/effects/iron_knight/game.gif) · [属性栏](reviews/ui/bank_hud_review/06_all_other_attributes.png) · [属性提示](reviews/ui/stat_tooltips.png)。
 
-最新武器提示：[六把武器的完整信息](reviews/ui/weapon_details/weapon_strip.png) · [理财页富文本提示](reviews/ui/weapon_details/bank_tooltips.png) · [理财页完整实机截图](reviews/ui/weapon_details/bank_context.png)。
+交易审阅仅保留：[五笔交易总览](reviews/ui/goblin_trade/five_trades_overview.png)、[小窗口完整条款](reviews/ui/goblin_trade/small_terms.png)、[强力刷新按钮](reviews/ui/goblin_trade/strong_refresh_button.gif)。总览由最后一版文本间距截图合成，历史布局与录制帧已清理。
+
+结息审阅仅保留：[最新演出](reviews/ui/interest_arrival/settlement.gif)、[完整界面截图](reviews/ui/interest_arrival/receipt.png)、[小窗口截图](reviews/ui/interest_arrival/small_receipt.png)。对应已精简文案、居中显示及利率成长显示具体小数的版本。
+
+最新武器提示：[六把武器的完整信息](reviews/ui/weapon_details/weapon_strip.png) · [理财页富文本提示](reviews/ui/weapon_details/bank_tooltips.png)。
 
 属性数值与范围实测：[七项属性去掉百分号](reviews/ui/stat_ranges/stats.png) · [攻击距离对比](reviews/ui/stat_ranges/attack_range.png) · [伤害范围对比](reviews/ui/stat_ranges/damage_area.png)。使用一级铸铁榴弹炮，在相同目标位置对比属性 0 与 50；辅助线和 HP 标签为依据运行数据添加的审阅标注。
 

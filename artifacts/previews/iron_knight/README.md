@@ -1,17 +1,13 @@
 # 钢甲骑士小 Boss：美术审阅稿
 
-本目录为已确认的原创透明 PNG 与美术模拟。2026-09-27 已导出至 `assets/sprites/enemies/iron_knight/` 并接入正式小 Boss；本目录动图仍是原始美术模拟，实机结果见 [正式录像](../../reviews/effects/iron_knight/)。
+本目录保留安装工具依赖的六组已确认原创透明 PNG 与参数清单。2026-09-27 已导出至 `assets/sprites/enemies/iron_knight/` 并接入正式小 Boss；重复的美术模拟动图、参考截图与联系表已清理，实机结果见 [正式录像](../../reviews/effects/iron_knight/)。
 
 ## 审阅入口
 
-- [造型、尺寸对比与预警总览](knight_review.png)
-- [宽站姿与完整迈步动图](knight_walk_review.gif)：左侧待机、右侧原地行走循环，放大 3 倍审阅大腿、膝踝、胯甲及身体起伏。
-- [追赶、蓄力、冲刺挥锤与收招动图](knight_attack.gif)：4.16 秒循环，按 50 FPS 采样，画面内明确标注为美术模拟。
-- [冲刺与挥锤速度对照](knight_speed_comparison.gif)：同款新造型，分别按 0.4 秒和 0.16 秒完成攻击；3 秒循环，正常速度播放。
-- [六帧挥锤分解](hammer_keyframes.png)
-- [全部动画帧](animation_contact_sheet.png)
-- [单帧透明原图](knight_reference.png)
-- [透明冲刺预警](dash_telegraph.png)
+- [正式实机录像](../../reviews/effects/iron_knight/game.gif)
+- [图集与动作参数](manifest.json)
+
+下文保留美术参数和制作记录；其中的模拟动图可通过末尾构建命令重建，不再作为常驻文件保存。
 
 本轮保留参考图例的修长尖顶面甲、层叠肩甲、收腰胸甲、尖底巨盾和分叉战裙，并按最新意见调整待机姿态：双腿从髋部向外展开，双脚间距由 16 像素扩大至 40 像素，形成撑稳重甲的宽站姿。持锤右臂贴近身侧自然垂下，锤头稍上提，露出脚踝与落脚位置。收招最终回到新站姿。
 

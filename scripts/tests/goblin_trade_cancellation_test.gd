@@ -26,7 +26,6 @@ func check(ok: bool, label: String) -> void:
 func present() -> void:
 	popup.present_trade("Review", "Sample offer", "Visual only")
 	popup.trade_presentation.sound_enabled = false
-	popup.trade_presentation.seek(4.0)
 
 
 func check_cancelled(reason: String) -> void:
@@ -84,8 +83,10 @@ func _run() -> void:
 	popup.trade_cancelled.connect(func(reason: String): reasons.append(reason))
 	present()
 	check(popup._bank.position.y > baseline.position.y and popup._bank.size.y < baseline.size.y, "active trade reserves only its own height")
-	popup.trade_presentation.seek(1.5)
-	check(not popup.trade_presentation._no.disabled and popup.trade_presentation._yes.disabled, "can reject while offer text is still typing")
+	check(not popup.trade_presentation._no.disabled and not popup.trade_presentation._yes.disabled, "both trade buttons are enabled on the first frame")
+	check(popup.trade_presentation._card.modulate.a == 1.0 and popup.trade_presentation._card.scale == Vector2.ONE and popup.trade_presentation._body.visible_characters == -1 and popup.trade_presentation._detail.modulate.a == 1.0, "complete card and all terms appear immediately")
+	popup.trade_presentation.seek(0.5)
+	check(popup.trade_presentation._speech_text.visible_characters > 0 and popup.trade_presentation._speech_text.visible_characters < popup.trade_presentation._speech_text.text.length(), "only goblin speech keeps typing")
 	popup.trade_presentation._no.pressed.emit()
 	check_cancelled("rejected")
 	var count := reasons.size()
@@ -102,6 +103,15 @@ func _run() -> void:
 	popup._buy(offer.duplicate(true))
 	check(flow.get_bound_player().get_relic_count("relic_worn_hemostatic_cloth") == 1, "purchase really succeeds")
 	check_cancelled("purchase")
+
+	present()
+	wallet = manager.get_current_gold()
+	manager.apply_gold_delta(-wallet, "test")
+	popup._refresh_shop()
+	check(popup.trade_presentation.is_active(), "failed refresh preserves trade")
+	manager.apply_gold_delta(wallet, "test")
+	popup._refresh_shop()
+	check_cancelled("refresh")
 
 	present()
 	popup._choose_bank_action("deposit")

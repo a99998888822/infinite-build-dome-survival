@@ -23,7 +23,7 @@
 
 水流最大范围较旧版缩小15%，显示与伤害使用同一最大半径，仍受伤害范围属性加成；伤害倍率55%、目标去重和元素反应沿用现有规则。水流仍即时结算范围伤害；光辉剑仍在等待和下落完成后结算范围伤害。
 
-正式水流实录见 `artifacts/reviews/effects/water.gif`；复现入口为 `scenes/tests/water_effect_live_capture.tscn -- --transient-session --variant=water --capture-dir=<绝对路径>`。原草稿保留在 `artifacts/previews/water/` 供追溯，正式运行不依赖该目录。
+正式水流实录见 `artifacts/reviews/effects/water.gif`；复现入口为 `scenes/tests/water_effect_live_capture.tscn -- --transient-session --variant=water --capture-dir=<绝对路径>`。已被正式实现替代的原草稿和旧版水流组合录制已清理，绘制实现保留在 `scripts/effects/water_wave_effect.gd`。
 
 ## 验证
 

@@ -64,6 +64,7 @@ func _on_flow_state_changed(previous: String, current: String) -> void:
 func _on_flow_reset() -> void:
 	_suspended_for_inspection = false
 	finance_popup.hide_popup()
+	finance_popup.reset_interest_arrival()
 
 
 func _process(_delta: float) -> void:

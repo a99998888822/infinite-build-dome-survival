@@ -11,6 +11,7 @@ var main_panel: Panel
 var economy_log: EconomyLogPanel
 var portrait: BankCounterPortrait
 var trade_presentation: GoblinTradePresentation
+var interest_arrival: InterestArrivalPresentation
 var shop_grid: VirtualShopGrid
 var workbench: EnchantmentWorkbench
 var amount_input: LineEdit
@@ -52,6 +53,8 @@ var _sale_items: HBoxContainer
 var _live_trade_token := ""
 var _refresh_glow := FinanceUIStyle.box("293329", "d5c578", 5)
 var _glow_time := 0.0
+var _last_arrival_id := ""
+var _arrival_pulse: Tween
 
 
 func _ready() -> void:
@@ -121,7 +124,40 @@ func configure(next_payload: Dictionary) -> void:
 		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
 		_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % settled if settled > 0 else "准备完成后，点击开始下一波。"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
+	_sync_interest_arrival()
 	_sync_live_trade()
+
+
+func _sync_interest_arrival() -> void:
+	var report := InterestArrivalReport.build(payload)
+	if report.is_empty() or str(report.id).is_empty() or str(report.id) == _last_arrival_id: return
+	_last_arrival_id = str(report.id)
+	_tooltip.hide()
+	interest_arrival.present(report)
+	_layout()
+
+
+func reset_interest_arrival() -> void:
+	_last_arrival_id = ""
+	interest_arrival.stop()
+
+
+func _on_interest_arrived(amount: int) -> void:
+	if _arrival_pulse != null and _arrival_pulse.is_valid(): _arrival_pulse.kill()
+	_summary.modulate = Color("fff0a4")
+	_arrival_pulse = create_tween()
+	_arrival_pulse.tween_property(_summary, "modulate", Color.WHITE, 0.6)
+	if amount <= 0: return
+	_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % amount
+	var affordable: Dictionary = {}
+	if flow != null:
+		for offer: Dictionary in payload.get("offers", []):
+			var cost := int(offer.get("shop_cost", 0))
+			if cost > 0 and cost <= amount and cost > int(affordable.get("shop_cost", 0)) and flow.get_offer_unavailable_reason(offer).is_empty():
+				affordable = offer
+	if not affordable.is_empty():
+		_feedback.text = "本波利息 +%d，足够购买「%s」" % [amount, str(affordable.get("display_name", "商品"))]
+	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
 
 
 func _process(delta: float) -> void:
@@ -158,9 +194,11 @@ func show_popup() -> void:
 	_tooltip.hide()
 	show()
 	_layout()
+	if interest_arrival.is_active(): interest_arrival.grab_focus()
 
 
 func hide_popup() -> void:
+	interest_arrival.stop()
 	cancel_trade("finance_closed")
 	hide()
 	_sale_layer.hide()
@@ -172,6 +210,7 @@ func present_trade(speech: String, body: String, detail: String = "") -> void:
 	# Also used by the isolated visual review.
 	if trade_presentation == null:
 		trade_presentation = GoblinTradePresentation.new()
+		trade_presentation.z_index = 31
 		main_panel.add_child(trade_presentation)
 		main_panel.move_child(trade_presentation, economy_log.get_index())
 		trade_presentation.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -186,6 +225,8 @@ func cancel_trade(reason: String) -> void:
 
 
 func _on_trade_cancelled(reason: String) -> void:
+	if reason in ["rejected", "accepted", "purchase", "sale", "deposit", "withdraw", "refresh", "resolved"]:
+		interest_arrival.skip()
 	if not _live_trade_token.is_empty():
 		_live_trade_token = ""
 		if flow != null: flow.cancel_goblin_trade()
@@ -351,10 +392,14 @@ func _build() -> void:
 	_tooltip_text.add_theme_constant_override("line_separation", 4)
 	_tooltip.add_child(_tooltip_text)
 	_tooltip.hide()
+	interest_arrival = InterestArrivalPresentation.new()
+	main_panel.add_child(interest_arrival)
+	interest_arrival.arrived.connect(_on_interest_arrived)
 
 
 func _build_sale_dialog() -> void:
 	_sale_layer = Control.new()
+	_sale_layer.z_index = 40
 	_sale_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	main_panel.add_child(_sale_layer)
 	var dimmer := ColorRect.new()
@@ -411,6 +456,13 @@ func _layout() -> void:
 	var bank_width := clampf(w * 0.23, 112.0, 150.0) if _compact else 226.0
 	var work_x := 20.0 + bank_width + (12.0 if _compact else 16.0)
 	var work_w := w - work_x - 20.0
+	if interest_arrival != null:
+		var screen_rect := get_viewport().get_visible_rect()
+		var center := screen_rect.get_center()
+		# Symmetric margins keep the receipt centered without covering the HUD.
+		var half_size := Vector2(minf(center.x - screen_rect.position.x - 16, main_panel.get_global_rect().end.x - center.x), center.y - main_panel.global_position.y)
+		var receipt_rect := Rect2(center - half_size - main_panel.global_position, half_size * 2)
+		interest_arrival.arrange(screen_rect.size, Vector2(88, 42 if short_window else 56), receipt_rect)
 	_place(_tabs, Rect2(work_x, body_y, work_w, 28 if short_window else 30))
 	var content_y := body_y + (34.0 if short_window else 40.0)
 	var content_h := maxf(24, body_bottom - content_y)
@@ -560,7 +612,9 @@ func _buy(offer: Dictionary) -> void:
 func _refresh_shop() -> void:
 	if flow == null: return
 	var result := flow.request_shop_refresh()
-	if bool(result.get("success", false)): _feedback_message("强力刷新已使用，保底史诗遗物。" if bool(result.get("strong_refresh", false)) else "货架已刷新。", true)
+	if bool(result.get("success", false)):
+		cancel_trade("refresh")
+		_feedback_message("强力刷新已使用，保底史诗遗物。" if bool(result.get("strong_refresh", false)) else "货架已刷新。", true)
 	else: show_error(str(result.get("reason", "")))
 
 
@@ -569,6 +623,7 @@ func _open_sale(kind: String, id: String) -> void:
 	if not bool(_quote.get("success", false)):
 		show_error(str(_quote.get("reason", "")))
 		return
+	interest_arrival.skip()
 	_tooltip.hide()
 	_sale_icon.texture = FinanceUIStyle.item_icon(str(_quote.get("icon", "")))
 	for child in _sale_items.get_children():

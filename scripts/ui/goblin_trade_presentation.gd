@@ -143,10 +143,12 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 func present(speech: String, body: String, detail: String = "") -> void:
 	_speech_text.text = speech
 	_body.text = body
+	_body.visible_characters = -1
 	_body.tooltip_text = body
 	_body_scroll.scroll_vertical = 0
 	_detail.text = detail
 	_detail.visible = not detail.is_empty()
+	_detail.modulate.a = 1.0
 	_elapsed = 0.0
 	_last_tick = -1
 	_chosen = false
@@ -154,6 +156,8 @@ func present(speech: String, body: String, detail: String = "") -> void:
 	show()
 	_title.text = "交易"
 	_card.show()
+	_card.scale = Vector2.ONE
+	_card.modulate.a = 1.0
 	_speech.show()
 	seek(0.0)
 
@@ -166,19 +170,12 @@ func seek(seconds: float) -> void:
 	if not _playing: return
 	_elapsed = seconds
 	var speech_chars := clampi(floori((seconds - 0.35) * 13), 0, _speech_text.text.length())
-	var body_chars := clampi(floori((seconds - 1.35) * 13), 0, _body.text.length())
 	_speech_text.visible_characters = speech_chars
-	_body.visible_characters = body_chars
-	_detail.modulate.a = clampf((seconds - 3.1) * 2.5, 0, 1)
-	var unfolding := clampf((seconds - 0.75) / 0.45, 0, 1)
-	_card.scale.y = lerpf(0.08, 1.0, 1.0 - pow(1.0 - unfolding, 3))
-	_card.modulate.a = unfolding
 	_speech.modulate.a = minf(clampf((seconds - 0.1) * 5, 0, 1), clampf((5.2 - seconds) / 0.45, 0, 1))
 	_speech.visible = seconds < 5.2
-	var ready_for_choice := body_chars >= _body.text.length() and seconds >= 3.4
-	_yes.disabled = not ready_for_choice or _chosen
-	_no.disabled = unfolding < 1.0 or _chosen
-	var tick := (speech_chars + body_chars) / 2
+	_yes.disabled = _chosen
+	_no.disabled = _chosen
+	var tick := speech_chars / 2
 	if sound_enabled and tick > _last_tick and tick > 0:
 		_audio.stream = TICKS[tick % TICKS.size()]
 		_audio.pitch_scale = 1.0 + (tick % 3 - 1) * 0.035
