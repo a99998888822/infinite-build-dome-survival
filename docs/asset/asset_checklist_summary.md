@@ -8,10 +8,11 @@
 > 生成日期：2026-09-21。
 > 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；原 SVG 保留，附魔配置已改用 PNG。
 > 2026-09-23：新增直接像素绘制的裂甲奔袭者，六组动作共 23 帧；登记 7 张 256 帧尺寸展示图、6 张 128 帧尺寸战斗图与 1 张冲刺路径 PNG。约 10% 克苏鲁元素；战斗帧表已接入精英场景，游戏内路径采用相同参数的 30% 红色矩形绘制。详见 [制作说明](elite_rusher_assets.md)。
+> 2026-09-27：正式小 Boss 改为钢甲骑士，新增六张 160×160 原生帧图集，共 32 帧；游戏预警内部不透明度改为 12%，两侧边缘及方粒脉动。旧裂甲奔袭者文件仅保留为历史素材，不再被正式精英场景引用。详见 [接入说明](iron_knight_integration.md)。
 > 磁盘核对：`assets/` 下 PNG + 音频共 118 个，已全部登记在第 1 节与第 4 节（2026-09-21 已清理 5 个冗余文件）。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
-## 1. 已存在的素材（131 个）
+## 1. 已存在的素材
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
@@ -124,7 +125,13 @@
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
 | 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
 | 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |
-| 已存在 | 裂甲奔袭者基准造型 | `enemy_rift_rusher_reference.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_reference.png` | 256x256 / RGBA PNG | 原创厚甲四足怪，约 10% 克苏鲁元素；直接像素绘制 |
+| 已存在 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 640x160 / 4 帧 / RGBA PNG | 宽站姿、右手自然垂锤、青色几何符文 |
+| 已存在 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1280x160 / 8 帧 / RGBA PNG | 大腿带动膝踝、胯甲随腿摆动，840 毫秒循环 |
+| 已存在 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 640x160 / 4 帧 / RGBA PNG | 巨盾防护、抬锤，800 毫秒 |
+| 已存在 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 960x160 / 6 帧 / RGBA PNG | 冲刺与挥锤同步，160 毫秒 |
+| 已存在 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 640x160 / 4 帧 / RGBA PNG | 收锤并恢复宽站姿，500 毫秒 |
+| 已存在 | 钢甲骑士死亡 | `knight_death.png` | `assets/sprites/enemies/iron_knight/knight_death.png` | 960x160 / 6 帧 / RGBA PNG | 甲身倒下，1120 毫秒后由代码淡出 |
+| 旧版留存 | 裂甲奔袭者基准造型 | `enemy_rift_rusher_reference.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_reference.png` | 256x256 / RGBA PNG | 原创厚甲四足怪，约 10% 克苏鲁元素；直接像素绘制 |
 | 已存在 | 裂甲奔袭者待机展示帧 | `enemy_rift_rusher_idle.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_idle.png` | 1024x256 / 4 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
 | 已存在 | 裂甲奔袭者移动展示帧 | `enemy_rift_rusher_move.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_move.png` | 1536x256 / 6 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
 | 已存在 | 裂甲奔袭者蓄力展示帧 | `enemy_rift_rusher_windup.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_windup.png` | 768x256 / 3 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
@@ -146,7 +153,6 @@
 | 已接入 | 风刃附魔图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 16x16 / 1:1 / RGBA PNG | 青白月牙风刃；至少 1 像素透明边距；原 SVG 保留 |
 | 已存在 | 火焰卷轴图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 结霜卷轴图标 | `scroll_ice.png` | `assets/ui/icons/augmentations/scroll_ice.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 连锁主宰卷轴图标 | `scroll_lightning.png` | `assets/ui/icons/augmentations/scroll_lightning.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 穿透卷轴图标 | `scroll_pierce.png` | `assets/ui/icons/augmentations/scroll_pierce.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 分裂卷轴图标 | `scroll_split.png` | `assets/ui/icons/augmentations/scroll_split.png` | 16x16 / 1:1 / PNG |  |
 | 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版保留 |

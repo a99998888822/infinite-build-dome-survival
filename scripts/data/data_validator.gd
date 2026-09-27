@@ -204,6 +204,8 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 
 
 func _allows_fractional_config_value(path: String) -> bool:
+	if path.begins_with("drop_tables[") and path.ends_with(".augmentation_chance_percent"):
+		return true
 	if path.begins_with("weapons[") and (path.ends_with(".flail_outer_threshold") or path.ends_with(".flail_outer_multiplier")):
 		return true
 	if path.begins_with("enemies[") and path.ends_with(".elite_profile.dash_half_width"):
@@ -264,6 +266,8 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
 	_validate_non_negative_int(record, "attachment_slots", path)
+	if int(record.get("attachment_slots", 0)) != WeaponInstance.get_attachment_slots_for_rarity(str(record.get("rarity", "common"))):
+		errors.append("%s.attachment_slots must match rarity: common/uncommon=1, rare or higher=2." % path)
 	if str(record.get("projectile_behavior", "")) == "meteor_flail":
 		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0:
 			errors.append("%s requires melee damage and positive flail reach/head radius." % path)
@@ -399,6 +403,21 @@ func _validate_relic_runtime_effect(effect: Variant, path: String) -> void:
 			errors.append("%s.condition is not a supported stat condition." % path)
 	if effect_data.has("else_value") and not effect_data.has("condition"):
 		errors.append("%s.else_value requires a condition." % path)
+	if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_CONDITIONAL_STAT:
+		_validate_required_fields(effect_data, ["condition", "threshold", "stat", "value"], path)
+		if str(effect_data.get("condition", "")) not in ["humanity_below", "hp_percent_below", "stationary_seconds"]:
+			errors.append("%s.condition is not a supported stat condition." % path)
+		if str(effect_data.get("trigger", "")) != BattleFinanceSystem.TRIGGER_DYNAMIC:
+			errors.append("%s requires the dynamic trigger." % path)
+		if str(effect_data.get("condition", "")) == "stationary_seconds":
+			var threshold: Variant = effect_data.get("threshold")
+			if (threshold is int or threshold is float) and (not is_finite(float(threshold)) or float(threshold) <= 0.0):
+				errors.append("%s.threshold must be finite and positive." % path)
+	if effect_data.has("positive_source_only"):
+		if not effect_data.positive_source_only is bool:
+			errors.append("%s.positive_source_only must be a boolean." % path)
+		if str(effect_data.get("effect", "")) != BattleFinanceSystem.EFFECT_DERIVED_STAT_FROM_PLAYER_STAT:
+			errors.append("%s.positive_source_only requires player-stat derivation." % path)
 	if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
 		_validate_required_fields(effect_data, ["minimum_deposit", "value"], path)
 		_validate_non_negative_int(effect_data, "minimum_deposit", path)
@@ -811,6 +830,23 @@ func _validate_drop_table_records(records: Array, records_by_id: Dictionary) -> 
 		if not (record is Dictionary):
 			continue
 		var path := "drop_tables[%d:%s]" % [record_index, str(record.get("id", ""))]
+		if record.has("augmentation_chance_percent"):
+			var chance: Variant = record.augmentation_chance_percent
+			if not (chance is int or chance is float) or not is_finite(float(chance)) or float(chance) < 0.0 or float(chance) > 100.0:
+				errors.append("%s.augmentation_chance_percent must be between 0 and 100." % path)
+			var rarity_weights: Variant = record.get("augmentation_rarity_weights", {})
+			if not (rarity_weights is Dictionary) or rarity_weights.is_empty():
+				errors.append("%s.augmentation_rarity_weights must be a nonempty object." % path)
+			else:
+				var total_weight := 0.0
+				for rarity in rarity_weights:
+					var weight: Variant = rarity_weights[rarity]
+					if not VALID_RARITIES.has(str(rarity)) or not (weight is int or weight is float) or not is_finite(float(weight)) or float(weight) < 0.0:
+						errors.append("%s.augmentation_rarity_weights requires valid rarities and finite nonnegative weights." % path)
+					else:
+						total_weight += float(weight)
+				if total_weight <= 0.0:
+					errors.append("%s.augmentation_rarity_weights must contain a positive weight." % path)
 		if record.has("elite_relic_decay_percent"):
 			var decay: Variant = record["elite_relic_decay_percent"]
 			if not (decay is int or decay is float) or not is_finite(float(decay)) or float(decay) < 0.0 or float(decay) > 100.0 or float(decay) != floorf(float(decay)):
@@ -825,12 +861,18 @@ func _validate_drop_table_records(records: Array, records_by_id: Dictionary) -> 
 			if not (entry is Dictionary):
 				errors.append("%s must be an object." % entry_path)
 				continue
-			_validate_required_fields(entry, ["type", "amount", "chance_percent"], entry_path)
+			var is_augmentation := str(entry.get("type", "")) == "augmentation"
+			_validate_required_fields(entry, ["type", "amount", "weight"] if is_augmentation else ["type", "amount", "chance_percent"], entry_path)
 			if entry.has("type") and not VALID_DROP_TYPES.has(str(entry["type"])):
 				warnings.append("Unknown drop type in %s: %s" % [entry_path, str(entry["type"])])
 			if int(entry.get("chance_percent", 0)) < 0 or int(entry.get("chance_percent", 0)) > 100:
 				errors.append("%s.chance_percent must be between 0 and 100." % entry_path)
 			if str(entry.get("type", "")) == "augmentation":
+				var weight: Variant = entry.get("weight", 0)
+				if not (weight is int or weight is float) or not is_finite(float(weight)) or float(weight) <= 0.0:
+					errors.append("%s.weight must be positive." % entry_path)
+				if int(entry.get("amount", 0)) != 1 or not record.has("augmentation_chance_percent"):
+					errors.append("%s requires amount=1 and a table-level augmentation_chance_percent." % entry_path)
 				var item_id := str(entry.get("item_id", entry.get("augmentation_id", "")))
 				if item_id.is_empty():
 					errors.append("%s requires item_id for augmentation drops." % entry_path)

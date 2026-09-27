@@ -7,6 +7,7 @@ const WALL_A = preload("res://assets/sprites/background/wetland/ruin_low_wall_01
 const WALL_B = preload("res://assets/sprites/background/wetland/ruin_low_wall_02.png")
 
 var _camera_x := 0.0
+var _horizon_y := 0.0
 var _content_rects: Dictionary = {}
 var _placements: Array[Dictionary] = []
 
@@ -18,6 +19,7 @@ func _ready() -> void:
 
 func configure_view(horizon: float, size: Vector2, camera_x: float) -> void:
 	_camera_x = camera_x
+	_horizon_y = horizon
 	_placements.clear()
 	# The sky coordinator supplies one horizon for both stones and water.
 	for layer in range(2):
@@ -43,19 +45,29 @@ func get_placements() -> Array[Dictionary]:
 func _add_placement(texture: Texture2D, base: Vector2, scale_factor: float, tint: Color) -> void:
 	var source: Rect2 = _content_rects.get(texture, Rect2(Vector2.ZERO, texture.get_size()))
 	var destination := get_ruin_rect(texture, base, scale_factor)
-	_placements.append({"texture": texture, "source": source, "rect": destination, "base": base, "tint": tint})
+	# This canvas is above the world water: explicitly omit submerged pixels
+	# instead of drawing the sprite's complete base and an airborne oval shadow.
+	var submerged := clampf(destination.size.y * 0.24, 6.0, 16.0)
+	var waterline := maxf(roundf(base.y - submerged), _horizon_y + 2.0)
+	var exposed := destination
+	exposed.size.y = maxf(0.0, waterline - destination.position.y)
+	var exposed_source := source
+	exposed_source.size.y *= exposed.size.y / maxf(destination.size.y, 1.0)
+	_placements.append({"texture": texture, "source": exposed_source, "rect": exposed,
+		"base": Vector2(base.x, waterline), "waterline": waterline, "tint": tint})
 
 
 func _draw() -> void:
 	for placement in _placements:
 		var destination: Rect2 = placement.rect
-		var base: Vector2 = placement.base
 		var tint: Color = placement.tint
-		# Visible stone feet stay fixed; only the separate reflection is animated.
-		draw_set_transform(Vector2(destination.get_center().x, base.y - 1.0), 0.0, Vector2(1.0, 0.20))
-		draw_circle(Vector2.ZERO, destination.size.x * 0.42, Color(0.008, 0.02, 0.018, tint.a * 0.65))
-		draw_set_transform(Vector2.ZERO)
 		draw_texture_rect_region(placement.texture, destination, placement.source, tint)
+		# A short damp band softens the exposed stone at the same reflection edge.
+		var wet_rect := Rect2(destination.position.x, destination.end.y - 3.0, destination.size.x, 3.0)
+		var source: Rect2 = placement.source
+		var sample_height := source.size.y * 3.0 / maxf(destination.size.y, 1.0)
+		var wet_source := Rect2(source.position.x, source.end.y - sample_height, source.size.x, sample_height)
+		draw_texture_rect_region(placement.texture, wet_rect, wet_source, Color(0.08, 0.17, 0.15, tint.a * 0.6))
 
 
 func get_ruin_rect(texture: Texture2D, base: Vector2, scale_factor: float) -> Rect2:

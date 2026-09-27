@@ -79,8 +79,8 @@ func _run() -> void:
 	weapon.runtime_stats.melee_damage += 10
 	check(weapon.calculate_damage_events()[0].damage == 32, "melee stat scales damage")
 	weapon.runtime_stats.melee_damage -= 10
-	check(weapon.get_load_cost() == 18 and weapon.get_attachment_slot_count() == 3, "load and attachment slots")
-	check(weapon.build_full_stats_text().contains("近战伤害") and weapon.build_full_stats_text().contains("22 / 33"), "details show melee and outer damage")
+	check(weapon.get_load_cost() == 18 and weapon.get_attachment_slot_count() == 2, "load and rare attachment slots")
+	check(weapon.build_full_stats_text().contains("[color=#EE7777]+0[/color]") and not weapon.build_full_stats_text().contains("伸展至"), "details retain red melee contribution and omit the outer-reach explanation")
 	advance(flail, 0.17)
 	check(hits.is_empty(), "windup has no damage")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)

@@ -42,9 +42,13 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var unit := minf(2.0, size.x / 128.0)
-	var origin := Vector2((size.x - 128.0 * unit) * 0.5, size.y - 59.0 * unit)
 	# Character size is independent of the counter's responsive enlargement.
 	var actor_unit := minf(1.0, unit) * ACTOR_SCALE
+	# Fit the entire silhouette, including breathing, into short window headers.
+	var fit := minf(1.0, size.y / maxf(1.0, 42.0 * unit + 96.0 * actor_unit + 2.0))
+	unit *= fit
+	actor_unit *= fit
+	var origin := Vector2((size.x - 128.0 * unit) * 0.5, size.y - 59.0 * unit)
 	var actor_size := Vector2(128, 112) * actor_unit
 	var actor_pos := Vector2(size.x * 0.5 - actor_size.x * 0.5, origin.y + 17.0 * unit - 96.0 * actor_unit)
 	actor_pos.y += roundf(sin(_elapsed * 1.5) * 0.6)

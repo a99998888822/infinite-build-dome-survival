@@ -4,14 +4,9 @@ class_name AugmentationPickup
 signal collected(pickup: AugmentationPickup, item_instance_id: String)
 
 const DEFAULT_ATTRACT_SPEED: float = 300.0
-const RARITY_COLORS: Dictionary = {
-	"common": Color(0.43, 0.72, 0.48, 1.0),
-	"uncommon": Color(0.34, 0.82, 0.78, 1.0),
-	"rare": Color(0.34, 0.55, 0.95, 1.0),
-	"epic": Color(0.72, 0.42, 0.94, 1.0),
-	"mythic": Color(1.0, 0.54, 0.25, 1.0),
-	"legendary": Color(1.0, 0.82, 0.28, 1.0),
-}
+const RARITY_COLORS: Dictionary = ItemInventoryCard.RARITY_COLORS
+const ICON_SCALE := Vector2.ONE
+const GLOW_RADIUS := 20.0
 
 @export var attract_speed: float = DEFAULT_ATTRACT_SPEED
 
@@ -20,7 +15,7 @@ var amount: int = 1
 var target_player: PlayerController = null
 var collected_once: bool = false
 var _display_color: Color = Color.WHITE
-var _rotation_time: float = 0.0
+var _age: float = 0.0
 var _icon_sprite: Sprite2D = null
 
 
@@ -35,6 +30,7 @@ func _ready() -> void:
 	_icon_sprite.z_index = 1
 	_icon_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_icon_sprite.centered = true
+	_icon_sprite.scale = ICON_SCALE
 	add_child(_icon_sprite)
 	queue_redraw()
 
@@ -56,8 +52,7 @@ func set_target_player(player: PlayerController) -> void:
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	_rotation_time += delta
-	rotation = _rotation_time * 2.2
+	_age += delta
 	queue_redraw()
 	if target_player == null or collected_once:
 		return
@@ -104,7 +99,8 @@ func _update_icon(icon_path: String) -> void:
 
 
 func _draw() -> void:
-	var pulse := 1.0 + sin(_rotation_time * 7.0) * 0.10
-	draw_circle(Vector2.ZERO, 20.0 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.14))
-	draw_circle(Vector2.ZERO, 13.0 * pulse, Color(_display_color.r, _display_color.g, _display_color.b, 0.85))
-	draw_colored_polygon(PackedVector2Array([Vector2(0, -14), Vector2(12, 0), Vector2(0, 14), Vector2(-12, 0)]), Color.WHITE)
+	var pulse := 0.9 + sin(_age * 2.6) * 0.1
+	# A faint falloff behind the actual inventory icon; no opaque badge or spin.
+	for layer in 6:
+		var radius := GLOW_RADIUS * (1.0 - float(layer) * 0.12)
+		draw_circle(Vector2.ZERO, radius, Color(_display_color, (0.012 + float(layer) * 0.006) * pulse))

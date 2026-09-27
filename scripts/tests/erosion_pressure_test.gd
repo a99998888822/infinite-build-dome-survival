@@ -79,10 +79,10 @@ func _test_spawns_and_damage() -> void:
 		var hot := _spawn(hot_manager, id)
 		var extreme := _spawn(extreme_manager, id)
 		hot_enemies.append(hot)
-		# Wave 15: 10 * 1.4^14 * 1.2 (region) * 2.8 (erosion), rounded once.
+		# Beginner wave 15: 10 * 0.8 * 1.14^14 * 1.2 (region) * 2.8 (erosion).
 		# Elite rank applies after rounding the same-wave normal HP.
 		var hp_rank := 20 if hot is EliteRusher else 1
-		check(cold.get_stat("max_hp") == 1333 * hp_rank and hot.get_stat("max_hp") == 3734 * hp_rank, "%s HP combines wave, region and erosion once" % id)
+		check(cold.get_stat("max_hp") == roundi(8.0 * pow(1.14, 14) * 1.2) * hp_rank and hot.get_stat("max_hp") == roundi(8.0 * pow(1.14, 14) * 1.2 * 2.8) * hp_rank, "%s HP combines difficulty, wave, region and erosion once" % id)
 		check(absf(hot.get_stat("armor") - cold.get_stat("armor") * 2.35) <= 1.0, "%s armor combines rank and erosion once" % id)
 		check(hot.current_hp == int(hot.get_stat("max_hp")), "%s spawns with full scaled health" % id)
 		check(extreme.get_stat("max_hp") > hot.get_stat("max_hp") and extreme.current_hp == int(extreme.get_stat("max_hp")), "%s erosion 200 spawns at full increased health" % id)
@@ -91,18 +91,17 @@ func _test_spawns_and_damage() -> void:
 			cold.modifier_stack.set_base_stat(stat, 100.0)
 			hot.modifier_stack.set_base_stat(stat, 100.0)
 			extreme.modifier_stack.set_base_stat(stat, 100.0)
-			check(hot.get_stat(stat) == 190.0 and cold.get_stat(stat) == 100.0, "%s also scales %s" % [id, stat])
-			check(extreme.get_stat(stat) == 280.0, "%s erosion 200 continues scaling %s" % [id, stat])
+			check(hot.get_stat(stat) == 86.0 and cold.get_stat(stat) == 45.0, "%s also scales %s with beginner damage" % [id, stat])
+			check(extreme.get_stat(stat) == 126.0, "%s erosion 200 continues scaling %s" % [id, stat])
 		if hot is EliteRusher:
 			cold._process_special_behavior(0.75)
 			hot._process_special_behavior(0.75)
 			extreme._process_special_behavior(0.75)
-			cold.start_dash()
-			hot.start_dash()
-			extreme.start_dash()
-			cold._try_dash_damage(0.0, 20.0)
-			hot._try_dash_damage(0.0, 20.0)
-			extreme._try_dash_damage(0.0, 20.0)
+			for elite in [cold, hot, extreme]:
+				elite._cooldown = 0.0
+				check(elite.start_dash(), "erosion damage fixture enters a valid dash")
+				elite._try_dash_damage(0.0, 20.0)
+				elite.cancel_skill()
 		else:
 			cold._process_contact_damage()
 			hot._process_contact_damage()

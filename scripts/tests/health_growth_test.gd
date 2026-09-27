@@ -129,6 +129,11 @@ func _test_contact_and_revive() -> void:
 	var enemy_b := manager.spawn_enemy("enemy_mutated_grub", p.global_position)
 	check(enemy_a != null and enemy_b != null, "ordinary contact test spawns two real enemies")
 	if enemy_a != null and enemy_b != null:
+		# This checks the base contact/health contract, independent of difficulty.
+		enemy_a.modifier_stack.clear_modifiers()
+		enemy_b.modifier_stack.clear_modifiers()
+		enemy_a.initialize("enemy_mutated_grub", p)
+		enemy_b.initialize("enemy_mutated_grub", p)
 		enemy_a.set_physics_process(false)
 		enemy_b.set_physics_process(false)
 		enemy_a._process_contact_damage()

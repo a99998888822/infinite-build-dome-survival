@@ -120,8 +120,7 @@ func _run() -> void:
 	check(popup.portrait.is_visible_in_tree() and popup.portrait.expression in [3, 4], "successful deposit keeps visible banker reaction")
 	check(int(manager.finance_system.last_manual_operation.get("amount", 0)) == deposit, "deposit amount is unchanged by layout")
 	await capture("bank_after_deposit")
-	# Compact layouts keep the bank header bound to its tab; very short windows
-	# retain scrollable forms instead of sacrificing access to the confirmation.
+	# Compact layouts reserve a banker column across tabs and keep forms scrollable.
 	window.size = Vector2i(660, 720)
 	window.content_scale_size = Vector2i(660, 720)
 	await frames(10)
@@ -130,10 +129,19 @@ func _run() -> void:
 	await frames()
 	check(popup.portrait.is_visible_in_tree(), "tall compact bank shows portrait")
 	popup._select_tab("shop")
-	check(not popup.portrait.is_visible_in_tree(), "compact shop does not leave banker over the merchandise")
+	check(popup.portrait.is_visible_in_tree() and not popup._bank_header.get_global_rect().intersects(popup._shop.get_global_rect()), "compact shop keeps banker beside merchandise")
 	popup.set_safe_rect(Rect2(8, 70, 644, 280))
 	popup._select_tab("bank")
-	check(not popup.portrait.is_visible_in_tree() and popup._bank.visible, "short bank preserves form access")
+	await frames()
+	check(popup.portrait.is_visible_in_tree() and popup._bank.visible and not popup._bank_header.get_global_rect().intersects(popup._bank.get_global_rect()), "short bank keeps portrait and scrollable form accessible")
+	window.size = Vector2i(640, 360)
+	window.content_scale_size = Vector2i(640, 360)
+	await frames(10)
+	for tab in ["bank", "shop", "enchant"]:
+		popup._select_tab(tab)
+		await frames()
+		check(popup.portrait.is_visible_in_tree() and popup.main_panel.get_global_rect().encloses(popup.portrait.get_global_rect()), "small window retains banker in " + tab)
+		await capture("bank_small_window_" + tab)
 
 	flow.request_battle_utility("settings")
 	flow.return_to_main_menu_from_settings()

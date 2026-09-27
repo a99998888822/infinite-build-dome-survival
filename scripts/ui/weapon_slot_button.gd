@@ -22,6 +22,8 @@ func set_attachment_editing_enabled(enabled: bool) -> void:
 
 
 func _refresh_text() -> void:
+	# Both hosts render weapon details in their own rich-text HUD.
+	tooltip_text = ""
 	if weapon == null:
 		text = ""
 		return
@@ -32,7 +34,6 @@ func _refresh_text() -> void:
 		return
 	var attached_count := weapon.get_attached_item_instances().size()
 	text = "%s\n[附魔 %d/%d]" % [weapon_name, attached_count, slot_count]
-	tooltip_text = weapon.build_full_stats_text()
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:

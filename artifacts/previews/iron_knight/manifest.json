@@ -1,0 +1,206 @@
+{
+  "preview_only": true,
+  "direct_pixel_drawing": true,
+  "frame_size": [
+    160,
+    160
+  ],
+  "anchor": [
+    80,
+    122
+  ],
+  "suggested_runtime_scale": 0.7,
+  "palette": {
+    "ink": "#090f19",
+    "joint": "#131d2a",
+    "deep": "#1b2a39",
+    "shadow": "#25384b",
+    "low": "#354d62",
+    "steel": "#526d80",
+    "light": "#7f99a8",
+    "shine": "#b9c9ce",
+    "glint": "#e0e6dc",
+    "blue": "#123440",
+    "blue_dark": "#0e2430",
+    "blue_light": "#1b4b56",
+    "brass_dark": "#4b4c37",
+    "brass": "#8a8b5c",
+    "brass_light": "#b8b681",
+    "rune_dark": "#1c515f",
+    "rune": "#327889",
+    "rune_light": "#71b4b6",
+    "leather": "#17262d",
+    "leather_light": "#516367"
+  },
+  "actions": {
+    "idle": {
+      "count": 4,
+      "durations_ms": [
+        230,
+        230,
+        230,
+        230
+      ],
+      "loop": true,
+      "unique_frames": 4,
+      "sheet_size": [
+        640,
+        160
+      ]
+    },
+    "move": {
+      "count": 8,
+      "durations_ms": [
+        120,
+        100,
+        100,
+        100,
+        120,
+        100,
+        100,
+        100
+      ],
+      "loop": true,
+      "unique_frames": 8,
+      "sheet_size": [
+        1280,
+        160
+      ]
+    },
+    "windup": {
+      "count": 4,
+      "durations_ms": [
+        160,
+        180,
+        200,
+        260
+      ],
+      "loop": false,
+      "unique_frames": 4,
+      "sheet_size": [
+        640,
+        160
+      ]
+    },
+    "dash": {
+      "count": 6,
+      "durations_ms": [
+        20,
+        20,
+        40,
+        40,
+        20,
+        20
+      ],
+      "loop": false,
+      "unique_frames": 6,
+      "sheet_size": [
+        960,
+        160
+      ]
+    },
+    "recover": {
+      "count": 4,
+      "durations_ms": [
+        100,
+        100,
+        140,
+        160
+      ],
+      "loop": false,
+      "unique_frames": 4,
+      "sheet_size": [
+        640,
+        160
+      ]
+    },
+    "death": {
+      "count": 6,
+      "durations_ms": [
+        100,
+        100,
+        140,
+        180,
+        220,
+        380
+      ],
+      "loop": false,
+      "unique_frames": 6,
+      "sheet_size": [
+        960,
+        160
+      ]
+    }
+  },
+  "reference_style": "pointed closed helm, tiered dark steel, separate teal angular runes, kite shield",
+  "neutral_pose": {
+    "legs": "wide straight stance with outward thigh alignment",
+    "foot_spacing": 40,
+    "hammer_arm": "relaxed at side",
+    "hand": [
+      38,
+      80
+    ],
+    "hammer_head": [
+      35,
+      100
+    ]
+  },
+  "gait": {
+    "frames": 8,
+    "cycle_ms": 840,
+    "upper_leg_length": 21,
+    "lower_leg_length": 21,
+    "thigh_plates_follow_leg": true,
+    "pelvis_and_body_shift": true
+  },
+  "dash": {
+    "duration_ms": 160,
+    "previous_duration_ms": 400,
+    "speed_multiplier": 2.5,
+    "distance": 240,
+    "speed": 1500.0,
+    "windup_ms": 800,
+    "hammer_synchronized": true
+  },
+  "telegraph": {
+    "fill_alpha": 31,
+    "edge_alpha_range": [
+      107,
+      140
+    ],
+    "edge_particle_alpha_range": [
+      122,
+      153
+    ],
+    "radius_gate": 240,
+    "shape": "straight rectangle without arrows or rounded corners"
+  },
+  "attack_gif": {
+    "frames": 142,
+    "duration_ms": 4160,
+    "size": [
+      960,
+      550
+    ],
+    "sample_fps": 50
+  },
+  "speed_comparison_gif": {
+    "frames": 74,
+    "duration_ms": 3000,
+    "size": [
+      960,
+      648
+    ],
+    "sample_fps": 50
+  },
+  "walk_review_gif": {
+    "frames": 32,
+    "duration_ms": 2520,
+    "size": [
+      1000,
+      620
+    ],
+    "sample_fps": 50
+  }
+}

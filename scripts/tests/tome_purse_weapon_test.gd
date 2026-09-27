@@ -96,7 +96,7 @@ func _run() -> void:
 	purse = loadout.get_weapon_instance(PURSE)
 	tome.runtime_stats.crit_chance = 0
 	purse.runtime_stats.crit_chance = 0
-	check(loadout.get_total_load_cost() == 32 and tome.get_attachment_slot_count() == 3 and purse.get_attachment_slot_count() == 3, "load and attachment slots integrate")
+	check(loadout.get_total_load_cost() == 32 and tome.get_attachment_slot_count() == 2 and purse.get_attachment_slot_count() == 1, "load and rarity attachment slots integrate")
 	check(tome.calculate_damage_events()[0].damage == 10 and tome.calculate_damage_events()[0].damage_kind == "element", "native tome is ten elemental damage")
 	check(purse.calculate_damage_events()[0].damage == 4 and purse.get_stat("projectile_count") == 3, "native purse has three four-damage coins at zero principal")
 	manager.finance_system.deposit(400, true, "test")
@@ -111,7 +111,8 @@ func _run() -> void:
 	check(purse.calculate_damage_events(true)[0].damage == 29 and tome.calculate_damage_events(true)[0].damage == 31, "both support critical scaling before rounding")
 	manager.finance_system.deposit(500, true, "test")
 	check(purse.calculate_damage_events()[0].damage == 23, "next shot reflects changed principal")
-	check(purse.build_full_stats_text().contains("900") and tome.build_full_stats_text().contains("元素伤害"), "details show live principal and elemental damage type")
+	check(purse.build_full_stats_text().contains("[color=#7FD88F]+6[/color][color=#F5D76E]+9[/color]")
+		and tome.build_full_stats_text().contains("[color=#78B7FF]+7[/color]"), "details show resolved live principal ranged and elemental contributions")
 	modifier("attack_speed", 100)
 	check(is_equal_approx(tome.get_actual_attack_interval_seconds(), 0.4) and is_equal_approx(purse.get_actual_attack_interval_seconds(), 0.55), "attack speed applies to both")
 	modifier("area_size", 50)
@@ -179,6 +180,7 @@ func _run() -> void:
 	check(enemies.all(func(e): return e.current_hp == 996), "pierce processes ordered contacts in one large frame")
 	check(not loadout.attach_item_to_weapon(TOME, pierce.item_instance_id) and player.item_inventory.find_item(pierce.item_instance_id).equipped_weapon_id == PURSE, "incompatible pierce transfer preserves its purse owner")
 	loadout.detach_item_from_weapon(PURSE, pierce.item_instance_id)
+	check(loadout.upgrade_weapon(PURSE) and loadout.upgrade_weapon(PURSE) and purse.get_attachment_slot_count() == 2, "rare purse unlocks a second slot")
 	fixture([Vector2(90,0),Vector2(180,40),Vector2(180,-40)])
 	split = attach(purse, "scroll_split")
 	fire = attach(purse, "scroll_fire")
@@ -189,7 +191,7 @@ func _run() -> void:
 	var children := coins().filter(func(c): return c.split_generation == 1)
 	check(children.size() == 2 and not enemies[0].is_alive(), "lethal purse hit still launches two split coins")
 	for child in children: child._physics_process(0.4)
-	check(enemies[1].current_hp == 994 and enemies[2].current_hp == 994 and enemies[1].has_status("burning") and enemies[2].has_status("burning"), "split coins deal sixty percent damage and carry fire")
+	check(enemies[1].current_hp == 993 and enemies[2].current_hp == 993 and enemies[1].has_status("burning") and enemies[2].has_status("burning"), "rare purse split coins deal sixty percent damage and carry fire")
 	check(coins().is_empty(), "split coins stop at one generation")
 	check(manager.finance_system.principal == 400, "firing and split never spend principal")
 	loadout.detach_item_from_weapon(PURSE, fire.item_instance_id)
@@ -217,7 +219,7 @@ func _run() -> void:
 	loadout.restore_traded_weapon(taken, 0)
 	check(loadout.has_weapon(TOME) and not loadout._ensure_ritual_domain(tome).cancelled, "trade rollback restores operational domain")
 	for index in 4:
-		check(loadout.upgrade_weapon(TOME) and loadout.upgrade_weapon(PURSE), "both upgrade through level %d" % (index + 2))
+		check(loadout.upgrade_weapon(TOME) and (purse.level == 5 or loadout.upgrade_weapon(PURSE)), "both upgrade towards maximum on step %d" % (index + 2))
 	check(tome.get_base_attack_damage() == 22 and purse.get_base_attack_damage() == 8 and not tome.upgrade() and not purse.upgrade(), "level five gains persist and max level is enforced")
 	var pool := ShopOfferGenerator.new().build_shop_candidate_pool({"load_capacity": 100, "current_load": 0})
 	check(pool.any(func(o): return o.target_id == TOME) and pool.any(func(o): return o.target_id == PURSE), "both enter shared shop and reward pool")
@@ -237,10 +239,12 @@ func _run() -> void:
 		check(flow.submit_inventory_sale("weapon", weapon_id, quote.quote_token).success and manager.get_current_gold() == gold_before + int(quote.total), "real sale credits the quoted value for " + weapon_id)
 		check(not loadout.has_weapon(weapon_id) and player.item_inventory.find_item(fire.item_instance_id).equipped_weapon_id == "", "sale returns the attachment and removes the weapon")
 		var offer: Dictionary = pool.filter(func(o): return o.target_id == weapon_id and o.offer_type == "new_weapon")[0]
+		ShopPricing.apply(offer, flow._build_shop_context())
 		flow._active_shop_offers[offer.offer_id] = offer.duplicate(true)
 		gold_before = manager.get_current_gold()
 		check(flow.submit_shop_purchase(offer, "shop").success and loadout.has_weapon(weapon_id) and manager.get_current_gold() == gold_before - int(offer.shop_cost), "real purchase deducts cost and equips " + weapon_id)
 		var upgrade: Dictionary = owned.filter(func(o): return o.target_id == weapon_id and o.offer_type == "weapon_upgrade")[0]
+		ShopPricing.apply(upgrade, flow._build_shop_context())
 		flow._active_shop_offers[upgrade.offer_id] = upgrade.duplicate(true)
 		check(flow.submit_shop_purchase(upgrade, "shop").success and loadout.get_weapon_instance(weapon_id).level == 2, "real purchase applies next-level upgrade")
 	check(flow.submit_enchantment_operation("attach", TOME, pierce.item_instance_id).reason == "incompatible_enchantment", "finance authority rejects tome pierce")

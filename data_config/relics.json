@@ -1683,5 +1683,437 @@
     "runtime_effects": [
       {"trigger": "lethal_damage", "effect": "principal_revive", "minimum_principal": 1000, "principal_cost": 500, "health_percent": 50, "max_uses": 1}
     ]
+  },
+  {
+    "id": "relic_old_brass_telescope",
+    "display_name": "旧铜望远镜",
+    "description": "攻击距离 +15，远程伤害 +1。",
+    "icon": "res://assets/ui/icons/relics/relic_old_brass_telescope.png",
+    "icon_description": "短黄铜望远镜、棕色握套、青色镜片。",
+    "rarity": "common",
+    "max_stack": 3,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_old_brass_telescope_area_size",
+        "source_type": "relic",
+        "source_id": "relic_old_brass_telescope",
+        "target_scope": "player",
+        "stat": "area_size",
+        "operation": "add_flat",
+        "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_old_brass_telescope_ranged_damage",
+        "source_type": "relic",
+        "source_id": "relic_old_brass_telescope",
+        "target_scope": "player",
+        "stat": "ranged_damage",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_cracked_bronze_bell",
+    "display_name": "裂纹铜铃",
+    "description": "伤害范围 +15，元素伤害 +1。",
+    "icon": "res://assets/ui/icons/relics/relic_cracked_bronze_bell.png",
+    "icon_description": "裂纹铜铃、外扩的铃口、短弧回声。",
+    "rarity": "common",
+    "max_stack": 3,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_cracked_bronze_bell_damage_area_size",
+        "source_type": "relic",
+        "source_id": "relic_cracked_bronze_bell",
+        "target_scope": "player",
+        "stat": "damage_area_size",
+        "operation": "add_flat",
+        "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_cracked_bronze_bell_element_damage",
+        "source_type": "relic",
+        "source_id": "relic_cracked_bronze_bell",
+        "target_scope": "player",
+        "stat": "element_damage",
+        "operation": "add_flat",
+        "value": 1,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_long_focus_eyepiece",
+    "display_name": "长焦目镜",
+    "description": "攻击距离 +35，远程伤害 +3，攻击速度 −8。",
+    "icon": "res://assets/ui/icons/relics/relic_long_focus_eyepiece.png",
+    "icon_description": "细长黑铁镜筒、红色镜片、黄铜旋钮。",
+    "rarity": "uncommon",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_long_focus_eyepiece_area_size",
+        "source_type": "relic",
+        "source_id": "relic_long_focus_eyepiece",
+        "target_scope": "player",
+        "stat": "area_size",
+        "operation": "add_flat",
+        "value": 35,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_long_focus_eyepiece_ranged_damage",
+        "source_type": "relic",
+        "source_id": "relic_long_focus_eyepiece",
+        "target_scope": "player",
+        "stat": "ranged_damage",
+        "operation": "add_flat",
+        "value": 3,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_long_focus_eyepiece_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_long_focus_eyepiece",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_flat",
+        "value": -8,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_diffusion_nozzle",
+    "display_name": "扩散喷口",
+    "description": "伤害范围 +30，伤害加成 +15，攻击速度 −6。",
+    "icon": "res://assets/ui/icons/relics/relic_diffusion_nozzle.png",
+    "icon_description": "张开的短金属喷口、烧黑内壁、橙红余烬。",
+    "rarity": "uncommon",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_diffusion_nozzle_damage_area_size",
+        "source_type": "relic",
+        "source_id": "relic_diffusion_nozzle",
+        "target_scope": "player",
+        "stat": "damage_area_size",
+        "operation": "add_flat",
+        "value": 30,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_diffusion_nozzle_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_diffusion_nozzle",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_diffusion_nozzle_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_diffusion_nozzle",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_flat",
+        "value": -6,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_range_tripod",
+    "display_name": "定距脚架",
+    "description": "攻击速度 +12；连续静止1秒后，额外攻击距离 +40、伤害加成 +20；移动立即取消额外加成。",
+    "icon": "res://assets/ui/icons/relics/relic_range_tripod.png",
+    "icon_description": "三条撑脚、金属固定环、青色测距晶体。",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_range_tripod_attack_speed",
+        "source_type": "relic",
+        "source_id": "relic_range_tripod",
+        "target_scope": "player",
+        "stat": "attack_speed",
+        "operation": "add_flat",
+        "value": 12,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "dynamic",
+        "effect": "conditional_stat",
+        "condition": "stationary_seconds",
+        "threshold": 1,
+        "stat": "area_size",
+        "value": 40
+      },
+      {
+        "trigger": "dynamic",
+        "effect": "conditional_stat",
+        "condition": "stationary_seconds",
+        "threshold": 1,
+        "stat": "damage_percent",
+        "value": 20
+      }
+    ]
+  },
+  {
+    "id": "relic_aftershock_hourglass",
+    "display_name": "余震沙漏",
+    "description": "伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。",
+    "icon": "res://assets/ui/icons/relics/relic_aftershock_hourglass.png",
+    "icon_description": "铁灰沙漏、琥珀沙粒、底部断续回声弧。",
+    "rarity": "rare",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_aftershock_hourglass_damage_area_size",
+        "source_type": "relic",
+        "source_id": "relic_aftershock_hourglass",
+        "target_scope": "player",
+        "stat": "damage_area_size",
+        "operation": "add_flat",
+        "value": 20,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_aftershock_hourglass_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_aftershock_hourglass",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": 12,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "wave_end",
+        "effect": "add_stat",
+        "stat": "damage_area_size",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "relic_golden_rangefinder",
+    "display_name": "黄金测距仪",
+    "description": "每满100本金：攻击距离 +3、伤害加成 +3，随当前本金变化。",
+    "icon": "res://assets/ui/icons/relics/relic_golden_rangefinder.png",
+    "icon_description": "打开的黄铜圆规、悬挂金币、绿色铰链宝石。",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build",
+      "finance"
+    ],
+    "effects": [],
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "area_size",
+        "divisor": 100,
+        "per_unit": 3
+      },
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "damage_percent",
+        "divisor": 100,
+        "per_unit": 3
+      }
+    ]
+  },
+  {
+    "id": "relic_abyssal_echo_shell",
+    "display_name": "深海回声螺",
+    "description": "伤害范围 +40，元素伤害 +8，理智值 −15。",
+    "icon": "res://assets/ui/icons/relics/relic_abyssal_echo_shell.png",
+    "icon_description": "蓝绿螺壳、幽蓝壳口、少量深色海藻。",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build",
+      "eldritch"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_abyssal_echo_shell_damage_area_size",
+        "source_type": "relic",
+        "source_id": "relic_abyssal_echo_shell",
+        "target_scope": "player",
+        "stat": "damage_area_size",
+        "operation": "add_flat",
+        "value": 40,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_abyssal_echo_shell_element_damage",
+        "source_type": "relic",
+        "source_id": "relic_abyssal_echo_shell",
+        "target_scope": "player",
+        "stat": "element_damage",
+        "operation": "add_flat",
+        "value": 8,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_abyssal_echo_shell_humanity",
+        "source_type": "relic",
+        "source_id": "relic_abyssal_echo_shell",
+        "target_scope": "player",
+        "stat": "humanity",
+        "operation": "add_flat",
+        "value": -15,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_folded_star_chart",
+    "display_name": "折叠星图",
+    "description": "攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。",
+    "icon": "res://assets/ui/icons/relics/relic_folded_star_chart.png",
+    "icon_description": "三折旧星图、紫黑裂缝、跨越折痕的星座。",
+    "rarity": "epic",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build",
+      "eldritch"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_folded_star_chart_area_size",
+        "source_type": "relic",
+        "source_id": "relic_folded_star_chart",
+        "target_scope": "player",
+        "stat": "area_size",
+        "operation": "add_flat",
+        "value": 25,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_folded_star_chart_damage_area_size",
+        "source_type": "relic",
+        "source_id": "relic_folded_star_chart",
+        "target_scope": "player",
+        "stat": "damage_area_size",
+        "operation": "add_flat",
+        "value": 25,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_folded_star_chart_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_folded_star_chart",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": 20,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_folded_star_chart_divinity",
+        "source_type": "relic",
+        "source_id": "relic_folded_star_chart",
+        "target_scope": "player",
+        "stat": "divinity",
+        "operation": "add_flat",
+        "value": 5,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_horizon_orrery",
+    "display_name": "地平线星仪",
+    "description": "攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。",
+    "icon": "res://assets/ui/icons/relics/relic_horizon_orrery.png",
+    "icon_description": "三道倾斜黄铜轨道、黑色星核、暖金缺口光。",
+    "rarity": "mythic",
+    "max_stack": 1,
+    "tags": [
+      "offense",
+      "build",
+      "eldritch"
+    ],
+    "effects": [
+      {
+        "id": "mod_relic_horizon_orrery_area_size",
+        "source_type": "relic",
+        "source_id": "relic_horizon_orrery",
+        "target_scope": "player",
+        "stat": "area_size",
+        "operation": "add_flat",
+        "value": 40,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_horizon_orrery_damage_percent",
+        "source_type": "relic",
+        "source_id": "relic_horizon_orrery",
+        "target_scope": "player",
+        "stat": "damage_percent",
+        "operation": "add_flat",
+        "value": 30,
+        "duration": -1
+      }
+    ],
+    "runtime_effects": [
+      {
+        "trigger": "dynamic",
+        "effect": "derived_stat_from_player_stat",
+        "source_stat": "area_size",
+        "stat": "damage_area_size",
+        "divisor": 10,
+        "per_unit": 5,
+        "positive_source_only": true
+      }
+    ]
   }
 ]

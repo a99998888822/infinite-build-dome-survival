@@ -72,7 +72,7 @@ func snapshot(label: String) -> void:
 	result_log.append({"label": label, "enemies": states})
 
 func _run() -> void:
-	await setup([Vector2.ZERO, Vector2(80, 0), Vector2(165, 0)], {"radius": 132.0})
+	await setup([Vector2.ZERO, Vector2(80, 0), Vector2(100, 0)], {"radius": 132.0})
 	var water := spawn_effect("water_wave")
 	await frames()
 	check(enemies[0].current_hp == 9945 and enemies[1].current_hp == 9945 and enemies[2].current_hp == 10000, "water immediate radius and damage")
@@ -85,6 +85,8 @@ func _run() -> void:
 	check(is_equal_approx(water.get("_elapsed"), 0.3), "paused water clock")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	water.call("_process", 0.23)
+	check(not water.is_queued_for_deletion(), "approved water outlives the old 0.52 second animation")
+	water.call("_process", 0.33)
 	check(water.is_queued_for_deletion(), "water lifetime")
 	await setup([Vector2(125, 0), Vector2(180, 0)], {"radius": 132.0})
 	weapon.runtime_stats["damage_area_size"] = 50.0

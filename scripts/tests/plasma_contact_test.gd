@@ -119,7 +119,7 @@ func _run() -> void:
 	check(enemies[0].current_hp == hp and ball.position == position_before and ball._plasma_visual.elapsed == clock,
 		"pause freezes contact damage, movement and visual clock")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	check(weapon.build_full_stats_text().contains("命中半径[/color] [color=#FFFFFF]12[/color]"), "item details read the shared twelve-pixel contact radius")
+	check(not weapon.build_full_stats_text().contains("命中半径") and weapon.get_hit_radius() == 12, "tooltip omits contact radius while the twelve-pixel hit shape stays unchanged")
 	await check_enchantment_damage()
 	host.queue_free()
 	await frames()

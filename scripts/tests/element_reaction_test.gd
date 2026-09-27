@@ -28,19 +28,20 @@ func count_reflections() -> int:
 
 
 func _run() -> void:
+	await _test_projected_frost_coverage()
 	await setup([Vector2.ZERO])
 	for ids in [["scroll_water", "scroll_black_hole"], ["scroll_black_hole", "scroll_water"]]:
 		equip(ids)
 		var water := PARAMS.build_weapon_context(weapon, "water")
 		var hole := PARAMS.build_weapon_context(weapon, "black_hole")
-		check(water.get_resolved_parameter("radius", 0) == 132 and is_equal_approx(water.get_resolved_parameter("duration", 0), 0.52), "water parameters isolated in " + str(ids))
+		check(water.get_resolved_parameter("radius", 0) == 132 and is_equal_approx(water.get_resolved_parameter("duration", 0), 0.85), "water parameters isolated in " + str(ids))
 		check(hole.get_resolved_parameter("radius", 0) == 100 and is_equal_approx(hole.get_resolved_parameter("duration", 0), 0.85), "black hole parameters isolated in " + str(ids))
 	weapon._attached_item_instances[0]["rolled_parameters"] = {"radius": 99.0}
 	var water := PARAMS.build_weapon_context(weapon, "water")
 	check(water.get_resolved_parameter("radius", 0) == 132, "foreign rolled parameter does not leak")
 	weapon.effect_modifiers.append({"effect_id": "*", "channel": "duration", "operation": "multiply", "value": 2.0})
 	water = PARAMS.build_weapon_context(weapon, "water")
-	check(is_equal_approx(water.get_resolved_parameter("duration", 0), 1.04), "explicit global modifier still works")
+	check(is_equal_approx(water.get_resolved_parameter("duration", 0), 1.70), "explicit global modifier still works")
 
 	for pair in [["water", "fire"], ["fire", "water"]]:
 		await setup([Vector2.ZERO])
@@ -80,7 +81,7 @@ func _run() -> void:
 	equip(["scroll_water", "scroll_ice"])
 	CombatEffectWorld.trigger_weapon_impact(host, weapon, event, Vector2.ZERO, Vector2.RIGHT, enemies[0])
 	check(enemies[0].has_status("frozen"), "same impact water and ice freeze synchronously")
-	await setup([Vector2.ZERO, Vector2(85, 0)])
+	await setup([Vector2.ZERO, Vector2(70, 0)])
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
 	var ice: IceFieldEffect
 	for child in host.get_children():
@@ -149,18 +150,17 @@ func _run() -> void:
 	patch._absorb_seed(Vector2.ZERO, fire_context, 1.0)
 	check(patch._radius >= expanded_radius, "new fire seed does not shrink wind-expanded fire field")
 
-	for mastery in [false, true]:
-		await setup([Vector2.ZERO, Vector2(30, 0), Vector2(60, 0), Vector2(90, 0), Vector2(120, 0)])
-		equip(["scroll_lightning", "wizard_scroll_chain_mastery"] if mastery else ["scroll_lightning"])
-		LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
-		await get_tree().create_timer(0.65).timeout
-		var damaged := 0
-		var correct_damage := true
-		for enemy in enemies:
-			if enemy.current_hp < 10000:
-				damaged += 1
-				correct_damage = correct_damage and enemy.current_hp == (9934 if mastery else 9945)
-		check(damaged == (3 if mastery else 2) and correct_damage, "chain target count and damage mastery=" + str(mastery))
+	await setup([Vector2.ZERO, Vector2(30, 0), Vector2(60, 0), Vector2(90, 0), Vector2(120, 0)])
+	equip(["scroll_lightning"])
+	LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
+	await get_tree().create_timer(0.65).timeout
+	var damaged := 0
+	var correct_damage := true
+	for enemy in enemies:
+		if enemy.current_hp < 10000:
+			damaged += 1
+			correct_damage = correct_damage and enemy.current_hp == 9945
+	check(damaged == 2 and correct_damage, "base chain still hits two targets for unchanged damage")
 
 	await setup([Vector2.ZERO, Vector2(35, 0)])
 	LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
@@ -208,3 +208,30 @@ func _run() -> void:
 	await frames()
 	print("REACTION_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures > 0 else 0)
+
+
+func _test_projected_frost_coverage() -> void:
+	await setup([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
+	equip(["scroll_ice"])
+	var body_radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
+	var positions := [Vector2(51.2 + body_radius - 1.0, 0), Vector2(51.2 + body_radius + 1.0, 0),
+		Vector2(0, 28.16 + body_radius - 1.0), Vector2(0, 28.16 + body_radius + 1.0), Vector2(0, 60)]
+	for index in positions.size(): enemies[index].position = positions[index]
+	await frames()
+	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
+	var field: IceFieldEffect
+	for child in host.get_children():
+		if child is IceFieldEffect: field = child
+	field.set_process(false)
+	check(is_equal_approx(field._radius, 64.0 * 0.8), "ice base radius is eighty percent of the previous radius")
+	check(enemies[0].current_hp == 9965 and enemies[2].current_hp == 9965, "ice covers enemy bodies touching the horizontal and projected vertical edges")
+	check(enemies[1].current_hp == 10000 and enemies[3].current_hp == 10000 and enemies[4].current_hp == 10000,
+		"ice rejects bodies outside either ellipse axis and the removed circular area")
+	field.expand_from_wind(1.35)
+	check(enemies[1].current_hp == 9965 and enemies[3].current_hp == 9965, "wind expands both ellipse axes and reaches newly covered bodies")
+	check(enemies[0].current_hp == 9965 and enemies[2].current_hp == 9965, "projected expansion does not repeat damage")
+	await setup([Vector2(100, 0), Vector2(0, 75)])
+	equip(["scroll_ice"])
+	weapon.runtime_stats.damage_area_size = 100.0
+	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
+	check(enemies[0].has_status("slowed") and not enemies[1].has_status("slowed"), "damage-area bonuses enlarge the projected footprint without restoring circular hits")

@@ -3,7 +3,8 @@ extends Node2D
 # Render-only pixel orb and grounded discharge. The parent owns all hit processing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const ARC_PERIOD := 0.32
-const DISCHARGE_RADIUS_MULTIPLIER := 2.0
+const DISCHARGE_RADIUS_MULTIPLIER := 1.25
+const FLOOR_HEIGHT_MULTIPLIER := 1.50
 const CORE_TEXTURE_SIZE := 24
 const CORE_FRAME_COUNT := 16
 static var _core_frames: Array[ImageTexture] = []
@@ -38,7 +39,7 @@ func advance(delta: float) -> void:
 		if _arcs[index].is_empty() or int(_arcs[index].cycle) != cycle:
 			var angle := phase + index * 2.4 + cycle * 1.73
 			# Save the floor endpoint in world space for the entire double flash.
-			var foot := Vector2(cos(angle) * radius * 1.65, radius * (1.4 + sin(angle) * 0.40))
+			var foot := Vector2(cos(angle) * radius * 1.20, radius * (FLOOR_HEIGHT_MULTIPLIER + sin(angle) * 0.25))
 			var socket_angle := 0.20 + absf(sin(angle * 1.31)) * 0.75
 			if foot.x < 0.0:
 				socket_angle = PI - socket_angle
@@ -51,10 +52,10 @@ func advance(delta: float) -> void:
 
 
 func _draw_ground() -> void:
-	var floor_center := Vector2(0, radius * 1.4)
+	var floor_center := Vector2(0, radius * FLOOR_HEIGHT_MULTIPLIER)
 	_ground.draw_set_transform(floor_center)
-	PIXEL.ellipse(_ground, Vector2(radius * 1.05, radius * 0.30), Color(0.015, 0.04, 0.08, 0.32))
-	PIXEL.ellipse(_ground, Vector2(radius * 1.55, radius * 0.48), Color(0.18, 0.62, 1.0, 0.08))
+	PIXEL.ellipse(_ground, Vector2(radius * 0.75, radius * 0.22), Color(0.015, 0.04, 0.08, 0.28))
+	PIXEL.ellipse(_ground, Vector2(radius * 1.05, radius * 0.32), Color(0.18, 0.62, 1.0, 0.07))
 	_ground.draw_set_transform(Vector2.ZERO)
 	for arc in _arcs:
 		var alpha := _arc_alpha(float(arc.age))
@@ -62,7 +63,7 @@ func _draw_ground() -> void:
 			continue
 		var foot := to_local(arc.foot)
 		_ground.draw_set_transform(foot)
-		PIXEL.ellipse(_ground, Vector2(7, 3), Color(0.25, 0.72, 1.0, alpha * 0.20))
+		PIXEL.ellipse(_ground, Vector2(5, 2), Color(0.25, 0.72, 1.0, alpha * 0.18))
 		_ground.draw_set_transform(Vector2.ZERO)
 		PIXEL.block(_ground, foot, Vector2(4, 2), Color(0.78, 0.95, 1.0, alpha))
 

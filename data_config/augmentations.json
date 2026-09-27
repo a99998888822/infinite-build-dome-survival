@@ -2,7 +2,7 @@
   {
     "id": "scroll_water",
     "display_name": "水流",
-    "description": "命中后释放蓝白水流波浪，对中等范围敌人造成伤害并打湿；可与火、冰、电产生元素反应。",
+    "description": "命中时对周围敌人造成一次伤害并打湿，随后呈现单圈向外扩散的蓝白水浪，0.85秒后消退；可与火、冰、电产生元素反应。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
     "effect_ids": [
@@ -10,7 +10,7 @@
     ],
     "effect_parameters": {
       "radius": 132.0,
-      "duration": 0.52,
+      "duration": 0.85,
       "damage_multiplier": 0.55,
       "wet_duration": 5.0,
       "wet_slow_multiplier": 0.8
@@ -24,7 +24,7 @@
     "display_name": "光辉剑",
     "description": "命中后召唤纯白大剑，延迟0.5秒从天空落下，对范围内敌人造成伤害并施加感光。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "light_sword"
     ],
@@ -45,7 +45,7 @@
     "display_name": "黑洞",
     "description": "吸附中等范围内敌人，造成范围伤害并施加致盲。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "black_hole"
     ],
@@ -105,7 +105,7 @@
     "display_name": "爆裂",
     "description": "命中时引发范围爆炸和场景破坏。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "mythic",
     "effect_ids": [
       "explosion"
     ],
@@ -229,7 +229,7 @@
     "display_name": "落雷",
     "description": "命中后在落点留下旋转的黄色虚线圆圈，延迟0.5秒后从高空劈下闪电，在圆圈范围内造成伤害。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "electric_spark"
     ],
@@ -271,59 +271,11 @@
     "icon": "res://assets/ui/icons/augmentations/scroll_lightning.png"
   },
   {
-    "id": "wizard_scroll_chain_mastery",
-    "display_name": "连锁主宰",
-    "description": "电火花连锁额外连接1个目标，电火花伤害提高20%；打湿目标额外承受一次电击。",
-    "category": "wizard_scroll",
-    "rarity": "legendary",
-    "effect_ids": [
-      "lightning"
-    ],
-    "modifiers": [
-      {
-        "effect_id": "lightning",
-        "channel": "chain_count",
-        "operation": "add_flat",
-        "value": 1
-      },
-      {
-        "effect_id": "lightning",
-        "channel": "damage",
-        "operation": "multiply",
-        "value": 1.2
-      },
-      {
-        "effect_id": "lightning",
-        "channel": "glow_multiplier",
-        "operation": "multiply",
-        "value": 1.8
-      },
-      {
-        "effect_id": "lightning",
-        "channel": "particle_rate",
-        "operation": "multiply",
-        "value": 1.5
-      },
-      {
-        "effect_id": "lightning",
-        "channel": "visual.color",
-        "operation": "tint",
-        "value": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    ],
-    "icon": "res://assets/ui/icons/augmentations/scroll_lightning.png"
-  },
-  {
     "id": "scroll_split",
     "display_name": "分裂",
     "description": "生成基础2枚、伤害为原伤害60%的子弹，优先攻击尚未命中的敌人；子弹不再分裂。榴弹炮对每个主爆炸命中目标生成小榴弹，爆炸半径减半。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "epic",
     "effect_ids": [
       "split"
     ],
@@ -361,7 +313,7 @@
     "display_name": "穿透",
     "description": "投射物命中目标后仍可继续飞行，可额外命中多个敌人。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "pierce"
     ],
@@ -402,12 +354,12 @@
     "display_name": "结霜",
     "description": "命中点生成寒冰领域，每个敌人首次接触时受到一次伤害并减速；可被风扩大，与打湿相遇冻结1秒，解冻后恢复打湿。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "ice"
     ],
     "effect_parameters": {
-      "radius": 64,
+      "radius": 51.2,
       "duration": 3.0,
       "slow_multiplier": 0.45,
       "freeze_duration": 1.0
@@ -438,7 +390,7 @@
     "display_name": "风刃",
     "description": "命中后释放青白月牙风刃，大幅击退敌人；可扩大火焰池与冰霜领域，并将打湿传播给附近敌人。",
     "category": "enchantment_scroll",
-    "rarity": "rare",
+    "rarity": "uncommon",
     "effect_ids": [
       "wind"
     ],

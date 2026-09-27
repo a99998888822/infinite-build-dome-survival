@@ -430,11 +430,11 @@ func _run_enemy_wave_checks() -> bool:
 	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(0) == 30 and wave_manager.calculate_wave_duration(6) == 60) and passed
 
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
-	var expected_enemy_hp := int(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0))
+	var expected_enemy_hp := roundi(float(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0)) * float(BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID).health))
 	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == expected_enemy_hp) and passed
 	passed = _print_check_result("enemy registry register", enemy != null and EnemyRegistry.get_registered_enemies().has(enemy)) and passed
 	if enemy != null:
-		passed = _print_check_result("enemy wave move speed modifier", enemy.get_stat("move_speed") >= 100.0 and enemy.get_stat("move_speed") <= 130.0) and passed
+		passed = _print_check_result("beginner enemy move speed modifier", enemy.get_stat("move_speed") == 85.0) and passed
 		var previous_hp := player.current_hp
 		enemy._process_contact_damage()
 		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
@@ -465,7 +465,7 @@ func _run_enemy_wave_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	passed = _print_check_result("enemy spawn rate", wave_manager.calculate_enemy_spawn_count(3) == 4) and passed
+	passed = _print_check_result("enemy spawn rate stacks after beginner density", wave_manager.calculate_enemy_spawn_count(6) == 3) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed

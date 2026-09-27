@@ -1,0 +1,80 @@
+{
+  "frame_size": [
+    160,
+    160
+  ],
+  "anchor": [
+    80,
+    122
+  ],
+  "actions": {
+    "idle": {
+      "frames": 4,
+      "durations_ms": [
+        230,
+        230,
+        230,
+        230
+      ],
+      "sha256": "5ad240669a89c5a21e884d5778d4780379e8c33b41ae24412d03e900e871ffaf"
+    },
+    "move": {
+      "frames": 8,
+      "durations_ms": [
+        120,
+        100,
+        100,
+        100,
+        120,
+        100,
+        100,
+        100
+      ],
+      "sha256": "fcfc6c317c908e00e25611ca6bdbbf8c7b9c9ed0b3036fceb4b55948e9da439a"
+    },
+    "windup": {
+      "frames": 4,
+      "durations_ms": [
+        160,
+        180,
+        200,
+        260
+      ],
+      "sha256": "d3794a75784ca7cd5de736082410991ee92c737672f2c480655fa2eb2a74dada"
+    },
+    "dash": {
+      "frames": 6,
+      "durations_ms": [
+        20,
+        20,
+        40,
+        40,
+        20,
+        20
+      ],
+      "sha256": "fe2eefd488dc8296396f6d76cc5d16ef465cb74e02f5dd1ac0710a8100268b43"
+    },
+    "recover": {
+      "frames": 4,
+      "durations_ms": [
+        100,
+        100,
+        140,
+        160
+      ],
+      "sha256": "651f66e56cf63bca380533b7b6d2faf37c8248ba4d54caf931b6067cb68f9588"
+    },
+    "death": {
+      "frames": 6,
+      "durations_ms": [
+        100,
+        100,
+        140,
+        180,
+        220,
+        380
+      ],
+      "sha256": "35f7f24d277b1040bd051fce732ddac5bade290aa639903dba9bec6c8ca308a5"
+    }
+  }
+}

@@ -8,6 +8,8 @@ const AUGMENTATION_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/aug
 const RELIC_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/relic_pickup.tscn")
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "health_pack", "relic", "augmentation"]
 const DEFAULT_ELITE_RELIC_DECAY_FACTOR: float = 0.5
+const AUGMENTATION_LUCK_BONUS_PER_POINT: float = 0.001
+const DEFAULT_AUGMENTATION_RARITY_WEIGHTS: Dictionary = {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2}
 
 var _elite_relics_dropped_this_wave: int = 0
 var _reward_generation: int = 0
@@ -15,6 +17,8 @@ var _next_elite_reward_id: int = 0
 var _resolved_elite_rewards: Dictionary = {}
 var _choice_tokens: Dictionary = {}
 var _next_choice_id: int = 0
+var _next_augmentation_roll_id: int = 0
+var _claimed_augmentation_rolls: Dictionary = {}
 
 
 func begin_wave() -> void:
@@ -23,6 +27,8 @@ func begin_wave() -> void:
 	_next_elite_reward_id = 0
 	_resolved_elite_rewards.clear()
 	_choice_tokens.clear()
+	_next_augmentation_roll_id = 0
+	_claimed_augmentation_rolls.clear()
 
 
 func get_elite_relics_dropped_this_wave() -> int:
@@ -69,6 +75,9 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 		if not VALID_DROP_TYPES.has(drop_type):
 			push_warning("[DropRewardSystem] unsupported drop type: %s" % drop_type)
 			continue
+		if drop_type == "augmentation":
+			# Scrolls share one roll, not one independent roll per item type.
+			continue
 
 		var base_chance := clampf(float(entry.get("chance_percent", 100.0)), 0.0, 100.0)
 		var adjusted_chance := clampf(base_chance * (1.0 + drop_rate_bonus / 100.0), 0.0, 100.0)
@@ -100,7 +109,63 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 			action["elite_relic_decay_factor"] = float(drop_table.get("elite_relic_decay_percent", DEFAULT_ELITE_RELIC_DECAY_FACTOR * 100.0)) / 100.0
 			_next_elite_reward_id += 1
 		actions.append(action)
+	var augmentation := _build_augmentation_action(drop_table, drop_rate_bonus, _get_player_stat(player, "luck"))
+	if not augmentation.is_empty():
+		actions.append(augmentation)
 	return actions
+
+
+static func calculate_augmentation_chance(base_chance: float, drop_rate_bonus: float = 0.0, luck: float = 0.0) -> float:
+	var luck_multiplier := 1.0 + maxf(luck, 0.0) * AUGMENTATION_LUCK_BONUS_PER_POINT
+	return clampf(base_chance * maxf(0.0, 1.0 + drop_rate_bonus / 100.0) * luck_multiplier, 0.0, 100.0)
+
+
+func _build_augmentation_action(table: Dictionary, drop_rate_bonus: float, luck: float = 0.0) -> Dictionary:
+	var chance := calculate_augmentation_chance(float(table.get("augmentation_chance_percent", 0.0)), drop_rate_bonus, luck)
+	if not _roll_drop_chance(chance):
+		return {}
+	var rarity_weights: Dictionary = table.get("augmentation_rarity_weights", DEFAULT_AUGMENTATION_RARITY_WEIGHTS)
+	var candidates_by_rarity: Dictionary = {}
+	var total_rarity_weight := 0.0
+	for entry in table.get("entries", []):
+		if entry is Dictionary and str(entry.get("type", "")) == "augmentation":
+			var weight := maxf(0.0, float(entry.get("weight", 0.0)))
+			var item_id := str(entry.get("item_id", entry.get("augmentation_id", "")))
+			var data := DataRegistry.get_record("augmentations", item_id)
+			var rarity := str(data.get("rarity", ""))
+			var rarity_weight := maxf(0.0, float(rarity_weights.get(rarity, 0)))
+			if weight <= 0.0 or data.is_empty() or rarity_weight <= 0.0:
+				continue
+			if not candidates_by_rarity.has(rarity):
+				candidates_by_rarity[rarity] = []
+				total_rarity_weight += rarity_weight
+			candidates_by_rarity[rarity].append(entry)
+	if candidates_by_rarity.is_empty():
+		return {}
+	# One roll per rarity, regardless of how many items that rarity contains.
+	var rarity_pick := randf() * total_rarity_weight
+	var selected_rarity: String = str(candidates_by_rarity.keys().back())
+	for rarity: String in candidates_by_rarity:
+		rarity_pick -= float(rarity_weights[rarity])
+		if rarity_pick < 0.0:
+			selected_rarity = rarity
+			break
+	var candidates: Array = candidates_by_rarity[selected_rarity]
+	var total_weight := 0.0
+	for entry: Dictionary in candidates:
+		total_weight += float(entry.weight)
+	var pick := randf() * total_weight
+	var selected: Dictionary = candidates.back()
+	for entry in candidates:
+		pick -= float(entry.weight)
+		if pick < 0.0:
+			selected = entry
+			break
+	# Identity prevents deferred replays; it never limits the number of drops.
+	var roll_id := _next_augmentation_roll_id
+	_next_augmentation_roll_id += 1
+	return {"type": "augmentation", "amount": 1, "entry": selected.duplicate(true),
+		"adjusted_chance_percent": chance, "augmentation_roll_id": roll_id, "reward_generation": _reward_generation}
 
 
 func spawn_drop_actions(
@@ -153,6 +218,13 @@ func spawn_action(
 		"health_pack":
 			return spawn_health_pack(amount, position, pickup_root, player, snapshot, on_health_collected)
 		"augmentation":
+			if action.has("augmentation_roll_id"):
+				var roll_id := int(action.augmentation_roll_id)
+				if int(action.get("reward_generation", -1)) != _reward_generation or _claimed_augmentation_rolls.has(roll_id):
+					return null
+				if not is_instance_valid(pickup_root) or not is_instance_valid(player):
+					return null
+				_claimed_augmentation_rolls[roll_id] = true
 			var entry: Dictionary = action.get("entry", {})
 			var augmentation_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
 			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot)
@@ -245,7 +317,7 @@ func spawn_augmentation(
 	player: PlayerController,
 	snapshot: RewardSnapshot = null
 ) -> AugmentationPickup:
-	if pickup_root == null or player == null or augmentation_id.is_empty():
+	if pickup_root == null or player == null or not DataRegistry.has_record("augmentations", augmentation_id):
 		return null
 	var pickup := AUGMENTATION_PICKUP_SCENE.instantiate() as AugmentationPickup
 	if pickup == null:

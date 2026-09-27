@@ -74,7 +74,7 @@ func _test_drops() -> void:
 	drops.spawn_action(pending(drops, player, "", "drop_boss_enemy"), Vector2.ZERO, root, player)
 	player.add_relic("relic_finance_manager")
 	check(drops.get_elite_relics_dropped_this_wave() == before, "other sources do not change elite decay")
-	var expected_chances := {"exp_orb": 100.0, "health_pack": 20.0, "augmentation": 5.0}
+	var expected_chances := {"exp_orb": 100.0, "health_pack": 20.0}
 	for action in drops.build_drop_actions("drop_elite_enemy", player):
 		if expected_chances.has(action.type):
 			check(is_equal_approx(action.adjusted_chance_percent, expected_chances[action.type]), "non-relic probability unchanged: " + action.type)
@@ -127,6 +127,8 @@ func _test_elite() -> void:
 	check(elite.take_damage(10) == 0, "spawn warning cannot be attacked")
 	elite._process_special_behavior(0.75)
 	check(elite.skill_state == "chase" and elite.sprite.visible, "spawn warning completes")
+	player.global_position = Vector2(200, 0)
+	elite._cooldown = 0.0
 	elite.start_dash()
 	var locked := elite._direction
 	player.global_position = Vector2(0, 500)
@@ -134,10 +136,12 @@ func _test_elite() -> void:
 	check(elite.skill_state == "windup" and elite._direction == locked, "telegraph locks direction")
 	elite._process_special_behavior(0.4)
 	check(elite.skill_state == "dash", "800ms windup starts dash")
-	elite._process_special_behavior(0.4)
-	check(elite.skill_state == "recover" and elite.global_position.distance_to(Vector2(240, 0)) < 0.1, "dash travels 240 pixels in 400ms")
+	elite._process_special_behavior(0.16)
+	check(elite.skill_state == "recover" and elite.global_position.distance_to(Vector2(240, 0)) < 0.1, "dash travels 240 pixels in 160ms")
 	elite._process_special_behavior(0.5)
 	check(elite.skill_state == "chase", "recovery returns to chase")
+	player.global_position = elite.global_position + Vector2(200, 0)
+	elite._cooldown = 0.0
 	elite.start_dash()
 	elite.apply_freeze(1.0)
 	elite._physics_process(0.01)

@@ -84,7 +84,7 @@
         ]
       }
     },
-    "attachment_slots": 3
+    "attachment_slots": 1
   },
   {
     "id": "weapon_plasma_cannon",
@@ -194,7 +194,7 @@
       "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]", "effects": [{"stat": "element_damage", "value": 3}]},
       "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]", "effects": [{"stat": "element_damage", "value": 3}]}
     },
-    "attachment_slots": 3
+    "attachment_slots": 2
   },
   {
     "id": "weapon_rentier_purse",
@@ -225,7 +225,7 @@
       "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 1}]},
       "5": {"rarity": "mythic", "description": "远程基础伤害 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 1}]}
     },
-    "attachment_slots": 3
+    "attachment_slots": 1
   },
   {
     "id": "weapon_meteor_flail",
@@ -256,6 +256,6 @@
       "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 5}]}
     },
-    "attachment_slots": 3
+    "attachment_slots": 2
   }
 ]

@@ -267,7 +267,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 9999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "影响稀有遗物、稀有升级选项、额外掉落等概率。"
+		"description": "影响稀有遗物与升级选项的概率；每100幸运使附魔掉落概率相对提高10%（普通怪1.5%→1.65%），每波无掉落数量上限。"
 	},
 	"currency_gain_percent": {
 		"display_name": "货币获取加成",

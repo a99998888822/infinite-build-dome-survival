@@ -70,6 +70,8 @@ var _gold_getter: Callable = Callable()
 var _gold_delta_applier: Callable = Callable()
 var _started_wave_number: int = 0
 var manual_operation_used: bool = false
+var trade_deposit_blocked := false
+var trade_withdraw_blocked := false
 var last_manual_operation: Dictionary = {}
 var _emitting_changed: bool = false
 var _settling_interest: bool = false
@@ -99,6 +101,8 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	current_wave_number = 0
 	_started_wave_number = 0
 	manual_operation_used = false
+	trade_deposit_blocked = false
+	trade_withdraw_blocked = false
 	last_manual_operation.clear()
 	last_action_wave_number = 0
 	last_deposit_wave_number = 0
@@ -123,6 +127,8 @@ func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 
 	for field in ["principal", "interest_rate_bonus", "interest_remainder", "wave_counter", "current_wave_number", "last_action_wave_number", "last_deposit_wave_number", "has_deposited_before_current_wave", "wave_start_deposit_amount", "has_principal_ever", "erosion_bonus", "_bankruptcy_triggered", "_started_wave_number", "manual_operation_used"]:
 		preview.set(field, get(field))
 	preview._rng.state = _rng.state
+	preview.trade_deposit_blocked = trade_deposit_blocked
+	preview.trade_withdraw_blocked = trade_withdraw_blocked
 	preview._principal_revive_uses = _principal_revive_uses.duplicate(true)
 	var preview_gold := {"value": maxi(0, get_current_gold() - maxi(0, purchase_cost))}
 	preview._gold_getter = func(): return int(preview_gold.value)
@@ -151,6 +157,8 @@ func prepare_wave(wave_number: int) -> Dictionary:
 	has_deposited_before_current_wave = false
 	wave_start_deposit_amount = 0
 	manual_operation_used = false
+	trade_deposit_blocked = false
+	trade_withdraw_blocked = false
 	last_manual_operation.clear()
 	_emit_changed()
 	return build_finance_popup_payload("preparation")
@@ -176,6 +184,8 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 	return {
 		"source": source,
 		"manual_operation_used": manual_operation_used,
+		"trade_deposit_blocked": trade_deposit_blocked,
+		"trade_withdraw_blocked": trade_withdraw_blocked,
 		"last_manual_operation": last_manual_operation.duplicate(true),
 		"wave_number": current_wave_number,
 		"gold": get_current_gold(),
@@ -222,6 +232,8 @@ func apply_finance_operation(action: String, amount: int) -> Dictionary:
 
 
 func deposit(amount: int, free_principal: bool = false, reason: String = "manual") -> Dictionary:
+	if trade_deposit_blocked and not free_principal:
+		return _build_operation_result(false, ACTION_DEPOSIT, amount, "trade_deposit_blocked")
 	var sanitized_amount := maxi(0, amount)
 	if sanitized_amount <= 0:
 		return _build_operation_result(false, ACTION_DEPOSIT, sanitized_amount, "amount_must_be_positive")
@@ -234,7 +246,7 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 	principal += sanitized_amount
 	var text := "存入 %d 金币，本金 %d → %d" % [sanitized_amount, principal - sanitized_amount, principal]
 	if free_principal:
-		text = "%s：本金 +%d（当前 %d）" % [_relic_name(reason), sanitized_amount, principal]
+		text = "%s：本金 +%d（当前 %d）" % ["哥布林交易" if reason == "goblin_trade" else _relic_name(reason), sanitized_amount, principal]
 	_record_activity("relic_principal" if free_principal else "deposit", text)
 	last_action_wave_number = current_wave_number
 	last_deposit_wave_number = current_wave_number
@@ -246,6 +258,8 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 
 
 func withdraw(amount: int) -> Dictionary:
+	if trade_withdraw_blocked:
+		return _build_operation_result(false, ACTION_WITHDRAW, amount, "trade_bank_blocked")
 	var sanitized_amount := maxi(0, amount)
 	if sanitized_amount <= 0:
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "amount_must_be_positive")
@@ -259,6 +273,14 @@ func withdraw(amount: int) -> Dictionary:
 	_record_activity("withdraw", "取出 %d 金币，本金 %d → %d" % [sanitized_amount, principal + sanitized_amount, principal])
 	_emit_changed()
 	return _build_operation_result(true, ACTION_WITHDRAW, sanitized_amount, "manual")
+
+
+func grant_trade_gold(amount: int) -> bool:
+	return amount > 0 and _apply_gold_delta(amount, "goblin_trade")
+
+
+func record_trade_activity(text: String) -> void:
+	_record_activity("goblin_trade", text)
 
 
 func settle_interest(source: String = SETTLE_WAVE_END) -> Dictionary:

@@ -477,7 +477,7 @@ size_flags_horizontal = 3
 theme_override_constants/margin_left = 44
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 44
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_bottom = 52
 
 [node name="Content" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin"]
 

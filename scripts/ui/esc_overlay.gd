@@ -504,12 +504,20 @@ func _show_relic_tooltip(relic_data: Dictionary, anchor_cell: Control) -> void:
 	relic_tooltip_label.text = tooltip_text
 	relic_tooltip.visible = true
 	relic_tooltip.reset_size()
-	var viewport_rect := get_viewport_rect()
+	_position_relic_tooltip(anchor_cell)
+	# RichTextLabel resolves wrapped text height after the container layout.
+	_position_relic_tooltip.call_deferred(anchor_cell)
+
+
+func _position_relic_tooltip(anchor_cell: Control) -> void:
+	if not is_instance_valid(anchor_cell) or relic_tooltip == null or not relic_tooltip.visible:
+		return
+	var safe := _get_modal_safe_rect()
 	var target := anchor_cell.global_position + Vector2(0, anchor_cell.size.y + 6)
-	if target.x + relic_tooltip.size.x > viewport_rect.size.x:
-		target.x = maxf(viewport_rect.size.x - relic_tooltip.size.x - 8, 0)
-	if target.y + relic_tooltip.size.y > viewport_rect.size.y:
-		target.y = maxf(anchor_cell.global_position.y - relic_tooltip.size.y - 6, 0)
+	target.x = clampf(target.x, safe.position.x, maxf(safe.position.x, safe.end.x - relic_tooltip.size.x))
+	if target.y + relic_tooltip.size.y > safe.end.y:
+		target.y = anchor_cell.global_position.y - relic_tooltip.size.y - 6
+	target.y = clampf(target.y, safe.position.y, maxf(safe.position.y, safe.end.y - relic_tooltip.size.y))
 	relic_tooltip.global_position = target
 
 

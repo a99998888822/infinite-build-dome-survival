@@ -13,6 +13,15 @@ const RARITY_COLORS: Dictionary = {
 	"legendary": Color(1.0, 0.82, 0.28, 1.0),
 }
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
+const ATTACHMENT_ICON_SIZE := 24
+const ATTACHMENT_ICON_GAP := " "
+const EMPTY_ATTACHMENT_ICON := "res://assets/ui/finance/empty_enchantment_slot.svg"
+const DAMAGE_SOURCE_COLORS := {
+	"melee_damage": "#EE7777",
+	"ranged_damage": "#7FD88F",
+	"element_damage": "#78B7FF",
+	"principal": "#F5D76E",
+}
 const EFFECT_PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
 var weapon_id: String = ""
@@ -200,7 +209,11 @@ func add_effect_by_id(effect_id: String) -> bool:
 
 
 func get_attachment_slot_count() -> int:
-	return maxi(0, int(weapon_data.get("attachment_slots", 0)))
+	return get_attachment_slots_for_rarity(get_visual_rarity())
+
+
+static func get_attachment_slots_for_rarity(rarity: String) -> int:
+	return 2 if rarity in ["rare", "epic", "mythic", "legendary"] else 1
 
 
 func has_attachment_slot() -> bool:
@@ -545,64 +558,68 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	var damage_label := "近战" if get_attack_kind() == DAMAGE_KIND_MELEE else ("元素" if get_attack_kind() == DAMAGE_KIND_ELEMENT else "远程")
-	var damage_line := "[color=#F5D76E]%s伤害[/color]%s" % [damage_label, _format_damage_source(get_damage_stat_id())]
-	lines.append(damage_line)
-	if is_coin_purse():
-		var principal := get_current_principal()
-		lines.append("[color=#F5D76E]本金增伤[/color] +%s（%s×√%s，不消耗本金）" % [str(snappedf(get_principal_damage_bonus(), 0.1)), str(weapon_data.get("principal_damage_coefficient", 0.3)), str(snappedf(maxf(principal, 0.0), 0.1))])
-	if is_coin_purse() or is_ritual_tome():
-		lines.append("[color=#F5D76E]非暴击伤害[/color] %d（含通用增伤，护甲减免前）" % maxi(1, roundi(get_base_attack_damage() * (1.0 + get_stat("damage_percent") / 100.0))))
+	lines.append("[color=#F5D76E]伤害[/color] " + _format_damage_source(get_damage_stat_id()))
+	if not is_zero_approx(get_stat("damage_percent")):
+		lines.append("[color=#F5D76E]伤害加成[/color] %+.0f%%" % get_stat("damage_percent"))
 	var interval := get_actual_attack_interval_seconds()
-	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]（每秒约 %.1f 次）" % [interval, 1.0 / interval])
+	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["主挥击次数" if is_meteor_flail() else ("每轮点名" if is_ritual_tome() else "投射物"), maxi(1, int(get_stat("projectile_count")))])
+	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["每轮挥击" if is_meteor_flail() else ("每轮目标" if is_ritual_tome() else "投射物"), maxi(1, int(get_stat("projectile_count")))])
 	if is_grenade():
-		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), str(snappedf(get_grenade_blast_radius(), 0.1))])
-		lines.append("[color=#F5D76E]飞行时间[/color] %.2fs · 固定落点" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
-		var damage := maxi(1, roundi(_get_damage_component_base("ranged_damage") * (1.0 + get_stat("damage_percent") / 100.0)))
-		lines.append("[color=#F5D76E]非暴击伤害[/color] %d（护甲减免前）" % damage)
-		lines.append("每个受击目标分别触发命中附魔；支持分裂，不支持穿透。")
-		for profile in get_grenade_split_profiles():
-			lines.append("[color=#F5D76E]集束分裂[/color] 每个目标 %d 枚 · 伤害 %d%% · 半径 %s · 飞行 %.2fs" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100), str(snappedf(get_grenade_blast_radius() * float(profile.radius_multiplier), 0.1)), float(profile.flight_seconds)])
-		if has_effect("split"):
-			lines.append("子榴弹排除主爆炸已命中目标，仍触发其他附魔；只分裂一代。")
+		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
+		lines.append("抛射榴弹，%.2f秒后在落点爆炸。" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
 	elif is_meteor_flail():
-		var multiplier := float(weapon_data.get("flail_outer_multiplier", 1.5))
-		var damage := get_base_attack_damage() * (1.0 + get_stat("damage_percent") / 100.0)
-		lines.append("[color=#F5D76E]锤头伸展[/color] %d · 前方140° · 命中半径 %d" % [roundi(get_attack_range()), roundi(get_hit_radius())])
-		lines.append("[color=#F5D76E]近圈 / 外圈伤害[/color] %d / %d（非暴击、护甲减免前）" % [maxi(1, roundi(damage)), maxi(1, roundi(roundi(damage) * multiplier))])
-		lines.append("伸展至%d%%距离后伤害为%d%%；锁定方向，锤头接触命中，锁链无伤害。" % [roundi(float(weapon_data.get("flail_outer_threshold", 0.8)) * 100), roundi(multiplier * 100)])
-		for profile in get_split_profiles():
-			lines.append("[color=#F5D76E]分裂追击[/color] 首次主命中追加 %d 次 · 伤害 %d%% · 每轮只追加一代" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
-		lines.append("每次挥击对同一目标命中一次；各次命中触发元素附魔，不支持穿透。")
+		lines.append("锤头挥击。")
 	elif is_ritual_tome():
 		var axes := get_domain_axes()
-		lines.append("[color=#F5D76E]领域半轴[/color] %d × %d（受攻击范围加成）" % [roundi(axes.x), roundi(axes.y)])
-		lines.append("随机点名领域内不同目标；分裂不越出领域，不支持穿透。")
+		lines.append("[color=#F5D76E]领域半径[/color] %d × %d" % [roundi(axes.x), roundi(axes.y)])
+		lines.append("随机攻击领域内的不同敌人。")
 	else:
-		lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]  [color=#F5D76E]命中半径[/color] [color=#FFFFFF]%d[/color]" % [int(get_attack_range()), int(get_hit_radius())])
+		lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]" % int(get_attack_range()))
 	if is_coin_purse():
-		lines.append("每轮均匀环射，方向逐轮偏转30°；同轮金币与分裂弹不重复命中同一敌人。")
-	if is_coin_purse() or is_ritual_tome():
-		for profile in get_split_profiles():
-			lines.append("[color=#F5D76E]分裂[/color] 每次主命中追加 %d 个 · 伤害 %d%% · 只分裂一代" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
+		lines.append("向四周撒出金币。")
+	elif str(weapon_data.get("projectile_behavior", "")) == "plasma":
+		lines.append("接触时每%.2f秒灼击，每球最多5次。" % float(weapon_data.get("plasma_tick_interval", 0.1)))
+	for profile in (get_grenade_split_profiles() if is_grenade() else get_split_profiles()):
+		lines.append("[color=#F5D76E]分裂[/color] %d个 · 伤害%d%%" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	if has_attachment_slot():
-		var attachments := get_attached_item_instances()
-		for slot_index in range(get_attachment_slot_count()):
-			var attachment_name := "空槽"
-			if slot_index < attachments.size():
-				var attachment := attachments[slot_index]
-				attachment_name = str(attachment.get("display_name", attachment.get("base_item_id", "已装填")))
-			lines.append("[color=#F5D76E]附加槽 %d[/color] [color=#FFFFFF]%s[/color]" % [slot_index + 1, attachment_name])
+		lines.append(_build_attachment_icons_text())
 	return "\n".join(lines)
 
 
+func _build_attachment_icons_text() -> String:
+	var icons: Array[String] = []
+	var attachments := get_attached_item_instances()
+	for slot_index in get_attachment_slot_count():
+		var icon_path := EMPTY_ATTACHMENT_ICON
+		if slot_index < attachments.size():
+			var attachment := attachments[slot_index]
+			var base := DataRegistry.get_record("augmentations", str(attachment.get("base_item_id", "")))
+			icon_path = str(attachment.get("icon", ""))
+			if icon_path.is_empty():
+				icon_path = str(base.get("icon", ""))
+		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+			icons.append("[img=%dx%d]%s[/img]" % [ATTACHMENT_ICON_SIZE, ATTACHMENT_ICON_SIZE, icon_path])
+		else:
+			icons.append("[color=#A9A184]?[/color]")
+	return "[color=#F5D76E]附魔[/color]" + ATTACHMENT_ICON_GAP + ATTACHMENT_ICON_GAP.join(icons)
+
+
 func _format_damage_source(stat_id: String) -> String:
-	var fixed_damage := int(roundi(get_weapon_stat(stat_id)))
-	var player_bonus := int(roundi((owner_player.get_stat(stat_id) - StatDefinitions.get_default_value(stat_id)) if owner_player != null else 0.0))
-	var coefficient := float(weapon_data.get("player_damage_coefficient", 1.0))
-	if not is_equal_approx(coefficient, 1.0):
-		return " %s（%d + %d×%s）" % [str(snappedf(_get_damage_component_base(stat_id), 0.1)), fixed_damage, player_bonus, str(coefficient)]
-	return "([color=#FFFFFF]%d[/color]+[color=#7FD88F]%d[/color])" % [fixed_damage, player_bonus]
+	var fixed_damage := get_weapon_stat(stat_id)
+	# Reuse combat's resolved contribution, including coefficients and clamping.
+	var player_bonus := _get_damage_component_base(stat_id) - fixed_damage
+	var text := "([color=#FFFFFF]%s[/color]%s" % [_format_damage_number(fixed_damage), _format_damage_bonus(player_bonus, stat_id)]
+	if is_coin_purse():
+		text += _format_damage_bonus(get_principal_damage_bonus(), "principal")
+	return text + ")"
+
+
+func _format_damage_bonus(value: float, source: String) -> String:
+	var sign_text := "+" if value >= 0.0 else "-"
+	return "[color=%s]%s%s[/color]" % [DAMAGE_SOURCE_COLORS.get(source, "#FFFFFF"), sign_text, _format_damage_number(absf(value))]
+
+
+func _format_damage_number(value: float) -> String:
+	return String.num(value, 2).trim_suffix(".0")

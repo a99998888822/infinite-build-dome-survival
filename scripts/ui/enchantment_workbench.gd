@@ -112,6 +112,8 @@ func refresh() -> void:
 		FinanceUIStyle.button(button, weapon.weapon_id == selected_weapon_id)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
+		button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
+		button.mouse_exited.connect(func(): tooltip_hidden.emit())
 	var current := loadout.get_weapon_instance(selected_weapon_id)
 	_weapon_icon.texture = FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null
 	_weapon_name.text = "%s · Lv.%d" % [str(current.weapon_data.get("display_name", "")), current.level] if current != null else "尚无武器"

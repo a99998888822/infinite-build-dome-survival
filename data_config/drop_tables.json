@@ -1,8 +1,10 @@
 [
   {
     "id": "drop_basic_enemy",
+    "augmentation_chance_percent": 1.5,
+    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，2%血包，2%火焰附魔卷轴，2%爆炸附魔卷轴，1%电火花附魔卷轴，1%落雷附魔卷轴，1%分裂附魔卷轴，1%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "小怪基准掉落：1经验，2%血包，1.5%概率掉落一件附魔。成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类；每波无数量上限，每100幸运提供10%相对掉率加成。拾取经验球时同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -25,74 +27,76 @@
         "type": "augmentation",
         "item_id": "scroll_fire",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_light_sword",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_black_hole",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_electric_spark",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_split",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_pierce",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_ice",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_wind",
         "amount": 1,
-        "chance_percent": 1
+        "weight": 1
       }
     ]
   },
   {
     "id": "drop_elite_enemy",
+    "augmentation_chance_percent": 12,
+    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
     "display_name": "精英怪掉落表",
-    "description": "小Boss基准掉落：2经验，100%遗物选择奖励，20%血包，附魔沿用各条目概率。遗物选择奖励落地后可靠近拾取，波末自动收取，复用升级奖励弹窗选择一件遗物；本波每落地1份奖励，后续遗物奖励概率乘以50%，无需等到拾取或选择，下一波重置。经验、金币、血包和附魔不受此衰减影响。",
+    "description": "小Boss基准掉落：2经验，100%遗物选择奖励，20%血包，12%概率掉落一件附魔。成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类；附魔每波无数量上限，每100幸运提供10%相对掉率加成。遗物奖励可靠近拾取，波末自动收取并选择一件遗物；本波每落地1份奖励，后续遗物奖励概率乘以50%，下一波重置。经验、金币、血包和附魔不受遗物衰减影响。",
     "elite_relic_decay_percent": 50,
     "enabled": true,
     "tags": [
@@ -120,68 +124,70 @@
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "chance_percent": 5
+        "weight": 5
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "chance_percent": 3
+        "weight": 3
       },
       {
         "type": "augmentation",
         "item_id": "scroll_light_sword",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_black_hole",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
-        "chance_percent": 3
+        "weight": 3
       },
       {
         "type": "augmentation",
         "item_id": "scroll_electric_spark",
         "amount": 1,
-        "chance_percent": 2
+        "weight": 2
       },
       {
         "type": "augmentation",
         "item_id": "scroll_split",
         "amount": 1,
-        "chance_percent": 4
+        "weight": 4
       },
       {
         "type": "augmentation",
         "item_id": "scroll_pierce",
         "amount": 1,
-        "chance_percent": 4
+        "weight": 4
       },
       {
         "type": "augmentation",
         "item_id": "scroll_ice",
         "amount": 1,
-        "chance_percent": 3
+        "weight": 3
       },
       {
         "type": "augmentation",
         "item_id": "scroll_wind",
         "amount": 1,
-        "chance_percent": 3
+        "weight": 3
       }
     ]
   },
   {
     "id": "drop_boss_enemy",
+    "augmentation_chance_percent": 60,
+    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
     "display_name": "BOSS掉落表",
-    "description": "BOSS基准掉落：10经验，100%遗物，10%火焰附魔卷轴，20%爆炸附魔卷轴，15%电火花附魔卷轴，15%落雷附魔卷轴，15%术士卷轴，12%分裂附魔卷轴，12%穿透附魔卷轴。死亡后掉落经验球，拾取后同步获得等额基础金币。",
+    "description": "BOSS基准掉落：10经验，100%遗物，60%概率掉落一件附魔；成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类，每波无数量上限，每100幸运提供10%相对掉率加成。拾取经验球时同步获得等额基础金币。",
     "enabled": true,
     "tags": [
       "drop",
@@ -203,73 +209,67 @@
         "type": "augmentation",
         "item_id": "scroll_electric_spark",
         "amount": 1,
-        "chance_percent": 15
+        "weight": 15
       },
       {
         "type": "augmentation",
         "item_id": "scroll_fire",
         "amount": 1,
-        "chance_percent": 10
+        "weight": 10
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "chance_percent": 10
+        "weight": 10
       },
       {
         "type": "augmentation",
         "item_id": "scroll_light_sword",
         "amount": 1,
-        "chance_percent": 5
+        "weight": 5
       },
       {
         "type": "augmentation",
         "item_id": "scroll_black_hole",
         "amount": 1,
-        "chance_percent": 5
+        "weight": 5
       },
       {
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "chance_percent": 20
+        "weight": 20
       },
       {
         "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
-        "chance_percent": 15
-      },
-      {
-        "type": "augmentation",
-        "item_id": "wizard_scroll_chain_mastery",
-        "amount": 1,
-        "chance_percent": 15
+        "weight": 15
       },
       {
         "type": "augmentation",
         "item_id": "scroll_split",
         "amount": 1,
-        "chance_percent": 12
+        "weight": 12
       },
       {
         "type": "augmentation",
         "item_id": "scroll_pierce",
         "amount": 1,
-        "chance_percent": 12
+        "weight": 12
       },
       {
         "type": "augmentation",
         "item_id": "scroll_ice",
         "amount": 1,
-        "chance_percent": 10
+        "weight": 10
       },
       {
         "type": "augmentation",
         "item_id": "scroll_wind",
         "amount": 1,
-        "chance_percent": 10
+        "weight": 10
       }
     ]
   }

@@ -106,8 +106,10 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_name_label.text = title
 	_kind_label.text = str({"new_weapon": "武器", "relic": "遗物", "weapon_upgrade": "武器升级"}.get(offer.get("offer_type", ""), ""))
 	_description.text = str(offer.get("description", ""))
-	tooltip_text = title + "\n" + _description.get_parsed_text()
-	_name_label.tooltip_text = tooltip_text
+	# Keep item details on the title, so an empty purchase tooltip cannot
+	# inherit the card's text through Godot's parent tooltip lookup.
+	tooltip_text = ""
+	_name_label.tooltip_text = title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
 	_icon.texture = FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
 	var rarity := str(offer.get("rarity", "common"))
@@ -127,6 +129,8 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	buy_button.disabled = not unavailable.is_empty()
 	buy_button.text = "购买" if unavailable.is_empty() else ("已购买" if unavailable == "already_purchased" else "不可购买")
 	buy_button.tooltip_text = HumanityEconomy.purchase_tooltip(offer) if unavailable.is_empty() else FinanceUIStyle.reason(unavailable)
+	if str(offer.get("offer_type", "")) == "relic":
+		buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":
 		buy_button.text = "差 %d" % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE

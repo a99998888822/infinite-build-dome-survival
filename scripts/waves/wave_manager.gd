@@ -17,12 +17,6 @@ const SPAWN_MIN_DISTANCE: float = 300.0
 const SPAWN_MAX_DISTANCE: float = 600.0
 const SPAWN_SEPARATION_DISTANCE: float = 96.0
 const SPAWN_POSITION_ATTEMPTS: int = 10
-const WAVE_HP_GROWTH_RATE: float = 0.40
-const WAVE_DAMAGE_GROWTH_PERCENT: float = 7.0
-const WAVE_MOVE_SPEED_GROWTH_PERCENT: float = 1.0
-const WAVE_SPAWN_COUNT_GROWTH_PERCENT: float = 8.0
-const WAVE_SPAWN_INTERVAL_GROWTH_PERCENT: float = 6.0
-const WAVE_ARMOR_GROWTH: float = 2.0
 const ZONE_SPAWN_COUNT_GROWTH_PERCENT: float = 6.0
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
@@ -38,6 +32,8 @@ var current_wave: Dictionary = {}
 var wave_time_left: float = 0.0
 var spawn_timers_ms: Array[float] = []
 var running: bool = false
+var difficulty_id: String = BattleDifficulty.DEFAULT_ID
+var _difficulty: Dictionary = BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID)
 var player_level: int = DEFAULT_PLAYER_LEVEL
 var current_exp: int = 0
 var current_gold: int = 0
@@ -51,6 +47,7 @@ var economy_journal: EconomyJournal = EconomyJournal.new()
 var _wave_income_recorded: bool = false
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
+var goblin_trades := GoblinTradeSystem.new()
 var enemy_scene_cache: Dictionary = {}
 var _pending_wave_end_absorb_count: int = 0
 var _finishing_wave_id: String = ""
@@ -89,6 +86,10 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	wave_time_left -= delta
+	var live_enemies := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive(): live_enemies += 1
+	goblin_trades.sample_enemies(delta, live_enemies)
 	if wave_time_left > 0.0:
 		_process_spawn_timers(delta)
 	if finance_system != null:
@@ -97,8 +98,17 @@ func _process(delta: float) -> void:
 		finish_current_wave()
 
 
-func initialize(target_player: PlayerController) -> void:
+func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
+	if is_instance_valid(player):
+		if player.health_damage_taken.is_connected(_record_trade_damage): player.health_damage_taken.disconnect(_record_trade_damage)
+		if player.hp_changed.is_connected(_record_trade_health): player.hp_changed.disconnect(_record_trade_health)
 	player = target_player
+	goblin_trades.reset()
+	if player != null:
+		player.health_damage_taken.connect(_record_trade_damage)
+		player.hp_changed.connect(_record_trade_health)
+	difficulty_id = BattleDifficulty.normalize(selected_difficulty)
+	_difficulty = BattleDifficulty.get_profile(difficulty_id)
 	economy_journal.clear()
 	_wave_income_recorded = false
 	current_wave_index = -1
@@ -148,6 +158,7 @@ func start_next_wave() -> bool:
 	if current_wave_index + 1 >= waves.size():
 		return false
 	current_wave_index += 1
+	goblin_trades.begin_combat()
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
 	_wave_income_recorded = false
@@ -159,8 +170,9 @@ func start_next_wave() -> bool:
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
 	spawn_timers_ms.clear()
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
-	for group in spawn_groups:
-		spawn_timers_ms.append(0.0)
+	for index in spawn_groups.size():
+		# Stagger the groups instead of surrounding a new player immediately.
+		spawn_timers_ms.append((float(_difficulty.opening_delay) + index * 0.6) * 1000.0)
 	if finance_system != null:
 		finance_system.begin_wave(current_wave_index + 1)
 	if player != null and player.is_alive():
@@ -178,6 +190,7 @@ func start_next_wave() -> bool:
 func finish_current_wave() -> void:
 	if not running:
 		return
+	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
 	running = false
 	# Include deaths deferred from this frame before clearing or settling rewards.
 	_flush_pending_reward_batches()
@@ -204,6 +217,11 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
 	runtime_modifiers.append_array(_build_wave_enemy_modifiers())
 	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
+	for stat in ["max_hp", "melee_damage", "ranged_damage", "element_damage", "move_speed", "armor"]:
+		var key := "health" if stat == "max_hp" else ("speed" if stat == "move_speed" else ("armor" if stat == "armor" else "damage"))
+		runtime_modifiers.append({"id": "difficulty_" + stat, "source_type": "difficulty", "source_id": difficulty_id,
+			"target_scope": "enemy", "stat": stat, "operation": Modifier.OPERATION_MULTIPLY,
+			"value": float(_difficulty[key]), "duration": Modifier.PERMANENT_DURATION, "stack_rule": Modifier.STACK_RULE_UNIQUE})
 	if not enemy.initialize(enemy_id, player, runtime_modifiers):
 		push_error("[WaveManager] enemy initialization failed: %s" % enemy_id)
 		enemy.queue_free()
@@ -407,7 +425,16 @@ func process_wave_end_settlements() -> Array[Dictionary]:
 		results = finance_system.process_wave_end_settlements()
 	if player != null and player.is_alive():
 		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
+		goblin_trades.settle_wave(current_wave_index + 1, player, finance_system)
 	return results
+
+
+func _record_trade_damage(before: int, after: int, maximum: int) -> void:
+	if running: goblin_trades.record_damage(before, after, maximum)
+
+
+func _record_trade_health(hp: int, maximum: int, shield: int) -> void:
+	if running: goblin_trades.record_health(hp, maximum, shield)
 
 
 func tick_finance(delta: float) -> void:
@@ -472,6 +499,7 @@ func _on_interest_settled(result: Dictionary) -> void:
 
 
 func _process_spawn_timers(delta: float) -> void:
+	var available := maxi(0, int(_difficulty.enemy_limit) - EnemyRegistry.get_registered_enemies().size())
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
 	for index in range(spawn_groups.size()):
 		var group: Dictionary = spawn_groups[index]
@@ -479,7 +507,7 @@ func _process_spawn_timers(delta: float) -> void:
 		if spawn_timers_ms[index] > 0.0:
 			continue
 		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
-		var spawn_count := calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1)))
+		var spawn_count := mini(available, calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1))))
 		for count_index in range(spawn_count):
 			var id := str(group.get("enemy_id", ""))
 			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
@@ -487,6 +515,8 @@ func _process_spawn_timers(delta: float) -> void:
 			if replace_with_elite:
 				id = replacement
 			var spawned := spawn_enemy(id, get_random_spawn_position())
+			if spawned != null:
+				available -= 1
 			if replace_with_elite and spawned != null:
 				_elite_spawned_count += 1
 				_elite_spawn_schedule.pop_front()
@@ -496,6 +526,9 @@ func _initialize_elite_schedule() -> void:
 	_elite_profile = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
 	_elite_erosion_snapshot = float(_wave_erosion_pressure.get("erosion", 0.0))
 	_elite_expected_count = calculate_miniboss_expected_count(current_wave_index + 1, _elite_erosion_snapshot)
+	_elite_expected_count = minf(float(_elite_profile.get("quota_cap", 3)), _elite_expected_count * float(_difficulty.elite_count))
+	if current_wave_index + 1 < int(_difficulty.first_elite_wave):
+		_elite_expected_count = 0.0
 	_elite_planned_count = _sample_miniboss_quota(_elite_expected_count)
 	_elite_spawned_count = 0
 	_elite_spawn_schedule.clear()
@@ -554,16 +587,16 @@ func complete_relic_choice(reward_id: String, selected: bool) -> void:
 
 func calculate_enemy_spawn_count(base_count: int) -> int:
 	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
-	var wave_multiplier := 1.0 + WAVE_SPAWN_COUNT_GROWTH_PERCENT * float(maxi(current_wave_index, 0)) / 100.0
+	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var streak_multiplier := 1.0 + ZONE_SPAWN_COUNT_GROWTH_PERCENT * float(ZoneProgression.get_effective_streak()) / 100.0
-	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * wave_multiplier * streak_multiplier)))
+	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier * streak_multiplier)))
 	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent)
 
 
 func calculate_spawn_interval(base_interval_ms: float) -> float:
-	var wave_growth := WAVE_SPAWN_INTERVAL_GROWTH_PERCENT * float(maxi(current_wave_index, 0)) / 100.0
+	var wave_growth := float(_difficulty.interval_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var zone_growth := ZoneProgression.get_enemy_pressure_per_streak("spawn_interval_percent") * float(ZoneProgression.get_effective_streak()) / 100.0
-	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) / (1.0 + wave_growth + zone_growth))
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth + zone_growth))
 
 
 func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:
@@ -606,10 +639,10 @@ func _build_erosion_enemy_modifiers() -> Array[Dictionary]:
 func _build_wave_enemy_modifiers() -> Array[Dictionary]:
 	var modifiers: Array[Dictionary] = []
 	var wave_step := float(maxi(current_wave_index, 0))
-	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + WAVE_HP_GROWTH_RATE, wave_step)))
-	modifiers.append(_build_wave_modifier("melee_damage", Modifier.OPERATION_ADD_PERCENT, WAVE_DAMAGE_GROWTH_PERCENT * wave_step))
-	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, WAVE_MOVE_SPEED_GROWTH_PERCENT * wave_step))
-	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, WAVE_ARMOR_GROWTH * wave_step))
+	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + float(_difficulty.hp_growth), wave_step)))
+	modifiers.append(_build_wave_modifier("melee_damage", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
+	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))
+	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, float(_difficulty.armor_growth) * wave_step))
 	return modifiers
 
 

@@ -210,6 +210,16 @@ func _test_inventory_inspection() -> void:
 	var spare_id := str(spare.get("item_instance_id", ""))
 	popup.workbench.refresh()
 	await frames()
+	for button in popup.workbench._weapon_row.get_children():
+		if not button is WeaponSlotButton: continue
+		(popup.workbench._weapon_row.get_parent() as ScrollContainer).ensure_control_visible(button)
+		await frames()
+		await _hover_control(button)
+		check(button.tooltip_text.is_empty() and popup._tooltip.visible, "weapon hover uses the finance HUD instead of a native plain-text tooltip")
+		check(popup._tooltip_text.bbcode_enabled and not popup._tooltip_text.get_parsed_text().contains("[color="), "finance weapon HUD parses color tags")
+		check(popup._tooltip_text.text == button.weapon.build_full_stats_text(), "finance HUD and weapon strip share current weapon details")
+	await _hover_control(popup._title)
+	check(not popup._tooltip.visible, "leaving weapon hides finance details")
 	var visible_ids: Array[String] = []
 	var target: EnchantmentInventoryCard
 	for card in popup.workbench._inventory.get_children():

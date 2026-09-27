@@ -43,7 +43,7 @@ var current_wave_duration_seconds: int = 0
 var current_character_id: String = ""
 var current_start_weapon_ids: Array[String] = []
 var current_outgame_modifiers: Array = []
-var current_difficulty_id: String = "standard"
+var current_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var current_battle_summary: Dictionary = {}
 var current_victory: bool = false
 var battle_resolved: bool = false
@@ -93,7 +93,7 @@ func reset_flow() -> void:
 	current_character_id = ""
 	current_start_weapon_ids.clear()
 	current_outgame_modifiers.clear()
-	current_difficulty_id = "standard"
+	current_difficulty_id = BattleDifficulty.DEFAULT_ID
 	current_wave_index = -1
 	current_wave_id = ""
 	current_wave_duration_seconds = 0
@@ -135,13 +135,11 @@ func enter_start_page() -> void:
 	reset_flow()
 
 
-func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[String] = [], outgame_modifiers: Array = [], difficulty_id: String = "standard") -> void:
+func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[String] = [], outgame_modifiers: Array = [], difficulty_id: String = BattleDifficulty.DEFAULT_ID) -> void:
 	current_character_id = _sanitize_text(character_id)
 	current_start_weapon_ids = _sanitize_string_array(start_weapon_ids)
 	current_outgame_modifiers = outgame_modifiers.duplicate(true)
-	current_difficulty_id = _sanitize_text(difficulty_id)
-	if current_difficulty_id.is_empty():
-		current_difficulty_id = "standard"
+	current_difficulty_id = BattleDifficulty.normalize(difficulty_id)
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_CHARACTER_SELECT)
 
@@ -157,7 +155,7 @@ func confirm_character_selection() -> bool:
 	var player_ok := _bound_player.initialize_from_character(current_character_id, current_outgame_modifiers, current_start_weapon_ids)
 	var loadout_ok: bool = _bound_loadout.initialize(_bound_player, _bound_wave_manager.finance_system if _bound_wave_manager != null else null)
 	if _bound_wave_manager != null:
-		_bound_wave_manager.initialize(_bound_player)
+		_bound_wave_manager.initialize(_bound_player, current_difficulty_id)
 
 	if not player_ok or not loadout_ok:
 		return false
@@ -386,6 +384,7 @@ func submit_finance_operation(action: String, amount: int) -> Dictionary:
 	var result := _bound_wave_manager.apply_finance_operation(action, amount)
 	_transaction_busy = false
 	result["source_balance_before"] = int(before.get("gold" if action == "deposit" else "principal", 0))
+	if bool(result.get("success", false)): cancel_goblin_trade()
 	_notify_preparation_changed()
 	return result
 
@@ -395,6 +394,7 @@ func close_finance_popup() -> void:
 		return
 	clear_stat_preview()
 	modal_closed.emit(STATE_FINANCE_POPUP)
+	cancel_goblin_trade()
 	_pending_finance_payload.clear()
 	_wave_end_ready = false
 	if not _start_prepared_wave():
@@ -538,6 +538,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 		_relic_choice_selected = not _active_relic_choice.is_empty()
 		close_shared_reward_shop_popup()
 	else:
+		cancel_goblin_trade()
 		_notify_preparation_changed()
 	return {"success": true, "action": "purchase", "offer_id": offer_id, "offer_type": offer_type, "target_id": target_id}
 
@@ -632,6 +633,7 @@ func get_economy_journal() -> EconomyJournal:
 
 
 func get_shop_refresh_cost() -> int:
+	if has_strong_refresh() and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP]: return 0
 	var wave_number := maxi(current_wave_index + 1, 1)
 	var first_refresh_cost := 3.0 + float(wave_number) * 0.5 + float(_total_refresh_count) * 0.25
 	var in_wave_refresh_count := float(_wave_refresh_count)
@@ -642,6 +644,8 @@ func get_shop_refresh_cost() -> int:
 func request_shop_refresh() -> Dictionary:
 	if current_state not in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_SHARED_REWARD_SHOP_POPUP] or _transaction_busy:
 		return {"success": false, "reason": "shop_not_active"}
+	var strong := has_strong_refresh() and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP]
+	if strong and not _has_epic_trade_candidate(): return {"success": false, "reason": "strong_refresh_unavailable"}
 	var cost := get_shop_refresh_cost()
 	if _bound_wave_manager == null or _bound_wave_manager.get_current_gold() < cost:
 		return {"success": false, "reason": "insufficient_gold_for_refresh"}
@@ -658,7 +662,11 @@ func request_shop_refresh() -> Dictionary:
 		var previous_ids: Array = []
 		for previous in _preparation_offers:
 			previous_ids.append(str(previous.get("candidate_id", "")))
-		payload = _build_shop_payload("shop", 0, previous_ids)
+		payload = _build_shop_payload("shop", 0, previous_ids, strong)
+	if strong:
+		_bound_wave_manager.goblin_trades.strong_refresh = false
+		_bound_wave_manager.finance_system.record_trade_activity("强力刷新已使用：幸运+100，保底史诗遗物。")
+		payload["refresh_cost"] = get_shop_refresh_cost()
 	_transaction_busy = false
 	clear_stat_preview()
 	if current_state == STATE_FINANCE_POPUP:
@@ -666,7 +674,7 @@ func request_shop_refresh() -> Dictionary:
 		_notify_preparation_changed()
 	else:
 		modal_requested.emit(current_state, payload)
-	return {"success": true, "cost": cost, "refresh_count": _wave_refresh_count, "total_refresh_count": _total_refresh_count}
+	return {"success": true, "cost": cost, "strong_refresh": strong, "refresh_count": _wave_refresh_count, "total_refresh_count": _total_refresh_count}
 
 
 func get_current_mode() -> String:
@@ -691,6 +699,7 @@ func get_state_snapshot() -> Dictionary:
 		"wave_id": current_wave_id,
 		"wave_duration_seconds": current_wave_duration_seconds,
 		"character_id": current_character_id,
+		"difficulty_id": current_difficulty_id,
 		"start_weapon_ids": current_start_weapon_ids.duplicate(),
 		"outgame_modifiers": current_outgame_modifiers.duplicate(true),
 		"battle_resolved": battle_resolved,
@@ -745,6 +754,7 @@ func _request_wave_end_finance() -> bool:
 	_pending_wave_start_after_finance = true
 	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(next_wave_number)
 	_preparation_offers = _build_shop_payload("shop", 0).get("offers", [])
+	_prepare_goblin_trade()
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_FINANCE_POPUP)
 	modal_requested.emit(STATE_FINANCE_POPUP, get_preparation_payload())
@@ -892,8 +902,9 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 	return payload
 
 
-func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []) -> Dictionary:
+func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = [], strong: bool = false) -> Dictionary:
 	var context := _build_shop_context()
+	if strong and not context.is_empty(): context["luck"] = float(context.luck) + float(_bound_wave_manager.goblin_trades.definition("strong_refresh").luck_bonus)
 	var offers: Array = []
 	var relic_only := mode == "free" and not _active_relic_choice.is_empty()
 	var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus"))
@@ -920,11 +931,11 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 				if not exclude_set.has(str(candidate.get("offer_id", ""))):
 					filtered_candidates.append(candidate)
 			candidates = filtered_candidates
-		var rarity_weights := generator.get_shop_rarity_weights(int(_get_shop_stat("luck")), ZoneProgression.get_current_zone_rarity_bonus())
+		var rarity_weights := generator.get_shop_rarity_weights(int(context.get("luck", 0)), ZoneProgression.get_current_zone_rarity_bonus())
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
 		if mode == "shop":
-			offers = generator.roll_paid_offers(rarity_weights, type_weights, candidates, offer_count, _shop_generation, exclude_offer_ids)
+			offers = generator.roll_paid_offers(rarity_weights, type_weights, candidates, offer_count, _shop_generation, exclude_offer_ids, "epic" if strong else "")
 		else:
 			offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count)
 		if not relic_only:
@@ -1030,6 +1041,11 @@ func get_preparation_payload() -> Dictionary:
 	payload["offer_generation"] = _shop_generation
 	payload["refresh_cost"] = get_shop_refresh_cost()
 	payload["settlement_results"] = _pending_interest_payload.get("settlement_results", [])
+	if _bound_wave_manager != null:
+		payload["goblin_trade"] = _bound_wave_manager.goblin_trades.offer.duplicate(true)
+		payload["strong_refresh"] = has_strong_refresh()
+		payload["interest_pact"] = _bound_wave_manager.goblin_trades.interest_pact
+		payload["interest_pact_terms"] = _bound_wave_manager.goblin_trades.get_interest_pact_terms()
 	return payload
 
 
@@ -1059,6 +1075,52 @@ func _refresh_economy_ui() -> void:
 	_notify_preparation_changed()
 
 
+func has_strong_refresh() -> bool:
+	return _bound_wave_manager != null and _bound_wave_manager.goblin_trades.strong_refresh
+
+
+func _has_epic_trade_candidate() -> bool:
+	var context := _build_shop_context()
+	if context.is_empty(): return false
+	for candidate in ShopOfferGenerator.new().build_shop_candidate_pool(context):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "epic": return true
+	return false
+
+
+func _prepare_goblin_trade() -> void:
+	var finance := _bound_wave_manager.finance_system
+	var principal_relic := false
+	for id in _bound_player.get_relic_counts():
+		for effect in DataRegistry.get_record("relics", str(id)).get("runtime_effects", []):
+			if str(effect.get("effect", "")) in ["derived_stat_from_principal", "principal_revive"]: principal_relic = true
+	_bound_wave_manager.goblin_trades.prepare({"wave": current_wave_index + 1, "earned": _bound_wave_manager.collected_gold_this_wave,
+		"has_next_wave": _has_next_wave(), "gold": get_current_gold(), "principal": finance.principal,
+		"sanity": _bound_player.get_stat("humanity"), "can_bank": not finance.manual_operation_used,
+		"principal_relic": principal_relic, "epic_available": _has_epic_trade_candidate(),
+		"struggling": bool(_bound_wave_manager.goblin_trades.pressure_snapshot.get("struggling", false))})
+
+
+func cancel_goblin_trade() -> void:
+	if _bound_wave_manager != null: _bound_wave_manager.goblin_trades.cancel()
+
+
+func accept_goblin_trade(token: String) -> Dictionary:
+	if current_state != STATE_FINANCE_POPUP or _transaction_busy or _bound_player == null or _bound_wave_manager == null or not _has_next_wave():
+		return {"success": false, "reason": "trade_expired"}
+	_transaction_busy = true
+	var result := _bound_wave_manager.goblin_trades.accept(token, _bound_player, _bound_wave_manager.finance_system)
+	if bool(result.get("success", false)) and bool(result.get("start_wave", false)):
+		clear_stat_preview()
+		modal_closed.emit(STATE_FINANCE_POPUP)
+		_pending_finance_payload.clear()
+		_wave_end_ready = false
+		_pending_wave_start_after_finance = true
+		_start_prepared_wave()
+	_transaction_busy = false
+	_notify_preparation_changed()
+	return result
+
+
 func get_bank_stat_preview(action: String, amount: int) -> String:
 	if _bound_player == null or _bound_wave_manager == null or _bound_wave_manager.finance_system == null:
 		return ""
@@ -1071,7 +1133,7 @@ func get_bank_stat_preview(action: String, amount: int) -> String:
 		lines.append("办理后本金：%d → %d" % [finance.principal, preview.principal])
 		if not is_equal_approx(finance.get_interest_rate(), preview.get_interest_rate()):
 			lines.append("利率：%s%% → %s%%" % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])
-		for stat_id in ["max_hp", "armor", "attack_speed", "damage_percent", "load_capacity", "currency_gain_percent", "humanity"]:
+		for stat_id in ["max_hp", "armor", "attack_speed", "damage_percent", "area_size", "damage_area_size", "load_capacity", "currency_gain_percent", "humanity"]:
 			var before := _bound_player.get_stat(stat_id)
 			var after := preview_player.get_stat(stat_id)
 			if not is_equal_approx(before, after):
@@ -1187,6 +1249,7 @@ func submit_inventory_sale(kind: String, target_id: String, quote_token: String)
 		_bound_player.item_inventory.items_changed.emit()
 	_transaction_busy = false
 	clear_stat_preview()
+	if paid: cancel_goblin_trade()
 	_notify_preparation_changed()
 	return {"success": paid, "reason": "" if paid else "sale_failed", "gold_gained": int(quote.get("total", 0)) if paid else 0}
 

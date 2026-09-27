@@ -9,7 +9,10 @@ var _drawer_locked_open: bool = false
 var _drawer_tween: Tween = null
 var _stat_value_labels: Dictionary = {}
 var _stat_name_labels: Dictionary = {}
-var _damage_tooltip_panel: PanelContainer = null
+var _stat_tooltip_panel: PanelContainer = null
+var _stat_tooltip_label: Label = null
+var _stat_tooltip_anchor: Control = null
+var _stat_tooltip_id := ""
 var _bond_indicator: Button = null
 var _bond_tooltip_panel: PanelContainer = null
 var _displayed_bond_id: String = ""
@@ -136,6 +139,10 @@ const MAIN_STAT_IDS: Array[String] = [
 	"max_hp", "hp_regen", "armor", "shield_regen", "move_speed", "damage_percent",
 	"melee_damage", "ranged_damage", "element_damage", "attack_speed", "crit_chance",
 	"crit_damage", "projectile_count", "area_size", "damage_area_size", "control_power",
+]
+const STAT_VALUES_WITHOUT_PERCENT: Array[String] = [
+	"damage_percent", "attack_speed", "area_size", "damage_area_size",
+	"exp_gain_percent", "drop_rate_percent", "enemy_spawn_rate_percent",
 ]
 
 @onready var status_panel: Control = get_node_or_null("StatusPanel")
@@ -268,17 +275,18 @@ func _create_stats_drawer_skin() -> void:
 	_drawer_scroll_hint.add_theme_font_size_override("font_size", 10)
 	_drawer_scroll_hint.add_theme_color_override("font_color", Color(0.64, 0.62, 0.50))
 	_drawer_scroll_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Keep the hint in the lower board margin, outside the symmetric list area.
+	# Reserve the lower wood for the hint, clear of the metal edge and list.
 	stats_drawer.add_child(_drawer_scroll_hint)
 	_drawer_scroll_hint.anchor_top = 1.0
 	_drawer_scroll_hint.anchor_right = 1.0
 	_drawer_scroll_hint.anchor_bottom = 1.0
 	_drawer_scroll_hint.offset_left = 72.0
 	_drawer_scroll_hint.offset_right = -44.0
-	_drawer_scroll_hint.offset_top = -28.0
-	_drawer_scroll_hint.offset_bottom = -16.0
+	_drawer_scroll_hint.offset_top = -48.0
+	_drawer_scroll_hint.offset_bottom = -32.0
 	stats_scroll.get_v_scroll_bar().changed.connect(_update_drawer_scroll_hint)
 	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_drawer_scroll_hint())
+	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _hide_stat_tooltip())
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		drawer_toggle_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	drawer_toggle_button.flat = false
@@ -826,6 +834,7 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 		return
 
 	_drawer_open = open
+	_hide_stat_tooltip()
 	if drawer_toggle_button != null:
 		drawer_toggle_button.text = ">" if open else "<"
 
@@ -843,7 +852,6 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 		_refresh_visibility()
 		return
 
-	_hide_damage_tooltip()
 	var full_duration := DRAWER_ANIMATION_SECONDS if open else DRAWER_CLOSE_SECONDS
 	var remaining := clampf(absf(target_left - stats_drawer.offset_left) / DRAWER_CLOSED_RIGHT, 0.0, 1.0)
 	var duration := lerpf(0.18, full_duration, remaining)
@@ -919,16 +927,7 @@ func _refresh_stats_drawer() -> void:
 		var name_label := _stat_name_labels.get(stat_id_variant, null) as Label
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
-			name_label.tooltip_text = name_label.text
-			if stat_id == "divinity":
-				name_label.tooltip_text = StatDefinitions.get_description(stat_id)
-			if stat_id == "humanity":
-				name_label.tooltip_text = HumanityEconomy.tooltip(_get_display_stat_value(stat_id))
-				if preview.has(stat_id):
-					name_label.tooltip_text += "\n获得后：" + HumanityEconomy.describe(float(preview[stat_id]))
-			if stat_id == "armor":
-				# Use the custom tooltip panel below; the built-in tooltip would show a duplicate.
-				name_label.tooltip_text = ""
+	_refresh_stat_tooltip()
 
 
 func _ensure_stat_rows() -> void:
@@ -945,6 +944,7 @@ func _ensure_stat_rows() -> void:
 		if stat_id == "damage_taken_percent" or stat_id == "shield" or stat_id == "finance":
 			continue
 		var row := HBoxContainer.new()
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.custom_minimum_size.y = 14.0
 		row.add_theme_constant_override("separation", 3)
@@ -959,7 +959,7 @@ func _ensure_stat_rows() -> void:
 		backing.add_theme_stylebox_override("panel", row_style)
 		backing.add_child(row)
 
-		var name_label := WrappedTooltipLabel.new()
+		var name_label := Label.new()
 		name_label.text = _get_stat_display_name(stat_id)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -967,23 +967,16 @@ func _ensure_stat_rows() -> void:
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		name_label.add_theme_constant_override("outline_size", 1)
 		name_label.add_theme_color_override("font_outline_color", Color("241e15"))
-		name_label.tooltip_text = name_label.text
-		if stat_id == "divinity":
-			name_label.tooltip_text = StatDefinitions.get_description(stat_id)
-		if stat_id == "humanity":
-			name_label.tooltip_text = HumanityEconomy.tooltip(_get_display_stat_value(stat_id))
-			name_label.mouse_default_cursor_shape = Control.CURSOR_HELP
-		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(name_label)
 
-		if stat_id == "armor":
-			name_label.mouse_filter = Control.MOUSE_FILTER_STOP
-			name_label.mouse_default_cursor_shape = Control.CURSOR_HELP
-			name_label.tooltip_text = ""
-			name_label.mouse_entered.connect(_show_damage_tooltip.bind(name_label))
-			name_label.mouse_exited.connect(_hide_damage_tooltip)
+		if stat_id in ["armor", "humanity", "divinity"]:
+			backing.mouse_default_cursor_shape = Control.CURSOR_HELP
+			backing.mouse_entered.connect(_show_stat_tooltip.bind(backing, stat_id))
+			backing.mouse_exited.connect(_hide_stat_tooltip)
 
 		var value_label := Label.new()
+		value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value_label.custom_minimum_size = Vector2(44.0, 0.0)
 		value_label.add_theme_font_size_override("font_size", 11)
@@ -1028,37 +1021,76 @@ func _get_damage_tooltip_text() -> String:
 
 
 
-func _show_damage_tooltip(anchor_control: Control) -> void:
-	_hide_damage_tooltip()
-	_damage_tooltip_panel = PanelContainer.new()
-	_damage_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_damage_tooltip_panel.z_index = 100
+func _get_stat_tooltip_text(stat_id: String) -> String:
+	match stat_id:
+		"armor":
+			return _get_damage_tooltip_text()
+		"humanity":
+			var factors := HumanityEconomy.get_multipliers(_get_display_stat_value(stat_id))
+			return "购买价格 + %s%%，出售价格 - %s%%，利息收益 - %s%%" % [
+				HumanityEconomy.number((float(factors.purchase) - 1.0) * 100.0),
+				HumanityEconomy.number((1.0 - float(factors.sale)) * 100.0),
+				HumanityEconomy.number((1.0 - float(factors.interest)) * 100.0),
+			]
+		"divinity":
+			return "影响怪物强度、数量"
+	return ""
+
+
+func _show_stat_tooltip(anchor_control: Control, stat_id: String) -> void:
+	_hide_stat_tooltip()
+	if not _drawer_open or _get_stat_tooltip_text(stat_id).is_empty():
+		return
+	_stat_tooltip_id = stat_id
+	_stat_tooltip_anchor = anchor_control
+	_stat_tooltip_panel = PanelContainer.new()
+	_stat_tooltip_panel.name = "StatTooltip"
+	_stat_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stat_tooltip_panel.z_index = 100
 	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.04, 0.05, 0.07, 0.96)
-	panel_style.border_color = Color(0.75, 0.78, 0.82, 0.8)
+	panel_style.bg_color = Color("14201dfc")
+	panel_style.border_color = Color("8c9274")
 	panel_style.set_border_width_all(1)
-	panel_style.set_corner_radius_all(4)
-	_damage_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
-	add_child(_damage_tooltip_panel)
-
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 8)
-	margin.add_theme_constant_override("margin_top", 5)
-	margin.add_theme_constant_override("margin_right", 8)
-	margin.add_theme_constant_override("margin_bottom", 5)
-	_damage_tooltip_panel.add_child(margin)
-
-	var label := RichTextLabel.new()
-	label.bbcode_enabled = true
-	label.fit_content = true
-	label.scroll_active = false
-	label.custom_minimum_size = Vector2(120, 0)
-	label.text = "[color=#FFFFFF]%s[/color]" % _get_damage_tooltip_text()
-	margin.add_child(label)
-	call_deferred("_position_damage_tooltip", anchor_control, _damage_tooltip_panel)
+	panel_style.content_margin_left = 8
+	panel_style.content_margin_right = 8
+	panel_style.content_margin_top = 6
+	panel_style.content_margin_bottom = 6
+	_stat_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(_stat_tooltip_panel)
+	_stat_tooltip_label = Label.new()
+	_stat_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stat_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_stat_tooltip_label.add_theme_font_size_override("font_size", 14)
+	_stat_tooltip_label.add_theme_color_override("font_color", Color("f1e6d2"))
+	_stat_tooltip_panel.add_child(_stat_tooltip_label)
+	_refresh_stat_tooltip()
 
 
-func _position_damage_tooltip(anchor_control: Control, tooltip_panel: PanelContainer) -> void:
+func _refresh_stat_tooltip() -> void:
+	if _stat_tooltip_panel == null:
+		return
+	if not visible or not _drawer_open or not is_instance_valid(_stat_tooltip_anchor) or not _stat_tooltip_anchor.is_visible_in_tree():
+		_hide_stat_tooltip()
+		return
+	var text := _get_stat_tooltip_text(_stat_tooltip_id)
+	if _stat_tooltip_label.text != text:
+		var face := _stat_tooltip_label.get_theme_font("font")
+		var width := minf(300.0, get_viewport().get_visible_rect().size.x - 32.0)
+		width = minf(width, ceilf(face.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x))
+		var paragraph := TextParagraph.new()
+		paragraph.width = width
+		paragraph.break_flags = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+		paragraph.add_string(text, face, 14)
+		_stat_tooltip_label.custom_minimum_size = Vector2(width, paragraph.get_size().y + maxf(0, paragraph.get_line_count() - 1) * _stat_tooltip_label.get_theme_constant("line_spacing"))
+		# Give the label its wrapping width before setting text; otherwise its
+		# first minimum-height calculation treats every character as a new line.
+		_stat_tooltip_label.size = _stat_tooltip_label.custom_minimum_size
+		_stat_tooltip_label.text = text
+		_stat_tooltip_panel.reset_size()
+	_position_stat_tooltip(_stat_tooltip_anchor, _stat_tooltip_panel)
+
+
+func _position_stat_tooltip(anchor_control: Control, tooltip_panel: PanelContainer) -> void:
 	if not is_instance_valid(anchor_control) or not is_instance_valid(tooltip_panel):
 		return
 	var anchor_rect := anchor_control.get_global_rect()
@@ -1071,10 +1103,14 @@ func _position_damage_tooltip(anchor_control: Control, tooltip_panel: PanelConta
 	tooltip_panel.position = tooltip_position
 
 
-func _hide_damage_tooltip() -> void:
-	if _damage_tooltip_panel != null:
-		_damage_tooltip_panel.queue_free()
-		_damage_tooltip_panel = null
+func _hide_stat_tooltip() -> void:
+	if _stat_tooltip_panel != null:
+		_stat_tooltip_panel.hide()
+		_stat_tooltip_panel.queue_free()
+		_stat_tooltip_panel = null
+	_stat_tooltip_label = null
+	_stat_tooltip_anchor = null
+	_stat_tooltip_id = ""
 
 
 func _get_ordered_stat_ids() -> Array[String]:
@@ -1107,7 +1143,8 @@ func _format_stat_value(stat_id: String, value: float) -> String:
 	var text_value := "%.2f" % value
 	if (StatDefinitions.is_integer_stat(stat_id) and stat_id != "shop_price_percent") or is_equal_approx(value, roundf(value)):
 		text_value = "%d" % roundi(value)
-	return text_value + ("%" if StatDefinitions.is_percent_stat(stat_id) else "")
+	var show_percent := StatDefinitions.is_percent_stat(stat_id) and stat_id not in STAT_VALUES_WITHOUT_PERCENT
+	return text_value + ("%" if show_percent else "")
 
 
 func _refresh_bond_indicator() -> void:

@@ -184,19 +184,23 @@ func _draw_water_ribbon(t: float, fade: float) -> void:
 
 
 func _draw_frost_front(t: float, fade: float) -> void:
-	var old_radius := float(options.get("from_radius", 64))
-	var radius := lerpf(old_radius, float(options.get("radius", 86)), smoothstep(0, 0.65, t))
+	var frost = preload("res://scripts/effects/frost_pattern.gd")
+	var old_radius := float(options.get("from_radius", 51.2))
+	var radius := lerpf(old_radius, float(options.get("radius", 69.12)), smoothstep(0, 0.65, t))
+	fade *= frost.OPACITY
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, frost.GROUND_FLATTEN))
 	for index in range(10 if detail > 0 else 6):
 		var angle := index * TAU / 10.0
 		var axis := Vector2.from_angle(angle)
 		var side := axis.orthogonal()
 		var a := axis * (old_radius - 8)
 		var b := axis * radius
-		PIXEL.line(self, a, b, Color(0.60, 0.91, 0.96, fade), 2)
+		PIXEL.line(self, a, b, Color(0.59, 0.78, 0.93, fade), 2)
 		for branch in [-1.0, 1.0]:
-			PIXEL.line(self, b - axis * 5, b - axis * 12 + side * branch * 7, Color(0.60, 0.91, 0.96, fade * 0.9), 2)
+			PIXEL.line(self, b - axis * 5, b - axis * 12 + side * branch * 7, Color(0.59, 0.78, 0.93, fade * 0.9), 2)
 		SHAPES.shard(self, b, axis, 10, 3, fade)
-		PIXEL.arc(self, radius, angle + 0.05, angle + 0.40, Color(0.27, 0.68, 0.85, fade * 0.85), 3)
+		PIXEL.arc(self, radius, angle + 0.05, angle + 0.40, Color(0.35, 0.58, 0.78, fade * 0.65), 3)
+	draw_set_transform(Vector2.ZERO)
 
 
 func _draw_thunder_fire(t: float, fade: float) -> void:

@@ -6,16 +6,19 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const FROST = preload("res://scripts/effects/frost_pattern.gd")
+const DEFAULT_RADIUS := 51.2
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _context: RefCounted = null
 var _elapsed: float = 0.0
-var _radius: float = 64.0
+var _radius: float = DEFAULT_RADIUS
 var _lifetime: float = 1.8
-var _maximum_radius: float = 128.0
+var _maximum_radius: float = DEFAULT_RADIUS * 2.0
 var _hit_targets: Dictionary = {}
 var _scan_timer: float = 0.0
+var _ground_shape := ConvexPolygonShape2D.new()
+var _shape_radius := -1.0
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
@@ -27,16 +30,16 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
 		"damage": maxf(damage_event.get_elemental_base_damage() * 0.35, 1.0),
-		"radius": 64.0,
+		"radius": DEFAULT_RADIUS,
 		"duration": 3.0,
 		"slow_multiplier": 0.45,
 	}, attachment_item_id)
-	effect._radius = maxf(effect._context.get_resolved_parameter("radius", 64.0) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 16.0)
+	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.8)
 	effect._lifetime = maxf(effect._context.get_resolved_parameter("duration", 3.0), 0.2)
 	effect._maximum_radius = effect._radius * 2.0
 	AudioManager.begin_combat_audio()
 	AudioManager.play_enchantment_sfx("ice")
-	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, {"count_multiplier": 0.4, "size_multiplier": 0.65})
+	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 0.6, Color(0.62, 0.80, 0.93, 0.55), {"count_multiplier": 0.3, "size_multiplier": 0.52})
 	effect._damage_enemies()
 	AudioManager.end_combat_audio()
 
@@ -71,10 +74,16 @@ func _process(delta: float) -> void:
 
 func _damage_enemies() -> void:
 	AudioManager.begin_combat_audio()
-	var shape := CircleShape2D.new()
-	shape.radius = _radius
+	# Query the same projected ellipse that is painted on the tilted ground.
+	# A cached convex outline avoids unsupported non-uniform circle scaling.
+	if not is_equal_approx(_shape_radius, _radius):
+		var outline := PackedVector2Array()
+		for index in 48:
+			outline.append(Vector2.from_angle(index * TAU / 48.0) * Vector2(1.0, FROST.GROUND_FLATTEN) * _radius)
+		_ground_shape.points = outline
+		_shape_radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
+	query.shape = _ground_shape
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = 2
 	query.collide_with_bodies = true
@@ -102,12 +111,13 @@ func _draw() -> void:
 	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
 	var fade := 1.0 - smoothstep(0.64, 1.0, progress)
 	var growth := smoothstep(0.0, 0.42, _elapsed)
-	PIXEL.ellipse(self, Vector2.ONE * _radius * growth, Color(0.24, 0.51, 0.63, 0.12 * fade))
-	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0)
+	var projection := Vector2(1.0, FROST.GROUND_FLATTEN)
+	PIXEL.ellipse(self, projection * _radius * growth, Color(0.43, 0.63, 0.80, 0.06 * fade))
+	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0, FROST.GROUND_FLATTEN)
 	for index in 6:
 		var angle := index * TAU / 6.0
-		var center := Vector2.from_angle(angle) * _radius * 0.67
+		var center := Vector2.from_angle(angle) * projection * _radius * 0.67
 		var small_growth := smoothstep(0.12 + (index % 2) * 0.07, 0.60, _elapsed)
-		FROST.draw_crystal(self, center, _radius * 0.23, small_growth, fade * 0.82, angle + PI / 6)
+		FROST.draw_crystal(self, center, _radius * 0.23, small_growth, fade * 0.82, angle + PI / 6, FROST.GROUND_FLATTEN)
 		var sparkle := 0.35 + 0.35 * sin(_elapsed * 4.0 + index * 1.7)
-		PIXEL.block(self, center + Vector2(3, -3), Vector2(2, 2), Color(0.85, 0.97, 1.0, sparkle * fade * small_growth))
+		PIXEL.block(self, center + Vector2(3, -3) * projection, Vector2(2, 2), Color(0.72, 0.85, 0.96, sparkle * fade * small_growth * FROST.OPACITY))

@@ -266,7 +266,7 @@ func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Di
 	return _pick_weighted_candidate(rarity_candidates)
 
 
-func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = []) -> Array[Dictionary]:
+func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = [], guaranteed_relic_rarity: String = "") -> Array[Dictionary]:
 	# Paid shelves can exceed the number of distinct relics. Prefer distinct
 	# products first, then refill stackable stock. Free reward rolls stay unchanged.
 	var stock: Array[Dictionary] = []
@@ -280,12 +280,18 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 	var result: Array[Dictionary] = []
 	var upgrade_selected := false
 	for slot in count:
+		var guaranteed: Array[Dictionary] = []
+		if slot == 0 and not guaranteed_relic_rarity.is_empty():
+			for candidate in candidates:
+				if str(candidate.get("offer_type", "")) == OFFER_RELIC and str(candidate.get("rarity", "")) == guaranteed_relic_rarity:
+					guaranteed.append(candidate)
+			if guaranteed.is_empty(): return []
 		if available.is_empty():
 			available = stock.duplicate()
-		if available.is_empty():
+		if available.is_empty() and guaranteed.is_empty():
 			break
 		var kind := _roll_weighted_key(_get_available_type_weights(type_weights, available))
-		var chosen := _pick_candidate_by_rarity(_filter_candidates_by_type(available, kind), rarity_weights)
+		var chosen := _pick_candidate_by_rarity(_filter_candidates_by_type(available, kind), rarity_weights) if guaranteed.is_empty() else _pick_weighted_candidate(guaranteed)
 		if chosen.is_empty():
 			break
 		available.erase(chosen)

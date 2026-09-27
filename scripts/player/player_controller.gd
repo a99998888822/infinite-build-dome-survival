@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name PlayerController
 
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
+signal health_damage_taken(previous_hp: int, remaining_hp: int, maximum_hp: int)
 signal died
 signal revived(remaining_revives: int)
 signal lethal_damage
@@ -52,6 +53,9 @@ var _initial_wave_shield: int = 0
 var _modifier_update_depth: int = 0
 var _modifiers_before_update: Dictionary = {}
 var _resolving_death: bool = false
+var _stationary_seconds: float = 0.0
+var _stationary_thresholds: Array[float] = []
+var _stationary_position := Vector2.ZERO
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -76,6 +80,8 @@ func _input(event: InputEvent) -> void:
 	for key_code in [KEY_A, KEY_LEFT, KEY_D, KEY_RIGHT, KEY_W, KEY_UP, KEY_S, KEY_DOWN]:
 		if key_event.keycode == key_code or key_event.physical_keycode == key_code:
 			_held_move_keys[key_code] = is_pressed
+			if is_pressed:
+				reset_stationary_relic_state()
 
 
 func _notification(what: int) -> void:
@@ -93,6 +99,7 @@ func _physics_process(delta: float) -> void:
 	_invincibility_timer = maxf(_invincibility_timer - delta, 0.0)
 	_process_regeneration(delta)
 	_process_movement(delta)
+	_tick_stationary_relic_state(delta)
 	_sync_camera()
 
 
@@ -106,6 +113,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	character_id = target_character_id
 	character_data = data
 	modifier_stack.remove_by_source("level", "run_level")
+	modifier_stack.remove_by_source_type("relic_runtime")
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
@@ -132,6 +140,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_relic_runtime_sequence = 0
 	_refreshing_relic_dynamic_effects = false
 	_resolving_death = false
+	reset_stationary_relic_state()
 	_clear_move_input()
 	_update_pickup_radius()
 
@@ -256,6 +265,9 @@ func create_stat_preview_copy() -> PlayerController:
 	preview.remaining_revives = remaining_revives
 	preview._configured_revive_count = _configured_revive_count
 	preview._relic_runtime_sequence = _relic_runtime_sequence
+	preview._stationary_seconds = _stationary_seconds
+	preview._stationary_thresholds = _stationary_thresholds.duplicate()
+	preview._stationary_position = _stationary_position
 	preview.alive = alive
 	preview.relic_system.owner_player = preview
 	preview.relic_system.weapon_ids = relic_system.weapon_ids.duplicate()
@@ -342,6 +354,8 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 		return 0
 
 	var had_shield := current_shield > 0
+	var previous_hp := current_hp
+	var damage_maximum_hp := int(get_stat("max_hp"))
 	var shield_damage := mini(current_shield, raw_damage)
 	current_shield -= shield_damage
 	var remaining_damage := raw_damage - shield_damage
@@ -350,6 +364,8 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 		var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 		health_damage = maxi(1, int(roundi(float(remaining_damage) * damage_taken_percent / 100.0)))
 	current_hp = maxi(current_hp - health_damage, 0)
+	if health_damage > 0:
+		health_damage_taken.emit(previous_hp, current_hp, damage_maximum_hp)
 	_invincibility_timer = invincibility_seconds
 	_apply_damage_flash()
 	_refresh_relic_dynamic_effects()
@@ -413,6 +429,8 @@ func reset_wave_shield() -> void:
 
 
 func process_relic_runtime_trigger(trigger: String) -> void:
+	if trigger in [BattleFinanceSystem.TRIGGER_WAVE_START, BattleFinanceSystem.TRIGGER_WAVE_END]:
+		reset_stationary_relic_state()
 	_process_relic_runtime_trigger(trigger)
 
 
@@ -459,6 +477,38 @@ func _read_move_input() -> Vector2:
 
 func set_mobile_move_direction(direction: Vector2) -> void:
 	_mobile_move_direction = direction.limit_length(1.0)
+	if not _mobile_move_direction.is_zero_approx():
+		reset_stationary_relic_state()
+
+
+func reset_stationary_relic_state() -> void:
+	var had_bonus := _has_stationary_relic_bonus()
+	_stationary_seconds = 0.0
+	_stationary_position = global_position
+	if had_bonus:
+		_update_after_stat_change()
+
+
+func _has_stationary_relic_bonus() -> bool:
+	for threshold in _stationary_thresholds:
+		if _stationary_seconds >= threshold:
+			return true
+	return false
+
+
+func _tick_stationary_relic_state(delta: float) -> void:
+	# Cache thresholds when relics change; do not rebuild modifiers every frame.
+	if not alive or not _read_move_input().is_zero_approx() or not global_position.is_equal_approx(_stationary_position):
+		reset_stationary_relic_state()
+		return
+	if _stationary_thresholds.is_empty():
+		return
+	var previous := _stationary_seconds
+	_stationary_seconds = minf(_stationary_seconds + maxf(delta, 0.0), _stationary_thresholds.back())
+	for threshold in _stationary_thresholds:
+		if previous < threshold and _stationary_seconds >= threshold:
+			_update_after_stat_change()
+			break
 
 
 func _clear_move_input() -> void:
@@ -588,7 +638,17 @@ func _refresh_relic_dynamic_effects() -> void:
 		if modifier.source_type == "relic_dynamic":
 			previous_values[modifier.id] = modifier.value
 	modifier_stack.remove_by_source_type("relic_dynamic")
-	for effect in _get_ordered_dynamic_effects():
+	var ordered_effects := _get_ordered_dynamic_effects()
+	_stationary_thresholds.clear()
+	for effect in ordered_effects:
+		if str(effect.get("condition", "")) == "stationary_seconds":
+			var threshold := maxf(float(effect.get("threshold", 1.0)), 0.001)
+			if not _stationary_thresholds.has(threshold):
+				_stationary_thresholds.append(threshold)
+	_stationary_thresholds.sort()
+	if _stationary_thresholds.is_empty():
+		_stationary_seconds = 0.0
+	for effect in ordered_effects:
 		var effect_type := str(effect.get("effect", ""))
 		var target_stat := str(effect.get("stat", effect.get("target_stat", "")))
 		if not StatDefinitions.has_stat(target_stat):
@@ -607,7 +667,10 @@ func _refresh_relic_dynamic_effects() -> void:
 				continue
 			var divisor := maxf(float(effect.get("divisor", 1.0)), 0.0001)
 			var per_unit := float(effect.get("per_unit", 1.0))
-			value = floorf(get_stat(source_stat) / divisor) * per_unit
+			var source_value := get_stat(source_stat)
+			if bool(effect.get("positive_source_only", false)):
+				source_value = maxf(source_value, 0.0)
+			value = floorf(source_value / divisor) * per_unit
 		var instance_id := str(effect.get("relic_instance_id", "relic"))
 		var effect_index := int(effect.get("relic_runtime_effect_index", 0))
 		var modifier_id := "relic_dynamic_%s_%d" % [instance_id, effect_index]
@@ -680,6 +743,8 @@ func _is_relic_condition_active(effect: Dictionary) -> bool:
 			return float(current_hp) / max_hp * 100.0 < threshold
 		"humanity_below":
 			return get_stat("humanity") < threshold
+		"stationary_seconds":
+			return alive and _stationary_seconds >= threshold
 	return false
 
 
@@ -733,6 +798,7 @@ func _die(source_id: String = "") -> void:
 	if not alive or _resolving_death:
 		return
 	_resolving_death = true
+	reset_stationary_relic_state()
 	if _try_revive():
 		_resolving_death = false
 		return

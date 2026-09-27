@@ -2,7 +2,6 @@ extends Control
 class_name WeaponStrip
 
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
-const ATTACHMENT_ROW_HEIGHT: float = 24.0
 
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
@@ -20,6 +19,10 @@ var _tooltip_weapon_id: String = ""
 func _ready() -> void:
 	if weapon_tooltip != null:
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		weapon_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
+	if weapon_tooltip_label != null:
+		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
+		weapon_tooltip_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false) -> void:
@@ -132,7 +135,6 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 				_tooltip_attachment_rows.append({
 					"item_instance_id": item_instance_id,
 					"slot_index": slot_index,
-					"slot_count": weapon.get_attachment_slot_count(),
 				})
 		_update_tooltip_attachment_rows()
 		call_deferred("_update_tooltip_attachment_rows")
@@ -153,13 +155,16 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 func _update_tooltip_attachment_rows() -> void:
 	if weapon_tooltip_label == null:
 		return
+	var face := weapon_tooltip_label.get_theme_font("normal_font")
+	var font_size := weapon_tooltip_label.get_theme_font_size("normal_font_size")
+	var header_width := face.get_string_size("附魔" + WeaponInstance.ATTACHMENT_ICON_GAP, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var gap_width := face.get_string_size(WeaponInstance.ATTACHMENT_ICON_GAP, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var row_y := weapon_tooltip_label.get_paragraph_offset(weapon_tooltip_label.get_paragraph_count() - 1)
 	for attachment_row in _tooltip_attachment_rows:
 		var slot_index := int(attachment_row.get("slot_index", 0))
-		var slot_count := int(attachment_row.get("slot_count", 1))
-		var content_height := minf(weapon_tooltip_label.size.y, float(weapon_tooltip_label.get_content_height()))
 		attachment_row["rect"] = Rect2(
-			Vector2(0.0, maxf(content_height - ATTACHMENT_ROW_HEIGHT * float(slot_count - slot_index), 0.0)),
-			Vector2(maxf(weapon_tooltip_label.size.x, 1.0), ATTACHMENT_ROW_HEIGHT)
+			Vector2(header_width + slot_index * (WeaponInstance.ATTACHMENT_ICON_SIZE + gap_width), row_y),
+			Vector2.ONE * WeaponInstance.ATTACHMENT_ICON_SIZE
 		)
 
 

@@ -1,0 +1,133 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Intel) - ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.101.5333)
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 6 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 1 records
+[DataRegistry] - enemies: 2 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 11 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS early reward example
+PASS middle reward example
+PASS late reward example
+PASS high income cannot exceed wave cap
+PASS cash is smaller than principal throughout the run
+PASS large surviving crowd triggers pressure
+PASS old crowd outside the rolling window is ignored
+PASS last-frame spawn spike is not a full crowd window
+PASS remaining under half and tiny heals do not farm episodes
+PASS three distinct low-health episodes trigger pressure without a crowd
+PASS crisis offers take priority over high sanity
+PASS principal relics raise advance weight
+PASS tiny deposit and misleading principal ratio are excluded
+PASS high sanity and spendable wealth can both qualify
+PASS normal starting sanity is not high sanity
+PASS reopening cannot reroll the offer
+PASS cancelled offer cannot return this preparation
+PASS same offer skips three following preparations
+PASS offer returns after cooldown
+PASS no deal after the final wave
+PASS missing eligible epic fails instead of promising a false guarantee
+PASS guarantee overrides luck gate but retains stock eligibility
+[GameGlobal] game root ready
+PASS start live game
+PASS actual health damage signal records three episodes
+PASS combat telemetry automatically opens a live trade
+PASS wave-end healing does not erase pressure snapshot
+PASS all-in offer displays the requested concrete amount and free refresh
+PASS strong refresh shows supplementary text only when present
+PASS strong refresh keeps readable terms separate from action buttons
+PASS strong refresh keeps white and green text two pixels apart
+PASS strong refresh fits complete text without unused vertical space
+PASS capture 01_deposit_offer
+PASS small strong refresh shows supplementary text only when present
+PASS small strong refresh keeps readable terms separate from action buttons
+PASS small strong refresh keeps white and green text two pixels apart
+PASS capture 01_small_deposit_offer
+PASS small window can scroll to the full epic guarantee
+PASS capture 01_small_deposit_scrolled
+PASS accept deposits instead of destroying the gold
+PASS deposit consumes bank allowance and awards persistent refresh
+PASS accepted card releases its layout space
+PASS cannot accept the same offer twice
+PASS cannot withdraw during the accepting preparation
+PASS free colorful refresh is usable with zero gold
+PASS capture 02_refresh_ready
+PASS free reward shop cannot consume the finance refresh token
+PASS next automatic shelf preserves refresh and restores banking
+PASS next wave never automatically refunds the deposit
+PASS player can manually withdraw next preparation
+PASS ordinary banking cannot cancel earned refresh
+PASS unavailable epic retains token and gold
+PASS manual paid-shop refresh consumes token once for free
+PASS purple RELIC guaranteed with zero effective luck
+PASS bonus luck is temporary and wallet remains unchanged
+PASS capture 03_epic_guarantee
+PASS cash offer displays the revised terms
+PASS cash price shows supplementary text only when present
+PASS cash price keeps readable terms separate from action buttons
+PASS cash price fits complete text without unused vertical space
+PASS capture 04_cash_offer
+PASS small cash price shows supplementary text only when present
+PASS small cash price keeps readable terms separate from action buttons
+PASS capture 04_small_cash_offer
+PASS small window retains banker and scrollable long terms
+PASS cash gift ignores combat income and currency multipliers
+PASS cash deal retains revised costs even when effective luck hits its existing zero floor
+PASS bank restriction blocks direct APIs too
+PASS locked bank explains its restriction
+PASS capture 05_small_bank_locked
+PASS capture 05_cash_accepted
+PASS bank restrictions expire on next preparation
+PASS cash stat costs remain after the bank reopens
+PASS spending money shows supplementary text only when present
+PASS spending money keeps readable terms separate from action buttons
+PASS spending money fits complete text without unused vertical space
+PASS capture 06_spending_offer
+PASS spending gift credits exactly 100 and greys deposit
+PASS capture 07_spending_accepted
+PASS spending deal allows withdrawals and automatic gifts
+PASS interest pact shows supplementary text only when present
+PASS interest pact keeps readable terms separate from action buttons
+PASS interest pact fits complete text without unused vertical space
+PASS capture 08_interest_offer
+PASS interest deal adds three percentage points
+PASS contract has no immediate sanity debit
+PASS capture 09_interest_accepted
+PASS wave end debits sanity even without principal
+PASS capture 10_interest_next_wave
+PASS same wave cannot debit the contract twice
+PASS high sanity permits another pact next preparation
+PASS second pact stacks the interest bonus
+PASS another pact preserves already paid sanity and has no immediate debit
+PASS finance tooltip explains the accumulated contract terms
+PASS repeated callback cannot accept the second pact again
+PASS capture 10_interest_stacked
+PASS two contracts debit two sanity on the following wave
+PASS stacked contracts still settle only once per wave
+PASS sanity regeneration offsets one of the two ongoing costs
+PASS principal advance shows supplementary text only when present
+PASS principal advance keeps readable terms separate from action buttons
+PASS principal advance fits complete text without unused vertical space
+PASS short trade shrinks its card compared to detailed refresh terms
+PASS capture 11_principal_offer
+PASS advance credits dynamically calculated principal
+PASS principal gift immediately updates principal-backed combat stats
+PASS advance directly starts the next wave
+PASS no intermediate opportunity to bank or adjust enchantments
+PASS gift principal is not a qualifying manual deposit
+PASS journal records accepted deals and ongoing cost
+PASS capture 12_principal_battle
+PASS new run clears contracts tokens offers and cooldowns
+GOBLIN_TRADE_COMPLETE checks=111 failures=0

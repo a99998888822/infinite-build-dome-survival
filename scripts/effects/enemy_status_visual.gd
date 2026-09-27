@@ -73,7 +73,7 @@ func _draw() -> void:
 	if _enemy.has_status("frozen"):
 		_draw_frozen_crystals(_get_body_radius())
 	elif _enemy.has_status("slowed"):
-		FROST.draw_crystal(self, Vector2(0, 12), _get_body_radius() * 1.1, 1.0, 0.72, PI / 6, 0.46)
+		FROST.draw_crystal(self, Vector2(0, 12), _get_body_radius() * 0.88, 1.0, 0.72, PI / 6, FROST.GROUND_FLATTEN)
 	if _enemy.has_status("holy_flame") or _enemy.has_status("dark_flame"):
 		_draw_transformed_flame(_enemy.has_status("holy_flame"))
 

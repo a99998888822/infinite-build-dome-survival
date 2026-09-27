@@ -51,6 +51,7 @@ func _run() -> void:
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
+	game.get_node("UiRoot/MainMenuUIController").hide()
 	await frames(12)
 	get_tree().root.mode = Window.MODE_WINDOWED
 	get_tree().root.size = Vector2i(1152, 648)
@@ -110,7 +111,7 @@ func _run() -> void:
 				get_tree().quit(3)
 				return
 	for enemy in enemies: total_damage += 10000 - enemy.current_hp
-	check(is_equal_approx(water_radius, 92.4), "equipped water uses radius 132 times 0.7")
+	check(is_equal_approx(water_radius, 78.54), "equipped water uses the approved 78.54 maximum footprint")
 	check(total_damage > 0, "real enemy damage observed")
 	match variant:
 		"water": check(statuses.has("wet"), "water applies wet")

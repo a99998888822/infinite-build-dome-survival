@@ -1,0 +1,11 @@
+{
+  "pressure": {"window_seconds": 3.0, "enemy_ratio": 0.3, "enemy_minimum": 15, "low_health_episodes": 3, "rearm_health_ratio": 0.6},
+  "rewards": {"principal_base": 100, "principal_per_wave": 10, "income_ratio": 0.2, "cap_base": 150, "cap_per_wave": 15, "cash_ratio": 0.6, "cash_minimum": 100, "round_to": 10},
+  "trades": [
+    {"id": "strong_refresh", "speech": "再存一点，我给你看看真正的好东西。", "body": "存入 %d 金币，获得 1 次免费的强力刷新", "detail": "强力刷新：拥有100幸运加成，且保底一件史诗遗物。", "minimum_gold": 100, "luck_bonus": 100, "weight": 3},
+    {"id": "principal_advance", "speech": "这些零碎有什么好买的？", "body": "本金+%d，直接开始下一波。", "detail": "", "cooldown_waves": 3, "weight": 2, "principal_relic_weight": 5},
+    {"id": "cash_price", "speech": "钱不够？没关系。总有可以交易的东西。", "body": "金币 + %d，本次关闭银行，理智-5，幸运-2", "detail": "", "minimum_principal": 300, "principal_gold_ratio": 3, "sanity_cost": 5, "luck_cost": 2, "cooldown_waves": 3, "weight": 6},
+    {"id": "interest_pact", "speech": "有我帮你理财，不用担心！只是得付出一点小小的代价。", "body": "利率+3%，每回合理智-1。", "detail": "", "minimum_sanity": 110, "interest_bonus": 3, "sanity_per_wave": 1, "weight": 3},
+    {"id": "spending_money", "speech": "别急着存钱，拿去花，下回可别忘了我。", "body": "金币+%d，本次不可存款。", "detail": "", "gold_reward": 100, "minimum_gold": 200, "maximum_principal_ratio": 0.25, "cooldown_waves": 3, "weight": 3}
+  ]
+}

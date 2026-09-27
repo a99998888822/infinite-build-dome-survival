@@ -25,7 +25,7 @@ const HINT_INTERVAL := 9.0
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
 var _selected_character_record: Dictionary = {}
-var _selected_difficulty_id: String = "standard"
+var _selected_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _title_base_position := Vector2.ZERO
 var _button_feedback_tweens: Dictionary = {}
 var _button_shake_tweens: Dictionary = {}
@@ -81,8 +81,6 @@ const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 @onready var character_stats_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/StatsLabel")
 @onready var character_weapon_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/WeaponLabel")
 @onready var character_passive_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/PassiveLabel")
-@onready var difficulty_option: OptionButton = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyRow/DifficultyOption")
-@onready var difficulty_description_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/DifficultyDescription")
 @onready var character_error_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ErrorLabel")
 @onready var character_back_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/BackButton")
 @onready var character_confirm_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/ConfirmButton")
@@ -275,7 +273,7 @@ func _refresh_visibility() -> void:
 func _on_start_battle_pressed() -> void:
 	_selected_character_id = ""
 	_selected_character_record.clear()
-	_selected_difficulty_id = "standard"
+	_selected_difficulty_id = BattleDifficulty.DEFAULT_ID
 	if character_error_label != null:
 		character_error_label.text = ""
 		character_error_label.visible = false
@@ -794,21 +792,17 @@ func _setup_role_select_runtime_ui() -> void:
 	details_bottom_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	details_scroll_content.add_child(details_bottom_spacer)
 
-	var difficulty_panel := _make_role_panel("DIFFICULTY")
+	var difficulty_panel := _make_role_panel("难度")
 	difficulty_panel.name = "DifficultyPanel"
-	difficulty_panel.custom_minimum_size = Vector2(270, 0)
+	difficulty_panel.custom_minimum_size = Vector2(234, 0)
 	difficulty_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	difficulty_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	body.add_child(difficulty_panel)
 	var difficulty_content := difficulty_panel.get_node("Body") as VBoxContainer
 	difficulty_list = VBoxContainer.new()
 	difficulty_list.name = "DifficultyList"
-	difficulty_list.add_theme_constant_override("separation", 8)
+	difficulty_list.add_theme_constant_override("separation", 6)
 	difficulty_content.add_child(difficulty_list)
-	difficulty_description_label = Label.new()
-	difficulty_description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	difficulty_description_label.add_theme_color_override("font_color", Color("#9eab91"))
-	difficulty_description_label.visible = false
-	difficulty_content.add_child(difficulty_description_label)
 
 	var footer := HBoxContainer.new()
 	footer.custom_minimum_size = Vector2(0, 34)
@@ -922,20 +916,8 @@ func _on_character_selected(character_id: String) -> void:
 	_animate_character_details()
 
 func _on_difficulty_selected(difficulty_id: String) -> void:
-	_selected_difficulty_id = difficulty_id if not difficulty_id.is_empty() else "standard"
+	_selected_difficulty_id = BattleDifficulty.normalize(difficulty_id)
 	_refresh_difficulty_button_states()
-	_refresh_difficulty_text()
-
-func _refresh_difficulty_text() -> void:
-	if difficulty_description_label == null:
-		return
-	match _selected_difficulty_id:
-		"hard":
-			difficulty_description_label.text = "敌人更凶猛，适合熟悉基础玩法后的挑战。"
-		"nightmare":
-			difficulty_description_label.text = "高压挑战：容错率很低，适合追求极限的玩家。"
-		_:
-			difficulty_description_label.text = "标准战局：推荐首次体验，完整展现穹顶生存流程。"
 
 func _refresh_character_details(record: Dictionary) -> void:
 	if character_name_label == null or stats_list == null or weapon_list == null or passive_list == null:
@@ -1080,22 +1062,26 @@ func _build_difficulty_list() -> void:
 		return
 	for child in difficulty_list.get_children():
 		child.queue_free()
-	var difficulties := [
-		{"id": "standard", "name": "STANDARD", "title": "标准", "description": "标准战局，无额外修正。", "color": Color("#c8ae54")},
-		{"id": "hard", "name": "HARD", "title": "困难", "description": "敌人更凶猛，适合熟悉基础玩法后的挑战。", "color": Color("#c8794f")},
-		{"id": "nightmare", "name": "NIGHTMARE", "title": "梦魇", "description": "高压挑战，容错率很低。", "color": Color("#a873bd")},
-	]
-	for difficulty in difficulties:
-		var button := _make_role_button("%s  %s
-%s" % [difficulty["name"], difficulty["title"], difficulty["description"]])
-		button.custom_minimum_size = Vector2(0, 76)
+	for difficulty_id in BattleDifficulty.IDS:
+		var difficulty := BattleDifficulty.get_profile(difficulty_id)
+		var button := DifficultyChoiceButton.new()
+		button.text = "%s - %s" % [difficulty_id, difficulty.title]
+		if not str(difficulty.description).is_empty():
+			button.text += "\n" + str(difficulty.description)
+		button.accent = difficulty.color
+		button.add_theme_font_size_override("font_size", 13)
+		button.add_theme_color_override("font_color", Color("#d9d0af"))
+		button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
+		button.add_theme_color_override("font_pressed_color", Color("#f1df9e"))
+		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		button.custom_minimum_size = Vector2(0, 60 if difficulty_id == "3" else 42)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.set_meta("difficulty_id", difficulty["id"])
+		button.set_meta("difficulty_id", difficulty_id)
 		button.set_meta("difficulty_color", difficulty["color"])
-		button.pressed.connect(_on_difficulty_selected.bind(difficulty["id"]))
+		button.pressed.connect(_on_difficulty_selected.bind(difficulty_id))
 		difficulty_list.add_child(button)
 	_refresh_difficulty_button_states()
-	_refresh_difficulty_text()
 
 func _refresh_difficulty_button_states() -> void:
 	if difficulty_list == null:
@@ -1106,9 +1092,15 @@ func _refresh_difficulty_button_states() -> void:
 		var button := child as Button
 		var selected := str(button.get_meta("difficulty_id", "")) == _selected_difficulty_id
 		var color: Color = button.get_meta("difficulty_color", Color("#385843"))
-		button.add_theme_stylebox_override("normal", _make_role_style(Color("#2c2817") if selected else Color("#111b16"), color if selected else Color("#59441f"), 2 if selected else 1, 0))
-		button.add_theme_stylebox_override("hover", _make_role_style(Color("#473616") if selected else Color("#2b3020"), color.lightened(0.12), 2, 0))
-		button.add_theme_stylebox_override("pressed", _make_role_style(Color("#473616"), color.lightened(0.12), 1, 0, true))
+		if button is DifficultyChoiceButton:
+			button.set_selected(selected)
+		var style := _make_role_style(Color("#2c2817") if selected else Color("#111b16"), color if selected else Color("#59441f"), 2 if selected else 1, 0)
+		# Native button states must not draw a second highlighted choice.
+		for state in ["normal", "hover", "pressed", "hover_pressed"]:
+			button.add_theme_stylebox_override(state, style)
+		var text_color := Color("#ffe18a") if selected else Color("#d9d0af")
+		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
+			button.add_theme_color_override(state, text_color)
 
 func _refresh_character_button_states() -> void:
 	if character_list == null:

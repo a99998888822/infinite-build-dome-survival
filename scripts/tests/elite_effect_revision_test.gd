@@ -45,6 +45,8 @@ func _run() -> void:
 	check(is_equal_approx(normal._slowed_remaining, 3.0) and is_equal_approx(normal._slow_multiplier, 0.45) and is_equal_approx(normal._wet_remaining, 5.0), "normal enemy control remains unchanged")
 	elite.clear_blind()
 	elite._stunned_remaining = 0
+	player.position = elite.position + Vector2(200, 0)
+	elite._cooldown = 0.0
 	elite.start_dash()
 	elite.apply_freeze(1.0)
 	elite._physics_process(0.01)
@@ -85,7 +87,7 @@ func _run() -> void:
 	for child in get_children():
 		if child is WaterWaveEffect:
 			water = child
-	check(water != null and is_equal_approx(water._radius, 23.1), "water footprint shrinks to seventy percent")
+	check(water != null and is_equal_approx(water._radius, 19.635), "fallback water footprint follows approved additional fifteen percent reduction")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	var age := water._elapsed
 	water._process(1.0)

@@ -37,6 +37,20 @@ func _draw() -> void:
 		if rect.end.x < 0 or rect.position.x > _view_size.x:
 			continue
 		_draw_reflection(placement)
+		_draw_water_contact(placement)
+
+
+func _draw_water_contact(placement: Dictionary) -> void:
+	var rect: Rect2 = placement.rect
+	var center := Vector2(rect.get_center().x, float(placement.waterline) + 1.0)
+	var half_width := rect.size.x * 0.42
+	# Broken horizontal ripples sit in front of the submerged base, not a
+	# solid shadow beneath an otherwise fully visible cutout.
+	for side in [-1.0, 1.0]:
+		var start := center + Vector2(side * half_width * 0.35, 1.0)
+		var end := center + Vector2(side * (half_width + 4.0), 1.0)
+		draw_line(start.round(), end.round(), Color(0.14, 0.23, 0.20, 0.38), 1.0)
+		draw_line((center + Vector2(side * 3, 3)).round(), (center + Vector2(side * half_width * 0.75, 3)).round(), Color(0.08, 0.15, 0.14, 0.32), 1.0)
 
 
 func _draw_reflection(placement: Dictionary) -> void:

@@ -73,6 +73,10 @@ static func scroll(control: ScrollContainer) -> void:
 static func reason(code: String) -> String:
 	return str({
 		"bank_operation_used": "本波已办理存取，下波恢复。",
+		"trade_bank_blocked": "交易限制：本次银行存取已关闭，下波恢复。",
+		"trade_deposit_blocked": "交易限制：本次不可存款，下波恢复。",
+		"trade_expired": "这笔交易已失效。",
+		"strong_refresh_unavailable": "当前没有可购买的史诗遗物，强力刷新资格已保留。",
 		"amount_must_be_positive": "请输入大于 0 的整数。",
 		"amount_exceeds_gold": "存入金额超过金币余额。",
 		"amount_exceeds_principal": "取出金额超过本金。",
