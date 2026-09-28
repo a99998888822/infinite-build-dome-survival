@@ -1,0 +1,912 @@
+scripts/tools/build_combat_audio.py
+  h_ae0329d199c6f5 24-26,40-43,48-49,83-123,138-141,158,160-177,222-223,269,274,276,278,280,282,285,303-304,314-316
+  h_ae0329d199c6f5 313
+data_config/README.md
+  h_ae0329d199c6f5 24,66
+  s_b11938437a28ec::t_5c8fc4fc76a32a 57,63-64,67,69-72
+docs/main/16-particle_system_design.md
+  h_ae0329d199c6f5 63,156,158,176,178,230,235,241-242,252-253
+  s_b11938437a28ec::t_3b1295e4afd200 184-191
+docs/asset/combat_audio.md
+  h_ae0329d199c6f5 1,3,5,10-11,22-24,34,43-44,51,53,64,84,86,101-111,113
+  h_ae0329d199c6f5 52,85,112
+data_config/drop_tables.json
+  h_ae0329d199c6f5 5,184
+scripts/tests/elite_relic_decay_test.gd
+  h_ae0329d199c6f5 176
+docs/asset/element_reactions.md
+  h_ae0329d199c6f5 11,17,25
+autoloads/data_registry.gd
+  h_ae0329d199c6f5 13
+data_config/enemies.json
+  h_ae0329d199c6f5 23,48
+scripts/waves/wave_manager.gd
+  h_ae0329d199c6f5 62,116-117,156,191,464,484,536-569
+  s_b19d7699c384b1::t_e3f123a272feef 233-237,570-572
+data_config/augmentations.json
+  h_ae0329d199c6f5 168-169,229,276
+  h_ae0329d199c6f5 324
+docs/asset/asset_checklist_summary.md
+  h_ae0329d199c6f5 238-240
+  h_ae0329d199c6f5 116-120,149-150
+scripts/ui/battle_hud.gd
+  h_ae0329d199c6f5 900-901
+  h_ae0329d199c6f5 724,753-755,777-778,902-905,933,943-947
+docs/main/checklist/relic_effect_consistency_audit_2026-09-22.md
+  h_ae0329d199c6f5 73,145
+scripts/tests/combat_audio_test.gd
+  h_ae0329d199c6f5 28,69-78
+  h_ae0329d199c6f5 140,145
+todo.md
+  h_ae0329d199c6f5 16,52
+autoloads/audio_manager.gd
+  h_ae0329d199c6f5 166-168,262-263,280,296,298
+docs/main/1-base_data_and_modifiers_design.md
+  h_ae0329d199c6f5 213
+scripts/audio/combat_audio_impact.gd
+  h_ae0329d199c6f5 20-21,31,37-38,44-55
+docs/main/checklist/godot_verification_master_checklist.md
+  h_ae0329d199c6f5 1099
+scripts/audio/combat_sound_library.gd
+  h_ae0329d199c6f5 7-9,23-26
+docs/main/18-humanity_erosion_gameplay_design.md
+  h_ae0329d199c6f5 3-4,31,167,191,201-204
+  h_ae0329d199c6f5 5-6,17,221-243,331-332,340,388,398,410,491,521
+scripts/tests/combat_audio_reaction_test.gd
+  h_ae0329d199c6f5 184-199
+scripts/ui/item_inventory_card.gd
+  h_ae0329d199c6f5 36-37
+  s_b11938437a28ec::t_da0f85f9c8804b 151
+docs/main/checklist/elite_relic_decay_2026-09-23.md
+  h_ae0329d199c6f5 3,44,52-65
+  h_ae0329d199c6f5 66-68
+scripts/data/data_validator.gd
+  h_ae0329d199c6f5 10,24,104,508-520
+  h_ae0329d199c6f5 205-208,261-279,370,376,379,382-387,521-522
+docs/main/4-weapon_loadout_design.md
+  h_ae0329d199c6f5 184,216-217
+  h_ae0329d199c6f5 114,487,496-564
+.idea/.gitignore
+  s_b11938437a28ec::t_47d4c3d03e951a 1-3
+.idea/CoolRequestSetting.xml
+  s_b11938437a28ec::t_0dd9134c76ee29 1-6
+.idea/checkstyle-idea.xml
+  s_b11938437a28ec::t_9c279013d609d2 1-16
+.idea/infinite-build-dome-survival.iml
+  s_b11938437a28ec::t_3e0ce3cba72e3f 1-9
+.idea/inspectionProfiles/Project_Default.xml
+  s_b11938437a28ec::t_b7be91ab8b1a5b 1-5
+.idea/misc.xml
+  s_b11938437a28ec::t_234e0e5850d872 1-6
+.idea/modules.xml
+  s_b11938437a28ec::t_fb5a82077837b4 1-8
+.idea/vcs.xml
+  s_b11938437a28ec::t_d57d3e49df0abf 1-6
+assets/audio/sfx/combat/grenade_launch_01.wav.import
+  s_b11938437a28ec::t_866c1fd433eace 1-24
+assets/sprites/weapons/kunyu_domain_rune.png.import
+  s_b11938437a28ec::t_941d7656d7ba68 1-40
+assets/ui/icons/relics/relic_frenzied_dividend.png.import
+  s_b11938437a28ec::t_0691d9a808b91c 1-40
+assets/ui/icons/relics/relic_sleepless_ledger.png.import
+  s_b11938437a28ec::t_e1173ec67fbfec 1-40
+assets/ui/icons/weapons/weapon_iron_grenade_cannon.png.import
+  s_b11938437a28ec::t_9ba0b58aeef838 1-40
+assets/ui/icons/weapons/weapon_plasma_cannon_v2.png.import
+  s_b11938437a28ec::t_2af23f8fc7d6cd 1-40
+data_config/erosion_pressure_rules.json
+  s_b11938437a28ec::t_691cf84b64f594 1-11
+docs/main/19-capital_dependency_relic_review.md
+  s_b11938437a28ec::t_0de4e28a6eabe4 1-116
+docs/main/checklist/weapon_balance_2026-09-24.md
+  s_b11938437a28ec::t_4185efe336eacc 1-34
+project.md
+  s_b11938437a28ec::t_11a9d2d7d125bd 1-3
+scenes/tests/battle_settings_test.tscn
+  s_b11938437a28ec::t_c8aa6b275368d1 1-6
+scenes/tests/erosion_pressure_test.tscn
+  s_b11938437a28ec::t_e31105411a13b0 1-6
+scenes/tests/grenade_attack_capture.tscn
+  s_b11938437a28ec::t_10de426640ebde 1-6
+scenes/tests/grenade_weapon_test.tscn
+  s_b11938437a28ec::t_05648e25a4ba91 1-6
+scenes/tests/humanity_economy_test.tscn
+  s_b11938437a28ec::t_9af2b9868ad3ad 1-6
+scenes/tests/nightwatch_spear_capture.tscn
+  s_b11938437a28ec::t_d6a2406600b7f4 1-6
+scenes/tests/nightwatch_spear_enchantment_capture.tscn
+  s_b11938437a28ec::t_93d150858e66ef 1-6
+scenes/tests/plasma_ball_live_capture.tscn
+  s_b11938437a28ec::t_09f604e4037e81 1-6
+scenes/tests/plasma_contact_test.tscn
+  s_b11938437a28ec::t_b7b6bb1b8ee5c9 1-6
+scenes/tests/tome_purse_capture.tscn
+  s_b11938437a28ec::t_7eee2b8f5ab14c 1-6
+scenes/tests/tome_purse_live_capture.tscn
+  s_b11938437a28ec::t_42790d9aefdb41 1-6
+scenes/tests/tome_purse_weapon_test.tscn
+  s_b11938437a28ec::t_3914ff7cf76afd 1-6
+scenes/tests/weapon_balance_test.tscn
+  s_b11938437a28ec::t_c153ea1ee256d3 1-6
+scripts/battle/battle_root.gd
+  s_b11938437a28ec::t_cc8de118c7dbe9 103-107
+scripts/core/main_flow_coordinator.gd
+  s_b19d7699c384b1::t_32ebd635dbd76d 13-14,52-54,103-105,156,186-187,438-449,451,453-456,459,465-466,468-484,498-503,832-833,968,1012-1013,1026-1058,1088-1092,1114,1119
+scripts/data/humanity_economy.gd.uid
+  s_b11938437a28ec::t_81a39c3830fbf2 1
+scripts/effects/plasma_ball_visual.gd
+  s_b11938437a28ec::t_39aed9535d82fe 1-160
+scripts/effects/plasma_ball_visual.gd.uid
+  s_b11938437a28ec::t_529170ca6b4318 1
+scripts/player/player_controller.gd
+  s_38e1ebf7bfb35e::t_e49562311d4c95 664-674,689
+scripts/rewards/battle_finance_system.gd
+  s_b19d7699c384b1::t_41713048340080 53,85,107,164-167,255-262,347-350,354-361,374-377,435-438,455-456
+scripts/rewards/inventory_trade_service.gd
+  s_b26ecb89787365::t_ec73bb8f65e3fd 15,34,42,45,51,57-66
+scripts/tests/battle_settings_test.gd
+  s_b11938437a28ec::t_cae87eb54d2abb 1-155
+scripts/tests/battle_settings_test.gd.uid
+  s_b11938437a28ec::t_cf817377cc286d 1
+scripts/tests/erosion_pressure_test.gd
+  s_b11938437a28ec::t_2d4591795ae23e 1-160
+scripts/tests/erosion_pressure_test.gd.uid
+  s_b11938437a28ec::t_3e7812651b035a 1
+scripts/tests/grenade_attack_capture.gd
+  s_b11938437a28ec::t_773a7e7ce1382f 1-143
+scripts/tests/grenade_attack_capture.gd.uid
+  s_b11938437a28ec::t_b341c56822615c 1
+scripts/tests/grenade_weapon_test.gd
+  s_b11938437a28ec::t_33b18fc79c93b4 1-382
+scripts/tests/grenade_weapon_test.gd.uid
+  s_b11938437a28ec::t_ef82b665561f13 1
+scripts/tests/humanity_economy_test.gd
+  s_b11938437a28ec::t_a2efffdf7a58ec 1-205
+scripts/tests/humanity_economy_test.gd.uid
+  s_b11938437a28ec::t_2ccf22750f29d2 1
+scripts/tests/nightwatch_spear_capture.gd
+  s_b11938437a28ec::t_c404035b0b563e 1-119
+scripts/tests/nightwatch_spear_enchantment_capture.gd
+  s_b11938437a28ec::t_baea5ce4f239bf 1-124
+scripts/tests/nightwatch_spear_enchantment_capture.gd.uid
+  s_b11938437a28ec::t_4a008d5c60b427 1
+scripts/tests/nightwatch_spear_preview.gd
+  s_b11938437a28ec::t_179243cc1e930e 1-228
+scripts/tests/nightwatch_spear_shard_preview.gd
+  s_b11938437a28ec::t_2c03a5718e6fd7 1-38
+scripts/tests/nightwatch_spear_shard_preview.gd.uid
+  s_b11938437a28ec::t_45fc3dfeae1ae8 1
+scripts/tests/plasma_ball_live_capture.gd
+  s_b11938437a28ec::t_ab77b4b255dd1e 1-128
+scripts/tests/plasma_ball_live_capture.gd.uid
+  s_b11938437a28ec::t_19c489c03c6c4c 1
+scripts/tests/plasma_contact_test.gd
+  s_b11938437a28ec::t_70ff226bbec52b 1-168
+scripts/tests/relic_consistency_test.gd
+  s_b11938437a28ec::t_f232537b387c0c 51-53,118,127,130-131,154-289,389
+scripts/tests/tome_purse_capture.gd
+  s_b11938437a28ec::t_dc524de368f1c9 1-111
+scripts/tests/tome_purse_live_capture.gd
+  s_b11938437a28ec::t_75a3d917a8ddcc 1-140
+scripts/tests/tome_purse_live_capture.gd.uid
+  s_b11938437a28ec::t_68a808097b1831 1
+scripts/tests/tome_purse_preview.gd
+  s_b11938437a28ec::t_89eaaf27b19d0e 1-225
+scripts/tests/tome_purse_weapon_test.gd
+  s_b11938437a28ec::t_45baf0b426c5b2 1-252
+scripts/tests/tome_purse_weapon_test.gd.uid
+  s_b11938437a28ec::t_6579487e01667a 1
+scripts/tests/weapon_balance_test.gd
+  s_b11938437a28ec::t_6499ca7943d918 1-85
+scripts/tests/weapon_balance_test.gd.uid
+  s_b11938437a28ec::t_b75b5164790ec7 1
+scripts/tools/build_grenade_launch_audio.py
+  s_b11938437a28ec::t_87f70fe9c0ce9f 1-26
+scripts/tools/build_iron_grenade_cannon_icon.py
+  s_b11938437a28ec::t_aef38961ea2c20 1-160
+scripts/tools/build_nightwatch_enchantment_review.py
+  s_b11938437a28ec::t_15669f0526350f 1-79
+scripts/tools/build_nightwatch_spear_art.py
+  s_b11938437a28ec::t_cfc89cf00e6d62 1-106
+scripts/tools/build_plasma_ball_review.py
+  s_b11938437a28ec::t_efd1d81f8453dc 1-79
+scripts/tools/build_plasma_cannon_icon.py
+  s_b11938437a28ec::t_f7ad2f4d290476 1-158
+scripts/tools/build_tome_purse_art.py
+  s_b11938437a28ec::t_f42646d31fe11b 1-207
+scripts/tools/build_tome_purse_live_review.py
+  s_b11938437a28ec::t_7c0195223ed190 1-60
+scripts/tools/build_tome_purse_review.py
+  s_b11938437a28ec::t_60bad583a47ab4 1-58
+scripts/ui/battle_utility_overlay.gd
+  s_b11938437a28ec::t_7973822c26ce74 21-22,25-28,66,87-91,94-96,104-107,138-139,262,266,269-271,275-291,294-295,299,302-354,366-367,386-390,394-395,401
+scripts/ui/finance_popup.gd
+  s_b19d7699c384b1::t_79ac7ae29b16e2 16-17,80-86,141,155-158,188-190,315,384-398,461,516
+scripts/ui/finance_ui_style.gd
+  s_b19d7699c384b1::t_f1acb2380323a2 78,84
+scripts/ui/main_menu_ui_controller.gd
+  s_b19d7699c384b1::t_12168e6fd24819 460,463,466,1034-1036
+scripts/ui/preparation_offer_card.gd
+  s_b26ecb89787365::t_37a6228ef955fa 83,124-126,129
+scripts/ui/settings_ui_style.gd
+  s_b11938437a28ec::t_c9985cbb18fd8f 1-48
+scripts/ui/settings_ui_style.gd.uid
+  s_b11938437a28ec::t_0b72fd0e3b6fd7 1
+scripts/ui/shop_offer_generator.gd
+  s_b11938437a28ec::t_b5fd2e3f1d4737 132-133,386,392-395,407
+scripts/weapons/coin_projectile.gd
+  s_b11938437a28ec::t_1576c671b2a545 1-160
+scripts/weapons/coin_projectile.gd.uid
+  s_b11938437a28ec::t_ee18287718b795 1
+scripts/weapons/damage_event.gd
+  s_b11938437a28ec::t_da1293f56046f4 9-10,24,39,52
+scripts/weapons/grenade_projectile.gd
+  s_b11938437a28ec::t_48b43f0dd5086c 1-225
+scripts/weapons/grenade_projectile.gd.uid
+  s_b11938437a28ec::t_3b2a92d651cc7d 1
+scripts/weapons/ritual_coin_hit.gd
+  s_b11938437a28ec::t_19532f1edda15f 1-95
+scripts/weapons/ritual_coin_hit.gd.uid
+  s_b11938437a28ec::t_a52be2e2c5b254 1
+scripts/weapons/ritual_domain.gd
+  s_b11938437a28ec::t_0ac2bc6109ac1a 1-164
+scripts/weapons/ritual_domain.gd.uid
+  s_b11938437a28ec::t_a2e6fa991f84bf 1
+scripts/weapons/targeting_service.gd
+  s_b11938437a28ec::t_e3edcee62f9ecc 43-91
+scripts/weapons/weapon_loadout.gd
+  s_b11938437a28ec::t_14ec59537db602 9,18,22,34-36,38,68,125-126,223-224,226-227,252,263-266,270-282,293-345
+artifacts/battle_settings_20260924/01_combat_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/02_esc_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/03_upgrade_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/04_relic_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/05_finance_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/06_returned_main_menu.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/07_main_menu_settings.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/battle_settings_20260924/bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/battle_settings_20260924/editor.log
+  h_ae0329d199c6f5 1-83
+artifacts/battle_settings_20260924/finance.log
+  h_ae0329d199c6f5 1-171
+artifacts/battle_settings_20260924/headless.log
+  h_ae0329d199c6f5 1-80
+artifacts/battle_settings_20260924/rewards.log
+  h_ae0329d199c6f5 1-45
+artifacts/battle_settings_20260924/visual.log
+  h_ae0329d199c6f5 1-88
+artifacts/capital_dependency_20260924/analyze_balance.py
+  h_ae0329d199c6f5 1-70
+artifacts/capital_dependency_20260924/balance_bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/capital_dependency_20260924/balance_editor.log
+  h_ae0329d199c6f5 1-42
+artifacts/capital_dependency_20260924/balance_humanity.log
+  h_ae0329d199c6f5 1-71
+artifacts/capital_dependency_20260924/balance_metrics.json
+  h_ae0329d199c6f5 1-887
+artifacts/capital_dependency_20260924/balance_relics.log
+  h_ae0329d199c6f5 1-91
+artifacts/capital_dependency_20260924/balance_workspace_editor.log
+  h_ae0329d199c6f5 1-54
+artifacts/capital_dependency_20260924/bootstrap_final.log
+  h_ae0329d199c6f5 1-265
+artifacts/capital_dependency_20260924/build_icon_review.py
+  h_ae0329d199c6f5 1-227
+artifacts/capital_dependency_20260924/editor.log
+  h_ae0329d199c6f5 1-870
+artifacts/capital_dependency_20260924/editor_cached.log
+  h_ae0329d199c6f5 1-262
+artifacts/capital_dependency_20260924/editor_final.log
+  h_ae0329d199c6f5 1-25
+artifacts/capital_dependency_20260924/editor_workspace.log
+  h_ae0329d199c6f5 1-48
+artifacts/capital_dependency_20260924/editor_workspace_final.log
+  h_ae0329d199c6f5 1-74
+artifacts/capital_dependency_20260924/existing_style_reference.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/finance_final.log
+  h_ae0329d199c6f5 1-171
+artifacts/capital_dependency_20260924/finance_regression.log
+  h_ae0329d199c6f5 1-177
+artifacts/capital_dependency_20260924/humanity_final.log
+  h_ae0329d199c6f5 1-71
+artifacts/capital_dependency_20260924/humanity_test.log
+  h_ae0329d199c6f5 1-69
+artifacts/capital_dependency_20260924/icon_briefs.json
+  h_ae0329d199c6f5 1-163
+artifacts/capital_dependency_20260924/icon_review.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/icons/relic_frenzied_dividend.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/icons/relic_gilded_trigger.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/icons/relic_lucid_vow.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/icons/relic_runaway_amplifier.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/icons/relic_sleepless_ledger.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/implementation_bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/capital_dependency_20260924/implementation_editor.log
+  h_ae0329d199c6f5 1-52
+artifacts/capital_dependency_20260924/implementation_erosion.log
+  h_ae0329d199c6f5 1-81
+artifacts/capital_dependency_20260924/implementation_humanity.log
+  h_ae0329d199c6f5 1-71
+artifacts/capital_dependency_20260924/implementation_relics.log
+  h_ae0329d199c6f5 1-134
+artifacts/capital_dependency_20260924/implementation_workspace_editor.log
+  h_ae0329d199c6f5 1-51
+artifacts/capital_dependency_20260924/main_final.log
+  h_ae0329d199c6f5 1-20
+artifacts/capital_dependency_20260924/prepare_validation.py
+  h_ae0329d199c6f5 1-14
+artifacts/capital_dependency_20260924/review.html
+  h_ae0329d199c6f5 1-17
+artifacts/capital_dependency_20260924/screenshots/01_finance_humanity_50.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/screenshots/02_sale_humanity_50.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/screenshots/03_bank_640.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/screenshots/03_bank_960.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/screenshots/04_humanity_hover.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/capital_dependency_20260924/verification.json
+  h_ae0329d199c6f5 1-130
+artifacts/capital_dependency_20260924/verify_review.py
+  h_ae0329d199c6f5 1-51
+artifacts/capital_dependency_20260924/visual.log
+  h_ae0329d199c6f5 1-64
+artifacts/capital_dependency_20260924/visual_errors.log
+  h_ae0329d199c6f5 1-6
+artifacts/capital_dependency_20260924/visual_final.log
+  h_ae0329d199c6f5 1-72
+artifacts/capital_dependency_20260924/visual_final_errors.log
+  h_ae0329d199c6f5 1-6
+artifacts/erosion_pressure_20260924/bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/erosion_pressure_20260924/bootstrap_ninefold.log
+  h_ae0329d199c6f5 1-265
+artifacts/erosion_pressure_20260924/bootstrap_triple.log
+  h_ae0329d199c6f5 1-265
+artifacts/erosion_pressure_20260924/editor.log
+  h_ae0329d199c6f5 1-578
+artifacts/erosion_pressure_20260924/editor_cached.log
+  h_ae0329d199c6f5 1-406
+artifacts/erosion_pressure_20260924/editor_ninefold.log
+  h_ae0329d199c6f5 1-22
+artifacts/erosion_pressure_20260924/editor_triple.log
+  h_ae0329d199c6f5 1-22
+artifacts/erosion_pressure_20260924/elite.log
+  h_ae0329d199c6f5 1-93
+artifacts/erosion_pressure_20260924/pressure.log
+  h_ae0329d199c6f5 1-67
+artifacts/erosion_pressure_20260924/pressure_ninefold.log
+  h_ae0329d199c6f5 1-67
+artifacts/erosion_pressure_20260924/pressure_triple.log
+  h_ae0329d199c6f5 1-67
+artifacts/grenade_attack_review/README.md
+  h_ae0329d199c6f5 1-18
+artifacts/grenade_attack_review/capture.json
+  h_ae0329d199c6f5 1-45
+artifacts/grenade_attack_review/capture.log
+  h_ae0329d199c6f5 1-35
+artifacts/grenade_attack_review/contact_sheet.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_attack_review/editor.log
+  h_ae0329d199c6f5 1-24
+artifacts/grenade_attack_review/headless.log
+  h_ae0329d199c6f5 1-36
+artifacts/grenade_attack_review/main_editor.log
+  h_ae0329d199c6f5 1-21
+artifacts/grenade_attack_revision/README.md
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_attack_revision/editor.log
+  h_ae0329d199c6f5 1-574
+artifacts/grenade_attack_revision/fire_capture.json
+  h_ae0329d199c6f5 1-58
+artifacts/grenade_attack_revision/fire_capture.log
+  h_ae0329d199c6f5 1-35
+artifacts/grenade_attack_revision/main_editor.log
+  h_ae0329d199c6f5 1-26
+artifacts/grenade_attack_revision/plain_capture.json
+  h_ae0329d199c6f5 1-56
+artifacts/grenade_attack_revision/plain_capture.log
+  h_ae0329d199c6f5 1-35
+artifacts/grenade_attack_revision/split_capture.json
+  h_ae0329d199c6f5 1-346
+artifacts/grenade_attack_revision/split_capture.log
+  h_ae0329d199c6f5 1-84
+artifacts/grenade_attack_revision/split_contact_sheet.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_attack_revision/split_headless.log
+  h_ae0329d199c6f5 1-82
+artifacts/grenade_attack_revision/test.log
+  h_ae0329d199c6f5 1-86
+artifacts/grenade_implementation/01_grenade_in_flight.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_implementation/02_grenade_explosion.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_implementation/03_grenade_workbench.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/grenade_implementation/bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/grenade_implementation/editor.log
+  h_ae0329d199c6f5 1-50
+artifacts/grenade_implementation/final_editor.log
+  h_ae0329d199c6f5 1-178
+artifacts/grenade_implementation/finance.log
+  h_ae0329d199c6f5 1-171
+artifacts/grenade_implementation/relics.log
+  h_ae0329d199c6f5 1-71
+artifacts/grenade_implementation/test.log
+  h_ae0329d199c6f5 1-73
+artifacts/grenade_implementation/visual.log
+  h_ae0329d199c6f5 1-74
+artifacts/grenade_split_implementation/.gdignore
+  h_ae0329d199c6f5 1
+artifacts/grenade_split_implementation/README.md
+  h_ae0329d199c6f5 1-32
+artifacts/grenade_split_implementation/bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/grenade_split_implementation/capture.json
+  h_ae0329d199c6f5 1-346
+artifacts/grenade_split_implementation/capture.log
+  h_ae0329d199c6f5 1-84
+artifacts/grenade_split_implementation/editor.log
+  h_ae0329d199c6f5 1-1678
+artifacts/grenade_split_implementation/finance.log
+  h_ae0329d199c6f5 1-177
+artifacts/grenade_split_implementation/main_editor.log
+  h_ae0329d199c6f5 1-42
+artifacts/grenade_split_implementation/test.log
+  h_ae0329d199c6f5 1-117
+artifacts/iron_grenade_cannon_review/asset_validation.json
+  h_ae0329d199c6f5 1-21
+artifacts/iron_grenade_cannon_review/icon_6x.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/iron_grenade_cannon_review/iron_grenade_cannon_review.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/iron_grenade_cannon_review/weapon_design.md
+  h_ae0329d199c6f5 1-129
+artifacts/nightwatch_spear_enchantments/baseline_regression.log
+  h_ae0329d199c6f5 1-35
+artifacts/nightwatch_spear_enchantments/capture_fire.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_enchantments/capture_ice.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_enchantments/capture_lightning.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_enchantments/capture_split.log
+  h_ae0329d199c6f5 1-37
+artifacts/nightwatch_spear_enchantments/capture_split_fire.log
+  h_ae0329d199c6f5 1-37
+artifacts/nightwatch_spear_enchantments/capture_split_lightning.log
+  h_ae0329d199c6f5 1-37
+artifacts/nightwatch_spear_enchantments/editor.log
+  h_ae0329d199c6f5 1-27
+artifacts/nightwatch_spear_enchantments/editor_final.log
+  h_ae0329d199c6f5 1-21
+artifacts/nightwatch_spear_enchantments/fire_capture.json
+  h_ae0329d199c6f5 1-49
+artifacts/nightwatch_spear_enchantments/headless_ice.log
+  h_ae0329d199c6f5 1-33
+artifacts/nightwatch_spear_enchantments/headless_plain.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_enchantments/headless_split.log
+  h_ae0329d199c6f5 1-36
+artifacts/nightwatch_spear_enchantments/headless_split_fire.log
+  h_ae0329d199c6f5 1-38
+artifacts/nightwatch_spear_enchantments/headless_split_lightning.log
+  h_ae0329d199c6f5 1-38
+artifacts/nightwatch_spear_enchantments/ice_capture.json
+  h_ae0329d199c6f5 1-49
+artifacts/nightwatch_spear_enchantments/lightning_capture.json
+  h_ae0329d199c6f5 1-49
+artifacts/nightwatch_spear_enchantments/media_validation.json
+  h_ae0329d199c6f5 1-83
+artifacts/nightwatch_spear_enchantments/review.md
+  h_ae0329d199c6f5 1-38
+artifacts/nightwatch_spear_enchantments/split_capture.json
+  h_ae0329d199c6f5 1-152
+artifacts/nightwatch_spear_enchantments/split_fire_capture.json
+  h_ae0329d199c6f5 1-163
+artifacts/nightwatch_spear_enchantments/split_lightning_capture.json
+  h_ae0329d199c6f5 1-163
+artifacts/nightwatch_spear_review/.gdignore
+  h_ae0329d199c6f5 1
+artifacts/nightwatch_spear_review/asset_validation.json
+  h_ae0329d199c6f5 1-20
+artifacts/nightwatch_spear_review/capture_hitbox_v2.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_review/capture_kite_v2.log
+  h_ae0329d199c6f5 1-33
+artifacts/nightwatch_spear_review/capture_line_v2.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_review/editor.log
+  h_ae0329d199c6f5 1-43
+artifacts/nightwatch_spear_review/editor_v2.log
+  h_ae0329d199c6f5 1-21
+artifacts/nightwatch_spear_review/headless_line_v2.log
+  h_ae0329d199c6f5 1-35
+artifacts/nightwatch_spear_review/headless_line_v2_verify.log
+  h_ae0329d199c6f5 1-469
+artifacts/nightwatch_spear_review/hitbox_capture.json
+  h_ae0329d199c6f5 1-55
+artifacts/nightwatch_spear_review/hitbox_capture.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_review/hitbox_capture_v2.json
+  h_ae0329d199c6f5 1-55
+artifacts/nightwatch_spear_review/kite_capture.json
+  h_ae0329d199c6f5 1-75
+artifacts/nightwatch_spear_review/kite_capture.log
+  h_ae0329d199c6f5 1-33
+artifacts/nightwatch_spear_review/kite_capture_v2.json
+  h_ae0329d199c6f5 1-75
+artifacts/nightwatch_spear_review/kite_headless.log
+  h_ae0329d199c6f5 1-32
+artifacts/nightwatch_spear_review/line_capture.json
+  h_ae0329d199c6f5 1-55
+artifacts/nightwatch_spear_review/line_capture.log
+  h_ae0329d199c6f5 1-34
+artifacts/nightwatch_spear_review/line_capture_v2.json
+  h_ae0329d199c6f5 1-55
+artifacts/nightwatch_spear_review/line_headless.log
+  h_ae0329d199c6f5 1-33
+artifacts/nightwatch_spear_review/main_editor.log
+  h_ae0329d199c6f5 1-44
+artifacts/nightwatch_spear_review/review_validation_v2.json
+  h_ae0329d199c6f5 1-38
+artifacts/nightwatch_spear_review/weapon_design.md
+  h_ae0329d199c6f5 1-59
+artifacts/plasma_ball_implementation/.gdignore
+  h_ae0329d199c6f5 1
+artifacts/plasma_ball_implementation/README.md
+  h_ae0329d199c6f5 1-22
+artifacts/plasma_ball_implementation/capture.json
+  h_ae0329d199c6f5 1-2729
+artifacts/plasma_ball_implementation/capture.log
+  h_ae0329d199c6f5 1-28
+artifacts/plasma_ball_implementation/combat_audio_test.log
+  h_ae0329d199c6f5 1-63
+artifacts/plasma_ball_implementation/compact_v2/capture.json
+  h_ae0329d199c6f5 1-2729
+artifacts/plasma_ball_implementation/compact_v2/capture.log
+  h_ae0329d199c6f5 1-28
+artifacts/plasma_ball_implementation/compact_v2/editor.log
+  h_ae0329d199c6f5 1-21
+artifacts/plasma_ball_implementation/compact_v2/headless.log
+  h_ae0329d199c6f5 1-29
+artifacts/plasma_ball_implementation/compact_v2/media_validation.json
+  h_ae0329d199c6f5 1-18
+artifacts/plasma_ball_implementation/compact_v2/verification.json
+  h_ae0329d199c6f5 1-11
+artifacts/plasma_ball_implementation/contact_v4/capture.json
+  h_ae0329d199c6f5 1-3732
+artifacts/plasma_ball_implementation/contact_v4/capture.log
+  h_ae0329d199c6f5 1-28
+artifacts/plasma_ball_implementation/contact_v4/combat_audio_test.log
+  h_ae0329d199c6f5 1-63
+artifacts/plasma_ball_implementation/contact_v4/contact_test.log
+  h_ae0329d199c6f5 1-46
+artifacts/plasma_ball_implementation/contact_v4/editor.log
+  h_ae0329d199c6f5 1-29
+artifacts/plasma_ball_implementation/contact_v4/headless.log
+  h_ae0329d199c6f5 1-29
+artifacts/plasma_ball_implementation/contact_v4/media_validation.json
+  h_ae0329d199c6f5 1-18
+artifacts/plasma_ball_implementation/contact_v4/verification.json
+  h_ae0329d199c6f5 1-35
+artifacts/plasma_ball_implementation/editor.log
+  h_ae0329d199c6f5 1-26
+artifacts/plasma_ball_implementation/energy_v3/capture.json
+  h_ae0329d199c6f5 1-2729
+artifacts/plasma_ball_implementation/energy_v3/capture.log
+  h_ae0329d199c6f5 1-28
+artifacts/plasma_ball_implementation/energy_v3/editor.log
+  h_ae0329d199c6f5 1-21
+artifacts/plasma_ball_implementation/energy_v3/headless.log
+  h_ae0329d199c6f5 1-29
+artifacts/plasma_ball_implementation/energy_v3/media_validation.json
+  h_ae0329d199c6f5 1-18
+artifacts/plasma_ball_implementation/energy_v3/verification.json
+  h_ae0329d199c6f5 1-11
+artifacts/plasma_ball_implementation/headless.log
+  h_ae0329d199c6f5 1-27
+artifacts/plasma_ball_implementation/media_validation.json
+  h_ae0329d199c6f5 1-18
+artifacts/plasma_ball_implementation/verification.json
+  h_ae0329d199c6f5 1-28
+artifacts/plasma_cannon_icon_review/plasma_icon_6x.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/plasma_cannon_icon_review/plasma_vs_grenade.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/plasma_cannon_icon_review/validation.json
+  h_ae0329d199c6f5 1-22
+artifacts/tome_purse_implementation/.gdignore
+  h_ae0329d199c6f5 1
+artifacts/tome_purse_implementation/README.md
+  h_ae0329d199c6f5 1-49
+artifacts/tome_purse_implementation/capture_combined.log
+  h_ae0329d199c6f5 1-30
+artifacts/tome_purse_implementation/capture_purse.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/capture_tome.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/combined_capture.json
+  h_ae0329d199c6f5 1-256
+artifacts/tome_purse_implementation/editor.log
+  h_ae0329d199c6f5 1-56
+artifacts/tome_purse_implementation/grenade_regression.log
+  h_ae0329d199c6f5 1-117
+artifacts/tome_purse_implementation/impact_v2/capture_tome.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/impact_v2/editor.log
+  h_ae0329d199c6f5 1-26
+artifacts/tome_purse_implementation/impact_v2/media_validation.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_implementation/impact_v2/test.log
+  h_ae0329d199c6f5 1-93
+artifacts/tome_purse_implementation/impact_v2/tome_capture.json
+  h_ae0329d199c6f5 1-133
+artifacts/tome_purse_implementation/impact_v3/capture_tome.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/impact_v3/editor.log
+  h_ae0329d199c6f5 1-21
+artifacts/tome_purse_implementation/impact_v3/media_validation.json
+  h_ae0329d199c6f5 1-26
+artifacts/tome_purse_implementation/impact_v3/test.log
+  h_ae0329d199c6f5 1-93
+artifacts/tome_purse_implementation/impact_v3/tome_capture.json
+  h_ae0329d199c6f5 1-133
+artifacts/tome_purse_implementation/impact_v3/verification.json
+  h_ae0329d199c6f5 1-10
+artifacts/tome_purse_implementation/impact_v4/capture_tome.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/impact_v4/editor.log
+  h_ae0329d199c6f5 1-21
+artifacts/tome_purse_implementation/impact_v4/media_validation.json
+  h_ae0329d199c6f5 1-10
+artifacts/tome_purse_implementation/impact_v4/tome_capture.json
+  h_ae0329d199c6f5 1-133
+artifacts/tome_purse_implementation/import.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/live_headless_combined.log
+  h_ae0329d199c6f5 1-29
+artifacts/tome_purse_implementation/live_headless_purse.log
+  h_ae0329d199c6f5 1-29
+artifacts/tome_purse_implementation/live_headless_tome.log
+  h_ae0329d199c6f5 1-29
+artifacts/tome_purse_implementation/main_runtime.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_implementation/media_validation.json
+  h_ae0329d199c6f5 1-26
+artifacts/tome_purse_implementation/purse_capture.json
+  h_ae0329d199c6f5 1-112
+artifacts/tome_purse_implementation/purse_inspection.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/test.log
+  h_ae0329d199c6f5 1-91
+artifacts/tome_purse_implementation/tome_capture.json
+  h_ae0329d199c6f5 1-133
+artifacts/tome_purse_implementation/tome_frame_015.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/tome_frame_060.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/tome_frame_120.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/tome_frame_180.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/tome_inspection.png.import
+  h_ae0329d199c6f5 1-40
+artifacts/tome_purse_implementation/verification.json
+  h_ae0329d199c6f5 1-30
+artifacts/tome_purse_review/asset_validation.json
+  h_ae0329d199c6f5 1-42
+artifacts/tome_purse_review/capture_purse.log
+  h_ae0329d199c6f5 1-36
+artifacts/tome_purse_review/capture_tome.log
+  h_ae0329d199c6f5 1-34
+artifacts/tome_purse_review/capture_v2_purse.log
+  h_ae0329d199c6f5 1-38
+artifacts/tome_purse_review/capture_v2_tome.log
+  h_ae0329d199c6f5 1-35
+artifacts/tome_purse_review/capture_v3_tome.log
+  h_ae0329d199c6f5 1-36
+artifacts/tome_purse_review/capture_v4_tome.log
+  h_ae0329d199c6f5 1-36
+artifacts/tome_purse_review/capture_v5_tome.log
+  h_ae0329d199c6f5 1-36
+artifacts/tome_purse_review/design.md
+  h_ae0329d199c6f5 1-54
+artifacts/tome_purse_review/editor.log
+  h_ae0329d199c6f5 1-62
+artifacts/tome_purse_review/editor_final.log
+  h_ae0329d199c6f5 1-43
+artifacts/tome_purse_review/editor_isolated.log
+  h_ae0329d199c6f5 1-55
+artifacts/tome_purse_review/editor_isolated_final.log
+  h_ae0329d199c6f5 1-28
+artifacts/tome_purse_review/editor_v2.log
+  h_ae0329d199c6f5 1-26
+artifacts/tome_purse_review/editor_v3.log
+  h_ae0329d199c6f5 1-37
+artifacts/tome_purse_review/editor_v4.log
+  h_ae0329d199c6f5 1-21
+artifacts/tome_purse_review/editor_v5.log
+  h_ae0329d199c6f5 1-21
+artifacts/tome_purse_review/headless_purse.log
+  h_ae0329d199c6f5 1-37
+artifacts/tome_purse_review/headless_tome.log
+  h_ae0329d199c6f5 1-35
+artifacts/tome_purse_review/headless_v2_purse.log
+  h_ae0329d199c6f5 1-39
+artifacts/tome_purse_review/headless_v2_tome.log
+  h_ae0329d199c6f5 1-36
+artifacts/tome_purse_review/headless_v3_purse.log
+  h_ae0329d199c6f5 1-39
+artifacts/tome_purse_review/headless_v3_tome.log
+  h_ae0329d199c6f5 1-37
+artifacts/tome_purse_review/headless_v4_tome.log
+  h_ae0329d199c6f5 1-37
+artifacts/tome_purse_review/headless_v5_tome.log
+  h_ae0329d199c6f5 1-35
+artifacts/tome_purse_review/media_validation.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_review/media_validation_v2.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_review/media_validation_v3.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_review/media_validation_v4.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_review/media_validation_v5.json
+  h_ae0329d199c6f5 1-20
+artifacts/tome_purse_review/purse_capture.json
+  h_ae0329d199c6f5 1-199
+artifacts/tome_purse_review/purse_capture_v2.json
+  h_ae0329d199c6f5 1-109
+artifacts/tome_purse_review/tome_capture.json
+  h_ae0329d199c6f5 1-63
+artifacts/tome_purse_review/tome_capture_v2.json
+  h_ae0329d199c6f5 1-63
+artifacts/tome_purse_review/tome_capture_v3.json
+  h_ae0329d199c6f5 1-63
+artifacts/tome_purse_review/tome_capture_v4.json
+  h_ae0329d199c6f5 1-63
+artifacts/tome_purse_review/tome_capture_v5.json
+  h_ae0329d199c6f5 1-63
+artifacts/weapon_balance_20260924/audio.log
+  h_ae0329d199c6f5 1-59
+artifacts/weapon_balance_20260924/balance.log
+  h_ae0329d199c6f5 1-108
+artifacts/weapon_balance_20260924/bootstrap.log
+  h_ae0329d199c6f5 1-265
+artifacts/weapon_balance_20260924/editor.log
+  h_ae0329d199c6f5 1-51
+artifacts/weapon_balance_20260924/grenade.log
+  h_ae0329d199c6f5 1-109
+artifacts/weapon_balance_20260924/plasma.log
+  h_ae0329d199c6f5 1-48
+artifacts/weapon_balance_20260924/plasma_verbose.log
+  h_ae0329d199c6f5 1-221
+artifacts/weapon_balance_20260924/tome_purse.log
+  h_ae0329d199c6f5 1-85
+assets/audio/sfx/combat/reaction_conduct_strike_01.wav.import
+  h_ae0329d199c6f5 1-24
+assets/audio/sfx/combat/reaction_thunder_fire_strike_01.wav.import
+  h_ae0329d199c6f5 1-24
+assets/sprites/weapons/rentier_coin_spin.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/weapons/weapon_kunyu_ritual_tome.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/weapons/weapon_kunyu_ritual_tome_animated.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/weapons/weapon_nightwatch_spear.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/weapons/weapon_rentier_purse.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/weapons/weapon_rentier_purse_animated.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/relics/relic_gilded_trigger.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/relics/relic_lucid_vow.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/relics/relic_runaway_amplifier.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/weapons/weapon_nightwatch_spear.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/weapons/weapon_rentier_purse.png.import
+  h_ae0329d199c6f5 1-40
+augmentations_list.md
+  h_ae0329d199c6f5 23,39,87-92
+data_config/relics.json
+  h_ae0329d199c6f5 587,590,778,785,1389,1397,1402-1479
+data_config/weapons.json
+  h_ae0329d199c6f5 32,36,46,50,60,64,74,78,92-93,107,119-124,131-228
+docs/asset/asset_rules_summary.md
+  h_ae0329d199c6f5 75-77
+docs/main/5-relic_bond_design.md
+  h_ae0329d199c6f5 317-319,329-340
+scripts/data/humanity_economy.gd
+  h_ae0329d199c6f5 1-58
+scripts/data/stat_definitions.gd
+  h_ae0329d199c6f5 140,150,348,356
+scripts/tests/nightwatch_spear_capture.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/nightwatch_spear_preview.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/plasma_contact_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/tome_purse_capture.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/tome_purse_preview.gd.uid
+  h_ae0329d199c6f5 1
+scripts/ui/enchantment_workbench.gd
+  h_ae0329d199c6f5 179-184,189-190
+scripts/ui/wrapped_tooltip_label.gd
+  h_ae0329d199c6f5 1-34
+scripts/ui/wrapped_tooltip_label.gd.uid
+  h_ae0329d199c6f5 1
+scripts/weapons/projectile_instance.gd
+  h_ae0329d199c6f5 4-5,11,17,34-35,77-78,85-89,115-116,180-182,184,211-214,217
+scripts/weapons/weapon_instance.gd
+  h_ae0329d199c6f5 5,15,26,36-37,77-78,225,238-244,347-349,362-434,447-448,479-480,484,494-495,504-508,512,537-538,540-544,548-569,585-587
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e0b9642d313ff38945c3a066a084bd6644ccd1ec",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  },
+  "sessions": {
+    "s_38e1ebf7bfb35e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c495-4183-7921-b144-2af84c7f679a",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b19d7699c384b1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0e5ff-c3fb-7372-bde8-73c5170c188f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b26ecb89787365": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-f6fe-7830-b9f5-0fdda1c11c07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
