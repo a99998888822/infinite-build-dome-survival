@@ -1,0 +1,507 @@
+artifacts/README.md
+  s_a7add2aced0840::t_9354d50587c7c2 7-8,11-12,17,50,53-54
+artifacts/previews/combat_picxel_3838180/README.md
+  s_a7add2aced0840::t_250b5b8ca30a90 1-44
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_01.anchor.json
+  s_a7add2aced0840::t_96257bde7a2586 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_02.anchor.json
+  s_a7add2aced0840::t_8cca75c5b4f06c 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_03.anchor.json
+  s_a7add2aced0840::t_6672486152df44 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_04.anchor.json
+  s_a7add2aced0840::t_0b1d261c1120ca 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_05.anchor.json
+  s_a7add2aced0840::t_ffe47df04fdcf5 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_06.anchor.json
+  s_a7add2aced0840::t_dd9dd2bb528f71 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_07.anchor.json
+  s_a7add2aced0840::t_6c869ef09f63c3 1-47
+artifacts/previews/combat_picxel_3838180/beginner/refs/beginner_08.anchor.json
+  s_a7add2aced0840::t_62acb64a9cea49 1-47
+artifacts/previews/combat_picxel_3838180/beginner/work/batch-report.json
+  s_a7add2aced0840::t_00692f09c22e5a 1-458
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_01-128-detail-face.pxg
+  s_a7add2aced0840::t_5012a3dfb450a9 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_01-128-detail.face.json
+  s_a7add2aced0840::t_262a3ac34b86de 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_01-64-detail-face.pxg
+  s_a7add2aced0840::t_f09b941e8d0450 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_01-64-detail.face.json
+  s_a7add2aced0840::t_a158b82ee59076 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_02-64-detail.face.json
+  s_a7add2aced0840::t_d4c9fdeb69ed72 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_04-128-detail-face.pxg
+  s_a7add2aced0840::t_3715e15351b42f 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_04-128-detail.face.json
+  s_a7add2aced0840::t_ab4b2936af48ab 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_04-64-detail-face.pxg
+  s_a7add2aced0840::t_003b1ff8f98704 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_04-64-detail.face.json
+  s_a7add2aced0840::t_f32cf8358c84ad 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_05-128-detail-face.pxg
+  s_a7add2aced0840::t_e7fd6e70897e24 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_05-128-detail.face.json
+  s_a7add2aced0840::t_4979c026359e48 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_05-64-detail-face.pxg
+  s_a7add2aced0840::t_a1883ee0088b8b 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_05-64-detail.face.json
+  s_a7add2aced0840::t_6a8761f0b07093 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_05.pal
+  s_a7add2aced0840::t_a531691c30d414 1-16
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_06-128-detail-face.pxg
+  s_a7add2aced0840::t_419933a1ad2e07 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_06-128-detail.face.json
+  s_a7add2aced0840::t_44ad992db0c8c3 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_06-64-detail-face.pxg
+  s_a7add2aced0840::t_9cbe4f4a442f31 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_06-64-detail.face.json
+  s_a7add2aced0840::t_6a65d70a0d4774 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_06.pal
+  s_a7add2aced0840::t_3a530c811af70f 1-16
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_07-128-detail-face.pxg
+  s_a7add2aced0840::t_2664553653625e 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_07-128-detail.face.json
+  s_a7add2aced0840::t_3a6b4b9e04c4ba 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_07-64-detail-face.pxg
+  s_a7add2aced0840::t_44158be1a29eb5 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_07-64-detail.face.json
+  s_a7add2aced0840::t_8178b86c0a0186 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_07.pal
+  s_a7add2aced0840::t_22d7ba7e44eeb4 1-16
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_08-128-detail-face.pxg
+  s_a7add2aced0840::t_a6898df6d80531 1-149
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_08-128-detail.face.json
+  s_a7add2aced0840::t_b3dc41ed96b772 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_08-64-detail-face.pxg
+  s_a7add2aced0840::t_c8c672dff6b26a 1-85
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_08-64-detail.face.json
+  s_a7add2aced0840::t_03a615d5464983 1-48
+artifacts/previews/combat_picxel_3838180/beginner/work/beginner_08.pal
+  s_a7add2aced0840::t_44e7e8d9f87bda 1-16
+artifacts/previews/combat_picxel_3838180/beginner/work/picxel.status.json
+  s_a7add2aced0840::t_3e00c47aa9364e 1-7
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_06.anchor.json
+  s_a7add2aced0840::t_00bb6c85121863 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_07.anchor.json
+  s_a7add2aced0840::t_17cc834362dfb0 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_08.anchor.json
+  s_a7add2aced0840::t_c262be1a363d38 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_09.anchor.json
+  s_a7add2aced0840::t_1b32f9d49b2e3d 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_10.anchor.json
+  s_a7add2aced0840::t_a3a4934e1d2e3d 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/refs/boss_attack_11.anchor.json
+  s_a7add2aced0840::t_31e4186846902b 1-34
+artifacts/previews/combat_picxel_3838180/boss_attack/work/batch-report.json
+  s_a7add2aced0840::t_f028cb888ee73b 1-409
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_01-128-detail.pxg
+  s_a7add2aced0840::t_0367976a7a4fb8 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_02-128-detail.pxg
+  s_a7add2aced0840::t_608234777a9bbf 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_03-128-detail.pxg
+  s_a7add2aced0840::t_a593a0b14ccc55 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_04-128-detail.pxg
+  s_a7add2aced0840::t_8583a650b1be91 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_04.pal
+  s_a7add2aced0840::t_fe2d9094cd3876 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_05-128-detail.pxg
+  s_a7add2aced0840::t_0094a35a84e469 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_05.pal
+  s_a7add2aced0840::t_156e71e8a70ea5 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_06-128-detail.pxg
+  s_a7add2aced0840::t_c47d6e67d824b7 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_06.pal
+  s_a7add2aced0840::t_25bf6dc3281d6d 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_07-128-detail.pxg
+  s_a7add2aced0840::t_4bf7bc41292144 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_07.pal
+  s_a7add2aced0840::t_f3c40444bb85ae 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_08-128-detail.pxg
+  s_a7add2aced0840::t_f9ee5b44e01dc0 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_08.pal
+  s_a7add2aced0840::t_a2aacfbb6b1b98 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_09-128-detail.pxg
+  s_a7add2aced0840::t_d799ef27b3e3f8 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_09.pal
+  s_a7add2aced0840::t_b58a48e6a81df6 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_10-128-detail.pxg
+  s_a7add2aced0840::t_bd06a1616e6026 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_10.pal
+  s_a7add2aced0840::t_5f7710ceafcbf5 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_11-128-detail.pxg
+  s_a7add2aced0840::t_8d076951629c78 1-149
+artifacts/previews/combat_picxel_3838180/boss_attack/work/boss_attack_11.pal
+  s_a7add2aced0840::t_4e4361eaeb70fa 1-16
+artifacts/previews/combat_picxel_3838180/boss_attack/work/picxel.status.json
+  s_a7add2aced0840::t_f36670523826d1 1-7
+artifacts/previews/combat_picxel_3838180/boss_walk/work/batch-report.json
+  s_a7add2aced0840::t_0c6c669a37d794 1-416
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_01-128-detail.pxg
+  s_a7add2aced0840::t_8877e851d2d316 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_01.pal
+  s_a7add2aced0840::t_98bf7cfc1f3fd8 1-16
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_02-128-detail.pxg
+  s_a7add2aced0840::t_6de6a79da5464d 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_02.pal
+  s_a7add2aced0840::t_425503f0508f0e 1-16
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_03-128-detail.pxg
+  s_a7add2aced0840::t_51348706e48413 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_04-128-detail.pxg
+  s_a7add2aced0840::t_7799e8738827e7 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_05-128-detail.pxg
+  s_a7add2aced0840::t_cd873d74971420 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_06-128-detail.pxg
+  s_a7add2aced0840::t_2ab4e116c029e4 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_07-128-detail.pxg
+  s_a7add2aced0840::t_096680be464613 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_08-128-detail.pxg
+  s_a7add2aced0840::t_338c7bb8ffa692 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_09-128-detail.pxg
+  s_a7add2aced0840::t_405ca5726c6a7b 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_10-128-detail.pxg
+  s_a7add2aced0840::t_b6518a718fb256 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_10.pal
+  s_a7add2aced0840::t_754d7966b6b232 1-16
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_11-128-detail.pxg
+  s_a7add2aced0840::t_b5c352fec8d943 1-149
+artifacts/previews/combat_picxel_3838180/boss_walk/work/boss_walk_11.pal
+  s_a7add2aced0840::t_75647acf61e57f 1-16
+artifacts/previews/combat_picxel_3838180/boss_walk/work/picxel.status.json
+  s_a7add2aced0840::t_e21e590502664e 1-7
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_01.anchor.json
+  s_a7add2aced0840::t_000d6a5640eb23 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_02.anchor.json
+  s_a7add2aced0840::t_46648d14b13797 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_03.anchor.json
+  s_a7add2aced0840::t_badfa623da6d63 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_04.anchor.json
+  s_a7add2aced0840::t_b0910e8ac11e45 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_05.anchor.json
+  s_a7add2aced0840::t_c2df46eabd1e29 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_06.anchor.json
+  s_a7add2aced0840::t_15f228118b57e8 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/refs/enemy_walk_07.anchor.json
+  s_a7add2aced0840::t_713c49b217c8fd 1-47
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/batch-report.json
+  s_a7add2aced0840::t_a1455cab85f4e1 1-306
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_01-64-detail-face.pxg
+  s_a7add2aced0840::t_0727fa4da4a892 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_01-64-detail.face.json
+  s_a7add2aced0840::t_194720d4e42131 1-22
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_02-64-detail.face.json
+  s_a7add2aced0840::t_c02ca90baa99f5 1-22
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_02.pal
+  s_a7add2aced0840::t_8dab24a9bc8882 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_03-64-detail-face.pxg
+  s_a7add2aced0840::t_babbc314643740 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_03-64-detail.face.json
+  s_a7add2aced0840::t_34b6c30701923d 1-22
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_03.pal
+  s_a7add2aced0840::t_9acab746a73aaf 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_04-64-detail-face.pxg
+  s_a7add2aced0840::t_f6e616808784ff 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_04-64-detail.face.json
+  s_a7add2aced0840::t_88d7a7ff6ea8cc 1-23
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_04.pal
+  s_a7add2aced0840::t_725b747bef60ee 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_05-64-detail-face.pxg
+  s_a7add2aced0840::t_eafd041bee4f84 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_05-64-detail.face.json
+  s_a7add2aced0840::t_40c9a52df9cc6b 1-23
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_05.pal
+  s_a7add2aced0840::t_c5fbabaa38ac7f 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_06-64-detail-face.pxg
+  s_a7add2aced0840::t_fe8e9a06e3b51c 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_06-64-detail.face.json
+  s_a7add2aced0840::t_a736bd09adeda0 1-23
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_06.pal
+  s_a7add2aced0840::t_7e7593be0076a6 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_07-64-detail-face.pxg
+  s_a7add2aced0840::t_857192c90e6f2c 1-85
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_07-64-detail.face.json
+  s_a7add2aced0840::t_b2a6435c6eb345 1-23
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/enemy_walk_07.pal
+  s_a7add2aced0840::t_03552cb090838b 1-16
+artifacts/previews/combat_picxel_3838180/enemy_walk/work/picxel.status.json
+  s_a7add2aced0840::t_cf917e993cc3c2 1-7
+artifacts/previews/combat_picxel_3838180/manifest.json
+  s_a7add2aced0840::t_ee3c0139238d13 1-1183
+artifacts/previews/combat_picxel_3838180/portrait/refs/beginner_portrait.anchor.json
+  s_a7add2aced0840::t_79a4c998998cd7 1-45
+artifacts/previews/combat_picxel_3838180/portrait/work/batch-report.json
+  s_a7add2aced0840::t_f96c3cd8394645 1-53
+artifacts/previews/combat_picxel_3838180/portrait/work/beginner_portrait-128.pxg
+  s_a7add2aced0840::t_76d7204572c94b 1-149
+artifacts/previews/combat_picxel_3838180/portrait/work/beginner_portrait.pal
+  s_a7add2aced0840::t_f9e7f6c0111981 1-16
+artifacts/previews/combat_picxel_3838180/portrait/work/picxel.status.json
+  s_a7add2aced0840::t_53a9633247d9d1 1-7
+artifacts/previews/combat_picxel_3838180/source-map.json
+  s_a7add2aced0840::t_b0830aa50752e1 1-902
+artifacts/previews/combat_picxel_3838180/verification.json
+  s_a7add2aced0840::t_d301877512d324 1-12
+artifacts/previews/player_picxel/README.md
+  s_a7add2aced0840::t_b76076242673a6 1-50
+artifacts/previews/player_picxel/installation.json
+  s_a7add2aced0840::t_089e767786a702 1-174
+artifacts/previews/player_picxel/manifest.json
+  s_a7add2aced0840::t_d5e83a62941d5a 1-497
+artifacts/previews/player_picxel/portraits/refs/beginner_portrait.anchor.json
+  s_a7add2aced0840::t_46df72173b6a82 1-52
+artifacts/previews/player_picxel/portraits/refs/capitalist_portrait.anchor.json
+  s_a7add2aced0840::t_d162debcd07de3 1-52
+artifacts/previews/player_picxel/portraits/work/batch-report.json
+  s_a7add2aced0840::t_67a190b9da88c4 1-95
+artifacts/previews/player_picxel/portraits/work/beginner_portrait-128.pxg
+  s_a7add2aced0840::t_d06301f2fc9666 1-149
+artifacts/previews/player_picxel/portraits/work/beginner_portrait.pal
+  s_a7add2aced0840::t_892b50974b4284 1-16
+artifacts/previews/player_picxel/portraits/work/capitalist_portrait-128.pxg
+  s_a7add2aced0840::t_91f3b8b638a8e1 1-148
+artifacts/previews/player_picxel/portraits/work/capitalist_portrait.pal
+  s_a7add2aced0840::t_6aecca18173959 1-16
+artifacts/previews/player_picxel/portraits/work/picxel.status.json
+  s_a7add2aced0840::t_c0a05e1b2a5eb8 1-7
+artifacts/previews/player_picxel/refs/beginner_walk01.anchor.json
+  s_a7add2aced0840::t_ec8a87aea96418 1-65
+artifacts/previews/player_picxel/refs/beginner_walk02.anchor.json
+  s_a7add2aced0840::t_230979a95e281a 1-65
+artifacts/previews/player_picxel/refs/beginner_walk03.anchor.json
+  s_a7add2aced0840::t_e4c18437b70ef7 1-65
+artifacts/previews/player_picxel/refs/beginner_walk04.anchor.json
+  s_a7add2aced0840::t_ee082f80fce9cc 1-65
+artifacts/previews/player_picxel/refs/beginner_walk05.anchor.json
+  s_a7add2aced0840::t_d0290491590471 1-65
+artifacts/previews/player_picxel/refs/beginner_walk06.anchor.json
+  s_a7add2aced0840::t_21818aad4d25a6 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk01.anchor.json
+  s_a7add2aced0840::t_72f68b9d8ab548 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk02.anchor.json
+  s_a7add2aced0840::t_a218dbf744756f 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk03.anchor.json
+  s_a7add2aced0840::t_6e71bcdea7a4e2 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk04.anchor.json
+  s_a7add2aced0840::t_d02cb645f81097 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk05.anchor.json
+  s_a7add2aced0840::t_f24ea82a640544 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk06.anchor.json
+  s_a7add2aced0840::t_bcdd072441423c 1-65
+artifacts/previews/player_picxel/refs/capitalist_walk07.anchor.json
+  s_a7add2aced0840::t_b2b7abe1bf09b7 1-65
+artifacts/previews/player_picxel/source-map.json
+  s_a7add2aced0840::t_aa92a57a07e0c4 1-318
+artifacts/previews/player_picxel/work/batch-report.json
+  s_a7add2aced0840::t_73811c02cc1150 1-748
+artifacts/previews/player_picxel/work/beginner_walk01-128-detail-face.pxg
+  s_a7add2aced0840::t_72c946a35094db 1-149
+artifacts/previews/player_picxel/work/beginner_walk01-128.face.json
+  s_a7add2aced0840::t_b98155bc417bbd 1-48
+artifacts/previews/player_picxel/work/beginner_walk01-64-detail-face.pxg
+  s_a7add2aced0840::t_bc67f6ee7293f2 1-85
+artifacts/previews/player_picxel/work/beginner_walk01-64.face.json
+  s_a7add2aced0840::t_03402244fecbc4 1-48
+artifacts/previews/player_picxel/work/beginner_walk01.pal
+  s_a7add2aced0840::t_afb75aba685867 1-16
+artifacts/previews/player_picxel/work/beginner_walk02-128-detail-face.pxg
+  s_a7add2aced0840::t_ef5f8308f54d55 1-149
+artifacts/previews/player_picxel/work/beginner_walk02-128.face.json
+  s_a7add2aced0840::t_801046a4b47a20 1-48
+artifacts/previews/player_picxel/work/beginner_walk02-64-detail-face.pxg
+  s_a7add2aced0840::t_c59225a429476e 1-85
+artifacts/previews/player_picxel/work/beginner_walk02-64.face.json
+  s_a7add2aced0840::t_60f187999338a3 1-48
+artifacts/previews/player_picxel/work/beginner_walk02.pal
+  s_a7add2aced0840::t_ba385309ddb533 1-16
+artifacts/previews/player_picxel/work/beginner_walk03-128-detail-face.pxg
+  s_a7add2aced0840::t_5ca6ba19740cec 1-149
+artifacts/previews/player_picxel/work/beginner_walk03-128.face.json
+  s_a7add2aced0840::t_c36e6730dc02ce 1-48
+artifacts/previews/player_picxel/work/beginner_walk03-64-detail-face.pxg
+  s_a7add2aced0840::t_a78aca61f43d7a 1-85
+artifacts/previews/player_picxel/work/beginner_walk03-64.face.json
+  s_a7add2aced0840::t_b54070e21b9207 1-48
+artifacts/previews/player_picxel/work/beginner_walk03.pal
+  s_a7add2aced0840::t_972a6e221186d9 1-16
+artifacts/previews/player_picxel/work/beginner_walk04-128-detail-face.pxg
+  s_a7add2aced0840::t_19392f6b2a9841 1-149
+artifacts/previews/player_picxel/work/beginner_walk04-128.face.json
+  s_a7add2aced0840::t_78aee8d4705611 1-48
+artifacts/previews/player_picxel/work/beginner_walk04-64-detail-face.pxg
+  s_a7add2aced0840::t_29a82f29d664dc 1-85
+artifacts/previews/player_picxel/work/beginner_walk04-64.face.json
+  s_a7add2aced0840::t_dace42152e8c00 1-48
+artifacts/previews/player_picxel/work/beginner_walk04.pal
+  s_a7add2aced0840::t_73e0d0d42f071f 1-16
+artifacts/previews/player_picxel/work/beginner_walk05-128-detail-face.pxg
+  s_a7add2aced0840::t_1daca014e988f1 1-149
+artifacts/previews/player_picxel/work/beginner_walk05-128.face.json
+  s_a7add2aced0840::t_10f14005b9175a 1-48
+artifacts/previews/player_picxel/work/beginner_walk05-64-detail-face.pxg
+  s_a7add2aced0840::t_5b36cb9d115d28 1-85
+artifacts/previews/player_picxel/work/beginner_walk05-64.face.json
+  s_a7add2aced0840::t_aac2153980315b 1-48
+artifacts/previews/player_picxel/work/beginner_walk05.pal
+  s_a7add2aced0840::t_a5ae2106d9aa50 1-16
+artifacts/previews/player_picxel/work/beginner_walk06-128-detail-face.pxg
+  s_a7add2aced0840::t_f71a9a7ed54ea0 1-149
+artifacts/previews/player_picxel/work/beginner_walk06-128.face.json
+  s_a7add2aced0840::t_260f58c3917c8e 1-48
+artifacts/previews/player_picxel/work/beginner_walk06-64-detail-face.pxg
+  s_a7add2aced0840::t_f7eac9d4ca8927 1-85
+artifacts/previews/player_picxel/work/beginner_walk06-64.face.json
+  s_a7add2aced0840::t_6623380ef249ef 1-48
+artifacts/previews/player_picxel/work/beginner_walk06.pal
+  s_a7add2aced0840::t_56c9c1873d7f28 1-16
+artifacts/previews/player_picxel/work/capitalist_walk01-128-accessory-face.pxg
+  s_a7add2aced0840::t_f9c981df8c9861 1-149
+artifacts/previews/player_picxel/work/capitalist_walk01-128.face.json
+  s_a7add2aced0840::t_cf46cbfc42e408 1-32
+artifacts/previews/player_picxel/work/capitalist_walk01-64-accessory-face.pxg
+  s_a7add2aced0840::t_4334a2b14811b3 1-85
+artifacts/previews/player_picxel/work/capitalist_walk01-64.face.json
+  s_a7add2aced0840::t_ac405d2f6e43d4 1-46
+artifacts/previews/player_picxel/work/capitalist_walk01.pal
+  s_a7add2aced0840::t_faa5c9c771e1ca 1-16
+artifacts/previews/player_picxel/work/capitalist_walk02-128-accessory-face.pxg
+  s_a7add2aced0840::t_3973e9a4b75afa 1-149
+artifacts/previews/player_picxel/work/capitalist_walk02-128.face.json
+  s_a7add2aced0840::t_fce191745c9c0b 1-32
+artifacts/previews/player_picxel/work/capitalist_walk02-64-accessory-face.pxg
+  s_a7add2aced0840::t_7d152484461d62 1-85
+artifacts/previews/player_picxel/work/capitalist_walk02-64.face.json
+  s_a7add2aced0840::t_6985c3b0c09114 1-46
+artifacts/previews/player_picxel/work/capitalist_walk02.pal
+  s_a7add2aced0840::t_9a8b99c9e829db 1-16
+artifacts/previews/player_picxel/work/capitalist_walk03-128-accessory-face.pxg
+  s_a7add2aced0840::t_be9a5d0b31ab1e 1-149
+artifacts/previews/player_picxel/work/capitalist_walk03-128.face.json
+  s_a7add2aced0840::t_ed43ae6006037d 1-32
+artifacts/previews/player_picxel/work/capitalist_walk03-64-accessory-face.pxg
+  s_a7add2aced0840::t_9430769aeeb3cb 1-85
+artifacts/previews/player_picxel/work/capitalist_walk03-64.face.json
+  s_a7add2aced0840::t_36dc021829265a 1-46
+artifacts/previews/player_picxel/work/capitalist_walk03.pal
+  s_a7add2aced0840::t_0d6992f98585c8 1-16
+artifacts/previews/player_picxel/work/capitalist_walk04-128-accessory-face.pxg
+  s_a7add2aced0840::t_319c768cf2d8b5 1-149
+artifacts/previews/player_picxel/work/capitalist_walk04-128.face.json
+  s_a7add2aced0840::t_8228bf7f406780 1-32
+artifacts/previews/player_picxel/work/capitalist_walk04-64-accessory-face.pxg
+  s_a7add2aced0840::t_16cec374e04607 1-85
+artifacts/previews/player_picxel/work/capitalist_walk04-64.face.json
+  s_a7add2aced0840::t_fba4391d468fb3 1-46
+artifacts/previews/player_picxel/work/capitalist_walk04.pal
+  s_a7add2aced0840::t_b785264c398234 1-16
+artifacts/previews/player_picxel/work/capitalist_walk05-128-accessory-face.pxg
+  s_a7add2aced0840::t_167ae67c606d89 1-149
+artifacts/previews/player_picxel/work/capitalist_walk05-128.face.json
+  s_a7add2aced0840::t_844e352a042678 1-32
+artifacts/previews/player_picxel/work/capitalist_walk05-64-accessory-face.pxg
+  s_a7add2aced0840::t_2071049c503a45 1-85
+artifacts/previews/player_picxel/work/capitalist_walk05-64.face.json
+  s_a7add2aced0840::t_5b1f303bcf4128 1-46
+artifacts/previews/player_picxel/work/capitalist_walk05.pal
+  s_a7add2aced0840::t_a06223d59983d9 1-16
+artifacts/previews/player_picxel/work/capitalist_walk06-128-accessory-face.pxg
+  s_a7add2aced0840::t_33664e83959e08 1-149
+artifacts/previews/player_picxel/work/capitalist_walk06-128.face.json
+  s_a7add2aced0840::t_1a402067993a1b 1-32
+artifacts/previews/player_picxel/work/capitalist_walk06-64-accessory-face.pxg
+  s_a7add2aced0840::t_bb5dd5a8b487b2 1-85
+artifacts/previews/player_picxel/work/capitalist_walk06-64.face.json
+  s_a7add2aced0840::t_3bd2339be36df9 1-46
+artifacts/previews/player_picxel/work/capitalist_walk06.pal
+  s_a7add2aced0840::t_af584f130ae662 1-16
+artifacts/previews/player_picxel/work/capitalist_walk07-128-accessory-face.pxg
+  s_a7add2aced0840::t_720dad5ec3c432 1-149
+artifacts/previews/player_picxel/work/capitalist_walk07-128.face.json
+  s_a7add2aced0840::t_faea7ff5ebaae0 1-32
+artifacts/previews/player_picxel/work/capitalist_walk07-64-accessory-face.pxg
+  s_a7add2aced0840::t_88b684f9c5a488 1-85
+artifacts/previews/player_picxel/work/capitalist_walk07-64.face.json
+  s_a7add2aced0840::t_2ecc588d1a0c8e 1-46
+artifacts/previews/player_picxel/work/capitalist_walk07.pal
+  s_a7add2aced0840::t_e25d1300233139 1-16
+artifacts/previews/player_picxel/work/picxel.status.json
+  s_a7add2aced0840::t_574e57e6310f91 1-7
+artifacts/reviews/characters/capitalist/README.md
+  s_a7add2aced0840::t_cbbdf9bb5b6ced 3,12,16
+artifacts/reviews/effects/iron_knight/README.md
+  s_b11938437a28ec::t_9275ea413eedbf 3-4,8,14,17
+assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres
+  s_b11938437a28ec::t_ca7651ecba1d5f 1,45-56,73-84,104,108,111-121,125,128-134,138,141-142,146,149-150,154
+assets/sprites/enemies/iron_knight/manifest.json
+  s_b11938437a28ec::t_e959e315b89330 6,8,10,13-15,18-20,23-25,28-30,33-35
+data_config/characters.json
+  s_a7add2aced0840::t_9b5961b4d306ee 16-17
+docs/asset/asset_checklist_summary.md
+  s_a7add2aced0840::t_eed705c7fd0d02 39,124-130
+docs/asset/asset_rules_summary.md
+  s_a7add2aced0840::t_1227047dfa24a3 20,28-31,37-39
+docs/asset/battle_environment_refresh.md
+  s_a7add2aced0840::t_32c6a22a23678f 5-6
+docs/asset/combat_sprite_clarity.md
+  s_a7add2aced0840::t_e8d2a772a4b7e3 3,16,21,23,25,27-30,42,48
+docs/asset/iron_knight_integration.md
+  s_a7add2aced0840::t_2c67b6f08d06c8 3,7,9,35
+docs/main/21-capitalist_character_design_review.md
+  s_a7add2aced0840::t_2c3406307b40a6 3,5,7,176,179-180,182,188,190,195,197-198,200,202,204,206
+scenes/enemy/elite_rusher.tscn
+  s_b11938437a28ec::t_d1c305cd492487 18
+scripts/enemies/elite_rusher.gd
+  s_b11938437a28ec::t_4eb62414744222 259-260,270
+scripts/player/player_controller.gd
+  s_a7add2aced0840::t_17b85aef527098 28-29,594-595
+scripts/tests/battle_hud_damage_test.gd
+  s_a7add2aced0840::t_6bafe26c8b2502 67-72
+scripts/tests/capitalist_character_test.gd
+  s_a7add2aced0840::t_6af3513c28bb4d 100-106
+scripts/tests/iron_knight_live_capture.gd
+  s_b11938437a28ec::t_c6a5dda6dbe105 54-67,82
+scripts/tests/iron_knight_test.gd
+  s_b11938437a28ec::t_928ebe7bf7717e 43,47,72,109,131-139
+scripts/tools/build_combat_picxel_review.py
+  s_a7add2aced0840::t_a5b94d9d5dec88 1-221
+scripts/tools/build_combat_sprites.py
+  s_a7add2aced0840::t_bba8d1d59d38a2 1-2,6
+scripts/tools/build_iron_knight_review.py
+  s_a7add2aced0840::t_e6af129a7a642c 1-2,5,9-13,16-17
+scripts/tools/export_combat_picxel_review.py
+  s_a7add2aced0840::t_f3d1305d72c381 1-175
+scripts/tools/export_player_picxel_review.py
+  s_a7add2aced0840::t_8334f15aebd3b0 1-166
+scripts/tools/install_iron_knight_assets.py
+  s_a7add2aced0840::t_b31a013935fc55 1-3,6-7,9-11,15-18
+scripts/tools/install_player_picxel_assets.py
+  s_a7add2aced0840::t_d243d39b3b9d40 1-18
+scripts/tools/picxel_combat_source_masks.py
+  s_a7add2aced0840::t_e8b9ce40d6a7a9 1-93
+scripts/tools/prepare_player_picxel_review.py
+  s_a7add2aced0840::t_658f6145fff85f 1-325
+scripts/tools/refine_combat_picxel_faces.py
+  s_a7add2aced0840::t_18770f705b21cb 1-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1b2347fa6b10ec9978c23be7e200d6526ccc6115",
+  "prompts": {},
+  "sessions": {
+    "s_a7add2aced0840": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0e84a-1a70-7683-9157-63ed61c953eb",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
