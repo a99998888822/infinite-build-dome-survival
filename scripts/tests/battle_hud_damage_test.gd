@@ -138,7 +138,7 @@ func _capture_live_combat() -> void:
 	battle.set_process(true)
 	manager.set_process(true)
 	hud._set_drawer_open(false, false)
-	await get_tree().create_timer(7).timeout
+	await get_tree().create_timer(1.0).timeout
 	for index in 20:
 		if flow.current_state != MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP:
 			break

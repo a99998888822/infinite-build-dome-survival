@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Art Asset Generator"
+  short_description: "Generate and process pixel-art assets"
+  default_prompt: "Use $godot-art-asset-generator to generate a Godot-ready pixel-art asset with Nano Banana."
+policy:
+  allow_implicit_invocation: true
