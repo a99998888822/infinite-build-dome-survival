@@ -1,10 +1,10 @@
 # 资本家角色设计审阅稿
 
-日期：2026-09-27。状态：已正式接入角色选择、开局遗物、银行结算与战斗动画。采用已确认的第二版数值及修正五官、腰腹后的美术；功能验证完成，长期强度仍需实战对比。
+日期：2026-09-27；美术更新于 2026-09-28。状态：已正式接入角色选择、开局遗物、银行结算与战斗动画。采用已确认的第二版数值及用户提供原图转换的 Picxel 美术；功能验证完成，长期强度仍需实战对比。
 
-本版按用户确认：四件方案完整触发合计 500 本金的一次性奖励；通过角色属性进一步削弱进行平衡。美术直接手工逐像素构造，不调用 imagegen 或外部图像 API。
+本版按用户确认：四件方案完整触发合计 500 本金的一次性奖励；通过角色属性进一步削弱进行平衡。当前美术采用外部原图、本地像素转换及局部修整，不调用图像生成 API。旧手工绘制造型及脚本已清理；下文第 6 节保留最初的设计方向，当前成品以 Picxel 包为准。
 
-![资本家形象审阅图](../../artifacts/previews/capitalist_character/capitalist_review.png)
+![资本家当前角色选择实机图](../../artifacts/reviews/characters/capitalist/selection.png)
 
 ## 1. 角色定位
 
@@ -173,37 +173,37 @@
 
 | 素材 | 规格与用途 | 当前状态 |
 |---|---|---|
-| 形象审阅板 | 1600×1060；全身、脸部与杖头局部、战斗尺寸对照 | 已完成，保留设计参照 |
+| 形象审阅板 | 两角色战斗、展示及头像规格对照 | 已完成并安装 |
 | 角色展示单帧 | 256×256，向右、透明 PNG | 已接入角色详情 |
 | 角色头像 | 128×128，保留帽子、单片镜和表情 | 已接入角色列表 |
-| 战斗待机图 | 54×54，透明 PNG，单独绘制 | 已接入并实机检查 |
-| 行走源图帧表 | 1024×256，四帧横排，单帧 256×256 | 已完成，保留美术源图 |
+| 战斗待机图 | 54×54，透明 PNG，由 64 像素稿裁去透明留白 | 已接入并实机检查 |
+| 完整行走帧表 | 378×54，七帧横排，单帧 54×54 | 保留在审阅包供后续编辑 |
 | 战斗行走帧表 | 216×54，四帧横排，单帧 54×54 | 已接入，6 FPS、左向镜像 |
-| 四帧总览与实机行走 | 1200×720 PNG、游戏录像 | 保留总览与实录，重复素材动图已清理 |
+| 四帧总览与实机行走 | Picxel 审阅板、游戏录像 | 已更新为当前造型 |
 
 正式资源安装在 `assets/sprites/player/`、`assets/sprites/player/combat/` 与 `assets/ui/icons/characters/`。沿用四份方案原图标；初始武器为食利者钱袋，只有一个空附魔槽。
 
 ## 8. 美术制作记录与文件
 
-用户明确要求直接绘制，因此使用手工定义的像素形状、轮廓和色块，通过 Pillow 输出 PNG。未调用 imagegen、图像模型或外部 API。绘图脚本默认重建审阅图；附加 `--install` 可同步安装四张正式纹理，不修改游戏配置。
+2026-09-28 按用户要求替换为外部原图的 Picxel 转换结果。使用统一画布、每角色 16 色色板、网格投票、原图细线恢复和眼部局部修整。安装脚本先核对尺寸、透明度、色数和清单哈希，再覆盖两角色共 8 张同名正式纹理。
 
-- [形象审阅板](../../artifacts/previews/capitalist_character/capitalist_review.png)
+- [当前形象实机图](../../artifacts/reviews/characters/capitalist/selection.png)
 - [透明角色展示图](../../assets/sprites/player/capitalist_idle_right.png)
 - [透明头像](../../assets/ui/icons/characters/icon_capitalist.png)
 - [54×54 战斗待机图](../../assets/sprites/player/combat/capitalist_idle_right.png)
 - [实机行走动图](../../artifacts/reviews/characters/capitalist/walk.gif)
-- [四帧总览](../../artifacts/previews/capitalist_character/capitalist_walk_frames.png)
-- [行走源图帧表](../../artifacts/previews/capitalist_character/capitalist_walk_right.png)
+- [完整七帧行走表](../../artifacts/previews/player_picxel/delivery/capitalist/combat/capitalist_walk_right_all_frames.png)
 - [战斗行走帧表](../../assets/sprites/player/combat/capitalist_walk_right_spritesheet.png)
-- [可编辑绘图源文件](../../scripts/tools/source_art/capitalist_character.py)
+- [可编辑像素稿、来源与修改流程](../../artifacts/previews/player_picxel/README.md)
+- [安装与校验脚本](../../scripts/tools/install_player_picxel_assets.py)
 
-展示图在 128×128 像素底稿上绘制，再以最近邻放大为 256×256；战斗尺寸草图独立按 54×54 绘制，避免缩小后丢失镜框和手杖。透明素材只使用 0／255 的 Alpha，不含半透明脏边。头像和局部细节由同一底稿裁出，保持设计一致。
+展示图由独立的 128×128 转换稿最近邻放大为 256×256；战斗从 64×64 转换稿仅移除透明留白，导出为 54×54。头像由原图头肩区域独立转换为 128×128。透明素材只使用 0／255 的 Alpha。
 
-本次形象修订：修正眼睛、眼镜、鼻子的透视位置，镜片改为能看清眼睛的浅色玻璃，仅保留少量幽绿反光；收窄腰腹、缩小红色马甲露出面积。展示图、头像、战斗草图、四帧行走素材及动图均同步重建。
+原始输入共七张，全部保留；完整手部、鞋子及手杖均随整帧保留，不对身体部位分层裁切。色板及局部眼部修整记录保存在 Picxel 包内。
 
-行走循环已补齐：落杖迈步、承重跟进、抬杖换步、前送手杖。双腿的膝盖和朝前鞋尖按各姿态重画；手臂、拐杖、衣摆分开运动，上身只有轻微起伏。正式角色按 6 FPS 播放，左向直接镜像；初心者保留 3.5 FPS。
+正式四帧行走选原图 1→3→5→7，待机选第 7 张，脚底统一到 y=52（不含该行）。资本家保持 6 FPS，左向整帧镜像；初心者于 2026-09-29 更新为完整八帧、7 FPS。未生成额外过渡帧。
 
-已检查硬透明通道、四个独立姿态、边界留白、脚底基准、角色选择及实际战斗显示。`artifacts/previews/capitalist_character/` 保留素材预览；[游戏内截图与行走实录](../../artifacts/reviews/characters/capitalist/README.md) 使用正式场景和角色控制器采集。
+已检查硬透明通道、四个独立姿态、边界留白、脚底基准、角色选择及实际战斗显示。[Picxel 包](../../artifacts/previews/player_picxel/README.md) 保留素材预览；[游戏内截图与行走实录](../../artifacts/reviews/characters/capitalist/README.md) 使用正式场景和角色控制器采集。
 
 ## 9. 实现与验证
 

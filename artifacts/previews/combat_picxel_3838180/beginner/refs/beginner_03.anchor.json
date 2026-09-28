@@ -1,0 +1,47 @@
+{
+  "subject": "Blond young adventurer in green cape, brown leather and complete steel sword",
+  "kind": "sprite",
+  "size": 128,
+  "palette": [
+    "#252e2d",
+    "#9b9987",
+    "#b8b3a0",
+    "#d4c9b3",
+    "#be9e88",
+    "#ead1b9",
+    "#f4e6d0",
+    "#304e4b",
+    "#4e6d66",
+    "#71928a",
+    "#453a32",
+    "#695544",
+    "#8a7258",
+    "#78908d",
+    "#c2cdca",
+    "#53b7a4"
+  ],
+  "keep": [
+    "Complete source silhouette, limbs and held equipment",
+    "Fixed animation source scale and origin",
+    "Original pose and identifying details"
+  ],
+  "drop": [
+    "Backdrop, floor cast shadow and detached footer",
+    "Subpixel texture and soft glow fringe"
+  ],
+  "regions": [],
+  "faces": [
+    {
+      "box": [
+        0.4166666666666667,
+        0.2170138888888889,
+        0.6380208333333334,
+        0.3819444444444444
+      ],
+      "complex": true,
+      "expression": "Neutral focused face, closed small mouth",
+      "gaze": "Three-quarter image-right; near iris sits under the upper eyelid toward image-right; far eye partly occluded by bangs",
+      "reason": "Small source irises and bangs need comparison at both pixel sizes"
+    }
+  ]
+}

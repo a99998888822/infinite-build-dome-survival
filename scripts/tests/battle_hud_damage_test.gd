@@ -64,6 +64,12 @@ func _run() -> void:
 	check(battle.loadout.equip_weapon(PURSE) and battle.loadout.equip_weapon(TOME), "equip three distinct weapons")
 	var enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(150, 0))
 	enemy.set_physics_process(false)
+	enemy._set_movement_visual(true, 0.75)
+	check(enemy.sprite.hframes == 7 and enemy.sprite.frame == 6 and enemy.sprite.texture.get_size() == Vector2(602, 86), "enemy reaches seventh approved move frame")
+	enemy._set_movement_visual(true, 0.125)
+	check(enemy.sprite.frame == 0, "enemy loops all seven move frames")
+	enemy._set_movement_visual(false, 0.0)
+	check(enemy.sprite.hframes == 1 and enemy.sprite.texture == enemy.idle_texture, "enemy stopping restores idle canvas")
 	enemy.current_hp = 10000
 	manager.weapon_damage_this_wave.clear()
 	var expected := enemy.take_damage(30, BLADE)

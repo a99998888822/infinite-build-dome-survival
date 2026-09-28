@@ -51,6 +51,20 @@ func _run() -> void:
 		runtime.queue_free()
 	await frames(2)
 	var origin := player.global_position
+	DirAccess.make_dir_recursive_absolute(capture_dir)
+	if OS.get_cmdline_user_args().has("--include-sprites"):
+		# Real battle viewport and production animation code, with scripted input.
+		var small := manager.spawn_enemy("enemy_mutated_grub", origin + Vector2(-110, 0))
+		small.set_physics_process(false)
+		for index in 144:
+			player._set_facing(index < 72)
+			player._update_walk_animation(Vector2.RIGHT if index < 72 else Vector2.LEFT, 1.0 / 60.0)
+			small._set_movement_visual(true, 1.0 / 60.0)
+			await RenderingServer.frame_post_draw
+			get_tree().root.get_texture().get_image().save_png(capture_dir.path_join("sprites_%04d.png" % index))
+		player._update_walk_animation(Vector2.ZERO, 0.0)
+		player._set_facing(true)
+		small.free()
 	var knight := manager.spawn_enemy("enemy_elite_rusher", origin + Vector2(-380, 0)) as EliteRusher
 	var records: Array[Dictionary] = []
 	var states: Dictionary = {}
@@ -65,6 +79,7 @@ func _run() -> void:
 			if knight.skill_state == "windup" and knight._state_time >= 0.3:
 				dodging = true
 			if dodging:
+				player._update_walk_animation(Vector2.UP if player.global_position.y > origin.y - 85 else Vector2.ZERO, 1.0 / 60.0)
 				player.global_position.y = move_toward(player.global_position.y, origin.y - 85, 260.0 / 60.0)
 			if knight.skill_state == "chase" and dodging:
 				knight.set_target_player(null)

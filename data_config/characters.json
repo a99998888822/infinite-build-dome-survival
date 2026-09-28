@@ -13,8 +13,8 @@
     "combat_visuals": {
       "idle": "res://assets/sprites/player/combat/void_hunter_idle_right.png",
       "walk": "res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
-      "walk_frames": 4,
-      "walk_fps": 3.5
+      "walk_frames": 8,
+      "walk_fps": 7
     },
     "display_stats": [
       "max_hp",

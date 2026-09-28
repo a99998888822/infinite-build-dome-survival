@@ -12,6 +12,8 @@ collision_layer = 2
 script = ExtResource("1_enemy")
 idle_texture = ExtResource("2_idle")
 move_texture = ExtResource("3_move")
+move_frame_count = 7
+move_frame_duration = 0.125
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
 shape = SubResource("CircleShape2D_enemy_body")

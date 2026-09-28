@@ -36,6 +36,7 @@ const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_
 @export var knockback_seconds: float = DEFAULT_KNOCKBACK_SECONDS
 @export var idle_texture: Texture2D
 @export var move_texture: Texture2D
+@export_range(1, 64, 1) var move_frame_count: int = 3
 @export var move_frame_duration: float = 0.14
 
 var enemy_data: Dictionary = {}
@@ -617,7 +618,7 @@ func _process_contact_recovery() -> bool:
 func _set_movement_visual(is_moving: bool, delta: float) -> void:
 	if sprite == null:
 		return
-	var can_animate_movement := is_moving and move_texture != null and move_texture.get_width() >= 3
+	var can_animate_movement := is_moving and move_texture != null and move_frame_count > 0 and move_texture.get_width() >= move_frame_count
 	if not can_animate_movement:
 		if _is_move_animation_active or sprite.texture != idle_texture:
 			sprite.texture = idle_texture
@@ -630,7 +631,7 @@ func _set_movement_visual(is_moving: bool, delta: float) -> void:
 
 	if not _is_move_animation_active:
 		sprite.texture = move_texture
-		sprite.hframes = 3
+		sprite.hframes = move_frame_count
 		sprite.frame = 0
 		_is_move_animation_active = true
 		_move_animation_frame = 0

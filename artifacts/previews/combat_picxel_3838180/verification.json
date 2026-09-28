@@ -1,0 +1,12 @@
+{
+  "remote_head": "3838180427a791cd7d8c6b9b140185dc35d52046",
+  "conflicts": 0,
+  "source_hashes_checked": 37,
+  "delivery_pngs_checked": 59,
+  "atlases_roundtrip_checked": 9,
+  "runtime_assets_unchanged": 36,
+  "image_model_used": false,
+  "panel_batches_finished": 5,
+  "review_status": "awaiting_user_review",
+  "previous_turn_images_preserved": true
+}

@@ -1,0 +1,32 @@
+{
+  "source": "capitalist_walk05-128-accessory",
+  "size": 128,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        66,
+        39,
+        68,
+        40
+      ],
+      "rows": [
+        "AMP",
+        "ILI"
+      ],
+      "eyes": [
+        {
+          "box": [
+            66,
+            39,
+            68,
+            40
+          ],
+          "light": "P",
+          "dark": "A"
+        }
+      ]
+    }
+  ]
+}

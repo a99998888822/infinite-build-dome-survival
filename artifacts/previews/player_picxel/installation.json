@@ -1,0 +1,174 @@
+{
+  "backup": "C:\\Users\\mi\\AppData\\Local\\Temp\\player-picxel-replaced-8zhoqpdw\\old-art.zip",
+  "deleted_files": [
+    {
+      "path": "assets/sprites/player/void_hunter_walk_right_spritesheet.png",
+      "sha256": "dd147712de8fea5e4158458de39d688855884a8d603f1bea257bec61af6412ee"
+    },
+    {
+      "path": "assets/sprites/player/void_hunter_walk_right_spritesheet.png.import",
+      "sha256": "64fa10b7b56331391eddcb1c349db5dbe8899cacd3798e61e4082b5db09a9e82"
+    },
+    {
+      "path": "scripts/tools/source_art/capitalist_character.py",
+      "sha256": "ce462f8235f4db95d624b0e0e1951b334a765f1a0a53dad385f226e04c11dd7c"
+    },
+    {
+      "path": "artifacts/previews/capitalist_character/capitalist_review.png",
+      "sha256": "e6487479909f61887ddbe6581b0fb649dca3c41f4d3775cac2f1a2e8a3c6f8fe"
+    },
+    {
+      "path": "artifacts/previews/capitalist_character/capitalist_walk_frames.png",
+      "sha256": "3d9b9c2738f558e3a12b85a4099ea15252ffc0e94c6433e510f8e8cbca2af38a"
+    },
+    {
+      "path": "artifacts/previews/capitalist_character/capitalist_walk_right.png",
+      "sha256": "020bc9e66f535ef1a1299bb6040159ababdde72ee6adfe3bce229081375574d5"
+    },
+    {
+      "path": "artifacts/previews/capitalist_character/README.md",
+      "sha256": "b634be5ba4ca6ad4e30ea2483e66290af3f69bfa08bb402845919692d5398940"
+    },
+    {
+      "path": "artifacts/generated/player/void_hunter_idle_right_64.png",
+      "sha256": "55b38817fe43a35ee464f5ba81e6a3766f225955d6d0913978c393165081695b"
+    },
+    {
+      "path": "artifacts/generated/player/void_hunter_idle_right_64_v5.png",
+      "sha256": "84d439e60bb74efc0d6320ab72434fcc0a91fae6501b658abe80a9b61d7bf997"
+    },
+    {
+      "path": "artifacts/generated/player/void_hunter_walk_right_spritesheet_256x64.png",
+      "sha256": "27a6cb21d538770336023272192ab61055b77ea4039c2db076d77af529e81bc3"
+    },
+    {
+      "path": "artifacts/generated/player/void_hunter_walk_right_spritesheet_256x64_v3.png",
+      "sha256": "4ed4b0c8fceae8d7e101b4fa45785546cf27d77b06b89fc413dc944531f5d00a"
+    },
+    {
+      "path": "artifacts/generated/player/void_hunter_walk_right_spritesheet_256x64_v6.png",
+      "sha256": "5ae3568c3714104daa4106cf2b6a5bcd76dd48995075038a459b8ed6152832a6"
+    },
+    {
+      "path": "artifacts/reviews/player_idle_v5/01_battle_damage.png",
+      "sha256": "52432d66bc2ac3cbbb6c0a3f1cb097da62738faf180348a63587aff1bbc05782"
+    },
+    {
+      "path": "artifacts/reviews/player_idle_v5/02_attribute_sections.png",
+      "sha256": "e3541cce4ef3c41562340c51eac93fac4633ab930255e2cdd2fe88df9d3a3d2b"
+    },
+    {
+      "path": "artifacts/reviews/player_idle_v5/03_attribute_scroll.png",
+      "sha256": "b03a9af21bfb892305b748a62902befd4ee9dd415a5d0ed00b0650174b68092d"
+    },
+    {
+      "path": "artifacts/reviews/player_idle_v5/report.json",
+      "sha256": "c9132b569a4406515c40856f8504cfd880c5ec4bc72617554fea76b866022a50"
+    },
+    {
+      "path": "artifacts/reviews/player_walk_v6/01_battle_damage.png",
+      "sha256": "18254c776b80c88e800f188688903a85947d57c64e1c70f29b2eb4d68d4394c6"
+    },
+    {
+      "path": "artifacts/reviews/player_walk_v6/02_attribute_sections.png",
+      "sha256": "f02dd63a4a1d8056b95c47f5d4c0f99eab1dd4d33c67dfcfd2442021302564eb"
+    },
+    {
+      "path": "artifacts/reviews/player_walk_v6/03_attribute_scroll.png",
+      "sha256": "2033b4d284621e6ec9979fc963b68fca9224074e35cea583ce3f3dd98ee2102f"
+    },
+    {
+      "path": "artifacts/reviews/player_walk_v6/player_walk_runtime.gif",
+      "sha256": "0d56b4f9b95317813f87a98f05124678cd0b13cb334d6df212b1bc128531e7db"
+    },
+    {
+      "path": "artifacts/reviews/player_walk_v6/report.json",
+      "sha256": "5496d566dd0c05fb6157e853683247c8c1b8dd3db13c4dfd540cc2fdcfb52862"
+    },
+    {
+      "path": "artifacts/reviews/player_live/difficulty_2.png",
+      "sha256": "9ee1d9fdcce734ab56a6a66c8900e00008e89257b3f35db2402ca86e9fec19cd"
+    },
+    {
+      "path": "artifacts/reviews/player_live/difficulty_3.png",
+      "sha256": "b985db030fbfe5dfe53d5002cd61b8abce09370323095bcbf413ad5acb7acaf3"
+    },
+    {
+      "path": "artifacts/reviews/player_live/difficulty_selection.png",
+      "sha256": "7e4c18ff0fed8939554dba79fa2d747c46b81e2b2416fbcac5f75bbffd8c0ca0"
+    },
+    {
+      "path": "artifacts/reviews/player_live3/01_battle_damage.png",
+      "sha256": "31d18e3f8e48f3cf8b8a0c59c1702ec0807ede16de80c552e197a237bd116ca6"
+    },
+    {
+      "path": "artifacts/reviews/player_live3/02_attribute_sections.png",
+      "sha256": "c452f86f789d264283a4190b25529c67fa5d780fe808ed5723b4dc7532541b49"
+    },
+    {
+      "path": "artifacts/reviews/player_live3/03_attribute_scroll.png",
+      "sha256": "964459a7b5f0c9b4b5bad636a290cf6724adf7bfa252461a3892b449fbbd2ed0"
+    },
+    {
+      "path": "artifacts/reviews/player_live3/report.json",
+      "sha256": "dbe8b82ba0fbd2de26ead279c6c3e590193af6351e11c2972e3810d9232ddbb8"
+    },
+    {
+      "path": "artifacts/reviews/player_live4/difficulty_2.png",
+      "sha256": "ddb9735c80579240b20a491829346a421802bb88ab6a1ec552c2d9bd65b22928"
+    },
+    {
+      "path": "artifacts/reviews/player_live4/difficulty_3.png",
+      "sha256": "681b92b9cc038262d1b28279f4bf3a949f7c91d021cc53be769d9ebcc852a1f5"
+    },
+    {
+      "path": "artifacts/reviews/player_live4/difficulty_selection.png",
+      "sha256": "0428b449daff921fa012b33982c0366115b3f01c5bc7a6d6aedde0d463e38702"
+    },
+    {
+      "path": "artifacts/reviews/player_live5/01_battle_damage.png",
+      "sha256": "799cf252ef4d7da58c5c8ea0ddcc129cd65813325d32b6b030b12c4e4cda6c9d"
+    },
+    {
+      "path": "artifacts/reviews/player_live5/02_attribute_sections.png",
+      "sha256": "816b33041c9e12f6be73ba6d826ac956fdbdda0ff847e16aec2e1a622e883374"
+    },
+    {
+      "path": "artifacts/reviews/player_live5/03_attribute_scroll.png",
+      "sha256": "73a600b273048fdf8d937b58ed1839d107c0a99569d8743c74736adad66af6fd"
+    },
+    {
+      "path": "artifacts/reviews/player_live5/battle_capture.gif",
+      "sha256": "75c0b791990b055d4fa4b08f7fabb9a2a7495a6d104180f07c55beba25875909"
+    },
+    {
+      "path": "artifacts/reviews/player_live5/report.json",
+      "sha256": "c9132b569a4406515c40856f8504cfd880c5ec4bc72617554fea76b866022a50"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_idle_nanobanana.png",
+      "sha256": "0350bf48beb7fc7dbd84dabf2346193bfc5b01dd69d163151122d1b62c8c1354"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_idle_nanobanana_v2.png",
+      "sha256": "bd8cd003c0f033364a224ca5550304ffa3b92c97d48f6fc490f34e71eb6de293"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_initial_nanobanana_v4_raw.png",
+      "sha256": "1902ac5371f2cad136ac93a515264f3615e85a6cceba6962e14aae6d53c5ab45"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_walk_nanobanana_v2.png",
+      "sha256": "0350bf48beb7fc7dbd84dabf2346193bfc5b01dd69d163151122d1b62c8c1354"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_walk_nanobanana_v3_raw.png",
+      "sha256": "ac19546d0e548b5ca71c124633e946672f654a63b84bc8ad95949f7754206943"
+    },
+    {
+      "path": "artifacts/generated/player_void_hunter_walk_nanobanana_v6_raw.png",
+      "sha256": "a87426786a54d3b89e26e49631eb3bb9e2197dbce54696cfca99c6c6339525ba"
+    }
+  ],
+  "source_images_preserved": true
+}

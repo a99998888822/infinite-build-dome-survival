@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-29",
+  "scope": "artifacts intermediate files only",
+  "removed_files": 985,
+  "removed_bytes": 61876736,
+  "removed_mib": 59.01,
+  "categories": {
+    "unreferenced_legacy_menu_image": 2,
+    "rebuildable_masked_input": 53,
+    "unselected_grid_or_repeated_render": 924,
+    "superseded_player_integration_preview": 4,
+    "superseded_combined_player_preview": 2
+  },
+  "empty_directories_removed": 22,
+  "before_files": 1642,
+  "before_bytes": 153618242,
+  "after_files": 658,
+  "after_bytes": 91744381,
+  "recovery_archive": "C:\\Users\\mi\\AppData\\Local\\Temp\\artifacts-intermediate-cleanup-38crpujx\\removed-files.zip",
+  "recovery_sha256": "799a3516c109366b6a366360a6a9ee482320b4e7f8f3144de225ce8bb55e89ca",
+  "retained_files_verified_unchanged": 657,
+  "asset_files_verified_unchanged": 597,
+  "installed_textures_verified": 15,
+  "preserved": [
+    "Approved delivery PNGs and manifests",
+    "Selected editable pixel grids and native PNGs",
+    "Original references, palettes, anchors and local repair parameters",
+    "Latest review outputs and live captures",
+    "Pending menu and spear designs"
+  ],
+  "historical_batch_reports": "Retained unchanged as provenance. Prepared inputs, draft grids and intermediate preview paths are archived; restore the archive before rerunning the old full conversion/finish workflow.",
+  "selected_grids_verified": 74,
+  "retained_hash_verification_scope": "All retained artifact content before documentation updates; all 597 asset files unchanged."
+}

@@ -1,0 +1,47 @@
+{
+  "subject": "Green squid-like creature, elongated head, black almond eyes, circular mouth and purple back crystals",
+  "kind": "sprite",
+  "size": 64,
+  "palette": [
+    "#142028",
+    "#293840",
+    "#39484b",
+    "#4b5e57",
+    "#61715f",
+    "#798571",
+    "#97a18b",
+    "#bac0a9",
+    "#424855",
+    "#626576",
+    "#8b8da2",
+    "#b7b9ca",
+    "#5e604a",
+    "#858464",
+    "#ada784",
+    "#dde0c8"
+  ],
+  "keep": [
+    "Complete source silhouette, limbs and held equipment",
+    "Fixed animation source scale and origin",
+    "Original pose and identifying details"
+  ],
+  "drop": [
+    "Backdrop, floor cast shadow and detached footer",
+    "Subpixel texture and soft glow fringe"
+  ],
+  "regions": [],
+  "faces": [
+    {
+      "box": [
+        0.4,
+        0.36,
+        0.67,
+        0.58
+      ],
+      "complex": false,
+      "expression": "Two black hollow eyes and round open mouth",
+      "gaze": "Three-quarter front view; dark eyes have no human sclera",
+      "reason": "Preserve original hollow eyes and mouth ring"
+    }
+  ]
+}

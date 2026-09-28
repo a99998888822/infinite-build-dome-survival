@@ -1,0 +1,458 @@
+{
+  "provider": "external-file",
+  "image_model_used": false,
+  "jobs": [
+    {
+      "name": "beginner_01",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_01-128-detail-face.pxg",
+        "beginner_01-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) declared but unused colors: E",
+        "64: (warn) 14 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) declared but unused colors: E",
+        "128: (warn) 57 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_01-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_01-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_01-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_01-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_01-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "af710de8f23f3443af56e30caecfc626343b6148e4da581ad3a3f1544f32678a"
+        },
+        "128": {
+          "sheet": "beginner_01-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "1983c62df5013536a608730693f2804228afee5b070df71173848801107f450a"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_01.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_01.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_02",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_02-128-detail-face.pxg",
+        "beginner_02-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) declared but unused colors: E",
+        "64: (warn) 20 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 51 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_02-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_02-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_02-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_02-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_02-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "75c29d8e28845d6a64d5f02531d3f18a968d0900fa4bfcd7cb98254f737cf5a3"
+        },
+        "128": {
+          "sheet": "beginner_02-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "15f3bb9fb8f52f6e639c3f261e23726752abbd2668be3aa09b82b5fbbe91b49e"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_02.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_02.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_03",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_03-128-detail-face.pxg",
+        "beginner_03-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) declared but unused colors: M",
+        "64: (warn) 21 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 46 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_03-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_03-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_03-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_03-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_03-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "addaf5c3e0268223295c907c292ceaebf12ab6d32e4193811d291245b512b151"
+        },
+        "128": {
+          "sheet": "beginner_03-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "7033d4d163f49ff708b248a445ab9cf9cbf4d4a79d0e3d26e9b2cce96b10da6d"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_03.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_03.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_04",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_04-128-detail-face.pxg",
+        "beginner_04-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) declared but unused colors: M",
+        "64: (warn) 15 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 53 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_04-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_04-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_04-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_04-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_04-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "a4e15dad368cc4a80d505992eb67578fe8be7d581a6d6a5395413e13963dbd9b"
+        },
+        "128": {
+          "sheet": "beginner_04-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "b85644626b9733bf7bf167fba08c8f9864cee0efd16d18b77c87fbb72e2b3af4"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_04.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_04.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_05",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_05-128-detail-face.pxg",
+        "beginner_05-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) 12 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 55 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_05-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_05-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_05-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_05-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_05-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "27f25cdcf66203e39a3c00f2f58c87719e8ee2a8a294a192f24d4a185c9f7fe2"
+        },
+        "128": {
+          "sheet": "beginner_05-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "5249d0c7effbf18ade0f7c8f09cb63af27273b8acca65e62f7fd8169467f1769"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_05.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_05.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_06",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_06-128-detail-face.pxg",
+        "beginner_06-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) 20 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 48 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_06-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_06-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_06-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_06-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_06-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "4b885e749d154421e7bdb5400921ac640c6ecd59a92ccc05a002dae1b5507f53"
+        },
+        "128": {
+          "sheet": "beginner_06-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "f8a213db3d576fa9328bf85caf8ee5c3dc7b2140fc38091a66b3012fbdc9d759"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_06.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_06.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_07",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_07-128-detail-face.pxg",
+        "beginner_07-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) declared but unused colors: E",
+        "64: (warn) 17 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 53 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_07-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_07-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_07-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_07-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_07-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "fc2595f5d5b31e5e07e10f0cda4b2e5d13da7dfaf4592b8b2d3c45c4b8ba25c2"
+        },
+        "128": {
+          "sheet": "beginner_07-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "c7143e968f1ca96f72171e9544add88cf707903b54d11d29d349e453a2069e3b"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_07.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_07.png",
+      "sizes": [
+        128,
+        64
+      ]
+    },
+    {
+      "name": "beginner_08",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_08-128-detail-face.pxg",
+        "beginner_08-64-detail-face.pxg"
+      ],
+      "problems": [
+        "64: (warn) 22 isolated pixels (warn above 3) -- noise, or deliberate texture?",
+        "128: (warn) 44 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_08-128-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_08-128.face-prompt.txt"
+        },
+        {
+          "sheet": "beginner_08-64-detail-face.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_08-64.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "64": {
+          "sheet": "beginner_08-64-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "3e49c9a987289b3cf7c27cd811e91f3afe907cd052612bb1fd084464159e2b22"
+        },
+        "128": {
+          "sheet": "beginner_08-128-detail-face.pxg",
+          "note": "Compared every source pose, near/far iris placement, complete hands, feet and sword at native and enlarged sizes. Local eye patches follow the updated eight-frame references.",
+          "sha256": "bdb68c4598391bc7b635f59c3c137205eda14ae4fcea944622213a55ae0e69fe"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_08.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_08.png",
+      "sizes": [
+        128,
+        64
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_01.png",
+      "sha256": "ed36ad58da67c5c1ff37807cc44c601e5980f60170fddc52b984e0815f699800"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_01.anchor.json",
+      "sha256": "7ff1535c80ce9e7f9c3f974863ee25ed30458a7ed3770e112177f66ebf6a0f0c"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_01.png",
+      "sha256": "67fcc69b5e26c4b4466d5c74bf36d41b47e653be924b02e046d67db7a36dc5bf"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_02.png",
+      "sha256": "d86463f6b220f96ccfe5c841e91595aefe62ad3c86c63b92719e74f98b476438"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_02.anchor.json",
+      "sha256": "774c6ab072498b7f9a606ce480df56b6f25ef2eb20426c02c3a37c2cd947f15e"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_02.png",
+      "sha256": "9c95509701ddaff9bef79de0a9884413123763e39b79d2fed9ca8ff8019a73f2"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_03.png",
+      "sha256": "7fc2bf6c29bda9d655f2e2213cfee0f3f3cafac09febdf590bc6fc8748b62b5f"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_03.anchor.json",
+      "sha256": "18b5de95a0e3bc0ad88870117b792342fd8c4fef7fe7691b889b2ac89517b738"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_03.png",
+      "sha256": "3b4037be6aea2f9fbc86165a972c6c4cba10713d16997546b2839a07498bc2bf"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_04.anchor.json",
+      "sha256": "c74fba4ddec0e4df31851f4d1a5d71cb5afd684249debd7a6333639d004512d2"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_04.png",
+      "sha256": "cc1084c1ef3a8b95bc343ce5078775439bde03e2801b2b654c3e81fb260bcab5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_04.png",
+      "sha256": "fc0d2b7c5e842e8e51ef37c5d705ecfd97f20b595b6cd6fa73075b4801fe9e02"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_05.png",
+      "sha256": "a7f83f870f6588b5f0c3391efb6d69195ea4968b2b93fbcfdbafb637282c3d7b"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_05.png",
+      "sha256": "508c152b3dc434da795ae126d82d736ab257b631a5c6eab4ff6a9a1d956192cc"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_05.anchor.json",
+      "sha256": "c1e3f21ed83ab1c35466726b724be4faae63b85b228808638ac168e73f194f2f"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_06.png",
+      "sha256": "5ece98cdff15a9dd7b476b89f550df5f0dd8507c2bffc92c2791fa053fecdc1a"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_06.anchor.json",
+      "sha256": "bfe8c441922cb4aeaa3d53eb13fb44d0c0b13153026f6782d4ed9189e975b9c0"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_06.png",
+      "sha256": "044be4467cdf2478a2728bbf5b530a50b22a9cc6c901b5668376420b3228ab8b"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_07.anchor.json",
+      "sha256": "02c509d83d5794e990fbc18dc1ceba1786aaf221fb5fa60322c684328eac5fd4"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_07.png",
+      "sha256": "604e72d5e2f9313e1c1b7c9de4bc86535672de387aa48bac347c201ee8cd7d1c"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_07.png",
+      "sha256": "a262462b4e4c3592380fedf8c41ea0cdeac6fcc53c74449b6c044b0f31a26a80"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_08.anchor.json",
+      "sha256": "9e0e99d6e9f0c69a41fbd9d1eae14ac894fdc72c6219a5274d7160858878915d"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\prepared\\beginner_08.png",
+      "sha256": "92992fce07b2a92bf94c3667f64fe5981214a70236a404676a3d5849f3606ebb"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\beginner\\refs\\beginner_08.png",
+      "sha256": "2023763b34c2550dba7eaea9902aa52a81aa02525418c78322b1c2b35cad81aa"
+    }
+  ],
+  "previews": [
+    "review-1.png",
+    "review-2.png"
+  ]
+}

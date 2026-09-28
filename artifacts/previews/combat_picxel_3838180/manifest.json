@@ -1,0 +1,1183 @@
+{
+  "status": "installed",
+  "runtime_assets_modified": true,
+  "image_model_used": false,
+  "remote_commit": "3838180",
+  "method": "Source background masks, Picxel palette voting, original light/ink recovery and localized face patches",
+  "maximum_colors_per_subject": 16,
+  "alpha": [
+    0,
+    255
+  ],
+  "beginner": {
+    "frame_size": [
+      54,
+      54
+    ],
+    "compatible_frames": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "compatible_fps": 3.5,
+    "all_frames": 8,
+    "all_frames_fps": 7,
+    "idle_source_frame": 1,
+    "display": [
+      256,
+      256
+    ],
+    "portrait": [
+      128,
+      128
+    ]
+  },
+  "boss": {
+    "frame_size": [
+      160,
+      160
+    ],
+    "native_grid": [
+      128,
+      128
+    ],
+    "move_frames": 11,
+    "move_fps": 11,
+    "attack_frames": 11,
+    "windup": {
+      "source_frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "duration_seconds": 0.8
+    },
+    "dash": {
+      "source_frames": [
+        8,
+        9
+      ],
+      "duration_seconds": 0.16
+    },
+    "recover": {
+      "source_frames": [
+        10,
+        11
+      ],
+      "duration_seconds": 0.5
+    },
+    "notes": [
+      "Frame counts must be updated in SpriteFrames on installation.",
+      "No death or return-to-idle source frames were supplied.",
+      "Frame 8 arc and frames 9-11 impact light are baked into the artwork."
+    ]
+  },
+  "enemy": {
+    "frame_size": [
+      86,
+      86
+    ],
+    "native_grid": [
+      64,
+      64
+    ],
+    "compatible_frames": [
+      1,
+      3,
+      6
+    ],
+    "compatible_frame_duration_seconds": 0.14,
+    "all_frames": 7,
+    "all_frames_preview_fps": 8,
+    "idle_source_frame": 1
+  },
+  "frame_transforms": [
+    {
+      "name": "beginner_01",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 773
+    },
+    {
+      "name": "beginner_02",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 800
+    },
+    {
+      "name": "beginner_03",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 822
+    },
+    {
+      "name": "beginner_04",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 820
+    },
+    {
+      "name": "beginner_05",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 798
+    },
+    {
+      "name": "beginner_06",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 805
+    },
+    {
+      "name": "beginner_07",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 802
+    },
+    {
+      "name": "beginner_08",
+      "native_grid": 64,
+      "canvas": [
+        54,
+        54
+      ],
+      "translation": [
+        -5,
+        -5
+      ],
+      "opaque_pixels": 804
+    },
+    {
+      "name": "boss_walk_01",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        6
+      ],
+      "opaque_pixels": 5535
+    },
+    {
+      "name": "boss_walk_02",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        4
+      ],
+      "opaque_pixels": 5665
+    },
+    {
+      "name": "boss_walk_03",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        3
+      ],
+      "opaque_pixels": 5556
+    },
+    {
+      "name": "boss_walk_04",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        3
+      ],
+      "opaque_pixels": 5407
+    },
+    {
+      "name": "boss_walk_05",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5485
+    },
+    {
+      "name": "boss_walk_06",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5536
+    },
+    {
+      "name": "boss_walk_07",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5368
+    },
+    {
+      "name": "boss_walk_08",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5375
+    },
+    {
+      "name": "boss_walk_09",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5441
+    },
+    {
+      "name": "boss_walk_10",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5455
+    },
+    {
+      "name": "boss_walk_11",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        3
+      ],
+      "opaque_pixels": 5533
+    },
+    {
+      "name": "boss_attack_01",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6270
+    },
+    {
+      "name": "boss_attack_02",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6247
+    },
+    {
+      "name": "boss_attack_03",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6264
+    },
+    {
+      "name": "boss_attack_04",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6253
+    },
+    {
+      "name": "boss_attack_05",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6242
+    },
+    {
+      "name": "boss_attack_06",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 6137
+    },
+    {
+      "name": "boss_attack_07",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5992
+    },
+    {
+      "name": "boss_attack_08",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5027
+    },
+    {
+      "name": "boss_attack_09",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 5276
+    },
+    {
+      "name": "boss_attack_10",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 4880
+    },
+    {
+      "name": "boss_attack_11",
+      "native_grid": 128,
+      "canvas": [
+        160,
+        160
+      ],
+      "translation": [
+        16,
+        2
+      ],
+      "opaque_pixels": 4695
+    },
+    {
+      "name": "enemy_walk_01",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        0
+      ],
+      "opaque_pixels": 1122
+    },
+    {
+      "name": "enemy_walk_02",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        -1
+      ],
+      "opaque_pixels": 1119
+    },
+    {
+      "name": "enemy_walk_03",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        -1
+      ],
+      "opaque_pixels": 1125
+    },
+    {
+      "name": "enemy_walk_04",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        -1
+      ],
+      "opaque_pixels": 1124
+    },
+    {
+      "name": "enemy_walk_05",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        0
+      ],
+      "opaque_pixels": 1130
+    },
+    {
+      "name": "enemy_walk_06",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        0
+      ],
+      "opaque_pixels": 1144
+    },
+    {
+      "name": "enemy_walk_07",
+      "native_grid": 64,
+      "canvas": [
+        86,
+        86
+      ],
+      "translation": [
+        11,
+        0
+      ],
+      "opaque_pixels": 1151
+    }
+  ],
+  "files": [
+    {
+      "path": "delivery/beginner/combat/void_hunter_idle_right.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "cebc0fae3fce42443d53dc15c395ff03b36f41ad151e1cbb6feee5bb17f1536c"
+    },
+    {
+      "path": "delivery/beginner/combat/void_hunter_walk_right_all_frames.png",
+      "size": [
+        432,
+        54
+      ],
+      "opaque_colors": 16,
+      "sha256": "30c9abf8aaaec02ee00e0cd79b328aae1ddec1ebc2fa6da34441e8180344ed57"
+    },
+    {
+      "path": "delivery/beginner/combat/void_hunter_walk_right_spritesheet.png",
+      "size": [
+        216,
+        54
+      ],
+      "opaque_colors": 16,
+      "sha256": "338583b97734007fdd199b4a3a2cb2462df85da35c46eb91dc307ec751cf8dba"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_01.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "cebc0fae3fce42443d53dc15c395ff03b36f41ad151e1cbb6feee5bb17f1536c"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_02.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "c7caafd0e4f7cbfbd3502401832155716bd9b99b29b4fabaf938dd92052a131f"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_03.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "d6dcd6f5b4dda49dbfe11ef1c1132b860ad7988d6c48f00951c95d4e9467e7af"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_04.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "78a5cb13326a307cead5e10121685e9b14c33114d6e7799823a3b0c08f3dc8d8"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_05.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 16,
+      "sha256": "880fe994b28649d94921b006d393144f39d1c23b33a7a3601b0c5fca45749754"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_06.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 16,
+      "sha256": "b7f1a5a9cfc46c424276ac5585687a8106b7f7b3e986466b1d4667737175d488"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_07.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 15,
+      "sha256": "9719f558770bb93ed790660656bf5ff6da45b0f9df240a0952a9fd781afafd4a"
+    },
+    {
+      "path": "delivery/beginner/frames/beginner_08.png",
+      "size": [
+        54,
+        54
+      ],
+      "opaque_colors": 16,
+      "sha256": "d8affdc469a54df1a4c1dd062086c04694147a767ad87c986930e79b912aa099"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_01.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 15,
+      "sha256": "b3101a21eea2656e7e15f30bf1697d4c53f0ad43b74314183f055780a6a4ad61"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_02.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "dba2dd5b22ab6a7d17533207fd69c4dacf7a935d690224a77b76d9d1f7872959"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_03.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "f75e6fe5f6aa1351df289be7f21d504e2858624fcb35a1dafa9ba17493f3e215"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_04.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "c226844b316fb5be321645681642b2a1646dedcf67b3987b4e79de6ef0fd62fe"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_05.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "7673aeee09ceff069a438a720fc737d54d871155ac4183d37f28bd708f8bb148"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_06.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "6987d31e3c4fb18afc525f61af08b3f48b453b810bdcc2d14ce9b05088590ea3"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_07.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "126bf17a0554b07067f152920df2727357c9697dc723f5a5b35fecf5dee7649f"
+    },
+    {
+      "path": "delivery/beginner/frames_128/beginner_08.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "3cee475bbf52ae6c7ff70adcd585e29b56fa8e76e0ac649f5b11c32322604b08"
+    },
+    {
+      "path": "delivery/beginner/ui/icon_void_hunter.png",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 16,
+      "sha256": "7855123e8d378d27fefea18f42c0aea915d55c2d07e826dba0e814c40e0efdee"
+    },
+    {
+      "path": "delivery/beginner/ui/void_hunter_idle_right.png",
+      "size": [
+        256,
+        256
+      ],
+      "opaque_colors": 15,
+      "sha256": "30a52e39968f231ae0b4f5f69dc88329e520de32536875cad141bed8854c24f6"
+    },
+    {
+      "path": "delivery/boss/combat/knight_attack.png",
+      "size": [
+        1760,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "8d269bbd16f3b57e7af4cd7c8b922907f0439fb3743e4e622c76ce4c65ead002"
+    },
+    {
+      "path": "delivery/boss/combat/knight_dash.png",
+      "size": [
+        320,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "8a1af5c8bdf529cb62cfa176c0d8ffa8daa83adf9ef37558a64def6bfacf2763"
+    },
+    {
+      "path": "delivery/boss/combat/knight_idle.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "39a9378e9c3532c026a0238d7151f4459736af983e839095851a5926f9a21a16"
+    },
+    {
+      "path": "delivery/boss/combat/knight_move.png",
+      "size": [
+        1760,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "803e40372ada9547f98c7595fe2db02b6aa2c23a5bf20336f656113373170ae3"
+    },
+    {
+      "path": "delivery/boss/combat/knight_recover.png",
+      "size": [
+        320,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "1713396633fc0641f7da1d4f59f87afac10f2ee9cff779b058d5f3ebd11d9dda"
+    },
+    {
+      "path": "delivery/boss/combat/knight_windup.png",
+      "size": [
+        1120,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "d75f0943dddc473ba7771bdaaba5dd78f6352c34df3d0dff1a7616a11b2e5b03"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_01.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "b88cf6fb061b7ea1bcee68f1de06bd5ee121dcba2f3953b902aa69746914ae20"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_02.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "ac75bcdaf5d224ca161634417b64e9298440283a14bd93960487522ed3687a6b"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_03.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "053e993c9fab3e427a73dc644a68d881df830bf5b9319ff4cf274f51d150322e"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_04.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "7723596a7d03b5448524b07f7de3c54ec14b84965813877d2ffae20d7e4e8f4b"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_05.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "8a262077bfc422448e47e584089e8ba1b09421ded1ec618b0fb5f4185f786a7b"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_06.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "96daf188c80c2b274579ea2fe94781759c5da60cdfb235bdf79ddfbefa02932a"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_07.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "3f22fc99cbe2356f2ed442444f71c931a60e26fe6502437ae8dcb4cf49a50a33"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_08.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "3e34e35993079cadd4fb501cca40226dbc1522f04e1686bae40174d57d220a92"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_09.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "b58f83b8934679c2d95cc1df335e984dbb17253fb3ae85766102c3cf2fa1bc45"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_10.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "4b48378b76759552cc05b001cecb788a0334aedbfb6935e74b8ddd5b2855edc4"
+    },
+    {
+      "path": "delivery/boss_attack/frames/boss_attack_11.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "3b97edca6908177338145435e676094ed644e42f6359e41eb1a8b428f02035b1"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_01.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "39a9378e9c3532c026a0238d7151f4459736af983e839095851a5926f9a21a16"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_02.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "2ee7dcc0d8cc1782d6d4975edd3a50ad042396096f32ba3e8cdd29b7b42b3f02"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_03.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "85cf6c44de3e33279d111391ab2ca868de3d458cc5c6c60223c6ca6da97089da"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_04.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "69c9fdcce890067334910b7dd64ba6956dd1827d1e9042fb2c4ae3d5cf465450"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_05.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "258aa972f9c95b2d4e05fb966f43957a48539d9ce2c59af9d4a744f3a601c06a"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_06.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "8b03fd14de5f8a7251cae41d0343a36747089169fddf6138cdb155ad2595eec2"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_07.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "e1626fc55e4856c5d655c5c8488a43ddaf20e2be88a85299c18a37540bfa76c0"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_08.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 14,
+      "sha256": "111bcc0627f59e2cc4a934dbf0ca142c7e72b8b541087f5133482c412dce5dc4"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_09.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "7e71e9aff7e32030f20f5c3c8b199705f49f90b15ac61984a31a302b27a90ac7"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_10.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 16,
+      "sha256": "cf7518b269728f99c51639fec2bcb4873000697ac467841c73cb98a2a71a8034"
+    },
+    {
+      "path": "delivery/boss_walk/frames/boss_walk_11.png",
+      "size": [
+        160,
+        160
+      ],
+      "opaque_colors": 15,
+      "sha256": "d5a1ec168ba4fc4686a4723f0cc06ad77bdcf9dcee71646172ac9b889829d415"
+    },
+    {
+      "path": "delivery/enemy/combat/enemy_gloom_mite_idle.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 13,
+      "sha256": "a9c3842e96073a47065e33a28e2132fd1ed5328c5ed9c5309cb16d0c9bfe7cda"
+    },
+    {
+      "path": "delivery/enemy/combat/enemy_gloom_mite_move.png",
+      "size": [
+        258,
+        86
+      ],
+      "opaque_colors": 15,
+      "sha256": "777ed560bbca7ed7ce9a37663fe45b964c738fb08b6c1203edc8070718da55f0"
+    },
+    {
+      "path": "delivery/enemy/combat/enemy_gloom_mite_move_all_frames.png",
+      "size": [
+        602,
+        86
+      ],
+      "opaque_colors": 15,
+      "sha256": "ad9308912a2af6d0af272e64b74f1c275178b464308d915f20e88f094e4ea714"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_01.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 13,
+      "sha256": "a9c3842e96073a47065e33a28e2132fd1ed5328c5ed9c5309cb16d0c9bfe7cda"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_02.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 15,
+      "sha256": "75e654d17a46a3b96f7522e83ca26dfe4f986fe972fe11fd8d938454b0ef1e43"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_03.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 15,
+      "sha256": "49c122427736a9b3303cf907dc372e6c24b0f93a0f44928900d43f22d08da6a5"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_04.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 14,
+      "sha256": "b31eeddad11812e5568396342ce4c9b023305abc310419f2e67fd87dc24598bc"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_05.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 13,
+      "sha256": "017e03fb5213cce8d30bd1a0ebf1dc9a5d8689253d54e49af459501ce3fd8c95"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_06.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 14,
+      "sha256": "1f812d1244ebcef0a76fbbc9bd0503a8299408e50801e48fe96aac9dc25b5b32"
+    },
+    {
+      "path": "delivery/enemy_walk/frames/enemy_walk_07.png",
+      "size": [
+        86,
+        86
+      ],
+      "opaque_colors": 14,
+      "sha256": "006c9a2ee8f9bf1ef7fc318e5b57e34343b25a462c229b9528531e2ab144470f"
+    }
+  ],
+  "installed_assets": [
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/beginner/combat/void_hunter_idle_right.png",
+      "destination": "assets/sprites/player/combat/void_hunter_idle_right.png",
+      "sha256": "cebc0fae3fce42443d53dc15c395ff03b36f41ad151e1cbb6feee5bb17f1536c"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/beginner/combat/void_hunter_walk_right_all_frames.png",
+      "destination": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+      "sha256": "30c9abf8aaaec02ee00e0cd79b328aae1ddec1ebc2fa6da34441e8180344ed57"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/beginner/ui/void_hunter_idle_right.png",
+      "destination": "assets/sprites/player/void_hunter_idle_right.png",
+      "sha256": "30a52e39968f231ae0b4f5f69dc88329e520de32536875cad141bed8854c24f6"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/beginner/ui/icon_void_hunter.png",
+      "destination": "assets/ui/icons/characters/icon_void_hunter.png",
+      "sha256": "7855123e8d378d27fefea18f42c0aea915d55c2d07e826dba0e814c40e0efdee"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/enemy/combat/enemy_gloom_mite_idle.png",
+      "destination": "assets/sprites/enemies/combat/enemy_gloom_mite_idle.png",
+      "sha256": "a9c3842e96073a47065e33a28e2132fd1ed5328c5ed9c5309cb16d0c9bfe7cda"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/enemy/combat/enemy_gloom_mite_move_all_frames.png",
+      "destination": "assets/sprites/enemies/combat/enemy_gloom_mite_move.png",
+      "sha256": "ad9308912a2af6d0af272e64b74f1c275178b464308d915f20e88f094e4ea714"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/boss/combat/knight_idle.png",
+      "destination": "assets/sprites/enemies/iron_knight/knight_idle.png",
+      "sha256": "39a9378e9c3532c026a0238d7151f4459736af983e839095851a5926f9a21a16"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/boss/combat/knight_move.png",
+      "destination": "assets/sprites/enemies/iron_knight/knight_move.png",
+      "sha256": "803e40372ada9547f98c7595fe2db02b6aa2c23a5bf20336f656113373170ae3"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/boss/combat/knight_windup.png",
+      "destination": "assets/sprites/enemies/iron_knight/knight_windup.png",
+      "sha256": "d75f0943dddc473ba7771bdaaba5dd78f6352c34df3d0dff1a7616a11b2e5b03"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/boss/combat/knight_dash.png",
+      "destination": "assets/sprites/enemies/iron_knight/knight_dash.png",
+      "sha256": "8a1af5c8bdf529cb62cfa176c0d8ffa8daa83adf9ef37558a64def6bfacf2763"
+    },
+    {
+      "package": "artifacts/previews/combat_picxel_3838180",
+      "source": "delivery/boss/combat/knight_recover.png",
+      "destination": "assets/sprites/enemies/iron_knight/knight_recover.png",
+      "sha256": "1713396633fc0641f7da1d4f59f87afac10f2ee9cff779b058d5f3ebd11d9dda"
+    }
+  ]
+}

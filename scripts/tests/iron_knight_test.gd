@@ -40,11 +40,11 @@ func _run() -> void:
 	knight.set_physics_process(false)
 	await get_tree().physics_frame
 	reset_knight()
-	var expected := {&"idle": 4, &"move": 8, &"windup": 4, &"dash": 6, &"recover": 4, &"death": 6}
+	var expected := {&"idle": 1, &"move": 11, &"windup": 7, &"dash": 2, &"recover": 2}
 	for action in expected:
 		check(EliteRusher.FRAMES.get_frame_count(action) == expected[action], "approved frame count: " + str(action))
 		check(EliteRusher.FRAMES.get_frame_texture(action, 0).get_size() == Vector2(160, 160), "native resolution: " + str(action))
-	check((knight.sprite.position + Vector2(0, 42) * knight.sprite.scale).is_zero_approx(), "fixed foot anchor aligns with world origin")
+	check((knight.sprite.position + Vector2(0, 48) * knight.sprite.scale).is_zero_approx(), "approved foot anchor aligns with world origin")
 	player.position = Vector2(600, 0)
 	check(not knight.start_dash(), "far target cannot manually trigger dash")
 	check(not knight._process_special_behavior(0.1), "expired cooldown outside range yields to chase")
@@ -69,7 +69,7 @@ func _run() -> void:
 	knight._process_special_behavior(0.08)
 	knight._animate(0.0)
 	check(knight.position.distance_to(Vector2(120, 0)) < 0.01, "half dash travels 120 units in 80ms")
-	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"dash", 3), "hammer synchronized at half dash")
+	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"dash", 1), "hammer synchronized at half dash")
 	knight._process_special_behavior(0.08)
 	check(knight.skill_state == "recover" and knight.position.distance_to(Vector2(240, 0)) < 0.01, "full dash completes in 160ms")
 	check(player.current_hp == 1000, "sidestepping outside warning avoids damage")
@@ -106,7 +106,7 @@ func _run() -> void:
 	knight._process_special_behavior(0.8)
 	knight._process_special_behavior(0.16)
 	knight._animate(0.0)
-	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"dash", 3), "configured duration rescales the entire swing")
+	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"dash", 1), "configured duration rescales the entire swing")
 	# Walls stop movement while the final swing frames still play.
 	reset_knight()
 	var wall := StaticBody2D.new()
@@ -128,7 +128,15 @@ func _run() -> void:
 	knight._process_special_behavior(0.04)
 	check(knight.skill_state == "recover" and player.current_hp == 1000, "blocked swing ends on time without hitting through wall")
 	wall.free()
-	knight.free()
+	var death_pose := knight.sprite.texture
+	var drops: Array = []
+	knight.died.connect(func(_enemy, table, location): drops.append([table, location]))
+	knight._die("test")
+	knight._die("test_repeat")
+	check(not knight.alive and knight.skill_state == "dead" and not knight.is_physics_processing(), "death stops AI and telegraph")
+	check(knight.sprite.texture == death_pose and drops.size() == 1, "death keeps approved pose and emits one reward")
+	await get_tree().create_timer(0.4).timeout
+	check(not is_instance_valid(knight), "death fade releases knight")
 	player.free()
 	await get_tree().process_frame
 	print("IRON_KNIGHT_COMPLETE checks=%d failures=%d" % [checks, failures])

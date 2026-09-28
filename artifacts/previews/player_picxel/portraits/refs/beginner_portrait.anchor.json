@@ -1,0 +1,52 @@
+{
+  "subject": "beginner head and shoulders from the supplied standing pose",
+  "kind": "sprite",
+  "size": 128,
+  "palette": [
+    "#252e2d",
+    "#9b9987",
+    "#b8b3a0",
+    "#d4c9b3",
+    "#be9e88",
+    "#ead1b9",
+    "#f4e6d0",
+    "#304e4b",
+    "#4e6d66",
+    "#71928a",
+    "#453a32",
+    "#695544",
+    "#8a7258",
+    "#78908d",
+    "#c2cdca",
+    "#53b7a4"
+  ],
+  "keep": [
+    "Original head silhouette and three-quarter view",
+    "Original gaze and expression",
+    "Blond fringe and teal eyes"
+  ],
+  "drop": [
+    "Background and lower body outside portrait crop"
+  ],
+  "regions": [],
+  "faces": [
+    {
+      "box": [
+        0.1,
+        0.25,
+        0.92,
+        0.83
+      ],
+      "complex": true,
+      "expression": "Neutral focused expression",
+      "gaze": "Iris toward image-right, light sclera on image-left",
+      "reason": "Check original iris and monocle after palette reduction"
+    }
+  ],
+  "source_crop": [
+    190,
+    35,
+    565,
+    480
+  ]
+}

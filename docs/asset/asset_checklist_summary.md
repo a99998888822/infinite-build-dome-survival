@@ -36,7 +36,7 @@
 | 已存在 | 经验球 | `pickup_exp_orb.png` | `assets/sprites/pickups/pickup_exp_orb.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 玩家右向基础单帧 | `void_hunter_idle_right.png` | `assets/sprites/player/void_hunter_idle_right.png` | 256x256 / 1:1 / PNG |  |
-| 已存在 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/void_hunter_walk_right_spritesheet.png` | 1024x256 / 4:1 / PNG |  |
+| 已接入 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png` | 432x54 / 8:1 / PNG | Picxel 完整八帧，7 FPS |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
@@ -121,14 +121,13 @@
 | 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
 | 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 当前战斗图的源素材；透明背景；旧历史版本已清理 |
-| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；保留原图用于重建战斗图 |
-| 已存在 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 640x160 / 4 帧 / RGBA PNG | 宽站姿、右手自然垂锤、青色几何符文 |
-| 已存在 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1280x160 / 8 帧 / RGBA PNG | 大腿带动膝踝、胯甲随腿摆动，840 毫秒循环 |
-| 已存在 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 640x160 / 4 帧 / RGBA PNG | 巨盾防护、抬锤，800 毫秒 |
-| 已存在 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 960x160 / 6 帧 / RGBA PNG | 冲刺与挥锤同步，160 毫秒 |
-| 已存在 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 640x160 / 4 帧 / RGBA PNG | 收锤并恢复宽站姿，500 毫秒 |
-| 已存在 | 钢甲骑士死亡 | `knight_death.png` | `assets/sprites/enemies/iron_knight/knight_death.png` | 960x160 / 6 帧 / RGBA PNG | 甲身倒下，1120 毫秒后由代码淡出 |
+| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_idle.png` | 86x86 / 1:1 / PNG | Picxel 64 像素稿扩展透明画布 |
+| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_move.png` | 602x86 / 7:1 / PNG | 完整七帧，8 FPS；旧高清贴图已清理 |
+| 已接入 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 160x160 / 1 帧 / RGBA PNG | Picxel 移动首帧 |
+| 已接入 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1760x160 / 11 帧 / RGBA PNG | 完整帧序，11 FPS |
+| 已接入 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 1120x160 / 7 帧 / RGBA PNG | 攻击原图 1–7，800 毫秒 |
+| 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 320x160 / 2 帧 / RGBA PNG | 攻击原图 8–9，160 毫秒 |
+| 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 320x160 / 2 帧 / RGBA PNG | 攻击原图 10–11，500 毫秒；死亡冻结当前姿势淡出，旧死亡图已删除 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
 | 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距 |

@@ -1,0 +1,23 @@
+{
+  "source": "enemy_walk_06-64-detail",
+  "size": 64,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "mouth",
+      "box": [
+        36,
+        31,
+        40,
+        35
+      ],
+      "rows": [
+        "FGGGF",
+        "GAAAG",
+        "GAAAG",
+        "GAAAG",
+        "CGGGE"
+      ]
+    }
+  ]
+}

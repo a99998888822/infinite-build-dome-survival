@@ -1,0 +1,53 @@
+{
+  "provider": "external-file",
+  "image_model_used": false,
+  "jobs": [
+    {
+      "name": "beginner_portrait",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "beginner_portrait-128.pxg"
+      ],
+      "problems": [
+        "128: (warn) 108 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [
+        {
+          "sheet": "beginner_portrait-128.pxg",
+          "status": "reviewed",
+          "prompt": "beginner_portrait-128.face-prompt.txt"
+        }
+      ],
+      "selected": {
+        "128": {
+          "sheet": "beginner_portrait-128.pxg",
+          "note": "Compared source eye direction, bangs and near/far eyelid contours. Base portrait is readable; no face redraw needed.",
+          "sha256": "aaebe636352833758137a9e7ebade4ea7dffb8ae45c7b6116cfff207565ea7b6"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\portrait\\refs\\beginner_portrait.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\portrait\\prepared\\beginner_portrait.png",
+      "sizes": [
+        128
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\portrait\\refs\\beginner_portrait.png",
+      "sha256": "67fcc69b5e26c4b4466d5c74bf36d41b47e653be924b02e046d67db7a36dc5bf"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\portrait\\refs\\beginner_portrait.anchor.json",
+      "sha256": "bc1d57d87c24f9da6f4f98a624a20f10133e0dee7c92e1b1d014490fda541f37"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\portrait\\prepared\\beginner_portrait.png",
+      "sha256": "c3d2c6c2250886d2f9a93235d7d68cc42332a968589d85b8f757368cb2b901ff"
+    }
+  ],
+  "previews": [
+    "review-1.png"
+  ]
+}

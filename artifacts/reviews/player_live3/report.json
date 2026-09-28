@@ -1,9 +1,0 @@
-{
-	"checks": 25,
-	"failures": 0,
-	"wave_damage": {
-		"weapon_kunyu_ritual_tome": 75,
-		"weapon_rentier_purse": 8,
-		"weapon_void_blade": 90
-	}
-}

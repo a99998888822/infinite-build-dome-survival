@@ -256,6 +256,8 @@ func fade_out_and_free() -> void:
 
 
 func _die(_source_id: String = "") -> void:
+	if not alive:
+		return
 	alive = false
 	skill_state = "dead"
 	velocity = Vector2.ZERO
@@ -265,19 +267,10 @@ func _die(_source_id: String = "") -> void:
 	if _visual_tween != null and _visual_tween.is_valid():
 		_visual_tween.kill()
 	sprite.modulate = _base_sprite_modulate
-	_set_animation(&"death")
+	# No death poses were supplied. Keep the current approved pose and fade it.
 	var tween := create_tween()
-	var duration := 0.0
-	for index in FRAMES.get_frame_count(&"death"):
-		duration += FRAMES.get_frame_duration(&"death", index) / FRAMES.get_animation_speed(&"death")
-	tween.tween_method(_show_death_frame, 0.0, duration, duration)
 	tween.tween_property(sprite, "modulate:a", 0.0, DEATH_FADE_SECONDS)
 	tween.tween_callback(queue_free)
-
-
-func _show_death_frame(time: float) -> void:
-	_animation_time = time
-	_animate(0.0)
 
 
 func _draw() -> void:

@@ -1,0 +1,416 @@
+{
+  "provider": "external-file",
+  "image_model_used": false,
+  "jobs": [
+    {
+      "name": "boss_walk_01",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_01-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) 572 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_01-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "de61cfe3939430fb507c46126705435ebc820c0adc719b2b81525b482d65abe7"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_01.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_01.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_02",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_02-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 577 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_02-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "a82e83e6ba9693a0cabb7519d98cb2e519064fe9a4453d4b23b2a9399112e88a"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_02.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_02.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_03",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_03-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 523 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_03-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "a2e6e12ae2a6b444d954ce12cc875140493d9b131536c8d6077de07a988ece79"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_03.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_03.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_04",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_04-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 433 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_04-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "f4dc0040586017349d86aa018e201b5aeec4987aebbd4ef03b3039d4d16f0810"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_04.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_04.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_05",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_05-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 545 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_05-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "3e013d332d86a735a97970b45a7a1877505af4ea757f0c0a0ed56f404a1b88c9"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_05.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_05.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_06",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_06-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 571 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_06-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "20ea9af5b4261d7e9076f829dbba61961b0bc08d17fee04fbf10c0b76a192187"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_06.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_06.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_07",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_07-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) 494 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_07-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "1c7131faa7b1d497ccf0855cc3ac87679be54e9694cacfa420b236a6b98683e9"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_07.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_07.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_08",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_08-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: LN",
+        "128: (warn) 536 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_08-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "d394e35fc56ef6b1a697a778922fb7aa5a091d87d1578822042a505e577fee80"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_08.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_08.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_09",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_09-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) 577 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_09-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "3c12a526a48eb155b38c87085774b420bc16825aeac7cdd294169829fcaf5c79"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_09.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_09.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_10",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_10-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) 535 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_10-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "98777c8674f1431efd61047f96f6686c3966df757506689605bdc23452643960"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_10.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_10.png",
+      "sizes": [
+        128
+      ]
+    },
+    {
+      "name": "boss_walk_11",
+      "status": "base-ready",
+      "review": "assistant-reviewed",
+      "sheets": [
+        "boss_walk_11-128-detail.pxg"
+      ],
+      "problems": [
+        "128: (warn) declared but unused colors: N",
+        "128: (warn) 519 isolated pixels (warn above 3) -- noise, or deliberate texture?"
+      ],
+      "face_review": [],
+      "selected": {
+        "128": {
+          "sheet": "boss_walk_11-128-detail.pxg",
+          "note": "Compared all source silhouettes, shield, weapon, feet and armor. Fixed source scale, shared palette, local steel highlight recovery; no generated poses.",
+          "sha256": "ade6d707d1d2fca5ee675eefd4b0a50d6f00cf094f303a959a1f5a8593b31525"
+        }
+      },
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_11.png",
+      "prepared_source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_11.png",
+      "sizes": [
+        128
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_01.png",
+      "sha256": "1352e14754ae8db7c2d4cb181ef14c9534f5affce07a21db394244e25f622ebb"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_01.png",
+      "sha256": "50d09bdedcba4db997960d1ba1fc0a0c521da1e5b2d7ebe41136d7dbe8a633d4"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_01.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_02.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_02.png",
+      "sha256": "b6cff5d665bdd1661a3dc269c063536efd745ff0539980fe19c5dab2f12ab0c4"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_02.png",
+      "sha256": "a71eb50a2ff1a3c274cab90554189dab481d0eda72c44783e60501513c884402"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_03.png",
+      "sha256": "571c54e5f39859283733a20480e1f1db4ae4eccefad036a093a921dd3770a3c1"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_03.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_03.png",
+      "sha256": "6a5e403c8590384dbf471074988258f3505d477930d4866c5e8f153df994b223"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_04.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_04.png",
+      "sha256": "bd6f1d182583672104181371584efdb1cf114450e3372364d2f159cafb53ad3a"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_04.png",
+      "sha256": "9cb43331f40648f47eb647144054c58dd56e87c976e910690fe5c31fc2a06979"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_05.png",
+      "sha256": "986782991117d927b747b95c865adce4cf521143edd73dfba252bc5a2ee35504"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_05.png",
+      "sha256": "30dd91f2d3956256d4ecdfcfdb89b1dfa544fdb57a778ed17389c57703bc7dda"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_05.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_06.png",
+      "sha256": "5cb79d0b3bba3af4a81133b8b9f6745bb56ba3816838c971dbaa2f86f3326ea5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_06.png",
+      "sha256": "da46a2d8694befe8cde7703f216fdacca0ab6564a17e45e127df5862e0e4e193"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_06.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_07.png",
+      "sha256": "d507e8cc46995b27bd0c465e9d567da8a10aaf8de0b02609f70333b507cd6943"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_07.png",
+      "sha256": "a30743f6612f926152f5fbd0153da7fa363ad8527b44091ac8360951e586f47c"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_07.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_08.png",
+      "sha256": "4665200261a89e3afebf9a7cd81010740c2479471c4decdc648fb32f5be1aa0c"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_08.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_08.png",
+      "sha256": "445999643dd9fb0944114543c0098a201f2d6ddd069e3c67fbc2761ee62af2c8"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_09.png",
+      "sha256": "afcd1e375c02a7b1da7faca627461e0067db671e2a5eda7c272e0aff211d4de7"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_09.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_09.png",
+      "sha256": "f69dc813bc84e8eaf0f93c36a6ffb42eb0eb6cbe0afbc2987513e78a5e5d8ca4"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_10.png",
+      "sha256": "4e0d5efcca96e61ace48317f363765c3bd2cd384e217c63b756ab35efbaa8084"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_10.png",
+      "sha256": "a485b724f3d6510282f93935aec022d97c329cfe5f286f74003856bb991f73ed"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_10.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_11.anchor.json",
+      "sha256": "7258f0b89099b4b0803963c4ab8a49e8fd665762132c81bf750bb01cf4c90cb5"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\refs\\boss_walk_11.png",
+      "sha256": "05f16366255ef4bb7012b44ae63df40e60836ce3432964a6000a03e279e777d2"
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\combat_picxel_3838180\\boss_walk\\prepared\\boss_walk_11.png",
+      "sha256": "53fd9d4dbb6bff88e8b42d14ae705a77d81e7dd8732fc68d2178407cac80c4ad"
+    }
+  ],
+  "previews": [
+    "review-1.png",
+    "review-2.png",
+    "review-3.png"
+  ]
+}
