@@ -28,6 +28,7 @@ const STATE_SHOP_POPUP: String = "shop_popup"
 const STATE_ESC_OVERLAY: String = "esc_overlay"
 const STATE_BATTLE_UTILITY: String = "battle_utility"
 const STATE_FINANCE_POPUP: String = "finance_popup"
+const STATE_WAVE_CHALLENGE: String = "wave_challenge"
 const STATE_ZONE_SELECT: String = "zone_select"
 const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
 const STATE_BATTLE_RESULT: String = "battle_result"
@@ -47,6 +48,7 @@ var current_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var current_battle_summary: Dictionary = {}
 var current_victory: bool = false
 var battle_resolved: bool = false
+var _pending_death_run_id := ""
 
 var _resume_state_after_modal: String = STATE_START_PAGE
 var _utility_resume_state: String = STATE_START_PAGE
@@ -100,6 +102,7 @@ func reset_flow() -> void:
 	current_battle_summary.clear()
 	current_victory = false
 	battle_resolved = false
+	_pending_death_run_id = ""
 	_resume_state_after_modal = STATE_START_PAGE
 	_utility_resume_state = STATE_START_PAGE
 	_utility_resume_paused = false
@@ -162,6 +165,7 @@ func confirm_character_selection() -> bool:
 
 	battle_resolved = false
 	current_victory = false
+	_pending_death_run_id = ""
 	current_battle_summary.clear()
 	_paid_purchase_count = 0
 	_active_level_up_level = 0
@@ -373,6 +377,7 @@ func close_zone_harvest_result_popup() -> void:
 
 
 func submit_finance_operation(action: String, amount: int) -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state != STATE_FINANCE_POPUP or _bound_wave_manager == null:
 		return {"success": false, "reason": "finance_popup_not_active"}
 	if _transaction_busy:
@@ -390,15 +395,49 @@ func submit_finance_operation(action: String, amount: int) -> Dictionary:
 
 
 func close_finance_popup() -> void:
+	if is_loan_dialog_open():
+		dismiss_goblin_loan()
+		return
 	if current_state != STATE_FINANCE_POPUP or _transaction_busy:
 		return
 	clear_stat_preview()
 	modal_closed.emit(STATE_FINANCE_POPUP)
 	cancel_goblin_trade()
+	if _bound_wave_manager != null and _has_next_wave():
+		var challenges := _bound_wave_manager.wave_challenges
+		var proposal := challenges.prepare(_get_next_wave_number(), WaveChallengeSystem.combat_snapshot(_bound_player, _bound_loadout))
+		if not proposal.is_empty():
+			_bound_wave_manager.run_statistics.show_advice("challenge", str(proposal.token))
+			_set_battle_runtime_paused(true)
+			_set_state(STATE_WAVE_CHALLENGE)
+			modal_requested.emit(STATE_WAVE_CHALLENGE, proposal)
+			return
 	_pending_finance_payload.clear()
 	_wave_end_ready = false
 	if not _start_prepared_wave():
 		_set_state(STATE_BATTLE_PREPARE)
+
+
+func decide_wave_challenge(token: String, accepted: bool) -> bool:
+	if current_state != STATE_WAVE_CHALLENGE or _transaction_busy or battle_resolved or not _has_next_wave() or _bound_wave_manager == null:
+		return false
+	_transaction_busy = true
+	var success := _bound_wave_manager.wave_challenges.decide(token, accepted, _bound_player, _bound_wave_manager.finance_system)
+	_transaction_busy = false
+	if not success: return false
+	_bound_wave_manager.run_statistics.decide_advice("challenge", token, accepted)
+	modal_closed.emit(STATE_WAVE_CHALLENGE)
+	_pending_finance_payload.clear()
+	_wave_end_ready = false
+	if not _start_prepared_wave(): _set_state(STATE_BATTLE_PREPARE)
+	return true
+
+
+func return_from_wave_challenge() -> void:
+	if current_state != STATE_WAVE_CHALLENGE or _transaction_busy: return
+	modal_closed.emit(STATE_WAVE_CHALLENGE)
+	_set_state(STATE_FINANCE_POPUP)
+	modal_requested.emit(STATE_FINANCE_POPUP, get_preparation_payload())
 
 
 func close_interest_settlement() -> void:
@@ -442,7 +481,7 @@ func can_open_battle_utility(page: String) -> bool:
 	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
 		return false
 	if page == "settings":
-		return current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE, STATE_ESC_OVERLAY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_SHOP_POPUP]
+		return current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE, STATE_ESC_OVERLAY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_WAVE_CHALLENGE]
 	return page == "encyclopedia" and current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE]
 
 
@@ -481,13 +520,14 @@ func return_to_main_menu_from_settings() -> void:
 		_bound_wave_manager.running = false
 		_bound_wave_manager.drop_reward_system.begin_wave()
 		_bound_wave_manager.clear_battle_entities()
-	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_ESC_OVERLAY]:
+	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
 		modal_closed.emit(modal)
 	# Abandon the run without invoking victory/loss settlement or granting choices.
 	reset_flow()
 
 
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state not in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_SHARED_REWARD_SHOP_POPUP] or _transaction_busy:
 		return {"success": false, "reason": "shop_not_active"}
 	var sanitized_mode := str(mode).strip_edges()
@@ -579,13 +619,21 @@ func advance_wave_end_phase() -> void:
 
 
 func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
-	ZoneProgression.reset_state(_bound_player)
+	if battle_resolved: return
 	battle_resolved = true
+	_pending_death_run_id = ""
+	var statistics := _bound_wave_manager.run_statistics if _bound_wave_manager != null else RunStatistics.new()
+	current_battle_summary = RunSettlement.build(statistics.freeze(), victory)
+	current_battle_summary["end_wave"] = maxi(current_wave_index + 1, 1)
+	current_battle_summary["reason"] = str(summary.get("reason", ""))
+	current_battle_summary["paid"] = CampProgression.apply_final_settlement(int(current_battle_summary.camp_currency), str(current_battle_summary.run_id))
+	if _bound_wave_manager != null:
+		_bound_wave_manager.running = false
+		_bound_wave_manager.clear_battle_entities()
+	ZoneProgression.reset_state(_bound_player)
 	current_victory = victory
-	current_battle_summary = summary.duplicate(true)
-	var settlement_gold := int(current_battle_summary.get("gold", 0))
-	if settlement_gold > 0 and CampProgression != null and CampProgression.has_method("apply_final_settlement"):
-		CampProgression.apply_final_settlement(settlement_gold)
+	for modal in [STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
+		modal_closed.emit(modal)
 	_pending_level_up_levels.clear()
 	_pending_relic_choices.clear()
 	_active_relic_choice = ""
@@ -594,12 +642,17 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
 	_set_mode(MODE_BATTLE)
-	_set_battle_runtime_paused(false)
+	_set_battle_runtime_paused(true)
 	_set_state(STATE_BATTLE_RESULT)
 	battle_result_changed.emit(victory, current_battle_summary.duplicate(true))
 
 
 func confirm_battle_result() -> void:
+	if current_state != STATE_BATTLE_RESULT: return
+	if not bool(current_battle_summary.get("paid", false)):
+		current_battle_summary["paid"] = CampProgression.apply_final_settlement(int(current_battle_summary.camp_currency), str(current_battle_summary.run_id))
+		battle_result_changed.emit(current_victory, current_battle_summary.duplicate(true))
+		if not bool(current_battle_summary.paid): return
 	enter_start_page()
 
 
@@ -643,6 +696,7 @@ func get_shop_refresh_cost() -> int:
 
 
 func request_shop_refresh() -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state not in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_SHARED_REWARD_SHOP_POPUP] or _transaction_busy:
 		return {"success": false, "reason": "shop_not_active"}
 	var strong := has_strong_refresh() and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP]
@@ -755,8 +809,12 @@ func _request_wave_end_finance() -> bool:
 	var next_wave_number := _get_next_wave_number()
 	_pending_wave_start_after_finance = true
 	_pending_finance_payload = _bound_wave_manager.prepare_finance_for_wave(next_wave_number)
+	_bound_wave_manager.goblin_loans.prepare(next_wave_number)
+	_bound_wave_manager.wave_challenges.begin_preparation(next_wave_number, _bound_player, _bound_loadout)
 	_preparation_offers = _build_shop_payload("shop", 0).get("offers", [])
 	_prepare_goblin_trade()
+	var shown_trade := _bound_wave_manager.goblin_trades.offer
+	if not shown_trade.is_empty(): _bound_wave_manager.run_statistics.show_advice("trade", str(shown_trade.token))
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_FINANCE_POPUP)
 	modal_requested.emit(STATE_FINANCE_POPUP, get_preparation_payload())
@@ -794,10 +852,21 @@ func _on_shared_reward_shop_requested(level: int) -> void:
 
 
 func _on_player_died() -> void:
-	if _bound_wave_manager != null:
-		_bound_wave_manager.record_wave_income(false)
-	var gold := _bound_wave_manager.get_current_gold() if _bound_wave_manager != null else 0
-	present_battle_result(false, {"reason": "player_died", "gold": gold})
+	if battle_resolved or not _pending_death_run_id.is_empty(): return
+	if _bound_wave_manager == null:
+		present_battle_result(false, {"reason": "player_died"})
+		return
+	_pending_death_run_id = _bound_wave_manager.run_statistics.run_id
+	_bound_wave_manager.running = false
+	_set_battle_runtime_paused(true)
+	# Death signals from the same physics frame finish before the receipt freezes.
+	_finalize_player_death.call_deferred(_pending_death_run_id)
+
+
+func _finalize_player_death(run_id: String) -> void:
+	if battle_resolved or run_id != _pending_death_run_id or _bound_wave_manager == null or _bound_wave_manager.run_statistics.run_id != run_id: return
+	_bound_wave_manager.record_wave_income(false)
+	present_battle_result(false, {"reason": "player_died"})
 
 
 func _restore_player_full_health() -> void:
@@ -1046,6 +1115,7 @@ func get_preparation_payload() -> Dictionary:
 	payload["combat_gold_earned"] = _pending_interest_payload.get("combat_gold_earned", 0)
 	if _bound_wave_manager != null:
 		payload["goblin_trade"] = _bound_wave_manager.goblin_trades.offer.duplicate(true)
+		payload["goblin_loan"] = _bound_wave_manager.goblin_loans.snapshot(get_current_gold())
 		payload["strong_refresh"] = has_strong_refresh()
 		payload["interest_pact"] = _bound_wave_manager.goblin_trades.interest_pact
 		payload["interest_pact_terms"] = _bound_wave_manager.goblin_trades.get_interest_pact_terms()
@@ -1104,14 +1174,19 @@ func _prepare_goblin_trade() -> void:
 
 
 func cancel_goblin_trade() -> void:
-	if _bound_wave_manager != null: _bound_wave_manager.goblin_trades.cancel()
+	if _bound_wave_manager == null: return
+	var proposal := _bound_wave_manager.goblin_trades.offer
+	if not proposal.is_empty(): _bound_wave_manager.run_statistics.decide_advice("trade", str(proposal.token), false)
+	_bound_wave_manager.goblin_trades.cancel()
 
 
 func accept_goblin_trade(token: String) -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state != STATE_FINANCE_POPUP or _transaction_busy or _bound_player == null or _bound_wave_manager == null or not _has_next_wave():
 		return {"success": false, "reason": "trade_expired"}
 	_transaction_busy = true
 	var result := _bound_wave_manager.goblin_trades.accept(token, _bound_player, _bound_wave_manager.finance_system)
+	if bool(result.get("success", false)): _bound_wave_manager.run_statistics.decide_advice("trade", token, true)
 	if bool(result.get("success", false)) and bool(result.get("start_wave", false)):
 		clear_stat_preview()
 		modal_closed.emit(STATE_FINANCE_POPUP)
@@ -1155,6 +1230,60 @@ func get_bank_stat_preview(action: String, amount: int) -> String:
 	return "\n".join(lines)
 
 
+func is_loan_dialog_open() -> bool:
+	return _bound_wave_manager != null and _bound_wave_manager.goblin_loans.dialog_open
+
+
+func record_loan_purchase_attempt(offer: Dictionary) -> bool:
+	if current_state != STATE_FINANCE_POPUP or battle_resolved or _transaction_busy or _bound_wave_manager == null or not _has_next_wave() or is_loan_dialog_open(): return false
+	var id := str(offer.get("offer_id",""))
+	if not _active_shop_offers.has(id) or not _active_shop_offer_ids.has(id): return false
+	var canonical: Dictionary = _active_shop_offers[id]
+	ShopPricing.apply(canonical,_build_shop_context())
+	if get_offer_unavailable_reason(canonical) != "insufficient_gold": return false
+	_transaction_busy = true
+	var opened := _bound_wave_manager.goblin_loans.record_attempt(_bound_wave_manager.finance_system,_bound_wave_manager.run_statistics)
+	_transaction_busy = false
+	if opened:
+		clear_stat_preview()
+		_notify_preparation_changed()
+	return opened
+
+
+func reopen_goblin_loan() -> bool:
+	if current_state != STATE_FINANCE_POPUP or battle_resolved or _transaction_busy or _bound_wave_manager == null: return false
+	var opened := _bound_wave_manager.goblin_loans.reopen()
+	if opened: _notify_preparation_changed()
+	return opened
+
+
+func dismiss_goblin_loan() -> void:
+	if _bound_wave_manager == null: return
+	_bound_wave_manager.goblin_loans.dismiss()
+	_notify_preparation_changed()
+
+
+func accept_goblin_loan(token: String, index: int) -> Dictionary:
+	if current_state != STATE_FINANCE_POPUP or battle_resolved or _transaction_busy or _bound_wave_manager == null or not _has_next_wave():
+		return {"success":false,"reason":"loan_expired"}
+	_transaction_busy = true
+	var result := _bound_wave_manager.goblin_loans.accept(token,index,_bound_wave_manager.finance_system,_bound_wave_manager.run_statistics)
+	if bool(result.success): cancel_goblin_trade()
+	_transaction_busy = false
+	_notify_preparation_changed()
+	return result
+
+
+func repay_goblin_loan() -> Dictionary:
+	if current_state != STATE_FINANCE_POPUP or battle_resolved or _transaction_busy or is_loan_dialog_open() or _bound_wave_manager == null:
+		return {"success":false,"reason":"loan_not_active"}
+	_transaction_busy = true
+	var result := _bound_wave_manager.goblin_loans.repay(_bound_wave_manager.finance_system)
+	_transaction_busy = false
+	_notify_preparation_changed()
+	return result
+
+
 func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) -> String:
 	if bool(offer.get("purchased", false)):
 		return "already_purchased"
@@ -1182,6 +1311,7 @@ func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) ->
 
 
 func submit_enchantment_operation(action: String, weapon_id: String, item_id: String, target_index: int = -1) -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state != STATE_FINANCE_POPUP or _bound_loadout == null or _transaction_busy:
 		return {"success": false, "reason": "enchantment_page_required"}
 	if action == "attach" and _bound_player != null:
@@ -1223,6 +1353,7 @@ func get_inventory_sale_quote(kind: String, target_id: String) -> Dictionary:
 
 
 func submit_inventory_sale(kind: String, target_id: String, quote_token: String) -> Dictionary:
+	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if _transaction_busy or _bound_wave_manager == null:
 		return {"success": false, "reason": "transaction_busy"}
 	var quote := get_inventory_sale_quote(kind, target_id)

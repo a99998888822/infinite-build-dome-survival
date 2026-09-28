@@ -74,7 +74,9 @@ func _play(id: String, rng_seed: int) -> void:
 	var previous_hp := player.current_hp
 	var captured := false
 	var timed_out := true
-	for frame in 18000:
+	# Allow complete late-wave runs; the old fixed budget stopped before wave ten.
+	var frame_budget := 18000 + maxi(0, wave_count - 3) * 4500
+	for frame in frame_budget:
 		if player.current_hp < previous_hp: stats.damage_taken += previous_hp - player.current_hp
 		previous_hp = player.current_hp
 		if not player.is_alive() or stats.completed_waves >= wave_count:
@@ -99,6 +101,8 @@ func _play(id: String, rng_seed: int) -> void:
 					bought = true
 					break
 			if not bought: flow.close_finance_popup()
+		elif state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+			flow.decide_wave_challenge(str(manager.wave_challenges.offer.token), false)
 		elif state == MainFlowCoordinator.STATE_SHOP_POPUP:
 			flow.close_shop_popup()
 		elif state == MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:

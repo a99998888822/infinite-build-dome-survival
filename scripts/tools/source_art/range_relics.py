@@ -10,7 +10,7 @@ import math
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[3]
-OUTPUT = ROOT / 'artifacts/previews/range_relics'
+OUTPUT = ROOT / 'artifacts/reviews/ui/range_relics'
 INK = '#29283b'
 BRASS_D, BRASS, BRASS_L, BRASS_H = '#865b3a', '#c18a4d', '#ebbc70', '#ffe4a0'
 IRON_D, IRON, IRON_L, IRON_H = '#343c50', '#52677b', '#8cabb5', '#d5e8dd'
@@ -403,7 +403,7 @@ def build_review(icons):
         d.text((x+40,y+384),'32px',font=font(11),fill='#94a8a9')
         d.text((x+143,y+384),'64px',font=font(11),fill='#94a8a9')
     d.text((28,975),'材质原色 · 深色轮廓 · 左上光源；边框仅用于审阅，独立 PNG 不含底板或文字。',font=font(18),fill='#aebec1')
-    board.save(OUTPUT/'overview.png')
+    board.save(OUTPUT/'icons.png')
 
 
 def build():
@@ -424,17 +424,7 @@ def build():
         icons.append(im)
         print(entry['id'], 'RGBA 32x32', 'colors',len(colors), 'bounds',bbox)
     build_review(icons)
-    rows=['# 距离与范围遗物图标','',
-          '本组10件遗物已接入正式遗物配置、商店和奖励候选池。此处只保留审阅总览；独立图标位于 `assets/ui/icons/relics/`。',
-          '原图均为32×32透明PNG，透明度仅0/255；放大请使用最近邻采样。',
-          '图标按项目既有像素绘图流程逐像素构建，绘制源文件为 `scripts/tools/source_art/range_relics.py`。',
-          '运行 `python scripts/tools/source_art/range_relics.py` 可重建原图与总览。','',
-          '| 图标 | 名称 / 稀有度 | 正式配置属性 |','|---|---|---|']
-    for entry in ENTRIES:
-        rows.append(f'| [PNG](../../../assets/ui/icons/relics/{entry["id"]}.png) | {entry["name"]} / {RARITIES[entry["rarity"]][0]} | {entry["effect"]} |')
-    rows.extend(['','白色两件各限持3件，其余各限持1件。',
-                 '定距脚架仅取消静止触发的额外加成；黄金测距仪随当前本金变化；星仪包含自身攻击距离加成。',''])
-    (OUTPUT/'README.md').write_text('\n'.join(rows),encoding='utf-8')
+    # Keep the curated runtime review README; regeneration only replaces images.
 
 
 if __name__=='__main__':

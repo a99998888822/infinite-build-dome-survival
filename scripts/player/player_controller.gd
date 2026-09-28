@@ -56,6 +56,9 @@ var _resolving_death: bool = false
 var _stationary_seconds: float = 0.0
 var _stationary_thresholds: Array[float] = []
 var _stationary_position := Vector2.ZERO
+var _starting_relics_granted: int = 0
+var _idle_texture: Texture2D = PLAYER_IDLE_TEXTURE
+var _walk_texture: Texture2D = PLAYER_WALK_TEXTURE
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -112,8 +115,13 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 
 	character_id = target_character_id
 	character_data = data
-	modifier_stack.remove_by_source("level", "run_level")
-	modifier_stack.remove_by_source_type("relic_runtime")
+	# A new character/run must not inherit old relic, trade, or camp modifiers.
+	relic_system.owner_player = null
+	relic_system.clear()
+	modifier_stack.clear()
+	_starting_relics_granted = 0
+	_configured_revive_count = 0
+	remaining_revives = 0
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
@@ -125,7 +133,6 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	start_weapon_ids = _resolve_start_weapons(data, initial_weapon_ids)
 	item_inventory.clear()
 	_initialize_starting_items(data)
-	relic_system.clear()
 	relic_system.initialize(self)
 	relic_system.set_weapon_ids(start_weapon_ids)
 	current_hp = int(get_stat("max_hp"))
@@ -142,10 +149,23 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_resolving_death = false
 	reset_stationary_relic_state()
 	_clear_move_input()
+	_configure_character_visuals(data.get("combat_visuals", {}))
 	_update_pickup_radius()
 
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	start_weapons_changed.emit(start_weapon_ids.duplicate())
+	relics_changed.emit(get_relic_ids())
+	return true
+
+
+func grant_starting_relics() -> bool:
+	# Call only after the run's bank and relic_added listener are ready.
+	# Track successful grants so repeated calls cannot award principal twice.
+	var ids: Array = character_data.get("start_relics", [])
+	while _starting_relics_granted < ids.size():
+		if not add_relic(str(ids[_starting_relics_granted]), true):
+			return false
+		_starting_relics_granted += 1
 	return true
 
 
@@ -257,6 +277,9 @@ func create_stat_preview_copy() -> PlayerController:
 	# Detached from the scene tree: no movement, pickups, or live UI signals.
 	var preview := PlayerController.new()
 	preview.auto_initialize_on_ready = false
+	preview.character_id = character_id
+	preview.character_data = character_data.duplicate(true)
+	preview._starting_relics_granted = _starting_relics_granted
 	preview.modifier_stack.base_stats = modifier_stack.base_stats.duplicate(true)
 	preview.modifier_stack.modifiers = modifier_stack.get_all_modifiers()
 	preview.current_hp = current_hp
@@ -299,8 +322,8 @@ func get_start_weapon_ids() -> Array[String]:
 	return start_weapon_ids.duplicate()
 
 
-func add_relic(relic_id: String) -> bool:
-	if not relic_system.add_relic(relic_id):
+func add_relic(relic_id: String, character_innate: bool = false) -> bool:
+	if not relic_system.add_relic(relic_id, character_innate):
 		return false
 	_refresh_relic_dynamic_effects()
 	_process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_ON_ACQUIRE)
@@ -559,6 +582,22 @@ func _setup_visuals() -> void:
 		_apply_idle_visual()
 
 
+func _configure_character_visuals(visuals: Dictionary) -> void:
+	_idle_texture = PLAYER_IDLE_TEXTURE
+	_walk_texture = PLAYER_WALK_TEXTURE
+	var idle_path := str(visuals.get("idle", ""))
+	var walk_path := str(visuals.get("walk", ""))
+	if not idle_path.is_empty() and ResourceLoader.exists(idle_path):
+		_idle_texture = load(idle_path) as Texture2D
+	if not walk_path.is_empty() and ResourceLoader.exists(walk_path):
+		_walk_texture = load(walk_path) as Texture2D
+	walk_frame_count = maxi(1, int(visuals.get("walk_frames", 4)))
+	walk_animation_fps = maxf(0.0, float(visuals.get("walk_fps", 3.5)))
+	_walk_animation_time = 0.0
+	facing_right = true
+	_setup_visuals()
+
+
 func _sync_camera() -> void:
 	if camera_2d != null:
 		# Snap the view only; physics keeps its subpixel movement precision.
@@ -585,14 +624,14 @@ func _update_walk_animation(direction: Vector2, delta: float) -> void:
 func _apply_idle_visual() -> void:
 	if sprite == null:
 		return
-	sprite.texture = PLAYER_IDLE_TEXTURE
+	sprite.texture = _idle_texture
 	sprite.hframes = 1
 	sprite.frame = 0
 
 
 func _apply_walk_visual() -> void:
 	if sprite != null:
-		sprite.texture = PLAYER_WALK_TEXTURE
+		sprite.texture = _walk_texture
 		sprite.hframes = maxi(walk_frame_count, 1)
 
 

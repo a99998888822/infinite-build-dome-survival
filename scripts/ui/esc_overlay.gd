@@ -498,6 +498,10 @@ func _show_relic_tooltip(relic_data: Dictionary, anchor_cell: Control) -> void:
 	var description := str(relic_data.get("description", ""))
 	var rarity_color: Color = RARITY_COLORS.get(rarity, Color.WHITE)
 	var tooltip_text := "[color=%s]%s[/color]\n%s" % [_color_to_bbcode(rarity_color), display_name, description]
+	if _player != null:
+		var innate_count := _player.relic_system.get_innate_relic_count(str(relic_data.get("id", "")))
+		if innate_count > 0:
+			tooltip_text += "\n[color=#d3b77c]角色固有 ×%d：开局获得时奖励已发放，不可移除。[/color]" % innate_count
 	var bond_text := BondDisplay.build_item_bond_text(relic_data, _player.relic_system if _player != null else null)
 	if not bond_text.is_empty():
 		tooltip_text += "\n" + bond_text

@@ -72,6 +72,10 @@ static func scroll(control: ScrollContainer) -> void:
 
 static func reason(code: String) -> String:
 	return str({
+		"loan_dialog_open": "请先选择或关闭贷款条款。",
+		"loan_expired": "这份贷款条款已失效。",
+		"loan_not_active": "当前没有需要偿还的贷款。",
+		"loan_insufficient_gold": "金币不足，无法一次性还清当前欠款。",
 		"bank_operation_used": "本波已办理存取，下波恢复。",
 		"trade_bank_blocked": "交易限制：本次银行存取已关闭，下波恢复。",
 		"trade_deposit_blocked": "交易限制：本次不可存款，下波恢复。",

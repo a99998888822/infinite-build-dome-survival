@@ -54,6 +54,7 @@ var player: PlayerController = null
 var principal: int = 0
 var interest_rate_bonus: float = 0.0
 var interest_remainder: float = 0.0
+var _project_expected_dividends := false
 var wave_counter: int = 0
 var current_wave_number: int = 0
 var last_action_wave_number: int = 0
@@ -79,6 +80,7 @@ var _journal_ready: bool = false
 var _last_activity_rate: float = DEFAULT_INTEREST_RATE
 var _principal_revive_uses: Dictionary = {}
 var _run_serial := 0
+var _interest_event_serial := 0
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
@@ -141,6 +143,29 @@ func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 
 	preview_player.lethal_damage.connect(preview._on_player_lethal_damage)
 	preview_player.relic_added.connect(preview.on_relic_added)
 	return preview
+
+
+func project_next_wave_interest(borrowed_gold: int, deposit_borrowed: bool) -> float:
+	if player == null: return 0.0
+	var preview_player := player.create_stat_preview_copy()
+	var preview := create_preview_copy(preview_player)
+	preview._project_expected_dividends = true
+	if borrowed_gold > 0:
+		preview.apply_loan_gold_delta(borrowed_gold)
+		if deposit_borrowed: preview.apply_finance_operation(ACTION_DEPOSIT,borrowed_gold)
+	preview.begin_wave(current_wave_number)
+	var gain := 0.0
+	for result: Dictionary in preview.process_wave_end_settlements(): gain += float(result.get("gain",0))
+	preview_player.free()
+	return gain
+
+
+func apply_loan_gold_delta(amount: int) -> bool:
+	return _apply_gold_delta(amount,"goblin_loan")
+
+
+func record_loan_activity(text: String) -> void:
+	_record_activity("loan",text)
 
 
 func _on_player_stats_changed() -> void:
@@ -234,7 +259,7 @@ func apply_finance_operation(action: String, amount: int) -> Dictionary:
 
 
 func deposit(amount: int, free_principal: bool = false, reason: String = "manual") -> Dictionary:
-	if trade_deposit_blocked and not free_principal:
+	if trade_deposit_blocked and not free_principal and reason != "wave_challenge":
 		return _build_operation_result(false, ACTION_DEPOSIT, amount, "trade_deposit_blocked")
 	var sanitized_amount := maxi(0, amount)
 	if sanitized_amount <= 0:
@@ -249,6 +274,7 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 	var text := "存入 %d 金币，本金 %d → %d" % [sanitized_amount, principal - sanitized_amount, principal]
 	if free_principal:
 		text = "%s：本金 +%d（当前 %d）" % ["哥布林交易" if reason == "goblin_trade" else _relic_name(reason), sanitized_amount, principal]
+		if reason == "wave_challenge": text = "下一波挑战：本金 +%d（当前 %d）" % [sanitized_amount, principal]
 	_record_activity("relic_principal" if free_principal else "deposit", text)
 	last_action_wave_number = current_wave_number
 	last_deposit_wave_number = current_wave_number
@@ -292,6 +318,8 @@ func settle_interest(source: String = SETTLE_WAVE_END, source_relic_id: String =
 		result["reason"] = "settlement_busy"
 		return result
 	_settling_interest = true
+	_interest_event_serial += 1
+	result["event_id"] = "%s:%d" % [str(result.settlement_id), _interest_event_serial]
 	if principal <= 0:
 		result["reason"] = "no_principal"
 		result["principal_after"] = principal
@@ -521,6 +549,9 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 				var dividend_chance := float(effect.get("double_chance_percent", 20)) / 100.0
 				var stack_count := maxi(1, int(effect.get("relic_count", 1)))
 				var dividend_multiplier := stack_count + 1
+				if _project_expected_dividends:
+					final_gain = ceili(float(final_gain)*(1.0+dividend_chance*stack_count))
+					continue
 				if _rng.randf() < dividend_chance:
 					final_gain = int(ceil(float(final_gain) * float(dividend_multiplier)))
 					result["dividend_double_triggered"] = true

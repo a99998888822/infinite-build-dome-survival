@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://c8jb5bwuuujb1" path="res://assets/ui/main_menu/button_main_menu.png" id="2_a7kih"]
 [ext_resource type="Texture2D" uid="uid://bsrwgtffh8g3f" path="res://assets/ui/main_menu/title_main_menu.png" id="2_kxa31"]
 
+[ext_resource type="Script" path="res://scripts/ui/run_settlement_panel.gd" id="4_settlement"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
 
 [node name="MainMenuUIController" type="CanvasLayer" unique_id=183020204]
@@ -416,6 +418,7 @@ disabled = true
 text = "继续"
 
 [node name="BattleResultPanel" type="Control" parent="." unique_id=2077631280]
+script = ExtResource("4_settlement")
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -423,30 +426,3 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="BattleResultPanel" unique_id=954575922]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="MainPanel" type="PanelContainer" parent="BattleResultPanel/CenterContainer" unique_id=1232233122]
-custom_minimum_size = Vector2(420, 260)
-layout_mode = 2
-
-[node name="Content" type="VBoxContainer" parent="BattleResultPanel/CenterContainer/MainPanel" unique_id=1111589842]
-layout_mode = 2
-theme_override_constants/separation = 14
-
-[node name="ResultTitleLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=1593405632]
-layout_mode = 2
-horizontal_alignment = 1
-
-[node name="ResultSummaryLabel" type="Label" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=1167959946]
-layout_mode = 2
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="ResultBackButton" type="Button" parent="BattleResultPanel/CenterContainer/MainPanel/Content" unique_id=314160173]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "返回主界面"

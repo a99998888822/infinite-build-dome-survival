@@ -12,6 +12,7 @@ var economy_log: EconomyLogPanel
 var portrait: BankCounterPortrait
 var trade_presentation: GoblinTradePresentation
 var interest_arrival: InterestArrivalPresentation
+var loan_presentation: GoblinLoanPresentation
 var shop_grid: VirtualShopGrid
 var workbench: EnchantmentWorkbench
 var amount_input: LineEdit
@@ -75,6 +76,7 @@ func _ready() -> void:
 
 func bind_flow(coordinator: MainFlowCoordinator) -> void:
 	flow = coordinator
+	loan_presentation.flow = flow
 	shop_grid.flow = flow
 	workbench.flow = flow
 
@@ -123,9 +125,14 @@ func configure(next_payload: Dictionary) -> void:
 		var settled := 0
 		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
 		_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % settled if settled > 0 else "准备完成后，点击开始下一波。"
+		var settlements: Array = payload.get("settlement_results", [])
+		if not settlements.is_empty() and settlements.back().has("challenge_settlement"):
+			_feedback.text = "挑战完成 · 结息后已将全部金币存入本金。"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
 	_sync_interest_arrival()
 	_sync_live_trade()
+	loan_presentation.configure(payload.get("goblin_loan",{}))
+	_layout()
 
 
 func _sync_interest_arrival() -> void:
@@ -147,6 +154,10 @@ func _on_interest_arrived(amount: int) -> void:
 	_summary.modulate = Color("fff0a4")
 	_arrival_pulse = create_tween()
 	_arrival_pulse.tween_property(_summary, "modulate", Color.WHITE, 0.6)
+	if bool(interest_arrival.report.get("auto_deposit", false)):
+		_feedback.text = "挑战完成 · 结息后已将全部金币存入本金。"
+		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
+		return
 	if amount <= 0: return
 	_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % amount
 	var affordable: Dictionary = {}
@@ -204,6 +215,10 @@ func hide_popup() -> void:
 	_sale_layer.hide()
 	_tooltip.hide()
 	if flow != null: flow.clear_stat_preview()
+
+
+func _sync_loan_visibility() -> void:
+	if loan_presentation != null: loan_presentation.visible = is_visible_in_tree() and main_panel.is_visible_in_tree()
 
 
 func present_trade(speech: String, body: String, detail: String = "") -> void:
@@ -395,6 +410,17 @@ func _build() -> void:
 	interest_arrival = InterestArrivalPresentation.new()
 	main_panel.add_child(interest_arrival)
 	interest_arrival.arrived.connect(_on_interest_arrived)
+	var loan_layer := CanvasLayer.new()
+	loan_layer.name = "LoanLayer"
+	loan_layer.layer = 32
+	add_child(loan_layer)
+	loan_presentation = GoblinLoanPresentation.new()
+	loan_presentation.name = "GoblinLoanPresentation"
+	loan_layer.add_child(loan_presentation)
+	loan_presentation.error_requested.connect(show_error)
+	visibility_changed.connect(_sync_loan_visibility)
+	main_panel.visibility_changed.connect(_sync_loan_visibility)
+	_sync_loan_visibility()
 
 
 func _build_sale_dialog() -> void:
@@ -446,13 +472,18 @@ func _layout() -> void:
 	main_panel.size = _safe_rect.size
 	var w := main_panel.size.x
 	var h := main_panel.size.y
+	var loan_space := loan_presentation.reserved_height() if loan_presentation != null else 0.0
+	var footer_bottom := h-loan_space
 	_compact = w < 700
 	var short_window := get_viewport().get_visible_rect().size.y < 480
 	FinanceUIStyle.label(_title, 18 if short_window else 22)
 	_place(_title, Rect2(20, 6 if short_window else 12, w - 40, 26 if short_window else 30))
 	_place(_summary, Rect2(20, 32 if short_window else 46, w - 40, 18 if short_window else 22))
-	var body_y := 54.0 if short_window else 78.0
-	var body_bottom := h - (46.0 if short_window else 60.0)
+	var body_y := (46.0 if loan_space>0 and _compact else 54.0) if short_window else 78.0
+	if short_window and loan_space>0 and _compact:
+		_place(_title,Rect2(20,4,w-40,22))
+		_place(_summary,Rect2(20,27,w-40,18))
+	var body_bottom := footer_bottom - (46.0 if short_window else 60.0)
 	var bank_width := clampf(w * 0.23, 112.0, 150.0) if _compact else 226.0
 	var work_x := 20.0 + bank_width + (12.0 if _compact else 16.0)
 	var work_w := w - work_x - 20.0
@@ -468,7 +499,7 @@ func _layout() -> void:
 	var content_h := maxf(24, body_bottom - content_y)
 	# Reserve a permanent banker column on every tab. Compact forms use the
 	# right-hand workspace; wide forms scroll underneath the pinned portrait.
-	var header_h := minf(160.0, maxf(70.0, (body_bottom - body_y) * 0.52))
+	var header_h := minf(200.0, maxf(70.0, (body_bottom - body_y) * (1.0 if _compact else 0.56)))
 	var trade_active := trade_presentation != null and trade_presentation.is_active()
 	var trade_height := 0.0
 	if trade_active:
@@ -495,16 +526,17 @@ func _layout() -> void:
 	_place(_stock, Rect2(148 if short_window else 0, content_h + 8 if short_window else content_h - 30, maxf(40, work_w - 294) if short_window else maxf(40, work_w - 140), 28))
 	_stock.visible = not short_window or work_w >= 360
 	_place(_refresh, Rect2(0 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
-	_place(_feedback, Rect2(84, h - 50, maxf(50, w - 252), 38))
+	_place(_feedback, Rect2(84, footer_bottom - 50, maxf(50, w - 252), 38))
 	_feedback.visible = not short_window
 	_summary.show()
-	_place(start_button, Rect2(w - 154, h - 38 if short_window else h - 50, 134, 30 if short_window else 36))
+	_place(start_button, Rect2(w - 154, footer_bottom - 38 if short_window else footer_bottom - 50, 134, 30 if short_window else 36))
 	_place(economy_log, Rect2(Vector2.ZERO, main_panel.size))
 	economy_log.apply_finance_layout(Rect2(20, body_y, w - 40, body_bottom - body_y), Rect2(20, start_button.position.y, 52, start_button.size.y))
 	var sale_size := Vector2(minf(420, w - 32), minf(360, h - 32))
 	_place(_sale_box, Rect2((Vector2(w, h) - sale_size) * 0.5, sale_size))
 	if not _compact and _active_tab == "bank": _active_tab = "shop"
 	_select_tab(_active_tab)
+	if loan_presentation != null: loan_presentation.arrange(main_panel.get_global_rect())
 
 
 func _select_tab(tab: String) -> void:
@@ -697,7 +729,11 @@ func _feedback_message(message: String, success: bool) -> void:
 func handle_back_request() -> bool:
 	if not visible or flow == null or flow.get_current_state() != MainFlowCoordinator.STATE_FINANCE_POPUP:
 		return false
-	if _sale_layer.visible:
+	if loan_presentation.is_active():
+		loan_presentation.dismiss_quote()
+	elif interest_arrival.is_active():
+		interest_arrival.skip()
+	elif _sale_layer.visible:
 		_sale_layer.hide()
 	else:
 		_tooltip.hide()
@@ -708,6 +744,20 @@ func handle_back_request() -> bool:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and not event.echo and event.is_action_pressed("ui_cancel") and handle_back_request():
 		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+		_observe_disabled_purchase(event.position)
+
+
+func _observe_disabled_purchase(point: Vector2) -> void:
+	if not is_visible_in_tree() or not main_panel.is_visible_in_tree() or flow == null or flow.get_current_state()!=MainFlowCoordinator.STATE_FINANCE_POPUP: return
+	if _sale_layer.visible or loan_presentation.is_active() or interest_arrival.is_active() or not _shop.is_visible_in_tree(): return
+	if economy_log.panel.visible and economy_log.panel.get_global_rect().has_point(point): return
+	if not shop_grid.scroll.get_global_rect().has_point(point): return
+	for card: PreparationOfferCard in shop_grid._pool:
+		if card.is_visible_in_tree() and card.buy_button.disabled and card.buy_button.get_global_rect().has_point(point):
+			if flow.record_loan_purchase_attempt(card.offer): get_viewport().set_input_as_handled()
+			return
 
 
 func _label(caption: String, parent: Control, font_size: int, color: Color) -> Label:

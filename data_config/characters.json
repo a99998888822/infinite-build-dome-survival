@@ -10,6 +10,12 @@
     ],
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
     "display_sprite": "res://assets/sprites/player/void_hunter_idle_right.png",
+    "combat_visuals": {
+      "idle": "res://assets/sprites/player/combat/void_hunter_idle_right.png",
+      "walk": "res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+      "walk_frames": 4,
+      "walk_fps": 3.5
+    },
     "display_stats": [
       "max_hp",
       "move_speed",
@@ -38,5 +44,46 @@
         "item_id": "scroll_lightning"
       }
     ]
+  },
+  {
+    "id": "character_capitalist",
+    "display_name": "资本家",
+    "description": "",
+    "enabled": true,
+    "tags": ["character", "capitalist"],
+    "icon": "res://assets/ui/icons/characters/icon_capitalist.png",
+    "display_sprite": "res://assets/sprites/player/capitalist_idle_right.png",
+    "combat_visuals": {
+      "idle": "res://assets/sprites/player/combat/capitalist_idle_right.png",
+      "walk": "res://assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+      "walk_frames": 4,
+      "walk_fps": 6
+    },
+    "display_stats": ["max_hp", "damage_percent", "currency_gain_percent", "load_capacity", "finance", "interest_rate", "humanity"],
+    "base_stats": {
+      "max_hp": 7,
+      "hp_regen": 0,
+      "shield": 0,
+      "armor": 0,
+      "damage_percent": -30,
+      "attack_speed": 0,
+      "currency_gain_percent": -40,
+      "move_speed": 240,
+      "load_capacity": 80,
+      "pickup_radius": 180,
+      "humanity": 100,
+      "divinity": 0,
+      "luck": 0,
+      "finance": 0,
+      "interest_rate": 5
+    },
+    "start_weapons": ["weapon_rentier_purse"],
+    "start_weapon_attachments": [],
+    "passive_modifiers": [],
+    "traits": [
+      {"title": "四份方案 · 角色固有", "description": "开局获得以下四件遗物，获得奖励合计 500 本金，仅发放一次。固有实例不可移除；后续获得的同名遗物照常生效。"},
+      {"title": "以资本换生存", "description": "四方案生效后：生命 4、护甲 -5、攻速 -12%、每秒回血 -0.5、血包恢复量 -1、商品价格 +10%。负回血只抵消恢复，不会持续扣血。战斗金币 -50%，不影响利息、取款与直接赠款。"}
+    ],
+    "start_relics": ["relic_medical_cutback", "relic_welfare_cutback", "relic_annual_leave_cutback", "relic_salary_adjustment"]
   }
 ]

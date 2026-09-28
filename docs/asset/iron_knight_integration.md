@@ -32,7 +32,7 @@ python scripts/tools/build_iron_knight_review.py
 python -B scripts/tools/install_iron_knight_assets.py
 ```
 
-第一条重建美术模拟审阅稿，第二条核对并导出正式 PNG 与 `SpriteFrames`。模拟稿上的历史审阅说明不代表当前接入状态；实机材料见 `artifacts/reviews/effects/iron_knight/`。
+第一条将美术模拟审阅稿输出到系统临时目录 `dome-iron-knight-preview`，不会重新堆积到 artifacts。第二条默认使用 `assets/sprites/enemies/iron_knight/` 中唯一保留的正式图集，逐帧核对绘制源代码并重建 `SpriteFrames` 和参数清单。需安装新审阅图集时，将该目录作为安装命令的第一个参数传入。模拟稿上的历史审阅说明不代表当前接入状态；实机材料见 `artifacts/reviews/effects/iron_knight/`。
 
 专项场景为 `scenes/tests/iron_knight_test.tscn`，检查距离边界、远处继续追赶、冷却、方向锁定、动画同步、160 毫秒位移、胶囊擦边命中与落空、低帧率扫掠、暂停/冻结和障碍阻挡。联动回归使用 `elite_relic_decay_test`、`elite_effect_revision_test`、`erosion_pressure_test`。测试与录像通过 `-- --transient-session` 避免写入正式营地存档。
 

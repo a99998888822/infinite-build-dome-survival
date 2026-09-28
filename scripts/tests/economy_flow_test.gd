@@ -227,6 +227,8 @@ func _test_live_ui() -> void:
 	await frames(15)
 	check(flow.submit_finance_operation("deposit", 50).success, "deposit is accepted through the actual preparation flow")
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	await frames()
 	m.add_exp_and_gold(0, 220)
 	check(m.current_wave_index == 1 and m.finance_system.current_wave_number == 2 and m.finance_system.has_deposited_before_current_wave, "prepared deposit activates contract in the correct wave")
@@ -280,6 +282,8 @@ func _test_live_ui() -> void:
 	get_tree().root.size = Vector2i(1152, 648)
 	get_tree().root.content_scale_size = Vector2i(1152, 648)
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	m.add_exp_and_gold(0, 37)
 	m.player.take_damage(999999, "economy_log_test")
 	await frames(6)

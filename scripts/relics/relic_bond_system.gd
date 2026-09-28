@@ -28,7 +28,7 @@ func get_weapon_ids() -> Array[String]:
 	return weapon_ids.duplicate()
 
 
-func add_relic(relic_id: String) -> bool:
+func add_relic(relic_id: String, character_innate: bool = false) -> bool:
 	var relic_data := DataRegistry.get_record("relics", relic_id)
 	if relic_data.is_empty():
 		push_warning("[RelicBondSystem] missing relic config: %s" % relic_id)
@@ -40,6 +40,7 @@ func add_relic(relic_id: String) -> bool:
 	relic_instances[instance_id] = {
 		"relic_id": relic_id,
 		"relic_data": relic_data.duplicate(true),
+		"character_innate": character_innate,
 	}
 	if not relic_ids_by_name.has(relic_id):
 		relic_ids_by_name[relic_id] = []
@@ -54,16 +55,14 @@ func remove_relic(relic_id: String) -> bool:
 	var instance_ids: Array = relic_ids_by_name[relic_id]
 	if instance_ids.is_empty():
 		return false
-	var instance_id := str(instance_ids.pop_back())
-	if instance_ids.is_empty():
-		relic_ids_by_name.erase(relic_id)
-	relic_instances.erase(instance_id)
-	refresh_effects()
-	return true
+	for index in range(instance_ids.size() - 1, -1, -1):
+		if remove_relic_instance(str(instance_ids[index])):
+			return true
+	return false
 
 
 func remove_relic_instance(instance_id: String) -> bool:
-	if not relic_instances.has(instance_id):
+	if not relic_instances.has(instance_id) or bool(relic_instances[instance_id].get("character_innate", false)):
 		return false
 	var relic_id := str(relic_instances[instance_id].get("relic_id", ""))
 	if relic_ids_by_name.has(relic_id):
@@ -74,6 +73,14 @@ func remove_relic_instance(instance_id: String) -> bool:
 	relic_instances.erase(instance_id)
 	refresh_effects()
 	return true
+
+
+func get_innate_relic_count(relic_id: String) -> int:
+	var count := 0
+	for instance_id in relic_ids_by_name.get(relic_id, []):
+		if bool(relic_instances[instance_id].get("character_innate", false)):
+			count += 1
+	return count
 
 
 func clear_relics() -> void:

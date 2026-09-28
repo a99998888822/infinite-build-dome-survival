@@ -31,7 +31,7 @@
 
 ## 实机录制
 
-实录：`artifacts/reviews/weapons/meteor_flail.gif`、`artifacts/reviews/weapons/meteor_flail_enchantments.gif`。
+实录：`artifacts/reviews/weapons/meteor_flail.mp4`、`artifacts/reviews/weapons/meteor_flail_enchantments.mp4`。
 
 | 组合 | 发动攻击 | 锤头实际命中 | 击杀 |
 | --- | --- | --- | --- |
@@ -44,6 +44,6 @@
 - 每段8秒，原始视口30帧／秒，动图15帧／秒；并排图仅裁剪、加标题和颜色量化。
 - 为观察连续追击，固定12个移动敌人的初始布局，演示敌人当前血量240，玩家最大生命1000，暴击率0；波管理器停止自动刷怪，玩家通过现有移动输入后撤。
 - 命中表只统计锤头直接接触；元素链跳／燃烧等伤害另由正式效果系统处理。命中统计与完整帧序列保存在各组合目录的 `capture.json`、`frame_*.png`。
-- 审阅动图：`meteor_flail_mechanics.gif`（原版／分裂）、`meteor_flail_enchantments.gif`（分裂＋闪电／分裂＋火焰）。
+- 审阅录像：`meteor_flail.mp4`（原版／分裂）、`meteor_flail_enchantments.mp4`（分裂＋闪电／分裂＋火焰）。原GIF已转为较小的MP4，并核对尺寸、帧数与时长。
 
 复现入口：`scenes/tests/meteor_flail_live_capture.tscn`，使用 Vulkan 渲染、`--fixed-fps 30`，用户参数为 `--transient-session --variant=base|split|split_lightning|split_fire --capture-dir=<绝对路径>`。

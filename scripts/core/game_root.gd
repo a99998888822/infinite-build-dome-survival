@@ -65,11 +65,15 @@ func _handle_android_back_request() -> void:
 			var finance := find_child("FinancePopup", true, false) as FinancePopup
 			if finance != null:
 				finance.handle_back_request()
+		MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+			flow.return_from_wave_challenge()
 		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
 			flow.close_interest_settlement()
 		MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
 			flow.close_zone_harvest_result_popup()
-		MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_CAMP_ENTRY, MainFlowCoordinator.STATE_BATTLE_RESULT:
+		MainFlowCoordinator.STATE_BATTLE_RESULT:
+			flow.confirm_battle_result()
+		MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_CAMP_ENTRY:
 			flow.enter_start_page()
 		MainFlowCoordinator.STATE_START_PAGE:
 			get_tree().quit()
@@ -167,6 +171,7 @@ func _ensure_main_flow_coordinator() -> MainFlowCoordinator:
 func _ensure_child(child_name: String, fallback_node: Node) -> Node:
 	var existing := get_node_or_null(child_name)
 	if existing != null and _is_expected_child_type(existing, fallback_node):
+		fallback_node.free()
 		return existing
 	if existing != null:
 		push_error("[GameRoot] child '%s' has an incompatible type: %s" % [child_name, existing.get_class()])

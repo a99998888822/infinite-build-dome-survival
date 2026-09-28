@@ -1,0 +1,430 @@
+{
+  "schema_version": 1,
+  "source_package": "battle_scene_picxel_review/128px",
+  "canvas_size": [
+    128,
+    128
+  ],
+  "scale_basis": "longest visible side; uniform aspect-preserving scaling",
+  "ground_slots": [
+    "brick",
+    "brick",
+    "crack",
+    "crack",
+    "wet",
+    "moss",
+    "moss",
+    "rubble",
+    "rubble"
+  ],
+  "groups": {
+    "wall": [
+      "ruin_curved_wall",
+      "ruin_sloped_wall",
+      "ruin_brick_wall",
+      "ruin_twin_pillar_wall",
+      "ruin_broken_arch"
+    ],
+    "pillar": [
+      "ruin_square_pillar",
+      "ruin_broken_column",
+      "ruin_short_column",
+      "ruin_stone_block",
+      "ruin_eroded_pillar"
+    ],
+    "brick": [
+      "decal_single_brick",
+      "decal_stacked_bricks",
+      "decal_brick_fragments"
+    ],
+    "rubble": [
+      "decal_scattered_stones",
+      "decal_high_rubble",
+      "decal_low_rubble",
+      "decal_flat_stones"
+    ],
+    "moss": [
+      "decal_compact_moss",
+      "decal_long_moss",
+      "decal_wet_moss"
+    ],
+    "crack": [
+      "decal_vertical_crack",
+      "decal_forked_crack",
+      "decal_fine_crack",
+      "decal_spreading_crack",
+      "decal_cyan_crack",
+      "decal_mossy_crack"
+    ],
+    "wet": [
+      "decal_wet_patch",
+      "decal_puddle"
+    ],
+    "ripple": [
+      "fx_fine_ripples",
+      "fx_cyan_ripples"
+    ]
+  },
+  "assets": {
+    "ruin_curved_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_curved_wall.png",
+      "source_file": "01_弧形残墙.png",
+      "sha256": "79ecb7fdcb003d1ff2e43cd2405ecb3e8ff72fb723a1e6dde33c05a239e724ed",
+      "content_rect": [
+        8,
+        40,
+        112,
+        47
+      ],
+      "world_extent": 176
+    },
+    "ruin_sloped_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_sloped_wall.png",
+      "source_file": "02_斜坡断墙.png",
+      "sha256": "9e0d33954fecc158d629a7fffefee9d686d1c415f825c620bbec1f61ce63c11a",
+      "content_rect": [
+        7,
+        24,
+        116,
+        80
+      ],
+      "world_extent": 176
+    },
+    "ruin_brick_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_brick_wall.png",
+      "source_file": "03_阶梯缺口砖墙.png",
+      "sha256": "10efdc0a6aa663fe644df8d666522a92c2ee092534f674dd53bbd412de831833",
+      "content_rect": [
+        6,
+        44,
+        115,
+        40
+      ],
+      "world_extent": 176
+    },
+    "ruin_twin_pillar_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
+      "source_file": "04_双柱低墙.png",
+      "sha256": "8f07c2d23613eb70201d171937656084ed94b2ac34749e0b4859c7124423506d",
+      "content_rect": [
+        7,
+        42,
+        114,
+        44
+      ],
+      "world_extent": 184
+    },
+    "ruin_broken_arch": {
+      "texture": "res://assets/sprites/background/wetland/ruin_broken_arch.png",
+      "source_file": "05_残破石拱门.png",
+      "sha256": "4875adb4bec455ed1e79732feac78d79fa2e64939d9d3c6f4e1bf5a7b4a8e2bb",
+      "content_rect": [
+        14,
+        22,
+        103,
+        84
+      ],
+      "world_extent": 156
+    },
+    "ruin_square_pillar": {
+      "texture": "res://assets/sprites/background/wetland/ruin_square_pillar.png",
+      "source_file": "06_完整方石柱.png",
+      "sha256": "fa04cd7dda2771c5bb365ecd85c94a6d27549fac43602d125d3f782d8706e241",
+      "content_rect": [
+        25,
+        8,
+        78,
+        112
+      ],
+      "world_extent": 104
+    },
+    "ruin_broken_column": {
+      "texture": "res://assets/sprites/background/wetland/ruin_broken_column.png",
+      "source_file": "07_断裂长石柱.png",
+      "sha256": "fb422bae9627c7ad222833189a96db8206a7469dbf394668a3d8ce59fbcdacb4",
+      "content_rect": [
+        21,
+        1,
+        86,
+        126
+      ],
+      "world_extent": 100
+    },
+    "ruin_short_column": {
+      "texture": "res://assets/sprites/background/wetland/ruin_short_column.png",
+      "source_file": "08_矮圆断柱.png",
+      "sha256": "3559d7f7c9c0151d130e54a8915238272164d9b50a9aa6953b7da2b54727668c",
+      "content_rect": [
+        20,
+        10,
+        88,
+        108
+      ],
+      "world_extent": 70
+    },
+    "ruin_stone_block": {
+      "texture": "res://assets/sprites/background/wetland/ruin_stone_block.png",
+      "source_file": "09_方形残石.png",
+      "sha256": "a70189b64389f799076b1af57c58bc882d950a0e1d68836eefaf4a35256b28ea",
+      "content_rect": [
+        7,
+        6,
+        114,
+        115
+      ],
+      "world_extent": 64
+    },
+    "ruin_eroded_pillar": {
+      "texture": "res://assets/sprites/background/wetland/ruin_eroded_pillar.png",
+      "source_file": "10_风蚀孔洞石柱.png",
+      "sha256": "24194ae772aeb00578b0096986bb610d99a3e6e2233cfdb7b7dc2b16f3a8117e",
+      "content_rect": [
+        30,
+        6,
+        69,
+        116
+      ],
+      "world_extent": 104
+    },
+    "decal_single_brick": {
+      "texture": "res://assets/sprites/background/wetland/decal_single_brick.png",
+      "source_file": "11_单块苔砖.png",
+      "sha256": "8691ac4a82e4be242e6abb648171becb784fa41c89d9ac33be796e924d7eed0e",
+      "content_rect": [
+        10,
+        37,
+        108,
+        54
+      ],
+      "world_extent": 44
+    },
+    "decal_stacked_bricks": {
+      "texture": "res://assets/sprites/background/wetland/decal_stacked_bricks.png",
+      "source_file": "12_三块叠砖.png",
+      "sha256": "f08809f615e07f2508cb023a81c84c6a182828aba1ac7ba4678031ad3d34cd13",
+      "content_rect": [
+        13,
+        43,
+        102,
+        42
+      ],
+      "world_extent": 62
+    },
+    "decal_brick_fragments": {
+      "texture": "res://assets/sprites/background/wetland/decal_brick_fragments.png",
+      "source_file": "13_碎砖与瓦片.png",
+      "sha256": "577afe348dafc97f087cbda942fa2c994c687a854531dd1f8f068337529c75c3",
+      "content_rect": [
+        4,
+        43,
+        120,
+        43
+      ],
+      "world_extent": 80
+    },
+    "decal_scattered_stones": {
+      "texture": "res://assets/sprites/background/wetland/decal_scattered_stones.png",
+      "source_file": "14_横向零散石块.png",
+      "sha256": "679ad2ca8d887aa9ea4ee937e931b5493fe81d154b24a5d442394a38b91a8c03",
+      "content_rect": [
+        5,
+        56,
+        116,
+        16
+      ],
+      "world_extent": 76
+    },
+    "decal_high_rubble": {
+      "texture": "res://assets/sprites/background/wetland/decal_high_rubble.png",
+      "source_file": "15_高碎石堆.png",
+      "sha256": "4d201c77b73c94b2a2e786ba2749215aaa358826400ca4f57804958a3e8410ec",
+      "content_rect": [
+        12,
+        35,
+        104,
+        58
+      ],
+      "world_extent": 86
+    },
+    "decal_low_rubble": {
+      "texture": "res://assets/sprites/background/wetland/decal_low_rubble.png",
+      "source_file": "16_低碎石堆.png",
+      "sha256": "f8fb778832b6a8e72ebac3d2509cfa5c562e3e52452b8f53faf2b2e4bc202237",
+      "content_rect": [
+        2,
+        33,
+        124,
+        62
+      ],
+      "world_extent": 78
+    },
+    "decal_flat_stones": {
+      "texture": "res://assets/sprites/background/wetland/decal_flat_stones.png",
+      "source_file": "17_扁平散石.png",
+      "sha256": "c720bbaa6397fde76dfc1798e717aab6cd27de91f572523dbf658974fca21462",
+      "content_rect": [
+        9,
+        46,
+        110,
+        36
+      ],
+      "world_extent": 82
+    },
+    "decal_compact_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_compact_moss.png",
+      "source_file": "18_紧凑苔藓.png",
+      "sha256": "294a009c6bc9a81825e1f6bcaa9cec77dd00ed189250786a93e2e7d93c8bc1de",
+      "content_rect": [
+        16,
+        39,
+        95,
+        49
+      ],
+      "world_extent": 20
+    },
+    "decal_long_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_long_moss.png",
+      "source_file": "19_扁长苔藓.png",
+      "sha256": "764b1b3307ff77b25d47680912ca11269825ae6d03c2b912a22fffd70cb668c2",
+      "content_rect": [
+        12,
+        45,
+        98,
+        38
+      ],
+      "world_extent": 26
+    },
+    "decal_wet_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_wet_moss.png",
+      "source_file": "20_散生湿苔.png",
+      "sha256": "24adfdbf83e6dc082f685ad995a515732757c18a97e133fa6ef1e5c9d549aeb9",
+      "content_rect": [
+        7,
+        40,
+        115,
+        47
+      ],
+      "world_extent": 32
+    },
+    "decal_vertical_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_vertical_crack.png",
+      "source_file": "21_纵向曲折裂痕.png",
+      "sha256": "6742a0c214af75acfe5154615f608ca3b1aa3632191a6b4d74b7e82a0fea315f",
+      "content_rect": [
+        58,
+        5,
+        12,
+        118
+      ],
+      "world_extent": 72
+    },
+    "decal_forked_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_forked_crack.png",
+      "source_file": "22_斜向双叉裂痕.png",
+      "sha256": "7adffd25c9e53c5b3383af18da527be0aa9fae3ab9904b04821acd9ed29b35e4",
+      "content_rect": [
+        39,
+        24,
+        49,
+        79
+      ],
+      "world_extent": 76
+    },
+    "decal_fine_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_fine_crack.png",
+      "source_file": "23_细小分叉裂痕.png",
+      "sha256": "4c844ae8cdc26d8402486e62ea3950a4ada3a550c9075c56e85be6795b6d686c",
+      "content_rect": [
+        32,
+        33,
+        64,
+        62
+      ],
+      "world_extent": 72
+    },
+    "decal_spreading_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_spreading_crack.png",
+      "source_file": "24_横向蔓延裂痕.png",
+      "sha256": "3e98623de58e137bdb7d9e42c9535f07d10d7d11325e6a2a4bcfc2a9f5b82deb",
+      "content_rect": [
+        4,
+        40,
+        120,
+        48
+      ],
+      "world_extent": 94
+    },
+    "decal_cyan_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_cyan_crack.png",
+      "source_file": "25_青绿星状裂痕.png",
+      "sha256": "363c7fd8ad57541504a236b8c3c7fd532d96d5bceccd29d0676355fce5ed46c2",
+      "content_rect": [
+        6,
+        27,
+        115,
+        73
+      ],
+      "world_extent": 96
+    },
+    "decal_mossy_crack": {
+      "texture": "res://assets/sprites/background/wetland/decal_mossy_crack.png",
+      "source_file": "26_覆苔放射裂痕.png",
+      "sha256": "b7a130be8122dd59b5b4f9b20298c7f0c08cbb4b0310db0509b2b58bb74c75f5",
+      "content_rect": [
+        6,
+        38,
+        117,
+        51
+      ],
+      "world_extent": 98
+    },
+    "decal_wet_patch": {
+      "texture": "res://assets/sprites/background/wetland/decal_wet_patch.png",
+      "source_file": "27_不规则湿地斑.png",
+      "sha256": "bfba06dff2c51bd32611124ca7a7f67805d1e1be663b98f1604b9391c53302a6",
+      "content_rect": [
+        13,
+        41,
+        109,
+        46
+      ],
+      "world_extent": 104
+    },
+    "decal_puddle": {
+      "texture": "res://assets/sprites/background/wetland/decal_puddle.png",
+      "source_file": "28_浅水洼.png",
+      "sha256": "e4ab447de04fea3f5cc31d1488c89c7dca24ed5661b19996cf726f3b5f72dcba",
+      "content_rect": [
+        6,
+        39,
+        116,
+        50
+      ],
+      "world_extent": 96
+    },
+    "fx_fine_ripples": {
+      "texture": "res://assets/sprites/background/wetland/fx_fine_ripples.png",
+      "source_file": "29_断续细线水纹.png",
+      "sha256": "1bada516cf5042899223f82a4de27255f0b7c2b225e0dd209ccff317db0987ab",
+      "content_rect": [
+        3,
+        52,
+        122,
+        24
+      ],
+      "world_extent": 58
+    },
+    "fx_cyan_ripples": {
+      "texture": "res://assets/sprites/background/wetland/fx_cyan_ripples.png",
+      "source_file": "30_多圈青绿水纹.png",
+      "sha256": "d9f78f424098e82ab004649b7ea35941dff21c2ebba6fa306de688d9a49bfdcf",
+      "content_rect": [
+        2,
+        46,
+        124,
+        36
+      ],
+      "world_extent": 58
+    }
+  }
+}

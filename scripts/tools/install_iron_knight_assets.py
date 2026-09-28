@@ -3,14 +3,16 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import sys
 
 from PIL import Image
 from build_iron_knight_review import ANCHOR, ROOT, SIZE, SPECS, draw_frame
 
 
-def main():
-    approved = ROOT / "artifacts/previews/iron_knight"
-    target = ROOT / "assets/sprites/enemies/iron_knight"
+def main(approved=None, target=None):
+    # The installed sheets are the approved baseline; no duplicate artifact copy.
+    approved = Path(approved) if approved is not None else ROOT / "assets/sprites/enemies/iron_knight"
+    target = Path(target) if target is not None else ROOT / "assets/sprites/enemies/iron_knight"
     target.mkdir(parents=True, exist_ok=True)
     report = {"frame_size": [SIZE, SIZE], "anchor": ANCHOR, "actions": {}}
     lines = [f'[gd_resource type="SpriteFrames" load_steps={1+len(SPECS)+sum(len(v[0]) for v in SPECS.values())} format=3]', '']
@@ -20,7 +22,8 @@ def main():
             assert sheet.size == (SIZE * len(durations), SIZE)
             for i in range(len(durations)):
                 assert sheet.crop((SIZE*i, 0, SIZE*(i+1), SIZE)).tobytes() == draw_frame(action, i).tobytes(), (action, i)
-        shutil.copyfile(approved / name, target / name)
+        if (approved / name).resolve() != (target / name).resolve():
+            shutil.copyfile(approved / name, target / name)
         report["actions"][action] = {"frames": len(durations), "durations_ms": durations,
                                     "sha256": hashlib.sha256((target / name).read_bytes()).hexdigest()}
         lines.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/{name}" id="tex_{action}"]')
@@ -40,4 +43,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else None)

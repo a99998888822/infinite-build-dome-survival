@@ -85,6 +85,7 @@ const DRAWER_AUTO_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
 ]
 const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
+	MainFlowCoordinator.STATE_WAVE_CHALLENGE,
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
@@ -94,6 +95,7 @@ const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
 ]
 const TOP_BAR_TIMER_HIDDEN_STATES: Array[String] = [
+	MainFlowCoordinator.STATE_WAVE_CHALLENGE,
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
@@ -571,6 +573,12 @@ func _refresh_wave_display() -> void:
 	var time_left := maxf(_wave_manager.wave_time_left, 0.0)
 	if wave_label != null:
 		wave_label.text = "第 %d 波" % wave_number
+		var challenge: Dictionary = _wave_manager.wave_challenges.active
+		if int(challenge.get("wave", -1)) == wave_number:
+			wave_label.text += " · 挑战"
+			wave_label.tooltip_text = str(challenge.get("body", ""))
+		else:
+			wave_label.tooltip_text = ""
 	if wave_timer_label != null:
 		wave_timer_label.text = "%ds" % ceili(time_left)
 		if time_left > 0.0 and time_left <= 10.0:
@@ -772,7 +780,7 @@ func get_modal_safe_rect() -> Rect2:
 
 
 func _refresh_visibility() -> void:
-	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP]
+	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_WAVE_CHALLENGE]
 	if _flow == null:
 		visible = false
 		if battle_top_bar != null:

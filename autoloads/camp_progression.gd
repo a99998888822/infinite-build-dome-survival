@@ -420,11 +420,19 @@ func clear_save_and_refund() -> int:
 	return refund
 
 
-func apply_final_settlement(camp_currency_gain: int) -> void:
-	_set_camp_currency_value(get_camp_currency() + maxi(camp_currency_gain, 0))
-	if not _transient_session_active:
-		save_state()
+func apply_final_settlement(camp_currency_gain: int, run_id: String = "") -> bool:
+	var amount := maxi(camp_currency_gain, 0)
+	var receipts: Dictionary = state.get("run_settlements", {}).duplicate(true)
+	if not run_id.is_empty() and receipts.has(run_id): return int(receipts[run_id]) == amount
+	var before := state.duplicate(true)
+	_set_camp_currency_value(get_camp_currency() + amount)
+	if not run_id.is_empty(): receipts[run_id] = amount
+	state["run_settlements"] = receipts
+	if not save_state():
+		state = before
+		return false
 	state_changed.emit()
+	return true
 
 
 func get_volume_setting(setting_key: String, default_value: int = 100) -> int:
@@ -536,6 +544,7 @@ func _merge_state(default_state: Dictionary, saved_state: Dictionary) -> Diction
 	merged["currencies"] = currencies
 	if saved_state.has("settings"):
 		merged["settings"] = _sanitize_settings_dictionary(saved_state.get("settings", {}))
+	merged["run_settlements"] = _sanitize_string_int_dictionary(saved_state.get("run_settlements", {}))
 	return _sanitize_state(merged)
 
 
@@ -648,6 +657,7 @@ func _sanitize_state(raw_state: Dictionary) -> Dictionary:
 		result["currencies"]["camp_currency"] = maxi(int(raw_state.get("camp_currency", 0)), 0)
 	if raw_state.has("settings"):
 		result["settings"] = _sanitize_settings_dictionary(raw_state.get("settings", {}))
+	result["run_settlements"] = _sanitize_string_int_dictionary(raw_state.get("run_settlements", {}))
 	_refund_retired_upgrade_options(result)
 	return result
 

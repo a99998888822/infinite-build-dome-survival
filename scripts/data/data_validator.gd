@@ -204,6 +204,8 @@ func _validate_integer_values(value_data: Variant, path: String) -> void:
 
 
 func _allows_fractional_config_value(path: String) -> bool:
+	if path.begins_with("characters[") and path.ends_with(".combat_visuals.walk_fps"):
+		return true
 	if path.begins_with("drop_tables[") and path.ends_with(".augmentation_chance_percent"):
 		return true
 	if path.begins_with("weapons[") and (path.ends_with(".flail_outer_threshold") or path.ends_with(".flail_outer_multiplier")):
@@ -510,6 +512,7 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 					if stat_id.is_empty() or not StatDefinitions.has_stat(stat_id):
 						errors.append("Unknown display stat in %s.display_stats[%d]: %s" % [path, stat_index, stat_id])
 		_validate_stat_dictionary(record.get("base_stats", {}), "%s.base_stats" % path)
+		_validate_character_starting_content(record, records_by_id, path)
 		var start_weapons: Variant = record.get("start_weapons", [])
 		if not (start_weapons is Array):
 			errors.append("%s.start_weapons must be an array." % path)
@@ -529,6 +532,48 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 				_validate_required_fields(attachment, ["weapon_id", "item_id"], attachment_path)
 				_validate_reference(attachment, "weapon_id", "weapons", records_by_id, attachment_path)
 				_validate_reference(attachment, "item_id", "augmentations", records_by_id, attachment_path)
+
+
+func _validate_character_starting_content(record: Dictionary, records_by_id: Dictionary, path: String) -> void:
+	var relics: Variant = record.get("start_relics", [])
+	if not (relics is Array):
+		errors.append("%s.start_relics must be an array." % path)
+	else:
+		var counts: Dictionary = {}
+		for relic_index in relics.size():
+			var relic_id := str(relics[relic_index])
+			_validate_id_reference(relic_id, "relics", records_by_id, "%s.start_relics[%d]" % [path, relic_index])
+			counts[relic_id] = int(counts.get(relic_id, 0)) + 1
+			var cap := int(records_by_id.get("relics", {}).get(relic_id, {}).get("max_stack", 0))
+			if cap > 0 and counts[relic_id] > cap:
+				errors.append("%s.start_relics exceeds max_stack for %s." % [path, relic_id])
+	var traits: Variant = record.get("traits", [])
+	if not (traits is Array):
+		errors.append("%s.traits must be an array." % path)
+	else:
+		for trait_data in traits:
+			if not (trait_data is Dictionary):
+				errors.append("%s.traits entries must be objects." % path)
+				continue
+			_validate_required_fields(trait_data, ["title", "description"], path + ".traits")
+			_validate_non_empty_text(trait_data, "title", path + ".traits")
+			_validate_non_empty_text(trait_data, "description", path + ".traits")
+	if not record.has("combat_visuals"):
+		return
+	var visuals: Variant = record.combat_visuals
+	if not (visuals is Dictionary):
+		errors.append("%s.combat_visuals must be an object." % path)
+		return
+	for field in ["idle", "walk"]:
+		var asset: Variant = visuals.get(field, "")
+		if not (asset is String) or str(asset).is_empty() or not ResourceLoader.exists(str(asset), "Texture2D"):
+			errors.append("%s.combat_visuals.%s must reference an existing texture." % [path, field])
+	_validate_non_negative_int(visuals, "walk_frames", path + ".combat_visuals")
+	if float(visuals.get("walk_frames", 0)) < 1:
+		errors.append("%s.combat_visuals.walk_frames must be positive." % path)
+	var fps: Variant = visuals.get("walk_fps", 0)
+	if not (fps is int or fps is float) or float(fps) <= 0:
+		errors.append("%s.combat_visuals.walk_fps must be positive." % path)
 
 
 func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:

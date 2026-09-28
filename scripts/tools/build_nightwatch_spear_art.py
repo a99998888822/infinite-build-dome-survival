@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "artifacts/nightwatch_spear_review"
-ICON = ROOT / "assets/ui/icons/weapons/weapon_nightwatch_spear.png"
+ICON = OUT / "weapon_nightwatch_spear.png"
 WORLD = ROOT / "assets/sprites/weapons/weapon_nightwatch_spear.png"
 P = {"ink": "#10191d", "wood": "#3d4546", "wood_hi": "#7a8176",
      "steel_lo": "#304a55", "steel": "#637f86", "silver": "#a9bfba", "edge": "#e1e8d3",

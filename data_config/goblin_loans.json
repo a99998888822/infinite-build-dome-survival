@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "trigger_clicks": 3,
+  "speech": "钱不够？先拿去，后面再还！",
+  "pricing": {"safety_margin_percent": 10, "rate_step_percent": 5},
+  "offers": [
+    {"amount": 100, "rate_percent": 40, "icon": "res://assets/ui/finance/loan/loan_100.png"},
+    {"amount": 200, "rate_percent": 30, "icon": "res://assets/ui/finance/loan/loan_200.png"},
+    {"amount": 500, "rate_percent": 20, "icon": "res://assets/ui/finance/loan/loan_500.png"}
+  ]
+}

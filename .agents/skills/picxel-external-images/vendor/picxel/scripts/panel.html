@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Picxel</title>
+<style>
+:root{--bg:#161a22;--panel:#1c212b;--card:#232936;--fg:#e6e8ee;--dim:#8d94a5;--line:#2e3442;--btn:#2b3140;--btn2:#343b4c;
+  --accent:#6c5ce7;--ok:#3fb950;--warn:#e3b341;--bad:#f85149;--okbg:#1f3a2a;--warnbg:#3a3220;--badbg:#3a2323;
+  --check1:#2a3040;--check2:#20262f;--overlay:rgba(8,10,14,.86)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;display:flex;min-height:100vh}
+aside{width:340px;flex:none;background:var(--panel);border-right:1px solid var(--line);padding:24px 22px;display:flex;flex-direction:column;gap:18px}
+main{flex:1;padding:28px 32px;overflow:auto;min-width:0}
+h1{font-size:22px;margin:0}
+h1 small{font-size:12px;color:var(--dim);margin-left:8px;font-weight:normal}
+.sub{color:var(--dim);font-size:12px;margin-top:-12px}
+.step{font-size:12px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+button{background:var(--btn);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font:inherit;cursor:pointer}
+button:hover{background:var(--btn2)}
+button:disabled{opacity:.45;cursor:default}
+button.mini{padding:2px 8px;font-size:11px;border-radius:7px;color:var(--dim)}
+button.primary{background:var(--accent);border-color:transparent;color:#fff}
+button.primary:hover{filter:brightness(1.1)}
+.path{font-size:12px;color:var(--dim);margin-top:6px;min-height:18px;display:flex;gap:6px;align-items:flex-start}
+.path span{word-break:break-all;flex:1}
+.path .folder{color:var(--fg)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--btn);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:8px}
+.seg button.on{background:var(--accent);color:#fff}
+.hint{margin-top:0;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:16px;text-align:center;color:var(--dim);line-height:1.7}
+.hint b{color:var(--fg);display:block;font-size:15px;margin-bottom:4px}
+.hint.live{border-color:var(--accent)}
+.err{color:var(--bad);font-size:12px;min-height:18px}
+.err:empty{display:none}
+.center{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--dim);text-align:center}
+.spin{width:54px;height:54px;border:5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:r 1s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
+.banner{display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+.pill{padding:4px 10px;border-radius:999px;font-size:12px;background:var(--btn)}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.bad{background:var(--badbg);color:var(--bad)}
+.notice{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:14px 16px;margin-bottom:22px;line-height:1.7}
+.notice.bad{background:var(--badbg);color:var(--bad)}
+.asset{margin-bottom:28px}
+.asset .head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.asset .name{font-weight:600;font-size:15px}
+.tag{font-size:11px;color:var(--dim);background:var(--btn);border-radius:6px;padding:2px 7px}
+.tag.warn{color:var(--warn);background:var(--warnbg)}.tag.bad{color:var(--bad);background:var(--badbg)}.tag.ok{color:var(--ok);background:var(--okbg)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:1200px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;display:flex;flex-direction:column;min-width:0;aspect-ratio:1;overflow:hidden}
+.card:hover{border-color:var(--accent)}
+.card .t{font-size:12px;color:var(--dim);margin-bottom:8px;display:flex;justify-content:space-between;gap:6px;align-items:center}.card .t span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.button-link{display:inline-block;background:var(--btn);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 14px;text-decoration:none}.original-link{font-size:12px;color:var(--dim)}
+.card .img{flex:1;display:flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden;min-height:0;padding:6px;
+  background:linear-gradient(45deg,var(--check1) 25%,transparent 25%,transparent 75%,var(--check1) 75%),linear-gradient(45deg,var(--check1) 25%,transparent 25%,transparent 75%,var(--check1) 75%);
+  background-size:16px 16px;background-position:0 0,8px 8px;background-color:var(--check2)}
+.card img{image-rendering:pixelated;display:block;width:100%;height:100%;object-fit:contain}
+.card.orig .img{min-height:0}
+.card.orig img{max-width:100%;max-height:100%;image-rendering:auto}
+.card .miss{color:var(--dim);font-size:12px;text-align:center;line-height:1.5;padding:8px;max-width:160px}
+.card.empty{cursor:default}.card.empty:hover{border-color:var(--line)}
+/* compare overlay */
+.overlay{position:fixed;inset:0;background:var(--overlay);display:flex;flex-direction:column;z-index:9}
+.overlay .bar{display:flex;gap:12px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.overlay .bar .name{font-weight:600;font-size:16px;flex:1}
+.overlay .stage{flex:1;overflow:auto;display:flex;gap:28px;align-items:center;justify-content:safe center;padding:10px 30px 30px}
+.overlay .item{text-align:center;flex:none}
+.overlay .item .box{display:inline-block;border-radius:8px;padding:8px;
+  background:linear-gradient(45deg,var(--check1) 25%,transparent 25%,transparent 75%,var(--check1) 75%),linear-gradient(45deg,var(--check1) 25%,transparent 25%,transparent 75%,var(--check1) 75%);
+  background-size:16px 16px;background-position:0 0,8px 8px;background-color:var(--check2)}
+.overlay .item img{display:block;image-rendering:pixelated}
+.overlay .item.orig img{image-rendering:auto;max-height:60vh;max-width:40vw}
+.overlay .item .cap{margin-top:8px;color:var(--dim);font-size:12px}
+.overlay .nav{background:var(--btn);border-radius:50%;width:38px;height:38px;padding:0;font-size:18px}
+kbd{font:11px/1 ui-monospace,monospace;color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:2px 5px}
+.single-stage{max-width:1200px;margin-bottom:24px;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:16px}
+.single-stage h2{font-size:18px;margin:0 0 6px}.single-stage .phase{color:var(--dim);margin-bottom:16px}
+.workbench{display:grid;grid-template-columns:1fr 1fr 2fr;gap:16px;align-items:start}.workbench figure{margin:0;min-width:0}
+.workbench figcaption{color:var(--dim);font-size:12px;margin-bottom:8px}.workbench .surface{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--check2);border-radius:10px;overflow:hidden}
+.workbench img{width:100%;height:100%;object-fit:contain}.workbench img[hidden],.workbench canvas[hidden]{display:none}
+.workbench canvas{width:100%;height:100%;image-rendering:pixelated;background:repeating-conic-gradient(var(--check1) 0% 25%,var(--check2) 0% 50%) 0/20px 20px}
+.workbench .empty-note{padding:18px;text-align:center;color:var(--dim);font-size:12px}.single-stage .controls{margin-top:16px}.single-stage .disclosure{color:var(--dim);font-size:12px;margin:12px 0 0}
+@media(max-width:900px){.workbench{grid-template-columns:1fr 1fr}.workbench .pixel-view{grid-column:1/-1;max-width:420px;width:100%;justify-self:center}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+@media (max-width:1100px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  body{flex-direction:column}
+  aside{width:auto;border-right:0;border-bottom:1px solid var(--line)}
+  main{padding:20px 16px}
+  .hint{margin-top:4px}
+}
+</style>
+<body>
+<aside>
+  <div class="row" style="justify-content:space-between;align-items:flex-start">
+    <h1>Picxel <small id="ver"></small></h1>
+    <button id="lang" class="mini" title="切换语言 / Switch language"></button>
+  </div>
+  <div class="sub" id="sub"></div>
+
+  <div>
+    <div class="step" id="step1"></div>
+    <button id="pickFiles"></button>
+    <div class="path" id="importPath"><span></span></div>
+  </div>
+
+  <div>
+    <div class="step" id="step2"></div>
+    <button id="pickExport"></button>
+    <div class="path" id="exportPath"><span></span></div>
+  </div>
+
+  <div>
+    <div class="step" id="step3"></div>
+    <div class="row">
+      <span class="seg"><button id="modeSingle" class="on"></button><button id="modeBatch"></button></span>
+      <span class="seg" id="sizes"><button data-s="32">32</button><button data-s="64" class="on">64</button><button data-s="128">128</button></span>
+    </div>
+  </div>
+
+  <div class="err" id="err"></div>
+  <div class="hint" id="hint"></div>
+  <button id="newJob" hidden></button>
+</aside>
+
+<main id="main"><div class="center"></div></main>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---------- every string a human sees, in both languages
+const T={
+zh:{
+  ver:"外部图片像素化",sub:"导入高清图片，整理为像素艺术素材",lang:"EN",
+  step1:"第一步 · 选图",pick:"选择图片",pickMore:"继续添加图片",importHint:"单张选一张，批量可以多选（≤20）",
+  step2:"第二步 · 导出位置",pickExport:"选择输出文件夹",exportHint:"默认为导入位置下的 picxel-out",
+  step3:"第三步 · 模式",single:"单张",batch:"批量（≤20）",newJob:"新任务（清空当前设置）",
+  copy:"复制",copied:"已复制",copyTitle:"复制路径",copyFail:"复制失败，请手动选中路径",
+  count:n=>`（${n} 张）`,
+  hintPick:"<b>选好外部图片和导出位置后</b>请与 AI 对话开始像素化",
+  hintRunning:"<b>正在处理原图</b>当前设置已锁定，可在任务结束后调整",
+  hintAsking:"<b>AI 在等你</b>看右边的问题，选好后在对话里说“继续”",
+  hintDone:"<b>这批已结束</b>继续处理其他图片：点下面「新任务」，或直接换导入位置",
+  hintReady:"<b>位置已就绪</b>请与 AI 对话开始像素化<br><span style='font-size:12px'>例如：“按面板设置处理这些原图”</span>",
+  errSameFolder:"同一批图片请放在同一个文件夹中，已选列表保持不变。",
+  errOtherFolder:"这批图片来自另一个文件夹。请把素材放到同一文件夹，或点「新任务」重新选择；已选列表保持不变。",
+  errLimit:"每批最多 20 张图片，已选列表保持不变。",
+  confirmClear:"这批图片仍在处理中。清空设置不会停止处理，只是面板不再显示这批。继续？",
+  empty:"面板会在这里显示结果。",
+  exportMissing:p=>`导出文件夹不在了：<b>${esc(p)}</b><br>可能被删了或换了盘。重新选一个导出位置，或者点「新任务」。`,
+  importMissing:p=>`导入文件夹不在了：${esc(p)}。成品还能看，原图显示不出来。`,
+  recorded:(n,mode,sizes)=>`已记录 ${n} 张 · ${mode==="single"?"单张":"批量"} · ${sizes}`,waitAI:"等 AI 开始",
+  stalled:idle=>`${idle} 没有新文件了——AI 可能停了（用量、网络或别的）。可以继续等，或者`,stopWait:"结束等待，看已完成的",
+  drawing:el=>`原图处理中 · 已用 ${el}`,haveResults:(d,t)=>`${d} / ${t} 张已有结果`,
+  askingPill:"AI 在等你决定",askingElapsed:(el,d,t)=>`已用 ${el} · ${d} / ${t} 张已有结果`,askingNotice:"请在对话里回复，AI 再继续处理。",
+  okPill:(d,t)=>`处理完成 ${d} / ${t}`,interruptedPill:(d,t)=>`处理中断 · 完成 ${d} / ${t}`,
+  elapsedPill:(el,fin)=>`用时 ${el}${fin?" · "+fin+" 结束":""}`,openFinished:"打开成品图",
+  faces:n=>`面部待检查 · ${n}`,draftFailed:"底稿失败",viewOriginal:"查看原图",
+  concept:"预处理原图",noConcept:"原图尚未处理",notGenerated:"未处理",
+  missing:{"needs-concept":"等待外部图片","check-failed":"底稿没过校验",failed:"底稿失败","base-ready":"底稿有了，待检查此尺寸",
+           none:"这张图片尚未处理"},
+  wbTitle:"单张制作台",original:"原图",conceptPending:"抠图等预处理完成后显示在这里",pixel:"像素成品",pixelPending:"等待像素成品",
+  replay:"重播显现演示",skip:"直接看成品",disclosure:"原图像素化后的色块显现演示。成品在导出文件夹里，后续修整会更新画面。",
+  phaseDone:"制作完成",phaseInterrupted:"处理已中断，展示已有结果",phaseAsking:"等待你的决定",phasePixelReady:"像素成品已就绪，等待验收",
+  phaseConceptReady:"原图已预处理，正在准备像素成品",phaseGenerating:el=>`正在处理外部原图 · 已用 ${el}`,
+  pixelCaption:sz=>`${sz} × ${sz} · 像素成品`,loadFail:"预览加载失败，成品在导出文件夹里",shown:"成品已显示",playing:"正在播放色块显现演示",
+  zoomCap:(sz,z)=>`${sz} × ${sz} · ${z} 倍`,close:"关闭",
+  sec:s=>`${s} 秒`,minSec:(m,s)=>`${m} 分 ${s} 秒`,hrMin:(h,m)=>`${h} 时 ${m} 分`,locale:"zh-CN",
+},
+en:{
+  ver:"External Image Pixelizer",sub:"Turn supplied high-resolution images into pixel-art assets",lang:"中文",
+  step1:"Step 1 · Pick images",pick:"Choose images",pickMore:"Add more images",importHint:"One image in single mode, up to 20 in batch mode",
+  step2:"Step 2 · Output folder",pickExport:"Choose output folder",exportHint:"Defaults to picxel-out inside the image folder",
+  step3:"Step 3 · Mode",single:"Single",batch:"Batch (≤20)",newJob:"New task (clear settings)",
+  copy:"Copy",copied:"Copied",copyTitle:"Copy path",copyFail:"Copy failed, please select the path by hand",
+  count:n=>`(${n} images)`,
+  hintPick:"<b>Pick images and an output folder</b>then ask the AI in chat to start",
+  hintRunning:"<b>Processing source images</b>Settings are locked until this task ends",
+  hintAsking:"<b>AI is waiting for you</b>See the question on the right, then say “continue” in chat",
+  hintDone:"<b>This task is finished</b>To process more, click “New task” below or pick other images",
+  hintReady:"<b>Ready</b>Ask the AI in chat to pixelize these images<br><span style='font-size:12px'>e.g. “Process these images with the panel settings”</span>",
+  errSameFolder:"Images in one batch must come from the same folder; the selection was left unchanged.",
+  errOtherFolder:"These images are in a different folder. Move them together or click “New task”; the selection was left unchanged.",
+  errLimit:"A batch holds at most 20 images; the selection was left unchanged.",
+  confirmClear:"These images are still being processed. Clearing settings won't stop processing; the panel just stops showing them. Continue?",
+  empty:"Results will show up here.",
+  exportMissing:p=>`The output folder is gone: <b>${esc(p)}</b><br>It may have been deleted or moved. Choose another output folder or click “New task”.`,
+  importMissing:p=>`The image folder is gone: ${esc(p)}. Results still show, originals won't.`,
+  recorded:(n,mode,sizes)=>`${n} image${n===1?"":"s"} · ${mode==="single"?"single":"batch"} · ${sizes}`,waitAI:"Waiting for the AI to start",
+  stalled:idle=>`No new files for ${idle} — the AI may have stopped (quota, network, or something else). Keep waiting, or`,stopWait:"Stop waiting, show what's done",
+  drawing:el=>`Processing source images · ${el}`,haveResults:(d,t)=>`${d} of ${t} done`,
+  askingPill:"AI needs your decision",askingElapsed:(el,d,t)=>`${el} · ${d} of ${t} done`,askingNotice:"Reply in chat and the AI will continue.",
+  okPill:(d,t)=>`Done ${d} / ${t}`,interruptedPill:(d,t)=>`Interrupted · ${d} / ${t} done`,
+  elapsedPill:(el,fin)=>`Took ${el}${fin?" · finished "+fin:""}`,openFinished:"Open finished images",
+  faces:n=>`Face review · ${n}`,draftFailed:"Draft failed",viewOriginal:"View original",
+  concept:"Prepared source",noConcept:"Source not prepared yet",notGenerated:"Not processed",
+  missing:{"needs-concept":"Waiting for an external image","check-failed":"Draft failed validation",failed:"Draft failed","base-ready":"Draft ready, this size needs review",
+           none:"This image has not been processed yet"},
+  wbTitle:"Single-image workbench",original:"Original",conceptPending:"The prepared source appears here when ready",pixel:"Pixel result",pixelPending:"Waiting for the pixel result",
+  replay:"Replay reveal",skip:"Show result",disclosure:"A color-block reveal of the pixelized source. The result is in the output folder; later touch-ups refresh the picture.",
+  phaseDone:"Finished",phaseInterrupted:"Interrupted, showing what exists",phaseAsking:"Waiting for your decision",phasePixelReady:"Pixel result ready, awaiting review",
+  phaseConceptReady:"Source prepared, preparing the pixel result",phaseGenerating:el=>`Processing the external source · ${el}`,
+  pixelCaption:sz=>`${sz} × ${sz} · pixel result`,loadFail:"Preview failed to load; the result is in the output folder",shown:"Result shown",playing:"Playing the reveal",
+  zoomCap:(sz,z)=>`${sz} × ${sz} · ${z}×`,close:"Close",
+  sec:s=>`${s}s`,minSec:(m,s)=>`${m}m ${s}s`,hrMin:(h,m)=>`${h}h ${m}m`,locale:"en-US",
+}};
+let lang=(()=>{try{const v=localStorage.getItem("picxel-lang");if(v in T)return v}catch{}return /^zh/i.test(navigator.language)?"zh":"en"})();
+const t=k=>T[lang][k];
+function applyStatic(){
+  document.documentElement.lang=lang;
+  for(const id of ["ver","sub","step1","step2","step3","newJob","pickExport"])$("#"+id).textContent=t(id);
+  $("#modeSingle").textContent=t("single");$("#modeBatch").textContent=t("batch");$("#lang").textContent=t("lang");
+  const c=$("#main .center");if(c&&!last?.job)c.textContent=t("empty");
+}
+$("#lang").onclick=()=>{
+  lang=lang==="zh"?"en":"zh";try{localStorage.setItem("picxel-lang",lang)}catch{}
+  applyStatic();clearSingle();
+  if(last)render(last);else refreshSide();
+  if(view.asset)drawCompare();
+};
+
+let ui={import:"",export:"",files:[],mode:"single",sizes:[64],saved:null};
+let last=null;                                  // latest /api/state payload
+let view={asset:null,zoom:4};                   // compare overlay
+const api=(p,b)=>fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...(b||{}),lang})}).then(r=>r.json());
+function err(m){$("#err").textContent=m||""}
+
+// ---------- sidebar
+function pathLine(el,full,fallback,extra){
+  if(!full){el.innerHTML=`<span>${esc(fallback)}</span>`;return}
+  const norm=full.replace(/\//g,"\\"), i=norm.lastIndexOf("\\");
+  const head=i>=0?norm.slice(0,i+1):"", tail=i>=0?norm.slice(i+1):norm;
+  el.innerHTML=`<span title="${esc(norm)}">${esc(head)}<b class="folder">${esc(tail)}</b>${extra?" "+esc(extra):""}</span><button class="mini copy" title="${esc(t("copyTitle"))}">${esc(t("copy"))}</button>`;
+  el.querySelector(".copy").onclick=async e=>{try{await navigator.clipboard.writeText(norm);e.target.textContent=t("copied");setTimeout(()=>e.target.textContent=t("copy"),1200)}catch{err(t("copyFail"))}};
+}
+function refreshSide(){
+  $("#pickFiles").textContent=ui.mode==="batch"&&ui.files.length?t("pickMore"):t("pick");
+  pathLine($("#importPath"),ui.import,t("importHint"),ui.files.length>1?t("count")(ui.files.length):ui.files.length===1?`（${ui.files[0]}）`:"");
+  pathLine($("#exportPath"),ui.export,t("exportHint"),"");
+  $("#modeSingle").classList.toggle("on",ui.mode==="single");$("#modeBatch").classList.toggle("on",ui.mode==="batch");
+  document.querySelectorAll("#sizes button").forEach(b=>b.classList.toggle("on",ui.sizes.includes(+b.dataset.s)));
+  $("#newJob").hidden=!ui.saved;
+  const st=last&&last.job?last.status.state:null, h=$("#hint");
+  const busy=st==="running"||st==="asking";
+  document.querySelectorAll("#pickFiles,#pickExport,#modeSingle,#modeBatch,#sizes button").forEach(b=>b.disabled=busy);
+  h.classList.toggle("live",busy);
+  if(!ui.import)h.innerHTML=t("hintPick");
+  else if(st==="running")h.innerHTML=t("hintRunning");
+  else if(st==="asking")h.innerHTML=t("hintAsking");
+  else if(st==="done"||st==="interrupted")h.innerHTML=t("hintDone");
+  else h.innerHTML=t("hintReady");
+}
+function mergePickedImages(current,paths){
+  if(!paths.length)return {import:current.import,files:[...current.files]};
+  const selected=(current.mode==="single"?paths.slice(0,1):paths).map(p=>p.replace(/\\/g,"/"));
+  const folder=selected[0].slice(0,selected[0].lastIndexOf("/"));
+  const windows=/^(?:[a-z]:\/|\/\/)/i.test(folder), key=s=>windows?s.toLowerCase():s;
+  if(selected.some(p=>key(p.slice(0,p.lastIndexOf("/")))!==key(folder)))throw Error(t("errSameFolder"));
+  const append=current.mode==="batch"&&current.files.length>0;
+  if(append&&key(current.import.replace(/\\/g,"/"))!==key(folder))throw Error(t("errOtherFolder"));
+  const files=[],seen=new Set();
+  for(const name of [...(append?current.files:[]),...selected.map(p=>p.slice(p.lastIndexOf("/")+1))]){
+    if(!seen.has(key(name))){seen.add(key(name));files.push(name)}
+  }
+  if(files.length>20)throw Error(t("errLimit"));
+  return {import:append?current.import:folder,files};
+}
+async function save(selection={}){
+  const selected={...ui,...selection};
+  if(!selected.import)return;
+  err("");
+  const r=await api("/api/job",{import:selected.import,export:ui.export||selected.import+"/picxel-out",mode:ui.mode,files:selected.files,sizes:ui.sizes});
+  if(r.error){err(r.error);return}
+  Object.assign(ui,selection);ui.files=r.job.files;ui.saved=r.job;refreshSide();poll();
+}
+$("#pickFiles").onclick=async()=>{
+  const button=$("#pickFiles");button.disabled=true;
+  try{const r=await api("/api/pick",{kind:ui.mode==="single"?"file":"files"});if(r.error)return err(r.error);
+    if(r.paths.length)await save(mergePickedImages(ui,r.paths));
+  }catch(e){err(e.message)}finally{button.disabled=!!last&&["running","asking"].includes(last.status?.state)}
+};
+$("#pickExport").onclick=async()=>{const r=await api("/api/pick",{kind:"dir"});if(r.error)return err(r.error);if(r.paths[0]){ui.export=r.paths[0];save()}};
+$("#modeSingle").onclick=()=>{ui.mode="single";save();refreshSide()};
+$("#modeBatch").onclick=()=>{ui.mode="batch";save();refreshSide()};
+document.querySelectorAll("#sizes button").forEach(b=>b.onclick=()=>{const s=+b.dataset.s;ui.sizes=ui.sizes.includes(s)?ui.sizes.filter(x=>x!==s):[...ui.sizes,s].sort((a,b)=>a-b);if(!ui.sizes.length)ui.sizes=[64];save();refreshSide()});
+$("#newJob").onclick=async()=>{
+  if(last&&last.status.state==="running"&&!confirm(t("confirmClear")))return;
+  await api("/api/clear");ui={import:"",export:"",files:[],mode:"single",sizes:[64],saved:null};
+  last=null;refreshSide();render({job:null});
+};
+
+// ---------- main
+function fmt(sec){sec=Math.floor(sec||0);return sec<60?t("sec")(sec):sec<3600?t("minSec")(Math.floor(sec/60),sec%60):t("hrMin")(Math.floor(sec/3600),Math.floor(sec%3600/60))}
+function clock(iso){if(!iso)return"";const d=new Date(iso);return d.toLocaleTimeString(t("locale"),{hour:"2-digit",minute:"2-digit"})}
+const orderedSizes=st=>[...st.job.sizes].sort((a,b)=>b-a);
+function missingText(r){const m=t("missing");const base=m[r.missing_code]||m.none;return r.missing_detail?`${base}: ${r.missing_detail}`:base}
+
+// Single-image presentation uses delivered pixels, never invented model strokes.
+let single=null;
+function clearSingle(){if(single)cancelAnimationFrame(single.frame);single=null}
+function singleResult(st){
+  const [name,r]=Object.entries(st.results)[0]||["",{sizes:{}}];
+  const since=["running","asking"].includes(st.status.state)?Date.parse(st.status.started)/1000||0:0;
+  return [name,{...r,concept:r.concept_updated>=since?r.concept:null,
+    sizes:Object.fromEntries(Object.entries(r.sizes).filter(([,v])=>v.updated>=since))}];
+}
+function mountSingle(st){
+  const host=$("#singleHost");if(!host)return;
+  const [name,r]=singleResult(st), key=JSON.stringify([st.job.created,st.job.export,name,st.status.started,lang]);
+  if(!single||single.key!==key){
+    clearSingle();
+    const node=document.createElement("section");node.className="single-stage";
+    node.innerHTML=`<h2>${esc(t("wbTitle"))}</h2><div class="phase" role="status"></div><div class="workbench">
+      <figure><figcaption>${esc(t("original"))}</figcaption><div class="surface"><img class="source" alt="${esc(t("original"))}"></div></figure>
+      <figure><figcaption>${esc(t("concept"))}</figcaption><div class="surface"><img class="concept" alt="${esc(t("concept"))}" hidden><span class="empty-note">${esc(t("conceptPending"))}</span></div></figure>
+      <figure class="pixel-view"><figcaption class="pixel-caption">${esc(t("pixel"))}</figcaption><div class="surface"><canvas hidden aria-label="${esc(t("pixel"))}"></canvas><span class="empty-note">${esc(t("pixelPending"))}</span></div></figure></div>
+      <div class="row controls"><button class="replay" disabled>${esc(t("replay"))}</button><button class="skip" disabled>${esc(t("skip"))}</button><span class="play-state" role="status"></span></div>
+      <p class="disclosure">${esc(t("disclosure"))}</p>`;
+    single={key,node,frame:0,version:"",image:null};
+    node.querySelector(".source").src=st.originals[name];
+    node.querySelector(".replay").onclick=()=>playSingle(single);
+    node.querySelector(".skip").onclick=()=>finishSingle(single);
+  }
+  const current=single;host.replaceWith(current.node);
+  current.live=current.live||st.status.state==="running";
+  const el=s=>current.node.querySelector(s);
+  const size=orderedSizes(st).find(n=>r.sizes[n]), got=r.sizes[size];
+  el(".phase").textContent=st.status.state==="done"?t("phaseDone"):st.status.state==="interrupted"?t("phaseInterrupted"):st.status.state==="asking"?t("phaseAsking"):got?t("phasePixelReady"):r.concept?t("phaseConceptReady"):t("phaseGenerating")(fmt(st.elapsed));
+  const concept=el(".concept");concept.hidden=!r.concept;concept.nextElementSibling.hidden=!!r.concept;
+  const conceptUrl=r.concept?r.concept+"&v="+r.concept_updated:"";
+  if(concept.dataset.version!==conceptUrl){concept.dataset.version=conceptUrl;if(conceptUrl)concept.src=conceptUrl}
+  if(!got)return;
+  const version=got.png+"&v="+got.updated;
+  if(current.version===version)return;
+  const first=!current.image;current.version=version;
+  const img=new Image();
+  img.onload=()=>{
+    if(single!==current||current.version!==version)return;
+    current.image=img;const canvas=el("canvas");canvas.width=img.width;canvas.height=img.height;canvas.hidden=false;canvas.nextElementSibling.hidden=true;
+    el(".pixel-caption").textContent=t("pixelCaption")(size);
+    el(".replay").disabled=el(".skip").disabled=false;
+    if(first&&current.live)playSingle(current);else finishSingle(current);
+  };
+  img.onerror=()=>{if(single===current&&current.version===version)el(".play-state").textContent=t("loadFail")};
+  img.src=version;
+}
+function finishSingle(current){
+  if(!current?.image)return;cancelAnimationFrame(current.frame);
+  const canvas=current.node.querySelector("canvas"),ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(current.image,0,0);
+  current.node.querySelector(".play-state").textContent=t("shown");
+}
+function playSingle(current){
+  if(!current?.image)return;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){finishSingle(current);return}
+  cancelAnimationFrame(current.frame);
+  const canvas=current.node.querySelector("canvas"),ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(current.image,0,0);
+  const pixels=ctx.getImageData(0,0,canvas.width,canvas.height), groups=new Map();
+  for(let i=0;i<pixels.data.length;i+=4){if(!pixels.data[i+3])continue;
+    const color=Array.from(pixels.data.slice(i,i+4)).join(",");if(!groups.has(color))groups.set(color,[]);groups.get(color).push(i)}
+  const order=[...groups.values()].sort((a,b)=>b.length-a.length).flat(), frame=ctx.createImageData(canvas.width,canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);let drawn=0,start=null;
+  current.node.querySelector(".play-state").textContent=t("playing");
+  function tick(now){
+    if(single!==current)return;if(start===null)start=now;
+    const end=Math.min(order.length,Math.floor(order.length*(now-start)/5000));
+    while(drawn<end){const i=order[drawn++];frame.data.set(pixels.data.subarray(i,i+4),i)}
+    ctx.putImageData(frame,0,0);
+    if(drawn<order.length)current.frame=requestAnimationFrame(tick);else finishSingle(current);
+  }
+  current.frame=requestAnimationFrame(tick);
+}
+
+function assetBlock(st,name,r){
+  const tags=[];
+  if(r.faces&&r.faces.length)tags.push(`<span class="tag warn">${esc(t("faces")(r.faces.length))}</span>`);
+  if(r.errors&&r.errors.length)tags.push(`<span class="tag bad">${esc(t("draftFailed"))}</span>`);
+  let h=`<div class="asset"><div class="head"><span class="name">${esc(name)}</span>${tags.join("")}<a class="original-link" href="${esc(st.originals[name])}" target="_blank" rel="noopener">${esc(t("viewOriginal"))}</a></div><div class="strip">`;
+  h+=r.concept?`<div class="card orig" data-open="${esc(name)}"><div class="t"><span>${esc(t("concept"))}</span></div><div class="img"><img src="${esc(r.concept)}" alt="${esc(name)} ${esc(t("concept"))}"></div></div>`
+              :`<div class="card empty"><div class="t"><span>${esc(t("concept"))}</span></div><div class="img"><span class="miss">${esc(t("noConcept"))}</span></div></div>`;
+  for(const sz of orderedSizes(st)){
+    const got=r.sizes[sz];
+    h+=got?`<div class="card" data-open="${esc(name)}"><div class="t"><span>${sz} × ${sz}</span></div><div class="img"><img src="${esc(got.png)}&amp;t=${encodeURIComponent(st.status.updated||"")}" alt="${esc(name)} ${sz}px"></div></div>`
+          :`<div class="card empty"><div class="t"><span>${sz} × ${sz}</span></div><div class="img"><span class="miss">${esc(t("notGenerated"))}<br>${esc(missingText(r))}</span></div></div>`;
+  }
+  return h+`</div></div>`;
+}
+function render(st){
+  last=st;
+  if(!st.job||st.job.mode!=="single"||st.export_missing||st.status.state==="waiting")clearSingle();
+  const m=$("#main");
+  if(!st.job){m.innerHTML=`<div class="center">${esc(t("empty"))}</div>`;refreshSide();return}
+  if(st.export_missing){
+    m.innerHTML=`<div class="notice bad">${t("exportMissing")(st.job.export)}</div>`;refreshSide();return}
+  const s=st.status.state;
+  let html=st.import_missing?`<div class="notice">${t("importMissing")(st.job.import)}</div>`:"";
+  if(s==="waiting"){
+    html+=`<div class="banner"><span class="pill">${esc(t("recorded")(st.total,st.job.mode,st.job.sizes.join(" / ")))}</span><span class="pill">${esc(t("waitAI"))}</span></div>`;
+    html+=`<div class="strip">`+Object.keys(st.results).map(n=>`<div class="card orig empty"><div class="t">${esc(n)}</div><div class="img"><img src="${st.originals[n]}"></div></div>`).join("")+`</div>`;
+    m.innerHTML=html;refreshSide();return}
+  if(s==="running"){
+    const stall=st.status.looks_stalled?`<div style="color:var(--warn)">${esc(t("stalled")(fmt(st.idle)))}<button id="stopBtn" style="margin-left:6px">${esc(t("stopWait"))}</button></div>`:"";
+    if(st.job.mode==="single"){
+      const [name,r]=singleResult(st);
+      m.innerHTML=html+`<div id="singleHost"></div>`+stall+((r.concept||Object.keys(r.sizes).length)?assetBlock(st,name,r):"");mountSingle(st);
+      document.querySelectorAll("[data-open]").forEach(c=>c.onclick=e=>{if(!e.target.closest("a"))openCompare(c.dataset.open)});
+    }else m.innerHTML=html+`<div class="center"><div class="spin"></div><div>${esc(t("drawing")(fmt(st.elapsed)))}</div><div>${esc(t("haveResults")(st.done,st.total))}</div>${stall}</div>`;
+    const b=$("#stopBtn");if(b)b.onclick=()=>api("/api/stop").then(poll);
+    refreshSide();return}
+  if(s==="asking"){
+    // the assistant stopped for a human decision: no spinner, the question first, then what exists so far
+    html+=`<div class="banner"><span class="pill warn">${esc(t("askingPill"))}</span>${st.status.note?`<span class="pill">${esc(st.status.note)}</span>`:""}<span class="pill">${esc(t("askingElapsed")(fmt(st.elapsed),st.done,st.total))}</span></div>`;
+    html+=`<div class="notice">${esc(t("askingNotice"))}</div>`;
+  }else{
+    // done / interrupted: cards for what exists, honest line for what doesn't
+    const ok=s==="done";
+    html+=`<div class="banner">${ok?`<span class="pill ok">${esc(t("okPill")(st.done,st.total))}</span>`:`<span class="pill warn">${esc(t("interruptedPill")(st.done,st.total))}</span>`}`;
+    if(st.status.note)html+=`<span class="pill">${esc(st.status.note)}</span>`;
+    if(st.elapsed!=null)html+=`<span class="pill">${esc(t("elapsedPill")(fmt(st.elapsed),st.status.finished?clock(st.status.finished):""))}</span>`;
+    html+=`<button id="openBtn">${esc(t("openFinished"))}</button></div>`;
+  }
+  if(st.job.mode==="single")html+=`<div id="singleHost"></div>`;
+  for(const [name,r] of Object.entries(st.results))html+=assetBlock(st,name,r);
+  m.innerHTML=html;const ob=$("#openBtn");if(ob)ob.onclick=async()=>{const r=await api("/api/open",{which:"export"});if(r.error)err(r.error)};
+  if(st.job.mode==="single")mountSingle(st);
+  document.querySelectorAll("[data-open]").forEach(c=>c.onclick=e=>{if(!e.target.closest("a"))openCompare(c.dataset.open)});
+  refreshSide();
+}
+
+// ---------- compare overlay
+function openCompare(name){view.asset=name;drawCompare()}
+function closeCompare(){view.asset=null;const o=$(".overlay");if(o)o.remove();if(last)render(last)}
+function drawCompare(){
+  const st=last;if(!st||!view.asset||!st.results[view.asset]){closeCompare();return}
+  const names=Object.keys(st.results), i=names.indexOf(view.asset), r=st.results[view.asset];
+  let o=$(".overlay");if(!o){o=document.createElement("div");o.className="overlay";document.body.appendChild(o);o.onclick=e=>{if(e.target===o)closeCompare()}}
+  let items=r.concept?`<div class="item orig"><div class="box"><img src="${esc(r.concept)}" alt="${esc(t("concept"))}"></div><div class="cap">${esc(t("concept"))}</div></div>`:`<div class="item"><div class="cap">${esc(t("noConcept"))}</div></div>`;
+  for(const sz of orderedSizes(st)){
+    const got=r.sizes[sz];
+    items+=got?`<div class="item"><div class="box"><img src="${got.png}" width="${sz*view.zoom}" height="${sz*view.zoom}"></div><div class="cap">${esc(t("zoomCap")(sz,view.zoom))}</div></div>`
+              :`<div class="item"><div class="box" style="width:${Math.max(120,sz*view.zoom)}px;height:${Math.max(120,sz*view.zoom)}px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:12px">${esc(t("notGenerated"))}</div><div class="cap">${sz} × ${sz}</div></div>`;
+  }
+  o.innerHTML=`<div class="bar"><button class="nav" id="prev" ${i<=0?"disabled":""}>‹</button><span class="name">${esc(view.asset)} <span style="color:var(--dim);font-weight:normal;font-size:12px">${i+1} / ${names.length}</span></span>
+    <span class="seg" id="zoom">${[1,2,4,8].map(z=>`<button data-z="${z}" class="${z===view.zoom?"on":""}">${z}×</button>`).join("")}</span>
+    <button class="nav" id="next" ${i>=names.length-1?"disabled":""}>›</button><button id="close">${esc(t("close"))} <kbd>Esc</kbd></button></div><div class="stage">${items}</div>`;
+  $("#close").onclick=closeCompare;
+  $("#prev").onclick=()=>{view.asset=names[i-1];drawCompare()};$("#next").onclick=()=>{view.asset=names[i+1];drawCompare()};
+  o.querySelectorAll("#zoom button").forEach(b=>b.onclick=()=>{view.zoom=+b.dataset.z;drawCompare()});
+}
+document.addEventListener("keydown",e=>{
+  if(!view.asset)return;
+  if(e.key==="Escape")closeCompare();
+  else if(e.key==="ArrowLeft"){const b=$("#prev");if(b&&!b.disabled)b.click()}
+  else if(e.key==="ArrowRight"){const b=$("#next");if(b&&!b.disabled)b.click()}
+});
+
+// ---------- poll
+let lastKey="";
+async function poll(){
+  try{const st=await (await fetch("/api/state")).json();
+    const key=JSON.stringify(st);if(key===lastKey)return;lastKey=key;      // redraw only when something changed
+    if(st.job&&(!ui.saved||st.job.created!==ui.saved.created)){ui={import:st.job.import,export:st.job.export,files:st.job.files,mode:st.job.mode,sizes:st.job.sizes,saved:st.job};}
+    if(!st.job&&ui.saved)ui={import:"",export:"",files:[],mode:"single",sizes:[64],saved:null};
+    if(view.asset){last=st;drawCompare();refreshSide()}else render(st)}catch(e){}
+}
+applyStatic();refreshSide();poll();setInterval(poll,2000);
+</script>
+</body>
+</html>

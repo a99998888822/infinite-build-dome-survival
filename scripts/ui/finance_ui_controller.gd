@@ -7,9 +7,17 @@ var _hud: BattleHud
 var _attempts := 0
 var _last_rect := Rect2()
 var _suspended_for_inspection := false
+var challenge_popup: WaveChallengePopup
 
 
 func _ready() -> void:
+	challenge_popup = WaveChallengePopup.new()
+	challenge_popup.name = "WaveChallengePopup"
+	var challenge_layer := CanvasLayer.new()
+	challenge_layer.name = "ChallengeLayer"
+	challenge_layer.layer = 30 # Above the HUD drawer (29); suspended when settings open.
+	add_child(challenge_layer)
+	challenge_layer.add_child(challenge_popup)
 	_bind.call_deferred()
 
 
@@ -30,9 +38,13 @@ func _bind() -> void:
 	_flow.state_changed.connect(_on_flow_state_changed)
 	_flow.flow_reset.connect(_on_flow_reset)
 	finance_popup.bind_flow(_flow)
+	challenge_popup.flow = _flow
 
 
 func _on_modal_requested(state: String, payload: Dictionary) -> void:
+	if state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		challenge_popup.present(payload)
+		return
 	if state != MainFlowCoordinator.STATE_FINANCE_POPUP: return
 	_suspended_for_inspection = false
 	_apply_safe_rect(true)
@@ -45,12 +57,18 @@ func _on_preparation_changed(payload: Dictionary) -> void:
 
 
 func _on_modal_closed(state: String) -> void:
+	if state == MainFlowCoordinator.STATE_WAVE_CHALLENGE: challenge_popup.dismiss()
 	if state == MainFlowCoordinator.STATE_FINANCE_POPUP:
 		_suspended_for_inspection = false
 		finance_popup.hide_popup()
 
 
 func _on_flow_state_changed(previous: String, current: String) -> void:
+	if current == MainFlowCoordinator.STATE_BATTLE_RESULT: challenge_popup.dismiss()
+	if previous == MainFlowCoordinator.STATE_WAVE_CHALLENGE and current == MainFlowCoordinator.STATE_BATTLE_UTILITY:
+		challenge_popup.hide()
+	elif previous == MainFlowCoordinator.STATE_BATTLE_UTILITY and current == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		challenge_popup.show()
 	if previous == MainFlowCoordinator.STATE_FINANCE_POPUP and current == MainFlowCoordinator.STATE_ESC_OVERLAY:
 		_suspended_for_inspection = true
 		# Preserve the existing widgets and scroll state while the list is open.
@@ -62,6 +80,7 @@ func _on_flow_state_changed(previous: String, current: String) -> void:
 
 
 func _on_flow_reset() -> void:
+	challenge_popup.dismiss()
 	_suspended_for_inspection = false
 	finance_popup.hide_popup()
 	finance_popup.reset_interest_arrival()

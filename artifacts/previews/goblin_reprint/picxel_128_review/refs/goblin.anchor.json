@@ -1,0 +1,99 @@
+{
+  "subject": "The supplied adult goblin banker: preserve the original silhouette, facial proportions, posture, tall top hat, monocle, fitted suit and resting hands.",
+  "kind": "sprite",
+  "size": 128,
+  "keep": [
+    "Adult slender head and narrow tailored waist, preserving the reference pose and proportions",
+    "Tall black top hat with curved brim and a few broad flat highlights",
+    "Long angular nose, small pointed ears, narrow chin and olive-green skin",
+    "Sly half-lidded yellow eyes, asymmetric eyebrows and restrained closed-mouth smirk",
+    "One brass monocle on image-left; black bow tie, ivory shirt and a simplified gold chain",
+    "Both long-fingered hands resting low and forward, with a small gold ring on image-right"
+  ],
+  "drop": [
+    "Paper backdrop and tabletop surface: deliver the character alone on real transparency",
+    "Continuous painterly gradients, cloth grain, individual hair strands and skin speckles",
+    "Individual chain links, tiny engraved symbols, fingernail texture and decorative noise",
+    "Text, logos and watermarks"
+  ],
+  "regions": [
+    {
+      "name": "hat and coat",
+      "box": [
+        0.05,
+        0.01,
+        0.94,
+        0.97
+      ],
+      "detail": "medium"
+    },
+    {
+      "name": "face",
+      "box": [
+        0.34,
+        0.33,
+        0.64,
+        0.58
+      ],
+      "detail": "fine"
+    },
+    {
+      "name": "monocle and eyes",
+      "box": [
+        0.36,
+        0.35,
+        0.63,
+        0.46
+      ],
+      "detail": "fine"
+    },
+    {
+      "name": "hands",
+      "box": [
+        0.2,
+        0.81,
+        0.92,
+        0.98
+      ],
+      "detail": "fine"
+    }
+  ],
+  "colors": [
+    "blue-black cloth",
+    "olive-green skin",
+    "muted brass",
+    "ivory shirt"
+  ],
+  "palette": [
+    "#141b20",
+    "#252b31",
+    "#393c40",
+    "#515458",
+    "#32492f",
+    "#4d633a",
+    "#728648",
+    "#97a65d",
+    "#b6bf73",
+    "#d0d196",
+    "#695033",
+    "#af8a4b",
+    "#e2c180",
+    "#969f97",
+    "#dedec6",
+    "#f2eedb"
+  ],
+  "faces": [
+    {
+      "box": [
+        0.34,
+        0.32,
+        0.65,
+        0.59
+      ],
+      "complex": true,
+      "expression": "Calculating, amused and slightly aloof: low upper eyelids, angled brows and a subtle closed-mouth smirk.",
+      "gaze": "Both pupils sit under low upper lids, approximately toward the middle of each eye, directed forward and slightly downward. Narrow sclera is visible at both outer sides. Do not turn this into an upward glance or large round surprised eyes.",
+      "reason": "Subtle eyelid angle, golden irises and the overlapping monocle require checking at native 128px."
+    }
+  ]
+}

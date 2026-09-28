@@ -1,0 +1,50 @@
+{
+  "frame_size": [
+    128,
+    128
+  ],
+  "states": [
+    {
+      "index": 0,
+      "expression": "neutral",
+      "source": "artifacts/previews/goblin_reprint/picxel_128_review/work/goblin-128.png",
+      "sha256": "28505363655a7e1e8aa8d339cda0a5dde3429a9472f93aaa0700c87cb7ee4212"
+    },
+    {
+      "index": 1,
+      "expression": "downcast",
+      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast-128.png",
+      "sha256": "27e1ac1ad62a235843e82ce1fb557b2d193714ac25ca133f23cd7beac72e6a01"
+    },
+    {
+      "index": 2,
+      "expression": "displeased",
+      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased-128.png",
+      "sha256": "407105a0d114d3687eca4b4bff0c7b4da36174f792313b5f620739dfad5d0439"
+    },
+    {
+      "index": 3,
+      "expression": "smile",
+      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile-128.png",
+      "sha256": "1f1c4d150cfb91b719a11518e391cf4c004a96a36bbb0a0e66120f78461aa6a0"
+    },
+    {
+      "index": 4,
+      "expression": "delighted",
+      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted-128.png",
+      "sha256": "a8533f87bb783827301be7589ac207b479159f1b880eb3c6af573cd8ec4b9152"
+    }
+  ],
+  "settlement_rows": [
+    4,
+    2,
+    3,
+    1
+  ],
+  "settlement_bob_pixels": [
+    0,
+    -1,
+    0,
+    1
+  ]
+}

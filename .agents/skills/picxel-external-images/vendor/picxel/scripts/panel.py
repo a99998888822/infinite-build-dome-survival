@@ -1,0 +1,483 @@
+"""Picxel panel -- a local page for the human: pick where the images come from and where the
+assets go, watch one spinner while the assistant works in chat, then see the results as cards.
+
+The panel never drives the assistant. It writes one job file the assistant reads
+(`picxel job show`), and reads back the status file the assistant updates
+(`picxel job start|done|stop`), the batch report and whatever PNGs land in the export folder.
+Standard library only: http.server for the page, tkinter for the native folder dialogs."""
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+import threading
+import webbrowser
+from datetime import datetime, timezone
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from urllib.parse import parse_qs, urlparse, urlencode
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(errors="replace")          # notes may be Chinese; a cp936 console must not crash the command
+
+SIZES = (32, 64, 128)
+BATCH_LIMIT = 20
+IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg", ".webp")
+# Project external-image workflow: do not replace the global Picxel panel job.
+JOB_FILE = Path(__file__).resolve().parents[1] / ".runtime" / "current-job.json"
+STATUS_NAME = "picxel.status.json"
+REPORT_NAME = "batch-report.json"       # written by `picxel batch` into the export folder
+FINISHED_DIR = "成品图"
+IDLE_SECONDS = 240          # no new file in the export folder for this long while "running" -> looks interrupted
+PANEL_HTML = Path(__file__).with_name("panel.html")
+
+# What the page says about a size that has no finished PNG yet, keyed by the batch report status.
+MISSING_REASON = {
+    "needs-concept": "等待外部图片",
+    "check-failed": "底稿没过校验",
+    "failed": "底稿失败",
+    "base-ready": "底稿有了，待检查此尺寸",
+}
+
+# The few server-side strings a human reads, in the page's current language (`lang` in each POST body).
+MESSAGES = {
+    "zh": {"busy": "当前任务尚未结束，请先结束等待或新建任务，再修改设置。", "stopped": "面板上手动结束等待",
+           "dir": "选择文件夹", "file": "选择一张图片", "files": f"选择图片（最多 {BATCH_LIMIT} 张）"},
+    "en": {"busy": "The current task has not finished. Stop waiting or start a new task before changing settings.",
+           "stopped": "Stopped waiting from the panel",
+           "dir": "Choose a folder", "file": "Choose an image", "files": f"Choose images (up to {BATCH_LIMIT})"},
+}
+
+
+def msg(key: str, lang: str | None) -> str:
+    return MESSAGES["en" if lang == "en" else "zh"][key]
+
+
+def now() -> str:
+    return datetime.now(timezone.utc).astimezone().isoformat(timespec="microseconds")
+
+
+def read_json(path: Path, default):
+    if not path.exists():
+        return default
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return default
+
+
+# ---------------------------------------------------------------- job + status files
+
+def load_job() -> dict | None:
+    return read_json(JOB_FILE, None)
+
+
+def save_job(job: dict) -> dict:
+    """Validate the panel's choices and write the job file the assistant will read."""
+    current = load_job()
+    if current and load_status(Path(current["export"]))["state"] in ("running", "asking"):
+        raise ValueError(msg("busy", job.get("lang")))
+    problems = []
+    src, dst = Path(job.get("import") or ""), Path(job.get("export") or "")
+    if not job.get("import") or not src.is_dir():
+        problems.append("import folder does not exist")
+    if not job.get("export"):
+        problems.append("export folder is empty")
+    elif dst.exists() and not dst.is_dir():
+        problems.append("export path must be a folder")
+    mode = job.get("mode")
+    if mode not in ("single", "batch"):
+        problems.append("mode must be single or batch")
+    files = [f for f in job.get("files", []) if isinstance(f, str)]
+    if src.is_dir() and not files:
+        files = sorted(p.name for p in src.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES)
+    if mode == "single":
+        files = files[:1]
+    files = list(dict.fromkeys(files))
+    if any(Path(f).name != f or Path(f).suffix.lower() not in IMAGE_SUFFIXES or
+           not (src / f).is_file() or (src / f).resolve().parent != src.resolve() for f in files):
+        problems.append("selected images must exist inside the import folder")
+    stems = [os.path.normcase(Path(f).stem) for f in files]
+    if len(stems) != len(set(stems)):
+        problems.append("selected images must have distinct names before their extensions")
+    if not files:
+        problems.append("no images selected")
+    if len(files) > BATCH_LIMIT:
+        problems.append(f"a batch is at most {BATCH_LIMIT} images")
+    sizes = [int(s) for s in job.get("sizes", [64]) if int(s) in SIZES] or [64]
+    if problems:
+        raise ValueError("; ".join(problems))
+    clean = {
+        "import": str(src), "export": str(dst), "mode": mode, "files": files, "sizes": sizes,
+        "created": now(),
+    }
+    dst.mkdir(parents=True, exist_ok=True)
+    (dst / STATUS_NAME).write_text(json.dumps({"state": "waiting", "updated": now(), "note": ""}, indent=2) + "\n", encoding="utf-8")
+    JOB_FILE.parent.mkdir(parents=True, exist_ok=True)
+    JOB_FILE.write_text(json.dumps(clean, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return clean
+
+
+def clear_job() -> None:
+    """Forget the current job so the page starts empty; nothing in the export folder is touched."""
+    JOB_FILE.unlink(missing_ok=True)
+
+
+def status_path(export: Path) -> Path:
+    return export / STATUS_NAME
+
+
+def load_status(export: Path) -> dict:
+    return read_json(status_path(export), {"state": "waiting", "updated": None, "note": ""})
+
+
+def set_status(export: Path, state: str, note: str = "") -> dict:
+    if state not in ("waiting", "running", "asking", "done", "interrupted"):
+        raise ValueError("state must be waiting, running, asking, done or interrupted")
+    export.mkdir(parents=True, exist_ok=True)
+    if state in ("done", "interrupted"):
+        job = load_job()
+        if job and Path(job["export"]).resolve() == export.resolve():
+            export_images(job)
+    current = load_status(export)
+    # `asking`: the assistant stopped for a human decision. Resuming with `running` keeps the
+    # original start time, so the elapsed clock covers the whole batch.
+    started = current.get("started") if state == "asking" or (state == "running" and current.get("state") in ("running", "asking")) else None
+    status = {"state": state, "updated": now(), "note": note,
+              "started": started or (now() if state == "running" else current.get("started")),
+              "finished": now() if state in ("done", "interrupted") else None}
+    status_path(export).write_text(json.dumps(status, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return status
+
+
+def load_report(export: Path) -> dict:
+    """batch-report.json as {asset name: job entry}; empty when the batch has not run."""
+    report = read_json(export / REPORT_NAME, {})
+    return {j["name"]: j for j in report.get("jobs", []) if isinstance(j, dict) and "name" in j}
+
+
+def image_url(name: str) -> str:
+    return "/file?" + urlencode({"root": "export", "path": name})
+
+
+def current_output(job: dict, path: Path) -> bool:
+    """Only files produced since these settings were saved belong to this job."""
+    return path.is_file() and path.stat().st_mtime >= datetime.fromisoformat(job["created"]).timestamp()
+
+
+def completed_image(job: dict, native: Path, preview: Path) -> bool:
+    return (current_output(job, native) and current_output(job, preview)
+            and preview.stat().st_mtime >= native.stat().st_mtime)
+
+
+def deliverable_images(job: dict) -> list[tuple[Path, str]]:
+    """Only completed native PNGs and background-removed concepts; no work files/previews."""
+    export = Path(job["export"])
+    files = []
+    for stem in dict.fromkeys(Path(f).stem for f in job["files"]):
+        concept = export / f"{stem}.concept.png"
+        if current_output(job, concept):
+            files.append((concept, f"{stem}-效果图.png"))
+        for size in sorted(set(job["sizes"]), reverse=True):
+            native = export / f"{stem}-{size}.png"
+            if completed_image(job, native, export / f"{stem}-{size}@4x.png"):
+                files.append((native, native.name))
+    if any(export.resolve() not in source.resolve().parents for source, _ in files):
+        raise ValueError("deliverable images must stay inside the export folder")
+    return files
+
+
+def export_images(job: dict) -> Path:
+    export = Path(job["export"]).resolve()
+    if not export.is_dir():
+        raise ValueError("export folder no longer exists")
+    destination = export / FINISHED_DIR
+    if export not in destination.resolve().parents:
+        raise ValueError("finished images folder must stay inside the export folder")
+    destination.mkdir(exist_ok=True)
+    for source, name in deliverable_images(job):
+        target = destination / name
+        if destination.resolve() not in target.resolve().parents:
+            raise ValueError("finished image must stay inside the finished images folder")
+        shutil.copy2(source, target)
+    return destination
+
+
+def scan_results(job: dict) -> dict:
+    """What actually exists in the export folder, grouped by asset name, plus the newest file time.
+    A size counts as finished when its @4x preview exists (that is what `render` writes last);
+    the page displays the native PNG so CSS can scale it to any zoom without blur."""
+    export = Path(job["export"])
+    stems = [Path(f).stem for f in job["files"]]
+    report = load_report(export) if current_output(job, export / REPORT_NAME) else {}
+    results, newest = {}, 0.0
+    if export.is_dir():
+        for p in export.iterdir():
+            if p.suffix.lower() == ".png":
+                newest = max(newest, p.stat().st_mtime)
+    for stem in stems:
+        sizes = {}
+        for size in job["sizes"]:
+            preview, native = export / f"{stem}-{size}@4x.png", export / f"{stem}-{size}.png"
+            if completed_image(job, native, preview):
+                sizes[str(size)] = {"png": image_url(native.name), "x4": image_url(preview.name),
+                                    "updated": native.stat().st_mtime}
+        entry = report.get(stem, {})
+        # "(warn)" lines are check hints for the assistant (isolated pixels etc.); the page shows only real failures
+        errors = [p for p in entry.get("problems", []) if "(warn)" not in p]
+        status = entry.get("status")
+        incomplete = len(sizes) < len(job["sizes"])
+        missing = MISSING_REASON.get(status, "这张图片尚未处理") if incomplete else ""
+        detail = errors[0] if status in ("check-failed", "failed") and errors else ""
+        if detail:
+            missing += "：" + detail
+        faces = [f["sheet"] for f in entry.get("face_review", []) if f.get("status") == "needs-face-review"]
+        concept = export / f"{stem}.concept.png"
+        results[stem] = {"sizes": sizes, "concept": image_url(concept.name) if current_output(job, concept) else None,
+                         "concept_updated": concept.stat().st_mtime if current_output(job, concept) else None,
+                         "status": status, "missing": missing, "errors": errors, "faces": faces,
+                         "missing_code": (status if status in MISSING_REASON else "none") if incomplete else "",
+                         "missing_detail": detail}
+    return {"results": results, "newest": newest,
+            "done": sum(all(str(n) in results[s]["sizes"] for n in job["sizes"]) for s in stems), "total": len(stems)}
+
+
+# ---------------------------------------------------------------- what the page polls
+
+def _seconds_since(iso: str | None) -> float | None:
+    if not iso:
+        return None
+    return max(0.0, datetime.now(timezone.utc).timestamp() - datetime.fromisoformat(iso).timestamp())
+
+
+def state_payload() -> dict:
+    job = load_job()
+    if job is None:
+        return {"job": None, "status": {"state": "waiting"}, "results": {}, "done": 0, "total": 0}
+    export = Path(job["export"])
+    if not export.is_dir():
+        return {"job": job, "status": {"state": "waiting"}, "results": {}, "done": 0, "total": len(job["files"]),
+                "export_missing": True, "import_missing": not Path(job["import"]).is_dir()}
+    status = load_status(export)
+    scan = scan_results(job)
+    idle = None
+    elapsed = None
+    if status.get("state") == "running":
+        # Reusing an export folder must not carry old PNG inactivity into a new run.
+        started = datetime.fromisoformat(status["started"]).timestamp() if status.get("started") else 0
+        last = max(scan["newest"], started)
+        idle = max(0, datetime.now().timestamp() - last) if last else 0
+        if idle > IDLE_SECONDS:
+            status = dict(status, looks_stalled=True)
+        elapsed = _seconds_since(status.get("started"))
+    elif status.get("started") and status.get("finished"):
+        elapsed = max(0.0, datetime.fromisoformat(status["finished"]).timestamp()
+                      - datetime.fromisoformat(status["started"]).timestamp())
+    elif status.get("state") == "asking":
+        elapsed = _seconds_since(status.get("started"))
+    stems = [Path(f).stem for f in job["files"]]
+    originals = {Path(f).stem: "/file?" + urlencode({"root": "import", "path": f}) for f in job["files"]}
+    return {"job": job, "status": status, "originals": originals, "idle": idle, "elapsed": elapsed,
+            "import_missing": not Path(job["import"]).is_dir(), **scan}
+
+
+# ---------------------------------------------------------------- native dialogs / opening folders
+
+def pick(kind: str, lang: str | None = None) -> list[str]:
+    """Keep Tk on a process main thread, outside HTTP request threads."""
+    if kind not in ("dir", "file", "files"):
+        raise ValueError("unknown picker kind")
+    result = subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--pick", kind, "en" if lang == "en" else "zh"],
+        capture_output=True, text=True, encoding="utf-8",
+        creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0,
+    )
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or "file dialog failed")
+    return json.loads(result.stdout)
+
+
+def _pick_on_main_thread(kind: str, lang: str = "zh") -> list[str]:
+    """Open the OS file/folder dialog through tkinter and return the chosen paths ([] if cancelled)."""
+    try:
+        import tkinter
+        from tkinter import filedialog
+    except ImportError:
+        raise RuntimeError("tkinter is not available; type the path instead")
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.shcore.SetProcessDpiAwareness(1)   # otherwise Windows stretches the dialog and it looks blurry
+        except Exception:
+            pass
+    root = tkinter.Tk()
+    root.withdraw()
+    root.attributes("-topmost", True)
+    try:
+        if kind == "dir":
+            chosen = filedialog.askdirectory(title=msg("dir", lang))
+            return [chosen] if chosen else []
+        if kind == "file":
+            chosen = filedialog.askopenfilename(title=msg("file", lang), filetypes=[("Images", "*.png *.jpg *.jpeg *.webp")])
+            return [chosen] if chosen else []
+        chosen = filedialog.askopenfilenames(title=msg("files", lang), filetypes=[("Images", "*.png *.jpg *.jpeg *.webp")])
+        return list(chosen)
+    finally:
+        root.destroy()
+
+
+def open_folder(path: Path) -> None:
+    if sys.platform == "win32":
+        os.startfile(str(path))                        # type: ignore[attr-defined]
+    elif sys.platform == "darwin":
+        subprocess.Popen(["open", str(path)])
+    else:
+        subprocess.Popen(["xdg-open", str(path)])
+
+
+# ---------------------------------------------------------------- http
+
+class Handler(BaseHTTPRequestHandler):
+    def parse_request(self):
+        if not super().parse_request():
+            return False
+        hosts = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+        origin = self.headers.get("Origin")
+        if self.headers.get("Host") not in hosts or (origin and origin not in {"http://" + h for h in hosts}):
+            self.send_error(403, "Local panel requests only")
+            return False
+        return True
+
+    def log_message(self, *_):                         # keep the console quiet
+        pass
+
+    def _json(self, payload, code=200):
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _body(self) -> dict:
+        n = int(self.headers.get("Content-Length") or 0)
+        raw = self.rfile.read(n)
+        if self.headers.get_content_type() != "application/json":
+            raise ValueError("request body must be application/json")
+        body = json.loads(raw or b"{}")
+        if not isinstance(body, dict):
+            raise ValueError("request body must be a JSON object")
+        return body
+
+    def do_GET(self):
+        url = urlparse(self.path)
+        if url.path == "/":
+            body = PANEL_HTML.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        elif url.path == "/api/state":
+            self._json(state_payload())
+        elif url.path == "/api/health":
+            self._json({"app": "Picxel", "root": str(Path(__file__).resolve().parents[1]),
+                        "python": sys.executable, "pid": os.getpid()})
+        elif url.path == "/file":
+            q = parse_qs(url.query)
+            job = load_job()
+            root = q.get("root", [""])[0]
+            if job is None or root not in ("import", "export"):
+                self.send_error(404); return
+            base = Path(job[root]).resolve()
+            target = (base / q.get("path", [""])[0]).resolve()
+            if base not in target.parents or not target.is_file() or target.suffix.lower() not in IMAGE_SUFFIXES:
+                self.send_error(404); return            # only files inside the two chosen folders
+            data = target.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "image/png" if target.suffix == ".png" else "image/jpeg" if target.suffix in (".jpg", ".jpeg") else "image/webp")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(data)
+        else:
+            self.send_error(404)
+
+    def do_POST(self):
+        url = urlparse(self.path)
+        try:
+            if url.path == "/api/pick":
+                b = self._body()
+                self._json({"paths": pick(b.get("kind", "dir"), b.get("lang"))})
+            elif url.path == "/api/job":
+                self._json({"job": save_job(self._body())})
+            elif url.path == "/api/clear":
+                self._body()
+                clear_job()
+                self._json({"ok": True})
+            elif url.path == "/api/stop":
+                b = self._body()
+                job = load_job()
+                if job is None:
+                    raise ValueError("no job")
+                self._json({"status": set_status(Path(job["export"]), "interrupted", msg("stopped", b.get("lang")))})
+            elif url.path == "/api/open":
+                job = load_job()
+                if job is None:
+                    raise ValueError("no job")
+                which = self._body().get("which", "export")
+                open_folder(Path(job["import"]) if which == "import" else export_images(job))
+                self._json({"ok": True})
+            else:
+                self.send_error(404)
+        except Exception as exc:                        # surfaced in the page, not in a traceback
+            self._json({"error": str(exc)}, 400)
+
+
+def serve(port: int, open_browser: bool) -> int:
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    url = f"http://127.0.0.1:{server.server_port}/"
+    print(f"Picxel panel: {url}  (Ctrl+C to stop)", flush=True)
+    if open_browser:
+        threading.Timer(0.5, lambda: webbrowser.open(url)).start()
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+    return 0
+
+
+
+# ---------------------------------------------------------------- `picxel job ...` for the assistant
+
+def job_command(action: str, note: str) -> int:
+    job = load_job()
+    if action == "show":
+        if job is None:
+            print("no panel job; ask the user to set import/export in the panel, or take paths from chat")
+            return 1
+        print(json.dumps(job, indent=2, ensure_ascii=False))
+        print(f"status: {load_status(Path(job['export']))['state']}")
+        return 0
+    if job is None:
+        print("no panel job to update")
+        return 1
+    state = {"start": "running", "ask": "asking", "done": "done", "stop": "interrupted"}[action]
+    status = set_status(Path(job["export"]), state, note)
+    print(f"job {state}: {job['export']}" + (f" -- {note}" if note else ""))
+    return 0
+
+
+if __name__ == "__main__":
+    if len(sys.argv) not in (3, 4) or sys.argv[1] != "--pick" or sys.argv[2] not in ("dir", "file", "files"):
+        raise SystemExit("usage: panel.py --pick dir|file|files [zh|en]")
+    sys.stdout.reconfigure(encoding="utf-8")
+    try:
+        print(json.dumps(_pick_on_main_thread(sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else "zh"), ensure_ascii=False))
+    except Exception as exc:
+        print(str(exc), file=sys.stderr)
+        raise SystemExit(1)

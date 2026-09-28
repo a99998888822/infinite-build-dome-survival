@@ -76,6 +76,19 @@ func _run() -> void:
 	popup = game.find_child("FinancePopup", true, false) as FinancePopup
 	check(flow.current_state == flow.STATE_FINANCE_POPUP and popup.visible, "wave end opens unified page")
 	check(popup.shop_grid.offers.size() >= 3, "paid shelf minimum three")
+	for viewport in [Vector2i(1152, 648), Vector2i(640, 360)]:
+		root.size = viewport
+		root.content_scale_size = viewport
+		popup._select_tab("enchant")
+		popup.workbench.refresh()
+		await frames()
+		var empty := popup.workbench._inventory.get_node_or_null("EmptyEnchantmentLabel") as Label
+		check(empty != null and empty.text == "暂无附魔" and empty.get_line_count() == 1, "empty enchantment text remains horizontal at " + str(viewport))
+		check(empty != null and empty.get_theme_color("font_color") == Color("8b9089"), "empty enchantment text is muted gray")
+	root.size = Vector2i(1152, 648)
+	root.content_scale_size = Vector2i(1152, 648)
+	popup._select_tab("shop")
+	await frames()
 	await get_tree().create_timer(.3).timeout
 	await capture("01_purchase_1152")
 	await _test_finance_esc_round_trip(game)
@@ -421,6 +434,8 @@ func _test_wave_start_and_free_rewards() -> void:
 	check(manager.finance_system.principal == principal_before, "new wave-start relic waits for start")
 	var wave_before := manager.finance_system.wave_counter
 	popup.start_button.pressed.emit()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(manager.wave_challenges.offer.token), false)
 	check(flow.current_state == flow.STATE_WAVE_COMBAT and manager.finance_system.wave_counter == wave_before + 1 and manager.finance_system.principal > principal_before, "start button runs newly acquired wave-start relic once")
 	check(manager.finance_system.wave_start_deposit_amount == 50, "preparation deposit survives real start")
 	flow.close_finance_popup()

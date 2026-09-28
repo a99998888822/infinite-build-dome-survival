@@ -2,6 +2,8 @@
 
 10件遗物及已确认的像素图标已接入正式遗物池。原图统一位于 `assets/ui/icons/relics/`，这里仅保存最终审阅图。
 
+[图标总览](icons.png) 合并自已完成的素材预览目录。原图均为32×32硬透明PNG；绘制源文件为 `scripts/tools/source_art/range_relics.py`，可重建正式图标和本目录总览，不覆盖此处的实机验证说明。属性以正式配置及下方实际HUD为准。
+
 | 图片 | 内容 |
 |---|---|
 | [shop_top.png](shop_top.png) / [shop_bottom.png](shop_bottom.png) | 哥布林银行商品卡、图标、稀有度与价格；滚动两屏覆盖10件遗物 |

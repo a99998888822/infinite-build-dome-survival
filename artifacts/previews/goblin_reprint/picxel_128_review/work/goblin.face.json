@@ -1,0 +1,56 @@
+{
+  "source": "goblin-128-detail",
+  "size": 128,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        53,
+        51,
+        56,
+        51
+      ],
+      "rows": [
+        "NMCN"
+      ],
+      "eyes": [
+        {
+          "box": [
+            53,
+            51,
+            56,
+            51
+          ],
+          "light": "N",
+          "dark": "C"
+        }
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        70,
+        49,
+        73,
+        49
+      ],
+      "rows": [
+        "AAMN"
+      ],
+      "eyes": [
+        {
+          "box": [
+            70,
+            49,
+            73,
+            49
+          ],
+          "light": "N",
+          "dark": "A"
+        }
+      ]
+    }
+  ]
+}

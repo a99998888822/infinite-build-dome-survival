@@ -84,10 +84,7 @@ const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 @onready var character_error_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ErrorLabel")
 @onready var character_back_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/BackButton")
 @onready var character_confirm_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/ConfirmButton")
-@onready var battle_result_panel: Control = get_node_or_null("BattleResultPanel")
-@onready var result_title_label: Label = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultTitleLabel")
-@onready var result_summary_label: Label = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultSummaryLabel")
-@onready var result_back_button: Button = get_node_or_null("BattleResultPanel/CenterContainer/MainPanel/Content/ResultBackButton")
+@onready var battle_result_panel: RunSettlementPanel = get_node_or_null("BattleResultPanel")
 
 var role_select_backdrop: Control = null
 
@@ -111,8 +108,8 @@ func _ready() -> void:
 		character_back_button.pressed.connect(_on_character_back_pressed)
 	if character_confirm_button != null and not character_confirm_button.pressed.is_connected(_on_character_confirm_pressed):
 		character_confirm_button.pressed.connect(_on_character_confirm_pressed)
-	if result_back_button != null and not result_back_button.pressed.is_connected(_on_result_back_pressed):
-		result_back_button.pressed.connect(_on_result_back_pressed)
+	if battle_result_panel != null:
+		battle_result_panel.back_requested.connect(_on_result_back_pressed)
 	call_deferred("_bind_to_main_flow")
 
 
@@ -218,6 +215,7 @@ func _bind_to_main_flow() -> void:
 		_main_flow_coordinator.state_changed.connect(state_callable)
 	if not _main_flow_coordinator.mode_changed.is_connected(mode_callable):
 		_main_flow_coordinator.mode_changed.connect(mode_callable)
+	_main_flow_coordinator.battle_result_changed.connect(_on_result_changed)
 	_refresh_visibility()
 
 
@@ -230,6 +228,8 @@ func _unbind_main_flow() -> void:
 		_main_flow_coordinator.state_changed.disconnect(state_callable)
 	if _main_flow_coordinator.mode_changed.is_connected(mode_callable):
 		_main_flow_coordinator.mode_changed.disconnect(mode_callable)
+	if _main_flow_coordinator.battle_result_changed.is_connected(_on_result_changed):
+		_main_flow_coordinator.battle_result_changed.disconnect(_on_result_changed)
 	_main_flow_coordinator = null
 
 
@@ -254,6 +254,7 @@ func _refresh_visibility() -> void:
 		return
 	var mode := flow.get_current_mode()
 	var state := flow.get_current_state()
+	layer = 40 if state == MainFlowCoordinator.STATE_BATTLE_RESULT else 20
 	var showing_character_select := mode == MainFlowCoordinator.MODE_BATTLE and state == MainFlowCoordinator.STATE_CHARACTER_SELECT
 	if start_page != null:
 		start_page.visible = mode == MainFlowCoordinator.MODE_BOOT
@@ -772,7 +773,7 @@ func _setup_role_select_runtime_ui() -> void:
 	details_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	details_content.add_theme_constant_override("separation", 8)
 	details_panel.add_child(details_content)
-	var stats_title := _make_role_section_title("◆ 基础属性")
+	var stats_title := _make_role_section_title("◆ 开局属性 · 不含营地")
 	details_content.add_child(stats_title)
 	stats_list = VBoxContainer.new()
 	stats_list.add_theme_constant_override("separation", 5)
@@ -922,6 +923,10 @@ func _on_difficulty_selected(difficulty_id: String) -> void:
 func _refresh_character_details(record: Dictionary) -> void:
 	if character_name_label == null or stats_list == null or weapon_list == null or passive_list == null:
 		return
+	for container in [stats_list, weapon_list, passive_list]:
+		for child in container.get_children():
+			container.remove_child(child)
+			child.queue_free()
 	if record.is_empty():
 		character_name_label.text = "请选择角色"
 		character_title_label.text = "SELECT A SURVIVOR"
@@ -933,24 +938,81 @@ func _refresh_character_details(record: Dictionary) -> void:
 	character_description_label.text = str(record.get("description", "暂无角色描述"))
 	var display_sprite_path := str(record.get("display_sprite", ""))
 	character_icon.texture = load(display_sprite_path) as Texture2D if not display_sprite_path.is_empty() and ResourceLoader.exists(display_sprite_path) else null
-	_build_stat_rows(record.get("base_stats", {}), record.get("display_stats", []))
+	_build_stat_rows(_get_character_starting_stats(record), record.get("display_stats", []))
 	_build_weapon_cards(record.get("start_weapons", []))
-	_build_passive_cards(record.get("passive_modifiers", []))
+	_build_character_traits(record)
+
+func _get_character_starting_stats(record: Dictionary) -> Dictionary:
+	# Use the same acquisition/modifier path as a run, without touching live state.
+	var preview := PlayerController.new()
+	preview.auto_initialize_on_ready = false
+	if not preview.initialize_from_character(str(record.get("id", ""))):
+		preview.free()
+		return {}
+	var bank := BattleFinanceSystem.new()
+	bank.initialize(preview, func(): return 0, func(_delta, _reason): return true)
+	preview.relic_added.connect(bank.on_relic_added)
+	preview.grant_starting_relics()
+	var result: Dictionary = {}
+	for stat_id in StatDefinitions.get_all_stat_ids():
+		result[stat_id] = preview.get_stat(stat_id)
+	result["finance"] = bank.principal
+	result["interest_rate"] = bank.get_interest_rate()
+	preview.free()
+	return result
+
+func _build_character_traits(record: Dictionary) -> void:
+	var traits: Array = record.get("traits", [])
+	var relics: Array = record.get("start_relics", [])
+	var passives: Array = record.get("passive_modifiers", [])
+	if traits.is_empty() and relics.is_empty():
+		_build_passive_cards(passives)
+		return
+	for trait_data in traits:
+		passive_list.add_child(_make_info_card(str(trait_data.title), str(trait_data.description)))
+	if not passives.is_empty():
+		_build_passive_cards(passives)
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_theme_constant_override("v_separation", 8)
+	passive_list.add_child(grid)
+	for relic_id in relics:
+		var relic := DataRegistry.get_record("relics", str(relic_id))
+		var row := HBoxContainer.new()
+		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.tooltip_text = "%s\n%s\n角色固有：开局获得奖励仅发放一次，不可移除。" % [relic.display_name, relic.description]
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(32, 32)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		icon.texture = load(str(relic.icon)) as Texture2D
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(icon)
+		var label := Label.new()
+		label.text = str(relic.display_name)
+		label.add_theme_font_size_override("font_size", 11)
+		label.add_theme_color_override("font_color", Color("bb92de"))
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(label)
+		grid.add_child(row)
 
 func _build_stat_rows(stats: Variant, display_stat_ids: Variant = []) -> void:
 	if not (stats is Dictionary):
 		return
-	var names := {"max_hp": "生命值", "hp_regen": "生命回复", "shield": "护盾", "armor": "护甲", "move_speed": "移动速度", "load_capacity": "负载上限", "pickup_radius": "拾取范围", "humanity": "理智值", "divinity": "侵蚀度"}
+	var names := {"max_hp": "生命值", "hp_regen": "生命回复", "shield": "护盾", "armor": "护甲", "move_speed": "移动速度", "load_capacity": "负载上限", "pickup_radius": "拾取范围", "humanity": "理智值", "divinity": "侵蚀度", "finance": "本金", "currency_gain_percent": "战斗金币"}
 	var caps := {"max_hp": 20.0, "hp_regen": 10.0, "shield": 20.0, "armor": 20.0, "move_speed": 360.0, "load_capacity": 150.0, "pickup_radius": 240.0, "humanity": 100.0, "divinity": 100.0}
 	var colors := {"max_hp": Color("#c85f52"), "hp_regen": Color("#d38b61"), "shield": Color("#72a9c8"), "armor": Color("#9c87c7"), "move_speed": Color("#6d9bc8"), "load_capacity": Color("#c49a4a"), "pickup_radius": Color("#73ad79"), "humanity": Color("#82b878"), "divinity": Color("#a979bd")}
+	caps["finance"] = 1000.0
 	var default_stat_order: Array[String] = ["max_hp", "hp_regen", "shield", "armor", "move_speed", "load_capacity", "pickup_radius", "humanity", "divinity"]
 	var stat_order: Array = display_stat_ids if display_stat_ids is Array else default_stat_order
 	for stat_id_variant in stat_order:
 		var stat_id := str(stat_id_variant)
 		if stats.has(stat_id):
-			stats_list.add_child(_make_stat_row(str(names.get(stat_id, stat_id)), float(stats[stat_id]), float(caps.get(stat_id, 100.0)), colors.get(stat_id, Color("#c49a4a"))))
+			stats_list.add_child(_make_stat_row(str(names.get(stat_id, StatDefinitions.get_display_name(stat_id))), float(stats[stat_id]), float(caps.get(stat_id, 100.0)), colors.get(stat_id, Color("#c49a4a")), StatDefinitions.is_percent_stat(stat_id)))
 
-func _make_stat_row(label_text: String, value: float, cap: float, color: Color) -> Control:
+func _make_stat_row(label_text: String, value: float, cap: float, color: Color, percent: bool = false) -> Control:
 	var row := HBoxContainer.new()
 	row.custom_minimum_size = Vector2(0, 26)
 	row.add_theme_constant_override("separation", 8)
@@ -966,16 +1028,17 @@ func _make_stat_row(label_text: String, value: float, cap: float, color: Color) 
 	bar.value = 0.0
 	bar.show_percentage = false
 	bar.add_theme_stylebox_override("background", _make_role_style(Color("#0a150e"), Color("#385843"), 2, 0))
-	bar.add_theme_stylebox_override("fill", _make_role_style(color, color.lightened(0.12), 0, 0))
+	var fill_color := Color("c85f52") if value < 0 else color
+	bar.add_theme_stylebox_override("fill", _make_role_style(fill_color, fill_color.lightened(0.12), 0, 0))
 	row.add_child(bar)
 	var value_label := Label.new()
 	value_label.custom_minimum_size = Vector2(58, 0)
-	value_label.text = _format_number(value)
+	value_label.text = _format_number(value) + ("%" if percent else "")
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value_label.add_theme_color_override("font_color", Color("#d6c68e"))
 	row.add_child(value_label)
 	var tween := create_tween()
-	tween.tween_property(bar, "value", value, 0.32)
+	tween.tween_property(bar, "value", absf(value), 0.32)
 	return row
 
 func _format_number(value: float) -> String:
@@ -1075,7 +1138,7 @@ func _build_difficulty_list() -> void:
 		button.add_theme_color_override("font_pressed_color", Color("#f1df9e"))
 		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		button.custom_minimum_size = Vector2(0, 60 if difficulty_id == "3" else 42)
+		button.custom_minimum_size = Vector2(0, 60 if not str(difficulty.description).is_empty() else 42)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.set_meta("difficulty_id", difficulty_id)
 		button.set_meta("difficulty_color", difficulty["color"])
@@ -1250,20 +1313,12 @@ func _make_role_style(background: Color, border: Color, border_width: int, radiu
 func _refresh_result_text() -> void:
 	if _main_flow_coordinator == null:
 		return
-	var victory := _main_flow_coordinator.current_victory
-	var summary := _main_flow_coordinator.current_battle_summary
-	if result_title_label != null:
-		result_title_label.text = "战斗胜利" if victory else "战斗失败"
-	if result_summary_label != null:
-		var reason := str(summary.get("reason", ""))
-		var summary_text := ""
-		if reason == "all_waves_cleared":
-			summary_text = "通关全部波次！"
-		elif reason == "player_died":
-			summary_text = "你在第 %d 波阵亡了" % maxi(_main_flow_coordinator.current_wave_index + 1, 1)
-		else:
-			summary_text = reason
-		result_summary_label.text = summary_text
+	if battle_result_panel != null and not _main_flow_coordinator.current_battle_summary.is_empty():
+		battle_result_panel.present(_main_flow_coordinator.current_battle_summary)
+
+
+func _on_result_changed(_victory: bool, _summary: Dictionary) -> void:
+	_refresh_result_text()
 
 
 func _on_result_back_pressed() -> void:

@@ -1,0 +1,36 @@
+{
+  "file": "bank-desk-128x64.png",
+  "canvas": [
+    128,
+    64
+  ],
+  "opaque_bbox": [
+    5,
+    8,
+    123,
+    56
+  ],
+  "opaque_colors": 16,
+  "alpha": [
+    0,
+    255
+  ],
+  "source_grid": [
+    128,
+    128
+  ],
+  "crop": [
+    0,
+    32,
+    128,
+    96
+  ],
+  "resampled": false,
+  "crop_restores_exact_grid": true,
+  "review_scale": 6,
+  "review_background_only": "#c2c6bf",
+  "method": "External-image pixelization plus AI-guided local pixel edits",
+  "image_model_used": false,
+  "user_style_review": "approved",
+  "installed_asset": "assets/ui/finance/bank_counter_desk_picxel.png"
+}

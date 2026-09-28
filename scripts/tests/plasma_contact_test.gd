@@ -40,7 +40,7 @@ func _run() -> void:
 	enemies[0].position = Vector2(boundary - 0.5, 0)
 	await frames()
 	ball._process_plasma_contact(0.0)
-	check(enemies[0].current_hp == 9988 and ball._plasma_tick_count == 1 and ball.speed == 80.0,
+	check(enemies[0].current_hp == 9988 and ball._plasma_tick_count == 1 and ball.speed == 20.0,
 		"visible edge contact starts one tick and slows the ball")
 	ball._process_plasma_contact(0.04)
 	check(enemies[0].current_hp == 9988, "no second tick before the contact interval")
@@ -103,14 +103,17 @@ func _run() -> void:
 	ball = shot()
 	await frames()
 	var first_gap := INF
+	var contact_step := INF
 	for step in 50:
 		var before := ball.global_position
 		ball._physics_process(1.0 / 60.0)
 		if ball._plasma_tick_count > 0:
 			first_gap = before.distance_to(enemies[0].global_position) - 12.0 - enemy_radius()
+			contact_step = before.distance_to(ball.global_position)
 			break
 	check(is_finite(first_gap) and first_gap <= 0.0 and first_gap > -3.0,
 		"real moving projectile starts damage only after the visible surfaces touch")
+	check(is_equal_approx(contact_step, 20.0 / 60.0), "the first damage frame immediately moves at the reduced speed")
 	var hp := enemies[0].current_hp
 	var clock: float = ball._plasma_visual.elapsed
 	var position_before := ball.position
@@ -120,6 +123,7 @@ func _run() -> void:
 		"pause freezes contact damage, movement and visual clock")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	check(not weapon.build_full_stats_text().contains("命中半径") and weapon.get_hit_radius() == 12, "tooltip omits contact radius while the twelve-pixel hit shape stays unchanged")
+	await check_contact_speed_recovery()
 	await check_enchantment_damage()
 	host.queue_free()
 	await frames()
@@ -127,6 +131,47 @@ func _run() -> void:
 	await get_tree().create_timer(0.1).timeout
 	print("PLASMA_CONTACT_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)
+
+
+func check_contact_speed_recovery() -> void:
+	await plasma_fixture([Vector2(24, 0), Vector2(800, 0)])
+	var ball := shot()
+	await frames()
+	enemies[0].current_hp = 1
+	ball._physics_process(1.0 / 60.0)
+	check(not enemies[0].is_alive() and ball.speed == 20.0 and ball._plasma_tick_count == 1,
+		"lethal contact immediately brakes the ball too")
+	var before := ball.position
+	for step in 9:
+		ball._physics_process(1.0 / 60.0)
+	check(is_equal_approx(ball.position.x - before.x, 3.0) and ball.speed == 20.0,
+		"after a kill the ball visibly crawls for at least 150 milliseconds")
+	var hold_before := ball._plasma_contact_hold_left
+	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+	ball._physics_process(1.0)
+	check(ball._plasma_contact_hold_left == hold_before and ball.speed == 20.0,
+		"pause freezes the contact slowdown hold")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+	ball._physics_process(0.07)
+	check(is_equal_approx(ball.speed, 80.0) and ball._plasma_tick_count == 1,
+		"speed recovers gradually after the hold without extra noncontact damage")
+	enemies[1].position = ball.position + Vector2(24, 0)
+	await frames()
+	ball._physics_process(0.01)
+	check(ball.speed == 20.0 and ball._plasma_tick_count == 2,
+		"recontact during recovery immediately reapplies the brake and resumes damage")
+	enemies[1].position = Vector2(800, 0)
+	await frames()
+	ball._physics_process(0.16)
+	ball._physics_process(0.12)
+	check(is_equal_approx(ball.speed, 140.0) and ball._plasma_tick_count == 2,
+		"leaving contact restores normal flight after the complete hold and recovery")
+	ball.free()
+	ball = shot()
+	await frames()
+	ball._physics_process(0.01)
+	check(ball.speed == 140.0 and ball._plasma_contact_hold_left == 0.0,
+		"a fresh projectile starts at full speed without inheriting a contact hold")
 
 
 func check_enchantment_damage() -> void:

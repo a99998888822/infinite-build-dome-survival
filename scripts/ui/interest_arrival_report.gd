@@ -48,6 +48,17 @@ static func build(payload: Dictionary) -> Dictionary:
 		var amount := "+%s%%" % HumanityEconomy.number(delta)
 		_add(report, "growth", "%s · 利率成长" % _relic_name(id, "遗物"), amount, float(report.total), id)
 	# No principal means no payout ceremony; the bank still shows its zero estimate.
+	var loan: Dictionary = last.get("loan_settlement",{})
+	if not loan.is_empty() and not report.steps.is_empty():
+		if str(loan.get("action",""))=="paid":
+			_add(report,"notice","贷款自动还清","−%d 金币" % int(loan.amount),float(report.total))
+		elif str(loan.get("action",""))=="rollover":
+			_add(report,"notice","贷款未还 · 已计复利","应还 %d 金币" % int(loan.due),float(report.total))
+	var challenge: Dictionary = last.get("challenge_settlement", {})
+	if not challenge.is_empty():
+		report["auto_deposit"] = true
+		_add(report, "growth", "结息后自动存入本金", "%d 金币" % int(challenge.deposited), float(report.total))
+		_add(report, "growth", "挑战奖励", "本金 +%d · 幸运 +%d" % [int(challenge.principal_bonus), int(challenge.luck_bonus)], float(report.total))
 	return report if not report.steps.is_empty() else {}
 
 

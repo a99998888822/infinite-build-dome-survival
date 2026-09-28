@@ -150,9 +150,12 @@ func refresh() -> void:
 	if _inventory.get_child_count() == 0:
 		_inventory.columns = 1
 		var empty := Label.new()
-		empty.text = "暂无未装备附魔 · 卸下或拾取后会显示在这里"
-		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		FinanceUIStyle.label(empty, 12, FinanceUIStyle.MUTED)
+		empty.name = "EmptyEnchantmentLabel"
+		empty.text = "暂无附魔"
+		empty.autowrap_mode = TextServer.AUTOWRAP_OFF
+		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		FinanceUIStyle.label(empty, 12, Color("8b9089"))
 		_inventory.add_child(empty)
 	_update_selection()
 

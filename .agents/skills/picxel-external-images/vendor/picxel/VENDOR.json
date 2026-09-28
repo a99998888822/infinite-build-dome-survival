@@ -1,0 +1,52 @@
+{
+  "upstream": "https://github.com/See-Sol-Lab/Picxel",
+  "snapshot_source": "Locally installed Picxel skill, tested in this project; upstream commit not recorded",
+  "snapshot_date": "2026-09-28",
+  "license": "GPL-3.0-only",
+  "files": [
+    {
+      "path": "scripts/picxel.py",
+      "sha256": "d9a4c463b44c68fc28005ff94ff61366c85baeed938b89c80d71a506ac6f3912"
+    },
+    {
+      "path": "scripts/px.py",
+      "sha256": "de8a6c48bc70fb68c4d29640187fe985a5ed3973f979807213f514c8b32bb96b"
+    },
+    {
+      "path": "scripts/panel.py",
+      "sha256": "895b009053be6da098a9e1122ae3979644a1f8e778764e4ee7cb2b1bce141639"
+    },
+    {
+      "path": "scripts/panel.html",
+      "sha256": "d5527b9136e1f47aeba282e7cd22b712003ea9c03bc655ae320aadde4bb6471a"
+    },
+    {
+      "path": "scripts/start_panel.py",
+      "sha256": "791b6585ca3e84d19ef691d2c60c07746f5b5e6c1a0387aeb55bb684cdd19dcc"
+    },
+    {
+      "path": "references/anchor.md",
+      "sha256": "d89ad757519953e7ee5b8d9755f219e37f56cd2b7998aa2d6d60e7ef63425e26"
+    },
+    {
+      "path": "references/faces.md",
+      "sha256": "edffc9b34430ec3b9f8d2868737a5df3f3eee0566f4e071a8b0f9fede46a6924"
+    },
+    {
+      "path": "references/checklist.md",
+      "sha256": "07739a73e458b472cdd8ee3503e459c8dd6ffe8e1203f59680382c43d46a5922"
+    },
+    {
+      "path": "SPEC.md",
+      "sha256": "65f06dbfb30a845f88ef61299ef0f739680196f19484ba177ef795afb8f2e398"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    }
+  ],
+  "local_changes": [
+    "panel.py: use a skill-local job file instead of the global Picxel job; describe external-image processing",
+    "panel.html: replace image-generation wording with external-image preparation and pixelization labels"
+  ]
+}

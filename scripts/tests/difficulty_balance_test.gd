@@ -66,8 +66,8 @@ func _test_selection_and_slots() -> void:
 			var base := 100.0 if stat == "armor" else 45.0
 			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index]), "actual enemy multiplier: " + id + " " + stat)
 		enemy.free()
-		check(manager.calculate_enemy_spawn_count(6) == 2 and manager.calculate_enemy_spawn_count(4) == 2, "same first-wave group sizes: " + id)
-		check(is_equal_approx(manager.calculate_spawn_interval(1200), 1620.0), "same regular spawn interval: " + id)
+		check(manager.calculate_enemy_spawn_count(6) == [4, 6, 8][index] and manager.calculate_enemy_spawn_count(4) == [4, 4, 6][index], "doubled first-wave group sizes: " + id)
+		check(is_equal_approx(manager.calculate_spawn_interval(1200), [1620.0, 1440.0, 1260.0][index]), "distinct regular spawn interval: " + id)
 		if id == "1":
 			_test_slots(player, loadout)
 			for wave in 3:
@@ -84,11 +84,12 @@ func _test_selection_and_slots() -> void:
 		manager._initialize_elite_schedule()
 		check(is_equal_approx(manager._elite_expected_count, 1.0 if id == "3" else 0.5), "tier three doubles elite expectation at the same wave")
 		var late_enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(3000, 0))
-		check(late_enemy.current_hp == roundi(8.0 * pow(1.14, 9) * [1.0, 1.2, 1.3][index]), "later waves retain the exact difficulty multiplier before rounding")
+		check(late_enemy.current_hp == roundi(8.0 * pow(1.24, 9) * [1.0, 1.2, 1.3][index]), "later waves retain the exact difficulty multiplier before rounding")
 		late_enemy.free()
 		# Fill to the configured limit and exercise real group spawning.
 		manager.current_wave_index = 0
 		var cap := int(BattleDifficulty.get_profile(id).enemy_limit)
+		check(cap == [240, 360, 480][index], "doubled live enemy limit: " + id)
 		for n in cap:
 			var blocker := manager.spawn_enemy("enemy_mutated_grub", Vector2(2000 + n * 3, 0))
 			blocker.set_physics_process(false)

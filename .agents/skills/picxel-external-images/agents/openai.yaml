@@ -1,0 +1,6 @@
+interface:
+  display_name: "Picxel · 外部图片像素化"
+  short_description: "把外部高清原图处理为透明像素素材，保留表情、统一色板并局部修整"
+  default_prompt: "使用 $picxel-external-images 将我提供的高清图片处理为透明像素素材，先按原图核对表情，再进行像素化与局部修整。"
+policy:
+  allow_implicit_invocation: true

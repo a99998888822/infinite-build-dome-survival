@@ -123,7 +123,9 @@
       "5": {"rarity": "mythic", "description": "每次灼击的远程基础伤害 [color=#7FD88F]+2[/color]", "effects": [{"stat": "ranged_damage", "value": 2}]}
     },
     "attachment_slots": 2,
-    "plasma_contact_speed": 80,
+    "plasma_contact_speed": 20,
+    "plasma_contact_hold_ms": 160,
+    "plasma_speed_recovery_ms": 120,
     "plasma_rotation_speed": 5.5,
     "plasma_arc_count": 4,
     "plasma_arc_segments": 16,

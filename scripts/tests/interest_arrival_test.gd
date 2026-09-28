@@ -80,7 +80,14 @@ func _run() -> void:
 	var first_id := str(report.id)
 	await _record("bonus")
 	arrival.seek(arrival.duration)
-	check(not arrival.is_active() and popup.trade_presentation.is_active(), "natural completion preserves the already visible trade")
+	check(arrival.is_active() and popup.trade_presentation.is_active(), "animation completion holds the receipt and preserves the trade")
+	arrival._process(60.0)
+	check(arrival.is_active() and arrival._amount.text == "+%d" % expected, "receipt remains visible with final amount after waiting")
+	var escape := InputEventKey.new()
+	escape.keycode = KEY_ESCAPE
+	escape.pressed = true
+	popup._input(escape)
+	check(not arrival.is_active() and flow.current_state == MainFlowCoordinator.STATE_FINANCE_POPUP and popup.trade_presentation.is_active(), "Escape closes only the receipt without opening inventory or cancelling trade")
 	check(manager.current_gold == snapshot_gold and is_equal_approx(manager.finance_system.get_interest_rate(), snapshot_rate), "animation cannot grant gold or grow interest again")
 	popup.configure(flow.get_preparation_payload())
 	popup.show_popup()
@@ -90,6 +97,8 @@ func _run() -> void:
 	check(not arrival.is_active(), "a new shop generation does not replay the payout")
 
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	manager.set_process(false)
 	_set_stat("humanity", 50)
 	_set_stat("interest_rate", 8 - manager.finance_system.interest_rate_bonus)
@@ -142,6 +151,8 @@ func _run() -> void:
 
 	# Closing during the next receipt must not resurrect an unresolved offer.
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	manager.set_process(false)
 	manager.goblin_trades.low_health_episodes = 3
 	flow.finish_current_wave()
@@ -168,6 +179,8 @@ func _run() -> void:
 		await frames()
 	check(manager.goblin_trades.offer.is_empty() and not popup.trade_presentation.is_active() and not arrival.is_active(), "actual click rejects trade during receipt and completes its presentation")
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	manager.set_process(false)
 	manager.goblin_trades.low_health_episodes = 3
 	flow.finish_current_wave()

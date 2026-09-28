@@ -1,0 +1,39 @@
+{
+  "source": "C:\\Users\\mi\\AppData\\Local\\Temp\\codex-clipboard-a9e49413-b33d-4a42-b589-c9c9763b5eae.png",
+  "source_sha256": "0b02644a9d6ea4bf1a84241a1d71eead6f29df8c42daa44e2132a05192e86e04",
+  "source_size": [
+    2176,
+    1088
+  ],
+  "source_has_alpha": false,
+  "subject_bbox": [
+    202,
+    185,
+    1980,
+    911
+  ],
+  "image_model_used": false,
+  "method": "Source-specific white flood fill including the enclosed crossbar gap; original RGB preserved",
+  "grid_size": [
+    128,
+    128
+  ],
+  "palette": [
+    "#111b18",
+    "#293025",
+    "#35291f",
+    "#523b28",
+    "#715032",
+    "#946a3e",
+    "#b38b55",
+    "#d1b47b",
+    "#e5d4a5",
+    "#a1926a",
+    "#7e6226",
+    "#bf9135",
+    "#efd172",
+    "#173d30",
+    "#245d50",
+    "#46a192"
+  ]
+}

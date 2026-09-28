@@ -398,7 +398,7 @@
 | 7 | 编写最小校验器 | 已完成 | `scripts/data/data_validator.gd` |
 | 8 | 加入跨表引用校验 | 已完成 | ID引用校验规则与 `scripts/data/unlock_registry.gd` |
 | 9 | 创建测试场景/脚本 | 已完成 | 复用 `scenes/core/bootstrap.tscn` 与 `scripts/core/bootstrap.gd` |
-| 10 | 准备占位素材 | 已完成 | `assets/ui/icons/placeholder_icon.png` |
+| 10 | 准备占位素材 | 历史步骤已完成 | 未使用的占位图已清理，当前使用正式图标 |
 | 11 | 验收基础模块 | 已完成 | 启动加载、查询、modifier计算、错误提示全部可用 |
 
 ## 结项说明
@@ -630,11 +630,11 @@ res://
 
 ### 文件
 
-`assets/ui/icons/placeholder_icon.png`
+历史占位图已移除。
 
 ### 说明
 
-该步骤已完成，当前已提供 `res://assets/ui/icons/placeholder_icon.png` 作为所有缺失图标的兜底资源。正式素材清单见 `docs/asset/base_data_asset_checklist.md`。
+该历史步骤已完成。清理时确认占位图没有运行时引用，已同步删除图片和导入文件；当前图标由正式配置与控件加载。正式素材清单见 `docs/asset/base_data_asset_checklist.md`。
 
 ## 第 11 步：验收基础模块
 

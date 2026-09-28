@@ -465,7 +465,8 @@ func _run_enemy_wave_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	passed = _print_check_result("enemy spawn rate stacks after beginner density", wave_manager.calculate_enemy_spawn_count(6) == 3) and passed
+	# Standard density yields 2, the +20% stat rounds to 3, then the current x2 population rule applies.
+	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 6) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
@@ -945,16 +946,18 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance cannot withdraw after deposit", not bool(fixed_deposit_withdraw_result.get("success", false)) and str(fixed_deposit_withdraw_result.get("reason", "")) == "bank_operation_used") and passed
 	wave_manager.add_relic("relic_compound_interest_tome")
 	var rate_before := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
-	wave_manager.process_wave_end_settlements()
+	# These finance-only scenarios deliberately settle without advancing combat.
+	# Real wave-end settlement is once-only and is tested through the main flow.
+	wave_manager.finance_system.process_wave_end_settlements()
 	var rate_after := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
 	passed = _print_check_result("finance compound rate growth on wave end", rate_after > rate_before) and passed
 	wave_manager.add_relic("relic_perpetual_annuity_scroll")
 	var annuity_principal_before := int(wave_manager.get_finance_snapshot().get("principal", 0))
-	var annuity_results := wave_manager.process_wave_end_settlements()
+	var annuity_results := wave_manager.finance_system.process_wave_end_settlements()
 	passed = _print_check_result("finance annuity extra settlement", annuity_results.size() >= 2 and int(wave_manager.get_finance_snapshot().get("principal", 0)) == annuity_principal_before and int(annuity_results[-1].get("gold_after", 0)) > int(annuity_results[0].get("gold_before", 0))) and passed
 	wave_manager.add_relic("relic_high_yield_contract")
 	wave_manager.prepare_finance_for_wave(3)
-	var base_settle_results := wave_manager.process_wave_end_settlements()
+	var base_settle_results := wave_manager.finance_system.process_wave_end_settlements()
 	var base_settle_result: Dictionary = base_settle_results[0] if not base_settle_results.is_empty() else {}
 	passed = _print_check_result("finance high yield preserves interest below threshold", bool(base_settle_result.get("success", false)) and not bool(base_settle_result.get("blocked", false))) and passed
 	var rate_before_deposit := wave_manager.finance_system.get_interest_rate()
@@ -964,7 +967,7 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance high yield adds six points at threshold", is_equal_approx(wave_manager.finance_system.get_interest_rate(), rate_before_deposit + 6.0)) and passed
 	wave_manager.finance_system.begin_wave(3)
 	passed = _print_check_result("finance preparation deposit survives wave start", wave_manager.finance_system.wave_start_deposit_amount == 50 and wave_manager.finance_system.has_deposited_before_current_wave) and passed
-	var threshold_settle_results := wave_manager.process_wave_end_settlements()
+	var threshold_settle_results := wave_manager.finance_system.process_wave_end_settlements()
 	var threshold_settle_result: Dictionary = threshold_settle_results[0] if not threshold_settle_results.is_empty() else {}
 	passed = _print_check_result("finance high yield passes at threshold", bool(threshold_settle_result.get("success", false)) and not bool(threshold_settle_result.get("blocked", false))) and passed
 	var finance_popup := FINANCE_POPUP_SCENE.instantiate() as FinancePopup
@@ -1092,6 +1095,8 @@ func _run_main_flow_checks() -> bool:
 	passed = _print_check_result("main flow finance submit", bool(finance_result.get("success", false))) and passed
 	passed = _print_check_result("main flow banking stays in preparation", flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP) and passed
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	passed = _print_check_result("main flow explicit next wave starts combat", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT) and passed
 
 	flow.present_battle_result(true, {"reason": "bootstrap"})

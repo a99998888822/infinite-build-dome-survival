@@ -168,14 +168,14 @@ def main():
     for name,draw in [("weapon_kunyu_ritual_tome",book),("weapon_rentier_purse",purse)]:
         im=draw()
         im.save(ICONS/f"{name}.png")
-        im.save(WORLD/f"{name}.png")
         im.resize((384,384),Image.Resampling.NEAREST).save(OUT/f"{name}_6x.png")
-        sheet=Image.new("RGBA",(256,64))
-        for frame in range(4): sheet.paste(draw(frame),(frame*64,0))
-        sheet.save(WORLD/f"{name}_animated.png")
+        if name == "weapon_kunyu_ritual_tome":
+            sheet=Image.new("RGBA",(256,64))
+            for frame in range(4): sheet.paste(draw(frame),(frame*64,0))
+            sheet.save(WORLD/f"{name}_animated.png")
         assert set(im.getchannel('A').tobytes())=={0,255}
         assert all(v>0 for v in im.getbbox()[:2]) and max(im.getbbox()[2:])<64
-        assets[name]={"icon_size":list(im.size),"alpha":[0,255],"bounds":list(im.getbbox()),"animation_frames":4}
+        assets[name]={"icon_size":list(im.size),"alpha":[0,255],"bounds":list(im.getbbox()),"animation_frames":4 if name == "weapon_kunyu_ritual_tome" else 0}
     coins=Image.new("RGBA",(128,16))
     for frame in range(8): coins.paste(coin(frame),(frame*16,0))
     coins.save(WORLD/"rentier_coin_spin.png")

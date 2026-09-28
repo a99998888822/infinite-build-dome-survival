@@ -5,12 +5,13 @@ import hashlib
 import json
 import math
 import random
+import tempfile
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/previews/iron_knight"
+OUT = Path(tempfile.gettempdir()) / "dome-iron-knight-preview"
 SIZE = 160
 ANCHOR = (80, 122)
 P = {

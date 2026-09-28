@@ -5,23 +5,12 @@ class_name WetlandBackdrop
 ## stable without changing movement, enemy spawning or gameplay randomness.
 const GROUND_SHADER = preload("res://shaders/battle/wetland_ground.gdshader")
 const DECAL_SHADER = preload("res://shaders/battle/wetland_decal_depth.gdshader")
-const RIPPLE_TEXTURE = preload("res://assets/sprites/background/wetland/fx_wet_ripple.png")
+const SCENERY = preload("res://scripts/battle/battle_scenery_catalog.gd")
 const STEP_SOUNDS: Array[AudioStream] = [
 	preload("res://assets/audio/sfx/environment/wet_step_01.wav"),
 	preload("res://assets/audio/sfx/environment/wet_step_02.wav"),
 ]
 const DROP_SOUND = preload("res://assets/audio/sfx/environment/water_drop.wav")
-const DECALS: Array[Texture2D] = [
-	preload("res://assets/sprites/background/wetland/decal_brick_01.png"),
-	preload("res://assets/sprites/background/wetland/decal_brick_02.png"),
-	preload("res://assets/sprites/background/wetland/decal_crack_01.png"),
-	preload("res://assets/sprites/background/wetland/decal_crack_02.png"),
-	preload("res://assets/sprites/background/wetland/decal_crack_03.png"),
-	preload("res://assets/sprites/background/wetland/decal_moss_01.png"),
-	preload("res://assets/sprites/background/wetland/decal_moss_02.png"),
-	preload("res://assets/sprites/background/wetland/decal_rubble_01.png"),
-	preload("res://assets/sprites/background/wetland/decal_rubble_02.png"),
-]
 const CELL_SIZE := 192.0
 const RIPPLE_COUNT := 24
 const RIPPLE_SECONDS := 1.35
@@ -50,6 +39,7 @@ var _step_cooldown := 0.0
 var _step_side := 1.0
 var _drop_timer := 2.0
 var _time := 0.0
+var _horizon_fraction := 128.0 / 648.0
 
 
 func _ready() -> void:
@@ -69,7 +59,8 @@ func _ready() -> void:
 	add_child(_ground)
 	for index in range(RIPPLE_COUNT):
 		var ripple := Sprite2D.new()
-		ripple.texture = RIPPLE_TEXTURE
+		ripple.texture = SCENERY.get_texture("fx_fine_ripples")
+		ripple.material = _decal_material
 		ripple.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		ripple.z_index = 20
 		ripple.visible = false
@@ -92,6 +83,7 @@ func get_environment_time() -> float:
 
 
 func set_horizon_view(horizon: float, height: float, ui_size: Vector2, units_per_pixel: Vector2, sky_texture: Texture2D) -> void:
+	_horizon_fraction = horizon / maxf(ui_size.y,1.0)
 	var stone_material: ShaderMaterial = _floor.material as ShaderMaterial if is_instance_valid(_floor) else null
 	for surface in [_material, _decal_material, stone_material]:
 		if surface == null:
@@ -156,6 +148,7 @@ func _update_ground() -> void:
 	if next_rect != _cell_rect:
 		_cell_rect = next_rect
 		_refresh_decals()
+	_update_decal_depth()
 
 
 func is_wet_at(world_position: Vector2) -> bool:
@@ -190,13 +183,32 @@ func _refresh_decals() -> void:
 				if not is_wet_at(point):
 					continue
 				var decal := Sprite2D.new()
-				decal.texture = DECALS[rng.randi_range(0, DECALS.size() - 1)]
+				# Preserve the original nine-slot RNG draw and position sequence.
+				# More art variants replace existing slots instead of adding objects.
+				var slot := rng.randi_range(0, 8)
+				var variation := absi(cx * 83492791 ^ cy * 297121507 ^ index * 31)
+				var asset_id := SCENERY.get_ground_variant(slot, variation)
+				decal.texture = SCENERY.get_texture(asset_id)
 				decal.material = _decal_material
 				decal.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 				decal.position = point.round()
 				decal.flip_h = rng.randf() > 0.5
 				decal.modulate = Color(0.65, 0.74, 0.69, rng.randf_range(0.5, 0.8))
+				var size_variation := lerpf(0.90,1.08,float(posmod(variation,17))/16.0)
+				decal.set_meta("asset_id",asset_id)
+				decal.set_meta("base_scale",SCENERY.get_base_scale(asset_id) * size_variation)
 				cell.add_child(decal)
+
+
+func _depth_at(world_position: Vector2) -> float:
+	var screen_position := get_viewport().get_canvas_transform() * world_position
+	return SCENERY.get_depth_scale(screen_position.y / maxf(get_viewport_rect().size.y,1.0), _horizon_fraction)
+
+
+func _update_decal_depth() -> void:
+	for cell in _cells.values():
+		for decal: Sprite2D in cell.get_children():
+			decal.scale = Vector2.ONE * float(decal.get_meta("base_scale")) * _depth_at(decal.global_position)
 
 
 func _update_footsteps() -> void:
@@ -225,8 +237,11 @@ func _update_footsteps() -> void:
 func spawn_ripple(world_position: Vector2, strength: float = 1.0) -> void:
 	var index := _ripple_cursor
 	_ripple_cursor = (_ripple_cursor + 1) % RIPPLE_COUNT
+	var asset_id := "fx_cyan_ripples" if strength >= 0.7 else "fx_fine_ripples"
+	_ripples[index].texture = SCENERY.get_texture(asset_id)
+	_ripples[index].set_meta("base_scale",SCENERY.get_base_scale(asset_id))
 	_ripples[index].position = world_position.round()
-	_ripples[index].scale = Vector2.ONE * 0.18
+	_ripples[index].scale = Vector2.ONE * SCENERY.get_base_scale(asset_id) * 0.18 * _depth_at(world_position)
 	_ripples[index].modulate.a = strength
 	_ripples[index].visible = true
 	_ripple_ages[index] = 0.0
@@ -240,5 +255,5 @@ func _update_ripples(delta: float) -> void:
 		_ripples[index].visible = progress < 1.0
 		if progress >= 1.0:
 			continue
-		_ripples[index].scale = Vector2.ONE * lerpf(0.18, 0.9, progress)
+		_ripples[index].scale = Vector2.ONE * lerpf(0.18, 0.9, progress) * float(_ripples[index].get_meta("base_scale")) * _depth_at(_ripples[index].global_position)
 		_ripples[index].modulate.a = (1.0 - progress) * _ripple_strengths[index]

@@ -43,11 +43,18 @@ var weapon_damage_this_wave: Dictionary = {}
 var _reward_remainders: Dictionary = {}
 
 var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
+var run_statistics := RunStatistics.new()
+var goblin_loans := GoblinLoanSystem.new()
 var economy_journal: EconomyJournal = EconomyJournal.new()
 var _wave_income_recorded: bool = false
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var goblin_trades := GoblinTradeSystem.new()
+var wave_challenges := WaveChallengeSystem.new()
+var _challenge_elite_schedule: Array[float] = []
+var _challenge_elite_spawned := 0
+var _challenge_elite_planned := 0
+var _last_settled_wave := -1
 var enemy_scene_cache: Dictionary = {}
 var _pending_wave_end_absorb_count: int = 0
 var _finishing_wave_id: String = ""
@@ -90,6 +97,8 @@ func _process(delta: float) -> void:
 	for enemy in EnemyRegistry.get_registered_enemies():
 		if enemy is EnemyController and enemy.is_alive(): live_enemies += 1
 	goblin_trades.sample_enemies(delta, live_enemies)
+	if player != null:
+		wave_challenges.sample_health(delta, player.current_hp, int(player.get_stat("max_hp")))
 	if wave_time_left > 0.0:
 		_process_spawn_timers(delta)
 	if finance_system != null:
@@ -100,10 +109,18 @@ func _process(delta: float) -> void:
 
 func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
 	if is_instance_valid(player):
+		if player.relic_added.is_connected(_on_player_relic_added): player.relic_added.disconnect(_on_player_relic_added)
 		if player.health_damage_taken.is_connected(_record_trade_damage): player.health_damage_taken.disconnect(_record_trade_damage)
 		if player.hp_changed.is_connected(_record_trade_health): player.hp_changed.disconnect(_record_trade_health)
 	player = target_player
+	run_statistics.reset()
+	goblin_loans.reset()
 	goblin_trades.reset()
+	wave_challenges.reset()
+	_challenge_elite_schedule.clear()
+	_challenge_elite_spawned = 0
+	_challenge_elite_planned = 0
+	_last_settled_wave = -1
 	if player != null:
 		player.health_damage_taken.connect(_record_trade_damage)
 		player.hp_changed.connect(_record_trade_health)
@@ -142,6 +159,8 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 		_connect_finance_system()
 		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
 	_connect_player_relic_signal()
+	if player != null and not player.grant_starting_relics():
+		push_error("[WaveManager] failed to grant character starting relics.")
 	reward_snapshot.reset()
 	drop_reward_system.begin_wave()
 	clear_battle_entities()
@@ -157,8 +176,10 @@ func start_next_wave() -> bool:
 	var waves := DataRegistry.get_table("waves")
 	if current_wave_index + 1 >= waves.size():
 		return false
+	goblin_loans.leave_preparation(run_statistics)
 	current_wave_index += 1
 	goblin_trades.begin_combat()
+	wave_challenges.begin_combat()
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
 	_wave_income_recorded = false
@@ -182,6 +203,12 @@ func start_next_wave() -> bool:
 		player.heal(int(player.get_stat("max_hp")))
 	_wave_erosion_pressure = calculate_enemy_erosion_pressure(player.get_stat("divinity") if player != null else 0.0)
 	_initialize_elite_schedule()
+	_challenge_elite_schedule.clear()
+	_challenge_elite_spawned = 0
+	_challenge_elite_planned = wave_challenges.extra_elites(current_wave_index + 1)
+	var challenge_progress: Array = wave_challenges.definition("extra_elites").get("spawn_progress", [0.18, 0.36])
+	for index in _challenge_elite_planned:
+		_challenge_elite_schedule.append(wave_time_left * float(challenge_progress[mini(index, challenge_progress.size() - 1)]))
 	running = true
 	wave_started.emit(str(current_wave.get("id", "")), int(current_wave.get("duration_seconds", 0)))
 	return true
@@ -191,6 +218,7 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
+	wave_challenges.finish_combat(goblin_trades.pressure_snapshot)
 	running = false
 	# Include deaths deferred from this frame before clearing or settling rewards.
 	_flush_pending_reward_batches()
@@ -305,7 +333,7 @@ func _start_wave_end_exp_absorb() -> void:
 		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
 	_pending_wave_end_absorb_count = 0
 	for orb in exp_orbs:
-		if not is_instance_valid(orb) or not orb.is_inside_tree():
+		if not is_instance_valid(orb) or not orb.is_inside_tree() or orb.is_queued_for_deletion() or orb.collected_once:
 			continue
 		_pending_wave_end_absorb_count += 1
 		var absorbed_callable := Callable(self, "_on_wave_end_exp_orb_absorbed")
@@ -325,9 +353,11 @@ func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount:
 
 
 func _complete_wave_end_absorb() -> void:
+	if _finishing_wave_id.is_empty() or run_statistics.frozen or player == null or not player.is_alive(): return
 	_pending_wave_end_absorb_count = 0
 	record_wave_income()
 	process_wave_end_settlements()
+	run_statistics.complete_wave(current_wave_index + 1)
 	var finished_wave_id := _finishing_wave_id
 	_finishing_wave_id = ""
 	wave_finished.emit(finished_wave_id)
@@ -371,12 +401,14 @@ func get_required_exp_for_next_level() -> int:
 
 
 func add_exp_and_gold(exp_amount: int, gold_amount: int) -> void:
+	if run_statistics.frozen: return
 	var final_exp := _apply_percent_bonus(exp_amount, "exp_gain_percent")
 	var final_gold := _apply_percent_bonus(gold_amount, "currency_gain_percent")
 	current_exp += final_exp
 	current_gold += final_gold
 	collected_exp_this_wave += final_exp
 	collected_gold_this_wave += final_gold
+	run_statistics.record_combat_gold(final_gold)
 	_process_level_ups()
 	exp_changed.emit(current_exp, get_required_exp_for_next_level(), player_level)
 	gold_changed.emit(current_gold)
@@ -420,21 +452,35 @@ func trigger_finance_interest(source: String = "manual") -> Dictionary:
 
 
 func process_wave_end_settlements() -> Array[Dictionary]:
+	if _last_settled_wave == current_wave_index:
+		return finance_system.last_settlement_results.duplicate(true) if finance_system != null else []
+	_last_settled_wave = current_wave_index
 	var results: Array[Dictionary] = []
 	if finance_system != null:
 		results = finance_system.process_wave_end_settlements()
 	if player != null and player.is_alive():
 		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
 		goblin_trades.settle_wave(current_wave_index + 1, player, finance_system)
+	var loan_result: Dictionary = {}
+	if player != null and player.is_alive():
+		loan_result = goblin_loans.settle_wave(current_wave_index + 1,finance_system)
+	if not loan_result.is_empty() and not results.is_empty():
+		results.back()["loan_settlement"] = loan_result
+	var challenge_result := wave_challenges.settle_wave(current_wave_index + 1, player, finance_system)
+	if not challenge_result.is_empty() and not results.is_empty():
+		results.back()["challenge_settlement"] = challenge_result
+	if finance_system != null: finance_system.last_settlement_results = results.duplicate(true)
 	return results
 
 
 func _record_trade_damage(before: int, after: int, maximum: int) -> void:
 	if running: goblin_trades.record_damage(before, after, maximum)
+	if running: wave_challenges.record_health(after, maximum)
 
 
 func _record_trade_health(hp: int, maximum: int, shield: int) -> void:
 	if running: goblin_trades.record_health(hp, maximum, shield)
+	if running: wave_challenges.record_health(hp, maximum)
 
 
 func tick_finance(delta: float) -> void:
@@ -495,11 +541,19 @@ func _on_finance_changed(snapshot: Dictionary) -> void:
 
 
 func _on_interest_settled(result: Dictionary) -> void:
+	run_statistics.record_interest(result)
 	interest_settled.emit(result.duplicate(true))
 
 
 func _process_spawn_timers(delta: float) -> void:
-	var available := maxi(0, int(_difficulty.enemy_limit) - EnemyRegistry.get_registered_enemies().size())
+	_process_challenge_elites()
+	var population := EnemyRegistry.get_registered_enemies()
+	var ordinary_population := population.size()
+	if _challenge_elite_planned > 0:
+		for enemy in population:
+			if is_instance_valid(enemy) and enemy.has_meta("wave_challenge_elite"):
+				ordinary_population -= 1
+	var available := maxi(0, int(_difficulty.enemy_limit) - ordinary_population)
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
 	for index in range(spawn_groups.size()):
 		var group: Dictionary = spawn_groups[index]
@@ -520,6 +574,18 @@ func _process_spawn_timers(delta: float) -> void:
 			if replace_with_elite and spawned != null:
 				_elite_spawned_count += 1
 				_elite_spawn_schedule.pop_front()
+
+
+func _process_challenge_elites() -> void:
+	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
+	# Exactly two additive spawns, independent of replacement quotas and crowd caps.
+	# Ordinary spawns remain capped; at most two extra entities can exceed that cap.
+	while not _challenge_elite_schedule.is_empty() and elapsed >= _challenge_elite_schedule[0]:
+		var elite := spawn_enemy("enemy_elite_rusher", get_random_spawn_position())
+		if elite == null: return
+		elite.set_meta("wave_challenge_elite", true)
+		_challenge_elite_schedule.pop_front()
+		_challenge_elite_spawned += 1
 
 
 func _initialize_elite_schedule() -> void:
@@ -569,7 +635,8 @@ func _is_elite_spawn_due() -> bool:
 
 
 func get_miniboss_spawn_snapshot() -> Dictionary:
-	return {"expected": _elite_expected_count, "planned": _elite_planned_count, "spawned": _elite_spawned_count, "erosion": _elite_erosion_snapshot, "spawn_deadline": _elite_spawn_deadline, "schedule": _elite_spawn_schedule.duplicate()}
+	return {"expected": _elite_expected_count, "planned": _elite_planned_count, "spawned": _elite_spawned_count, "erosion": _elite_erosion_snapshot, "spawn_deadline": _elite_spawn_deadline, "schedule": _elite_spawn_schedule.duplicate(),
+		"challenge_planned": _challenge_elite_planned, "challenge_spawned": _challenge_elite_spawned, "challenge_schedule": _challenge_elite_schedule.duplicate()}
 
 
 func _on_relic_choice_collected(reward_id: String) -> void:
@@ -590,7 +657,8 @@ func calculate_enemy_spawn_count(base_count: int) -> int:
 	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var streak_multiplier := 1.0 + ZONE_SPAWN_COUNT_GROWTH_PERCENT * float(ZoneProgression.get_effective_streak()) / 100.0
 	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier * streak_multiplier)))
-	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent)
+	# Apply after rounding and player modifiers so every batch doubles exactly.
+	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * int(_difficulty.spawn_count_multiplier)
 
 
 func calculate_spawn_interval(base_interval_ms: float) -> float:
@@ -640,7 +708,8 @@ func _build_wave_enemy_modifiers() -> Array[Dictionary]:
 	var modifiers: Array[Dictionary] = []
 	var wave_step := float(maxi(current_wave_index, 0))
 	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + float(_difficulty.hp_growth), wave_step)))
-	modifiers.append(_build_wave_modifier("melee_damage", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
+	for stat in ["melee_damage", "ranged_damage", "element_damage"]:
+		modifiers.append(_build_wave_modifier(stat, Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
 	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))
 	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, float(_difficulty.armor_growth) * wave_step))
 	return modifiers
@@ -689,6 +758,8 @@ func _has_spawn_clearance(candidate: Vector2) -> bool:
 
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
+	if not is_instance_valid(enemy) or not run_statistics.record_kill(enemy.get_instance_id(), enemy.enemy_id): return
+	if player == null or not player.is_alive(): return
 	if player != null:
 		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
@@ -706,7 +777,7 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 
 
 func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
-	if amount <= 0 or pickup_root == null or player == null:
+	if amount <= 0 or pickup_root == null or player == null or run_statistics.frozen or not player.is_alive():
 		return
 	drop_reward_system.spawn_exp_orb(amount, drop_position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
 
@@ -719,7 +790,7 @@ func _flush_pending_reward_batches() -> void:
 
 
 func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:
-	if pickup_root == null or player == null:
+	if pickup_root == null or player == null or run_statistics.frozen or not player.is_alive():
 		return
 	for action in actions:
 		drop_reward_system.spawn_action(
@@ -734,6 +805,7 @@ func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> 
 
 
 func _on_exp_orb_collected(orb: ExpOrb, exp_amount: int, gold_amount: int) -> void:
+	if player == null or not player.is_alive() or run_statistics.frozen: return
 	add_exp_and_gold(exp_amount, gold_amount)
 	reward_snapshot.record_exp_collection(exp_amount, gold_amount)
 

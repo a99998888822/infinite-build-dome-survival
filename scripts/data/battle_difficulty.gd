@@ -3,12 +3,12 @@ class_name BattleDifficulty
 
 const DEFAULT_ID := "1"
 const IDS: Array[String] = ["1", "2", "3"]
-# All tiers share the verified no-talent baseline and the same wave growth.
+# Health and density drive progression; contact damage grows slowly.
 const BASELINE := {
 	"health": 0.8, "damage": 0.45, "speed": 0.85, "armor": 1.0,
-	"spawn_count": 0.30, "spawn_interval": 1.35, "opening_delay": 2.0, "enemy_limit": 75,
-	"hp_growth": 0.14, "damage_growth": 3.0, "speed_growth": 0.5, "armor_growth": 0.5,
-	"count_growth": 3.0, "interval_growth": 2.0, "first_elite_wave": 4, "elite_count": 0.5,
+	"spawn_count": 0.30, "spawn_count_multiplier": 2, "spawn_interval": 1.35, "opening_delay": 2.0, "enemy_limit": 240,
+	"hp_growth": 0.24, "damage_growth": 1.5, "speed_growth": 0.5, "armor_growth": 0.5,
+	"count_growth": 6.0, "interval_growth": 2.5, "first_elite_wave": 4, "elite_count": 0.5,
 }
 const PROFILES := {
 	"1": {
@@ -17,11 +17,13 @@ const PROFILES := {
 	},
 	"2": {
 		"title": "怪物属性加强20%", "color": Color("#c8ae54"), "stat_multiplier": 1.2,
-		"description": "",
+		"description": "怪物更多",
+		"spawn_count": 0.45, "spawn_interval": 1.20, "enemy_limit": 360,
 	},
 	"3": {
 		"title": "怪物属性加强30%", "color": Color("#c8794f"), "stat_multiplier": 1.3,
-		"description": "精英到来更频繁",
+		"description": "怪物密集 · 精英更频繁",
+		"spawn_count": 0.65, "spawn_interval": 1.05, "enemy_limit": 480,
 		"first_elite_wave": 2, "elite_count": 1.0,
 	},
 }

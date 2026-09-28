@@ -1,0 +1,33 @@
+{
+  "source": "goblin_delighted-128-detail",
+  "size": 128,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        52,
+        51,
+        57,
+        52
+      ],
+      "rows": [
+        "PPCNNK",
+        "PPNMPP"
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        70,
+        50,
+        74,
+        50
+      ],
+      "rows": [
+        "PCNPP"
+      ]
+    }
+  ]
+}

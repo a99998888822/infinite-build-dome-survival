@@ -1,5 +1,7 @@
 # 主战斗场景视觉更新（2026-09-22）
 
+> 当前装饰资源已于 2026-09-28 替换为用户确认的 128×128 素材包，见 [Picxel 场景接入说明](battle_scenery_picxel_integration.md)。下文保留此前的场景设计与验证记录，其中旧湿地 PNG 和旧石柱路径已淘汰。
+
 ## 本次范围
 
 - 根据后续反馈，地面在 0.8 倍基础上再次缩小 20%，现为原始宽高的 64%；同步调整位置，保持中央祭坛在原点。已擦除的边缘残砖和 PNG 透明通道保留，画布仍为 1024×575。
@@ -26,7 +28,7 @@
 | `ruin_broken_pillar.png` | 断柱及柱脚碎石 | 80×120 |
 | `fx_wet_ripple.png` | 不连续椭圆水纹 | 64×32 |
 
-右上角按钮恢复使用 `background-icon-baike.png` 和 `background-icon-plugin.png`。上一版绘制的两张 `icon_hud_relics.png`、`icon_hud_stats.png` 保留在文件夹内，主战斗场景不再引用。
+右上角按钮恢复使用 `background-icon-baike.png` 和 `background-icon-plugin.png`。未引用的上一版按钮图标已清理。
 
 素材以直接像素绘制与图像遮罩处理完成，没有使用外部图像生成 API。艺术约束：低饱和青灰石材、苔绿、少量旧铜与浅米色；克苏鲁元素仅作为约 10% 的局部点缀，不加入血肉或密集触手。
 

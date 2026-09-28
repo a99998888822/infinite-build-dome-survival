@@ -6,10 +6,9 @@
 > 补充说明：第 13 组可选区域素材原文未给固定文件名，此处按 `zones.json` ID 和现有目录规则补了建议命名。
 > 尺寸说明：已存在条目的尺寸列按磁盘 PNG 实际像素读取；遗物图标当前实际为 `32x32`（原清单按 `128x128` 规划）。
 > 生成日期：2026-09-21。
-> 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；原 SVG 保留，附魔配置已改用 PNG。
-> 2026-09-23：新增直接像素绘制的裂甲奔袭者，六组动作共 23 帧；登记 7 张 256 帧尺寸展示图、6 张 128 帧尺寸战斗图与 1 张冲刺路径 PNG。约 10% 克苏鲁元素；战斗帧表已接入精英场景，游戏内路径采用相同参数的 30% 红色矩形绘制。详见 [制作说明](elite_rusher_assets.md)。
-> 2026-09-27：正式小 Boss 改为钢甲骑士，新增六张 160×160 原生帧图集，共 32 帧；游戏预警内部不透明度改为 12%，两侧边缘及方粒脉动。旧裂甲奔袭者文件仅保留为历史素材，不再被正式精英场景引用。详见 [接入说明](iron_knight_integration.md)。
-> 磁盘核对：`assets/` 下 PNG + 音频共 118 个，已全部登记在第 1 节与第 4 节（2026-09-21 已清理 5 个冗余文件）。
+> 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；附魔配置使用 PNG，旧SVG占位图已清理。
+> 2026-09-27：正式小 Boss 改为钢甲骑士，六张 160×160 原生帧图集，共 32 帧；游戏预警内部不透明度为 12%，两侧边缘及方粒脉动。详见 [接入说明](iron_knight_integration.md)。
+> 2026-09-28：移除旧四足精英图集与生成工具、普通怪历史版本、主菜单备份、未使用字体和旧图标；保留正式资源及必要的可编辑源文件。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
 ## 1. 已存在的素材
@@ -41,7 +40,6 @@
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | placeholder_icon | `placeholder_icon.png` | `assets/ui/icons/placeholder_icon.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | 年假削减方案遗物图标 | `relic_annual_leave_cutback.png` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；被撕掉休假页、排满加班日期的年度排班表，像素风，轮廓清晰，透明背景。 |
 | 已存在 | 破产重组遗物图标 | `relic_bankruptcy_reorg.png` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 32x32 / 1:1 / PNG，透明背景 | 红稀有度；破产重组主题图标，像素风，轮廓清晰，透明背景。 |
 | 已存在 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；复利宝典主题图标，像素风，轮廓清晰，透明背景。 |
@@ -123,39 +121,25 @@
 | 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
 | 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 已采用原稿微调版；透明背景；旧 PNG 与 Aseprite 源文件以 `_legacy` 后缀保留在同目录 |
-| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；旧 PNG 以 `_legacy` 后缀保留在同目录 |
+| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 当前战斗图的源素材；透明背景；旧历史版本已清理 |
+| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/enemy_gloom_mite_move.png` | 384x128 / 3:1 / PNG | 三帧，首帧与待机一致；保留原图用于重建战斗图 |
 | 已存在 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 640x160 / 4 帧 / RGBA PNG | 宽站姿、右手自然垂锤、青色几何符文 |
 | 已存在 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1280x160 / 8 帧 / RGBA PNG | 大腿带动膝踝、胯甲随腿摆动，840 毫秒循环 |
 | 已存在 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 640x160 / 4 帧 / RGBA PNG | 巨盾防护、抬锤，800 毫秒 |
 | 已存在 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 960x160 / 6 帧 / RGBA PNG | 冲刺与挥锤同步，160 毫秒 |
 | 已存在 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 640x160 / 4 帧 / RGBA PNG | 收锤并恢复宽站姿，500 毫秒 |
 | 已存在 | 钢甲骑士死亡 | `knight_death.png` | `assets/sprites/enemies/iron_knight/knight_death.png` | 960x160 / 6 帧 / RGBA PNG | 甲身倒下，1120 毫秒后由代码淡出 |
-| 旧版留存 | 裂甲奔袭者基准造型 | `enemy_rift_rusher_reference.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_reference.png` | 256x256 / RGBA PNG | 原创厚甲四足怪，约 10% 克苏鲁元素；直接像素绘制 |
-| 已存在 | 裂甲奔袭者待机展示帧 | `enemy_rift_rusher_idle.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_idle.png` | 1024x256 / 4 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
-| 已存在 | 裂甲奔袭者移动展示帧 | `enemy_rift_rusher_move.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_move.png` | 1536x256 / 6 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
-| 已存在 | 裂甲奔袭者蓄力展示帧 | `enemy_rift_rusher_windup.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_windup.png` | 768x256 / 3 帧 / RGBA PNG | 战斗原生图最近邻 2 倍展示版 |
-| 已存在 | 裂甲奔袭者冲刺展示帧 | `enemy_rift_rusher_dash.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_dash.png` | 512x256 / 2 帧 / RGBA PNG | 位移由运行代码控制 |
-| 已存在 | 裂甲奔袭者收招展示帧 | `enemy_rift_rusher_recover.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_recover.png` | 768x256 / 3 帧 / RGBA PNG | 刹停、回弹、恢复站姿 |
-| 已存在 | 裂甲奔袭者死亡展示帧 | `enemy_rift_rusher_death.png` | `assets/sprites/enemies/elite_rusher/enemy_rift_rusher_death.png` | 1280x256 / 5 帧 / RGBA PNG | 无血腥，淡出由运行代码控制 |
-| 已存在 | 裂甲奔袭者战斗待机 | `enemy_rift_rusher_idle.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_idle.png` | 512x128 / 4 帧 / RGBA PNG | 原生 128 帧，共享 23 色，硬透明 |
-| 已存在 | 裂甲奔袭者战斗移动 | `enemy_rift_rusher_move.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_move.png` | 768x128 / 6 帧 / RGBA PNG | 原生 128 帧，共享 23 色，硬透明 |
-| 已存在 | 裂甲奔袭者战斗蓄力 | `enemy_rift_rusher_windup.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_windup.png` | 384x128 / 3 帧 / RGBA PNG | 0.8 秒，末帧保持 |
-| 已存在 | 裂甲奔袭者战斗冲刺 | `enemy_rift_rusher_dash.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_dash.png` | 256x128 / 2 帧 / RGBA PNG | 右向短冲刺，左向翻转 |
-| 已存在 | 裂甲奔袭者战斗收招 | `enemy_rift_rusher_recover.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_recover.png` | 384x128 / 3 帧 / RGBA PNG | 收招总时长 0.5 秒 |
-| 已存在 | 裂甲奔袭者战斗死亡 | `enemy_rift_rusher_death.png` | `assets/sprites/enemies/combat/elite_rusher/enemy_rift_rusher_death.png` | 640x128 / 5 帧 / RGBA PNG | 不循环，不烘焙全身淡出 |
-| 已存在 | 精英冲刺红色路径 | `elite_rusher_dash_path.png` | `assets/sprites/effects/telegraphs/elite_rusher_dash_path.png` | 304x64 / RGBA PNG | 红色 30% 不透明度，alpha 77；直角矩形，无箭头、无圆角；240 像素行程，半宽 32，另有 SVG 源图 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
-| 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距；原 SVG 保留 |
-| 已接入 | 光辉剑附魔图标 | `scroll_light_sword.png` | `assets/ui/icons/augmentations/scroll_light_sword.png` | 16x16 / 1:1 / RGBA PNG | 下落的白色大剑；至少 1 像素透明边距；原 SVG 保留 |
-| 已接入 | 水流附魔图标 | `scroll_water.png` | `assets/ui/icons/augmentations/scroll_water.png` | 16x16 / 1:1 / RGBA PNG | 蓝白卷浪；至少 1 像素透明边距；原 SVG 保留 |
-| 已接入 | 风刃附魔图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 16x16 / 1:1 / RGBA PNG | 青白月牙风刃；至少 1 像素透明边距；原 SVG 保留 |
+| 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距 |
+| 已接入 | 光辉剑附魔图标 | `scroll_light_sword.png` | `assets/ui/icons/augmentations/scroll_light_sword.png` | 16x16 / 1:1 / RGBA PNG | 下落的白色大剑；至少 1 像素透明边距 |
+| 已接入 | 水流附魔图标 | `scroll_water.png` | `assets/ui/icons/augmentations/scroll_water.png` | 16x16 / 1:1 / RGBA PNG | 蓝白卷浪；至少 1 像素透明边距 |
+| 已接入 | 风刃附魔图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 16x16 / 1:1 / RGBA PNG | 青白月牙风刃；至少 1 像素透明边距 |
 | 已存在 | 火焰卷轴图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 结霜卷轴图标 | `scroll_ice.png` | `assets/ui/icons/augmentations/scroll_ice.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 穿透卷轴图标 | `scroll_pierce.png` | `assets/ui/icons/augmentations/scroll_pierce.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 分裂卷轴图标 | `scroll_split.png` | `assets/ui/icons/augmentations/scroll_split.png` | 16x16 / 1:1 / PNG |  |
-| 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版保留 |
+| 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版图标已清理 |
 | 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 64x64 / 1:1 / RGBA PNG | 铸铁炮管、黄铜箍、木柄 |
 | 已存在 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 64x64 / 1:1 / PNG |  |
 | 已存在 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1920x1080 / 16:9 / PNG |  |

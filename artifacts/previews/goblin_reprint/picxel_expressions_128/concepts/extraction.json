@@ -1,0 +1,61 @@
+{
+  "image_model_used": false,
+  "states": [
+    {
+      "name": "goblin_smile",
+      "bbox": [
+        235,
+        74,
+        1334,
+        1504
+      ],
+      "source_pixels_per_output_pixel": 12,
+      "offset": [
+        218,
+        53
+      ]
+    },
+    {
+      "name": "goblin_displeased",
+      "bbox": [
+        234,
+        74,
+        1334,
+        1504
+      ],
+      "source_pixels_per_output_pixel": 12,
+      "offset": [
+        218,
+        53
+      ]
+    },
+    {
+      "name": "goblin_delighted",
+      "bbox": [
+        234,
+        62,
+        1335,
+        1505
+      ],
+      "source_pixels_per_output_pixel": 12,
+      "offset": [
+        217,
+        46
+      ]
+    },
+    {
+      "name": "goblin_downcast",
+      "bbox": [
+        235,
+        64,
+        1334,
+        1504
+      ],
+      "source_pixels_per_output_pixel": 12,
+      "offset": [
+        218,
+        48
+      ]
+    }
+  ]
+}

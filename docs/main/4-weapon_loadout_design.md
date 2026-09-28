@@ -575,7 +575,7 @@ WeaponEffectRegistry
 - 注册至统一商店／奖励、装备、升级、附魔与出售流程。当前共有6把正式武器，总负载111，100负载需要搭配取舍，最多同时装备其中5把。
 - 电浆炮初始品质由史诗改为稀有：零幸运时史诗权重为0，因此此前无法刷新；稀有品质允许正常开局出现。购买基础价格随品质采用现有定价，升级品质及接触伤害参数保持原配置。
 - 专项验证：`scenes/tests/meteor_flail_test.tscn`；实机录制：`scenes/tests/meteor_flail_live_capture.tscn`，参数 `--variant=base|split|split_lightning|split_fire`。验证／录制追加 `--transient-session`，在自动加载阶段即隔离存档。
-- 实录产物为 `artifacts/reviews/weapons/meteor_flail.gif` 与 `artifacts/reviews/weapons/meteor_flail_enchantments.gif`。使用正式 GameRoot、自动索敌、移动敌人和附魔；为观察连续追击，演示敌人血量设为240、玩家最大生命设为1000、暴击设为0。动图只裁剪、加标题，不重绘攻击效果。
+- 实录产物为 `artifacts/reviews/weapons/meteor_flail.mp4` 与 `artifacts/reviews/weapons/meteor_flail_enchantments.mp4`，由原GIF转换并核对尺寸、帧数和时长。使用正式 GameRoot、自动索敌、移动敌人和附魔；为观察连续追击，演示敌人血量设为240、玩家最大生命设为1000、暴击设为0。录像只裁剪、加标题，不重绘攻击效果。
 
 ## 24. 武器提示精简与加成配色
 

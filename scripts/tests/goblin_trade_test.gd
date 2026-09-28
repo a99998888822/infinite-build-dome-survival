@@ -114,6 +114,8 @@ func offer_only(id: String) -> Dictionary:
 
 func advance_preparation() -> void:
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	manager.set_process(false)
 	flow.finish_current_wave()
 	await frames(12)
@@ -224,6 +226,8 @@ func _test_live_flow() -> void:
 	await capture("02_refresh_ready")
 	await capture_refresh_animation()
 	flow.close_finance_popup()
+	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
+		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	manager.apply_gold_delta(50, "test")
 	flow.request_shared_reward_shop_popup(2, "test")
 	var reward_refresh := flow.request_shop_refresh()

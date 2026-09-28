@@ -18,6 +18,7 @@ const TICKS: Array[AudioStream] = [
 
 var _card: Control
 var _speech: Control
+var _speech_tail: TextureRect
 var _speech_text: Label
 var _body: Label
 var _body_scroll: ScrollContainer
@@ -37,6 +38,9 @@ var _playing := false
 var _compact := false
 var sound_enabled := true
 var start_wave_on_accept := false
+var accept_text := ""
+var decline_text := "拒绝"
+var _challenge_header := false
 
 
 func _ready() -> void:
@@ -75,11 +79,11 @@ func _ready() -> void:
 	_speech.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_speech)
 	_frame(_speech, BUBBLE)
-	var tail := TextureRect.new()
-	tail.texture = TAIL
-	tail.position = Vector2(10, 53)
-	tail.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_speech.add_child(tail)
+	_speech_tail = TextureRect.new()
+	_speech_tail.texture = TAIL
+	_speech_tail.position = Vector2(10, 53)
+	_speech_tail.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_speech.add_child(_speech_tail)
 	_speech_text = _label(_speech, "", 12, FinanceUIStyle.TEXT)
 	_speech_text.position = Vector2(12, 10)
 	_speech_text.size = Vector2(196, 40)
@@ -123,6 +127,9 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_seal.size = Vector2(20, 20) if _compact else Vector2(28, 28)
 	_title.position = Vector2(padding + (24 if _compact else 36), 10 if _compact else 12)
 	_title.size = Vector2(w - _title.position.x - padding, 18 if _compact else 26)
+	if _challenge_header:
+		_title.size.y = _seal.size.y
+	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER if _challenge_header else VERTICAL_ALIGNMENT_TOP
 	FinanceUIStyle.label(_title, 12 if _compact else 18, FinanceUIStyle.GOLD)
 	_body_scroll.position = Vector2(padding, 44 if _compact else 60)
 	var button_width := (w - padding * 2 - 10) * 0.5
@@ -133,7 +140,13 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_no.size = Vector2(button_width, button_height)
 	_yes.size = Vector2(button_width, button_height)
 	_yes.text = ("开战" if _compact else "接受并开战") if start_wave_on_accept else "接受"
+	if not accept_text.is_empty(): _yes.text = accept_text
+	_no.text = decline_text
 	_speech.size = Vector2(220, 58)
+	if _challenge_header:
+		_speech.size.y = maxf(58, ceilf(_text_height(_speech_text, 196)) + 20)
+	_speech_text.size = Vector2(196, _speech.size.y - 20 if _challenge_header else 40)
+	_speech_tail.position.y = _speech.size.y - 5
 	_speech.position = Vector2(
 		clampf(portrait_rect.end.x - 16, bounds.position.x, bounds.end.x - 224),
 		maxf(bounds.position.y, portrait_rect.position.y + 6))
@@ -141,6 +154,7 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 
 
 func present(speech: String, body: String, detail: String = "") -> void:
+	_challenge_header = false
 	_speech_text.text = speech
 	_body.text = body
 	_body.visible_characters = -1
@@ -160,6 +174,15 @@ func present(speech: String, body: String, detail: String = "") -> void:
 	_card.modulate.a = 1.0
 	_speech.show()
 	seek(0.0)
+
+
+func configure_challenge(wave: int, icon: String) -> void:
+	_challenge_header = true
+	_title.text = "第%d波·挑战" % wave
+	accept_text = "接受并开战"
+	decline_text = "正常开战"
+	_seal.texture = FinanceUIStyle.item_icon(icon)
+	FinanceUIStyle.label(_body, 16, FinanceUIStyle.TEXT)
 
 
 func _process(delta: float) -> void:

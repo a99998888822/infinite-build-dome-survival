@@ -31,6 +31,7 @@ var active: bool = false
 var _trail_emitter: Node2D = null
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
+var _plasma_contact_hold_left: float = 0.0
 var _plasma_visual: Node2D = null
 var _hit_shape: CircleShape2D = null
 
@@ -65,6 +66,7 @@ func initialize(
 	active = true
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
+	_plasma_contact_hold_left = 0.0
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -115,6 +117,8 @@ func _physics_process(delta: float) -> void:
 		if _plasma_visual != null:
 			_plasma_visual.advance(delta)
 		_process_plasma_contact(delta)
+		if not active:
+			return
 	var step := speed * delta
 	global_position += direction * step
 	remaining_distance -= step
@@ -165,11 +169,19 @@ func _is_plasma_projectile() -> bool:
 
 func _process_plasma_contact(delta: float) -> void:
 	var enemies := _query_plasma_enemies()
+	var flight_speed := maxf(weapon.get_projectile_speed(), 1.0)
+	var contact_speed := clampf(float(weapon.weapon_data.get("plasma_contact_speed", 20.0)), 1.0, flight_speed)
 	if enemies.is_empty():
-		speed = maxf(weapon.get_projectile_speed(), 1.0)
+		# Keep the impact readable even when the first tick kills its target.
+		# Only movement lingers; damage still requires actual surface contact.
+		var recovery_delta := maxf(delta - _plasma_contact_hold_left, 0.0)
+		_plasma_contact_hold_left = maxf(_plasma_contact_hold_left - delta, 0.0)
+		var recovery_seconds := maxf(float(weapon.weapon_data.get("plasma_speed_recovery_ms", 120.0)) / 1000.0, 0.001)
+		speed = move_toward(minf(speed, flight_speed), flight_speed, (flight_speed - contact_speed) / recovery_seconds * recovery_delta)
 		_plasma_tick_timer = 0.0
 		return
-	speed = maxf(float(weapon.weapon_data.get("plasma_contact_speed", 80.0)), 1.0)
+	speed = contact_speed
+	_plasma_contact_hold_left = maxf(float(weapon.weapon_data.get("plasma_contact_hold_ms", 160.0)) / 1000.0, 0.0)
 	_plasma_tick_timer -= delta
 	if _plasma_tick_timer <= 0.0:
 		_process_plasma_tick(enemies)

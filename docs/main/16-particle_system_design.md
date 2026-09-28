@@ -189,6 +189,8 @@ ProjectileInstance 命中敌人或场景后发送落雷效果事件。效果节�
 
 保留 `plasma_arc_count`、`plasma_arc_segments` 和 `plasma_arc_jitter` 配置入口；移除球面电弧后，旧 `plasma_rotation_speed` 字段不再参与绘制。旧的112像素伤害半径及独立 `plasma_damage_radius`／`plasma_visual_radius` 配置已移除。球体与怪物碰撞体接触时才减速并开始灼击；每次灼击只命中当时接触的敌人，离开后停止，重新接触可以继续剩余次数。保留0.1秒间隔、每颗最多5次、原有单次伤害和附魔派发。视觉时钟随战斗暂停；电弧、光晕和投影不扩大接触范围。
 
+当前接触速度由80降至20像素/秒（正常飞行140，减速约86%）。最后一次接触后保持160毫秒减速，再用120毫秒线性恢复原速，确保一击击杀或短暂脱离也有明显的停顿感；恢复过程中再次接触立即减速并刷新停留时间。停留只影响位移，不扩大判定或追加脱离后的伤害，暂停会冻结停留计时。配置入口为 `plasma_contact_speed`、`plasma_contact_hold_ms`、`plasma_speed_recovery_ms`。第五轮伤害销毁弹体后不再执行当帧位移。
+
 ## 6. 性能与约束
 
 MVP 必须具备以下硬限制：

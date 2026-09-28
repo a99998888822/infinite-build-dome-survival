@@ -1,0 +1,32 @@
+{
+  "pressure": {
+    "minimum_observed_seconds": 5.0,
+    "sustained_low_health_seconds": 5.0,
+    "comfortable_minimum_health_ratio": 0.65,
+    "comfortable_crowd_threshold_ratio": 0.5
+  },
+  "preparation": { "significant_gain_ratio": 0.15 },
+  "challenges": [
+    {
+      "id": "extra_elites", "weight": 1, "condition": "pressure_or_low_gain",
+      "speech": "多来几个大家伙而已，你不会连这点钱都不敢赚吧？",
+      "body": "下一波额外出现 2 个精英怪。",
+      "icon": "res://assets/ui/finance/challenge_elites.svg",
+      "elite_count": 2, "spawn_progress": [0.18, 0.36]
+    },
+    {
+      "id": "rising_tide", "weight": 1, "condition": "pressure_or_low_gain",
+      "speech": "风浪越大，鱼越贵！",
+      "body": "侵蚀 +20、利率 +1%、本金 +100、幸运 +10。",
+      "icon": "res://assets/ui/finance/challenge_tide.svg",
+      "erosion": 20, "interest_rate": 1, "principal": 100, "luck": 10
+    },
+    {
+      "id": "all_in", "weight": 2, "condition": "comfortable",
+      "speech": "下一步结束，将全部金币存入本金。\n额外获得本金 +100，幸运 +10.",
+      "body": "下一波结束：先结息，再将全部金币存入本金。\n额外获得本金 +100、幸运 +10。",
+      "icon": "res://assets/ui/finance/challenge_deposit.svg",
+      "principal": 100, "luck": 10
+    }
+  ]
+}

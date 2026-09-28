@@ -6,6 +6,6 @@
 - [菜单叠加预览](homepage-preview-v2.png)。
 - `background-native-640x360.png`：可用于后续接入的原生背景。
 - `menu-overlay-v2.png`：独立透明菜单层，供合成预览使用。
-- `draw_background.py`：原创像素绘制源文件，执行后重新生成上述背景与合成预览。
+- [main_menu_background.py](../../../scripts/tools/source_art/main_menu_background.py)：原创像素绘制源文件，执行后重新生成上述背景与合成预览。
 
 分层图片可以由绘制代码重建，因此不另存中间图。

@@ -1,6 +1,6 @@
 extends Control
 class_name InterestArrivalPresentation
-## A short, skippable receipt replay. Authoritative balances are already settled.
+## Receipt animation holds its final state until dismissed; balances are already settled.
 
 signal finished
 signal arrived(amount: int)
@@ -124,8 +124,9 @@ func present(data: Dictionary) -> void:
 		row.modulate.a = 0
 		_row_nodes.append(row)
 	_heading.text = "第 %d 波 · 利息结算" % int(report.wave)
+	_caption.text = "利息已转入本金" if bool(report.get("auto_deposit", false)) else "实际到账"
 	_comparison.text = "战斗 +%d　│　利息 +%d 金币" % [int(report.combat), int(report.total)]
-	_skip_hint.text = "点击 / 空格跳过"
+	_skip_hint.text = "点击 / Esc 关闭"
 	_step_span = clampf(0.85 / maxf(1, report.steps.size()), 0.10, 0.24)
 	final_time = 0.16 + _step_span * report.steps.size()
 	duration = final_time + (0.80 if bool(report.special) else 0.65)
@@ -177,7 +178,8 @@ func is_active() -> bool:
 
 
 func _process(delta: float) -> void:
-	if _active and is_visible_in_tree(): seek(_elapsed + delta)
+	if _active and is_visible_in_tree() and _elapsed < duration:
+		seek(minf(_elapsed + delta, duration))
 
 
 func seek(seconds: float) -> void:
@@ -216,7 +218,6 @@ func seek(seconds: float) -> void:
 			_event_audio.play()
 		arrived.emit(int(report.total))
 	_effects.queue_redraw()
-	if _elapsed >= duration: skip()
 
 
 func _scroll_to_current() -> void:
@@ -226,7 +227,7 @@ func _scroll_to_current() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if not _active: return
-	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed) or (event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_SPACE, KEY_ENTER]):
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed) or (event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_SPACE, KEY_ENTER, KEY_ESCAPE]):
 		accept_event()
 		skip()
 
@@ -259,7 +260,10 @@ func _draw_effects() -> void:
 	for index in count:
 		var progress := clampf((t - index * 0.012) / 0.42, 0, 1)
 		if progress <= 0 or progress >= 1: continue
-		var p := origin.lerp(_wallet_target, progress)
+		var destination := _wallet_target
+		if bool(report.get("auto_deposit", false)):
+			destination = _card.position + _caption.position + _caption.size * 0.5
+		var p := origin.lerp(destination, progress)
 		p += Vector2(sin(index * 2.4) * 45 * sin(progress * PI), -sin(progress * PI) * (45 + index * 2))
 		_effects.draw_rect(Rect2(p.round(), Vector2(6, 7)), Color("8f6229"))
 		_effects.draw_rect(Rect2(p.round() + Vector2(1, 1), Vector2(4, 5)), GOLD)

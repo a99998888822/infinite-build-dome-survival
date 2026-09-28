@@ -1,0 +1,14 @@
+{
+  "formula": {"kills_per_coin": 10, "gold_per_coin": 20, "coins_per_wave": 20, "interest_per_coin": 50, "interest_cap_per_wave": 20},
+  "presentation": {"stage_times": [0.55, 1.35, 2.15, 2.95, 3.85], "count_seconds": 0.6, "voice_time": 4.6, "voice_volume_db": -4, "cue_volume_db": -6},
+  "reactions": {
+    "death_followed": {"speech": "哥布林包赚，但不包活哈哈哈！", "voice_path": "", "row": 0},
+    "death_refused": {"speech": "嘬嘬嘬，不听哥布林，吃亏在眼前！", "voice_path": "", "row": 1},
+    "victory_followed": {"speech": "再来，再来！", "voice_path": "", "row": 2},
+    "victory_refused": {"speech": "啧，稳妥点当然好，就是赚的少了些。", "voice_path": "", "row": 3}
+  },
+  "monster_portraits": {
+    "enemy_mutated_grub": "res://assets/ui/settlement/enemy_mutated_grub.png",
+    "enemy_elite_rusher": "res://assets/ui/settlement/enemy_elite_rusher.png"
+  }
+}

@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## External-image pixel art workflow
+
+For requests to pixelize supplied high-resolution images, convert references into pixel-art assets, process character expressions, or use Picxel on image files, read `.agents/skills/picxel-external-images/SKILL.md` and use that project workflow. It accepts external files, requires no image-generation tool or image API key, and records AI-guided local pixel repairs honestly. Prefer it over the global Picxel generation workflow for these tasks. Source-code reviews and replacement of already completed assets do not start a new conversion task.
+
 ## Encoding Rules for Codex on Windows
 
 This project uses UTF-8 for source code, JSON data, Markdown design docs, Godot scenes, and Godot scripts.
