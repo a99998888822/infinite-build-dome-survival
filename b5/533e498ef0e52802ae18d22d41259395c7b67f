@@ -1,0 +1,84 @@
+.gitignore
+  s_51b182b0710eb0::t_367b621ee93db5 5-8
+artifacts/README.md
+  s_51b182b0710eb0::t_6eee49adb89c90 8,11,13,18,20-24
+artifacts/previews/main_menu/README.md
+  s_51b182b0710eb0::t_22b004ebc47a5b 5
+docs/asset/goblin_trade_visual_review.md
+  s_25a386ae822436::t_57c2600957ad76 5-6
+docs/asset/interest_arrival_visual_review.md
+  s_25a386ae822436::t_26d88e7cc4f6ca 1-44
+docs/asset/pixel_combat_effects.md
+  s_25a386ae822436::t_e5cc26505d4290 26
+docs/main/checklist/elite_relic_decay_2026-09-23.md
+  s_25a386ae822436::t_397d6205c93be7 80
+docs/main/checklist/goblin_trades_2026-09-27.md
+  s_25a386ae822436::t_14a44061f33377 50,54,56,65-66,68
+scenes/tests/interest_arrival_test.tscn
+  s_25a386ae822436::t_d6f78904765c0c 1-6
+scripts/core/main_flow_coordinator.gd
+  s_b19d7699c384b1::t_8c84e951d12a32 550,671,1046
+scripts/rewards/battle_finance_system.gd
+  s_b19d7699c384b1::t_f42905c6df77ab 81,85,288,290,324,352,355,528,532-533,539,541,561
+scripts/tests/goblin_trade_cancellation_test.gd
+  s_25a386ae822436::t_e78290b194d643 86-89,107-115
+scripts/tests/goblin_trade_test.gd
+  s_25a386ae822436::t_d1062233618bf3 108,120,190-196,215-216
+scripts/tests/interest_arrival_test.gd
+  s_25a386ae822436::t_dcef86d663310c 3-4,6-8,17-24,32-181,184-185,187-201,203-261
+scripts/tools/assemble_interest_arrival_review.py
+  s_25a386ae822436::t_cdbf573116301b 1,3,7-8,11-25,29-30
+scripts/tools/build_interest_arrival_audio.py
+  s_25a386ae822436::t_baf3b64c716c43 1-42
+scripts/ui/finance_popup.gd
+  s_b19d7699c384b1::t_e14dc7eb646ff5 14,56-57,127,131-162,197,201,213,228-229,395-397,402,459-465,615-617,626
+scripts/ui/finance_ui_controller.gd
+  s_25a386ae822436::t_17ef08144665d6 67
+scripts/ui/goblin_trade_presentation.gd
+  s_25a386ae822436::t_1759bc065d8c71 146,151,159-160,176-178
+scripts/ui/interest_arrival_presentation.gd
+  s_25a386ae822436::t_5359ad1a564830 1-275
+scripts/ui/interest_arrival_presentation.gd.uid
+  s_25a386ae822436::t_1545d85952889f 1
+scripts/ui/interest_arrival_report.gd
+  s_25a386ae822436::t_048561b71b5cba 1-60
+scripts/ui/interest_arrival_report.gd.uid
+  s_25a386ae822436::t_63cefd97c3c5be 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b5533e498ef0e52802ae18d22d41259395c7b67f",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  },
+  "sessions": {
+    "s_25a386ae822436": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d171-1be7-7a82-8afc-a93daf086a61",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_51b182b0710eb0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d7fd-a551-7d10-b2e8-7f8beb056680",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b19d7699c384b1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0e5ff-c3fb-7372-bde8-73c5170c188f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
