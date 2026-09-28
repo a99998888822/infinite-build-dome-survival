@@ -1,0 +1,364 @@
+artifacts/.gdignore
+  s_09d96d2c4f99d5::t_e1d9cc7d40e59f 1
+artifacts/README.md
+  s_51b182b0710eb0::t_4417eba272ef1f 1,3-22
+artifacts/previews/main_menu/README.md
+  s_51b182b0710eb0::t_31e5590e0442cd 1-11
+artifacts/previews/nightwatch_spear/README.md
+  s_51b182b0710eb0::t_78a309d7b40b23 1,3-14
+artifacts/reports/android/README.md
+  s_51b182b0710eb0::t_b964060c91d8a7 1-65
+artifacts/reports/android/measurements.json
+  s_51b182b0710eb0::t_d7c18696c61777 1-746
+artifacts/reports/audio_release.json
+  s_51b182b0710eb0::t_1a1fc2f21552bf 2-371,374-375
+artifacts/reports/audio_validation.json
+  s_51b182b0710eb0::t_471b64ec1267da 1-54
+assets/audio/sfx/combat/meteor_flail_hit.wav.import
+  s_b11938437a28ec::t_b5b1d0571ed6c2 3-6,10-11,15-24
+assets/sprites/player/player_void_hunter_right_base_64.png.import
+  s_09d96d2c4f99d5::t_d2a766161f3992 5-6,13-14
+assets/sprites/weapons/meteor_flail/meteor_flail_chain_link.png.import
+  s_b11938437a28ec::t_aaab5ba212f6ab 5-6,13-14
+assets/sprites/weapons/meteor_flail/meteor_flail_grip.png.import
+  s_b11938437a28ec::t_1ff280e0845a5f 5-6,13-14
+assets/sprites/weapons/meteor_flail/meteor_flail_head.png.import
+  s_b11938437a28ec::t_2e71a95044c208 5-6,13-14
+assets/ui/icons/relics/relic_coin_heart.png.import
+  s_25a386ae822436::t_f066d26700a367 5-6,13-14
+assets/ui/icons/relics/relic_golden_sarcophagus.png.import
+  s_25a386ae822436::t_bd0977008fb03b 5-6,13-14
+assets/ui/icons/relics/relic_hoarders_ring.png.import
+  s_25a386ae822436::t_8fd1165aa28c3b 5-6,13-14
+assets/ui/icons/weapons/weapon_meteor_flail.png.import
+  s_b11938437a28ec::t_e3b766b08b5663 5-6,13-14
+augmentations_list.md
+  s_25a386ae822436::t_6659d60f4af085 1-2,8,13-16,20,22-23,31,36-37,43-46,48,50,53,69,71-72,84,87-89,91,93,95-102
+autoloads/audio_manager.gd
+  s_9ceadd46c2b609::t_4a22fe5ef7cef1 16-17,173-174,259-260,312-313
+autoloads/camp_progression.gd
+  s_b19d7699c384b1::t_a6206b2d7050e1 14-22,36-39,651,655-670
+data_config/camp_buildings.json
+  s_25a386ae822436::t_a6f677f4ac0410 354
+data_config/characters.json
+  s_25a386ae822436::t_8762f7613709e9 5,21
+data_config/enemies.json
+  s_b11938437a28ec::t_23d599922b2df3 42
+data_config/relics.json
+  s_51b182b0710eb0::t_3c29acc47c6999 68,71,80,175,200,209,229,236-247,259,266,269-272,383,410,420,479,506,516,532,535,539-541,627,634,701,706-708,710-719,722-726,732,740,827,834,842,847-851,853-872,875-882,888,892,904,911,936,943,967,972-975,977-996,999-1004,1042,1224,1229-1231,1233-1252,1274,1279-1282,1284-1303,1310,1314-1318,1320-1339,1441,1446-1449,1451-1480,1517,1527,1534,1538,1552,1556,1585,1593,1615,1622,1625,1643-1685
+data_config/weapons.json
+  s_51b182b0710eb0::t_f4e50bdfa903f0 96,229-259
+docs/asset/asset_checklist_summary.md
+  s_51b182b0710eb0::t_41e937345be58e 121-123
+docs/asset/combat_audio.md
+  s_51b182b0710eb0::t_82037a962711ef 3,21-22,25-27,29,62-63,77,118-169
+docs/asset/combat_sprite_clarity.md
+  s_51b182b0710eb0::t_fcb9e1a246d45a 51
+docs/main/19-capital_dependency_relic_review.md
+  s_25a386ae822436::t_e04c12c9127890 3-7,17,27,30-32,34,38,42-43,46,48,52-54,75,77,81,99-100,116,122-125
+docs/main/4-weapon_loadout_design.md
+  s_51b182b0710eb0::t_016a1b1a988efc 520-521,547,565-578
+docs/main/5-relic_bond_design.md
+  s_51b182b0710eb0::t_9034784b22cf72 302,304,306,308-312,315,319,328,335,340-373
+docs/main/7-camp_meta_progression_design.md
+  s_25a386ae822436::t_577429eff2a362 142,153,168,175
+docs/main/checklist/economy_flow_changes_2026-09-25.md
+  s_25a386ae822436::t_86fffc68dafc54 1-73
+docs/main/checklist/elite_relic_decay_2026-09-23.md
+  s_25a386ae822436::t_34c549107ec89e 61,80
+docs/main/checklist/finance_talent_audit_2026-09-25.md
+  s_51b182b0710eb0::t_148cc9546f7caa 1-41
+docs/main/checklist/health_regen_balance_proposal_2026-09-25.md
+  s_25a386ae822436::t_f7f260b5a086d9 1-106
+docs/main/checklist/health_regen_changes_2026-09-25.md
+  s_25a386ae822436::t_755dd7229660a1 1-63
+docs/main/checklist/meteor_flail_implementation_2026-09-25.md
+  s_51b182b0710eb0::t_ed858d8484c803 1,3,5-16,18,20-28,30-49
+docs/main/checklist/relic_balance_changes_2026-09-25.md
+  s_25a386ae822436::t_fd557054be0f62 1,3-45
+docs/main/checklist/relic_effect_consistency_audit_2026-09-22.md
+  s_51b182b0710eb0::t_7b1e3db858e439 184
+docs/main/checklist/relic_effect_fixes_2026-09-23.md
+  s_51b182b0710eb0::t_0378768a82b33f 54
+docs/main/checklist/weapon_balance_2026-09-24.md
+  s_51b182b0710eb0::t_0dd254d3456478 20-26,32
+project.md
+  s_b11938437a28ec::t_caabd60001cd3d 3-5,7
+scenes/battle/battle_root.tscn
+  s_51b182b0710eb0::t_94983de6ead140 477-480,493-494
+scenes/enemy/elite_rusher.tscn
+  s_b11938437a28ec::t_824f799760a46c 6,18-19
+scenes/tests/battle_hud_damage_test.tscn
+  s_0cc97b4e6b7005::t_f358b8b9195466 2-5
+scenes/tests/economy_flow_test.tscn
+  s_25a386ae822436::t_4aea9dabab947c 1-6
+scenes/tests/elite_effect_revision_test.tscn
+  s_c134b173378a1d::t_94f7fa01cbb50f 1-6
+scenes/tests/elite_element_live_capture.tscn
+  s_c134b173378a1d::t_276350d09708ac 1-6
+scenes/tests/finance_talent_regression_test.tscn
+  s_0cc97b4e6b7005::t_1b921adc24b87d 1,3,5-6
+scenes/tests/health_growth_test.tscn
+  s_25a386ae822436::t_9d7a8c1868d23d 1-6
+scenes/tests/meteor_flail_live_capture.tscn
+  s_b11938437a28ec::t_83d0ff8e8de570 1-6
+scenes/tests/meteor_flail_test.tscn
+  s_b11938437a28ec::t_9d0321df8be9ab 1-6
+scenes/tests/principal_relic_test.tscn
+  s_25a386ae822436::t_b0d7d331b7b1ef 1-6
+scenes/tests/relic_balance_regression_test.tscn
+  s_25a386ae822436::t_605ee9f37aa95d 1-6
+scenes/tests/water_effect_live_capture.tscn
+  s_51b182b0710eb0::t_51ad4934aa5014 1-6
+scripts/audio/combat_sound_library.gd
+  s_9ceadd46c2b609::t_f0aa0b5acd2dba 7,9-10,20,25-26,28,31-33
+scripts/core/bootstrap.gd
+  s_25a386ae822436::t_4b384cb7d1eb0e 315,337,341,499,501,505,866,878-879,892-893,927,940,954,957-960,964
+scripts/core/main_flow_coordinator.gd
+  s_b19d7699c384b1::t_68966c7e1fd437 73,124,168,503,533-534,630-633,785-786,981-983,1026,1028,1039-1047,1072-1074,1079,1081-1088
+scripts/data/data_validator.gd
+  s_25a386ae822436::t_1ecd242e0398e3 60,71,83,207-210,267-274,390,402-420,633,654-660
+scripts/data/humanity_economy.gd
+  s_25a386ae822436::t_8e7c11723327db 48,52-57
+scripts/data/stat_definitions.gd
+  s_51b182b0710eb0::t_b537fc7c686a18 300,356
+scripts/debug/ui_visual_audit.gd
+  s_25a386ae822436::t_924638d7a6ca66 223-225
+scripts/effects/black_hole_effect.gd
+  s_c134b173378a1d::t_bc58b3ce048d9b 72
+scripts/effects/combat_effect_world.gd
+  s_c134b173378a1d::t_6d1c154be9dc33 99-100,102
+scripts/effects/element_reaction_visual.gd
+  s_51b182b0710eb0::t_1d58686bf5c1ab 8,64-65,69-70,75
+scripts/effects/enemy_status_visual.gd
+  s_51b182b0710eb0::t_75ba41ea714c30 6,76
+scripts/effects/frost_pattern.gd
+  s_51b182b0710eb0::t_ab78ef57b67e97 1-2,4-36
+scripts/effects/frost_pattern.gd.uid
+  s_25a386ae822436::t_7bcabd957a9894 1
+scripts/effects/ice_field_effect.gd
+  s_51b182b0710eb0::t_4861f43351c33c 8,102-113
+scripts/effects/water_wave_effect.gd
+  s_b11938437a28ec::t_aa2543bc9a2327 11,51,113-166,182
+scripts/effects/wind_blade_effect.gd
+  s_c134b173378a1d::t_7ad3f76bb72458 58-60
+scripts/enemies/elite_rusher.gd
+  s_b11938437a28ec::t_e5ffe834d72688 5-6,137-147,244,246,250
+scripts/enemies/enemy_controller.gd
+  s_c134b173378a1d::t_07ac31df778b52 6,227-229,235-237,250,298,341-348,353,355,372-374,418-419,486,490,670,672
+scripts/pickups/relic_pickup.gd
+  s_b11938437a28ec::t_28c58f94657b8d 5,68-88,90-95
+scripts/player/player_controller.gd
+  s_25a386ae822436::t_2e3bc82b952487 7,15,54,108,134,143-158,341,375-377,566-569,733,735,737,739-746,753-759,762
+scripts/rewards/battle_finance_system.gd
+  s_b19d7699c384b1::t_012f28daf27597 6,29,39,51,75-78,82-83,86-87,91,110,115-117,126,133,169-171,189,192-194,235-238,241,259,266-269,274,277,282-283,294-307,309,314,362-364,368-370,411-446,464-465,468,510-512,514-519,537-539,587-590,598-602,610-613,619,621-624,677-679,696-734,772-773,778-783
+scripts/rewards/economy_journal.gd
+  s_25a386ae822436::t_8026ade2927adb 1-2,4,6-8,11-14,17-26,29-30
+scripts/rewards/economy_journal.gd.uid
+  s_25a386ae822436::t_99be9d253e5539 1
+scripts/tests/battle_hud_damage_test.gd
+  s_0cc97b4e6b7005::t_9b8a657803ffb7 1-166
+scripts/tests/battle_hud_damage_test.gd.uid
+  s_b11938437a28ec::t_aff3e4ceb5ee57 1
+scripts/tests/combat_audio_reaction_test.gd
+  s_9ceadd46c2b609::t_448a30d82c9866 62,69,72-73,77,89
+scripts/tests/combat_audio_test.gd
+  s_9ceadd46c2b609::t_112847c7e396e0 44-53,145
+scripts/tests/economy_flow_test.gd
+  s_25a386ae822436::t_f0f98d0d2bc480 1-291
+scripts/tests/economy_flow_test.gd.uid
+  s_25a386ae822436::t_560769ba188e94 1
+scripts/tests/elite_effect_revision_test.gd
+  s_b11938437a28ec::t_503a78addcb7c6 1-4,8-20,22,24-28,30-32,34-47,49-95
+scripts/tests/elite_effect_revision_test.gd.uid
+  s_25a386ae822436::t_4fbe430a3599ea 1
+scripts/tests/elite_element_live_capture.gd
+  s_51b182b0710eb0::t_8c02fb10ca383f 1-180
+scripts/tests/elite_element_live_capture.gd.uid
+  s_25a386ae822436::t_72e53bfbd114c9 1
+scripts/tests/elite_relic_decay_test.gd
+  s_b11938437a28ec::t_fb7cf3212c0ad6 144
+scripts/tests/finance_talent_regression_test.gd
+  s_0cc97b4e6b7005::t_7f96b0aa5e7f75 1-161
+scripts/tests/finance_talent_regression_test.gd.uid
+  s_b11938437a28ec::t_34d1ca0f7cdcc0 1
+scripts/tests/health_growth_test.gd
+  s_25a386ae822436::t_0d0158907375b2 1-202
+scripts/tests/humanity_economy_test.gd
+  s_25a386ae822436::t_6500b87442dc63 112,115
+scripts/tests/meteor_flail_live_capture.gd
+  s_b11938437a28ec::t_0d34c344b7e2f5 1-144
+scripts/tests/meteor_flail_live_capture.gd.uid
+  s_09d96d2c4f99d5::t_030d4886e3495b 1
+scripts/tests/meteor_flail_test.gd
+  s_51b182b0710eb0::t_6c9643caa23809 1-171
+scripts/tests/meteor_flail_test.gd.uid
+  s_09d96d2c4f99d5::t_be377dc5c64db8 1
+scripts/tests/pixel_combat_effect_test.gd
+  s_b11938437a28ec::t_76a807acb0794c 89
+scripts/tests/principal_relic_test.gd
+  s_25a386ae822436::t_a283be4eeb22f7 1-290
+scripts/tests/principal_relic_test.gd.uid
+  s_25a386ae822436::t_aeec71c22c7284 1
+scripts/tests/relic_balance_regression_test.gd
+  s_25a386ae822436::t_66e3b6b7a5d331 1-171
+scripts/tests/relic_consistency_test.gd
+  s_25a386ae822436::t_f357ebf847ad44 25-27,55-56,71,79,81,87,94,105,125,135-139,142,149-150,153,158,198-199,201,204,209,215-275,286,300,304,319,323-328,344,400,402,413,419,423,473
+scripts/tests/water_effect_live_capture.gd
+  s_51b182b0710eb0::t_0c215999d16223 1-160
+scripts/tests/water_effect_live_capture.gd.uid
+  s_51b182b0710eb0::t_a58800577f5c17 1
+scripts/tests/water_review_target.gd
+  s_51b182b0710eb0::t_d0b7901e738ddb 1-11
+scripts/tests/water_review_target.gd.uid
+  s_51b182b0710eb0::t_764d5551f87528 1
+scripts/tools/assemble_meteor_flail_capture.py
+  s_b11938437a28ec::t_6be5cadcc3c754 1-5,7-16,19-47,50-57
+scripts/tools/audio_sources/README.md
+  s_51b182b0710eb0::t_56e7be02abb770 1-9
+scripts/tools/audio_sources/electric_spark_reference/README.md
+  s_51b182b0710eb0::t_e32352b652310d 1-5
+scripts/tools/audio_sources/lightning_bright_approved.json
+  s_51b182b0710eb0::t_80a22b2fb4e362 2-8
+scripts/tools/audio_sources/round2/README.md
+  s_51b182b0710eb0::t_d6123a358b0600 1,3-8
+scripts/tools/build_all_sfx_review.py
+  s_51b182b0710eb0::t_28fc8219d3526f 1-171
+scripts/tools/build_combat_audio.py
+  s_9ceadd46c2b609::t_9f3421addac9c9 16,21,26,28-29,32,39,44-45,47,52-54,102-122,162-169,171-178,180,270-275,294-295,312-313,333,360-361
+scripts/tools/build_electric_spark_c_directions.py
+  s_09d96d2c4f99d5::t_a4cf7fc8d7ac72 1-116
+scripts/tools/build_electric_spark_c_refinement.py
+  s_09d96d2c4f99d5::t_97985c9e2753b3 1-110
+scripts/tools/build_elite_element_review.py
+  s_51b182b0710eb0::t_558eea13f312ad 1,3,5-8,10-64
+scripts/tools/build_meteor_flail_audio.py
+  s_25a386ae822436::t_e943e3e5333e2f 1,3-5,7-10
+scripts/tools/build_meteor_flail_review.py
+  s_25a386ae822436::t_4e98017d613d93 1-2,4-8,11-223
+scripts/tools/build_sfx_round2_review.py
+  s_51b182b0710eb0::t_6d3548779e64ca 1-5
+scripts/tools/build_sfx_round3_review.py
+  s_51b182b0710eb0::t_bdaf120e60d0d4 1-5
+scripts/tools/build_water_effect_review.py
+  s_51b182b0710eb0::t_60c887339e37c7 1,3-10,13-28,31-41,44-102,104-111
+scripts/tools/combat_audio_revision_round2.py
+  s_9ceadd46c2b609::t_d57383eb574b73 1-134
+scripts/tools/source_art/README.md
+  s_51b182b0710eb0::t_7a4dfc09e45f8a 1-8
+scripts/tools/source_art/principal_relics.py
+  s_51b182b0710eb0::t_fd53a58ef22384 1-162
+scripts/tools/templates/all_sfx_review.html
+  s_9ceadd46c2b609::t_49c4871aff75b1 1-183
+scripts/ui/battle_hud.gd
+  s_25a386ae822436::t_1856dc919135d1 36-38,47,135-139,169-174,176-178,262-263,266,268,271-279,321,337-338,648-649,658-659,767,848,938-940,942-944,949-950,952-953,955-956,966,968-969,988-989,991-992,995-996,1001-1022
+scripts/ui/economy_log_panel.gd
+  s_25a386ae822436::t_a7626a56e518f2 1-128
+scripts/ui/economy_log_panel.gd.uid
+  s_25a386ae822436::t_43d9b5b5c3b070 1
+scripts/ui/finance_popup.gd
+  s_b19d7699c384b1::t_d9cd85e2fa38a7 8,18,21,75,87-91,107,155-157,162,166,171-175,255-257,334-342,347-349,353-354,364,384-388
+scripts/ui/finance_ui_style.gd
+  s_b19d7699c384b1::t_61046a6470b3cc 10-19
+scripts/ui/interest_settlement_popup.gd
+  s_25a386ae822436::t_8d1d24c33e2429 259,264-268
+scripts/ui/shop_offer_generator.gd
+  s_25a386ae822436::t_19a0a15593ba22 133,386
+scripts/ui/shop_pricing.gd
+  s_25a386ae822436::t_412433064177c4 1-2,4-7,10-29
+scripts/ui/shop_pricing.gd.uid
+  s_25a386ae822436::t_d6a2bcfd627c2f 1
+scripts/ui/weapon_damage_meter.gd
+  s_0cc97b4e6b7005::t_1298912bf21327 1-119
+scripts/ui/weapon_damage_meter.gd.uid
+  s_b11938437a28ec::t_551a2322835c58 1
+scripts/waves/wave_manager.gd
+  s_b19d7699c384b1::t_5037fe15dc19cc 13,46,50-51,102-103,109-110,116-117,133,151-153,155-156,212,216-222,311,318-324,456-457,726-727
+scripts/weapons/meteor_flail.gd
+  s_25a386ae822436::t_07e2fd0d5d7b5e 1-215
+scripts/weapons/meteor_flail.gd.uid
+  s_b11938437a28ec::t_4603e84270d295 1
+scripts/weapons/weapon_instance.gd
+  s_51b182b0710eb0::t_632f39cf59ab70 5,375-385,400,458,548-549,559,570-578
+scripts/weapons/weapon_loadout.gd
+  s_b11938437a28ec::t_f286cce7d59125 272-286
+todo.md
+  s_25a386ae822436::t_eed5588673a96b 34-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "73f65ad1e6e8fed16109d7723787324631ba6f6a",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  },
+  "sessions": {
+    "s_09d96d2c4f99d5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d80c-8e03-7613-b58d-10babb59ee98",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_0cc97b4e6b7005": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d7d8-222a-7850-9e20-c7ff11457a3e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25a386ae822436": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d171-1be7-7a82-8afc-a93daf086a61",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_51b182b0710eb0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d7fd-a551-7d10-b2e8-7f8beb056680",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_9ceadd46c2b609": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d8c5-b448-7162-a045-4d0c5aed13fd",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b19d7699c384b1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0e5ff-c3fb-7372-bde8-73c5170c188f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_c134b173378a1d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d7e6-9985-7420-a2c0-2845318dbf2b",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
