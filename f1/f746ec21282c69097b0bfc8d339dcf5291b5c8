@@ -1,0 +1,510 @@
+.agents/skills/picxel-external-images/.gitignore
+  h_ae0329d199c6f5 1-5
+.agents/skills/picxel-external-images/SKILL.md
+  h_ae0329d199c6f5 1-91
+.agents/skills/picxel-external-images/agents/openai.yaml
+  h_ae0329d199c6f5 1-6
+.agents/skills/picxel-external-images/references/workflow.md
+  h_ae0329d199c6f5 1-85
+.agents/skills/picxel-external-images/scripts/external_pixel.py
+  h_ae0329d199c6f5 1-231
+.agents/skills/picxel-external-images/vendor/picxel/SPEC.md
+  h_ae0329d199c6f5 1-82
+.agents/skills/picxel-external-images/vendor/picxel/references/faces.md
+  h_ae0329d199c6f5 1-67
+.agents/skills/picxel-external-images/vendor/picxel/scripts/panel.html
+  h_ae0329d199c6f5 1-470
+.agents/skills/picxel-external-images/vendor/picxel/scripts/panel.py
+  h_ae0329d199c6f5 1-2,4-7,11-18,20-41,43-50,54-335,337-483
+.agents/skills/picxel-external-images/vendor/picxel/scripts/px.py
+  h_ae0329d199c6f5 1-124
+.agents/skills/picxel-external-images/vendor/picxel/scripts/start_panel.py
+  h_ae0329d199c6f5 1-94
+.gitignore
+  h_ae0329d199c6f5 10-12
+AGENTS.md
+  h_ae0329d199c6f5 3-6
+artifacts/README.md
+  h_ae0329d199c6f5 5-6,9-14,16,18-21,24,28-32,38-39,44,46,48
+artifacts/previews/bank_desk_picxel/highres_r2/README.md
+  h_ae0329d199c6f5 1,3-5,7,9
+artifacts/previews/bank_desk_picxel/highres_r2/delivery-report.json
+  h_ae0329d199c6f5 1-36
+artifacts/previews/bank_desk_picxel/highres_r2/export_review.py
+  h_ae0329d199c6f5 1-33
+artifacts/previews/bank_desk_picxel/highres_r2/prepare.py
+  h_ae0329d199c6f5 1-69
+artifacts/previews/bank_desk_picxel/highres_r2/refine.py
+  h_ae0329d199c6f5 1-196
+artifacts/previews/bank_desk_picxel/highres_r2/refinement-report.json
+  h_ae0329d199c6f5 1-18
+artifacts/previews/bank_desk_picxel/highres_r2/refs/bank-desk.anchor.json
+  h_ae0329d199c6f5 2-21,23-28,30-32,34-41,43,45-51,53,55-61,63,65-71,73,75-76
+artifacts/previews/bank_desk_picxel/highres_r2/work/bank-desk-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/bank_desk_picxel/highres_r2/work/bank-desk-128.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/bank_desk_picxel/highres_r2/work/bank-desk.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/bank_desk_picxel/highres_r2/work/picxel.status.json
+  h_ae0329d199c6f5 1-7
+artifacts/previews/capitalist_character/README.md
+  h_ae0329d199c6f5 1-38
+artifacts/previews/goblin_reprint/picxel_128_review/README.md
+  h_ae0329d199c6f5 1-23
+artifacts/previews/goblin_reprint/picxel_128_review/concepts/method.json
+  h_ae0329d199c6f5 1-18
+artifacts/previews/goblin_reprint/picxel_128_review/refs/goblin.anchor.json
+  h_ae0329d199c6f5 1-99
+artifacts/previews/goblin_reprint/picxel_128_review/work/goblin-128-detail-face.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_128_review/work/goblin-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_128_review/work/goblin.face.json
+  h_ae0329d199c6f5 1-56
+artifacts/previews/goblin_reprint/picxel_128_review/work/goblin.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/goblin_reprint/picxel_128_review/work/validation.json
+  h_ae0329d199c6f5 1-34
+artifacts/previews/goblin_reprint/picxel_expressions_128/README.md
+  h_ae0329d199c6f5 1-14
+artifacts/previews/goblin_reprint/picxel_expressions_128/concepts/extraction.json
+  h_ae0329d199c6f5 2-10,12-15,18-24,26-29,32-38,40-43,46-52,54-57,60
+artifacts/previews/goblin_reprint/picxel_expressions_128/refs/goblin_delighted.anchor.json
+  h_ae0329d199c6f5 1-99
+artifacts/previews/goblin_reprint/picxel_expressions_128/refs/goblin_displeased.anchor.json
+  h_ae0329d199c6f5 1-99
+artifacts/previews/goblin_reprint/picxel_expressions_128/refs/goblin_downcast.anchor.json
+  h_ae0329d199c6f5 1-99
+artifacts/previews/goblin_reprint/picxel_expressions_128/refs/goblin_smile.anchor.json
+  h_ae0329d199c6f5 1-99
+artifacts/previews/goblin_reprint/picxel_expressions_128/sources.json
+  h_ae0329d199c6f5 1-48
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted-128-detail-face.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted-128.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted.face.json
+  h_ae0329d199c6f5 1-33
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased-128-detail-face.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased-128.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased.face.json
+  h_ae0329d199c6f5 1-32
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast-128-detail-face.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast-128.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast.face.json
+  h_ae0329d199c6f5 1-34
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile-128-detail-face.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile-128-detail.pxg
+  h_ae0329d199c6f5 1-149
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile.face.json
+  h_ae0329d199c6f5 1-32
+artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile.pal
+  h_ae0329d199c6f5 1-16
+artifacts/previews/main_menu/README.md
+  h_ae0329d199c6f5 9
+artifacts/previews/nightwatch_spear/README.md
+  h_ae0329d199c6f5 10
+artifacts/references/battle_environment/README.md
+  h_ae0329d199c6f5 1-109
+artifacts/reports/android/README.md
+  h_ae0329d199c6f5 13-14,60
+artifacts/reports/asset_cleanup.json
+  h_ae0329d199c6f5 1-1698
+artifacts/reviews/characters/capitalist/README.md
+  h_ae0329d199c6f5 1-16
+artifacts/reviews/environment/picxel_128_larger_ruins/README.md
+  h_ae0329d199c6f5 1-7
+artifacts/reviews/ui/bank_desk_integration/README.md
+  h_ae0329d199c6f5 1-17
+artifacts/reviews/ui/goblin_loan/README.md
+  h_ae0329d199c6f5 1-26
+artifacts/reviews/ui/range_relics/README.md
+  h_ae0329d199c6f5 5-6
+artifacts/reviews/ui/run_settlement/README.md
+  h_ae0329d199c6f5 1-22
+artifacts/reviews/ui/wave_challenges/README.md
+  h_ae0329d199c6f5 1-14
+artifacts/reviews/ui/wave_pressure/README.md
+  h_ae0329d199c6f5 1-30
+assets/audio/sfx/settlement/stage_1.wav.import
+  h_ae0329d199c6f5 3-6,10-11,15-24
+assets/audio/sfx/settlement/stage_2.wav.import
+  h_ae0329d199c6f5 3-6,10-11,15-24
+assets/audio/sfx/settlement/stage_3.wav.import
+  h_ae0329d199c6f5 3-6,10-11,15-24
+assets/audio/sfx/settlement/stage_4.wav.import
+  h_ae0329d199c6f5 1-24
+assets/audio/sfx/settlement/stage_5.wav.import
+  h_ae0329d199c6f5 1-24
+assets/sprites/background/wetland/decal_brick_fragments.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_compact_moss.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_cyan_crack.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_fine_crack.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_flat_stones.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_forked_crack.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_high_rubble.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_long_moss.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_low_rubble.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_mossy_crack.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_puddle.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_scattered_stones.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_single_brick.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_spreading_crack.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_stacked_bricks.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_vertical_crack.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/decal_wet_moss.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/decal_wet_patch.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/fx_cyan_ripples.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/fx_fine_ripples.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/ruin_brick_wall.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/ruin_broken_arch.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/background/wetland/ruin_broken_column.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_curved_wall.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_eroded_pillar.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_short_column.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_sloped_wall.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_square_pillar.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_stone_block.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/background/wetland/ruin_twin_pillar_wall.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/player/capitalist_idle_right.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/sprites/player/combat/capitalist_idle_right.png.import
+  h_ae0329d199c6f5 1-40
+assets/sprites/player/combat/capitalist_walk_right_spritesheet.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/finance/bank_counter_desk_picxel.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/finance/challenge_deposit.svg
+  h_ae0329d199c6f5 1
+assets/ui/finance/challenge_deposit.svg.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/challenge_elites.svg
+  h_ae0329d199c6f5 1
+assets/ui/finance/challenge_elites.svg.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/challenge_tide.svg
+  h_ae0329d199c6f5 1
+assets/ui/finance/challenge_tide.svg.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/goblin_portraits.json
+  h_ae0329d199c6f5 1-49
+assets/ui/finance/loan/loan_100.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/loan/loan_200.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/loan/loan_500.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/finance/loan/loan_note.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/finance/loan/loan_rollover.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/icons/characters/icon_capitalist.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/settlement/enemy_elite_rusher.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/settlement/enemy_mutated_grub.png.import
+  h_ae0329d199c6f5 5-6,13-14
+assets/ui/settlement/goblin_reactions.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/settlement/payout_glint.png.import
+  h_ae0329d199c6f5 1-40
+assets/ui/settlement/settlement_icons.png.import
+  h_ae0329d199c6f5 1-40
+autoloads/camp_progression.gd
+  h_ae0329d199c6f5 423-433,435,547,660
+data_config/battle_scenery.json
+  h_ae0329d199c6f5 1-430
+data_config/characters.json
+  h_ae0329d199c6f5 13-18,47-87
+data_config/goblin_loans.json
+  h_ae0329d199c6f5 1-11
+data_config/run_settlement.json
+  h_ae0329d199c6f5 1-14
+data_config/wave_challenges.json
+  h_ae0329d199c6f5 1-32
+data_config/weapons.json
+  h_ae0329d199c6f5 126-128
+docs/asset/asset_checklist_summary.md
+  h_ae0329d199c6f5 9-11,124-125,134-137,142
+docs/asset/asset_rules_summary.md
+  h_ae0329d199c6f5 160
+docs/asset/battle_environment_refresh.md
+  h_ae0329d199c6f5 3-4,31
+docs/asset/battle_scenery_picxel_integration.md
+  h_ae0329d199c6f5 1-46
+docs/asset/finance_preparation_refresh.md
+  h_ae0329d199c6f5 10-11,28,38-39,42-43,58-60
+docs/asset/goblin_loan_visual_review.md
+  h_ae0329d199c6f5 1-79
+docs/asset/interest_arrival_visual_review.md
+  h_ae0329d199c6f5 14,28-29,32,34,36,40
+docs/asset/iron_knight_integration.md
+  h_ae0329d199c6f5 35
+docs/asset/stats_drawer_refresh.md
+  h_ae0329d199c6f5 9
+docs/main/16-particle_system_design.md
+  h_ae0329d199c6f5 192-193
+docs/main/18-humanity_erosion_gameplay_design.md
+  h_ae0329d199c6f5 248
+docs/main/21-capitalist_character_design_review.md
+  h_ae0329d199c6f5 1-229
+docs/main/22-next_wave_challenges.md
+  h_ae0329d199c6f5 1-72
+docs/main/23-run_settlement_design_review.md
+  h_ae0329d199c6f5 1-141
+docs/main/4-weapon_loadout_design.md
+  h_ae0329d199c6f5 578
+docs/main/6-enemy_wave_design.md
+  h_ae0329d199c6f5 13-15,17-19,21,25,27-39
+docs/main/checklist/economy_flow_changes_2026-09-25.md
+  h_ae0329d199c6f5 71
+docs/main/checklist/finance_talent_audit_2026-09-25.md
+  h_ae0329d199c6f5 39
+docs/main/checklist/godot_verification_master_checklist.md
+  h_ae0329d199c6f5 401,633,637
+docs/main/checklist/meteor_flail_implementation_2026-09-25.md
+  h_ae0329d199c6f5 34,47
+goblin_trades_list.md
+  h_ae0329d199c6f5 1-32
+scenes/tests/battle_environment_test.tscn
+  h_ae0329d199c6f5 1-6
+scenes/tests/capitalist_character_test.tscn
+  h_ae0329d199c6f5 1-6
+scenes/tests/goblin_loan_visual_review.tscn
+  h_ae0329d199c6f5 1-6
+scenes/tests/run_settlement_test.tscn
+  h_ae0329d199c6f5 1-6
+scenes/tests/wave_challenge_test.tscn
+  h_ae0329d199c6f5 1-6
+scenes/tests/wave_pressure_test.tscn
+  h_ae0329d199c6f5 1-6
+scenes/ui/main_menu/main_menu_ui_controller.tscn
+  h_ae0329d199c6f5 7-8,421
+scripts/battle/battle_scenery_catalog.gd
+  h_ae0329d199c6f5 1-48
+scripts/battle/battle_scenery_catalog.gd.uid
+  h_ae0329d199c6f5 1
+scripts/battle/distant_ruins.gd
+  h_ae0329d199c6f5 4-5,25-27,29,37-40,49,67
+scripts/battle/wetland_backdrop.gd
+  h_ae0329d199c6f5 8,42,62-63,86,151,186-191,197-199,203-213,240-242,244,258
+scripts/core/bootstrap.gd
+  h_ae0329d199c6f5 468-469,949-951,956,960,970,1098-1099
+scripts/core/game_root.gd
+  h_ae0329d199c6f5 68-69,74-76,174
+scripts/core/main_flow_coordinator.gd
+  h_ae0329d199c6f5 31,51,105,168,380,398-400,406-414,421-442,484,523,530,622,624-633,635-636,645,651-655,699,812-813,816-817,855-869,1118,1177-1180,1184,1189,1233-1286,1314,1356
+scripts/data/battle_difficulty.gd
+  h_ae0329d199c6f5 6,9-11,20-21,25-26
+scripts/data/data_validator.gd
+  h_ae0329d199c6f5 207-208,515,537-578
+scripts/player/player_controller.gd
+  h_ae0329d199c6f5 59-61,118-124,152,157-168,280-282,325-326,585-600,627,634
+scripts/relics/relic_bond_system.gd
+  h_ae0329d199c6f5 31,43,58-61,65,78-85
+scripts/rewards/battle_finance_system.gd
+  h_ae0329d199c6f5 57,83,148-170,262,277,321-322,552-554
+scripts/rewards/goblin_loan_system.gd
+  h_ae0329d199c6f5 1-170
+scripts/rewards/goblin_loan_system.gd.uid
+  h_ae0329d199c6f5 1
+scripts/rewards/run_settlement.gd
+  h_ae0329d199c6f5 1-31
+scripts/rewards/run_settlement.gd.uid
+  h_ae0329d199c6f5 1
+scripts/rewards/run_statistics.gd
+  h_ae0329d199c6f5 1-89
+scripts/rewards/run_statistics.gd.uid
+  h_ae0329d199c6f5 1
+scripts/rewards/wave_challenge_system.gd
+  h_ae0329d199c6f5 1-177
+scripts/rewards/wave_challenge_system.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/battle_environment_test.gd
+  h_ae0329d199c6f5 1-155
+scripts/tests/battle_environment_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/beginner_playability_test.gd
+  h_ae0329d199c6f5 77-79,104-105
+scripts/tests/capitalist_character_test.gd
+  h_ae0329d199c6f5 1-187
+scripts/tests/capitalist_character_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/difficulty_balance_test.gd
+  h_ae0329d199c6f5 69-70,87,92
+scripts/tests/economy_flow_test.gd
+  h_ae0329d199c6f5 230-231,285-286
+scripts/tests/erosion_pressure_test.gd
+  h_ae0329d199c6f5 82,85,94-95
+scripts/tests/finance_preparation_test.gd
+  h_ae0329d199c6f5 79-91,437-438
+scripts/tests/fixtures/goblin_loan_visual_mockup.gd
+  h_ae0329d199c6f5 1-391
+scripts/tests/fixtures/goblin_loan_visual_mockup.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/goblin_loan_test.gd
+  h_ae0329d199c6f5 1-341
+scripts/tests/goblin_loan_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/goblin_loan_visual_review.gd
+  h_ae0329d199c6f5 1-239
+scripts/tests/goblin_loan_visual_review.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/goblin_trade_test.gd
+  h_ae0329d199c6f5 117-118,229-230
+scripts/tests/interest_arrival_test.gd
+  h_ae0329d199c6f5 83-90,100-101,154-155,182-183
+scripts/tests/plasma_contact_test.gd
+  h_ae0329d199c6f5 43,106,112,116,126,136-176
+scripts/tests/run_settlement_test.gd
+  h_ae0329d199c6f5 1-277
+scripts/tests/run_settlement_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/wave_challenge_test.gd
+  h_ae0329d199c6f5 1-281
+scripts/tests/wave_challenge_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tests/wave_pressure_test.gd
+  h_ae0329d199c6f5 1-77
+scripts/tests/wave_pressure_test.gd.uid
+  h_ae0329d199c6f5 1
+scripts/tools/assemble_goblin_loan_review.py
+  h_ae0329d199c6f5 1-55
+scripts/tools/build_iron_knight_review.py
+  h_ae0329d199c6f5 8,14
+scripts/tools/build_nightwatch_spear_art.py
+  h_ae0329d199c6f5 11
+scripts/tools/build_picxel_goblin_expressions.py
+  h_ae0329d199c6f5 1-253
+scripts/tools/build_tome_purse_art.py
+  h_ae0329d199c6f5 172-175,178
+scripts/tools/draw_goblin_bank_highres.py
+  h_ae0329d199c6f5 1-259
+scripts/tools/draw_goblin_native_pixel.py
+  h_ae0329d199c6f5 1-449
+scripts/tools/draw_picxel_goblin_concept.py
+  h_ae0329d199c6f5 1-275
+scripts/tools/install_battle_environment_assets.py
+  h_ae0329d199c6f5 1-83
+scripts/tools/install_goblin_portraits.py
+  h_ae0329d199c6f5 1-57
+scripts/tools/install_iron_knight_assets.py
+  h_ae0329d199c6f5 6,12-15,25-26,46
+scripts/tools/pixelize_goblin_review.py
+  h_ae0329d199c6f5 1,3-5,7-11,13,16-195,199-232
+scripts/tools/prepare_picxel_goblin_128.py
+  h_ae0329d199c6f5 1-56
+scripts/tools/refine_picxel_goblin_128.py
+  h_ae0329d199c6f5 1-53
+scripts/tools/source_art/capitalist_character.py
+  h_ae0329d199c6f5 1-670
+scripts/tools/source_art/goblin_loan_art.py
+  h_ae0329d199c6f5 1-112
+scripts/tools/source_art/main_menu_background.py
+  h_ae0329d199c6f5 15
+scripts/tools/source_art/range_relics.py
+  h_ae0329d199c6f5 13,406,427
+scripts/tools/source_art/render_settlement_voices.ps1
+  h_ae0329d199c6f5 1-24
+scripts/tools/source_art/run_settlement_review.py
+  h_ae0329d199c6f5 1-328
+scripts/ui/bank_counter_portrait.gd
+  h_ae0329d199c6f5 5-9,48-51,54-61
+scripts/ui/battle_hud.gd
+  h_ae0329d199c6f5 88,98,576-581,783
+scripts/ui/enchantment_workbench.gd
+  h_ae0329d199c6f5 153-158
+scripts/ui/esc_overlay.gd
+  h_ae0329d199c6f5 501-504
+scripts/ui/finance_popup.gd
+  h_ae0329d199c6f5 15,79,128-130,134-135,157-160,220-223,413-423,475-476,482-486,502,529,532,539,732-736,747-760
+scripts/ui/finance_ui_controller.gd
+  h_ae0329d199c6f5 10,14-20,41,45-47,60,67-71,83
+scripts/ui/finance_ui_style.gd
+  h_ae0329d199c6f5 75-78
+scripts/ui/goblin_loan_presentation.gd
+  h_ae0329d199c6f5 1-374
+scripts/ui/goblin_loan_presentation.gd.uid
+  h_ae0329d199c6f5 1
+scripts/ui/goblin_trade_presentation.gd
+  h_ae0329d199c6f5 21,41-43,82-86,130-132,143-144,146-149,157,179-187
+scripts/ui/interest_arrival_presentation.gd
+  h_ae0329d199c6f5 3,127,129,181-182,230,263-266
+scripts/ui/interest_arrival_report.gd
+  h_ae0329d199c6f5 51-61
+scripts/ui/main_menu_ui_controller.gd
+  h_ae0329d199c6f5 87,111-112,218,231-232,257,776,926-929,941,943-999,1004,1007,1013,1015,1031-1032,1036,1041,1141,1316-1321
+scripts/ui/run_settlement_panel.gd
+  h_ae0329d199c6f5 1-403
+scripts/ui/run_settlement_panel.gd.uid
+  h_ae0329d199c6f5 1
+scripts/ui/wave_challenge_popup.gd
+  h_ae0329d199c6f5 1-74
+scripts/ui/wave_challenge_popup.gd.uid
+  h_ae0329d199c6f5 1
+scripts/waves/wave_manager.gd
+  h_ae0329d199c6f5 46-47,53-57,100-101,112,116-117,119-123,162-163,179,182,206-211,221,336,356,360,404,411,455-457,464-472,478,483,544,549-556,579-590,638-639,660-661,711-712,761-762,780,793,808
+scripts/weapons/projectile_instance.gd
+  h_ae0329d199c6f5 34,69,120-121,172-173,175-180,183-184
+todo.md
+  h_ae0329d199c6f5 10-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f1f746ec21282c69097b0bfc8d339dcf5291b5c8",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
