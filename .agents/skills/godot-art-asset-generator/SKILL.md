@@ -9,15 +9,20 @@ Use this skill for project art generation through `https://www.rightapi.ai`. Kee
 
 ## Credentials and API
 
-- Read the token only from the environment variable `NANOBANANA_API_TOKEN`.
-- Never write the token to this skill, project files, logs, command history, generated metadata, or an inline shell assignment. If the variable is missing, stop and ask the user to set it locally; never paste or echo the secret.
+- Read `NANOBANANA_API_TOKEN` from the process environment first; on Windows, if it is absent there, automatically read the same variable from the current user environment registry.
+- Never write the token to this skill, project files, logs, command history, generated metadata, or an inline shell assignment. If it is missing from both locations, stop and ask the user to set it locally; never paste or echo the secret.
 - Use the RightCodes asynchronous image endpoint `https://www.rightapi.ai/draw/v1/images/generations`.
 - Send `Authorization: Bearer $NANOBANANA_API_TOKEN` and JSON with `model`, `prompt`, and `async: true` (plus supported image parameters when needed).
 - The submission response contains `task_id`; poll `GET https://www.rightapi.ai/v1/tasks/{task_id}` without the `/draw` prefix until `status` is `completed`.
 - Continue polling for `queued` and `in_progress`; stop with a sanitized error for `failed`, unexpected status, timeout, or completed tasks without `data[].url`/supported result data.
-- Supported models: `nano-banana-2-lite`, `nano-banana-2`, `gpt-image-2`, `gpt-image-2-vip`, `gpt-image-2.5`, `gpt-image-2.5-flare`, and `gpt-image-2.5-sunburst`.
+- Supported models: `nano-banana-2-lite`, `nano-banana-2`, `nano-banana-pro`, `gpt-image-2`, `gpt-image-2-vip`, `gpt-image-2.5`, `gpt-image-2.5-flare`, and `gpt-image-2.5-sunburst`.
 - Prefer `nano-banana-2` for pixel sprites; use `nano-banana-2-lite` for quick drafts and a GPT image model when the user requests higher fidelity or the Nano model fails to produce a usable image.
+- Use `nano-banana-pro` when the user explicitly requests that model for a high-fidelity character or illustration.
 - The response commonly contains a Markdown image URL. Download that URL immediately to a review output under `artifacts/generated/`; do not assume the API returns base64.
+- Before any paid request, validate the token, model name, reference paths, image MIME types, and output path locally.
+- Default to one image (`n=1`) and one submission. Do not generate variants or retry a request after a submission response unless the user explicitly approves another paid attempt.
+- As soon as a submission returns `task_id`, persist it in `artifacts/generated/.rightapi_tasks.jsonl` without storing the token, prompt, or base64 image data.
+- If polling fails, times out, or the client crashes after submission, resume with the saved task ID before submitting anything new. Never treat an unknown task state as a reason to create another task.
 
 Use the bundled `scripts/rightapi_generate.py` for requests. It submits the asynchronous draw task, polls the task endpoint, validates HTTP status and JSON at every step, extracts the completed image URL, and validates the downloaded image body. Never treat an empty response, prose-only response, missing task ID, failed task, timeout, or non-image response as a generated asset. Save each attempt under a unique output filename so stale files cannot be mistaken for a new result.
 
@@ -31,6 +36,16 @@ Use the bundled `scripts/rightapi_generate.py` for requests. It submits the asyn
 6. Resize with `Image.Resampling.NEAREST`, convert to RGBA, and verify the exact dimensions and alpha bounding box. For spritesheets, verify each frame independently.
 7. Validate the candidate in Godot through a candidate-specific duplicate scene or runtime harness that loads the new path directly. Do not temporarily overwrite an existing source file or only edit a script constant: Godot import caches can make screenshots display the old `.ctex`. Run the editor import pass first, capture a candidate screenshot, and compare it against a baseline or inspect the candidate region to prove the new pixels are visible. Restore the original reference after review unless the user explicitly requests replacement.
 8. Report the generated path, model used, dimensions, transparency result, validation command/result, and any known limitations. Include an absolute-path image link for visual review.
+
+## Cost and recovery workflow
+
+1. Build and review the prompt locally before calling the paid endpoint. Use one reference set and one output size.
+2. Run the script's preflight checks. A missing token, missing reference, unsupported MIME type, existing output, or unsupported model must fail before network submission.
+3. Submit exactly once. Immediately persist the returned `task_id` and intended output path to `.rightapi_tasks.jsonl`.
+4. Poll the saved task ID. If the process stops, run the same command with `--resume-task <task_id>`; do not submit a duplicate request.
+5. Download only a validated image URL. Record completion and output path in the task log.
+6. Only retry after a pre-submission failure such as a local validation error or a clearly rejected HTTP request with no `task_id`. Never retry after a 2xx response, a gzip/JSON parsing error, or an unknown task status until the original task has been queried.
+7. Use `nano-banana-2-lite` for optional exploratory drafts and `nano-banana-pro` only for an approved final. Do not spend final-model credits on speculative prompt experiments.
 
 ## Sprite rules
 
@@ -74,7 +89,7 @@ Use `gpt-image-2.5-sunburst` for final large scenes, parallax backgrounds, and m
 | UI panel decoration | `gpt-image-2` or `gpt-image-2.5` | Individual panel or ornament | Alpha cleanup and nine-patch/layer integration |
 | Battle background | `gpt-image-2.5-sunburst` | Separate depth layers | Parallax composition and color matching |
 | Large panorama | `gpt-image-2-vip` or `gpt-image-2.5-sunburst` | Split regions or layers | Stitching, crop, and runtime validation |
-| Character selection illustration | `nano-banana-2` or `gpt-image-2.5-sunburst` | Single illustration with references | Transparent/plain background and composition check |
+| Character selection illustration | `nano-banana-2`, `nano-banana-pro`, or `gpt-image-2.5-sunburst` | Single illustration with references | Transparent/plain background and composition check |
 
 ### Prompt patterns
 
@@ -118,6 +133,10 @@ When transparency is unavailable, prefer a connected-component flood fill from t
 
 - Do not silently switch models. If the selected model returns an empty `choices` array, non-JSON output, a timeout, or no image URL, report the exact failure class and either retry the same model once or state the explicit fallback model before using it.
 - RightCodes image generation is asynchronous. Do not call the chat-completions endpoint for image generation and do not expect the submit response to contain the final image. Always submit with `async: true`, retain `task_id`, poll the site-level task endpoint, and only download after `status=completed`.
+- The official Images payload uses top-level `prompt`, `n`, `size`, `imageSize`, `async`, and optional `image` data-URL array. Do not use `messages[].content[].image_url` for this endpoint.
+- Treat a 2xx submission as billable/active until proven otherwise. Persist its task ID before parsing any later response fields.
+- Handle gzip/deflate response bodies before JSON decoding and accept official `data[0].url` or Gemini-compatible candidate results.
+- Use browser-like headers only as a compatibility measure; do not loop on Cloudflare 403/1010. Report the block and stop after one pre-task retry.
 - A successful HTTP request is not a successful generation. Require a downloadable image, inspect its dimensions and mode, and reject placeholder files or stale output paths.
 - The advertised output size is a target, not evidence that the model honored it. Record the raw dimensions, then document any crop, nearest-neighbor resize, palette quantization, or aspect-ratio correction.
 - Never claim runtime validation from a screenshot that still contains the previous asset. Use a unique candidate path, force Godot to import it, and compare the resulting screenshot with the baseline.
