@@ -8,8 +8,8 @@ signal damage_received(source_id: String, damage: int)
 const DEFAULT_ENEMY_ID: String = "enemy_mutated_grub"
 const DEFAULT_KNOCKBACK_SPEED: float = 450.0
 const DEFAULT_KNOCKBACK_SECONDS: float = 0.18
-const CONTACT_RADIUS: float = 52.0
 const CONTACT_RESET_RADIUS: float = 68.0
+const CONTACT_MARGIN: float = 1.0
 const CONTACT_DAMAGE_COOLDOWN_SECONDS: float = 0.55
 const CONTACT_RECOVERY_SPEED: float = 180.0
 const CHASE_ACCELERATION: float = 900.0
@@ -20,6 +20,8 @@ const DAMAGE_NUMBER_SIZE: Vector2 = Vector2(76.0, 34.0)
 const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -36.0)
 const DAMAGE_NUMBER_RISE: float = 42.0
 const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.62
+const MAX_DAMAGE_NUMBERS := 160
+static var active_damage_numbers := 0
 const HIT_KNOCKBACK_SPEED: float = 60.0
 const HIT_KNOCKBACK_SECONDS: float = 0.06
 const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
@@ -55,6 +57,7 @@ var _burn_tick_timer: float = 0.0
 var _burn_damage_per_tick: float = 0.0
 var _burn_damage_remainder: float = 0.0
 var _burn_source_id: String = ""
+var _burn_sources: Dictionary = {}
 var _holy_flame: bool = false
 var _dark_flame: bool = false
 var _stunned_remaining: float = 0.0
@@ -74,6 +77,7 @@ var _lightning_visual: Node2D = null
 var _is_move_animation_active: bool = false
 var _move_animation_frame: int = 0
 var _move_animation_timer: float = 0.0
+var _contact_probe := CircleShape2D.new()
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -169,6 +173,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_burn_damage_per_tick = 0.0
 	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
+	_burn_sources.clear()
 	_holy_flame = false
 	_dark_flame = false
 	_stunned_remaining = 0.0
@@ -210,9 +215,15 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 func apply_burning(duration: float, damage_per_tick: float, source_id: String = "", holy_flame: bool = false, dark_flame: bool = false) -> void:
 	if not alive:
 		return
+	if _burning_remaining <= 0.0:
+		clear_burning()
 	_burning_remaining = maxf(_burning_remaining, duration)
-	_burn_damage_per_tick = maxf(_burn_damage_per_tick, damage_per_tick)
-	_burn_source_id = source_id if not source_id.is_empty() else _burn_source_id
+	# One contribution per weapon for the lifetime of this burn. Reapplication
+	# refreshes the shared duration without replacing or adding its damage.
+	if not _burn_sources.has(source_id):
+		_burn_sources[source_id] = {"damage": maxf(damage_per_tick, 0.0), "remainder": 0.0}
+		_burn_damage_per_tick += maxf(damage_per_tick, 0.0)
+	_burn_source_id = source_id if _burn_sources.size() == 1 else ""
 	if dark_flame:
 		_dark_flame = true
 		_holy_flame = false
@@ -335,6 +346,7 @@ func clear_burning() -> void:
 	_burn_damage_per_tick = 0.0
 	_burn_damage_remainder = 0.0
 	_burn_source_id = ""
+	_burn_sources.clear()
 	_holy_flame = false
 	_dark_flame = false
 
@@ -378,19 +390,23 @@ func apply_lightning_stun(duration: float = 0.65) -> void:
 func _process_burning(delta: float) -> void:
 	if _burning_remaining <= 0.0:
 		return
+	var active_delta := minf(delta, _burning_remaining)
 	_burning_remaining = maxf(_burning_remaining - delta, 0.0)
-	_burn_tick_timer -= delta
-	if _burn_tick_timer > 0.0:
-		return
-	_burn_tick_timer = 0.5
-	_burn_damage_remainder += _burn_damage_per_tick
-	var damage := int(floor(_burn_damage_remainder))
-	_burn_damage_remainder -= float(damage)
-	if _holy_flame:
-		damage = maxi(1, int(roundi(float(damage) * 2.0))) if damage > 0 else 0
-	if damage > 0:
-		# Holy burning already includes its 2x bonus; light must not square it.
-		take_damage(damage, _burn_source_id, false, Vector2.ZERO, [], not _holy_flame)
+	_burn_tick_timer -= active_delta
+	while _burn_tick_timer <= 0.0 and alive and not _burn_sources.is_empty():
+		_burn_tick_timer += 0.5
+		for source_id: String in _burn_sources.keys():
+			if not alive or not _burn_sources.has(source_id):
+				break
+			var contribution: Dictionary = _burn_sources[source_id]
+			contribution.remainder += float(contribution.damage)
+			var damage := int(floor(float(contribution.remainder)))
+			contribution.remainder -= damage
+			if _holy_flame:
+				damage *= 2
+			if damage > 0:
+				# Report each contribution to its own weapon, including holy fire.
+				take_damage(damage, source_id, false, Vector2.ZERO, [], not _holy_flame)
 	if _burning_remaining <= 0.0:
 		clear_burning()
 
@@ -407,23 +423,24 @@ func take_damage(
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var light_multiplier := 1.0
-	var light_doubled := false
+	var light_amplified := false
 	if allow_light_bonus and _light_remaining > 0.0:
-		light_multiplier = 2.0
-		light_doubled = true
-		if not _holy_flame:
-			clear_light()
+		light_multiplier = 1.3
+		light_amplified = true
+		# Consume one exposure without removing the separate holy burning state.
+		_light_remaining = 0.0
+		_light_freeze_reacted = false
 	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	current_hp = maxi(current_hp - final_damage, 0)
 	# One notification after mitigation, shared by direct hits, effects and burn ticks.
 	damage_received.emit(source_id, final_damage)
 	if damage_components.is_empty():
-		_spawn_damage_number(final_damage, is_critical, 0, 1, light_doubled, pre_light_damage)
+		_spawn_damage_number(final_damage, is_critical, 0, 1, light_amplified, pre_light_damage)
 	else:
 		var display_components := _split_damage_for_display(final_damage, damage_components)
 		for index in range(display_components.size()):
-			_spawn_damage_number(display_components[index], is_critical, index, display_components.size(), light_doubled, display_components[index] / 2)
+			_spawn_damage_number(display_components[index], is_critical, index, display_components.size(), light_amplified, roundi(display_components[index] / light_multiplier))
 	_apply_hit_feedback(hit_direction)
 	if current_hp <= 0:
 		_die(source_id)
@@ -515,12 +532,19 @@ func _spawn_damage_number(
 	is_critical: bool = false,
 	display_index: int = 0,
 	display_count: int = 1,
-	light_doubled: bool = false,
+	light_amplified: bool = false,
 	light_base_damage: int = 0
 ) -> void:
+	# This is a display budget only. Damage, reactions and accounting have already
+	# resolved. Reserve 32 slots for critical hits during dense area attacks.
+	if active_damage_numbers >= (MAX_DAMAGE_NUMBERS if is_critical else MAX_DAMAGE_NUMBERS - 32):
+		return
+	var damage_number_parent := get_parent()
+	if damage_number_parent == null or not damage_number_parent.is_inside_tree():
+		return
 	var damage_number := Label.new()
 	damage_number.name = "DamageNumber"
-	damage_number.text = (str(light_base_damage if light_base_damage > 0 else final_damage) + "x2") if light_doubled else str(final_damage)
+	damage_number.text = (str(light_base_damage if light_base_damage > 0 else final_damage) + "x1.3") if light_amplified else str(final_damage)
 	damage_number.size = DAMAGE_NUMBER_SIZE
 	damage_number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	damage_number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -539,9 +563,8 @@ func _spawn_damage_number(
 	damage_number.add_theme_constant_override("shadow_offset_y", 3)
 	damage_number.add_theme_constant_override("shadow_outline_size", 2)
 
-	var damage_number_parent := get_parent()
-	if damage_number_parent == null or not damage_number_parent.is_inside_tree():
-		return
+	active_damage_numbers += 1
+	damage_number.tree_exiting.connect(EnemyController.release_damage_number, CONNECT_ONE_SHOT)
 	damage_number_parent.add_child(damage_number)
 	var spread_offset := Vector2(randf_range(-14.0, 14.0), randf_range(-4.0, 4.0))
 	if display_count > 1:
@@ -559,6 +582,10 @@ func _spawn_damage_number(
 	tween.tween_interval(0.10)
 	tween.tween_property(damage_number, "modulate:a", 0.0, 0.28)
 	tween.tween_callback(damage_number.queue_free)
+
+
+static func release_damage_number() -> void:
+	active_damage_numbers = maxi(0, active_damage_numbers - 1)
 
 
 func _get_damage_number_color(final_damage: int) -> Color:
@@ -648,7 +675,7 @@ func _set_movement_visual(is_moving: bool, delta: float) -> void:
 func _process_contact_damage() -> void:
 	if target_player == null or not target_player.alive or _contact_damage_cooldown > 0.0:
 		return
-	if global_position.distance_to(target_player.global_position) > CONTACT_RADIUS:
+	if not _is_touching_player():
 		return
 	var base_damage := get_stat("melee_damage")
 	var damage := int(roundf(base_damage * (1.0 + get_stat("damage_percent") / 100.0)))
@@ -660,6 +687,19 @@ func _process_contact_damage() -> void:
 		has_contact_damaged = true
 		contact_damaged.emit(target_player, dealt_damage)
 	_apply_contact_knockback()
+
+
+func _is_touching_player() -> bool:
+	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	var player_body := target_player.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body == null or player_body == null or body.disabled or player_body.disabled or body.shape == null or player_body.shape == null:
+		return false
+	if body.shape is CircleShape2D:
+		# Include move_and_slide's tiny safe gap, rather than a fixed root radius.
+		_contact_probe.radius = (body.shape as CircleShape2D).radius + CONTACT_MARGIN
+		return _contact_probe.collide(body.global_transform, player_body.shape, player_body.global_transform)
+	var motion := body.global_position.direction_to(player_body.global_position) * CONTACT_MARGIN
+	return body.shape.collide_with_motion(body.global_transform, motion, player_body.shape, player_body.global_transform, Vector2.ZERO)
 
 
 func _apply_contact_knockback() -> void:

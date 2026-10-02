@@ -96,6 +96,7 @@ func _run() -> void:
 	purse = loadout.get_weapon_instance(PURSE)
 	tome.runtime_stats.crit_chance = 0
 	purse.runtime_stats.crit_chance = 0
+	_test_body_sizes_and_contact()
 	check(loadout.get_total_load_cost() == 32 and tome.get_attachment_slot_count() == 2 and purse.get_attachment_slot_count() == 1, "load and rarity attachment slots integrate")
 	check(tome.calculate_damage_events()[0].damage == 10 and tome.calculate_damage_events()[0].damage_kind == "element", "native tome is ten elemental damage")
 	check(purse.calculate_damage_events()[0].damage == 4 and purse.get_stat("projectile_count") == 3, "native purse has three four-damage coins at zero principal")
@@ -148,7 +149,7 @@ func _run() -> void:
 	domain.try_attack()
 	var changed := enemies.slice(0,5).filter(func(e): return e.current_hp != 1000 and e.current_hp != 1)
 	var burning := enemies.slice(0,5).filter(func(e): return e.has_status("burning"))
-	check(changed.size() == 3 and burning.size() == 3, "tome split plus fire affects three distinct contacts")
+	check(changed.size() == 3 and burning.size() == 2, "tome split affects three distinct contacts and fire applies only to the two child contacts")
 	check(enemies[5].current_hp == 1000 and not enemies[5].has_status("burning"), "tome native and split contacts stay inside domain")
 	loadout.detach_item_from_weapon(TOME, fire.item_instance_id)
 	loadout.detach_item_from_weapon(TOME, split.item_instance_id)
@@ -191,17 +192,18 @@ func _run() -> void:
 	var children := coins().filter(func(c): return c.split_generation == 1)
 	check(children.size() == 2 and not enemies[0].is_alive(), "lethal purse hit still launches two split coins")
 	for child in children: child._physics_process(0.4)
-	check(enemies[1].current_hp == 993 and enemies[2].current_hp == 993 and enemies[1].has_status("burning") and enemies[2].has_status("burning"), "rare purse split coins deal sixty percent damage and carry fire")
+	check(enemies[1].current_hp == 995 and enemies[2].current_hp == 995 and enemies[1].has_status("burning") and enemies[2].has_status("burning"), "rare purse split coins deal forty-five percent damage and carry fire")
 	check(coins().is_empty(), "split coins stop at one generation")
 	check(manager.finance_system.principal == 400, "firing and split never spend principal")
 	loadout.detach_item_from_weapon(PURSE, fire.item_instance_id)
 	loadout.detach_item_from_weapon(PURSE, split.item_instance_id)
 	manager.finance_system.withdraw(400)
 	player.remove_runtime_modifiers_by_source("test", "tome_purse")
-	fixture([Vector2(300,0)])
+	fixture([Vector2(320,0)])
 	coin = shot()
 	coin._physics_process(2)
 	check(coin.cancelled and is_equal_approx(coin.distance_travelled, 280) and enemies[0].current_hp == 1000, "coin expires at actual range without overshoot")
+	await _test_coin_body_contacts()
 	fixture([])
 	coin = shot()
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
@@ -254,3 +256,83 @@ func _run() -> void:
 	check(get_tree().get_nodes_in_group("coin_projectiles").is_empty() and get_tree().get_nodes_in_group("ritual_domains").is_empty(), "return to menu removes weapon runtime nodes")
 	print("TOME_PURSE_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
+
+
+func _test_body_sizes_and_contact() -> void:
+	for character in ["character_void_hunter", "character_capitalist"]:
+		var actor := preload("res://scenes/player/player_root.tscn").instantiate() as PlayerController
+		actor.auto_initialize_on_ready = false
+		actor.get_node("Camera2D").free()
+		add_child(actor)
+		actor.set_physics_process(false)
+		for repeat in 2:
+			actor.initialize_from_character(character)
+			actor._set_facing(false)
+			check(actor.visual_anchor.scale == Vector2(-1.2, 1.2), "left-facing player keeps 1.2 scale: " + character)
+			actor._set_facing(true)
+			check(actor.visual_anchor.scale == Vector2(1.2, 1.2), "right-facing player keeps 1.2 scale: " + character)
+		var shape := actor.get_node("CollisionShape2D") as CollisionShape2D
+		check(is_equal_approx(shape.shape.radius, 10.08) and is_equal_approx(shape.shape.height, 55.2) and shape.position == Vector2.ZERO, "capsule follows enlarged central body")
+		check(actor.get_node("PickupArea/CollisionShape2D").shape.radius == actor.get_stat("pickup_radius"), "visual scale does not multiply pickup radius")
+		actor.free()
+	fixture([Vector2(40, 0)])
+	var enemy := enemies[0]
+	var shape := enemy.get_node("CollisionShape2D") as CollisionShape2D
+	check(enemy.sprite.scale == Vector2(0.8, 0.8) and enemy.sprite.position == shape.position and is_equal_approx(shape.shape.radius, 17.6), "small enemy uses 0.8 art with centered body")
+	check(not enemy._is_touching_player(), "no contact damage across visible 40px gap")
+	enemy.global_position = player.global_position + Vector2(28, 0)
+	check(enemy._is_touching_player(), "physical body contact includes slide safe margin")
+	shape.disabled = true
+	check(not enemy._is_touching_player(), "disabled body cannot contact player")
+	var boss := preload("res://scenes/enemy/elite_rusher.tscn").instantiate()
+	check(boss.get_node("Sprite2D").scale == Vector2(1.12, 1.12) and is_equal_approx(boss.get_node("CollisionShape2D").shape.radius, 33.6), "boss visual and collision reduced to eighty percent together")
+	boss.free()
+
+
+func _test_coin_body_contacts() -> void:
+	for offset in [Vector2(100, 36), Vector2(100, -25), Vector2(300, 0)]:
+		fixture([offset])
+		var coin := shot()
+		coin._physics_process(2.0)
+		check(enemies[0].current_hp < 1000, "coin hits real body edge even when root point is outside ray: " + str(offset))
+	for offset in [Vector2(100, 39), Vector2(100, -26)]:
+		fixture([offset])
+		var coin := shot()
+		coin._physics_process(2.0)
+		check(enemies[0].current_hp == 1000, "coin misses outside body and projectile radii: " + str(offset))
+	fixture([Vector2(100, 60)])
+	var body := enemies[0].get_node("CollisionShape2D") as CollisionShape2D
+	body.position = Vector2(0, -60)
+	var coin := shot()
+	coin._physics_process(1)
+	check(enemies[0].current_hp < 1000, "coin follows collider offset rather than entity root")
+	fixture([Vector2(100, 0)])
+	body = enemies[0].get_node("CollisionShape2D")
+	body.disabled = true
+	coin = shot()
+	coin._physics_process(1)
+	check(enemies[0].current_hp == 1000, "disabled collision body is skipped")
+	fixture([Vector2(100, 20)])
+	body = enemies[0].get_node("CollisionShape2D")
+	var rectangle := RectangleShape2D.new()
+	rectangle.size = Vector2(20, 20)
+	body.shape = rectangle
+	coin = shot()
+	coin._physics_process(1)
+	check(enemies[0].current_hp < 1000, "non-circle enemy uses actual swept shape")
+	fixture([Vector2(150, 0)])
+	var wall := StaticBody2D.new()
+	wall.collision_layer = 4
+	wall.collision_mask = 0
+	var wall_shape := CollisionShape2D.new()
+	var wall_rect := RectangleShape2D.new()
+	wall_rect.size = Vector2(4, 80)
+	wall_shape.shape = wall_rect
+	wall.add_child(wall_shape)
+	host.add_child(wall)
+	wall.global_position = player.global_position + Vector2(80, 0)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	coin = shot()
+	coin._physics_process(1)
+	check(enemies[0].current_hp == 1000 and coin.cancelled and coin.distance_travelled < 78, "swept coin radius stops at wall before enemy")

@@ -3,37 +3,16 @@ class_name MainMenuUIController
 
 const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
 const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
-const MAIN_MENU_BUTTON_TEXTURE_PATH: String = "res://assets/ui/main_menu/button_main_menu.png"
 const ROLE_SELECT_BACKDROP_SCRIPT: Script = preload("res://scripts/ui/role_select_backdrop.gd")
-const HINT_MESSAGES: Array[String] = [
-	"Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn",
-	"在拉莱耶的宅邸中，长眠的克拉斯托弗候汝入梦",
-	"永恒长眠的并非亡者，奇妙的万古之中，即便死亡亦会消逝",
-	"穹顶之下，古神注视着你……",
-	"按下「开始战斗」，直面怪物的视线",
-	"不要抬头看……不要去数星星……",
-	"它们从深处苏醒，穹顶只是一道脆弱的屏障",
-]
-const HINT_COLORS: Array[Color] = [
-	Color("#6e9d91"),
-	Color("#a884b5"),
-	Color("#7087a8"),
-	Color("#b69a65"),
-]
-const HINT_INTERVAL := 9.0
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
 var _selected_character_record: Dictionary = {}
 var _selected_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _title_base_position := Vector2.ZERO
-var _button_feedback_tweens: Dictionary = {}
-var _button_shake_tweens: Dictionary = {}
 var _role_button_tweens: Dictionary = {}
 var _character_icon_tween: Tween = null
 var _role_select_was_visible := false
-var _hint_index := 0
-var _hint_elapsed := 0.0
 var _settings_overlay: Control = null
 var _settings_panel: PanelContainer = null
 var _music_slider: HSlider = null
@@ -55,18 +34,10 @@ const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
 @onready var title_art: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack/TitleArt")
-@onready var start_battle_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell")
-@onready var camp_entry_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell")
-@onready var settings_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell")
-@onready var quit_shell: Control = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell")
-@onready var start_battle_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/FrameTexture")
-@onready var camp_entry_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/FrameTexture")
-@onready var quit_button_frame: TextureRect = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/FrameTexture")
 @onready var start_battle_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton")
 @onready var camp_entry_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton")
 @onready var settings_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell/SettingsButton")
 @onready var quit_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton")
-@onready var hint_label: Label = get_node_or_null("StartPage/ContentMargin/ContentColumn/BottomSpacer/MenuHintLabel")
 @onready var character_select_page: Control = get_node_or_null("CharacterSelectPage")
 @onready var character_title_label: Label = null
 @onready var stats_list: VBoxContainer = null
@@ -92,7 +63,6 @@ var role_select_backdrop: Control = null
 func _ready() -> void:
 	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
-	_setup_start_page_feedback()
 	_create_settings_ui()
 	_bind_window_settings()
 	_setup_menu_atmosphere()
@@ -113,91 +83,16 @@ func _ready() -> void:
 	call_deferred("_bind_to_main_flow")
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var time := Time.get_ticks_msec() * 0.001
 	if title_art != null and start_page != null and start_page.visible:
 		var title_offset := sin(time * 1.7) * 4.0
 		title_art.position = _title_base_position + Vector2(0.0, title_offset)
-		_update_hint_effect(delta, time)
 
 
 func _setup_menu_atmosphere() -> void:
 	if title_art != null:
 		_title_base_position = title_art.position
-	if hint_label != null and not HINT_MESSAGES.is_empty():
-		hint_label.text = HINT_MESSAGES[_hint_index]
-
-
-func _setup_start_page_feedback() -> void:
-	_bind_button_feedback(start_battle_button, start_battle_shell)
-	_bind_button_feedback(camp_entry_button, camp_entry_shell)
-	_bind_button_feedback(settings_button, settings_shell)
-	_bind_button_feedback(quit_button, quit_shell)
-
-
-func _bind_button_feedback(button: Button, shell: Control) -> void:
-	if button == null or shell == null:
-		return
-	shell.resized.connect(_center_button_pivot.bind(shell))
-	_center_button_pivot(shell)
-	if not button.mouse_entered.is_connected(_on_menu_button_hovered.bind(shell)):
-		button.mouse_entered.connect(_on_menu_button_hovered.bind(shell))
-	if not button.mouse_exited.is_connected(_on_menu_button_unhovered.bind(shell)):
-		button.mouse_exited.connect(_on_menu_button_unhovered.bind(shell))
-
-
-func _center_button_pivot(shell: Control) -> void:
-	shell.pivot_offset = shell.size * 0.5
-
-
-func _on_menu_button_hovered(shell: Control) -> void:
-	_animate_menu_button(shell, Vector2(1.06, 1.06), Color(1.12, 1.12, 1.04, 1))
-	var old_shake_tween: Tween = _button_shake_tweens.get(shell)
-	if old_shake_tween != null:
-		old_shake_tween.kill()
-	var shake_tween := create_tween()
-	shake_tween.tween_property(shell, "rotation", deg_to_rad(-1.2), 0.055)
-	shake_tween.tween_property(shell, "rotation", deg_to_rad(1.2), 0.09)
-	shake_tween.tween_property(shell, "rotation", deg_to_rad(-0.8), 0.075)
-	shake_tween.tween_property(shell, "rotation", deg_to_rad(0.0), 0.065)
-	shake_tween.set_loops()
-	_button_shake_tweens[shell] = shake_tween
-
-
-func _on_menu_button_unhovered(shell: Control) -> void:
-	_animate_menu_button(shell, Vector2.ONE, Color.WHITE)
-	var shake_tween: Tween = _button_shake_tweens.get(shell)
-	if shake_tween != null:
-		shake_tween.kill()
-	_button_shake_tweens.erase(shell)
-	var reset_tween := create_tween()
-	reset_tween.tween_property(shell, "rotation", 0.0, 0.1)
-
-
-func _animate_menu_button(shell: Control, target_scale: Vector2, target_modulate: Color) -> void:
-	var old_tween: Tween = _button_feedback_tweens.get(shell)
-	if old_tween != null:
-		old_tween.kill()
-	var tween := create_tween().set_parallel(true)
-	tween.tween_property(shell, "scale", target_scale, 0.13)
-	tween.tween_property(shell, "modulate", target_modulate, 0.13)
-	_button_feedback_tweens[shell] = tween
-
-
-func _update_hint_effect(delta: float, time: float) -> void:
-	if hint_label == null or HINT_MESSAGES.is_empty():
-		return
-	_hint_elapsed += delta
-	if _hint_elapsed >= HINT_INTERVAL:
-		_hint_elapsed = 0.0
-		_hint_index = (_hint_index + 1) % HINT_MESSAGES.size()
-		hint_label.text = HINT_MESSAGES[_hint_index]
-	var color_index := _hint_index % HINT_COLORS.size()
-	var color := HINT_COLORS[color_index]
-	var color_next := HINT_COLORS[(color_index + 1) % HINT_COLORS.size()]
-	var color_mix := (sin(time * 0.75) + 1.0) * 0.5
-	var flicker := 0.90 + sin(time * 1.2) * 0.04 + sin(time * 2.7) * 0.02
-	hint_label.modulate = Color(color.lerp(color_next, color_mix), clampf(flicker, 0.82, 1.0))
 
 
 func _bind_to_main_flow() -> void:
@@ -987,7 +882,7 @@ func _build_character_traits(record: Dictionary) -> void:
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		icon.texture = load(str(relic.icon)) as Texture2D
+		FinanceUIStyle.set_item_icon(icon, load(str(relic.icon)) as Texture2D)
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(icon)
 		var label := Label.new()
@@ -1329,9 +1224,6 @@ func _on_result_back_pressed() -> void:
 func _apply_start_page_assets() -> void:
 	_ensure_texture(start_page_background, MAIN_MENU_BACKGROUND_TEXTURE_PATH)
 	_ensure_texture(title_art, MAIN_MENU_TITLE_TEXTURE_PATH)
-	_ensure_texture(start_battle_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
-	_ensure_texture(camp_entry_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
-	_ensure_texture(quit_button_frame, MAIN_MENU_BUTTON_TEXTURE_PATH)
 
 
 func _ensure_texture(texture_rect: TextureRect, fallback_path: String) -> void:

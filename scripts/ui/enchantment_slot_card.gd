@@ -11,7 +11,7 @@ var _caption: Label
 func _ready() -> void:
 	super._ready()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	custom_minimum_size = Vector2(68, 41)
+	custom_minimum_size = Vector2(68, 53)
 	focus_mode = Control.FOCUS_ALL
 	var body := VBoxContainer.new()
 	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -23,13 +23,13 @@ func _ready() -> void:
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
 	var image_area := Control.new()
-	image_area.custom_minimum_size.y = 20
+	image_area.custom_minimum_size.y = 32
 	image_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(image_area)
 	_art = TextureRect.new()
 	_art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_art.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	image_area.add_child(_art)
 	_empty_mark = Label.new()

@@ -1,0 +1,5293 @@
+[
+  {
+    "key": "weapon_wood_arrow",
+    "names": [
+      "木质弓箭"
+    ],
+    "config_ids": [
+      "weapon_void_blade"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_wood_arrow.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_wood_arrow.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "9c8a3f4bc965db73b4a4b73ac1a1e9c9a5ece35d44922a7cbae5dcce0e18ac19",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_plasma_cannon_v2",
+    "names": [
+      "电浆炮"
+    ],
+    "config_ids": [
+      "weapon_plasma_cannon"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_plasma_cannon_v2.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_plasma_cannon_v2.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "0af5a7ef95c82650708bd56129210f9d0fa7fe693d75c0cd9313b2791b0f7a6a",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_iron_grenade_cannon",
+    "names": [
+      "铸铁榴弹炮"
+    ],
+    "config_ids": [
+      "weapon_iron_grenade_cannon"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_iron_grenade_cannon.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_iron_grenade_cannon.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "be4c4e7832679af38bb74bc9b54a0424f76f090b6cf8639f13e492f33662be85",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_kunyu_ritual_tome",
+    "names": [
+      "坤舆秘仪书"
+    ],
+    "config_ids": [
+      "weapon_kunyu_ritual_tome"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_kunyu_ritual_tome.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_kunyu_ritual_tome.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "2a4b09345360d256afa2db2c7a8c6efe397b8a189ccb04f63fcf3d5685b86f40",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_rentier_purse",
+    "names": [
+      "食利者钱袋"
+    ],
+    "config_ids": [
+      "weapon_rentier_purse"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_rentier_purse.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_rentier_purse.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_rentier_purse.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "69a6a49a2ebcce8e8239d14f258d165eadd890676dbe4659fd9864ee3c0e63b5",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_nightwatch_spear",
+    "names": [
+      "守夜长枪"
+    ],
+    "config_ids": [
+      "weapon_nightwatch_spear"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_nightwatch_spear.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_nightwatch_spear.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "aff0e28939d2cb3a71a0014c4e170070c95491d1119f6d3fd142b92f9a07d1f9",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_meteor_flail",
+    "names": [
+      "流星摆锤"
+    ],
+    "config_ids": [
+      "weapon_meteor_flail"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_meteor_flail.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_meteor_flail.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_meteor_flail.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "2177fa4a200a6df9c96f8619870915384897cd72837f64267da7e396f62e711d",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_copper_lamp",
+    "names": [
+      "赤铜炉灯"
+    ],
+    "config_ids": [
+      "weapon_copper_lamp"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_copper_lamp.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_copper_lamp.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_copper_lamp.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "576c5bcc7e5604fd49956a4d5827aa0a7c08ea541e7a3f90c565143c7bc63095",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_mutant_tentacle",
+    "names": [
+      "异化触手"
+    ],
+    "config_ids": [
+      "weapon_mutant_tentacle"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_mutant_tentacle.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_mutant_tentacle.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "217534bb3e1485c70d267c0f48763149a35641d08a90203a66e22a7df4c7e2bb",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_earth_hammer",
+    "names": [
+      "裂地战锤"
+    ],
+    "config_ids": [
+      "weapon_earth_hammer"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_earth_hammer.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_earth_hammer.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_earth_hammer.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "5876d17c4cb596be8688cc2974e07f16c09b3a985f16772c915f2a9e2e1b93d1",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "weapon_camp_dagger",
+    "names": [
+      "营地短刀"
+    ],
+    "config_ids": [
+      "weapon_camp_dagger"
+    ],
+    "table": "weapons",
+    "batch": "weapons_01",
+    "original_path": "res://assets/ui/icons/weapons/weapon_camp_dagger.png",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "weapon_camp_dagger.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/weapons_sheet_01/elements_r03/doubao_prompt.txt",
+    "status": "installed",
+    "generation_batch": "weapons_sheet_01",
+    "generation_package": "batches/weapons_sheet_01/elements_r03/README.md",
+    "integration": "Candidate 64px icon; inspect new art then align UI as needed. Battle sprites/projectiles are separate assets.",
+    "generation_revision": "elements_r03",
+    "pixel_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/export/png/weapon_camp_dagger.png",
+    "candidate_size": [
+      64,
+      64
+    ],
+    "installed_size": [
+      64,
+      64
+    ],
+    "installed_sha256": "65911ae2bef50b5b07e8ff9c6e09c1e5c88be586d6ab67213ac2874e8c5c15d8",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "key": "relic_piggy_bank",
+    "names": [
+      "猪猪存钱罐"
+    ],
+    "config_ids": [
+      "relic_piggy_bank"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_piggy_bank.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_piggy_bank.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_piggy_bank.png",
+      "sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "eec6d593dbdfb3accc392b40de45739c8dd42b0c9e8b0e95c73aa1499c246ae9",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_piggy_bank.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_piggy_bank.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_finance_manager",
+    "names": [
+      "理财经理"
+    ],
+    "config_ids": [
+      "relic_finance_manager"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_finance_manager.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_finance_manager.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_finance_manager.png",
+      "sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "400797192609c673a6a13d916e880319bbcc5bcfc10a73287ba7899629230f9a",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_finance_manager.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_finance_manager.pxg"
+  },
+  {
+    "key": "relic_dividend_check",
+    "names": [
+      "分红支票"
+    ],
+    "config_ids": [
+      "relic_dividend_check"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_dividend_check.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_dividend_check.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_dividend_check.png",
+      "sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "1b8c7839b1146d79f00874e1f7a8af249d097457e3d1a1a13a4f35b52a6a39d9",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_dividend_check.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_dividend_check.pxg"
+  },
+  {
+    "key": "relic_fixed_deposit_certificate",
+    "names": [
+      "定期存单"
+    ],
+    "config_ids": [
+      "relic_fixed_deposit_certificate"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_fixed_deposit_certificate.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_fixed_deposit_certificate.png",
+      "sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "c2bb98651efc2dbfb4e320ebb4d25c1b4a4d25fc6ae9804e81cc138252f931d3",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_fixed_deposit_certificate.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg"
+  },
+  {
+    "key": "relic_flyer_ad",
+    "names": [
+      "传单广告"
+    ],
+    "config_ids": [
+      "relic_flyer_ad"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_flyer_ad.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_flyer_ad.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_flyer_ad.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md",
+    "supersedes": {
+      "generation_batch": "relics_sheet_08",
+      "installed_sha256": "5e4d0db08329325dc262c917f2cf37c4c5250cbec5b0fd26cba5c0fb61312515",
+      "grid_sha256": "228401dac4f893938ab2ac01a5ecf910507c445b4c5f7e77e92ac136bd233713",
+      "reason": "User supplied a new irregular dark ink-blot flyer to replace the red-circle design.",
+      "backup": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/installation/previous"
+    }
+  },
+  {
+    "key": "relic_steel_vault",
+    "names": [
+      "钢铁保险柜"
+    ],
+    "config_ids": [
+      "relic_steel_vault"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_steel_vault.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_steel_vault.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_steel_vault.png",
+      "sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "96816a23f56d7862b3efe0ec9f45fc9d2e9f1aecf38993d9ff8dd1190ba8ff2a",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_steel_vault.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_steel_vault.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_quant_trading",
+    "names": [
+      "量化操盘"
+    ],
+    "config_ids": [
+      "relic_quant_trading"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_quant_trading.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_quant_trading.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_quant_trading.png",
+      "sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "14536b3dbd2c15770aec742406df794bbc1aad777d942ff0c8f156513bd304df",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_quant_trading.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_quant_trading.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_hostile_takeover",
+    "names": [
+      "恶意收购"
+    ],
+    "config_ids": [
+      "relic_hostile_takeover"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_hostile_takeover.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_hostile_takeover.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_hostile_takeover.png",
+      "sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "3dc974be4fe1d682799c976a9ddb4d6bd377f75de0533bba5dcde8bc42fbc434",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_hostile_takeover.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_hostile_takeover.pxg"
+  },
+  {
+    "key": "relic_gold_compass",
+    "names": [
+      "吸金罗盘"
+    ],
+    "config_ids": [
+      "relic_gold_compass"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_gold_compass.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_gold_compass.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_gold_compass.png",
+      "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "acf28d5712a755ff7ddf11c4de7aa8039de37f15a93fe23d20bb563460b6dd64",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_gold_compass.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_gold_compass.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_tip_tray",
+    "names": [
+      "小费托盘"
+    ],
+    "config_ids": [
+      "relic_tip_tray"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_tip_tray.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_tip_tray.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_tip_tray.png",
+      "sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "f7f711743acb70808737a94b05431331559f39a50a3b61917e8ce712707b4b36",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_tip_tray.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_tip_tray.pxg"
+  },
+  {
+    "key": "relic_compound_interest_tome",
+    "names": [
+      "复利宝典"
+    ],
+    "config_ids": [
+      "relic_compound_interest_tome"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_compound_interest_tome.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_compound_interest_tome.png",
+      "sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "aaec54b39ca3692f80add47a6137e4ae61b7c512c327bd8929ff1032b6869b5c",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_compound_interest_tome.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_compound_interest_tome.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_high_yield_contract",
+    "names": [
+      "高利契约"
+    ],
+    "config_ids": [
+      "relic_high_yield_contract"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_high_yield_contract.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_high_yield_contract.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_02",
+    "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "previous_pixel_review_outcome": "r01_not_approved_by_user",
+    "installed_sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_high_yield_contract.png",
+      "sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "92504cd6f879d5f6b5d6c1c75910a5fae2c36a5310a78ee9027f21906d50d7a2",
+      "record": "13_relics_sheet_02_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_high_yield_contract.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_high_yield_contract.pxg"
+  },
+  {
+    "key": "relic_merger_reorg",
+    "names": [
+      "并购重组"
+    ],
+    "config_ids": [
+      "relic_merger_reorg"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_merger_reorg.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_merger_reorg.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_merger_reorg.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_periodic_dividend_clock",
+    "names": [
+      "周期分红钟"
+    ],
+    "config_ids": [
+      "relic_periodic_dividend_clock"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_periodic_dividend_clock.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_periodic_dividend_clock.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "installed_sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
+    "generation_batch": "relics_sheet_01",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_periodic_dividend_clock.png",
+      "sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "d8a60b88883e2f784babee48ecbe50ccb9d2968497cc81507e6add5ba2c47b06",
+      "record": "12_relics_sheet_01_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_periodic_dividend_clock.png",
+      "pixel_review_path": null
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_review_outcome": "approved",
+    "pixel_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pxg",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+  },
+  {
+    "key": "relic_medical_cutback",
+    "names": [
+      "医疗削减方案"
+    ],
+    "config_ids": [
+      "relic_medical_cutback"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_medical_cutback.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_medical_cutback.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_medical_cutback.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_welfare_cutback",
+    "names": [
+      "福利削减方案"
+    ],
+    "config_ids": [
+      "relic_welfare_cutback"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_welfare_cutback.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_welfare_cutback.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_welfare_cutback.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_annual_leave_cutback",
+    "names": [
+      "年假削减方案"
+    ],
+    "config_ids": [
+      "relic_annual_leave_cutback"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_annual_leave_cutback.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_annual_leave_cutback.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_salary_adjustment",
+    "names": [
+      "薪酬调整方案"
+    ],
+    "config_ids": [
+      "relic_salary_adjustment"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_salary_adjustment.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_salary_adjustment.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_salary_adjustment.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_divine_fusion",
+    "names": [
+      "神性融合"
+    ],
+    "config_ids": [
+      "relic_divine_fusion"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_divine_fusion.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_divine_fusion.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_divine_fusion.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_goblin_central_bank_printer",
+    "names": [
+      "哥布林金币铸造机"
+    ],
+    "config_ids": [
+      "relic_goblin_central_bank_printer"
+    ],
+    "table": "relics",
+    "batch": "relics_01",
+    "original_path": "res://assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_goblin_central_bank_printer.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_perpetual_annuity_scroll",
+    "names": [
+      "永续年金卷轴"
+    ],
+    "config_ids": [
+      "relic_perpetual_annuity_scroll"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_perpetual_annuity_scroll.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_bankruptcy_reorg",
+    "names": [
+      "破产重组"
+    ],
+    "config_ids": [
+      "relic_bankruptcy_reorg"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_bankruptcy_reorg.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_bankruptcy_reorg.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_09",
+    "generation_package": "batches/relics_sheet_09/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pxg",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "key": "relic_worn_hemostatic_cloth",
+    "names": [
+      "磨损的止血布条"
+    ],
+    "config_ids": [
+      "relic_worn_hemostatic_cloth"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_worn_hemostatic_cloth.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_worn_hemostatic_cloth.png",
+      "sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "21e793306c79d1440ffdead563496f087bcb12bdc3a5b5dcb410131517c4b9f1",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_worn_hemostatic_cloth.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg"
+  },
+  {
+    "key": "relic_load_iron_bracer",
+    "names": [
+      "负重铁皮护腕"
+    ],
+    "config_ids": [
+      "relic_load_iron_bracer"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_load_iron_bracer.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_load_iron_bracer.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_load_iron_bracer.png",
+      "sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "b3455e8150920c82962a119375eb96734e02314778399df41dbb80d4edfd2277",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_load_iron_bracer.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_load_iron_bracer.pxg"
+  },
+  {
+    "key": "relic_pungent_sachet",
+    "names": [
+      "刺鼻香包"
+    ],
+    "config_ids": [
+      "relic_pungent_sachet"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_pungent_sachet.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_pungent_sachet.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_pungent_sachet.png",
+      "sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "b0bd37a9f9600ac83f2d2eecba02fd7cce7b484338e3fee789024bdf6fd00d03",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_pungent_sachet.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_pungent_sachet.pxg"
+  },
+  {
+    "key": "relic_broken_crystal",
+    "names": [
+      "残破晶石"
+    ],
+    "config_ids": [
+      "relic_broken_crystal"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_broken_crystal.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_broken_crystal.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_broken_crystal.png",
+      "sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "b25b856ae034a943597d0a826c3830326f8041c0bea7b7f050c7474753e60293",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_broken_crystal.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_broken_crystal.pxg"
+  },
+  {
+    "key": "relic_vitality_potion",
+    "names": [
+      "生命力药瓶"
+    ],
+    "config_ids": [
+      "relic_vitality_potion"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_vitality_potion.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_vitality_potion.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "52c04207ca4b808748878c0c3c2fe7f62b81e8f394c4dbbccff619bcf6eb341d",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_vitality_potion.png",
+      "sha256": "52c04207ca4b808748878c0c3c2fe7f62b81e8f394c4dbbccff619bcf6eb341d",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "08e1bf53603705a29372268ae56f28528db53bad0427710e5bf04781aae247de",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_vitality_potion.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_vitality_potion.pxg"
+  },
+  {
+    "key": "relic_dead_shield_badge",
+    "names": [
+      "死寂护盾徽章"
+    ],
+    "config_ids": [
+      "relic_dead_shield_badge"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_dead_shield_badge.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_dead_shield_badge.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_dead_shield_badge.png",
+      "sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "da4550160b71c64f79774e818d240ae570a545664de87dd6ff9877c052a688bc",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_dead_shield_badge.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_dead_shield_badge.pxg"
+  },
+  {
+    "key": "relic_turtle_shell_pendant",
+    "names": [
+      "龟壳吊坠"
+    ],
+    "config_ids": [
+      "relic_turtle_shell_pendant"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_turtle_shell_pendant.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_turtle_shell_pendant.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_turtle_shell_pendant.png",
+      "sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "df6d5226e7ab8f8806004a02126ecffc3da2e08f91c85bbf73b6f32292005974",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_turtle_shell_pendant.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pxg"
+  },
+  {
+    "key": "relic_prison_copper_anklet",
+    "names": [
+      "监狱铜制脚环"
+    ],
+    "config_ids": [
+      "relic_prison_copper_anklet"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_prison_copper_anklet.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_prison_copper_anklet.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_prison_copper_anklet.png",
+      "sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "635a24a167973884257aa6060423d5935bff333edc4daa2b311f9a785a3a22ac",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_prison_copper_anklet.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pxg"
+  },
+  {
+    "key": "relic_brass_pocket_watch",
+    "names": [
+      "黄铜怀表"
+    ],
+    "config_ids": [
+      "relic_brass_pocket_watch"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_brass_pocket_watch.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_brass_pocket_watch.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_brass_pocket_watch.png",
+      "sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "b41c3a51568a120c93383aeea8c0a69a3054b2fa1b4b3c3fc719a24b90b3ebe6",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_brass_pocket_watch.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pxg"
+  },
+  {
+    "key": "relic_flesh_pauldron",
+    "names": [
+      "血肉肩甲"
+    ],
+    "config_ids": [
+      "relic_flesh_pauldron"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_flesh_pauldron.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_flesh_pauldron.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_flesh_pauldron.png",
+      "sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "f840126dc6d79a648e92ece9a45e422dad09f51adf090bf1babd24dc2756e75d",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_flesh_pauldron.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_flesh_pauldron.pxg"
+  },
+  {
+    "key": "relic_nightmare_healing_urn",
+    "names": [
+      "梦魇治愈圣壶"
+    ],
+    "config_ids": [
+      "relic_nightmare_healing_urn"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_nightmare_healing_urn.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_nightmare_healing_urn.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_nightmare_healing_urn.png",
+      "sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "49e98ed4ec193fe3a9bcfeddfcbae8b29facd26cec0c11e05deaf7f7f9e8bef8",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_nightmare_healing_urn.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pxg"
+  },
+  {
+    "key": "relic_barrier_crystal",
+    "names": [
+      "屏障结晶"
+    ],
+    "config_ids": [
+      "relic_barrier_crystal"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_barrier_crystal.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_barrier_crystal.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "generation_batch": "relics_sheet_03",
+    "generation_package": "batches/relics_sheet_03/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
+    "pixel_review_outcome": "approved",
+    "installed_sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
+    "installation_record": "16_relics_64_installation.md",
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_barrier_crystal.png",
+      "sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
+      "record": "15_relics_64_review.md",
+      "installation_record": "16_relics_64_installation.md"
+    },
+    "previous_32px_installation": {
+      "sha256": "d0213bd6cd3b12763b4a62f617d0341a645e832aaf50ca536b0a56468e76ebf3",
+      "record": "14_relics_sheet_03_installation.md",
+      "size": [
+        32,
+        32
+      ],
+      "backup": "artifacts/previews/art_refresh_v1/relics_64/r01/installation/previous/relic_barrier_crystal.png",
+      "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/README.md"
+    },
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_barrier_crystal.pxg"
+  },
+  {
+    "key": "relic_cultic_holy_shield",
+    "names": [
+      "密教圣盾"
+    ],
+    "config_ids": [
+      "relic_cultic_holy_shield"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_cultic_holy_shield.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_cultic_holy_shield.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_lost_wayfarer_greave",
+    "names": [
+      "迷途者胫环"
+    ],
+    "config_ids": [
+      "relic_lost_wayfarer_greave"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_lost_wayfarer_greave.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_soul_keeper_face_stone",
+    "names": [
+      "守魂人面石雕"
+    ],
+    "config_ids": [
+      "relic_soul_keeper_face_stone"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_soul_keeper_face_stone.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_pain_vessel",
+    "names": [
+      "苦痛祭皿"
+    ],
+    "config_ids": [
+      "relic_pain_vessel"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_pain_vessel.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_pain_vessel.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_pain_vessel.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_true_silver_armor",
+    "names": [
+      "真银护甲"
+    ],
+    "config_ids": [
+      "relic_true_silver_armor"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_true_silver_armor.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_true_silver_armor.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_true_silver_armor.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_holy_silver_cup",
+    "names": [
+      "圣质银杯"
+    ],
+    "config_ids": [
+      "relic_holy_silver_cup"
+    ],
+    "table": "relics",
+    "batch": "relics_02",
+    "original_path": "res://assets/ui/icons/relics/relic_holy_silver_cup.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_holy_silver_cup.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_holy_silver_cup.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_suffering_carapace",
+    "names": [
+      "受难甲壳"
+    ],
+    "config_ids": [
+      "relic_suffering_carapace"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_suffering_carapace.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_suffering_carapace.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_suffering_carapace.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_costly_seed_of_life",
+    "names": [
+      "代价生命之种"
+    ],
+    "config_ids": [
+      "relic_costly_seed_of_life"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_costly_seed_of_life.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_costly_seed_of_life.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_shadowless_greave",
+    "names": [
+      "无影遁形胫甲"
+    ],
+    "config_ids": [
+      "relic_shadowless_greave"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_shadowless_greave.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_shadowless_greave.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_shadowless_greave.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_chain_of_hardship",
+    "names": [
+      "苦难前行之枷锁"
+    ],
+    "config_ids": [
+      "relic_chain_of_hardship"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_chain_of_hardship.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_chain_of_hardship.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_chain_of_hardship.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_void_tentacle",
+    "names": [
+      "虚空触手"
+    ],
+    "config_ids": [
+      "relic_void_tentacle"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_void_tentacle.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_void_tentacle.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_void_tentacle.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_worn_fighting_gloves",
+    "names": [
+      "磨损格斗拳套"
+    ],
+    "config_ids": [
+      "relic_worn_fighting_gloves"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_worn_fighting_gloves.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_worn_fighting_gloves.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_04",
+    "generation_package": "batches/relics_sheet_04/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pxg",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "key": "relic_cracked_stone_bullet",
+    "names": [
+      "裂痕石子弹"
+    ],
+    "config_ids": [
+      "relic_cracked_stone_bullet"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_cracked_stone_bullet.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_cracked_stone_bullet.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_hasty_spring_trigger",
+    "names": [
+      "急促弹簧扳机"
+    ],
+    "config_ids": [
+      "relic_hasty_spring_trigger"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_hasty_spring_trigger.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_hasty_spring_trigger.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_rough_grinding_lens",
+    "names": [
+      "粗糙研磨透镜"
+    ],
+    "config_ids": [
+      "relic_rough_grinding_lens"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_rough_grinding_lens.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_rough_grinding_lens.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_blocking_counterweight",
+    "names": [
+      "阻滞配重石"
+    ],
+    "config_ids": [
+      "relic_blocking_counterweight"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_blocking_counterweight.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_blocking_counterweight.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_blocking_counterweight.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_bloodstained_belt",
+    "names": [
+      "嗜血皮带"
+    ],
+    "config_ids": [
+      "relic_bloodstained_belt"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_bloodstained_belt.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_bloodstained_belt.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_bloodstained_belt.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_poison_mist_pouch",
+    "names": [
+      "毒雾投囊"
+    ],
+    "config_ids": [
+      "relic_poison_mist_pouch"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_poison_mist_pouch.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_poison_mist_pouch.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_tremor_grip",
+    "names": [
+      "震颤握柄"
+    ],
+    "config_ids": [
+      "relic_tremor_grip"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_tremor_grip.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_tremor_grip.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_tremor_grip.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_black_spot_eagle_eye",
+    "names": [
+      "黑斑鹰眼水晶"
+    ],
+    "config_ids": [
+      "relic_black_spot_eagle_eye"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_black_spot_eagle_eye.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_berserker_copper_badge",
+    "names": [
+      "狂战士铜质徽章"
+    ],
+    "config_ids": [
+      "relic_berserker_copper_badge"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_berserker_copper_badge.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_berserker_copper_badge.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_corroded_blowpipe",
+    "names": [
+      "蚀腐吹管"
+    ],
+    "config_ids": [
+      "relic_corroded_blowpipe"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_corroded_blowpipe.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_corroded_blowpipe.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_gale_roulette",
+    "names": [
+      "疾风轮盘"
+    ],
+    "config_ids": [
+      "relic_gale_roulette"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_gale_roulette.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_gale_roulette.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_gale_roulette.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_executioner_bracer",
+    "names": [
+      "屠戮者臂铠"
+    ],
+    "config_ids": [
+      "relic_executioner_bracer"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_executioner_bracer.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_executioner_bracer.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_05",
+    "generation_package": "batches/relics_sheet_05/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_executioner_bracer.pxg",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "key": "relic_judgment_eye_pendant",
+    "names": [
+      "裁决之眼吊坠"
+    ],
+    "config_ids": [
+      "relic_judgment_eye_pendant"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_judgment_eye_pendant.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_judgment_eye_pendant.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_split_crystal_warhead",
+    "names": [
+      "分裂晶石弹头"
+    ],
+    "config_ids": [
+      "relic_split_crystal_warhead"
+    ],
+    "table": "relics",
+    "batch": "relics_03",
+    "original_path": "res://assets/ui/icons/relics/relic_split_crystal_warhead.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_split_crystal_warhead.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_gold_digger_gloves",
+    "names": [
+      "淘金者的手套"
+    ],
+    "config_ids": [
+      "relic_gold_digger_gloves"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_gold_digger_gloves.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_gold_digger_gloves.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_incomplete_divination_dice",
+    "names": [
+      "残缺的占卜骰子"
+    ],
+    "config_ids": [
+      "relic_incomplete_divination_dice"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_incomplete_divination_dice.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_incomplete_divination_dice.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_travelers_ledger",
+    "names": [
+      "商旅账本"
+    ],
+    "config_ids": [
+      "relic_travelers_ledger"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_travelers_ledger.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_travelers_ledger.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_travelers_ledger.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_defiled_blessing_coin",
+    "names": [
+      "被亵渎的祈福铜钱"
+    ],
+    "config_ids": [
+      "relic_defiled_blessing_coin"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_defiled_blessing_coin.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_defiled_blessing_coin.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_expanded_backpack_strap",
+    "names": [
+      "扩容背包束带"
+    ],
+    "config_ids": [
+      "relic_expanded_backpack_strap"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_expanded_backpack_strap.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_expanded_backpack_strap.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_stargazers_lens",
+    "names": [
+      "观星者的镜片"
+    ],
+    "config_ids": [
+      "relic_stargazers_lens"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_stargazers_lens.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_stargazers_lens.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_stargazers_lens.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_harvest_sacrificial_vessel",
+    "names": [
+      "丰收的牺牲祭器"
+    ],
+    "config_ids": [
+      "relic_harvest_sacrificial_vessel"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_harvest_sacrificial_vessel.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_amulet_of_humanity",
+    "names": [
+      "人性护符"
+    ],
+    "config_ids": [
+      "relic_amulet_of_humanity"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_amulet_of_humanity.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_amulet_of_humanity.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_gift_mark",
+    "names": [
+      "馈赠印记"
+    ],
+    "config_ids": [
+      "relic_gift_mark"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_gift_mark.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_gift_mark.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_gift_mark.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_void_storage_casket",
+    "names": [
+      "虚空收纳匣"
+    ],
+    "config_ids": [
+      "relic_void_storage_casket"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_void_storage_casket.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_void_storage_casket.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_06",
+    "generation_package": "batches/relics_sheet_06/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_void_storage_casket.pxg",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "key": "relic_reincarnation_hellfire_candle",
+    "names": [
+      "轮回业火之烛"
+    ],
+    "config_ids": [
+      "relic_reincarnation_hellfire_candle"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_reincarnation_hellfire_candle.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_guarding_heart_copper_mirror",
+    "names": [
+      "守心铜鉴"
+    ],
+    "config_ids": [
+      "relic_guarding_heart_copper_mirror"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_guarding_heart_copper_mirror.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_sleepless_ledger",
+    "names": [
+      "无眠账簿"
+    ],
+    "config_ids": [
+      "relic_sleepless_ledger"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_sleepless_ledger.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_sleepless_ledger.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_sleepless_ledger.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_frenzied_dividend",
+    "names": [
+      "狂热分红"
+    ],
+    "config_ids": [
+      "relic_frenzied_dividend"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_frenzied_dividend.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_frenzied_dividend.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_frenzied_dividend.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_gilded_trigger",
+    "names": [
+      "镀金扳机"
+    ],
+    "config_ids": [
+      "relic_gilded_trigger"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_gilded_trigger.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_gilded_trigger.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_gilded_trigger.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_runaway_amplifier",
+    "names": [
+      "失控增幅器"
+    ],
+    "config_ids": [
+      "relic_runaway_amplifier"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_runaway_amplifier.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_runaway_amplifier.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_runaway_amplifier.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_lucid_vow",
+    "names": [
+      "清醒誓言"
+    ],
+    "config_ids": [
+      "relic_lucid_vow"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_lucid_vow.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_lucid_vow.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_lucid_vow.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_coin_heart",
+    "names": [
+      "金币心脏"
+    ],
+    "config_ids": [
+      "relic_coin_heart"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_coin_heart.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_coin_heart.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_coin_heart.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_hoarders_ring",
+    "names": [
+      "囤积者戒指"
+    ],
+    "config_ids": [
+      "relic_hoarders_ring"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_hoarders_ring.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_hoarders_ring.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_hoarders_ring.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_golden_sarcophagus",
+    "names": [
+      "黄金棺椁"
+    ],
+    "config_ids": [
+      "relic_golden_sarcophagus"
+    ],
+    "table": "relics",
+    "batch": "relics_04",
+    "original_path": "res://assets/ui/icons/relics/relic_golden_sarcophagus.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_golden_sarcophagus.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_old_brass_telescope",
+    "names": [
+      "旧铜望远镜"
+    ],
+    "config_ids": [
+      "relic_old_brass_telescope"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_old_brass_telescope.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_old_brass_telescope.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_old_brass_telescope.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_cracked_bronze_bell",
+    "names": [
+      "裂纹铜铃"
+    ],
+    "config_ids": [
+      "relic_cracked_bronze_bell"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_cracked_bronze_bell.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_cracked_bronze_bell.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_07",
+    "generation_package": "batches/relics_sheet_07/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pxg",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "key": "relic_long_focus_eyepiece",
+    "names": [
+      "长焦目镜"
+    ],
+    "config_ids": [
+      "relic_long_focus_eyepiece"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_long_focus_eyepiece.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_long_focus_eyepiece.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_diffusion_nozzle",
+    "names": [
+      "扩散喷口"
+    ],
+    "config_ids": [
+      "relic_diffusion_nozzle"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_diffusion_nozzle.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_diffusion_nozzle.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_range_tripod",
+    "names": [
+      "定距脚架"
+    ],
+    "config_ids": [
+      "relic_range_tripod"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_range_tripod.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_range_tripod.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "26dc2852b69c29354baae42423cd7017eaa5927056b26241cac301cf492a8ce2",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_range_tripod.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_aftershock_hourglass",
+    "names": [
+      "余震沙漏"
+    ],
+    "config_ids": [
+      "relic_aftershock_hourglass"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_aftershock_hourglass.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_aftershock_hourglass.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "162bac96e060beeaa9989c8c0b27643cff6b327bc9cde749ff5e5fd4ab11a618",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_golden_rangefinder",
+    "names": [
+      "黄金测距仪"
+    ],
+    "config_ids": [
+      "relic_golden_rangefinder"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_golden_rangefinder.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_golden_rangefinder.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "7073ff37f42057cd19e779c5045b07a8af09e7f1ecabc4c29724b6a94d3abadf",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_golden_rangefinder.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_abyssal_echo_shell",
+    "names": [
+      "深海回声螺"
+    ],
+    "config_ids": [
+      "relic_abyssal_echo_shell"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_abyssal_echo_shell.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_abyssal_echo_shell.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "d45d351edaab1a121d67caec7d4b02aa1f4128bea47c8dec5819794c5fab5b37",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_folded_star_chart",
+    "names": [
+      "折叠星图"
+    ],
+    "config_ids": [
+      "relic_folded_star_chart"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_folded_star_chart.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_folded_star_chart.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "940e3ba65f05da98778b25ded29d62535c29712b7188bb0433b62d9d3390421a",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_folded_star_chart.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "relic_horizon_orrery",
+    "names": [
+      "地平线星仪"
+    ],
+    "config_ids": [
+      "relic_horizon_orrery"
+    ],
+    "table": "relics",
+    "batch": "relics_05",
+    "original_path": "res://assets/ui/icons/relics/relic_horizon_orrery.png",
+    "original_size": [
+      32,
+      32
+    ],
+    "highres_name": "relic_horizon_orrery.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "03b_relic_prompts.md",
+    "status": "installed",
+    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "generation_batch": "relics_sheet_08",
+    "generation_package": "batches/relics_sheet_08/README.md",
+    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
+    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
+    "installed_sha256": "673bf4fcf8ea5adbad489dd8b8ded04605cd079cce1de83ea14c603ec092671e",
+    "installed_size": [
+      64,
+      64
+    ],
+    "pixel_source": "assets/ui/icons/relics/relic_horizon_orrery.pxg",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "key": "scroll_water",
+    "names": [
+      "水流"
+    ],
+    "config_ids": [
+      "scroll_water"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_water.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_water.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_water.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_water.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_water.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_water.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "495960a58d65a23d920a30b94a929abf3786c9a0158b3ea124e8542fb112977b",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_light_sword",
+    "names": [
+      "光辉剑"
+    ],
+    "config_ids": [
+      "scroll_light_sword"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_light_sword.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_light_sword.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_light_sword.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_light_sword.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_light_sword.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_light_sword.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "f1d9723fac85e975bc958afd8d68128b157bd7cf85d3710196bf57029cf2ff13",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_black_hole",
+    "names": [
+      "黑洞"
+    ],
+    "config_ids": [
+      "scroll_black_hole"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_black_hole.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_black_hole.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_black_hole.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_black_hole.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_black_hole.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_black_hole.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "e81a9169b355de69e6132870362cc201771e2cf66b4f03042e473ecab1e6e6ac",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_fire",
+    "names": [
+      "火焰"
+    ],
+    "config_ids": [
+      "scroll_fire"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_fire.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_fire.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_fire.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_fire.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_fire.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_fire.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "6ebc6cba2c9b8c61f95c16a71ab57f809bbca0ec799c371d7adee0f5058f684d",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_explosion",
+    "names": [
+      "震荡"
+    ],
+    "config_ids": [
+      "scroll_explosion"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_explosion.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_explosion.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_explosion.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_explosion.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_explosion.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_explosion.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "175a84632a24404a4e8901ef0ba084601b7c73174a1da020d3637259627905e8",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_lightning",
+    "names": [
+      "电火花",
+      "落雷"
+    ],
+    "config_ids": [
+      "scroll_lightning",
+      "scroll_electric_spark"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_lightning.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_lightning.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_lightning.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_lightning.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_lightning.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_lightning.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "f7154f7edee684e667eb66edb6c4e514d97aadfa8c86d2a3fc388ffc2df6d014",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_split",
+    "names": [
+      "分裂"
+    ],
+    "config_ids": [
+      "scroll_split"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_split.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_split.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_split.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_split.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_split.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_split.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "db53845b0515eb78992571129bed64f3d1e26f8ca0518c894a0f2932388fc7c6",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_pierce",
+    "names": [
+      "穿透"
+    ],
+    "config_ids": [
+      "scroll_pierce"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_pierce.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_pierce.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_pierce.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_pierce.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_pierce.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_pierce.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "7bfc1c32f0329f4718b81de6a18a8193538e9eba55afa1196bb4ecd4405c37e6",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_ice",
+    "names": [
+      "结霜"
+    ],
+    "config_ids": [
+      "scroll_ice"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_ice.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_ice.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_ice.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_ice.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_ice.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_ice.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "0dd908ab2803cd3f36735d7946fcd75cedc575ae0fff538c3a071f510f6f3243",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_wind",
+    "names": [
+      "风刃"
+    ],
+    "config_ids": [
+      "scroll_wind"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_wind.png",
+    "original_size": [
+      16,
+      16
+    ],
+    "highres_name": "scroll_wind.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "status": "installed",
+    "integration": "32px replacement; UI slot normalization required",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_wind.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_wind.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_wind.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_wind.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "3f716ebffb5fb65c2fa885bae00b4c5585fddbfdc7131748a3a4b1beb303a067",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_bounce",
+    "names": [
+      "弹跳"
+    ],
+    "config_ids": [
+      "scroll_bounce"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_bounce.svg",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "scroll_bounce.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "status": "installed",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_bounce.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_bounce.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_bounce.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_bounce.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "992ed5d1d7a989c3e9af794f1482654f9b2b7b452173e55257db8cf46b7252bb",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "key": "scroll_resonance",
+    "names": [
+      "共鸣"
+    ],
+    "config_ids": [
+      "scroll_resonance"
+    ],
+    "table": "augmentations",
+    "batch": "augmentations_01",
+    "original_path": "res://assets/ui/icons/augmentations/scroll_resonance.svg",
+    "original_size": [
+      64,
+      64
+    ],
+    "highres_name": "scroll_resonance.png",
+    "highres_size": [
+      1024,
+      1024
+    ],
+    "status": "installed",
+    "generation_batch": "augmentations_sheet_01",
+    "generation_package": "batches/augmentations_sheet_01/README.md",
+    "prompt_file": "batches/augmentations_sheet_01/doubao_prompt.txt",
+    "draft_pixel_size": [
+      64,
+      64
+    ],
+    "detail_pixel_size": null,
+    "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "candidate_png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_resonance.png",
+    "candidate_size": [
+      32,
+      32
+    ],
+    "alternative_pixel_reviews": [
+      {
+        "size": [
+          32,
+          32
+        ],
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/export/png/scroll_resonance.png",
+        "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png",
+        "status": "installed"
+      }
+    ],
+    "archived_pixel_candidates": [
+      {
+        "size": [
+          64,
+          64
+        ],
+        "png": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/export/png/scroll_resonance.png",
+        "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md"
+      }
+    ],
+    "installed_path": "assets/ui/icons/augmentations/scroll_resonance.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "installed_sha256": "84e95d76892293e7418a043b3f92a13e5ba9e64afe06222482a4846b3099b8dc",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  }
+]

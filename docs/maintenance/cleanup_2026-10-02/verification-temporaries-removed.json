@@ -1,0 +1,34 @@
+[
+  {
+    "path": "docs/maintenance/cleanup_2026-10-02/battle-headless.log",
+    "bytes": 961
+  },
+  {
+    "path": "docs/maintenance/cleanup_2026-10-02/boss-runtime.log",
+    "bytes": 3805
+  },
+  {
+    "path": "docs/maintenance/cleanup_2026-10-02/editor-console.log",
+    "bytes": 1497
+  },
+  {
+    "path": "docs/maintenance/cleanup_2026-10-02/editor.log",
+    "bytes": 0
+  },
+  {
+    "path": "docs/maintenance/cleanup_2026-10-02/main-headless.log",
+    "bytes": 1168
+  },
+  {
+    "path": "temp/cleanup_workspace.py",
+    "bytes": 9140
+  },
+  {
+    "path": "temp/verify_cleanup.py",
+    "bytes": 1468
+  },
+  {
+    "path": "scripts/tools/__pycache__/install_combat_picxel_assets.cpython-313.pyc",
+    "bytes": 9324
+  }
+]

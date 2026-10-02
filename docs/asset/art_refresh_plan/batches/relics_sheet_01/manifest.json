@@ -1,0 +1,137 @@
+{
+  "status": "installed",
+  "method": "Existing icons composited on white with nearest-neighbor 12x enlargement, not newly drawn art.",
+  "layout": {
+    "columns": 3,
+    "rows": 2,
+    "preferred_canvas": [
+      3072,
+      2048
+    ],
+    "fallback_canvas": [
+      1536,
+      1024
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual returned objects and order before cropping; do not blindly trust a perfect grid.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_piggy_bank",
+      "name": "猪猪存钱罐",
+      "source": "assets/ui/icons/relics/relic_piggy_bank.png",
+      "source_sha256": "94644e04be85f93f4d11f05dbe328371eb9d1a6075aa078637029002593768a8",
+      "reference_cell_rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_piggy_bank.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_steel_vault",
+      "name": "钢铁保险柜",
+      "source": "assets/ui/icons/relics/relic_steel_vault.png",
+      "source_sha256": "222ae650eee8f7a403f962a0cca3e1bf90ea026ebfec6fe184fd2852e2883620",
+      "reference_cell_rect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_steel_vault.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_gold_compass",
+      "name": "吸金罗盘",
+      "source": "assets/ui/icons/relics/relic_gold_compass.png",
+      "source_sha256": "2b9c182bf4cf3cebcc2e2f0074f362eb3f99ec0cdb89f6eacc82bf0f3568648e",
+      "reference_cell_rect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_gold_compass.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_compound_interest_tome",
+      "name": "复利宝典",
+      "source": "assets/ui/icons/relics/relic_compound_interest_tome.png",
+      "source_sha256": "f559370112cefa5b4ec970ac6e7802471b37d8c26a0a8ca71cdd389275d01ea9",
+      "reference_cell_rect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_compound_interest_tome.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_periodic_dividend_clock",
+      "name": "周期分红钟",
+      "source": "assets/ui/icons/relics/relic_periodic_dividend_clock.png",
+      "source_sha256": "3569d0f89136aed5b2c9c612e34708f12a96c4855786100ba5ba5093df180d5b",
+      "reference_cell_rect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_periodic_dividend_clock.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_quant_trading",
+      "name": "量化操盘",
+      "source": "assets/ui/icons/relics/relic_quant_trading.png",
+      "source_sha256": "d43fe8a22e78190be3183e7daf28fd2644872ca099d20a9196f1633d0f0e878f",
+      "reference_cell_rect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_quant_trading.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    }
+  ],
+  "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_01/r01/README.md",
+  "installation_record": "docs/asset/art_refresh_plan/12_relics_sheet_01_installation.md"
+}

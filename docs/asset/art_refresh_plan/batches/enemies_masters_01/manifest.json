@@ -1,0 +1,95 @@
+{
+  "status": "awaiting_highres_masters",
+  "image_model_used": false,
+  "production_changed": false,
+  "references": [
+    {
+      "file": "grub_style_reference.png",
+      "source": "artifacts/reference/cuthulu/u=3055906668,2960803188&fm=253&fmt=auto&app=120&f=JPEG.webp",
+      "source_sha256": "81475d8f74095fe4ca9919e21341a9fc4bf66fa609bd44c5458249498a837cbd",
+      "source_size": [
+        500,
+        757
+      ],
+      "crop_xyxy": [
+        60,
+        450,
+        310,
+        665
+      ],
+      "output_size": [
+        250,
+        215
+      ],
+      "sha256": "6f54b94fbf9f814b248d144e49e8c446e7e860c6cfd2e0424f7904224c9524a2",
+      "role": "Organic plane shading and dark ink contours only; exclude the source character silhouette, bones and colors.",
+      "method": "Unscaled crop; no image generation or pixel conversion."
+    },
+    {
+      "file": "knight_style_reference.png",
+      "source": "artifacts/reference/darkest_dungeon/u=2637947151,2706126914&fm=253&fmt=auto&app=120&f=JPEG.webp",
+      "source_sha256": "63de8cad8a8f5e1823be915e9b1cd3bc59e3e9efbf10d10e7c8bc29a7aa9e4ec",
+      "source_size": [
+        800,
+        500
+      ],
+      "crop_xyxy": [
+        50,
+        15,
+        340,
+        245
+      ],
+      "output_size": [
+        290,
+        230
+      ],
+      "sha256": "5eedca62adf0f31389962ff151926127e5e1bf9ccfd4f608781cc4d81f575f1c",
+      "role": "Metal planes and dark outline only; no character, armor design, glow or layout copying.",
+      "method": "Unscaled crop; no image generation or pixel conversion."
+    }
+  ],
+  "items": [
+    {
+      "id": "enemy_mutated_grub",
+      "prompt": "grub_prompt.txt",
+      "reference": "grub_style_reference.png",
+      "requested_source_size": [
+        2048,
+        2048
+      ],
+      "future_pixel_size": [
+        64,
+        64
+      ],
+      "actions": [
+        "idle",
+        "move"
+      ]
+    },
+    {
+      "id": "enemy_elite_rusher",
+      "prompt": "knight_prompt.txt",
+      "reference": "knight_style_reference.png",
+      "requested_source_size": [
+        2048,
+        2048
+      ],
+      "future_pixel_size": [
+        128,
+        128
+      ],
+      "actions": [
+        "idle",
+        "move",
+        "windup",
+        "dash",
+        "recover"
+      ],
+      "gameplay_durations_seconds": {
+        "windup": 0.8,
+        "dash": 0.16,
+        "recover": 0.5
+      }
+    }
+  ]
+}

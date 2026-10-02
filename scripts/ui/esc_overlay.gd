@@ -285,7 +285,10 @@ func _layout_overlay() -> void:
 
 
 func _update_relic_grid_columns() -> void:
-	_update_grid_columns(relic_grid, relic_scroll, RELIC_CELL_SIZE.x)
+	var cell_width := RELIC_CELL_SIZE.x
+	for cell in _relic_cells:
+		cell_width = maxf(cell_width, cell.custom_minimum_size.x)
+	_update_grid_columns(relic_grid, relic_scroll, cell_width)
 
 
 func _update_item_grid_columns() -> void:
@@ -402,12 +405,15 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		var texture := load(icon_path)
 		if texture is Texture2D:
 			var icon_rect := TextureRect.new()
-			icon_rect.texture = texture
 			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			cell.add_child(icon_rect)
+			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			FinanceUIStyle.set_item_icon(icon_rect, texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+			if FinanceUIStyle.is_native_relic_icon(texture):
+				cell.custom_minimum_size = RELIC_CELL_SIZE.max(texture.get_size() * FinanceUIStyle.RELIC_LIST_ICON_SCALE + Vector2(8, 8))
+				cell.size = cell.custom_minimum_size
+			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	else:
 		var placeholder := PanelContainer.new()
 		placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -445,7 +451,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		badge.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.06, 0.95))
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(badge)
-	cell.pivot_offset = RELIC_CELL_SIZE * 0.5
+	cell.pivot_offset = cell.custom_minimum_size * 0.5
 	cell.mouse_entered.connect(_on_relic_cell_hovered.bind(cell, relic_data))
 	cell.mouse_exited.connect(_on_relic_cell_unhovered.bind(cell))
 	_relic_cells.append(cell)

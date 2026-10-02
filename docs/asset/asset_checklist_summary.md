@@ -36,7 +36,10 @@
 | 已存在 | 经验球 | `pickup_exp_orb.png` | `assets/sprites/pickups/pickup_exp_orb.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 玩家右向基础单帧 | `void_hunter_idle_right.png` | `assets/sprites/player/void_hunter_idle_right.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png` | 432x54 / 8:1 / PNG | Picxel 完整八帧，7 FPS |
+| 已接入 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png` | 384x64 / 6:1 / PNG | 1px描边版，完整六帧，6 FPS |
+| 已接入 | 初心者战斗待机 | `void_hunter_idle_right.png` | `assets/sprites/player/combat/void_hunter_idle_right.png` | 64x64 / 1:1 / PNG | 与walk第一帧一致 |
+| 已接入 | 资本家战斗行走 | `capitalist_walk_right_spritesheet.png` | `assets/sprites/player/combat/capitalist_walk_right_spritesheet.png` | 448x64 / 7:1 / PNG | 1px描边版，完整七帧，7 FPS |
+| 已接入 | 资本家战斗待机 | `capitalist_idle_right.png` | `assets/sprites/player/combat/capitalist_idle_right.png` | 64x64 / 1:1 / PNG | 与walk第一帧一致 |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
@@ -141,9 +144,9 @@
 | 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版图标已清理 |
 | 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 64x64 / 1:1 / RGBA PNG | 铸铁炮管、黄铜箍、木柄 |
 | 已存在 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 64x64 / 1:1 / PNG |  |
-| 已存在 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1920x1080 / 16:9 / PNG |  |
+| 已接入 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1024x572 / PNG | 哥布林地牢混合像素尺度，脸与金币精修、瞳孔上移确认版；最近邻显示 |
 | 已存在 | 主菜单按钮底图 | `button_main_menu.png` | `assets/ui/main_menu/button_main_menu.png` | 600x186 / PNG |  |
-| 已存在 | 主菜单标题图 | `title_main_menu.png` | `assets/ui/main_menu/title_main_menu.png` | 350x80 / PNG |  |
+| 已接入 | 主菜单标题图 | `title_main_menu.png` | `assets/ui/main_menu/title_main_menu.png` | 240x128 / RGBA PNG | “哥布林／教你地下城”两行原创艺术字；油画笔触 Picxel 版，15 色，最近邻显示 |
 
 ## 2. 未存在的必需素材（10 个）
 

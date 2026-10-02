@@ -1,0 +1,227 @@
+{
+  "status": "installed",
+  "method": "Original object designs from one style reference plus concise text; no identity images supplied.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping. Do not assume the model obeyed grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_worn_hemostatic_cloth",
+      "name": "磨损的止血布条",
+      "config_ids": [
+        "relic_worn_hemostatic_cloth"
+      ],
+      "source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
+      "source_sha256": "b17e11f0a6c49bfbbeb8805530b99ab41b254a4acf410d745ff3831517590556",
+      "output_filename": "relic_worn_hemostatic_cloth.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "21e793306c79d1440ffdead563496f087bcb12bdc3a5b5dcb410131517c4b9f1"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_load_iron_bracer",
+      "name": "负重铁皮护腕",
+      "config_ids": [
+        "relic_load_iron_bracer"
+      ],
+      "source": "assets/ui/icons/relics/relic_load_iron_bracer.png",
+      "source_sha256": "0c335612a04180e714c1c74dbbc58859ad299cedcc951b32b71b6df6f2fa9757",
+      "output_filename": "relic_load_iron_bracer.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "b3455e8150920c82962a119375eb96734e02314778399df41dbb80d4edfd2277"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_pungent_sachet",
+      "name": "刺鼻香包",
+      "config_ids": [
+        "relic_pungent_sachet"
+      ],
+      "source": "assets/ui/icons/relics/relic_pungent_sachet.png",
+      "source_sha256": "28c08dd24d5ad025d6f426059479a26f457df62244e6d3ada8b60f4f17544dc9",
+      "output_filename": "relic_pungent_sachet.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "b0bd37a9f9600ac83f2d2eecba02fd7cce7b484338e3fee789024bdf6fd00d03"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_broken_crystal",
+      "name": "残破晶石",
+      "config_ids": [
+        "relic_broken_crystal"
+      ],
+      "source": "assets/ui/icons/relics/relic_broken_crystal.png",
+      "source_sha256": "e9a5ecf5dc720ab25b303964e4819dc8966171877e79a8614f5f69960dfd322f",
+      "output_filename": "relic_broken_crystal.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "b25b856ae034a943597d0a826c3830326f8041c0bea7b7f050c7474753e60293"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_vitality_potion",
+      "name": "生命力药瓶",
+      "config_ids": [
+        "relic_vitality_potion"
+      ],
+      "source": "assets/ui/icons/relics/relic_vitality_potion.png",
+      "source_sha256": "9fca5fa7d67822102a62f4ba798c4bfb8d5100e9c1ad8d9c2f33277954e68e61",
+      "output_filename": "relic_vitality_potion.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "08e1bf53603705a29372268ae56f28528db53bad0427710e5bf04781aae247de"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_dead_shield_badge",
+      "name": "死寂护盾徽章",
+      "config_ids": [
+        "relic_dead_shield_badge"
+      ],
+      "source": "assets/ui/icons/relics/relic_dead_shield_badge.png",
+      "source_sha256": "1d31f958164351ac2feab646e79bb8444759fb97f108718b848d0943e061ca43",
+      "output_filename": "relic_dead_shield_badge.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "da4550160b71c64f79774e818d240ae570a545664de87dd6ff9877c052a688bc"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_turtle_shell_pendant",
+      "name": "龟壳吊坠",
+      "config_ids": [
+        "relic_turtle_shell_pendant"
+      ],
+      "source": "assets/ui/icons/relics/relic_turtle_shell_pendant.png",
+      "source_sha256": "f40f7695219ef2e94c534953e070c19bf80e225a60fe5302818c3de458eb8042",
+      "output_filename": "relic_turtle_shell_pendant.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "df6d5226e7ab8f8806004a02126ecffc3da2e08f91c85bbf73b6f32292005974"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_prison_copper_anklet",
+      "name": "监狱铜制脚环",
+      "config_ids": [
+        "relic_prison_copper_anklet"
+      ],
+      "source": "assets/ui/icons/relics/relic_prison_copper_anklet.png",
+      "source_sha256": "5fe4780a5a3904e3787ab4a0e8bb00cf013cb6560479deeb9720e51bfe74552b",
+      "output_filename": "relic_prison_copper_anklet.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "635a24a167973884257aa6060423d5935bff333edc4daa2b311f9a785a3a22ac"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_brass_pocket_watch",
+      "name": "黄铜怀表",
+      "config_ids": [
+        "relic_brass_pocket_watch"
+      ],
+      "source": "assets/ui/icons/relics/relic_brass_pocket_watch.png",
+      "source_sha256": "00b84a6b760109ea3ec3127f743b241785dbad6fa7ce58d66f3c719452925713",
+      "output_filename": "relic_brass_pocket_watch.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "b41c3a51568a120c93383aeea8c0a69a3054b2fa1b4b3c3fc719a24b90b3ebe6"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_flesh_pauldron",
+      "name": "血肉肩甲",
+      "config_ids": [
+        "relic_flesh_pauldron"
+      ],
+      "source": "assets/ui/icons/relics/relic_flesh_pauldron.png",
+      "source_sha256": "2e8a223925b04f730894d314c352cb0da3a4b9d463a3bdbda6aa5649d103bfd8",
+      "output_filename": "relic_flesh_pauldron.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "f840126dc6d79a648e92ece9a45e422dad09f51adf090bf1babd24dc2756e75d"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_nightmare_healing_urn",
+      "name": "梦魇治愈圣壶",
+      "config_ids": [
+        "relic_nightmare_healing_urn"
+      ],
+      "source": "assets/ui/icons/relics/relic_nightmare_healing_urn.png",
+      "source_sha256": "2f612b74abae04d9b0652780012a7cee66c4af5dc943facf496ab08ff6c43f93",
+      "output_filename": "relic_nightmare_healing_urn.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "49e98ed4ec193fe3a9bcfeddfcbae8b29facd26cec0c11e05deaf7f7f9e8bef8"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_barrier_crystal",
+      "name": "屏障结晶",
+      "config_ids": [
+        "relic_barrier_crystal"
+      ],
+      "source": "assets/ui/icons/relics/relic_barrier_crystal.png",
+      "source_sha256": "1e64fec023a65dd5bd2a4fb075fb565fa968370f6e66b2b11277076ff3a00794",
+      "output_filename": "relic_barrier_crystal.png",
+      "pixel_target": [
+        32,
+        32
+      ],
+      "installed_sha256": "d0213bd6cd3b12763b4a62f617d0341a645e832aaf50ca536b0a56468e76ebf3"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../14_relics_sheet_03_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

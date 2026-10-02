@@ -122,6 +122,9 @@ func _run() -> void:
 	print("FINANCE_PREPARATION_DONE failures=", failures)
 	game.queue_free()
 	await frames()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	await get_tree().create_timer(0.25).timeout
 	get_tree().quit(failures)
 
 
@@ -225,7 +228,7 @@ func _test_inventory_inspection() -> void:
 	await frames()
 	for button in popup.workbench._weapon_row.get_children():
 		if not button is WeaponSlotButton: continue
-		(popup.workbench._weapon_row.get_parent() as ScrollContainer).ensure_control_visible(button)
+		popup.workbench._weapon_scroll.ensure_control_visible(button)
 		await frames()
 		await _hover_control(button)
 		check(button.tooltip_text.is_empty() and popup._tooltip.visible, "weapon hover uses the finance HUD instead of a native plain-text tooltip")

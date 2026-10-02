@@ -1,0 +1,404 @@
+{
+  "status": "installed",
+  "scope": "12 unique augmentation UI icons for 13 configuration records; effects excluded.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      4096,
+      3072
+    ],
+    "bottom_white_band_percent": 10
+  },
+  "method": "Style-only image plus semantic identity cues; allow new silhouettes and arrangements.",
+  "reference": {
+    "file": "01_arcane_ink_reference.png",
+    "source": "artifacts/reference/darkest_dungeon/u=1960619763,3771408159&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "source_sha256": "ac21a5dca7167a9f696ddbd7cf6b290ae42fb28d9502713ed5703959e68f6bee",
+    "crop_xyxy": [
+      245,
+      55,
+      568,
+      390
+    ],
+    "sha256": "15895ec4dd820d987e479229ba7b0179cab1563fbfc9102cfe84bdbb312caee5"
+  },
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "scroll_bounce",
+      "names": [
+        "弹跳"
+      ],
+      "config_ids": [
+        "scroll_bounce"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_bounce.svg",
+      "source_sha256": "d196d78f518157f5384b6539dba8d523c8c9a4f49ab16428d4cc52e66157afe0",
+      "current_canvas": [
+        64,
+        64
+      ],
+      "output_filename": "scroll_bounce.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_bounce.png",
+      "config_path_change_on_install": true,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "scroll_resonance",
+      "names": [
+        "共鸣"
+      ],
+      "config_ids": [
+        "scroll_resonance"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_resonance.svg",
+      "source_sha256": "45627969d23475f63b0ea0c6e80275000bc9ecbc31662afec269aa2659873b68",
+      "current_canvas": [
+        64,
+        64
+      ],
+      "output_filename": "scroll_resonance.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_resonance.png",
+      "config_path_change_on_install": true,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "scroll_water",
+      "names": [
+        "水流"
+      ],
+      "config_ids": [
+        "scroll_water"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_water.png",
+      "source_sha256": "92a36a03a002f6c71a6abaaf01d80344ad8977a4bb304c6b3d54369f16f98831",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_water.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_water.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "scroll_light_sword",
+      "names": [
+        "光辉剑"
+      ],
+      "config_ids": [
+        "scroll_light_sword"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_light_sword.png",
+      "source_sha256": "3301674ec7fa1794494087889c11f98b72ce2adc50d8a543784ff6f259e7b0af",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_light_sword.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_light_sword.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "scroll_black_hole",
+      "names": [
+        "黑洞"
+      ],
+      "config_ids": [
+        "scroll_black_hole"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_black_hole.png",
+      "source_sha256": "68ab9659f3189d0f6653c0addfe67097ee469d837d8f6b002c78906f0f482ab0",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_black_hole.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_black_hole.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "scroll_fire",
+      "names": [
+        "火焰"
+      ],
+      "config_ids": [
+        "scroll_fire"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_fire.png",
+      "source_sha256": "0a4544c71580e86bb639633245de0a61e309a5ff2cb017886e77dea93ad38488",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_fire.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_fire.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "scroll_explosion",
+      "names": [
+        "震荡"
+      ],
+      "config_ids": [
+        "scroll_explosion"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_explosion.png",
+      "source_sha256": "807a97baeed310294ab073dde7f68814e97993e6a28195bb93f2c2438a60e348",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_explosion.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_explosion.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "scroll_lightning",
+      "names": [
+        "电火花",
+        "落雷"
+      ],
+      "config_ids": [
+        "scroll_lightning",
+        "scroll_electric_spark"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_lightning.png",
+      "source_sha256": "20038dc24f8f368e856983d25498ea5b048d07e67144120cb2bfc44b00b4e9fb",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_lightning.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_lightning.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "scroll_split",
+      "names": [
+        "分裂"
+      ],
+      "config_ids": [
+        "scroll_split"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_split.png",
+      "source_sha256": "c5e0bb0b9ef9f01075098a8976309791c41c108d492c9de02eeef158cdbb58d3",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_split.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_split.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "scroll_pierce",
+      "names": [
+        "穿透"
+      ],
+      "config_ids": [
+        "scroll_pierce"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_pierce.png",
+      "source_sha256": "f17f52aa2f172d5fc01e5c7862733b3d6d2f7b439dafd164ff64a3bd051f3c0a",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_pierce.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_pierce.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "scroll_ice",
+      "names": [
+        "结霜"
+      ],
+      "config_ids": [
+        "scroll_ice"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_ice.png",
+      "source_sha256": "58075e5cbb496c0b0e92e575a9841bf53c0b173f9c6a90b3d909d44e7fc7ace5",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_ice.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_ice.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "scroll_wind",
+      "names": [
+        "风刃"
+      ],
+      "config_ids": [
+        "scroll_wind"
+      ],
+      "source": "assets/ui/icons/augmentations/scroll_wind.png",
+      "source_sha256": "9ccd7da9093d0aed354366d929a8ee3493764807a765f89ee2525c90db4ea2cf",
+      "current_canvas": [
+        16,
+        16
+      ],
+      "output_filename": "scroll_wind.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "future_png_path": "assets/ui/icons/augmentations/scroll_wind.png",
+      "config_path_change_on_install": false,
+      "installed_size": [
+        32,
+        32
+      ],
+      "status": "installed"
+    }
+  ],
+  "pixel_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+  "highres_source": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/source/augmentations_sheet_01_source.png",
+  "highres_sha256": "b45f45f008e43022e3b3ad1079a93320a94948a50f431be733bedc78d1892897",
+  "size_review": {
+    "available_sizes": [
+      [
+        32,
+        32
+      ],
+      [
+        64,
+        64
+      ]
+    ],
+    "selected_size": [
+      32,
+      32
+    ],
+    "review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md",
+    "comparison": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/review/comparison_32_64_dark.png"
+  },
+  "installed_size": [
+    32,
+    32
+  ],
+  "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+}

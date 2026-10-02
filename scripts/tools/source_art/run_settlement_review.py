@@ -189,7 +189,7 @@ def make_audio(_cases):
 
 
 def draw_preview(case,sheet,seconds=20):
-    background=Image.open(ROOT/'assets/sprites/background/background-stone-brick-floor.png').convert('RGB').resize((W,H))
+    background=Image.open(ROOT/'assets/sprites/background/meadow/meadow-ground.png').convert('RGB').resize((W,H))
     im=Image.blend(background,Image.new('RGB',(W,H),'#080f0d'),.91).convert('RGBA')
     panel(im,(44,38,1064,688),'#151e19','#8d7953',2)
     d=ImageDraw.Draw(im)

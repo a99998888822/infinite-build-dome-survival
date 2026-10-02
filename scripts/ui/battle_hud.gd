@@ -37,6 +37,7 @@ var _experience_frame: Panel
 var _bond_row: HBoxContainer
 var _bond_buttons: Dictionary = {}
 var _weapon_damage_meter: Control
+var _performance_line: Label
 var _economy_log: EconomyLogPanel
 var _economy_log_layer: CanvasLayer
 
@@ -185,6 +186,9 @@ func _ready() -> void:
 	_weapon_damage_meter = WEAPON_DAMAGE_METER.new()
 	_weapon_damage_meter.name = "WeaponDamageMeter"
 	status_panel.add_child(_weapon_damage_meter)
+	_performance_line = preload("res://scripts/ui/combat_performance_line.gd").new()
+	_performance_line.name = "CombatPerformanceLine"
+	status_panel.add_child(_performance_line)
 	_create_stats_drawer_skin()
 	_bind_viewport_resize()
 	_apply_combat_layout()
@@ -292,6 +296,8 @@ func _create_stats_drawer_skin() -> void:
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		drawer_toggle_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	drawer_toggle_button.flat = false
+	drawer_toggle_button.offset_left = 5.0
+	drawer_toggle_button.offset_right = 33.0
 	drawer_toggle_button.offset_top = -22.0
 	drawer_toggle_button.offset_bottom = 22.0
 	drawer_toggle_button.add_theme_font_size_override("font_size", 14)
@@ -306,11 +312,11 @@ func _create_stats_drawer_skin() -> void:
 	handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	handle.show_behind_parent = true
 	drawer_toggle_button.add_child(handle)
-	# The rivet sits over the board, while the loose end stays visible when closed.
+	# The 44px handle's rivet at local x32 lands on the metal rail at panel x11.
 	handle.anchor_top = 0.5
 	handle.anchor_bottom = 0.5
 	handle.offset_left = 4.0
-	handle.offset_right = 68.0
+	handle.offset_right = 48.0
 	handle.offset_top = -20.0
 	handle.offset_bottom = 20.0
 	drawer_toggle_button.mouse_entered.connect(func() -> void: handle.modulate = Color(1.2, 1.15, 1.0))
@@ -671,7 +677,9 @@ func _apply_combat_layout() -> void:
 	top_left.position = Vector2(18, 6)
 	_vitals_frame.position = Vector2(10, 2)
 	_vitals_frame.size = Vector2(bar_width + 44, 52)
-	_weapon_damage_meter.position = Vector2(10, 62)
+	_performance_line.position = Vector2(16, 64)
+	_performance_line.size = Vector2(maxf(bar_width + 32, 210), 18)
+	_weapon_damage_meter.position = Vector2(10, 94)
 	_weapon_damage_meter.size.x = (bar_width + 44) * 0.5
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width

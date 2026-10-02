@@ -1,0 +1,114 @@
+{
+  "approved_panel": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r03/review/ui_stats_drawer_fit_288x520.png",
+  "approved_panel_sha256": "a00a4a1dd6e2441213c99fb9cca4facc7badf64b4f16fc548c34b31e6a66be29",
+  "approved_handle": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r05/export/stats_leather_handle_44x40.png",
+  "native_size": [
+    288,
+    520
+  ],
+  "native_recomposition_pixel_exact": true,
+  "before": {
+    "assets/ui/stats_drawer/stats_board_bottom.png": "6d3b8a0ddf6a319225a8ff2920bb22bb992399037b57f565d024e66af05de2d8",
+    "assets/ui/stats_drawer/stats_board_bottom.png.import": "f5475f8508fe9eb6a6cbd9ee30cf238aa5726adafc05c710cddbef30225e9035",
+    "assets/ui/stats_drawer/stats_board_top.png": "c4c20474aea28e9b1a68ef28e6a728fc2907bd88e9fc6008fce9281dadb95540",
+    "assets/ui/stats_drawer/stats_board_top.png.import": "3de415a0f4f31adba62ccf03340054d5d77f414714512ef0b9390fa218228531",
+    "assets/ui/stats_drawer/stats_leather_handle.png": "affa7af56fb7979a6718d6d69cc35a23f6844bd53b46cffe4f704e8c2b409a45",
+    "assets/ui/stats_drawer/stats_leather_handle.png.import": "a1ad6f06b455197d17e3e38ad69c579a5e49042b851ea7295c366d48395f1355",
+    "assets/ui/stats_drawer/stats_rail_left.png": "ddbb2733104e5bbf3288643aa0b9e89ce151dd09ee9cf32926a87bc1d910805f",
+    "assets/ui/stats_drawer/stats_rail_left.png.import": "4352ea008a0ebca317abea41eba48307b866f3a2983f127f4e57ade90f3c10c6",
+    "assets/ui/stats_drawer/stats_rail_right.png": "b43258046b8b16a29193bfcfd9c3a2efb2bdc45a53ba85becaa58276d62c56e5",
+    "assets/ui/stats_drawer/stats_rail_right.png.import": "a9ee6dbcb9c0c82abd41396bb7abfe7f8a54448be32ef859015f94119a1a77a0",
+    "assets/ui/stats_drawer/stats_wood_tile.png": "cf077c06f94967359435bb3b9efc6bbe540c2b5439e62844c123b9ca9aff68b4",
+    "assets/ui/stats_drawer/stats_wood_tile.png.import": "78328835619ee37b1886995e39e83c2c763249234788e9afb30192b168fda418"
+  },
+  "after": {
+    "stats_board_top.png": {
+      "size": [
+        288,
+        260
+      ],
+      "sha256": "ecba65c44a0ddc1dc373daa95fb276200f09c71afc53914f911754c9dd6e6ff7"
+    },
+    "stats_board_bottom.png": {
+      "size": [
+        288,
+        260
+      ],
+      "sha256": "7398c1e6d1cf0ad5b4111b3ac5245ae901afdd8f553b887031a15243589ae092"
+    },
+    "stats_rail_left.png": {
+      "size": [
+        18,
+        24
+      ],
+      "sha256": "cc43b75a65d5a1b91df010b65fdeebdc81718df210b9c7cc7e5ced061a9e31f3"
+    },
+    "stats_rail_right.png": {
+      "size": [
+        24,
+        24
+      ],
+      "sha256": "f1037b99025effb9ea6a71dfebdb86c3106a79fa6919e3651927a064b1d8fc8c"
+    },
+    "stats_wood_tile.png": {
+      "size": [
+        272,
+        168
+      ],
+      "sha256": "69da505ed62519d78e964349aeb648b772f1de9b0ee04e7d3a693f6fe47d7e5f"
+    },
+    "stats_leather_handle.png": {
+      "size": [
+        44,
+        40
+      ],
+      "sha256": "dfdb410ae1e559b929d58f9833879a2747978ce1f1eab5489ec51f27bee172a4"
+    }
+  },
+  "status": "installed",
+  "approved_by_user": true,
+  "installed_date": "2026-09-29",
+  "backup_and_validation_directory": "C:\\Users\\mi\\AppData\\Local\\Temp\\stats-drawer-install-20260929-170943",
+  "native_gpu_diff_pixels": 0,
+  "tested_resolutions": [
+    [
+      1024,
+      576
+    ],
+    [
+      1152,
+      648
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "window_safety": {
+    "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+    "pid": 27592,
+    "private_desktop": "CodexGodotCapture_1790673145581183700",
+    "verified_desktop": "CodexGodotCapture_1790673145581183700",
+    "foreground_samples": 0,
+    "samples": 385,
+    "exit_code": 0,
+    "elapsed_seconds": 8.333480800007237
+  },
+  "editor_import_passed": true,
+  "main_scene_passed": true,
+  "mouse_hit_test_passed": true,
+  "last_stat_scroll_passed": true,
+  "finance_layout_passed": true,
+  "environment_note": "Editor reports unavailable Android build-tools directory; desktop import and runtime passed.",
+  "consumer_scripts": {
+    "scripts/ui/battle_hud.gd": {
+      "before": "5c336a51996a68ed2c33f7506aba07b49fe519b223ecebe08a41be08e880a4e2",
+      "after": "daee97dd07645ca68263568c7858540ca62763ccf5cbe407f5e937a9e0195014"
+    },
+    "scripts/ui/stats_drawer_skin.gd": {
+      "before": "a2c608f801dc4f7c2ec88b6d0de7c045a1128aac759bada79ff9538df619210a",
+      "after": "7fc7cb89ce062549ef51abe39bdbdd5b7b922e942a230eb639eab9d69737b9c0"
+    }
+  },
+  "unrelated_protected_file_drift": []
+}

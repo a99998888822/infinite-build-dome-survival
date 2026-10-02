@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tests/weapon_trio_live_capture.gd" id="1"]
+
+[node name="WeaponTrioLiveCapture" type="Node"]
+script = ExtResource("1")

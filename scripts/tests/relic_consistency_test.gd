@@ -66,7 +66,7 @@ func _run() -> void:
 func _test_config_and_health() -> void:
 	var p := make_player()
 	p.add_relic("relic_vitality_potion")
-	check(is_equal_approx(p.get_stat("hp_regen"), 0.5), "MD vitality regen 0.5")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.25), "vitality relic regeneration halved")
 	p.add_relic("relic_turtle_shell_pendant")
 	check(p.get_stat("max_hp") == 13, "MD turtle max HP +3")
 	p.add_relic("relic_stargazers_lens")
@@ -164,7 +164,9 @@ func _test_confirmed_balance() -> void:
 	p.add_relic("relic_nightmare_healing_urn")
 	p.current_hp = 5
 	p._physics_process(1.25)
-	check(is_equal_approx(p.get_stat("hp_regen"), 0.8) and p.current_hp == 6, "urn regenerates one HP in 1.25 seconds")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.4) and p.current_hp == 5, "urn keeps fractional half HP after 1.25 seconds")
+	p._physics_process(1.25)
+	check(p.current_hp == 6, "halved urn regenerates one HP in 2.5 seconds")
 	p.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
 	check(p.get_stat("humanity") == 99, "urn retains one sanity loss per wave")
 	p.add_relic("relic_guarding_heart_copper_mirror")

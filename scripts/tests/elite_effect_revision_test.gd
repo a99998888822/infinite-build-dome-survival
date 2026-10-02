@@ -33,7 +33,9 @@ func _run() -> void:
 	elite._process_special_behavior(0.75)
 	normal.position = Vector2(80, 0)
 	elite.position = Vector2(-80, 0)
-	check(elite.sprite.scale == Vector2(0.7, 0.7) and elite.get_node("CollisionShape2D").shape.radius == 21.0, "boss visual and body are 0.7 of previous size")
+	check(elite.sprite.scale == Vector2(1.12, 1.12) and is_equal_approx(elite.get_node("CollisionShape2D").shape.radius, 33.6), "boss visual and body reduced to eighty percent together")
+	check((elite.sprite.position + Vector2(0, 54) * elite.sprite.scale).is_zero_approx(), "resized boss retains grounded foot anchor")
+	check(is_equal_approx(elite._profile.dash_half_width, 35.84), "dash hit and telegraph width follow resized body")
 	for enemy in [normal, elite]:
 		enemy.apply_slow(3.0, 0.45)
 		enemy.apply_wet(5.0, 0.8)

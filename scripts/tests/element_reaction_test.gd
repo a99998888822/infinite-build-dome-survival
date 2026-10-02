@@ -34,11 +34,11 @@ func _run() -> void:
 		equip(ids)
 		var water := PARAMS.build_weapon_context(weapon, "water")
 		var hole := PARAMS.build_weapon_context(weapon, "black_hole")
-		check(water.get_resolved_parameter("radius", 0) == 132 and is_equal_approx(water.get_resolved_parameter("duration", 0), 0.85), "water parameters isolated in " + str(ids))
-		check(hole.get_resolved_parameter("radius", 0) == 100 and is_equal_approx(hole.get_resolved_parameter("duration", 0), 0.85), "black hole parameters isolated in " + str(ids))
+		check(water.get_resolved_parameter("radius", 0) == 96 and is_equal_approx(water.get_resolved_parameter("duration", 0), 0.85), "water parameters isolated in " + str(ids))
+		check(hole.get_resolved_parameter("radius", 0) == 90 and is_equal_approx(hole.get_resolved_parameter("duration", 0), 0.85), "black hole parameters isolated in " + str(ids))
 	weapon._attached_item_instances[0]["rolled_parameters"] = {"radius": 99.0}
 	var water := PARAMS.build_weapon_context(weapon, "water")
-	check(water.get_resolved_parameter("radius", 0) == 132, "foreign rolled parameter does not leak")
+	check(water.get_resolved_parameter("radius", 0) == 96, "foreign rolled parameter does not leak")
 	weapon.effect_modifiers.append({"effect_id": "*", "channel": "duration", "operation": "multiply", "value": 2.0})
 	water = PARAMS.build_weapon_context(weapon, "water")
 	check(is_equal_approx(water.get_resolved_parameter("duration", 0), 1.70), "explicit global modifier still works")
@@ -69,7 +69,9 @@ func _run() -> void:
 		enemies[0]._process_burning(0.5)
 		check(enemies[0].current_hp == 9980 and enemies[0].has_status("light"), "holy tick is 2x and preserves light " + str(pair))
 		enemies[0].take_damage(10)
-		check(enemies[0].current_hp == 9960, "holy does not remove the separate light bonus for direct hits")
+		check(enemies[0].current_hp == 9967 and not enemies[0].has_status("light") and enemies[0].has_status("holy_flame"), "first holy direct hit gets 30 percent exposure without clearing holy burn")
+		enemies[0].take_damage(10)
+		check(enemies[0].current_hp == 9957, "holy cannot sustain global exposure on later direct hits")
 	for pair in [["dark", "light"], ["light", "dark"]]:
 		await setup([Vector2.ZERO])
 		element(enemies[0], pair[0])
@@ -90,10 +92,10 @@ func _run() -> void:
 	var prior := enemies[0].current_hp
 	check(enemies[1].current_hp == 10000, "outer ice target initially outside")
 	ice.expand_from_wind(1.35)
-	check(enemies[1].current_hp == 9965 and enemies[1].has_status("slowed"), "wind ice expansion affects new coverage")
+	check(enemies[1].current_hp == 9975 and enemies[1].has_status("slowed"), "wind ice expansion affects new coverage")
 	check(enemies[0].current_hp == prior, "wind ice does not double hit old coverage")
 	ice.expand_from_wind(1.35)
-	check(enemies[1].current_hp == 9965, "repeated wind cannot rehit previous ice victim")
+	check(enemies[1].current_hp == 9975, "repeated wind cannot rehit previous ice victim")
 	ice._radius = 180
 	ice.expand_from_wind(1.35)
 	check(ice._radius >= 180, "wind cannot shrink a large ice field")
@@ -115,6 +117,16 @@ func _run() -> void:
 	element(enemies[0], "water")
 	CombatEffectWorld._apply_wind(host, enemies[0], weapon, event, Vector2.ZERO, Vector2.RIGHT, "")
 	check(not enemies[1].has_status("wet"), "zero wet propagation limit spreads to nobody")
+	await setup([Vector2.ZERO, Vector2(55, 0)])
+	weapon._attached_item_instances = [{"effect_ids": ["wind"], "effect_parameters": {"damage_multiplier": 0.4}}]
+	CombatEffectWorld._apply_wind(host, enemies[0], weapon, event, Vector2.ZERO, Vector2.RIGHT, "")
+	check(enemies[0].current_hp == 9960, "wind initial contact uses configured coefficient")
+	for child in host.get_children():
+		if child is WindBladeEffect:
+			child.set_process(false)
+			weapon._attached_item_instances[0].effect_parameters.damage_multiplier = 0.9
+			child._process(0.1)
+	check(enemies[1].current_hp == 9960, "wind path preserves the same launched coefficient after attachment changes")
 
 	for ground in [false, true]:
 		await setup([Vector2.ZERO])
@@ -206,6 +218,8 @@ func _run() -> void:
 	check(get_tree().get_nodes_in_group("element_reaction_cues").size() <= CUE.MAX_CUES, "reaction cue budget is bounded")
 	host.queue_free()
 	await frames()
+	AudioManager.stop_combat_sfx()
+	await get_tree().create_timer(0.25).timeout
 	print("REACTION_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures > 0 else 0)
 
@@ -224,12 +238,12 @@ func _test_projected_frost_coverage() -> void:
 		if child is IceFieldEffect: field = child
 	field.set_process(false)
 	check(is_equal_approx(field._radius, 64.0 * 0.8), "ice base radius is eighty percent of the previous radius")
-	check(enemies[0].current_hp == 9965 and enemies[2].current_hp == 9965, "ice covers enemy bodies touching the horizontal and projected vertical edges")
+	check(enemies[0].current_hp == 9975 and enemies[2].current_hp == 9975, "ice covers enemy bodies touching the horizontal and projected vertical edges")
 	check(enemies[1].current_hp == 10000 and enemies[3].current_hp == 10000 and enemies[4].current_hp == 10000,
 		"ice rejects bodies outside either ellipse axis and the removed circular area")
 	field.expand_from_wind(1.35)
-	check(enemies[1].current_hp == 9965 and enemies[3].current_hp == 9965, "wind expands both ellipse axes and reaches newly covered bodies")
-	check(enemies[0].current_hp == 9965 and enemies[2].current_hp == 9965, "projected expansion does not repeat damage")
+	check(enemies[1].current_hp == 9975 and enemies[3].current_hp == 9975, "wind expands both ellipse axes and reaches newly covered bodies")
+	check(enemies[0].current_hp == 9975 and enemies[2].current_hp == 9975, "projected expansion does not repeat damage")
 	await setup([Vector2(100, 0), Vector2(0, 75)])
 	equip(["scroll_ice"])
 	weapon.runtime_stats.damage_area_size = 100.0

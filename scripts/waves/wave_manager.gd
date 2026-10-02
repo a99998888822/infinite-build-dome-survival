@@ -68,6 +68,7 @@ var _elite_spawned_count: int = 0
 var _elite_spawn_deadline: float = 0.0
 var _elite_erosion_snapshot: float = 0.0
 var _wave_erosion_pressure: Dictionary = {}
+var _augmentation_valid_kills: int = 0
 var _pending_relic_choices: Dictionary = {}
 
 @onready var enemy_root: Node = _get_optional_node(enemy_root_path)
@@ -162,7 +163,8 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	if player != null and not player.grant_starting_relics():
 		push_error("[WaveManager] failed to grant character starting relics.")
 	reward_snapshot.reset()
-	drop_reward_system.begin_wave()
+	drop_reward_system.reset_run()
+	_augmentation_valid_kills = 0
 	clear_battle_entities()
 
 
@@ -187,7 +189,8 @@ func start_next_wave() -> bool:
 	weapon_damage_this_wave.clear()
 	weapon_damage_changed.emit()
 	reward_snapshot.reset(str(current_wave.get("id", "")))
-	drop_reward_system.begin_wave()
+	drop_reward_system.begin_wave(current_wave_index + 1)
+	_augmentation_valid_kills = 0
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
 	spawn_timers_ms.clear()
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
@@ -225,6 +228,7 @@ func finish_current_wave() -> void:
 	_finishing_wave_id = str(current_wave.get("id", ""))
 	wave_end_absorb_started.emit(_finishing_wave_id)
 	collect_all_relic_pickups()
+	collect_all_augmentation_pickups()
 	clear_battle_entities()
 	_start_wave_end_exp_absorb()
 
@@ -280,7 +284,17 @@ func collect_all_exp_orbs() -> void:
 
 func collect_all_reward_pickups() -> void:
 	collect_all_relic_pickups()
+	collect_all_augmentation_pickups()
 	collect_all_exp_orbs()
+
+
+func collect_all_augmentation_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if is_instance_valid(pickup) and pickup is AugmentationPickup and not pickup.is_queued_for_deletion():
+			pickup.collect()
 
 
 func collect_all_relic_pickups() -> void:
@@ -357,6 +371,7 @@ func _complete_wave_end_absorb() -> void:
 	_pending_wave_end_absorb_count = 0
 	record_wave_income()
 	process_wave_end_settlements()
+	drop_reward_system.finish_wave(_augmentation_valid_kills, player, reward_snapshot)
 	run_statistics.complete_wave(current_wave_index + 1)
 	var finished_wave_id := _finishing_wave_id
 	_finishing_wave_id = ""
@@ -379,6 +394,8 @@ func _clear_non_exp_reward_pickups() -> void:
 			continue
 		# A failed grant stays visible for retry; successful ones already queue_free.
 		if pickup is RelicPickup and not _finishing_wave_id.is_empty() and not pickup.collected_once:
+			continue
+		if pickup is AugmentationPickup and not _finishing_wave_id.is_empty() and not pickup.collected_once:
 			continue
 		if is_instance_valid(pickup) and pickup.is_inside_tree():
 			pickup.queue_free()
@@ -760,6 +777,8 @@ func _has_spawn_clearance(candidate: Vector2) -> bool:
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
 	if not is_instance_valid(enemy) or not run_statistics.record_kill(enemy.get_instance_id(), enemy.enemy_id): return
 	if player == null or not player.is_alive(): return
+	if running and DataRegistry.has_record("enemies", enemy.enemy_id) and not bool(enemy.get_meta("exclude_reward_progress", false)) and not (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
+		_augmentation_valid_kills += 1
 	if player != null:
 		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
@@ -849,4 +868,5 @@ func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:
 func get_reward_snapshot() -> Dictionary:
 	var snapshot := reward_snapshot.to_dictionary()
 	snapshot["elite_relics_dropped"] = drop_reward_system.get_elite_relics_dropped_this_wave()
+	snapshot.merge(drop_reward_system.get_augmentation_snapshot())
 	return snapshot

@@ -22,17 +22,29 @@ var _title: Label
 var _move_left: Button
 var _move_right: Button
 var _weapon_icon: TextureRect
+var _weapon_scroll: ScrollContainer
 
 
 func _ready() -> void:
 	add_theme_constant_override("separation", 4)
-	var weapon_scroll := ScrollContainer.new()
-	weapon_scroll.custom_minimum_size.y = 52
-	weapon_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	add_child(weapon_scroll)
+	# Separate the card edges, scroll track and sale heading instead of letting
+	# the default scrollbar touch both rows. Keep the remaining form compact.
+	var weapon_section := MarginContainer.new()
+	weapon_section.add_theme_constant_override("margin_bottom", 14)
+	add_child(weapon_section)
+	_weapon_scroll = TouchScrollContainer.new()
+	_weapon_scroll.follow_focus = true
+	FinanceUIStyle.horizontal_scroll(_weapon_scroll)
+	weapon_section.add_child(_weapon_scroll)
+	var weapon_padding := MarginContainer.new()
+	weapon_padding.add_theme_constant_override("margin_left", 4)
+	weapon_padding.add_theme_constant_override("margin_right", 4)
+	weapon_padding.add_theme_constant_override("margin_top", 4)
+	weapon_padding.add_theme_constant_override("margin_bottom", 18)
+	_weapon_scroll.add_child(weapon_padding)
 	_weapon_row = HBoxContainer.new()
 	_weapon_row.add_theme_constant_override("separation", 8)
-	weapon_scroll.add_child(_weapon_row)
+	weapon_padding.add_child(_weapon_row)
 	var heading := HBoxContainer.new()
 	add_child(heading)
 	_weapon_icon = TextureRect.new()
@@ -49,8 +61,8 @@ func _ready() -> void:
 	_sell_weapon = _button("出售武器", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
-	slot_scroll.custom_minimum_size.y = 44
-	slot_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	slot_scroll.custom_minimum_size.y = 64
+	FinanceUIStyle.horizontal_scroll(slot_scroll)
 	add_child(slot_scroll)
 	_slots = HBoxContainer.new()
 	_slots.add_theme_constant_override("separation", 4)
@@ -96,6 +108,7 @@ func refresh() -> void:
 	var player := flow.get_bound_player()
 	if loadout == null or player == null: return
 	var weapons := loadout.get_weapon_instances()
+	var resonance := loadout.get_resonance_weapons()
 	if loadout.get_weapon_instance(selected_weapon_id) == null:
 		selected_weapon_id = weapons[0].weapon_id if not weapons.is_empty() else ""
 	_clear(_weapon_row)
@@ -103,6 +116,8 @@ func refresh() -> void:
 		var button := WeaponSlotButton.new()
 		_weapon_row.add_child(button)
 		button.configure(weapon, true)
+		if resonance.has(weapon):
+			button.text += " · 共鸣%d" % (resonance.find(weapon) + 1)
 		button.custom_minimum_size = Vector2(180, 46)
 		button.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
 		button.expand_icon = true
@@ -117,6 +132,11 @@ func refresh() -> void:
 	var current := loadout.get_weapon_instance(selected_weapon_id)
 	_weapon_icon.texture = FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null
 	_weapon_name.text = "%s · Lv.%d" % [str(current.weapon_data.get("display_name", "")), current.level] if current != null else "尚无武器"
+	if current != null and resonance.has(current):
+		_weapon_name.text += " · 共鸣%d%s" % [resonance.find(current) + 1, "（领奏）" if resonance[0] == current else "（接力）"]
+		_weapon_name.tooltip_text = "按武器栏顺序接力，共用%s的冷却；后续武器不再主动攻击。" % str(resonance[0].weapon_data.display_name)
+	else:
+		_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1
 	_sell_weapon.tooltip_text = "至少保留一把武器" if _sell_weapon.disabled else "出售后，附魔自动归还背包"
 	_clear(_slots)
@@ -139,8 +159,9 @@ func refresh() -> void:
 				slot.pressed.connect(func(): _operate("attach", selected_weapon_id, selected_item_id))
 			else:
 				slot.pressed.connect(_select_item.bind(str(item.get("item_instance_id", ""))))
-		_title.text = "附魔背包 · 槽位从左至右排列，可拖动或前后移位"
+		_title.text = "附魔背包 · 从左至右触发，可拖动调整顺序"
 		_title.tooltip_text = "称号：" + str(current.battle_title.get("display_name", "")) if not str(current.battle_title.get("display_name", "")).is_empty() else "选中已装备附魔后，可卸下或调整顺序。"
+		_title.tooltip_text += "\n分裂前的附魔在主命中点触发；分裂后的附魔由子攻击命中触发。属性加成始终作用于当前武器。"
 	_clear(_inventory)
 	_layout_inventory()
 	for item in player.item_inventory.get_items():

@@ -87,7 +87,7 @@ func _capture_main_menu(game_root: GameRoot) -> void:
 		return
 	await _wait_frames(8)
 	await _capture("main_menu", [
-		_assert_title_below_rule(menu),
+		_assert_title_above_buttons(menu),
 		_assert_control_in_viewport("quit_button", menu.get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton") as Control),
 		_assert_button_uses_full_shell(menu, "StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell", "StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton"),
 	])
@@ -322,14 +322,15 @@ func _assert_drawer_open(label: String, hud: Node) -> Dictionary:
 	return _result(label, open, "rect=(%.1f,%.1f %.1fx%.1f)" % [drawer_rect.position.x, drawer_rect.position.y, drawer_rect.size.x, drawer_rect.size.y])
 
 
-func _assert_title_below_rule(menu: Node) -> Dictionary:
+func _assert_title_above_buttons(menu: Node) -> Dictionary:
 	var title := menu.get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack/TitleArt") as Control
-	var top_rule := menu.get_node_or_null("StartPage/TopRule") as Control
-	if title == null or top_rule == null:
-		return _failure_result("main_menu_title", "title art or top rule is missing")
+	var buttons := menu.get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow") as Control
+	if title == null or buttons == null:
+		return _failure_result("main_menu_title", "title art or button column is missing")
 	var title_rect := _get_screen_rect(title)
-	var rule_rect := _get_screen_rect(top_rule)
-	return _result("main_menu_title", title_rect.position.y + VIEWPORT_MARGIN >= rule_rect.end.y, "title_top=%.1f rule_bottom=%.1f" % [title_rect.position.y, rule_rect.end.y])
+	var button_rect := _get_screen_rect(buttons)
+	var separated := title_rect.position.y >= -VIEWPORT_MARGIN and title_rect.end.y <= button_rect.position.y + VIEWPORT_MARGIN
+	return _result("main_menu_title", separated, "title_bottom=%.1f buttons_top=%.1f" % [title_rect.end.y, button_rect.position.y])
 
 
 func _assert_button_uses_full_shell(menu: Node, shell_path: String, button_path: String) -> Dictionary:

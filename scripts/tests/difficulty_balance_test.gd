@@ -23,6 +23,9 @@ func _run() -> void:
 	_test_drops()
 	await frames()
 	check(selection_completed, "all integration checks reached completion")
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	await get_tree().create_timer(0.25).timeout
 	print("DIFFICULTY_BALANCE_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
 
@@ -144,9 +147,16 @@ func _test_drops() -> void:
 				distribution[item_id] = int(distribution.get(item_id, 0)) + 1
 		var rate := float(count) / 200.0
 		print("DROP_SAMPLE ", table_id, " rate=", rate, " distribution=", distribution)
-		check(absf(rate - float(table.augmentation_chance_percent)) < 1.0 and distribution.size() == (table.entries as Array).filter(func(e): return e.type == "augmentation").size(), "20000 kills match total chance and reach all weighted items: " + table_id)
-		check(drops._build_augmentation_action(table, -100).is_empty(), "minus 100 drop bonus disables enchantments: " + table_id)
-		# Guaranteed rolls exercise deferred spawning; there is no per-wave limit.
+		var available_items := (table.entries as Array).filter(func(e): return e.type == "augmentation" and float(table.augmentation_rarity_weights.get(DataRegistry.get_record("augmentations", e.item_id).rarity, 0)) > 0).size()
+		check(absf(rate - float(table.augmentation_chance_percent)) < 1.0, "20000 base candidates match chance: " + table_id)
+		# Test reachability conditionally: a few hundred actual drops can legitimately
+		# miss a specific purple item after the rarity rebalance.
+		var conditional_items := {}
+		for _attempt in 5000:
+			conditional_items[drops._pick_augmentation_entry(table).item_id] = true
+		check(conditional_items.size() == available_items, "conditional pool reaches every enabled item: " + table_id)
+		check(is_equal_approx(drops.calculate_augmentation_chance(float(table.augmentation_chance_percent), -100), float(table.augmentation_chance_percent) * .25), "negative drop bonus preserves a floor: " + table_id)
+		# Candidate rolls are further thinned at spawn using the shared quota.
 		drops.begin_wave()
 		var guaranteed := table.duplicate(true)
 		guaranteed.augmentation_chance_percent = 100
@@ -154,7 +164,7 @@ func _test_drops() -> void:
 		for death in 100:
 			var action := drops._build_augmentation_action(guaranteed, 0)
 			if not action.is_empty(): batch.append(action)
-		check(batch.size() == 100, "all one hundred same-wave successful rolls survive: " + table_id)
+		check(batch.size() == 100, "one hundred pending candidates can share one frame: " + table_id)
 		var player := PlayerController.new()
 		player.auto_initialize_on_ready = false
 		add_child(player)
@@ -164,7 +174,7 @@ func _test_drops() -> void:
 		add_child(root)
 		check(drops.spawn_action(batch[0], Vector2.ZERO, root, player) != null and drops.spawn_action(batch[0], Vector2.ZERO, root, player) == null, "deferred action cannot replay")
 		var extra_spawned := drops.spawn_drop_actions(batch.slice(1), Vector2(1000, 0), root, player)
-		check(extra_spawned.size() == 99 and root.get_child_count() == 100, "all deferred drops spawn beyond the old cap")
+		check(extra_spawned.size() == 2 and root.get_child_count() == 3, "deferred drops respect the first-five-wave cap")
 		drops.begin_wave()
 		check(drops.spawn_action(batch[1], Vector2.ZERO, root, player) == null and not drops._build_augmentation_action(guaranteed, 0).is_empty(), "new wave rejects stale rewards and accepts new drops")
 		player.modifier_stack.set_base_stat("luck", 100)
@@ -173,7 +183,7 @@ func _test_drops() -> void:
 			for action in drops.build_drop_actions(table_id, player):
 				if action.type == "augmentation": rolled_chance = action.adjusted_chance_percent
 			if rolled_chance >= 0.0: break
-		check(is_equal_approx(rolled_chance, float(table.augmentation_chance_percent) * 1.1), "live player luck adds ten percent relative chance: " + table_id)
+		check(is_equal_approx(rolled_chance, float(table.augmentation_chance_percent) * 1.2), "live player luck uses bounded diminishing returns: " + table_id)
 		root.free()
 		player.free()
 	var base := DataRegistry.get_record("drop_tables", "drop_basic_enemy")
@@ -181,7 +191,7 @@ func _test_drops() -> void:
 	for attempt in 20000:
 		drops.begin_wave()
 		if not drops._build_augmentation_action(base, 100).is_empty(): boosted += 1
-	check(absf(float(boosted) / 200.0 - 3.0) < 0.5, "100 percent drop bonus doubles total ordinary chance to three percent")
-	check(is_equal_approx(DropRewardSystem.calculate_augmentation_chance(1.5, 100, 100), 3.3), "luck stacks multiplicatively with drop-rate modifiers")
-	check(DropRewardSystem.calculate_augmentation_chance(1.5, -100, 9999) == 0.0 and DropRewardSystem.calculate_augmentation_chance(60, 100, 9999) == 100.0, "luck respects zero chance and probability ceiling")
+	check(absf(float(boosted) / 200.0 - 1.8) < 0.5, "100 percent drop bonus gives 1.8 percent base candidates")
+	check(is_equal_approx(DropRewardSystem.calculate_augmentation_chance(1.5, 100, 100), 2.16), "bounded luck composes with bounded drop bonus")
+	check(DropRewardSystem.calculate_augmentation_chance(1.5, -100, 9999) > 0.0 and DropRewardSystem.calculate_augmentation_chance(60, 100, 9999) == 100.0, "luck respects floor and probability ceiling")
 	check(DropRewardSystem.calculate_augmentation_chance(1.5, 0, -10) == 1.5, "nonpositive luck preserves base odds")

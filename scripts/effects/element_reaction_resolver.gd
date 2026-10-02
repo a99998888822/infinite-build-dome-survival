@@ -17,7 +17,7 @@ const DEFAULT_BURN_DURATION: float = 3.0
 const DEFAULT_BURN_TICK_DAMAGE_PERCENT: float = 0.10
 const DEFAULT_FREEZE_DURATION: float = 1.0
 const DEFAULT_ICE_SLOW_DURATION: float = 3.0
-const DEFAULT_ICE_SLOW_MULTIPLIER: float = 0.45
+const DEFAULT_ICE_SLOW_MULTIPLIER: float = 0.6
 const DEFAULT_STUN_DURATION: float = 0.5
 const DEFAULT_LIGHT_DURATION: float = 5.0
 const DEFAULT_DARK_DURATION: float = 2.0
@@ -152,7 +152,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 		var direction := Vector2.RIGHT
 		if is_instance_valid(damage_event.source_player):
 			direction = damage_event.source_player.global_position.direction_to(enemy.global_position)
-		REFLECTION.spawn(parent, hit_position, direction, damage_event)
+		REFLECTION.spawn(parent, hit_position, direction, damage_event, REFLECTION.DEFAULT_RADIUS * damage_event.damage_area_scale)
 	AudioManager.end_combat_audio()
 	return result
 

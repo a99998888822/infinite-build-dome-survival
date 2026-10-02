@@ -206,7 +206,7 @@ func _get_particle_extent_multiplier() -> float:
 
 
 func _emit_ignition_burst(burst_position: Vector2, field_strength: float, source_context: RefCounted = null) -> void:
-	var audio_impact: RefCounted = source_context.get_meta("combat_audio_impact", null) if source_context != null else null
+	var audio_impact: RefCounted = source_context.get_meta("combat_audio_impact") if source_context != null and source_context.has_meta("combat_audio_impact") else null
 	AudioManager.begin_combat_audio(audio_impact)
 	AudioManager.play_enchantment_sfx("fire")
 	AudioManager.end_combat_audio()
@@ -261,7 +261,7 @@ func _apply_tick_damage() -> void:
 				ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "fire", {
 					"parent": get_parent(),
 					"hit_position": enemy.global_position,
-					"source_id": "fire_patch",
+					"source_id": _source_weapon_id if not _source_weapon_id.is_empty() else "fire_patch",
 					"original_damage": original_damage,
 					"burn_duration": burn_duration,
 				})

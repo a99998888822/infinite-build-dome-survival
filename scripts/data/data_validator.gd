@@ -261,12 +261,60 @@ func _validate_weapon_records(records: Array, records_by_id: Dictionary) -> void
 
 
 func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
+	var behavior := str(record.get("projectile_behavior", ""))
+	var timed_fields: Array = []
+	if behavior == "copper_lamp":
+		timed_fields = ["lamp_spray_ms", "lamp_tick_ms", "lamp_proc_ms", "lamp_proc_percent", "lamp_cone_degrees", "lamp_turn_degrees_per_second"]
+		if str(record.get("attack_kind", "")) != "element" or int(record.get("lamp_cone_degrees", 0)) > 90:
+			errors.append("%s lamp requires elemental damage and a narrow cone." % path)
+	elif behavior == "mutant_tentacle":
+		timed_fields = ["tentacle_hit_ms", "tentacle_motion_ms"]
+		if int(record.get("tentacle_hit_ms", 0)) >= int(record.get("tentacle_motion_ms", 0)):
+			errors.append("%s tentacle hit must precede recovery." % path)
+	elif behavior == "earth_hammer":
+		timed_fields = ["hammer_appear_ms", "hammer_slam_ms", "hammer_contact_ms", "hammer_fade_ms", "ground_node_count", "ground_node_interval_ms", "ground_node_spacing", "ground_first_offset", "ground_branch_length"]
+		if int(record.get("ground_node_count", 0)) > 8:
+			errors.append("%s ground nodes exceed the supported limit." % path)
+	if not timed_fields.is_empty():
+		for field in timed_fields:
+			_validate_non_negative_int(record, field, path)
+			if int(record.get(field, 0)) <= 0:
+				errors.append("%s.%s must be positive." % [path, field])
+		if float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0 or not "pierce" in record.get("unsupported_effects", []):
+			errors.append("%s requires positive reach/width and must reject ineffective pierce." % path)
+		if behavior != "copper_lamp" and str(record.get("attack_kind", "")) != "melee":
+			errors.append("%s requires melee damage." % path)
 	_validate_non_negative_int(record, "load_cost", path)
 	_validate_non_negative_int(record, "attack_interval_ms", path)
 	_validate_non_negative_int(record, "attack_range", path)
 	_validate_non_negative_int(record, "hit_radius", path)
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
+	if str(record.get("projectile_behavior", "")) == "camp_dagger":
+		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0:
+			errors.append("%s dagger requires melee damage and positive reach/contact radius." % path)
+		var angle := float(record.get("dagger_arc_degrees", 0))
+		if angle <= 0 or angle > 180:
+			errors.append("%s.dagger_arc_degrees must be in (0,180]." % path)
+		var duration := 0
+		for field in ["dagger_windup_ms", "dagger_sweep_ms", "dagger_recover_ms", "dagger_split_window_ms"]:
+			_validate_non_negative_int(record, field, path)
+			if int(record.get(field, 0)) <= 0:
+				errors.append("%s.%s must be positive." % [path, field])
+			duration += int(record.get(field, 0))
+		if duration > int(record.get("attack_interval_ms", 0)):
+			errors.append("%s dagger combo must fit inside its base cooldown." % path)
+		if not "pierce" in record.get("unsupported_effects", []):
+			errors.append("%s must reject pierce for contact slashes." % path)
+	if str(record.get("projectile_behavior", "")) == "nightwatch_spear":
+		if not "pierce" in record.get("unsupported_effects", []):
+			errors.append("%s must reject pierce for inherent line piercing." % path)
+		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0 or float(record.get("projectile_speed", 0)) <= 0:
+			errors.append("%s spear requires melee damage and positive reach, width and shard speed." % path)
+		for field in ["spear_windup_ms", "spear_extend_ms", "spear_recover_ms"]:
+			_validate_non_negative_int(record, field, path)
+			if int(record.get(field, 0)) <= 0:
+				errors.append("%s.%s must be positive." % [path, field])
 	_validate_non_negative_int(record, "attachment_slots", path)
 	if int(record.get("attachment_slots", 0)) != WeaponInstance.get_attachment_slots_for_rarity(str(record.get("rarity", "common"))):
 		errors.append("%s.attachment_slots must match rarity: common/uncommon=1, rare or higher=2." % path)
@@ -817,6 +865,16 @@ func _validate_augmentation_records(records: Array) -> void:
 			continue
 		var path := "augmentations[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
+		var weapon_bonuses: Variant = record.get("weapon_bonuses", {})
+		if not (weapon_bonuses is Dictionary):
+			errors.append("%s.weapon_bonuses must be an object." % path)
+		else:
+			for key in weapon_bonuses:
+				var amount: Variant = weapon_bonuses[key]
+				if not str(key) in WeaponInstance.ATTACHMENT_BONUS_KEYS:
+					errors.append("Unknown weapon-only bonus in %s: %s" % [path, key])
+				elif not (amount is int or amount is float) or not is_finite(float(amount)) or float(amount) < 0 or float(amount) != floorf(float(amount)):
+					errors.append("%s.weapon_bonuses.%s must be a nonnegative integer." % [path, key])
 		if record.has("effect_ids") and not (record["effect_ids"] is Array):
 			errors.append("%s.effect_ids must be an array." % path)
 		var effect_parameters: Variant = record.get("effect_parameters", {})

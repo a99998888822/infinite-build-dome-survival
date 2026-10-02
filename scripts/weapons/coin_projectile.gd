@@ -20,6 +20,7 @@ var has_split := false
 var cancelled := false
 # Every coin and descendant of a volley shares this ledger, by reference.
 var volley_hits: Dictionary = {}
+var _sweep_shape := CircleShape2D.new()
 
 
 func initialize(source: WeaponInstance, event: DamageEvent, origin: Vector2, heading: Vector2,
@@ -49,27 +50,32 @@ func _physics_process(delta: float) -> void:
 	var start := global_position
 	var step := minf(speed * delta, remaining_distance)
 	var end := start + direction * step
+	var radius := maxf(1.0, weapon.get_hit_radius())
+	_sweep_shape.radius = radius
 	# Sweep terrain first, so a large frame cannot shoot through a wall or a target.
 	var terrain: Dictionary = {}
 	if step > 0.0:
-		var ray := PhysicsRayQueryParameters2D.create(start, end, 4)
-		terrain = get_world_2d().direct_space_state.intersect_ray(ray)
-		if not terrain.is_empty():
-			end = terrain.position
+		var query := PhysicsShapeQueryParameters2D.new()
+		query.shape = _sweep_shape
+		query.transform = Transform2D(0.0, start)
+		query.collision_mask = 4
+		var space := get_world_2d().direct_space_state
+		if not space.intersect_shape(query, 1).is_empty():
+			end = start
+			terrain = {"position": end}
+		else:
+			query.motion = end - start
+			var fractions := space.cast_motion(query)
+			if fractions[0] < 1.0:
+				end = start + query.motion * fractions[0]
+				terrain = {"position": end}
 	var contacts: Array[Dictionary] = []
-	var radius := maxf(1.0, weapon.get_hit_radius())
 	var length := start.distance_to(end)
 	for enemy in EnemyRegistry.get_registered_enemies():
 		if not is_instance_valid(enemy) or not enemy.is_alive() or volley_hits.has(enemy.get_instance_id()):
 			continue
-		var relative: Vector2 = enemy.global_position - start
-		var along: float = relative.dot(direction)
-		var lateral_squared := maxf(0.0, relative.length_squared() - along * along)
-		if lateral_squared > radius * radius:
-			continue
-		var half_chord := sqrt(maxf(0.0, radius * radius - lateral_squared))
-		var entry := maxf(0.0, along - half_chord)
-		if along + half_chord < 0.0 or entry > length:
+		var entry := _body_contact_distance(enemy, start, length, radius)
+		if is_inf(entry):
 			continue
 		contacts.append({"enemy": enemy, "distance": entry})
 	contacts.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.distance < b.distance)
@@ -92,17 +98,52 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 
+func _body_contact_distance(enemy: EnemyController, start: Vector2, length: float, radius: float) -> float:
+	var body := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body == null or body.disabled or body.shape == null:
+		return INF
+	var transform := body.global_transform
+	var scale_x := transform.x.length()
+	var scale_y := transform.y.length()
+	if body.shape is CircleShape2D and is_equal_approx(scale_x, scale_y):
+		# Minkowski sum: the coin touches the body's surface, not its root point.
+		var combined_radius := radius + (body.shape as CircleShape2D).radius * scale_x
+		var relative := body.global_position - start
+		var along := relative.dot(direction)
+		var lateral_squared := maxf(0.0, relative.length_squared() - along * along)
+		if lateral_squared > combined_radius * combined_radius:
+			return INF
+		var half_chord := sqrt(maxf(0.0, combined_radius * combined_radius - lateral_squared))
+		var entry := maxf(0.0, along - half_chord)
+		return entry if along + half_chord >= 0.0 and entry <= length else INF
+	# Retain actual shape geometry if a later enemy uses a capsule or rectangle.
+	var coin_transform := Transform2D(0.0, start)
+	if _sweep_shape.collide(coin_transform, body.shape, transform):
+		return 0.0
+	if not _sweep_shape.collide_with_motion(coin_transform, direction * length, body.shape, transform, Vector2.ZERO):
+		return INF
+	var low := 0.0
+	var high := length
+	for iteration in 12:
+		var midpoint := (low + high) * 0.5
+		if _sweep_shape.collide_with_motion(coin_transform, direction * midpoint, body.shape, transform, Vector2.ZERO):
+			high = midpoint
+		else:
+			low = midpoint
+	return high
+
+
 func _hit_enemy(enemy: EnemyController) -> void:
 	var target_id := enemy.get_instance_id()
 	volley_hits[target_id] = true
 	var where := enemy.global_position
 	var event := damage_event.duplicate_event()
 	event.hit_position = where
-	# Capture split origin before lethal damage, but share the volley ledger.
+	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, direction, enemy)
+	# Create branches after the prefix, before a lethal native hit removes its origin.
 	if split_generation == 0 and not has_split:
 		has_split = true
 		_spawn_children(where)
-	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, direction, enemy)
 	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
 	HIT.spawn(get_parent(), weapon, where, false)
 	weapon.play_projectile_hit_sfx(str(get_instance_id()))
@@ -130,7 +171,7 @@ func _spawn_children(origin: Vector2) -> void:
 			if nearest != null:
 				heading = origin.direction_to(nearest.global_position)
 				reserved[nearest.get_instance_id()] = true
-			var event := damage_event.duplicate_event()
+			var event := damage_event.continue_after_split(profile)
 			var multiplier := float(profile.damage_multiplier)
 			event.damage = maxi(1, roundi(event.damage * multiplier))
 			event.original_damage = maxi(1, roundi(event.original_damage * multiplier))

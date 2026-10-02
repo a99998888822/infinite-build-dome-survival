@@ -2,7 +2,7 @@ extends EnemyController
 class_name EliteRusher
 
 const FRAMES: SpriteFrames = preload("res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres")
-const BODY_SCALE := 0.7
+const BODY_SCALE := 1.12
 const CONTROL_MULTIPLIER := 0.1
 
 var skill_state: String = "spawn"
@@ -69,7 +69,7 @@ func _process_special_behavior(delta: float) -> bool:
 		return false
 	if skill_state == "windup":
 		velocity = Vector2.ZERO
-		if _state_time >= float(_profile.get("windup_ms", 800)) / 1000.0:
+		if _state_time >= float(_profile.get("windup_ms", 400)) / 1000.0:
 			skill_state = "dash"
 			_state_time = 0.0
 			_set_animation(&"dash")
@@ -160,7 +160,7 @@ func can_be_pushed_by_wind() -> bool:
 func _try_dash_damage(from_distance: float, to_distance: float) -> void:
 	if _dash_hit:
 		return
-	var half_width := float(_profile.get("dash_half_width", 22.4))
+	var half_width := float(_profile.get("dash_half_width", 35.84))
 	var rect := Rect2(from_distance - half_width, -half_width, to_distance - from_distance + half_width * 2.0, half_width * 2.0)
 	if not _sweep_overlaps_player(rect):
 		return
@@ -274,24 +274,21 @@ func _die(_source_id: String = "") -> void:
 
 
 func _draw() -> void:
-	if not alive:
+	if not alive or skill_state == "spawn":
 		return
 	if skill_state == "windup":
 		_draw_dash_telegraph()
-	if skill_state == "spawn":
-		draw_rect(Rect2(Vector2(-32, -20) * BODY_SCALE, Vector2(64, 40) * BODY_SCALE), Color(0.8, 0.65, 0.35, 0.3))
-	else:
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE * BODY_SCALE)
-		draw_rect(Rect2(-26, -118, 52, 4), Color("243232"))
-		draw_rect(Rect2(-26, -118, 52 * clampf(float(current_hp) / maxf(get_stat("max_hp"), 1.0), 0.0, 1.0), 4), Color("dbc584"))
-		draw_colored_polygon(PackedVector2Array([Vector2(0, -129), Vector2(4, -125), Vector2(0, -121), Vector2(-4, -125)]), Color("dbc584"))
-		draw_set_transform(Vector2.ZERO)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE * BODY_SCALE)
+	draw_rect(Rect2(-26, -118, 52, 4), Color("243232"))
+	draw_rect(Rect2(-26, -118, 52 * clampf(float(current_hp) / maxf(get_stat("max_hp"), 1.0), 0.0, 1.0), 4), Color("dbc584"))
+	draw_colored_polygon(PackedVector2Array([Vector2(0, -129), Vector2(4, -125), Vector2(0, -121), Vector2(-4, -125)]), Color("dbc584"))
+	draw_set_transform(Vector2.ZERO)
 
 
 func _draw_dash_telegraph() -> void:
-	var half_width := float(_profile.get("dash_half_width", 22.4))
+	var half_width := float(_profile.get("dash_half_width", 35.84))
 	var length := float(_profile.get("dash_distance", 240)) + half_width * 2.0
-	var progress := clampf(_state_time / maxf(float(_profile.get("windup_ms", 800)) / 1000.0, 0.001), 0.0, 1.0)
+	var progress := clampf(_state_time / maxf(float(_profile.get("windup_ms", 400)) / 1000.0, 0.001), 0.0, 1.0)
 	var pulse := 0.5 + 0.5 * sin(progress * TAU * 2.0)
 	var fill_alpha := float(_profile.get("telegraph_fill_percent", 12)) / 100.0
 	var edge_alpha := lerpf(float(_profile.get("telegraph_edge_min_percent", 42)), float(_profile.get("telegraph_edge_max_percent", 55)), pulse) / 100.0

@@ -2,7 +2,15 @@
   "upstream": "https://github.com/See-Sol-Lab/Picxel",
   "snapshot_source": "Locally installed Picxel skill, tested in this project; upstream commit not recorded",
   "snapshot_date": "2026-09-28",
+  "upstream_review": {
+    "date": "2026-09-29",
+    "commit": "4dc28f9dab520cbac5b1a9f4863689c4a686fcaa",
+    "skill_sha256": "c90fab22b60679acfa757a3a3564ee075350a42c572c4d3ead616a766d82f121",
+    "verified_equal": ["scripts/picxel.py", "scripts/px.py", "scripts/start_panel.py", "references/anchor.md", "references/faces.md", "references/checklist.md", "SPEC.md", "LICENSE"],
+    "note": "Core files match this commit byte-for-byte. The original snapshot commit remains unknown; panel adaptations are retained. The project workflow omits model generation intentionally."
+  },
   "license": "GPL-3.0-only",
+  "hash_scope": "sha256 records bundled file bytes; upstream_sha256 records the reviewed upstream bytes before local adaptations.",
   "files": [
     {
       "path": "scripts/picxel.py",
@@ -14,11 +22,13 @@
     },
     {
       "path": "scripts/panel.py",
-      "sha256": "895b009053be6da098a9e1122ae3979644a1f8e778764e4ee7cb2b1bce141639"
+      "sha256": "55b2ef879f5bac10988438248fd28d7018d818c60326d4372b86ecd544257b18",
+      "upstream_sha256": "895b009053be6da098a9e1122ae3979644a1f8e778764e4ee7cb2b1bce141639"
     },
     {
       "path": "scripts/panel.html",
-      "sha256": "d5527b9136e1f47aeba282e7cd22b712003ea9c03bc655ae320aadde4bb6471a"
+      "sha256": "cc502565d58e3e2f14b2fabc1f44b1d10bef38125144b62ed5bb20524991011f",
+      "upstream_sha256": "d5527b9136e1f47aeba282e7cd22b712003ea9c03bc655ae320aadde4bb6471a"
     },
     {
       "path": "scripts/start_panel.py",

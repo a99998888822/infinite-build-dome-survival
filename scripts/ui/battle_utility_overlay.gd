@@ -214,7 +214,7 @@ func _refresh_entries() -> void:
 		_records.append(record)
 		_entries.add_item(title)
 	if _records.is_empty():
-		_entry_icon.texture = null
+		FinanceUIStyle.set_item_icon(_entry_icon, null)
 		_entry_title.text = "没有匹配的条目"
 		_entry_details.text = "请尝试其他名称或效果关键词。"
 	else:
@@ -229,7 +229,7 @@ func _show_entry(index: int) -> void:
 	var record := _records[index]
 	_entry_title.text = str(record.get("display_name", record.get("name", "")))
 	var icon_path := str(record.get("icon", ""))
-	_entry_icon.texture = load(icon_path) as Texture2D if not icon_path.is_empty() and ResourceLoader.exists(icon_path) else null
+	FinanceUIStyle.set_item_icon(_entry_icon, FinanceUIStyle.item_icon(icon_path))
 	_entry_icon.visible = _entry_icon.texture != null
 	_entry_details.text = _describe_record(TABLES[_category.selected], record)
 	_entry_details.scroll_to_line(0)

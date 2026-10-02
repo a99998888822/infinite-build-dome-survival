@@ -1,0 +1,227 @@
+{
+  "status": "installed",
+  "method": "Original object designs from one style reference plus concise text; no identity images supplied.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_cultic_holy_shield",
+      "name": "密教圣盾",
+      "config_ids": [
+        "relic_cultic_holy_shield"
+      ],
+      "source": "assets/ui/icons/relics/relic_cultic_holy_shield.png",
+      "source_sha256": "2727f75738147f771d51f4479c43baf3cea68e947c3c9c2d452be98d2bf7b8dc",
+      "output_filename": "relic_cultic_holy_shield.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_lost_wayfarer_greave",
+      "name": "迷途者胫环",
+      "config_ids": [
+        "relic_lost_wayfarer_greave"
+      ],
+      "source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
+      "source_sha256": "b571de5c319a5452d5ea1c9dd88568496380cd4e5d48b494ba8d60ee25868500",
+      "output_filename": "relic_lost_wayfarer_greave.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_soul_keeper_face_stone",
+      "name": "守魂人面石雕",
+      "config_ids": [
+        "relic_soul_keeper_face_stone"
+      ],
+      "source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
+      "source_sha256": "c9d9def57f1356a67922a08eb7c5a89be00e82bc63f5bf4b7ce7000dc2a843ef",
+      "output_filename": "relic_soul_keeper_face_stone.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_pain_vessel",
+      "name": "苦痛祭皿",
+      "config_ids": [
+        "relic_pain_vessel"
+      ],
+      "source": "assets/ui/icons/relics/relic_pain_vessel.png",
+      "source_sha256": "0a867826e585b3151ab5638998789c58daa4f9c56e2135615860cdf77097e16e",
+      "output_filename": "relic_pain_vessel.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_true_silver_armor",
+      "name": "真银护甲",
+      "config_ids": [
+        "relic_true_silver_armor"
+      ],
+      "source": "assets/ui/icons/relics/relic_true_silver_armor.png",
+      "source_sha256": "83f367f1906db0f829aa075a36ed9da1158e49ed33bdb623ae612831020c07c7",
+      "output_filename": "relic_true_silver_armor.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_holy_silver_cup",
+      "name": "圣质银杯",
+      "config_ids": [
+        "relic_holy_silver_cup"
+      ],
+      "source": "assets/ui/icons/relics/relic_holy_silver_cup.png",
+      "source_sha256": "924b9faf93846faec8488348fe12b5635b23504f0435b988c5eb155cf2e8f0be",
+      "output_filename": "relic_holy_silver_cup.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_suffering_carapace",
+      "name": "受难甲壳",
+      "config_ids": [
+        "relic_suffering_carapace"
+      ],
+      "source": "assets/ui/icons/relics/relic_suffering_carapace.png",
+      "source_sha256": "2002cab8e9906cc23d0beb925143ea751135e75c30a5f2b8a9e1455cc45f0cb0",
+      "output_filename": "relic_suffering_carapace.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_costly_seed_of_life",
+      "name": "代价生命之种",
+      "config_ids": [
+        "relic_costly_seed_of_life"
+      ],
+      "source": "assets/ui/icons/relics/relic_costly_seed_of_life.png",
+      "source_sha256": "d51ad4ecd9f91d0ddad25380e39b5fd7a940653d954b11d3ae10ea6bf7d47652",
+      "output_filename": "relic_costly_seed_of_life.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_shadowless_greave",
+      "name": "无影遁形胫甲",
+      "config_ids": [
+        "relic_shadowless_greave"
+      ],
+      "source": "assets/ui/icons/relics/relic_shadowless_greave.png",
+      "source_sha256": "a72747b2c7fce5e795b8ab221b81d862074ba9ca4b6bcea28876f5047778b9e8",
+      "output_filename": "relic_shadowless_greave.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_chain_of_hardship",
+      "name": "苦难前行之枷锁",
+      "config_ids": [
+        "relic_chain_of_hardship"
+      ],
+      "source": "assets/ui/icons/relics/relic_chain_of_hardship.png",
+      "source_sha256": "abe4c23700a1dba799679b4a33e1481e9ba6ee41abfe0bca7360c59743c3e6fd",
+      "output_filename": "relic_chain_of_hardship.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_void_tentacle",
+      "name": "虚空触手",
+      "config_ids": [
+        "relic_void_tentacle"
+      ],
+      "source": "assets/ui/icons/relics/relic_void_tentacle.png",
+      "source_sha256": "e24bef0275e24f49dc496f57693ea0f84765535c2a1d0b0c9e6968f4f7bcced3",
+      "output_filename": "relic_void_tentacle.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_worn_fighting_gloves",
+      "name": "磨损格斗拳套",
+      "config_ids": [
+        "relic_worn_fighting_gloves"
+      ],
+      "source": "assets/ui/icons/relics/relic_worn_fighting_gloves.png",
+      "source_sha256": "58015762c4cd3461a2b93b4f13e2ed72ffeabcf725fa54b364ac2b9997118a1a",
+      "output_filename": "relic_worn_fighting_gloves.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../17_relics_sheet_04_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

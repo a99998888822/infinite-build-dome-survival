@@ -19,6 +19,8 @@ var _hit_targets: Dictionary = {}
 var _scan_timer: float = 0.0
 var _ground_shape := ConvexPolygonShape2D.new()
 var _shape_radius := -1.0
+var _visual_detail := 2
+var _visual_frame := -1
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
@@ -26,13 +28,14 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	var effect := IceFieldEffect.new()
 	parent.add_child(effect)
 	effect.global_position = hit_position
+	effect._visual_detail = PIXEL.register(effect, "ice")
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
-		"damage": maxf(damage_event.get_elemental_base_damage() * 0.35, 1.0),
+		"damage": maxf(damage_event.get_elemental_base_damage() * 0.25, 1.0),
 		"radius": DEFAULT_RADIUS,
 		"duration": 3.0,
-		"slow_multiplier": 0.45,
+		"slow_multiplier": 0.6,
 	}, attachment_item_id)
 	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.8)
 	effect._lifetime = maxf(effect._context.get_resolved_parameter("duration", 3.0), 0.2)
@@ -68,7 +71,11 @@ func _process(delta: float) -> void:
 	if _scan_timer <= 0.0 and _elapsed < _lifetime:
 		_scan_timer = 0.12
 		_damage_enemies()
-	queue_redraw()
+	# Crystal growth/fade needs 12 visual updates per second, independent of damage scans.
+	var visual_frame := int(_elapsed * 12.0)
+	if visual_frame != _visual_frame:
+		_visual_frame = visual_frame
+		queue_redraw()
 	if _elapsed >= _lifetime:
 		queue_free()
 
@@ -99,7 +106,7 @@ func _damage_enemies() -> void:
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
 			"slow_duration": _context.get_resolved_parameter("duration", 3.0),
-			"slow_multiplier": _context.get_resolved_parameter("slow_multiplier", 0.45),
+			"slow_multiplier": _context.get_resolved_parameter("slow_multiplier", 0.6),
 			"freeze_duration": _context.get_resolved_parameter("freeze_duration", 1.0),
 			"original_damage": _damage_event.get_elemental_base_damage(),
 			"damage_event": _damage_event,
@@ -113,7 +120,8 @@ func _draw() -> void:
 	var growth := smoothstep(0.0, 0.42, _elapsed)
 	var projection := Vector2(1.0, FROST.GROUND_FLATTEN)
 	PIXEL.ellipse(self, projection * _radius * growth, Color(0.43, 0.63, 0.80, 0.06 * fade))
-	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0, FROST.GROUND_FLATTEN)
+	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0, FROST.GROUND_FLATTEN, _visual_detail)
+	if _visual_detail < 2: return
 	for index in 6:
 		var angle := index * TAU / 6.0
 		var center := Vector2.from_angle(angle) * projection * _radius * 0.67

@@ -17,7 +17,7 @@ const MAX_HP_PER_LEVEL: int = 1
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
-const PLAYER_VISUAL_SCALE: float = 1.0
+const PLAYER_VISUAL_SCALE: float = 1.2
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_idle_right.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
@@ -25,8 +25,8 @@ const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 @export var character_id: String = DEFAULT_CHARACTER_ID
 @export var auto_initialize_on_ready: bool = true
 @export var invincibility_seconds: float = DEFAULT_INVINCIBILITY_SECONDS
-@export var walk_animation_fps: float = 7.0
-@export var walk_frame_count: int = 8
+@export var walk_animation_fps: float = 6.0
+@export var walk_frame_count: int = 6
 
 var character_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
@@ -591,8 +591,8 @@ func _configure_character_visuals(visuals: Dictionary) -> void:
 		_idle_texture = load(idle_path) as Texture2D
 	if not walk_path.is_empty() and ResourceLoader.exists(walk_path):
 		_walk_texture = load(walk_path) as Texture2D
-	walk_frame_count = maxi(1, int(visuals.get("walk_frames", 8)))
-	walk_animation_fps = maxf(0.0, float(visuals.get("walk_fps", 7.0)))
+	walk_frame_count = maxi(1, int(visuals.get("walk_frames", 6)))
+	walk_animation_fps = maxf(0.0, float(visuals.get("walk_fps", 6.0)))
 	_walk_animation_time = 0.0
 	facing_right = true
 	_setup_visuals()

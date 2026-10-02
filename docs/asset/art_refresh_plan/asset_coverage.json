@@ -1,0 +1,2657 @@
+[
+  {
+    "path": "assets/sprites/background/background-icon-baike.png",
+    "current_canvas": [
+      16,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "bfa046802ec402bb9fb0ddd1a77e0171ff048d5debebf90956d68a66828f66f6"
+  },
+  {
+    "path": "assets/sprites/background/background-icon-plugin.png",
+    "current_canvas": [
+      16,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "8364a18d6ee765768ccd355a6f30338546abf45d3ab15f17340007571230a8cb"
+  },
+  {
+    "path": "assets/sprites/background/background-sky-Recovered.png",
+    "current_canvas": [
+      256,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#战斗地表与天幕",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "a497b7e893d09a1cc22b36cf0169d89c7a29c0fd0d2f8d946fa99a1fa8717862"
+  },
+  {
+    "path": "assets/sprites/background/background-stone-brick-floor.png",
+    "current_canvas": [
+      1024,
+      575
+    ],
+    "recipe": "02_doubao_recipes.md#战斗地表与天幕",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "70ab1bec143a1998509490fb1bcc94108dd109667f5b8f7899dbb4a86ee119b4"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_brick_fragments.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "577afe348dafc97f087cbda942fa2c994c687a854531dd1f8f068337529c75c3"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_compact_moss.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "294a009c6bc9a81825e1f6bcaa9cec77dd00ed189250786a93e2e7d93c8bc1de"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_cyan_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "363c7fd8ad57541504a236b8c3c7fd532d96d5bceccd29d0676355fce5ed46c2"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_fine_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "4c844ae8cdc26d8402486e62ea3950a4ada3a550c9075c56e85be6795b6d686c"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_flat_stones.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "c720bbaa6397fde76dfc1798e717aab6cd27de91f572523dbf658974fca21462"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_forked_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "7adffd25c9e53c5b3383af18da527be0aa9fae3ab9904b04821acd9ed29b35e4"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_high_rubble.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "4d201c77b73c94b2a2e786ba2749215aaa358826400ca4f57804958a3e8410ec"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_long_moss.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "764b1b3307ff77b25d47680912ca11269825ae6d03c2b912a22fffd70cb668c2"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_low_rubble.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "f8fb778832b6a8e72ebac3d2509cfa5c562e3e52452b8f53faf2b2e4bc202237"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_mossy_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "b7a130be8122dd59b5b4f9b20298c7f0c08cbb4b0310db0509b2b58bb74c75f5"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_puddle.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "e4ab447de04fea3f5cc31d1488c89c7dca24ed5661b19996cf726f3b5f72dcba"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_scattered_stones.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "679ad2ca8d887aa9ea4ee937e931b5493fe81d154b24a5d442394a38b91a8c03"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_single_brick.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "8691ac4a82e4be242e6abb648171becb784fa41c89d9ac33be796e924d7eed0e"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_spreading_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "3e98623de58e137bdb7d9e42c9535f07d10d7d11325e6a2a4bcfc2a9f5b82deb"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_stacked_bricks.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "f08809f615e07f2508cb023a81c84c6a182828aba1ac7ba4678031ad3d34cd13"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_vertical_crack.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "6742a0c214af75acfe5154615f608ca3b1aa3632191a6b4d74b7e82a0fea315f"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_wet_moss.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "24adfdbf83e6dc082f685ad995a515732757c18a97e133fa6ef1e5c9d549aeb9"
+  },
+  {
+    "path": "assets/sprites/background/wetland/decal_wet_patch.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "bfba06dff2c51bd32611124ca7a7f67805d1e1be663b98f1604b9391c53302a6"
+  },
+  {
+    "path": "assets/sprites/background/wetland/fx_cyan_ripples.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "d9f78f424098e82ab004649b7ea35941dff21c2ebba6fa306de688d9a49bfdcf"
+  },
+  {
+    "path": "assets/sprites/background/wetland/fx_fine_ripples.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "1bada516cf5042899223f82a4de27255f0b7c2b225e0dd209ccff317db0987ab"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_brick_wall.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "10efdc0a6aa663fe644df8d666522a92c2ee092534f674dd53bbd412de831833"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_broken_arch.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "4875adb4bec455ed1e79732feac78d79fa2e64939d9d3c6f4e1bf5a7b4a8e2bb"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_broken_column.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "fb422bae9627c7ad222833189a96db8206a7469dbf394668a3d8ce59fbcdacb4"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_curved_wall.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "79ecb7fdcb003d1ff2e43cd2405ecb3e8ff72fb723a1e6dde33c05a239e724ed"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_eroded_pillar.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "24194ae772aeb00578b0096986bb610d99a3e6e2233cfdb7b7dc2b16f3a8117e"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_short_column.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "3559d7f7c9c0151d130e54a8915238272164d9b50a9aa6953b7da2b54727668c"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_sloped_wall.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "9e0d33954fecc158d629a7fffefee9d686d1c415f825c620bbec1f61ce63c11a"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_square_pillar.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "fa04cd7dda2771c5bb365ecd85c94a6d27549fac43602d125d3f782d8706e241"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_stone_block.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "a70189b64389f799076b1af57c58bc882d950a0e1d68836eefaf4a35256b28ea"
+  },
+  {
+    "path": "assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "04_scenery_prompts.md",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "8f07c2d23613eb70201d171937656084ed94b2ac34749e0b4859c7124423506d"
+  },
+  {
+    "path": "assets/sprites/camp/background1.png",
+    "current_canvas": [
+      512,
+      512
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "98bd8b7c5448fec791b139c7c3051551c30a0e7287343d8e0f4c8f4b658e0363"
+  },
+  {
+    "path": "assets/sprites/camp/background2.png",
+    "current_canvas": [
+      512,
+      512
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "a4b5f629ed643b794d1734f9243ef6dc4e4e57d19b7f121dadd1045635901b7d"
+  },
+  {
+    "path": "assets/sprites/camp/buildings/unlocked/camp_relic_archive.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "2fe2fa165b51c2b505b714c86b6c8d2da2330f45bf53a74be6a863f8de65380a"
+  },
+  {
+    "path": "assets/sprites/camp/stone1.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "96b39a535e00714a9aa70ff26aa7221ff218de34c3dcef4f2835ea8e7b17eecb"
+  },
+  {
+    "path": "assets/sprites/camp/stone2.png",
+    "current_canvas": [
+      256,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "3d4624f07a8fcc66584d7859b0f26b7842481d5bf93d005c42bd001b52d0c073"
+  },
+  {
+    "path": "assets/sprites/camp/stone3.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "5c4baf6f2ebe05a8a3c1f9ac78069374b50abcf15942d4495b276a654a9fa51b"
+  },
+  {
+    "path": "assets/sprites/camp/stone4.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "ad189a8513468e8e652d01d5b0fbb77f7d0701a1150e3c26738e316947db81b0"
+  },
+  {
+    "path": "assets/sprites/camp/thicket1.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "c286c6b43e240e9b822c27a1c08931ebba7d2b93c9e5b05c91031d80c55d194c"
+  },
+  {
+    "path": "assets/sprites/camp/tree1.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "ccd0d5aba832e3192ecc845bf75d39af2bef89109022497b37110caebda859e3"
+  },
+  {
+    "path": "assets/sprites/camp/tree1_shader.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "cd9bfd63157f1a772604754aedf23e4aeb8c308e9ff69b29ceb802027bb6d919"
+  },
+  {
+    "path": "assets/sprites/camp/tree2.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "3318e05fe5404137f0a5b5374f620a1e037706d4d4421c39ff6fa1a52ede65eb"
+  },
+  {
+    "path": "assets/sprites/camp/tree3.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "1b1d48e9a2ff4312503935f92a767f17528010c9ea59f1d9771517960b5a5803"
+  },
+  {
+    "path": "assets/sprites/camp/tree4.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "4b373d4d4d680244a2fc5bdbb05e7572ae69e945539be895289a377229754e17"
+  },
+  {
+    "path": "assets/sprites/camp/tree5.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "2c38f3e2cee78d1ecf621363f18ef9212b6e34ee61aa9c1b3322630ae6efe1d7"
+  },
+  {
+    "path": "assets/sprites/camp/tree6.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "bcf227c26e03238d29c032fc7a083425537e7d1eeaf168cd49d965ddb30193a6"
+  },
+  {
+    "path": "assets/sprites/camp/tree7.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "68878b7f216046cf04b76459b863eba09998a82132bbce0a41dbc88fb80c2881"
+  },
+  {
+    "path": "assets/sprites/camp/tree8.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "34834ac6b7b9738fe9474201d973c85ebd7d24d7b49f4c5383fe8f41b308971e"
+  },
+  {
+    "path": "assets/sprites/camp/wood1.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "cb6b17616d23c5aec24664876c7eb6fce037d1e1730fda3cf1d7631a0cac8609"
+  },
+  {
+    "path": "assets/sprites/camp/wood2.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#后续营地素材",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "0f3f607e32fd5b3f0fcce81feaa773740e5b216d2dc03b558c2adabb1351da1a"
+  },
+  {
+    "path": "assets/sprites/enemies/combat/enemy_gloom_mite_idle.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "9ccbb963ab0553d66bfc4c931d320f25df7b8481ae713be3f4d5a8cdade8dc00",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/combat/enemy_gloom_mite_move.png",
+    "current_canvas": [
+      448,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "bb8788b8d67c4a3d41dd056be5194ff7ebb902b49c56dfbb108f7c6ba5dc4200",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/iron_knight/knight_dash.png",
+    "current_canvas": [
+      256,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "da96c85589712960dda13fcb52d307a0dd8ed7575f0a0245a5b602cdbd25fb41",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/iron_knight/knight_idle.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "30937a917d8588ca95baedfaf44831381e2918d6eb259dbd79ca3ec7b7c4b3f0",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/iron_knight/knight_move.png",
+    "current_canvas": [
+      768,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "a1411e51e85b6f3265981e70eaab7784db1ea6235e86f68682ae1e9284735c74",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/iron_knight/knight_recover.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "ddb81dcebb67db7541cd4bcbb36feafa980dfc6e6825c3470c7f83166edf0fde",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/enemies/iron_knight/knight_windup.png",
+    "current_canvas": [
+      896,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "3fceec8cfa2dc8608e197a4b5a5969e388a0744657f4d9a90ff8faf98b321775",
+    "installation_record": "27_enemies_installation.md"
+  },
+  {
+    "path": "assets/sprites/pickups/pickup_exp_orb.png",
+    "current_canvas": [
+      16,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "202ec0635c521d366dc682a8e64fedff66fcc617269a6010c9167e1ae230cc02"
+  },
+  {
+    "path": "assets/sprites/pickups/pickup_health_pack.png",
+    "current_canvas": [
+      16,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "577f3358f041245b42e9987b83ea66a0e0320ef9437274b0810674660162b80b"
+  },
+  {
+    "path": "assets/sprites/player/capitalist_idle_right.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "planned",
+    "sha256": "2c9f7774a2ae9785f4b05997fd8e957ebbbe30233ac3a380601e4dadb59498e5"
+  },
+  {
+    "path": "assets/sprites/player/combat/capitalist_idle_right.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "6c7f9d4d7a07dbe936cfaed2fe4855da013921f627a211ebc3dd12e381148866",
+    "installation_record": "25_players_outline_installation.md"
+  },
+  {
+    "path": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+    "current_canvas": [
+      448,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "22396876762af9238160750368a47a1e609fe86574ccd40e08e130b0fbb0d364",
+    "installation_record": "25_players_outline_installation.md"
+  },
+  {
+    "path": "assets/sprites/player/combat/void_hunter_idle_right.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "139fdabe3da0f35d7dd1b1da651ae7a2184778d7e58b322172392b5b89e77ac4",
+    "installation_record": "25_players_outline_installation.md"
+  },
+  {
+    "path": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+    "current_canvas": [
+      384,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "installed",
+    "sha256": "9e06cd1e6dd3f0194754afbf3f304d93f5646b359f942e5485fc6e5e87bebbe3",
+    "installation_record": "25_players_outline_installation.md"
+  },
+  {
+    "path": "assets/sprites/player/void_hunter_idle_right.png",
+    "current_canvas": [
+      256,
+      256
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "planned",
+    "sha256": "30a52e39968f231ae0b4f5f69dc88329e520de32536875cad141bed8854c24f6"
+  },
+  {
+    "path": "assets/sprites/weapons/kunyu_domain_rune.png",
+    "current_canvas": [
+      384,
+      240
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "dabde52eaed2512a939888a7ac169f0b64bcd04f2386ff09a55d64091609a3f2"
+  },
+  {
+    "path": "assets/sprites/weapons/meteor_flail/meteor_flail_chain_link.png",
+    "current_canvas": [
+      9,
+      7
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "c802575e734993921b3089aaa2a474d81a777ad64a919168a2778104f58e68d4"
+  },
+  {
+    "path": "assets/sprites/weapons/meteor_flail/meteor_flail_grip.png",
+    "current_canvas": [
+      12,
+      32
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "20dab49aa127b7c02cd81a8f579e07328444b6fef36b960b7f3ff753d3fceb45"
+  },
+  {
+    "path": "assets/sprites/weapons/meteor_flail/meteor_flail_head.png",
+    "current_canvas": [
+      40,
+      40
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "065847126622d38ccd313d2060c72bdd9214b60cf85004b3d5b67262e7aa4b78"
+  },
+  {
+    "path": "assets/sprites/weapons/projectiles/projectile_wood_arrow.png",
+    "current_canvas": [
+      24,
+      24
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "f4064a36df7031cc972a3bc140498216c2673e3d9713456a5b15c2075d42c60b"
+  },
+  {
+    "path": "assets/sprites/weapons/rentier_coin_spin.png",
+    "current_canvas": [
+      128,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "07303d1e6097a78126727dfaa1a5cad457750745dac13fb3e1a875df5a7c67a2"
+  },
+  {
+    "path": "assets/sprites/weapons/weapon_kunyu_ritual_tome_animated.png",
+    "current_canvas": [
+      256,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P6",
+    "status": "planned",
+    "sha256": "00c2028a929fa5acc9ad8b8e13d87be48db4fce8d60a05b05e831d81257a56a6"
+  },
+  {
+    "path": "assets/sprites/weapons/weapon_nightwatch_spear.png",
+    "current_canvas": [
+      248,
+      28
+    ],
+    "recipe": "02_doubao_recipes.md#战斗武器与特效",
+    "phase": "P4",
+    "status": "planned",
+    "sha256": "5adf07d89e11fb698b833b402ddc38733fdc40e7a87e91a2ca8fc1683e73f26a"
+  },
+  {
+    "path": "assets/ui/finance/bank_counter_desk_picxel.png",
+    "current_canvas": [
+      128,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "0bfcad6372eaef76b5e9b275d89ed39b8666a167812c25cade641e8687e0cb42"
+  },
+  {
+    "path": "assets/ui/finance/challenge_deposit.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "a64507fec467f0d01e7f61af631a6fb01951fddddad9016a20ceebf6f6f2c529"
+  },
+  {
+    "path": "assets/ui/finance/challenge_elites.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "c57aec6848057f87fc62f62c6cd8e829709074fc040eafeeb0a32c383c594f21"
+  },
+  {
+    "path": "assets/ui/finance/challenge_tide.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "ef6bb5c79bc47e839fff046321ad56629b099a737633c893963a00d72cd320eb"
+  },
+  {
+    "path": "assets/ui/finance/empty_enchantment_slot.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "3ed2de761aeac6004f83bb855d54c25105f761075cba2ce34178418893a1a586"
+  },
+  {
+    "path": "assets/ui/finance/finance_bill.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "fca79b94e2ebb34405fb46b20abdb1560739b5db6ef3bf6b729302c1ad2d986c"
+  },
+  {
+    "path": "assets/ui/finance/finance_board.png",
+    "current_canvas": [
+      408,
+      260
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "d2dbc54c8e3fcc6c1808015bad6f87db69a69e1934892fd8c9e200681641d6d4"
+  },
+  {
+    "path": "assets/ui/finance/finance_coin.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "9c0a82a4963b108bad1ceb585be624a8dc8aef63bcfa32290858a7f054c0aff7"
+  },
+  {
+    "path": "assets/ui/finance/goblin_banker_states.png",
+    "current_canvas": [
+      640,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "2c3bd9091f8af53cd6aaa82ac9ba27b2f7b9d822b1ebbf8f2e5a0a87b208c38f"
+  },
+  {
+    "path": "assets/ui/finance/inspect_enchantment.svg",
+    "current_canvas": null,
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "ab63bc178ba753b5a249c39d816722cb5e71da6f2059435021e8f5915575e2f1"
+  },
+  {
+    "path": "assets/ui/finance/loan/loan_100.png",
+    "current_canvas": [
+      48,
+      48
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "165e08c21dc8319a58396a93b10f5fc67096d16316f49e21370977d5b91da7bc"
+  },
+  {
+    "path": "assets/ui/finance/loan/loan_200.png",
+    "current_canvas": [
+      48,
+      48
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "1aa5d5ba2d193bc7aac1aba6775e42567452754b934fed3216c8fff2143d16a1"
+  },
+  {
+    "path": "assets/ui/finance/loan/loan_500.png",
+    "current_canvas": [
+      48,
+      48
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "1ab99bd101b61be65d7eacc9a0606d397a7325aff07ebb5586e23c28c545d93d"
+  },
+  {
+    "path": "assets/ui/finance/loan/loan_note.png",
+    "current_canvas": [
+      24,
+      24
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "0cad362561f1be547af217b3ede76580126f3f25744590f0b4989bc2c8234037"
+  },
+  {
+    "path": "assets/ui/finance/loan/loan_rollover.png",
+    "current_canvas": [
+      24,
+      24
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "86fff8382c7060344358db82cc37aab908c2d33d114076d9121f2b58e68e2d19"
+  },
+  {
+    "path": "assets/ui/finance/trade_bubble.png",
+    "current_canvas": [
+      96,
+      48
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "8daa46446ceae6473e1aa19ce8e59c45c55abb11d076f430e864578284ec5861"
+  },
+  {
+    "path": "assets/ui/finance/trade_bubble_tail.png",
+    "current_canvas": [
+      18,
+      12
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "24f87ed6a49d141dd86327521516e7e4db74a268ab68317641dd40cd633f8f34"
+  },
+  {
+    "path": "assets/ui/finance/trade_glints.png",
+    "current_canvas": [
+      128,
+      16
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "e86e93e67f6648abbfb4736bef7358618075217d6633d72aec682caf8a87fb4a"
+  },
+  {
+    "path": "assets/ui/finance/trade_panel.png",
+    "current_canvas": [
+      112,
+      80
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "751b5d2f0354e96b1f122d2b128ab5ea31b708431b68e96fc2bb976828f8c987"
+  },
+  {
+    "path": "assets/ui/finance/trade_seal.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "ce82031156a0aa48b4e44c028abdf93b30a5ec17963bf2b4e50c0ef8e76b0b02"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_black_hole.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e81a9169b355de69e6132870362cc201771e2cf66b4f03042e473ecab1e6e6ac",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_explosion.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "175a84632a24404a4e8901ef0ba084601b7c73174a1da020d3637259627905e8",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_fire.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "6ebc6cba2c9b8c61f95c16a71ab57f809bbca0ec799c371d7adee0f5058f684d",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_ice.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "0dd908ab2803cd3f36735d7946fcd75cedc575ae0fff538c3a071f510f6f3243",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_light_sword.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "f1d9723fac85e975bc958afd8d68128b157bd7cf85d3710196bf57029cf2ff13",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_lightning.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "f7154f7edee684e667eb66edb6c4e514d97aadfa8c86d2a3fc388ffc2df6d014",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_pierce.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7bfc1c32f0329f4718b81de6a18a8193538e9eba55afa1196bb4ecd4405c37e6",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_split.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "db53845b0515eb78992571129bed64f3d1e26f8ca0518c894a0f2932388fc7c6",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_water.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "495960a58d65a23d920a30b94a929abf3786c9a0158b3ea124e8542fb112977b",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_wind.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "3f716ebffb5fb65c2fa885bae00b4c5585fddbfdc7131748a3a4b1beb303a067",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/characters/icon_capitalist.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "planned",
+    "sha256": "070d2b791b1634ad6c1a717aeefc2cecc7bc634bdd822004fd4d5e6acf6fd98f"
+  },
+  {
+    "path": "assets/ui/icons/characters/icon_void_hunter.png",
+    "current_canvas": [
+      128,
+      128
+    ],
+    "recipe": "02_doubao_recipes.md#角色与怪物",
+    "phase": "P3",
+    "status": "planned",
+    "sha256": "7855123e8d378d27fefea18f42c0aea915d55c2d07e826dba0e814c40e0efdee"
+  },
+  {
+    "path": "assets/ui/icons/hud/icon_hud_hp.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "e75797951b3b39b9f1c6efdbaafc958f1291408d4c4905fa76d5bf659f9e88c8"
+  },
+  {
+    "path": "assets/ui/icons/hud/icon_hud_shield.png",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "b22fdf29dd2793c90e8fc37b0256420e53461a2d277746eae8e1f1b689235188"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_abyssal_echo_shell.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "d45d351edaab1a121d67caec7d4b02aa1f4128bea47c8dec5819794c5fab5b37",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_aftershock_hourglass.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "162bac96e060beeaa9989c8c0b27643cff6b327bc9cde749ff5e5fd4ab11a618",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_amulet_of_humanity.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_annual_leave_cutback.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_bankruptcy_reorg.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_barrier_crystal.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_berserker_copper_badge.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_blocking_counterweight.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_bloodstained_belt.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_brass_pocket_watch.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_broken_crystal.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_chain_of_hardship.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_coin_heart.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_compound_interest_tome.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_corroded_blowpipe.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_costly_seed_of_life.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_cracked_bronze_bell.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_cracked_stone_bullet.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_cultic_holy_shield.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_dead_shield_badge.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_defiled_blessing_coin.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_diffusion_nozzle.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_dividend_check.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_divine_fusion.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_executioner_bracer.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_expanded_backpack_strap.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_finance_manager.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_flesh_pauldron.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_flyer_ad.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_folded_star_chart.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "940e3ba65f05da98778b25ded29d62535c29712b7188bb0433b62d9d3390421a",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_frenzied_dividend.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_gale_roulette.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_gift_mark.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_gilded_trigger.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_gold_compass.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_gold_digger_gloves.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_golden_rangefinder.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7073ff37f42057cd19e779c5045b07a8af09e7f1ecabc4c29724b6a94d3abadf",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_golden_sarcophagus.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_hasty_spring_trigger.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_high_yield_contract.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_hoarders_ring.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_holy_silver_cup.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_horizon_orrery.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "673bf4fcf8ea5adbad489dd8b8ded04605cd079cce1de83ea14c603ec092671e",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_hostile_takeover.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_incomplete_divination_dice.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_judgment_eye_pendant.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_load_iron_bracer.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_long_focus_eyepiece.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_lucid_vow.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_medical_cutback.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_merger_reorg.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_nightmare_healing_urn.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_old_brass_telescope.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_pain_vessel.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_periodic_dividend_clock.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_piggy_bank.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_poison_mist_pouch.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_prison_copper_anklet.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_pungent_sachet.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_quant_trading.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_range_tripod.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "26dc2852b69c29354baae42423cd7017eaa5927056b26241cac301cf492a8ce2",
+    "installation_record": "21_relics_sheet_08_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_rough_grinding_lens.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_runaway_amplifier.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_salary_adjustment.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_shadowless_greave.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_sleepless_ledger.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a",
+    "installation_record": "20_relics_sheet_07_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_split_crystal_warhead.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_stargazers_lens.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_steel_vault.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_suffering_carapace.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_tip_tray.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_travelers_ledger.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_tremor_grip.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec",
+    "installation_record": "18_relics_sheet_05_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_true_silver_armor.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_turtle_shell_pendant.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_vitality_potion.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "52c04207ca4b808748878c0c3c2fe7f62b81e8f394c4dbbccff619bcf6eb341d",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_void_storage_casket.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b",
+    "installation_record": "19_relics_sheet_06_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_void_tentacle.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_welfare_cutback.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66",
+    "installation_record": "22_relics_sheet_09_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_worn_fighting_gloves.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644",
+    "installation_record": "17_relics_sheet_04_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "03b_relic_prompts.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
+    "installation_record": "16_relics_64_installation.md"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "be4c4e7832679af38bb74bc9b54a0424f76f090b6cf8639f13e492f33662be85",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "2a4b09345360d256afa2db2c7a8c6efe397b8a189ccb04f63fcf3d5685b86f40",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_meteor_flail.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "2177fa4a200a6df9c96f8619870915384897cd72837f64267da7e396f62e711d",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "aff0e28939d2cb3a71a0014c4e170070c95491d1119f6d3fd142b92f9a07d1f9",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "0af5a7ef95c82650708bd56129210f9d0fa7fe693d75c0cd9313b2791b0f7a6a",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_rentier_purse.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "69a6a49a2ebcce8e8239d14f258d165eadd890676dbe4659fd9864ee3c0e63b5",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_wood_arrow.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "9c8a3f4bc965db73b4a4b73ac1a1e9c9a5ece35d44922a7cbae5dcce0e18ac19",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/main_menu/bg_main_menu.png",
+    "current_canvas": [
+      1920,
+      1080
+    ],
+    "recipe": "02_doubao_recipes.md#主界面",
+    "phase": "P5",
+    "status": "planned",
+    "sha256": "9e01506568d508950dc08648e888a3caf22e3592e02246a34deab1fb4b19ea7d"
+  },
+  {
+    "path": "assets/ui/main_menu/button_main_menu.png",
+    "current_canvas": [
+      600,
+      186
+    ],
+    "recipe": "02_doubao_recipes.md#主界面",
+    "phase": "P5",
+    "status": "planned",
+    "sha256": "828859bcca79e1a61c758d7063a13919bc82207464350ac4bdb1ee46f7a0dd03"
+  },
+  {
+    "path": "assets/ui/main_menu/title_main_menu.png",
+    "current_canvas": [
+      700,
+      160
+    ],
+    "recipe": "02_doubao_recipes.md#主界面",
+    "phase": "P5",
+    "status": "planned",
+    "sha256": "d709786e83df1e4fe18b9e1fcf25a774029f9af49bb22caf36df06d9e300cb26"
+  },
+  {
+    "path": "assets/ui/settlement/enemy_elite_rusher.png",
+    "current_canvas": [
+      90,
+      113
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "e5c2eb8e5a9c5183345b7fd9c9163ea6f6ae5f672b0e0f81ecbbf1a9f4bf4f85"
+  },
+  {
+    "path": "assets/ui/settlement/enemy_mutated_grub.png",
+    "current_canvas": [
+      44,
+      39
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "cfca345227b4a517fab239cc46162bd9c3eb2a846e865b1a1b46ea6cd03ff381"
+  },
+  {
+    "path": "assets/ui/settlement/goblin_reactions.png",
+    "current_canvas": [
+      512,
+      512
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "f19cef639411682019d0aed2136a7228d7fa48dbb256d56039cc460d4422cdbc"
+  },
+  {
+    "path": "assets/ui/settlement/payout_glint.png",
+    "current_canvas": [
+      512,
+      64
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "9c81ba4ca7aa5ed85bf60808d32d3547464a0e01f9130e92975e0176bbe830f3"
+  },
+  {
+    "path": "assets/ui/settlement/settlement_icons.png",
+    "current_canvas": [
+      160,
+      32
+    ],
+    "recipe": "02_doubao_recipes.md#ui组件与银行",
+    "phase": "P1",
+    "status": "planned",
+    "sha256": "956f449bebb754e539c05e4e92504e8b4607662e604a75b977a3c8b633bb31b2"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_board_bottom.png",
+    "current_canvas": [
+      288,
+      260
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "7398c1e6d1cf0ad5b4111b3ac5245ae901afdd8f553b887031a15243589ae092",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_board_top.png",
+    "current_canvas": [
+      288,
+      260
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "ecba65c44a0ddc1dc373daa95fb276200f09c71afc53914f911754c9dd6e6ff7",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_leather_handle.png",
+    "current_canvas": [
+      44,
+      40
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "dfdb410ae1e559b929d58f9833879a2747978ce1f1eab5489ec51f27bee172a4",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_rail_left.png",
+    "current_canvas": [
+      18,
+      24
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "cc43b75a65d5a1b91df010b65fdeebdc81718df210b9c7cc7e5ced061a9e31f3",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_rail_right.png",
+    "current_canvas": [
+      24,
+      24
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "f1037b99025effb9ea6a71dfebdb86c3106a79fa6919e3651927a064b1d8fc8c",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/stats_drawer/stats_wood_tile.png",
+    "current_canvas": [
+      272,
+      168
+    ],
+    "recipe": "09_ui_scope_and_stats_redraw.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "69da505ed62519d78e964349aeb648b772f1de9b0ee04e7d3a693f6fe47d7e5f",
+    "installation_record": "stats_drawer_install_record.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_copper_lamp.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "576c5bcc7e5604fd49956a4d5827aa0a7c08ea541e7a3f90c565143c7bc63095",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "217534bb3e1485c70d267c0f48763149a35641d08a90203a66e22a7df4c7e2bb",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_earth_hammer.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "5876d17c4cb596be8688cc2974e07f16c09b3a985f16772c915f2a9e2e1b93d1",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/weapons/weapon_camp_dagger.png",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "recipe": "batches/weapons_sheet_01/elements_r03/README.md",
+    "phase": "P2",
+    "status": "installed",
+    "sha256": "65911ae2bef50b5b07e8ff9c6e09c1e5c88be586d6ab67213ac2874e8c5c15d8",
+    "candidate_review": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/README.md",
+    "installation": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_bounce.svg",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "phase": "P2",
+    "sha256": "d196d78f518157f5384b6539dba8d523c8c9a4f49ab16428d4cc52e66157afe0",
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "status": "superseded",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "replaced_by": "assets/ui/icons/augmentations/scroll_bounce.png",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_resonance.svg",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "phase": "P2",
+    "sha256": "45627969d23475f63b0ea0c6e80275000bc9ecbc31662afec269aa2659873b68",
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "status": "superseded",
+    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
+    "replaced_by": "assets/ui/icons/augmentations/scroll_resonance.png",
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_bounce.png",
+    "phase": "P2",
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "status": "installed",
+    "sha256": "992ed5d1d7a989c3e9af794f1482654f9b2b7b452173e55257db8cf46b7252bb",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_resonance.png",
+    "phase": "P2",
+    "recipe": "batches/augmentations_sheet_01/README.md",
+    "status": "installed",
+    "sha256": "84e95d76892293e7418a043b3f92a13e5ba9e64afe06222482a4846b3099b8dc",
+    "current_canvas": [
+      32,
+      32
+    ],
+    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+  }
+]

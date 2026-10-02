@@ -4,7 +4,7 @@ from scipy import ndimage as nd
 from scipy.spatial import ConvexHull
 from PIL import Image,ImageDraw,ImageFont
 ROOT=Path(__file__).resolve().parents[2]
-SRC=ROOT/'assets/sprites/player/tobe_handled'
+SRC=ROOT/'artifacts/sources/character_frames'
 
 def poly(shape,points):
     im=Image.new('L',shape);ImageDraw.Draw(im).polygon(points,fill=255)

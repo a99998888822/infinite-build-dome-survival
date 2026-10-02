@@ -1,12 +1,15 @@
 [gd_scene format=3 uid="uid://bff3u3lony2bv"]
 
 [ext_resource type="Script" uid="uid://dmtnpk5cdld1w" path="res://scripts/ui/main_menu_ui_controller.gd" id="1_main_menu"]
-[ext_resource type="Texture2D" uid="uid://c8jb5bwuuujb1" path="res://assets/ui/main_menu/button_main_menu.png" id="2_a7kih"]
+[ext_resource type="Theme" path="res://assets/ui/main_menu/menu_button_theme.tres" id="2_menu_theme"]
 [ext_resource type="Texture2D" uid="uid://bsrwgtffh8g3f" path="res://assets/ui/main_menu/title_main_menu.png" id="2_kxa31"]
 
 [ext_resource type="Script" path="res://scripts/ui/run_settlement_panel.gd" id="4_settlement"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
+[ext_resource type="Texture2D" path="res://assets/ui/main_menu/icon_battle.png" id="5_icon_battle"]
+[ext_resource type="Texture2D" path="res://assets/ui/main_menu/icon_talent.png" id="6_icon_talent"]
+[ext_resource type="Texture2D" path="res://assets/ui/main_menu/icon_settings.png" id="7_icon_settings"]
+[ext_resource type="Texture2D" path="res://assets/ui/main_menu/icon_quit.png" id="8_icon_quit"]
 
 [node name="MainMenuUIController" type="CanvasLayer" unique_id=183020204]
 layer = 20
@@ -29,6 +32,7 @@ color = Color(0.15, 0.22, 0.22, 1)
 
 [node name="Background" type="TextureRect" parent="StartPage" unique_id=158706256]
 visible = false
+texture_filter = 1
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,18 +46,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 color = Color(0.08, 0.13, 0.14, 0.22)
-
-[node name="TopRule" type="ColorRect" parent="StartPage" unique_id=620922937]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -190.0
-offset_top = 35.0
-offset_right = 190.0
-offset_bottom = 37.0
-grow_horizontal = 2
-mouse_filter = 2
-color = Color(0.85, 0.72, 0.32, 0.58)
 
 [node name="VersionLabel" type="Label" parent="StartPage" unique_id=1796183719]
 layout_mode = 0
@@ -72,12 +64,14 @@ horizontal_alignment = 2
 
 [node name="ContentMargin" type="MarginContainer" parent="StartPage" unique_id=778555507]
 layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/margin_left = 64
-theme_override_constants/margin_top = 42
-theme_override_constants/margin_right = 64
-theme_override_constants/margin_bottom = 48
+anchor_left = 0.065
+anchor_top = 0.045
+anchor_right = 0.435
+anchor_bottom = 0.78
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="ContentColumn" type="VBoxContainer" parent="StartPage/ContentMargin" unique_id=928923107]
 layout_mode = 2
@@ -85,46 +79,41 @@ theme_override_constants/separation = 0
 
 [node name="TopSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=757830656]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="TitleArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1055827538]
-custom_minimum_size = Vector2(0, 170)
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TitleCenter" type="CenterContainer" parent="StartPage/ContentMargin/ContentColumn/TitleArea" unique_id=52519252]
+[node name="TitleCenter" type="Control" parent="StartPage/ContentMargin/ContentColumn/TitleArea" unique_id=52519252]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="TitleStack" type="Control" parent="StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter" unique_id=439048650]
-custom_minimum_size = Vector2(700, 160)
-layout_mode = 2
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="TitleArt" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/TitleArea/TitleCenter/TitleStack" unique_id=317699850]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 63.999996
-offset_top = -55.000015
-offset_right = 64.0
-offset_bottom = -55.000015
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8, 0.8)
 mouse_filter = 2
 texture = ExtResource("2_kxa31")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="MiddleSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=605045204]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="ButtonArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1647143214]
-custom_minimum_size = Vector2(0, 180)
+custom_minimum_size = Vector2(0, 248)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -135,163 +124,89 @@ anchor_bottom = 1.0
 
 [node name="ButtonRow" type="VBoxContainer" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter" unique_id=1554262281]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme = ExtResource("2_menu_theme")
+theme_override_constants/separation = 8
 
 [node name="StartBattleShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=304726107]
-custom_minimum_size = Vector2(150, 42)
+custom_minimum_size = Vector2(216, 56)
 layout_mode = 2
-
-[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell" unique_id=1931168593]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource("2_a7kih")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="StartBattleButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell" unique_id=1844054139]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
-theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
-theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "开始战斗"
-flat = true
+focus_neighbor_top = NodePath("../../QuitShell/QuitButton")
+focus_neighbor_bottom = NodePath("../../CampEntryShell/CampEntryButton")
+icon = ExtResource("5_icon_battle")
+icon_alignment = 0
+expand_icon = true
 
 [node name="CampEntryShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1695527156]
-custom_minimum_size = Vector2(150, 42)
+custom_minimum_size = Vector2(216, 56)
 layout_mode = 2
-
-[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell" unique_id=1702929359]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource("2_a7kih")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="CampEntryButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell" unique_id=1204232876]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_right = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
-theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
-theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "天赋"
-flat = true
+focus_neighbor_top = NodePath("../../StartBattleShell/StartBattleButton")
+focus_neighbor_bottom = NodePath("../../SettingsShell/SettingsButton")
+icon = ExtResource("6_icon_talent")
+icon_alignment = 0
+expand_icon = true
 
 [node name="SettingsShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow"]
-custom_minimum_size = Vector2(150, 42)
+custom_minimum_size = Vector2(216, 56)
 layout_mode = 2
-
-[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource("2_a7kih")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="SettingsButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = -2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
-theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
-theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "设置"
-flat = true
+focus_neighbor_top = NodePath("../../CampEntryShell/CampEntryButton")
+focus_neighbor_bottom = NodePath("../../QuitShell/QuitButton")
+icon = ExtResource("7_icon_settings")
+icon_alignment = 0
+expand_icon = true
 
 [node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
-custom_minimum_size = Vector2(150, 42)
+custom_minimum_size = Vector2(216, 56)
 layout_mode = 2
 
-[node name="FrameTexture" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell" unique_id=1477197933]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource("2_a7kih")
-expand_mode = 1
-stretch_mode = 5
-
 [node name="QuitButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell" unique_id=1911587221]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = -2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
-theme_override_colors/font_pressed_color = Color(0.82, 0.95, 0.86, 1)
-theme_override_colors/font_hover_color = Color(1, 0.98, 0.84, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_menu_button")
 text = "退出"
-flat = true
+focus_neighbor_top = NodePath("../../SettingsShell/SettingsButton")
+focus_neighbor_bottom = NodePath("../../StartBattleShell/StartBattleButton")
+icon = ExtResource("8_icon_quit")
+icon_alignment = 0
+expand_icon = true
 
 [node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
-custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-
-[node name="MenuHintLabel" type="Label" parent="StartPage/ContentMargin/ContentColumn/BottomSpacer" unique_id=1917742012]
-custom_minimum_size = Vector2(520, 38)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.45, 0.65, 0.61, 0.9)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 1
-theme_override_font_sizes/font_size = 11
-text = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 
 [node name="CharacterSelectPage" type="Control" parent="." unique_id=737550973]
 visible = false

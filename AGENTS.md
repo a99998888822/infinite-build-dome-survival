@@ -4,6 +4,8 @@
 
 For requests to pixelize supplied high-resolution images, convert references into pixel-art assets, process character expressions, or use Picxel on image files, read `.agents/skills/picxel-external-images/SKILL.md` and use that project workflow. It accepts external files, requires no image-generation tool or image API key, and records AI-guided local pixel repairs honestly. Prefer it over the global Picxel generation workflow for these tasks. Source-code reviews and replacement of already completed assets do not start a new conversion task.
 
+A bare "picxel" or a request to open/setup Picxel in this project opens the project skill's panel (normally port 8771) and reads its existing settings; it does not start conversion. Keep the global panel's job separate. When the user has selected inputs in the global panel for this task, follow the skill's `adopt-job` procedure instead of asking them to select everything again. Explicit requests for upstream image-model redrawing or creation from scratch follow the corresponding art-generation workflow; do not present local pixel conversion as model redrawing.
+
 ## Encoding Rules for Codex on Windows
 
 This project uses UTF-8 for source code, JSON data, Markdown design docs, Godot scenes, and Godot scripts.
@@ -74,6 +76,8 @@ Godot-specific notes:
 - Preserve existing line endings unless a formatter or project convention says otherwise.
 
 ## Godot Headless Debugging
+
+- User preference: Godot validation must not take focus, appear on top, or cover the browser. Use headless checks first. For GPU screenshots, use `scripts/tools/run_godot_background.py` on its private Windows desktop without switching the input desktop; the helper passes `--background-capture`. Verify the actual engine desktop and `foreground_samples=0`. Do not launch a normal visible game window for automated validation. Keep this behavior confined to review runs, not normal gameplay settings.
 
 - For Godot script, scene, autoload, or runtime changes, automatically use headless validation when Godot is available.
 - Locate `godot.exe`/`godot4.exe` using PATH probing first, then resolve desktop/start-menu `.lnk` shortcuts when necessary. Use the discovered absolute executable path to run:

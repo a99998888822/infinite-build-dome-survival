@@ -1,0 +1,10 @@
+{
+  "ids": ["G01", "G09", "G10", "G11", "G12"],
+  "status": "pixel_candidate_complete_awaiting_user_review",
+  "source_revision": "r04",
+  "candidate_revision": "pixel_r01",
+  "review": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/README.md",
+  "report": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/delivery-report.json",
+  "production_replaced": false,
+  "preview_type": "offline_composition_not_runtime_capture"
+}

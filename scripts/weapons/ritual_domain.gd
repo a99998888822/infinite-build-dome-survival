@@ -78,7 +78,7 @@ func try_attack() -> bool:
 					candidates.pop_back()
 				if candidates.is_empty():
 					break
-				var event: DamageEvent = primary.event.duplicate_event()
+				var event: DamageEvent = primary.event.continue_after_split(profile)
 				var multiplier := float(profile.damage_multiplier)
 				event.damage = maxi(1, roundi(event.damage * multiplier))
 				event.original_damage = maxi(1, roundi(event.original_damage * multiplier))

@@ -15,6 +15,8 @@ var _pool: Array[PreparationOfferCard] = []
 var _columns := 3
 var _last_start := -1
 var _logical_focus := 0
+var _card_height := CARD_HEIGHT
+var _card_min_width := CARD_MIN_WIDTH
 
 
 func _ready() -> void:
@@ -32,6 +34,13 @@ func _ready() -> void:
 
 func set_offers(next_offers: Array, reset_scroll: bool = false) -> void:
 	offers = next_offers
+	_card_height = CARD_HEIGHT
+	_card_min_width = CARD_MIN_WIDTH
+	for offer: Dictionary in offers:
+		var texture := FinanceUIStyle.item_icon(str(offer.get("icon", "")), "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
+		if FinanceUIStyle.is_native_relic_icon(texture):
+			_card_height = maxf(_card_height, 96.0 + texture.get_height() * FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+			_card_min_width = maxf(_card_min_width, 96.0 + texture.get_width() * FinanceUIStyle.RELIC_LIST_ICON_SCALE)
 	if reset_scroll:
 		_logical_focus = 0
 		scroll.scroll_vertical = 0
@@ -47,8 +56,8 @@ func _layout() -> void:
 	if scroll == null:
 		return
 	var usable := maxf(100.0, size.x - 16.0)
-	_columns = clampi(floori((usable + GAP) / (CARD_MIN_WIDTH + GAP)), 1, 3)
-	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (CARD_HEIGHT + GAP) - GAP)
+	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 3)
+	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
 	_last_start = -1
 	_refresh_pool(true)
 
@@ -56,12 +65,12 @@ func _layout() -> void:
 func _refresh_pool(force: bool = false) -> void:
 	if not is_inside_tree() or canvas == null:
 		return
-	var first_row := maxi(0, floori(float(scroll.scroll_vertical) / (CARD_HEIGHT + GAP)) - 1)
+	var first_row := maxi(0, floori(float(scroll.scroll_vertical) / (_card_height + GAP)) - 1)
 	var start := first_row * _columns
 	if not force and start == _last_start:
 		return
 	_last_start = start
-	var rows := maxi(1, ceili(size.y / (CARD_HEIGHT + GAP))) + 3
+	var rows := maxi(1, ceili(size.y / (_card_height + GAP))) + 3
 	var count := mini(rows * _columns, offers.size())
 	while _pool.size() < count:
 		var card := PreparationOfferCard.new()
@@ -80,9 +89,9 @@ func _refresh_pool(force: bool = false) -> void:
 		if not card.visible:
 			continue
 		card.set_meta("offer_index", index)
-		card.position = Vector2((index % _columns) * (width + GAP), (index / _columns) * (CARD_HEIGHT + GAP))
-		card.size = Vector2(width, CARD_HEIGHT)
 		card.configure(offers[index], flow.get_offer_unavailable_reason(offers[index]) if flow != null else "", flow.get_current_gold() if flow != null else 0)
+		card.position = Vector2((index % _columns) * (width + GAP), (index / _columns) * (_card_height + GAP))
+		card.size = Vector2(width, _card_height)
 
 
 func _on_card_key(event: InputEvent, card: PreparationOfferCard) -> void:
@@ -96,7 +105,7 @@ func _on_card_key(event: InputEvent, card: PreparationOfferCard) -> void:
 	if step == 0:
 		return
 	_logical_focus = clampi(int(card.get_meta("offer_index", 0)) + step, 0, maxi(0, offers.size() - 1))
-	scroll.scroll_vertical = maxi(0, floori(float(_logical_focus / _columns) * (CARD_HEIGHT + GAP)))
+	scroll.scroll_vertical = maxi(0, floori(float(_logical_focus / _columns) * (_card_height + GAP)))
 	_refresh_pool(true)
 	for candidate in _pool:
 		if candidate.visible and int(candidate.get_meta("offer_index", -1)) == _logical_focus:

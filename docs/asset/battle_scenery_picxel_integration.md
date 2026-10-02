@@ -1,12 +1,16 @@
-# 战斗场景 Picxel 128×128 素材接入
+# 战斗场景 Picxel 素材接入
 
-使用用户确认的 `battle_scene_picxel_review/128px` 中 01—30 共 30 张 PNG。图片字节保持不变，复制至 `assets/sprites/background/wetland/`，按用途改为英文文件名；原图文件名、SHA-256、可见内容矩形和尺寸配置记录在 `data_config/battle_scenery.json`。
+2026-09-30：已接入用户确认的 `artifacts/previews/art_refresh_v1/battle_ground_01/environment_seams_r03/exports/` 共 30 张 64×64 PNG。图片字节保持不变，替换至 `assets/sprites/background/wetland/`；来源、SHA-256、实际可见内容矩形和尺寸配置同步记录在 `data_config/battle_scenery.json`。
+
+本版保留原色系和外轮廓，减少石块之间的内部黑缝。20 张石柱、断墙、碎石、苔藓采用局部补色版，其余 10 张裂纹、水面、水纹沿用上一轮 64×64 稿。全部审阅稿、网格和历史版本保留，旧正式 PNG 与旧配置另作备份，位置见本版 `installation-report.json`。
+
+之前的正式版本来自 `battle_scene_picxel_review/128px`，其 128×128 画布已由本轮替换。
 
 旧的 13 张湿地装饰 PNG、两张旧石柱 PNG、对应导入文件及两份旧石柱 Aseprite 源文件已删除。中央砖台、天幕、HUD 和音效继续使用现有资源。
 
 ## 尺寸与层次
 
-128×128 是素材画布，不是游戏里的物体尺寸。`BattleSceneryCatalog` 使用 AtlasTexture 裁取可见内容，再按可见长边统一缩放，保持纵横比。
+64×64 是素材画布，不是游戏里的物体尺寸。`BattleSceneryCatalog` 使用 AtlasTexture 裁取可见内容，再按可见长边统一缩放，保持纵横比。本轮重新测量全部 PNG 的透明边界，并保持每项 `world_extent` 不变；地面锚点和远景入水边界沿用现有逻辑。
 
 | 用途 | 近处可见长边，世界单位 |
 | --- | --- |
@@ -31,16 +35,16 @@
 
 ## 验证与审阅
 
-`scenes/tests/battle_environment_test.tscn` 启动真实游戏场景，在临时营地会话中验证：30 张 PNG 哈希、裁切范围、材质尺寸关系、远近比例、装饰数量、中央砖台避让、世界坐标稳定、网格回收、暂停/恢复、水纹范围、640×360 窗口的入水边界，以及正常战斗与场景退出。
+`scenes/tests/battle_environment_test.tscn` 启动真实游戏场景，在临时营地会话中验证：30 张 PNG 哈希、配置画布尺寸、实际透明边界与裁切范围一致、可见长边与世界尺寸一致、材质尺寸关系、远近比例、装饰数量、中央砖台避让、世界坐标稳定、网格回收、暂停/恢复、水纹范围、640×360 窗口的入水边界，以及正常战斗与场景退出。
 
 修改前保存了实际装饰坐标，在原点、湿地、负坐标外围及返回原点四个位置逐一比对；修改后数量和坐标完全一致。
 
-当前截图位于 `artifacts/reviews/environment/picxel_128_larger_ruins/`，由 Godot GL Compatibility 实际渲染的根视口直接保存；包含中央场景、湿地、外围、小窗口和正在战斗的画面。旧尺寸截图已清理。
+本轮实机截图和日志保存于系统临时目录，具体位置见 `environment_seams_r03/installation-report.json`。图形验证使用 `scripts/tools/run_godot_background.py` 的私有 Windows 桌面，由真实 Godot 根视口保存截图，不切换用户桌面；核验实际引擎所在桌面以及 `foreground_samples=0`。
 
-重新安装素材可执行：
+历史 128×128 安装器如下，仅用于复现旧包，会恢复旧的尺寸配置，不用于当前 64×64 版本：
 
 ```powershell
 python -B scripts/tools/install_battle_environment_assets.py <battle_scene_picxel_review文件夹>
 ```
 
-尺寸调整优先修改 `data_config/battle_scenery.json`；重新运行安装脚本会恢复其默认尺寸配置。
+本轮接入由 `environment_seams_r03/install.py` 完成：先核验全部候选哈希和旧正式资源，再备份、原样复制 PNG、更新裁切和哈希，保留现有世界尺寸与分组。尺寸调整优先修改 `data_config/battle_scenery.json`。

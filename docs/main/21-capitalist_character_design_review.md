@@ -4,7 +4,7 @@
 
 本版按用户确认：四件方案完整触发合计 500 本金的一次性奖励；通过角色属性进一步削弱进行平衡。当前美术采用外部原图、本地像素转换及局部修整，不调用图像生成 API。旧手工绘制造型及脚本已清理；下文第 6 节保留最初的设计方向，当前成品以 Picxel 包为准。
 
-![资本家当前角色选择实机图](../../artifacts/reviews/characters/capitalist/selection.png)
+资本家当前角色选择实机图（历史附件已清理）
 
 ## 1. 角色定位
 
@@ -187,14 +187,14 @@
 
 2026-09-28 按用户要求替换为外部原图的 Picxel 转换结果。使用统一画布、每角色 16 色色板、网格投票、原图细线恢复和眼部局部修整。安装脚本先核对尺寸、透明度、色数和清单哈希，再覆盖两角色共 8 张同名正式纹理。
 
-- [当前形象实机图](../../artifacts/reviews/characters/capitalist/selection.png)
+- 当前形象实机图（历史附件已清理）
 - [透明角色展示图](../../assets/sprites/player/capitalist_idle_right.png)
 - [透明头像](../../assets/ui/icons/characters/icon_capitalist.png)
 - [54×54 战斗待机图](../../assets/sprites/player/combat/capitalist_idle_right.png)
-- [实机行走动图](../../artifacts/reviews/characters/capitalist/walk.gif)
-- [完整七帧行走表](../../artifacts/previews/player_picxel/delivery/capitalist/combat/capitalist_walk_right_all_frames.png)
+- 实机行走动图（历史附件已清理）
+- 完整七帧行走表（历史附件已清理）
 - [战斗行走帧表](../../assets/sprites/player/combat/capitalist_walk_right_spritesheet.png)
-- [可编辑像素稿、来源与修改流程](../../artifacts/previews/player_picxel/README.md)
+- 可编辑像素稿、来源与修改流程（历史附件已清理）
 - [安装与校验脚本](../../scripts/tools/install_player_picxel_assets.py)
 
 展示图由独立的 128×128 转换稿最近邻放大为 256×256；战斗从 64×64 转换稿仅移除透明留白，导出为 54×54。头像由原图头肩区域独立转换为 128×128。透明素材只使用 0／255 的 Alpha。
@@ -203,7 +203,7 @@
 
 正式四帧行走选原图 1→3→5→7，待机选第 7 张，脚底统一到 y=52（不含该行）。资本家保持 6 FPS，左向整帧镜像；初心者于 2026-09-29 更新为完整八帧、7 FPS。未生成额外过渡帧。
 
-已检查硬透明通道、四个独立姿态、边界留白、脚底基准、角色选择及实际战斗显示。[Picxel 包](../../artifacts/previews/player_picxel/README.md) 保留素材预览；[游戏内截图与行走实录](../../artifacts/reviews/characters/capitalist/README.md) 使用正式场景和角色控制器采集。
+已检查硬透明通道、四个独立姿态、边界留白、脚底基准、角色选择及实际战斗显示。Picxel 包（历史附件已清理） 保留素材预览；游戏内截图与行走实录（历史附件已清理） 使用正式场景和角色控制器采集。
 
 ## 9. 实现与验证
 

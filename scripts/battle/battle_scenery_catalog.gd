@@ -1,6 +1,6 @@
 extends RefCounted
 class_name BattleSceneryCatalog
-## Cropped views into unchanged 128px art, with physical size independent of canvas.
+## Cropped views into approved art, with physical size independent of canvas.
 const CONFIG_PATH := "res://data_config/battle_scenery.json"
 static var _config: Dictionary = {}
 static var _textures: Dictionary = {}

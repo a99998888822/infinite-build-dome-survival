@@ -1,0 +1,42 @@
+[
+  {
+    "name": "main-headless",
+    "exit_code": 0,
+    "errors": [
+      "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+    ],
+    "tail": [
+      "[DataRegistry] - drop_tables: 3 records",
+      "[DataRegistry] - augmentations: 20 records",
+      "[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s",
+      "[DataRegistry] stat check: armor=100 => damage_taken_percent 50",
+      "[DataRegistry] stat check: area_size=40 => radius 140 from 100",
+      "[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6",
+      "[DataRegistry] load completed without errors",
+      "[GameGlobal] game root ready",
+      "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+      "   at: cleanup (core/object/object.cpp:2536)",
+      "ERROR: 2 resources still in use at exit (run with --verbose for details).",
+      "   at: clear (core/io/resource.cpp:822)"
+    ]
+  },
+  {
+    "name": "battle-headless",
+    "exit_code": 0,
+    "errors": [],
+    "tail": [
+      "[DataRegistry] - camp_buildings: 6 records",
+      "[DataRegistry] - zones: 3 records",
+      "[DataRegistry] - waves: 20 records",
+      "[DataRegistry] - drop_tables: 3 records",
+      "[DataRegistry] - augmentations: 20 records",
+      "[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s",
+      "[DataRegistry] stat check: armor=100 => damage_taken_percent 50",
+      "[DataRegistry] stat check: area_size=40 => radius 140 from 100",
+      "[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6",
+      "[DataRegistry] load completed without errors",
+      "[GameGlobal] game root ready",
+      "MEADOW_INSTALL_REVIEW checks=107 failures=0"
+    ]
+  }
+]

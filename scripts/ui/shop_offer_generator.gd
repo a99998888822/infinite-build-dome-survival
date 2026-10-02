@@ -17,10 +17,15 @@ const RARITY_LUCK_REQUIREMENTS: Dictionary = {
 const WEAPON_UPGRADE_MISS_WEIGHT: int = 2
 const WEAPON_UPGRADE_WEIGHT_CAP: int = 20
 const BASE_TYPE_WEIGHTS: Dictionary = {
-	OFFER_NEW_WEAPON: 25,
+	OFFER_NEW_WEAPON: 12,
 	OFFER_RELIC: 60,
 	OFFER_WEAPON_UPGRADE: 8,
 }
+# The index is the number of distinct weapons already owned, capped at four.
+# Free level rewards arrive several times per wave; paid shelves stay more useful
+# for deliberately buying a second weapon without quickly filling the loadout.
+const PAID_NEW_WEAPON_WEIGHTS := [18, 12, 6, 3, 1]
+const FREE_NEW_WEAPON_WEIGHTS := [12, 6, 3, 1, 1]
 
 
 func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
@@ -187,6 +192,9 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 	var candidates: Array = context.get("candidate_pool", [])
 	var weights: Dictionary = BASE_TYPE_WEIGHTS.duplicate()
 	var type_counts := _count_offer_types(candidates)
+	var owned_count := _to_string_set(context.get("owned_weapon_ids", [])).size()
+	var new_weapon_weights := FREE_NEW_WEAPON_WEIGHTS if str(context.get("offer_mode", "shop")) == "free" else PAID_NEW_WEAPON_WEIGHTS
+	weights[OFFER_NEW_WEAPON] = new_weapon_weights[mini(owned_count, new_weapon_weights.size() - 1)]
 	for offer_type in weights.keys():
 		if int(type_counts.get(offer_type, 0)) <= 0:
 			weights[offer_type] = 0
@@ -213,9 +221,11 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 	var zone_target_pools := _to_string_set(context.get("zone_target_pools", []))
 	var zone_tag_weight_bonus := maxi(0, int(context.get("zone_tag_weight_bonus", 0)))
 	if zone_target_pools.has("weapon"):
-		weights[OFFER_NEW_WEAPON] += zone_tag_weight_bonus
-		weights[OFFER_WEAPON_UPGRADE] = mini(WEAPON_UPGRADE_WEIGHT_CAP, int(weights[OFFER_WEAPON_UPGRADE]) + maxi(1, int(ceil(float(zone_tag_weight_bonus) * 0.5))))
-	if zone_target_pools.has("relic"):
+		# Weapon tags already bias candidates within their type. Adding an
+		# unbounded zone bonus here would erase the ownership/load reduction.
+		if int(type_counts.get(OFFER_WEAPON_UPGRADE, 0)) > 0:
+			weights[OFFER_WEAPON_UPGRADE] = mini(WEAPON_UPGRADE_WEIGHT_CAP, int(weights[OFFER_WEAPON_UPGRADE]) + maxi(1, int(ceil(float(zone_tag_weight_bonus) * 0.5))))
+	if zone_target_pools.has("relic") and int(type_counts.get(OFFER_RELIC, 0)) > 0:
 		weights[OFFER_RELIC] += zone_tag_weight_bonus
 	return weights
 
@@ -227,11 +237,12 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 			remaining.append(candidate.duplicate(true))
 	var offers: Array[Dictionary] = []
 	var upgrade_selected := false
+	var new_weapon_selected := false
 
 	for _slot in maxi(0, offer_count):
 		if remaining.is_empty():
 			break
-		var available := _filter_available_candidates(remaining, upgrade_selected)
+		var available := _filter_available_candidates(remaining, upgrade_selected, new_weapon_selected)
 		available = _filter_candidates_by_rarity_weights(available, rarity_weights)
 		if available.is_empty():
 			break
@@ -243,6 +254,8 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 			break
 		if candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE:
 			upgrade_selected = true
+		if candidate.get("offer_type", "") == OFFER_NEW_WEAPON:
+			new_weapon_selected = true
 		remaining.erase(candidate)
 		offers.append(candidate)
 	return offers
@@ -279,6 +292,7 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 			available.append(candidate)
 	var result: Array[Dictionary] = []
 	var upgrade_selected := false
+	var new_weapon_selected := false
 	for slot in count:
 		var guaranteed: Array[Dictionary] = []
 		if slot == 0 and not guaranteed_relic_rarity.is_empty():
@@ -308,9 +322,10 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 			stock.erase(chosen)
 		if str(chosen.get("offer_type", "")) == OFFER_WEAPON_UPGRADE:
 			upgrade_selected = true
-		if upgrade_selected:
-			stock = _filter_available_candidates(stock, true)
-			available = _filter_available_candidates(available, true)
+		if str(chosen.get("offer_type", "")) == OFFER_NEW_WEAPON:
+			new_weapon_selected = true
+		stock = _filter_available_candidates(stock, upgrade_selected, new_weapon_selected)
+		available = _filter_available_candidates(available, upgrade_selected, new_weapon_selected)
 	return result
 
 
@@ -331,10 +346,12 @@ func _pick_weighted_candidate(candidates: Array[Dictionary]) -> Dictionary:
 	return candidates[0]
 
 
-func _filter_available_candidates(candidates: Array[Dictionary], upgrade_selected: bool) -> Array[Dictionary]:
+func _filter_available_candidates(candidates: Array[Dictionary], upgrade_selected: bool, new_weapon_selected: bool = false) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for candidate in candidates:
 		if upgrade_selected and candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE:
+			continue
+		if new_weapon_selected and candidate.get("offer_type", "") == OFFER_NEW_WEAPON:
 			continue
 		result.append(candidate)
 	return result

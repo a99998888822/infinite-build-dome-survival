@@ -56,6 +56,9 @@ func _ready() -> void:
 	_seal.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(_seal)
 	_title = _label(_card, "交易", 18, FinanceUIStyle.GOLD)
+	# A header must not acquire a wrapped minimum height before its first layout.
+	_title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_body_scroll = ScrollContainer.new()
 	_body_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	FinanceUIStyle.scroll(_body_scroll)
@@ -126,11 +129,11 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_seal.position = Vector2(padding, 10 if _compact else 12)
 	_seal.size = Vector2(20, 20) if _compact else Vector2(28, 28)
 	_title.position = Vector2(padding + (24 if _compact else 36), 10 if _compact else 12)
+	FinanceUIStyle.label(_title, 12 if _compact else 18, FinanceUIStyle.GOLD)
 	_title.size = Vector2(w - _title.position.x - padding, 18 if _compact else 26)
 	if _challenge_header:
 		_title.size.y = _seal.size.y
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER if _challenge_header else VERTICAL_ALIGNMENT_TOP
-	FinanceUIStyle.label(_title, 12 if _compact else 18, FinanceUIStyle.GOLD)
 	_body_scroll.position = Vector2(padding, 44 if _compact else 60)
 	var button_width := (w - padding * 2 - 10) * 0.5
 	var button_height := 24.0 if _compact else 28.0

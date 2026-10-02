@@ -1,7 +1,7 @@
 extends ItemInventoryCard
 class_name EnchantmentInventoryCard
 
-const CARD_SIZE := Vector2(112, 28)
+const CARD_SIZE := Vector2(112, 40)
 const INSPECT_ICON: Texture2D = preload("res://assets/ui/finance/inspect_enchantment.svg")
 var _art: TextureRect
 var _caption: Label
@@ -20,9 +20,9 @@ func _ready() -> void:
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
 	_art = TextureRect.new()
-	_art.custom_minimum_size = Vector2(20, 20)
+	_art.custom_minimum_size = Vector2(32, 32)
 	_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_art.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(_art)
 	_caption = Label.new()

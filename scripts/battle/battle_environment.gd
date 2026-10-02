@@ -20,7 +20,7 @@ var fold_height := FOLD_HEIGHT
 @onready var bottom_edge_glow: ColorRect = get_node_or_null("../BattleSky/BottomEdgeGlow")
 @onready var bottom_edge_shadow: ColorRect = get_node_or_null("../BattleSky/BottomEdgeShadow")
 @onready var ruins: Node2D = get_node_or_null("../BattleSky/DistantRuins")
-@onready var ground: WetlandBackdrop = get_node_or_null("../CombatRenderWorld/Backdrop")
+@onready var ground: Node2D = get_node_or_null("../CombatRenderWorld/Backdrop")
 @onready var fold: WetlandHorizonFold = get_node_or_null("../CombatRenderWorld/HorizonFold")
 
 
@@ -47,17 +47,20 @@ func _apply_sky_layout() -> void:
 	if sky == null or get_viewport() == null:
 		return
 	var view_size := get_viewport().get_visible_rect().size
-	var sky_bottom := TOP_BAR_HEIGHT + ceilf(view_size.x / SKY_TEXTURE_ASPECT_RATIO)
+	var top_height := 0.0 if ground is MeadowBattleBackdrop else TOP_BAR_HEIGHT
+	var sky_bottom := top_height + ceilf(view_size.x / SKY_TEXTURE_ASPECT_RATIO)
 	horizon_y = sky_bottom
 	fold_height = clampf(view_size.y * FOLD_HEIGHT / 648.0, 30.0, 48.0)
-	sky.offset_top = TOP_BAR_HEIGHT
+	sky.offset_top = top_height
 	sky.offset_bottom = sky_bottom
 	if sky.material is ShaderMaterial:
-		(sky.material as ShaderMaterial).set_shader_parameter("sky_height", sky_bottom - TOP_BAR_HEIGHT)
+		(sky.material as ShaderMaterial).set_shader_parameter("sky_height", sky_bottom - top_height)
 	if top_edge_highlight != null:
+		top_edge_highlight.visible = top_height > 0.0
 		top_edge_highlight.offset_top = TOP_BAR_HEIGHT
 		top_edge_highlight.offset_bottom = TOP_BAR_HEIGHT + TOP_EDGE_HIGHLIGHT_HEIGHT
 	if top_edge_shadow != null:
+		top_edge_shadow.visible = top_height > 0.0
 		top_edge_shadow.offset_top = TOP_BAR_HEIGHT + TOP_EDGE_HIGHLIGHT_HEIGHT
 		top_edge_shadow.offset_bottom = top_edge_shadow.offset_top + TOP_EDGE_SHADOW_HEIGHT
 	if bottom_edge_glow != null:
@@ -71,6 +74,13 @@ func _apply_sky_layout() -> void:
 func _update_horizon_view() -> void:
 	if ground == null or fold == null or ruins == null or not ground.is_node_ready():
 		return
+	if ground is MeadowBattleBackdrop:
+		# The meadow owns the exact terrain projection shared by its ruin roots.
+		fold.hide()
+		return
 	var view_size := get_viewport().get_visible_rect().size
 	ruins.configure_view(horizon_y, view_size, ground.camera_position.x)
+	if ground is GreenBattleBackdrop:
+		fold.hide()
+		return
 	fold.configure_view(horizon_y, fold_height, view_size, ground, ruins.get_placements(), sky.texture)

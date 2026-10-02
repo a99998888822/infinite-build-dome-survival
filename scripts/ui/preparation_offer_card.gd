@@ -6,6 +6,7 @@ signal preview_requested(offer: Dictionary)
 signal preview_cleared
 var offer: Dictionary = {}
 var _icon: TextureRect
+var _icon_frame: Control
 var _rarity_glow: TextureRect
 var _name_label: Label
 var _kind_label: Label
@@ -23,10 +24,10 @@ func _ready() -> void:
 	var heading := HBoxContainer.new()
 	heading.add_theme_constant_override("separation", 12)
 	body.add_child(heading)
-	var icon_frame := Control.new()
-	icon_frame.custom_minimum_size = Vector2(36, 36)
-	icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	heading.add_child(icon_frame)
+	_icon_frame = Control.new()
+	_icon_frame.custom_minimum_size = Vector2(36, 36)
+	_icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	heading.add_child(_icon_frame)
 	var gradient := Gradient.new()
 	gradient.offsets = PackedFloat32Array([0.0, 0.35, 1.0])
 	gradient.colors = PackedColorArray([Color(1, 1, 1, 0.8), Color(1, 1, 1, 0.35), Color(1, 1, 1, 0)])
@@ -40,18 +41,21 @@ func _ready() -> void:
 	_rarity_glow = TextureRect.new()
 	_rarity_glow.texture = glow_texture
 	_rarity_glow.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_rarity_glow.position = Vector2(-12, -12)
-	_rarity_glow.size = Vector2(60, 60)
 	_rarity_glow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_rarity_glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	icon_frame.add_child(_rarity_glow)
+	_icon_frame.add_child(_rarity_glow)
+	_rarity_glow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_rarity_glow.offset_left = -12
+	_rarity_glow.offset_top = -12
+	_rarity_glow.offset_right = 12
+	_rarity_glow.offset_bottom = 12
 	_icon = TextureRect.new()
 	_icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	icon_frame.add_child(_icon)
+	_icon_frame.add_child(_icon)
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	heading.add_child(titles)
@@ -111,7 +115,8 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	tooltip_text = ""
 	_name_label.tooltip_text = title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
-	_icon.texture = FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
+	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+	_icon_frame.custom_minimum_size = Vector2(36, 36).max(_icon.custom_minimum_size)
 	var rarity := str(offer.get("rarity", "common"))
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"

@@ -21,6 +21,9 @@ func _ready() -> void:
 func _make_player(erosion: float) -> RecordingPlayer:
 	var player := RecordingPlayer.new()
 	player.auto_initialize_on_ready = false
+	var body_scene := preload("res://scenes/player/player_root.tscn").instantiate()
+	player.add_child(body_scene.get_node("CollisionShape2D").duplicate())
+	body_scene.free()
 	add_child(player)
 	player.initialize_from_character("character_void_hunter")
 	player.set_physics_process(false)

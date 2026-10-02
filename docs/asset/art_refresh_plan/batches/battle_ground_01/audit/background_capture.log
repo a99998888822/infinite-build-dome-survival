@@ -1,0 +1,54 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Intel) - ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.101.5333)
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 11 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 2 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - zones: 3 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 20 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.50s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 140 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS all thirty approved assets registered
+PASS copied PNG hashes and content bounds match approved package
+PASS moss remains smaller than single brick including size variation
+PASS same asset smaller in distance
+[GameGlobal] game root ready
+PASS start production battle
+PASS all cells keep density <= 3 at 01_center
+PASS cropped nearest-neighbor art keeps aspect ratio and stays off central floor 01_center
+PASS streamed cells reclaimed 01_center
+PASS capture 01_center
+PASS all cells keep density <= 3 at 02_wetland
+PASS cropped nearest-neighbor art keeps aspect ratio and stays off central floor 02_wetland
+PASS streamed cells reclaimed 02_wetland
+PASS capture 02_wetland
+PASS all cells keep density <= 3 at 03_outskirts
+PASS cropped nearest-neighbor art keeps aspect ratio and stays off central floor 03_outskirts
+PASS streamed cells reclaimed 03_outskirts
+PASS capture 03_outskirts
+PASS all cells keep density <= 3 at 04_return
+PASS cropped nearest-neighbor art keeps aspect ratio and stays off central floor 04_return
+PASS streamed cells reclaimed 04_return
+PASS capture 04_return
+PASS decoration positions stable after leaving and returning
+PASS environment pauses with battle
+PASS environment resumes
+PASS ripple keeps original physical size despite 128px canvas
+PASS ripple pool expires normally
+PASS small-window ruins remain below HUD and share reflection waterline
+PASS capture 05_small_window
+PASS normal battle runs with new scenery
+PASS capture 06_live_combat
+PASS normal return to menu releases streamed environment
+PASS environment released with battle
+BATTLE_ENVIRONMENT_COMPLETE failures=0

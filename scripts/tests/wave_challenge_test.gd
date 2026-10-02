@@ -85,9 +85,17 @@ func _end_wave() -> void:
 func _open(id: String) -> void:
 	_force_kind(id)
 	flow.close_finance_popup()
+	_check_header_layout("first layout")
 	await frames()
+	_check_header_layout("settled layout")
 	check(flow.current_state == flow.STATE_WAVE_CHALLENGE and ui.visible and not manager.running, "next-wave action opens paused challenge")
 	check(not ui.presentation._yes.disabled and not ui.presentation._no.disabled and ui.presentation._body.visible_characters == -1, "terms and both choices ready immediately")
+
+
+func _check_header_layout(stage: String) -> void:
+	var title := ui.presentation._title.get_global_rect()
+	var body := ui.presentation._body_scroll.get_global_rect()
+	check(title.size.y <= 28 and title.end.y + 12 <= body.position.y, "challenge header clear of terms: " + stage)
 
 
 func _capture(name: String) -> void:
@@ -143,6 +151,7 @@ func _test_flow() -> void:
 	get_tree().root.content_scale_size = Vector2i(640, 360)
 	await frames()
 	check(ui.portrait.get_rect().position.y >= 0 and ui._back.get_rect().end.y <= 360 and ui.presentation._card.get_rect().end.x <= 640, "compact screen keeps portrait card and navigation inside viewport")
+	_check_header_layout("compact viewport")
 	check((ui.get_parent() as CanvasLayer).layer > (game.find_child("HUD", true, false) as BattleHud).layer, "challenge sits above the stats drawer on every screen size")
 	await _capture("04_compact")
 	get_tree().root.size = Vector2i(1152, 768)

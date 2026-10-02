@@ -23,6 +23,7 @@ const DAMAGE_SOURCE_COLORS := {
 	"principal": "#F5D76E",
 }
 const EFFECT_PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const ATTACHMENT_BONUS_KEYS := ["all_damage_percent", "element_damage_percent", "projectile_count", "damage_area_size", "crit_chance", "crit_damage", "attack_speed"]
 
 var weapon_id: String = ""
 static var _next_instance_id: int = 1
@@ -41,9 +42,14 @@ var effect_modifiers: Array[Dictionary] = []
 var _base_effect_ids: Array[String] = []
 var _base_effect_modifiers: Array[Dictionary] = []
 var _attached_item_instances: Array[Dictionary] = []
+var _attachment_bonuses: Dictionary = {}
 var attack_interval_ms: int = 0
 var attack_timer: float = 0.0
 var volley_index: int = 0
+var attack_context: Dictionary = {}
+# A replay has its own immutable world origin; the real player never moves.
+var fixed_attack_origin: Variant = null
+var is_bounce_attack := false
 var grenade_blast_radius: float = 0.0
 var _attack_hit_sfx_played: bool = false
 var _projectile_hit_sfx_played: Dictionary = {}
@@ -92,6 +98,40 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 
 func tick(delta: float) -> void:
 	attack_timer = maxf(attack_timer - delta, 0.0)
+
+
+func begin_attack() -> void:
+	attack_context = {"bounce_used": false}
+
+
+func get_attack_origin() -> Vector2:
+	return fixed_attack_origin if fixed_attack_origin is Vector2 else owner_player.global_position
+
+
+func make_bounce_copy(point: Vector2) -> WeaponInstance:
+	var copy := WeaponInstance.new()
+	copy.weapon_id = weapon_id
+	copy.instance_id = instance_id + "_bounce"
+	copy.weapon_data = weapon_data.duplicate(true)
+	copy.owner_player = owner_player
+	copy.principal_getter = principal_getter
+	copy.level = level
+	copy.runtime_stats = runtime_stats.duplicate(true)
+	copy.attack_interval_ms = attack_interval_ms
+	copy.grenade_blast_radius = grenade_blast_radius
+	copy.volley_index = volley_index
+	copy.fixed_attack_origin = point
+	copy.is_bounce_attack = true
+	copy._base_effect_ids = _base_effect_ids.duplicate()
+	copy._base_effect_ids.erase("bounce")
+	copy._base_effect_ids.erase("resonance")
+	copy._base_effect_modifiers = _base_effect_modifiers.duplicate(true)
+	for item in _attached_item_instances:
+		if not "bounce" in item.get("effect_ids", []) and not "resonance" in item.get("effect_ids", []):
+			copy._attached_item_instances.append(item.duplicate(true))
+	copy._rebuild_attachment_effects()
+	copy.begin_attack()
+	return copy
 
 
 func can_attack() -> bool:
@@ -171,7 +211,18 @@ func get_stat(stat_id: String) -> float:
 	var default_value := StatDefinitions.get_default_value(stat_id)
 	var weapon_value := float(runtime_stats.get(stat_id, default_value))
 	var player_value := owner_player.get_stat(stat_id) if owner_player != null else default_value
-	return StatDefinitions.clamp_stat_value(stat_id, weapon_value + player_value - default_value)
+	return StatDefinitions.clamp_stat_value(stat_id, weapon_value + player_value - default_value + get_attachment_bonus(stat_id))
+
+
+func get_attachment_bonus(key: String) -> float:
+	return float(_attachment_bonuses.get(key, 0.0))
+
+
+func get_attachment_damage_multiplier(elemental: bool = false) -> float:
+	var multiplier := 1.0 + get_attachment_bonus("all_damage_percent") / 100.0
+	if elemental:
+		multiplier *= 1.0 + get_attachment_bonus("element_damage_percent") / 100.0
+	return multiplier
 
 
 func get_weapon_stat(stat_id: String) -> float:
@@ -184,6 +235,24 @@ func get_effect_ids() -> Array[String]:
 
 func has_effect(effect_id: String) -> bool:
 	return effect_ids.has(effect_id.strip_edges())
+
+
+func get_enchantment_sequence() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for id in _base_effect_ids:
+		result.append({"effect_id": id, "item_instance_id": "__base_effect__"})
+	for item in _attached_item_instances:
+		for id in item.get("effect_ids", []):
+			result.append({"effect_id": str(id), "item_instance_id": str(item.get("item_instance_id", ""))})
+	return result
+
+
+func get_split_continuation(item_id: String) -> int:
+	var sequence := get_enchantment_sequence()
+	for index in sequence.size():
+		if sequence[index].effect_id == "split" and sequence[index].item_instance_id == item_id:
+			return index + 1
+	return 0
 
 
 func get_effect_instances(effect_id: String) -> Array[Dictionary]:
@@ -299,6 +368,7 @@ func add_augmentation(augmentation_id: String) -> bool:
 		"display_name": str(augmentation.get("display_name", augmentation_id)),
 		"effect_ids": augmentation.get("effect_ids", []).duplicate(),
 		"modifiers": augmentation.get("modifiers", []).duplicate(true),
+		"weapon_bonuses": augmentation.get("weapon_bonuses", {}).duplicate(true),
 	}
 	return attach_item_instance(legacy_item)
 
@@ -306,12 +376,19 @@ func add_augmentation(augmentation_id: String) -> bool:
 func _reset_effect_runtime() -> void:
 	effect_ids = _base_effect_ids.duplicate()
 	effect_modifiers = _base_effect_modifiers.duplicate(true)
+	_attachment_bonuses.clear()
 
 
 func _rebuild_attachment_effects() -> void:
 	_reset_effect_runtime()
 	for item_instance in _attached_item_instances:
 		var item_instance_id := str(item_instance.get("item_instance_id", ""))
+		# Keep attachment bonuses outside player stats and permanent level stats.
+		# Rebuilding makes transfer/removal reversible and bounce copies independent.
+		var bonuses: Dictionary = item_instance.get("weapon_bonuses", {})
+		for key in bonuses:
+			if key in ATTACHMENT_BONUS_KEYS:
+				_attachment_bonuses[key] = get_attachment_bonus(key) + float(bonuses[key])
 		for effect_id in item_instance.get("effect_ids", []):
 			add_effect_by_id(str(effect_id))
 		for modifier in item_instance.get("modifiers", []):
@@ -341,7 +418,15 @@ func get_effect_modifiers(effect_id: String = "", source_id: String = "") -> Arr
 		if not effect_id.is_empty() and modifier_effect_id != "*" and modifier_effect_id != effect_id:
 			continue
 		if not source_id.is_empty() and modifier_source_id != source_id and modifier_source_id != "":
-			continue
+			# Another copy's local modifiers must not amplify this copy. Global
+			# relic/base modifiers and explicit cross-effect modifiers still apply.
+			var belongs_to_other_copy := false
+			for item in _attached_item_instances:
+				if str(item.get("item_instance_id", "")) == modifier_source_id and effect_id in item.get("effect_ids", []):
+					belongs_to_other_copy = true
+					break
+			if belongs_to_other_copy:
+				continue
 		result.append(modifier.duplicate(true))
 	return result
 
@@ -358,14 +443,18 @@ func get_load_cost() -> int:
 
 func get_hit_radius() -> float:
 	var base_radius := float(weapon_data.get("hit_radius", 0))
+	if is_nightwatch_spear() or is_camp_dagger() or is_copper_lamp() or is_mutant_tentacle() or is_earth_hammer():
+		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 	if str(weapon_data.get("projectile_behavior", "")) == "plasma":
 		# One radius owns the plasma core, contact query, collider and item details.
 		return maxf(StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size")), 4.0)
-	return StatDefinitions.calculate_attack_radius(base_radius, get_stat("area_size"))
+	return StatDefinitions.calculate_damage_area_radius(StatDefinitions.calculate_attack_radius(base_radius, get_stat("area_size")), get_stat("damage_area_size"))
 
 
 func get_attack_range() -> float:
 	var base_range := float(weapon_data.get("attack_range", weapon_data.get("hit_radius", 0)))
+	if is_earth_hammer():
+		base_range = float(weapon_data.ground_first_offset) + (get_ground_node_count() - 1) * float(weapon_data.ground_node_spacing)
 	return StatDefinitions.calculate_attack_radius(base_range, get_stat("area_size"))
 
 
@@ -387,6 +476,30 @@ func is_coin_purse() -> bool:
 
 func is_meteor_flail() -> bool:
 	return str(weapon_data.get("projectile_behavior", "")) == "meteor_flail"
+
+
+func is_nightwatch_spear() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "nightwatch_spear"
+
+
+func is_camp_dagger() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "camp_dagger"
+
+
+func is_copper_lamp() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "copper_lamp"
+
+
+func is_mutant_tentacle() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "mutant_tentacle"
+
+
+func is_earth_hammer() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "earth_hammer"
+
+
+func get_ground_node_count() -> int:
+	return clampi(int(weapon_data.get("ground_node_count", 5)) + maxi(0, int(get_stat("projectile_count")) - 1), 1, 8)
 
 
 func get_damage_stat_id() -> String:
@@ -417,11 +530,12 @@ func get_split_profiles() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for item in get_effect_instances("split"):
 		var context := EFFECT_PARAMETERS.build_weapon_context(self, "split", {
-			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.6,
+			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.45,
 		}, str(item.get("item_instance_id", "")))
 		result.append({"child_count": clampi(roundi(context.get_resolved_parameter("child_count", 2.0)), 1, 8),
+			"enchantment_start": get_split_continuation(str(item.get("item_instance_id", ""))),
 			"spread_angle": maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0),
-			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0)})
+			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.45), 0.0)})
 	return result
 
 
@@ -443,12 +557,13 @@ func get_grenade_split_profiles() -> Array[Dictionary]:
 		return profiles
 	for item in get_effect_instances("split"):
 		var context := EFFECT_PARAMETERS.build_weapon_context(self, "split", {
-			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.6,
+			"child_count": 2.0, "spread_angle": 36.0, "damage_multiplier": 0.45,
 		}, str(item.get("item_instance_id", "")))
 		profiles.append({
+			"enchantment_start": get_split_continuation(str(item.get("item_instance_id", ""))),
 			"child_count": clampi(roundi(context.get_resolved_parameter("child_count", 2.0)), 1, 8),
 			"spread_angle": maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0),
-			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0),
+			"damage_multiplier": maxf(context.get_resolved_parameter("damage_multiplier", 0.45), 0.0),
 			"radius_multiplier": maxf(float(weapon_data.get("grenade_split_radius_multiplier", 0.5)), 0.01),
 			"flight_seconds": maxf(float(weapon_data.get("grenade_split_flight_seconds", 0.32)), 0.01),
 			"arc_height": maxf(float(weapon_data.get("grenade_split_arc_height", 32)), 0.0),
@@ -504,17 +619,22 @@ func _apply_level_upgrades(target_level: int) -> void:
 			grenade_blast_radius = maxf(1.0, grenade_blast_radius + value)
 
 
-func _build_damage_event(damage_kind: String, force_critical: bool) -> DamageEvent:
+func _build_damage_event(damage_kind: String, force_critical: bool, roll_critical: bool = true) -> DamageEvent:
 	var base_damage := get_base_attack_damage()
 	var damage := base_damage * (1.0 + get_stat("damage_percent") / 100.0)
-	var critical := force_critical or randf() * 100.0 < get_stat("crit_chance")
+	var critical := force_critical or (roll_critical and randf() * 100.0 < get_stat("crit_chance"))
 	if critical:
 		damage *= get_stat("crit_damage") / 100.0
 	return DamageEvent.create({
 		"source_player": owner_player,
 		"source_weapon_id": weapon_id,
-		"damage": maxi(1, int(roundi(damage))),
+		"attack_context": attack_context,
+		"damage": maxi(1, int(roundi(damage * get_attachment_damage_multiplier(damage_kind == DAMAGE_KIND_ELEMENT)))),
 		"original_damage": maxi(1, int(roundi(damage))),
+		# Keep the pre-attachment base; boost the full elemental base once, including
+		# the flat element bonus. Children/reactions inherit this captured multiplier.
+		"elemental_damage_scale": get_attachment_damage_multiplier(true),
+		"damage_area_scale": maxf(0.01, 1.0 + get_stat("damage_area_size") / 100.0),
 		# Elemental native attacks already include this bonus; attachments must not add it twice.
 		"element_damage_bonus": 0 if damage_kind == DAMAGE_KIND_ELEMENT else maxi(0, int(roundi(get_stat("element_damage")))),
 		"damage_kind": damage_kind,
@@ -558,18 +678,42 @@ func build_full_stats_text() -> String:
 	var display_name := str(weapon_data.get("display_name", weapon_id))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	lines.append("[color=#F5D76E]伤害[/color] " + _format_damage_source(get_damage_stat_id()))
-	if not is_zero_approx(get_stat("damage_percent")):
-		lines.append("[color=#F5D76E]伤害加成[/color] %+.0f%%" % get_stat("damage_percent"))
+	lines.append("[color=#F5D76E]伤害：[/color]" + _format_damage_source(get_damage_stat_id()))
+	if get_stat("damage_area_size") != 0:
+		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f%%" % get_stat("damage_area_size"))
 	var interval := get_actual_attack_interval_seconds()
-	lines.append("[color=#F5D76E]攻击间隔[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
+	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%.2fs[/color]" % ["过热冷却" if is_copper_lamp() else "攻击间隔", interval])
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
-	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % ["每轮挥击" if is_meteor_flail() else ("每轮目标" if is_ritual_tome() else "投射物"), maxi(1, int(get_stat("projectile_count")))])
+	var count_label := "投射物"
+	if is_nightwatch_spear(): count_label = "每轮刺击"
+	elif is_meteor_flail(): count_label = "每轮挥击"
+	elif is_ritual_tome(): count_label = "每轮目标"
+	elif is_copper_lamp(): count_label = "火流束数"
+	elif is_earth_hammer(): count_label = "地裂节点"
+	if not is_camp_dagger() and not is_mutant_tentacle():
+		lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % [count_label, get_ground_node_count() if is_earth_hammer() else maxi(1, int(get_stat("projectile_count")))])
 	if is_grenade():
 		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
 		lines.append("抛射榴弹，%.2f秒后在落点爆炸。" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
 	elif is_meteor_flail():
+		lines.append("[color=#F5D76E]锤头伤害半径[/color] %s" % _format_damage_number(get_hit_radius()))
 		lines.append("锤头挥击。")
+	elif is_copper_lamp():
+		lines.append("[color=#F5D76E]喷射距离[/color] %d · %s°窄扇面" % [roundi(get_attack_range()), _format_damage_number(get_lamp_cone_degrees())])
+		lines.append("开火后持续喷射%.2fs至过热，每%.2fs灼烧。" % [float(weapon_data.lamp_spray_ms) / 1000, float(weapon_data.lamp_tick_ms) / 1000 * interval / (attack_interval_ms / 1000.0)])
+		lines.append("每秒%s°追踪最近目标；无目标时保持方向。" % _format_damage_number(float(weapon_data.get("lamp_turn_degrees_per_second", 180))))
+		lines.append("附魔每%.2fs最多触发一次，元素基数%d%%。" % [float(weapon_data.lamp_proc_ms) / 1000, int(weapon_data.lamp_proc_percent)])
+	elif is_mutant_tentacle():
+		lines.append("卷曲展开后瞬间拍地。")
+	elif is_earth_hammer():
+		lines.append("[color=#F5D76E]末节点距离[/color] %d · 每%.2fs向外推进" % [roundi(get_attack_range()), float(weapon_data.ground_node_interval_ms) / 1000])
+		lines.append("[color=#F5D76E]节点伤害半径[/color] %s" % _format_damage_number(get_hit_radius()))
+		lines.append("空地节点触发附魔；闪电链无目标不释放；短侧枝承接分裂后的附魔；穿透无效。")
+	elif is_camp_dagger():
+		lines.append("正反手交替斩击，分裂追加弱化追斩。")
+	elif is_nightwatch_spear():
+		lines.append("[color=#F5D76E]刺击距离[/color] %d  [color=#F5D76E]刺击宽度[/color] %d" % [roundi(get_attack_range()), roundi(get_hit_radius() * 2.0)])
+		lines.append("锁定方向，贯穿前方敌人；地形阻挡。")
 	elif is_ritual_tome():
 		var axes := get_domain_axes()
 		lines.append("[color=#F5D76E]领域半径[/color] %d × %d" % [roundi(axes.x), roundi(axes.y)])
@@ -582,10 +726,18 @@ func build_full_stats_text() -> String:
 		lines.append("接触时每%.2f秒灼击，每球最多5次。" % float(weapon_data.get("plasma_tick_interval", 0.1)))
 	for profile in (get_grenade_split_profiles() if is_grenade() else get_split_profiles()):
 		lines.append("[color=#F5D76E]分裂[/color] %d个 · 伤害%d%%" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
+	if has_effect("bounce"):
+		lines.append("[color=#F5D76E]弹跳[/color] 首次命中立即追加%d次攻击" % get_effect_instances("bounce").size())
+	if has_effect("resonance"):
+		lines.append("[color=#F5D76E]共鸣[/color] 每轮接力攻击%d次，至少两把武器参与" % get_effect_instances("resonance").size())
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	if has_attachment_slot():
 		lines.append(_build_attachment_icons_text())
 	return "\n".join(lines)
+
+
+func get_lamp_cone_degrees() -> float:
+	return minf(float(weapon_data.get("lamp_cone_degrees", 30)) * get_hit_radius() / maxf(float(weapon_data.get("hit_radius", 1)), 0.01), 162.0)
 
 
 func _build_attachment_icons_text() -> String:
@@ -610,10 +762,10 @@ func _format_damage_source(stat_id: String) -> String:
 	var fixed_damage := get_weapon_stat(stat_id)
 	# Reuse combat's resolved contribution, including coefficients and clamping.
 	var player_bonus := _get_damage_component_base(stat_id) - fixed_damage
-	var text := "([color=#FFFFFF]%s[/color]%s" % [_format_damage_number(fixed_damage), _format_damage_bonus(player_bonus, stat_id)]
+	var text := "（[color=#FFFFFF]%s[/color]%s" % [_format_damage_number(fixed_damage), _format_damage_bonus(player_bonus, stat_id)]
 	if is_coin_purse():
 		text += _format_damage_bonus(get_principal_damage_bonus(), "principal")
-	return text + ")"
+	return text + "）"
 
 
 func _format_damage_bonus(value: float, source: String) -> String:

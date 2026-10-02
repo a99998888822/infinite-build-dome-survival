@@ -3,6 +3,7 @@
 /android/
 artifacts/ui_visual_audit/
 tmp/
+temp/
 # Disposable capture frames and logs; keep only curated review outputs.
 artifacts/**/[0-9][0-9][0-9].png
 artifacts/**/capture.log

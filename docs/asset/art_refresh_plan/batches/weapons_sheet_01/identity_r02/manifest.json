@@ -1,0 +1,299 @@
+{
+  "status": "revision_rejected_by_user_report",
+  "revision": "identity_r02",
+  "scope": "11 weapon UI icons; 64x64 target after high-resolution review.",
+  "method": "Redraw existing identity in updated illustration style, not free redesign.",
+  "reference_processing": "Existing PNGs composed at 5x nearest-neighbor on white; existing style crop copied. No image model, pixel conversion or production installation.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "empty_cells": [
+      [
+        3,
+        4
+      ]
+    ],
+    "preferred_canvas": [
+      4096,
+      3072
+    ],
+    "bottom_white_band_percent": 10
+  },
+  "references": [
+    {
+      "file": "01_weapon_identity.png",
+      "role": "Identity only: silhouette, topology, orientation, proportions, key ornaments and main colors.",
+      "sha256": "7bd1312914ee7811a9d7c0694082c617138de788274d43e58fe6a1bf7f2a05b4",
+      "sources": [
+        "assets/ui/icons/weapons/weapon_wood_arrow.png",
+        "assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+        "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+        "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+        "assets/ui/icons/weapons/weapon_rentier_purse.png",
+        "assets/ui/icons/weapons/weapon_copper_lamp.png",
+        "assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+        "assets/ui/icons/weapons/weapon_earth_hammer.png",
+        "assets/ui/icons/weapons/weapon_camp_dagger.png",
+        "assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+        "assets/ui/icons/weapons/weapon_meteor_flail.png"
+      ]
+    },
+    {
+      "file": "02_drawing_style.png",
+      "role": "Drawing style only: dark outline, broad planes and hard shadows. Do not borrow object design or force its palette.",
+      "sha256": "f53fd1f3e5e3b0407d55b60a75842db481e3826857f74fee1efb91744c19d15d",
+      "provenance": {
+        "file": "01_steel_ink_reference.png",
+        "source": "artifacts/reference/darkest_dungeon/u=2637947151,2706126914&fm=253&fmt=auto&app=120&f=JPEG.webp",
+        "source_sha256": "63de8cad8a8f5e1823be915e9b1cd3bc59e3e9efbf10d10e7c8bc29a7aa9e4ec",
+        "source_canvas": [
+          800,
+          500
+        ],
+        "crop_xyxy": [
+          0,
+          0,
+          800,
+          245
+        ],
+        "output_sha256": "f53fd1f3e5e3b0407d55b60a75842db481e3826857f74fee1efb91744c19d15d",
+        "purpose": "Primary: dark metal planes, clear edges and hard shadows; omit identity and composition.",
+        "method": "Local crop; no image generation or pixel conversion."
+      }
+    }
+  ],
+  "rejected_input": {
+    "path": "artifacts/previews/art_refresh_v1/weapons_sheet_01/design_review_r02/weapons_sheet_01_rejected_source.png",
+    "sha256": "ea864279e9bbac1108e12accf212c7279767ae5c95e16b8dd416f911760dbe57",
+    "size": [
+      2364,
+      1773
+    ],
+    "status": "rejected_by_user_for_identity_drift",
+    "usage": "Review record only; do not upload as a new design reference."
+  },
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "weapon_wood_arrow",
+      "name": "木质弓箭",
+      "config_ids": [
+        "weapon_void_blade"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_wood_arrow.png",
+      "source_sha256": "e60552412da16c668a7641ddcc3ac50579b7f489b96d7ca5d18c53fd59cb7610",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_wood_arrow.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "weapon_plasma_cannon_v2",
+      "name": "电浆炮",
+      "config_ids": [
+        "weapon_plasma_cannon"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+      "source_sha256": "580b10f0050a95ec224e29d9378cf9041c87d7b8209cb3746e814504811d4d22",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_plasma_cannon_v2.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "weapon_iron_grenade_cannon",
+      "name": "铸铁榴弹炮",
+      "config_ids": [
+        "weapon_iron_grenade_cannon"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+      "source_sha256": "b919d0c85ca6fd14acc3506f1304f5905059123ee0848aa804fe04f16179ba77",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_iron_grenade_cannon.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "weapon_kunyu_ritual_tome",
+      "name": "坤舆秘仪书",
+      "config_ids": [
+        "weapon_kunyu_ritual_tome"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+      "source_sha256": "9bb6b8e3ac3c396127728321ed9544e12c31be1b3dcba46c70e8c9c5f4aeb6c6",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_kunyu_ritual_tome.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "weapon_rentier_purse",
+      "name": "食利者钱袋",
+      "config_ids": [
+        "weapon_rentier_purse"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_rentier_purse.png",
+      "source_sha256": "53ae76f0af0a1e08a8ed16be421fb6c10947b78e4ee26e1313858a1d116a4804",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_rentier_purse.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "weapon_copper_lamp",
+      "name": "赤铜炉灯",
+      "config_ids": [
+        "weapon_copper_lamp"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_copper_lamp.png",
+      "source_sha256": "cf610bed44f0a2150b27edd920e63949f6376a25007686408e53d03322db67e6",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_copper_lamp.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "weapon_mutant_tentacle",
+      "name": "异化触手",
+      "config_ids": [
+        "weapon_mutant_tentacle"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+      "source_sha256": "904b9d60e3202d8ef0125e1c41c1699bbba4520772edfb520c3697ca34be0b3f",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_mutant_tentacle.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "weapon_earth_hammer",
+      "name": "裂地战锤",
+      "config_ids": [
+        "weapon_earth_hammer"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_earth_hammer.png",
+      "source_sha256": "3d702d74131a3abadc05519d43c6886fa71f28469a828debc436bbc922282b60",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_earth_hammer.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "weapon_camp_dagger",
+      "name": "营地短刀",
+      "config_ids": [
+        "weapon_camp_dagger"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_camp_dagger.png",
+      "source_sha256": "c671e2b2f85d27020bf7e312f56b682034b551f43428efb2c9c69ef371a5ab67",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_camp_dagger.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "weapon_nightwatch_spear",
+      "name": "守夜长枪",
+      "config_ids": [
+        "weapon_nightwatch_spear"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+      "source_sha256": "5b1ca21ffbd353c05ca5e6249a248655ac157de17252be15e74ec78395bc9bec",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_nightwatch_spear.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "weapon_meteor_flail",
+      "name": "流星摆锤",
+      "config_ids": [
+        "weapon_meteor_flail"
+      ],
+      "source": "assets/ui/icons/weapons/weapon_meteor_flail.png",
+      "source_sha256": "7dc91b0a0c06e650e03048c3f04185d23d21a218bacb8cb9a1d0a08e2775667b",
+      "current_size": [
+        64,
+        64
+      ],
+      "output_filename": "weapon_meteor_flail.png",
+      "pixel_target": [
+        64,
+        64
+      ]
+    }
+  ],
+  "next_revision": "../elements_r03/README.md",
+  "rejection": "User reports original shapes were replicated; retain semantic cues but allow new designs."
+}

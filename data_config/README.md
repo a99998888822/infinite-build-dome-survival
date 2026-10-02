@@ -63,7 +63,7 @@
 7. 普通直线投射物按最近敌人索敌；榴弹选择密集怪群，秘仪书在椭圆领域内随机点名，钱袋均匀环射。
 8. `projectile_behavior` 区分普通弹体、`plasma`、`grenade`、`ritual_domain` 和 `coin`；`attack_kind=element` 使用元素武器伤害。
 9. `area_size` 只表示武器攻击距离/索敌距离；`damage_area_size` 只表示指定范围伤害的半径与视觉大小。
-10. 木质弓箭与电火花连锁不受 `damage_area_size` 影响；电浆球、落雷、火焰、冰冻、爆裂受其影响；`pickup_radius` 只控制掉落物吸附。
+10. 木质弓箭与电火花连锁不受 `damage_area_size` 影响；电浆球、落雷、火焰、冰冻的伤害区域及震荡的击退区域受其影响；`pickup_radius` 只控制掉落物吸附。
     电浆炮的 `hit_radius` 是球体显示、接触灼击、物理碰撞和属性栏共用的基础半径，默认12像素，受 `damage_area_size` 缩放，最低4像素；`area_size` 只扩大射程。旧 `plasma_damage_radius`／`plasma_visual_radius` 已移除，接地电弧不参与伤害判定。
 11. `hit_sfx` 是可选的武器命中音效路径；音频缺失时静默处理，不影响伤害逻辑。
 12. 秘仪书的 `attack_range`、`domain_minor_axis` 分别为椭圆的水平和垂直半轴，均受 `area_size` 加成；`projectile_count` 对应每轮不同目标的点名数量。

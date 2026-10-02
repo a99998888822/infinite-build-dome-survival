@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -8,7 +8,6 @@
 [ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
 [ext_resource type="PackedScene" path="res://scenes/ui/esc/esc_overlay.tscn" id="7_esc_overlay"]
 [ext_resource type="Script" path="res://scripts/battle/battle_environment.gd" id="8_battle_environment"]
-[ext_resource type="Texture2D" path="res://assets/sprites/background/background-stone-brick-floor.png" id="9_stone_floor"]
 [ext_resource type="Shader" path="res://shaders/battle/crt_ambience.gdshader" id="10_crt_ambience"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_hp.png" id="11_hud_hp"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_shield.png" id="12_hud_shield"]
@@ -22,9 +21,8 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-sky-Recovered.png" id="21_battle_sky"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-baike.png" id="22_icon_baike"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-plugin.png" id="23_icon_plugin"]
-[ext_resource type="Script" path="res://scripts/battle/wetland_backdrop.gd" id="24_wetland"]
-[ext_resource type="Shader" path="res://shaders/battle/wet_stone_floor.gdshader" id="25_wet_stone_floor"]
-[ext_resource type="Script" path="res://scripts/battle/distant_ruins.gd" id="26_ruins"]
+[ext_resource type="Script" path="res://scripts/battle/meadow_battle_backdrop.gd" id="24_wetland"]
+[ext_resource type="Script" path="res://scripts/battle/meadow_battle_horizon.gd" id="26_ruins"]
 [ext_resource type="Script" path="res://scripts/ui/battle_utility_overlay.gd" id="27_utility"]
 [ext_resource type="Script" path="res://scripts/battle/wetland_horizon_fold.gd" id="28_horizon_fold"]
 [ext_resource type="Shader" path="res://shaders/battle/horizon_sky.gdshader" id="29_horizon_sky"]
@@ -38,16 +36,13 @@ shader = ExtResource("6_modal_backdrop")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_ambience"]
 shader = ExtResource("10_crt_ambience")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wet_stone_floor"]
-shader = ExtResource("25_wet_stone_floor")
-
 [sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
-bg_color = Color(0.035, 0.049, 0.031, 0.9)
+bg_color = Color(0.035, 0.049, 0.031, 0.5)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.235, 0.274, 0.184, 0.94)
+border_color = Color(0.235, 0.274, 0.184, 0.5)
 content_margin_left = 10.0
 content_margin_top = 3.0
 content_margin_right = 10.0
@@ -102,8 +97,8 @@ layer = -2
 texture_filter = 1
 material = SubResource("ShaderMaterial_horizon_sky")
 anchor_right = 1.0
-offset_top = 56.0
-offset_bottom = 128.0
+offset_top = 0.0
+offset_bottom = 72.0
 grow_horizontal = 2
 mouse_filter = 2
 texture = ExtResource("21_battle_sky")
@@ -111,6 +106,7 @@ expand_mode = 1
 stretch_mode = 0
 
 [node name="TopEdgeHighlight" type="ColorRect" parent="BattleSky"]
+visible = false
 anchor_right = 1.0
 offset_top = 56.0
 offset_bottom = 58.0
@@ -119,6 +115,7 @@ mouse_filter = 2
 color = Color(0.32, 0.22, 0.08, 0.72)
 
 [node name="TopEdgeShadow" type="ColorRect" parent="BattleSky"]
+visible = false
 anchor_right = 1.0
 offset_top = 58.0
 offset_bottom = 65.0
@@ -157,18 +154,17 @@ layer = 30
 script = ExtResource("27_utility")
 
 [node name="Backdrop" type="Node2D" parent="CombatRenderWorld"]
-z_index = -110
 script = ExtResource("24_wetland")
 
 [node name="StoneBrickFloor" type="Sprite2D" parent="CombatRenderWorld"]
+visible = false
 texture_filter = 1
 position = Vector2(0, -24.64)
 scale = Vector2(0.64, 0.64)
 z_index = -100
-material = SubResource("ShaderMaterial_wet_stone_floor")
-texture = ExtResource("9_stone_floor")
 
 [node name="HorizonFold" type="Node2D" parent="CombatRenderWorld"]
+visible = false
 z_index = -105
 script = ExtResource("28_horizon_fold")
 
@@ -305,6 +301,7 @@ layer = 28
 layer = 21
 
 [node name="Background" type="ColorRect" parent="BattleTopBarBackground"]
+visible = false
 anchor_right = 1.0
 offset_bottom = 56.0
 grow_horizontal = 2

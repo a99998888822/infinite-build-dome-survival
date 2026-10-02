@@ -5,6 +5,7 @@ signal detonated(hit_count: int)
 
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
 const BLAST_LIFETIME := 0.52
+const MAX_SPLIT_GRENADES_PER_ATTACK := 6
 
 var weapon: WeaponInstance
 var damage_event: DamageEvent
@@ -34,11 +35,15 @@ func initialize(source: WeaponInstance, event: DamageEvent, start: Vector2, targ
 	global_position = start
 	z_index = 50
 	add_to_group("grenade_projectiles")
+	add_to_group("weapon_runtime_effects")
 	queue_redraw()
 
 
 func _physics_process(delta: float) -> void:
 	if cancelled or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	if is_instance_valid(weapon.owner_player) and not weapon.owner_player.alive:
+		cancel()
 		return
 	elapsed += delta
 	if not exploded:
@@ -125,6 +130,10 @@ func _spawn_split_grenades(contacts: Array[DamageEvent], profiles: Array) -> voi
 		for profile: Dictionary in profiles:
 			var count := int(profile.child_count)
 			for index in count:
+				var spawned := int(damage_event.attack_context.get("grenade_split_spawned", 0))
+				if spawned >= MAX_SPLIT_GRENADES_PER_ATTACK:
+					return
+				damage_event.attack_context["grenade_split_spawned"] = spawned + 1
 				var nearest: EnemyController
 				var nearest_distance := search_range * search_range
 				for enemy in candidates:
@@ -143,7 +152,7 @@ func _spawn_split_grenades(contacts: Array[DamageEvent], profiles: Array) -> voi
 				if nearest != null:
 					landing = nearest.global_position
 					reserved[nearest.get_instance_id()] = true
-				var event := damage_event.duplicate_event()
+				var event := damage_event.continue_after_split(profile)
 				var multiplier := float(profile.damage_multiplier)
 				event.damage = maxi(1, roundi(event.damage * multiplier))
 				event.original_damage = maxi(1, roundi(event.original_damage * multiplier))

@@ -1,0 +1,38 @@
+[
+  {
+    "file": "01_steel_ink_reference.png",
+    "source": "artifacts/reference/darkest_dungeon/u=2637947151,2706126914&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "source_sha256": "63de8cad8a8f5e1823be915e9b1cd3bc59e3e9efbf10d10e7c8bc29a7aa9e4ec",
+    "source_canvas": [
+      800,
+      500
+    ],
+    "crop_xyxy": [
+      0,
+      0,
+      800,
+      245
+    ],
+    "output_sha256": "f53fd1f3e5e3b0407d55b60a75842db481e3826857f74fee1efb91744c19d15d",
+    "purpose": "Primary: dark metal planes, clear edges and hard shadows; omit identity and composition.",
+    "method": "Local crop; no image generation or pixel conversion."
+  },
+  {
+    "file": "02_arcane_color_reference.png",
+    "source": "artifacts/reference/cuthulu/u=3055906668,2960803188&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "source_sha256": "81475d8f74095fe4ca9919e21341a9fc4bf66fa609bd44c5458249498a837cbd",
+    "source_canvas": [
+      500,
+      757
+    ],
+    "crop_xyxy": [
+      0,
+      0,
+      500,
+      450
+    ],
+    "output_sha256": "800342a343d44b37a820f0d2df2c6101c7fd2bfdf7ee49a5a78a269a71513f59",
+    "purpose": "Secondary: violet/cyan and aged-gold accents only; omit figure, glow, fine linework and composition.",
+    "method": "Local crop; no image generation or pixel conversion."
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "revision": "r02",
+  "utf8_and_whitespace": "passed",
+  "current_markdown_links": "passed",
+  "zip_integrity_and_file_hashes": "passed",
+  "zip_file_count": 14,
+  "prompt_count": 6,
+  "asset_count": 8,
+  "reference_count": 2,
+  "reference_hashes": "passed",
+  "opaque_terrain_contracts": "passed",
+  "obsolete_reference_archived": true,
+  "visual_review": [
+    "01_ground_palette_reference.png",
+    "layering_explained.png",
+    "layout_proposal.png"
+  ],
+  "pixel_conversion_performed": false,
+  "new_scene_runtime_validation_performed": false
+}

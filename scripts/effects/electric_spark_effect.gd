@@ -60,8 +60,13 @@ func _arm() -> void:
 
 
 func _ready() -> void:
+	add_to_group("combat_particle_counters")
 	z_index = 81
 	queue_redraw()
+
+
+func get_active_particle_count() -> int:
+	return PARTICLE_ROWS * PARTICLES_PER_ROW
 
 
 func _process(delta: float) -> void:

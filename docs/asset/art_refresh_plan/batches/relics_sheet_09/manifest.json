@@ -1,0 +1,154 @@
+{
+  "status": "installed",
+  "method": "Original designs from one style reference and text; no identity images.",
+  "covers_all_remaining_relics": true,
+  "layout": {
+    "columns": 3,
+    "rows": 2,
+    "preferred_canvas": [
+      3072,
+      2304
+    ],
+    "bottom_white_band_percent": 10
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_medical_cutback",
+      "name": "医疗削减方案",
+      "config_ids": [
+        "relic_medical_cutback"
+      ],
+      "source": "assets/ui/icons/relics/relic_medical_cutback.png",
+      "source_sha256": "3593704c494ab786fc73bf6e22bffb2bc3a9b94cdebb1a258c0a1e14676d1d48",
+      "output_filename": "relic_medical_cutback.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_welfare_cutback",
+      "name": "福利削减方案",
+      "config_ids": [
+        "relic_welfare_cutback"
+      ],
+      "source": "assets/ui/icons/relics/relic_welfare_cutback.png",
+      "source_sha256": "19b18af6c357804e4c2e431cf39fbc15389a32faf17e30393195369a4fca42c8",
+      "output_filename": "relic_welfare_cutback.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_annual_leave_cutback",
+      "name": "年假削减方案",
+      "config_ids": [
+        "relic_annual_leave_cutback"
+      ],
+      "source": "assets/ui/icons/relics/relic_annual_leave_cutback.png",
+      "source_sha256": "64d102f719c7e781d872ee8cbd2f922ca3cd1beddffac0f36f263b5dec0aaafc",
+      "output_filename": "relic_annual_leave_cutback.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_salary_adjustment",
+      "name": "薪酬调整方案",
+      "config_ids": [
+        "relic_salary_adjustment"
+      ],
+      "source": "assets/ui/icons/relics/relic_salary_adjustment.png",
+      "source_sha256": "310c52e9c6ba19504b1576a610bd5481ed8837adf3466818ef91a087e8ce3ce0",
+      "output_filename": "relic_salary_adjustment.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_perpetual_annuity_scroll",
+      "name": "永续年金卷轴",
+      "config_ids": [
+        "relic_perpetual_annuity_scroll"
+      ],
+      "source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
+      "source_sha256": "e2fcbddbb73fb01002acb567f374bfda252909af5d406dd1e0a5271c994e2451",
+      "output_filename": "relic_perpetual_annuity_scroll.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_bankruptcy_reorg",
+      "name": "破产重组",
+      "config_ids": [
+        "relic_bankruptcy_reorg"
+      ],
+      "source": "assets/ui/icons/relics/relic_bankruptcy_reorg.png",
+      "source_sha256": "ae87bbd69a1b122c18adc5002fa8495fab0a3ca873df3260457ba81b25742316",
+      "output_filename": "relic_bankruptcy_reorg.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../22_relics_sheet_09_installation.md",
+  "actual_source_layout": {
+    "row_counts": [
+      4,
+      3
+    ],
+    "item_order": [
+      "relic_medical_cutback",
+      "relic_welfare_cutback",
+      "relic_annual_leave_cutback",
+      "relic_salary_adjustment",
+      "relic_perpetual_annuity_scroll",
+      "relic_bankruptcy_reorg",
+      "relic_flyer_ad"
+    ]
+  },
+  "authorization": "User requested pixelization, direct installation, and replacement of the prior flyer.",
+  "additional_supplied_items": [
+    {
+      "key": "relic_flyer_ad",
+      "name": "传单广告",
+      "purpose": "replace previous flyer",
+      "installed_sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
+      "pixel_target": [
+        64,
+        64
+      ]
+    }
+  ]
+}

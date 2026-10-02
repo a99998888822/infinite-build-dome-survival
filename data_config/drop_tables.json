@@ -2,9 +2,14 @@
   {
     "id": "drop_basic_enemy",
     "augmentation_chance_percent": 1.5,
-    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
+    "augmentation_rarity_weights": {
+      "common": 10,
+      "uncommon": 60,
+      "rare": 25,
+      "epic": 5
+    },
     "display_name": "小怪掉落表",
-    "description": "小怪基准掉落：1经验，2%血包，1.5%概率掉落一件附魔。成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类；每波无数量上限，每100幸运提供10%相对掉率加成。拾取经验球时同步获得等额基础金币。",
+    "description": "附魔基础掉率1.5%，每次最多1个；白/绿/蓝/紫占比10/60/25/5，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少30个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。",
     "enabled": true,
     "tags": [
       "drop",
@@ -13,6 +18,48 @@
       "normal"
     ],
     "entries": [
+      {
+        "type": "augmentation",
+        "item_id": "scroll_might",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_wisdom",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_multishot",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_domain",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_precision",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lethality",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_haste",
+        "amount": 1,
+        "weight": 1
+      },
       {
         "type": "exp_orb",
         "amount": 1,
@@ -27,13 +74,13 @@
         "type": "augmentation",
         "item_id": "scroll_fire",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
@@ -51,7 +98,7 @@
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
@@ -68,6 +115,18 @@
       {
         "type": "augmentation",
         "item_id": "scroll_split",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_bounce",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_resonance",
         "amount": 1,
         "weight": 1
       },
@@ -93,10 +152,15 @@
   },
   {
     "id": "drop_elite_enemy",
-    "augmentation_chance_percent": 12,
-    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
+    "augmentation_chance_percent": 15,
+    "augmentation_rarity_weights": {
+      "common": 5,
+      "uncommon": 45,
+      "rare": 40,
+      "epic": 10
+    },
     "display_name": "精英怪掉落表",
-    "description": "小Boss基准掉落：2经验，100%遗物选择奖励，20%血包，12%概率掉落一件附魔。成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类；附魔每波无数量上限，每100幸运提供10%相对掉率加成。遗物奖励可靠近拾取，波末自动收取并选择一件遗物；本波每落地1份奖励，后续遗物奖励概率乘以50%，下一波重置。经验、金币、血包和附魔不受遗物衰减影响。",
+    "description": "附魔基础掉率15%，每次最多1个；白/绿/蓝/紫占比5/45/40/10，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少30个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。",
     "elite_relic_decay_percent": 50,
     "enabled": true,
     "tags": [
@@ -105,6 +169,48 @@
       "elite"
     ],
     "entries": [
+      {
+        "type": "augmentation",
+        "item_id": "scroll_might",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_wisdom",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_multishot",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_domain",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_precision",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lethality",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_haste",
+        "amount": 1,
+        "weight": 1
+      },
       {
         "type": "exp_orb",
         "amount": 2,
@@ -124,70 +230,93 @@
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "weight": 5
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "weight": 3
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_light_sword",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_black_hole",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
-        "weight": 3
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_electric_spark",
         "amount": 1,
-        "weight": 2
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_split",
         "amount": 1,
-        "weight": 4
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_bounce",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_resonance",
+        "amount": 1,
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_pierce",
         "amount": 1,
-        "weight": 4
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_ice",
         "amount": 1,
-        "weight": 3
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_wind",
         "amount": 1,
-        "weight": 3
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_fire",
+        "amount": 1,
+        "weight": 1
       }
     ]
   },
   {
     "id": "drop_boss_enemy",
     "augmentation_chance_percent": 60,
-    "augmentation_rarity_weights": {"uncommon": 70, "rare": 20, "epic": 8, "mythic": 2},
+    "augmentation_rarity_weights": {
+      "common": 0,
+      "uncommon": 35,
+      "rare": 50,
+      "epic": 15
+    },
     "display_name": "BOSS掉落表",
-    "description": "BOSS基准掉落：10经验，100%遗物，60%概率掉落一件附魔；成功后按绿70、蓝20、紫8、橙2抽取稀有度，再按档内权重选择种类，每波无数量上限，每100幸运提供10%相对掉率加成。拾取经验球时同步获得等额基础金币。",
+    "description": "附魔基础掉率60%，每次最多1个；白/绿/蓝/紫占比0/35/50/15，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少30个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。",
     "enabled": true,
     "tags": [
       "drop",
@@ -195,6 +324,48 @@
       "boss"
     ],
     "entries": [
+      {
+        "type": "augmentation",
+        "item_id": "scroll_might",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_wisdom",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_multishot",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_domain",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_precision",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_lethality",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_haste",
+        "amount": 1,
+        "weight": 1
+      },
       {
         "type": "exp_orb",
         "amount": 10,
@@ -209,67 +380,79 @@
         "type": "augmentation",
         "item_id": "scroll_electric_spark",
         "amount": 1,
-        "weight": 15
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_fire",
         "amount": 1,
-        "weight": 10
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_water",
         "amount": 1,
-        "weight": 10
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_light_sword",
         "amount": 1,
-        "weight": 5
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_black_hole",
         "amount": 1,
-        "weight": 5
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_explosion",
         "amount": 1,
-        "weight": 20
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_lightning",
         "amount": 1,
-        "weight": 15
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_split",
         "amount": 1,
-        "weight": 12
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_bounce",
+        "amount": 1,
+        "weight": 1
+      },
+      {
+        "type": "augmentation",
+        "item_id": "scroll_resonance",
+        "amount": 1,
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_pierce",
         "amount": 1,
-        "weight": 12
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_ice",
         "amount": 1,
-        "weight": 10
+        "weight": 1
       },
       {
         "type": "augmentation",
         "item_id": "scroll_wind",
         "amount": 1,
-        "weight": 10
+        "weight": 1
       }
     ]
   }

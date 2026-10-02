@@ -1,0 +1,15 @@
+{
+  "protected_files": 1068,
+  "documentation_changes": [
+    "assets/ui/main_menu/README.md"
+  ],
+  "unexpected_changes": [],
+  "assets_verified": 239,
+  "editable_checks": {
+    "native_pngs": 76,
+    "matching_grids": 161,
+    "ordered_atlases": 2
+  },
+  "ground_tiles": 12,
+  "old_packages_absent": true
+}

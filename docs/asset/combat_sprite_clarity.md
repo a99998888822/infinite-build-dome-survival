@@ -1,6 +1,6 @@
 # 战斗精灵清晰度调整
 
-2026-09-22：按原来的战斗体型整理像素贴图。2026-09-29 初心者与怪物更新为[新版 Picxel 素材](../../artifacts/previews/combat_picxel_3838180/README.md)；资本家沿用[上一版确认稿](../../artifacts/previews/player_picxel/README.md)。
+2026-09-22：按原来的战斗体型整理像素贴图。2026-09-29 初心者与怪物更新为新版 Picxel 素材，资本家沿用上一版确认稿；正式资源均在 `assets/`，审阅包已按用户要求删除。
 
 ## 渲染设置
 
@@ -13,7 +13,7 @@
 
 ## 战斗专用贴图
 
-战斗场景和玩家动画引用各自 `combat/` 目录里的素材。下表的原尺寸为改造前记录；玩家与怪物使用 Picxel 成品，过期正式图和旧重建输入已删除，用户提供的高清原图与可编辑像素稿保留：
+战斗场景和玩家动画引用各自 `combat/` 目录里的素材。下表的原尺寸为改造前记录；玩家与怪物使用 Picxel 成品。旧重建输入及 `artifacts` 中的原图副本、像素工作稿已清理，`assets` 中的文件保持不变：
 
 | 素材 | 原画布和缩放 | 战斗画布和缩放 |
 |---|---|---|
@@ -39,7 +39,7 @@
 python scripts/tools/build_combat_sprites.py
 ```
 
-该命令从已确认 Picxel 导出安装两角色与怪物，同时重建匹配 Boss 动画的帧表。运行 `python scripts/tools/install_combat_picxel_assets.py --check` 仅校验正式贴图哈希、格式与 Boss 帧表。修改像素稿后先重新导出审阅包，再安装并由 Godot 导入。
+该命令默认仅校验当前正式贴图的尺寸、色板、透明度与 Boss 帧表。安装新成品需显式传入 `--source <目录>`，输入目录布局与 `assets/` 一致；安装时核对复制前后的哈希。原审阅包已删除，工具不再依赖它。详见[素材安装工具说明](../../scripts/tools/ASSET_INSTALLERS.md)。
 
 ## 验收
 

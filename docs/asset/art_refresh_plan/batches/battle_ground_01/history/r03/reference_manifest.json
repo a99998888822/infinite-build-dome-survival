@@ -1,0 +1,49 @@
+{
+  "revision": "r03",
+  "status": "reference_aids_only",
+  "references": [
+    {
+      "file": "01_ground_palette_reference.png",
+      "type": "designed_palette_reference",
+      "created_by": "local solid-color drawing; not AI image generation",
+      "colors": [
+        "#20352c",
+        "#314936",
+        "#4b6246",
+        "#657652",
+        "#383930",
+        "#514f40",
+        "#56635b",
+        "#768175"
+      ],
+      "source_photo": null,
+      "output_sha256": "4c0da8577e8d56bbfd528c17fe38605d2837472e835224586bc35041fa1e78c3",
+      "usage": "G01–G05只参考配色：上排植被，下排左侧土、右侧石；画风由提示词定义，不复制排版。",
+      "limitations": "人工指定的建议色系，并非从原图采样，也不是最终像素色板；不要求模型精确复现HEX。"
+    },
+    {
+      "file": "02_vegetation_reference.png",
+      "type": "source_crop",
+      "source": "artifacts/reference/scene/b861aTower-Interior-1.webp",
+      "source_sha256": "a06724937d2e50775405413fcc665742b285d6e3bb1efba89000c04a7e15236f",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "crop_xyxy": [
+        1300,
+        925,
+        1870,
+        1080
+      ],
+      "resized": false,
+      "output_sha256": "7d8ceabc2cee432c0edb6ddb6dd86eedceb4b7061eeefce7047ddc7dbb32bbd9",
+      "usage": "仅参考低植被成簇节奏与暗部层次；宽叶团块由文字定义，不复制针叶、树干或建筑。"
+    }
+  ],
+  "retired": {
+    "file": "01_ground_planes_reference.png",
+    "archive": "history/r01/01_ground_planes_reference.png",
+    "reason": "溪流、岩石与长明暗带容易被复制为地表构图，r02不再上传。"
+  }
+}

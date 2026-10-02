@@ -41,6 +41,7 @@ func add_item_from_base(
 		"effect_ids": _to_string_array(base_data.get("effect_ids", [])),
 		"effect_parameters": _duplicate_dictionary(base_data.get("effect_parameters", {})),
 		"modifiers": _duplicate_dictionary_array(base_data.get("modifiers", [])),
+		"weapon_bonuses": _duplicate_dictionary(base_data.get("weapon_bonuses", {})),
 		"rolled_parameters": _roll_instance_parameters(base_data, source_id),
 		"source_id": source_id,
 		"acquired_order": _next_acquired_order,

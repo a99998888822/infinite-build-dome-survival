@@ -1,0 +1,227 @@
+{
+  "status": "installed",
+  "method": "Original object designs from one style reference plus concise text; no identity images supplied.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_reincarnation_hellfire_candle",
+      "name": "轮回业火之烛",
+      "config_ids": [
+        "relic_reincarnation_hellfire_candle"
+      ],
+      "source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
+      "source_sha256": "8a119d06d4c6d7c37a02bcde2d6131178589b610a492d524c732b4ab51576dfe",
+      "output_filename": "relic_reincarnation_hellfire_candle.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_guarding_heart_copper_mirror",
+      "name": "守心铜鉴",
+      "config_ids": [
+        "relic_guarding_heart_copper_mirror"
+      ],
+      "source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
+      "source_sha256": "61216e3645fe03e50a3d3f9f5764ca5477f0d03790c6d9f2fd60a773b110b27d",
+      "output_filename": "relic_guarding_heart_copper_mirror.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_sleepless_ledger",
+      "name": "无眠账簿",
+      "config_ids": [
+        "relic_sleepless_ledger"
+      ],
+      "source": "assets/ui/icons/relics/relic_sleepless_ledger.png",
+      "source_sha256": "b7d750868d8a600900067439c6dceb96a79ec41913ee136c6432d34ba8c3ee05",
+      "output_filename": "relic_sleepless_ledger.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_frenzied_dividend",
+      "name": "狂热分红",
+      "config_ids": [
+        "relic_frenzied_dividend"
+      ],
+      "source": "assets/ui/icons/relics/relic_frenzied_dividend.png",
+      "source_sha256": "9d34e2c619f63c9dc904b3cafeffdbbaa5f5389f216bdbc1623c0680170b6871",
+      "output_filename": "relic_frenzied_dividend.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_gilded_trigger",
+      "name": "镀金扳机",
+      "config_ids": [
+        "relic_gilded_trigger"
+      ],
+      "source": "assets/ui/icons/relics/relic_gilded_trigger.png",
+      "source_sha256": "73d0428dc02c12aab20088b63173f4a1119d85c6b05dd6fb0b080e9a8f37b524",
+      "output_filename": "relic_gilded_trigger.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_runaway_amplifier",
+      "name": "失控增幅器",
+      "config_ids": [
+        "relic_runaway_amplifier"
+      ],
+      "source": "assets/ui/icons/relics/relic_runaway_amplifier.png",
+      "source_sha256": "fd02b79b3c4fa3617e47c60daef01640aa5c2ce45fe3bb0235f091d063a0533f",
+      "output_filename": "relic_runaway_amplifier.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_lucid_vow",
+      "name": "清醒誓言",
+      "config_ids": [
+        "relic_lucid_vow"
+      ],
+      "source": "assets/ui/icons/relics/relic_lucid_vow.png",
+      "source_sha256": "f8d450d2e2216ffa41eea6d991566517f0e40c9f81c0615dcd7ec4dea40811ad",
+      "output_filename": "relic_lucid_vow.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_coin_heart",
+      "name": "金币心脏",
+      "config_ids": [
+        "relic_coin_heart"
+      ],
+      "source": "assets/ui/icons/relics/relic_coin_heart.png",
+      "source_sha256": "f34d00d2b522fc4a89c5a31438b0a4a69f0f3b6ab8128c87a9d889fd5219e7f7",
+      "output_filename": "relic_coin_heart.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_hoarders_ring",
+      "name": "囤积者戒指",
+      "config_ids": [
+        "relic_hoarders_ring"
+      ],
+      "source": "assets/ui/icons/relics/relic_hoarders_ring.png",
+      "source_sha256": "c8f2c8cf99070bdc7a3f6468102af36cc790565f5bd4014e93c0f34c65c57627",
+      "output_filename": "relic_hoarders_ring.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_golden_sarcophagus",
+      "name": "黄金棺椁",
+      "config_ids": [
+        "relic_golden_sarcophagus"
+      ],
+      "source": "assets/ui/icons/relics/relic_golden_sarcophagus.png",
+      "source_sha256": "46d8f632ef58cf17650003d6e0bc06756478e697e1a70aa40fd16c53f9d3a4a1",
+      "output_filename": "relic_golden_sarcophagus.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_old_brass_telescope",
+      "name": "旧铜望远镜",
+      "config_ids": [
+        "relic_old_brass_telescope"
+      ],
+      "source": "assets/ui/icons/relics/relic_old_brass_telescope.png",
+      "source_sha256": "1524320aab7159bf7b944dcaf4f8c20691cec69db8ecc676ce901c79b919b7c1",
+      "output_filename": "relic_old_brass_telescope.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_cracked_bronze_bell",
+      "name": "裂纹铜铃",
+      "config_ids": [
+        "relic_cracked_bronze_bell"
+      ],
+      "source": "assets/ui/icons/relics/relic_cracked_bronze_bell.png",
+      "source_sha256": "f40ed7308d25e312852aaa32741941402be7a7ff5909b9cbe3edc05775d78047",
+      "output_filename": "relic_cracked_bronze_bell.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../20_relics_sheet_07_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

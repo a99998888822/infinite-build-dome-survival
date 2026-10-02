@@ -7,6 +7,7 @@ const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructibl
 const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.gd")
 
 const BASE_DAMAGE_RADIUS: float = 96.0
+const BASE_SHOCKWAVE_RADIUS: float = 55.2
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -16,6 +17,9 @@ var _damage_multiplier_override: float = -1.0
 var _radius_override: float = -1.0
 var _reaction_id: String = ""
 var _audio_impact: RefCounted = null
+var weapon: WeaponInstance:
+	get: return _weapon
+var cancelled := false
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", damage_multiplier_override: float = -1.0, radius_override: float = -1.0, reaction_id: String = "") -> void:
@@ -31,14 +35,21 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._radius_override = radius_override
 	effect._reaction_id = reaction_id
 	effect._audio_impact = AudioManager.current_combat_audio()
+	if reaction_id.is_empty():
+		effect.add_to_group("weapon_runtime_effects")
 	EffectScheduler.schedule(0.0, Callable(effect, "_detonate"), effect)
 
 
 func _detonate() -> void:
-	if _weapon == null or _damage_event == null:
+	if cancelled or _weapon == null or _damage_event == null:
 		queue_free()
 		return
-	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion" if _reaction_id.is_empty() else _reaction_id, {
+	if _reaction_id.is_empty():
+		# Keep the legacy effect ID for equipped scrolls. Only elemental reactions
+		# use the damaging explosion path below; this enchantment is pure control.
+		_shockwave()
+		return
+	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, _reaction_id, {
 		"damage": maxf(_damage_event.get_elemental_base_damage() * (0.8 if _damage_multiplier_override <= 0.0 else _damage_multiplier_override), 1.0),
 		"radius": BASE_DAMAGE_RADIUS if _radius_override <= 0.0 else _radius_override,
 		"damage_falloff": 0.0,
@@ -47,16 +58,51 @@ func _detonate() -> void:
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
 	var particle_parameters := _build_particle_parameters(context, radius)
 	AudioManager.begin_combat_audio(_audio_impact)
-	if _reaction_id.is_empty():
-		AudioManager.play_enchantment_sfx("explosion")
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, particle_parameters)
-	else:
-		AudioManager.play_reaction_sfx(_reaction_id)
-		REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
+	AudioManager.play_reaction_sfx(_reaction_id)
+	REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
 	_emit_material_debris(destroyed_materials, particle_parameters)
 	AudioManager.end_combat_audio()
+	queue_free()
+
+
+func _shockwave() -> void:
+	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, "explosion", {
+		"radius": BASE_SHOCKWAVE_RADIUS, "knockback_speed": 450.0, "knockback_duration": 0.3,
+	}, _attachment_item_id)
+	# Pure displacement has no damage area; Domain does not enlarge this wave.
+	var radius := maxf(12, context.get_resolved_parameter("radius", BASE_SHOCKWAVE_RADIUS))
+	# Enemy deceleration scales with initial speed. Halving speed while keeping
+	# duration halves the displacement without changing the affected radius.
+	var speed := maxf(1, context.get_resolved_parameter("knockback_speed", 450))
+	var duration := maxf(0.05, context.get_resolved_parameter("knockback_duration", 0.3))
+	var fallback := Vector2.RIGHT
+	if is_instance_valid(_damage_event.source_player):
+		fallback = _damage_event.source_player.global_position.direction_to(_hit_position)
+		if fallback.is_zero_approx(): fallback = Vector2.RIGHT
+	for node in EnemyRegistry.get_registered_enemies():
+		var enemy := node as EnemyController
+		# Radial pressure respects the same displacement immunity as wind.
+		if not is_instance_valid(enemy) or not enemy.is_alive() or not enemy.can_be_pushed_by_wind():
+			continue
+		var offset := enemy.global_position - _hit_position
+		if offset.length_squared() > radius * radius:
+			continue
+		enemy.apply_knockback(offset.normalized() if not offset.is_zero_approx() else fallback, speed, duration)
+	AudioManager.begin_combat_audio(_audio_impact)
+	AudioManager.play_enchantment_sfx("explosion")
+	AudioManager.end_combat_audio()
+	# Reuse the original square burst. Override its warm palette only here;
+	# reactions and terrain debris still use their own colors and full radius.
+	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
+		Vector2.ZERO, 1.0, Color.WHITE, _build_particle_parameters(context, radius))
+	queue_free()
+
+
+func cancel() -> void:
+	cancelled = true
+	EffectScheduler.cancel_owner(self)
 	queue_free()
 
 

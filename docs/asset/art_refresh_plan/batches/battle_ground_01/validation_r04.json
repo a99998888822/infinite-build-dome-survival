@@ -1,0 +1,16 @@
+{
+  "revision": "r04",
+  "checks": [
+    "utf8",
+    "links",
+    "zip_hashes",
+    "12_assets_6_prompts",
+    "G02_local_derivation",
+    "flat_ground_and_64px_grass_separated",
+    "no_camera_in_ground_prompts",
+    "old_prompts_archived"
+  ],
+  "status": "passed",
+  "pixel_conversion_performed": false,
+  "runtime_modified": false
+}

@@ -8,7 +8,7 @@
     "victory_refused": {"speech": "啧，稳妥点当然好，就是赚的少了些。", "voice_path": "", "row": 3}
   },
   "monster_portraits": {
-    "enemy_mutated_grub": "res://assets/ui/settlement/enemy_mutated_grub.png",
-    "enemy_elite_rusher": "res://assets/ui/settlement/enemy_elite_rusher.png"
+    "enemy_mutated_grub": "res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png",
+    "enemy_elite_rusher": "res://assets/sprites/enemies/iron_knight/knight_idle.png"
   }
 }

@@ -1,17 +1,132 @@
 [
   {
+    "id": "scroll_might",
+    "display_name": "巨力",
+    "description": "当前武器造成的全部伤害增加30%，包括本体、附魔与元素反应；仅对装填此附魔的武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": ["might"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"all_damage_percent": 30},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_might.png"
+  },
+  {
+    "id": "scroll_wisdom",
+    "display_name": "智慧",
+    "description": "当前武器造成的元素伤害增加30%，包括元素本体、附魔与元素反应，不增加近战或远程本体伤害；仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "uncommon",
+    "effect_ids": ["wisdom"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"element_damage_percent": 30},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_wisdom.png"
+  },
+  {
+    "id": "scroll_multishot",
+    "display_name": "多投",
+    "description": "当前武器投射物数量+1。近战武器增加每轮攻击次数，炉灯增加火流，秘仪书增加目标，战锤增加地裂节点（最多8个）；仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "epic",
+    "effect_ids": ["multishot"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"projectile_count": 1},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_multishot.png"
+  },
+  {
+    "id": "scroll_domain",
+    "display_name": "领域",
+    "description": "当前武器伤害范围+30%，扩大本体伤害区域与结霜等附魔的伤害区域。搜敌距离、传播距离和击退距离不变；电火花连锁、纯控制震荡等没有伤害区域的效果不受影响。仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": ["domain"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"damage_area_size": 30},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_domain.png"
+  },
+  {
+    "id": "scroll_precision",
+    "display_name": "会心",
+    "description": "当前武器暴击率增加25个百分点，例如5%变为30%，最高100%；仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "uncommon",
+    "effect_ids": ["precision"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"crit_chance": 25},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_precision.png"
+  },
+  {
+    "id": "scroll_lethality",
+    "display_name": "致命",
+    "description": "当前武器暴击伤害增加100个百分点，例如150%变为250%，不改变暴击概率；仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": ["lethality"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"crit_damage": 100},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_lethality.png"
+  },
+  {
+    "id": "scroll_haste",
+    "display_name": "迅捷",
+    "description": "当前武器攻击速度+25%，按现有攻速公式缩短攻击间隔。共鸣武器仍由领头武器决定触发冷却；仅对当前武器生效。",
+    "category": "enchantment_scroll",
+    "rarity": "rare",
+    "effect_ids": ["haste"],
+    "effect_parameters": {},
+    "weapon_bonuses": {"attack_speed": 25},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_haste.png"
+  },
+  {
+    "id": "scroll_bounce",
+    "display_name": "弹跳",
+    "description": "每轮攻击首次命中时，每份弹跳在命中位置立刻追加一次原武器攻击，并可触发其他附魔。两份弹跳追加两次；追加攻击不会再次弹跳。地裂的首个地面命中点也能触发。",
+    "category": "enchantment_scroll",
+    "rarity": "epic",
+    "effect_ids": ["bounce"],
+    "effect_parameters": {},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_bounce.png"
+  },
+  {
+    "id": "scroll_resonance",
+    "display_name": "共鸣",
+    "description": "至少两把武器装备共鸣时，按武器栏从左到右接力，共用第一把的冷却；每把武器按自身共鸣数量连续攻击，两份就攻击两次，再唤醒下一把。远程发射完即可接力，近战等待动作结束，地裂等待最后节点，炉灯等待喷射结束。无目标则跳过；仅一把时正常攻击。",
+    "category": "enchantment_scroll",
+    "rarity": "epic",
+    "effect_ids": ["resonance"],
+    "effect_parameters": {},
+    "instance_parameter_ranges": [],
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_resonance.png"
+  },
+  {
     "id": "scroll_water",
     "display_name": "水流",
-    "description": "命中时对周围敌人造成一次伤害并打湿，随后呈现单圈向外扩散的蓝白水浪，0.85秒后消退；可与火、冰、电产生元素反应。",
+    "description": "命中时对周围敌人造成一次45%元素基准伤害并打湿5秒，使其减速20%；水浪0.85秒后消退，可与火、冰、电产生元素反应。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
     "effect_ids": [
       "water"
     ],
     "effect_parameters": {
-      "radius": 132.0,
+      "radius": 96.0,
       "duration": 0.85,
-      "damage_multiplier": 0.55,
+      "damage_multiplier": 0.45,
       "wet_duration": 5.0,
       "wet_slow_multiplier": 0.8
     },
@@ -22,9 +137,9 @@
   {
     "id": "scroll_light_sword",
     "display_name": "光辉剑",
-    "description": "命中后召唤纯白大剑，延迟0.5秒从天空落下，对范围内敌人造成伤害并施加感光。",
+    "description": "命中后召唤纯白大剑，延迟0.5秒落下，造成65%元素基准伤害并施加感光：下一次受伤增加30%，随后消耗。",
     "category": "enchantment_scroll",
-    "rarity": "uncommon",
+    "rarity": "rare",
     "effect_ids": [
       "light_sword"
     ],
@@ -33,7 +148,7 @@
       "delay": 0.5,
       "fall_seconds": 0.22,
       "dissolve_seconds": 0.75,
-      "damage_multiplier": 0.9,
+      "damage_multiplier": 0.65,
       "light_duration": 5.0
     },
     "instance_parameter_ranges": [],
@@ -43,17 +158,17 @@
   {
     "id": "scroll_black_hole",
     "display_name": "黑洞",
-    "description": "吸附中等范围内敌人，造成范围伤害并施加致盲。",
+    "description": "吸附附近敌人0.85秒，造成一次45%元素基准伤害并施加2秒致盲。",
     "category": "enchantment_scroll",
-    "rarity": "uncommon",
+    "rarity": "rare",
     "effect_ids": [
       "black_hole"
     ],
     "effect_parameters": {
-      "radius": 100.0,
+      "radius": 90.0,
       "duration": 0.85,
       "pull_speed": 150.0,
-      "damage_multiplier": 0.65,
+      "damage_multiplier": 0.45,
       "dark_duration": 2.0
     },
     "instance_parameter_ranges": [],
@@ -63,7 +178,7 @@
   {
     "id": "scroll_fire",
     "display_name": "火焰",
-    "description": "命中后散落火焰种子，形成持续火焰池并施加燃烧。",
+    "description": "命中后施加燃烧，每0.5秒造成10%元素基准伤害；散落种子形成持续3秒的火焰池。不同武器的燃烧伤害相加，各自计算伤害归属；同一武器再次施加只刷新整组燃烧时间，不增加或替换伤害。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
     "effect_ids": [
@@ -73,12 +188,6 @@
       "patch_duration": 3.0
     },
     "modifiers": [
-      {
-        "effect_id": "fire",
-        "channel": "damage",
-        "operation": "multiply",
-        "value": 1.15
-      },
       {
         "effect_id": "fire",
         "channel": "burn_duration",
@@ -102,65 +211,23 @@
   },
   {
     "id": "scroll_explosion",
-    "display_name": "爆裂",
-    "description": "命中时引发范围爆炸和场景破坏。",
+    "display_name": "震荡",
+    "description": "命中时释放震荡波，以命中点为中心向四周推开附近敌人，不造成附魔伤害。震荡范围和击退距离不受领域影响。",
     "category": "enchantment_scroll",
-    "rarity": "mythic",
+    "rarity": "common",
     "effect_ids": [
       "explosion"
     ],
     "effect_parameters": {
-      "damage_falloff": 0.0
+      "radius": 55.2,
+      "knockback_speed": 450.0,
+      "knockback_duration": 0.3,
+      "count_multiplier": 1.15,
+      "speed_multiplier": 0.5,
+      "lifetime_multiplier": 2.0,
+      "glow_multiplier": 1.2
     },
-    "modifiers": [
-      {
-        "effect_id": "explosion",
-        "channel": "radius",
-        "operation": "multiply",
-        "value": 1.15
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "damage",
-        "operation": "multiply",
-        "value": 1.2
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "glow_multiplier",
-        "operation": "multiply",
-        "value": 1.2
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "count_multiplier",
-        "operation": "multiply",
-        "value": 1.15
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "speed_multiplier",
-        "operation": "multiply",
-        "value": 0.5
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "lifetime_multiplier",
-        "operation": "multiply",
-        "value": 2.0
-      },
-      {
-        "effect_id": "explosion",
-        "channel": "visual.color",
-        "operation": "tint",
-        "value": [
-          1.0,
-          0.86,
-          0.62,
-          1.0
-        ]
-      }
-    ],
+    "modifiers": [],
     "icon": "res://assets/ui/icons/augmentations/scroll_explosion.png"
   },
   {
@@ -211,14 +278,14 @@
       },
       {
         "channel": "chain_interval",
-        "min": 0.08,
-        "max": 0.16,
+        "min": 0.1,
+        "max": 0.1,
         "step": 0.01
       },
       {
         "channel": "stun_duration",
         "min": 0.45,
-        "max": 0.8,
+        "max": 0.6,
         "step": 0.05
       }
     ],
@@ -273,7 +340,7 @@
   {
     "id": "scroll_split",
     "display_name": "分裂",
-    "description": "生成基础2枚、伤害为原伤害60%的子弹，优先攻击尚未命中的敌人；子弹不再分裂。榴弹炮对每个主爆炸命中目标生成小榴弹，爆炸半径减半。",
+      "description": "生成2个、伤害为原伤害45%的子攻击。分裂前的附魔在主命中点触发，分裂后的附魔由子攻击命中触发；多份分裂各产生一代，不递归。榴弹炮每轮最多6枚子榴弹，爆炸半径减半。",
     "category": "enchantment_scroll",
     "rarity": "epic",
     "effect_ids": [
@@ -282,21 +349,14 @@
     "effect_parameters": {
       "child_count": 2,
       "spread_angle": 36,
-      "damage_multiplier": 0.6
+      "damage_multiplier": 0.45
     },
-    "modifiers": [
-      {
-        "effect_id": "split",
-        "channel": "child_count",
-        "operation": "multiply",
-        "value": 1.1
-      }
-    ],
+    "modifiers": [],
     "instance_parameter_ranges": [
       {
         "channel": "child_count",
         "min": 2,
-        "max": 4,
+        "max": 2,
         "step": 1
       },
       {
@@ -311,7 +371,7 @@
   {
     "id": "scroll_pierce",
     "display_name": "穿透",
-    "description": "投射物命中目标后仍可继续飞行，可额外命中多个敌人。",
+    "description": "投射物命中目标后仍可继续飞行，可额外命中2个敌人。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
     "effect_ids": [
@@ -342,8 +402,8 @@
     "instance_parameter_ranges": [
       {
         "channel": "extra_target_hits",
-        "min": 1,
-        "max": 3,
+        "min": 2,
+        "max": 2,
         "step": 1
       }
     ],
@@ -352,7 +412,7 @@
   {
     "id": "scroll_ice",
     "display_name": "结霜",
-    "description": "命中点生成寒冰领域，每个敌人首次接触时受到一次伤害并减速；可被风扩大，与打湿相遇冻结1秒，解冻后恢复打湿。",
+    "description": "命中点生成持续3秒的寒冰领域，每个敌人首次接触时受到25%元素基准伤害并减速40%；可被风扩大，与打湿相遇冻结1秒，解冻后恢复打湿。",
     "category": "enchantment_scroll",
     "rarity": "uncommon",
     "effect_ids": [
@@ -361,7 +421,7 @@
     "effect_parameters": {
       "radius": 51.2,
       "duration": 3.0,
-      "slow_multiplier": 0.45,
+      "slow_multiplier": 0.6,
       "freeze_duration": 1.0
     },
     "modifiers": [
@@ -388,16 +448,16 @@
   {
     "id": "scroll_wind",
     "display_name": "风刃",
-    "description": "命中后释放青白月牙风刃，大幅击退敌人；可扩大火焰池与冰霜领域，并将打湿传播给附近敌人。",
+    "description": "命中后释放青白月牙风刃，造成伤害并推开敌人；可扩大火焰池与冰霜领域，并将打湿传播给附近敌人。",
     "category": "enchantment_scroll",
-    "rarity": "uncommon",
+    "rarity": "rare",
     "effect_ids": [
       "wind"
     ],
     "effect_parameters": {
       "damage_multiplier": 0.7,
-      "knockback_speed": 900.0,
-      "knockback_duration": 0.34,
+      "knockback_speed": 450.0,
+      "knockback_duration": 0.3,
       "blade_speed": 480.0,
       "blade_lifetime": 0.46,
       "field_search_radius": 18.0,

@@ -2,7 +2,9 @@ extends Node
 
 var failures := 0
 var checks := 0
-const RARITIES := {"scroll_split": "epic", "scroll_lightning": "rare", "scroll_explosion": "mythic"}
+const RARITIES := {"scroll_split": "epic", "scroll_bounce": "epic", "scroll_resonance": "epic", "scroll_lightning": "rare", "scroll_explosion": "common",
+	"scroll_might": "rare", "scroll_wisdom": "uncommon", "scroll_multishot": "epic", "scroll_domain": "rare", "scroll_lethality": "rare", "scroll_haste": "rare",
+	"scroll_light_sword": "rare", "scroll_black_hole": "rare", "scroll_wind": "rare"}
 
 func _ready() -> void:
 	_run.call_deferred()
@@ -64,7 +66,8 @@ func _run() -> void:
 	add_child(host)
 	check(drops.spawn_augmentation("wizard_scroll_chain_mastery", 1, Vector2.ZERO, host, player) == null,
 		"removed enchantment cannot spawn directly")
-	for id in ["scroll_fire", "scroll_lightning", "scroll_split", "scroll_explosion"]:
+	for id in ["scroll_fire", "scroll_lightning", "scroll_split", "scroll_explosion", "scroll_bounce", "scroll_resonance"]:
+		drops.begin_wave()
 		var pickup := drops.spawn_augmentation(id, 1, Vector2(100, 0), host, player)
 		pickup.set_physics_process(false)
 		var card := ItemInventoryCard.new()

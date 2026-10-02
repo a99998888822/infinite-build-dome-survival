@@ -1,0 +1,13 @@
+{
+  "source": "references/R02_darkest_ink.webp",
+  "source_sha256": "e2a9825e9aa946eef2fce7411f5015086e034a4eb42df72c6d8a2982ab7d4e76",
+  "crop": [
+    0,
+    0,
+    667,
+    310
+  ],
+  "output": "references/U01_darkest_style_no_text.png",
+  "output_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "method": "Crop existing reference above the title; no generation."
+}

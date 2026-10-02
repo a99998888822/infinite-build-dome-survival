@@ -124,6 +124,9 @@ func _test_sources_and_preview() -> void:
 
 func _test_contact_and_revive() -> void:
 	var p := make_player()
+	var body_scene := preload("res://scenes/player/player_root.tscn").instantiate()
+	p.add_child(body_scene.get_node("CollisionShape2D").duplicate())
+	body_scene.free()
 	var manager := make_manager(p)
 	var enemy_a := manager.spawn_enemy("enemy_mutated_grub", p.global_position)
 	var enemy_b := manager.spawn_enemy("enemy_mutated_grub", p.global_position)
@@ -186,14 +189,14 @@ func _test_camp_and_regeneration() -> void:
 	level_to(manager, 10)
 	check(p.get_stat("max_hp") == 24 and is_equal_approx(p.get_stat("hp_regen"), 0.5), "level ten and full camp training yield twenty-four HP and 0.5 regen")
 	p.add_relic("relic_holy_silver_cup")
-	check(is_equal_approx(p.get_stat("hp_regen"), 2.0) and is_equal_approx(manager.finance_system.get_interest_rate(), 4.0), "silver cup plus full training yields two regen and retains one-point interest cost")
+	check(is_equal_approx(p.get_stat("hp_regen"), 1.25) and is_equal_approx(manager.finance_system.get_interest_rate(), 4.0), "halved silver cup plus unchanged training yields 1.25 regen and retains interest cost")
 	p.current_hp = 12
-	p._process_regeneration(0.25)
+	p._process_regeneration(0.4)
 	check(p.current_hp == 12, "fractional regeneration waits for a whole HP")
-	p._process_regeneration(0.25)
+	p._process_regeneration(0.4)
 	check(p.current_hp == 13, "fractional regeneration accumulates without loss")
-	p._process_regeneration(5.5)
-	check(p.current_hp == 24, "twenty-four HP with two regen recovers half health in six seconds")
+	p._process_regeneration(8.8)
+	check(p.current_hp == 24, "twenty-four HP with 1.25 regen recovers half health in 9.6 seconds")
 	p._process_regeneration(20.0)
 	check(p.current_hp == 24, "regeneration is capped at current maximum")
 	manager.free()
@@ -203,5 +206,7 @@ func _test_camp_and_regeneration() -> void:
 	p.add_relic("relic_holy_silver_cup")
 	p.current_hp = 1
 	p._process_regeneration(2.0)
-	check(p.current_hp == 4 and is_equal_approx(p.get_stat("hp_regen"), 1.5), "silver cup alone heals three in two seconds")
+	check(p.current_hp == 2 and is_equal_approx(p.get_stat("hp_regen"), 0.75), "silver cup halves two-second regeneration and retains fractional HP")
+	p._process_regeneration(2.0)
+	check(p.current_hp == 4, "silver cup fractional carry restores three HP across four seconds")
 	p.free()

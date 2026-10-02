@@ -121,7 +121,7 @@ func _run() -> void:
 		"wind": check(cues.has("wet_spread"), "wind spreads wet along water ribbons")
 		"light": check(statuses.has("light"), "light sword lands and applies light")
 		"dark": check(statuses.has("dark"), "black hole applies dark")
-		"explosion": check(total_damage > 30, "water and explosion apply damage")
+		"explosion": check(statuses.has("wet") and total_damage > 0, "water deals damage alongside non-damaging shockwave")
 	var report := {"variant": variant, "production": true, "attachments": attachments,
 		"frames": FRAMES, "fps": 30, "triggered_impacts": hits, "water_radius": water_radius,
 		"statuses": statuses.keys(), "reaction_cues": cues.keys(), "total_damage_last_cycle": total_damage,

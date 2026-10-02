@@ -112,7 +112,7 @@ func present(data: Dictionary) -> void:
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icon.texture = FinanceUIStyle.item_icon(str(step.icon))
+		FinanceUIStyle.set_item_icon(icon, FinanceUIStyle.item_icon(str(step.icon)))
 		row.add_child(icon)
 		var color := LOSS if step.kind == "loss" else (FinanceUIStyle.GREEN if step.kind == "growth" else FinanceUIStyle.TEXT)
 		var label := _label(row, 12, color)
@@ -147,7 +147,10 @@ func arrange(bounds: Vector2, wallet_target: Vector2, receipt_bounds := Rect2())
 	_receipt_bounds = receipt_bounds if receipt_bounds.has_area() else Rect2(Vector2.ZERO, bounds)
 	if _card == null: return
 	_compact = bounds.y < 400
-	var content_height := maxf(206, (164 if _compact else 178) + _row_nodes.size() * 28)
+	var rows_height := maxf(0, _row_nodes.size() - 1) * _rows.get_theme_constant("separation")
+	for row in _row_nodes:
+		rows_height += row.get_combined_minimum_size().y
+	var content_height := maxf(206, (164 if _compact else 178) + rows_height)
 	_card.size = Vector2(minf(550, _receipt_bounds.size.x), minf(content_height, _receipt_bounds.size.y))
 	_card.position = (_receipt_bounds.position + (_receipt_bounds.size - _card.size) * 0.5).floor()
 	_shade.position = _card.position - Vector2(4, 4)

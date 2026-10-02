@@ -1,0 +1,231 @@
+{
+  "status": "installed",
+  "method": "Original designs from one style reference and text; no identity images.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ],
+    "bottom_white_band_percent": 10
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_long_focus_eyepiece",
+      "name": "长焦目镜",
+      "config_ids": [
+        "relic_long_focus_eyepiece"
+      ],
+      "source": "assets/ui/icons/relics/relic_long_focus_eyepiece.png",
+      "source_sha256": "9fd0a27d7193e8d1047696bdf3c74f28c6ffbcf18452137da55e268d2b4c7b32",
+      "output_filename": "relic_long_focus_eyepiece.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_diffusion_nozzle",
+      "name": "扩散喷口",
+      "config_ids": [
+        "relic_diffusion_nozzle"
+      ],
+      "source": "assets/ui/icons/relics/relic_diffusion_nozzle.png",
+      "source_sha256": "acd2c2840940de70c1d07fb5fe5c47d86e53c2816ecd6e478c4c610b17b66cfb",
+      "output_filename": "relic_diffusion_nozzle.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_range_tripod",
+      "name": "定距脚架",
+      "config_ids": [
+        "relic_range_tripod"
+      ],
+      "source": "assets/ui/icons/relics/relic_range_tripod.png",
+      "source_sha256": "b0ad441b85a0007b0b2a132a8716c518f95186869568a6b8b0f19b0fc4576945",
+      "output_filename": "relic_range_tripod.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "26dc2852b69c29354baae42423cd7017eaa5927056b26241cac301cf492a8ce2"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_aftershock_hourglass",
+      "name": "余震沙漏",
+      "config_ids": [
+        "relic_aftershock_hourglass"
+      ],
+      "source": "assets/ui/icons/relics/relic_aftershock_hourglass.png",
+      "source_sha256": "597b38b11b032233aad0100392a117a147c22a170d2a6aacf1d66fb3b6dcec5f",
+      "output_filename": "relic_aftershock_hourglass.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "162bac96e060beeaa9989c8c0b27643cff6b327bc9cde749ff5e5fd4ab11a618"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_golden_rangefinder",
+      "name": "黄金测距仪",
+      "config_ids": [
+        "relic_golden_rangefinder"
+      ],
+      "source": "assets/ui/icons/relics/relic_golden_rangefinder.png",
+      "source_sha256": "4dff5e532517b0aa232895a64579a0e3d2e0938b8437586307b9a9d3711a0767",
+      "output_filename": "relic_golden_rangefinder.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "7073ff37f42057cd19e779c5045b07a8af09e7f1ecabc4c29724b6a94d3abadf"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_abyssal_echo_shell",
+      "name": "深海回声螺",
+      "config_ids": [
+        "relic_abyssal_echo_shell"
+      ],
+      "source": "assets/ui/icons/relics/relic_abyssal_echo_shell.png",
+      "source_sha256": "77fce11ed17defb931d6db531c91614cf8a6e3815630adc72ee97bc86995e7d3",
+      "output_filename": "relic_abyssal_echo_shell.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "d45d351edaab1a121d67caec7d4b02aa1f4128bea47c8dec5819794c5fab5b37"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_folded_star_chart",
+      "name": "折叠星图",
+      "config_ids": [
+        "relic_folded_star_chart"
+      ],
+      "source": "assets/ui/icons/relics/relic_folded_star_chart.png",
+      "source_sha256": "516b80e5f25cb4971eece8ac773707ef516e5277228f76ae3f98a9ab2a20c6b7",
+      "output_filename": "relic_folded_star_chart.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "940e3ba65f05da98778b25ded29d62535c29712b7188bb0433b62d9d3390421a"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_horizon_orrery",
+      "name": "地平线星仪",
+      "config_ids": [
+        "relic_horizon_orrery"
+      ],
+      "source": "assets/ui/icons/relics/relic_horizon_orrery.png",
+      "source_sha256": "510a998e804d8908329038603c1052cf01432fda1d2d68d64f00fc9a5737bc41",
+      "output_filename": "relic_horizon_orrery.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "673bf4fcf8ea5adbad489dd8b8ded04605cd079cce1de83ea14c603ec092671e"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_flyer_ad",
+      "name": "传单广告",
+      "config_ids": [
+        "relic_flyer_ad"
+      ],
+      "source": "assets/ui/icons/relics/relic_flyer_ad.png",
+      "source_sha256": "31254e56d646292b1ace96fd0ff34e499b205779bd6aeec9d7193030895364bc",
+      "output_filename": "relic_flyer_ad.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "5e4d0db08329325dc262c917f2cf37c4c5250cbec5b0fd26cba5c0fb61312515",
+      "status": "superseded",
+      "superseded_by": "relics_sheet_09",
+      "replacement_record": "../../22_relics_sheet_09_installation.md"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_merger_reorg",
+      "name": "并购重组",
+      "config_ids": [
+        "relic_merger_reorg"
+      ],
+      "source": "assets/ui/icons/relics/relic_merger_reorg.png",
+      "source_sha256": "eb7345128ff2749342401b6fa907345cf1376773e56b60d6dd9424dfc1a9f12a",
+      "output_filename": "relic_merger_reorg.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_divine_fusion",
+      "name": "神性融合",
+      "config_ids": [
+        "relic_divine_fusion"
+      ],
+      "source": "assets/ui/icons/relics/relic_divine_fusion.png",
+      "source_sha256": "3b67508479930aec10100e43a02e7a7ae78a750b214c7986fd80d5e51e55dbdf",
+      "output_filename": "relic_divine_fusion.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_goblin_central_bank_printer",
+      "name": "哥布林金币铸造机",
+      "config_ids": [
+        "relic_goblin_central_bank_printer"
+      ],
+      "source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
+      "source_sha256": "ba1646bc402dfd5a61aa7360b065a8ca809fae8e88e0ab647df3d8066130f744",
+      "output_filename": "relic_goblin_central_bank_printer.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../21_relics_sheet_08_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

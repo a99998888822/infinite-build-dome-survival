@@ -1,0 +1,28 @@
+{
+  "frame_size": 64,
+  "idle_source": "grub_move_01",
+  "atlas_sources": {
+    "enemy_gloom_mite_idle.png": [
+      "grub_move_01"
+    ],
+    "enemy_gloom_mite_move.png": [
+      "grub_move_01",
+      "grub_move_02",
+      "grub_move_03",
+      "grub_move_04",
+      "grub_move_05",
+      "grub_move_06",
+      "grub_move_07"
+    ]
+  },
+  "source_limitations": [],
+  "editable": {
+    "grub_move_01": "grub_move_01-64-outline.pxg",
+    "grub_move_02": "grub_move_02-64-outline.pxg",
+    "grub_move_03": "grub_move_03-64-outline.pxg",
+    "grub_move_04": "grub_move_04-64-outline.pxg",
+    "grub_move_05": "grub_move_05-64-outline.pxg",
+    "grub_move_06": "grub_move_06-64-outline.pxg",
+    "grub_move_07": "grub_move_07-64-outline.pxg"
+  }
+}

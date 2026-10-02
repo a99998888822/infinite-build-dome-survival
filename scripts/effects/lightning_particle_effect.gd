@@ -7,6 +7,7 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+const BATCH = preload("res://scripts/effects/pixel_particle_batch.gd")
 
 const CHAIN_DISPLAY_ECHO_DELAY: float = 0.12
 const CHAIN_CONTROL_POINT_SPACING: float = 24.0
@@ -81,8 +82,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._attachment_item_id = attachment_item_id
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	effect._audio_impact = AudioManager.current_combat_audio()
-	# Resolve all lightning modifiers together so Chain Mastery strengthens the
-	# existing chain instead of spawning a second independent chain.
+	# Each attachment owns a chain; global modifiers still apply to every chain.
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
 		"damage": maxf(damage_event.get_elemental_base_damage() * 0.55, 1.0),
 		"chain_count": DEFAULT_CHAIN_COUNT,
@@ -90,7 +90,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 		"jump_radius": DEFAULT_JUMP_RADIUS,
 		"stun_duration": DEFAULT_STUN_DURATION,
 		"detonate_burning": 1.0,
-	}, "")
+	}, attachment_item_id)
 	effect._cache_resolved_parameters()
 	# chain_count means additional victims after the directly struck target.
 	effect._remaining_jumps = 1 + maxi(0, int(roundi(effect._get_cached_parameter("chain_count", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter("control_power", 0.0) / 10.0)))
@@ -397,6 +397,8 @@ func _emit_bolt_pulse(start_position: Vector2, end_position: Vector2, path_index
 			"glow_size": BOLT_GLOW_PARTICLE_SIZE * glow_multiplier,
 			"is_core": strand_index == 0,
 		})
+		if not _is_ground_strike:
+			_build_particle_batch(_bolt_pulses.back())
 	_emit_bolt_light(start_position.lerp(end_position, 0.5), distance, glow_multiplier)
 	queue_redraw()
 
@@ -488,6 +490,7 @@ func _get_cached_parameter(channel: String, fallback: float = 0.0) -> float:
 
 
 func _ready() -> void:
+	add_to_group("combat_particle_counters")
 	z_index = 81
 	queue_redraw()
 
@@ -499,13 +502,23 @@ func _process(delta: float) -> void:
 		var pulse: Dictionary = _bolt_pulses[index]
 		pulse["age"] = float(pulse.get("age", 0.0)) + delta
 		if float(pulse["age"]) >= float(pulse["lifetime"]):
+			if pulse.has("batch"): pulse.batch.queue_free()
 			_bolt_pulses.remove_at(index)
 		else:
+			if pulse.has("batch"):
+				var fade := 1.0 - float(pulse.age) / float(pulse.lifetime)
+				pulse.batch.modulate.a = fade * fade
 			_bolt_pulses[index] = pulse
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
 	queue_redraw()
 	_try_finish_chain()
+
+
+func get_active_particle_count() -> int:
+	var count := 0
+	for pulse in _bolt_pulses: count += (pulse.points as PackedVector2Array).size()
+	return count
 
 
 func _draw() -> void:
@@ -531,22 +544,27 @@ func _draw() -> void:
 			draw_polyline(points, Color(0.70, 0.90, 1.0, glow_alpha), 6.0, true)
 			draw_polyline(points, Color(1.0, 1.0, 1.0, core_alpha), 2.3, true)
 			continue
-		var base_particle_size: Vector2 = pulse["particle_size"]
-		var particle_size := Vector2(
-			clampf(base_particle_size.x * float(pulse["size_multiplier"]), 2.0, 5.0),
-			clampf(base_particle_size.y * float(pulse["size_multiplier"]), 1.5, 4.0)
-		)
-		var glow_size := clampf(float(pulse["glow_size"]) * float(pulse["size_multiplier"]), 3.0, 10.0) * CHAIN_GLOW_RADIUS_MULTIPLIER
-		var rotations: PackedFloat32Array = pulse.get("rotations", PackedFloat32Array())
-		for point_index in points.size():
-			var point: Vector2 = points[point_index]
-			var particle_rotation := float(rotations[point_index]) if point_index < rotations.size() else 0.0
-			draw_set_transform(point, particle_rotation, Vector2.ONE)
-			var glow_alpha := alpha * (0.12 if point_index % 3 == 1 else 0.08)
-			draw_rect(Rect2(Vector2(-glow_size * 0.62, -glow_size * 0.30), Vector2(glow_size * 1.24, glow_size * 0.60)), Color(1.0, 1.0, 1.0, glow_alpha))
-			var particle_alpha := alpha * (0.72 if point_index % 3 == 1 else 0.9)
-			draw_rect(Rect2(-particle_size * 0.5, particle_size), Color(1.0, 1.0, 1.0, particle_alpha))
-			if bool(pulse.get("is_core", false)) and point_index % 5 == 0:
-				var highlight_size := Vector2(minf(particle_size.x, 2.0), minf(particle_size.y, 2.0))
-				draw_rect(Rect2(-highlight_size * 0.5, highlight_size), Color(1.0, 1.0, 1.0, alpha * 0.82))
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		# Chain rectangles are immutable after spawning; only their node alpha fades.
+
+
+func _build_particle_batch(pulse: Dictionary) -> void:
+	var points: PackedVector2Array = pulse.points
+	var batch := BATCH.create(points.size() * 3)
+	add_child(batch)
+	pulse.batch = batch
+	var size: Vector2 = pulse.particle_size * float(pulse.size_multiplier)
+	size = Vector2(clampf(size.x, 2, 5), clampf(size.y, 1.5, 4))
+	var glow := clampf(float(pulse.glow_size) * float(pulse.size_multiplier), 3, 10) * CHAIN_GLOW_RADIUS_MULTIPLIER
+	var rotations: PackedFloat32Array = pulse.rotations
+	var alpha: float = pulse.color.a
+	var index := 0
+	for i in points.size():
+		var angle := float(rotations[i]) if i < rotations.size() else 0.0
+		BATCH.put(batch.multimesh, index, points[i], Vector2(glow * 1.24, glow * 0.6), angle, Color(1,1,1,alpha * (0.12 if i % 3 == 1 else 0.08)))
+		index += 1
+		BATCH.put(batch.multimesh, index, points[i], size, angle, Color(1,1,1,alpha * (0.72 if i % 3 == 1 else 0.9)))
+		index += 1
+		if bool(pulse.is_core) and i % 5 == 0:
+			BATCH.put(batch.multimesh, index, points[i], Vector2(minf(size.x,2), minf(size.y,2)), angle, Color(1,1,1,alpha*0.82))
+			index += 1
+	batch.multimesh.visible_instance_count = index

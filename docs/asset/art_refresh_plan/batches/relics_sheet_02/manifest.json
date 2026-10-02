@@ -1,0 +1,170 @@
+{
+  "status": "installed",
+  "method": "Existing icons composited on white with nearest-neighbor 12x enlargement, not newly drawn art.",
+  "layout": {
+    "columns": 3,
+    "rows": 2,
+    "preferred_canvas": [
+      3072,
+      2048
+    ],
+    "fallback_canvas": [
+      1536,
+      1024
+    ]
+  },
+  "style_reference_source": "artifacts/previews/art_refresh_v1/relics_sheet_01/r01/source/relics_sheet_01_hd.png",
+  "style_reference_source_sha256": "0546d74a252cab27ebd6baf521cf047ce8f30371ed262c105b1c802d8da8577f",
+  "style_reference_crops": [
+    {
+      "key": "relic_piggy_bank",
+      "source_crop_xyxy": [
+        96,
+        104,
+        576,
+        544
+      ]
+    },
+    {
+      "key": "relic_steel_vault",
+      "source_crop_xyxy": [
+        752,
+        112,
+        1190,
+        544
+      ]
+    },
+    {
+      "key": "relic_compound_interest_tome",
+      "source_crop_xyxy": [
+        104,
+        744,
+        552,
+        1194
+      ]
+    }
+  ],
+  "style_reference_sha256": "bb68d0260b64b1e94fdfeea50588a85ea1aa0535fa68dd65a21f80351b398c78",
+  "split_rule": "Inspect actual returned objects and order before cropping; do not blindly trust a perfect grid.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_finance_manager",
+      "name": "理财经理",
+      "source": "assets/ui/icons/relics/relic_finance_manager.png",
+      "source_sha256": "d71a22a66095469ec70f704fccbbf47eb1b0b3f473b4d785790f90697e6f21f6",
+      "reference_cell_rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_finance_manager.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_dividend_check",
+      "name": "分红支票",
+      "source": "assets/ui/icons/relics/relic_dividend_check.png",
+      "source_sha256": "87b9f50c14248c4cae35d6bbc0fe77733c8aae67aa910eb56255bfd0edb2d68a",
+      "reference_cell_rect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_dividend_check.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_fixed_deposit_certificate",
+      "name": "定期存单",
+      "source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
+      "source_sha256": "452475a417c8d3416eb52a29cbc6355f5c1ee93d95e4aab8fd86ca579365948a",
+      "reference_cell_rect": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "output_filename": "relic_fixed_deposit_certificate.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_hostile_takeover",
+      "name": "恶意收购",
+      "source": "assets/ui/icons/relics/relic_hostile_takeover.png",
+      "source_sha256": "d761b673a639c378f3b55b084db3dfa06533b122d1535b65486a98967b2a7fbd",
+      "reference_cell_rect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_hostile_takeover.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_tip_tray",
+      "name": "小费托盘",
+      "source": "assets/ui/icons/relics/relic_tip_tray.png",
+      "source_sha256": "fbec3099575c7d863934dbd2e7d638e18c5b690b576f898722f2bac58eb4c160",
+      "reference_cell_rect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_tip_tray.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_high_yield_contract",
+      "name": "高利契约",
+      "source": "assets/ui/icons/relics/relic_high_yield_contract.png",
+      "source_sha256": "1b1134473cf59e5aafb9a4152bb8baac6561f9b518811dc1366488a1f41f1212",
+      "reference_cell_rect": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "output_filename": "relic_high_yield_contract.png",
+      "pixel_target": [
+        32,
+        32
+      ]
+    }
+  ],
+  "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/README.md",
+  "active_generation_package": "from_scratch_r02/README.md",
+  "previous_pixel_review": "not_approved_by_user",
+  "active_pixel_revision": "r02",
+  "installation_record": "docs/asset/art_refresh_plan/13_relics_sheet_02_installation.md"
+}

@@ -20,6 +20,11 @@ var weapon_instances: Array[WeaponInstance] = []
 var targeting_service: TargetingService = null
 var _projectile_sequence: int = 0
 var _ritual_domains: Dictionary = {}
+var _directed_runtimes: Dictionary = {}
+var _resonance_members: Array[WeaponInstance] = []
+var _resonance_chain: Array[WeaponInstance] = []
+var _resonance_active: WeaponInstance
+var _resonance_next := 0
 
 
 func _ready() -> void:
@@ -32,6 +37,8 @@ func _ready() -> void:
 
 
 func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> bool:
+	_reset_resonance()
+	_resonance_members.clear()
 	for previous in weapon_instances:
 		_clear_weapon_runtime(previous)
 	owner_player = player
@@ -222,12 +229,106 @@ func get_load_capacity() -> int:
 func tick(delta: float) -> void:
 	if not is_instance_valid(owner_player) or not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	_sync_resonance()
 	for weapon in weapon_instances:
 		if weapon.is_ritual_tome():
 			_ensure_ritual_domain(weapon)
+		if weapon.is_copper_lamp() or weapon.is_mutant_tentacle():
+			_ensure_directed_runtime(weapon)
 		weapon.tick(delta)
+		if _resonance_members.size() > 1 and _resonance_members.has(weapon):
+			continue
+		if weapon.is_copper_lamp():
+			continue
 		if weapon.can_attack():
 			_try_attack_with_weapon(weapon)
+	_tick_resonance()
+	if _resonance_members.size() > 1:
+		for follower in _resonance_members.slice(1):
+			follower.attack_timer = _resonance_members[0].attack_timer
+
+
+func get_resonance_weapons() -> Array[WeaponInstance]:
+	var result: Array[WeaponInstance] = []
+	for weapon in weapon_instances:
+		if weapon.has_effect("resonance"):
+			result.append(weapon)
+	return result
+
+
+func _reset_resonance() -> void:
+	_resonance_chain.clear()
+	_resonance_active = null
+	_resonance_next = 0
+
+
+func _sync_resonance() -> void:
+	var members := get_resonance_weapons()
+	if members != _resonance_members:
+		# Rebuild on sale, reorder or detachment; never wake a stale instance.
+		_reset_resonance()
+		_resonance_members = members
+	for weapon in weapon_instances:
+		if weapon.is_copper_lamp():
+			var lamp := _ensure_directed_runtime(weapon) as CopperLamp
+			var controlled := members.size() > 1 and members.has(weapon)
+			if lamp.resonance_controlled != controlled:
+				lamp.resonance_controlled = controlled
+				lamp.burst_active = false
+				lamp.firing = false
+				lamp.beams.clear()
+
+
+func _tick_resonance() -> void:
+	if _resonance_members.size() < 2:
+		return
+	if _resonance_active != null and _weapon_is_attacking(_resonance_active):
+		return
+	if _resonance_chain.is_empty():
+		var leader := _resonance_members[0]
+		if not leader.can_attack() or _weapon_is_attacking(leader):
+			return
+		# A leader needs a valid attack to wake anyone else.
+		if not _try_attack_with_weapon(leader, true):
+			return
+		for member in _resonance_members:
+			for _copy in member.get_effect_instances("resonance"):
+				_resonance_chain.append(member)
+		_resonance_active = leader
+		_resonance_next = 1
+	while not _weapon_is_attacking(_resonance_active):
+		if _resonance_next >= _resonance_chain.size():
+			_reset_resonance()
+			return
+		var follower := _resonance_chain[_resonance_next]
+		_resonance_next += 1
+		if not weapon_instances.has(follower) or not follower.has_effect("resonance"):
+			continue
+		# No valid target means skip this member for this round, not deadlock.
+		var leader_timer := _resonance_members[0].attack_timer
+		if _try_attack_with_weapon(follower, true):
+			_resonance_active = follower
+			# Extra leader attacks belong to this cycle, not a new cooldown.
+			if follower == _resonance_members[0]:
+				follower.attack_timer = leader_timer
+
+
+func _weapon_is_attacking(weapon: WeaponInstance) -> bool:
+	for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
+		if effect.weapon != weapon or effect.cancelled:
+			continue
+		if effect is CopperLamp and effect.burst_active:
+			return true
+		if effect is MutantTentacle and effect.attacking:
+			return true
+		if effect is EarthHammer:
+			if effect.is_attacking() or (not effect.blocked and effect.next_node < effect.node_count):
+				return true
+		elif effect.has_method("is_attacking") and effect.is_attacking():
+			return true
+		elif effect is MeteorFlail and effect.is_swinging():
+			return true
+	return false
 
 
 func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
@@ -264,17 +365,97 @@ func get_current_principal() -> float:
 	return float(finance_system.principal) if finance_system != null else 0.0
 
 
-func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
+func _try_attack_with_weapon(weapon: WeaponInstance, resonance_wakeup: bool = false) -> bool:
+	if weapon == null:
+		return false
+	if not resonance_wakeup:
+		var members := get_resonance_weapons()
+		if members.size() > 1 and members.has(weapon):
+			return false
+	var previous_context := weapon.attack_context
+	weapon.begin_attack()
+	var fired := _perform_weapon_attack(weapon)
+	if not fired:
+		weapon.attack_context = previous_context
+	return fired
+
+
+func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 	if weapon == null or owner_player == null or targeting_service == null:
 		return false
 	if not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if weapon.is_copper_lamp():
+		var lamp := _ensure_directed_runtime(weapon) as CopperLamp
+		if not lamp.resonance_controlled or not lamp.try_resonance_attack():
+			return false
+		weapon.reset_attack_timer()
+		# The leader lamp retains its complete spray + cooling cycle.
+		weapon.attack_timer += float(weapon.weapon_data.lamp_spray_ms) / 1000.0
+		weapon.volley_index += 1
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		return true
+	if weapon.is_mutant_tentacle():
+		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
+		if target == null:
+			return false
+		var tentacle := _ensure_directed_runtime(weapon) as MutantTentacle
+		if not tentacle.try_attack(owner_player.global_position.direction_to(target.global_position)):
+			return false
+		weapon.volley_index += 1
+		weapon.reset_attack_timer()
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		return true
+	if weapon.is_earth_hammer():
+		for active in get_tree().get_nodes_in_group("earth_hammers"):
+			if active.weapon == weapon and active.is_attacking():
+				return false
+		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
+		var direction := Vector2.RIGHT if owner_player.facing_right else Vector2.LEFT
+		if target != null:
+			direction = owner_player.global_position.direction_to(target.global_position)
+		var hammer := EarthHammer.new()
+		_get_visual_root().add_child(hammer)
+		hammer.initialize(weapon, direction)
+		weapon.volley_index += 1
+		weapon.reset_attack_timer()
+		weapon_fired.emit(weapon.weapon_id, weapon.get_ground_node_count())
+		return true
+	if weapon.is_camp_dagger():
+		for active in get_tree().get_nodes_in_group("camp_daggers"):
+			if active.weapon == weapon and active.is_attacking():
+				return false
+		var target := CampDagger.find_target(weapon)
+		if target == null or not target.is_alive():
+			return false
+		var dagger := CampDagger.new()
+		_get_visual_root().add_child(dagger)
+		dagger.initialize(weapon, owner_player.global_position.direction_to(target.global_position))
+		weapon.volley_index += 1
+		weapon.reset_attack_timer()
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		return true
+	if weapon.is_nightwatch_spear():
+		for active in get_tree().get_nodes_in_group("nightwatch_spears"):
+			if active.weapon == weapon and active.is_attacking():
+				return false
+		var target := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, weapon.get_attack_range()) as EnemyController
+		if target == null or not target.is_alive():
+			return false
+		var spear := NightwatchSpear.new()
+		_get_visual_root().add_child(spear)
+		spear.initialize(weapon, owner_player.global_position.direction_to(target.global_position))
+		weapon.volley_index += 1
+		weapon.reset_attack_timer()
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		return true
 	if weapon.is_meteor_flail():
 		# Only one attack sequence per instance, including split follow-throughs.
 		for active in get_tree().get_nodes_in_group("meteor_flails"):
 			if active.weapon == weapon and active.is_swinging():
 				return false
-		var target := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, weapon.get_attack_range() + weapon.get_hit_radius()) as EnemyController
+		var targeting_radius := StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.get("hit_radius", 0)), weapon.get_stat("area_size"))
+		var target := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, weapon.get_attack_range() + targeting_radius) as EnemyController
 		if target == null or not target.is_alive():
 			return false
 		var flail := MeteorFlail.new()
@@ -302,7 +483,26 @@ func _try_attack_with_weapon(weapon: WeaponInstance) -> bool:
 			attacked = _apply_ranged_damage(weapon, damage_event) or attacked
 	if attacked:
 		weapon.reset_attack_timer()
+		weapon.volley_index += 1
+		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
 	return attacked
+
+
+func _ensure_directed_runtime(weapon: WeaponInstance) -> DirectedWeaponRuntime:
+	var cached: Variant = _directed_runtimes.get(weapon.instance_id)
+	if is_instance_valid(cached) and not cached.cancelled:
+		return cached as DirectedWeaponRuntime
+	var effect: DirectedWeaponRuntime = CopperLamp.new() if weapon.is_copper_lamp() else MutantTentacle.new()
+	_get_visual_root().add_child(effect)
+	effect.initialize(weapon)
+	if effect is CopperLamp:
+		effect.spray_started.connect(func():
+			if effect.resonance_controlled:
+				return
+			weapon.volley_index += 1
+			weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count")))))
+	_directed_runtimes[weapon.instance_id] = effect
+	return effect
 
 
 func _ensure_ritual_domain(weapon: WeaponInstance) -> RitualDomain:
@@ -318,6 +518,7 @@ func _ensure_ritual_domain(weapon: WeaponInstance) -> RitualDomain:
 
 func _clear_weapon_runtime(weapon: WeaponInstance) -> void:
 	_ritual_domains.erase(weapon.instance_id)
+	_directed_runtimes.erase(weapon.instance_id)
 	if not is_inside_tree():
 		return
 	for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
@@ -355,6 +556,8 @@ func _fire_grenades(weapon: WeaponInstance) -> bool:
 		grenade.initialize(weapon, weapon.calculate_damage_events()[0], owner_player.global_position, target)
 	weapon.reset_attack_timer()
 	AudioManager.play_sfx_path(str(weapon.weapon_data.get("launch_sfx", "")), 100, "grenade_launch")
+	weapon.volley_index += 1
+	weapon_fired.emit(weapon.weapon_id, targets.size())
 	return true
 
 

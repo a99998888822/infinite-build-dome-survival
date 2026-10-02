@@ -1,0 +1,15 @@
+{
+  "revision": "r03",
+  "checks": [
+    "utf8",
+    "current_links",
+    "zip_15_files",
+    "hashes",
+    "six_oblique_prompts",
+    "eight_asset_manifest",
+    "input_metadata"
+  ],
+  "status": "passed",
+  "new_pixel_conversion": false,
+  "runtime_changes": false
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "references/current_goblin_neutral.png",
+    "source": "assets/ui/finance/goblin_banker_states.png",
+    "source_sha256": "2c3bd9091f8af53cd6aaa82ac9ba27b2f7b9d822b1ebbf8f2e5a0a87b208c38f",
+    "crop": [
+      0,
+      0,
+      128,
+      128
+    ],
+    "method": "Original current frame cropped without redrawing or scaling; identity reference only"
+  }
+]

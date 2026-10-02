@@ -28,12 +28,15 @@ var _split_depth: int = 0
 var _has_split: bool = false
 var hit_targets: Dictionary = {}
 var active: bool = false
+var cancelled: bool:
+	get: return not active
 var _trail_emitter: Node2D = null
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
 var _plasma_contact_hold_left: float = 0.0
 var _plasma_visual: Node2D = null
 var _hit_shape: CircleShape2D = null
+var _deferred_contacts: Dictionary = {}
 
 
 func initialize(
@@ -64,6 +67,7 @@ func initialize(
 	_split_depth = maxi(split_depth, 0)
 	_has_split = false
 	active = true
+	add_to_group("weapon_runtime_effects")
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
 	_plasma_contact_hold_left = 0.0
@@ -111,7 +115,18 @@ func initialize(
 func _physics_process(delta: float) -> void:
 	if not active:
 		return
+	if is_instance_valid(weapon.owner_player) and not weapon.owner_player.alive:
+		cancel()
+		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	var pending := _deferred_contacts.keys()
+	_deferred_contacts.clear()
+	for id in pending:
+		var body := instance_from_id(id) as Node
+		if is_instance_valid(body):
+			_on_body_entered(body)
+	if not active:
 		return
 	if _is_plasma_projectile():
 		if _plasma_visual != null:
@@ -119,7 +134,7 @@ func _physics_process(delta: float) -> void:
 		_process_plasma_contact(delta)
 		if not active:
 			return
-	var step := speed * delta
+	var step := minf(speed * delta, maxf(remaining_distance, 0.0))
 	global_position += direction * step
 	remaining_distance -= step
 	if remaining_distance <= 0.0:
@@ -127,6 +142,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if not active:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		_deferred_contacts[body.get_instance_id()] = true
 		return
 	if _is_plasma_projectile() and body is EnemyController:
 		return
@@ -149,9 +167,10 @@ func _on_body_entered(body: Node) -> void:
 	var split_root := weapon != null and weapon.has_effect("split") and _split_depth == 0 and not _has_split
 	if split_root:
 		_has_split = true
-		_spawn_split_projectiles(enemy_hit_position)
 	AudioManager.begin_combat_audio()
 	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy, split_root)
+	if split_root:
+		_spawn_split_projectiles(enemy_hit_position)
 	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
 	if weapon != null:
 		if ENABLE_ENEMY_HIT_GREEN_PARTICLES and weapon.register_hit_feedback_frame(true):
@@ -225,6 +244,9 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 		# bonus, not damage. Keep their shared scale through delayed event copies.
 		effect_event.elemental_damage_scale *= PLASMA_ENCHANTMENT_DAMAGE_SCALE
 		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
+		if _split_depth == 0 and not _has_split and weapon.has_effect("split"):
+			_has_split = true
+			_spawn_split_projectiles(enemy.global_position)
 		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
 		plasma_target_hit.emit(enemy, tick_event.damage)
 		contacted = true
@@ -262,11 +284,11 @@ func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id
 	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "split", {
 		"child_count": 2.0,
 		"spread_angle": 36.0,
-		"damage_multiplier": 0.6,
+		"damage_multiplier": 0.45,
 	}, attachment_item_id)
 	var child_count := clampi(int(roundi(context.get_resolved_parameter("child_count", 2.0))), 1, 8)
 	var spread_angle := maxf(context.get_resolved_parameter("spread_angle", 36.0), 0.0)
-	var child_damage_multiplier := maxf(context.get_resolved_parameter("damage_multiplier", 0.6), 0.0)
+	var child_damage_multiplier := maxf(context.get_resolved_parameter("damage_multiplier", 0.45), 0.0)
 	var inherited_targets := hit_targets.duplicate()
 	var reserved_targets := inherited_targets.duplicate()
 	var child_directions: Array[Vector2] = []
@@ -291,7 +313,10 @@ func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id
 				child_ignored_targets[reserved_target_id] = true
 		var launch_position := hit_position + child_directions[child_index] * maxf(weapon.get_hit_radius(), DEFAULT_HIT_RADIUS)
 		var child_damage_event := damage_event.duplicate_event()
+		child_damage_event.enchantment_start = weapon.get_split_continuation(attachment_item_id)
+		child_damage_event.split_child = true
 		child_damage_event.damage = maxi(1, int(roundi(float(child_damage_event.damage) * child_damage_multiplier)))
+		child_damage_event.elemental_damage_scale *= child_damage_multiplier
 		# body_entered can run while Godot is flushing physics queries. Defer the
 		# whole child creation so Area2D and CollisionShape2D state changes happen
 		# after the physics query completes.
@@ -328,8 +353,14 @@ func _spawn_terrain_sparks(hit_position: Vector2, burst_direction: Vector2 = Vec
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "impact_terrain", hit_position, burst_direction)
 
 
+func cancel() -> void:
+	_destroy()
+
+
 func _destroy() -> void:
 	if not active:
 		return
 	active = false
+	_deferred_contacts.clear()
+	hide()
 	queue_free()

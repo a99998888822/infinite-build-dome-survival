@@ -1,0 +1,227 @@
+{
+  "status": "installed",
+  "method": "Original object designs from one style reference plus concise text; no identity images supplied.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_cracked_stone_bullet",
+      "name": "裂痕石子弹",
+      "config_ids": [
+        "relic_cracked_stone_bullet"
+      ],
+      "source": "assets/ui/icons/relics/relic_cracked_stone_bullet.png",
+      "source_sha256": "6b213c44ab55ac2146fbc854b300ea2aaf795488793eeaf46cf075ea540138fd",
+      "output_filename": "relic_cracked_stone_bullet.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_hasty_spring_trigger",
+      "name": "急促弹簧扳机",
+      "config_ids": [
+        "relic_hasty_spring_trigger"
+      ],
+      "source": "assets/ui/icons/relics/relic_hasty_spring_trigger.png",
+      "source_sha256": "c60b6f1c366b6e265be7b13eb8e169ea93af8b2a4a8216a52a25c1e080982456",
+      "output_filename": "relic_hasty_spring_trigger.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_rough_grinding_lens",
+      "name": "粗糙研磨透镜",
+      "config_ids": [
+        "relic_rough_grinding_lens"
+      ],
+      "source": "assets/ui/icons/relics/relic_rough_grinding_lens.png",
+      "source_sha256": "56289e2b74c99be6bbf35a6a57723b89ffda0985416f1ea8c712db7e5215ad61",
+      "output_filename": "relic_rough_grinding_lens.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_blocking_counterweight",
+      "name": "阻滞配重石",
+      "config_ids": [
+        "relic_blocking_counterweight"
+      ],
+      "source": "assets/ui/icons/relics/relic_blocking_counterweight.png",
+      "source_sha256": "64e9e04852a92405e2c128edce172a46a9decc49cc8044cd3845600eac59b227",
+      "output_filename": "relic_blocking_counterweight.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_bloodstained_belt",
+      "name": "嗜血皮带",
+      "config_ids": [
+        "relic_bloodstained_belt"
+      ],
+      "source": "assets/ui/icons/relics/relic_bloodstained_belt.png",
+      "source_sha256": "18e1ea74a70c4226040dd0bf3f3b88d17719eb38a372c0af4413a8aae7b0c9eb",
+      "output_filename": "relic_bloodstained_belt.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_poison_mist_pouch",
+      "name": "毒雾投囊",
+      "config_ids": [
+        "relic_poison_mist_pouch"
+      ],
+      "source": "assets/ui/icons/relics/relic_poison_mist_pouch.png",
+      "source_sha256": "3a439fb9ecceeb7ae85ff0facdc4ee14f335dd73d02ba7eede40169f8eeac34f",
+      "output_filename": "relic_poison_mist_pouch.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_tremor_grip",
+      "name": "震颤握柄",
+      "config_ids": [
+        "relic_tremor_grip"
+      ],
+      "source": "assets/ui/icons/relics/relic_tremor_grip.png",
+      "source_sha256": "7a1accd972b892d5ccae62f5a7706e5587d6f508cace43a88541e5b51570119a",
+      "output_filename": "relic_tremor_grip.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_black_spot_eagle_eye",
+      "name": "黑斑鹰眼水晶",
+      "config_ids": [
+        "relic_black_spot_eagle_eye"
+      ],
+      "source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
+      "source_sha256": "348e396f9e8e460af09968507f96db4d8b47e224d32bd6fed1eb49fa6243bcd6",
+      "output_filename": "relic_black_spot_eagle_eye.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_berserker_copper_badge",
+      "name": "狂战士铜质徽章",
+      "config_ids": [
+        "relic_berserker_copper_badge"
+      ],
+      "source": "assets/ui/icons/relics/relic_berserker_copper_badge.png",
+      "source_sha256": "d2cdbcfdc0c4846965ab5927bad2f56ab548fdbae963671a8107ead76198e0b1",
+      "output_filename": "relic_berserker_copper_badge.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_corroded_blowpipe",
+      "name": "蚀腐吹管",
+      "config_ids": [
+        "relic_corroded_blowpipe"
+      ],
+      "source": "assets/ui/icons/relics/relic_corroded_blowpipe.png",
+      "source_sha256": "1d5dbb7a56a5eb595295e9aa95a7e0d0f2578ec363aae06502b91d96ffb8e669",
+      "output_filename": "relic_corroded_blowpipe.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_gale_roulette",
+      "name": "疾风轮盘",
+      "config_ids": [
+        "relic_gale_roulette"
+      ],
+      "source": "assets/ui/icons/relics/relic_gale_roulette.png",
+      "source_sha256": "97289067621c1b5a5a1dce02f914fa0a10cb60935ec90ce78337991359bcea4b",
+      "output_filename": "relic_gale_roulette.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_executioner_bracer",
+      "name": "屠戮者臂铠",
+      "config_ids": [
+        "relic_executioner_bracer"
+      ],
+      "source": "assets/ui/icons/relics/relic_executioner_bracer.png",
+      "source_sha256": "0be1b5e155fe35e4d0cc5182ce7b9a484f893ebba38919da39533767051a8f4f",
+      "output_filename": "relic_executioner_bracer.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../18_relics_sheet_05_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

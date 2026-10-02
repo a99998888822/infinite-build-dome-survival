@@ -255,43 +255,46 @@ func _arrange() -> void:
 	var compact := size.x < 900 or size.y < 600
 	var stacked := size.x < 540
 	var short_window := size.y < 400 and not stacked
-	var margin := 12.0 if compact else 38.0
-	_card.size = Vector2(minf(1064, size.x - margin * 2), minf(688, size.y - margin * 2))
+	var margin := 12.0 if compact else 24.0
+	_card.size = Vector2(minf(960, size.x - margin * 2), minf(640 if stacked else 600, size.y - margin * 2))
 	_card.position = (size - _card.size) * 0.5
-	var padding := 12.0 if compact else 34.0
+	var padding := 12.0 if compact else 24.0
 	var width := _card.size.x - padding * 2
-	var header := 52.0 if compact else 92.0
-	_place(_title, Vector2(padding, 4 if compact else 22), Vector2(width * 0.65, 26 if compact else 40), 24 if compact else 36)
-	_place(_subtitle, Vector2(padding, 32 if compact else 64), Vector2(width * 0.65, 16 if compact else 18), 12 if compact else 14)
-	_place(_heading, Vector2(padding + width * 0.65, 14 if compact else 30), Vector2(width * 0.35, 30), 14 if compact else 20)
+	var header := 52.0 if compact else 72.0
+	_place(_title, Vector2(padding, 4 if compact else 12), Vector2(width * 0.65, 26 if compact else 34), 24 if compact else 28)
+	_place(_subtitle, Vector2(padding, 32 if compact else 46), Vector2(width * 0.65, 16 if compact else 18), 12 if compact else 14)
+	_place(_heading, Vector2(padding + width * 0.65, 14 if compact else 20), Vector2(width * 0.35, 30), 14 if compact else 18)
 	_scroll.position = Vector2(padding, header)
-	_scroll.size = Vector2(width, _card.size.y - header - (52 if compact else 76))
-	var body_height := maxf(228 if short_window else (260 if compact else 480), _scroll.size.y)
-	var left_width := width if stacked else (minf(196, width * 0.33) if compact else 280.0)
-	var gap := 14.0 if compact else 34.0
+	_scroll.size = Vector2(width, _card.size.y - header - (52 if compact else 60))
+	# Only scroll when the actual compact content cannot fit, rather than forcing
+	# a desktop-sized minimum into shorter windows or both stacked columns.
+	var stacked_offset := 252.0 if stacked else 0.0
+	var body_height := maxf(228 if short_window else (252 if compact else 348), _scroll.size.y - stacked_offset)
+	var left_width := width if stacked else (minf(196, width * 0.33) if compact else 240.0)
+	var gap := 14.0 if compact else 24.0
 	_left.position = Vector2.ZERO
-	_left.size = Vector2(left_width, 282 if stacked else body_height)
-	_right.position = Vector2(0, 292) if stacked else Vector2(left_width + gap, 0)
+	_left.size = Vector2(left_width, 238 if stacked else body_height)
+	_right.position = Vector2(0, stacked_offset) if stacked else Vector2(left_width + gap, 0)
 	_right.size = Vector2(width if stacked else width - left_width - gap, body_height)
-	_content.custom_minimum_size = Vector2(width - 2, 292 + body_height if stacked else body_height)
+	_content.custom_minimum_size = Vector2(width - 2, stacked_offset + body_height)
 	_content.size = _content.custom_minimum_size
-	_place(_monster_heading, Vector2.ZERO, Vector2(left_width, 25), 14 if compact else 20)
-	_monster_scroll.position = Vector2(0, 23 if short_window else (28 if compact else 55))
-	_monster_scroll.size = Vector2(left_width, 102 if compact else 172)
+	_place(_monster_heading, Vector2.ZERO, Vector2(left_width, 25), 14 if compact else 18)
+	_monster_scroll.position = Vector2(0, 23 if short_window else (28 if compact else 34))
+	_monster_scroll.size = Vector2(left_width, 102 if compact else 132)
 	for monster in _monster_nodes:
 		var tile: Control = monster.tile
-		var tw := 87.0 if compact else 132.0
-		var th := 94.0 if compact else 161.0
+		var tw := 87.0 if compact else 112.0
+		var th := 94.0 if compact else 124.0
 		tile.custom_minimum_size = Vector2(tw, th)
 		monster.icon.position = Vector2(6, 6)
-		monster.icon.size = Vector2(tw - 12, 50 if compact else 98)
-		_place(monster.label, Vector2(2, th - 40), Vector2(tw - 4, 20), 12 if compact else 16)
-		_place(monster.count, Vector2(2, th - 22), Vector2(tw - 4, 20), 12 if compact else 18)
-	var speech_y := 124.0 if short_window else (131.0 if compact else 244.0)
-	var speech_height := 52.0 if short_window else (60.0 if compact else 91.0)
+		monster.icon.size = Vector2(tw - 12, 50 if compact else 74)
+		_place(monster.label, Vector2(2, th - 40), Vector2(tw - 4, 20), 12 if compact else 14)
+		_place(monster.count, Vector2(2, th - 22), Vector2(tw - 4, 20), 12 if compact else 16)
+	var speech_y := 124.0 if short_window or stacked else (131.0 if compact else 176.0)
+	var speech_height := 52.0 if short_window or stacked else (60.0 if compact else 66.0)
 	_speech.position = Vector2(0, speech_y)
 	_speech.size = Vector2(left_width, speech_height)
-	_place(_speech_label, Vector2(8, 7), _speech.size - Vector2(16, 14), 12 if compact else 18)
+	_place(_speech_label, Vector2(8, 7), _speech.size - Vector2(16, 14), 12 if compact else 16)
 	var portrait_y := speech_y + speech_height + 2
 	var portrait_height := maxf(52, _left.size.y - portrait_y)
 	_portrait.position = Vector2(0, portrait_y)
@@ -299,32 +302,32 @@ func _arrange() -> void:
 	_desk.position = Vector2(0, portrait_y + portrait_height * 0.57)
 	_desk.size = Vector2(left_width, portrait_height * 0.43)
 	var rw := _right.size.x
-	var row_height := 31.0 if short_window else (34.0 if compact else 57.0)
-	var row_gap := 4.0 if short_window else (5.0 if compact else 8.0)
+	var row_height := 31.0 if short_window else (34.0 if compact else 46.0)
+	var row_gap := 4.0 if short_window else (5.0 if compact else 7.0)
 	for i in 4:
 		var row: Dictionary = _rows[i]
 		row.panel.position = Vector2(0, i * (row_height + row_gap))
 		row.panel.size = Vector2(rw, row_height)
-		row.icon.position = Vector2(8, 5 if compact else 13)
-		row.icon.size = Vector2.ONE * (24 if compact else 32)
-		_place(row.label, Vector2(38 if compact else 58, 0), Vector2(84 if compact else 140, row_height), 12 if compact else 18)
+		row.icon.position = Vector2(8, 5 if compact else 9)
+		row.icon.size = Vector2.ONE * (24 if compact else 28)
+		_place(row.label, Vector2(38 if compact else 48, 0), Vector2(84 if compact else 124, row_height), 12 if compact else 16)
 		var value_x := rw * (0.40 if compact else 0.42)
-		_place(row.value, Vector2(value_x, 0), Vector2(rw * 0.35, row_height), 16 if compact else 24)
-		_place(row.points, Vector2(rw * 0.76, 0), Vector2(rw * 0.24 - 10, row_height), 14 if compact else 20)
+		_place(row.value, Vector2(value_x, 0), Vector2(rw * 0.35, row_height), 16 if compact else 22)
+		_place(row.points, Vector2(rw * 0.76, 0), Vector2(rw * 0.24 - 10, row_height), 14 if compact else 18)
 	var rows_end := 4 * (row_height + row_gap)
 	_place(_conversion, Vector2(0, rows_end), Vector2(rw, 18), 10 if compact else 12)
 	_total.position = Vector2(0, rows_end + (18 if short_window else 23))
-	_total.size = Vector2(rw, 70 if short_window else (72 if compact else 132))
-	var icon_size := 42.0 if compact else 70.0
-	_total_icon.position = Vector2(12, 16 if compact else 30)
+	_total.size = Vector2(rw, 70 if short_window else (72 if compact else 104))
+	var icon_size := 42.0 if compact else 56.0
+	_total_icon.position = Vector2(12, 16 if compact else 24)
 	_total_icon.size = Vector2.ONE * icon_size
-	_place(_total_title, Vector2(icon_size + 24, 5 if compact else 14), Vector2(rw - icon_size - 36, 24), 12 if compact else 18)
-	_place(_total_value, Vector2(icon_size + 24, 22 if compact else 40), Vector2(rw - icon_size - 36, 36 if compact else 64), 28 if compact else 48)
+	_place(_total_title, Vector2(icon_size + 24, 5 if compact else 8), Vector2(rw - icon_size - 36, 24), 12 if compact else 16)
+	_place(_total_value, Vector2(icon_size + 24, 22 if compact else 28), Vector2(rw - icon_size - 36, 36 if compact else 52), 28 if compact else 40)
 	_place(_status, Vector2(8, _total.size.y - 18), Vector2(rw - 16, 18), 10 if compact else 12)
 	var button_width := minf(218, width * 0.45)
-	back_button.position = Vector2(padding + (width - button_width) * 0.5, _card.size.y - (42 if compact else 66))
-	back_button.size = Vector2(button_width, 30 if compact else 44)
-	back_button.add_theme_font_size_override("font_size", 12 if compact else 18)
+	back_button.position = Vector2(padding + (width - button_width) * 0.5, _card.size.y - (42 if compact else 48))
+	back_button.size = Vector2(button_width, 30 if compact else 36)
+	back_button.add_theme_font_size_override("font_size", 12 if compact else 16)
 	_place(_skip_hint, Vector2(padding + width * 0.73, back_button.position.y), Vector2(width * 0.27, back_button.size.y), 10 if compact else 12)
 	_skip_hint.visible = width >= 520
 	_effects.size = _content.size

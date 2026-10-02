@@ -1,0 +1,305 @@
+{
+  "revision": "r04",
+  "input_directory": "temp/battle_ground_01/r04/",
+  "first_sample_inputs": [
+    "G01_ground_plain",
+    "G09_G12_grass_clumps"
+  ],
+  "generation_references": "none; first pass text only",
+  "camera_contract": "CAMERA_CONTRACT.md",
+  "paving_candidate_screen_ratio": "approximately 3:1; 8 columns and 24 rows before missing bricks",
+  "input_extensions": [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp"
+  ],
+  "source_size_policy": "highest native output; record actual dimensions, do not upscale or rename formats",
+  "asset_count": 12,
+  "generation_count": 6,
+  "assets": [
+    {
+      "id": "G01",
+      "input_stem": "G01_ground_plain",
+      "prompt": "prompts/G01_ground_plain.txt",
+      "reference": null,
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform flat material colors; no cast shadow",
+      "view": "flat material only; no camera direction, volume or upright vegetation",
+      "status": "pixel_candidate_complete_awaiting_user_review"
+    },
+    {
+      "id": "G02",
+      "output_stem": "ground_variant",
+      "input_stem": null,
+      "prompt": null,
+      "reference": null,
+      "source_type": "local_derivation_from_approved_G01",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque",
+      "background_removal": false,
+      "depends_on": "G01",
+      "status": "awaiting_approved_G01; not yet derived"
+    },
+    {
+      "id": "G03",
+      "input_stem": "G03_wet_earth",
+      "prompt": "prompts/G03_wet_earth.txt",
+      "reference": null,
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform flat material colors; no cast shadow",
+      "view": "flat material only; no camera direction, volume or upright vegetation",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G04",
+      "input_stem": "G04_paving_worn",
+      "prompt": "prompts/G04_paving_worn.txt",
+      "reference": null,
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform flat material colors; no cast shadow",
+      "view": "flat material only; no camera direction, volume or upright vegetation",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G05",
+      "input_stem": "G05_paving_broken",
+      "prompt": "prompts/G05_paving_broken.txt",
+      "reference": null,
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform flat material colors; no cast shadow",
+      "view": "flat material only; no camera direction, volume or upright vegetation",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G06",
+      "output_stem": "bush_round",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 1,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G07",
+      "output_stem": "bush_long",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 2,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G08",
+      "output_stem": "bush_sparse",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 3,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r04_hd_review"
+    },
+    {
+      "id": "G09",
+      "output_stem": "grass_short",
+      "input_stem": "G09_G12_grass_clumps",
+      "sheet_position_row_major": 1,
+      "prompt": "prompts/G09_G12_grass_clumps.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        2048,
+        2048
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "fixed oblique view; top and front visible; separate root anchor",
+      "status": "pixel_candidate_complete_awaiting_user_review"
+    },
+    {
+      "id": "G10",
+      "output_stem": "grass_dense",
+      "input_stem": "G09_G12_grass_clumps",
+      "sheet_position_row_major": 2,
+      "prompt": "prompts/G09_G12_grass_clumps.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        2048,
+        2048
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "fixed oblique view; top and front visible; separate root anchor",
+      "status": "pixel_candidate_complete_awaiting_user_review"
+    },
+    {
+      "id": "G11",
+      "output_stem": "grass_long",
+      "input_stem": "G09_G12_grass_clumps",
+      "sheet_position_row_major": 3,
+      "prompt": "prompts/G09_G12_grass_clumps.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        2048,
+        2048
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "fixed oblique view; top and front visible; separate root anchor",
+      "status": "pixel_candidate_complete_awaiting_user_review"
+    },
+    {
+      "id": "G12",
+      "output_stem": "grass_dry_mix",
+      "input_stem": "G09_G12_grass_clumps",
+      "sheet_position_row_major": 4,
+      "prompt": "prompts/G09_G12_grass_clumps.txt",
+      "reference": null,
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        2048,
+        2048
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "fixed oblique view; top and front visible; separate root anchor",
+      "status": "pixel_candidate_complete_awaiting_user_review"
+    }
+  ],
+  "generated_later": [
+    "grass-earth pixel masks",
+    "grass-paving pixel masks",
+    "earth-paving pixel masks",
+    "worn-broken paving transitions",
+    "inner/outer corners",
+    "compatible internal texture variants"
+  ],
+  "current_sample": {
+    "id": "G01",
+    "status": "pixel_candidate_complete_awaiting_user_review",
+    "actual_size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "review": "audit/g01_r04/review.md",
+    "source_sha256": "d2908a5fc38c45bb673e6f3ac4a794eb2ba50762f93c19bc89ccb047c189c1c8"
+  },
+  "runtime_status": "new terrain not installed; streaming requirements documented only",
+  "pixel_sample": {
+    "ids": [
+      "G01",
+      "G09",
+      "G10",
+      "G11",
+      "G12"
+    ],
+    "status": "pixel_candidate_complete_awaiting_user_review",
+    "source_revision": "r04",
+    "candidate_revision": "pixel_r01",
+    "review": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/README.md",
+    "report": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/delivery-report.json",
+    "production_replaced": false,
+    "preview_type": "offline_composition_not_runtime_capture"
+  }
+}

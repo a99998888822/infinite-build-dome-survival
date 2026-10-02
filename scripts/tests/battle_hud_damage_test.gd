@@ -64,9 +64,9 @@ func _run() -> void:
 	check(battle.loadout.equip_weapon(PURSE) and battle.loadout.equip_weapon(TOME), "equip three distinct weapons")
 	var enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(150, 0))
 	enemy.set_physics_process(false)
-	enemy._set_movement_visual(true, 0.75)
-	check(enemy.sprite.hframes == 7 and enemy.sprite.frame == 6 and enemy.sprite.texture.get_size() == Vector2(602, 86), "enemy reaches seventh approved move frame")
-	enemy._set_movement_visual(true, 0.125)
+	enemy._set_movement_visual(true, enemy.move_frame_duration * 6.01)
+	check(enemy.sprite.hframes == 7 and enemy.sprite.frame == 6 and enemy.sprite.texture == enemy.move_texture, "enemy reaches seventh approved move frame")
+	enemy._set_movement_visual(true, enemy.move_frame_duration)
 	check(enemy.sprite.frame == 0, "enemy loops all seven move frames")
 	enemy._set_movement_visual(false, 0.0)
 	check(enemy.sprite.hframes == 1 and enemy.sprite.texture == enemy.idle_texture, "enemy stopping restores idle canvas")
@@ -122,6 +122,10 @@ func _run() -> void:
 			visible_values += 1
 	check(visible_values >= 22 and is_equal_approx(hud.stats_drawer.size.x, 320), "compact single-column drawer retains original width and shows more attributes")
 	check(hud._weapon_damage_meter.position.y >= hud._vitals_frame.get_rect().end.y, "damage meter is below vitals")
+	hud._performance_line.refresh()
+	check(hud._performance_line.position.y >= hud._vitals_frame.get_rect().end.y + 8, "performance line has top padding below vitals")
+	check(hud._weapon_damage_meter.position.y >= hud._performance_line.get_rect().end.y + 8, "damage meter has padding below performance line")
+	check(hud._performance_line.sample.has("particles") and hud._performance_line.text.begins_with("FPS "), "performance line exposes real samples")
 	if not capture_dir.is_empty() and DisplayServer.get_name() != "headless":
 		await _capture_live_combat()
 	print("BATTLE_HUD_DAMAGE_TEST checks=", checks, " failures=", failures)

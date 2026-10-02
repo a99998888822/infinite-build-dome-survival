@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "source": "artifacts/previews/art_refresh_v1/battle_ground_02/green_restore_r01",
+  "ground_texture": "res://assets/sprites/background/green_ground/green-ground-repeat.png",
+  "ground_sha256": "94976449be755afe7acf6f8a257dd1a1ea0ac226cbf8a1ed8d37ceb5876f5c51",
+  "ground_size": [
+    2176,
+    1600
+  ],
+  "sample_offset": [
+    1056,
+    728
+  ],
+  "central_bounds": [
+    -448,
+    -264,
+    896,
+    608
+  ],
+  "approved_layout_world_offset": [
+    0,
+    40
+  ],
+  "assets": {
+    "ruin_curved_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_curved_wall.png",
+      "sha256": "74d569e9abe22d0f5246ca379aa70bca1cd970f6ce8e7ab70f530b3c9ab1d59b",
+      "anchor": [
+        32.0,
+        44
+      ],
+      "scale": 2
+    },
+    "ruin_sloped_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_sloped_wall.png",
+      "sha256": "ab33d4742e33bdb049c019851a1d67fd3907a591e8681f24af68f233d1c13a8f",
+      "anchor": [
+        32.5,
+        52
+      ],
+      "scale": 2
+    },
+    "ruin_brick_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_brick_wall.png",
+      "sha256": "b33c82c3b87bb9a6d1bb332a3dd57476508c0d6c8f847740328b0c239f12050b",
+      "anchor": [
+        32.0,
+        42
+      ],
+      "scale": 2
+    },
+    "ruin_twin_pillar_wall": {
+      "texture": "res://assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
+      "sha256": "1738e628d0fdee82466410f0b3c5b1c02abf1b985fae558af813b51a8ef9b642",
+      "anchor": [
+        32.0,
+        43
+      ],
+      "scale": 2
+    },
+    "ruin_broken_arch": {
+      "texture": "res://assets/sprites/background/wetland/ruin_broken_arch.png",
+      "sha256": "db8ec98abbab724564faa583f64e50a0846466a5805a122387ca9d76d5434337",
+      "anchor": [
+        32.5,
+        53
+      ],
+      "scale": 2
+    },
+    "ruin_square_pillar": {
+      "texture": "res://assets/sprites/background/wetland/ruin_square_pillar.png",
+      "sha256": "d22d3a2a676e370ae176f0d49cc2b8bb64b33b3654826edfd0d9182179723d1b",
+      "anchor": [
+        32.0,
+        60
+      ],
+      "scale": 2
+    },
+    "ruin_broken_column": {
+      "texture": "res://assets/sprites/background/wetland/ruin_broken_column.png",
+      "sha256": "18e436529baadef8237b8a43bc2c772173ab9de8ebd4532a1456a628a62adced",
+      "anchor": [
+        32.5,
+        64
+      ],
+      "scale": 2
+    },
+    "ruin_short_column": {
+      "texture": "res://assets/sprites/background/wetland/ruin_short_column.png",
+      "sha256": "21c2d2e87b566e63b8244e96f7f473dcef49ee175442c0c6f05d270c3551c515",
+      "anchor": [
+        32.0,
+        59
+      ],
+      "scale": 2
+    },
+    "ruin_stone_block": {
+      "texture": "res://assets/sprites/background/wetland/ruin_stone_block.png",
+      "sha256": "a7eba2bf3881eba87e5694be4a6a866707e64945823638c3250ce803d8774d72",
+      "anchor": [
+        32.0,
+        60
+      ],
+      "scale": 2
+    },
+    "ruin_eroded_pillar": {
+      "texture": "res://assets/sprites/background/wetland/ruin_eroded_pillar.png",
+      "sha256": "6b34d5a8ac86912babf931032d2e73a7d21be1c50b5060502ba5f718b38dbea8",
+      "anchor": [
+        32.5,
+        61
+      ],
+      "scale": 2
+    },
+    "decal_single_brick": {
+      "texture": "res://assets/sprites/background/wetland/decal_single_brick.png",
+      "sha256": "b94d9c4b1875ba35d8454232e505582035bd5ecd0c4911772910d6c6e1a223bd",
+      "anchor": [
+        32.0,
+        46
+      ],
+      "scale": 1
+    },
+    "decal_stacked_bricks": {
+      "texture": "res://assets/sprites/background/wetland/decal_stacked_bricks.png",
+      "sha256": "ed64124e01a7d5a48efbc33795e24d13f870a7ac2619cc92f1f15338a99f9be9",
+      "anchor": [
+        32.0,
+        43
+      ],
+      "scale": 1
+    },
+    "decal_brick_fragments": {
+      "texture": "res://assets/sprites/background/wetland/decal_brick_fragments.png",
+      "sha256": "3979454451b6e609885cc9ecfdb87f492fe55c69391d56a18cddb75695af5426",
+      "anchor": [
+        32.0,
+        43
+      ],
+      "scale": 1
+    },
+    "decal_scattered_stones": {
+      "texture": "res://assets/sprites/background/wetland/decal_scattered_stones.png",
+      "sha256": "42a4ec9aaacfab0d4a421609a5dbf31ed1a4486a754eeb66cb3685f69522d21a",
+      "anchor": [
+        31.5,
+        36
+      ],
+      "scale": 1
+    },
+    "decal_high_rubble": {
+      "texture": "res://assets/sprites/background/wetland/decal_high_rubble.png",
+      "sha256": "7584a1763ac6c271edf6605ec159476dbc70634c3b456a6e5401cee71c21848b",
+      "anchor": [
+        32.5,
+        46
+      ],
+      "scale": 1
+    },
+    "decal_low_rubble": {
+      "texture": "res://assets/sprites/background/wetland/decal_low_rubble.png",
+      "sha256": "d0a2231e96727252b1c938175e5da7322e5996bcc44b7877f7dc29329371fb57",
+      "anchor": [
+        32.0,
+        48
+      ],
+      "scale": 1
+    },
+    "decal_flat_stones": {
+      "texture": "res://assets/sprites/background/wetland/decal_flat_stones.png",
+      "sha256": "557475f0c1a530897c840822b6566b47513c223f29a0b8042297b60a3fd734f2",
+      "anchor": [
+        32.5,
+        41
+      ],
+      "scale": 1
+    },
+    "decal_compact_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_compact_moss.png",
+      "sha256": "78ced046f4cdd9d418a770b082f13c05e83b84bcf3f1659a7c1c4a1d4a2328e0",
+      "anchor": [
+        32.0,
+        44
+      ],
+      "scale": 1
+    },
+    "decal_long_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_long_moss.png",
+      "sha256": "759c0142925a897304f875fcfc7f35f10fc2998e1be66cb5202e14bdaa21f353",
+      "anchor": [
+        30.5,
+        41
+      ],
+      "scale": 1
+    },
+    "decal_wet_moss": {
+      "texture": "res://assets/sprites/background/wetland/decal_wet_moss.png",
+      "sha256": "4a44795ff4c316994c92406054acd8d5c341748463edac9da9d78e530ff36319",
+      "anchor": [
+        31.5,
+        43
+      ],
+      "scale": 1
+    },
+    "G09_grass_short-32": {
+      "texture": "res://assets/sprites/background/green_ground/G09_grass_short-32.png",
+      "sha256": "1424b61359b18c4f98cee9b1882e67245b51d3a02ba21502f8fd71904a5cfa42",
+      "anchor": [
+        16.5,
+        24
+      ],
+      "scale": 1
+    },
+    "G10_grass_dense-32": {
+      "texture": "res://assets/sprites/background/green_ground/G10_grass_dense-32.png",
+      "sha256": "42a5f51fb18ed71232880809be3baa08e12e3bed33ba8d6efc34a6d8f86e7340",
+      "anchor": [
+        16.0,
+        26
+      ],
+      "scale": 1
+    },
+    "G11_grass_long-32": {
+      "texture": "res://assets/sprites/background/green_ground/G11_grass_long-32.png",
+      "sha256": "be49e096cb89fab683d3ac939c156910053ec9861a2746fb49f36d4bc80b7a93",
+      "anchor": [
+        16.0,
+        25
+      ],
+      "scale": 1
+    },
+    "G12_grass_dry_mix-32": {
+      "texture": "res://assets/sprites/background/green_ground/G12_grass_dry_mix-32.png",
+      "sha256": "e29daf5924ea489df51d40e5e4ac9082f121c46798c72ba0a3ed53596097478e",
+      "anchor": [
+        16.0,
+        28
+      ],
+      "scale": 1
+    }
+  },
+  "groups": {
+    "grass": [
+      "G09_grass_short-32",
+      "G10_grass_dense-32",
+      "G11_grass_long-32",
+      "G12_grass_dry_mix-32"
+    ],
+    "ruins": [
+      "ruin_curved_wall",
+      "ruin_sloped_wall",
+      "ruin_brick_wall",
+      "ruin_twin_pillar_wall",
+      "ruin_broken_arch",
+      "ruin_square_pillar",
+      "ruin_broken_column",
+      "ruin_short_column",
+      "ruin_stone_block",
+      "ruin_eroded_pillar"
+    ],
+    "rubble": [
+      "decal_single_brick",
+      "decal_stacked_bricks",
+      "decal_brick_fragments",
+      "decal_scattered_stones",
+      "decal_high_rubble",
+      "decal_low_rubble",
+      "decal_flat_stones"
+    ],
+    "moss": [
+      "decal_compact_moss",
+      "decal_long_moss",
+      "decal_wet_moss"
+    ]
+  },
+  "central_placements": [
+    {
+      "id": "ruin_broken_column",
+      "root": [
+        -363,
+        -121
+      ],
+      "scale": 2
+    },
+    {
+      "id": "ruin_sloped_wall",
+      "root": [
+        -189,
+        -151
+      ],
+      "scale": 2
+    },
+    {
+      "id": "ruin_broken_arch",
+      "root": [
+        258,
+        -152
+      ],
+      "scale": 2
+    },
+    {
+      "id": "decal_low_rubble",
+      "root": [
+        -278,
+        58
+      ],
+      "scale": 1
+    },
+    {
+      "id": "decal_high_rubble",
+      "root": [
+        307,
+        179
+      ],
+      "scale": 1
+    },
+    {
+      "id": "decal_flat_stones",
+      "root": [
+        166,
+        -7
+      ],
+      "scale": 1
+    },
+    {
+      "id": "decal_brick_fragments",
+      "root": [
+        -108,
+        229
+      ],
+      "scale": 1
+    },
+    {
+      "id": "decal_compact_moss",
+      "root": [
+        -252,
+        208
+      ],
+      "scale": 1
+    },
+    {
+      "id": "decal_stacked_bricks",
+      "root": [
+        368,
+        -22
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        311,
+        208
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        48,
+        247
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        -332,
+        -45
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G12_grass_dry_mix-32",
+      "root": [
+        -43,
+        257
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        -405,
+        93
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        -374,
+        77
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        135,
+        102
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        -165,
+        82
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        220,
+        199
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        -403,
+        27
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G12_grass_dry_mix-32",
+      "root": [
+        -53,
+        246
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        257,
+        203
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        -261,
+        -76
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G12_grass_dry_mix-32",
+      "root": [
+        -371,
+        107
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        98,
+        -79
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        -287,
+        -112
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        321,
+        0
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        119,
+        285
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        13,
+        -44
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        213,
+        100
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G12_grass_dry_mix-32",
+      "root": [
+        -395,
+        38
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G09_grass_short-32",
+      "root": [
+        -110,
+        128
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "root": [
+        -215,
+        230
+      ],
+      "scale": 1
+    },
+    {
+      "id": "G11_grass_long-32",
+      "root": [
+        244,
+        108
+      ],
+      "scale": 1
+    }
+  ],
+  "decoration_cell_size": 384,
+  "wrap_note": "Large periodic texture, 64px outer overlap cut; central approved pixels unchanged. Decorations vary by world coordinate."
+}

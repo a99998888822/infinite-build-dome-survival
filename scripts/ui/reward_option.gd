@@ -11,6 +11,7 @@ const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.sv
 const NORMAL_MINIMUM_HEIGHT: float = 360.0
 const COMPACT_MINIMUM_HEIGHT: float = 272.0
 const SMALL_MINIMUM_HEIGHT: float = 156.0
+const RELIC_ICON_SCALE := 0.75
 
 const OFFER_TYPE_TITLES: Dictionary = {
 	"weapon_upgrade": "武器升级",
@@ -42,6 +43,7 @@ var _interaction_locked: bool = false
 var _animation_tween: Tween = null
 var _hover_tween: Tween = null
 var _icon_float_tween: Tween = null
+var _icon_float_base_offsets := Vector2.ZERO
 var _rarity_glow_material: ShaderMaterial = null
 var _compact_layout: bool = false
 var _small_layout: bool = false
@@ -129,6 +131,9 @@ func _apply_layout_density() -> void:
 		_update_type_badge_layout(offer_type)
 	if icon_frame != null:
 		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (88.0 if _compact_layout else 104.0)
+		if icon_texture != null and FinanceUIStyle.is_native_relic_icon(icon_texture.texture):
+			# Reserve space for the displayed icon, not its full source dimensions.
+			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(icon_texture.texture.get_height() * RELIC_ICON_SCALE / 0.8) + 4.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
@@ -352,10 +357,18 @@ func _update_icon(icon_path: String) -> void:
 		if resource is Texture2D:
 			loaded_texture = resource
 	if icon_texture != null:
-		icon_texture.texture = loaded_texture
+		FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, RELIC_ICON_SCALE)
+		if not FinanceUIStyle.is_native_relic_icon(loaded_texture):
+			# A reused card must restore the weapon's original inset layout.
+			icon_texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			icon_texture.anchor_left = 0.1
+			icon_texture.anchor_top = 0.1
+			icon_texture.anchor_right = 0.9
+			icon_texture.anchor_bottom = 0.9
 		icon_texture.visible = loaded_texture != null
 	if icon_placeholder != null:
 		icon_placeholder.visible = loaded_texture == null
+	_apply_layout_density()
 	if loaded_texture != null:
 		call_deferred("_start_icon_float")
 
@@ -387,6 +400,7 @@ func _start_icon_float() -> void:
 	_stop_icon_float()
 	var base_top := icon_texture.offset_top
 	var base_bottom := icon_texture.offset_bottom
+	_icon_float_base_offsets = Vector2(base_top, base_bottom)
 	_icon_float_tween = create_tween()
 	_icon_float_tween.set_loops()
 	_icon_float_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -402,9 +416,9 @@ func _stop_icon_float() -> void:
 	if _icon_float_tween != null:
 		_icon_float_tween.kill()
 		_icon_float_tween = null
-	if icon_texture != null:
-		icon_texture.offset_top = 0.0
-		icon_texture.offset_bottom = 0.0
+		if icon_texture != null:
+			icon_texture.offset_top = _icon_float_base_offsets.x
+			icon_texture.offset_bottom = _icon_float_base_offsets.y
 
 
 func _build_description_text(offer: Dictionary) -> String:

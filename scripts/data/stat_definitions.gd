@@ -247,7 +247,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "局内掉落概率百分比加成。"
+		"description": "局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。"
 	},
 	"health_pack_heal_plus": {
 		"display_name": "血包恢复量加成",
@@ -267,7 +267,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 9999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "影响稀有遗物与升级选项的概率；每100幸运使附魔掉落概率相对提高10%（普通怪1.5%→1.65%），每波无掉落数量上限。"
+		"description": "影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少30个敌人的战斗未掉附魔，第二次结算补1个。"
 	},
 	"currency_gain_percent": {
 		"display_name": "货币获取加成",

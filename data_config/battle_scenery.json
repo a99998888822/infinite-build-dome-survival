@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "source_package": "battle_scene_picxel_review/128px",
+  "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_seams_r03/exports",
   "canvas_size": [
-    128,
-    128
+    64,
+    64
   ],
   "scale_basis": "longest visible side; uniform aspect-preserving scaling",
   "ground_slots": [
@@ -68,361 +68,381 @@
   "assets": {
     "ruin_curved_wall": {
       "texture": "res://assets/sprites/background/wetland/ruin_curved_wall.png",
-      "source_file": "01_弧形残墙.png",
-      "sha256": "79ecb7fdcb003d1ff2e43cd2405ecb3e8ff72fb723a1e6dde33c05a239e724ed",
+      "source_file": "ruin_curved_wall-64.png",
+      "sha256": "74d569e9abe22d0f5246ca379aa70bca1cd970f6ce8e7ab70f530b3c9ab1d59b",
       "content_rect": [
-        8,
-        40,
-        112,
-        47
+        4,
+        20,
+        56,
+        24
       ],
-      "world_extent": 176
+      "world_extent": 176,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_sloped_wall": {
       "texture": "res://assets/sprites/background/wetland/ruin_sloped_wall.png",
-      "source_file": "02_斜坡断墙.png",
-      "sha256": "9e0d33954fecc158d629a7fffefee9d686d1c415f825c620bbec1f61ce63c11a",
+      "source_file": "ruin_sloped_wall-64.png",
+      "sha256": "ab33d4742e33bdb049c019851a1d67fd3907a591e8681f24af68f233d1c13a8f",
       "content_rect": [
-        7,
-        24,
-        116,
-        80
+        4,
+        12,
+        57,
+        40
       ],
-      "world_extent": 176
+      "world_extent": 176,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_brick_wall": {
       "texture": "res://assets/sprites/background/wetland/ruin_brick_wall.png",
-      "source_file": "03_阶梯缺口砖墙.png",
-      "sha256": "10efdc0a6aa663fe644df8d666522a92c2ee092534f674dd53bbd412de831833",
+      "source_file": "ruin_brick_wall-64.png",
+      "sha256": "b33c82c3b87bb9a6d1bb332a3dd57476508c0d6c8f847740328b0c239f12050b",
       "content_rect": [
-        6,
-        44,
-        115,
-        40
+        3,
+        22,
+        58,
+        20
       ],
-      "world_extent": 176
+      "world_extent": 176,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_twin_pillar_wall": {
       "texture": "res://assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
-      "source_file": "04_双柱低墙.png",
-      "sha256": "8f07c2d23613eb70201d171937656084ed94b2ac34749e0b4859c7124423506d",
+      "source_file": "ruin_twin_pillar_wall-64.png",
+      "sha256": "1738e628d0fdee82466410f0b3c5b1c02abf1b985fae558af813b51a8ef9b642",
       "content_rect": [
-        7,
-        42,
-        114,
-        44
+        4,
+        21,
+        56,
+        22
       ],
-      "world_extent": 184
+      "world_extent": 184,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_broken_arch": {
       "texture": "res://assets/sprites/background/wetland/ruin_broken_arch.png",
-      "source_file": "05_残破石拱门.png",
-      "sha256": "4875adb4bec455ed1e79732feac78d79fa2e64939d9d3c6f4e1bf5a7b4a8e2bb",
+      "source_file": "ruin_broken_arch-64.png",
+      "sha256": "db8ec98abbab724564faa583f64e50a0846466a5805a122387ca9d76d5434337",
       "content_rect": [
-        14,
-        22,
-        103,
-        84
+        7,
+        11,
+        51,
+        42
       ],
-      "world_extent": 156
+      "world_extent": 156,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_square_pillar": {
       "texture": "res://assets/sprites/background/wetland/ruin_square_pillar.png",
-      "source_file": "06_完整方石柱.png",
-      "sha256": "fa04cd7dda2771c5bb365ecd85c94a6d27549fac43602d125d3f782d8706e241",
+      "source_file": "ruin_square_pillar-64.png",
+      "sha256": "d22d3a2a676e370ae176f0d49cc2b8bb64b33b3654826edfd0d9182179723d1b",
       "content_rect": [
-        25,
-        8,
-        78,
-        112
+        13,
+        4,
+        38,
+        56
       ],
-      "world_extent": 104
+      "world_extent": 104,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_broken_column": {
       "texture": "res://assets/sprites/background/wetland/ruin_broken_column.png",
-      "source_file": "07_断裂长石柱.png",
-      "sha256": "fb422bae9627c7ad222833189a96db8206a7469dbf394668a3d8ce59fbcdacb4",
+      "source_file": "ruin_broken_column-64.png",
+      "sha256": "18e436529baadef8237b8a43bc2c772173ab9de8ebd4532a1456a628a62adced",
       "content_rect": [
-        21,
-        1,
-        86,
-        126
+        11,
+        0,
+        43,
+        64
       ],
-      "world_extent": 100
+      "world_extent": 100,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_short_column": {
       "texture": "res://assets/sprites/background/wetland/ruin_short_column.png",
-      "source_file": "08_矮圆断柱.png",
-      "sha256": "3559d7f7c9c0151d130e54a8915238272164d9b50a9aa6953b7da2b54727668c",
+      "source_file": "ruin_short_column-64.png",
+      "sha256": "21c2d2e87b566e63b8244e96f7f473dcef49ee175442c0c6f05d270c3551c515",
       "content_rect": [
-        20,
         10,
-        88,
-        108
+        5,
+        44,
+        54
       ],
-      "world_extent": 70
+      "world_extent": 70,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_stone_block": {
       "texture": "res://assets/sprites/background/wetland/ruin_stone_block.png",
-      "source_file": "09_方形残石.png",
-      "sha256": "a70189b64389f799076b1af57c58bc882d950a0e1d68836eefaf4a35256b28ea",
+      "source_file": "ruin_stone_block-64.png",
+      "sha256": "a7eba2bf3881eba87e5694be4a6a866707e64945823638c3250ce803d8774d72",
       "content_rect": [
-        7,
-        6,
-        114,
-        115
+        4,
+        3,
+        56,
+        57
       ],
-      "world_extent": 64
+      "world_extent": 64,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "ruin_eroded_pillar": {
       "texture": "res://assets/sprites/background/wetland/ruin_eroded_pillar.png",
-      "source_file": "10_风蚀孔洞石柱.png",
-      "sha256": "24194ae772aeb00578b0096986bb610d99a3e6e2233cfdb7b7dc2b16f3a8117e",
+      "source_file": "ruin_eroded_pillar-64.png",
+      "sha256": "6b34d5a8ac86912babf931032d2e73a7d21be1c50b5060502ba5f718b38dbea8",
       "content_rect": [
-        30,
-        6,
-        69,
-        116
+        15,
+        3,
+        35,
+        58
       ],
-      "world_extent": 104
+      "world_extent": 104,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_single_brick": {
       "texture": "res://assets/sprites/background/wetland/decal_single_brick.png",
-      "source_file": "11_单块苔砖.png",
-      "sha256": "8691ac4a82e4be242e6abb648171becb784fa41c89d9ac33be796e924d7eed0e",
+      "source_file": "decal_single_brick-64.png",
+      "sha256": "b94d9c4b1875ba35d8454232e505582035bd5ecd0c4911772910d6c6e1a223bd",
       "content_rect": [
-        10,
-        37,
-        108,
-        54
+        5,
+        18,
+        54,
+        28
       ],
-      "world_extent": 44
+      "world_extent": 44,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_stacked_bricks": {
       "texture": "res://assets/sprites/background/wetland/decal_stacked_bricks.png",
-      "source_file": "12_三块叠砖.png",
-      "sha256": "f08809f615e07f2508cb023a81c84c6a182828aba1ac7ba4678031ad3d34cd13",
+      "source_file": "decal_stacked_bricks-64.png",
+      "sha256": "ed64124e01a7d5a48efbc33795e24d13f870a7ac2619cc92f1f15338a99f9be9",
       "content_rect": [
-        13,
-        43,
-        102,
-        42
+        6,
+        21,
+        52,
+        22
       ],
-      "world_extent": 62
+      "world_extent": 62,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_brick_fragments": {
       "texture": "res://assets/sprites/background/wetland/decal_brick_fragments.png",
-      "source_file": "13_碎砖与瓦片.png",
-      "sha256": "577afe348dafc97f087cbda942fa2c994c687a854531dd1f8f068337529c75c3",
+      "source_file": "decal_brick_fragments-64.png",
+      "sha256": "3979454451b6e609885cc9ecfdb87f492fe55c69391d56a18cddb75695af5426",
       "content_rect": [
-        4,
-        43,
-        120,
-        43
+        2,
+        21,
+        60,
+        22
       ],
-      "world_extent": 80
+      "world_extent": 80,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_scattered_stones": {
       "texture": "res://assets/sprites/background/wetland/decal_scattered_stones.png",
-      "source_file": "14_横向零散石块.png",
-      "sha256": "679ad2ca8d887aa9ea4ee937e931b5493fe81d154b24a5d442394a38b91a8c03",
+      "source_file": "decal_scattered_stones-64.png",
+      "sha256": "42a4ec9aaacfab0d4a421609a5dbf31ed1a4486a754eeb66cb3685f69522d21a",
       "content_rect": [
-        5,
-        56,
-        116,
-        16
+        2,
+        28,
+        59,
+        8
       ],
-      "world_extent": 76
+      "world_extent": 76,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_high_rubble": {
       "texture": "res://assets/sprites/background/wetland/decal_high_rubble.png",
-      "source_file": "15_高碎石堆.png",
-      "sha256": "4d201c77b73c94b2a2e786ba2749215aaa358826400ca4f57804958a3e8410ec",
+      "source_file": "decal_high_rubble-64.png",
+      "sha256": "7584a1763ac6c271edf6605ec159476dbc70634c3b456a6e5401cee71c21848b",
       "content_rect": [
-        12,
-        35,
-        104,
-        58
+        7,
+        17,
+        51,
+        29
       ],
-      "world_extent": 86
+      "world_extent": 86,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_low_rubble": {
       "texture": "res://assets/sprites/background/wetland/decal_low_rubble.png",
-      "source_file": "16_低碎石堆.png",
-      "sha256": "f8fb778832b6a8e72ebac3d2509cfa5c562e3e52452b8f53faf2b2e4bc202237",
+      "source_file": "decal_low_rubble-64.png",
+      "sha256": "d0a2231e96727252b1c938175e5da7322e5996bcc44b7877f7dc29329371fb57",
       "content_rect": [
         2,
-        33,
-        124,
-        62
+        17,
+        60,
+        31
       ],
-      "world_extent": 78
+      "world_extent": 78,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_flat_stones": {
       "texture": "res://assets/sprites/background/wetland/decal_flat_stones.png",
-      "source_file": "17_扁平散石.png",
-      "sha256": "c720bbaa6397fde76dfc1798e717aab6cd27de91f572523dbf658974fca21462",
+      "source_file": "decal_flat_stones-64.png",
+      "sha256": "557475f0c1a530897c840822b6566b47513c223f29a0b8042297b60a3fd734f2",
       "content_rect": [
-        9,
-        46,
-        110,
-        36
+        5,
+        23,
+        55,
+        18
       ],
-      "world_extent": 82
+      "world_extent": 82,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_compact_moss": {
       "texture": "res://assets/sprites/background/wetland/decal_compact_moss.png",
-      "source_file": "18_紧凑苔藓.png",
-      "sha256": "294a009c6bc9a81825e1f6bcaa9cec77dd00ed189250786a93e2e7d93c8bc1de",
+      "source_file": "decal_compact_moss-64.png",
+      "sha256": "78ced046f4cdd9d418a770b082f13c05e83b84bcf3f1659a7c1c4a1d4a2328e0",
       "content_rect": [
-        16,
-        39,
-        95,
-        49
+        8,
+        20,
+        48,
+        24
       ],
-      "world_extent": 20
+      "world_extent": 20,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_long_moss": {
       "texture": "res://assets/sprites/background/wetland/decal_long_moss.png",
-      "source_file": "19_扁长苔藓.png",
-      "sha256": "764b1b3307ff77b25d47680912ca11269825ae6d03c2b912a22fffd70cb668c2",
+      "source_file": "decal_long_moss-64.png",
+      "sha256": "759c0142925a897304f875fcfc7f35f10fc2998e1be66cb5202e14bdaa21f353",
       "content_rect": [
-        12,
-        45,
-        98,
-        38
+        6,
+        22,
+        49,
+        19
       ],
-      "world_extent": 26
+      "world_extent": 26,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_wet_moss": {
       "texture": "res://assets/sprites/background/wetland/decal_wet_moss.png",
-      "source_file": "20_散生湿苔.png",
-      "sha256": "24adfdbf83e6dc082f685ad995a515732757c18a97e133fa6ef1e5c9d549aeb9",
+      "source_file": "decal_wet_moss-64.png",
+      "sha256": "4a44795ff4c316994c92406054acd8d5c341748463edac9da9d78e530ff36319",
       "content_rect": [
-        7,
-        40,
-        115,
-        47
+        4,
+        20,
+        55,
+        23
       ],
-      "world_extent": 32
+      "world_extent": 32,
+      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
     "decal_vertical_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_vertical_crack.png",
-      "source_file": "21_纵向曲折裂痕.png",
-      "sha256": "6742a0c214af75acfe5154615f608ca3b1aa3632191a6b4d74b7e82a0fea315f",
+      "source_file": "decal_vertical_crack-64.png",
+      "sha256": "6cff34f776f12d6969cbd7e351c21fabe712e1f71df0c6ab5a62cd1686909a4b",
       "content_rect": [
-        58,
-        5,
-        12,
-        118
+        29,
+        2,
+        6,
+        60
       ],
       "world_extent": 72
     },
     "decal_forked_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_forked_crack.png",
-      "source_file": "22_斜向双叉裂痕.png",
-      "sha256": "7adffd25c9e53c5b3383af18da527be0aa9fae3ab9904b04821acd9ed29b35e4",
+      "source_file": "decal_forked_crack-64.png",
+      "sha256": "60bf4f7ed635c1396efeb662a8ac5c403d44ff50d37f388bfa40aaba6567100b",
       "content_rect": [
-        39,
-        24,
-        49,
-        79
+        19,
+        12,
+        25,
+        40
       ],
       "world_extent": 76
     },
     "decal_fine_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_fine_crack.png",
-      "source_file": "23_细小分叉裂痕.png",
-      "sha256": "4c844ae8cdc26d8402486e62ea3950a4ada3a550c9075c56e85be6795b6d686c",
+      "source_file": "decal_fine_crack-64.png",
+      "sha256": "85ef4a159be38706b33178368f347230d6c31f40abecabfa51dc4e921384f777",
       "content_rect": [
+        16,
+        16,
         32,
-        33,
-        64,
-        62
+        32
       ],
       "world_extent": 72
     },
     "decal_spreading_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_spreading_crack.png",
-      "source_file": "24_横向蔓延裂痕.png",
-      "sha256": "3e98623de58e137bdb7d9e42c9535f07d10d7d11325e6a2a4bcfc2a9f5b82deb",
+      "source_file": "decal_spreading_crack-64.png",
+      "sha256": "f8d85408a7254e260220d7b9e1be36b5579ee098c79b5106473cfbc01c2b165b",
       "content_rect": [
-        4,
-        40,
-        120,
-        48
+        2,
+        20,
+        60,
+        24
       ],
       "world_extent": 94
     },
     "decal_cyan_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_cyan_crack.png",
-      "source_file": "25_青绿星状裂痕.png",
-      "sha256": "363c7fd8ad57541504a236b8c3c7fd532d96d5bceccd29d0676355fce5ed46c2",
+      "source_file": "decal_cyan_crack-64.png",
+      "sha256": "c89e0c66cc554ffa1b180ca6f7b7128a8f0356bc310051d059cc51c4c0545c35",
       "content_rect": [
-        6,
-        27,
-        115,
-        73
+        3,
+        13,
+        58,
+        37
       ],
       "world_extent": 96
     },
     "decal_mossy_crack": {
       "texture": "res://assets/sprites/background/wetland/decal_mossy_crack.png",
-      "source_file": "26_覆苔放射裂痕.png",
-      "sha256": "b7a130be8122dd59b5b4f9b20298c7f0c08cbb4b0310db0509b2b58bb74c75f5",
+      "source_file": "decal_mossy_crack-64.png",
+      "sha256": "71de283cc7d2e493a72fe7eb5717febab0ad85edbbc51c02353c10c24545908c",
       "content_rect": [
-        6,
-        38,
-        117,
-        51
+        3,
+        19,
+        59,
+        26
       ],
       "world_extent": 98
     },
     "decal_wet_patch": {
       "texture": "res://assets/sprites/background/wetland/decal_wet_patch.png",
-      "source_file": "27_不规则湿地斑.png",
-      "sha256": "bfba06dff2c51bd32611124ca7a7f67805d1e1be663b98f1604b9391c53302a6",
+      "source_file": "decal_wet_patch-64.png",
+      "sha256": "2346eca536ed123092fb6edb24940bbea1b94a5fca52e296bc41dbef2f2af9ec",
       "content_rect": [
-        13,
-        41,
-        109,
-        46
+        7,
+        22,
+        50,
+        21
       ],
       "world_extent": 104
     },
     "decal_puddle": {
       "texture": "res://assets/sprites/background/wetland/decal_puddle.png",
-      "source_file": "28_浅水洼.png",
-      "sha256": "e4ab447de04fea3f5cc31d1488c89c7dca24ed5661b19996cf726f3b5f72dcba",
+      "source_file": "decal_puddle-64.png",
+      "sha256": "db85af2f76b79ce4cc0d94db1f59a1469ec753a8297d4ae5594efd39a5a2c2b1",
       "content_rect": [
-        6,
-        39,
-        116,
-        50
+        4,
+        20,
+        55,
+        25
       ],
       "world_extent": 96
     },
     "fx_fine_ripples": {
       "texture": "res://assets/sprites/background/wetland/fx_fine_ripples.png",
-      "source_file": "29_断续细线水纹.png",
-      "sha256": "1bada516cf5042899223f82a4de27255f0b7c2b225e0dd209ccff317db0987ab",
+      "source_file": "fx_fine_ripples-64.png",
+      "sha256": "72dfe290711d0e9178521ce55c729a0491a5e11fe349f9f6810c16c78a500abf",
       "content_rect": [
-        3,
-        52,
-        122,
-        24
+        1,
+        26,
+        62,
+        12
       ],
       "world_extent": 58
     },
     "fx_cyan_ripples": {
       "texture": "res://assets/sprites/background/wetland/fx_cyan_ripples.png",
-      "source_file": "30_多圈青绿水纹.png",
-      "sha256": "d9f78f424098e82ab004649b7ea35941dff21c2ebba6fa306de688d9a49bfdcf",
+      "source_file": "fx_cyan_ripples-64.png",
+      "sha256": "f0e887ad1d0ab46120dc0923e2bca52ef579385ddd1f455a779c8d99a4839e9b",
       "content_rect": [
-        2,
-        46,
-        124,
-        36
+        1,
+        23,
+        62,
+        18
       ],
       "world_extent": 58
     }

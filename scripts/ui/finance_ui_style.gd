@@ -5,6 +5,81 @@ const TEXT := Color("e0d6b6")
 const MUTED := Color("a79f87")
 const GOLD := Color("c5a16a")
 const GREEN := Color("a9c498")
+const RELIC_LIST_ICON_SCALE := 0.5
+
+# Opt in only after a batch has passed art review. Legacy assets keep their layout.
+const NATIVE_RELIC_ICONS := [
+	"relic_piggy_bank", "relic_steel_vault", "relic_gold_compass",
+	"relic_compound_interest_tome", "relic_periodic_dividend_clock", "relic_quant_trading",
+	"relic_finance_manager", "relic_dividend_check", "relic_fixed_deposit_certificate",
+	"relic_hostile_takeover", "relic_tip_tray", "relic_high_yield_contract",
+	"relic_worn_hemostatic_cloth", "relic_load_iron_bracer", "relic_pungent_sachet",
+	"relic_broken_crystal", "relic_vitality_potion", "relic_dead_shield_badge",
+	"relic_turtle_shell_pendant", "relic_prison_copper_anklet", "relic_brass_pocket_watch",
+	"relic_flesh_pauldron", "relic_nightmare_healing_urn", "relic_barrier_crystal",
+	"relic_cultic_holy_shield", "relic_lost_wayfarer_greave", "relic_soul_keeper_face_stone",
+	"relic_pain_vessel", "relic_true_silver_armor", "relic_holy_silver_cup",
+	"relic_suffering_carapace", "relic_costly_seed_of_life", "relic_shadowless_greave",
+	"relic_chain_of_hardship", "relic_void_tentacle", "relic_worn_fighting_gloves",
+	"relic_cracked_stone_bullet", "relic_hasty_spring_trigger", "relic_rough_grinding_lens",
+	"relic_blocking_counterweight", "relic_bloodstained_belt", "relic_poison_mist_pouch",
+	"relic_tremor_grip", "relic_black_spot_eagle_eye", "relic_berserker_copper_badge",
+	"relic_corroded_blowpipe", "relic_gale_roulette", "relic_executioner_bracer",
+	"relic_judgment_eye_pendant", "relic_split_crystal_warhead", "relic_gold_digger_gloves",
+	"relic_incomplete_divination_dice", "relic_travelers_ledger", "relic_defiled_blessing_coin",
+	"relic_expanded_backpack_strap", "relic_stargazers_lens", "relic_harvest_sacrificial_vessel",
+	"relic_amulet_of_humanity", "relic_gift_mark", "relic_void_storage_casket",
+	"relic_reincarnation_hellfire_candle", "relic_guarding_heart_copper_mirror", "relic_sleepless_ledger",
+	"relic_frenzied_dividend", "relic_gilded_trigger", "relic_runaway_amplifier",
+	"relic_lucid_vow", "relic_coin_heart", "relic_hoarders_ring",
+	"relic_golden_sarcophagus", "relic_old_brass_telescope", "relic_cracked_bronze_bell",
+	"relic_long_focus_eyepiece", "relic_diffusion_nozzle", "relic_range_tripod",
+	"relic_aftershock_hourglass", "relic_golden_rangefinder", "relic_abyssal_echo_shell",
+	"relic_folded_star_chart", "relic_horizon_orrery", "relic_flyer_ad",
+	"relic_merger_reorg", "relic_divine_fusion", "relic_goblin_central_bank_printer",
+	"relic_medical_cutback", "relic_welfare_cutback", "relic_annual_leave_cutback",
+	"relic_salary_adjustment", "relic_perpetual_annuity_scroll", "relic_bankruptcy_reorg",
+]
+
+
+static func is_native_relic_icon(texture: Texture2D) -> bool:
+	return texture != null and texture.resource_path.get_base_dir() == "res://assets/ui/icons/relics" and texture.resource_path.get_file().get_basename() in NATIVE_RELIC_ICONS
+
+
+static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale: float = 1.0) -> void:
+	if control.has_meta("scaled_relic_icon"):
+		control.custom_minimum_size = Vector2.ZERO
+		control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		control.remove_meta("scaled_relic_icon")
+	control.texture = texture
+	var native_pixel := is_native_relic_icon(texture)
+	if native_pixel:
+		if not control.has_meta("legacy_icon_layout"):
+			control.set_meta("legacy_icon_layout", [control.stretch_mode, control.texture_filter, control.custom_minimum_size])
+		control.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var previous: Array = control.get_meta("legacy_icon_layout")
+		control.custom_minimum_size = (previous[2] as Vector2).max(texture.get_size() * native_scale)
+		if native_scale != 1.0:
+			# Center an explicit drawing rect; shrinking only the minimum size leaves
+			# STRETCH_KEEP_CENTERED drawing the full source texture.
+			var extent := texture.get_size() * native_scale
+			control.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			control.custom_minimum_size = extent
+			control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+			control.size = extent
+			control.offset_left = -extent.x * 0.5
+			control.offset_top = -extent.y * 0.5
+			control.offset_right = extent.x * 0.5
+			control.offset_bottom = extent.y * 0.5
+			control.set_meta("scaled_relic_icon", true)
+	elif control.has_meta("legacy_icon_layout"):
+		# Shop cards and encyclopedia details are reused for different items.
+		var previous: Array = control.get_meta("legacy_icon_layout")
+		control.stretch_mode = previous[0]
+		control.texture_filter = previous[1]
+		control.custom_minimum_size = previous[2]
+		control.remove_meta("legacy_icon_layout")
 
 
 static func principal_revive_status(state: Dictionary) -> String:
@@ -68,6 +143,21 @@ static func scroll(control: ScrollContainer) -> void:
 	control.get_v_scroll_bar().add_theme_stylebox_override("grabber", box("797752", "aaa178", 0))
 	control.get_v_scroll_bar().add_theme_stylebox_override("grabber_highlight", box("979367", "c2b388", 0))
 	control.get_v_scroll_bar().add_theme_stylebox_override("grabber_pressed", box("999364", "c2b388", 0))
+
+
+static func horizontal_scroll(control: ScrollContainer) -> void:
+	control.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	control.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	var bar := control.get_h_scroll_bar()
+	bar.custom_minimum_size.y = 8
+	bar.add_theme_stylebox_override("scroll", box("171f19", "343e2d", 3))
+	bar.add_theme_stylebox_override("scroll_focus", StyleBoxEmpty.new())
+	bar.add_theme_stylebox_override("grabber", box("797752", "aaa178", 3))
+	bar.add_theme_stylebox_override("grabber_highlight", box("979367", "d4bc81", 3))
+	bar.add_theme_stylebox_override("grabber_pressed", box("aaa178", "e0d6b6", 3))
+	var blank := ImageTexture.create_from_image(Image.create(1, 1, false, Image.FORMAT_RGBA8))
+	for icon_name in ["increment", "increment_highlight", "increment_pressed", "decrement", "decrement_highlight", "decrement_pressed"]:
+		bar.add_theme_icon_override(icon_name, blank)
 
 
 static func reason(code: String) -> String:

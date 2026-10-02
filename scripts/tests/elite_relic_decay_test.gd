@@ -132,10 +132,10 @@ func _test_elite() -> void:
 	elite.start_dash()
 	var locked := elite._direction
 	player.global_position = Vector2(0, 500)
-	elite._process_special_behavior(0.4)
+	elite._process_special_behavior(0.2)
 	check(elite.skill_state == "windup" and elite._direction == locked, "telegraph locks direction")
-	elite._process_special_behavior(0.4)
-	check(elite.skill_state == "dash", "800ms windup starts dash")
+	elite._process_special_behavior(0.2)
+	check(elite.skill_state == "dash", "400ms windup starts dash")
 	elite._process_special_behavior(0.16)
 	check(elite.skill_state == "recover" and elite.global_position.distance_to(Vector2(240, 0)) < 0.1, "dash travels 240 pixels in 160ms")
 	elite._process_special_behavior(0.5)

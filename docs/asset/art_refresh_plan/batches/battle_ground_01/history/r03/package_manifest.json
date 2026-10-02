@@ -1,0 +1,19 @@
+{
+  "revision": "r03",
+  "files": {
+    "START_HERE.md": "9225bf0dc87567b8d9e018a6003ed23e9b945f5930cf560570ecf14f30872363",
+    "REVIEW_CHECKLIST.md": "4f0cb763a6d99990dc7a6ec00bf7143e97f82eabb8b411ec9d3c5777e37429e9",
+    "NEXT_STEPS.md": "c6e08232a906276ee451c821830b3dfab4ffb09e1e3e9f0ba7d82d9952cd6a54",
+    "CAMERA_CONTRACT.md": "8084d3511aa608b97fff80f4057f2f4a1f63c0b27bf79af4a3dd98d56170a9a0",
+    "01_ground_palette_reference.png": "4c0da8577e8d56bbfd528c17fe38605d2837472e835224586bc35041fa1e78c3",
+    "02_vegetation_reference.png": "7d8ceabc2cee432c0edb6ddb6dd86eedceb4b7061eeefce7047ddc7dbb32bbd9",
+    "reference_manifest.json": "c043166fb82de048d0ed6d0f22b6481e741a3175f97cbdd772bb59791ebbaf36",
+    "asset_manifest.json": "1ed669435cb64f7a8b5584cecddcdb95084808576846798859e5b01a1b1afc3e",
+    "prompts/G01_grass_sparse.txt": "66a75009615c1e98a65bf679a390b32451a82e082001fcc36e2bd7130f1371d9",
+    "prompts/G02_grass_dense.txt": "aab653778f1269f6ab565186776b9b863032a3519bbc16b2709b8986469b9e00",
+    "prompts/G03_wet_earth.txt": "4c3414cfb542815aab1059156b045094d150aa776c90cdf5bab8b8a81758b423",
+    "prompts/G04_paving_worn.txt": "84591e23b4fc1244a657d280fef38b619abfe73672dcc56a27475573fb7644ad",
+    "prompts/G05_paving_broken.txt": "e2cb8941062c61482c60699dec6efce250dd3add2ce947f3ea574eb1fbbc7ee9",
+    "prompts/G06_G08_bushes.txt": "f4cacf3107aedda586d756dd69da837c890714d8270011062837941c25b98026"
+  }
+}

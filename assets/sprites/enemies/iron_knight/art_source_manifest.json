@@ -1,0 +1,55 @@
+{
+  "frame_size": 128,
+  "idle_source": "boss_walk_06",
+  "atlas_sources": {
+    "knight_idle.png": [
+      "boss_walk_06"
+    ],
+    "knight_move.png": [
+      "boss_walk_01",
+      "boss_walk_02",
+      "boss_walk_03",
+      "boss_walk_04",
+      "boss_walk_05",
+      "boss_walk_06"
+    ],
+    "knight_windup.png": [
+      "boss_attack_01",
+      "boss_attack_02",
+      "boss_attack_03",
+      "boss_attack_04",
+      "boss_attack_05",
+      "boss_attack_06",
+      "boss_attack_07"
+    ],
+    "knight_dash.png": [
+      "boss_attack_08",
+      "boss_attack_09"
+    ],
+    "knight_recover.png": [
+      "boss_attack_10"
+    ]
+  },
+  "source_limitations": [
+    "attack03 and attack08 source hammer tops clipped",
+    "recover holds attack10; no invented return-to-idle frames"
+  ],
+  "editable": {
+    "boss_attack_01": "boss_attack_01-128-clean.pxg",
+    "boss_attack_02": "boss_attack_02-128-clean.pxg",
+    "boss_attack_03": "boss_attack_03-128-clean.pxg",
+    "boss_attack_04": "boss_attack_04-128-clean.pxg",
+    "boss_attack_05": "boss_attack_05-128-clean.pxg",
+    "boss_attack_06": "boss_attack_06-128-clean.pxg",
+    "boss_attack_07": "boss_attack_07-128-clean.pxg",
+    "boss_attack_08": "boss_attack_08-128-clean.pxg",
+    "boss_attack_09": "boss_attack_09-128-clean.pxg",
+    "boss_attack_10": "boss_attack_10-128-clean.pxg",
+    "boss_walk_01": "boss_walk_01-128-clean.pxg",
+    "boss_walk_02": "boss_walk_02-128-clean.pxg",
+    "boss_walk_03": "boss_walk_03-128-clean.pxg",
+    "boss_walk_04": "boss_walk_04-128-clean.pxg",
+    "boss_walk_05": "boss_walk_05-128-clean.pxg",
+    "boss_walk_06": "boss_walk_06-128-clean.pxg"
+  }
+}

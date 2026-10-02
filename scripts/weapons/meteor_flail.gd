@@ -30,7 +30,7 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	heading = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	swing_sign = 1.0 if weapon.volley_index % 2 == 0 else -1.0
 	time_scale = weapon.get_actual_attack_interval_seconds() / 1.5
-	global_position = weapon.owner_player.global_position
+	global_position = weapon.get_attack_origin()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = 50
 	split_profiles = weapon.get_split_profiles()
@@ -45,10 +45,13 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	add_to_group("weapon_runtime_effects")
 
 
-func _add_swing(start: float, windup: float, duration: float, multiplier: float, child: bool, index: int) -> void:
+func _add_swing(start: float, windup: float, duration: float, multiplier: float, child: bool, index: int, continuation: int = 0) -> void:
+	var event := weapon.calculate_damage_events()[0]
+	event.split_child = child
+	event.enchantment_start = continuation
 	swings.append({"start": start, "windup": windup, "duration": duration,
 		"multiplier": multiplier, "child": child, "sign": swing_sign * (1.0 if index % 2 == 0 else -1.0),
-		"event": weapon.calculate_damage_events()[0], "hits": {}, "trail": [], "processed_until": start})
+		"event": event, "hits": {}, "trail": [], "processed_until": start})
 
 
 func is_swinging() -> bool:
@@ -66,7 +69,7 @@ func _physics_process(delta: float) -> void:
 	var previous := age
 	var old_origin := global_position
 	age += delta / time_scale
-	global_position = weapon.owner_player.global_position
+	global_position = weapon.get_attack_origin()
 	# Snapshot the count: contact may append split swings, never recurse this frame.
 	for index in swings.size():
 		var swing := swings[index]
@@ -152,11 +155,11 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 	event.hit_position = where
 	if not bool(swing.child) and not split_triggered:
 		split_triggered = true
-		var children: Array[float] = []
+		var children: Array[Dictionary] = []
 		for profile in split_profiles:
-			for _index in int(profile.child_count): children.append(float(profile.damage_multiplier))
+			for _index in int(profile.child_count): children.append(profile)
 		for index in children.size():
-			_add_swing(maxf(0.70, at_time) + 0.36 * index / maxf(children.size() - 1, 1), 0.03, 0.32, children[index], true, index + 1)
+			_add_swing(maxf(0.70, at_time) + 0.36 * index / maxf(children.size() - 1, 1), 0.03, 0.32, float(children[index].damage_multiplier), true, index + 1, int(children[index].enchantment_start))
 	# Every contacted victim gets attachments, including a lethal native hit.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, heading, enemy)
 	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, heading)

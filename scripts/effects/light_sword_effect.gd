@@ -37,7 +37,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "light_sword", {
-		"damage_multiplier": 0.9,
+		"damage_multiplier": 0.65,
 		"radius": DEFAULT_RADIUS,
 		"delay": DEFAULT_DELAY,
 		"fall_seconds": DEFAULT_FALL_SECONDS,
@@ -84,7 +84,7 @@ func _land() -> void:
 	AudioManager.begin_combat_audio()
 	AudioManager.play_enchantment_sfx("light_sword")
 	_build_ground_cracks()
-	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.9))
+	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.65))
 	var shape := CircleShape2D.new()
 	shape.radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()

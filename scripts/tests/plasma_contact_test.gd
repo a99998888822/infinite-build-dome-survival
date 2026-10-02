@@ -12,7 +12,7 @@ func plasma_fixture(positions: Array) -> void:
 func shot() -> ProjectileInstance:
 	var result := ProjectileInstance.new()
 	host.add_child(result)
-	result.initialize(weapon, event, "plasma_contact_test", Vector2.ZERO, Vector2.RIGHT, 460.0, null, 1.0)
+	result.initialize(weapon, event, "plasma_contact_test", Vector2.ZERO, Vector2.RIGHT, weapon.get_attack_range(), null, 1.0)
 	result.set_physics_process(false)
 	return result
 
@@ -82,7 +82,7 @@ func _run() -> void:
 		"live damage-area growth updates visible core and collision together")
 	weapon.runtime_stats.area_size = 200.0
 	ball._physics_process(0.0)
-	check(ball._hit_shape.radius == 24.0 and ball._plasma_visual.core_radius == 24.0 and weapon.get_attack_range() == 1380.0,
+	check(ball._hit_shape.radius == 24.0 and ball._plasma_visual.core_radius == 24.0 and weapon.get_attack_range() == 720.0,
 		"attack range expands travel without secretly expanding contact")
 	enemies[0].position = Vector2(24.0 + enemy_radius() - 0.5, 0)
 	await frames()
@@ -177,20 +177,20 @@ func check_contact_speed_recovery() -> void:
 func check_enchantment_damage() -> void:
 	# Use different direct/original damage and a player elemental bonus to catch
 	# effects that accidentally bypass the plasma-specific scale.
-	await plasma_fixture([Vector2.ZERO, Vector2(60, 0)])
+	await plasma_fixture([Vector2.ZERO, Vector2(45, 0)])
 	event = DamageEvent.create({"damage": 100, "original_damage": 80, "element_damage_bonus": 45,
 		"source_weapon_id": weapon.weapon_id})
 	weapon._attached_item_instances = [{"effect_ids": ["explosion"]}]
 	var ball := shot()
 	ball._process_plasma_contact(0.0)
 	await frames()
-	check(enemies[0].current_hp == 9880 and enemies[1].current_hp == 9980,
-		"plasma keeps full direct damage but explosion scales original plus elemental bonus to twenty percent")
+	check(enemies[0].current_hp == 9900 and enemies[0]._knockback_timer > 0 and enemies[1].current_hp == 10000 and enemies[1]._knockback_timer > 0,
+		"plasma keeps full direct damage; shockwave pushes contact target and neighbors inside 55.2 pixels without extra damage")
 	for tick in 4:
 		ball._process_plasma_contact(0.101)
 		await frames()
-	check(enemies[0].current_hp == 9400 and enemies[1].current_hp == 9900,
-		"five delayed explosions retain their scale even after the plasma ball expires")
+	check(enemies[0].current_hp == 9500 and enemies[1].current_hp == 10000,
+		"five shockwaves add zero damage even after the plasma ball expires")
 	check(event.damage == 100 and event.get_elemental_base_damage() == 125.0,
 		"plasma enchantment scaling does not mutate the source or later direct ticks")
 

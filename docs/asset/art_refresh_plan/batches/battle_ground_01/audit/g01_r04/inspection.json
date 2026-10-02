@@ -1,0 +1,22 @@
+{
+  "source_sha256": "d2908a5fc38c45bb673e6f3ac4a794eb2ba50762f93c19bc89ccb047c189c1c8",
+  "source_dimensions": [
+    2048,
+    2048
+  ],
+  "source_format": "PNG",
+  "source_mode": "RGB",
+  "quadrant_mean_luminance_including_platform_mark": [
+    57.41154670715332,
+    57.60709857940674,
+    57.00087642669678,
+    57.86553478240967
+  ],
+  "diagnostics": {
+    "original_repeat_3x3.png": "original downsampled to 256px per cell; 3x3 repetition; no seam correction",
+    "size_check_128.png": "LANCZOS size check only, not pixel stylization",
+    "size_check_128_at4x.png": "nearest-neighbor display enlargement of size check"
+  },
+  "pixel_conversion_performed": false,
+  "runtime_installed": false
+}

@@ -6,6 +6,7 @@ const PARTICLE_WORLD_PATH: String = "res://scripts/effects/particle_world.gd"
 const PARTICLE_LIGHT_FIELD_PATH: String = "res://scripts/effects/particle_light_field.gd"
 
 const MAX_PARTICLES: int = 900
+const BATCH = preload("res://scripts/effects/pixel_particle_batch.gd")
 const PROFILE_DEFINITIONS: Dictionary = {
 	"impact_green": {
 		"count": 26,
@@ -424,11 +425,29 @@ var _particle_circle_flags: PackedByteArray = PackedByteArray()
 var _light_field: Node = null
 var _emitter_pool: Array[Node2D] = []
 var _random := RandomNumberGenerator.new()
+var _batch: MultiMeshInstance2D
 
 
 func _ready() -> void:
+	add_to_group("particle_worlds")
+	add_to_group("combat_particle_counters")
 	_random.randomize()
+	_batch = BATCH.create(MAX_PARTICLES * 2)
+	add_child(_batch)
 	queue_redraw()
+
+
+func get_active_particle_count() -> int:
+	return _particle_order.size()
+
+
+func _exit_tree() -> void:
+	# Pooled emitters have been detached, so freeing the world does not free them.
+	# Replays and scene transitions must release that detached ownership too.
+	for emitter in _emitter_pool:
+		if is_instance_valid(emitter):
+			emitter.free()
+	_emitter_pool.clear()
 
 
 static func emit_profile(
@@ -808,6 +827,9 @@ func _release_particle_slot(slot: int) -> void:
 
 
 func _draw() -> void:
+	if _batch == null: return
+	var index := 0
+	var instances := _batch.multimesh
 	for slot in _particle_order:
 		var lifetime := maxf(_particle_lifetimes[slot], 0.01)
 		var age_ratio := clampf(_particle_ages[slot] / lifetime, 0.0, 1.0)
@@ -828,16 +850,19 @@ func _draw() -> void:
 		var size := _particle_sizes[slot]
 		var glow := _particle_glows[slot]
 		var glow_radius_multiplier := _particle_glow_radius_multipliers[slot]
-		draw_set_transform(position.round(), _particle_rotations[slot], Vector2.ONE)
+		var rotation := _particle_rotations[slot]
 		if glow > 0.0:
 			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
 			if _particle_glow_streak_flags[slot] != 0:
 				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35)) * glow_radius_multiplier
-				draw_rect(Rect2(-glow_size * 0.5, glow_size), glow_color)
+				BATCH.put(instances, index, position.round(), glow_size, rotation, glow_color)
 			else:
-				draw_circle(Vector2.ZERO, maxf(size.x, size.y) * (1.5 + glow * 0.35) * glow_radius_multiplier, glow_color)
+				var diameter := maxf(size.x, size.y) * (1.5 + glow * 0.35) * glow_radius_multiplier * 2.0
+				BATCH.put(instances, index, position.round(), Vector2.ONE * diameter, rotation, glow_color, true)
+			index += 1
 		if _particle_circle_flags[slot] != 0:
-			draw_circle(Vector2.ZERO, maxf(size.x, size.y) * 0.5, color)
+			BATCH.put(instances, index, position.round(), Vector2.ONE * maxf(size.x, size.y), rotation, color, true)
 		else:
-			draw_rect(Rect2(-size * 0.5, size), color)
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+			BATCH.put(instances, index, position.round(), size, rotation, color)
+		index += 1
+	instances.visible_instance_count = index

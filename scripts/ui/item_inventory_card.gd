@@ -32,7 +32,7 @@ const CATEGORY_LABELS: Dictionary = {
 const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
 	"water": "水",
-	"explosion": "爆炸",
+	"explosion": "震荡",
 	"lightning": "电火花",
 	"electric_spark": "落雷",
 	"ice": "冰冻",
@@ -41,6 +41,15 @@ const EFFECT_LABELS: Dictionary = {
 	"black_hole": "黑洞",
 	"split": "分裂",
 	"pierce": "穿透",
+	"bounce": "弹跳",
+	"resonance": "共鸣",
+	"might": "巨力",
+	"wisdom": "智慧",
+	"multishot": "多投",
+	"domain": "领域",
+	"precision": "会心",
+	"lethality": "致命",
+	"haste": "迅捷",
 }
 const TOOLTIP_LABEL_COLOR := "#C7D3E4"
 const TOOLTIP_VALUE_COLOR := "#BFD8FF"
@@ -108,10 +117,11 @@ func _update_icon(icon_path: String) -> void:
 	if not resource is Texture2D:
 		return
 	icon = resource as Texture2D
-	expand_icon = true
+	var native_augmentation := icon_path.get_base_dir() == "res://assets/ui/icons/augmentations" and icon.get_size() == Vector2(32, 32)
+	expand_icon = not native_augmentation
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_theme_constant_override("icon_max_width", INVENTORY_ICON_MAX_WIDTH)
+	add_theme_constant_override("icon_max_width", 32 if native_augmentation else INVENTORY_ICON_MAX_WIDTH)
 
 
 func _get_drag_data(_position: Vector2) -> Variant:
@@ -127,6 +137,9 @@ func _get_drag_data(_position: Vector2) -> Variant:
 	preview.size = INVENTORY_ICON_SIZE
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	if icon_path.get_base_dir() == "res://assets/ui/icons/augmentations" and preview.texture != null and preview.texture.get_size() == Vector2(32, 32):
+		preview.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_drag_preview(preview)
 	return {
@@ -240,7 +253,7 @@ func _get_visual_color_name(effect_id: String) -> String:
 		"fire":
 			return "火焰橙"
 		"explosion":
-			return "暖金色"
+			return "灰白色"
 		"lightning":
 			return "冰蓝色"
 		"electric_spark":

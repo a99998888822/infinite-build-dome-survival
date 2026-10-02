@@ -47,6 +47,11 @@ func _attach_world_nodes_to_low_resolution_viewport() -> void:
 
 func restore_world_nodes() -> void:
 	for node in _low_resolution_world_nodes:
+		if is_instance_valid(node):
+			var backdrop := node.get_node_or_null("Backdrop")
+			if backdrop != null and backdrop.has_method("detach_player"):
+				backdrop.detach_player()
+	for node in _low_resolution_world_nodes:
 		if is_instance_valid(node) and node.get_parent() != self:
 			node.reparent(self, false)
 	_low_resolution_world_nodes.clear()

@@ -1,12 +1,12 @@
 # 钢甲骑士小 Boss：正式接入
 
-更新：2026-09-29，已接入用户确认的 Picxel 新版移动与攻击。沿用 `enemy_elite_rusher` ID 与 `EliteRusher` 类，展示名为“钢甲骑士”。
+更新：2026-09-30，已接入用户确认的128px描边版移动与攻击。沿用 `enemy_elite_rusher` ID 与 `EliteRusher` 类，展示名为“钢甲骑士”。本轮素材与备份见[接入记录](art_refresh_plan/27_enemies_installation.md)。
 
 ## 资源与配置
 
-正式资源位于 `assets/sprites/enemies/iron_knight/`，待机 1、行走 11、蓄力 7、冲刺挥锤 2、收招 2。每帧由原生 128 像素稿加透明留白至 160×160，最多 16 色，硬透明 PNG；安装逐文件核对审阅稿哈希。移动 11 FPS；攻击三阶段按技能持续时间播放完整帧序。没有提供死亡姿势，死亡时冻结当前图像并在 0.2 秒内淡出；旧死亡图及导入文件已删除。
+正式资源位于 `assets/sprites/enemies/iron_knight/`，待机1、行走6、蓄力7、冲刺挥锤2、收招1。每帧原生128×128，整组16色，硬透明PNG与深色描边，不再补边至160px。idle取行走第6帧，行走6FPS；攻击原图第1–7帧用于蓄力、第8–9帧用于冲刺、第10帧用于收招，按实际技能持续时间播放。第3、8帧源图锤头截断已在审阅时说明；收招保持第10帧，再由现有状态机切回待机，没有合成返回姿势。死亡仍冻结当前图像并在0.2秒内淡出。
 
-场景保持 0.7 显示比例与半径 21 的身体碰撞体，按新移动图 `(80,128)` 脚底参考锚点将 `Sprite2D` 偏移设为 `(0,-33.6)`；攻击保留动作自身上下变化及鞋底外的火花。技能动画按实际技能时钟映射到帧表，暂停和短控制同时暂停动作。
+场景保持0.7显示比例与半径21的身体碰撞体，按128px画布的 `(64,118)` 脚底参考锚点将 `Sprite2D` 偏移设为 `(0,-37.8)`。行走和攻击共用尺寸、缩放与对齐规则；技能动画按实际技能时钟映射到帧表，暂停和短控制同时暂停动作。
 
 | 参数 | 当前值 |
 | --- | --- |
@@ -32,7 +32,7 @@ python scripts/tools/build_iron_knight_review.py
 python -B scripts/tools/install_iron_knight_assets.py
 ```
 
-第一条将当前已确认的 Boss 预览复制到系统临时目录，不再绘制旧版造型。第二条从 `artifacts/previews/combat_picxel_3838180/delivery/boss/combat/` 核对并安装五张正式贴图，重建匹配的 `SpriteFrames`；附加 `--check` 仅校验。修改工作流见[本轮 Picxel 记录](../../artifacts/previews/combat_picxel_3838180/README.md)。实机材料见 `artifacts/reviews/effects/iron_knight/`。
+第一条从当前正式 Boss 图集生成临时逐帧对照图。第二条默认只校验五张正式贴图和 `SpriteFrames`；安装新素材需传入 `--source <目录>`。原审阅包和实机材料已按用户要求删除，工具不再依赖它们。输入目录与使用方法见[素材安装工具说明](../../scripts/tools/ASSET_INSTALLERS.md)。
 
 专项场景为 `scenes/tests/iron_knight_test.tscn`，检查距离边界、远处继续追赶、冷却、方向锁定、动画同步、160 毫秒位移、胶囊擦边命中与落空、低帧率扫掠、暂停/冻结和障碍阻挡。联动回归使用 `elite_relic_decay_test`、`elite_effect_revision_test`、`erosion_pressure_test`。测试与录像通过 `-- --transient-session` 避免写入正式营地存档。
 

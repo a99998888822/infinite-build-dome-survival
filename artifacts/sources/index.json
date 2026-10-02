@@ -1,0 +1,172 @@
+[
+  {
+    "original": "artifacts/generated/main_menu/main_menu_goblin_dungeon_origin.png",
+    "retained": "artifacts/sources/originals/3493776d30-main_menu_goblin_dungeon_origin.png",
+    "sha256": "3493776d3012d6a5fa84e1e697e35410b5cf455785daed9b6c5eb2c8c1a1e2fe"
+  },
+  {
+    "original": "artifacts/generated/main_menu_title/r03_oil_brushwork/goblin-dungeon-title-oil-1200x640.png",
+    "retained": "artifacts/sources/originals/c591787d10-goblin-dungeon-title-oil-1200x640.png",
+    "sha256": "c591787d10ef1be6cb5d1505e864a0eced26a9ef4f5c05c46314f2ab537026fe"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/source/augmentations_sheet_01_source.png",
+    "retained": "artifacts/sources/originals/b45f45f008-augmentations_sheet_01_source.png",
+    "sha256": "b45f45f008e43022e3b3ad1079a93320a94948a50f431be733bedc78d1892897"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/source/augmentations_sheet_01_source.png",
+    "retained": "artifacts/sources/originals/b45f45f008-augmentations_sheet_01_source.png",
+    "sha256": "b45f45f008e43022e3b3ad1079a93320a94948a50f431be733bedc78d1892897"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/battle_ground_01/ground_variants_r01/originals/A-attachment-2.png",
+    "retained": "artifacts/sources/originals/b1bf2338fa-A-attachment-2.png",
+    "sha256": "b1bf2338fa9e74eeb4e35cb6da9e27d1edc92a16d350417fa96a7556c67b626e"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/battle_ground_01/ground_variants_r01/originals/B-attachment-3.png",
+    "retained": "artifacts/sources/originals/631e77f73e-B-attachment-3.png",
+    "sha256": "631e77f73e3cd945b60d4bdf24cb1135a4e670307f68378a75c0831833898a49"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/battle_ground_01/ground_variants_r01/originals/C-attachment-4.png",
+    "retained": "artifacts/sources/originals/0c8c9c7c54-C-attachment-4.png",
+    "sha256": "0c8c9c7c54a990838067351766b591487c5c44a127074389944f089a5fd7ebae"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/originals/G09_G12_grass_clumps.png",
+    "retained": "artifacts/sources/originals/8e538a1835-G09_G12_grass_clumps.png",
+    "sha256": "8e538a1835faf2799b894b86d8c7ceec2028470c5c9726faa27351afcea5da63"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/battle_ground_01/pixel_r01/terrain/refs/G01_ground_plain.png",
+    "retained": "artifacts/sources/originals/d2908a5fc3-G01_ground_plain.png",
+    "sha256": "d2908a5fc38c45bb673e6f3ac4a794eb2ba50762f93c19bc89ccb047c189c1c8"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_64/r01/source/relics_sheet_01_hd.png",
+    "retained": "artifacts/sources/originals/0546d74a25-relics_sheet_01_hd.png",
+    "sha256": "0546d74a252cab27ebd6baf521cf047ce8f30371ed262c105b1c802d8da8577f"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_64/r01/source/relics_sheet_02_source.png",
+    "retained": "artifacts/sources/originals/a2fda03c5d-relics_sheet_02_source.png",
+    "sha256": "a2fda03c5d5230f94498e6e689e1e73c5104207165ee2ca9be7425dc87187f80"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_64/r01/source/relics_sheet_03_source.png",
+    "retained": "artifacts/sources/originals/7ba5e30315-relics_sheet_03_source.png",
+    "sha256": "7ba5e30315fb64c297e8b3db707c63381fd0812cb784f8fb1b4eff24a1782005"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_01/r01/source/relics_sheet_01_hd.png",
+    "retained": "artifacts/sources/originals/0546d74a25-relics_sheet_01_hd.png",
+    "sha256": "0546d74a252cab27ebd6baf521cf047ce8f30371ed262c105b1c802d8da8577f"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_02/r01/source/relics_sheet_02_hd.png",
+    "retained": "artifacts/sources/originals/0c22436e10-relics_sheet_02_hd.png",
+    "sha256": "0c22436e10ee7c54339925bd3778550f2073fee054e8ef1f263ac9bf5386afa4"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_02/r02/source/relics_sheet_02_source.png",
+    "retained": "artifacts/sources/originals/a2fda03c5d-relics_sheet_02_source.png",
+    "sha256": "a2fda03c5d5230f94498e6e689e1e73c5104207165ee2ca9be7425dc87187f80"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_03/r01/source/relics_sheet_03_source.png",
+    "retained": "artifacts/sources/originals/7ba5e30315-relics_sheet_03_source.png",
+    "sha256": "7ba5e30315fb64c297e8b3db707c63381fd0812cb784f8fb1b4eff24a1782005"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/source/relics_sheet_04_source.png",
+    "retained": "artifacts/sources/originals/4175ad57ee-relics_sheet_04_source.png",
+    "sha256": "4175ad57ee945f7911e25dd9f90bbe08ae95eb1c17ac26e22a5f7e34b109d4d7"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/source/relics_sheet_05_source.png",
+    "retained": "artifacts/sources/originals/aae6dea054-relics_sheet_05_source.png",
+    "sha256": "aae6dea054af1ccdf804fcb111f804d75d757363a1362c833bc02d6d574c4ad9"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/source/relics_sheet_06_source.png",
+    "retained": "artifacts/sources/originals/90913601de-relics_sheet_06_source.png",
+    "sha256": "90913601de7082ddd3742587e02f1e454c95c9de8009f83b1665d8e59886cfc7"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/source/relics_sheet_07_source.png",
+    "retained": "artifacts/sources/originals/0e8eb8ad16-relics_sheet_07_source.png",
+    "sha256": "0e8eb8ad169e6fe14d1de61120d0af37b557f7464a9d708a8699d1183bd659e0"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/source/relics_sheet_08_source.png",
+    "retained": "artifacts/sources/originals/a9acdbf404-relics_sheet_08_source.png",
+    "sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/source/relics_sheet_09_source.png",
+    "retained": "artifacts/sources/originals/6a0fc6b695-relics_sheet_09_source.png",
+    "sha256": "6a0fc6b6956137283963090632d9bd355e3442b6c69a153c8f6b7d06f92caa96"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r01/source/approved_hd.png",
+    "retained": "artifacts/sources/originals/a856cbdbf6-approved_hd.png",
+    "sha256": "a856cbdbf6614b9f410033afdec54721663616e88fba47a6b0bb8da10e05fe46"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r02/source/handle_approved_hd.png",
+    "retained": "artifacts/sources/originals/8b4fa178f0-handle_approved_hd.png",
+    "sha256": "8b4fa178f0fca0662f35847aa82796b69181550806b42f925fb85207141ad5de"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r02/source/panel_approved_hd.png",
+    "retained": "artifacts/sources/originals/410021b232-panel_approved_hd.png",
+    "sha256": "410021b2321fe0a466b1dc56c1ddd333f09e8795f96abee8192085f79dc9c504"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/pixel_r03/source/original_horizontal_wood.png",
+    "retained": "artifacts/sources/originals/cf077c06f9-original_horizontal_wood.png",
+    "sha256": "cf077c06f94967359435bb3b9efc6bbe540c2b5439e62844c123b9ca9aff68b4"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/r01/source/ui_stats_drawer_doubao_original.png",
+    "retained": "artifacts/sources/originals/03c516f674-ui_stats_drawer_doubao_original.png",
+    "sha256": "03c516f6746b0d0f60ad249ed3e1e2a7b4eeeb4bdf62ef805057fbc408e9ac82"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/ui_stats_drawer/r02/source/ui_stats_drawer_doubao_r02.png",
+    "retained": "artifacts/sources/originals/caa9f6c88d-ui_stats_drawer_doubao_r02.png",
+    "sha256": "caa9f6c88d5e2ba720f380a8eed026b56762880e16fef33c9099148bb917572e"
+  },
+  {
+    "original": "artifacts/previews/art_refresh_v1/weapons_sheet_01/pixel_r01/source/weapons_sheet_01_source.png",
+    "retained": "artifacts/sources/originals/ea36a68cb6-weapons_sheet_01_source.png",
+    "sha256": "ea36a68cb669f285f58835ef5031732807987b1ee80cfa918258529901abf360"
+  },
+  {
+    "original": "artifacts/previews/main_menu_goblin_picxel/r02/refs/original/main_menu_goblin_dungeon_oil_painting_20261001.png",
+    "retained": "artifacts/sources/originals/3493776d30-main_menu_goblin_dungeon_origin.png",
+    "sha256": "3493776d3012d6a5fa84e1e697e35410b5cf455785daed9b6c5eb2c8c1a1e2fe"
+  },
+  {
+    "original": "artifacts/previews/main_menu_title_picxel/r01/refs/original/goblin-dungeon-title-oil-1200x640.png",
+    "retained": "artifacts/sources/originals/c591787d10-goblin-dungeon-title-oil-1200x640.png",
+    "sha256": "c591787d10ef1be6cb5d1505e864a0eced26a9ef4f5c05c46314f2ab537026fe"
+  },
+  {
+    "original": "artifacts/generated/main_menu_title/r03_oil_brushwork/glyph-outlines.svg",
+    "retained": "artifacts/sources/originals/title_design/glyph-outlines.svg",
+    "sha256": "da0b05f9187d6ed735497d112006044cce43622c254d986483a049ec33b7545e"
+  },
+  {
+    "original": "artifacts/generated/main_menu_title/r03_oil_brushwork/glyph-design.json",
+    "retained": "artifacts/sources/originals/title_design/glyph-design.json",
+    "sha256": "369cc5472b0c84494291bb3fe05ecb96eee132876174a66ce5dd5fc8cdbe9df6"
+  },
+  {
+    "original": "artifacts/wip/main_menu_buttons/hd_source/button_copper_oil_hd.png",
+    "retained": "artifacts/sources/originals/263cf9a972-button_copper_oil_hd.png",
+    "sha256": "263cf9a972a6c59b1c0bbd1adea1c268672379e6957446c2f26a2119945720ff"
+  }
+]

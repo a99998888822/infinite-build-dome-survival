@@ -1,0 +1,1730 @@
+{
+  "input_sha256": {
+    "data_config\\augmentations.json": "a08dbd0582b3767a325ec9d16d1cefa7bde8b51e6448f1adcdb5a0fce402645c",
+    "data_config\\drop_tables.json": "6b4f8bda081176fa8af6060ce2dbc4960749ca3b4ba5de9891e156f8918e92dc",
+    "data_config\\waves.json": "0132949c30f204396d78fb96f1d3847d33868a222edbfb55ad2fe72273e5e5d2",
+    "data_config\\weapons.json": "ddf36296552747b2fc13fc2a3ff742a8a010678f0aa64e5b8562e275393be519",
+    "data_config\\enemies.json": "2540db36248045338b424266a405214ba8d5ab888cbbff89fb8f685ad0866d31",
+    "scripts\\rewards\\drop_reward_system.gd": "4e91223a9058c9400f04b539b89c6932a00fac8d56a34dd82026a9143312518b",
+    "scripts\\waves\\wave_manager.gd": "167335bc6923dd1bb597b02ce496824cfcae296640a435101c98d0893b3c5465",
+    "scripts\\data\\battle_difficulty.gd": "0a80248bd56f01f28e7564a28b0d99214f29ce53e63b9ece5f18daa644b2feaf"
+  },
+  "assumptions": {
+    "proposed_base_normal": 0.008,
+    "proposed_base_elite": 0.15,
+    "normal_decay": 0.45,
+    "cap": 4,
+    "pity": "one after two eligible zero-drop waves; >=30 kills each",
+    "spawn_model": "60 Hz, no living-cap blockage, no streak/player bonus; excludes challenge elites"
+  },
+  "item_probabilities": [
+    {
+      "id": "scroll_might",
+      "name": "巨力",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.5,
+        "per_kill_percent_luck0_bonus0": 0.30000000000000004
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 1.0,
+        "per_kill_percent_luck0_bonus0": 0.6
+      }
+    },
+    {
+      "id": "scroll_wisdom",
+      "name": "智慧",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.5,
+        "per_kill_percent_luck0_bonus0": 0.30000000000000004
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 1.0,
+        "per_kill_percent_luck0_bonus0": 0.6
+      }
+    },
+    {
+      "id": "scroll_multishot",
+      "name": "多投",
+      "rarity": "epic",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.03
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 0.6153846153846154,
+        "per_kill_percent_luck0_bonus0": 0.07384615384615384
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 0.21621621621621623,
+        "per_kill_percent_luck0_bonus0": 0.12972972972972974
+      }
+    },
+    {
+      "id": "scroll_domain",
+      "name": "领域",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.5,
+        "per_kill_percent_luck0_bonus0": 0.30000000000000004
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 1.0,
+        "per_kill_percent_luck0_bonus0": 0.6
+      }
+    },
+    {
+      "id": "scroll_precision",
+      "name": "会心",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.4999999999999996,
+        "per_kill_percent_luck0_bonus0": 0.41999999999999993
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 0.8974358974358974,
+        "per_kill_percent_luck0_bonus0": 0.5384615384615384
+      }
+    },
+    {
+      "id": "scroll_lethality",
+      "name": "致命",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.5,
+        "per_kill_percent_luck0_bonus0": 0.30000000000000004
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 1.0,
+        "per_kill_percent_luck0_bonus0": 0.6
+      }
+    },
+    {
+      "id": "scroll_haste",
+      "name": "迅捷",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.5,
+        "per_kill_percent_luck0_bonus0": 0.30000000000000004
+      },
+      "drop_boss_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 1.0,
+        "per_kill_percent_luck0_bonus0": 0.6
+      }
+    },
+    {
+      "id": "scroll_bounce",
+      "name": "弹跳",
+      "rarity": "epic",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.03
+      },
+      "drop_elite_enemy": {
+        "weight": 4,
+        "given_scroll_percent": 2.4615384615384617,
+        "per_kill_percent_luck0_bonus0": 0.29538461538461536
+      },
+      "drop_boss_enemy": {
+        "weight": 12,
+        "given_scroll_percent": 2.5945945945945943,
+        "per_kill_percent_luck0_bonus0": 1.5567567567567566
+      }
+    },
+    {
+      "id": "scroll_resonance",
+      "name": "共鸣",
+      "rarity": "epic",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.03
+      },
+      "drop_elite_enemy": {
+        "weight": 4,
+        "given_scroll_percent": 2.4615384615384617,
+        "per_kill_percent_luck0_bonus0": 0.29538461538461536
+      },
+      "drop_boss_enemy": {
+        "weight": 12,
+        "given_scroll_percent": 2.5945945945945943,
+        "per_kill_percent_luck0_bonus0": 1.5567567567567566
+      }
+    },
+    {
+      "id": "scroll_water",
+      "name": "水流",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 12.727272727272727,
+        "per_kill_percent_luck0_bonus0": 0.1909090909090909
+      },
+      "drop_elite_enemy": {
+        "weight": 3,
+        "given_scroll_percent": 10.499999999999998,
+        "per_kill_percent_luck0_bonus0": 1.2599999999999998
+      },
+      "drop_boss_enemy": {
+        "weight": 10,
+        "given_scroll_percent": 8.974358974358974,
+        "per_kill_percent_luck0_bonus0": 5.384615384615385
+      }
+    },
+    {
+      "id": "scroll_light_sword",
+      "name": "光辉剑",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 6.999999999999999,
+        "per_kill_percent_luck0_bonus0": 0.8399999999999999
+      },
+      "drop_boss_enemy": {
+        "weight": 5,
+        "given_scroll_percent": 4.487179487179487,
+        "per_kill_percent_luck0_bonus0": 2.6923076923076925
+      }
+    },
+    {
+      "id": "scroll_black_hole",
+      "name": "黑洞",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 6.999999999999999,
+        "per_kill_percent_luck0_bonus0": 0.8399999999999999
+      },
+      "drop_boss_enemy": {
+        "weight": 5,
+        "given_scroll_percent": 4.487179487179487,
+        "per_kill_percent_luck0_bonus0": 2.6923076923076925
+      }
+    },
+    {
+      "id": "scroll_fire",
+      "name": "火焰",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 12.727272727272727,
+        "per_kill_percent_luck0_bonus0": 0.1909090909090909
+      },
+      "drop_elite_enemy": {
+        "weight": 0,
+        "given_scroll_percent": 0.0,
+        "per_kill_percent_luck0_bonus0": 0.0
+      },
+      "drop_boss_enemy": {
+        "weight": 10,
+        "given_scroll_percent": 8.974358974358974,
+        "per_kill_percent_luck0_bonus0": 5.384615384615385
+      }
+    },
+    {
+      "id": "scroll_explosion",
+      "name": "震荡",
+      "rarity": "common",
+      "drop_basic_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.03
+      },
+      "drop_elite_enemy": {
+        "weight": 5,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.24
+      },
+      "drop_boss_enemy": {
+        "weight": 20,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 1.2
+      }
+    },
+    {
+      "id": "scroll_lightning",
+      "name": "电火花",
+      "rarity": "rare",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 3.3333333333333335,
+        "per_kill_percent_luck0_bonus0": 0.05
+      },
+      "drop_elite_enemy": {
+        "weight": 3,
+        "given_scroll_percent": 7.500000000000001,
+        "per_kill_percent_luck0_bonus0": 0.9000000000000001
+      },
+      "drop_boss_enemy": {
+        "weight": 15,
+        "given_scroll_percent": 15.0,
+        "per_kill_percent_luck0_bonus0": 9.0
+      }
+    },
+    {
+      "id": "scroll_electric_spark",
+      "name": "落雷",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 2,
+        "given_scroll_percent": 6.999999999999999,
+        "per_kill_percent_luck0_bonus0": 0.8399999999999999
+      },
+      "drop_boss_enemy": {
+        "weight": 15,
+        "given_scroll_percent": 13.461538461538462,
+        "per_kill_percent_luck0_bonus0": 8.076923076923077
+      }
+    },
+    {
+      "id": "scroll_split",
+      "name": "分裂",
+      "rarity": "epic",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 2.0,
+        "per_kill_percent_luck0_bonus0": 0.03
+      },
+      "drop_elite_enemy": {
+        "weight": 4,
+        "given_scroll_percent": 2.4615384615384617,
+        "per_kill_percent_luck0_bonus0": 0.29538461538461536
+      },
+      "drop_boss_enemy": {
+        "weight": 12,
+        "given_scroll_percent": 2.5945945945945943,
+        "per_kill_percent_luck0_bonus0": 1.5567567567567566
+      }
+    },
+    {
+      "id": "scroll_pierce",
+      "name": "穿透",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 4,
+        "given_scroll_percent": 13.999999999999998,
+        "per_kill_percent_luck0_bonus0": 1.6799999999999997
+      },
+      "drop_boss_enemy": {
+        "weight": 12,
+        "given_scroll_percent": 10.769230769230766,
+        "per_kill_percent_luck0_bonus0": 6.46153846153846
+      }
+    },
+    {
+      "id": "scroll_ice",
+      "name": "结霜",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 3,
+        "given_scroll_percent": 10.499999999999998,
+        "per_kill_percent_luck0_bonus0": 1.2599999999999998
+      },
+      "drop_boss_enemy": {
+        "weight": 10,
+        "given_scroll_percent": 8.974358974358974,
+        "per_kill_percent_luck0_bonus0": 5.384615384615385
+      }
+    },
+    {
+      "id": "scroll_wind",
+      "name": "风刃",
+      "rarity": "uncommon",
+      "drop_basic_enemy": {
+        "weight": 1,
+        "given_scroll_percent": 6.363636363636363,
+        "per_kill_percent_luck0_bonus0": 0.09545454545454544
+      },
+      "drop_elite_enemy": {
+        "weight": 3,
+        "given_scroll_percent": 10.499999999999998,
+        "per_kill_percent_luck0_bonus0": 1.2599999999999998
+      },
+      "drop_boss_enemy": {
+        "weight": 10,
+        "given_scroll_percent": 8.974358974358974,
+        "per_kill_percent_luck0_bonus0": 5.384615384615385
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "kills": 30,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.44999999999999996,
+        "zero": 0.6354580927313493,
+        "p95": 2,
+        "ge5": 7.912708412733966e-05,
+        "ge10": 1.316918874483542e-11
+      },
+      "proposed_no_pity": {
+        "mean": 0.22555675603492914,
+        "zero": 0.7858690127248705,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.5713772505732417
+    },
+    {
+      "kills": 30,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.495,
+        "zero": 0.6070590356431477,
+        "p95": 2,
+        "ge5": 0.00012350012477205542,
+        "ge10": 3.3227523686927606e-11
+      },
+      "proposed_no_pity": {
+        "mean": 0.2674377506667054,
+        "zero": 0.7487191656111531,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.5880040256737882
+    },
+    {
+      "kills": 30,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.585,
+        "zero": 0.5538956317241999,
+        "p95": 2,
+        "ge5": 0.00026740313031612284,
+        "ge10": 1.671042950480973e-10
+      },
+      "proposed_no_pity": {
+        "mean": 0.3002273178397579,
+        "zero": 0.7202271712212318,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6017730594972859
+    },
+    {
+      "kills": 30,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.8999999999999999,
+        "zero": 0.40100706854315793,
+        "p95": 3,
+        "ge5": 0.0018496925517689966,
+        "ge10": 1.0217864576681488e-08
+      },
+      "proposed_no_pity": {
+        "mean": 0.32841161527650925,
+        "zero": 0.6961588325279122,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6141378755845341
+    },
+    {
+      "kills": 30,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 4.9495499999999995,
+        "zero": 0.0044753634770889235,
+        "p95": 8,
+        "ge5": 0.5659210325136692,
+        "ge10": 0.018431180041302987
+      },
+      "proposed_no_pity": {
+        "mean": 0.3459371120098483,
+        "zero": 0.6813913340736788,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6220739879064396
+    },
+    {
+      "kills": 30,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 0.8775,
+        "zero": 0.41041382004834726,
+        "p95": 3,
+        "ge5": 0.0016555759542405929,
+        "ge10": 8.04385131775595e-09
+      },
+      "proposed_no_pity": {
+        "mean": 0.336644066219265,
+        "zero": 0.6892028745944663,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.617842144610714
+    },
+    {
+      "kills": 30,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 1.7999999999999998,
+        "zero": 0.15625560616666484,
+        "p95": 4,
+        "ge5": 0.031538378990801905,
+        "ge10": 5.949763481479288e-06
+      },
+      "proposed_no_pity": {
+        "mean": 0.38726866418235667,
+        "zero": 0.6471736770677068,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.641542863752461
+    },
+    {
+      "kills": 30,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 30.0,
+        "zero": 0.0,
+        "p95": 30,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 0.4658072233997521,
+        "zero": 0.584549904102623,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6814511671478662
+    },
+    {
+      "kills": 40,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.6,
+        "zero": 0.5463226671010744,
+        "p95": 2,
+        "ge5": 0.00032262826938504985,
+        "ge10": 3.2400557514078887e-10
+      },
+      "proposed_no_pity": {
+        "mean": 0.29462145378161797,
+        "zero": 0.7252151801981999,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.5994744736405585
+    },
+    {
+      "kills": 40,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.66,
+        "zero": 0.514013553025383,
+        "p95": 2,
+        "ge5": 0.0004973659638362774,
+        "ge10": 8.063446300482106e-10
+      },
+      "proposed_no_pity": {
+        "mean": 0.34800743963516956,
+        "zero": 0.6798690437546149,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6231609811414283
+    },
+    {
+      "kills": 40,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 0.78,
+        "zero": 0.45488741335349014,
+        "p95": 2,
+        "ge5": 0.0010506524989595356,
+        "ge10": 3.9450778398427506e-09
+      },
+      "proposed_no_pity": {
+        "mean": 0.3895242368444812,
+        "zero": 0.6455937767629684,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6428014006746334
+    },
+    {
+      "kills": 40,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 1.2,
+        "zero": 0.2957122873991327,
+        "p95": 3,
+        "ge5": 0.0066701057055764245,
+        "ge10": 2.1900341170313314e-07
+      },
+      "proposed_no_pity": {
+        "mean": 0.4250154930041698,
+        "zero": 0.6169895146096857,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6604382076840385
+    },
+    {
+      "kills": 40,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 6.599399999999999,
+        "zero": 0.0007375153850883876,
+        "p95": 11,
+        "ge5": 0.8120467833548367,
+        "ge10": 0.11154724625653836
+      },
+      "proposed_no_pity": {
+        "mean": 0.44699471632950694,
+        "zero": 0.5996007138470819,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6717514402629895
+    },
+    {
+      "kills": 40,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 1.17,
+        "zero": 0.30499728171800805,
+        "p95": 3,
+        "ge5": 0.006006615157141926,
+        "ge10": 1.736040936255686e-07
+      },
+      "proposed_no_pity": {
+        "mean": 0.43534858927174364,
+        "zero": 0.6087833604276407,
+        "p95": 1,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6657196815206432
+    },
+    {
+      "kills": 40,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 2.4,
+        "zero": 0.08416163114342586,
+        "p95": 5,
+        "ge5": 0.08958186930983195,
+        "ge10": 9.651752842599915e-05
+      },
+      "proposed_no_pity": {
+        "mean": 0.4985597468624126,
+        "zero": 0.5597934245077505,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.6994637083732194
+    },
+    {
+      "kills": 40,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 40.0,
+        "zero": 0.0,
+        "p95": 40,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 0.5955175131193406,
+        "zero": 0.48875977716961194,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.7559773290293677
+    },
+    {
+      "kills": 100,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 1.5,
+        "zero": 0.22060891046938758,
+        "p95": 4,
+        "ge5": 0.01769323352024206,
+        "ge10": 2.9206916703138375e-06
+      },
+      "proposed_no_pity": {
+        "mean": 0.6565076496731561,
+        "zero": 0.447885719403078,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.7950556130634678
+    },
+    {
+      "kills": 100,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 1.6500000000000001,
+        "zero": 0.18942462036661,
+        "p95": 4,
+        "ge5": 0.025389325536706326,
+        "ge10": 6.69862375396004e-06
+      },
+      "proposed_no_pity": {
+        "mean": 0.7606031264815915,
+        "zero": 0.3811212529853802,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.8657737689311025
+    },
+    {
+      "kills": 100,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 1.95,
+        "zero": 0.1395596271087323,
+        "p95": 4,
+        "ge5": 0.04652581496825831,
+        "ge10": 2.78373603862741e-05
+      },
+      "proposed_no_pity": {
+        "mean": 0.8389058148968114,
+        "zero": 0.33488703806135717,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.9229199112688776
+    },
+    {
+      "kills": 100,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 3.0,
+        "zero": 0.047552507925405794,
+        "p95": 6,
+        "ge5": 0.18214519392435788,
+        "ge10": 0.000874058473735697
+      },
+      "proposed_no_pity": {
+        "mean": 0.9041135649741342,
+        "zero": 0.2990160214964227,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.9729430325341656
+    },
+    {
+      "kills": 100,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 16.4985,
+        "zero": 1.4771605856957531e-08,
+        "p95": 23,
+        "ge5": 0.9998901371225773,
+        "ge10": 0.9764474011960907
+      },
+      "proposed_no_pity": {
+        "mean": 0.9437324507043393,
+        "zero": 0.27839110386538857,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.0043567827081001
+    },
+    {
+      "kills": 100,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 2.925,
+        "zero": 0.05137359075836695,
+        "p95": 6,
+        "ge5": 0.16965364693936144,
+        "ge10": 0.0007215818925336982
+      },
+      "proposed_no_pity": {
+        "mean": 0.9228107463490688,
+        "zero": 0.28917246290334564,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.9876746149995553
+    },
+    {
+      "kills": 100,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 6.0,
+        "zero": 0.002054874770523603,
+        "p95": 10,
+        "ge5": 0.7232247809849256,
+        "ge10": 0.07753905734561181
+      },
+      "proposed_no_pity": {
+        "mean": 1.034506199257767,
+        "zero": 0.2344603894501734,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.0790371333330284
+    },
+    {
+      "kills": 100,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 100.0,
+        "zero": 0.0,
+        "p95": 100,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 1.1975845278778752,
+        "zero": 0.16700852689642046,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.2214848228742528
+    },
+    {
+      "kills": 150,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 2.25,
+        "zero": 0.10361784950198207,
+        "p95": 5,
+        "ge5": 0.07652247788463247,
+        "ge10": 0.00010034395359242457
+      },
+      "proposed_no_pity": {
+        "mean": 0.9035665417092984,
+        "zero": 0.299744224018491,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 0.9726929114766235
+    },
+    {
+      "kills": 150,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 2.475,
+        "zero": 0.08244316163515027,
+        "p95": 5,
+        "ge5": 0.10383104039363451,
+        "ge10": 0.0002152589471802535
+      },
+      "proposed_no_pity": {
+        "mean": 1.0338340776532593,
+        "zero": 0.23528527667563146,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.0786489576373466
+    },
+    {
+      "kills": 150,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 2.925,
+        "zero": 0.052136239205294733,
+        "p95": 6,
+        "ge5": 0.17054994575395657,
+        "ge10": 0.0007830455628566622
+      },
+      "proposed_no_pity": {
+        "mean": 1.1299117743883527,
+        "zero": 0.19379720421633437,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.161372190135198
+    },
+    {
+      "kills": 150,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 4.5,
+        "zero": 0.010369555489464177,
+        "p95": 8,
+        "ge5": 0.46933877958189546,
+        "ge10": 0.015540240919020483
+      },
+      "proposed_no_pity": {
+        "mean": 1.2087601531199836,
+        "zero": 0.16350900967120618,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.2317382272229196
+    },
+    {
+      "kills": 150,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 24.74775,
+        "zero": 1.7953187500626597e-12,
+        "p95": 32,
+        "ge5": 0.9999999360918165,
+        "ge10": 0.9999016158003693
+      },
+      "proposed_no_pity": {
+        "mean": 1.2561812328924395,
+        "zero": 0.14688688792307142,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.2749936877830845
+    },
+    {
+      "kills": 150,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 4.387499999999999,
+        "zero": 0.011644206072034029,
+        "p95": 8,
+        "ge5": 0.44751706240165523,
+        "ge10": 0.013250934871585164
+      },
+      "proposed_no_pity": {
+        "mean": 1.2311838347055561,
+        "zero": 0.1555017929644363,
+        "p95": 2,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.2521105072234053
+    },
+    {
+      "kills": 150,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 9.0,
+        "zero": 9.314896633915045e-05,
+        "p95": 14,
+        "ge5": 0.9500923281248764,
+        "ge10": 0.41254971610583535
+      },
+      "proposed_no_pity": {
+        "mean": 1.3635380515958246,
+        "zero": 0.11352832310315121,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.375112683223241
+    },
+    {
+      "kills": 150,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 150.0,
+        "zero": 0.0,
+        "p95": 150,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 1.5523478838615747,
+        "zero": 0.06825083483936384,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.5567084481638442
+    },
+    {
+      "kills": 300,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 4.5,
+        "zero": 0.01073665873541542,
+        "p95": 8,
+        "ge5": 0.4686128498506163,
+        "ge10": 0.016313592214274846
+      },
+      "proposed_no_pity": {
+        "mean": 1.4564151207842229,
+        "zero": 0.08984659983244736,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.4638220453024926
+    },
+    {
+      "kills": 300,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 4.95,
+        "zero": 0.006796874900399529,
+        "p95": 9,
+        "ge5": 0.5520913750324855,
+        "ge10": 0.028886028968620803
+      },
+      "proposed_no_pity": {
+        "mean": 1.6259085329013083,
+        "zero": 0.05535916142032841,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.628812413272269
+    },
+    {
+      "kills": 300,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 5.85,
+        "zero": 0.0027181874384717133,
+        "p95": 10,
+        "ge5": 0.6969247273940828,
+        "ge10": 0.07201206453026135
+      },
+      "proposed_no_pity": {
+        "mean": 1.7470056039000101,
+        "zero": 0.037557356362067605,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.7483650998433025
+    },
+    {
+      "kills": 300,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 9.0,
+        "zero": 0.0001075276810491004,
+        "p95": 14,
+        "ge5": 0.9475658680410782,
+        "ge10": 0.41258156896991466
+      },
+      "proposed_no_pity": {
+        "mean": 1.8442320296173411,
+        "zero": 0.026735196243658603,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.844928188394017
+    },
+    {
+      "kills": 300,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 49.4955,
+        "zero": 3.2231694143265065e-24,
+        "p95": 60,
+        "ge5": 1.0,
+        "ge10": 0.9999999999999161
+      },
+      "proposed_no_pity": {
+        "mean": 1.9018589595502218,
+        "zero": 0.021575757843724935,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.902314641199827
+    },
+    {
+      "kills": 300,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 8.774999999999999,
+        "zero": 0.00013558753504799408,
+        "p95": 14,
+        "ge5": 0.9396232608455323,
+        "ge10": 0.3825229076156751
+      },
+      "proposed_no_pity": {
+        "mean": 1.8715575785260161,
+        "zero": 0.0241808076151544,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 1.8721284850032451
+    },
+    {
+      "kills": 300,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 18.0,
+        "zero": 8.676729930051462e-09,
+        "p95": 25,
+        "ge5": 0.9999405434616326,
+        "ge10": 0.9868069575023568
+      },
+      "proposed_no_pity": {
+        "mean": 2.0301858155119206,
+        "zero": 0.012888680146613509,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.03034981978917
+    },
+    {
+      "kills": 300,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 300.0,
+        "zero": 0.0,
+        "p95": 300,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 2.2494920555998217,
+        "zero": 0.004658176456270121,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.2495136536004217
+    },
+    {
+      "kills": 600,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 9.0,
+        "zero": 0.00011527584080079112,
+        "p95": 14,
+        "ge5": 0.9463013525324661,
+        "ge10": 0.41258924766520855
+      },
+      "proposed_no_pity": {
+        "mean": 2.1394864027554674,
+        "zero": 0.008072411501451923,
+        "p95": 3,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.139551044766007
+    },
+    {
+      "kills": 600,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 9.9,
+        "zero": 4.619750841168107e-05,
+        "p95": 15,
+        "ge5": 0.9697722600068862,
+        "ge10": 0.5304449475987474
+      },
+      "proposed_no_pity": {
+        "mean": 2.333451327179878,
+        "zero": 0.0030646367531619763,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.3334606904831836
+    },
+    {
+      "kills": 600,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 11.7,
+        "zero": 7.3885429506654145e-06,
+        "p95": 18,
+        "ge5": 0.9911180156971833,
+        "ge10": 0.7329145921242962
+      },
+      "proposed_no_pity": {
+        "mean": 2.468517901110544,
+        "zero": 0.0014105550169073388,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.4685198879734203
+    },
+    {
+      "kills": 600,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 18.0,
+        "zero": 1.1562202191792024e-08,
+        "p95": 25,
+        "ge5": 0.9999289778847037,
+        "ge10": 0.9857281460794062
+      },
+      "proposed_no_pity": {
+        "mean": 2.5748650081199154,
+        "zero": 0.0007147707181869368,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.5748655186521816
+    },
+    {
+      "kills": 600,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 98.991,
+        "zero": 1.0388821073450064e-47,
+        "p95": 114,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 2.6369968768189262,
+        "zero": 0.00046551332653105824,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.6369970934207525
+    },
+    {
+      "kills": 600,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 17.549999999999997,
+        "zero": 1.838397966039115e-08,
+        "p95": 25,
+        "ge5": 0.9998976221976503,
+        "ge10": 0.9817085287347008
+      },
+      "proposed_no_pity": {
+        "mean": 2.6044117423728634,
+        "zero": 0.0005847114569211086,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.6044120840605625
+    },
+    {
+      "kills": 600,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 36.0,
+        "zero": 7.528564227904988e-17,
+        "p95": 46,
+        "ge5": 0.9999999999925595,
+        "ge10": 0.999999955010303
+      },
+      "proposed_no_pity": {
+        "mean": 2.772828941159399,
+        "zero": 0.0001661180759217093,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.772828968750031
+    },
+    {
+      "kills": 600,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 600.0,
+        "zero": 0.0,
+        "p95": 600,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 2.996031575378332,
+        "zero": 2.1698607897749216e-05,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.9960315758491514
+    },
+    {
+      "kills": 1000,
+      "luck": 0,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 15.0,
+        "zero": 2.730426545896389e-07,
+        "p95": 22,
+        "ge5": 0.9991955341207417,
+        "ge10": 0.9316068131003961
+      },
+      "proposed_no_pity": {
+        "mean": 2.6890028300202107,
+        "zero": 0.00032484198389677566,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.6890029355082583
+    },
+    {
+      "kills": 1000,
+      "luck": 100,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 16.5,
+        "zero": 5.947908177454522e-08,
+        "p95": 23,
+        "ge5": 0.9997487542101221,
+        "ge10": 0.9673115258932119
+      },
+      "proposed_no_pity": {
+        "mean": 2.8859463348195495,
+        "zero": 6.465940085426292e-05,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 2.8859463390001174
+    },
+    {
+      "kills": 1000,
+      "luck": 300,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 19.5,
+        "zero": 2.8028380446135905e-09,
+        "p95": 27,
+        "ge5": 0.9999775637236215,
+        "ge10": 0.9937179693585669
+      },
+      "proposed_no_pity": {
+        "mean": 3.018812771470164,
+        "zero": 1.7741215989122792e-05,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.018812771784909
+    },
+    {
+      "kills": 1000,
+      "luck": 1000,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 30.0,
+        "zero": 5.911997833620076e-14,
+        "p95": 39,
+        "ge5": 0.9999999974389127,
+        "ge10": 0.9999943399300731
+      },
+      "proposed_no_pity": {
+        "mean": 3.1205329747856596,
+        "zero": 5.7140572539179735e-06,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.12053297481831
+    },
+    {
+      "kills": 1000,
+      "luck": 9999,
+      "drop_bonus": 0,
+      "current": {
+        "mean": 164.98499999999999,
+        "zero": 4.9462619305417905e-79,
+        "p95": 184,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 3.1786362013372456,
+        "zero": 2.7961053502412794e-06,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.1786362013450637
+    },
+    {
+      "kills": 1000,
+      "luck": 300,
+      "drop_bonus": 50,
+      "current": {
+        "mean": 29.25,
+        "zero": 1.280557895152849e-13,
+        "p95": 38,
+        "ge5": 0.9999999949841112,
+        "ge10": 0.999990210246167
+      },
+      "proposed_no_pity": {
+        "mean": 3.1482923156634572,
+        "zero": 4.088550244982397e-06,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.148292315680173
+    },
+    {
+      "kills": 1000,
+      "luck": 1000,
+      "drop_bonus": 100,
+      "current": {
+        "mean": 60.0,
+        "zero": 1.3423123924933753e-27,
+        "p95": 73,
+        "ge5": 1.0,
+        "ge10": 0.9999999999999999
+      },
+      "proposed_no_pity": {
+        "mean": 3.30182896364827,
+        "zero": 5.019897163205773e-07,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.301828963648522
+    },
+    {
+      "kills": 1000,
+      "luck": 9999,
+      "drop_bonus": 10000,
+      "current": {
+        "mean": 1000.0,
+        "zero": 0.0,
+        "p95": 1000,
+        "ge5": 1.0,
+        "ge10": 1.0
+      },
+      "proposed_no_pity": {
+        "mean": 3.4908497305582538,
+        "zero": 1.6880544586111966e-08,
+        "p95": 4,
+        "ge5": 0,
+        "ge10": 0
+      },
+      "proposed_mean_with_pity_stationary": 3.490849730558254
+    }
+  ],
+  "spawn_opportunities": [
+    {
+      "difficulty": 1,
+      "wave": 1,
+      "spawn_opportunities": 120,
+      "living_enemy_cap": 240,
+      "batches": [
+        18,
+        12
+      ]
+    },
+    {
+      "difficulty": 1,
+      "wave": 5,
+      "spawn_opportunities": 302,
+      "living_enemy_cap": 240,
+      "batches": [
+        35,
+        23
+      ]
+    },
+    {
+      "difficulty": 1,
+      "wave": 10,
+      "spawn_opportunities": 698,
+      "living_enemy_cap": 240,
+      "batches": [
+        50,
+        33
+      ]
+    },
+    {
+      "difficulty": 1,
+      "wave": 15,
+      "spawn_opportunities": 1016,
+      "living_enemy_cap": 240,
+      "batches": [
+        58,
+        40
+      ]
+    },
+    {
+      "difficulty": 1,
+      "wave": 20,
+      "spawn_opportunities": 1542,
+      "living_enemy_cap": 240,
+      "batches": [
+        69,
+        48
+      ]
+    },
+    {
+      "difficulty": 2,
+      "wave": 1,
+      "spawn_opportunities": 172,
+      "living_enemy_cap": 360,
+      "batches": [
+        20,
+        13
+      ]
+    },
+    {
+      "difficulty": 2,
+      "wave": 5,
+      "spawn_opportunities": 468,
+      "living_enemy_cap": 360,
+      "batches": [
+        39,
+        26
+      ]
+    },
+    {
+      "difficulty": 2,
+      "wave": 10,
+      "spawn_opportunities": 1164,
+      "living_enemy_cap": 360,
+      "batches": [
+        56,
+        38
+      ]
+    },
+    {
+      "difficulty": 2,
+      "wave": 15,
+      "spawn_opportunities": 1728,
+      "living_enemy_cap": 360,
+      "batches": [
+        66,
+        45
+      ]
+    },
+    {
+      "difficulty": 2,
+      "wave": 20,
+      "spawn_opportunities": 2408,
+      "living_enemy_cap": 360,
+      "batches": [
+        78,
+        53
+      ]
+    },
+    {
+      "difficulty": 3,
+      "wave": 1,
+      "spawn_opportunities": 274,
+      "living_enemy_cap": 480,
+      "batches": [
+        23,
+        15
+      ]
+    },
+    {
+      "difficulty": 3,
+      "wave": 5,
+      "spawn_opportunities": 828,
+      "living_enemy_cap": 480,
+      "batches": [
+        44,
+        30
+      ]
+    },
+    {
+      "difficulty": 3,
+      "wave": 10,
+      "spawn_opportunities": 1882,
+      "living_enemy_cap": 480,
+      "batches": [
+        64,
+        43
+      ]
+    },
+    {
+      "difficulty": 3,
+      "wave": 15,
+      "spawn_opportunities": 2718,
+      "living_enemy_cap": 480,
+      "batches": [
+        75,
+        51
+      ]
+    },
+    {
+      "difficulty": 3,
+      "wave": 20,
+      "spawn_opportunities": 3900,
+      "living_enemy_cap": 480,
+      "batches": [
+        87,
+        61
+      ]
+    }
+  ],
+  "critical_examples": [
+    {
+      "crit_percent": 5,
+      "precision_gain_percent": 12.195121951219505,
+      "lethality_gain_percent": 4.878048780487816
+    },
+    {
+      "crit_percent": 30,
+      "precision_gain_percent": 10.869565217391298,
+      "lethality_gain_percent": 26.08695652173914
+    },
+    {
+      "crit_percent": 50,
+      "precision_gain_percent": 10.0,
+      "lethality_gain_percent": 40.0
+    },
+    {
+      "crit_percent": 75,
+      "precision_gain_percent": 9.090909090909093,
+      "lethality_gain_percent": 54.54545454545453
+    },
+    {
+      "crit_percent": 100,
+      "precision_gain_percent": 0.0,
+      "lethality_gain_percent": 66.66666666666666
+    }
+  ],
+  "proposed_600_normal_2_elites_luck0": {
+    "mean": 2.4207897462756893,
+    "zero": 0.005832317309799015,
+    "p95": 4,
+    "ge5": 0,
+    "ge10": 0
+  }
+}

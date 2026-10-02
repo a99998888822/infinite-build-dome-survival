@@ -1,0 +1,204 @@
+{
+  "revision": "r03",
+  "input_directory": "temp/battle_ground_01/r03/",
+  "camera_contract": "CAMERA_CONTRACT.md",
+  "paving_candidate_screen_ratio": "approximately 3:1; 8 columns and 24 rows before missing bricks",
+  "input_extensions": [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp"
+  ],
+  "source_size_policy": "highest native output; record actual dimensions, do not upscale or rename formats",
+  "asset_count": 8,
+  "generation_count": 6,
+  "assets": [
+    {
+      "id": "G01",
+      "input_stem": "G01_grass_sparse",
+      "prompt": "prompts/G01_grass_sparse.txt",
+      "reference": "01_ground_palette_reference.png",
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform diffuse; local short form shading only",
+      "view": "fixed oblique parallel view baked into art; no extra whole-image flattening",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G02",
+      "input_stem": "G02_grass_dense",
+      "prompt": "prompts/G02_grass_dense.txt",
+      "reference": "01_ground_palette_reference.png",
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform diffuse; local short form shading only",
+      "view": "fixed oblique parallel view baked into art; no extra whole-image flattening",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G03",
+      "input_stem": "G03_wet_earth",
+      "prompt": "prompts/G03_wet_earth.txt",
+      "reference": "01_ground_palette_reference.png",
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform diffuse; local short form shading only",
+      "view": "fixed oblique parallel view baked into art; no extra whole-image flattening",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G04",
+      "input_stem": "G04_paving_worn",
+      "prompt": "prompts/G04_paving_worn.txt",
+      "reference": "01_ground_palette_reference.png",
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform diffuse; local short form shading only",
+      "view": "fixed oblique parallel view baked into art; no extra whole-image flattening",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G05",
+      "input_stem": "G05_paving_broken",
+      "prompt": "prompts/G05_paving_broken.txt",
+      "reference": "01_ground_palette_reference.png",
+      "source_type": "opaque_full_bleed_texture",
+      "requested_hd_size": [
+        2048,
+        2048
+      ],
+      "pixel_kind": "tile",
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "opaque; RGB or alpha=255",
+      "background_removal": false,
+      "lighting": "uniform diffuse; local short form shading only",
+      "view": "fixed oblique parallel view baked into art; no extra whole-image flattening",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G06",
+      "output_stem": "bush_round",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 1,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": "02_vegetation_reference.png",
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G07",
+      "output_stem": "bush_long",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 2,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": "02_vegetation_reference.png",
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r03_hd_review"
+    },
+    {
+      "id": "G08",
+      "output_stem": "bush_sparse",
+      "input_stem": "G06_G08_bushes",
+      "sheet_position_left_to_right": 3,
+      "prompt": "prompts/G06_G08_bushes.txt",
+      "reference": "02_vegetation_reference.png",
+      "source_type": "isolated_white_background_sprite",
+      "requested_sheet_hd_size": [
+        3072,
+        1024
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "master_alpha": "transparent background",
+      "background_removal": true,
+      "view": "same fixed oblique parallel view; top and front visible",
+      "status": "awaiting_r03_hd_review"
+    }
+  ],
+  "generated_later": [
+    "grass-earth pixel masks",
+    "grass-paving pixel masks",
+    "earth-paving pixel masks",
+    "worn-broken paving transitions",
+    "inner/outer corners",
+    "compatible internal texture variants"
+  ],
+  "current_sample": {
+    "id": "G01",
+    "status": "issues_recorded_not_approved",
+    "actual_size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "source_sha256": "6b462172de5c63a615cdeafbf79abda1635137e237e901e713b79c43fbd4b60f"
+  },
+  "runtime_status": "new terrain not installed; streaming requirements documented only"
+}

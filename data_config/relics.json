@@ -65,10 +65,10 @@
   {
     "id": "relic_fixed_deposit_certificate",
     "display_name": "定期存单",
-    "description": "获得时：本金 +（20×当前波次）；最多持有 1 件",
+    "description": "获得时：本金 +（20×当前波次）；最多持有 5 件",
     "icon": "res://assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "rarity": "uncommon",
-    "max_stack": 1,
+    "max_stack": 5,
     "tags": [
       "finance"
     ],
@@ -327,7 +327,7 @@
   {
     "id": "relic_medical_cutback",
     "display_name": "医疗削减方案",
-    "description": "获得时：本金 +150；利率 +2%；回血 -0.5；血包恢复量 -1",
+    "description": "获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1",
     "icon": "res://assets/ui/icons/relics/relic_medical_cutback.png",
     "rarity": "epic",
     "max_stack": 0,
@@ -354,7 +354,7 @@
         "target_scope": "player",
         "stat": "hp_regen",
         "operation": "add_flat",
-        "value": -0.5,
+        "value": -0.25,
         "duration": -1
       },
       {
@@ -653,14 +653,14 @@
   {
     "id": "relic_pungent_sachet",
     "display_name": "刺鼻香包",
-    "description": "每秒回血 + 0.2；理智值 + 1",
+    "description": "每秒回血 + 0.1；理智值 + 1",
     "icon": "res://assets/ui/icons/relics/relic_pungent_sachet.png",
     "icon_description": "散发刺鼻迷雾的粗布小包",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_pungent_sachet_hp_regen", "source_type": "relic", "source_id": "relic_pungent_sachet", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.2, "duration": -1},
+      {"id": "mod_relic_pungent_sachet_hp_regen", "source_type": "relic", "source_id": "relic_pungent_sachet", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.1, "duration": -1},
       {"id": "mod_relic_pungent_sachet_humanity", "source_type": "relic", "source_id": "relic_pungent_sachet", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": 1, "duration": -1}
     ],
     "runtime_effects": []
@@ -682,14 +682,14 @@
   {
     "id": "relic_vitality_potion",
     "display_name": "生命力药瓶",
-    "description": "每秒回血 + 0.5；每波过后，侵蚀度 + 1",
+    "description": "每秒回血 + 0.25；每波过后，侵蚀度 + 1",
     "icon": "res://assets/ui/icons/relics/relic_vitality_potion.png",
     "icon_description": "晃动时漂浮血色气泡的玻璃药罐",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_vitality_potion_hp_regen", "source_type": "relic", "source_id": "relic_vitality_potion", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.5, "duration": -1}
+      {"id": "mod_relic_vitality_potion_hp_regen", "source_type": "relic", "source_id": "relic_vitality_potion", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.25, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "divinity", "value": 1}
@@ -775,7 +775,7 @@
   {
     "id": "relic_flesh_pauldron",
     "display_name": "血肉肩甲",
-    "description": "最大生命值 + 5、护甲 + 15；每秒回血 - 0.2；侵蚀度 + 2；理智值 - 2",
+    "description": "最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2",
     "icon": "res://assets/ui/icons/relics/relic_flesh_pauldron.png",
     "icon_description": "附着鲜活蠕动皮肉的深色肩铠",
     "rarity": "rare",
@@ -784,7 +784,7 @@
     "effects": [
       {"id": "mod_relic_flesh_pauldron_max_hp", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 5, "duration": -1},
       {"id": "mod_relic_flesh_pauldron_armor", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 15, "duration": -1},
-      {"id": "mod_relic_flesh_pauldron_hp_regen", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.2, "duration": -1},
+      {"id": "mod_relic_flesh_pauldron_hp_regen", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.1, "duration": -1},
       {"id": "mod_relic_flesh_pauldron_divinity", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 2, "duration": -1},
       {"id": "mod_relic_flesh_pauldron_humanity", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -2, "duration": -1}
     ],
@@ -793,14 +793,14 @@
   {
     "id": "relic_nightmare_healing_urn",
     "display_name": "梦魇治愈圣壶",
-    "description": "每秒回血 + 0.8；每波过后，理智值 - 1",
+    "description": "每秒回血 + 0.4；每波过后，理智值 - 1",
     "icon": "res://assets/ui/icons/relics/relic_nightmare_healing_urn.png",
     "icon_description": "壶口飘出朦胧黑雾的青铜水壶",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_nightmare_healing_urn_hp_regen", "source_type": "relic", "source_id": "relic_nightmare_healing_urn", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.8, "duration": -1}
+      {"id": "mod_relic_nightmare_healing_urn_hp_regen", "source_type": "relic", "source_id": "relic_nightmare_healing_urn", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.4, "duration": -1}
     ],
     "runtime_effects": [
       {"trigger": "wave_end", "effect": "add_stat", "stat": "humanity", "value": -1}
@@ -901,14 +901,14 @@
   {
     "id": "relic_pain_vessel",
     "display_name": "苦痛祭皿",
-    "description": "每秒回血 + 1.2；最大生命值 - 1；理智值 - 3",
+    "description": "每秒回血 + 0.6；最大生命值 - 1；理智值 - 3",
     "icon": "res://assets/ui/icons/relics/relic_pain_vessel.png",
     "icon_description": "盆内漂浮细碎黑雾的金色圆盘",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1.2, "duration": -1},
+      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.6, "duration": -1},
       {"id": "mod_relic_pain_vessel_max_hp", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -1, "duration": -1},
       {"id": "mod_relic_pain_vessel_humanity", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -3, "duration": -1}
     ],
@@ -933,14 +933,14 @@
   {
     "id": "relic_holy_silver_cup",
     "display_name": "圣质银杯",
-    "description": "每秒回血 + 1.5；利率 - 1 个百分点",
+    "description": "每秒回血 + 0.75；利率 - 1 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_holy_silver_cup.png",
     "icon_description": "杯身雕刻人形纹路、盛放澄澈净水的银杯",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "finance"],
     "effects": [
-      {"id": "mod_relic_holy_silver_cup_hp_regen", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 1.5, "duration": -1},
+      {"id": "mod_relic_holy_silver_cup_hp_regen", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.75, "duration": -1},
       {"id": "mod_relic_holy_silver_cup_interest_rate", "source_type": "relic", "source_id": "relic_holy_silver_cup", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": -1, "duration": -1}
     ],
     "runtime_effects": []
@@ -964,7 +964,7 @@
   {
     "id": "relic_costly_seed_of_life",
     "display_name": "代价生命之种",
-    "description": "每秒回血 +1；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件",
+    "description": "每秒回血 +0.5；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_costly_seed_of_life.png",
     "icon_description": "外壳通透、胚芽不停蠕动的奇异种子",
     "rarity": "mythic",
@@ -981,7 +981,7 @@
         "target_scope": "player",
         "stat": "hp_regen",
         "operation": "add_flat",
-        "value": 1,
+        "value": 0.5,
         "duration": -1
       },
       {
@@ -1132,7 +1132,7 @@
   {
     "id": "relic_bloodstained_belt",
     "display_name": "嗜血皮带",
-    "description": "近战伤害 + 3；每秒回血 - 0.5",
+    "description": "近战伤害 + 3；每秒回血 - 0.25",
     "icon": "res://assets/ui/icons/relics/relic_bloodstained_belt.png",
     "icon_description": "沾染少量干涸血迹的皮质腰带",
     "rarity": "uncommon",
@@ -1140,14 +1140,14 @@
     "tags": ["combat", "survival"],
     "effects": [
       {"id": "mod_relic_bloodstained_belt_melee_damage", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 3, "duration": -1},
-      {"id": "mod_relic_bloodstained_belt_hp_regen", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.5, "duration": -1}
+      {"id": "mod_relic_bloodstained_belt_hp_regen", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.25, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_poison_mist_pouch",
     "display_name": "毒雾投囊",
-    "description": "远程伤害 + 3；每秒回血 - 0.5",
+    "description": "远程伤害 + 3；每秒回血 - 0.25",
     "icon": "res://assets/ui/icons/relics/relic_poison_mist_pouch.png",
     "icon_description": "密封的褐色胶质小包",
     "rarity": "uncommon",
@@ -1155,7 +1155,7 @@
     "tags": ["combat", "survival"],
     "effects": [
       {"id": "mod_relic_poison_mist_pouch_ranged_damage", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 3, "duration": -1},
-      {"id": "mod_relic_poison_mist_pouch_hp_regen", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.5, "duration": -1}
+      {"id": "mod_relic_poison_mist_pouch_hp_regen", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.25, "duration": -1}
     ],
     "runtime_effects": []
   },

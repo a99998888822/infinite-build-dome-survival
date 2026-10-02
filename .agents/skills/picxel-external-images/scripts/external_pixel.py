@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import shutil
 import sys
+import tempfile
 
 SKILL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL / "vendor/picxel/scripts"))
@@ -53,6 +54,12 @@ def build(args):
     if refs == out or refs in out.parents:
         raise ValueError("Output must be separate from the references")
     anchors = sorted(refs.glob("*.anchor.json"))
+    only = getattr(args, "only", None)
+    if only is not None:
+        available = {p.name[:-len(".anchor.json")] for p in anchors}
+        if not only or set(only) - available:
+            raise ValueError("--only must name existing assets: " + ", ".join(sorted(available)))
+        anchors = [p for p in anchors if p.name[:-len(".anchor.json")] in only]
     if not 1 <= len(anchors) <= 20:
         raise ValueError("Need 1-20 annotated external images")
     if (out / "batch-report.json").exists() or list(out.glob("*.pxg")) or list(out.glob("*.png")):
@@ -79,6 +86,8 @@ def build(args):
                           "files": [p.name for _, p, _, _ in items], "sizes": sizes})
     panel.set_status(out, "running", "External images: local pixel processing")
     report = {"provider": "external-file", "image_model_used": False, "jobs": [], "inputs": fingerprints}
+    if only is not None:
+        report["selected"] = sorted(set(only))
     failed = False
     for name, original, prepared, anchor in items:
         entry = {"name": name, "status": "base-ready", "review": "pending", "sheets": [],
@@ -166,10 +175,10 @@ def select(args):
     return 0
 
 
-def finish(args):
-    out = args.out.resolve()
-    job = matching_job(out)
+def reviewed_sheets(out):
+    """Verify the selected deliverables without changing panel state."""
     report = read(out / "batch-report.json")
+    selected = []
     for record in report["inputs"]:
         if fingerprint(record["path"])["sha256"] != record["sha256"]:
             raise ValueError("Input changed after conversion: " + record["path"])
@@ -185,6 +194,14 @@ def finish(args):
             with Image.open(out / f"{entry['name']}-{size}.png") as png:
                 if png.size != (size, size) or png.convert("RGBA").tobytes() != sheet.image().convert("RGBA").tobytes():
                     raise ValueError("Final PNG differs from selected grid")
+            selected.append((f"{entry['name']}-{size}", sheet))
+    return report, selected
+
+
+def finish(args):
+    out = args.out.resolve()
+    job = matching_job(out)
+    report, _ = reviewed_sheets(out)
     report["previews"] = px.review_overview(report["jobs"], out)
     write(out / "batch-report.json", report)
     panel.set_status(out, "done", "External image conversion and assistant visual review complete")
@@ -192,6 +209,59 @@ def finish(args):
     if scan["done"] != scan["total"]:
         raise ValueError("Panel output count does not match the requested batch")
     print(json.dumps({"done": scan["done"], "total": scan["total"], "delivery": str(out / panel.FINISHED_DIR)}))
+    return 0
+
+
+def review(args):
+    out = args.out.resolve()
+    report = read(out / "batch-report.json")
+    report["previews"] = px.review_overview(report["jobs"], out)
+    write(out / "batch-report.json", report)
+    print(json.dumps({"previews": report["previews"]}))
+    return 0
+
+
+def sheet(args):
+    out = args.out.resolve()
+    _, selected = reviewed_sheets(out)
+    destination = (args.destination or out / "dist").resolve()
+    if destination == out or destination in out.parents:
+        raise ValueError("Atlas output must be separate from the task files")
+    if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
+        raise ValueError("Atlas output must be a new or empty directory")
+    if not selected:
+        raise ValueError("No reviewed assets to pack")
+    # Upstream sheet scans every .pxg. Stage only selected versions, so base and
+    # intermediate edits cannot leak into the atlas or replace the final frame.
+    with tempfile.TemporaryDirectory(prefix="picxel-selected-") as folder:
+        stage = Path(folder)
+        for name, source in selected:
+            path = stage / f"{name}.pxg"
+            normalized = px.Sheet(name, source.size, source.kind, "custom", source.colors, source.rows, path)
+            path.write_text(normalized.dump(), encoding="utf-8")
+        px.build_sheet(stage, destination, args.columns)
+    return 0
+
+
+def adopt_job(args):
+    """Copy panel choices into this skill, leaving the source job/status alone."""
+    source = args.job.resolve()
+    if source == panel.JOB_FILE.resolve():
+        raise ValueError("Already using the project job; use picxel.py job show")
+    job = read(source)
+    destination = args.out.resolve()
+    original_export = Path(job["export"]).resolve()
+    original_import = Path(job["import"]).resolve()
+    if (destination == original_export or destination in original_export.parents
+            or original_export in destination.parents
+            or destination == original_import or destination in original_import.parents
+            or original_import in destination.parents):
+        raise ValueError("Use a separate output directory for the project job")
+    if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
+        raise ValueError("Project output must be a new or empty directory")
+    job["export"] = str(destination)
+    result = panel.save_job(job)
+    print(json.dumps(result, ensure_ascii=True))
     return 0
 
 
@@ -204,12 +274,22 @@ def main():
     p.add_argument("--sizes", type=int, choices=(32, 64, 128), nargs="+", default=[128])
     p.add_argument("--prepared-dir", type=Path)
     p.add_argument("--background", default="none")
+    p.add_argument("--only", nargs="+", help="process named assets in a new revision directory")
     p = commands.add_parser("select")
     p.add_argument("out", type=Path)
     p.add_argument("--name", required=True)
     p.add_argument("--size", type=int, choices=(32, 64, 128), required=True)
     p.add_argument("--sheet", type=Path, required=True)
     p.add_argument("--note", required=True)
+    p = commands.add_parser("review", help="refresh previews without converting images")
+    p.add_argument("out", type=Path)
+    p = commands.add_parser("sheet", help="pack only verified, selected grids")
+    p.add_argument("out", type=Path)
+    p.add_argument("-o", "--destination", type=Path)
+    p.add_argument("--columns", type=int, default=8)
+    p = commands.add_parser("adopt-job", help="copy another panel's choices to a separate project output")
+    p.add_argument("job", type=Path)
+    p.add_argument("-o", "--out", type=Path, required=True)
     for command in ("finish", "stop"):
         p = commands.add_parser(command)
         p.add_argument("out", type=Path)
@@ -221,7 +301,8 @@ def main():
             matching_job(args.out)
             panel.set_status(args.out.resolve(), "interrupted", args.note)
             return 0
-        return {"build": build, "select": select, "finish": finish}[args.command](args)
+        return {"build": build, "select": select, "finish": finish,
+                "review": review, "sheet": sheet, "adopt-job": adopt_job}[args.command](args)
     except (OSError, ValueError, KeyError) as exc:
         print(str(exc), file=sys.stderr)
         return 1

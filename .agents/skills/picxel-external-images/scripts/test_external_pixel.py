@@ -125,6 +125,102 @@ class ExternalWorkflowTest(unittest.TestCase):
             self.assertEqual(preview.tobytes(), final.tobytes())
         self.assertTrue((self.out / "base" / original.name).is_file())
 
+    def test_only_ignores_unselected_inputs_and_rejects_unknown_names(self):
+        # More than 20 source anchors is valid when the requested subset is small.
+        for number in range(21):
+            workflow.write(self.refs / f"unused_{number}.anchor.json", {})
+        self.args.only = [self.name]
+        self.build()
+        report = workflow.read(self.out / "batch-report.json")
+        self.assertEqual(report["selected"], [self.name])
+        self.assertEqual([item["name"] for item in report["jobs"]], [self.name])
+        self.assertEqual(workflow.panel.load_job()["files"], [self.source.name])
+        self.assertFalse(any("unused_" in item["path"] for item in report["inputs"]))
+        self.args.out = self.root / "unknown-selection"
+        self.args.only = ["missing"]
+        with self.assertRaisesRegex(ValueError, "existing assets"):
+            workflow.build(self.args)
+        self.assertFalse(self.args.out.exists())
+
+    def test_review_refresh_does_not_convert_or_approve(self):
+        self.build()
+        before = {p.name: p.read_bytes() for p in self.out.glob("*.pxg")}
+        status = workflow.panel.status_path(self.out).read_bytes()
+        report = workflow.read(self.out / "batch-report.json")
+        for name in report["previews"]:
+            (self.out / name).unlink()
+        with redirect_stdout(io.StringIO()), patch.object(workflow.px, "_import_image", side_effect=AssertionError("No reconversion")):
+            workflow.review(Namespace(out=self.out))
+        refreshed = workflow.read(self.out / "batch-report.json")
+        self.assertTrue(all((self.out / name).is_file() for name in refreshed["previews"]))
+        self.assertEqual(refreshed["jobs"][0]["review"], "pending")
+        self.assertEqual(status, workflow.panel.status_path(self.out).read_bytes())
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.out.glob("*.pxg")})
+
+    def test_atlas_contains_only_selected_versions(self):
+        self.args.sizes = [64]
+        self.build()
+        args = Namespace(out=self.out, destination=self.out / "dist", columns=4)
+        with self.assertRaisesRegex(ValueError, "visual review"):
+            workflow.sheet(args)
+        original = self.out / f"{self.name}-64.pxg"
+        selected = workflow.px.load(original)
+        row = list(selected.rows[32])
+        row[32] = next(symbol for symbol in selected.colors if symbol != row[32])
+        selected.rows[32] = "".join(row)
+        refined = self.out / f"{self.name}-64-detail.pxg"
+        refined.write_text(selected.dump(), encoding="utf-8")
+        with redirect_stdout(io.StringIO()):
+            workflow.select(Namespace(out=self.out, name=self.name, size=64, sheet=refined, note="Checked edit"))
+        before = {p.name: p.read_bytes() for p in self.out.iterdir() if p.is_file()}
+        with redirect_stdout(io.StringIO()):
+            workflow.sheet(args)
+        atlas = workflow.read(args.destination / "sheet.json")
+        self.assertEqual(set(atlas["frames"]), {f"{self.name}-64"})
+        with Image.open(args.destination / "sheet.png") as image:
+            self.assertEqual(image.tobytes(), selected.image().tobytes())
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.out.iterdir() if p.is_file()})
+        with self.assertRaisesRegex(ValueError, "new or empty"):
+            workflow.sheet(args)
+        selected.rows[32] = "." * 64
+        refined.write_text(selected.dump(), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Grid changed"):
+            workflow.sheet(Namespace(out=self.out, destination=self.out / "stale", columns=4))
+
+    def test_adopt_job_preserves_source_and_protects_active_project(self):
+        source_out = self.root / "global-output"
+        source_out.mkdir()
+        workflow.write(source_out / workflow.panel.STATUS_NAME, {"state": "running", "started": "existing"})
+        source_job = self.root / "global-job.json"
+        workflow.write(source_job, {"import": str(self.refs), "export": str(source_out),
+                                   "mode": "single", "files": [self.source.name], "sizes": [32, 128]})
+        job_before = source_job.read_bytes()
+        state_before = workflow.panel.status_path(source_out).read_bytes()
+        with redirect_stdout(io.StringIO()):
+            workflow.adopt_job(Namespace(job=source_job, out=self.out))
+        project = workflow.panel.load_job()
+        self.assertEqual(project["sizes"], [32, 128])
+        self.assertEqual(project["files"], [self.source.name])
+        self.assertEqual(Path(project["export"]), self.out)
+        self.assertEqual(source_job.read_bytes(), job_before)
+        self.assertEqual(workflow.panel.status_path(source_out).read_bytes(), state_before)
+        workflow.panel.set_status(self.out, "asking", "Pending choice")
+        active_before = workflow.panel.JOB_FILE.read_bytes()
+        with self.assertRaises(ValueError):
+            workflow.adopt_job(Namespace(job=source_job, out=self.root / "another-output"))
+        self.assertEqual(workflow.panel.JOB_FILE.read_bytes(), active_before)
+        with self.assertRaisesRegex(ValueError, "separate output"):
+            workflow.adopt_job(Namespace(job=source_job, out=source_out))
+
+    def test_pause_and_resume_preserves_started_time(self):
+        self.build()
+        started = workflow.panel.load_status(self.out)["started"]
+        with redirect_stdout(io.StringIO()):
+            workflow.panel.job_command("ask", "Need input")
+            workflow.panel.job_command("start", "")
+        self.assertEqual(workflow.panel.load_status(self.out)["started"], started)
+        self.assertEqual(workflow.panel.load_status(self.out)["state"], "running")
+
 
 if __name__ == "__main__":
     unittest.main()

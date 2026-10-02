@@ -975,6 +975,7 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 
 func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = [], strong: bool = false) -> Dictionary:
 	var context := _build_shop_context()
+	if not context.is_empty(): context["offer_mode"] = mode
 	if strong and not context.is_empty(): context["luck"] = float(context.luck) + float(_bound_wave_manager.goblin_trades.definition("strong_refresh").luck_bonus)
 	var offers: Array = []
 	var relic_only := mode == "free" and not _active_relic_choice.is_empty()

@@ -1,0 +1,49 @@
+{
+  "purpose": "Original drawer structure reference, not a new approved design or generated HD artwork.",
+  "native_size": [
+    313,
+    558
+  ],
+  "upload_size": [
+    626,
+    1116
+  ],
+  "method": "Native pixel assembly using the current skin geometry. The upload version uses nearest-neighbor 2x enlargement only.",
+  "sources": [
+    {
+      "path": "assets/ui/stats_drawer/stats_board_bottom.png",
+      "sha256": "6d3b8a0ddf6a319225a8ff2920bb22bb992399037b57f565d024e66af05de2d8"
+    },
+    {
+      "path": "assets/ui/stats_drawer/stats_board_top.png",
+      "sha256": "c4c20474aea28e9b1a68ef28e6a728fc2907bd88e9fc6008fce9281dadb95540"
+    },
+    {
+      "path": "assets/ui/stats_drawer/stats_leather_handle.png",
+      "sha256": "affa7af56fb7979a6718d6d69cc35a23f6844bd53b46cffe4f704e8c2b409a45"
+    },
+    {
+      "path": "assets/ui/stats_drawer/stats_rail_left.png",
+      "sha256": "ddbb2733104e5bbf3288643aa0b9e89ce151dd09ee9cf32926a87bc1d910805f"
+    },
+    {
+      "path": "assets/ui/stats_drawer/stats_rail_right.png",
+      "sha256": "b43258046b8b16a29193bfcfd9c3a2efb2bdc45a53ba85becaa58276d62c56e5"
+    },
+    {
+      "path": "assets/ui/stats_drawer/stats_wood_tile.png",
+      "sha256": "cf077c06f94967359435bb3b9efc6bbe540c2b5439e62844c123b9ca9aff68b4"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "references/U01_stats_original_structure.png",
+      "sha256": "6831ff293002540b5634e4736f183a4176ff7bd7e9bdf2c16c636b2940111156"
+    },
+    {
+      "path": "references/U01_stats_original_structure_2x.png",
+      "sha256": "3fd23192746e3739eb2c23ef39eeb3b13c0ec71a97ac0483bc334ed8e4bb10f8"
+    }
+  ],
+  "identity_notes": "Preserve metal edging and sparse leather ties. The separate interactive leather handle is not baked into the new panel. Existing chains are secondary, not the main design requirement."
+}

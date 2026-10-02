@@ -11,8 +11,8 @@ resource_local_to_scene = true
 shader = ExtResource("5_glow_shader")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player_body"]
-radius = 8.4
-height = 39.2
+radius = 10.08
+height = 55.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_en6th"]
 radius = 180.0
@@ -22,12 +22,13 @@ collision_mask = 2
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=338996884]
-position = Vector2(0, 2.1)
 shape = SubResource("CapsuleShape2D_player_body")
 
 [node name="VisualAnchor" type="Node2D" parent="." unique_id=1223510489]
+scale = Vector2(1.2, 1.2)
 
 [node name="GroundMarker" type="Node2D" parent="."]
+scale = Vector2(1.2, 1.2)
 script = ExtResource("3_marker")
 
 [node name="VisibilityGlow" type="ColorRect" parent="."]

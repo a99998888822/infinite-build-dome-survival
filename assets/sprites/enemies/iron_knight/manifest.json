@@ -1,11 +1,11 @@
 {
   "frame_size": [
-    160,
-    160
+    128,
+    128
   ],
   "movement_foot_anchor": [
-    80,
-    128
+    64,
+    118
   ],
   "death": "freeze_current_pose_and_fade",
   "actions": {
@@ -15,8 +15,8 @@
       "loop": true
     },
     "move": {
-      "frames": 11,
-      "fps": 11.0,
+      "frames": 6,
+      "fps": 6.0,
       "loop": true
     },
     "windup": {
@@ -30,8 +30,8 @@
       "loop": false
     },
     "recover": {
-      "frames": 2,
-      "fps": 4.0,
+      "frames": 1,
+      "fps": 2.0,
       "loop": false
     }
   }

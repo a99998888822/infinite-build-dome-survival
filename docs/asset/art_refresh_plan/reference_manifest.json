@@ -1,0 +1,44 @@
+[
+  {
+    "id": "R01",
+    "file": "references/R01_forest_shapes.jpg",
+    "source": "artifacts/reference/scene/u=4143898148,827992823&fm=253&app=138&f=JPEG.jpg",
+    "use": "环境大块面、岩石切面、空间层次",
+    "sha256": "6cd18aa799a3d8589fc6f639aecf3aba62765667aeec3cc05778fc55604cf1fe"
+  },
+  {
+    "id": "R02",
+    "file": "references/R02_darkest_ink.webp",
+    "source": "artifacts/reference/darkest_dungeon/u=439607916,3606041519&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "use": "轮廓、硬阴影、概括材质；减少排线",
+    "sha256": "e2a9825e9aa946eef2fce7411f5015086e034a4eb42df72c6d8a2982ab7d4e76"
+  },
+  {
+    "id": "R03",
+    "file": "references/R03_armor_shapes.webp",
+    "source": "artifacts/reference/darkest_dungeon/u=2637947151,2706126914&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "use": "盔甲块面与厚重轮廓；不复制武器与徽记",
+    "sha256": "63de8cad8a8f5e1823be915e9b1cd3bc59e3e9efbf10d10e7c8bc29a7aa9e4ec"
+  },
+  {
+    "id": "R04",
+    "file": "references/R04_creature_shapes.webp",
+    "source": "artifacts/reference/cuthulu/u=1044588798,3208899356&fm=253&fmt=auto&app=120&f=JPEG.webp",
+    "use": "怪物有机剪影与非对称；降低饱和度",
+    "sha256": "057ba4233acd38bca8c8639925fa355a45b1537c4f2a9303cc910eab8cc27ab7"
+  },
+  {
+    "id": "R05",
+    "file": "references/R05_face_planes.webp",
+    "source": "artifacts/reference/cuthulu/u=1758180758,1661537932&fm=253&fmt=auto&app=138&f=JPEG.webp",
+    "use": "人脸概括明暗；不复制人物身份",
+    "sha256": "149cc18238c9d341369e0cb7afcf181a25a4c1c3f36a41e1bac45be189bed6e2"
+  },
+  {
+    "id": "R06",
+    "file": "references/R06_marsh_mood.jpg",
+    "source": "artifacts/reference/scene/zzLi-fychtth0163612.jpg",
+    "use": "湿地、雾层与旧建筑氛围；不复制写实纹理",
+    "sha256": "e5c169cbcf0457003dba793deb19e0c7648d5921c514a78df9a5423b9ad99184"
+  }
+]

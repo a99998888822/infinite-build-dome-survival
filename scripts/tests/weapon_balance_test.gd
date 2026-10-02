@@ -79,7 +79,47 @@ func _run() -> void:
 		"shop and purchase both reject grenade when only twenty-four load remains")
 	player.remove_runtime_modifiers_by_source("test", "balance_capacity")
 	check(loadout.try_buy_weapon("weapon_iron_grenade_cannon"), "grenade is purchasable again after restoring capacity")
+	await check_attack_ranges(loadout, player)
 	host.queue_free()
 	await frames()
 	print("WEAPON_BALANCE_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)
+
+
+func check_attack_ranges(loadout: WeaponLoadout, player: PlayerController) -> void:
+	var enemy := load("res://scenes/enemy/mutated_grub.tscn").instantiate() as EnemyController
+	enemy.auto_initialize_on_ready = false
+	host.add_child(enemy)
+	enemy.initialize("enemy_mutated_grub", player)
+	enemy.set_physics_process(false)
+	for id in [BOW, PLASMA, "weapon_iron_grenade_cannon"]:
+		var current := loadout.get_weapon_instance(id)
+		var reach := current.get_attack_range()
+		enemy.position = Vector2(reach + 1, 0)
+		current.attack_timer = 0
+		await frames()
+		check(not loadout._try_attack_with_weapon(current) and current.attack_timer == 0,
+			id + " does not acquire beyond the new range or spend cooldown")
+		enemy.position = Vector2(reach - 1, 0)
+		await frames()
+		check(loadout._try_attack_with_weapon(current), id + " still attacks just inside range")
+		if current.is_grenade():
+			var grenades := host.get_children().filter(func(node): return node is GrenadeProjectile)
+			check(grenades.size() == 1 and grenades[0].target_position.distance_to(player.global_position) < reach,
+				"grenade landing stays inside its throw range")
+		else:
+			var shots := host.get_children().filter(func(node): return node is ProjectileInstance and node.weapon == current)
+			check(shots.size() == 1 and is_equal_approx(shots[0].remaining_distance, reach),
+				id + " projectile receives the same distance as targeting")
+			if not shots.is_empty():
+				var shot := shots[0] as ProjectileInstance
+				shot.set_physics_process(false)
+				shot._physics_process(10.0)
+				check(not shot.active and is_equal_approx(shot.global_position.distance_to(player.global_position), reach),
+					id + " expires at exact range even during a long frame")
+		enemy.position = Vector2(reach * 1.25, 0)
+		await frames()
+		check(not loadout._try_attack_with_weapon(current), id + " cannot use the old longer targeting radius")
+		current.runtime_stats.area_size = 50
+		check(loadout._try_attack_with_weapon(current), id + " earned range bonuses still extend targeting")
+		current.runtime_stats.area_size = 0

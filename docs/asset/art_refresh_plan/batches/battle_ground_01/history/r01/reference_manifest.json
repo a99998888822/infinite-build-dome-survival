@@ -1,0 +1,41 @@
+{
+  "status": "style_reference_crops_only",
+  "references": [
+    {
+      "file": "01_ground_planes_reference.png",
+      "source": "artifacts/reference/scene/u=4143898148,827992823&fm=253&app=138&f=JPEG.jpg",
+      "source_sha256": "6cd18aa799a3d8589fc6f639aecf3aba62765667aeec3cc05778fc55604cf1fe",
+      "source_size": [
+        1000,
+        500
+      ],
+      "crop_xyxy": [
+        285,
+        283,
+        825,
+        429
+      ],
+      "resized": false,
+      "output_sha256": "9dfaa1374ef1efba86ec6f5c444addad7a07874740775693917cc440aecf2a3d",
+      "usage": "仅参考草地、岩面的大色块与硬边，不参考溪流和场景构图。"
+    },
+    {
+      "file": "02_vegetation_reference.png",
+      "source": "artifacts/reference/scene/b861aTower-Interior-1.webp",
+      "source_sha256": "a06724937d2e50775405413fcc665742b285d6e3bb1efba89000c04a7e15236f",
+      "source_size": [
+        1920,
+        1080
+      ],
+      "crop_xyxy": [
+        1300,
+        925,
+        1870,
+        1080
+      ],
+      "resized": false,
+      "output_sha256": "7d8ceabc2cee432c0edb6ddb6dd86eedceb4b7061eeefce7047ddc7dbb32bbd9",
+      "usage": "仅参考低植被成簇节奏与暗部层次；宽叶团块由文字定义，不复制针叶、树干或建筑。"
+    }
+  ]
+}

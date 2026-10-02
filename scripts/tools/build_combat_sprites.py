@@ -1,6 +1,6 @@
-"""Install current reviewed combat sprites without resampling or redrawing."""
-from install_combat_picxel_assets import install_assets
+"""Validate current art, or install explicit --source inputs without resampling."""
+from install_combat_picxel_assets import run_cli
 
 
 if __name__ == "__main__":
-    install_assets()
+    run_cli()

@@ -1,0 +1,227 @@
+{
+  "status": "installed",
+  "method": "Original object designs from one style reference plus concise text; no identity images supplied.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "preferred_canvas": [
+      3072,
+      2304
+    ]
+  },
+  "style_reference_source": "docs/asset/art_refresh_plan/references/U01_darkest_style_no_text.png",
+  "style_reference_sha256": "48168701d5089ae156e19e823fff4fc7776313de59dede20e759420578c853c2",
+  "split_rule": "Inspect actual count, identity and location before cropping; do not assume generation follows grid order.",
+  "items": [
+    {
+      "row": 1,
+      "column": 1,
+      "key": "relic_judgment_eye_pendant",
+      "name": "裁决之眼吊坠",
+      "config_ids": [
+        "relic_judgment_eye_pendant"
+      ],
+      "source": "assets/ui/icons/relics/relic_judgment_eye_pendant.png",
+      "source_sha256": "bed9654f12c4d1a0cc6b7f6c4fdc487fd22afc86634545422d376b26014ba2ba",
+      "output_filename": "relic_judgment_eye_pendant.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "key": "relic_split_crystal_warhead",
+      "name": "分裂晶石弹头",
+      "config_ids": [
+        "relic_split_crystal_warhead"
+      ],
+      "source": "assets/ui/icons/relics/relic_split_crystal_warhead.png",
+      "source_sha256": "cf232131f8529580e28d9540aaf490ba9a9d71b02ee40d7f9ec88dc044310db1",
+      "output_filename": "relic_split_crystal_warhead.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457"
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "key": "relic_gold_digger_gloves",
+      "name": "淘金者的手套",
+      "config_ids": [
+        "relic_gold_digger_gloves"
+      ],
+      "source": "assets/ui/icons/relics/relic_gold_digger_gloves.png",
+      "source_sha256": "b9901a1dfc73756efdac7c6c80e69be94c4e9faef6b8b7d7b348d83bec89b9c3",
+      "output_filename": "relic_gold_digger_gloves.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc"
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "key": "relic_incomplete_divination_dice",
+      "name": "残缺的占卜骰子",
+      "config_ids": [
+        "relic_incomplete_divination_dice"
+      ],
+      "source": "assets/ui/icons/relics/relic_incomplete_divination_dice.png",
+      "source_sha256": "4b8f4537b2ff252e159647621a2e6e838f3b6f0a794c9741e7909059575082bb",
+      "output_filename": "relic_incomplete_divination_dice.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99"
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "key": "relic_travelers_ledger",
+      "name": "商旅账本",
+      "config_ids": [
+        "relic_travelers_ledger"
+      ],
+      "source": "assets/ui/icons/relics/relic_travelers_ledger.png",
+      "source_sha256": "3f399ffd8d249e852f3a7c6c506e47036e77b8ce7d056dd4ade4a77ff58d4abd",
+      "output_filename": "relic_travelers_ledger.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624"
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "key": "relic_defiled_blessing_coin",
+      "name": "被亵渎的祈福铜钱",
+      "config_ids": [
+        "relic_defiled_blessing_coin"
+      ],
+      "source": "assets/ui/icons/relics/relic_defiled_blessing_coin.png",
+      "source_sha256": "18255587498713858a6f066498c6218141c11b44c0bf9024f1534363da25216d",
+      "output_filename": "relic_defiled_blessing_coin.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21"
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "key": "relic_expanded_backpack_strap",
+      "name": "扩容背包束带",
+      "config_ids": [
+        "relic_expanded_backpack_strap"
+      ],
+      "source": "assets/ui/icons/relics/relic_expanded_backpack_strap.png",
+      "source_sha256": "ef5d64393b80734d2290b85bfa826696c153c458692237653fa7fbc9f58cd5bd",
+      "output_filename": "relic_expanded_backpack_strap.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a"
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "key": "relic_stargazers_lens",
+      "name": "观星者的镜片",
+      "config_ids": [
+        "relic_stargazers_lens"
+      ],
+      "source": "assets/ui/icons/relics/relic_stargazers_lens.png",
+      "source_sha256": "197c6d2d55d522e62057581b346c5ddf18759d12dfbf0fa8fe1bdb4274fc843f",
+      "output_filename": "relic_stargazers_lens.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218"
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "key": "relic_harvest_sacrificial_vessel",
+      "name": "丰收的牺牲祭器",
+      "config_ids": [
+        "relic_harvest_sacrificial_vessel"
+      ],
+      "source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
+      "source_sha256": "6fc2a535ccd762db1d6c8e8df7ad118b49601956fb6d0ca8e128d90382e693ef",
+      "output_filename": "relic_harvest_sacrificial_vessel.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "key": "relic_amulet_of_humanity",
+      "name": "人性护符",
+      "config_ids": [
+        "relic_amulet_of_humanity"
+      ],
+      "source": "assets/ui/icons/relics/relic_amulet_of_humanity.png",
+      "source_sha256": "c59937bfa8d64a5c35500246f5e413a74f225d6fe13f6095bac1827fdde9c06b",
+      "output_filename": "relic_amulet_of_humanity.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "key": "relic_gift_mark",
+      "name": "馈赠印记",
+      "config_ids": [
+        "relic_gift_mark"
+      ],
+      "source": "assets/ui/icons/relics/relic_gift_mark.png",
+      "source_sha256": "07dac28a0ee52b808c4f34dfe9d4d642dd0512f963fa18488e133cd56f8ed987",
+      "output_filename": "relic_gift_mark.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e"
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "key": "relic_void_storage_casket",
+      "name": "虚空收纳匣",
+      "config_ids": [
+        "relic_void_storage_casket"
+      ],
+      "source": "assets/ui/icons/relics/relic_void_storage_casket.png",
+      "source_sha256": "162a8b0a01a1e658b6f20c7495c7be7368b8fba94bedb08d9c1f249c26bd00bb",
+      "output_filename": "relic_void_storage_casket.png",
+      "pixel_target": [
+        64,
+        64
+      ],
+      "installed_sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b"
+    }
+  ],
+  "source_canvas": [
+    2364,
+    1773
+  ],
+  "installation_record": "../../19_relics_sheet_06_installation.md",
+  "authorization": "User requested pixelization and immediate replacement; assistant visual review completed."
+}

@@ -56,7 +56,7 @@ func _run() -> void:
 				gains[cue] = player.volume_db)
 	await prepare(["scroll_water", "scroll_ice"], [Vector2.ZERO, Vector2(30, 0)])
 	hit(enemies[0])
-	check(enemies[0].current_hp == 9810 and enemies[1].current_hp == 9910, "audio batching does not delay or alter water/ice/weapon damage")
+	check(enemies[0].current_hp == 9830 and enemies[1].current_hp == 9930, "audio batching does not delay or alter water/ice/weapon damage")
 	check(heard.is_empty(), "base audio waits for reaction resolution")
 	await drain()
 	check(not heard.has("reaction_freeze") and not heard.has("water") and not heard.has("ice"), "silent freeze still suppresses its participating base sounds")
@@ -86,7 +86,7 @@ func _run() -> void:
 	enemies[0].apply_wet(5.0, 0.8)
 	hit(enemies[0])
 	await drain()
-	check(not heard.has("reaction_freeze") and heard.has("explosion") and not heard.has("ice"), "unrelated explosion remains audible alongside silent freeze: " + str(heard))
+	check(not heard.has("reaction_freeze") and heard.has("explosion") and not heard.has("ice"), "shockwave impact remains audible alongside silent freeze: " + str(heard))
 
 	await prepare(["scroll_water", "scroll_lightning"])
 	hit(enemies[0])

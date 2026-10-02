@@ -188,6 +188,10 @@ func _live() -> void:
 	check(flow.current_battle_summary == report and CampProgression.get_camp_currency() == balance + int(report.camp_currency), "duplicate outcome cannot change frozen result or award again")
 	var ui := game.find_child("BattleResultPanel", true, false) as RunSettlementPanel
 	check(ui != null and ui.visible and not ui.back_button.disabled, "new result UI and return action immediately available")
+	var current_portraits := ["res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png", "res://assets/sprites/enemies/iron_knight/knight_idle.png"]
+	check(ui._monster_nodes.size() == 2, "both defeated enemy types have portraits")
+	for monster in ui._monster_nodes:
+		check(monster.icon.texture.resource_path in current_portraits, "settlement reuses the current combat idle texture")
 	check((ui.get_parent() as CanvasLayer).layer > 31, "result covers combat header and journal overlay")
 	ui.sound_enabled = false
 	ui.set_process(false)
@@ -257,13 +261,16 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 			ui.skip()
 			check(ui._speech_label.text == str(RunSettlement.configuration().reactions[receipt.reaction].speech), "exact goblin text " + receipt.reaction)
 			await _capture(ui, receipt.reaction)
-	for bounds in [Vector2i(640, 360), Vector2i(360, 640)]:
+	for bounds in [Vector2i(2560, 1440), Vector2i(1920, 1080), Vector2i(1280, 720), Vector2i(1152, 648), Vector2i(1024, 576), Vector2i(900, 600), Vector2i(640, 360), Vector2i(360, 640)]:
 		get_tree().root.size = bounds
 		get_tree().root.content_scale_size = bounds
 		await frames()
 		check(ui.get_global_rect().encloses(ui.back_button.get_global_rect()) and ui._portrait.visible and ui._scroll.get_global_rect().end.y <= ui.back_button.get_global_rect().position.y, "compact/portrait keeps goblin and navigation, scroll excludes footer " + str(bounds))
-		if bounds.x == 640: check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._desk.get_global_rect()), "small landscape shows complete total and goblin desk without scrolling")
-		await _capture(ui, "compact_%d" % bounds.x)
+		check(not ui._scroll.get_v_scroll_bar().visible and not ui._scroll.get_h_scroll_bar().visible, "settlement fits one screen without scrolling " + str(bounds))
+		check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._desk.get_global_rect()), "total and goblin desk fit above the footer " + str(bounds))
+		for row in ui._rows:
+			check(ui._scroll.get_global_rect().encloses(row.panel.get_global_rect()), "settlement row fits " + str(bounds))
+		await _capture(ui, "layout_%dx%d" % [bounds.x, bounds.y])
 	get_tree().root.size = Vector2i(1152, 768)
 	get_tree().root.content_scale_size = Vector2i(1152, 768)
 	await frames()

@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SKILL = ROOT / '.agents/skills/picxel-external-images'
 TASK = ROOT / 'artifacts/previews/player_picxel'
 TEMP = Path('C:/Users/mi/AppData/Local/Temp/player-picxel-review')
-SOURCE = ROOT / 'assets/sprites/player/tobe_handled'
+SOURCE = ROOT / 'artifacts/sources/character_frames'
 sys.path.insert(0, str(SKILL / 'scripts'))
 import external_pixel as external
 

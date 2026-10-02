@@ -1,0 +1,16 @@
+{
+  "revision": "r04",
+  "files": {
+    "START_HERE.md": "dd7057ba7c48c239682395fdc849620f1c0dfb9c077104e77f039d68e64f06a2",
+    "REVIEW_CHECKLIST.md": "dacd66cdc15660858049183692b1ad4cbff79a198873624af24b8bb3b28eaf81",
+    "NEXT_STEPS.md": "bec7c61479410b525736ae08feece64b8ecb840e8bb68885a695cf642df6bfb7",
+    "CAMERA_CONTRACT.md": "ee4c68748e3af01d40b7ab8277a5cbf2469e55e2c57d07b2c93b4c27ca27d2db",
+    "asset_manifest.json": "9aebb986ebc2ea499c143d9c7d5699945b9dbf649c92da7bfadd349532b3fe4f",
+    "prompts/G01_ground_plain.txt": "f585df48acc773b99b29d5c5479bed0f8d3b9d85ad315ef89df3e705996040b0",
+    "prompts/G03_wet_earth.txt": "32b1eac90b973eff42d82b5fe5ff48db4df2ea8546761501812056cef96f6dcc",
+    "prompts/G04_paving_worn.txt": "10ccd122d9e49669c30c6c8144f890c12cbcbcd95a2b2ca0d39431662072c0d7",
+    "prompts/G05_paving_broken.txt": "84b5abc86097ef0fc9c4b13174d6b653fad9ff66dd4136492b0be30b47590016",
+    "prompts/G06_G08_bushes.txt": "29c4d6963ed4b9950eb2783ebbbb8433ee5d3f826d20596e01640baab495cde2",
+    "prompts/G09_G12_grass_clumps.txt": "50ee086af4cf31954d68241c2af5f739db610b327dc125e932e1ba04c32aca28"
+  }
+}

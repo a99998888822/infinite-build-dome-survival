@@ -7,7 +7,7 @@ const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
-const DEFAULT_DAMAGE_MULTIPLIER: float = 0.55
+const DEFAULT_DAMAGE_MULTIPLIER: float = 0.45
 const SIZE_MULTIPLIER: float = 0.7
 # Approved single-front draft is 15% smaller than the previous water footprint.
 const RADIUS_SCALE: float = 0.85
@@ -52,7 +52,7 @@ static func spawn(
 	) * SIZE_MULTIPLIER * RADIUS_SCALE
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
 	effect._phase = randf_range(0.0, TAU)
-	# Water is an immediate contact effect, before ice in the impact dispatcher.
+	# Apply contact synchronously so the following slot observes the wet state.
 	effect._apply_wave()
 
 

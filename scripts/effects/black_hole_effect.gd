@@ -5,7 +5,7 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
-const DEFAULT_RADIUS: float = 100.0
+const DEFAULT_RADIUS: float = 90.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_PULL_SPEED: float = 150.0
 const DEFAULT_DARK_DURATION: float = 2.0
@@ -35,7 +35,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._audio_impact = AudioManager.current_combat_audio()
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "black_hole", {
-		"damage_multiplier": 0.65,
+		"damage_multiplier": 0.45,
 		"radius": DEFAULT_RADIUS,
 		"duration": DEFAULT_DURATION,
 		"pull_speed": DEFAULT_PULL_SPEED,
@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 func _collect_targets() -> void:
 	if _context == null or _damage_event == null:
 		return
-	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.65))
+	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.45))
 	var shape := CircleShape2D.new()
 	shape.radius = _radius
 	var query := PhysicsShapeQueryParameters2D.new()

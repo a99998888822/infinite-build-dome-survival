@@ -24,7 +24,7 @@ VARIANTS = {
     "thunder": "水流 + 落雷：导电",
     "light": "水流 + 光辉剑",
     "dark": "水流 + 黑洞",
-    "explosion": "水流 + 爆裂",
+    "explosion": "水流 + 震荡",
 }
 
 

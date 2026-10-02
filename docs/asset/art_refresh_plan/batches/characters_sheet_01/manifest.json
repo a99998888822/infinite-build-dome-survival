@@ -1,0 +1,151 @@
+{
+  "status": "players_outline_installed_enemies_pending",
+  "scope": "Original 4-static-master generation plan retained. Players now use supplied walk screenshots with frame 1 as idle; enemies still await high-resolution sources.",
+  "player_review": {
+    "candidate_dir": "artifacts/previews/art_refresh_v1/players_walk_01/pixel_r02",
+    "frame_size": [
+      64,
+      64
+    ],
+    "void_hunter_walk_frames": 6,
+    "capitalist_walk_frames": 7,
+    "idle_source_frame": 1,
+    "gpu_runtime_verified": true,
+    "installed": true,
+    "pending": "Enemy high-resolution masters pending.",
+    "installation_record": "docs/asset/art_refresh_plan/25_players_outline_installation.md"
+  },
+  "layout": {
+    "rows": 2,
+    "columns": 2,
+    "preferred_canvas": [
+      4096,
+      4096
+    ]
+  },
+  "references": [
+    {
+      "file": "01_character_ink_style.png",
+      "source": "artifacts/reference/darkest_dungeon/u=2931143658,1257505253&fm=253&fmt=auto&app=120&f=JPEG.webp",
+      "source_sha256": "03ea4b79f1733ba2c2d92786fb9ba3a6ab962fc6bcffbbe58e121eb27cfc5dfd",
+      "source_canvas": [
+        889,
+        500
+      ],
+      "crop_xyxy": [
+        32,
+        105,
+        865,
+        280
+      ],
+      "sha256": "7b065ba64a9448e6f52f5fd76ec602e709c6c0f4557bdb5c79ec7db4e5804614",
+      "role": "Dark outlines, broad clothing/armor planes and hard shadows only; no character copying.",
+      "method": "Unscaled local crop."
+    },
+    {
+      "file": "02_organic_block_style.png",
+      "source": "artifacts/reference/cuthulu/u=1044588798,3208899356&fm=253&fmt=auto&app=120&f=JPEG.webp",
+      "source_sha256": "057ba4233acd38bca8c8639925fa355a45b1537c4f2a9303cc910eab8cc27ab7",
+      "source_canvas": [
+        500,
+        707
+      ],
+      "crop_xyxy": [
+        30,
+        58,
+        465,
+        557
+      ],
+      "sha256": "83da41603f575f783c2aca06f93ea15797fa79ce81ec5f36c85ec4aaa2774089",
+      "role": "Organic hard-shadow planes only; do not copy the many-eyed silhouette.",
+      "method": "Unscaled local crop."
+    }
+  ],
+  "items": [
+    {
+      "key": "character_void_hunter",
+      "row": 1,
+      "column": 1,
+      "identity_audit_only": "assets/sprites/player/combat/void_hunter_idle_right.png",
+      "source_sha256": "cebc0fae3fce42443d53dc15c395ff03b36f41ad151e1cbb6feee5bb17f1536c",
+      "current_canvas": [
+        54,
+        54
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "actions_later": {
+        "idle": 1,
+        "walk": 8
+      },
+      "upload_existing_art": false
+    },
+    {
+      "key": "character_capitalist",
+      "row": 1,
+      "column": 2,
+      "identity_audit_only": "assets/sprites/player/combat/capitalist_idle_right.png",
+      "source_sha256": "a3a9c74be413219377105524fde5068664ef96b2dda88a24f08863bac60a1187",
+      "current_canvas": [
+        54,
+        54
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "actions_later": {
+        "idle": 1,
+        "walk": 4
+      },
+      "upload_existing_art": false
+    },
+    {
+      "key": "enemy_mutated_grub",
+      "row": 2,
+      "column": 1,
+      "identity_audit_only": "assets/sprites/enemies/combat/enemy_gloom_mite_idle.png",
+      "source_sha256": "a9c3842e96073a47065e33a28e2132fd1ed5328c5ed9c5309cb16d0c9bfe7cda",
+      "current_canvas": [
+        86,
+        86
+      ],
+      "candidate_pixel_size": [
+        64,
+        64
+      ],
+      "actions_later": {
+        "idle": 1,
+        "move": 7
+      },
+      "upload_existing_art": false
+    },
+    {
+      "key": "enemy_elite_rusher",
+      "row": 2,
+      "column": 2,
+      "identity_audit_only": "assets/sprites/enemies/iron_knight/knight_idle.png",
+      "source_sha256": "39a9378e9c3532c026a0238d7151f4459736af983e839095851a5926f9a21a16",
+      "current_canvas": [
+        160,
+        160
+      ],
+      "candidate_pixel_size": [
+        128,
+        128
+      ],
+      "actions_later": {
+        "idle": 1,
+        "move": 11,
+        "windup": 7,
+        "dash": 2,
+        "recover": 2
+      },
+      "upload_existing_art": false
+    }
+  ],
+  "image_model_used": false,
+  "production_changed": true
+}

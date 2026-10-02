@@ -30,7 +30,7 @@ func _run() -> void:
 	get_tree().root.size = Vector2i(1152, 648)
 	get_tree().root.content_scale_size = Vector2i(1152, 648)
 	var flow := game.get_main_flow_coordinator()
-	flow.enter_battle_selection("character_void_hunter", ["weapon_void_blade"])
+	flow.enter_battle_selection("character_void_hunter", [])
 	print("KNIGHT_CAPTURE_STAGE selection")
 	await frames(4)
 	if not flow.confirm_character_selection():
@@ -60,6 +60,7 @@ func _run() -> void:
 			player._set_facing(index < 72)
 			player._update_walk_animation(Vector2.RIGHT if index < 72 else Vector2.LEFT, 1.0 / 60.0)
 			small._set_movement_visual(true, 1.0 / 60.0)
+			small.sprite.flip_h = index >= 72
 			await RenderingServer.frame_post_draw
 			get_tree().root.get_texture().get_image().save_png(capture_dir.path_join("sprites_%04d.png" % index))
 		player._update_walk_animation(Vector2.ZERO, 0.0)
@@ -87,7 +88,9 @@ func _run() -> void:
 				knight.take_damage(100000, "iron_knight_capture")
 			records.append({"frame": index, "state": knight.skill_state, "state_time": knight._state_time,
 				"distance": knight.global_position.distance_to(player.global_position),
-				"position": [knight.global_position.x, knight.global_position.y], "animation": str(knight._animation)})
+				"position": [knight.global_position.x, knight.global_position.y], "animation": str(knight._animation),
+				"texture_size": [knight.sprite.texture.get_width(), knight.sprite.texture.get_height()],
+				"atlas_region": str((knight.sprite.texture as AtlasTexture).region)})
 		manager._flush_pending_reward_batches()
 		loot_seen = loot_seen or not get_tree().get_nodes_in_group("relic_pickups").is_empty()
 		await RenderingServer.frame_post_draw

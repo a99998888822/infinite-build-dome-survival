@@ -1,0 +1,18 @@
+{
+  "revision": "r02",
+  "files": {
+    "START_HERE.md": "db731d7c502c4c02987b9aed113be5f9005f3c486a3ec8af3043ec985cb22432",
+    "REVIEW_CHECKLIST.md": "9f3f2c7a910c7008e51e130df6a663fe65d8ccbcc4a8ae905960ba5b5d1e0a33",
+    "NEXT_STEPS.md": "b81e206b8ec81ba3da417d2cbaf6612559eea5098aece26268bf05ab44934a89",
+    "01_ground_palette_reference.png": "4c0da8577e8d56bbfd528c17fe38605d2837472e835224586bc35041fa1e78c3",
+    "02_vegetation_reference.png": "7d8ceabc2cee432c0edb6ddb6dd86eedceb4b7061eeefce7047ddc7dbb32bbd9",
+    "reference_manifest.json": "ad0815514072015a080ebf4745dc8a7821b11670fb739a632a4367e26726780f",
+    "asset_manifest.json": "f01500b11e4db71d4a967d345ad2ee854a4a46d5e588b435ce255f5c58e15f92",
+    "prompts/G01_grass_sparse.txt": "c63e6998d637abaef94ed7393fadff1549a380d31e98ffe73f57884fd4a0d732",
+    "prompts/G02_grass_dense.txt": "298db772e75ea5b3cf12268c280aa39944d4942a8231b99a66a03ae3b9f4132e",
+    "prompts/G03_wet_earth.txt": "79444536ba138ac92adc4acef0bcb9ee7717f6114be0613079e83fb068ecc881",
+    "prompts/G04_paving_worn.txt": "d79b05b6a0ac2f5145df69cefd63a7ed2b98a5cae123e3c51b75fa64e4663acc",
+    "prompts/G05_paving_broken.txt": "21ec989030d1aec6e01a403cdf3c562a173e062a077d530bc367d8edfeedd8bb",
+    "prompts/G06_G08_bushes.txt": "5d8889ea4446bac76f9de23312c549b8af929afdfa8350835c8957098a1fcdc2"
+  }
+}

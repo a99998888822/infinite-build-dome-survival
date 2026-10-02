@@ -299,6 +299,8 @@ def build_review(folder, profiles, audio):
     old = []
     for name in ["lighting_1.wav","lighting_2.wav","thunder_1.wav"]:
         p = ROOT / "assets/audio/sfx/effects" / name
+        if not p.exists():
+            continue
         old.append(f'<article><h3>原版 {html.escape(name)}</h3><audio controls preload="none" src="{data_uri(p)}"></audio></article>')
     # Illustrative sequence (not a game recording). Uses the same per-cue gains.
     mix = np.zeros(RATE*13)

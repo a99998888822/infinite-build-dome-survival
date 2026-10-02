@@ -1,0 +1,291 @@
+{
+  "deleted_files": 2697,
+  "deleted_bytes": 160280275,
+  "changed_files_skipped": [],
+  "source_format_simplification": {
+    "removed_files": 64,
+    "removed_grids": 59,
+    "unique_tiles_exported": 12,
+    "removed_other_files": [
+      "artifacts/cleanup-report.json",
+      "artifacts/editable/README.md",
+      "artifacts/sources/README.md",
+      "artifacts/wip/character_select/source-map.json",
+      "artifacts/sources/character_frames/.gdignore"
+    ],
+    "grid_replacements": {
+      "artifacts/editable/sprites/background/green_ground/G09_grass_short-32.pxg": {
+        "retained": "assets/sprites/background/green_ground/G09_grass_short-32.png"
+      },
+      "artifacts/editable/sprites/background/green_ground/G10_grass_dense-32.pxg": {
+        "retained": "assets/sprites/background/green_ground/G10_grass_dense-32.png"
+      },
+      "artifacts/editable/sprites/background/green_ground/G11_grass_long-32.pxg": {
+        "retained": "assets/sprites/background/green_ground/G11_grass_long-32.png"
+      },
+      "artifacts/editable/sprites/background/green_ground/G12_grass_dry_mix-32.pxg": {
+        "retained": "assets/sprites/background/green_ground/G12_grass_dry_mix-32.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_brick_fragments.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_brick_fragments.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_compact_moss.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_compact_moss.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_cyan_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_cyan_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_fine_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_fine_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_flat_stones.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_flat_stones.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_forked_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_forked_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_high_rubble.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_high_rubble.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_long_moss.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_long_moss.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_low_rubble.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_low_rubble.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_mossy_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_mossy_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_puddle.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_puddle.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_scattered_stones.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_scattered_stones.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_single_brick.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_single_brick.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_spreading_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_spreading_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_stacked_bricks.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_stacked_bricks.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_vertical_crack.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_vertical_crack.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_wet_moss.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_wet_moss.png"
+      },
+      "artifacts/editable/sprites/background/wetland/decal_wet_patch.pxg": {
+        "retained": "assets/sprites/background/wetland/decal_wet_patch.png"
+      },
+      "artifacts/editable/sprites/background/wetland/fx_cyan_ripples.pxg": {
+        "retained": "assets/sprites/background/wetland/fx_cyan_ripples.png"
+      },
+      "artifacts/editable/sprites/background/wetland/fx_fine_ripples.pxg": {
+        "retained": "assets/sprites/background/wetland/fx_fine_ripples.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_brick_wall.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_brick_wall.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_broken_arch.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_broken_arch.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_broken_column.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_broken_column.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_curved_wall.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_curved_wall.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_eroded_pillar.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_eroded_pillar.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_short_column.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_short_column.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_sloped_wall.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_sloped_wall.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_square_pillar.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_square_pillar.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_stone_block.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_stone_block.png"
+      },
+      "artifacts/editable/sprites/background/wetland/ruin_twin_pillar_wall.pxg": {
+        "retained": "assets/sprites/background/wetland/ruin_twin_pillar_wall.png"
+      },
+      "artifacts/editable/sprites/player/combat/capitalist_idle_right.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          0,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_02.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          64,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_03.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          128,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_04.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          192,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_05.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          256,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_06.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          320,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/capitalist_walk_right_spritesheet/frame_07.pxg": {
+        "retained": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+        "frame_rect": [
+          384,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/combat/void_hunter_idle_right.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          0,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/void_hunter_walk_right_spritesheet/frame_02.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          64,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/void_hunter_walk_right_spritesheet/frame_03.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          128,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/void_hunter_walk_right_spritesheet/frame_04.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          192,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/void_hunter_walk_right_spritesheet/frame_05.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          256,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/sprites/player/void_hunter_walk_right_spritesheet/frame_06.pxg": {
+        "retained": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+        "frame_rect": [
+          320,
+          0,
+          64,
+          64
+        ]
+      },
+      "artifacts/editable/ground_tiles/T01_ground_A1-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T01_ground_A1-128.png"
+      },
+      "artifacts/editable/ground_tiles/T02_ground_A2-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T02_ground_A2-128.png"
+      },
+      "artifacts/editable/ground_tiles/T03_ground_A3-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T03_ground_A3-128.png"
+      },
+      "artifacts/editable/ground_tiles/T04_ground_A4-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T04_ground_A4-128.png"
+      },
+      "artifacts/editable/ground_tiles/T05_ground_B1-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T05_ground_B1-128.png"
+      },
+      "artifacts/editable/ground_tiles/T06_ground_B2-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T06_ground_B2-128.png"
+      },
+      "artifacts/editable/ground_tiles/T07_ground_B3-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T07_ground_B3-128.png"
+      },
+      "artifacts/editable/ground_tiles/T08_ground_B4-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T08_ground_B4-128.png"
+      },
+      "artifacts/editable/ground_tiles/T09_ground_C1-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T09_ground_C1-128.png"
+      },
+      "artifacts/editable/ground_tiles/T10_ground_C2-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T10_ground_C2-128.png"
+      },
+      "artifacts/editable/ground_tiles/T11_ground_C3-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T11_ground_C3-128.png"
+      },
+      "artifacts/editable/ground_tiles/T12_ground_C4-128.pxg": {
+        "retained": "artifacts/editable/ground_tiles/T12_ground_C4-128.png"
+      }
+    },
+    "artifacts_files_before": 186,
+    "artifacts_files_after": 134,
+    "asset_index_entries_checked": 239,
+    "protected_files_checked": 951,
+    "unexpected_protected_changes": [],
+    "remaining_extensions": {
+      "": 1,
+      ".md": 3,
+      ".json": 5,
+      ".gif": 1,
+      ".png": 102,
+      ".py": 3,
+      ".gd": 1,
+      ".svg": 1,
+      ".webp": 13,
+      ".jpg": 4
+    }
+  }
+}

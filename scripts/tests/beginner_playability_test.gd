@@ -23,6 +23,12 @@ func _run() -> void:
 		if arg.begins_with("--seed="): seeds = [int(arg.trim_prefix("--seed="))]
 		if arg.begins_with("--waves="): wave_count = int(arg.trim_prefix("--waves="))
 		if arg == "--stationary": stationary = true
+		if arg.begins_with("--offer-baseline="):
+			# Comparison only: reload the generator in this test process without
+			# changing production files or the user's saved game.
+			var generator: GDScript = load("res://scripts/ui/shop_offer_generator.gd")
+			generator.source_code = FileAccess.get_file_as_string(arg.trim_prefix("--offer-baseline="))
+			assert(generator.reload() == OK)
 	if not capture_dir.is_empty(): DirAccess.make_dir_recursive_absolute(capture_dir)
 	for id in difficulties:
 		for rng_seed in seeds:

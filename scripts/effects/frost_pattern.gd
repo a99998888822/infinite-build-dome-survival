@@ -6,7 +6,7 @@ const GROUND_FLATTEN := 0.55
 const OPACITY := 0.58
 
 
-static func draw_crystal(canvas: CanvasItem, center: Vector2, radius: float, growth: float, fade: float, rotation_angle: float = 0.0, flatten: float = 1.0) -> void:
+static func draw_crystal(canvas: CanvasItem, center: Vector2, radius: float, growth: float, fade: float, rotation_angle: float = 0.0, flatten: float = 1.0, detail: int = 2) -> void:
 	var reach := radius * clampf(growth, 0.0, 1.0)
 	fade *= OPACITY
 	if reach < 2.0:
@@ -23,12 +23,13 @@ static func draw_crystal(canvas: CanvasItem, center: Vector2, radius: float, gro
 		var tip := center + axis * Vector2(1, flatten) * reach
 		PIXEL.line(canvas, center, tip, Color(0.30, 0.50, 0.66, fade * 0.58), 4)
 		PIXEL.line(canvas, center, tip, Color(0.68, 0.83, 0.94, fade * 0.90), 2)
+		if detail == 0: continue
 		for tier in [0.40, 0.68]:
 			var joint: Vector2 = axis * reach * tier
 			for sign_value in [-1.0, 1.0]:
 				var branch: Vector2 = joint - axis * reach * 0.19 + side * sign_value * reach * 0.18
 				PIXEL.line(canvas, center + joint * Vector2(1, flatten), center + branch * Vector2(1, flatten), Color(0.59, 0.78, 0.93, fade * 0.9), 2)
-		if radius >= 28:
+		if radius >= 28 and detail == 2:
 			var facet := PackedVector2Array([
 				center + axis * reach * 0.25 * Vector2(1, flatten),
 				center + (axis * 0.58 + side * 0.08) * reach * Vector2(1, flatten),

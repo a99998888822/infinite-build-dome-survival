@@ -55,7 +55,8 @@ func check_refresh() -> void:
 	var free_found := false
 	var paid_found := false
 	var flail_found := false
-	for index in 400:
+	# New-weapon offers are deliberately scarce; sample enough to cover rare rolls.
+	for index in 4000:
 		var free := generator.roll_shop_offers(rarity, types, pool, 3)
 		var paid := generator.roll_paid_offers(rarity, types, pool, 5, index)
 		free_found = free_found or free.any(func(offer): return offer.target_id == PLASMA)
@@ -132,12 +133,12 @@ func _run() -> void:
 	flail = await fixture([Vector2(140, 0)], ["scroll_split", "scroll_fire"])
 	advance(flail, 1.49)
 	check(flail.swings.size() == 3 and hits.filter(func(hit): return hit.child).size() == 2, "one split adds exactly two real contact sweeps, no recursion")
-	check(hits.all(func(hit): return hit.damage == (20 if hit.child else 33)), "split and outer multipliers apply once")
+	check(hits.all(func(hit): return hit.damage == (15 if hit.child else 33)), "split and outer multipliers apply once")
 	check(enemies[0].has_status("burning"), "native contacts trigger actual fire enchantment")
 	var split_swing := flail.swings[1]
 	split_swing.event.element_damage_bonus = 10
 	var child_event := flail.damage_for_contact(split_swing, float(split_swing.start) + 0.03 + 0.16)
-	check(is_equal_approx(child_event.get_elemental_base_damage(), 28.8), "elemental base scales both weapon and bonus once without early rounding")
+	check(is_equal_approx(child_event.get_elemental_base_damage(), 21.6), "elemental base scales both weapon and bonus once without early rounding")
 	var pierce := player.item_inventory.add_item_from_base("scroll_pierce", "flail_test")
 	check(not loadout.attach_item_to_weapon(FLAIL, pierce.item_instance_id), "incompatible pierce rejected")
 
