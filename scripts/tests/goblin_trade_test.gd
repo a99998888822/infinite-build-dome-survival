@@ -28,6 +28,11 @@ func _run() -> void:
 	CampProgression.begin_transient_session()
 	_test_rules()
 	await _test_live_flow()
+	CampProgression.end_transient_session()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
+	await get_tree().create_timer(0.3).timeout
 	print("GOBLIN_TRADE_COMPLETE checks=%d failures=%d" % [checks, failures])
 	await frames()
 	get_tree().quit(1 if failures else 0)

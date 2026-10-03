@@ -25,7 +25,7 @@ func _run() -> void:
 		for stream: AudioStreamWAV in profile.streams:
 			assets_count += 1
 			assets_valid = assets_valid and stream != null and stream.mix_rate == 48000 and not stream.stereo and stream.loop_mode == AudioStreamWAV.LOOP_DISABLED and stream.get_length() > 0.1
-	check(assets_valid and assets_count == 25, "each cue imports one of 25 non-looping mono WAVs at 48 kHz")
+	check(assets_valid and assets_count == 23, "each active cue imports one of 23 non-looping mono WAVs at 48 kHz")
 	check(AudioServer.get_bus_send(AudioServer.get_bus_index("CombatSFX")) == "SFX", "combat follows existing SFX volume setting")
 	check(AudioServer.get_bus_effect_count(AudioServer.get_bus_index("CombatSFX")) == 2, "combat compressor and limiter installed")
 	check(AudioManager.play_weapon_hit_sfx("weapon_void_blade"), "bow configured hit plays")

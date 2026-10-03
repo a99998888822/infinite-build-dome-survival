@@ -40,6 +40,8 @@ var _weapon_damage_meter: Control
 var _performance_line: Label
 var _economy_log: EconomyLogPanel
 var _economy_log_layer: CanvasLayer
+var _finance_economy_back: Panel
+var _drawer_scene_layout := false
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
@@ -49,10 +51,9 @@ const DRAWER_ANIMATION_SECONDS := 0.36
 const DRAWER_CLOSE_SECONDS := 0.32
 const DRAWER_SKIN = preload("res://scripts/ui/stats_drawer_skin.gd")
 const WEAPON_DAMAGE_METER = preload("res://scripts/ui/weapon_damage_meter.gd")
-const DRAWER_HANDLE: Texture2D = preload("res://assets/ui/stats_drawer/stats_leather_handle.png")
 const DRAWER_OPEN_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_open.wav")
 const DRAWER_CLOSE_SOUND: AudioStream = preload("res://assets/audio/sfx/ui/stats_chain_close.wav")
-const DRAWER_TEXT_COLOR := Color(0.91, 0.86, 0.70)
+const DRAWER_TEXT_COLOR := Color("39372e")
 const TOP_BAR_HEIGHT := 56.0
 const TOP_BAR_MARGIN := 12.0
 const TOP_BAR_GAP := 12.0
@@ -63,8 +64,8 @@ const MODAL_SAFE_EDGE_MARGIN := 16.0
 const MODAL_FALLBACK_TOP := 16.0
 const MODAL_FALLBACK_RIGHT_OPEN := 336.0
 const MODAL_FALLBACK_RIGHT_CLOSED := 44.0
-const STAT_PREVIEW_GAIN_COLOR := Color(0.498, 0.847, 0.561, 1.0)
-const STAT_PREVIEW_LOSS_COLOR := Color(0.949, 0.545, 0.510, 1.0)
+const STAT_PREVIEW_GAIN_COLOR := Color("315b34")
+const STAT_PREVIEW_LOSS_COLOR := Color("903c38")
 const ELDRITCH_NAMING_THRESHOLD := 60.0
 const HP_PULSE_COLOR := Color(1.18, 0.82, 0.78, 1.0)
 const SHIELD_PULSE_COLOR := Color(0.84, 0.76, 1.16, 1.0)
@@ -73,7 +74,6 @@ const GOLD_PULSE_COLOR := Color(1.18, 1.08, 0.68, 1.0)
 const DRAWER_LOCKED_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
-	MainFlowCoordinator.STATE_FINANCE_POPUP,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 ]
 const DRAWER_AUTO_OPEN_STATES: Array[String] = [
@@ -190,6 +190,13 @@ func _ready() -> void:
 	_performance_line.name = "CombatPerformanceLine"
 	status_panel.add_child(_performance_line)
 	_create_stats_drawer_skin()
+	_finance_economy_back = Panel.new()
+	_finance_economy_back.name = "FinanceEconomyBacking"
+	_finance_economy_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_finance_economy_back.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slim"))
+	_finance_economy_back.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	battle_top_bar.add_child(_finance_economy_back)
+	battle_top_bar.move_child(_finance_economy_back, economy_panel.get_index())
 	_bind_viewport_resize()
 	_apply_combat_layout()
 	if drawer_toggle_button != null and not drawer_toggle_button.pressed.is_connected(_on_drawer_toggle_pressed):
@@ -264,7 +271,7 @@ func _create_stats_drawer_skin() -> void:
 	var panel := stats_drawer.get_node("DrawerPanel") as PanelContainer
 	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	var skin := Control.new()
-	skin.name = "WoodAndChainSkin"
+	skin.name = "ParchmentPanelSkin"
 	skin.set_script(DRAWER_SKIN)
 	stats_drawer.add_child(skin)
 	stats_drawer.move_child(skin, 0)
@@ -279,48 +286,34 @@ func _create_stats_drawer_skin() -> void:
 	_drawer_scroll_hint.custom_minimum_size.y = 12.0
 	_drawer_scroll_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_drawer_scroll_hint.add_theme_font_size_override("font_size", 10)
-	_drawer_scroll_hint.add_theme_color_override("font_color", Color(0.64, 0.62, 0.50))
+	_drawer_scroll_hint.add_theme_color_override("font_color", Color("655d4c"))
 	_drawer_scroll_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Reserve the lower wood for the hint, clear of the metal edge and list.
+	# Keep the hint inside the paper, clear of the bottom edge and list.
 	stats_drawer.add_child(_drawer_scroll_hint)
 	_drawer_scroll_hint.anchor_top = 1.0
 	_drawer_scroll_hint.anchor_right = 1.0
 	_drawer_scroll_hint.anchor_bottom = 1.0
 	_drawer_scroll_hint.offset_left = 72.0
 	_drawer_scroll_hint.offset_right = -44.0
-	_drawer_scroll_hint.offset_top = -48.0
-	_drawer_scroll_hint.offset_bottom = -32.0
+	_drawer_scroll_hint.offset_top = -68.0
+	_drawer_scroll_hint.offset_bottom = -52.0
 	stats_scroll.get_v_scroll_bar().changed.connect(_update_drawer_scroll_hint)
 	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_drawer_scroll_hint())
 	stats_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _hide_stat_tooltip())
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		drawer_toggle_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	drawer_toggle_button.flat = false
-	drawer_toggle_button.offset_left = 5.0
-	drawer_toggle_button.offset_right = 33.0
+	drawer_toggle_button.offset_left = 0.0
+	drawer_toggle_button.offset_right = 28.0
 	drawer_toggle_button.offset_top = -22.0
 	drawer_toggle_button.offset_bottom = 22.0
-	drawer_toggle_button.add_theme_font_size_override("font_size", 14)
-	drawer_toggle_button.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-	drawer_toggle_button.add_theme_color_override("font_disabled_color", Color(0.65, 0.63, 0.52))
-	drawer_toggle_button.add_theme_constant_override("outline_size", 3)
-	var handle := TextureRect.new()
-	handle.name = "LeatherPullHandle"
-	handle.texture = DRAWER_HANDLE
-	handle.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	handle.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	handle.show_behind_parent = true
-	drawer_toggle_button.add_child(handle)
-	# The 44px handle's rivet at local x32 lands on the metal rail at panel x11.
-	handle.anchor_top = 0.5
-	handle.anchor_bottom = 0.5
-	handle.offset_left = 4.0
-	handle.offset_right = 48.0
-	handle.offset_top = -20.0
-	handle.offset_bottom = 20.0
-	drawer_toggle_button.mouse_entered.connect(func() -> void: handle.modulate = Color(1.2, 1.15, 1.0))
-	drawer_toggle_button.mouse_exited.connect(func() -> void: handle.modulate = Color.WHITE)
+	drawer_toggle_button.add_theme_font_size_override("font_size", 24)
+	drawer_toggle_button.add_theme_color_override("font_color", Color("e4d5b6"))
+	drawer_toggle_button.add_theme_color_override("font_hover_color", Color("fff0c9"))
+	drawer_toggle_button.add_theme_color_override("font_pressed_color", Color("c6b185"))
+	drawer_toggle_button.add_theme_color_override("font_disabled_color", Color("837b65"))
+	drawer_toggle_button.add_theme_color_override("font_outline_color", Color("25261f"))
+	drawer_toggle_button.add_theme_constant_override("outline_size", 2)
 	_drawer_audio = AudioStreamPlayer.new()
 	_drawer_audio.name = "DrawerChainAudio"
 	_drawer_audio.bus = AudioManager.BUS_SFX
@@ -661,9 +654,13 @@ func _bind_viewport_resize() -> void:
 func _on_viewport_resized() -> void:
 	if _flow != null and _flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP:
 		var compact := get_viewport().get_visible_rect().size.x < 1000
-		_set_drawer_locked_open(not compact)
+		_set_drawer_locked_open(false)
 		_set_drawer_open(not compact, false)
 	call_deferred("_apply_combat_layout")
+
+
+func _uses_finance_scene_layout() -> bool:
+	return _flow != null and _flow.get_battle_display_state() == MainFlowCoordinator.STATE_FINANCE_POPUP and FinanceSceneLayout.supports(get_viewport().get_visible_rect().size)
 
 
 func _apply_combat_layout() -> void:
@@ -671,6 +668,15 @@ func _apply_combat_layout() -> void:
 		_economy_log.apply_layout()
 	if get_viewport() == null:
 		return
+	var finance_scene := _uses_finance_scene_layout()
+	if finance_scene != _drawer_scene_layout:
+		_drawer_scene_layout = finance_scene
+		stats_drawer.offset_top = 68 if finance_scene else 72
+		stats_drawer.offset_bottom = -28 if finance_scene else -56
+		drawer_toggle_button.offset_left = 4 if finance_scene else 0
+		drawer_toggle_button.offset_right = 32 if finance_scene else 28
+		_set_drawer_open(_drawer_open, false)
+	_finance_economy_back.visible = finance_scene
 	var viewport_width := get_viewport().get_visible_rect().size.x
 	var bar_width := clampf(viewport_width * 0.24, 120.0, 226.0)
 	var timer_size := WAVE_PANEL_SIZE if viewport_width >= 800.0 else Vector2(112, 48)
@@ -713,13 +719,15 @@ func _apply_combat_layout() -> void:
 		else:
 			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
 			economy_width = minf(economy_width, available_width)
-		var economy_size := Vector2(economy_width, 44.0)
+		var economy_size := Vector2(economy_width, 42.0 if finance_scene else 44.0)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
 		economy_panel.anchor_right = 0.0
 		economy_panel.anchor_bottom = 0.0
 		economy_panel.position = Vector2(economy_left, (TOP_BAR_HEIGHT - economy_size.y) * 0.5)
 		economy_panel.size = economy_size
+		_finance_economy_back.position = economy_panel.position - Vector2(10, 4)
+		_finance_economy_back.size = economy_size + Vector2(18, 8)
 	if exp_panel != null:
 		if OS.has_feature("mobile"):
 			exp_panel.anchor_left = 0.28
@@ -826,7 +834,7 @@ func _on_flow_state_changed(_previous_state: String, current_state: String) -> v
 	var compact_finance := current_state == MainFlowCoordinator.STATE_FINANCE_POPUP and get_viewport().get_visible_rect().size.x < 1000
 	var lock_drawer_open := DRAWER_LOCKED_OPEN_STATES.has(current_state) and not compact_finance
 	_set_drawer_locked_open(lock_drawer_open)
-	_set_modal_backdrop_visible(lock_drawer_open or compact_finance)
+	_set_modal_backdrop_visible(lock_drawer_open or current_state == MainFlowCoordinator.STATE_FINANCE_POPUP)
 	if compact_finance:
 		_set_drawer_open(false, false)
 	elif DRAWER_AUTO_OPEN_STATES.has(current_state):
@@ -856,6 +864,9 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 
 	var target_left := DRAWER_OPEN_LEFT if open else DRAWER_CLOSED_LEFT
 	var target_right := DRAWER_OPEN_RIGHT if open else DRAWER_CLOSED_RIGHT
+	if _uses_finance_scene_layout():
+		target_left = -282.0 if open else -32.0
+		target_right = -6.0 if open else 244.0
 	if _drawer_tween != null:
 		_drawer_tween.kill()
 		_drawer_tween = null
@@ -968,7 +979,7 @@ func _ensure_stat_rows() -> void:
 		backing.name = stat_id
 		backing.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		backing.mouse_filter = Control.MOUSE_FILTER_PASS
-		# Lettering sits directly on the original wood, without stacked row cards.
+		# Dark ink sits directly on the parchment, without stacked row cards.
 		var row_style := StyleBoxEmpty.new()
 		row_style.content_margin_left = 5.0
 		row_style.content_margin_right = 5.0
@@ -981,8 +992,7 @@ func _ensure_stat_rows() -> void:
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		name_label.add_theme_font_size_override("font_size", 11)
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-		name_label.add_theme_constant_override("outline_size", 1)
-		name_label.add_theme_color_override("font_outline_color", Color("241e15"))
+		name_label.add_theme_constant_override("outline_size", 0)
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(name_label)
 
@@ -997,8 +1007,7 @@ func _ensure_stat_rows() -> void:
 		value_label.custom_minimum_size = Vector2(44.0, 0.0)
 		value_label.add_theme_font_size_override("font_size", 11)
 		value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-		value_label.add_theme_constant_override("outline_size", 1)
-		value_label.add_theme_color_override("font_outline_color", Color("241e15"))
+		value_label.add_theme_constant_override("outline_size", 0)
 
 		row.add_child(value_label)
 		var rows := main_rows if MAIN_STAT_IDS.has(stat_id) else special_rows
@@ -1013,8 +1022,7 @@ func _create_stat_section(section_name: String, special: bool) -> VBoxContainer:
 	section.mouse_filter = Control.MOUSE_FILTER_PASS
 	stats_list.add_child(section)
 	var style := StyleBoxFlat.new()
-	# A light patina and a recessed horizontal seam separate the lower region.
-	# Both sections retain the grain of the single board underneath.
+	# A faint ink rule separates the two sections on the same paper sheet.
 	style.bg_color = Color(0.12, 0.18, 0.14, 0.12) if special else Color.TRANSPARENT
 	style.border_color = Color(0.12, 0.10, 0.06, 0.68)
 	style.border_width_top = 2 if special else 0

@@ -97,6 +97,15 @@ func _apply_safe_rect(force: bool = false) -> void:
 	var viewport := get_viewport().get_visible_rect().size
 	finance_popup.main_panel.visible = viewport.x >= 1000 or _hud == null or not _hud.is_stats_drawer_open()
 	var safe := _hud.get_modal_safe_rect() if _hud != null else Rect2(16, 72, viewport.x - 352, viewport.y - 128)
+	if FinanceSceneLayout.supports(viewport):
+		var right := viewport.x - 36
+		if _hud != null and _hud.is_stats_drawer_open():
+			right = minf(right, _hud.stats_drawer.global_position.x - 14)
+		safe = Rect2(0, 0, right, viewport.y)
+		if force or safe != _last_rect:
+			_last_rect = safe
+			finance_popup.set_safe_rect(safe)
+		return
 	var top := minf(72, viewport.y * 0.18)
 	var bottom := minf(56, viewport.y * 0.14)
 	if viewport.y < 480:

@@ -10,7 +10,7 @@ static func configuration() -> Dictionary:
 	return data if data is Dictionary else {}
 
 
-static func build(statistics: Dictionary, victory: bool) -> Dictionary:
+static func build(statistics: Dictionary, victory: bool, difficulty_id: String = BattleDifficulty.DEFAULT_ID) -> Dictionary:
 	var config := configuration()
 	var rates: Dictionary = config.formula
 	var report := statistics.duplicate(true)
@@ -23,7 +23,12 @@ static func build(statistics: Dictionary, victory: bool) -> Dictionary:
 		floori(float(values[1]) / float(rates.gold_per_coin)), values[2] * int(rates.coins_per_wave), mini(raw_interest, interest_cap)]
 	report["values"] = values
 	report["contributions"] = parts
-	report["camp_currency"] = parts[0] + parts[1] + parts[2] + parts[3]
+	report["difficulty_id"] = BattleDifficulty.normalize(difficulty_id)
+	report["difficulty_multiplier"] = float(config.difficulty_multipliers.get(report.difficulty_id, 1.0))
+	report["base_camp_currency"] = parts[0] + parts[1] + parts[2] + parts[3]
+	# Apply once to the subtotal, after contribution caps; display and payment share this receipt.
+	report["camp_currency"] = roundi(float(report.base_camp_currency) * float(report.difficulty_multiplier))
+	report["difficulty_bonus"] = int(report.camp_currency) - int(report.base_camp_currency)
 	report["interest_capped"] = raw_interest >= interest_cap and raw_interest > 0
 	report["victory"] = victory
 	report["reaction"] = ("victory_" if victory else "death_") + ("followed" if bool(statistics.get("followed", false)) else "refused") if bool(statistics.get("has_advice", false)) else ""

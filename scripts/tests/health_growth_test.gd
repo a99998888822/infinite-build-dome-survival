@@ -64,20 +64,20 @@ func _test_level_growth() -> void:
 	manager.add_exp_and_gold(manager.get_required_exp_for_next_level() - 1, 0)
 	check(manager.player_level == 1 and p.get_stat("max_hp") == 5, "XP below threshold does not grant health")
 	manager.add_exp_and_gold(1, 0)
-	check(manager.player_level == 2 and p.current_hp == 4 and p.get_stat("max_hp") == 6, "exact XP threshold grows maximum without healing")
+	check(manager.player_level == 2 and p.current_hp == 5 and p.get_stat("max_hp") == 6, "exact XP threshold grows maximum and heals one HP without filling existing damage")
 	check(signals.hp > 1 and signals.stats > 0 and signals.seen_max == 6 and signals.reward == 1, "HUD and reward signals include new maximum")
 	var xp_batch := manager.get_required_exp_for_next_level() + ceili(0.45 * pow(4.8, 2.9)) + 3
 	manager.add_exp_and_gold(xp_batch, 0)
-	check(manager.player_level == 4 and manager.current_exp == 3 and p.get_stat("max_hp") == 8 and p.current_hp == 4, "one XP grant supports multiple levels and preserves remainder")
+	check(manager.player_level == 4 and manager.current_exp == 3 and p.get_stat("max_hp") == 8 and p.current_hp == 7, "one XP grant heals each earned level and preserves remainder")
 	level_to(manager, 10)
-	check(p.get_stat("max_hp") == 14 and p.current_hp == 4, "level ten has fourteen base HP and no implicit healing")
+	check(p.get_stat("max_hp") == 14 and p.current_hp == 13, "level ten has fourteen base HP and retains one missing HP")
 	p.set_run_level(10)
 	p.set_run_level(10)
-	check(p.get_stat("max_hp") == 14, "repeated level sync does not stack")
+	check(p.get_stat("max_hp") == 14 and p.current_hp == 13, "repeated level sync neither stacks growth nor heals again")
 	check(manager.start_next_wave() and p.current_hp == 14, "wave start retains full recovery with new health cap")
 	manager.running = false
 	level_to(manager, 20)
-	check(p.get_stat("max_hp") == 24 and p.current_hp == 14, "level twenty has twenty-four base HP")
+	check(p.get_stat("max_hp") == 24 and p.current_hp == 24, "level twenty has twenty-four base HP and stays full when leveling at full HP")
 	check(manager.start_next_wave() and p.current_hp == 24 and p.get_stat("max_hp") == 24, "wave transition does not duplicate level growth")
 	manager.running = false
 	p.initialize_from_character("character_void_hunter")
@@ -117,7 +117,7 @@ func _test_sources_and_preview() -> void:
 	p.add_relic("relic_welfare_cutback")
 	check(p.current_hp == 26 and p.get_stat("max_hp") == 29 and bank.principal == 1150, "welfare costs three HP while its principal gift adds one heart tier")
 	level_to(manager, 11)
-	check(p.current_hp == 26 and p.get_stat("max_hp") == 30, "level growth survives stat penalties")
+	check(p.current_hp == 27 and p.get_stat("max_hp") == 30, "level growth heals only the added capacity alongside stat penalties")
 	manager.free()
 	p.free()
 
@@ -143,6 +143,8 @@ func _test_contact_and_revive() -> void:
 		check(p.alive and p.current_hp == 2 and p._invincibility_timer == 0.0, "first ordinary contact deals three with no shared protection")
 		enemy_b._process_contact_damage()
 		check(not p.alive and p.current_hp == 0, "second enemy in same frame can kill five-HP player")
+		p.set_run_level(2)
+		check(not p.alive and p.current_hp == 0, "level growth cannot revive a dead player")
 	manager.clear_battle_entities()
 	manager.free()
 	p.free()
@@ -154,7 +156,7 @@ func _test_contact_and_revive() -> void:
 	check(p.alive and p.current_hp == 7 and p.remaining_revives == 0, "revival restores half of level-scaled maximum")
 	check(p.take_damage(3) == 0 and p.current_hp == 7, "one-second revival protection remains")
 	level_to(manager, 11)
-	check(p.current_hp == 7 and p.remaining_revives == 0 and p.get_stat("max_hp") == 15, "level growth cannot refill health or spent revival")
+	check(p.current_hp == 8 and p.remaining_revives == 0 and p.get_stat("max_hp") == 15, "level growth heals one HP after revival without restoring the spent revival")
 	manager.free()
 	p.free()
 
@@ -169,7 +171,7 @@ func _test_camp_and_regeneration() -> void:
 	manager.running = false
 	check(p.current_hp == 7, "camp starting level enters battle at full seven HP")
 	level_to(manager, 4)
-	check(p.get_stat("max_hp") == 8 and p.current_hp == 7, "first earned level after camp bonus grants exactly one HP cap")
+	check(p.get_stat("max_hp") == 8 and p.current_hp == 8, "first earned level after camp bonus grants exactly one maximum and current HP")
 	manager.free()
 	p.free()
 	CampProgression.state.building_levels["camp_dome_shelter"] = 1

@@ -91,8 +91,7 @@ func _ready() -> void:
 	footer.add_child(_price)
 	buy_button = Button.new()
 	buy_button.custom_minimum_size = Vector2(58, 26)
-	FinanceUIStyle.button(buy_button)
-	buy_button.add_theme_font_size_override("font_size", 11)
+	FinanceUIStyle.bank_button(buy_button)
 	buy_button.clip_text = true
 	footer.add_child(buy_button)
 	buy_button.pressed.connect(func(): purchase_requested.emit(offer))
@@ -110,10 +109,14 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_name_label.text = title
 	_kind_label.text = str({"new_weapon": "武器", "relic": "遗物", "weapon_upgrade": "武器升级"}.get(offer.get("offer_type", ""), ""))
 	_description.text = str(offer.get("description", ""))
+	var new_weapon := str(offer.get("offer_type", "")) == "new_weapon"
+	if new_weapon:
+		var weapon := DataRegistry.get_record("weapons", str(offer.get("target_id", "")))
+		_description.text = str(weapon.get("shop_description", _description.get_parsed_text().left(30)))
 	# Keep item details on the title, so an empty purchase tooltip cannot
 	# inherit the card's text through Godot's parent tooltip lookup.
 	tooltip_text = ""
-	_name_label.tooltip_text = title + "\n" + _description.get_parsed_text()
+	_name_label.tooltip_text = "" if new_weapon else title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
 	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), FinanceUIStyle.RELIC_LIST_ICON_SCALE)
 	_icon_frame.custom_minimum_size = Vector2(36, 36).max(_icon.custom_minimum_size)
@@ -124,8 +127,9 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	var rarity_label := str(ItemInventoryCard.RARITY_LABELS.get(rarity, "普通"))
 	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + " · " + rarity_label
 	_kind_label.add_theme_color_override("font_color", rarity_color)
-	var panel := FinanceUIStyle.box("232a21", "576048", 6)
-	panel.border_color = Color("576048").lerp(rarity_color, 0.55)
+	var kind := "card_" + rarity if rarity in ["uncommon", "rare", "epic", "legendary"] else "card"
+	var panel := FinanceFrameSkin.box(kind, 9)
+	panel.content_margin_top = 10
 	add_theme_stylebox_override("panel", panel)
 	var cost := int(offer.get("shop_cost", 0))
 	_price.text = "%s 金币" % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))

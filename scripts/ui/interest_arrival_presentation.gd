@@ -57,6 +57,7 @@ func _ready() -> void:
 	frame.patch_margin_right = 12
 	frame.patch_margin_top = 12
 	frame.patch_margin_bottom = 12
+	FinanceFrameSkin.nine_patch(frame)
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(frame)
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -70,7 +71,7 @@ func _ready() -> void:
 	_skip_hint = _label(_card, 11, FinanceUIStyle.MUTED)
 	_skip_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_scroll = ScrollContainer.new()
-	FinanceUIStyle.scroll(_scroll)
+	FinanceUIStyle.bank_scroll(_scroll)
 	_scroll.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(_scroll)
 	_rows = VBoxContainer.new()

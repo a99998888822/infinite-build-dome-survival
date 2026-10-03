@@ -100,8 +100,8 @@ func _run() -> void:
 	player.set_physics_process(false)
 	loadout = WeaponLoadout.new()
 	host.add_child(loadout)
-	check(loadout.initialize(player) and player.get_start_weapon_ids() == [TENTACLE], "beginner starts with tentacle")
-	check(loadout.get_weapon_instance(TENTACLE) != null and loadout.get_weapon_instance(TENTACLE).has_effect("lightning"), "beginner keeps the starter lightning attachment on tentacle")
+	check(loadout.initialize(player) and player.get_start_weapon_ids() == ["weapon_void_blade"], "beginner starts with wooden bow")
+	check(loadout.get_weapon_instance("weapon_void_blade") != null and loadout.get_weapon_instance("weapon_void_blade").has_effect("lightning"), "beginner keeps the starter lightning attachment on wooden bow")
 	await fixture(LAMP, [Vector2(121, 0), Vector2(90, 50), Vector2(-70, 0)])
 	var fire := lamp()
 	var starts: Array = []

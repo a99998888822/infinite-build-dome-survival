@@ -65,7 +65,8 @@ func _run() -> void:
 			if not previous_tier.is_empty():
 				check(spawned >= previous_tier[wave - 1].spawned_20s * 1.25, "at least 25 percent more actual spawns than prior tier at wave " + str(wave))
 			if PREVIOUS_SPAWNS[tier].has(wave):
-				check(spawned == int(PREVIOUS_SPAWNS[tier][wave]) * 2, "actual spawns doubled: tier %s wave %d" % [tier, wave])
+				var population_multiplier := 1 if tier == "1" else 2
+				check(spawned == int(PREVIOUS_SPAWNS[tier][wave]) * population_multiplier, "tier one halved; higher tiers retain actual spawn counts: tier %s wave %d" % [tier, wave])
 				rows.append(row)
 		check(tier_rows[19].hp > tier_rows[0].hp * 40, "late HP grows much faster than damage")
 		check(tier_rows[19].spawned_20s > tier_rows[0].spawned_20s * 3, "late density exceeds three times opening density")

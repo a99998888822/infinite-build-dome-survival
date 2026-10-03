@@ -4,7 +4,7 @@ class RejectingPayout extends WaveManager:
 	func apply_gold_delta(_delta: int, _reason: String = "") -> bool:
 		return false
 
-# Run in a project copy with isolated user data; optional -- --capture-dir=<absolute path>.
+# Uses transient progression; optional -- --capture-dir=<absolute path>.
 var failures := 0
 var capture_dir := ""
 var flow: MainFlowCoordinator
@@ -49,6 +49,7 @@ func capture(name: String) -> void:
 
 
 func _run() -> void:
+	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	root.add_child(game)
 	get_tree().current_scene = game
@@ -122,6 +123,7 @@ func _run() -> void:
 	print("FINANCE_PREPARATION_DONE failures=", failures)
 	game.queue_free()
 	await frames()
+	CampProgression.end_transient_session()
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
 	await get_tree().create_timer(0.25).timeout

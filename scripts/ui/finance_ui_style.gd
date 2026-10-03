@@ -116,6 +116,27 @@ static func button(control: Button, selected: bool = false) -> void:
 	control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
+static func bank_button(control: Button, selected: bool = false) -> void:
+	button(control, selected)
+	var normal := box("756943" if selected else "293228f2", "b59b61" if selected else "786e4d", 6)
+	normal.border_width_bottom = 2
+	control.add_theme_stylebox_override("normal", normal)
+	control.add_theme_stylebox_override("hover", box("414b34", "b59b61", 6))
+	control.add_theme_stylebox_override("pressed", box("293228", "b59b61", 6))
+	control.add_theme_stylebox_override("disabled", box("20281fed", "53543d", 6))
+	control.add_theme_color_override("font_color", Color("e8dbb9"))
+	control.add_theme_color_override("font_disabled_color", Color("97987f"))
+	FinanceFrameSkin.button(control, selected)
+
+
+static func bank_tab(control: Button, selected: bool) -> void:
+	control.toggle_mode = true
+	control.set_pressed_no_signal(selected)
+	bank_button(control, selected)
+	for state in ["font_color", "font_pressed_color", "font_focus_color"]:
+		control.add_theme_color_override(state, Color("f7e4ad") if selected else Color("b9b59a"))
+
+
 static func label(control: Label, font_size: int = 14, color: Color = TEXT) -> void:
 	control.add_theme_font_size_override("font_size", font_size)
 	control.add_theme_color_override("font_color", color)
@@ -158,6 +179,16 @@ static func horizontal_scroll(control: ScrollContainer) -> void:
 	var blank := ImageTexture.create_from_image(Image.create(1, 1, false, Image.FORMAT_RGBA8))
 	for icon_name in ["increment", "increment_highlight", "increment_pressed", "decrement", "decrement_highlight", "decrement_pressed"]:
 		bar.add_theme_icon_override(icon_name, blank)
+
+
+static func bank_scroll(control: ScrollContainer) -> void:
+	scroll(control)
+	FinanceFrameSkin.scrollbar(control.get_v_scroll_bar())
+
+
+static func bank_horizontal_scroll(control: ScrollContainer) -> void:
+	horizontal_scroll(control)
+	FinanceFrameSkin.scrollbar(control.get_h_scroll_bar())
 
 
 static func reason(code: String) -> String:

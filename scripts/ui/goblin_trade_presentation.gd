@@ -37,6 +37,7 @@ var _chosen := false
 var _playing := false
 var _compact := false
 var sound_enabled := true
+var finance_skin := false
 var start_wave_on_accept := false
 var accept_text := ""
 var decline_text := "拒绝"
@@ -62,6 +63,7 @@ func _ready() -> void:
 	_body_scroll = ScrollContainer.new()
 	_body_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	FinanceUIStyle.scroll(_body_scroll)
+	if finance_skin: FinanceFrameSkin.scrollbar(_body_scroll.get_v_scroll_bar())
 	_card.add_child(_body_scroll)
 	_terms = VBoxContainer.new()
 	_terms.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -260,6 +262,7 @@ func _frame(parent: Control, texture: Texture2D) -> void:
 	frame.patch_margin_right = 12
 	frame.patch_margin_top = 12
 	frame.patch_margin_bottom = 12
+	if finance_skin and texture == PANEL: FinanceFrameSkin.nine_patch(frame)
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(frame)
@@ -282,6 +285,7 @@ func _button(text: String, accepted: bool) -> Button:
 	if accepted:
 		button.add_theme_stylebox_override("normal", FinanceUIStyle.box("655432", "c4a368", 3))
 		button.add_theme_stylebox_override("hover", FinanceUIStyle.box("7c653b", "edd59a", 3))
+	if finance_skin: FinanceFrameSkin.button(button, accepted)
 	button.pressed.connect(_choose.bind(accepted))
 	_card.add_child(button)
 	return button

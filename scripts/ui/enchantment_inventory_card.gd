@@ -58,7 +58,7 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	focus_mode = Control.FOCUS_ALL
 	_art.texture = FinanceUIStyle.item_icon(str(item_instance.get("icon", "")), "augmentations", str(item_instance.get("base_item_id", "")))
 	_caption.text = str(item_instance.get("display_name", "附魔"))
-	FinanceUIStyle.button(self)
+	FinanceUIStyle.bank_button(self)
 
 
 func _on_mouse_entered() -> void:

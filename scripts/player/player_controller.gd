@@ -171,7 +171,8 @@ func grant_starting_relics() -> bool:
 
 func set_run_level(level: int) -> void:
 	# Replace the total contribution, so refreshes never duplicate level growth.
-	# Growing maximum HP does not heal; wave start still restores full health.
+	# Fill newly gained HP capacity once; repeated level syncs cannot heal.
+	var previous_max_hp := int(get_stat("max_hp"))
 	add_runtime_modifier({
 		"id": "mod_player_level_max_hp",
 		"source_type": "level",
@@ -183,6 +184,7 @@ func set_run_level(level: int) -> void:
 		"duration": Modifier.PERMANENT_DURATION,
 		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
 	})
+	heal(maxi(0, int(get_stat("max_hp")) - previous_max_hp))
 
 
 func add_runtime_modifier(modifier_data: Dictionary) -> bool:

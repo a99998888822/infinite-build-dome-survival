@@ -1,5 +1,6 @@
 {
   "formula": {"kills_per_coin": 10, "gold_per_coin": 20, "coins_per_wave": 20, "interest_per_coin": 50, "interest_cap_per_wave": 20},
+  "difficulty_multipliers": {"1": 1.0, "2": 2.0, "3": 3.0},
   "presentation": {"stage_times": [0.55, 1.35, 2.15, 2.95, 3.85], "count_seconds": 0.6, "voice_time": 4.6, "voice_volume_db": -4, "cue_volume_db": -6},
   "reactions": {
     "death_followed": {"speech": "哥布林包赚，但不包活哈哈哈！", "voice_path": "", "row": 0},

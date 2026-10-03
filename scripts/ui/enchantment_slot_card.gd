@@ -58,13 +58,14 @@ func configure_slot(index: int, item: Dictionary) -> void:
 
 
 func set_selected(selected: bool) -> void:
-	FinanceUIStyle.button(self, selected)
+	FinanceUIStyle.bank_button(self, selected)
 	var normal := FinanceUIStyle.box("3a4933" if selected else ("1a241e" if drag_enabled else "20231d"), "d8ba74" if selected else ("89946a" if drag_enabled else "665f48"), 0)
 	normal.set_border_width_all(2)
 	add_theme_stylebox_override("normal", normal)
 	var hover := FinanceUIStyle.box("3c4c35", "dbbd79", 0)
 	hover.set_border_width_all(2)
 	add_theme_stylebox_override("hover", hover)
+	FinanceFrameSkin.button(self, selected, true)
 
 
 func _can_drop_data(_position: Vector2, data: Variant) -> bool:

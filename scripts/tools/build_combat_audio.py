@@ -50,7 +50,7 @@ SPECS = [
 # All landing variants share one cooldown and voice budget, including reactions.
 THUNDER_CUES = {"electric_spark", "reaction_conduct_strike", "reaction_thunder_fire_strike"}
 # User decision: ice enchantment / ice weapon and freezing have no audio.
-# Keep source WAVs for archived comparisons, but reject every runtime entry point.
+# Retired WAVs are archived outside the project; do not regenerate or preload them.
 DISABLED_CUES = {"ice", "reaction_freeze"}
 
 
@@ -342,6 +342,8 @@ def main():
     args=parser.parse_args()
     profiles={}; audio={}; report=[]
     for key,label,category,count,gain,cooldown,voices,priority,pitch in SPECS:
+        if key in DISABLED_CUES:
+            continue
         paths=[]; audio[key]=[]
         for v in range(count):
             x=synthesize(key,v); path=ASSET/f"{key}_{v+1:02}.wav"
@@ -360,7 +362,9 @@ def main():
         catalogue+='\t'+json.dumps(key)+': {"streams": ['+stream_text+'], '+json.dumps(fields)[1:] + ",\n"
     catalogue+="}\n"
     catalogue += "\nconst DISABLED_CUES: Dictionary = " + json.dumps({key: True for key in sorted(DISABLED_CUES)}) + "\n"
-    catalogue += "const DISABLED_PATHS: Dictionary = " + json.dumps({path: True for key in sorted(DISABLED_CUES) for path in profiles[key]["paths"]}) + "\n"
+    disabled_paths = {f"res://assets/audio/sfx/combat/{key}_{v+1:02}.wav": True
+                      for key, _, _, count, *_ in SPECS if key in DISABLED_CUES for v in range(count)}
+    catalogue += "const DISABLED_PATHS: Dictionary = " + json.dumps(disabled_paths, sort_keys=True) + "\n"
     target=ROOT/"scripts/audio/combat_sound_library.gd"
     target.parent.mkdir(parents=True,exist_ok=True)
     newline = "\r\n" if target.exists() and b"\r\n" in target.read_bytes() else "\n"

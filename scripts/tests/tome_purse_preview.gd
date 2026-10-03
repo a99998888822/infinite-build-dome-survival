@@ -3,7 +3,6 @@ extends Node2D
 # Asset review prototype; not registered in the production weapon pool.
 signal attack_emitted(count: int)
 signal target_hit(target_id: int, damage: int, volley_id: int)
-const BOOK = preload("res://assets/sprites/weapons/weapon_kunyu_ritual_tome_animated.png")
 const COIN = preload("res://assets/sprites/weapons/rentier_coin_spin.png")
 const RUNE = preload("res://assets/sprites/weapons/kunyu_domain_rune.png")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -15,12 +14,10 @@ var player: PlayerController
 var kind := "tome"
 var elapsed := 0.0
 var cooldown := 0.35
-var cast_age := 1.0
 var volley := 0
 var hits: Array[Dictionary] = []
 var coins: Array[Dictionary] = []
 var domain_layer: Node2D
-var equipment_layer: Node2D
 var rng := RandomNumberGenerator.new()
 var boundary_particles: Array[Dictionary] = []
 var outer_particles: Array[Dictionary] = []
@@ -35,8 +32,6 @@ func initialize(owner: PlayerController, weapon_kind: String) -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = 45
 	domain_layer = PIXEL.layer(self, -8, _draw_domain)
-	equipment_layer = PIXEL.layer(self, 40, _draw_equipment)
-	equipment_layer.visible = false
 
 
 func contains_enemy(enemy: EnemyController) -> bool:
@@ -56,7 +51,6 @@ func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)): return
 	global_position = player.global_position
 	elapsed += delta
-	cast_age += delta
 	for index in range(hits.size() - 1, -1, -1):
 		hits[index].age += delta
 		if hits[index].age > 0.40: hits.remove_at(index)
@@ -71,7 +65,6 @@ func _physics_process(delta: float) -> void:
 				var chosen := candidates[rng.randi_range(0, candidates.size() - 1)]
 				_hit(chosen, damage_value(), volley)
 				volley += 1
-				cast_age = 0
 				attack_emitted.emit(1)
 				cooldown = 0.8
 		else:
@@ -79,7 +72,6 @@ func _physics_process(delta: float) -> void:
 			cooldown = 1.1
 	queue_redraw()
 	domain_layer.queue_redraw()
-	equipment_layer.queue_redraw()
 
 
 func _hit(enemy: EnemyController, damage: int, volley_id: int) -> void:
@@ -97,7 +89,6 @@ func _fire_coins() -> void:
 		coins.append({"position": origin, "direction": direction, "distance": 0.0, "age": float(index) * 0.04,
 			"damage": damage_value(), "volley": volley, "hits": shared_hits})
 	volley += 1
-	cast_age = 0
 	attack_emitted.emit(COIN_COUNT)
 
 
@@ -182,15 +173,6 @@ func _draw_domain() -> void:
 	# The PNG itself has max alpha 51/255; modulation remains within [0.08, 1].
 	var fade := lerpf(0.08, 1.0, (1.0 - cos(TAU * elapsed / 4.4)) * 0.5)
 	domain_layer.draw_texture(RUNE, Vector2(-192, -120), Color(1, 1, 1, fade))
-
-
-func _draw_equipment() -> void:
-	if kind != "tome": return
-	var frame := 0
-	if cast_age < 0.32: frame = mini(3, int(cast_age / 0.08))
-	var bob := roundf(sin(elapsed * 3.0) * 1.5)
-	var rect := Rect2(18, -37 + bob, 36, 36)
-	equipment_layer.draw_texture_rect_region(BOOK, rect, Rect2(frame * 64, 0, 64, 64))
 
 
 func _draw() -> void:

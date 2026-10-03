@@ -623,7 +623,7 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	battle_resolved = true
 	_pending_death_run_id = ""
 	var statistics := _bound_wave_manager.run_statistics if _bound_wave_manager != null else RunStatistics.new()
-	current_battle_summary = RunSettlement.build(statistics.freeze(), victory)
+	current_battle_summary = RunSettlement.build(statistics.freeze(), victory, current_difficulty_id)
 	current_battle_summary["end_wave"] = maxi(current_wave_index + 1, 1)
 	current_battle_summary["reason"] = str(summary.get("reason", ""))
 	current_battle_summary["paid"] = CampProgression.apply_final_settlement(int(current_battle_summary.camp_currency), str(current_battle_summary.run_id))

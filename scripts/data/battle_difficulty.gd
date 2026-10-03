@@ -14,6 +14,7 @@ const PROFILES := {
 	"1": {
 		"title": "标准难度", "color": Color("#83b77c"), "stat_multiplier": 1.0,
 		"description": "",
+		"spawn_count_multiplier": 1, "enemy_limit": 120,
 	},
 	"2": {
 		"title": "怪物属性加强20%", "color": Color("#c8ae54"), "stat_multiplier": 1.2,

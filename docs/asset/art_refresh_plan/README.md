@@ -22,7 +22,7 @@
 
 武器进度：[11件64×64图标已正式安装](23_weapons_sheet_01_installation.md)。附魔进度：[12张已按用户选定的32×32正式安装](24_augmentations_sheet_01_installation.md)，覆盖13条配置；弹跳／共鸣改用PNG，电火花与落雷共用关系保留。背包与工作台适配原生32px，Godot导入、掉落回归和后台实机检查通过。[32／64对照稿](../../../artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/README.md)留档。物品图标现已完成113／113。
 
-当前角色进度：[初心者6帧、资本家7帧的64px描边版已正式接入](25_players_outline_installation.md)，第一帧同时作为idle。[天外幼体7帧、钢甲骑士行走6帧＋攻击10帧也已获用户确认并正式接入](27_enemies_installation.md)，规格64／128，idle分别选移动第1帧、行走第6帧。敌人帧表、偏移、安装器与回归同步；已完成后台实机验证。[原4个角色母稿配方](batches/characters_sheet_01/README.md)和所有已确认审阅包保留。
+当前角色进度：[初心者6帧、资本家7帧的64px描边版已正式接入](25_players_outline_installation.md)，第一帧同时作为idle。[天外幼体最新采用32px、12色B方案的完整7帧](grub_32_source12_installation_2026-10-03.md)，idle取移动第1帧，场景缩放1.6保持战斗显示大小。[钢甲骑士行走6帧＋攻击10帧已替换为128px原色12色简化稿](knight_source12_installation_2026-10-03.md)，idle取行走第6帧。[此前的敌人接入记录](27_enemies_installation.md)保留作历史参考；帧表、缩放、安装器与回归随正式规格同步。[原4个角色母稿配方](batches/characters_sheet_01/README.md)和所有已确认审阅包保留。
 
 本轮敌人更新已完成。原[独立母稿包](batches/enemies_masters_01/README.md)和[23帧像素审阅稿](26_enemies_frames_review.md)留档；Boss攻击第3、8帧的源图锤头截断按确认稿保留，末尾保持最后一帧完成收招后切回待机。后续美术类别继续按更新顺序推进。
 

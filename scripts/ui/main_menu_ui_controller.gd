@@ -3,15 +3,15 @@ class_name MainMenuUIController
 
 const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
 const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
-const ROLE_SELECT_BACKDROP_SCRIPT: Script = preload("res://scripts/ui/role_select_backdrop.gd")
+const CHARACTER_SELECT_VIEW: Script = preload("res://scripts/ui/character_select_view.gd")
+
+var character_view: CharacterSelectView
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
 var _selected_character_record: Dictionary = {}
 var _selected_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _title_base_position := Vector2.ZERO
-var _role_button_tweens: Dictionary = {}
-var _character_icon_tween: Tween = null
 var _role_select_was_visible := false
 var _settings_overlay: Control = null
 var _settings_panel: PanelContainer = null
@@ -39,22 +39,21 @@ const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 @onready var settings_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell/SettingsButton")
 @onready var quit_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton")
 @onready var character_select_page: Control = get_node_or_null("CharacterSelectPage")
-@onready var character_title_label: Label = null
-@onready var stats_list: VBoxContainer = null
+@onready var stats_list: Control = null
 @onready var weapon_list: VBoxContainer = null
 @onready var passive_list: VBoxContainer = null
-@onready var difficulty_list: VBoxContainer = null
+@onready var difficulty_list: Control = null
 @onready var character_details_scroll: ScrollContainer = null
-@onready var character_list: VBoxContainer = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterList")
-@onready var character_icon: TextureRect = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader/CharacterIcon")
-@onready var character_name_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterHeader/CharacterName")
-@onready var character_description_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/CharacterDescription")
-@onready var character_stats_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/StatsLabel")
-@onready var character_weapon_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/WeaponLabel")
-@onready var character_passive_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/SelectionBody/CharacterDetails/PassiveLabel")
-@onready var character_error_label: Label = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ErrorLabel")
-@onready var character_back_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/BackButton")
-@onready var character_confirm_button: Button = get_node_or_null("CharacterSelectPage/CenterContainer/MainPanel/Content/ButtonRow/ConfirmButton")
+@onready var character_list: VBoxContainer = null
+@onready var character_icon: TextureRect = null
+@onready var character_name_label: Label = null
+@onready var character_description_label: Label = null
+@onready var character_stats_label: Label = null
+@onready var character_weapon_label: Label = null
+@onready var character_passive_label: Label = null
+@onready var character_error_label: Label = null
+@onready var character_back_button: Button = null
+@onready var character_confirm_button: Button = null
 @onready var battle_result_panel: RunSettlementPanel = get_node_or_null("BattleResultPanel")
 
 var role_select_backdrop: Control = null
@@ -520,322 +519,64 @@ func _confirm_character_selection_now() -> void:
 func _setup_role_select_runtime_ui() -> void:
 	if character_select_page == null:
 		return
-	var old_center := character_select_page.get_node_or_null("CenterContainer")
-	if old_center != null:
-		old_center.visible = false
-	var runtime := character_select_page.get_node_or_null("RoleSelectRuntime") as Control
-	if runtime != null:
-		return
-	runtime = Control.new()
-	runtime.name = "RoleSelectRuntime"
-	runtime.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	character_select_page.add_child(runtime)
+	character_view = CHARACTER_SELECT_VIEW.new() as CharacterSelectView
+	character_view.name = "RoleSelectRuntime"
+	character_select_page.add_child(character_view)
+	character_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	character_view.character_selected.connect(_on_character_selected)
+	character_view.difficulty_selected.connect(_on_difficulty_selected)
+	character_list = character_view.character_list
+	character_icon = character_view.character_icon
+	character_name_label = character_view.name_label
+	character_description_label = character_view.description_label
+	character_details_scroll = character_view.details_scroll
+	stats_list = character_view.stats_list
+	weapon_list = character_view.weapon_list
+	passive_list = character_view.passive_list
+	difficulty_list = character_view.difficulty_list
+	character_back_button = character_view.back_button
+	character_confirm_button = character_view.confirm_button
+	character_error_label = character_view.error_label
+	role_select_backdrop = character_view.background
 
-	var background := ROLE_SELECT_BACKDROP_SCRIPT.new() as Control
-	background.name = "Backdrop"
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	role_select_backdrop = background
-	runtime.add_child(background)
-
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 24)
-	margin.add_theme_constant_override("margin_top", 8)
-	margin.add_theme_constant_override("margin_right", 24)
-	margin.add_theme_constant_override("margin_bottom", 18)
-	runtime.add_child(margin)
-
-	var page_column := VBoxContainer.new()
-	page_column.add_theme_constant_override("separation", 12)
-	margin.add_child(page_column)
-
-	var header := VBoxContainer.new()
-	header.custom_minimum_size = Vector2(0, 74)
-	header.alignment = BoxContainer.ALIGNMENT_CENTER
-	header.add_theme_constant_override("separation", 2)
-	page_column.add_child(header)
-	var title := Label.new()
-	title.text = "选择角色"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 30)
-	title.add_theme_color_override("font_color", Color("#ffe18a"))
-	title.add_theme_color_override("font_shadow_color", Color("#000000"))
-	title.add_theme_constant_override("shadow_offset_x", 2)
-	title.add_theme_constant_override("shadow_offset_y", 2)
-	header.add_child(title)
-	var subtitle := Label.new()
-	subtitle.text = "SELECT SURVIVOR"
-	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	subtitle.add_theme_font_size_override("font_size", 11)
-	subtitle.add_theme_color_override("font_color", Color("#8dbda0"))
-	header.add_child(subtitle)
-
-	var body := HBoxContainer.new()
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_theme_constant_override("separation", 12)
-	page_column.add_child(body)
-
-	var survivor_panel := _make_role_panel("SURVIVORS")
-	survivor_panel.custom_minimum_size = Vector2(240, 0)
-	survivor_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	body.add_child(survivor_panel)
-	var survivor_content := survivor_panel.get_node("Body") as VBoxContainer
-	var survivor_scroll := TouchScrollContainer.new()
-	survivor_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	survivor_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	survivor_content.add_child(survivor_scroll)
-	character_list = VBoxContainer.new()
-	character_list.add_theme_constant_override("separation", 8)
-	character_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	survivor_scroll.add_child(character_list)
-
-	var center_column := VBoxContainer.new()
-	center_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	center_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	center_column.add_theme_constant_override("separation", 12)
-	body.add_child(center_column)
-
-	var summary := PanelContainer.new()
-	summary.custom_minimum_size = Vector2(0, 128)
-	summary.add_theme_stylebox_override("panel", _make_role_style(Color("#15120f"), Color("#8d6818"), 2, 0))
-	center_column.add_child(summary)
-	var summary_stack := VBoxContainer.new()
-	summary_stack.add_theme_constant_override("separation", 0)
-	summary.add_child(summary_stack)
-	var summary_body := HBoxContainer.new()
-	summary_body.name = "Body"
-	summary_body.add_theme_constant_override("separation", 12)
-	summary_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	summary_stack.add_child(summary_body)
-	character_icon = TextureRect.new()
-	character_icon.custom_minimum_size = Vector2(78, 78)
-	character_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	character_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	character_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	character_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	summary_body.add_child(character_icon)
-	var character_info := VBoxContainer.new()
-	character_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	character_info.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	character_info.add_theme_constant_override("separation", 5)
-	summary_body.add_child(character_info)
-	character_name_label = Label.new()
-	character_name_label.add_theme_font_size_override("font_size", 25)
-	character_name_label.add_theme_color_override("font_color", Color("#c49a4a"))
-	character_info.add_child(character_name_label)
-	character_title_label = Label.new()
-	character_title_label.add_theme_font_size_override("font_size", 11)
-	character_title_label.add_theme_color_override("font_color", Color("#8cc56e"))
-	character_info.add_child(character_title_label)
-	character_description_label = Label.new()
-	character_description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	character_description_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	character_description_label.add_theme_color_override("font_color", Color("#c5b887"))
-	character_info.add_child(character_description_label)
-
-	var details_frame := PanelContainer.new()
-	details_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var frame_padding := 12
-	var details_frame_style := _make_role_style(Color("#0b1510"), Color("#8d6818"), 2, 0)
-	details_frame_style.content_margin_left = frame_padding
-	details_frame_style.content_margin_top = frame_padding
-	details_frame_style.content_margin_right = frame_padding
-	details_frame_style.content_margin_bottom = frame_padding
-	details_frame.add_theme_stylebox_override("panel", details_frame_style)
-	center_column.add_child(details_frame)
-	character_details_scroll = TouchScrollContainer.new()
-	character_details_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	character_details_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	character_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	character_details_scroll.clip_contents = true
-	details_frame.add_child(character_details_scroll)
-	var details_scroll_content := VBoxContainer.new()
-	details_scroll_content.name = "DetailsScrollContent"
-	details_scroll_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	character_details_scroll.add_child(details_scroll_content)
-	var details_padding := 8
-	var details_top_spacer := Control.new()
-	details_top_spacer.custom_minimum_size = Vector2(0, details_padding)
-	details_top_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	details_scroll_content.add_child(details_top_spacer)
-	var details_panel := PanelContainer.new()
-	details_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	details_panel.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c13"), Color("#59441f"), 1, 0))
-	details_scroll_content.add_child(details_panel)
-	var details_content := VBoxContainer.new()
-	details_content.name = "DetailsContent"
-	details_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	details_content.add_theme_constant_override("separation", 8)
-	details_panel.add_child(details_content)
-	var stats_title := _make_role_section_title("◆ 开局属性 · 不含营地")
-	details_content.add_child(stats_title)
-	stats_list = VBoxContainer.new()
-	stats_list.add_theme_constant_override("separation", 5)
-	details_content.add_child(stats_list)
-	var weapon_title := _make_role_section_title("◆ 初始武器")
-	details_content.add_child(weapon_title)
-	weapon_list = VBoxContainer.new()
-	weapon_list.add_theme_constant_override("separation", 6)
-	details_content.add_child(weapon_list)
-	var passive_title := _make_role_section_title("◆ 角色特性")
-	details_content.add_child(passive_title)
-	passive_list = VBoxContainer.new()
-	passive_list.add_theme_constant_override("separation", 6)
-	details_content.add_child(passive_list)
-	var details_bottom_spacer := Control.new()
-	details_bottom_spacer.custom_minimum_size = Vector2(0, details_padding)
-	details_bottom_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	details_scroll_content.add_child(details_bottom_spacer)
-
-	var difficulty_panel := _make_role_panel("难度")
-	difficulty_panel.name = "DifficultyPanel"
-	difficulty_panel.custom_minimum_size = Vector2(234, 0)
-	difficulty_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	difficulty_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	body.add_child(difficulty_panel)
-	var difficulty_content := difficulty_panel.get_node("Body") as VBoxContainer
-	difficulty_list = VBoxContainer.new()
-	difficulty_list.name = "DifficultyList"
-	difficulty_list.add_theme_constant_override("separation", 6)
-	difficulty_content.add_child(difficulty_list)
-
-	var footer := HBoxContainer.new()
-	footer.custom_minimum_size = Vector2(0, 34)
-	page_column.add_child(footer)
-	character_back_button = _make_role_button("◀ 返回主界面")
-	character_back_button.custom_minimum_size = Vector2(160, 34)
-	footer.add_child(character_back_button)
-	var footer_spacer := Control.new()
-	footer_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	footer.add_child(footer_spacer)
-	character_confirm_button = _make_role_button("继续 ▶")
-	character_confirm_button.custom_minimum_size = Vector2(136, 34)
-	footer.add_child(character_confirm_button)
-	character_error_label = Label.new()
-	character_error_label.visible = false
-	page_column.add_child(character_error_label)
-	_add_role_select_scanlines(runtime)
-
-
-func _add_role_select_scanlines(runtime: Control) -> void:
-	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
-	scanline_image.fill(Color.TRANSPARENT)
-	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.045))
-	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.045))
-	var scanlines := TextureRect.new()
-	scanlines.texture = ImageTexture.create_from_image(scanline_image)
-	scanlines.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	scanlines.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	scanlines.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	scanlines.stretch_mode = TextureRect.STRETCH_TILE
-	scanlines.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	scanlines.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	scanlines.z_index = 1
-	runtime.add_child(scanlines)
 
 func _rebuild_character_list() -> void:
-	if character_list == null:
+	if character_view == null:
 		return
-	for child in character_list.get_children():
-		child.queue_free()
-	for container in [stats_list, weapon_list, passive_list, difficulty_list]:
-		if container == null:
-			continue
-		for child in container.get_children():
-			child.queue_free()
 	_selected_character_id = ""
 	_selected_character_record.clear()
-	if character_confirm_button != null:
-		character_confirm_button.disabled = true
-	var character_records: Array = DataRegistry.get_table("characters") if DataRegistry != null else []
-	var first_character_id := ""
-	for record in character_records:
-		if not (record is Dictionary):
-			continue
-		var character_id := str(record.get("id", ""))
-		if character_id.is_empty():
-			continue
-		if first_character_id.is_empty():
-			first_character_id = character_id
-		var button := _make_role_button("%s
-%s" % [str(record.get("display_name", character_id)), "初始角色" if record.get("tags", []).has("starter") else "可用角色"])
-		button.custom_minimum_size = Vector2(0, 68)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		var icon_path := str(record.get("icon", ""))
-		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-			button.icon = load(icon_path) as Texture2D
-			button.add_theme_constant_override("icon_max_width", 42)
-		button.set_meta("character_id", character_id)
-		button.pressed.connect(_on_character_selected.bind(character_id))
-		character_list.add_child(button)
-	if first_character_id.is_empty():
-		if character_error_label != null:
-			character_error_label.text = "没有可用角色"
-			character_error_label.visible = true
+	character_confirm_button.disabled = true
+	var records: Array = DataRegistry.get_table("characters") if DataRegistry != null else []
+	var first_id := character_view.rebuild_roster(records)
+	character_view.set_difficulty(_selected_difficulty_id)
+	if first_id.is_empty():
+		character_error_label.text = "没有可用角色"
+		character_error_label.visible = true
 		return
-	_build_difficulty_list()
-	_on_character_selected(first_character_id)
-	call_deferred("_animate_role_select_entries")
+	_on_character_selected(first_id)
 
-func _animate_role_select_entries() -> void:
-	var containers: Array = [character_list, difficulty_list]
-	for container_variant in containers:
-		var container := container_variant as VBoxContainer
-		if container == null:
-			continue
-		for index in container.get_child_count():
-			var button := container.get_child(index) as Button
-			if button == null:
-				continue
-			button.pivot_offset = button.size * 0.5
-			button.modulate.a = 0.0
-			button.scale = Vector2(0.96, 0.96)
-			var tween := create_tween().set_parallel(true)
-			tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-			tween.tween_property(button, "modulate:a", 1.0, 0.22).set_delay(float(index) * 0.045)
-			tween.tween_property(button, "scale", Vector2.ONE, 0.26).set_delay(float(index) * 0.045)
 
 func _on_character_selected(character_id: String) -> void:
 	if character_id == _selected_character_id and not _selected_character_record.is_empty():
 		return
 	_selected_character_id = character_id
 	_selected_character_record = DataRegistry.get_record("characters", character_id) if DataRegistry != null else {}
-	_refresh_character_details(_selected_character_record)
-	_refresh_character_button_states()
-	if character_error_label != null:
-		character_error_label.visible = false
-	if character_confirm_button != null:
-		character_confirm_button.disabled = _selected_character_record.is_empty()
-	if character_details_scroll != null:
-		character_details_scroll.scroll_vertical = 0
-	_animate_character_details()
+	character_view.show_character(_selected_character_record, _get_character_starting_stats(_selected_character_record))
+	character_error_label.visible = false
+	character_confirm_button.disabled = _selected_character_record.is_empty()
+
 
 func _on_difficulty_selected(difficulty_id: String) -> void:
 	_selected_difficulty_id = BattleDifficulty.normalize(difficulty_id)
-	_refresh_difficulty_button_states()
+	character_view.set_difficulty(_selected_difficulty_id)
 
-func _refresh_character_details(record: Dictionary) -> void:
-	if character_name_label == null or stats_list == null or weapon_list == null or passive_list == null:
+
+func _animate_character_page_in() -> void:
+	if character_view == null:
 		return
-	for container in [stats_list, weapon_list, passive_list]:
-		for child in container.get_children():
-			container.remove_child(child)
-			child.queue_free()
-	if record.is_empty():
-		character_name_label.text = "请选择角色"
-		character_title_label.text = "SELECT A SURVIVOR"
-		character_description_label.text = "选择左侧角色查看基础属性、初始武器与特性。"
-		character_icon.texture = null
-		return
-	character_name_label.text = str(record.get("display_name", record.get("id", "未知角色")))
-	character_title_label.text = "STARTER SURVIVOR · 初始角色" if record.get("tags", []).has("starter") else "SURVIVOR · 可用角色"
-	character_description_label.text = str(record.get("description", "暂无角色描述"))
-	var display_sprite_path := str(record.get("display_sprite", ""))
-	character_icon.texture = load(display_sprite_path) as Texture2D if not display_sprite_path.is_empty() and ResourceLoader.exists(display_sprite_path) else null
-	_build_stat_rows(_get_character_starting_stats(record), record.get("display_stats", []))
-	_build_weapon_cards(record.get("start_weapons", []))
-	_build_character_traits(record)
+	character_view.modulate.a = 0.0
+	create_tween().tween_property(character_view, "modulate:a", 1.0, 0.25)
+
 
 func _get_character_starting_stats(record: Dictionary) -> Dictionary:
 	# Use the same acquisition/modifier path as a run, without touching live state.
@@ -855,355 +596,6 @@ func _get_character_starting_stats(record: Dictionary) -> Dictionary:
 	result["interest_rate"] = bank.get_interest_rate()
 	preview.free()
 	return result
-
-func _build_character_traits(record: Dictionary) -> void:
-	var traits: Array = record.get("traits", [])
-	var relics: Array = record.get("start_relics", [])
-	var passives: Array = record.get("passive_modifiers", [])
-	if traits.is_empty() and relics.is_empty():
-		_build_passive_cards(passives)
-		return
-	for trait_data in traits:
-		passive_list.add_child(_make_info_card(str(trait_data.title), str(trait_data.description)))
-	if not passives.is_empty():
-		_build_passive_cards(passives)
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.add_theme_constant_override("h_separation", 8)
-	grid.add_theme_constant_override("v_separation", 8)
-	passive_list.add_child(grid)
-	for relic_id in relics:
-		var relic := DataRegistry.get_record("relics", str(relic_id))
-		var row := HBoxContainer.new()
-		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.tooltip_text = "%s\n%s\n角色固有：开局获得奖励仅发放一次，不可移除。" % [relic.display_name, relic.description]
-		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(32, 32)
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		FinanceUIStyle.set_item_icon(icon, load(str(relic.icon)) as Texture2D)
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(icon)
-		var label := Label.new()
-		label.text = str(relic.display_name)
-		label.add_theme_font_size_override("font_size", 11)
-		label.add_theme_color_override("font_color", Color("bb92de"))
-		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(label)
-		grid.add_child(row)
-
-func _build_stat_rows(stats: Variant, display_stat_ids: Variant = []) -> void:
-	if not (stats is Dictionary):
-		return
-	var names := {"max_hp": "生命值", "hp_regen": "生命回复", "shield": "护盾", "armor": "护甲", "move_speed": "移动速度", "load_capacity": "负载上限", "pickup_radius": "拾取范围", "humanity": "理智值", "divinity": "侵蚀度", "finance": "本金", "currency_gain_percent": "战斗金币"}
-	var caps := {"max_hp": 20.0, "hp_regen": 10.0, "shield": 20.0, "armor": 20.0, "move_speed": 360.0, "load_capacity": 150.0, "pickup_radius": 240.0, "humanity": 100.0, "divinity": 100.0}
-	var colors := {"max_hp": Color("#c85f52"), "hp_regen": Color("#d38b61"), "shield": Color("#72a9c8"), "armor": Color("#9c87c7"), "move_speed": Color("#6d9bc8"), "load_capacity": Color("#c49a4a"), "pickup_radius": Color("#73ad79"), "humanity": Color("#82b878"), "divinity": Color("#a979bd")}
-	caps["finance"] = 1000.0
-	var default_stat_order: Array[String] = ["max_hp", "hp_regen", "shield", "armor", "move_speed", "load_capacity", "pickup_radius", "humanity", "divinity"]
-	var stat_order: Array = display_stat_ids if display_stat_ids is Array else default_stat_order
-	for stat_id_variant in stat_order:
-		var stat_id := str(stat_id_variant)
-		if stats.has(stat_id):
-			stats_list.add_child(_make_stat_row(str(names.get(stat_id, StatDefinitions.get_display_name(stat_id))), float(stats[stat_id]), float(caps.get(stat_id, 100.0)), colors.get(stat_id, Color("#c49a4a")), StatDefinitions.is_percent_stat(stat_id)))
-
-func _make_stat_row(label_text: String, value: float, cap: float, color: Color, percent: bool = false) -> Control:
-	var row := HBoxContainer.new()
-	row.custom_minimum_size = Vector2(0, 26)
-	row.add_theme_constant_override("separation", 8)
-	var label := Label.new()
-	label.custom_minimum_size = Vector2(82, 0)
-	label.text = label_text
-	label.add_theme_color_override("font_color", Color("#9eab91"))
-	row.add_child(label)
-	var bar := ProgressBar.new()
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.custom_minimum_size = Vector2(0, 16)
-	bar.max_value = cap
-	bar.value = 0.0
-	bar.show_percentage = false
-	bar.add_theme_stylebox_override("background", _make_role_style(Color("#0a150e"), Color("#385843"), 2, 0))
-	var fill_color := Color("c85f52") if value < 0 else color
-	bar.add_theme_stylebox_override("fill", _make_role_style(fill_color, fill_color.lightened(0.12), 0, 0))
-	row.add_child(bar)
-	var value_label := Label.new()
-	value_label.custom_minimum_size = Vector2(58, 0)
-	value_label.text = _format_number(value) + ("%" if percent else "")
-	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	value_label.add_theme_color_override("font_color", Color("#d6c68e"))
-	row.add_child(value_label)
-	var tween := create_tween()
-	tween.tween_property(bar, "value", absf(value), 0.32)
-	return row
-
-func _format_number(value: float) -> String:
-	if is_equal_approx(value, roundf(value)):
-		return "%d" % int(value)
-	return "%.2f" % value
-
-func _build_weapon_cards(weapon_ids: Variant) -> void:
-	if not (weapon_ids is Array) or weapon_ids.is_empty():
-		weapon_list.add_child(_make_info_card("暂无初始武器", "本局将从基础配置开始。"))
-		return
-	for weapon_id in weapon_ids:
-		var weapon := DataRegistry.get_record("weapons", str(weapon_id)) if DataRegistry != null else {}
-		if weapon.is_empty():
-			weapon_list.add_child(_make_info_card(str(weapon_id), "武器配置缺失"))
-			continue
-		var card := PanelContainer.new()
-		card.add_theme_stylebox_override("panel", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
-		var body := HBoxContainer.new()
-		body.add_theme_constant_override("separation", 10)
-		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(48, 48)
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		var icon_path := str(weapon.get("icon", ""))
-		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-			icon.texture = load(icon_path) as Texture2D
-		body.add_child(icon)
-		var info := VBoxContainer.new()
-		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var name_label := Label.new()
-		name_label.text = str(weapon.get("display_name", weapon_id))
-		name_label.add_theme_color_override("font_color", Color("#d6c68e"))
-		info.add_child(name_label)
-		var stats: Dictionary = weapon.get("base_stats", {})
-		var kind := "混合" if weapon.get("attack_kind", "") == "mixed" else ("远程" if weapon.get("attack_kind", "") == "ranged" else "近战")
-		var damage: float = float(stats.get("ranged_damage", stats.get("melee_damage", 0)))
-		if weapon.get("attack_kind", "") == "element":
-			kind = "元素"
-			damage = float(stats.get("element_damage", 0))
-		var detail := Label.new()
-		detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		detail.text = "%s · 伤害 %s · 间隔 %.2fs · 负载 %d" % [kind, _format_number(damage), float(weapon.get("attack_interval_ms", 0)) / 1000.0, int(weapon.get("load_cost", 0))]
-		detail.add_theme_color_override("font_color", Color("#9eab91"))
-		info.add_child(detail)
-		var description := Label.new()
-		description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		description.text = str(weapon.get("description", "暂无武器描述"))
-		description.add_theme_color_override("font_color", Color("#778979"))
-		info.add_child(description)
-		body.add_child(info)
-		card.add_child(body)
-		weapon_list.add_child(card)
-
-func _build_passive_cards(passives: Variant) -> void:
-	if not (passives is Array) or passives.is_empty():
-		passive_list.add_child(_make_info_card("暂无特殊特性", "该角色使用标准属性和基础武器开始战斗。"))
-		return
-	for passive in passives:
-		var text := str(passive.get("description", passive.get("stat", "未知特性"))) if passive is Dictionary else str(passive)
-		passive_list.add_child(_make_info_card("角色特性", text))
-
-func _make_info_card(title_text: String, body_text: String) -> Control:
-	var card := PanelContainer.new()
-	card.add_theme_stylebox_override("panel", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 4)
-	var title := Label.new()
-	title.text = title_text
-	title.add_theme_color_override("font_color", Color("#d3a637"))
-	title.add_theme_font_size_override("font_size", 11)
-	content.add_child(title)
-	var body := Label.new()
-	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.text = body_text
-	body.add_theme_color_override("font_color", Color("#a9a184"))
-	body.add_theme_font_size_override("font_size", 11)
-	content.add_child(body)
-	card.add_child(content)
-	return card
-
-func _build_difficulty_list() -> void:
-	if difficulty_list == null:
-		return
-	for child in difficulty_list.get_children():
-		child.queue_free()
-	for difficulty_id in BattleDifficulty.IDS:
-		var difficulty := BattleDifficulty.get_profile(difficulty_id)
-		var button := DifficultyChoiceButton.new()
-		button.text = "%s - %s" % [difficulty_id, difficulty.title]
-		if not str(difficulty.description).is_empty():
-			button.text += "\n" + str(difficulty.description)
-		button.accent = difficulty.color
-		button.add_theme_font_size_override("font_size", 13)
-		button.add_theme_color_override("font_color", Color("#d9d0af"))
-		button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
-		button.add_theme_color_override("font_pressed_color", Color("#f1df9e"))
-		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		button.custom_minimum_size = Vector2(0, 60 if not str(difficulty.description).is_empty() else 42)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.set_meta("difficulty_id", difficulty_id)
-		button.set_meta("difficulty_color", difficulty["color"])
-		button.pressed.connect(_on_difficulty_selected.bind(difficulty_id))
-		difficulty_list.add_child(button)
-	_refresh_difficulty_button_states()
-
-func _refresh_difficulty_button_states() -> void:
-	if difficulty_list == null:
-		return
-	for child in difficulty_list.get_children():
-		if not (child is Button):
-			continue
-		var button := child as Button
-		var selected := str(button.get_meta("difficulty_id", "")) == _selected_difficulty_id
-		var color: Color = button.get_meta("difficulty_color", Color("#385843"))
-		if button is DifficultyChoiceButton:
-			button.set_selected(selected)
-		var style := _make_role_style(Color("#2c2817") if selected else Color("#111b16"), color if selected else Color("#59441f"), 2 if selected else 1, 0)
-		# Native button states must not draw a second highlighted choice.
-		for state in ["normal", "hover", "pressed", "hover_pressed"]:
-			button.add_theme_stylebox_override(state, style)
-		var text_color := Color("#ffe18a") if selected else Color("#d9d0af")
-		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
-			button.add_theme_color_override(state, text_color)
-
-func _refresh_character_button_states() -> void:
-	if character_list == null:
-		return
-	for child in character_list.get_children():
-		if not (child is Button):
-			continue
-		var button := child as Button
-		var selected := str(button.get_meta("character_id", "")) == _selected_character_id
-		var normal_background := Color("#2c2817") if selected else Color("#111b16")
-		var normal_border := Color("#ffe18a") if selected else Color("#59441f")
-		button.add_theme_stylebox_override("normal", _make_role_style(normal_background, normal_border, 2 if selected else 1, 0))
-		button.add_theme_stylebox_override("hover", _make_role_style(Color("#473616") if selected else Color("#2b3020"), Color("#ffe18a"), 2, 0))
-
-func _on_character_button_hovered(button: Button) -> void:
-	if button == null or button.disabled:
-		return
-	var old_tween: Tween = _role_button_tweens.get(button)
-	if old_tween != null:
-		old_tween.kill()
-	button.pivot_offset = button.size * 0.5
-	var tween := create_tween().set_parallel(true)
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2(1.015, 1.015), 0.1)
-	tween.tween_property(button, "modulate", Color(1.06, 1.04, 0.96, 1.0), 0.1)
-	_role_button_tweens[button] = tween
-
-func _on_character_button_unhovered(button: Button) -> void:
-	if button == null:
-		return
-	var old_tween: Tween = _role_button_tweens.get(button)
-	if old_tween != null:
-		old_tween.kill()
-	var tween := create_tween()
-	tween.set_parallel(true)
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(button, "scale", Vector2.ONE, 0.1)
-	tween.tween_property(button, "modulate", Color.WHITE, 0.1)
-	_role_button_tweens[button] = tween
-
-func _animate_character_page_in() -> void:
-	if character_select_page == null:
-		return
-	var runtime := character_select_page.get_node_or_null("RoleSelectRuntime") as Control
-	if runtime != null:
-		runtime.pivot_offset = runtime.size * 0.5
-		runtime.modulate.a = 0.0
-		runtime.scale = Vector2(0.985, 0.985)
-		var runtime_tween := create_tween().set_parallel(true)
-		runtime_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		runtime_tween.tween_property(runtime, "modulate:a", 1.0, 0.34)
-		runtime_tween.tween_property(runtime, "scale", Vector2.ONE, 0.42)
-	else:
-		character_select_page.modulate.a = 0.0
-		var page_tween := create_tween()
-		page_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		page_tween.tween_property(character_select_page, "modulate:a", 1.0, 0.32)
-
-func _animate_character_details() -> void:
-	if character_name_label == null:
-		return
-	if _character_icon_tween != null:
-		_character_icon_tween.kill()
-	character_name_label.modulate.a = 0.0
-	character_description_label.modulate.a = 0.0
-	var tween := create_tween().set_parallel(true)
-	tween.tween_property(character_name_label, "modulate:a", 1.0, 0.2)
-	tween.tween_property(character_description_label, "modulate:a", 1.0, 0.28).set_delay(0.06)
-	if character_icon != null:
-		character_icon.pivot_offset = character_icon.size * 0.5
-		character_icon.modulate.a = 0.0
-		character_icon.scale = Vector2(0.90, 0.90)
-		tween.tween_property(character_icon, "modulate:a", 1.0, 0.24)
-		tween.tween_property(character_icon, "scale", Vector2.ONE, 0.30)
-		tween.chain().tween_callback(_start_character_icon_breathing)
-
-func _start_character_icon_breathing() -> void:
-	if character_icon == null or not is_instance_valid(character_icon):
-		return
-	if _character_icon_tween != null:
-		_character_icon_tween.kill()
-	_character_icon_tween = create_tween().set_loops()
-	_character_icon_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	_character_icon_tween.tween_property(character_icon, "scale", Vector2(1.015, 1.015), 1.05)
-	_character_icon_tween.tween_property(character_icon, "scale", Vector2.ONE, 1.05)
-
-func _make_role_panel(title_text: String) -> PanelContainer:
-	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", _make_role_style(Color("#0d1c14"), Color("#8d6818"), 2, 0))
-	var column := VBoxContainer.new()
-	column.name = "Body"
-	column.add_theme_constant_override("separation", 7)
-	panel.add_child(column)
-	if not title_text.is_empty():
-		var title := Label.new()
-		title.text = title_text
-		title.custom_minimum_size = Vector2(0, 26)
-		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		title.add_theme_color_override("font_color", Color("#ffe18a"))
-		title.add_theme_font_size_override("font_size", 12)
-		column.add_child(title)
-		var rule := ColorRect.new()
-		rule.custom_minimum_size = Vector2(0, 1)
-		rule.color = Color("#8d6818")
-		column.add_child(rule)
-	return panel
-
-func _make_role_section_title(text: String) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_color_override("font_color", Color("#d3a637"))
-	label.add_theme_font_size_override("font_size", 12)
-	return label
-
-func _make_role_button(text: String) -> Button:
-	var button := Button.new()
-	button.text = text
-	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_font_size_override("font_size", 12)
-	button.add_theme_color_override("font_color", Color("#d9d0af"))
-	button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
-	button.add_theme_color_override("font_pressed_color", Color("#f1df9e"))
-	button.add_theme_stylebox_override("normal", _make_role_style(Color("#111b16"), Color("#59441f"), 1, 0))
-	button.add_theme_stylebox_override("hover", _make_role_style(Color("#2b3020"), Color("#ffe18a"), 2, 0))
-	button.add_theme_stylebox_override("pressed", _make_role_style(Color("#473616"), Color("#d3a637"), 1, 0, true))
-	button.add_theme_stylebox_override("disabled", _make_role_style(Color("#121513"), Color("#454238"), 1, 0))
-	button.mouse_entered.connect(_on_character_button_hovered.bind(button))
-	button.mouse_exited.connect(_on_character_button_unhovered.bind(button))
-	return button
-
-func _make_role_style(background: Color, border: Color, border_width: int, radius: int, pressed: bool = false) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = background
-	style.border_color = border
-	style.set_border_width_all(border_width)
-	style.set_corner_radius_all(radius)
-	style.border_color = border.darkened(0.12) if pressed else border
-	style.shadow_color = border.darkened(0.72) if not pressed and border_width > 0 else Color(0.0, 0.0, 0.0, 0.0)
-	style.shadow_size = 4 if not pressed and border_width > 0 else 0
-	style.shadow_offset = Vector2(2, 2) if border_width > 0 else Vector2.ZERO
-	style.content_margin_left = 10.0
-	style.content_margin_top = 7.0 if not pressed else 8.0
-	style.content_margin_right = 10.0
-	style.content_margin_bottom = 7.0 if not pressed else 6.0
-	return style
 
 func _refresh_result_text() -> void:
 	if _main_flow_coordinator == null:

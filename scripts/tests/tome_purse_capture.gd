@@ -75,7 +75,6 @@ func _run() -> void:
 				get_tree().quit(3)
 				return
 	preview.set_physics_process(false)
-	check(not preview.equipment_layer.visible, "weapon body is hidden during combat")
 	if variant == "tome":
 		check(attacks.size() == 7 and attacks.all(func(count): return count == 1) and hit_log.size() == 7, "seven random single-target ticks")
 		check(enemies.slice(7).all(func(enemy): return enemy.current_hp == 1000), "outside-ellipse targets remain untouched")

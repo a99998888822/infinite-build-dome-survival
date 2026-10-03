@@ -510,16 +510,21 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
+    "integration": "Approved warm rose 64px color-block icon; existing nearest-neighbor consumer sizes and import UID preserved",
+    "installed_sha256": "e195698e324a4d15993284ad1d672ef6a51d1c500e909418fb7eb36a520e7551",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "piggy_warm_rose_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_piggy_bank.png",
+      "path": "artifacts/previews/relic_piggy_style_study/r03/delivery/pig_warm_rose-64.png",
+      "sha256": "e195698e324a4d15993284ad1d672ef6a51d1c500e909418fb7eb36a520e7551",
+      "record": "artifacts/previews/relic_piggy_style_study/r03/review/pig_midpoint_64.png",
+      "installation_record": "piggy_warm_rose_installation_2026-10-02.md"
+    },
+    "previous_64px_installation": {
       "sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_piggy_style_study/r03/installation/previous/relic_piggy_bank.png"
     },
     "previous_32px_installation": {
       "sha256": "eec6d593dbdfb3accc392b40de45739c8dd42b0c9e8b0e95c73aa1499c246ae9",
@@ -537,7 +542,7 @@
     ],
     "pixel_review_outcome": "approved",
     "pixel_source": "assets/ui/icons/relics/relic_piggy_bank.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_piggy_style_study/r03/review/pig_midpoint_64.png"
   },
   {
     "key": "relic_finance_manager",
@@ -566,20 +571,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "0e5aa78ccca9c856b62208c3067705c9e4f62a72084ee1054efdb62838be6103",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_finance_manager.png",
-      "sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_finance_manager.png",
+      "sha256": "0e5aa78ccca9c856b62208c3067705c9e4f62a72084ee1054efdb62838be6103",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "400797192609c673a6a13d916e880319bbcc5bcfc10a73287ba7899629230f9a",
@@ -595,7 +600,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_finance_manager.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_finance_manager.pxg",
+    "previous_source12_installation": {
+      "sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_finance_manager.png"
+    }
   },
   {
     "key": "relic_dividend_check",
@@ -624,20 +634,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "573083f62eff3113c4edc609e1e47eef92a6399bad5857953810a89e6b4ca5a1",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_dividend_check.png",
-      "sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_dividend_check.png",
+      "sha256": "573083f62eff3113c4edc609e1e47eef92a6399bad5857953810a89e6b4ca5a1",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "1b8c7839b1146d79f00874e1f7a8af249d097457e3d1a1a13a4f35b52a6a39d9",
@@ -653,7 +663,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_dividend_check.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_dividend_check.pxg",
+    "previous_source12_installation": {
+      "sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_dividend_check.png"
+    }
   },
   {
     "key": "relic_fixed_deposit_certificate",
@@ -682,20 +697,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "61816aebcfe53ece98a7c885525b6176b56597d89d3b5a2d12045d251e8374e0",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_fixed_deposit_certificate.png",
-      "sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_fixed_deposit_certificate.png",
+      "sha256": "61816aebcfe53ece98a7c885525b6176b56597d89d3b5a2d12045d251e8374e0",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "c2bb98651efc2dbfb4e320ebb4d25c1b4a4d25fc6ae9804e81cc138252f931d3",
@@ -711,7 +726,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg",
+    "previous_source12_installation": {
+      "sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_fixed_deposit_certificate.png"
+    }
   },
   {
     "key": "relic_flyer_ad",
@@ -740,24 +760,36 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "4fe8f617164d2767503bbfe22866aa95aba93f0d6dbf49db7570752dbf0b61e7",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_flyer_ad.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "supersedes": {
       "generation_batch": "relics_sheet_08",
       "installed_sha256": "5e4d0db08329325dc262c917f2cf37c4c5250cbec5b0fd26cba5c0fb61312515",
       "grid_sha256": "228401dac4f893938ab2ac01a5ecf910507c445b4c5f7e77e92ac136bd233713",
       "reason": "User supplied a new irregular dark ink-blot flyer to replace the red-circle design.",
       "backup": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/installation/previous"
+    },
+    "previous_source12_installation": {
+      "sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_flyer_ad.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_flyer_ad.png",
+      "sha256": "4fe8f617164d2767503bbfe22866aa95aba93f0d6dbf49db7570752dbf0b61e7",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     }
   },
   {
@@ -787,16 +819,16 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
+    "installed_sha256": "bcff8fc6b1dd76e02aca2b79ad3c464bb50e216729327924f9a7bc03cb450c71",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_steel_vault.png",
-      "sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_steel_vault.png",
+      "sha256": "bcff8fc6b1dd76e02aca2b79ad3c464bb50e216729327924f9a7bc03cb450c71",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "96816a23f56d7862b3efe0ec9f45fc9d2e9f1aecf38993d9ff8dd1190ba8ff2a",
@@ -812,9 +844,14 @@
       64,
       64
     ],
-    "pixel_review_outcome": "approved",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "pixel_source": "assets/ui/icons/relics/relic_steel_vault.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "previous_source12_installation": {
+      "sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_steel_vault.png"
+    }
   },
   {
     "key": "relic_quant_trading",
@@ -843,16 +880,16 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
+    "installed_sha256": "31a3e715e4224a6ffa23b48b356ff088f6d4794a2b31e0f6fe43ebca4efc8898",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_quant_trading.png",
-      "sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_quant_trading.png",
+      "sha256": "31a3e715e4224a6ffa23b48b356ff088f6d4794a2b31e0f6fe43ebca4efc8898",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "14536b3dbd2c15770aec742406df794bbc1aad777d942ff0c8f156513bd304df",
@@ -868,9 +905,14 @@
       64,
       64
     ],
-    "pixel_review_outcome": "approved",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "pixel_source": "assets/ui/icons/relics/relic_quant_trading.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "previous_source12_installation": {
+      "sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_quant_trading.png"
+    }
   },
   {
     "key": "relic_hostile_takeover",
@@ -899,20 +941,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "aca639c107111ad4682b96da166b530e0e04d25f2fc5d5e67b60682f8c9bf950",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_hostile_takeover.png",
-      "sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_hostile_takeover.png",
+      "sha256": "aca639c107111ad4682b96da166b530e0e04d25f2fc5d5e67b60682f8c9bf950",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "3dc974be4fe1d682799c976a9ddb4d6bd377f75de0533bba5dcde8bc42fbc434",
@@ -928,7 +970,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_hostile_takeover.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_hostile_takeover.pxg",
+    "previous_source12_installation": {
+      "sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_hostile_takeover.png"
+    }
   },
   {
     "key": "relic_gold_compass",
@@ -957,16 +1004,16 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+    "integration": "64px source-tone clusters, 12 colors; list/shop 32px, encyclopedia 64px, reward 48px; nearest filtering",
+    "installed_sha256": "7f7fdc089fcd6c9b8d7e4e432f55110da3f6d684369364a84b3d60be829a300b",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "compass_clean12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_gold_compass.png",
-      "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_compass_tone_study/r02/delivery/compass_clean_clusters12-64.png",
+      "sha256": "7f7fdc089fcd6c9b8d7e4e432f55110da3f6d684369364a84b3d60be829a300b",
+      "record": "artifacts/previews/relic_compass_tone_study/r02/README.md",
+      "installation_record": "compass_clean12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "acf28d5712a755ff7ddf11c4de7aa8039de37f15a93fe23d20bb563460b6dd64",
@@ -984,7 +1031,19 @@
     ],
     "pixel_review_outcome": "approved",
     "pixel_source": "assets/ui/icons/relics/relic_gold_compass.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_compass_tone_study/r02/review/compass_12_review.png",
+    "previous_64px_installation": {
+      "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+      "record": "16_relics_64_installation.md",
+      "pixel_64_candidate": {
+        "status": "approved_installed",
+        "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_gold_compass.png",
+        "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
+        "record": "15_relics_64_review.md",
+        "installation_record": "16_relics_64_installation.md"
+      },
+      "backup": "artifacts/previews/relic_compass_tone_study/r02/installation/previous/relic_gold_compass.png"
+    }
   },
   {
     "key": "relic_tip_tray",
@@ -1013,20 +1072,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "504390bc53f0c61a44bb444dce3154b50935c005f6bf5b88988c96a0465184f0",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_tip_tray.png",
-      "sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_tip_tray.png",
+      "sha256": "504390bc53f0c61a44bb444dce3154b50935c005f6bf5b88988c96a0465184f0",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "f7f711743acb70808737a94b05431331559f39a50a3b61917e8ce712707b4b36",
@@ -1042,7 +1101,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_tip_tray.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_tip_tray.pxg",
+    "previous_source12_installation": {
+      "sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_tip_tray.png"
+    }
   },
   {
     "key": "relic_compound_interest_tome",
@@ -1071,16 +1135,16 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
+    "installed_sha256": "e32500baaa3ff3fef0c02a7a9d1bab533881f10a74a3fb73c1500b3f003c0688",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_compound_interest_tome.png",
-      "sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_compound_interest_tome.png",
+      "sha256": "e32500baaa3ff3fef0c02a7a9d1bab533881f10a74a3fb73c1500b3f003c0688",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "aaec54b39ca3692f80add47a6137e4ae61b7c512c327bd8929ff1032b6869b5c",
@@ -1096,9 +1160,14 @@
       64,
       64
     ],
-    "pixel_review_outcome": "approved",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "pixel_source": "assets/ui/icons/relics/relic_compound_interest_tome.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "previous_source12_installation": {
+      "sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_compound_interest_tome.png"
+    }
   },
   {
     "key": "relic_high_yield_contract",
@@ -1127,20 +1196,20 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_02",
     "generation_package": "batches/relics_sheet_02/from_scratch_r02/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "previous_pixel_review_outcome": "r01_not_approved_by_user",
-    "installed_sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
-    "installation_record": "16_relics_64_installation.md",
+    "installed_sha256": "af77c69b1d3b014c789e5c87259f01ee4262e171107401529643e12fb4b7cfa2",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_high_yield_contract.png",
-      "sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_high_yield_contract.png",
+      "sha256": "af77c69b1d3b014c789e5c87259f01ee4262e171107401529643e12fb4b7cfa2",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "92504cd6f879d5f6b5d6c1c75910a5fae2c36a5310a78ee9027f21906d50d7a2",
@@ -1156,7 +1225,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_high_yield_contract.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_high_yield_contract.pxg",
+    "previous_source12_installation": {
+      "sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_high_yield_contract.png"
+    }
   },
   {
     "key": "relic_merger_reorg",
@@ -1185,18 +1259,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "3b224f829e3bd435b32f4056b88c3cd7c21b4883958bd6f7763c30351ebbb4f6",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_merger_reorg.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_merger_reorg.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_merger_reorg.png",
+      "sha256": "3b224f829e3bd435b32f4056b88c3cd7c21b4883958bd6f7763c30351ebbb4f6",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_periodic_dividend_clock",
@@ -1225,16 +1311,16 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
-    "installed_sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
+    "installed_sha256": "ce0ca53d0287c050ebdf454d6a433b0e23dbe8597047f8f3acb75882aa17fe4b",
     "generation_batch": "relics_sheet_01",
-    "installation_record": "16_relics_64_installation.md",
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_periodic_dividend_clock.png",
-      "sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_periodic_dividend_clock.png",
+      "sha256": "ce0ca53d0287c050ebdf454d6a433b0e23dbe8597047f8f3acb75882aa17fe4b",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
     },
     "previous_32px_installation": {
       "sha256": "d8a60b88883e2f784babee48ecbe50ccb9d2968497cc81507e6add5ba2c47b06",
@@ -1250,9 +1336,14 @@
       64,
       64
     ],
-    "pixel_review_outcome": "approved",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
     "pixel_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pxg",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md"
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "previous_source12_installation": {
+      "sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_periodic_dividend_clock.png"
+    }
   },
   {
     "key": "relic_medical_cutback",
@@ -1281,18 +1372,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "b0da3f19fbc1b4664fc9cf3f679850ebbca5ed11a92cdefec92c9bac3f6cc386",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_medical_cutback.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_medical_cutback.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_medical_cutback.png",
+      "sha256": "b0da3f19fbc1b4664fc9cf3f679850ebbca5ed11a92cdefec92c9bac3f6cc386",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_welfare_cutback",
@@ -1321,18 +1424,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "3de138310885f96cb37012784f2f3d6b21b7d0dfb19c6fec2c708b0ab922ca65",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_welfare_cutback.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_welfare_cutback.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_welfare_cutback.png",
+      "sha256": "3de138310885f96cb37012784f2f3d6b21b7d0dfb19c6fec2c708b0ab922ca65",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_annual_leave_cutback",
@@ -1361,18 +1476,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "601ee1fe264524a4710b62942c87617b7a6b2f2c81c8df941dbc5f8f6545f9ec",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_annual_leave_cutback.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_annual_leave_cutback.png",
+      "sha256": "601ee1fe264524a4710b62942c87617b7a6b2f2c81c8df941dbc5f8f6545f9ec",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_salary_adjustment",
@@ -1401,18 +1528,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "cfe8c6c17a05fa59478bf2cbf477dfdbc4ee0da0236044dd100ac3aade671875",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_salary_adjustment.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_salary_adjustment.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_salary_adjustment.png",
+      "sha256": "cfe8c6c17a05fa59478bf2cbf477dfdbc4ee0da0236044dd100ac3aade671875",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_divine_fusion",
@@ -1441,18 +1580,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "03ead42ea68d8f0f4a9e15b071480c6b3c8e6a4f23818f4f819dfd52561dda8d",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_divine_fusion.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_divine_fusion.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_divine_fusion.png",
+      "sha256": "03ead42ea68d8f0f4a9e15b071480c6b3c8e6a4f23818f4f819dfd52561dda8d",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_goblin_central_bank_printer",
@@ -1481,18 +1632,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "d19efe78b1d9143dbb399f82dfa9ac02185fab72cfcc5025cb3c085451857cbb",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_goblin_central_bank_printer.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_goblin_central_bank_printer.png",
+      "sha256": "d19efe78b1d9143dbb399f82dfa9ac02185fab72cfcc5025cb3c085451857cbb",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_perpetual_annuity_scroll",
@@ -1521,18 +1684,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "efec07a95bb1404a4cca855df20e718546efd3fafa65d7fcbb2949ec4f41829a",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_perpetual_annuity_scroll.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_perpetual_annuity_scroll.png",
+      "sha256": "efec07a95bb1404a4cca855df20e718546efd3fafa65d7fcbb2949ec4f41829a",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_bankruptcy_reorg",
@@ -1561,18 +1736,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_09",
     "generation_package": "batches/relics_sheet_09/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_09/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "430f7f92476ccb9b34f09026e679e5a4908507b321c97e016bc381aa386b165f",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pxg",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86",
+      "record": "22_relics_sheet_09_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_bankruptcy_reorg.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_bankruptcy_reorg.png",
+      "sha256": "430f7f92476ccb9b34f09026e679e5a4908507b321c97e016bc381aa386b165f",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_worn_hemostatic_cloth",
@@ -1601,19 +1788,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "c2b490714d0f81b8d3677ea3637ee32b613f4c071668e98b0948b11c254b9d66",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_worn_hemostatic_cloth.png",
-      "sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_worn_hemostatic_cloth-64.png",
+      "sha256": "c2b490714d0f81b8d3677ea3637ee32b613f4c071668e98b0948b11c254b9d66",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "21e793306c79d1440ffdead563496f087bcb12bdc3a5b5dcb410131517c4b9f1",
@@ -1629,7 +1816,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg",
+    "previous_A_installation": {
+      "sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_worn_hemostatic_cloth.png"
+    }
   },
   {
     "key": "relic_load_iron_bracer",
@@ -1658,19 +1850,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "c568a13fede5738a79978f68e0f2f3ac8f2dff8f19550274a6bb318747cdb10a",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_load_iron_bracer.png",
-      "sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_load_iron_bracer-64.png",
+      "sha256": "c568a13fede5738a79978f68e0f2f3ac8f2dff8f19550274a6bb318747cdb10a",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "b3455e8150920c82962a119375eb96734e02314778399df41dbb80d4edfd2277",
@@ -1686,7 +1878,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_load_iron_bracer.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_load_iron_bracer.pxg",
+    "previous_A_installation": {
+      "sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_load_iron_bracer.png"
+    }
   },
   {
     "key": "relic_pungent_sachet",
@@ -1715,19 +1912,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "1c7563234b2489f1efe6c5f3d523632390b8b1944d7cfef6430ccdb98a9e9de1",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_pungent_sachet.png",
-      "sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_pungent_sachet-64.png",
+      "sha256": "1c7563234b2489f1efe6c5f3d523632390b8b1944d7cfef6430ccdb98a9e9de1",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "b0bd37a9f9600ac83f2d2eecba02fd7cce7b484338e3fee789024bdf6fd00d03",
@@ -1743,7 +1940,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_pungent_sachet.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_pungent_sachet.pxg",
+    "previous_A_installation": {
+      "sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_pungent_sachet.png"
+    }
   },
   {
     "key": "relic_broken_crystal",
@@ -1772,19 +1974,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "d5a1e8b2acbfe781636278c354ecf3b0782438e9e0d0e25eede09f2ca3573c61",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_broken_crystal.png",
-      "sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_broken_crystal-64.png",
+      "sha256": "d5a1e8b2acbfe781636278c354ecf3b0782438e9e0d0e25eede09f2ca3573c61",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "b25b856ae034a943597d0a826c3830326f8041c0bea7b7f050c7474753e60293",
@@ -1800,7 +2002,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_broken_crystal.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_broken_crystal.pxg",
+    "previous_A_installation": {
+      "sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_broken_crystal.png"
+    }
   },
   {
     "key": "relic_vitality_potion",
@@ -1886,19 +2093,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "13e2177e8a61b4441f77317bdfbdd33fb26691b98f5578a78f58060e278c0a2c",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_dead_shield_badge.png",
-      "sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_dead_shield_badge-64.png",
+      "sha256": "13e2177e8a61b4441f77317bdfbdd33fb26691b98f5578a78f58060e278c0a2c",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "da4550160b71c64f79774e818d240ae570a545664de87dd6ff9877c052a688bc",
@@ -1914,7 +2121,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_dead_shield_badge.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_dead_shield_badge.pxg",
+    "previous_A_installation": {
+      "sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_dead_shield_badge.png"
+    }
   },
   {
     "key": "relic_turtle_shell_pendant",
@@ -1943,19 +2155,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "84d6d2f6a008c4fa90f0f0cd5f7150c48b4c90d9016d4a71cb22d903f1c25005",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_turtle_shell_pendant.png",
-      "sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_turtle_shell_pendant-64.png",
+      "sha256": "84d6d2f6a008c4fa90f0f0cd5f7150c48b4c90d9016d4a71cb22d903f1c25005",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "df6d5226e7ab8f8806004a02126ecffc3da2e08f91c85bbf73b6f32292005974",
@@ -1971,7 +2183,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pxg",
+    "previous_A_installation": {
+      "sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_turtle_shell_pendant.png"
+    }
   },
   {
     "key": "relic_prison_copper_anklet",
@@ -2000,19 +2217,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "90b38c7efedc6f52cd8ab174cd7855db15ffd05118ef021e7a0a7f0d4ddfaf7f",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_prison_copper_anklet.png",
-      "sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_prison_copper_anklet-64.png",
+      "sha256": "90b38c7efedc6f52cd8ab174cd7855db15ffd05118ef021e7a0a7f0d4ddfaf7f",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "635a24a167973884257aa6060423d5935bff333edc4daa2b311f9a785a3a22ac",
@@ -2028,7 +2245,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pxg",
+    "previous_A_installation": {
+      "sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_prison_copper_anklet.png"
+    }
   },
   {
     "key": "relic_brass_pocket_watch",
@@ -2057,19 +2279,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "e87703b34bfd45bebe50530c1138850999189812300e59aa0dc48d1466581c88",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_brass_pocket_watch.png",
-      "sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_brass_pocket_watch-64.png",
+      "sha256": "e87703b34bfd45bebe50530c1138850999189812300e59aa0dc48d1466581c88",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "b41c3a51568a120c93383aeea8c0a69a3054b2fa1b4b3c3fc719a24b90b3ebe6",
@@ -2085,7 +2307,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pxg",
+    "previous_A_installation": {
+      "sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_brass_pocket_watch.png"
+    }
   },
   {
     "key": "relic_flesh_pauldron",
@@ -2114,19 +2341,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "3fea72a2728b480a53278215446727f1ec27824a1c67a94899d307c282d8a03d",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_flesh_pauldron.png",
-      "sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_flesh_pauldron-64.png",
+      "sha256": "3fea72a2728b480a53278215446727f1ec27824a1c67a94899d307c282d8a03d",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "f840126dc6d79a648e92ece9a45e422dad09f51adf090bf1babd24dc2756e75d",
@@ -2142,7 +2369,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_flesh_pauldron.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_flesh_pauldron.pxg",
+    "previous_A_installation": {
+      "sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_flesh_pauldron.png"
+    }
   },
   {
     "key": "relic_nightmare_healing_urn",
@@ -2171,19 +2403,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "78eddaae7baa77b535452ac3aafc3f1fc77ef49b5c2798312dfa1be3bb859967",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_nightmare_healing_urn.png",
-      "sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_nightmare_healing_urn-64.png",
+      "sha256": "78eddaae7baa77b535452ac3aafc3f1fc77ef49b5c2798312dfa1be3bb859967",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "49e98ed4ec193fe3a9bcfeddfcbae8b29facd26cec0c11e05deaf7f7f9e8bef8",
@@ -2199,7 +2431,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pxg",
+    "previous_A_installation": {
+      "sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_nightmare_healing_urn.png"
+    }
   },
   {
     "key": "relic_barrier_crystal",
@@ -2228,19 +2465,19 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; UI slots fit; import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_03",
     "generation_package": "batches/relics_sheet_03/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_64/r01/README.md",
-    "pixel_review_outcome": "approved",
-    "installed_sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
-    "installation_record": "16_relics_64_installation.md",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "6f9463fc107b8f37bee85bc17cabffe81b153b5b7e09009235d4f9101832e56e",
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
     "pixel_64_candidate": {
       "status": "approved_installed",
-      "path": "artifacts/previews/art_refresh_v1/relics_64/r01/export/png/relic_barrier_crystal.png",
-      "sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
-      "record": "15_relics_64_review.md",
-      "installation_record": "16_relics_64_installation.md"
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_barrier_crystal-64.png",
+      "sha256": "6f9463fc107b8f37bee85bc17cabffe81b153b5b7e09009235d4f9101832e56e",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
     },
     "previous_32px_installation": {
       "sha256": "d0213bd6cd3b12763b4a62f617d0341a645e832aaf50ca536b0a56468e76ebf3",
@@ -2256,7 +2493,12 @@
       64,
       64
     ],
-    "pixel_source": "assets/ui/icons/relics/relic_barrier_crystal.pxg"
+    "pixel_source": "assets/ui/icons/relics/relic_barrier_crystal.pxg",
+    "previous_A_installation": {
+      "sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
+      "record": "16_relics_64_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_barrier_crystal.png"
+    }
   },
   {
     "key": "relic_cultic_holy_shield",
@@ -2285,18 +2527,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "d1b144d64c365542237747ef6157403230b2f03d5b79804e471b8d660048e584",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_cultic_holy_shield.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_cultic_holy_shield-64.png",
+      "sha256": "d1b144d64c365542237747ef6157403230b2f03d5b79804e471b8d660048e584",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_lost_wayfarer_greave",
@@ -2325,18 +2579,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "cf4a3f9513f32e6469c22ad95cce670008f0c0747cbeb0a65fff3e7c02f445d9",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_lost_wayfarer_greave.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_lost_wayfarer_greave-64.png",
+      "sha256": "cf4a3f9513f32e6469c22ad95cce670008f0c0747cbeb0a65fff3e7c02f445d9",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_soul_keeper_face_stone",
@@ -2365,18 +2631,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "b237ed80508f8258b7cd08cb8baa9f1f45d39d6ca9735b7ebf24982f2d0bf4ea",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_soul_keeper_face_stone.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_soul_keeper_face_stone-64.png",
+      "sha256": "b237ed80508f8258b7cd08cb8baa9f1f45d39d6ca9735b7ebf24982f2d0bf4ea",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_pain_vessel",
@@ -2405,18 +2683,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "e76428ef786e13e7683cf2ecda0d86e91ccda302f90a8cc4b0a84b49d5dda910",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_pain_vessel.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_pain_vessel.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_pain_vessel-64.png",
+      "sha256": "e76428ef786e13e7683cf2ecda0d86e91ccda302f90a8cc4b0a84b49d5dda910",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_true_silver_armor",
@@ -2445,18 +2735,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "14672a30fb1f97fa3950d5459dfb1e99b992a86f69a6410a4849f6eb69e48fb6",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_true_silver_armor.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_true_silver_armor.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_true_silver_armor-64.png",
+      "sha256": "14672a30fb1f97fa3950d5459dfb1e99b992a86f69a6410a4849f6eb69e48fb6",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_holy_silver_cup",
@@ -2485,18 +2787,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "fd8ad9fc7575dc6f9a14fbe2dd7f4d6a858e606dfc121308dfd98dab2734ce84",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_holy_silver_cup.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_holy_silver_cup.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_holy_silver_cup-64.png",
+      "sha256": "fd8ad9fc7575dc6f9a14fbe2dd7f4d6a858e606dfc121308dfd98dab2734ce84",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_suffering_carapace",
@@ -2525,18 +2839,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "92bcc23cc6a7934df5bc2fe8d4f26a6679e6abd0ac57edb07d05332a1d561270",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_suffering_carapace.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_suffering_carapace.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_suffering_carapace-64.png",
+      "sha256": "92bcc23cc6a7934df5bc2fe8d4f26a6679e6abd0ac57edb07d05332a1d561270",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_costly_seed_of_life",
@@ -2565,18 +2891,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "2c1da82e126b101a7658f7e8ac73b4adfed3abc367cc5a4196566fd9cef6df61",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_costly_seed_of_life.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_costly_seed_of_life-64.png",
+      "sha256": "2c1da82e126b101a7658f7e8ac73b4adfed3abc367cc5a4196566fd9cef6df61",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_shadowless_greave",
@@ -2605,18 +2943,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "0b19da1e139d53ab70ad8329aab638aedb5c70a12429ed782913bb0be0ec4053",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_shadowless_greave.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_shadowless_greave.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_shadowless_greave-64.png",
+      "sha256": "0b19da1e139d53ab70ad8329aab638aedb5c70a12429ed782913bb0be0ec4053",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_chain_of_hardship",
@@ -2645,18 +2995,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "483d9dca69541c23ad981c4fb889f7d065642054e6dcc22176aacff320937aa8",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_chain_of_hardship.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_chain_of_hardship.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_chain_of_hardship-64.png",
+      "sha256": "483d9dca69541c23ad981c4fb889f7d065642054e6dcc22176aacff320937aa8",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_void_tentacle",
@@ -2685,18 +3047,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "d8612afeb616d25cc0900cfe94eae5e5a0afeb86997955013f037c46a2ab30dc",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_void_tentacle.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_void_tentacle.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_void_tentacle-64.png",
+      "sha256": "d8612afeb616d25cc0900cfe94eae5e5a0afeb86997955013f037c46a2ab30dc",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_worn_fighting_gloves",
@@ -2725,18 +3099,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_04",
     "generation_package": "batches/relics_sheet_04/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_04/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644",
+    "pixel_review_path": "artifacts/previews/relic_a_batch02/r01/review/A-batch02-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "e4faa4d59c3369417916588748914442c0c2074040eea9c0929c7b0f4d72a60e",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pxg",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "installation_record": "relic_A_batch02_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644",
+      "record": "17_relics_sheet_04_installation.md",
+      "backup": "artifacts/previews/relic_a_batch02/r01/installation/previous/relic_worn_fighting_gloves.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch02/r01/delivery/png64/relic_worn_fighting_gloves-64.png",
+      "sha256": "e4faa4d59c3369417916588748914442c0c2074040eea9c0929c7b0f4d72a60e",
+      "record": "artifacts/previews/relic_a_batch02/r01/README.md",
+      "installation_record": "relic_A_batch02_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_cracked_stone_bullet",
@@ -2765,18 +3151,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "c00ff38355c9fc569971d4cf1190c503950e109ac4535727c48fb685561541d1",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_cracked_stone_bullet.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_cracked_stone_bullet-64.png",
+      "sha256": "c00ff38355c9fc569971d4cf1190c503950e109ac4535727c48fb685561541d1",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_hasty_spring_trigger",
@@ -2805,18 +3203,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "989aa709c606ceb030d70b85562afde8e33c7ef898f2a5d9891f678333ce31a5",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_hasty_spring_trigger.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_hasty_spring_trigger-64.png",
+      "sha256": "989aa709c606ceb030d70b85562afde8e33c7ef898f2a5d9891f678333ce31a5",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_rough_grinding_lens",
@@ -2845,18 +3255,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "fadaf562e83f22262e1adaafecb9b4947e880cb657b27f3c0a1dd7dcea76f56f",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_rough_grinding_lens.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_rough_grinding_lens-64.png",
+      "sha256": "fadaf562e83f22262e1adaafecb9b4947e880cb657b27f3c0a1dd7dcea76f56f",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_blocking_counterweight",
@@ -2885,18 +3307,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "8a52f038e171f15ac4a198836003ae0997707849e8bd31b0d2d93bfa41d0e555",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_blocking_counterweight.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_blocking_counterweight.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_blocking_counterweight-64.png",
+      "sha256": "8a52f038e171f15ac4a198836003ae0997707849e8bd31b0d2d93bfa41d0e555",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_bloodstained_belt",
@@ -2925,18 +3359,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "275e1c365288ff98fd86f3ea04dfde24fd4ba2f37fd3faeb966aef99a3731f68",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_bloodstained_belt.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_bloodstained_belt.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_bloodstained_belt-64.png",
+      "sha256": "275e1c365288ff98fd86f3ea04dfde24fd4ba2f37fd3faeb966aef99a3731f68",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_poison_mist_pouch",
@@ -2965,18 +3411,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "4ca619285c1700e3b3226bb6739a1e8a943af72ec2be65acf6c80950b6c61603",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_poison_mist_pouch.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_poison_mist_pouch-64.png",
+      "sha256": "4ca619285c1700e3b3226bb6739a1e8a943af72ec2be65acf6c80950b6c61603",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_tremor_grip",
@@ -3005,18 +3463,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "3c762cdc9e10e5c27e66a5340d4edbd33968f1ea747a5e0c6b4785d20a4c3c34",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_tremor_grip.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_tremor_grip.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_tremor_grip-64.png",
+      "sha256": "3c762cdc9e10e5c27e66a5340d4edbd33968f1ea747a5e0c6b4785d20a4c3c34",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_black_spot_eagle_eye",
@@ -3045,18 +3515,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "84f048474507b94a61e95183dcf2851b9b06a697ee63964e8abee510b82da349",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_black_spot_eagle_eye.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_black_spot_eagle_eye-64.png",
+      "sha256": "84f048474507b94a61e95183dcf2851b9b06a697ee63964e8abee510b82da349",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_berserker_copper_badge",
@@ -3085,18 +3567,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "c6723c7151236586b57e6517f8108059f34328e8ada63813ebfdcef01a8740eb",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_berserker_copper_badge.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_berserker_copper_badge-64.png",
+      "sha256": "c6723c7151236586b57e6517f8108059f34328e8ada63813ebfdcef01a8740eb",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_corroded_blowpipe",
@@ -3125,18 +3619,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "5e8f36bbffb87d957e25c4b46525290b89639506b407be66572874e9168b38ff",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_corroded_blowpipe.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_corroded_blowpipe-64.png",
+      "sha256": "5e8f36bbffb87d957e25c4b46525290b89639506b407be66572874e9168b38ff",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_gale_roulette",
@@ -3165,18 +3671,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "e9e09a8ce484d404e373fc1c75efeee4c0a34dfc1c5ba4d74414b789fbe3c1ec",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_gale_roulette.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_gale_roulette.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_gale_roulette-64.png",
+      "sha256": "e9e09a8ce484d404e373fc1c75efeee4c0a34dfc1c5ba4d74414b789fbe3c1ec",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_executioner_bracer",
@@ -3205,18 +3723,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_05",
     "generation_package": "batches/relics_sheet_05/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_05/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e",
+    "pixel_review_path": "artifacts/previews/relic_a_batch03/r01/review/A-batch03-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "b8c76f1ebec619fdfe9b82fe27f2bd29f4f84ee75e36e99650f1181f29bc9652",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_executioner_bracer.pxg",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "installation_record": "relic_A_batch03_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e",
+      "record": "18_relics_sheet_05_installation.md",
+      "backup": "artifacts/previews/relic_a_batch03/r01/installation/previous/relic_executioner_bracer.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch03/r01/delivery/png64/relic_executioner_bracer-64.png",
+      "sha256": "b8c76f1ebec619fdfe9b82fe27f2bd29f4f84ee75e36e99650f1181f29bc9652",
+      "record": "artifacts/previews/relic_a_batch03/r01/README.md",
+      "installation_record": "relic_A_batch03_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_judgment_eye_pendant",
@@ -3245,18 +3775,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "1f60a5bf25ac50f9af232c7d2ec1143551eb5c06f322396cd239815f3abab139",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_judgment_eye_pendant.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_judgment_eye_pendant-64.png",
+      "sha256": "1f60a5bf25ac50f9af232c7d2ec1143551eb5c06f322396cd239815f3abab139",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_split_crystal_warhead",
@@ -3285,18 +3827,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "cf9b82f75ea3870e0de0c6b628af0969300d2c7d6bfce48090c392107cc8354b",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_split_crystal_warhead.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_split_crystal_warhead-64.png",
+      "sha256": "cf9b82f75ea3870e0de0c6b628af0969300d2c7d6bfce48090c392107cc8354b",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_gold_digger_gloves",
@@ -3325,18 +3879,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "8186c56c1670418503e53680b7977c91db5cd76d77eff8e812d890712405636f",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_gold_digger_gloves.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_gold_digger_gloves-64.png",
+      "sha256": "8186c56c1670418503e53680b7977c91db5cd76d77eff8e812d890712405636f",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_incomplete_divination_dice",
@@ -3365,18 +3931,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "2e5efdbe746fa2dca79370e0a8a1ae903e309dd863c1c234225a330f0fc2e410",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_incomplete_divination_dice.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_incomplete_divination_dice-64.png",
+      "sha256": "2e5efdbe746fa2dca79370e0a8a1ae903e309dd863c1c234225a330f0fc2e410",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_travelers_ledger",
@@ -3405,18 +3983,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "a42dc7100e4e447d20ce1b02b510d77c6f887d63c87481b10bf3a85500e7c483",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_travelers_ledger.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_travelers_ledger.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_travelers_ledger-64.png",
+      "sha256": "a42dc7100e4e447d20ce1b02b510d77c6f887d63c87481b10bf3a85500e7c483",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_defiled_blessing_coin",
@@ -3445,18 +4035,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "8f3f4b2ad41e5124aeb8d2f4ef604b376e2a33ccc5019a31b7a60e5396975152",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_defiled_blessing_coin.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_defiled_blessing_coin-64.png",
+      "sha256": "8f3f4b2ad41e5124aeb8d2f4ef604b376e2a33ccc5019a31b7a60e5396975152",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_expanded_backpack_strap",
@@ -3485,18 +4087,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "42d5bf686791f43026f07fd8ba3be910fcae933442ba51c25ca8df914c19d6ce",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_expanded_backpack_strap.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_expanded_backpack_strap-64.png",
+      "sha256": "42d5bf686791f43026f07fd8ba3be910fcae933442ba51c25ca8df914c19d6ce",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_stargazers_lens",
@@ -3525,18 +4139,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "029bdbd2a6731411fa17f52d16eff8a9d51b8aa27355aedc151eb7f56fc5144c",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_stargazers_lens.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_stargazers_lens.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_stargazers_lens-64.png",
+      "sha256": "029bdbd2a6731411fa17f52d16eff8a9d51b8aa27355aedc151eb7f56fc5144c",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_harvest_sacrificial_vessel",
@@ -3565,18 +4191,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "9afd2479af768e0f07acbc716e39eb67717363bb7d1ec556dd1c0acf566a5096",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_harvest_sacrificial_vessel.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_harvest_sacrificial_vessel-64.png",
+      "sha256": "9afd2479af768e0f07acbc716e39eb67717363bb7d1ec556dd1c0acf566a5096",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_amulet_of_humanity",
@@ -3605,18 +4243,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "c33a773f0eb6f82b12f32b091bf12ce5d2621d702a9a5435752ed9f56b5c571e",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_amulet_of_humanity.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_amulet_of_humanity-64.png",
+      "sha256": "c33a773f0eb6f82b12f32b091bf12ce5d2621d702a9a5435752ed9f56b5c571e",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_gift_mark",
@@ -3645,18 +4295,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "17492c9902070971f690664bf87955b0bd5413f01952d352c926bf5d19c4ed05",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_gift_mark.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_gift_mark.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_gift_mark-64.png",
+      "sha256": "17492c9902070971f690664bf87955b0bd5413f01952d352c926bf5d19c4ed05",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_void_storage_casket",
@@ -3685,18 +4347,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_06",
     "generation_package": "batches/relics_sheet_06/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_06/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b",
+    "pixel_review_path": "artifacts/previews/relic_a_batch04/r01/review/A-batch04-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "f129aef6e4f29e88b6ecceaced42e747cc66fc7efd4c5473f76a8dfd14d94a41",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_void_storage_casket.pxg",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "installation_record": "relic_A_batch04_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b",
+      "record": "19_relics_sheet_06_installation.md",
+      "backup": "artifacts/previews/relic_a_batch04/r01/installation/previous/relic_void_storage_casket.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch04/r01/delivery/png64/relic_void_storage_casket-64.png",
+      "sha256": "f129aef6e4f29e88b6ecceaced42e747cc66fc7efd4c5473f76a8dfd14d94a41",
+      "record": "artifacts/previews/relic_a_batch04/r01/README.md",
+      "installation_record": "relic_A_batch04_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_reincarnation_hellfire_candle",
@@ -3725,18 +4399,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "4d1717bc48fc2b13779d3de1dfdc8e32d5f60f2bce089690418ad5e448bbac54",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_reincarnation_hellfire_candle.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_reincarnation_hellfire_candle.png",
+      "sha256": "4d1717bc48fc2b13779d3de1dfdc8e32d5f60f2bce089690418ad5e448bbac54",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_guarding_heart_copper_mirror",
@@ -3765,18 +4451,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "c7df5fb479b3008b071be7572b5ae434047b1717aa4be0a853511dd3b79cfef0",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_guarding_heart_copper_mirror.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_guarding_heart_copper_mirror.png",
+      "sha256": "c7df5fb479b3008b071be7572b5ae434047b1717aa4be0a853511dd3b79cfef0",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_sleepless_ledger",
@@ -3805,18 +4503,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "2a4eb8267ca9d7035238b66e5763351426ecf26cee1e111fe3654dea799dfa6e",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_sleepless_ledger.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_sleepless_ledger.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_sleepless_ledger.png",
+      "sha256": "2a4eb8267ca9d7035238b66e5763351426ecf26cee1e111fe3654dea799dfa6e",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_frenzied_dividend",
@@ -3845,18 +4555,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "e9a58c2cc0cfbae13f0d702a5d775718ae4d73d14d687dc2cd071e0d849764cf",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_frenzied_dividend.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_frenzied_dividend.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_frenzied_dividend.png",
+      "sha256": "e9a58c2cc0cfbae13f0d702a5d775718ae4d73d14d687dc2cd071e0d849764cf",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_gilded_trigger",
@@ -3885,18 +4607,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "327991da47e16a1eb5e8c83241085f24b809df3d1021f935090d357c22ecb4a7",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_gilded_trigger.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_gilded_trigger.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_gilded_trigger.png",
+      "sha256": "327991da47e16a1eb5e8c83241085f24b809df3d1021f935090d357c22ecb4a7",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_runaway_amplifier",
@@ -3925,18 +4659,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "969e2ee342dfd0f36f577355d1514a8024097ff5aa5cce332c3490e1e47eb745",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_runaway_amplifier.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_runaway_amplifier.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_runaway_amplifier.png",
+      "sha256": "969e2ee342dfd0f36f577355d1514a8024097ff5aa5cce332c3490e1e47eb745",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_lucid_vow",
@@ -3965,18 +4711,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "4abd7c92ac4839822e49b297344ff194483aa9802ee6730d92ad36d7914b4e61",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_lucid_vow.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_lucid_vow.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_lucid_vow.png",
+      "sha256": "4abd7c92ac4839822e49b297344ff194483aa9802ee6730d92ad36d7914b4e61",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_coin_heart",
@@ -4005,18 +4763,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "91dc11925d33680b8ec3f84cd23c5420a0f528307f7225c6a526f844f6112577",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_coin_heart.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_coin_heart.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_coin_heart.png",
+      "sha256": "91dc11925d33680b8ec3f84cd23c5420a0f528307f7225c6a526f844f6112577",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_hoarders_ring",
@@ -4045,18 +4815,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "46a96fb0d7dc1a54a2db125e4775d73bc6f5c1e72e92585ecda3ec24ddb086d1",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_hoarders_ring.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_hoarders_ring.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_hoarders_ring.png",
+      "sha256": "46a96fb0d7dc1a54a2db125e4775d73bc6f5c1e72e92585ecda3ec24ddb086d1",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_golden_sarcophagus",
@@ -4085,18 +4867,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "3456d4f2b2863968915a065e682793c0d54acc9455228ce777f1ffe04b672608",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_golden_sarcophagus.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_golden_sarcophagus.png",
+      "sha256": "3456d4f2b2863968915a065e682793c0d54acc9455228ce777f1ffe04b672608",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_old_brass_telescope",
@@ -4125,18 +4919,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "40ea8de175e2e3e1bad40fca0fbf5ae75e5f648a7577c6994937add0076ec712",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_old_brass_telescope.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_old_brass_telescope.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_old_brass_telescope.png",
+      "sha256": "40ea8de175e2e3e1bad40fca0fbf5ae75e5f648a7577c6994937add0076ec712",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_cracked_bronze_bell",
@@ -4165,18 +4971,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "A source-image reduction, up to 12 colors, native 64px; existing nearest filtering and UI display sizes retained",
     "generation_batch": "relics_sheet_07",
     "generation_package": "batches/relics_sheet_07/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_07/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55",
+    "pixel_review_path": "artifacts/previews/relic_a_batch12/r02/review/A-batch12-overview.png",
+    "pixel_review_outcome": "user_approved_A_installed",
+    "installed_sha256": "57ec79341e74ed7c212b8b6f5648ca12c457d58985b597e86e94e911378d2394",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pxg",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "installation_record": "relic_A_batch12_installation_2026-10-02.md",
+    "previous_A_installation": {
+      "sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55",
+      "record": "20_relics_sheet_07_installation.md",
+      "backup": "artifacts/previews/relic_a_batch12/r02/installation/previous/relic_cracked_bronze_bell.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_a_batch12/r02/delivery/png64/relic_cracked_bronze_bell-64.png",
+      "sha256": "57ec79341e74ed7c212b8b6f5648ca12c457d58985b597e86e94e911378d2394",
+      "record": "artifacts/previews/relic_a_batch12/r02/README.md",
+      "installation_record": "relic_A_batch12_installation_2026-10-02.md"
+    }
   },
   {
     "key": "relic_long_focus_eyepiece",
@@ -4205,18 +5023,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "631f6af1d77acb15b0640cbf6d0a209b594455857bb613e822f8d5a5e9fff489",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_long_focus_eyepiece.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_long_focus_eyepiece.png",
+      "sha256": "631f6af1d77acb15b0640cbf6d0a209b594455857bb613e822f8d5a5e9fff489",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_diffusion_nozzle",
@@ -4245,18 +5075,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "09555019523e972e0ad3e6f5889a5b58aac2fae58978739c22ccd38c22e733a7",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_diffusion_nozzle.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_diffusion_nozzle.png",
+      "sha256": "09555019523e972e0ad3e6f5889a5b58aac2fae58978739c22ccd38c22e733a7",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_range_tripod",
@@ -4285,18 +5127,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "26dc2852b69c29354baae42423cd7017eaa5927056b26241cac301cf492a8ce2",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "099c1da3d527a4aafc93dd5b59b0b96217157bf6adbd5ff1d18fc033b8c99b2a",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_range_tripod.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "26dc2852b69c29354baae42423cd7017eaa5927056b26241cac301cf492a8ce2",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_range_tripod.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_range_tripod.png",
+      "sha256": "099c1da3d527a4aafc93dd5b59b0b96217157bf6adbd5ff1d18fc033b8c99b2a",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_aftershock_hourglass",
@@ -4325,18 +5179,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "162bac96e060beeaa9989c8c0b27643cff6b327bc9cde749ff5e5fd4ab11a618",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "9a38330d9060c6782b884d316b723c57d7af9d63e5ab30edbdc40842b428ee4d",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "162bac96e060beeaa9989c8c0b27643cff6b327bc9cde749ff5e5fd4ab11a618",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_aftershock_hourglass.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_aftershock_hourglass.png",
+      "sha256": "9a38330d9060c6782b884d316b723c57d7af9d63e5ab30edbdc40842b428ee4d",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_golden_rangefinder",
@@ -4365,18 +5231,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "7073ff37f42057cd19e779c5045b07a8af09e7f1ecabc4c29724b6a94d3abadf",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "bcad9a47398e7f35ffe888515507ee187411bb730a369af6ad0c8a50b6cf6090",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_golden_rangefinder.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "7073ff37f42057cd19e779c5045b07a8af09e7f1ecabc4c29724b6a94d3abadf",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_golden_rangefinder.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_golden_rangefinder.png",
+      "sha256": "bcad9a47398e7f35ffe888515507ee187411bb730a369af6ad0c8a50b6cf6090",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_abyssal_echo_shell",
@@ -4405,18 +5283,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "d45d351edaab1a121d67caec7d4b02aa1f4128bea47c8dec5819794c5fab5b37",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "1357dc472222db7b58c60850239a504e38b151d89a44f42bfad8b60a1658d6b4",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "d45d351edaab1a121d67caec7d4b02aa1f4128bea47c8dec5819794c5fab5b37",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_abyssal_echo_shell.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_abyssal_echo_shell.png",
+      "sha256": "1357dc472222db7b58c60850239a504e38b151d89a44f42bfad8b60a1658d6b4",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_folded_star_chart",
@@ -4445,18 +5335,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "940e3ba65f05da98778b25ded29d62535c29712b7188bb0433b62d9d3390421a",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "e775bbd93841c864db62a427e341aa38c9c5c622dfc0542ed78fbca3a8a12362",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_folded_star_chart.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "940e3ba65f05da98778b25ded29d62535c29712b7188bb0433b62d9d3390421a",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_folded_star_chart.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_folded_star_chart.png",
+      "sha256": "e775bbd93841c864db62a427e341aa38c9c5c622dfc0542ed78fbca3a8a12362",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "relic_horizon_orrery",
@@ -4485,18 +5387,30 @@
     "detail_pixel_size": null,
     "prompt_file": "03b_relic_prompts.md",
     "status": "installed",
-    "integration": "Native 64px centered with nearest filtering; existing import UID preserved",
+    "integration": "User-approved r02, source-derived 12-color palette, actual 10-12 colors at 64px; nearest filtering and existing UI sizes retained",
     "generation_batch": "relics_sheet_08",
     "generation_package": "batches/relics_sheet_08/README.md",
-    "pixel_review_path": "artifacts/previews/art_refresh_v1/relics_sheet_08/r01/README.md",
-    "pixel_review_outcome": "assistant_reviewed_user_direct_install_authorization",
-    "installed_sha256": "673bf4fcf8ea5adbad489dd8b8ded04605cd079cce1de83ea14c603ec092671e",
+    "pixel_review_path": "artifacts/previews/relic_flat_review/r02/delivery/overview64.png",
+    "pixel_review_outcome": "user_approved_source12_r02_installed",
+    "installed_sha256": "07a1bd24944d0bc7c035b5ee0907b8ef7cdaea7b13cf105b957542f2139927db",
     "installed_size": [
       64,
       64
     ],
     "pixel_source": "assets/ui/icons/relics/relic_horizon_orrery.pxg",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "installation_record": "relic_source12_39_installation_2026-10-03.md",
+    "previous_source12_installation": {
+      "sha256": "673bf4fcf8ea5adbad489dd8b8ded04605cd079cce1de83ea14c603ec092671e",
+      "record": "21_relics_sheet_08_installation.md",
+      "backup": "artifacts/previews/relic_flat_review/r02/installation/previous/relic_horizon_orrery.png"
+    },
+    "pixel_64_candidate": {
+      "status": "approved_installed",
+      "path": "artifacts/previews/relic_flat_review/r02/delivery/png64/relic_horizon_orrery.png",
+      "sha256": "07a1bd24944d0bc7c035b5ee0907b8ef7cdaea7b13cf105b957542f2139927db",
+      "record": "artifacts/previews/relic_flat_review/r02/delivery/README.md",
+      "installation_record": "relic_source12_39_installation_2026-10-03.md"
+    }
   },
   {
     "key": "scroll_water",

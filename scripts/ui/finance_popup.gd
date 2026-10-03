@@ -4,7 +4,13 @@ class_name FinancePopup
 signal trade_cancelled(reason: String)
 signal trade_choice_made(accepted: bool)
 
-const BOARD: Texture2D = preload("res://assets/ui/finance/finance_board.png")
+const BACKGROUND: Texture2D = preload("res://assets/ui/finance/finance_background.png")
+var scene_background: TextureRect
+var _scene_wide := false
+var _scene_summary_back: Panel
+var _scene_bank_back: Panel
+var _scene_enchant_back: Panel
+var _scene_footer_back: Panel
 var flow: MainFlowCoordinator
 var payload: Dictionary = {}
 var main_panel: Panel
@@ -52,7 +58,7 @@ var _notice_timer: Timer
 var _sale_icon: TextureRect
 var _sale_items: HBoxContainer
 var _live_trade_token := ""
-var _refresh_glow := FinanceUIStyle.box("293329", "d5c578", 5)
+var _refresh_glow := FinanceFrameSkin.box("selected", 6)
 var _glow_time := 0.0
 var _last_arrival_id := ""
 var _arrival_pulse: Tween
@@ -108,7 +114,7 @@ func configure(next_payload: Dictionary) -> void:
 	_stock.text = "剩余 %d / %d 件" % [remaining, shop_grid.offers.size()]
 	_refresh.text = "刷新 · %d 金币" % int(payload.get("refresh_cost", 0))
 	_refresh.disabled = int(payload.get("gold", 0)) < int(payload.get("refresh_cost", 0))
-	FinanceUIStyle.button(_refresh)
+	FinanceUIStyle.bank_button(_refresh)
 	if bool(payload.get("strong_refresh", false)):
 		_refresh.text = "强力刷新 · 免费"
 		_refresh.add_theme_stylebox_override("normal", _refresh_glow)
@@ -175,7 +181,7 @@ func _process(delta: float) -> void:
 	if not visible or not bool(payload.get("strong_refresh", false)): return
 	_glow_time += delta
 	var color := Color.from_hsv(fmod(_glow_time * 0.18, 1.0), 0.55, 1.0)
-	_refresh_glow.border_color = color
+	_refresh_glow.modulate_color = Color.WHITE.lerp(color, 0.22)
 	_refresh.add_theme_color_override("font_color", color)
 	_refresh.add_theme_color_override("font_hover_color", color)
 
@@ -225,6 +231,7 @@ func present_trade(speech: String, body: String, detail: String = "") -> void:
 	# Also used by the isolated visual review.
 	if trade_presentation == null:
 		trade_presentation = GoblinTradePresentation.new()
+		trade_presentation.finance_skin = true
 		trade_presentation.z_index = 31
 		main_panel.add_child(trade_presentation)
 		main_panel.move_child(trade_presentation, economy_log.get_index())
@@ -276,25 +283,28 @@ func show_error(code: String) -> void:
 
 
 func _build() -> void:
+	scene_background = TextureRect.new()
+	scene_background.name = "BankSceneBackground"
+	scene_background.texture = BACKGROUND
+	scene_background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	scene_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scene_background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(scene_background)
 	main_panel = Panel.new()
 	main_panel.name = "MainPanel"
-	main_panel.add_theme_stylebox_override("panel", FinanceUIStyle.box("292b20", "9c9169", 0))
+	main_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
 	add_child(main_panel)
-	var board := NinePatchRect.new()
-	board.texture = BOARD
-	board.patch_margin_left = 16
-	board.patch_margin_top = 16
-	board.patch_margin_right = 16
-	board.patch_margin_bottom = 16
-	board.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	board.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	main_panel.add_child(board)
+	_scene_summary_back = _scene_surface("slim")
+	_scene_bank_back = _scene_surface("panel")
+	_scene_enchant_back = _scene_surface("panel")
+	_scene_footer_back = _scene_surface("slim")
 	_title = _label("哥布林银行", main_panel, 22, FinanceUIStyle.TEXT)
 	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
+	_summary.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_summary.mouse_filter = Control.MOUSE_FILTER_PASS
 	_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_bank = preload("res://scripts/ui/touch_scroll_container.gd").new()
-	FinanceUIStyle.scroll(_bank)
+	FinanceUIStyle.bank_scroll(_bank)
 	main_panel.add_child(_bank)
 	_bank_header = VBoxContainer.new()
 	_bank_header.add_theme_constant_override("separation", 8)
@@ -305,14 +315,14 @@ func _build() -> void:
 	_bank.add_child(bank_body)
 	portrait = BankCounterPortrait.new()
 	portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_bank_header.add_child(portrait)
+	main_panel.add_child(portrait)
 	_principal_protection = _label("", bank_body, 12, FinanceUIStyle.GOLD)
 	_principal_protection.name = "PrincipalReviveStatus"
 	_principal_protection.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_principal_protection.mouse_filter = Control.MOUSE_FILTER_PASS
 	_principal_protection.hide()
 	_bank_form = VBoxContainer.new()
-	_bank_form.add_theme_constant_override("separation", 8)
+	_bank_form.add_theme_constant_override("separation", 6)
 	bank_body.add_child(_bank_form)
 	var actions := HBoxContainer.new()
 	_bank_form.add_child(actions)
@@ -326,8 +336,9 @@ func _build() -> void:
 	amount_input.placeholder_text = "输入金额"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-	amount_input.add_theme_font_size_override("font_size", 14)
-	amount_input.add_theme_stylebox_override("normal", FinanceUIStyle.box("1c251e", "626b4e", 6))
+	amount_input.add_theme_font_size_override("font_size", 12)
+	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
+	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_color_override("font_color", FinanceUIStyle.TEXT)
 	_bank_form.add_child(amount_input)
 	amount_input.text_submitted.connect(func(_value): _submit_bank())
@@ -373,7 +384,7 @@ func _build() -> void:
 	_refresh = _button("刷新", _shop)
 	_refresh.pressed.connect(_refresh_shop)
 	_enchant_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
-	FinanceUIStyle.scroll(_enchant_scroll)
+	FinanceUIStyle.bank_scroll(_enchant_scroll)
 	main_panel.add_child(_enchant_scroll)
 	workbench = EnchantmentWorkbench.new()
 	workbench.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -386,7 +397,7 @@ func _build() -> void:
 	_feedback = _label("", main_panel, 12, FinanceUIStyle.MUTED)
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	start_button = _button("开始下一波", main_panel)
-	FinanceUIStyle.button(start_button, true)
+	FinanceUIStyle.bank_button(start_button, true)
 	start_button.pressed.connect(func():
 		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
 	)
@@ -395,7 +406,7 @@ func _build() -> void:
 	main_panel.add_child(economy_log)
 	_build_sale_dialog()
 	_tooltip = PanelContainer.new()
-	_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 12))
+	_tooltip.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 12))
 	_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_tooltip.z_index = 20
 	main_panel.add_child(_tooltip)
@@ -433,7 +444,7 @@ func _build_sale_dialog() -> void:
 	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_sale_layer.add_child(dimmer)
 	_sale_box = PanelContainer.new()
-	_sale_box.add_theme_stylebox_override("panel", FinanceUIStyle.box("2d3427", "ab9b6a", 18))
+	_sale_box.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 18))
 	_sale_layer.add_child(_sale_box)
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 12)
@@ -467,7 +478,25 @@ func _build_sale_dialog() -> void:
 	_sale_layer.hide()
 
 
+func _scene_surface(kind: String) -> Panel:
+	var panel := Panel.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box(kind))
+	main_panel.add_child(panel)
+	return panel
+
+
 func _layout() -> void:
+	_scene_wide = FinanceSceneLayout.supports(get_viewport_rect().size)
+	portrait.background_counter = _scene_wide
+	for panel in [_scene_summary_back, _scene_bank_back, _scene_enchant_back, _scene_footer_back]:
+		panel.visible = _scene_wide
+	if _scene_wide:
+		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+		FinanceSceneLayout.arrange(self)
+		return
+	main_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
+	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	main_panel.position = _safe_rect.position
 	main_panel.size = _safe_rect.size
 	var w := main_panel.size.x
@@ -511,6 +540,7 @@ func _layout() -> void:
 	header_h = floorf(header_h)
 	portrait.show()
 	_place(_bank_header, Rect2(20, body_y, bank_width, header_h))
+	_place(portrait, _bank_header.get_rect())
 	var bank_rect := Rect2(work_x, content_y, work_w, content_h) if _compact else Rect2(20, body_y + header_h + 8, bank_width, maxf(24, body_bottom - body_y - header_h - 8))
 	if trade_active:
 		var card_rect := Rect2(20, body_y + header_h + 4, bank_width, trade_height)
@@ -543,12 +573,13 @@ func _select_tab(tab: String) -> void:
 	_active_tab = tab
 	_bank.visible = not _compact or tab == "bank"
 	_bank_header.show()
+	_scene_enchant_back.visible = _scene_wide and tab == "enchant"
 	_shop.visible = tab == "shop"
 	_enchant_scroll.visible = tab == "enchant"
 	for key in _tab_buttons:
 		var button: Button = _tab_buttons[key]
 		button.visible = key != "bank" or _compact
-		FinanceUIStyle.tab(button, key == tab)
+		FinanceUIStyle.bank_tab(button, key == tab)
 	if _tooltip != null: _tooltip.hide()
 	if flow != null: flow.clear_stat_preview()
 
@@ -578,8 +609,8 @@ func _refresh_bank() -> void:
 
 func _choose_bank_action(action: String) -> void:
 	_bank_action = action
-	FinanceUIStyle.button(_deposit, action == "deposit")
-	FinanceUIStyle.button(_withdraw, action == "withdraw")
+	FinanceUIStyle.bank_button(_deposit, action == "deposit")
+	FinanceUIStyle.bank_button(_withdraw, action == "withdraw")
 	bank_confirm.text = "确认存入" if action == "deposit" else "确认取出"
 	_withdraw.disabled = int(payload.get("principal", 0)) <= 0
 	_deposit.disabled = bool(payload.get("trade_deposit_blocked", false))
@@ -611,6 +642,7 @@ func _update_bank_confirm() -> void:
 	_bank_preview.visible = not _bank_preview.text.is_empty()
 	if _bank_preview.visible:
 		_reveal_bank_preview.call_deferred()
+	if _scene_wide: _layout.call_deferred()
 
 
 func _reveal_bank_preview() -> void:
@@ -772,7 +804,7 @@ func _button(caption: String, parent: Control) -> Button:
 	var control := Button.new()
 	control.text = caption
 	control.custom_minimum_size.y = 28
-	FinanceUIStyle.button(control)
+	FinanceUIStyle.bank_button(control)
 	parent.add_child(control)
 	return control
 

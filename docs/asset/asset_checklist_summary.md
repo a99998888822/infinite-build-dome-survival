@@ -4,10 +4,10 @@
 > 判定规则：已存在表按磁盘上实际在用的文件列出，缺失表按清单目标路径列出；`.import`、“节点实现/无需 PNG”条目不纳入文件表。
 > 文件表范围：只收 `assets/` 下的 PNG 与音频（OGG/WAV）；字体（`assets/font/`）、`.svg`、`.aseprite`、`.tres` 和说明性 `.md` 不纳入。
 > 补充说明：第 13 组可选区域素材原文未给固定文件名，此处按 `zones.json` ID 和现有目录规则补了建议命名。
-> 尺寸说明：已存在条目的尺寸列按磁盘 PNG 实际像素读取；遗物图标当前实际为 `32x32`（原清单按 `128x128` 规划）。
+> 尺寸说明：当前 90 件正式遗物 PNG 均为 `64x64`。2026-10-03 已将本次确认的 39 件替换为 r02 原色 12 色色板版，见[接入记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。2026-10-02 的 A 版批次记录见[第一批](art_refresh_plan/relic_A_batch12_installation_2026-10-02.md)、[第二批](art_refresh_plan/relic_A_batch02_installation_2026-10-02.md)与[第三批](art_refresh_plan/relic_A_batch03_installation_2026-10-02.md)；表中未属本次更新的旧尺寸描述仍需按实际文件核对。
 > 生成日期：2026-09-21。
 > 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；附魔配置使用 PNG，旧SVG占位图已清理。
-> 2026-09-27：正式小 Boss 改为钢甲骑士，六张 160×160 原生帧图集，共 32 帧；游戏预警内部不透明度为 12%，两侧边缘及方粒脉动。详见 [接入说明](iron_knight_integration.md)。
+> 2026-10-03：钢甲骑士完整动画已接入原色 12 色简化版，5 张图集、16 张唯一帧，每帧 128×128；当前场景按 1.12 倍显示。详见[本轮接入记录](art_refresh_plan/knight_source12_installation_2026-10-03.md)与[接入说明](iron_knight_integration.md)。
 > 2026-09-28：移除旧四足精英图集与生成工具、普通怪历史版本、主菜单备份、未使用字体和旧图标；保留正式资源及必要的可编辑源文件。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
@@ -43,94 +43,94 @@
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 年假削减方案遗物图标 | `relic_annual_leave_cutback.png` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；被撕掉休假页、排满加班日期的年度排班表，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 破产重组遗物图标 | `relic_bankruptcy_reorg.png` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 32x32 / 1:1 / PNG，透明背景 | 红稀有度；破产重组主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；复利宝典主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 分红支票遗物图标 | `relic_dividend_check.png` | `assets/ui/icons/relics/relic_dividend_check.png` | 32x32 / 1:1 / PNG，透明背景 | 绿稀有度；分红支票主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 神性融合遗物图标 | `relic_divine_fusion.png` | `assets/ui/icons/relics/relic_divine_fusion.png` | 32x32 / 1:1 / PNG，透明背景 | 橙稀有度；神性融合主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 理财经理遗物图标 | `relic_finance_manager.png` | `assets/ui/icons/relics/relic_finance_manager.png` | 32x32 / 1:1 / PNG，透明背景 | 白稀有度；理财经理主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 定期存单遗物图标 | `relic_fixed_deposit_certificate.png` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 32x32 / 1:1 / PNG，透明背景 | 绿稀有度；定期存单主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 传单广告遗物图标 | `relic_flyer_ad.png` | `assets/ui/icons/relics/relic_flyer_ad.png` | 32x32 / 1:1 / PNG，透明背景 | 绿稀有度；传单广告主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 哥布林金币铸造机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 32x32 / 1:1 / PNG，透明背景 | 橙稀有度；哥布林金币铸造机主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 吸金罗盘遗物图标 | `relic_gold_compass.png` | `assets/ui/icons/relics/relic_gold_compass.png` | 32x32 / 1:1 / PNG，透明背景 | 蓝稀有度；吸金罗盘主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 高利契约遗物图标 | `relic_high_yield_contract.png` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；高利契约主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 恶意收购遗物图标 | `relic_hostile_takeover.png` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 32x32 / 1:1 / PNG，透明背景 | 蓝稀有度；恶意收购主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 医疗削减方案遗物图标 | `relic_medical_cutback.png` | `assets/ui/icons/relics/relic_medical_cutback.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；盖着红章、被裁去福利条款的医疗报销单，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 并购重组遗物图标 | `relic_merger_reorg.png` | `assets/ui/icons/relics/relic_merger_reorg.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；并购重组主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 周期分红钟遗物图标 | `relic_periodic_dividend_clock.png` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；周期分红钟主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 32x32 / 1:1 / PNG，透明背景 | 橙稀有度；永续年金卷轴主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 猪猪存钱罐遗物图标 | `relic_piggy_bank.png` | `assets/ui/icons/relics/relic_piggy_bank.png` | 32x32 / 1:1 / PNG，透明背景 | 白稀有度；猪猪存钱罐主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 量化操盘遗物图标 | `relic_quant_trading.png` | `assets/ui/icons/relics/relic_quant_trading.png` | 32x32 / 1:1 / PNG，透明背景 | 蓝稀有度；量化操盘主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 薪酬调整方案遗物图标 | `relic_salary_adjustment.png` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；薪资条上覆盖“结构性调整”红章的工资单，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 钢铁保险柜遗物图标 | `relic_steel_vault.png` | `assets/ui/icons/relics/relic_steel_vault.png` | 32x32 / 1:1 / PNG，透明背景 | 蓝稀有度；钢铁保险柜主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 小费托盘遗物图标 | `relic_tip_tray.png` | `assets/ui/icons/relics/relic_tip_tray.png` | 32x32 / 1:1 / PNG，透明背景 | 蓝稀有度；小费托盘主题图标，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 福利削减方案遗物图标 | `relic_welfare_cutback.png` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 32x32 / 1:1 / PNG，透明背景 | 紫稀有度；被剪去彩带、盖着“优化福利”印章的员工福利手册，像素风，轮廓清晰，透明背景。 |
-| 已存在 | 人性护符遗物图标 | `relic_amulet_of_humanity.png` | `assets/ui/icons/relics/relic_amulet_of_humanity.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 屏障结晶遗物图标 | `relic_barrier_crystal.png` | `assets/ui/icons/relics/relic_barrier_crystal.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 狂战士铜质徽章遗物图标 | `relic_berserker_copper_badge.png` | `assets/ui/icons/relics/relic_berserker_copper_badge.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 黑斑鹰眼水晶遗物图标 | `relic_black_spot_eagle_eye.png` | `assets/ui/icons/relics/relic_black_spot_eagle_eye.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 阻滞配重石遗物图标 | `relic_blocking_counterweight.png` | `assets/ui/icons/relics/relic_blocking_counterweight.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 嗜血皮带遗物图标 | `relic_bloodstained_belt.png` | `assets/ui/icons/relics/relic_bloodstained_belt.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 黄铜怀表遗物图标 | `relic_brass_pocket_watch.png` | `assets/ui/icons/relics/relic_brass_pocket_watch.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 残破晶石遗物图标 | `relic_broken_crystal.png` | `assets/ui/icons/relics/relic_broken_crystal.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 苦难前行之枷锁遗物图标 | `relic_chain_of_hardship.png` | `assets/ui/icons/relics/relic_chain_of_hardship.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 蚀腐吹管遗物图标 | `relic_corroded_blowpipe.png` | `assets/ui/icons/relics/relic_corroded_blowpipe.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 代价生命之种遗物图标 | `relic_costly_seed_of_life.png` | `assets/ui/icons/relics/relic_costly_seed_of_life.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 裂痕石子弹遗物图标 | `relic_cracked_stone_bullet.png` | `assets/ui/icons/relics/relic_cracked_stone_bullet.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 密教圣盾遗物图标 | `relic_cultic_holy_shield.png` | `assets/ui/icons/relics/relic_cultic_holy_shield.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 死寂护盾徽章遗物图标 | `relic_dead_shield_badge.png` | `assets/ui/icons/relics/relic_dead_shield_badge.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 被亵渎的祈福铜钱遗物图标 | `relic_defiled_blessing_coin.png` | `assets/ui/icons/relics/relic_defiled_blessing_coin.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 屠戮者臂铠遗物图标 | `relic_executioner_bracer.png` | `assets/ui/icons/relics/relic_executioner_bracer.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 扩容背包束带遗物图标 | `relic_expanded_backpack_strap.png` | `assets/ui/icons/relics/relic_expanded_backpack_strap.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 血肉肩甲遗物图标 | `relic_flesh_pauldron.png` | `assets/ui/icons/relics/relic_flesh_pauldron.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 疾风轮盘遗物图标 | `relic_gale_roulette.png` | `assets/ui/icons/relics/relic_gale_roulette.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 馈赠印记遗物图标 | `relic_gift_mark.png` | `assets/ui/icons/relics/relic_gift_mark.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 淘金者的手套遗物图标 | `relic_gold_digger_gloves.png` | `assets/ui/icons/relics/relic_gold_digger_gloves.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 守心铜鉴遗物图标 | `relic_guarding_heart_copper_mirror.png` | `assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 丰收的牺牲祭器遗物图标 | `relic_harvest_sacrificial_vessel.png` | `assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 急促弹簧扳机遗物图标 | `relic_hasty_spring_trigger.png` | `assets/ui/icons/relics/relic_hasty_spring_trigger.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 圣质银杯遗物图标 | `relic_holy_silver_cup.png` | `assets/ui/icons/relics/relic_holy_silver_cup.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 残缺的占卜骰子遗物图标 | `relic_incomplete_divination_dice.png` | `assets/ui/icons/relics/relic_incomplete_divination_dice.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 裁决之眼吊坠遗物图标 | `relic_judgment_eye_pendant.png` | `assets/ui/icons/relics/relic_judgment_eye_pendant.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 负重铁皮护腕遗物图标 | `relic_load_iron_bracer.png` | `assets/ui/icons/relics/relic_load_iron_bracer.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 迷途者胫环遗物图标 | `relic_lost_wayfarer_greave.png` | `assets/ui/icons/relics/relic_lost_wayfarer_greave.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 梦魇治愈圣壶遗物图标 | `relic_nightmare_healing_urn.png` | `assets/ui/icons/relics/relic_nightmare_healing_urn.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 苦痛祭皿遗物图标 | `relic_pain_vessel.png` | `assets/ui/icons/relics/relic_pain_vessel.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 毒雾投囊遗物图标 | `relic_poison_mist_pouch.png` | `assets/ui/icons/relics/relic_poison_mist_pouch.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 监狱铜制脚环遗物图标 | `relic_prison_copper_anklet.png` | `assets/ui/icons/relics/relic_prison_copper_anklet.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 刺鼻香包遗物图标 | `relic_pungent_sachet.png` | `assets/ui/icons/relics/relic_pungent_sachet.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 轮回业火之烛遗物图标 | `relic_reincarnation_hellfire_candle.png` | `assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 粗糙研磨透镜遗物图标 | `relic_rough_grinding_lens.png` | `assets/ui/icons/relics/relic_rough_grinding_lens.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 无影遁形胫甲遗物图标 | `relic_shadowless_greave.png` | `assets/ui/icons/relics/relic_shadowless_greave.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 守魂人面石雕遗物图标 | `relic_soul_keeper_face_stone.png` | `assets/ui/icons/relics/relic_soul_keeper_face_stone.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 分裂晶石弹头遗物图标 | `relic_split_crystal_warhead.png` | `assets/ui/icons/relics/relic_split_crystal_warhead.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 观星者的镜片遗物图标 | `relic_stargazers_lens.png` | `assets/ui/icons/relics/relic_stargazers_lens.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 受难甲壳遗物图标 | `relic_suffering_carapace.png` | `assets/ui/icons/relics/relic_suffering_carapace.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 商旅账本遗物图标 | `relic_travelers_ledger.png` | `assets/ui/icons/relics/relic_travelers_ledger.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 震颤握柄遗物图标 | `relic_tremor_grip.png` | `assets/ui/icons/relics/relic_tremor_grip.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 真银护甲遗物图标 | `relic_true_silver_armor.png` | `assets/ui/icons/relics/relic_true_silver_armor.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 龟壳吊坠遗物图标 | `relic_turtle_shell_pendant.png` | `assets/ui/icons/relics/relic_turtle_shell_pendant.png` | 32x32 / 1:1 / PNG |  |
+| 已接入 | 年假削减方案遗物图标 | `relic_annual_leave_cutback.png` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 破产重组遗物图标 | `relic_bankruptcy_reorg.png` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 复利宝典遗物图标 | `relic_compound_interest_tome.png` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 分红支票遗物图标 | `relic_dividend_check.png` | `assets/ui/icons/relics/relic_dividend_check.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 神性融合遗物图标 | `relic_divine_fusion.png` | `assets/ui/icons/relics/relic_divine_fusion.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 理财经理遗物图标 | `relic_finance_manager.png` | `assets/ui/icons/relics/relic_finance_manager.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 定期存单遗物图标 | `relic_fixed_deposit_certificate.png` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 传单广告遗物图标 | `relic_flyer_ad.png` | `assets/ui/icons/relics/relic_flyer_ad.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 哥布林金币铸造机遗物图标 | `relic_goblin_central_bank_printer.png` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 吸金罗盘遗物图标 | `relic_gold_compass.png` | `assets/ui/icons/relics/relic_gold_compass.png` | 64x64 / 1:1 / PNG，透明背景 | 蓝稀有度；2026-10-02 用户确认去纹理、原色大色块、12 色；PNG 与可编辑网格同步，详见罗盘接入记录。 |
+| 已接入 | 高利契约遗物图标 | `relic_high_yield_contract.png` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 恶意收购遗物图标 | `relic_hostile_takeover.png` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 医疗削减方案遗物图标 | `relic_medical_cutback.png` | `assets/ui/icons/relics/relic_medical_cutback.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 并购重组遗物图标 | `relic_merger_reorg.png` | `assets/ui/icons/relics/relic_merger_reorg.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 周期分红钟遗物图标 | `relic_periodic_dividend_clock.png` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 永续年金卷轴遗物图标 | `relic_perpetual_annuity_scroll.png` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 猪猪存钱罐遗物图标 | `relic_piggy_bank.png` | `assets/ui/icons/relics/relic_piggy_bank.png` | 64x64 / 1:1 / PNG，透明背景 | 白稀有度；2026-10-02 用户确认暖藕粉，6 色大色块拼接；PNG 与可编辑网格同步，详见暖藕粉接入记录。 |
+| 已接入 | 量化操盘遗物图标 | `relic_quant_trading.png` | `assets/ui/icons/relics/relic_quant_trading.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 薪酬调整方案遗物图标 | `relic_salary_adjustment.png` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 钢铁保险柜遗物图标 | `relic_steel_vault.png` | `assets/ui/icons/relics/relic_steel_vault.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 小费托盘遗物图标 | `relic_tip_tray.png` | `assets/ui/icons/relics/relic_tip_tray.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 福利削减方案遗物图标 | `relic_welfare_cutback.png` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 人性护符遗物图标 | `relic_amulet_of_humanity.png` | `assets/ui/icons/relics/relic_amulet_of_humanity.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 屏障结晶遗物图标 | `relic_barrier_crystal.png` | `assets/ui/icons/relics/relic_barrier_crystal.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 狂战士铜质徽章遗物图标 | `relic_berserker_copper_badge.png` | `assets/ui/icons/relics/relic_berserker_copper_badge.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 黑斑鹰眼水晶遗物图标 | `relic_black_spot_eagle_eye.png` | `assets/ui/icons/relics/relic_black_spot_eagle_eye.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 阻滞配重石遗物图标 | `relic_blocking_counterweight.png` | `assets/ui/icons/relics/relic_blocking_counterweight.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 嗜血皮带遗物图标 | `relic_bloodstained_belt.png` | `assets/ui/icons/relics/relic_bloodstained_belt.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 黄铜怀表遗物图标 | `relic_brass_pocket_watch.png` | `assets/ui/icons/relics/relic_brass_pocket_watch.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 残破晶石遗物图标 | `relic_broken_crystal.png` | `assets/ui/icons/relics/relic_broken_crystal.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 苦难前行之枷锁遗物图标 | `relic_chain_of_hardship.png` | `assets/ui/icons/relics/relic_chain_of_hardship.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 蚀腐吹管遗物图标 | `relic_corroded_blowpipe.png` | `assets/ui/icons/relics/relic_corroded_blowpipe.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 代价生命之种遗物图标 | `relic_costly_seed_of_life.png` | `assets/ui/icons/relics/relic_costly_seed_of_life.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 裂痕石子弹遗物图标 | `relic_cracked_stone_bullet.png` | `assets/ui/icons/relics/relic_cracked_stone_bullet.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 密教圣盾遗物图标 | `relic_cultic_holy_shield.png` | `assets/ui/icons/relics/relic_cultic_holy_shield.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 死寂护盾徽章遗物图标 | `relic_dead_shield_badge.png` | `assets/ui/icons/relics/relic_dead_shield_badge.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 被亵渎的祈福铜钱遗物图标 | `relic_defiled_blessing_coin.png` | `assets/ui/icons/relics/relic_defiled_blessing_coin.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 屠戮者臂铠遗物图标 | `relic_executioner_bracer.png` | `assets/ui/icons/relics/relic_executioner_bracer.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 扩容背包束带遗物图标 | `relic_expanded_backpack_strap.png` | `assets/ui/icons/relics/relic_expanded_backpack_strap.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 血肉肩甲遗物图标 | `relic_flesh_pauldron.png` | `assets/ui/icons/relics/relic_flesh_pauldron.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 疾风轮盘遗物图标 | `relic_gale_roulette.png` | `assets/ui/icons/relics/relic_gale_roulette.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 馈赠印记遗物图标 | `relic_gift_mark.png` | `assets/ui/icons/relics/relic_gift_mark.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 淘金者的手套遗物图标 | `relic_gold_digger_gloves.png` | `assets/ui/icons/relics/relic_gold_digger_gloves.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 守心铜鉴遗物图标 | `relic_guarding_heart_copper_mirror.png` | `assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 丰收的牺牲祭器遗物图标 | `relic_harvest_sacrificial_vessel.png` | `assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 急促弹簧扳机遗物图标 | `relic_hasty_spring_trigger.png` | `assets/ui/icons/relics/relic_hasty_spring_trigger.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 圣质银杯遗物图标 | `relic_holy_silver_cup.png` | `assets/ui/icons/relics/relic_holy_silver_cup.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 残缺的占卜骰子遗物图标 | `relic_incomplete_divination_dice.png` | `assets/ui/icons/relics/relic_incomplete_divination_dice.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 裁决之眼吊坠遗物图标 | `relic_judgment_eye_pendant.png` | `assets/ui/icons/relics/relic_judgment_eye_pendant.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 负重铁皮护腕遗物图标 | `relic_load_iron_bracer.png` | `assets/ui/icons/relics/relic_load_iron_bracer.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 迷途者胫环遗物图标 | `relic_lost_wayfarer_greave.png` | `assets/ui/icons/relics/relic_lost_wayfarer_greave.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 梦魇治愈圣壶遗物图标 | `relic_nightmare_healing_urn.png` | `assets/ui/icons/relics/relic_nightmare_healing_urn.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 苦痛祭皿遗物图标 | `relic_pain_vessel.png` | `assets/ui/icons/relics/relic_pain_vessel.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 毒雾投囊遗物图标 | `relic_poison_mist_pouch.png` | `assets/ui/icons/relics/relic_poison_mist_pouch.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 监狱铜制脚环遗物图标 | `relic_prison_copper_anklet.png` | `assets/ui/icons/relics/relic_prison_copper_anklet.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 刺鼻香包遗物图标 | `relic_pungent_sachet.png` | `assets/ui/icons/relics/relic_pungent_sachet.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 轮回业火之烛遗物图标 | `relic_reincarnation_hellfire_candle.png` | `assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 粗糙研磨透镜遗物图标 | `relic_rough_grinding_lens.png` | `assets/ui/icons/relics/relic_rough_grinding_lens.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 无影遁形胫甲遗物图标 | `relic_shadowless_greave.png` | `assets/ui/icons/relics/relic_shadowless_greave.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 守魂人面石雕遗物图标 | `relic_soul_keeper_face_stone.png` | `assets/ui/icons/relics/relic_soul_keeper_face_stone.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 分裂晶石弹头遗物图标 | `relic_split_crystal_warhead.png` | `assets/ui/icons/relics/relic_split_crystal_warhead.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 观星者的镜片遗物图标 | `relic_stargazers_lens.png` | `assets/ui/icons/relics/relic_stargazers_lens.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 受难甲壳遗物图标 | `relic_suffering_carapace.png` | `assets/ui/icons/relics/relic_suffering_carapace.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 商旅账本遗物图标 | `relic_travelers_ledger.png` | `assets/ui/icons/relics/relic_travelers_ledger.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 震颤握柄遗物图标 | `relic_tremor_grip.png` | `assets/ui/icons/relics/relic_tremor_grip.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 真银护甲遗物图标 | `relic_true_silver_armor.png` | `assets/ui/icons/relics/relic_true_silver_armor.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 龟壳吊坠遗物图标 | `relic_turtle_shell_pendant.png` | `assets/ui/icons/relics/relic_turtle_shell_pendant.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
 | 已存在 | 生命力药瓶遗物图标 | `relic_vitality_potion.png` | `assets/ui/icons/relics/relic_vitality_potion.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 虚空收纳匣遗物图标 | `relic_void_storage_casket.png` | `assets/ui/icons/relics/relic_void_storage_casket.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 虚空触手遗物图标 | `relic_void_tentacle.png` | `assets/ui/icons/relics/relic_void_tentacle.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 磨损格斗拳套遗物图标 | `relic_worn_fighting_gloves.png` | `assets/ui/icons/relics/relic_worn_fighting_gloves.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 磨损的止血布条遗物图标 | `relic_worn_hemostatic_cloth.png` | `assets/ui/icons/relics/relic_worn_hemostatic_cloth.png` | 32x32 / 1:1 / PNG |  |
-| 已存在 | 无眠账簿遗物图标 | `relic_sleepless_ledger.png` | `assets/ui/icons/relics/relic_sleepless_ledger.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
-| 已存在 | 狂热分红遗物图标 | `relic_frenzied_dividend.png` | `assets/ui/icons/relics/relic_frenzied_dividend.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
-| 已存在 | 镀金扳机遗物图标 | `relic_gilded_trigger.png` | `assets/ui/icons/relics/relic_gilded_trigger.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
-| 已存在 | 失控增幅器遗物图标 | `relic_runaway_amplifier.png` | `assets/ui/icons/relics/relic_runaway_amplifier.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
-| 已存在 | 清醒誓言遗物图标 | `relic_lucid_vow.png` | `assets/ui/icons/relics/relic_lucid_vow.png` | 32x32 / 1:1 / PNG | 透明底，手工像素审阅稿已接入 |
-| 已接入 | 金币心脏遗物图标 | `relic_coin_heart.png` | `assets/ui/icons/relics/relic_coin_heart.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
-| 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
-| 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 32x32 / 1:1 / PNG | 透明底；2026-09-25审阅稿已用于正式配置 |
+| 已接入 | 虚空收纳匣遗物图标 | `relic_void_storage_casket.png` | `assets/ui/icons/relics/relic_void_storage_casket.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 虚空触手遗物图标 | `relic_void_tentacle.png` | `assets/ui/icons/relics/relic_void_tentacle.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 磨损格斗拳套遗物图标 | `relic_worn_fighting_gloves.png` | `assets/ui/icons/relics/relic_worn_fighting_gloves.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 磨损的止血布条遗物图标 | `relic_worn_hemostatic_cloth.png` | `assets/ui/icons/relics/relic_worn_hemostatic_cloth.png` | 64x64 / 1:1 / PNG | 2026-10-02：用户确认 A 方案，最多12色，保留原图明暗与材质；PNG 与网格已同步。 |
+| 已接入 | 无眠账簿遗物图标 | `relic_sleepless_ledger.png` | `assets/ui/icons/relics/relic_sleepless_ledger.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 狂热分红遗物图标 | `relic_frenzied_dividend.png` | `assets/ui/icons/relics/relic_frenzied_dividend.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 镀金扳机遗物图标 | `relic_gilded_trigger.png` | `assets/ui/icons/relics/relic_gilded_trigger.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 失控增幅器遗物图标 | `relic_runaway_amplifier.png` | `assets/ui/icons/relics/relic_runaway_amplifier.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 清醒誓言遗物图标 | `relic_lucid_vow.png` | `assets/ui/icons/relics/relic_lucid_vow.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 金币心脏遗物图标 | `relic_coin_heart.png` | `assets/ui/icons/relics/relic_coin_heart.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_idle.png` | 86x86 / 1:1 / PNG | Picxel 64 像素稿扩展透明画布 |
+| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_idle.png` | 32x32 / 1:1 / PNG | 2026-10-03：B方案原色12色板，复用移动第1帧；移动图集224×32共7帧，场景缩放1.6保持显示大小。 |
 | 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_move.png` | 602x86 / 7:1 / PNG | 完整七帧，8 FPS；旧高清贴图已清理 |
-| 已接入 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 160x160 / 1 帧 / RGBA PNG | Picxel 移动首帧 |
-| 已接入 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1760x160 / 11 帧 / RGBA PNG | 完整帧序，11 FPS |
-| 已接入 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 1120x160 / 7 帧 / RGBA PNG | 攻击原图 1–7，800 毫秒 |
-| 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 320x160 / 2 帧 / RGBA PNG | 攻击原图 8–9，160 毫秒 |
-| 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 320x160 / 2 帧 / RGBA PNG | 攻击原图 10–11，500 毫秒；死亡冻结当前姿势淡出，旧死亡图已删除 |
+| 已接入 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 128x128 / 1 帧 / RGBA PNG | 已确认的12色样例；复用行走第6帧 |
+| 已接入 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 768x128 / 6 帧 / RGBA PNG | 共享12色色板；6 FPS；逐帧轮廓与位置保留 |
+| 已接入 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 896x128 / 7 帧 / RGBA PNG | 共享12色色板；攻击1–7，800毫秒 |
+| 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 256x128 / 2 帧 / RGBA PNG | 共享12色色板；攻击8–9，160毫秒 |
+| 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 128x128 / 1 帧 / RGBA PNG | 共享12色色板；攻击10，500毫秒；死亡冻结当前姿势淡出 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
 | 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距 |
@@ -145,8 +145,19 @@
 | 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 64x64 / 1:1 / RGBA PNG | 铸铁炮管、黄铜箍、木柄 |
 | 已存在 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 64x64 / 1:1 / PNG |  |
 | 已接入 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1024x572 / PNG | 哥布林地牢混合像素尺度，脸与金币精修、瞳孔上移确认版；最近邻显示 |
+| 已接入 | 角色选择背景 | `background.png` | `assets/ui/character_select/background.png` | 640x360 / PNG | 用户确认的像素版，1280×720 等比布局，最近邻显示 |
+| 已接入 | 角色选择按钮与难度底图 | `back_button.png`、`continue_button.png`、`difficulty_*.png` | `assets/ui/character_select/` | 98x25、66x25、32x32 / PNG | 旧木暗铜风格；文字、状态与难度说明由实时控件显示 |
 | 已存在 | 主菜单按钮底图 | `button_main_menu.png` | `assets/ui/main_menu/button_main_menu.png` | 600x186 / PNG |  |
 | 已接入 | 主菜单标题图 | `title_main_menu.png` | `assets/ui/main_menu/title_main_menu.png` | 240x128 / RGBA PNG | “哥布林／教你地下城”两行原创艺术字；油画笔触 Picxel 版，15 色，最近邻显示 |
+| 已接入 | 旧铜望远镜遗物图标 | `relic_old_brass_telescope.png` | `assets/ui/icons/relics/relic_old_brass_telescope.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 深海回声螺遗物图标 | `relic_abyssal_echo_shell.png` | `assets/ui/icons/relics/relic_abyssal_echo_shell.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 余震沙漏遗物图标 | `relic_aftershock_hourglass.png` | `assets/ui/icons/relics/relic_aftershock_hourglass.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 扩散喷口遗物图标 | `relic_diffusion_nozzle.png` | `assets/ui/icons/relics/relic_diffusion_nozzle.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 折叠星图遗物图标 | `relic_folded_star_chart.png` | `assets/ui/icons/relics/relic_folded_star_chart.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 黄金测距仪遗物图标 | `relic_golden_rangefinder.png` | `assets/ui/icons/relics/relic_golden_rangefinder.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 地平线星仪遗物图标 | `relic_horizon_orrery.png` | `assets/ui/icons/relics/relic_horizon_orrery.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 长焦目镜遗物图标 | `relic_long_focus_eyepiece.png` | `assets/ui/icons/relics/relic_long_focus_eyepiece.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| 已接入 | 定距脚架遗物图标 | `relic_range_tripod.png` | `assets/ui/icons/relics/relic_range_tripod.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 
 ## 2. 未存在的必需素材（10 个）
 
@@ -185,7 +196,7 @@
 | 未存在 | 模式选择图标 | `icon_mode_select.png` | `assets/ui/icons/system/icon_mode_select.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示模式选择，使用简洁分支或选择符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | 图鉴图标 | `icon_gallery.png` | `assets/ui/icons/system/icon_gallery.png` | 1:1，128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，表示图鉴，使用书本、卡册或资料页符号，轮廓清楚，透明背景，PNG，不要文字，不要噪点 |
 | 未存在 | 建筑卡片底图 | `card_building_detail.png` | `assets/ui/panels/camp/card_building_detail.png` | 4:5，512x640 / PNG，透明或半透明底 | 生成一张清新干净的像素风建筑详情卡片底图，适合营地界面，顶部留出建筑名称区域，中部留出建筑图像区域，底部留出升级信息区域，边框简洁，PNG，不要文字，不要噪点 |
-| 未存在 | 角色选择卡片底图 | `card_character_select.png` | `assets/ui/panels/system/card_character_select.png` | 4:5，512x640 / PNG，透明或半透明底 | 生成一张清新干净的像素风角色选择卡片底图，适合角色头像和文字说明，边框简洁，留白充足，PNG，不要文字，不要噪点 |
+| 已接入 | 角色名册框与列表底图 | `roster_frame.png`、`roster_*.png` | `assets/ui/character_select/` | 114x178、88x20 / PNG | 使用确认的旧木暗铜名册设计，替代原计划的通用角色卡；支持选中、普通及空位状态 |
 | 未存在 | 金币图标 | `icon_currency_gold.png` | `assets/ui/icons/rewards/icon_currency_gold.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“金币 / 货币”，小型金色硬币或能量币，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
 | 未存在 | 区域图标-近弦战场 | `zone_nearstring_battlefield.png` | `assets/ui/icons/zones/zone_nearstring_battlefield.png` | 1:1, 128x128 / PNG | 生成：简洁的近战倾向图标 / 区域选择页识别 / PNG |
 | 未存在 | 区域图标-流星高塔 | `zone_meteor_tower.png` | `assets/ui/icons/zones/zone_meteor_tower.png` | 1:1, 128x128 / PNG | 生成：简洁的远程倾向图标 / 区域选择页识别 / PNG |

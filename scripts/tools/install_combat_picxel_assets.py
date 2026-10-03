@@ -35,7 +35,7 @@ def asset_pairs(subjects=SUBJECTS):
         ):
             yield destination, size
     if "enemy" in subjects:
-        for name, size in (("enemy_gloom_mite_idle.png", (64, 64)), ("enemy_gloom_mite_move.png", (448, 64))):
+        for name, size in (("enemy_gloom_mite_idle.png", (32, 32)), ("enemy_gloom_mite_move.png", (224, 32))):
             yield f"sprites/enemies/combat/{name}", size
     if "boss" in subjects:
         for action, (count, _, _) in BOSS_ACTIONS.items():

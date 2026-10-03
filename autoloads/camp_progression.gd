@@ -34,7 +34,10 @@ var _transient_session_snapshot: Dictionary = {}
 
 func _ready() -> void:
 	# Opt-in test/capture sessions must be isolated before autoload save migration.
-	if OS.get_cmdline_user_args().has("--transient-session"):
+	var recording_launch := false
+	for arg in OS.get_cmdline_args():
+		if arg.replace("\\", "/").ends_with("scenes/debug/recording_studio.tscn"): recording_launch = true
+	if OS.get_cmdline_user_args().has("--transient-session") or recording_launch:
 		begin_transient_session()
 		return
 	_reset_state()

@@ -1,6 +1,7 @@
 [
   {
     "id": "weapon_void_blade",
+    "shop_description": "快速射出木箭，持续远程攻击。",
     "display_name": "木质弓箭",
     "description": "简单的木质弓箭，射速较快",
     "icon": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
@@ -88,6 +89,7 @@
   },
   {
     "id": "weapon_plasma_cannon",
+    "shop_description": "发射缓慢电球，持续灼击接触的敌人。",
     "display_name": "电浆炮",
     "description": "发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，每球最多5轮。\n每次灼击触发附魔时，以20%的元素伤害基数计算。",
     "icon": "res://assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
@@ -133,6 +135,7 @@
   },
   {
     "id": "weapon_iron_grenade_cannon",
+    "shop_description": "向密集敌群抛射榴弹，在落点造成范围爆炸。",
     "display_name": "铸铁榴弹炮",
     "description": "向密集怪群抛射铸铁榴弹，越过沿途敌人，0.45秒后在固定落点爆炸。\n远程伤害：16＋角色远程伤害×1.2\n攻击间隔：1.80秒；攻击距离：200\n爆炸半径：64；负载：25；附魔槽：2\n每枚榴弹对每个敌人造成一次原生伤害，并在每个受击目标处分别触发附魔；不自带燃烧。\n支持分裂：每个主爆炸命中目标产生小榴弹，伤害45%、半径减半；同轮所有主榴弹合计最多分裂6枚，只分裂一代；暂不支持穿透。",
     "icon": "res://assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
@@ -170,6 +173,7 @@
   },
   {
     "id": "weapon_kunyu_ritual_tome",
+    "shop_description": "展开随身领域，周期随机打击范围内的敌人。",
     "display_name": "坤舆秘仪书",
     "description": "展开始终围绕玩家的椭圆领域，每0.80秒随机点名一个领域内敌人。\n元素伤害：10＋角色元素伤害；领域半轴：220×145。\n浅蓝方粒间距大幅波动并轻微旋转，中央符文若隐若现；战斗中不显示书本。\n投射物数量增加每轮不同目标的点名次数；分裂追加领域内不同目标的45%伤害点名，只分裂一代。支持元素附魔，不支持穿透。",
     "icon": "res://assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
@@ -200,6 +204,7 @@
   },
   {
     "id": "weapon_rentier_purse",
+    "shop_description": "向四周撒出金币攻击，本金越多伤害越高，不消耗本金。",
     "display_name": "食利者钱袋",
     "description": "每1.10秒向周围均匀撒出3枚金币，下一轮方向偏转30°；战斗中不显示钱袋。\n每枚远程伤害：4＋角色远程伤害×0.6＋0.3×√当前本金；不消耗本金。\n飞行速度：380；攻击距离：280；同轮金币及其分裂弹对同一敌人最多造成一次原生伤害。\n支持分裂、穿透和元素附魔；分裂金币伤害45%，只分裂一代。金币弹体不是货币掉落物。",
     "icon": "res://assets/ui/icons/weapons/weapon_rentier_purse.png",
@@ -231,6 +236,7 @@
   },
   {
     "id": "weapon_copper_lamp",
+    "shop_description": "追踪近敌喷射火流，持续灼烧，过热后冷却。",
     "display_name": "赤铜炉灯",
     "description": "射程内有敌人时开始喷出30°火流，以每秒180°追踪最近目标；开火后持续喷射至过热，无目标时保持方向。\n每0.15秒造成3点元素基础伤害，持续喷射1.8秒后过热，冷却2.6秒。攻速提升灼烧频率并缩短冷却。\n附魔每0.3秒最多触发一次，使用30%元素伤害基数。分裂增加短侧火流；穿透无效。",
     "icon": "res://assets/ui/icons/weapons/weapon_copper_lamp.png",
@@ -254,6 +260,7 @@
   },
   {
     "id": "weapon_mutant_tentacle",
+    "shop_description": "触手蓄力猛拍前方，对范围内敌人造成近战伤害。",
     "display_name": "异化触手",
     "description": "卷曲的肥厚触手旋转展开后，猛拍地面。\n对前方140×40范围造成24点近战基础伤害，基础间隔2.4秒；每次拍击对每个敌人只命中一次。\n额外投射物转为连续拍击；分裂追加弱化侧拍，只分裂一代。元素附魔需要命中真实敌人；穿透无效。",
     "icon": "res://assets/ui/icons/weapons/weapon_mutant_tentacle.png",
@@ -275,6 +282,7 @@
   },
   {
     "id": "weapon_earth_hammer",
+    "shop_description": "重砸地面，裂缝向前推进，各节点可触发附魔。",
     "display_name": "裂地战锤",
     "description": "缓慢显现后猛砸地面，落地后锤体消失，留下逐点向外推进的细裂缝。\n每0.1秒产生一节点，间距64，基础5点。额外投射物增加节点，最多8点。原生地裂每轮对同一敌人只伤害一次。\n每个主节点独立触发附魔，空地也能触发落雷等地面效果；电火花从节点寻找敌人，无目标不释放。分裂产生弱化短侧枝，不复制附魔链。穿透无效。",
     "icon": "res://assets/ui/icons/weapons/weapon_earth_hammer.png",
@@ -298,6 +306,7 @@
   },
   {
     "id": "weapon_camp_dagger",
+    "shop_description": "正反手快速斩击，可边移动边攻击。",
     "display_name": "营地短刀",
     "description": "正反手快速斩击，锁定出刀方向，可边走边攻击。\n近战伤害：7＋角色近战伤害×0.8；基础间隔：0.40秒；负载：12。\n攻击距离80，扫过前方130°，每次斩击对同一目标只命中一次，地形阻挡伤害。\n额外投射物转为连续斩击。分裂在本轮首次主命中后追加弱化追斩，默认2次、45%伤害，只触发一代；支持元素附魔，不支持穿透。",
     "icon": "res://assets/ui/icons/weapons/weapon_camp_dagger.png",
@@ -333,6 +342,7 @@
   },
   {
     "id": "weapon_nightwatch_spear",
+    "shop_description": "向前刺出长枪，贯穿直线上的敌人，可移动攻击。",
     "display_name": "守夜长枪",
     "description": "锁定最近敌人的方向，向前刺出长枪，可边走边攻击。\n近战伤害：14＋角色近战伤害；基础间隔：1.10秒。\n刺击距离220、全宽28，贯穿前方敌人；每次刺击对每个目标命中一次，地形会阻挡攻击。\n额外投射物转为连续刺击。分裂使每个命中的目标释放短矛，伤害45%，不重复命中本轮主刺目标，只分裂一代。支持元素附魔，不支持穿透附魔。",
     "icon": "res://assets/ui/icons/weapons/weapon_nightwatch_spear.png",
@@ -366,6 +376,7 @@
   },
   {
     "id": "weapon_meteor_flail",
+    "shop_description": "蓄力挥动链锤，锤头远端命中伤害更高。",
     "display_name": "流星摆锤",
     "description": "蓄力时锁定最近敌人的方向，左右交替向前挥出流星锤；仅攻击期间显示武器。\n近战伤害：22＋角色近战伤害×1.2；基础间隔：1.50秒。\n锤头最大伸展距离：144；挥击角度：140°。只有锤头接触造成伤害，锁链不造成伤害，每次挥击对每个目标命中一次。\n锤头伸展至80%攻击距离后，命中伤害提高至150%。负载：18；附魔槽：3。\n分裂：主挥击首次命中后追加弱化挥击，每个分裂默认追加2次、伤害45%，只追加一代；各次命中均触发元素附魔。额外投射物转为额外主挥击；不支持穿透。",
     "icon": "res://assets/ui/icons/weapons/weapon_meteor_flail.png",

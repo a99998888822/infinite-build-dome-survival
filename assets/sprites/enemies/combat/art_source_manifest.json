@@ -1,5 +1,7 @@
 {
-  "frame_size": 64,
+  "frame_size": 32,
+  "frames_per_second": 7,
+  "loop": true,
   "idle_source": "grub_move_01",
   "atlas_sources": {
     "enemy_gloom_mite_idle.png": [
@@ -15,14 +17,87 @@
       "grub_move_07"
     ]
   },
-  "source_limitations": [],
   "editable": {
-    "grub_move_01": "grub_move_01-64-outline.pxg",
-    "grub_move_02": "grub_move_02-64-outline.pxg",
-    "grub_move_03": "grub_move_03-64-outline.pxg",
-    "grub_move_04": "grub_move_04-64-outline.pxg",
-    "grub_move_05": "grub_move_05-64-outline.pxg",
-    "grub_move_06": "grub_move_06-64-outline.pxg",
-    "grub_move_07": "grub_move_07-64-outline.pxg"
+    "grub_move_01": "grub_move_01-32-final.pxg",
+    "grub_move_02": "grub_move_02-32-final.pxg",
+    "grub_move_03": "grub_move_03-32-final.pxg",
+    "grub_move_04": "grub_move_04-32-final.pxg",
+    "grub_move_05": "grub_move_05-32-final.pxg",
+    "grub_move_06": "grub_move_06-32-final.pxg",
+    "grub_move_07": "grub_move_07-32-final.pxg"
+  },
+  "palette": [
+    "#0d141d",
+    "#1b2933",
+    "#293f48",
+    "#38535b",
+    "#4b6b72",
+    "#64858a",
+    "#82a3a5",
+    "#a4c4c4",
+    "#c8dfdb",
+    "#76846b",
+    "#919e7a",
+    "#b0be9b"
+  ],
+  "status": "installed",
+  "approved_sample": "grub_move_03",
+  "source_size": 64,
+  "canvas_scale": 0.5,
+  "canvas_translation": [
+    0,
+    0
+  ],
+  "frame_rects": [
+    [
+      0,
+      0,
+      32,
+      32
+    ],
+    [
+      32,
+      0,
+      32,
+      32
+    ],
+    [
+      64,
+      0,
+      32,
+      32
+    ],
+    [
+      96,
+      0,
+      32,
+      32
+    ],
+    [
+      128,
+      0,
+      32,
+      32
+    ],
+    [
+      160,
+      0,
+      32,
+      32
+    ],
+    [
+      192,
+      0,
+      32,
+      32
+    ]
+  ],
+  "source_limitations": [],
+  "processing": {
+    "revision": "grub_32_source12_2026-10-03",
+    "approved_sample": "grub_move_03",
+    "record": "docs/asset/art_refresh_plan/grub_32_source12_installation_2026-10-03.md",
+    "source": "artifacts/previews/grub_source12_animation/r03_32_animation/delivery",
+    "method": "User-approved B local block simplification, shared 12 source colors, fixed 2:1 canvas, per-pose eye protection."
   }
 }

@@ -10,6 +10,7 @@ var log_text: RichTextLabel
 var _journal: EconomyJournal
 var _last_sequence := 0
 var _open := false
+var _finance_style := false
 
 
 func _ready() -> void:
@@ -77,6 +78,7 @@ func set_open(open: bool) -> void:
 	panel.visible = open
 	toggle_button.button_pressed = open
 	FinanceUIStyle.button(toggle_button, open)
+	if _finance_style: FinanceUIStyle.bank_button(toggle_button, open)
 	if open:
 		_scroll_to_end.call_deferred()
 
@@ -95,6 +97,11 @@ func apply_layout() -> void:
 
 
 func apply_finance_layout(content_rect: Rect2, button_rect: Rect2) -> void:
+	if not _finance_style:
+		panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(panel, "panel", "panel"))
+		FinanceFrameSkin.scrollbar(log_text.get_v_scroll_bar())
+	_finance_style = true
+	FinanceUIStyle.bank_button(toggle_button, _open)
 	toggle_button.position = button_rect.position
 	toggle_button.size = button_rect.size
 	var height := minf(_panel_height_limit(), maxf(0, button_rect.position.y - content_rect.position.y - 6))

@@ -1,0 +1,69 @@
+{
+  "approved_review": "artifacts/wip/character_select/ui_refinement_review",
+  "background_source_sha256": "fdbb6f19c37a1f24ae263026566b18462e75194013c673de0a122c7ba38ca6fc",
+  "assets": {
+    "back_button.png": {
+      "size": [
+        98,
+        25
+      ],
+      "sha256": "b0f20b4bbff5c1eaf77c4015ccba0bd5916e486ff7860ba68d281daf95a14e56"
+    },
+    "background.png": {
+      "size": [
+        640,
+        360
+      ],
+      "sha256": "fdbb6f19c37a1f24ae263026566b18462e75194013c673de0a122c7ba38ca6fc"
+    },
+    "continue_button.png": {
+      "size": [
+        66,
+        25
+      ],
+      "sha256": "a5cad46171002c10e53f062a49078f25a1f2700c17687ee3a1b20a2bce50719a"
+    },
+    "difficulty_normal.png": {
+      "size": [
+        32,
+        32
+      ],
+      "sha256": "d4dfc95330da0ccb7464debc1d0377d12177f5e4e044a392e3d87074e04c1397"
+    },
+    "difficulty_selected.png": {
+      "size": [
+        32,
+        32
+      ],
+      "sha256": "da783704a5295aa50d58ca12818ec21e6bfe6055f894597d0084ed3627da7d31"
+    },
+    "roster_empty.png": {
+      "size": [
+        88,
+        20
+      ],
+      "sha256": "8c3d40caf859463438175f67d7983dafd6ba94f7b35fe8ba67ee249e7b05bb07"
+    },
+    "roster_frame.png": {
+      "size": [
+        114,
+        178
+      ],
+      "sha256": "bf2fda63d832fa0baa3c8a7738d4455afabd99d4d6744552bef22bee49dab963"
+    },
+    "roster_normal.png": {
+      "size": [
+        88,
+        20
+      ],
+      "sha256": "8ae263c036aa890e3fb2f0ee9ac2b3bba93e18ecf0f719a059e62afc2ef32496"
+    },
+    "roster_selected.png": {
+      "size": [
+        88,
+        20
+      ],
+      "sha256": "b25e97c2f1d11d7ade8fcdccd5a429af9c200053d2f95899885488bad1f03529"
+    }
+  }
+}

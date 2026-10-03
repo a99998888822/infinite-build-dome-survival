@@ -4,7 +4,7 @@ class_name VirtualShopGrid
 signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
-const CARD_HEIGHT := 132.0
+const CARD_HEIGHT := 144.0
 const CARD_MIN_WIDTH := 136.0
 const GAP := 8.0
 var offers: Array = []
@@ -22,7 +22,7 @@ var _card_min_width := CARD_MIN_WIDTH
 func _ready() -> void:
 	scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	FinanceUIStyle.scroll(scroll)
+	FinanceUIStyle.bank_scroll(scroll)
 	add_child(scroll)
 	canvas = Control.new()
 	canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL

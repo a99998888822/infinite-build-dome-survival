@@ -465,8 +465,8 @@ func _run_enemy_wave_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	# Standard density yields 2, the +20% stat rounds to 3, then the current x2 population rule applies.
-	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 6) and passed
+	# Tier one density yields 2; the +20% stat rounds to 3 with no population doubling.
+	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 3) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed

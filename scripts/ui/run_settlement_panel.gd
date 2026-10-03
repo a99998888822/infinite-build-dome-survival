@@ -148,6 +148,8 @@ func present(data: Dictionary) -> void:
 	_skipped = false
 	_title.text = "冒险结束"
 	_subtitle.text = "通关！" if bool(report.victory) else "第%d波 阵亡" % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
+	_subtitle.text += " · 难度 %s" % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
+	_heading.text = "结算 ×%d%%" % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
 	_title.add_theme_color_override("font_color", GOLD if bool(report.victory) else Color("c78f79"))
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
 	_speech_text = str(reaction.get("speech", ""))
@@ -217,7 +219,11 @@ func seek(seconds: float) -> void:
 	var pulse := maxf(0, 1 - absf(seconds - float(_config.presentation.stage_times[4]) - 0.3) / 0.3)
 	_total_value.scale = Vector2.ONE * (1 + pulse * 0.07)
 	_status.text = ("已结算" if bool(report.get("paid", false)) else "保存失败，返回时重试") if _progress(4) >= 1 else "正在清点…"
-	_conversion.text = "利息贡献已达上限" if bool(report.interest_capped) and _progress(3) >= 1 else "右列为各项折算的营地币"
+	_conversion.text = "右列为基础营地币"
+	if _progress(4) >= 1:
+		_conversion.text = "基础 %s ×%d%% = %s" % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0), _number(int(report.camp_currency))]
+	if bool(report.interest_capped) and _progress(3) >= 1:
+		_conversion.text += " · 利息贡献已达上限"
 	var voice_time := float(_config.presentation.voice_time)
 	_speech.visible = seconds >= voice_time and not _speech_text.is_empty()
 	_speech_label.visible_characters = -1 if _skipped else maxi(0, int((seconds - voice_time) * 18))

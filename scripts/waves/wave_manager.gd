@@ -674,7 +674,7 @@ func calculate_enemy_spawn_count(base_count: int) -> int:
 	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var streak_multiplier := 1.0 + ZONE_SPAWN_COUNT_GROWTH_PERCENT * float(ZoneProgression.get_effective_streak()) / 100.0
 	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier * streak_multiplier)))
-	# Apply after rounding and player modifiers so every batch doubles exactly.
+	# Apply the selected tier's population multiplier after rounding and player modifiers.
 	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * int(_difficulty.spawn_count_multiplier)
 
 

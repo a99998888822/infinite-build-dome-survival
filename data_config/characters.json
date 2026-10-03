@@ -2,7 +2,7 @@
   {
     "id": "character_void_hunter",
     "display_name": "初心者",
-    "description": "初始最大生命 5；每升一级，最大生命 +1（升级不回复生命）。",
+    "description": "初始最大生命 5；每升一级，最大生命 +1，并回复 1 点生命。",
     "enabled": true,
     "tags": [
       "character",
@@ -35,12 +35,12 @@
       "divinity": 0
     },
     "start_weapons": [
-      "weapon_mutant_tentacle"
+      "weapon_void_blade"
     ],
     "passive_modifiers": [],
     "start_weapon_attachments": [
       {
-        "weapon_id": "weapon_mutant_tentacle",
+        "weapon_id": "weapon_void_blade",
         "item_id": "scroll_lightning"
       }
     ]
@@ -80,10 +80,7 @@
     "start_weapons": ["weapon_rentier_purse"],
     "start_weapon_attachments": [],
     "passive_modifiers": [],
-    "traits": [
-      {"title": "四份方案 · 角色固有", "description": "开局获得以下四件遗物，获得奖励合计 500 本金，仅发放一次。固有实例不可移除；后续获得的同名遗物照常生效。"},
-      {"title": "以资本换生存", "description": "四方案生效后：生命 4、护甲 -5、攻速 -12%、每秒回血 -0.25、血包恢复量 -1、商品价格 +10%。负回血只抵消恢复，不会持续扣血。战斗金币 -50%，不影响利息、取款与直接赠款。"}
-    ],
+    "traits": [],
     "start_relics": ["relic_medical_cutback", "relic_welfare_cutback", "relic_annual_leave_cutback", "relic_salary_adjustment"]
   }
 ]

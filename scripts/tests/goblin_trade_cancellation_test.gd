@@ -31,11 +31,20 @@ func present() -> void:
 func check_cancelled(reason: String) -> void:
 	var trade := popup.trade_presentation
 	check(not trade.is_active() and not trade.visible and not trade._speech.visible and not trade._audio.playing, reason + " stops the card, bubble and sound")
-	check(reasons.back() == reason and popup._bank.get_rect() == baseline, reason + " releases all reserved bank space")
+	check(reasons.back() == reason and bank_space_restored(), reason + " releases all reserved bank space")
 	trade.seek(1.0)
 	popup.configure(flow.get_preparation_payload())
 	popup.set_safe_rect(popup._safe_rect)
-	check(not trade.is_active() and not trade.visible and not trade._speech.visible and popup._bank.get_rect() == baseline, reason + " stays closed after animation ticks, refresh and relayout")
+	check(not trade.is_active() and not trade.visible and not trade._speech.visible and bank_space_restored(), reason + " stays closed after animation ticks, refresh and relayout")
+
+
+func bank_space_restored() -> bool:
+	if not popup._scene_wide: return popup._bank.get_rect() == baseline
+	# The wide form stays under the hands; its height follows the live receipt
+	# or input preview, so a completed transaction may change its height.
+	var rect := popup._bank.get_rect()
+	var backing := popup._scene_bank_back.get_rect()
+	return rect.position == baseline.position and rect.size.x == baseline.size.x and backing.encloses(rect) and rect.end.y <= backing.end.y - 10 and backing.end.y < popup._scene_footer_back.position.y
 
 
 func seed_offer(target: String) -> Dictionary:
@@ -82,7 +91,7 @@ func _run() -> void:
 	check(popup.trade_presentation == null, "presentation stays lazy without an eligible live offer")
 	popup.trade_cancelled.connect(func(reason: String): reasons.append(reason))
 	present()
-	check(popup._bank.position.y > baseline.position.y and popup._bank.size.y < baseline.size.y, "active trade reserves only its own height")
+	check(popup._bank.get_rect() == baseline and popup.trade_presentation._card.get_global_rect().end.y < popup._bank.global_position.y, "wide trade stays above the bank without displacing its controls")
 	check(not popup.trade_presentation._no.disabled and not popup.trade_presentation._yes.disabled, "both trade buttons are enabled on the first frame")
 	check(popup.trade_presentation._card.modulate.a == 1.0 and popup.trade_presentation._card.scale == Vector2.ONE and popup.trade_presentation._body.visible_characters == -1 and popup.trade_presentation._detail.modulate.a == 1.0, "complete card and all terms appear immediately")
 	popup.trade_presentation.seek(0.5)
@@ -171,8 +180,12 @@ func _run() -> void:
 	check_cancelled("finance_closed")
 	popup.show_popup()
 	check(not popup.trade_presentation.is_active(), "returning to finance cannot resurrect cancelled offer")
-	CampProgression.end_transient_session()
 	game.queue_free()
 	await frames()
+	CampProgression.end_transient_session()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
+	await get_tree().create_timer(0.3).timeout
 	print("TRADE_CANCELLATION_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures else 0)

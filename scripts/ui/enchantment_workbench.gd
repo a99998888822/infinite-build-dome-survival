@@ -34,7 +34,7 @@ func _ready() -> void:
 	add_child(weapon_section)
 	_weapon_scroll = TouchScrollContainer.new()
 	_weapon_scroll.follow_focus = true
-	FinanceUIStyle.horizontal_scroll(_weapon_scroll)
+	FinanceUIStyle.bank_horizontal_scroll(_weapon_scroll)
 	weapon_section.add_child(_weapon_scroll)
 	var weapon_padding := MarginContainer.new()
 	weapon_padding.add_theme_constant_override("margin_left", 4)
@@ -62,7 +62,7 @@ func _ready() -> void:
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
 	slot_scroll.custom_minimum_size.y = 64
-	FinanceUIStyle.horizontal_scroll(slot_scroll)
+	FinanceUIStyle.bank_horizontal_scroll(slot_scroll)
 	add_child(slot_scroll)
 	_slots = HBoxContainer.new()
 	_slots.add_theme_constant_override("separation", 4)
@@ -72,7 +72,7 @@ func _ready() -> void:
 	FinanceUIStyle.label(_title, 12, FinanceUIStyle.MUTED)
 	add_child(_title)
 	_inventory_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
-	FinanceUIStyle.scroll(_inventory_scroll)
+	FinanceUIStyle.bank_scroll(_inventory_scroll)
 	_inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_inventory_scroll.custom_minimum_size.y = 52
 	add_child(_inventory_scroll)
@@ -124,7 +124,7 @@ func refresh() -> void:
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.add_theme_constant_override("icon_max_width", 36)
 		button.focus_mode = Control.FOCUS_ALL
-		FinanceUIStyle.button(button, weapon.weapon_id == selected_weapon_id)
+		FinanceUIStyle.bank_button(button, weapon.weapon_id == selected_weapon_id)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
 		button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
@@ -225,7 +225,7 @@ func _update_selection() -> void:
 			if child is EnchantmentSlotCard:
 				child.set_selected(not selected_item_id.is_empty() and str(child.item_instance.get("item_instance_id", "")) == selected_item_id)
 			elif child is ItemInventoryCard:
-				FinanceUIStyle.button(child, str(child.item_instance.get("item_instance_id", "")) == selected_item_id)
+				FinanceUIStyle.bank_button(child, str(child.item_instance.get("item_instance_id", "")) == selected_item_id)
 
 
 func _apply_selected() -> void:
@@ -306,7 +306,7 @@ func _button(caption: String, parent: Control) -> Button:
 	var control := Button.new()
 	control.text = caption
 	control.custom_minimum_size.y = 28
-	FinanceUIStyle.button(control)
+	FinanceUIStyle.bank_button(control)
 	parent.add_child(control)
 	return control
 

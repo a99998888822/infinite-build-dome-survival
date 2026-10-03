@@ -179,6 +179,7 @@ func _build_modal() -> void:
 	inner.patch_margin_top = 12
 	inner.patch_margin_right = 12
 	inner.patch_margin_bottom = 12
+	FinanceFrameSkin.nine_patch(inner)
 	inner.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_box.add_child(inner)
@@ -192,12 +193,14 @@ func _build_modal() -> void:
 	atlas.region = Rect2(3 * 128, 0, 128, 128)
 	_portrait.texture = atlas
 	_bubble = _panel(_box, "303c2c", "778463")
+	_bubble.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slim"))
 	_speech = _label(_bubble, SPEECH, 18, TEXT)
 	_speech.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tail = _image(_box, "res://assets/ui/finance/trade_bubble_tail.png")
 	for i in 3:
 		var amount: int = [100, 200, 500][i]
 		var card := _panel(_box, "283326" if i < 2 else "343724", "67734f" if i < 2 else "bba066")
+		card.add_theme_stylebox_override("panel", FinanceFrameSkin.box("card"))
 		var gain := _label(card, "立即获得", 12, MUTED)
 		var value := _label(card, "+ %d" % amount, 30, Color("ecce8a"))
 		var money := _label(card, "金币", 12, MUTED)
@@ -212,6 +215,7 @@ func _build_modal() -> void:
 		var rate := _label(card, "每波利息 %d%%" % [40,30,20][i], 12, DEBT)
 		var button := _button(card, "借 %d" % amount)
 		FinanceUIStyle.button(button, i == 2)
+		FinanceFrameSkin.button(button, i == 2)
 		button.pressed.connect(_choose.bind(i))
 		_cards.append({"panel":card,"icon":icon,"gain":gain,"value":value,"money":money,
 			"line":line,"caption":caption,"due":repayment,"rate":rate,"button":button,
@@ -342,13 +346,14 @@ func _button(parent: Node, value: String) -> Button:
 	var node := Button.new()
 	node.text = value
 	FinanceUIStyle.button(node)
+	FinanceFrameSkin.button(node)
 	parent.add_child(node)
 	return node
 
 
-func _panel(parent: Node, fill: String, edge: String) -> Panel:
+func _panel(parent: Node, _fill: String, _edge: String) -> Panel:
 	var node := Panel.new()
-	node.add_theme_stylebox_override("panel",FinanceUIStyle.box(fill,edge,0))
+	node.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
 	parent.add_child(node)
 	return node
 

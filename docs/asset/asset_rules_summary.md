@@ -118,34 +118,34 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_flyer_ad` | `icon` | `assets/ui/icons/relics/relic_flyer_ad.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_merger_reorg` | `icon` | `assets/ui/icons/relics/relic_merger_reorg.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_periodic_dividend_clock` | `icon` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_divine_fusion` | `icon` | `assets/ui/icons/relics/relic_divine_fusion.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_medical_cutback` | `icon` | `assets/ui/icons/relics/relic_medical_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_welfare_cutback` | `icon` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
-| `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 已存在 | 文件已存在，实际尺寸 32x32 |
+| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 已接入 | 2026-10-02：64x64、6 色暖藕粉、大色块拼接，用户确认；沿用各界面的现有最近邻显示尺寸 |
+| `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_flyer_ad` | `icon` | `assets/ui/icons/relics/relic_flyer_ad.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 已接入 | 2026-10-02：64x64、12 色原色大色块，去纹理，用户确认；沿用各界面的现有最近邻显示尺寸 |
+| `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_merger_reorg` | `icon` | `assets/ui/icons/relics/relic_merger_reorg.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_periodic_dividend_clock` | `icon` | `assets/ui/icons/relics/relic_periodic_dividend_clock.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_divine_fusion` | `icon` | `assets/ui/icons/relics/relic_divine_fusion.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_goblin_central_bank_printer` | `icon` | `assets/ui/icons/relics/relic_goblin_central_bank_printer.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_perpetual_annuity_scroll` | `icon` | `assets/ui/icons/relics/relic_perpetual_annuity_scroll.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_bankruptcy_reorg` | `icon` | `assets/ui/icons/relics/relic_bankruptcy_reorg.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_medical_cutback` | `icon` | `assets/ui/icons/relics/relic_medical_cutback.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_welfare_cutback` | `icon` | `assets/ui/icons/relics/relic_welfare_cutback.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
+| `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 
-> 说明：上表只覆盖原列表中的 22 个遗物图标；完整 72 条遗物图标以 `docs/asset/asset_checklist_summary.md` 为准，状态与尺寸已按磁盘实况更新。
+> 说明：上表只覆盖原列表中的 22 个遗物图标；完整 90 件以 `docs/asset/art_refresh_plan/icon_manifest.json` 为准。当前正式 PNG 均为 64×64，素材总清单中部分旧尺寸说明尚未同步。
 
 ### 5. Godot 导入约定
 
-1. 遗物图标统一使用 PNG，透明背景；当前工程内实际为 `32x32`，如后续重出高清版本再按 `128x128` 或 `256x256` 制作。
+1. 遗物图标统一使用 64×64 透明 PNG，沿用列表／商店 32px、百科 64px、奖励 48px 的最近邻显示尺寸。2026-10-03 已将本次确认的 39 件替换为 r02 原色 12 色色板版，实际使用 10–12 色，见[接入记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。2026-10-02 的 A 版批次见[第一批记录](art_refresh_plan/relic_A_batch12_installation_2026-10-02.md)、[第二批记录](art_refresh_plan/relic_A_batch02_installation_2026-10-02.md)与[第三批记录](art_refresh_plan/relic_A_batch03_installation_2026-10-02.md)。后续以用户确认的尺寸为准。
 2. 羁绊徽记统一使用 `128x128` PNG，便于在 UI 面板中缩放。
 3. 遗物奖励卡面统一复用第九模块 `reward_option.tscn`，MVP 阶段不需要单独卡底图。
 4. 当前 MVP 只要求遗物图标可用，羁绊徽记可暂空。
@@ -162,7 +162,7 @@
 
 ## 敌人与波次模块素材 Checklist
 
-2026-09-30更新：天外幼体采用64×64硬透明描边稿，移动7帧、idle取第1帧；钢甲骑士采用128×128稿，待机1、行走6、蓄力7、冲刺2、收招1，保持0.7战斗显示比例。具体见[正式接入记录](art_refresh_plan/27_enemies_installation.md)与[钢甲骑士接入规格](iron_knight_integration.md)，不受下表历史MVP单帧约定限制。冲刺预警仍由代码按实际扫掠范围绘制，内部12%不透明度、两侧边缘42%～55%脉动，无箭头、无圆角，不烘焙进角色帧表。
+2026-10-03更新：天外幼体采用32×32、共用12色原色板的B方案简化稿，移动7帧、7FPS、idle取第1帧；场景缩放1.6，保持此前64px帧搭配0.8缩放的战斗显示大小，见[小怪接入记录](art_refresh_plan/grub_32_source12_installation_2026-10-03.md)。钢甲骑士完整动画采用128×128、共用12色原色板的简化稿，待机1、行走6、蓄力7、冲刺2、收招1，沿用当前场景1.12战斗显示比例。具体见[骑士接入记录](art_refresh_plan/knight_source12_installation_2026-10-03.md)与[钢甲骑士接入规格](iron_knight_integration.md)，不受下表历史MVP单帧约定限制。冲刺预警仍由代码按实际扫掠范围绘制，内部12%不透明度、两侧边缘42%～55%脉动，无箭头、无圆角，不烘焙进角色帧表。
 
 ### 1. 统一美术规范
 
@@ -179,7 +179,7 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `enemy_mutated_grub` | `scene` | `scenes/enemy/mutated_grub.tscn` | 已接入 | 64px描边稿，移动7帧，idle取第1帧；2026-09-30正式替换 |
+| `enemy_mutated_grub` | `scene` | `scenes/enemy/mutated_grub.tscn` | 已接入 | 32px、共享12色B方案，移动7帧，idle取第1帧；2026-10-03正式替换 |
 
 ### 5. Godot 导入约定
 

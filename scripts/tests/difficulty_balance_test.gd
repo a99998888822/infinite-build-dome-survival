@@ -69,7 +69,7 @@ func _test_selection_and_slots() -> void:
 			var base := 100.0 if stat == "armor" else 45.0
 			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index]), "actual enemy multiplier: " + id + " " + stat)
 		enemy.free()
-		check(manager.calculate_enemy_spawn_count(6) == [4, 6, 8][index] and manager.calculate_enemy_spawn_count(4) == [4, 4, 6][index], "doubled first-wave group sizes: " + id)
+		check(manager.calculate_enemy_spawn_count(6) == [2, 6, 8][index] and manager.calculate_enemy_spawn_count(4) == [2, 4, 6][index], "reduced tier one and unchanged higher-tier group sizes: " + id)
 		check(is_equal_approx(manager.calculate_spawn_interval(1200), [1620.0, 1440.0, 1260.0][index]), "distinct regular spawn interval: " + id)
 		if id == "1":
 			_test_slots(player, loadout)
@@ -92,7 +92,7 @@ func _test_selection_and_slots() -> void:
 		# Fill to the configured limit and exercise real group spawning.
 		manager.current_wave_index = 0
 		var cap := int(BattleDifficulty.get_profile(id).enemy_limit)
-		check(cap == [240, 360, 480][index], "doubled live enemy limit: " + id)
+		check(cap == [120, 360, 480][index], "reduced tier one and unchanged higher-tier live enemy limit: " + id)
 		for n in cap:
 			var blocker := manager.spawn_enemy("enemy_mutated_grub", Vector2(2000 + n * 3, 0))
 			blocker.set_physics_process(false)
