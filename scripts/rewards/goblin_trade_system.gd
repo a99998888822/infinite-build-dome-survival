@@ -100,8 +100,13 @@ func finish_combat(enemy_limit: int) -> Dictionary:
 	for sample in _enemy_samples: weighted += sample.x * sample.y
 	var average := weighted / _sample_duration if _sample_duration > 0 else 0.0
 	var threshold := maxi(int(config.pressure.enemy_minimum), ceili(enemy_limit * float(config.pressure.enemy_ratio)))
+	# Wave challenges consume the original pressure flag. Broader trade eligibility
+	# is recorded separately so this tuning only changes the banker's offers.
+	var trade_rules: Dictionary = config.trade_pressure
+	var trade_threshold := maxi(int(trade_rules.enemy_minimum), ceili(enemy_limit * float(trade_rules.enemy_ratio)))
 	pressure_snapshot = {"remaining_average": average, "enemy_threshold": threshold, "low_health_episodes": low_health_episodes,
-		"struggling": average >= threshold or low_health_episodes >= int(config.pressure.low_health_episodes)}
+		"struggling": average >= threshold or low_health_episodes >= int(config.pressure.low_health_episodes),
+		"trade_struggling": average >= trade_threshold or low_health_episodes >= int(trade_rules.low_health_episodes)}
 	return pressure_snapshot.duplicate(true)
 
 

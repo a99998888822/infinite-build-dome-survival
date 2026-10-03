@@ -78,8 +78,10 @@ func _test_rules() -> void:
 	c.principal = 0
 	check(trades.eligible_offers(c).size() == 2, "high sanity and spendable wealth can both qualify")
 	c.sanity = 100
+	check(trades.eligible_offers(c).size() == 2, "starting sanity qualifies for ordinary interest offers")
+	c.sanity = 94
 	trades.prepare(c)
-	check(trades.offer.id == "spending_money", "normal starting sanity is not high sanity")
+	check(trades.offer.id == "spending_money", "lower sanity still allows eligible spending money")
 	var token := str(trades.offer.token)
 	c.gold = 1000
 	trades.prepare(c)
@@ -99,6 +101,58 @@ func _test_rules() -> void:
 	var guaranteed_pool := [{"offer_id": "relic:relic_guarding_heart_copper_mirror", "offer_type": "relic", "target_id": "relic_guarding_heart_copper_mirror", "rarity": "epic"}]
 	var guaranteed_roll := ShopOfferGenerator.new().roll_paid_offers({"epic": 0}, {"relic": 100}, guaranteed_pool, 3, 1, [], "epic")
 	check(guaranteed_roll.size() == 1 and guaranteed_roll[0].rarity == "epic", "guarantee overrides luck gate but retains stock eligibility")
+	_test_broader_eligibility()
+
+
+func _test_broader_eligibility() -> void:
+	var trades := GoblinTradeSystem.new()
+	var c := {"wave": 1, "has_next_wave": true, "gold": 0, "principal": 500, "sanity": 100, "struggling": false}
+	check(trades.eligible_offers(c).any(func(x): return x.id == "interest_pact"), "ordinary saver with empty wallet qualifies at starting sanity")
+	c.sanity = 95
+	check(trades.eligible_offers(c).size() == 1, "slightly reduced sanity still qualifies at 95")
+	c.sanity = 94
+	check(trades.eligible_offers(c).is_empty(), "sanity below 95 cannot offer an interest pact")
+	c.gold = 50
+	c.principal = 100
+	check(trades.eligible_offers(c).any(func(x): return x.id == "spending_money"), "50 wallet and 100 principal qualify for spending money")
+	c.principal = 101
+	check(trades.eligible_offers(c).is_empty(), "spending money respects its expanded principal ratio")
+	c.principal = 0
+	c.gold = 49
+	check(trades.eligible_offers(c).is_empty(), "spending money still requires 50 gold")
+	c.gold = 50
+	c.can_bank = false
+	check(trades.eligible_offers(c).is_empty(), "expanded spending offer still requires usable banking")
+	c.can_bank = true
+	c.struggling = true
+	check(trades.eligible_offers(c).any(func(x): return x.id == "strong_refresh"), "50 gold can now qualify for strong refresh")
+	c.epic_available = false
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "strong_refresh"), "expanded strong refresh still requires an epic candidate")
+	c.gold = 60
+	c.principal = 100
+	check(trades.eligible_offers(c).any(func(x): return x.id == "cash_price"), "100 principal and 60 wallet qualify for cash trade")
+	c.principal = 99
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "cash_price"), "cash trade retains its minimum principal boundary")
+	c.principal = 100
+	c.gold = 67
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "cash_price"), "cash trade retains its 1.5 principal ratio boundary")
+	trades.record_damage(10, 4, 10)
+	var pressure := trades.finish_combat(100)
+	check(pressure.trade_struggling and not pressure.struggling, "one low-health episode enables trades without changing challenge pressure")
+	var challenges := WaveChallengeSystem.new()
+	challenges.finish_combat(pressure)
+	check(not challenges.pressure.struggling, "wave challenges retain their own pressure behavior")
+	trades.begin_combat()
+	trades.sample_enemies(3, 19)
+	check(not trades.finish_combat(100).trade_struggling, "crowd below 20 percent does not trigger trades")
+	trades.sample_enemies(3, 20)
+	pressure = trades.finish_combat(100)
+	check(pressure.trade_struggling and not pressure.struggling, "20 percent crowd enables trades before challenge pressure")
+	trades.begin_combat()
+	trades.sample_enemies(3, 7)
+	check(not trades.finish_combat(10).trade_struggling, "small difficulty still requires at least eight enemies")
+	trades.sample_enemies(3, 8)
+	check(trades.finish_combat(10).trade_struggling, "eight enemies qualify at the minimum crowd threshold")
 
 
 func offer_only(id: String) -> Dictionary:

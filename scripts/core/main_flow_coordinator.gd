@@ -1171,7 +1171,7 @@ func _prepare_goblin_trade() -> void:
 		"has_next_wave": _has_next_wave(), "gold": get_current_gold(), "principal": finance.principal,
 		"sanity": _bound_player.get_stat("humanity"), "can_bank": not finance.manual_operation_used,
 		"principal_relic": principal_relic, "epic_available": _has_epic_trade_candidate(),
-		"struggling": bool(_bound_wave_manager.goblin_trades.pressure_snapshot.get("struggling", false))})
+		"struggling": bool(_bound_wave_manager.goblin_trades.pressure_snapshot.get("trade_struggling", false))})
 
 
 func cancel_goblin_trade() -> void:

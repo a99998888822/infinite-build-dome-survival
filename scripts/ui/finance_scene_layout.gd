@@ -51,19 +51,21 @@ static func arrange(ui) -> void:
 	place(ui._stock, Rect2(0, content_h - 42, work_w - 140, 28))
 	ui._stock.show()
 	place(ui._refresh, Rect2(work_w - 136, content_h - 44, 136, 30))
-	var bank_x := 34 * sx
+	# All left-column frames share one pixel-aligned edge at every resolution.
+	var bank_x := roundf(34 * sx)
 	var bank_w := 306 * sx
 	var bank_y := 382 * sy
 	var body: Control = ui._bank.get_child(0)
 	var bank_h := minf(maxf(154, body.get_combined_minimum_size().y + 20), footer_y - bank_y - 10)
 	place(ui._scene_bank_back, Rect2(bank_x, bank_y, bank_w, bank_h))
 	place(ui._bank, Rect2(bank_x + 12, bank_y + 10, bank_w - 24, maxf(24, bank_h - 20)))
-	place(ui._scene_footer_back, Rect2(24, footer_y, right - 16, 40))
-	place(ui._feedback, Rect2(100, footer_y + 8, maxf(100, right - 268), 24))
+	place(ui._scene_footer_back, Rect2(bank_x, footer_y, right - bank_x, 40))
+	var feedback_x := bank_x + 76
+	place(ui._feedback, Rect2(feedback_x, footer_y + 8, maxf(100, right - feedback_x - 158), 24))
 	ui._feedback.show()
-	place(ui.start_button, Rect2(right - 142, footer_y + 6, 144, 28))
+	place(ui.start_button, Rect2(right - 150, footer_y + 6, 144, 28))
 	place(ui.economy_log, Rect2(Vector2.ZERO, viewport))
-	ui.economy_log.apply_finance_layout(Rect2(36, 214 * sy, right - 40, footer_y - 220 * sy), Rect2(30, footer_y + 6, 56, 28))
+	ui.economy_log.apply_finance_layout(Rect2(bank_x, 214 * sy, right - bank_x, footer_y - 220 * sy), Rect2(bank_x + 6, footer_y + 6, 56, 28))
 	# A temporary trade sits above the form. Its scrollable terms and choices
 	# never displace the banking or next-wave controls below the counter.
 	if ui.trade_presentation != null and ui.trade_presentation.is_active():
@@ -72,6 +74,7 @@ static func arrange(ui) -> void:
 	var sale_size := Vector2(minf(420, right - 48), minf(360, viewport.y - 112))
 	place(ui._sale_box, Rect2((viewport - sale_size) * 0.5, sale_size))
 	ui.interest_arrival.arrange(viewport, Vector2(88, 56), Rect2(16, 56, viewport.x - 32, viewport.y - 112))
-	ui.loan_presentation.arrange(Rect2(14, 0, right - 6, viewport.y))
+	# The loan presenter insets its strip by 20 on each side of the supplied rect.
+	ui.loan_presentation.arrange(Rect2(bank_x - 20, 0, right - bank_x + 40, viewport.y))
 	if ui._active_tab == "bank": ui._active_tab = "shop"
 	ui._select_tab(ui._active_tab)
