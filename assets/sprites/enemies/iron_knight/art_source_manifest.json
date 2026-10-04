@@ -1,76 +1,254 @@
 {
-  "frame_size": 128,
-  "idle_source": "boss_walk_06",
+  "frame_size": 256,
+  "idle_source": "move-01",
   "atlas_sources": {
     "knight_idle.png": [
-      "boss_walk_06"
+      "move-01"
     ],
     "knight_move.png": [
-      "boss_walk_01",
-      "boss_walk_02",
-      "boss_walk_03",
-      "boss_walk_04",
-      "boss_walk_05",
-      "boss_walk_06"
+      "move-01",
+      "move-02",
+      "move-03",
+      "move-04",
+      "move-05",
+      "move-06",
+      "move-07"
     ],
     "knight_windup.png": [
-      "boss_attack_01",
-      "boss_attack_02",
-      "boss_attack_03",
-      "boss_attack_04",
-      "boss_attack_05",
-      "boss_attack_06",
-      "boss_attack_07"
+      "attack-01",
+      "attack-02",
+      "attack-03",
+      "attack-04",
+      "attack-05",
+      "attack-06",
+      "attack-07"
     ],
     "knight_dash.png": [
-      "boss_attack_08",
-      "boss_attack_09"
+      "attack-08",
+      "attack-09"
     ],
     "knight_recover.png": [
-      "boss_attack_10"
+      "attack-10"
     ]
   },
   "source_limitations": [
-    "attack03 and attack08 source hammer tops clipped",
-    "recover holds attack10; no invented return-to-idle frames"
+    "attack-03 has a source-cropped hammer head; retained without inventing missing art.",
+    "Recover holds attack-10; no invented return poses."
   ],
   "editable": {
-    "boss_attack_01": "boss_attack_01-128-clean.pxg",
-    "boss_attack_02": "boss_attack_02-128-clean.pxg",
-    "boss_attack_03": "boss_attack_03-128-clean.pxg",
-    "boss_attack_04": "boss_attack_04-128-clean.pxg",
-    "boss_attack_05": "boss_attack_05-128-clean.pxg",
-    "boss_attack_06": "boss_attack_06-128-clean.pxg",
-    "boss_attack_07": "boss_attack_07-128-clean.pxg",
-    "boss_attack_08": "boss_attack_08-128-clean.pxg",
-    "boss_attack_09": "boss_attack_09-128-clean.pxg",
-    "boss_attack_10": "boss_attack_10-128-clean.pxg",
-    "boss_walk_01": "boss_walk_01-128-clean.pxg",
-    "boss_walk_02": "boss_walk_02-128-clean.pxg",
-    "boss_walk_03": "boss_walk_03-128-clean.pxg",
-    "boss_walk_04": "boss_walk_04-128-clean.pxg",
-    "boss_walk_05": "boss_walk_05-128-clean.pxg",
-    "boss_walk_06": "boss_walk_06-128-clean.pxg"
+    "move-01": "move-01-256-clean.pxg",
+    "move-02": "move-02-256-clean.pxg",
+    "move-03": "move-03-256-clean.pxg",
+    "move-04": "move-04-256-clean.pxg",
+    "move-05": "move-05-256-clean.pxg",
+    "move-06": "move-06-256-clean.pxg",
+    "move-07": "move-07-256-clean.pxg",
+    "attack-01": "attack-01-256-clean.pxg",
+    "attack-02": "attack-02-256-clean.pxg",
+    "attack-03": "attack-03-256-clean.pxg",
+    "attack-04": "attack-04-256-clean.pxg",
+    "attack-05": "attack-05-256-clean.pxg",
+    "attack-06": "attack-06-256-clean.pxg",
+    "attack-07": "attack-07-256-clean.pxg",
+    "attack-08": "attack-08-256-clean.pxg",
+    "attack-09": "attack-09-256-clean.pxg",
+    "attack-10": "attack-10-256-clean.pxg"
   },
+  "sources": [
+    {
+      "name": "move-01",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk1.png",
+      "sha256": "9db8e6c7a1c9fc75b1c64b2391526310c90fb403f67179088926d158ab7f7892",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-02",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk2.png",
+      "sha256": "106895720d68d52f4d4ceb6097bbcd5aa2f53bc0f91965bc04eaa4b2bf8c55bd",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-03",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk3.png",
+      "sha256": "fd74ed399e01c8cde5a81b9dd3f68e62ae545ccb1600005ec4ebaf36a67f4d53",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-04",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk4.png",
+      "sha256": "3e77c755cb03e8f2debb6faee8eb73805ca838f7b9ff5c85e5f5b2f9875867e0",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-05",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk5.png",
+      "sha256": "4845e95a2bcf72e2abeddc3181c87f6252b8e6968d18ed4010dac11e6f00203d",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-06",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk6.png",
+      "sha256": "efd084bb14abf15e2a7a8b544032fe1ccde55c16f8e6310b047b283b358c2345",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "move-07",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_move.zip",
+      "member": "boss_walk7.png",
+      "sha256": "108f284189caac9db4a6cade48d1dc2d48613820e0a89975d17b0092ab01137e",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-01",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack1.png",
+      "sha256": "c3b850ba9fbf5ac3b4d7e3045e9c405324a47e62da12c26628941752de24c602",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-02",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack2.png",
+      "sha256": "0a868e8cf9b012cb02ea5f53bb55159067d8e3a2e3cdf8c83d66b5d90db963d9",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-03",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack3.png",
+      "sha256": "7dae7ca768a6309d69c1854b91b56a78ccc9f64995a7e767228796bacf72333d",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-04",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack4.png",
+      "sha256": "c850402d87fd89efd4a4dec6ce094393acbeed087b57a55e7950a738af6a1a5c",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-05",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack5.png",
+      "sha256": "f4482a74377b3a7d11833d1e2c617c7b6e77b397dbc93d43fa2b9394912d34f6",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-06",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack6.png",
+      "sha256": "7235e008dbe22387f25161ba331b1e8390cd922f5a85a069fc393722738d0095",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-07",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack7.png",
+      "sha256": "0e5387fd3179b1862c1ac84b0f49862119b85b0193285f38bb1f3b4a70576519",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-08",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack8.png",
+      "sha256": "ad8d80e1d22d6fc2d78a678cf2378b250c961c919623b998bc7246fdb4ec3381",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-09",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack9.png",
+      "sha256": "c4d3d7ac3acf584dc3327796c46f837f53e520a6dcecd45608c819211af4c2fd",
+      "size": [
+        720,
+        720
+      ]
+    },
+    {
+      "name": "attack-10",
+      "archive": "C:\\Users\\mi\\Downloads\\boss_attack.zip",
+      "member": "boss_attack10.png",
+      "sha256": "b6a052e52b3e77979849a1e223c7e47dee6c99924e17c95437ec4685d369d58d",
+      "size": [
+        720,
+        720
+      ]
+    }
+  ],
   "processing": {
-    "revision": "source12_2026-10-03",
+    "revision": "picxel256_2026-10-04",
     "palette": [
-      "#10151d",
-      "#1b2432",
-      "#283447",
-      "#3a495e",
-      "#4f5f76",
-      "#687b92",
-      "#879bb0",
-      "#9ba4af",
-      "#c0c9d3",
-      "#f1f4f5",
-      "#54585e",
-      "#3b3c3e"
+      "#000000",
+      "#b3bcce",
+      "#070c20",
+      "#4f606e",
+      "#798d94",
+      "#3d434f",
+      "#1f2437",
+      "#12172a",
+      "#687582",
+      "#454f5d",
+      "#2c3346",
+      "#0b1326",
+      "#73878e",
+      "#00000c",
+      "#000515",
+      "#4e586a"
     ],
-    "approved_sample": "artifacts/previews/enemy_source12_sample/r01/delivery/iron_knight_idle_128_12colors.png",
-    "review": "artifacts/previews/knight_source12_animation/r01/delivery",
-    "method": "Same local material simplification as the user-approved idle sample, with per-pose protected landmarks. Exact original alpha/canvas; idle is the approved sample.",
-    "installation_record": "docs/asset/art_refresh_plan/knight_source12_installation_2026-10-03.md"
+    "approved_sample": "artifacts/previews/iron_knight/20261004-clean256-r3/results/steel-knight-256-clean.png",
+    "review": "artifacts/previews/iron_knight/20261004-animation256-r4",
+    "method": "Approved fixed-scale 256px local conversion, binary alpha, shared 16-color palette; per-pose fringe, shadow and armor speck cleanup. No image model.",
+    "installation_record": "docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md"
   }
 }

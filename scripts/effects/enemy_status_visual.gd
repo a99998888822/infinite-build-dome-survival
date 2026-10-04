@@ -1,16 +1,18 @@
 extends Node2D
 
-const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
 const FROST = preload("res://scripts/effects/frost_pattern.gd")
-const FOOT_FLAME_INTERVAL: float = 0.16
+const DRAW_STATUSES := ["wet", "light", "dark", "frozen", "slowed", "holy_flame", "dark_flame"]
 
-var _foot_flame_timer: float = 0.0
+var _flame_visual: Node2D
 var _enemy: Node = null
 var _elapsed: float = 0.0
 var _draw_frame: int = -1
 var _draw_status_mask: int = -1
+var _status_revision := -1
+var _status_mask := 0
 
 
 func _ready() -> void:
@@ -25,33 +27,30 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_elapsed += delta
-	if _enemy.has_status("burning") and not _enemy.has_status("holy_flame") and not _enemy.has_status("dark_flame"):
-		_foot_flame_timer -= delta
-		if _foot_flame_timer <= 0.0:
-			_foot_flame_timer = FOOT_FLAME_INTERVAL
-			var parent := _enemy.get_parent()
-			if parent != null:
-				var flame_color := Color.WHITE if _enemy.has_status("holy_flame") else Color.TRANSPARENT
-				var flame_parameters := {
-					"count_multiplier": 0.35,
-					"spawn_extent_multiplier": 0.62,
-					"fire_white": _enemy.has_status("holy_flame"),
-					"fire_dark": _enemy.has_status("dark_flame"),
-				}
-				PARTICLE_WORLD_SCRIPT.emit_profile(parent, "fire_flame", _enemy.global_position + Vector2(0.0, 12.0), Vector2.UP, 0.75, flame_color, flame_parameters)
-	else:
-		_foot_flame_timer = 0.0
+	if _status_revision != _enemy.status_visual_revision:
+		_status_revision = _enemy.status_visual_revision
+		_status_mask = _enemy.get_status_visual_mask()
+		_sync_flame()
 	# The silhouettes animate at 12 fps. Redraw immediately for status changes,
 	# but avoid rebuilding identical pixel polygons every render frame.
 	var next_frame := int(_elapsed * 12.0)
-	var mask := 0
-	var statuses := ["wet", "light", "dark", "frozen", "slowed", "holy_flame", "dark_flame"]
-	for index in statuses.size():
-		if _enemy.has_status(statuses[index]): mask |= 1 << index
-	if next_frame != _draw_frame or mask != _draw_status_mask:
+	var mask := _status_mask & 127
+	# No visible status means no geometry to rebuild. Transitions still redraw.
+	if mask != _draw_status_mask or (mask != 0 and next_frame != _draw_frame):
 		_draw_frame = next_frame
 		_draw_status_mask = mask
 		queue_redraw()
+
+
+func _sync_flame() -> void:
+	var burning := (_status_mask & 128) != 0
+	if burning and not is_instance_valid(_flame_visual):
+		_flame_visual = FIRE_VISUAL.new()
+		add_child(_flame_visual)
+		_flame_visual.setup_status(_get_body_radius())
+	elif not burning and is_instance_valid(_flame_visual):
+		_flame_visual.queue_free()
+		_flame_visual = null
 
 
 func _draw() -> void:

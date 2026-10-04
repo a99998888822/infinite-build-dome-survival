@@ -1,6 +1,6 @@
 {
-  "frame_size": 32,
-  "frames_per_second": 7,
+  "frame_size": 128,
+  "frames_per_second": 14,
   "loop": true,
   "idle_source": "grub_move_01",
   "atlas_sources": {
@@ -18,86 +18,112 @@
     ]
   },
   "editable": {
-    "grub_move_01": "grub_move_01-32-final.pxg",
-    "grub_move_02": "grub_move_02-32-final.pxg",
-    "grub_move_03": "grub_move_03-32-final.pxg",
-    "grub_move_04": "grub_move_04-32-final.pxg",
-    "grub_move_05": "grub_move_05-32-final.pxg",
-    "grub_move_06": "grub_move_06-32-final.pxg",
-    "grub_move_07": "grub_move_07-32-final.pxg"
+    "grub_move_01": "grub_move_01-128-final.pxg",
+    "grub_move_02": "grub_move_02-128-final.pxg",
+    "grub_move_03": "grub_move_03-128-final.pxg",
+    "grub_move_04": "grub_move_04-128-final.pxg",
+    "grub_move_05": "grub_move_05-128-final.pxg",
+    "grub_move_06": "grub_move_06-128-final.pxg",
+    "grub_move_07": "grub_move_07-128-final.pxg"
   },
   "palette": [
-    "#0d141d",
-    "#1b2933",
-    "#293f48",
-    "#38535b",
-    "#4b6b72",
-    "#64858a",
-    "#82a3a5",
-    "#a4c4c4",
-    "#c8dfdb",
-    "#76846b",
-    "#919e7a",
-    "#b0be9b"
+    "#000000",
+    "#c4b9aa",
+    "#355d66",
+    "#2c4453",
+    "#04060a",
+    "#89736a",
+    "#567173",
+    "#171314",
+    "#5d8790",
+    "#ab9b85",
+    "#9a847b",
+    "#0c0b0e",
+    "#6e7875",
+    "#202c33",
+    "#486469",
+    "#314d5b"
   ],
   "status": "installed",
-  "approved_sample": "grub_move_03",
-  "source_size": 64,
-  "canvas_scale": 0.5,
-  "canvas_translation": [
-    0,
-    0
-  ],
+  "approved_sample": "20261004-128-14fps-r4",
+  "source_size": 720,
   "frame_rects": [
     [
       0,
       0,
-      32,
-      32
-    ],
-    [
-      32,
-      0,
-      32,
-      32
-    ],
-    [
-      64,
-      0,
-      32,
-      32
-    ],
-    [
-      96,
-      0,
-      32,
-      32
+      128,
+      128
     ],
     [
       128,
       0,
-      32,
-      32
+      128,
+      128
     ],
     [
-      160,
+      256,
       0,
-      32,
-      32
+      128,
+      128
     ],
     [
-      192,
+      384,
       0,
-      32,
-      32
+      128,
+      128
+    ],
+    [
+      512,
+      0,
+      128,
+      128
+    ],
+    [
+      640,
+      0,
+      128,
+      128
+    ],
+    [
+      768,
+      0,
+      128,
+      128
     ]
   ],
+  "baseline_exclusive": 92,
+  "game_display": {
+    "size_multiplier": 1.1,
+    "reference_canvas_world_size": [
+      51.2,
+      51.2
+    ],
+    "canvas_world_size": [
+      56.32,
+      56.32
+    ],
+    "sprite_scale": [
+      0.44,
+      0.44
+    ],
+    "sprite_offset": [
+      0,
+      1.76
+    ],
+    "baseline_world_y": 14.08,
+    "collision_radius_before": 17.6,
+    "collision_radius_after": 19.36,
+    "collision_offset": [
+      0,
+      -7.04
+    ],
+    "frame_duration": 0.07142857142857142
+  },
   "source_limitations": [],
   "processing": {
-    "revision": "grub_32_source12_2026-10-03",
-    "approved_sample": "grub_move_03",
-    "record": "docs/asset/art_refresh_plan/grub_32_source12_installation_2026-10-03.md",
-    "source": "artifacts/previews/grub_source12_animation/r03_32_animation/delivery",
-    "method": "User-approved B local block simplification, shared 12 source colors, fixed 2:1 canvas, per-pose eye protection."
+    "revision": "xiaoguai_128_14fps_2026-10-04",
+    "source": "artifacts/previews/xiaoguai_move/20261004-128-14fps-r4",
+    "record": "docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md",
+    "method": "Approved 16-color transparent Picxel seven-frame animation. 14 FPS. Display and collision enlarged 1.1x; movement speed retained."
   }
 }

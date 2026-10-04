@@ -85,6 +85,8 @@ func _update_ruins() -> void:
 			var key := Vector2i(x,y)
 			# Retain four of every five world cells without moving the survivors.
 			if posmod(x*269+y*73+1,5)==0: continue
+			# Approved sparser skyline: retain two thirds of the remaining cells.
+			if posmod(x*137+y*83+2,3)==0: continue
 			var rng := RandomNumberGenerator.new()
 			rng.seed = absi(x*73856093 ^ y*19349663 ^ 113907)
 			var anchor := (Vector2(key)*SPACING+Vector2(rng.randf_range(65,295),rng.randf_range(25,125))).round()

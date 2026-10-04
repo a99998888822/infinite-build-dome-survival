@@ -52,24 +52,49 @@ var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _knockback_deceleration: float = 0.0
 var _contact_damage_cooldown: float = 0.0
-var _burning_remaining: float = 0.0
+var status_visual_revision := 0
+var _burning_remaining: float = 0.0:
+	set(value):
+		if (_burning_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_burning_remaining = value
 var _burn_tick_timer: float = 0.0
 var _burn_damage_per_tick: float = 0.0
 var _burn_damage_remainder: float = 0.0
 var _burn_source_id: String = ""
 var _burn_sources: Dictionary = {}
-var _holy_flame: bool = false
-var _dark_flame: bool = false
+var _holy_flame: bool = false:
+	set(value):
+		if _holy_flame != value: status_visual_revision += 1
+		_holy_flame = value
+var _dark_flame: bool = false:
+	set(value):
+		if _dark_flame != value: status_visual_revision += 1
+		_dark_flame = value
 var _stunned_remaining: float = 0.0
-var _slowed_remaining: float = 0.0
+var _slowed_remaining: float = 0.0:
+	set(value):
+		if (_slowed_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_slowed_remaining = value
 var _slow_multiplier: float = 1.0
-var _wet_remaining: float = 0.0
+var _wet_remaining: float = 0.0:
+	set(value):
+		if (_wet_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_wet_remaining = value
 var _wet_slow_multiplier: float = 1.0
-var _frozen_remaining: float = 0.0
+var _frozen_remaining: float = 0.0:
+	set(value):
+		if (_frozen_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_frozen_remaining = value
 var _thaw_reaction_data: Dictionary = {}
 var _light_freeze_reacted: bool = false
-var _light_remaining: float = 0.0
-var _blinded_remaining: float = 0.0
+var _light_remaining: float = 0.0:
+	set(value):
+		if (_light_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_light_remaining = value
+var _blinded_remaining: float = 0.0:
+	set(value):
+		if (_blinded_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
+		_blinded_remaining = value
 var _visual_tween: Tween = null
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
@@ -78,6 +103,9 @@ var _is_move_animation_active: bool = false
 var _move_animation_frame: int = 0
 var _move_animation_timer: float = 0.0
 var _contact_probe := CircleShape2D.new()
+var _contact_body: CollisionShape2D
+var _contact_player_body: CollisionShape2D
+
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -158,6 +186,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
+	modifier_stack.cache_enabled = true
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_runtime_modifiers(runtime_modifiers)
 	current_hp = int(get_stat("max_hp"))
@@ -316,6 +345,19 @@ func apply_blind(duration: float = 2.0) -> void:
 
 func clear_blind() -> void:
 	_blinded_remaining = 0.0
+
+
+func get_status_visual_mask() -> int:
+	# Bit order matches EnemyStatusVisual.DRAW_STATUSES; bit 7 is normal fire.
+	var mask := int(_wet_remaining > 0.0) | (int(_light_remaining > 0.0) << 1)
+	mask |= int(_blinded_remaining > 0.0) << 2
+	mask |= int(_frozen_remaining > 0.0) << 3
+	mask |= int(_slowed_remaining > 0.0) << 4
+	if _burning_remaining > 0.0:
+		mask |= int(_holy_flame) << 5
+		mask |= int(_dark_flame) << 6
+		mask |= int(not _holy_flame and not _dark_flame) << 7
+	return mask
 
 
 func has_status(status_id: String) -> bool:
@@ -614,8 +656,10 @@ func _process_chase() -> void:
 		_set_movement_visual(false, get_physics_process_delta_time())
 		return
 	var direction := global_position.direction_to(target_player.global_position)
-	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", get_stat("move_speed")))
-	var move_speed := minf(get_stat("move_speed"), base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
+	# Dictionary.get evaluates its default argument even when the key exists.
+	var resolved_move_speed := get_stat("move_speed")
+	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", resolved_move_speed))
+	var move_speed := minf(resolved_move_speed, base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
 	if _slowed_remaining > 0.0:
 		move_speed *= _slow_multiplier
 	if _wet_remaining > 0.0:
@@ -669,7 +713,7 @@ func _set_movement_visual(is_moving: bool, delta: float) -> void:
 	while _move_animation_timer >= frame_duration:
 		_move_animation_timer -= frame_duration
 		_move_animation_frame = (_move_animation_frame + 1) % sprite.hframes
-		sprite.frame = _move_animation_frame
+		if sprite.frame != _move_animation_frame: sprite.frame = _move_animation_frame
 
 
 func _process_contact_damage() -> void:
@@ -690,9 +734,23 @@ func _process_contact_damage() -> void:
 
 
 func _is_touching_player() -> bool:
-	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
-	var player_body := target_player.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if not is_instance_valid(_contact_body) or _contact_body.get_parent() != self:
+		_contact_body = get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if not is_instance_valid(_contact_player_body) or _contact_player_body.get_parent() != target_player:
+		_contact_player_body = target_player.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	var body := _contact_body
+	var player_body := _contact_player_body
 	if body == null or player_body == null or body.disabled or player_body.disabled or body.shape == null or player_body.shape == null:
+		return false
+	# Conservative transformed bounds reject distant pairs; overlapping bounds
+	# still use the original exact shape query, including offsets, scale and margin.
+	var body_bounds: Rect2
+	if body.shape is CircleShape2D:
+		body_bounds = body.global_transform * body.shape.get_rect().grow(CONTACT_MARGIN)
+	else:
+		body_bounds = (body.global_transform * body.shape.get_rect()).grow(CONTACT_MARGIN)
+	var player_bounds: Rect2 = player_body.global_transform * player_body.shape.get_rect()
+	if not body_bounds.grow(0.001).intersects(player_bounds, true):
 		return false
 	if body.shape is CircleShape2D:
 		# Include move_and_slide's tiny safe gap, rather than a fixed root radius.

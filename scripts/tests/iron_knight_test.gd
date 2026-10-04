@@ -52,28 +52,30 @@ func _run() -> void:
 	knight.set_physics_process(false)
 	await get_tree().physics_frame
 	reset_knight()
-	var expected := {&"idle": 1, &"move": 6, &"windup": 7, &"dash": 2, &"recover": 1}
+	var expected := {&"idle": 1, &"move": 7, &"windup": 7, &"dash": 2, &"recover": 1}
 	for action in expected:
 		check(EliteRusher.FRAMES.get_frame_count(action) == expected[action], "approved frame count: " + str(action))
 		for frame_index in expected[action]:
-			check(EliteRusher.FRAMES.get_frame_texture(action, frame_index).get_size() == Vector2(128, 128), "native resolution: %s/%d" % [action, frame_index])
-	check((knight.sprite.position + Vector2(0, 54) * knight.sprite.scale).is_zero_approx(), "approved foot anchor aligns with world origin")
-	check(visible_pixels_match(EliteRusher.FRAMES.get_frame_texture(&"idle", 0).get_image(), EliteRusher.FRAMES.get_frame_texture(&"move", 5).get_image()), "Boss idle is approved sixth walk frame")
+			check(EliteRusher.FRAMES.get_frame_texture(action, frame_index).get_size() == Vector2(256, 256), "native resolution: %s/%d" % [action, frame_index])
+	check((knight.sprite.position + Vector2(0, 93) * knight.sprite.scale).is_zero_approx(), "approved foot anchor aligns with world origin")
+	check(visible_pixels_match(EliteRusher.FRAMES.get_frame_texture(&"idle", 0).get_image(), EliteRusher.FRAMES.get_frame_texture(&"move", 0).get_image()), "Boss idle is approved first walk frame")
+	check(is_equal_approx(EliteRusher.FRAMES.get_animation_speed(&"move"), 10.0), "Boss movement plays at approved 10 FPS")
 	# Check the ordinary enemy's real controller across a whole atlas cycle.
 	var grub := load("res://scenes/enemy/mutated_grub.tscn").instantiate() as EnemyController
 	add_child(grub)
 	grub.set_physics_process(false)
-	check(grub.idle_texture.get_size() == Vector2(32, 32), "Grub native idle is 32px")
-	check(visible_pixels_match(grub.idle_texture.get_image(), grub.move_texture.get_image().get_region(Rect2i(0, 0, 32, 32))), "Grub idle equals first move frame")
-	check((grub.idle_texture.get_size() * grub.sprite.scale).is_equal_approx(Vector2(51.2, 51.2)), "Grub retains its battle display size after 32px migration")
+	check(grub.idle_texture.get_size() == Vector2(128, 128), "Grub native idle is 128px")
+	check(visible_pixels_match(grub.idle_texture.get_image(), grub.move_texture.get_image().get_region(Rect2i(0, 0, 128, 128))), "Grub idle equals first move frame")
+	check((grub.idle_texture.get_size() * grub.sprite.scale).is_equal_approx(Vector2(56.32, 56.32)), "Grub battle display is enlarged by 1.1")
+	check(is_equal_approx(grub.move_frame_duration, 1.0 / 14.0), "Grub movement animation plays at 14 FPS")
 	grub._set_movement_visual(true, 0.0)
 	for frame_index in 7:
-		check(grub.sprite.frame == frame_index and grub.sprite.get_rect().size == Vector2(32, 32), "Grub atlas frame %d stays 32px" % frame_index)
+		check(grub.sprite.frame == frame_index and grub.sprite.get_rect().size == Vector2(128, 128), "Grub atlas frame %d stays 128px" % frame_index)
 		grub._set_movement_visual(true, grub.move_frame_duration)
 	check(grub.sprite.frame == 0, "Grub movement wraps without blank frame")
 	grub._set_movement_visual(false, 0.0)
 	check(grub.sprite.texture == grub.idle_texture and grub.sprite.hframes == 1, "Grub stop restores single-frame idle")
-	check(is_equal_approx(grub.sprite.position.y + 12.0 * grub.sprite.scale.y, 12.8), "Grub retains its approved smaller foot anchor")
+	check(is_equal_approx(grub.sprite.position.y + 28.0 * grub.sprite.scale.y, 14.08), "Grub retains its approved enlarged foot anchor")
 	grub.free()
 	player.position = Vector2(600, 0)
 	check(not knight.start_dash(), "far target cannot manually trigger dash")

@@ -2,6 +2,8 @@ extends Node2D
 class_name MeadowBattleBackdrop
 ## Approved streamed meadow: no per-grass scripts, physics, texture reads or manual sort per frame.
 const CELL := 256.0
+const GRASS_FILL_MULTIPLIER := 2.6
+const GRASS_FILL_LIMIT := 210
 const GROUND_SHADER = preload("res://shaders/battle/meadow/continuous_ground.gdshader")
 const GRASS_SHADER = preload("res://shaders/battle/meadow/continuous_grass.gdshader")
 var config: Dictionary
@@ -42,6 +44,7 @@ var decoration_material := ShaderMaterial.new()
 var _foot_texture: Texture2D
 var _time := 0.0
 var initialized := false
+var grass_batch: Node
 
 
 func _ready() -> void:
@@ -77,6 +80,7 @@ func _refresh_player_foot() -> void:
 func detach_player() -> void:
 	# Called before BattleRoot reparents or frees its world nodes.
 	set_process(false)
+	if is_instance_valid(grass_batch): grass_batch.set_process(false)
 	if is_instance_valid(player) and is_instance_valid(player.visual_anchor) and player.visual_anchor.get_parent() == proxy:
 		player.visual_anchor.reparent(player,false)
 		player.visual_anchor.position = old_visual_position
@@ -118,6 +122,12 @@ func _setup() -> void:
 	initialized = true
 	set_process(true)
 	_update_area()
+	# Own the approved V2 renderer so it shares this battle's pause and lifetime.
+	grass_batch = load("res://scripts/battle/meadow_grass_batch.gd").new()
+	grass_batch.name = "GrassBatch"
+	add_child(grass_batch)
+	grass_batch.bind(self)
+	grass_batch.set_mode("batch")
 
 
 func sample_ground(point: Vector2) -> Color:
@@ -283,6 +293,42 @@ func _plan_cell(key: Vector2i) -> Dictionary:
 	var plan := _dense_plan_cell(key)
 	if not plan.stone.is_empty() and config.groups.ruins.has(plan.stone.id):
 		plan.stone = {}
+	if plan.get("colour_fill", false): return plan
+	plan.colour_fill = true
+	var original: Array = plan.grass.duplicate()
+	if original.is_empty(): return plan
+	var target := mini(GRASS_FILL_LIMIT, roundi(original.size() * GRASS_FILL_MULTIPLIER))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = absi(key.x * 73856093 ^ key.y * 19349663 ^ 4100426)
+	var origin := Vector2(key) * CELL
+	# Preserve existing clusters, then fill matching patches. Spatial bins keep
+	# generation bounded; all work happens once per streamed cell, not per frame.
+	var bins: Dictionary = {}
+	for entry: Dictionary in original:
+		var bin_key := Vector2i((entry.point / 8.0).floor())
+		if not bins.has(bin_key): bins[bin_key] = []
+		bins[bin_key].append(entry.point)
+	var center := Vector2.ZERO
+	for attempt in 4200:
+		if plan.grass.size() >= target: break
+		if attempt % 6 == 0:
+			center = original[rng.randi_range(0, original.size() - 1)].point if rng.randf() < .65 else origin + Vector2(rng.randf_range(12, 244), rng.randf_range(12, 244))
+		var point := (center + Vector2(rng.randf_range(-48, 48), rng.randf_range(-34, 34))).round().clamp(origin + Vector2(6, 6), origin + Vector2(250, 250))
+		var local := sample_ground(point)
+		# Stronger matching for additions leaves brown/dull islands readable.
+		if local.a < .40 or rng.randf() > .98 * local.a * local.a: continue
+		var bin_key := Vector2i((point / 8.0).floor())
+		var close := false
+		for y in range(bin_key.y - 1, bin_key.y + 2):
+			for x in range(bin_key.x - 1, bin_key.x + 2):
+				for other: Vector2 in bins.get(Vector2i(x, y), []):
+					if other.distance_squared_to(point) < 64.0: close = true; break
+		if close: continue
+		var names: Array = config.groups.grass
+		var id := str(names[3] if rng.randf() < (1.0 - local.a) * .25 else names[rng.randi_range(0, 2)])
+		plan.grass.append({"id": id, "point": point, "local": local})
+		if not bins.has(bin_key): bins[bin_key] = []
+		bins[bin_key].append(point)
 	return plan
 
 

@@ -21,8 +21,6 @@ var swings: Array[Dictionary] = []
 var sparks: Array[Dictionary] = []
 var split_profiles: Array[Dictionary] = []
 var split_triggered := false
-var _shape := CapsuleShape2D.new()
-var _query := PhysicsShapeQueryParameters2D.new()
 
 
 func initialize(source: WeaponInstance, direction: Vector2) -> void:
@@ -38,9 +36,6 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	for index in count:
 		var delay := 0.36 * index / maxf(count - 1, 1)
 		_add_swing(delay, WINDUP, SWEEP, 1.0, false, index)
-	_query.shape = _shape
-	_query.collision_mask = 2
-	_query.collide_with_areas = false
 	add_to_group("meteor_flails")
 	add_to_group("weapon_runtime_effects")
 
@@ -79,15 +74,14 @@ func _physics_process(delta: float) -> void:
 			# Newly queued follow-throughs catch up even if a long frame crossed their start.
 			var first := maxf(float(swing.processed_until), begin)
 			var last := minf(age, end)
-			# Subdivide the curved trajectory, then query the actual enemy colliders.
-			# The same head_position owns rendering and collision; no sector damage.
+			# The chain sweeps the entire fan, including enemies near the grip.
 			var steps := maxi(1, ceili((last - first) / (float(swing.duration) / 64.0)))
 			for step in steps:
 				var t0 := lerpf(first, last, float(step) / steps)
 				var t1 := lerpf(first, last, float(step + 1) / steps)
 				var origin0 := old_origin.lerp(global_position, clampf((t0 - previous) / maxf(age - previous, 0.0001), 0, 1))
 				var origin1 := old_origin.lerp(global_position, clampf((t1 - previous) / maxf(age - previous, 0.0001), 0, 1))
-				_sweep_contacts(swing, origin0 + head_position(swing, t0), origin1 + head_position(swing, t1), t1)
+				_sweep_contacts(swing, origin0 + head_position(swing, t0), origin1 + head_position(swing, t1), t1, origin0, origin1)
 			var trail: Array = swing.trail
 			trail.append({"point": head_position(swing, last), "time": age})
 		while not swing.trail.is_empty() and age - float(swing.trail[0].time) > 0.10:
@@ -106,8 +100,9 @@ func head_position(swing: Dictionary, at_time: float) -> Vector2:
 	var local_time := at_time - float(swing.start)
 	var u := clampf((local_time - float(swing.windup)) / float(swing.duration), 0, 1)
 	var eased := u * u * (3.0 - 2.0 * u)
-	var angle := deg_to_rad(lerpf(-70.0, 70.0, eased)) * float(swing.sign)
-	var reach := weapon.get_attack_range() * (0.45 + 0.55 * sin(PI * u))
+	var half := AttackFootprint.FLAIL_ARC * 0.5
+	var angle := deg_to_rad(lerpf(-half, half, eased)) * float(swing.sign)
+	var reach := weapon.get_attack_range()
 	if local_time < float(swing.windup):
 		reach *= lerpf(0.70, 1.0, maxf(local_time / float(swing.windup), 0))
 	elif local_time > float(swing.windup) + float(swing.duration):
@@ -119,14 +114,18 @@ func head_radius(swing: Dictionary) -> float:
 	return weapon.get_hit_radius() * (0.8 if bool(swing.child) else 1.0)
 
 
-func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: float) -> void:
-	_shape.radius = maxf(head_radius(swing), 1.0)
-	_shape.height = from.distance_to(to) + 2.0 * _shape.radius
-	_query.transform = Transform2D((to - from).angle() - PI / 2, (from + to) * 0.5)
-	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
-	for contact in contacts:
-		var enemy := contact.collider as EnemyController
+func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: float, from_origin: Vector2 = Vector2.INF, to_origin: Vector2 = Vector2.INF) -> void:
+	var first_angle := heading.angle_to(from - (global_position if from_origin == Vector2.INF else from_origin))
+	var last_angle := heading.angle_to(to - (global_position if to_origin == Vector2.INF else to_origin))
+	for node in EnemyRegistry.get_registered_enemies():
+		var enemy := node as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or swing.hits.has(enemy.get_instance_id()):
+			continue
+		var offset := enemy.global_position - global_position
+		if not AttackFootprint.in_flail_fan(offset, heading, weapon.get_attack_range()):
+			continue
+		var angle := heading.angle_to(offset)
+		if angle < minf(first_angle, last_angle) - 0.001 or angle > maxf(first_angle, last_angle) + 0.001:
 			continue
 		# A chain cannot reach through blocking terrain.
 		var ray := PhysicsRayQueryParameters2D.create(global_position, enemy.global_position, 4)
@@ -135,10 +134,10 @@ func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: flo
 		_apply_hit(swing, enemy, at_time)
 
 
-func damage_for_contact(swing: Dictionary, at_time: float) -> DamageEvent:
+func damage_for_contact(swing: Dictionary, at_time: float, contact_distance: float = -1.0) -> DamageEvent:
 	var event: DamageEvent = swing.event.duplicate_event()
 	var multiplier := float(swing.multiplier)
-	var extension := head_position(swing, at_time).length() / maxf(weapon.get_attack_range(), 1)
+	var extension := (head_position(swing, at_time).length() if contact_distance < 0 else contact_distance) / maxf(weapon.get_attack_range(), 1)
 	if extension >= float(weapon.weapon_data.get("flail_outer_threshold", 0.8)):
 		multiplier *= float(weapon.weapon_data.get("flail_outer_multiplier", 1.5))
 	event.damage = maxi(1, roundi(event.damage * multiplier))
@@ -151,7 +150,7 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 	var id := enemy.get_instance_id()
 	swing.hits[id] = true
 	var where := enemy.global_position
-	var event := damage_for_contact(swing, at_time)
+	var event := damage_for_contact(swing, at_time, global_position.distance_to(where))
 	event.hit_position = where
 	if not bool(swing.child) and not split_triggered:
 		split_triggered = true
@@ -191,6 +190,18 @@ func _draw() -> void:
 			continue
 		var fade := minf(1.0, local_time / 0.045) * (1.0 - clampf((local_time - end) / RECOVER, 0, 1))
 		var head := head_position(swing, age)
+		if local_time >= float(swing.windup) and local_time <= end:
+			var current_angle := heading.angle_to(head)
+			var half_arc := deg_to_rad(AttackFootprint.FLAIL_ARC * 0.5)
+			var trailing_angle := clampf(current_angle - float(swing.sign) * deg_to_rad(25), -half_arc, half_arc)
+			var fan := PackedVector2Array()
+			for i in 17:
+				fan.append(heading.rotated(lerpf(trailing_angle, current_angle, i / 16.0)) * weapon.get_attack_range())
+			for i in range(16, -1, -1):
+				fan.append(heading.rotated(lerpf(trailing_angle, current_angle, i / 16.0)) * 20)
+			if absf(trailing_angle - current_angle) > 0.001:
+				draw_colored_polygon(fan, Color(tint, 0.16 * fade))
+			draw_arc(Vector2.ZERO, weapon.get_attack_range(), heading.angle() + minf(trailing_angle, current_angle), heading.angle() + maxf(trailing_angle, current_angle), 20, Color(tint, 0.6 * fade), 2, true)
 		var radial := head.normalized()
 		var grip := heading * 14.0
 		var length := grip.distance_to(head)

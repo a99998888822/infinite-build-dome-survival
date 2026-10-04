@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / "assets"
 SUBJECTS = ("beginner", "capitalist", "enemy", "boss")
 BOSS_ACTIONS = {
-    "idle": (1, 1.0, True), "move": (6, 6.0, True),
-    "windup": (7, 8.75, False), "dash": (2, 12.5, False), "recover": (1, 2.0, False),
+    "idle": (1, 1.0, True), "move": (7, 10.0, True),
+    "windup": (7, 17.5, False), "dash": (2, 12.5, False), "recover": (1, 2.0, False),
 }
-BOSS_FRAME_SIZE = 128
+BOSS_FRAME_SIZE = 256
 BOSS_TARGET = "assets/sprites/enemies/iron_knight"
 
 
@@ -63,7 +63,7 @@ def validated_assets(subjects=SUBJECTS, source_root=ASSETS):
 
 def boss_resource():
     steps = 1 + len(BOSS_ACTIONS) + sum(spec[0] for spec in BOSS_ACTIONS.values())
-    lines = [f'[gd_resource type="SpriteFrames" load_steps={steps} format=3]', ""]
+    lines = [f'[gd_resource type="SpriteFrames" load_steps={steps} format=3 uid="uid://djnvkuodrglia"]', ""]
     for action in BOSS_ACTIONS:
         lines.append(f'[ext_resource type="Texture2D" path="res://{BOSS_TARGET}/knight_{action}.png" id="tex_{action}"]')
     animations = []
@@ -104,7 +104,7 @@ def install_assets(subjects=SUBJECTS, source=None, asset_root=ASSETS):
     if "boss" in subjects:
         target = Path(asset_root) / "sprites/enemies/iron_knight"
         (target / "iron_knight_sprite_frames.tres").write_text(boss_resource(), encoding="utf-8")
-        report = {"frame_size": [BOSS_FRAME_SIZE, BOSS_FRAME_SIZE], "movement_foot_anchor": [64, 118], "death": "freeze_current_pose_and_fade",
+        report = {"frame_size": [BOSS_FRAME_SIZE, BOSS_FRAME_SIZE], "movement_foot_anchor": [128, 221], "death": "freeze_current_pose_and_fade",
                   "actions": {name: {"frames": n, "fps": fps, "loop": loop} for name, (n, fps, loop) in BOSS_ACTIONS.items()}}
         (target / "manifest.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     check_installed(subjects, asset_root)

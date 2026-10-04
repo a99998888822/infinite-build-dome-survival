@@ -1,12 +1,11 @@
 extends Node2D
 class_name FireSeed
 
-const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const FIRE_PATCH_SCRIPT = preload("res://scripts/effects/fire_patch.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 
 const MAX_VISUAL_SEEDS_PER_IMPACT: int = 4
-const TRAIL_INTERVAL_SECONDS: float = 0.14
 
 var _velocity: Vector2 = Vector2.ZERO
 var _elapsed: float = 0.0
@@ -15,7 +14,6 @@ var _context: RefCounted = null
 var _parent_root: Node = null
 var _land_position: Vector2 = Vector2.ZERO
 var _field_strength: float = 1.0
-var _trail_timer: float = 0.0
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, direction: Vector2, attachment_item_id: String = "") -> void:
@@ -47,6 +45,12 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		seed._lifetime = randf_range(0.34, 0.56)
 
 
+func _ready() -> void:
+	var visual := FIRE_VISUAL.new()
+	add_child(visual)
+	visual.setup_single(Vector2(14, 22), 2)
+
+
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
@@ -54,13 +58,6 @@ func _process(delta: float) -> void:
 	_velocity = _velocity.move_toward(Vector2.ZERO, 220.0 * delta)
 	_velocity.y += 180.0 * delta
 	global_position += _velocity * delta
-	_trail_timer -= delta
-	if _trail_timer <= 0.0:
-		_trail_timer = TRAIL_INTERVAL_SECONDS
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_spark", global_position, _velocity, 0.35, Color.TRANSPARENT, {
-			"count_multiplier": 0.35,
-			"lifetime_multiplier": 0.75,
-		})
 	if _elapsed >= _lifetime:
 		FIRE_PATCH_SCRIPT.spawn(_parent_root, _land_position, _context, _field_strength)
 		queue_free()

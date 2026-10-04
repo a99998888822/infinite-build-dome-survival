@@ -13,6 +13,9 @@ var proc_left := 0.0
 var beams: Array[Dictionary] = []
 var resonance_controlled := false
 var burst_active := false
+## Optional directed control for the active-combat review; automatic mode is unchanged.
+var manual_control := false
+var manual_direction := Vector2.RIGHT
 
 
 func try_resonance_attack() -> bool:
@@ -41,6 +44,8 @@ func _physics_process(delta: float) -> void:
 		return
 	age += delta
 	global_position = weapon.get_attack_origin()
+	if manual_control and not manual_direction.is_zero_approx():
+		heading = manual_direction.normalized()
 	proc_left = maxf(0, proc_left - delta)
 	var was_firing := firing
 	firing = false
@@ -50,7 +55,7 @@ func _physics_process(delta: float) -> void:
 		heat = cooling / cooling_duration
 		target = null
 	else:
-		target = nearest(weapon, weapon.get_attack_range())
+		target = null if manual_control else nearest(weapon, weapon.get_attack_range())
 		if not burst_active and not resonance_controlled and weapon.attack_timer <= 0 and is_instance_valid(target):
 			burst_active = true
 		if burst_active:
@@ -114,16 +119,11 @@ func _tick_damage() -> void:
 		event.damage = maxi(1, roundi(event.damage * float(beam.power)))
 		event.elemental_damage_scale *= float(beam.power)
 		var direction: Vector2 = beam.direction
-		var origin := global_position + direction * 16.0
-		var half_angle := deg_to_rad(weapon.get_lamp_cone_degrees()) * 0.5
 		for node in enemies:
 			var enemy := node as EnemyController
 			if not is_instance_valid(enemy) or not enemy.is_alive():
 				continue
-			var relative := enemy.global_position - origin
-			if global_position.distance_to(enemy.global_position) > float(beam.reach) or relative.dot(direction) < -16.0:
-				continue
-			if relative.length() > 16 and absf(direction.angle_to(relative)) > minf(half_angle, PI * 0.45):
+			if not AttackFootprint.in_lamp_cone(enemy.global_position - global_position, direction, float(beam.reach), weapon.get_lamp_cone_degrees()):
 				continue
 			if not clear_path(self, global_position, enemy.global_position):
 				continue
@@ -143,9 +143,26 @@ func _draw() -> void:
 	if firing:
 		for beam in beams:
 			var direction: Vector2 = beam.direction
-			var scale_x := maxf(1, float(beam.reach) - 16) / 104.0
-			var scale_y := scale_x * weapon.get_hit_radius() / float(weapon.weapon_data.hit_radius)
-			draw_atlas(FIRE, 128, int(age * 10) % 6, Vector2(9, 64), direction * 16, direction.angle(), Vector2(scale_x, scale_y))
+			_draw_cone_flame(direction, float(beam.reach), bool(beam.child))
 	if heat > 0:
 		draw_rect(Rect2(-18, 32, 36, 4), Color("172022"))
 		draw_rect(Rect2(-17, 33, 34 * heat, 2), Color("9c6545") if cooling > 0 else Color("e89c4f"))
+
+
+func _draw_cone_flame(direction: Vector2, reach: float, child: bool) -> void:
+	var half := deg_to_rad(weapon.get_lamp_cone_degrees()) * 0.5
+	var origin := direction * 16.0
+	# Pixel tongues travel along the same clipped rays as the real damage cone.
+	for i in 90:
+		var progress := fposmod(age * (1.1 + (i % 5) * 0.08) + i * 0.618034, 1.0)
+		var angle := sin(i * 13.7) * half * 0.96
+		var ray := direction.rotated(angle)
+		var projection := origin.dot(ray)
+		var extent := -projection + sqrt(maxf(0, projection * projection + reach * reach - origin.length_squared()))
+		var point := origin + ray * extent * progress
+		var size := (2.0 + progress * 5.0) * (0.7 if child else 1.0)
+		var color := Color("ffdb85") if i % 3 == 0 else Color("ed8737")
+		if i % 5 == 0:
+			color = Color("ab4b2d")
+		color.a = (1.0 - progress * 0.75) * (0.6 if child else 0.85)
+		draw_rect(Rect2((point - Vector2.ONE * size * 0.5).snapped(Vector2(2, 2)), Vector2.ONE * snappedf(size, 2)), color)

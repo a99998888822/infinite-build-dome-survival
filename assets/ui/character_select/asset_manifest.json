@@ -1,27 +1,42 @@
 {
-  "approved_review": "artifacts/wip/character_select/ui_refinement_review",
-  "background_source_sha256": "fdbb6f19c37a1f24ae263026566b18462e75194013c673de0a122c7ba38ca6fc",
+  "approved_review": "artifacts/previews/character_select_basement/20261004-layout-r5/review",
+  "background_grid": [
+    688,
+    384
+  ],
+  "composition_size": [
+    2752,
+    1536
+  ],
+  "background_source_sha256": "a617cc249f5db2b19dd794687f18fec3b2b00a8b987a76b3beaa02f4870b3216",
   "assets": {
     "back_button.png": {
       "size": [
-        98,
-        25
+        224,
+        92
       ],
-      "sha256": "b0f20b4bbff5c1eaf77c4015ccba0bd5916e486ff7860ba68d281daf95a14e56"
+      "sha256": "582e6a476dc6b75bac05b173ddbc0d681127152055438d22efed43f3645b2311"
     },
     "background.png": {
       "size": [
-        640,
-        360
+        2752,
+        1536
       ],
-      "sha256": "fdbb6f19c37a1f24ae263026566b18462e75194013c673de0a122c7ba38ca6fc"
+      "sha256": "a617cc249f5db2b19dd794687f18fec3b2b00a8b987a76b3beaa02f4870b3216"
+    },
+    "character_shadow.png": {
+      "size": [
+        308,
+        24
+      ],
+      "sha256": "d0a46a81f81c7cf08ae4963db6d5a6ec53c04173ebfba984ec3509d4999f2b37"
     },
     "continue_button.png": {
       "size": [
-        66,
-        25
+        224,
+        92
       ],
-      "sha256": "a5cad46171002c10e53f062a49078f25a1f2700c17687ee3a1b20a2bce50719a"
+      "sha256": "78e2410bd768ebdf0e9ad4ed1d46e9a9cf7a05180876e28504d3d164b1e1e325"
     },
     "difficulty_normal.png": {
       "size": [
@@ -53,17 +68,21 @@
     },
     "roster_normal.png": {
       "size": [
-        88,
-        20
+        336,
+        91
       ],
-      "sha256": "8ae263c036aa890e3fb2f0ee9ac2b3bba93e18ecf0f719a059e62afc2ef32496"
+      "sha256": "935b86d9570b1cfb4a741e3fd11bd1c4cf0da0fd369f627199759693742db869"
     },
     "roster_selected.png": {
       "size": [
-        88,
-        20
+        336,
+        91
       ],
-      "sha256": "b25e97c2f1d11d7ade8fcdccd5a429af9c200053d2f95899885488bad1f03529"
+      "sha256": "dd038d1727dcfc4571f0530f8812da4de5ea67f3a8720634e462474421fef556"
     }
-  }
+  },
+  "legacy_unused": [
+    "roster_frame.png",
+    "roster_empty.png"
+  ]
 }

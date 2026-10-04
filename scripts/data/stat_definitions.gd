@@ -380,10 +380,12 @@ static func get_max_value(stat_id: String) -> float:
 
 
 static func clamp_stat_value(stat_id: String, value: float) -> float:
-	if not has_stat(stat_id):
+	if not STAT_DEFINITIONS.has(stat_id):
 		return value
-	var clamped_value := clampf(value, get_min_value(stat_id), get_max_value(stat_id))
-	if is_integer_stat(stat_id):
+	# Read the immutable definition once, rather than repeating helper lookups.
+	var definition: Dictionary = STAT_DEFINITIONS[stat_id]
+	var clamped_value := clampf(value, float(definition.get("min", -INF)), float(definition.get("max", INF)))
+	if bool(definition.get("is_integer", false)):
 		return float(roundi(clamped_value))
 	return clamped_value
 

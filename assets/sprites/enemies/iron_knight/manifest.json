@@ -1,11 +1,11 @@
 {
   "frame_size": [
-    128,
-    128
+    256,
+    256
   ],
   "movement_foot_anchor": [
-    64,
-    118
+    128,
+    221
   ],
   "death": "freeze_current_pose_and_fade",
   "actions": {
@@ -15,13 +15,13 @@
       "loop": true
     },
     "move": {
-      "frames": 6,
-      "fps": 6.0,
+      "frames": 7,
+      "fps": 10.0,
       "loop": true
     },
     "windup": {
       "frames": 7,
-      "fps": 8.75,
+      "fps": 17.5,
       "loop": false
     },
     "dash": {
@@ -34,5 +34,18 @@
       "fps": 2.0,
       "loop": false
     }
-  }
+  },
+  "sprite_scale": 0.56,
+  "sprite_offset": [
+    0,
+    -52.08
+  ],
+  "collision_radius": 33.6,
+  "attack_source_frames": 10,
+  "movement_source_frames": 7,
+  "skill_ms": [
+    400,
+    160,
+    500
+  ]
 }

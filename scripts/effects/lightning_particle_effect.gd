@@ -7,24 +7,19 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
-const BATCH = preload("res://scripts/effects/pixel_particle_batch.gd")
+const PIXEL_BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 
-const CHAIN_DISPLAY_ECHO_DELAY: float = 0.12
+const STEP_SECONDS := 0.06
+const FLASH_SECONDS := STEP_SECONDS * 2.0
+const DARK_SECONDS := 0.04
+const TOTAL_SECONDS := FLASH_SECONDS * 2.0 + DARK_SECONDS
+const CONTROL_JITTER_PIXELS := 20.0
+
 const CHAIN_CONTROL_POINT_SPACING: float = 24.0
 const CHAIN_CONTROL_POINT_JITTER: float = 26.0
 const BOLT_PULSE_LIFETIME: float = 0.38
-const BOLT_CORE_PARTICLE_SIZE: Vector2 = Vector2(4.0, 2.0)
-const BOLT_COMPANION_PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
-const BOLT_GLOW_PARTICLE_SIZE: float = 5.0
 const CHAIN_GLOW_RADIUS_MULTIPLIER: float = 0.5
-const BOLT_PARTICLE_SPACING: float = 3.25
-const BOLT_MICRO_JITTER: float = 2.2
-const GROUND_STRIKE_ECHO_COUNT: int = 2
-const GROUND_STRIKE_CHAIN_COUNT: int = 2
 const GROUND_STRIKE_CONTROL_POINT_SPACING: float = 24.0
-const GROUND_STRIKE_JITTER_MULTIPLIER: float = 12.0 / CHAIN_CONTROL_POINT_JITTER
-const GROUND_STRIKE_SAMPLE_JITTER_MULTIPLIER: float = 0.0
-const GROUND_STRIKE_PARTICLE_SPACING: float = 1.5
 const GROUND_STRIKE_IMPACT_RING_LIFETIME: float = 0.42
 const GROUND_STRIKE_IMPACT_RING_START_RADIUS: float = 7.0
 const DEFAULT_CHAIN_COUNT: float = 1.0
@@ -43,14 +38,8 @@ var _visited: Dictionary = {}
 var _remaining_jumps: int = 0
 var _chain_selection_step: int = 0
 var _jump_radius: float = 170.0
-var _pending_display_echoes: int = 0
 var _chain_finished: bool = false
-var _bolt_pulses: Array[Dictionary] = []
-var _display_echo_count: int = 2
-var _control_point_jitter_multiplier: float = 1.0
-var _sample_jitter_multiplier: float = 1.0
-var _longitudinal_sample_jitter_multiplier: float = 1.0
-var _bolt_particle_spacing: float = BOLT_PARTICLE_SPACING
+var _path_pulses: Array[Dictionary] = []
 var _control_point_spacing: float = CHAIN_CONTROL_POINT_SPACING
 var _control_point_envelope_power: float = 1.3
 var _is_ground_strike: bool = false
@@ -119,11 +108,6 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	effect._ground_strike_damage_applied = false
 	effect.global_position = ground_position
 	effect._direction = Vector2.DOWN
-	effect._display_echo_count = GROUND_STRIKE_ECHO_COUNT
-	effect._control_point_jitter_multiplier = GROUND_STRIKE_JITTER_MULTIPLIER
-	effect._sample_jitter_multiplier = GROUND_STRIKE_SAMPLE_JITTER_MULTIPLIER
-	effect._longitudinal_sample_jitter_multiplier = 0.0
-	effect._bolt_particle_spacing = GROUND_STRIKE_PARTICLE_SPACING
 	effect._control_point_spacing = GROUND_STRIKE_CONTROL_POINT_SPACING
 	effect._control_point_envelope_power = 0.65
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "electric_spark", {
@@ -322,85 +306,48 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 	PARTICLE_WORLD_SCRIPT.emit_profile(_parent_root, "lightning_impact", hit_position, burst_direction, intensity, Color.WHITE, context_parameters)
 
 
+static func alpha_at(age: float) -> float:
+	if age < 0.0 or age >= TOTAL_SECONDS:
+		return 0.0
+	if age >= FLASH_SECONDS and age < FLASH_SECONDS + DARK_SECONDS:
+		return 0.0
+	var local_age := age if age < FLASH_SECONDS else age - FLASH_SECONDS - DARK_SECONDS
+	if local_age < STEP_SECONDS:
+		return 1.0
+	return 0.6
+
+
 func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
-	var chain_count := GROUND_STRIKE_CHAIN_COUNT if _is_ground_strike else 1
-	for chain_index in chain_count:
-		_emit_bolt_pulse(start_position, end_position, chain_index)
-	for echo_index in range(1, _display_echo_count):
-		_pending_display_echoes += 1
-		EffectScheduler.schedule(CHAIN_DISPLAY_ECHO_DELAY * float(echo_index), Callable(self, "_emit_bolt_echo").bind(start_position, end_position), self)
-
-
-func _emit_bolt_echo(start_position: Vector2, end_position: Vector2) -> void:
-	_pending_display_echoes = maxi(_pending_display_echoes - 1, 0)
-	if _is_ground_strike:
-		_bolt_pulses.clear()
-	var chain_count := GROUND_STRIKE_CHAIN_COUNT if _is_ground_strike else 1
-	for chain_index in chain_count:
-		_emit_bolt_pulse(start_position, end_position, chain_index)
-	_try_finish_chain()
-
-
-func _emit_bolt_pulse(start_position: Vector2, end_position: Vector2, path_index: int = 0) -> void:
-	var distance := start_position.distance_to(end_position)
-	if distance <= 1.0:
+	if start_position.distance_squared_to(end_position) <= 1.0:
 		return
-	var bolt_direction := start_position.direction_to(end_position)
-	var perpendicular := bolt_direction.orthogonal()
-	var strand_count := 1 if _is_ground_strike else clampi(int(roundi(_get_cached_parameter("projectile_count", 1.0))), 1, 3)
-	var size_multiplier := clampf(_get_cached_parameter("size_multiplier", 1.0), 0.5, 2.0)
-	var glow_multiplier := clampf(_get_cached_parameter("glow_multiplier", 1.0), 0.25, 3.0)
-	var lifetime_multiplier := clampf(_get_cached_parameter("lifetime_multiplier", 1.0), 0.5, 2.0)
-	var alpha_multiplier := clampf(_get_cached_parameter("alpha_multiplier", 1.0), 0.0, 2.0)
-	var control_points := _get_bolt_control_points(start_position, end_position, bolt_direction, perpendicular, path_index)
-	var control_segment_count := control_points.size() - 1
-	var inverse_control_segment_count := 1.0 / float(control_segment_count)
-	for strand_index in strand_count:
-		var strand_offset := (float(strand_index) - float(strand_count - 1) * 0.5) * 1.2
-		var particle_points := PackedVector2Array()
-		var particle_rotations := PackedFloat32Array()
-		for control_index in control_segment_count:
-			var segment_start: Vector2 = control_points[control_index] + perpendicular * strand_offset
-			var segment_end: Vector2 = control_points[control_index + 1] + perpendicular * strand_offset
-			var segment_distance := segment_start.distance_to(segment_end)
-			var sample_count := maxi(1, int(ceil(segment_distance / _bolt_particle_spacing)))
-			var segment_direction := segment_start.direction_to(segment_end)
-			var segment_perpendicular := segment_direction.orthogonal()
-			for sample_index in sample_count:
-				var sample_ratio := float(sample_index) / float(sample_count)
-				var sample_position := segment_start.lerp(segment_end, sample_ratio)
-				if not segment_direction.is_zero_approx() and sample_index > 0 and sample_index < sample_count:
-					var path_ratio := (float(control_index) + sample_ratio) * inverse_control_segment_count
-					var jitter_envelope := pow(sin(path_ratio * PI), _control_point_envelope_power)
-					sample_position += segment_perpendicular * randf_range(-BOLT_MICRO_JITTER, BOLT_MICRO_JITTER) * _sample_jitter_multiplier * jitter_envelope
-					sample_position += segment_direction * randf_range(-0.7, 0.7) * _longitudinal_sample_jitter_multiplier * jitter_envelope
-				var sample_point := to_local(sample_position).round()
-				if particle_points.is_empty() or particle_points[particle_points.size() - 1].distance_squared_to(sample_point) > 0.25:
-					particle_points.append(sample_point)
-					particle_rotations.append(randf_range(-PI, PI))
-			var end_point := to_local(segment_end).round()
-			if particle_points.is_empty() or particle_points[particle_points.size() - 1].distance_squared_to(end_point) > 0.25:
-				particle_points.append(end_point)
-				particle_rotations.append(randf_range(-PI, PI))
-		var strand_color := Color.WHITE
-		if strand_index > 0:
-			strand_color.a = 0.9
-		strand_color.a *= alpha_multiplier
-		_bolt_pulses.append({
-			"points": particle_points,
-			"rotations": particle_rotations,
-			"age": 0.0,
-			"lifetime": BOLT_PULSE_LIFETIME * lifetime_multiplier,
-			"color": strand_color,
-			"size_multiplier": size_multiplier,
-			"particle_size": BOLT_CORE_PARTICLE_SIZE if strand_index == 0 else BOLT_COMPANION_PARTICLE_SIZE,
-			"glow_size": BOLT_GLOW_PARTICLE_SIZE * glow_multiplier,
-			"is_core": strand_index == 0,
-		})
-		if not _is_ground_strike:
-			_build_particle_batch(_bolt_pulses.back())
-	_emit_bolt_light(start_position.lerp(end_position, 0.5), distance, glow_multiplier)
-	queue_redraw()
+	# Both spells use the existing ground strike's sparse control geometry.
+	_control_point_envelope_power = 0.65
+	var lifetime_scale := clampf(_get_cached_parameter("lifetime_multiplier", 1.0), 0.5, 2.0)
+	var bolt := _create_bolt_path(start_position, end_position)
+	# One initial path per contact, followed by one independently drawn echo path.
+	_path_pulses.append({"bolt": bolt, "age": 0.0, "scale": lifetime_scale,
+		"start": start_position, "end": end_position, "initial_points": bolt.points.duplicate(), "echoed": false})
+
+
+func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_points := PackedVector2Array()) -> Node2D:
+	_control_point_spacing = minf(GROUND_STRIKE_CONTROL_POINT_SPACING, start_position.distance_to(end_position) * 0.5)
+	var direction := start_position.direction_to(end_position)
+	var jitter := minf(CONTROL_JITTER_PIXELS, start_position.distance_to(end_position) * 0.3)
+	var controls := _build_bolt_control_points(start_position, end_position, direction, direction.orthogonal(), jitter / CHAIN_CONTROL_POINT_JITTER)
+	var bolt := PIXEL_BOLT.new()
+	for point in controls:
+		bolt.points.append(to_local(point).round())
+	# Even a very short, rounded path must not accidentally repeat its first shape.
+	if bolt.points == previous_points:
+		var middle: int = bolt.points.size() / 2
+		bolt.points[middle] = (bolt.points[middle] + direction.orthogonal() * 6.0).round()
+	bolt.base_alpha = clampf(_get_cached_parameter("alpha_multiplier", 1.0), 0.0, 2.0)
+	bolt.cell_size = 2
+	bolt.grid_origin = to_local(Vector2.ZERO)
+	bolt.build()
+	add_child(bolt)
+	_emit_bolt_light(start_position.lerp(end_position, 0.5), start_position.distance_to(end_position), _get_cached_parameter("glow_multiplier", 1.0))
+	return bolt
 
 
 func _emit_bolt_light(global_position: Vector2, distance: float, glow_multiplier: float) -> void:
@@ -422,7 +369,8 @@ func _finish_chain() -> void:
 
 
 func _try_finish_chain() -> void:
-	if _chain_finished and _pending_display_echoes <= 0 and _bolt_pulses.is_empty():
+	var ring_active := _is_ground_strike and _ground_strike_impact_age >= 0.0 and _ground_strike_impact_age < GROUND_STRIKE_IMPACT_RING_LIFETIME
+	if _chain_finished and _path_pulses.is_empty() and not ring_active:
 		queue_free()
 
 
@@ -443,22 +391,6 @@ func _build_bolt_control_points(
 		control_points.append(start_position.lerp(end_position, t) + perpendicular * offset)
 	control_points.append(end_position)
 	return control_points
-
-
-func _get_bolt_control_points(
-	start_position: Vector2,
-	end_position: Vector2,
-	bolt_direction: Vector2,
-	perpendicular: Vector2,
-	path_index: int = 0
-) -> Array[Vector2]:
-	return _build_bolt_control_points(
-		start_position,
-		end_position,
-		bolt_direction,
-		perpendicular,
-		_control_point_jitter_multiplier
-	)
 
 
 func _cache_resolved_parameters() -> void:
@@ -498,27 +430,28 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	for index in range(_bolt_pulses.size() - 1, -1, -1):
-		var pulse: Dictionary = _bolt_pulses[index]
-		pulse["age"] = float(pulse.get("age", 0.0)) + delta
-		if float(pulse["age"]) >= float(pulse["lifetime"]):
-			if pulse.has("batch"): pulse.batch.queue_free()
-			_bolt_pulses.remove_at(index)
-		else:
-			if pulse.has("batch"):
-				var fade := 1.0 - float(pulse.age) / float(pulse.lifetime)
-				pulse.batch.modulate.a = fade * fade
-			_bolt_pulses[index] = pulse
+	for index in range(_path_pulses.size() - 1, -1, -1):
+		var pulse := _path_pulses[index]
+		pulse.age += delta / float(pulse.scale)
+		if pulse.age >= TOTAL_SECONDS:
+			pulse.bolt.queue_free()
+			_path_pulses.remove_at(index)
+			continue
+		if not pulse.echoed and pulse.age >= FLASH_SECONDS + DARK_SECONDS:
+			pulse.bolt.hide()
+			pulse.bolt.queue_free()
+			pulse.bolt = _create_bolt_path(pulse.start, pulse.end, pulse.initial_points)
+			pulse.echoed = true
+			# New node and new random geometry; no second strike or damage event.
+		pulse.bolt.modulate.a = alpha_at(pulse.age)
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
-	queue_redraw()
+		queue_redraw()
 	_try_finish_chain()
 
 
 func get_active_particle_count() -> int:
-	var count := 0
-	for pulse in _bolt_pulses: count += (pulse.points as PackedVector2Array).size()
-	return count
+	return 0
 
 
 func _draw() -> void:
@@ -529,42 +462,3 @@ func _draw() -> void:
 		var impact_alpha := (1.0 - impact_ratio) * 0.68
 		draw_circle(impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
 		draw_arc(impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)
-	for pulse in _bolt_pulses:
-		var points: PackedVector2Array = pulse["points"]
-		if points.size() < 2:
-			continue
-		var lifetime := maxf(float(pulse.get("lifetime", BOLT_PULSE_LIFETIME)), 0.01)
-		var age_ratio := clampf(float(pulse.get("age", 0.0)) / lifetime, 0.0, 1.0)
-		var fade := (1.0 - age_ratio) * (1.0 - age_ratio)
-		var base_color: Color = pulse["color"]
-		var alpha := base_color.a * fade
-		if _is_ground_strike:
-			var glow_alpha := alpha * 0.18
-			var core_alpha := alpha * 0.96
-			draw_polyline(points, Color(0.70, 0.90, 1.0, glow_alpha), 6.0, true)
-			draw_polyline(points, Color(1.0, 1.0, 1.0, core_alpha), 2.3, true)
-			continue
-		# Chain rectangles are immutable after spawning; only their node alpha fades.
-
-
-func _build_particle_batch(pulse: Dictionary) -> void:
-	var points: PackedVector2Array = pulse.points
-	var batch := BATCH.create(points.size() * 3)
-	add_child(batch)
-	pulse.batch = batch
-	var size: Vector2 = pulse.particle_size * float(pulse.size_multiplier)
-	size = Vector2(clampf(size.x, 2, 5), clampf(size.y, 1.5, 4))
-	var glow := clampf(float(pulse.glow_size) * float(pulse.size_multiplier), 3, 10) * CHAIN_GLOW_RADIUS_MULTIPLIER
-	var rotations: PackedFloat32Array = pulse.rotations
-	var alpha: float = pulse.color.a
-	var index := 0
-	for i in points.size():
-		var angle := float(rotations[i]) if i < rotations.size() else 0.0
-		BATCH.put(batch.multimesh, index, points[i], Vector2(glow * 1.24, glow * 0.6), angle, Color(1,1,1,alpha * (0.12 if i % 3 == 1 else 0.08)))
-		index += 1
-		BATCH.put(batch.multimesh, index, points[i], size, angle, Color(1,1,1,alpha * (0.72 if i % 3 == 1 else 0.9)))
-		index += 1
-		if bool(pulse.is_core) and i % 5 == 0:
-			BATCH.put(batch.multimesh, index, points[i], Vector2(minf(size.x,2), minf(size.y,2)), angle, Color(1,1,1,alpha*0.82))
-			index += 1
-	batch.multimesh.visible_instance_count = index

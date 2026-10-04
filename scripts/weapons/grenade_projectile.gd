@@ -15,6 +15,7 @@ var elapsed := 0.0
 var flight_seconds := 0.45
 var arc_height := 56.0
 var blast_radius := 64.0
+var elliptical_blast := false
 var exploded := false
 var cancelled := false
 var impact_batches := 0
@@ -70,8 +71,9 @@ func _collect_victims() -> Array[EnemyController]:
 			continue
 		if excluded_target_ids.has(enemy.get_instance_id()):
 			continue
-		var distance := enemy.global_position.distance_squared_to(target_position)
-		if distance > blast_radius * blast_radius:
+		var offset := enemy.global_position - target_position
+		var axes := Vector2(blast_radius, blast_radius * (AttackFootprint.ELLIPSE_RATIO if elliptical_blast else 1.0)).max(Vector2.ONE)
+		if (offset / axes).length_squared() > 1.0:
 			continue
 		victims.append(enemy)
 	return victims
@@ -163,6 +165,7 @@ func _spawn_split_grenades(contacts: Array[DamageEvent], profiles: Array) -> voi
 				child.split_generation = split_generation + 1
 				child.excluded_target_ids = excluded
 				child.blast_radius = blast_radius * float(profile.radius_multiplier)
+				child.elliptical_blast = elliptical_blast
 				child.flight_seconds = float(profile.flight_seconds)
 				child.arc_height = float(profile.arc_height)
 
@@ -171,7 +174,10 @@ func _draw() -> void:
 	if cancelled:
 		return
 	if exploded:
+		if elliptical_blast:
+			draw_set_transform(Vector2.ZERO, 0, Vector2(1, AttackFootprint.ELLIPSE_RATIO))
 		_draw_explosion()
+		draw_set_transform(Vector2.ZERO)
 		return
 	var progress := clampf(elapsed / flight_seconds, 0.0, 1.0)
 	var landing := target_position - global_position

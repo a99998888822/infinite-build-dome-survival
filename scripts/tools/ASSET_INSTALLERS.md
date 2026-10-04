@@ -1,6 +1,6 @@
 # 素材安装工具
 
-2026-09-30敌人更新：普通怪64px，idle1／move7；钢甲骑士128px，idle1／move6／windup7／dash2／recover1。两个idle分别选移动第1帧和行走第6帧。`install_combat_picxel_assets.py`、Boss安装器与临时对照图工具均已按此规格更新。当前可编辑PXG／PAL及帧序来源清单位于各敌人资源目录的 `frames/` 和 `art_source_manifest.json`；接入与回归见[本轮记录](../../docs/asset/art_refresh_plan/27_enemies_installation.md)。
+2026-10-04钢甲骑士更新：256px，idle1／move7（10FPS）／windup7／dash2／recover1，idle选移动第1帧。Boss安装器、图集构建与临时对照图工具均按此规格更新。当前可编辑PXG／PAL及帧序来源清单位于资源目录的 `frames/` 和 `art_source_manifest.json`；接入与回归见[本轮记录](../../docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md)。普通怪当前为128px、移动7帧（14FPS），其独立接入记录见[小怪记录](../../docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md)；通用安装器的非Boss历史契约不作为本轮验收入口。
 
 正式资源位于 `assets/`。安装工具保留在本目录，不依赖 `artifacts` 中的审阅包。默认运行或传入 `--check` 仅检查现有资源的尺寸、色板、透明度和图集布局；旧审阅包已删除，不再进行与历史审阅文件的哈希比对。
 

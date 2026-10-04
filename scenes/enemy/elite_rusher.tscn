@@ -15,6 +15,6 @@ enemy_id = "enemy_elite_rusher"
 shape = SubResource("body")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -60.48)
-scale = Vector2(1.12, 1.12)
+position = Vector2(0, -52.08)
+scale = Vector2(0.56, 0.56)
 texture_filter = 1

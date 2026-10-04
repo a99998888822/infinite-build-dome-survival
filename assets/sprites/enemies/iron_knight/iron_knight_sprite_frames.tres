@@ -1,154 +1,130 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://djnvkuodrglia"]
+[gd_resource type="SpriteFrames" load_steps=24 format=3 uid="uid://djnvkuodrglia"]
 
-[ext_resource type="Texture2D" uid="uid://bxc6rb4ryl0ny" path="res://assets/sprites/enemies/iron_knight/knight_dash.png" id="tex_dash"]
-[ext_resource type="Texture2D" uid="uid://bvl6adgyadvk8" path="res://assets/sprites/enemies/iron_knight/knight_idle.png" id="tex_idle"]
-[ext_resource type="Texture2D" uid="uid://cm88g5qntpnsc" path="res://assets/sprites/enemies/iron_knight/knight_move.png" id="tex_move"]
-[ext_resource type="Texture2D" uid="uid://dtliy58asugji" path="res://assets/sprites/enemies/iron_knight/knight_recover.png" id="tex_recover"]
-[ext_resource type="Texture2D" uid="uid://d24hya887xsg6" path="res://assets/sprites/enemies/iron_knight/knight_windup.png" id="tex_windup"]
-
-[sub_resource type="AtlasTexture" id="dash_0"]
-atlas = ExtResource("tex_dash")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="dash_1"]
-atlas = ExtResource("tex_dash")
-region = Rect2(128, 0, 128, 128)
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/knight_idle.png" id="tex_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/knight_move.png" id="tex_move"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/knight_windup.png" id="tex_windup"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/knight_dash.png" id="tex_dash"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/iron_knight/knight_recover.png" id="tex_recover"]
 
 [sub_resource type="AtlasTexture" id="idle_0"]
 atlas = ExtResource("tex_idle")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_0"]
 atlas = ExtResource("tex_move")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_1"]
 atlas = ExtResource("tex_move")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(256, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_2"]
 atlas = ExtResource("tex_move")
-region = Rect2(256, 0, 128, 128)
+region = Rect2(512, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_3"]
 atlas = ExtResource("tex_move")
-region = Rect2(384, 0, 128, 128)
+region = Rect2(768, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_4"]
 atlas = ExtResource("tex_move")
-region = Rect2(512, 0, 128, 128)
+region = Rect2(1024, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="move_5"]
 atlas = ExtResource("tex_move")
-region = Rect2(640, 0, 128, 128)
+region = Rect2(1280, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="recover_0"]
-atlas = ExtResource("tex_recover")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="move_6"]
+atlas = ExtResource("tex_move")
+region = Rect2(1536, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_0"]
 atlas = ExtResource("tex_windup")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_1"]
 atlas = ExtResource("tex_windup")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(256, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_2"]
 atlas = ExtResource("tex_windup")
-region = Rect2(256, 0, 128, 128)
+region = Rect2(512, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_3"]
 atlas = ExtResource("tex_windup")
-region = Rect2(384, 0, 128, 128)
+region = Rect2(768, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_4"]
 atlas = ExtResource("tex_windup")
-region = Rect2(512, 0, 128, 128)
+region = Rect2(1024, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_5"]
 atlas = ExtResource("tex_windup")
-region = Rect2(640, 0, 128, 128)
+region = Rect2(1280, 0, 256, 256)
 
 [sub_resource type="AtlasTexture" id="windup_6"]
 atlas = ExtResource("tex_windup")
-region = Rect2(768, 0, 128, 128)
+region = Rect2(1536, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="dash_0"]
+atlas = ExtResource("tex_dash")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="dash_1"]
+atlas = ExtResource("tex_dash")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="recover_0"]
+atlas = ExtResource("tex_recover")
+region = Rect2(0, 0, 256, 256)
 
 [resource]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("dash_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("dash_1")
-}],
-"loop": 0,
-"name": &"dash",
-"speed": 12.5
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("idle_0")
-}],
-"loop": 1,
+"frames": [
+{"duration": 1.0, "texture": SubResource("idle_0")}
+],
+"loop": true,
 "name": &"idle",
 "speed": 1.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("move_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("move_1")
-}, {
-"duration": 1.0,
-"texture": SubResource("move_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("move_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("move_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("move_5")
-}],
-"loop": 1,
+"frames": [
+{"duration": 1.0, "texture": SubResource("move_0")},
+{"duration": 1.0, "texture": SubResource("move_1")},
+{"duration": 1.0, "texture": SubResource("move_2")},
+{"duration": 1.0, "texture": SubResource("move_3")},
+{"duration": 1.0, "texture": SubResource("move_4")},
+{"duration": 1.0, "texture": SubResource("move_5")},
+{"duration": 1.0, "texture": SubResource("move_6")}
+],
+"loop": true,
 "name": &"move",
-"speed": 6.0
+"speed": 10.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("recover_0")
-}],
-"loop": 0,
+"frames": [
+{"duration": 1.0, "texture": SubResource("windup_0")},
+{"duration": 1.0, "texture": SubResource("windup_1")},
+{"duration": 1.0, "texture": SubResource("windup_2")},
+{"duration": 1.0, "texture": SubResource("windup_3")},
+{"duration": 1.0, "texture": SubResource("windup_4")},
+{"duration": 1.0, "texture": SubResource("windup_5")},
+{"duration": 1.0, "texture": SubResource("windup_6")}
+],
+"loop": false,
+"name": &"windup",
+"speed": 17.5
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("dash_0")},
+{"duration": 1.0, "texture": SubResource("dash_1")}
+],
+"loop": false,
+"name": &"dash",
+"speed": 12.5
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("recover_0")}
+],
+"loop": false,
 "name": &"recover",
 "speed": 2.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("windup_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_1")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_5")
-}, {
-"duration": 1.0,
-"texture": SubResource("windup_6")
-}],
-"loop": 0,
-"name": &"windup",
-"speed": 8.75
 }]

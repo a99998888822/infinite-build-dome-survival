@@ -8,6 +8,8 @@ const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
 const HIT = preload("res://scripts/weapons/ritual_coin_hit.gd")
 const DOMAIN := Vector2(220, 145)
+const MARK_INTERVAL := 0.8
+const MARK_RECOVERY := 0.3
 
 var weapon: WeaponInstance
 var elapsed := 0.0
@@ -16,9 +18,14 @@ var domain_layer: Node2D
 var boundary_particles: Array[Dictionary] = []
 var outer_particles: Array[Dictionary] = []
 var target_rng := RandomNumberGenerator.new()
+var active_cast := false
+var marks_remaining := 0
+var marks_completed := 0
+var next_mark_at := 0.22
+var finished_at := -1.0
 
 
-func initialize(source: WeaponInstance) -> void:
+func initialize(source: WeaponInstance, directed_cast: bool = false) -> void:
 	weapon = source
 	global_position = weapon.owner_player.global_position
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -28,6 +35,13 @@ func initialize(source: WeaponInstance) -> void:
 	domain_layer.scale = weapon.get_domain_axes() / DOMAIN
 	add_to_group("weapon_runtime_effects")
 	add_to_group("ritual_domains")
+	active_cast = directed_cast
+	if active_cast:
+		marks_remaining = 3 + maxi(0, int(weapon.get_stat("projectile_count")) - 1)
+
+
+func is_attacking() -> bool:
+	return active_cast and not cancelled and (marks_remaining > 0 or elapsed < finished_at + MARK_RECOVERY)
 
 
 func _physics_process(delta: float) -> void:
@@ -38,20 +52,38 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	global_position = weapon.owner_player.global_position
+	if not active_cast:
+		global_position = weapon.owner_player.global_position
 	domain_layer.scale = weapon.get_domain_axes() / DOMAIN
 	elapsed += delta
+	# Both cast modes retain the original star seal and drifting boundary particles.
 	domain_layer.queue_redraw()
+	if active_cast:
+		while marks_remaining > 0 and elapsed >= next_mark_at:
+			if not try_attack(1):
+				# Empty ground retains its unspent marks, without busy catch-up loops.
+				next_mark_at = elapsed + 0.1
+				break
+			marks_remaining -= 1
+			marks_completed += 1
+			next_mark_at += MARK_INTERVAL
+			if marks_remaining == 0:
+				finished_at = elapsed
+		if marks_remaining == 0:
+			domain_layer.modulate.a = clampf(1.0 - (elapsed - finished_at) / MARK_RECOVERY, 0, 1)
+			if not is_attacking():
+				cancel()
 
 
 func contains_enemy(enemy: EnemyController) -> bool:
 	if not is_instance_valid(enemy) or not enemy.is_alive() or not enemy.is_inside_tree():
 		return false
-	var relative := (enemy.global_position - weapon.owner_player.global_position) / weapon.get_domain_axes().max(Vector2.ONE)
+	var center := global_position if active_cast else weapon.owner_player.global_position
+	var relative := (enemy.global_position - center) / weapon.get_domain_axes().max(Vector2.ONE)
 	return relative.length_squared() <= 1.0
 
 
-func try_attack() -> bool:
+func try_attack(primary_limit: int = -1) -> bool:
 	if cancelled or not is_instance_valid(weapon.owner_player) or not weapon.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
 	var candidates: Array[EnemyController] = []
@@ -64,7 +96,8 @@ func try_attack() -> bool:
 		var swap := candidates[index]
 		candidates[index] = candidates[other]
 		candidates[other] = swap
-	var count := mini(maxi(1, int(weapon.get_stat("projectile_count"))), candidates.size())
+	var requested := primary_limit if primary_limit >= 0 else maxi(1, int(weapon.get_stat("projectile_count")))
+	var count := mini(requested, candidates.size())
 	if count == 0:
 		return false
 	var primaries: Array[Dictionary] = []

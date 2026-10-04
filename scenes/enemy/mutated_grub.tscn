@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png" id="3_move"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy_body"]
-radius = 17.6
+radius = 19.36
 
 [node name="MutatedGrub" type="CharacterBody2D" unique_id=82577481]
 collision_layer = 2
@@ -13,14 +13,14 @@ script = ExtResource("1_enemy")
 idle_texture = ExtResource("2_idle")
 move_texture = ExtResource("3_move")
 move_frame_count = 7
-move_frame_duration = 0.142857143
+move_frame_duration = 0.0714285714
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
-position = Vector2(0, -6.4)
+position = Vector2(0, -7.04)
 shape = SubResource("CircleShape2D_enemy_body")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479700477]
-position = Vector2(0, -6.4)
-scale = Vector2(1.6, 1.6)
+position = Vector2(0, 1.76)
+scale = Vector2(0.44, 0.44)
 texture_filter = 1
 texture = ExtResource("2_idle")

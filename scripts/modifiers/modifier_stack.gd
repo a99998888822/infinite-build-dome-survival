@@ -1,15 +1,30 @@
 extends RefCounted
 class_name ModifierStack
 
-var base_stats: Dictionary = {}
-var modifiers: Array[Modifier] = []
+# Cache is opt-in for live enemy stacks. Other stacks retain uncached semantics.
+# Mutate cached stacks via the methods below; replacing either container also invalidates.
+var cache_enabled := false:
+	set(value):
+		cache_enabled = value
+		_stat_cache.clear()
+var _stat_cache: Dictionary = {}
+var base_stats: Dictionary = {}:
+	set(value):
+		base_stats = value
+		_stat_cache.clear()
+var modifiers: Array[Modifier] = []:
+	set(value):
+		modifiers = value
+		_stat_cache.clear()
 
 
 func set_base_stat(stat_id: String, value: float) -> void:
+	_stat_cache.clear()
 	base_stats[stat_id] = StatDefinitions.clamp_stat_value(stat_id, value)
 
 
 func set_base_stats(stats: Dictionary) -> void:
+	_stat_cache.clear()
 	base_stats.clear()
 	for stat_id in stats.keys():
 		set_base_stat(str(stat_id), float(stats[stat_id]))
@@ -24,6 +39,7 @@ func get_base_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 
 
 func add_modifier(modifier: Modifier) -> bool:
+	_stat_cache.clear()
 	if modifier == null:
 		push_warning("Cannot add null modifier.")
 		return false
@@ -51,24 +67,28 @@ func add_modifier_from_dictionary(data: Dictionary) -> Modifier:
 
 
 func remove_modifier(modifier_id: String) -> void:
+	_stat_cache.clear()
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].id == modifier_id:
 			modifiers.remove_at(index)
 
 
 func remove_by_source(source_type: String, source_id: String) -> void:
+	_stat_cache.clear()
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].matches_source(source_type, source_id):
 			modifiers.remove_at(index)
 
 
 func remove_by_source_type(source_type: String) -> void:
+	_stat_cache.clear()
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].source_type == source_type:
 			modifiers.remove_at(index)
 
 
 func remove_by_target_scope(target_scope: String) -> void:
+	_stat_cache.clear()
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].target_scope == target_scope:
 			modifiers.remove_at(index)
@@ -82,6 +102,16 @@ func has_modifier(modifier_id: String) -> bool:
 
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
+	if not cache_enabled or not StatDefinitions.has_stat(stat_id):
+		return _resolve_stat(stat_id, fallback_base_value)
+	if _stat_cache.has(stat_id):
+		return float(_stat_cache[stat_id])
+	var value := _resolve_stat(stat_id, fallback_base_value)
+	_stat_cache[stat_id] = value
+	return value
+
+
+func _resolve_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	if stat_id == "damage_taken_percent":
 		var armor_rate := StatDefinitions.calculate_damage_taken_from_armor(get_stat("armor"))
 		var other_rate := _calculate_regular_stat(stat_id, fallback_base_value)
@@ -93,10 +123,12 @@ func get_stat_with_extra_modifier(stat_id: String, modifier_data: Dictionary, fa
 	var extra := Modifier.from_dictionary(modifier_data)
 	if extra == null or not extra.validate().is_empty():
 		return get_stat(stat_id, fallback_base_value)
+	_stat_cache.clear()
 	modifiers.append(extra)
 	_sort_modifiers()
 	var result := get_stat(stat_id, fallback_base_value)
 	modifiers.erase(extra)
+	_stat_cache.clear()
 	_sort_modifiers()
 	return result
 
@@ -115,14 +147,17 @@ func tick(delta: float) -> void:
 	for index in range(modifiers.size() - 1, -1, -1):
 		if modifiers[index].is_expired():
 			modifiers.remove_at(index)
+			_stat_cache.clear()
 
 
 func clear() -> void:
+	_stat_cache.clear()
 	base_stats.clear()
 	modifiers.clear()
 
 
 func clear_modifiers() -> void:
+	_stat_cache.clear()
 	modifiers.clear()
 
 

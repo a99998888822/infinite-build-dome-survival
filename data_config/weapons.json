@@ -247,7 +247,7 @@
     "attack_interval_ms": 2600, "attack_range": 120, "hit_radius": 15,
     "projectile_speed": 0, "spread_angle": 20, "projectile_behavior": "copper_lamp",
     "player_damage_coefficient": 0.3, "lamp_spray_ms": 1800, "lamp_tick_ms": 150,
-    "lamp_proc_ms": 300, "lamp_proc_percent": 30, "lamp_cone_degrees": 30, "lamp_turn_degrees_per_second": 180,
+    "lamp_proc_ms": 300, "lamp_proc_percent": 30, "lamp_cone_degrees": 60, "lamp_turn_degrees_per_second": 180,
     "unsupported_effects": ["pierce"],
     "base_stats": {"element_damage": 3, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {

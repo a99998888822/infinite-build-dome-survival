@@ -25,8 +25,8 @@ static func arrange(ui) -> void:
 	place(ui.main_panel, Rect2(Vector2.ZERO, viewport))
 	ui._compact = false
 	ui._bank_header.hide()
-	var actor_size := Vector2.ONE * 259.2 * minf(sx, sy)
-	var hand := Vector2(187 * sx, 361.75 * sy)
+	var actor_size := Vector2.ONE * 259.2 * 0.9 * minf(sx, sy)
+	var hand := Vector2(187 * sx, 367.75 * sy)
 	place(ui.portrait, Rect2(hand - BankCounterPortrait.HAND_CONTACT * (actor_size.x / 128.0), actor_size))
 	ui.portrait.show()
 	ui._title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -35,20 +35,22 @@ static func arrange(ui) -> void:
 	ui._title.add_theme_color_override("font_shadow_color", Color("343428"))
 	ui._title.add_theme_constant_override("shadow_offset_x", 2)
 	ui._title.add_theme_constant_override("shadow_offset_y", 2)
-	place(ui._title, Rect2(389 * sx, 84 * sy, 436 * sx, 46 * sy))
-	place(ui._scene_summary_back, Rect2(work_x, 164 * sy, work_w + 6, 32))
-	place(ui._summary, Rect2(work_x + 14, 164 * sy, work_w - 22, 32))
+	place(ui._title, Rect2(558 * sx, 75 * sy, 274 * sx, 46 * sy))
+	place(ui._scene_summary_back, Rect2(work_x, 158 * sy, work_w + 6, 32))
+	place(ui._summary, Rect2(work_x + 14, 158 * sy, work_w - 22, 32))
 	FinanceUIStyle.label(ui._summary, 12, FinanceUIStyle.GOLD)
 	ui._summary.show()
-	place(ui._tabs, Rect2(work_x, 216 * sy, work_w, 30))
-	var content_y := 216 * sy + 38
+	place(ui._tabs, Rect2(work_x, 200 * sy, work_w, 30))
+	var content_y := 200 * sy + 38
 	var content_h := maxf(80, content_bottom - content_y)
-	place(ui._enchant_scroll, Rect2(work_x, content_y, work_w, content_h))
+	place(ui._enchant_scroll, Rect2(work_x + 12, content_y + 16, work_w - 18, maxf(24, content_h - 20)))
 	ui.workbench.custom_minimum_size.y = 276
-	place(ui._scene_enchant_back, Rect2(work_x - 12, content_y - 8, work_w + 24, content_h + 16))
+	place(ui._scene_enchant_back, Rect2(work_x, content_y + 4, work_w + 6, content_h + 4))
 	place(ui._shop, Rect2(work_x, content_y + 4, work_w, content_h - 6))
 	place(ui.shop_grid, Rect2(0, 0, work_w, maxf(40, content_h - 60)))
-	place(ui._stock, Rect2(0, content_h - 42, work_w - 140, 28))
+	# Keep the stock count on the painted front rim, clear of the loan footer.
+	var stock_y := minf(531 * sy - 14, footer_y - 36)
+	place(ui._stock, Rect2(0, roundf(stock_y) - ui._shop.position.y, work_w - 140, 28))
 	ui._stock.show()
 	place(ui._refresh, Rect2(work_w - 136, content_h - 44, 136, 30))
 	# All left-column frames share one pixel-aligned edge at every resolution.

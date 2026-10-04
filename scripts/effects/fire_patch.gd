@@ -2,6 +2,7 @@ extends Area2D
 class_name FirePatch
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
+const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 
 const MERGE_DISTANCE: float = 64.0
@@ -20,7 +21,7 @@ var _light_timer: float = 0.0
 var _stack_strength: float = 1.0
 var _source_weapon_id: String = ""
 var _collision_shape: CollisionShape2D = null
-var _flame_emitters: Array[Node2D] = []
+var _flame_visual: Node2D
 var _light_field: Node = null
 
 
@@ -70,8 +71,8 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 	patch.collision_mask = 2
 	patch.monitoring = true
 	patch.monitorable = false
-	patch._create_particle_emitters()
-	patch._emit_ignition_burst(patch_position, field_strength, context)
+	patch._create_flame_visual()
+	patch._play_ignition_sound(context)
 	return patch
 
 
@@ -133,8 +134,8 @@ func _absorb_seed(patch_position: Vector2, context: RefCounted, field_strength: 
 	if _source_weapon_id.is_empty():
 		_source_weapon_id = _get_source_weapon_id(context)
 	_update_collision_radius()
-	_update_particle_extent()
-	_emit_ignition_burst(patch_position, field_strength, context)
+	_update_flame_extent()
+	_play_ignition_sound(context)
 
 
 func expand_from_wind(radius_multiplier: float = 1.35) -> void:
@@ -142,8 +143,8 @@ func expand_from_wind(radius_multiplier: float = 1.35) -> void:
 	_radius = maxf(_radius, minf(MAX_WIND_FIELD_RADIUS, _radius * safe_multiplier))
 	_base_radius = maxf(_base_radius, _radius)
 	_update_collision_radius()
-	_update_particle_extent()
-	_emit_ignition_burst(global_position, 0.8)
+	_update_flame_extent()
+	_play_ignition_sound()
 
 
 static func expand_nearby_fields(center: Vector2, search_radius: float, radius_multiplier: float) -> void:
@@ -166,67 +167,23 @@ func _update_collision_radius() -> void:
 		circle.radius = _radius
 
 
-func _create_particle_emitters() -> void:
-	if not _flame_emitters.is_empty():
-		return
-	var extent_multiplier := _get_particle_extent_multiplier()
-	_flame_emitters.append(_create_emitter("fire_pool_base", 1.8, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_flame", 0.8, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_tongue", 1.5, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_core", 1.2, extent_multiplier))
-	_flame_emitters.append(_create_emitter("fire_pool_ember", 0.5, extent_multiplier))
-	var configured_emitters: Array[Node2D] = []
-	for emitter in _flame_emitters:
-		if emitter != null:
-			configured_emitters.append(emitter)
-	_flame_emitters = configured_emitters
+func _create_flame_visual() -> void:
+	if is_instance_valid(_flame_visual): return
+	_flame_visual = FIRE_VISUAL.new()
+	add_child(_flame_visual)
+	_flame_visual.setup_field(_radius, _get_flame_color_tint())
 
 
-func _create_emitter(profile_id: String, particle_rate: float, extent_multiplier: float) -> Node2D:
-	return PARTICLE_WORLD_SCRIPT.create_emitter(self, profile_id, _context, {
-		"direction": Vector2.UP,
-		"particle_rate": particle_rate,
-		"max_emissions_per_frame": 1,
-		"spawn_extent_multiplier": extent_multiplier,
-		"use_context_color": false,
-		"color_override": Color.TRANSPARENT,
-		"color_tint": _get_flame_color_tint(),
-	})
+func _update_flame_extent() -> void:
+	if is_instance_valid(_flame_visual):
+		_flame_visual.setup_field(_radius, _get_flame_color_tint())
 
 
-func _update_particle_extent() -> void:
-	var extent_multiplier := _get_particle_extent_multiplier()
-	for emitter in _flame_emitters:
-		if emitter != null and is_instance_valid(emitter) and emitter.has_method("set_spawn_extent_multiplier"):
-			emitter.call("set_spawn_extent_multiplier", extent_multiplier)
-
-
-func _get_particle_extent_multiplier() -> float:
-	return clampf(_radius / 30.0, 0.75, 1.8)
-
-
-func _emit_ignition_burst(burst_position: Vector2, field_strength: float, source_context: RefCounted = null) -> void:
+func _play_ignition_sound(source_context: RefCounted = null) -> void:
 	var audio_impact: RefCounted = source_context.get_meta("combat_audio_impact") if source_context != null and source_context.has_meta("combat_audio_impact") else null
 	AudioManager.begin_combat_audio(audio_impact)
 	AudioManager.play_enchantment_sfx("fire")
 	AudioManager.end_combat_audio()
-	var intensity := clampf(0.45 + sqrt(maxf(field_strength, 0.05)) * 0.16, 0.45, 1.0)
-	var parameters := _build_particle_parameters()
-	parameters["color_tint"] = _get_flame_color_tint()
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_pool_core", burst_position, Vector2.UP, intensity, Color.TRANSPARENT, parameters)
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "fire_pool_ember", burst_position, Vector2.UP, intensity, Color.TRANSPARENT, parameters)
-
-
-func _build_particle_parameters() -> Dictionary:
-	return {
-		"count_multiplier": _context.get_resolved_parameter("count_multiplier", 1.0) if _context != null else 1.0,
-		"speed_multiplier": _context.get_resolved_parameter("speed_multiplier", 1.0) if _context != null else 1.0,
-		"size_multiplier": _context.get_resolved_parameter("size_multiplier", 1.0) if _context != null else 1.0,
-		"lifetime_multiplier": _context.get_resolved_parameter("lifetime_multiplier", 1.0) if _context != null else 1.0,
-		"alpha_multiplier": _context.get_resolved_parameter("alpha_multiplier", 1.0) if _context != null else 1.0,
-		"glow_multiplier": _context.get_resolved_parameter("glow_multiplier", 1.0) if _context != null else 1.0,
-		"spawn_extent_multiplier": _get_particle_extent_multiplier(),
-	}
 
 
 func _refresh_field_light() -> void:

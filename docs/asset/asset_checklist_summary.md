@@ -7,7 +7,7 @@
 > 尺寸说明：当前 90 件正式遗物 PNG 均为 `64x64`。2026-10-03 已将本次确认的 39 件替换为 r02 原色 12 色色板版，见[接入记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。2026-10-02 的 A 版批次记录见[第一批](art_refresh_plan/relic_A_batch12_installation_2026-10-02.md)、[第二批](art_refresh_plan/relic_A_batch02_installation_2026-10-02.md)与[第三批](art_refresh_plan/relic_A_batch03_installation_2026-10-02.md)；表中未属本次更新的旧尺寸描述仍需按实际文件核对。
 > 生成日期：2026-09-21。
 > 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；附魔配置使用 PNG，旧SVG占位图已清理。
-> 2026-10-03：钢甲骑士完整动画已接入原色 12 色简化版，5 张图集、16 张唯一帧，每帧 128×128；当前场景按 1.12 倍显示。详见[本轮接入记录](art_refresh_plan/knight_source12_installation_2026-10-03.md)与[接入说明](iron_knight_integration.md)。
+> 2026-10-04：钢甲骑士已替换为用户确认的 256×256、16 色清理版，5 张图集、17 张唯一帧；移动 7 帧、10 FPS，攻击 10 帧。场景缩放 0.56、碰撞半径 33.6。详见[本轮接入记录](art_refresh_plan/knight_256_installation_2026-10-04.md)与[接入说明](iron_knight_integration.md)。
 > 2026-09-28：移除旧四足精英图集与生成工具、普通怪历史版本、主菜单备份、未使用字体和旧图标；保留正式资源及必要的可编辑源文件。
 > 表格结构：已存在素材、未存在的必需素材、未存在的可选素材、动效与音频。
 
@@ -124,13 +124,13 @@
 | 已接入 | 囤积者戒指遗物图标 | `relic_hoarders_ring.png` | `assets/ui/icons/relics/relic_hoarders_ring.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | 已接入 | 黄金棺椁遗物图标 | `relic_golden_sarcophagus.png` | `assets/ui/icons/relics/relic_golden_sarcophagus.png` | 64x64 / 1:1 / PNG | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | 已存在 | tree1_shader | `tree1_shader.png` | `assets/sprites/camp/tree1_shader.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_idle.png` | 32x32 / 1:1 / PNG | 2026-10-03：B方案原色12色板，复用移动第1帧；移动图集224×32共7帧，场景缩放1.6保持显示大小。 |
-| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_move.png` | 602x86 / 7:1 / PNG | 完整七帧，8 FPS；旧高清贴图已清理 |
-| 已接入 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 128x128 / 1 帧 / RGBA PNG | 已确认的12色样例；复用行走第6帧 |
-| 已接入 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 768x128 / 6 帧 / RGBA PNG | 共享12色色板；6 FPS；逐帧轮廓与位置保留 |
-| 已接入 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 896x128 / 7 帧 / RGBA PNG | 共享12色色板；攻击1–7，800毫秒 |
-| 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 256x128 / 2 帧 / RGBA PNG | 共享12色色板；攻击8–9，160毫秒 |
-| 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 128x128 / 1 帧 / RGBA PNG | 共享12色色板；攻击10，500毫秒；死亡冻结当前姿势淡出 |
+| 已接入 | 天外幼体待机帧 | `enemy_gloom_mite_idle.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_idle.png` | 128x128 / 1:1 / PNG | 2026-10-04：用户确认的16色Picxel版本，复用移动第1帧；显示尺寸与碰撞体均为此前1.1倍。 |
+| 已接入 | 天外幼体行走帧 | `enemy_gloom_mite_move.png` | `assets/sprites/enemies/combat/enemy_gloom_mite_move.png` | 896x128 / 7:1 / PNG | 完整七帧，14 FPS；场景缩放0.44、碰撞半径19.36，移动速度不变。 |
+| 已接入 | 钢甲骑士待机 | `knight_idle.png` | `assets/sprites/enemies/iron_knight/knight_idle.png` | 256x256 / 1 帧 / RGBA PNG | 已确认的16色清理样例；复用移动第1帧 |
+| 已接入 | 钢甲骑士行走 | `knight_move.png` | `assets/sprites/enemies/iron_knight/knight_move.png` | 1792x256 / 7 帧 / RGBA PNG | 共享16色色板；10 FPS；统一脚底基线 |
+| 已接入 | 钢甲骑士蓄力 | `knight_windup.png` | `assets/sprites/enemies/iron_knight/knight_windup.png` | 1792x256 / 7 帧 / RGBA PNG | 共享16色色板；攻击1–7，400毫秒 |
+| 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 512x256 / 2 帧 / RGBA PNG | 共享16色色板；攻击8–9，160毫秒 |
+| 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 256x256 / 1 帧 / RGBA PNG | 共享16色色板；攻击10，500毫秒；死亡冻结当前姿势淡出 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
 | 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
 | 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距 |

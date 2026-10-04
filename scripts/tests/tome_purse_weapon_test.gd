@@ -76,6 +76,7 @@ func attach(weapon: WeaponInstance, item_id: String) -> Dictionary:
 
 
 func _run() -> void:
+	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
@@ -254,6 +255,13 @@ func _run() -> void:
 	flow.return_to_main_menu_from_settings()
 	await frames(12)
 	check(get_tree().get_nodes_in_group("coin_projectiles").is_empty() and get_tree().get_nodes_in_group("ritual_domains").is_empty(), "return to menu removes weapon runtime nodes")
+	game.queue_free()
+	await frames(3)
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
+	CampProgression.end_transient_session()
+	await get_tree().create_timer(0.3).timeout
 	print("TOME_PURSE_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
 
@@ -278,7 +286,7 @@ func _test_body_sizes_and_contact() -> void:
 	fixture([Vector2(40, 0)])
 	var enemy := enemies[0]
 	var shape := enemy.get_node("CollisionShape2D") as CollisionShape2D
-	check(enemy.sprite.scale == Vector2(0.8, 0.8) and enemy.sprite.position == shape.position and is_equal_approx(shape.shape.radius, 17.6), "small enemy uses 0.8 art with centered body")
+	check(enemy.sprite.scale.is_equal_approx(Vector2(0.44, 0.44)) and enemy.sprite.position.is_equal_approx(Vector2(0, 1.76)) and shape.position.is_equal_approx(Vector2(0, -7.04)) and is_equal_approx(shape.shape.radius, 19.36), "small enemy uses approved 128px art and 1.1x body")
 	check(not enemy._is_touching_player(), "no contact damage across visible 40px gap")
 	enemy.global_position = player.global_position + Vector2(28, 0)
 	check(enemy._is_touching_player(), "physical body contact includes slide safe margin")
@@ -295,7 +303,7 @@ func _test_coin_body_contacts() -> void:
 		var coin := shot()
 		coin._physics_process(2.0)
 		check(enemies[0].current_hp < 1000, "coin hits real body edge even when root point is outside ray: " + str(offset))
-	for offset in [Vector2(100, 39), Vector2(100, -26)]:
+	for offset in [Vector2(100, 42), Vector2(100, -28)]:
 		fixture([offset])
 		var coin := shot()
 		coin._physics_process(2.0)

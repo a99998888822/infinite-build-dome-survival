@@ -89,8 +89,8 @@ func _run() -> void:
 	check(is_equal_approx(flail.age, 0.17) and hits.is_empty(), "pause freezes swing and contact")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	advance(flail, 0.60, 0.60)
-	check(hits.size() == 1 and hits[0].damage == 33, "large time step sweeps the curve, outer contact hits once")
-	check(enemies[1].current_hp == 10000 and enemies[2].current_hp == 10000, "chain and rear enemies receive no sector damage")
+	check(hits.size() == 2 and hits.any(func(hit): return hit.damage == 33) and hits.any(func(hit): return hit.damage == 22), "large step sweeps fan once, with distinct outer and inner damage")
+	check(enemies[1].current_hp == 9978 and enemies[2].current_hp == 10000, "inner fan hits while rear remains unharmed")
 	check(flail.heading == Vector2.RIGHT, "attack direction remains locked")
 	advance(flail, 0.4)
 	check(flail.cancelled and not flail.visible, "weapon disappears after recovery")
@@ -100,15 +100,14 @@ func _run() -> void:
 	flail = await fixture([Vector2(140, 0)])
 	var near_time := 0.18
 	var head := flail.head_position(flail.swings[0], near_time)
-	var radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
-	enemies[0].position = head + Vector2.RIGHT * (flail.head_radius(flail.swings[0]) + radius + 0.8)
+	enemies[0].position = head.normalized() * (weapon.get_attack_range() + 0.8)
 	await frames()
 	flail._sweep_contacts(flail.swings[0], head, head, near_time)
-	check(hits.is_empty(), "outside actual head plus enemy collider stays unharmed")
-	enemies[0].position.x -= 1.6
+	check(hits.is_empty(), "outside fan radius stays unharmed")
+	enemies[0].position = head.normalized() * 45
 	await frames()
 	flail._sweep_contacts(flail.swings[0], head, head, near_time)
-	check(hits.size() == 1 and hits[0].damage == 22, "inner visible contact gives baseline damage")
+	check(hits.size() == 1 and hits[0].damage == 22, "inner fan gives baseline damage")
 	player.add_runtime_modifier({"id": "melee_bonus", "source_type": "test", "source_id": "flail_test",
 		"stat": "melee_damage", "operation": "add_flat", "value": 10, "duration": -1,
 		"stack_rule": "unique", "target_scope": "player"})
