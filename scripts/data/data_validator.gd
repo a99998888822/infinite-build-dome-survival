@@ -286,10 +286,17 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 			errors.append("%s requires melee damage." % path)
 	_validate_non_negative_int(record, "load_cost", path)
 	_validate_non_negative_int(record, "attack_interval_ms", path)
+	_validate_non_negative_int(record, "active_cooldown_ms", path)
+	if int(record.get("active_cooldown_ms", 0)) <= 0:
+		errors.append("%s.active_cooldown_ms must be positive; it starts after execution." % path)
 	_validate_non_negative_int(record, "attack_range", path)
 	_validate_non_negative_int(record, "hit_radius", path)
 	_validate_non_negative_int(record, "projectile_speed", path)
 	_validate_non_negative_int(record, "spread_angle", path)
+	if record.has("projectile_spacing_degrees"):
+		var gap: Variant = record.projectile_spacing_degrees
+		if not (gap is int or gap is float) or float(gap) <= 0 or float(gap) > 180:
+			errors.append("%s.projectile_spacing_degrees must be greater than zero and at most 180." % path)
 	if str(record.get("projectile_behavior", "")) == "camp_dagger":
 		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0:
 			errors.append("%s dagger requires melee damage and positive reach/contact radius." % path)
@@ -302,8 +309,7 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 			if int(record.get(field, 0)) <= 0:
 				errors.append("%s.%s must be positive." % [path, field])
 			duration += int(record.get(field, 0))
-		if duration > int(record.get("attack_interval_ms", 0)):
-			errors.append("%s dagger combo must fit inside its base cooldown." % path)
+		# Active actions finish before cooldown starts; combo length is independent.
 		if not "pierce" in record.get("unsupported_effects", []):
 			errors.append("%s must reject pierce for contact slashes." % path)
 	if str(record.get("projectile_behavior", "")) == "nightwatch_spear":
@@ -331,7 +337,7 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 		if str(record.get("attack_kind", "")) != "element" or float(record.get("domain_minor_axis", 0)) <= 0 or float(record.get("attack_range", 0)) <= 0:
 			errors.append("%s requires elemental damage and positive ellipse axes." % path)
 	if str(record.get("projectile_behavior", "")) == "coin":
-		for field in ["player_damage_coefficient", "principal_damage_coefficient", "volley_rotation_degrees"]:
+		for field in ["player_damage_coefficient", "principal_damage_coefficient"]:
 			var value: Variant = record.get(field)
 			if not (value is int or value is float) or float(value) < 0.0:
 				errors.append("%s.%s must be a non-negative number." % [path, field])

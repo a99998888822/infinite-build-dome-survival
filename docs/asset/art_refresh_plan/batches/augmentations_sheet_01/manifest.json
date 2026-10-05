@@ -1,6 +1,6 @@
 {
   "status": "installed",
-  "scope": "12 unique augmentation UI icons for 13 configuration records; effects excluded.",
+  "scope": "11 unique augmentation UI icons for 12 configuration records; row 1 column 2 remains empty; effects excluded.",
   "layout": {
     "columns": 4,
     "rows": 3,
@@ -46,35 +46,6 @@
         64
       ],
       "future_png_path": "assets/ui/icons/augmentations/scroll_bounce.png",
-      "config_path_change_on_install": true,
-      "installed_size": [
-        32,
-        32
-      ],
-      "status": "installed"
-    },
-    {
-      "row": 1,
-      "column": 2,
-      "key": "scroll_resonance",
-      "names": [
-        "共鸣"
-      ],
-      "config_ids": [
-        "scroll_resonance"
-      ],
-      "source": "assets/ui/icons/augmentations/scroll_resonance.svg",
-      "source_sha256": "45627969d23475f63b0ea0c6e80275000bc9ecbc31662afec269aa2659873b68",
-      "current_canvas": [
-        64,
-        64
-      ],
-      "output_filename": "scroll_resonance.png",
-      "pixel_target": [
-        64,
-        64
-      ],
-      "future_png_path": "assets/ui/icons/augmentations/scroll_resonance.png",
       "config_path_change_on_install": true,
       "installed_size": [
         32,

@@ -241,7 +241,8 @@ func _test_live_flow() -> void:
 	manager.apply_gold_delta(260, "test")
 	for i in 3:
 		manager.player.restore_full_health()
-		manager.player.take_damage(3, "enemy_test")
+		# Cross half health even after the player's base health was rebalanced.
+		manager.player.take_damage(ceili(manager.player.get_stat("max_hp") * 0.6), "enemy_test")
 	check(manager.goblin_trades.low_health_episodes == 3, "actual health damage signal records three episodes")
 	flow.finish_current_wave()
 	await frames(12)
@@ -375,7 +376,7 @@ func _test_live_flow() -> void:
 	popup.trade_presentation._yes.pressed.emit()
 	check(manager.goblin_trades.interest_pact_count == 2 and is_equal_approx(manager.finance_system.get_interest_rate(), rate + 6), "second pact stacks the interest bonus")
 	check(manager.player.get_stat("humanity") == 119 and manager.goblin_trades.interest_sanity_paid == 1, "another pact preserves already paid sanity and has no immediate debit")
-	check(popup._summary.tooltip_text.contains("已接受2次") and popup._summary.tooltip_text.contains("利率+6") and popup._summary.tooltip_text.contains("每回合理智-2"), "finance tooltip explains the accumulated contract terms")
+	check(popup._summary.tooltip_text.is_empty() and int(popup.payload.get("interest_pact_terms", {}).get("count", 0)) == 2, "stacked contracts retain live terms without a finance summary tooltip")
 	check(not flow.accept_goblin_trade(str(offer.token)).success and manager.goblin_trades.interest_pact_count == 2, "repeated callback cannot accept the second pact again")
 	await capture("10_interest_stacked")
 	await advance_preparation()

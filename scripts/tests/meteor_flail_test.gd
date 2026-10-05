@@ -80,13 +80,13 @@ func _run() -> void:
 	weapon.runtime_stats.melee_damage += 10
 	check(weapon.calculate_damage_events()[0].damage == 32, "melee stat scales damage")
 	weapon.runtime_stats.melee_damage -= 10
-	check(weapon.get_load_cost() == 18 and weapon.get_attachment_slot_count() == 2, "load and rare attachment slots")
+	check(weapon.get_load_cost() == 32 and weapon.get_attachment_slot_count() == 2, "load and rare attachment slots")
 	check(weapon.build_full_stats_text().contains("[color=#EE7777]+0[/color]") and not weapon.build_full_stats_text().contains("伸展至"), "details retain red melee contribution and omit the outer-reach explanation")
-	advance(flail, 0.17)
+	advance(flail, 0.12)
 	check(hits.is_empty(), "windup has no damage")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	advance(flail, 0.5)
-	check(is_equal_approx(flail.age, 0.17) and hits.is_empty(), "pause freezes swing and contact")
+	check(is_equal_approx(flail.age, 0.12) and hits.is_empty(), "pause freezes swing and contact")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	advance(flail, 0.60, 0.60)
 	check(hits.size() == 2 and hits.any(func(hit): return hit.damage == 33) and hits.any(func(hit): return hit.damage == 22), "large step sweeps fan once, with distinct outer and inner damage")
@@ -98,7 +98,7 @@ func _run() -> void:
 	check(weapon.get_base_attack_damage() == 42 and not weapon.upgrade(), "four upgrades reach forty-two and stop at level five")
 
 	flail = await fixture([Vector2(140, 0)])
-	var near_time := 0.18
+	var near_time := MeteorFlail.WINDUP
 	var head := flail.head_position(flail.swings[0], near_time)
 	enemies[0].position = head.normalized() * (weapon.get_attack_range() + 0.8)
 	await frames()
@@ -122,15 +122,15 @@ func _run() -> void:
 	flail.initialize(weapon, Vector2.RIGHT)
 	flail.set_physics_process(false)
 	flail.sparks.append({"point": Vector2.ZERO, "velocity": Vector2.ZERO, "life": 1.0})
-	advance(flail, 0.44)
-	check(is_equal_approx(flail.age, 0.88) and not flail.is_swinging(), "attack speed scales windup, sweep and recovery as well as cooldown")
+	advance(flail, 0.30)
+	check(is_equal_approx(flail.age, 0.60) and not flail.is_swinging(), "attack speed scales windup, sweep and recovery as well as cooldown")
 	enemies[0].position = Vector2(140, 0)
 	await frames()
 	check(loadout._try_attack_with_weapon(weapon), "lingering cosmetic sparks cannot block the next loadout attack")
 	flail.cancel()
 
 	flail = await fixture([Vector2(140, 0)], ["scroll_split", "scroll_fire"])
-	advance(flail, 1.49)
+	advance(flail, 1.8)
 	check(flail.swings.size() == 3 and hits.filter(func(hit): return hit.child).size() == 2, "one split adds exactly two real contact sweeps, no recursion")
 	check(hits.all(func(hit): return hit.damage == (15 if hit.child else 33)), "split and outer multipliers apply once")
 	check(enemies[0].has_status("burning"), "native contacts trigger actual fire enchantment")

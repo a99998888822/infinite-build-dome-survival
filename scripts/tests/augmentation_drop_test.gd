@@ -2,7 +2,7 @@ extends Node
 
 var failures := 0
 var checks := 0
-const RARITIES := {"scroll_split": "epic", "scroll_bounce": "epic", "scroll_resonance": "epic", "scroll_lightning": "rare", "scroll_explosion": "common",
+const RARITIES := {"scroll_split": "epic", "scroll_bounce": "epic", "scroll_lightning": "rare", "scroll_explosion": "common",
 	"scroll_might": "rare", "scroll_wisdom": "uncommon", "scroll_multishot": "epic", "scroll_domain": "rare", "scroll_lethality": "rare", "scroll_haste": "rare",
 	"scroll_light_sword": "rare", "scroll_black_hole": "rare", "scroll_wind": "rare"}
 
@@ -66,15 +66,15 @@ func _run() -> void:
 	add_child(host)
 	check(drops.spawn_augmentation("wizard_scroll_chain_mastery", 1, Vector2.ZERO, host, player) == null,
 		"removed enchantment cannot spawn directly")
-	for id in ["scroll_fire", "scroll_lightning", "scroll_split", "scroll_explosion", "scroll_bounce", "scroll_resonance"]:
+	for id in ["scroll_fire", "scroll_lightning", "scroll_electric_spark", "scroll_split", "scroll_explosion", "scroll_bounce"]:
 		drops.begin_wave()
 		var pickup := drops.spawn_augmentation(id, 1, Vector2(100, 0), host, player)
 		pickup.set_physics_process(false)
 		var card := ItemInventoryCard.new()
 		add_child(card)
 		card.configure(DataRegistry.get_record("augmentations", id), false)
-		check(pickup._icon_sprite.texture == card.icon and pickup._icon_sprite.scale == Vector2.ONE,
-			"pickup uses identical ESC icon at native size: " + id)
+		check(pickup._icon_sprite.texture == card.icon and pickup._icon_sprite.texture.get_size() * pickup._icon_sprite.scale == Vector2(32, 32),
+			"pickup uses identical ESC icon at the existing 32px display size: " + id)
 		var rarity := str(DataRegistry.get_record("augmentations", id).rarity)
 		check(pickup._display_color == ItemInventoryCard.RARITY_COLORS[rarity], "glow matches inventory rarity: " + id)
 		pickup._physics_process(0.1)

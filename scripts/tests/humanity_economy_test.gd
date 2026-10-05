@@ -151,7 +151,7 @@ func _run() -> void:
 	popup.amount_input.text_changed.emit("100")
 	await frames()
 	check(popup._bank_preview.visible and popup._bank_preview.text.contains("500 → 400"), "withdrawal preview appears in bank")
-	check(popup._summary.tooltip_text.contains("理智损耗"), "interest value explains reduction")
+	check(popup._summary.tooltip_text.is_empty(), "interest summary stays tooltip-free with reduced sanity")
 	await capture("01_finance_humanity_50")
 	if not capture_dir.is_empty():
 		hud._set_drawer_open(true, false)
@@ -212,6 +212,10 @@ func _run() -> void:
 		check(player.get_relic_count("relic_amulet_of_humanity") == relic_count + 1, "paid purchase delivers its relic")
 	game.queue_free()
 	await frames()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
+	await get_tree().create_timer(0.3).timeout
 	CampProgression.end_transient_session()
 	print("HUMANITY_ECONOMY_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(failures)

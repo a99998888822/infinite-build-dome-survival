@@ -98,7 +98,7 @@ func _run() -> void:
 	tome.runtime_stats.crit_chance = 0
 	purse.runtime_stats.crit_chance = 0
 	_test_body_sizes_and_contact()
-	check(loadout.get_total_load_cost() == 32 and tome.get_attachment_slot_count() == 2 and purse.get_attachment_slot_count() == 1, "load and rarity attachment slots integrate")
+	check(loadout.get_total_load_cost() == 50 and tome.get_attachment_slot_count() == 2 and purse.get_attachment_slot_count() == 1, "load and rarity attachment slots integrate")
 	check(tome.calculate_damage_events()[0].damage == 10 and tome.calculate_damage_events()[0].damage_kind == "element", "native tome is ten elemental damage")
 	check(purse.calculate_damage_events()[0].damage == 4 and purse.get_stat("projectile_count") == 3, "native purse has three four-damage coins at zero principal")
 	manager.finance_system.deposit(400, true, "test")
@@ -160,14 +160,14 @@ func _run() -> void:
 	domain.try_attack()
 	check(enemies.all(func(e): return e.current_hp == 990), "extra tome projectiles reserve unique targets without repeat damage")
 	player.remove_runtime_modifiers_by_source("test", "tome_purse")
-	fixture([])
+	fixture([Vector2(200, 0)])
 	purse.volley_index = 0
 	loadout._try_attack_with_weapon(purse)
 	var volley := coins()
-	check(volley.size() == 3 and is_equal_approx(volley[0].direction.dot(volley[1].direction), -0.5), "real loadout emits three coins spaced 120 degrees")
+	check(volley.size() == 3 and is_equal_approx(volley[0].direction.dot(volley[1].direction), cos(deg_to_rad(10))), "real loadout emits three coins spaced ten degrees")
 	loadout._try_attack_with_weapon(purse)
 	volley = coins()
-	check(volley.size() == 6 and is_equal_approx(volley[3].direction.angle(), deg_to_rad(30)), "next volley rotates thirty degrees")
+	check(volley.size() == 6 and volley[3].direction.is_equal_approx(volley[0].direction), "same target keeps the next volley centered on the same aim")
 	fixture([Vector2(100,0),Vector2(200,0)])
 	var shared: Dictionary = {}
 	var coin := shot(shared)
@@ -293,7 +293,7 @@ func _test_body_sizes_and_contact() -> void:
 	shape.disabled = true
 	check(not enemy._is_touching_player(), "disabled body cannot contact player")
 	var boss := preload("res://scenes/enemy/elite_rusher.tscn").instantiate()
-	check(boss.get_node("Sprite2D").scale == Vector2(1.12, 1.12) and is_equal_approx(boss.get_node("CollisionShape2D").shape.radius, 33.6), "boss visual and collision reduced to eighty percent together")
+	check(boss.get_node("Sprite2D").scale == Vector2(0.56, 0.56) and is_equal_approx(boss.get_node("CollisionShape2D").shape.radius, 33.6), "current boss art scale preserves the approved collision radius")
 	boss.free()
 
 

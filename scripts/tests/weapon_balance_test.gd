@@ -3,11 +3,11 @@ extends "res://scripts/tests/pixel_combat_effect_test.gd"
 const BOW := "weapon_void_blade"
 const PLASMA := "weapon_plasma_cannon"
 const LOADS := {
-	BOW: 12,
-	"weapon_rentier_purse": 14,
-	"weapon_kunyu_ritual_tome": 18,
-	PLASMA: 24,
-	"weapon_iron_grenade_cannon": 25,
+	BOW: 20,
+	"weapon_rentier_purse": 22,
+	"weapon_kunyu_ritual_tome": 28,
+	PLASMA: 25,
+	"weapon_iron_grenade_cannon": 32,
 }
 
 
@@ -35,19 +35,24 @@ func _run() -> void:
 	check(loadout.initialize(player) and loadout.get_load_capacity() == 100, "normal character starts with capacity one hundred")
 	var generator := ShopOfferGenerator.new()
 	for weapon_id in LOADS:
+		if weapon_id == "weapon_iron_grenade_cannon":
+			check(loadout.get_total_load_cost() == 95 and not loadout.try_buy_weapon(weapon_id),
+				"four weapons leave five load and reject the fifth at standard capacity")
+			player.add_runtime_modifier({"id": "balance_extra_capacity", "source_type": "test", "source_id": "balance_extra_capacity",
+				"target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": 27,
+				"duration": -1, "stack_rule": "unique"})
 		var offers := generator.build_shop_candidate_pool(shop_context(loadout))
 		var match_offer := offers.filter(func(offer): return offer.target_id == weapon_id and offer.offer_type == "new_weapon")
 		check(match_offer.size() == 1 and match_offer[0].load_cost == LOADS[weapon_id], "shop advertises current load for " + weapon_id)
-		check(loadout.try_buy_weapon(weapon_id), "all five distinct weapons fit through purchase validation: " + weapon_id)
-	check(loadout.get_total_load_cost() == 93 and loadout.get_weapon_instances().size() == 5,
-		"five weapons consume ninety-three load with seven remaining")
-	check(not loadout.try_buy_weapon(BOW) and loadout.get_total_load_cost() == 93, "duplicate purchase still rejected without altering load")
+		check(loadout.try_buy_weapon(weapon_id), "distinct weapon fits available capacity: " + weapon_id)
+	check(loadout.get_total_load_cost() == 127 and loadout.get_weapon_instances().size() == 5,
+		"five weapons exactly fill the expanded capacity")
+	check(not loadout.try_buy_weapon(BOW) and loadout.get_total_load_cost() == 127, "duplicate purchase still rejected without altering load")
 
 	var bow := loadout.get_weapon_instance(BOW)
 	var plasma := loadout.get_weapon_instance(PLASMA)
 	bow.runtime_stats.crit_chance = 0
 	plasma.runtime_stats.crit_chance = 0
-	var bow_dps := bow.get_base_attack_damage() / bow.get_actual_attack_interval_seconds()
 	for next_level in range(2, 6):
 		var offers := generator.build_shop_candidate_pool(shop_context(loadout))
 		for current in loadout.get_weapon_instances():
@@ -55,15 +60,15 @@ func _run() -> void:
 			check(upgrades.size() == 1 and upgrades[0].to_level == next_level,
 				"shop offers exactly the next upgrade for %s level %d" % [current.weapon_id, next_level])
 			check(loadout.upgrade_weapon(current.weapon_id), "upgrade applies for %s level %d" % [current.weapon_id, next_level])
-		var next_dps := bow.get_base_attack_damage() / bow.get_actual_attack_interval_seconds()
-		check(next_dps > bow_dps and next_dps / bow_dps < 1.5 and bow.get_stat("projectile_count") == 1,
-			"bow grows smoothly without a level-five projectile jump: %d" % next_level)
-		bow_dps = next_dps
-		check(plasma.calculate_damage_events()[0].damage == 10 + 2 * next_level
-			and is_equal_approx(plasma.get_actual_attack_interval_seconds(), 1.5) and plasma.get_hit_radius() == 12.0,
-			"plasma gains damage while preserving timing and contact size: %d" % next_level)
-		check(loadout.get_total_load_cost() == 93, "upgrades never increase equipped load")
-	check(bow.get_base_attack_damage() == 9 and is_equal_approx(bow_dps, 18.0), "max-level bare bow deals nine every half second")
+		check(bow.get_base_attack_damage() == [12, 17, 22, 27][next_level - 2]
+			and is_equal_approx(bow.get_active_cooldown_seconds(), [2.0, 1.9, 1.8, 1.7][next_level - 2])
+			and bow.get_stat("projectile_count") == (3 if next_level == 5 else 2),
+			"bow upgrades alternate projectile and damage/cooldown gains: %d" % next_level)
+		check(plasma.calculate_damage_events()[0].damage == [14, 16, 18, 21][next_level - 2]
+			and is_equal_approx(plasma.get_active_cooldown_seconds(), 3.0 - 0.1 * (next_level - 1)) and plasma.get_hit_radius() == 12.0,
+			"plasma gains damage and fixed cooldown reduction while preserving contact size: %d" % next_level)
+		check(loadout.get_total_load_cost() == 127, "upgrades never increase equipped load")
+	check(bow.get_base_attack_damage() == 27 and is_equal_approx(bow.get_active_cooldown_seconds(), 1.7), "max-level bow has three fixed cooldown reductions")
 	var final_offers := generator.build_shop_candidate_pool(shop_context(loadout))
 	check(not final_offers.any(func(offer): return offer.offer_type in ["new_weapon", "weapon_upgrade"]),
 		"all-owned max-level loadout offers no duplicate weapons or sixth-level upgrades")
@@ -71,12 +76,12 @@ func _run() -> void:
 
 	loadout.remove_weapon("weapon_iron_grenade_cannon")
 	player.add_runtime_modifier({"id": "balance_capacity", "source_type": "test", "source_id": "balance_capacity",
-		"target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": -8,
+		"target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": -1,
 		"duration": -1, "stack_rule": "unique"})
 	var tight_offers := generator.build_shop_candidate_pool(shop_context(loadout))
 	check(not tight_offers.any(func(offer): return offer.target_id == "weapon_iron_grenade_cannon")
-		and not loadout.try_buy_weapon("weapon_iron_grenade_cannon") and loadout.get_total_load_cost() == 68,
-		"shop and purchase both reject grenade when only twenty-four load remains")
+		and not loadout.try_buy_weapon("weapon_iron_grenade_cannon") and loadout.get_total_load_cost() == 95,
+		"shop and purchase both reject grenade when only thirty-one load remains")
 	player.remove_runtime_modifiers_by_source("test", "balance_capacity")
 	check(loadout.try_buy_weapon("weapon_iron_grenade_cannon"), "grenade is purchasable again after restoring capacity")
 	await check_attack_ranges(loadout, player)
@@ -94,6 +99,9 @@ func check_attack_ranges(loadout: WeaponLoadout, player: PlayerController) -> vo
 	enemy.set_physics_process(false)
 	for id in [BOW, PLASMA, "weapon_iron_grenade_cannon"]:
 		var current := loadout.get_weapon_instance(id)
+		# This fixture isolates reach; upgraded volley counts have their own suite.
+		var original_count := int(current.runtime_stats.projectile_count)
+		current.runtime_stats.projectile_count = 1
 		var reach := current.get_attack_range()
 		enemy.position = Vector2(reach + 1, 0)
 		current.attack_timer = 0
@@ -123,3 +131,4 @@ func check_attack_ranges(loadout: WeaponLoadout, player: PlayerController) -> vo
 		current.runtime_stats.area_size = 50
 		check(loadout._try_attack_with_weapon(current), id + " earned range bonuses still extend targeting")
 		current.runtime_stats.area_size = 0
+		current.runtime_stats.projectile_count = original_count

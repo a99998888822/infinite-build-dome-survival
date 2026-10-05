@@ -146,8 +146,9 @@ func test_status_visual(enemy: EnemyController) -> void:
 	visual._process(0.01)
 	check(visual._draw_status_mask != 0, "new status invalidates immediately")
 	frame = visual._draw_frame
+	var elapsed: float = visual._elapsed
 	visual._process(0.2)
-	check(visual._draw_frame > frame, "active status still animates at 12fps")
+	check(visual._draw_frame == frame and visual._elapsed > elapsed, "static status geometry stays cached while the visual clock advances")
 	enemy.clear_wet()
 	visual._process(0.01)
 	check(visual._draw_status_mask == 0, "status removal clears cached geometry")

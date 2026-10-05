@@ -242,10 +242,8 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			AudioManager.mark_combat_reaction("thunder_fire")
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 		if bool(reaction_result.get("extra_trigger", false)):
-			var extra_damage := enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
-			if extra_damage > 0:
-				_emit_hit_burst(enemy.global_position, hit_direction)
-			_emit_bolt(ground_position + Vector2.UP * _get_cached_parameter("strike_height", 182.0), ground_position)
+			# Keep the extra hit; its only additional visual is the short blue cue.
+			enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
 
 
 func _schedule_next(origin: Vector2) -> void:

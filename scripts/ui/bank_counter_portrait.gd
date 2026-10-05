@@ -5,6 +5,7 @@ const GOBLIN: Texture2D = preload("res://assets/ui/finance/goblin_banker_states.
 const DESK: Texture2D = preload("res://assets/ui/finance/bank_counter_desk_picxel.png")
 const ACTOR_SCALE := 0.60
 const HAND_CONTACT := Vector2(64, 119)
+const WAIST_CONTACT := Vector2(64, 110)
 const DESK_CONTACT_Y := 24.0
 const DESK_BASE_Y := 56.0
 var expression: int = 0
@@ -62,7 +63,7 @@ func _draw() -> void:
 	# The complete bust leans over the counter. Draw it once, so sleeves, palms
 	# and fingers share the same transform and cannot be cut by tabletop props.
 	draw_texture_rect(DESK, Rect2(origin.round(), Vector2(128, 64) * unit), false)
-	draw_texture_rect_region(GOBLIN, Rect2((actor_pos + breathing).round(), actor_size.round()), Rect2(expression * 128, 0, 128, 128))
+	draw_texture_rect_region(GOBLIN, Rect2((actor_pos + breathing).round(), actor_size.round()), _expression_region())
 	if _reaction_left > 0.3:
 		var t := clampf((1.4 - _reaction_left) / 1.1, 0, 1)
 		for index in 4:
@@ -77,7 +78,7 @@ func _draw_on_background() -> void:
 	var extent := Vector2(128, 128) * unit
 	var origin := (size - extent) * 0.5
 	var breathing := Vector2(0, roundf(sin(_elapsed * 1.5) * 0.6))
-	draw_texture_rect_region(GOBLIN, Rect2(origin + breathing, extent), Rect2(expression * 128, 0, 128, 128))
+	draw_texture_rect_region(GOBLIN, Rect2(origin + breathing, extent), _expression_region())
 	if _reaction_left > 0.3:
 		var t := clampf((1.4 - _reaction_left) / 1.1, 0, 1)
 		for index in 4:
@@ -85,3 +86,9 @@ func _draw_on_background() -> void:
 			var target := progress if _action == "deposit" else 1.0 - progress
 			var point := origin + Vector2(lerpf(24, 103, target), 120 - sin(progress * PI) * 16) * unit
 			draw_rect(Rect2(point.round(), Vector2(3, 2) * unit), FinanceUIStyle.GOLD)
+
+
+func _expression_region() -> Rect2:
+	# Atlas pixels are independent of the counter's logical 128-unit layout.
+	var frame_size := GOBLIN.get_height()
+	return Rect2(expression * frame_size, 0, frame_size, frame_size)

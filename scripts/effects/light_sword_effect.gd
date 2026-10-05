@@ -84,6 +84,7 @@ func _land() -> void:
 	AudioManager.begin_combat_audio()
 	AudioManager.play_enchantment_sfx("light_sword")
 	_build_ground_cracks()
+	FirePatch.tint_nearby_fields(get_tree(), global_position, _radius, 1, _light_duration)
 	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.65))
 	var shape := CircleShape2D.new()
 	shape.radius = _radius

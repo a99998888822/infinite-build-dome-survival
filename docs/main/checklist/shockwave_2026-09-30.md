@@ -25,6 +25,6 @@
 - 上一版55.2半径调整共263项通过：震荡35、等离子接触36、榴弹89、三武器103。覆盖范围边界、白色粒子及扩散距离、零伤害、四向击退、中心退化方向、实际移动、范围属性、暂停、出售取消、反应爆炸伤害保留和白色掉落配置。
 - 首次接入时另有附魔拾取／掉落57、战斗音效／元素反应29、音效45项通过；本次未修改这些路径。
 - 编译与中文文本校验通过。部分原有整场景测试退出时仍报告已有的资源释放警告。
-- 实机入口：`scenes/tests/bounce_resonance_live_capture.tscn -- --mode=shockwave --capture-dir=<项目外目录>`。使用真实GameRoot和正式木弓／震荡逻辑；敌人使用保留原生状态、碰撞、击退，关闭自主追击的审阅夹具。
+- 实机入口：`scenes/tests/bounce_live_capture.tscn -- --mode=shockwave --capture-dir=<项目外目录>`。使用真实GameRoot和正式木弓／震荡逻辑；敌人使用保留原生状态、碰撞、击退，关闭自主追击的审阅夹具。
 - 首次接入的圆环版本录制在 `C:/Users/mi/AppData/Local/Temp/shockwave-review/`，已被本次白色粒子版本取代。
 - 上一版55.2半径的白色粒子实机动图：`C:/Users/mi/AppData/Local/Temp/shockwave-white-review/shockwave-white.gif`。6秒、180帧，6次木弓攻击合计30点原生伤害；5个目标在先后命中后被推开。私有桌面核验一致，2978次前台采样中抢占次数为0。

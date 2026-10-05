@@ -890,6 +890,14 @@
     "sha256": "3ed2de761aeac6004f83bb855d54c25105f761075cba2ce34178418893a1a586"
   },
   {
+    "path": "assets/ui/finance/finance_background.png",
+    "current_canvas": [2752, 1536],
+    "recipe": "finance_table_ui_installation_2026-10-05.md",
+    "phase": "P1",
+    "status": "installed",
+    "sha256": "31449d9a8159e0f760b351956d476063bf9ec251f6f83aa45bc9a005b515e2ff"
+  },
+  {
     "path": "assets/ui/finance/finance_bill.svg",
     "current_canvas": null,
     "recipe": "02_doubao_recipes.md#ui组件与银行",
@@ -919,13 +927,13 @@
   {
     "path": "assets/ui/finance/goblin_banker_states.png",
     "current_canvas": [
-      640,
-      128
+      1280,
+      256
     ],
     "recipe": "02_doubao_recipes.md#ui组件与银行",
     "phase": "P1",
-    "status": "planned",
-    "sha256": "2c3bd9091f8af53cd6aaa82ac9ba27b2f7b9d822b1ebbf8f2e5a0a87b208c38f"
+    "status": "installed",
+    "sha256": "3743b4eed9324dab44ade4d6438af7207ba29e5771d546ee7560698850e912cb"
   },
   {
     "path": "assets/ui/finance/inspect_enchantment.svg",
@@ -1048,132 +1056,132 @@
   {
     "path": "assets/ui/icons/augmentations/scroll_black_hole.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e81a9169b355de69e6132870362cc201771e2cf66b4f03042e473ecab1e6e6ac",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "1c3347a8a408f535bfa613ff9b784ac0aeaa4ea1ead003030936a55c6e754ef0",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_explosion.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "175a84632a24404a4e8901ef0ba084601b7c73174a1da020d3637259627905e8",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "c5b8e127195d29e79a2447ffa900f151c6703d340f8d7babb8d69ccf4c5d899d",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_fire.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "6ebc6cba2c9b8c61f95c16a71ab57f809bbca0ec799c371d7adee0f5058f684d",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "0aafb749b52a43939b7de7c910d0dc6cdaa6676816aa5a81826ee166860bf517",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_ice.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "0dd908ab2803cd3f36735d7946fcd75cedc575ae0fff538c3a071f510f6f3243",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "ff75e33735d3514f2b9cefa121a191224f2808bd63bfe3f409a91b37be8c277c",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_light_sword.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "f1d9723fac85e975bc958afd8d68128b157bd7cf85d3710196bf57029cf2ff13",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "2a283967a14364008e9b42620cf79dbb7f69b37c9095571fb75aaf37a95f4189",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_lightning.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "f7154f7edee684e667eb66edb6c4e514d97aadfa8c86d2a3fc388ffc2df6d014",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "e3061eb7e951e5537da30307d208b95bc059903a6f4082ff55574a19c2cc1a9b",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_pierce.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "7bfc1c32f0329f4718b81de6a18a8193538e9eba55afa1196bb4ecd4405c37e6",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "bde5330d98b48f848549e5b6215b281e4eb97b34b25bcbfd94994ea9467c995e",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_split.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "db53845b0515eb78992571129bed64f3d1e26f8ca0518c894a0f2932388fc7c6",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "113df9057fa072114a296391e305fee8ea656d8ef0f0d0114d44e318fa2a9181",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_water.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "495960a58d65a23d920a30b94a929abf3786c9a0158b3ea124e8542fb112977b",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "bea96b8e93f3a94039e271390e787b9e081c24f7e054e1e7cbe4126a82494764",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/augmentations/scroll_wind.png",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
     "recipe": "batches/augmentations_sheet_01/README.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "3f716ebffb5fb65c2fa885bae00b4c5585fddbfdc7131748a3a4b1beb303a067",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "sha256": "c6f00bc3734ed216ad2b32294f6c9da1a2963f82799f1929bbce2bbd8088605d",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/characters/icon_capitalist.png",
@@ -1246,350 +1254,350 @@
   {
     "path": "assets/ui/icons/relics/relic_amulet_of_humanity.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ef913b49a4237566956483917dc6f325ad6ee590b2fe6d1cd3979f099b68f617",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "001d6788ab1171a3cdf776a0ddae1f2132d9d68ce1ebc7a5ae84dee6ec336c90",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_annual_leave_cutback.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "c00db0c557d36038aee232a44e4e9c1b9fe321a6c95009e499bc0f3aa28ac4f1",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "aa4aa53d4c44fc224bb4d5d4bdd9b25b4a646382485974016edadce065574069",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_bankruptcy_reorg.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ffd31d2a28bc7875ac5649859d16e3d53890d98524fae03b596cddf3d11e2c86",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "3766ea7eec2817aa4ea35de3bf265cea18f16f3173016e476b9d837d1b1ee977",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_barrier_crystal.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "7f29840909c10e7e2ad248209b626f3b9f808e8d1a4372dd53535bc3b429b702",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "93de1a33f12384d2bbd0d19400a98b3a46b4c57025c2bae42108ae4cd7a4a9d2",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_berserker_copper_badge.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "3a2d17f6d2b14f3ac138ddd579524fd6999f45d3adcb47f30b84d29b24bca5ae",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "e3b5b2dd77dcc39626ca940867e67849d3859a2f52e0027ee11f84b36efbdf42",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ccaf68ea08494cea15bcce390928bb7f94d4330cb901b2b34962af4a9f9f8eb5",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "0135fe6ef20eaf0232be833387a41e4fb68d2ebbc78d4b138d92b5a96417f662",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_blocking_counterweight.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "3c114316729f3132b51c6fba59f6f6590915267be280153140eee0a920d8ea07",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "f4fbd2d9015a74c8b6764303a47f5f92005f92b2ec11e2868b9ad70cfea45db2",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_bloodstained_belt.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "75edeba515e805c2bac7d1cfc34d5dea111796a1253434938a6805ae38d7212f",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "83e87bbbdf2fd8b87a9272d77826ff6665ba357196be01b5af00bd2335437d8f",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_brass_pocket_watch.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "8d465a1a891a9033b189c3f14b66f092f6e46a55401cbef7734110dcc3aef818",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "ce22c79a2ec756553d0396346c71a1751983f74d706393f20613567532d3a32f",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_broken_crystal.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "7a52ce5346aae0749fa9b0af8c8c482cc701482901615cdfd6acd242421dd8ca",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "ddcfcea884d8a153881a07ceaba5ae10d99c8aef9e4535ad1ba2f9b617600cf8",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_chain_of_hardship.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b7dd4306fbedea0f4ad70dcdb3d0f02cbf25a7912bc7289d1cb63694c8ad8050",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "aa6594b8dcb4cfdc9a5768a414c1f0c5fe01f93ed843b00f24e3b4c3e0d94779",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_coin_heart.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "63032f1eb75c327e6a049c976cf7c704274b0c01c5a07126d6baec5b85831e56",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "72e2781b0efe83479d0a0957da1af840a83efce90d2dc74efdf43042948f254d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_compound_interest_tome.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ae8d5b0e7881aa80a293e2044aad23ef09ec9abfcdba654baded6b691db16ca2",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "2a8e927da5474b4881ae1a4bef44a374fb7dd54e83c955a205863e76cb15fb91",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_corroded_blowpipe.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ae47552eb1ca23e0e010373818410b009be58b45d346b670c2ca7ca05843dc53",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "f62ebb837674969c93e94a26bb327ddfde6f587687d88daf565988af105ccd6d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_costly_seed_of_life.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "d206200df80515e9c102efe6624c5d5debb55bcfadbd5c641facac174c297a9d",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "352b3937631c92cf79163c21f57849fc6095444a9420b774ed7762adc8aacf6a",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_cracked_bronze_bell.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "2f9f22ae2a21f866dfd847e196cae69e92dbadf8dc7c08bdf8c8d7b145187f55",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "c1a6ba2f66593e0df4008772be116636c7d74753de852c707c198e82c81597f3",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_cracked_stone_bullet.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "9aa2f22c40fef774811bfe7582913c8a085926de79de0797aafe18bb5b8d2e85",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "01f13a1be1eed5966fd74a30f5d04bfec03c22740aaf49fbcf9a931835560486",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_cultic_holy_shield.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "97e747ef3ba36539e009db6bf7ff213634602ba70b5b1307ec022f55cddf400c",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "ad7078ac861e7e626f63bbe082b26c2cafee34753e758841c4cab454b92d6622",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_dead_shield_badge.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e3ea64aac2307348ee894ae6114eaa0953d34d419468005972a7d8a60d441899",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "4bb737fa5b9c8104da625ce42037a7a7f5764dc9a6441b35dffddbf42b841f59",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_defiled_blessing_coin.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "cf27267979eb15fff797c3f7dea434b1f4294629e387f1fa186218af1790fb21",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "308099a42d3a2d91e19cb4e87c48ce11490cf6f62e2b3add9189c19eabd8fe3e",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_diffusion_nozzle.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "067ca495159f8dda39fc225f476e2bd34efa5ce815ad3832b3ffaf9e546e0fc6",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "sha256": "b9c0c02a7632a36376744ce31d97570b89ff9ffc78d6540d457d143af0b41fa0",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_dividend_check.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "4ebd4cbe51eb49ad17896a62beee7fd715350b64a83476a877c1db525101990c",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "be317bd5a36b967210c703a2fb0225838b986a4486688a947ad047e846c837cb",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_divine_fusion.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "67bdeece02f084d8f939892560be70680cd4857fc08fcd0eadef6bfaa70e9c62",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "sha256": "719723e4a5a7c9eb8be0d981b452f5cb93fb4d355bf1a477e0fba3a2918f9e08",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_executioner_bracer.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "cbebe16e76ce5906c087a4cd6a14a33dfe2eb4bc712a0cd26e0d973b110eba2e",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "76279d04f9335226f64bfcf445d0c8431b309e4a4f29cd9a43f115b913cac6a8",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_expanded_backpack_strap.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "1c82873dd08cc101213319f19081ea8b3657e467ddaa80ac99a69a01bd55825a",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "6e9813396cc4329732ef838befa80885649aac885790a92c27b3f9d4f02c4f56",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_finance_manager.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "84766622359c62ed46736a2b46f35b00e1e6b12a40daf73e210ddfeb18555736",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "0b586e7a76ba27d0635d82892990fe64ec1293b6a71356cedafd9881d245bb17",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b5555ead0fb8b1e1be7d052172f80a425e80b11edb30a7a540f3479d66088382",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "f59a723bbe7f8eca3fa8457646045b98434dc4a42e2c1640ed48f1b2d9333a5d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_flesh_pauldron.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "76b97b89818e4033bc30bbf4f06d89934531c36cb6d8e0be82963afe66cbc04c",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "5d7a1e3854dd04356b421b40998278ae69e57519cf2189bbf910d8417c09a08b",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_flyer_ad.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "f6c6e0fc58f58332a7a8bda18ce1b83d6f7d65eaa1797cc73cd26e23e7a3dbad",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "d98649bbb6fd5409c39eb339129841d0f577e26db26de744e37d902da0bb4606",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_folded_star_chart.png",
@@ -1606,86 +1614,86 @@
   {
     "path": "assets/ui/icons/relics/relic_frenzied_dividend.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "6458a606426cc88ccafd20ad49780b3ab15af7ac9ae506bdc93fa823a16c2e20",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "1bed8973ee4c19d9023bad0096042ffb732dc56ca027105319552a6a5e9ba696",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_gale_roulette.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e8afc28f93d3babcc1e8aa798edc16da28fe082225425e45b7900e48cacf732d",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "55f7a8ebd7283b3528d876f64607bb12f668a3a70bad9cba2eab4634de26b3d0",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_gift_mark.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "84fb0e2f94340e39ab01aa92e6a255a2445f56203e30a3f7356a34e64dc4d32e",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "512c56ff0ee159dcc9ef69d3977348d864c548878e405ff4a36a2e4bc408b3eb",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_gilded_trigger.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "5623a20fd77da9f424c22ba0e424eb2061781d4f7c5c39f44326313e91e3f77e",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "dfe8494029fdc1779bb439194428646e6b004352206af6721ab46f484de30567",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e559ddf016bcfe8fe96e21b8ff07db580a4eeceeb4098475ed697190e13e3f72",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "sha256": "5b1860fe28bc5c0ba4f6c21fc6b45951db8c4a1640c0604a001c46775e6775fb",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_gold_compass.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "4e873b8f0171cf380281170cf7e535a4725d6ac3eb0ee818c686258b0e2f14ea",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "980fbeb6dd2e048a858bd67a21a790c58ae8b9c63193dce68991ba77828113e4",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_gold_digger_gloves.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "48de86b9bcc2cc48b0bd25646176ec9b46ea258448f62952e4982e71a42445fc",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "bfe882198ac8fc93f6d656147f1733846e2c755bbacad891efcc4ac7f9bbb228",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_golden_rangefinder.png",
@@ -1702,86 +1710,86 @@
   {
     "path": "assets/ui/icons/relics/relic_golden_sarcophagus.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e2f13cffb324574af82afa7a7e4d69493d6dbc92b045e8b7c891a3d676386d77",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "97f7e3283a6472a058d1f92e4ee45f199d02121dbc86cbf4209f27a71d43a1f8",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "88378a1ed9c244972a059ff2dcea6014d5796a2580e8cc39820bf131717b4df8",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "62e911259b43c5a347a84fb62eb07f93786f3521891e1c3243b770e71f87c275",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "199c692a4ad58538a1b87130a08ea3c463b09211e3e66a1d2830817084638454",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "4bd3db757e3f7af70c002dc44f881e2ecb46ce0a1b8577a9556a9bc74da8dda4",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_hasty_spring_trigger.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "fbbeb8d8360657051a22adf5f7e4c6cc09da297febe085b514cb102ef2f1ede2",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "9d325468cfea4d9eaf641fcbbfb9b69b7451a88493e8d68531a2b66fa666be30",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_high_yield_contract.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "577f8e4cd9e9453da9968d7a05b5daf9bab2f7e821165e50283d7d028deb9b28",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "87d94da4f5dca83cf8cee3470dd1bb65246ab09fe0b8d2eccf1c1d211542803c",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_hoarders_ring.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "a80f52e70f4c46fde97e8f5858de2a90d7677b08f60fb35cd54cfea81632f89a",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "e8be043b4550cf2d70b089742ff2f5d1b01633f703871b0b0901737a36619980",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_holy_silver_cup.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "049d2e9850c54fc7347786298e04507c93b32940ab2606b86fe4f89d591b5b7f",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "c606c7fc7550cce7c2e0f2e29dbd45ad04dab07dfd1dcb15831cc888349ad3af",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_horizon_orrery.png",
@@ -1798,230 +1806,230 @@
   {
     "path": "assets/ui/icons/relics/relic_hostile_takeover.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "c3a63e1fa62bb1d09910d5116a9001940bb6fb58062ecd4f41a53d4f8c6380bf",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "f31ac6d9467c4471fa81ed1524cd5976b9677d4221473ee94da1d9ef35e4918d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_incomplete_divination_dice.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b6a3f3026203529cf1f140cee739b3972a6dd79e04a8af263b6ac0776a5a7c99",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "28f93aa0ec84540039d9015f5fac29fdd63d277921ac5093eef583843ffa08ef",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_judgment_eye_pendant.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "d9f14580680ee469beff8f7b9665f7e4ec238124335f8cbbf16719629baa7f7f",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "e43f65fa99784552ca3d325587b0a93dd6989573b01cf9bdf39e20a57d972325",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_load_iron_bracer.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "c4853aca9ba8a3dc09be44d3fa4000221cb1795c2d1ddbca97a424f16fa889ae",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "e3ce987e9b1449eab268c84dada0224694281d80ce3b85acaf8bd1cf06e6b7f0",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_long_focus_eyepiece.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "4e35a1749b81039878ade42e1921dc64166353df2a1bd6102181a95f387b8e5b",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "sha256": "89e74ebe86af05fd26bfe05ca7cf1d28d185f6cd3f4d9f0727c7dac20fac6b04",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ec500944e1f46e304052be1b6205a5f2ca2d9fd35a32a53f2ae3b40c0c600303",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "09282fe31593ab92ffc4f621f3dc2abf20748b425b0e78f02c6b9da90266d36d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_lucid_vow.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "1efbdd8b3a1d435e8871287f5723990c23e5fdaec5a55f361c432cde12b8a941",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "36d5ddd333777ece52d3d7c86d9b065edb861768058fc8d4671dd0dde05497a9",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_medical_cutback.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "404fd0875aba5825e2ad5a5a1db51190480e2780ee1a1019e4dbfe2b02251c8f",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "c24f5042f2a0e09c05461c0bc5d8cfc51acecafd11abc3e1b82f918dec38f3ca",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_merger_reorg.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "57319e8143c21b8b582f3fd1a178b1a4b94ddd4ef7999efbf562e0feeeb0df02",
-    "installation_record": "21_relics_sheet_08_installation.md"
+    "sha256": "f71669bacda3c5dfa7ddb536c3bfb4856e6b7f3cc681fda0c924bad99b93cef5",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_nightmare_healing_urn.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "29198f342a0b8a45b43168edf6b34f5bac39dc6a0414d6068eb3e045ce7ffdf7",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "fa8a090047542ee78700604038ed8f9a6abd4a60799719d32d7b12c1827dcb09",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_old_brass_telescope.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "8f4f9fc293aa0776e3fcbe05eee99ad2bf6acebce5b778366105ee6f027a9022",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "304e740de5c6417578b439649df8aeae3e045f2a81199eab21917a5b3c75387b",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_pain_vessel.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b61cde33815b75e3bee5630e7c814c3aa2d08210e15404d4ea2e1d3f1dd25f29",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "27a2ddb452c685675b071460a8f97f8ea45e27a7c96bb1d7559f4a195112f135",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_periodic_dividend_clock.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "ad2a58082a24d2e36a51143d728e791488edd40133778fdec96a2b73230dbfbf",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "6d3936ba0bfb4a02b64ae93e303f21ccd6e02dc50adbcb1d189284b04b6cf3f4",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "dda6c9febb7da45e7ffd455e5a011649d8ae540e09906fafc2cb21f5fe5e6c65",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "2029dd204341c2cc40603217ebe6f4fe12b3dc856d269580e418121d31e93459",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_piggy_bank.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "f98b46730511872cfb7236777762b0555af8d5305a92cfd589d3bcc0cd7700e6",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "7142a70eac7ffc075312a5cdb4193639b22e3c2dcb0663acc70378ea0eaf7aa0",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_poison_mist_pouch.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "7375e430ccb2d7ead368097be16f30d4e46d67407caaa48fedccd439255d9484",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "adadc042e2527a9181cc3e4dce55eafce946094a4991fc0ee944d3e44864165c",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_prison_copper_anklet.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "0354ca975c45d29edc692d76ebda2d22b4c975f3191956cb5ca66357bb5ddf34",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "adb6350d789a8f06c76f7bb5b09f06c0a5ba28d7fdf3607edefc674c55ee8e8f",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_pungent_sachet.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "1e076f615cb8868b97e19a01332c4235efa561c07e2608980b8646e0cc038b76",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "baa04c7192624e0ba8349180922dc9cc7784214938ef0d8e39d5b26459547f50",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_quant_trading.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "0d4f68b3f2c8ce14ab68c019561168c6475850266d618e3aeb336216d2d8fe3f",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "e5670c8abe108173c552b39504e0893dcde3eab810e95aee040bcf51ceb23674",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_range_tripod.png",
@@ -2038,266 +2046,266 @@
   {
     "path": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "16b7b0cd5dba33e17e54cc6939062a4167a208cfcdf31c99c2d5626d254be943",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "83febcfe83b2b0e24139999f487e5e8c635a12d373bcc91312bbaacafa53d279",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_rough_grinding_lens.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "a18ccae5f0e99b7ebf35198db2b5254086377494f0999933be6fc93df32f5f83",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "e1ffb7b0dab1824abb9fa6c0b6933676c5964998cb725aedb98dc3f303f5915d",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_runaway_amplifier.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "d71908e0b187ae497d19ec7414615c24264f2a20ce4e581c42f36d4963473335",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "a919494328010f49bcbe5d48f57869ddddfca0990ca14861dbc6a4b07cfa434e",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_salary_adjustment.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "7a4033425edb03afa4774d56f997c713b3c8340d6a76535218386e1dee98058a",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "9b38441fd3738fddb1775a501335adff582d3bfa2db8e8ecc761fb0e8a34a1d1",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_shadowless_greave.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "3c36d4623427e92cfe432c570cbb1cc7df5015e627ed50c278ee96a16a476b99",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "dad34264065bfa2be7ca6d248e951a15fc1b744c658cfb75a35ab447aaf26a5f",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_sleepless_ledger.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "e25a5012f934e876c50b0ef42078fe93dfdfa9bc18111d459dab12b514693b9a",
-    "installation_record": "20_relics_sheet_07_installation.md"
+    "sha256": "54cf2981651466ebdda09ff089731fc35ccf141673f42ef8de0eb698d4d1dba7",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "5f4a8c1316f3688fc05c16ecf7f74492eaf9c9d934260b7aac21ee4a360f4c10",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "454af3c285c6376df39dccc403ab11ba8caef7b70073cfa8d5120b8c3e731768",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_split_crystal_warhead.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "370b411afc18cd76c3ad2424853052bc7bf82960acb932b274dd9a5a62454457",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "c0e1170f7c47d93b116814cdfb312516c639e6757174388c30343c14abcb42d6",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_stargazers_lens.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "c1e909afa87f4ecffe58c62a2563f11312e82f796b4bd47c402db324544d0218",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "fbe29402e5fbc0275774d5f3456af64d7f94c49f6b055cd20476788a044a05a5",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_steel_vault.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "d06582cb2cddb6029213cf2c6c1c3c108cb71b1bdf11a6ae26c58d51707dec0e",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "a82398a3f0cb901babd75b13fabadc5dc336076cdcdea1d6ba89d925a0f15d00",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_suffering_carapace.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "1afd37e68329ae7a77e90db7d380ae956adfee0aa9e139dc5b61dfc1f947c09d",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "ed49d2292fc3b8c8bf813eaec9e6759051bb4b89ee98fae19176153f3e6d590b",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_tip_tray.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "3a32e22b5cb1a493beb87c713aba3a1b6ef0c45a6bc69130c4f5d7d5f73b4223",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "7723d4a7e01caf571b2f2f51e85044ec249620bed395a0152278a43625cb7bbf",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_travelers_ledger.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b888913a3bf24810021b87d37b50b02e38d28f35f3994a04928bf40d3ff11624",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "780a065cbd455112a38c5d500f93f239b3505ace3c99a10025bb887486428363",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_tremor_grip.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "531142b427612adb36778343c7015dc7b32f4da34b5026169f6cb2f8426904ec",
-    "installation_record": "18_relics_sheet_05_installation.md"
+    "sha256": "8d448cf6e15a906b6292cd0f7b0e12638c5ac06bda5381a6d25c75bcedf922fe",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_true_silver_armor.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "cb58bc84c23ff3d551f652817b89da5c48d6f9b6dfeafc830a44b46811001af2",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "32118661986d378d7017552ad8524e951244142d7fb66e5abc7ebc9fed685b15",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_turtle_shell_pendant.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "4106924166cd8cca55b6a33e7db466554616d43e10184fec1b155d764a216fd7",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "e337ce7572a38fcbb03ed392954ef700456f06dbacf53fcc4041fd40f97762f8",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_vitality_potion.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "52c04207ca4b808748878c0c3c2fe7f62b81e8f394c4dbbccff619bcf6eb341d",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "308c5d7172f93b52a1eff95d898040752e70cbc0b71ba5cc8ff8f43a908eea6b",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_void_storage_casket.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "5903c74c200c8510c20dde3dacaf1e52578a4bee3e0e681facf2c52a2dd2678b",
-    "installation_record": "19_relics_sheet_06_installation.md"
+    "sha256": "a8d3075252d925d950bb6b5a5c154ebc70489c831aed8040a416495dce2308e5",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_void_tentacle.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "cd641d17295ce005de6cd8c8d8326ee3ca2fa2e39d379381430a5faf52d298c7",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "b4b2878df3074c40ecc433383ed806b6a2c1e97e62049b514cf41c373326ac0c",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_welfare_cutback.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "4ba742dc7487d04fb6184731173f065e5f28adf105683f440c1e865883fb3d66",
-    "installation_record": "22_relics_sheet_09_installation.md"
+    "sha256": "18a7605bab24f566e88ab9e9817b797184bfda776dae40e774c4b7851507e49b",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_worn_fighting_gloves.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "b296da441a9b4e346286666a83c87c5b0c6b09368f2c04d866874c3340860644",
-    "installation_record": "17_relics_sheet_04_installation.md"
+    "sha256": "444864c26160554fe2d25690c8489a78b054bb55e2e89f4125ee3bd4c9d90820",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
     "current_canvas": [
-      64,
-      64
+      128,
+      128
     ],
     "recipe": "03b_relic_prompts.md",
     "phase": "P2",
     "status": "installed",
-    "sha256": "f151bbb5cdbaf6e78f0ae4dc65798c1598926b92cbe70dc7d341b5cac4043f45",
-    "installation_record": "16_relics_64_installation.md"
+    "sha256": "88dd933a06df295be7554e29036775fe2b9d3b1415c3dc6c305305cafdbe406f",
+    "installation_record": "relic_icons_128_installation_2026-10-05.md"
   },
   {
     "path": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
@@ -2448,13 +2456,13 @@
   {
     "path": "assets/ui/settlement/goblin_reactions.png",
     "current_canvas": [
-      512,
-      512
+      1024,
+      1024
     ],
     "recipe": "02_doubao_recipes.md#ui组件与银行",
     "phase": "P1",
-    "status": "planned",
-    "sha256": "f19cef639411682019d0aed2136a7228d7fa48dbb256d56039cc460d4422cdbc"
+    "status": "installed",
+    "sha256": "5c208d35e8e34ffc31c014301283e3a6f654aaad670301e6cc8292699891e22d"
   },
   {
     "path": "assets/ui/settlement/payout_glint.png",
@@ -2617,41 +2625,112 @@
     "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
   },
   {
-    "path": "assets/ui/icons/augmentations/scroll_resonance.svg",
-    "current_canvas": [
-      64,
-      64
-    ],
-    "phase": "P2",
-    "sha256": "45627969d23475f63b0ea0c6e80275000bc9ecbc31662afec269aa2659873b68",
-    "recipe": "batches/augmentations_sheet_01/README.md",
-    "status": "superseded",
-    "candidate_review": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel_r01/README.md",
-    "replaced_by": "assets/ui/icons/augmentations/scroll_resonance.png",
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
-  },
-  {
     "path": "assets/ui/icons/augmentations/scroll_bounce.png",
     "phase": "P2",
     "recipe": "batches/augmentations_sheet_01/README.md",
     "status": "installed",
-    "sha256": "992ed5d1d7a989c3e9af794f1482654f9b2b7b452173e55257db8cf46b7252bb",
+    "sha256": "110513c88bc334982dfed9b4482b5464686c5925cfbd634fe3bfea53f15b5e7f",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md"
   },
   {
-    "path": "assets/ui/icons/augmentations/scroll_resonance.png",
+    "path": "assets/ui/icons/augmentations/scroll_might.png",
     "phase": "P2",
-    "recipe": "batches/augmentations_sheet_01/README.md",
-    "status": "installed",
-    "sha256": "84e95d76892293e7418a043b3f92a13e5ba9e64afe06222482a4846b3099b8dc",
     "current_canvas": [
-      32,
-      32
+      64,
+      64
     ],
-    "installation": "artifacts/previews/art_refresh_v1/augmentations_sheet_01/pixel32_r01/installation/verification.json"
+    "status": "installed",
+    "sha256": "6dba81768543d770bdc842a7bf50c6a470a11b4dea3f72ec1be996940bbcdbdb",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_wisdom.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "fdb95c72bfeb323756703f48d963af8fa86001d542e0d532cd52b7eec923af92",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_multishot.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "7106a348754896a9afad4a40df44c3e93e5654ccbc962d9680b084198cd6fb8d",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_domain.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "7e287bfd0b1aa55844012c6ccc8b2b7161f8c06319f6f822c38a72755af97998",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_precision.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "6c30498a77e3b60abae595944a220ced048580b462c4b14fa0a3d2447afa3e41",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_lethality.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "a2c7500ea81b7899b8607919deed3e0bc141cc7ec47cc368dbd680c36bf137fd",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_haste.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "f903c5535edf88d615335b2ba0bccfa1accbebbef551ee2285da341311a855f5",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
+  },
+  {
+    "path": "assets/ui/icons/augmentations/scroll_electric_spark.png",
+    "phase": "P2",
+    "current_canvas": [
+      64,
+      64
+    ],
+    "status": "installed",
+    "sha256": "4cbc6037ddcc271090164e740c83677697ca2b0a20ffd97d28f6a0cb340a6ff7",
+    "candidate_review": "artifacts/previews/spell_icons/20261005-all64-r2/README.md",
+    "installation": "docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md"
   }
 ]

@@ -42,7 +42,6 @@ const EFFECT_LABELS: Dictionary = {
 	"split": "分裂",
 	"pierce": "穿透",
 	"bounce": "弹跳",
-	"resonance": "共鸣",
 	"might": "巨力",
 	"wisdom": "智慧",
 	"multishot": "多投",
@@ -117,11 +116,11 @@ func _update_icon(icon_path: String) -> void:
 	if not resource is Texture2D:
 		return
 	icon = resource as Texture2D
-	var native_augmentation := icon_path.get_base_dir() == "res://assets/ui/icons/augmentations" and icon.get_size() == Vector2(32, 32)
-	expand_icon = not native_augmentation
+	var is_augmentation := icon_path.get_base_dir() == "res://assets/ui/icons/augmentations"
+	expand_icon = true
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_theme_constant_override("icon_max_width", 32 if native_augmentation else INVENTORY_ICON_MAX_WIDTH)
+	add_theme_constant_override("icon_max_width", 32 if is_augmentation else INVENTORY_ICON_MAX_WIDTH)
 
 
 func _get_drag_data(_position: Vector2) -> Variant:
@@ -137,8 +136,9 @@ func _get_drag_data(_position: Vector2) -> Variant:
 	preview.size = INVENTORY_ICON_SIZE
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	if icon_path.get_base_dir() == "res://assets/ui/icons/augmentations" and preview.texture != null and preview.texture.get_size() == Vector2(32, 32):
-		preview.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	if icon_path.get_base_dir() == "res://assets/ui/icons/augmentations":
+		preview.custom_minimum_size = Vector2(32, 32)
+		preview.size = Vector2(32, 32)
 	preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_drag_preview(preview)

@@ -1,0 +1,545 @@
+{
+  "date": "2026-10-04",
+  "battle_caveat": "Concurrent unrelated Godot capture observed. Whole-battle frame times are diagnostic observations, not a causal performance ranking.",
+  "battle": [
+    {
+      "id": "baseline",
+      "mean_ms_by_repeat": [
+        10.4782068062827,
+        10.4478545454545
+      ],
+      "p95_ms_by_repeat": [
+        13.041,
+        12.475
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 0,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "fire",
+      "mean_ms_by_repeat": [
+        12.9033118971061,
+        13.9035520833333
+      ],
+      "p95_ms_by_repeat": [
+        15.926,
+        17.211
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 81,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "water",
+      "mean_ms_by_repeat": [
+        23.9994311377245,
+        22.2564419889503
+      ],
+      "p95_ms_by_repeat": [
+        34.232,
+        31.48
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 80,
+      "sampled_kind_peaks": {
+        "water": 2
+      }
+    },
+    {
+      "id": "ice",
+      "mean_ms_by_repeat": [
+        13.1084267100977,
+        13.5645371621622
+      ],
+      "p95_ms_by_repeat": [
+        18.171,
+        18.544
+      ],
+      "sampled_particles_peak": 18,
+      "sampled_damage_numbers_peak": 48,
+      "sampled_kind_peaks": {
+        "ice": 6
+      }
+    },
+    {
+      "id": "lightning",
+      "mean_ms_by_repeat": [
+        10.6396180371353,
+        10.9300108991826
+      ],
+      "p95_ms_by_repeat": [
+        12.88,
+        13.683
+      ],
+      "sampled_particles_peak": 70,
+      "sampled_damage_numbers_peak": 4,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "electric_spark",
+      "mean_ms_by_repeat": [
+        24.3917272727273,
+        23.6157058823529
+      ],
+      "p95_ms_by_repeat": [
+        36.104,
+        32.586
+      ],
+      "sampled_particles_peak": 615,
+      "sampled_damage_numbers_peak": 28,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "wind",
+      "mean_ms_by_repeat": [
+        11.8175693215339,
+        11.685148255814
+      ],
+      "p95_ms_by_repeat": [
+        14.849,
+        14.221
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 11,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "light_sword",
+      "mean_ms_by_repeat": [
+        22.2763277777778,
+        20.6038666666667
+      ],
+      "p95_ms_by_repeat": [
+        37.694,
+        35.074
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 96,
+      "sampled_kind_peaks": {
+        "light_sword": 3
+      }
+    },
+    {
+      "id": "black_hole",
+      "mean_ms_by_repeat": [
+        31.2775968992248,
+        27.4535068493151
+      ],
+      "p95_ms_by_repeat": [
+        53.538,
+        49.85
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "black_hole": 2
+      }
+    },
+    {
+      "id": "explosion",
+      "mean_ms_by_repeat": [
+        10.9969726027397,
+        10.4657310704961
+      ],
+      "p95_ms_by_repeat": [
+        13.477,
+        11.981
+      ],
+      "sampled_particles_peak": 209,
+      "sampled_damage_numbers_peak": 0,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "fire_chain",
+      "mean_ms_by_repeat": [
+        18.5884351851852,
+        16.7590333333333
+      ],
+      "p95_ms_by_repeat": [
+        24.997,
+        21.991
+      ],
+      "sampled_particles_peak": 180,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "fire_spark",
+      "mean_ms_by_repeat": [
+        34.0869830508475,
+        32.3532177419355
+      ],
+      "p95_ms_by_repeat": [
+        100.85,
+        91.315
+      ],
+      "sampled_particles_peak": 900,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {}
+    },
+    {
+      "id": "water_chain",
+      "mean_ms_by_repeat": [
+        24.1947168674699,
+        22.2965888888889
+      ],
+      "p95_ms_by_repeat": [
+        34.683,
+        30.431
+      ],
+      "sampled_particles_peak": 84,
+      "sampled_damage_numbers_peak": 86,
+      "sampled_kind_peaks": {
+        "water": 2,
+        "reaction_conduct": 3
+      }
+    },
+    {
+      "id": "water_spark",
+      "mean_ms_by_repeat": [
+        42.7442340425532,
+        36.7269545454545
+      ],
+      "p95_ms_by_repeat": [
+        63.359,
+        55.911
+      ],
+      "sampled_particles_peak": 533,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "water": 2,
+        "reaction_conduct": 36
+      }
+    },
+    {
+      "id": "freeze",
+      "mean_ms_by_repeat": [
+        31.0980775193799,
+        31.2387054263566
+      ],
+      "p95_ms_by_repeat": [
+        47.365,
+        45.259
+      ],
+      "sampled_particles_peak": 21,
+      "sampled_damage_numbers_peak": 116,
+      "sampled_kind_peaks": {
+        "water": 2,
+        "reaction_freeze": 36,
+        "ice": 7
+      }
+    },
+    {
+      "id": "wind_ice",
+      "mean_ms_by_repeat": [
+        17.3879177489178,
+        16.864230125523
+      ],
+      "p95_ms_by_repeat": [
+        26.82,
+        25.073
+      ],
+      "sampled_particles_peak": 18,
+      "sampled_damage_numbers_peak": 25,
+      "sampled_kind_peaks": {
+        "reaction_ice_expand": 4,
+        "ice": 6
+      }
+    },
+    {
+      "id": "reflection",
+      "mean_ms_by_repeat": [
+        54.7480540540541,
+        57.9933661971831
+      ],
+      "p95_ms_by_repeat": [
+        69.798,
+        79.403
+      ],
+      "sampled_particles_peak": 21,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "reflection": 36,
+        "reaction_freeze": 36,
+        "ice": 7,
+        "light_sword": 3,
+        "water": 2
+      }
+    },
+    {
+      "id": "holy",
+      "mean_ms_by_repeat": [
+        26.2303986928104,
+        23.5857368421053
+      ],
+      "p95_ms_by_repeat": [
+        41.861,
+        38.149
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "light_sword": 3
+      }
+    },
+    {
+      "id": "dark",
+      "mean_ms_by_repeat": [
+        33.7669416666667,
+        45.7103370786517
+      ],
+      "p95_ms_by_repeat": [
+        56.985,
+        73.692
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "black_hole": 2
+      }
+    },
+    {
+      "id": "wind_water",
+      "mean_ms_by_repeat": [
+        22.0290923913043,
+        22.7575197740113
+      ],
+      "p95_ms_by_repeat": [
+        32.851,
+        36.693
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 22,
+      "sampled_kind_peaks": {
+        "water": 2,
+        "reaction_wet_spread": 6
+      }
+    },
+    {
+      "id": "steam",
+      "mean_ms_by_repeat": [
+        30.0850671641791,
+        30.1824850746269
+      ],
+      "p95_ms_by_repeat": [
+        45.87,
+        43.902
+      ],
+      "sampled_particles_peak": 0,
+      "sampled_damage_numbers_peak": 128,
+      "sampled_kind_peaks": {
+        "water": 2,
+        "reaction_steam": 60
+      }
+    }
+  ],
+  "microbenchmarks": [
+    {
+      "draw_calls": 240,
+      "draw_prepare_ms_per_frame": 0.013275,
+      "frequency": 0,
+      "instances_mean": 0.0,
+      "mean_ms": 16.6661784232365,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.754,
+      "particles_mean": 0.0,
+      "repeat": 0,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.0285458333333333,
+      "spawn_ms_per_event": 0.0,
+      "spawn_ms_per_frame": 0.0
+    },
+    {
+      "draw_calls": 280,
+      "draw_prepare_ms_per_frame": 1.30717916666667,
+      "frequency": 10,
+      "instances_mean": 579.377593360996,
+      "mean_ms": 16.6658589211618,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.733,
+      "particles_mean": 289.688796680498,
+      "repeat": 0,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.169820833333333,
+      "spawn_ms_per_event": 0.753219512195122,
+      "spawn_ms_per_frame": 0.128675
+    },
+    {
+      "draw_calls": 360,
+      "draw_prepare_ms_per_frame": 4.2755375,
+      "frequency": 30,
+      "instances_mean": 1655.13692946058,
+      "mean_ms": 16.6661618257261,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.723,
+      "particles_mean": 827.56846473029,
+      "repeat": 0,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.377770833333333,
+      "spawn_ms_per_event": 0.714760330578512,
+      "spawn_ms_per_frame": 0.360358333333333
+    },
+    {
+      "draw_calls": 360,
+      "draw_prepare_ms_per_frame": 4.14694583333333,
+      "frequency": 30,
+      "instances_mean": 1654.92946058091,
+      "mean_ms": 16.6659128630705,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.742,
+      "particles_mean": 827.464730290456,
+      "repeat": 1,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.37355,
+      "spawn_ms_per_event": 0.69298347107438,
+      "spawn_ms_per_frame": 0.349379166666667
+    },
+    {
+      "draw_calls": 280,
+      "draw_prepare_ms_per_frame": 1.30755416666667,
+      "frequency": 10,
+      "instances_mean": 579.410788381743,
+      "mean_ms": 16.6660041493776,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.752,
+      "particles_mean": 289.705394190871,
+      "repeat": 1,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.17225,
+      "spawn_ms_per_event": 0.751878048780488,
+      "spawn_ms_per_frame": 0.128445833333333
+    },
+    {
+      "draw_calls": 240,
+      "draw_prepare_ms_per_frame": 0.0128916666666667,
+      "frequency": 0,
+      "instances_mean": 0.0,
+      "mean_ms": 16.6660082987552,
+      "method": "60 fps cap; unchanged explosion_burst methods wrapped by CPU timers; 2s warmup + 4s measurement; no readback",
+      "p95_ms": 16.722,
+      "particles_mean": 0.0,
+      "repeat": 1,
+      "sim_calls": 240,
+      "simulation_ms_per_frame": 0.0287458333333333,
+      "spawn_ms_per_event": 0.0,
+      "spawn_ms_per_frame": 0.0
+    },
+    {
+      "draw_cpu_ms_per_call": 2.48159166666667,
+      "draw_cpu_ms_per_frame": 2.47129460580913,
+      "instances": 1,
+      "kind": "water",
+      "mean_ms": 16.6558962655602,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 16.745
+    },
+    {
+      "draw_cpu_ms_per_call": 1.87408944444444,
+      "draw_cpu_ms_per_frame": 14.9263761061947,
+      "instances": 8,
+      "kind": "water",
+      "mean_ms": 17.7152300884956,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 21.793
+    },
+    {
+      "draw_cpu_ms_per_call": 2.09560416666667,
+      "draw_cpu_ms_per_frame": 0.417381742738589,
+      "instances": 1,
+      "kind": "ice",
+      "mean_ms": 16.6569211618257,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 16.736
+    },
+    {
+      "draw_cpu_ms_per_call": 1.9421796875,
+      "draw_cpu_ms_per_frame": 3.09459336099585,
+      "instances": 8,
+      "kind": "ice",
+      "mean_ms": 16.6465726141079,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 16.74
+    },
+    {
+      "draw_cpu_ms_per_call": 0.889266666666667,
+      "draw_cpu_ms_per_frame": 0.885576763485477,
+      "instances": 1,
+      "kind": "reflection",
+      "mean_ms": 16.6625062240664,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 16.722
+    },
+    {
+      "draw_cpu_ms_per_call": 0.715085416666667,
+      "draw_cpu_ms_per_frame": 5.69694605809129,
+      "instances": 8,
+      "kind": "reflection",
+      "mean_ms": 16.638643153527,
+      "method": "60 fps cap; unchanged production _draw, maximum visual detail, animated clock; gameplay disabled; 1s warmup + 4s measurement",
+      "p95_ms": 16.722
+    }
+  ],
+  "private_desktop_verification": {
+    "battle": {
+      "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+      "pid": 24984,
+      "private_desktop": "CodexGodotCapture_1791127835660030700",
+      "verified_desktop": "CodexGodotCapture_1791127835660030700",
+      "foreground_samples": 0,
+      "samples": 21145,
+      "exit_code": 0,
+      "elapsed_seconds": 436.1118806999875
+    },
+    "micro": {
+      "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+      "pid": 35188,
+      "private_desktop": "CodexGodotCapture_1791128292826315100",
+      "verified_desktop": "CodexGodotCapture_1791128292826315100",
+      "foreground_samples": 0,
+      "samples": 3453,
+      "exit_code": 0,
+      "elapsed_seconds": 71.45271150011104
+    }
+  },
+  "source_hashes_collected_after_runs": {
+    "scripts/effects/black_hole_effect.gd": "2dcdf2265ebf510e465e5a3dba183692d0a3f4e00b73ef4032a162f854fe6d04",
+    "scripts/effects/combat_effect_world.gd": "63ce53f35e9736c4d952a5bef1af8cdc12d3c03a47b9bf377e44e154c786814b",
+    "scripts/effects/combat_render_world.gd": "f4ba0e374f603428775737476ee4ab30f9276a5a4503ba4db3a8c9fdf7c89822",
+    "scripts/effects/effect_context.gd": "e3576cb79ffb4a115e30c0dde641c9344b86ad32d558b1057a9d126b432816a3",
+    "scripts/effects/effect_modifier.gd": "0f86ca3e7a062d0e834d684a4f1be0e4862f5d8c6d60f1684e547b2c3bc8fb5c",
+    "scripts/effects/effect_parameter_resolver.gd": "f448f51e4ef7795d5de79d94047506d1b1bf997ecf6d67feeb6d1c739532bc72",
+    "scripts/effects/effect_scheduler.gd": "34ea9e05200025b87300fc28bf408bb10f9a5cc08dd319f486530ef8923c9c73",
+    "scripts/effects/electric_spark_effect.gd": "79b287940a4d2eb4ac022b7b5fc2fc1a2017532f36a0fd38891e7311f6cd8019",
+    "scripts/effects/element_reaction_resolver.gd": "b760adb82e6ae0e097c47264542f9026f640637d2d8a54eec0611fe115bee8f3",
+    "scripts/effects/element_reaction_visual.gd": "98624069c428901c5a103337bc685627cb6ef2bc8aeb08f0b6a53b83aa7dc8df",
+    "scripts/effects/enemy_status_visual.gd": "74c2ef4f199fa7525bcdfb99b3ddee7d5eac02cad8e87ef39110a0b601a9671b",
+    "scripts/effects/explosion_effect.gd": "9a69ad9ed9bac5ff8ab54f003252cf90f66ec7d152eb379804e88cc648111db9",
+    "scripts/effects/fire_patch.gd": "b03b45c7f89dd7b4c412c4c82f1cc151ec16d13f9642400d81590b7f88a0f1df",
+    "scripts/effects/fire_seed.gd": "7579a1fc5f5cc9e05c10e0eb6f447b5fe02d6b794aed1517622a5268c6aad22d",
+    "scripts/effects/frost_pattern.gd": "55e30cea5957ff861ca2efdeb83828301c0e8019fe0d169c00b1b0f34cd154b1",
+    "scripts/effects/hit_particle_burst.gd": "a53e05f4a70698f08c524c0a4a82845895c527c099256d5d1a812e70a7c18dfa",
+    "scripts/effects/ice_field_effect.gd": "f7f34129bf2f8cd26c5b22fc38c10e65c313691b055a7b91f3167548e8de52d4",
+    "scripts/effects/lightning_particle_effect.gd": "359c50aea7bded7a62a066b1d3deac6b3b82bd1350420279a7be9d71889e3508",
+    "scripts/effects/lightning_pixel_bolt.gd": "2c053a5b1cb5953c76d1ff10baaf1f8f61ab8f59c92e37b4694ab77ce339bdc7",
+    "scripts/effects/lightning_status_visual.gd": "54c4951f0223d87b232a6ddd2ce2aaefbc36cc6556e2d64234dd5b6ce25876eb",
+    "scripts/effects/light_reflection_effect.gd": "ee581402ff190174c47177213ee13cc02f729245477b9c6869cd8af8b3e181f1",
+    "scripts/effects/light_sword_effect.gd": "1622e97069ed4359c59c9ef7e656c5cdd22d694682151c5b590d437bf74b0783",
+    "scripts/effects/particle_emitter_runtime.gd": "b58bfdfbb1bb126ab4a69540b86628734e15ba7f7f5b13ded26b29b92a4e7655",
+    "scripts/effects/particle_event.gd": "f1e1f8d5a58d85e14dbe62da2273af33aac631846e74a466427f57cb5ca9d563",
+    "scripts/effects/particle_light_field.gd": "dbeeeed958330ffe387a0e3edc53157f8dca1db4d186ed9144a902ba9c9ddd3f",
+    "scripts/effects/particle_motion_behavior.gd": "7a1d83aa30531f98ee44fba3340e2eb47dd5188f4432c9d0e65b3509674457df",
+    "scripts/effects/particle_world.gd": "7ecb0cbac82da5f2257e6a7c6cc25cdbff14f6ccadfd430a99b6d02b84a6327b",
+    "scripts/effects/pixel_effect_draw.gd": "1aa272292fa2de6a88aa96f189cfd598c1fe7d72ae47bf680d8dbc34af9df96e",
+    "scripts/effects/pixel_fire_visual.gd": "7ab8629b310358a3eea0a3246c93d399c2c4fd54804b0390c9eddb8fa1c65bfa",
+    "scripts/effects/pixel_particle_batch.gd": "5bb0e7c661379b41fb8259fb990fe23abe70b8cc4696d743d071c45b738e5a0b",
+    "scripts/effects/plasma_ball_visual.gd": "ce584724fcaf716b689e1db3c82a79ac0a2765b2804017392eff4062e398fbf6",
+    "scripts/effects/reaction_pixel_shapes.gd": "6b7738def6cb4ca6d62bf2dd9b09787d6cd84d59eb57a4a96781c12d6c7194fb",
+    "scripts/effects/water_wave_effect.gd": "fa6ceb0cb0832cd27139a87f5529d854fbd94e84d8e929d6a291f2fb52af6656",
+    "scripts/effects/wind_blade_effect.gd": "9043ab7b4b1bbbe35ed02e4e775aeff0c6ce37844bcc0e24644ad73f22f612dd",
+    "scripts/enemies/enemy_controller.gd": "ce505c4937ae940fde1755b760e95adff894c8ef38fc266b5917d97db841d2d3",
+    "scripts/enemies/enemy_registry.gd": "ee70d89c3344f8226f9b45f13205cd75f004c5b5afb8ba630764417b9de1ad9c",
+    "shaders/effects/pixel_fire.gdshader": "f45e4095d8ff719dcd7bfabbe5bb7ced189aa3eb91fe8f7eb84ba3d7940ecd1c"
+  },
+  "raw_data": "D:\\project\\useless\\review-archives\\enchantment-cost-20261004"
+}

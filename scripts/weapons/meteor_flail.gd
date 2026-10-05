@@ -7,9 +7,9 @@ const HEAD = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_hea
 const LINK = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_chain_link.png")
 const GRIP = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_grip.png")
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
-const WINDUP := 0.18
-const SWEEP := 0.55
-const RECOVER := 0.15
+const WINDUP := 0.13
+const SWEEP := 0.37
+const RECOVER := 0.10
 
 var weapon: WeaponInstance
 var cancelled := false
@@ -27,14 +27,14 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	weapon = source
 	heading = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	swing_sign = 1.0 if weapon.volley_index % 2 == 0 else -1.0
-	time_scale = weapon.get_actual_attack_interval_seconds() / 1.5
+	time_scale = 1.0 if weapon.use_active_range_rules else weapon.get_actual_attack_interval_seconds() / 1.5
 	global_position = weapon.get_attack_origin()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = 50
 	split_profiles = weapon.get_split_profiles()
 	var count := maxi(1, int(weapon.get_stat("projectile_count")))
 	for index in count:
-		var delay := 0.36 * index / maxf(count - 1, 1)
+		var delay := (WINDUP + SWEEP + RECOVER) * index
 		_add_swing(delay, WINDUP, SWEEP, 1.0, false, index)
 	add_to_group("meteor_flails")
 	add_to_group("weapon_runtime_effects")
@@ -47,6 +47,13 @@ func _add_swing(start: float, windup: float, duration: float, multiplier: float,
 	swings.append({"start": start, "windup": windup, "duration": duration,
 		"multiplier": multiplier, "child": child, "sign": swing_sign * (1.0 if index % 2 == 0 else -1.0),
 		"event": event, "hits": {}, "trail": [], "processed_until": start})
+
+
+func sequence_duration() -> float:
+	var end := 0.0
+	for swing in swings:
+		end = maxf(end, float(swing.start) + float(swing.windup) + float(swing.duration) + RECOVER)
+	return end
 
 
 func is_swinging() -> bool:
@@ -157,8 +164,9 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 		var children: Array[Dictionary] = []
 		for profile in split_profiles:
 			for _index in int(profile.child_count): children.append(profile)
+		# Finish every queued swing before starting the next follow-through.
 		for index in children.size():
-			_add_swing(maxf(0.70, at_time) + 0.36 * index / maxf(children.size() - 1, 1), 0.03, 0.32, float(children[index].damage_multiplier), true, index + 1, int(children[index].enchantment_start))
+			_add_swing(maxf(sequence_duration(), at_time), 0.03, 0.32, float(children[index].damage_multiplier), true, swings.size(), int(children[index].enchantment_start))
 	# Every contacted victim gets attachments, including a lethal native hit.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, heading, enemy)
 	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, heading)
@@ -186,7 +194,7 @@ func _draw() -> void:
 	for swing in swings:
 		var local_time := age - float(swing.start)
 		var end := float(swing.windup) + float(swing.duration)
-		if local_time < 0 or local_time > end + RECOVER:
+		if local_time < 0 or local_time >= end + RECOVER:
 			continue
 		var fade := minf(1.0, local_time / 0.045) * (1.0 - clampf((local_time - end) / RECOVER, 0, 1))
 		var head := head_position(swing, age)

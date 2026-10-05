@@ -1,7 +1,7 @@
 extends Node
 ## Interactive art review built on the real GameRoot and weapon runtimes.
 ## Fixtures: all 11 weapons, stationary durable targets, no wave spawning.
-## Numerical balance, resonance redesign and cleanup phases remain separate work.
+## Numerical balance and cleanup phases remain separate work.
 
 const INDICATOR = preload("res://scripts/battle/weapon_attack_indicator.gd")
 const MARKER = preload("res://scripts/battle/move_destination_marker.gd")
@@ -83,6 +83,11 @@ func _boot() -> void:
 		return
 	battle = (game.get_node("SceneDirector") as GameSceneDirector).battle_root as BattleRoot
 	battle.set_process(false)
+	# This fixture owns its input/scheduling; formal combat is covered separately.
+	battle.active_controller.enabled = false
+	battle.active_controller.clear_input()
+	battle.loadout.set_active_combat_enabled(false)
+	battle.player.active_controls = false
 	# The review owns Esc priority; BattleRoot otherwise opens its overlay first.
 	battle.set_process_unhandled_input(false)
 	battle.wave_manager.set_process(false)
@@ -393,7 +398,7 @@ func _fire(index: int) -> bool:
 		lamp.initialize(weapon)
 		lamp.manual_control = true
 		lamp.manual_direction = last_direction
-		lamp.resonance_controlled = true
+		lamp.externally_driven = true
 		lamp.burst_active = true
 		body = lamp
 	elif weapon.is_mutant_tentacle():
@@ -411,12 +416,7 @@ func _fire(index: int) -> bool:
 		var dagger := CampDagger.new()
 		visual_root.add_child(dagger)
 		dagger.initialize(weapon, aim)
-		# Preview the agreed uncompressed combo timing without changing shipped combat.
-		for i in dagger.cuts.size():
-			dagger.cuts[i].start = dagger.main_duration * i
-			dagger.cuts[i].windup = float(weapon.weapon_data.dagger_windup_ms) / 1000
-			dagger.cuts[i].sweep = float(weapon.weapon_data.dagger_sweep_ms) / 1000
-			dagger.cuts[i].recover = float(weapon.weapon_data.dagger_recover_ms) / 1000
+		dagger.configure_continuous_combo()
 		body = dagger
 	elif weapon.is_nightwatch_spear():
 		var spear := NightwatchSpear.new()
@@ -441,7 +441,7 @@ func _fire(index: int) -> bool:
 			grenade.elliptical_blast = true
 			grenade.blast_radius = AttackFootprint.grenade_blast_axes(weapon).x
 	elif weapon.is_coin_purse():
-		loadout._fire_coins(weapon)
+		loadout._fire_coins(weapon, aim)
 	else:
 		loadout._spawn_projectiles(weapon, weapon.calculate_damage_events()[0], player.global_position + aim * weapon.get_attack_range(), weapon.get_attack_range())
 	if not weapon.is_coin_purse():
@@ -450,6 +450,8 @@ func _fire(index: int) -> bool:
 	states[index].active = true
 	states[index].body = body
 	states[index].action_left = 0.18
+	if weapon.is_grenade():
+		states[index].action_left = float(weapon.weapon_data.get("grenade_flight_seconds", 0.45)) + GrenadeProjectile.BLAST_LIFETIME
 	heading_label.text = "%02d  %s · 已释放" % [index + 1, str(weapon.weapon_data.display_name)]
 	_cancel_aim()
 	return true

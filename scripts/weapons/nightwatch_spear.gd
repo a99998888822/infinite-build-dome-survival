@@ -29,14 +29,13 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	weapon = source
 	aim = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	global_position = weapon.get_attack_origin()
-	time_scale = weapon.get_actual_attack_interval_seconds() / maxf(float(weapon.attack_interval_ms) / 1000.0, 0.001)
+	time_scale = 1.0 if weapon.use_active_range_rules else weapon.get_actual_attack_interval_seconds() / (float(weapon.attack_interval_ms) / 1000.0)
 	windup = float(weapon.weapon_data.get("spear_windup_ms", 100)) / 1000.0
 	extend = float(weapon.weapon_data.get("spear_extend_ms", 120)) / 1000.0
 	recover = float(weapon.weapon_data.get("spear_recover_ms", 160)) / 1000.0
 	split_profiles = weapon.get_split_profiles()
-	var count := maxi(1, int(weapon.get_stat("projectile_count")))
-	for index in count:
-		thrusts.append({"start": 0.18 * index / maxf(count - 1, 1), "hits": {}, "contacts": [], "event": weapon.calculate_damage_events()[0]})
+	for angle in weapon.get_projectile_angles():
+		thrusts.append({"start": 0.0, "direction": aim.rotated(deg_to_rad(angle)), "hits": {}, "contacts": [], "event": weapon.calculate_damage_events()[0]})
 	_query.shape = _shape
 	_query.collision_mask = 2
 	_query.collide_with_areas = false
@@ -95,15 +94,16 @@ func _physics_process(delta: float) -> void:
 
 
 func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) -> void:
+	var direction: Vector2 = thrust.direction
 	_shape.size = Vector2(maxf(length, 1), maxf(weapon.get_hit_radius() * 2.0, 1))
-	_query.transform = Transform2D(aim.angle(), origin + aim * length * 0.5)
+	_query.transform = Transform2D(direction.angle(), origin + direction * length * 0.5)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
 	AudioManager.begin_combat_audio()
 	for contact in contacts:
 		var enemy := contact.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or thrust.hits.has(enemy.get_instance_id()):
 			continue
-		if (enemy.global_position - origin).dot(aim) < 0:
+		if (enemy.global_position - origin).dot(direction) < 0:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
@@ -114,8 +114,8 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 		var event: DamageEvent = thrust.event.duplicate_event()
 		event.hit_position = enemy.global_position
 		thrust.contacts.append({"position": enemy.global_position, "event": event})
-		EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, event.hit_position, aim, enemy)
-		enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, aim)
+		EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, event.hit_position, direction, enemy)
+		enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
 		weapon.play_attack_hit_sfx()
 		target_hit.emit(id, event.damage, index)
 	AudioManager.end_combat_audio()
@@ -123,6 +123,7 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 
 func _spawn_shards() -> void:
 	for thrust in thrusts:
+		var forward: Vector2 = thrust.direction
 		var reserved := primary_hits.duplicate()
 		var plans: Array[Dictionary] = []
 		for contact in thrust.contacts:
@@ -135,11 +136,11 @@ func _spawn_shards() -> void:
 						if not enemy.is_alive() or not enemy.is_inside_tree() or reserved.has(enemy.get_instance_id()):
 							continue
 						var relative: Vector2 = enemy.global_position - origin
-						if relative.dot(aim) > 0 and relative.length_squared() < distance:
+						if relative.dot(forward) > 0 and relative.length_squared() < distance:
 							nearest = enemy
 							distance = relative.length_squared()
 					var spread := float(profile.spread_angle)
-					var direction := aim.rotated(deg_to_rad(lerpf(-spread * 0.5, spread * 0.5, float(index) / maxf(int(profile.child_count) - 1, 1))))
+					var direction := forward.rotated(deg_to_rad(lerpf(-spread * 0.5, spread * 0.5, float(index) / maxf(int(profile.child_count) - 1, 1))))
 					var target_id := 0
 					if nearest != null:
 						direction = origin.direction_to(nearest.global_position)
@@ -174,8 +175,8 @@ func _draw() -> void:
 	if weapon.has_effect("fire"): tint = Color("ffad60")
 	elif weapon.has_effect("ice"): tint = Color("82d9f0")
 	elif weapon.has_effect("lightning"): tint = Color("c6b9ff")
-	draw_set_transform(Vector2.ZERO, aim.angle())
 	for thrust in thrusts:
+		draw_set_transform(Vector2.ZERO, (thrust.direction as Vector2).angle())
 		var local_time := age - float(thrust.start)
 		if local_time < 0 or local_time >= windup + extend + recover:
 			continue

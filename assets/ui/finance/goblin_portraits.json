@@ -1,38 +1,38 @@
 {
   "frame_size": [
-    128,
-    128
+    256,
+    256
   ],
   "states": [
     {
       "index": 0,
       "expression": "neutral",
-      "source": "artifacts/previews/goblin_reprint/picxel_128_review/work/goblin-128.png",
-      "sha256": "28505363655a7e1e8aa8d339cda0a5dde3429a9472f93aaa0700c87cb7ee4212"
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_neutral.png",
+      "sha256": "efbf56a01bbfb1739d4ed148ea1540c77372439e31254d076152e57b176374dd"
     },
     {
       "index": 1,
       "expression": "downcast",
-      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_downcast-128.png",
-      "sha256": "27e1ac1ad62a235843e82ce1fb557b2d193714ac25ca133f23cd7beac72e6a01"
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_downcast.png",
+      "sha256": "004d2486646c271bc99cc447eb4a21c658042a2d22cc12718ef88e4a66674436"
     },
     {
       "index": 2,
       "expression": "displeased",
-      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_displeased-128.png",
-      "sha256": "407105a0d114d3687eca4b4bff0c7b4da36174f792313b5f620739dfad5d0439"
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_displeased.png",
+      "sha256": "3f46aea02e90caddc20ea47f0eb0d7cc49c001e9ea36085a4ae6f6a64f8aca3d"
     },
     {
       "index": 3,
       "expression": "smile",
-      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_smile-128.png",
-      "sha256": "1f1c4d150cfb91b719a11518e391cf4c004a96a36bbb0a0e66120f78461aa6a0"
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_smile.png",
+      "sha256": "2477bdd24f274360d1f040db5047f5e759f088e4b1199178609a465246dda2ef"
     },
     {
       "index": 4,
       "expression": "delighted",
-      "source": "artifacts/previews/goblin_reprint/picxel_expressions_128/work/goblin_delighted-128.png",
-      "sha256": "a8533f87bb783827301be7589ac207b479159f1b880eb3c6af573cd8ec4b9152"
+      "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_delighted.png",
+      "sha256": "32a32e3fc5c75573688e51b0ff0bbd1fd0f750ed57b3130bea6b66c6912a46d1"
     }
   ],
   "settlement_rows": [
@@ -43,8 +43,8 @@
   ],
   "settlement_bob_pixels": [
     0,
-    -1,
+    -2,
     0,
-    1
+    2
   ]
 }

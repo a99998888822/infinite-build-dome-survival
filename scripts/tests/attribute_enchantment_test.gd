@@ -1,4 +1,4 @@
-extends "res://scripts/tests/bounce_resonance_test.gd"
+extends "res://scripts/tests/bounce_test.gd"
 
 const IDS := ["might", "wisdom", "multishot", "domain", "precision", "lethality", "haste"]
 const BONUS_KEYS := ["all_damage_percent", "element_damage_percent", "projectile_count", "damage_area_size", "crit_chance", "crit_damage", "attack_speed"]
@@ -60,7 +60,7 @@ func _run() -> void:
 		loadout.detach_item_from_weapon(weapon.weapon_id, item.item_instance_id)
 		check(copy.get_attachment_bonus(BONUS_KEYS[index]) == AMOUNTS[index] and weapon.get_attachment_bonus(BONUS_KEYS[index]) == 0, "bounce snapshot and original stay independent")
 		var texture := load(item.icon) as Texture2D
-		check(texture != null and texture.get_size() == Vector2(32, 32), "installed native 32px icon: " + IDS[index])
+		check(texture != null and texture.get_size() == Vector2(64, 64), "installed 64px icon: " + IDS[index])
 		var card := ItemInventoryCard.new()
 		host.add_child(card)
 		card.configure(item, false)
@@ -139,18 +139,6 @@ func _run() -> void:
 	player.modifier_stack.set_base_stat("crit_chance", 90)
 	check(weapon.get_stat("crit_chance") == 100, "crit chance clamps at 100 percent")
 	check(player.get_stat("crit_chance") == 90, "crit clamp does not change player stats")
-
-	await fixture(BOW, [Vector2(100, 0)], ["scroll_resonance", "scroll_haste"])
-	var follower := add_member(TENTACLE)
-	var follower_interval := follower.get_actual_attack_interval_seconds()
-	check(is_equal_approx(weapon.get_actual_attack_interval_seconds(), weapon.attack_interval_ms / 1250.0), "haste uses standard local attack-speed formula")
-	track()
-	loadout.tick(0.01)
-	freeze_nodes(host)
-	step(0.02)
-	check(fired == [BOW, TENTACLE], "haste preserves ordered resonance wakeup")
-	check(follower.get_actual_attack_interval_seconds() == follower_interval and follower.get_stat("attack_speed") == 0, "leader haste does not modify follower attributes")
-	check(not loadout._try_attack_with_weapon(follower), "resonance follower remains unable to fire autonomously")
 
 	var validator := DataValidator.new()
 	check(validator.validate_all(DataRegistry.tables, DataRegistry.records_by_id), "full production configuration validation")

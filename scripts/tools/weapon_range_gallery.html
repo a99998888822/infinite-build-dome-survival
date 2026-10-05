@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>武器范围 · 标签规则实机对照 R02</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101919;color:#e2dbc3;font:15px/1.6 system-ui,'Microsoft YaHei',sans-serif}main{max-width:1600px;margin:auto;padding:28px}h1{font-size:27px;margin:0 0 8px}p{margin:8px 0;color:#a6bcb8}button{font:inherit;color:#bfcdc7;background:#1c2c2c;border:1px solid #39514d;border-radius:6px;padding:8px 14px;cursor:pointer}button[aria-pressed=true]{background:#355656;color:#efffff;border-color:#b2d9df}.row{display:flex;flex-wrap:wrap;gap:8px;margin:17px 0}.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{min-width:0;background:#172424;border:1px solid #324747;border-radius:9px;overflow:hidden}.panel h2{font-size:17px;padding:10px 16px;margin:0}.media img,.media video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#101919}.meta{padding:10px 16px;font-size:14px;color:#b8c9c3}.note{padding:15px 18px;border-left:3px solid #cdbd8a;background:#232b26;margin:17px 0}a{color:#bbdfed}table{border-collapse:collapse;width:100%;margin:16px 0}td,th{padding:9px 14px;text-align:left;border-bottom:1px solid #344743}th{color:#9fb4ac}small{color:#8ba29c}.footer{margin-top:28px} @media(max-width:850px){main{padding:15px}.compare{grid-template-columns:1fr}}
+</style>
+<main><h1>攻击距离 × 伤害范围 · R02</h1><p>按已确认标签更新 · 11 把武器 · 5 档数值 · Godot 实机录制 · 每把武器固定镜头与 A—G 目标位置</p>
+<div class="row" id="weapons"></div><p id="tags"></p><div class="row" id="cases"></div>
+<div class="row" id="modes"><button data-mode="aim">指示器</button><button data-mode="video">播放实际攻击</button><button data-mode="attack">攻击关键帧</button><button id="replay">两侧重新播放</button></div>
+<div class="compare"><section class="panel"><h2 id="lefttitle"></h2><div class="media" id="left"></div><div class="meta" id="leftmeta"></div></section><section class="panel"><h2 id="righttitle"></h2><div class="media" id="right"></div><div class="meta" id="rightmeta"></div></section></div>
+<div id="note" class="note"></div><table><thead><tr><th>当前实际参数（世界单位）</th><th>基础</th><th id="casehead"></th></tr></thead><tbody id="metrics"></tbody></table>
+<p id="downloads"></p><p class="footer">说明：本页在独立审阅场景启用新规则，正式主战斗尚未迁移。默认投射物数量（钱袋 3，其余 1），移除附魔，暴击与攻速加成为 0。字母变金色表示该目标受到过实际伤害；未受击也可能由穿透次数或秘仪书随机点名预算导致，不能直接当作边界判定。投射物贴图变大不自动扩大碰撞范围。</p><p>三把扇形武器按“基础距离 ×（1＋攻击距离加成＋伤害范围加成）”增加最远距离，角度固定。炉灯、秘仪书的“指示器”页面是审阅用范围说明，实战按数字键直接施放。播放使用真实引擎帧及原始时间戳，结果页有短暂停留；动画 GIF 会重采样至 15 fps，完整 MP4 保留原始采样时序。</p><small id="validation"></small></main>
+<script>
+const data=__CAPTURE_DATA__;
+let wi=0, ci=2, mode='aim';
+const notes={
+weapon_void_blade:'木质弓箭：攻击距离增加飞行路程与箭头长度，箭杆宽度固定。伤害范围只放大木箭贴图，不改变射程、碰撞半径或指示器。',
+weapon_plasma_cannon:'电浆炮：攻击距离增加飞行路程与箭头长度，箭杆宽度固定。伤害范围只放大电球外观，实际接触半径保持不变。',
+weapon_iron_grenade_cannon:'铸铁榴弹炮：攻击距离扩大外层施法椭圆；伤害范围分别放大飞行中的弹体和落点爆炸椭圆。完整爆炸范围限制在射程内，因此爆炸越大，允许的最远落点中心越靠近玩家。',
+weapon_kunyu_ritual_tome:'坤舆秘仪书：已新增“法阵”标签，保留原版法阵特效。沿用攻击距离扩大法阵两条半轴、伤害范围不扩大原生法阵的规则；默认 3 次点名、间隔 0.35 秒。',
+weapon_rentier_purse:'食利者钱袋：固定 3 枚、相邻 10°。攻击距离增加飞行路程与箭头长度；伤害范围只放大金币贴图，指示器宽度与原生碰撞半径不变。',
+weapon_copper_lamp:'赤铜炉灯：攻击距离和伤害范围共同增加最远喷射距离，扩散角始终为 60°。两项各 +100% 时距离为基础的 3 倍，喷射仍持续 1.8 秒。',
+weapon_mutant_tentacle:'异化触手：带“范围”标签，因此攻击距离让箭头变长，伤害范围让箭头变宽，实际攻击长宽同步。动画时长从 0.22 秒延长至 0.33 秒，命中时点同步调整。',
+weapon_earth_hammer:'裂地战锤：基于原版像素稿加粗裂缝主线，并补上短小细分叉；保留原版暗色岩土配色与走势，移除上一版金色描边。裂缝从玩家身前留空后向外延伸，放大时不会向后穿过角色。原生攻击只吃攻击距离，伤害范围只放大视觉；节点、判定及箭杆宽度保持原规则。',
+weapon_camp_dagger:'营地短刀：攻击距离与伤害范围共同增加 130° 扇形的最远半径，刀刃随轨迹外移；伤害范围不放大刀身贴图或接触厚度。单刀仍为 0.30 秒，多刀保持无间隔衔接。',
+weapon_nightwatch_spear:'守夜长枪：按无“范围”标签的直线规则处理，攻击距离延长刺击和箭头；伤害范围不改变箭头宽度、原生刺击宽度或枪体贴图。',
+weapon_meteor_flail:'流星摆锤：攻击距离与伤害范围共同扩大 130° 扇面，链条延长、实际远端目标可以被命中；锤头贴图大小固定，完整挥击仍为 0.6 秒。'
+};
+const labels={reach:'攻击最远距离',hit_radius:'原生命中半径 / 半宽（部分武器不使用）',projectile_visual_scale:'投射物贴图倍率',projectiles:'投射物数量',domain_axes:'法阵半轴',blast_axes:'爆炸半轴',landing:'最远落点中心',cone_degrees:'喷射扩散角（°）',spray_seconds:'喷射时长（s）',fan_outer_radius:'短刀指示器外半径',blade_sprite_scale:'短刀贴图缩放',motion_seconds:'触手动作时长（s）',fan_degrees:'扇形角度（°）',indicator_shaft_width:'直线箭杆宽度（已缩至 0.8 倍）',last_node_outer_edge:'最后节点伤害带远端',eligible_targets:'法阵内可点名目标'};
+function fmt(v){return Array.isArray(v)?v.map(fmt).join(v.every(x=>typeof x==='number')?' × ':'、'):typeof v==='number'?Number(v.toFixed(2)):v;}
+function setMedia(side,e){const host=document.getElementById(side);host.replaceChildren();let el=document.createElement(mode==='video'?'video':'img');el.src=e[mode];if(mode==='video'){el.controls=true;el.muted=true;el.loop=true;el.playsInline=true;el.autoplay=true;}else el.alt=e.name+' · '+e.case_name;host.append(el);document.getElementById(side+'title').textContent=e.name+' · '+e.case_name;let hit=e.target_hits.map((n,i)=>n?String.fromCharCode(65+i)+'（'+n+'）':null).filter(Boolean).join('、');document.getElementById(side+'meta').textContent='实际受击：'+(hit||'无')+' ｜原生动作/飞行 '+(e.action_ticks/60).toFixed(2)+'s';}
+function render(){
+  let w=data.weapons[wi],a=w.cases[0],b=w.cases[ci];
+  document.getElementById('weapons').replaceChildren(...data.weapons.map((w,i)=>button(w.name,i===wi,()=>{wi=i;render()})));
+  document.getElementById('tags').textContent='标签：'+a.tags.join(' · ');
+  document.getElementById('cases').replaceChildren(...w.cases.map((c,i)=>button(c.case_name,i===ci,()=>{ci=i;render()})));
+  document.querySelectorAll('[data-mode]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.mode===mode)));
+  setMedia('left',a);setMedia('right',b);
+  document.getElementById('note').textContent=notes[w.id];
+  document.getElementById('casehead').textContent=b.case_name;
+  document.getElementById('metrics').innerHTML=Object.keys(labels).filter(k=>k in b.metrics).map(k=>'<tr><td>'+labels[k]+'</td><td>'+fmt(a.metrics[k])+'</td><td>'+fmt(b.metrics[k])+'</td></tr>').join('');
+  let prefix=w.media_prefix||'';
+  document.getElementById('downloads').innerHTML='<a href="'+prefix+w.id+'.gif">五档连续动图</a> · <a href="'+prefix+w.id+'.mp4">完整 MP4</a> · <a href="'+prefix+w.id+'_comparison.png">五档静态对照图</a>';
+}
+function button(t,active,cb){let b=document.createElement('button');b.textContent=t;b.setAttribute('aria-pressed',String(active));b.onclick=cb;return b;}
+document.querySelectorAll('[data-mode]').forEach(e=>e.onclick=()=>{mode=e.dataset.mode;render()});document.getElementById('replay').onclick=()=>{mode='video';render()};document.getElementById('validation').textContent='基线验证：'+data.checks+' 项检查通过；55 组实机录制；引擎私有桌面已核验；前台抢焦点次数 '+data.desktop.foreground_samples+'。'+(data.updates?.length?' 最近修订重新录制 '+data.updates.at(-1).cases+' 组，'+data.updates.at(-1).checks+' 项检查通过。':'');render();
+</script></html>

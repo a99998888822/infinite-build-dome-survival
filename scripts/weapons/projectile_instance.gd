@@ -96,7 +96,7 @@ func initialize(
 		var sprite := Sprite2D.new()
 		sprite.texture = texture
 		sprite.centered = true
-		sprite.scale = Vector2.ONE * visual_scale
+		sprite.scale = Vector2.ONE * visual_scale * weapon.get_projectile_visual_scale()
 		sprite.rotation = direction.angle()
 		add_child(sprite)
 

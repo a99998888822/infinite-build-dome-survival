@@ -1,0 +1,339 @@
+{
+  "source": "artifacts/sources/finance/finance_table_ui_scroll_short.png",
+  "source_sha256": "4ca8c2d44f239e383c350fead1bcdce6e6e657e01c3b3a56977bdb169cd85759",
+  "source_size": [
+    2752,
+    1536
+  ],
+  "pixel_background_size": [
+    688,
+    384
+  ],
+  "composite_size": [
+    2752,
+    1536
+  ],
+  "background_scale": 4,
+  "palette": [
+    "#1b1d24",
+    "#292a2f",
+    "#3a3c3e",
+    "#2b3f44",
+    "#486064",
+    "#514c41",
+    "#746247",
+    "#45352d",
+    "#876749",
+    "#aa8357",
+    "#b7966d",
+    "#d0af80",
+    "#f1c480",
+    "#ffebbd",
+    "#415346",
+    "#5f704e"
+  ],
+  "tiles": [
+    {
+      "name": "bank-r1-c1",
+      "row": 0,
+      "column": 0,
+      "source_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c1-128.pxg",
+      "sha256": "abd7f7301bfa1f4bab3f10d6414ba6ea3e08e1b02b49e638dce4708621581d6b",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c1.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r1-c2",
+      "row": 0,
+      "column": 1,
+      "source_box": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c2-128.pxg",
+      "sha256": "328ff8ef48b33a096ef4f93f5d37ff25eb2d5d4474eae29ac512793988684523",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c2.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r1-c3",
+      "row": 0,
+      "column": 2,
+      "source_box": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "reprocessed": true,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c3-128.pxg",
+      "sha256": "fb473329580195b7aa8a44a6f1a880212e0a987ed68301908604cf7efa15d1bd",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c3.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r1-c4",
+      "row": 0,
+      "column": 3,
+      "source_box": [
+        1536,
+        0,
+        2048,
+        512
+      ],
+      "reprocessed": true,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c4-128.pxg",
+      "sha256": "81b9c8ae1c32f28e90f86e2df8623cb1523cd392e5eb9b63d9bc251d08badd5c",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c4.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r1-c5",
+      "row": 0,
+      "column": 4,
+      "source_box": [
+        2048,
+        0,
+        2560,
+        512
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c5-128.pxg",
+      "sha256": "55d118e76d8aa83b9a4c5e8a416ddc43de845d3481d5031a8ac45a45304a3989",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c5.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r1-c6",
+      "row": 0,
+      "column": 5,
+      "source_box": [
+        2560,
+        0,
+        3072,
+        512
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r1-c6-128.pxg",
+      "sha256": "67037b0a45d3b6b991ebff4974e079c9f92e699bcf3578249dc4ebd2b6265fb3",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r1-c6.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c1",
+      "row": 1,
+      "column": 0,
+      "source_box": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c1-128.pxg",
+      "sha256": "eefadfedef7a51420b88c01603d674829cdb707f93222f960af3a328230356b2",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c1.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c2",
+      "row": 1,
+      "column": 1,
+      "source_box": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c2-128.pxg",
+      "sha256": "58d671e813b279463346fdf7e21e09e8042250a239f764ed8075f72a4410bf82",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c2.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c3",
+      "row": 1,
+      "column": 2,
+      "source_box": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "reprocessed": true,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c3-128.pxg",
+      "sha256": "c10be6aa03b31b91d29604d7f4a56536bc846e5bf1fc889e81dca4236240d691",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c3.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c4",
+      "row": 1,
+      "column": 3,
+      "source_box": [
+        1536,
+        512,
+        2048,
+        1024
+      ],
+      "reprocessed": true,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c4-128.pxg",
+      "sha256": "16a7eabc73cb7d3df17020c4a56e8623141e7ca7f90e25bdebe19105090b2a9d",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c4.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c5",
+      "row": 1,
+      "column": 4,
+      "source_box": [
+        2048,
+        512,
+        2560,
+        1024
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c5-128.pxg",
+      "sha256": "9f9702e01c9d8ca6b5c5ce87b951e67b7dbc1aa094a322959f1814f224ca75bf",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c5.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r2-c6",
+      "row": 1,
+      "column": 5,
+      "source_box": [
+        2560,
+        512,
+        3072,
+        1024
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r2-c6-128.pxg",
+      "sha256": "0d88f6b010ff426e1acb3e6d6ae132a793f803393f4fcf382d08782eae5f83dd",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r2-c6.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c1",
+      "row": 2,
+      "column": 0,
+      "source_box": [
+        0,
+        1024,
+        512,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c1-128.pxg",
+      "sha256": "d3dc560eebe34e862e9a12e85f7ddaf76bf996cce48a5d780dbc7a6cf85b2fd5",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c1.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c2",
+      "row": 2,
+      "column": 1,
+      "source_box": [
+        512,
+        1024,
+        1024,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c2-128.pxg",
+      "sha256": "84da04dde63d1d2bbe456baf2979a0b7dfc9189610b8a7fe50309ba297b77c69",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c2.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c3",
+      "row": 2,
+      "column": 2,
+      "source_box": [
+        1024,
+        1024,
+        1536,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c3-128.pxg",
+      "sha256": "cc33a961f80775ed83bfaf6e1a748758778b7d53a52083d9960c057ceb00d162",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c3.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c4",
+      "row": 2,
+      "column": 3,
+      "source_box": [
+        1536,
+        1024,
+        2048,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c4-128.pxg",
+      "sha256": "d6a9b60635459809178e9edc45c18c69d7424c5e172590e65dca525e9c6d31a3",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c4.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c5",
+      "row": 2,
+      "column": 4,
+      "source_box": [
+        2048,
+        1024,
+        2560,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c5-128.pxg",
+      "sha256": "90a64e86d73066391a7b8e0e3e402be0eddf637b19f1fbf05d0488de196046f3",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c5.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    },
+    {
+      "name": "bank-r3-c6",
+      "row": 2,
+      "column": 5,
+      "source_box": [
+        2560,
+        1024,
+        3072,
+        1536
+      ],
+      "reprocessed": false,
+      "grid": "artifacts/editable/finance_background/tiles/bank-r3-c6-128.pxg",
+      "sha256": "2bd20855c2c877fa98b98675981ede9c87ecae966a41d9e901863ad36dfb3810",
+      "palette": "artifacts/editable/finance_background/tiles/bank-r3-c6.pal",
+      "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
+    }
+  ],
+  "changed_blocks": [
+    "bank-r1-c3",
+    "bank-r1-c4",
+    "bank-r2-c3",
+    "bank-r2-c4"
+  ],
+  "image_model_used": false,
+  "production_modified": false,
+  "hd_content": "Short scroll paper and both rollers, including ink outline; surrounding scene uses the 688x384 pixel background.",
+  "asset": "assets/ui/finance/finance_background.png",
+  "pixel_background": "artifacts/editable/finance_background/pixel_background.png",
+  "scroll_mask": "artifacts/editable/finance_background/scroll_mask.png",
+  "asset_sha256": "31449d9a8159e0f760b351956d476063bf9ec251f6f83aa45bc9a005b515e2ff",
+  "composition": "Image.composite(short_scroll_RGBA, pixel_background_RGBA.resize((2752,1536), NEAREST), scroll_mask_L)"
+}

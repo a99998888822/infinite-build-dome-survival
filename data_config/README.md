@@ -2,6 +2,8 @@
 
 本目录存放游戏的静态配置表，供 `DataRegistry` 在启动时统一加载、缓存和查询。业务模块不应直接读取本目录下的 JSON 文件，而应通过 `DataRegistry` 获取配置。
 
+2026-10-05：正式主战斗采用主动施放。武器新增 `active_cooldown_ms`（动作结束后的冷却）和用户定义的 `combat_tags`；`attack_interval_ms` 保留为升级比例基准。当前敌我与掉落数值见 [正式接入记录](../docs/main/active_combat_implementation.md)，下方早期示例说明不代表当前平衡基准。
+
 ## 第 5 步前你需要预先准备什么
 
 1. 配置文件本身必须存在：即使只有一条示例数据，也要先创建对应 JSON 文件，避免加载阶段全是“文件不存在”。
@@ -54,20 +56,23 @@
 
 ## weapons.json 规则
 
+以下属性说明描述现有正式战斗；主动战斗的 R02 独立审阅通过 `WeaponInstance.use_active_range_rules` 启用新范围规则，详见根目录方案第 17.8—17.9 节。`combat_tags` 单独保存用户指定的中文战斗标签（近战、远程、投射物、扇形、范围、法阵），不要与现有 `tags` 的附魔分类合并；秘仪书为“范围、法阵”。新模式中投射物外观缩放与原生碰撞分离，三把扇形武器按两项加成之和扩大最远距离。
+
 1. `weapons.json` 保留运行与 UI 必要字段；`description` 必填，用于商店和图鉴展示。
 2. 武器基础攻击间隔使用 `attack_interval_ms`，单位为毫秒整数；例如 `700` 表示0.7秒。
 3. 武器稀有度使用 `rarity`，当前白色/普通武器写 `common`。
 4. 武器图标使用 `icon`，素材未完成时可先写占位路径。
 5. 武器升级使用 `level_upgrades`：`stat` 表示属性升级，`field` 表示武器自身字段升级。
 6. 每个 `level_upgrades` 目标等级使用对象结构：`rarity` 表示升级选项稀有度，`effects` 保存具体升级效果。
-7. 普通直线投射物按最近敌人索敌；榴弹选择密集怪群，秘仪书在椭圆领域内随机点名，钱袋均匀环射。
+7. 普通直线投射物按最近敌人索敌；榴弹选择密集怪群，秘仪书在椭圆领域内随机点名，钱袋以目标方向为中心扇状齐射。
 8. `projectile_behavior` 区分普通弹体、`plasma`、`grenade`、`ritual_domain` 和 `coin`；`attack_kind=element` 使用元素武器伤害。
 9. `area_size` 只表示武器攻击距离/索敌距离；`damage_area_size` 只表示指定范围伤害的半径与视觉大小。
 10. 木质弓箭与电火花连锁不受 `damage_area_size` 影响；电浆球、落雷、火焰、冰冻的伤害区域及震荡的击退区域受其影响；`pickup_radius` 只控制掉落物吸附。
     电浆炮的 `hit_radius` 是球体显示、接触灼击、物理碰撞和属性栏共用的基础半径，默认12像素，受 `damage_area_size` 缩放，最低4像素；`area_size` 只扩大射程。旧 `plasma_damage_radius`／`plasma_visual_radius` 已移除，接地电弧不参与伤害判定。
 11. `hit_sfx` 是可选的武器命中音效路径；音频缺失时静默处理，不影响伤害逻辑。
 12. 秘仪书的 `attack_range`、`domain_minor_axis` 分别为椭圆的水平和垂直半轴，均受 `area_size` 加成；`projectile_count` 对应每轮不同目标的点名数量。
-13. 钱袋原生伤害为 `等级基础伤害 + 角色远程伤害×player_damage_coefficient + principal_damage_coefficient×sqrt(max(当前本金, 0))`，再计算通用增伤、暴击和取整；本金只读。`volley_rotation_degrees` 决定每轮环射的角度偏移。
+13. 钱袋原生伤害为 `等级基础伤害 + 角色远程伤害×player_damage_coefficient + principal_damage_coefficient×sqrt(max(当前本金, 0))`，再计算通用增伤、暴击和取整；本金只读。默认 3 发，`projectile_spacing_degrees=10` 指相邻金币夹角，围绕瞄准方向对称齐射。
+14. 木质弓箭的 `projectile_spacing_degrees=15`；异化触手、裂地战锤、守夜长枪、电浆炮为 20，基础投射物均为 1。此字段优先于旧的总展开角 `spread_angle`；其他武器继续沿用各自规则。战锤额外投射物增加地裂路线，每路节点数和射程保持不变。
 14. 当前负载：木弓12、钱袋14、秘仪书18、电浆炮24、榴弹炮25，总计93；升级不增加负载，同种武器不可重复装备。长期按轻型12～14、中型16～18、重型24～25扩展武器池，支持100负载下4～8件的配装目标，当前正式种类上限仍为5件。
 15. 木弓2～5级每级增加1点远程基础伤害、缩短50毫秒间隔，不再在五级自动增加箭矢。电浆炮2～5级每级增加2点灼击基础伤害，发射间隔、灼击间隔和接触半径不变；每次灼击触发的附魔使用20%的完整元素伤害基数，延迟至具体效果结算时取整。
 

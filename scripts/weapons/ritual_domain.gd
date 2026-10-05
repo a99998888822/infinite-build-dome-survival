@@ -8,7 +8,7 @@ const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
 const HIT = preload("res://scripts/weapons/ritual_coin_hit.gd")
 const DOMAIN := Vector2(220, 145)
-const MARK_INTERVAL := 0.8
+const MARK_INTERVAL := 0.35
 const MARK_RECOVERY := 0.3
 
 var weapon: WeaponInstance
@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 				break
 			marks_remaining -= 1
 			marks_completed += 1
-			next_mark_at += MARK_INTERVAL
+			next_mark_at = elapsed + MARK_INTERVAL
 			if marks_remaining == 0:
 				finished_at = elapsed
 		if marks_remaining == 0:

@@ -15,12 +15,13 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 	add_to_group("weapon_runtime_effects")
 	add_to_group("bounce_attacks")
 	var heading := direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
-	var scale_time := replay.get_actual_attack_interval_seconds() / maxf(float(replay.attack_interval_ms) / 1000.0, 0.001)
+	var scale_time := 1.0 if replay.use_active_range_rules else replay.get_actual_attack_interval_seconds() / maxf(float(replay.attack_interval_ms) / 1000.0, 0.001)
 	lifetime = maxf(8.0, replay.get_actual_attack_interval_seconds() * 3.0)
 	if replay.is_grenade():
 		var grenade := GrenadeProjectile.new()
 		add_child(grenade)
 		grenade.initialize(replay, replay.calculate_damage_events()[0], point, point)
+		grenade.elliptical_blast = replay.use_active_range_rules
 		grenade._detonate()
 	elif replay.is_earth_hammer():
 		# The first repeated ground node lands exactly on the captured impact.
@@ -37,14 +38,16 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 		add_child(tentacle)
 		tentacle.initialize(replay)
 		tentacle.try_attack(heading)
-		tentacle._physics_process((tentacle.hit_time + 0.00001) * scale_time / tentacle.strike_count)
+		tentacle._physics_process((tentacle.hit_time + 0.00001) * scale_time)
 	elif replay.is_camp_dagger():
 		replay.fixed_attack_origin = point - heading * replay.get_attack_range() * 0.55
 		var dagger := CampDagger.new()
 		add_child(dagger)
 		dagger.initialize(replay, heading)
+		if replay.use_active_range_rules:
+			dagger.configure_continuous_combo()
 		var cut: Dictionary = dagger.cuts[0]
-		dagger._physics_process((float(cut.windup) + float(cut.sweep) * 0.5) * scale_time)
+		dagger._physics_process((float(cut.windup) + float(cut.sweep) * 0.5) * dagger.time_scale)
 	elif replay.is_nightwatch_spear():
 		replay.fixed_attack_origin = point - heading * replay.get_attack_range() * 0.5
 		var spear := NightwatchSpear.new()
@@ -62,10 +65,12 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 		var lamp := CopperLamp.new()
 		add_child(lamp)
 		lamp.initialize(replay)
-		lamp.resonance_controlled = true
+		lamp.manual_control = replay.use_active_range_rules
+		lamp.manual_direction = heading
+		lamp.externally_driven = true
 		lamp.burst_active = true
 		lamp._physics_process(0.00001)
-		lifetime = float(replay.weapon_data.lamp_spray_ms) / 1000.0 + 0.1
+		lifetime = lamp.burst_duration + 0.1
 	elif replay.is_ritual_tome():
 		# Tome attacks are pinpoint contacts, not a second player-following domain.
 		preload("res://scripts/weapons/ritual_coin_hit.gd").spawn(self, replay, point, true)
@@ -76,10 +81,6 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 	else:
 		var shared_hits: Dictionary = {}
 		var angles := replay.get_projectile_angles()
-		if replay.is_coin_purse():
-			# Preserve the purse's radial volley, anchored by its first impact.
-			for index in angles.size():
-				angles[index] = 360.0 * index / angles.size()
 		for angle in angles:
 			var aim := heading.rotated(deg_to_rad(angle))
 			var event := replay.calculate_damage_events()[0]
@@ -119,6 +120,8 @@ func _physics_process(delta: float) -> void:
 	# Persistent equipped runtimes must not leave idle ghost weapons behind.
 	# Let already-spawned companion effects finish their own lifetime.
 	for child in get_children():
+		if child is MeteorFlail:
+			lifetime = maxf(lifetime, age + maxf(0, child.sequence_duration() - child.age) * child.time_scale + 0.1)
 		if child is MutantTentacle and not child.attacking:
 			child.cancel()
 		elif child is CopperLamp and not child.burst_active:

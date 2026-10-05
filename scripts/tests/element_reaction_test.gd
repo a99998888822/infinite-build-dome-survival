@@ -77,7 +77,16 @@ func _run() -> void:
 		element(enemies[0], pair[0])
 		element(enemies[0], pair[1])
 		check(not enemies[0].has_status("light") and not enemies[0].has_status("dark"), "opposite light/dark cancel " + str(pair))
-		check(get_tree().get_nodes_in_group("element_reaction_cues").any(func(cue): return cue.kind == "cancel"), "cancellation has visible cue")
+		check(not get_tree().get_nodes_in_group("element_reaction_cues").any(func(cue): return cue.kind == "cancel"), "cancellation removes markers without adding a cue")
+
+	await setup([Vector2.ZERO])
+	enemies[0].apply_light()
+	var dealt := enemies[0].take_damage(35)
+	var labels: Array[String] = []
+	for child in host.get_children():
+		if child is Label and str(child.name).begins_with("DamageNumber"): labels.append(child.text)
+	check(dealt == 46 and enemies[0].current_hp == 9954, "light exposure keeps rounded final damage 46")
+	check(labels.has("46") and not labels.any(func(label): return label.contains("x")), "damage label displays final number without a formula")
 
 	await setup([Vector2.ZERO])
 	equip(["scroll_water", "scroll_ice"])

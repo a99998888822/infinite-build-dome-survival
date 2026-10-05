@@ -24,3 +24,22 @@ static func put(instances: MultiMesh, index: int, point: Vector2, size: Vector2,
 	instances.set_instance_transform_2d(index, Transform2D(angle, size, 0.0, point))
 	instances.set_instance_color(index, color)
 	instances.set_instance_custom_data(index, Color(1.0 if circle else 0.0, 0, 0, 0))
+
+
+static func put_buffer(buffer: PackedFloat32Array, index: int, point: Vector2, size: Vector2, angle: float, color: Color, circle: bool = false) -> void:
+	# 2D transforms occupy two padded rows, then RGBA color and custom data.
+	# Padding and unused custom channels remain zero from initial allocation.
+	var first := index * 16
+	var cosine := cos(angle)
+	var sine := sin(angle)
+	buffer[first] = cosine * size.x
+	buffer[first + 1] = -sine * size.y
+	buffer[first + 3] = point.x
+	buffer[first + 4] = sine * size.x
+	buffer[first + 5] = cosine * size.y
+	buffer[first + 7] = point.y
+	buffer[first + 8] = color.r
+	buffer[first + 9] = color.g
+	buffer[first + 10] = color.b
+	buffer[first + 11] = color.a
+	buffer[first + 12] = 1.0 if circle else 0.0

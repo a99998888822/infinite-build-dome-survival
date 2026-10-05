@@ -68,8 +68,8 @@ func _run() -> void:
 	var dagger := await fixture([Vector2(30, 0), Vector2(26, 22), Vector2(-20, 0), Vector2(0, 130), Vector2(130, 0)])
 	check(weapon.is_camp_dagger() and weapon.get_attack_kind() == "melee", "dedicated melee behavior")
 	check(weapon.get_base_attack_damage() == 7 and weapon.calculate_damage_events(true)[0].damage == 11, "native melee and critical calculation")
-	check(weapon.get_load_cost() == 12 and weapon.get_attachment_slot_count() == 1, "light load and common slot count")
-	check(load(weapon.weapon_data.icon).get_size() == Vector2(64, 64) and CampDagger.BLADE.get_size() == Vector2(32, 32), "approved art installed at native sizes")
+	check(weapon.get_load_cost() == 16 and weapon.get_attachment_slot_count() == 1, "light load and common slot count")
+	check(load(weapon.weapon_data.icon).get_size() == Vector2(128, 128) and CampDagger.BLADE.get_size() == Vector2(32, 32), "approved art installed at native sizes")
 	var details := weapon.build_full_stats_text()
 	check(details.contains("伤害：[/color]（[color=#FFFFFF]7[/color][color=#EE7777]+0[/color]）"), "tooltip shows unboosted damage components")
 	for removed in ["每轮斩击", "斩击距离", "角度", "刀刃伤害宽度", "伤害加成", "伤害基础", "（非暴击）"]:
@@ -94,7 +94,7 @@ func _run() -> void:
 
 	dagger = await fixture([Vector2(36, 0)])
 	var radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
-	enemies[0].position.x = 72 + 8 + radius + 1
+	enemies[0].position.x = 90 + 8 + radius + 1
 	await frames()
 	dagger._contact(dagger.cuts[0], Vector2.ZERO, 0.11)
 	check(hits.is_empty(), "outside visible blade plus collider misses")
@@ -105,9 +105,9 @@ func _run() -> void:
 	check(hits.size() == 1, "actual enemy collider edge contact counts")
 	check(CampDagger.find_target(weapon) == enemies[0], "acquisition sees reachable edge even when center is outside range")
 	weapon.runtime_stats.area_size = 100
-	check(dagger.blade_segment(dagger.cuts[0], 0.11)[1].length() == 144 and weapon.get_hit_radius() == 8, "range scales rendered blade path without changing contact thickness")
+	check(dagger.blade_segment(dagger.cuts[0], 0.11)[1].length() == 180 and weapon.get_hit_radius() == 8, "range scales rendered blade path without changing contact thickness")
 	weapon.runtime_stats.damage_area_size = 100
-	check(weapon.get_hit_radius() == 16 and weapon.get_attack_range() == 160, "damage area separately scales blade thickness")
+	check(weapon.get_hit_radius() == 16 and weapon.get_attack_range() == 200, "damage area separately scales blade thickness")
 	check(dagger.blade_segment(dagger.cuts[0], 0.11)[0].length() == 21, "increasing reach does not create an inner blind ring")
 
 	dagger = await fixture([Vector2(16, 0), Vector2(36, 0)])

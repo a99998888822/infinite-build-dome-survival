@@ -4,6 +4,7 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
+const RECT_BATCH = preload("res://scripts/effects/pixel_rect_batch.gd")
 
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
@@ -21,6 +22,7 @@ var _elapsed: float = 0.0
 var _damage_applied: bool = false
 var _phase: float = 0.0
 var _visual_detail: int = 2
+var _rects := RECT_BATCH.new()
 
 
 static func spawn(
@@ -58,6 +60,7 @@ static func spawn(
 
 func _ready() -> void:
 	z_index = -8
+	_rects.setup(self)
 	queue_redraw()
 
 
@@ -126,23 +129,32 @@ func _contour(reach: float, inset: float, time: float) -> PackedVector2Array:
 
 
 func _draw() -> void:
+	_rects.begin()
 	var time := clampf(_elapsed / _duration, 0.0, 1.0)
 	var growth := 1.0 - pow(1.0 - minf(time / 0.82, 1.0), 1.55)
 	var reach := _radius * lerpf(0.065, 1.0, growth)
 	var fade := 1.0 - smoothstep(0.66, 1.0, time)
 	var width := minf(reach * 0.40, lerpf(6.0, 13.0, growth) * RADIUS_SCALE)
-	var outer := _contour(reach, 0.0, time)
-	var inner := _contour(reach, width, time)
+	var outer := PackedVector2Array()
+	var inner := PackedVector2Array()
+	var shoulder := PackedVector2Array()
+	var segments := 96 if _visual_detail > 0 else 48
+	for index in range(segments + 1):
+		var angle := float(index) * TAU / float(segments)
+		var direction := Vector2.from_angle(angle)
+		var edge := _edge_radius(angle, reach, time)
+		outer.append(direction * maxf(1.0, edge))
+		inner.append(direction * maxf(1.0, edge - width))
+		shoulder.append(direction * maxf(1.0, edge - width * 0.35))
 	var band := outer.duplicate()
 	for index in range(inner.size() - 1, -1, -1): band.append(inner[index])
 	# A quiet translucent surface follows the growing edge; most of the
 	# contrast belongs to the outer front and its curling white-blue crests.
-	PIXEL.polygon(self, outer, Color(0.10, 0.43, 0.57, fade * 0.11))
-	PIXEL.polygon(self, band, Color(0.055, 0.29, 0.40, fade * 0.86))
-	PIXEL.path(self, inner, Color(0.09, 0.39, 0.51, fade * 0.72), 2)
-	var shoulder := _contour(reach, width * 0.35, time)
-	PIXEL.path(self, shoulder, Color(0.20, 0.62, 0.74, fade * 0.93), maxf(2.0, width * 0.5))
-	PIXEL.path(self, outer, Color(0.46, 0.83, 0.87, fade * 0.85), 2)
+	_rects.polygon(outer, Color(0.10, 0.43, 0.57, fade * 0.11))
+	_rects.polygon(band, Color(0.055, 0.29, 0.40, fade * 0.86))
+	_rects.path(inner, Color(0.09, 0.39, 0.51, fade * 0.72), 2)
+	_rects.path(shoulder, Color(0.20, 0.62, 0.74, fade * 0.93), maxf(2.0, width * 0.5))
+	_rects.path(outer, Color(0.46, 0.83, 0.87, fade * 0.85), 2)
 	# Foam follows short uneven sections of the rim, curling into the wake.
 	var crest_count := 7 if _visual_detail == 2 else (4 if _visual_detail == 1 else 3)
 	for crest in range(crest_count):
@@ -156,9 +168,9 @@ func _draw() -> void:
 			var distance := _edge_radius(angle, reach, time) - width * (0.08 + bend * 0.74)
 			angle -= bend * 0.08
 			lip.append(Vector2.from_angle(angle) * maxf(distance, 1.0))
-		PIXEL.path(self, lip, Color(0.65, 0.92, 0.93, fade * 0.98), 2)
+		_rects.path(lip, Color(0.65, 0.92, 0.93, fade * 0.98), 2)
 		if reach > 25.0:
-			PIXEL.path(self, lip.slice(2, 8), Color(0.88, 0.98, 0.95, fade * 0.94), 2)
+			_rects.path(lip.slice(2, 8), Color(0.88, 0.98, 0.95, fade * 0.94), 2)
 	# The inner wake is subordinate to the single advancing outer wave.
 	if time > 0.22 and _visual_detail > 0:
 		var wake_alpha := fade * smoothstep(0.22, 0.45, time) * 0.34
@@ -168,4 +180,5 @@ func _draw() -> void:
 				var angle := wake * TAU / 3.0 + index * 0.043 - time * 0.35
 				var distance := reach * (0.70 + 0.018 * sin(angle * 8.0 + time * 4))
 				points.append(Vector2.from_angle(angle) * distance)
-			PIXEL.path(self, points, Color(0.38, 0.73, 0.80, wake_alpha), 2)
+			_rects.path(points, Color(0.38, 0.73, 0.80, wake_alpha), 2)
+	_rects.finish()

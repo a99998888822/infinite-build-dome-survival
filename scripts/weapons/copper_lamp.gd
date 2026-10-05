@@ -2,6 +2,7 @@ extends DirectedWeaponRuntime
 class_name CopperLamp
 
 const FIRE := preload("res://assets/sprites/weapons/copper_lamp/copper_lamp.png")
+const FLAME_VISUAL := preload("res://scripts/effects/copper_lamp_flame.gd")
 signal spray_started
 var heat := 0.0
 var cooling := 0.0
@@ -11,28 +12,13 @@ var target: EnemyController
 var tick_left := 0.0
 var proc_left := 0.0
 var beams: Array[Dictionary] = []
-var resonance_controlled := false
+var externally_driven := false
 var burst_active := false
+var burst_duration := 1.8
+var flame_visuals: Array[Node2D] = []
 ## Optional directed control for the active-combat review; automatic mode is unchanged.
 var manual_control := false
 var manual_direction := Vector2.RIGHT
-
-
-func try_resonance_attack() -> bool:
-	if burst_active:
-		return false
-	var next_target := nearest(weapon, weapon.get_attack_range())
-	if next_target == null:
-		return false
-	# Followers use the leader's cooldown, including the lamp's heat lock.
-	heat = 0
-	cooling = 0
-	tick_left = 0
-	proc_left = 0
-	burst_active = true
-	target = next_target
-	heading = weapon.get_attack_origin().direction_to(target.global_position)
-	return true
 
 
 func initialize(source: WeaponInstance) -> void:
@@ -56,15 +42,17 @@ func _physics_process(delta: float) -> void:
 		target = null
 	else:
 		target = null if manual_control else nearest(weapon, weapon.get_attack_range())
-		if not burst_active and not resonance_controlled and weapon.attack_timer <= 0 and is_instance_valid(target):
+		if not burst_active and not externally_driven and weapon.attack_timer <= 0 and is_instance_valid(target):
 			burst_active = true
 		if burst_active:
 			firing = true
 			if not was_firing:
+				# Snapshot duration once; extra projectiles add time, not overlapping cones.
+				burst_duration = weapon.get_lamp_spray_seconds()
 				if is_instance_valid(target):
 					heading = global_position.direction_to(target.global_position)
 				tick_left = 0
-				if not resonance_controlled:
+				if not externally_driven:
 					weapon.begin_attack()
 				spray_started.emit()
 			elif is_instance_valid(target):
@@ -74,9 +62,9 @@ func _physics_process(delta: float) -> void:
 					heading = Vector2.from_angle(rotate_toward(heading.angle(), relative.angle(), turn))
 			# A started burst burns for its full duration, even with no target.
 			_build_beams()
-			var available := maxf(0, (1.0 - heat) * float(weapon.weapon_data.lamp_spray_ms) / 1000.0)
+			var available := maxf(0, (1.0 - heat) * burst_duration)
 			var firing_delta := minf(delta, available)
-			heat = minf(1, heat + firing_delta * 1000.0 / float(weapon.weapon_data.lamp_spray_ms))
+			heat = minf(1, heat + firing_delta / burst_duration)
 			tick_left -= firing_delta
 			var interval := maxf(0.025, float(weapon.weapon_data.lamp_tick_ms) / 1000.0 * speed_scale())
 			while tick_left <= 0:
@@ -90,12 +78,12 @@ func _physics_process(delta: float) -> void:
 		else:
 			heat = maxf(0, heat - delta / weapon.get_actual_attack_interval_seconds())
 			tick_left = 0
+	_sync_flame_visuals()
 	queue_redraw()
 
 
 func _build_beams() -> void:
-	for angle in weapon.get_projectile_angles():
-		beams.append({"direction": heading.rotated(deg_to_rad(angle)), "reach": weapon.get_attack_range(), "power": 1.0, "child": false})
+	beams.append({"direction": heading, "reach": weapon.get_attack_range(), "power": 1.0, "child": false})
 	# Side jets share the same uninterrupted burst; no recursive splitting.
 	for profile in weapon.get_split_profiles():
 		for i in int(profile.child_count):
@@ -140,29 +128,19 @@ func _tick_damage() -> void:
 func _draw() -> void:
 	if cancelled:
 		return
-	if firing:
-		for beam in beams:
-			var direction: Vector2 = beam.direction
-			_draw_cone_flame(direction, float(beam.reach), bool(beam.child))
-	if heat > 0:
+	if heat > 0 and not externally_driven:
 		draw_rect(Rect2(-18, 32, 36, 4), Color("172022"))
 		draw_rect(Rect2(-17, 33, 34 * heat, 2), Color("9c6545") if cooling > 0 else Color("e89c4f"))
 
 
-func _draw_cone_flame(direction: Vector2, reach: float, child: bool) -> void:
-	var half := deg_to_rad(weapon.get_lamp_cone_degrees()) * 0.5
-	var origin := direction * 16.0
-	# Pixel tongues travel along the same clipped rays as the real damage cone.
-	for i in 90:
-		var progress := fposmod(age * (1.1 + (i % 5) * 0.08) + i * 0.618034, 1.0)
-		var angle := sin(i * 13.7) * half * 0.96
-		var ray := direction.rotated(angle)
-		var projection := origin.dot(ray)
-		var extent := -projection + sqrt(maxf(0, projection * projection + reach * reach - origin.length_squared()))
-		var point := origin + ray * extent * progress
-		var size := (2.0 + progress * 5.0) * (0.7 if child else 1.0)
-		var color := Color("ffdb85") if i % 3 == 0 else Color("ed8737")
-		if i % 5 == 0:
-			color = Color("ab4b2d")
-		color.a = (1.0 - progress * 0.75) * (0.6 if child else 0.85)
-		draw_rect(Rect2((point - Vector2.ONE * size * 0.5).snapped(Vector2(2, 2)), Vector2.ONE * snappedf(size, 2)), color)
+func _sync_flame_visuals() -> void:
+	var needed := beams.size() if firing else 0
+	while flame_visuals.size() < needed:
+		var visual := FLAME_VISUAL.new()
+		add_child(visual)
+		flame_visuals.append(visual)
+	for i in flame_visuals.size():
+		flame_visuals[i].visible = i < needed
+		if i < needed:
+			var beam := beams[i]
+			flame_visuals[i].configure(beam.direction, float(beam.reach), weapon.get_lamp_cone_degrees(), age, bool(beam.child))

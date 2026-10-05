@@ -1,0 +1,184 @@
+{
+  "source": "artifacts/sources/goblin/gobline_face.png",
+  "source_sha256": "88d107c9411e563c5b41102341acd43d879f81c9c3bef6eced462087233eb5b7",
+  "frame_size": [
+    256,
+    256
+  ],
+  "method": "Original source crops converted with project Picxel; approved r7/r8 local face, hat and clothing shading on 256px grids; per-expression landmarks; hands unchanged; no image-generation API.",
+  "approved_neutral_sha256": "efbf56a01bbfb1739d4ed148ea1540c77372439e31254d076152e57b176374dd",
+  "neutral_unchanged": true,
+  "framing": {
+    "native_canvas": [
+      896,
+      896
+    ],
+    "bottom_anchor": 854,
+    "grid_scale": "2/7"
+  },
+  "batch_manifest": {
+    "source": "artifacts/sources/goblin/gobline_face.png",
+    "source_sha256": "88d107c9411e563c5b41102341acd43d879f81c9c3bef6eced462087233eb5b7",
+    "size": 256,
+    "states": [
+      {
+        "name": "goblin_downcast",
+        "expression": "downcast",
+        "title": "失落",
+        "crop": [
+          768,
+          0,
+          1536,
+          930
+        ],
+        "bbox": [
+          26,
+          101,
+          703,
+          912
+        ],
+        "background": [
+          67.0,
+          80.0,
+          96.0
+        ]
+      },
+      {
+        "name": "goblin_displeased",
+        "expression": "displeased",
+        "title": "不悦",
+        "crop": [
+          0,
+          930,
+          768,
+          1850
+        ],
+        "bbox": [
+          55,
+          79,
+          721,
+          884
+        ],
+        "background": [
+          67.0,
+          80.0,
+          96.0
+        ]
+      },
+      {
+        "name": "goblin_smile",
+        "expression": "smile",
+        "title": "微笑",
+        "crop": [
+          768,
+          930,
+          1536,
+          1850
+        ],
+        "bbox": [
+          35,
+          79,
+          702,
+          883
+        ],
+        "background": [
+          67.0,
+          80.0,
+          96.0
+        ]
+      },
+      {
+        "name": "goblin_delighted",
+        "expression": "delighted",
+        "title": "欣喜",
+        "crop": [
+          384,
+          1840,
+          1152,
+          2752
+        ],
+        "bbox": [
+          46,
+          37,
+          720,
+          851
+        ],
+        "background": [
+          67.0,
+          80.0,
+          96.0
+        ]
+      }
+    ],
+    "palette": [
+      "#151820",
+      "#eee9d6",
+      "#b39763",
+      "#8b945a",
+      "#000000",
+      "#ffffff",
+      "#858b5b",
+      "#2c2e31",
+      "#4e513c",
+      "#080a15",
+      "#686c53",
+      "#070900",
+      "#36373d",
+      "#777a5b",
+      "#793c49",
+      "#1e1f27"
+    ],
+    "palette_role": "Original conversion palette before the approved shading revision; current per-expression palettes are the adjacent PAL files."
+  },
+  "portraits": [
+    {
+      "expression": "neutral",
+      "png": "goblin_neutral.png",
+      "grid": "goblin_neutral.pxg",
+      "palette": "goblin_neutral.pal",
+      "sha256": "efbf56a01bbfb1739d4ed148ea1540c77372439e31254d076152e57b176374dd",
+      "grid_sha256": "61efd9508782253b79e5216c5ee2278d6609e027dd92ca38c3daab82f2ed591c",
+      "palette_sha256": "b6f08e07fe58a763074e2dc28e3e3726476bad0dd7af33dd2a99f96a5458dce8"
+    },
+    {
+      "expression": "downcast",
+      "png": "goblin_downcast.png",
+      "grid": "goblin_downcast.pxg",
+      "palette": "goblin_downcast.pal",
+      "sha256": "004d2486646c271bc99cc447eb4a21c658042a2d22cc12718ef88e4a66674436",
+      "grid_sha256": "4036be69184214e8c28aacbd6e09fcbf39396d414aa68bae839a00f082e4b3ed",
+      "palette_sha256": "e99add81d8794d553f11b2ce09efb0e9a54f0f64e71dbe9f8c9d0233bc2f44e2"
+    },
+    {
+      "expression": "displeased",
+      "png": "goblin_displeased.png",
+      "grid": "goblin_displeased.pxg",
+      "palette": "goblin_displeased.pal",
+      "sha256": "3f46aea02e90caddc20ea47f0eb0d7cc49c001e9ea36085a4ae6f6a64f8aca3d",
+      "grid_sha256": "c49b7caf449eb6182328bf9444008976021d0cc3d6a1757055bc2f22cacfa8b5",
+      "palette_sha256": "8ed5db11e2ea204428bf00c57007aa6ee7911ed562572dc75ba05fe2dbfad230"
+    },
+    {
+      "expression": "smile",
+      "png": "goblin_smile.png",
+      "grid": "goblin_smile.pxg",
+      "palette": "goblin_smile.pal",
+      "sha256": "2477bdd24f274360d1f040db5047f5e759f088e4b1199178609a465246dda2ef",
+      "grid_sha256": "be3508b927a294f7f407219eb6bcbe88444345fe54bf5156e8a01ac120b15055",
+      "palette_sha256": "303625bbcc1a6cced57e83010a659f92bef486632a97f8a5426aabf040e10e48"
+    },
+    {
+      "expression": "delighted",
+      "png": "goblin_delighted.png",
+      "grid": "goblin_delighted.pxg",
+      "palette": "goblin_delighted.pal",
+      "sha256": "32a32e3fc5c75573688e51b0ff0bbd1fd0f750ed57b3130bea6b66c6912a46d1",
+      "grid_sha256": "fcba9a2983d3a717e76dd12a0574d5137e72e93b2d4d9fd96957eab84dad6b1c",
+      "palette_sha256": "ab041ab9ab0a1437dbe0fc54c1752fc9381ab1634efa51cdb48b01e193659cbf"
+    }
+  ],
+  "revision": "20261004-shaded-all-r8",
+  "neutral_unchanged_relative_to": "Approved face-r7 PNG",
+  "hands_unchanged": true,
+  "palette_policy": "Maximum 16 colors per expression. Near-black and incidental non-mouth burgundy colors consolidated for layered highlights; delighted mouth burgundy retained."
+}

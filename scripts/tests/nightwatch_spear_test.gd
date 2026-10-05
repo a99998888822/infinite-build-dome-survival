@@ -99,8 +99,8 @@ func _run() -> void:
 	var spear := await fixture([Vector2(70, 0), Vector2(175, 0), Vector2(-70, 0), Vector2(150, 60), Vector2(260, 0)])
 	check(weapon.is_nightwatch_spear() and weapon.get_attack_kind() == "melee", "dedicated production melee behavior")
 	check(weapon.get_base_attack_damage() == 14 and weapon.calculate_damage_events(true)[0].damage == 21, "native damage and critical calculation")
-	check(weapon.get_load_cost() == 16 and weapon.get_attachment_slot_count() == 1, "medium load and initial attachment slot")
-	check(load(weapon.weapon_data.icon).get_size() == Vector2(64, 64), "formal 64 pixel icon")
+	check(weapon.get_load_cost() == 28 and weapon.get_attachment_slot_count() == 1, "medium load and initial attachment slot")
+	check(load(weapon.weapon_data.icon).get_size() == Vector2(128, 128), "formal 128 pixel icon")
 	check(weapon.build_full_stats_text().contains("每轮刺击"), "details describe thrusts instead of projectiles")
 	advance(spear, 0.09)
 	check(hits.is_empty(), "windup cannot damage")
@@ -116,8 +116,9 @@ func _run() -> void:
 	check(weapon.get_base_attack_damage() == 26 and weapon.get_attachment_slot_count() == 2 and not weapon.upgrade(), "level five damage and rarity slots, capped upgrades")
 
 	spear = await fixture([Vector2(150, 0)])
-	var radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
-	enemies[0].position.y = 14 + radius + 1
+	var body := enemies[0].get_node("CollisionShape2D") as CollisionShape2D
+	var radius: float = body.shape.radius * body.global_scale.y
+	enemies[0].position.y = 14 + radius + 1 - body.position.y
 	await frames()
 	spear._contact(spear.thrusts[0], 0, Vector2.ZERO, 220)
 	check(hits.is_empty(), "outside rectangle plus actual collider misses")
@@ -146,7 +147,7 @@ func _run() -> void:
 	advance(spear, 0.12, 0.12)
 	check(hits.size() == 1 and spear.aim == Vector2.RIGHT and spear.global_position == player.global_position, "moving player carries the locked thrust and sweeps between frames")
 
-	spear = await fixture([Vector2(150, 0)])
+	spear = await fixture([Vector2(150, 0), Vector2(150, 0).rotated(deg_to_rad(-20)), Vector2(150, 0).rotated(deg_to_rad(20))])
 	spear.cancel()
 	weapon.runtime_stats.projectile_count = 3
 	weapon.runtime_stats.attack_speed = 100

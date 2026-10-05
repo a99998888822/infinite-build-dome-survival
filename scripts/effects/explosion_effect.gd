@@ -9,6 +9,12 @@ const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.g
 const BASE_DAMAGE_RADIUS: float = 96.0
 const BASE_SHOCKWAVE_RADIUS: float = 55.2
 
+# Cache both hits and misses, invalidated by any scene hierarchy change.
+static var _terrain_cache_tree: SceneTree
+static var _terrain_cache_root: Node
+static var _terrain_cache_node: Node
+static var _terrain_cache_valid := false
+
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _hit_position: Vector2 = Vector2.ZERO
@@ -59,7 +65,11 @@ func _detonate() -> void:
 	var particle_parameters := _build_particle_parameters(context, radius)
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_reaction_sfx(_reaction_id)
-	REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
+	if _reaction_id == "thunder_fire":
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
+			Vector2.ZERO, 1.0, Color(1.0, 0.72, 0.12), particle_parameters)
+	else:
+		REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
 	_emit_material_debris(destroyed_materials, particle_parameters)
@@ -144,7 +154,7 @@ func _damage_terrain(radius: float) -> Array[Dictionary]:
 	var root := get_tree().current_scene if get_tree() != null else null
 	if root == null:
 		return destroyed_materials
-	var terrain := root.find_child("DestructibleTestArea", true, false)
+	var terrain := _find_terrain_cached(root)
 	if terrain == null or terrain.get_script() != DESTRUCTIBLE_TEST_AREA_SCRIPT:
 		return destroyed_materials
 	if terrain.has_method("destroy_radius_with_materials"):
@@ -164,3 +174,25 @@ func _emit_material_debris(destroyed_materials: Array[Dictionary], particle_para
 	var material_parameters := particle_parameters.duplicate(true)
 	material_parameters["count_multiplier"] = float(material_parameters.get("count_multiplier", 1.0)) * minf(float(destroyed_materials.size()) * 0.08, 0.5)
 	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position, Vector2.ZERO, 1.0, Color.TRANSPARENT, material_parameters)
+
+
+static func _invalidate_terrain_cache() -> void:
+	_terrain_cache_valid = false
+	_terrain_cache_root = null
+	_terrain_cache_node = null
+
+
+static func _find_terrain_cached(root: Node) -> Node:
+	var tree := root.get_tree()
+	if tree != _terrain_cache_tree:
+		if is_instance_valid(_terrain_cache_tree) and _terrain_cache_tree.tree_changed.is_connected(_invalidate_terrain_cache):
+			_terrain_cache_tree.tree_changed.disconnect(_invalidate_terrain_cache)
+		_terrain_cache_tree = tree
+		tree.tree_changed.connect(_invalidate_terrain_cache)
+		_invalidate_terrain_cache()
+	if _terrain_cache_valid and _terrain_cache_root == root:
+		return _terrain_cache_node if is_instance_valid(_terrain_cache_node) else null
+	_terrain_cache_root = root
+	_terrain_cache_node = root.find_child("DestructibleTestArea", true, false)
+	_terrain_cache_valid = true
+	return _terrain_cache_node

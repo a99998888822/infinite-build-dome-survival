@@ -137,9 +137,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_price.tooltip_text = HumanityEconomy.purchase_tooltip(offer)
 	buy_button.disabled = not unavailable.is_empty()
 	buy_button.text = "购买" if unavailable.is_empty() else ("已购买" if unavailable == "already_purchased" else "不可购买")
-	buy_button.tooltip_text = HumanityEconomy.purchase_tooltip(offer) if unavailable.is_empty() else FinanceUIStyle.reason(unavailable)
-	if str(offer.get("offer_type", "")) == "relic":
-		buy_button.tooltip_text = ""
+	buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":
 		buy_button.text = "差 %d" % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE

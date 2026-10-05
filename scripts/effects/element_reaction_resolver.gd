@@ -127,7 +127,9 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				enemy.clear_wet()
 				result["extra_trigger"] = true
 				result["wet_consumed"] = true
-				emit_feedback(parent, "conduct", hit_position)
+				# A single local cue replaces both the wet outline and stun orbit.
+				if is_instance_valid(enemy._lightning_visual): enemy._lightning_visual.hide()
+				emit_feedback(parent, "conduct", hit_position, {"follow": weakref(enemy)})
 		ELEMENT_LIGHT:
 			if enemy.has_status("dark"):
 				enemy.clear_blind()

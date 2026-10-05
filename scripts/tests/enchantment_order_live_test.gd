@@ -35,7 +35,6 @@ func _run() -> void:
 		{"id":"hammer_lightning", "title":"战锤：分裂 → 落雷", "count":30, "moving":false, "weapons":{"earth_hammer":["split","electric_spark"]}},
 		{"id":"lamp_haste", "title":"炉灯：迅捷＋燃烧", "count":30, "moving":true, "weapons":{"copper_lamp":["haste","fire"]}},
 		{"id":"control", "title":"触手：结霜 → 震荡", "count":30, "moving":true, "weapons":{"mutant_tentacle":["ice","explosion"]}},
-		{"id":"resonance", "title":"共鸣接力：弓 → 炉灯 → 战锤", "count":50, "moving":true, "weapons":{"void_blade":["resonance","fire"],"copper_lamp":["resonance","ice"],"earth_hammer":["resonance","electric_spark"]}},
 		{"id":"baseline_200", "title":"200只怪物 · 单武器基准", "count":200, "moving":true, "weapons":{"void_blade":[]}},
 		{"id":"stress_200", "title":"200只怪物 · 五武器重复与范围附魔", "count":200, "moving":true, "weapons":{"meteor_flail":["split","lightning"],"copper_lamp":["fire","fire"],"earth_hammer":["split","electric_spark"],"iron_grenade_cannon":["lightning","lightning"],"mutant_tentacle":["water","ice"]}},
 	]

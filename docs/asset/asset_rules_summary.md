@@ -1,5 +1,9 @@
 # 素材规则汇总
 
+> 2026-10-05：84件遗物采用用户确认的128×128透明PNG，狂乱分红用B、裂纹铜铃用D；其余6件维持64×64。列表／商店32px、百科／收款64px、奖励48px的显示大小固定，统一最近邻缩放。见[遗物接入记录](art_refresh_plan/relic_icons_128_installation_2026-10-05.md)。
+
+> 2026-10-05：19张法术／附魔图标采用用户确认的64×64 RGBA PNG，透明通道仅0／255、每图最多16色；界面和掉落物按原有32px区域最近邻缩放。当前同名PXG／PAL为可编辑源，电火花和落雷各用独立图标。见[接入记录](art_refresh_plan/spell_icons_64_installation_2026-10-05.md)。
+
 > 本文档汇总原分模块 asset checklist 中的美术规范、Godot 导入约定、复用规则和不制作决策。
 > 具体素材条目、路径、尺寸和提示词以 `docs/asset/asset_checklist_summary.md` 为唯一来源。
 > 判定说明：下列“当前配置引用检查”表已按磁盘实况核对（2026-09-21），状态以 `assets/` 下实际文件为准。
@@ -66,7 +70,7 @@
 | 背景要求 | 游戏内精灵、投射物、特效必须透明背景；图标可透明背景 |
 | 文件格式 | PNG，优先透明背景，禁止 JPG 用于正式游戏素材 |
 | 朝向规则 | `icon` 可保持中性朝向；远程投射物统一按右向制作；近战挥砍特效统一按右向半圆/弧形制作；范围伤害特效统一按圆形制作 |
-| 图标规格 | 建议 `128x128`，正方形，武器居中，边缘留白 |
+| 图标规格 | 当前 11 张为 `128x128` 透明 PNG，最多 16 色，武器居中、边缘留白；2026-10-04 按用户选择接入 `wuqi_icon.png` 像素稿，见[接入记录](art_refresh_plan/weapon_icons_128_installation_2026-10-04.md) |
 | 投射物规格 | 建议 `64x64` 或 `128x128`，透明背景，朝右，后续由 Godot 旋转 |
 | 特效规格 | 建议 `256x256`，透明背景，中心点居中，方便以玩家为中心播放 |
 
@@ -74,11 +78,11 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 已存在 | 64x64；配置 `display_name` 为“木质弓箭”，`weapon_void_blade` 是遗留 ID（按设计保留，不再重命名） |
+| `weapon_void_blade` | `icon` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 已接入 | 128x128；配置 `display_name` 为“木质弓箭”，`weapon_void_blade` 是遗留 ID（按设计保留，不再重命名） |
 | `weapon_void_blade` | `projectile_texture` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 已存在 | 24x24；投射物贴图 |
 | `weapon_void_blade` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
-| `weapon_plasma_cannon` | `icon` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 已接入 | 64x64；蓝青双导轨新版 |
-| `weapon_iron_grenade_cannon` | `icon` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 已接入 | 64x64；铸铁与黄铜 |
+| `weapon_plasma_cannon` | `icon` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 已接入 | 128x128；原图蓝青电浆核心、金属炮管与木柄 |
+| `weapon_iron_grenade_cannon` | `icon` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 已接入 | 128x128；原图铸铁炮管、金属箍与木柄 |
 | `weapon_iron_grenade_cannon` | `launch_sfx` | `assets/audio/sfx/combat/grenade_launch_01.wav` | 已接入 | 本地合成，单声道 44.1 kHz；100ms 发射去重 |
 | `weapon_plasma_cannon` | `hit_sfx` | `assets/audio/sfx/weapons/sfx_weapon_void_blade_hit.ogg` | 未存在 | 目标路径；目录 `assets/audio/sfx/weapons/` 尚未创建 |
 
@@ -118,7 +122,7 @@
 
 | 配置 ID | 字段 | 当前路径 | 状态 | 说明 |
 |---|---|---|---|---|
-| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 已接入 | 2026-10-02：64x64、6 色暖藕粉、大色块拼接，用户确认；沿用各界面的现有最近邻显示尺寸 |
+| `relic_piggy_bank` | `icon` | `assets/ui/icons/relics/relic_piggy_bank.png` | 已接入 | 2026-10-05：128×128、8色透明PNG，沿用用户确认样例；保持各界面的原显示尺寸 |
 | `relic_finance_manager` | `icon` | `assets/ui/icons/relics/relic_finance_manager.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_dividend_check` | `icon` | `assets/ui/icons/relics/relic_dividend_check.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_fixed_deposit_certificate` | `icon` | `assets/ui/icons/relics/relic_fixed_deposit_certificate.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
@@ -126,7 +130,7 @@
 | `relic_steel_vault` | `icon` | `assets/ui/icons/relics/relic_steel_vault.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_quant_trading` | `icon` | `assets/ui/icons/relics/relic_quant_trading.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_hostile_takeover` | `icon` | `assets/ui/icons/relics/relic_hostile_takeover.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
-| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 已接入 | 2026-10-02：64x64、12 色原色大色块，去纹理，用户确认；沿用各界面的现有最近邻显示尺寸 |
+| `relic_gold_compass` | `icon` | `assets/ui/icons/relics/relic_gold_compass.png` | 已接入 | 2026-10-05：128×128透明PNG，最多16色，原图像素化；保持各界面的原显示尺寸 |
 | `relic_tip_tray` | `icon` | `assets/ui/icons/relics/relic_tip_tray.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_compound_interest_tome` | `icon` | `assets/ui/icons/relics/relic_compound_interest_tome.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_high_yield_contract` | `icon` | `assets/ui/icons/relics/relic_high_yield_contract.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
@@ -141,11 +145,11 @@
 | `relic_annual_leave_cutback` | `icon` | `assets/ui/icons/relics/relic_annual_leave_cutback.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 | `relic_salary_adjustment` | `icon` | `assets/ui/icons/relics/relic_salary_adjustment.png` | 已接入 | 2026-10-03：用户确认 r02 原色 12 色色板版，64×64，实际 10–12 色，二值透明；PNG 与可编辑网格同步。 |
 
-> 说明：上表只覆盖原列表中的 22 个遗物图标；完整 90 件以 `docs/asset/art_refresh_plan/icon_manifest.json` 为准。当前正式 PNG 均为 64×64，素材总清单中部分旧尺寸说明尚未同步。
+> 说明：上表只覆盖原列表中的22个遗物图标；完整90件以 `docs/asset/art_refresh_plan/icon_manifest.json` 为准。当前84件为128×128，另6件维持64×64；旧批次文档中的尺寸说明属于历史记录。
 
 ### 5. Godot 导入约定
 
-1. 遗物图标统一使用 64×64 透明 PNG，沿用列表／商店 32px、百科 64px、奖励 48px 的最近邻显示尺寸。2026-10-03 已将本次确认的 39 件替换为 r02 原色 12 色色板版，实际使用 10–12 色，见[接入记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。2026-10-02 的 A 版批次见[第一批记录](art_refresh_plan/relic_A_batch12_installation_2026-10-02.md)、[第二批记录](art_refresh_plan/relic_A_batch02_installation_2026-10-02.md)与[第三批记录](art_refresh_plan/relic_A_batch03_installation_2026-10-02.md)。后续以用户确认的尺寸为准。
+1. 遗物图标按用户确认使用128×128透明PNG；尚未提供新源图的6件保留64×64。显示尺寸独立于源图尺寸：列表／商店32px、百科／收款64px、奖励48px，均用最近邻采样。当前接入见[84件128px记录](art_refresh_plan/relic_icons_128_installation_2026-10-05.md)，此前39件64px批次见[历史记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。
 2. 羁绊徽记统一使用 `128x128` PNG，便于在 UI 面板中缩放。
 3. 遗物奖励卡面统一复用第九模块 `reward_option.tscn`，MVP 阶段不需要单独卡底图。
 4. 当前 MVP 只要求遗物图标可用，羁绊徽记可暂空。

@@ -192,9 +192,9 @@ func _draw() -> void:
 
 
 func _draw_shell(center: Vector2) -> void:
-	if split_generation > 0:
-		draw_set_transform(center, 0, Vector2(0.65, 0.65))
-		center = Vector2.ZERO
+	var size_scale := weapon.get_projectile_visual_scale() * (0.65 if split_generation > 0 else 1.0)
+	draw_set_transform(center, 0, Vector2.ONE * size_scale)
+	center = Vector2.ZERO
 	draw_rect(Rect2(center + Vector2(-4, -6), Vector2(8, 12)), Color("171e1d"))
 	draw_rect(Rect2(center + Vector2(-6, -3), Vector2(12, 7)), Color("171e1d"))
 	draw_rect(Rect2(center + Vector2(-4, -4), Vector2(8, 8)), Color("566462"))

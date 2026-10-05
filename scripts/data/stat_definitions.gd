@@ -157,7 +157,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "整数百分比攻速；实际攻击间隔 = 武器固定速率 / (1 + attack_speed / 100)。"
+		"description": "整数百分比攻速；动作后冷却 = 武器基础冷却 / (1 + attack_speed / 100)。不加快武器动作与喷射频率。"
 	},
 	"crit_chance": {
 		"display_name": "暴击率",

@@ -198,4 +198,5 @@ func _draw() -> void:
 		draw_rect(Rect2(point.round(), Vector2(2,2)), Color(0.81, 0.64, 0.31, 0.48 - index * 0.12))
 	var frame := int(age * 18.0) % 8
 	var side := 12.0 if split_generation > 0 else 16.0
+	side *= weapon.get_projectile_visual_scale()
 	draw_texture_rect_region(COIN, Rect2(Vector2.ONE * (-side * 0.5), Vector2.ONE * side), Rect2(frame * 16, 0, 16, 16))

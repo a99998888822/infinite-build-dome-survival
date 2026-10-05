@@ -60,17 +60,17 @@ func _test_selection_and_slots() -> void:
 		check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and manager.difficulty_id == id, "UI selection reaches live wave manager: " + id)
 		var enemy := manager.spawn_enemy("enemy_mutated_grub", player.global_position)
 		enemy.set_physics_process(false)
-		check(enemy.get_stat("max_hp") == [8, 10, 10][index] and enemy.get_stat("move_speed") == [85, 102, 111][index], "difficulty controls actual enemy HP and speed: " + id)
+		check(enemy.get_stat("max_hp") == [24, 29, 31][index] and enemy.get_stat("move_speed") == [51, 61, 66][index], "active difficulty controls actual enemy HP and speed: " + id)
 		var before := player.current_hp
 		enemy._process_contact_damage()
-		check(before - player.current_hp == [1, 2, 2][index], "actual rounded contact damage in tier " + id)
+		check(before - player.current_hp == [4, 5, 5][index], "actual rounded contact damage in tier " + id)
 		for stat in ["melee_damage", "ranged_damage", "element_damage", "armor"]:
 			enemy.modifier_stack.set_base_stat(stat, 100.0)
 			var base := 100.0 if stat == "armor" else 45.0
 			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index]), "actual enemy multiplier: " + id + " " + stat)
 		enemy.free()
-		check(manager.calculate_enemy_spawn_count(6) == [2, 6, 8][index] and manager.calculate_enemy_spawn_count(4) == [2, 4, 6][index], "reduced tier one and unchanged higher-tier group sizes: " + id)
-		check(is_equal_approx(manager.calculate_spawn_interval(1200), [1620.0, 1440.0, 1260.0][index]), "distinct regular spawn interval: " + id)
+		check(manager.calculate_enemy_spawn_count(6) == [1, 2, 2][index] and manager.calculate_enemy_spawn_count(4) == [1, 1, 2][index], "active combat smaller groups: " + id)
+		check(is_equal_approx(manager.calculate_spawn_interval(1200), [3240.0, 2880.0, 2520.0][index]), "distinct regular spawn interval: " + id)
 		if id == "1":
 			_test_slots(player, loadout)
 			for wave in 3:
@@ -87,12 +87,12 @@ func _test_selection_and_slots() -> void:
 		manager._initialize_elite_schedule()
 		check(is_equal_approx(manager._elite_expected_count, 1.0 if id == "3" else 0.5), "tier three doubles elite expectation at the same wave")
 		var late_enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(3000, 0))
-		check(late_enemy.current_hp == roundi(8.0 * pow(1.24, 9) * [1.0, 1.2, 1.3][index]), "later waves retain the exact difficulty multiplier before rounding")
+		check(late_enemy.current_hp == roundi((24.0 + 200.0 * 9.0 / 19.0) * [1.0, 1.2, 1.3][index]), "linear ordinary HP retains the exact difficulty multiplier before rounding")
 		late_enemy.free()
 		# Fill to the configured limit and exercise real group spawning.
 		manager.current_wave_index = 0
 		var cap := int(BattleDifficulty.get_profile(id).enemy_limit)
-		check(cap == [120, 360, 480][index], "reduced tier one and unchanged higher-tier live enemy limit: " + id)
+		check(cap == [24, 36, 48][index], "active combat live enemy limit: " + id)
 		for n in cap:
 			var blocker := manager.spawn_enemy("enemy_mutated_grub", Vector2(2000 + n * 3, 0))
 			blocker.set_physics_process(false)
@@ -191,7 +191,7 @@ func _test_drops() -> void:
 	for attempt in 20000:
 		drops.begin_wave()
 		if not drops._build_augmentation_action(base, 100).is_empty(): boosted += 1
-	check(absf(float(boosted) / 200.0 - 1.8) < 0.5, "100 percent drop bonus gives 1.8 percent base candidates")
+	check(absf(float(boosted) / 200.0 - 7.2) < 0.8, "100 percent drop bonus gives 7.2 percent base candidates")
 	check(is_equal_approx(DropRewardSystem.calculate_augmentation_chance(1.5, 100, 100), 2.16), "bounded luck composes with bounded drop bonus")
 	check(DropRewardSystem.calculate_augmentation_chance(1.5, -100, 9999) > 0.0 and DropRewardSystem.calculate_augmentation_chance(60, 100, 9999) == 100.0, "luck respects floor and probability ceiling")
 	check(DropRewardSystem.calculate_augmentation_chance(1.5, 0, -10) == 1.5, "nonpositive luck preserves base odds")

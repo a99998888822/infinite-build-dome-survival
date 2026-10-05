@@ -11,6 +11,7 @@ var pixel_size := 3
 var last_radius := -1.0
 var parts: Array[Dictionary] = []
 var layer := 42
+var palette := 0
 var _batch_slot := -1
 var _batch_layer := -1
 var _batch_epoch := -1
@@ -170,6 +171,15 @@ func setup_single(size: Vector2, grid: int, phase := 0.37) -> void:
 	layer = 43
 	build([{"point": Vector2.ZERO, "size": size, "phase": phase}], grid)
 
+func set_palette(value: int) -> void:
+	if palette == value: return
+	palette = clampi(value, 0, 2)
+	for part in parts:
+		var data: Color = part.data
+		data.b = fposmod(data.b, 1.0) + palette
+		part.data = data
+	build_count += 1
+
 func build(entries: Array, grid: int) -> void:
 	build_count += 1
 	tongue_count = entries.size()
@@ -180,5 +190,5 @@ func build(entries: Array, grid: int) -> void:
 		var point: Vector2 = (entry.point / grid).round() * grid
 		var top_left := point - Vector2(size.x * 0.5, size.y * 0.94)
 		top_left = (top_left / grid).round() * grid
-		var data := Color(size.x / 128.0, size.y / 128.0, float(entry.phase), float(grid) / 4.0)
+		var data := Color(size.x / 128.0, size.y / 128.0, float(entry.phase) + palette, float(grid) / 4.0)
 		parts.append({"transform": Transform2D(0.0, size, 0.0, top_left + size * 0.5), "data": data})

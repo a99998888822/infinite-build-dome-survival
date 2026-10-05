@@ -399,9 +399,9 @@ func _test_sanity_and_dependencies() -> void:
 		modify(p, "humanity", -50)
 		modify(p, "divinity", 20)
 		for id in ids: p.add_relic(id)
-		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 290 and p.get_stat("armor") == 41, "dependency order independent " + str(ids))
+		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 170 and p.get_stat("armor") == 29, "dependency order independent " + str(ids))
 		modify(p, "divinity", 0)
-		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 272 and p.get_stat("armor") == 39, "dependency change recalculates condition and armor")
+		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 152 and p.get_stat("armor") == 27, "dependency change recalculates condition and armor")
 		p.free()
 
 

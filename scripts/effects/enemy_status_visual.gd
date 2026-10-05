@@ -13,6 +13,7 @@ var _draw_frame: int = -1
 var _draw_status_mask: int = -1
 var _status_revision := -1
 var _status_mask := 0
+var _draw_body_radius := -1.0
 
 
 func _ready() -> void:
@@ -31,19 +32,18 @@ func _process(delta: float) -> void:
 		_status_revision = _enemy.status_visual_revision
 		_status_mask = _enemy.get_status_visual_mask()
 		_sync_flame()
-	# The silhouettes animate at 12 fps. Redraw immediately for status changes,
-	# but avoid rebuilding identical pixel polygons every render frame.
-	var next_frame := int(_elapsed * 12.0)
-	var mask := _status_mask & 127
-	# No visible status means no geometry to rebuild. Transitions still redraw.
-	if mask != _draw_status_mask or (mask != 0 and next_frame != _draw_frame):
-		_draw_frame = next_frame
+	var mask := _status_mask & 31
+	# These icons, the ice shell and the slowed footprint contain no clock.
+	# Position is inherited; flames continue to animate on their shared clock.
+	var radius := _get_body_radius() if mask != 0 else -1.0
+	if mask != _draw_status_mask or radius != _draw_body_radius:
+		_draw_body_radius = radius
 		_draw_status_mask = mask
 		queue_redraw()
 
 
 func _sync_flame() -> void:
-	var burning := (_status_mask & 128) != 0
+	var burning := (_status_mask & (128 | 32 | 64)) != 0
 	if burning and not is_instance_valid(_flame_visual):
 		_flame_visual = FIRE_VISUAL.new()
 		add_child(_flame_visual)
@@ -51,6 +51,8 @@ func _sync_flame() -> void:
 	elif not burning and is_instance_valid(_flame_visual):
 		_flame_visual.queue_free()
 		_flame_visual = null
+	if is_instance_valid(_flame_visual):
+		_flame_visual.set_palette(2 if (_status_mask & 64) != 0 else (1 if (_status_mask & 32) != 0 else 0))
 
 
 func _draw() -> void:
@@ -73,8 +75,6 @@ func _draw() -> void:
 		_draw_frozen_crystals(_get_body_radius())
 	elif _enemy.has_status("slowed"):
 		FROST.draw_crystal(self, Vector2(0, 12), _get_body_radius() * 0.88, 1.0, 0.72, PI / 6, FROST.GROUND_FLATTEN)
-	if _enemy.has_status("holy_flame") or _enemy.has_status("dark_flame"):
-		_draw_transformed_flame(_enemy.has_status("holy_flame"))
 
 
 func _get_body_radius() -> float:
@@ -147,20 +147,3 @@ func _draw_frozen_crystals(body_radius: float) -> void:
 		SHAPES.shard(self, Vector2(side * width, 11), Vector2(side * 0.3, -1), 17, 4)
 		PIXEL.path(self, PackedVector2Array([Vector2(side * width, -12), Vector2(side * (width - 5), -6), Vector2(side * (width - 2), 1)]), Color(0.81, 0.99, 1.0, 0.78), 2)
 	PIXEL.line(self, Vector2(-width, 14), Vector2(width, 14), Color(0.37, 0.72, 0.83, 0.92), 4)
-
-
-func _draw_transformed_flame(holy: bool) -> void:
-	var clock := floorf(_elapsed * 12.0) / 12.0
-	for index in range(3):
-		var side := float(index - 1)
-		var height := 17.0 if index == 1 else 32.0 + sin(clock * 6 + index * 2) * 5.0
-		SHAPES.flame(self, Vector2(side * 16, 18), height, 11 if holy else 13, clock * (6 if holy else -5) + index * 2, holy)
-	if holy:
-		SHAPES.star(self, Vector2(0, -33), 6 + sin(clock * 3), Color(1.0, 0.88, 0.44, 0.92))
-		for side in [-1.0, 1.0]:
-			PIXEL.line(self, Vector2(side * 10, -28), Vector2(side * 17, -24), Color(0.96, 0.69, 0.21, 0.8), 2)
-	else:
-		for index in range(3):
-			var age := fmod(clock * 0.75 + index * 0.33, 1.0)
-			var ember := Vector2(sin(age * 6 + index * 2) * 22, 10 - age * 38)
-			PIXEL.block(self, ember, Vector2(2, 4), Color(0.60, 0.44, 0.85, (1.0 - age) * 0.8))

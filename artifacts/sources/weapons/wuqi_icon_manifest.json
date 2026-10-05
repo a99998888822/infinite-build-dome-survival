@@ -1,0 +1,525 @@
+{
+  "source": "artifacts/sources/weapons/wuqi_icon.png",
+  "source_sha256": "2f244d0a6346a82313ff6dedfef4bd8672fab1e6719db3490fbcd5a4a921976e",
+  "size": 128,
+  "items": [
+    {
+      "name": "camp-dagger",
+      "weapon_id": "weapon_camp_dagger",
+      "title": "营地短刀",
+      "crop": [
+        8,
+        8,
+        500,
+        552
+      ],
+      "target": "assets/ui/icons/weapons/weapon_camp_dagger.png",
+      "approved_sample_sha256": "cce3bcbd298fd4515512415dfc7f2adec6b6c2b4a2ade392762ac3ad6fc639e5",
+      "png_sha256": "cce3bcbd298fd4515512415dfc7f2adec6b6c2b4a2ade392762ac3ad6fc639e5",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 13,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        17,
+        8,
+        110,
+        120
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_camp_dagger.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_camp_dagger.pal"
+    },
+    {
+      "name": "copper-lamp",
+      "weapon_id": "weapon_copper_lamp",
+      "title": "赤铜炉灯",
+      "crop": [
+        518,
+        8,
+        1021,
+        552
+      ],
+      "target": "assets/ui/icons/weapons/weapon_copper_lamp.png",
+      "cutout_bbox": [
+        125,
+        41,
+        369,
+        484
+      ],
+      "holes": [
+        [
+          288,
+          118
+        ],
+        [
+          166,
+          319
+        ],
+        [
+          328,
+          319
+        ]
+      ],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "d5b578619c252a3af6234aafbabecd34af8ad36d1c085da8fbba8da12d756f5d",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 15,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        34,
+        9,
+        94,
+        119
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_copper_lamp.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_copper_lamp.pal"
+    },
+    {
+      "name": "earth-hammer",
+      "weapon_id": "weapon_earth_hammer",
+      "title": "裂地战锤",
+      "crop": [
+        1039,
+        8,
+        1528,
+        552
+      ],
+      "target": "assets/ui/icons/weapons/weapon_earth_hammer.png",
+      "cutout_bbox": [
+        48,
+        37,
+        445,
+        486
+      ],
+      "holes": [],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "424fe93da348700154a392581bf5eda896a526432e9bc89381fe38bda1d13382",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 14,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        14,
+        8,
+        113,
+        120
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_earth_hammer.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_earth_hammer.pal"
+    },
+    {
+      "name": "grenade-cannon",
+      "weapon_id": "weapon_iron_grenade_cannon",
+      "title": "铸铁榴弹炮",
+      "crop": [
+        1039,
+        570,
+        1528,
+        1094
+      ],
+      "target": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+      "cutout_bbox": [
+        56,
+        45,
+        452,
+        440
+      ],
+      "holes": [
+        [
+          186,
+          290
+        ]
+      ],
+      "background": [
+        45.0,
+        57.0,
+        70.0
+      ],
+      "png_sha256": "58d1fc27039f99b58543e550b797fb47cfc41f9e4b21e8250e79eb72ab0a59c5",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 13,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        15,
+        15,
+        113,
+        113
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pal"
+    },
+    {
+      "name": "ritual-tome",
+      "weapon_id": "weapon_kunyu_ritual_tome",
+      "title": "坤舆秘仪书",
+      "crop": [
+        8,
+        1112,
+        500,
+        1628
+      ],
+      "target": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+      "cutout_bbox": [
+        43,
+        33,
+        450,
+        445
+      ],
+      "holes": [],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "edfc93d9d060c95b91a6be9c30b81ab996b3e7767e4ebb7a75f7d36ccf5e158a",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 14,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        13,
+        13,
+        115,
+        115
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pal"
+    },
+    {
+      "name": "meteor-flail",
+      "weapon_id": "weapon_meteor_flail",
+      "title": "流星摆锤",
+      "crop": [
+        518,
+        1112,
+        1021,
+        1628
+      ],
+      "target": "assets/ui/icons/weapons/weapon_meteor_flail.png",
+      "cutout_bbox": [
+        53,
+        34,
+        446,
+        448
+      ],
+      "holes": [
+        [
+          193,
+          68
+        ],
+        [
+          160,
+          76
+        ],
+        [
+          183,
+          85
+        ],
+        [
+          139,
+          104
+        ],
+        [
+          109,
+          135
+        ],
+        [
+          298,
+          154
+        ],
+        [
+          100,
+          183
+        ],
+        [
+          104,
+          212
+        ],
+        [
+          99,
+          272
+        ]
+      ],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "a385544aed8afdaa0cc8b91cbb85ca43ada28d504a5e3ff75fc08da202600c2c",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 12,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        15,
+        12,
+        113,
+        116
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_meteor_flail.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_meteor_flail.pal"
+    },
+    {
+      "name": "mutant-tentacle",
+      "weapon_id": "weapon_mutant_tentacle",
+      "title": "异化触手",
+      "crop": [
+        1039,
+        1112,
+        1528,
+        1628
+      ],
+      "target": "assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+      "cutout_bbox": [
+        99,
+        33,
+        426,
+        421
+      ],
+      "holes": [],
+      "background": [
+        45.0,
+        57.0,
+        70.0
+      ],
+      "png_sha256": "b25f7572889733afbfe2349c148311fcb143f5b1c09a8dac353ccbe3dd343321",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 14,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        23,
+        16,
+        105,
+        112
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_mutant_tentacle.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_mutant_tentacle.pal"
+    },
+    {
+      "name": "nightwatch-spear",
+      "weapon_id": "weapon_nightwatch_spear",
+      "title": "守夜长枪",
+      "crop": [
+        8,
+        1646,
+        500,
+        2153
+      ],
+      "target": "assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+      "cutout_bbox": [
+        42,
+        30,
+        455,
+        451
+      ],
+      "holes": [],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "07ff7ed8ff124b01ccd6551f18ad38a7cc2fc43ef67057f3f36be4cbadf60523",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 10,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        12,
+        12,
+        115,
+        116
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_nightwatch_spear.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_nightwatch_spear.pal"
+    },
+    {
+      "name": "plasma-cannon",
+      "weapon_id": "weapon_plasma_cannon",
+      "title": "电浆炮",
+      "crop": [
+        518,
+        1646,
+        1021,
+        2153
+      ],
+      "target": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+      "cutout_bbox": [
+        51,
+        51,
+        451,
+        430
+      ],
+      "holes": [
+        [
+          214,
+          305
+        ]
+      ],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "5ff6b4b221c983b77ab7a202aeb9377a4825542dff6152b443725df72ce4862a",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 14,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        14,
+        17,
+        114,
+        111
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pal"
+    },
+    {
+      "name": "rentier-purse",
+      "weapon_id": "weapon_rentier_purse",
+      "title": "食利者钱袋",
+      "crop": [
+        1039,
+        1646,
+        1528,
+        2153
+      ],
+      "target": "assets/ui/icons/weapons/weapon_rentier_purse.png",
+      "cutout_bbox": [
+        63,
+        34,
+        431,
+        448
+      ],
+      "holes": [],
+      "background": [
+        45.0,
+        57.0,
+        71.0
+      ],
+      "png_sha256": "2e2fa17fad786c9876f1650cf88d3c474f0643ccd3e4e9ea56d48514944fe831",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 13,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        18,
+        12,
+        110,
+        116
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_rentier_purse.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_rentier_purse.pal"
+    },
+    {
+      "name": "wood-arrow",
+      "weapon_id": "weapon_void_blade",
+      "title": "木质短弓",
+      "crop": [
+        8,
+        2172,
+        500,
+        2744
+      ],
+      "target": "assets/ui/icons/weapons/weapon_wood_arrow.png",
+      "cutout_bbox": [
+        43,
+        40,
+        453,
+        462
+      ],
+      "holes": [],
+      "background": [
+        46.0,
+        58.0,
+        71.0
+      ],
+      "png_sha256": "5372d1a6e3a88cdef8dc589ebaf0f15582ddb9fe719261dec2c402ed6f54c9da",
+      "size": [
+        128,
+        128
+      ],
+      "opaque_colors": 10,
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bbox": [
+        13,
+        11,
+        115,
+        116
+      ],
+      "editable": "assets/ui/icons/weapons/weapon_wood_arrow.pxg",
+      "palette": "assets/ui/icons/weapons/weapon_wood_arrow.pal"
+    }
+  ],
+  "image_model_used": false,
+  "approved_sample": "artifacts/previews/weapon_icons/20261004-dagger-r1",
+  "palette_policy": "Source material palette per distinct weapon, at most 16 colors; same sampling and outline cleanup as approved dagger.",
+  "installed_on": "2026-10-04",
+  "method": "Source extraction, Picxel quantization and AI-guided local grid cleanup; no image-generation model.",
+  "sample_unchanged": true,
+  "tentacle_base_repair": "Restored purple stump lost during color-key cutout; 190 local pixel edits."
+}

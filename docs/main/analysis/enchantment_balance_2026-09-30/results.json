@@ -179,26 +179,6 @@
       }
     },
     {
-      "id": "scroll_resonance",
-      "name": "共鸣",
-      "rarity": "epic",
-      "drop_basic_enemy": {
-        "weight": 1,
-        "given_scroll_percent": 2.0,
-        "per_kill_percent_luck0_bonus0": 0.03
-      },
-      "drop_elite_enemy": {
-        "weight": 4,
-        "given_scroll_percent": 2.4615384615384617,
-        "per_kill_percent_luck0_bonus0": 0.29538461538461536
-      },
-      "drop_boss_enemy": {
-        "weight": 12,
-        "given_scroll_percent": 2.5945945945945943,
-        "per_kill_percent_luck0_bonus0": 1.5567567567567566
-      }
-    },
-    {
       "id": "scroll_water",
       "name": "水流",
       "rarity": "uncommon",

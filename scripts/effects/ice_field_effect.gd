@@ -21,6 +21,8 @@ var _ground_shape := ConvexPolygonShape2D.new()
 var _shape_radius := -1.0
 var _visual_detail := 2
 var _visual_frame := -1
+var _query := PhysicsShapeQueryParameters2D.new()
+var _excluded_bodies: Array[RID] = []
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
@@ -49,6 +51,9 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 func _ready() -> void:
 	z_index = -6
+	_query.shape = _ground_shape
+	_query.collision_mask = 2
+	_query.collide_with_bodies = true
 	if not is_in_group("ice_fields"):
 		add_to_group("ice_fields")
 
@@ -89,18 +94,18 @@ func _damage_enemies() -> void:
 			outline.append(Vector2.from_angle(index * TAU / 48.0) * Vector2(1.0, FROST.GROUND_FLATTEN) * _radius)
 		_ground_shape.points = outline
 		_shape_radius = _radius
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = _ground_shape
-	query.transform = Transform2D(0.0, global_position)
-	query.collision_mask = 2
-	query.collide_with_bodies = true
-	var results := get_world_2d().direct_space_state.intersect_shape(query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	_query.transform = Transform2D(0.0, global_position)
+	var results := get_world_2d().direct_space_state.intersect_shape(_query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	var previous_excluded_count := _excluded_bodies.size()
 	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
 	for result in results:
 		var enemy := result.get("collider") as EnemyController
 		if enemy == null or not enemy.is_alive() or _hit_targets.has(enemy.get_instance_id()):
 			continue
 		_hit_targets[enemy.get_instance_id()] = true
+		# This field never hits the same body twice. Exclude it before the next
+		# narrow-phase query, while retaining scans for newcomers and wind growth.
+		_excluded_bodies.append(enemy.get_rid())
 		ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "ice", {
 			"parent": get_parent(),
 			"hit_position": enemy.global_position,
@@ -112,6 +117,8 @@ func _damage_enemies() -> void:
 			"damage_event": _damage_event,
 		})
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
+	if _excluded_bodies.size() != previous_excluded_count:
+		_query.exclude = _excluded_bodies
 	AudioManager.end_combat_audio()
 
 func _draw() -> void:

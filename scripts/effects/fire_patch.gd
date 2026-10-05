@@ -23,6 +23,8 @@ var _source_weapon_id: String = ""
 var _collision_shape: CollisionShape2D = null
 var _flame_visual: Node2D
 var _light_field: Node = null
+var _visual_palette := 0
+var _palette_remaining := 0.0
 
 
 static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, field_strength: float = 1.0) -> FirePatch:
@@ -101,6 +103,11 @@ func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_remaining -= delta
+	if _palette_remaining > 0.0:
+		_palette_remaining -= delta
+		if _palette_remaining <= 0.0:
+			_visual_palette = 0
+			if is_instance_valid(_flame_visual): _flame_visual.set_palette(0)
 	_tick_timer -= delta
 	_light_timer -= delta
 	if _light_timer <= 0.0:
@@ -197,7 +204,18 @@ func _refresh_field_light() -> void:
 
 
 func _get_flame_tint() -> Color:
+	if _visual_palette == 1: return Color(1.0, 0.96, 0.82)
+	if _visual_palette == 2: return Color(0.13, 0.05, 0.22)
 	return _context.get_tinted_color(Color(1.0, 0.55, 0.10, 1.0)) if _context != null else Color(1.0, 0.55, 0.10, 1.0)
+
+
+static func tint_nearby_fields(tree: SceneTree, center: Vector2, radius: float, palette: int, duration: float) -> void:
+	# Visual recoloring only; field size, ticks, lifetime and statuses stay intact.
+	for field: FirePatch in tree.get_nodes_in_group("fire_patches"):
+		if field.global_position.distance_squared_to(center) > pow(radius + field._radius, 2): continue
+		field._visual_palette = palette
+		field._palette_remaining = duration
+		if is_instance_valid(field._flame_visual): field._flame_visual.set_palette(palette)
 
 
 func _get_flame_color_tint() -> Color:

@@ -98,15 +98,12 @@ func configure(next_payload: Dictionary) -> void:
 	else:
 		shop_grid.refresh_availability()
 	_summary.text = "金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
-	var humanity := float(payload.get("humanity", 100))
 	var protection: Dictionary = payload.get("principal_revive", {})
 	_principal_protection.visible = not protection.is_empty()
 	if not protection.is_empty():
 		_principal_protection.text = "%s：%s" % [protection.display_name, FinanceUIStyle.principal_revive_status(protection)]
 		_principal_protection.tooltip_text = "已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。" % [int(protection.principal_cost), HumanityEconomy.number(float(protection.health_percent))]
-	var nominal := int(payload.get("nominal_estimated_interest", 0))
-	var retention := float(payload.get("interest_multiplier", 1.0))
-	_summary.tooltip_text = "单次基础预计：应得 %d，理智损耗 %s，预计入账 %d。\n实际利率 %s%%；未入账小数 %s。\n不含随机翻倍和后续额外结息。\n%s" % [nominal, HumanityEconomy.number(nominal * (1.0 - retention)), int(payload.get("estimated_interest", 0)), HumanityEconomy.number(float(payload.get("interest_rate", 0)) * retention), "%.3f" % float(payload.get("interest_remainder", 0)), HumanityEconomy.describe(humanity)]
+	_summary.tooltip_text = ""
 	_refresh_bank()
 	var remaining := 0
 	for offer in shop_grid.offers:
@@ -123,9 +120,6 @@ func configure(next_payload: Dictionary) -> void:
 	else:
 		_refresh.tooltip_text = ""
 		_refresh.remove_theme_color_override("font_hover_color")
-	if bool(payload.get("interest_pact", false)):
-		var terms: Dictionary = payload.get("interest_pact_terms", {})
-		_summary.tooltip_text += "\n哥布林交易（已接受%d次）：利率+%s%%，每回合理智-%d；本金取空后仍持续。" % [int(terms.get("count", 0)), str(terms.get("interest_bonus", 0)), int(terms.get("sanity_per_wave", 0))]
 	workbench.refresh()
 	if new_shelf:
 		var settled := 0
@@ -301,7 +295,7 @@ func _build() -> void:
 	_title = _label("哥布林银行", main_panel, 22, FinanceUIStyle.TEXT)
 	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
 	_summary.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_summary.mouse_filter = Control.MOUSE_FILTER_PASS
+	_summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_bank = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_bank)

@@ -228,7 +228,8 @@ func seek(seconds: float) -> void:
 	_speech.visible = seconds >= voice_time and not _speech_text.is_empty()
 	_speech_label.visible_characters = -1 if _skipped else maxi(0, int((seconds - voice_time) * 18))
 	var frame := int(seconds * 5) % 4 if not _skipped else 0
-	_portrait.texture = _atlas(GOBLIN, Rect2(frame * 128, _reaction_row * 128, 128, 128))
+	var frame_size := GOBLIN.get_width() / 4.0
+	_portrait.texture = _atlas(GOBLIN, Rect2(frame * frame_size, _reaction_row * frame_size, frame_size, frame_size))
 	_effects.queue_redraw()
 
 

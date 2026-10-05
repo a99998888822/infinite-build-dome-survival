@@ -102,6 +102,19 @@ func _run() -> void:
 			get_viewport().push_input(click, true)
 			await frames(2)
 		check(manager.goblin_trades.offer.is_empty() and not popup.trade_presentation.is_active(), "pointer rejection closes the actual offer")
+	check(popup._summary.tooltip_text.is_empty(), "finance summary has no hover tooltip")
+	for card in popup.shop_grid._pool:
+		check(card.buy_button.tooltip_text.is_empty(), "purchase buttons have no hover tooltip")
+	for resolution in [Vector2i(1152, 648), Vector2i(1536, 864), Vector2i(1000, 540)]:
+		get_tree().root.size = resolution
+		get_tree().root.content_scale_size = resolution
+		await frames(12)
+		var actual_waist := popup.portrait.position + BankCounterPortrait.WAIST_CONTACT * (popup.portrait.size.x / 128.0)
+		check(absf(actual_waist.y - 356.0 * resolution.y / 648.0) < 1.0, "portrait waist follows the wooden tabletop at " + str(resolution))
+		await capture("counter_%d" % resolution.x)
+	get_tree().root.size = Vector2i(1152, 648)
+	get_tree().root.content_scale_size = Vector2i(1152, 648)
+	await frames(12)
 	for i in 3:
 		await next_preparation(80)
 		check(not manager.goblin_trades.offer.is_empty() and popup.trade_presentation._card.is_visible_in_tree(), "healthy 80-gold preparation %d now has a live ordinary trade" % i)
@@ -132,7 +145,8 @@ func next_preparation(gold: int, struggling: bool = false) -> void:
 	manager.apply_gold_delta(gold - manager.current_gold, "test")
 	if struggling:
 		manager.player.restore_full_health()
-		manager.player.take_damage(3, "enemy_test")
+		# Cross the low-health threshold even when character health is rebalanced.
+		manager.player.take_damage(ceili(manager.player.get_stat("max_hp") * 0.6), "enemy_test")
 	flow.finish_current_wave()
 	await frames(12)
 	popup.interest_arrival.skip()

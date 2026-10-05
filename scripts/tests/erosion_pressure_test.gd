@@ -82,10 +82,9 @@ func _test_spawns_and_damage() -> void:
 		var hot := _spawn(hot_manager, id)
 		var extreme := _spawn(extreme_manager, id)
 		hot_enemies.append(hot)
-		# Standard wave 15: 10 * 0.8 * 1.24^14 * 1.2 (region) * 2.8 (erosion).
-		# Elite rank applies after rounding the same-wave normal HP.
-		var hp_rank := 20 if hot is EliteRusher else 1
-		check(cold.get_stat("max_hp") == roundi(8.0 * pow(1.24, 14) * 1.2) * hp_rank and hot.get_stat("max_hp") == roundi(8.0 * pow(1.24, 14) * 1.2 * 2.8) * hp_rank, "%s HP combines difficulty, wave, region and erosion once" % id)
+		# Wave 15: ordinary linear HP; independent elite base retains compounded HP.
+		var wave_hp := 160.0 * pow(1.24, 14) if hot is EliteRusher else 24.0 + 200.0 * 14.0 / 19.0
+		check(cold.get_stat("max_hp") == roundi(wave_hp * 1.2) and hot.get_stat("max_hp") == roundi(wave_hp * 1.2 * 2.8), "%s HP combines difficulty, wave, region and erosion once" % id)
 		check(absf(hot.get_stat("armor") - cold.get_stat("armor") * 2.35) <= 1.0, "%s armor combines rank and erosion once" % id)
 		check(hot.current_hp == int(hot.get_stat("max_hp")), "%s spawns with full scaled health" % id)
 		check(extreme.get_stat("max_hp") > hot.get_stat("max_hp") and extreme.current_hp == int(extreme.get_stat("max_hp")), "%s erosion 200 spawns at full increased health" % id)
@@ -114,7 +113,7 @@ func _test_spawns_and_damage() -> void:
 		check(hot.take_damage(100) < cold.take_damage(100), "%s actual incoming damage uses increased armor" % id)
 	var normal := hot_enemies[0]
 	var elite := hot_enemies[1]
-	check(elite.get_stat("max_hp") == normal.get_stat("max_hp") * 20.0, "erosion preserves elite 20x normal HP")
+	check(elite.get_stat("max_hp") == roundi(160.0 * pow(1.24, 14) * 1.2 * 2.8), "erosion preserves independently scaled elite HP")
 	var frozen := hot_manager.get_enemy_erosion_snapshot()
 	var original_hp := normal.current_hp
 	hot_player.modifier_stack.set_base_stat("divinity", 0.0)
@@ -128,7 +127,7 @@ func _test_spawns_and_damage() -> void:
 	check(hot_manager.get_enemy_erosion_snapshot().max_hp_multiplier == 1.0 and hot_manager._build_erosion_enemy_modifiers().is_empty(), "next wave adopts changed erosion")
 	hot_manager.initialize(hot_player)
 	check(hot_manager.get_enemy_erosion_snapshot().erosion == 0.0, "new run clears pressure snapshot")
-	check(DataRegistry.get_record("enemies", "enemy_mutated_grub").base_stats.max_hp == 10, "shared enemy configuration is unchanged")
+	check(DataRegistry.get_record("enemies", "enemy_mutated_grub").base_stats.max_hp == 30, "shared enemy configuration is unchanged")
 	cold_manager.free()
 	hot_manager.free()
 	extreme_manager.free()

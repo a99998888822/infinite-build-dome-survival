@@ -2,7 +2,7 @@
   {
     "id": "character_void_hunter",
     "display_name": "初心者",
-    "description": "初始最大生命 5；每升一级，最大生命 +1，并回复 1 点生命。",
+    "description": "初始最大生命 30；每升一级，最大生命 +1，并回复 1 点生命。",
     "enabled": true,
     "tags": [
       "character",
@@ -24,11 +24,11 @@
       "divinity"
     ],
     "base_stats": {
-      "max_hp": 5,
+      "max_hp": 30,
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,
-      "move_speed": 240,
+      "move_speed": 120,
       "load_capacity": 100,
       "pickup_radius": 180,
       "humanity": 100,
@@ -61,14 +61,14 @@
     },
     "display_stats": ["max_hp", "damage_percent", "currency_gain_percent", "load_capacity", "finance", "interest_rate", "humanity"],
     "base_stats": {
-      "max_hp": 7,
+      "max_hp": 42,
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,
       "damage_percent": -30,
       "attack_speed": 0,
       "currency_gain_percent": -40,
-      "move_speed": 240,
+      "move_speed": 120,
       "load_capacity": 80,
       "pickup_radius": 180,
       "humanity": 100,

@@ -38,6 +38,11 @@ var current_shield_capacity: int = 0
 var remaining_revives: int = 0
 var alive: bool = true
 var facing_right: bool = true
+var active_controls := false
+var keyboard_movement := false
+var last_move_direction := Vector2.RIGHT
+var move_destination := Vector2.ZERO
+var has_move_destination := false
 var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
@@ -80,6 +85,8 @@ func _input(event: InputEvent) -> void:
 	if key_event.echo:
 		return
 	var is_pressed := key_event.pressed
+	if active_controls and is_pressed:
+		return # Active battle presses are accepted only after the UI has declined them.
 	for key_code in [KEY_A, KEY_LEFT, KEY_D, KEY_RIGHT, KEY_W, KEY_UP, KEY_S, KEY_DOWN]:
 		if key_event.keycode == key_code or key_event.physical_keycode == key_code:
 			_held_move_keys[key_code] = is_pressed
@@ -481,6 +488,9 @@ func _process_movement(delta: float) -> void:
 		_update_walk_animation(Vector2.ZERO, delta)
 		return
 	velocity = direction * get_stat("move_speed")
+	if active_controls and not keyboard_movement and has_move_destination:
+		velocity = direction * minf(get_stat("move_speed"), global_position.distance_to(move_destination) / maxf(delta, 0.001))
+	last_move_direction = direction.normalized()
 	if not is_zero_approx(direction.x):
 		_set_facing(direction.x > 0.0)
 	move_and_slide()
@@ -488,6 +498,13 @@ func _process_movement(delta: float) -> void:
 
 
 func _read_move_input() -> Vector2:
+	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
+		if has_move_destination:
+			if global_position.distance_squared_to(move_destination) <= 4.0:
+				has_move_destination = false
+			else:
+				return global_position.direction_to(move_destination)
+		return Vector2.ZERO
 	var direction := _mobile_move_direction
 	if bool(_held_move_keys.get(KEY_A, false)) or bool(_held_move_keys.get(KEY_LEFT, false)):
 		direction.x -= 1.0
@@ -539,6 +556,24 @@ func _tick_stationary_relic_state(delta: float) -> void:
 func _clear_move_input() -> void:
 	_held_move_keys.clear()
 	_mobile_move_direction = Vector2.ZERO
+	has_move_destination = false
+	velocity = Vector2.ZERO
+
+
+func request_move(point: Vector2) -> void:
+	move_destination = point
+	has_move_destination = true
+	reset_stationary_relic_state()
+
+
+func accept_move_key(event: InputEventKey) -> bool:
+	if not keyboard_movement:
+		return false
+	var code := event.physical_keycode if event.physical_keycode != 0 else event.keycode
+	if code not in [KEY_A, KEY_D, KEY_W, KEY_S, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN]:
+		return false
+	_held_move_keys[code] = event.pressed
+	return true
 
 
 func _process_regeneration(delta: float) -> void:

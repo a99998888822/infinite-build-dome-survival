@@ -190,7 +190,8 @@ func _build_modal() -> void:
 	_portrait = _image(_box, "")
 	var atlas := AtlasTexture.new()
 	atlas.atlas = load("res://assets/ui/finance/goblin_banker_states.png")
-	atlas.region = Rect2(3 * 128, 0, 128, 128)
+	var frame_size := atlas.atlas.get_height()
+	atlas.region = Rect2(3 * frame_size, 0, frame_size, frame_size)
 	_portrait.texture = atlas
 	_bubble = _panel(_box, "303c2c", "778463")
 	_bubble.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slim"))

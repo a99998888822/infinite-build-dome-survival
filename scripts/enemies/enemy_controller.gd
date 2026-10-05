@@ -21,7 +21,9 @@ const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -36.0)
 const DAMAGE_NUMBER_RISE: float = 42.0
 const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.62
 const MAX_DAMAGE_NUMBERS := 160
+const DAMAGE_NUMBER_POOL_META := &"_idle_damage_numbers"
 static var active_damage_numbers := 0
+static var _damage_number_themes: Dictionary = {}
 const HIT_KNOCKBACK_SPEED: float = 60.0
 const HIT_KNOCKBACK_SECONDS: float = 0.06
 const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
@@ -416,6 +418,7 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 	if not alive:
 		return
 	if is_instance_valid(_lightning_visual):
+		_lightning_visual.show()
 		_lightning_visual.call("refresh", duration)
 		return
 	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration, LIGHTNING_STATUS_VISUAL_SCRIPT)
@@ -522,14 +525,19 @@ func _apply_hit_feedback(hit_direction: Vector2) -> void:
 	if sprite == null:
 		return
 	_capture_base_sprite_modulate()
-	if _visual_tween != null and _visual_tween.is_valid():
+	# A pending Tween reads its starting values when it first advances. Repeated
+	# hits before that point only replace those values, not the animation itself.
+	# Once it has advanced (or was stopped), retain the original restart behavior.
+	var pending_feedback := _visual_tween != null and _visual_tween.is_valid() and _visual_tween.is_running() and _visual_tween.get_total_elapsed_time() == 0.0
+	if not pending_feedback and _visual_tween != null and _visual_tween.is_valid():
 		_visual_tween.kill()
 	# The untinted sprite still needs a visible brightness pulse on impact.
 	sprite.modulate = Color(1.35, 1.35, 1.35, _base_sprite_modulate.a)
 	sprite.rotation = randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
-	_visual_tween = create_tween()
-	_visual_tween.tween_property(sprite, "modulate", _base_sprite_modulate, HIT_FLASH_SECONDS)
-	_visual_tween.parallel().tween_property(sprite, "rotation", 0.0, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if not pending_feedback:
+		_visual_tween = create_tween()
+		_visual_tween.tween_property(sprite, "modulate", _base_sprite_modulate, HIT_FLASH_SECONDS)
+		_visual_tween.parallel().tween_property(sprite, "rotation", 0.0, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	if not hit_direction.is_zero_approx():
 		_apply_weapon_knockback(hit_direction)
 
@@ -584,30 +592,17 @@ func _spawn_damage_number(
 	var damage_number_parent := get_parent()
 	if damage_number_parent == null or not damage_number_parent.is_inside_tree():
 		return
-	var damage_number := Label.new()
-	damage_number.name = "DamageNumber"
-	damage_number.text = (str(light_base_damage if light_base_damage > 0 else final_damage) + "x1.3") if light_amplified else str(final_damage)
-	damage_number.size = DAMAGE_NUMBER_SIZE
-	damage_number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	damage_number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	damage_number.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	damage_number.z_index = 100
-	damage_number.pivot_offset = DAMAGE_NUMBER_SIZE * 0.5
+	var damage_number := _acquire_damage_number(damage_number_parent)
+	damage_number.text = str(final_damage)
 	damage_number.scale = Vector2(0.84, 0.84) if not is_critical else Vector2(0.92, 0.92)
 	damage_number.modulate.a = 0.0
-	damage_number.add_theme_font_override("font", DAMAGE_NUMBER_FONT)
-	damage_number.add_theme_font_size_override("font_size", DAMAGE_NUMBER_CRITICAL_FONT_SIZE if is_critical else DAMAGE_NUMBER_FONT_SIZE)
-	damage_number.add_theme_color_override("font_color", _get_damage_number_color(final_damage))
-	damage_number.add_theme_color_override("font_outline_color", Color(0.01, 0.01, 0.015, 0.98))
-	damage_number.add_theme_constant_override("outline_size", 4 if is_critical else 3)
-	damage_number.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.92))
-	damage_number.add_theme_constant_override("shadow_offset_x", 2)
-	damage_number.add_theme_constant_override("shadow_offset_y", 3)
-	damage_number.add_theme_constant_override("shadow_outline_size", 2)
+	damage_number.theme = _get_damage_number_theme(final_damage, is_critical)
+	damage_number.reset_size()
+	damage_number.size = DAMAGE_NUMBER_SIZE
 
 	active_damage_numbers += 1
 	damage_number.tree_exiting.connect(EnemyController.release_damage_number, CONNECT_ONE_SHOT)
-	damage_number_parent.add_child(damage_number)
+	damage_number.show()
 	var spread_offset := Vector2(randf_range(-14.0, 14.0), randf_range(-4.0, 4.0))
 	if display_count > 1:
 		var centered_index := float(display_index) - float(display_count - 1) * 0.5
@@ -623,11 +618,77 @@ func _spawn_damage_number(
 	tween.set_parallel(false)
 	tween.tween_interval(0.10)
 	tween.tween_property(damage_number, "modulate:a", 0.0, 0.28)
-	tween.tween_callback(damage_number.queue_free)
+	tween.tween_callback(_queue_recycle_damage_number.bind(damage_number))
+
+
+static func _acquire_damage_number(parent: Node) -> Label:
+	var idle: Array = parent.get_meta(DAMAGE_NUMBER_POOL_META, [])
+	while not idle.is_empty():
+		var candidate: Variant = idle.pop_back()
+		if not is_instance_valid(candidate) or candidate.is_queued_for_deletion():
+			continue
+		var label := candidate as Label
+		# Reused numbers occupy the same painter position as newly added nodes.
+		parent.move_child(label, -1)
+		return label
+	var label := Label.new()
+	label.name = "DamageNumber"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.z_index = 100
+	label.pivot_offset = DAMAGE_NUMBER_SIZE * 0.5
+	parent.add_child(label)
+	return label
+
+
+static func _queue_recycle_damage_number(label: Label) -> void:
+	# Match queue_free's end-of-frame budget release, after tween processing.
+	_recycle_damage_number.call_deferred(label)
+
+
+static func _recycle_damage_number(label: Variant) -> void:
+	if not is_instance_valid(label) or label.is_queued_for_deletion():
+		return
+	if not label.tree_exiting.is_connected(EnemyController.release_damage_number):
+		return
+	label.tree_exiting.disconnect(EnemyController.release_damage_number)
+	release_damage_number()
+	label.hide()
+	var parent: Node = label.get_parent()
+	if parent == null or parent.is_queued_for_deletion():
+		label.queue_free()
+		return
+	if not parent.has_meta(DAMAGE_NUMBER_POOL_META):
+		parent.set_meta(DAMAGE_NUMBER_POOL_META, [])
+	var idle: Array = parent.get_meta(DAMAGE_NUMBER_POOL_META)
+	# The combat parent owns the pool and frees it when the encounter exits.
+	if idle.size() < MAX_DAMAGE_NUMBERS:
+		idle.append(label)
+	else:
+		label.queue_free()
 
 
 static func release_damage_number() -> void:
 	active_damage_numbers = maxi(0, active_damage_numbers - 1)
+
+
+func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
+	# Four magnitude colors and two font/outline sizes: at most eight themes.
+	var key := Vector2i(int(is_critical), clampi(str(absi(final_damage)).length(), 4, 7))
+	if _damage_number_themes.has(key): return _damage_number_themes[key]
+	var style := Theme.new()
+	style.set_font("font", "Label", DAMAGE_NUMBER_FONT)
+	style.set_font_size("font_size", "Label", DAMAGE_NUMBER_CRITICAL_FONT_SIZE if is_critical else DAMAGE_NUMBER_FONT_SIZE)
+	style.set_color("font_color", "Label", _get_damage_number_color(final_damage))
+	style.set_color("font_outline_color", "Label", Color(0.01, 0.01, 0.015, 0.98))
+	style.set_constant("outline_size", "Label", 4 if is_critical else 3)
+	style.set_color("font_shadow_color", "Label", Color(0.0, 0.0, 0.0, 0.92))
+	style.set_constant("shadow_offset_x", "Label", 2)
+	style.set_constant("shadow_offset_y", "Label", 3)
+	style.set_constant("shadow_outline_size", "Label", 2)
+	_damage_number_themes[key] = style
+	return style
 
 
 func _get_damage_number_color(final_damage: int) -> Color:

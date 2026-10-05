@@ -9,8 +9,7 @@ const RELIC_PICKUP_SCENE: PackedScene = preload("res://scenes/pickups/relic_pick
 const VALID_DROP_TYPES: Array[String] = ["exp_orb", "health_pack", "relic", "augmentation"]
 const DEFAULT_ELITE_RELIC_DECAY_FACTOR: float = 0.5
 const AUGMENTATION_WAVE_DECAY: float = 0.45
-const AUGMENTATION_PITY_MIN_KILLS: int = 30
-const RESONANCE_SECOND_CHANCE: float = 30.0
+const AUGMENTATION_PITY_MIN_KILLS: int = 8
 const DEFAULT_AUGMENTATION_RARITY_WEIGHTS: Dictionary = {"common": 10, "uncommon": 60, "rare": 25, "epic": 5}
 
 var _elite_relics_dropped_this_wave: int = 0
@@ -25,12 +24,10 @@ var _augmentation_wave_number: int = 1
 var _augmentations_dropped_this_wave: int = 0
 var _augmentation_dry_waves: int = 0
 var _augmentation_wave_finished := false
-var _pending_resonance_pickups: Array[WeakRef] = []
 
 
 func reset_run() -> void:
 	_augmentation_dry_waves = 0
-	_pending_resonance_pickups.clear()
 	begin_wave(1)
 
 
@@ -163,7 +160,7 @@ func finish_wave(valid_kills: int, player: PlayerController, snapshot: RewardSna
 	if _augmentation_dry_waves < 2:
 		return false
 	var table := DataRegistry.get_record("drop_tables", "drop_basic_enemy")
-	var entry := _prefer_second_resonance(_pick_augmentation_entry(table), table, player)
+	var entry := _pick_augmentation_entry(table)
 	if entry.is_empty() or _augmentations_dropped_this_wave >= get_augmentation_wave_limit():
 		return false
 	# Reserve before item_added callbacks; a pity grant occupies the same quota.
@@ -239,25 +236,6 @@ func _pick_augmentation_entry(table: Dictionary) -> Dictionary:
 	return selected
 
 
-func _prefer_second_resonance(selected: Dictionary, table: Dictionary, player: PlayerController) -> Dictionary:
-	if selected.is_empty() or not is_instance_valid(player) or player.item_inventory == null:
-		return selected
-	var held := 0
-	for item in player.item_inventory.get_items():
-		if str(item.get("base_item_id", "")) == "scroll_resonance": held += 1
-	if held != 1:
-		return selected
-	_pending_resonance_pickups = _pending_resonance_pickups.filter(func(ref: WeakRef):
-		var pickup = ref.get_ref()
-		return is_instance_valid(pickup) and not pickup.collected_once and not pickup.is_queued_for_deletion())
-	if not _pending_resonance_pickups.is_empty():
-		return selected
-	for entry in table.get("entries", []):
-		if str(entry.get("item_id", "")) == "scroll_resonance" and float(entry.get("weight", 0)) > 0:
-			return entry if _roll_drop_chance(RESONANCE_SECOND_CHANCE) else selected
-	return selected
-
-
 func spawn_drop_actions(
 	actions: Array[Dictionary],
 	position: Vector2,
@@ -321,8 +299,6 @@ func spawn_action(
 				if bool(action.get("augmentation_ordinary", false)) and not _roll_drop_chance(100.0 * pow(AUGMENTATION_WAVE_DECAY, _augmentations_dropped_this_wave)):
 					return null
 			var entry: Dictionary = action.get("entry", {})
-			if action.has("augmentation_roll_id"):
-				entry = _prefer_second_resonance(entry, DataRegistry.get_record("drop_tables", str(action.get("augmentation_table_id", ""))), player)
 			var augmentation_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
 			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot)
 		"relic":
@@ -427,8 +403,6 @@ func spawn_augmentation(
 	pickup_root.add_child(pickup)
 	pickup.global_position = position
 	pickup.initialize(augmentation_id, granted_amount)
-	if augmentation_id == "scroll_resonance":
-		_pending_resonance_pickups.append(weakref(pickup))
 	pickup.set_target_player(player)
 	if snapshot != null:
 		snapshot.record_spawned_drop("augmentation", granted_amount)

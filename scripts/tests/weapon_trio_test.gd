@@ -188,7 +188,7 @@ func _run() -> void:
 	hits.clear()
 	limb.try_attack(Vector2.RIGHT)
 	advance(limb, 0.23, 0.23)
-	check(hits.size() == 4, "additional projectile becomes another complete slap without missed long-frame contacts")
+	check(hits.size() == 4, "two angular slaps resolve their contacts in a long frame")
 
 	await fixture(TENTACLE, [Vector2(80, 0)])
 	limb = tentacle()
@@ -241,7 +241,7 @@ func _run() -> void:
 	var pierce := player.item_inventory.add_item_from_base("scroll_pierce", "trio_test")
 	check(not weapon.get_attachment_incompatibility(pierce).is_empty(), "ineffective pierce is rejected before consuming a slot")
 	weapon.runtime_stats.projectile_count = 99
-	check(weapon.get_ground_node_count() == 8 and weapon.get_attack_range() == 488, "additional nodes are capped at eight")
+	check(weapon.get_ground_node_count() == 5 and weapon.get_attack_range() == 296, "additional rays preserve node count and reach")
 
 	await fixture(HAMMER, [], ["scroll_lightning"])
 	quake = hammer()
@@ -287,7 +287,7 @@ func _run() -> void:
 		check(not weapon.upgrade() and weapon.get_attachment_slot_count() == 2, "rarity slots and level cap " + id)
 		var pool := ShopOfferGenerator.new().build_shop_candidate_pool({"load_capacity":100,"current_load":0,"luck":350})
 		check(pool.any(func(offer): return offer.target_id == id), "shop/reward candidate " + id)
-		check(load(weapon.weapon_data.icon).get_size() == Vector2(64,64), "installed icon " + id)
+		check(load(weapon.weapon_data.icon).get_size() == Vector2(128,128), "installed icon " + id)
 		check(not weapon.build_full_stats_text().is_empty(), "weapon stats tooltip " + id)
 	var validator := DataValidator.new()
 	check(validator.validate_all(DataRegistry.tables, DataRegistry.records_by_id), "full configuration validation")

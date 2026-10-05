@@ -1,7 +1,7 @@
 """Validate current goblin atlases, or install five reviewed --source portraits.
 
 Input names: goblin_neutral.png, goblin_downcast.png, goblin_displeased.png,
-goblin_smile.png and goblin_delighted.png, each 128x128 RGBA with binary alpha.
+goblin_smile.png and goblin_delighted.png, each 256x256 RGBA with binary alpha.
 """
 from pathlib import Path
 import argparse
@@ -12,7 +12,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / "assets"
-FRAME = 128
+FRAME = 256
+BOB = (0, -2, 0, 2)
 # Existing bank reaction indices: idle, small/large withdrawal, small/large deposit.
 STATES = ("neutral", "downcast", "displeased", "smile", "delighted")
 # Settlement rows follow data_config/run_settlement.json.
@@ -24,7 +25,7 @@ def settlement_sheet(bank: Image.Image) -> Image.Image:
     sheet = Image.new("RGBA", (FRAME * 4, FRAME * 4))
     for row, state in enumerate(REACTIONS):
         source = bank.crop((state * FRAME, 0, (state + 1) * FRAME, FRAME))
-        for frame, bob in enumerate((0, -1, 0, 1)):
+        for frame, bob in enumerate(BOB):
             pose = Image.new("RGBA", (FRAME, FRAME))
             pose.alpha_composite(source, (0, bob))
             # Transparent margins must accommodate the existing idle movement.
@@ -35,7 +36,7 @@ def settlement_sheet(bank: Image.Image) -> Image.Image:
 
 def validate_sprite(sprite):
     if sprite.mode != "RGBA" or sprite.size != (FRAME, FRAME):
-        raise ValueError("Portrait must be a 128x128 RGBA image")
+        raise ValueError("Portrait must be a 256x256 RGBA image")
     if set(sprite.getchannel("A").tobytes()) != {0, 255}:
         raise ValueError("Portrait must have binary alpha")
     colors = {pixel[:3] for _, pixel in sprite.getcolors(FRAME * FRAME) if pixel[3]}
@@ -47,7 +48,7 @@ def check_installed(asset_root=ASSETS):
     with Image.open(Path(asset_root) / "ui/finance/goblin_banker_states.png") as source:
         bank = source.convert("RGBA")
     if bank.size != (FRAME * len(STATES), FRAME):
-        raise ValueError("Bank atlas must be 640x128")
+        raise ValueError("Bank atlas must be 1280x256")
     for index in range(len(STATES)):
         validate_sprite(bank.crop((index * FRAME, 0, (index + 1) * FRAME, FRAME)))
     expected = settlement_sheet(bank)
@@ -79,10 +80,10 @@ def install_assets(source, asset_root=ASSETS):
     bank.save(target)
     reactions.save(reaction_target)
     manifest = {"frame_size": [FRAME, FRAME], "states": records,
-                "settlement_rows": list(REACTIONS), "settlement_bob_pixels": [0, -1, 0, 1]}
+                "settlement_rows": list(REACTIONS), "settlement_bob_pixels": list(BOB)}
     (Path(asset_root) / "ui/finance/goblin_portraits.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("Overwrote bank 640x128 and settlement 512x512 atlases; approved pixels and alpha preserved.")
+    print("Overwrote bank 1280x256 and settlement 1024x1024 atlases; approved pixels and alpha preserved.")
     check_installed(asset_root)
 
 

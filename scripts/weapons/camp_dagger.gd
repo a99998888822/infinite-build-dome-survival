@@ -15,6 +15,7 @@ var age := 0.0
 var heading := Vector2.RIGHT
 var time_scale := 1.0
 var main_duration := 0.24
+var continuous_combo := false
 var split_triggered := false
 var cuts: Array[Dictionary] = []
 var split_profiles: Array[Dictionary] = []
@@ -27,7 +28,7 @@ static func find_target(source: WeaponInstance) -> EnemyController:
 	# A center-only radius cannot engage enemies that retreat after contact damage.
 	var origin := source.get_attack_origin()
 	var shape := CircleShape2D.new()
-	shape.radius = 36.0 * source.get_attack_range() / BASE_REACH + source.get_hit_radius()
+	shape.radius = source.get_dagger_outer_radius()
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0, origin)
@@ -54,7 +55,7 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	weapon = source
 	heading = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	global_position = weapon.get_attack_origin()
-	time_scale = weapon.get_actual_attack_interval_seconds() / (float(weapon.attack_interval_ms) / 1000.0)
+	time_scale = 1.0 if weapon.use_active_range_rules else weapon.get_actual_attack_interval_seconds() / (float(weapon.attack_interval_ms) / 1000.0)
 	var windup := float(weapon.weapon_data.get("dagger_windup_ms", 60)) / 1000.0
 	var sweep := float(weapon.weapon_data.get("dagger_sweep_ms", 100)) / 1000.0
 	var recover := float(weapon.weapon_data.get("dagger_recover_ms", 80)) / 1000.0
@@ -75,6 +76,25 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	queue_redraw()
 
 
+## Enable before the first tick for active casts and their native replays.
+func configure_continuous_combo() -> void:
+	if continuous_combo:
+		return
+	continuous_combo = true
+	time_scale *= 1.25
+	var windup := float(weapon.weapon_data.get("dagger_windup_ms", 60)) / 1000.0
+	var sweep := float(weapon.weapon_data.get("dagger_sweep_ms", 100)) / 1000.0
+	var recover := float(weapon.weapon_data.get("dagger_recover_ms", 80)) / 1000.0
+	var next := 0.0
+	for index in cuts.size():
+		var cut := cuts[index]
+		cut.start = next
+		cut.windup = windup if index == 0 else 0.0
+		cut.sweep = sweep
+		cut.recover = recover if index == cuts.size() - 1 else 0.0
+		next = cut_end(cut)
+
+
 func _add_cut(start: float, windup: float, sweep: float, recover: float, event: DamageEvent, child: bool, index: int) -> void:
 	cuts.append({"start": start, "windup": windup, "sweep": sweep, "recover": recover,
 		"sign": 1.0 if (weapon.volley_index + index) % 2 == 0 else -1.0,
@@ -89,6 +109,13 @@ func cut_end(cut: Dictionary) -> float:
 	return float(cut.start) + float(cut.windup) + float(cut.sweep) + float(cut.recover)
 
 
+func cut_opacity(cut: Dictionary, at: float) -> float:
+	if float(cut.recover) <= 0.0:
+		return 1.0
+	var end := float(cut.start) + float(cut.windup) + float(cut.sweep)
+	return 1.0 - clampf((at - end) / float(cut.recover), 0, 1)
+
+
 func blade_direction(cut: Dictionary, at: float) -> Vector2:
 	var t := clampf((at - float(cut.start) - float(cut.windup)) / float(cut.sweep), 0, 1)
 	var half_angle := deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))) * 0.5
@@ -100,7 +127,7 @@ func blade_segment(cut: Dictionary, at: float) -> PackedVector2Array:
 	var scale_factor := weapon.get_attack_range() / BASE_REACH
 	# Keep the inner slash reachable when extending the outer arc: increased
 	# range must not create a blind ring where touching enemies cannot be hit.
-	return PackedVector2Array([radial * 21.0 * minf(scale_factor, 1.0), radial * 36.0 * scale_factor])
+	return PackedVector2Array([radial * 21.0 * minf(scale_factor, 1.0), radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius())])
 
 
 func _physics_process(delta: float) -> void:
@@ -177,6 +204,16 @@ func _append_split_cuts(source: DamageEvent) -> void:
 	var count := events.size()
 	if count == 0:
 		return
+	if continuous_combo:
+		# Continue from the final main blade position; only the final child recovers.
+		var recover := float(cuts[-1].recover)
+		cuts[-1].recover = 0.0
+		var next := cut_end(cuts[-1])
+		var sweep := float(weapon.weapon_data.get("dagger_sweep_ms", 100)) / 1000.0
+		for index in count:
+			_add_cut(next, 0.0, sweep, recover if index == count - 1 else 0.0, events[index], true, cuts.size())
+			next += sweep
+		return
 	var duration := float(weapon.weapon_data.get("dagger_split_window_ms", 140)) / 1000.0 / count
 	var first_index := cuts.size()
 	for index in count:
@@ -205,7 +242,7 @@ func _draw() -> void:
 		var begin := float(cut.start) + float(cut.windup)
 		var end := begin + float(cut.sweep)
 		var radial := blade_direction(cut, age)
-		var fade := 1.0 - clampf((age - end) / float(cut.recover), 0, 1)
+		var fade := cut_opacity(cut, age)
 		if age >= begin:
 			# Reveal the approved crescent only behind the moving edge, then fade it.
 			var angle := heading.angle_to(radial)
@@ -217,6 +254,10 @@ func _draw() -> void:
 			draw_texture_rect_region(SLASH, Rect2(Vector2(-22, y0 - 32) * slash_scale, Vector2(64, height) * slash_scale),
 				Rect2(0, y0, 64, height), Color(tint, 0.58 * fade))
 		var grip := radial * 14.0 * scale_factor
-		draw_set_transform(grip.round(), radial.angle(), Vector2(scale_factor, weapon.get_hit_radius() / 4.0))
+		var body_scale := weapon.get_dagger_body_scale()
+		if weapon.use_active_range_rules:
+			# Move the fixed-size blade out to the new arc; only the slash trail grows.
+			grip = radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius() - 22.0 * body_scale.x)
+		draw_set_transform(grip.round(), radial.angle(), body_scale)
 		draw_texture(BLADE, -GRIP, Color(tint if bool(cut.child) else Color.WHITE, fade))
 		draw_set_transform(Vector2.ZERO)

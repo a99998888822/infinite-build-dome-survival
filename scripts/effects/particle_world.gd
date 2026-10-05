@@ -426,6 +426,7 @@ var _light_field: Node = null
 var _emitter_pool: Array[Node2D] = []
 var _random := RandomNumberGenerator.new()
 var _batch: MultiMeshInstance2D
+var _batch_buffer := PackedFloat32Array()
 
 
 func _ready() -> void:
@@ -433,6 +434,7 @@ func _ready() -> void:
 	add_to_group("combat_particle_counters")
 	_random.randomize()
 	_batch = BATCH.create(MAX_PARTICLES * 2)
+	_batch_buffer.resize(MAX_PARTICLES * 2 * 16)
 	add_child(_batch)
 	queue_redraw()
 
@@ -745,6 +747,7 @@ func _resolve_color(profile: Dictionary, color_override: Color, color_tint: Colo
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	var expired := false
 	for order_index in range(_particle_order.size() - 1, -1, -1):
 		var slot := _particle_order[order_index]
 		var velocity := _particle_velocities[slot]
@@ -755,8 +758,17 @@ func _process(delta: float) -> void:
 		_particle_rotations[slot] += _particle_spins[slot] * delta
 		_particle_ages[slot] += delta
 		if _particle_ages[slot] >= _particle_lifetimes[slot]:
-			_particle_order.remove_at(order_index)
+			_particle_order[order_index] = -1
+			expired = true
 			_release_particle_slot(slot)
+	if expired:
+		# Keep painter order and the original reverse-order free-slot release.
+		var write_index := 0
+		for slot in _particle_order:
+			if slot >= 0:
+				_particle_order[write_index] = slot
+				write_index += 1
+		_particle_order.resize(write_index)
 	queue_redraw()
 
 
@@ -855,14 +867,15 @@ func _draw() -> void:
 			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
 			if _particle_glow_streak_flags[slot] != 0:
 				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35)) * glow_radius_multiplier
-				BATCH.put(instances, index, position.round(), glow_size, rotation, glow_color)
+				BATCH.put_buffer(_batch_buffer, index, position.round(), glow_size, rotation, glow_color)
 			else:
 				var diameter := maxf(size.x, size.y) * (1.5 + glow * 0.35) * glow_radius_multiplier * 2.0
-				BATCH.put(instances, index, position.round(), Vector2.ONE * diameter, rotation, glow_color, true)
+				BATCH.put_buffer(_batch_buffer, index, position.round(), Vector2.ONE * diameter, rotation, glow_color, true)
 			index += 1
 		if _particle_circle_flags[slot] != 0:
-			BATCH.put(instances, index, position.round(), Vector2.ONE * maxf(size.x, size.y), rotation, color, true)
+			BATCH.put_buffer(_batch_buffer, index, position.round(), Vector2.ONE * maxf(size.x, size.y), rotation, color, true)
 		else:
-			BATCH.put(instances, index, position.round(), size, rotation, color)
+			BATCH.put_buffer(_batch_buffer, index, position.round(), size, rotation, color)
 		index += 1
+	if index > 0: instances.buffer = _batch_buffer
 	instances.visible_instance_count = index

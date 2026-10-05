@@ -74,6 +74,8 @@ func deal_hit(enemy: EnemyController, source: DamageEvent, direction: Vector2, c
 
 
 func speed_scale() -> float:
+	if weapon.use_active_range_rules:
+		return 1.0
 	return weapon.get_actual_attack_interval_seconds() / maxf(float(weapon.attack_interval_ms) / 1000.0, 0.001)
 
 

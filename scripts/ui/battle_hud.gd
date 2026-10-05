@@ -42,6 +42,9 @@ var _economy_log: EconomyLogPanel
 var _economy_log_layer: CanvasLayer
 var _finance_economy_back: Panel
 var _drawer_scene_layout := false
+var combat_bar: ActiveCombatWeaponBar
+var combat_hints: Label
+var cleanup_label: Label
 
 const DRAWER_OPEN_LEFT := -320.0
 const DRAWER_OPEN_RIGHT := 0.0
@@ -183,6 +186,24 @@ func _ready() -> void:
 	_economy_log = EconomyLogPanel.new()
 	_economy_log_layer.add_child(_economy_log)
 	_style_combat_hud()
+	combat_bar = ActiveCombatWeaponBar.new()
+	combat_bar.name = "CombatWeaponBar"
+	status_panel.add_child(combat_bar)
+	combat_hints = Label.new()
+	combat_hints.name = "CombatHints"
+	combat_hints.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	combat_hints.add_theme_font_size_override("font_size", 12)
+	combat_hints.add_theme_color_override("font_color", Color("9bada7"))
+	combat_hints.add_theme_constant_override("outline_size", 2)
+	combat_hints.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_panel.add_child(combat_hints)
+	cleanup_label = Label.new()
+	cleanup_label.name = "CleanupStatus"
+	cleanup_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cleanup_label.add_theme_font_size_override("font_size", 12)
+	cleanup_label.add_theme_color_override("font_color", Color("f2a18e"))
+	cleanup_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	battle_top_bar.add_child(cleanup_label)
 	_weapon_damage_meter = WEAPON_DAMAGE_METER.new()
 	_weapon_damage_meter.name = "WeaponDamageMeter"
 	status_panel.add_child(_weapon_damage_meter)
@@ -229,7 +250,7 @@ func _style_combat_hud() -> void:
 	status_panel.add_child(_experience_frame)
 	status_panel.move_child(_experience_frame, 0)
 	top_left.add_theme_constant_override("separation", 2)
-	level_label.visible = false
+	level_label.visible = true
 	for label in [hp_label, shield_label, gold_label, finance_label]:
 		label.add_theme_font_size_override("font_size", 14)
 		label.add_theme_constant_override("outline_size", 2)
@@ -241,7 +262,16 @@ func _style_combat_hud() -> void:
 	exp_label.add_theme_font_size_override("font_size", 12)
 	exp_label.add_theme_color_override("font_color", Color(0.72, 0.83, 0.62))
 	exp_panel.add_theme_constant_override("separation", 2)
-	exp_bar.custom_minimum_size.y = 8
+	exp_bar.custom_minimum_size.y = 4
+	exp_label.hide()
+	exp_bar.show_percentage = false
+	_experience_frame.hide()
+	var exp_back := StyleBoxFlat.new()
+	exp_back.bg_color = Color("152522")
+	exp_bar.add_theme_stylebox_override("background", exp_back)
+	var exp_fill := StyleBoxFlat.new()
+	exp_fill.bg_color = Color("8ea968")
+	exp_bar.add_theme_stylebox_override("fill", exp_fill)
 	for button in [encyclopedia_button, settings_button]:
 		button.custom_minimum_size = Vector2(40, 40)
 		button.mouse_entered.connect(func() -> void: button.modulate = Color(1.2, 1.16, 1.03))
@@ -366,6 +396,27 @@ func _refresh_all() -> void:
 	_refresh_stats_drawer()
 	_refresh_bond_indicator()
 	_refresh_visibility()
+	_refresh_active_combat()
+
+
+func _refresh_active_combat() -> void:
+	var loadout := _flow.get_bound_loadout()
+	var active := loadout != null and loadout.active_combat_enabled and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
+	combat_bar.visible = active
+	combat_hints.visible = active and CombatSettings.show_hints
+	if not active:
+		return
+	if combat_bar.weapons != loadout.weapon_instances:
+		combat_bar.setup(loadout.weapon_instances)
+		_apply_combat_layout()
+	var battle := get_parent() as BattleRoot
+	for i in loadout.weapon_instances.size():
+		var weapon := loadout.weapon_instances[i]
+		var state := loadout.active_casting.state_for(weapon)
+		var selected := battle != null and battle.active_controller != null and battle.active_controller.selected_weapon == weapon
+		combat_bar.update_slot(i, state.remaining, state.total, state.executing, selected)
+	var move_text := "WASD / 方向键移动" if CombatSettings.keyboard_movement else "右键移动 · S 停止"
+	combat_hints.text = move_text + ("  ·  1—9 / 0 快捷施放" if CombatSettings.quick_cast else "  ·  1—9 / 0 选武器  ·  左键施放") + "  ·  右键 / Esc 取消瞄准"
 
 
 func _ensure_feedback_ui() -> void:
@@ -533,7 +584,7 @@ func _sync_progress(animate: bool) -> void:
 	var required_exp := maxi(_wave_manager.get_required_exp_for_next_level(), 1)
 	var level := maxi(_wave_manager.player_level, 1)
 	if exp_label != null:
-		exp_label.text = "等级 %d  经验 %d/%d" % [level, current_exp, required_exp]
+		exp_label.text = ""
 	if level_label != null:
 		level_label.text = "Lv. %d" % level
 	if _last_exp != current_exp or _last_exp_required != required_exp:
@@ -570,6 +621,10 @@ func _refresh_wave_display() -> void:
 		return
 	var wave_number := maxi(_wave_manager.current_wave_index + 1, 1)
 	var time_left := maxf(_wave_manager.wave_time_left, 0.0)
+	cleanup_label.visible = _wave_manager.cleanup_active and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
+	if _wave_manager.cleanup_active:
+		time_left = _wave_manager.cleanup_time_left
+		cleanup_label.text = "剩余小 Boss：%d  ·  已停止增援" % _wave_manager.get_living_miniboss_count()
 	if wave_label != null:
 		wave_label.text = "第 %d 波" % wave_number
 		var challenge: Dictionary = _wave_manager.wave_challenges.active
@@ -579,6 +634,8 @@ func _refresh_wave_display() -> void:
 		else:
 			wave_label.tooltip_text = ""
 	if wave_timer_label != null:
+		if _wave_manager.cleanup_active:
+			wave_label.text = "最终清剿"
 		wave_timer_label.text = "%ds" % ceili(time_left)
 		if time_left > 0.0 and time_left <= 10.0:
 			wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.25, 0.22, 1.0))
@@ -682,10 +739,11 @@ func _apply_combat_layout() -> void:
 	var timer_size := WAVE_PANEL_SIZE if viewport_width >= 800.0 else Vector2(112, 48)
 	top_left.position = Vector2(18, 6)
 	_vitals_frame.position = Vector2(10, 2)
-	_vitals_frame.size = Vector2(bar_width + 44, 52)
-	_performance_line.position = Vector2(16, 64)
+	_vitals_frame.size = Vector2(bar_width + 44, 70)
+	level_label.add_theme_font_size_override("font_size", 12)
+	_performance_line.position = Vector2(16, 78)
 	_performance_line.size = Vector2(maxf(bar_width + 32, 210), 18)
-	_weapon_damage_meter.position = Vector2(10, 94)
+	_weapon_damage_meter.position = Vector2(10, 102)
 	_weapon_damage_meter.size.x = (bar_width + 44) * 0.5
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
@@ -734,12 +792,19 @@ func _apply_combat_layout() -> void:
 		else:
 			exp_panel.anchor_left = 0.10 if viewport_width < 720.0 else 0.15
 		exp_panel.anchor_right = 0.90 if viewport_width < 720.0 else 0.85
-		exp_panel.offset_top = -39.0
+		exp_panel.offset_top = -14.0
 		exp_panel.offset_bottom = -10.0
 		_experience_frame.position = Vector2(viewport_width * exp_panel.anchor_left - 10, get_viewport().get_visible_rect().size.y - 43)
 		_experience_frame.size = Vector2(viewport_width * (exp_panel.anchor_right - exp_panel.anchor_left) + 20, 37)
 	if _bond_row != null:
-		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 75)
+		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 148)
+	if combat_bar != null:
+		combat_bar.apply_layout()
+		combat_hints.position = Vector2(8, combat_bar.position.y - 27)
+		combat_hints.size = Vector2(viewport_width - 16, 20)
+	if cleanup_label != null:
+		cleanup_label.position = Vector2(viewport_width * 0.5 - 160, 57)
+		cleanup_label.size = Vector2(320, 22)
 
 
 func _get_weapon_strip_rect() -> Rect2:

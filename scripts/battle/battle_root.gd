@@ -12,6 +12,7 @@ const PLAYER_START_POSITION := Vector2.ZERO
 @onready var mobile_joystick: MobileJoystick = get_node_or_null("MobileControls/MobileJoystick")
 
 var _main_flow_coordinator: MainFlowCoordinator = null
+var active_controller: ActiveCombatController
 var _low_resolution_world_parent: Node2D = null
 var _low_resolution_world_nodes: Array[Node] = []
 
@@ -22,6 +23,9 @@ func _ready() -> void:
 	_attach_world_nodes_to_low_resolution_viewport()
 	_bind_mobile_joystick()
 	_bind_to_flow()
+	active_controller = ActiveCombatController.new()
+	add_child(active_controller)
+	active_controller.initialize(self)
 
 
 func _exit_tree() -> void:
@@ -78,6 +82,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if key_event.keycode != KEY_ESCAPE:
 		return
+	if active_controller != null and active_controller.cancel_aim():
+		get_viewport().set_input_as_handled()
+		return
 	var state := _main_flow_coordinator.get_current_state()
 	if state == MainFlowCoordinator.STATE_WAVE_COMBAT or state == MainFlowCoordinator.STATE_BATTLE_PREPARE:
 		_main_flow_coordinator.request_esc_overlay()
@@ -106,6 +113,11 @@ func _bind_to_flow() -> void:
 
 
 func _on_flow_state_changed(previous_state: String, current_state: String) -> void:
+	if active_controller != null:
+		active_controller.clear_input()
+	if loadout != null and loadout.active_combat_enabled and current_state in [MainFlowCoordinator.STATE_WAVE_END_ABSORB, MainFlowCoordinator.STATE_BATTLE_RESULT]:
+		for weapon in loadout.weapon_instances:
+			loadout._clear_weapon_runtime(weapon)
 	var settings_over_esc := current_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and _main_flow_coordinator.get_battle_display_state() == MainFlowCoordinator.STATE_ESC_OVERLAY
 	var returning_to_esc := previous_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and current_state == MainFlowCoordinator.STATE_ESC_OVERLAY
 	if not settings_over_esc and not returning_to_esc:

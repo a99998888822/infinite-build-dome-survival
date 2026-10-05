@@ -3,6 +3,18 @@ class_name ActiveCombatWeaponBar
 ## Battle-only display; the existing Esc WeaponStrip remains independent.
 
 const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
+class WeaponHeader extends Control:
+	var number_source: Label
+	var status_source: Label
+	func _draw() -> void:
+		var font := number_source.get_theme_font("font")
+		for side in 2:
+			var text := number_source.text if side == 0 else status_source.text
+			var align := HORIZONTAL_ALIGNMENT_LEFT if side == 0 else HORIZONTAL_ALIGNMENT_RIGHT
+			draw_string_outline(font, Vector2(6, 17), text, align, size.x - 12, 12, 1, Color("101c20"))
+			draw_string(font, Vector2(6, 17), text, align, size.x - 12, 12, Color("e1f4ff"))
+
+var headers: Array[WeaponHeader] = []
 var weapons: Array[WeaponInstance] = []
 var cards: Array[Panel] = []
 var icons: Array[TextureRect] = []
@@ -11,10 +23,12 @@ var timers: Array[Label] = []
 var selected_index := -1
 var slot_size := 64.0
 var preview_page := 0
+var _normal_style: StyleBoxFlat
+var _aim_style: StyleBoxFlat
 
 
 func setup(sources: Array[WeaponInstance]) -> void:
-	weapons = sources
+	weapons = sources.duplicate()
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	for child in get_children():
 		child.queue_free()
@@ -22,6 +36,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 	icons.clear()
 	numbers.clear()
 	timers.clear()
+	headers.clear()
 	for i in weapons.size():
 		var card := Panel.new()
 		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -39,12 +54,20 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		icon.material = material
 		card.add_child(icon)
 		icons.append(icon)
-		var number := _label(card, 14)
+		var number := _label(card, 12)
 		number.text = str(i + 1) if i < 9 else "0" if i == 9 else "Tab·1"
 		numbers.append(number)
 		var timer := _label(card, 12)
 		timer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		timers.append(timer)
+		number.hide()
+		timer.hide()
+		var header := WeaponHeader.new()
+		header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		header.number_source = number
+		header.status_source = timer
+		card.add_child(header)
+		headers.append(header)
 	apply_layout()
 
 
@@ -60,11 +83,19 @@ func _label(parent: Control, font_size: int) -> Label:
 
 
 func _style(selected: bool) -> StyleBoxFlat:
+	if selected and _aim_style != null:
+		return _aim_style
+	if not selected and _normal_style != null:
+		return _normal_style
 	var box := StyleBoxFlat.new()
 	box.bg_color = Color(0.028, 0.049, 0.052, 0.90)
 	box.border_color = Color("c5edff") if selected else Color("455857")
 	box.set_border_width_all(2 if selected else 1)
 	box.set_corner_radius_all(3)
+	if selected:
+		_aim_style = box
+	else:
+		_normal_style = box
 	return box
 
 
@@ -81,6 +112,8 @@ func apply_layout() -> void:
 		numbers[i].position = Vector2(4, 0)
 		timers[i].position = Vector2(20, 0)
 		timers[i].size = Vector2(slot_size - 24, 20)
+		headers[i].size = Vector2(slot_size, 22)
+		headers[i].queue_redraw()
 
 
 func update_slot(index: int, remaining: float, total: float, executing: bool, selected: bool) -> void:
@@ -88,7 +121,10 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 		return
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
 	(icons[index].material as ShaderMaterial).set_shader_parameter("remaining", fraction)
-	timers[index].text = "施放中" if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
+	var text := "施放中" if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
+	if timers[index].text != text:
+		timers[index].text = text
+		headers[index].queue_redraw()
 	cards[index].add_theme_stylebox_override("panel", _style(selected))
 
 

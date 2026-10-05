@@ -6,7 +6,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 ASSETS = {
-    'assets/ui/icons/weapons/weapon_camp_dagger.png': (64, 16),
+    'assets/ui/icons/weapons/weapon_camp_dagger.png': (128, 16),
     'assets/sprites/weapons/camp_dagger.png': (32, 12),
     'assets/sprites/weapons/effects/camp_dagger_slash.png': (64, 3),
 }

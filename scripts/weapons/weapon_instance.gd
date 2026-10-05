@@ -33,6 +33,8 @@ var trade_upgrade_basis: Dictionary = {}
 # Reserved for earned, instance-bound titles; combat title scoring is a later feature.
 var battle_title: Dictionary = {}
 var weapon_data: Dictionary = {}
+# Enabled by the production loadout; legacy fixtures may opt out explicitly.
+var use_active_range_rules := false
 var owner_player: PlayerController = null
 var principal_getter: Callable = Callable()
 var level: int = 1
@@ -44,9 +46,14 @@ var _base_effect_modifiers: Array[Dictionary] = []
 var _attached_item_instances: Array[Dictionary] = []
 var _attachment_bonuses: Dictionary = {}
 var attack_interval_ms: int = 0
+var active_cooldown_ms: int = -1
 var attack_timer: float = 0.0
 var volley_index: int = 0
 var attack_context: Dictionary = {}
+var source_instance_id := ""
+var _cast_stats: Dictionary = {}
+var _cast_player_stats: Dictionary = {}
+var _cast_principal := -1.0
 # A replay has its own immutable world origin; the real player never moves.
 var fixed_attack_origin: Variant = null
 var is_bounce_attack := false
@@ -89,6 +96,7 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 	_attached_item_instances.clear()
 	_reset_effect_runtime()
 	attack_interval_ms = int(data.get("attack_interval_ms", 1000))
+	active_cooldown_ms = int(data.get("active_cooldown_ms", attack_interval_ms))
 	attack_timer = 0.0
 	volley_index = 0
 	grenade_blast_radius = float(data.get("grenade_blast_radius", 0.0))
@@ -102,6 +110,34 @@ func tick(delta: float) -> void:
 
 func begin_attack() -> void:
 	attack_context = {"bounce_used": false}
+	reset_hit_sfx_state()
+
+
+func make_cast_copy() -> WeaponInstance:
+	# Freeze a cast's geometry, attachment sequence and values while the loadout
+	# can still change in a paused reward screen. Each cast owns its proc budget.
+	var copy := WeaponInstance.new()
+	copy.initialize(weapon_id, owner_player)
+	copy.source_instance_id = instance_id
+	copy.weapon_data = weapon_data.duplicate(true)
+	copy.use_active_range_rules = use_active_range_rules
+	copy.principal_getter = principal_getter
+	copy.level = level
+	copy.runtime_stats = runtime_stats.duplicate(true)
+	copy.attack_interval_ms = attack_interval_ms
+	copy.active_cooldown_ms = active_cooldown_ms
+	copy.grenade_blast_radius = grenade_blast_radius
+	copy.volley_index = volley_index
+	copy._base_effect_ids = _base_effect_ids.duplicate()
+	copy._base_effect_modifiers = _base_effect_modifiers.duplicate(true)
+	copy._attached_item_instances = _attached_item_instances.duplicate(true)
+	copy._rebuild_attachment_effects()
+	for stat in StatDefinitions.get_all_stat_ids():
+		copy._cast_stats[stat] = get_stat(stat)
+		copy._cast_player_stats[stat] = owner_player.get_stat(stat)
+	copy._cast_principal = get_current_principal()
+	copy.begin_attack()
+	return copy
 
 
 func get_attack_origin() -> Vector2:
@@ -113,21 +149,26 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 	copy.weapon_id = weapon_id
 	copy.instance_id = instance_id + "_bounce"
 	copy.weapon_data = weapon_data.duplicate(true)
+	copy.use_active_range_rules = use_active_range_rules
 	copy.owner_player = owner_player
 	copy.principal_getter = principal_getter
 	copy.level = level
 	copy.runtime_stats = runtime_stats.duplicate(true)
 	copy.attack_interval_ms = attack_interval_ms
+	copy.active_cooldown_ms = active_cooldown_ms
 	copy.grenade_blast_radius = grenade_blast_radius
 	copy.volley_index = volley_index
 	copy.fixed_attack_origin = point
 	copy.is_bounce_attack = true
+	copy.source_instance_id = source_instance_id
+	copy._cast_stats = _cast_stats.duplicate()
+	copy._cast_player_stats = _cast_player_stats.duplicate()
+	copy._cast_principal = _cast_principal
 	copy._base_effect_ids = _base_effect_ids.duplicate()
 	copy._base_effect_ids.erase("bounce")
-	copy._base_effect_ids.erase("resonance")
 	copy._base_effect_modifiers = _base_effect_modifiers.duplicate(true)
 	for item in _attached_item_instances:
-		if not "bounce" in item.get("effect_ids", []) and not "resonance" in item.get("effect_ids", []):
+		if not "bounce" in item.get("effect_ids", []):
 			copy._attached_item_instances.append(item.duplicate(true))
 	copy._rebuild_attachment_effects()
 	copy.begin_attack()
@@ -136,6 +177,11 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 
 func can_attack() -> bool:
 	return attack_timer <= 0.0
+
+
+func get_active_cooldown_seconds() -> float:
+	var base := float(active_cooldown_ms if active_cooldown_ms >= 0 else weapon_data.get("active_cooldown_ms", attack_interval_ms)) / 1000.0
+	return maxf(0.15, base * get_actual_attack_interval_seconds() / maxf(float(weapon_data.get("attack_interval_ms", attack_interval_ms)) / 1000.0, 0.001))
 
 
 func reset_attack_timer() -> void:
@@ -208,6 +254,8 @@ func upgrade() -> bool:
 
 
 func get_stat(stat_id: String) -> float:
+	if _cast_stats.has(stat_id):
+		return float(_cast_stats[stat_id])
 	var default_value := StatDefinitions.get_default_value(stat_id)
 	var weapon_value := float(runtime_stats.get(stat_id, default_value))
 	var player_value := owner_player.get_stat(stat_id) if owner_player != null else default_value
@@ -443,6 +491,10 @@ func get_load_cost() -> int:
 
 func get_hit_radius() -> float:
 	var base_radius := float(weapon_data.get("hit_radius", 0))
+	if use_active_range_rules:
+		if is_mutant_tentacle():
+			return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
+		return maxf(base_radius, 4.0) if str(weapon_data.get("projectile_behavior", "")) == "plasma" else base_radius
 	if is_nightwatch_spear() or is_camp_dagger() or is_copper_lamp() or is_mutant_tentacle() or is_earth_hammer():
 		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 	if str(weapon_data.get("projectile_behavior", "")) == "plasma":
@@ -451,11 +503,48 @@ func get_hit_radius() -> float:
 	return StatDefinitions.calculate_damage_area_radius(StatDefinitions.calculate_attack_radius(base_radius, get_stat("area_size")), get_stat("damage_area_size"))
 
 
-func get_attack_range() -> float:
+func get_base_attack_range() -> float:
 	var base_range := float(weapon_data.get("attack_range", weapon_data.get("hit_radius", 0)))
 	if is_earth_hammer():
 		base_range = float(weapon_data.ground_first_offset) + (get_ground_node_count() - 1) * float(weapon_data.ground_node_spacing)
-	return StatDefinitions.calculate_attack_radius(base_range, get_stat("area_size"))
+	return base_range
+
+
+func get_attack_range() -> float:
+	var bonus := get_stat("area_size")
+	if use_active_range_rules and has_combat_tag("扇形") and has_combat_tag("范围"):
+		bonus += get_stat("damage_area_size")
+	return StatDefinitions.calculate_attack_radius(get_base_attack_range(), bonus)
+
+
+func get_combat_tags() -> Array[String]:
+	var result: Array[String] = []
+	for tag in weapon_data.get("combat_tags", []):
+		result.append(str(tag))
+	return result
+
+
+func has_combat_tag(tag: String) -> bool:
+	return tag in weapon_data.get("combat_tags", [])
+
+
+func get_projectile_visual_scale() -> float:
+	if use_active_range_rules and has_combat_tag("投射物"):
+		return maxf(0.1, 1.0 + get_stat("damage_area_size") / 100.0)
+	return 1.0
+
+
+func get_dagger_outer_radius() -> float:
+	if use_active_range_rules:
+		return get_attack_range()
+	return 36.0 * get_attack_range() / 40.0 + get_hit_radius()
+
+
+func get_dagger_body_scale() -> Vector2:
+	var body_reach := get_attack_range()
+	if use_active_range_rules:
+		body_reach = StatDefinitions.calculate_attack_radius(get_base_attack_range(), get_stat("area_size"))
+	return Vector2(body_reach / 40.0, get_hit_radius() / 4.0)
 
 
 func get_projectile_speed() -> float:
@@ -499,7 +588,7 @@ func is_earth_hammer() -> bool:
 
 
 func get_ground_node_count() -> int:
-	return clampi(int(weapon_data.get("ground_node_count", 5)) + maxi(0, int(get_stat("projectile_count")) - 1), 1, 8)
+	return clampi(int(weapon_data.get("ground_node_count", 5)), 1, 8)
 
 
 func get_damage_stat_id() -> String:
@@ -518,6 +607,8 @@ func get_principal_damage_bonus() -> float:
 
 
 func get_current_principal() -> float:
+	if _cast_principal >= 0:
+		return _cast_principal
 	# The finance stat is a starting talent, not the live bank balance.
 	return maxf(0.0, float(principal_getter.call())) if principal_getter.is_valid() else 0.0
 
@@ -592,6 +683,11 @@ func get_projectile_angles() -> Array[float]:
 	var projectile_count: int = maxi(1, int(get_stat("projectile_count")))
 	var spread_angle := get_spread_angle()
 	var angles: Array[float] = []
+	if weapon_data.has("projectile_spacing_degrees"):
+		var gap := float(weapon_data.projectile_spacing_degrees)
+		for index in projectile_count:
+			angles.append((index - (projectile_count - 1) * 0.5) * gap)
+		return angles
 	if projectile_count == 1:
 		angles.append(0.0)
 		return angles
@@ -615,6 +711,8 @@ func _apply_level_upgrades(target_level: int) -> void:
 			runtime_stats[stat_id] = StatDefinitions.clamp_stat_value(stat_id, get_weapon_stat(stat_id) + value)
 		elif str(upgrade.get("field", "")) == "attack_interval_ms":
 			attack_interval_ms = maxi(1, attack_interval_ms + value)
+		elif str(upgrade.get("field", "")) == "active_cooldown_ms":
+			active_cooldown_ms = maxi(150, active_cooldown_ms + value)
 		elif str(upgrade.get("field", "")) == "grenade_blast_radius":
 			grenade_blast_radius = maxf(1.0, grenade_blast_radius + value)
 
@@ -649,6 +747,8 @@ func _get_damage_component_base(stat_id: String) -> float:
 	if is_equal_approx(coefficient, 1.0):
 		return get_stat(stat_id)
 	var player_bonus := owner_player.get_stat(stat_id) if is_instance_valid(owner_player) else 0.0
+	if _cast_player_stats.has(stat_id):
+		player_bonus = float(_cast_player_stats[stat_id])
 	return maxf(0.0, get_weapon_stat(stat_id) + player_bonus * coefficient)
 
 
@@ -681,27 +781,32 @@ func build_full_stats_text() -> String:
 	lines.append("[color=#F5D76E]伤害：[/color]" + _format_damage_source(get_damage_stat_id()))
 	if get_stat("damage_area_size") != 0:
 		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f%%" % get_stat("damage_area_size"))
-	var interval := get_actual_attack_interval_seconds()
-	lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%.2fs[/color]" % ["过热冷却" if is_copper_lamp() else "攻击间隔", interval])
+	var interval := get_active_cooldown_seconds()
+	lines.append("[color=#F5D76E]动作后冷却[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
 	var count_label := "投射物"
 	if is_nightwatch_spear(): count_label = "每轮刺击"
 	elif is_meteor_flail(): count_label = "每轮挥击"
-	elif is_ritual_tome(): count_label = "每轮目标"
-	elif is_copper_lamp(): count_label = "火流束数"
-	elif is_earth_hammer(): count_label = "地裂节点"
+	elif is_ritual_tome(): count_label = "每次点名"
+	elif is_copper_lamp(): count_label = "喷射时长倍率"
+	elif is_earth_hammer(): count_label = "地裂方向"
 	if not is_camp_dagger() and not is_mutant_tentacle():
-		lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % [count_label, get_ground_node_count() if is_earth_hammer() else maxi(1, int(get_stat("projectile_count")))])
+		lines.append("[color=#F5D76E]%s[/color] [color=#FFFFFF]%d[/color]" % [count_label, maxi(1, int(get_stat("projectile_count"))) + (2 if is_ritual_tome() else 0)])
+	if weapon_data.has("projectile_spacing_degrees"):
+		lines.append("[color=#F5D76E]相邻夹角[/color] [color=#FFFFFF]%s°[/color]" % _format_damage_number(float(weapon_data.projectile_spacing_degrees)))
+	if is_earth_hammer():
+		lines.append("[color=#F5D76E]每路节点[/color] [color=#FFFFFF]%d[/color]" % get_ground_node_count())
 	if is_grenade():
 		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
 		lines.append("抛射榴弹，%.2f秒后在落点爆炸。" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
 	elif is_meteor_flail():
 		lines.append("[color=#F5D76E]锤头伤害半径[/color] %s" % _format_damage_number(get_hit_radius()))
-		lines.append("锤头挥击。")
+		lines.append("前方130°完整连续挥击，额外投射物增加挥击次数。")
 	elif is_copper_lamp():
 		lines.append("[color=#F5D76E]喷射距离[/color] %d · %s°窄扇面" % [roundi(get_attack_range()), _format_damage_number(get_lamp_cone_degrees())])
-		lines.append("开火后持续喷射%.2fs至过热，每%.2fs灼烧。" % [float(weapon_data.lamp_spray_ms) / 1000, float(weapon_data.lamp_tick_ms) / 1000 * interval / (attack_interval_ms / 1000.0)])
-		lines.append("每秒%s°追踪最近目标；无目标时保持方向。" % _format_damage_number(float(weapon_data.get("lamp_turn_degrees_per_second", 180))))
+		lines.append("按数字键喷射%.2fs，每%.2fs灼烧。" % [get_lamp_spray_seconds(), float(weapon_data.lamp_tick_ms) / 1000])
+		lines.append("每个额外投射物增加%.2fs喷射时间。" % (float(weapon_data.lamp_spray_ms) / 1000.0))
+		lines.append("随移动方向转向，静止沿用最后方向。")
 		lines.append("附魔每%.2fs最多触发一次，元素基数%d%%。" % [float(weapon_data.lamp_proc_ms) / 1000, int(weapon_data.lamp_proc_percent)])
 	elif is_mutant_tentacle():
 		lines.append("卷曲展开后瞬间拍地。")
@@ -717,19 +822,17 @@ func build_full_stats_text() -> String:
 	elif is_ritual_tome():
 		var axes := get_domain_axes()
 		lines.append("[color=#F5D76E]领域半径[/color] %d × %d" % [roundi(axes.x), roundi(axes.y)])
-		lines.append("随机攻击领域内的不同敌人。")
+		lines.append("按数字键放置法阵；每0.35s点名一次，可重复命中。无敌人时等待，点名完毕后冷却。")
 	else:
 		lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]" % int(get_attack_range()))
 	if is_coin_purse():
-		lines.append("向四周撒出金币。")
+		lines.append("向瞄准方向扇形散射金币，相邻夹角10°。")
 	elif str(weapon_data.get("projectile_behavior", "")) == "plasma":
 		lines.append("接触时每%.2f秒灼击，每球最多5次。" % float(weapon_data.get("plasma_tick_interval", 0.1)))
 	for profile in (get_grenade_split_profiles() if is_grenade() else get_split_profiles()):
 		lines.append("[color=#F5D76E]分裂[/color] %d个 · 伤害%d%%" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
 	if has_effect("bounce"):
 		lines.append("[color=#F5D76E]弹跳[/color] 首次命中立即追加%d次攻击" % get_effect_instances("bounce").size())
-	if has_effect("resonance"):
-		lines.append("[color=#F5D76E]共鸣[/color] 每轮接力攻击%d次，至少两把武器参与" % get_effect_instances("resonance").size())
 	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
 	if has_attachment_slot():
 		lines.append(_build_attachment_icons_text())
@@ -737,7 +840,13 @@ func build_full_stats_text() -> String:
 
 
 func get_lamp_cone_degrees() -> float:
+	if use_active_range_rules:
+		return float(weapon_data.get("lamp_cone_degrees", 60))
 	return minf(float(weapon_data.get("lamp_cone_degrees", 30)) * get_hit_radius() / maxf(float(weapon_data.get("hit_radius", 1)), 0.01), 162.0)
+
+
+func get_lamp_spray_seconds() -> float:
+	return maxf(0.001, float(weapon_data.get("lamp_spray_ms", 1800)) / 1000.0) * maxi(1, int(get_stat("projectile_count")))
 
 
 func _build_attachment_icons_text() -> String:

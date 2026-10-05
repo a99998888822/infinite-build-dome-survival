@@ -1,7 +1,7 @@
 [
   {
     "id": "drop_basic_enemy",
-    "augmentation_chance_percent": 1.5,
+    "augmentation_chance_percent": 6.0,
     "augmentation_rarity_weights": {
       "common": 10,
       "uncommon": 60,
@@ -9,7 +9,7 @@
       "epic": 5
     },
     "display_name": "小怪掉落表",
-    "description": "附魔基础掉率1.5%，每次最多1个；白/绿/蓝/紫占比10/60/25/5，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少30个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。",
+    "description": "附魔基础掉率6%，每次最多1个；白/绿/蓝/紫占比10/60/25/5，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少8个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。",
     "enabled": true,
     "tags": [
       "drop",
@@ -62,13 +62,13 @@
       },
       {
         "type": "exp_orb",
-        "amount": 1,
+        "amount": 4,
         "chance_percent": 100
       },
       {
         "type": "health_pack",
-        "amount": 1,
-        "chance_percent": 2
+        "amount": 3,
+        "chance_percent": 8
       },
       {
         "type": "augmentation",
@@ -121,12 +121,6 @@
       {
         "type": "augmentation",
         "item_id": "scroll_bounce",
-        "amount": 1,
-        "weight": 1
-      },
-      {
-        "type": "augmentation",
-        "item_id": "scroll_resonance",
         "amount": 1,
         "weight": 1
       },
@@ -213,7 +207,7 @@
       },
       {
         "type": "exp_orb",
-        "amount": 2,
+        "amount": 8,
         "chance_percent": 100
       },
       {
@@ -271,12 +265,6 @@
       {
         "type": "augmentation",
         "item_id": "scroll_bounce",
-        "amount": 1,
-        "weight": 1
-      },
-      {
-        "type": "augmentation",
-        "item_id": "scroll_resonance",
         "amount": 1,
         "weight": 1
       },
@@ -427,12 +415,6 @@
       {
         "type": "augmentation",
         "item_id": "scroll_bounce",
-        "amount": 1,
-        "weight": 1
-      },
-      {
-        "type": "augmentation",
-        "item_id": "scroll_resonance",
         "amount": 1,
         "weight": 1
       },

@@ -59,38 +59,6 @@ func _run() -> void:
 	CombatEffectWorld.trigger_weapon_impact(host, weapon, event, Vector2(80, 0), Vector2.RIGHT, enemies[0])
 	check(bounces().size() == 2 and bounces().all(func(copy): return not copy.replay.has_effect("bounce")), "later contacts cannot replay either copy or recurse")
 
-	await fixture(BOW, [Vector2(40, 0)], ["scroll_resonance", "scroll_resonance"])
-	var follower := add_member("weapon_iron_grenade_cannon")
-	attach(follower, "scroll_resonance")
-	track()
-	loadout.tick(0.01)
-	check(fired == [BOW, BOW, follower.weapon_id, follower.weapon_id], "each resonance weapon repeats its own turn in slot order")
-	check(is_equal_approx(weapon.attack_timer, weapon.get_actual_attack_interval_seconds()), "extra leader attack does not add a cooldown")
-	freeze_nodes(host)
-	loadout.tick(0.01)
-	check(fired.size() == 4, "resonance followers never start an independent cycle")
-
-	await fixture(DAGGER, [Vector2(40, 0)], ["scroll_resonance", "scroll_resonance"])
-	add_member(BOW)
-	track()
-	loadout.tick(0.01)
-	freeze_nodes(host)
-	step(0.05)
-	check(fired == [DAGGER], "duplicate melee resonance waits for the first animation")
-	for _i in 100:
-		step(0.01)
-		if fired.size() >= 3: break
-	check(fired == [DAGGER, DAGGER, BOW], "second melee attack finishes before the next weapon wakes")
-
-	await fixture(LAMP, [Vector2(40, 0)], ["scroll_resonance", "scroll_resonance"])
-	add_member(BOW)
-	track()
-	loadout.tick(0.01)
-	freeze_nodes(host)
-	step(3.7)
-	check(fired == [LAMP, LAMP, BOW], "duplicate lamp resonance repeats two complete sprays before passing the turn")
-	check(weapon.attack_timer > 0 and weapon.attack_timer < 1, "lamp repetitions retain the original leader cycle cooldown")
-
 	await fixture(BOW, [Vector2(40, 0)])
 	var victim := enemies[0]
 	burn_received.clear()
@@ -151,7 +119,7 @@ func _run() -> void:
 		if child is LightReflectionEffect: check(is_equal_approx(child._radius, 286), "reflection damage fan inherits captured domain scale once")
 
 	await fixture(LAMP, [], ["scroll_domain"])
-	check(is_equal_approx(weapon.get_lamp_cone_degrees(), 39) and weapon.build_full_stats_text().contains("39°"), "lamp preview displays the enlarged damage cone")
+	check(is_equal_approx(weapon.get_lamp_cone_degrees(), 78) and weapon.build_full_stats_text().contains("78°"), "lamp preview displays the enlarged 60-degree base cone")
 	for data in DataRegistry.tables.weapons:
 		await fixture(str(data.id), [], ["scroll_might", "scroll_wisdom"])
 		normalize_damage(weapon)

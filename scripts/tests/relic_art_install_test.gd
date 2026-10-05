@@ -1,6 +1,10 @@
 extends Node
 ## Runs production UI consumers with reviewed relics in a transient game.
 var keys: Array = FinanceUIStyle.NATIVE_RELIC_ICONS.duplicate()
+const LEGACY_SOURCE_64 := [
+	"relic_range_tripod", "relic_aftershock_hourglass", "relic_golden_rangefinder",
+	"relic_abyssal_echo_shell", "relic_folded_star_chart", "relic_horizon_orrery",
+]
 var failures := 0
 var output := ""
 var game: GameRoot
@@ -37,6 +41,10 @@ func check(value: bool, note: String) -> void:
 
 func _run() -> void:
 	seed(20260929)
+	for key: String in keys:
+		var texture := FinanceUIStyle.item_icon(str(DataRegistry.get_record("relics", key).get("icon", "")))
+		var source_size := 64 if key in LEGACY_SOURCE_64 else 128
+		check(texture != null and texture.get_size() == Vector2(source_size, source_size), "approved source resolution: " + key)
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	root.add_child(game)
 	get_tree().current_scene = game
@@ -122,7 +130,7 @@ func _run() -> void:
 		await capture("shop_bottom_%dx%d" % [viewport_size.x, viewport_size.y], popup.shop_grid)
 		for pooled in popup.shop_grid._pool:
 			if not pooled.visible: continue
-			check(pooled._icon.size == pooled._icon.texture.get_size() * 0.5, "shop relic draws at half size")
+			check(pooled._icon.size == Vector2(32, 32), "shop relic remains thirty-two pixels")
 			check(pooled._icon_frame.get_global_rect().encloses(pooled._icon.get_global_rect()), "shop parent contains centered half-size icon")
 			check(pooled._name_label.global_position.x >= pooled._icon.get_global_rect().end.x + 10, "shop title clear of icon")
 			check(pooled.size.y <= popup.shop_grid._card_height, "shop card fits virtual row")
@@ -206,9 +214,9 @@ func capture(label: String, scope: Node) -> void:
 	for rect in found:
 		var list_icon := label.begins_with("relic_list") or label.begins_with("shop_") or label.begins_with("reward_")
 		var icon_scale := 0.75 if label.begins_with("reward_") else (0.5 if list_icon else 1.0)
-		var extent := rect.texture.get_size() * icon_scale
-		var mode := TextureRect.STRETCH_KEEP_ASPECT_CENTERED if list_icon else TextureRect.STRETCH_KEEP_CENTERED
-		check(rect.texture.get_size() == Vector2(64, 64) and rect.stretch_mode == mode and rect.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel filter and display mode: " + rect.texture.resource_path.get_file())
+		var extent := Vector2(64, 64) * icon_scale
+		var mode := TextureRect.STRETCH_KEEP_ASPECT_CENTERED if list_icon or rect.texture.get_width() == 128 else TextureRect.STRETCH_KEEP_CENTERED
+		check(rect.stretch_mode == mode and rect.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel filter and display mode: " + rect.texture.resource_path.get_file())
 		check(rect.size == extent if list_icon else rect.size.x >= extent.x and rect.size.y >= extent.y, "slot fits expected icon size")
 		var origin := rect.get_global_rect().get_center() - extent * 0.5
 		var drawn := Rect2(origin, extent)

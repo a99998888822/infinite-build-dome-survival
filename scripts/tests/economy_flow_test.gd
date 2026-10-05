@@ -54,6 +54,9 @@ func _run() -> void:
 	CampProgression.end_transient_session()
 	print("ECONOMY_FLOW_COMPLETE checks=%d failures=%d" % [checks, failures])
 	await frames()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	await get_tree().create_timer(0.3).timeout
 	get_tree().quit(1 if failures else 0)
 
 

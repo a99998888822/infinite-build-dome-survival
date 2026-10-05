@@ -6,6 +6,7 @@ const MUTED := Color("a79f87")
 const GOLD := Color("c5a16a")
 const GREEN := Color("a9c498")
 const RELIC_LIST_ICON_SCALE := 0.5
+const RELIC_DISPLAY_SIZE := 64.0
 
 # Opt in only after a batch has passed art review. Legacy assets keep their layout.
 const NATIVE_RELIC_ICONS := [
@@ -46,6 +47,11 @@ static func is_native_relic_icon(texture: Texture2D) -> bool:
 	return texture != null and texture.resource_path.get_base_dir() == "res://assets/ui/icons/relics" and texture.resource_path.get_file().get_basename() in NATIVE_RELIC_ICONS
 
 
+static func relic_icon_size(texture: Texture2D, display_scale: float = 1.0) -> Vector2:
+	# Keep the established UI footprint when an approved source gains resolution.
+	return texture.get_size() * (RELIC_DISPLAY_SIZE / maxf(texture.get_width(), 1.0)) * display_scale
+
+
 static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale: float = 1.0) -> void:
 	if control.has_meta("scaled_relic_icon"):
 		control.custom_minimum_size = Vector2.ZERO
@@ -59,11 +65,11 @@ static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale
 		control.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 		control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		var previous: Array = control.get_meta("legacy_icon_layout")
-		control.custom_minimum_size = (previous[2] as Vector2).max(texture.get_size() * native_scale)
-		if native_scale != 1.0:
+		var extent := relic_icon_size(texture, native_scale)
+		control.custom_minimum_size = (previous[2] as Vector2).max(extent)
+		if extent != texture.get_size():
 			# Center an explicit drawing rect; shrinking only the minimum size leaves
 			# STRETCH_KEEP_CENTERED drawing the full source texture.
-			var extent := texture.get_size() * native_scale
 			control.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			control.custom_minimum_size = extent
 			control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)

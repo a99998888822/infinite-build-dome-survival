@@ -1,7 +1,7 @@
 extends ItemInventoryCard
 class_name EnchantmentInventoryCard
 
-const CARD_SIZE := Vector2(112, 40)
+const CARD_SIZE := Vector2(84, 40)
 const INSPECT_ICON: Texture2D = preload("res://assets/ui/finance/inspect_enchantment.svg")
 var _art: TextureRect
 var _caption: Label
@@ -12,17 +12,17 @@ func _ready() -> void:
 	super._ready()
 	var body := HBoxContainer.new()
 	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	body.offset_left = 4
-	body.offset_right = -4
+	body.offset_left = 2
+	body.offset_right = -2
 	body.offset_top = 4
 	body.offset_bottom = -4
-	body.add_theme_constant_override("separation", 3)
+	body.add_theme_constant_override("separation", 1)
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
 	_art = TextureRect.new()
 	_art.custom_minimum_size = Vector2(32, 32)
 	_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_art.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(_art)
 	_caption = Label.new()
@@ -33,7 +33,7 @@ func _ready() -> void:
 	body.add_child(_caption)
 	_inspect = TextureRect.new()
 	_inspect.texture = INSPECT_ICON
-	_inspect.custom_minimum_size = Vector2(16, 16)
+	_inspect.custom_minimum_size = Vector2(12, 12)
 	_inspect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_inspect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_inspect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -54,7 +54,7 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	icon = null
 	custom_minimum_size = CARD_SIZE
 	size = CARD_SIZE
-	size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	_art.texture = FinanceUIStyle.item_icon(str(item_instance.get("icon", "")), "augmentations", str(item_instance.get("base_item_id", "")))
 	_caption.text = str(item_instance.get("display_name", "附魔"))

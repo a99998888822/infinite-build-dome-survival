@@ -132,18 +132,36 @@
 | 已接入 | 钢甲骑士冲刺挥锤 | `knight_dash.png` | `assets/sprites/enemies/iron_knight/knight_dash.png` | 512x256 / 2 帧 / RGBA PNG | 共享16色色板；攻击8–9，160毫秒 |
 | 已接入 | 钢甲骑士收招 | `knight_recover.png` | `assets/sprites/enemies/iron_knight/knight_recover.png` | 256x256 / 1 帧 / RGBA PNG | 共享16色色板；攻击10，500毫秒；死亡冻结当前姿势淡出 |
 | 已存在 | 木质弓箭弹道贴图 | `projectile_wood_arrow.png` | `assets/sprites/weapons/projectiles/projectile_wood_arrow.png` | 24x24 / 1:1 / PNG |  |
-| 已存在 | 爆裂卷轴图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 16x16 / 1:1 / PNG |  |
-| 已接入 | 黑洞附魔图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 16x16 / 1:1 / RGBA PNG | 暗色旋涡；至少 1 像素透明边距 |
-| 已接入 | 光辉剑附魔图标 | `scroll_light_sword.png` | `assets/ui/icons/augmentations/scroll_light_sword.png` | 16x16 / 1:1 / RGBA PNG | 下落的白色大剑；至少 1 像素透明边距 |
-| 已接入 | 水流附魔图标 | `scroll_water.png` | `assets/ui/icons/augmentations/scroll_water.png` | 16x16 / 1:1 / RGBA PNG | 蓝白卷浪；至少 1 像素透明边距 |
-| 已接入 | 风刃附魔图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 16x16 / 1:1 / RGBA PNG | 青白月牙风刃；至少 1 像素透明边距 |
-| 已存在 | 火焰卷轴图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 结霜卷轴图标 | `scroll_ice.png` | `assets/ui/icons/augmentations/scroll_ice.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 穿透卷轴图标 | `scroll_pierce.png` | `assets/ui/icons/augmentations/scroll_pierce.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 分裂卷轴图标 | `scroll_split.png` | `assets/ui/icons/augmentations/scroll_split.png` | 16x16 / 1:1 / PNG |  |
-| 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 64x64 / 1:1 / RGBA PNG | 双导轨、蓝青电浆核心；旧版图标已清理 |
-| 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 64x64 / 1:1 / RGBA PNG | 铸铁炮管、黄铜箍、木柄 |
-| 已存在 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 64x64 / 1:1 / PNG |  |
+| 已接入 | 巨力法术图标 | `scroll_might.png` | `assets/ui/icons/augmentations/scroll_might.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 智慧法术图标 | `scroll_wisdom.png` | `assets/ui/icons/augmentations/scroll_wisdom.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 多投法术图标 | `scroll_multishot.png` | `assets/ui/icons/augmentations/scroll_multishot.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 领域法术图标 | `scroll_domain.png` | `assets/ui/icons/augmentations/scroll_domain.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 会心法术图标 | `scroll_precision.png` | `assets/ui/icons/augmentations/scroll_precision.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 致命法术图标 | `scroll_lethality.png` | `assets/ui/icons/augmentations/scroll_lethality.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 迅捷法术图标 | `scroll_haste.png` | `assets/ui/icons/augmentations/scroll_haste.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 弹跳法术图标 | `scroll_bounce.png` | `assets/ui/icons/augmentations/scroll_bounce.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 水流法术图标 | `scroll_water.png` | `assets/ui/icons/augmentations/scroll_water.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 光辉剑法术图标 | `scroll_light_sword.png` | `assets/ui/icons/augmentations/scroll_light_sword.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 黑洞法术图标 | `scroll_black_hole.png` | `assets/ui/icons/augmentations/scroll_black_hole.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 火焰法术图标 | `scroll_fire.png` | `assets/ui/icons/augmentations/scroll_fire.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 震荡法术图标 | `scroll_explosion.png` | `assets/ui/icons/augmentations/scroll_explosion.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 电火花法术图标 | `scroll_lightning.png` | `assets/ui/icons/augmentations/scroll_lightning.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 落雷法术图标 | `scroll_electric_spark.png` | `assets/ui/icons/augmentations/scroll_electric_spark.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 分裂法术图标 | `scroll_split.png` | `assets/ui/icons/augmentations/scroll_split.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 穿透法术图标 | `scroll_pierce.png` | `assets/ui/icons/augmentations/scroll_pierce.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 结霜法术图标 | `scroll_ice.png` | `assets/ui/icons/augmentations/scroll_ice.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 风刃法术图标 | `scroll_wind.png` | `assets/ui/icons/augmentations/scroll_wind.png` | 64x64 / 1:1 / RGBA PNG | 2026-10-05: Picxel; PNG / PXG / PAL |
+| 已接入 | 营地短刀武器图标 | `weapon_camp_dagger.png` | `assets/ui/icons/weapons/weapon_camp_dagger.png` | 128x128 / 1:1 / RGBA PNG | 2026-10-04：原样沿用用户确认的 128 样例 |
+| 已接入 | 赤铜炉灯武器图标 | `weapon_copper_lamp.png` | `assets/ui/icons/weapons/weapon_copper_lamp.png` | 128x128 / 1:1 / RGBA PNG | 原图像素化，保留灯焰与提手空隙 |
+| 已接入 | 裂地战锤武器图标 | `weapon_earth_hammer.png` | `assets/ui/icons/weapons/weapon_earth_hammer.png` | 128x128 / 1:1 / RGBA PNG | 原图像素化，保留苔色石锤与绑带 |
+| 已接入 | 铸铁榴弹炮武器图标 | `weapon_iron_grenade_cannon.png` | `assets/ui/icons/weapons/weapon_iron_grenade_cannon.png` | 128x128 / 1:1 / RGBA PNG | 铸铁炮管、金属箍、木柄 |
+| 已接入 | 坤舆秘仪书武器图标 | `weapon_kunyu_ritual_tome.png` | `assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png` | 128x128 / 1:1 / RGBA PNG | 青色书封、浅色书页与金属扣 |
+| 已接入 | 流星摆锤武器图标 | `weapon_meteor_flail.png` | `assets/ui/icons/weapons/weapon_meteor_flail.png` | 128x128 / 1:1 / RGBA PNG | 保留链环空隙与带刺锤球 |
+| 已接入 | 异化触手武器图标 | `weapon_mutant_tentacle.png` | `assets/ui/icons/weapons/weapon_mutant_tentacle.png` | 128x128 / 1:1 / RGBA PNG | 绿紫触手、吸盘；局部修复底部抠图缺口 |
+| 已接入 | 守夜长枪武器图标 | `weapon_nightwatch_spear.png` | `assets/ui/icons/weapons/weapon_nightwatch_spear.png` | 128x128 / 1:1 / RGBA PNG | 木杆、银色枪尖与绿布 |
+| 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 128x128 / 1:1 / RGBA PNG | 蓝青电浆核心、金属炮管与木柄 |
+| 已接入 | 食利者钱袋武器图标 | `weapon_rentier_purse.png` | `assets/ui/icons/weapons/weapon_rentier_purse.png` | 128x128 / 1:1 / RGBA PNG | 保留钱袋旁独立金币 |
+| 已接入 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 128x128 / 1:1 / RGBA PNG | 用户称“木质短弓”，沿用原图箭矢与现有配置名；11 张均保留同名 PXG/PAL，见[接入记录](art_refresh_plan/weapon_icons_128_installation_2026-10-04.md) |
 | 已接入 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1024x572 / PNG | 哥布林地牢混合像素尺度，脸与金币精修、瞳孔上移确认版；最近邻显示 |
 | 已接入 | 角色选择背景 | `background.png` | `assets/ui/character_select/background.png` | 640x360 / PNG | 用户确认的像素版，1280×720 等比布局，最近邻显示 |
 | 已接入 | 角色选择按钮与难度底图 | `back_button.png`、`continue_button.png`、`difficulty_*.png` | `assets/ui/character_select/` | 98x25、66x25、32x32 / PNG | 旧木暗铜风格；文字、状态与难度说明由实时控件显示 |

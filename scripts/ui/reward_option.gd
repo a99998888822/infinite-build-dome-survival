@@ -133,7 +133,7 @@ func _apply_layout_density() -> void:
 		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (88.0 if _compact_layout else 104.0)
 		if icon_texture != null and FinanceUIStyle.is_native_relic_icon(icon_texture.texture):
 			# Reserve space for the displayed icon, not its full source dimensions.
-			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(icon_texture.texture.get_height() * RELIC_ICON_SCALE / 0.8) + 4.0)
+			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(FinanceUIStyle.relic_icon_size(icon_texture.texture, RELIC_ICON_SCALE).y / 0.8) + 4.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:

@@ -36,7 +36,6 @@ func _run() -> void:
 	var drops := AcceptRolls.new()
 	var snapshot := RewardSnapshot.new()
 	var basic := DataRegistry.get_record("drop_tables", "drop_basic_enemy")
-	await resonance_catchup(basic)
 	check(float(basic.augmentation_chance_percent) == 1.5, "ordinary base remains 1.5 percent")
 	check(is_equal_approx(drops.calculate_augmentation_chance(1.5), 1.5), "zero luck has positive unchanged base")
 	check(is_equal_approx(drops.calculate_augmentation_chance(1.5, 100, 100), 2.16), "bounded bonuses compose multiplicatively")
@@ -55,7 +54,7 @@ func _run() -> void:
 		for rarity in expected_weights:
 			weights_match = weights_match and actual_weights.has(rarity) and is_equal_approx(float(actual_weights.get(rarity, -1)), float(expected_weights[rarity]))
 		check(weights_match, "source-specific rarity distribution " + table_id)
-		check(entries.size() == 20 and entries.all(func(entry): return entry.weight == 1) and entries.any(func(entry): return entry.item_id == "scroll_fire"), "complete equal-weight item pool " + table_id)
+		check(entries.size() == DataRegistry.tables.augmentations.size() and entries.all(func(entry): return entry.weight == 1 and DataRegistry.has_record("augmentations", str(entry.item_id))) and entries.any(func(entry): return entry.item_id == "scroll_fire"), "complete equal-weight item pool " + table_id)
 	var fixed_rolls := true
 	for _i in 30:
 		var split := player.item_inventory.add_item_from_base("scroll_split", "drop")
@@ -151,44 +150,3 @@ func _run() -> void:
 	AudioManager.stop_bgm()
 	print("ENCHANTMENT_BALANCE_TEST checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
-
-
-func resonance_catchup(table: Dictionary) -> void:
-	var drops := AcceptRolls.new()
-	var ordinary := {"item_id": "scroll_fire"}
-	check(drops._prefer_second_resonance(ordinary, table, player) == ordinary, "zero resonance has no catch-up")
-	var first := player.item_inventory.add_item_from_base("scroll_resonance", "test")
-	check(drops._prefer_second_resonance(ordinary, table, player).item_id == "scroll_resonance", "one inventory resonance enables catch-up")
-	player.item_inventory.set_equipped_weapon(first.item_instance_id, "weapon_void_blade")
-	check(drops._prefer_second_resonance(ordinary, table, player).item_id == "scroll_resonance", "equipped resonance counts toward catch-up")
-	var second := player.item_inventory.add_item_from_base("scroll_resonance", "test")
-	check(drops._prefer_second_resonance(ordinary, table, player) == ordinary, "two resonance restores normal distribution")
-	player.item_inventory.take_unequipped_item_for_trade(second.item_instance_id)
-	check(drops._prefer_second_resonance(ordinary, table, player).item_id == "scroll_resonance", "selling excess to one re-enables catch-up")
-	var pending := drops.spawn_augmentation("scroll_resonance", 1, Vector2(10000, 0), host, player)
-	check(drops._prefer_second_resonance(ordinary, table, player) == ordinary, "uncollected second resonance prevents same-frame bonus duplication")
-	pending.collect()
-	check(drops._prefer_second_resonance(ordinary, table, player) == ordinary, "collected second resonance restores normal distribution")
-	for item in player.item_inventory.get_available_items(): player.item_inventory.take_unequipped_item_for_trade(item.item_instance_id)
-	await get_tree().process_frame
-	check(drops._prefer_second_resonance(ordinary, table, player).item_id == "scroll_resonance", "expired pickup weak reference does not block future catch-up")
-	drops.reset_run()
-	drops.begin_wave(1)
-	drops.finish_wave(30, player)
-	drops.begin_wave(2)
-	var before_pity := player.item_inventory.get_item_count()
-	var paid := drops.finish_wave(30, player)
-	check(paid and player.item_inventory.get_item_count() == before_pity + 1 and player.item_inventory.get_items().filter(func(item): return item.base_item_id == "scroll_resonance").size() == 2, "pity also catches up resonance without extra scrolls")
-	player.item_inventory.clear()
-	player.item_inventory.add_item_from_base("scroll_resonance", "test")
-	var random_drops := DropRewardSystem.new()
-	seed(30092026)
-	var total := 12000
-	var resonance := 0
-	for _i in total:
-		if random_drops._prefer_second_resonance(random_drops._pick_augmentation_entry(table), table, player).item_id == "scroll_resonance": resonance += 1
-	var rate := float(resonance) / total
-	check(absf(rate - 0.30875) < 0.02, "seeded catch-up distribution near 30.875 percent")
-	print("RESONANCE_CATCHUP samples=", total, " rate=", rate)
-	player.item_inventory.clear()
-	clear_host()

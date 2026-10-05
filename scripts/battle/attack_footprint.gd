@@ -33,9 +33,13 @@ static func grenade_landings(source: WeaponInstance, pointer: Vector2) -> Array[
 	var center_axes := (axes - inner).max(Vector2.ZERO)
 	var count := maxi(1, int(source.get_stat("projectile_count")))
 	var aim := pointer.normalized() if not pointer.is_zero_approx() else Vector2.RIGHT
+	var center := Vector2.ZERO
+	if center_axes.x > 0 and center_axes.y > 0:
+		# Clamp the aim before spreading so distant cursors cannot collapse a volley.
+		center = (pointer / center_axes).limit_length(1.0) * center_axes
 	for i in count:
 		var spread := (i - (count - 1) * 0.5) * minf(30, inner.x * 0.65)
-		var point := pointer + aim.orthogonal() * spread
+		var point := center + aim.orthogonal() * spread
 		if center_axes.x <= 0 or center_axes.y <= 0:
 			result.append(Vector2.ZERO)
 		else:

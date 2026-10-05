@@ -5,7 +5,7 @@ signal collected(pickup: AugmentationPickup, item_instance_id: String)
 
 const DEFAULT_ATTRACT_SPEED: float = 300.0
 const RARITY_COLORS: Dictionary = ItemInventoryCard.RARITY_COLORS
-const ICON_SCALE := Vector2.ONE
+const ICON_DISPLAY_SIZE := 32.0
 const GLOW_RADIUS := 20.0
 
 @export var attract_speed: float = DEFAULT_ATTRACT_SPEED
@@ -30,7 +30,6 @@ func _ready() -> void:
 	_icon_sprite.z_index = 1
 	_icon_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_icon_sprite.centered = true
-	_icon_sprite.scale = ICON_SCALE
 	add_child(_icon_sprite)
 	queue_redraw()
 
@@ -95,6 +94,7 @@ func _update_icon(icon_path: String) -> void:
 	var resource := load(icon_path)
 	if resource is Texture2D:
 		_icon_sprite.texture = resource as Texture2D
+		_icon_sprite.scale = Vector2.ONE * ICON_DISPLAY_SIZE / maxf(_icon_sprite.texture.get_width(), _icon_sprite.texture.get_height())
 		_icon_sprite.visible = true
 
 

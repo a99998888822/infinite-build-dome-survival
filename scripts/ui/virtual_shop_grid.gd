@@ -39,8 +39,9 @@ func set_offers(next_offers: Array, reset_scroll: bool = false) -> void:
 	for offer: Dictionary in offers:
 		var texture := FinanceUIStyle.item_icon(str(offer.get("icon", "")), "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
 		if FinanceUIStyle.is_native_relic_icon(texture):
-			_card_height = maxf(_card_height, 96.0 + texture.get_height() * FinanceUIStyle.RELIC_LIST_ICON_SCALE)
-			_card_min_width = maxf(_card_min_width, 96.0 + texture.get_width() * FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+			var extent := FinanceUIStyle.relic_icon_size(texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+			_card_height = maxf(_card_height, 96.0 + extent.y)
+			_card_min_width = maxf(_card_min_width, 96.0 + extent.x)
 	if reset_scroll:
 		_logical_focus = 0
 		scroll.scroll_vertical = 0

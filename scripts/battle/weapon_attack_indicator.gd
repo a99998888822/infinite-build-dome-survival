@@ -36,7 +36,6 @@ func _draw() -> void:
 	if weapon == null:
 		return
 	var reach := weapon.get_attack_range()
-	var radius := maxf(weapon.get_hit_radius(), 2.0)
 	var aim := target_offset.normalized() if target_offset.length_squared() > 0.01 else Vector2.RIGHT
 	if weapon.is_ritual_tome():
 		_range_ellipse(Vector2.ZERO, weapon.get_domain_axes(), true)
@@ -44,30 +43,18 @@ func _draw() -> void:
 		_range_ellipse(Vector2.ZERO, FOOTPRINT.grenade_range_axes(weapon), false)
 		for point in grenade_landings(weapon, target_offset):
 			_range_ellipse(point, FOOTPRINT.grenade_blast_axes(weapon), true)
-	elif weapon.is_coin_purse():
-		var count := maxi(1, int(weapon.get_stat("projectile_count")))
-		var step := deg_to_rad(float(weapon.weapon_data.get("volley_rotation_degrees", 30))) * weapon.volley_index
-		_range_ellipse(Vector2.ZERO, Vector2.ONE * reach, false)
-		for i in count:
-			draw_set_transform(Vector2.ZERO, TAU * i / count + step)
-			_arrow(reach, maxf(radius, 7.0))
 	else:
 		draw_set_transform(Vector2.ZERO, aim.angle())
 		if weapon.is_camp_dagger():
-			var scale_factor := reach / CampDagger.BASE_REACH
-			_fan(clearance, maxf(clearance + 8, 36.0 * scale_factor + radius), deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))))
+			_fan(clearance, maxf(clearance + 8, weapon.get_dagger_outer_radius()), deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))))
 		elif weapon.is_copper_lamp():
-			for angle in weapon.get_projectile_angles():
-				draw_set_transform(Vector2.ZERO, aim.angle() + deg_to_rad(angle))
-				_lamp_fan(reach, deg_to_rad(weapon.get_lamp_cone_degrees()))
+			_lamp_fan(reach, deg_to_rad(weapon.get_lamp_cone_degrees()))
 		elif weapon.is_meteor_flail():
 			_fan(clearance, reach, deg_to_rad(FOOTPRINT.FLAIL_ARC))
-		elif weapon.is_earth_hammer() or weapon.is_nightwatch_spear() or weapon.is_mutant_tentacle():
-			_arrow(reach, maxf(10, radius))
 		else:
 			for angle in weapon.get_projectile_angles():
 				draw_set_transform(Vector2.ZERO, aim.angle() + deg_to_rad(angle))
-				_arrow(reach, maxf(9, radius))
+				_arrow(reach, get_arrow_width_parameter())
 	draw_set_transform(Vector2.ZERO)
 
 
@@ -107,15 +94,33 @@ func _rounded(points: PackedVector2Array, fraction: float = 0.22) -> PackedVecto
 	return result
 
 
-func _arrow(reach: float, half_width: float) -> void:
+func get_arrow_width_parameter() -> float:
+	if weapon.use_active_range_rules:
+		var base := minf(maxf(20, float(weapon.weapon_data.get("hit_radius", 0))), maxf(12, weapon.get_base_attack_range() - clearance - 2) * 0.23)
+		return base * maxf(0.1, 1.0 + weapon.get_stat("damage_area_size") / 100.0) if weapon.has_combat_tag("范围") else base
+	return minf(maxf(20, weapon.get_hit_radius()), maxf(12, weapon.get_attack_range() - clearance - 2) * 0.23)
+
+
+func arrow_points(reach: float, width: float) -> PackedVector2Array:
 	var begin := clearance + 2.0
 	var length := maxf(12, reach - begin)
-	var width := minf(maxf(20, half_width), length * 0.23)
 	var shoulder := reach - minf(length * 0.32, maxf(22, width * 2.4))
+	# Keep the original rounded head vertices, including their old tangents.
 	var raw := PackedVector2Array([Vector2(begin, -width * 0.62), Vector2(shoulder, -width * 0.62),
 		Vector2(shoulder, -width * 1.2), Vector2(reach, 0), Vector2(shoulder, width * 1.2),
 		Vector2(shoulder, width * 0.62), Vector2(begin, width * 0.62)])
-	_polygon(_rounded(raw))
+	var rounded := _rounded(raw)
+	var shaft := width * 0.62 * 0.8
+	var result := PackedVector2Array([Vector2(begin, -shaft), Vector2(shoulder, -shaft)])
+	for i in range(14, 35):
+		result.append(rounded[i])
+	result.append(Vector2(shoulder, shaft))
+	result.append(Vector2(begin, shaft))
+	return result
+
+
+func _arrow(reach: float, width: float) -> void:
+	_polygon(arrow_points(reach, width))
 
 
 func _arc_points(center: Vector2, axes: Vector2, start: float = 0.0, end: float = TAU, count: int = 96) -> PackedVector2Array:

@@ -29,7 +29,7 @@ func _ready() -> void:
 	_art = TextureRect.new()
 	_art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_art.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	image_area.add_child(_art)
 	_empty_mark = Label.new()

@@ -78,7 +78,7 @@ func _ready() -> void:
 	add_child(_inventory_scroll)
 	_inventory = GridContainer.new()
 	_inventory.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_inventory.add_theme_constant_override("h_separation", 8)
+	_inventory.add_theme_constant_override("h_separation", 4)
 	_inventory.add_theme_constant_override("v_separation", 6)
 	_inventory_scroll.add_child(_inventory)
 	_selection = Label.new()
@@ -98,7 +98,7 @@ func _ready() -> void:
 	_move_right.pressed.connect(_move_selected.bind(1))
 	_sell_item = _button("出售附魔", actions)
 	_sell_item.pressed.connect(_sell_selected_item)
-	resized.connect(_layout_inventory)
+	_inventory_scroll.resized.connect(_layout_inventory)
 
 
 func refresh() -> void:
@@ -108,7 +108,6 @@ func refresh() -> void:
 	var player := flow.get_bound_player()
 	if loadout == null or player == null: return
 	var weapons := loadout.get_weapon_instances()
-	var resonance := loadout.get_resonance_weapons()
 	if loadout.get_weapon_instance(selected_weapon_id) == null:
 		selected_weapon_id = weapons[0].weapon_id if not weapons.is_empty() else ""
 	_clear(_weapon_row)
@@ -116,8 +115,6 @@ func refresh() -> void:
 		var button := WeaponSlotButton.new()
 		_weapon_row.add_child(button)
 		button.configure(weapon, true)
-		if resonance.has(weapon):
-			button.text += " · 共鸣%d" % (resonance.find(weapon) + 1)
 		button.custom_minimum_size = Vector2(180, 46)
 		button.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
 		button.expand_icon = true
@@ -132,11 +129,7 @@ func refresh() -> void:
 	var current := loadout.get_weapon_instance(selected_weapon_id)
 	_weapon_icon.texture = FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null
 	_weapon_name.text = "%s · Lv.%d" % [str(current.weapon_data.get("display_name", "")), current.level] if current != null else "尚无武器"
-	if current != null and resonance.has(current):
-		_weapon_name.text += " · 共鸣%d%s" % [resonance.find(current) + 1, "（领奏）" if resonance[0] == current else "（接力）"]
-		_weapon_name.tooltip_text = "按武器栏顺序接力，共用%s的冷却；后续武器不再主动攻击。" % str(resonance[0].weapon_data.display_name)
-	else:
-		_weapon_name.tooltip_text = ""
+	_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1
 	_sell_weapon.tooltip_text = "至少保留一把武器" if _sell_weapon.disabled else "出售后，附魔自动归还背包"
 	_clear(_slots)
@@ -287,8 +280,9 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 
 
 func _layout_inventory() -> void:
-	var usable := maxf(1, size.x - 16)
-	_inventory.columns = maxi(1, floori((usable + 8) / (EnchantmentInventoryCard.CARD_SIZE.x + 8)))
+	var usable := maxf(1, _inventory_scroll.size.x - _inventory_scroll.get_v_scroll_bar().get_combined_minimum_size().x)
+	var gap := _inventory.get_theme_constant("h_separation")
+	_inventory.columns = clampi(floori((usable + gap) / (EnchantmentInventoryCard.CARD_SIZE.x + gap)), 1, 4)
 	if _inventory.get_child_count() == 1 and _inventory.get_child(0) is Label:
 		_inventory.columns = 1
 

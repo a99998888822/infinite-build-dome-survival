@@ -29,6 +29,8 @@ P99 帧时间仍略高于原版；本次正式接入不宣称已解决偶发长�
 
 ## 追溯与备份
 
-审阅工程：`D:/project/useless/review-archives/combat-perf-20261004/project_v2/`。
+审阅工程原位于 `D:/project/useless/review-archives/combat-perf-20261004/project_v2/`，已按用户清理要求移除。正式实现保留在本项目 `scripts/battle/meadow_grass_*.gd` 及对应着色器中。
 
 本次备份及验证：`D:/project/useless/review-archives/combat-perf-20261004/promotion_grass_v2/`。其中 `before/` 保存接入前正式草场文件，`manifest.json` 记录来源及正式文件 SHA256，`gpu/comparison.json` 保存配对画面结果。源脚本已对照 V2 审阅报告中的 SHA256 核验。
+
+中间文件清理后保留审阅页、最终视频/对照动图、比较结果及回退备份；原始 RGB 帧、重复截图、旧试作代码和打包脚本已删除。清理记录位于 `D:/project/useless/review-archives/cleanup-20261004/result.json`。

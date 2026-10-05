@@ -434,7 +434,7 @@ func _run_enemy_wave_checks() -> bool:
 	passed = _print_check_result("enemy instantiate", enemy != null and enemy.current_hp == expected_enemy_hp) and passed
 	passed = _print_check_result("enemy registry register", enemy != null and EnemyRegistry.get_registered_enemies().has(enemy)) and passed
 	if enemy != null:
-		passed = _print_check_result("beginner enemy move speed modifier", enemy.get_stat("move_speed") == 85.0) and passed
+		passed = _print_check_result("beginner enemy move speed modifier", enemy.get_stat("move_speed") == 51.0) and passed
 		var previous_hp := player.current_hp
 		enemy._process_contact_damage()
 		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
@@ -700,7 +700,7 @@ func _run_weapon_checks() -> bool:
 	player.initialize_from_character("character_void_hunter")
 	var initialized := loadout.initialize(player)
 	passed = _print_check_result("weapon loadout initialize", initialized and loadout.get_weapon_instances().size() == 1) and passed
-	passed = _print_check_result("weapon load cost", loadout.get_total_load_cost() == 12 and loadout.get_load_capacity() == 100) and passed
+	passed = _print_check_result("weapon load cost", loadout.get_total_load_cost() == 20 and loadout.get_load_capacity() == 100) and passed
 
 	var weapon := loadout.get_weapon_instance("weapon_void_blade")
 	passed = _print_check_result("weapon instance lookup", weapon != null) and passed
@@ -727,7 +727,7 @@ func _run_weapon_checks() -> bool:
 		for effect in upgrade_entry.get("effects", []):
 			if effect is Dictionary and str(effect.get("stat", "")) == "ranged_damage":
 				expected_weapon_damage += int(effect.get("value", 0))
-		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == expected_weapon_damage and weapon.attack_interval_ms == 650) and passed
+		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == expected_weapon_damage and weapon.attack_interval_ms == 700 and weapon.get_weapon_stat("projectile_count") == 2 and is_equal_approx(weapon.get_active_cooldown_seconds(), 1.0)) and passed
 		var damage_events := weapon.calculate_damage_events(false)
 		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= expected_weapon_damage
 		passed = _print_check_result("weapon damage event", damage_ok) and passed

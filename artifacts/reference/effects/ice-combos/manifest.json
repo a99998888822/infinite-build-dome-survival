@@ -1,0 +1,36 @@
+{
+  "kind": "godot_runtime_gif_backup",
+  "capture_date": "2026-10-04",
+  "clips": [
+    {
+      "file": "ice_crystal_expansion.gif",
+      "title": "冰场 + 风：冰晶扩展",
+      "description": "风使冰场半径按 1.35 倍扩大，最多初始半径的两倍；外沿长出冰晶与霜纹，新覆盖目标受到首次命中，旧目标不重复结算。",
+      "source_gif": "D:\\project\\useless\\review-archives\\element-interactions-20261004\\review\\wind_ice\\clip.gif",
+      "source_case": "wind_ice",
+      "sha256": "9edf00fc9977a88a75fcbb0368f8832c3db09b74adb0694ca7a8790577a03a68",
+      "size_px": [
+        864,
+        486
+      ],
+      "frames": 73,
+      "duration_ms": 4870,
+      "bytes": 818704
+    },
+    {
+      "file": "water_ice_freeze.gif",
+      "title": "水 + 冰：冻结 → 解冻",
+      "description": "湿润遇冰，或冰减速遇水，会消耗湿润并冻结。冰壳与冰晶出现；冻结结束产生碎冰，重新转为湿润。",
+      "source_gif": "D:\\project\\useless\\review-archives\\element-interactions-20261004\\review\\freeze\\clip.gif",
+      "source_case": "freeze",
+      "sha256": "9a5e2b2031e3daf9a51934735fa08fc24f260b67615fb84c524b638c836f32ec",
+      "size_px": [
+        864,
+        486
+      ],
+      "frames": 73,
+      "duration_ms": 4870,
+      "bytes": 797623
+    }
+  ]
+}

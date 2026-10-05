@@ -411,7 +411,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			FinanceUIStyle.set_item_icon(icon_rect, texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
 			if FinanceUIStyle.is_native_relic_icon(texture):
-				cell.custom_minimum_size = RELIC_CELL_SIZE.max(texture.get_size() * FinanceUIStyle.RELIC_LIST_ICON_SCALE + Vector2(8, 8))
+				cell.custom_minimum_size = RELIC_CELL_SIZE.max(FinanceUIStyle.relic_icon_size(texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE) + Vector2(8, 8))
 				cell.size = cell.custom_minimum_size
 			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	else:

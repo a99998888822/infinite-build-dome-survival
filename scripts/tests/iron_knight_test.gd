@@ -96,12 +96,12 @@ func _run() -> void:
 	knight._physics_process(1.0)
 	check(knight._state_time == 0.2, "pause freezes windup clock")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	knight._process_special_behavior(0.199)
+	knight._process_special_behavior(0.799)
 	knight._animate(0.0)
-	check(knight.skill_state == "windup" and player.current_hp == 1000, "warning cannot damage or dash before 400ms")
-	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"windup", 6), "shorter warning still reaches final windup frame")
+	check(knight.skill_state == "windup" and player.current_hp == 1000, "warning cannot damage or dash before 1000ms")
+	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"windup", 6), "extended warning reaches final windup frame")
 	knight._process_special_behavior(0.0011)
-	check(knight.skill_state == "dash", "400ms warning precedes dash")
+	check(knight.skill_state == "dash", "1000ms warning precedes dash")
 	knight._process_special_behavior(0.08)
 	knight._animate(0.0)
 	check(knight.position.distance_to(Vector2(120, 0)) < 0.01, "half dash travels 120 units in 80ms")
@@ -119,7 +119,7 @@ func _run() -> void:
 		reset_knight()
 		knight.start_dash()
 		player.position = offset
-		knight._process_special_behavior(0.4)
+		knight._process_special_behavior(1.0)
 		knight._process_special_behavior(0.16)
 		var should_hit: bool = offset.y < boundary
 		check((player.current_hp < 1000) == should_hit, "swept capsule boundary y=%s" % offset.y)
@@ -141,7 +141,7 @@ func _run() -> void:
 	check(knight.skill_state == "windup" and knight._state_time == 0.0, "resisted freeze pauses skill and animation together")
 	knight._frozen_remaining = 0.0
 	knight._profile["dash_ms"] = 320
-	knight._process_special_behavior(0.4)
+	knight._process_special_behavior(1.0)
 	knight._process_special_behavior(0.16)
 	knight._animate(0.0)
 	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"dash", 1), "configured duration rescales the entire swing")
@@ -157,7 +157,7 @@ func _run() -> void:
 	add_child(wall)
 	await get_tree().physics_frame
 	knight.start_dash()
-	knight._process_special_behavior(0.4)
+	knight._process_special_behavior(1.0)
 	knight._process_special_behavior(0.04)
 	var stopped := knight.position
 	check(knight._dash_blocked and knight.skill_state == "dash" and stopped.x < 60, "wall blocks travel while swing continues")

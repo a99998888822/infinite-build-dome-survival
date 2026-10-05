@@ -80,7 +80,7 @@
   {
     "id": "scroll_haste",
     "display_name": "迅捷",
-    "description": "当前武器攻击速度+25%，按现有攻速公式缩短攻击间隔。共鸣武器仍由领头武器决定触发冷却；仅对当前武器生效。",
+    "description": "当前武器攻击速度+25%，按现有攻速公式缩短攻击间隔；仅对当前武器生效。",
     "category": "enchantment_scroll",
     "rarity": "rare",
     "effect_ids": ["haste"],
@@ -101,18 +101,6 @@
     "instance_parameter_ranges": [],
     "modifiers": [],
     "icon": "res://assets/ui/icons/augmentations/scroll_bounce.png"
-  },
-  {
-    "id": "scroll_resonance",
-    "display_name": "共鸣",
-    "description": "至少两把武器装备共鸣时，按武器栏从左到右接力，共用第一把的冷却；每把武器按自身共鸣数量连续攻击，两份就攻击两次，再唤醒下一把。远程发射完即可接力，近战等待动作结束，地裂等待最后节点，炉灯等待喷射结束。无目标则跳过；仅一把时正常攻击。",
-    "category": "enchantment_scroll",
-    "rarity": "epic",
-    "effect_ids": ["resonance"],
-    "effect_parameters": {},
-    "instance_parameter_ranges": [],
-    "modifiers": [],
-    "icon": "res://assets/ui/icons/augmentations/scroll_resonance.png"
   },
   {
     "id": "scroll_water",
@@ -335,7 +323,7 @@
         ]
       }
     ],
-    "icon": "res://assets/ui/icons/augmentations/scroll_lightning.png"
+    "icon": "res://assets/ui/icons/augmentations/scroll_electric_spark.png"
   },
   {
     "id": "scroll_split",

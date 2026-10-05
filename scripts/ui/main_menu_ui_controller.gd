@@ -14,7 +14,7 @@ var _selected_difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _title_base_position := Vector2.ZERO
 var _role_select_was_visible := false
 var _settings_overlay: Control = null
-var _settings_panel: PanelContainer = null
+var _settings_panel: GameSettingsPanel = null
 var _music_slider: HSlider = null
 var _sfx_slider: HSlider = null
 var _resolution_option: OptionButton = null
@@ -24,12 +24,6 @@ var _music_value_label: Label = null
 var _sfx_value_label: Label = null
 var _display_settings_note: Label = null
 var _settings_tween: Tween = null
-
-const SETTINGS_PANEL_SIZE := Vector2(620, 430)
-const SETTINGS_ROW_HEIGHT := 36.0
-const SETTINGS_TITLE_WIDTH := 150.0
-const SETTINGS_TITLE_FONT_SIZE := 14
-const SETTINGS_TITLE_COLOR := Color("#d9d0af")
 
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
@@ -63,7 +57,7 @@ func _ready() -> void:
 	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
 	_create_settings_ui()
-	_bind_window_settings()
+	get_viewport().size_changed.connect(_layout_settings)
 	_setup_menu_atmosphere()
 	if start_battle_button != null and not start_battle_button.pressed.is_connected(_on_start_battle_pressed):
 		start_battle_button.pressed.connect(_on_start_battle_pressed)
@@ -210,158 +204,51 @@ func show_start_page() -> void:
 
 
 func _create_settings_ui() -> void:
-	var overlay := Control.new()
-	overlay.name = "SettingsOverlay"
-	_settings_overlay = overlay
-	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	overlay.visible = false
-	add_child(overlay)
+	_settings_overlay = Control.new()
+	_settings_overlay.name = "SettingsOverlay"
+	_settings_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_settings_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_settings_overlay.visible = false
+	add_child(_settings_overlay)
 	var backdrop := ColorRect.new()
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.01, 0.015, 0.02, 0.86)
+	backdrop.color = Color(0.014, 0.022, 0.021, 0.78)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	overlay.add_child(backdrop)
-	_settings_panel = PanelContainer.new()
+	_settings_overlay.add_child(backdrop)
+	_settings_panel = GameSettingsPanel.new()
 	_settings_panel.name = "SettingsPanel"
-	_settings_panel.custom_minimum_size = SETTINGS_PANEL_SIZE
-	_settings_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_settings_panel.offset_left = -SETTINGS_PANEL_SIZE.x * 0.5
-	_settings_panel.offset_top = -SETTINGS_PANEL_SIZE.y * 0.5
-	_settings_panel.offset_right = SETTINGS_PANEL_SIZE.x * 0.5
-	_settings_panel.offset_bottom = SETTINGS_PANEL_SIZE.y * 0.5
-	_settings_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	_settings_panel.add_theme_stylebox_override("panel", _make_settings_panel_style())
-	overlay.add_child(_settings_panel)
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 12)
-	_settings_panel.add_child(content)
-	var title := Label.new()
-	title.text = "设置"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_color_override("font_color", Color("#ffe18a"))
-	title.add_theme_font_size_override("font_size", 22)
-	content.add_child(title)
-	_music_slider = _make_volume_row(content, "背景音乐", 100)
-	_sfx_slider = _make_volume_row(content, "音效", 100)
-	var resolution_row := HBoxContainer.new()
-	resolution_row.add_theme_constant_override("separation", 12)
-	content.add_child(resolution_row)
-	var resolution_label := _make_settings_title("界面分辨率")
-	resolution_row.add_child(resolution_label)
-	_resolution_option = OptionButton.new()
-	_resolution_option.custom_minimum_size = Vector2(300, 36)
-	resolution_row.add_child(_resolution_option)
-	if WindowSettings != null:
-		for size in WindowSettings.get_resolution_presets():
-			_resolution_option.add_item("%d × %d" % [size.x, size.y])
-	_resolution_option.item_selected.connect(_on_resolution_selected)
-	var fullscreen_row := HBoxContainer.new()
-	fullscreen_row.add_theme_constant_override("separation", 12)
-	content.add_child(fullscreen_row)
-	var fullscreen_title := _make_settings_title("全屏：")
-	fullscreen_row.add_child(fullscreen_title)
-	var fullscreen_group := ButtonGroup.new()
-	_fullscreen_yes_button = _make_fullscreen_option("是", fullscreen_group)
-	_fullscreen_no_button = _make_fullscreen_option("否", fullscreen_group)
-	fullscreen_row.add_child(_fullscreen_yes_button)
-	fullscreen_row.add_child(_fullscreen_no_button)
-	_display_settings_note = _make_settings_label("")
-	_display_settings_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_display_settings_note.add_theme_color_override("font_color", Color("#e3b65c"))
-	_display_settings_note.add_theme_font_size_override("font_size", 11)
-	_display_settings_note.visible = false
-	content.add_child(_display_settings_note)
-	var credit_row := HBoxContainer.new()
-	credit_row.add_theme_constant_override("separation", 12)
-	content.add_child(credit_row)
-	var credit_title := _make_settings_title("Credit")
-	credit_row.add_child(credit_title)
-	var credit_area := PanelContainer.new()
-	credit_area.custom_minimum_size = Vector2(300, SETTINGS_ROW_HEIGHT)
-	credit_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	credit_area.add_theme_stylebox_override("panel", _make_credit_area_style())
-	credit_row.add_child(credit_area)
-	var credit_scroll := ScrollContainer.new()
-	credit_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
-	credit_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
-	credit_scroll.custom_minimum_size = Vector2(0, SETTINGS_ROW_HEIGHT)
-	credit_area.add_child(credit_scroll)
-	var credit_text := Label.new()
-	credit_text.text = "Ark Pixel Font | SIL Open Font License 1.1"
-	credit_text.custom_minimum_size = Vector2(0, SETTINGS_ROW_HEIGHT)
-	credit_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	credit_text.add_theme_color_override("font_color", Color("#d9d0af"))
-	credit_text.add_theme_font_size_override("font_size", 10)
-	credit_scroll.add_child(credit_text)
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	content.add_child(spacer)
-	var back_button := Button.new()
-	back_button.text = "返回"
-	back_button.custom_minimum_size = Vector2(180, 40)
-	back_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	back_button.add_theme_font_size_override("font_size", 14)
-	back_button.add_theme_color_override("font_color", Color("#d9d0af"))
-	back_button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
-	back_button.add_theme_stylebox_override("normal", _make_settings_button_style(Color("#111b16"), Color("#59441f")))
-	back_button.add_theme_stylebox_override("hover", _make_settings_button_style(Color("#2b3020"), Color("#ffe18a")))
-	back_button.pressed.connect(_close_settings)
-	content.add_child(back_button)
-	_load_settings_values()
-
-func _make_volume_row(parent: VBoxContainer, title_text: String, default_value: int) -> HSlider:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 16)
-	parent.add_child(row)
-	var label := _make_settings_title(title_text)
-	row.add_child(label)
-	var slider := HSlider.new()
-	slider.min_value = 0.0
-	slider.max_value = 100.0
-	slider.step = 1.0
-	slider.value = default_value
-	slider.custom_minimum_size = Vector2(300, 36)
-	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(slider)
-	var value_label := _make_settings_label("100%")
-	value_label.custom_minimum_size = Vector2(70, 36)
-	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	row.add_child(value_label)
-	slider.value_changed.connect(_on_volume_slider_changed.bind(slider, value_label, title_text))
-	if title_text == "背景音乐":
-		_music_value_label = value_label
-	else:
-		_sfx_value_label = value_label
-	return slider
-
-func _make_settings_label(text_value: String) -> Label:
-	var label := Label.new()
-	label.text = text_value
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_color_override("font_color", SETTINGS_TITLE_COLOR)
-	label.add_theme_font_size_override("font_size", SETTINGS_TITLE_FONT_SIZE)
-	return label
+	_settings_overlay.add_child(_settings_panel)
+	_settings_panel.open_page(false)
+	_settings_panel.back_requested.connect(_close_settings)
+	_music_slider = _settings_panel.volume_controls.bgm_volume.slider
+	_sfx_slider = _settings_panel.volume_controls.sfx_volume.slider
+	_music_value_label = _settings_panel.volume_controls.bgm_volume.label
+	_sfx_value_label = _settings_panel.volume_controls.sfx_volume.label
+	_resolution_option = _settings_panel.resolution
+	_fullscreen_yes_button = _settings_panel.fullscreen_yes
+	_fullscreen_no_button = _settings_panel.fullscreen_no
+	_display_settings_note = _settings_panel.display_note
+	_layout_settings()
 
 
-func _make_settings_title(text_value: String) -> Label:
-	var label := _make_settings_label(text_value)
-	label.custom_minimum_size = Vector2(SETTINGS_TITLE_WIDTH, SETTINGS_ROW_HEIGHT)
-	return label
+func _layout_settings() -> void:
+	if _settings_panel != null:
+		_settings_panel.fit_to_viewport(get_viewport().get_visible_rect().size)
 
-func _make_settings_panel_style() -> StyleBoxFlat:
-	return SettingsUIStyle.panel()
 
-func _make_credit_area_style() -> StyleBoxFlat:
-	return SettingsUIStyle.credit()
+func _input(event: InputEvent) -> void:
+	if _settings_overlay == null or not _settings_overlay.is_visible_in_tree(): return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		if _resolution_option.get_popup().visible: return
+		get_viewport().set_input_as_handled()
+		_close_settings()
 
-func _make_settings_button_style(background: Color, border: Color) -> StyleBoxFlat:
-	return SettingsUIStyle.button(background, border)
 
 func _on_settings_pressed() -> void:
 	if _settings_panel == null:
 		return
-	_load_settings_values()
+	_settings_panel.open_page(false)
+	_layout_settings()
 	var overlay := _settings_panel.get_parent() as Control
 	if overlay == null:
 		return
@@ -394,87 +281,6 @@ func _close_settings() -> void:
 		_settings_panel.scale = Vector2.ONE
 	)
 	AudioManager.play_ui_sfx("modal_close")
-
-func _on_volume_slider_changed(value: float, slider: HSlider, value_label: Label, title_text: String) -> void:
-	var percentage := clampi(roundi(value), 0, 100)
-	value_label.text = "%d%%" % percentage
-	var bus_name := AudioManager.BUS_BGM if title_text == "背景音乐" else AudioManager.BUS_SFX
-	AudioManager.set_bus_volume(bus_name, percentage)
-
-func _on_resolution_selected(index: int) -> void:
-	if WindowSettings == null or index < 0 or index >= WindowSettings.get_resolution_presets().size():
-		return
-	WindowSettings.set_resolution_index(index)
-
-func _on_fullscreen_option_pressed(fullscreen_enabled: bool) -> void:
-	if WindowSettings == null:
-		return
-	WindowSettings.set_fullscreen(fullscreen_enabled)
-
-func _bind_window_settings() -> void:
-	if WindowSettings == null:
-		return
-	var settings_callable := Callable(self, "_on_window_settings_changed")
-	if not WindowSettings.settings_changed.is_connected(settings_callable):
-		WindowSettings.settings_changed.connect(settings_callable)
-	_sync_window_settings_controls()
-
-
-func _on_window_settings_changed() -> void:
-	_sync_window_settings_controls()
-
-
-func _sync_window_settings_controls() -> void:
-	if WindowSettings == null:
-		return
-	var fullscreen := WindowSettings.is_fullscreen()
-	if _display_settings_note != null:
-		var is_embedded := WindowSettings.is_embedded()
-		_display_settings_note.visible = is_embedded
-		if is_embedded:
-			_display_settings_note.text = "编辑器嵌入运行时不支持调整窗口尺寸或全屏；当前设置会保存，请关闭编辑器的“嵌入游戏”后运行"
-		else:
-			_display_settings_note.text = ""
-	if _resolution_option != null:
-		_resolution_option.select(WindowSettings.get_resolution_index())
-	if _fullscreen_yes_button != null:
-		_fullscreen_yes_button.set_pressed_no_signal(fullscreen)
-		_fullscreen_yes_button.text = "● 是" if fullscreen else "○ 是"
-	if _fullscreen_no_button != null:
-		_fullscreen_no_button.set_pressed_no_signal(not fullscreen)
-		_fullscreen_no_button.text = "● 否" if not fullscreen else "○ 否"
-
-
-func _load_settings_values() -> void:
-	var music_value := CampProgression.get_volume_setting("bgm_volume", 100)
-	var sfx_value := CampProgression.get_volume_setting("sfx_volume", 100)
-	if _music_slider != null:
-		_music_slider.set_value_no_signal(music_value)
-	if _sfx_slider != null:
-		_sfx_slider.set_value_no_signal(sfx_value)
-	if _music_value_label != null:
-		_music_value_label.text = "%d%%" % music_value
-	if _sfx_value_label != null:
-		_sfx_value_label.text = "%d%%" % sfx_value
-	_sync_window_settings_controls()
-
-
-func _make_fullscreen_option(text_value: String, group: ButtonGroup) -> Button:
-	var button := Button.new()
-	button.text = "○ %s" % text_value
-	button.toggle_mode = true
-	button.button_group = group
-	button.custom_minimum_size = Vector2(124, 36)
-	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_font_size_override("font_size", 14)
-	button.add_theme_color_override("font_color", Color("#a9a184"))
-	button.add_theme_color_override("font_hover_color", Color("#ffe18a"))
-	button.add_theme_color_override("font_pressed_color", Color("#ffe18a"))
-	button.add_theme_stylebox_override("normal", _make_settings_button_style(Color("#111b16"), Color("#59441f")))
-	button.add_theme_stylebox_override("hover", _make_settings_button_style(Color("#2b3020"), Color("#ffe18a")))
-	button.add_theme_stylebox_override("pressed", _make_settings_button_style(Color("#473616"), Color("#d3a637")))
-	button.pressed.connect(_on_fullscreen_option_pressed.bind(text_value == "是"))
-	return button
 
 func _on_quit_pressed() -> void:
 	if get_tree() != null:

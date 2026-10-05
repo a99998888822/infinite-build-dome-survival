@@ -340,7 +340,9 @@
   {
     "original": "artifacts/previews/finance_bank_desktop/20261004-r1/source.png",
     "retained": "artifacts/sources/finance/finance_bank_desktop.png",
-    "sha256": "726dbe764e9eeaaa8e1e47ed19118df7cab43febda98b0309da707fa633e6ddc"
+    "sha256": "726dbe764e9eeaaa8e1e47ed19118df7cab43febda98b0309da707fa633e6ddc",
+    "availability": "missing_before_cleanup_2026-10-05",
+    "note": "Already absent before this cleanup; historical original and Downloads copy also absent. Existing finance layout/clipboard sources and production background are retained."
   },
   {
     "original": "artifacts/generated/finance-bank-style-r1/bank-source.png",
@@ -406,5 +408,55 @@
     "original": "C:/Users/mi/Downloads/move_indictor.png",
     "retained": "artifacts/sources/ui/move_indictor.png",
     "sha256": "07f200da2fe40d18afc8be6714ebb752af4634bad8c2aeb23b0e8035cf9663ff"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/wuqi_icon.png",
+    "retained": "artifacts/sources/weapons/wuqi_icon.png",
+    "sha256": "2f244d0a6346a82313ff6dedfef4bd8672fab1e6719db3490fbcd5a4a921976e"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/gobline_face.png",
+    "retained": "artifacts/sources/goblin/gobline_face.png",
+    "sha256": "88d107c9411e563c5b41102341acd43d879f81c9c3bef6eced462087233eb5b7"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/fashu_icon.png",
+    "retained": "artifacts/sources/spells/fashu_icon.png",
+    "sha256": "6e49212e7e824843fbb0d4815d668d8226202bf7ee72a67c8d1fe9183f8348ad"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/yiwu_icon1.png",
+    "retained": "artifacts/sources/relics/yiwu_icon1.png",
+    "sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/yiwu_icon2.png",
+    "retained": "artifacts/sources/relics/yiwu_icon2.png",
+    "sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/yiwu_icon3.png",
+    "retained": "artifacts/sources/relics/yiwu_icon3.png",
+    "sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/yiwu_icon4.png",
+    "retained": "artifacts/sources/relics/yiwu_icon4.png",
+    "sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7"
+  },
+  {
+    "original": "C:/Users/mi/Downloads/finance_table_ui.png",
+    "retained": "artifacts/sources/finance/finance_table_ui.png",
+    "sha256": "b46dab25af63ad99c37dd24031dc36afe32fdf2a6af1823ace6934e71850b825"
+  },
+  {
+    "original": "artifacts/previews/finance_table_ui/20261005-scroll-r1/finance_table_ui-scroll-short.png",
+    "retained": "artifacts/sources/finance/finance_table_ui_scroll_short.png",
+    "sha256": "4ca8c2d44f239e383c350fead1bcdce6e6e657e01c3b3a56977bdb169cd85759"
+  },
+  {
+    "original": "artifacts/previews/finance_table_ui/20261005-scroll-r1/edit-notes.json",
+    "retained": "artifacts/sources/finance/finance_table_ui_scroll_short.edit-notes.json",
+    "sha256": "6a125eda780917788f633b9eaf75f34a64ba4aa9889dd70e56be91249b9cd97b"
   }
 ]

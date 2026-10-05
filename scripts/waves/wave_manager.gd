@@ -13,10 +13,11 @@ signal relic_choice_requested(reward_id: String)
 signal weapon_damage_changed
 
 const DEFAULT_PLAYER_LEVEL: int = 1
-const SPAWN_MIN_DISTANCE: float = 300.0
-const SPAWN_MAX_DISTANCE: float = 600.0
-const SPAWN_SEPARATION_DISTANCE: float = 96.0
-const SPAWN_POSITION_ATTEMPTS: int = 10
+const SPAWN_MIN_DISTANCE: float = 400.0
+const SPAWN_MAX_DISTANCE: float = 500.0
+const SPAWN_SEPARATION_DISTANCE: float = 32.0
+const SPAWN_CLUSTER_HALF_ANGLE: float = PI / 22.5 # Eight degrees either side.
+const SPAWN_POSITION_ATTEMPTS: int = 24
 const ZONE_SPAWN_COUNT_GROWTH_PERCENT: float = 6.0
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
@@ -32,6 +33,10 @@ var current_wave: Dictionary = {}
 var wave_time_left: float = 0.0
 var spawn_timers_ms: Array[float] = []
 var running: bool = false
+const CLEANUP_SECONDS := 10.0
+var cleanup_active := false
+var cleanup_time_left := 0.0
+var _wave_finish_queued := false
 var difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _difficulty: Dictionary = BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID)
 var player_level: int = DEFAULT_PLAYER_LEVEL
@@ -93,22 +98,54 @@ func _process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	wave_time_left -= delta
+	if player == null or not player.is_alive() or run_statistics.frozen:
+		return
+	if cleanup_active:
+		cleanup_time_left = maxf(0.0, cleanup_time_left - delta)
+	else:
+		wave_time_left = maxf(0.0, wave_time_left - delta)
 	var live_enemies := 0
 	for enemy in EnemyRegistry.get_registered_enemies():
 		if enemy is EnemyController and enemy.is_alive(): live_enemies += 1
 	goblin_trades.sample_enemies(delta, live_enemies)
 	if player != null:
 		wave_challenges.sample_health(delta, player.current_hp, int(player.get_stat("max_hp")))
-	if wave_time_left > 0.0:
+	if wave_time_left > 0.0 and not cleanup_active:
 		_process_spawn_timers(delta)
 	if finance_system != null:
 		finance_system.tick(delta)
 	if wave_time_left <= 0.0:
-		finish_current_wave()
+		if not cleanup_active and get_living_miniboss_count() > 0:
+			cleanup_active = true
+			cleanup_time_left = CLEANUP_SECONDS
+			spawn_timers_ms.clear()
+			_elite_spawn_schedule.clear()
+			_challenge_elite_schedule.clear()
+		elif not cleanup_active or cleanup_time_left <= 0.0 or get_living_miniboss_count() == 0:
+			if not _wave_finish_queued:
+				_wave_finish_queued = true
+				_finish_elapsed_wave.call_deferred()
+
+
+func get_living_miniboss_count() -> int:
+	var count := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive() and enemy_root.is_ancestor_of(enemy) and str(enemy.enemy_data.get("enemy_type", "")) == "elite":
+			count += 1
+	return count
+
+
+func _finish_elapsed_wave() -> void:
+	_wave_finish_queued = false
+	if not running or player == null or not player.is_alive() or run_statistics.frozen or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	finish_current_wave()
 
 
 func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
+	cleanup_active = false
+	cleanup_time_left = 0.0
+	_wave_finish_queued = false
 	if is_instance_valid(player):
 		if player.relic_added.is_connected(_on_player_relic_added): player.relic_added.disconnect(_on_player_relic_added)
 		if player.health_damage_taken.is_connected(_record_trade_damage): player.health_damage_taken.disconnect(_record_trade_damage)
@@ -178,6 +215,9 @@ func start_next_wave() -> bool:
 	var waves := DataRegistry.get_table("waves")
 	if current_wave_index + 1 >= waves.size():
 		return false
+	cleanup_active = false
+	cleanup_time_left = 0.0
+	_wave_finish_queued = false
 	goblin_loans.leave_preparation(run_statistics)
 	current_wave_index += 1
 	goblin_trades.begin_combat()
@@ -224,6 +264,8 @@ func finish_current_wave() -> void:
 	wave_challenges.finish_combat(goblin_trades.pressure_snapshot)
 	running = false
 	# Include deaths deferred from this frame before clearing or settling rewards.
+	cleanup_active = false
+	cleanup_time_left = 0.0
 	_flush_pending_reward_batches()
 	_finishing_wave_id = str(current_wave.get("id", ""))
 	wave_end_absorb_started.emit(_finishing_wave_id)
@@ -234,6 +276,8 @@ func finish_current_wave() -> void:
 
 
 func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyController:
+	if cleanup_active or _wave_finish_queued or not _finishing_wave_id.is_empty():
+		return null
 	var enemy_data := DataRegistry.get_record("enemies", enemy_id)
 	if enemy_data.is_empty():
 		return null
@@ -247,7 +291,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy_root.add_child(enemy)
 	enemy.global_position = position
 	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
-	runtime_modifiers.append_array(_build_wave_enemy_modifiers())
+	runtime_modifiers.append_array(_build_wave_enemy_modifiers(str(enemy_data.get("enemy_type", "normal"))))
 	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
 	for stat in ["max_hp", "melee_damage", "ranged_damage", "element_damage", "move_speed", "armor"]:
 		var key := "health" if stat == "max_hp" else ("speed" if stat == "move_speed" else ("armor" if stat == "armor" else "damage"))
@@ -563,7 +607,11 @@ func _on_interest_settled(result: Dictionary) -> void:
 
 
 func _process_spawn_timers(delta: float) -> void:
-	_process_challenge_elites()
+	if cleanup_active or _wave_finish_queued:
+		return
+	# All spawns due in this update share a cluster, including elite replacements.
+	var batch_positions: Array[Vector2] = []
+	_process_challenge_elites(batch_positions)
 	var population := EnemyRegistry.get_registered_enemies()
 	var ordinary_population := population.size()
 	if _challenge_elite_planned > 0:
@@ -585,7 +633,7 @@ func _process_spawn_timers(delta: float) -> void:
 			var replace_with_elite := not replacement.is_empty() and _is_elite_spawn_due()
 			if replace_with_elite:
 				id = replacement
-			var spawned := spawn_enemy(id, get_random_spawn_position())
+			var spawned := spawn_enemy(id, _get_batch_spawn_position(batch_positions))
 			if spawned != null:
 				available -= 1
 			if replace_with_elite and spawned != null:
@@ -593,12 +641,12 @@ func _process_spawn_timers(delta: float) -> void:
 				_elite_spawn_schedule.pop_front()
 
 
-func _process_challenge_elites() -> void:
+func _process_challenge_elites(batch_positions: Array[Vector2]) -> void:
 	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
 	# Exactly two additive spawns, independent of replacement quotas and crowd caps.
 	# Ordinary spawns remain capped; at most two extra entities can exceed that cap.
 	while not _challenge_elite_schedule.is_empty() and elapsed >= _challenge_elite_schedule[0]:
-		var elite := spawn_enemy("enemy_elite_rusher", get_random_spawn_position())
+		var elite := spawn_enemy("enemy_elite_rusher", _get_batch_spawn_position(batch_positions))
 		if elite == null: return
 		elite.set_meta("wave_challenge_elite", true)
 		_challenge_elite_schedule.pop_front()
@@ -721,10 +769,11 @@ func _build_erosion_enemy_modifiers() -> Array[Dictionary]:
 	return result
 
 
-func _build_wave_enemy_modifiers() -> Array[Dictionary]:
+func _build_wave_enemy_modifiers(enemy_type: String = "normal") -> Array[Dictionary]:
 	var modifiers: Array[Dictionary] = []
 	var wave_step := float(maxi(current_wave_index, 0))
-	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, pow(1.0 + float(_difficulty.hp_growth), wave_step)))
+	var hp_multiplier := 1.0 + float(_difficulty.normal_hp_growth) * wave_step if enemy_type == "normal" else pow(1.0 + float(_difficulty.hp_growth), wave_step)
+	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, hp_multiplier))
 	for stat in ["melee_damage", "ranged_damage", "element_damage"]:
 		modifiers.append(_build_wave_modifier(stat, Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
 	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))
@@ -749,29 +798,40 @@ func _build_wave_modifier(stat_id: String, operation: String, value: float) -> D
 	}
 
 
-func get_random_spawn_position() -> Vector2:
+func get_random_spawn_position(cluster_angle: float = NAN) -> Vector2:
 	var origin := player.global_position if player != null else Vector2.ZERO
 	var fallback := origin
+	var best_clearance := -1.0
 	for attempt in range(SPAWN_POSITION_ATTEMPTS):
-		var angle := randf() * TAU
+		var angle := randf() * TAU if is_nan(cluster_angle) else cluster_angle + randf_range(-SPAWN_CLUSTER_HALF_ANGLE, SPAWN_CLUSTER_HALF_ANGLE)
 		var distance := randf_range(SPAWN_MIN_DISTANCE, SPAWN_MAX_DISTANCE)
 		var candidate := origin + Vector2.RIGHT.rotated(angle) * distance
-		if attempt == 0:
+		var clearance := _get_spawn_clearance_squared(candidate)
+		if clearance > best_clearance:
 			fallback = candidate
-		if _has_spawn_clearance(candidate):
+			best_clearance = clearance
+		if clearance >= SPAWN_SEPARATION_DISTANCE * SPAWN_SEPARATION_DISTANCE:
 			return candidate
+	# Crowding may relax spacing, but never the annulus or the batch's sector.
 	return fallback
 
 
-func _has_spawn_clearance(candidate: Vector2) -> bool:
-	var min_distance_sq := SPAWN_SEPARATION_DISTANCE * SPAWN_SEPARATION_DISTANCE
+func _get_batch_spawn_position(batch_positions: Array[Vector2]) -> Vector2:
+	var origin := player.global_position if player != null else Vector2.ZERO
+	var angle := NAN if batch_positions.is_empty() else (batch_positions[0] - origin).angle()
+	var position := get_random_spawn_position(angle)
+	batch_positions.append(position)
+	return position
+
+
+func _get_spawn_clearance_squared(candidate: Vector2) -> float:
+	var nearest := INF
 	for node in get_tree().get_nodes_in_group("enemies"):
 		var enemy := node as Node2D
 		if enemy == null or not enemy.is_inside_tree():
 			continue
-		if candidate.distance_squared_to(enemy.global_position) < min_distance_sq:
-			return false
-	return true
+		nearest = minf(nearest, candidate.distance_squared_to(enemy.global_position))
+	return nearest
 
 
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:

@@ -1,0 +1,25 @@
+{
+  "source": "artifacts/sources/finance/finance_table_ui.png",
+  "size": [
+    2752,
+    1536
+  ],
+  "method": "Local original-image cutout, piecewise resize and reposition; same-image wall donor with gradient-domain blending. No image-generation API.",
+  "chain_visible_length_reference_px": {
+    "left_before": 145,
+    "left_after": 50,
+    "right_before": 118,
+    "right_after": 22
+  },
+  "new_scroll_bottom_reference_px": 302,
+  "lamp_bottom_reference_px": 350,
+  "changed_bbox": [
+    1316,
+    197,
+    2017,
+    722
+  ],
+  "unchanged_pixel_fraction": 0.9163158328034157,
+  "production_modified": false,
+  "title_baked_into_asset": false
+}

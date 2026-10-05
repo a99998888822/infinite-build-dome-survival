@@ -58,6 +58,7 @@ func _arm() -> void:
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_enchantment_sfx("black_hole")
 	_collect_targets()
+	FirePatch.tint_nearby_fields(get_tree(), global_position, _radius, 2, ELEMENT_REACTION_RESOLVER_SCRIPT.DARK_FLAME_DURATION)
 	AudioManager.end_combat_audio()
 	_audio_impact = null
 

@@ -69,7 +69,7 @@ func _process_special_behavior(delta: float) -> bool:
 		return false
 	if skill_state == "windup":
 		velocity = Vector2.ZERO
-		if _state_time >= float(_profile.get("windup_ms", 400)) / 1000.0:
+		if _state_time >= float(_profile.get("windup_ms", 1000)) / 1000.0:
 			skill_state = "dash"
 			_state_time = 0.0
 			_set_animation(&"dash")
@@ -288,7 +288,7 @@ func _draw() -> void:
 func _draw_dash_telegraph() -> void:
 	var half_width := float(_profile.get("dash_half_width", 35.84))
 	var length := float(_profile.get("dash_distance", 240)) + half_width * 2.0
-	var progress := clampf(_state_time / maxf(float(_profile.get("windup_ms", 400)) / 1000.0, 0.001), 0.0, 1.0)
+	var progress := clampf(_state_time / maxf(float(_profile.get("windup_ms", 1000)) / 1000.0, 0.001), 0.0, 1.0)
 	var pulse := 0.5 + 0.5 * sin(progress * TAU * 2.0)
 	var fill_alpha := float(_profile.get("telegraph_fill_percent", 12)) / 100.0
 	var edge_alpha := lerpf(float(_profile.get("telegraph_edge_min_percent", 42)), float(_profile.get("telegraph_edge_max_percent", 55)), pulse) / 100.0
