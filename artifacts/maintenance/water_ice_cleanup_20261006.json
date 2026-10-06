@@ -1,0 +1,382 @@
+{
+  "status": "completed",
+  "archives": [
+    {
+      "path": "D:\\project\\useless\\review-archives\\water-ice-diagnosis-20261006",
+      "files": 5868,
+      "bytes": 713406861
+    },
+    {
+      "path": "D:\\project\\useless\\review-archives\\water-png-20261006",
+      "files": 6834,
+      "bytes": 716498523
+    },
+    {
+      "path": "D:\\project\\useless\\review-archives\\freeze-png-20261006",
+      "files": 12520,
+      "bytes": 1430444761
+    }
+  ],
+  "artifact_files_removed": [
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\combat_poster.png",
+      "bytes": 638430
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\diagnostic_poster.png",
+      "bytes": 334368
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\probe.gd",
+      "bytes": 552
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\run.py",
+      "bytes": 4253
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\setup.py",
+      "bytes": 4268
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_ice_20261006\\water_ice_review.gd",
+      "bytes": 8576
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\atlas_preview.png",
+      "bytes": 24319
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\build_atlas.py",
+      "bytes": 1834
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\candidate_water.gd",
+      "bytes": 9656
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\combo_poster.png",
+      "bytes": 438187
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\heavy_poster.png",
+      "bytes": 402861
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\size_poster.png",
+      "bytes": 28867
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\water_bake.gd",
+      "bytes": 1110
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\water_png_config.gd",
+      "bytes": 615
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\water_png_review.gd",
+      "bytes": 10517
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\water_poster.png",
+      "bytes": 343999
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_atlas.json",
+      "bytes": 483
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d0_p0.png",
+      "bytes": 57630
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d0_p1.png",
+      "bytes": 58223
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d0_p2.png",
+      "bytes": 58126
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d0_p3.png",
+      "bytes": 57729
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d1_p0.png",
+      "bytes": 58431
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d1_p1.png",
+      "bytes": 60516
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d1_p2.png",
+      "bytes": 60201
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d1_p3.png",
+      "bytes": 58848
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d2_p0.png",
+      "bytes": 62942
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d2_p1.png",
+      "bytes": 63858
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d2_p2.png",
+      "bytes": 64067
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\png_assets\\water_d2_p3.png",
+      "bytes": 63168
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\bake-desktop.json",
+      "bytes": 340
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\editor-candidate.log",
+      "bytes": 4690
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\headless-png.log",
+      "bytes": 1183
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\headless-realtime.log",
+      "bytes": 1195
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\showcase-desktop.json",
+      "bytes": 341
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\water_png_20261006\\validation\\visual-qa-desktop.json",
+      "bytes": 341
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\battle_200_poster.png",
+      "bytes": 386000
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\battle_80_poster.png",
+      "bytes": 461459
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\build_atlas.py",
+      "bytes": 1692
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\candidate_reaction.gd",
+      "bytes": 8663
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\check_visual.py",
+      "bytes": 1552
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\freeze_bake.gd",
+      "bytes": 1174
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\freeze_png_config.gd",
+      "bytes": 51
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\freeze_visual_qa.gd",
+      "bytes": 2195
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\prepare.py",
+      "bytes": 6728
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\qa-before-alpha-fix.json",
+      "bytes": 30235
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\qa_comparison.png",
+      "bytes": 8306
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\runner.py",
+      "bytes": 4719
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\run_review.py",
+      "bytes": 4071
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\shards_poster.png",
+      "bytes": 19006
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\water_png_config.gd",
+      "bytes": 615
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\water_png_review.gd",
+      "bytes": 11015
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\editor-import.log",
+      "bytes": 1497
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\main-scene.log",
+      "bytes": 1144
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\prepare_smoke.py",
+      "bytes": 3015
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\promote.py",
+      "bytes": 6478
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\run_smoke.py",
+      "bytes": 1767
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\smoke-source-sha256.json",
+      "bytes": 55403
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\validate.py",
+      "bytes": 1555
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\freeze_atlas.json",
+      "bytes": 1321
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\freeze_d0.png",
+      "bytes": 9691
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\freeze_d0.png.import",
+      "bytes": 952
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\freeze_d1.png",
+      "bytes": 11663
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\freeze_d1.png.import",
+      "bytes": 952
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\thaw_d0.png",
+      "bytes": 12800
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\thaw_d0.png.import",
+      "bytes": 947
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\thaw_d1.png",
+      "bytes": 12287
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\png_assets\\thaw_d1.png.import",
+      "bytes": 947
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\baked-raw-desktop.json",
+      "bytes": 342
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\editor-bake.log",
+      "bytes": 48793
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\editor-candidate.log",
+      "bytes": 2605
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\headless-png.log",
+      "bytes": 1206
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\headless-realtime.log",
+      "bytes": 1213
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\validation\\visual-qa-desktop.json",
+      "bytes": 341
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\smoke-gpu\\battle.png",
+      "bytes": 685865
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\smoke-gpu\\launcher.log",
+      "bytes": 234
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\smoke-gpu\\result.json",
+      "bytes": 23871
+    },
+    {
+      "path": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\performance\\freeze_png_20261006\\installed_20261006\\smoke-headless\\result.json",
+      "bytes": 23447
+    }
+  ],
+  "total_files": 25299,
+  "total_bytes": 2865192686,
+  "gib": 2.6684186290949583,
+  "protected_formal_files": 41,
+  "preserved_artifact_files": 51,
+  "utc": "2026-10-06T15:19:19.219565+00:00",
+  "formal_hashes_unchanged": true,
+  "retained_artifact_hashes_unchanged": true,
+  "retained_document_links": "PASS",
+  "protected_formal_sha256": {
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\README.md": "d342b5d0bc768624b47b5db0b0df9a9cafb2d8df46cd0c61eb0da712231206b1",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\freeze_atlas.json": "3d9d0afd93281ba7e0a909b3aa528be1ff759b74d032a7778b52b60d0e5bd9b5",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\freeze_d0.png": "3f7013c3f0b398dcb1ba1c6a38d58c2e82f26f19ebfff82fb01d5ec0840e0f23",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\freeze_d0.png.import": "5178e20d176131e0b646292241ea757130b4e987521f5488e598bafc748389bf",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\freeze_d1.png": "85eaef28a459c693f55ad0151f04b63ea7372b7ba736974b8793e481b17111a1",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\freeze_d1.png.import": "8910802d49a29291f7654589333ddfed90f9c24c32b1cdcfee83cbf7c452f810",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\thaw_d0.png": "3e5a3db09de43a414643edb806723a0993e57365a37056b353e37edde4946809",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\thaw_d0.png.import": "375443b03356914a677dc29814ff04b40301a4de378ac7462e19d05611f66792",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\thaw_d1.png": "4464657093f4d6de445c88c80e17961b7c47d4d5eb9d6a094a3e2c537cac9583",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\ice_shards\\thaw_d1.png.import": "b0402e3422d61ae42e19fd58f8bf0270c68d6a0f8786c1d13d6872bdc870e5ed",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_atlas.json": "9528b00eefee87bdc95a5f3378b44013e60ac2bb1213a5694cbc91dcee5ed04f",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p0.png": "450358dd4f022dc4c607f44bd5c733cc285abb5b486b0745b7f461cbcc87f7d1",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p0.png.import": "423cf1da258f16982fa6e45aab8c28b5ba8f7d93d4b7847278e9a784129ec7f9",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p1.png": "69bfd664747f37ebfaac051a14a3e779704a31c21c610e46ad315dc5768901dc",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p1.png.import": "336d191dc6c7bd1aacaf2985c2b0a60fe09c331586672d60aeec0ba4de78ea47",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p2.png": "f1bff1a21d7e3525849cc75712dbb61a5cb3d8d89b0744296c7a0d64dace8884",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p2.png.import": "754c760ffaadc5d023071523b2f4a17c14315b59bc618e3e7be1c3c41101f32c",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p3.png": "62edc4517244012490b427f20ba2d96fc43460824897966db85d86c839e1387a",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d0_p3.png.import": "252f273934a860bdc6bc093c3a9586ccf95a53dcbd7efb91266bdcd7c99fb3d6",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p0.png": "20a978e4276c76105f73af9b2ea1c5bbd07893c9a255e87d25d28fc90e3b6f46",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p0.png.import": "073e4033d186dc0de2bda6264be1490e898f7388ffcd1584b36b58d02181bad7",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p1.png": "66c0778711567e29931dc17fb870a9947c7b4bc3e3b85ba9e0bc435f2be635df",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p1.png.import": "af1febf3c9a2349505734d2c3923679722db4bcd344702c21fe52ebc9721772b",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p2.png": "1b4757eb31cd91a28b1ba70f03b9f898195f68b916f2ecd8c3681cb25d304c41",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p2.png.import": "113cfab0407ff1f29513a9a4a3877e53dca21b734d258ad91fc4564671dbc2c3",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p3.png": "743bdb59b69ddb718de865bf5d4d2d0eb6913c746bccfc4dbd596177af4c6ba2",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d1_p3.png.import": "751d36949df5511bef3067c20b9b48639ad40e66c3fe86d6c379a464a179ff40",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p0.png": "46af13798026803632668f1d365465370e5931990a32f0ad1040cc9740ca6ac8",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p0.png.import": "d440031af25f24d2aadd27fd2ef554fb2d979c1d93390ad69c51d9509c05187e",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p1.png": "fa334e230232c4e30c98ff4a19785cc80b9bff166ad28270061a313f8160c57f",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p1.png.import": "d249158fbd19293f9a51eaee05aaf2b284c69ca4dceb0a8e25ecb594fc7d0e9f",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p2.png": "f8faedb0c3c4e1b51aca9f7e1752f80b482b3505d422a2cb87704bfeaf1d55a3",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p2.png.import": "a511e841340d63f7c50bb0ba6890b06b836ff7a4eb48b48d7cbb927a1eb84f7f",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p3.png": "2f031bf804fba8801f096545a4332c590f720ac2d485d4a0895046b3f87aa26f",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\sprites\\effects\\water_wave\\water_d2_p3.png.import": "e0d37248422444f46823cf85f98f7ae1a70700c89ea707abb3de1f4a5e2ecae3",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scripts\\effects\\water_wave_effect.gd": "b60b8056ba92615e29bad071e5a8d019f5f5c211fde9335789d717bdc406e27e",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scripts\\effects\\element_reaction_visual.gd": "2877951dd34686d10751f9d7b2c7bbff3cdc96f7199db8c0122b41f722bef2a3",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scripts\\tests\\pixel_combat_effect_test.gd": "317c2f2116e2995671240b558aff1512def64c651b1b65507ca8f6990c0ab939",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scripts\\tests\\water_ice_atlas_test.gd": "893d061088c5bfebd5e7c723956dcb8d1044ccbddc6bd19e074da85202f67349",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scripts\\tests\\water_ice_atlas_test.gd.uid": "d8132035c6e23f0b74ff186324bd69dcabd031489f3c571499f1333998724248",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\scenes\\tests\\water_ice_atlas_test.tscn": "b7e36e8ba6e0d7dfc4c3522600d79022a41c3acf54059f638b0ad8c429fa6f0e"
+  }
+}

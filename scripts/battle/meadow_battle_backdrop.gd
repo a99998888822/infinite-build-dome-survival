@@ -194,7 +194,7 @@ func _update_cells() -> void:
 	ground_material.set_shader_parameter("surface_size",ground.size)
 	var ui_size := get_tree().root.get_visible_rect().size
 	ground_material.set_shader_parameter("view_size",ui_size)
-	ground_material.set_shader_parameter("horizon_y",ceilf(ui_size.x/16.0))
+	ground_material.set_shader_parameter("horizon_y",BattleEnvironment.get_sky_height(ui_size.x))
 	_horizon.configure_view(ui_size,player.camera_2d.get_screen_center_position().x)
 	var first := Vector2i((area.position/CELL).floor())-Vector2i.ONE
 	var last := Vector2i((area.end/CELL).floor())+Vector2i(2,2)
@@ -463,7 +463,7 @@ func _update_area() -> void:
 	var inverse := get_viewport().get_canvas_transform().affine_inverse()
 	var size := get_tree().root.get_visible_rect().size
 	var ratio := get_viewport_rect().size/size
-	var horizon := ceilf(size.x/16.0)
+	var horizon := BattleEnvironment.get_sky_height(size.x)
 	var parameters := {
 		"view_size":size,"horizon_y":horizon,"world_screen_origin":inverse.origin,
 		"world_screen_x":inverse.x*ratio.x,"world_screen_y":inverse.y*ratio.y,

@@ -3,7 +3,7 @@ extends "res://scripts/tests/combat_hud_style_review.gd"
 
 const REVIEW_IDS := ["weapon_rentier_purse", "weapon_void_blade", "weapon_mutant_tentacle",
 	"weapon_earth_hammer", "weapon_nightwatch_spear", "weapon_plasma_cannon"]
-const GAPS := [10.0, 15.0, 20.0, 20.0, 20.0, 20.0]
+const GAPS := [10.0, 15.0, 20.0, 10.0, 20.0, 20.0]
 var review_title: Label
 var review_subtitle: Label
 var samples: Dictionary = {}

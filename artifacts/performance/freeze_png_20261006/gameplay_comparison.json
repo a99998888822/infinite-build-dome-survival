@@ -1,0 +1,163 @@
+[
+  {
+    "repeat": 1,
+    "enemies": 20,
+    "damage_equal": true,
+    "damage": [
+      1860,
+      1860
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 25,
+        "thaw_spawn": 15
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 25,
+        "thaw_spawn": 15
+      }
+    ]
+  },
+  {
+    "repeat": 2,
+    "enemies": 20,
+    "damage_equal": true,
+    "damage": [
+      1860,
+      1860
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 25,
+        "thaw_spawn": 15
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 25,
+        "thaw_spawn": 15
+      }
+    ]
+  },
+  {
+    "repeat": 1,
+    "enemies": 80,
+    "damage_equal": true,
+    "damage": [
+      13218,
+      13218
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 70
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 70
+      }
+    ]
+  },
+  {
+    "repeat": 2,
+    "enemies": 80,
+    "damage_equal": true,
+    "damage": [
+      13218,
+      13218
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 70
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 70
+      }
+    ]
+  },
+  {
+    "repeat": 1,
+    "enemies": 200,
+    "damage_equal": true,
+    "damage": [
+      23611,
+      23611
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      }
+    ]
+  },
+  {
+    "repeat": 2,
+    "enemies": 200,
+    "damage_equal": true,
+    "damage": [
+      23611,
+      23611
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      }
+    ]
+  },
+  {
+    "repeat": 3,
+    "enemies": 200,
+    "damage_equal": true,
+    "damage": [
+      23611,
+      23611
+    ],
+    "per_target_water_hits_equal": true,
+    "cue_counts_equal": true,
+    "cue_counts": [
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      },
+      {
+        "water_spawn": 10,
+        "freeze_spawn": 96,
+        "thaw_spawn": 96
+      }
+    ]
+  }
+]

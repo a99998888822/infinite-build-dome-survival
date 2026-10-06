@@ -29,6 +29,7 @@ const CATEGORY_LABELS: Dictionary = {
 	"enchantment_scroll": "附魔卷轴",
 	"wizard_scroll": "术士卷轴",
 }
+const ENCHANTMENT_TYPE_LABELS := {"buff": "增益", "spell": "法术", "element": "元素"}
 const EFFECT_LABELS: Dictionary = {
 	"fire": "火焰",
 	"water": "水",
@@ -174,20 +175,21 @@ func _build_tooltip() -> String:
 	var rarity_color := str(RARITY_COLOR_CODES.get(rarity, "#FFFFFF"))
 	lines.append("[color=%s][b]%s[/b][/color]" % [rarity_color, str(item_instance.get("display_name", "物品"))])
 	lines.append("[color=#C7D3E4]类型：%s　稀有度：%s[/color]" % [
-		str(CATEGORY_LABELS.get(str(item_instance.get("category", "")), "特殊物品")),
+		_get_type_label(),
 		str(RARITY_LABELS.get(rarity, "未知")),
 	])
 	var description := str(item_instance.get("description", ""))
 	if not description.is_empty():
 		lines.append("[color=#FFFFFF]%s[/color]" % description)
-	var effect_names := _get_effect_names()
-	if not effect_names.is_empty():
-		lines.append("[color=%s]附加效果：[/color][color=%s]%s[/color]" % [TOOLTIP_LABEL_COLOR, TOOLTIP_VALUE_COLOR, effect_names])
-	_append_rolled_parameter_lines(lines)
-	for modifier in item_instance.get("modifiers", []):
-		if modifier is Dictionary:
-			lines.append(_format_modifier(modifier))
 	return "\n".join(lines)
+
+
+func _get_type_label() -> String:
+	var kind := str(item_instance.get("enchantment_type", ""))
+	if kind.is_empty():
+		var base_id := str(item_instance.get("base_item_id", item_instance.get("id", "")))
+		kind = str(DataRegistry.get_record("augmentations", base_id).get("enchantment_type", ""))
+	return str(ENCHANTMENT_TYPE_LABELS.get(kind, CATEGORY_LABELS.get(str(item_instance.get("category", "")), "特殊物品")))
 
 
 func _on_mouse_entered() -> void:

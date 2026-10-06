@@ -447,8 +447,9 @@ func grant_shield(amount: int) -> int:
 	if not alive or amount <= 0:
 		return 0
 	var old_shield := current_shield
-	current_shield_capacity += amount
 	current_shield += amount
+	# Refill damage first; only shield above the existing capacity grows it.
+	current_shield_capacity = maxi(current_shield_capacity, current_shield)
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
 	return current_shield - old_shield
 

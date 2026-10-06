@@ -113,7 +113,7 @@ func _run() -> void:
 		"stack_rule": "unique", "target_scope": "player"})
 	check(weapon.get_base_attack_damage() == 34, "player melee bonus uses the configured 1.2 coefficient")
 	weapon.runtime_stats.area_size = 100
-	check(flail.head_radius(flail.swings[0]) == 32 and is_equal_approx(flail.head_position(flail.swings[0], 0.455).length(), 288), "range growth updates rendered trajectory and contact radius together")
+	check(flail.head_radius(flail.swings[0]) == 24 and is_equal_approx(flail.head_position(flail.swings[0], 0.455).length(), 216), "range growth updates rendered trajectory and contact radius together")
 	flail.cancel()
 	weapon.runtime_stats.area_size = 0
 	weapon.runtime_stats.attack_speed = 100

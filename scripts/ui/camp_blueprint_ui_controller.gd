@@ -744,7 +744,7 @@ func _show_finance_tooltip(anchor: Control, text: String) -> void:
 	label.add_theme_color_override("font_color", TEXT)
 	label.add_theme_font_size_override("font_size", 11)
 	_finance_tooltip_panel.add_child(label)
-	add_child(_finance_tooltip_panel)
+	GameTooltipLayer.for_owner(self).add_child(_finance_tooltip_panel)
 	call_deferred("_position_finance_tooltip", anchor)
 
 

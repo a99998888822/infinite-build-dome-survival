@@ -99,6 +99,7 @@ func _run() -> void:
 	popup._select_tab("enchant")
 	await frames(10)
 	await _test_inventory_inspection()
+	await _test_slot_replacement()
 	await capture("02_enchantment_1152")
 	popup._open_sale("weapon", "weapon_plasma_cannon")
 	await frames()
@@ -269,6 +270,104 @@ func _test_inventory_inspection() -> void:
 	for card in popup.workbench._inventory.get_children():
 		if card is EnchantmentInventoryCard and str(card.item_instance.get("item_instance_id", "")) == spare_id: returned = true
 	check(returned, "detached instance is visible again")
+
+
+func _test_slot_replacement() -> void:
+	var workbench := popup.workbench
+	var weapon := loadout.get_weapon_instance("weapon_plasma_cannon")
+	var inventory := player.item_inventory
+	var original := weapon.get_attached_item_instances()
+	for item in original:
+		flow.submit_enchantment_operation("detach", weapon.weapon_id, str(item.item_instance_id))
+	var water := inventory.add_item_from_base("scroll_water", "drop")
+	var fire := inventory.add_item_from_base("scroll_fire", "drop")
+	var incoming := inventory.add_item_from_base("scroll_lightning", "drop")
+	var water_id := str(water.item_instance_id)
+	var fire_id := str(fire.item_instance_id)
+	var incoming_id := str(incoming.item_instance_id)
+	flow.submit_enchantment_operation("attach", weapon.weapon_id, water_id)
+	flow.submit_enchantment_operation("attach", weapon.weapon_id, fire_id)
+	workbench.selected_weapon_id = weapon.weapon_id
+	workbench.refresh()
+	await frames()
+	check(not weapon.has_available_attachment_slot(), "replacement fixture fills every weapon slot")
+	var inventory_count := inventory.get_item_count()
+	var notifications: Array = []
+	var observe := func():
+		notifications.append([str(weapon.get_attached_item_instances()[0].item_instance_id), str(inventory.find_item(water_id).equipped_weapon_id), str(inventory.find_item(incoming_id).equipped_weapon_id)])
+	inventory.items_changed.connect(observe)
+	await _drag_enchantment_to_slot(incoming_id, 0)
+	inventory.items_changed.disconnect(observe)
+	var attached := weapon.get_attached_item_instances()
+	check(attached.size() == 2 and str(attached[0].item_instance_id) == incoming_id and str(attached[1].item_instance_id) == fire_id, "backpack drag replaces only the targeted occupied slot")
+	check(notifications == [[incoming_id, "", weapon.weapon_id]], "replacement publishes one consistent weapon and inventory update")
+	check(inventory.find_item(water_id) == water and inventory.get_item_count() == inventory_count, "old enchantment returns intact without losing or duplicating items")
+	var expected_incoming := incoming.duplicate(true)
+	expected_incoming.equipped_weapon_id = weapon.weapon_id
+	check(inventory.find_item(incoming_id) == expected_incoming, "replacement preserves incoming identity and rolled parameters")
+	check(weapon.has_effect("lightning") and weapon.has_effect("fire") and not weapon.has_effect("water"), "replacement rebuilds the weapon effects")
+	var backpack_ids: Array = []
+	for card in workbench._inventory.get_children():
+		if card is EnchantmentInventoryCard: backpack_ids.append(str(card.item_instance.item_instance_id))
+	check(backpack_ids.has(water_id) and not backpack_ids.has(incoming_id), "backpack immediately shows the displaced enchantment")
+	await capture("enchantment_slot_replaced")
+	var before := inventory.get_items()
+	flow.request_esc_overlay()
+	check(not flow.submit_enchantment_operation("replace", weapon.weapon_id, water_id, 0).success and not loadout.request_manual_attachment_replacement(weapon.weapon_id, water_id, 0), "replacement is rejected outside the finance page")
+	check(inventory.get_items() == before and weapon.get_attached_item_instances() == attached, "read-only inspection cannot replace attachments")
+	flow.close_esc_overlay()
+	await frames()
+	var lamp := WeaponInstance.new()
+	lamp.initialize("weapon_copper_lamp", player)
+	lamp.attach_item_instance(water)
+	var incompatible := {"item_instance_id": "unsupported_pierce", "effect_ids": ["pierce"]}
+	check(lamp.replace_attachment_instance(0, incompatible).is_empty() and lamp.has_effect("water") and not lamp.has_effect("pierce"), "incompatible replacement keeps the previous enchantment")
+	check(not flow.submit_enchantment_operation("replace", weapon.weapon_id, water_id, 99).success, "invalid replacement slot is rejected")
+	check(not flow.submit_enchantment_operation("replace", weapon.weapon_id, "missing_item", 0).success and inventory.get_items() == before and weapon.get_attached_item_instances() == attached, "invalid replacement preserves inventory and slot order")
+	# Force a failed ownership commit to exercise restoration of the original slot.
+	inventory.clear_equipped_weapon(incoming_id)
+	check(not flow.submit_enchantment_operation("replace", weapon.weapon_id, water_id, 0).success and weapon.get_attached_item_instances() == attached, "failed ownership update restores the exact previous attachment")
+	inventory.set_equipped_weapon(incoming_id, weapon.weapon_id)
+	workbench.refresh()
+	await _drag_enchantment_to_slot(incoming_id, 1)
+	check(str(weapon.get_attached_item_instances()[1].item_instance_id) == incoming_id and str(inventory.find_item(incoming_id).equipped_weapon_id) == weapon.weapon_id, "dragging an equipped enchantment still reorders it")
+	flow.submit_enchantment_operation("detach", weapon.weapon_id, incoming_id)
+	await _drag_enchantment_to_slot(water_id, 1)
+	check(str(weapon.get_attached_item_instances()[1].item_instance_id) == water_id, "dragging into an empty slot still equips normally")
+	for item in weapon.get_attached_item_instances():
+		flow.submit_enchantment_operation("detach", weapon.weapon_id, str(item.item_instance_id))
+	for item in original:
+		flow.submit_enchantment_operation("attach", weapon.weapon_id, str(item.item_instance_id))
+	for id in [water_id, fire_id, incoming_id]: inventory.take_unequipped_item_for_trade(id)
+	workbench.refresh()
+
+
+func _drag_enchantment_to_slot(item_id: String, index: int) -> void:
+	await frames()
+	var workbench := popup.workbench
+	var source: ItemInventoryCard
+	var target: EnchantmentSlotCard
+	for container in [workbench._inventory, workbench._slots]:
+		for card in container.get_children():
+			if card is ItemInventoryCard and str(card.item_instance.get("item_instance_id", "")) == item_id: source = card
+	for card in workbench._slots.get_children():
+		if card is EnchantmentSlotCard and card.slot_index == index: target = card
+	check(source != null and target != null, "drag source and target exist")
+	if source == null or target == null: return
+	popup._enchant_scroll.ensure_control_visible(target)
+	await frames()
+	source.force_drag({"type": "augmentation_item", "item_instance_id": item_id}, Label.new())
+	var motion := InputEventMouseMotion.new()
+	motion.position = target.get_global_rect().get_center()
+	root.push_input(motion)
+	await frames(2)
+	var release := InputEventMouseButton.new()
+	release.position = motion.position
+	release.button_index = MOUSE_BUTTON_LEFT
+	release.pressed = false
+	root.push_input(release)
+	await frames()
+	check(not root.gui_is_dragging(), "viewport completes the enchantment drop")
 
 
 func _hover_control(control: Control) -> void:

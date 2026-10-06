@@ -1,0 +1,21 @@
+{
+  "frame_size": [
+    64,
+    64
+  ],
+  "columns": 8,
+  "rows": 6,
+  "frame_count": 48,
+  "fps": 60,
+  "charge_seconds": 0.5,
+  "fade_seconds": 0.28,
+  "radius": 20,
+  "pivot": [
+    32,
+    32
+  ],
+  "last_frame_transparent": true,
+  "alpha": "straight; unpremultiplied from Godot readback",
+  "source_sha256": "79b287940a4d2eb4ac022b7b5fc2fc1a2017532f36a0fd38891e7311f6cd8019",
+  "generation": "GPU bake of existing production drawing code; no image generation API"
+}

@@ -1,0 +1,57 @@
+{
+  "retained_review_gifs": 3,
+  "bytes_removed_from_workspace": 1290885562,
+  "method": "Windows Recycle Bin (recoverable)",
+  "workspace_reduction_mib": 1231.08,
+  "files_removed_from_workspace": 4856,
+  "recycled_targets": [
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\captures",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\sample",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_install\\captures",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_install\\control",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\range_comparison.gif",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\area_comparison.gif",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\combined_comparison.gif",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\range_gif_check.png",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\sample_gpu.json",
+    "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\sample_gpu.log"
+  ],
+  "retained_production_frames": 12,
+  "validation": {
+    "verified_at_utc": "2026-10-06T15:22:11.917806+00:00",
+    "retained_gifs_valid": [
+      "artifacts/previews/range_half_bonus_review/range_review.gif",
+      "artifacts/previews/range_half_bonus_review/area_review.gif",
+      "artifacts/previews/range_half_bonus_review/combined_review.gif"
+    ],
+    "retained_production_frames_valid": [
+      "artifacts/previews/range_half_bonus_install/captures/range/000_019.png",
+      "artifacts/previews/range_half_bonus_install/captures/range/050_019.png",
+      "artifacts/previews/range_half_bonus_install/captures/range/100_019.png",
+      "artifacts/previews/range_half_bonus_install/captures/range/200_019.png",
+      "artifacts/previews/range_half_bonus_install/captures/area/000_025.png",
+      "artifacts/previews/range_half_bonus_install/captures/area/050_025.png",
+      "artifacts/previews/range_half_bonus_install/captures/area/100_025.png",
+      "artifacts/previews/range_half_bonus_install/captures/area/200_025.png",
+      "artifacts/previews/range_half_bonus_install/captures/combined/000_032.png",
+      "artifacts/previews/range_half_bonus_install/captures/combined/050_032.png",
+      "artifacts/previews/range_half_bonus_install/captures/combined/100_032.png",
+      "artifacts/previews/range_half_bonus_install/captures/combined/200_032.png"
+    ],
+    "retained_contact_sheets_and_posters_valid": true,
+    "retained_capture_reports": 9,
+    "temporary_targets_absent": true,
+    "edited_markdown_utf8_valid": true,
+    "production_resource_check": {
+      "files": 1912,
+      "baseline_sha256": "323b7d7e258fcc40fbfd07c0d2b0b628a946c1089785556a04ce5559045686f2",
+      "current_sha256": "fefea109ddd39dda71b956ef60e79bb0d17586984859a9e92c969fa171663e56",
+      "unchanged_files": 1911,
+      "changed_files": [
+        "assets/sprites/effects/README.md"
+      ],
+      "baseline_matches_when_only_effects_readme_historical_hash_is_substituted": true,
+      "note": "The effects README was updated during cleanup; preserved as found. Cleanup mutations were confined to the two range preview artifact directories and the range checklist."
+    }
+  }
+}

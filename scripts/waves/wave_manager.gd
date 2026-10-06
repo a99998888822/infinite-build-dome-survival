@@ -115,16 +115,25 @@ func _process(delta: float) -> void:
 	if finance_system != null:
 		finance_system.tick(delta)
 	if wave_time_left <= 0.0:
-		if not cleanup_active and get_living_miniboss_count() > 0:
-			cleanup_active = true
-			cleanup_time_left = CLEANUP_SECONDS
+		if not cleanup_active:
 			spawn_timers_ms.clear()
 			_elite_spawn_schedule.clear()
 			_challenge_elite_schedule.clear()
-		elif not cleanup_active or cleanup_time_left <= 0.0 or get_living_miniboss_count() == 0:
+			if get_living_enemy_count() > 0:
+				cleanup_active = true
+				cleanup_time_left = CLEANUP_SECONDS
+		if not cleanup_active or cleanup_time_left <= 0.0 or get_living_enemy_count() == 0:
 			if not _wave_finish_queued:
 				_wave_finish_queued = true
 				_finish_elapsed_wave.call_deferred()
+
+
+func get_living_enemy_count() -> int:
+	var count := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive() and enemy_root.is_ancestor_of(enemy):
+			count += 1
+	return count
 
 
 func get_living_miniboss_count() -> int:
@@ -276,7 +285,7 @@ func finish_current_wave() -> void:
 
 
 func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyController:
-	if cleanup_active or _wave_finish_queued or not _finishing_wave_id.is_empty():
+	if cleanup_active or _wave_finish_queued or not _finishing_wave_id.is_empty() or (running and wave_time_left <= 0.0):
 		return null
 	var enemy_data := DataRegistry.get_record("enemies", enemy_id)
 	if enemy_data.is_empty():
@@ -607,7 +616,7 @@ func _on_interest_settled(result: Dictionary) -> void:
 
 
 func _process_spawn_timers(delta: float) -> void:
-	if cleanup_active or _wave_finish_queued:
+	if cleanup_active or _wave_finish_queued or (running and wave_time_left <= 0.0):
 		return
 	# All spawns due in this update share a cluster, including elite replacements.
 	var batch_positions: Array[Vector2] = []

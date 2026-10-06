@@ -18,6 +18,7 @@ var headers: Array[WeaponHeader] = []
 var weapons: Array[WeaponInstance] = []
 var cards: Array[Panel] = []
 var icons: Array[TextureRect] = []
+var cooldown_masks: Array[ColorRect] = []
 var numbers: Array[Label] = []
 var timers: Array[Label] = []
 var selected_index := -1
@@ -34,6 +35,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		child.queue_free()
 	cards.clear()
 	icons.clear()
+	cooldown_masks.clear()
 	numbers.clear()
 	timers.clear()
 	headers.clear()
@@ -49,11 +51,19 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var material := ShaderMaterial.new()
-		material.shader = COOLDOWN_SHADER
-		icon.material = material
 		card.add_child(icon)
 		icons.append(icon)
+		# A separate disk also covers transparent pixels around narrow weapon art.
+		var mask := ColorRect.new()
+		mask.name = "CooldownMask"
+		mask.color = Color(0.16, 0.17, 0.18, 0.55)
+		mask.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var material := ShaderMaterial.new()
+		material.shader = COOLDOWN_SHADER
+		mask.material = material
+		mask.hide()
+		card.add_child(mask)
+		cooldown_masks.append(mask)
 		var number := _label(card, 12)
 		number.text = str(i + 1) if i < 9 else "0" if i == 9 else "Tab·1"
 		numbers.append(number)
@@ -109,6 +119,8 @@ func apply_layout() -> void:
 		cards[i].size = Vector2.ONE * slot_size
 		icons[i].position = Vector2(8, 14)
 		icons[i].size = Vector2(slot_size - 16, slot_size - 18)
+		cooldown_masks[i].position = Vector2(4, 4)
+		cooldown_masks[i].size = Vector2.ONE * (slot_size - 8)
 		numbers[i].position = Vector2(4, 0)
 		timers[i].position = Vector2(20, 0)
 		timers[i].size = Vector2(slot_size - 24, 20)
@@ -120,7 +132,8 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	if index < 0 or index >= cards.size():
 		return
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
-	(icons[index].material as ShaderMaterial).set_shader_parameter("remaining", fraction)
+	(cooldown_masks[index].material as ShaderMaterial).set_shader_parameter("remaining", fraction)
+	cooldown_masks[index].visible = fraction > 0.0
 	var text := "施放中" if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
 	if timers[index].text != text:
 		timers[index].text = text

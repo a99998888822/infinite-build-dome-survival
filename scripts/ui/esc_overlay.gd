@@ -47,6 +47,8 @@ var _grid_layout_retry_in_progress: bool = false
 
 
 func _ready() -> void:
+	if relic_tooltip != null:
+		relic_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 	_ensure_backdrop()
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
@@ -187,7 +189,7 @@ func _show_item_tooltip(anchor_card: ItemInventoryCard, bbcode_text: String) -> 
 	panel_style.set_border_width_all(1)
 	panel_style.set_corner_radius_all(4)
 	_item_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
-	add_child(_item_tooltip_panel)
+	GameTooltipLayer.for_owner(self).add_child(_item_tooltip_panel)
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 10)

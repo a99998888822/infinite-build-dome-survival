@@ -37,6 +37,7 @@ var _header_line: ColorRect
 var _footer_line: ColorRect
 var _tab_marks: Array[ColorRect] = []
 var _key_descriptions: Array[Label] = []
+var _key_labels: Array[Label] = []
 
 
 func _ready() -> void:
@@ -206,12 +207,11 @@ func _build_combat(parent: Node) -> void:
 	combat_settings.name = "CombatSettings"
 	combat_settings.add_theme_constant_override("separation", 0)
 	parent.add_child(combat_settings)
-	# UI placeholder only; not persisted or connected to combat behavior yet.
 	wheelchair_mode = _checkbox("轮椅模式", PAPER)
 	wheelchair_mode.name = "WheelchairMode"
 	wheelchair_mode.custom_minimum_size.y = 28
 	wheelchair_mode.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	wheelchair_mode.set_pressed_no_signal(false)
+	wheelchair_mode.toggled.connect(func(value: bool): CombatSettings.set_option("wheelchair_mode", value))
 	combat_settings.add_child(wheelchair_mode)
 	_space(combat_settings, 16)
 	_label(combat_settings, "移动方式", 16).custom_minimum_size.y = 24
@@ -264,7 +264,9 @@ func _build_combat(parent: Node) -> void:
 		keycap.custom_minimum_size = Vector2(100, 28)
 		keycap.add_theme_stylebox_override("panel", _box(Color("1d2a23"), Color("4a5b4d")))
 		row.add_child(keycap)
-		_label(keycap, key_name, 12).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var key_label := _label(keycap, key_name, 12)
+		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_key_labels.append(key_label)
 		var description := _label(row, "", 14)
 		description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -339,11 +341,22 @@ func sync_combat() -> void:
 		mode_buttons[i].set_pressed_no_signal(selected)
 		mode_checks[i].visible = selected
 	quick_cast.set_pressed_no_signal(CombatSettings.quick_cast)
+	wheelchair_mode.set_pressed_no_signal(CombatSettings.wheelchair_mode)
 	show_hints.set_pressed_no_signal(CombatSettings.show_hints)
 	_key_descriptions[0].text = "按编号直接施放，无需进入瞄准" if CombatSettings.quick_cast else "按武器栏编号选择，再次选武器会切换瞄准"
 	_key_descriptions[1].text = "无需点击左键确认" if CombatSettings.quick_cast else "瞄准时确认施放；成功后退出瞄准"
 	_key_descriptions[2].text = "取消瞄准；使用方向键 / WASD 移动" if CombatSettings.keyboard_movement else "取消瞄准并移动至目的地；S 停止移动"
 	_key_descriptions[3].text = "优先取消瞄准；未瞄准时打开暂停"
+	_key_labels[0].text = "鼠标滚轮" if CombatSettings.keyboard_movement else "数字键"
+	if CombatSettings.keyboard_movement:
+		_key_descriptions[0].text = "循环切换当前武器，鼠标旁图标同步切换"
+		_key_descriptions[1].text = "单击立即施放当前武器" if CombatSettings.quick_cast else "单击显示指示器，再次单击施放"
+	if CombatSettings.wheelchair_mode:
+		_key_labels[0].text = "自动攻击"
+		_key_descriptions[0].text = "无需按键，武器在攻击范围内自动施放"
+		_key_descriptions[1].text = "无需点击左键确认"
+		_key_descriptions[2].text = "使用方向键 / WASD 移动" if CombatSettings.keyboard_movement else "移动至目的地；S 停止移动"
+		_key_descriptions[3].text = "打开暂停"
 
 
 func _basic_row(title: String) -> HBoxContainer:

@@ -34,6 +34,7 @@ func add_item_from_base(
 		"item_instance_id": "item_%06d" % _next_instance_number,
 		"base_item_id": base_item_id,
 		"category": str(base_data.get("category", "augmentation")),
+		"enchantment_type": str(base_data.get("enchantment_type", "")),
 		"rarity": str(base_data.get("rarity", "common")),
 		"display_name": str(base_data.get("display_name", base_item_id)),
 		"description": str(base_data.get("description", "")),
@@ -105,6 +106,25 @@ func set_equipped_weapon(item_instance_id: String, weapon_id: String) -> bool:
 		items_changed.emit()
 		return true
 	return false
+
+
+func replace_equipped_item(weapon_id: String, old_item_id: String, new_item_id: String) -> bool:
+	if weapon_id.is_empty() or old_item_id == new_item_id:
+		return false
+	var old_item: Dictionary = {}
+	var new_item: Dictionary = {}
+	for item in _items:
+		if str(item.get("item_instance_id", "")) == old_item_id: old_item = item
+		if str(item.get("item_instance_id", "")) == new_item_id: new_item = item
+	if old_item.is_empty() or new_item.is_empty():
+		return false
+	if str(old_item.get("equipped_weapon_id", "")) != weapon_id or not str(new_item.get("equipped_weapon_id", "")).is_empty():
+		return false
+	# Observers see both ownership changes together, with both instances intact.
+	old_item["equipped_weapon_id"] = ""
+	new_item["equipped_weapon_id"] = weapon_id
+	items_changed.emit()
+	return true
 
 
 func clear_equipped_weapon(item_instance_id: String) -> bool:

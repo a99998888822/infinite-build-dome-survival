@@ -125,6 +125,28 @@ func request_manual_attachment_move(weapon_id: String, item_instance_id: String,
 	return true
 
 
+func request_manual_attachment_replacement(weapon_id: String, item_instance_id: String, target_index: int) -> bool:
+	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+		return false
+	if owner_player == null or owner_player.item_inventory == null:
+		return false
+	var weapon := get_weapon_instance(weapon_id)
+	var inventory := owner_player.item_inventory
+	var item := inventory.find_item(item_instance_id)
+	if weapon == null or item.is_empty() or not str(item.get("equipped_weapon_id", "")).is_empty():
+		return false
+	if not ATTACHABLE_ITEM_CATEGORIES.has(str(item.get("category", ""))):
+		return false
+	var replaced := weapon.replace_attachment_instance(target_index, item)
+	if replaced.is_empty():
+		return false
+	if not inventory.replace_equipped_item(weapon_id, str(replaced.get("item_instance_id", "")), item_instance_id):
+		weapon.replace_attachment_instance(target_index, replaced)
+		return false
+	weapon_attachment_changed.emit(weapon_id, item_instance_id)
+	return true
+
+
 func attach_item_to_weapon(weapon_id: String, item_instance_id: String) -> bool:
 	if owner_player == null or owner_player.item_inventory == null:
 		return false
@@ -238,6 +260,8 @@ func tick(delta: float) -> void:
 		return
 	if active_combat_enabled:
 		active_casting.tick(delta)
+		if CombatSettings.wheelchair_mode and str(GameGlobal.get_runtime_flag("main_flow_state", "")) == MainFlowCoordinator.STATE_WAVE_COMBAT:
+			active_casting.auto_attack()
 		return
 	for weapon in weapon_instances:
 		if weapon.is_ritual_tome():

@@ -37,7 +37,7 @@ func setup(texture: Texture2D) -> void:
 func configure_view(size: Vector2, _world_x: float) -> void:
 	view_size = size
 	# Only fill the sky-side silhouette. Everything below shares the native ground.
-	land.size = Vector2(size.x,ceilf(size.x/16.0)+(86.0 if coverage_debug else 1.0))
+	land.size = Vector2(size.x,BattleEnvironment.get_sky_height(size.x)+(86.0 if coverage_debug else 1.0))
 
 
 func set_surface_transform(parameters: Dictionary, point: Vector2) -> void:

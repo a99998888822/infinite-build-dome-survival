@@ -1,0 +1,81 @@
+{
+  "assets": [
+    {
+      "path": "assets/sprites/effects/water_wave/water_atlas.json",
+      "sha256": "9528b00eefee87bdc95a5f3378b44013e60ac2bb1213a5694cbc91dcee5ed04f"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d0_p0.png",
+      "sha256": "450358dd4f022dc4c607f44bd5c733cc285abb5b486b0745b7f461cbcc87f7d1"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d0_p1.png",
+      "sha256": "69bfd664747f37ebfaac051a14a3e779704a31c21c610e46ad315dc5768901dc"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d0_p2.png",
+      "sha256": "f1bff1a21d7e3525849cc75712dbb61a5cb3d8d89b0744296c7a0d64dace8884"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d0_p3.png",
+      "sha256": "62edc4517244012490b427f20ba2d96fc43460824897966db85d86c839e1387a"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d1_p0.png",
+      "sha256": "20a978e4276c76105f73af9b2ea1c5bbd07893c9a255e87d25d28fc90e3b6f46"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d1_p1.png",
+      "sha256": "66c0778711567e29931dc17fb870a9947c7b4bc3e3b85ba9e0bc435f2be635df"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d1_p2.png",
+      "sha256": "1b4757eb31cd91a28b1ba70f03b9f898195f68b916f2ecd8c3681cb25d304c41"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d1_p3.png",
+      "sha256": "743bdb59b69ddb718de865bf5d4d2d0eb6913c746bccfc4dbd596177af4c6ba2"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d2_p0.png",
+      "sha256": "46af13798026803632668f1d365465370e5931990a32f0ad1040cc9740ca6ac8"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d2_p1.png",
+      "sha256": "fa334e230232c4e30c98ff4a19785cc80b9bff166ad28270061a313f8160c57f"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d2_p2.png",
+      "sha256": "f8faedb0c3c4e1b51aca9f7e1752f80b482b3505d422a2cb87704bfeaf1d55a3"
+    },
+    {
+      "path": "assets/sprites/effects/water_wave/water_d2_p3.png",
+      "sha256": "2f031bf804fba8801f096545a4332c590f720ac2d485d4a0895046b3f87aa26f"
+    },
+    {
+      "path": "assets/sprites/effects/ice_shards/freeze_atlas.json",
+      "sha256": "3d9d0afd93281ba7e0a909b3aa528be1ff759b74d032a7778b52b60d0e5bd9b5"
+    },
+    {
+      "path": "assets/sprites/effects/ice_shards/freeze_d0.png",
+      "sha256": "3f7013c3f0b398dcb1ba1c6a38d58c2e82f26f19ebfff82fb01d5ec0840e0f23"
+    },
+    {
+      "path": "assets/sprites/effects/ice_shards/freeze_d1.png",
+      "sha256": "85eaef28a459c693f55ad0151f04b63ea7372b7ba736974b8793e481b17111a1"
+    },
+    {
+      "path": "assets/sprites/effects/ice_shards/thaw_d0.png",
+      "sha256": "3e5a3db09de43a414643edb806723a0993e57365a37056b353e37edde4946809"
+    },
+    {
+      "path": "assets/sprites/effects/ice_shards/thaw_d1.png",
+      "sha256": "4464657093f4d6de445c88c80e17961b7c47d4d5eb9d6a094a3e2c537cac9583"
+    }
+  ],
+  "scripts": {
+    "scripts/effects/water_wave_effect.gd": "b60b8056ba92615e29bad071e5a8d019f5f5c211fde9335789d717bdc406e27e",
+    "scripts/effects/element_reaction_visual.gd": "2877951dd34686d10751f9d7b2c7bbff3cdc96f7199db8c0122b41f722bef2a3",
+    "scripts/tests/pixel_combat_effect_test.gd": "317c2f2116e2995671240b558aff1512def64c651b1b65507ca8f6990c0ab939"
+  }
+}

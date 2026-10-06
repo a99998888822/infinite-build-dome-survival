@@ -25,6 +25,11 @@ var first_offset := 40.0
 var interval := 0.1
 var impact_age := -1.0
 var event: DamageEvent
+var lightning_count := 0
+var next_lightning := 0
+var lightning_first := 40.0
+var lightning_spacing := 64.0
+var lightning_duration := 0.4
 
 
 func initialize(source: WeaponInstance, direction: Vector2) -> void:
@@ -48,14 +53,28 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	first_offset = float(weapon.weapon_data.ground_first_offset) * range_scale
 	interval = float(weapon.weapon_data.ground_node_interval_ms) / 1000.0
 	event = weapon.calculate_damage_events()[0]
+	if weapon.has_effect("electric_spark"):
+		# Sample the full ray independently of the five native damage cells.
+		# Keep the first point near the caster and include the exact far endpoint.
+		var reach := weapon.get_attack_range()
+		lightning_first = minf(float(weapon.weapon_data.ground_first_offset), reach)
+		var span := maxf(0.0, reach - lightning_first)
+		var max_spacing := maxf(1.0, float(weapon.weapon_data.ground_node_spacing))
+		lightning_count = ceili(span / max_spacing) + 1
+		lightning_spacing = span / (lightning_count - 1) if lightning_count > 1 else 0.0
+		lightning_duration = (node_count - 1) * interval
 	for angle in weapon.get_projectile_angles():
-		rays.append({"direction": heading.rotated(deg_to_rad(angle)), "hits": {}, "blocked": false})
+		rays.append({"direction": heading.rotated(deg_to_rad(angle)), "hits": {}, "blocked": false, "lightning_blocked": false})
 	# Origin and heading stay locked even if the player moves during the windup.
 	queue_redraw()
 
 
 func is_attacking() -> bool:
-	return not cancelled and (age < appear + slam + contact + fade or (not blocked and next_node < node_count))
+	return not cancelled and (age < appear + slam + contact + fade or (not blocked and next_node < node_count) or _has_pending_lightning())
+
+
+func _has_pending_lightning() -> bool:
+	return next_lightning < lightning_count and rays.any(func(ray: Dictionary): return not ray.lightning_blocked)
 
 
 func hammer_opacity() -> float:
@@ -83,6 +102,16 @@ func _physics_process(delta: float) -> void:
 					_emit_node(next_node, ray)
 				blocked = blocked and bool(ray.blocked)
 			next_node += 1
+		# This queue has its own wall state: a blocked distant native node must
+		# not discard nearer lightning samples that still lie before the wall.
+		while _has_pending_lightning():
+			var when := lightning_duration * next_lightning / maxf(lightning_count - 1, 1)
+			if impact_age + 0.000001 < when:
+				break
+			for ray in rays:
+				if not ray.lightning_blocked:
+					_emit_lightning_sample(next_lightning, ray)
+			next_lightning += 1
 	if age > hit_at + (node_count - 1) * interval + 1.25:
 		cancel()
 	queue_redraw()
@@ -99,7 +128,7 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 	var when := appear + slam + index * interval
 	nodes.append({"point": point - global_position, "at": when, "child": false, "direction": direction, "length": spacing})
 	# Resolve the node once; real enemies below do not fire this dispatcher again.
-	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction)
+	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "", "electric_spark" if lightning_count > 0 else "")
 	var start := global_position if index == 0 else point - direction * spacing * 0.5
 	var length := offset + spacing * 0.5 if index == 0 else spacing
 	if weapon.use_active_range_rules:
@@ -118,9 +147,31 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 			var branch_event := event.continue_after_split(profile)
 			branch_event.damage = maxi(1, roundi(branch_event.damage * float(profile.damage_multiplier)))
 			branch_event.elemental_damage_scale *= float(profile.damage_multiplier)
-			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction)
+			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "", "electric_spark" if lightning_count > 0 else "")
 			_native_damage(point, branch_direction, branch_length, float(profile.damage_multiplier), ray.hits)
 	node_created.emit(index, point)
+
+
+func _emit_lightning_sample(index: int, ray: Dictionary) -> void:
+	var direction: Vector2 = ray.direction
+	var point := global_position + direction * (lightning_first + index * lightning_spacing)
+	if not clear_path(self, global_position, point):
+		ray.lightning_blocked = true
+		return
+	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "electric_spark")
+	# Split-before-lightning samples the same translated branch endpoints;
+	# only the enchantment is repeated, not native damage or other effects.
+	for profile in weapon.get_split_profiles():
+		for child_index in int(profile.child_count):
+			var sign_value := -1.0 if child_index % 2 == 0 else 1.0
+			var branch_direction := direction.rotated(deg_to_rad(maxf(float(profile.spread_angle), 25.0) * sign_value))
+			var endpoint := point + branch_direction * float(weapon.weapon_data.ground_branch_length)
+			if not clear_path(self, point, endpoint):
+				continue
+			var branch_event := event.continue_after_split(profile)
+			branch_event.damage = maxi(1, roundi(branch_event.damage * float(profile.damage_multiplier)))
+			branch_event.elemental_damage_scale *= float(profile.damage_multiplier)
+			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "electric_spark")
 
 
 func _native_damage(origin: Vector2, direction: Vector2, length: float, power: float, ray_hits: Dictionary) -> void:

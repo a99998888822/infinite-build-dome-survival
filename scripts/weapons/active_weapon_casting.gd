@@ -13,6 +13,45 @@ func can_cast(weapon: WeaponInstance) -> bool:
 	var state := state_for(weapon)
 	return not state.executing and float(state.remaining) <= 0.0
 
+func auto_attack() -> void:
+	# Use the same snapshots, animation and cooldown as a manual cast.
+	for weapon: WeaponInstance in loadout.weapon_instances:
+		if not can_cast(weapon):
+			continue
+		var target := _auto_target(weapon)
+		if target != null:
+			cast(weapon, target.global_position)
+
+func _auto_target(weapon: WeaponInstance) -> EnemyController:
+	var origin := weapon.get_attack_origin()
+	var reach := weapon.get_attack_range()
+	var nearest: EnemyController
+	var nearest_distance := INF
+	for node in EnemyRegistry.get_registered_enemies():
+		var enemy := node as EnemyController
+		if not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_alive():
+			continue
+		if enemy is EliteRusher and enemy.skill_state == "spawn":
+			continue
+		var offset := enemy.global_position - origin
+		var distance := offset.length_squared()
+		if distance >= nearest_distance:
+			continue
+		if weapon.is_ritual_tome():
+			if (offset / weapon.get_domain_axes().max(Vector2.ONE)).length_squared() > 1.0:
+				continue
+		elif weapon.is_grenade():
+			if (offset / AttackFootprint.grenade_range_axes(weapon).max(Vector2.ONE)).length_squared() > 1.0:
+				continue
+		elif weapon.is_copper_lamp():
+			if not AttackFootprint.in_lamp_cone(offset, weapon.owner_player.last_move_direction, reach, weapon.get_lamp_cone_degrees()):
+				continue
+		elif distance > reach * reach:
+			continue
+		nearest = enemy
+		nearest_distance = distance
+	return nearest
+
 func tick(delta: float) -> void:
 	for weapon: WeaponInstance in loadout.weapon_instances:
 		var state := state_for(weapon)

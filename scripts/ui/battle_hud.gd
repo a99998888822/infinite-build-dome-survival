@@ -414,8 +414,16 @@ func _refresh_active_combat() -> void:
 		var weapon := loadout.weapon_instances[i]
 		var state := loadout.active_casting.state_for(weapon)
 		var selected := battle != null and battle.active_controller != null and battle.active_controller.selected_weapon == weapon
+		if battle != null and battle.active_controller != null and battle.active_controller.mouse_weapon_controls():
+			selected = battle.active_controller.current_weapon == weapon
 		combat_bar.update_slot(i, state.remaining, state.total, state.executing, selected)
 	var move_text := "WASD / 方向键移动" if CombatSettings.keyboard_movement else "右键移动 · S 停止"
+	if CombatSettings.wheelchair_mode:
+		combat_hints.text = move_text + "  ·  轮椅模式：自动攻击  ·  Esc 暂停"
+		return
+	if CombatSettings.keyboard_movement:
+		combat_hints.text = move_text + "  ·  滚轮切换武器" + ("  ·  左键快捷施放" if CombatSettings.quick_cast else "  ·  左键瞄准，再次左键施放") + "  ·  右键 / Esc 取消瞄准"
+		return
 	combat_hints.text = move_text + ("  ·  1—9 / 0 快捷施放" if CombatSettings.quick_cast else "  ·  1—9 / 0 选武器  ·  左键施放") + "  ·  右键 / Esc 取消瞄准"
 
 
@@ -624,7 +632,7 @@ func _refresh_wave_display() -> void:
 	cleanup_label.visible = _wave_manager.cleanup_active and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
 	if _wave_manager.cleanup_active:
 		time_left = _wave_manager.cleanup_time_left
-		cleanup_label.text = "剩余小 Boss：%d  ·  已停止增援" % _wave_manager.get_living_miniboss_count()
+		cleanup_label.text = "剩余敌人：%d" % _wave_manager.get_living_enemy_count()
 	if wave_label != null:
 		wave_label.text = "第 %d 波" % wave_number
 		var challenge: Dictionary = _wave_manager.wave_challenges.active
@@ -1145,7 +1153,7 @@ func _show_stat_tooltip(anchor_control: Control, stat_id: String) -> void:
 	panel_style.content_margin_top = 6
 	panel_style.content_margin_bottom = 6
 	_stat_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
-	add_child(_stat_tooltip_panel)
+	GameTooltipLayer.for_owner(self).add_child(_stat_tooltip_panel)
 	_stat_tooltip_label = Label.new()
 	_stat_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_stat_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1295,7 +1303,7 @@ func _show_bond_tooltip() -> void:
 	panel_style.set_border_width_all(1)
 	panel_style.set_corner_radius_all(4)
 	_bond_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
-	add_child(_bond_tooltip_panel)
+	GameTooltipLayer.for_owner(self).add_child(_bond_tooltip_panel)
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 8)
 	margin.add_theme_constant_override("margin_top", 5)

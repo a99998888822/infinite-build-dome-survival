@@ -143,7 +143,7 @@ func _run() -> void:
 		if ground: LightningParticleEffect.spawn_ground_strike(host, Vector2.ZERO, weapon, event)
 		else: LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
 		await frames()
-		check(enemies[0].current_hp == (9856 if ground else 9890) and not enemies[0].has_status("wet"), "wet electric is same-target extra hit ground=" + str(ground))
+		check(enemies[0].current_hp == (9880 if ground else 9890) and not enemies[0].has_status("wet"), "wet electric is same-target extra hit ground=" + str(ground))
 	await setup([Vector2.ZERO])
 	element(enemies[0], "fire")
 	LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
@@ -237,9 +237,10 @@ func _test_projected_frost_coverage() -> void:
 	await setup([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
 	equip(["scroll_ice"])
 	var body_radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
+	var body_offset: Vector2 = enemies[0].get_node("CollisionShape2D").position
 	var positions := [Vector2(51.2 + body_radius - 1.0, 0), Vector2(51.2 + body_radius + 1.0, 0),
 		Vector2(0, 28.16 + body_radius - 1.0), Vector2(0, 28.16 + body_radius + 1.0), Vector2(0, 60)]
-	for index in positions.size(): enemies[index].position = positions[index]
+	for index in positions.size(): enemies[index].position = positions[index] - body_offset
 	await frames()
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
 	var field: IceFieldEffect
@@ -253,7 +254,8 @@ func _test_projected_frost_coverage() -> void:
 	field.expand_from_wind(1.35)
 	check(enemies[1].current_hp == 9975 and enemies[3].current_hp == 9975, "wind expands both ellipse axes and reaches newly covered bodies")
 	check(enemies[0].current_hp == 9975 and enemies[2].current_hp == 9975, "projected expansion does not repeat damage")
-	await setup([Vector2(100, 0), Vector2(0, 75)])
+	var outside_expanded_edge := Vector2(0, 51.2 * 1.5 * 0.55 + body_radius + 2.0)
+	await setup([Vector2(75, 0) - body_offset, outside_expanded_edge - body_offset])
 	equip(["scroll_ice"])
 	weapon.runtime_stats.damage_area_size = 100.0
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)

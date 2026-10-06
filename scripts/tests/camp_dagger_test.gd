@@ -105,9 +105,9 @@ func _run() -> void:
 	check(hits.size() == 1, "actual enemy collider edge contact counts")
 	check(CampDagger.find_target(weapon) == enemies[0], "acquisition sees reachable edge even when center is outside range")
 	weapon.runtime_stats.area_size = 100
-	check(dagger.blade_segment(dagger.cuts[0], 0.11)[1].length() == 180 and weapon.get_hit_radius() == 8, "range scales rendered blade path without changing contact thickness")
+	check(dagger.blade_segment(dagger.cuts[0], 0.11)[1].length() == 135 and weapon.get_hit_radius() == 8, "range scales rendered blade path without changing contact thickness")
 	weapon.runtime_stats.damage_area_size = 100
-	check(weapon.get_hit_radius() == 16 and weapon.get_attack_range() == 200, "damage area separately scales blade thickness")
+	check(weapon.get_hit_radius() == 12 and weapon.get_attack_range() == 150, "damage area separately scales blade thickness")
 	check(dagger.blade_segment(dagger.cuts[0], 0.11)[0].length() == 21, "increasing reach does not create an inner blind ring")
 
 	dagger = await fixture([Vector2(16, 0), Vector2(36, 0)])

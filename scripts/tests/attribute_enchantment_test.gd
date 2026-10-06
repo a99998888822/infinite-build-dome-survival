@@ -2,7 +2,7 @@ extends "res://scripts/tests/bounce_test.gd"
 
 const IDS := ["might", "wisdom", "multishot", "domain", "precision", "lethality", "haste"]
 const BONUS_KEYS := ["all_damage_percent", "element_damage_percent", "projectile_count", "damage_area_size", "crit_chance", "crit_damage", "attack_speed"]
-const AMOUNTS := [30, 30, 1, 30, 25, 100, 25]
+const AMOUNTS := [20, 30, 1, 30, 25, 50, 25]
 
 
 func room(source: WeaponInstance) -> void:
@@ -78,17 +78,17 @@ func _run() -> void:
 		var plain_base := plain.get_elemental_base_damage()
 		equip_bonus(weapon, "might")
 		var mighty := weapon.calculate_damage_events()[0]
-		check(mighty.damage == roundi(plain.damage * 1.3), "might boosts native " + str(record.id))
-		check(is_equal_approx(mighty.get_elemental_base_damage(), plain_base * 1.3), "might boosts elemental base once")
+		check(mighty.damage == roundi(plain.damage * 1.2), "might boosts native " + str(record.id))
+		check(is_equal_approx(mighty.get_elemental_base_damage(), plain_base * 1.2), "might boosts elemental base once")
 		equip_bonus(weapon, "wisdom")
 		var both := weapon.calculate_damage_events()[0]
-		check(both.damage == roundi(plain.damage * (1.69 if weapon.get_attack_kind() == "element" else 1.3)), "wisdom affects only elemental native damage")
-		check(is_equal_approx(both.get_elemental_base_damage(), plain_base * 1.69), "might and wisdom compose once each")
+		check(both.damage == roundi(plain.damage * (1.56 if weapon.get_attack_kind() == "element" else 1.2)), "wisdom affects only elemental native damage")
+		check(is_equal_approx(both.get_elemental_base_damage(), plain_base * 1.56), "might and wisdom compose once each")
 		var delayed := both.duplicate_event()
 		delayed.elemental_damage_scale *= 0.6
-		check(is_equal_approx(delayed.get_elemental_base_damage(), plain_base * 1.69 * 0.6), "child multiplier preserves local bonuses")
+		check(is_equal_approx(delayed.get_elemental_base_damage(), plain_base * 1.56 * 0.6), "child multiplier preserves local bonuses")
 		for item in weapon.get_attached_item_instances(): loadout.detach_item_from_weapon(weapon.weapon_id, item.item_instance_id)
-		check(is_equal_approx(both.get_elemental_base_damage(), plain_base * 1.69) and is_equal_approx(weapon.calculate_damage_events()[0].get_elemental_base_damage(), plain_base), "launched damage stays captured after removal")
+		check(is_equal_approx(both.get_elemental_base_damage(), plain_base * 1.56) and is_equal_approx(weapon.calculate_damage_events()[0].get_elemental_base_damage(), plain_base), "launched damage stays captured after removal")
 
 	await fixture(BOW, [Vector2(10, 0)])
 	room(weapon)
@@ -97,11 +97,11 @@ func _run() -> void:
 	player.modifier_stack.set_base_stat("damage_percent", 50)
 	equip_bonus(weapon, "might")
 	var boosted := weapon.calculate_damage_events()[0]
-	check(boosted.damage == 195 and is_equal_approx(boosted.get_elemental_base_damage(), 221), "might multiplies existing damage and flat elemental bonus")
+	check(boosted.damage == 180 and is_equal_approx(boosted.get_elemental_base_damage(), 204), "might multiplies existing damage and flat elemental bonus")
 	var steam := ElementReactionResolver.apply_element(enemies[0], "fire", {"original_damage": boosted.get_elemental_base_damage(), "source_id": BOW})
-	check(is_equal_approx(enemies[0]._burn_damage_per_tick, 22.1), "burning receives increased elemental damage")
+	check(is_equal_approx(enemies[0]._burn_damage_per_tick, 20.4), "burning receives increased elemental damage")
 	steam = ElementReactionResolver.apply_element(enemies[0], "water", {"original_damage": boosted.get_elemental_base_damage(), "source_id": BOW})
-	check(steam.steam_damage == 332, "element reaction receives increased damage exactly once")
+	check(steam.steam_damage == 306, "element reaction receives increased damage exactly once")
 
 	for bonus_id in ["might", "wisdom"]:
 		await fixture(BOW, [Vector2(10, 0)], ["scroll_" + bonus_id, "scroll_water"])
@@ -109,7 +109,7 @@ func _run() -> void:
 		player.modifier_stack.set_base_stat("element_damage", 20)
 		WaterWaveEffect.spawn(host, Vector2.ZERO, weapon, weapon.calculate_damage_events()[0])
 		await frames()
-		check(enemies[0].current_hp == 9930, "real water impact deals 70 with " + bonus_id)
+		check(enemies[0].current_hp == (9935 if bonus_id == "might" else 9930), "real water impact includes revised local bonus " + bonus_id)
 	await fixture(BOW, [Vector2(10, 0)], ["scroll_might", "scroll_explosion"])
 	ExplosionEffect.spawn(host, Vector2.ZERO, weapon, weapon.calculate_damage_events()[0])
 	await frames()
@@ -129,13 +129,14 @@ func _run() -> void:
 	var multi := weapon.get_attached_item_instances()[0]
 	loadout.upgrade_weapon(BOW)
 	check(weapon.get_stat("projectile_count") == weapon.get_weapon_stat("projectile_count") + player.get_stat("projectile_count"), "upgrade does not bake or duplicate the extra projectile")
+	var upgraded_count := weapon.get_stat("projectile_count")
 	loadout.detach_item_from_weapon(BOW, multi.item_instance_id)
-	check(weapon.get_stat("projectile_count") == 1, "upgrade then detach restores base count")
+	check(weapon.get_stat("projectile_count") == upgraded_count - 1, "detach removes only the enchantment projectile and retains the upgrade")
 
 	await fixture(BOW, [], ["scroll_precision", "scroll_lethality"])
 	normalize_damage(weapon)
-	check(weapon.get_stat("crit_chance") == 25 and weapon.get_stat("crit_damage") == 250, "crit bonuses use percentage points")
-	check(weapon.calculate_damage_events(true)[0].damage == 250, "actual critical hit uses 250 percent")
+	check(weapon.get_stat("crit_chance") == 25 and weapon.get_stat("crit_damage") == 200, "crit bonuses use percentage points")
+	check(weapon.calculate_damage_events(true)[0].damage == 200, "actual critical hit uses 200 percent")
 	player.modifier_stack.set_base_stat("crit_chance", 90)
 	check(weapon.get_stat("crit_chance") == 100, "crit chance clamps at 100 percent")
 	check(player.get_stat("crit_chance") == 90, "crit clamp does not change player stats")
@@ -149,6 +150,12 @@ func _run() -> void:
 	host.queue_free()
 	await frames()
 	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	for voice in AudioManager.get_children():
+		if voice is AudioStreamPlayer:
+			voice.stop()
+			voice.stream = null
+	await get_tree().create_timer(0.3).timeout
 	CampProgression.end_transient_session()
 	print("ATTRIBUTE_ENCHANTMENT_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)

@@ -1,0 +1,146 @@
+[
+  {
+    "repeat": 1,
+    "enemies": 20,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      1447,
+      1447
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 20,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      1447,
+      1447
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 1,
+    "enemies": 80,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      10539,
+      10539
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 80,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      10539,
+      10539
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 1,
+    "enemies": 200,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      18889,
+      18889
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 200,
+    "spell": "water",
+    "damage_equal": true,
+    "damage": [
+      18889,
+      18889
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 1,
+    "enemies": 20,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      1860,
+      1860
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 20,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      1860,
+      1860
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 1,
+    "enemies": 80,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      13218,
+      13218
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 80,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      13218,
+      13218
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 1,
+    "enemies": 200,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      23611,
+      23611
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  },
+  {
+    "repeat": 2,
+    "enemies": 200,
+    "spell": "combo",
+    "damage_equal": true,
+    "damage": [
+      23611,
+      23611
+    ],
+    "per_target_water_hits_equal": true,
+    "water_spawn_equal": true
+  }
+]

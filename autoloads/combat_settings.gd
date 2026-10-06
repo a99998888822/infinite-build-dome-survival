@@ -4,6 +4,7 @@ signal settings_changed
 const PATH := "user://combat_settings.cfg"
 var keyboard_movement := false
 var quick_cast := false
+var wheelchair_mode := false
 var show_hints := true
 
 func _ready() -> void:
@@ -11,15 +12,16 @@ func _ready() -> void:
 	if config.load(PATH) == OK:
 		keyboard_movement = bool(config.get_value("combat", "keyboard_movement", false))
 		quick_cast = bool(config.get_value("combat", "quick_cast", false))
+		wheelchair_mode = bool(config.get_value("combat", "wheelchair_mode", false))
 		show_hints = bool(config.get_value("combat", "show_hints", true))
 
 func set_option(key: String, value: bool, persist: bool = true) -> void:
-	if key not in ["keyboard_movement", "quick_cast", "show_hints"]:
+	if key not in ["keyboard_movement", "quick_cast", "wheelchair_mode", "show_hints"]:
 		return
 	set(key, value)
 	if persist and not "--transient-session" in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
 		var config := ConfigFile.new()
-		for option in ["keyboard_movement", "quick_cast", "show_hints"]:
+		for option in ["keyboard_movement", "quick_cast", "wheelchair_mode", "show_hints"]:
 			config.set_value("combat", option, get(option))
 		if config.save(PATH) != OK:
 			push_warning("Combat settings could not be saved.")

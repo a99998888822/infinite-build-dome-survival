@@ -3,6 +3,18 @@ extends Node2D
 ## Short, render-only reaction cues. They never own damage or status timing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
+# Baked from the original pixel geometry; all instances share these textures.
+const ATLAS_TILE := 112
+const ATLAS_COLUMNS := 8
+const ATLAS_FPS := 60.0
+const FREEZE_FRAMES := 39
+const THAW_FRAMES := 45
+const SHARD_ATLASES: Array[Texture2D] = [
+	preload("res://assets/sprites/effects/ice_shards/freeze_d0.png"),
+	preload("res://assets/sprites/effects/ice_shards/freeze_d1.png"),
+	preload("res://assets/sprites/effects/ice_shards/thaw_d0.png"),
+	preload("res://assets/sprites/effects/ice_shards/thaw_d1.png"),
+]
 const GROUP := "element_reaction_cues"
 const MAX_CUES := 96
 const STEAM_SCALE := 0.6
@@ -29,6 +41,8 @@ static func spawn(parent: Node, reaction: String, origin: Vector2, settings: Dic
 		return
 	var effect := new()
 	effect.kind = reaction
+	if reaction in ["freeze", "thaw"]:
+		effect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	effect.options = settings.duplicate()
 	effect.duration = 1.1 if reaction in ["steam", "dark_flame", "holy"] else 0.72
 	if reaction == "freeze": effect.duration = 0.62
@@ -51,6 +65,12 @@ func _process(delta: float) -> void:
 		else: queue_free(); return
 	if elapsed >= duration:
 		queue_free()
+	if kind in ["freeze", "thaw"]:
+		var atlas_frame := _get_atlas_frame()
+		if atlas_frame != _draw_frame:
+			_draw_frame = atlas_frame
+			queue_redraw()
+		return
 	var frame := int(elapsed * 12.0)
 	if kind != "conduct" or frame != _draw_frame:
 		_draw_frame = frame
@@ -58,13 +78,14 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if kind in ["freeze", "thaw"]:
+		_draw_shard_animation()
+		return
 	var t := clampf(elapsed / duration, 0.0, 1.0)
 	var fade := (1.0 - smoothstep(0.5, 1.0, t)) * (0.7 if detail == 0 else 1.0)
 	if kind == "conduct": fade = (1.0 - smoothstep(0.75, 1.0, t)) * (0.7 if detail == 0 else 1.0)
 	match kind:
 		"steam": _draw_steam(t, fade)
-		"freeze": _draw_freeze(t, fade)
-		"thaw": _draw_thaw(t, fade)
 		"conduct": _draw_conduct(t, fade)
 		"wet_spread": _draw_water_ribbon(t, fade)
 		"ice_expand": _draw_frost_front(t, fade)
@@ -87,26 +108,18 @@ func _draw_steam(t: float, fade: float) -> void:
 		PIXEL.path(self, cloud, Color(0.84, 0.91, 0.86, fade * 0.84), 2)
 
 
-func _draw_freeze(t: float, fade: float) -> void:
-	var reach := 14.0 + ease(t, 0.4) * 25.0
-	for index in range(6 if detail > 0 else 4):
-		var angle := index * TAU / 6.0
-		var direction := Vector2.from_angle(angle)
-		var point := direction * reach
-		point.y = point.y * 0.65 + 8.0 - sin(t * PI) * 7.0
-		SHAPES.shard(self, point, direction, 15.0 * (1.0 - t * 0.5), 4.0, fade)
-	if t < 0.4:
-		for side in [-1.0, 1.0]:
-			PIXEL.line(self, Vector2(side * 10, 14), Vector2(side * 17, -16 - t * 25), Color(0.77, 0.98, 1.0, fade), 3)
+func _get_atlas_frame() -> int:
+	var frames := FREEZE_FRAMES if kind == "freeze" else THAW_FRAMES
+	return clampi(int(elapsed * ATLAS_FPS + 0.00001), 0, frames - 1)
 
 
-func _draw_thaw(t: float, fade: float) -> void:
-	for index in range(6):
-		var angle := index * TAU / 6.0
-		var point := Vector2.from_angle(angle) * (15.0 + t * 21.0)
-		point.y = point.y * 0.4 + 12.0 - sin(t * PI) * 12.0
-		SHAPES.shard(self, point, Vector2.from_angle(angle), 9.0 * (1.0 - t), 2.0, fade)
-	PIXEL.arc(self, 16 + t * 21, 0, TAU, Color(0.37, 0.75, 0.88, fade * 0.7), 2, Vector2(1, 0.4))
+func _draw_shard_animation() -> void:
+	var frame := _get_atlas_frame()
+	# Detail 1 and 2 used identical shard geometry; only tier 0 needs another atlas.
+	var index := (0 if kind == "freeze" else 2) + (0 if detail == 0 else 1)
+	var extent := Vector2.ONE * ATLAS_TILE
+	var region := Rect2(Vector2((frame % ATLAS_COLUMNS) * ATLAS_TILE, (frame / ATLAS_COLUMNS) * ATLAS_TILE), extent)
+	draw_texture_rect_region(SHARD_ATLASES[index], Rect2(-extent * 0.5, extent), region)
 
 
 func _draw_conduct(t: float, fade: float) -> void:

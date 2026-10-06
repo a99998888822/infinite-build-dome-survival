@@ -18,6 +18,7 @@ var _tooltip_weapon_id: String = ""
 
 func _ready() -> void:
 	if weapon_tooltip != null:
+		weapon_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		weapon_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
 	if weapon_tooltip_label != null:

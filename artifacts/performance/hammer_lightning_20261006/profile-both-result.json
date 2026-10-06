@@ -1,0 +1,605 @@
+{
+	"active": {
+		"fps": 23.7800520407665,
+		"frames": 38,
+		"max_ms": 169.599,
+		"mean_ms": 42.0520526315789,
+		"over16": 16,
+		"over33": 11,
+		"p50_ms": 10.445,
+		"p95_ms": 166.232,
+		"p99_ms": 169.599
+	},
+	"all": {
+		"fps": 72.8653448427306,
+		"frames": 219,
+		"max_ms": 169.599,
+		"mean_ms": 13.7239452054795,
+		"over16": 16,
+		"over33": 11,
+		"p50_ms": 7.689,
+		"p95_ms": 51.683,
+		"p99_ms": 137.872
+	},
+	"build": {
+		"angles": [
+			-20.0,
+			0.0,
+			20.0
+		],
+		"cooldown": 3.6,
+		"gpu": "ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.101.5333)",
+		"level": 5,
+		"nodes": 5,
+		"projectiles": 3.0,
+		"range": 296.0,
+		"renderer": "gl_compatibility",
+		"sequence": [
+			{
+				"effect_id": "split",
+				"item_instance_id": "hammer_review_scroll_split"
+			},
+			{
+				"effect_id": "electric_spark",
+				"item_instance_id": "hammer_review_scroll_electric_spark"
+			}
+		],
+		"size": [
+			1152,
+			648
+		],
+		"slots": 2,
+		"split": [
+			{
+				"child_count": 2,
+				"damage_multiplier": 0.45,
+				"enchantment_start": 1,
+				"spread_angle": 36.0
+			}
+		],
+		"world_viewport": "(1152.0, 648.0)"
+	},
+	"capture": false,
+	"casts": [
+		0.006392
+	],
+	"costs": {
+		"earth_hammer._emit_node": {
+			"calls": 15,
+			"max_usec": 1230,
+			"usec": 10121
+		},
+		"electric_spark_effect._draw": {
+			"calls": 294,
+			"max_usec": 3213,
+			"usec": 442911
+		},
+		"lightning_particle_effect._create_bolt_path": {
+			"calls": 60,
+			"max_usec": 762,
+			"usec": 26295
+		},
+		"lightning_particle_effect._damage_ground_enemies": {
+			"calls": 30,
+			"max_usec": 683,
+			"usec": 8459
+		},
+		"lightning_pixel_bolt.build": {
+			"calls": 60,
+			"max_usec": 684,
+			"usec": 23731
+		},
+		"particle_world._draw": {
+			"calls": 219,
+			"max_usec": 126,
+			"usec": 4192
+		},
+		"particle_world._process": {
+			"calls": 219,
+			"max_usec": 75,
+			"usec": 1883
+		}
+	},
+	"counters": {
+		"bolt_meshes": 60,
+		"bolt_vertices": 22080,
+		"hammer_nodes": 15,
+		"hit_bursts": 109,
+		"strikes": 30,
+		"thunder_enemy_hits": 79
+	},
+	"damage": 2609,
+	"frame_stamps": [],
+	"lights_peak": 0,
+	"moving": false,
+	"particles_peak": 0,
+	"profile": true,
+	"reported_peak": 720,
+	"samples": [
+		{
+			"draw_calls": 183.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.392,
+			"particles": 0,
+			"physics_ms": 0.332,
+			"process_ms": 7.927,
+			"reported": 0,
+			"t": 0.006392
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.864,
+			"particles": 0,
+			"physics_ms": 0.332,
+			"process_ms": 7.927,
+			"reported": 0,
+			"t": 0.060332
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.127,
+			"particles": 0,
+			"physics_ms": 0.332,
+			"process_ms": 7.927,
+			"reported": 0,
+			"t": 0.111906
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.704,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.165833
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.54,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.221765
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.533,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.277934
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.578,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.328616
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.672,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.385079
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.277,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.435206
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.109,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.486549
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.384,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.5376
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.807,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 0,
+			"t": 0.594143
+		},
+		{
+			"draw_calls": 191.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 28.428,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 144,
+			"t": 0.652454
+		},
+		{
+			"draw_calls": 531.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 31.384,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 144,
+			"t": 0.713719
+		},
+		{
+			"draw_calls": 531.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 52.827,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 288,
+			"t": 0.766546
+		},
+		{
+			"draw_calls": 855.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 51.683,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 288,
+			"t": 0.818229
+		},
+		{
+			"draw_calls": 847.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 82.328,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 432,
+			"t": 0.900557
+		},
+		{
+			"draw_calls": 1187.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 108.371,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 576,
+			"t": 1.008928
+		},
+		{
+			"draw_calls": 1487.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 137.872,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 720,
+			"t": 1.1468
+		},
+		{
+			"draw_calls": 1773.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 133.759,
+			"particles": 0,
+			"physics_ms": 0.384,
+			"process_ms": 13.229,
+			"reported": 720,
+			"t": 1.280559
+		},
+		{
+			"draw_calls": 1773.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 132.684,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 720,
+			"t": 1.413243
+		},
+		{
+			"draw_calls": 2022.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 166.232,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 720,
+			"t": 1.579475
+		},
+		{
+			"draw_calls": 2126.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 169.599,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 720,
+			"t": 1.749074
+		},
+		{
+			"draw_calls": 1596.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 124.62,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 432,
+			"t": 1.873694
+		},
+		{
+			"draw_calls": 1230.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 102.691,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 288,
+			"t": 1.976385
+		},
+		{
+			"draw_calls": 554.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 21.728,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 0,
+			"t": 2.026961
+		},
+		{
+			"draw_calls": 506.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 10.164,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 0,
+			"t": 2.082131
+		},
+		{
+			"draw_calls": 506.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 10.445,
+			"particles": 0,
+			"physics_ms": 28.164,
+			"process_ms": 132.444,
+			"reported": 0,
+			"t": 2.140554
+		},
+		{
+			"draw_calls": 506.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 11.583,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.199552
+		},
+		{
+			"draw_calls": 505.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 10.896,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.249992
+		},
+		{
+			"draw_calls": 505.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 9.895,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.308185
+		},
+		{
+			"draw_calls": 317.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 8.137,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.363088
+		},
+		{
+			"draw_calls": 316.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 8.428,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.4132
+		},
+		{
+			"draw_calls": 236.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.741,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.463954
+		},
+		{
+			"draw_calls": 236.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.576,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.518094
+		},
+		{
+			"draw_calls": 236.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.475,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.57262
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.068,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.625052
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.388,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.677239
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.759,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.731193
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.844,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.784346
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.73,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.834718
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 7.807,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.887608
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.709,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.938217
+		},
+		{
+			"draw_calls": 188.0,
+			"instances": 0,
+			"lights": 0,
+			"ms": 6.917,
+			"particles": 0,
+			"physics_ms": 0.772,
+			"process_ms": 168.339,
+			"reported": 0,
+			"t": 2.990126
+		}
+	],
+	"variant": "both"
+}

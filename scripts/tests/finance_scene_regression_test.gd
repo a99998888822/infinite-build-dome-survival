@@ -105,6 +105,7 @@ func _run() -> void:
 	check(popup._summary.tooltip_text.is_empty(), "finance summary has no hover tooltip")
 	for card in popup.shop_grid._pool:
 		check(card.buy_button.tooltip_text.is_empty(), "purchase buttons have no hover tooltip")
+	await verify_tooltips(hud)
 	for resolution in [Vector2i(1152, 648), Vector2i(1536, 864), Vector2i(1000, 540)]:
 		get_tree().root.size = resolution
 		get_tree().root.content_scale_size = resolution
@@ -134,6 +135,66 @@ func _run() -> void:
 	AudioManager._bgm_player.stream = null
 	print("FINANCE_SCENE_REGRESSION_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
+
+
+func verify_tooltips(hud: BattleHud) -> void:
+	for index in 8:
+		manager.player.item_inventory.add_item_from_base("scroll_lightning", "tooltip_test")
+	popup.workbench.refresh()
+	popup._select_tab("enchant")
+	hud._set_drawer_open(true, false)
+	await frames(12)
+	var card := popup.workbench._inventory.get_child(0) as EnchantmentInventoryCard
+	for entry in popup.workbench._inventory.get_children():
+		if entry is EnchantmentInventoryCard and entry._inspect.get_global_rect().get_center().x > card._inspect.get_global_rect().get_center().x:
+			card = entry
+	popup._enchant_scroll.ensure_control_visible(card)
+	await frames()
+	var point := card._inspect.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	motion.global_position = point
+	Input.parse_input_event(motion)
+	await frames()
+	print("TOOLTIP_HOVER point=", point, " hovered=", get_viewport().gui_get_hovered_control(), " card=", card.get_global_rect())
+	check(get_viewport().gui_get_hovered_control() == card._inspect, "actual enchantment magnifier remains reachable with drawer open")
+	check(popup._tooltip.is_visible_in_tree() and not popup._tooltip_text.text.is_empty(), "real magnifier hover displays enchantment details")
+	var tooltip_layer := popup._tooltip.get_parent() as GameTooltipLayer
+	check(tooltip_layer != null and tooltip_layer.layer > hud.layer, "enchantment tooltip renders above the attribute drawer CanvasLayer")
+	check(get_viewport().get_visible_rect().encloses(popup._tooltip.get_global_rect()), "enchantment tooltip stays within the viewport")
+	var tooltip_rect := popup._tooltip.get_global_rect()
+	var expected_x := point.x + 14 if point.x + 14 + tooltip_rect.size.x <= get_viewport().get_visible_rect().size.x - 12 else point.x - tooltip_rect.size.x - 14
+	var expected_y := clampf(point.y + 14, 12, get_viewport().get_visible_rect().size.y - tooltip_rect.size.y - 12)
+	print("TOOLTIP_LAYOUT pointer_event=", popup._tooltip_mouse_position, " rect=", tooltip_rect, " expected=", Vector2(expected_x, expected_y))
+	check(absf(tooltip_rect.position.x - expected_x) < 1 and absf(tooltip_rect.position.y - expected_y) < 1, "tooltip stays next to the magnifier after final text layout, flipping only at viewport edges")
+	check(popup._tooltip.modulate.a == 1, "tooltip appears after its wrapping width and height settle")
+	await capture("enchantment_tooltip_drawer")
+	popup.main_panel.hide()
+	check(not tooltip_layer.visible and not popup._tooltip.visible, "hiding source panel immediately dismisses its tooltip")
+	popup.main_panel.show()
+	check(tooltip_layer.visible and not popup._tooltip.visible, "reopening source panel does not resurrect stale tooltip")
+	popup._show_tooltip(card._build_tooltip())
+	var finance_layer := popup.get_canvas_layer_node()
+	finance_layer.hide()
+	check(not tooltip_layer.visible and not popup._tooltip.visible, "hiding ancestor CanvasLayer dismisses nested tooltip layer")
+	finance_layer.show()
+	check(tooltip_layer.visible and not popup._tooltip.visible, "restoring ancestor layer keeps stale tooltip dismissed")
+	var anchor: Control = hud._stat_name_labels["armor"]
+	hud._show_stat_tooltip(anchor, "armor")
+	await frames()
+	check(hud._stat_tooltip_panel != null and hud._stat_tooltip_panel.get_parent() is GameTooltipLayer, "attribute explanations use the same foreground tooltip layer")
+	await capture("attribute_tooltip")
+	hud._hide_stat_tooltip()
+	popup._show_tooltip(card._build_tooltip())
+	flow.request_battle_utility("settings")
+	await frames()
+	check(not tooltip_layer.visible and not popup._tooltip.visible, "opening settings dismisses finance tooltips")
+	flow.close_battle_utility()
+	await frames()
+	check(not popup._tooltip.visible, "returning from settings has no stale finance tooltip")
+	popup._select_tab("shop")
+	hud._set_drawer_open(false, false)
+	await frames()
 
 
 func next_preparation(gold: int, struggling: bool = false) -> void:

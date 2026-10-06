@@ -78,22 +78,22 @@ func _run() -> void:
 	await frames()
 	weapon.runtime_stats.damage_area_size = 100.0
 	ball._physics_process(0.0)
-	check(weapon.get_hit_radius() == 24.0 and ball._hit_shape.radius == 24.0 and ball._plasma_visual.core_radius == 24.0,
+	check(weapon.get_hit_radius() == 18.0 and ball._hit_shape.radius == 18.0 and ball._plasma_visual.core_radius == 18.0,
 		"live damage-area growth updates visible core and collision together")
 	weapon.runtime_stats.area_size = 200.0
 	ball._physics_process(0.0)
-	check(ball._hit_shape.radius == 24.0 and ball._plasma_visual.core_radius == 24.0 and weapon.get_attack_range() == 720.0,
+	check(ball._hit_shape.radius == 18.0 and ball._plasma_visual.core_radius == 18.0 and weapon.get_attack_range() == 480.0,
 		"attack range expands travel without secretly expanding contact")
-	enemies[0].position = Vector2(24.0 + enemy_radius() - 0.5, 0)
+	enemies[0].position = Vector2(18.0 + enemy_radius() - 0.5, 0)
 	await frames()
 	ball._process_plasma_contact(0.0)
 	check(enemies[0].current_hp == 9988, "expanded visible edge deals contact damage")
 	weapon.runtime_stats.damage_area_size = -100.0
 	ball._physics_process(0.0)
-	check(ball._hit_shape.radius == 4.0 and ball._plasma_visual.core_radius == 4.0,
-		"minimum-radius clamp is shared instead of keeping a larger invisible collider")
+	check(is_equal_approx(ball._hit_shape.radius, 6.6) and is_equal_approx(ball._plasma_visual.core_radius, 6.6),
+		"negative range bonus also has half efficiency and keeps visual/collider agreement")
 	ball.free()
-	enemies[0].position = Vector2(4.0 + enemy_radius() + 0.5, 0)
+	enemies[0].position = Vector2(6.6 + enemy_radius() + 0.5, 0)
 	await frames()
 	ball = shot()
 	ball._process_plasma_contact(0.0)

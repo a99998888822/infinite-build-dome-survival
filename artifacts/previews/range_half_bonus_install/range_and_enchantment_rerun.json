@@ -1,0 +1,18 @@
+[
+  {
+    "name": "enchantment_stacking_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENCHANTMENT_STACKING_TEST checks=242 failures=0"
+    ]
+  },
+  {
+    "name": "hammer_density_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "HAMMER_DENSITY_TEST checks=230 failures=0"
+    ]
+  }
+]

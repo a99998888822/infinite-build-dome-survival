@@ -77,7 +77,7 @@ func start_character(id: String) -> void:
 	move_to(Vector2.ZERO)
 	await frames()
 	var sky := battle.get_node("BattleSky/Sky") as TextureRect
-	check(sky.offset_top==0 and sky.offset_bottom==ceilf(get_tree().root.get_visible_rect().size.x/16.0),"C sky fills the removed top strip")
+	check(sky.offset_top==0 and sky.offset_bottom==ceilf(get_tree().root.get_visible_rect().size.x/32.0),"sky is compressed to half its original height")
 	check(not (battle.get_node("BattleTopBarBackground/Background") as CanvasItem).visible,"C top black strip stays hidden")
 	var wave := battle.get_node("BattleTopBar/WavePanel") as PanelContainer
 	var style := wave.get_theme_stylebox("panel") as StyleBoxFlat

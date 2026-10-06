@@ -1,0 +1,1545 @@
+{
+  "capture_fps": 20,
+  "cases": [
+    {
+      "actual_range": 220.0,
+      "area_attribute": 0.0,
+      "blast_radius": 1.0,
+      "cast_tick": 43,
+      "expected_targets": [
+        0
+      ],
+      "frames": [
+        {
+          "file": "000_000.png",
+          "hit_targets": 0,
+          "physics_tick": 1,
+          "simulation_frame": 0
+        },
+        {
+          "file": "000_001.png",
+          "hit_targets": 0,
+          "physics_tick": 4,
+          "simulation_frame": 3
+        },
+        {
+          "file": "000_002.png",
+          "hit_targets": 0,
+          "physics_tick": 7,
+          "simulation_frame": 6
+        },
+        {
+          "file": "000_003.png",
+          "hit_targets": 0,
+          "physics_tick": 10,
+          "simulation_frame": 9
+        },
+        {
+          "file": "000_004.png",
+          "hit_targets": 0,
+          "physics_tick": 13,
+          "simulation_frame": 12
+        },
+        {
+          "file": "000_005.png",
+          "hit_targets": 0,
+          "physics_tick": 16,
+          "simulation_frame": 15
+        },
+        {
+          "file": "000_006.png",
+          "hit_targets": 0,
+          "physics_tick": 19,
+          "simulation_frame": 18
+        },
+        {
+          "file": "000_007.png",
+          "hit_targets": 0,
+          "physics_tick": 22,
+          "simulation_frame": 21
+        },
+        {
+          "file": "000_008.png",
+          "hit_targets": 0,
+          "physics_tick": 25,
+          "simulation_frame": 24
+        },
+        {
+          "file": "000_009.png",
+          "hit_targets": 0,
+          "physics_tick": 28,
+          "simulation_frame": 27
+        },
+        {
+          "file": "000_010.png",
+          "hit_targets": 0,
+          "physics_tick": 31,
+          "simulation_frame": 30
+        },
+        {
+          "file": "000_011.png",
+          "hit_targets": 0,
+          "physics_tick": 34,
+          "simulation_frame": 33
+        },
+        {
+          "file": "000_012.png",
+          "hit_targets": 0,
+          "physics_tick": 37,
+          "simulation_frame": 36
+        },
+        {
+          "file": "000_013.png",
+          "hit_targets": 0,
+          "physics_tick": 40,
+          "simulation_frame": 39
+        },
+        {
+          "file": "000_014.png",
+          "hit_targets": 0,
+          "physics_tick": 43,
+          "simulation_frame": 42
+        },
+        {
+          "file": "000_015.png",
+          "hit_targets": 0,
+          "physics_tick": 46,
+          "simulation_frame": 45
+        },
+        {
+          "file": "000_016.png",
+          "hit_targets": 0,
+          "physics_tick": 49,
+          "simulation_frame": 48
+        },
+        {
+          "file": "000_017.png",
+          "hit_targets": 1,
+          "physics_tick": 52,
+          "simulation_frame": 51
+        },
+        {
+          "file": "000_018.png",
+          "hit_targets": 1,
+          "physics_tick": 55,
+          "simulation_frame": 54
+        },
+        {
+          "file": "000_019.png",
+          "hit_targets": 1,
+          "physics_tick": 58,
+          "simulation_frame": 57
+        },
+        {
+          "file": "000_020.png",
+          "hit_targets": 1,
+          "physics_tick": 61,
+          "simulation_frame": 60
+        },
+        {
+          "file": "000_021.png",
+          "hit_targets": 1,
+          "physics_tick": 64,
+          "simulation_frame": 63
+        },
+        {
+          "file": "000_022.png",
+          "hit_targets": 1,
+          "physics_tick": 67,
+          "simulation_frame": 66
+        },
+        {
+          "file": "000_023.png",
+          "hit_targets": 1,
+          "physics_tick": 70,
+          "simulation_frame": 69
+        },
+        {
+          "file": "000_024.png",
+          "hit_targets": 1,
+          "physics_tick": 73,
+          "simulation_frame": 72
+        },
+        {
+          "file": "000_025.png",
+          "hit_targets": 1,
+          "physics_tick": 76,
+          "simulation_frame": 75
+        },
+        {
+          "file": "000_026.png",
+          "hit_targets": 1,
+          "physics_tick": 79,
+          "simulation_frame": 78
+        },
+        {
+          "file": "000_027.png",
+          "hit_targets": 1,
+          "physics_tick": 82,
+          "simulation_frame": 81
+        },
+        {
+          "file": "000_028.png",
+          "hit_targets": 1,
+          "physics_tick": 85,
+          "simulation_frame": 84
+        },
+        {
+          "file": "000_029.png",
+          "hit_targets": 1,
+          "physics_tick": 88,
+          "simulation_frame": 87
+        },
+        {
+          "file": "000_030.png",
+          "hit_targets": 1,
+          "physics_tick": 91,
+          "simulation_frame": 90
+        },
+        {
+          "file": "000_031.png",
+          "hit_targets": 1,
+          "physics_tick": 94,
+          "simulation_frame": 93
+        },
+        {
+          "file": "000_032.png",
+          "hit_targets": 1,
+          "physics_tick": 97,
+          "simulation_frame": 96
+        },
+        {
+          "file": "000_033.png",
+          "hit_targets": 1,
+          "physics_tick": 100,
+          "simulation_frame": 99
+        },
+        {
+          "file": "000_034.png",
+          "hit_targets": 1,
+          "physics_tick": 103,
+          "simulation_frame": 102
+        },
+        {
+          "file": "000_035.png",
+          "hit_targets": 1,
+          "physics_tick": 106,
+          "simulation_frame": 105
+        },
+        {
+          "file": "000_036.png",
+          "hit_targets": 1,
+          "physics_tick": 109,
+          "simulation_frame": 108
+        },
+        {
+          "file": "000_037.png",
+          "hit_targets": 1,
+          "physics_tick": 112,
+          "simulation_frame": 111
+        },
+        {
+          "file": "000_038.png",
+          "hit_targets": 1,
+          "physics_tick": 115,
+          "simulation_frame": 114
+        },
+        {
+          "file": "000_039.png",
+          "hit_targets": 1,
+          "physics_tick": 118,
+          "simulation_frame": 117
+        },
+        {
+          "file": "000_040.png",
+          "hit_targets": 1,
+          "physics_tick": 121,
+          "simulation_frame": 120
+        },
+        {
+          "file": "000_041.png",
+          "hit_targets": 1,
+          "physics_tick": 124,
+          "simulation_frame": 123
+        },
+        {
+          "file": "000_042.png",
+          "hit_targets": 1,
+          "physics_tick": 127,
+          "simulation_frame": 126
+        },
+        {
+          "file": "000_043.png",
+          "hit_targets": 1,
+          "physics_tick": 130,
+          "simulation_frame": 129
+        },
+        {
+          "file": "000_044.png",
+          "hit_targets": 1,
+          "physics_tick": 133,
+          "simulation_frame": 132
+        },
+        {
+          "file": "000_045.png",
+          "hit_targets": 1,
+          "physics_tick": 136,
+          "simulation_frame": 135
+        },
+        {
+          "file": "000_046.png",
+          "hit_targets": 1,
+          "physics_tick": 139,
+          "simulation_frame": 138
+        },
+        {
+          "file": "000_047.png",
+          "hit_targets": 1,
+          "physics_tick": 142,
+          "simulation_frame": 141
+        },
+        {
+          "file": "000_048.png",
+          "hit_targets": 1,
+          "physics_tick": 145,
+          "simulation_frame": 144
+        },
+        {
+          "file": "000_049.png",
+          "hit_targets": 1,
+          "physics_tick": 148,
+          "simulation_frame": 147
+        },
+        {
+          "file": "000_050.png",
+          "hit_targets": 1,
+          "physics_tick": 151,
+          "simulation_frame": 150
+        },
+        {
+          "file": "000_051.png",
+          "hit_targets": 1,
+          "physics_tick": 154,
+          "simulation_frame": 153
+        },
+        {
+          "file": "000_052.png",
+          "hit_targets": 1,
+          "physics_tick": 157,
+          "simulation_frame": 156
+        },
+        {
+          "file": "000_053.png",
+          "hit_targets": 1,
+          "physics_tick": 160,
+          "simulation_frame": 159
+        },
+        {
+          "file": "000_054.png",
+          "hit_targets": 1,
+          "physics_tick": 163,
+          "simulation_frame": 162
+        },
+        {
+          "file": "000_055.png",
+          "hit_targets": 1,
+          "physics_tick": 166,
+          "simulation_frame": 165
+        },
+        {
+          "file": "000_056.png",
+          "hit_targets": 1,
+          "physics_tick": 169,
+          "simulation_frame": 168
+        },
+        {
+          "file": "000_057.png",
+          "hit_targets": 1,
+          "physics_tick": 172,
+          "simulation_frame": 171
+        },
+        {
+          "file": "000_058.png",
+          "hit_targets": 1,
+          "physics_tick": 175,
+          "simulation_frame": 174
+        },
+        {
+          "file": "000_059.png",
+          "hit_targets": 1,
+          "physics_tick": 178,
+          "simulation_frame": 177
+        }
+      ],
+      "hits": {
+        "0": 26
+      },
+      "range_attribute": 0.0,
+      "score": 0,
+      "single_damage": 26
+    },
+    {
+      "actual_range": 275.0,
+      "area_attribute": 0.0,
+      "blast_radius": 1.0,
+      "cast_tick": 43,
+      "expected_targets": [
+        0,
+        1
+      ],
+      "frames": [
+        {
+          "file": "050_000.png",
+          "hit_targets": 0,
+          "physics_tick": 1,
+          "simulation_frame": 0
+        },
+        {
+          "file": "050_001.png",
+          "hit_targets": 0,
+          "physics_tick": 4,
+          "simulation_frame": 3
+        },
+        {
+          "file": "050_002.png",
+          "hit_targets": 0,
+          "physics_tick": 7,
+          "simulation_frame": 6
+        },
+        {
+          "file": "050_003.png",
+          "hit_targets": 0,
+          "physics_tick": 10,
+          "simulation_frame": 9
+        },
+        {
+          "file": "050_004.png",
+          "hit_targets": 0,
+          "physics_tick": 13,
+          "simulation_frame": 12
+        },
+        {
+          "file": "050_005.png",
+          "hit_targets": 0,
+          "physics_tick": 16,
+          "simulation_frame": 15
+        },
+        {
+          "file": "050_006.png",
+          "hit_targets": 0,
+          "physics_tick": 19,
+          "simulation_frame": 18
+        },
+        {
+          "file": "050_007.png",
+          "hit_targets": 0,
+          "physics_tick": 22,
+          "simulation_frame": 21
+        },
+        {
+          "file": "050_008.png",
+          "hit_targets": 0,
+          "physics_tick": 25,
+          "simulation_frame": 24
+        },
+        {
+          "file": "050_009.png",
+          "hit_targets": 0,
+          "physics_tick": 28,
+          "simulation_frame": 27
+        },
+        {
+          "file": "050_010.png",
+          "hit_targets": 0,
+          "physics_tick": 31,
+          "simulation_frame": 30
+        },
+        {
+          "file": "050_011.png",
+          "hit_targets": 0,
+          "physics_tick": 34,
+          "simulation_frame": 33
+        },
+        {
+          "file": "050_012.png",
+          "hit_targets": 0,
+          "physics_tick": 37,
+          "simulation_frame": 36
+        },
+        {
+          "file": "050_013.png",
+          "hit_targets": 0,
+          "physics_tick": 40,
+          "simulation_frame": 39
+        },
+        {
+          "file": "050_014.png",
+          "hit_targets": 0,
+          "physics_tick": 43,
+          "simulation_frame": 42
+        },
+        {
+          "file": "050_015.png",
+          "hit_targets": 0,
+          "physics_tick": 46,
+          "simulation_frame": 45
+        },
+        {
+          "file": "050_016.png",
+          "hit_targets": 0,
+          "physics_tick": 49,
+          "simulation_frame": 48
+        },
+        {
+          "file": "050_017.png",
+          "hit_targets": 2,
+          "physics_tick": 52,
+          "simulation_frame": 51
+        },
+        {
+          "file": "050_018.png",
+          "hit_targets": 2,
+          "physics_tick": 55,
+          "simulation_frame": 54
+        },
+        {
+          "file": "050_019.png",
+          "hit_targets": 2,
+          "physics_tick": 58,
+          "simulation_frame": 57
+        },
+        {
+          "file": "050_020.png",
+          "hit_targets": 2,
+          "physics_tick": 61,
+          "simulation_frame": 60
+        },
+        {
+          "file": "050_021.png",
+          "hit_targets": 2,
+          "physics_tick": 64,
+          "simulation_frame": 63
+        },
+        {
+          "file": "050_022.png",
+          "hit_targets": 2,
+          "physics_tick": 67,
+          "simulation_frame": 66
+        },
+        {
+          "file": "050_023.png",
+          "hit_targets": 2,
+          "physics_tick": 70,
+          "simulation_frame": 69
+        },
+        {
+          "file": "050_024.png",
+          "hit_targets": 2,
+          "physics_tick": 73,
+          "simulation_frame": 72
+        },
+        {
+          "file": "050_025.png",
+          "hit_targets": 2,
+          "physics_tick": 76,
+          "simulation_frame": 75
+        },
+        {
+          "file": "050_026.png",
+          "hit_targets": 2,
+          "physics_tick": 79,
+          "simulation_frame": 78
+        },
+        {
+          "file": "050_027.png",
+          "hit_targets": 2,
+          "physics_tick": 82,
+          "simulation_frame": 81
+        },
+        {
+          "file": "050_028.png",
+          "hit_targets": 2,
+          "physics_tick": 85,
+          "simulation_frame": 84
+        },
+        {
+          "file": "050_029.png",
+          "hit_targets": 2,
+          "physics_tick": 88,
+          "simulation_frame": 87
+        },
+        {
+          "file": "050_030.png",
+          "hit_targets": 2,
+          "physics_tick": 91,
+          "simulation_frame": 90
+        },
+        {
+          "file": "050_031.png",
+          "hit_targets": 2,
+          "physics_tick": 94,
+          "simulation_frame": 93
+        },
+        {
+          "file": "050_032.png",
+          "hit_targets": 2,
+          "physics_tick": 97,
+          "simulation_frame": 96
+        },
+        {
+          "file": "050_033.png",
+          "hit_targets": 2,
+          "physics_tick": 100,
+          "simulation_frame": 99
+        },
+        {
+          "file": "050_034.png",
+          "hit_targets": 2,
+          "physics_tick": 103,
+          "simulation_frame": 102
+        },
+        {
+          "file": "050_035.png",
+          "hit_targets": 2,
+          "physics_tick": 106,
+          "simulation_frame": 105
+        },
+        {
+          "file": "050_036.png",
+          "hit_targets": 2,
+          "physics_tick": 109,
+          "simulation_frame": 108
+        },
+        {
+          "file": "050_037.png",
+          "hit_targets": 2,
+          "physics_tick": 112,
+          "simulation_frame": 111
+        },
+        {
+          "file": "050_038.png",
+          "hit_targets": 2,
+          "physics_tick": 115,
+          "simulation_frame": 114
+        },
+        {
+          "file": "050_039.png",
+          "hit_targets": 2,
+          "physics_tick": 118,
+          "simulation_frame": 117
+        },
+        {
+          "file": "050_040.png",
+          "hit_targets": 2,
+          "physics_tick": 121,
+          "simulation_frame": 120
+        },
+        {
+          "file": "050_041.png",
+          "hit_targets": 2,
+          "physics_tick": 124,
+          "simulation_frame": 123
+        },
+        {
+          "file": "050_042.png",
+          "hit_targets": 2,
+          "physics_tick": 127,
+          "simulation_frame": 126
+        },
+        {
+          "file": "050_043.png",
+          "hit_targets": 2,
+          "physics_tick": 130,
+          "simulation_frame": 129
+        },
+        {
+          "file": "050_044.png",
+          "hit_targets": 2,
+          "physics_tick": 133,
+          "simulation_frame": 132
+        },
+        {
+          "file": "050_045.png",
+          "hit_targets": 2,
+          "physics_tick": 136,
+          "simulation_frame": 135
+        },
+        {
+          "file": "050_046.png",
+          "hit_targets": 2,
+          "physics_tick": 139,
+          "simulation_frame": 138
+        },
+        {
+          "file": "050_047.png",
+          "hit_targets": 2,
+          "physics_tick": 142,
+          "simulation_frame": 141
+        },
+        {
+          "file": "050_048.png",
+          "hit_targets": 2,
+          "physics_tick": 145,
+          "simulation_frame": 144
+        },
+        {
+          "file": "050_049.png",
+          "hit_targets": 2,
+          "physics_tick": 148,
+          "simulation_frame": 147
+        },
+        {
+          "file": "050_050.png",
+          "hit_targets": 2,
+          "physics_tick": 151,
+          "simulation_frame": 150
+        },
+        {
+          "file": "050_051.png",
+          "hit_targets": 2,
+          "physics_tick": 154,
+          "simulation_frame": 153
+        },
+        {
+          "file": "050_052.png",
+          "hit_targets": 2,
+          "physics_tick": 157,
+          "simulation_frame": 156
+        },
+        {
+          "file": "050_053.png",
+          "hit_targets": 2,
+          "physics_tick": 160,
+          "simulation_frame": 159
+        },
+        {
+          "file": "050_054.png",
+          "hit_targets": 2,
+          "physics_tick": 163,
+          "simulation_frame": 162
+        },
+        {
+          "file": "050_055.png",
+          "hit_targets": 2,
+          "physics_tick": 166,
+          "simulation_frame": 165
+        },
+        {
+          "file": "050_056.png",
+          "hit_targets": 2,
+          "physics_tick": 169,
+          "simulation_frame": 168
+        },
+        {
+          "file": "050_057.png",
+          "hit_targets": 2,
+          "physics_tick": 172,
+          "simulation_frame": 171
+        },
+        {
+          "file": "050_058.png",
+          "hit_targets": 2,
+          "physics_tick": 175,
+          "simulation_frame": 174
+        },
+        {
+          "file": "050_059.png",
+          "hit_targets": 2,
+          "physics_tick": 178,
+          "simulation_frame": 177
+        }
+      ],
+      "hits": {
+        "0": 26,
+        "1": 26
+      },
+      "range_attribute": 50.0,
+      "score": 50,
+      "single_damage": 26
+    },
+    {
+      "actual_range": 330.0,
+      "area_attribute": 0.0,
+      "blast_radius": 1.0,
+      "cast_tick": 43,
+      "expected_targets": [
+        0,
+        1,
+        2
+      ],
+      "frames": [
+        {
+          "file": "100_000.png",
+          "hit_targets": 0,
+          "physics_tick": 1,
+          "simulation_frame": 0
+        },
+        {
+          "file": "100_001.png",
+          "hit_targets": 0,
+          "physics_tick": 4,
+          "simulation_frame": 3
+        },
+        {
+          "file": "100_002.png",
+          "hit_targets": 0,
+          "physics_tick": 7,
+          "simulation_frame": 6
+        },
+        {
+          "file": "100_003.png",
+          "hit_targets": 0,
+          "physics_tick": 10,
+          "simulation_frame": 9
+        },
+        {
+          "file": "100_004.png",
+          "hit_targets": 0,
+          "physics_tick": 13,
+          "simulation_frame": 12
+        },
+        {
+          "file": "100_005.png",
+          "hit_targets": 0,
+          "physics_tick": 16,
+          "simulation_frame": 15
+        },
+        {
+          "file": "100_006.png",
+          "hit_targets": 0,
+          "physics_tick": 19,
+          "simulation_frame": 18
+        },
+        {
+          "file": "100_007.png",
+          "hit_targets": 0,
+          "physics_tick": 22,
+          "simulation_frame": 21
+        },
+        {
+          "file": "100_008.png",
+          "hit_targets": 0,
+          "physics_tick": 25,
+          "simulation_frame": 24
+        },
+        {
+          "file": "100_009.png",
+          "hit_targets": 0,
+          "physics_tick": 28,
+          "simulation_frame": 27
+        },
+        {
+          "file": "100_010.png",
+          "hit_targets": 0,
+          "physics_tick": 31,
+          "simulation_frame": 30
+        },
+        {
+          "file": "100_011.png",
+          "hit_targets": 0,
+          "physics_tick": 34,
+          "simulation_frame": 33
+        },
+        {
+          "file": "100_012.png",
+          "hit_targets": 0,
+          "physics_tick": 37,
+          "simulation_frame": 36
+        },
+        {
+          "file": "100_013.png",
+          "hit_targets": 0,
+          "physics_tick": 40,
+          "simulation_frame": 39
+        },
+        {
+          "file": "100_014.png",
+          "hit_targets": 0,
+          "physics_tick": 43,
+          "simulation_frame": 42
+        },
+        {
+          "file": "100_015.png",
+          "hit_targets": 0,
+          "physics_tick": 46,
+          "simulation_frame": 45
+        },
+        {
+          "file": "100_016.png",
+          "hit_targets": 0,
+          "physics_tick": 49,
+          "simulation_frame": 48
+        },
+        {
+          "file": "100_017.png",
+          "hit_targets": 3,
+          "physics_tick": 52,
+          "simulation_frame": 51
+        },
+        {
+          "file": "100_018.png",
+          "hit_targets": 3,
+          "physics_tick": 55,
+          "simulation_frame": 54
+        },
+        {
+          "file": "100_019.png",
+          "hit_targets": 3,
+          "physics_tick": 58,
+          "simulation_frame": 57
+        },
+        {
+          "file": "100_020.png",
+          "hit_targets": 3,
+          "physics_tick": 61,
+          "simulation_frame": 60
+        },
+        {
+          "file": "100_021.png",
+          "hit_targets": 3,
+          "physics_tick": 64,
+          "simulation_frame": 63
+        },
+        {
+          "file": "100_022.png",
+          "hit_targets": 3,
+          "physics_tick": 67,
+          "simulation_frame": 66
+        },
+        {
+          "file": "100_023.png",
+          "hit_targets": 3,
+          "physics_tick": 70,
+          "simulation_frame": 69
+        },
+        {
+          "file": "100_024.png",
+          "hit_targets": 3,
+          "physics_tick": 73,
+          "simulation_frame": 72
+        },
+        {
+          "file": "100_025.png",
+          "hit_targets": 3,
+          "physics_tick": 76,
+          "simulation_frame": 75
+        },
+        {
+          "file": "100_026.png",
+          "hit_targets": 3,
+          "physics_tick": 79,
+          "simulation_frame": 78
+        },
+        {
+          "file": "100_027.png",
+          "hit_targets": 3,
+          "physics_tick": 82,
+          "simulation_frame": 81
+        },
+        {
+          "file": "100_028.png",
+          "hit_targets": 3,
+          "physics_tick": 85,
+          "simulation_frame": 84
+        },
+        {
+          "file": "100_029.png",
+          "hit_targets": 3,
+          "physics_tick": 88,
+          "simulation_frame": 87
+        },
+        {
+          "file": "100_030.png",
+          "hit_targets": 3,
+          "physics_tick": 91,
+          "simulation_frame": 90
+        },
+        {
+          "file": "100_031.png",
+          "hit_targets": 3,
+          "physics_tick": 94,
+          "simulation_frame": 93
+        },
+        {
+          "file": "100_032.png",
+          "hit_targets": 3,
+          "physics_tick": 97,
+          "simulation_frame": 96
+        },
+        {
+          "file": "100_033.png",
+          "hit_targets": 3,
+          "physics_tick": 100,
+          "simulation_frame": 99
+        },
+        {
+          "file": "100_034.png",
+          "hit_targets": 3,
+          "physics_tick": 103,
+          "simulation_frame": 102
+        },
+        {
+          "file": "100_035.png",
+          "hit_targets": 3,
+          "physics_tick": 106,
+          "simulation_frame": 105
+        },
+        {
+          "file": "100_036.png",
+          "hit_targets": 3,
+          "physics_tick": 109,
+          "simulation_frame": 108
+        },
+        {
+          "file": "100_037.png",
+          "hit_targets": 3,
+          "physics_tick": 112,
+          "simulation_frame": 111
+        },
+        {
+          "file": "100_038.png",
+          "hit_targets": 3,
+          "physics_tick": 115,
+          "simulation_frame": 114
+        },
+        {
+          "file": "100_039.png",
+          "hit_targets": 3,
+          "physics_tick": 118,
+          "simulation_frame": 117
+        },
+        {
+          "file": "100_040.png",
+          "hit_targets": 3,
+          "physics_tick": 121,
+          "simulation_frame": 120
+        },
+        {
+          "file": "100_041.png",
+          "hit_targets": 3,
+          "physics_tick": 124,
+          "simulation_frame": 123
+        },
+        {
+          "file": "100_042.png",
+          "hit_targets": 3,
+          "physics_tick": 127,
+          "simulation_frame": 126
+        },
+        {
+          "file": "100_043.png",
+          "hit_targets": 3,
+          "physics_tick": 130,
+          "simulation_frame": 129
+        },
+        {
+          "file": "100_044.png",
+          "hit_targets": 3,
+          "physics_tick": 133,
+          "simulation_frame": 132
+        },
+        {
+          "file": "100_045.png",
+          "hit_targets": 3,
+          "physics_tick": 136,
+          "simulation_frame": 135
+        },
+        {
+          "file": "100_046.png",
+          "hit_targets": 3,
+          "physics_tick": 139,
+          "simulation_frame": 138
+        },
+        {
+          "file": "100_047.png",
+          "hit_targets": 3,
+          "physics_tick": 142,
+          "simulation_frame": 141
+        },
+        {
+          "file": "100_048.png",
+          "hit_targets": 3,
+          "physics_tick": 145,
+          "simulation_frame": 144
+        },
+        {
+          "file": "100_049.png",
+          "hit_targets": 3,
+          "physics_tick": 148,
+          "simulation_frame": 147
+        },
+        {
+          "file": "100_050.png",
+          "hit_targets": 3,
+          "physics_tick": 151,
+          "simulation_frame": 150
+        },
+        {
+          "file": "100_051.png",
+          "hit_targets": 3,
+          "physics_tick": 154,
+          "simulation_frame": 153
+        },
+        {
+          "file": "100_052.png",
+          "hit_targets": 3,
+          "physics_tick": 157,
+          "simulation_frame": 156
+        },
+        {
+          "file": "100_053.png",
+          "hit_targets": 3,
+          "physics_tick": 160,
+          "simulation_frame": 159
+        },
+        {
+          "file": "100_054.png",
+          "hit_targets": 3,
+          "physics_tick": 163,
+          "simulation_frame": 162
+        },
+        {
+          "file": "100_055.png",
+          "hit_targets": 3,
+          "physics_tick": 166,
+          "simulation_frame": 165
+        },
+        {
+          "file": "100_056.png",
+          "hit_targets": 3,
+          "physics_tick": 169,
+          "simulation_frame": 168
+        },
+        {
+          "file": "100_057.png",
+          "hit_targets": 3,
+          "physics_tick": 172,
+          "simulation_frame": 171
+        },
+        {
+          "file": "100_058.png",
+          "hit_targets": 3,
+          "physics_tick": 175,
+          "simulation_frame": 174
+        },
+        {
+          "file": "100_059.png",
+          "hit_targets": 3,
+          "physics_tick": 178,
+          "simulation_frame": 177
+        }
+      ],
+      "hits": {
+        "0": 26,
+        "1": 26,
+        "2": 26
+      },
+      "range_attribute": 100.0,
+      "score": 100,
+      "single_damage": 26
+    },
+    {
+      "actual_range": 440.0,
+      "area_attribute": 0.0,
+      "blast_radius": 1.0,
+      "cast_tick": 43,
+      "expected_targets": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        {
+          "file": "200_000.png",
+          "hit_targets": 0,
+          "physics_tick": 1,
+          "simulation_frame": 0
+        },
+        {
+          "file": "200_001.png",
+          "hit_targets": 0,
+          "physics_tick": 4,
+          "simulation_frame": 3
+        },
+        {
+          "file": "200_002.png",
+          "hit_targets": 0,
+          "physics_tick": 7,
+          "simulation_frame": 6
+        },
+        {
+          "file": "200_003.png",
+          "hit_targets": 0,
+          "physics_tick": 10,
+          "simulation_frame": 9
+        },
+        {
+          "file": "200_004.png",
+          "hit_targets": 0,
+          "physics_tick": 13,
+          "simulation_frame": 12
+        },
+        {
+          "file": "200_005.png",
+          "hit_targets": 0,
+          "physics_tick": 16,
+          "simulation_frame": 15
+        },
+        {
+          "file": "200_006.png",
+          "hit_targets": 0,
+          "physics_tick": 19,
+          "simulation_frame": 18
+        },
+        {
+          "file": "200_007.png",
+          "hit_targets": 0,
+          "physics_tick": 22,
+          "simulation_frame": 21
+        },
+        {
+          "file": "200_008.png",
+          "hit_targets": 0,
+          "physics_tick": 25,
+          "simulation_frame": 24
+        },
+        {
+          "file": "200_009.png",
+          "hit_targets": 0,
+          "physics_tick": 28,
+          "simulation_frame": 27
+        },
+        {
+          "file": "200_010.png",
+          "hit_targets": 0,
+          "physics_tick": 31,
+          "simulation_frame": 30
+        },
+        {
+          "file": "200_011.png",
+          "hit_targets": 0,
+          "physics_tick": 34,
+          "simulation_frame": 33
+        },
+        {
+          "file": "200_012.png",
+          "hit_targets": 0,
+          "physics_tick": 37,
+          "simulation_frame": 36
+        },
+        {
+          "file": "200_013.png",
+          "hit_targets": 0,
+          "physics_tick": 40,
+          "simulation_frame": 39
+        },
+        {
+          "file": "200_014.png",
+          "hit_targets": 0,
+          "physics_tick": 43,
+          "simulation_frame": 42
+        },
+        {
+          "file": "200_015.png",
+          "hit_targets": 0,
+          "physics_tick": 46,
+          "simulation_frame": 45
+        },
+        {
+          "file": "200_016.png",
+          "hit_targets": 0,
+          "physics_tick": 49,
+          "simulation_frame": 48
+        },
+        {
+          "file": "200_017.png",
+          "hit_targets": 4,
+          "physics_tick": 52,
+          "simulation_frame": 51
+        },
+        {
+          "file": "200_018.png",
+          "hit_targets": 5,
+          "physics_tick": 55,
+          "simulation_frame": 54
+        },
+        {
+          "file": "200_019.png",
+          "hit_targets": 5,
+          "physics_tick": 58,
+          "simulation_frame": 57
+        },
+        {
+          "file": "200_020.png",
+          "hit_targets": 5,
+          "physics_tick": 61,
+          "simulation_frame": 60
+        },
+        {
+          "file": "200_021.png",
+          "hit_targets": 5,
+          "physics_tick": 64,
+          "simulation_frame": 63
+        },
+        {
+          "file": "200_022.png",
+          "hit_targets": 5,
+          "physics_tick": 67,
+          "simulation_frame": 66
+        },
+        {
+          "file": "200_023.png",
+          "hit_targets": 5,
+          "physics_tick": 70,
+          "simulation_frame": 69
+        },
+        {
+          "file": "200_024.png",
+          "hit_targets": 5,
+          "physics_tick": 73,
+          "simulation_frame": 72
+        },
+        {
+          "file": "200_025.png",
+          "hit_targets": 5,
+          "physics_tick": 76,
+          "simulation_frame": 75
+        },
+        {
+          "file": "200_026.png",
+          "hit_targets": 5,
+          "physics_tick": 79,
+          "simulation_frame": 78
+        },
+        {
+          "file": "200_027.png",
+          "hit_targets": 5,
+          "physics_tick": 82,
+          "simulation_frame": 81
+        },
+        {
+          "file": "200_028.png",
+          "hit_targets": 5,
+          "physics_tick": 85,
+          "simulation_frame": 84
+        },
+        {
+          "file": "200_029.png",
+          "hit_targets": 5,
+          "physics_tick": 88,
+          "simulation_frame": 87
+        },
+        {
+          "file": "200_030.png",
+          "hit_targets": 5,
+          "physics_tick": 91,
+          "simulation_frame": 90
+        },
+        {
+          "file": "200_031.png",
+          "hit_targets": 5,
+          "physics_tick": 94,
+          "simulation_frame": 93
+        },
+        {
+          "file": "200_032.png",
+          "hit_targets": 5,
+          "physics_tick": 97,
+          "simulation_frame": 96
+        },
+        {
+          "file": "200_033.png",
+          "hit_targets": 5,
+          "physics_tick": 100,
+          "simulation_frame": 99
+        },
+        {
+          "file": "200_034.png",
+          "hit_targets": 5,
+          "physics_tick": 103,
+          "simulation_frame": 102
+        },
+        {
+          "file": "200_035.png",
+          "hit_targets": 5,
+          "physics_tick": 106,
+          "simulation_frame": 105
+        },
+        {
+          "file": "200_036.png",
+          "hit_targets": 5,
+          "physics_tick": 109,
+          "simulation_frame": 108
+        },
+        {
+          "file": "200_037.png",
+          "hit_targets": 5,
+          "physics_tick": 112,
+          "simulation_frame": 111
+        },
+        {
+          "file": "200_038.png",
+          "hit_targets": 5,
+          "physics_tick": 115,
+          "simulation_frame": 114
+        },
+        {
+          "file": "200_039.png",
+          "hit_targets": 5,
+          "physics_tick": 118,
+          "simulation_frame": 117
+        },
+        {
+          "file": "200_040.png",
+          "hit_targets": 5,
+          "physics_tick": 121,
+          "simulation_frame": 120
+        },
+        {
+          "file": "200_041.png",
+          "hit_targets": 5,
+          "physics_tick": 124,
+          "simulation_frame": 123
+        },
+        {
+          "file": "200_042.png",
+          "hit_targets": 5,
+          "physics_tick": 127,
+          "simulation_frame": 126
+        },
+        {
+          "file": "200_043.png",
+          "hit_targets": 5,
+          "physics_tick": 130,
+          "simulation_frame": 129
+        },
+        {
+          "file": "200_044.png",
+          "hit_targets": 5,
+          "physics_tick": 133,
+          "simulation_frame": 132
+        },
+        {
+          "file": "200_045.png",
+          "hit_targets": 5,
+          "physics_tick": 136,
+          "simulation_frame": 135
+        },
+        {
+          "file": "200_046.png",
+          "hit_targets": 5,
+          "physics_tick": 139,
+          "simulation_frame": 138
+        },
+        {
+          "file": "200_047.png",
+          "hit_targets": 5,
+          "physics_tick": 142,
+          "simulation_frame": 141
+        },
+        {
+          "file": "200_048.png",
+          "hit_targets": 5,
+          "physics_tick": 145,
+          "simulation_frame": 144
+        },
+        {
+          "file": "200_049.png",
+          "hit_targets": 5,
+          "physics_tick": 148,
+          "simulation_frame": 147
+        },
+        {
+          "file": "200_050.png",
+          "hit_targets": 5,
+          "physics_tick": 151,
+          "simulation_frame": 150
+        },
+        {
+          "file": "200_051.png",
+          "hit_targets": 5,
+          "physics_tick": 154,
+          "simulation_frame": 153
+        },
+        {
+          "file": "200_052.png",
+          "hit_targets": 5,
+          "physics_tick": 157,
+          "simulation_frame": 156
+        },
+        {
+          "file": "200_053.png",
+          "hit_targets": 5,
+          "physics_tick": 160,
+          "simulation_frame": 159
+        },
+        {
+          "file": "200_054.png",
+          "hit_targets": 5,
+          "physics_tick": 163,
+          "simulation_frame": 162
+        },
+        {
+          "file": "200_055.png",
+          "hit_targets": 5,
+          "physics_tick": 166,
+          "simulation_frame": 165
+        },
+        {
+          "file": "200_056.png",
+          "hit_targets": 5,
+          "physics_tick": 169,
+          "simulation_frame": 168
+        },
+        {
+          "file": "200_057.png",
+          "hit_targets": 5,
+          "physics_tick": 172,
+          "simulation_frame": 171
+        },
+        {
+          "file": "200_058.png",
+          "hit_targets": 5,
+          "physics_tick": 175,
+          "simulation_frame": 174
+        },
+        {
+          "file": "200_059.png",
+          "hit_targets": 5,
+          "physics_tick": 178,
+          "simulation_frame": 177
+        }
+      ],
+      "hits": {
+        "0": 26,
+        "1": 26,
+        "2": 26,
+        "3": 26,
+        "4": 26
+      },
+      "range_attribute": 200.0,
+      "score": 200,
+      "single_damage": 26
+    }
+  ],
+  "checks": 272,
+  "efficiency": 0.5,
+  "failures": 0,
+  "family": "range",
+  "method": "Production GameRoot and plain WeaponInstance; unified production bonus formulas, native casting/collision/VFX, raw attributes preserved. Stationary durable native targets and fixed camera, matching the approved review fixture.",
+  "mode": "half",
+  "render_fps": 60,
+  "size": [
+    960,
+    540
+  ],
+  "retained_frame_files": [
+    "000_019.png",
+    "050_019.png",
+    "100_019.png",
+    "200_019.png"
+  ],
+  "raw_frames_retained": false
+}

@@ -366,6 +366,21 @@ func attach_item_instance(item_instance: Dictionary) -> bool:
 	return true
 
 
+func replace_attachment_instance(target_index: int, item_instance: Dictionary) -> Dictionary:
+	if target_index < 0 or target_index >= _attached_item_instances.size() or item_instance.is_empty():
+		return {}
+	var item_id := str(item_instance.get("item_instance_id", ""))
+	if item_id.is_empty() or not get_attachment_incompatibility(item_instance).is_empty():
+		return {}
+	for attached in _attached_item_instances:
+		if str(attached.get("item_instance_id", "")) == item_id:
+			return {}
+	var replaced := _attached_item_instances[target_index].duplicate(true)
+	_attached_item_instances[target_index] = item_instance.duplicate(true)
+	_rebuild_attachment_effects()
+	return replaced
+
+
 func get_attachment_incompatibility(item: Dictionary) -> String:
 	for effect_id in item.get("effect_ids", []):
 		if effect_id in weapon_data.get("unsupported_effects", []):
@@ -530,7 +545,7 @@ func has_combat_tag(tag: String) -> bool:
 
 func get_projectile_visual_scale() -> float:
 	if use_active_range_rules and has_combat_tag("投射物"):
-		return maxf(0.1, 1.0 + get_stat("damage_area_size") / 100.0)
+		return StatDefinitions.calculate_damage_area_multiplier(get_stat("damage_area_size"))
 	return 1.0
 
 
@@ -639,7 +654,7 @@ func get_pierce_hit_limit() -> int:
 
 
 func get_grenade_blast_radius() -> float:
-	return maxf(1.0, grenade_blast_radius * (1.0 + get_stat("damage_area_size") / 100.0))
+	return maxf(1.0, StatDefinitions.calculate_damage_area_radius(grenade_blast_radius, get_stat("damage_area_size")))
 
 
 func get_grenade_split_profiles() -> Array[Dictionary]:
@@ -732,7 +747,7 @@ func _build_damage_event(damage_kind: String, force_critical: bool, roll_critica
 		# Keep the pre-attachment base; boost the full elemental base once, including
 		# the flat element bonus. Children/reactions inherit this captured multiplier.
 		"elemental_damage_scale": get_attachment_damage_multiplier(true),
-		"damage_area_scale": maxf(0.01, 1.0 + get_stat("damage_area_size") / 100.0),
+		"damage_area_scale": StatDefinitions.calculate_damage_area_multiplier(get_stat("damage_area_size")),
 		# Elemental native attacks already include this bonus; attachments must not add it twice.
 		"element_damage_bonus": 0 if damage_kind == DAMAGE_KIND_ELEMENT else maxi(0, int(roundi(get_stat("element_damage")))),
 		"damage_kind": damage_kind,
@@ -780,7 +795,7 @@ func build_full_stats_text() -> String:
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
 	lines.append("[color=#F5D76E]伤害：[/color]" + _format_damage_source(get_damage_stat_id()))
 	if get_stat("damage_area_size") != 0:
-		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f%%" % get_stat("damage_area_size"))
+		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f（每点增加0.5%%）" % get_stat("damage_area_size"))
 	var interval := get_active_cooldown_seconds()
 	lines.append("[color=#F5D76E]动作后冷却[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])

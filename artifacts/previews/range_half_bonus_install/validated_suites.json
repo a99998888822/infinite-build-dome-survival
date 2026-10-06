@@ -1,0 +1,74 @@
+[
+  {
+    "name": "active_range_rules_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ACTIVE_RANGE_RULES checks=118 failures=0"
+    ]
+  },
+  {
+    "name": "range_relic_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "RANGE_RELIC_COMPLETE checks=119 failures=0"
+    ]
+  },
+  {
+    "name": "attribute_enchantment_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ATTRIBUTE_ENCHANTMENT_TEST checks=262 failures=0"
+    ]
+  },
+  {
+    "name": "enchantment_stacking_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENCHANTMENT_STACKING_TEST checks=242 failures=0"
+    ]
+  },
+  {
+    "name": "hammer_density_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "HAMMER_DENSITY_TEST checks=230 failures=0"
+    ]
+  },
+  {
+    "name": "element_reaction_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "REACTION_TEST checks=68 failures=0"
+    ]
+  },
+  {
+    "name": "water_ice_atlas_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WATER_ICE_ATLAS_TEST checks=41 failures=0"
+    ]
+  },
+  {
+    "name": "enchantment_tooltip_balance_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENCHANTMENT_TOOLTIP_BALANCE checks=112 failures=0"
+    ]
+  },
+  {
+    "name": "active_combat_integration_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ACTIVE_COMBAT_INTEGRATION checks=115 failures=0"
+    ]
+  }
+]

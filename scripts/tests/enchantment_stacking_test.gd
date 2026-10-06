@@ -99,15 +99,15 @@ func _run() -> void:
 	await frames()
 	check(enemies[0].current_hp < 10000, "domain-expanded ice damage reaches the outer target")
 	for child in host.get_children():
-		if child is IceFieldEffect: check(is_equal_approx(child._radius, 51.2 * 1.3), "ice area scales exactly once")
+		if child is IceFieldEffect: check(is_equal_approx(child._radius, 51.2 * 1.15), "ice area scales exactly once")
 
-	await fixture(BOW, [Vector2(17, 0)], ["scroll_domain", "scroll_wind"])
+	await fixture(BOW, [Vector2(15.5, 0)], ["scroll_domain", "scroll_wind"])
 	WindBladeEffect.spawn(host, Vector2.ZERO, Vector2.RIGHT, 480, 0.46, weapon, weapon.calculate_damage_events()[0], 0, Callable(), str(weapon.get_effect_instances("wind")[0].item_instance_id))
 	for child in host.get_children():
 		if child is WindBladeEffect:
 			child.set_process(false)
 			child._damage_path_enemies()
-			check(is_equal_approx(child._hit_radius, 18.2) and child._speed == 480 and child._lifetime == 0.46, "domain scales wind damage width without changing flight distance")
+			check(is_equal_approx(child._hit_radius, 16.1) and child._speed == 480 and child._lifetime == 0.46, "domain scales wind damage width without changing flight distance")
 	check(enemies[0].current_hp < 10000, "expanded wind blade hits outside its original 14px width")
 	var wind_item := str(weapon.get_effect_instances("wind")[0].item_instance_id)
 	ctx = PARAMS.build_weapon_context(weapon, "wind", {}, wind_item)
@@ -116,10 +116,10 @@ func _run() -> void:
 	enemies[0].apply_freeze()
 	ElementReactionResolver.apply_element(enemies[0], "light", {"parent": host, "damage_event": reflected_event})
 	for child in host.get_children():
-		if child is LightReflectionEffect: check(is_equal_approx(child._radius, 286), "reflection damage fan inherits captured domain scale once")
+		if child is LightReflectionEffect: check(is_equal_approx(child._radius, 253), "reflection damage fan inherits captured domain scale once")
 
 	await fixture(LAMP, [], ["scroll_domain"])
-	check(is_equal_approx(weapon.get_lamp_cone_degrees(), 78) and weapon.build_full_stats_text().contains("78°"), "lamp preview displays the enlarged 60-degree base cone")
+	check(is_equal_approx(weapon.get_lamp_cone_degrees(), 69) and weapon.build_full_stats_text().contains("69°"), "lamp preview displays the enlarged 60-degree base cone")
 	for data in DataRegistry.tables.weapons:
 		await fixture(str(data.id), [], ["scroll_might", "scroll_wisdom"])
 		normalize_damage(weapon)

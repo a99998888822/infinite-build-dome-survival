@@ -4,14 +4,32 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
-const RECT_BATCH = preload("res://scripts/effects/pixel_rect_batch.gd")
+# Shared resources load with the effect script, before the first combat hit.
+const ATLAS_RADIUS: float = 45.696
+const ATLAS_TILE := 112
+const ATLAS_COLUMNS := 8
+const ATLAS_FRAMES := 52
+const ATLASES: Array[Texture2D] = [
+	preload("res://assets/sprites/effects/water_wave/water_d0_p0.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d0_p1.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d0_p2.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d0_p3.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d1_p0.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d1_p1.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d1_p2.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d1_p3.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d2_p0.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d2_p1.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d2_p2.png"),
+	preload("res://assets/sprites/effects/water_wave/water_d2_p3.png"),
+]
 
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.45
 const SIZE_MULTIPLIER: float = 0.7
-# Approved single-front draft is 15% smaller than the previous water footprint.
-const RADIUS_SCALE: float = 0.85
+# Approved PNG footprint: 0.8 times the prior 0.85 scale, for art and collision.
+const RADIUS_SCALE: float = 0.68
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -20,9 +38,9 @@ var _radius: float = DEFAULT_RADIUS
 var _duration: float = DEFAULT_DURATION
 var _elapsed: float = 0.0
 var _damage_applied: bool = false
-var _phase: float = 0.0
 var _visual_detail: int = 2
-var _rects := RECT_BATCH.new()
+var _atlas_index := 0
+var _atlas_frame := -1
 
 
 static func spawn(
@@ -53,14 +71,17 @@ static func spawn(
 		32.0,
 	) * SIZE_MULTIPLIER * RADIUS_SCALE
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
-	effect._phase = randf_range(0.0, TAU)
+	# Preserve the reviewed four phases and one random sample per spawned wave.
+	var phase := randf_range(0.0, TAU)
+	var phase_index := posmod(roundi(phase / TAU * 4.0), 4)
+	effect._atlas_index = effect._visual_detail * 4 + phase_index
 	# Apply contact synchronously so the following slot observes the wet state.
 	effect._apply_wave()
 
 
 func _ready() -> void:
 	z_index = -8
-	_rects.setup(self)
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	queue_redraw()
 
 
@@ -68,7 +89,10 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_elapsed += delta
-	queue_redraw()
+	var frame := _get_atlas_frame()
+	if frame != _atlas_frame:
+		_atlas_frame = frame
+		queue_redraw()
 	if _elapsed >= _duration:
 		queue_free()
 
@@ -110,75 +134,12 @@ func _apply_wave() -> void:
 	AudioManager.end_combat_audio()
 
 
-func _edge_radius(angle: float, reach: float, time: float) -> float:
-	# Small, unequal ripples keep the overall outline circular, with liquid
-	# edges rather than a rigid circle or evenly spaced flower petals.
-	var ripple := sin(angle * 5.0 - time * 4.8 + _phase) * 0.031
-	ripple += sin(angle * 9.0 + time * 5.5 + _phase * 1.7) * 0.018
-	ripple += sin(angle * 13.0 - time * 3.0 + 1.1) * 0.009
-	return reach * (0.942 + ripple)
-
-
-func _contour(reach: float, inset: float, time: float) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	var segments := 96 if _visual_detail > 0 else 48
-	for index in range(segments + 1):
-		var angle := float(index) * TAU / float(segments)
-		points.append(Vector2.from_angle(angle) * maxf(1.0, _edge_radius(angle, reach, time) - inset))
-	return points
+func _get_atlas_frame() -> int:
+	return clampi(int(_elapsed / _duration * (ATLAS_FRAMES - 1) + 0.00001), 0, ATLAS_FRAMES - 1)
 
 
 func _draw() -> void:
-	_rects.begin()
-	var time := clampf(_elapsed / _duration, 0.0, 1.0)
-	var growth := 1.0 - pow(1.0 - minf(time / 0.82, 1.0), 1.55)
-	var reach := _radius * lerpf(0.065, 1.0, growth)
-	var fade := 1.0 - smoothstep(0.66, 1.0, time)
-	var width := minf(reach * 0.40, lerpf(6.0, 13.0, growth) * RADIUS_SCALE)
-	var outer := PackedVector2Array()
-	var inner := PackedVector2Array()
-	var shoulder := PackedVector2Array()
-	var segments := 96 if _visual_detail > 0 else 48
-	for index in range(segments + 1):
-		var angle := float(index) * TAU / float(segments)
-		var direction := Vector2.from_angle(angle)
-		var edge := _edge_radius(angle, reach, time)
-		outer.append(direction * maxf(1.0, edge))
-		inner.append(direction * maxf(1.0, edge - width))
-		shoulder.append(direction * maxf(1.0, edge - width * 0.35))
-	var band := outer.duplicate()
-	for index in range(inner.size() - 1, -1, -1): band.append(inner[index])
-	# A quiet translucent surface follows the growing edge; most of the
-	# contrast belongs to the outer front and its curling white-blue crests.
-	_rects.polygon(outer, Color(0.10, 0.43, 0.57, fade * 0.11))
-	_rects.polygon(band, Color(0.055, 0.29, 0.40, fade * 0.86))
-	_rects.path(inner, Color(0.09, 0.39, 0.51, fade * 0.72), 2)
-	_rects.path(shoulder, Color(0.20, 0.62, 0.74, fade * 0.93), maxf(2.0, width * 0.5))
-	_rects.path(outer, Color(0.46, 0.83, 0.87, fade * 0.85), 2)
-	# Foam follows short uneven sections of the rim, curling into the wake.
-	var crest_count := 7 if _visual_detail == 2 else (4 if _visual_detail == 1 else 3)
-	for crest in range(crest_count):
-		var start := crest * TAU / float(crest_count) + sin(crest * 2.4) * 0.09 + time * 0.28
-		var length := 0.36 + float(crest % 3) * 0.075
-		var lip := PackedVector2Array()
-		for index in range(15):
-			var u := float(index) / 14.0
-			var angle := start + u * length
-			var bend := smoothstep(0.62, 1.0, u)
-			var distance := _edge_radius(angle, reach, time) - width * (0.08 + bend * 0.74)
-			angle -= bend * 0.08
-			lip.append(Vector2.from_angle(angle) * maxf(distance, 1.0))
-		_rects.path(lip, Color(0.65, 0.92, 0.93, fade * 0.98), 2)
-		if reach > 25.0:
-			_rects.path(lip.slice(2, 8), Color(0.88, 0.98, 0.95, fade * 0.94), 2)
-	# The inner wake is subordinate to the single advancing outer wave.
-	if time > 0.22 and _visual_detail > 0:
-		var wake_alpha := fade * smoothstep(0.22, 0.45, time) * 0.34
-		for wake in range(3):
-			var points := PackedVector2Array()
-			for index in range(19):
-				var angle := wake * TAU / 3.0 + index * 0.043 - time * 0.35
-				var distance := reach * (0.70 + 0.018 * sin(angle * 8.0 + time * 4))
-				points.append(Vector2.from_angle(angle) * distance)
-			_rects.path(points, Color(0.38, 0.73, 0.80, wake_alpha), 2)
-	_rects.finish()
+	var frame := _get_atlas_frame()
+	var extent := Vector2.ONE * ATLAS_TILE * _radius / ATLAS_RADIUS
+	var region := Rect2(Vector2((frame % ATLAS_COLUMNS) * ATLAS_TILE, (frame / ATLAS_COLUMNS) * ATLAS_TILE), Vector2.ONE * ATLAS_TILE)
+	draw_texture_rect_region(ATLASES[_atlas_index], Rect2(-extent * 0.5, extent), region)

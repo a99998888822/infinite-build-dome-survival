@@ -41,7 +41,7 @@ func timing_test() -> void:
 		var echo_snapshot := PackedVector2Array()
 		check(snapshot.size() == 10, "200px arc uses ten control points instead of dense samples")
 		check(snapshot[0] == Vector2(-13, -7) and snapshot[-1] == Vector2(187, 33), "contact endpoints stay anchored")
-		var times := [0.01, 0.07, 0.13, 0.17, 0.23]
+		var times := [0.01, 0.09, 0.17, 0.21, 0.29]
 		var expected := [1.0, 0.6, 0.0, 1.0, 0.6]
 		var previous := 0.0
 		for i in times.size():
@@ -62,7 +62,7 @@ func timing_test() -> void:
 		effect._process(1.0)
 		check(is_equal_approx(effect._path_pulses[0].age, previous), "battle pause freezes fade and flashback")
 		GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-		effect._process(0.06)
+		effect._process(0.08)
 		check(effect._path_pulses.is_empty() and effect.get_active_particle_count() == 0, "both flashes expire without path particles")
 		effect._chain_finished = true
 		effect._try_finish_chain()

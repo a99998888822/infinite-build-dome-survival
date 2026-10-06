@@ -97,7 +97,7 @@ func _rounded(points: PackedVector2Array, fraction: float = 0.22) -> PackedVecto
 func get_arrow_width_parameter() -> float:
 	if weapon.use_active_range_rules:
 		var base := minf(maxf(20, float(weapon.weapon_data.get("hit_radius", 0))), maxf(12, weapon.get_base_attack_range() - clearance - 2) * 0.23)
-		return base * maxf(0.1, 1.0 + weapon.get_stat("damage_area_size") / 100.0) if weapon.has_combat_tag("范围") else base
+		return StatDefinitions.calculate_damage_area_radius(base, weapon.get_stat("damage_area_size")) if weapon.has_combat_tag("范围") else base
 	return minf(maxf(20, weapon.get_hit_radius()), maxf(12, weapon.get_attack_range() - clearance - 2) * 0.23)
 
 

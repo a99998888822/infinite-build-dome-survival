@@ -1,0 +1,94 @@
+{
+	"capture_fps": 20,
+	"cases": [
+		{
+			"actual_range": 220.0,
+			"area_attribute": 0.0,
+			"blast_radius": 1.0,
+			"cast_tick": 43,
+			"expected_targets": [
+				0
+			],
+			"frames": [],
+			"hits": {
+				"0": 26
+			},
+			"range_attribute": 0.0,
+			"score": 0,
+			"single_damage": 26
+		},
+		{
+			"actual_range": 275.0,
+			"area_attribute": 0.0,
+			"blast_radius": 1.0,
+			"cast_tick": 43,
+			"expected_targets": [
+				0,
+				1
+			],
+			"frames": [],
+			"hits": {
+				"0": 26,
+				"1": 26
+			},
+			"range_attribute": 50.0,
+			"score": 50,
+			"single_damage": 26
+		},
+		{
+			"actual_range": 330.0,
+			"area_attribute": 0.0,
+			"blast_radius": 1.0,
+			"cast_tick": 43,
+			"expected_targets": [
+				0,
+				1,
+				2
+			],
+			"frames": [],
+			"hits": {
+				"0": 26,
+				"1": 26,
+				"2": 26
+			},
+			"range_attribute": 100.0,
+			"score": 100,
+			"single_damage": 26
+		},
+		{
+			"actual_range": 440.0,
+			"area_attribute": 0.0,
+			"blast_radius": 1.0,
+			"cast_tick": 43,
+			"expected_targets": [
+				0,
+				1,
+				2,
+				3,
+				4
+			],
+			"frames": [],
+			"hits": {
+				"0": 26,
+				"1": 26,
+				"2": 26,
+				"3": 26,
+				"4": 26
+			},
+			"range_attribute": 200.0,
+			"score": 200,
+			"single_damage": 26
+		}
+	],
+	"checks": 32,
+	"efficiency": 0.5,
+	"failures": 0,
+	"family": "range",
+	"method": "Real GameRoot and native casting/collision/VFX. Raw equipment stats preserved; preview-only cast snapshots halve the two bonuses. Stationary durable native enemies, fixed camera, seeded environment. No production resource edits.",
+	"mode": "half",
+	"render_fps": 60,
+	"size": [
+		960,
+		540
+	]
+}

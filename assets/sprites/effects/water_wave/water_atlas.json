@@ -1,0 +1,19 @@
+{
+  "frame_size": [
+    112,
+    112
+  ],
+  "columns": 8,
+  "rows": 7,
+  "frame_count": 52,
+  "fps": 60,
+  "duration": 0.85,
+  "baked_radius": 45.696,
+  "relative_size": 0.8,
+  "phases": 4,
+  "details": 3,
+  "alpha": "straight alpha, unpremultiplied GPU readback",
+  "generation": "existing Godot water drawing baked offline; no image model",
+  "source_sha256": "d26d6af5ae1389cdedf31f1ee2f2036257114653b47df8149d9b315b8e189920",
+  "texture_bytes_rgba8": 33718272
+}

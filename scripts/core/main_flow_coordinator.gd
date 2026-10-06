@@ -1315,7 +1315,7 @@ func submit_enchantment_operation(action: String, weapon_id: String, item_id: St
 	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state != STATE_FINANCE_POPUP or _bound_loadout == null or _transaction_busy:
 		return {"success": false, "reason": "enchantment_page_required"}
-	if action == "attach" and _bound_player != null:
+	if action in ["attach", "replace"] and _bound_player != null:
 		var weapon := _bound_loadout.get_weapon_instance(weapon_id)
 		var item := _bound_player.item_inventory.find_item(item_id)
 		if weapon != null and not weapon.get_attachment_incompatibility(item).is_empty():
@@ -1328,6 +1328,8 @@ func submit_enchantment_operation(action: String, weapon_id: String, item_id: St
 		success = not _bound_loadout.request_manual_detachment(weapon_id, item_id).is_empty()
 	elif action == "move":
 		success = _bound_loadout.request_manual_attachment_move(weapon_id, item_id, target_index)
+	elif action == "replace":
+		success = _bound_loadout.request_manual_attachment_replacement(weapon_id, item_id, target_index)
 	_transaction_busy = false
 	clear_stat_preview()
 	_notify_preparation_changed()

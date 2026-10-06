@@ -49,6 +49,8 @@ var _sale_confirm: Button
 var _quote: Dictionary = {}
 var _tooltip: PanelContainer
 var _tooltip_text: RichTextLabel
+var _tooltip_layout_frames := 0
+var _tooltip_mouse_position := Vector2.ZERO
 var _active_tab := "shop"
 var _bank_action := "deposit"
 var _generation := -1
@@ -172,6 +174,10 @@ func _on_interest_arrived(amount: int) -> void:
 
 
 func _process(delta: float) -> void:
+	if _tooltip != null and _tooltip.visible:
+		_fit_tooltip(_tooltip_mouse_position)
+		_tooltip_layout_frames = maxi(0, _tooltip_layout_frames - 1)
+		_tooltip.modulate.a = 1.0 if _tooltip_layout_frames == 0 else 0.0
 	if not visible or not bool(payload.get("strong_refresh", false)): return
 	_glow_time += delta
 	var color := Color.from_hsv(fmod(_glow_time * 0.18, 1.0), 0.55, 1.0)
@@ -403,7 +409,7 @@ func _build() -> void:
 	_tooltip.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 12))
 	_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_tooltip.z_index = 20
-	main_panel.add_child(_tooltip)
+	GameTooltipLayer.for_owner(main_panel).add_child(_tooltip)
 	_tooltip_text = RichTextLabel.new()
 	_tooltip_text.bbcode_enabled = true
 	_tooltip_text.scroll_active = false
@@ -731,15 +737,28 @@ func _confirm_sale() -> void:
 
 func _show_tooltip(content: String) -> void:
 	if _sale_layer.visible: return
-	var tooltip_size := Vector2(minf(310, main_panel.size.x - 24), 0)
+	var viewport_size := get_viewport_rect().size
+	var tooltip_size := Vector2(minf(310, viewport_size.x - 24), 0)
 	_tooltip_text.size.x = maxf(tooltip_size.x - 24, 1)
 	_tooltip_text.text = content
-	tooltip_size.y = minf(float(_tooltip_text.get_content_height()) + 24, main_panel.size.y - 24)
-	var point := get_global_mouse_position() - main_panel.global_position + Vector2(14, 14)
-	point.x = clampf(point.x, 12, main_panel.size.x - tooltip_size.x - 12)
-	point.y = clampf(point.y, 12, main_panel.size.y - tooltip_size.y - 12)
-	_place(_tooltip, Rect2(point, tooltip_size))
+	_tooltip.size.x = tooltip_size.x
+	# Keep the first wrapping/layout pass invisible instead of flashing at a corner.
+	_tooltip_layout_frames = 2
+	_tooltip.modulate.a = 0.0
 	_tooltip.show()
+	_fit_tooltip(_tooltip_mouse_position)
+
+
+func _fit_tooltip(mouse: Vector2) -> void:
+	if not _tooltip.visible: return
+	var viewport_size := get_viewport_rect().size
+	var tooltip_size := Vector2(minf(310, viewport_size.x - 24), minf(float(_tooltip_text.get_content_height()) + 24, viewport_size.y - 24))
+	var point := mouse + Vector2(14, 14)
+	if point.x + tooltip_size.x > viewport_size.x - 12:
+		point.x = mouse.x - tooltip_size.x - 14
+	point.x = clampf(point.x, 12, viewport_size.x - tooltip_size.x - 12)
+	point.y = clampf(point.y, 12, viewport_size.y - tooltip_size.y - 12)
+	_place(_tooltip, Rect2(point, tooltip_size))
 
 
 func _feedback_message(message: String, success: bool) -> void:
@@ -768,6 +787,9 @@ func handle_back_request() -> bool:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and get_viewport_rect().has_point(event.position):
+		# Use the pointer event that opens the tooltip, in viewport coordinates.
+		_tooltip_mouse_position = event.position
 	if event is InputEventKey and not event.echo and event.is_action_pressed("ui_cancel") and handle_back_request():
 		get_viewport().set_input_as_handled()
 		return

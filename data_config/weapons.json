@@ -123,7 +123,7 @@
       "2": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
       "3": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
       "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "5": {"rarity": "mythic", "description": "基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+10%[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 10}, {"stat": "projectile_count", "value": 1}]}
+      "5": {"rarity": "mythic", "description": "基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+10[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 10}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 2
   },
@@ -216,7 +216,7 @@
       "2": {"rarity": "uncommon", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
       "3": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
       "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
-      "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+20%[/color]", "effects": [{"stat": "element_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 20}]}
+      "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+20[/color]", "effects": [{"stat": "element_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 20}]}
     },
     "attachment_slots": 1
   },
@@ -237,10 +237,10 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 40, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
-      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
-      "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5%[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
+      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
+      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
+      "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
     "projectile_spacing_degrees": 20
@@ -250,7 +250,7 @@
     "combat_tags": ["近战", "投射物"],
     "shop_description": "向前砸出逐段延伸的地裂。",
     "display_name": "裂地战锤",
-    "description": "基础近战伤害30，锤击后每路地裂依次向外推进5个节点。默认1路，多路相邻20°同时展开。完成攻击后冷却4秒。原生攻击判定只受攻击距离加成；伤害范围仅放大投射物贴图及适用的附魔效果。地裂从身前延伸，保留原色、加粗主线并增加细小分叉。",
+    "description": "基础近战伤害30，锤击后每路地裂依次向外推进5个节点。默认1路，多路相邻10°同时展开。完成攻击后冷却4秒。原生攻击判定只受攻击距离加成；伤害范围仅放大投射物贴图及适用的附魔效果。落雷沿每路均匀分布，间距不超过64像素，射程增加时自动增加落点。地裂从身前延伸，保留原色、加粗主线并增加细小分叉。",
     "icon": "res://assets/ui/icons/weapons/weapon_earth_hammer.png",
     "hit_sfx": "res://assets/audio/sfx/combat/meteor_flail_hit.wav",
     "rarity": "rare", "attack_kind": "melee", "tags": ["heavy"],
@@ -270,7 +270,7 @@
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 2,
-    "projectile_spacing_degrees": 20
+    "projectile_spacing_degrees": 10
   },
   {
     "id": "weapon_camp_dagger",
@@ -339,10 +339,10 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 26, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
-      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5%[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
-      "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5%[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
+      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
+      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
+      "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
     "projectile_spacing_degrees": 20

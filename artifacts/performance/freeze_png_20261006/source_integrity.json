@@ -1,0 +1,19 @@
+{
+  "formal_effects_unchanged": {
+    "scripts/effects/element_reaction_visual.gd": true,
+    "scripts/effects/water_wave_effect.gd": true,
+    "scripts/effects/ice_field_effect.gd": true,
+    "scripts/effects/element_reaction_resolver.gd": true
+  },
+  "concurrent_changes": [
+    "scripts/core/main_flow_coordinator.gd",
+    "scripts/items/item_inventory.gd",
+    "scripts/tests/character_select_view_test.gd",
+    "scripts/tests/finance_preparation_test.gd",
+    "scripts/ui/character_select_view.gd",
+    "scripts/ui/enchantment_workbench.gd",
+    "scripts/weapons/weapon_instance.gd",
+    "scripts/weapons/weapon_loadout.gd"
+  ],
+  "this_task_writes": "Only independent review archive and artifacts"
+}

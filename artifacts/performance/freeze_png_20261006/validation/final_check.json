@@ -1,0 +1,36 @@
+{
+  "media": [
+    {
+      "name": "battle_80_comparison",
+      "gif_frames": 110,
+      "gif_seconds": 5.5,
+      "mp4_seconds": 5.5,
+      "gif_bytes": 1598054
+    },
+    {
+      "name": "battle_200_comparison",
+      "gif_frames": 110,
+      "gif_seconds": 5.5,
+      "mp4_seconds": 5.5,
+      "gif_bytes": 1154300
+    },
+    {
+      "name": "shards_closeup",
+      "gif_frames": 82,
+      "gif_seconds": 1.4,
+      "mp4_seconds": 1.4,
+      "gif_bytes": 235025
+    }
+  ],
+  "raw_capture_bytes_removed": 889076736,
+  "raw_capture_files_removed": [
+    "D:\\project\\useless\\review-archives\\freeze-png-20261006\\capture-200-png\\frames.rgb",
+    "D:\\project\\useless\\review-archives\\freeze-png-20261006\\capture-200-realtime\\frames.rgb",
+    "D:\\project\\useless\\review-archives\\freeze-png-20261006\\capture-80-png\\frames.rgb",
+    "D:\\project\\useless\\review-archives\\freeze-png-20261006\\capture-80-realtime\\frames.rgb"
+  ],
+  "gameplay_pairs_passed": 7,
+  "formal_effects_unchanged": true,
+  "encoding_check": "PASS",
+  "repository_diff_check": "Unrelated existing todo.md:26 new blank line at EOF; no formal file changed by this task."
+}

@@ -69,7 +69,36 @@ func _run() -> void:
 	await move_pointer(Vector2(10,10))
 	check(menu.character_select_page.visible and not menu.start_page.visible, "start button opens production character selection")
 	check(view.background.texture.get_size() == Vector2(2752,1536) and view.canvas.size == Vector2(2752,1536), "approved basement composition sizes")
-	check(view.character_icon.size == Vector2(463,463) and view.character_icon.position == Vector2(1148,728), "sprite stands on the approved platform anchor")
+	check(view.character_icon.size == Vector2(463,463) and view._character_rest_position == Vector2(1148,728), "sprite retains the approved platform rest anchor")
+	view.set_process(false)
+	view.reset_animation()
+	var hover_bounds := view.hover_target.get_rect()
+	var name_position := view.name_label.position
+	view._process(0.5)
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.06), "inhale stretches upper body while the sprite anchor stays fixed")
+	await capture("character_select_breath_in")
+	var inhale: Image = null
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		inhale = get_tree().root.get_texture().get_image()
+	view._process(1.0)
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.06), "exhale contracts upper body without moving the sprite")
+	check(view.hover_target.get_rect() == hover_bounds and view.name_label.position == name_position, "breathing leaves name and hover bounds still")
+	await capture("character_select_breath_out")
+	if inhale != null:
+		await RenderingServer.frame_post_draw
+		var exhale := get_tree().root.get_texture().get_image()
+		var rect := view.character_icon.get_global_rect()
+		var waist_y := ceili(rect.position.y + rect.size.y * 36.0 / 64.0)
+		var lower := Rect2i(int(rect.position.x), waist_y, int(rect.size.x), floori(rect.end.y) - waist_y)
+		var upper := Rect2i(int(rect.position.x), int(rect.position.y), int(rect.size.x), waist_y - int(rect.position.y))
+		check(inhale.get_region(lower).get_data() == exhale.get_region(lower).get_data(), "GPU: legs and feet remain pixel-identical throughout breathing")
+		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper-body breathing changes visible pixels")
+	view._process(0.5)
+	check(is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "two seconds completes one breathing cycle")
+	view.reset_animation()
+	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears the upper-body stretch")
+	view.set_process(true)
 	check(view.stats_list.get_child_count() == 5 and view.character_list.get_child_count() == 2, "beginner dossier and one row per character")
 	for row in view.stats_list.get_children():
 		check(row.size.y < 48 and row.size.y >= view._font.get_height(29), "compact stat rows retain room for the full text line")
@@ -92,6 +121,7 @@ func _run() -> void:
 	await move_pointer(view.hover_target.get_global_rect().get_center())
 	await get_tree().create_timer(0.38).timeout
 	check(view.walking and view.walk_frame > 0 and view.character_icon.texture is AtlasTexture, "real pointer hover advances walk sprite frames")
+	check(view.character_icon.position == view._character_rest_position, "walking does not retain idle breathing offset")
 	await capture("character_select_walk")
 	await click(view.hover_target)
 	await move_pointer(Vector2(10,10))
@@ -116,6 +146,7 @@ func _run() -> void:
 	check(relic_icons.get_child_count() == 4, "all four starting relic icons remain available")
 	for card in relic_icons.get_children():
 		check(card.get_child_count() == 1 and card.get_child(0) is TextureRect, "relic card shows only its icon")
+	await _test_relic_tooltips()
 	await move_pointer(Vector2(10,10))
 	await capture("character_select_capitalist")
 	check(view.details_scroll.scroll_vertical == 0, "simplified dossier starts at its top")
@@ -129,6 +160,9 @@ func _run() -> void:
 		await frames(10)
 		check(is_equal_approx(view.canvas.scale.x, view.canvas.scale.y), "uniform layout scaling " + str(dimensions))
 		check(Rect2(Vector2.ZERO,Vector2(dimensions)).encloses(view.canvas.get_global_rect()), "composition stays within viewport " + str(dimensions))
+		await click(view.character_list.get_child(1))
+		await _test_relic_tooltips()
+		await click(view.character_list.get_child(0))
 		await click(view.difficulty_list.get_child(1))
 		check(menu._selected_difficulty_id == "2", "scaled input selects difficulty " + str(dimensions))
 		await move_pointer(Vector2(10,10))
@@ -141,11 +175,42 @@ func _run() -> void:
 	await click(view.confirm_button)
 	var flow := game.get_main_flow_coordinator()
 	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and flow._bound_wave_manager.difficulty_id == "3", "continue starts combat with chosen difficulty")
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
+	await frames(4)
 	game.queue_free()
 	await frames(4)
 	CampProgression.end_transient_session()
 	print("CHARACTER_SELECT_VIEW_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
+
+
+func _test_relic_tooltips() -> void:
+	var cards := view.passive_list.get_node("StartingRelicIcons").get_children()
+	var relics: Array = DataRegistry.get_record("characters", "character_capitalist").start_relics
+	for index in cards.size():
+		var card := cards[index] as Control
+		await move_pointer(Vector2(10, 10))
+		var event := InputEventMouseMotion.new()
+		event.position = card.get_global_rect().get_center()
+		event.global_position = event.position
+		get_tree().root.push_input(event)
+		check(view._item_tooltip.visible, "relic tooltip opens in the hover event without a timer")
+		await frames(2)
+		var record := DataRegistry.get_record("relics", str(relics[index]))
+		check(view._item_tooltip_label.text.contains(record.description), "relic tooltip retains the full description")
+		check(view._item_tooltip.size.x <= 340 and view._item_tooltip_label.get_line_count() > 3, "relic tooltip wraps long Chinese text within its fixed width")
+		check(view.get_viewport_rect().encloses(view._item_tooltip.get_global_rect()), "relic tooltip stays inside the viewport")
+		if index == 0: await capture("relic_tooltip_%d" % int(view.get_viewport_rect().size.x))
+	await move_pointer(Vector2(10, 10))
+	check(not view._item_tooltip.visible, "leaving relic icons immediately hides the tooltip")
+	await move_pointer((cards[0] as Control).get_global_rect().get_center())
+	menu.character_select_page.hide()
+	check(not view._item_tooltip.is_visible_in_tree(), "hidden character page cannot leave its tooltip on screen")
+	menu.character_select_page.show()
+	check(not view._item_tooltip.visible, "reopening character page does not restore a stale tooltip")
+	await move_pointer(Vector2(10, 10))
 
 
 func _test_dossier_padding_and_scroll() -> void:

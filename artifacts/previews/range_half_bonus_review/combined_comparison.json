@@ -1,0 +1,81 @@
+{
+  "family": "combined",
+  "artifact": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\combined_review.gif",
+  "duration_ms": 12000,
+  "size": [
+    1280,
+    446
+  ],
+  "bytes": 5169592,
+  "cases": [
+    {
+      "score": 0,
+      "range": [
+        120.0,
+        120.0
+      ],
+      "blast_radius": [
+        1.0,
+        1.0
+      ],
+      "hit_targets": [
+        1,
+        1
+      ],
+      "single_damage": 4
+    },
+    {
+      "score": 50,
+      "range": [
+        240.0,
+        180.0
+      ],
+      "blast_radius": [
+        1.0,
+        1.0
+      ],
+      "hit_targets": [
+        3,
+        2
+      ],
+      "single_damage": 4
+    },
+    {
+      "score": 100,
+      "range": [
+        360.0,
+        240.0
+      ],
+      "blast_radius": [
+        1.0,
+        1.0
+      ],
+      "hit_targets": [
+        5,
+        3
+      ],
+      "single_damage": 4
+    },
+    {
+      "score": 200,
+      "range": [
+        600.0,
+        360.0
+      ],
+      "blast_radius": [
+        1.0,
+        1.0
+      ],
+      "hit_targets": [
+        7,
+        5
+      ],
+      "single_damage": 4
+    }
+  ],
+  "review_artifact": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\range_half_bonus_review\\combined_review.gif",
+  "review_bytes": 5169592,
+  "source": "Actual Godot GPU frames, 60 Hz fixed simulation, sampled at 20 fps, original timing.",
+  "unoptimized_export_removed": true,
+  "raw_frames_removed": true
+}

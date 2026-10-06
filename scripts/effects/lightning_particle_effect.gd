@@ -9,15 +9,16 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL_BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 
-const STEP_SECONDS := 0.06
+const STEP_SECONDS := 0.08
 const FLASH_SECONDS := STEP_SECONDS * 2.0
 const DARK_SECONDS := 0.04
 const TOTAL_SECONDS := FLASH_SECONDS * 2.0 + DARK_SECONDS
 const CONTROL_JITTER_PIXELS := 20.0
+const HIT_BURST_COUNT_MULTIPLIER := 0.5
+const HIT_BURST_GLOW_RADIUS_MULTIPLIER := 0.5
 
 const CHAIN_CONTROL_POINT_SPACING: float = 24.0
 const CHAIN_CONTROL_POINT_JITTER: float = 26.0
-const BOLT_PULSE_LIFETIME: float = 0.38
 const CHAIN_GLOW_RADIUS_MULTIPLIER: float = 0.5
 const GROUND_STRIKE_CONTROL_POINT_SPACING: float = 24.0
 const GROUND_STRIKE_IMPACT_RING_LIFETIME: float = 0.42
@@ -47,7 +48,6 @@ var _ground_strike_damage_radius: float = 0.0
 var _ground_strike_position: Vector2 = Vector2.ZERO
 var _ground_strike_impact_age: float = -1.0
 var _ground_strike_damage_applied: bool = false
-var _light_field: Node = null
 var _audio_impact: RefCounted = null
 
 
@@ -111,10 +111,12 @@ static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: 
 	effect._control_point_spacing = GROUND_STRIKE_CONTROL_POINT_SPACING
 	effect._control_point_envelope_power = 0.65
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "electric_spark", {
-		"damage": maxf(damage_event.get_elemental_base_damage() * 0.72, 1.0),
+		"damage_multiplier": 0.6,
 		"strike_height": strike_height,
 		"detonate_burning": 1.0,
 	}, effect._attachment_item_id)
+	# Resolve the configured multiplier once, before the shared final rounding.
+	effect._context.set_parameter("damage", maxf(damage_event.get_elemental_base_damage() * effect._context.get_resolved_parameter("damage_multiplier", 0.6), 1.0))
 	effect._cache_resolved_parameters()
 	effect._chain_finished = true
 	EffectScheduler.schedule(0.0, Callable(effect, "_strike_ground").bind(ground_position), effect)
@@ -290,12 +292,12 @@ func _find_random_enemy(origin: Vector2) -> EnemyController:
 
 func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 	var context_parameters := {
-		"count_multiplier": _get_cached_parameter("count_multiplier", 1.0),
+		"count_multiplier": _get_cached_parameter("count_multiplier", 1.0) * HIT_BURST_COUNT_MULTIPLIER,
 		"speed_multiplier": _get_cached_parameter("speed_multiplier", 1.0),
 		"size_multiplier": _get_cached_parameter("size_multiplier", 1.0),
 		"lifetime_multiplier": _get_cached_parameter("lifetime_multiplier", 1.0),
 		"glow_multiplier": _get_cached_parameter("glow_multiplier", 1.0),
-		"glow_radius_multiplier": 1.0 if _is_ground_strike else CHAIN_GLOW_RADIUS_MULTIPLIER,
+		"glow_radius_multiplier": (1.0 if _is_ground_strike else CHAIN_GLOW_RADIUS_MULTIPLIER) * HIT_BURST_GLOW_RADIUS_MULTIPLIER,
 		"alpha_multiplier": _get_cached_parameter("alpha_multiplier", 1.0),
 		"distance_multiplier": _get_cached_parameter("attack_range_multiplier", 1.0),
 	}
@@ -340,25 +342,12 @@ func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_
 		var middle: int = bolt.points.size() / 2
 		bolt.points[middle] = (bolt.points[middle] + direction.orthogonal() * 6.0).round()
 	bolt.base_alpha = clampf(_get_cached_parameter("alpha_multiplier", 1.0), 0.0, 2.0)
+	bolt.rim_enabled = false
 	bolt.cell_size = 2
 	bolt.grid_origin = to_local(Vector2.ZERO)
 	bolt.build()
 	add_child(bolt)
-	_emit_bolt_light(start_position.lerp(end_position, 0.5), start_position.distance_to(end_position), _get_cached_parameter("glow_multiplier", 1.0))
 	return bolt
-
-
-func _emit_bolt_light(global_position: Vector2, distance: float, glow_multiplier: float) -> void:
-	if _parent_root == null:
-		return
-	if _light_field == null or not is_instance_valid(_light_field) or not _light_field.has_method("add_light"):
-		_light_field = PARTICLE_WORLD_SCRIPT.find_light_field(_parent_root)
-	var field := _light_field
-	if field != null and field.has_method("add_light"):
-		var glow_radius := clampf(distance * 0.42, 36.0, 130.0)
-		if not _is_ground_strike:
-			glow_radius *= CHAIN_GLOW_RADIUS_MULTIPLIER
-		field.call("add_light", global_position, Color(0.74, 0.90, 1.0, 1.0), 0.18 * glow_multiplier, glow_radius, BOLT_PULSE_LIFETIME)
 
 
 func _finish_chain() -> void:

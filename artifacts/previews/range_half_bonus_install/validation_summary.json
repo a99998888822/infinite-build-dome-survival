@@ -1,0 +1,11 @@
+{
+  "status": "installed",
+  "bonus_efficiency": 0.5,
+  "passing_suites": 9,
+  "passing_checks": 1307,
+  "production_gpu_cases": 12,
+  "matches_approved_preview": true,
+  "legacy_suites_with_existing_failures": 7,
+  "legacy_existing_failures": 77,
+  "introduced_failures_in_control_comparison": 0
+}

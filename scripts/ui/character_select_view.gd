@@ -14,6 +14,9 @@ const PAPER_WIDTH := 464.0
 const FOOT_ANCHOR := Vector2(1380, 1148)
 const STARTING_WEAPON_ICON_SIZE := Vector2(62, 68)
 const STARTING_ENCHANTMENT_ICON_SIZE := Vector2(36, 36)
+const BREATH_PERIOD := 2.0
+const BREATH_STRETCH := 0.06
+const BREATH_SHADER := preload("res://assets/shaders/character_select_breathing.gdshader")
 
 var canvas: Control
 var background: TextureRect
@@ -42,11 +45,16 @@ var _walk: AtlasTexture
 var _walk_frames := 1
 var _walk_fps := 6.0
 var _elapsed := 0.0
+var _breath_elapsed := 0.0
+var _character_rest_position := Vector2.ZERO
+var _breath_material: ShaderMaterial
 var _hovered := false
 var _keyboard_focus := false
 var walking := false
 var walk_frame := 0
 var _cropped_icons: Dictionary = {}
+var _item_tooltip: Panel
+var _item_tooltip_label: Label
 
 
 func _ready() -> void:
@@ -54,6 +62,7 @@ func _ready() -> void:
 	_font = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf").duplicate() as FontFile
 	_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
 	_bold_font = _font
+	_build_item_tooltip()
 	var matte := ColorRect.new()
 	matte.color = Color("#141319")
 	matte.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -85,6 +94,9 @@ func _ready() -> void:
 	_image(canvas, load(ART + "character_shadow.png"), Rect2(1228,1136,308,24))
 	character_icon = _image(canvas, null, Rect2(1148,728,463,463))
 	character_icon.name = "CharacterSprite"
+	_breath_material = ShaderMaterial.new()
+	_breath_material.shader = BREATH_SHADER
+	character_icon.material = _breath_material
 	hover_target = Button.new()
 	hover_target.name = "CharacterHover"
 	_place(canvas, hover_target, Rect2(1148,691,463,500))
@@ -122,6 +134,7 @@ func _ready() -> void:
 	details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	details_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_style_scrollbar(details_scroll)
+	details_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_item_tooltip())
 	_details = VBoxContainer.new()
 	_details.custom_minimum_size.x = PAPER_WIDTH
 	_details.add_theme_constant_override("separation", 0)
@@ -177,6 +190,7 @@ func _ready() -> void:
 
 
 func _fit_composition() -> void:
+	_hide_item_tooltip()
 	if canvas == null: return
 	var factor := minf(size.x / DESIGN_SIZE.x, size.y / DESIGN_SIZE.y)
 	canvas.scale = Vector2.ONE * factor
@@ -209,6 +223,7 @@ func rebuild_roster(records: Array) -> String:
 
 
 func show_character(record: Dictionary, stats: Dictionary) -> void:
+	_hide_item_tooltip()
 	for container in [stats_list, weapon_list, passive_list]: _clear(container)
 	reset_animation()
 	if record.is_empty():
@@ -260,7 +275,7 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 	card.set_meta("weapon_id", weapon_id)
 	card.custom_minimum_size = Vector2(PAPER_WIDTH, STARTING_WEAPON_ICON_SIZE.y)
 	card.add_theme_constant_override("separation", 11)
-	card.tooltip_text = str(weapon.get("description", ""))
+	_bind_item_tooltip(card, "%s\n%s" % [weapon.get("display_name", weapon_id), weapon.get("description", "")])
 	weapon_list.add_child(card)
 	var weapon_icon := _image(card, _crop_icon(str(weapon.get("icon", ""))), Rect2(Vector2.ZERO, STARTING_WEAPON_ICON_SIZE), true)
 	weapon_icon.name = "WeaponIcon"
@@ -289,7 +304,7 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 		icon.custom_minimum_size = STARTING_ENCHANTMENT_ICON_SIZE
 		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		icon.mouse_filter = Control.MOUSE_FILTER_PASS
-		icon.tooltip_text = "%s\n%s" % [item.get("display_name", item_id), item.get("description", "")]
+		_bind_item_tooltip(icon, "%s\n%s" % [item.get("display_name", item_id), item.get("description", "")])
 
 
 func _build_traits(record: Dictionary) -> void:
@@ -324,9 +339,64 @@ func _build_traits(record: Dictionary) -> void:
 		var relic := DataRegistry.get_record("relics", str(id))
 		var card := Control.new()
 		card.custom_minimum_size = Vector2(72,72)
-		card.tooltip_text = "%s\n%s\n角色固有，开局奖励仅发放一次，不可移除。" % [relic.display_name, relic.description]
+		_bind_item_tooltip(card, "%s\n%s\n角色固有，开局奖励仅发放一次，不可移除。" % [relic.display_name, relic.description])
 		grid.add_child(card)
 		_image(card, _crop_icon(str(relic.get("icon", ""))), Rect2(4,4,64,64), true)
+
+
+func _build_item_tooltip() -> void:
+	_item_tooltip = Panel.new()
+	_item_tooltip.name = "ItemTooltip"
+	_item_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("14201dfc")
+	style.border_color = Color("8c9274")
+	style.set_border_width_all(1)
+	style.set_content_margin_all(10)
+	_item_tooltip.add_theme_stylebox_override("panel", style)
+	_item_tooltip_label = Label.new()
+	_item_tooltip_label.position = Vector2(10, 10)
+	_item_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_item_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_item_tooltip_label.add_theme_font_override("font", _font)
+	_item_tooltip_label.add_theme_font_size_override("font_size", 16)
+	_item_tooltip_label.add_theme_color_override("font_color", Color("f1e6d2"))
+	_item_tooltip.add_child(_item_tooltip_label)
+	GameTooltipLayer.for_owner(self).add_child(_item_tooltip)
+	_item_tooltip.hide()
+
+
+func _bind_item_tooltip(anchor: Control, text: String) -> void:
+	# Use viewport-space hover signals, without the native tooltip delay.
+	anchor.mouse_entered.connect(_show_item_tooltip.bind(anchor, text))
+	anchor.mouse_exited.connect(_hide_item_tooltip)
+
+
+func _show_item_tooltip(anchor: Control, text: String) -> void:
+	if text.is_empty() or not anchor.is_visible_in_tree(): return
+	var viewport_size := get_viewport_rect().size
+	var width := minf(320.0, viewport_size.x - 40.0)
+	var paragraph := TextParagraph.new()
+	paragraph.width = width
+	paragraph.break_flags = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+	paragraph.add_string(text, _font, 16)
+	_item_tooltip_label.size.x = width
+	_item_tooltip_label.text = text
+	# Size before showing, so the first frame wraps and clamps correctly.
+	var height := paragraph.get_size().y + maxf(0, paragraph.get_line_count() - 1) * _item_tooltip_label.get_theme_constant("line_spacing")
+	_item_tooltip_label.custom_minimum_size = Vector2(width, height)
+	_item_tooltip_label.size = Vector2(width, height)
+	_item_tooltip.size = Vector2(width + 20, height + 20)
+	var bounds := anchor.get_global_rect()
+	var point := Vector2(bounds.position.x - _item_tooltip.size.x - 10, bounds.position.y)
+	point.x = clampf(point.x, 10, maxf(10, viewport_size.x - _item_tooltip.size.x - 10))
+	point.y = clampf(point.y, 10, maxf(10, viewport_size.y - _item_tooltip.size.y - 10))
+	_item_tooltip.position = point.round()
+	_item_tooltip.show()
+
+
+func _hide_item_tooltip() -> void:
+	if _item_tooltip != null: _item_tooltip.hide()
 
 
 func _position_character() -> void:
@@ -336,6 +406,7 @@ func _position_character() -> void:
 	var side := roundf(64.0 * 376.0 / maxf(1.0, used.size.y))
 	character_icon.size = Vector2.ONE * side
 	character_icon.position = FOOT_ANCHOR - (Vector2(32,58) * side / 64.0).round()
+	_character_rest_position = character_icon.position
 	var name_y := character_icon.position.y + roundf(used.position.y * side / 64.0) - 80
 	name_label.position = Vector2(FOOT_ANCHOR.x - name_label.size.x / 2.0, name_y)
 	hover_target.position = Vector2(character_icon.position.x, name_y)
@@ -359,13 +430,21 @@ func reset_animation() -> void:
 	walking = false
 	_elapsed = 0.0
 	walk_frame = 0
+	_reset_breathing()
 	if character_icon != null: character_icon.texture = _idle
+
+
+func _reset_breathing() -> void:
+	_breath_elapsed = 0.0
+	if _breath_material != null: _breath_material.set_shader_parameter("breath_amount", 0.0)
+	if character_icon != null: character_icon.position = _character_rest_position
 
 
 func _update_walking() -> void:
 	var active := (_hovered or _keyboard_focus) and is_visible_in_tree() and _walk != null
 	if active == walking: return
 	walking = active
+	_reset_breathing()
 	_elapsed = 0.0
 	walk_frame = 0
 	if walking:
@@ -380,7 +459,11 @@ func _notification(what: int) -> void:
 
 
 func _process(delta: float) -> void:
-	if not walking: return
+	if not is_visible_in_tree() or _idle == null: return
+	if not walking:
+		_breath_elapsed = fmod(_breath_elapsed + delta, BREATH_PERIOD)
+		_breath_material.set_shader_parameter("breath_amount", BREATH_STRETCH * sin(TAU * _breath_elapsed / BREATH_PERIOD))
+		return
 	_elapsed += delta
 	walk_frame = int(_elapsed * _walk_fps) % _walk_frames
 	_walk.region = Rect2(walk_frame*64,0,64,64)

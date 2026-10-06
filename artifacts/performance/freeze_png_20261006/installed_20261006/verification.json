@@ -1,0 +1,27 @@
+{
+  "status": "installed",
+  "test_checks": {
+    "atlas-test": 41,
+    "pixel-effects": 27,
+    "element-reactions": 68
+  },
+  "total_checks": 136,
+  "shared_atlases": 16,
+  "approved_asset_hashes_match": true,
+  "no_review_runtime_dependency": true,
+  "headless_battle_lifecycle": "PASS",
+  "gpu_battle_lifecycle": "PASS",
+  "gpu_desktop": {
+    "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+    "pid": 13184,
+    "private_desktop": "CodexGodotCapture_1791293383454060500",
+    "verified_desktop": "CodexGodotCapture_1791293383454060500",
+    "foreground_samples": 0,
+    "samples": 939,
+    "exit_code": 0,
+    "elapsed_seconds": 19.471325500002422
+  },
+  "utf8_check": "PASS",
+  "changed_file_diff_check": "PASS",
+  "forced_quit_note": "--quit-after while menu BGM plays reports OggVorbis cleanup resources; full battle smoke with explicit normal cleanup has no errors or warnings."
+}

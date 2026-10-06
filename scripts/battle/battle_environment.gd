@@ -2,6 +2,7 @@ extends CanvasLayer
 class_name BattleEnvironment
 
 const SKY_TEXTURE_ASPECT_RATIO: float = 16.0
+const SKY_HEIGHT_SCALE: float = 0.5
 const TOP_BAR_HEIGHT: float = 56.0
 const TOP_EDGE_HIGHLIGHT_HEIGHT: float = 2.0
 const TOP_EDGE_SHADOW_HEIGHT: float = 7.0
@@ -43,12 +44,16 @@ func _on_viewport_size_changed() -> void:
 	_apply_sky_layout()
 
 
+static func get_sky_height(view_width: float) -> float:
+	return ceilf(view_width / SKY_TEXTURE_ASPECT_RATIO * SKY_HEIGHT_SCALE)
+
+
 func _apply_sky_layout() -> void:
 	if sky == null or get_viewport() == null:
 		return
 	var view_size := get_viewport().get_visible_rect().size
 	var top_height := 0.0 if ground is MeadowBattleBackdrop else TOP_BAR_HEIGHT
-	var sky_bottom := top_height + ceilf(view_size.x / SKY_TEXTURE_ASPECT_RATIO)
+	var sky_bottom := top_height + get_sky_height(view_size.x)
 	horizon_y = sky_bottom
 	fold_height = clampf(view_size.y * FOLD_HEIGHT / 648.0, 30.0, 48.0)
 	sky.offset_top = top_height

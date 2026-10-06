@@ -204,15 +204,15 @@ combat_root.tscn
 ### 范围
 
 ```text
-最终攻击距离 = attack_range * (1 + area_size / 100)
+最终攻击距离 = attack_range * (1 + area_size / 200)
 
-最终伤害范围 = base_damage_radius * (1 + damage_area_size / 100)
+最终伤害范围 = base_damage_radius * (1 + damage_area_size / 200)
 ```
 
 说明：
 
-1. `area_size = 40` 表示武器攻击距离增加 40%，即能攻击到更远的怪物。
-2. `damage_area_size = 10` 表示指定范围伤害的半径和视觉大小增加 10%。
+1. `area_size = 40` 表示攻击距离属性为40，实际武器攻击距离增加20%。
+2. `damage_area_size = 10` 表示伤害范围属性为10，适用伤害半径、宽度和视觉大小增加5%。基础数值和原始属性值不变。
 3. `area_size` 不得用于扩大电浆球、落雷、火焰、冰冻的伤害区域或震荡的击退区域。
 4. 木质弓箭与电火花连锁不受 `damage_area_size` 影响。
 5. `pickup_radius` 只控制掉落物吸附范围。

@@ -706,7 +706,7 @@ func _run_weapon_checks() -> bool:
 	passed = _print_check_result("weapon instance lookup", weapon != null) and passed
 	if weapon != null:
 		passed = _print_check_result("weapon config runtime fields", int(weapon.get_attack_range()) == 280 and int(weapon.get_hit_radius()) == 10 and int(weapon.get_projectile_speed()) == 500 and int(weapon.get_spread_angle()) == 12) and passed
-		passed = _print_check_result("weapon area_size radius", int(StatDefinitions.calculate_attack_radius(100, 40)) == 140) and passed
+		passed = _print_check_result("weapon area_size radius", int(StatDefinitions.calculate_attack_radius(100, 40)) == 120) and passed
 		passed = _print_check_result("weapon attack interval base", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.7)) and passed
 		player.add_runtime_modifier({
 			"id": "mod_test_weapon_attack_speed",

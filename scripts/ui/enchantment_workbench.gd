@@ -155,6 +155,7 @@ func refresh() -> void:
 		_title.text = "附魔背包 · 从左至右触发，可拖动调整顺序"
 		_title.tooltip_text = "称号：" + str(current.battle_title.get("display_name", "")) if not str(current.battle_title.get("display_name", "")).is_empty() else "选中已装备附魔后，可卸下或调整顺序。"
 		_title.tooltip_text += "\n分裂前的附魔在主命中点触发；分裂后的附魔由子攻击命中触发。属性加成始终作用于当前武器。"
+		_title.tooltip_text += "\n将背包附魔拖到已有槽位可替换，原附魔归还背包。"
 	_clear(_inventory)
 	_layout_inventory()
 	for item in player.item_inventory.get_items():
@@ -194,7 +195,7 @@ func _update_selection() -> void:
 	_selection.text = "选中：" + str(item.get("display_name", "")) if not item.is_empty() else "选择一张附魔，可装备、转移或出售"
 	_apply.text = "卸下附魔" if same_weapon else ("转移至此武器" if not equipped.is_empty() else "装备至此武器")
 	_apply.disabled = item.is_empty() or current == null or (not same_weapon and not current.has_available_attachment_slot())
-	_apply.tooltip_text = "当前武器没有空槽，请先卸下附魔" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
+	_apply.tooltip_text = "当前武器没有空槽，可将背包附魔拖到已有槽位进行替换。" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
 	if current != null and not same_weapon:
 		var incompatibility := current.get_attachment_incompatibility(item)
 		if not incompatibility.is_empty():
@@ -253,7 +254,7 @@ func _drop_into_slot(index: int, item_id: String) -> void:
 	if str(item.get("equipped_weapon_id", "")) == selected_weapon_id:
 		_operate("move", selected_weapon_id, item_id, mini(index, attached.size() - 1))
 	elif index < attached.size():
-		feedback_requested.emit("此槽已有附魔，请先卸下，或将新附魔拖到空槽。", false)
+		_operate("replace", selected_weapon_id, item_id, index)
 	else:
 		_operate("attach", selected_weapon_id, item_id)
 
@@ -276,6 +277,7 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 	var result := flow.submit_enchantment_operation(action, weapon_id, item_id, target_index)
 	var success := bool(result.get("success", false))
 	var message := "附魔已卸下。其余附魔按顺序前移。" if action == "detach" else ("附魔排列已更新。" if action == "move" else "附魔配置已更新。")
+	if action == "replace": message = "附魔已替换，原附魔已归还背包。"
 	feedback_requested.emit(message if success else FinanceUIStyle.reason(str(result.get("reason", ""))), success)
 
 

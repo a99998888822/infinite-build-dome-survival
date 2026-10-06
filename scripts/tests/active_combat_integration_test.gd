@@ -91,6 +91,7 @@ func _run() -> void:
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
 	CombatSettings.set_option("quick_cast", false, false)
+	CombatSettings.set_option("wheelchair_mode", false, false)
 	game = load("res://scenes/core/game_root.tscn").instantiate()
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
@@ -105,6 +106,7 @@ func _run() -> void:
 	else:
 		await _input_and_settings()
 	await _weapon_execution()
+	await _inventory_tooltips()
 	await _cleanup()
 	flow.enter_start_page()
 	await frames(6)
@@ -304,6 +306,40 @@ func _weapon_execution() -> void:
 	# Let embedded popup geometry settle before the next fixture frees the scene.
 	await frames(4)
 
+func _inventory_tooltips() -> void:
+	player.add_relic("relic_worn_hemostatic_cloth")
+	player.item_inventory.add_item_from_base("scroll_lightning", "tooltip_test")
+	flow.request_esc_overlay()
+	await get_tree().create_timer(0.4).timeout
+	var esc := battle.esc_overlay
+	var hud := battle.hud as BattleHud
+	hud._set_drawer_open(true, false)
+	var strip := esc.weapon_strip
+	strip.set_process(false)
+	strip._show_weapon_tooltip(loadout.weapon_instances[0], strip._weapon_buttons[0])
+	await frames()
+	check(strip.weapon_tooltip.is_visible_in_tree() and strip.weapon_tooltip.get_parent() is GameTooltipLayer and (strip.weapon_tooltip.get_parent() as CanvasLayer).layer > hud.layer, "Escape weapon tooltip renders above the attribute drawer")
+	check(get_viewport().get_visible_rect().encloses(strip.weapon_tooltip.get_global_rect()), "weapon tooltip retains viewport placement after reparenting")
+	await capture("06_weapon_tooltip")
+	strip._hide_weapon_tooltip()
+	esc._show_relic_tooltip(DataRegistry.get_record("relics", "relic_worn_hemostatic_cloth"), esc._relic_cells[0])
+	await frames()
+	check(esc.relic_tooltip.is_visible_in_tree() and esc.relic_tooltip.get_parent() is GameTooltipLayer, "Escape relic tooltip renders in shared foreground layer")
+	await capture("07_relic_tooltip")
+	esc._hide_relic_tooltip()
+	var card := esc._item_cards[0] as ItemInventoryCard
+	esc._show_item_tooltip(card, card._build_tooltip())
+	await frames()
+	check(esc._item_tooltip_panel.is_visible_in_tree() and esc._item_tooltip_panel.get_parent() is GameTooltipLayer, "Escape enchantment tooltip renders in shared foreground layer")
+	await capture("08_inventory_tooltip")
+	strip._show_weapon_tooltip(loadout.weapon_instances[0], strip._weapon_buttons[0])
+	esc._show_relic_tooltip(DataRegistry.get_record("relics", "relic_worn_hemostatic_cloth"), esc._relic_cells[0])
+	flow.close_esc_overlay()
+	await get_tree().create_timer(0.4).timeout
+	check(not strip.weapon_tooltip.visible and not esc.relic_tooltip.visible and esc._item_tooltip_panel == null, "closing Escape clears weapon relic and item tooltips")
+	strip.set_process(true)
+
+
 func _cleanup() -> void:
 	await boot()
 	player.set_physics_process(false)
@@ -314,6 +350,9 @@ func _cleanup() -> void:
 	manager.wave_time_left = 0.01
 	manager._process(0.02)
 	check(manager.cleanup_active and manager.cleanup_time_left == 10 and flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT, "living miniboss enters ten-second combat cleanup")
+	check(manager.get_living_enemy_count() == 2, "cleanup counts both ordinary enemies and minibosses")
+	(battle.hud as BattleHud)._process(0)
+	check((battle.hud as BattleHud).cleanup_label.text == "剩余敌人：2", "cleanup HUD shows the count without reinforcement text")
 	check(manager.spawn_enemy("enemy_mutated_grub") == null and manager.spawn_enemy("enemy_elite_rusher") == null, "cleanup blocks all reinforcements")
 	var population := EnemyRegistry.get_registered_enemies().size()
 	manager._process_spawn_timers(10)
@@ -344,18 +383,38 @@ func _cleanup() -> void:
 	elite = manager.spawn_enemy("enemy_elite_rusher", player.global_position + Vector2(300, 0))
 	elite._physics_process(0.8) # Leave the existing spawn invulnerability first.
 	elite.set_physics_process(false)
+	ordinary = manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(-300, 0))
+	ordinary.set_physics_process(false)
 	manager.wave_time_left = 0
+	check(manager.spawn_enemy("enemy_mutated_grub") == null and manager.spawn_enemy("enemy_elite_rusher") == null, "countdown boundary blocks spawns before cleanup transition")
+	population = manager.get_living_enemy_count()
+	manager._process_spawn_timers(10)
+	check(manager.get_living_enemy_count() == population, "expired wave blocks direct scheduler before cleanup transition")
 	manager._process(0.01)
 	elite.take_damage(99999, "weapon_void_blade")
 	manager._process(0.01)
 	await frames(6)
-	check(not manager.running, "last miniboss death finishes cleanup early")
+	check(manager.running and manager.cleanup_active and manager.get_living_enemy_count() == 1, "last miniboss death does not skip remaining ordinary enemies")
+	ordinary.take_damage(99999, "weapon_void_blade")
+	manager._process(0.01)
+	await frames(6)
+	check(not manager.running, "last ordinary enemy death finishes cleanup early")
+	await boot()
+	player.set_physics_process(false)
+	ordinary = manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(300, 0))
+	ordinary.set_physics_process(false)
+	manager.wave_time_left = 0
+	manager._process(0.01)
+	check(manager.running and manager.cleanup_active and manager.cleanup_time_left == 10, "ordinary-only wave enters full ten-second cleanup")
+	manager._process(10)
+	await frames(8)
+	check(not manager.running and flow.current_state != MainFlowCoordinator.STATE_WAVE_COMBAT, "ordinary-only cleanup forces finance at ten seconds")
 	await boot()
 	player.set_physics_process(false)
 	manager.wave_time_left = 0
 	manager._process(0.01)
 	await frames(6)
-	check(not manager.cleanup_active and not manager.running, "no miniboss finishes directly without cleanup")
+	check(not manager.cleanup_active and not manager.running, "no living enemies finishes directly without cleanup")
 	await boot()
 	player.set_physics_process(false)
 	finishes = [0]

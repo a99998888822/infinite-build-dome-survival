@@ -871,6 +871,8 @@ func _validate_augmentation_records(records: Array) -> void:
 			continue
 		var path := "augmentations[%d:%s]" % [record_index, str(record.get("id", ""))]
 		_validate_rarity(record, path)
+		if record.has("enchantment_type") and not record.enchantment_type in ["buff", "spell", "element"]:
+			errors.append("%s.enchantment_type must be buff, spell or element." % path)
 		var weapon_bonuses: Variant = record.get("weapon_bonuses", {})
 		if not (weapon_bonuses is Dictionary):
 			errors.append("%s.weapon_bonuses must be an object." % path)

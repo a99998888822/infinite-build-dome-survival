@@ -19,7 +19,8 @@ const FIRE_PATCH_SCRIPT = preload("res://scripts/effects/fire_patch.gd")
 static func trigger_weapon_impact(
 	parent: Node, weapon: WeaponInstance, damage_event: DamageEvent,
 	hit_position: Vector2, direction: Vector2 = Vector2.RIGHT,
-	body: Node = null, _legacy_skip_lightning: bool = false, ground: bool = false
+	body: Node = null, _legacy_skip_lightning: bool = false, ground: bool = false,
+	only_effect_id: String = "", skip_effect_id: String = ""
 ) -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
@@ -30,6 +31,12 @@ static func trigger_weapon_impact(
 	for index in range(damage_event.enchantment_start, sequence.size()):
 		var entry := sequence[index]
 		var item_id := str(entry.item_instance_id)
+		# Filtering must never bypass the split boundary or its continuation.
+		if str(entry.effect_id) != "split":
+			if not only_effect_id.is_empty() and str(entry.effect_id) != only_effect_id:
+				continue
+			if str(entry.effect_id) == skip_effect_id:
+				continue
 		match str(entry.effect_id):
 			"split":
 				# Native weapon runtimes create one generation of branches. Only
@@ -66,8 +73,8 @@ static func trigger_weapon_impact(
 	AudioManager.end_combat_audio()
 
 
-static func trigger_ground_weapon_impact(parent: Node, weapon: WeaponInstance, event: DamageEvent, point: Vector2, direction: Vector2) -> void:
-	trigger_weapon_impact(parent, weapon, event, point, direction, null, false, true)
+static func trigger_ground_weapon_impact(parent: Node, weapon: WeaponInstance, event: DamageEvent, point: Vector2, direction: Vector2, only_effect_id: String = "", skip_effect_id: String = "") -> void:
+	trigger_weapon_impact(parent, weapon, event, point, direction, null, false, true, only_effect_id, skip_effect_id)
 
 
 static func _ground_chain_target(weapon: WeaponInstance, point: Vector2, item_id: String) -> EnemyController:

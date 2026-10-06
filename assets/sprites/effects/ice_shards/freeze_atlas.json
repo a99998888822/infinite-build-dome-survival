@@ -1,0 +1,67 @@
+{
+  "tile": 112,
+  "columns": 8,
+  "fps": 60,
+  "pivot": [
+    56,
+    56
+  ],
+  "detail_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 1
+  },
+  "alpha": "straight alpha from unpremultiplied GPU readback",
+  "generation": "unchanged source geometry baked with Godot; no image model",
+  "source_sha256": "ef0bd9e39efc46860e9f61fe9effa9f50e7947364ef4bb221b503f21cd1ee30a",
+  "atlases": [
+    {
+      "kind": "freeze",
+      "tier": 0,
+      "frames": 39,
+      "duration": 0.62,
+      "dimensions": [
+        896,
+        560
+      ],
+      "disk_bytes": 9691,
+      "texture_bytes_rgba8": 2007040
+    },
+    {
+      "kind": "freeze",
+      "tier": 1,
+      "frames": 39,
+      "duration": 0.62,
+      "dimensions": [
+        896,
+        560
+      ],
+      "disk_bytes": 11663,
+      "texture_bytes_rgba8": 2007040
+    },
+    {
+      "kind": "thaw",
+      "tier": 0,
+      "frames": 45,
+      "duration": 0.72,
+      "dimensions": [
+        896,
+        672
+      ],
+      "disk_bytes": 12800,
+      "texture_bytes_rgba8": 2408448
+    },
+    {
+      "kind": "thaw",
+      "tier": 1,
+      "frames": 45,
+      "duration": 0.72,
+      "dimensions": [
+        896,
+        672
+      ],
+      "disk_bytes": 12287,
+      "texture_bytes_rgba8": 2408448
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "checked_files": 854,
+  "changed_since_snapshot": [
+    "scripts/tests/active_combat_integration_test.gd",
+    "scripts/tests/character_select_view_test.gd",
+    "scripts/tests/finance_scene_regression_test.gd",
+    "scripts/ui/battle_hud.gd",
+    "scripts/ui/character_select_view.gd",
+    "scripts/ui/finance_popup.gd"
+  ],
+  "candidate_location": "D:\\project\\useless\\review-archives\\warning-png-20261006\\project",
+  "production_replaced": false
+}

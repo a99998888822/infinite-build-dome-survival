@@ -2,6 +2,7 @@ extends RefCounted
 class_name StatDefinitions
 
 const ARMOR_K: float = 100
+const RANGE_BONUS_EFFICIENCY: float = 0.5
 const MIN_DAMAGE_TAKEN_PERCENT: float = 5
 const DEFAULT_HUMANITY: float = 100
 const DEFAULT_DIVINITY: float = 0
@@ -58,7 +59,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 99999,
 		"is_integer": false,
 		"is_percent": false,
-		"description": "每秒生成的护盾值；没有护盾上限时可持续累积。"
+		"description": "每秒恢复护盾，优先补满已有上限；溢出部分使当前护盾与上限一起增长。"
 	},
 	"revive_count": {
 		"display_name": "额外复活",
@@ -196,8 +197,8 @@ const STAT_DEFINITIONS: Dictionary = {
 		"min": -90,
 		"max": 10000,
 		"is_integer": true,
-		"is_percent": true,
-		"description": "整数百分比攻击距离加成，决定武器能够攻击到多远的怪物。"
+		"is_percent": false,
+		"description": "攻击距离属性，每点增加0.5%的基础攻击距离；例如+100实际增加50%。"
 	},
 	"damage_area_size": {
 		"display_name": "伤害范围",
@@ -206,8 +207,8 @@ const STAT_DEFINITIONS: Dictionary = {
 		"min": -90,
 		"max": 10000,
 		"is_integer": true,
-		"is_percent": true,
-		"description": "整数百分比范围伤害加成，影响指定范围伤害的影响半径与对应视觉大小。"
+		"is_percent": false,
+		"description": "伤害范围属性，每点增加0.5%的适用伤害半径或宽度，并同步对应视觉大小；例如+100实际增加50%。"
 	},
 	"control_power": {
 		"display_name": "控制强度",
@@ -442,15 +443,21 @@ static func calculate_attack_interval(base_interval: float, attack_speed: float)
 	return base_interval / speed_multiplier
 
 
+static func calculate_attack_range_multiplier(area_size: float) -> float:
+	return 1.0 + clamp_stat_value("area_size", area_size) * RANGE_BONUS_EFFICIENCY / 100.0
+
+
+static func calculate_damage_area_multiplier(damage_area_size: float) -> float:
+	return 1.0 + clamp_stat_value("damage_area_size", damage_area_size) * RANGE_BONUS_EFFICIENCY / 100.0
+
+
 static func calculate_attack_radius(base_radius: float, area_size: float) -> float:
-	# area_size 只控制攻击距离，基础距离来自武器配置。
-	var radius_percent := clamp_stat_value("area_size", area_size)
-	return maxf(base_radius, 0.0) * maxf(1.0 + radius_percent / 100.0, 0.0)
+	# Preserve raw equipment stats and base reach; scale only the bonus here.
+	return maxf(base_radius, 0.0) * calculate_attack_range_multiplier(area_size)
 
 
 static func calculate_damage_area_radius(base_radius: float, damage_area_size: float) -> float:
-	var radius_percent := clamp_stat_value("damage_area_size", damage_area_size)
-	return maxf(base_radius, 0.0) * maxf(1.0 + radius_percent / 100.0, 0.0)
+	return maxf(base_radius, 0.0) * calculate_damage_area_multiplier(damage_area_size)
 
 
 static func calculate_finance_interest_gain(finance: float, interest_rate: float) -> int:

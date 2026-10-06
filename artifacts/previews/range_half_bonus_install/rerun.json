@@ -1,0 +1,33 @@
+[
+  {
+    "name": "grenade_weapon_test",
+    "exit": 1,
+    "errors": [
+      "FAIL base native damage 16",
+      "FAIL critical damage 150 percent",
+      "FAIL coefficient applies to player damage before percent and rounding",
+      "FAIL native blast ignores melee and element bonuses",
+      "FAIL level 2 base damage",
+      "FAIL level 3 base damage",
+      "FAIL level 4 base damage",
+      "FAIL level 5 base damage",
+      "FAIL level five radius and max-level boundary",
+      "FAIL native damage has no falloff or extra direct hit",
+      "FAIL smoke and repeat detonate cannot deal damage twice",
+      "FAIL separate grenades each damage same single target: 928",
+      "FAIL one grenade shares critical roll across all victims",
+      "FAIL shockwave adds no damage to the native 16-damage grenade",
+      "FAIL separated native contacts keep grenade damage unchanged",
+      "FAIL repeat detonation cannot repeat enchantments or native damage",
+      "FAIL children use 45 percent damage with approved radius flight and arc",
+      "FAIL core takes only primary damage and six outer targets take child damage",
+      "FAIL child landing on primary victim still excludes its native damage and enchantments",
+      "FAIL sibling blasts may overlap without recursively splitting",
+      "FAIL children inherit area once and scale the original critical result",
+      "FAIL dense child bursts exclude all primary victims and stop at one generation"
+    ],
+    "summary": [
+      "GRENADE_WEAPON_COMPLETE checks=90 failures=22"
+    ]
+  }
+]

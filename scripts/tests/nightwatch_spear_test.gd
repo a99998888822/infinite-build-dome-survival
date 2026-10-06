@@ -127,9 +127,9 @@ func _run() -> void:
 	spear._contact(spear.thrusts[0], 0, Vector2.ZERO, 220)
 	check(hits.size() == 1, "collider edge contact counts even with center outside width")
 	weapon.runtime_stats.area_size = 100
-	check(weapon.get_attack_range() == 440 and weapon.get_hit_radius() == 14, "attack range scales reach alone")
+	check(weapon.get_attack_range() == 330 and weapon.get_hit_radius() == 14, "attack range scales reach alone")
 	weapon.runtime_stats.damage_area_size = 100
-	check(weapon.get_attack_range() == 440 and weapon.get_hit_radius() == 28, "damage area scales width alone")
+	check(weapon.get_attack_range() == 330 and weapon.get_hit_radius() == 21, "damage area scales width alone")
 	player.add_runtime_modifier({"id": "spear_melee", "source_type": "test", "source_id": "spear_test", "stat": "melee_damage", "operation": "add_flat", "value": 10, "duration": -1, "stack_rule": "unique", "target_scope": "player"})
 	check(weapon.get_base_attack_damage() == 24, "player melee uses one-to-one coefficient")
 	weapon.runtime_stats.ranged_damage = 100

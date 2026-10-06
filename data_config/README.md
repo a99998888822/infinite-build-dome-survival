@@ -66,15 +66,24 @@
 6. 每个 `level_upgrades` 目标等级使用对象结构：`rarity` 表示升级选项稀有度，`effects` 保存具体升级效果。
 7. 普通直线投射物按最近敌人索敌；榴弹选择密集怪群，秘仪书在椭圆领域内随机点名，钱袋以目标方向为中心扇状齐射。
 8. `projectile_behavior` 区分普通弹体、`plasma`、`grenade`、`ritual_domain` 和 `coin`；`attack_kind=element` 使用元素武器伤害。
-9. `area_size` 只表示武器攻击距离/索敌距离；`damage_area_size` 只表示指定范围伤害的半径与视觉大小。
+9. `area_size` 表示武器攻击距离/索敌距离属性；`damage_area_size` 表示指定范围伤害的半径、宽度与视觉大小属性。两者每点按0.5%生效，统一倍率为 `1 + 属性 / 200`；配置和面板保留原始属性值，基础距离、半径不变。短刀、炉灯、摆锤的两项属性相加后扩大原生扇形半径。
 10. 木质弓箭与电火花连锁不受 `damage_area_size` 影响；电浆球、落雷、火焰、冰冻的伤害区域及震荡的击退区域受其影响；`pickup_radius` 只控制掉落物吸附。
     电浆炮的 `hit_radius` 是球体显示、接触灼击、物理碰撞和属性栏共用的基础半径，默认12像素，受 `damage_area_size` 缩放，最低4像素；`area_size` 只扩大射程。旧 `plasma_damage_radius`／`plasma_visual_radius` 已移除，接地电弧不参与伤害判定。
 11. `hit_sfx` 是可选的武器命中音效路径；音频缺失时静默处理，不影响伤害逻辑。
 12. 秘仪书的 `attack_range`、`domain_minor_axis` 分别为椭圆的水平和垂直半轴，均受 `area_size` 加成；`projectile_count` 对应每轮不同目标的点名数量。
 13. 钱袋原生伤害为 `等级基础伤害 + 角色远程伤害×player_damage_coefficient + principal_damage_coefficient×sqrt(max(当前本金, 0))`，再计算通用增伤、暴击和取整；本金只读。默认 3 发，`projectile_spacing_degrees=10` 指相邻金币夹角，围绕瞄准方向对称齐射。
-14. 木质弓箭的 `projectile_spacing_degrees=15`；异化触手、裂地战锤、守夜长枪、电浆炮为 20，基础投射物均为 1。此字段优先于旧的总展开角 `spread_angle`；其他武器继续沿用各自规则。战锤额外投射物增加地裂路线，每路节点数和射程保持不变。
+14. 木质弓箭的 `projectile_spacing_degrees=15`，裂地战锤为 10；异化触手、守夜长枪、电浆炮为 20，基础投射物均为 1。此字段优先于旧的总展开角 `spread_angle`；其他武器继续沿用各自规则。战锤额外投射物增加地裂路线，每路原生节点仍为 5 个、射程保持不变；落雷独立均匀布点，首点距身前 40px、末点位于射程末端、最大间距 64px。射程增加时自动增加落雷次数，分裂在前时同步增加分支落雷；伤害范围只扩大单雷半径。推进时长仍为 0.4 秒、每次预警仍为 0.5 秒。
 14. 当前负载：木弓12、钱袋14、秘仪书18、电浆炮24、榴弹炮25，总计93；升级不增加负载，同种武器不可重复装备。长期按轻型12～14、中型16～18、重型24～25扩展武器池，支持100负载下4～8件的配装目标，当前正式种类上限仍为5件。
 15. 木弓2～5级每级增加1点远程基础伤害、缩短50毫秒间隔，不再在五级自动增加箭矢。电浆炮2～5级每级增加2点灼击基础伤害，发射间隔、灼击间隔和接触半径不变；每次灼击触发的附魔使用20%的完整元素伤害基数，延迟至具体效果结算时取整。
+
+## augmentations.json 规则
+
+1. `description` 保存面向玩家的效果文案，支持 `\n` 换行；名称、类型和稀有度由共用提示框单独展示。理财背包、已装备附魔槽与 Esc 背包使用同一格式，不再追加粒子、辉光或实例参数说明。
+2. `enchantment_type` 是展示分类：`buff`＝增益、`spell`＝法术、`element`＝元素。`category` 继续保留 `enchantment_scroll`，用于附魔装填和物品流转，不应改为展示分类。
+3. `rarity` 同时用于提示文本、卡片颜色和掉落档位；会心当前为 `rare`（稀有）。
+4. `weapon_bonuses` 保存当前武器的属性附魔加成。巨力为 `all_damage_percent: 20`，致命为 `crit_damage: 50`；暴击率与暴击伤害仍按百分点相加。
+5. `scroll_electric_spark`（落雷）的 `damage_multiplier: 0.6` 直接参与实际落雷伤害结算，不再叠加旧的 `damage × 0.85`。`scroll_lightning`（电火花）基础与掉落实例的麻痹时长均为 0.5 秒。
+6. 当前全部 19 条批准文案与数值说明见 [附魔提示文本清单](../docs/main/enchantment_tooltip_inventory.md)。
 
 ## bonds.json 简写规则
 

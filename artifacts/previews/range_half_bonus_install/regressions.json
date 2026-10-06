@@ -1,0 +1,222 @@
+[
+  {
+    "name": "active_range_rules_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ACTIVE_RANGE_RULES checks=118 failures=0"
+    ]
+  },
+  {
+    "name": "range_relic_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "RANGE_RELIC_COMPLETE checks=119 failures=0"
+    ]
+  },
+  {
+    "name": "attribute_enchantment_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ATTRIBUTE_ENCHANTMENT_TEST checks=262 failures=0"
+    ]
+  },
+  {
+    "name": "enchantment_stacking_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL expanded wind blade hits outside its original 14px width",
+      "ERROR: FAIL reflection damage fan inherits captured domain scale once",
+      "ERROR: FAIL lamp preview displays the enlarged 60-degree base cone"
+    ],
+    "summary": [
+      "ENCHANTMENT_STACKING_TEST checks=242 failures=3"
+    ]
+  },
+  {
+    "name": "grenade_weapon_test",
+    "exit": 1,
+    "errors": [
+      "FAIL base native damage 16",
+      "FAIL critical damage 150 percent",
+      "FAIL coefficient applies to player damage before percent and rounding",
+      "FAIL native blast ignores melee and element bonuses",
+      "FAIL tooltip displays resolved ranged bonus radius and fixed flight time",
+      "FAIL level 2 base damage",
+      "FAIL level 3 base damage",
+      "FAIL level 4 base damage",
+      "FAIL level 5 base damage",
+      "FAIL level five radius and max-level boundary",
+      "FAIL native damage has no falloff or extra direct hit",
+      "FAIL smoke and repeat detonate cannot deal damage twice",
+      "FAIL separate grenades each damage same single target: 928",
+      "FAIL one grenade shares critical roll across all victims",
+      "FAIL shockwave adds no damage to the native 16-damage grenade",
+      "FAIL separated native contacts keep grenade damage unchanged",
+      "FAIL repeat detonation cannot repeat enchantments or native damage",
+      "FAIL children use 45 percent damage with approved radius flight and arc",
+      "FAIL core takes only primary damage and six outer targets take child damage",
+      "FAIL child landing on primary victim still excludes its native damage and enchantments",
+      "FAIL sibling blasts may overlap without recursively splitting",
+      "FAIL children inherit area once and scale the original critical result",
+      "FAIL dense child bursts exclude all primary victims and stop at one generation"
+    ],
+    "summary": [
+      "GRENADE_WEAPON_COMPLETE checks=90 failures=23"
+    ]
+  },
+  {
+    "name": "hammer_density_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL three independent dense rays",
+      "ERROR: FAIL cast locks lightning origin and reach"
+    ],
+    "summary": [
+      "HAMMER_DENSITY_TEST checks=230 failures=2"
+    ]
+  },
+  {
+    "name": "element_reaction_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "REACTION_TEST checks=68 failures=0"
+    ]
+  },
+  {
+    "name": "water_ice_atlas_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WATER_ICE_ATLAS_TEST checks=41 failures=0"
+    ]
+  },
+  {
+    "name": "plasma_contact_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL visible edge contact starts one tick and slows the ball",
+      "ERROR: FAIL no second tick before the contact interval",
+      "ERROR: FAIL continued contact deals the next tick after 0.1 seconds",
+      "ERROR: FAIL leaving contact stops ticks and restores flight speed",
+      "ERROR: FAIL diagonal outside contact is not a bounding-box hit",
+      "ERROR: FAIL diagonal recontact resumes the remaining ticks",
+      "ERROR: FAIL five total contact ticks retain the original damage and lifetime limit",
+      "ERROR: FAIL expired ball cannot add a sixth tick",
+      "ERROR: FAIL expanded visible edge deals contact damage",
+      "ERROR: FAIL minimum-radius edge still rejects noncontact"
+    ],
+    "summary": [
+      "PLASMA_CONTACT_TEST checks=36 failures=10"
+    ]
+  },
+  {
+    "name": "weapon_trio_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL 100ms impact pose deals rectangle damage exactly once"
+    ],
+    "summary": [
+      "WEAPON_TRIO_TEST checks=124 failures=1"
+    ]
+  },
+  {
+    "name": "tome_purse_weapon_test",
+    "exit": 1,
+    "errors": [
+      "FAIL native tome is ten elemental damage",
+      "FAIL native purse has three four-damage coins at zero principal",
+      "FAIL purse combines ranged and sqrt principal before percent and final rounding",
+      "FAIL elemental bonus enters tome and attachment basis exactly once",
+      "FAIL both support critical scaling before rounding",
+      "FAIL next shot reflects changed principal",
+      "FAIL withdrawing bank balance immediately removes principal scaling",
+      "FAIL extra tome projectiles reserve unique targets without repeat damage",
+      "FAIL swept coins do not tunnel or repeat a same-volley contact",
+      "FAIL pierce processes ordered contacts in one large frame",
+      "FAIL rare purse split coins deal forty-five percent damage and carry fire",
+      "FAIL level five gains persist and max level is enforced"
+    ],
+    "summary": [
+      "TOME_PURSE_COMPLETE checks=91 failures=12"
+    ]
+  },
+  {
+    "name": "nightwatch_spear_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL native damage and critical calculation",
+      "ERROR: FAIL large frame pierces each aligned enemy exactly once",
+      "ERROR: FAIL level five damage and rarity slots, capped upgrades",
+      "ERROR: FAIL player melee uses one-to-one coefficient",
+      "ERROR: FAIL ranged damage does not scale spear",
+      "ERROR: FAIL extra projectiles become independent full-damage thrusts",
+      "ERROR: FAIL short spear damage, attribution and generation limit",
+      "ERROR: FAIL child elemental damage scaled once",
+      "ERROR: FAIL elemental bonuses inherit child multiplier without early rounding",
+      "ERROR: FAIL exactly sixteen load permits spear"
+    ],
+    "summary": [
+      "NIGHTWATCH_SPEAR_TEST checks=69 failures=10"
+    ]
+  },
+  {
+    "name": "camp_dagger_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL native melee and critical calculation",
+      "ERROR: FAIL tooltip shows unboosted damage components",
+      "ERROR: FAIL long frame sweeps front targets once",
+      "ERROR: FAIL level five cap and rarity slots",
+      "ERROR: FAIL player melee coefficient is 0.8",
+      "ERROR: FAIL tooltip includes upgraded base and coefficient-scaled player contribution",
+      "ERROR: FAIL ranged damage cannot scale dagger",
+      "ERROR: FAIL extra projectiles become three full damage cuts even in a long frame",
+      "ERROR: FAIL split adds two follow-throughs once per volley, not per victim",
+      "ERROR: FAIL child multiplier applied once with rounding",
+      "ERROR: FAIL full elemental base scaled once without early rounding",
+      "ERROR: FAIL dagger fits exactly twelve remaining load"
+    ],
+    "summary": [
+      "CAMP_DAGGER_TEST checks=77 failures=12"
+    ]
+  },
+  {
+    "name": "meteor_flail_test",
+    "exit": 1,
+    "errors": [
+      "ERROR: FAIL native melee damage event",
+      "ERROR: FAIL ranged damage never scales flail",
+      "ERROR: FAIL melee stat scales damage",
+      "ERROR: FAIL large step sweeps fan once, with distinct outer and inner damage",
+      "ERROR: FAIL inner fan hits while rear remains unharmed",
+      "ERROR: FAIL four upgrades reach forty-two and stop at level five",
+      "ERROR: FAIL inner fan gives baseline damage",
+      "ERROR: FAIL player melee bonus uses the configured 1.2 coefficient",
+      "ERROR: FAIL split and outer multipliers apply once",
+      "ERROR: FAIL elemental base scales both weapon and bonus once without early rounding"
+    ],
+    "summary": [
+      "METEOR_FLAIL_TEST checks=45 failures=10"
+    ]
+  },
+  {
+    "name": "enchantment_tooltip_balance_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENCHANTMENT_TOOLTIP_BALANCE checks=112 failures=0"
+    ]
+  },
+  {
+    "name": "active_combat_integration_test",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ACTIVE_COMBAT_INTEGRATION checks=115 failures=0"
+    ]
+  }
+]

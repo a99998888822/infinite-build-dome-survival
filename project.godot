@@ -43,9 +43,8 @@ theme/custom="res://assets/font/theme_global.tres"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+gl_compatibility/driver.windows="opengl3_angle"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-; Avoid the Intel native OpenGL resize hang captured in resolution_switch_hang_2026-10-01.md.
-gl_compatibility/driver.windows="opengl3_angle"
 textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_transforms_to_pixel=true

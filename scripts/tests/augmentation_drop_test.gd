@@ -3,7 +3,7 @@ extends Node
 var failures := 0
 var checks := 0
 const RARITIES := {"scroll_split": "epic", "scroll_bounce": "epic", "scroll_lightning": "rare", "scroll_explosion": "common",
-	"scroll_might": "rare", "scroll_wisdom": "uncommon", "scroll_multishot": "epic", "scroll_domain": "rare", "scroll_lethality": "rare", "scroll_haste": "rare",
+	"scroll_might": "rare", "scroll_wisdom": "uncommon", "scroll_multishot": "epic", "scroll_domain": "rare", "scroll_precision": "rare", "scroll_lethality": "rare", "scroll_haste": "rare",
 	"scroll_light_sword": "rare", "scroll_black_hole": "rare", "scroll_wind": "rare"}
 
 func _ready() -> void:

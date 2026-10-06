@@ -526,12 +526,7 @@ func _ensure_bond_tooltip() -> void:
 
 
 func _get_tooltip_layer() -> CanvasLayer:
-	var current: Node = self
-	while current != null:
-		if current is CanvasLayer:
-			return current as CanvasLayer
-		current = current.get_parent()
-	return null
+	return GameTooltipLayer.for_owner(self)
 
 
 func _exit_tree() -> void:
