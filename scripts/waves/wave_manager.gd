@@ -56,6 +56,7 @@ var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var goblin_trades := GoblinTradeSystem.new()
 var wave_challenges := WaveChallengeSystem.new()
+var enemy_pressure := EnemyWavePressure.new()
 var _challenge_elite_schedule: Array[float] = []
 var _challenge_elite_spawned := 0
 var _challenge_elite_planned := 0
@@ -100,6 +101,7 @@ func _process(delta: float) -> void:
 		return
 	if player == null or not player.is_alive() or run_statistics.frozen:
 		return
+	enemy_pressure.advance(minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
 	if cleanup_active:
 		cleanup_time_left = maxf(0.0, cleanup_time_left - delta)
 	else:
@@ -164,6 +166,7 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	goblin_loans.reset()
 	goblin_trades.reset()
 	wave_challenges.reset()
+	enemy_pressure.reset()
 	_challenge_elite_schedule.clear()
 	_challenge_elite_spawned = 0
 	_challenge_elite_planned = 0
@@ -229,6 +232,7 @@ func start_next_wave() -> bool:
 	_wave_finish_queued = false
 	goblin_loans.leave_preparation(run_statistics)
 	current_wave_index += 1
+	enemy_pressure.begin_wave(current_wave_index + 1)
 	goblin_trades.begin_combat()
 	wave_challenges.begin_combat()
 	collected_exp_this_wave = 0
@@ -271,6 +275,7 @@ func finish_current_wave() -> void:
 		return
 	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
 	wave_challenges.finish_combat(goblin_trades.pressure_snapshot)
+	enemy_pressure.finish_wave(wave_challenges.pressure)
 	running = false
 	# Include deaths deferred from this frame before clearing or settling rewards.
 	cleanup_active = false
@@ -302,6 +307,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
 	runtime_modifiers.append_array(_build_wave_enemy_modifiers(str(enemy_data.get("enemy_type", "normal"))))
 	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
+	runtime_modifiers.append_array(enemy_pressure.build_modifiers(str(enemy_data.get("enemy_type", "normal"))))
 	for stat in ["max_hp", "melee_damage", "ranged_damage", "element_damage", "move_speed", "armor"]:
 		var key := "health" if stat == "max_hp" else ("speed" if stat == "move_speed" else ("armor" if stat == "armor" else "damage"))
 		runtime_modifiers.append({"id": "difficulty_" + stat, "source_type": "difficulty", "source_id": difficulty_id,
@@ -313,7 +319,18 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 		return null
 	enemy.died.connect(_on_enemy_died)
 	enemy.damage_received.connect(_on_enemy_damage_received)
+	enemy.damage_received.connect(_on_enemy_pressure_damage.bind(enemy, current_wave_index + 1))
 	return enemy
+
+
+func _on_enemy_pressure_damage(_source_id: String, damage: int, enemy: EnemyController, wave: int) -> void:
+	if not running or wave != current_wave_index + 1 or damage <= 0 or run_statistics.frozen:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)) or player == null or not player.is_alive():
+		return
+	if bool(enemy.get_meta("exclude_reward_progress", false)) or (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
+		return
+	enemy_pressure.record_damage(enemy.get_instance_id(), str(enemy.enemy_data.get("enemy_type", "normal")))
 
 
 func _on_enemy_damage_received(source_id: String, damage: int) -> void:
@@ -742,15 +759,7 @@ func calculate_spawn_interval(base_interval_ms: float) -> float:
 
 
 func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:
-	var rules := DataRegistry.get_record("erosion_pressure_rules", "erosion_enemy_stats")
-	# The configured reference value calibrates growth; it is not an upper limit.
-	var ratio := maxf(0.0, erosion) / maxf(1.0, float(rules.get("erosion_full_at", 100)))
-	return {
-		"erosion": maxf(0.0, erosion),
-		"max_hp_multiplier": 1.0 + ratio * float(rules.get("max_hp_bonus_percent", 180)) / 100.0,
-		"damage_multiplier": 1.0 + ratio * float(rules.get("damage_bonus_percent", 90)) / 100.0,
-		"armor_multiplier": 1.0 + ratio * float(rules.get("armor_bonus_percent", 135)) / 100.0,
-	}
+	return EnemyWavePressure.calculate_erosion(erosion)
 
 
 func get_enemy_erosion_snapshot() -> Dictionary:
@@ -846,6 +855,8 @@ func _get_spawn_clearance_squared(candidate: Vector2) -> float:
 func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
 	if not is_instance_valid(enemy) or not run_statistics.record_kill(enemy.get_instance_id(), enemy.enemy_id): return
 	if player == null or not player.is_alive(): return
+	if running and not bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		enemy_pressure.record_kill(enemy.get_instance_id())
 	if running and DataRegistry.has_record("enemies", enemy.enemy_id) and not bool(enemy.get_meta("exclude_reward_progress", false)) and not (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
 		_augmentation_valid_kills += 1
 	if player != null:

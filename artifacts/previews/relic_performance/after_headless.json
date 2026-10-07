@@ -1,0 +1,222 @@
+[
+  {
+    "after_purchase_stats": {
+      "area_size": 0.0,
+      "armor": 0.0,
+      "attack_speed": 0.0,
+      "control_power": 0.0,
+      "crit_chance": 0.0,
+      "crit_damage": 150.0,
+      "currency_gain_percent": 0.0,
+      "damage_area_size": 0.0,
+      "damage_percent": 0.0,
+      "damage_taken_percent": 100.0,
+      "divinity": 0.0,
+      "drop_rate_percent": 0.0,
+      "element_damage": 0.0,
+      "enemy_spawn_rate_percent": 0.0,
+      "exp_gain_percent": 0.0,
+      "finance": 0.0,
+      "health_pack_heal_plus": 0.0,
+      "hp_regen": 0.0,
+      "humanity": 100.0,
+      "interest_rate": 5.0,
+      "load_capacity": 100.0,
+      "luck": 0.0,
+      "max_hp": 34.0,
+      "melee_damage": 0.0,
+      "move_speed": 120.0,
+      "on_kill_heal": 0.0,
+      "pickup_radius": 180.0,
+      "projectile_count": 1.0,
+      "ranged_damage": 0.0,
+      "revive_count": 0.0,
+      "shield": 0.0,
+      "shield_regen": 0.0,
+      "shop_offer_count_bonus": 0.0,
+      "shop_price_percent": 0.0
+    },
+    "cpu": [
+      {
+        "label": "hud_refresh",
+        "max_ms": 0.269,
+        "median_ms": 0.04
+      },
+      {
+        "label": "dynamic_refresh",
+        "max_ms": 0.023,
+        "median_ms": 0.003
+      },
+      {
+        "label": "stat_block_query_100",
+        "max_ms": 0.063,
+        "median_ms": 0.045
+      },
+      {
+        "label": "esc_open",
+        "median_ms": 13.316
+      },
+      {
+        "label": "esc_reconfigure",
+        "max_ms": 0.435,
+        "median_ms": 0.283
+      },
+      {
+        "label": "finance_open",
+        "median_ms": 61.925
+      },
+      {
+        "label": "purchase_hover_preview",
+        "max_ms": 0.875,
+        "median_ms": 0.514
+      },
+      {
+        "label": "purchase_transaction",
+        "median_ms": 23.716,
+        "success": true
+      }
+    ],
+    "frames": [
+      {
+        "avg_ms": 6.89973333333333,
+        "draw_calls": 0.0,
+        "label": "battle_idle",
+        "p95_ms": 6.946,
+        "p99_ms": 6.955
+      },
+      {
+        "avg_ms": 6.90013333333333,
+        "draw_calls": 0.0,
+        "label": "esc_idle",
+        "p95_ms": 6.948,
+        "p99_ms": 7.008
+      },
+      {
+        "avg_ms": 6.89963333333333,
+        "draw_calls": 0.0,
+        "label": "shop_idle",
+        "p95_ms": 6.942,
+        "p99_ms": 6.948
+      },
+      {
+        "avg_ms": 6.90011666666667,
+        "draw_calls": 0.0,
+        "label": "enchant_idle",
+        "p95_ms": 6.97,
+        "p99_ms": 7.031
+      }
+    ],
+    "modifiers": 1,
+    "relics": 0
+  },
+  {
+    "after_purchase_stats": {
+      "area_size": 0.0,
+      "armor": 129.0,
+      "attack_speed": 54.0,
+      "control_power": 6.0,
+      "crit_chance": 22.0,
+      "crit_damage": 195.0,
+      "currency_gain_percent": 0.0,
+      "damage_area_size": 0.0,
+      "damage_percent": -23.0,
+      "damage_taken_percent": 44.0,
+      "divinity": 13.0,
+      "drop_rate_percent": 0.0,
+      "element_damage": 0.0,
+      "enemy_spawn_rate_percent": 0.0,
+      "exp_gain_percent": 8.0,
+      "finance": 0.0,
+      "health_pack_heal_plus": -1.0,
+      "hp_regen": 1.75,
+      "humanity": 107.0,
+      "interest_rate": 22.5,
+      "load_capacity": 115.0,
+      "luck": 0.0,
+      "max_hp": 65.0,
+      "melee_damage": 22.0,
+      "move_speed": 135.0,
+      "on_kill_heal": 0.0,
+      "pickup_radius": 220.0,
+      "projectile_count": 2.0,
+      "ranged_damage": 10.0,
+      "revive_count": 1.0,
+      "shield": 30.0,
+      "shield_regen": 1.5,
+      "shop_offer_count_bonus": 0.0,
+      "shop_price_percent": -2.0
+    },
+    "cpu": [
+      {
+        "label": "hud_refresh",
+        "max_ms": 0.268,
+        "median_ms": 0.041
+      },
+      {
+        "label": "dynamic_refresh",
+        "max_ms": 0.426,
+        "median_ms": 0.278
+      },
+      {
+        "label": "stat_block_query_100",
+        "max_ms": 0.254,
+        "median_ms": 0.054
+      },
+      {
+        "label": "esc_open",
+        "median_ms": 239.856
+      },
+      {
+        "label": "esc_reconfigure",
+        "max_ms": 0.472,
+        "median_ms": 0.17
+      },
+      {
+        "label": "finance_open",
+        "median_ms": 94.471
+      },
+      {
+        "label": "purchase_hover_preview",
+        "max_ms": 10.666,
+        "median_ms": 9.963
+      },
+      {
+        "label": "purchase_transaction",
+        "median_ms": 29.886,
+        "success": true
+      }
+    ],
+    "frames": [
+      {
+        "avg_ms": 6.89981666666667,
+        "draw_calls": 0.0,
+        "label": "battle_idle",
+        "p95_ms": 7.002,
+        "p99_ms": 7.131
+      },
+      {
+        "avg_ms": 6.90064166666667,
+        "draw_calls": 0.0,
+        "label": "esc_idle",
+        "p95_ms": 7.002,
+        "p99_ms": 7.078
+      },
+      {
+        "avg_ms": 6.900225,
+        "draw_calls": 0.0,
+        "label": "shop_idle",
+        "p95_ms": 7.002,
+        "p99_ms": 7.052
+      },
+      {
+        "avg_ms": 6.89993333333333,
+        "draw_calls": 0.0,
+        "label": "enchant_idle",
+        "p95_ms": 7.045,
+        "p99_ms": 7.17
+      }
+    ],
+    "modifiers": 102,
+    "relics": 60
+  }
+]

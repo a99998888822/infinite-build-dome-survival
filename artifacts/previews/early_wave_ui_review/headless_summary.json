@@ -1,0 +1,55 @@
+[
+  {
+    "name": "editor",
+    "exit_code": 0,
+    "issues": [],
+    "summary": []
+  },
+  {
+    "name": "early_wave_weapon_test",
+    "exit_code": 0,
+    "issues": [
+      "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+    ],
+    "summary": [
+      "EARLY_WAVE_WEAPON_TEST checks=1674 failures=0"
+    ]
+  },
+  {
+    "name": "battle_hud_damage_test",
+    "exit_code": 1,
+    "issues": [
+      "FAIL performance line has top padding below vitals",
+      "FAIL damage meter has padding below performance line"
+    ],
+    "summary": [
+      "BATTLE_HUD_DAMAGE_TEST checks=29 failures=2"
+    ]
+  },
+  {
+    "name": "finance_preparation_test",
+    "exit_code": 0,
+    "issues": [],
+    "summary": [
+      "FINANCE_PREPARATION_DONE failures=0"
+    ]
+  },
+  {
+    "name": "interest_arrival_test",
+    "exit_code": 0,
+    "issues": [],
+    "summary": [
+      "INTEREST_ARRIVAL_COMPLETE checks=40 failures=0"
+    ]
+  },
+  {
+    "name": "miniboss_choice_test",
+    "exit_code": 0,
+    "issues": [
+      "ERROR: 4 resources still in use at exit (run with --verbose for details)."
+    ],
+    "summary": [
+      "MINIBOSS_CHOICE_COMPLETE checks=25 failures=0"
+    ]
+  }
+]

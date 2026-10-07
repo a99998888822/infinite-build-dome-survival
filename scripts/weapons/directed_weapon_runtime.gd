@@ -38,7 +38,9 @@ static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
 	var distance := radius * radius + 0.001
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
-		if not is_instance_valid(enemy) or not enemy.is_alive():
+		if not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_alive():
+			continue
+		if enemy is EliteRusher and enemy.skill_state == "spawn":
 			continue
 		var next := origin.distance_squared_to(enemy.global_position)
 		if next < distance and clear_path(source.owner_player, origin, enemy.global_position):

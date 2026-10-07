@@ -71,6 +71,11 @@ var _walk_texture: Texture2D = PLAYER_WALK_TEXTURE
 @onready var camera_2d: Camera2D = get_node_or_null("Camera2D")
 
 
+func _init() -> void:
+	# Player and detached preview mutations use ModifierStack's invalidating API.
+	modifier_stack.cache_enabled = true
+
+
 func _ready() -> void:
 	_clear_move_input()
 	_setup_visuals()
@@ -263,7 +268,7 @@ func begin_modifier_update() -> void:
 	if _modifier_update_depth == 0:
 		_modifiers_before_update.clear()
 		for modifier in modifier_stack.modifiers:
-			_modifiers_before_update[modifier.id] = modifier.to_dictionary()
+			_modifiers_before_update[modifier.id] = {"stat": modifier.stat, "operation": modifier.operation, "value": modifier.value}
 	_modifier_update_depth += 1
 
 
@@ -362,14 +367,7 @@ func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]
 
 
 func _is_stat_increase_blocked(stat_id: String) -> bool:
-	if stat_id.is_empty():
-		return false
-	for effect in get_active_relic_runtime_effects():
-		if str(effect.get("effect", "")) != BattleFinanceSystem.EFFECT_BLOCK_STAT_INCREASE:
-			continue
-		if str(effect.get("stat", "")) == stat_id:
-			return true
-	return false
+	return not stat_id.is_empty() and relic_system.is_stat_increase_blocked(stat_id)
 
 
 func sync_relic_weapon_ids(weapon_ids: Array[String]) -> void:
@@ -710,10 +708,7 @@ func _refresh_relic_dynamic_effects() -> void:
 	if _refreshing_relic_dynamic_effects or _modifier_update_depth > 0:
 		return
 	_refreshing_relic_dynamic_effects = true
-	var previous_values := {}
-	for modifier in modifier_stack.get_all_modifiers():
-		if modifier.source_type == "relic_dynamic":
-			previous_values[modifier.id] = modifier.value
+	var previous_values := modifier_stack.get_values_by_source_type("relic_dynamic")
 	modifier_stack.remove_by_source_type("relic_dynamic")
 	var ordered_effects := _get_ordered_dynamic_effects()
 	_stationary_thresholds.clear()

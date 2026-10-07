@@ -671,7 +671,7 @@ res://
 
 控制台应能看到以下类型输出：
 
-1. `attack_speed=100: 1.00s -> 0.50s`。
+1. `attack_speed=100: 1.00s -> 0.75s`。
 2. `armor=100: damage_taken_percent=...`，具体数值由护甲函数决定，但必须大于最低承伤下限。
 3. `area_size=40: attack distance 100 -> 140`。
 4. `damage_area_size=10: damage radius 100 -> 110`，且属性栏显示为 `10` 而不是 `10%`。

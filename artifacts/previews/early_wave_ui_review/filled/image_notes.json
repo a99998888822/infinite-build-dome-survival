@@ -1,0 +1,35 @@
+{
+  "boss_detail": {
+    "sources": [
+      "boss_sprite.png",
+      "boss_collision_and_full_hp.png"
+    ],
+    "crop": [
+      610,
+      160,
+      782,
+      368
+    ],
+    "scale": 3,
+    "resampling": "nearest",
+    "overlay": "Drawn by Godot from CollisionShape2D.shape under the actual collision transform.",
+    "postprocessing": "crop, nearest-neighbor enlargement, side-by-side arrangement and labels only"
+  },
+  "relic_fixture": "90 official relic definitions in a temporary UI inventory; acquisition modifiers are not applied.",
+  "interest_detail": {
+    "source": "interest_receipt.png",
+    "crop": [
+      298,
+      183,
+      855,
+      465
+    ],
+    "scale": 1
+  },
+  "validation": {
+    "headless_passed": true,
+    "gpu_passed": true,
+    "private_desktop_verified": true,
+    "foreground_samples": 0
+  }
+}

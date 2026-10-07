@@ -51,6 +51,6 @@ PNG版HUD中的“粒子”不再把黄色圈算作24个实时粒子；测试另
 
 ![图集预览：绿色底仅供审阅，正式候选PNG为透明底](atlas-preview.png)
 
-候选工程位于 `D:/project/useless/review-archives/warning-png-20261006/project`。本目录备份候选代码、烘焙脚本、验证日志和指标，便于复现与审阅。
+候选工程位于 `D:/project/useless/review-archives/warning-png-20261006/project`。2026-10-07 清理了本目录中重复的候选代码、一次性烘焙脚本和原始日志；保留图集、最终对照附件及指标，日志结论与异常上下文见[日志摘要](../../maintenance/validation_log_summary_20261007.json)。本报告描述 10 月 6 日的历史试作；当前正式预警实现以项目最新安装记录为准。
 
 Godot headless编辑器导入和运行验证通过；GPU逐帧外观验证及实战测试均在私有Windows桌面完成，记录验证了实际桌面一致、`foreground_samples=0`。正式文件没有执行替换操作，校验结果保存在 `production-integrity.json`。

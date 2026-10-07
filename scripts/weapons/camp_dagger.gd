@@ -175,7 +175,7 @@ func _contact(cut: Dictionary, origin: Vector2, at: float) -> void:
 		var enemy := result.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or cut.hits.has(enemy.get_instance_id()):
 			continue
-		if (enemy.global_position - origin).dot(heading) < 0:
+		if (weapon.get_auto_target_position(enemy) - origin).dot(heading) < 0:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():

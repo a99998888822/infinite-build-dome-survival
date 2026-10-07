@@ -243,7 +243,7 @@ func _run() -> void:
 	add_modifier("damage_area_size", 50)
 	check(weapon.get_grenade_blast_radius() == 80 and weapon.get_attack_range() == 250, "blast area scales independently")
 	add_modifier("attack_speed", 100)
-	check(is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.9), "attack speed changes launch interval")
+	check(is_equal_approx(weapon.get_actual_attack_interval_seconds(), 1.35), "100 attack speed keeps 75 percent of launch interval")
 	var stats := weapon.build_full_stats_text()
 	check(stats.contains("[color=#7FD88F]+12[/color]") and stats.contains("80") and stats.contains("0.45"), "tooltip displays resolved ranged bonus radius and fixed flight time")
 	player.remove_runtime_modifiers_by_source("test", "grenade")

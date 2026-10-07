@@ -36,6 +36,7 @@ var _vitals_frame: Panel
 var _experience_frame: Panel
 var _bond_row: HBoxContainer
 var _bond_buttons: Dictionary = {}
+var _bond_effects_revision := -1
 var _weapon_damage_meter: Control
 var _performance_line: Label
 var _economy_log: EconomyLogPanel
@@ -372,6 +373,7 @@ func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_mana
 	_disconnect_combat_signals()
 	_flow = flow
 	_player = player
+	_bond_effects_revision = -1
 	_wave_manager = wave_manager
 	_economy_log.bind_journal(wave_manager.economy_journal if wave_manager != null else null)
 	_weapon_damage_meter.bind_context(wave_manager, flow.get_bound_loadout() if flow != null else null)
@@ -393,7 +395,8 @@ func _refresh_all() -> void:
 	if _player == null or _wave_manager == null or _flow == null:
 		return
 	_refresh_labels()
-	_refresh_stats_drawer()
+	if _drawer_open or (_drawer_tween != null and _drawer_tween.is_running()):
+		_refresh_stats_drawer()
 	_refresh_bond_indicator()
 	_refresh_visibility()
 	_refresh_active_combat()
@@ -572,7 +575,7 @@ func _sync_vitals(animate: bool) -> void:
 		var shield_row := shield_bar.get_parent() as Control
 		shield_row.modulate.a = 1.0 if current_shield > 0 else 0.5
 	if _last_hp != current_hp or _last_max_hp != max_hp:
-		_set_progress_value(hp_bar, float(current_hp) * 100.0 / float(max_hp), animate)
+		_set_progress_value(hp_bar, float(current_hp) * 100.0 / float(max_hp), animate and current_hp < max_hp)
 		if animate and _last_hp >= 0:
 			_pulse_control(hp_bar, HP_PULSE_COLOR)
 	if _last_shield != current_shield or _last_max_shield != max_shield:
@@ -610,8 +613,9 @@ func _sync_economy(animate: bool) -> void:
 	if _wave_manager == null:
 		return
 	var current_gold := maxi(_wave_manager.current_gold, 0)
-	var finance_snapshot := _wave_manager.get_finance_snapshot()
-	var principal := maxi(int(finance_snapshot.get("principal", 0)), 0)
+	# The balance label does not need a full settlement/relic projection each frame.
+	var finance := _wave_manager.finance_system
+	var principal := maxi(finance.principal, 0) if finance != null else 0
 	if gold_label != null:
 		gold_label.text = "金币：%s" % _format_number(current_gold)
 	if finance_label != null:
@@ -641,6 +645,12 @@ func _refresh_wave_display() -> void:
 			wave_label.tooltip_text = str(challenge.get("body", ""))
 		else:
 			wave_label.tooltip_text = ""
+		var adaptive: Dictionary = _wave_manager.enemy_pressure.wave_bonus
+		if int(adaptive.normal) > 0 or int(adaptive.elite) > 0:
+			wave_label.text += " · 强化"
+			wave_label.tooltip_text += "\n秒怪适应：本波小怪生命额外+%d%%，小Boss额外+%d%%。" % [adaptive.normal, adaptive.elite]
+		if wave_panel != null:
+			wave_panel.tooltip_text = wave_label.tooltip_text.strip_edges()
 	if wave_timer_label != null:
 		if _wave_manager.cleanup_active:
 			wave_label.text = "最终清剿"
@@ -656,11 +666,14 @@ func _set_progress_value(progress_bar: ProgressBar, target_value: float, animate
 	if progress_bar == null:
 		return
 	var clamped_value := clampf(target_value, 0.0, 100.0)
-	if is_equal_approx(float(progress_bar.value), clamped_value):
-		return
 	var old_tween: Tween = _progress_tweens.get(progress_bar, null)
 	if old_tween != null and old_tween.is_valid():
 		old_tween.kill()
+	_progress_tweens.erase(progress_bar)
+	# A heal can restore the current displayed value before a damage tween has
+	# advanced. Cancel that obsolete tween even when the new value is identical.
+	if is_equal_approx(float(progress_bar.value), clamped_value):
+		return
 	if not animate:
 		progress_bar.value = clamped_value
 		return
@@ -931,6 +944,8 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 		return
 
 	_drawer_open = open
+	if open and _player != null:
+		_refresh_stats_drawer()
 	_hide_stat_tooltip()
 	if drawer_toggle_button != null:
 		drawer_toggle_button.text = ">" if open else "<"
@@ -1013,17 +1028,17 @@ func _refresh_stats_drawer() -> void:
 		var stat_id := str(stat_id_variant)
 		var value_label := _stat_value_labels[stat_id_variant] as Label
 		if value_label != null:
+			var color := DRAWER_TEXT_COLOR
 			if preview.has(stat_id):
 				var preview_value := float(preview[stat_id])
 				var current_value := _get_display_stat_value(stat_id)
 				value_label.text = _format_stat_value(stat_id, preview_value)
-				if is_equal_approx(preview_value, current_value):
-					value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
-				else:
-					value_label.add_theme_color_override("font_color", STAT_PREVIEW_GAIN_COLOR if preview_value > current_value else STAT_PREVIEW_LOSS_COLOR)
+				if not is_equal_approx(preview_value, current_value):
+					color = STAT_PREVIEW_GAIN_COLOR if preview_value > current_value else STAT_PREVIEW_LOSS_COLOR
 			else:
 				value_label.text = _format_stat_value(stat_id, _get_display_stat_value(stat_id))
-				value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
+			if value_label.get_theme_color("font_color") != color:
+				value_label.add_theme_color_override("font_color", color)
 		var name_label := _stat_name_labels.get(stat_id_variant, null) as Label
 		if name_label != null:
 			name_label.text = _get_stat_display_name(stat_id)
@@ -1130,7 +1145,8 @@ func _get_stat_tooltip_text(stat_id: String) -> String:
 				HumanityEconomy.number((1.0 - float(factors.interest)) * 100.0),
 			]
 		"divinity":
-			return "影响怪物强度、数量"
+			var pressure := EnemyWavePressure.calculate_erosion(_get_display_stat_value(stat_id))
+			return "侵蚀越高，怪物越强；超过30、60后加速增长。\n按当前侵蚀：生命×%.2f、伤害×%.2f、护甲×%.2f\n每波开始锁定；同时影响小Boss数量。" % [pressure.max_hp_multiplier, pressure.damage_multiplier, pressure.armor_multiplier]
 	return ""
 
 
@@ -1228,8 +1244,8 @@ func _get_display_stat_value(stat_id: String) -> float:
 
 
 func _get_stat_display_name(stat_id: String) -> String:
-	var eldritch_name_changed := _player != null and _player.get_stat("divinity") > ELDRITCH_NAMING_THRESHOLD
 	if stat_id == "humanity":
+		var eldritch_name_changed := _player != null and _player.get_stat("divinity") > ELDRITCH_NAMING_THRESHOLD
 		return "人性" if eldritch_name_changed else "理智值"
 	if stat_id == "divinity":
 		return "侵蚀度"
@@ -1246,11 +1262,16 @@ func _format_stat_value(stat_id: String, value: float) -> String:
 
 func _refresh_bond_indicator() -> void:
 	if _flow == null or _flow.get_current_state() != MainFlowCoordinator.STATE_WAVE_COMBAT:
+		_bond_effects_revision = -1
 		_displayed_bond_id = ""
 		_hide_bond_tooltip()
 		if _bond_row != null:
 			_bond_row.visible = false
 		return
+	var revision := _player.relic_system.effects_revision
+	if _bond_effects_revision == revision:
+		return
+	_bond_effects_revision = revision
 	if _bond_row == null:
 		_bond_row = HBoxContainer.new()
 		_bond_row.name = "BondRow"
@@ -1258,12 +1279,13 @@ func _refresh_bond_indicator() -> void:
 		_bond_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(_bond_row)
 		call_deferred("_apply_combat_layout")
-	_bond_row.visible = true
+	var has_visible_bond := false
 	for bond in DataRegistry.get_table("bonds"):
 		if not (bond is Dictionary):
 			continue
 		var bond_id := str(bond.get("id", ""))
-		if bond_id.is_empty():
+		# A grouping without threshold rewards has no combat status to display.
+		if bond_id.is_empty() or bond.get("thresholds", {}).is_empty():
 			continue
 		var count := _player.relic_system.get_bond_count(bond_id)
 		if not _bond_buttons.has(bond_id):
@@ -1280,8 +1302,11 @@ func _refresh_bond_indicator() -> void:
 			_bond_buttons[bond_id] = button
 		var indicator := _bond_buttons[bond_id] as Button
 		indicator.visible = count > 0
+		if indicator.visible:
+			has_visible_bond = true
 		indicator.text = "%s %d" % [BondDisplay.get_bond_name(bond_id), count]
 		indicator.modulate = Color.WHITE if count >= 2 else Color(0.75, 0.8, 0.72)
+	_bond_row.visible = has_visible_bond
 
 
 func _inspect_bond(bond_id: String, indicator: Button) -> void:

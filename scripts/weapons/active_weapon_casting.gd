@@ -13,16 +13,21 @@ func can_cast(weapon: WeaponInstance) -> bool:
 	var state := state_for(weapon)
 	return not state.executing and float(state.remaining) <= 0.0
 
-func auto_attack() -> void:
+func auto_attack(all_weapons: bool = true) -> void:
 	# Use the same snapshots, animation and cooldown as a manual cast.
 	for weapon: WeaponInstance in loadout.weapon_instances:
+		if not all_weapons and not weapon.is_copper_lamp():
+			continue
 		if not can_cast(weapon):
 			continue
 		var target := _auto_target(weapon)
 		if target != null:
-			cast(weapon, target.global_position)
+			cast(weapon, weapon.get_auto_target_position(target))
 
 func _auto_target(weapon: WeaponInstance) -> EnemyController:
+	if weapon.is_copper_lamp():
+		# Acquisition and continuous tracking use the same range and line of sight.
+		return DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 	var origin := weapon.get_attack_origin()
 	var reach := weapon.get_attack_range()
 	var nearest: EnemyController
@@ -43,9 +48,6 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		elif weapon.is_grenade():
 			if (offset / AttackFootprint.grenade_range_axes(weapon).max(Vector2.ONE)).length_squared() > 1.0:
 				continue
-		elif weapon.is_copper_lamp():
-			if not AttackFootprint.in_lamp_cone(offset, weapon.owner_player.last_move_direction, reach, weapon.get_lamp_cone_degrees()):
-				continue
 		elif distance > reach * reach:
 			continue
 		nearest = enemy
@@ -61,7 +63,6 @@ func tick(delta: float) -> void:
 			var playing := false
 			if is_instance_valid(body) and not body.cancelled:
 				if body is CopperLamp:
-					body.manual_direction = loadout.owner_player.last_move_direction
 					playing = body.burst_active
 				elif body is MutantTentacle:
 					playing = body.attacking
@@ -94,6 +95,8 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 		return false
 	if not is_instance_valid(loadout.owner_player) or not loadout.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if source.is_copper_lamp() and _auto_target(source) == null:
+		return false
 	var weapon := source.make_cast_copy()
 	var origin: Vector2 = loadout.owner_player.global_position
 	var offset := point - origin
@@ -105,8 +108,6 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 		var lamp := CopperLamp.new()
 		root.add_child(lamp)
 		lamp.initialize(weapon)
-		lamp.manual_control = true
-		lamp.manual_direction = loadout.owner_player.last_move_direction
 		lamp.externally_driven = true
 		lamp.burst_active = true
 		body = lamp

@@ -1,6 +1,6 @@
 # 攻击距离 / 伤害范围：加成收益减半预览
 
-本目录保存独立审阅阶段的实验与动图。审阅阶段未改动正式资源，`production_verification.json` 记录当时1912个既有文件的SHA-256比对结果。用户确认后，50%加成效率已接入正式战斗，正式验收记录位于相邻的 `range_half_bonus_install/`。本目录的对比适配器保留旧规则与新规则的重放能力。
+本目录保存独立审阅阶段的报告与动图。审阅阶段未改动正式资源，`production_verification.json` 记录当时1912个既有文件的SHA-256比对结果。用户确认后，50%加成效率已接入正式战斗，正式验收记录位于相邻的 `range_half_bonus_install/`。2026-10-07 已清理一次性对比适配器与录制脚本，保留最终媒体和测量数据。
 
 ## 查看动图
 
@@ -31,7 +31,7 @@
 
 使用真实 `GameRoot`、`ActiveWeaponCasting`、武器动画、碰撞、伤害与飘字。固定高血量敌人作为测试目标，取消自动追击和普通受击位移，关闭随机刷怪。预览目标未改写伤害处理。
 
-`preview_weapon.gd` 保留原始装备属性，在生成施放快照时按当前正式公式换算出100%或50%加成效率；瞄准提示读取相同的几何快照。此适配器仅用于重放审阅对照，正式战斗已经使用统一属性换算入口。
+当时使用的 `preview_weapon.gd` 保留原始装备属性，在生成施放快照时按当时的正式公式换算出100%或50%加成效率；瞄准提示读取相同的几何快照。该适配器仅用于审阅对照，已随中间产物清理；正式战斗使用统一属性换算入口。
 
 实际运行验证了：
 
@@ -46,15 +46,8 @@ GPU 实录通过项目的 `run_godot_background.py` 在私有 Windows 桌面运�
 
 60 Hz 固定模拟，每 3 帧采集一张真实 GPU 图像，动图以 20 fps、原速播放。后期仅裁切、缩放、左右拼接、加说明文字及 GIF 调色板压缩；没有补画战斗、伪造命中或改变动画速度。每张动图 240 帧、12 秒。
 
-`captures/` 保留逐帧记录，原始截图、初次试拍和未压缩的重复动图已移入回收站。三张 `*_review.gif`、各档位的 `*_contact_sheet.png`、代表画面和 `*_comparison.json` 统计均保留。需要完整帧序列时可按下方命令重新录制。
+`captures/` 保留各组 JSON 验证报告，不再保存原始截图序列。三张 `*_review.gif`、各档位的 `*_contact_sheet.png`、代表画面和 `*_comparison.json` 统计均保留。
 
-## 复现
+## 历史验证记录
 
-在项目根目录运行：
-
-```powershell
-python artifacts/previews/range_half_bonus_review/run_captures.py
-python artifacts/previews/range_half_bonus_review/assemble.py
-```
-
-以上脚本只生成本目录内的审阅文件，不修改正式资源。`production_before.json` 和 `production_verification.json` 是正式接入前的历史校验记录，不用于校验接入后的项目。
+一次性录制及组装脚本已删除，完整帧序列需要重新搭建录制。旧日志的测试结果与异常上下文见[日志摘要](../../maintenance/validation_log_summary_20261007.json)。`production_before.json` 和 `production_verification.json` 是正式接入前的历史校验记录，不用于校验接入后的项目。

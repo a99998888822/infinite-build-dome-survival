@@ -14,8 +14,8 @@ const PAPER_WIDTH := 464.0
 const FOOT_ANCHOR := Vector2(1380, 1148)
 const STARTING_WEAPON_ICON_SIZE := Vector2(62, 68)
 const STARTING_ENCHANTMENT_ICON_SIZE := Vector2(36, 36)
-const BREATH_PERIOD := 2.0
-const BREATH_STRETCH := 0.06
+const BREATH_PERIOD := 3.0
+const BREATH_OFFSET := 0.0125
 const BREATH_SHADER := preload("res://assets/shaders/character_select_breathing.gdshader")
 
 var canvas: Control
@@ -462,7 +462,7 @@ func _process(delta: float) -> void:
 	if not is_visible_in_tree() or _idle == null: return
 	if not walking:
 		_breath_elapsed = fmod(_breath_elapsed + delta, BREATH_PERIOD)
-		_breath_material.set_shader_parameter("breath_amount", BREATH_STRETCH * sin(TAU * _breath_elapsed / BREATH_PERIOD))
+		_breath_material.set_shader_parameter("breath_amount", BREATH_OFFSET * sin(TAU * _breath_elapsed / BREATH_PERIOD))
 		return
 	_elapsed += delta
 	walk_frame = int(_elapsed * _walk_fps) % _walk_frames

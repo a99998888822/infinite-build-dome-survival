@@ -1,5 +1,6 @@
 extends Node2D
 class_name LightSwordEffect
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -121,23 +122,15 @@ func _land() -> void:
 
 
 func _draw() -> void:
-	var sword_y := -190.0
-	if _strike_started:
-		var fall := clampf((_elapsed - _delay) / _fall_seconds, 0.0, 1.0)
-		sword_y = lerpf(-190.0, -88.0, fall)
-	var dissolve := 0.0
+	var phase := "wait"
+	var frame := 0
 	if _landed:
-		var landed_age := _elapsed - _delay - _fall_seconds
-		# Continue moving into the ground instead of instantly replacing the sword.
-		sword_y = lerpf(-88.0, -38.0, clampf(landed_age / 0.09, 0.0, 1.0))
-		dissolve = clampf(landed_age / _dissolve_seconds, 0.0, 1.0)
-	elif _strike_started and _visual_detail > 0:
-		for index in range(3):
-			var tail_y := sword_y - 30.0 - float(index) * 10.0
-			PIXEL.block(self, Vector2(0, tail_y), Vector2(2, 6 - index * 2), Color(0.6, 0.77, 0.8, 0.6 - index * 0.15))
-	_draw_pixel_sword(sword_y, dissolve)
-	if _landed and _visual_detail > 0:
-		_draw_impact(dissolve)
+		phase = "land"
+		frame = int((_elapsed - _delay - _fall_seconds) / _dissolve_seconds * 45.0)
+	elif _strike_started:
+		phase = "fall"
+		frame = int((_elapsed - _delay) / _fall_seconds * 13.2)
+	BAKED.draw(self, "sword_%s_d%d" % [phase, _visual_detail], frame)
 
 
 func _draw_pixel_sword(top: float, dissolve: float) -> void:
@@ -193,19 +186,13 @@ func _draw_impact(dissolve: float) -> void:
 
 
 func _draw_ground() -> void:
-	if _visual_detail == 0:
-		return
+	if _visual_detail == 0: return
 	if not _landed:
-		var anticipation := clampf(_elapsed / _delay, 0.0, 1.0)
-		var color := Color(0.48, 0.63, 0.6, 0.25 + anticipation * 0.3)
-		for index in range(4):
-			PIXEL.arc(_ground_layer, 10.0, float(index) * PI * 0.5 + 0.15, float(index) * PI * 0.5 + 0.85, color)
-		PIXEL.block(_ground_layer, Vector2.ZERO, Vector2(2, 2), color)
-		return
-	var progress := clampf((_elapsed - _delay - _fall_seconds) / _dissolve_seconds, 0.0, 1.0)
-	var fade := 1.0 - smoothstep(0.25, 1.0, progress)
-	for crack in _ground_cracks:
-		PIXEL.path(_ground_layer, crack, Color(0.035, 0.065, 0.06, 0.62 * fade), 2)
+		var alpha := (0.25 + clampf(_elapsed / _delay, 0.0, 1.0) * 0.3) / 0.55
+		BAKED.draw(_ground_layer, "sword_mark", 0, Vector2.ONE, Color(1,1,1,alpha))
+	else:
+		var fade := 1.0 - smoothstep(0.25, 1.0, clampf((_elapsed - _delay - _fall_seconds) / _dissolve_seconds,0,1))
+		BAKED.draw(_ground_layer, "sword_cracks", 0, Vector2.ONE, Color(1,1,1,fade))
 
 
 func _build_ground_cracks() -> void:

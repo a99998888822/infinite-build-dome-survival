@@ -150,7 +150,7 @@ func _run() -> void:
 	spear = await fixture([Vector2(150, 0), Vector2(150, 0).rotated(deg_to_rad(-20)), Vector2(150, 0).rotated(deg_to_rad(20))])
 	spear.cancel()
 	weapon.runtime_stats.projectile_count = 3
-	weapon.runtime_stats.attack_speed = 100
+	weapon.runtime_stats.attack_speed = 700
 	spear = motion()
 	advance(spear, 0.30)
 	check(hits.size() == 3 and hits.all(func(hit): return hit.damage == 14), "extra projectiles become independent full-damage thrusts")

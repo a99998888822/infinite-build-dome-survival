@@ -144,6 +144,14 @@ func get_attack_origin() -> Vector2:
 	return fixed_attack_origin if fixed_attack_origin is Vector2 else owner_player.global_position
 
 
+func get_auto_target_position(enemy: EnemyController) -> Vector2:
+	# Ground-area attacks use the feet; physical strikes aim inside the body.
+	if is_grenade() or is_ritual_tome() or is_copper_lamp() or is_meteor_flail():
+		return enemy.global_position
+	var body := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	return body.global_position if body != null and body.shape != null else enemy.global_position
+
+
 func make_bounce_copy(point: Vector2) -> WeaponInstance:
 	var copy := WeaponInstance.new()
 	copy.weapon_id = weapon_id
@@ -795,7 +803,7 @@ func build_full_stats_text() -> String:
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
 	lines.append("[color=#F5D76E]伤害：[/color]" + _format_damage_source(get_damage_stat_id()))
 	if get_stat("damage_area_size") != 0:
-		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f（每点增加0.5%%）" % get_stat("damage_area_size"))
+		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f" % get_stat("damage_area_size"))
 	var interval := get_active_cooldown_seconds()
 	lines.append("[color=#F5D76E]动作后冷却[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
 	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])

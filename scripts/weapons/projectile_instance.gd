@@ -297,7 +297,7 @@ func _spawn_split_projectiles_for_item(hit_position: Vector2, attachment_item_id
 		var target := _find_split_target(hit_position, reserved_targets)
 		var child_direction := direction
 		if target != null:
-			child_direction = hit_position.direction_to(target.global_position)
+			child_direction = hit_position.direction_to(weapon.get_auto_target_position(target))
 			reserved_targets[target.get_instance_id()] = true
 		elif child_count > 1:
 			var normalized_index := float(child_index) / float(child_count - 1)

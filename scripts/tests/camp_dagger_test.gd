@@ -131,7 +131,7 @@ func _run() -> void:
 	dagger = await fixture([Vector2(30, 0)])
 	dagger.cancel()
 	weapon.runtime_stats.projectile_count = 3
-	weapon.runtime_stats.attack_speed = 100
+	weapon.runtime_stats.attack_speed = 700
 	dagger = motion()
 	advance(dagger, 0.13, 0.13)
 	check(hits.size() == 3 and hits.all(func(hit): return hit.damage == 7), "extra projectiles become three full damage cuts even in a long frame")

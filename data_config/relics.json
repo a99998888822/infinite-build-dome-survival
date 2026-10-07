@@ -276,7 +276,7 @@
   {
     "id": "relic_merger_reorg",
     "display_name": "并购重组",
-    "description": "负载上限 + 10；每 500 本金再 + 5",
+    "description": "负载上限 +10；当前本金每满 500，额外 +5 负载上限，上限20",
     "icon": "res://assets/ui/icons/relics/relic_merger_reorg.png",
     "rarity": "epic",
     "max_stack": 1,
@@ -301,7 +301,8 @@
         "effect": "derived_stat_from_principal",
         "stat": "load_capacity",
         "divisor": 500,
-        "per_unit": 5
+        "per_unit": 5,
+        "max_bonus": 20
       }
     ]
   },
@@ -885,7 +886,7 @@
   {
     "id": "relic_soul_keeper_face_stone",
     "display_name": "守魂人面石雕",
-    "description": "最大生命值 + 5；每点侵蚀度提供 1 点理智值；每局最多持有 1 件",
+    "description": "最大生命＋5；每3点侵蚀度＋1理智",
     "icon": "res://assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
     "icon_description": "人脸神情哀伤、表面渗出水珠的小型石像",
     "rarity": "epic",
@@ -895,7 +896,7 @@
       {"id": "mod_relic_soul_keeper_face_stone_max_hp", "source_type": "relic", "source_id": "relic_soul_keeper_face_stone", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": [
-      {"trigger": "dynamic", "effect": "derived_stat_from_player_stat", "source_stat": "divinity", "stat": "humanity", "divisor": 1, "per_unit": 1}
+      {"trigger": "dynamic", "effect": "derived_stat_from_player_stat", "source_stat": "divinity", "stat": "humanity", "divisor": 3, "per_unit": 1}
     ]
   },
   {
@@ -1582,7 +1583,7 @@
   {
     "id": "relic_frenzied_dividend",
     "display_name": "狂热分红",
-    "description": "每次成功收到利息后，通用伤害 + 2%，理智值 - 2；每局最多持有 1 件",
+    "description": "每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_frenzied_dividend.png",
     "icon_description": "盖着猩红封蜡的分红信封，上沿露出两枚金币",
     "rarity": "epic",
@@ -1591,7 +1592,7 @@
     "effects": [],
     "runtime_effects": [
       {"trigger": "interest_success", "effect": "add_stat", "stat": "damage_percent", "value": 2},
-      {"trigger": "interest_success", "effect": "add_stat", "stat": "humanity", "value": -2}
+      {"trigger": "interest_success", "effect": "add_stat", "stat": "humanity", "value": -1}
     ]
   },
   {
@@ -1937,7 +1938,7 @@
   {
     "id": "relic_golden_rangefinder",
     "display_name": "黄金测距仪",
-    "description": "每满100本金：攻击距离 +3、伤害加成 +3，随当前本金变化。",
+    "description": "每满100本金，攻击距离＋3、伤害加成＋3%，上限30",
     "icon": "res://assets/ui/icons/relics/relic_golden_rangefinder.png",
     "icon_description": "打开的黄铜圆规、悬挂金币、绿色铰链宝石。",
     "rarity": "epic",
@@ -1954,14 +1955,16 @@
         "effect": "derived_stat_from_principal",
         "stat": "area_size",
         "divisor": 100,
-        "per_unit": 3
+        "per_unit": 3,
+        "max_bonus": 30
       },
       {
         "trigger": "derived",
         "effect": "derived_stat_from_principal",
         "stat": "damage_percent",
         "divisor": 100,
-        "per_unit": 3
+        "per_unit": 3,
+        "max_bonus": 30
       }
     ]
   },

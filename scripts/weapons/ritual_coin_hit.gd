@@ -1,4 +1,5 @@
 extends Node2D
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const TOME_LIFETIME := 0.60
@@ -38,16 +39,7 @@ func cancel() -> void:
 
 
 func _draw() -> void:
-	if cancelled:
-		return
-	if tome:
-		_draw_tome_impact()
-	else:
-		var progress := age / COIN_LIFETIME
-		for index in 10:
-			var offset := Vector2.RIGHT.rotated(index * 2.4) * (4 + progress * (12 + index % 3 * 5))
-			offset.y += progress * progress * 10
-			draw_rect(Rect2(offset.round(), Vector2(2,2)), Color(0.94, 0.74, 0.35, 1.0 - progress))
+	if not cancelled: BAKED.draw(self,"tome" if tome else "coin_hit",int(age*60.0))
 
 
 func _draw_tome_impact() -> void:

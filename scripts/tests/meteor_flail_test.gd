@@ -116,7 +116,7 @@ func _run() -> void:
 	check(flail.head_radius(flail.swings[0]) == 24 and is_equal_approx(flail.head_position(flail.swings[0], 0.455).length(), 216), "range growth updates rendered trajectory and contact radius together")
 	flail.cancel()
 	weapon.runtime_stats.area_size = 0
-	weapon.runtime_stats.attack_speed = 100
+	weapon.runtime_stats.attack_speed = 700
 	flail = MeteorFlail.new()
 	host.add_child(flail)
 	flail.initialize(weapon, Vector2.RIGHT)

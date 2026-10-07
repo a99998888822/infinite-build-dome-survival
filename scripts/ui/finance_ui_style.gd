@@ -5,8 +5,9 @@ const TEXT := Color("e0d6b6")
 const MUTED := Color("a79f87")
 const GOLD := Color("c5a16a")
 const GREEN := Color("a9c498")
-const RELIC_LIST_ICON_SCALE := 0.5
+const RELIC_LIST_ICON_SCALE := 0.625
 const RELIC_DISPLAY_SIZE := 64.0
+static var _item_icon_cache: Dictionary = {}
 
 # Opt in only after a batch has passed art review. Legacy assets keep their layout.
 const NATIVE_RELIC_ICONS := [
@@ -234,6 +235,12 @@ static func reason(code: String) -> String:
 
 static func item_icon(path: String, table: String = "", record_id: String = "") -> Texture2D:
 	var resolved := path
+	if _item_icon_cache.has(resolved):
+		return _item_icon_cache[resolved]
 	if (resolved.is_empty() or not ResourceLoader.exists(resolved)) and not table.is_empty():
 		resolved = str(DataRegistry.get_record(table, record_id).get("icon", ""))
-	return load(resolved) as Texture2D if not resolved.is_empty() and ResourceLoader.exists(resolved) else null
+	if resolved.is_empty() or not ResourceLoader.exists(resolved):
+		return null
+	if not _item_icon_cache.has(resolved):
+		_item_icon_cache[resolved] = load(resolved) as Texture2D
+	return _item_icon_cache[resolved]

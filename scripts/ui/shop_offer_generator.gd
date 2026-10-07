@@ -230,7 +230,7 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 	return weights
 
 
-func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidate_pool: Array, offer_count: int) -> Array[Dictionary]:
+func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidate_pool: Array, offer_count: int, guarantee_new_weapon: bool = false) -> Array[Dictionary]:
 	var remaining: Array[Dictionary] = []
 	for candidate in candidate_pool:
 		if candidate is Dictionary:
@@ -248,6 +248,8 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 			break
 		var available_type_weights := _get_available_type_weights(type_weights, available)
 		var offer_type := _roll_weighted_key(available_type_weights)
+		if guarantee_new_weapon and not new_weapon_selected and not _filter_candidates_by_type(available, OFFER_NEW_WEAPON).is_empty():
+			offer_type = OFFER_NEW_WEAPON
 		var typed_candidates := _filter_candidates_by_type(available, offer_type)
 		var candidate := _pick_candidate_by_rarity(typed_candidates, rarity_weights)
 		if candidate.is_empty():
@@ -279,7 +281,7 @@ func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Di
 	return _pick_weighted_candidate(rarity_candidates)
 
 
-func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = [], guaranteed_relic_rarity: String = "") -> Array[Dictionary]:
+func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = [], guaranteed_relic_rarity: String = "", guarantee_new_weapon: bool = false) -> Array[Dictionary]:
 	# Paid shelves can exceed the number of distinct relics. Prefer distinct
 	# products first, then refill stackable stock. Free reward rolls stay unchanged.
 	var stock: Array[Dictionary] = []
@@ -305,6 +307,8 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		if available.is_empty() and guaranteed.is_empty():
 			break
 		var kind := _roll_weighted_key(_get_available_type_weights(type_weights, available))
+		if guaranteed.is_empty() and guarantee_new_weapon and not new_weapon_selected and not _filter_candidates_by_type(available, OFFER_NEW_WEAPON).is_empty():
+			kind = OFFER_NEW_WEAPON
 		var chosen := _pick_candidate_by_rarity(_filter_candidates_by_type(available, kind), rarity_weights) if guaranteed.is_empty() else _pick_weighted_candidate(guaranteed)
 		if chosen.is_empty():
 			break

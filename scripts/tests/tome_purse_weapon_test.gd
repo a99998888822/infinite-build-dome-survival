@@ -116,7 +116,7 @@ func _run() -> void:
 	check(purse.build_full_stats_text().contains("[color=#7FD88F]+6[/color][color=#F5D76E]+9[/color]")
 		and tome.build_full_stats_text().contains("[color=#78B7FF]+7[/color]"), "details show resolved live principal ranged and elemental contributions")
 	modifier("attack_speed", 100)
-	check(is_equal_approx(tome.get_actual_attack_interval_seconds(), 0.4) and is_equal_approx(purse.get_actual_attack_interval_seconds(), 0.55), "attack speed applies to both")
+	check(is_equal_approx(tome.get_actual_attack_interval_seconds(), 0.6) and is_equal_approx(purse.get_actual_attack_interval_seconds(), 0.825), "100 attack speed keeps 75 percent of both intervals")
 	modifier("area_size", 50)
 	check(tome.get_domain_axes() == Vector2(275,181.25) and purse.get_attack_range() == 350, "attack range scales ellipse and coin travel")
 	modifier("damage_area_size", 100)
@@ -293,7 +293,7 @@ func _test_body_sizes_and_contact() -> void:
 	shape.disabled = true
 	check(not enemy._is_touching_player(), "disabled body cannot contact player")
 	var boss := preload("res://scenes/enemy/elite_rusher.tscn").instantiate()
-	check(boss.get_node("Sprite2D").scale == Vector2(0.56, 0.56) and is_equal_approx(boss.get_node("CollisionShape2D").shape.radius, 33.6), "current boss art scale preserves the approved collision radius")
+	check(boss.get_node("Sprite2D").scale == Vector2(0.56, 0.56) and boss.get_node("CollisionShape2D").shape is CapsuleShape2D and boss.get_node("CollisionShape2D").position == Vector2(0, -46), "boss retains its art size with a capsule inside the sprite")
 	boss.free()
 
 

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "editor",
+    "exit": 0,
+    "issues": []
+  },
+  {
+    "name": "game_root",
+    "exit": 0,
+    "issues": []
+  }
+]

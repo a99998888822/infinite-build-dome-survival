@@ -15,7 +15,8 @@ const CONTACT_RECOVERY_SPEED: float = 180.0
 const CHASE_ACCELERATION: float = 900.0
 const DAMAGE_NUMBER_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
 const DAMAGE_NUMBER_FONT_SIZE: int = 18
-const DAMAGE_NUMBER_CRITICAL_FONT_SIZE: int = 22
+const DAMAGE_NUMBER_CRITICAL_FONT_SIZE: int = 26
+const DAMAGE_NUMBER_CRITICAL_SHAKE_SECONDS: float = 0.30
 const DAMAGE_NUMBER_SIZE: Vector2 = Vector2(76.0, 34.0)
 const DAMAGE_NUMBER_OFFSET: Vector2 = Vector2(0.0, -36.0)
 const DAMAGE_NUMBER_RISE: float = 42.0
@@ -612,13 +613,23 @@ func _spawn_damage_number(
 	var target_position := damage_number.global_position + Vector2(0.0, -DAMAGE_NUMBER_RISE)
 	var tween := damage_number.create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(damage_number, "global_position", target_position, DAMAGE_NUMBER_ANIMATION_SECONDS)
+	if is_critical:
+		# One position track combines rise and shake; the label owns the tween even after a lethal hit.
+		tween.tween_method(EnemyController._animate_critical_damage_number.bind(damage_number, damage_number.global_position), 0.0, DAMAGE_NUMBER_ANIMATION_SECONDS, DAMAGE_NUMBER_ANIMATION_SECONDS)
+	else:
+		tween.tween_property(damage_number, "global_position", target_position, DAMAGE_NUMBER_ANIMATION_SECONDS)
 	tween.tween_property(damage_number, "modulate:a", 1.0, 0.10)
 	tween.tween_property(damage_number, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.set_parallel(false)
 	tween.tween_interval(0.10)
 	tween.tween_property(damage_number, "modulate:a", 0.0, 0.28)
 	tween.tween_callback(_queue_recycle_damage_number.bind(damage_number))
+
+
+static func _animate_critical_damage_number(elapsed: float, label: Label, origin: Vector2) -> void:
+	var shake_strength := maxf(1.0 - elapsed / DAMAGE_NUMBER_CRITICAL_SHAKE_SECONDS, 0.0)
+	var shake := Vector2(sin(elapsed * TAU * 14.0) * 5.0, sin(elapsed * TAU * 19.0) * 2.0) * shake_strength
+	label.global_position = origin + Vector2(0.0, -DAMAGE_NUMBER_RISE * elapsed / DAMAGE_NUMBER_ANIMATION_SECONDS) + shake.round()
 
 
 static func _acquire_damage_number(parent: Node) -> Label:
@@ -675,7 +686,7 @@ static func release_damage_number() -> void:
 
 func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
 	# Four magnitude colors and two font/outline sizes: at most eight themes.
-	var key := Vector2i(int(is_critical), clampi(str(absi(final_damage)).length(), 4, 7))
+	var key := Vector2i(int(is_critical), clampi(ceili(str(absi(final_damage)).length() / 2.0), 1, 4))
 	if _damage_number_themes.has(key): return _damage_number_themes[key]
 	var style := Theme.new()
 	style.set_font("font", "Label", DAMAGE_NUMBER_FONT)
@@ -693,11 +704,11 @@ func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
 
 func _get_damage_number_color(final_damage: int) -> Color:
 	var digit_count := str(absi(final_damage)).length()
-	if digit_count <= 4:
+	if digit_count <= 2:
 		return Color.WHITE
-	if digit_count == 5:
+	if digit_count <= 4:
 		return Color(1.0, 0.78, 0.28, 1.0)
-	if digit_count == 6:
+	if digit_count <= 6:
 		return Color(1.0, 0.57, 0.12, 1.0)
 	return Color(0.95, 0.20, 0.20, 1.0)
 

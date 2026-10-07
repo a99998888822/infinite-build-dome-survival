@@ -1,0 +1,386 @@
+{
+  "ice_d0": {
+    "size": [
+      128,
+      80
+    ],
+    "origin": [
+      -64,
+      -40
+    ],
+    "count": 37,
+    "fps": 60
+  },
+  "hole_d0": {
+    "size": [
+      208,
+      208
+    ],
+    "origin": [
+      -104,
+      -104
+    ],
+    "count": 52,
+    "fps": 60
+  },
+  "sword_wait_d0": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "sword_fall_d0": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 15,
+    "fps": 60
+  },
+  "sword_land_d0": {
+    "size": [
+      80,
+      144
+    ],
+    "origin": [
+      -40,
+      -118
+    ],
+    "count": 46,
+    "fps": 60
+  },
+  "ice_d1": {
+    "size": [
+      128,
+      80
+    ],
+    "origin": [
+      -64,
+      -40
+    ],
+    "count": 37,
+    "fps": 60
+  },
+  "hole_d1": {
+    "size": [
+      208,
+      208
+    ],
+    "origin": [
+      -104,
+      -104
+    ],
+    "count": 52,
+    "fps": 60
+  },
+  "sword_wait_d1": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "sword_fall_d1": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 15,
+    "fps": 60
+  },
+  "sword_land_d1": {
+    "size": [
+      80,
+      144
+    ],
+    "origin": [
+      -40,
+      -118
+    ],
+    "count": 46,
+    "fps": 60
+  },
+  "ice_d2": {
+    "size": [
+      128,
+      80
+    ],
+    "origin": [
+      -64,
+      -40
+    ],
+    "count": 37,
+    "fps": 60
+  },
+  "hole_d2": {
+    "size": [
+      208,
+      208
+    ],
+    "origin": [
+      -104,
+      -104
+    ],
+    "count": 52,
+    "fps": 60
+  },
+  "sword_wait_d2": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "sword_fall_d2": {
+    "size": [
+      80,
+      272
+    ],
+    "origin": [
+      -40,
+      -246
+    ],
+    "count": 15,
+    "fps": 60
+  },
+  "sword_land_d2": {
+    "size": [
+      80,
+      144
+    ],
+    "origin": [
+      -40,
+      -118
+    ],
+    "count": 46,
+    "fps": 60
+  },
+  "hole_shadow": {
+    "size": [
+      48,
+      20
+    ],
+    "origin": [
+      -24,
+      -10
+    ],
+    "count": 52,
+    "fps": 60
+  },
+  "sword_mark": {
+    "size": [
+      32,
+      32
+    ],
+    "origin": [
+      -16,
+      -16
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "sword_cracks": {
+    "size": [
+      72,
+      16
+    ],
+    "origin": [
+      -36,
+      -8
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "steam_d0": {
+    "size": [
+      96,
+      96
+    ],
+    "origin": [
+      -48,
+      -80
+    ],
+    "count": 67,
+    "fps": 60
+  },
+  "frost_front_d0": {
+    "size": [
+      160,
+      96
+    ],
+    "origin": [
+      -80,
+      -48
+    ],
+    "count": 44,
+    "fps": 60
+  },
+  "steam_d1": {
+    "size": [
+      96,
+      96
+    ],
+    "origin": [
+      -48,
+      -80
+    ],
+    "count": 67,
+    "fps": 60
+  },
+  "frost_front_d1": {
+    "size": [
+      160,
+      96
+    ],
+    "origin": [
+      -80,
+      -48
+    ],
+    "count": 44,
+    "fps": 60
+  },
+  "conduct": {
+    "size": [
+      48,
+      32
+    ],
+    "origin": [
+      -24,
+      -26
+    ],
+    "count": 14,
+    "fps": 12
+  },
+  "grenade": {
+    "size": [
+      144,
+      144
+    ],
+    "origin": [
+      -72,
+      -72
+    ],
+    "count": 31,
+    "fps": 60
+  },
+  "tome": {
+    "size": [
+      96,
+      96
+    ],
+    "origin": [
+      -48,
+      -52
+    ],
+    "count": 37,
+    "fps": 60
+  },
+  "coin_hit": {
+    "size": [
+      80,
+      80
+    ],
+    "origin": [
+      -40,
+      -32
+    ],
+    "count": 25,
+    "fps": 60
+  },
+  "ice_shell": {
+    "size": [
+      72,
+      72
+    ],
+    "origin": [
+      -36,
+      -42
+    ],
+    "count": 11,
+    "fps": 60
+  },
+  "slowed": {
+    "size": [
+      64,
+      40
+    ],
+    "origin": [
+      -32,
+      -20
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "shard": {
+    "size": [
+      64,
+      32
+    ],
+    "origin": [
+      -24,
+      -16
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "star": {
+    "size": [
+      24,
+      28
+    ],
+    "origin": [
+      -12,
+      -14
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "reflection_beam": {
+    "size": [
+      236,
+      20
+    ],
+    "origin": [
+      -8,
+      -10
+    ],
+    "count": 1,
+    "fps": 60
+  },
+  "reflection_sides": {
+    "size": [
+      220,
+      20
+    ],
+    "origin": [
+      16,
+      -10
+    ],
+    "count": 1,
+    "fps": 60
+  }
+}

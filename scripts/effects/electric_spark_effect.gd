@@ -3,6 +3,7 @@ class_name ElectricSparkEffect
 
 const LIGHTNING_EFFECT_SCRIPT = preload("res://scripts/effects/lightning_particle_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const WARNING_SPRITE = preload("res://scripts/effects/electric_spark_warning_sprite.gd")
 
 const ACTIVATION_DELAY_SECONDS: float = 0.5
 const RING_FADE_SECONDS: float = 0.28
@@ -13,6 +14,8 @@ const PARTICLE_ROWS: int = 3
 const PARTICLES_PER_ROW: int = 8
 const BODY_RADIUS: Vector2 = Vector2(23.0, 14.0)
 const PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
+
+var _warning_sprite: MultiMeshInstance2D = null
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -55,13 +58,15 @@ func _arm() -> void:
 		queue_free()
 		return
 	AudioManager.play_combat_sfx("spark_charge")
-	queue_redraw()
+	_sync_warning()
 
 
 func _ready() -> void:
+	_warning_sprite = WARNING_SPRITE.new()
+	add_child(_warning_sprite)
 	add_to_group("combat_particle_counters")
 	z_index = 81
-	queue_redraw()
+	_sync_warning()
 
 
 func get_active_particle_count() -> int:
@@ -78,7 +83,7 @@ func _process(delta: float) -> void:
 	if _strike_landed and _elapsed >= _ring_fade_start_elapsed + RING_FADE_SECONDS:
 		queue_free()
 		return
-	queue_redraw()
+	_sync_warning()
 
 
 func _trigger_strike() -> void:
@@ -108,27 +113,10 @@ func _on_ground_strike_landed() -> void:
 	_ring_fade_start_elapsed = _elapsed
 
 
-func _draw() -> void:
+func _sync_warning() -> void:
+	if _warning_sprite == null:
+		return
 	var fade := 1.0
 	if _strike_landed:
 		fade = 1.0 - clampf((_elapsed - _ring_fade_start_elapsed) / RING_FADE_SECONDS, 0.0, 1.0)
-	var radius_scale := _ring_radius / DEFAULT_RADIUS
-	for row_index in PARTICLE_ROWS:
-		var row_phase := float(row_index) * 1.9
-		for particle_index in PARTICLES_PER_ROW:
-			var ratio := float(particle_index) / float(PARTICLES_PER_ROW)
-			var orbit_angle := _elapsed * (5.0 + float(row_index) * 0.7) + ratio * TAU + row_phase
-			var wave := sin(_elapsed * 13.0 + ratio * 15.0 + row_phase) * 2.8
-			var particle_position := Vector2(
-				cos(orbit_angle) * (BODY_RADIUS.x + wave),
-				sin(orbit_angle) * (BODY_RADIUS.y + wave * 0.45),
-			) * radius_scale
-			var tangent := Vector2(-sin(orbit_angle), cos(orbit_angle)).angle()
-			var particle_alpha := (0.55 + 0.45 * sin(_elapsed * 18.0 + ratio * TAU + row_phase)) * fade
-			var yellow_color := Color(1.0, 0.62, 0.06, particle_alpha * 0.72)
-			var bright_yellow_color := Color(1.0, 0.94, 0.34, particle_alpha)
-			draw_set_transform(particle_position.round(), tangent, Vector2.ONE)
-			draw_circle(Vector2.ZERO, 3.2, Color(1.0, 0.72, 0.08, particle_alpha * 0.12))
-			draw_rect(Rect2(-PARTICLE_SIZE * 0.5, PARTICLE_SIZE), yellow_color)
-			draw_rect(Rect2(-Vector2(2.0, 0.8), Vector2(4.0, 1.6)), bright_yellow_color)
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	_warning_sprite.sync(_elapsed, _ring_radius / DEFAULT_RADIUS, fade)

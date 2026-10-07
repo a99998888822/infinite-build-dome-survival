@@ -18,6 +18,8 @@ func _run() -> void:
 	for record in DataRegistry.get_table("weapons"):
 		await _automatic_weapon(record.id)
 	await _boundaries_and_switching()
+	await _lamp_all_modes()
+	await _lamp_target_boundaries()
 	await _special_shapes()
 	CombatSettings.set_option("wheelchair_mode", false, false)
 	flow.enter_start_page()
@@ -56,7 +58,7 @@ func _automatic_weapon(id: String) -> void:
 	CombatSettings.set_option("wheelchair_mode", true, false)
 	loadout.tick(10)
 	check(weapon.volley_index == 0, "out-of-range target does not consume cooldown " + id)
-	target.global_position = Vector2(60 if weapon.is_copper_lamp() else -60, 0)
+	target.global_position = Vector2(-60, 0)
 	await get_tree().physics_frame
 	loadout.tick(0)
 	var state := loadout.active_casting.state_for(weapon)
@@ -128,6 +130,108 @@ func _boundaries_and_switching() -> void:
 	check(controller.selected_weapon == weapon, "manual aiming restored after disabling")
 	check(loadout.cast_weapon(weapon, target.global_position), "manual release works after disabling")
 
+func _lamp_all_modes() -> void:
+	for wheelchair in [false, true]:
+		for keyboard in [false, true]:
+			var weapon := await fixture("weapon_copper_lamp", Vector2(-60, 0))
+			CombatSettings.set_option("wheelchair_mode", wheelchair, false)
+			CombatSettings.set_option("keyboard_movement", keyboard, false)
+			var label := " wheelchair=%s keyboard=%s" % [wheelchair, keyboard]
+			var farther := manager.spawn_enemy("enemy_mutated_grub", Vector2(90, 0))
+			farther.set_physics_process(false)
+			farther.modifier_stack.set_base_stat("max_hp", 100000)
+			farther.current_hp = 100000
+			check(loadout.equip_weapon("weapon_void_blade"), "equip manual companion" + label)
+			controller.current_weapon = loadout.weapon_instances[1]
+			loadout.tick(0)
+			var state := loadout.active_casting.state_for(weapon)
+			check(weapon.volley_index == 1 and state.executing, "unselected lamp starts without input" + label)
+			check(loadout.weapon_instances[1].volley_index == (1 if wheelchair else 0), "other weapons retain their mode rules" + label)
+			var body: CopperLamp = state.body.get_ref()
+			body.set_physics_process(false)
+			body._physics_process(0.01)
+			check(not body.manual_control and body.target == target and body.heading.is_equal_approx(Vector2.LEFT), "nearest rear target wins over facing target" + label)
+			check(target.current_hp < 100000 and farther.current_hp == 100000, "flame damages the selected rear cone" + label)
+			player.last_move_direction = Vector2.UP
+			controller._pointer_position = Vector2(1200, 0)
+			controller._has_pointer_position = true
+			loadout.tick(0)
+			body._physics_process(0.01)
+			check(body.heading.is_equal_approx(Vector2.LEFT), "movement and pointer cannot redirect spray" + label)
+			check(not loadout.cast_weapon(weapon, Vector2.UP * 100) and weapon.volley_index == 1, "manual input cannot duplicate automatic burst" + label)
+			target.alive = false
+			var previous := body.heading
+			body._physics_process(0.1)
+			check(body.target == farther and is_equal_approx(absf(previous.angle_to(body.heading)), deg_to_rad(18)), "dead target switches with existing turn speed" + label)
+			target.alive = true
+			target.global_position = Vector2(0, -40)
+			player.global_position = Vector2(0, 10)
+			body._physics_process(0.1)
+			check(body.target == target and body.global_position == player.global_position, "nearest target is reevaluated as player and enemies move" + label)
+			var heat := body.heat
+			GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+			body._physics_process(10)
+			loadout.tick(10)
+			check(body.heat == heat and state.executing and weapon.volley_index == 1, "pause freezes automatic burst" + label)
+			GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+			body._physics_process(weapon.get_lamp_spray_seconds())
+			loadout.tick(0)
+			var cooldown := weapon.get_active_cooldown_seconds()
+			check(not state.executing and is_equal_approx(state.remaining, cooldown), "full spray ends before cooldown" + label)
+			loadout.tick(cooldown * 0.5)
+			check(weapon.volley_index == 1, "cooldown blocks repeat" + label)
+			loadout.tick(cooldown * 0.5 + 0.001)
+			check(weapon.volley_index == 2 and state.executing, "lamp automatically repeats after cooldown" + label)
+	CombatSettings.set_option("keyboard_movement", false, false)
+
+func _lamp_target_boundaries() -> void:
+	var weapon := await fixture("weapon_copper_lamp", Vector2(-2000, 0))
+	loadout.tick(10)
+	check(weapon.volley_index == 0 and not loadout.cast_weapon(weapon, Vector2.LEFT), "automatic and manual lamp ignore out-of-range targets")
+	target.global_position = Vector2(-60, 0)
+	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+	loadout.tick(10)
+	check(weapon.volley_index == 0, "manual-mode lamp cannot start while paused")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+	GameGlobal.set_runtime_flag("main_flow_state", MainFlowCoordinator.STATE_FINANCE_POPUP)
+	loadout.tick(10)
+	check(weapon.volley_index == 0, "manual-mode lamp cannot start outside combat")
+	GameGlobal.set_runtime_flag("main_flow_state", MainFlowCoordinator.STATE_WAVE_COMBAT)
+	player.alive = false
+	loadout.tick(10)
+	check(weapon.volley_index == 0, "dead player cannot start automatic lamp")
+	player.alive = true
+	target.alive = false
+	loadout.tick(10)
+	check(weapon.volley_index == 0, "dead target cannot start automatic lamp")
+	target.alive = true
+	var wall := StaticBody2D.new()
+	wall.collision_layer = 4
+	wall.collision_mask = 0
+	var collider := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(4, 120)
+	collider.shape = shape
+	wall.add_child(collider)
+	player.get_parent().add_child(wall)
+	wall.global_position = Vector2(-30, 0)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	loadout.tick(10)
+	check(weapon.volley_index == 0 and not loadout.cast_weapon(weapon, target.global_position), "blocked target cannot consume lamp cooldown")
+	var elite := manager.spawn_enemy("enemy_elite_rusher", Vector2(20, 0)) as EliteRusher
+	elite.set_physics_process(false)
+	loadout.tick(0)
+	check(weapon.volley_index == 0, "spawning boss cannot start lamp while other targets are blocked")
+	wall.free()
+	await get_tree().physics_frame
+	loadout.tick(0)
+	check(weapon.volley_index == 1, "clearing obstruction starts lamp automatically")
+	var body: CopperLamp = loadout.active_casting.state_for(weapon).body.get_ref()
+	body.set_physics_process(false)
+	body._physics_process(0.01)
+	check(body.target == target, "continuous tracking also skips spawning boss")
+
 func _special_shapes() -> void:
 	for id in ["weapon_kunyu_ritual_tome", "weapon_iron_grenade_cannon"]:
 		var weapon := await fixture(id)
@@ -139,18 +243,6 @@ func _special_shapes() -> void:
 		weapon.runtime_stats.area_size = 100
 		loadout.tick(0)
 		check(weapon.volley_index == 1, "auto targeting follows increased range " + id)
-	var lamp := await fixture("weapon_copper_lamp", Vector2(-60, 0))
-	CombatSettings.set_option("wheelchair_mode", true, false)
-	loadout.tick(0)
-	check(lamp.volley_index == 0, "lamp waits for targets in movement-facing cone")
-	player.last_move_direction = Vector2.LEFT
-	loadout.tick(0)
-	check(lamp.volley_index == 1, "turning movement direction triggers lamp automatically")
-	var lamp_body: CopperLamp = loadout.active_casting.state_for(lamp).body.get_ref()
-	player.last_move_direction = Vector2.UP
-	loadout.tick(0)
-	lamp_body._physics_process(0.01)
-	check(lamp_body.heading == Vector2.UP, "automatic lamp keeps following movement while spraying")
 	var tome := await fixture("weapon_kunyu_ritual_tome")
 	CombatSettings.set_option("wheelchair_mode", true, false)
 	loadout.tick(0)

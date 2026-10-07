@@ -1,0 +1,19 @@
+{
+  "source": "GPU rasterization of original circle and two rectangle layers; RGB stores layer coverage",
+  "frames": 256,
+  "columns": 16,
+  "cell": [
+    8,
+    8
+  ],
+  "atlas": [
+    128,
+    128
+  ],
+  "rgba_bytes": 65536,
+  "count": 24,
+  "batches_per_warning": 1,
+  "orientation_step_degrees": 1.40625,
+  "animation": "GPU selects baked orientation frame; original orbit, brightness and landing fade retained",
+  "radius_behavior": "Only orbit centers scale; pixel size and halo radius remain unchanged"
+}

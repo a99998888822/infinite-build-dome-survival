@@ -1,7 +1,7 @@
 extends RefCounted
 class_name ModifierStack
 
-# Cache is opt-in for live enemy stacks. Other stacks retain uncached semantics.
+# Cache is opt-in for live actors and detached player previews.
 # Mutate cached stacks via the methods below; replacing either container also invalidates.
 var cache_enabled := false:
 	set(value):
@@ -54,8 +54,16 @@ func add_modifier(modifier: Modifier) -> bool:
 	if not _apply_stack_rule(modifier_to_add):
 		_sort_modifiers()
 		return true
-	modifiers.append(modifier_to_add)
-	_sort_modifiers()
+	# Existing modifiers are sorted; insert one entry without re-sorting the set.
+	var left := 0
+	var right := modifiers.size()
+	while left < right:
+		var middle := (left + right) / 2
+		if _compare_modifier_priority(modifier_to_add, modifiers[middle]):
+			right = middle
+		else:
+			left = middle + 1
+	modifiers.insert(left, modifier_to_add)
 	return true
 
 
@@ -138,6 +146,14 @@ func get_all_modifiers(stat_id: String = "") -> Array[Modifier]:
 	for modifier in modifiers:
 		if stat_id.is_empty() or modifier.stat == stat_id:
 			result.append(modifier.duplicate_modifier())
+	return result
+
+
+func get_values_by_source_type(source_type: String) -> Dictionary:
+	var result := {}
+	for modifier in modifiers:
+		if modifier.source_type == source_type:
+			result[modifier.id] = modifier.value
 	return result
 
 

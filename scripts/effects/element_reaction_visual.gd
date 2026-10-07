@@ -1,4 +1,5 @@
 extends Node2D
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 ## Short, render-only reaction cues. They never own damage or status timing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -78,6 +79,18 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if kind == "steam":
+		BAKED.draw(self, "steam_d%d" % (0 if detail == 0 else 1), int(elapsed / duration * 66.0))
+		return
+	if kind == "conduct":
+		BAKED.draw(self, "conduct", int(elapsed * 12.0))
+		return
+	if kind == "ice_expand":
+		var growth := smoothstep(0,0.65,clampf(elapsed/duration,0,1))
+		var radius := lerpf(float(options.get("from_radius",51.2)),float(options.get("radius",69.12)),growth)
+		var radius_scale := radius / lerpf(51.2,69.12,growth)
+		BAKED.draw(self, "frost_front_d1", int(elapsed / duration * 43.2), Vector2.ONE * radius_scale)
+		return
 	if kind in ["freeze", "thaw"]:
 		_draw_shard_animation()
 		return

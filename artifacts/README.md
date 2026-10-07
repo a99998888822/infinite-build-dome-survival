@@ -2,11 +2,17 @@
 
 本目录保留原始素材、必要参考、编辑源索引和说明。正式游戏资源与对应的 PXG/PAL 编辑源位于 `assets/`。
 
+2026-10-07 清理完成：删除 1,142 个中间文件，共 342.18 MiB；原图、编辑源、报告数据和必要的最终对照附件保留。逐帧截图、缓存、旧版重复导出、一次性脚本和旧源码副本已删除。历史报告提及的原始日志已归纳为[验证日志摘要](maintenance/validation_log_summary_20261007.json)，包含测试结果及错误、警告上下文；它们是历史记录，不代表重新运行测试。详见[本轮清理报告](maintenance/cleanup_20261007.md)与[逐文件哈希清单](maintenance/cleanup_20261007.json)。
+
 | 目录 | 保留内容 |
 | --- | --- |
 | [sources/](sources/) | 用户原图、角色与敌人原始动画帧、UI 原图及布局说明 |
 | [reference/](reference/) | 用户提供的画风、油画、场景和动效参考；包括明确要求保留的[冰元素组合实机 GIF](reference/effects/ice-combos/README.md) |
 | [editable/](editable/) | 12 张原生地面色片、理财底图最终像素网格与合成遮罩，以及正式资源与编辑源的对应索引 |
+| [performance/](performance/) | 性能报告、测量数据、必要的原始绘制参考和最终对照附件 |
+| [previews/](previews/) | 历史审阅报告及最终附件；未正式采用的霸体设计保留独有源码和审阅页 |
+| [reviews/](reviews/) | 敌人强度及压力曲线报告、数据和图表 |
+| [maintenance/](maintenance/) | 清理明细、完整性核对记录及历史验证日志摘要 |
 
 [来源索引](sources/index.json) 记录原路径、归集后的路径和 SHA-256；[编辑源索引](editable/index.json) 指向当前存在的正式 PNG 或可编辑网格。标题的 SVG 字形与设计 JSON 属于原始设计源，继续保留。
 

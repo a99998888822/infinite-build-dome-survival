@@ -16,7 +16,7 @@ var externally_driven := false
 var burst_active := false
 var burst_duration := 1.8
 var flame_visuals: Array[Node2D] = []
-## Optional directed control for the active-combat review; automatic mode is unchanged.
+## Explicit direction is reserved for effect reviews and bounce replays.
 var manual_control := false
 var manual_direction := Vector2.RIGHT
 

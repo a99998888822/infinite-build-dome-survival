@@ -44,6 +44,8 @@ func _run() -> void:
 	_test_catalog()
 	_test_heart()
 	_test_ring()
+	_test_merger_cap()
+	_test_uncapped_stats()
 	_test_protection()
 	_test_revive_priority_and_preview()
 	_test_validator()
@@ -135,6 +137,85 @@ func _test_ring() -> void:
 		p.free()
 
 
+func _test_merger_cap() -> void:
+	var description := "负载上限 +10；当前本金每满 500，额外 +5 负载上限，上限20"
+	check(DataRegistry.get_record("relics", "relic_merger_reorg").description == description, "merger uses the approved description verbatim")
+	var offers := ShopOfferGenerator.new().build_shop_candidate_pool({}).filter(func(entry): return entry.get("target_id", "") == "relic_merger_reorg")
+	check(offers.size() == 1 and offers[0].description == description, "merger shop offer uses the approved description")
+	var p := make_player()
+	var bank := make_bank(p)
+	var base_capacity := p.get_stat("load_capacity")
+	bank.deposit(100000, true)
+	var offer := {"offer_type": "relic", "target_id": "relic_merger_reorg"}
+	var prediction := StatPreviewBuilder.build_offer_stat_preview(offer, p, bank)
+	check(prediction.get("load_capacity", 0) == base_capacity + 30, "merger purchase preview caps total bonus at thirty")
+	check(p.get_stat("load_capacity") == base_capacity and p.get_relic_count("relic_merger_reorg") == 0 and bank.principal == 100000, "merger preview does not mutate live state")
+	bank.withdraw(bank.principal)
+	check(p.add_relic("relic_merger_reorg") and not p.add_relic("relic_merger_reorg"), "merger still allows only one copy")
+	for sample in [[0, 10], [499, 10], [500, 15], [1000, 20], [1500, 25], [1999, 25], [2000, 30], [2500, 30], [100000, 30]]:
+		if sample[0] > bank.principal:
+			bank.deposit(sample[0] - bank.principal, true)
+		check(p.get_stat("load_capacity") == base_capacity + sample[1], "merger capped tiers at principal %d" % sample[0])
+	for sample in [[1999, 25], [499, 10], [0, 10]]:
+		bank.withdraw(bank.principal - sample[0])
+		check(p.get_stat("load_capacity") == base_capacity + sample[1], "merger withdrawal restores tier at principal %d" % sample[0])
+	bank.deposit(2000, true)
+	var preview_player := p.create_stat_preview_copy()
+	var preview_bank := bank.create_preview_copy(preview_player)
+	preview_bank.withdraw(501)
+	check(preview_player.get_stat("load_capacity") == base_capacity + 20, "withdrawal preview falls below the capped principal tier")
+	check(p.get_stat("load_capacity") == base_capacity + 30 and bank.principal == 2000, "withdrawal preview preserves real capped bonus")
+	preview_player.free()
+	p.add_relic("relic_expanded_backpack_strap")
+	check(p.get_stat("load_capacity") == base_capacity + 40, "merger cap does not limit another relic's load capacity")
+	p.free()
+
+
+func _test_uncapped_stats() -> void:
+	var p := make_player()
+	var values := {"max_hp": 200000, "armor": 200000, "damage_percent": 200000, "attack_speed": 20000, "area_size": 20000, "damage_area_size": 20000, "currency_gain_percent": 20000, "interest_rate": 20000.5}
+	for stat: String in values:
+		p.modifier_stack.set_base_stat(stat, values[stat] - 1)
+		p.add_runtime_modifier({"id": "uncapped_" + stat, "source_type": "test", "source_id": "uncapped", "target_scope": "player", "stat": stat, "operation": "add_flat", "value": 1, "duration": -1, "stack_rule": "unique"})
+		check(p.get_stat(stat) == values[stat], "base and modifiers exceed former global cap for " + stat)
+		check(StatDefinitions.get_max_value(stat) == INF, "no global upper bound for " + stat)
+	p.restore_full_health()
+	p.current_hp -= 10
+	check(p.heal(10) == 10 and p.current_hp == 200000, "high maximum health supports actual healing")
+	check(p.get_stat("damage_taken_percent") == 5, "removing armor number cap preserves authored damage reduction curve")
+	var weapon := WeaponInstance.new()
+	weapon.initialize("weapon_void_blade", p)
+	weapon.use_active_range_rules = true
+	check(is_equal_approx(weapon.get_attack_range(), weapon.get_base_attack_range() * 101), "weapon range exceeds former global range cap")
+	check(is_equal_approx(StatDefinitions.calculate_damage_area_radius(10, p.get_stat("damage_area_size")), 1010), "damage radius exceeds former global area cap")
+	check(StatDefinitions.calculate_attack_interval(10, p.get_stat("attack_speed")) < StatDefinitions.calculate_attack_interval(10, 10000), "attack speed keeps reducing cooldown beyond former cap")
+	check(weapon.calculate_damage_events(false)[0].damage == 24012, "uncapped damage reaches actual weapon events")
+	var bank := make_bank(p)
+	bank.deposit(1000, true)
+	check(is_equal_approx(bank.get_interest_rate(), 20000.5) and bank.settle_interest().gain == 200005, "uncapped fractional interest rate reaches real settlement")
+	var manager := WaveManager.new()
+	manager.player = p
+	manager.add_exp_and_gold(0, 1)
+	check(manager.current_gold == 201, "uncapped currency bonus reaches real pickups")
+	manager.free()
+	var preview := p.create_stat_preview_copy()
+	for stat: String in values:
+		check(preview.get_stat(stat) == p.get_stat(stat), "stat preview preserves uncapped " + stat)
+	preview.free()
+	p.free()
+	p = make_player()
+	bank = make_bank(p)
+	for id in ["relic_coin_heart", "relic_steel_vault", "relic_quant_trading", "relic_hostile_takeover", "relic_hoarders_ring"]:
+		p.add_relic(id)
+	bank.deposit(100000000, true)
+	check(p.get_stat("max_hp") == 1000010 and p.get_stat("armor") == 2000000, "principal-derived health and armor exceed former global limits")
+	check(p.get_stat("attack_speed") == 2000000 and p.get_stat("damage_percent") == 1000000 and p.get_stat("currency_gain_percent") == 2000000, "principal-derived offense and currency exceed former global limits")
+	bank.withdraw(99999500)
+	check(p.get_stat("max_hp") == 15 and p.get_stat("armor") == 10 and p.get_stat("attack_speed") == 10 and p.get_stat("damage_percent") == 5 and p.get_stat("currency_gain_percent") == 10, "withdrawal correctly removes very large derived bonuses")
+	p.free()
+	check(StatDefinitions.clamp_stat_value("attack_speed", -1000) == -90 and StatDefinitions.clamp_stat_value("max_hp", -1) == 1, "existing lower bounds remain")
+	check(StatDefinitions.clamp_stat_value("crit_chance", 200) == 100 and StatDefinitions.clamp_stat_value("load_capacity", 20000) == 9999, "unrelated attribute caps remain")
+
 func _test_protection() -> void:
 	for principal in [0, 999]:
 		var p := make_player()
@@ -221,6 +302,15 @@ func _test_validator() -> void:
 	var validator := DataValidator.new()
 	validator._validate_relic_runtime_effect(DataRegistry.get_record("relics", "relic_hoarders_ring").runtime_effects[1], "ring_test")
 	check(validator.errors.is_empty(), "negative principal stat conversion is valid")
+	var capped: Dictionary = DataRegistry.get_record("relics", "relic_merger_reorg").runtime_effects[0]
+	validator._validate_relic_runtime_effect(capped, "merger_cap_test")
+	check(validator.errors.is_empty(), "principal bonus cap is valid")
+	for patch in [{"max_bonus": -1}, {"max_bonus": "invalid"}, {"max_bonus": INF}, {"effect": "add_stat"}]:
+		var invalid := capped.duplicate(true)
+		invalid.merge(patch, true)
+		var cap_validator := DataValidator.new()
+		cap_validator._validate_relic_runtime_effect(invalid, "invalid_merger_cap_test")
+		check(not cap_validator.errors.is_empty(), "reject invalid principal bonus cap " + str(patch))
 
 
 func frames(count: int = 5) -> void:
@@ -247,8 +337,9 @@ func _test_bank_ui() -> void:
 	flow.finish_current_wave()
 	await frames(15)
 	var bank := manager.finance_system
-	var base_max_hp := 5 + manager.player_level - 1
-	check(p.get_stat("max_hp") == base_max_hp, "actual game UI uses five starting HP plus level growth")
+	var starting_hp := int(DataRegistry.get_record("characters", "character_void_hunter").base_stats.max_hp)
+	var base_max_hp := starting_hp + manager.player_level - 1
+	check(p.get_stat("max_hp") == base_max_hp, "actual game UI uses configured starting HP plus level growth")
 	var funded_max_hp := base_max_hp + 10
 	var withdrawn_max_hp := base_max_hp + 4
 	for id in IDS: p.add_relic(id)

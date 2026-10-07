@@ -1,0 +1,1267 @@
+{
+	"adaptation": [
+		{
+			"elite": 0,
+			"normal": 0,
+			"qualifying_waves": 0
+		},
+		{
+			"elite": 5,
+			"normal": 10,
+			"qualifying_waves": 1
+		},
+		{
+			"elite": 10,
+			"normal": 20,
+			"qualifying_waves": 2
+		},
+		{
+			"elite": 15,
+			"normal": 30,
+			"qualifying_waves": 3
+		},
+		{
+			"elite": 20,
+			"normal": 40,
+			"qualifying_waves": 4
+		},
+		{
+			"elite": 25,
+			"normal": 50,
+			"qualifying_waves": 5
+		},
+		{
+			"elite": 30,
+			"normal": 60,
+			"qualifying_waves": 6
+		},
+		{
+			"elite": 30,
+			"normal": 60,
+			"qualifying_waves": 7
+		},
+		{
+			"elite": 30,
+			"normal": 60,
+			"qualifying_waves": 8
+		},
+		{
+			"elite": 30,
+			"normal": 60,
+			"qualifying_waves": 9
+		},
+		{
+			"elite": 30,
+			"normal": 60,
+			"qualifying_waves": 10
+		}
+	],
+	"erosion": [
+		{
+			"armor_multiplier": 1.0,
+			"damage_multiplier": 1.0,
+			"erosion": 0.0,
+			"max_hp_multiplier": 1.0
+		},
+		{
+			"armor_multiplier": 1.0135,
+			"damage_multiplier": 1.009,
+			"erosion": 1.0,
+			"max_hp_multiplier": 1.018
+		},
+		{
+			"armor_multiplier": 1.027,
+			"damage_multiplier": 1.018,
+			"erosion": 2.0,
+			"max_hp_multiplier": 1.036
+		},
+		{
+			"armor_multiplier": 1.0405,
+			"damage_multiplier": 1.027,
+			"erosion": 3.0,
+			"max_hp_multiplier": 1.054
+		},
+		{
+			"armor_multiplier": 1.054,
+			"damage_multiplier": 1.036,
+			"erosion": 4.0,
+			"max_hp_multiplier": 1.072
+		},
+		{
+			"armor_multiplier": 1.0675,
+			"damage_multiplier": 1.045,
+			"erosion": 5.0,
+			"max_hp_multiplier": 1.09
+		},
+		{
+			"armor_multiplier": 1.081,
+			"damage_multiplier": 1.054,
+			"erosion": 6.0,
+			"max_hp_multiplier": 1.108
+		},
+		{
+			"armor_multiplier": 1.0945,
+			"damage_multiplier": 1.063,
+			"erosion": 7.0,
+			"max_hp_multiplier": 1.126
+		},
+		{
+			"armor_multiplier": 1.108,
+			"damage_multiplier": 1.072,
+			"erosion": 8.0,
+			"max_hp_multiplier": 1.144
+		},
+		{
+			"armor_multiplier": 1.1215,
+			"damage_multiplier": 1.081,
+			"erosion": 9.0,
+			"max_hp_multiplier": 1.162
+		},
+		{
+			"armor_multiplier": 1.135,
+			"damage_multiplier": 1.09,
+			"erosion": 10.0,
+			"max_hp_multiplier": 1.18
+		},
+		{
+			"armor_multiplier": 1.1485,
+			"damage_multiplier": 1.099,
+			"erosion": 11.0,
+			"max_hp_multiplier": 1.198
+		},
+		{
+			"armor_multiplier": 1.162,
+			"damage_multiplier": 1.108,
+			"erosion": 12.0,
+			"max_hp_multiplier": 1.216
+		},
+		{
+			"armor_multiplier": 1.1755,
+			"damage_multiplier": 1.117,
+			"erosion": 13.0,
+			"max_hp_multiplier": 1.234
+		},
+		{
+			"armor_multiplier": 1.189,
+			"damage_multiplier": 1.126,
+			"erosion": 14.0,
+			"max_hp_multiplier": 1.252
+		},
+		{
+			"armor_multiplier": 1.2025,
+			"damage_multiplier": 1.135,
+			"erosion": 15.0,
+			"max_hp_multiplier": 1.27
+		},
+		{
+			"armor_multiplier": 1.216,
+			"damage_multiplier": 1.144,
+			"erosion": 16.0,
+			"max_hp_multiplier": 1.288
+		},
+		{
+			"armor_multiplier": 1.2295,
+			"damage_multiplier": 1.153,
+			"erosion": 17.0,
+			"max_hp_multiplier": 1.306
+		},
+		{
+			"armor_multiplier": 1.243,
+			"damage_multiplier": 1.162,
+			"erosion": 18.0,
+			"max_hp_multiplier": 1.324
+		},
+		{
+			"armor_multiplier": 1.2565,
+			"damage_multiplier": 1.171,
+			"erosion": 19.0,
+			"max_hp_multiplier": 1.342
+		},
+		{
+			"armor_multiplier": 1.27,
+			"damage_multiplier": 1.18,
+			"erosion": 20.0,
+			"max_hp_multiplier": 1.36
+		},
+		{
+			"armor_multiplier": 1.2835,
+			"damage_multiplier": 1.189,
+			"erosion": 21.0,
+			"max_hp_multiplier": 1.378
+		},
+		{
+			"armor_multiplier": 1.297,
+			"damage_multiplier": 1.198,
+			"erosion": 22.0,
+			"max_hp_multiplier": 1.396
+		},
+		{
+			"armor_multiplier": 1.3105,
+			"damage_multiplier": 1.207,
+			"erosion": 23.0,
+			"max_hp_multiplier": 1.414
+		},
+		{
+			"armor_multiplier": 1.324,
+			"damage_multiplier": 1.216,
+			"erosion": 24.0,
+			"max_hp_multiplier": 1.432
+		},
+		{
+			"armor_multiplier": 1.3375,
+			"damage_multiplier": 1.225,
+			"erosion": 25.0,
+			"max_hp_multiplier": 1.45
+		},
+		{
+			"armor_multiplier": 1.351,
+			"damage_multiplier": 1.234,
+			"erosion": 26.0,
+			"max_hp_multiplier": 1.468
+		},
+		{
+			"armor_multiplier": 1.3645,
+			"damage_multiplier": 1.243,
+			"erosion": 27.0,
+			"max_hp_multiplier": 1.486
+		},
+		{
+			"armor_multiplier": 1.378,
+			"damage_multiplier": 1.252,
+			"erosion": 28.0,
+			"max_hp_multiplier": 1.504
+		},
+		{
+			"armor_multiplier": 1.3915,
+			"damage_multiplier": 1.261,
+			"erosion": 29.0,
+			"max_hp_multiplier": 1.522
+		},
+		{
+			"armor_multiplier": 1.405,
+			"damage_multiplier": 1.27,
+			"erosion": 30.0,
+			"max_hp_multiplier": 1.54
+		},
+		{
+			"armor_multiplier": 1.4185,
+			"damage_multiplier": 1.282,
+			"erosion": 31.0,
+			"max_hp_multiplier": 1.576
+		},
+		{
+			"armor_multiplier": 1.432,
+			"damage_multiplier": 1.294,
+			"erosion": 32.0,
+			"max_hp_multiplier": 1.612
+		},
+		{
+			"armor_multiplier": 1.4455,
+			"damage_multiplier": 1.306,
+			"erosion": 33.0,
+			"max_hp_multiplier": 1.648
+		},
+		{
+			"armor_multiplier": 1.459,
+			"damage_multiplier": 1.318,
+			"erosion": 34.0,
+			"max_hp_multiplier": 1.684
+		},
+		{
+			"armor_multiplier": 1.4725,
+			"damage_multiplier": 1.33,
+			"erosion": 35.0,
+			"max_hp_multiplier": 1.72
+		},
+		{
+			"armor_multiplier": 1.486,
+			"damage_multiplier": 1.342,
+			"erosion": 36.0,
+			"max_hp_multiplier": 1.756
+		},
+		{
+			"armor_multiplier": 1.4995,
+			"damage_multiplier": 1.354,
+			"erosion": 37.0,
+			"max_hp_multiplier": 1.792
+		},
+		{
+			"armor_multiplier": 1.513,
+			"damage_multiplier": 1.366,
+			"erosion": 38.0,
+			"max_hp_multiplier": 1.828
+		},
+		{
+			"armor_multiplier": 1.5265,
+			"damage_multiplier": 1.378,
+			"erosion": 39.0,
+			"max_hp_multiplier": 1.864
+		},
+		{
+			"armor_multiplier": 1.54,
+			"damage_multiplier": 1.39,
+			"erosion": 40.0,
+			"max_hp_multiplier": 1.9
+		},
+		{
+			"armor_multiplier": 1.5535,
+			"damage_multiplier": 1.402,
+			"erosion": 41.0,
+			"max_hp_multiplier": 1.936
+		},
+		{
+			"armor_multiplier": 1.567,
+			"damage_multiplier": 1.414,
+			"erosion": 42.0,
+			"max_hp_multiplier": 1.972
+		},
+		{
+			"armor_multiplier": 1.5805,
+			"damage_multiplier": 1.426,
+			"erosion": 43.0,
+			"max_hp_multiplier": 2.008
+		},
+		{
+			"armor_multiplier": 1.594,
+			"damage_multiplier": 1.438,
+			"erosion": 44.0,
+			"max_hp_multiplier": 2.044
+		},
+		{
+			"armor_multiplier": 1.6075,
+			"damage_multiplier": 1.45,
+			"erosion": 45.0,
+			"max_hp_multiplier": 2.08
+		},
+		{
+			"armor_multiplier": 1.621,
+			"damage_multiplier": 1.462,
+			"erosion": 46.0,
+			"max_hp_multiplier": 2.116
+		},
+		{
+			"armor_multiplier": 1.6345,
+			"damage_multiplier": 1.474,
+			"erosion": 47.0,
+			"max_hp_multiplier": 2.152
+		},
+		{
+			"armor_multiplier": 1.648,
+			"damage_multiplier": 1.486,
+			"erosion": 48.0,
+			"max_hp_multiplier": 2.188
+		},
+		{
+			"armor_multiplier": 1.6615,
+			"damage_multiplier": 1.498,
+			"erosion": 49.0,
+			"max_hp_multiplier": 2.224
+		},
+		{
+			"armor_multiplier": 1.675,
+			"damage_multiplier": 1.51,
+			"erosion": 50.0,
+			"max_hp_multiplier": 2.26
+		},
+		{
+			"armor_multiplier": 1.6885,
+			"damage_multiplier": 1.522,
+			"erosion": 51.0,
+			"max_hp_multiplier": 2.296
+		},
+		{
+			"armor_multiplier": 1.702,
+			"damage_multiplier": 1.534,
+			"erosion": 52.0,
+			"max_hp_multiplier": 2.332
+		},
+		{
+			"armor_multiplier": 1.7155,
+			"damage_multiplier": 1.546,
+			"erosion": 53.0,
+			"max_hp_multiplier": 2.368
+		},
+		{
+			"armor_multiplier": 1.729,
+			"damage_multiplier": 1.558,
+			"erosion": 54.0,
+			"max_hp_multiplier": 2.404
+		},
+		{
+			"armor_multiplier": 1.7425,
+			"damage_multiplier": 1.57,
+			"erosion": 55.0,
+			"max_hp_multiplier": 2.44
+		},
+		{
+			"armor_multiplier": 1.756,
+			"damage_multiplier": 1.582,
+			"erosion": 56.0,
+			"max_hp_multiplier": 2.476
+		},
+		{
+			"armor_multiplier": 1.7695,
+			"damage_multiplier": 1.594,
+			"erosion": 57.0,
+			"max_hp_multiplier": 2.512
+		},
+		{
+			"armor_multiplier": 1.783,
+			"damage_multiplier": 1.606,
+			"erosion": 58.0,
+			"max_hp_multiplier": 2.548
+		},
+		{
+			"armor_multiplier": 1.7965,
+			"damage_multiplier": 1.618,
+			"erosion": 59.0,
+			"max_hp_multiplier": 2.584
+		},
+		{
+			"armor_multiplier": 1.81,
+			"damage_multiplier": 1.63,
+			"erosion": 60.0,
+			"max_hp_multiplier": 2.62
+		},
+		{
+			"armor_multiplier": 1.8235,
+			"damage_multiplier": 1.645,
+			"erosion": 61.0,
+			"max_hp_multiplier": 2.674
+		},
+		{
+			"armor_multiplier": 1.837,
+			"damage_multiplier": 1.66,
+			"erosion": 62.0,
+			"max_hp_multiplier": 2.728
+		},
+		{
+			"armor_multiplier": 1.8505,
+			"damage_multiplier": 1.675,
+			"erosion": 63.0,
+			"max_hp_multiplier": 2.782
+		},
+		{
+			"armor_multiplier": 1.864,
+			"damage_multiplier": 1.69,
+			"erosion": 64.0,
+			"max_hp_multiplier": 2.836
+		},
+		{
+			"armor_multiplier": 1.8775,
+			"damage_multiplier": 1.705,
+			"erosion": 65.0,
+			"max_hp_multiplier": 2.89
+		},
+		{
+			"armor_multiplier": 1.891,
+			"damage_multiplier": 1.72,
+			"erosion": 66.0,
+			"max_hp_multiplier": 2.944
+		},
+		{
+			"armor_multiplier": 1.9045,
+			"damage_multiplier": 1.735,
+			"erosion": 67.0,
+			"max_hp_multiplier": 2.998
+		},
+		{
+			"armor_multiplier": 1.918,
+			"damage_multiplier": 1.75,
+			"erosion": 68.0,
+			"max_hp_multiplier": 3.052
+		},
+		{
+			"armor_multiplier": 1.9315,
+			"damage_multiplier": 1.765,
+			"erosion": 69.0,
+			"max_hp_multiplier": 3.106
+		},
+		{
+			"armor_multiplier": 1.945,
+			"damage_multiplier": 1.78,
+			"erosion": 70.0,
+			"max_hp_multiplier": 3.16
+		},
+		{
+			"armor_multiplier": 1.9585,
+			"damage_multiplier": 1.795,
+			"erosion": 71.0,
+			"max_hp_multiplier": 3.214
+		},
+		{
+			"armor_multiplier": 1.972,
+			"damage_multiplier": 1.81,
+			"erosion": 72.0,
+			"max_hp_multiplier": 3.268
+		},
+		{
+			"armor_multiplier": 1.9855,
+			"damage_multiplier": 1.825,
+			"erosion": 73.0,
+			"max_hp_multiplier": 3.322
+		},
+		{
+			"armor_multiplier": 1.999,
+			"damage_multiplier": 1.84,
+			"erosion": 74.0,
+			"max_hp_multiplier": 3.376
+		},
+		{
+			"armor_multiplier": 2.0125,
+			"damage_multiplier": 1.855,
+			"erosion": 75.0,
+			"max_hp_multiplier": 3.43
+		},
+		{
+			"armor_multiplier": 2.026,
+			"damage_multiplier": 1.87,
+			"erosion": 76.0,
+			"max_hp_multiplier": 3.484
+		},
+		{
+			"armor_multiplier": 2.0395,
+			"damage_multiplier": 1.885,
+			"erosion": 77.0,
+			"max_hp_multiplier": 3.538
+		},
+		{
+			"armor_multiplier": 2.053,
+			"damage_multiplier": 1.9,
+			"erosion": 78.0,
+			"max_hp_multiplier": 3.592
+		},
+		{
+			"armor_multiplier": 2.0665,
+			"damage_multiplier": 1.915,
+			"erosion": 79.0,
+			"max_hp_multiplier": 3.646
+		},
+		{
+			"armor_multiplier": 2.08,
+			"damage_multiplier": 1.93,
+			"erosion": 80.0,
+			"max_hp_multiplier": 3.7
+		},
+		{
+			"armor_multiplier": 2.0935,
+			"damage_multiplier": 1.945,
+			"erosion": 81.0,
+			"max_hp_multiplier": 3.754
+		},
+		{
+			"armor_multiplier": 2.107,
+			"damage_multiplier": 1.96,
+			"erosion": 82.0,
+			"max_hp_multiplier": 3.808
+		},
+		{
+			"armor_multiplier": 2.1205,
+			"damage_multiplier": 1.975,
+			"erosion": 83.0,
+			"max_hp_multiplier": 3.862
+		},
+		{
+			"armor_multiplier": 2.134,
+			"damage_multiplier": 1.99,
+			"erosion": 84.0,
+			"max_hp_multiplier": 3.916
+		},
+		{
+			"armor_multiplier": 2.1475,
+			"damage_multiplier": 2.005,
+			"erosion": 85.0,
+			"max_hp_multiplier": 3.97
+		},
+		{
+			"armor_multiplier": 2.161,
+			"damage_multiplier": 2.02,
+			"erosion": 86.0,
+			"max_hp_multiplier": 4.024
+		},
+		{
+			"armor_multiplier": 2.1745,
+			"damage_multiplier": 2.035,
+			"erosion": 87.0,
+			"max_hp_multiplier": 4.078
+		},
+		{
+			"armor_multiplier": 2.188,
+			"damage_multiplier": 2.05,
+			"erosion": 88.0,
+			"max_hp_multiplier": 4.132
+		},
+		{
+			"armor_multiplier": 2.2015,
+			"damage_multiplier": 2.065,
+			"erosion": 89.0,
+			"max_hp_multiplier": 4.186
+		},
+		{
+			"armor_multiplier": 2.215,
+			"damage_multiplier": 2.08,
+			"erosion": 90.0,
+			"max_hp_multiplier": 4.24
+		},
+		{
+			"armor_multiplier": 2.2285,
+			"damage_multiplier": 2.095,
+			"erosion": 91.0,
+			"max_hp_multiplier": 4.294
+		},
+		{
+			"armor_multiplier": 2.242,
+			"damage_multiplier": 2.11,
+			"erosion": 92.0,
+			"max_hp_multiplier": 4.348
+		},
+		{
+			"armor_multiplier": 2.2555,
+			"damage_multiplier": 2.125,
+			"erosion": 93.0,
+			"max_hp_multiplier": 4.402
+		},
+		{
+			"armor_multiplier": 2.269,
+			"damage_multiplier": 2.14,
+			"erosion": 94.0,
+			"max_hp_multiplier": 4.456
+		},
+		{
+			"armor_multiplier": 2.2825,
+			"damage_multiplier": 2.155,
+			"erosion": 95.0,
+			"max_hp_multiplier": 4.51
+		},
+		{
+			"armor_multiplier": 2.296,
+			"damage_multiplier": 2.17,
+			"erosion": 96.0,
+			"max_hp_multiplier": 4.564
+		},
+		{
+			"armor_multiplier": 2.3095,
+			"damage_multiplier": 2.185,
+			"erosion": 97.0,
+			"max_hp_multiplier": 4.618
+		},
+		{
+			"armor_multiplier": 2.323,
+			"damage_multiplier": 2.2,
+			"erosion": 98.0,
+			"max_hp_multiplier": 4.672
+		},
+		{
+			"armor_multiplier": 2.3365,
+			"damage_multiplier": 2.215,
+			"erosion": 99.0,
+			"max_hp_multiplier": 4.726
+		},
+		{
+			"armor_multiplier": 2.35,
+			"damage_multiplier": 2.23,
+			"erosion": 100.0,
+			"max_hp_multiplier": 4.78
+		},
+		{
+			"armor_multiplier": 2.3635,
+			"damage_multiplier": 2.245,
+			"erosion": 101.0,
+			"max_hp_multiplier": 4.834
+		},
+		{
+			"armor_multiplier": 2.377,
+			"damage_multiplier": 2.26,
+			"erosion": 102.0,
+			"max_hp_multiplier": 4.888
+		},
+		{
+			"armor_multiplier": 2.3905,
+			"damage_multiplier": 2.275,
+			"erosion": 103.0,
+			"max_hp_multiplier": 4.942
+		},
+		{
+			"armor_multiplier": 2.404,
+			"damage_multiplier": 2.29,
+			"erosion": 104.0,
+			"max_hp_multiplier": 4.996
+		},
+		{
+			"armor_multiplier": 2.4175,
+			"damage_multiplier": 2.305,
+			"erosion": 105.0,
+			"max_hp_multiplier": 5.05
+		},
+		{
+			"armor_multiplier": 2.431,
+			"damage_multiplier": 2.32,
+			"erosion": 106.0,
+			"max_hp_multiplier": 5.104
+		},
+		{
+			"armor_multiplier": 2.4445,
+			"damage_multiplier": 2.335,
+			"erosion": 107.0,
+			"max_hp_multiplier": 5.158
+		},
+		{
+			"armor_multiplier": 2.458,
+			"damage_multiplier": 2.35,
+			"erosion": 108.0,
+			"max_hp_multiplier": 5.212
+		},
+		{
+			"armor_multiplier": 2.4715,
+			"damage_multiplier": 2.365,
+			"erosion": 109.0,
+			"max_hp_multiplier": 5.266
+		},
+		{
+			"armor_multiplier": 2.485,
+			"damage_multiplier": 2.38,
+			"erosion": 110.0,
+			"max_hp_multiplier": 5.32
+		},
+		{
+			"armor_multiplier": 2.4985,
+			"damage_multiplier": 2.395,
+			"erosion": 111.0,
+			"max_hp_multiplier": 5.374
+		},
+		{
+			"armor_multiplier": 2.512,
+			"damage_multiplier": 2.41,
+			"erosion": 112.0,
+			"max_hp_multiplier": 5.428
+		},
+		{
+			"armor_multiplier": 2.5255,
+			"damage_multiplier": 2.425,
+			"erosion": 113.0,
+			"max_hp_multiplier": 5.482
+		},
+		{
+			"armor_multiplier": 2.539,
+			"damage_multiplier": 2.44,
+			"erosion": 114.0,
+			"max_hp_multiplier": 5.536
+		},
+		{
+			"armor_multiplier": 2.5525,
+			"damage_multiplier": 2.455,
+			"erosion": 115.0,
+			"max_hp_multiplier": 5.59
+		},
+		{
+			"armor_multiplier": 2.566,
+			"damage_multiplier": 2.47,
+			"erosion": 116.0,
+			"max_hp_multiplier": 5.644
+		},
+		{
+			"armor_multiplier": 2.5795,
+			"damage_multiplier": 2.485,
+			"erosion": 117.0,
+			"max_hp_multiplier": 5.698
+		},
+		{
+			"armor_multiplier": 2.593,
+			"damage_multiplier": 2.5,
+			"erosion": 118.0,
+			"max_hp_multiplier": 5.752
+		},
+		{
+			"armor_multiplier": 2.6065,
+			"damage_multiplier": 2.515,
+			"erosion": 119.0,
+			"max_hp_multiplier": 5.806
+		},
+		{
+			"armor_multiplier": 2.62,
+			"damage_multiplier": 2.53,
+			"erosion": 120.0,
+			"max_hp_multiplier": 5.86
+		},
+		{
+			"armor_multiplier": 2.6335,
+			"damage_multiplier": 2.545,
+			"erosion": 121.0,
+			"max_hp_multiplier": 5.914
+		},
+		{
+			"armor_multiplier": 2.647,
+			"damage_multiplier": 2.56,
+			"erosion": 122.0,
+			"max_hp_multiplier": 5.968
+		},
+		{
+			"armor_multiplier": 2.6605,
+			"damage_multiplier": 2.575,
+			"erosion": 123.0,
+			"max_hp_multiplier": 6.022
+		},
+		{
+			"armor_multiplier": 2.674,
+			"damage_multiplier": 2.59,
+			"erosion": 124.0,
+			"max_hp_multiplier": 6.076
+		},
+		{
+			"armor_multiplier": 2.6875,
+			"damage_multiplier": 2.605,
+			"erosion": 125.0,
+			"max_hp_multiplier": 6.13
+		},
+		{
+			"armor_multiplier": 2.701,
+			"damage_multiplier": 2.62,
+			"erosion": 126.0,
+			"max_hp_multiplier": 6.184
+		},
+		{
+			"armor_multiplier": 2.7145,
+			"damage_multiplier": 2.635,
+			"erosion": 127.0,
+			"max_hp_multiplier": 6.238
+		},
+		{
+			"armor_multiplier": 2.728,
+			"damage_multiplier": 2.65,
+			"erosion": 128.0,
+			"max_hp_multiplier": 6.292
+		},
+		{
+			"armor_multiplier": 2.7415,
+			"damage_multiplier": 2.665,
+			"erosion": 129.0,
+			"max_hp_multiplier": 6.346
+		},
+		{
+			"armor_multiplier": 2.755,
+			"damage_multiplier": 2.68,
+			"erosion": 130.0,
+			"max_hp_multiplier": 6.4
+		},
+		{
+			"armor_multiplier": 2.7685,
+			"damage_multiplier": 2.695,
+			"erosion": 131.0,
+			"max_hp_multiplier": 6.454
+		},
+		{
+			"armor_multiplier": 2.782,
+			"damage_multiplier": 2.71,
+			"erosion": 132.0,
+			"max_hp_multiplier": 6.508
+		},
+		{
+			"armor_multiplier": 2.7955,
+			"damage_multiplier": 2.725,
+			"erosion": 133.0,
+			"max_hp_multiplier": 6.562
+		},
+		{
+			"armor_multiplier": 2.809,
+			"damage_multiplier": 2.74,
+			"erosion": 134.0,
+			"max_hp_multiplier": 6.616
+		},
+		{
+			"armor_multiplier": 2.8225,
+			"damage_multiplier": 2.755,
+			"erosion": 135.0,
+			"max_hp_multiplier": 6.67
+		},
+		{
+			"armor_multiplier": 2.836,
+			"damage_multiplier": 2.77,
+			"erosion": 136.0,
+			"max_hp_multiplier": 6.724
+		},
+		{
+			"armor_multiplier": 2.8495,
+			"damage_multiplier": 2.785,
+			"erosion": 137.0,
+			"max_hp_multiplier": 6.778
+		},
+		{
+			"armor_multiplier": 2.863,
+			"damage_multiplier": 2.8,
+			"erosion": 138.0,
+			"max_hp_multiplier": 6.832
+		},
+		{
+			"armor_multiplier": 2.8765,
+			"damage_multiplier": 2.815,
+			"erosion": 139.0,
+			"max_hp_multiplier": 6.886
+		},
+		{
+			"armor_multiplier": 2.89,
+			"damage_multiplier": 2.83,
+			"erosion": 140.0,
+			"max_hp_multiplier": 6.94
+		},
+		{
+			"armor_multiplier": 2.9035,
+			"damage_multiplier": 2.845,
+			"erosion": 141.0,
+			"max_hp_multiplier": 6.994
+		},
+		{
+			"armor_multiplier": 2.917,
+			"damage_multiplier": 2.86,
+			"erosion": 142.0,
+			"max_hp_multiplier": 7.048
+		},
+		{
+			"armor_multiplier": 2.9305,
+			"damage_multiplier": 2.875,
+			"erosion": 143.0,
+			"max_hp_multiplier": 7.102
+		},
+		{
+			"armor_multiplier": 2.944,
+			"damage_multiplier": 2.89,
+			"erosion": 144.0,
+			"max_hp_multiplier": 7.156
+		},
+		{
+			"armor_multiplier": 2.9575,
+			"damage_multiplier": 2.905,
+			"erosion": 145.0,
+			"max_hp_multiplier": 7.21
+		},
+		{
+			"armor_multiplier": 2.971,
+			"damage_multiplier": 2.92,
+			"erosion": 146.0,
+			"max_hp_multiplier": 7.264
+		},
+		{
+			"armor_multiplier": 2.9845,
+			"damage_multiplier": 2.935,
+			"erosion": 147.0,
+			"max_hp_multiplier": 7.318
+		},
+		{
+			"armor_multiplier": 2.998,
+			"damage_multiplier": 2.95,
+			"erosion": 148.0,
+			"max_hp_multiplier": 7.372
+		},
+		{
+			"armor_multiplier": 3.0115,
+			"damage_multiplier": 2.965,
+			"erosion": 149.0,
+			"max_hp_multiplier": 7.426
+		},
+		{
+			"armor_multiplier": 3.025,
+			"damage_multiplier": 2.98,
+			"erosion": 150.0,
+			"max_hp_multiplier": 7.48
+		},
+		{
+			"armor_multiplier": 3.0385,
+			"damage_multiplier": 2.995,
+			"erosion": 151.0,
+			"max_hp_multiplier": 7.534
+		},
+		{
+			"armor_multiplier": 3.052,
+			"damage_multiplier": 3.01,
+			"erosion": 152.0,
+			"max_hp_multiplier": 7.588
+		},
+		{
+			"armor_multiplier": 3.0655,
+			"damage_multiplier": 3.025,
+			"erosion": 153.0,
+			"max_hp_multiplier": 7.642
+		},
+		{
+			"armor_multiplier": 3.079,
+			"damage_multiplier": 3.04,
+			"erosion": 154.0,
+			"max_hp_multiplier": 7.696
+		},
+		{
+			"armor_multiplier": 3.0925,
+			"damage_multiplier": 3.055,
+			"erosion": 155.0,
+			"max_hp_multiplier": 7.75
+		},
+		{
+			"armor_multiplier": 3.106,
+			"damage_multiplier": 3.07,
+			"erosion": 156.0,
+			"max_hp_multiplier": 7.804
+		},
+		{
+			"armor_multiplier": 3.1195,
+			"damage_multiplier": 3.085,
+			"erosion": 157.0,
+			"max_hp_multiplier": 7.858
+		},
+		{
+			"armor_multiplier": 3.133,
+			"damage_multiplier": 3.1,
+			"erosion": 158.0,
+			"max_hp_multiplier": 7.912
+		},
+		{
+			"armor_multiplier": 3.1465,
+			"damage_multiplier": 3.115,
+			"erosion": 159.0,
+			"max_hp_multiplier": 7.966
+		},
+		{
+			"armor_multiplier": 3.16,
+			"damage_multiplier": 3.13,
+			"erosion": 160.0,
+			"max_hp_multiplier": 8.02
+		},
+		{
+			"armor_multiplier": 3.1735,
+			"damage_multiplier": 3.145,
+			"erosion": 161.0,
+			"max_hp_multiplier": 8.074
+		},
+		{
+			"armor_multiplier": 3.187,
+			"damage_multiplier": 3.16,
+			"erosion": 162.0,
+			"max_hp_multiplier": 8.128
+		},
+		{
+			"armor_multiplier": 3.2005,
+			"damage_multiplier": 3.175,
+			"erosion": 163.0,
+			"max_hp_multiplier": 8.182
+		},
+		{
+			"armor_multiplier": 3.214,
+			"damage_multiplier": 3.19,
+			"erosion": 164.0,
+			"max_hp_multiplier": 8.236
+		},
+		{
+			"armor_multiplier": 3.2275,
+			"damage_multiplier": 3.205,
+			"erosion": 165.0,
+			"max_hp_multiplier": 8.29
+		},
+		{
+			"armor_multiplier": 3.241,
+			"damage_multiplier": 3.22,
+			"erosion": 166.0,
+			"max_hp_multiplier": 8.344
+		},
+		{
+			"armor_multiplier": 3.2545,
+			"damage_multiplier": 3.235,
+			"erosion": 167.0,
+			"max_hp_multiplier": 8.398
+		},
+		{
+			"armor_multiplier": 3.268,
+			"damage_multiplier": 3.25,
+			"erosion": 168.0,
+			"max_hp_multiplier": 8.452
+		},
+		{
+			"armor_multiplier": 3.2815,
+			"damage_multiplier": 3.265,
+			"erosion": 169.0,
+			"max_hp_multiplier": 8.506
+		},
+		{
+			"armor_multiplier": 3.295,
+			"damage_multiplier": 3.28,
+			"erosion": 170.0,
+			"max_hp_multiplier": 8.56
+		},
+		{
+			"armor_multiplier": 3.3085,
+			"damage_multiplier": 3.295,
+			"erosion": 171.0,
+			"max_hp_multiplier": 8.614
+		},
+		{
+			"armor_multiplier": 3.322,
+			"damage_multiplier": 3.31,
+			"erosion": 172.0,
+			"max_hp_multiplier": 8.668
+		},
+		{
+			"armor_multiplier": 3.3355,
+			"damage_multiplier": 3.325,
+			"erosion": 173.0,
+			"max_hp_multiplier": 8.722
+		},
+		{
+			"armor_multiplier": 3.349,
+			"damage_multiplier": 3.34,
+			"erosion": 174.0,
+			"max_hp_multiplier": 8.776
+		},
+		{
+			"armor_multiplier": 3.3625,
+			"damage_multiplier": 3.355,
+			"erosion": 175.0,
+			"max_hp_multiplier": 8.83
+		},
+		{
+			"armor_multiplier": 3.376,
+			"damage_multiplier": 3.37,
+			"erosion": 176.0,
+			"max_hp_multiplier": 8.884
+		},
+		{
+			"armor_multiplier": 3.3895,
+			"damage_multiplier": 3.385,
+			"erosion": 177.0,
+			"max_hp_multiplier": 8.938
+		},
+		{
+			"armor_multiplier": 3.403,
+			"damage_multiplier": 3.4,
+			"erosion": 178.0,
+			"max_hp_multiplier": 8.992
+		},
+		{
+			"armor_multiplier": 3.4165,
+			"damage_multiplier": 3.415,
+			"erosion": 179.0,
+			"max_hp_multiplier": 9.046
+		},
+		{
+			"armor_multiplier": 3.43,
+			"damage_multiplier": 3.43,
+			"erosion": 180.0,
+			"max_hp_multiplier": 9.1
+		},
+		{
+			"armor_multiplier": 3.4435,
+			"damage_multiplier": 3.445,
+			"erosion": 181.0,
+			"max_hp_multiplier": 9.154
+		},
+		{
+			"armor_multiplier": 3.457,
+			"damage_multiplier": 3.46,
+			"erosion": 182.0,
+			"max_hp_multiplier": 9.208
+		},
+		{
+			"armor_multiplier": 3.4705,
+			"damage_multiplier": 3.475,
+			"erosion": 183.0,
+			"max_hp_multiplier": 9.262
+		},
+		{
+			"armor_multiplier": 3.484,
+			"damage_multiplier": 3.49,
+			"erosion": 184.0,
+			"max_hp_multiplier": 9.316
+		},
+		{
+			"armor_multiplier": 3.4975,
+			"damage_multiplier": 3.505,
+			"erosion": 185.0,
+			"max_hp_multiplier": 9.37
+		},
+		{
+			"armor_multiplier": 3.511,
+			"damage_multiplier": 3.52,
+			"erosion": 186.0,
+			"max_hp_multiplier": 9.424
+		},
+		{
+			"armor_multiplier": 3.5245,
+			"damage_multiplier": 3.535,
+			"erosion": 187.0,
+			"max_hp_multiplier": 9.478
+		},
+		{
+			"armor_multiplier": 3.538,
+			"damage_multiplier": 3.55,
+			"erosion": 188.0,
+			"max_hp_multiplier": 9.532
+		},
+		{
+			"armor_multiplier": 3.5515,
+			"damage_multiplier": 3.565,
+			"erosion": 189.0,
+			"max_hp_multiplier": 9.586
+		},
+		{
+			"armor_multiplier": 3.565,
+			"damage_multiplier": 3.58,
+			"erosion": 190.0,
+			"max_hp_multiplier": 9.64
+		},
+		{
+			"armor_multiplier": 3.5785,
+			"damage_multiplier": 3.595,
+			"erosion": 191.0,
+			"max_hp_multiplier": 9.694
+		},
+		{
+			"armor_multiplier": 3.592,
+			"damage_multiplier": 3.61,
+			"erosion": 192.0,
+			"max_hp_multiplier": 9.748
+		},
+		{
+			"armor_multiplier": 3.6055,
+			"damage_multiplier": 3.625,
+			"erosion": 193.0,
+			"max_hp_multiplier": 9.802
+		},
+		{
+			"armor_multiplier": 3.619,
+			"damage_multiplier": 3.64,
+			"erosion": 194.0,
+			"max_hp_multiplier": 9.856
+		},
+		{
+			"armor_multiplier": 3.6325,
+			"damage_multiplier": 3.655,
+			"erosion": 195.0,
+			"max_hp_multiplier": 9.91
+		},
+		{
+			"armor_multiplier": 3.646,
+			"damage_multiplier": 3.67,
+			"erosion": 196.0,
+			"max_hp_multiplier": 9.964
+		},
+		{
+			"armor_multiplier": 3.6595,
+			"damage_multiplier": 3.685,
+			"erosion": 197.0,
+			"max_hp_multiplier": 10.018
+		},
+		{
+			"armor_multiplier": 3.673,
+			"damage_multiplier": 3.7,
+			"erosion": 198.0,
+			"max_hp_multiplier": 10.072
+		},
+		{
+			"armor_multiplier": 3.6865,
+			"damage_multiplier": 3.715,
+			"erosion": 199.0,
+			"max_hp_multiplier": 10.126
+		},
+		{
+			"armor_multiplier": 3.7,
+			"damage_multiplier": 3.73,
+			"erosion": 200.0,
+			"max_hp_multiplier": 10.18
+		}
+	]
+}

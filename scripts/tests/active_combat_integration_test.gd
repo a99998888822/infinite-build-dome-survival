@@ -228,6 +228,12 @@ func _weapon_execution() -> void:
 		source.runtime_stats.projectile_count = 3
 		source.runtime_stats.attack_speed = 100
 		source.runtime_stats.crit_chance = 0
+		var lamp_target: EnemyController
+		if source.is_copper_lamp():
+			lamp_target = manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(-60, 0))
+			lamp_target.set_physics_process(false)
+			lamp_target.modifier_stack.set_base_stat("max_hp", 100000)
+			lamp_target.current_hp = 100000
 		check(loadout.cast_weapon(source, player.global_position + Vector2(240, 0)), "cast " + source.weapon_id)
 		var state := loadout.active_casting.state_for(source)
 		check(state.executing and state.remaining == 0 and not loadout.cast_weapon(source, Vector2.ZERO), "execution rejects recast; cooldown has not started")
@@ -264,7 +270,7 @@ func _weapon_execution() -> void:
 				player.last_move_direction = Vector2.UP
 				loadout.tick(0)
 				body._physics_process(0.01)
-				check(body.heading == Vector2.UP and is_equal_approx(body.burst_duration, 5.4), "lamp follows movement and three projectiles spray for 5.4s")
+				check(body.target == lamp_target and body.heading.is_equal_approx(Vector2.LEFT) and is_equal_approx(body.burst_duration, 5.4), "lamp follows nearest enemy and three projectiles spray for 5.4s")
 			var before_age: float = body.elapsed if body is RitualDomain else body.age
 			GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 			body._physics_process(2)
@@ -282,8 +288,10 @@ func _weapon_execution() -> void:
 		loadout.tick(1)
 		check(state.remaining == remaining, "pause freezes cooldown")
 		GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+		if is_instance_valid(lamp_target):
+			lamp_target.free()
 		loadout.tick(remaining + 1)
-		check(loadout.active_casting.can_cast(source) and source.volley_index == 1, "cooldown completes without automatic repeat")
+		check(loadout.active_casting.can_cast(source) and source.volley_index == 1, "cooldown completes without repeat when no automatic target remains")
 		manager.clear_battle_entities()
 		for enemy in EnemyRegistry.get_registered_enemies().duplicate():
 			enemy.free()

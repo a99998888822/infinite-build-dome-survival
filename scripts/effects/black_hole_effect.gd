@@ -1,5 +1,6 @@
 extends Node2D
 class_name BlackHoleEffect
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -115,40 +116,11 @@ func _collect_targets() -> void:
 
 
 func _draw() -> void:
-	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var collapse := 1.0 - smoothstep(0.76, 1.0, progress)
-	var core_radius := _radius * 0.22 * collapse
-	var fade := (1.0 - progress * 0.3) * collapse
-	if collapse <= 0.0:
-		return
-	# Lift only the drawing; the attraction center and collision query stay on
-	# the original ground point. A round body and separate shadow imply height.
-	var center := Vector2(0, roundf((-_radius * 0.22 - 10.0) / 2.0) * 2.0)
-	if _visual_detail > 0:
-		_draw_absorbing_segments(core_radius, fade, center)
-	draw_set_transform(center)
-	if _visual_detail > 0:
-		_draw_accretion_rings(fade, core_radius, false)
-	PIXEL.ellipse(self, Vector2.ONE * (core_radius + 2.0), Color(0.18, 0.15, 0.27, collapse))
-	PIXEL.ellipse(self, Vector2.ONE * core_radius, Color(0.052, 0.041, 0.091, collapse))
-	# Broad, clipped color masses suggest a sphere without noisy surface detail.
-	draw_set_transform(center + (Vector2(-0.14, -0.16) * core_radius / 2.0).round() * 2.0)
-	PIXEL.ellipse(self, Vector2.ONE * core_radius * 0.72, Color(0.105, 0.082, 0.17, collapse))
-	draw_set_transform(center + (Vector2(0.12, 0.15) * core_radius / 2.0).round() * 2.0)
-	PIXEL.ellipse(self, Vector2.ONE * core_radius * 0.78, Color(0.018, 0.02, 0.041, collapse))
-	draw_set_transform(center)
-	PIXEL.arc(self, core_radius, 3.4, 5.15, Color(0.44, 0.37, 0.59, fade), 2)
-	PIXEL.arc(self, core_radius - 4.0, 3.8, 4.6, Color(0.25, 0.21, 0.38, fade * 0.85), 2)
-	if _visual_detail > 0:
-		_draw_accretion_rings(fade, core_radius, true)
-	draw_set_transform(Vector2.ZERO)
+	BAKED.draw(self, "hole_d%d" % _visual_detail, int(_elapsed / _duration * 51.0), Vector2.ONE * (_radius / DEFAULT_RADIUS))
 
 
 func _draw_shadow() -> void:
-	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var collapse := 1.0 - smoothstep(0.76, 1.0, progress)
-	if collapse > 0.0:
-		PIXEL.ellipse(_shadow_layer, Vector2(_radius * 0.2, _radius * 0.06) * collapse, Color(0.01, 0.02, 0.025, 0.35 * collapse))
+	BAKED.draw(_shadow_layer, "hole_shadow", int(_elapsed / _duration * 51.0), Vector2.ONE * (_radius / DEFAULT_RADIUS))
 
 
 func _draw_accretion_rings(fade: float, core_radius: float, front: bool) -> void:

@@ -232,6 +232,12 @@ func _update_indicator() -> void:
 		cancel_aim()
 		return
 	indicator.global_position = player.global_position
-	var offset := player.last_move_direction if selected_weapon.is_copper_lamp() else pointer_world() - player.global_position
+	var offset := pointer_world() - player.global_position
+	if selected_weapon.is_copper_lamp():
+		var target := loadout.active_casting._auto_target(selected_weapon)
+		if target == null:
+			indicator.hide()
+			return
+		offset = target.global_position - selected_weapon.get_attack_origin()
 	indicator.configure(selected_weapon, offset, loadout.active_casting.can_cast(selected_weapon))
 	indicator.show()

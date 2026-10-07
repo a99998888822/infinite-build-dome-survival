@@ -1,0 +1,6962 @@
+[
+	{
+		"difficulty": "1",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 6.0,
+		"elite_dash": 7,
+		"elite_expected": 0.0,
+		"elite_hp": 160,
+		"elite_speed": 102.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 4.0,
+		"normal_hp": 24,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3240.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4860.0
+			}
+		],
+		"spawn_rate_per_second": 0.51440329218107,
+		"wave": 1
+	},
+	{
+		"difficulty": "1",
+		"duration": 35.0,
+		"elite_armor": 1.0,
+		"elite_contact": 6.0,
+		"elite_dash": 7,
+		"elite_expected": 0.0,
+		"elite_hp": 198,
+		"elite_speed": 103.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 4.0,
+		"normal_hp": 35,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3121.46341463415
+			},
+			{
+				"count": 1,
+				"interval_ms": 4675.60975609756
+			}
+		],
+		"spawn_rate_per_second": 0.534238404328141,
+		"wave": 2
+	},
+	{
+		"difficulty": "1",
+		"duration": 40.0,
+		"elite_armor": 2.0,
+		"elite_contact": 6.0,
+		"elite_dash": 7,
+		"elite_expected": 0.0,
+		"elite_hp": 246,
+		"elite_speed": 103.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 4.0,
+		"normal_hp": 45,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 3008.57142857143
+			},
+			{
+				"count": 1,
+				"interval_ms": 4500.0
+			}
+		],
+		"spawn_rate_per_second": 0.88698955365622,
+		"wave": 3
+	},
+	{
+		"difficulty": "1",
+		"duration": 45.0,
+		"elite_armor": 3.0,
+		"elite_contact": 6.0,
+		"elite_dash": 7,
+		"elite_expected": 0.2,
+		"elite_hp": 305,
+		"elite_speed": 104.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 4.0,
+		"normal_hp": 56,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2900.93023255814
+			},
+			{
+				"count": 1,
+				"interval_ms": 4332.55813953488
+			}
+		],
+		"spawn_rate_per_second": 0.920244543432949,
+		"wave": 4
+	},
+	{
+		"difficulty": "1",
+		"duration": 50.0,
+		"elite_armor": 4.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.25,
+		"elite_hp": 378,
+		"elite_speed": 104.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 4.0,
+		"normal_hp": 66,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			},
+			{
+				"count": 1,
+				"interval_ms": 4172.72727272727
+			}
+		],
+		"spawn_rate_per_second": 0.95440125367886,
+		"wave": 5
+	},
+	{
+		"difficulty": "1",
+		"duration": 55.0,
+		"elite_armor": 5.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.3,
+		"elite_hp": 469,
+		"elite_speed": 105.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 4.0,
+		"normal_hp": 77,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2700.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4020.0
+			}
+		],
+		"spawn_rate_per_second": 0.989496959646213,
+		"wave": 6
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 6.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.35,
+		"elite_hp": 582,
+		"elite_speed": 105.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 4.0,
+		"normal_hp": 87,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2606.08695652174
+			},
+			{
+				"count": 2,
+				"interval_ms": 3873.91304347826
+			}
+		],
+		"spawn_rate_per_second": 1.28370795037462,
+		"wave": 7
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 7.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.4,
+		"elite_hp": 721,
+		"elite_speed": 106.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 4.0,
+		"normal_hp": 98,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2516.17021276596
+			},
+			{
+				"count": 2,
+				"interval_ms": 3734.04255319149
+			}
+		],
+		"spawn_rate_per_second": 1.3304713213389,
+		"wave": 8
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 8.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.45,
+		"elite_hp": 894,
+		"elite_speed": 106.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 5.0,
+		"normal_hp": 108,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2430.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3600.0
+			}
+		],
+		"spawn_rate_per_second": 1.37860082304527,
+		"wave": 9
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 9.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.5,
+		"elite_hp": 1109,
+		"elite_speed": 107.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 5.0,
+		"normal_hp": 119,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2347.34693877551
+			},
+			{
+				"count": 2,
+				"interval_ms": 3471.42857142857
+			}
+		],
+		"spawn_rate_per_second": 1.85417028922506,
+		"wave": 10
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 10.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.55,
+		"elite_hp": 1375,
+		"elite_speed": 107.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 5.0,
+		"normal_hp": 129,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2268.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3348.0
+			}
+		],
+		"spawn_rate_per_second": 1.92012288786482,
+		"wave": 11
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 11.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.6,
+		"elite_hp": 1705,
+		"elite_speed": 108.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 5.0,
+		"normal_hp": 140,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2191.76470588235
+			},
+			{
+				"count": 2,
+				"interval_ms": 3229.41176470588
+			}
+		],
+		"spawn_rate_per_second": 1.98806789683482,
+		"wave": 12
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 12.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.65,
+		"elite_hp": 2114,
+		"elite_speed": 108.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 5.0,
+		"normal_hp": 150,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2118.46153846154
+			},
+			{
+				"count": 2,
+				"interval_ms": 3115.38461538462
+			}
+		],
+		"spawn_rate_per_second": 2.05809731299927,
+		"wave": 13
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 13.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.7,
+		"elite_hp": 2622,
+		"elite_speed": 109.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 5.0,
+		"normal_hp": 161,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2047.92452830189
+			},
+			{
+				"count": 2,
+				"interval_ms": 3005.66037735849
+			}
+		],
+		"spawn_rate_per_second": 2.1303089074402,
+		"wave": 14
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 14.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.75,
+		"elite_hp": 3251,
+		"elite_speed": 109.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 5.0,
+		"normal_hp": 171,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1980.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 2900.0
+			}
+		],
+		"spawn_rate_per_second": 2.20480668756531,
+		"wave": 15
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 15.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.8,
+		"elite_hp": 4031,
+		"elite_speed": 110.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 5.0,
+		"normal_hp": 182,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1914.54545454545
+			},
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			}
+		],
+		"spawn_rate_per_second": 2.28170140450842,
+		"wave": 16
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 16.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.85,
+		"elite_hp": 4999,
+		"elite_speed": 110.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 5.0,
+		"normal_hp": 192,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1851.42857142857
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 2.73148148148148,
+		"wave": 17
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.9,
+		"elite_hp": 6199,
+		"elite_speed": 111.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 5.0,
+		"normal_hp": 203,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1790.52631578947
+			},
+			{
+				"count": 3,
+				"interval_ms": 2605.26315789474
+			}
+		],
+		"spawn_rate_per_second": 3.38549516327294,
+		"wave": 18
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.95,
+		"elite_hp": 7686,
+		"elite_speed": 111.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 5.0,
+		"normal_hp": 213,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1731.72413793103
+			},
+			{
+				"count": 3,
+				"interval_ms": 2513.79310344828
+			}
+		],
+		"spawn_rate_per_second": 3.50325235629895,
+		"wave": 19
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 19.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 1.0,
+		"elite_hp": 9531,
+		"elite_speed": 112.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 5.0,
+		"normal_hp": 224,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1674.91525423729
+			},
+			{
+				"count": 3,
+				"interval_ms": 2425.42372881356
+			}
+		],
+		"spawn_rate_per_second": 3.62507780489016,
+		"wave": 20
+	},
+	{
+		"difficulty": "1",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.0,
+		"elite_hp": 304,
+		"elite_speed": 102.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 6.0,
+		"normal_hp": 46,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3240.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4860.0
+			}
+		],
+		"spawn_rate_per_second": 0.51440329218107,
+		"wave": 1
+	},
+	{
+		"difficulty": "1",
+		"duration": 35.0,
+		"elite_armor": 2.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.0,
+		"elite_hp": 377,
+		"elite_speed": 103.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 6.0,
+		"normal_hp": 66,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3121.46341463415
+			},
+			{
+				"count": 1,
+				"interval_ms": 4675.60975609756
+			}
+		],
+		"spawn_rate_per_second": 0.534238404328141,
+		"wave": 2
+	},
+	{
+		"difficulty": "1",
+		"duration": 40.0,
+		"elite_armor": 3.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.0,
+		"elite_hp": 467,
+		"elite_speed": 103.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 2.0,
+		"normal_damage": 6.0,
+		"normal_hp": 86,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 3008.57142857143
+			},
+			{
+				"count": 1,
+				"interval_ms": 4500.0
+			}
+		],
+		"spawn_rate_per_second": 0.88698955365622,
+		"wave": 3
+	},
+	{
+		"difficulty": "1",
+		"duration": 45.0,
+		"elite_armor": 5.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.3,
+		"elite_hp": 580,
+		"elite_speed": 104.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 6.0,
+		"normal_hp": 106,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2900.93023255814
+			},
+			{
+				"count": 1,
+				"interval_ms": 4332.55813953488
+			}
+		],
+		"spawn_rate_per_second": 0.920244543432949,
+		"wave": 4
+	},
+	{
+		"difficulty": "1",
+		"duration": 50.0,
+		"elite_armor": 7.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.375,
+		"elite_hp": 719,
+		"elite_speed": 104.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 6.0,
+		"normal_hp": 126,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			},
+			{
+				"count": 1,
+				"interval_ms": 4172.72727272727
+			}
+		],
+		"spawn_rate_per_second": 0.95440125367886,
+		"wave": 5
+	},
+	{
+		"difficulty": "1",
+		"duration": 55.0,
+		"elite_armor": 8.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.45,
+		"elite_hp": 891,
+		"elite_speed": 105.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 6.0,
+		"normal_hp": 146,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2700.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4020.0
+			}
+		],
+		"spawn_rate_per_second": 0.989496959646213,
+		"wave": 6
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 10.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.525,
+		"elite_hp": 1105,
+		"elite_speed": 105.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 6.0,
+		"normal_hp": 166,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2606.08695652174
+			},
+			{
+				"count": 2,
+				"interval_ms": 3873.91304347826
+			}
+		],
+		"spawn_rate_per_second": 1.28370795037462,
+		"wave": 7
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 12.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.6,
+		"elite_hp": 1370,
+		"elite_speed": 106.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 6.0,
+		"normal_hp": 186,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2516.17021276596
+			},
+			{
+				"count": 2,
+				"interval_ms": 3734.04255319149
+			}
+		],
+		"spawn_rate_per_second": 1.3304713213389,
+		"wave": 8
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 13.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.675,
+		"elite_hp": 1699,
+		"elite_speed": 106.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 7.0,
+		"normal_hp": 206,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2430.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3600.0
+			}
+		],
+		"spawn_rate_per_second": 1.37860082304527,
+		"wave": 9
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 15.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.75,
+		"elite_hp": 2107,
+		"elite_speed": 107.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 7.0,
+		"normal_hp": 226,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2347.34693877551
+			},
+			{
+				"count": 2,
+				"interval_ms": 3471.42857142857
+			}
+		],
+		"spawn_rate_per_second": 1.85417028922506,
+		"wave": 10
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.825,
+		"elite_hp": 2613,
+		"elite_speed": 107.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 7.0,
+		"normal_hp": 246,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2268.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3348.0
+			}
+		],
+		"spawn_rate_per_second": 1.92012288786482,
+		"wave": 11
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 0.9,
+		"elite_hp": 3240,
+		"elite_speed": 108.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 7.0,
+		"normal_hp": 266,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2191.76470588235
+			},
+			{
+				"count": 2,
+				"interval_ms": 3229.41176470588
+			}
+		],
+		"spawn_rate_per_second": 1.98806789683482,
+		"wave": 12
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.975,
+		"elite_hp": 4017,
+		"elite_speed": 108.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 7.0,
+		"normal_hp": 286,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2118.46153846154
+			},
+			{
+				"count": 2,
+				"interval_ms": 3115.38461538462
+			}
+		],
+		"spawn_rate_per_second": 2.05809731299927,
+		"wave": 13
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.05,
+		"elite_hp": 4981,
+		"elite_speed": 109.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 7.0,
+		"normal_hp": 306,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2047.92452830189
+			},
+			{
+				"count": 2,
+				"interval_ms": 3005.66037735849
+			}
+		],
+		"spawn_rate_per_second": 2.1303089074402,
+		"wave": 14
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 23.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.125,
+		"elite_hp": 6177,
+		"elite_speed": 109.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 7.0,
+		"normal_hp": 326,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1980.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 2900.0
+			}
+		],
+		"spawn_rate_per_second": 2.20480668756531,
+		"wave": 15
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 25.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.2,
+		"elite_hp": 7659,
+		"elite_speed": 110.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 7.0,
+		"normal_hp": 346,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1914.54545454545
+			},
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			}
+		],
+		"spawn_rate_per_second": 2.28170140450842,
+		"wave": 16
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 27.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.275,
+		"elite_hp": 9498,
+		"elite_speed": 110.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 7.0,
+		"normal_hp": 366,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1851.42857142857
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 2.73148148148148,
+		"wave": 17
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 28.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.35,
+		"elite_hp": 11777,
+		"elite_speed": 111.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 7.0,
+		"normal_hp": 386,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1790.52631578947
+			},
+			{
+				"count": 3,
+				"interval_ms": 2605.26315789474
+			}
+		],
+		"spawn_rate_per_second": 3.38549516327294,
+		"wave": 18
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 30.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 1.425,
+		"elite_hp": 14604,
+		"elite_speed": 111.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 7.0,
+		"normal_hp": 406,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1731.72413793103
+			},
+			{
+				"count": 3,
+				"interval_ms": 2513.79310344828
+			}
+		],
+		"spawn_rate_per_second": 3.50325235629895,
+		"wave": 19
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 32.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 1.5,
+		"elite_hp": 18109,
+		"elite_speed": 112.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 8.0,
+		"normal_hp": 426,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1674.91525423729
+			},
+			{
+				"count": 3,
+				"interval_ms": 2425.42372881356
+			}
+		],
+		"spawn_rate_per_second": 3.62507780489016,
+		"wave": 20
+	},
+	{
+		"difficulty": "1",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.0,
+		"elite_hp": 448,
+		"elite_speed": 102.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 8.0,
+		"normal_hp": 67,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3240.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4860.0
+			}
+		],
+		"spawn_rate_per_second": 0.51440329218107,
+		"wave": 1
+	},
+	{
+		"difficulty": "1",
+		"duration": 35.0,
+		"elite_armor": 2.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.0,
+		"elite_hp": 556,
+		"elite_speed": 103.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 8.0,
+		"normal_hp": 97,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3121.46341463415
+			},
+			{
+				"count": 1,
+				"interval_ms": 4675.60975609756
+			}
+		],
+		"spawn_rate_per_second": 0.534238404328141,
+		"wave": 2
+	},
+	{
+		"difficulty": "1",
+		"duration": 40.0,
+		"elite_armor": 5.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.0,
+		"elite_hp": 689,
+		"elite_speed": 103.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 2.0,
+		"normal_damage": 8.0,
+		"normal_hp": 126,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 3008.57142857143
+			},
+			{
+				"count": 1,
+				"interval_ms": 4500.0
+			}
+		],
+		"spawn_rate_per_second": 0.88698955365622,
+		"wave": 3
+	},
+	{
+		"difficulty": "1",
+		"duration": 45.0,
+		"elite_armor": 7.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.4,
+		"elite_hp": 854,
+		"elite_speed": 104.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 8.0,
+		"normal_hp": 156,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2900.93023255814
+			},
+			{
+				"count": 1,
+				"interval_ms": 4332.55813953488
+			}
+		],
+		"spawn_rate_per_second": 0.920244543432949,
+		"wave": 4
+	},
+	{
+		"difficulty": "1",
+		"duration": 50.0,
+		"elite_armor": 9.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.5,
+		"elite_hp": 1059,
+		"elite_speed": 104.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 8.0,
+		"normal_hp": 185,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			},
+			{
+				"count": 1,
+				"interval_ms": 4172.72727272727
+			}
+		],
+		"spawn_rate_per_second": 0.95440125367886,
+		"wave": 5
+	},
+	{
+		"difficulty": "1",
+		"duration": 55.0,
+		"elite_armor": 12.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.6,
+		"elite_hp": 1313,
+		"elite_speed": 105.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 8.0,
+		"normal_hp": 215,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2700.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4020.0
+			}
+		],
+		"spawn_rate_per_second": 0.989496959646213,
+		"wave": 6
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 14.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.7,
+		"elite_hp": 1629,
+		"elite_speed": 105.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 8.0,
+		"normal_hp": 244,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2606.08695652174
+			},
+			{
+				"count": 2,
+				"interval_ms": 3873.91304347826
+			}
+		],
+		"spawn_rate_per_second": 1.28370795037462,
+		"wave": 7
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 16.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.8,
+		"elite_hp": 2019,
+		"elite_speed": 106.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 9.0,
+		"normal_hp": 274,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2516.17021276596
+			},
+			{
+				"count": 2,
+				"interval_ms": 3734.04255319149
+			}
+		],
+		"spawn_rate_per_second": 1.3304713213389,
+		"wave": 8
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 19.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.9,
+		"elite_hp": 2504,
+		"elite_speed": 106.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 9.0,
+		"normal_hp": 303,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2430.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3600.0
+			}
+		],
+		"spawn_rate_per_second": 1.37860082304527,
+		"wave": 9
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 21.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.0,
+		"elite_hp": 3105,
+		"elite_speed": 107.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 9.0,
+		"normal_hp": 332,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2347.34693877551
+			},
+			{
+				"count": 2,
+				"interval_ms": 3471.42857142857
+			}
+		],
+		"spawn_rate_per_second": 1.85417028922506,
+		"wave": 10
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 24.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.1,
+		"elite_hp": 3850,
+		"elite_speed": 107.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 9.0,
+		"normal_hp": 362,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2268.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3348.0
+			}
+		],
+		"spawn_rate_per_second": 1.92012288786482,
+		"wave": 11
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 26.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.2,
+		"elite_hp": 4774,
+		"elite_speed": 108.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 9.0,
+		"normal_hp": 391,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2191.76470588235
+			},
+			{
+				"count": 2,
+				"interval_ms": 3229.41176470588
+			}
+		],
+		"spawn_rate_per_second": 1.98806789683482,
+		"wave": 12
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 28.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.3,
+		"elite_hp": 5920,
+		"elite_speed": 108.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 9.0,
+		"normal_hp": 421,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2118.46153846154
+			},
+			{
+				"count": 2,
+				"interval_ms": 3115.38461538462
+			}
+		],
+		"spawn_rate_per_second": 2.05809731299927,
+		"wave": 13
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 31.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.4,
+		"elite_hp": 7341,
+		"elite_speed": 109.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 9.0,
+		"normal_hp": 450,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2047.92452830189
+			},
+			{
+				"count": 2,
+				"interval_ms": 3005.66037735849
+			}
+		],
+		"spawn_rate_per_second": 2.1303089074402,
+		"wave": 14
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 33.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.5,
+		"elite_hp": 9103,
+		"elite_speed": 109.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 9.0,
+		"normal_hp": 480,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1980.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 2900.0
+			}
+		],
+		"spawn_rate_per_second": 2.20480668756531,
+		"wave": 15
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 35.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.5,
+		"elite_hp": 11288,
+		"elite_speed": 110.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 18.0,
+		"normal_damage": 9.0,
+		"normal_hp": 509,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1914.54545454545
+			},
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			}
+		],
+		"spawn_rate_per_second": 2.28170140450842,
+		"wave": 16
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 38.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 1.5,
+		"elite_hp": 13997,
+		"elite_speed": 110.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 19.0,
+		"normal_damage": 10.0,
+		"normal_hp": 539,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1851.42857142857
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 2.73148148148148,
+		"wave": 17
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 40.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 1.5,
+		"elite_hp": 17356,
+		"elite_speed": 111.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 10.0,
+		"normal_hp": 568,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1790.52631578947
+			},
+			{
+				"count": 3,
+				"interval_ms": 2605.26315789474
+			}
+		],
+		"spawn_rate_per_second": 3.38549516327294,
+		"wave": 18
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 42.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 1.5,
+		"elite_hp": 21521,
+		"elite_speed": 111.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 21.0,
+		"normal_damage": 10.0,
+		"normal_hp": 598,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1731.72413793103
+			},
+			{
+				"count": 3,
+				"interval_ms": 2513.79310344828
+			}
+		],
+		"spawn_rate_per_second": 3.50325235629895,
+		"wave": 19
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 45.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 1.5,
+		"elite_hp": 26686,
+		"elite_speed": 112.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 22.0,
+		"normal_damage": 10.0,
+		"normal_hp": 627,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1674.91525423729
+			},
+			{
+				"count": 3,
+				"interval_ms": 2425.42372881356
+			}
+		],
+		"spawn_rate_per_second": 3.62507780489016,
+		"wave": 20
+	},
+	{
+		"difficulty": "1",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 0.0,
+		"elite_hp": 736,
+		"elite_speed": 102.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 11.0,
+		"normal_hp": 110,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3240.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4860.0
+			}
+		],
+		"spawn_rate_per_second": 0.51440329218107,
+		"wave": 1
+	},
+	{
+		"difficulty": "1",
+		"duration": 35.0,
+		"elite_armor": 4.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 0.0,
+		"elite_hp": 913,
+		"elite_speed": 103.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 2.0,
+		"normal_damage": 12.0,
+		"normal_hp": 159,
+		"normal_speed": 51.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 1,
+				"interval_ms": 3121.46341463415
+			},
+			{
+				"count": 1,
+				"interval_ms": 4675.60975609756
+			}
+		],
+		"spawn_rate_per_second": 0.534238404328141,
+		"wave": 2
+	},
+	{
+		"difficulty": "1",
+		"duration": 40.0,
+		"elite_armor": 7.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 0.0,
+		"elite_hp": 1132,
+		"elite_speed": 103.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 4.0,
+		"normal_damage": 12.0,
+		"normal_hp": 207,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 3008.57142857143
+			},
+			{
+				"count": 1,
+				"interval_ms": 4500.0
+			}
+		],
+		"spawn_rate_per_second": 0.88698955365622,
+		"wave": 3
+	},
+	{
+		"difficulty": "1",
+		"duration": 45.0,
+		"elite_armor": 11.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 0.4,
+		"elite_hp": 1403,
+		"elite_speed": 104.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 12.0,
+		"normal_hp": 256,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2900.93023255814
+			},
+			{
+				"count": 1,
+				"interval_ms": 4332.55813953488
+			}
+		],
+		"spawn_rate_per_second": 0.920244543432949,
+		"wave": 4
+	},
+	{
+		"difficulty": "1",
+		"duration": 50.0,
+		"elite_armor": 15.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 0.5,
+		"elite_hp": 1740,
+		"elite_speed": 104.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 12.0,
+		"normal_hp": 304,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			},
+			{
+				"count": 1,
+				"interval_ms": 4172.72727272727
+			}
+		],
+		"spawn_rate_per_second": 0.95440125367886,
+		"wave": 5
+	},
+	{
+		"difficulty": "1",
+		"duration": 55.0,
+		"elite_armor": 19.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 0.6,
+		"elite_hp": 2158,
+		"elite_speed": 105.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 12.0,
+		"normal_hp": 353,
+		"normal_speed": 52.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2700.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4020.0
+			}
+		],
+		"spawn_rate_per_second": 0.989496959646213,
+		"wave": 6
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 0.7,
+		"elite_hp": 2676,
+		"elite_speed": 105.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 12.0,
+		"normal_hp": 401,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2606.08695652174
+			},
+			{
+				"count": 2,
+				"interval_ms": 3873.91304347826
+			}
+		],
+		"spawn_rate_per_second": 1.28370795037462,
+		"wave": 7
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 26.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 0.8,
+		"elite_hp": 3318,
+		"elite_speed": 106.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 13.0,
+		"normal_hp": 449,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2516.17021276596
+			},
+			{
+				"count": 2,
+				"interval_ms": 3734.04255319149
+			}
+		],
+		"spawn_rate_per_second": 1.3304713213389,
+		"wave": 8
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 30.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 0.9,
+		"elite_hp": 4114,
+		"elite_speed": 106.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 13.0,
+		"normal_hp": 498,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2430.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3600.0
+			}
+		],
+		"spawn_rate_per_second": 1.37860082304527,
+		"wave": 9
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 33.0,
+		"elite_contact": 20.0,
+		"elite_dash": 24,
+		"elite_expected": 1.0,
+		"elite_hp": 5101,
+		"elite_speed": 107.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 13.0,
+		"normal_hp": 546,
+		"normal_speed": 53.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2347.34693877551
+			},
+			{
+				"count": 2,
+				"interval_ms": 3471.42857142857
+			}
+		],
+		"spawn_rate_per_second": 1.85417028922506,
+		"wave": 10
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 37.0,
+		"elite_contact": 20.0,
+		"elite_dash": 24,
+		"elite_expected": 1.1,
+		"elite_hp": 6325,
+		"elite_speed": 107.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 19.0,
+		"normal_damage": 13.0,
+		"normal_hp": 595,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2268.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3348.0
+			}
+		],
+		"spawn_rate_per_second": 1.92012288786482,
+		"wave": 11
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 41.0,
+		"elite_contact": 20.0,
+		"elite_dash": 24,
+		"elite_expected": 1.2,
+		"elite_hp": 7844,
+		"elite_speed": 108.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 13.0,
+		"normal_hp": 643,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2191.76470588235
+			},
+			{
+				"count": 2,
+				"interval_ms": 3229.41176470588
+			}
+		],
+		"spawn_rate_per_second": 1.98806789683482,
+		"wave": 12
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 44.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 1.3,
+		"elite_hp": 9726,
+		"elite_speed": 108.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 22.0,
+		"normal_damage": 13.0,
+		"normal_hp": 691,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2118.46153846154
+			},
+			{
+				"count": 2,
+				"interval_ms": 3115.38461538462
+			}
+		],
+		"spawn_rate_per_second": 2.05809731299927,
+		"wave": 13
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 48.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 1.4,
+		"elite_hp": 12060,
+		"elite_speed": 109.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 24.0,
+		"normal_damage": 14.0,
+		"normal_hp": 740,
+		"normal_speed": 54.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2047.92452830189
+			},
+			{
+				"count": 2,
+				"interval_ms": 3005.66037735849
+			}
+		],
+		"spawn_rate_per_second": 2.1303089074402,
+		"wave": 14
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 52.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 1.5,
+		"elite_hp": 14955,
+		"elite_speed": 109.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 26.0,
+		"normal_damage": 14.0,
+		"normal_hp": 788,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1980.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 2900.0
+			}
+		],
+		"spawn_rate_per_second": 2.20480668756531,
+		"wave": 15
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 56.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 1.5,
+		"elite_hp": 18544,
+		"elite_speed": 110.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 28.0,
+		"normal_damage": 14.0,
+		"normal_hp": 837,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1914.54545454545
+			},
+			{
+				"count": 2,
+				"interval_ms": 2798.18181818182
+			}
+		],
+		"spawn_rate_per_second": 2.28170140450842,
+		"wave": 16
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 59.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 1.5,
+		"elite_hp": 22995,
+		"elite_speed": 110.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 30.0,
+		"normal_damage": 14.0,
+		"normal_hp": 885,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 1851.42857142857
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 2.73148148148148,
+		"wave": 17
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 63.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 1.5,
+		"elite_hp": 28513,
+		"elite_speed": 111.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 31.0,
+		"normal_damage": 14.0,
+		"normal_hp": 934,
+		"normal_speed": 55.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1790.52631578947
+			},
+			{
+				"count": 3,
+				"interval_ms": 2605.26315789474
+			}
+		],
+		"spawn_rate_per_second": 3.38549516327294,
+		"wave": 18
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 67.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 1.5,
+		"elite_hp": 35356,
+		"elite_speed": 111.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 33.0,
+		"normal_damage": 14.0,
+		"normal_hp": 982,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1731.72413793103
+			},
+			{
+				"count": 3,
+				"interval_ms": 2513.79310344828
+			}
+		],
+		"spawn_rate_per_second": 3.50325235629895,
+		"wave": 19
+	},
+	{
+		"difficulty": "1",
+		"duration": 60.0,
+		"elite_armor": 70.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 1.5,
+		"elite_hp": 43842,
+		"elite_speed": 112.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 35.0,
+		"normal_damage": 15.0,
+		"normal_hp": 1030,
+		"normal_speed": 56.0,
+		"population_limit": 24,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1674.91525423729
+			},
+			{
+				"count": 3,
+				"interval_ms": 2425.42372881356
+			}
+		],
+		"spawn_rate_per_second": 3.62507780489016,
+		"wave": 20
+	},
+	{
+		"difficulty": "2",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 7.0,
+		"elite_dash": 8,
+		"elite_expected": 0.0,
+		"elite_hp": 192,
+		"elite_speed": 122.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 5.0,
+		"normal_hp": 29,
+		"normal_speed": 61.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2880.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4320.0
+			}
+		],
+		"spawn_rate_per_second": 0.925925925925926,
+		"wave": 1
+	},
+	{
+		"difficulty": "2",
+		"duration": 35.0,
+		"elite_armor": 1.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.0,
+		"elite_hp": 238,
+		"elite_speed": 123.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 5.0,
+		"normal_hp": 41,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2774.63414634146
+			},
+			{
+				"count": 1,
+				"interval_ms": 4156.09756097561
+			}
+		],
+		"spawn_rate_per_second": 0.96142608109982,
+		"wave": 2
+	},
+	{
+		"difficulty": "2",
+		"duration": 40.0,
+		"elite_armor": 2.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.0,
+		"elite_hp": 295,
+		"elite_speed": 124.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 5.0,
+		"normal_hp": 54,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2674.28571428571
+			},
+			{
+				"count": 1,
+				"interval_ms": 4000.0
+			}
+		],
+		"spawn_rate_per_second": 0.997863247863248,
+		"wave": 3
+	},
+	{
+		"difficulty": "2",
+		"duration": 45.0,
+		"elite_armor": 4.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.2,
+		"elite_hp": 366,
+		"elite_speed": 124.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 5.0,
+		"normal_hp": 67,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2578.60465116279
+			},
+			{
+				"count": 2,
+				"interval_ms": 3851.16279069767
+			}
+		],
+		"spawn_rate_per_second": 1.29493694711086,
+		"wave": 4
+	},
+	{
+		"difficulty": "2",
+		"duration": 50.0,
+		"elite_armor": 5.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.25,
+		"elite_hp": 454,
+		"elite_speed": 125.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 5.0,
+		"normal_hp": 79,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2487.27272727273
+			},
+			{
+				"count": 2,
+				"interval_ms": 3709.09090909091
+			}
+		],
+		"spawn_rate_per_second": 1.34330925352597,
+		"wave": 5
+	},
+	{
+		"difficulty": "2",
+		"duration": 55.0,
+		"elite_armor": 6.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.3,
+		"elite_hp": 563,
+		"elite_speed": 125.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 5.0,
+		"normal_hp": 92,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2400.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3573.33333333333
+			}
+		],
+		"spawn_rate_per_second": 1.80970149253731,
+		"wave": 6
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 7.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.35,
+		"elite_hp": 698,
+		"elite_speed": 126.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 5.0,
+		"normal_hp": 105,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2316.52173913044
+			},
+			{
+				"count": 2,
+				"interval_ms": 3443.47826086957
+			}
+		],
+		"spawn_rate_per_second": 1.87585312585313,
+		"wave": 7
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 8.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.4,
+		"elite_hp": 865,
+		"elite_speed": 127.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 5.0,
+		"normal_hp": 117,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2236.59574468085
+			},
+			{
+				"count": 2,
+				"interval_ms": 3319.14893617021
+			}
+		],
+		"spawn_rate_per_second": 1.94388830347734,
+		"wave": 8
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 10.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.45,
+		"elite_hp": 1073,
+		"elite_speed": 127.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 5.0,
+		"normal_hp": 130,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2160.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3200.0
+			}
+		],
+		"spawn_rate_per_second": 2.01388888888889,
+		"wave": 9
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 11.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.5,
+		"elite_hp": 1331,
+		"elite_speed": 128.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 6.0,
+		"normal_hp": 142,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2086.5306122449
+			},
+			{
+				"count": 3,
+				"interval_ms": 3085.71428571429
+			}
+		],
+		"spawn_rate_per_second": 2.88928012519562,
+		"wave": 10
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 12.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.55,
+		"elite_hp": 1650,
+		"elite_speed": 129.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 6.0,
+		"normal_hp": 155,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2016.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2976.0
+			}
+		],
+		"spawn_rate_per_second": 2.99219150025602,
+		"wave": 11
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 13.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.6,
+		"elite_hp": 2046,
+		"elite_speed": 129.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 6.0,
+		"normal_hp": 168,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1948.23529411765
+			},
+			{
+				"count": 3,
+				"interval_ms": 2870.58823529412
+			}
+		],
+		"spawn_rate_per_second": 3.09822206383147,
+		"wave": 12
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 14.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.65,
+		"elite_hp": 2537,
+		"elite_speed": 130.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 6.0,
+		"normal_hp": 180,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1883.07692307692
+			},
+			{
+				"count": 3,
+				"interval_ms": 2769.23076923077
+			}
+		],
+		"spawn_rate_per_second": 3.20751633986928,
+		"wave": 13
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 16.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.7,
+		"elite_hp": 3146,
+		"elite_speed": 130.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 6.0,
+		"normal_hp": 193,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1820.37735849057
+			},
+			{
+				"count": 3,
+				"interval_ms": 2671.69811320755
+			}
+		],
+		"spawn_rate_per_second": 3.32022795626388,
+		"wave": 14
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.75,
+		"elite_hp": 3901,
+		"elite_speed": 131.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 6.0,
+		"normal_hp": 206,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1760.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2577.77777777778
+			}
+		],
+		"spawn_rate_per_second": 4.00470219435737,
+		"wave": 15
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.8,
+		"elite_hp": 4838,
+		"elite_speed": 132.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 6.0,
+		"normal_hp": 218,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1701.81818181818
+			},
+			{
+				"count": 3,
+				"interval_ms": 2487.27272727273
+			}
+		],
+		"spawn_rate_per_second": 4.14417453891138,
+		"wave": 16
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 19.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.85,
+		"elite_hp": 5999,
+		"elite_speed": 132.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 6.0,
+		"normal_hp": 231,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1645.71428571429
+			},
+			{
+				"count": 4,
+				"interval_ms": 2400.0
+			}
+		],
+		"spawn_rate_per_second": 4.70486111111111,
+		"wave": 17
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.9,
+		"elite_hp": 7438,
+		"elite_speed": 133.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 6.0,
+		"normal_hp": 244,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1591.57894736842
+			},
+			{
+				"count": 4,
+				"interval_ms": 2315.78947368421
+			}
+		],
+		"spawn_rate_per_second": 4.86880711880712,
+		"wave": 18
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.95,
+		"elite_hp": 9223,
+		"elite_speed": 133.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 6.0,
+		"normal_hp": 256,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1539.31034482759
+			},
+			{
+				"count": 4,
+				"interval_ms": 2234.48275862069
+			}
+		],
+		"spawn_rate_per_second": 5.03833134209478,
+		"wave": 19
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 23.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.0,
+		"elite_hp": 11437,
+		"elite_speed": 134.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 6.0,
+		"normal_hp": 269,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1488.81355932203
+			},
+			{
+				"count": 4,
+				"interval_ms": 2155.93220338983
+			}
+		],
+		"spawn_rate_per_second": 5.21372478262364,
+		"wave": 20
+	},
+	{
+		"difficulty": "2",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.0,
+		"elite_hp": 365,
+		"elite_speed": 122.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 7.0,
+		"normal_hp": 55,
+		"normal_speed": 61.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2880.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4320.0
+			}
+		],
+		"spawn_rate_per_second": 0.925925925925926,
+		"wave": 1
+	},
+	{
+		"difficulty": "2",
+		"duration": 35.0,
+		"elite_armor": 2.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.0,
+		"elite_hp": 452,
+		"elite_speed": 123.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 7.0,
+		"normal_hp": 79,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2774.63414634146
+			},
+			{
+				"count": 1,
+				"interval_ms": 4156.09756097561
+			}
+		],
+		"spawn_rate_per_second": 0.96142608109982,
+		"wave": 2
+	},
+	{
+		"difficulty": "2",
+		"duration": 40.0,
+		"elite_armor": 4.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.0,
+		"elite_hp": 561,
+		"elite_speed": 124.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 2.0,
+		"normal_damage": 7.0,
+		"normal_hp": 103,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2674.28571428571
+			},
+			{
+				"count": 1,
+				"interval_ms": 4000.0
+			}
+		],
+		"spawn_rate_per_second": 0.997863247863248,
+		"wave": 3
+	},
+	{
+		"difficulty": "2",
+		"duration": 45.0,
+		"elite_armor": 6.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.3,
+		"elite_hp": 696,
+		"elite_speed": 124.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 7.0,
+		"normal_hp": 127,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2578.60465116279
+			},
+			{
+				"count": 2,
+				"interval_ms": 3851.16279069767
+			}
+		],
+		"spawn_rate_per_second": 1.29493694711086,
+		"wave": 4
+	},
+	{
+		"difficulty": "2",
+		"duration": 50.0,
+		"elite_armor": 8.0,
+		"elite_contact": 11.0,
+		"elite_dash": 13,
+		"elite_expected": 0.375,
+		"elite_hp": 862,
+		"elite_speed": 125.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 7.0,
+		"normal_hp": 151,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2487.27272727273
+			},
+			{
+				"count": 2,
+				"interval_ms": 3709.09090909091
+			}
+		],
+		"spawn_rate_per_second": 1.34330925352597,
+		"wave": 5
+	},
+	{
+		"difficulty": "2",
+		"duration": 55.0,
+		"elite_armor": 10.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.45,
+		"elite_hp": 1069,
+		"elite_speed": 125.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 8.0,
+		"normal_hp": 175,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2400.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3573.33333333333
+			}
+		],
+		"spawn_rate_per_second": 1.80970149253731,
+		"wave": 6
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 12.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.525,
+		"elite_hp": 1326,
+		"elite_speed": 126.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 8.0,
+		"normal_hp": 199,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2316.52173913044
+			},
+			{
+				"count": 2,
+				"interval_ms": 3443.47826086957
+			}
+		],
+		"spawn_rate_per_second": 1.87585312585313,
+		"wave": 7
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 14.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.6,
+		"elite_hp": 1644,
+		"elite_speed": 127.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 8.0,
+		"normal_hp": 223,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2236.59574468085
+			},
+			{
+				"count": 2,
+				"interval_ms": 3319.14893617021
+			}
+		],
+		"spawn_rate_per_second": 1.94388830347734,
+		"wave": 8
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 16.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.675,
+		"elite_hp": 2039,
+		"elite_speed": 127.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 8.0,
+		"normal_hp": 247,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2160.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3200.0
+			}
+		],
+		"spawn_rate_per_second": 2.01388888888889,
+		"wave": 9
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.75,
+		"elite_hp": 2528,
+		"elite_speed": 128.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 8.0,
+		"normal_hp": 271,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2086.5306122449
+			},
+			{
+				"count": 3,
+				"interval_ms": 3085.71428571429
+			}
+		],
+		"spawn_rate_per_second": 2.88928012519562,
+		"wave": 10
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.825,
+		"elite_hp": 3135,
+		"elite_speed": 129.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 8.0,
+		"normal_hp": 295,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2016.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2976.0
+			}
+		],
+		"spawn_rate_per_second": 2.99219150025602,
+		"wave": 11
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.9,
+		"elite_hp": 3888,
+		"elite_speed": 129.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 8.0,
+		"normal_hp": 319,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1948.23529411765
+			},
+			{
+				"count": 3,
+				"interval_ms": 2870.58823529412
+			}
+		],
+		"spawn_rate_per_second": 3.09822206383147,
+		"wave": 12
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 24.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.975,
+		"elite_hp": 4821,
+		"elite_speed": 130.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 8.0,
+		"normal_hp": 343,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1883.07692307692
+			},
+			{
+				"count": 3,
+				"interval_ms": 2769.23076923077
+			}
+		],
+		"spawn_rate_per_second": 3.20751633986928,
+		"wave": 13
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 26.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.05,
+		"elite_hp": 5978,
+		"elite_speed": 130.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 8.0,
+		"normal_hp": 367,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1820.37735849057
+			},
+			{
+				"count": 3,
+				"interval_ms": 2671.69811320755
+			}
+		],
+		"spawn_rate_per_second": 3.32022795626388,
+		"wave": 14
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 28.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.125,
+		"elite_hp": 7412,
+		"elite_speed": 131.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 9.0,
+		"normal_hp": 391,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1760.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2577.77777777778
+			}
+		],
+		"spawn_rate_per_second": 4.00470219435737,
+		"wave": 15
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 30.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.2,
+		"elite_hp": 9191,
+		"elite_speed": 132.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 9.0,
+		"normal_hp": 415,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1701.81818181818
+			},
+			{
+				"count": 3,
+				"interval_ms": 2487.27272727273
+			}
+		],
+		"spawn_rate_per_second": 4.14417453891138,
+		"wave": 16
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 32.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.275,
+		"elite_hp": 11397,
+		"elite_speed": 132.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 9.0,
+		"normal_hp": 439,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1645.71428571429
+			},
+			{
+				"count": 4,
+				"interval_ms": 2400.0
+			}
+		],
+		"spawn_rate_per_second": 4.70486111111111,
+		"wave": 17
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 34.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.35,
+		"elite_hp": 14133,
+		"elite_speed": 133.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 9.0,
+		"normal_hp": 463,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1591.57894736842
+			},
+			{
+				"count": 4,
+				"interval_ms": 2315.78947368421
+			}
+		],
+		"spawn_rate_per_second": 4.86880711880712,
+		"wave": 18
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 36.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.425,
+		"elite_hp": 17524,
+		"elite_speed": 133.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 18.0,
+		"normal_damage": 9.0,
+		"normal_hp": 487,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1539.31034482759
+			},
+			{
+				"count": 4,
+				"interval_ms": 2234.48275862069
+			}
+		],
+		"spawn_rate_per_second": 5.03833134209478,
+		"wave": 19
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 38.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.5,
+		"elite_hp": 21730,
+		"elite_speed": 134.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 19.0,
+		"normal_damage": 9.0,
+		"normal_hp": 511,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1488.81355932203
+			},
+			{
+				"count": 4,
+				"interval_ms": 2155.93220338983
+			}
+		],
+		"spawn_rate_per_second": 5.21372478262364,
+		"wave": 20
+	},
+	{
+		"difficulty": "2",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 0.0,
+		"elite_hp": 538,
+		"elite_speed": 122.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 9.0,
+		"normal_hp": 81,
+		"normal_speed": 61.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2880.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4320.0
+			}
+		],
+		"spawn_rate_per_second": 0.925925925925926,
+		"wave": 1
+	},
+	{
+		"difficulty": "2",
+		"duration": 35.0,
+		"elite_armor": 3.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 0.0,
+		"elite_hp": 667,
+		"elite_speed": 123.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 1.0,
+		"normal_damage": 9.0,
+		"normal_hp": 116,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2774.63414634146
+			},
+			{
+				"count": 1,
+				"interval_ms": 4156.09756097561
+			}
+		],
+		"spawn_rate_per_second": 0.96142608109982,
+		"wave": 2
+	},
+	{
+		"difficulty": "2",
+		"duration": 40.0,
+		"elite_armor": 6.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.0,
+		"elite_hp": 827,
+		"elite_speed": 124.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 3.0,
+		"normal_damage": 10.0,
+		"normal_hp": 151,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2674.28571428571
+			},
+			{
+				"count": 1,
+				"interval_ms": 4000.0
+			}
+		],
+		"spawn_rate_per_second": 0.997863247863248,
+		"wave": 3
+	},
+	{
+		"difficulty": "2",
+		"duration": 45.0,
+		"elite_armor": 8.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.4,
+		"elite_hp": 1025,
+		"elite_speed": 124.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 10.0,
+		"normal_hp": 187,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2578.60465116279
+			},
+			{
+				"count": 2,
+				"interval_ms": 3851.16279069767
+			}
+		],
+		"spawn_rate_per_second": 1.29493694711086,
+		"wave": 4
+	},
+	{
+		"difficulty": "2",
+		"duration": 50.0,
+		"elite_armor": 11.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.5,
+		"elite_hp": 1271,
+		"elite_speed": 125.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 10.0,
+		"normal_hp": 222,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2487.27272727273
+			},
+			{
+				"count": 2,
+				"interval_ms": 3709.09090909091
+			}
+		],
+		"spawn_rate_per_second": 1.34330925352597,
+		"wave": 5
+	},
+	{
+		"difficulty": "2",
+		"duration": 55.0,
+		"elite_armor": 14.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.6,
+		"elite_hp": 1576,
+		"elite_speed": 125.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 10.0,
+		"normal_hp": 257,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2400.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3573.33333333333
+			}
+		],
+		"spawn_rate_per_second": 1.80970149253731,
+		"wave": 6
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.7,
+		"elite_hp": 1954,
+		"elite_speed": 126.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 10.0,
+		"normal_hp": 293,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2316.52173913044
+			},
+			{
+				"count": 2,
+				"interval_ms": 3443.47826086957
+			}
+		],
+		"spawn_rate_per_second": 1.87585312585313,
+		"wave": 7
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 0.8,
+		"elite_hp": 2423,
+		"elite_speed": 127.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 10.0,
+		"normal_hp": 328,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2236.59574468085
+			},
+			{
+				"count": 2,
+				"interval_ms": 3319.14893617021
+			}
+		],
+		"spawn_rate_per_second": 1.94388830347734,
+		"wave": 8
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 23.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 0.9,
+		"elite_hp": 3005,
+		"elite_speed": 127.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 10.0,
+		"normal_hp": 364,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2160.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3200.0
+			}
+		],
+		"spawn_rate_per_second": 2.01388888888889,
+		"wave": 9
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 25.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 1.0,
+		"elite_hp": 3726,
+		"elite_speed": 128.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 10.0,
+		"normal_hp": 399,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2086.5306122449
+			},
+			{
+				"count": 3,
+				"interval_ms": 3085.71428571429
+			}
+		],
+		"spawn_rate_per_second": 2.88928012519562,
+		"wave": 10
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 28.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 1.1,
+		"elite_hp": 4620,
+		"elite_speed": 129.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 11.0,
+		"normal_hp": 434,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2016.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2976.0
+			}
+		],
+		"spawn_rate_per_second": 2.99219150025602,
+		"wave": 11
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 31.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 1.2,
+		"elite_hp": 5729,
+		"elite_speed": 129.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 11.0,
+		"normal_hp": 470,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1948.23529411765
+			},
+			{
+				"count": 3,
+				"interval_ms": 2870.58823529412
+			}
+		],
+		"spawn_rate_per_second": 3.09822206383147,
+		"wave": 12
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 34.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.3,
+		"elite_hp": 7104,
+		"elite_speed": 130.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 11.0,
+		"normal_hp": 505,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1883.07692307692
+			},
+			{
+				"count": 3,
+				"interval_ms": 2769.23076923077
+			}
+		],
+		"spawn_rate_per_second": 3.20751633986928,
+		"wave": 13
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 37.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.4,
+		"elite_hp": 8809,
+		"elite_speed": 130.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 18.0,
+		"normal_damage": 11.0,
+		"normal_hp": 540,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1820.37735849057
+			},
+			{
+				"count": 3,
+				"interval_ms": 2671.69811320755
+			}
+		],
+		"spawn_rate_per_second": 3.32022795626388,
+		"wave": 14
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 39.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.5,
+		"elite_hp": 10924,
+		"elite_speed": 131.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 11.0,
+		"normal_hp": 576,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1760.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2577.77777777778
+			}
+		],
+		"spawn_rate_per_second": 4.00470219435737,
+		"wave": 15
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 42.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.5,
+		"elite_hp": 13545,
+		"elite_speed": 132.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 21.0,
+		"normal_damage": 11.0,
+		"normal_hp": 611,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1701.81818181818
+			},
+			{
+				"count": 3,
+				"interval_ms": 2487.27272727273
+			}
+		],
+		"spawn_rate_per_second": 4.14417453891138,
+		"wave": 16
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 45.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 1.5,
+		"elite_hp": 16796,
+		"elite_speed": 132.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 23.0,
+		"normal_damage": 11.0,
+		"normal_hp": 647,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1645.71428571429
+			},
+			{
+				"count": 4,
+				"interval_ms": 2400.0
+			}
+		],
+		"spawn_rate_per_second": 4.70486111111111,
+		"wave": 17
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 48.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 1.5,
+		"elite_hp": 20827,
+		"elite_speed": 133.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 24.0,
+		"normal_damage": 12.0,
+		"normal_hp": 682,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1591.57894736842
+			},
+			{
+				"count": 4,
+				"interval_ms": 2315.78947368421
+			}
+		],
+		"spawn_rate_per_second": 4.86880711880712,
+		"wave": 18
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 51.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 1.5,
+		"elite_hp": 25826,
+		"elite_speed": 133.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 25.0,
+		"normal_damage": 12.0,
+		"normal_hp": 717,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1539.31034482759
+			},
+			{
+				"count": 4,
+				"interval_ms": 2234.48275862069
+			}
+		],
+		"spawn_rate_per_second": 5.03833134209478,
+		"wave": 19
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 54.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 1.5,
+		"elite_hp": 32024,
+		"elite_speed": 134.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 27.0,
+		"normal_damage": 12.0,
+		"normal_hp": 753,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1488.81355932203
+			},
+			{
+				"count": 4,
+				"interval_ms": 2155.93220338983
+			}
+		],
+		"spawn_rate_per_second": 5.21372478262364,
+		"wave": 20
+	},
+	{
+		"difficulty": "2",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 0.0,
+		"elite_hp": 883,
+		"elite_speed": 122.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 14.0,
+		"normal_hp": 132,
+		"normal_speed": 61.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2880.0
+			},
+			{
+				"count": 1,
+				"interval_ms": 4320.0
+			}
+		],
+		"spawn_rate_per_second": 0.925925925925926,
+		"wave": 1
+	},
+	{
+		"difficulty": "2",
+		"duration": 35.0,
+		"elite_armor": 4.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 0.0,
+		"elite_hp": 1095,
+		"elite_speed": 123.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 2.0,
+		"normal_damage": 14.0,
+		"normal_hp": 191,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2774.63414634146
+			},
+			{
+				"count": 1,
+				"interval_ms": 4156.09756097561
+			}
+		],
+		"spawn_rate_per_second": 0.96142608109982,
+		"wave": 2
+	},
+	{
+		"difficulty": "2",
+		"duration": 40.0,
+		"elite_armor": 9.0,
+		"elite_contact": 21.0,
+		"elite_dash": 25,
+		"elite_expected": 0.0,
+		"elite_hp": 1358,
+		"elite_speed": 124.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 4.0,
+		"normal_damage": 14.0,
+		"normal_hp": 249,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2674.28571428571
+			},
+			{
+				"count": 1,
+				"interval_ms": 4000.0
+			}
+		],
+		"spawn_rate_per_second": 0.997863247863248,
+		"wave": 3
+	},
+	{
+		"difficulty": "2",
+		"duration": 45.0,
+		"elite_armor": 13.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 0.4,
+		"elite_hp": 1684,
+		"elite_speed": 124.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 14.0,
+		"normal_hp": 307,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2578.60465116279
+			},
+			{
+				"count": 2,
+				"interval_ms": 3851.16279069767
+			}
+		],
+		"spawn_rate_per_second": 1.29493694711086,
+		"wave": 4
+	},
+	{
+		"difficulty": "2",
+		"duration": 50.0,
+		"elite_armor": 18.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 0.5,
+		"elite_hp": 2088,
+		"elite_speed": 125.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 14.0,
+		"normal_hp": 365,
+		"normal_speed": 62.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2487.27272727273
+			},
+			{
+				"count": 2,
+				"interval_ms": 3709.09090909091
+			}
+		],
+		"spawn_rate_per_second": 1.34330925352597,
+		"wave": 5
+	},
+	{
+		"difficulty": "2",
+		"duration": 55.0,
+		"elite_armor": 22.0,
+		"elite_contact": 22.0,
+		"elite_dash": 26,
+		"elite_expected": 0.6,
+		"elite_hp": 2589,
+		"elite_speed": 125.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 15.0,
+		"normal_hp": 423,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2400.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3573.33333333333
+			}
+		],
+		"spawn_rate_per_second": 1.80970149253731,
+		"wave": 6
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 27.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.7,
+		"elite_hp": 3211,
+		"elite_speed": 126.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 15.0,
+		"normal_hp": 481,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2316.52173913044
+			},
+			{
+				"count": 2,
+				"interval_ms": 3443.47826086957
+			}
+		],
+		"spawn_rate_per_second": 1.87585312585313,
+		"wave": 7
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 31.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.8,
+		"elite_hp": 3981,
+		"elite_speed": 127.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 15.0,
+		"normal_hp": 539,
+		"normal_speed": 63.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2236.59574468085
+			},
+			{
+				"count": 2,
+				"interval_ms": 3319.14893617021
+			}
+		],
+		"spawn_rate_per_second": 1.94388830347734,
+		"wave": 8
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 36.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.9,
+		"elite_hp": 4937,
+		"elite_speed": 127.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 18.0,
+		"normal_damage": 15.0,
+		"normal_hp": 597,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2160.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3200.0
+			}
+		],
+		"spawn_rate_per_second": 2.01388888888889,
+		"wave": 9
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 40.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 1.0,
+		"elite_hp": 6121,
+		"elite_speed": 128.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 15.0,
+		"normal_hp": 655,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2086.5306122449
+			},
+			{
+				"count": 3,
+				"interval_ms": 3085.71428571429
+			}
+		],
+		"spawn_rate_per_second": 2.88928012519562,
+		"wave": 10
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 44.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 1.1,
+		"elite_hp": 7591,
+		"elite_speed": 129.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 22.0,
+		"normal_damage": 16.0,
+		"normal_hp": 714,
+		"normal_speed": 64.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2016.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2976.0
+			}
+		],
+		"spawn_rate_per_second": 2.99219150025602,
+		"wave": 11
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 49.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 1.2,
+		"elite_hp": 9412,
+		"elite_speed": 129.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 24.0,
+		"normal_damage": 16.0,
+		"normal_hp": 772,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1948.23529411765
+			},
+			{
+				"count": 3,
+				"interval_ms": 2870.58823529412
+			}
+		],
+		"spawn_rate_per_second": 3.09822206383147,
+		"wave": 12
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 53.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.3,
+		"elite_hp": 11671,
+		"elite_speed": 130.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 27.0,
+		"normal_damage": 16.0,
+		"normal_hp": 830,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1883.07692307692
+			},
+			{
+				"count": 3,
+				"interval_ms": 2769.23076923077
+			}
+		],
+		"spawn_rate_per_second": 3.20751633986928,
+		"wave": 13
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 58.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.4,
+		"elite_hp": 14472,
+		"elite_speed": 130.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 29.0,
+		"normal_damage": 16.0,
+		"normal_hp": 888,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1820.37735849057
+			},
+			{
+				"count": 3,
+				"interval_ms": 2671.69811320755
+			}
+		],
+		"spawn_rate_per_second": 3.32022795626388,
+		"wave": 14
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 62.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.5,
+		"elite_hp": 17946,
+		"elite_speed": 131.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 31.0,
+		"normal_damage": 16.0,
+		"normal_hp": 946,
+		"normal_speed": 65.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1760.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2577.77777777778
+			}
+		],
+		"spawn_rate_per_second": 4.00470219435737,
+		"wave": 15
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 67.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 1.5,
+		"elite_hp": 22253,
+		"elite_speed": 132.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 33.0,
+		"normal_damage": 17.0,
+		"normal_hp": 1004,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1701.81818181818
+			},
+			{
+				"count": 3,
+				"interval_ms": 2487.27272727273
+			}
+		],
+		"spawn_rate_per_second": 4.14417453891138,
+		"wave": 16
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 71.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 1.5,
+		"elite_hp": 27593,
+		"elite_speed": 132.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 36.0,
+		"normal_damage": 17.0,
+		"normal_hp": 1062,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1645.71428571429
+			},
+			{
+				"count": 4,
+				"interval_ms": 2400.0
+			}
+		],
+		"spawn_rate_per_second": 4.70486111111111,
+		"wave": 17
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 75.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 1.5,
+		"elite_hp": 34216,
+		"elite_speed": 133.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 38.0,
+		"normal_damage": 17.0,
+		"normal_hp": 1120,
+		"normal_speed": 66.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1591.57894736842
+			},
+			{
+				"count": 4,
+				"interval_ms": 2315.78947368421
+			}
+		],
+		"spawn_rate_per_second": 4.86880711880712,
+		"wave": 18
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 80.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 1.5,
+		"elite_hp": 42428,
+		"elite_speed": 133.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 40.0,
+		"normal_damage": 17.0,
+		"normal_hp": 1178,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1539.31034482759
+			},
+			{
+				"count": 4,
+				"interval_ms": 2234.48275862069
+			}
+		],
+		"spawn_rate_per_second": 5.03833134209478,
+		"wave": 19
+	},
+	{
+		"difficulty": "2",
+		"duration": 60.0,
+		"elite_armor": 84.0,
+		"elite_contact": 27.0,
+		"elite_dash": 32,
+		"elite_expected": 1.5,
+		"elite_hp": 52610,
+		"elite_speed": 134.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 42.0,
+		"normal_damage": 17.0,
+		"normal_hp": 1236,
+		"normal_speed": 67.0,
+		"population_limit": 36,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1488.81355932203
+			},
+			{
+				"count": 4,
+				"interval_ms": 2155.93220338983
+			}
+		],
+		"spawn_rate_per_second": 5.21372478262364,
+		"wave": 20
+	},
+	{
+		"difficulty": "3",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.0,
+		"elite_hp": 208,
+		"elite_speed": 133.0,
+		"erosion": 0,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 5.0,
+		"normal_hp": 31,
+		"normal_speed": 66.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2520.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3780.0
+			}
+		],
+		"spawn_rate_per_second": 1.32275132275132,
+		"wave": 1
+	},
+	{
+		"difficulty": "3",
+		"duration": 35.0,
+		"elite_armor": 1.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.2,
+		"elite_hp": 258,
+		"elite_speed": 133.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 1.0,
+		"normal_damage": 5.0,
+		"normal_hp": 45,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2427.80487804878
+			},
+			{
+				"count": 2,
+				"interval_ms": 3636.58536585366
+			}
+		],
+		"spawn_rate_per_second": 1.37375589684379,
+		"wave": 2
+	},
+	{
+		"difficulty": "3",
+		"duration": 40.0,
+		"elite_armor": 3.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.3,
+		"elite_hp": 320,
+		"elite_speed": 134.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 1.0,
+		"normal_damage": 5.0,
+		"normal_hp": 59,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2340.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3500.0
+			}
+		],
+		"spawn_rate_per_second": 1.85347985347985,
+		"wave": 3
+	},
+	{
+		"difficulty": "3",
+		"duration": 45.0,
+		"elite_armor": 4.0,
+		"elite_contact": 8.0,
+		"elite_dash": 10,
+		"elite_expected": 0.4,
+		"elite_hp": 397,
+		"elite_speed": 135.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 6.0,
+		"normal_hp": 72,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2256.27906976744
+			},
+			{
+				"count": 2,
+				"interval_ms": 3369.76744186047
+			}
+		],
+		"spawn_rate_per_second": 1.92313552562,
+		"wave": 4
+	},
+	{
+		"difficulty": "3",
+		"duration": 50.0,
+		"elite_armor": 5.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.5,
+		"elite_hp": 492,
+		"elite_speed": 135.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 6.0,
+		"normal_hp": 86,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2176.36363636364
+			},
+			{
+				"count": 2,
+				"interval_ms": 3245.45454545455
+			}
+		],
+		"spawn_rate_per_second": 1.99469261388766,
+		"wave": 5
+	},
+	{
+		"difficulty": "3",
+		"duration": 55.0,
+		"elite_armor": 7.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.6,
+		"elite_hp": 610,
+		"elite_speed": 136.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 6.0,
+		"normal_hp": 100,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2100.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3126.66666666667
+			}
+		],
+		"spawn_rate_per_second": 2.0682302771855,
+		"wave": 6
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 8.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.7,
+		"elite_hp": 756,
+		"elite_speed": 137.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 6.0,
+		"normal_hp": 113,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2026.95652173913
+			},
+			{
+				"count": 3,
+				"interval_ms": 3013.04347826087
+			}
+		],
+		"spawn_rate_per_second": 2.96907296907297,
+		"wave": 7
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 9.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.8,
+		"elite_hp": 938,
+		"elite_speed": 137.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 6.0,
+		"normal_hp": 127,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1957.02127659574
+			},
+			{
+				"count": 3,
+				"interval_ms": 2904.25531914894
+			}
+		],
+		"spawn_rate_per_second": 3.07688962483483,
+		"wave": 8
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 10.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 0.9,
+		"elite_hp": 1163,
+		"elite_speed": 138.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 6.0,
+		"normal_hp": 141,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1890.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2800.0
+			}
+		],
+		"spawn_rate_per_second": 3.18783068783069,
+		"wave": 9
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 12.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 1.0,
+		"elite_hp": 1442,
+		"elite_speed": 139.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 6.0,
+		"normal_hp": 154,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1825.71428571429
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 3.84976525821596,
+		"wave": 10
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 13.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 1.1,
+		"elite_hp": 1788,
+		"elite_speed": 139.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 6.0,
+		"normal_hp": 168,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1764.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2604.0
+			}
+		],
+		"spawn_rate_per_second": 3.9865408529003,
+		"wave": 11
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 14.0,
+		"elite_contact": 9.0,
+		"elite_dash": 11,
+		"elite_expected": 1.2,
+		"elite_hp": 2217,
+		"elite_speed": 140.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 6.0,
+		"normal_hp": 182,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1704.70588235294
+			},
+			{
+				"count": 3,
+				"interval_ms": 2511.76470588235
+			}
+		],
+		"spawn_rate_per_second": 4.12743667198407,
+		"wave": 12
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 16.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.3,
+		"elite_hp": 2749,
+		"elite_speed": 141.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 6.0,
+		"normal_hp": 195,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1647.69230769231
+			},
+			{
+				"count": 4,
+				"interval_ms": 2423.07692307692
+			}
+		],
+		"spawn_rate_per_second": 5.2922502334267,
+		"wave": 13
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.4,
+		"elite_hp": 3408,
+		"elite_speed": 141.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 6.0,
+		"normal_hp": 209,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1592.83018867925
+			},
+			{
+				"count": 4,
+				"interval_ms": 2337.7358490566
+			}
+		],
+		"spawn_rate_per_second": 5.47793719056051,
+		"wave": 14
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.5,
+		"elite_hp": 4226,
+		"elite_speed": 142.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 6.0,
+		"normal_hp": 223,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1540.0
+			},
+			{
+				"count": 4,
+				"interval_ms": 2255.55555555556
+			}
+		],
+		"spawn_rate_per_second": 5.66950291088222,
+		"wave": 15
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.6,
+		"elite_hp": 5241,
+		"elite_speed": 143.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 6.0,
+		"normal_hp": 236,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1489.09090909091
+			},
+			{
+				"count": 4,
+				"interval_ms": 2176.36363636364
+			}
+		],
+		"spawn_rate_per_second": 5.86723218302166,
+		"wave": 16
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 21.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.7,
+		"elite_hp": 6498,
+		"elite_speed": 143.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 7.0,
+		"normal_hp": 250,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1440.0
+			},
+			{
+				"count": 5,
+				"interval_ms": 2100.0
+			}
+		],
+		"spawn_rate_per_second": 6.54761904761905,
+		"wave": 17
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.8,
+		"elite_hp": 8058,
+		"elite_speed": 144.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 7.0,
+		"normal_hp": 264,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1392.63157894737
+			},
+			{
+				"count": 5,
+				"interval_ms": 2026.31578947368
+			}
+		],
+		"spawn_rate_per_second": 7.4939874939875,
+		"wave": 18
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 23.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 1.9,
+		"elite_hp": 9992,
+		"elite_speed": 145.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 7.0,
+		"normal_hp": 278,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1346.89655172414
+			},
+			{
+				"count": 5,
+				"interval_ms": 1955.1724137931
+			}
+		],
+		"spawn_rate_per_second": 7.75445184047335,
+		"wave": 19
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 25.0,
+		"elite_contact": 10.0,
+		"elite_dash": 12,
+		"elite_expected": 2.0,
+		"elite_hp": 12390,
+		"elite_speed": 145.0,
+		"erosion": 0,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 7.0,
+		"normal_hp": 291,
+		"normal_speed": 73.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1302.71186440678
+			},
+			{
+				"count": 6,
+				"interval_ms": 1886.4406779661
+			}
+		],
+		"spawn_rate_per_second": 8.55399918499207,
+		"wave": 20
+	},
+	{
+		"difficulty": "3",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.0,
+		"elite_hp": 395,
+		"elite_speed": 133.0,
+		"erosion": 50,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 8.0,
+		"normal_hp": 59,
+		"normal_speed": 66.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2520.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3780.0
+			}
+		],
+		"spawn_rate_per_second": 1.32275132275132,
+		"wave": 1
+	},
+	{
+		"difficulty": "3",
+		"duration": 35.0,
+		"elite_armor": 2.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.3,
+		"elite_hp": 490,
+		"elite_speed": 133.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 1.0,
+		"normal_damage": 8.0,
+		"normal_hp": 85,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2427.80487804878
+			},
+			{
+				"count": 2,
+				"interval_ms": 3636.58536585366
+			}
+		],
+		"spawn_rate_per_second": 1.37375589684379,
+		"wave": 2
+	},
+	{
+		"difficulty": "3",
+		"duration": 40.0,
+		"elite_armor": 4.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.45,
+		"elite_hp": 608,
+		"elite_speed": 134.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 8.0,
+		"normal_hp": 111,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2340.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3500.0
+			}
+		],
+		"spawn_rate_per_second": 1.85347985347985,
+		"wave": 3
+	},
+	{
+		"difficulty": "3",
+		"duration": 45.0,
+		"elite_armor": 7.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.6,
+		"elite_hp": 753,
+		"elite_speed": 135.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 8.0,
+		"normal_hp": 137,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2256.27906976744
+			},
+			{
+				"count": 2,
+				"interval_ms": 3369.76744186047
+			}
+		],
+		"spawn_rate_per_second": 1.92313552562,
+		"wave": 4
+	},
+	{
+		"difficulty": "3",
+		"duration": 50.0,
+		"elite_armor": 9.0,
+		"elite_contact": 12.0,
+		"elite_dash": 14,
+		"elite_expected": 0.75,
+		"elite_hp": 934,
+		"elite_speed": 135.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 4.0,
+		"normal_damage": 8.0,
+		"normal_hp": 163,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2176.36363636364
+			},
+			{
+				"count": 2,
+				"interval_ms": 3245.45454545455
+			}
+		],
+		"spawn_rate_per_second": 1.99469261388766,
+		"wave": 5
+	},
+	{
+		"difficulty": "3",
+		"duration": 55.0,
+		"elite_armor": 11.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 0.9,
+		"elite_hp": 1159,
+		"elite_speed": 136.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 8.0,
+		"normal_hp": 189,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2100.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3126.66666666667
+			}
+		],
+		"spawn_rate_per_second": 2.0682302771855,
+		"wave": 6
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 13.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.05,
+		"elite_hp": 1437,
+		"elite_speed": 137.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 8.0,
+		"normal_hp": 215,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2026.95652173913
+			},
+			{
+				"count": 3,
+				"interval_ms": 3013.04347826087
+			}
+		],
+		"spawn_rate_per_second": 2.96907296907297,
+		"wave": 7
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 15.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.2,
+		"elite_hp": 1781,
+		"elite_speed": 137.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 8.0,
+		"normal_hp": 241,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1957.02127659574
+			},
+			{
+				"count": 3,
+				"interval_ms": 2904.25531914894
+			}
+		],
+		"spawn_rate_per_second": 3.07688962483483,
+		"wave": 8
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 17.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.35,
+		"elite_hp": 2209,
+		"elite_speed": 138.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 9.0,
+		"normal_hp": 267,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1890.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2800.0
+			}
+		],
+		"spawn_rate_per_second": 3.18783068783069,
+		"wave": 9
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 20.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.5,
+		"elite_hp": 2739,
+		"elite_speed": 139.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 9.0,
+		"normal_hp": 293,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1825.71428571429
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 3.84976525821596,
+		"wave": 10
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 22.0,
+		"elite_contact": 13.0,
+		"elite_dash": 16,
+		"elite_expected": 1.65,
+		"elite_hp": 3397,
+		"elite_speed": 139.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 9.0,
+		"normal_hp": 319,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1764.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2604.0
+			}
+		],
+		"spawn_rate_per_second": 3.9865408529003,
+		"wave": 11
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 24.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.8,
+		"elite_hp": 4212,
+		"elite_speed": 140.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 9.0,
+		"normal_hp": 345,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1704.70588235294
+			},
+			{
+				"count": 3,
+				"interval_ms": 2511.76470588235
+			}
+		],
+		"spawn_rate_per_second": 4.12743667198407,
+		"wave": 12
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 26.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 1.95,
+		"elite_hp": 5222,
+		"elite_speed": 141.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 13.0,
+		"normal_damage": 9.0,
+		"normal_hp": 371,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1647.69230769231
+			},
+			{
+				"count": 4,
+				"interval_ms": 2423.07692307692
+			}
+		],
+		"spawn_rate_per_second": 5.2922502334267,
+		"wave": 13
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 28.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 2.1,
+		"elite_hp": 6476,
+		"elite_speed": 141.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 9.0,
+		"normal_hp": 397,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1592.83018867925
+			},
+			{
+				"count": 4,
+				"interval_ms": 2337.7358490566
+			}
+		],
+		"spawn_rate_per_second": 5.47793719056051,
+		"wave": 14
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 30.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 2.25,
+		"elite_hp": 8030,
+		"elite_speed": 142.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 9.0,
+		"normal_hp": 423,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1540.0
+			},
+			{
+				"count": 4,
+				"interval_ms": 2255.55555555556
+			}
+		],
+		"spawn_rate_per_second": 5.66950291088222,
+		"wave": 15
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 33.0,
+		"elite_contact": 14.0,
+		"elite_dash": 17,
+		"elite_expected": 2.4,
+		"elite_hp": 9957,
+		"elite_speed": 143.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 16.0,
+		"normal_damage": 9.0,
+		"normal_hp": 449,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1489.09090909091
+			},
+			{
+				"count": 4,
+				"interval_ms": 2176.36363636364
+			}
+		],
+		"spawn_rate_per_second": 5.86723218302166,
+		"wave": 16
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 35.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 2.55,
+		"elite_hp": 12347,
+		"elite_speed": 143.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 9.0,
+		"normal_hp": 475,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1440.0
+			},
+			{
+				"count": 5,
+				"interval_ms": 2100.0
+			}
+		],
+		"spawn_rate_per_second": 6.54761904761905,
+		"wave": 17
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 37.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 2.7,
+		"elite_hp": 15310,
+		"elite_speed": 144.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 19.0,
+		"normal_damage": 10.0,
+		"normal_hp": 501,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1392.63157894737
+			},
+			{
+				"count": 5,
+				"interval_ms": 2026.31578947368
+			}
+		],
+		"spawn_rate_per_second": 7.4939874939875,
+		"wave": 18
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 39.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 2.85,
+		"elite_hp": 18985,
+		"elite_speed": 145.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 10.0,
+		"normal_hp": 527,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1346.89655172414
+			},
+			{
+				"count": 5,
+				"interval_ms": 1955.1724137931
+			}
+		],
+		"spawn_rate_per_second": 7.75445184047335,
+		"wave": 19
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 41.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 3.0,
+		"elite_hp": 23541,
+		"elite_speed": 145.0,
+		"erosion": 50,
+		"natural_elite_eligible": true,
+		"normal_armor": 21.0,
+		"normal_damage": 10.0,
+		"normal_hp": 553,
+		"normal_speed": 73.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1302.71186440678
+			},
+			{
+				"count": 6,
+				"interval_ms": 1886.4406779661
+			}
+		],
+		"spawn_rate_per_second": 8.55399918499207,
+		"wave": 20
+	},
+	{
+		"difficulty": "3",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 15.0,
+		"elite_dash": 18,
+		"elite_expected": 0.0,
+		"elite_hp": 582,
+		"elite_speed": 133.0,
+		"erosion": 100,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 10.0,
+		"normal_hp": 87,
+		"normal_speed": 66.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2520.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3780.0
+			}
+		],
+		"spawn_rate_per_second": 1.32275132275132,
+		"wave": 1
+	},
+	{
+		"difficulty": "3",
+		"duration": 35.0,
+		"elite_armor": 3.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 0.4,
+		"elite_hp": 722,
+		"elite_speed": 133.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 10.0,
+		"normal_hp": 126,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2427.80487804878
+			},
+			{
+				"count": 2,
+				"interval_ms": 3636.58536585366
+			}
+		],
+		"spawn_rate_per_second": 1.37375589684379,
+		"wave": 2
+	},
+	{
+		"difficulty": "3",
+		"duration": 40.0,
+		"elite_armor": 6.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 0.6,
+		"elite_hp": 895,
+		"elite_speed": 134.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 3.0,
+		"normal_damage": 10.0,
+		"normal_hp": 164,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2340.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3500.0
+			}
+		],
+		"spawn_rate_per_second": 1.85347985347985,
+		"wave": 3
+	},
+	{
+		"difficulty": "3",
+		"duration": 45.0,
+		"elite_armor": 9.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 0.8,
+		"elite_hp": 1110,
+		"elite_speed": 135.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 10.0,
+		"normal_hp": 202,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2256.27906976744
+			},
+			{
+				"count": 2,
+				"interval_ms": 3369.76744186047
+			}
+		],
+		"spawn_rate_per_second": 1.92313552562,
+		"wave": 4
+	},
+	{
+		"difficulty": "3",
+		"duration": 50.0,
+		"elite_armor": 12.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 1.0,
+		"elite_hp": 1377,
+		"elite_speed": 135.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 6.0,
+		"normal_damage": 11.0,
+		"normal_hp": 241,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2176.36363636364
+			},
+			{
+				"count": 2,
+				"interval_ms": 3245.45454545455
+			}
+		],
+		"spawn_rate_per_second": 1.99469261388766,
+		"wave": 5
+	},
+	{
+		"difficulty": "3",
+		"duration": 55.0,
+		"elite_armor": 15.0,
+		"elite_contact": 16.0,
+		"elite_dash": 19,
+		"elite_expected": 1.2,
+		"elite_hp": 1707,
+		"elite_speed": 136.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 8.0,
+		"normal_damage": 11.0,
+		"normal_hp": 279,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2100.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3126.66666666667
+			}
+		],
+		"spawn_rate_per_second": 2.0682302771855,
+		"wave": 6
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 18.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.4,
+		"elite_hp": 2117,
+		"elite_speed": 137.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 9.0,
+		"normal_damage": 11.0,
+		"normal_hp": 317,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2026.95652173913
+			},
+			{
+				"count": 3,
+				"interval_ms": 3013.04347826087
+			}
+		],
+		"spawn_rate_per_second": 2.96907296907297,
+		"wave": 7
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 21.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.6,
+		"elite_hp": 2625,
+		"elite_speed": 137.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 11.0,
+		"normal_damage": 11.0,
+		"normal_hp": 356,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1957.02127659574
+			},
+			{
+				"count": 3,
+				"interval_ms": 2904.25531914894
+			}
+		],
+		"spawn_rate_per_second": 3.07688962483483,
+		"wave": 8
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 24.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 1.8,
+		"elite_hp": 3255,
+		"elite_speed": 138.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 11.0,
+		"normal_hp": 394,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1890.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2800.0
+			}
+		],
+		"spawn_rate_per_second": 3.18783068783069,
+		"wave": 9
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 27.0,
+		"elite_contact": 17.0,
+		"elite_dash": 20,
+		"elite_expected": 2.0,
+		"elite_hp": 4037,
+		"elite_speed": 139.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 11.0,
+		"normal_hp": 432,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1825.71428571429
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 3.84976525821596,
+		"wave": 10
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 31.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 2.2,
+		"elite_hp": 5005,
+		"elite_speed": 139.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 15.0,
+		"normal_damage": 12.0,
+		"normal_hp": 471,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1764.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2604.0
+			}
+		],
+		"spawn_rate_per_second": 3.9865408529003,
+		"wave": 11
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 34.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 2.4,
+		"elite_hp": 6207,
+		"elite_speed": 140.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 12.0,
+		"normal_hp": 509,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1704.70588235294
+			},
+			{
+				"count": 3,
+				"interval_ms": 2511.76470588235
+			}
+		],
+		"spawn_rate_per_second": 4.12743667198407,
+		"wave": 12
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 37.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 2.6,
+		"elite_hp": 7696,
+		"elite_speed": 141.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 18.0,
+		"normal_damage": 12.0,
+		"normal_hp": 547,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1647.69230769231
+			},
+			{
+				"count": 4,
+				"interval_ms": 2423.07692307692
+			}
+		],
+		"spawn_rate_per_second": 5.2922502334267,
+		"wave": 13
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 40.0,
+		"elite_contact": 18.0,
+		"elite_dash": 22,
+		"elite_expected": 2.8,
+		"elite_hp": 9543,
+		"elite_speed": 141.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 20.0,
+		"normal_damage": 12.0,
+		"normal_hp": 585,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1592.83018867925
+			},
+			{
+				"count": 4,
+				"interval_ms": 2337.7358490566
+			}
+		],
+		"spawn_rate_per_second": 5.47793719056051,
+		"wave": 14
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 43.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 3.0,
+		"elite_hp": 11834,
+		"elite_speed": 142.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 21.0,
+		"normal_damage": 12.0,
+		"normal_hp": 624,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1540.0
+			},
+			{
+				"count": 4,
+				"interval_ms": 2255.55555555556
+			}
+		],
+		"spawn_rate_per_second": 5.66950291088222,
+		"wave": 15
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 46.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 3.0,
+		"elite_hp": 14674,
+		"elite_speed": 143.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 23.0,
+		"normal_damage": 12.0,
+		"normal_hp": 662,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1489.09090909091
+			},
+			{
+				"count": 4,
+				"interval_ms": 2176.36363636364
+			}
+		],
+		"spawn_rate_per_second": 5.86723218302166,
+		"wave": 16
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 49.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 3.0,
+		"elite_hp": 18196,
+		"elite_speed": 143.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 24.0,
+		"normal_damage": 12.0,
+		"normal_hp": 700,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1440.0
+			},
+			{
+				"count": 5,
+				"interval_ms": 2100.0
+			}
+		],
+		"spawn_rate_per_second": 6.54761904761905,
+		"wave": 17
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 52.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 3.0,
+		"elite_hp": 22563,
+		"elite_speed": 144.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 26.0,
+		"normal_damage": 13.0,
+		"normal_hp": 739,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1392.63157894737
+			},
+			{
+				"count": 5,
+				"interval_ms": 2026.31578947368
+			}
+		],
+		"spawn_rate_per_second": 7.4939874939875,
+		"wave": 18
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 55.0,
+		"elite_contact": 19.0,
+		"elite_dash": 23,
+		"elite_expected": 3.0,
+		"elite_hp": 27978,
+		"elite_speed": 145.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 27.0,
+		"normal_damage": 13.0,
+		"normal_hp": 777,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1346.89655172414
+			},
+			{
+				"count": 5,
+				"interval_ms": 1955.1724137931
+			}
+		],
+		"spawn_rate_per_second": 7.75445184047335,
+		"wave": 19
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 58.0,
+		"elite_contact": 20.0,
+		"elite_dash": 24,
+		"elite_expected": 3.0,
+		"elite_hp": 34692,
+		"elite_speed": 145.0,
+		"erosion": 100,
+		"natural_elite_eligible": true,
+		"normal_armor": 29.0,
+		"normal_damage": 13.0,
+		"normal_hp": 815,
+		"normal_speed": 73.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1302.71186440678
+			},
+			{
+				"count": 6,
+				"interval_ms": 1886.4406779661
+			}
+		],
+		"spawn_rate_per_second": 8.55399918499207,
+		"wave": 20
+	},
+	{
+		"difficulty": "3",
+		"duration": 30.0,
+		"elite_armor": 0.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.0,
+		"elite_hp": 957,
+		"elite_speed": 133.0,
+		"erosion": 200,
+		"natural_elite_eligible": false,
+		"normal_armor": 0.0,
+		"normal_damage": 15.0,
+		"normal_hp": 144,
+		"normal_speed": 66.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2520.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3780.0
+			}
+		],
+		"spawn_rate_per_second": 1.32275132275132,
+		"wave": 1
+	},
+	{
+		"difficulty": "3",
+		"duration": 35.0,
+		"elite_armor": 5.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.4,
+		"elite_hp": 1186,
+		"elite_speed": 133.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 2.0,
+		"normal_damage": 15.0,
+		"normal_hp": 206,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 2,
+				"interval_ms": 2427.80487804878
+			},
+			{
+				"count": 2,
+				"interval_ms": 3636.58536585366
+			}
+		],
+		"spawn_rate_per_second": 1.37375589684379,
+		"wave": 2
+	},
+	{
+		"difficulty": "3",
+		"duration": 40.0,
+		"elite_armor": 10.0,
+		"elite_contact": 23.0,
+		"elite_dash": 28,
+		"elite_expected": 0.6,
+		"elite_hp": 1471,
+		"elite_speed": 134.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 5.0,
+		"normal_damage": 15.0,
+		"normal_hp": 269,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2340.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3500.0
+			}
+		],
+		"spawn_rate_per_second": 1.85347985347985,
+		"wave": 3
+	},
+	{
+		"difficulty": "3",
+		"duration": 45.0,
+		"elite_armor": 14.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 0.8,
+		"elite_hp": 1824,
+		"elite_speed": 135.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 7.0,
+		"normal_damage": 15.0,
+		"normal_hp": 332,
+		"normal_speed": 67.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2256.27906976744
+			},
+			{
+				"count": 2,
+				"interval_ms": 3369.76744186047
+			}
+		],
+		"spawn_rate_per_second": 1.92313552562,
+		"wave": 4
+	},
+	{
+		"difficulty": "3",
+		"duration": 50.0,
+		"elite_armor": 19.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 1.0,
+		"elite_hp": 2262,
+		"elite_speed": 135.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 10.0,
+		"normal_damage": 16.0,
+		"normal_hp": 395,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2176.36363636364
+			},
+			{
+				"count": 2,
+				"interval_ms": 3245.45454545455
+			}
+		],
+		"spawn_rate_per_second": 1.99469261388766,
+		"wave": 5
+	},
+	{
+		"difficulty": "3",
+		"duration": 55.0,
+		"elite_armor": 24.0,
+		"elite_contact": 24.0,
+		"elite_dash": 29,
+		"elite_expected": 1.2,
+		"elite_hp": 2805,
+		"elite_speed": 136.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 12.0,
+		"normal_damage": 16.0,
+		"normal_hp": 458,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 3,
+				"interval_ms": 2100.0
+			},
+			{
+				"count": 2,
+				"interval_ms": 3126.66666666667
+			}
+		],
+		"spawn_rate_per_second": 2.0682302771855,
+		"wave": 6
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 29.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.4,
+		"elite_hp": 3478,
+		"elite_speed": 137.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 14.0,
+		"normal_damage": 16.0,
+		"normal_hp": 521,
+		"normal_speed": 68.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 2026.95652173913
+			},
+			{
+				"count": 3,
+				"interval_ms": 3013.04347826087
+			}
+		],
+		"spawn_rate_per_second": 2.96907296907297,
+		"wave": 7
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 34.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.6,
+		"elite_hp": 4313,
+		"elite_speed": 137.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 17.0,
+		"normal_damage": 16.0,
+		"normal_hp": 584,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1957.02127659574
+			},
+			{
+				"count": 3,
+				"interval_ms": 2904.25531914894
+			}
+		],
+		"spawn_rate_per_second": 3.07688962483483,
+		"wave": 8
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 38.0,
+		"elite_contact": 25.0,
+		"elite_dash": 30,
+		"elite_expected": 1.8,
+		"elite_hp": 5348,
+		"elite_speed": 138.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 19.0,
+		"normal_damage": 17.0,
+		"normal_hp": 647,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 4,
+				"interval_ms": 1890.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2800.0
+			}
+		],
+		"spawn_rate_per_second": 3.18783068783069,
+		"wave": 9
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 43.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 2.0,
+		"elite_hp": 6632,
+		"elite_speed": 139.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 22.0,
+		"normal_damage": 17.0,
+		"normal_hp": 710,
+		"normal_speed": 69.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1825.71428571429
+			},
+			{
+				"count": 3,
+				"interval_ms": 2700.0
+			}
+		],
+		"spawn_rate_per_second": 3.84976525821596,
+		"wave": 10
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 48.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 2.2,
+		"elite_hp": 8223,
+		"elite_speed": 139.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 24.0,
+		"normal_damage": 17.0,
+		"normal_hp": 773,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1764.0
+			},
+			{
+				"count": 3,
+				"interval_ms": 2604.0
+			}
+		],
+		"spawn_rate_per_second": 3.9865408529003,
+		"wave": 11
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 53.0,
+		"elite_contact": 26.0,
+		"elite_dash": 31,
+		"elite_expected": 2.4,
+		"elite_hp": 10197,
+		"elite_speed": 140.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 26.0,
+		"normal_damage": 17.0,
+		"normal_hp": 836,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 5,
+				"interval_ms": 1704.70588235294
+			},
+			{
+				"count": 3,
+				"interval_ms": 2511.76470588235
+			}
+		],
+		"spawn_rate_per_second": 4.12743667198407,
+		"wave": 12
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 58.0,
+		"elite_contact": 27.0,
+		"elite_dash": 32,
+		"elite_expected": 2.6,
+		"elite_hp": 12644,
+		"elite_speed": 141.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 29.0,
+		"normal_damage": 17.0,
+		"normal_hp": 899,
+		"normal_speed": 70.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1647.69230769231
+			},
+			{
+				"count": 4,
+				"interval_ms": 2423.07692307692
+			}
+		],
+		"spawn_rate_per_second": 5.2922502334267,
+		"wave": 13
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 63.0,
+		"elite_contact": 27.0,
+		"elite_dash": 32,
+		"elite_expected": 2.8,
+		"elite_hp": 15678,
+		"elite_speed": 141.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 31.0,
+		"normal_damage": 18.0,
+		"normal_hp": 962,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1592.83018867925
+			},
+			{
+				"count": 4,
+				"interval_ms": 2337.7358490566
+			}
+		],
+		"spawn_rate_per_second": 5.47793719056051,
+		"wave": 14
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 67.0,
+		"elite_contact": 27.0,
+		"elite_dash": 32,
+		"elite_expected": 3.0,
+		"elite_hp": 19441,
+		"elite_speed": 142.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 34.0,
+		"normal_damage": 18.0,
+		"normal_hp": 1025,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1540.0
+			},
+			{
+				"count": 4,
+				"interval_ms": 2255.55555555556
+			}
+		],
+		"spawn_rate_per_second": 5.66950291088222,
+		"wave": 15
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 72.0,
+		"elite_contact": 28.0,
+		"elite_dash": 34,
+		"elite_expected": 3.0,
+		"elite_hp": 24107,
+		"elite_speed": 143.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 36.0,
+		"normal_damage": 18.0,
+		"normal_hp": 1088,
+		"normal_speed": 71.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1489.09090909091
+			},
+			{
+				"count": 4,
+				"interval_ms": 2176.36363636364
+			}
+		],
+		"spawn_rate_per_second": 5.86723218302166,
+		"wave": 16
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 77.0,
+		"elite_contact": 28.0,
+		"elite_dash": 34,
+		"elite_expected": 3.0,
+		"elite_hp": 29893,
+		"elite_speed": 143.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 38.0,
+		"normal_damage": 18.0,
+		"normal_hp": 1151,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 6,
+				"interval_ms": 1440.0
+			},
+			{
+				"count": 5,
+				"interval_ms": 2100.0
+			}
+		],
+		"spawn_rate_per_second": 6.54761904761905,
+		"wave": 17
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 82.0,
+		"elite_contact": 28.0,
+		"elite_dash": 34,
+		"elite_expected": 3.0,
+		"elite_hp": 37067,
+		"elite_speed": 144.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 41.0,
+		"normal_damage": 19.0,
+		"normal_hp": 1214,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1392.63157894737
+			},
+			{
+				"count": 5,
+				"interval_ms": 2026.31578947368
+			}
+		],
+		"spawn_rate_per_second": 7.4939874939875,
+		"wave": 18
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 87.0,
+		"elite_contact": 29.0,
+		"elite_dash": 35,
+		"elite_expected": 3.0,
+		"elite_hp": 45963,
+		"elite_speed": 145.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 43.0,
+		"normal_damage": 19.0,
+		"normal_hp": 1277,
+		"normal_speed": 72.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1346.89655172414
+			},
+			{
+				"count": 5,
+				"interval_ms": 1955.1724137931
+			}
+		],
+		"spawn_rate_per_second": 7.75445184047335,
+		"wave": 19
+	},
+	{
+		"difficulty": "3",
+		"duration": 60.0,
+		"elite_armor": 91.0,
+		"elite_contact": 29.0,
+		"elite_dash": 35,
+		"elite_expected": 3.0,
+		"elite_hp": 56995,
+		"elite_speed": 145.0,
+		"erosion": 200,
+		"natural_elite_eligible": true,
+		"normal_armor": 46.0,
+		"normal_damage": 19.0,
+		"normal_hp": 1340,
+		"normal_speed": 73.0,
+		"population_limit": 48,
+		"spawn_groups": [
+			{
+				"count": 7,
+				"interval_ms": 1302.71186440678
+			},
+			{
+				"count": 6,
+				"interval_ms": 1886.4406779661
+			}
+		],
+		"spawn_rate_per_second": 8.55399918499207,
+		"wave": 20
+	}
+]

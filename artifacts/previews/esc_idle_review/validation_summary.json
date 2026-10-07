@@ -1,0 +1,32 @@
+{
+  "editor": {
+    "checks_passed": 0,
+    "errors": [],
+    "environment_notice": "Android build-tools directory unavailable; unrelated to desktop validation."
+  },
+  "character_headless": {
+    "checks_passed": 151,
+    "errors": []
+  },
+  "finance_headless": {
+    "checks_passed": 176,
+    "errors": []
+  },
+  "tooltip_headless": {
+    "checks_passed": 41,
+    "errors": []
+  },
+  "character_gpu": {
+    "checks_passed": 167,
+    "errors": [],
+    "private_desktop_verified": true,
+    "foreground_samples": 0
+  },
+  "tooltip_gpu": {
+    "checks_passed": 41,
+    "errors": [],
+    "private_desktop_verified": true,
+    "foreground_samples": 0
+  },
+  "source_utf8_valid": true
+}

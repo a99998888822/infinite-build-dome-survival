@@ -166,13 +166,23 @@ func _special_weapons() -> void:
 		await fixture([id])
 		player.last_move_direction = Vector2.UP
 		var source := controller.current_weapon
+		var target: EnemyController
+		if source.is_copper_lamp():
+			target = manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(-60, 0))
+			target.set_physics_process(false)
+			target.modifier_stack.set_base_stat("max_hp", 100000)
+			target.current_hp = 100000
 		await press_mouse()
 		check(controller.selected_weapon == source and controller.indicator.visible and source.volley_index == 0, "keyboard first click previews " + id)
+		if source.is_copper_lamp():
+			check(controller.indicator.target_offset.normalized().is_equal_approx(Vector2.LEFT), "lamp preview points to nearest enemy instead of movement or pointer")
 		await press_mouse()
 		check(source.volley_index == 1 and controller.selected_weapon == null, "keyboard second click casts " + id)
 		var body: Node2D = loadout.active_casting.state_for(source).body.get_ref()
 		if body is CopperLamp:
-			check(body.manual_direction == Vector2.UP, "lamp still casts along last movement direction")
+			body.set_physics_process(false)
+			body._physics_process(0.01)
+			check(not body.manual_control and body.target == target and body.heading.is_equal_approx(Vector2.LEFT), "manual lamp click still targets nearest enemy instead of movement or pointer")
 		if body is RitualDomain:
 			check(body.global_position.is_equal_approx(player.global_position), "ritual retains player-origin fixed domain")
 

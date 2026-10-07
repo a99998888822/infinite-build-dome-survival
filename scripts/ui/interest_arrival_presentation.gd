@@ -11,6 +11,10 @@ const BONUS := preload("res://assets/audio/sfx/finance/interest_bonus.wav")
 const ARRIVE := preload("res://assets/audio/sfx/finance/interest_arrive.wav")
 const GOLD := Color("f2d58a")
 const LOSS := Color("de9380")
+const ROW_ICON_SIZE := Vector2(20, 20)
+const ROW_PADDING := 6
+const ROW_COLUMN_GAP := 8
+const FOOTER_HEIGHT := 56.0
 var report: Dictionary = {}
 var sound_enabled := true
 var duration := 1.5
@@ -76,7 +80,7 @@ func _ready() -> void:
 	_card.add_child(_scroll)
 	_rows = VBoxContainer.new()
 	_rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_rows.add_theme_constant_override("separation", 6)
+	_rows.add_theme_constant_override("separation", 0)
 	_rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_scroll.add_child(_rows)
 	_tick_audio = AudioStreamPlayer.new()
@@ -103,24 +107,37 @@ func present(data: Dictionary) -> void:
 		child.queue_free()
 	_row_nodes.clear()
 	for step: Dictionary in report.steps:
-		var row := HBoxContainer.new()
-		row.custom_minimum_size.y = 22
-		row.add_theme_constant_override("separation", 8)
+		var row := MarginContainer.new()
+		row.add_theme_constant_override("margin_top", ROW_PADDING)
+		row.add_theme_constant_override("margin_bottom", ROW_PADDING)
 		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_rows.add_child(row)
+		var columns := HBoxContainer.new()
+		columns.name = "Columns"
+		columns.add_theme_constant_override("separation", ROW_COLUMN_GAP)
+		columns.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(columns)
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(20, 20)
+		icon.name = "IconSlot"
+		# Empty rows reserve the same column as relic rows. Keep the explicit
+		# drawing bounds instead of the shared native-relic display size.
+		icon.custom_minimum_size = ROW_ICON_SIZE
+		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		FinanceUIStyle.set_item_icon(icon, FinanceUIStyle.item_icon(str(step.icon)))
-		row.add_child(icon)
+		icon.texture = FinanceUIStyle.item_icon(str(step.icon))
+		columns.add_child(icon)
 		var color := LOSS if step.kind == "loss" else (FinanceUIStyle.GREEN if step.kind == "growth" else FinanceUIStyle.TEXT)
-		var label := _label(row, 12, color)
+		var label := _label(columns, 12, color)
+		label.name = "Description"
 		label.text = str(step.label)
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		var value := _label(row, 14, GOLD if step.kind == "bonus" else color)
+		var value := _label(columns, 14, GOLD if step.kind == "bonus" else color)
+		value.name = "Value"
+		value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		value.text = str(step.amount)
 		row.modulate.a = 0
 		_row_nodes.append(row)
@@ -151,7 +168,9 @@ func arrange(bounds: Vector2, wallet_target: Vector2, receipt_bounds := Rect2())
 	var rows_height := maxf(0, _row_nodes.size() - 1) * _rows.get_theme_constant("separation")
 	for row in _row_nodes:
 		rows_height += row.get_combined_minimum_size().y
-	var content_height := maxf(206, (164 if _compact else 178) + rows_height)
+	var rows_top := 94.0 if _compact else 128.0
+	var footer_height := 48.0 if _compact else FOOTER_HEIGHT
+	var content_height := maxf(206, rows_top + rows_height + footer_height)
 	_card.size = Vector2(minf(550, _receipt_bounds.size.x), minf(content_height, _receipt_bounds.size.y))
 	_card.position = (_receipt_bounds.position + (_receipt_bounds.size - _card.size) * 0.5).floor()
 	_shade.position = _card.position - Vector2(4, 4)
@@ -159,19 +178,19 @@ func arrange(bounds: Vector2, wallet_target: Vector2, receipt_bounds := Rect2())
 	_card.pivot_offset = _card.size * 0.5
 	var w := _card.size.x
 	var h := _card.size.y
-	_heading.position = Vector2(20, 14)
+	_heading.position = Vector2(20, 10 if _compact else 14)
 	_heading.size = Vector2(w - 40, 26)
-	_amount.position = Vector2(20, 44)
-	_amount.size = Vector2(w - 40, 38 if _compact else 50)
-	FinanceUIStyle.label(_amount, 30 if _compact else 40, GOLD)
-	_caption.position = Vector2(20, 84 if _compact else 96)
-	_caption.size = Vector2(w - 40, 18)
+	_amount.position = Vector2(20, 38 if _compact else 44)
+	_amount.size = Vector2(w - 40, 34 if _compact else 50)
+	FinanceUIStyle.label(_amount, 28 if _compact else 40, GOLD)
+	_caption.position = Vector2(20, 74 if _compact else 96)
+	_caption.size = Vector2(w - 40, 16 if _compact else 18)
 	FinanceUIStyle.label(_caption, 11 if _compact else 12, FinanceUIStyle.TEXT)
-	_scroll.position = Vector2(20, 114 if _compact else 128)
-	_scroll.size = Vector2(w - 40, maxf(22, h - _scroll.position.y - 56))
-	_comparison.position = Vector2(20, h - 46)
+	_scroll.position = Vector2(20, rows_top)
+	_scroll.size = Vector2(w - 40, maxf(ROW_ICON_SIZE.y + ROW_PADDING * 2, h - rows_top - footer_height))
+	_comparison.position = Vector2(20, h - (42 if _compact else 46))
 	_comparison.size = Vector2(w - 40, 18)
-	_skip_hint.position = Vector2(20, h - 26)
+	_skip_hint.position = Vector2(20, h - (24 if _compact else 26))
 	_skip_hint.size = Vector2(w - 40, 16)
 	_scroll_to_current.call_deferred()
 	_effects.queue_redraw()
@@ -255,7 +274,7 @@ func stop() -> void:
 
 func _draw_effects() -> void:
 	if not _active: return
-	var divider_y := _card.position.y + _scroll.position.y - 7
+	var divider_y := _card.position.y + _scroll.position.y
 	_effects.draw_line(Vector2(_card.position.x + 20, divider_y), Vector2(_card.get_rect().end.x - 20, divider_y), Color("74603e"))
 	if _elapsed < final_time or int(report.total) <= 0: return
 	var t := _elapsed - final_time

@@ -46,6 +46,7 @@ func _run() -> void:
 	_test_stationary()
 	_test_wave_growth()
 	_test_conversion()
+	_test_rangefinder_cap()
 	_test_bank_preview()
 	_test_validation()
 	await _test_tooltip_bounds()
@@ -172,6 +173,28 @@ func _test_conversion() -> void:
 		modify(p, "area_size", -100)
 		check(p.get_stat("area_size") == -60 and p.get_stat("damage_area_size") == 0, "negative range cannot subtract damage area")
 		p.free()
+
+func _test_rangefinder_cap() -> void:
+	var p := player()
+	var bank := bank_for(p)
+	p.add_relic("relic_golden_rangefinder")
+	for sample in [[0, 0], [99, 0], [100, 3], [999, 27], [1000, 30], [1100, 30], [100000000, 30]]:
+		if sample[0] > bank.principal:
+			bank.deposit(sample[0] - bank.principal, true)
+		check(p.get_stat("area_size") == sample[1] and p.get_stat("damage_percent") == sample[1], "rangefinder caps both attributes at principal %d" % sample[0])
+	var preview_player := p.create_stat_preview_copy()
+	var preview_bank := bank.create_preview_copy(preview_player)
+	preview_bank.withdraw(preview_bank.principal - 999)
+	check(preview_player.get_stat("area_size") == 27 and preview_player.get_stat("damage_percent") == 27, "preview correctly drops below rangefinder cap")
+	check(p.get_stat("area_size") == 30 and bank.principal == 100000000, "capped withdrawal preview preserves real state")
+	preview_player.free()
+	modify(p, "area_size", 20000)
+	modify(p, "damage_percent", 200000)
+	check(p.get_stat("area_size") == 20030 and p.get_stat("damage_percent") == 200030, "rangefinder cap does not clamp other sources beyond former global limits")
+	for sample in [[1000, 30], [999, 27], [99, 0], [0, 0]]:
+		bank.withdraw(bank.principal - sample[0])
+		check(p.get_stat("area_size") == 20000 + sample[1] and p.get_stat("damage_percent") == 200000 + sample[1], "withdrawal removes only rangefinder tiers at principal %d" % sample[0])
+	p.free()
 
 func _test_bank_preview() -> void:
 	var p := player()

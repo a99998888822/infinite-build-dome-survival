@@ -1,0 +1,16 @@
+[
+  {
+    "name": "editor",
+    "exit": 0,
+    "issues": [],
+    "summary": []
+  },
+  {
+    "name": "finance_preparation_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "FINANCE_PREPARATION_DONE failures=0"
+    ]
+  }
+]

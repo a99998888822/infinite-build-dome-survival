@@ -60,6 +60,7 @@ var _pending_relic_choices: Array[String] = []
 var _active_relic_choice: String = ""
 var _relic_choice_selected: bool = false
 var _weapon_upgrade_miss_count: int = 0
+var _early_wave_weapon_offered: Dictionary = {}
 var _wave_end_ready: bool = false
 var _active_zone_selection_wave_number: int = 0
 var _pending_zone_harvest_payload: Dictionary = {}
@@ -113,6 +114,7 @@ func reset_flow() -> void:
 	_active_relic_choice = ""
 	_relic_choice_selected = false
 	_weapon_upgrade_miss_count = 0
+	_early_wave_weapon_offered.clear()
 	_wave_end_ready = false
 	_active_zone_selection_wave_number = 0
 	_pending_zone_harvest_payload.clear()
@@ -168,6 +170,7 @@ func confirm_character_selection() -> bool:
 	_pending_death_run_id = ""
 	current_battle_summary.clear()
 	_paid_purchase_count = 0
+	_early_wave_weapon_offered.clear()
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
 	_wave_end_ready = false
@@ -979,6 +982,9 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 	if strong and not context.is_empty(): context["luck"] = float(context.luck) + float(_bound_wave_manager.goblin_trades.definition("strong_refresh").luck_bonus)
 	var offers: Array = []
 	var relic_only := mode == "free" and not _active_relic_choice.is_empty()
+	# One shared guarantee per completed/combat wave, across level rewards and
+	# its following paid shelf. Showing a weapon consumes it; buying is optional.
+	var guarantee_weapon := not relic_only and current_wave_index in [0, 1] and not _early_wave_weapon_offered.has(current_wave_index)
 	var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus"))
 	_shop_generation += 1
 	if mode == "shop":
@@ -1007,11 +1013,13 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
 		if mode == "shop":
-			offers = generator.roll_paid_offers(rarity_weights, type_weights, candidates, offer_count, _shop_generation, exclude_offer_ids, "epic" if strong else "")
+			offers = generator.roll_paid_offers(rarity_weights, type_weights, candidates, offer_count, _shop_generation, exclude_offer_ids, "epic" if strong else "", guarantee_weapon)
 		else:
-			offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count)
+			offers = generator.roll_shop_offers(rarity_weights, type_weights, candidates, offer_count, guarantee_weapon)
 		if not relic_only:
 			_update_weapon_upgrade_miss_count(candidates, offers)
+			if guarantee_weapon and offers.any(func(offer: Dictionary): return str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_NEW_WEAPON):
+				_early_wave_weapon_offered[current_wave_index] = true
 	_active_shop_offer_ids.clear()
 	_active_shop_offers.clear()
 	for offer in offers:

@@ -1,0 +1,42 @@
+[
+  {
+    "case": "main",
+    "exit_code": 0,
+    "issues": [],
+    "new_issues": [],
+    "existing_failures_unchanged": true,
+    "summary": [
+      "[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s"
+    ],
+    "haste_checks_passed": 0
+  },
+  {
+    "case": "weapon_upgrade_progression_test",
+    "exit_code": 1,
+    "issues": [
+      "ERROR: FAIL grenade gains percent blast area and a second landing",
+      "ERROR: FAIL lamp area extends its cone without adding duration",
+      "ERROR: FAIL upgraded tentacle has two wider contacts",
+      "ERROR: FAIL upgraded spear has two longer thrusts"
+    ],
+    "new_issues": [],
+    "existing_failures_unchanged": true,
+    "summary": [
+      "[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s",
+      "WEAPON_UPGRADE_PROGRESSION checks=401 failures=4"
+    ],
+    "haste_checks_passed": 69
+  },
+  {
+    "case": "active_combat_integration_test",
+    "exit_code": 0,
+    "issues": [],
+    "new_issues": [],
+    "existing_failures_unchanged": true,
+    "summary": [
+      "[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s",
+      "ACTIVE_COMBAT_INTEGRATION checks=115 failures=0"
+    ],
+    "haste_checks_passed": 0
+  }
+]

@@ -169,7 +169,7 @@ func _spawn_children(origin: Vector2) -> void:
 					nearest_distance = distance
 			var heading := direction.rotated(deg_to_rad(lerpf(-float(profile.spread_angle) * 0.5, float(profile.spread_angle) * 0.5, float(index) / maxf(count - 1, 1))))
 			if nearest != null:
-				heading = origin.direction_to(nearest.global_position)
+				heading = origin.direction_to(weapon.get_auto_target_position(nearest))
 				reserved[nearest.get_instance_id()] = true
 			var event := damage_event.continue_after_split(profile)
 			var multiplier := float(profile.damage_multiplier)

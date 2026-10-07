@@ -4,6 +4,7 @@ class_name PreparationOfferCard
 signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
+const ICON_FRAME_SIZE := Vector2(44, 44)
 var offer: Dictionary = {}
 var _icon: TextureRect
 var _icon_frame: Control
@@ -25,7 +26,7 @@ func _ready() -> void:
 	heading.add_theme_constant_override("separation", 12)
 	body.add_child(heading)
 	_icon_frame = Control.new()
-	_icon_frame.custom_minimum_size = Vector2(36, 36)
+	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE
 	_icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	heading.add_child(_icon_frame)
 	var gradient := Gradient.new()
@@ -119,7 +120,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_name_label.tooltip_text = "" if new_weapon else title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
 	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), FinanceUIStyle.RELIC_LIST_ICON_SCALE)
-	_icon_frame.custom_minimum_size = Vector2(36, 36).max(_icon.custom_minimum_size)
+	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE.max(_icon.custom_minimum_size)
 	var rarity := str(offer.get("rarity", "common"))
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"

@@ -1,0 +1,36 @@
+{
+  "preview_only": true,
+  "version": 2,
+  "fps": 30,
+  "cycle_seconds": 2.8,
+  "armor_seconds": 2.0,
+  "text_seconds": 0.8,
+  "text_scale": 0.7,
+  "palette": [
+    "yellow",
+    "orange",
+    "red"
+  ],
+  "color_speed_multiplier": 4,
+  "source_outline_pixels": 3,
+  "game_outline_pixels": 1.68,
+  "variants": {
+    "idle": {
+      "frames": 84,
+      "foreground_samples": 0,
+      "gpu_errors": 0
+    },
+    "move": {
+      "frames": 84,
+      "foreground_samples": 0,
+      "gpu_errors": 0
+    },
+    "mirrored": {
+      "frames": 84,
+      "foreground_samples": 0,
+      "gpu_errors": 0
+    }
+  },
+  "references_unchanged": true,
+  "gif_duration_ms": 2800
+}

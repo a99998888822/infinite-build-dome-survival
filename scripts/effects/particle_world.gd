@@ -1,5 +1,17 @@
 extends Node2D
 
+const GPU_SHADER = preload("res://assets/shaders/particle_gpu.gdshader")
+const SQUARE_PNG = preload("res://assets/effects/pixel_baked/particle_square.png")
+const CIRCLE_PNG = preload("res://assets/effects/pixel_baked/particle_circle.png")
+var _gpu_clock := 0.0
+var _gpu_birth := PackedFloat32Array()
+var _gpu_pending := PackedInt32Array()
+var _gpu_pending_flags := PackedByteArray()
+var _gpu_image: Image
+var _gpu_texture: ImageTexture
+var _gpu_material: ShaderMaterial
+
+
 const PARTICLE_EVENT_SCRIPT = preload("res://scripts/effects/particle_event.gd")
 const PARTICLE_EMITTER_RUNTIME_SCRIPT = preload("res://scripts/effects/particle_emitter_runtime.gd")
 const PARTICLE_WORLD_PATH: String = "res://scripts/effects/particle_world.gd"
@@ -433,8 +445,24 @@ func _ready() -> void:
 	add_to_group("particle_worlds")
 	add_to_group("combat_particle_counters")
 	_random.randomize()
-	_batch = BATCH.create(MAX_PARTICLES * 2)
-	_batch_buffer.resize(MAX_PARTICLES * 2 * 16)
+	_batch = BATCH.create(MAX_PARTICLES)
+	_batch_buffer.resize(MAX_PARTICLES * 16)
+	_gpu_birth.resize(MAX_PARTICLES)
+	_gpu_pending_flags.resize(MAX_PARTICLES)
+	_gpu_image = Image.create(MAX_PARTICLES,9,false,Image.FORMAT_RGBAF)
+	_gpu_texture = ImageTexture.create_from_image(_gpu_image)
+	_gpu_material = ShaderMaterial.new()
+	_gpu_material.shader = GPU_SHADER
+	_gpu_material.set_shader_parameter("particle_data",_gpu_texture)
+	_gpu_material.set_shader_parameter("square_png",SQUARE_PNG)
+	_gpu_material.set_shader_parameter("circle_png",CIRCLE_PNG)
+	_batch.material = _gpu_material
+	for index in MAX_PARTICLES:
+		_batch_buffer[index*16] = 1.0
+		_batch_buffer[index*16+5] = 1.0
+		_batch_buffer[index*16+12] = float(index)
+	_batch.multimesh.buffer = _batch_buffer
+	_batch.multimesh.custom_aabb = AABB(Vector3(-100000,-100000,-1),Vector3(200000,200000,2))
 	add_child(_batch)
 	queue_redraw()
 
@@ -565,7 +593,15 @@ func emit_event(event: Variant) -> void:
 	var count := maxi(1, int(roundi(float(profile["count"]) * intensity * count_multiplier)))
 	# Reserve capacity for impacts; persistent flames and trails yield first.
 	var particle_limit := MAX_PARTICLES - 180 if profile_id.begins_with("fire_") or profile_id == "projectile_trail" else MAX_PARTICLES
-	count = mini(count, maxi(particle_limit - _particle_order.size(), 0))
+	if profile_id == "projectile_trail" or profile_id.begins_with("fire_"):
+		count = mini(count, maxi(particle_limit - _particle_order.size(),0))
+	else:
+		count = mini(count,MAX_PARTICLES)
+		# Keep new impact feedback under saturation; reuse the oldest slots.
+		var retire_count := maxi(_particle_order.size() + count - MAX_PARTICLES,0)
+		for retired_index in retire_count:
+			_release_particle_slot(_particle_order[retired_index])
+		if retire_count > 0: _particle_order = _particle_order.slice(retire_count)
 	var speed_multiplier := maxf(float(parameters.get("speed_multiplier", 1.0)), 0.0)
 	var size_multiplier := maxf(float(parameters.get("size_multiplier", 1.0)), 0.0)
 	var lifetime_multiplier := maxf(float(parameters.get("lifetime_multiplier", 1.0)), 0.01)
@@ -657,6 +693,10 @@ func emit_event(event: Variant) -> void:
 		if is_fire_particle:
 			particle_velocity.y -= maxf(-particle_velocity.y, 0.0) * (fire_rise_multiplier - 1.0)
 		var slot := _acquire_particle_slot()
+		_gpu_birth[slot] = _gpu_clock
+		if _gpu_pending_flags[slot] == 0:
+			_gpu_pending.append(slot)
+			_gpu_pending_flags[slot] = 1
 		_particle_positions[slot] = spawn_position + initial_offset
 		_particle_velocities[slot] = particle_velocity
 		_particle_gravities[slot] = Vector2(profile["gravity"].x, profile["gravity"].y * _random.randf_range(gravity_range.x, gravity_range.y) * gravity_multiplier)
@@ -747,15 +787,12 @@ func _resolve_color(profile: Dictionary, color_override: Color, color_tint: Colo
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	_gpu_clock += delta
+	_gpu_material.set_shader_parameter("clock",_gpu_clock)
+	_batch.multimesh.visible_instance_count = 0 if _particle_order.is_empty() else _particle_positions.size()
 	var expired := false
 	for order_index in range(_particle_order.size() - 1, -1, -1):
 		var slot := _particle_order[order_index]
-		var velocity := _particle_velocities[slot]
-		velocity = velocity.move_toward(Vector2.ZERO, _particle_drags[slot] * delta)
-		velocity += _particle_gravities[slot] * delta
-		_particle_velocities[slot] = velocity
-		_particle_positions[slot] += velocity * delta
-		_particle_rotations[slot] += _particle_spins[slot] * delta
 		_particle_ages[slot] += delta
 		if _particle_ages[slot] >= _particle_lifetimes[slot]:
 			_particle_order[order_index] = -1
@@ -769,7 +806,7 @@ func _process(delta: float) -> void:
 				_particle_order[write_index] = slot
 				write_index += 1
 		_particle_order.resize(write_index)
-	queue_redraw()
+
 
 
 func acquire_emitter(owner_node: Node, profile_id: String, context: Variant = null, options: Dictionary = {}) -> Node2D:
@@ -839,43 +876,22 @@ func _release_particle_slot(slot: int) -> void:
 
 
 func _draw() -> void:
-	if _batch == null: return
-	var index := 0
-	var instances := _batch.multimesh
-	for slot in _particle_order:
-		var lifetime := maxf(_particle_lifetimes[slot], 0.01)
-		var age_ratio := clampf(_particle_ages[slot] / lifetime, 0.0, 1.0)
-		var fade := 1.0 - age_ratio
-		var color := _particle_colors[slot]
-		var end_color := _particle_end_colors[slot]
-		if _particle_fire_flags[slot] != 0:
-			var mid_color := _particle_mid_colors[slot]
-			var final_color := _particle_final_colors[slot]
-			if age_ratio < 0.45:
-				color = color.lerp(mid_color, age_ratio / 0.45)
-			else:
-				color = mid_color.lerp(final_color, (age_ratio - 0.45) / 0.55)
-		else:
-			color = color.lerp(end_color, age_ratio)
-		color.a *= fade * fade * _particle_alpha_multipliers[slot]
-		var position := _particle_positions[slot]
-		var size := _particle_sizes[slot]
-		var glow := _particle_glows[slot]
-		var glow_radius_multiplier := _particle_glow_radius_multipliers[slot]
-		var rotation := _particle_rotations[slot]
-		if glow > 0.0:
-			var glow_color := Color(color.r, color.g, color.b, color.a * 0.12)
-			if _particle_glow_streak_flags[slot] != 0:
-				var glow_size := Vector2(size.x * (0.9 + glow * 0.25), maxf(size.y, 1.0) * (1.1 + glow * 0.35)) * glow_radius_multiplier
-				BATCH.put_buffer(_batch_buffer, index, position.round(), glow_size, rotation, glow_color)
-			else:
-				var diameter := maxf(size.x, size.y) * (1.5 + glow * 0.35) * glow_radius_multiplier * 2.0
-				BATCH.put_buffer(_batch_buffer, index, position.round(), Vector2.ONE * diameter, rotation, glow_color, true)
-			index += 1
-		if _particle_circle_flags[slot] != 0:
-			BATCH.put_buffer(_batch_buffer, index, position.round(), Vector2.ONE * maxf(size.x, size.y), rotation, color, true)
-		else:
-			BATCH.put_buffer(_batch_buffer, index, position.round(), size, rotation, color)
-		index += 1
-	if index > 0: instances.buffer = _batch_buffer
-	instances.visible_instance_count = index
+	if _gpu_pending.is_empty(): return
+	for slot in _gpu_pending:
+		_gpu_pending_flags[slot] = 0
+		var p := _particle_positions[slot]
+		var v := _particle_velocities[slot]
+		var g := _particle_gravities[slot]
+		var s := _particle_sizes[slot]
+		_gpu_image.set_pixel(slot,0,Color(p.x,p.y,v.x,v.y))
+		_gpu_image.set_pixel(slot,1,Color(g.x,g.y,_particle_drags[slot],_particle_lifetimes[slot]))
+		_gpu_image.set_pixel(slot,2,Color(s.x,s.y,_particle_rotations[slot],_particle_spins[slot]))
+		_gpu_image.set_pixel(slot,3,_particle_colors[slot])
+		_gpu_image.set_pixel(slot,4,_particle_end_colors[slot])
+		_gpu_image.set_pixel(slot,5,Color(_particle_glows[slot],_particle_glow_radius_multipliers[slot],_particle_alpha_multipliers[slot],_gpu_birth[slot]))
+		_gpu_image.set_pixel(slot,6,_particle_mid_colors[slot])
+		_gpu_image.set_pixel(slot,7,_particle_final_colors[slot])
+		_gpu_image.set_pixel(slot,8,Color(_particle_circle_flags[slot],_particle_fire_flags[slot],_particle_glow_streak_flags[slot],0))
+	_gpu_pending.clear()
+	_gpu_texture.update(_gpu_image)
+	_batch.multimesh.visible_instance_count = 0 if _particle_order.is_empty() else _particle_positions.size()

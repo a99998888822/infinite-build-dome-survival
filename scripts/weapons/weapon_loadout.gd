@@ -260,8 +260,8 @@ func tick(delta: float) -> void:
 		return
 	if active_combat_enabled:
 		active_casting.tick(delta)
-		if CombatSettings.wheelchair_mode and str(GameGlobal.get_runtime_flag("main_flow_state", "")) == MainFlowCoordinator.STATE_WAVE_COMBAT:
-			active_casting.auto_attack()
+		if str(GameGlobal.get_runtime_flag("main_flow_state", "")) == MainFlowCoordinator.STATE_WAVE_COMBAT:
+			active_casting.auto_attack(CombatSettings.wheelchair_mode)
 		return
 	for weapon in weapon_instances:
 		if weapon.is_ritual_tome():
@@ -334,7 +334,7 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 		if target == null:
 			return false
 		var tentacle := _ensure_directed_runtime(weapon) as MutantTentacle
-		if not tentacle.try_attack(owner_player.global_position.direction_to(target.global_position)):
+		if not tentacle.try_attack(owner_player.global_position.direction_to(weapon.get_auto_target_position(target))):
 			return false
 		weapon.volley_index += 1
 		weapon.reset_attack_timer()
@@ -347,7 +347,7 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 		var direction := Vector2.RIGHT if owner_player.facing_right else Vector2.LEFT
 		if target != null:
-			direction = owner_player.global_position.direction_to(target.global_position)
+			direction = owner_player.global_position.direction_to(weapon.get_auto_target_position(target))
 		var hammer := EarthHammer.new()
 		_get_visual_root().add_child(hammer)
 		hammer.initialize(weapon, direction)
@@ -364,7 +364,7 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 			return false
 		var dagger := CampDagger.new()
 		_get_visual_root().add_child(dagger)
-		dagger.initialize(weapon, owner_player.global_position.direction_to(target.global_position))
+		dagger.initialize(weapon, owner_player.global_position.direction_to(weapon.get_auto_target_position(target)))
 		weapon.volley_index += 1
 		weapon.reset_attack_timer()
 		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
@@ -378,7 +378,7 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 			return false
 		var spear := NightwatchSpear.new()
 		_get_visual_root().add_child(spear)
-		spear.initialize(weapon, owner_player.global_position.direction_to(target.global_position))
+		spear.initialize(weapon, owner_player.global_position.direction_to(weapon.get_auto_target_position(target)))
 		weapon.volley_index += 1
 		weapon.reset_attack_timer()
 		weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
@@ -467,7 +467,7 @@ func _fire_coins(weapon: WeaponInstance, aim: Vector2 = Vector2.ZERO) -> bool:
 		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 		if target == null:
 			return false
-		aim = weapon.get_attack_origin().direction_to(target.global_position)
+		aim = weapon.get_attack_origin().direction_to(weapon.get_auto_target_position(target))
 	var shared_hits: Dictionary = {}
 	var origin := weapon.get_attack_origin()
 	var angles := weapon.get_projectile_angles()
@@ -506,7 +506,7 @@ func _apply_ranged_damage(weapon: WeaponInstance, damage_event: DamageEvent) -> 
 		return false
 	if weapon.get_projectile_speed() <= 0.0:
 		return false
-	return _spawn_projectiles(weapon, damage_event, enemy.global_position, attack_range)
+	return _spawn_projectiles(weapon, damage_event, weapon.get_auto_target_position(enemy), attack_range)
 
 
 func _spawn_projectiles(weapon: WeaponInstance, damage_event: DamageEvent, target_position: Vector2, attack_range: float) -> bool:

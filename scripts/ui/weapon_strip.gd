@@ -9,6 +9,10 @@ var _attachment_editing_enabled: bool = false
 var _hovered_weapon_button: WeaponSlotButton = null
 var _tooltip_attachment_rows: Array[Dictionary] = []
 var _tooltip_weapon_id: String = ""
+var _attachment_tooltip: Panel
+var _attachment_tooltip_label: Label
+var _hovered_attachment_id := ""
+var _tooltip_mouse_position := Vector2.ZERO
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -24,6 +28,7 @@ func _ready() -> void:
 	if weapon_tooltip_label != null:
 		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
 		weapon_tooltip_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_build_attachment_tooltip()
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false) -> void:
@@ -109,11 +114,13 @@ func _restore_weapon_tooltip(weapon_id: String, preserved_position: Vector2) -> 
 func _process(_delta: float) -> void:
 	if weapon_tooltip == null or not weapon_tooltip.visible:
 		return
-	var mouse_position := get_global_mouse_position()
+	var mouse_position := _tooltip_mouse_position
 	var over_weapon := _hovered_weapon_button != null and is_instance_valid(_hovered_weapon_button) and _hovered_weapon_button.get_global_rect().has_point(mouse_position)
 	var over_tooltip := weapon_tooltip.get_global_rect().has_point(mouse_position)
 	if not over_weapon and not over_tooltip:
 		_hide_weapon_tooltip()
+		return
+	_update_attachment_tooltip(mouse_position)
 
 
 func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserved_position: Vector2 = Vector2.ZERO, keep_position: bool = false) -> void:
@@ -125,17 +132,17 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 	weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	weapon_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var attached_items := weapon.get_attached_item_instances()
-	var can_detach_attachment := _attachment_editing_enabled and not attached_items.is_empty()
 	weapon_tooltip_label.text = weapon.build_full_stats_text()
 	weapon_tooltip.visible = true
 	weapon_tooltip.reset_size()
-	if can_detach_attachment:
+	if not attached_items.is_empty():
 		for slot_index in range(attached_items.size()):
 			var item_instance_id := str(attached_items[slot_index].get("item_instance_id", ""))
 			if not item_instance_id.is_empty():
 				_tooltip_attachment_rows.append({
 					"item_instance_id": item_instance_id,
 					"slot_index": slot_index,
+					"item": attached_items[slot_index],
 				})
 		_update_tooltip_attachment_rows()
 		call_deferred("_update_tooltip_attachment_rows")
@@ -169,7 +176,80 @@ func _update_tooltip_attachment_rows() -> void:
 		)
 
 
+func _build_attachment_tooltip() -> void:
+	_attachment_tooltip = Panel.new()
+	_attachment_tooltip.name = "AttachmentTooltip"
+	_attachment_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_attachment_tooltip.z_index = 4096
+	_attachment_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
+	_attachment_tooltip_label = Label.new()
+	_attachment_tooltip_label.position = Vector2(10, 8)
+	_attachment_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_attachment_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_attachment_tooltip_label.add_theme_color_override("font_color", Color("ffffff"))
+	if weapon_tooltip_label != null:
+		_attachment_tooltip_label.add_theme_font_override("font", weapon_tooltip_label.get_theme_font("normal_font"))
+		_attachment_tooltip_label.add_theme_font_size_override("font_size", weapon_tooltip_label.get_theme_font_size("normal_font_size"))
+	_attachment_tooltip.add_child(_attachment_tooltip_label)
+	GameTooltipLayer.for_owner(self).add_child(_attachment_tooltip)
+	_attachment_tooltip.hide()
+
+
+func _update_attachment_tooltip(mouse_position: Vector2) -> void:
+	if weapon_tooltip_label == null:
+		return
+	var local_mouse := mouse_position - weapon_tooltip_label.global_position
+	for row in _tooltip_attachment_rows:
+		var rect: Rect2 = row.get("rect", Rect2())
+		if rect.has_point(local_mouse):
+			var item_id := str(row.get("item_instance_id", ""))
+			if _hovered_attachment_id != item_id or not _attachment_tooltip.visible:
+				_hovered_attachment_id = item_id
+				_show_attachment_tooltip(row.get("item", {}), rect)
+			return
+	_hide_attachment_tooltip()
+
+
+func _show_attachment_tooltip(item: Dictionary, icon_rect: Rect2) -> void:
+	var base := DataRegistry.get_record("augmentations", str(item.get("base_item_id", "")))
+	var title := str(item.get("display_name", base.get("display_name", "附魔")))
+	var description := str(item.get("description", base.get("description", "")))
+	var text := title + ("\n" + description if not description.is_empty() else "")
+	var viewport_size := get_viewport_rect().size
+	var width := minf(280.0, viewport_size.x - 40.0)
+	var paragraph := TextParagraph.new()
+	paragraph.width = width
+	paragraph.break_flags = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+	paragraph.add_string(text, _attachment_tooltip_label.get_theme_font("font"), _attachment_tooltip_label.get_theme_font_size("font_size"))
+	var height := paragraph.get_size().y + maxf(0, paragraph.get_line_count() - 1) * _attachment_tooltip_label.get_theme_constant("line_spacing")
+	_attachment_tooltip_label.text = text
+	_attachment_tooltip_label.size = Vector2(width, height)
+	_attachment_tooltip.size = Vector2(width + 20, height + 16)
+	var weapon_rect := weapon_tooltip.get_global_rect()
+	var point := Vector2(weapon_rect.end.x + 8, weapon_tooltip_label.global_position.y + icon_rect.position.y)
+	if point.x + _attachment_tooltip.size.x > viewport_size.x - 8:
+		point.x = weapon_rect.position.x - _attachment_tooltip.size.x - 8
+		if point.x < 8:
+			point.x = weapon_rect.position.x
+			point.y = weapon_rect.end.y + 8
+			if point.y + _attachment_tooltip.size.y > viewport_size.y - 8:
+				point.y = weapon_tooltip_label.global_position.y + icon_rect.position.y - _attachment_tooltip.size.y - 8
+	point.x = clampf(point.x, 8, maxf(8, viewport_size.x - _attachment_tooltip.size.x - 8))
+	point.y = clampf(point.y, 8, maxf(8, viewport_size.y - _attachment_tooltip.size.y - 8))
+	_attachment_tooltip.position = point.round()
+	_attachment_tooltip.show()
+
+
+func _hide_attachment_tooltip() -> void:
+	_hovered_attachment_id = ""
+	if _attachment_tooltip != null:
+		_attachment_tooltip.hide()
+
+
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		# Use the same viewport coordinates as the rendered tooltip layer.
+		_tooltip_mouse_position = event.position
 	if weapon_tooltip == null or not weapon_tooltip.visible:
 		return
 	if not (event is InputEventMouseButton):
@@ -204,6 +284,7 @@ func _detach_tooltip_attachment(weapon_id: String, item_instance_id: String) -> 
 
 
 func _hide_weapon_tooltip() -> void:
+	_hide_attachment_tooltip()
 	_tooltip_attachment_rows.clear()
 	_tooltip_weapon_id = ""
 	if weapon_tooltip != null:

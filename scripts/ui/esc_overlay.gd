@@ -4,6 +4,7 @@ class_name EscOverlay
 signal back_pressed
 
 const RELIC_CELL_SIZE: Vector2 = Vector2(48, 48)
+const RELIC_ICON_SCALE := 0.625 # 40px icons inside the shared 48px inventory cell.
 const GRID_EDGE_PADDING := 4
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
@@ -32,6 +33,9 @@ var _show_tween: Tween = null
 var _item_tooltip_panel: PanelContainer = null
 var _grid_layout_retry_pending: bool = false
 var _grid_layout_retry_in_progress: bool = false
+var _listed_relic_player: PlayerController
+var _listed_relic_counts: Dictionary = {}
+static var _relic_glow_textures: Dictionary = {}
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
@@ -47,6 +51,7 @@ var _grid_layout_retry_in_progress: bool = false
 
 
 func _ready() -> void:
+	visibility_changed.connect(_sync_relic_pulses)
 	if relic_tooltip != null:
 		relic_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 	_ensure_backdrop()
@@ -352,6 +357,11 @@ func _on_back_pressed() -> void:
 
 
 func _refresh_relic_list() -> void:
+	var counts := _player.get_relic_counts() if _player != null else {}
+	if _listed_relic_player == _player and _listed_relic_counts == counts:
+		return
+	_listed_relic_player = _player
+	_listed_relic_counts = counts.duplicate()
 	for cell in _relic_cells:
 		if is_instance_valid(cell):
 			cell.queue_free()
@@ -363,7 +373,6 @@ func _refresh_relic_list() -> void:
 	_relic_pulse_tweens.clear()
 	if relic_grid == null:
 		return
-	var counts := _player.get_relic_counts() if _player != null else {}
 	var relic_ids: Array[String] = []
 	for relic_id_variant in counts.keys():
 		var relic_id := str(relic_id_variant)
@@ -395,25 +404,51 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 	var rarity := str(relic_data.get("rarity", "common"))
 	var display_name := str(relic_data.get("display_name", relic_id))
 	var cell := Button.new()
-	cell.flat = true
+	cell.flat = false
+	var rarity_color: Color = RARITY_COLORS.get(rarity, RARITY_COLORS["common"])
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = Color("292c31")
+	frame.border_color = Color("62666d")
+	frame.set_border_width_all(1)
+	frame.set_corner_radius_all(3)
+	frame.shadow_color = Color(rarity_color, 0.35)
+	frame.shadow_size = 3
+	for state in ["normal", "hover", "pressed", "hover_pressed"]:
+		cell.add_theme_stylebox_override(state, frame)
 	cell.custom_minimum_size = RELIC_CELL_SIZE
 	cell.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	cell.size = RELIC_CELL_SIZE
 	cell.focus_mode = Control.FOCUS_NONE
 	cell.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var glow := TextureRect.new()
+	glow.name = "RarityGlow"
+	glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	glow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	if not _relic_glow_textures.has(rarity):
+		var gradient := Gradient.new()
+		gradient.colors = PackedColorArray([Color(rarity_color, 0.40), Color(rarity_color, 0.0)])
+		var glow_texture := GradientTexture2D.new()
+		glow_texture.gradient = gradient
+		glow_texture.fill = GradientTexture2D.FILL_RADIAL
+		glow_texture.fill_from = Vector2(0.5, 0.5)
+		glow_texture.fill_to = Vector2(1.0, 0.5)
+		_relic_glow_textures[rarity] = glow_texture
+	glow.texture = _relic_glow_textures[rarity]
+	cell.add_child(glow)
+	glow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var icon_path := str(relic_data.get("icon", ""))
 	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-		var texture := load(icon_path)
+		var texture := FinanceUIStyle.item_icon(icon_path)
 		if texture is Texture2D:
 			var icon_rect := TextureRect.new()
 			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			cell.add_child(icon_rect)
 			icon_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			FinanceUIStyle.set_item_icon(icon_rect, texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+			FinanceUIStyle.set_item_icon(icon_rect, texture, RELIC_ICON_SCALE)
 			if FinanceUIStyle.is_native_relic_icon(texture):
-				cell.custom_minimum_size = RELIC_CELL_SIZE.max(FinanceUIStyle.relic_icon_size(texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE) + Vector2(8, 8))
+				cell.custom_minimum_size = RELIC_CELL_SIZE.max(FinanceUIStyle.relic_icon_size(texture, RELIC_ICON_SCALE) + Vector2(8, 8))
 				cell.size = cell.custom_minimum_size
 			icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	else:
@@ -463,7 +498,15 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		pulse.tween_property(cell, "modulate", Color(1.08, 1.04, 0.92, 1.0), 1.2)
 		pulse.tween_property(cell, "modulate", Color.WHITE, 1.2)
 		_relic_pulse_tweens[cell] = pulse
+		if not is_visible_in_tree(): pulse.pause()
 	return cell
+
+
+func _sync_relic_pulses() -> void:
+	for pulse: Tween in _relic_pulse_tweens.values():
+		if not pulse.is_valid(): continue
+		if is_visible_in_tree(): pulse.play()
+		else: pulse.pause()
 
 
 func _on_relic_cell_hovered(cell: Control, relic_data: Dictionary) -> void:

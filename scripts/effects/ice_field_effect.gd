@@ -1,5 +1,6 @@
 extends Node2D
 class_name IceFieldEffect
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
@@ -30,7 +31,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	var effect := IceFieldEffect.new()
 	parent.add_child(effect)
 	effect.global_position = hit_position
-	effect._visual_detail = PIXEL.register(effect, "ice")
+	PIXEL.register(effect, "ice")
+	effect._visual_detail = 2
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
@@ -122,17 +124,6 @@ func _damage_enemies() -> void:
 	AudioManager.end_combat_audio()
 
 func _draw() -> void:
-	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
-	var fade := 1.0 - smoothstep(0.64, 1.0, progress)
-	var growth := smoothstep(0.0, 0.42, _elapsed)
-	var projection := Vector2(1.0, FROST.GROUND_FLATTEN)
-	PIXEL.ellipse(self, projection * _radius * growth, Color(0.43, 0.63, 0.80, 0.06 * fade))
-	FROST.draw_crystal(self, Vector2.ZERO, _radius * 0.90, growth, fade, PI / 6.0, FROST.GROUND_FLATTEN, _visual_detail)
-	if _visual_detail < 2: return
-	for index in 6:
-		var angle := index * TAU / 6.0
-		var center := Vector2.from_angle(angle) * projection * _radius * 0.67
-		var small_growth := smoothstep(0.12 + (index % 2) * 0.07, 0.60, _elapsed)
-		FROST.draw_crystal(self, center, _radius * 0.23, small_growth, fade * 0.82, angle + PI / 6, FROST.GROUND_FLATTEN)
-		var sparkle := 0.35 + 0.35 * sin(_elapsed * 4.0 + index * 1.7)
-		PIXEL.block(self, center + Vector2(3, -3) * projection, Vector2(2, 2), Color(0.72, 0.85, 0.96, sparkle * fade * small_growth * FROST.OPACITY))
+	var fade := 1.0 - smoothstep(0.64, 1.0, clampf(_elapsed / _lifetime, 0.0, 1.0))
+	BAKED.draw(self, "ice_d2", mini(36, int(_elapsed * 60.0)), Vector2.ONE * (_radius / DEFAULT_RADIUS), Color(1,1,1,fade))
+

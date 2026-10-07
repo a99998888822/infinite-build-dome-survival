@@ -103,7 +103,7 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 		var enemy := contact.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or thrust.hits.has(enemy.get_instance_id()):
 			continue
-		if (enemy.global_position - origin).dot(direction) < 0:
+		if (weapon.get_auto_target_position(enemy) - origin).dot(direction) < 0:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
@@ -143,7 +143,7 @@ func _spawn_shards() -> void:
 					var direction := forward.rotated(deg_to_rad(lerpf(-spread * 0.5, spread * 0.5, float(index) / maxf(int(profile.child_count) - 1, 1))))
 					var target_id := 0
 					if nearest != null:
-						direction = origin.direction_to(nearest.global_position)
+						direction = origin.direction_to(weapon.get_auto_target_position(nearest))
 						target_id = nearest.get_instance_id()
 						reserved[target_id] = true
 					var event: DamageEvent = contact.event.continue_after_split(profile)

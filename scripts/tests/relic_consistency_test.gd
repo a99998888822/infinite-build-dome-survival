@@ -136,7 +136,7 @@ func _test_interest() -> void:
 		check(correct, "contract always preserves normal periodic and annuity interest deposit=%d" % deposited)
 		check(is_equal_approx(float(results[0].interest_rate), 6.0 if deposited < 50 else 12.0), "contract grants six rate points only at the deposit threshold")
 		check(is_equal_approx(bank.interest_rate_bonus, 0.6), "tome grows once per successful settlement deposit=%d" % deposited)
-		check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 94, "all positive settlements apply frenzy growth and cost deposit=%d" % deposited)
+		check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 97, "all positive settlements apply frenzy growth and cost deposit=%d" % deposited)
 		if deposited == 0:
 			var manual := bank.trigger_manual_interest()
 			check(manual.gain > 0 and not manual.blocked and is_equal_approx(bank.interest_rate_bonus, 0.8), "manual positive interest also grows tome")
@@ -198,17 +198,17 @@ func _test_confirmed_balance() -> void:
 	p.add_relic("relic_perpetual_annuity_scroll")
 	var results := bank.process_wave_end_settlements()
 	check(results.size() == 2 and results[0].gain == 25 and results[1].gain == 24 and bank.principal == 500, "second annuity payout uses unchanged principal and sanity lost after first payout")
-	check(p.get_stat("damage_percent") == 4 and p.get_stat("humanity") == 96, "two successful payouts grant damage four and sanity minus four")
+	check(p.get_stat("damage_percent") == 4 and p.get_stat("humanity") == 98, "two successful payouts grant damage four and sanity minus two")
 	bank.trigger_manual_interest()
-	check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 94, "manual positive settlement triggers frenzy once")
+	check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 97, "manual positive settlement triggers frenzy once")
 	p.add_relic("relic_high_yield_contract")
 	bank.process_wave_end_settlements()
-	check(p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == 90, "unqualified contract still permits positive settlements and frenzy")
+	check(p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == 95, "unqualified contract still permits positive settlements and frenzy")
 	bank.principal = 1
 	bank.interest_remainder = 0
 	modify(p, "humanity", -300)
 	var zero_gain := bank.trigger_manual_interest()
-	check(zero_gain.gain == 0 and p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == -210, "zero integer payout accrues fractions without triggering frenzy")
+	check(zero_gain.gain == 0 and p.get_stat("damage_percent") == 10 and p.get_stat("humanity") == -205, "zero integer payout accrues fractions without triggering frenzy")
 	var candidates := ShopOfferGenerator.new().build_shop_candidate_pool({"owned_relic_counts": p.get_relic_counts()})
 	check(candidates.all(func(offer): return str(offer.get("target_id", "")) not in ["relic_frenzied_dividend", "relic_perpetual_annuity_scroll"]), "capped relics leave the candidate pool")
 	p.free()
@@ -366,6 +366,12 @@ func _test_conditional_event_validation() -> void:
 
 func _test_sanity_and_dependencies() -> void:
 	var p := make_player()
+	p.add_relic("relic_soul_keeper_face_stone")
+	for sample in [[0, 100], [1, 100], [2, 100], [3, 101], [5, 101], [6, 102], [299, 199], [300, 200], [1000, 433]]:
+		modify(p, "divinity", sample[0])
+		check(p.get_stat("humanity") == sample[1] and p.get_stat("max_hp") == 15, "soul stone grants sanity per three erosion at %d" % sample[0])
+	p.free()
+	p = make_player()
 	p.add_relic("relic_amulet_of_humanity")
 	p.add_relic("relic_reincarnation_hellfire_candle")
 	check(p.get_stat("humanity") == 110, "candle preserves preexisting sanity bonus")
@@ -381,13 +387,13 @@ func _test_sanity_and_dependencies() -> void:
 	modify(p, "divinity", 20)
 	p.add_relic("relic_soul_keeper_face_stone")
 	p.add_relic("relic_reincarnation_hellfire_candle")
-	check(p.get_stat("humanity") == 120, "candle preserves existing derived sanity")
+	check(p.get_stat("humanity") == 106, "candle preserves existing derived sanity")
 	modify(p, "divinity", 30)
-	check(p.get_stat("humanity") == 120, "existing stone cannot gain more sanity")
+	check(p.get_stat("humanity") == 106, "existing stone cannot gain more sanity")
 	modify(p, "divinity", 10)
-	check(p.get_stat("humanity") == 110, "blocked derived sanity can decrease")
+	check(p.get_stat("humanity") == 103, "blocked derived sanity can decrease")
 	modify(p, "divinity", 30)
-	check(p.get_stat("humanity") == 110, "blocked derived sanity cannot recover after decrease")
+	check(p.get_stat("humanity") == 103, "blocked derived sanity cannot recover after decrease")
 	p.free()
 	var permutations := [
 		["relic_lost_wayfarer_greave", "relic_soul_keeper_face_stone", "relic_shadowless_greave"],
@@ -397,7 +403,7 @@ func _test_sanity_and_dependencies() -> void:
 	for ids in permutations:
 		p = make_player()
 		modify(p, "humanity", -50)
-		modify(p, "divinity", 20)
+		modify(p, "divinity", 60)
 		for id in ids: p.add_relic(id)
 		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 170 and p.get_stat("armor") == 29, "dependency order independent " + str(ids))
 		modify(p, "divinity", 0)

@@ -2,6 +2,7 @@ extends RefCounted
 class_name StatDefinitions
 
 const ARMOR_K: float = 100
+const ATTACK_SPEED_SCALE: float = 300.0
 const RANGE_BONUS_EFFICIENCY: float = 0.5
 const MIN_DAMAGE_TAKEN_PERCENT: float = 5
 const DEFAULT_HUMANITY: float = 100
@@ -26,7 +27,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_SURVIVAL,
 		"default": 100,
 		"min": 1,
-		"max": 99999,
 		"is_integer": true,
 		"is_percent": false,
 		"description": "角色或敌人的最大生命值。"
@@ -85,7 +85,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"display_name": "护甲",
 		"category": CATEGORY_SURVIVAL,
 		"default": 0,
-		"max": 99999,
 		"is_integer": true,
 		"is_percent": false,
 		"description": "通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。"
@@ -145,7 +144,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_ATTACK,
 		"default": 0,
 		"min": -99999,
-		"max": 99999,
 		"is_integer": true,
 		"is_percent": true,
 		"description": "通用伤害百分比加成，影响近战、远程和元素武器伤害。"
@@ -155,10 +153,9 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_ATTACK,
 		"default": 0,
 		"min": -90,
-		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "整数百分比攻速；动作后冷却 = 武器基础冷却 / (1 + attack_speed / 100)。不加快武器动作与喷射频率。"
+		"description": "正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。"
 	},
 	"crit_chance": {
 		"display_name": "暴击率",
@@ -195,20 +192,18 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_CONTROL,
 		"default": 0,
 		"min": -90,
-		"max": 10000,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "攻击距离属性，每点增加0.5%的基础攻击距离；例如+100实际增加50%。"
+		"description": "影响武器的攻击距离与索敌距离。"
 	},
 	"damage_area_size": {
 		"display_name": "伤害范围",
 		"category": CATEGORY_CONTROL,
 		"default": 0,
 		"min": -90,
-		"max": 10000,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "伤害范围属性，每点增加0.5%的适用伤害半径或宽度，并同步对应视觉大小；例如+100实际增加50%。"
+		"description": "影响适用攻击的伤害半径或宽度，并同步对应视觉大小。"
 	},
 	"control_power": {
 		"display_name": "控制强度",
@@ -275,7 +270,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_REWARD,
 		"default": 0,
 		"min": -95,
-		"max": 10000,
 		"is_integer": true,
 		"is_percent": true,
 		"description": "局内或结算货币获取百分比加成。"
@@ -295,7 +289,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_REWARD,
 		"default": 5,
 		"min": 0,
-		"max": 10000,
 		"is_integer": false,
 		"is_percent": true,
 		"description": "当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。"
@@ -438,8 +431,12 @@ static func calculate_damage_taken_from_armor(armor: float) -> float:
 
 
 static func calculate_attack_interval(base_interval: float, attack_speed: float) -> float:
-	# 攻速采用倍率式换算，保持数值直观且便于叠加。
-	var speed_multiplier := maxf(1.0 + attack_speed / 100.0, 0.1)
+	# 正攻速前段更陡、后段更缓：100 点保留 75%，300 点保留 60%。
+	# 负攻速保持原线性惩罚，避免对数映射放大减速效果。
+	var effective_attack_speed := attack_speed
+	if attack_speed > 0.0:
+		effective_attack_speed = 100.0 * log(1.0 + attack_speed / 100.0) / log(2.0)
+	var speed_multiplier := maxf(1.0 + effective_attack_speed / ATTACK_SPEED_SCALE, 0.1)
 	return base_interval / speed_multiplier
 
 

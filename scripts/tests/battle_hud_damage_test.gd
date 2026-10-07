@@ -61,6 +61,8 @@ func _run() -> void:
 	manager.set_process(false)
 	manager.clear_battle_entities()
 	player.set_physics_process(false)
+	await _test_vitals_tween_replacement()
+	await _test_enemy_pressure_display()
 	check(battle.loadout.equip_weapon(PURSE) and battle.loadout.equip_weapon(TOME), "equip three distinct weapons")
 	var enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(150, 0))
 	enemy.set_physics_process(false)
@@ -133,6 +135,54 @@ func _run() -> void:
 	game.queue_free()
 	await frames(8)
 	get_tree().quit(0 if failures == 0 else 1)
+
+
+func _test_enemy_pressure_display() -> void:
+	var old_wave := manager.current_wave_index
+	var old_bonus := manager.enemy_pressure.wave_bonus.duplicate()
+	var old_challenge := manager.wave_challenges.active.duplicate(true)
+	manager.current_wave_index = 19
+	manager.enemy_pressure.wave_bonus = {"normal": 60, "elite": 30}
+	manager.wave_challenges.active = {"wave": 20, "body": "challenge fixture"}
+	player.modifier_stack.set_base_stat("divinity", 100)
+	var text := hud._get_stat_tooltip_text("divinity")
+	check(text.contains("4.78") and text.contains("2.23") and text.contains("2.35"), "erosion tooltip uses runtime multipliers")
+	hud._refresh_wave_display()
+	await frames()
+	check(hud.wave_panel.tooltip_text.contains("60%") and hud.wave_panel.tooltip_text.contains("30%") and hud.wave_panel.tooltip_text.contains("challenge fixture"), "wave tooltip preserves challenge and both HP bonuses")
+	check(hud.wave_label.get_global_rect().end.x <= hud.wave_panel.get_global_rect().end.x + 1.0, "combined challenge and adaptation label fits wave panel")
+	manager.current_wave_index = old_wave
+	manager.enemy_pressure.wave_bonus = old_bonus
+	manager.wave_challenges.active = old_challenge
+	player.modifier_stack.set_base_stat("divinity", 0)
+	hud._refresh_wave_display()
+	check(not hud.wave_panel.tooltip_text.contains("60%"), "clearing adaptation clears its tooltip")
+
+
+func _test_vitals_tween_replacement() -> void:
+	var original_max := player.get_stat("max_hp")
+	var original_hp := player.current_hp
+	player.modifier_stack.set_base_stat("max_hp", 48)
+	player.current_hp = 48
+	hud._sync_vitals(false)
+	player.current_hp = 36
+	hud._sync_vitals(true)
+	player.current_hp = 48
+	hud._sync_vitals(true)
+	check(hud.hp_label.text == "48/48" and is_equal_approx(hud.hp_bar.value, 100), "full HP label and red bar agree immediately after same-frame damage and heal")
+	await get_tree().create_timer(0.3).timeout
+	check(is_equal_approx(hud.hp_bar.value, 100), "obsolete damage tween cannot lower the healed bar later")
+	player.current_hp = 24
+	hud._sync_vitals(true)
+	await get_tree().create_timer(0.08).timeout
+	player.current_hp = 48
+	hud._sync_vitals(true)
+	check(is_equal_approx(hud.hp_bar.value, 100), "healing during a running tween fills the bar immediately")
+	await get_tree().create_timer(0.3).timeout
+	check(is_equal_approx(hud.hp_bar.value, 100), "full bar stays synchronized after interrupted tween")
+	player.modifier_stack.set_base_stat("max_hp", original_max)
+	player.current_hp = original_hp
+	hud._sync_vitals(false)
 
 
 func _capture_live_combat() -> void:

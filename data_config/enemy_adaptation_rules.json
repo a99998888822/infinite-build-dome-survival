@@ -1,0 +1,15 @@
+[
+  {
+    "id": "kill_speed_hp",
+    "display_name": "秒怪生命适应",
+    "description": "从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。",
+    "first_effective_wave": 4,
+    "fast_kill_ms": 1000,
+    "minimum_observed_seconds": 15,
+    "fast_ratio_percent": 80,
+    "slow_ratio_percent": 50,
+    "slow_waves_to_relax": 2,
+    "normal": {"minimum_samples": 20, "step_percent": 10, "max_percent": 60},
+    "elite": {"minimum_samples": 1, "step_percent": 5, "max_percent": 30}
+  }
+]

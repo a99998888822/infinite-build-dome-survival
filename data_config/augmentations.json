@@ -44,7 +44,7 @@
   {
     "id": "scroll_domain",
     "display_name": "领域",
-    "description": "伤害范围+30（实际范围增加15%）",
+    "description": "伤害范围+30",
     "enchantment_type": "buff",
     "category": "enchantment_scroll",
     "rarity": "rare",

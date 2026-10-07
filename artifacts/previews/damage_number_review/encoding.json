@@ -1,0 +1,16 @@
+{
+  "gif_frames": 250,
+  "duration_ms": 5000,
+  "size": [
+    984,
+    588
+  ],
+  "source": "Godot GPU viewport",
+  "speed": "1x",
+  "crop": [
+    260,
+    120,
+    820,
+    490
+  ]
+}

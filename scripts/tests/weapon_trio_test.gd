@@ -178,7 +178,7 @@ func _run() -> void:
 	advance(limb, 0.0043)
 	check(hits.is_empty() and limb.pose_index() == 12, "fast slam reaches the last airborne pose before damage")
 	advance(limb, 0.0004)
-	check(hits.size() == 2 and hits.all(func(hit): return hit.damage == 24) and limb.pose_index() == 13, "100ms impact pose deals rectangle damage exactly once")
+	check(hits.size() == 2 and hits.all(func(hit): return hit.damage == 40) and limb.pose_index() == 13, "100ms impact pose deals current base damage to the rectangle exactly once")
 	check(enemies[2].current_hp == 10000 and enemies[3].current_hp == 10000 and enemies[4].current_hp == 10000, "tentacle excludes rear/outside width and reach")
 	advance(limb, 0.112)
 	check(limb.pose_index() == 18 and hits.size() == 2, "full recovery animation completes without repeated damage")

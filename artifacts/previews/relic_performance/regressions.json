@@ -1,0 +1,47 @@
+[
+  {
+    "name": "combat_optimization_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "COMBAT_OPTIMIZATION_TEST checks=134 failures=0"
+    ]
+  },
+  {
+    "name": "relic_balance_regression_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "RELIC_BALANCE_COMPLETE checks=88 failures=0"
+    ]
+  },
+  {
+    "name": "principal_relic_test",
+    "exit": 1,
+    "issues": [
+      "FAIL actual game UI uses five starting HP plus level growth",
+      "FAIL bank preview exposes lost max and current HP",
+      "FAIL bank preview preserves live protection and health",
+      "FAIL actual withdrawal matches preview across all three relics"
+    ],
+    "summary": [
+      "PRINCIPAL_RELIC_COMPLETE checks=76 failures=4"
+    ]
+  },
+  {
+    "name": "finance_preparation_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "FINANCE_PREPARATION_DONE failures=0"
+    ]
+  },
+  {
+    "name": "relic_consistency_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "RELIC_TEST_COMPLETE checks=153 failures=0"
+    ]
+  }
+]

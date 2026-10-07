@@ -81,6 +81,9 @@ var _last_activity_rate: float = DEFAULT_INTEREST_RATE
 var _principal_revive_uses: Dictionary = {}
 var _run_serial := 0
 var _interest_event_serial := 0
+var _runtime_effect_cache: Dictionary = {}
+var _runtime_effect_owner_id := 0
+var _runtime_effect_revision := -1
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
@@ -657,39 +660,38 @@ func _refresh_derived_stats() -> void:
 	if player == null:
 		return
 	has_deposited_before_current_wave = wave_start_deposit_amount >= _get_wave_deposit_requirement()
-	var previous_values := {}
-	for modifier in player.modifier_stack.get_all_modifiers():
-		if modifier.source_type == "finance_derived":
-			previous_values[modifier.id] = modifier.value
+	var previous_values := player.modifier_stack.get_values_by_source_type("finance_derived")
 	player.remove_runtime_modifiers_by_source_type("finance_derived")
-	for relic_id in player.get_relic_ids():
-		var relic_count := player.get_relic_count(relic_id)
-		if relic_count <= 0:
-			continue
-		for effect in _get_relic_runtime_effects(relic_id, TRIGGER_DERIVED):
-			match str(effect.get("effect", "")):
-				EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
-					if wave_start_deposit_amount >= int(effect.get("minimum_deposit", 50)):
-						var deposit_rate := float(effect.get("value", 0.0)) * float(relic_count)
-						player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", deposit_rate))
-				EFFECT_DERIVED_STAT_FROM_PRINCIPAL:
-					var stat_id := str(effect.get("stat", ""))
-					if not StatDefinitions.has_stat(stat_id):
-						continue
-					var divisor := maxf(1.0, float(effect.get("divisor", 100)))
-					var per_unit := float(effect.get("per_unit", 1))
-					var derived_value := floorf(float(principal) / divisor) * per_unit * float(relic_count)
-					if player._is_stat_increase_blocked(stat_id):
-						var modifier_id := "derived_%s_%s" % [relic_id, stat_id]
-						derived_value = minf(derived_value, float(previous_values.get(modifier_id, 0.0)))
-					if not is_zero_approx(derived_value):
-						player.add_runtime_modifier(_build_derived_modifier(relic_id, stat_id, derived_value))
-				EFFECT_DERIVED_INTEREST_FROM_EROSION:
-					var erosion_divisor := maxf(1.0, float(effect.get("divisor", 5)))
-					var erosion_per_unit := maxf(0.0, float(effect.get("per_unit", 1)))
-					var derived_rate := floorf(player.get_stat("divinity") / erosion_divisor) * erosion_per_unit * float(relic_count)
-					if derived_rate > 0.0:
-						player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", derived_rate))
+	for effect in _collect_runtime_effects(TRIGGER_DERIVED):
+		var relic_id := str(effect.relic_id)
+		var relic_count := int(effect.relic_count)
+		match str(effect.get("effect", "")):
+			EFFECT_INTEREST_RATE_ON_WAVE_DEPOSIT:
+				if wave_start_deposit_amount >= int(effect.get("minimum_deposit", 50)):
+					var deposit_rate := float(effect.get("value", 0.0)) * float(relic_count)
+					player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", deposit_rate))
+			EFFECT_DERIVED_STAT_FROM_PRINCIPAL:
+				var stat_id := str(effect.get("stat", ""))
+				if not StatDefinitions.has_stat(stat_id):
+					continue
+				var divisor := maxf(1.0, float(effect.get("divisor", 100)))
+				var per_unit := float(effect.get("per_unit", 1))
+				var per_copy_bonus := floorf(float(principal) / divisor) * per_unit
+				# The optional cap covers this relic's principal bonus, not its flat stats.
+				if effect.has("max_bonus"):
+					per_copy_bonus = minf(per_copy_bonus, float(effect.max_bonus))
+				var derived_value := per_copy_bonus * float(relic_count)
+				if player._is_stat_increase_blocked(stat_id):
+					var modifier_id := "derived_%s_%s" % [relic_id, stat_id]
+					derived_value = minf(derived_value, float(previous_values.get(modifier_id, 0.0)))
+				if not is_zero_approx(derived_value):
+					player.add_runtime_modifier(_build_derived_modifier(relic_id, stat_id, derived_value))
+			EFFECT_DERIVED_INTEREST_FROM_EROSION:
+				var erosion_divisor := maxf(1.0, float(effect.get("divisor", 5)))
+				var erosion_per_unit := maxf(0.0, float(effect.get("per_unit", 1)))
+				var derived_rate := floorf(player.get_stat("divinity") / erosion_divisor) * erosion_per_unit * float(relic_count)
+				if derived_rate > 0.0:
+					player.add_runtime_modifier(_build_derived_modifier(relic_id, "interest_rate", derived_rate))
 
 
 func _refresh_erosion_bonus() -> void:
@@ -815,6 +817,16 @@ func _collect_runtime_effects(trigger: String) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	if player == null:
 		return result
+	# Only cache effect definitions/counts, never principal, interest or RNG results.
+	var owner_id := player.get_instance_id()
+	var revision := player.relic_system.effects_revision
+	if owner_id != _runtime_effect_owner_id or revision != _runtime_effect_revision:
+		_runtime_effect_cache.clear()
+		_runtime_effect_owner_id = owner_id
+		_runtime_effect_revision = revision
+	if _runtime_effect_cache.has(trigger):
+		var cached: Array[Dictionary] = _runtime_effect_cache[trigger]
+		return cached.duplicate(true)
 	for relic_id in player.get_relic_ids():
 		var relic_count := player.get_relic_count(relic_id)
 		if relic_count <= 0:
@@ -824,7 +836,8 @@ func _collect_runtime_effects(trigger: String) -> Array[Dictionary]:
 			entry["relic_id"] = relic_id
 			entry["relic_count"] = relic_count
 			result.append(entry)
-	return result
+	_runtime_effect_cache[trigger] = result
+	return result.duplicate(true)
 
 
 func _get_wave_deposit_requirement() -> int:

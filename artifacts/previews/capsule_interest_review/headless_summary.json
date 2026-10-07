@@ -1,0 +1,32 @@
+[
+  {
+    "name": "editor",
+    "exit": 0,
+    "issues": [],
+    "summary": []
+  },
+  {
+    "name": "elite_capsule_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "ELITE_CAPSULE_TEST checks=40 failures=0"
+    ]
+  },
+  {
+    "name": "interest_arrival_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "INTEREST_ARRIVAL_COMPLETE checks=40 failures=0"
+    ]
+  },
+  {
+    "name": "active_combat_integration_test",
+    "exit": 0,
+    "issues": [],
+    "summary": [
+      "ACTIVE_COMBAT_INTEGRATION checks=115 failures=0"
+    ]
+  }
+]

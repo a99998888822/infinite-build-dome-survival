@@ -1,0 +1,75 @@
+{
+  "runs": [
+    {
+      "name": "early_wave_weapon_test",
+      "completed": [
+        "EARLY_WAVE_WEAPON_TEST checks=1674 failures=0"
+      ],
+      "failures": [],
+      "engine_notices": []
+    },
+    {
+      "name": "battle_hud_damage_test",
+      "completed": [
+        "BATTLE_HUD_DAMAGE_TEST checks=29 failures=2"
+      ],
+      "failures": [
+        "FAIL performance line has top padding below vitals",
+        "FAIL damage meter has padding below performance line"
+      ],
+      "engine_notices": []
+    },
+    {
+      "name": "finance_preparation_test",
+      "completed": [
+        "FINANCE_PREPARATION_DONE failures=0"
+      ],
+      "failures": [],
+      "engine_notices": []
+    },
+    {
+      "name": "interest_arrival_test",
+      "completed": [
+        "INTEREST_ARRIVAL_COMPLETE checks=40 failures=0"
+      ],
+      "failures": [],
+      "engine_notices": []
+    },
+    {
+      "name": "miniboss_choice_test",
+      "completed": [
+        "MINIBOSS_CHOICE_COMPLETE checks=25 failures=0"
+      ],
+      "failures": [],
+      "engine_notices": [
+        "WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 4 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "name": "hud_control",
+      "completed": [
+        "BATTLE_HUD_DAMAGE_TEST checks=25 failures=2"
+      ],
+      "failures": [
+        "FAIL performance line has top padding below vitals",
+        "FAIL damage meter has padding below performance line"
+      ],
+      "engine_notices": []
+    },
+    {
+      "name": "gpu",
+      "completed": [
+        "EARLY_WAVE_UI_REVIEW_COMPLETE failures=0"
+      ],
+      "failures": [],
+      "engine_notices": []
+    }
+  ],
+  "known_hud_spacing_failures_match_original_test": true,
+  "known_hud_spacing_note": "Existing layout uses 6px gaps; original assertions require 8px. Layout lines are unchanged from HEAD.",
+  "gpu_private_desktop_verified": true,
+  "foreground_samples": 0,
+  "utf8_valid": true,
+  "editor_check_passed": true
+}

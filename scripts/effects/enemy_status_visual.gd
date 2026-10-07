@@ -1,4 +1,5 @@
 extends Node2D
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -74,7 +75,9 @@ func _draw() -> void:
 	if _enemy.has_status("frozen"):
 		_draw_frozen_crystals(_get_body_radius())
 	elif _enemy.has_status("slowed"):
-		FROST.draw_crystal(self, Vector2(0, 12), _get_body_radius() * 0.88, 1.0, 0.72, PI / 6, FROST.GROUND_FLATTEN)
+		draw_set_transform(Vector2(0,12))
+		BAKED.draw(self,"slowed",0,Vector2.ONE * _get_body_radius()*0.88/16.0)
+		draw_set_transform(Vector2.ZERO)
 
 
 func _get_body_radius() -> float:
@@ -133,17 +136,5 @@ func _draw_dark_eye(center: Vector2, icon_radius: float) -> void:
 
 
 func _draw_frozen_crystals(body_radius: float) -> void:
-	var width := clampf(body_radius * 1.10, 15.0, 25.0)
-	var shell := PackedVector2Array([
-		Vector2(-width, 12), Vector2(-width - 3, -4), Vector2(-width * 0.55, -24),
-		Vector2(width * 0.45, -29), Vector2(width + 3, -7), Vector2(width, 14), Vector2(-width, 12),
-	])
-	# Transparent central pane keeps the monster readable inside the ice.
-	PIXEL.polygon(self, shell, Color(0.30, 0.71, 0.87, 0.13))
-	PIXEL.path(self, shell, Color(0.69, 0.95, 0.98, 0.92), 2)
-	PIXEL.polygon(self, PackedVector2Array([shell[0], shell[1], shell[2], Vector2(-width * 0.65, 8)]), Color(0.25, 0.63, 0.79, 0.5))
-	PIXEL.polygon(self, PackedVector2Array([shell[3], shell[4], shell[5], Vector2(width * 0.65, 1)]), Color(0.57, 0.85, 0.95, 0.38))
-	for side in [-1.0, 1.0]:
-		SHAPES.shard(self, Vector2(side * width, 11), Vector2(side * 0.3, -1), 17, 4)
-		PIXEL.path(self, PackedVector2Array([Vector2(side * width, -12), Vector2(side * (width - 5), -6), Vector2(side * (width - 2), 1)]), Color(0.81, 0.99, 1.0, 0.78), 2)
-	PIXEL.line(self, Vector2(-width, 14), Vector2(width, 14), Color(0.37, 0.72, 0.83, 0.92), 4)
+	BAKED.draw(self, "ice_shell", int(round(clampf(body_radius*1.1,15,25)-15)))
+

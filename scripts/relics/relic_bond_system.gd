@@ -7,6 +7,11 @@ var relic_instances: Dictionary = {}
 var relic_ids_by_name: Dictionary = {}
 var instance_sequence: int = 0
 var active_special_effects: Array[Dictionary] = []
+var _runtime_effects: Array[Dictionary] = []
+var _runtime_effects_by_trigger: Dictionary = {}
+var _blocked_stat_ids: Dictionary = {}
+var _runtime_cache_dirty := true
+var effects_revision := 0
 
 
 func initialize(player: PlayerController) -> void:
@@ -131,7 +136,26 @@ func get_relic_counts() -> Dictionary:
 
 
 func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]:
+	_ensure_runtime_effect_cache()
 	var result: Array[Dictionary] = []
+	var effects: Array = _runtime_effects if trigger.is_empty() else _runtime_effects_by_trigger.get(trigger, [])
+	for effect: Dictionary in effects:
+		result.append(effect.duplicate(true))
+	return result
+
+
+func is_stat_increase_blocked(stat_id: String) -> bool:
+	_ensure_runtime_effect_cache()
+	return _blocked_stat_ids.has(stat_id)
+
+
+func _ensure_runtime_effect_cache() -> void:
+	if not _runtime_cache_dirty:
+		return
+	_runtime_cache_dirty = false
+	_runtime_effects.clear()
+	_runtime_effects_by_trigger.clear()
+	_blocked_stat_ids.clear()
 	for instance_id in relic_instances.keys():
 		var relic_instance: Dictionary = relic_instances[instance_id]
 		var relic_data: Dictionary = relic_instance.get("relic_data", {})
@@ -144,13 +168,15 @@ func get_active_relic_runtime_effects(trigger: String = "") -> Array[Dictionary]
 				continue
 			var effect_data: Dictionary = effect.duplicate(true)
 			var effect_trigger := str(effect_data.get("trigger", ""))
-			if not trigger.is_empty() and effect_trigger != trigger:
-				continue
 			effect_data["relic_id"] = str(relic_instance.get("relic_id", ""))
 			effect_data["relic_instance_id"] = str(instance_id)
 			effect_data["relic_runtime_effect_index"] = effect_index
-			result.append(effect_data)
-	return result
+			_runtime_effects.append(effect_data)
+			if not _runtime_effects_by_trigger.has(effect_trigger):
+				_runtime_effects_by_trigger[effect_trigger] = []
+			_runtime_effects_by_trigger[effect_trigger].append(effect_data)
+			if str(effect_data.get("effect", "")) == BattleFinanceSystem.EFFECT_BLOCK_STAT_INCREASE:
+				_blocked_stat_ids[str(effect_data.get("stat", ""))] = true
 
 
 func get_bond_count(bond_id: String) -> int:
@@ -190,6 +216,9 @@ func get_active_special_effects() -> Array[Dictionary]:
 
 
 func refresh_effects() -> void:
+	# Relics may be added, removed, cleared or restored before a refresh.
+	_runtime_cache_dirty = true
+	effects_revision += 1
 	if owner_player != null:
 		owner_player.begin_modifier_update()
 	_clear_owner_effects("relic")

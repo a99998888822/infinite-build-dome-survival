@@ -1,0 +1,261 @@
+{
+	"checks": 338,
+	"failures": [],
+	"fixture": "stationary enemies with scripted damage through take_damage",
+	"fps": 60,
+	"frames": 300,
+	"observations": [
+		{
+			"frame": 24,
+			"labels": [
+				{
+					"color": "ffffffff",
+					"font_size": 18,
+					"position": [
+						-241.666259765625,
+						-74.1569137573242
+					],
+					"text": "9"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 18,
+					"position": [
+						-77.4664459228516,
+						-73.3120040893555
+					],
+					"text": "999"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 18,
+					"position": [
+						73.5095291137695,
+						-76.7682266235352
+					],
+					"text": "99999"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 18,
+					"position": [
+						268.956481933594,
+						-71.6668853759766
+					],
+					"text": "1000000"
+				},
+				{
+					"color": "ffffffff",
+					"font_size": 26,
+					"position": [
+						-249.212432861328,
+						89.1541900634766
+					],
+					"text": "9"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 26,
+					"position": [
+						-81.5201416015625,
+						83.6830749511719
+					],
+					"text": "999"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 26,
+					"position": [
+						91.7157669067383,
+						85.5363159179688
+					],
+					"text": "99999"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 26,
+					"position": [
+						251.206146240234,
+						87.1926345825195
+					],
+					"text": "1000000"
+				}
+			]
+		},
+		{
+			"frame": 114,
+			"labels": [
+				{
+					"color": "ffffffff",
+					"font_size": 18,
+					"position": [
+						-243.001129150391,
+						-76.0807876586914
+					],
+					"text": "99"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 18,
+					"position": [
+						-74.9804382324219,
+						-71.0387802124023
+					],
+					"text": "9999"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 18,
+					"position": [
+						73.9352111816406,
+						-71.3800659179688
+					],
+					"text": "999999"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 18,
+					"position": [
+						248.874206542969,
+						-76.6201629638672
+					],
+					"text": "9999999"
+				},
+				{
+					"color": "ffffffff",
+					"font_size": 26,
+					"position": [
+						-242.084045410156,
+						88.3091812133789
+					],
+					"text": "99"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 26,
+					"position": [
+						-76.9239654541016,
+						88.8704376220703
+					],
+					"text": "9999"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 26,
+					"position": [
+						96.9873809814453,
+						83.8304748535156
+					],
+					"text": "999999"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 26,
+					"position": [
+						246.627502441406,
+						83.1556701660156
+					],
+					"text": "9999999"
+				}
+			]
+		},
+		{
+			"frame": 204,
+			"labels": [
+				{
+					"color": "ffffffff",
+					"font_size": 18,
+					"position": [
+						-254.194412231445,
+						-76.712776184082
+					],
+					"text": "88"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 18,
+					"position": [
+						-80.1881408691406,
+						-74.725830078125
+					],
+					"text": "8888"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 18,
+					"position": [
+						89.5315628051758,
+						-73.5292587280273
+					],
+					"text": "888888"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 18,
+					"position": [
+						266.906372070313,
+						-75.8669891357422
+					],
+					"text": "8888888"
+				},
+				{
+					"color": "ffffffff",
+					"font_size": 26,
+					"position": [
+						-259.577850341797,
+						89.7687072753906
+					],
+					"text": "88"
+				},
+				{
+					"color": "ffc747ff",
+					"font_size": 26,
+					"position": [
+						-81.4419555664063,
+						84.5962066650391
+					],
+					"text": "8888"
+				},
+				{
+					"color": "ff911fff",
+					"font_size": 26,
+					"position": [
+						77.2311935424805,
+						86.6993560791016
+					],
+					"text": "888888"
+				},
+				{
+					"color": "f23333ff",
+					"font_size": 26,
+					"position": [
+						250.695678710938,
+						89.8911361694336
+					],
+					"text": "8888888"
+				}
+			]
+		}
+	],
+	"production_scene": "res://scenes/battle/battle_root.tscn",
+	"samples": [
+		[
+			9,
+			999,
+			99999,
+			1000000
+		],
+		[
+			99,
+			9999,
+			999999,
+			9999999
+		],
+		[
+			88,
+			8888,
+			888888,
+			8888888
+		]
+	]
+}

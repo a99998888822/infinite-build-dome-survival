@@ -18,6 +18,15 @@ const PROGRESSION := {
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	check(DataRegistry.get_load_errors().is_empty(), "upgraded configs validate")
+	check(is_equal_approx(StatDefinitions.calculate_attack_interval(1.0, 0), 1.0), "zero haste keeps base interval")
+	check(is_equal_approx(StatDefinitions.calculate_attack_interval(0.7, -90), 1.0), "negative haste retains previous penalty")
+	var previous_interval := 1.0
+	var valid_curve := true
+	for haste in range(1, 10001):
+		var interval := StatDefinitions.calculate_attack_interval(1.0, haste)
+		valid_curve = valid_curve and is_finite(interval) and interval > 0.0 and interval < previous_interval
+		previous_interval = interval
+	check(valid_curve, "positive haste curve stays finite and strictly decreasing to stat cap")
 	for id in PROGRESSION:
 		await fixture(id, [])
 		weapon.use_active_range_rules = true
@@ -39,12 +48,20 @@ func _run() -> void:
 		check(not weapon.upgrade() and weapon.level == 5, "level cap " + id)
 		_check_runtime()
 		var plain_cd := weapon.get_active_cooldown_seconds()
+		weapon.runtime_stats.attack_speed = 50
+		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd * 0.836828836953), "50 haste frontloads cooldown reduction " + id)
 		weapon.runtime_stats.attack_speed = 100
-		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd / 2.0), "haste scales the reduced cooldown " + id)
+		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd * 0.75), "100 haste keeps 75 percent of upgraded cooldown " + id)
 		var cast := weapon.make_cast_copy()
 		var replay := cast.make_bounce_copy(Vector2(100, 0))
-		check(is_equal_approx(cast.get_active_cooldown_seconds(), plain_cd / 2.0)
+		check(is_equal_approx(cast.get_active_cooldown_seconds(), plain_cd * 0.75)
 			and replay.get_active_cooldown_seconds() == cast.get_active_cooldown_seconds(), "cast and bounce keep upgraded cooldown " + id)
+		weapon.runtime_stats.attack_speed = 200
+		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd * 0.654312875957), "200 haste keeps 65.43 percent of upgraded cooldown " + id)
+		weapon.runtime_stats.attack_speed = 300
+		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd * 0.6), "300 haste keeps 60 percent of upgraded cooldown " + id)
+		weapon.runtime_stats.attack_speed = 700
+		check(is_equal_approx(weapon.get_active_cooldown_seconds(), plain_cd * 0.5), "700 haste halves upgraded cooldown " + id)
 		weapon.initialize(id, player)
 		_check_stats(weapon, PROGRESSION[id][0], "reinitialize resets upgrades " + id)
 		host.queue_free()

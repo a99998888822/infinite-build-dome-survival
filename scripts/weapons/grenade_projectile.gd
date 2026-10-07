@@ -1,5 +1,6 @@
 extends Node2D
 class_name GrenadeProjectile
+const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 signal detonated(hit_count: int)
 
@@ -205,33 +206,7 @@ func _draw_shell(center: Vector2) -> void:
 
 
 func _draw_explosion() -> void:
-	var progress := clampf((elapsed - flight_seconds) / BLAST_LIFETIME, 0.0, 1.0)
-	var fade := 1.0 - progress
-	# Every mark is an axis-aligned square on a two-pixel grid. No smooth
-	# outline, translucent filled disk or shared soft-glow burst is drawn.
-	for index in 18:
-		var angle := TAU * index / 18.0 + sin(index * 2.7) * 0.18
-		var radius := blast_radius * (0.12 + progress * 0.46) * (0.7 + 0.3 * sin(index * 1.8))
-		var center := Vector2.RIGHT.rotated(angle) * radius + Vector2.UP * progress * 12
-		var size := (4.0 + float(index % 3) * 2.0) * (0.7 + progress) * blast_radius / 64.0
-		var shade := 0.17 + float(index % 3) * 0.045
-		_draw_pixel(center, size + 2, Color(0.065, 0.075, 0.07, fade * 0.82))
-		_draw_pixel(center, size, Color(shade, shade * 1.04, shade * 0.91, fade * 0.95))
-	for index in 44:
-		var angle := TAU * index / 44.0 + sin(index * 4.1) * 0.055
-		var reach := 1.0 if index % 4 == 0 else 0.35 + 0.6 * absf(sin(index * 2.3))
-		var radius := blast_radius * reach * lerpf(0.35, 1.0, minf(progress * 5, 1))
-		var center := Vector2.RIGHT.rotated(angle) * radius
-		var size := 2.0 + float(index % 3) * 2.0
-		var color := Color("ffc45b") if index % 3 == 0 else Color("cf662d")
-		color.a = fade * maxf(0, 1.0 - progress * (0.7 if index % 3 == 0 else 1.0))
-		_draw_pixel(center, size * blast_radius / 64.0, color)
-	if progress < 0.32:
-		for index in 13:
-			var center := Vector2(float(index % 5 - 2), float(index / 5 - 1)) * 7.0
-			var color := Color("ffdf88") if index % 3 == 0 else Color("ed963d")
-			color.a = 1.0 - progress / 0.32
-			_draw_pixel(center * blast_radius / 64.0, 6.0 * blast_radius / 64.0, color)
+	BAKED.draw(self, "grenade", int((elapsed-flight_seconds)*60.0), Vector2.ONE * blast_radius/64.0)
 
 
 func _draw_pixel(center: Vector2, size: float, color: Color) -> void:

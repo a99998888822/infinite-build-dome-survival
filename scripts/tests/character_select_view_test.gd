@@ -74,15 +74,15 @@ func _run() -> void:
 	view.reset_animation()
 	var hover_bounds := view.hover_target.get_rect()
 	var name_position := view.name_label.position
-	view._process(0.5)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.06), "inhale stretches upper body while the sprite anchor stays fixed")
+	view._process(0.75)
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.0125), "inhale lifts the whole sprite while the layout anchor stays fixed")
 	await capture("character_select_breath_in")
 	var inhale: Image = null
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
 		inhale = get_tree().root.get_texture().get_image()
-	view._process(1.0)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.06), "exhale contracts upper body without moving the sprite")
+	view._process(1.5)
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.0125), "exhale lowers the whole sprite without changing the layout")
 	check(view.hover_target.get_rect() == hover_bounds and view.name_label.position == name_position, "breathing leaves name and hover bounds still")
 	await capture("character_select_breath_out")
 	if inhale != null:
@@ -92,12 +92,12 @@ func _run() -> void:
 		var waist_y := ceili(rect.position.y + rect.size.y * 36.0 / 64.0)
 		var lower := Rect2i(int(rect.position.x), waist_y, int(rect.size.x), floori(rect.end.y) - waist_y)
 		var upper := Rect2i(int(rect.position.x), int(rect.position.y), int(rect.size.x), waist_y - int(rect.position.y))
-		check(inhale.get_region(lower).get_data() == exhale.get_region(lower).get_data(), "GPU: legs and feet remain pixel-identical throughout breathing")
-		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper-body breathing changes visible pixels")
-	view._process(0.5)
-	check(is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "two seconds completes one breathing cycle")
+		check(inhale.get_region(lower).get_data() != exhale.get_region(lower).get_data(), "GPU: legs and feet move with the breathing body")
+		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper body moves with the breathing body")
+	view._process(0.75)
+	check(is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "three seconds completes one breathing cycle")
 	view.reset_animation()
-	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears the upper-body stretch")
+	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears the whole-body offset")
 	view.set_process(true)
 	check(view.stats_list.get_child_count() == 5 and view.character_list.get_child_count() == 2, "beginner dossier and one row per character")
 	for row in view.stats_list.get_children():
