@@ -28,14 +28,24 @@ Use the bundled `scripts/rightapi_generate.py` for requests. It submits the asyn
 
 ## Project workflow
 
-1. Inspect the target asset, all scene/script references, current dimensions, color mode, frame count, and import settings with `rg`, Pillow, and Godot files.
+1. Inspect the target asset, all scene/script references, current dimensions, color mode, frame count, and import settings with `rg`, Pillow, and Godot files. For backgrounds, inspect the reference canvas first and treat its aspect ratio as a hard requirement.
 2. Choose a non-destructive output path such as `artifacts/generated/<asset-name>/` and preserve the original until review.
-3. Build a precise prompt from the reference: silhouette, facing direction, pose, frame layout, canvas size, palette, contrast against the actual scene, and transparency requirements.
+3. Build a precise prompt from the reference: silhouette, facing direction, pose, frame layout, canvas size, palette, contrast against the actual scene, and transparency requirements. Explicitly state the requested aspect ratio and final pixel dimensions; for backgrounds, describe safe negative space and every object that must be absent.
 4. Request strict pixel art: nearest-neighbor blocks, hard edges, no antialiasing, no gradients, limited palette, no text, and no unintended objects. For animation, state the exact cell layout and distinct poses.
 5. Download the returned image. Inspect it visually and with Pillow. If the provider returns checkerboard or a solid background, remove only the connected outer background. Do not globally delete white pixels because white may be part of the character.
 6. Resize with `Image.Resampling.NEAREST`, convert to RGBA, and verify the exact dimensions and alpha bounding box. For spritesheets, verify each frame independently.
 7. Validate the candidate in Godot through a candidate-specific duplicate scene or runtime harness that loads the new path directly. Do not temporarily overwrite an existing source file or only edit a script constant: Godot import caches can make screenshots display the old `.ctex`. Run the editor import pass first, capture a candidate screenshot, and compare it against a baseline or inspect the candidate region to prove the new pixels are visible. Restore the original reference after review unless the user explicitly requests replacement.
 8. Report the generated path, model used, dimensions, transparency result, validation command/result, and any known limitations. Include an absolute-path image link for visual review.
+
+### Preflight and tool-failure rules
+
+- Before a paid request, verify the generator's payload supports the requested aspect ratio, output size, reference-image count, and MIME types. Never discover a hard-coded portrait/landscape mismatch after submission.
+- If the bundled generator lacks a needed parameter, make one minimal, reversible compatibility change before submission, syntax-check it, and restore the helper after generation when the change is not part of the requested project work. Do not spend multiple attempts on the same patch mechanism.
+- On Windows, if `apply_patch` fails with permissions or shell-redirection errors, stop retrying that exact invocation. Use the tool-native patch path if available; otherwise use one explicit UTF-8 fallback only after preserving the file and checking the diff. Never rewrite unrelated files or change encoding/line endings unnecessarily.
+- Separate network time from local processing in progress reports: record preflight/inspection, asynchronous polling, post-processing, and Godot validation as distinct phases.
+- For a background that is already compositionally suitable, do not purchase a second variant merely to improve minor details. Keep the first valid result and report limitations unless the user explicitly approves another paid attempt.
+- For targeted image revisions, treat the user's requested canvas and aspect ratio as hard acceptance gates. After download, check the raw dimensions before opening, cropping, compositing, or generating previews. If the result is not the requested layout, stop immediately and report failure; do not spend additional tokens on local repair.
+- Use a bounded polling timeout appropriate to the task, normally 300 seconds or less. A long timeout is not a reason to keep processing a failed result.
 
 ## Cost and recovery workflow
 
@@ -46,6 +56,7 @@ Use the bundled `scripts/rightapi_generate.py` for requests. It submits the asyn
 5. Download only a validated image URL. Record completion and output path in the task log.
 6. Only retry after a pre-submission failure such as a local validation error or a clearly rejected HTTP request with no `task_id`. Never retry after a 2xx response, a gzip/JSON parsing error, or an unknown task status until the original task has been queried.
 7. Use `nano-banana-2-lite` for optional exploratory drafts and `nano-banana-pro` only for an approved final. Do not spend final-model credits on speculative prompt experiments.
+8. For a user-approved retry, submit one request only. If the returned image fails dimensions, aspect ratio, composition, or explicit content constraints, do not auto-retry, locally repaint, create contact sheets, or run extra preview iterations. Return the failure and wait for a new approval before any additional paid request.
 
 ## Sprite rules
 
@@ -138,7 +149,9 @@ When transparency is unavailable, prefer a connected-component flood fill from t
 - Handle gzip/deflate response bodies before JSON decoding and accept official `data[0].url` or Gemini-compatible candidate results.
 - Use browser-like headers only as a compatibility measure; do not loop on Cloudflare 403/1010. Report the block and stop after one pre-task retry.
 - A successful HTTP request is not a successful generation. Require a downloadable image, inspect its dimensions and mode, and reject placeholder files or stale output paths.
+- For layout revisions, reject any raw result whose dimensions or orientation differ from the requested canvas. Do not silently crop, rotate, stitch, or resize a portrait/duplicated composition into landscape and call it a valid revision.
 - The advertised output size is a target, not evidence that the model honored it. Record the raw dimensions, then document any crop, nearest-neighbor resize, palette quantization, or aspect-ratio correction.
+- Treat the requested aspect ratio as independently verifiable: inspect the returned dimensions before processing, then use the appropriate resampling method for the asset type (LANCZOS for painted backgrounds, NEAREST for pixel-art sprites) and record that choice.
 - Never claim runtime validation from a screenshot that still contains the previous asset. Use a unique candidate path, force Godot to import it, and compare the resulting screenshot with the baseline.
 - For large backgrounds, keep the center gameplay/menu-safe area explicit in the prompt and inspect the actual composition before integrating. Do not present an unsuitable image merely because it has the right filename and dimensions.
 - Keep API diagnostics free of credentials. Store only sanitized errors such as HTTP status, empty response, invalid JSON, missing choices, missing URL, or invalid image content.
