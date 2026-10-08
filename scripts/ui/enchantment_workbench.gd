@@ -237,7 +237,10 @@ func _sell_selected_item() -> void:
 		feedback_requested.emit(FinanceUIStyle.reason(str(quote.get("reason", ""))), false)
 		return
 	var result := flow.submit_inventory_sale("enchantment", selected_item_id, str(quote.get("quote_token", "")))
-	feedback_requested.emit(L10n.text("ui.enchantment.sale_done") % int(result.get("gold_gained", 0)), true) if bool(result.get("success", false)) else feedback_requested.emit(FinanceUIStyle.reason(str(result.get("reason", ""))), false)
+	if bool(result.get("success", false)):
+		feedback_requested.emit(L10n.text("ui.enchantment.sale_done") % int(result.get("gold_gained", 0)), true)
+	else:
+		feedback_requested.emit(FinanceUIStyle.reason(str(result.get("reason", ""))), false)
 
 
 func _drop_item(weapon_id: String, item_id: String) -> void:
