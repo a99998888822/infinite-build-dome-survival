@@ -142,7 +142,7 @@ func _refresh_all() -> void:
 
 func _refresh_currency() -> void:
 	if currency_label != null and CampProgression != null:
-		currency_label.text = "营地币：%d" % CampProgression.get_camp_currency()
+		currency_label.text = L10n.text("ui.camp.currency") % CampProgression.get_camp_currency()
 
 
 func _refresh_building_list() -> void:
@@ -156,10 +156,10 @@ func _refresh_building_list() -> void:
 		var building_id := str(record.get("id", ""))
 		if building_id.is_empty():
 			continue
-		var building_name := str(record.get("name", building_id))
+		var building_name := L10n.source(str(record.get("name", building_id)))
 		var level := CampProgression.get_building_level(building_id)
 		var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
-		var state_text := "Lv.%d" % level if level > 0 else ("已解锁" if unlocked else "未解锁")
+		var state_text := "Lv.%d" % level if level > 0 else (L10n.text("ui.common.unlocked") if unlocked else L10n.text("ui.common.locked"))
 		var button := Button.new()
 		button.text = "%s（%s）" % [building_name, state_text]
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -175,7 +175,7 @@ func _refresh_detail() -> void:
 	_clear_upgrade_options()
 	if record.is_empty():
 		if detail_title != null:
-			detail_title.text = "选择一个建筑查看详情"
+			detail_title.text = "ui.camp.building.select_hint"
 		if detail_level != null:
 			detail_level.text = ""
 		if detail_desc != null:
@@ -185,16 +185,16 @@ func _refresh_detail() -> void:
 		if upgrade_building_button != null:
 			upgrade_building_button.visible = false
 		return
-	var building_name := str(record.get("name", building_id))
+	var building_name := L10n.source(str(record.get("name", building_id)))
 	var level := CampProgression.get_building_level(building_id)
 	var unlocked := CampProgression.is_building_unlocked(building_id) or CampProgression.is_building_initially_unlocked(building_id)
 	var max_level := CampProgression.get_building_max_level(building_id)
 	if detail_title != null:
 		detail_title.text = building_name
 	if detail_level != null:
-		detail_level.text = "等级：%d / %d" % [level, max_level] if unlocked else "未解锁"
+		detail_level.text = L10n.text("ui.camp.building.level") % [level, max_level] if unlocked else "ui.common.locked"
 	if detail_desc != null:
-		detail_desc.text = str(record.get("description", ""))
+		detail_desc.text = L10n.source(str(record.get("description", "")))
 	if unlock_button != null:
 		var unlock_condition: Variant = record.get("unlock_condition", {})
 		var unlock_cost := int((unlock_condition as Dictionary).get("cost", 0)) if unlock_condition is Dictionary else 0
@@ -202,7 +202,7 @@ func _refresh_detail() -> void:
 			unlock_button.visible = false
 		else:
 			unlock_button.visible = true
-			unlock_button.text = "购买解锁（%d 营地币）" % unlock_cost
+			unlock_button.text = L10n.text("ui.camp.building.purchase_unlock") % unlock_cost
 			unlock_button.disabled = not CampProgression.can_purchase_building_unlock(building_id)
 	if upgrade_building_button != null:
 		if not unlocked or level >= max_level:
@@ -210,7 +210,7 @@ func _refresh_detail() -> void:
 		else:
 			upgrade_building_button.visible = true
 			var upgrade_cost := CampProgression.get_building_upgrade_cost(building_id, level + 1)
-			upgrade_building_button.text = "升级建筑（Lv.%d → Lv.%d，%d 营地币）" % [level, level + 1, upgrade_cost]
+			upgrade_building_button.text = L10n.text("ui.camp.building.upgrade") % [level, level + 1, upgrade_cost]
 			upgrade_building_button.disabled = not CampProgression.can_purchase_building_upgrade(building_id)
 	_rebuild_upgrade_options(building_id)
 
@@ -223,7 +223,7 @@ func _rebuild_upgrade_options(building_id: String) -> void:
 		if not (option is Dictionary):
 			continue
 		var option_id := str(option.get("id", ""))
-		var option_name := str(option.get("name", option_id))
+		var option_name := L10n.source(str(option.get("name", option_id)))
 		var current_level := CampProgression.get_upgrade_option_level(option_id)
 		var max_level := int(option.get("max_level", 1))
 		var cost := CampProgression.get_upgrade_cost(option_id)
@@ -234,10 +234,10 @@ func _rebuild_upgrade_options(building_id: String) -> void:
 		info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var buy_button := Button.new()
 		var requirement_ok := required_level <= 0 or CampProgression.get_building_level(building_id) >= required_level
-		buy_button.text = "购买（%d 营地币）" % cost
+		buy_button.text = L10n.text("ui.camp.purchase") % cost
 		buy_button.disabled = not CampProgression.can_purchase_upgrade(option_id)
 		if not requirement_ok:
-			buy_button.text = "需建筑 Lv.%d" % required_level
+			buy_button.text = L10n.text("ui.camp.building.level_required") % required_level
 		var buy_callable := Callable(self, "_on_upgrade_option_pressed").bind(option_id)
 		buy_button.pressed.connect(buy_callable)
 		row.add_child(info_label)

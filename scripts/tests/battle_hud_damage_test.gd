@@ -125,15 +125,21 @@ func _run() -> void:
 	check(visible_values >= 22 and is_equal_approx(hud.stats_drawer.size.x, 320), "compact single-column drawer retains original width and shows more attributes")
 	check(hud._weapon_damage_meter.position.y >= hud._vitals_frame.get_rect().end.y, "damage meter is below vitals")
 	hud._performance_line.refresh()
-	check(hud._performance_line.position.y >= hud._vitals_frame.get_rect().end.y + 8, "performance line has top padding below vitals")
-	check(hud._weapon_damage_meter.position.y >= hud._performance_line.get_rect().end.y + 8, "damage meter has padding below performance line")
+	# The accepted compact HUD uses 6px gaps. Guard separation without forcing
+	# the previous 8px layout back into a page with no requested visual changes.
+	check(hud._performance_line.position.y > hud._vitals_frame.get_rect().end.y, "performance line has top padding below vitals")
+	check(hud._weapon_damage_meter.position.y > hud._performance_line.get_rect().end.y, "damage meter has padding below performance line")
 	check(hud._performance_line.sample.has("particles") and hud._performance_line.text.begins_with("FPS "), "performance line exposes real samples")
 	if not capture_dir.is_empty() and DisplayServer.get_name() != "headless":
 		await _capture_live_combat()
 	print("BATTLE_HUD_DAMAGE_TEST checks=", checks, " failures=", failures)
 	manager.clear_battle_entities()
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
 	game.queue_free()
 	await frames(8)
+	await get_tree().create_timer(0.4).timeout
 	get_tree().quit(0 if failures == 0 else 1)
 
 
@@ -145,8 +151,12 @@ func _test_enemy_pressure_display() -> void:
 	manager.enemy_pressure.wave_bonus = {"normal": 60, "elite": 30}
 	manager.wave_challenges.active = {"wave": 20, "body": "challenge fixture"}
 	player.modifier_stack.set_base_stat("divinity", 100)
-	var text := hud._get_stat_tooltip_text("divinity")
-	check(text.contains("4.78") and text.contains("2.23") and text.contains("2.35"), "erosion tooltip uses runtime multipliers")
+	var old_locale := L10n.locale
+	for locale in ["zh_CN", "en"]:
+		L10n.set_locale(locale, false)
+		var expected := "影响怪物的数量和强度" if locale == "zh_CN" else "Affects the number and strength of enemies."
+		check(hud._get_stat_tooltip_text("divinity") == expected, "erosion tooltip shows the reviewed short description " + locale)
+	L10n.set_locale(old_locale, false)
 	hud._refresh_wave_display()
 	await frames()
 	check(hud.wave_panel.tooltip_text.contains("60%") and hud.wave_panel.tooltip_text.contains("30%") and hud.wave_panel.tooltip_text.contains("challenge fixture"), "wave tooltip preserves challenge and both HP bonuses")

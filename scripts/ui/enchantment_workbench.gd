@@ -26,6 +26,7 @@ var _weapon_scroll: ScrollContainer
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(refresh)
 	add_theme_constant_override("separation", 4)
 	# Separate the card edges, scroll track and sale heading instead of letting
 	# the default scrollbar touch both rows. Keep the remaining form compact.
@@ -58,7 +59,7 @@ func _ready() -> void:
 	_weapon_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	FinanceUIStyle.label(_weapon_name, 14)
 	heading.add_child(_weapon_name)
-	_sell_weapon = _button("出售武器", heading)
+	_sell_weapon = _button("ui.enchantment.sell_weapon", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
 	slot_scroll.custom_minimum_size.y = 64
@@ -87,16 +88,16 @@ func _ready() -> void:
 	add_child(_selection)
 	var actions := HBoxContainer.new()
 	add_child(actions)
-	_apply = _button("装备到当前武器", actions)
+	_apply = _button("ui.enchantment.equip_current", actions)
 	_apply.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_apply.pressed.connect(_apply_selected)
-	_move_left = _button("← 前移", actions)
-	_move_left.tooltip_text = "将选中的已装备附魔前移一格"
+	_move_left = _button("ui.enchantment.move_left", actions)
+	_move_left.tooltip_text = "ui.enchantment.move_left_tooltip"
 	_move_left.pressed.connect(_move_selected.bind(-1))
-	_move_right = _button("后移 →", actions)
-	_move_right.tooltip_text = "将选中的已装备附魔后移一格"
+	_move_right = _button("ui.enchantment.move_right", actions)
+	_move_right.tooltip_text = "ui.enchantment.move_right_tooltip"
 	_move_right.pressed.connect(_move_selected.bind(1))
-	_sell_item = _button("出售附魔", actions)
+	_sell_item = _button("ui.enchantment.sell", actions)
 	_sell_item.pressed.connect(_sell_selected_item)
 	_inventory_scroll.resized.connect(_layout_inventory)
 
@@ -128,10 +129,10 @@ func refresh() -> void:
 		button.mouse_exited.connect(func(): tooltip_hidden.emit())
 	var current := loadout.get_weapon_instance(selected_weapon_id)
 	_weapon_icon.texture = FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null
-	_weapon_name.text = "%s · Lv.%d" % [str(current.weapon_data.get("display_name", "")), current.level] if current != null else "尚无武器"
+	_weapon_name.text = "%s · Lv.%d" % [L10n.source(str(current.weapon_data.get("display_name", ""))), current.level] if current != null else "尚无武器"
 	_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1
-	_sell_weapon.tooltip_text = "至少保留一把武器" if _sell_weapon.disabled else "出售后，附魔自动归还背包"
+	_sell_weapon.tooltip_text = "ui.enchantment.keep_one_weapon" if _sell_weapon.disabled else "ui.enchantment.sale_returns_enchantments"
 	_clear(_slots)
 	if current != null:
 		var attached := current.get_attached_item_instances()
@@ -152,10 +153,10 @@ func refresh() -> void:
 				slot.pressed.connect(func(): _operate("attach", selected_weapon_id, selected_item_id))
 			else:
 				slot.pressed.connect(_select_item.bind(str(item.get("item_instance_id", ""))))
-		_title.text = "附魔背包 · 从左至右触发，可拖动调整顺序"
-		_title.tooltip_text = "称号：" + str(current.battle_title.get("display_name", "")) if not str(current.battle_title.get("display_name", "")).is_empty() else "选中已装备附魔后，可卸下或调整顺序。"
-		_title.tooltip_text += "\n分裂前的附魔在主命中点触发；分裂后的附魔由子攻击命中触发。属性加成始终作用于当前武器。"
-		_title.tooltip_text += "\n将背包附魔拖到已有槽位可替换，原附魔归还背包。"
+		_title.text = "ui.enchantment.inventory.title"
+		_title.tooltip_text = L10n.text("ui.enchantment.weapon_title_prefix") + L10n.source(str(current.battle_title.get("display_name", ""))) if not L10n.source(str(current.battle_title.get("display_name", ""))).is_empty() else L10n.text("ui.enchantment.selected_equipped_hint")
+		_title.tooltip_text += L10n.text("ui.enchantment.split_order_hint")
+		_title.tooltip_text += L10n.text("ui.enchantment.replace_hint")
 	_clear(_inventory)
 	_layout_inventory()
 	for item in player.item_inventory.get_items():
@@ -166,7 +167,7 @@ func refresh() -> void:
 		_inventory.columns = 1
 		var empty := Label.new()
 		empty.name = "EmptyEnchantmentLabel"
-		empty.text = "暂无附魔"
+		empty.text = "ui.enchantment.inventory.empty"
 		empty.autowrap_mode = TextServer.AUTOWRAP_OFF
 		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -192,10 +193,10 @@ func _update_selection() -> void:
 	var equipped := str(item.get("equipped_weapon_id", ""))
 	var current := flow.get_bound_loadout().get_weapon_instance(selected_weapon_id)
 	var same_weapon := not equipped.is_empty() and equipped == selected_weapon_id
-	_selection.text = "选中：" + str(item.get("display_name", "")) if not item.is_empty() else "选择一张附魔，可装备、转移或出售"
-	_apply.text = "卸下附魔" if same_weapon else ("转移至此武器" if not equipped.is_empty() else "装备至此武器")
+	_selection.text = L10n.text("ui.enchantment.selected_prefix") + L10n.source(str(item.get("display_name", ""))) if not item.is_empty() else "ui.enchantment.select_hint"
+	_apply.text = "ui.enchantment.unequip" if same_weapon else ("ui.enchantment.transfer_here" if not equipped.is_empty() else "ui.enchantment.equip_here")
 	_apply.disabled = item.is_empty() or current == null or (not same_weapon and not current.has_available_attachment_slot())
-	_apply.tooltip_text = "当前武器没有空槽，可将背包附魔拖到已有槽位进行替换。" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
+	_apply.tooltip_text = "ui.enchantment.no_empty_slots_hint" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""
 	if current != null and not same_weapon:
 		var incompatibility := current.get_attachment_incompatibility(item)
 		if not incompatibility.is_empty():
@@ -203,9 +204,9 @@ func _update_selection() -> void:
 			_apply.tooltip_text = incompatibility
 			_selection.text += " · " + incompatibility
 	var sale_quote := flow.get_inventory_sale_quote("enchantment", selected_item_id) if not item.is_empty() and equipped.is_empty() else {}
-	_sell_item.text = "出售附魔(%d)" % int(sale_quote.get("total", 0)) if bool(sale_quote.get("success", false)) else "出售附魔"
+	_sell_item.text = L10n.text("ui.enchantment.sell_price") % int(sale_quote.get("total", 0)) if bool(sale_quote.get("success", false)) else "ui.enchantment.sell"
 	_sell_item.disabled = item.is_empty() or not equipped.is_empty() or not bool(sale_quote.get("success", false))
-	_sell_item.tooltip_text = "先卸下，再出售" if not equipped.is_empty() else ""
+	_sell_item.tooltip_text = "ui.enchantment.unequip_before_sale" if not equipped.is_empty() else ""
 	if bool(sale_quote.get("success", false)):
 		_sell_item.tooltip_text = HumanityEconomy.sale_tooltip(sale_quote)
 	var selected_index := -1
@@ -236,7 +237,7 @@ func _sell_selected_item() -> void:
 		feedback_requested.emit(FinanceUIStyle.reason(str(quote.get("reason", ""))), false)
 		return
 	var result := flow.submit_inventory_sale("enchantment", selected_item_id, str(quote.get("quote_token", "")))
-	feedback_requested.emit("已出售，获得 %d 金币。" % int(result.get("gold_gained", 0)), true) if bool(result.get("success", false)) else feedback_requested.emit(FinanceUIStyle.reason(str(result.get("reason", ""))), false)
+	feedback_requested.emit(L10n.text("ui.enchantment.sale_done") % int(result.get("gold_gained", 0)), true) if bool(result.get("success", false)) else feedback_requested.emit(FinanceUIStyle.reason(str(result.get("reason", ""))), false)
 
 
 func _drop_item(weapon_id: String, item_id: String) -> void:
@@ -271,12 +272,12 @@ func _move_selected(direction: int) -> void:
 
 func _operate(action: String, weapon_id: String, item_id: String, target_index: int = -1) -> void:
 	if item_id.is_empty():
-		feedback_requested.emit("请先选择背包中的附魔。", false)
+		feedback_requested.emit(L10n.text("ui.enchantment.select_inventory_first"), false)
 		return
 	tooltip_hidden.emit()
 	var result := flow.submit_enchantment_operation(action, weapon_id, item_id, target_index)
 	var success := bool(result.get("success", false))
-	var message := "附魔已卸下。其余附魔按顺序前移。" if action == "detach" else ("附魔排列已更新。" if action == "move" else "附魔配置已更新。")
+	var message := L10n.text("ui.enchantment.unequip_done") if action == "detach" else ("附魔排列已更新。" if action == "move" else "附魔配置已更新。")
 	if action == "replace": message = "附魔已替换，原附魔已归还背包。"
 	feedback_requested.emit(message if success else FinanceUIStyle.reason(str(result.get("reason", ""))), success)
 

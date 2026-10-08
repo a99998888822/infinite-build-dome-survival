@@ -17,11 +17,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+L10n="*res://autoloads/localization.gd"
 DataRegistry="*res://autoloads/data_registry.gd"
 GameGlobal="*res://autoloads/game_global.gd"
 CampProgression="*res://autoloads/camp_progression.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
-ZoneProgression="*res://autoloads/zone_progression.gd"
 WindowSettings="*res://autoloads/window_settings.gd"
 CombatSettings="*res://autoloads/combat_settings.gd"
 EnemyRegistry="*res://scripts/enemies/enemy_registry.gd"
@@ -48,3 +48,8 @@ renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_transforms_to_pixel=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/catalogs/content.zh_CN.translation", "res://localization/catalogs/content.en.translation", "res://localization/catalogs/gameplay.zh_CN.translation", "res://localization/catalogs/gameplay.en.translation", "res://localization/catalogs/messages.zh_CN.translation", "res://localization/catalogs/messages.en.translation", "res://localization/catalogs/ui.zh_CN.translation", "res://localization/catalogs/ui.en.translation", "res://localization/generated/source_aliases.zh_CN.translation", "res://localization/generated/source_aliases.en.translation")
+locale/fallback="zh_CN"

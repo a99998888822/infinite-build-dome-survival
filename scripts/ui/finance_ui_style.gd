@@ -91,12 +91,12 @@ static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale
 
 static func principal_revive_status(state: Dictionary) -> String:
 	if state.is_empty():
-		return "未持有"
+		return L10n.text("ui.bank.revival.not_owned")
 	if int(state.get("remaining_uses", 0)) <= 0:
-		return "本局已使用"
+		return L10n.text("ui.bank.revival.used")
 	if bool(state.get("available", false)):
-		return "可触发（消耗%d本金）" % int(state.get("principal_cost", 0))
-	return "本金不足（需%d）" % int(state.get("minimum_principal", 0))
+		return L10n.text("ui.bank.revival.ready") % int(state.get("principal_cost", 0))
+	return L10n.text("ui.bank.revival.insufficient_principal") % int(state.get("minimum_principal", 0))
 
 
 static func box(fill: String = "232a21", edge: String = "576048", margin: int = 8) -> StyleBoxFlat:
@@ -200,37 +200,37 @@ static func bank_horizontal_scroll(control: ScrollContainer) -> void:
 
 static func reason(code: String) -> String:
 	return str({
-		"loan_dialog_open": "请先选择或关闭贷款条款。",
-		"loan_expired": "这份贷款条款已失效。",
-		"loan_not_active": "当前没有需要偿还的贷款。",
-		"loan_insufficient_gold": "金币不足，无法一次性还清当前欠款。",
-		"bank_operation_used": "本波已办理存取，下波恢复。",
-		"trade_bank_blocked": "交易限制：本次银行存取已关闭，下波恢复。",
-		"trade_deposit_blocked": "交易限制：本次不可存款，下波恢复。",
-		"trade_expired": "这笔交易已失效。",
-		"strong_refresh_unavailable": "当前没有可购买的史诗遗物，强力刷新资格已保留。",
-		"amount_must_be_positive": "请输入大于 0 的整数。",
-		"amount_exceeds_gold": "存入金额超过金币余额。",
-		"amount_exceeds_principal": "取出金额超过本金。",
-		"invalid_action": "请选择存入或取出。",
-		"insufficient_gold": "金币不足",
-		"insufficient_gold_for_refresh": "金币不足，无法刷新。",
-		"already_purchased": "已购买",
-		"weapon_already_owned": "已拥有此武器",
-		"load_capacity_exceeded": "武器负载不足",
-		"upgrade_no_longer_available": "升级条件已改变",
-		"relic_stack_limit": "遗物已达叠加上限",
-		"attachment_failed": "无法配置：请检查武器空槽和附魔归属。",
-		"incompatible_enchantment": "此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。",
-		"enchantment_page_required": "请在理财页面调整附魔或出售物品。",
-		"last_weapon": "至少保留一把武器，最后一把不可出售。",
-		"detach_before_sale": "已装备的附魔需要先卸下。",
-		"item_not_found": "物品已不存在，请重新选择。",
-		"sale_quote_changed": "物品或报价已变化，请重新确认。",
-		"shop_price_changed": "理智变化后价格已更新，请查看新价格再购买。",
-		"transaction_busy": "操作正在处理。",
-		"sale_failed": "出售失败，物品已恢复。",
-	}.get(code, "操作未成功，请重试。"))
+		"loan_dialog_open": L10n.text("error.bank.loan_terms_open"),
+		"loan_expired": L10n.text("error.bank.loan_terms_expired"),
+		"loan_not_active": L10n.text("error.bank.no_loan"),
+		"loan_insufficient_gold": L10n.text("error.bank.repayment_insufficient_gold"),
+		"bank_operation_used": L10n.text("error.bank.transaction_used"),
+		"trade_bank_blocked": L10n.text("error.bank.transactions_closed"),
+		"trade_deposit_blocked": L10n.text("error.bank.deposit_closed"),
+		"trade_expired": L10n.text("error.bank.trade_expired"),
+		"strong_refresh_unavailable": L10n.text("error.bank.no_epic_relic"),
+		"amount_must_be_positive": L10n.text("error.bank.invalid_amount"),
+		"amount_exceeds_gold": L10n.text("error.bank.deposit_exceeds_gold"),
+		"amount_exceeds_principal": L10n.text("error.bank.withdraw_exceeds_principal"),
+		"invalid_action": L10n.text("error.bank.select_transaction"),
+		"insufficient_gold": L10n.text("error.bank.insufficient_gold"),
+		"insufficient_gold_for_refresh": L10n.text("error.bank.reroll_insufficient_gold"),
+		"already_purchased": L10n.text("error.bank.already_purchased"),
+		"weapon_already_owned": L10n.text("error.bank.weapon_already_owned"),
+		"load_capacity_exceeded": L10n.text("error.bank.insufficient_load"),
+		"upgrade_no_longer_available": L10n.text("error.bank.upgrade_requirements_changed"),
+		"relic_stack_limit": L10n.text("error.bank.relic_stack_limit"),
+		"attachment_failed": L10n.text("error.bank.enchantment_configuration"),
+		"incompatible_enchantment": L10n.text("error.bank.enchantment_incompatible"),
+		"enchantment_page_required": L10n.text("error.bank.bank_required"),
+		"last_weapon": L10n.text("error.bank.last_weapon"),
+		"detach_before_sale": L10n.text("error.bank.enchantment_equipped"),
+		"item_not_found": L10n.text("error.bank.item_missing"),
+		"sale_quote_changed": L10n.text("error.bank.quote_changed"),
+		"shop_price_changed": L10n.text("error.bank.sanity_price_changed"),
+		"transaction_busy": L10n.text("error.bank.busy"),
+		"sale_failed": L10n.text("error.bank.sale_failed_restored"),
+	}.get(code, L10n.text("error.bank.operation_failed")))
 
 
 static func item_icon(path: String, table: String = "", record_id: String = "") -> Texture2D:

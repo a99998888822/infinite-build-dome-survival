@@ -141,7 +141,7 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
 	(cooldown_masks[index].material as ShaderMaterial).set_shader_parameter("remaining", fraction)
 	cooldown_masks[index].visible = fraction > 0.0 and not returning
-	var text := "施放中" if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
+	var text := L10n.text("ui.weapon_bar.casting") if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
 	if timers[index].text != text:
 		timers[index].text = text
 		headers[index].queue_redraw()

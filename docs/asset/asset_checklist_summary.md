@@ -3,7 +3,6 @@
 > 汇总来源：`assets/` 实际源素材 + 已迁移的原分模块 asset checklist 目标清单；后续只维护本文档和 `asset_rules_summary.md`。
 > 判定规则：已存在表按磁盘上实际在用的文件列出，缺失表按清单目标路径列出；`.import`、“节点实现/无需 PNG”条目不纳入文件表。
 > 文件表范围：只收 `assets/` 下的 PNG 与音频（OGG/WAV）；字体（`assets/font/`）、`.svg`、`.aseprite`、`.tres` 和说明性 `.md` 不纳入。
-> 补充说明：第 13 组可选区域素材原文未给固定文件名，此处按 `zones.json` ID 和现有目录规则补了建议命名。
 > 尺寸说明：当前 90 件正式遗物 PNG 均为 `64x64`。2026-10-03 已将本次确认的 39 件替换为 r02 原色 12 色色板版，见[接入记录](art_refresh_plan/relic_source12_39_installation_2026-10-03.md)。2026-10-02 的 A 版批次记录见[第一批](art_refresh_plan/relic_A_batch12_installation_2026-10-02.md)、[第二批](art_refresh_plan/relic_A_batch02_installation_2026-10-02.md)与[第三批](art_refresh_plan/relic_A_batch03_installation_2026-10-02.md)；表中未属本次更新的旧尺寸描述仍需按实际文件核对。
 > 生成日期：2026-09-21。
 > 2026-09-23：黑洞、光辉剑、水流、风刃图标经审阅后接入 16x16 透明 PNG；附魔配置使用 PNG，旧SVG占位图已清理。
@@ -192,7 +191,7 @@
 | 未存在 | 利率图标 | `ui_finance_interest_icon.png` | `assets/ui/icons/finance/ui_finance_interest_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 建议百分号 + 金币光效 |
 | 未存在 | 本金锁定提示 | `ui_finance_lock_icon.png` | `assets/ui/icons/finance/ui_finance_lock_icon.png` | 64x64 / 1:1 / PNG，透明背景 | 定期存单锁定状态 |
 
-## 3. 未存在的可选素材（25 个）
+## 3. 未存在的可选素材（20 个）
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
@@ -216,21 +215,15 @@
 | 未存在 | 建筑卡片底图 | `card_building_detail.png` | `assets/ui/panels/camp/card_building_detail.png` | 4:5，512x640 / PNG，透明或半透明底 | 生成一张清新干净的像素风建筑详情卡片底图，适合营地界面，顶部留出建筑名称区域，中部留出建筑图像区域，底部留出升级信息区域，边框简洁，PNG，不要文字，不要噪点 |
 | 已接入 | 角色名册框与列表底图 | `roster_frame.png`、`roster_*.png` | `assets/ui/character_select/` | 114x178、88x20 / PNG | 使用确认的旧木暗铜名册设计，替代原计划的通用角色卡；支持选中、普通及空位状态 |
 | 未存在 | 金币图标 | `icon_currency_gold.png` | `assets/ui/icons/rewards/icon_currency_gold.png` | 1:1，64x64 或 128x128 / PNG，透明背景 | 生成一张清新干净的中高精度像素风 UI 图标，主题是“金币 / 货币”，小型金色硬币或能量币，轮廓清晰，小尺寸可读，透明背景，PNG，不要文字，不要肮脏噪点，不要血腥 |
-| 未存在 | 区域图标-近弦战场 | `zone_nearstring_battlefield.png` | `assets/ui/icons/zones/zone_nearstring_battlefield.png` | 1:1, 128x128 / PNG | 生成：简洁的近战倾向图标 / 区域选择页识别 / PNG |
-| 未存在 | 区域图标-流星高塔 | `zone_meteor_tower.png` | `assets/ui/icons/zones/zone_meteor_tower.png` | 1:1, 128x128 / PNG | 生成：简洁的远程倾向图标 / 区域选择页识别 / PNG |
-| 未存在 | 区域图标-神选之地 | `zone_chosen_land.png` | `assets/ui/icons/zones/zone_chosen_land.png` | 1:1, 128x128 / PNG | 生成：简洁的理智/侵蚀倾向图标 / 区域选择页识别 / PNG |
-| 未存在 | 福缘收割提示图标 | `icon_fortune_harvest.png` | `assets/ui/icons/zones/icon_fortune_harvest.png` | 1:1, 128x128 / PNG | 生成：福袋、收割、光点一类提示符号 / 切区收割结果页 / PNG |
-| 未存在 | 区域卡片底纹 | `card_zone_pattern.png` | `assets/ui/panels/zones/card_zone_pattern.png` | 4:5, 512x640 / PNG | 生成：低对比、干净的卡片纹理 / 区域选择页背景强化 / PNG |
 
-## 4. 动效与音频（32 个文件 + 3 条节点实现）
+## 4. 动效与音频（31 个文件 + 3 条节点实现）
 
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
 | 未存在 | UI 弹窗关闭音效 | `sfx_ui_modal_close.ogg` | `assets/audio/sfx/ui/sfx_ui_modal_close.ogg` | OGG/WAV，短音效 | 比打开音效更轻、更短的收束提示音 |
-| 未存在 | UI 弹窗打开音效 | `sfx_ui_modal_open.ogg` | `assets/audio/sfx/ui/sfx_ui_modal_open.ogg` | OGG/WAV，短音效 | 深沉、克制的面板展开提示音，适合区域、ESC、营地详情等弹窗 |
+| 未存在 | UI 弹窗打开音效 | `sfx_ui_modal_open.ogg` | `assets/audio/sfx/ui/sfx_ui_modal_open.ogg` | OGG/WAV，短音效 | 深沉、克制的面板展开提示音，适合银行、ESC、营地详情等弹窗 |
 | 未存在 | UI 确认音效 | `sfx_ui_confirm.ogg` | `assets/audio/sfx/ui/sfx_ui_confirm.ogg` | OGG/WAV，短音效 | 清晰短促的确认反馈，不要过亮 |
-| 未存在 | 区域选择音效 | `sfx_ui_zone_select.ogg` | `assets/audio/sfx/ui/sfx_ui_zone_select.ogg` | OGG/WAV，短音效 | 带有方向感和轻微能量感的区域确认音 |
 | 未存在 | 奖励揭示音效 | `sfx_ui_reward_reveal.ogg` | `assets/audio/sfx/ui/sfx_ui_reward_reveal.ogg` | OGG/WAV，短音效 | 金色奖励出现时的短促上扬提示音 |
 | 未存在 | UI 购买成功音效 | `sfx_ui_purchase_success.ogg` | `assets/audio/sfx/ui/sfx_ui_purchase_success.ogg` | OGG/WAV，短音效 | 营地升级或购买成功的金币确认声 |
 | 未存在 | UI 购买失败音效 | `sfx_ui_purchase_error.ogg` | `assets/audio/sfx/ui/sfx_ui_purchase_error.ogg` | OGG/WAV，短音效 | 低调、短促的错误提示音，不要刺耳 |

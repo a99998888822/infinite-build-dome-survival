@@ -71,7 +71,7 @@ func configure(data: Dictionary) -> void:
 	due = int(active.get("due",0))
 	_quote = data.get("quote",{}).duplicate(true)
 	if not _quote.is_empty():
-		_speech.text = str(_quote.get("speech",SPEECH))
+		_speech.text = L10n.source(str(_quote.get("speech",SPEECH)))
 		var options: Array = _quote.get("options",[])
 		for i in _cards.size():
 			var card: Dictionary = _cards[i]
@@ -81,12 +81,12 @@ func configure(data: Dictionary) -> void:
 			card.amount_value = int(entry.amount)
 			card.repayment = int(entry.due)
 			card.value.text = "+ %d" % int(entry.amount)
-			card.due.text = "%d 金币" % int(entry.due)
-			card.rate.text = "每波利息 %s%%" % HumanityEconomy.number(float(entry.rate_percent))
-			card.button.text = "借 %d" % int(entry.amount)
+			card.due.text = L10n.text("ui.loan.gold_amount") % int(entry.due)
+			card.rate.text = L10n.text("ui.loan.interest_rate") % HumanityEconomy.number(float(entry.rate_percent))
+			card.button.text = L10n.text("ui.loan.borrow_amount") % int(entry.amount)
 			card.icon.texture = load(str(entry.icon))
-			var terms := "获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。" % [entry.amount,int(_quote.due_wave),entry.due,HumanityEconomy.number(float(entry.rate_percent))]
-			if bool(entry.get("adjusted",false)): terms += "\n已依据当前遗物的预计新增利息调整；本次条款已固定。"
+			var terms := L10n.text("ui.loan.terms") % [entry.amount,int(_quote.due_wave),entry.due,HumanityEconomy.number(float(entry.rate_percent))]
+			if bool(entry.get("adjusted",false)): terms += L10n.text("ui.loan.terms_relic_adjustment")
 			card.button.tooltip_text = terms
 			card.due.tooltip_text = terms
 			card.rate.tooltip_text = terms
@@ -103,7 +103,7 @@ func configure(data: Dictionary) -> void:
 		_audio.stop()
 		if is_instance_valid(_return_focus) and _return_focus.is_visible_in_tree(): _return_focus.grab_focus.call_deferred()
 	_layout_strip()
-	_strip_detail.tooltip_text = "当前应还 %d 金币；第%d波结束，在全部结息后检查钱包。\n不足不扣款，按合同利率计复利。" % [due,int(active.get("due_wave",0))]
+	_strip_detail.tooltip_text = L10n.text("ui.loan.repayment_rules") % [due,int(active.get("due_wave",0))]
 	_layout_modal()
 	_seek()
 
@@ -184,7 +184,7 @@ func _build_modal() -> void:
 	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_box.add_child(inner)
 	_seal = _image(_box, ART + "loan_note.png")
-	_title = _label(_box, "哥布林贷款", 24, GOLD)
+	_title = _label(_box, "ui.loan.title", 24, GOLD)
 	_close = _button(_box, "×")
 	_close.pressed.connect(dismiss_quote)
 	_portrait = _image(_box, "")
@@ -202,28 +202,28 @@ func _build_modal() -> void:
 		var amount: int = [100, 200, 500][i]
 		var card := _panel(_box, "283326" if i < 2 else "343724", "67734f" if i < 2 else "bba066")
 		card.add_theme_stylebox_override("panel", FinanceFrameSkin.box("card"))
-		var gain := _label(card, "立即获得", 12, MUTED)
+		var gain := _label(card, "ui.loan.receive_now", 12, MUTED)
 		var value := _label(card, "+ %d" % amount, 30, Color("ecce8a"))
-		var money := _label(card, "金币", 12, MUTED)
+		var money := _label(card, "stat.gold.name", 12, MUTED)
 		var icon := _image(card, ART + "loan_%d.png" % amount)
 		var line := ColorRect.new()
 		line.color = Color("526043")
 		line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(line)
-		var caption := _label(card, "下波归还", 12, MUTED)
-		var repayment := _label(card, "%d 金币" % [140,260,600][i], 18, TEXT)
+		var caption := _label(card, "ui.loan.repay_next_wave", 12, MUTED)
+		var repayment := _label(card, L10n.text("ui.loan.gold_amount") % [140,260,600][i], 18, TEXT)
 		repayment.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var rate := _label(card, "每波利息 %d%%" % [40,30,20][i], 12, DEBT)
-		var button := _button(card, "借 %d" % amount)
+		var rate := _label(card, L10n.text("ui.loan.integer_interest_rate") % [40,30,20][i], 12, DEBT)
+		var button := _button(card, L10n.text("ui.loan.borrow_amount") % amount)
 		FinanceUIStyle.button(button, i == 2)
 		FinanceFrameSkin.button(button, i == 2)
 		button.pressed.connect(_choose.bind(i))
 		_cards.append({"panel":card,"icon":icon,"gain":gain,"value":value,"money":money,
 			"line":line,"caption":caption,"due":repayment,"rate":rate,"button":button,
 			"amount_value":amount,"repayment":[140,260,600][i]})
-	_rule = _label(_box, "下一波结束，全部结息后自动还款。\n余额不足不扣款，欠款计复利。", 12, MUTED)
+	_rule = _label(_box, "ui.loan.automatic_repayment_hint", 12, MUTED)
 	_rule.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_decline = _button(_box, "暂时不用")
+	_decline = _button(_box, "ui.loan.decline")
 	_decline.pressed.connect(dismiss_quote)
 
 
@@ -286,11 +286,11 @@ func _layout_modal() -> void:
 func _build_strip() -> void:
 	_strip = _panel(self, "1d281fd9", "706446")
 	_strip_icon = _image(_strip, ART+"loan_note.png")
-	_strip_label = _label(_strip, "哥布林贷款", 14, GOLD)
+	_strip_label = _label(_strip, "ui.loan.title", 14, GOLD)
 	_strip_detail = _label(_strip, "", 12, MUTED)
-	reopen = _button(_strip,"查看条款")
+	reopen = _button(_strip,"ui.loan.view_terms")
 	reopen.pressed.connect(show_quote)
-	repay = _button(_strip,"还清")
+	repay = _button(_strip,"ui.loan.repay")
 	repay.pressed.connect(_repay)
 	_line = ColorRect.new()
 	_line.color = Color("675b3a")
@@ -309,8 +309,8 @@ func _layout_strip() -> void:
 	repay.visible = state in ["borrowed","compound","ready"]
 	_strip_detail.visible = repay.visible
 	_line.visible = repay.visible and not narrow
-	var text := "哥布林贷款"
-	if repay.visible: text = "已贷款：%d 金币" % borrowed
+	var text := L10n.text("ui.loan.title")
+	if repay.visible: text = L10n.text("ui.loan.borrowed_amount") % borrowed
 	if state == "paid": text = "贷款已还清"
 	_strip_label.text = text
 	var label_width := 164.0 if not narrow else 148.0
@@ -318,8 +318,8 @@ func _layout_strip() -> void:
 	_rect(reopen,w-100,7,90,28)
 	_rect(repay,40+label_width,6,44,28)
 	repay.disabled = wallet < due
-	repay.tooltip_text = "一次性还清 %d 金币" % due if not repay.disabled else "还清需要 %d 金币" % due
-	_strip_detail.text = "应还 %d 金币 · %s" % [due, "已计复利" if state in ["compound","ready"] else "下波结束结算"]
+	repay.tooltip_text = L10n.text("ui.loan.repay_amount") % due if not repay.disabled else L10n.text("ui.loan.repay_required") % due
+	_strip_detail.text = L10n.text("ui.loan.amount_due_status") % [due, L10n.text("ui.loan.status.compounded" if state in ["compound","ready"] else "ui.loan.status.next_wave")]
 	_strip_detail.add_theme_color_override("font_color",DEBT if state in ["compound","ready"] else MUTED)
 	_strip_icon.texture = load(ART+("loan_rollover.png" if state in ["compound","ready"] else "loan_note.png"))
 	_rect(_line,40+label_width+60,12,1,18)

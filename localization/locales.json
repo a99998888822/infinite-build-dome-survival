@@ -1,0 +1,16 @@
+{
+  "source_locale": "zh_CN",
+  "fallback_locale": "en",
+  "locales": [
+    {
+      "id": "zh_CN",
+      "native_name": "中文",
+      "title_texture": "res://assets/ui/main_menu/title_main_menu.png"
+    },
+    {
+      "id": "en",
+      "native_name": "English",
+      "title_texture": "res://assets/ui/main_menu/title_main_menu_en.png"
+    }
+  ]
+}

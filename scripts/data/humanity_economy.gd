@@ -18,14 +18,14 @@ static func number(value: float) -> String:
 
 static func describe(humanity: float) -> String:
 	var factors := get_multipliers(humanity)
-	return "理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。" % [
+	return L10n.text("economy.sanity.summary") % [
 		number(humanity), number((float(factors.purchase) - 1.0) * 100.0),
 		number((1.0 - float(factors.sale)) * 100.0), number((1.0 - float(factors.interest)) * 100.0),
 	]
 
 
 static func tooltip(humanity: float) -> String:
-	return describe(humanity) + "\n理智达到100时按原有价格交易、获得全额利息；低于0后代价继续增加。\n购买修正包含武器、升级和遗物；出售修正包含武器和附魔。"
+	return describe(humanity) + L10n.text("economy.sanity.rules")
 
 
 static func reprice_offer(offer: Dictionary, humanity: float) -> void:
@@ -45,20 +45,20 @@ static func price_text(actual: int, neutral: int) -> String:
 
 
 static func purchase_tooltip(offer: Dictionary) -> String:
-	var text := "购买价格：%s 金币\n括号为不计理智的价格与理智价差。\n%s" % [
+	var text := L10n.text("economy.price.purchase_tooltip") % [
 		price_text(int(offer.get("shop_cost", 0)), int(offer.get("shop_cost_without_humanity", offer.get("shop_cost", 0)))),
 		describe(float(offer.get("humanity", 100))),
 	]
 	var parts: Dictionary = offer.get("price_breakdown", {})
 	if not parts.is_empty():
-		text += "\n折扣与理智修正前：基础 %d + 波次 %d + 购买次数 %d + 本波收入 %d。" % [parts.base, parts.wave, parts.purchases, parts.income]
+		text += L10n.text("economy.price.cost_breakdown") % [parts.base, parts.wave, parts.purchases, parts.income]
 		if str(offer.get("offer_type", "")) in ["new_weapon", "relic"]:
-			text += "\n本波战斗金币 %d；每 200 金币附加 1，最多为基础、波次和购买次数合计的 10%%。" % int(parts.wave_gold)
+			text += L10n.text("economy.price.wave_income_rules") % int(parts.wave_gold)
 	return text
 
 
 static func sale_tooltip(quote: Dictionary) -> String:
-	return "出售收益：%s 金币\n原回收价 %d，理智损耗 %d。" % [
+	return L10n.text("economy.price.sale_tooltip") % [
 		price_text(int(quote.get("total", 0)), int(quote.get("total_without_humanity", quote.get("total", 0)))),
 		int(quote.get("total_without_humanity", quote.get("total", 0))), int(quote.get("humanity_loss", 0)),
 	]

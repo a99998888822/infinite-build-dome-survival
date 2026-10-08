@@ -393,7 +393,7 @@ func replace_attachment_instance(target_index: int, item_instance: Dictionary) -
 func get_attachment_incompatibility(item: Dictionary) -> String:
 	for effect_id in item.get("effect_ids", []):
 		if effect_id in weapon_data.get("unsupported_effects", []):
-			return "此武器暂不支持%s附魔" % ("穿透" if effect_id == "pierce" else str(effect_id))
+			return L10n.text("error.weapon.enchantment_incompatible") % (L10n.text("enchantment.pierce.name") if effect_id == "pierce" else str(effect_id))
 	return ""
 
 
@@ -538,7 +538,7 @@ func get_base_attack_range() -> float:
 
 func get_attack_range() -> float:
 	var bonus := get_stat("area_size")
-	if use_active_range_rules and has_combat_tag("扇形") and has_combat_tag("范围"):
+	if use_active_range_rules and has_combat_tag(L10n.text("combat.tag.cone")) and has_combat_tag(L10n.text("combat.tag.area")):
 		bonus += get_stat("damage_area_size")
 	return StatDefinitions.calculate_attack_radius(get_base_attack_range(), bonus)
 
@@ -555,7 +555,7 @@ func has_combat_tag(tag: String) -> bool:
 
 
 func get_projectile_visual_scale() -> float:
-	if use_active_range_rules and has_combat_tag("投射物"):
+	if use_active_range_rules and has_combat_tag(L10n.text("stat.category.projectiles")):
 		return StatDefinitions.calculate_damage_area_multiplier(get_stat("damage_area_size"))
 	return 1.0
 
@@ -835,52 +835,52 @@ func _get_tags() -> Array[String]:
 
 func build_full_stats_text() -> String:
 	var lines: Array[String] = []
-	var display_name := str(weapon_data.get("display_name", weapon_id))
+	var display_name := L10n.source(str(weapon_data.get("display_name", weapon_id)))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
-	lines.append("[color=#F5D76E]伤害：[/color]" + _format_damage_source(get_damage_stat_id()))
+	lines.append(L10n.text("ui.weapon.stats.damage") + _format_damage_source(get_damage_stat_id()))
 	if get_stat("damage_area_size") != 0:
-		lines.append("[color=#F5D76E]伤害范围[/color] %+.0f" % get_stat("damage_area_size"))
+		lines.append(L10n.text("ui.weapon.stats.area_bonus") % get_stat("damage_area_size"))
 	var interval := get_active_cooldown_seconds()
-	lines.append("[color=#F5D76E]冷却[/color] [color=#FFFFFF]%.2fs[/color]" % interval)
-	lines.append("[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color]" % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
+	lines.append(L10n.text("ui.weapon.stats.cooldown") % interval)
+	lines.append(L10n.text("ui.weapon.stats.critical") % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
 	if is_ritual_tome():
-		lines.append("[color=#F5D76E]每次点名[/color] [color=#FFFFFF]%d[/color]" % (maxi(1, int(get_stat("projectile_count"))) + 2))
+		lines.append(L10n.text("ui.weapon.stats.targets") % (maxi(1, int(get_stat("projectile_count"))) + 2))
 	elif get_attack_kind() == DAMAGE_KIND_RANGED:
-		lines.append("[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color]" % maxi(1, int(get_stat("projectile_count"))))
+		lines.append(L10n.text("ui.weapon.stats.projectiles") % maxi(1, int(get_stat("projectile_count"))))
 	if is_mobility_weapon():
-		lines.append(str(weapon_data.description))
+		lines.append(L10n.source(str(weapon_data.description)))
 		if not is_hand_cannon():
-			lines.append("[color=#F5D76E]伤害段数[/color] %d" % maxi(1, int(get_stat("projectile_count"))))
+			lines.append(L10n.text("ui.weapon.stats.hit_count") % maxi(1, int(get_stat("projectile_count"))))
 	elif is_grenade():
-		lines.append("[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s" % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
-		lines.append("抛射榴弹，%.2f秒后在落点爆炸。" % float(weapon_data.get("grenade_flight_seconds", 0.45)))
+		lines.append(L10n.text("ui.weapon.stats.range_radius") % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
+		lines.append(L10n.text("ui.weapon.behavior.grenade") % float(weapon_data.get("grenade_flight_seconds", 0.45)))
 	elif is_meteor_flail():
-		lines.append("流星锤头挥击前方扇面")
+		lines.append(L10n.text("ui.weapon.behavior.flail"))
 	elif is_copper_lamp():
-		lines.append("[color=#F5D76E]喷射距离[/color] %d · %s°窄扇面" % [roundi(get_attack_range()), _format_damage_number(get_lamp_cone_degrees())])
-		lines.append("按数字键喷射%.2fs，每%.2fs灼烧。" % [get_lamp_spray_seconds(), float(weapon_data.lamp_tick_ms) / 1000])
+		lines.append(L10n.text("ui.weapon.stats.spray_range") % [roundi(get_attack_range()), _format_damage_number(get_lamp_cone_degrees())])
+		lines.append(L10n.text("ui.weapon.behavior.lamp") % [get_lamp_spray_seconds(), float(weapon_data.lamp_tick_ms) / 1000])
 	elif is_mutant_tentacle():
-		lines.append("卷曲展开后瞬间拍地。")
+		lines.append(L10n.text("ui.weapon.behavior.tentacle"))
 	elif is_camp_dagger():
-		lines.append("正反手交替斩击")
+		lines.append(L10n.text("ui.weapon.behavior.dagger"))
 	elif is_nightwatch_spear():
-		lines.append("刺出长枪，贯穿前方敌人")
+		lines.append(L10n.text("ui.weapon.behavior.spear"))
 	elif is_ritual_tome():
 		var axes := get_domain_axes()
-		lines.append("[color=#F5D76E]领域半径[/color] %d × %d" % [roundi(axes.x), roundi(axes.y)])
-		lines.append("施展法阵，每0.35s点名一次造成伤害")
+		lines.append(L10n.text("ui.weapon.stats.field_radius") % [roundi(axes.x), roundi(axes.y)])
+		lines.append(L10n.text("ui.weapon.behavior.ritual"))
 	elif not is_earth_hammer():
-		lines.append("[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color]" % int(get_attack_range()))
+		lines.append(L10n.text("ui.weapon.stats.range") % int(get_attack_range()))
 	if is_coin_purse():
-		lines.append("向瞄准方向扇形散射金币，受到远程伤害和本金双加成")
+		lines.append(L10n.text("ui.weapon.behavior.purse"))
 	elif str(weapon_data.get("projectile_behavior", "")) == "plasma":
-		lines.append("接触时每%.2f秒灼击，每球最多5次。" % float(weapon_data.get("plasma_tick_interval", 0.1)))
+		lines.append(L10n.text("ui.weapon.behavior.plasma") % float(weapon_data.get("plasma_tick_interval", 0.1)))
 	for profile in (get_grenade_split_profiles() if is_grenade() else get_split_profiles()):
-		lines.append("[color=#F5D76E]分裂[/color] %d个 · 伤害%d%%" % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
+		lines.append(L10n.text("ui.weapon.stats.split") % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
 	if has_effect("bounce"):
-		lines.append("[color=#F5D76E]弹跳[/color] 首次命中立即追加%d次攻击" % get_effect_instances("bounce").size())
-	lines.append("[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color]" % get_load_cost())
+		lines.append(L10n.text("ui.weapon.stats.bounce") % get_effect_instances("bounce").size())
+	lines.append(L10n.text("ui.weapon.stats.load") % get_load_cost())
 	if has_attachment_slot():
 		lines.append(_build_attachment_icons_text())
 	return "\n".join(lines)
@@ -911,7 +911,7 @@ func _build_attachment_icons_text() -> String:
 			icons.append("[img=%dx%d]%s[/img]" % [ATTACHMENT_ICON_SIZE, ATTACHMENT_ICON_SIZE, icon_path])
 		else:
 			icons.append("[color=#A9A184]?[/color]")
-	return "[color=#F5D76E]附魔[/color]" + ATTACHMENT_ICON_GAP + ATTACHMENT_ICON_GAP.join(icons)
+	return L10n.text("ui.weapon.stats.enchantments") + ATTACHMENT_ICON_GAP + ATTACHMENT_ICON_GAP.join(icons)
 
 
 func _format_damage_source(stat_id: String) -> String:

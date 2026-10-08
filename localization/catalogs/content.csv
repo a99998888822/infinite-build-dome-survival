@@ -1,0 +1,484 @@
+keys,zh_CN,en
+content.augmentations.scroll_black_hole.description,吸附附近敌人0.85秒，造成一次45%元素伤害并施加2秒致盲,"Pulls nearby enemies for 0.85 seconds, deals 45% Elemental Damage once, and blinds them for 2 seconds."
+content.augmentations.scroll_bounce.description,首次命中时，在命中位置立刻追加一次攻击,The first hit immediately triggers another attack at the impact point.
+content.augmentations.scroll_domain.description,伤害范围+30,Damage Area +30
+content.augmentations.scroll_electric_spark.description,命中后延迟0.5秒后从高空劈下闪电，造成60%元素伤害,"On hit, calls down a lightning strike after 0.5 seconds, dealing 60% Elemental Damage."
+content.augmentations.scroll_explosion.description,命中时释放震荡波，向四周推开附近敌人,"On hit, releases a shockwave that pushes nearby enemies outward."
+content.augmentations.scroll_fire.description,命中后施加燃烧，每0.5秒造成10%元素伤害；散落种子可形成持续3秒的火焰池,"Applies Burning on hit, dealing 10% Elemental Damage every 0.5 seconds. Scattered seeds can form fire pools lasting 3 seconds."
+content.augmentations.scroll_haste.description,攻击速度+25%,Attack Speed +25%
+content.augmentations.scroll_ice.description,命中点生成持续3秒的寒冰领域，敌人首次接触时受到25%元素伤害并减速40%,Creates an ice field at the impact point for 3 seconds. Enemies entering it take 25% Elemental Damage on first contact and are slowed by 40%.
+content.augmentations.scroll_ice.display_name,结霜,Frost
+content.augmentations.scroll_lethality.description,暴击伤害增加50%,Crit Damage +50%
+content.augmentations.scroll_light_sword.description,"命中后召唤纯白大剑，延迟0.5秒落下，造成65%元素伤害并施加感光。
+感光：下一次受伤增加30%，随后消耗","On hit, summons a white greatsword that falls after 0.5 seconds, dealing 65% Elemental Damage and applying Photosensitivity.
+Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
+content.augmentations.scroll_lightning.description,命中后释放闪电链，对当前目标和范围内另一个目标造成55%元素伤害，并施加0.5s麻痹,"On hit, releases chain lightning that deals 55% Elemental Damage to the current target and one nearby enemy, paralyzing them for 0.5s."
+content.augmentations.scroll_might.description,全部伤害增加20%,All damage +20%
+content.augmentations.scroll_multishot.description,投射物数量+1,Projectiles +1
+content.augmentations.scroll_pierce.description,投射物命中目标后仍可继续飞行，额外命中2个敌人,"Projectiles continue after impact, hitting 2 additional enemies."
+content.augmentations.scroll_precision.description,暴击率增加25%,Crit Chance +25%
+content.augmentations.scroll_split.description,生成2个45%原伤害的子攻击,"Creates 2 child attacks, each dealing 45% of the original damage."
+content.augmentations.scroll_water.description,命中时对周围敌人造成一次45%元素伤害并打湿5秒，使其减速20%,"On hit, deals 45% Elemental Damage to nearby enemies and wets them for 5 seconds, slowing them by 20%."
+content.augmentations.scroll_water.display_name,水流,Waterflow
+content.augmentations.scroll_wind.description,命中后释放月牙风刃，造成70%元素伤害并推开敌人,"On hit, releases a crescent wind blade that deals 70% Elemental Damage and pushes enemies away."
+content.augmentations.scroll_wisdom.description,元素伤害增加30%,Elemental Damage +30%
+content.bonds.bond_chosen.name,神选者,Chosen One
+content.bonds.bond_mighty.name,大力,Mighty
+content.bonds.bond_sharpshooter.name,神射手,Sharpshooter
+content.bonds.bond_surplus_value.name,剩余价值,Surplus Value
+content.camp.archives.drop_rate_bonus,掉落率+5%,Drop Rate +5%
+content.camp.archives.luck_bonus,幸运+20,Luck +20
+content.camp.archives.unlock_common_relics,解锁全部普通、精良遗物库,Unlock all common and uncommon relics
+content.camp.archives.unlock_epic_relics,解锁全部史诗遗物,Unlock all epic relics
+content.camp.archives.unlock_exotic_relics,解锁全部珍奇遗物,Unlock all exotic relics
+content.camp.archives.unlock_legendary_void_relics,解锁全部传说、虚空遗物,Unlock all legendary and void relics
+content.camp.archives.unlock_rare_relics,解锁全部稀有遗物,Unlock all rare relics
+content.camp.armory.attack_speed_bonus,攻击速度+10%,Attack Speed +10%
+content.camp.armory.damage_bonus,通用伤害+4%,All damage +4%
+content.camp.armory.unlock_common_weapons,解锁全部基础、精良武器,Unlock all basic and uncommon weapons
+content.camp.armory.unlock_epic_weapons,解锁全部史诗武器,Unlock all epic weapons
+content.camp.armory.unlock_exotic_weapons,解锁全部珍奇武器,Unlock all exotic weapons
+content.camp.armory.unlock_legendary_weapons,解锁全部传说武器,Unlock all legendary weapons
+content.camp.armory.unlock_rare_weapons,解锁全部稀有武器库,Unlock all rare weapons
+content.camp.council.starting_levels,开局连升两级,Start with two extra levels
+content.camp.shelter.starting_relic,开局额外获得一件随机遗物,Start with one additional random relic
+content.camp.unlock_stat_upgrades,解锁属性购买升级,Unlock purchasable stat upgrades
+content.camp_buildings.camp_armory_workshop.description,锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。,Forge and repair survival weapons. The artisans keep refining their designs to face new enemies.
+content.camp_buildings.camp_armory_workshop.name,军械工坊,Armory Workshop
+content.camp_buildings.camp_armory_workshop.role,武器图鉴解锁、武器基础强化,Unlock weapons and improve their base stats
+content.camp_buildings.camp_blade_arena.description,幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,"A training ground where survivors hone close combat, learning to wield body and blade as one."
+content.camp_buildings.camp_blade_arena.name,利刃演武场,Blademaster's Yard
+content.camp_buildings.camp_blade_arena.role,近战专属营地建筑，解锁近战物理升级选项,Melee camp building; unlocks physical melee upgrades
+content.camp_buildings.camp_council_hall.description,幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,Survivors gather beneath ancient totems to exchange relic-combination tactics.
+content.camp_buildings.camp_council_hall.name,议事大厅,Council Hall
+content.camp_buildings.camp_council_hall.role,强化套装与通用成长收益,Improve synergies and general growth
+content.camp_buildings.camp_dome_shelter.description,穹顶内最基础的防御与修整设施，为幸存者提供稳定庇护。,The dome's essential shelter and recovery facilities offer survivors a safe haven.
+content.camp_buildings.camp_dome_shelter.name,穹顶庇护所,Dome Shelter
+content.camp_buildings.camp_dome_shelter.role,生存防御类加成，平衡建筑,Balanced survival and defensive bonuses
+content.camp_buildings.camp_farstar_range.description,用于训练远程弹道与精准打击的高台。,An elevated range for practicing trajectories and precision strikes.
+content.camp_buildings.camp_farstar_range.name,远星射靶台,Farstar Shooting Range
+content.camp_buildings.camp_farstar_range.role,远程专属营地建筑，解锁远程与投射物相关升级选项,Ranged camp building; unlocks ranged and projectile upgrades
+content.camp_buildings.camp_relic_archive.description,收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,Stores strange objects brought back by survivors. Each new relic helps them understand their enemies.
+content.camp_buildings.camp_relic_archive.name,遗物档案馆,Relic Archives
+content.camp_buildings.camp_relic_archive.role,遗物图鉴解锁、遗物套装预览,Unlock relics and preview synergies
+content.camp_buildings.camp_upgrade_area_size_ranged.name,攻击距离训练,Attack Range Training
+content.camp_buildings.camp_upgrade_armor.name,护甲训练,Armor Training
+content.camp_buildings.camp_upgrade_control_power_ranged.name,远程控制训练,Ranged Control Training
+content.camp_buildings.camp_upgrade_currency_gain_percent.name,货币获取训练,Currency Gain Training
+content.camp_buildings.camp_upgrade_damage_area_size.name,伤害范围训练,Damage Area Training
+content.camp_buildings.camp_upgrade_drop_rate_percent.name,掉落率训练,Drop Rate Training
+content.camp_buildings.camp_upgrade_element_damage.name,元素伤害训练,Elemental Damage Training
+content.camp_buildings.camp_upgrade_enemy_spawn_rate.name,敌潮承压训练,Enemy Wave Endurance Training
+content.camp_buildings.camp_upgrade_exp_gain_percent.name,经验获取训练,Experience Training
+content.camp_buildings.camp_upgrade_hp_regen.name,每秒回血训练,Health Regeneration Training
+content.camp_buildings.camp_upgrade_initial_principal.name,初始本金,Starting Principal
+content.camp_buildings.camp_upgrade_interest_rate.name,利率训练,Interest Rate Training
+content.camp_buildings.camp_upgrade_load_capacity.name,负载扩容训练,Load Capacity Training
+content.camp_buildings.camp_upgrade_max_hp.name,最大生命训练,Max HP Training
+content.camp_buildings.camp_upgrade_melee_damage.name,近战伤害训练,Melee Damage Training
+content.camp_buildings.camp_upgrade_move_speed.name,移动速度训练,Movement Speed Training
+content.camp_buildings.camp_upgrade_on_kill_heal.name,战地急救训练,Field Medicine Training
+content.camp_buildings.camp_upgrade_pickup_radius.name,拾取范围训练,Pickup Range Training
+content.camp_buildings.camp_upgrade_projectile_count.name,投射物数量训练,Projectile Training
+content.camp_buildings.camp_upgrade_ranged_damage.name,远程伤害训练,Ranged Damage Training
+content.camp_buildings.camp_upgrade_relic_luck.name,遗物鉴定训练,Relic Appraisal Training
+content.camp_buildings.camp_upgrade_revive_count.name,应急复苏训练,Emergency Revival Training
+content.camp_buildings.camp_upgrade_shield.name,护盾训练,Shield Training
+content.camp_buildings.camp_upgrade_shop_offer_count.name,商店选项扩容,Expanded Shop Selection
+content.camp_buildings.camp_upgrade_shop_price.name,商店议价训练,Shop Bargaining Training
+content.camp_buildings.camp_upgrade_weapon_attack_speed.name,武器攻速训练,Attack Speed Training
+content.camp_buildings.camp_upgrade_weapon_crit_chance.name,武器暴击训练,Critical Chance Training
+content.camp_buildings.camp_upgrade_weapon_crit_damage.name,武器爆伤训练,Critical Damage Training
+content.camp_buildings.camp_upgrade_weapon_damage.name,武器伤害训练,Weapon Damage Training
+content.characters.character_capitalist.display_name,资本家,Capitalist
+content.characters.character_void_hunter.description,初始最大生命 30；每升一级，最大生命 +1，并回复 1 点生命。,Starts with 30 Max HP. Each level grants +1 Max HP and restores 1 HP.
+content.characters.character_void_hunter.display_name,初心者,Novice
+content.drop_tables.drop_basic_enemy.description,附魔基础掉率6%，每次最多1个；白/绿/蓝/紫占比10/60/25/5，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少8个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。,"Base enchantment drop chance: 6%, at most 1 per drop. Common/Uncommon/Rare/Epic weights: 10/60/25/5, equal within each tier. Luck and drop bonuses have capped diminishing returns. Each enchantment generated this wave multiplies subsequent normal-enemy chances by 45%. All sources share a cap of 3 in waves 1–5, then 4. If two completed waves in a row each have at least 8 eligible kills and no enchantment drops, one is granted at the end of the second wave. Enchantments are collected automatically at wave end. Elite relic drops use a separate successive-halving rule."
+content.drop_tables.drop_basic_enemy.display_name,小怪掉落表,Normal Enemy Loot Table
+content.drop_tables.drop_boss_enemy.description,附魔基础掉率60%，每次最多1个；白/绿/蓝/紫占比0/35/50/15，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少8个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。,"Base enchantment drop chance: 60%, at most 1 per drop. Common/Uncommon/Rare/Epic weights: 0/35/50/15, equal within each tier. Luck and drop bonuses have capped diminishing returns. Each enchantment generated this wave multiplies subsequent normal-enemy chances by 45%. All sources share a cap of 3 in waves 1–5, then 4. If two completed waves in a row each have at least 8 eligible kills and no enchantment drops, one is granted at the end of the second wave. Enchantments are collected automatically at wave end. Elite relic drops use a separate successive-halving rule."
+content.drop_tables.drop_boss_enemy.display_name,BOSS掉落表,Boss Loot Table
+content.drop_tables.drop_elite_enemy.description,附魔基础掉率15%，每次最多1个；白/绿/蓝/紫占比5/45/40/10，档内等权。幸运与掉落加成采用有上界的递减收益；本波每生成1个附魔，普通怪后续概率乘45%。前5波所有来源合计最多3个，之后4个；连续两次完成且击杀至少8个有效敌人的战斗没有附魔，第二次波末补1个。波末自动收取附魔。精英遗物仍使用独立的逐次减半规则。,"Base enchantment drop chance: 15%, at most 1 per drop. Common/Uncommon/Rare/Epic weights: 5/45/40/10, equal within each tier. Luck and drop bonuses have capped diminishing returns. Each enchantment generated this wave multiplies subsequent normal-enemy chances by 45%. All sources share a cap of 3 in waves 1–5, then 4. If two completed waves in a row each have at least 8 eligible kills and no enchantment drops, one is granted at the end of the second wave. Enchantments are collected automatically at wave end. Elite relic drops use a separate successive-halving rule."
+content.drop_tables.drop_elite_enemy.display_name,精英怪掉落表,Elite Enemy Loot Table
+content.enemies.enemy_echo_bat.description,保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,"Flies at medium range, retreating when you approach and following when you move away. Briefly charges, marks a narrow path, then fires a pixel spiral soundwave in the locked direction. Makes up 30% of normal enemy spawns."
+content.enemies.enemy_echo_bat.display_name,回声蝙蝠,Echo Bat
+content.enemies.enemy_elite_rusher.description,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为200，不再按普通怪生命倍增，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加100%，单波最多3只；波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 200 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. Later waves have a base expected count of wave/10, increased by up to 100% through Corruption, capped at 3 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
+content.enemies.enemy_elite_rusher.display_name,钢甲骑士,Ironclad Knight
+content.enemies.enemy_mutated_grub.description,最基础的近战追踪小怪示例。,A basic melee enemy that pursues the player.
+content.enemies.enemy_mutated_grub.display_name,天外幼体,Otherworld Larva
+content.enemies.enemy_underworld_wolf.description,幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,"A miniboss with blue spectral bone markings and a flaming tail. Shares the miniboss spawn quota with the Ironclad Knight at equal odds. Marks a landing point, leaps into a ground slam, then quickly returns to idle. A cone warns of its blue flame breath, which can hit up to 3 times per cast. Both the slam and flames knock the player back."
+content.enemies.enemy_underworld_wolf.display_name,幽焰冥狼,Ghostflame Wolf
+content.enemy_adaptation_rules.kill_speed_hp.description,从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。,"From wave 4, the next wave gains HP if the previous combat lasted at least 15 seconds, at least 80% of an enemy type died within 1 second of first damage, and the player was not struggling. Requires 20 normal-enemy samples or 1 miniboss sample. Normal enemies gain 10 percentage points per step, capped at 60%; minibosses gain 5, capped at 30%. Drops one step if the player struggles or rapid kills stay below 50% for two consecutive waves."
+content.enemy_adaptation_rules.kill_speed_hp.display_name,秒怪生命适应,Rapid-Kill HP Adaptation
+content.erosion_pressure_rules.erosion_enemy_stats.description,波初读取侵蚀，所有怪物获得独立乘区加成。每点侵蚀增加生命1.8%、伤害0.9%、护甲1.35%；超过30、60的部分各额外增加生命1.8%、伤害0.3%，持续增长，不封顶。,"Corruption is read at wave start and applies a separate multiplier to all enemies. Each point adds 1.8% HP, 0.9% damage, and 1.35% armor. Points above 30 and above 60 each add another 1.8% HP and 0.3% damage. Scaling continues without a cap."
+content.erosion_pressure_rules.erosion_enemy_stats.display_name,侵蚀敌人属性压力,Corruption Enemy Scaling
+content.goblin_trades.cash_price.body,金币 + %d，本次关闭银行，理智-5，幸运-2,"Gold +%d. The bank closes for this visit. Sanity −5, Luck −2."
+content.goblin_trades.cash_price.speech,钱不够？没关系。总有可以交易的东西。,Short on gold? No problem. There's always something to trade.
+content.goblin_trades.interest_pact.body,利率+3%，每回合理智-1。,Interest Rate +3%. Sanity −1 each wave.
+content.goblin_trades.interest_pact.speech,有我帮你理财，不用担心！只是得付出一点小小的代价。,Let me manage your money. Nothing to worry about! Just one tiny price to pay.
+content.goblin_trades.principal_advance.body,本金+%d，直接开始下一波。,Principal +%d. Start the next wave immediately.
+content.goblin_trades.principal_advance.speech,这些零碎有什么好买的？,Why waste your money on these trinkets?
+content.goblin_trades.spending_money.body,金币+%d，本次不可存款。,Gold +%d. Deposits are unavailable this visit.
+content.goblin_trades.spending_money.speech,别急着存钱，拿去花，下回可别忘了我。,No rush to save. Go spend it—and remember me next time.
+content.goblin_trades.strong_refresh.body,存入 %d 金币，获得 1 次免费的强力刷新,Deposit %d gold to gain 1 free Power Reroll
+content.goblin_trades.strong_refresh.detail,强力刷新：拥有100幸运加成，且保底一件史诗遗物。,Power Reroll grants +100 Luck and guarantees at least one Epic relic.
+content.goblin_trades.strong_refresh.speech,再存一点，我给你看看真正的好东西。,"Deposit a little more, and I'll show you the good stuff."
+content.relics.relic_abyssal_echo_shell.description,伤害范围 +40，元素伤害 +8，理智值 −15。,Damage Area +40; Elemental Damage +8; Sanity −15.
+content.relics.relic_abyssal_echo_shell.display_name,深海回声螺,Abyssal Echo Shell
+content.relics.relic_aftershock_hourglass.description,伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。,Damage Area +20; Damage Bonus +12. Each wave completed after acquisition grants another +2 Damage Area.
+content.relics.relic_aftershock_hourglass.display_name,余震沙漏,Aftershock Hourglass
+content.relics.relic_amulet_of_humanity.description,理智值 + 10；幸运 - 5,Sanity +10; Luck −5
+content.relics.relic_amulet_of_humanity.display_name,人性护符,Amulet of Humanity
+content.relics.relic_annual_leave_cutback.description,获得时：本金 +100；利率 +2%；攻击速度 -12,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12.
+content.relics.relic_annual_leave_cutback.display_name,年假削减方案,Leave Cutbacks
+content.relics.relic_bankruptcy_reorg.description,本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,"When Principal reaches zero, immediately gain Principal equal to twice your current gold and +1 Revive."
+content.relics.relic_bankruptcy_reorg.display_name,破产重组,Bankruptcy Reorganization
+content.relics.relic_barrier_crystal.description,每两秒生成 1 点护盾；侵蚀度 + 5,Generate 1 Shield every 2 seconds; Corruption +5
+content.relics.relic_barrier_crystal.display_name,屏障结晶,Barrier Crystal
+content.relics.relic_berserker_copper_badge.description,近战伤害 + 8；护甲 - 10,Melee Damage +8; Armor −10
+content.relics.relic_berserker_copper_badge.display_name,狂战士铜质徽章,Berserker's Copper Badge
+content.relics.relic_black_spot_eagle_eye.description,暴击几率 + 7,Crit Chance +7
+content.relics.relic_black_spot_eagle_eye.display_name,黑斑鹰眼水晶,Spotted Hawkeye Crystal
+content.relics.relic_blocking_counterweight.description,控制强度 + 6,Control Strength +6
+content.relics.relic_blocking_counterweight.display_name,阻滞配重石,Hindering Counterweight
+content.relics.relic_bloodstained_belt.description,近战伤害 + 3；每秒回血 - 0.25,Melee Damage +3; HP Regen/s −0.25
+content.relics.relic_bloodstained_belt.display_name,嗜血皮带,Bloodthirsty Belt
+content.relics.relic_brass_pocket_watch.description,护甲 + 8；理智值 + 2,Armor +8; Sanity +2
+content.relics.relic_brass_pocket_watch.display_name,黄铜怀表,Brass Pocket Watch
+content.relics.relic_broken_crystal.description,生命值低于 50% 时，护甲 + 25,Armor +25 while below 50% HP
+content.relics.relic_broken_crystal.display_name,残破晶石,Broken Crystal
+content.relics.relic_chain_of_hardship.description,护甲 + 15；每点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per point of Corruption
+content.relics.relic_chain_of_hardship.display_name,苦难前行之枷锁,Shackles of Hardship
+content.relics.relic_coin_heart.description,每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件,Max HP +1 per full 100 Principal. The bonus falls when Principal decreases; increasing Max HP does not heal you. Stack limit: 1 per run.
+content.relics.relic_coin_heart.display_name,金币心脏,Coin Heart
+content.relics.relic_compound_interest_tome.description,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
+content.relics.relic_compound_interest_tome.display_name,复利宝典,Tome of Compound Interest
+content.relics.relic_corroded_blowpipe.description,远程伤害 + 6；最大生命 - 3,Ranged Damage +6; Max HP −3
+content.relics.relic_corroded_blowpipe.display_name,蚀腐吹管,Corroded Blowpipe
+content.relics.relic_costly_seed_of_life.description,每秒回血 +0.5；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件,"HP Regen/s +0.5. Grants 1 extra Revive, consumed on use. While held, every revival adds +20 Corruption. Stack limit: 1."
+content.relics.relic_costly_seed_of_life.display_name,代价生命之种,Costly Seed of Life
+content.relics.relic_cracked_bronze_bell.description,伤害范围 +15，元素伤害 +1。,Damage Area +15; Elemental Damage +1.
+content.relics.relic_cracked_bronze_bell.display_name,裂纹铜铃,Cracked Bronze Bell
+content.relics.relic_cracked_stone_bullet.description,远程伤害 + 1；拾取范围 - 10,Ranged Damage +1; Pickup Range −10
+content.relics.relic_cracked_stone_bullet.display_name,裂痕石子弹,Cracked Stone Bullet
+content.relics.relic_cultic_holy_shield.description,护甲 + 30；侵蚀度 + 5,Armor +30; Corruption +5
+content.relics.relic_cultic_holy_shield.display_name,密教圣盾,Cultic Holy Shield
+content.relics.relic_dead_shield_badge.description,每波开始生成10点护盾,Gain 10 Shield at each wave start
+content.relics.relic_dead_shield_badge.display_name,死寂护盾徽章,Deathly Shield Badge
+content.relics.relic_defiled_blessing_coin.description,幸运 + 18；理智值 - 3,Luck +18; Sanity −3
+content.relics.relic_defiled_blessing_coin.display_name,被亵渎的祈福铜钱,Defiled Blessing Coin
+content.relics.relic_diffusion_nozzle.description,伤害范围 +30，伤害加成 +15，攻击速度 −6。,Damage Area +30; Damage Bonus +15; Attack Speed −6.
+content.relics.relic_diffusion_nozzle.display_name,扩散喷口,Diffusion Nozzle
+content.relics.relic_dividend_check.description,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
+content.relics.relic_divine_fusion.description,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.5 per full 5 Corruption. Corruption +1 at each wave start. Stack limit: 1 per run."
+content.relics.relic_divine_fusion.display_name,神性融合,Divine Fusion
+content.relics.relic_executioner_bracer.description,近战伤害 + 10；移速 - 20,Melee Damage +10; Movement Speed −20
+content.relics.relic_executioner_bracer.display_name,屠戮者臂铠,Executioner's Bracers
+content.relics.relic_expanded_backpack_strap.description,负载 + 10；移动速度 - 12；拾取范围 - 10,Load Capacity +10; Movement Speed −12; Pickup Range −10
+content.relics.relic_expanded_backpack_strap.display_name,扩容背包束带,Expanded Backpack Straps
+content.relics.relic_finance_manager.description,利率 + 1.5%,Interest Rate +1.5%
+content.relics.relic_finance_manager.display_name,理财经理,Financial Adviser
+content.relics.relic_fixed_deposit_certificate.description,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
+content.relics.relic_fixed_deposit_certificate.display_name,定期存单,Fixed Deposit Certificate
+content.relics.relic_flesh_pauldron.description,最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2,Max HP +5; Armor +15; HP Regen/s −0.1; Corruption +2; Sanity −2
+content.relics.relic_flesh_pauldron.display_name,血肉肩甲,Flesh Pauldron
+content.relics.relic_flyer_ad.description,商店折扣 + 8%,Shop Discount +8%
+content.relics.relic_flyer_ad.display_name,传单广告,Advertising Flyer
+content.relics.relic_folded_star_chart.description,攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。,Attack Range +25; Damage Area +25; Damage Bonus +20; Corruption +5.
+content.relics.relic_folded_star_chart.display_name,折叠星图,Folded Star Chart
+content.relics.relic_frenzied_dividend.description,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
+content.relics.relic_frenzied_dividend.display_name,狂热分红,Frenzied Dividend
+content.relics.relic_gale_roulette.description,攻击速度 +30%；通用伤害 -8%,Attack Speed +30%; All Damage −8%
+content.relics.relic_gale_roulette.display_name,疾风轮盘,Gale Roulette
+content.relics.relic_gift_mark.description,幸运 + 42；侵蚀度 + 10,Luck +42; Corruption +10
+content.relics.relic_gift_mark.display_name,馈赠印记,Mark of Bounty
+content.relics.relic_gilded_trigger.description,通用伤害 + 25%；理智值 - 20；每局最多持有 1 件,All Damage +25%; Sanity −20. Stack limit: 1 per run.
+content.relics.relic_gilded_trigger.display_name,镀金扳机,Gilded Trigger
+content.relics.relic_goblin_central_bank_printer.description,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
+content.relics.relic_goblin_central_bank_printer.display_name,哥布林金币铸造机,Goblin Coin Mint
+content.relics.relic_gold_compass.description,拾取范围 +40；金币获取 +10%,Pickup Range +40; Gold Gain +10%
+content.relics.relic_gold_compass.display_name,吸金罗盘,Gold Compass
+content.relics.relic_gold_digger_gloves.description,拾取范围 + 10；经验获取 + 8,Pickup Range +10; Experience Gain +8
+content.relics.relic_gold_digger_gloves.display_name,淘金者的手套,Prospector's Gloves
+content.relics.relic_golden_rangefinder.description,每满100本金，攻击距离＋3、伤害加成＋3%，上限30,"Every full 100 Principal grants Attack Range +3 and Damage Bonus +3%, each capped at +30."
+content.relics.relic_golden_rangefinder.display_name,黄金测距仪,Golden Rangefinder
+content.relics.relic_golden_sarcophagus.description,已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,"After all other Revives are spent, if Principal is at least 1,000, lethal damage consumes 500 Principal and restores 50% of your Max HP after payment. Triggers once per run. Stack limit: 1."
+content.relics.relic_golden_sarcophagus.display_name,黄金棺椁,Golden Sarcophagus
+content.relics.relic_guarding_heart_copper_mirror.description,幸运 + 18；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +18; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
+content.relics.relic_guarding_heart_copper_mirror.display_name,守心铜鉴,Heartguard Bronze Mirror
+content.relics.relic_harvest_sacrificial_vessel.description,金币获取 +15%；经验获取 +15%；最大生命值 -2,Gold Gain +15%; Experience Gain +15%; Max HP −2
+content.relics.relic_harvest_sacrificial_vessel.display_name,丰收的牺牲祭器,Harvest Sacrificial Vessel
+content.relics.relic_hasty_spring_trigger.description,攻击速度 + 8；移动速度 - 5,Attack Speed +8; Movement Speed −5
+content.relics.relic_hasty_spring_trigger.display_name,急促弹簧扳机,Hasty Spring Trigger
+content.relics.relic_high_yield_contract.description,本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,"Manually deposit at least 50 gold before the wave to gain +6 percentage points of Interest Rate for that wave. Otherwise, interest is paid at the normal rate. Stack limit: 1."
+content.relics.relic_high_yield_contract.display_name,高利契约,High-Yield Contract
+content.relics.relic_hoarders_ring.description,每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件,Every full 500 Principal grants Gold Gain +10% and Sanity −2. Withdrawals remove the corresponding bonus and cost; Sanity recovery is still blocked by Candle of Rebirth's Hellfire. Stack limit: 1 per run.
+content.relics.relic_hoarders_ring.display_name,囤积者戒指,Hoarder's Ring
+content.relics.relic_holy_silver_cup.description,每秒回血 + 0.75；利率 - 1 个百分点,HP Regen/s +0.75; Interest Rate −1 percentage point
+content.relics.relic_holy_silver_cup.display_name,圣质银杯,Holy Silver Chalice
+content.relics.relic_horizon_orrery.description,攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。,Attack Range +40; Damage Bonus +30. Every full 10 points of positive Attack Range bonus grants another +5 Damage Area.
+content.relics.relic_horizon_orrery.display_name,地平线星仪,Horizon Orrery
+content.relics.relic_hostile_takeover.description,每 100 本金提供通用伤害加成 + 1%,All damage +1% per 100 Principal
+content.relics.relic_hostile_takeover.display_name,恶意收购,Hostile Takeover
+content.relics.relic_incomplete_divination_dice.description,幸运 + 9；掉落率 + 5,Luck +9; Drop Rate +5
+content.relics.relic_incomplete_divination_dice.display_name,残缺的占卜骰子,Broken Divination Dice
+content.relics.relic_judgment_eye_pendant.description,暴击几率 +12 个百分点；暴击伤害 +35 个百分点,Crit Chance +12 percentage points; Crit Damage +35 percentage points
+content.relics.relic_judgment_eye_pendant.display_name,裁决之眼吊坠,Eye of Judgment Pendant
+content.relics.relic_load_iron_bracer.description,护甲 + 8；移动速度 - 5,Armor +8; Movement Speed −5
+content.relics.relic_load_iron_bracer.display_name,负重铁皮护腕,Weighted Iron Bracers
+content.relics.relic_long_focus_eyepiece.description,攻击距离 +35，远程伤害 +3，攻击速度 −8。,Attack Range +35; Ranged Damage +3; Attack Speed −8.
+content.relics.relic_long_focus_eyepiece.display_name,长焦目镜,Long-Focus Eyepiece
+content.relics.relic_lost_wayfarer_greave.description,护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成,Armor +12; Movement Speed +18. The +18 speed bonus is disabled below 60 Sanity.
+content.relics.relic_lost_wayfarer_greave.display_name,迷途者胫环,Lost Wayfarer's Greaves
+content.relics.relic_lucid_vow.description,每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件,Sanity +2 at each wave end; All Damage −8%. Stack limit: 1 per run.
+content.relics.relic_lucid_vow.display_name,清醒誓言,Lucid Vow
+content.relics.relic_medical_cutback.description,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1.
+content.relics.relic_medical_cutback.display_name,医疗削减方案,Medical Cutbacks
+content.relics.relic_merger_reorg.description,负载上限 +10；当前本金每满 500，额外 +5 负载上限，上限20,"Load Capacity +10. Every full 500 Principal grants another +5 Load Capacity, up to +20 extra."
+content.relics.relic_merger_reorg.display_name,并购重组,Merger & Restructuring
+content.relics.relic_nightmare_healing_urn.description,每秒回血 + 0.4；每波过后，理智值 - 1,HP Regen/s +0.4; Sanity −1 after each wave
+content.relics.relic_nightmare_healing_urn.display_name,梦魇治愈圣壶,Nightmare Healing Urn
+content.relics.relic_old_brass_telescope.description,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
+content.relics.relic_old_brass_telescope.display_name,旧铜望远镜,Old Brass Telescope
+content.relics.relic_pain_vessel.description,每秒回血 + 0.6；最大生命值 - 1；理智值 - 3,HP Regen/s +0.6; Max HP −1; Sanity −3
+content.relics.relic_pain_vessel.display_name,苦痛祭皿,Vessel of Pain
+content.relics.relic_periodic_dividend_clock.description,每经过 3 波，额外触发一次利息结算,"Every 3 waves, trigger one extra interest settlement."
+content.relics.relic_perpetual_annuity_scroll.description,每个回合结息次数 + 1；每局最多持有 1 件,One additional interest settlement per wave. Stack limit: 1 per run.
+content.relics.relic_perpetual_annuity_scroll.display_name,永续年金卷轴,Perpetual Annuity Scroll
+content.relics.relic_piggy_bank.description,每波开始自动本金 + 15,Automatically gain +15 Principal at the start of each wave.
+content.relics.relic_piggy_bank.display_name,猪猪存钱罐,Piggy Bank
+content.relics.relic_poison_mist_pouch.description,远程伤害 + 3；每秒回血 - 0.25,Ranged Damage +3; HP Regen/s −0.25
+content.relics.relic_poison_mist_pouch.display_name,毒雾投囊,Poison Mist Pouch
+content.relics.relic_prison_copper_anklet.description,最大生命值 + 3；移动速度 + 10；理智值 - 5,Max HP +3; Movement Speed +10; Sanity −5
+content.relics.relic_prison_copper_anklet.display_name,监狱铜制脚环,Prisoner's Copper Anklet
+content.relics.relic_pungent_sachet.description,每秒回血 + 0.1；理智值 + 1,HP Regen/s +0.1; Sanity +1
+content.relics.relic_pungent_sachet.display_name,刺鼻香包,Pungent Sachet
+content.relics.relic_quant_trading.description,每 50 本金 +1 攻速,Attack Speed +1 per 50 Principal
+content.relics.relic_quant_trading.display_name,量化操盘,Quant Trading
+content.relics.relic_range_tripod.description,攻击速度 +12；连续静止1秒后，额外攻击距离 +40、伤害加成 +20；移动立即取消额外加成。,"Attack Speed +12. After standing still for 1 second, gain Attack Range +40 and Damage Bonus +20. Moving immediately removes these extra bonuses."
+content.relics.relic_range_tripod.display_name,定距脚架,Range Tripod
+content.relics.relic_reincarnation_hellfire_candle.description,幸运 + 75；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,Luck +75; Experience Gain +35%. Sanity can no longer recover. Corruption +1 at each wave end. Stack limit: 1 per run.
+content.relics.relic_reincarnation_hellfire_candle.display_name,轮回业火之烛,Candle of Rebirth's Hellfire
+content.relics.relic_rough_grinding_lens.description,暴击几率 + 3；暴击伤害 + 10,Crit Chance +3; Crit Damage +10
+content.relics.relic_rough_grinding_lens.display_name,粗糙研磨透镜,Rough-Ground Lens
+content.relics.relic_runaway_amplifier.description,通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 3 Sanity, or 5 if Sanity is already below 0. Stack limit: 1 per run."
+content.relics.relic_runaway_amplifier.display_name,失控增幅器,Runaway Amplifier
+content.relics.relic_salary_adjustment.description,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%.
+content.relics.relic_salary_adjustment.display_name,薪酬调整方案,Salary Adjustment
+content.relics.relic_shadowless_greave.description,移动速度 + 32；每10点移速提供护甲+1,Movement Speed +32; Armor +1 per 10 Movement Speed
+content.relics.relic_shadowless_greave.display_name,无影遁形胫甲,Shadowless Greaves
+content.relics.relic_sleepless_ledger.description,利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −3 at each wave end. Stack limit: 1 per run.
+content.relics.relic_sleepless_ledger.display_name,无眠账簿,Sleepless Ledger
+content.relics.relic_soul_keeper_face_stone.description,最大生命＋5；每3点侵蚀度＋1理智,Max HP +5; Sanity +1 per 3 Corruption
+content.relics.relic_soul_keeper_face_stone.display_name,守魂人面石雕,Soulkeeper's Stone Face
+content.relics.relic_split_crystal_warhead.description,投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件,Projectiles +1; All Damage −15%. Extra projectiles increase coverage; some weapons cannot hit the same target repeatedly. Stack limit: 1.
+content.relics.relic_split_crystal_warhead.display_name,分裂晶石弹头,Splitting Crystal Warhead
+content.relics.relic_stargazers_lens.description,幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5,Luck +18; Experience Gain +12; Drop Rate +12; Sanity −5
+content.relics.relic_stargazers_lens.display_name,观星者的镜片,Stargazer's Lens
+content.relics.relic_steel_vault.description,每 50 本金 +1 护甲,Armor +1 per 50 Principal
+content.relics.relic_steel_vault.display_name,钢铁保险柜,Steel Vault
+content.relics.relic_suffering_carapace.description,最大生命值 + 12；护甲 + 8；移动速度 - 15,Max HP +12; Armor +8; Movement Speed −15
+content.relics.relic_suffering_carapace.display_name,受难甲壳,Carapace of Suffering
+content.relics.relic_tip_tray.description,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验1和基础金币1,Kills have a 10% chance to drop an extra experience orb worth 1 base XP and 1 base gold.
+content.relics.relic_tip_tray.display_name,小费托盘,Tip Tray
+content.relics.relic_travelers_ledger.description,金币获取 + 10；获取时本金 + 20；负载 - 5,Gold Gain +10; Principal +20 on acquisition; Load Capacity −5
+content.relics.relic_travelers_ledger.display_name,商旅账本,Merchant's Ledger
+content.relics.relic_tremor_grip.description,攻击速度 + 18；通用伤害 - 5,Attack Speed +18; All Damage −5
+content.relics.relic_tremor_grip.display_name,震颤握柄,Tremor Grip
+content.relics.relic_true_silver_armor.description,最大生命值 + 10；护甲 + 5；理智值 + 2,Max HP +10; Armor +5; Sanity +2
+content.relics.relic_true_silver_armor.display_name,真银护甲,Truesilver Armor
+content.relics.relic_turtle_shell_pendant.description,护甲 + 10；最大生命值 + 3,Armor +10; Max HP +3
+content.relics.relic_turtle_shell_pendant.display_name,龟壳吊坠,Turtle Shell Pendant
+content.relics.relic_vitality_potion.description,每秒回血 + 0.25；每波过后，侵蚀度 + 1,HP Regen/s +0.25; Corruption +1 after each wave
+content.relics.relic_vitality_potion.display_name,生命力药瓶,Vitality Vial
+content.relics.relic_void_storage_casket.description,幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 5,Luck +18; Load Capacity +10; Pickup Range +10; Corruption +5
+content.relics.relic_void_storage_casket.display_name,虚空收纳匣,Void Storage Casket
+content.relics.relic_void_tentacle.description,每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值,"Shield +20 at each wave start; Shield Regen/s +1. When your shield breaks, Corruption +1; if you survive the hit, restore 3 HP."
+content.relics.relic_void_tentacle.display_name,虚空触手,Void Tentacle
+content.relics.relic_welfare_cutback.description,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5.
+content.relics.relic_welfare_cutback.display_name,福利削减方案,Welfare Cutbacks
+content.relics.relic_worn_fighting_gloves.description,近战伤害 + 1；护甲 - 3,Melee Damage +1; Armor −3
+content.relics.relic_worn_fighting_gloves.display_name,磨损格斗拳套,Worn Fighting Gloves
+content.relics.relic_worn_hemostatic_cloth.description,最大生命值 + 4,Max HP +4
+content.relics.relic_worn_hemostatic_cloth.display_name,磨损的止血布条,Worn Hemostatic Cloth
+content.run_settlement.reactions.death_followed.speech,哥布林包赚，但不包活哈哈哈！,"A goblin guarantees profit, not survival! Hahaha!"
+content.run_settlement.reactions.death_refused.speech,嘬嘬嘬，不听哥布林，吃亏在眼前！,"Tsk, tsk. Ignore a goblin's advice and see what happens!"
+content.run_settlement.reactions.victory_followed.speech,再来，再来！,"Again, again!"
+content.run_settlement.reactions.victory_refused.speech,啧，稳妥点当然好，就是赚的少了些。,"Well, playing it safe works. Just doesn't pay as much."
+content.wave_challenges.all_in.body,"下一波结束：先结息，再将全部金币存入本金。
+额外获得本金 +100、幸运 +10。","At the end of the next wave, settle interest, then deposit all gold.
+Gain an extra +100 Principal and +10 Luck."
+content.wave_challenges.all_in.speech,"下一步结束，将全部金币存入本金。
+额外获得本金 +100，幸运 +10.","Deposit all your gold at the end of the next wave.
+Gain an extra +100 Principal and +10 Luck."
+content.wave_challenges.extra_elites.body,下一波额外出现 2 个精英怪。,2 additional elite enemies appear next wave.
+content.wave_challenges.extra_elites.speech,多来几个大家伙而已，你不会连这点钱都不敢赚吧？,Just a few more big ones. Surely you're not afraid of easy money?
+content.wave_challenges.rising_tide.body,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.
+content.wave_challenges.rising_tide.speech,风浪越大，鱼越贵！,"Rougher seas, richer catches!"
+content.weapons.weapon_camp_dagger.display_name,营地短刀,Camp Dagger
+content.weapons.weapon_camp_dagger.level_2.description,伤害次数 [color=#7FD88F]+1[/color],Damage ticks [color=#7FD88F]+1[/color]
+content.weapons.weapon_camp_dagger.level_3.description,"近战基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_camp_dagger.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害次数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage ticks [color=#7FD88F]+1[/color]"
+content.weapons.weapon_copper_lamp.display_name,赤铜炉灯,Copper Furnace Lamp
+content.weapons.weapon_copper_lamp.level_2.description,"元素基础伤害 [color=#7FD88F]+1[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Elemental Damage [color=#7FD88F]+1[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_copper_lamp.level_5.description,"元素基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+20[/color]","Base Elemental Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+20[/color]"
+content.weapons.weapon_copper_lamp.shop_description,最近的敌人持续喷射火流,Continuously sprays fire toward the nearest enemy.
+content.weapons.weapon_dash_blade.description,朝鼠标位置短冲，抵达后以自身为中心快速圆斩。突进距离受攻击距离加成，圆斩半径受伤害范围加成。,"Dashes a short distance toward the cursor, then slashes in a circle. Dash distance scales with Attack Range; slash radius scales with Damage Area."
+content.weapons.weapon_dash_blade.display_name,突进短刃,Dash Blade
+content.weapons.weapon_dash_blade.level_2.description,"近战基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+4[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_dash_blade.level_5.description,"近战基础伤害 [color=#7FD88F]+6[/color]
+圆斩伤害段数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+6[/color]
+Circular slash hits [color=#7FD88F]+1[/color]"
+content.weapons.weapon_dash_blade.shop_description,朝前方位移一小段，然后斩击周围敌人,"Dashes forward, then slashes nearby enemies."
+content.weapons.weapon_earth_hammer.display_name,裂地战锤,Earthsplitter Hammer
+content.weapons.weapon_earth_hammer.level_2.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_earth_hammer.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_earth_hammer.shop_description,向前砸出延伸的地裂。,"Smashes the ground, sending a fissure forward."
+content.weapons.weapon_hand_cannon.description,朝瞄准方向发射近距离散弹，同时向后滑退。,Fires a short-range spread toward your aim while sliding backward.
+content.weapons.weapon_hand_cannon.display_name,巨型手持火炮,Heavy Hand Cannon
+content.weapons.weapon_hand_cannon.level_2.description,"每发基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_hand_cannon.level_5.description,"每发基础伤害 [color=#7FD88F]+2[/color]
+散弹数量 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
+Pellets [color=#7FD88F]+1[/color]"
+content.weapons.weapon_hand_cannon.shop_description,向前喷射近距散弹，同时向后滑退,Fires a short-range blast ahead and slides backward.
+content.weapons.weapon_iron_grenade_cannon.display_name,铸铁榴弹炮,Cast-Iron Grenade Cannon
+content.weapons.weapon_iron_grenade_cannon.level_5.description,"基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+10[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+10[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_iron_grenade_cannon.shop_description,抛射榴弹炮，延迟后在落点爆炸,Lobs a grenade that explodes at its landing point after a delay.
+content.weapons.weapon_kunyu_ritual_tome.display_name,坤舆秘仪书,Tome of Earthly Rites
+content.weapons.weapon_kunyu_ritual_tome.level_2.description,"元素基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_kunyu_ritual_tome.level_4.description,"元素基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害次数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage ticks [color=#7FD88F]+1[/color]"
+content.weapons.weapon_meteor_flail.display_name,流星摆锤,Meteor Flail
+content.weapons.weapon_meteor_flail.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击次数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Attack count [color=#7FD88F]+1[/color]"
+content.weapons.weapon_mutant_tentacle.display_name,异化触手,Mutated Tentacle
+content.weapons.weapon_mutant_tentacle.level_2.description,"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+5[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+5[/color]"
+content.weapons.weapon_mutant_tentacle.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+5[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+5[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_nightwatch_spear.display_name,守夜长枪,Nightwatch Spear
+content.weapons.weapon_nightwatch_spear.level_2.description,"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击距离 [color=#7FD88F]+5[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Attack Range [color=#7FD88F]+5[/color]"
+content.weapons.weapon_nightwatch_spear.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击距离 [color=#7FD88F]+5[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Attack Range [color=#7FD88F]+5[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_plasma_cannon.display_name,电浆炮,Plasma Cannon
+content.weapons.weapon_plasma_cannon.level_2.description,"远程基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_plasma_cannon.level_5.description,"远程基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_plasma_cannon.shop_description,发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次,"Fires a slow lightning orb that repeatedly burns enemies touching it, up to 5 times."
+content.weapons.weapon_rentier_purse.display_name,食利者钱袋,Rentier's Purse
+content.weapons.weapon_star_tome.description,闪现到鼠标位置，震开落点周围敌人并造成伤害。起点留下印记，再次施放返回。,"Blinks to the cursor, damaging and knocking back nearby enemies. Leaves a mark at the origin; cast again to return."
+content.weapons.weapon_star_tome.display_name,移星秘典,Starshift Codex
+content.weapons.weapon_star_tome.level_2.description,"元素基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.2s[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.2s[/color]"
+content.weapons.weapon_star_tome.level_5.description,"元素基础伤害 [color=#7FD88F]+8[/color]
+震击伤害段数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+8[/color]
+Shockwave hits [color=#7FD88F]+1[/color]"
+content.weapons.weapon_star_tome.shop_description,闪现震开敌人，再次施放返回起点,Blinks and knocks enemies back. Cast again to return.
+content.weapons.weapon_void_blade.display_name,木质弓箭,Wooden Bow
+content.weapons.weapon_void_blade.level_2.description,额外投射物 [color=#7FD88F]+1[/color],Extra projectiles [color=#7FD88F]+1[/color]
+content.weapons.weapon_void_blade.level_3.description,"远程基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_void_blade.level_5.description,"远程基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+额外投射物 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Extra projectiles [color=#7FD88F]+1[/color]"
+content.weapons.weapon_void_blade.shop_description,朝瞄准方向射出木箭,Fires a wooden arrow toward your aim.
+enchantment.black_hole.name,黑洞,Black Hole
+enchantment.bounce.name,弹跳,Bounce
+enchantment.domain.name,领域,Domain
+enchantment.fire.name,火焰,Fire
+enchantment.freeze.name,冰冻,Freeze
+enchantment.lethality.name,致命,Lethality
+enchantment.lightning.name,落雷,Lightning
+enchantment.might.name,巨力,Might
+enchantment.multishot.name,多投,Multishot
+enchantment.param.area_damage_multiplier,范围伤害倍率,Area Damage Multiplier
+enchantment.param.burn_damage,燃烧伤害,Burn Damage
+enchantment.param.burn_duration,燃烧时间,Burn Duration
+enchantment.param.chain_count,连续传递,Chain Transfers
+enchantment.param.chain_range,连锁范围,Chain Range
+enchantment.param.explosion_area,爆炸范围,Blast Area
+enchantment.param.extra_hits,额外命中,Extra Hits
+enchantment.param.field_expansion,场地扩张,Field Expansion
+enchantment.param.fire_pool_duration,火焰池持续时间,Fire Pool Duration
+enchantment.param.freeze_duration,冻结时间,Freeze Duration
+enchantment.param.glow_strength,辉光强度,Glow Intensity
+enchantment.param.ignite_explosion,燃烧引爆,Ignite Detonation
+enchantment.param.knockback_duration,击退时间,Knockback Duration
+enchantment.param.knockback_strength,击退力度,Knockback Force
+enchantment.param.particle_count,粒子数量,Particle Count
+enchantment.param.particle_emission,粒子发射,Particle Emission
+enchantment.param.split_angle,分裂角度,Split Angle
+enchantment.param.split_count,分裂数量,Split Count
+enchantment.param.wet_duration,打湿时间,Wet Duration
+enchantment.param.wet_speed_multiplier,打湿移速倍率,Wet Speed Multiplier
+enchantment.param.wet_spread_count,打湿传播数量,Wet Spread Count
+enchantment.param.wet_spread_range,打湿传播范围,Wet Spread Range
+enchantment.pierce.name,穿透,Pierce
+enchantment.precision.name,会心,Precision
+enchantment.radiant_sword.name,光辉剑,Radiant Sword
+enchantment.shock.name,震荡,Shockwave
+enchantment.spark.name,电火花,Spark
+enchantment.split.name,分裂,Split
+enchantment.swiftness.name,迅捷,Haste
+enchantment.water.name,水,Water
+enchantment.wind_blade.name,风刃,Wind Blade
+enchantment.wisdom.name,智慧,Wisdom

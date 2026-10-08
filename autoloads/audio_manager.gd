@@ -24,7 +24,6 @@ const UI_SFX_PATHS: Dictionary = {
 	"modal_open": "res://assets/audio/sfx/ui/sfx_ui_modal_open.ogg",
 	"modal_close": "res://assets/audio/sfx/ui/sfx_ui_modal_close.ogg",
 	"confirm": "res://assets/audio/sfx/ui/sfx_ui_confirm.ogg",
-	"zone_select": "res://assets/audio/sfx/ui/sfx_ui_zone_select.ogg",
 	"reward_reveal": "res://assets/audio/sfx/ui/sfx_ui_reward_reveal.ogg",
 	"interest_reveal": "res://assets/audio/sfx/finance/sfx_interest_settle.ogg",
 	"purchase_success": "res://assets/audio/sfx/ui/sfx_ui_purchase_success.ogg",

@@ -50,9 +50,6 @@ func _run() -> void:
 		var weights := generator.get_shop_type_weights(next)
 		check(weights.new_weapon <= free.new_weapon, "owning more weapons never raises their reward weight")
 		free = weights
-		next.zone_target_pools = ["weapon", "relic"]
-		next.zone_tag_weight_bonus = 2000
-		check(generator.get_shop_type_weights(next).new_weapon == free.new_weapon, "zone streak cannot erase the ownership reduction")
 	var rarity := generator.get_shop_rarity_weights(0)
 	var pressure := {"new_weapon":1000000,"relic":1,"weapon_upgrade":1}
 	var valid_batches := true
@@ -68,9 +65,7 @@ func _run() -> void:
 	check(unique_shelves, "offer identities remain unique")
 	var empty: Dictionary = context.duplicate(true)
 	empty.candidate_pool = []
-	empty.zone_target_pools = ["weapon", "relic"]
-	empty.zone_tag_weight_bonus = 2000
-	check(generator.get_shop_type_weights(empty).values().all(func(w): return w == 0), "zone bias does not revive unavailable types")
+	check(generator.get_shop_type_weights(empty).values().all(func(w): return w == 0), "empty candidate pool disables every offer type")
 	var mythic := generator.get_shop_rarity_weights(200)
 	var strong := generator.roll_paid_offers(mythic, paid, candidates, 3, 999, [], "epic")
 	check(strong.size() == 3 and strong[0].offer_type == "relic" and strong[0].rarity == "epic", "strong refresh retains guaranteed epic relic")
@@ -107,8 +102,6 @@ func simulate(generator: RefCounted) -> Dictionary:
 				var candidates: Array = pools[key]
 				context.candidate_pool = candidates
 				context.offer_mode = mode
-				context.zone_target_pools = ["weapon", "relic"]
-				context.zone_tag_weight_bonus = wave * 20
 				var weights: Dictionary = generator.get_shop_type_weights(context)
 				var offers: Array = generator.roll_paid_offers(rarity, weights, candidates, 3, ticket) if mode == "shop" else generator.roll_shop_offers(rarity, weights, candidates, 3)
 				for offer in offers:

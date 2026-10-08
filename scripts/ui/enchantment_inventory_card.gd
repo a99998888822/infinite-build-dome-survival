@@ -57,7 +57,7 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	focus_mode = Control.FOCUS_ALL
 	_art.texture = FinanceUIStyle.item_icon(str(item_instance.get("icon", "")), "augmentations", str(item_instance.get("base_item_id", "")))
-	_caption.text = str(item_instance.get("display_name", "附魔"))
+	_caption.text = L10n.source(str(item_instance.get("display_name", "ui.common.enchantments")))
 	FinanceUIStyle.bank_button(self)
 
 

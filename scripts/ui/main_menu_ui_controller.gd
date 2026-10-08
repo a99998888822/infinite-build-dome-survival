@@ -24,6 +24,7 @@ var _music_value_label: Label = null
 var _sfx_value_label: Label = null
 var _display_settings_note: Label = null
 var _settings_tween: Tween = null
+var _language_option: OptionButton
 
 @onready var start_page: Control = get_node_or_null("StartPage")
 @onready var start_page_background: TextureRect = get_node_or_null("StartPage/Background")
@@ -56,6 +57,8 @@ var role_select_backdrop: Control = null
 func _ready() -> void:
 	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
+	_create_language_selector()
+	L10n.locale_changed.connect(_on_locale_changed)
 	_create_settings_ui()
 	get_viewport().size_changed.connect(_layout_settings)
 	_setup_menu_atmosphere()
@@ -315,7 +318,7 @@ func _confirm_character_selection_now() -> void:
 	var confirmed := _main_flow_coordinator.confirm_character_selection()
 	if not confirmed:
 		if character_error_label != null:
-			character_error_label.text = "进入战斗失败，请重试"
+			character_error_label.text = "error.main_menu.battle_start_failed"
 			character_error_label.visible = true
 		if character_confirm_button != null:
 			character_confirm_button.disabled = false
@@ -356,7 +359,7 @@ func _rebuild_character_list() -> void:
 	var first_id := character_view.rebuild_roster(records)
 	character_view.set_difficulty(_selected_difficulty_id)
 	if first_id.is_empty():
-		character_error_label.text = "没有可用角色"
+		character_error_label.text = "error.main_menu.no_characters"
 		character_error_label.visible = true
 		return
 	_on_character_selected(first_id)
@@ -421,7 +424,79 @@ func _on_result_back_pressed() -> void:
 
 func _apply_start_page_assets() -> void:
 	_ensure_texture(start_page_background, MAIN_MENU_BACKGROUND_TEXTURE_PATH)
-	_ensure_texture(title_art, MAIN_MENU_TITLE_TEXTURE_PATH)
+	if title_art != null:
+		var path := str(L10n.locale_definitions.get(L10n.locale, {}).get("title_texture", MAIN_MENU_TITLE_TEXTURE_PATH))
+		title_art.texture = _load_menu_texture(path)
+		title_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		title_art.visible = title_art.texture != null
+
+
+func _create_language_selector() -> void:
+	if start_page == null:
+		return
+	var row := HBoxContainer.new()
+	row.name = "LanguageSelector"
+	start_page.add_child(row)
+	row.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	row.offset_left = -268
+	row.offset_right = -20
+	row.offset_top = 18
+	row.offset_bottom = 56
+	row.add_theme_constant_override("separation", 8)
+	var label := Label.new()
+	label.text = "ui.main_menu.language"
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_color_override("font_color", Color("dcc795"))
+	row.add_child(label)
+	_language_option = OptionButton.new()
+	_language_option.name = "LanguageOption"
+	_language_option.custom_minimum_size = Vector2(160, 38)
+	_language_option.size_flags_horizontal = Control.SIZE_SHRINK_END
+	_language_option.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_language_option.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	for id in L10n.supported_locales:
+		_language_option.add_item(str(L10n.locale_definitions[id].native_name))
+	_language_option.add_theme_font_size_override("font_size", 16)
+	_language_option.add_theme_color_override("font_color", Color("e2d5b3"))
+	for state in ["normal", "hover", "pressed", "focus"]:
+		_language_option.add_theme_stylebox_override(state, _language_style(state in ["hover", "focus"]))
+	var popup := _language_option.get_popup()
+	popup.add_theme_stylebox_override("panel", _language_style(false))
+	popup.add_theme_stylebox_override("hover", _language_style(true))
+	popup.add_theme_color_override("font_color", Color("e2d5b3"))
+	popup.add_theme_color_override("font_hover_color", Color("fff0bd"))
+	popup.add_theme_font_size_override("font_size", 16)
+	popup.add_theme_constant_override("v_separation", 12)
+	popup.add_theme_constant_override("start_padding", 12)
+	popup.add_theme_constant_override("end_padding", 12)
+	popup.add_theme_constant_override("indent", 10)
+	for index in popup.item_count:
+		popup.set_item_indent(index, 1)
+	row.add_child(_language_option)
+	_language_option.select(L10n.supported_locales.find(L10n.locale))
+	_language_option.item_selected.connect(func(index: int): L10n.set_locale(L10n.supported_locales[index]))
+
+
+func _language_style(highlighted: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("27362b") if highlighted else Color("111d18")
+	style.border_color = Color("d6b476") if highlighted else Color("887647")
+	style.set_border_width_all(2)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 7
+	style.content_margin_bottom = 7
+	return style
+
+
+func _on_locale_changed() -> void:
+	_apply_start_page_assets()
+	if _language_option != null:
+		_language_option.select(L10n.supported_locales.find(L10n.locale))
+	if _settings_panel != null:
+		_settings_panel.sync_all()
 
 
 func _ensure_texture(texture_rect: TextureRect, fallback_path: String) -> void:

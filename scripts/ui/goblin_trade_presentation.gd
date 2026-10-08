@@ -56,7 +56,7 @@ func _ready() -> void:
 	_seal.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_seal.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(_seal)
-	_title = _label(_card, "交易", 18, FinanceUIStyle.GOLD)
+	_title = _label(_card, "ui.trade.action", 18, FinanceUIStyle.GOLD)
 	# A header must not acquire a wrapped minimum height before its first layout.
 	_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -74,8 +74,8 @@ func _ready() -> void:
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail = _label(_terms, "", 12, FinanceUIStyle.GREEN)
 	_detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_yes = _button("接受", true)
-	_no = _button("拒绝", false)
+	_yes = _button("ui.trade.accept", true)
+	_no = _button("ui.trade.decline", false)
 	_accents = Control.new()
 	_accents.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_accents.draw.connect(_draw_accents)
@@ -144,7 +144,7 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_yes.position = Vector2(padding + button_width + 10, h - button_height - padding)
 	_no.size = Vector2(button_width, button_height)
 	_yes.size = Vector2(button_width, button_height)
-	_yes.text = ("开战" if _compact else "接受并开战") if start_wave_on_accept else "接受"
+	_yes.text = ("ui.challenge.start_battle" if _compact else "ui.challenge.accept_and_start") if start_wave_on_accept else "ui.trade.accept"
 	if not accept_text.is_empty(): _yes.text = accept_text
 	_no.text = decline_text
 	_speech.size = Vector2(220, 58)
@@ -173,7 +173,7 @@ func present(speech: String, body: String, detail: String = "") -> void:
 	_chosen = false
 	_playing = true
 	show()
-	_title.text = "交易"
+	_title.text = "ui.trade.action"
 	_card.show()
 	_card.scale = Vector2.ONE
 	_card.modulate.a = 1.0
@@ -183,9 +183,9 @@ func present(speech: String, body: String, detail: String = "") -> void:
 
 func configure_challenge(wave: int, icon: String) -> void:
 	_challenge_header = true
-	_title.text = "第%d波·挑战" % wave
-	accept_text = "接受并开战"
-	decline_text = "正常开战"
+	_title.text = L10n.text("ui.challenge.wave_title") % wave
+	accept_text = L10n.text("ui.challenge.accept_and_start")
+	decline_text = L10n.text("ui.challenge.start_normal")
 	_seal.texture = FinanceUIStyle.item_icon(icon)
 	FinanceUIStyle.label(_body, 16, FinanceUIStyle.TEXT)
 
@@ -219,7 +219,7 @@ func _choose(accepted: bool) -> void:
 		choice_made.emit(false)
 		return
 	_chosen = true
-	_title.text = "已接受"
+	_title.text = "ui.challenge.accepted"
 	_yes.disabled = true
 	_no.disabled = true
 	choice_made.emit(accepted)

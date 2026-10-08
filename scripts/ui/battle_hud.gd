@@ -86,8 +86,6 @@ const DRAWER_AUTO_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
-	MainFlowCoordinator.STATE_ZONE_SELECT,
-	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
 ]
 const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_WAVE_CHALLENGE,
@@ -96,8 +94,6 @@ const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
-	MainFlowCoordinator.STATE_ZONE_SELECT,
-	MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT,
 ]
 const TOP_BAR_TIMER_HIDDEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_WAVE_CHALLENGE,
@@ -179,6 +175,7 @@ const STAT_VALUES_WITHOUT_PERCENT: Array[String] = [
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_on_locale_changed)
 	_ensure_feedback_ui()
 	_economy_log_layer = CanvasLayer.new()
 	_economy_log_layer.name = "EconomyLogLayer"
@@ -284,9 +281,9 @@ func _style_combat_hud() -> void:
 		button.button_up.connect(func() -> void: button.modulate = Color.WHITE)
 	encyclopedia_button.pressed.connect(_on_encyclopedia_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
-	encyclopedia_button.tooltip_text = "游戏百科"
-	settings_button.tooltip_text = "游戏设置"
-	drawer_toggle_button.tooltip_text = "展开 / 收起玩家属性"
+	encyclopedia_button.tooltip_text = "ui.hud.encyclopedia"
+	settings_button.tooltip_text = "ui.hud.settings"
+	drawer_toggle_button.tooltip_text = "ui.hud.stats.toggle_tooltip"
 
 
 func _on_encyclopedia_pressed() -> void:
@@ -365,9 +362,9 @@ func _update_drawer_scroll_hint() -> void:
 	if maximum <= 0.0:
 		_drawer_scroll_hint.text = ""
 	elif bar.value >= maximum - 1.0:
-		_drawer_scroll_hint.text = "已到底部 · 向上滚动"
+		_drawer_scroll_hint.text = "ui.hud.scroll.at_bottom"
 	else:
-		_drawer_scroll_hint.text = "拖动查看更多" if OS.has_feature("mobile") else "滚轮查看更多"
+		_drawer_scroll_hint.text = "ui.hud.scroll.drag" if OS.has_feature("mobile") else "ui.hud.scroll.wheel"
 
 
 func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_manager: WaveManager) -> void:
@@ -391,6 +388,13 @@ func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_mana
 
 
 func _process(_delta: float) -> void:
+	_refresh_all()
+
+
+func _on_locale_changed() -> void:
+	_last_gold = -1
+	_last_finance_principal = -1
+	_bond_effects_revision = -1
 	_refresh_all()
 
 
@@ -423,20 +427,20 @@ func _refresh_active_combat() -> void:
 		if battle != null and battle.active_controller != null and battle.active_controller.mouse_weapon_controls():
 			selected = battle.active_controller.current_weapon == weapon
 		combat_bar.update_slot(i, state.remaining, state.total, state.executing, selected)
-	var move_text := "WASD / 方向键移动" if CombatSettings.keyboard_movement else "右键移动 · S 停止"
+	var move_text := L10n.text("ui.hud.controls.keyboard_move") if CombatSettings.keyboard_movement else L10n.text("ui.hud.controls.mouse_move")
 	if CombatSettings.wheelchair_mode:
-		combat_hints.text = move_text + "  ·  轮椅模式：自动攻击  ·  Esc 暂停"
+		combat_hints.text = move_text + L10n.text("ui.hud.controls.auto_attack_suffix")
 		return
 	if CombatSettings.keyboard_movement:
-		combat_hints.text = move_text + "  ·  滚轮切换武器" + ("  ·  左键快捷施放" if CombatSettings.quick_cast else "  ·  左键瞄准，再次左键施放") + "  ·  右键 / Esc 取消瞄准"
+		combat_hints.text = move_text + L10n.text("ui.hud.controls.wheel_suffix") + (L10n.text("ui.hud.controls.quick_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.click_aim_suffix")) + L10n.text("ui.hud.controls.cancel_aim_suffix")
 		return
-	combat_hints.text = move_text + ("  ·  1—9 / 0 快捷施放" if CombatSettings.quick_cast else "  ·  1—9 / 0 选武器  ·  左键施放") + "  ·  右键 / Esc 取消瞄准"
+	combat_hints.text = move_text + (L10n.text("ui.hud.controls.number_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.number_select_suffix")) + L10n.text("ui.hud.controls.cancel_aim_suffix")
 
 
 func _ensure_feedback_ui() -> void:
 	_wave_toast = Label.new()
 	_wave_toast.name = "WaveEndToast"
-	_wave_toast.text = "\u767d\u5929\u5230\u4e86\uff0c\u6682\u65f6\u5b89\u5168\u4e86..."
+	_wave_toast.text = "ui.hud.dawn"
 	_wave_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_wave_toast.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	_wave_toast.position = Vector2(-180.0, -96.0)
@@ -550,7 +554,7 @@ func _on_gold_changed(current_gold: int) -> void:
 	var had_displayed_value := _last_gold >= 0
 	_sync_economy(true)
 	if had_displayed_value and delta != 0:
-		_show_resource_pop("%+d 金币" % delta, delta > 0)
+		_show_resource_pop(L10n.text("ui.hud.gold_change") % delta, delta > 0)
 
 
 func _on_finance_changed(_snapshot: Dictionary) -> void:
@@ -620,9 +624,9 @@ func _sync_economy(animate: bool) -> void:
 	var finance := _wave_manager.finance_system
 	var principal := maxi(finance.principal, 0) if finance != null else 0
 	if gold_label != null:
-		gold_label.text = "金币：%s" % _format_number(current_gold)
+		gold_label.text = L10n.text("ui.hud.gold") % _format_number(current_gold)
 	if finance_label != null:
-		finance_label.text = "本金：%s" % _format_number(principal)
+		finance_label.text = L10n.text("ui.hud.principal") % _format_number(principal)
 	if animate and _last_gold >= 0 and _last_gold != current_gold:
 		_pulse_control(gold_label, GOLD_PULSE_COLOR)
 	if animate and _last_finance_principal >= 0 and _last_finance_principal != principal:
@@ -639,24 +643,24 @@ func _refresh_wave_display() -> void:
 	cleanup_label.visible = _wave_manager.cleanup_active and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
 	if _wave_manager.cleanup_active:
 		time_left = _wave_manager.cleanup_time_left
-		cleanup_label.text = "剩余敌人：%d" % _wave_manager.get_living_enemy_count()
+		cleanup_label.text = L10n.text("ui.hud.enemies_remaining") % _wave_manager.get_living_enemy_count()
 	if wave_label != null:
-		wave_label.text = "第 %d 波" % wave_number
+		wave_label.text = L10n.text("ui.hud.wave") % wave_number
 		var challenge: Dictionary = _wave_manager.wave_challenges.active
 		if int(challenge.get("wave", -1)) == wave_number:
-			wave_label.text += " · 挑战"
-			wave_label.tooltip_text = str(challenge.get("body", ""))
+			wave_label.text += L10n.text("ui.hud.wave.challenge_suffix")
+			wave_label.tooltip_text = L10n.source(str(challenge.get("body", "")))
 		else:
 			wave_label.tooltip_text = ""
 		var adaptive: Dictionary = _wave_manager.enemy_pressure.wave_bonus
 		if int(adaptive.normal) > 0 or int(adaptive.elite) > 0:
-			wave_label.text += " · 强化"
-			wave_label.tooltip_text += "\n秒怪适应：本波小怪生命额外+%d%%，小Boss额外+%d%%。" % [adaptive.normal, adaptive.elite]
+			wave_label.text += L10n.text("ui.hud.wave.empowered_suffix")
+			wave_label.tooltip_text += L10n.text("ui.hud.wave.adaptation_tooltip") % [adaptive.normal, adaptive.elite]
 		if wave_panel != null:
 			wave_panel.tooltip_text = wave_label.tooltip_text.strip_edges()
 	if wave_timer_label != null:
 		if _wave_manager.cleanup_active:
-			wave_label.text = "最终清剿"
+			wave_label.text = "ui.hud.final_cleanup"
 		wave_timer_label.text = "%ds" % ceili(time_left)
 		if time_left > 0.0 and time_left <= 10.0:
 			wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.25, 0.22, 1.0))
@@ -1130,9 +1134,9 @@ func _create_stat_section(section_name: String, special: bool) -> VBoxContainer:
 
 func _get_damage_tooltip_text() -> String:
 	if _player == null:
-		return "护甲减免后，承受xx%的伤害"
+		return L10n.text("ui.hud.armor.placeholder")
 	var damage_taken_percent := _format_stat_value("damage_taken_percent", _player.get_stat("damage_taken_percent"))
-	return "护甲减免后，承受%s的伤害" % damage_taken_percent
+	return L10n.text("ui.hud.armor.tooltip") % damage_taken_percent
 
 
 
@@ -1142,14 +1146,13 @@ func _get_stat_tooltip_text(stat_id: String) -> String:
 			return _get_damage_tooltip_text()
 		"humanity":
 			var factors := HumanityEconomy.get_multipliers(_get_display_stat_value(stat_id))
-			return "购买价格 + %s%%，出售价格 - %s%%，利息收益 - %s%%" % [
+			return L10n.text("ui.hud.sanity.tooltip") % [
 				HumanityEconomy.number((float(factors.purchase) - 1.0) * 100.0),
 				HumanityEconomy.number((1.0 - float(factors.sale)) * 100.0),
 				HumanityEconomy.number((1.0 - float(factors.interest)) * 100.0),
 			]
 		"divinity":
-			var pressure := EnemyWavePressure.calculate_erosion(_get_display_stat_value(stat_id))
-			return "侵蚀越高，怪物越强；超过30、60后加速增长。\n按当前侵蚀：生命×%.2f、伤害×%.2f、护甲×%.2f\n每波开始锁定；同时影响小Boss数量。" % [pressure.max_hp_multiplier, pressure.damage_multiplier, pressure.armor_multiplier]
+			return L10n.text("ui.hud.corruption.tooltip")
 	return ""
 
 
@@ -1249,9 +1252,9 @@ func _get_display_stat_value(stat_id: String) -> float:
 func _get_stat_display_name(stat_id: String) -> String:
 	if stat_id == "humanity":
 		var eldritch_name_changed := _player != null and _player.get_stat("divinity") > ELDRITCH_NAMING_THRESHOLD
-		return "人性" if eldritch_name_changed else "理智值"
+		return L10n.text("stat.humanity.legacy_name") if eldritch_name_changed else L10n.text("ui.hud.sanity.name")
 	if stat_id == "divinity":
-		return "侵蚀度"
+		return L10n.text("stat.divinity.name")
 	return StatDefinitions.get_display_name(stat_id)
 
 

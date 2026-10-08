@@ -14,6 +14,7 @@ var manager: WaveManager
 
 
 func _ready() -> void:
+	L10n.set_locale("zh_CN", false)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): capture_dir = arg.trim_prefix("--capture-dir=")
 	_run.call_deferred()
@@ -266,6 +267,7 @@ func _live() -> void:
 
 func _capture_variants(ui: RunSettlementPanel) -> void:
 	var sample := {"kills": 1800, "gold": 2500, "waves": 8, "interest": 1600, "has_advice": true, "monsters": {"enemy_mutated_grub": 1782, "enemy_elite_rusher": 18}}
+	sample.monsters = {"enemy_mutated_grub": 1400, "enemy_echo_bat": 370, "enemy_elite_rusher": 18, "enemy_underworld_wolf": 12}
 	for victory in [false, true]:
 		for followed in [true, false]:
 			sample.run_id = str(victory) + str(followed)
@@ -290,6 +292,14 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 		await frames()
 		check(ui.get_global_rect().encloses(ui.back_button.get_global_rect()) and ui._portrait.visible and ui._scroll.get_global_rect().end.y <= ui.back_button.get_global_rect().position.y, "compact/portrait keeps goblin and navigation, scroll excludes footer " + str(bounds))
 		check(not ui._scroll.get_v_scroll_bar().visible and not ui._scroll.get_h_scroll_bar().visible, "settlement fits one screen without scrolling " + str(bounds))
+		for locale in ["en", "zh_CN"]:
+			L10n.set_locale(locale, false)
+			await frames()
+			for monster in ui._monster_nodes:
+				check(ui._monster_scroll.get_global_rect().encloses(monster.tile.get_global_rect()), "all enemy cards fit together " + locale + str(bounds))
+				check(monster.icon.texture.resource_path == str(RunSettlement.configuration().monster_portraits[monster.id]), "enemy uses its own formal portrait " + str(monster.id))
+				var name_width: float = monster.label.get_theme_font("font").get_string_size(monster.label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, monster.label.get_theme_font_size("font_size")).x
+				check(name_width <= monster.label.size.x, "complete enemy name fits " + locale + str(monster.id) + str(bounds))
 		check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._desk.get_global_rect()), "total and goblin desk fit above the footer " + str(bounds))
 		for row in ui._rows:
 			check(ui._scroll.get_global_rect().encloses(row.panel.get_global_rect()), "settlement row fits " + str(bounds))

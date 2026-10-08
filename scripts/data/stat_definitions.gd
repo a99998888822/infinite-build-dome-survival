@@ -263,7 +263,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 9999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少30个敌人的战斗未掉附魔，第二次结算补1个。"
+		"description": "影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。"
 	},
 	"currency_gain_percent": {
 		"display_name": "货币获取加成",
@@ -347,7 +347,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": DEFAULT_DIVINITY,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。"
+		"description": "影响怪物的数量和强度"
 	}
 }
 
@@ -393,15 +393,15 @@ static func is_integer_stat(stat_id: String) -> bool:
 
 
 static func get_display_name(stat_id: String) -> String:
-	return str(_get_stat_property(stat_id, "display_name", stat_id))
+	return L10n.source(_get_stat_property(stat_id, "display_name", stat_id))
 
 
 static func get_category(stat_id: String) -> String:
-	return str(_get_stat_property(stat_id, "category", "未知"))
+	return str(_get_stat_property(stat_id, "category", L10n.text("ui.common.unknown")))
 
 
 static func get_description(stat_id: String) -> String:
-	return str(_get_stat_property(stat_id, "description", ""))
+	return L10n.source(_get_stat_property(stat_id, "description", ""))
 
 
 static func get_all_stat_ids() -> Array[String]:

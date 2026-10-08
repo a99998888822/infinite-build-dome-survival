@@ -15,18 +15,18 @@ static func get_bond_id(record: Dictionary) -> String:
 
 static func get_bond_name(bond_id: String) -> String:
 	var bond_data := DataRegistry.get_record("bonds", bond_id)
-	return str(bond_data.get("name", bond_id))
+	return L10n.source(str(bond_data.get("name", bond_id)))
 
 
 static func build_item_bond_text(record: Dictionary, relic_system: RelicBondSystem = null) -> String:
 	var bond_id := get_bond_id(record)
 	if bond_id.is_empty():
 		return ""
-	var line := "[color=%s]\u7f81\u7eca[/color]\uff1a%s" % [BOND_LABEL_COLOR, get_bond_name(bond_id)]
+	var line := L10n.text("ui.synergy.heading") % [BOND_LABEL_COLOR, get_bond_name(bond_id)]
 	if relic_system != null:
 		var count := relic_system.get_bond_count(bond_id)
 		if count > 0:
-			line += "[color=%s]\uff08\u5f53\u524d %d \u5c42\uff09[/color]" % [ACTIVE_LAYER_COLOR, count]
+			line += L10n.text("ui.synergy.current_stacks") % [ACTIVE_LAYER_COLOR, count]
 	return line
 
 
@@ -35,7 +35,7 @@ static func build_bond_tooltip_text(bond_id: String, relic_system: RelicBondSyst
 	var count := relic_system.get_bond_count(bond_id)
 	var active_thresholds := relic_system.get_active_thresholds(bond_id)
 	var bond_data := DataRegistry.get_record("bonds", bond_id)
-	var lines: Array[String] = ["[color=%s]%s[/color]\uff08\u5f53\u524d %d\uff09" % [BOND_LABEL_COLOR, bond_name, count]]
+	var lines: Array[String] = [L10n.text("ui.synergy.current_value") % [BOND_LABEL_COLOR, bond_name, count]]
 	var thresholds: Variant = bond_data.get("thresholds", {})
 	if thresholds is Dictionary:
 		var keys: Array = thresholds.keys()
@@ -55,7 +55,7 @@ static func build_bond_reference_text(bond_data: Dictionary) -> String:
 	var keys := thresholds.keys()
 	keys.sort_custom(func(a, b): return int(str(a)) < int(str(b)))
 	for key in keys:
-		lines.append("%d 件：%s" % [int(str(key)), _build_threshold_effects_text(thresholds[key])])
+		lines.append(L10n.text("ui.synergy.tier") % [int(str(key)), _build_threshold_effects_text(thresholds[key])])
 	return "\n\n".join(lines)
 
 
@@ -83,8 +83,8 @@ static func _build_single_effect_text(effect: Dictionary) -> String:
 	if effect_type == "tagged_damage_percent":
 		var target_text := _format_target_tags(effect.get("target_tags", []))
 		var value := absf(float(effect.get("value", 0.0)))
-		return "\u5bf9 %s \u4f24\u5bb3+%s" % [target_text, _format_percent(value)]
-	return "\u7279\u6b8a\u6548\u679c"
+		return L10n.text("ui.synergy.damage_against") % [target_text, _format_percent(value)]
+	return L10n.text("ui.synergy.special_effect")
 
 
 static func _format_effect_value(stat_id: String, value: float) -> String:
@@ -103,5 +103,5 @@ static func _format_target_tags(tags: Variant) -> String:
 	var names: Array[String] = []
 	if tags is Array:
 		for tag in tags:
-			names.append(str(SPECIAL_TAG_NAMES.get(str(tag), str(tag))))
+			names.append(L10n.source(str(SPECIAL_TAG_NAMES.get(str(tag), str(tag)))))
 	return "\u3001".join(names)

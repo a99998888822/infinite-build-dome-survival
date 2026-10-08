@@ -52,8 +52,8 @@ func configure_slot(index: int, item: Dictionary) -> void:
 	drag_enabled = not item.is_empty()
 	_art.texture = FinanceUIStyle.item_icon(str(item.get("icon", "")), "augmentations", str(item.get("base_item_id", "")))
 	_empty_mark.visible = not drag_enabled
-	_caption.text = str(item.get("display_name", "空槽"))
-	tooltip_text = "" if drag_enabled else "选中背包附魔后点击，或拖入。新附魔接在已有附魔后。"
+	_caption.text = L10n.source(str(item.get("display_name", "ui.enchantment.empty_slot")))
+	tooltip_text = "" if drag_enabled else L10n.text("ui.enchantment.empty_slot_tooltip")
 	set_selected(false)
 
 

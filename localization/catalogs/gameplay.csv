@@ -1,0 +1,132 @@
+keys,zh_CN,en
+combat.tag.area,范围,Area
+combat.tag.cone,扇形,Cone
+combat.tag.melee,近战,Melee
+combat.tag.mobility,位移,Mobility
+combat.tag.mystic,神秘,Mystic
+combat.tag.ranged,远程,Ranged
+combat.tag.ritual,法阵,Ritual
+difficulty.hard.enemy_count,怪物更多,More enemies
+difficulty.hard.enemy_stats,怪物属性加强20%,Enemy stats increased by 20%
+difficulty.nightmare.enemy_count,怪物密集 · 精英更频繁,Dense waves · More frequent elites
+difficulty.nightmare.enemy_stats,怪物属性加强30%,Enemy stats increased by 30%
+difficulty.normal.description,标准难度,Standard difficulty
+difficulty.normal.summary,基础怪物属性 · 常规数量,Base enemy stats · Normal numbers
+economy.price.cost_breakdown,"
+折扣与理智修正前：基础 %d + 波次 %d + 购买次数 %d + 本波收入 %d。","
+Before discounts and Sanity: base %d + wave %d + purchases %d + wave income %d."
+economy.price.purchase_tooltip,"购买价格：%s 金币
+括号为不计理智的价格与理智价差。
+%s","Purchase price: %s gold
+Brackets show the price before Sanity and the Sanity adjustment.
+%s"
+economy.price.sale_tooltip,"出售收益：%s 金币
+原回收价 %d，理智损耗 %d。","Sale proceeds: %s gold
+Base resale value %d; Sanity loss %d."
+economy.price.wave_income_rules,"
+本波战斗金币 %d；每 200 金币附加 1，最多为基础、波次和购买次数合计的 10%%。","
+Combat gold this wave: %d. Each 200 gold adds 1, capped at 10%% of the combined base, wave and purchase costs."
+economy.sanity.rules,"
+理智达到100时按原有价格交易、获得全额利息；低于0后代价继续增加。
+购买修正包含武器、升级和遗物；出售修正包含武器和附魔。","
+At 100 Sanity, trade at normal prices and receive full interest. Costs keep rising below 0.
+Purchase adjustments apply to weapons, upgrades and relics; sale adjustments apply to weapons and enchantments."
+economy.sanity.summary,理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,"Sanity %s: purchase prices +%s%%, sale proceeds −%s%%, interest income −%s%%."
+item.effect.buff,增益,Buff
+item.effect.element,元素,Elemental
+item.effect.spell,法术,Spell
+item.type.enchantment_scroll,附魔卷轴,Enchantment Scroll
+item.type.special,特殊物品,Special Item
+item.type.warlock_scroll,术士卷轴,Warlock Scroll
+rarity.common,普通,Common
+rarity.epic,史诗,Epic
+rarity.legendary,传说,Legendary
+rarity.mythic,神话,Mythic
+rarity.rare,稀有,Rare
+rarity.uncommon,优秀,Uncommon
+stat.armor.description,通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,Converted to damage taken through an armor curve. Positive armor reduces damage; negative armor increases it.
+stat.armor.name,护甲,Armor
+stat.attack_range.description,影响武器的攻击距离与索敌距离。,Affects weapon reach and targeting range.
+stat.attack_range.name,攻击距离,Attack Range
+stat.attack_speed.description,正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,"Positive attack speed: cooldown multiplier = 1 / (1 + log2(1 + attack_speed / 100) / 3). At 100, cooldown is 75%; at 300, 60%. Negative attack speed uses 1 / (1 + attack_speed / 300). Does not speed up attack animations or spray ticks."
+stat.attack_speed.name,攻击速度,Attack Speed
+stat.category.area_control,范围与控制,Area & Control
+stat.category.attack,攻击,Attack
+stat.category.build,构筑,Build
+stat.category.critical,暴击,Critical
+stat.category.loot_growth,掉落与成长,Loot & Growth
+stat.category.mind,精神/外神,Mind / Eldritch
+stat.category.movement,移动,Movement
+stat.category.projectiles,投射物,Projectiles
+stat.category.survival,生存,Survival
+stat.category.waves,波次,Waves
+stat.control_strength.description,影响减速、定身等控制效果强度。,Affects control effects such as slows and roots.
+stat.control_strength.name,控制强度,Control Strength
+stat.crit_chance.description,攻击造成暴击的概率。,Chance for an attack to critically hit.
+stat.crit_chance.name,暴击率,Crit Chance
+stat.crit_damage.description,暴击时的伤害百分比，150表示造成150%伤害。,Damage percentage on a critical hit. 150 means 150% damage.
+stat.crit_damage.name,暴击伤害,Crit Damage
+stat.currency_bonus.description,局内或结算货币获取百分比加成。,Percentage bonus to currency earned during a run or at settlement.
+stat.currency_bonus.name,货币获取加成,Gold Gain
+stat.damage.name,伤害,Damage
+stat.damage_area.description,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.
+stat.damage_area.name,伤害范围,Damage Area
+stat.damage_bonus.description,通用伤害百分比加成，影响近战、远程和元素武器伤害。,"General percentage damage bonus affecting melee, ranged and elemental weapons."
+stat.damage_bonus.name,伤害加成,Damage Bonus
+stat.damage_taken.description,最终承受伤害百分比，整数100表示承受100%伤害，89表示承受89%伤害。,Final percentage of incoming damage taken. 100 means 100% damage; 89 means 89%.
+stat.damage_taken.name,受到伤害百分比,Damage Taken
+stat.divinity.description,影响怪物的数量和强度,Affects the number and strength of enemies.
+stat.divinity.name,侵蚀度,Corruption
+stat.divinity.short_name,侵蚀,Corruption
+stat.drop_rate.description,局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。,Bonus to drop chances. Enchantment drops have diminishing returns: positive bonuses increase the rate by up to 40%; negative bonuses reduce it by up to 75%. Other drops use percentage scaling.
+stat.drop_rate.name,掉落率加成,Drop Rate
+stat.elemental_damage.description,元素武器、元素附魔及元素反应造成的固定伤害加成。,"Flat damage bonus for elemental weapons, enchantments and reactions."
+stat.elemental_damage.name,元素伤害,Elemental Damage
+stat.enemy_count.description,每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,Percentage increase in enemies per spawn group. 20 means 20% more.
+stat.enemy_count.name,怪物数量增幅,Enemy Count Bonus
+stat.experience_bonus.description,经验获取百分比加成。,Percentage bonus to experience gained.
+stat.experience_bonus.name,经验获取加成,XP Gain
+stat.gold.name,金币,Gold
+stat.health.short_name,生命,HP
+stat.health_pickup_bonus.description,血包拾取后的固定生命恢复量加成，可为负，不影响血包掉落概率。,Flat bonus to health restored by pickups. Can be negative; does not affect their drop chance.
+stat.health_pickup_bonus.name,血包恢复量加成,Health Pickup Bonus
+stat.health_regen.description,每秒恢复的生命值；负值会抵扣正向回血，战斗结算时以 0 为下限（不会掉血），面板仍显示真实数值。,"Health restored each second. Negative values offset positive regeneration; the combat result is floored at 0, so this cannot drain HP. The panel shows the actual stat."
+stat.health_regen.name,每秒回血,HP Regen/s
+stat.humanity.description,理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,"Sanity starts at 100 and has no upper or lower bound. Below 100, purchases cost more and sale proceeds and interest decrease. At 100, prices and interest are normal."
+stat.humanity.legacy_name,人性,Sanity
+stat.humanity.name,理智,Sanity
+stat.interest_rate.description,当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。,"Current effective interest rate, starting at 5. Supports fractional growth. Nominal interest is ceil(principal × rate / 100), then adjusted by Sanity. Interest goes to carried gold, not automatically to principal."
+stat.interest_rate.name,利率,Interest Rate
+stat.life_on_kill.description,每次击杀敌人后恢复的固定生命值。,Flat health restored per enemy killed.
+stat.life_on_kill.name,击杀回血,HP on Kill
+stat.load.short_name,负载,Load
+stat.load_capacity.description,玩家可装备武器的总负载上限。,Maximum combined load of equipped weapons.
+stat.load_capacity.name,负载上限,Load Capacity
+stat.luck.description,影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。,"Affects rare relics and upgrade offers. Enchantment drop bonuses diminish with Luck, up to a relative +60%. Each enchantment drop multiplies further normal-enemy chances that wave by 45%; the cap is 3 in waves 1–5, then 4. After two completed battles with at least 8 kills each and no enchantment drops, the second settlement grants one."
+stat.luck.name,幸运,Luck
+stat.max_health.description,角色或敌人的最大生命值。,Maximum health of a character or enemy.
+stat.max_health.name,最大生命,Max HP
+stat.melee_damage.description,近战伤害固定数值加成。,Flat bonus to melee damage.
+stat.melee_damage.name,近战伤害,Melee Damage
+stat.move_speed.description,实体移动速度。,Movement speed.
+stat.move_speed.name,移动速度,Move Speed
+stat.move_speed.short_name,移速,Speed
+stat.pickup_range.description,自动吸附经验球、奖励物的半径。,Radius for automatically collecting XP and reward pickups.
+stat.pickup_range.name,拾取范围,Pickup Range
+stat.principal.description,每波开始前可存入或取出的局内金币本金。,Run gold deposited as principal. May be deposited or withdrawn before each wave.
+stat.principal.name,理财,Bank
+stat.principal.short_name,本金,Principal
+stat.projectile_count.description,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
+stat.projectile_count.name,投射物数量,Projectile Count
+stat.ranged_damage.description,远程伤害固定数值加成。,Flat bonus to ranged damage.
+stat.ranged_damage.name,远程伤害,Ranged Damage
+stat.revive_count.description,本局额外复活次数；复活后消耗 1 次。,Additional revives this run. One charge is consumed per revival.
+stat.revive_count.name,额外复活,Extra Revives
+stat.shield.description,优先承受伤害的护盾值。,Absorbs damage before health.
+stat.shield.name,护盾,Shield
+stat.shield_regen.description,每秒恢复护盾，优先补满已有上限；溢出部分使当前护盾与上限一起增长。,"Restores shield each second, filling existing capacity first. Excess restoration increases both current shield and capacity."
+stat.shield_regen.name,每秒护盾,Shield Regen/s
+stat.shop_choices.description,共享奖励和局内商店的候选数量加成，无上限；购买货架至少 3 件，升级奖励沿用原有数量规则。,"Additional reward and shop choices, with no upper limit. The paid shelf has at least 3 offers; level-up rewards follow their own offer rules."
+stat.shop_choices.name,商店选择数量加成,Extra Shop Offers
+stat.shop_discount.description,局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。,Shop price discount. 10 means prices are 10% lower; negative values raise prices. Multiple sources multiply sequentially.
+stat.shop_discount.name,商店折扣,Shop Discount

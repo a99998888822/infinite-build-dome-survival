@@ -12,6 +12,7 @@ var live_completed := false
 
 
 func _ready() -> void:
+	L10n.set_locale("zh_CN", false)
 	WindowSettings._startup_applied = true
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): capture_dir=arg.trim_prefix("--capture-dir=")

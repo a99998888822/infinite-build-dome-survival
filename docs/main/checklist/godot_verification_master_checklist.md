@@ -8,7 +8,7 @@
 
 1. 先运行 `scenes/core/bootstrap.tscn`，确认所有模块自检通过。  
 2. 再运行 `scenes/core/game_root.tscn`，确认主场景树、Autoload、主流程协调器与 UI 根节点接通。  
-3. 然后按模块逐个检查 scene、UI、营地、战斗、区域、存档等手工搭建项。  
+3. 然后按模块逐个检查 scene、UI、营地、战斗、存档等手工搭建项。
 4. 最后补齐缺失素材后，再回头复测对应模块。
 
 ### 当前验收进度
@@ -61,8 +61,6 @@
 - `weapon checks`  
 - `enemy wave checks`  
 - `camp meta progression checks`  
-- `zone streak fortune checks`  
-- `zone ui checks`  
 - `audio checks`  
 - `ui flow checks`  
 - `main flow checks`
@@ -89,7 +87,7 @@
 2. 确认这是正式主场景入口。  
 3. 查看场景树里是否有这些节点：`CoreRoot`、`WorldRoot`、`UiRoot`、`DebugRoot`。  
 4. 观察 `MainFlowCoordinator` 是否挂在 `CoreRoot` 下。  
-5. 观察 `ZoneUIController` 是否挂在 `UiRoot` 下。
+5. 观察银行、商店和主菜单的 UI 控制器是否挂在 `UiRoot` 下。
 
 ### 你应该看到什么
 
@@ -102,7 +100,6 @@
 
 - `GameRoot` 能正常实例化。  
 - `MainFlowCoordinator` 存在。  
-- `ZoneUIController` 存在。  
 - 没有运行时报错。
 
 ## 5. 各模块逐项验收
@@ -241,11 +238,11 @@
 
 ### 5.8 UI 交互
 
-关注场景：`scenes/ui/zones/zone_ui_controller.tscn`、`scenes/ui/zones/zone_select_popup.tscn`、`scenes/ui/zones/zone_harvest_result_popup.tscn`、`scenes/ui/zones/zone_select_card.tscn`、`scenes/ui/rewards/reward_option.tscn`。
+关注场景：`scenes/ui/finance/finance_popup.tscn`、`scenes/ui/rewards/reward_option.tscn`。
 
 你要在 Godot 里做什么：
 1. 确认 `UiRoot` 下的分层存在。  
-2. 确认区域选择弹窗、收割结果弹窗、奖励/商店候选卡都能实例化。  
+2. 确认银行准备弹窗、奖励/商店候选卡都能实例化。
 3. 观察按钮文字、稀有度边框、卡片布局。  
 4. 后续再补 HUD、失败弹窗、营地详情面板。
 
@@ -256,7 +253,7 @@
 - 共享奖励页和商店页共享同一套候选项。
 
 通过标准：
-- `zone ui checks` 和 `ui flow checks` 通过。  
+- `ui flow checks` 通过。
 - 运行中能看到正确的弹窗层级。
 
 ### 5.9 音频与氛围
@@ -291,7 +288,7 @@
 
 你要在 Godot 里做什么：
 1. 运行主流程，确认状态机能从启动页进入角色选择。  
-2. 确认第一波开始、战斗中升级、波次结束、经验吸收、补升级、利息、商店、理财、区域选择的顺序正确。  
+2. 确认第一波开始、战斗中升级、波次结束、经验吸收、补升级、利息、银行准备、下一波的顺序正确。
 3. 确认 `battle_result` 只是简单胜负页。  
 4. 确认战斗、营地、区服流程能切换。
 
@@ -305,29 +302,6 @@
 - 场景之间切换正常。  
 - 没有状态卡死。
 
-### 5.12 区域驻守与福缘
-
-关注场景：`scenes/ui/zones/zone_ui_controller.tscn` 及 `ZoneProgression`。
-
-你要确认：
-- 第 1 波不选区。  
-- 第 2 波开始前第一次选区。  
-- 理财后进入下一波前进行区域选择。  
-- 连驻层数能持续累积。  
-- 切区会触发收割。  
-- 福缘、区域压力、商店偏向能联动。
-
-通过标准：
-- `zone streak fortune checks` 通过。  
-- 区域切换和收割结果能弹出。  
-- 连驻和 debuff 不会乱清。
-
-
-
-你要确认：
-
-通过标准：
-
 ## 6. 手工场景搭建总表
 
 这部分来自 `docs/main/godot_manual_scene_setup_checklist.md`，现在统一并入总验收文档。
@@ -337,7 +311,6 @@
 - `scenes/core/bootstrap.tscn`：只做自检，不摆美术。  
 - `scenes/core/game_root.tscn`：主根场景。  
 - `scenes/core/main_flow_coordinator.tscn`：主流程协调器。  
-- `scenes/ui/zones/zone_ui_controller.tscn`：区域 UI 根。
 
 ### 6.2 必手工
 
@@ -348,8 +321,6 @@
 - `scenes/waves/wave_manager.tscn`：确认敌人根和掉落根都在。
 - `scenes/camp/camp_root.tscn`：搭背景、树木、石头、花草、篝火。  
 - `scenes/camp/camp_building_slot.tscn`：确认废墟 / 建筑切换。  
-- `scenes/ui/zones/zone_select_popup.tscn`：区域选择页。  
-- `scenes/ui/zones/zone_harvest_result_popup.tscn`：收割结果页。  
 - `scenes/ui/rewards/reward_option.tscn`：奖励 / 商店候选卡。
 
 ## 7. 最后判定
@@ -830,7 +801,7 @@ res://
 ## 1. 当前状态
 
 - [x] 已确认本模块由场景脚本承载，不做全局 Autoload。
-- [x] 已确认第一波直接开战；第 2 波起波次结束顺序固定为：吸收经验 -> 补共享奖励/商店页 -> 利息 -> 商店 -> 理财 -> 区域选择。
+- [x] 已确认第一波直接开战；第 2 波起波次结束顺序固定为：吸收经验 -> 补共享奖励/商店页 -> 利息 -> 银行准备 -> 挑战（按条件） -> 下一波。
 - [x] 已确认 `battle_result` 只做简单胜负页。
 - [x] 已确认未来 Boss 波、事件波继续复用同一套状态机。
 - [x] 已完成 `MainFlowCoordinator` 场景脚本与对应场景文件。
@@ -842,11 +813,11 @@ res://
 - [x] 新增 `scripts/core/main_flow_coordinator.gd`。
 - [x] 新增 `scenes/core/main_flow_coordinator.tscn`。
 - [x] 新增 `scripts/core/main_flow_coordinator.gd.uid`。
-- [x] 主流程状态机已包含启动页、角色选择、战斗准备、波次战斗、共享奖励/商店页、波次收尾、利息结算、商店、理财、区域选择、福缘收割结果、战斗结果、营地入口。
+- [x] 主流程状态机已包含启动页、角色选择、战斗准备、波次战斗、共享奖励/商店页、波次收尾、利息结算、商店、理财、战斗结果、营地入口。
 - [x] 支持绑定 `PlayerController`、`WeaponLoadout`、`WaveManager`。
 - [x] 支持角色确认后初始化初始武器。
 - [x] 支持战斗中共享奖励/商店页与波次结束后的共享奖励/商店补弹窗。
-- [x] 支持第一波跳过理财直接开战；第 2 波起支持波次结束后顺序推进到利息、商店、理财、区域选择和下一波准备。
+- [x] 支持第一波跳过理财直接开战；第 2 波起支持波次结束后顺序推进到利息、商店、理财和下一波准备。
 - [x] 支持死亡后进入简单战斗结果页。
 - [x] 支持营地流程入口切换。
 - [x] 在 `bootstrap.gd` 中加入主流程自测。
@@ -856,7 +827,7 @@ res://
 - [ ] 在具备 Godot 的电脑上运行项目，确认 `bootstrap` 控制台输出包含 `[Bootstrap] main flow checks`。
 - [ ] 确认主流程自测各项检查均通过。
 - [ ] 确认战斗中升级会进入共享奖励/商店页。
-- [ ] 确认第一波直接开战，且第 2 波起波次结束后顺序能依次推进到共享奖励/商店、利息、商店、理财、区域选择。
+- [ ] 确认第一波直接开战，且第 2 波起波次结束后顺序能依次推进到共享奖励/商店、利息、商店、理财。
 - [ ] 确认简单战斗结果页可返回启动页。
 - [ ] 确认营地入口状态可正常切换。
 - [ ] 确认后续 Boss 波与事件波可以复用同一套状态机。
@@ -864,68 +835,9 @@ res://
 ## 4. 结项标准
 
 - [ ] 启动页、战斗流、营地流三者可按设计稳定切换。
-- [ ] 共享奖励/商店页、商店页、理财页、区域选择页、结果页的顺序不乱。
+- [ ] 共享奖励/商店页、商店页、理财页、结果页的顺序不乱。
 - [ ] 战斗结束后再做结果处理，不在战斗过程中正式落盘。
 - [ ] 相关自测输出稳定无误。
-
-
-### 13-zone_streak_fortune_implementation_checklist.md
-# 13-区域驻守与福缘收割模块实施清单
-
-> 当前已完成核心代码接入；本机暂无 Godot 可执行环境，启动验证留给具备 Godot 的电脑执行。
-
-> 该模块先暂缓收口，后续回到具备 Godot 的电脑时再继续按待办逐条验证。
-
-本清单对应 `docs/main/13-zone_streak_fortune_design.md`。本模块采用 `ZoneProgression` 全局 Autoload + `MainFlowCoordinator` 主流程编排的组合方式，负责区域选择、连驻、福缘积累、切区收割、区域压力与商店偏向。
-
-## 1. 当前完成项
-
-- [x] 新增 `data_config/zones.json`，并加入 3 个 MVP 区域。
-- [x] 新增 `autoloads/zone_progression.gd`，记录当前区域、连驻层数、福缘储备与收割结果。
-- [x] 将 `zones` 表接入 `DataRegistry` 加载与 `DataValidator` 校验。
-- [x] 将区域压力接入敌人生成与玩家临时状态加成。
-- [x] 将区域偏向接入商店候选池与商店权重。
-- [x] 统一输出区域运行时上下文与收割上下文，供后续模块复用。
-- [x] 将区域选择、收割结果与战斗主流程接线到 `MainFlowCoordinator`。
-- [x] 将 `ZoneProgression` 注册为 Autoload，并纳入启动自检。
-- [x] 在 `bootstrap.gd` 中补充区域相关自测。
-
-## 2. 代码侧待确认
-
-- [ ] 在 Godot 电脑上启动项目，确认控制台输出包含 `zone streak fortune checks`。
-- [ ] 确认第一次选区发生在第 1 波结束后、第 2 波开始前。
-- [ ] 确认连续选择同一区域时，玩家 debuff 会正确叠加。
-- [ ] 确认切换区域时，旧区域 debuff 会被清理，收割结果会弹出。
-- [ ] 确认区域偏向会影响商店候选池与刷新权重。
-- [ ] 确认死亡/通关时区域状态会按单局态重置。
-
-## 3. 验收标准
-
-- [ ] `DataRegistry` 启动时能输出 `zones` 表数量。
-- [ ] `bootstrap` 自检通过，且区域自测项全部通过。
-- [ ] `MainFlowCoordinator` 第一波直接开战；第 2 波起波次结束顺序保持为：吸收经验 -> 补升级 -> 利息 -> 商店 -> 理财 -> 区域选择。
-- [ ] `ZoneProgression` 在换区时正确生成收割 payload，并在确认后清空待处理状态。
-- [ ] 区域压力与商店偏向只作为运行时上下文，不直接改静态配置表。
-
-## 4. UI / 场景骨架待补
-
-- [x] 在 `UiRoot` 下补齐 `HUDLayer`、`PopupLayer`、`FadeLayer` 分层。
-- [x] 创建 `zone_select_popup.tscn`，用于显示 3 个区域卡和确认按钮。
-- [x] 创建区域卡组件 `ZoneSelectCard`，优先复用 `reward_option.tscn` 的卡片风格。
-- [x] 创建 `zone_harvest_result_popup.tscn`，用于展示换区后的收割结果。
-- [x] 创建轻量 `zone_ui_controller.gd`，监听 `MainFlowCoordinator.modal_requested / modal_closed`。
-- [x] 已移除 `ZoneUIController` 内联区域调试面板，正式流程只保留区域选择与收割结果 UI。
-- [x] UI 先用 `PanelContainer + StyleBoxFlat` 占位，不新增区域专属美术。
-
-## 5. 后续扩展
-
-- [ ] 后续新增区域时，只补 `zones.json` 与对应运行时压力配置。
-- [ ] 后续新增区域事件波、Boss 波时，复用现有状态机与区域上下文。
-- [ ] 如果后续要做更复杂的区域表现，再补专属 UI 与美术素材。
-
-
-
-
 
 
 ### 14-engineering_foundation_implementation_checklist.md
@@ -1461,7 +1373,6 @@ res://
 ## 3. 后续非阻塞项
 
 - [ ] 精英怪和 Boss 的真实敌人配置接入后，复测对应掉落表。
-- [ ] 区域福缘收割后，将 `gold_gain`、额外候选和定向倾向转为更明确的奖励表现。
 - [ ] 若后续加入材料、钥匙、事件道具，沿 `DropRewardSystem` 增加新 `type`。
 - [ ] 若需要结算页统计，扩展 `RewardSnapshot` 的击杀、掉落和构筑字段。
 

@@ -106,14 +106,14 @@ func _ready() -> void:
 
 func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	offer = value
-	var title := str(offer.get("display_name", ""))
+	var title := L10n.record_text(offer, "display_name")
 	_name_label.text = title
-	_kind_label.text = str({"new_weapon": "武器", "relic": "遗物", "weapon_upgrade": "武器升级"}.get(offer.get("offer_type", ""), ""))
-	_description.text = str(offer.get("description", ""))
+	_kind_label.text = L10n.source(str({"new_weapon": "ui.common.weapons", "relic": "ui.common.relic", "weapon_upgrade": "ui.shop.weapon_upgrade"}.get(offer.get("offer_type", ""), "")))
+	_description.text = L10n.source(str(offer.get("description", "")))
 	var new_weapon := str(offer.get("offer_type", "")) == "new_weapon"
 	if new_weapon:
 		var weapon := DataRegistry.get_record("weapons", str(offer.get("target_id", "")))
-		_description.text = str(weapon.get("shop_description", weapon.get("description", offer.get("description", ""))))
+		_description.text = L10n.source(str(weapon.get("shop_description", weapon.get("description", offer.get("description", "")))))
 	# Keep item details on the title, so an empty purchase tooltip cannot
 	# inherit the card's text through Godot's parent tooltip lookup.
 	tooltip_text = ""
@@ -125,7 +125,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"
 	_rarity_glow.modulate = rarity_color
-	var rarity_label := str(ItemInventoryCard.RARITY_LABELS.get(rarity, "普通"))
+	var rarity_label := L10n.source(str(ItemInventoryCard.RARITY_LABELS.get(rarity, L10n.text("rarity.common"))))
 	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + " · " + rarity_label
 	_kind_label.add_theme_color_override("font_color", rarity_color)
 	var kind := "card_" + rarity if rarity in ["uncommon", "rare", "epic", "legendary"] else "card"
@@ -133,12 +133,12 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	panel.content_margin_top = 10
 	add_theme_stylebox_override("panel", panel)
 	var cost := int(offer.get("shop_cost", 0))
-	_price.text = "%s 金币" % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))
+	_price.text = L10n.text("ui.shop.gold_price") % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))
 	_price.mouse_filter = Control.MOUSE_FILTER_PASS
 	_price.tooltip_text = HumanityEconomy.purchase_tooltip(offer)
 	buy_button.disabled = not unavailable.is_empty()
-	buy_button.text = "购买" if unavailable.is_empty() else ("已购买" if unavailable == "already_purchased" else "不可购买")
+	buy_button.text = "ui.common.buy" if unavailable.is_empty() else ("error.bank.already_purchased" if unavailable == "already_purchased" else "不可购买")
 	buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":
-		buy_button.text = "差 %d" % maxi(0, cost - gold)
+		buy_button.text = L10n.text("ui.shop.gold_shortfall") % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE

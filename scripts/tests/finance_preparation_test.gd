@@ -16,6 +16,7 @@ var popup: FinancePopup
 
 
 func _ready() -> void:
+	L10n.set_locale("zh_CN", false)
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-dir="): capture_dir = argument.trim_prefix("--capture-dir=")
 	_run.call_deferred()
@@ -84,7 +85,7 @@ func _run() -> void:
 		popup.workbench.refresh()
 		await frames()
 		var empty := popup.workbench._inventory.get_node_or_null("EmptyEnchantmentLabel") as Label
-		check(empty != null and empty.text == "暂无附魔" and empty.get_line_count() == 1, "empty enchantment text remains horizontal at " + str(viewport))
+		check(empty != null and empty.tr(empty.text) == "暂无附魔" and empty.get_line_count() == 1, "empty enchantment text remains horizontal at " + str(viewport))
 		check(empty != null and empty.get_theme_color("font_color") == Color("8b9089"), "empty enchantment text is muted gray")
 	root.size = Vector2i(1152, 648)
 	root.content_scale_size = Vector2i(1152, 648)

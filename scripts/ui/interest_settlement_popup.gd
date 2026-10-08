@@ -152,11 +152,11 @@ func _ensure_dynamic_content() -> void:
 func _refresh_visual() -> void:
 	_ensure_dynamic_content()
 	if title_label != null:
-		title_label.text = "利息结算"
+		title_label.text = "ui.interest.title"
 	if summary_label != null:
-		summary_label.text = "本金：%d    ·    当前利率：%.1f%%" % [int(payload.get("principal", 0)), float(payload.get("interest_rate", 0.0))]
+		summary_label.text = L10n.text("ui.interest.principal_rate") % [int(payload.get("principal", 0)), float(payload.get("interest_rate", 0.0))]
 	if _result_label != null:
-		_result_label.text = "+%d 利息" % _displayed_gain
+		_result_label.text = L10n.text("ui.interest.amount") % _displayed_gain
 		_result_label.add_theme_color_override("font_color", GREEN if _get_total_gain() > 0 else MUTED)
 	if _detail_column != null:
 		_rebuild_detail_lines()
@@ -194,7 +194,7 @@ func _get_detail_line_color(index: int) -> Color:
 func _start_gain_counter(token: int) -> void:
 	_displayed_gain = 0
 	if _result_label != null:
-		_result_label.text = "+0 利息"
+		_result_label.text = "ui.interest.zero_amount"
 	var target_gain := _get_total_gain()
 	_counter_tween = create_tween()
 	_counter_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -215,7 +215,7 @@ func _start_gain_counter(token: int) -> void:
 func _set_gain_counter(progress: float, target_gain: int) -> void:
 	_displayed_gain = int(roundf(lerpf(0.0, float(target_gain), progress)))
 	if _result_label != null:
-		_result_label.text = "+%d 利息" % _displayed_gain
+		_result_label.text = L10n.text("ui.interest.amount") % _displayed_gain
 
 
 func _start_detail_lines(token: int) -> void:
@@ -256,41 +256,41 @@ func _build_detail_lines() -> Array[String]:
 		var result_data := result as Dictionary
 		var source_label := _source_label(str(result_data.get("source", "")))
 		if bool(result_data.get("blocked", false)):
-			lines.append("⛓ %s：未收息（条件未满足）" % source_label)
+			lines.append(L10n.text("ui.interest.requirements_unmet") % source_label)
 		elif not bool(result_data.get("success", false)):
-			lines.append("· %s：未收息（%s）" % [source_label, _reason_label(str(result_data.get("reason", "unknown")))])
+			lines.append(L10n.text("ui.interest.not_received") % [source_label, _reason_label(str(result_data.get("reason", "unknown")))])
 		else:
 			var gain := int(result_data.get("gain", 0))
-			lines.append("✦ %s：+%d 金币（利率 %.1f%%）" % [source_label, gain, float(result_data.get("interest_rate", 0.0))])
+			lines.append(L10n.text("ui.interest.received_from_source") % [source_label, gain, float(result_data.get("interest_rate", 0.0))])
 			if bool(result_data.get("dividend_double_triggered", false)):
-				lines.append("分红支票：本次 %d 倍结算" % int(result_data.get("dividend_multiplier", 2)))
+				lines.append(L10n.text("ui.interest.dividend_multiplier") % int(result_data.get("dividend_multiplier", 2)))
 	if not lines.is_empty():
-		lines.append("利息自动加入随身金币，本金保持不变。")
+		lines.append(L10n.text("ui.interest.wallet_hint"))
 	if lines.is_empty():
-		lines.append("本波没有利息结算记录。")
+		lines.append(L10n.text("ui.interest.no_records"))
 	return lines
 
 
 func _reason_label(reason: String) -> String:
 	match reason:
 		"no_principal":
-			return "无本金"
+			return L10n.text("log.finance.reason.no_principal")
 		"zero_interest_gain":
-			return "无利息收益"
+			return L10n.text("ui.interest.no_income")
 		_:
-			return "未结算"
+			return L10n.text("log.finance.reason.not_settled")
 
 
 func _source_label(source: String) -> String:
 	match source:
 		"wave_end":
-			return "波末结算"
+			return L10n.text("ui.interest.source.wave_end")
 		"periodic":
-			return "周期分红钟"
+			return L10n.text("ui.interest.source.dividend_clock")
 		"annuity_extra":
-			return "永续年金（追加结算）"
+			return L10n.text("ui.interest.source.perpetual_annuity")
 		_:
-			return "利息结算"
+			return L10n.text("ui.interest.title")
 
 
 func _style_confirm_button() -> void:

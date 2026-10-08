@@ -48,6 +48,7 @@ var _scanline_overlay: TextureRect = null
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_visual)
 	_create_scanline_overlay()
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
@@ -147,17 +148,17 @@ func show_error(reason: String) -> void:
 func _translate_purchase_error(reason: String) -> String:
 	match reason:
 		"insufficient_gold":
-			return "购买失败  金币不足"
+			return L10n.text("error.shop.insufficient_gold")
 		"invalid_offer":
-			return "购买失败  无效的选项"
+			return L10n.text("error.shop.invalid_offer")
 		"purchase_failed":
-			return "购买失败  升级未生效"
+			return L10n.text("error.shop.upgrade_failed")
 		"shop_not_active":
-			return "购买失败  商店未开启"
+			return L10n.text("error.shop.closed")
 		"insufficient_gold_for_refresh":
-			return "刷新失败  金币不足"
+			return L10n.text("error.shop.reroll_insufficient_gold")
 		_:
-			return "操作失败  请重试"
+			return L10n.text("error.shop.operation_failed")
 
 
 func reset_submission() -> void:
@@ -193,7 +194,7 @@ func get_mode() -> String:
 func _refresh_visual() -> void:
 	var mode := get_mode()
 	if title_label != null:
-		title_label.text = str(payload.get("title", "升级奖励" if mode == ENTRY_FREE else "局内商店"))
+		title_label.text = str(payload.get("title", "ui.shop.upgrade_reward" if mode == ENTRY_FREE else "局内商店"))
 	_update_gold_labels(int(payload.get("gold", 0)))
 	if error_label != null:
 		error_label.text = ""
@@ -238,7 +239,7 @@ func _update_refresh_button() -> void:
 		return
 	var refresh_cost := int(payload.get("refresh_cost", 0))
 	var current_gold := int(payload.get("gold", 0))
-	refresh_button.text = "刷新 ￥%d" % refresh_cost if refresh_cost > 0 else "刷新"
+	refresh_button.text = L10n.text("ui.shop.reroll_price") % refresh_cost if refresh_cost > 0 else "ui.common.reroll"
 	refresh_button.disabled = _submitted or _refreshing or refresh_cost <= 0 or current_gold < refresh_cost
 
 

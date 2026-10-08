@@ -46,7 +46,6 @@ func _spawn(manager: WaveManager, id: String) -> EnemyController:
 
 func _run() -> void:
 	check(DataRegistry.get_load_errors().is_empty(), "configuration loads with common erosion rules")
-	ZoneProgression.reset_state()
 	var player := _make_player(0.0)
 	var manager := _make_manager(player)
 	for row in [[-100, 1.0, 1.0, 1.0], [0, 1.0, 1.0, 1.0], [1, 1.018, 1.009, 1.0135], [10, 1.18, 1.09, 1.135], [30, 1.54, 1.27, 1.405], [50, 2.26, 1.51, 1.675], [60, 2.62, 1.63, 1.81], [100, 4.78, 2.23, 2.35], [150, 7.48, 2.98, 3.025], [200, 10.18, 3.73, 3.7], [1000000, 53999.38, 15000.73, 13501.0]]:
@@ -67,9 +66,6 @@ func _run() -> void:
 	get_tree().quit(1 if failures else 0)
 
 func _test_spawns_and_damage() -> void:
-	# Keep a nonzero region pressure to catch accidental additive stacking.
-	ZoneProgression.current_zone_id = str(DataRegistry.get_table("zones")[0].id)
-	ZoneProgression.streak_count = 3
 	var cold_player := _make_player(0.0)
 	var hot_player := _make_player(100.0)
 	var extreme_player := _make_player(200.0)
@@ -84,7 +80,7 @@ func _test_spawns_and_damage() -> void:
 		hot_enemies.append(hot)
 		# Wave 15: ordinary linear HP; independent elite base retains compounded HP.
 		var wave_hp := 160.0 * pow(1.24, 14) if hot is EliteRusher else 24.0 + 200.0 * 14.0 / 19.0
-		check(cold.get_stat("max_hp") == roundi(wave_hp * 1.2) and hot.get_stat("max_hp") == roundi(wave_hp * 1.2 * 4.78), "%s HP combines difficulty, wave, region and erosion once" % id)
+		check(cold.get_stat("max_hp") == roundi(wave_hp) and hot.get_stat("max_hp") == roundi(wave_hp * 4.78), "%s HP combines difficulty, wave and erosion once" % id)
 		check(absf(hot.get_stat("armor") - cold.get_stat("armor") * 2.35) <= 1.0, "%s armor combines rank and erosion once" % id)
 		check(hot.current_hp == int(hot.get_stat("max_hp")), "%s spawns with full scaled health" % id)
 		check(extreme.get_stat("max_hp") > hot.get_stat("max_hp") and extreme.current_hp == int(extreme.get_stat("max_hp")), "%s erosion 200 spawns at full increased health" % id)
@@ -113,7 +109,7 @@ func _test_spawns_and_damage() -> void:
 		check(hot.take_damage(100) < cold.take_damage(100), "%s actual incoming damage uses increased armor" % id)
 	var normal := hot_enemies[0]
 	var elite := hot_enemies[1]
-	check(elite.get_stat("max_hp") == roundi(160.0 * pow(1.24, 14) * 1.2 * 4.78), "erosion preserves independently scaled elite HP")
+	check(elite.get_stat("max_hp") == roundi(160.0 * pow(1.24, 14) * 4.78), "erosion preserves independently scaled elite HP")
 	var frozen := hot_manager.get_enemy_erosion_snapshot()
 	var original_hp := normal.current_hp
 	hot_player.modifier_stack.set_base_stat("divinity", 0.0)
@@ -134,7 +130,6 @@ func _test_spawns_and_damage() -> void:
 	cold_player.free()
 	hot_player.free()
 	extreme_player.free()
-	ZoneProgression.reset_state()
 
 func _test_wave_start_snapshot() -> void:
 	var player := _make_player(49.0)

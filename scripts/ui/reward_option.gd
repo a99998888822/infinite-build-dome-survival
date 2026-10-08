@@ -67,6 +67,7 @@ var bond_tooltip_label: RichTextLabel = null
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_visual)
 	_prepare_rarity_glow()
 	if select_button != null:
 		if not select_button.pressed.is_connected(_on_select_button_pressed):
@@ -211,7 +212,7 @@ func play_claim_animation(preserve_slot: bool = false) -> void:
 
 func get_button_text_for_offer(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> String:
 	if mode == ENTRY_FREE:
-		return "选择"
+		return L10n.text("ui.common.select")
 	if explicit_cost >= 0:
 		return str(explicit_cost)
 	if offer.has("shop_cost"):
@@ -243,7 +244,7 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 		type_label.add_theme_color_override("font_color", type_color)
 	_update_type_badge_layout(offer_type)
 	if name_label != null:
-		name_label.text = str(offer_data.get("display_name", offer_data.get("target_id", "")))
+		name_label.text = L10n.record_text(offer_data, "display_name", str(offer_data.get("target_id", "")))
 		name_label.add_theme_color_override("font_color", rarity_color)
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
@@ -422,7 +423,7 @@ func _stop_icon_float() -> void:
 
 
 func _build_description_text(offer: Dictionary) -> String:
-	return str(offer.get("description", ""))
+	return L10n.source(str(offer.get("description", "")))
 
 
 func _on_card_mouse_entered() -> void:

@@ -20,6 +20,13 @@ var horizon_y := 72.0
 var surface_parameters: Dictionary = {}
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		for node in [land, ruins]:
+			if is_instance_valid(node) and node.get_parent() == null:
+				node.free()
+
+
 func setup(texture: Texture2D) -> void:
 	surface = texture
 	config = JSON.parse_string(FileAccess.get_file_as_string("res://data_config/green_battlefield.json"))

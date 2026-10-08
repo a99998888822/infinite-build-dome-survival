@@ -1,8 +1,8 @@
 extends CanvasLayer
 class_name BattleUtilityOverlay
 
-const TABLES: Array[String] = ["relics", "weapons", "bonds"]
-const CATEGORY_NAMES: Array[String] = ["遗物", "武器", "羁绊"]
+const TABLES: Array[String] = ["relics", "weapons"]
+const CATEGORY_NAMES: Array[String] = ["遗物", "武器"]
 
 var _flow: MainFlowCoordinator
 var _panel: PanelContainer
@@ -63,7 +63,7 @@ func _ready() -> void:
 	header.add_child(_title)
 	_close_button = Button.new()
 	_close_button.name = "CloseButton"
-	_close_button.text = "返回战斗"
+	_close_button.text = "ui.common.return_to_battle"
 	_close_button.custom_minimum_size = Vector2(104, 32)
 	_close_button.pressed.connect(_close)
 	header.add_child(_close_button)
@@ -89,7 +89,7 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 		return
 	var is_encyclopedia := str(payload.get("page", "")) == "encyclopedia"
 	_showing_settings = not is_encyclopedia
-	_title.text = "游戏百科"
+	_title.text = "ui.hud.encyclopedia"
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_title.add_theme_color_override("font_color", SettingsUIStyle.GOLD)
 	_panel.visible = is_encyclopedia
@@ -159,7 +159,7 @@ func _build_encyclopedia(parent: VBoxContainer) -> void:
 	filters.add_child(_category)
 	_search = LineEdit.new()
 	_search.name = "Search"
-	_search.placeholder_text = "搜索名称或效果"
+	_search.placeholder_text = "ui.encyclopedia.search_placeholder"
 	_search.clear_button_enabled = true
 	_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_search.text_changed.connect(func(_text: String) -> void: _refresh_entries())
@@ -207,7 +207,7 @@ func _refresh_entries() -> void:
 	var table := TABLES[_category.selected]
 	var query := _search.text.strip_edges()
 	for record: Dictionary in DataRegistry.get_table(table):
-		var title := str(record.get("display_name", record.get("name", "")))
+		var title := L10n.source(str(record.get("display_name", record.get("name", ""))))
 		var description := _describe_record(table, record)
 		if not query.is_empty() and (title + "\n" + description).findn(query) < 0:
 			continue
@@ -215,8 +215,8 @@ func _refresh_entries() -> void:
 		_entries.add_item(title)
 	if _records.is_empty():
 		FinanceUIStyle.set_item_icon(_entry_icon, null)
-		_entry_title.text = "没有匹配的条目"
-		_entry_details.text = "请尝试其他名称或效果关键词。"
+		_entry_title.text = "ui.encyclopedia.empty.title"
+		_entry_details.text = "ui.encyclopedia.empty.hint"
 	else:
 		_entries.select(0)
 		_entries.ensure_current_is_visible()
@@ -227,7 +227,7 @@ func _show_entry(index: int) -> void:
 	if index < 0 or index >= _records.size():
 		return
 	var record := _records[index]
-	_entry_title.text = str(record.get("display_name", record.get("name", "")))
+	_entry_title.text = L10n.source(str(record.get("display_name", record.get("name", ""))))
 	var icon_path := str(record.get("icon", ""))
 	FinanceUIStyle.set_item_icon(_entry_icon, FinanceUIStyle.item_icon(icon_path))
 	_entry_icon.visible = _entry_icon.texture != null
@@ -236,18 +236,13 @@ func _show_entry(index: int) -> void:
 
 
 func _describe_record(table: String, record: Dictionary) -> String:
-	if table == "bonds":
-		return BondDisplay.build_bond_reference_text(record)
-	var lines: Array[String] = [str(record.get("description", ""))]
-	var bond_text := BondDisplay.build_item_bond_text(record)
-	if not bond_text.is_empty():
-		lines.append(bond_text)
+	var lines: Array[String] = [L10n.source(str(record.get("description", "")))]
 	if table == "relics":
 		var max_stack := int(record.get("max_stack", 0))
-		lines.append("叠加上限：%d" % max_stack if max_stack > 0 else "叠加上限：不限")
+		lines.append(L10n.text("ui.encyclopedia.stack_limit") % max_stack if max_stack > 0 else L10n.text("ui.encyclopedia.stack_unlimited"))
 	elif table == "weapons":
-		lines.append("基础负载：%d　最高等级：%d" % [int(record.get("load_cost", 0)), int(record.get("max_level", 1))])
-		lines.append("基础冷却：%.2f 秒（动作结束后开始）" % (float(record.get("active_cooldown_ms", record.get("attack_interval_ms", 0))) / 1000.0))
+		lines.append(L10n.text("ui.encyclopedia.weapon.load_level") % [int(record.get("load_cost", 0)), int(record.get("max_level", 1))])
+		lines.append(L10n.text("ui.encyclopedia.weapon.cooldown") % (float(record.get("active_cooldown_ms", record.get("attack_interval_ms", 0))) / 1000.0))
 	return "\n\n".join(lines)
 
 

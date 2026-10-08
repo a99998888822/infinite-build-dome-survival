@@ -19,6 +19,7 @@ static func for_owner(source: Node) -> GameTooltipLayer:
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_clear_tooltips)
 	var ancestor := get_parent()
 	while ancestor != null:
 		if ancestor is CanvasItem or ancestor is CanvasLayer:

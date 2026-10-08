@@ -9,6 +9,7 @@ var capture_dir := ""
 
 
 func _ready() -> void:
+	L10n.set_locale("zh_CN", false)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): capture_dir = arg.trim_prefix("--capture-dir=")
 	_run.call_deferred()
@@ -282,7 +283,7 @@ func _test_live_flow() -> void:
 	check(not popup.trade_presentation.is_active(), "accepted card releases its layout space")
 	check(not flow.accept_goblin_trade(str(offer.token)).success, "cannot accept the same offer twice")
 	check(not flow.submit_finance_operation("withdraw", 10).success, "cannot withdraw during the accepting preparation")
-	check(popup._refresh.text == "强力刷新 · 免费" and not popup._refresh.disabled, "free colorful refresh is usable with zero gold")
+	check(popup._refresh.tr(popup._refresh.text) == "强力刷新 · 免费" and not popup._refresh.disabled, "free colorful refresh is usable with zero gold")
 	await capture("02_refresh_ready")
 	await capture_refresh_animation()
 	flow.close_finance_popup()
@@ -333,7 +334,7 @@ func _test_live_flow() -> void:
 	var luck_cost := manager.player.modifier_stack.get_all_modifiers("luck").any(func(x): return x.id == "goblin_cash_price_luck" and x.value == -2)
 	check(manager.player.get_stat("humanity") == sanity - 5 and manager.player.get_stat("luck") == maxf(0, luck - 2) and luck_cost, "cash deal retains revised costs even when effective luck hits its existing zero floor")
 	check(not manager.finance_system.deposit(1).success and not manager.finance_system.withdraw(1).success, "bank restriction blocks direct APIs too")
-	check(not popup._bank_form.visible and popup._receipt.text.contains("关闭"), "locked bank explains its restriction")
+	check(not popup._bank_form.visible and popup._receipt.tr(popup._receipt.text).contains("关闭"), "locked bank explains its restriction")
 	popup._select_tab("bank")
 	await capture("05_small_bank_locked")
 	get_tree().root.size = Vector2i(1152, 768)

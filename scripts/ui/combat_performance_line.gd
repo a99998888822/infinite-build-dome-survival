@@ -12,7 +12,7 @@ func _ready() -> void:
 	add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
 	add_theme_constant_override("shadow_offset_x", 1)
 	add_theme_constant_override("shadow_offset_y", 1)
-	tooltip_text = "实时帧率、存活怪物、共享粒子与闪电采样点。每0.5秒更新。"
+	tooltip_text = "ui.performance.tooltip"
 	refresh()
 
 
@@ -36,4 +36,4 @@ func refresh() -> void:
 		"physics_ms": Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0,
 		"nodes": Performance.get_monitor(Performance.OBJECT_NODE_COUNT),
 		"draw_calls": Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)}
-	text = "FPS %d   怪物 %d   粒子 %d" % [sample.fps, enemies, particles]
+	text = L10n.text("ui.performance.counter") % [sample.fps, enemies, particles]

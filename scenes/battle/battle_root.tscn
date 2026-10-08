@@ -324,7 +324,7 @@ theme_override_colors/font_color = Color(0.64, 0.65, 0.56, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 9
-text = "第 1 波"
+text = "ui.hud.preview.wave"
 horizontal_alignment = 1
 
 [node name="TimerLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
@@ -357,7 +357,7 @@ theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 12
-text = "金币：0"
+text = "ui.hud.preview.gold"
 vertical_alignment = 1
 
 [node name="FinanceRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
@@ -377,7 +377,7 @@ theme_override_colors/font_color = Color(0.66, 0.54, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 12
-text = "本金：0"
+text = "ui.hud.preview.principal"
 vertical_alignment = 1
 
 [node name="TopRightActions" type="HBoxContainer" parent="BattleTopBar"]
@@ -424,7 +424,7 @@ theme_override_colors/font_color = Color(0.48, 0.78, 0.37, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 11
-text = "等级 1  经验 0/0"
+text = "ui.hud.preview.level_experience"
 horizontal_alignment = 1
 
 [node name="ExpBar" type="ProgressBar" parent="HUD/StatusPanel/ExpPanel"]

@@ -125,7 +125,7 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	_emit_changed()
 	_last_activity_rate = get_interest_rate()
 	_journal_ready = true
-	_record_activity("initial", "开局本金 %d，利率 %s%%" % [principal, HumanityEconomy.number(get_interest_rate())])
+	_record_activity("initial", L10n.message("log.finance.initial_balance", [principal, HumanityEconomy.number(get_interest_rate())]))
 
 
 func create_preview_copy(preview_player: PlayerController, purchase_cost: int = 0) -> BattleFinanceSystem:
@@ -167,7 +167,7 @@ func apply_loan_gold_delta(amount: int) -> bool:
 	return _apply_gold_delta(amount,"goblin_loan")
 
 
-func record_loan_activity(text: String) -> void:
+func record_loan_activity(text: Variant) -> void:
 	_record_activity("loan",text)
 
 
@@ -205,7 +205,7 @@ func begin_wave(wave_number: int) -> Dictionary:
 	_apply_wave_start_relics()
 	_emit_changed()
 	if _get_wave_deposit_requirement() > 0:
-		var contract_text := "高利契约：已满足存款条件，本波利率额外 +%s 个百分点" % HumanityEconomy.number(_get_wave_deposit_bonus_rate()) if has_deposited_before_current_wave else "高利契约：未满足存入 %d 金币条件，本波无额外加息，仍按原利率结息" % _get_wave_deposit_requirement()
+		var contract_text := L10n.message("log.finance.high_yield.fulfilled", [HumanityEconomy.number(_get_wave_deposit_bonus_rate())]) if has_deposited_before_current_wave else L10n.message("log.finance.high_yield.unfulfilled", [_get_wave_deposit_requirement()])
 		_record_activity("relic_condition", contract_text)
 	return build_finance_popup_payload("wave_start")
 
@@ -274,10 +274,10 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 		if not _apply_gold_delta(-sanitized_amount, "finance_deposit"):
 			return _build_operation_result(false, ACTION_DEPOSIT, sanitized_amount, "gold_delta_failed")
 	principal += sanitized_amount
-	var text := "存入 %d 金币，本金 %d → %d" % [sanitized_amount, principal - sanitized_amount, principal]
+	var text := L10n.message("log.finance.deposit", [sanitized_amount, principal - sanitized_amount, principal])
 	if free_principal:
-		text = "%s：本金 +%d（当前 %d）" % ["哥布林交易" if reason == "goblin_trade" else _relic_name(reason), sanitized_amount, principal]
-		if reason == "wave_challenge": text = "下一波挑战：本金 +%d（当前 %d）" % [sanitized_amount, principal]
+		text = L10n.message("log.finance.principal_granted", ["ui.trade.title" if reason == "goblin_trade" else _relic_name(reason), sanitized_amount, principal])
+		if reason == "wave_challenge": text = L10n.message("log.challenge.principal_granted", [sanitized_amount, principal])
 	_record_activity("relic_principal" if free_principal else "deposit", text)
 	last_action_wave_number = current_wave_number
 	last_deposit_wave_number = current_wave_number
@@ -301,7 +301,7 @@ func withdraw(amount: int) -> Dictionary:
 	if not _apply_gold_delta(sanitized_amount, "finance_withdraw"):
 		principal += sanitized_amount
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "gold_delta_failed")
-	_record_activity("withdraw", "取出 %d 金币，本金 %d → %d" % [sanitized_amount, principal + sanitized_amount, principal])
+	_record_activity("withdraw", L10n.message("log.finance.withdraw", [sanitized_amount, principal + sanitized_amount, principal]))
 	_emit_changed()
 	return _build_operation_result(true, ACTION_WITHDRAW, sanitized_amount, "manual")
 
@@ -310,7 +310,7 @@ func grant_trade_gold(amount: int) -> bool:
 	return amount > 0 and _apply_gold_delta(amount, "goblin_trade")
 
 
-func record_trade_activity(text: String) -> void:
+func record_trade_activity(text: Variant) -> void:
 	_record_activity("goblin_trade", text)
 
 
@@ -417,13 +417,13 @@ func on_relic_added(relic_id: String) -> void:
 			EFFECT_ADD_PRINCIPAL_FLAT:
 				var amount := int(effect.get("value", 0))
 				principal += amount
-				_record_activity("relic_principal", "%s：本金 +%d（当前 %d）" % [_relic_name(relic_id), amount, principal])
+				_record_activity("relic_principal", L10n.message("log.finance.principal_granted", [_relic_name(relic_id), amount, principal]))
 				handled = true
 				_emit_changed()
 			EFFECT_ADD_PRINCIPAL_PER_WAVE:
 				var amount := int(effect.get("value_per_wave", 0)) * maxi(1, current_wave_number)
 				principal += amount
-				_record_activity("relic_principal", "%s：本金 +%d（当前 %d）" % [_relic_name(relic_id), amount, principal])
+				_record_activity("relic_principal", L10n.message("log.finance.principal_granted", [_relic_name(relic_id), amount, principal]))
 				handled = true
 				_emit_changed()
 	if not handled:
@@ -494,7 +494,7 @@ func _on_player_lethal_damage() -> void:
 	# Reserve the one-shot charge before any synchronous stat/UI callbacks.
 	_principal_revive_uses[relic_id] = int(_principal_revive_uses.get(relic_id, 0)) + 1
 	principal -= int(protection.principal_cost)
-	_record_activity("relic_principal", "%s：复活消耗 %d 本金，剩余 %d" % [protection.display_name, protection.principal_cost, principal])
+	_record_activity("relic_principal", L10n.message("log.finance.revival_cost", [protection.display_name, protection.principal_cost, principal]))
 	# This is an expense, not a withdrawal: no gold credit or manual action used.
 	_emit_changed()
 	player.revive_from_lethal_damage(float(protection.health_percent))
@@ -571,7 +571,7 @@ func _apply_after_successful_interest_relics(_source: String, result: Dictionary
 				var growth := float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
 				interest_rate_bonus += growth
 				growth_events.append({"relic_id": str(effect.get("relic_id", "")), "delta": growth})
-				_record_activity("relic_growth", "%s：收到利息，利率成长 +%s 个百分点" % [_relic_name(str(effect.get("relic_id", ""))), HumanityEconomy.number(growth)])
+				_record_activity("relic_growth", L10n.message("log.finance.interest_rate_growth", [_relic_name(str(effect.get("relic_id", ""))), HumanityEconomy.number(growth)]))
 	result["rate_growth_events"] = growth_events
 	if player != null:
 		for effect in player.get_active_relic_runtime_effects(TRIGGER_INTEREST_SUCCESS):
@@ -579,7 +579,7 @@ func _apply_after_successful_interest_relics(_source: String, result: Dictionary
 				var amount := float(effect.get("value", 0))
 				var stat_id := str(effect.get("stat", ""))
 				var unit := "%" if StatDefinitions.is_percent_stat(stat_id) else ""
-				_record_activity("relic_growth", "%s：%s %s%s%s" % [_relic_name(str(effect.get("relic_id", ""))), StatDefinitions.get_display_name(stat_id), "+" if amount >= 0 else "", HumanityEconomy.number(amount), unit])
+				_record_activity("relic_growth", L10n.message("log.finance.stat_growth", [_relic_name(str(effect.get("relic_id", ""))), StatDefinitions.get_stat_definition(stat_id).get("display_name", stat_id), "+" if amount >= 0 else "", HumanityEconomy.number(amount), unit]))
 		player.begin_modifier_update()
 		player.process_relic_runtime_trigger(TRIGGER_INTEREST_SUCCESS)
 		player.end_modifier_update()
@@ -650,7 +650,7 @@ func _emit_changed() -> void:
 		player.end_modifier_update()
 	var rate := get_interest_rate()
 	if _journal_ready and not is_equal_approx(rate, _last_activity_rate):
-		_record_activity("rate", "有效利率：%s%% → %s%%" % [HumanityEconomy.number(_last_activity_rate), HumanityEconomy.number(rate)])
+		_record_activity("rate", L10n.message("log.finance.effective_rate_changed", [HumanityEconomy.number(_last_activity_rate), HumanityEconomy.number(rate)]))
 	_last_activity_rate = rate
 	finance_changed.emit(get_state_snapshot())
 	_emitting_changed = false
@@ -739,7 +739,7 @@ func _check_bankruptcy_trigger() -> void:
 		var multiplier := maxi(1, int(effect.get("gold_multiplier", 2)))
 		var recovery := get_current_gold() * multiplier
 		principal += recovery
-		_record_activity("relic_principal", "破产重组：本金 +%d（当前 %d），复活次数 +1" % [recovery, principal])
+		_record_activity("relic_principal", L10n.message("log.finance.bankruptcy_reorganization", [recovery, principal]))
 		player.add_runtime_modifier({
 			"id": "bankruptcy_recovery_revive",
 			"source_type": "finance_recovery",
@@ -756,43 +756,43 @@ func _check_bankruptcy_trigger() -> void:
 		break
 
 
-func _record_activity(kind: String, text: String, details: Dictionary = {}) -> void:
+func _record_activity(kind: String, text: Variant, details: Dictionary = {}) -> void:
 	if not _journal_ready:
 		return
-	activity_recorded.emit({"wave": maxi(1, current_wave_number), "kind": kind, "text": text, "details": details.duplicate(true)})
+	activity_recorded.emit({"wave": maxi(1, current_wave_number), "kind": kind, "text": L10n.render_message(text), "message": text, "details": details.duplicate(true)})
 
 
 func _relic_name(relic_id: String) -> String:
-	return str(DataRegistry.get_record("relics", relic_id).get("display_name", "本金赠予"))
+	return str(DataRegistry.get_record("relics", relic_id).get("display_name", "log.finance.reason.principal_gift"))
 
 
 func _record_interest_result(result: Dictionary) -> void:
-	var label := "额外结息"
+	var label: Variant = "log.finance.reason.extra_interest"
 	match str(result.get("source", "")):
-		SETTLE_WAVE_END: label = "波末结息"
-		SETTLE_PERIODIC: label = "周期分红钟·额外结息"
-		SETTLE_ANNUITY_EXTRA: label = "永续年金·额外结息"
+		SETTLE_WAVE_END: label = "log.finance.reason.wave_interest"
+		SETTLE_PERIODIC: label = "log.finance.reason.dividend_clock"
+		SETTLE_ANNUITY_EXTRA: label = "log.finance.reason.perpetual_annuity"
 		_:
 			var relic_data := DataRegistry.get_record("relics", str(result.get("source", "")))
 			if not relic_data.is_empty():
-				label = "%s·额外结息" % str(relic_data.get("display_name", "遗物"))
-	var text := ""
+				label = L10n.message("log.finance.reason.relic_interest", [relic_data.get("display_name", "ui.common.relic")])
+	var parts: Array = []
 	if not bool(result.get("success", false)) or bool(result.get("blocked", false)):
 		var reason := str(result.get("reason", ""))
-		var reason_text := "条件未满足" if bool(result.get("blocked", false)) else "未结算"
-		if reason == "no_principal": reason_text = "无本金"
-		elif reason == "gold_delta_failed": reason_text = "金币入账失败"
-		text = "%s：未收到利息（%s）" % [label, reason_text]
+		var reason_text := "log.finance.reason.requirements_unmet" if bool(result.get("blocked", false)) else "log.finance.reason.not_settled"
+		if reason == "no_principal": reason_text = "log.finance.reason.no_principal"
+		elif reason == "gold_delta_failed": reason_text = "log.finance.reason.credit_failed"
+		parts.append(L10n.message("log.finance.interest_not_received", [label, reason_text]))
 	else:
-		text = "%s：利息 +%d 金币（本金 %d，利率 %s%%）" % [label, int(result.get("gain", 0)), int(result.get("principal_before", principal)), HumanityEconomy.number(float(result.get("interest_rate", 0)))]
+		parts.append(L10n.message("log.finance.interest_received", [label, int(result.get("gain", 0)), int(result.get("principal_before", principal)), HumanityEconomy.number(float(result.get("interest_rate", 0)))]))
 		if bool(result.get("dividend_double_triggered", false)):
-			text += "；分红支票触发 %d 倍结算" % int(result.get("dividend_multiplier", 2))
+			parts.append(L10n.message("log.finance.dividend_multiplier_suffix", [int(result.get("dividend_multiplier", 2))]))
 		var loss := float(result.get("humanity_loss", 0))
 		if loss > 0.0001:
-			text += "；利息因理智减少 %s 金币" % HumanityEconomy.number(loss)
+			parts.append(L10n.message("log.finance.sanity_loss_suffix", [HumanityEconomy.number(loss)]))
 		if int(result.get("gain", 0)) == 0:
-			text += "；收益不足 1 金币，小数留待后续结算" if float(result.get("interest_remainder", 0)) > 0 else "；本次无利息收益"
-	_record_activity("interest", text, result)
+			parts.append("log.finance.fraction_carried_suffix" if float(result.get("interest_remainder", 0)) > 0 else "log.finance.no_interest_suffix")
+	_record_activity("interest", {"message_parts": parts}, result)
 
 
 func _get_relic_runtime_effects(relic_id: String, trigger: String = "") -> Array[Dictionary]:

@@ -16,6 +16,7 @@ var _icons: Dictionary = {}
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(refresh)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	resized.connect(queue_redraw)
@@ -65,7 +66,7 @@ func refresh() -> void:
 			var path := str(data.get("icon", ""))
 			_icons[weapon_id] = load(path) if not path.is_empty() and ResourceLoader.exists(path) else null
 		_entries.append({
-			"weapon_id": weapon_id, "name": str(data.get("display_name", weapon_id)),
+			"weapon_id": weapon_id, "name": L10n.source(str(data.get("display_name", weapon_id))),
 			"damage": int(_manager.weapon_damage_this_wave.get(weapon_id, 0)),
 			"order": index, "color": COLORS[index % COLORS.size()], "icon": _icons[weapon_id],
 		})
@@ -79,7 +80,7 @@ func _draw() -> void:
 	if _entries.is_empty():
 		return
 	var font := get_theme_font("font", "Label")
-	draw_string(font, Vector2(3, 15), "统计", HORIZONTAL_ALIGNMENT_LEFT, size.x, 11, Color("c7c6a7"))
+	draw_string(font, Vector2(3, 15), L10n.text("ui.damage_meter.title"), HORIZONTAL_ALIGNMENT_LEFT, size.x, 11, Color("c7c6a7"))
 	var maximum := maxi(int(_entries[0].damage), 1)
 	for index in _entries.size():
 		var entry := _entries[index]

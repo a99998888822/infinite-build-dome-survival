@@ -13,3 +13,7 @@ artifacts/previews/**/*.log
 # Python bytecode is disposable and must not be committed.
 __pycache__/
 *.py[cod]
+# Godot generates these from the maintained localization CSV catalogs.
+localization/**/*.translation
+# Rebuildable localization review pages, captures, archives and validation reports.
+artifacts/localization/

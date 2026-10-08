@@ -27,13 +27,13 @@ func _refresh_text() -> void:
 	if weapon == null:
 		text = ""
 		return
-	var weapon_name := str(weapon.weapon_data.get("display_name", weapon.weapon_id))
+	var weapon_name := L10n.source(str(weapon.weapon_data.get("display_name", weapon.weapon_id)))
 	var slot_count := weapon.get_attachment_slot_count()
 	if slot_count <= 0:
 		text = weapon_name
 		return
 	var attached_count := weapon.get_attached_item_instances().size()
-	text = "%s\n[附魔 %d/%d]" % [weapon_name, attached_count, slot_count]
+	text = L10n.text("ui.weapon.tooltip.enchantment_slots") % [weapon_name, attached_count, slot_count]
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:

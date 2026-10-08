@@ -74,7 +74,7 @@ func _ready() -> void:
 	add_child(canvas)
 	background = _image(canvas, load(ART + "background.png"), Rect2(Vector2.ZERO, DESIGN_SIZE))
 	background.name = "Background"
-	_label(canvas, "角色名册", Vector2(128,236), 34, CREAM, 288)
+	_label(canvas, "ui.character.roster", Vector2(128,236), 34, CREAM, 288)
 	roster_scroll = TouchScrollContainer.new()
 	roster_scroll.name = "RosterScroll"
 	# 336px cards, then an 8px gap and an 8px scrollbar in the frame padding.
@@ -116,7 +116,7 @@ func _ready() -> void:
 			_keyboard_focus = false
 			_update_walking()
 	)
-	_label(canvas, "出征档案", Vector2(2180,300), 34, INK, PAPER_WIDTH)
+	_label(canvas, "ui.character.profile", Vector2(2180,300), 34, INK, PAPER_WIDTH)
 	_paper_name = _label(canvas, "", Vector2(2180,357), 29, INK, PAPER_WIDTH)
 	_place(canvas, _rectangle_rule(), Rect2(2176,410,PAPER_WIDTH,2))
 	# Fixed compact header; only the padded paper body scrolls.
@@ -139,16 +139,16 @@ func _ready() -> void:
 	_details.custom_minimum_size.x = PAPER_WIDTH
 	_details.add_theme_constant_override("separation", 0)
 	details_scroll.add_child(_details)
-	_body_label(_details, "开局属性", 34, INK, 76)
+	_body_label(_details, "ui.character.starting_stats", 34, INK, 76)
 	stats_list = Control.new()
 	_details.add_child(stats_list)
 	_spacer(_details, 30)
-	_body_label(_details, "角色特性", 34, INK, 80)
+	_body_label(_details, "ui.character.traits", 34, INK, 80)
 	passive_list = VBoxContainer.new()
 	passive_list.add_theme_constant_override("separation", 4)
 	_details.add_child(passive_list)
 	_spacer(_details, 20)
-	_body_label(_details, "初始武器", 34, INK, 60)
+	_body_label(_details, "ui.character.starting_weapon", 34, INK, 60)
 	weapon_list = VBoxContainer.new()
 	weapon_list.add_theme_constant_override("separation", 6)
 	_details.add_child(weapon_list)
@@ -161,7 +161,7 @@ func _ready() -> void:
 	confirm_button = _button("", "continue_button.png", Vector2(224,92), 34)
 	_place(canvas, confirm_button, Rect2(2472,1372,224,92))
 	_navigation_content(confirm_button, true)
-	_shadow(_label(canvas, "难度", Vector2(696,1392), 34, CREAM, 136))
+	_shadow(_label(canvas, "ui.character.difficulty", Vector2(620,1392), 34, CREAM, 220))
 	difficulty_list = HBoxContainer.new()
 	difficulty_list.name = "DifficultyList"
 	_place(canvas, difficulty_list, Rect2(872,1352,448,128))
@@ -210,9 +210,11 @@ func rebuild_roster(records: Array) -> String:
 		button.toggle_mode = true
 		button.button_group = group
 		button.set_meta("character_id", id)
-		button.tooltip_text = str(record.get("display_name", id))
-		var label := _label(button, str(record.get("display_name", id)), Vector2(88,23), 29, CREAM, 234)
+		button.tooltip_text = L10n.source(str(record.get("display_name", id)))
+		var label := _label(button, L10n.source(str(record.get("display_name", id))), Vector2(88,0), 29, CREAM, 234)
 		label.name = "CharacterName"
+		label.size.y = 91
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_image(button, _crop_icon(str(record.get("icon", ""))), Rect2(14,14,62,62), true)
 		button.pressed.connect(func(): character_selected.emit(id))
 		character_list.add_child(button)
@@ -227,13 +229,13 @@ func show_character(record: Dictionary, stats: Dictionary) -> void:
 	for container in [stats_list, weapon_list, passive_list]: _clear(container)
 	reset_animation()
 	if record.is_empty():
-		name_label.text = "请选择角色"
+		name_label.text = "ui.character.select_prompt"
 		character_icon.texture = null
 		return
-	var display_name := str(record.get("display_name", record.get("id", "")))
+	var display_name := L10n.source(str(record.get("display_name", record.get("id", ""))))
 	name_label.text = display_name
 	_paper_name.text = display_name
-	description_label.text = str(record.get("description", ""))
+	description_label.text = L10n.source(str(record.get("description", "")))
 	var visuals: Dictionary = record.get("combat_visuals", {})
 	_idle = load(str(visuals.get("idle", record.get("display_sprite", "")))) as Texture2D
 	character_icon.texture = _idle
@@ -244,14 +246,14 @@ func show_character(record: Dictionary, stats: Dictionary) -> void:
 	_walk.atlas = load(str(visuals.get("walk", visuals.get("idle", "")))) as Texture2D
 	_walk.region = Rect2(0,0,64,64)
 	var stat_ids: Array = record.get("display_stats", ["max_hp", "move_speed", "load_capacity"])
-	var names := {"max_hp":"生命", "move_speed":"移速", "load_capacity":"负载", "humanity":"理智", "divinity":"侵蚀", "finance":"本金", "currency_gain_percent":"金币", "damage_percent":"伤害", "interest_rate":"利率"}
+	var names := {"max_hp":L10n.text("stat.health.short_name"), "move_speed":L10n.text("stat.move_speed.short_name"), "load_capacity":L10n.text("stat.load.short_name"), "humanity":L10n.text("stat.humanity.name"), "divinity":L10n.text("stat.divinity.short_name"), "finance":L10n.text("stat.principal.short_name"), "currency_gain_percent":L10n.text("stat.gold.name"), "damage_percent":L10n.text("stat.damage.name"), "interest_rate":L10n.text("stat.interest_rate.name")}
 	var row_height := _compact_text_height(29, 48)
 	for index in stat_ids.size():
 		var id := str(stat_ids[index])
 		var row := Control.new()
 		_place(stats_list, row, Rect2(0,index*row_height,PAPER_WIDTH,row_height))
 		row.tooltip_text = StatDefinitions.get_display_name(id)
-		_label(row, str(names.get(id, StatDefinitions.get_display_name(id))), Vector2.ZERO, 29, INK, 270)
+		_label(row, L10n.source(str(names.get(id, StatDefinitions.get_display_name(id)))), Vector2.ZERO, 29, INK, 270)
 		var number := _label(row, _number(float(stats.get(id, 0))) + ("%" if StatDefinitions.is_percent_stat(id) else ""), Vector2.ZERO, 29, INK, 380)
 		number.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		for label in row.get_children():
@@ -275,7 +277,7 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 	card.set_meta("weapon_id", weapon_id)
 	card.custom_minimum_size = Vector2(PAPER_WIDTH, STARTING_WEAPON_ICON_SIZE.y)
 	card.add_theme_constant_override("separation", 11)
-	_bind_item_tooltip(card, "%s\n%s" % [weapon.get("display_name", weapon_id), weapon.get("description", "")])
+	_bind_item_tooltip(card, "%s\n%s" % [L10n.source(weapon.get("display_name", weapon_id)), L10n.source(weapon.get("description", ""))])
 	weapon_list.add_child(card)
 	var weapon_icon := _image(card, _crop_icon(str(weapon.get("icon", ""))), Rect2(Vector2.ZERO, STARTING_WEAPON_ICON_SIZE), true)
 	weapon_icon.name = "WeaponIcon"
@@ -289,7 +291,7 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 	content.add_theme_constant_override("h_separation", 10)
 	content.add_theme_constant_override("v_separation", 4)
 	card.add_child(content)
-	var title := _label(content, str(weapon.get("display_name", weapon_id)), Vector2.ZERO, 29, INK, 0)
+	var title := _label(content, L10n.source(str(weapon.get("display_name", weapon_id))), Vector2.ZERO, 29, INK, 0)
 	title.clip_text = false
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	for attachment in record.get("start_weapon_attachments", []):
@@ -304,31 +306,31 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 		icon.custom_minimum_size = STARTING_ENCHANTMENT_ICON_SIZE
 		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		icon.mouse_filter = Control.MOUSE_FILTER_PASS
-		_bind_item_tooltip(icon, "%s\n%s" % [item.get("display_name", item_id), item.get("description", "")])
+		_bind_item_tooltip(icon, "%s\n%s" % [L10n.source(item.get("display_name", item_id)), L10n.source(item.get("description", ""))])
 
 
 func _build_traits(record: Dictionary) -> void:
 	var traits: Array = record.get("traits", [])
 	var relics: Array = record.get("start_relics", [])
 	if traits.is_empty() and relics.is_empty() and record.get("passive_modifiers", []).is_empty():
-		_body_label(passive_list, "每级生命+1", 29, INK, 40)
+		_body_label(passive_list, "ui.character.health_per_level", 29, INK, 40)
 		return
 	for trait_data in traits:
 		var card := VBoxContainer.new()
 		card.add_theme_constant_override("separation", 2)
 		passive_list.add_child(card)
 		_body_label(card, str(trait_data.title), 34, INK, 48)
-		var body := _body_label(card, str(trait_data.description), 29, INK, 40)
+		var body := _body_label(card, L10n.source(str(trait_data.description)), 29, INK, 40)
 		body.clip_text = false
 		body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for passive in record.get("passive_modifiers", []):
-		var label := _body_label(passive_list, str(passive.get("description", passive.get("stat", ""))), 29, INK, 40)
+		var label := _body_label(passive_list, L10n.source(str(passive.get("description", passive.get("stat", "")))), 29, INK, 40)
 		label.clip_text = false
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if relics.is_empty(): return
 	if traits.is_empty():
-		_body_label(passive_list, "开局获得如下四件遗物" if relics.size() == 4 else "开局获得如下遗物", 29, INK, 40)
+		_body_label(passive_list, "ui.character.four_starting_relics" if relics.size() == 4 else "开局获得如下遗物", 29, INK, 40)
 	var grid := GridContainer.new()
 	grid.name = "StartingRelicIcons"
 	grid.columns = 4
@@ -339,7 +341,7 @@ func _build_traits(record: Dictionary) -> void:
 		var relic := DataRegistry.get_record("relics", str(id))
 		var card := Control.new()
 		card.custom_minimum_size = Vector2(72,72)
-		_bind_item_tooltip(card, "%s\n%s\n角色固有，开局奖励仅发放一次，不可移除。" % [relic.display_name, relic.description])
+		_bind_item_tooltip(card, L10n.text("ui.character.innate_relic_tooltip") % [L10n.source(relic.display_name), L10n.source(relic.description)])
 		grid.add_child(card)
 		_image(card, _crop_icon(str(relic.get("icon", ""))), Rect2(4,4,64,64), true)
 
@@ -417,7 +419,7 @@ func set_difficulty(id: String) -> void:
 	id = BattleDifficulty.normalize(id)
 	var profile := BattleDifficulty.get_profile(id)
 	difficulty_title.text = str(profile.title)
-	difficulty_description.text = str(profile.description) if not str(profile.description).is_empty() else "基础怪物属性 · 常规数量"
+	difficulty_description.text = L10n.source(str(profile.description)) if not L10n.source(str(profile.description)).is_empty() else "difficulty.normal.summary"
 	for button in difficulty_list.get_children():
 		var active := str(button.get_meta("difficulty_id", "")) == id
 		button.set_pressed_no_signal(active)
@@ -561,7 +563,7 @@ func _navigation_content(button: Button, points_right: bool) -> void:
 	content.add_theme_constant_override("separation", 14)
 	button.add_child(content)
 	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var words := ["继续", "▶"] if points_right else ["◀", "返回"]
+	var words := [L10n.text("ui.common.continue"), "▶"] if points_right else ["◀", L10n.text("ui.common.back")]
 	for word in words:
 		var is_arrow: bool = word in ["◀", "▶"]
 		var label := _label(content, word, Vector2.ZERO, 29 if is_arrow else 34, CREAM, 0)

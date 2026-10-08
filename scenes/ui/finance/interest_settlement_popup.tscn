@@ -22,7 +22,7 @@ custom_minimum_size = Vector2(560, 420)
 theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
-text = "利息结算"
+text = "ui.interest.title"
 horizontal_alignment = 1
 
 [node name="SummaryLabel" type="Label" parent="CenterContainer/MainPanel/Content"]
@@ -32,4 +32,4 @@ autowrap_mode = 3
 autowrap_mode = 3
 
 [node name="ConfirmButton" type="Button" parent="CenterContainer/MainPanel/Content"]
-text = "确认"
+text = "ui.common.confirm"

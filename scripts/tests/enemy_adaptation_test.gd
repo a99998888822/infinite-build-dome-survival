@@ -35,7 +35,6 @@ func finish(system: EnemyWavePressure, struggling := false) -> Dictionary:
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	ZoneProgression.reset_state()
 	check(DataRegistry.get_load_errors().is_empty(), "formal pressure configs validate")
 	_test_decisions()
 	_test_timing_and_survivors()

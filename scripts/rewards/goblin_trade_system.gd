@@ -161,6 +161,7 @@ func prepare(context: Dictionary) -> void:
 			"spending_money": amount = int(offer.gold_reward)
 		offer["amount"] = amount
 		offer["token"] = "%d:%s" % [wave, str(offer.id)]
+		offer["body_message"] = L10n.message(L10n.key_for_source(str(offer.body)), [amount] if amount > 0 else [])
 		if amount > 0: offer.body = str(offer.body) % amount
 		break
 
@@ -198,7 +199,7 @@ func accept(token: String, player: PlayerController, finance: BattleFinanceSyste
 	if not bool(result.get("success", false)): return result
 	accepted_waves[id] = preparation_wave
 	offer.clear()
-	finance.record_trade_activity(str(accepted.body))
+	finance.record_trade_activity(accepted.get("body_message", str(accepted.body)))
 	return {"success": true, "id": id, "amount": amount, "start_wave": id == "principal_advance"}
 
 
@@ -208,7 +209,7 @@ func settle_wave(wave: int, player: PlayerController, finance: BattleFinanceSyst
 	var cost := int(get_interest_pact_terms().sanity_per_wave)
 	interest_sanity_paid += cost
 	apply_stat(player, "interest_pact", "humanity", -interest_sanity_paid)
-	finance.record_trade_activity("哥布林交易：理智-%d（本局累计-%d）" % [cost, interest_sanity_paid])
+	finance.record_trade_activity(L10n.message("log.trade.sanity_cost", [cost, interest_sanity_paid]))
 
 
 static func apply_stat(player: PlayerController, source: String, stat: String, value: float) -> void:

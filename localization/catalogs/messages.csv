@@ -1,0 +1,79 @@
+keys,zh_CN,en
+error.bank.already_purchased,已购买,Purchased
+error.bank.bank_required,请在理财页面调整附魔或出售物品。,Visit the Bank to change enchantments or sell items.
+error.bank.busy,操作正在处理。,Operation in progress.
+error.bank.deposit_closed,交易限制：本次不可存款，下波恢复。,Bargain restriction: deposits are blocked until next wave.
+error.bank.deposit_exceeds_gold,存入金额超过金币余额。,Deposit exceeds your gold balance.
+error.bank.enchantment_configuration,无法配置：请检查武器空槽和附魔归属。,Cannot equip: check weapon slots and enchantment ownership.
+error.bank.enchantment_equipped,已装备的附魔需要先卸下。,Unequip this enchantment before selling.
+error.bank.enchantment_incompatible,此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,This weapon cannot use that enchantment. The Cast-Iron Grenade Launcher does not currently support Pierce.
+error.bank.insufficient_gold,金币不足,Not enough gold
+error.bank.insufficient_load,武器负载不足,Insufficient load capacity
+error.bank.invalid_amount,请输入大于 0 的整数。,Enter a whole number greater than 0.
+error.bank.item_missing,物品已不存在，请重新选择。,This item no longer exists. Select again.
+error.bank.last_weapon,至少保留一把武器，最后一把不可出售。,Keep at least one weapon. Your last weapon cannot be sold.
+error.bank.loan_terms_expired,这份贷款条款已失效。,These loan terms have expired.
+error.bank.loan_terms_open,请先选择或关闭贷款条款。,Choose or close the loan terms first.
+error.bank.no_epic_relic,当前没有可购买的史诗遗物，强力刷新资格已保留。,No Epic relic is currently available. Your Power Reroll has been retained.
+error.bank.no_loan,当前没有需要偿还的贷款。,There is no outstanding loan.
+error.bank.operation_failed,操作未成功，请重试。,Operation failed. Please try again.
+error.bank.quote_changed,物品或报价已变化，请重新确认。,The item or quote changed. Please confirm again.
+error.bank.relic_stack_limit,遗物已达叠加上限,Relic stack limit reached
+error.bank.repayment_insufficient_gold,金币不足，无法一次性还清当前欠款。,Not enough gold to repay the full outstanding balance.
+error.bank.reroll_insufficient_gold,金币不足，无法刷新。,Not enough gold to reroll.
+error.bank.sale_failed_restored,出售失败，物品已恢复。,Sale failed. The item was restored.
+error.bank.sanity_price_changed,理智变化后价格已更新，请查看新价格再购买。,Prices changed with Sanity. Review the new price before purchasing.
+error.bank.select_transaction,请选择存入或取出。,Choose deposit or withdrawal.
+error.bank.trade_expired,这笔交易已失效。,This bargain has expired.
+error.bank.transaction_used,本波已办理存取，下波恢复。,Bank action already used this wave. Refreshes next wave.
+error.bank.transactions_closed,交易限制：本次银行存取已关闭，下波恢复。,Bargain restriction: bank actions are closed until next wave.
+error.bank.upgrade_requirements_changed,升级条件已改变,Upgrade requirements have changed
+error.bank.weapon_already_owned,已拥有此武器,Weapon already owned
+error.bank.withdraw_exceeds_principal,取出金额超过本金。,Withdrawal exceeds your principal.
+error.main_menu.battle_start_failed,进入战斗失败，请重试,Could not start battle. Please try again.
+error.main_menu.no_characters,没有可用角色,No available characters
+error.shop.closed,购买失败  商店未开启,Purchase failed: shop is closed
+error.shop.insufficient_gold,购买失败  金币不足,Purchase failed: not enough gold
+error.shop.invalid_offer,购买失败  无效的选项,Purchase failed: invalid offer
+error.shop.operation_failed,操作失败  请重试,Action failed. Please try again.
+error.shop.reroll_insufficient_gold,刷新失败  金币不足,Reroll failed: not enough gold
+error.shop.upgrade_failed,购买失败  升级未生效,Purchase failed: upgrade not applied
+error.weapon.enchantment_incompatible,此武器暂不支持%s附魔,This weapon does not support %s enchantments yet
+log.challenge.accepted_prefix,接受下一波挑战：,Accepted next-wave challenge: 
+log.challenge.completed,挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。,Challenge complete: automatically deposited %d gold after interest; bonus principal +%d and Luck +%d.
+log.challenge.principal_granted,下一波挑战：本金 +%d（当前 %d）,Next-wave challenge: principal +%d (now %d)
+log.combat.gold_earned,战斗获得 %d 金币%s,Combat earnings: %d gold%s
+log.combat.incomplete_wave_suffix,（本波未完成）, (wave unfinished)
+log.finance.bankruptcy_reorganization,破产重组：本金 +%d（当前 %d），复活次数 +1,Bankruptcy Reorganization: principal +%d (now %d); revives +1
+log.finance.deposit,存入 %d 金币，本金 %d → %d,Deposited %d gold; principal %d → %d
+log.finance.dividend_multiplier_suffix,；分红支票触发 %d 倍结算,; Dividend Check triggered a %d× payout
+log.finance.effective_rate_changed,有效利率：%s%% → %s%%,Effective interest rate: %s%% → %s%%
+log.finance.fraction_carried_suffix,；收益不足 1 金币，小数留待后续结算,"; income below 1 gold, fraction retained for later"
+log.finance.high_yield.fulfilled,高利契约：已满足存款条件，本波利率额外 +%s 个百分点,High-Yield Contract: deposit requirement met; interest rate +%s percentage points this wave
+log.finance.high_yield.unfulfilled,高利契约：未满足存入 %d 金币条件，本波无额外加息，仍按原利率结息,"High-Yield Contract: required deposit of %d gold not met; normal interest still applies, without the bonus"
+log.finance.initial_balance,开局本金 %d，利率 %s%%,Starting principal %d; interest rate %s%%
+log.finance.interest_not_received,%s：未收到利息（%s）,%s: no interest received (%s)
+log.finance.interest_rate_growth,%s：收到利息，利率成长 +%s 个百分点,%s: interest received; rate grows by %s percentage points
+log.finance.interest_received,%s：利息 +%d 金币（本金 %d，利率 %s%%）,%s: interest +%d gold (principal %d; rate %s%%)
+log.finance.no_interest_suffix,；本次无利息收益,; no interest income this time
+log.finance.principal_granted,%s：本金 +%d（当前 %d）,%s: principal +%d (now %d)
+log.finance.reason.credit_failed,金币入账失败,Gold payment failed
+log.finance.reason.dividend_clock,周期分红钟·额外结息,Dividend Clock · Extra Interest
+log.finance.reason.extra_interest,额外结息,Extra Interest
+log.finance.reason.no_principal,无本金,No principal
+log.finance.reason.not_settled,未结算,Not settled
+log.finance.reason.perpetual_annuity,永续年金·额外结息,Perpetual Annuity · Extra Interest
+log.finance.reason.principal_gift,本金赠予,Principal Grant
+log.finance.reason.relic_interest,%s·额外结息,%s · Extra Interest
+log.finance.reason.requirements_unmet,条件未满足,Requirement not met
+log.finance.reason.wave_interest,波末结息,Wave-End Interest
+log.finance.revival_cost,%s：复活消耗 %d 本金，剩余 %d,%s: revival cost %d principal; %d remaining
+log.finance.sanity_loss_suffix,；利息因理智减少 %s 金币,; Sanity reduced interest by %s gold
+log.finance.stat_growth,%s：%s %s%s%s,%s: %s %s%s%s
+log.finance.withdraw,取出 %d 金币，本金 %d → %d,Withdrew %d gold; principal %d → %d
+log.loan.borrowed,哥布林贷款：获得 %d 金币，第%d波结束应还 %d 金币（每波利息 %s%%）,Goblin Loan: received %d gold; repay at the end of wave %d: %d gold (interest %s%% per wave)
+log.loan.repaid,贷款%s还清：−%d 金币,Loan repaid (%s): −%d gold
+log.loan.repayment.automatic,自动,automatic
+log.loan.repayment.manual,主动,manual
+log.loan.unpaid,贷款未还：金币 %d / 应还 %d；复利 +%d，应还 %d 金币,Loan unpaid: gold %d / due %d; compound interest +%d; now due %d gold
+log.trade.sanity_cost,哥布林交易：理智-%d（本局累计-%d）,Goblin Bargain: Sanity −%d (−%d total this run)

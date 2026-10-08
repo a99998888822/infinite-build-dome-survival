@@ -114,7 +114,7 @@ func accept(token: String, index: int, finance: BattleFinanceSystem, stats: RunS
 		_busy = false
 		return {"success":false,"reason":"transaction_failed"}
 	stats.decide_advice("loan",token,true)
-	finance.record_loan_activity("哥布林贷款：获得 %d 金币，第%d波结束应还 %d 金币（每波利息 %s%%）" % [chosen.amount,preparation_wave,chosen.due,HumanityEconomy.number(float(chosen.rate_percent))])
+	finance.record_loan_activity(L10n.message("log.loan.borrowed", [chosen.amount,preparation_wave,chosen.due,HumanityEconomy.number(float(chosen.rate_percent))]))
 	_busy = false
 	return {"success":true,"amount":chosen.amount,"due":chosen.due}
 
@@ -132,7 +132,7 @@ func repay(finance: BattleFinanceSystem, automatic := false) -> Dictionary:
 		return {"success":false,"reason":"transaction_failed"}
 	paid_this_visit = true
 	dialog_open = false
-	finance.record_loan_activity("贷款%s还清：−%d 金币" % ["自动" if automatic else "主动",amount])
+	finance.record_loan_activity(L10n.message("log.loan.repaid", ["log.loan.repayment.automatic" if automatic else "log.loan.repayment.manual",amount]))
 	_busy = false
 	return {"success":true,"action":"paid","amount":amount,"borrowed":previous.amount}
 
@@ -150,7 +150,7 @@ func settle_wave(wave: int, finance: BattleFinanceSystem) -> Dictionary:
 		debt.due_wave = wave+1
 		debt.rollovers = int(debt.rollovers)+1
 		result = {"success":true,"action":"rollover","before":before,"due":debt.due,"interest":int(debt.due)-before,"gold":finance.get_current_gold()}
-		finance.record_loan_activity("贷款未还：金币 %d / 应还 %d；复利 +%d，应还 %d 金币" % [result.gold,before,result.interest,result.due])
+		finance.record_loan_activity(L10n.message("log.loan.unpaid", [result.gold,before,result.interest,result.due]))
 	result["wave"] = wave
 	last_settlement = result.duplicate(true)
 	return result

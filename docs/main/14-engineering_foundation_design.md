@@ -79,7 +79,6 @@ res://
 | `GameGlobal` | 运行时标记、全局模式、调试开关、重置事件 | 是 |
 | `AudioManager` | 音量设置、播放接口、音效去重 | 是 |
 | `CampProgression` | 局外营地运行态 | 业务服务，依赖工程基础设施 |
-| `ZoneProgression` | 区域连驻运行态 | 业务服务，依赖工程基础设施 |
 
 ### 4.1 `DataRegistry`
 

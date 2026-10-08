@@ -41,6 +41,7 @@ var _key_labels: Array[Label] = []
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(sync_all)
 	add_theme_stylebox_override("panel", _box(Color("111b16"), Color("9a8149")))
 	_canvas = Control.new()
 	_canvas.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -49,16 +50,16 @@ func _ready() -> void:
 	_sidebar.add_theme_stylebox_override("panel", _box(Color("0e1913"), Color("0e1913"), 0))
 	_sidebar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_canvas.add_child(_sidebar)
-	_sidebar_title = _label(_canvas, "设置", 24, GOLD)
+	_sidebar_title = _label(_canvas, "ui.settings.title", 24, GOLD)
 	_divider = _line(_canvas)
-	_heading = _label(_canvas, "基础设置", 24, GOLD)
+	_heading = _label(_canvas, "ui.settings.general", 24, GOLD)
 	_header_line = _line(_canvas)
 	_footer_line = _line(_canvas)
 	var group := ButtonGroup.new()
 	for i in 2:
 		var tab := Button.new()
 		tab.name = "BasicSettingsTab" if i == 0 else "CombatSettingsTab"
-		tab.text = "基础设置" if i == 0 else "战斗设置"
+		tab.text = "ui.settings.general" if i == 0 else "战斗设置"
 		tab.toggle_mode = true
 		tab.button_group = group
 		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -86,7 +87,7 @@ func _ready() -> void:
 
 
 func open_page(in_battle: bool) -> void:
-	return_button.text = "返回战斗" if in_battle else "返回"
+	return_button.text = "ui.common.return_to_battle" if in_battle else "ui.common.back"
 	menu_button.visible = in_battle
 	sync_all()
 	select_page(0)
@@ -132,7 +133,7 @@ func select_page(index: int) -> void:
 	basic_settings.visible = index == 0
 	combat_settings.visible = index == 1
 	show_hints.visible = index == 1
-	_heading.text = "基础设置" if index == 0 else "战斗设置"
+	_heading.text = "ui.settings.general" if index == 0 else "战斗设置"
 	content_scroll.scroll_vertical = 0
 	for i in tabs.size():
 		var selected := i == index
@@ -154,7 +155,7 @@ func _build_basic(parent: Node) -> void:
 	basic_settings.name = "BasicSettings"
 	basic_settings.add_theme_constant_override("separation", 12)
 	parent.add_child(basic_settings)
-	for spec in [["背景音乐", AudioManager.BUS_BGM, "bgm_volume"], ["音效", AudioManager.BUS_SFX, "sfx_volume"]]:
+	for spec in [["ui.settings.audio.music", AudioManager.BUS_BGM, "bgm_volume"], ["ui.settings.audio.sound_effects", AudioManager.BUS_SFX, "sfx_volume"]]:
 		var row := _basic_row(spec[0])
 		var slider := HSlider.new()
 		slider.min_value = 0
@@ -171,15 +172,22 @@ func _build_basic(parent: Node) -> void:
 		slider.value_changed.connect(func(value: float):
 			amount.text = "%d%%" % roundi(value)
 			AudioManager.set_bus_volume(spec[1], roundi(value)))
-	var resolution_row := _basic_row("界面分辨率")
+	var resolution_row := _basic_row("ui.settings.display.resolution")
 	resolution = OptionButton.new()
 	resolution.name = "Resolution"
 	resolution.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	SettingsUIStyle.apply_button(resolution)
+	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+		var style := resolution.get_theme_stylebox(state).duplicate() as StyleBox
+		style.content_margin_left = 12
+		style.content_margin_right = 12
+		resolution.add_theme_stylebox_override(state, style)
+	resolution.get_popup().add_theme_constant_override("start_padding", 12)
+	resolution.get_popup().add_theme_constant_override("end_padding", 12)
 	for preset in WindowSettings.get_resolution_presets(): resolution.add_item("%d × %d" % [preset.x, preset.y])
 	resolution.item_selected.connect(func(index: int): WindowSettings.set_resolution_index(index))
 	resolution_row.add_child(resolution)
-	var fullscreen_row := _basic_row("全屏：")
+	var fullscreen_row := _basic_row("ui.settings.display.fullscreen")
 	var group := ButtonGroup.new()
 	for enabled in [true, false]:
 		var button := Button.new()
@@ -207,14 +215,14 @@ func _build_combat(parent: Node) -> void:
 	combat_settings.name = "CombatSettings"
 	combat_settings.add_theme_constant_override("separation", 0)
 	parent.add_child(combat_settings)
-	wheelchair_mode = _checkbox("轮椅模式", PAPER)
+	wheelchair_mode = _checkbox("ui.settings.auto_attack", PAPER)
 	wheelchair_mode.name = "WheelchairMode"
 	wheelchair_mode.custom_minimum_size.y = 28
 	wheelchair_mode.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	wheelchair_mode.toggled.connect(func(value: bool): CombatSettings.set_option("wheelchair_mode", value))
 	combat_settings.add_child(wheelchair_mode)
 	_space(combat_settings, 16)
-	_label(combat_settings, "移动方式", 16).custom_minimum_size.y = 24
+	_label(combat_settings, "ui.settings.movement.mode", 16).custom_minimum_size.y = 24
 	_space(combat_settings, 10)
 	var movement := HBoxContainer.new()
 	movement.add_theme_constant_override("separation", 16)
@@ -228,13 +236,13 @@ func _build_combat(parent: Node) -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.custom_minimum_size = Vector2(0, 80)
 		movement.add_child(button)
-		var title := _label(button, "鼠标右键" if i == 0 else "方向键 / WASD", 18)
+		var title := _label(button, "ui.settings.controls.right_mouse" if i == 0 else "方向键 / WASD", 18)
 		title.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 		title.offset_left = 18
 		title.offset_top = 10
 		title.offset_right = -40
 		title.offset_bottom = 38
-		var description := _label(button, "点击地面移动 · S 停止移动" if i == 0 else "按住方向键，直接控制移动", 12, MUTED)
+		var description := _label(button, "ui.settings.movement.mouse_hint" if i == 0 else "按住方向键，直接控制移动", 12, MUTED)
 		description.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 		description.offset_left = 18
 		description.offset_top = 43
@@ -250,12 +258,12 @@ func _build_combat(parent: Node) -> void:
 		mode_buttons.append(button)
 		button.pressed.connect(func(): CombatSettings.set_option("keyboard_movement", i == 1))
 	_space(combat_settings, 22)
-	_label(combat_settings, "战斗操作", 16).custom_minimum_size.y = 24
+	_label(combat_settings, "ui.settings.controls.title", 16).custom_minimum_size.y = 24
 	_space(combat_settings, 12)
 	var keys := VBoxContainer.new()
 	keys.add_theme_constant_override("separation", 8)
 	combat_settings.add_child(keys)
-	for key_name in ["数字键", "鼠标左键", "鼠标右键", "Esc"]:
+	for key_name in ["ui.settings.controls.number_keys", "ui.settings.controls.left_mouse", "ui.settings.controls.right_mouse", "Esc"]:
 		var row := HBoxContainer.new()
 		row.custom_minimum_size.y = 28
 		row.add_theme_constant_override("separation", 16)
@@ -271,8 +279,8 @@ func _build_combat(parent: Node) -> void:
 		description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_key_descriptions.append(description)
-		if key_name == "鼠标左键":
-			quick_cast = _checkbox("快捷施法", ICE)
+		if key_name == "ui.settings.controls.left_mouse":
+			quick_cast = _checkbox("ui.settings.controls.quick_cast", ICE)
 			quick_cast.name = "QuickCast"
 			quick_cast.custom_minimum_size = Vector2(136, 28)
 			quick_cast.toggled.connect(func(value: bool): CombatSettings.set_option("quick_cast", value))
@@ -287,20 +295,20 @@ func _build_footer() -> void:
 	var left := HBoxContainer.new()
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	footer.add_child(left)
-	show_hints = _checkbox("显示操作提示", PAPER)
+	show_hints = _checkbox("ui.settings.controls.show_hints", PAPER)
 	show_hints.name = "ShowCombatHints"
 	show_hints.toggled.connect(func(value: bool): CombatSettings.set_option("show_hints", value))
 	left.add_child(show_hints)
 	return_button = Button.new()
 	return_button.name = "ReturnButton"
-	return_button.text = "返回战斗"
+	return_button.text = "ui.common.return_to_battle"
 	return_button.custom_minimum_size = Vector2(160, 40)
 	SettingsUIStyle.apply_button(return_button)
 	return_button.pressed.connect(func(): back_requested.emit())
 	footer.add_child(return_button)
 	menu_button = Button.new()
 	menu_button.name = "MainMenuButton"
-	menu_button.text = "返回主菜单"
+	menu_button.text = "ui.settings.return_to_main_menu"
 	menu_button.custom_minimum_size = Vector2(160, 40)
 	SettingsUIStyle.apply_button(menu_button)
 	menu_button.pressed.connect(func(): main_menu_requested.emit())
@@ -321,15 +329,15 @@ func sync_display() -> void:
 	var fullscreen := WindowSettings.is_fullscreen()
 	fullscreen_yes.set_pressed_no_signal(fullscreen)
 	fullscreen_no.set_pressed_no_signal(not fullscreen)
-	fullscreen_yes.text = "● 是" if fullscreen else "○ 是"
-	fullscreen_no.text = "○ 否" if fullscreen else "● 否"
+	fullscreen_yes.text = "ui.settings.yes_selected" if fullscreen else "ui.settings.yes_unselected"
+	fullscreen_no.text = "ui.settings.no_unselected" if fullscreen else "ui.settings.no_selected"
 	var native_locked := WindowSettings.is_embedded() or OS.has_feature("mobile")
 	resolution.disabled = native_locked or fullscreen
 	fullscreen_yes.disabled = native_locked
 	fullscreen_no.disabled = native_locked
-	display_note.text = "修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。"
-	if WindowSettings.is_embedded(): display_note.text = "调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。"
-	elif OS.has_feature("mobile"): display_note.text = "当前设备使用系统屏幕尺寸。音量修改会自动保存。"
+	display_note.text = "ui.settings.autosave_hint"
+	if WindowSettings.is_embedded(): display_note.text = "ui.settings.display.embedded_hint"
+	elif OS.has_feature("mobile"): display_note.text = "ui.settings.display.system_size_hint"
 
 
 func sync_combat() -> void:
@@ -343,20 +351,20 @@ func sync_combat() -> void:
 	quick_cast.set_pressed_no_signal(CombatSettings.quick_cast)
 	wheelchair_mode.set_pressed_no_signal(CombatSettings.wheelchair_mode)
 	show_hints.set_pressed_no_signal(CombatSettings.show_hints)
-	_key_descriptions[0].text = "按编号直接施放，无需进入瞄准" if CombatSettings.quick_cast else "按武器栏编号选择，再次选武器会切换瞄准"
-	_key_descriptions[1].text = "无需点击左键确认" if CombatSettings.quick_cast else "瞄准时确认施放；成功后退出瞄准"
-	_key_descriptions[2].text = "取消瞄准；使用方向键 / WASD 移动" if CombatSettings.keyboard_movement else "取消瞄准并移动至目的地；S 停止移动"
-	_key_descriptions[3].text = "优先取消瞄准；未瞄准时打开暂停"
-	_key_labels[0].text = "鼠标滚轮" if CombatSettings.keyboard_movement else "数字键"
+	_key_descriptions[0].text = "ui.settings.controls.number_quick_cast_hint" if CombatSettings.quick_cast else "ui.settings.controls.number_select_hint"
+	_key_descriptions[1].text = "ui.settings.controls.no_click_needed" if CombatSettings.quick_cast else "ui.settings.controls.confirm_cast_hint"
+	_key_descriptions[2].text = "ui.settings.controls.cancel_keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.cancel_mouse_hint"
+	_key_descriptions[3].text = "ui.settings.controls.escape_hint"
+	_key_labels[0].text = "ui.settings.controls.mouse_wheel" if CombatSettings.keyboard_movement else "ui.settings.controls.number_keys"
 	if CombatSettings.keyboard_movement:
-		_key_descriptions[0].text = "循环切换当前武器，鼠标旁图标同步切换"
-		_key_descriptions[1].text = "单击立即施放当前武器" if CombatSettings.quick_cast else "单击显示指示器，再次单击施放"
+		_key_descriptions[0].text = "ui.settings.controls.wheel_hint"
+		_key_descriptions[1].text = "ui.settings.controls.click_quick_cast_hint" if CombatSettings.quick_cast else "ui.settings.controls.click_aim_hint"
 	if CombatSettings.wheelchair_mode:
-		_key_labels[0].text = "自动攻击"
-		_key_descriptions[0].text = "无需按键，武器在攻击范围内自动施放"
-		_key_descriptions[1].text = "无需点击左键确认"
-		_key_descriptions[2].text = "使用方向键 / WASD 移动" if CombatSettings.keyboard_movement else "移动至目的地；S 停止移动"
-		_key_descriptions[3].text = "打开暂停"
+		_key_labels[0].text = "ui.settings.controls.auto_attack"
+		_key_descriptions[0].text = "ui.settings.controls.auto_attack_hint"
+		_key_descriptions[1].text = "ui.settings.controls.no_click_needed"
+		_key_descriptions[2].text = "ui.settings.controls.keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.mouse_move_hint"
+		_key_descriptions[3].text = "ui.settings.controls.pause_hint"
 
 
 func _basic_row(title: String) -> HBoxContainer:

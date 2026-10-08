@@ -13,7 +13,6 @@ const CONFIG_PATHS: Dictionary = {
 	"erosion_pressure_rules": "res://data_config/erosion_pressure_rules.json",
 	"enemy_adaptation_rules": "res://data_config/enemy_adaptation_rules.json",
 	"camp_buildings": "res://data_config/camp_buildings.json",
-	"zones": "res://data_config/zones.json",
 	"waves": "res://data_config/waves.json",
 	"drop_tables": "res://data_config/drop_tables.json",
 	"augmentations": "res://data_config/augmentations.json",

@@ -30,7 +30,7 @@ var _left: Control
 var _right: Control
 var _monster_heading: Label
 var _monster_scroll: ScrollContainer
-var _monster_list: HBoxContainer
+var _monster_list: Control
 var _monster_nodes: Array[Dictionary] = []
 var _speech: Panel
 var _speech_label: Label
@@ -51,6 +51,7 @@ var _effects: Control
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_language)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -62,7 +63,7 @@ func _ready() -> void:
 	_card = _panel(self, "151e19", "8d7953")
 	_title = _label(_card, "", 36, GOLD)
 	_subtitle = _label(_card, "", 14, MUTED)
-	_heading = _label(_card, "营地结算", 20, GOLD)
+	_heading = _label(_card, "ui.settlement.camp_title", 20, GOLD)
 	_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_scroll = ScrollContainer.new()
 	FinanceUIStyle.scroll(_scroll)
@@ -78,43 +79,46 @@ func _ready() -> void:
 	_right = Control.new()
 	_right.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_content.add_child(_right)
-	_monster_heading = _label(_left, "击杀记录", 20)
+	_monster_heading = _label(_left, "ui.settlement.kill_records", 20)
 	_monster_scroll = ScrollContainer.new()
 	_monster_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_monster_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_left.add_child(_monster_scroll)
-	_monster_list = HBoxContainer.new()
-	_monster_list.add_theme_constant_override("separation", 12)
+	_monster_list = Control.new()
+	_monster_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_monster_scroll.add_child(_monster_list)
 	_speech = _panel(_left, "2a3023", "998252")
 	_speech_label = _label(_speech, "", 18)
 	_speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_portrait = _texture(_left, null)
 	_desk = _texture(_left, DESK)
-	var names := ["总杀敌数", "赚取金币", "度过波次", "赚取利息"]
+	var names := ["ui.settlement.total_kills", "ui.settlement.gold_earned", "ui.settlement.waves_survived", "ui.settlement.interest_earned"]
 	for i in 4:
 		var row := _panel(_right, "1b261f", "3f4b3b")
 		var icon := _texture(row, _atlas(ICONS, Rect2(i * 32, 0, 32, 32)))
 		var label := _label(row, names[i], 18)
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 		var value := _label(row, "0", 24)
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var points := _label(row, "+0", 20, GOLD)
 		points.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_rows.append({"panel": row, "icon": icon, "label": label, "value": value, "points": points})
-	_conversion = _label(_right, "右列为各项折算的营地币", 12, MUTED)
+	_conversion = _label(_right, "ui.settlement.conversion_hint", 12, MUTED)
 	_conversion.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_total = _panel(_right, "292c20", "9c834e")
 	_total_icon = _texture(_total, _atlas(ICONS, Rect2(128, 0, 32, 32)))
-	_total_title = _label(_total, "本次获得营地币", 18, GOLD)
+	_total_title = _label(_total, "ui.settlement.camp_coins_earned", 18, GOLD)
 	_total_value = _label(_total, "+ 0", 48, Color("ffe6a2"))
 	_status = _label(_total, "", 12, Color("96bda3"))
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	back_button = Button.new()
 	back_button.name = "ResultBackButton"
-	back_button.text = "返回主界面"
+	back_button.text = "ui.common.return_to_main_menu"
 	FinanceUIStyle.button(back_button)
 	back_button.pressed.connect(func(): stop_audio(); back_requested.emit())
 	_card.add_child(back_button)
-	_skip_hint = _label(_card, "点击空白处 / 空格快进", 12, MUTED)
+	_skip_hint = _label(_card, "ui.settlement.skip_hint", 12, MUTED)
 	_skip_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_cue = AudioStreamPlayer.new()
 	_cue.bus = "SFX"
@@ -146,13 +150,13 @@ func present(data: Dictionary) -> void:
 	_last_stage = -1
 	_voice_started = false
 	_skipped = false
-	_title.text = "冒险结束"
-	_subtitle.text = "通关！" if bool(report.victory) else "第%d波 阵亡" % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
-	_subtitle.text += " · 难度 %s" % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
-	_heading.text = "结算 ×%d%%" % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
+	_title.text = "ui.settlement.defeat"
+	_subtitle.text = L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
+	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
+	_heading.text = L10n.text("ui.settlement.multiplier") % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
 	_title.add_theme_color_override("font_color", GOLD if bool(report.victory) else Color("c78f79"))
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
-	_speech_text = str(reaction.get("speech", ""))
+	_speech_text = L10n.source(str(reaction.get("speech", "")))
 	_voice_path = str(reaction.get("voice_path", "")).strip_edges()
 	_reaction_row = int(reaction.get("row", 3))
 	_speech_label.text = _speech_text
@@ -167,18 +171,19 @@ func present(data: Dictionary) -> void:
 		var tile := _panel(_monster_list, "1e2821", "756748")
 		var path := str(_config.monster_portraits.get(id, ""))
 		var icon := _texture(tile, load(path) as Texture2D if ResourceLoader.exists(path) else _atlas(ICONS, Rect2(0, 0, 32, 32)))
-		var label := _label(tile, str(DataRegistry.get_record("enemies", id).get("display_name", id)), 16)
+		var label := _label(tile, L10n.source(str(DataRegistry.get_record("enemies", id).get("display_name", id))), 16)
+		label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		var count := _label(tile, "× 0", 18, GOLD)
 		count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_monster_nodes.append({"tile": tile, "icon": icon, "label": label, "count": count, "amount": int(counts[id])})
+		_monster_nodes.append({"id": id, "tile": tile, "icon": icon, "label": label, "count": count, "amount": int(counts[id])})
 	if ids.is_empty():
-		_label(_monster_list, "本次未击败敌人", 14, MUTED)
+		_label(_monster_list, "ui.settlement.no_kills", 14, MUTED)
 	var rates: Dictionary = _config.formula
-	var tips := ["每 %d 只敌人折算 1 营地币。" % int(rates.kills_per_coin),
-		"每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。" % int(rates.gold_per_coin),
-		"每完整度过一波获得 %d 营地币。" % int(rates.coins_per_wave),
-		"每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。" % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
+	var tips := [L10n.text("ui.settlement.kills_tooltip") % int(rates.kills_per_coin),
+		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
+		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
+		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
 	for i in 4:
 		_rows[i].panel.tooltip_text = tips[i]
 		_rows[i].panel.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -206,6 +211,27 @@ func _process(delta: float) -> void:
 	seek(next)
 
 
+func _refresh_language() -> void:
+	if report.is_empty():
+		return
+	_subtitle.text = L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
+	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
+	_heading.text = L10n.text("ui.settlement.multiplier") % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
+	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
+	_speech_text = L10n.source(reaction.get("speech", ""))
+	for monster in _monster_nodes:
+		monster.label.text = L10n.source(DataRegistry.get_record("enemies", str(monster.id)).get("display_name", monster.id))
+	var rates: Dictionary = _config.formula
+	var tips := [L10n.text("ui.settlement.kills_tooltip") % int(rates.kills_per_coin),
+		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
+		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
+		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
+	for index in 4:
+		_rows[index].panel.tooltip_text = tips[index]
+	# Retain progress, payout state, and audio playback.
+	seek(_elapsed)
+
+
 func seek(seconds: float) -> void:
 	_elapsed = seconds
 	if report.is_empty(): return
@@ -218,12 +244,12 @@ func seek(seconds: float) -> void:
 	_total_value.text = "+ " + _number(roundi(int(report.camp_currency) * _progress(4)))
 	var pulse := maxf(0, 1 - absf(seconds - float(_config.presentation.stage_times[4]) - 0.3) / 0.3)
 	_total_value.scale = Vector2.ONE * (1 + pulse * 0.07)
-	_status.text = ("已结算" if bool(report.get("paid", false)) else "保存失败，返回时重试") if _progress(4) >= 1 else "正在清点…"
-	_conversion.text = "右列为基础营地币"
+	_status.text = ("ui.settlement.saved" if bool(report.get("paid", false)) else "ui.settlement.save_failed") if _progress(4) >= 1 else "ui.settlement.counting"
+	_conversion.text = "ui.settlement.base_conversion_hint"
 	if _progress(4) >= 1:
-		_conversion.text = "基础 %s ×%d%% = %s" % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0), _number(int(report.camp_currency))]
+		_conversion.text = L10n.text("ui.settlement.conversion") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0), _number(int(report.camp_currency))]
 	if bool(report.interest_capped) and _progress(3) >= 1:
-		_conversion.text += " · 利息贡献已达上限"
+		_conversion.text += L10n.text("ui.settlement.interest_cap_suffix")
 	var voice_time := float(_config.presentation.voice_time)
 	_speech.visible = seconds >= voice_time and not _speech_text.is_empty()
 	_speech_label.visible_characters = -1 if _skipped else maxi(0, int((seconds - voice_time) * 18))
@@ -277,7 +303,7 @@ func _arrange() -> void:
 	# a desktop-sized minimum into shorter windows or both stacked columns.
 	var stacked_offset := 252.0 if stacked else 0.0
 	var body_height := maxf(228 if short_window else (252 if compact else 348), _scroll.size.y - stacked_offset)
-	var left_width := width if stacked else (minf(196, width * 0.33) if compact else 240.0)
+	var left_width := width if stacked else (minf(196, width * 0.33) if compact else 300.0)
 	var gap := 14.0 if compact else 24.0
 	_left.position = Vector2.ZERO
 	_left.size = Vector2(left_width, 238 if stacked else body_height)
@@ -287,18 +313,27 @@ func _arrange() -> void:
 	_content.size = _content.custom_minimum_size
 	_place(_monster_heading, Vector2.ZERO, Vector2(left_width, 25), 14 if compact else 18)
 	_monster_scroll.position = Vector2(0, 23 if short_window else (28 if compact else 34))
-	_monster_scroll.size = Vector2(left_width, 102 if compact else 132)
-	for monster in _monster_nodes:
+	var columns := mini(2, maxi(1, _monster_nodes.size()))
+	var rows := maxi(1, ceili(float(_monster_nodes.size()) / columns))
+	var tile_gap := 6.0
+	var tw := floorf((left_width - tile_gap * (columns - 1)) / columns)
+	var th := 44.0 if short_window else (50.0 if stacked else (64.0 if compact else 92.0))
+	var grid_height := rows * th + (rows - 1) * tile_gap
+	_monster_scroll.size = Vector2(left_width, grid_height)
+	_monster_list.custom_minimum_size = _monster_scroll.size
+	for index in _monster_nodes.size():
+		var monster: Dictionary = _monster_nodes[index]
 		var tile: Control = monster.tile
-		var tw := 87.0 if compact else 112.0
-		var th := 94.0 if compact else 124.0
-		tile.custom_minimum_size = Vector2(tw, th)
-		monster.icon.position = Vector2(6, 6)
-		monster.icon.size = Vector2(tw - 12, 50 if compact else 74)
-		_place(monster.label, Vector2(2, th - 40), Vector2(tw - 4, 20), 12 if compact else 14)
-		_place(monster.count, Vector2(2, th - 22), Vector2(tw - 4, 20), 12 if compact else 16)
-	var speech_y := 124.0 if short_window or stacked else (131.0 if compact else 176.0)
-	var speech_height := 52.0 if short_window or stacked else (60.0 if compact else 66.0)
+		var name_font_size := 10 if compact else 12
+		var line_height := 12.0 if compact else 18.0
+		tile.position = Vector2((index % columns) * (tw + tile_gap), floorf(float(index) / columns) * (th + tile_gap))
+		tile.size = Vector2(tw, th)
+		monster.icon.position = Vector2(4, 3)
+		monster.icon.size = Vector2(tw - 8, th - 2 * line_height - 6)
+		_place(monster.label, Vector2(2, th - 2 * line_height - 2), Vector2(tw - 4, line_height), name_font_size)
+		_place(monster.count, Vector2(2, th - line_height - 2), Vector2(tw - 4, line_height), 10 if compact else 14)
+	var speech_y := _monster_scroll.position.y + grid_height + 8
+	var speech_height := 44.0 if short_window or stacked else (52.0 if compact else 60.0)
 	_speech.position = Vector2(0, speech_y)
 	_speech.size = Vector2(left_width, speech_height)
 	_place(_speech_label, Vector2(8, 7), _speech.size - Vector2(16, 14), 12 if compact else 16)
@@ -317,8 +352,9 @@ func _arrange() -> void:
 		row.panel.size = Vector2(rw, row_height)
 		row.icon.position = Vector2(8, 5 if compact else 9)
 		row.icon.size = Vector2.ONE * (24 if compact else 28)
-		_place(row.label, Vector2(38 if compact else 48, 0), Vector2(84 if compact else 124, row_height), 12 if compact else 16)
 		var value_x := rw * (0.40 if compact else 0.42)
+		var label_x := 38.0 if compact else 48.0
+		_place(row.label, Vector2(label_x, 0), Vector2(maxf(1, value_x - label_x - 6), row_height), 12 if compact else 16)
 		_place(row.value, Vector2(value_x, 0), Vector2(rw * 0.35, row_height), 16 if compact else 22)
 		_place(row.points, Vector2(rw * 0.76, 0), Vector2(rw * 0.24 - 10, row_height), 14 if compact else 18)
 	var rows_end := 4 * (row_height + row_gap)

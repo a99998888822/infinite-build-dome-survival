@@ -19,15 +19,15 @@ layout_mode = 2
 
 [node name="BackButton" type="Button" parent="TopBar" unique_id=1508394029]
 layout_mode = 2
-text = "返回主界面"
+text = "ui.common.return_to_main_menu"
 
 [node name="ResetSaveButton" type="Button" parent="TopBar" unique_id=1359170715]
 layout_mode = 2
-text = "清除存档并返还货币"
+text = "ui.camp.clear_save_tooltip"
 
 [node name="ResetUpgradesButton" type="Button" parent="TopBar" unique_id=2031410073]
 layout_mode = 2
-text = "重置属性升级并返还货币"
+text = "ui.camp.reset_upgrades_tooltip"
 
 [node name="ClearSaveDialog" type="ConfirmationDialog" parent="." unique_id=1002231805]
 title = "清除存档"
@@ -90,7 +90,7 @@ layout_mode = 2
 
 [node name="UpgradeOptionsTitle" type="Label" parent="MainSplit/DetailPanel/DetailContent" unique_id=154563898]
 layout_mode = 2
-text = "升级选项"
+text = "ui.camp.upgrades.title"
 
 [node name="UpgradeOptionsList" type="VBoxContainer" parent="MainSplit/DetailPanel/DetailContent" unique_id=611642300]
 layout_mode = 2

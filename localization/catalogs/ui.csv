@@ -1,0 +1,444 @@
+keys,zh_CN,en
+ui.bank.amount_placeholder,输入金额,Enter amount
+ui.bank.balance_summary,金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,Gold %d  │  Principal %d  │  Rate %.1f%%  │  Est. interest +%d
+ui.bank.challenge_deposit_done,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
+ui.bank.deposit.action,存入,Deposit
+ui.bank.deposit.confirm,确认存入,Confirm Deposit
+ui.bank.deposit.tab,存入本金,Deposit
+ui.bank.deposit_ownership_hint,"
+存款仍归你所有，下次进入银行可手动取出。强力刷新可跨波保留。","
+The deposit is still yours. You may withdraw it on your next bank visit. Power Reroll carries over between waves."
+ui.bank.high_yield.fulfilled,本波利率已 +%s 个百分点,Interest rate +%s percentage points this wave
+ui.bank.high_yield.progress,"高利契约：手动存入 %d / %d
+%s","High-Yield Contract: manual deposits %d / %d
+%s"
+ui.bank.high_yield.requirement,达标后利率 +%s 个百分点；未达标仍正常结息,Meet the target for +%s percentage points; normal interest still applies otherwise
+ui.bank.interest_purchase_hint,本波利息 +%d，足够购买「%s」,"Interest +%d this wave, enough to buy %s"
+ui.bank.interest_received,本波利息 +%d 金币 · 已入随身金币,Interest this wave: +%d gold · Added to carried gold
+ui.bank.next_wave,开始下一波,Next Wave
+ui.bank.power_reroll_done,强力刷新已使用，保底史诗遗物。,Power Reroll used. Epic relic guaranteed.
+ui.bank.purchase_done_prefix,已购买：,Purchased: 
+ui.bank.ready_hint,准备完成后，点击开始下一波。,"When ready, start the next wave."
+ui.bank.reroll_done,货架已刷新。,Shop rerolled.
+ui.bank.restriction.all,"交易限制：本次银行存取已关闭。
+下次进入银行恢复。","Bargain restriction: bank actions are closed this visit.
+They return on your next visit."
+ui.bank.restriction.deposit_only,交易限制：本次不可存款，仍可取款。,Bargain restriction: deposits are blocked; withdrawals remain available.
+ui.bank.restriction.no_deposit,交易限制：本次不可存款。,Bargain restriction: deposits are blocked this visit.
+ui.bank.return_to_inventory,归还背包,Return to Inventory
+ui.bank.revival.insufficient_principal,本金不足（需%d）,Insufficient principal (requires %d)
+ui.bank.revival.not_owned,未持有,Not owned
+ui.bank.revival.ready,可触发（消耗%d本金）,Ready (cost: %d principal)
+ui.bank.revival.used,本局已使用,Used this run
+ui.bank.revival_tooltip,已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。,"Automatically triggers when other revives are exhausted. Costs %d principal, then restores %s%% of max HP calculated after payment. Adds no carried gold and does not use a bank action."
+ui.bank.sale.confirm,确认出售,Confirm Sale
+ui.bank.sale.price,出售 · %d 金币,Sell · %d Gold
+ui.bank.sale.proceeds,"
+[color=#D4BC81]获得 %d 金币[/color]","
+[color=#D4BC81]Receive %d gold[/color]"
+ui.bank.sale.returned_enchantments_prefix,附魔将归还背包：,Enchantments returned to inventory: 
+ui.bank.sale.title_bonus,称号「%s」加价：%d,Title bonus (%s): %d
+ui.bank.sale.weapon_breakdown,"武器等级：%d
+基础回收：%d
+升级回收：%d","Weapon level: %d
+Base resale: %d
+Upgrade resale: %d"
+ui.bank.shop.power_reroll,强力刷新 · 免费,Power Reroll · Free
+ui.bank.shop.power_reroll_tooltip,消耗1次强力刷新：本次幸运+100，保底一件史诗（紫色）遗物。可跨波保留，直到主动刷新时使用。,Uses one Power Reroll: Luck +100 and at least one Epic (purple) relic guaranteed. Saved across waves until you manually reroll.
+ui.bank.shop.product,商品,Item
+ui.bank.shop.remaining,剩余 %d / %d 件,Remaining: %d / %d
+ui.bank.shop.reroll_price,刷新 · %d 金币,Reroll · %d Gold
+ui.bank.title,哥布林银行,Goblin Bank
+ui.bank.trade_accepted,交易已接受。,Bargain accepted.
+ui.bank.transaction_done,"本波已%s %d 金币
+下波可再次办理存取。","%s: %d gold this wave.
+Bank actions refresh next wave."
+ui.bank.transaction_done_hint,存取已完成。仍可购买、出售和配置附魔。,"Bank action used. Shopping, selling and enchanting remain available."
+ui.bank.withdraw.action,取出,Withdraw
+ui.bank.withdraw.confirm,确认取出,Confirm Withdrawal
+ui.bank.withdraw.tab,取出本金,Withdraw
+ui.camp.building.level,等级：%d / %d,Level: %d / %d
+ui.camp.building.level_benefits,建筑等级收益,Building Level Bonuses
+ui.camp.building.level_required,需建筑 Lv.%d,Requires building Lv.%d
+ui.camp.building.purchase_unlock,购买解锁（%d 营地币）,Unlock (%d Camp Coins)
+ui.camp.building.select_hint,选择一个建筑查看详情,Select a building for details
+ui.camp.building.unlocked,建筑已解锁,Building unlocked
+ui.camp.building.upgrade,升级建筑（Lv.%d → Lv.%d，%d 营地币）,"Upgrade building (Lv.%d → Lv.%d, %d Camp Coins)"
+ui.camp.buildings.subtitle,固定设施与成长入口,Facilities and progression
+ui.camp.buildings.title,营地建筑,Camp Buildings
+ui.camp.clear_save_tooltip,清除存档并返还货币,Clear save data and refund currency
+ui.camp.currency,营地币：%d,Camp Coins: %d
+ui.camp.finance.description,理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。,Bank: start with %d principal. Interest is calculated from principal × interest rate.
+ui.camp.purchase,购买（%d 营地币）,Buy (%d Camp Coins)
+ui.camp.purchase_amount,购买 %d,Buy %d
+ui.camp.reset_upgrades,重置升级,Reset Upgrades
+ui.camp.reset_upgrades_tooltip,重置属性升级并返还货币,Reset stat upgrades and refund currency
+ui.camp.stat.per_level,每级 %s%s,Per level: %s%s
+ui.camp.stat.upgrade_preview,属性升级  Lv.%d  →  Lv.%d,Stat upgrade  Lv.%d → Lv.%d
+ui.camp.stats.empty,尚无已应用属性,No applied bonuses yet
+ui.camp.stats.subtitle,已应用的营地成长,Applied camp bonuses
+ui.camp.stats.title,属性总览,Stat Overview
+ui.camp.title,营地搭建,Camp Building
+ui.camp.unlock_camp,解锁营地（%d 营地币）,Unlock camp (%d Camp Coins)
+ui.camp.unlocked_count,已解锁 %d 项,Unlocked: %d
+ui.camp.upgrade_to_level,升级至 Lv.%d（%d 营地币）,Upgrade to Lv.%d (%d Camp Coins)
+ui.camp.upgrades.applied,升级已生效,Upgrade applied
+ui.camp.upgrades.reset_done,升级已重置,Upgrades reset
+ui.camp.upgrades.subtitle,已解锁的属性成长,Unlocked stat upgrades
+ui.camp.upgrades.title,升级选项,Upgrades
+ui.challenge.accept_and_start,接受并开战,Accept & Fight
+ui.challenge.accepted,已接受,Accepted
+ui.challenge.start_battle,开战,Fight
+ui.challenge.start_normal,正常开战,Fight Normally
+ui.challenge.wave_title,第%d波·挑战,Wave %d · Challenge
+ui.character.difficulty,难度,Difficulty
+ui.character.four_starting_relics,开局获得如下四件遗物,Starts with these four relics
+ui.character.health_per_level,每级生命+1,Max HP +1 per level
+ui.character.innate_relic_tooltip,"%s
+%s
+角色固有，开局奖励仅发放一次，不可移除。","%s
+%s
+Innate trait. Starting rewards are granted once and cannot be removed."
+ui.character.profile,出征档案,Expedition File
+ui.character.roster,角色名册,Roster
+ui.character.select_prompt,请选择角色,Select a character
+ui.character.starting_relics,开局获得如下遗物,Starts with these relics
+ui.character.starting_stats,开局属性,Starting Stats
+ui.character.starting_weapon,初始武器,Starting Weapon
+ui.character.traits,角色特性,Traits
+ui.color.ash_white,灰白色,Ash White
+ui.color.custom,自定义色彩,Custom Color
+ui.color.electric_yellow,电光黄色,Electric Yellow
+ui.color.fire_orange,火焰橙,Flame Orange
+ui.color.ice_blue,冰蓝色,Ice Blue
+ui.color.light_blue,浅蓝色,Light Blue
+ui.color.pink_white,粉白色,Pink White
+ui.common.all,全部,All
+ui.common.back,返回,Back
+ui.common.buy,购买,Buy
+ui.common.cancel,取消,Cancel
+ui.common.confirm,确认,Confirm
+ui.common.continue,继续,Continue
+ui.common.enchantments,附魔,Enchantment
+ui.common.item,物品,Item
+ui.common.locked,未解锁,Locked
+ui.common.max_level,已达最高等级,Maximum level reached
+ui.common.no,否,No
+ui.common.none,无,None
+ui.common.relic,遗物,Relic
+ui.common.reroll,刷新,Reroll
+ui.common.return_to_battle,返回战斗,Resume
+ui.common.return_to_main_menu,返回主界面,Main Menu
+ui.common.select,选择,Select
+ui.common.skip,跳过,Skip
+ui.common.synergies,羁绊,Synergy
+ui.common.unknown,未知,Unknown
+ui.common.unlocked,已解锁,Unlocked
+ui.common.weapons,武器,Weapon
+ui.common.yes,是,Yes
+ui.damage_meter.title,统计,Damage
+ui.economy_log.empty,本局暂无经济记录。,No economic activity this run yet.
+ui.economy_log.entry,第 %d 波 · %s,Wave %d · %s
+ui.economy_log.retention_hint,保留本局最近 300 条记录,Keeps the last 300 entries this run
+ui.economy_log.title,日志,Log
+ui.economy_log.toggle_tooltip,展开 / 收起本局经济日志；查看战斗收入、结息与存取款,"Show / hide this run's economic log: combat income, interest, deposits and withdrawals"
+ui.enchantment.configure_done,附魔配置已更新。,Enchantment setup updated.
+ui.enchantment.empty_slot,空槽,Empty Slot
+ui.enchantment.empty_slot_tooltip,选中背包附魔后点击，或拖入。新附魔接在已有附魔后。,"Select an inventory enchantment and click, or drag it here. New enchantments trigger after existing ones."
+ui.enchantment.equip_current,装备到当前武器,Equip on Current Weapon
+ui.enchantment.equip_here,装备至此武器,Equip on This Weapon
+ui.enchantment.inventory.empty,暂无附魔,No enchantments
+ui.enchantment.inventory.title,附魔背包 · 从左至右触发，可拖动调整顺序,Enchantments · Trigger left to right; drag to reorder
+ui.enchantment.keep_one_weapon,至少保留一把武器,Keep at least one weapon
+ui.enchantment.move_left,← 前移,← Earlier
+ui.enchantment.move_left_tooltip,将选中的已装备附魔前移一格,Move the selected equipped enchantment one slot earlier
+ui.enchantment.move_right,后移 →,Later →
+ui.enchantment.move_right_tooltip,将选中的已装备附魔后移一格,Move the selected equipped enchantment one slot later
+ui.enchantment.no_empty_slots_hint,当前武器没有空槽，可将背包附魔拖到已有槽位进行替换。,This weapon has no empty slots. Drag an inventory enchantment onto an occupied slot to replace it.
+ui.enchantment.no_weapons,尚无武器,No weapons yet
+ui.enchantment.reorder_done,附魔排列已更新。,Enchantment order updated.
+ui.enchantment.replace_done,附魔已替换，原附魔已归还背包。,Enchantment replaced. The old one returned to inventory.
+ui.enchantment.replace_hint,"
+将背包附魔拖到已有槽位可替换，原附魔归还背包。","
+Drag an inventory enchantment onto an occupied slot to replace it. The old enchantment returns to inventory."
+ui.enchantment.sale_done,已出售，获得 %d 金币。,Sold for %d gold.
+ui.enchantment.sale_returns_enchantments,出售后，附魔自动归还背包,Enchantments return to inventory when sold
+ui.enchantment.select_hint,选择一张附魔，可装备、转移或出售,"Select an enchantment to equip, transfer or sell"
+ui.enchantment.select_inventory_first,请先选择背包中的附魔。,Select an enchantment from inventory first.
+ui.enchantment.selected_equipped_hint,选中已装备附魔后，可卸下或调整顺序。,Select an equipped enchantment to remove or reorder it.
+ui.enchantment.selected_prefix,选中：,Selected: 
+ui.enchantment.sell,出售附魔,Sell Enchantment
+ui.enchantment.sell_price,出售附魔(%d),Sell Enchantment (%d)
+ui.enchantment.sell_weapon,出售武器,Sell Weapon
+ui.enchantment.split_order_hint,"
+分裂前的附魔在主命中点触发；分裂后的附魔由子攻击命中触发。属性加成始终作用于当前武器。","
+Enchantments before Split trigger at the main hit; those after Split trigger on child hits. Stat bonuses always apply to the current weapon."
+ui.enchantment.transfer_here,转移至此武器,Transfer to This Weapon
+ui.enchantment.unequip,卸下附魔,Unequip
+ui.enchantment.unequip_before_sale,先卸下，再出售,Unequip before selling
+ui.enchantment.unequip_done,附魔已卸下。其余附魔按顺序前移。,Enchantment removed. Remaining enchantments shifted forward.
+ui.enchantment.weapon_title_prefix,称号：,Title: 
+ui.encyclopedia.empty.hint,请尝试其他名称或效果关键词。,Try another name or effect keyword.
+ui.encyclopedia.empty.title,没有匹配的条目,No matching entries
+ui.encyclopedia.search_placeholder,搜索名称或效果,Search names or effects
+ui.encyclopedia.stack_limit,叠加上限：%d,Stack limit: %d
+ui.encyclopedia.stack_unlimited,叠加上限：不限,Stack limit: unlimited
+ui.encyclopedia.weapon.cooldown,基础冷却：%.2f 秒（动作结束后开始）,Base cooldown: %.2f s (starts after the action)
+ui.encyclopedia.weapon.load_level,基础负载：%d　最高等级：%d,Base load: %d   Max level: %d
+ui.hud.armor.placeholder,护甲减免后，承受xx%的伤害,"After armor, take xx% damage"
+ui.hud.armor.tooltip,护甲减免后，承受%s的伤害,"After armor, take %s damage"
+ui.hud.controls.auto_attack_suffix,  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  Auto-Attack  ·  Esc to pause
+ui.hud.controls.cancel_aim_suffix,  ·  右键 / Esc 取消瞄准,  ·  Right-click / Esc to cancel aim
+ui.hud.controls.click_aim_suffix,  ·  左键瞄准，再次左键施放,"  ·  Left-click to aim, again to cast"
+ui.hud.controls.keyboard_move,WASD / 方向键移动,WASD / arrows to move
+ui.hud.controls.mouse_move,右键移动 · S 停止,Right-click to move · S to stop
+ui.hud.controls.number_cast_suffix,  ·  1—9 / 0 快捷施放,  ·  1–9 / 0 to quick cast
+ui.hud.controls.number_select_suffix,  ·  1—9 / 0 选武器  ·  左键施放,  ·  1–9 / 0 to select  ·  Left-click to cast
+ui.hud.controls.quick_cast_suffix,  ·  左键快捷施放,  ·  Left-click to quick cast
+ui.hud.controls.wheel_suffix,  ·  滚轮切换武器,  ·  Wheel to switch weapons
+ui.hud.corruption.tooltip,影响怪物的数量和强度,Affects the number and strength of enemies.
+ui.hud.dawn,白天到了，暂时安全了...,"Dawn breaks. Safe, for now..."
+ui.hud.encyclopedia,游戏百科,Encyclopedia
+ui.hud.enemies_remaining,剩余敌人：%d,Enemies left: %d
+ui.hud.final_cleanup,最终清剿,Final Cleanup
+ui.hud.gold,金币：%s,Gold: %s
+ui.hud.gold_change,%+d 金币,%+d gold
+ui.hud.preview.gold,金币：0,Gold: 0
+ui.hud.preview.level_experience,等级 1  经验 0/0,Level 1  XP 0/0
+ui.hud.preview.principal,本金：0,Principal: 0
+ui.hud.preview.wave,第 1 波,Wave 1
+ui.hud.principal,本金：%s,Principal: %s
+ui.hud.sanity.name,理智值,Sanity
+ui.hud.sanity.tooltip,购买价格 + %s%%，出售价格 - %s%%，利息收益 - %s%%,Purchase prices +%s%%; sale proceeds −%s%%; interest income −%s%%
+ui.hud.scroll.at_bottom,已到底部 · 向上滚动,End of list · Scroll up
+ui.hud.scroll.drag,拖动查看更多,Drag for more
+ui.hud.scroll.wheel,滚轮查看更多,Scroll for more
+ui.hud.settings,游戏设置,Settings
+ui.hud.stats.toggle_tooltip,展开 / 收起玩家属性,Show / hide character stats
+ui.hud.wave,第 %d 波,Wave %d
+ui.hud.wave.adaptation_tooltip,"
+秒怪适应：本波小怪生命额外+%d%%，小Boss额外+%d%%。","
+Fast-kill adaptation this wave: normal enemy HP +%d%%; miniboss HP +%d%%."
+ui.hud.wave.challenge_suffix, · 挑战, · Challenge
+ui.hud.wave.empowered_suffix, · 强化, · Enhanced
+ui.interest.actual_received,实际到账,Received
+ui.interest.amount,+%d 利息,+%d interest
+ui.interest.auto_deposit,结息后自动存入本金,Auto-deposited after interest
+ui.interest.base,基础利息,Base Interest
+ui.interest.challenge_bonus,本金 +%d · 幸运 +%d,Principal +%d · Luck +%d
+ui.interest.challenge_reward,挑战奖励,Challenge Reward
+ui.interest.close_hint,点击 / Esc 关闭,Click / Esc to close
+ui.interest.dividend_check,分红支票,Dividend Check
+ui.interest.dividend_multiplier,分红支票：本次 %d 倍结算,Dividend Check: %d× payout
+ui.interest.extra_by_source,%s · 额外结息,%s · Extra Interest
+ui.interest.gold_spent,−%d 金币,−%d gold
+ui.interest.income_summary,战斗 +%d　│　利息 +%d 金币,Combat +%d  │  Interest +%d gold
+ui.interest.loan_compounded,贷款未还 · 已计复利,Loan unpaid · Interest compounded
+ui.interest.loan_due,应还 %d 金币,Due: %d gold
+ui.interest.loan_repaid,贷款自动还清,Loan repaid automatically
+ui.interest.no_income,无利息收益,No interest income
+ui.interest.no_records,本波没有利息结算记录。,No interest records this wave.
+ui.interest.not_received,· %s：未收息（%s）,· %s: no interest (%s)
+ui.interest.not_settled,本次未结息,No interest this time
+ui.interest.principal_rate,本金：%d    ·    当前利率：%.1f%%,Principal: %d    ·    Current rate: %.1f%%
+ui.interest.rate_growth,%s · 利率成长,%s · Rate Growth
+ui.interest.received_from_source,✦ %s：+%d 金币（利率 %.1f%%）,✦ %s: +%d gold (rate %.1f%%)
+ui.interest.requirements_unmet,⛓ %s：未收息（条件未满足）,⛓ %s: no interest (requirement not met)
+ui.interest.sanity_loss,理智折损,Sanity Loss
+ui.interest.source.dividend_clock,周期分红钟,Dividend Clock
+ui.interest.source.perpetual_annuity,永续年金（追加结算）,Perpetual Annuity (extra settlement)
+ui.interest.source.wave_end,波末结算,Wave-End Settlement
+ui.interest.title,利息结算,Interest Settlement
+ui.interest.transferred_to_principal,利息已转入本金,Interest transferred to principal
+ui.interest.wallet_hint,利息自动加入随身金币，本金保持不变。,Interest is added to carried gold; principal is unchanged.
+ui.interest.wave_title,第 %d 波 · 利息结算,Wave %d · Interest
+ui.interest.zero_amount,+0 利息,+0 interest
+ui.inventory.back,⬅ 返回,⬅ Back
+ui.inventory.edit_in_bank_hint,此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,View only. Visit the Bank to change enchantments. Press ESC again or select Back.
+ui.inventory.entry_count,共 %d 个,Total: %d
+ui.inventory.innate_relic_note,"
+[color=#d3b77c]角色固有 ×%d：开局获得时奖励已发放，不可移除。[/color]","
+[color=#d3b77c]Innate ×%d: starting rewards already granted. Cannot be removed.[/color]"
+ui.inventory.item_count,共 %d 件,Total: %d
+ui.inventory.preview.entry_count,共 0 个,0 entries
+ui.inventory.preview.item_count,共 0 件,0 items
+ui.inventory.relics_title,遗物清单,Relics
+ui.inventory.title,物品栏,Inventory
+ui.inventory.view_only,仅供查看 · ESC 返回,View only · ESC to return
+ui.item.tooltip.chain_count,[color=%s]连续传递：[/color][color=#7FD88F]%d 次[/color],[color=%s]Chain transfers: [/color][color=#7FD88F]%d[/color]
+ui.item.tooltip.chain_interval,[color=%s]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color],[color=%s]Transfer interval: [/color][color=#7FD88F]%.2f s[/color]
+ui.item.tooltip.effect_active,[color=%s]%s：[/color][color=#7FD88F]已生效[/color],[color=%s]%s: [/color][color=#7FD88F]Active[/color]
+ui.item.tooltip.effect_upgrade,效果强化,Effect Bonus
+ui.item.tooltip.enchantment_effect,附魔效果,Enchantment Effect
+ui.item.tooltip.extra_hits,[color=%s]额外命中：[/color][color=#7FD88F]%d 个目标[/color],[color=%s]Extra targets: [/color][color=#7FD88F]%d[/color]
+ui.item.tooltip.ignite_enabled,[color=%s]燃烧引爆：[/color][color=#7FD88F]已启用[/color],[color=%s]Ignite detonation: [/color][color=#7FD88F]Enabled[/color]
+ui.item.tooltip.paralysis_duration,[color=%s]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color],[color=%s]Paralysis duration: [/color][color=#7FD88F]%.2f s[/color]
+ui.item.tooltip.particle_color,[color=%s]粒子颜色：[/color][color=%s]%s[/color],[color=%s]Particle color: [/color][color=%s]%s[/color]
+ui.item.tooltip.split_angle,[color=%s]分裂角度：[/color][color=#7FD88F]%d°[/color],[color=%s]Split angle: [/color][color=#7FD88F]%d°[/color]
+ui.item.tooltip.split_count,[color=%s]分裂子弹：[/color][color=#7FD88F]%d 枚[/color],[color=%s]Split projectiles: [/color][color=#7FD88F]%d[/color]
+ui.item.tooltip.type_rarity,[color=#C7D3E4]类型：%s　稀有度：%s[/color],[color=#C7D3E4]Type: %s   Rarity: %s[/color]
+ui.loan.amount_due_status,应还 %d 金币 · %s,Due: %d gold · %s
+ui.loan.automatic_repayment_hint,"下一波结束，全部结息后自动还款。
+余额不足不扣款，欠款计复利。","Automatically repaid after all interest at the end of the next wave.
+If funds are insufficient, no payment is taken and debt compounds."
+ui.loan.borrow_amount,借 %d,Borrow %d
+ui.loan.borrowed_amount,已贷款：%d 金币,Borrowed: %d gold
+ui.loan.decline,暂时不用,Not Now
+ui.loan.gold_amount,%d 金币,%d gold
+ui.loan.integer_interest_rate,每波利息 %d%%,Interest: %d%% per wave
+ui.loan.interest_rate,每波利息 %s%%,Interest: %s%% per wave
+ui.loan.pitch,钱不够？先拿去，后面再还！,Short on gold? Take it now. Pay me later!
+ui.loan.receive_now,立即获得,Receive Now
+ui.loan.repaid,贷款已还清,Loan repaid
+ui.loan.repay,还清,Repay
+ui.loan.repay_amount,一次性还清 %d 金币,Repay all: %d gold
+ui.loan.repay_next_wave,下波归还,Repay Next Wave
+ui.loan.repay_required,还清需要 %d 金币,Repayment requires %d gold
+ui.loan.repayment_rules,"当前应还 %d 金币；第%d波结束，在全部结息后检查钱包。
+不足不扣款，按合同利率计复利。","Currently due: %d gold. Your wallet is checked after all interest at the end of wave %d.
+No partial payment is taken. Unpaid debt compounds at the contract rate."
+ui.loan.status.compounded,已计复利,Interest compounded
+ui.loan.status.next_wave,下波结束结算,Settles at next wave end
+ui.loan.terms,获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。,"Receive %d gold; at the end of wave %d, repay %d gold. Interest: %s%% per wave."
+ui.loan.terms_relic_adjustment,"
+已依据当前遗物的预计新增利息调整；本次条款已固定。","
+Adjusted for the extra interest expected from your relics. These terms are now fixed."
+ui.loan.title,哥布林贷款,Goblin Loan
+ui.loan.view_terms,查看条款,View Terms
+ui.main_menu.game_title,哥布林教你地下城,Goblin's Guide to Dungeons
+ui.main_menu.language,语言：,Language：
+ui.main_menu.quit,退出,Quit
+ui.main_menu.start_run,开始战斗,Start Run
+ui.main_menu.talents,天赋,Talents
+ui.main_menu.version,版本：v.0106.260816,Version: v.0106.260816
+ui.performance.counter,FPS %d   怪物 %d   粒子 %d,FPS %d   Enemies %d   Particles %d
+ui.performance.tooltip,实时帧率、存活怪物、共享粒子与闪电采样点。每0.5秒更新。,"Live FPS, enemies, shared particles and lightning samples. Updates every 0.5 seconds."
+ui.preview.void_blade_upgrade,虚空刃 升至2级,Void Blade to Lv.2
+ui.reward.miniboss.title,小 Boss 遗物奖励,Miniboss Relic Reward
+ui.reward.power_reroll.used_detail,强力刷新已使用：幸运+100，保底史诗遗物。,Power Reroll used: Luck +100; at least one Epic relic guaranteed.
+ui.reward.preview.description,属性描述,Stat Description
+ui.reward.preview.name,奖励名称,Reward Name
+ui.settings.audio.music,背景音乐,Music
+ui.settings.audio.sound_effects,音效,Sound Effects
+ui.settings.auto_attack,轮椅模式,Auto-Attack
+ui.settings.autosave_hint,修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,Changes apply immediately and save automatically. Press Esc or Back to return.
+ui.settings.combat,战斗设置,Combat
+ui.settings.controls.auto_attack,自动攻击,Auto-Attack
+ui.settings.controls.auto_attack_hint,武器在范围内自动攻击；位移武器仍需手动施放,Auto-attacks targets in range; mobility weapons remain manual
+ui.settings.controls.cancel_keyboard_hint,取消瞄准；使用方向键 / WASD 移动,Cancel aim; move with arrows / WASD
+ui.settings.controls.cancel_mouse_hint,取消瞄准并移动至目的地；S 停止移动,Cancel aim and move to the target; S to stop
+ui.settings.controls.click_aim_hint,单击显示指示器，再次单击施放,"Click to aim, then click again to cast"
+ui.settings.controls.click_quick_cast_hint,单击立即施放当前武器,Click once to cast the current weapon
+ui.settings.controls.confirm_cast_hint,瞄准时确认施放；成功后退出瞄准,Confirm the aimed cast; aiming ends after casting
+ui.settings.controls.escape_hint,优先取消瞄准；未瞄准时打开暂停,Cancel aim first; otherwise pause
+ui.settings.controls.keyboard_hint,使用方向键 / WASD 移动,Move with arrows / WASD
+ui.settings.controls.keyboard_move,方向键 / WASD,Arrows / WASD
+ui.settings.controls.left_mouse,鼠标左键,Left Mouse
+ui.settings.controls.mouse_move_hint,移动至目的地；S 停止移动,Move to the target; S to stop
+ui.settings.controls.mouse_wheel,鼠标滚轮,Mouse Wheel
+ui.settings.controls.no_click_needed,无需点击左键确认,No left-click confirmation needed
+ui.settings.controls.number_keys,数字键,Number Keys
+ui.settings.controls.number_quick_cast_hint,按编号直接施放，无需进入瞄准,Press a weapon number to cast immediately
+ui.settings.controls.number_select_hint,按武器栏编号选择，再次选武器会切换瞄准,Select a weapon by number; selecting another changes your aim
+ui.settings.controls.pause_hint,打开暂停,Pause
+ui.settings.controls.quick_cast,快捷施法,Quick Cast
+ui.settings.controls.right_mouse,鼠标右键,Right Mouse
+ui.settings.controls.show_hints,显示操作提示,Show Control Hints
+ui.settings.controls.title,战斗操作,Combat Controls
+ui.settings.controls.wheel_hint,循环切换当前武器，鼠标旁图标同步切换,Cycle weapons; the icon beside the cursor updates
+ui.settings.display.embedded_hint,调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。,"To resize or use fullscreen, disable the editor's embedded game and run separately."
+ui.settings.display.fullscreen,全屏：,Fullscreen:
+ui.settings.display.resolution,界面分辨率,Resolution
+ui.settings.display.system_size_hint,当前设备使用系统屏幕尺寸。音量修改会自动保存。,This device uses the system screen size. Volume changes save automatically.
+ui.settings.general,基础设置,General
+ui.settings.movement.keyboard_hint,按住方向键，直接控制移动,Hold direction keys to move directly
+ui.settings.movement.mode,移动方式,Movement
+ui.settings.movement.mouse_hint,点击地面移动 · S 停止移动,Click ground to move · S to stop
+ui.settings.no_selected,● 否,● No
+ui.settings.no_unselected,○ 否,○ No
+ui.settings.return_to_main_menu,返回主菜单,Main Menu
+ui.settings.title,设置,Settings
+ui.settings.yes_selected,● 是,● Yes
+ui.settings.yes_unselected,○ 是,○ Yes
+ui.settlement.base_conversion_hint,右列为基础营地币,The right column shows base Camp Coins
+ui.settlement.camp_coins_earned,本次获得营地币,Camp Coins Earned
+ui.settlement.camp_title,营地结算,Camp Settlement
+ui.settlement.conversion,基础 %s ×%d%% = %s,Base %s ×%d%% = %s
+ui.settlement.conversion_hint,右列为各项折算的营地币,Right column: converted Camp Coins
+ui.settlement.counting,正在清点…,Counting…
+ui.settlement.death_wave,第%d波 阵亡,Fell on Wave %d
+ui.settlement.defeat,冒险结束,Expedition Over
+ui.settlement.difficulty_suffix, · 难度 %s, · Difficulty %s
+ui.settlement.gold_earned,赚取金币,Gold Earned
+ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Camp Coin. Spending and deposits do not reduce this total.
+ui.settlement.interest_cap_suffix, · 利息贡献已达上限, · Interest contribution capped
+ui.settlement.interest_earned,赚取利息,Interest Earned
+ui.settlement.interest_tooltip,每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,"Every %d interest received earns 1 Camp Coin, capped at %d coins per completed wave."
+ui.settlement.kill_records,击杀记录,Kill Record
+ui.settlement.kills_tooltip,每 %d 只敌人折算 1 营地币。,Every %d enemies defeated earns 1 Camp Coin.
+ui.settlement.multiplier,结算 ×%d%%,Reward ×%d%%
+ui.settlement.no_kills,本次未击败敌人,No enemies defeated this run
+ui.settlement.save_failed,保存失败，返回时重试,Save failed; retrying when you return
+ui.settlement.saved,已结算,Reward saved
+ui.settlement.skip_hint,点击空白处 / 空格快进,Click an empty area / Space to skip ahead
+ui.settlement.total_kills,总杀敌数,Enemies Defeated
+ui.settlement.victory,通关！,Victory!
+ui.settlement.waves_survived,度过波次,Waves Survived
+ui.settlement.waves_tooltip,每完整度过一波获得 %d 营地币。,Each completed wave earns %d Camp Coins.
+ui.shop.gold_price,%s 金币,%s gold
+ui.shop.gold_shortfall,差 %d,Need %d more
+ui.shop.new_weapon,新武器,New Weapon
+ui.shop.reroll_price,刷新 ￥%d,Reroll · %d gold
+ui.shop.return_to_bank,返回银行,Return to Bank
+ui.shop.short_title,商店,Shop
+ui.shop.title,局内商店,Shop
+ui.shop.unavailable,不可购买,Unavailable
+ui.shop.upgrade_reward,升级奖励,Level-Up Reward
+ui.shop.upgrade_to_level,%s 升至%d级,%s to Lv.%d
+ui.shop.weapon_upgrade,武器升级,Weapon Upgrade
+ui.synergy.current_stacks,[color=%s]（当前 %d 层）[/color],[color=%s] (current stacks: %d)[/color]
+ui.synergy.current_value,[color=%s]%s[/color]（当前 %d）,[color=%s]%s[/color] (current: %d)
+ui.synergy.damage_against,对 %s 伤害+%s,Damage against %s +%s
+ui.synergy.heading,[color=%s]羁绊[/color]：%s,[color=%s]Synergy[/color]: %s
+ui.synergy.special_effect,特殊效果,Special effect
+ui.synergy.tier,%d 件：%s,%d pieces: %s
+ui.trade.accept,接受,Accept
+ui.trade.action,交易,Bargain
+ui.trade.decline,拒绝,Decline
+ui.trade.preview.after,办理后,After transaction
+ui.trade.preview.health,当前生命：%d → %d,Current HP: %d → %d
+ui.trade.preview.interest_rate,利率：%s%% → %s%%,Interest rate: %s%% → %s%%
+ui.trade.preview.principal,办理后本金：%d → %d,Principal after transaction: %d → %d
+ui.trade.title,哥布林交易,Goblin Bargain
+ui.unit.seconds_suffix, 秒, s
+ui.unit.times_suffix, 次, times
+ui.weapon.behavior.dagger,正反手交替斩击,Alternates forehand and backhand slashes.
+ui.weapon.behavior.flail,流星锤头挥击前方扇面,Swings the flail head in a cone ahead.
+ui.weapon.behavior.grenade,抛射榴弹，%.2f秒后在落点爆炸。,Lobs a grenade that explodes after %.2f seconds.
+ui.weapon.behavior.lamp,自动喷射%.2fs，每%.2fs灼烧。,"Automatically sprays for %.2fs, burning every %.2fs."
+ui.weapon.behavior.plasma,接触时每%.2f秒灼击，每球最多5次。,"Burns enemies on contact every %.2f seconds, up to 5 times per orb."
+ui.weapon.behavior.purse,向瞄准方向扇形散射金币，受到远程伤害和本金双加成,Scatters coins in a cone toward your aim. Scales with Ranged Damage and Principal.
+ui.weapon.behavior.ritual,施展法阵，每0.35s点名一次造成伤害,Creates a ritual circle that strikes a target every 0.35s.
+ui.weapon.behavior.spear,刺出长枪，贯穿前方敌人,Thrusts a spear through enemies ahead.
+ui.weapon.behavior.tentacle,卷曲展开后瞬间拍地。,"Uncoils, then slams the ground."
+ui.weapon.load,负载%d/%d,Load %d/%d
+ui.weapon.load_empty,负载0/0,Load 0/0
+ui.weapon.stats.area_bonus,[color=#F5D76E]伤害范围[/color] %+.0f,[color=#F5D76E]Damage Area[/color] %+.0f
+ui.weapon.stats.bounce,[color=#F5D76E]弹跳[/color] 首次命中立即追加%d次攻击,[color=#F5D76E]Bounce[/color] First hit immediately adds %d attacks
+ui.weapon.stats.cooldown,[color=#F5D76E]冷却[/color] [color=#FFFFFF]%.2fs[/color],[color=#F5D76E]Cooldown[/color] [color=#FFFFFF]%.2fs[/color]
+ui.weapon.stats.critical,[color=#F5D76E]暴击率[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]暴击伤害[/color] [color=#FFFFFF]%d%%[/color],[color=#F5D76E]Crit Chance[/color] [color=#FFFFFF]%d%%[/color]  [color=#F5D76E]Crit Damage[/color] [color=#FFFFFF]%d%%[/color]
+ui.weapon.stats.damage,[color=#F5D76E]伤害：[/color],[color=#F5D76E]Damage: [/color]
+ui.weapon.stats.enchantments,[color=#F5D76E]附魔[/color],[color=#F5D76E]Enchantments[/color]
+ui.weapon.stats.field_radius,[color=#F5D76E]领域半径[/color] %d × %d,[color=#F5D76E]Field Radius[/color] %d × %d
+ui.weapon.stats.hit_count,[color=#F5D76E]伤害段数[/color] %d,[color=#F5D76E]Damage ticks[/color] %d
+ui.weapon.stats.load,[color=#F5D76E]负载[/color] [color=#FFFFFF]%d[/color],[color=#F5D76E]Load[/color] [color=#FFFFFF]%d[/color]
+ui.weapon.stats.projectiles,[color=#F5D76E]投射物[/color] [color=#FFFFFF]%d[/color],[color=#F5D76E]Projectiles[/color] [color=#FFFFFF]%d[/color]
+ui.weapon.stats.range,[color=#F5D76E]攻击范围[/color] [color=#FFFFFF]%d[/color],[color=#F5D76E]Attack Range[/color] [color=#FFFFFF]%d[/color]
+ui.weapon.stats.range_radius,[color=#F5D76E]攻击距离[/color] %d  [color=#F5D76E]爆炸半径[/color] %s,[color=#F5D76E]Range[/color] %d  [color=#F5D76E]Blast Radius[/color] %s
+ui.weapon.stats.split,[color=#F5D76E]分裂[/color] %d个 · 伤害%d%%,[color=#F5D76E]Split[/color] %d attacks · %d%% damage
+ui.weapon.stats.spray_range,[color=#F5D76E]喷射距离[/color] %d · %s°窄扇面,[color=#F5D76E]Spray Range[/color] %d · %s° cone
+ui.weapon.stats.targets,[color=#F5D76E]每次点名[/color] [color=#FFFFFF]%d[/color],[color=#F5D76E]Targets per tick[/color] [color=#FFFFFF]%d[/color]
+ui.weapon.tooltip.enchantment_slots,"%s
+[附魔 %d/%d]","%s
+[Enchantments %d/%d]"
+ui.weapon_bar.casting,施放中,Casting

@@ -236,7 +236,8 @@ func _test_flow() -> void:
 	manager.process_wave_end_settlements()
 	check(manager.finance_system.principal == principal and manager.current_gold == 0 and manager.player.get_stat("luck") == luck + 10, "duplicate wave settlement cannot repeat interest transfer or rewards")
 	var finance_ui := game.find_child("FinancePopup", true, false) as FinancePopup
-	check(finance_ui.interest_arrival._caption.text == "利息已转入本金", "actual receipt accurately identifies destination")
+	var receipt_caption := finance_ui.interest_arrival._caption
+	check(receipt_caption.tr(receipt_caption.text) == L10n.text("ui.interest.transferred_to_principal"), "actual receipt accurately identifies destination")
 	finance_ui.interest_arrival.skip()
 	check(flow.submit_finance_operation("withdraw", 50).success and manager.current_gold == 50, "next bank visit allows manual redemption")
 	# Actual upgraded weapon and principal damage are included without rolling crits.

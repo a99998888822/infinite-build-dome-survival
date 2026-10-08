@@ -9,6 +9,7 @@
     "victory_refused": {"speech": "啧，稳妥点当然好，就是赚的少了些。", "voice_path": "", "row": 3}
   },
   "monster_portraits": {
+    "enemy_echo_bat": "res://assets/sprites/enemies/echo_bat/idle.png",
     "enemy_mutated_grub": "res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png",
     "enemy_elite_rusher": "res://assets/sprites/enemies/iron_knight/knight_idle.png",
     "enemy_underworld_wolf": "res://assets/sprites/enemies/underworld_wolf/frames/attack_01.png"

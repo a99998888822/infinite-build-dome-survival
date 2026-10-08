@@ -22,7 +22,7 @@ func _ready() -> void:
 	add_child(presentation)
 	presentation.choice_made.connect(_choose)
 	_back = Button.new()
-	_back.text = "返回银行"
+	_back.text = "ui.shop.return_to_bank"
 	FinanceUIStyle.button(_back)
 	_back.pressed.connect(func():
 		if flow != null: flow.return_from_wave_challenge())
@@ -33,7 +33,7 @@ func _ready() -> void:
 
 func present(payload: Dictionary) -> void:
 	proposal = payload.duplicate(true)
-	presentation.present(str(payload.speech), str(payload.body))
+	presentation.present(L10n.source(str(payload.speech)), L10n.source(str(payload.body)))
 	presentation.configure_challenge(int(payload.wave), str(payload.icon))
 	show()
 	_arrange()

@@ -69,8 +69,6 @@ func _handle_android_back_request() -> void:
 			flow.return_from_wave_challenge()
 		MainFlowCoordinator.STATE_INTEREST_SETTLEMENT:
 			flow.close_interest_settlement()
-		MainFlowCoordinator.STATE_ZONE_HARVEST_RESULT:
-			flow.close_zone_harvest_result_popup()
 		MainFlowCoordinator.STATE_BATTLE_RESULT:
 			flow.confirm_battle_result()
 		MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_CAMP_ENTRY:

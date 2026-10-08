@@ -18,7 +18,6 @@ const SPAWN_MAX_DISTANCE: float = 500.0
 const SPAWN_SEPARATION_DISTANCE: float = 32.0
 const SPAWN_CLUSTER_HALF_ANGLE: float = PI / 22.5 # Eight degrees either side.
 const SPAWN_POSITION_ATTEMPTS: int = 24
-const ZONE_SPAWN_COUNT_GROWTH_PERCENT: float = 6.0
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
@@ -304,8 +303,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO) -> EnemyCon
 	enemy.auto_initialize_on_ready = false
 	enemy_root.add_child(enemy)
 	enemy.global_position = position
-	var runtime_modifiers := ZoneProgression.build_enemy_pressure_modifiers()
-	runtime_modifiers.append_array(_build_wave_enemy_modifiers(str(enemy_data.get("enemy_type", "normal"))))
+	var runtime_modifiers := _build_wave_enemy_modifiers(str(enemy_data.get("enemy_type", "normal")))
 	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
 	runtime_modifiers.append_array(enemy_pressure.build_modifiers(str(enemy_data.get("enemy_type", "normal"))))
 	for stat in ["max_hp", "melee_damage", "ranged_damage", "element_damage", "move_speed", "armor"]:
@@ -452,7 +450,8 @@ func record_wave_income(completed: bool = true) -> void:
 	if _wave_income_recorded or current_wave_index < 0:
 		return
 	_wave_income_recorded = true
-	economy_journal.append({"wave": current_wave_index + 1, "kind": "wave_income", "text": "战斗获得 %d 金币%s" % [collected_gold_this_wave, "" if completed else "（本波未完成）"], "gold": collected_gold_this_wave})
+	var income_message := L10n.message("log.combat.gold_earned", [collected_gold_this_wave, "" if completed else "log.combat.incomplete_wave_suffix"])
+	economy_journal.append({"wave": current_wave_index + 1, "kind": "wave_income", "text": L10n.render_message(income_message), "message": income_message, "gold": collected_gold_this_wave})
 
 
 func _clear_non_exp_reward_pickups() -> void:
@@ -784,16 +783,14 @@ func complete_relic_choice(reward_id: String, selected: bool) -> void:
 func calculate_enemy_spawn_count(base_count: int) -> int:
 	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
 	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
-	var streak_multiplier := 1.0 + ZONE_SPAWN_COUNT_GROWTH_PERCENT * float(ZoneProgression.get_effective_streak()) / 100.0
-	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier * streak_multiplier)))
+	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier)))
 	# Apply the selected tier's population multiplier after rounding and player modifiers.
 	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * int(_difficulty.spawn_count_multiplier)
 
 
 func calculate_spawn_interval(base_interval_ms: float) -> float:
 	var wave_growth := float(_difficulty.interval_growth) * float(maxi(current_wave_index, 0)) / 100.0
-	var zone_growth := ZoneProgression.get_enemy_pressure_per_streak("spawn_interval_percent") * float(ZoneProgression.get_effective_streak()) / 100.0
-	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth + zone_growth))
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth))
 
 
 func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:

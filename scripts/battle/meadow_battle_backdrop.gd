@@ -47,6 +47,13 @@ var initialized := false
 var grass_batch: Node
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		for node in [roots, ground]:
+			if is_instance_valid(node) and node.get_parent() == null:
+				node.free()
+
+
 func _ready() -> void:
 	add_to_group("battle_meadow")
 	process_priority = 40

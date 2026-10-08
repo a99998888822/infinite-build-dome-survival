@@ -29,8 +29,6 @@ const STATE_ESC_OVERLAY: String = "esc_overlay"
 const STATE_BATTLE_UTILITY: String = "battle_utility"
 const STATE_FINANCE_POPUP: String = "finance_popup"
 const STATE_WAVE_CHALLENGE: String = "wave_challenge"
-const STATE_ZONE_SELECT: String = "zone_select"
-const STATE_ZONE_HARVEST_RESULT: String = "zone_harvest_result"
 const STATE_BATTLE_RESULT: String = "battle_result"
 const STATE_CAMP_ENTRY: String = "camp_entry"
 const STATE_TALENTS: String = "talents"
@@ -62,8 +60,6 @@ var _relic_choice_selected: bool = false
 var _weapon_upgrade_miss_count: int = 0
 var _early_wave_weapon_offered: Dictionary = {}
 var _wave_end_ready: bool = false
-var _active_zone_selection_wave_number: int = 0
-var _pending_zone_harvest_payload: Dictionary = {}
 var _pending_interest_payload: Dictionary = {}
 var _pending_finance_payload: Dictionary = {}
 var _pending_wave_start_after_finance: bool = false
@@ -89,9 +85,7 @@ func _ready() -> void:
 
 
 func reset_flow() -> void:
-	var previous_player := _bound_player
 	_unbind_battle_context()
-	ZoneProgression.reset_state(previous_player)
 	_bound_camp_root = null
 	current_character_id = ""
 	current_start_weapon_ids.clear()
@@ -116,8 +110,6 @@ func reset_flow() -> void:
 	_weapon_upgrade_miss_count = 0
 	_early_wave_weapon_offered.clear()
 	_wave_end_ready = false
-	_active_zone_selection_wave_number = 0
-	_pending_zone_harvest_payload.clear()
 	_pending_interest_payload.clear()
 	_pending_finance_payload.clear()
 	_pending_wave_start_after_finance = false
@@ -336,47 +328,6 @@ func _finish_wave_rewards() -> void:
 		present_battle_result(true, {"reason": "all_waves_cleared", "gold": gold})
 	else:
 		_enter_wave_end_shop()
-
-
-func request_zone_select_popup(source: String = "wave_manager") -> bool:
-	if current_mode != MODE_BATTLE or battle_resolved:
-		return false
-	if not ZoneProgression.has_zone_records():
-		return false
-	_active_zone_selection_wave_number = _get_next_wave_number()
-	if _active_zone_selection_wave_number <= 1:
-		return false
-	_set_state(STATE_ZONE_SELECT)
-	modal_requested.emit(STATE_ZONE_SELECT, ZoneProgression.build_zone_selection_payload(_active_zone_selection_wave_number))
-	return true
-
-
-func confirm_zone_selection(zone_id: String) -> bool:
-	if current_state != STATE_ZONE_SELECT:
-		return false
-	var selection_result := ZoneProgression.select_zone(zone_id, _active_zone_selection_wave_number, _bound_player)
-	if not bool(selection_result.get("success", false)):
-		return false
-	modal_closed.emit(STATE_ZONE_SELECT)
-	if bool(selection_result.get("harvested", false)):
-		_pending_zone_harvest_payload = (selection_result.get("harvest_payload", {}) as Dictionary).duplicate(true)
-		_set_state(STATE_ZONE_HARVEST_RESULT)
-		modal_requested.emit(STATE_ZONE_HARVEST_RESULT, _pending_zone_harvest_payload.duplicate(true))
-	else:
-		_pending_zone_harvest_payload.clear()
-		_set_state(STATE_BATTLE_PREPARE)
-		_start_prepared_wave()
-	return true
-
-
-func close_zone_harvest_result_popup() -> void:
-	if current_state != STATE_ZONE_HARVEST_RESULT:
-		return
-	modal_closed.emit(STATE_ZONE_HARVEST_RESULT)
-	ZoneProgression.acknowledge_harvest_result()
-	_pending_zone_harvest_payload.clear()
-	_set_state(STATE_BATTLE_PREPARE)
-	_start_prepared_wave()
 
 
 func submit_finance_operation(action: String, amount: int) -> Dictionary:
@@ -633,7 +584,6 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	if _bound_wave_manager != null:
 		_bound_wave_manager.running = false
 		_bound_wave_manager.clear_battle_entities()
-	ZoneProgression.reset_state(_bound_player)
 	current_victory = victory
 	for modal in [STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
 		modal_closed.emit(modal)
@@ -642,8 +592,6 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	_active_relic_choice = ""
 	_relic_choice_selected = false
 	_wave_end_ready = false
-	_active_zone_selection_wave_number = 0
-	_pending_zone_harvest_payload.clear()
 	_set_mode(MODE_BATTLE)
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_BATTLE_RESULT)
@@ -723,7 +671,7 @@ func request_shop_refresh() -> Dictionary:
 		payload = _build_shop_payload("shop", 0, previous_ids, strong)
 	if strong:
 		_bound_wave_manager.goblin_trades.strong_refresh = false
-		_bound_wave_manager.finance_system.record_trade_activity("强力刷新已使用：幸运+100，保底史诗遗物。")
+		_bound_wave_manager.finance_system.record_trade_activity(L10n.text("ui.reward.power_reroll.used_detail"))
 		payload["refresh_cost"] = get_shop_refresh_cost()
 	cancel_goblin_trade()
 	_transaction_busy = false
@@ -744,12 +692,6 @@ func get_current_state() -> String:
 	return current_state
 
 
-func get_zone_selection_payload() -> Dictionary:
-	if current_state != STATE_ZONE_SELECT or _active_zone_selection_wave_number <= 0:
-		return {}
-	return ZoneProgression.build_zone_selection_payload(_active_zone_selection_wave_number)
-
-
 func get_state_snapshot() -> Dictionary:
 	return {
 		"mode": current_mode,
@@ -767,9 +709,6 @@ func get_state_snapshot() -> Dictionary:
 		"active_shared_reward_shop_level": _active_level_up_level,
 		"pending_shared_reward_shop_levels": _pending_level_up_levels.duplicate(),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
-		"zone_state": ZoneProgression.get_state_snapshot(),
-		"active_zone_selection_wave_number": _active_zone_selection_wave_number,
-		"pending_zone_harvest_payload": _pending_zone_harvest_payload.duplicate(true),
 		"pending_interest_payload": _pending_interest_payload.duplicate(true),
 		"pending_finance_payload": _pending_finance_payload.duplicate(true),
 		"pending_wave_start_after_finance": _pending_wave_start_after_finance,
@@ -971,7 +910,7 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 	payload["queued"] = queued
 	payload["resume_state"] = _resume_state_after_modal
 	if not _active_relic_choice.is_empty():
-		payload["title"] = "小 Boss 遗物奖励"
+		payload["title"] = L10n.text("ui.reward.miniboss.title")
 		payload["choice_id"] = _active_relic_choice
 	return payload
 
@@ -1009,7 +948,7 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 				if not exclude_set.has(str(candidate.get("offer_id", ""))):
 					filtered_candidates.append(candidate)
 			candidates = filtered_candidates
-		var rarity_weights := generator.get_shop_rarity_weights(int(context.get("luck", 0)), ZoneProgression.get_current_zone_rarity_bonus())
+		var rarity_weights := generator.get_shop_rarity_weights(int(context.get("luck", 0)))
 		context["candidate_pool"] = candidates
 		var type_weights := generator.get_shop_type_weights(context)
 		if mode == "shop":
@@ -1072,9 +1011,6 @@ func _build_shop_context() -> Dictionary:
 		"shop_wave_number": maxi(1, current_wave_index + 1),
 		"paid_purchase_count": _paid_purchase_count,
 		"wave_gold_earned": _bound_wave_manager.collected_gold_this_wave if _bound_wave_manager != null else 0,
-		"zone_tendency_tags": ZoneProgression.get_current_zone_tendency_tags(),
-		"zone_target_pools": ZoneProgression.get_current_zone_target_pools(),
-		"zone_tag_weight_bonus": ZoneProgression.get_current_zone_tag_weight_bonus(),
 	}
 
 
@@ -1217,24 +1153,24 @@ func get_bank_stat_preview(action: String, amount: int) -> String:
 	var result := preview.apply_finance_operation(action, amount)
 	var lines: Array[String] = []
 	if bool(result.get("success", false)):
-		lines.append("办理后本金：%d → %d" % [finance.principal, preview.principal])
+		lines.append(L10n.text("ui.trade.preview.principal") % [finance.principal, preview.principal])
 		if not is_equal_approx(finance.get_interest_rate(), preview.get_interest_rate()):
-			lines.append("利率：%s%% → %s%%" % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])
+			lines.append(L10n.text("ui.trade.preview.interest_rate") % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])
 		for stat_id in ["max_hp", "armor", "attack_speed", "damage_percent", "area_size", "damage_area_size", "load_capacity", "currency_gain_percent", "humanity"]:
 			var before := _bound_player.get_stat(stat_id)
 			var after := preview_player.get_stat(stat_id)
 			if not is_equal_approx(before, after):
-				var name := str(StatDefinitions.get_stat_definition(stat_id).get("display_name", stat_id))
+				var name := StatDefinitions.get_display_name(stat_id)
 				var unit := "%" if stat_id in ["damage_percent", "currency_gain_percent"] else ""
 				lines.append("%s：%s%s → %s%s" % [name, HumanityEconomy.number(before), unit, HumanityEconomy.number(after), unit])
 		if _bound_player.current_hp != preview_player.current_hp:
-			lines.append("当前生命：%d → %d" % [_bound_player.current_hp, preview_player.current_hp])
+			lines.append(L10n.text("ui.trade.preview.health") % [_bound_player.current_hp, preview_player.current_hp])
 		if not is_equal_approx(_bound_player.get_stat("humanity"), preview_player.get_stat("humanity")):
-			lines.append("办理后" + HumanityEconomy.describe(preview_player.get_stat("humanity")))
+			lines.append(L10n.text("ui.trade.preview.after") + HumanityEconomy.describe(preview_player.get_stat("humanity")))
 		var protection_before := finance.get_principal_revive_state()
 		var protection_after := preview.get_principal_revive_state()
 		if not protection_before.is_empty() and protection_before.available != protection_after.get("available", false):
-			lines.append("%s：%s → %s" % [protection_before.display_name, FinanceUIStyle.principal_revive_status(protection_before), FinanceUIStyle.principal_revive_status(protection_after)])
+			lines.append("%s：%s → %s" % [L10n.source(protection_before.display_name), FinanceUIStyle.principal_revive_status(protection_before), FinanceUIStyle.principal_revive_status(protection_after)])
 	preview_player.free()
 	return "\n".join(lines)
 

@@ -6,6 +6,7 @@ var capture_dir := ""
 
 
 func _ready() -> void:
+	L10n.set_locale("zh_CN", false)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): capture_dir = arg.trim_prefix("--capture-dir=")
 	_run.call_deferred()
@@ -31,7 +32,7 @@ func capture(name: String) -> void:
 
 func find_button(root: Node, text: String) -> Button:
 	for child in root.get_children():
-		if child is Button and child.text == text: return child
+		if child is Button and child.tr(child.text) == text: return child
 		var nested := find_button(child, text)
 		if nested != null: return nested
 	return null

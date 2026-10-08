@@ -99,19 +99,19 @@ func _build_interface() -> void:
 	_currency_label.add_theme_font_size_override("font_size", 16)
 	top_row.add_child(_currency_label)
 	var title := Label.new()
-	title.text = "营地搭建"
+	title.text = "ui.camp.title"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.add_theme_color_override("font_color", GOLD_BRIGHT)
 	title.add_theme_font_size_override("font_size", 23)
 	top_row.add_child(title)
-	var back_button := _make_compact_button("返回主界面", GREEN)
+	var back_button := _make_compact_button("ui.common.return_to_main_menu", GREEN)
 	back_button.custom_minimum_size = Vector2(120, 32)
 	back_button.add_theme_font_size_override("font_size", 10)
 	back_button.pressed.connect(_on_back_pressed)
 	top_row.add_child(back_button)
-	var reset_button := _make_compact_button("重置升级", RED)
+	var reset_button := _make_compact_button("ui.camp.reset_upgrades", RED)
 	reset_button.custom_minimum_size = Vector2(98, 32)
 	reset_button.add_theme_font_size_override("font_size", 10)
 	reset_button.pressed.connect(_on_reset_pressed.bind(reset_button))
@@ -128,7 +128,7 @@ func _build_interface() -> void:
 	var left_column := VBoxContainer.new()
 	left_column.add_theme_constant_override("separation", 6)
 	left_panel.add_child(left_column)
-	left_column.add_child(_make_header("营地建筑", "固定设施与成长入口"))
+	left_column.add_child(_make_header("ui.camp.buildings.title", "ui.camp.buildings.subtitle"))
 	var building_scroll := TouchScrollContainer.new()
 	building_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	building_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -172,7 +172,7 @@ func _build_interface() -> void:
 	upper.add_child(summary_panel)
 	var summary_content := VBoxContainer.new()
 	summary_panel.add_child(summary_content)
-	summary_content.add_child(_make_header("属性总览", "已应用的营地成长", 16, 9))
+	summary_content.add_child(_make_header("ui.camp.stats.title", "ui.camp.stats.subtitle", 16, 9))
 	var summary_scroll := TouchScrollContainer.new()
 	summary_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	summary_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -192,7 +192,7 @@ func _build_interface() -> void:
 	options_panel.add_child(options_column)
 	var options_header := HBoxContainer.new()
 	options_column.add_child(options_header)
-	options_header.add_child(_make_header("升级选项", "已解锁的属性成长"))
+	options_header.add_child(_make_header("ui.camp.upgrades.title", "ui.camp.upgrades.subtitle"))
 	_options_count_label = Label.new()
 	_options_count_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_options_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -406,7 +406,7 @@ func _refresh_currency() -> void:
 		return
 	var value := CampProgression.get_camp_currency()
 	var changed := _last_currency >= 0 and value != _last_currency
-	_currency_label.text = "营地币：%d" % value
+	_currency_label.text = L10n.text("ui.camp.currency") % value
 	_currency_label.add_theme_color_override("font_color", GOLD_BRIGHT if changed else GOLD)
 	if changed:
 		if _currency_tween != null and _currency_tween.is_valid():
@@ -446,8 +446,8 @@ func _refresh_buildings() -> void:
 		button.custom_minimum_size.y = 48
 		button.add_theme_font_size_override("font_size", 12)
 		button.disabled = false
-		var status := "Lv.%d" % level if unlocked else "未解锁"
-		button.text = "⌂  %s\n    %s" % [str(record.get("name", building_id)), status]
+		var status := "Lv.%d" % level if unlocked else L10n.text("ui.common.locked")
+		button.text = "⌂  %s\n    %s" % [L10n.source(str(record.get("name", building_id))), status]
 		if building_id == _selected_building_id:
 			button.add_theme_stylebox_override("normal", _button_style(Color("#2c2817"), GOLD_BRIGHT, 2))
 		elif unlocked:
@@ -490,19 +490,19 @@ func _refresh_detail(animate_reveal: bool = true) -> void:
 	var header := HBoxContainer.new()
 	_detail_panel.add_child(header)
 	_detail_title = Label.new()
-	_detail_title.text = str(record.get("name", _selected_building_id))
+	_detail_title.text = L10n.source(str(record.get("name", _selected_building_id)))
 	_detail_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail_title.clip_text = true
 	_detail_title.add_theme_color_override("font_color", GOLD_BRIGHT)
 	_detail_title.add_theme_font_size_override("font_size", 17)
 	header.add_child(_detail_title)
 	_detail_level = Label.new()
-	_detail_level.text = "Lv.%d / %d" % [level, max_level] if unlocked else "未解锁"
+	_detail_level.text = "Lv.%d / %d" % [level, max_level] if unlocked else "ui.common.locked"
 	_detail_level.add_theme_color_override("font_color", GREEN if unlocked else RED)
 	_detail_level.add_theme_font_size_override("font_size", 12)
 	header.add_child(_detail_level)
 	_detail_description = Label.new()
-	_detail_description.text = str(record.get("description", ""))
+	_detail_description.text = L10n.source(str(record.get("description", "")))
 	_detail_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_description.add_theme_color_override("font_color", TEXT)
 	_detail_description.add_theme_font_size_override("font_size", 12)
@@ -511,7 +511,7 @@ func _refresh_detail(animate_reveal: bool = true) -> void:
 	_detail_effects.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_detail_panel.add_child(_detail_effects)
 	var effect_title := Label.new()
-	effect_title.text = "建筑等级收益"
+	effect_title.text = "ui.camp.building.level_benefits"
 	effect_title.add_theme_color_override("font_color", CYAN)
 	effect_title.add_theme_font_size_override("font_size", 12)
 	_detail_effects.add_child(effect_title)
@@ -524,7 +524,7 @@ func _refresh_detail(animate_reveal: bool = true) -> void:
 			var effect_names: Array[String] = []
 			for effect in levels[level_key]:
 				if effect is Dictionary:
-					effect_names.append(str(effect.get("name", "")))
+					effect_names.append(L10n.source(str(effect.get("name", ""))))
 			effects.text = "Lv.%s  %s" % [str(level_key), "；".join(effect_names)]
 			effects.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			effects.add_theme_color_override("font_color", GREEN if int(str(level_key)) <= level else MUTED)
@@ -536,20 +536,20 @@ func _refresh_detail(animate_reveal: bool = true) -> void:
 		_animate_detail_reveal()
 	if unlocked and level >= max_level:
 		var max_label := Label.new()
-		max_label.text = "已达最高等级"
+		max_label.text = "ui.common.max_level"
 		max_label.add_theme_color_override("font_color", GOLD_BRIGHT)
 		max_label.add_theme_font_size_override("font_size", 12)
 		_detail_panel.add_child(max_label)
 	if not unlocked:
 		var unlock_condition: Variant = record.get("unlock_condition", {})
 		var unlock_cost := int((unlock_condition as Dictionary).get("cost", 0)) if unlock_condition is Dictionary else 0
-		var unlock := _make_compact_button("解锁营地（%d 营地币）" % unlock_cost, GOLD)
+		var unlock := _make_compact_button(L10n.text("ui.camp.unlock_camp") % unlock_cost, GOLD)
 		unlock.disabled = not CampProgression.can_purchase_building_unlock(_selected_building_id)
 		unlock.pressed.connect(_on_unlock_pressed.bind(unlock))
 		action_row.add_child(unlock)
 	elif level < max_level:
 		var cost := CampProgression.get_building_upgrade_cost(_selected_building_id, level + 1)
-		var upgrade := _make_compact_button("升级至 Lv.%d（%d 营地币）" % [level + 1, cost], GOLD)
+		var upgrade := _make_compact_button(L10n.text("ui.camp.upgrade_to_level") % [level + 1, cost], GOLD)
 		upgrade.disabled = not CampProgression.can_purchase_building_upgrade(_selected_building_id)
 		upgrade.pressed.connect(_on_building_upgrade_pressed.bind(upgrade))
 		action_row.add_child(upgrade)
@@ -588,7 +588,7 @@ func _refresh_summary() -> void:
 		shown += 1
 	if shown == 0:
 		var empty := Label.new()
-		empty.text = "\u5c1a\u65e0\u5df2\u5e94\u7528\u5c5e\u6027"
+		empty.text = "ui.camp.stats.empty"
 		empty.add_theme_color_override("font_color", MUTED)
 		empty.add_theme_font_size_override("font_size", 10)
 		_summary_grid.add_child(empty)
@@ -601,7 +601,7 @@ func _format_summary_value(stat: String, value: float) -> String:
 func _format_upgrade_effect(option: Dictionary) -> String:
 	var stat := str(option.get("stat", ""))
 	var stat_name := StatDefinitions.get_display_name(stat) if StatDefinitions.has_stat(stat) else stat
-	return "每级 %s%s" % [stat_name, _format_modifier_value(stat, float(option.get("value_per_level", 0.0)))]
+	return L10n.text("ui.camp.stat.per_level") % [stat_name, _format_modifier_value(stat, float(option.get("value_per_level", 0.0)))]
 
 
 func _format_modifier_value(stat: String, value: float) -> String:
@@ -642,7 +642,7 @@ func _refresh_options(animate_rows: bool = true) -> void:
 		var group := VBoxContainer.new()
 		group.add_theme_constant_override("separation", 4)
 		var group_title := Label.new()
-		group_title.text = "%s  ·  Lv.%d" % [str(record.get("name", building_id)), building_level]
+		group_title.text = "%s  ·  Lv.%d" % [L10n.source(str(record.get("name", building_id))), building_level]
 		group_title.add_theme_color_override("font_color", CYAN if building_id == _selected_building_id else GOLD)
 		group_title.add_theme_font_size_override("font_size", 12)
 		group.add_child(group_title)
@@ -653,7 +653,7 @@ func _refresh_options(animate_rows: bool = true) -> void:
 				_animate_option_row(option_row, total)
 			total += 1
 		_options_list.add_child(group)
-	_options_count_label.text = "已解锁 %d 项" % total
+	_options_count_label.text = L10n.text("ui.camp.unlocked_count") % total
 
 
 func _animate_option_row(option_row: Control, index: int) -> void:
@@ -684,13 +684,13 @@ func _make_option_row(building_id: String, option: Dictionary, animate_progress:
 	var current := CampProgression.get_upgrade_option_level(option_id)
 	var max_level := int(option.get("max_level", 1))
 	var name_label := Label.new()
-	name_label.text = str(option.get("name", option_id))
+	name_label.text = L10n.source(str(option.get("name", option_id)))
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	name_label.add_theme_color_override("font_color", TEXT)
 	name_label.add_theme_font_size_override("font_size", 11)
 	info.add_child(name_label)
 	if str(option.get("stat", "")) == "finance":
-		var finance_tip := "理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。" % int(option.get("value_per_level", 0))
+		var finance_tip := L10n.text("ui.camp.finance.description") % int(option.get("value_per_level", 0))
 		row.mouse_entered.connect(_show_finance_tooltip.bind(row, finance_tip))
 		row.mouse_exited.connect(_hide_finance_tooltip)
 	var progress := Label.new()
@@ -713,7 +713,7 @@ func _make_option_row(building_id: String, option: Dictionary, animate_progress:
 	else:
 		progress_bar.value = current
 	line.add_child(info)
-	var buy := _make_compact_button("购买 %d" % CampProgression.get_upgrade_cost(option_id), GOLD)
+	var buy := _make_compact_button(L10n.text("ui.camp.purchase_amount") % CampProgression.get_upgrade_cost(option_id), GOLD)
 	buy.custom_minimum_size = Vector2(68, 26)
 	buy.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	buy.disabled = not CampProgression.can_purchase_upgrade(option_id)
@@ -799,7 +799,7 @@ func _on_building_selected(building_id: String) -> void:
 
 func _on_unlock_pressed(source_button: Button) -> void:
 	if CampProgression.purchase_building_unlock(_selected_building_id):
-		_play_purchase_feedback(source_button, "建筑已解锁")
+		_play_purchase_feedback(source_button, L10n.text("ui.camp.building.unlocked"))
 	else:
 		_play_purchase_error(source_button)
 
@@ -822,7 +822,7 @@ func _on_option_pressed(option_id: String, source_button: Button) -> void:
 	_skip_next_option_animation = true
 	if CampProgression.purchase_upgrade(option_id):
 		var new_level := CampProgression.get_upgrade_option_level(option_id)
-		_play_purchase_feedback(source_button, "属性升级  Lv.%d  →  Lv.%d" % [old_level, new_level], true, false)
+		_play_purchase_feedback(source_button, L10n.text("ui.camp.stat.upgrade_preview") % [old_level, new_level], true, false)
 	else:
 		_skip_next_option_animation = false
 		_play_purchase_error(source_button)
@@ -831,7 +831,7 @@ func _on_option_pressed(option_id: String, source_button: Button) -> void:
 func _on_reset_pressed(source_button: Button) -> void:
 	_skip_next_option_animation = true
 	CampProgression.reset_upgrade_options_and_refund()
-	_play_purchase_feedback(source_button, "升级已重置", false)
+	_play_purchase_feedback(source_button, L10n.text("ui.camp.upgrades.reset_done"), false)
 
 
 func _play_purchase_feedback(source_button: Control, message: String = "升级已生效", show_coin_particles: bool = true, show_page_flash: bool = true) -> void:

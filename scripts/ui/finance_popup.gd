@@ -67,6 +67,7 @@ var _arrival_pulse: Tween
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_on_locale_changed)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_build()
@@ -99,26 +100,26 @@ func configure(next_payload: Dictionary) -> void:
 		shop_grid.set_offers(payload.get("offers", []), true)
 	else:
 		shop_grid.refresh_availability()
-	_summary.text = "金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d" % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
+	_summary.text = L10n.text("ui.bank.balance_summary") % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
 	var protection: Dictionary = payload.get("principal_revive", {})
 	_principal_protection.visible = not protection.is_empty()
 	if not protection.is_empty():
-		_principal_protection.text = "%s：%s" % [protection.display_name, FinanceUIStyle.principal_revive_status(protection)]
-		_principal_protection.tooltip_text = "已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。" % [int(protection.principal_cost), HumanityEconomy.number(float(protection.health_percent))]
+		_principal_protection.text = "%s: %s" % [L10n.source(protection.display_name), FinanceUIStyle.principal_revive_status(protection)]
+		_principal_protection.tooltip_text = L10n.text("ui.bank.revival_tooltip") % [int(protection.principal_cost), HumanityEconomy.number(float(protection.health_percent))]
 	_summary.tooltip_text = ""
 	_refresh_bank()
 	var remaining := 0
 	for offer in shop_grid.offers:
 		if not bool(offer.get("purchased", false)): remaining += 1
-	_stock.text = "剩余 %d / %d 件" % [remaining, shop_grid.offers.size()]
-	_refresh.text = "刷新 · %d 金币" % int(payload.get("refresh_cost", 0))
+	_stock.text = L10n.text("ui.bank.shop.remaining") % [remaining, shop_grid.offers.size()]
+	_refresh.text = L10n.text("ui.bank.shop.reroll_price") % int(payload.get("refresh_cost", 0))
 	_refresh.disabled = int(payload.get("gold", 0)) < int(payload.get("refresh_cost", 0))
 	FinanceUIStyle.bank_button(_refresh)
 	if bool(payload.get("strong_refresh", false)):
-		_refresh.text = "强力刷新 · 免费"
+		_refresh.text = "ui.bank.shop.power_reroll"
 		_refresh.add_theme_stylebox_override("normal", _refresh_glow)
 		_refresh.add_theme_stylebox_override("hover", _refresh_glow)
-		_refresh.tooltip_text = "消耗1次强力刷新：本次幸运+100，保底一件史诗（紫色）遗物。可跨波保留，直到主动刷新时使用。"
+		_refresh.tooltip_text = "ui.bank.shop.power_reroll_tooltip"
 	else:
 		_refresh.tooltip_text = ""
 		_refresh.remove_theme_color_override("font_hover_color")
@@ -126,10 +127,10 @@ func configure(next_payload: Dictionary) -> void:
 	if new_shelf:
 		var settled := 0
 		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
-		_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % settled if settled > 0 else "准备完成后，点击开始下一波。"
+		_feedback.text = L10n.text("ui.bank.interest_received") % settled if settled > 0 else "ui.bank.ready_hint"
 		var settlements: Array = payload.get("settlement_results", [])
 		if not settlements.is_empty() and settlements.back().has("challenge_settlement"):
-			_feedback.text = "挑战完成 · 结息后已将全部金币存入本金。"
+			_feedback.text = "ui.bank.challenge_deposit_done"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
 	_sync_interest_arrival()
 	_sync_live_trade()
@@ -157,11 +158,11 @@ func _on_interest_arrived(amount: int) -> void:
 	_arrival_pulse = create_tween()
 	_arrival_pulse.tween_property(_summary, "modulate", Color.WHITE, 0.6)
 	if bool(interest_arrival.report.get("auto_deposit", false)):
-		_feedback.text = "挑战完成 · 结息后已将全部金币存入本金。"
+		_feedback.text = "ui.bank.challenge_deposit_done"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
 		return
 	if amount <= 0: return
-	_feedback.text = "本波利息 +%d 金币 · 已入随身金币" % amount
+	_feedback.text = L10n.text("ui.bank.interest_received") % amount
 	var affordable: Dictionary = {}
 	if flow != null:
 		for offer: Dictionary in payload.get("offers", []):
@@ -169,7 +170,7 @@ func _on_interest_arrived(amount: int) -> void:
 			if cost > 0 and cost <= amount and cost > int(affordable.get("shop_cost", 0)) and flow.get_offer_unavailable_reason(offer).is_empty():
 				affordable = offer
 	if not affordable.is_empty():
-		_feedback.text = "本波利息 +%d，足够购买「%s」" % [amount, str(affordable.get("display_name", "商品"))]
+		_feedback.text = L10n.text("ui.bank.interest_purchase_hint") % [amount, L10n.record_text(affordable, "display_name", "ui.bank.shop.product")]
 	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
 
 
@@ -196,13 +197,13 @@ func _sync_live_trade() -> void:
 	var token := str(offer.get("token", ""))
 	if token == _live_trade_token: return
 	_live_trade_token = token
-	present_trade(str(offer.speech), str(offer.body), str(offer.detail))
+	present_trade(L10n.record_text(offer, "speech"), L10n.record_text(offer, "body"), L10n.record_text(offer, "detail"))
 	trade_presentation.start_wave_on_accept = str(offer.id) == "principal_advance"
-	trade_presentation._yes.tooltip_text = str(offer.body)
-	if not str(offer.detail).is_empty():
-		trade_presentation._yes.tooltip_text += "\n" + str(offer.detail)
+	trade_presentation._yes.tooltip_text = L10n.record_text(offer, "body")
+	if not L10n.source(str(offer.detail)).is_empty():
+		trade_presentation._yes.tooltip_text += "\n" + L10n.source(str(offer.detail))
 	if str(offer.id) == "strong_refresh":
-		trade_presentation._yes.tooltip_text += "\n存款仍归你所有，下次进入银行可手动取出。强力刷新可跨波保留。"
+		trade_presentation._yes.tooltip_text += L10n.text("ui.bank.deposit_ownership_hint")
 	_layout()
 
 
@@ -265,7 +266,7 @@ func _on_trade_choice(accepted: bool) -> void:
 		cancel_trade("accepted")
 		if flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP:
 			configure(flow.get_preparation_payload())
-			_feedback_message("交易已接受。", true)
+			_feedback_message(L10n.text("ui.bank.trade_accepted"), true)
 	else:
 		show_error(str(result.get("reason", "trade_expired")))
 		flow.cancel_goblin_trade()
@@ -298,7 +299,7 @@ func _build() -> void:
 	_scene_bank_back = _scene_surface("panel")
 	_scene_enchant_back = _scene_surface("panel")
 	_scene_footer_back = _scene_surface("slim")
-	_title = _label("哥布林银行", main_panel, 22, FinanceUIStyle.TEXT)
+	_title = _label("ui.bank.title", main_panel, 22, FinanceUIStyle.TEXT)
 	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
 	_summary.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -326,14 +327,14 @@ func _build() -> void:
 	bank_body.add_child(_bank_form)
 	var actions := HBoxContainer.new()
 	_bank_form.add_child(actions)
-	_deposit = _button("存入本金", actions)
+	_deposit = _button("ui.bank.deposit.tab", actions)
 	_deposit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_deposit.pressed.connect(_choose_bank_action.bind("deposit"))
-	_withdraw = _button("取出本金", actions)
+	_withdraw = _button("ui.bank.withdraw.tab", actions)
 	_withdraw.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_withdraw.pressed.connect(_choose_bank_action.bind("withdraw"))
 	amount_input = LineEdit.new()
-	amount_input.placeholder_text = "输入金额"
+	amount_input.placeholder_text = "ui.bank.amount_placeholder"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
 	amount_input.add_theme_font_size_override("font_size", 12)
@@ -345,7 +346,7 @@ func _build() -> void:
 	var shortcuts := HBoxContainer.new()
 	_bank_form.add_child(shortcuts)
 	for portion in [0.25, 0.5, 1.0]:
-		var quick := _button("全部" if portion == 1.0 else ("1/2" if portion == 0.5 else "1/4"), shortcuts)
+		var quick := _button("ui.common.all" if portion == 1.0 else ("1/2" if portion == 0.5 else "1/4"), shortcuts)
 		quick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		quick.pressed.connect(func():
 			amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion))
@@ -354,7 +355,7 @@ func _build() -> void:
 	_bank_preview = _label("", _bank_form, 12, FinanceUIStyle.GOLD)
 	_bank_preview.name = "PrincipalStatPreview"
 	_bank_preview.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	bank_confirm = _button("确认存入", _bank_form)
+	bank_confirm = _button("ui.bank.deposit.confirm", _bank_form)
 	bank_confirm.pressed.connect(_submit_bank)
 	amount_input.text_changed.connect(func(_value): _update_bank_confirm())
 	_receipt = _label("", bank_body, 14, FinanceUIStyle.GREEN)
@@ -364,7 +365,7 @@ func _build() -> void:
 	_tabs = HBoxContainer.new()
 	_tabs.add_theme_constant_override("separation", 8)
 	main_panel.add_child(_tabs)
-	for entry in [["bank", "理财"], ["shop", "购买"], ["enchant", "附魔"]]:
+	for entry in [["bank", "stat.principal.name"], ["shop", "ui.common.buy"], ["enchant", "ui.common.enchantments"]]:
 		var tab := _button(entry[1], _tabs)
 		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		tab.pressed.connect(_select_tab.bind(entry[0]))
@@ -381,7 +382,7 @@ func _build() -> void:
 		if flow != null: flow.clear_stat_preview()
 	)
 	_stock = _label("", _shop, 12, FinanceUIStyle.MUTED)
-	_refresh = _button("刷新", _shop)
+	_refresh = _button("ui.common.reroll", _shop)
 	_refresh.pressed.connect(_refresh_shop)
 	_enchant_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_enchant_scroll)
@@ -396,7 +397,8 @@ func _build() -> void:
 	workbench.tooltip_hidden.connect(func(): _tooltip.hide())
 	_feedback = _label("", main_panel, 12, FinanceUIStyle.MUTED)
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	start_button = _button("开始下一波", main_panel)
+	_feedback.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	start_button = _button("ui.bank.next_wave", main_panel)
 	FinanceUIStyle.bank_button(start_button, true)
 	start_button.pressed.connect(func():
 		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
@@ -457,7 +459,7 @@ func _build_sale_dialog() -> void:
 	_sale_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_sale_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	sale_heading.add_child(_sale_icon)
-	_label("确认出售", sale_heading, 20, FinanceUIStyle.GOLD)
+	_label("ui.bank.sale.confirm", sale_heading, 20, FinanceUIStyle.GOLD)
 	_sale_text = RichTextLabel.new()
 	_sale_text.bbcode_enabled = true
 	_sale_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -469,10 +471,10 @@ func _build_sale_dialog() -> void:
 	body.add_child(_sale_items)
 	var actions := HBoxContainer.new()
 	body.add_child(actions)
-	var cancel := _button("取消", actions)
+	var cancel := _button("ui.common.cancel", actions)
 	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cancel.pressed.connect(func(): _sale_layer.hide())
-	_sale_confirm = _button("确认出售", actions)
+	_sale_confirm = _button("ui.bank.sale.confirm", actions)
 	_sale_confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_sale_confirm.pressed.connect(_confirm_sale)
 	_sale_layer.hide()
@@ -591,11 +593,11 @@ func _refresh_bank() -> void:
 	_receipt.visible = locked
 	if locked:
 		var last: Dictionary = payload.get("last_manual_operation", {})
-		_receipt.text = "本波已%s %d 金币\n下波可再次办理存取。" % ["存入" if str(last.get("action", "")) == "deposit" else "取出", int(last.get("amount", 0))]
-		if trade_locked: _receipt.text = "交易限制：本次银行存取已关闭。\n下次进入银行恢复。"
+		_receipt.text = L10n.text("ui.bank.transaction_done") % [L10n.text("ui.bank.deposit.action" if str(last.get("action", "")) == "deposit" else "ui.bank.withdraw.action"), int(last.get("amount", 0))]
+		if trade_locked: _receipt.text = "ui.bank.restriction.all"
 	elif bool(payload.get("trade_deposit_blocked", false)):
 		_receipt.show()
-		_receipt.text = "交易限制：本次不可存款，仍可取款。"
+		_receipt.text = "ui.bank.restriction.deposit_only"
 		_bank_action = "withdraw"
 	_choose_bank_action(_bank_action)
 	_contract.text = ""
@@ -603,18 +605,18 @@ func _refresh_bank() -> void:
 	if _contract.visible:
 		var bonus := float(payload.get("deposit_bonus_rate", 0.0))
 		var bonus_text := HumanityEconomy.number(bonus)
-		var status := "本波利率已 +%s 个百分点" % bonus_text if bool(payload.get("deposit_bonus_active", false)) else "达标后利率 +%s 个百分点；未达标仍正常结息" % bonus_text
-		_contract.text = "高利契约：手动存入 %d / %d\n%s" % [int(payload.get("wave_start_deposit_amount", 0)), int(payload.get("deposit_requirement", 0)), status]
+		var status := L10n.text("ui.bank.high_yield.fulfilled") % bonus_text if bool(payload.get("deposit_bonus_active", false)) else L10n.text("ui.bank.high_yield.requirement") % bonus_text
+		_contract.text = L10n.text("ui.bank.high_yield.progress") % [int(payload.get("wave_start_deposit_amount", 0)), int(payload.get("deposit_requirement", 0)), status]
 
 
 func _choose_bank_action(action: String) -> void:
 	_bank_action = action
 	FinanceUIStyle.bank_button(_deposit, action == "deposit")
 	FinanceUIStyle.bank_button(_withdraw, action == "withdraw")
-	bank_confirm.text = "确认存入" if action == "deposit" else "确认取出"
+	bank_confirm.text = "ui.bank.deposit.confirm" if action == "deposit" else "确认取出"
 	_withdraw.disabled = int(payload.get("principal", 0)) <= 0
 	_deposit.disabled = bool(payload.get("trade_deposit_blocked", false))
-	_deposit.tooltip_text = "交易限制：本次不可存款。" if _deposit.disabled else ""
+	_deposit.tooltip_text = "ui.bank.restriction.no_deposit" if _deposit.disabled else ""
 	_withdraw.disabled = _withdraw.disabled or bool(payload.get("trade_withdraw_blocked", false))
 	_update_bank_confirm()
 
@@ -660,7 +662,7 @@ func _submit_bank() -> void:
 	if bool(result.get("success", false)):
 		cancel_trade(_bank_action)
 		portrait.react(_bank_action, int(result.get("amount", 0)), int(result.get("source_balance_before", 0)))
-		_feedback_message("存取已完成。仍可购买、出售和配置附魔。", true)
+		_feedback_message(L10n.text("ui.bank.transaction_done_hint"), true)
 	else: show_error(str(result.get("reason", "")))
 
 
@@ -669,8 +671,20 @@ func _buy(offer: Dictionary) -> void:
 	var result := flow.submit_shop_purchase(offer, "shop")
 	if bool(result.get("success", false)):
 		cancel_trade("purchase")
-		_feedback_message("已购买：" + str(offer.get("display_name", "")), true)
+		_feedback_message(L10n.text("ui.bank.purchase_done_prefix") + L10n.record_text(offer, "display_name"), true)
 	else: show_error(str(result.get("reason", "")))
+
+
+func _on_locale_changed() -> void:
+	if payload.is_empty() or not is_node_ready():
+		return
+	# Existing generation and arrival IDs prevent rerolls and replayed payouts.
+	configure(payload)
+	var offer: Dictionary = payload.get("goblin_trade", {})
+	if not offer.is_empty():
+		trade_presentation._speech_text.text = L10n.record_text(offer, "speech")
+		trade_presentation._body.text = L10n.record_text(offer, "body")
+		trade_presentation._yes.tooltip_text = L10n.record_text(offer, "body")
 
 
 func _refresh_shop() -> void:
@@ -678,7 +692,7 @@ func _refresh_shop() -> void:
 	var result := flow.request_shop_refresh()
 	if bool(result.get("success", false)):
 		cancel_trade("refresh")
-		_feedback_message("强力刷新已使用，保底史诗遗物。" if bool(result.get("strong_refresh", false)) else "货架已刷新。", true)
+		_feedback_message(L10n.text("ui.bank.power_reroll_done") if bool(result.get("strong_refresh", false)) else L10n.text("ui.bank.reroll_done"), true)
 	else: show_error(str(result.get("reason", "")))
 
 
@@ -695,7 +709,7 @@ func _open_sale(kind: String, id: String) -> void:
 		child.queue_free()
 	_sale_items.visible = kind == "weapon" and not (_quote.get("returned_ids", []) as Array).is_empty()
 	if _sale_items.visible:
-		_label("归还背包", _sale_items, 12, FinanceUIStyle.MUTED)
+		_label("ui.bank.return_to_inventory", _sale_items, 12, FinanceUIStyle.MUTED)
 		for returned_id in _quote.get("returned_ids", []):
 			var returned_item := flow.get_bound_player().item_inventory.find_item(str(returned_id))
 			var icon := TextureRect.new()
@@ -703,23 +717,25 @@ func _open_sale(kind: String, id: String) -> void:
 			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.texture = FinanceUIStyle.item_icon(str(returned_item.get("icon", "")))
-			icon.tooltip_text = str(returned_item.get("display_name", ""))
+			icon.tooltip_text = L10n.source(str(returned_item.get("display_name", "")))
 			_sale_items.add_child(icon)
-	var lines: Array[String] = ["[b]%s[/b]" % str(_quote.get("display_name", ""))]
+	var lines: Array[String] = ["[b]%s[/b]" % L10n.source(str(_quote.get("display_name", "")))]
 	if kind == "weapon":
-		lines.append("武器等级：%d\n基础回收：%d\n升级回收：%d" % [int(_quote.get("level", 1)), int(_quote.get("base_value", 0)), int(_quote.get("upgrade_value", 0))])
-		if int(_quote.get("title_bonus", 0)) > 0: lines.append("称号「%s」加价：%d" % [str(_quote.get("title", "")), int(_quote.get("title_bonus", 0))])
-		var returned: Array = _quote.get("returned_items", [])
-		lines.append("附魔将归还背包：" + ("、".join(returned) if not returned.is_empty() else "无"))
+		lines.append(L10n.text("ui.bank.sale.weapon_breakdown") % [int(_quote.get("level", 1)), int(_quote.get("base_value", 0)), int(_quote.get("upgrade_value", 0))])
+		if int(_quote.get("title_bonus", 0)) > 0: lines.append(L10n.text("ui.bank.sale.title_bonus") % [L10n.source(_quote.get("title", "")), int(_quote.get("title_bonus", 0))])
+		var returned: Array[String] = []
+		for item_name in _quote.get("returned_items", []): returned.append(L10n.source(item_name))
+		lines.append(L10n.text("ui.bank.sale.returned_enchantments_prefix") + (", ".join(returned) if not returned.is_empty() else L10n.text("ui.common.none")))
 	else:
 		var detail := ItemInventoryCard.new()
 		detail.item_instance = flow.get_bound_player().item_inventory.find_item(id)
-		lines.append(detail._build_tooltip())
+		lines.append(detail._build_tooltip(false))
 		detail.free()
 	lines.append(HumanityEconomy.sale_tooltip(_quote))
-	lines.append("\n[color=#D4BC81]获得 %d 金币[/color]" % int(_quote.get("total", 0)))
+	lines.append(L10n.text("ui.bank.sale.proceeds") % int(_quote.get("total", 0)))
 	_sale_text.text = "\n\n".join(lines)
-	_sale_confirm.text = "出售 · %d 金币" % int(_quote.get("total", 0))
+	_sale_text.scroll_to_line(0)
+	_sale_confirm.text = L10n.text("ui.bank.sale.price") % int(_quote.get("total", 0))
 	_sale_layer.show()
 	_sale_confirm.grab_focus()
 
@@ -731,7 +747,7 @@ func _confirm_sale() -> void:
 	_quote.clear()
 	if bool(result.get("success", false)):
 		cancel_trade("sale")
-		_feedback_message("已出售，获得 %d 金币。" % int(result.get("gold_gained", 0)), true)
+		_feedback_message(L10n.text("ui.enchantment.sale_done") % int(result.get("gold_gained", 0)), true)
 	else: show_error(str(result.get("reason", "")))
 
 

@@ -146,7 +146,7 @@ func decide(token: String, accepted: bool, player: PlayerController, finance: Ba
 		_add_stat(player, "luck", float(chosen.luck))
 		player.end_modifier_update()
 		finance.deposit(int(chosen.principal), true, "wave_challenge")
-	finance.record_trade_activity("接受下一波挑战：" + str(chosen.body).replace("\n", " "))
+	finance.record_trade_activity({"message_parts": ["log.challenge.accepted_prefix", L10n.message(L10n.key_for_source(str(chosen.body)))]})
 	return true
 
 
@@ -166,7 +166,7 @@ func settle_wave(wave: int, player: PlayerController, finance: BattleFinanceSyst
 		return {}
 	finance.deposit(int(completed.principal), true, "wave_challenge")
 	_add_stat(player, "luck", float(completed.luck))
-	finance.record_trade_activity("挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。" % [transferred, int(completed.principal), int(completed.luck)])
+	finance.record_trade_activity(L10n.message("log.challenge.completed", [transferred, int(completed.principal), int(completed.luck)]))
 	return {"deposited": transferred, "principal_bonus": int(completed.principal), "luck_bonus": int(completed.luck)}
 
 

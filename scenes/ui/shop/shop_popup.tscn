@@ -134,7 +134,7 @@ theme_override_colors/font_shadow_color = Color(0.18, 0.12, 0.03, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "升级奖励"
+text = "ui.shop.upgrade_reward"
 horizontal_alignment = 1
 vertical_alignment = 1
 mouse_filter = 2
@@ -169,7 +169,7 @@ theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleTabNormal")
 theme_override_styles/hover = SubResource("StyleTabNormal")
-text = "升级奖励"
+text = "ui.shop.upgrade_reward"
 mouse_filter = 2
 focus_mode = 0
 
@@ -180,7 +180,7 @@ theme_override_colors/font_color = Color(0.909804, 0.862745, 0.768627, 1)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleTabNormal")
 theme_override_styles/hover = SubResource("StyleTabNormal")
-text = "商店"
+text = "ui.shop.short_title"
 mouse_filter = 2
 focus_mode = 0
 
@@ -230,7 +230,7 @@ theme_override_colors/font_color = Color(0.831373, 0.784314, 0.635294, 1)
 theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleAction")
 theme_override_styles/hover = SubResource("StyleActionHover")
-text = "跳过"
+text = "ui.common.skip"
 mouse_default_cursor_shape = 2
 
 [node name="RefreshButton" type="Button" parent="CenterContainer/MainPanel/Content/Footer"]
@@ -240,5 +240,5 @@ theme_override_colors/font_color = Color(0.831373, 0.784314, 0.635294, 1)
 theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("StyleAction")
 theme_override_styles/hover = SubResource("StyleActionHover")
-text = "刷新"
+text = "ui.common.reroll"
 mouse_default_cursor_shape = 2

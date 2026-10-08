@@ -14,11 +14,12 @@ var _finance_style := false
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_entries)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	toggle_button = Button.new()
 	toggle_button.name = "EconomyLogToggle"
-	toggle_button.text = "日志"
-	toggle_button.tooltip_text = "展开 / 收起本局经济日志；查看战斗收入、结息与存取款"
+	toggle_button.text = "ui.economy_log.title"
+	toggle_button.tooltip_text = "ui.economy_log.toggle_tooltip"
 	toggle_button.focus_mode = Control.FOCUS_NONE
 	FinanceUIStyle.button(toggle_button)
 	toggle_button.pressed.connect(func(): set_open(not _open))
@@ -40,8 +41,8 @@ func _ready() -> void:
 	panel.add_child(column)
 	var heading := Label.new()
 	heading.name = "LogTitle"
-	heading.text = "日志"
-	heading.tooltip_text = "保留本局最近 300 条记录"
+	heading.text = "ui.economy_log.title"
+	heading.tooltip_text = "ui.economy_log.retention_hint"
 	heading.add_theme_color_override("font_color", Color("e0c68a"))
 	heading.add_theme_font_size_override("font_size", 13)
 	column.add_child(heading)
@@ -124,8 +125,8 @@ func _refresh_entries() -> void:
 	_last_sequence = latest
 	var lines: PackedStringArray = []
 	for entry in _journal.entries:
-		lines.append("第 %d 波 · %s" % [int(entry.get("wave", 1)), str(entry.text)])
-	log_text.text = "\n".join(lines) if not lines.is_empty() else "本局暂无经济记录。"
+		lines.append(L10n.text("ui.economy_log.entry") % [int(entry.get("wave", 1)), L10n.render_message(entry.get("message", entry.get("text", "")))])
+	log_text.text = "\n".join(lines) if not lines.is_empty() else "ui.economy_log.empty"
 	if follow and _open:
 		_scroll_to_end.call_deferred()
 

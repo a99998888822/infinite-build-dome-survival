@@ -21,6 +21,7 @@ var _tooltip_mouse_position := Vector2.ZERO
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_weapon_strip)
 	if weapon_tooltip != null:
 		weapon_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -46,9 +47,9 @@ func _refresh_load_label() -> void:
 	if load_label == null:
 		return
 	if _loadout == null:
-		load_label.text = "负载0/0"
+		load_label.text = "ui.weapon.load_empty"
 		return
-	load_label.text = "负载%d/%d" % [_loadout.get_total_load_cost(), _loadout.get_load_capacity()]
+	load_label.text = L10n.text("ui.weapon.load") % [_loadout.get_total_load_cost(), _loadout.get_load_capacity()]
 
 
 func _refresh_weapon_strip() -> void:
@@ -165,7 +166,7 @@ func _update_tooltip_attachment_rows() -> void:
 		return
 	var face := weapon_tooltip_label.get_theme_font("normal_font")
 	var font_size := weapon_tooltip_label.get_theme_font_size("normal_font_size")
-	var header_width := face.get_string_size("附魔" + WeaponInstance.ATTACHMENT_ICON_GAP, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var header_width := face.get_string_size(L10n.text("ui.common.enchantments") + WeaponInstance.ATTACHMENT_ICON_GAP, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var gap_width := face.get_string_size(WeaponInstance.ATTACHMENT_ICON_GAP, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var row_y := weapon_tooltip_label.get_paragraph_offset(weapon_tooltip_label.get_paragraph_count() - 1)
 	for attachment_row in _tooltip_attachment_rows:
@@ -212,8 +213,8 @@ func _update_attachment_tooltip(mouse_position: Vector2) -> void:
 
 func _show_attachment_tooltip(item: Dictionary, icon_rect: Rect2) -> void:
 	var base := DataRegistry.get_record("augmentations", str(item.get("base_item_id", "")))
-	var title := str(item.get("display_name", base.get("display_name", "附魔")))
-	var description := str(item.get("description", base.get("description", "")))
+	var title := L10n.source(str(item.get("display_name", base.get("display_name", L10n.text("ui.common.enchantments")))))
+	var description := L10n.source(str(item.get("description", base.get("description", ""))))
 	var text := title + ("\n" + description if not description.is_empty() else "")
 	var viewport_size := get_viewport_rect().size
 	var width := minf(280.0, viewport_size.x - 40.0)

@@ -156,29 +156,30 @@ func _append_rolled_parameter_lines(lines: Array[String]) -> void:
 	if not (rolled_parameters is Dictionary):
 		return
 	if rolled_parameters.has("chain_count"):
-		lines.append("[color=%s]连续传递：[/color][color=#7FD88F]%d 次[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["chain_count"])])
+		lines.append(L10n.text("ui.item.tooltip.chain_count") % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["chain_count"])])
 	if rolled_parameters.has("chain_interval"):
-		lines.append("[color=%s]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color]" % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["chain_interval"])])
+		lines.append(L10n.text("ui.item.tooltip.chain_interval") % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["chain_interval"])])
 	if rolled_parameters.has("stun_duration"):
-		lines.append("[color=%s]麻痹时间：[/color][color=#7FD88F]%.2f 秒[/color]" % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["stun_duration"])])
+		lines.append(L10n.text("ui.item.tooltip.paralysis_duration") % [TOOLTIP_LABEL_COLOR, float(rolled_parameters["stun_duration"])])
 	if rolled_parameters.has("child_count"):
-		lines.append("[color=%s]分裂子弹：[/color][color=#7FD88F]%d 枚[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["child_count"])])
+		lines.append(L10n.text("ui.item.tooltip.split_count") % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["child_count"])])
 	if rolled_parameters.has("spread_angle"):
-		lines.append("[color=%s]分裂角度：[/color][color=#7FD88F]%d°[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["spread_angle"])])
+		lines.append(L10n.text("ui.item.tooltip.split_angle") % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["spread_angle"])])
 	if rolled_parameters.has("extra_target_hits"):
-		lines.append("[color=%s]额外命中：[/color][color=#7FD88F]%d 个目标[/color]" % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["extra_target_hits"])])
+		lines.append(L10n.text("ui.item.tooltip.extra_hits") % [TOOLTIP_LABEL_COLOR, int(rolled_parameters["extra_target_hits"])])
 
 
-func _build_tooltip() -> String:
+func _build_tooltip(include_title := true) -> String:
 	var lines: Array[String] = []
 	var rarity := str(item_instance.get("rarity", "common"))
 	var rarity_color := str(RARITY_COLOR_CODES.get(rarity, "#FFFFFF"))
-	lines.append("[color=%s][b]%s[/b][/color]" % [rarity_color, str(item_instance.get("display_name", "物品"))])
-	lines.append("[color=#C7D3E4]类型：%s　稀有度：%s[/color]" % [
+	if include_title:
+		lines.append("[color=%s][b]%s[/b][/color]" % [rarity_color, L10n.source(str(item_instance.get("display_name", L10n.text("ui.common.item"))))])
+	lines.append(L10n.text("ui.item.tooltip.type_rarity") % [
 		_get_type_label(),
-		str(RARITY_LABELS.get(rarity, "未知")),
+		L10n.source(str(RARITY_LABELS.get(rarity, L10n.text("ui.common.unknown")))),
 	])
-	var description := str(item_instance.get("description", ""))
+	var description := L10n.source(str(item_instance.get("description", "")))
 	if not description.is_empty():
 		lines.append("[color=#FFFFFF]%s[/color]" % description)
 	return "\n".join(lines)
@@ -189,7 +190,7 @@ func _get_type_label() -> String:
 	if kind.is_empty():
 		var base_id := str(item_instance.get("base_item_id", item_instance.get("id", "")))
 		kind = str(DataRegistry.get_record("augmentations", base_id).get("enchantment_type", ""))
-	return str(ENCHANTMENT_TYPE_LABELS.get(kind, CATEGORY_LABELS.get(str(item_instance.get("category", "")), "特殊物品")))
+	return L10n.source(str(ENCHANTMENT_TYPE_LABELS.get(kind, CATEGORY_LABELS.get(str(item_instance.get("category", "")), L10n.text("item.type.special")))))
 
 
 func _on_mouse_entered() -> void:
@@ -206,7 +207,7 @@ func _get_effect_names() -> String:
 	var effect_ids: Variant = item_instance.get("effect_ids", [])
 	if effect_ids is Array:
 		for effect_id in effect_ids:
-			names.append(str(EFFECT_LABELS.get(str(effect_id), "附魔效果")))
+			names.append(L10n.source(str(EFFECT_LABELS.get(str(effect_id), L10n.text("ui.item.tooltip.enchantment_effect")))))
 	return "、".join(names)
 
 
@@ -215,27 +216,27 @@ func _format_modifier(modifier: Dictionary) -> String:
 	var operation := str(modifier.get("operation", ""))
 	var effect_id := str(modifier.get("effect_id", ""))
 	if channel == "visual.color":
-		return "[color=%s]粒子颜色：[/color][color=%s]%s[/color]" % [
+		return L10n.text("ui.item.tooltip.particle_color") % [
 			TOOLTIP_LABEL_COLOR,
 			TOOLTIP_VALUE_COLOR,
 			_get_visual_color_name(effect_id),
 		]
 	if channel == "detonate_burning":
-		return "[color=%s]燃烧引爆：[/color][color=#7FD88F]已启用[/color]" % TOOLTIP_LABEL_COLOR
-	var label := str(MODIFIER_LABELS.get(channel, "效果强化"))
+		return L10n.text("ui.item.tooltip.ignite_enabled") % TOOLTIP_LABEL_COLOR
+	var label := L10n.source(str(MODIFIER_LABELS.get(channel, L10n.text("ui.item.tooltip.effect_upgrade"))))
 	var value: Variant = modifier.get("value", 0.0)
 	if not (value is int or value is float):
-		return "[color=%s]%s：[/color][color=#7FD88F]已生效[/color]" % [TOOLTIP_LABEL_COLOR, label]
+		return L10n.text("ui.item.tooltip.effect_active") % [TOOLTIP_LABEL_COLOR, label]
 	var number := float(value)
 	if operation == "multiply":
 		var percent := (number - 1.0) * 100.0
 		return _format_colored_value(label, _format_signed_number(percent) + "%", percent)
 	if operation == "add_flat":
-		var suffix := " 秒" if channel == "burn_duration" else " 次" if channel in ["chain_count", "child_count", "extra_target_hits"] else "°" if channel == "spread_angle" else ""
+		var suffix := L10n.text("ui.unit.seconds_suffix") if channel == "burn_duration" else " 次" if channel in ["chain_count", "child_count", "extra_target_hits"] else "°" if channel == "spread_angle" else ""
 		return _format_colored_value(label, _format_signed_number(number) + suffix, number)
 	if operation == "override":
 		return "[color=%s]%s：[/color][color=#7FD88F]%.2f[/color]" % [TOOLTIP_LABEL_COLOR, label, number]
-	return "[color=%s]%s：[/color][color=#7FD88F]已生效[/color]" % [TOOLTIP_LABEL_COLOR, label]
+	return L10n.text("ui.item.tooltip.effect_active") % [TOOLTIP_LABEL_COLOR, label]
 
 
 func _format_colored_value(label: String, value_text: String, number: float) -> String:
@@ -253,16 +254,16 @@ func _format_signed_number(number: float) -> String:
 func _get_visual_color_name(effect_id: String) -> String:
 	match effect_id:
 		"fire":
-			return "火焰橙"
+			return L10n.text("ui.color.fire_orange")
 		"explosion":
-			return "灰白色"
+			return L10n.text("ui.color.ash_white")
 		"lightning":
-			return "冰蓝色"
+			return L10n.text("ui.color.ice_blue")
 		"electric_spark":
-			return "电光黄色"
+			return L10n.text("ui.color.electric_yellow")
 		"split":
-			return "粉白色"
+			return L10n.text("ui.color.pink_white")
 		"pierce":
-			return "浅蓝色"
+			return L10n.text("ui.color.light_blue")
 		_:
-			return "自定义色彩"
+			return L10n.text("ui.color.custom")

@@ -37,7 +37,6 @@ MISSING_LABELS = {
     "sfx_ui_modal_open.ogg": "通用弹窗 · 打开",
     "sfx_ui_modal_close.ogg": "通用弹窗 · 关闭",
     "sfx_ui_confirm.ogg": "通用按钮 · 确认",
-    "sfx_ui_zone_select.ogg": "关卡 · 选择",
     "sfx_ui_reward_reveal.ogg": "奖励 · 展示",
     "sfx_interest_settle.ogg": "利息 · 结算",
     "sfx_ui_purchase_success.ogg": "购买 · 成功",

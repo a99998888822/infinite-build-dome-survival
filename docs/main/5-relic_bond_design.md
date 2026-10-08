@@ -271,7 +271,7 @@
 2. 结算展示：主流程进入 `interest_settlement`，可以读取 `finance_state.last_settlement_result` 展示收益。
 3. 商店阶段：保留现有 `shop_popup` 状态。
 4. 理财阶段：主流程在下一波开始前进入 `finance_popup`，调用 `prepare_finance_for_wave(next_wave_number)`，应用“每波开始”类遗物并构建弹窗 payload。
-5. 玩家确认后：`submit_finance_operation(action, amount)` 校验并执行，关闭弹窗后进入区域选择或回到战斗准备。
+5. 玩家确认后：`submit_finance_operation(action, amount)` 校验并执行，关闭弹窗后按波次条件进入挑战提案或开始下一波战斗。
 6. 下一波开始：如果理财阶段已提前准备过该波，`WaveManager.start_next_wave()` 不重复应用每波开始类遗物。
 
 ### 11.5 遗物数据字段

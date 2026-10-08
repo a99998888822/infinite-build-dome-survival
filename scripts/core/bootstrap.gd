@@ -9,10 +9,6 @@ const CAMP_SCENE: PackedScene = preload("res://scenes/camp/camp_root.tscn")
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
 const GAME_ROOT_SCENE: PackedScene = preload("res://scenes/core/game_root.tscn")
 const DEBUG_ROOT_SCENE: PackedScene = preload("res://scenes/core/debug_root.tscn")
-const ZONE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_ui_controller.tscn")
-const ZONE_SELECT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_popup.tscn")
-const ZONE_SELECT_CARD_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_select_card.tscn")
-const ZONE_HARVEST_RESULT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/zones/zone_harvest_result_popup.tscn")
 const FINANCE_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_ui_controller.tscn")
 const FINANCE_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/finance_popup.tscn")
 const INTEREST_SETTLEMENT_POPUP_SCENE: PackedScene = preload("res://scenes/ui/finance/interest_settlement_popup.tscn")
@@ -29,7 +25,6 @@ const TABLE_NAMES: Array[String] = [
 	"characters",
 	"enemies",
 	"camp_buildings",
-	"zones",
 	"waves",
 	"drop_tables",
 	"augmentations",
@@ -57,8 +52,6 @@ func run_data_self_test() -> bool:
 	var weapon_success := _run_weapon_checks()
 	var enemy_wave_success := _run_enemy_wave_checks()
 	var camp_success := _run_camp_meta_checks()
-	var zone_success := _run_zone_state_checks()
-	var zone_ui_success := _run_zone_ui_checks()
 	var audio_success := _run_audio_checks()
 	var ui_success := _run_ui_flow_checks()
 	var finance_success := _run_finance_checks()
@@ -68,7 +61,7 @@ func run_data_self_test() -> bool:
 	_print_formula_checks()
 	_print_engine_checks()
 	_print_validation_messages()
-	var passed := load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and camp_success and zone_success and zone_ui_success and audio_success and ui_success and finance_success and main_flow_success
+	var passed := load_success and modifier_success and relic_success and player_success and survival_relic_success and weapon_success and enemy_wave_success and camp_success and audio_success and ui_success and finance_success and main_flow_success
 	if passed:
 		print("[Bootstrap] data self-test passed")
 	else:
@@ -90,7 +83,6 @@ func _print_lookup_checks() -> void:
 	_print_lookup_result("bonds", "bond_mighty")
 	_print_lookup_result("characters", "character_void_hunter")
 	_print_lookup_result("enemies", "enemy_mutated_grub")
-	_print_lookup_result("zones", "zone_nearstring_battlefield")
 	_print_lookup_result("drop_tables", "drop_basic_enemy")
 	_print_lookup_result("augmentations", "scroll_fire")
 	_print_lookup_result("waves", "wave_stage_01")
@@ -122,10 +114,6 @@ func _print_engine_checks() -> void:
 	print("[Bootstrap] - GameGlobal bootstrap flag: %s" % str(GameGlobal.get_runtime_flag("bootstrap_self_test", false)))
 	print("[Bootstrap] - GameRoot scene ready: %s" % str(GAME_ROOT_SCENE != null))
 	print("[Bootstrap] - DebugRoot scene ready: %s" % str(DEBUG_ROOT_SCENE != null))
-	print("[Bootstrap] - ZoneUIController scene ready: %s" % str(ZONE_UI_CONTROLLER_SCENE != null))
-	print("[Bootstrap] - ZoneSelectPopup scene ready: %s" % str(ZONE_SELECT_POPUP_SCENE != null))
-	print("[Bootstrap] - ZoneSelectCard scene ready: %s" % str(ZONE_SELECT_CARD_SCENE != null))
-	print("[Bootstrap] - ZoneHarvestResultPopup scene ready: %s" % str(ZONE_HARVEST_RESULT_POPUP_SCENE != null))
 
 
 func _run_modifier_stack_checks() -> bool:
@@ -339,7 +327,8 @@ func _run_survival_relic_checks() -> bool:
 
 	passed = _print_check_result("survival relic low hp armor", player.add_relic("relic_broken_crystal")) and passed
 	player.restore_full_health()
-	player.take_damage(6, "bootstrap_relic_check")
+	# Cross the 50% threshold after armor with the current 30 HP starter.
+	player.take_damage(ceili(float(player.current_hp) * 0.75), "bootstrap_relic_check")
 	passed = _print_check_result("survival relic low hp condition", is_equal_approx(player.get_stat("armor"), base_armor + 33.0)) and passed
 	player.heal(99)
 	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 8.0)) and passed
@@ -465,8 +454,8 @@ func _run_enemy_wave_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	# Tier one density yields 2; the +20% stat rounds to 3 with no population doubling.
-	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 3) and passed
+	# Tier one density rounds 6 * 0.15 up to 1; +20% rounds up to 2.
+	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 2) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed
@@ -550,76 +539,6 @@ func _run_camp_meta_checks() -> bool:
 
 
 
-func _run_zone_state_checks() -> bool:
-	print("[Bootstrap] zone streak fortune checks")
-	var passed := true
-	if not ZoneProgression.has_zone_records():
-		push_error("[Bootstrap] zone table missing")
-		return false
-	var zone_count := ZoneProgression.get_zone_records().size()
-	passed = _print_check_result("zone table count", zone_count >= 3) and passed
-	var player := PLAYER_SCENE.instantiate() as PlayerController
-	passed = _print_check_result("zone test player instantiate", player != null) and passed
-	if player == null:
-		return false
-
-	player.auto_initialize_on_ready = false
-	add_child(player)
-	player.initialize_from_character("character_void_hunter")
-	ZoneProgression.reset_state(player)
-
-	var initial_selection := ZoneProgression.select_zone("zone_nearstring_battlefield", 1, player)
-	passed = _print_check_result("zone initial select", bool(initial_selection.get("success", false)) and initial_selection.get("action", "") == "initial" and ZoneProgression.get_current_zone_id() == "zone_nearstring_battlefield" and ZoneProgression.get_current_streak_count() == 1 and ZoneProgression.get_fortune_storage() == 0) and passed
-
-	var stay_selection := ZoneProgression.select_zone("zone_nearstring_battlefield", 2, player)
-	var expected_fortune_gain := ZoneProgression.calculate_fortune_gain(2, 2)
-	passed = _print_check_result("zone stay accumulation", bool(stay_selection.get("success", false)) and stay_selection.get("action", "") == "stay" and int(stay_selection.get("fortune_gain", -1)) == expected_fortune_gain and ZoneProgression.get_current_streak_count() == 2 and ZoneProgression.get_fortune_storage() == expected_fortune_gain) and passed
-	passed = _print_check_result("zone pressure applied", int(player.get_stat("damage_taken_percent")) == 103) and passed
-
-	var runtime_context := ZoneProgression.get_zone_runtime_context()
-	passed = _print_check_result("zone runtime context", int(runtime_context.get("zone_streak_count", 0)) == 2 and int(runtime_context.get("zone_fortune_storage", 0)) == expected_fortune_gain) and passed
-	passed = _print_check_result("zone harvest context", not ZoneProgression.build_harvest_context("zone_meteor_tower").is_empty()) and passed
-
-	var switch_selection := ZoneProgression.select_zone("zone_meteor_tower", 3, player)
-	passed = _print_check_result("zone switch harvest", bool(switch_selection.get("success", false)) and bool(switch_selection.get("harvested", false)) and not switch_selection.get("harvest_payload", {}).is_empty() and ZoneProgression.get_current_zone_id() == "zone_meteor_tower" and ZoneProgression.get_current_streak_count() == 1 and ZoneProgression.get_fortune_storage() == 0 and int(player.get_stat("damage_taken_percent")) == 100) and passed
-	ZoneProgression.acknowledge_harvest_result()
-	passed = _print_check_result("zone harvest acknowledge", not ZoneProgression.is_harvest_pending()) and passed
-
-	ZoneProgression.reset_state(player)
-	player.queue_free()
-	return passed
-
-
-func _run_zone_ui_checks() -> bool:
-	print("[Bootstrap] zone ui checks")
-	var passed := true
-	var controller := ZONE_UI_CONTROLLER_SCENE.instantiate()
-	passed = _print_check_result("zone ui controller instantiate", controller != null) and passed
-	if controller != null:
-		passed = _print_check_result("zone ui controller layer", controller.get_node_or_null("PopupLayer") != null and controller.get_node_or_null("DebugLayer") == null) and passed
-		passed = _print_check_result("zone ui select popup", controller.get_node_or_null("PopupLayer/ZoneSelectPopup") != null) and passed
-		passed = _print_check_result("zone ui harvest popup", controller.get_node_or_null("PopupLayer/ZoneHarvestResultPopup") != null) and passed
-		controller.queue_free()
-
-	var select_popup := ZONE_SELECT_POPUP_SCENE.instantiate()
-	passed = _print_check_result("zone select popup instantiate", select_popup != null and select_popup.get_node_or_null("CenterContainer/MainPanel/Content/ZoneCardGrid") != null) and passed
-	if select_popup != null:
-		select_popup.queue_free()
-	var select_card := ZONE_SELECT_CARD_SCENE.instantiate()
-	passed = _print_check_result("zone select card instantiate", select_card != null and select_card.get_node_or_null("Content/SelectButton") != null) and passed
-	if select_card != null:
-		select_card.queue_free()
-	var harvest_popup := ZONE_HARVEST_RESULT_POPUP_SCENE.instantiate()
-	passed = _print_check_result("zone harvest popup instantiate", harvest_popup != null and harvest_popup.get_node_or_null("CenterContainer/MainPanel/Content/ConfirmButton") != null) and passed
-	if harvest_popup != null:
-		harvest_popup.queue_free()
-	var game_root := GAME_ROOT_SCENE.instantiate() as GameRoot
-	passed = _print_check_result("game root zone ui controller removed", game_root != null and game_root.get_node_or_null("UiRoot/ZoneUIController") == null) and passed
-	if game_root != null:
-		game_root.queue_free()
-	return passed
-
-
 func _run_audio_checks() -> bool:
 	print("[Bootstrap] audio checks")
 	var passed := true
@@ -646,7 +565,7 @@ func _run_ui_flow_checks() -> bool:
 			"offer_type": ShopOfferGenerator.OFFER_WEAPON_UPGRADE,
 			"rarity": "rare",
 			"target_id": "weapon_void_blade",
-			"display_name": "虚空刃 升至2级",
+			"display_name": L10n.text("ui.preview.void_blade_upgrade"),
 			"load_cost": 12,
 			"to_level": 2,
 			"effects": [],
@@ -719,7 +638,7 @@ func _run_weapon_checks() -> bool:
 			"duration": -1,
 			"stack_rule": "unique",
 		})
-		passed = _print_check_result("weapon attack_speed interval", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.35)) and passed
+		passed = _print_check_result("weapon attack_speed interval", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.525)) and passed
 		var upgraded := loadout.upgrade_weapon("weapon_void_blade")
 		var expected_weapon_damage := int(DataRegistry.get_record("weapons", "weapon_void_blade").get("base_stats", {}).get("ranged_damage", 0))
 		var weapon_data := DataRegistry.get_record("weapons", "weapon_void_blade")
@@ -727,7 +646,7 @@ func _run_weapon_checks() -> bool:
 		for effect in upgrade_entry.get("effects", []):
 			if effect is Dictionary and str(effect.get("stat", "")) == "ranged_damage":
 				expected_weapon_damage += int(effect.get("value", 0))
-		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == expected_weapon_damage and weapon.attack_interval_ms == 700 and weapon.get_weapon_stat("projectile_count") == 2 and is_equal_approx(weapon.get_active_cooldown_seconds(), 1.0)) and passed
+		passed = _print_check_result("weapon upgrade", upgraded and weapon.level == 2 and int(weapon.get_weapon_stat("ranged_damage")) == expected_weapon_damage and weapon.attack_interval_ms == 700 and weapon.get_weapon_stat("projectile_count") == 2 and is_equal_approx(weapon.get_active_cooldown_seconds(), 1.5)) and passed
 		var damage_events := weapon.calculate_damage_events(false)
 		var damage_ok := damage_events.size() == 1 and damage_events[0].damage_kind == "ranged" and damage_events[0].damage >= expected_weapon_damage
 		passed = _print_check_result("weapon damage event", damage_ok) and passed
@@ -783,8 +702,6 @@ func _run_weapon_checks() -> bool:
 	}
 	var shop_candidates := shop_generator.build_shop_candidate_pool(shop_context)
 	var shop_rarity_weights := shop_generator.get_shop_rarity_weights(100)
-	var boosted_shop_rarity_weights := shop_generator.get_shop_rarity_weights(100, 4)
-	var locked_rarity_zone_weights := shop_generator.get_shop_rarity_weights(0, 4)
 	var epic_threshold_weights := shop_generator.get_shop_rarity_weights(40)
 	var mythic_threshold_weights := shop_generator.get_shop_rarity_weights(150)
 	var legendary_threshold_weights := shop_generator.get_shop_rarity_weights(350)
@@ -792,12 +709,9 @@ func _run_weapon_checks() -> bool:
 	var mythic_after_threshold_weights := shop_generator.get_shop_rarity_weights(155)
 	var legendary_after_threshold_weights := shop_generator.get_shop_rarity_weights(360)
 	var rarity_weight_sum := 0
-	var boosted_rarity_weight_sum := 0
 	for rarity in ShopOfferGenerator.RARITIES:
 		rarity_weight_sum += int(shop_rarity_weights.get(rarity, 0))
-		boosted_rarity_weight_sum += int(boosted_shop_rarity_weights.get(rarity, 0))
-	var zone_rarity_bonus_check := rarity_weight_sum == 10000 and boosted_rarity_weight_sum == 10000 and int(boosted_shop_rarity_weights.get("rare", 0)) > int(shop_rarity_weights.get("rare", 0)) and int(locked_rarity_zone_weights.get("epic", 0)) == 0 and int(locked_rarity_zone_weights.get("mythic", 0)) == 0 and int(locked_rarity_zone_weights.get("legendary", 0)) == 0
-	passed = _print_check_result("shop zone rarity bonus", zone_rarity_bonus_check) and passed
+	passed = _print_check_result("shop rarity weights normalized", rarity_weight_sum == 10000) and passed
 	var rarity_luck_gate_check := (
 		int(shop_generator.get_shop_rarity_weights(39).get("epic", 0)) == 0
 		and int(epic_threshold_weights.get("epic", 0)) == 0

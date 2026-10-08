@@ -10,12 +10,14 @@ import json
 import re
 import sys
 from pathlib import Path
+from localization_catalog import read_catalogs
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'localization'
 CJK = re.compile(r'[\u3400-\u9fff]')
 TOKEN = re.compile(r'#[^\n]*|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'')
-FIELDS = {'display_name', 'name', 'description', 'shop_description', 'speech', 'body', 'detail', 'role'}
+FIELDS = {'display_name', 'name', 'title', 'description', 'shop_description', 'speech', 'body', 'detail', 'role'}
+CATALOG = read_catalogs()
 
 
 def script_strings(path):
@@ -25,7 +27,11 @@ def script_strings(path):
         if raw.startswith('#'): continue
         try: value = ast.literal_eval(raw)
         except (ValueError, SyntaxError): continue
-        if not isinstance(value, str) or not CJK.search(value): continue
+        if not isinstance(value, str): continue
+        if value in CATALOG:
+            value = CATALOG[value]['zh_CN']
+        elif not CJK.search(value):
+            continue
         line = source.count('\n', 0, match.start()) + 1
         prefix = source[source.rfind('\n', 0, match.start()) + 1:match.start()]
         if re.search(r'\b(print|push_warning|push_error)\s*\(', prefix): continue
@@ -66,18 +72,22 @@ def inventory():
             for match in TOKEN.finditer(line):
                 try: text=ast.literal_eval(match.group())
                 except (ValueError,SyntaxError): continue
+                if text in CATALOG:
+                    text = CATALOG[text]['zh_CN']
                 if isinstance(text,str) and CJK.search(text): add(text,{'file':path.relative_to(ROOT).as_posix(),'line':line_no})
     previous = {}
     if (OUT/'catalog_meta.json').exists():
         previous={e['source']:e for e in json.loads((OUT/'catalog_meta.json').read_text(encoding='utf-8'))['entries']}
+    # The catalog is authoritative. Updating wording preserves its explicit ID;
+    # new candidates stay pending until someone assigns a meaningful key.
+    catalog_sources = {}
+    for key, row in CATALOG.items():
+        catalog_sources.setdefault(row['zh_CN'], key)
     results=[]
     for index, entry in enumerate(entries.values()):
         prior=previous.get(entry['source'],{})
-        origin=entry['locations'][0]
-        domain='content' if origin['file'].startswith('data_config') else 'ui'
-        slug=Path(origin['file']).stem
-        digest=hashlib.sha256(entry['source'].encode('utf-8')).hexdigest()[:10]
-        entry['key']=prior.get('key',f'{domain}.{slug}.{digest}')
+        entry['key']=catalog_sources.get(entry['source'], prior.get('key'))
+        entry['status']='translated' if entry['key'] in CATALOG else 'pending'
         entry['index']=index
         entry['source_hash']=hashlib.sha256(entry['source'].encode('utf-8')).hexdigest()
         results.append(entry)
@@ -94,7 +104,7 @@ def main():
     OUT.mkdir(exist_ok=True)
     # One entry per line: source locations remain inspectable without 15k+ lines
     # of indentation. This is development metadata, not a runtime dependency.
-    serialized = '{"version":1,"entries":[\n' + ',\n'.join(json.dumps(entry,ensure_ascii=False,separators=(',', ':')) for entry in entries) + '\n]}\n'
+    serialized = '{"version":2,"entries":[\n' + ',\n'.join(json.dumps(entry,ensure_ascii=False,separators=(',', ':')) for entry in entries) + '\n]}\n'
     (OUT/'catalog_meta.json').write_text(serialized,encoding='utf-8')
     print('TOTAL='+str(len(entries)))
     if args.count:

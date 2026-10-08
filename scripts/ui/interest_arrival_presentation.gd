@@ -43,6 +43,7 @@ var _receipt_bounds := Rect2()
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_refresh_language)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	focus_mode = Control.FOCUS_ALL
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -68,7 +69,7 @@ func _ready() -> void:
 	_heading = _label(_card, 20, GOLD)
 	_amount = _label(_card, 40, GOLD)
 	_caption = _label(_card, 12, FinanceUIStyle.TEXT)
-	_caption.text = "实际到账"
+	_caption.text = "ui.interest.actual_received"
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_amount, _caption]: label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_comparison = _label(_card, 12, FinanceUIStyle.GREEN)
@@ -141,10 +142,10 @@ func present(data: Dictionary) -> void:
 		value.text = str(step.amount)
 		row.modulate.a = 0
 		_row_nodes.append(row)
-	_heading.text = "第 %d 波 · 利息结算" % int(report.wave)
-	_caption.text = "利息已转入本金" if bool(report.get("auto_deposit", false)) else "实际到账"
-	_comparison.text = "战斗 +%d　│　利息 +%d 金币" % [int(report.combat), int(report.total)]
-	_skip_hint.text = "点击 / Esc 关闭"
+	_heading.text = L10n.text("ui.interest.wave_title") % int(report.wave)
+	_caption.text = "ui.interest.transferred_to_principal" if bool(report.get("auto_deposit", false)) else "ui.interest.actual_received"
+	_comparison.text = L10n.text("ui.interest.income_summary") % [int(report.combat), int(report.total)]
+	_skip_hint.text = "ui.interest.close_hint"
 	_step_span = clampf(0.85 / maxf(1, report.steps.size()), 0.10, 0.24)
 	final_time = 0.16 + _step_span * report.steps.size()
 	duration = final_time + (0.80 if bool(report.special) else 0.65)
@@ -157,6 +158,22 @@ func present(data: Dictionary) -> void:
 	if is_visible_in_tree(): grab_focus()
 	arrange(size, _wallet_target, _receipt_bounds)
 	seek(0)
+
+
+func _refresh_language() -> void:
+	if report.is_empty() or not report.has("source_payload"):
+		return
+	var updated := InterestArrivalReport.build(report.source_payload)
+	if updated.is_empty() or updated.steps.size() != _row_nodes.size():
+		return
+	report = updated
+	for index in _row_nodes.size():
+		var row := _row_nodes[index]
+		row.get_node("Columns/Description").text = str(report.steps[index].label)
+		row.get_node("Columns/Value").text = str(report.steps[index].amount)
+	_heading.text = L10n.text("ui.interest.wave_title") % int(report.wave)
+	_comparison.text = L10n.text("ui.interest.income_summary") % [int(report.combat), int(report.total)]
+	# No seek/present call: keep elapsed time, sounds and the arrival signal intact.
 
 
 func arrange(bounds: Vector2, wallet_target: Vector2, receipt_bounds := Rect2()) -> void:

@@ -177,7 +177,7 @@ func _refresh_item_list() -> void:
 		item_grid.add_child(card)
 		_item_cards.append(card)
 	if item_total_label != null:
-		item_total_label.text = "共 %d 件" % items.size()
+		item_total_label.text = L10n.text("ui.inventory.item_count") % items.size()
 	_queue_grid_layout_retry()
 
 
@@ -263,12 +263,12 @@ func _layout_overlay() -> void:
 		content.add_theme_constant_override("separation", 6 if compact else 10)
 		var title := content.get_node("TitleRow/TitleLabel") as Label
 		title.add_theme_font_size_override("font_size", 18 if compact else 22)
-		back_button.text = "返回" if compact else "⬅ 返回"
+		back_button.text = "ui.common.back" if compact else "ui.inventory.back"
 		back_button.add_theme_font_size_override("font_size", 14 if compact else 16)
 		back_button.custom_minimum_size = Vector2(60.0, 28.0) if compact else Vector2(90.0, 34.0)
 		total_label.custom_minimum_size.x = back_button.custom_minimum_size.x
 		var hint := content.get_node("HintLabel") as Label
-		hint.text = "仅供查看 · ESC 返回" if compact else "此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回"
+		hint.text = "ui.inventory.view_only" if compact else "ui.inventory.edit_in_bank_hint"
 		panel.custom_minimum_size = panel_size
 		panel.size = panel_size
 		center_container.size = target_size
@@ -385,7 +385,7 @@ func _refresh_relic_list() -> void:
 		total += count
 		relic_grid.add_child(_create_relic_cell(relic_id, count))
 	if total_label != null:
-		total_label.text = "共 %d 个" % total
+		total_label.text = L10n.text("ui.inventory.entry_count") % total
 	_queue_grid_layout_retry()
 
 
@@ -396,13 +396,13 @@ func _compare_relics(a: String, b: String) -> bool:
 	var rank_b := RARITY_ORDER.find(str(data_b.get("rarity", "common")))
 	if rank_a != rank_b:
 		return rank_a < rank_b
-	return str(data_a.get("display_name", a)) < str(data_b.get("display_name", b))
+	return L10n.source(str(data_a.get("display_name", a))) < L10n.source(str(data_b.get("display_name", b)))
 
 
 func _create_relic_cell(relic_id: String, count: int) -> Control:
 	var relic_data := DataRegistry.get_record("relics", relic_id)
 	var rarity := str(relic_data.get("rarity", "common"))
-	var display_name := str(relic_data.get("display_name", relic_id))
+	var display_name := L10n.source(str(relic_data.get("display_name", relic_id)))
 	var cell := Button.new()
 	cell.flat = false
 	var rarity_color: Color = RARITY_COLORS.get(rarity, RARITY_COLORS["common"])
@@ -545,14 +545,14 @@ func _show_relic_tooltip(relic_data: Dictionary, anchor_cell: Control) -> void:
 	if relic_tooltip == null or relic_tooltip_label == null:
 		return
 	var rarity := str(relic_data.get("rarity", "common"))
-	var display_name := str(relic_data.get("display_name", ""))
-	var description := str(relic_data.get("description", ""))
+	var display_name := L10n.source(str(relic_data.get("display_name", "")))
+	var description := L10n.source(str(relic_data.get("description", "")))
 	var rarity_color: Color = RARITY_COLORS.get(rarity, Color.WHITE)
 	var tooltip_text := "[color=%s]%s[/color]\n%s" % [_color_to_bbcode(rarity_color), display_name, description]
 	if _player != null:
 		var innate_count := _player.relic_system.get_innate_relic_count(str(relic_data.get("id", "")))
 		if innate_count > 0:
-			tooltip_text += "\n[color=#d3b77c]角色固有 ×%d：开局获得时奖励已发放，不可移除。[/color]" % innate_count
+			tooltip_text += L10n.text("ui.inventory.innate_relic_note") % innate_count
 	var bond_text := BondDisplay.build_item_bond_text(relic_data, _player.relic_system if _player != null else null)
 	if not bond_text.is_empty():
 		tooltip_text += "\n" + bond_text
