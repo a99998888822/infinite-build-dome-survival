@@ -204,6 +204,7 @@ func _sync_live_trade() -> void:
 		trade_presentation._yes.tooltip_text += "\n" + L10n.source(str(offer.detail))
 	if str(offer.id) == "strong_refresh":
 		trade_presentation._yes.tooltip_text += L10n.text("ui.bank.deposit_ownership_hint")
+	trade_presentation.configure_offer(offer)
 	_layout()
 
 

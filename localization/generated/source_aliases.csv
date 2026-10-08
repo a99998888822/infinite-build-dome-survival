@@ -47,11 +47,14 @@ Fast-kill adaptation this wave: normal enemy HP +%d%%; miniboss HP +%d%%."
   ·  右键 / Esc 取消瞄准,  ·  右键 / Esc 取消瞄准,  ·  Right-click / Esc to cancel aim
   ·  左键快捷施放,  ·  左键快捷施放,  ·  Left-click to quick cast
   ·  左键瞄准，再次左键施放,  ·  左键瞄准，再次左键施放,"  ·  Left-click to aim, again to cast"
+  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
   ·  滚轮切换武器,  ·  滚轮切换武器,  ·  Wheel to switch weapons
-  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  Auto-Attack  ·  Esc to pause
+  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
  · 利息贡献已达上限, · 利息贡献已达上限, · Interest contribution capped
+ · 各技能独立自动／手动, · 各技能独立自动／手动, · Per-skill Auto/Manual
  · 强化, · 强化, · Enhanced
  · 挑战, · 挑战, · Challenge
+ · 数字键选技／滚轮切手动技能, · 数字键选技／滚轮切手动技能, · Numbers select / wheel cycles manual skills
  · 难度 %s, · 难度 %s, · Difficulty %s
  次, 次, times
  秒, 秒, s
@@ -83,6 +86,7 @@ Innate trait. Starting rewards are granted once and cannot be removed."
 +%d 利息,+%d 利息,+%d interest
 +0 利息,+0 利息,+0 interest
 BOSS掉落表,BOSS掉落表,Boss Loot Table
+Esc 武器栏：逐个选择自动或手动,Esc 武器栏：逐个选择自动或手动,Esc inventory: choose auto or manual
 FPS %d   怪物 %d   粒子 %d,FPS %d   怪物 %d   粒子 %d,FPS %d   Enemies %d   Particles %d
 WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 [color=#C7D3E4]类型：%s　稀有度：%s[/color],[color=#C7D3E4]类型：%s　稀有度：%s[/color],[color=#C7D3E4]Type: %s   Rarity: %s[/color]
@@ -125,6 +129,8 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 ⬅ 返回,⬅ 返回,⬅ Back
 一次性还清 %d 金币,一次性还清 %d 金币,Repay all: %d gold
 一次攻击产生的投射物数量。,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
+上一步,上一步,Previous
+下一步,下一步,Next
 "下一步结束，将全部金币存入本金。
 额外获得本金 +100，幸运 +10.","下一步结束，将全部金币存入本金。
 额外获得本金 +100，幸运 +10.","Deposit all your gold at the end of the next wave.
@@ -144,6 +150,7 @@ Gain an extra +100 Principal and +10 Luck."
 不可购买,不可购买,Unavailable
 丰收的牺牲祭器,丰收的牺牲祭器,Harvest Sacrificial Vessel
 主动,主动,manual
+也可以使用 WASD 移动,也可以使用 WASD 移动,You can also move with WASD
 交易,交易,Bargain
 交易已接受。,交易已接受。,Bargain accepted.
 交易限制：本次不可存款。,交易限制：本次不可存款。,Bargain restriction: deposits are blocked this visit.
@@ -156,7 +163,8 @@ They return on your next visit."
 交易限制：本次银行存取已关闭，下波恢复。,交易限制：本次银行存取已关闭，下波恢复。,Bargain restriction: bank actions are closed until next wave.
 人性,人性,Sanity
 人性护符,人性护符,Amulet of Humanity
-仅供查看 · ESC 返回,仅供查看 · ESC 返回,View only · ESC to return
+仅供查看 · ESC 返回,武器下方图标切换自动／手动 · ESC 返回,Toggle Auto/Manual below each weapon · ESC to return
+仅辅助持续追击或高压力撤退；停步时不自动位移,仅辅助持续追击或高压力撤退；停步时不自动位移,Only assists sustained pursuit or retreat under pressure; never moves you while standing still
 从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。,从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。,"From wave 4, the next wave gains HP if the previous combat lasted at least 15 seconds, at least 80% of an enemy type died within 1 second of first damage, and the player was not struggling. Requires 20 normal-enemy samples or 1 miniboss sample. Normal enemies gain 10 percentage points per step, capped at 60%; minibosses gain 5, capped at 30%. Drops one step if the player struggles or rapid kills stay below 50% for two consecutive waves."
 代价生命之种,代价生命之种,Costly Seed of Life
 优先取消瞄准；未瞄准时打开暂停,优先取消瞄准；未瞄准时打开暂停,Cancel aim first; otherwise pause
@@ -177,6 +185,7 @@ They return on your next visit."
 伤害范围训练,伤害范围训练,Damage Area Training
 位移,位移,Mobility
 余震沙漏,余震沙漏,Aftershock Hourglass
+你当前使用 WASD 模式；指引不会修改已有设置。,你当前使用 WASD 模式；指引不会修改已有设置。,You currently use WASD. This guide keeps your existing settings.
 使用方向键 / WASD 移动,使用方向键 / WASD 移动,Move with arrows / WASD
 侵蚀,侵蚀,Corruption
 侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.
@@ -187,6 +196,7 @@ They return on your next visit."
 每波开始锁定；同时影响小Boss数量。",影响怪物的数量和强度,Affects the number and strength of enemies.
 保存失败，返回时重试,保存失败，返回时重试,Save failed; retrying when you return
 保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,"Flies at medium range, retreating when you approach and following when you move away. Briefly charges, marks a narrow path, then fires a pixel spiral soundwave in the locked direction. Makes up 30% of normal enemy spawns."
+保持清醒是有价值的，我可以为这份价值标上一个价格。,保持清醒是有价值的，我可以为这份价值标上一个价格。,Clarity has value. I can put a price on it.
 保留本局最近 300 条记录,保留本局最近 300 条记录,Keeps the last 300 entries this run
 修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,Changes apply immediately and save automatically. Press Esc or Back to return.
 借 %d,借 %d,Borrow %d
@@ -323,6 +333,11 @@ Base resale value %d; Sanity loss %d."
 史诗,史诗,Epic
 右列为各项折算的营地币,右列为各项折算的营地币,Right column: converted Camp Coins
 右列为基础营地币,右列为基础营地币,The right column shows base Camp Coins
+右键地面，移动到目标位置,右键地面，移动到目标位置,Right-click the ground to move
+"右键点击地面，角色会自动走向该位置。按 S 可立即停止移动。
+这里只是示意，无需实际操作，点击「下一步」继续。","右键点击地面，角色会自动走向该位置。按 S 可立即停止移动。
+这里只是示意，无需实际操作，点击「下一步」继续。","Right-click the ground to move to that spot. Press S to stop immediately.
+This is a static example. Click Next to continue."
 右键移动 · S 停止,右键移动 · S 停止,Right-click to move · S to stop
 后移 →,后移 →,Later →
 向前喷射近距散弹，同时向后滑退,向前喷射近距散弹，同时向后滑退,Fires a short-range blast ahead and slides backward.
@@ -384,6 +399,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 基础设置,基础设置,General
 基础负载：%d　最高等级：%d,基础负载：%d　最高等级：%d,Base load: %d   Max level: %d
 增益,增益,Buff
+处理完开局奖励后，将自动显示操作指引。,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
 复利宝典,复利宝典,Tome of Compound Interest
 多投,多投,Multishot
 多来几个大家伙而已，你不会连这点钱都不敢赚吧？,多来几个大家伙而已，你不会连这点钱都不敢赚吧？,Just a few more big ones. Surely you're not afraid of easy money?
@@ -499,7 +515,8 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 影响武器的攻击距离与索敌距离。,影响武器的攻击距离与索敌距离。,Affects weapon reach and targeting range.
 影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。,影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。,"Affects rare relics and upgrade offers. Enchantment drop bonuses diminish with Luck, up to a relative +60%. Each enchantment drop multiplies further normal-enemy chances that wave by 45%; the cap is 3 in waves 1–5, then 4. After two completed battles with at least 8 kills each and no enchantment drops, the second settlement grants one."
 影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.
-循环切换当前武器，鼠标旁图标同步切换,循环切换当前武器，鼠标旁图标同步切换,Cycle weapons; the icon beside the cursor updates
+循环切换当前武器，鼠标旁图标同步切换,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
+循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
 快捷施法,快捷施法,Quick Cast
 急促弹簧扳机,急促弹簧扳机,Hasty Spring Trigger
 怪物密集 · 精英更频繁,怪物密集 · 精英更频繁,Dense waves · More frequent elites
@@ -509,13 +526,19 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 怪物更多,怪物更多,More enemies
 总杀敌数,总杀敌数,Enemies Defeated
 恶意收购,恶意收购,Hostile Takeover
+我给你的，外面可买不到。,我给你的，外面可买不到。,You won't find what I'm offering anywhere else.
 战地急救训练,战地急救训练,Field Medicine Training
 战斗 +%d　│　利息 +%d 金币,战斗 +%d　│　利息 +%d 金币,Combat +%d  │  Interest +%d gold
 战斗操作,战斗操作,Combat Controls
 战斗获得 %d 金币%s,战斗获得 %d 金币%s,Combat earnings: %d gold%s
 战斗设置,战斗设置,Combat
 扇形,扇形,Cone
+手动释放,手动释放,Manual casting
 打开暂停,打开暂停,Pause
+"打开设置 → 战斗设置，在「移动方式」中选择「方向键 / WASD」。
+选择适合你的操作习惯；本次指引不会替你切换设置。","打开设置 → 战斗设置，在「移动方式」中选择「方向键 / WASD」。
+选择适合你的操作习惯；本次指引不会替你切换设置。","Open Settings → Combat Settings and choose Arrow Keys / WASD under Movement Mode.
+Choose the controls you prefer. This guide does not change your settings."
 打湿传播数量,打湿传播数量,Wet Spread Count
 打湿传播范围,打湿传播范围,Wet Spread Range
 打湿时间,打湿时间,Wet Duration
@@ -549,9 +572,17 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 拾取范围 + 10；经验获取 + 8,拾取范围 + 10；经验获取 + 8,Pickup Range +10; Experience Gain +8
 拾取范围 +40；金币获取 +10%,拾取范围 +40；金币获取 +10%,Pickup Range +40; Gold Gain +10%
 拾取范围训练,拾取范围训练,Pickup Range Training
+"按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
+默认攻击技能自动释放，位移技能手动释放；每个技能的设置独立生效。","按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
+默认攻击技能自动释放，位移技能手动释放；每个技能的设置独立生效。","Press Esc and click an icon on a weapon slot's bottom edge to change its cast mode.
+Attacks default to auto; mobility skills default to manual. Each skill's setting takes effect independently."
+按 Esc，在武器下方点击图标切换,按 Esc，在武器下方点击图标切换,Press Esc and click the icon below the weapon to change its mode
 按住方向键，直接控制移动,按住方向键，直接控制移动,Hold direction keys to move directly
 按武器栏编号选择，再次选武器会切换瞄准,按武器栏编号选择，再次选武器会切换瞄准,Select a weapon by number; selecting another changes your aim
+按每种技能的选择自动施放；Esc 武器下方图标切换自动／手动,按每种技能的选择自动施放；Esc 武器下方图标切换自动／手动,Auto-casts according to each skill's choice; toggle Auto/Manual below each weapon in the Esc inventory
+按编号直接施放手动技能；Esc 武器下方图标切换自动／手动,按编号直接施放手动技能；Esc 武器下方图标切换自动／手动,Cast manual skills by number; toggle Auto/Manual below each weapon in the Esc inventory
 按编号直接施放，无需进入瞄准,按编号直接施放，无需进入瞄准,Press a weapon number to cast immediately
+按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,Select a manual skill by number and confirm with left-click; toggle Auto/Manual below each weapon in the Esc inventory
 挑战奖励,挑战奖励,Challenge Reward
 挑战完成 · 结息后已将全部金币存入本金。,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
 挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。,挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。,Challenge complete: automatically deposited %d gold after interest; bonus principal +%d and Luck +%d.
@@ -568,6 +599,7 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。,影响怪物的数量和强度,Affects the number and strength of enemies.
 搜索名称或效果,搜索名称或效果,Search names or effects
 操作失败  请重试,操作失败  请重试,Action failed. Please try again.
+操作指引 · 静态示意 · 战斗已暂停,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
 操作未成功，请重试。,操作未成功，请重试。,Operation failed. Please try again.
 操作正在处理。,操作正在处理。,Operation in progress.
 收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,Stores strange objects brought back by survivors. Each new relic helps them understand their enemies.
@@ -677,12 +709,13 @@ Bank actions refresh next wave."
 正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,"Positive attack speed: cooldown multiplier = 1 / (1 + log2(1 + attack_speed / 100) / 3). At 100, cooldown is 75%; at 300, 60%. Negative attack speed uses 1 / (1 + attack_speed / 300). Does not speed up attack animations or spray ticks."
 此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,This weapon cannot use that enchantment. The Cast-Iron Grenade Launcher does not currently support Pierce.
 此武器暂不支持%s附魔,此武器暂不支持%s附魔,This weapon does not support %s enchantments yet
-此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,View only. Visit the Bank to change enchantments. Press ESC again or select Back.
+此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 武器,武器,Weapon
+武器下方图标切换自动／手动 · ESC 返回,武器下方图标切换自动／手动 · ESC 返回,Toggle Auto/Manual below each weapon · ESC to return
 武器伤害训练,武器伤害训练,Weapon Damage Training
 武器升级,武器升级,Weapon Upgrade
 武器图鉴解锁、武器基础强化,武器图鉴解锁、武器基础强化,Unlock weapons and improve their base stats
-武器在范围内自动攻击；位移武器仍需手动施放,武器在范围内自动攻击；位移武器仍需手动施放,Auto-attacks targets in range; mobility weapons remain manual
+武器在范围内自动攻击；位移武器仍需手动施放,按每种技能的选择自动施放；Esc 武器下方图标切换自动／手动,Auto-casts according to each skill's choice; toggle Auto/Manual below each weapon in the Esc inventory
 武器攻速训练,武器攻速训练,Attack Speed Training
 武器暴击训练,武器暴击训练,Critical Chance Training
 武器爆伤训练,武器爆伤训练,Critical Damage Training
@@ -772,7 +805,10 @@ Pellets [color=#7FD88F]+1[/color]"
 火焰池持续时间,火焰池持续时间,Fire Pool Duration
 灰白色,灰白色,Ash White
 点击 / Esc 关闭,点击 / Esc 关闭,Click / Esc to close
+点击切换为手动释放,点击切换为手动释放,Click to switch to manual casting
+点击切换为自动释放,点击切换为自动释放,Click to switch to automatic casting
 点击地面移动 · S 停止移动,点击地面移动 · S 停止移动,Click ground to move · S to stop
+点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 点击空白处 / 空格快进,点击空白处 / 空格快进,Click an empty area / Space to skip ahead
 燃烧伤害,燃烧伤害,Burn Damage
 燃烧引爆,燃烧引爆,Ignite Detonation
@@ -791,6 +827,7 @@ Pellets [color=#7FD88F]+1[/color]"
 玩家可装备武器的总负载上限。,玩家可装备武器的总负载上限。,Maximum combined load of equipped weapons.
 理智,理智,Sanity
 理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,"Sanity %s: purchase prices +%s%%, sale proceeds −%s%%, interest income −%s%%."
+理智+%s，本金-%d,理智+%s，本金-%d,"Sanity +%s, principal -%d."
 理智值,理智值,Sanity
 理智值 + 10；幸运 - 5,理智值 + 10；幸运 - 5,Sanity +10; Luck −5
 理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,"Sanity starts at 100 and has no upper or lower bound. Below 100, purchases cost more and sale proceeds and interest decrease. At 100, prices and interest are normal."
@@ -846,6 +883,7 @@ Pellets [color=#7FD88F]+1[/color]"
 空槽,空槽,Empty Slot
 穿透,穿透,Pierce
 突进短刃,突进短刃,Dash Blade
+立即免费获得这件随机史诗遗物[icon]，并将商店栏位削减成1个,立即免费获得这件随机史诗遗物[icon]，并将商店栏位削减成1个,"Receive this randomly selected Epic relic[icon] for free, and reduce the shop to 1 slot."
 立即获得,立即获得,Receive Now
 第 %d 波,第 %d 波,Wave %d
 第 %d 波 · %s,第 %d 波 · %s,Wave %d · %s
@@ -861,6 +899,7 @@ Pellets [color=#7FD88F]+1[/color]"
 粗糙研磨透镜,粗糙研磨透镜,Rough-Ground Lens
 精神/外神,精神/外神,Mind / Eldritch
 精英怪掉落表,精英怪掉落表,Elite Enemy Loot Table
+终于走到这一步，再来一次，我相信你可以做的更好,终于走到这一步，再来一次，我相信你可以做的更好,You've come so far. Start again. I believe you can do even better.
 经验获取加成,经验获取加成,XP Gain
 经验获取百分比加成。,经验获取百分比加成。,Percentage bonus to experience gained.
 经验获取训练,经验获取训练,Experience Training
@@ -875,6 +914,7 @@ Pellets [color=#7FD88F]+1[/color]"
 自动吸附经验球、奖励物的半径。,自动吸附经验球、奖励物的半径。,Radius for automatically collecting XP and reward pickups.
 自动喷射%.2fs，每%.2fs灼烧。,自动喷射%.2fs，每%.2fs灼烧。,"Automatically sprays for %.2fs, burning every %.2fs."
 自动攻击,自动攻击,Auto-Attack
+自动释放,自动释放,Automatic casting
 自定义色彩,自定义色彩,Custom Color
 至少保留一把武器,至少保留一把武器,Keep at least one weapon
 至少保留一把武器，最后一把不可出售。,至少保留一把武器，最后一把不可出售。,Keep at least one weapon. Your last weapon cannot be sold.
@@ -975,9 +1015,9 @@ Brackets show the price before Sanity and the Sanity adjustment.
 赚取金币,赚取金币,Gold Earned
 赤铜炉灯,赤铜炉灯,Copper Furnace Lamp
 跳过,跳过,Skip
+跳过指引,跳过指引,Skip guide
 转移至此武器,转移至此武器,Transfer to This Weapon
 轮回业火之烛,轮回业火之烛,Candle of Rebirth's Hellfire
-轮椅模式,轮椅模式,Auto-Attack
 辉光强度,辉光强度,Glow Intensity
 输入金额,输入金额,Enter amount
 达标后利率 +%s 个百分点；未达标仍正常结息,达标后利率 +%s 个百分点；未达标仍正常结息,Meet the target for +%s percentage points; normal interest still applies otherwise
@@ -1066,6 +1106,7 @@ Circular slash hits [color=#7FD88F]+1[/color]"
 返回主界面,返回主界面,Main Menu
 返回主菜单,返回主菜单,Main Menu
 返回战斗,返回战斗,Resume
+返回设置,返回设置,Back to settings
 返回银行,返回银行,Return to Bank
 还清,还清,Repay
 还清需要 %d 金币,还清需要 %d 金币,Repayment requires %d gold
@@ -1127,12 +1168,14 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 遗物档案馆,遗物档案馆,Relic Archives
 遗物清单,遗物清单,Relics
 遗物鉴定训练,遗物鉴定训练,Relic Appraisal Training
+重看操作指引,重看操作指引,Replay control guide
 重置升级,重置升级,Reset Upgrades
 重置属性升级并返还货币,重置属性升级并返还货币,Reset stat upgrades and refund currency
 量化操盘,量化操盘,Quant Trading
 金币,金币,Gold
 金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,Gold %d  │  Principal %d  │  Rate %.1f%%  │  Est. interest +%d
 金币 + %d，本次关闭银行，理智-5，幸运-2,金币 + %d，本次关闭银行，理智-5，幸运-2,"Gold +%d. The bank closes for this visit. Sanity −5, Luck −2."
+金币+%d，出售%s及其全部附魔,金币+%d，出售%s及其全部附魔,"Gold +%d, sell %s and all its enchantments."
 金币+%d，本次不可存款。,金币+%d，本次不可存款。,Gold +%d. Deposits are unavailable this visit.
 金币不足,金币不足,Not enough gold
 金币不足，无法一次性还清当前欠款。,金币不足，无法一次性还清当前欠款。,Not enough gold to repay the full outstanding balance.

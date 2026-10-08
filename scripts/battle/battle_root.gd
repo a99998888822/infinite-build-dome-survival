@@ -13,6 +13,7 @@ const PLAYER_START_POSITION := Vector2.ZERO
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var active_controller: ActiveCombatController
+var combat_guide: CombatGuideOverlay
 var _low_resolution_world_parent: Node2D = null
 var _low_resolution_world_nodes: Array[Node] = []
 
@@ -26,6 +27,9 @@ func _ready() -> void:
 	active_controller = ActiveCombatController.new()
 	add_child(active_controller)
 	active_controller.initialize(self)
+	combat_guide = CombatGuideOverlay.new()
+	add_child(combat_guide)
+	combat_guide.initialize(self, _main_flow_coordinator)
 
 
 func _exit_tree() -> void:
@@ -120,6 +124,8 @@ func _on_flow_state_changed(previous_state: String, current_state: String) -> vo
 			loadout._clear_weapon_runtime(weapon)
 	var settings_over_esc := current_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and _main_flow_coordinator.get_battle_display_state() == MainFlowCoordinator.STATE_ESC_OVERLAY
 	var returning_to_esc := previous_state == MainFlowCoordinator.STATE_BATTLE_UTILITY and current_state == MainFlowCoordinator.STATE_ESC_OVERLAY
+	if previous_state == MainFlowCoordinator.STATE_COMBAT_GUIDE and settings_over_esc:
+		_apply_esc_overlay_visibility(MainFlowCoordinator.STATE_ESC_OVERLAY)
 	if not settings_over_esc and not returning_to_esc:
 		_apply_esc_overlay_visibility(current_state)
 	_apply_mobile_controls(current_state)

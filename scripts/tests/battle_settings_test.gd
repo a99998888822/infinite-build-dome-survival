@@ -91,7 +91,7 @@ func _run() -> void:
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
 	CombatSettings.set_option("quick_cast", false, false)
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	CombatSettings.set_option("show_hints", true, false)
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
@@ -159,13 +159,13 @@ func _run() -> void:
 	await capture("07_main_menu_settings")
 	await click(menu._settings_panel.tabs[1])
 	check(menu._settings_panel.combat_settings.visible and CombatSettings.keyboard_movement and CombatSettings.quick_cast, "main menu combat page retains settings changed in battle")
-	check(menu._settings_panel.wheelchair_mode.button_pressed, "main menu shares wheelchair selection with battle")
+	check(menu._settings_panel.find_child("WheelchairMode", true, false) == null, "main menu has no retired automation switch")
 	await capture("12_main_menu_combat")
 	await escape()
 	await get_tree().create_timer(0.3).timeout
 	check(not menu._settings_overlay.visible, "Escape closes main menu settings")
 	AudioManager.set_bus_volume(AudioManager.BUS_BGM, 100)
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
 	await get_tree().create_timer(0.3).timeout
@@ -182,11 +182,8 @@ func _test_review_layout() -> void:
 	check(view.combat_settings.visible and view.mode_buttons.size() == 2, "combat settings use two movement cards")
 	check(view.mode_buttons[0].button_pressed and view.mode_checks[0].visible and not view.quick_cast.button_pressed, "mouse card selected and quick cast off by default")
 	check(view.quick_cast.get_parent() == view._key_descriptions[1].get_parent(), "quick cast remains on the left mouse row")
-	check(not view.wheelchair_mode.button_pressed, "wheelchair mode starts unchecked")
+	check(view.find_child("WheelchairMode", true, false) == null, "battle settings has no retired automation switch")
 	await capture("09_review_mouse")
-	await click(view.wheelchair_mode)
-	check(view.wheelchair_mode.button_pressed and CombatSettings.wheelchair_mode and not CombatSettings.keyboard_movement and not CombatSettings.quick_cast and CombatSettings.show_hints, "wheelchair option updates without changing manual preferences")
-	await capture("09_review_wheelchair_checked")
 	await click(view.mode_buttons[1])
 	await click(view.quick_cast)
 	await click(view.show_hints)
@@ -194,7 +191,7 @@ func _test_review_layout() -> void:
 	await click(view.tabs[0])
 	await click(view.tabs[1])
 	check(view.mode_buttons[1].button_pressed and view.mode_checks[1].visible and view.quick_cast.button_pressed and not view.show_hints.button_pressed, "tab changes preserve choices and selected indicators")
-	check(view.wheelchair_mode.button_pressed and CombatSettings.wheelchair_mode, "tab changes preserve automatic combat selection")
+	check(not CombatSettings.prefers_auto_cast("weapon_void_blade", false), "movement and quick-cast changes preserve per-skill preferences")
 	await capture("10_review_keyboard_quick")
 	for viewport_size in [Vector2i(1024, 576), Vector2i(960, 540)]:
 		get_tree().root.size = viewport_size

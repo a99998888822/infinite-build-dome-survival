@@ -1,0 +1,7 @@
+keys,zh_CN,en
+data.goblin.exclusive_relic.speech,我给你的，外面可买不到。,You won't find what I'm offering anywhere else.
+data.goblin.exclusive_relic.body,立即免费获得这件随机史诗遗物[icon]，并将商店栏位削减成1个,"Receive this randomly selected Epic relic[icon] for free, and reduce the shop to 1 slot."
+data.goblin.weapon_buyout.speech,终于走到这一步，再来一次，我相信你可以做的更好,"You've come so far. Start again. I believe you can do even better."
+data.goblin.weapon_buyout.body,金币+%d，出售%s及其全部附魔,"Gold +%d, sell %s and all its enchantments."
+data.goblin.sanity_buyback.speech,保持清醒是有价值的，我可以为这份价值标上一个价格。,Clarity has value. I can put a price on it.
+data.goblin.sanity_buyback.body,理智+%s，本金-%d,"Sanity +%s, principal -%d."

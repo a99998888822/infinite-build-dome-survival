@@ -27,6 +27,7 @@ const STATE_INTEREST_SETTLEMENT: String = "interest_settlement"
 const STATE_SHOP_POPUP: String = "shop_popup"
 const STATE_ESC_OVERLAY: String = "esc_overlay"
 const STATE_BATTLE_UTILITY: String = "battle_utility"
+const STATE_COMBAT_GUIDE: String = "combat_guide"
 const STATE_FINANCE_POPUP: String = "finance_popup"
 const STATE_WAVE_CHALLENGE: String = "wave_challenge"
 const STATE_BATTLE_RESULT: String = "battle_result"
@@ -52,6 +53,9 @@ var _resume_state_after_modal: String = STATE_START_PAGE
 var _utility_resume_state: String = STATE_START_PAGE
 var _utility_resume_paused: bool = false
 var _utility_page: String = ""
+var _first_guide_pending := false
+var _guide_resume_state := STATE_BATTLE_PREPARE
+var _guide_resume_paused := false
 var _active_level_up_level: int = 0
 var _pending_level_up_levels: Array[int] = []
 var _pending_relic_choices: Array[String] = []
@@ -102,6 +106,9 @@ func reset_flow() -> void:
 	_utility_resume_state = STATE_START_PAGE
 	_utility_resume_paused = false
 	_utility_page = ""
+	_first_guide_pending = false
+	_guide_resume_state = STATE_BATTLE_PREPARE
+	_guide_resume_paused = false
 	_active_level_up_level = 0
 	_pending_level_up_levels.clear()
 	_pending_relic_choices.clear()
@@ -168,6 +175,15 @@ func confirm_character_selection() -> bool:
 	_wave_end_ready = false
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_BATTLE_PREPARE)
+	_first_guide_pending = CombatSettings.should_show_combat_guide()
+	if _first_guide_pending:
+		_set_battle_runtime_paused(true)
+		if CampProgression.has_unlock("run_start_double_level"):
+			request_shared_reward_shop_popup(2, "camp_start_level")
+			request_shared_reward_shop_popup(3, "camp_start_level")
+		else:
+			_begin_combat_guide()
+		return true
 	var started := request_next_wave()
 	if started and CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
 		request_shared_reward_shop_popup(2, "camp_start_level")
@@ -179,6 +195,9 @@ func bind_battle_context(player: PlayerController, loadout: WeaponLoadout, wave_
 	_unbind_battle_context()
 	_bound_player = player
 	_bound_loadout = loadout
+	if _bound_loadout != null:
+		_bound_loadout.weapon_attachment_changed.connect(_on_trade_attachment_changed)
+		_bound_loadout.loadout_changed.connect(_on_trade_loadout_changed)
 	if _bound_player != null:
 		var player_callable := Callable(self, "_on_player_died")
 		if not _bound_player.died.is_connected(player_callable):
@@ -233,6 +252,8 @@ func request_next_wave() -> bool:
 	if current_mode != MODE_BATTLE or battle_resolved:
 		return false
 	if current_state != STATE_BATTLE_PREPARE:
+		return false
+	if _first_guide_pending:
 		return false
 	var next_wave_number := _get_next_wave_number()
 	if not _has_next_wave():
@@ -290,6 +311,10 @@ func close_shared_reward_shop_popup() -> void:
 		return
 	_active_level_up_level = 0
 	if _open_next_relic_choice():
+		return
+	if _first_guide_pending:
+		_set_state(STATE_BATTLE_PREPARE)
+		_begin_combat_guide()
 		return
 	if _wave_end_ready:
 		_set_battle_runtime_paused(false)
@@ -453,6 +478,35 @@ func request_battle_utility(page: String) -> void:
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_BATTLE_UTILITY)
 	modal_requested.emit(STATE_BATTLE_UTILITY, {"page": page, "return_state": _utility_resume_state})
+
+
+func request_combat_guide_replay() -> bool:
+	if current_state != STATE_BATTLE_UTILITY or _utility_page != "settings" or battle_resolved or _first_guide_pending:
+		return false
+	_begin_combat_guide()
+	return true
+
+
+func _begin_combat_guide() -> void:
+	_guide_resume_state = current_state
+	_guide_resume_paused = bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
+	_set_battle_runtime_paused(true)
+	_set_state(STATE_COMBAT_GUIDE)
+
+
+func finish_combat_guide() -> void:
+	if current_state != STATE_COMBAT_GUIDE:
+		return
+	CombatSettings.complete_combat_guide()
+	if _first_guide_pending:
+		_first_guide_pending = false
+		_set_state(STATE_BATTLE_PREPARE)
+		request_next_wave()
+	else:
+		_set_state(_guide_resume_state)
+		_set_battle_runtime_paused(_guide_resume_paused)
+		if _guide_resume_state == STATE_BATTLE_UTILITY:
+			modal_requested.emit(STATE_BATTLE_UTILITY, {"page": "settings", "combat_tab": true})
 
 
 func close_battle_utility() -> void:
@@ -852,6 +906,11 @@ func _set_battle_runtime_paused(paused: bool) -> void:
 
 
 func _unbind_battle_context() -> void:
+	if _bound_loadout != null:
+		if _bound_loadout.weapon_attachment_changed.is_connected(_on_trade_attachment_changed):
+			_bound_loadout.weapon_attachment_changed.disconnect(_on_trade_attachment_changed)
+		if _bound_loadout.loadout_changed.is_connected(_on_trade_loadout_changed):
+			_bound_loadout.loadout_changed.disconnect(_on_trade_loadout_changed)
 	_unbind_player()
 	_unbind_wave_manager()
 	_bound_loadout = null
@@ -928,6 +987,9 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 	_shop_generation += 1
 	if mode == "shop":
 		offer_count = maxi(3, offer_count)
+		if _bound_wave_manager != null and _bound_wave_manager.goblin_trades.single_slot_wave == current_wave_index + 1:
+			offer_count = 1
+			if strong: guarantee_weapon = false
 	if not context.is_empty():
 		var generator := ShopOfferGenerator.new()
 		var candidates := generator.build_shop_candidate_pool(context)
@@ -1107,15 +1169,37 @@ func _has_epic_trade_candidate() -> bool:
 
 func _prepare_goblin_trade() -> void:
 	var finance := _bound_wave_manager.finance_system
-	var principal_relic := false
-	for id in _bound_player.get_relic_counts():
-		for effect in DataRegistry.get_record("relics", str(id)).get("runtime_effects", []):
-			if str(effect.get("effect", "")) in ["derived_stat_from_principal", "principal_revive"]: principal_relic = true
-	_bound_wave_manager.goblin_trades.prepare({"wave": current_wave_index + 1, "earned": _bound_wave_manager.collected_gold_this_wave,
+	var trades := _bound_wave_manager.goblin_trades
+	var context := {"wave": current_wave_index + 1, "earned": _bound_wave_manager.collected_gold_this_wave,
 		"has_next_wave": _has_next_wave(), "gold": get_current_gold(), "principal": finance.principal,
 		"sanity": _bound_player.get_stat("humanity"), "can_bank": not finance.manual_operation_used,
-		"principal_relic": principal_relic, "epic_available": _has_epic_trade_candidate(),
-		"struggling": bool(_bound_wave_manager.goblin_trades.pressure_snapshot.get("trade_struggling", false))})
+		"epic_available": _has_epic_trade_candidate(),
+		"struggling": bool(trades.pressure_snapshot.get("trade_struggling", false))}
+	var pressure: Dictionary = _bound_wave_manager.wave_challenges.pressure
+	context["high_pressure"] = bool(pressure.get("struggling", false))
+	context["comfortable"] = bool(pressure.get("comfortable", false))
+	var prices: Array[int] = []
+	for entry in _preparation_offers: prices.append(int(entry.get("shop_cost", 0)))
+	prices.sort()
+	context["shelf_median"] = prices[prices.size() / 2] if not prices.is_empty() else 0
+	var epics: Array[Dictionary] = []
+	for candidate in ShopOfferGenerator.new().build_shop_candidate_pool(_build_shop_context()):
+		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_RELIC and str(candidate.get("rarity", "")) == "epic": epics.append(candidate)
+	context["epic_candidates"] = epics
+	var buyout := trades.definition("weapon_buyout")
+	if not buyout.is_empty():
+		context["weapon_quotes"] = GoblinSpecialTrades.best_weapon_quotes(_bound_loadout, _bound_player, _bound_wave_manager.weapon_damage_this_wave, int(buyout.price_multiplier))
+	var sanity := trades.definition("sanity_buyback")
+	if not sanity.is_empty() and float(context.sanity) <= float(sanity.maximum_sanity) and finance.principal >= int(sanity.minimum_principal):
+		context["sanity_quote"] = GoblinSpecialTrades.sanity_quote(_bound_player, finance, sanity)
+	var loss := 0.0
+	var nominal := 0.0
+	for settlement in finance.last_settlement_results:
+		loss += float(settlement.get("humanity_loss", 0))
+		nominal += float(settlement.get("gain", 0)) + float(settlement.get("humanity_loss", 0))
+	context["interest_loss"] = loss
+	context["interest_loss_ratio"] = loss / nominal if nominal > 0 else 0.0
+	trades.prepare(context)
 
 
 func cancel_goblin_trade() -> void:
@@ -1130,7 +1214,9 @@ func accept_goblin_trade(token: String) -> Dictionary:
 	if current_state != STATE_FINANCE_POPUP or _transaction_busy or _bound_player == null or _bound_wave_manager == null or not _has_next_wave():
 		return {"success": false, "reason": "trade_expired"}
 	_transaction_busy = true
-	var result := _bound_wave_manager.goblin_trades.accept(token, _bound_player, _bound_wave_manager.finance_system)
+	var result := _bound_wave_manager.goblin_trades.accept(token, _bound_player, _bound_wave_manager.finance_system, _bound_loadout)
+	if bool(result.get("success", false)) and str(result.get("id", "")) == "exclusive_relic":
+		_limit_current_shop_to_one()
 	if bool(result.get("success", false)): _bound_wave_manager.run_statistics.decide_advice("trade", token, true)
 	if bool(result.get("success", false)) and bool(result.get("start_wave", false)):
 		clear_stat_preview()
@@ -1142,6 +1228,18 @@ func accept_goblin_trade(token: String) -> Dictionary:
 	_transaction_busy = false
 	_notify_preparation_changed()
 	return result
+
+
+func _limit_current_shop_to_one() -> void:
+	if _preparation_offers.is_empty(): return
+	var retained: Dictionary = _preparation_offers[0]
+	_preparation_offers = [retained]
+	_active_shop_offers.clear()
+	_active_shop_offer_ids.clear()
+	var id := str(retained.offer_id)
+	_active_shop_offers[id] = retained
+	_active_shop_offer_ids.append(id)
+	_shop_generation += 1
 
 
 func get_bank_stat_preview(action: String, amount: int) -> String:
@@ -1225,6 +1323,7 @@ func repay_goblin_loan() -> Dictionary:
 	_transaction_busy = true
 	var result := _bound_wave_manager.goblin_loans.repay(_bound_wave_manager.finance_system)
 	_transaction_busy = false
+	if bool(result.get("success", false)): cancel_goblin_trade()
 	_notify_preparation_changed()
 	return result
 
@@ -1275,9 +1374,34 @@ func submit_enchantment_operation(action: String, weapon_id: String, item_id: St
 	elif action == "replace":
 		success = _bound_loadout.request_manual_attachment_replacement(weapon_id, item_id, target_index)
 	_transaction_busy = false
+	if success: _invalidate_attachment_trade(weapon_id)
 	clear_stat_preview()
 	_notify_preparation_changed()
 	return {"success": success, "reason": "" if success else "attachment_failed"}
+
+
+func _invalidate_attachment_trade(weapon_id: String = "") -> void:
+	if _bound_wave_manager == null or current_state != STATE_FINANCE_POPUP: return
+	var proposal := _bound_wave_manager.goblin_trades.offer
+	var id := str(proposal.get("id", ""))
+	if id in ["exclusive_relic", "sanity_buyback"]:
+		cancel_goblin_trade()
+	elif id == "weapon_buyout":
+		var current := GoblinSpecialTrades.weapon_quote(_bound_loadout.get_weapon_instance(str(proposal.weapon_id)), _bound_player, int(proposal.price_multiplier))
+		if str(proposal.weapon_id) == weapon_id or current.get("fingerprint", []) != proposal.fingerprint:
+			cancel_goblin_trade()
+
+
+func _on_trade_attachment_changed(weapon_id: String, _item_id: String) -> void:
+	if _transaction_busy: return
+	_invalidate_attachment_trade(weapon_id)
+	_queue_economy_refresh()
+
+
+func _on_trade_loadout_changed() -> void:
+	if _transaction_busy: return
+	_invalidate_attachment_trade()
+	_queue_economy_refresh()
 
 
 func get_inventory_sale_quote(kind: String, target_id: String) -> Dictionary:

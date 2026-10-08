@@ -21,6 +21,7 @@ var _speech: Control
 var _speech_tail: TextureRect
 var _speech_text: Label
 var _body: Label
+var _relic_body: GoblinTradeRelicTerms
 var _body_scroll: ScrollContainer
 var _terms: VBoxContainer
 var _detail: Label
@@ -72,6 +73,10 @@ func _ready() -> void:
 	_body_scroll.add_child(_terms)
 	_body = _label(_terms, "", 12, FinanceUIStyle.TEXT)
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_relic_body = GoblinTradeRelicTerms.new()
+	_relic_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_terms.add_child(_relic_body)
+	_relic_body.hide()
 	_detail = _label(_terms, "", 12, FinanceUIStyle.GREEN)
 	_detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_yes = _button("ui.trade.accept", true)
@@ -106,6 +111,9 @@ func get_preferred_height(width: float) -> float:
 	var padding := 12.0 if compact else 16.0
 	var text_width := maxf(1, floorf(width - padding * 2 - _body_scroll.get_v_scroll_bar().get_combined_minimum_size().x))
 	var text_height := _text_height(_body, text_width)
+	if _relic_body.visible:
+		_relic_body.size.x = text_width
+		text_height = _relic_body.get_content_height()
 	if not _detail.text.is_empty():
 		text_height += _terms.get_theme_constant("separation") + _text_height(_detail, text_width)
 	return (44 if compact else 60) + ceilf(text_height) + (24 if compact else 28) + (10 if compact else 12) + padding
@@ -160,6 +168,10 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 
 func present(speech: String, body: String, detail: String = "") -> void:
 	_challenge_header = false
+	_body.show()
+	_relic_body.hide()
+	_title.show()
+	_seal.show()
 	_speech_text.text = speech
 	_body.text = body
 	_body.visible_characters = -1
@@ -179,6 +191,16 @@ func present(speech: String, body: String, detail: String = "") -> void:
 	_card.modulate.a = 1.0
 	_speech.show()
 	seek(0.0)
+
+
+func configure_offer(offer: Dictionary) -> void:
+	if str(offer.get("id", "")) == "exclusive_relic":
+		_body.hide()
+		_relic_body.show()
+		_relic_body.configure(L10n.record_text(offer, "body"), offer.relic, _body)
+	if str(offer.get("id", "")) in ["exclusive_relic", "weapon_buyout", "sanity_buyback"]:
+		_detail.hide()
+		_yes.tooltip_text = ""
 
 
 func configure_challenge(wave: int, icon: String) -> void:

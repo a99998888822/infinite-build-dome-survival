@@ -4,7 +4,7 @@ var target: EnemyController
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	CombatSettings.set_option("keyboard_movement", false, false)
 	CombatSettings.set_option("quick_cast", false, false)
 	game = load("res://scenes/core/game_root.tscn").instantiate()
@@ -21,7 +21,7 @@ func _run() -> void:
 	await _lamp_all_modes()
 	await _lamp_target_boundaries()
 	await _special_shapes()
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	flow.enter_start_page()
 	await frames(8)
 	AudioManager.stop_combat_sfx()
@@ -31,7 +31,7 @@ func _run() -> void:
 	get_tree().quit(1 if failures else 0)
 
 func fixture(id: String, position: Vector2 = Vector2(60, 0)) -> WeaponInstance:
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	for old in loadout.weapon_instances.duplicate():
 		loadout.remove_weapon(old.weapon_id)
 	manager.clear_battle_entities()
@@ -55,7 +55,7 @@ func _automatic_weapon(id: String) -> void:
 	var weapon := await fixture(id, Vector2(2000, 0))
 	loadout.tick(10)
 	check(weapon.volley_index == 0, "manual mode stays idle " + id)
-	CombatSettings.set_option("wheelchair_mode", true, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	loadout.tick(10)
 	check(weapon.volley_index == 0, "out-of-range target does not consume cooldown " + id)
 	target.global_position = Vector2(-60, 0)
@@ -82,8 +82,8 @@ func _automatic_weapon(id: String) -> void:
 	loadout.tick(0.2)
 	check(not state.executing and is_equal_approx(state.remaining, weapon.get_active_cooldown_seconds()), "cooldown begins after full attack " + id)
 	var cooldown: float = state.remaining
-	CombatSettings.set_option("wheelchair_mode", false, false)
-	CombatSettings.set_option("wheelchair_mode", true, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	check(state.remaining == cooldown, "toggling does not reset cooldown " + id)
 	loadout.tick(cooldown * 0.5)
 	check(weapon.volley_index == 1, "cooldown prevents early automatic repeat " + id)
@@ -94,7 +94,7 @@ func _boundaries_and_switching() -> void:
 	var weapon := await fixture("weapon_void_blade")
 	controller.select_slot(0)
 	check(controller.selected_weapon == weapon, "manual targeting works before switch")
-	CombatSettings.set_option("wheelchair_mode", true, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	controller.select_slot(0)
 	check(controller.selected_weapon == null and not controller.indicator.visible, "auto mode clears aim and ignores manual selection")
 	player.request_move(Vector2(300, 100))
@@ -125,7 +125,7 @@ func _boundaries_and_switching() -> void:
 	loadout.tick(0)
 	check(loadout.weapon_instances.all(func(w): return w.volley_index == 1), "multiple weapons auto cast independently in same tick")
 	var state := loadout.active_casting.state_for(weapon)
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	check(state.executing, "disabling auto does not interrupt an attack already started")
 	await get_tree().create_timer(0.3).timeout
 	loadout.tick(0.2)
@@ -139,7 +139,7 @@ func _lamp_all_modes() -> void:
 	for wheelchair in [false, true]:
 		for keyboard in [false, true]:
 			var weapon := await fixture("weapon_copper_lamp", Vector2(-60, 0))
-			CombatSettings.set_option("wheelchair_mode", wheelchair, false)
+			preload("res://scripts/tests/cast_policy_test_support.gd").apply(wheelchair)
 			CombatSettings.set_option("keyboard_movement", keyboard, false)
 			var label := " wheelchair=%s keyboard=%s" % [wheelchair, keyboard]
 			var farther := manager.spawn_enemy("enemy_mutated_grub", Vector2(90, 0))
@@ -150,8 +150,10 @@ func _lamp_all_modes() -> void:
 			controller.current_weapon = loadout.weapon_instances[1]
 			loadout.tick(0)
 			var state := loadout.active_casting.state_for(weapon)
-			check(weapon.volley_index == 1 and state.executing, "unselected lamp starts without input" + label)
+			check(weapon.volley_index == (1 if wheelchair else 0), "lamp respects automatic master switch" + label)
 			check(loadout.weapon_instances[1].volley_index == (1 if wheelchair else 0), "other weapons retain their mode rules" + label)
+			if not wheelchair:
+				check(loadout.cast_weapon(weapon, target.global_position), "manual lamp remains usable with master off" + label)
 			var body: CopperLamp = state.body.get_ref()
 			body.set_physics_process(false)
 			body._physics_process(0.01)
@@ -186,11 +188,12 @@ func _lamp_all_modes() -> void:
 			loadout.tick(cooldown * 0.5)
 			check(weapon.volley_index == 1, "cooldown blocks repeat" + label)
 			loadout.tick(cooldown * 0.5 + 0.001)
-			check(weapon.volley_index == 2 and state.executing, "lamp automatically repeats after cooldown" + label)
+			check(weapon.volley_index == (2 if wheelchair else 1) and state.executing == wheelchair, "lamp repeats only while automation is enabled" + label)
 	CombatSettings.set_option("keyboard_movement", false, false)
 
 func _lamp_target_boundaries() -> void:
 	var weapon := await fixture("weapon_copper_lamp", Vector2(-2000, 0))
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	loadout.tick(10)
 	check(weapon.volley_index == 0 and not loadout.cast_weapon(weapon, Vector2.LEFT), "automatic and manual lamp ignore out-of-range targets")
 	target.global_position = Vector2(-60, 0)
@@ -242,14 +245,14 @@ func _special_shapes() -> void:
 		var weapon := await fixture(id)
 		var axes := weapon.get_domain_axes() if weapon.is_ritual_tome() else AttackFootprint.grenade_range_axes(weapon)
 		target.global_position = Vector2(0, axes.y + 10)
-		CombatSettings.set_option("wheelchair_mode", true, false)
+		preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 		loadout.tick(0)
 		check(weapon.volley_index == 0, "ellipse excludes targets beyond minor axis " + id)
 		weapon.runtime_stats.area_size = 100
 		loadout.tick(0)
 		check(weapon.volley_index == 1, "auto targeting follows increased range " + id)
 	var tome := await fixture("weapon_kunyu_ritual_tome")
-	CombatSettings.set_option("wheelchair_mode", true, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	loadout.tick(0)
 	var state := loadout.active_casting.state_for(tome)
 	var domain: RitualDomain = state.body.get_ref()

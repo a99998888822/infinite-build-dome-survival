@@ -127,7 +127,7 @@ func _run() -> void:
 	popup.trade_presentation._no.pressed.emit()
 	await next_preparation(20, true)
 	check(manager.goblin_trades.pressure_snapshot.trade_struggling and not manager.goblin_trades.pressure_snapshot.struggling, "one actual low-health episode qualifies for a trade independently of challenge pressure")
-	check(str(manager.goblin_trades.offer.get("id", "")) in ["principal_advance", "cash_price"] and popup.trade_presentation._card.is_visible_in_tree(), "single low-health episode opens a live crisis deal")
+	check(str(manager.goblin_trades.offer.get("id", "")) in ["principal_advance", "cash_price", "interest_pact"] and popup.trade_presentation._card.is_visible_in_tree(), "pressure and ordinary trades share the eligible live pool")
 	await capture("crisis_trade")
 	CampProgression.end_transient_session()
 	AudioManager.stop_combat_sfx()

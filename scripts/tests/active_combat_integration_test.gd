@@ -91,7 +91,7 @@ func _run() -> void:
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
 	CombatSettings.set_option("quick_cast", false, false)
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	game = load("res://scenes/core/game_root.tscn").instantiate()
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game

@@ -79,6 +79,16 @@ func restore_traded_item(item: Dictionary) -> void:
 	_items.append(item)
 
 
+func take_weapon_bundle_for_trade(weapon_id: String) -> Array[Dictionary]:
+	# Special goblin buyouts own the attached instances; ordinary sales return them.
+	var removed: Array[Dictionary] = []
+	for index in range(_items.size() - 1, -1, -1):
+		if str(_items[index].get("equipped_weapon_id", "")) == weapon_id:
+			removed.push_front(_items[index])
+			_items.remove_at(index)
+	return removed
+
+
 func get_available_items() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for item in _items:

@@ -261,7 +261,8 @@ func tick(delta: float) -> void:
 	if active_combat_enabled:
 		active_casting.tick(delta)
 		if str(GameGlobal.get_runtime_flag("main_flow_state", "")) == MainFlowCoordinator.STATE_WAVE_COMBAT:
-			active_casting.auto_attack(CombatSettings.wheelchair_mode)
+			active_casting.auto_attack()
+			active_casting.mobility_planner.tick(active_casting, delta)
 		return
 	for weapon in weapon_instances:
 		if weapon.is_ritual_tome():

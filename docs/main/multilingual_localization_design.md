@@ -215,7 +215,7 @@ BBCode 的颜色、图标路径和样式尽量由显示组件持有；译文中�
 | 附魔 | Enchantment | 名词；操作可用 Enchant |
 | 羁绊 | Synergy | 不直接按字面使用 Bond |
 | 负载／负载上限 | Load / Load Capacity | 明确是装备预算 |
-| 轮椅模式 | Auto-Attack | 用实际功能命名；说明位移技能仍手动施放 |
+| 自动释放／手动释放 | Automatic Casting / Manual Casting | 每个技能独立生效；攻击默认自动，位移默认手动 |
 | 快捷施法 | Quick Cast | 操作提示随移动模式一起变化 |
 | 营地币 | Camp Coins | 与局内 Gold 分开 |
 

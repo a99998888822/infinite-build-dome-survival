@@ -21,8 +21,10 @@ var clearance := 25.0
 var resolved_landing: Variant = null
 var _configuration: Array = []
 var _rings: Dictionary = {}
+var _ring_fills: Dictionary = {}
 var _fan_key: Array = []
 var _fan_points := PackedVector2Array()
+var _fan_fill := PackedVector2Array()
 
 func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool) -> void:
 	var anchor := Vector2.ZERO
@@ -68,15 +70,21 @@ func ring(at: Vector2, radius: float, filled: bool, strength: float = 1.0) -> vo
 
 
 func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) -> void:
+	if axes.x <= 0.0 or axes.y <= 0.0: return
 	if not _rings.has(axes):
 		var border := PackedVector2Array()
-		for i in 97: border.append(Vector2.from_angle(TAU * i / 96.0) * axes)
-		if _rings.size() >= 8: _rings.clear()
+		for i in 96: border.append(Vector2.from_angle(TAU * i / 96.0) * axes)
+		if _rings.size() >= 8:
+			_rings.clear()
+			_ring_fills.clear()
+		# Polygon triangulation expects unique vertices; only the outline closes.
+		_ring_fills[axes] = border.duplicate()
+		border.append(border[0])
 		_rings[axes] = border
 	var points: PackedVector2Array = _rings[axes]
 	draw_set_transform(at)
 	if filled:
-		draw_colored_polygon(points, tint(FILL))
+		draw_colored_polygon(_ring_fills[axes], tint(FILL))
 	outline(points, strength)
 	draw_set_transform(Vector2.ZERO)
 
@@ -133,9 +141,10 @@ func _draw() -> void:
 					_fan_points.append(Vector2.from_angle(deg_to_rad(lerpf(-shot_angle * 0.5, shot_angle * 0.5, i / 48.0))) * shot_range)
 				for i in 49:
 					_fan_points.append(Vector2.from_angle(deg_to_rad(lerpf(shot_angle * 0.5, -shot_angle * 0.5, i / 48.0))) * clearance)
+				_fan_fill = _fan_points.duplicate()
 				_fan_points.append(_fan_points[0])
 			draw_set_transform(Vector2.ZERO, direction.angle())
-			draw_colored_polygon(_fan_points, tint(FILL))
+			draw_colored_polygon(_fan_fill, tint(FILL))
 			outline(_fan_points)
 			draw_set_transform(Vector2.ZERO)
 			var retreat := get_landing_offset()

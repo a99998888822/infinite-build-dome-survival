@@ -179,7 +179,7 @@ func _run() -> void:
 		window.content_scale_size = dimensions
 		await frames(15)
 		popup._select_tab("bank")
-		check(popup._bank.visible and popup._title.text == "哥布林银行", "compact bank retains its title and operations " + str(dimensions))
+		check(popup._bank.visible and popup._title.tr(popup._title.text) == "哥布林银行", "compact bank retains its title and operations " + str(dimensions))
 		check(popup.start_button.get_global_rect().end.y <= window.size.y, "next wave button fits " + str(dimensions))
 		popup._bank.ensure_control_visible(popup.bank_confirm)
 		await frames()

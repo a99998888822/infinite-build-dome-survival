@@ -11,8 +11,10 @@ var phase := "moving"
 var phase_age := 0.0
 var replay_only := false
 var hit_count := 0
+var allow_return := true
 
-func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2) -> void:
+func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2, automatic: bool = false) -> void:
+	allow_return = not automatic
 	bind_weapon(source, "mobility_weapon_runtimes")
 	z_index = 0 # Child clips own their authored ground/foreground layers.
 	live_source = original
@@ -23,15 +25,15 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	if heading.is_zero_approx(): heading = player.last_move_direction
 	var landing := player.resolve_mobility_destination(anchor_position + weapon.get_mobility_landing(point - anchor_position))
 	if weapon.is_star_tome():
-		player._clear_move_input()
 		player.reset_stationary_relic_state()
 		MobilityAtlasEffect.spawn(self, weapon, "star_depart", anchor_position)
-		anchor = MobilityAtlasEffect.spawn(self, weapon, "star_anchor", anchor_position, 0, Vector2.ONE, true)
+		if allow_return:
+			anchor = MobilityAtlasEffect.spawn(self, weapon, "star_anchor", anchor_position, 0, Vector2.ONE, true)
 		player.global_position = landing
 		MobilityAtlasEffect.spawn(self, weapon, "star_arrive", landing)
 		_impact(landing)
 		phase = "arriving"
-		return_ready = true
+		return_ready = allow_return
 	else:
 		player.begin_mobility_motion(self, landing, float(weapon.weapon_data.get("movement_ms", 220)) / 1000.0)
 		if weapon.is_hand_cannon():
@@ -91,7 +93,6 @@ func request_return() -> bool:
 	# A blocked return keeps the mark available, instead of consuming it halfway.
 	if landing.distance_squared_to(anchor_position) > 1.0: return false
 	var departure := player.global_position
-	player._clear_move_input()
 	player.reset_stationary_relic_state()
 	player.global_position = landing
 	MobilityAtlasEffect.spawn(self, weapon, "star_depart", departure)
@@ -118,7 +119,7 @@ func _physics_process(delta: float) -> void:
 		phase_age = age if weapon.is_hand_cannon() else 0.0
 		if not weapon.is_hand_cannon(): _impact(weapon.owner_player.global_position)
 	elif phase == "arriving" and phase_age >= SHOCK_SECONDS:
-		phase = "anchored"
+		phase = "anchored" if allow_return else "done"
 	elif phase == "returning" and phase_age >= 8.0 / 24.0:
 		phase = "done"
 	elif phase == "impact" and phase_age >= (0.28 if weapon.is_hand_cannon() else SLASH_SECONDS):

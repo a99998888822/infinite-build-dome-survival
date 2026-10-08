@@ -1,4 +1,25 @@
 keys,zh_CN,en
+ui.guide.replay,重看操作指引,Replay control guide
+ui.guide.after_rewards,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
+ui.guide.context,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
+ui.guide.skip,跳过指引,Skip guide
+ui.guide.previous,上一步,Previous
+ui.guide.next,下一步,Next
+ui.guide.start,开始战斗,Start battle
+ui.guide.done,返回设置,Back to settings
+ui.guide.title.move,右键地面，移动到目标位置,Right-click the ground to move
+ui.guide.body.move,"右键点击地面，角色会自动走向该位置。按 S 可立即停止移动。
+这里只是示意，无需实际操作，点击「下一步」继续。","Right-click the ground to move to that spot. Press S to stop immediately.
+This is a static example. Click Next to continue."
+ui.guide.keyboard_preserved,你当前使用 WASD 模式；指引不会修改已有设置。,You currently use WASD. This guide keeps your existing settings.
+ui.guide.title.cast,Esc 武器栏：逐个选择自动或手动,Esc inventory: choose auto or manual
+ui.guide.body.cast,"按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
+默认攻击技能自动释放，位移技能手动释放；每个技能的设置独立生效。","Press Esc and click an icon on a weapon slot's bottom edge to change its cast mode.
+Attacks default to auto; mobility skills default to manual. Each skill's setting takes effect independently."
+ui.guide.title.settings,也可以使用 WASD 移动,You can also move with WASD
+ui.guide.body.settings,"打开设置 → 战斗设置，在「移动方式」中选择「方向键 / WASD」。
+选择适合你的操作习惯；本次指引不会替你切换设置。","Open Settings → Combat Settings and choose Arrow Keys / WASD under Movement Mode.
+Choose the controls you prefer. This guide does not change your settings."
 ui.bank.amount_placeholder,输入金额,Enter amount
 ui.bank.balance_summary,金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,Gold %d  │  Principal %d  │  Rate %.1f%%  │  Est. interest +%d
 ui.bank.challenge_deposit_done,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
@@ -187,7 +208,7 @@ ui.encyclopedia.weapon.cooldown,基础冷却：%.2f 秒（动作结束后开始�
 ui.encyclopedia.weapon.load_level,基础负载：%d　最高等级：%d,Base load: %d   Max level: %d
 ui.hud.armor.placeholder,护甲减免后，承受xx%的伤害,"After armor, take xx% damage"
 ui.hud.armor.tooltip,护甲减免后，承受%s的伤害,"After armor, take %s damage"
-ui.hud.controls.auto_attack_suffix,  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  Auto-Attack  ·  Esc to pause
+ui.hud.controls.auto_attack_suffix,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
 ui.hud.controls.cancel_aim_suffix,  ·  右键 / Esc 取消瞄准,  ·  Right-click / Esc to cancel aim
 ui.hud.controls.click_aim_suffix,  ·  左键瞄准，再次左键施放,"  ·  Left-click to aim, again to cast"
 ui.hud.controls.keyboard_move,WASD / 方向键移动,WASD / arrows to move
@@ -254,7 +275,7 @@ ui.interest.wallet_hint,利息自动加入随身金币，本金保持不变。,I
 ui.interest.wave_title,第 %d 波 · 利息结算,Wave %d · Interest
 ui.interest.zero_amount,+0 利息,+0 interest
 ui.inventory.back,⬅ 返回,⬅ Back
-ui.inventory.edit_in_bank_hint,此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,View only. Visit the Bank to change enchantments. Press ESC again or select Back.
+ui.inventory.edit_in_bank_hint,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 ui.inventory.entry_count,共 %d 个,Total: %d
 ui.inventory.innate_relic_note,"
 [color=#d3b77c]角色固有 ×%d：开局获得时奖励已发放，不可移除。[/color]","
@@ -264,7 +285,7 @@ ui.inventory.preview.entry_count,共 0 个,0 entries
 ui.inventory.preview.item_count,共 0 件,0 items
 ui.inventory.relics_title,遗物清单,Relics
 ui.inventory.title,物品栏,Inventory
-ui.inventory.view_only,仅供查看 · ESC 返回,View only · ESC to return
+ui.inventory.view_only,武器下方图标切换自动／手动 · ESC 返回,Toggle Auto/Manual below each weapon · ESC to return
 ui.item.tooltip.chain_count,[color=%s]连续传递：[/color][color=#7FD88F]%d 次[/color],[color=%s]Chain transfers: [/color][color=#7FD88F]%d[/color]
 ui.item.tooltip.chain_interval,[color=%s]传递间隔：[/color][color=#7FD88F]%.2f 秒[/color],[color=%s]Transfer interval: [/color][color=#7FD88F]%.2f s[/color]
 ui.item.tooltip.effect_active,[color=%s]%s：[/color][color=#7FD88F]已生效[/color],[color=%s]%s: [/color][color=#7FD88F]Active[/color]
@@ -320,11 +341,18 @@ ui.reward.preview.description,属性描述,Stat Description
 ui.reward.preview.name,奖励名称,Reward Name
 ui.settings.audio.music,背景音乐,Music
 ui.settings.audio.sound_effects,音效,Sound Effects
-ui.settings.auto_attack,轮椅模式,Auto-Attack
 ui.settings.autosave_hint,修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,Changes apply immediately and save automatically. Press Esc or Back to return.
 ui.settings.combat,战斗设置,Combat
 ui.settings.controls.auto_attack,自动攻击,Auto-Attack
-ui.settings.controls.auto_attack_hint,武器在范围内自动攻击；位移武器仍需手动施放,Auto-attacks targets in range; mobility weapons remain manual
+ui.settings.skills.manual_select,按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,Select a manual skill by number and confirm with left-click; toggle Auto/Manual below each weapon in the Esc inventory
+ui.settings.skills.manual_quick,按编号直接施放手动技能；Esc 武器下方图标切换自动／手动,Cast manual skills by number; toggle Auto/Manual below each weapon in the Esc inventory
+ui.settings.controls.auto_attack_hint,按每种技能的选择自动施放；Esc 武器下方图标切换自动／手动,Auto-casts according to each skill's choice; toggle Auto/Manual below each weapon in the Esc inventory
+ui.weapon.cast_mode.auto,自动释放,Automatic casting
+ui.weapon.cast_mode.manual,手动释放,Manual casting
+ui.weapon.cast_mode.to_manual,点击切换为手动释放,Click to switch to manual casting
+ui.weapon.cast_mode.to_auto,点击切换为自动释放,Click to switch to automatic casting
+ui.weapon.cast_mode.edit_hint,按 Esc，在武器下方点击图标切换,Press Esc and click the icon below the weapon to change its mode
+ui.weapon.cast_mode.mobility_hint,仅辅助持续追击或高压力撤退；停步时不自动位移,Only assists sustained pursuit or retreat under pressure; never moves you while standing still
 ui.settings.controls.cancel_keyboard_hint,取消瞄准；使用方向键 / WASD 移动,Cancel aim; move with arrows / WASD
 ui.settings.controls.cancel_mouse_hint,取消瞄准并移动至目的地；S 停止移动,Cancel aim and move to the target; S to stop
 ui.settings.controls.click_aim_hint,单击显示指示器，再次单击施放,"Click to aim, then click again to cast"
@@ -345,7 +373,9 @@ ui.settings.controls.quick_cast,快捷施法,Quick Cast
 ui.settings.controls.right_mouse,鼠标右键,Right Mouse
 ui.settings.controls.show_hints,显示操作提示,Show Control Hints
 ui.settings.controls.title,战斗操作,Combat Controls
-ui.settings.controls.wheel_hint,循环切换当前武器，鼠标旁图标同步切换,Cycle weapons; the icon beside the cursor updates
+ui.settings.controls.wheel_hint,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
+ui.hud.controls.skill_cast_suffix, · 各技能独立自动／手动, · Per-skill Auto/Manual
+ui.hud.controls.manual_wheel_suffix, · 数字键选技／滚轮切手动技能, · Numbers select / wheel cycles manual skills
 ui.settings.display.embedded_hint,调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。,"To resize or use fullscreen, disable the editor's embedded game and run separately."
 ui.settings.display.fullscreen,全屏：,Fullscreen:
 ui.settings.display.resolution,界面分辨率,Resolution

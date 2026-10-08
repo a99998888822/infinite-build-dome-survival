@@ -16,7 +16,7 @@
 | 附魔 | Enchantment | 操作为 Enchant |
 | 羁绊 | Synergy | 内部 bonds 表名不变 |
 | 负载／负载上限 | Load / Load Capacity | 武器装备预算 |
-| 轮椅模式 | Auto-Attack | 位移武器仍手动施放 |
+| 自动释放／手动释放 | Automatic Casting / Manual Casting | 每个技能独立设置；攻击默认自动、位移默认手动，无总开关 |
 | 快捷施法 | Quick Cast | 保持现有操作逻辑 |
 | 营地币 | Camp Coins | 区别于本局 Gold |
 | 强力刷新 | Power Reroll | 保底史诗遗物的刷新资格 |

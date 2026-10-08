@@ -8,6 +8,8 @@ var offer: Dictionary = {}
 var preparation_wave := -1
 var accepted_waves: Dictionary = {}
 var strong_refresh := false
+var single_slot_wave := -1
+var _accepting := false
 var interest_pact_count := 0
 var interest_pact: bool:
 	get: return interest_pact_count > 0
@@ -35,6 +37,8 @@ func reset() -> void:
 	preparation_wave = -1
 	accepted_waves.clear()
 	strong_refresh = false
+	single_slot_wave = -1
+	_accepting = false
 	interest_pact_count = 0
 	interest_sanity_paid = 0
 	last_contract_wave = -1
@@ -111,15 +115,15 @@ func finish_combat(enemy_limit: int) -> Dictionary:
 
 
 func eligible_offers(context: Dictionary) -> Array[Dictionary]:
-	var crisis: Array[Dictionary] = []
-	var ordinary: Array[Dictionary] = []
+	var candidates: Array[Dictionary] = []
 	var wave := int(context.get("wave", 0))
-	if wave < 1 or not bool(context.get("has_next_wave", false)): return crisis
+	if wave < 1 or not bool(context.get("has_next_wave", false)): return candidates
 	var gold := int(context.get("gold", 0))
 	var principal := int(context.get("principal", 0))
 	var struggling := bool(context.get("struggling", false))
 	for entry in config.trades:
 		var id := str(entry.id)
+		if bool(entry.get("once_per_run", false)) and accepted_waves.has(id): continue
 		# A cooldown of three skips the next three preparation visits.
 		if accepted_waves.has(id) and wave - int(accepted_waves[id]) <= int(entry.get("cooldown_waves", 0)): continue
 		var eligible := false
@@ -129,13 +133,13 @@ func eligible_offers(context: Dictionary) -> Array[Dictionary]:
 			"cash_price": eligible = struggling and principal >= int(entry.minimum_principal) and principal >= gold * float(entry.principal_gold_ratio)
 			"interest_pact": eligible = float(context.get("sanity", 100)) >= float(entry.minimum_sanity)
 			"spending_money": eligible = gold >= int(entry.minimum_gold) and principal <= gold * float(entry.maximum_principal_ratio) and bool(context.get("can_bank", true))
+			"exclusive_relic": eligible = bool(context.get("high_pressure", false)) and gold >= maxf(float(entry.minimum_gold), float(context.get("shelf_median", 0)) * float(entry.shelf_price_ratio)) and not context.get("epic_candidates", []).is_empty()
+			"weapon_buyout": eligible = wave >= int(entry.minimum_completed_waves) and bool(context.get("comfortable", false)) and gold < int(entry.gold_below) and principal < int(entry.principal_below) and not context.get("weapon_quotes", []).is_empty()
+			"sanity_buyback": eligible = float(context.get("sanity", 100)) <= float(entry.maximum_sanity) and principal >= int(entry.minimum_principal) and float(context.get("interest_loss", 0)) >= float(entry.minimum_interest_loss) and float(context.get("interest_loss_ratio", 0)) >= float(entry.minimum_loss_ratio) and not context.get("sanity_quote", {}).is_empty()
 		if not eligible: continue
 		var candidate: Dictionary = entry.duplicate(true)
-		if id == "principal_advance" and bool(context.get("principal_relic", false)):
-			candidate.weight = int(entry.principal_relic_weight)
-		if id in ["strong_refresh", "principal_advance", "cash_price"]: crisis.append(candidate)
-		else: ordinary.append(candidate)
-	return crisis if not crisis.is_empty() else ordinary
+		candidates.append(candidate)
+	return candidates
 
 
 func prepare(context: Dictionary) -> void:
@@ -144,34 +148,48 @@ func prepare(context: Dictionary) -> void:
 	preparation_wave = wave
 	offer.clear()
 	var candidates := eligible_offers(context)
-	var total := 0
-	for candidate in candidates: total += int(candidate.weight)
-	if total <= 0: return
-	var roll := _rng.randi_range(1, total)
-	for candidate in candidates:
-		roll -= int(candidate.weight)
-		if roll > 0: continue
-		offer = candidate.duplicate(true)
-		var amounts := reward_amounts(wave, int(context.get("earned", 0)))
-		var amount := 0
-		match str(offer.id):
-			"strong_refresh": amount = int(context.gold)
-			"principal_advance": amount = int(amounts.principal)
-			"cash_price": amount = int(amounts.gold)
-			"spending_money": amount = int(offer.gold_reward)
-		offer["amount"] = amount
-		offer["token"] = "%d:%s" % [wave, str(offer.id)]
-		offer["body_message"] = L10n.message(L10n.key_for_source(str(offer.body)), [amount] if amount > 0 else [])
-		if amount > 0: offer.body = str(offer.body) % amount
-		break
+	if candidates.is_empty(): return
+	# Every eligible offer shares one uniform pool; reopening never rerolls it.
+	offer = candidates[_rng.randi_range(0, candidates.size() - 1)].duplicate(true)
+	var amounts := reward_amounts(wave, int(context.get("earned", 0)))
+	var amount := 0
+	var args: Array = []
+	match str(offer.id):
+		"strong_refresh": amount = int(context.gold)
+		"principal_advance": amount = int(amounts.principal)
+		"cash_price": amount = int(amounts.gold)
+		"spending_money": amount = int(offer.gold_reward)
+		"exclusive_relic":
+			var pool: Array = context.epic_candidates
+			offer["relic"] = pool[_rng.randi_range(0, pool.size() - 1)].duplicate(true)
+		"weapon_buyout":
+			var quotes: Array = context.weapon_quotes
+			offer.merge(quotes[_rng.randi_range(0, quotes.size() - 1)], true)
+			amount = int(offer.amount)
+			args = [amount, str(offer.weapon_name)]
+		"sanity_buyback":
+			offer["sanity_quote"] = context.sanity_quote.duplicate(true)
+			args = [HumanityEconomy.number(float(context.sanity_quote.gain)), int(context.sanity_quote.cost)]
+	if args.is_empty() and amount > 0: args = [amount]
+	offer["amount"] = amount
+	offer["token"] = "%d:%s" % [wave, str(offer.id)]
+	offer["body_message"] = L10n.message(L10n.key_for_source(str(offer.body)), args)
+	if not args.is_empty(): offer.body = str(offer.body) % args
 
 
 func cancel() -> void:
 	offer.clear()
 
 
-func accept(token: String, player: PlayerController, finance: BattleFinanceSystem) -> Dictionary:
-	if offer.is_empty() or token != str(offer.token): return {"success": false, "reason": "trade_expired"}
+func accept(token: String, player: PlayerController, finance: BattleFinanceSystem, loadout: WeaponLoadout = null) -> Dictionary:
+	if _accepting or offer.is_empty() or token != str(offer.token): return {"success": false, "reason": "trade_expired"}
+	_accepting = true
+	var result := _accept_locked(player, finance, loadout)
+	_accepting = false
+	return result
+
+
+func _accept_locked(player: PlayerController, finance: BattleFinanceSystem, loadout: WeaponLoadout) -> Dictionary:
 	var accepted := offer.duplicate(true)
 	var id := str(accepted.id)
 	var amount := int(accepted.amount)
@@ -196,6 +214,17 @@ func accept(token: String, player: PlayerController, finance: BattleFinanceSyste
 		"interest_pact":
 			interest_pact_count += 1
 			apply_stat(player, id, "interest_rate", float(get_interest_pact_terms().interest_bonus))
+		"exclusive_relic":
+			var relic_id := str(accepted.relic.target_id)
+			var relic := DataRegistry.get_record("relics", relic_id)
+			var limit := int(relic.get("max_stack", 0))
+			if relic.is_empty() or str(relic.get("rarity", "")) != "epic" or (limit > 0 and player.get_relic_count(relic_id) >= limit): return {"success": false, "reason": "trade_expired"}
+			if not player.add_relic(relic_id): return {"success": false, "reason": "transaction_failed"}
+			single_slot_wave = preparation_wave
+		"weapon_buyout":
+			if not GoblinSpecialTrades.accept_weapon(accepted, player, finance, loadout): return {"success": false, "reason": "trade_expired"}
+		"sanity_buyback":
+			if not GoblinSpecialTrades.accept_sanity(accepted, player, finance): return {"success": false, "reason": "trade_expired"}
 	if not bool(result.get("success", false)): return result
 	accepted_waves[id] = preparation_wave
 	offer.clear()

@@ -69,11 +69,11 @@ func _test_rules() -> void:
 	check(trades.finish_combat(100).struggling, "three distinct low-health episodes trigger pressure without a crowd")
 	var c := {"wave": 3, "earned": 150, "has_next_wave": true, "gold": 100, "principal": 500, "sanity": 120, "struggling": true, "principal_relic": true}
 	var candidates := trades.eligible_offers(c)
-	check(candidates.size() == 3 and candidates.all(func(x): return str(x.id) in ["strong_refresh", "principal_advance", "cash_price"]), "crisis offers take priority over high sanity")
-	check(candidates.any(func(x): return x.id == "principal_advance" and x.weight == 5), "principal relics raise advance weight")
+	check(candidates.size() == 4 and candidates.any(func(x): return x.id == "interest_pact"), "all eligible ordinary and crisis offers share the pool")
+	check(candidates.any(func(x): return x.id == "principal_advance"), "principal relics preserve advance eligibility")
 	c.gold = 1
 	c.principal = 3
-	check(trades.eligible_offers(c).size() == 1, "tiny deposit and misleading principal ratio are excluded")
+	check(trades.eligible_offers(c).size() == 2, "tiny deposit excludes ratio offers while retaining advance and interest")
 	c.struggling = false
 	c.gold = 300
 	c.principal = 0

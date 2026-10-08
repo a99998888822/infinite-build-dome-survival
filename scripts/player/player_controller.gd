@@ -222,6 +222,17 @@ func add_runtime_modifiers(modifier_data_list: Array) -> void:
 			add_runtime_modifier(modifier_data)
 
 
+func restore_sanity_from_goblin_trade(amount: float) -> void:
+	# This paid restoration alone bypasses the candle. It does not disable the
+	# blocker for future healing, derived modifiers, or other relics.
+	if amount <= 0: return
+	modifier_stack.add_modifier_from_dictionary({"id": "goblin_purchased_sanity", "source_type": "goblin_trade",
+		"source_id": "sanity_buyback", "target_scope": "player", "stat": "humanity",
+		"operation": Modifier.OPERATION_ADD_FLAT, "value": amount,
+		"duration": Modifier.PERMANENT_DURATION, "stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE})
+	_update_after_stat_change()
+
+
 func remove_runtime_modifiers_by_source(source_type: String, source_id: String) -> void:
 	modifier_stack.remove_by_source(source_type, source_id)
 	_update_after_stat_change()
@@ -547,7 +558,6 @@ func resolve_mobility_destination(point: Vector2) -> Vector2:
 func begin_mobility_motion(source: Node, target: Vector2, seconds: float) -> bool:
 	if not alive or is_mobility_moving():
 		return false
-	_clear_move_input()
 	reset_stationary_relic_state()
 	_mobility_start = global_position
 	_mobility_target = resolve_mobility_destination(target)
@@ -563,6 +573,14 @@ func cancel_mobility_motion(source: Node) -> void:
 		velocity = Vector2.ZERO
 
 
+func movement_intent() -> Vector2:
+	# Read the live command, never velocity (which may come from recoil/knockback).
+	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
+		if has_move_destination and global_position.distance_squared_to(move_destination) > 4.0:
+			return global_position.direction_to(move_destination)
+		return Vector2.ZERO
+	return _keyboard_move_direction()
+
 func _read_move_input() -> Vector2:
 	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
 		if has_move_destination:
@@ -571,6 +589,9 @@ func _read_move_input() -> Vector2:
 			else:
 				return global_position.direction_to(move_destination)
 		return Vector2.ZERO
+	return _keyboard_move_direction()
+
+func _keyboard_move_direction() -> Vector2:
 	var direction := _mobile_move_direction
 	if bool(_held_move_keys.get(KEY_A, false)) or bool(_held_move_keys.get(KEY_LEFT, false)):
 		direction.x -= 1.0

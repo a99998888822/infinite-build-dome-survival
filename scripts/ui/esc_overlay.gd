@@ -143,7 +143,7 @@ func _ensure_backdrop() -> void:
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout, false)
+		weapon_strip.set_loadout(loadout, false, true)
 	if is_instance_valid(_player) and _player.get_item_inventory() != null:
 		var inventory := _player.get_item_inventory()
 		if not inventory.items_changed.is_connected(_on_item_inventory_changed):

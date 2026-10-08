@@ -3,6 +3,8 @@ class_name ActiveWeaponCasting
 ## Execution and cooldown belong to the weapon instance, never its slot number.
 var loadout: Node
 var states: Dictionary = {}
+var mobility_planner := AutoMobilityPlanner.new()
+var manual_aiming := false
 
 func state_for(weapon: WeaponInstance) -> Dictionary:
 	if not states.has(weapon.instance_id):
@@ -16,17 +18,17 @@ func can_cast(weapon: WeaponInstance) -> bool:
 	var state := state_for(weapon)
 	return not state.executing and float(state.remaining) <= 0.0
 
-func auto_attack(all_weapons: bool = true) -> void:
+func auto_attack() -> void:
 	# Use the same snapshots, animation and cooldown as a manual cast.
 	for weapon: WeaponInstance in loadout.weapon_instances:
-		if weapon.is_mobility_weapon(): continue # Position changes always remain manual.
-		if not all_weapons and not weapon.is_copper_lamp():
+		if weapon.is_mobility_weapon(): continue # Evaluated by the throttled movement planner.
+		if not CombatSettings.is_weapon_automatic(weapon):
 			continue
 		if not can_cast(weapon):
 			continue
 		var target := _auto_target(weapon)
 		if target != null:
-			cast(weapon, weapon.get_auto_target_position(target))
+			cast(weapon, weapon.get_auto_target_position(target), true)
 
 func _auto_target(weapon: WeaponInstance) -> EnemyController:
 	if weapon.is_copper_lamp():
@@ -107,12 +109,14 @@ func interrupt(weapon: WeaponInstance) -> void:
 		if is_instance_valid(runtime): runtime.cancel()
 	_finish(weapon)
 
-func cast(source: WeaponInstance, point: Vector2) -> bool:
+func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bool:
 	if not can_cast(source) or not loadout.weapon_instances.has(source):
 		return false
 	if not is_instance_valid(loadout.owner_player) or not loadout.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if not automatic: mobility_planner.manual_priority()
 	if source.is_return_ready():
+		if automatic: return false
 		return source.mobility_runtime.get_ref().request_return()
 	if source.is_copper_lamp() and _auto_target(source) == null:
 		return false
@@ -126,7 +130,7 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 	if weapon.is_mobility_weapon():
 		var mobility := MobilityWeaponRuntime.new()
 		root.add_child(mobility)
-		mobility.initialize(weapon, source, point)
+		mobility.initialize(weapon, source, point, automatic)
 		body = mobility
 	elif weapon.is_copper_lamp():
 		var lamp := CopperLamp.new()

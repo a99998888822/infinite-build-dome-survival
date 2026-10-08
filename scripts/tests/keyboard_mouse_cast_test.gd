@@ -40,7 +40,7 @@ func fixture(ids: Array[String]) -> void:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	CombatSettings.set_option("keyboard_movement", true, false)
 	CombatSettings.set_option("quick_cast", false, false)
 	gpu = DisplayServer.get_name() != "headless"
@@ -57,6 +57,7 @@ func _run() -> void:
 	await _quick_casting()
 	await _special_weapons()
 	await _mode_boundaries()
+	await _mixed_skills()
 	await _loadout_changes()
 	flow.enter_start_page()
 	await frames(6)
@@ -79,7 +80,9 @@ func _normal_casting() -> void:
 	check(controller.cursor_icon.visible and controller.cursor_icon.weapon == bow, "current weapon icon visible beside battlefield pointer")
 	check(controller.cursor_icon.position.x > POINTER.x and controller.cursor_icon.position.y < POINTER.y, "icon placed above and right of pointer")
 	await press_key(KEY_2)
-	check(controller.current_weapon == bow and controller.selected_weapon == null and dagger.volley_index == 0, "number keys do not select or cast in manual keyboard mode")
+	check(controller.current_weapon == dagger and controller.selected_weapon == dagger and dagger.volley_index == 0, "WASD supports number-key manual aiming")
+	await press_key(KEY_1)
+	controller.cancel_aim()
 	await press_mouse()
 	check(controller.selected_weapon == bow and controller.indicator.visible and bow.volley_index == 0, "first left click only aims")
 	if gpu:
@@ -122,7 +125,7 @@ func _normal_casting() -> void:
 		await get_tree().create_timer(0.4).timeout
 		await press_mouse()
 		var hud := battle.hud as BattleHud
-		await click(hud.combat_bar.cards[0])
+		await click(hud.combat_bar.cast_mode_icons[0])
 		check(plasma.volley_index == 0 and controller.selected_weapon == plasma, "weapon bar intercepts left click")
 		var point := hud.combat_bar.cards[0].get_global_rect().get_center()
 		await press_mouse(MOUSE_BUTTON_WHEEL_DOWN, point)
@@ -132,7 +135,7 @@ func _normal_casting() -> void:
 		check(not controller.cursor_icon.visible and controller.selected_weapon == null, "settings clears aim and hides cursor icon")
 		var settings: GameSettingsPanel = battle.utility_overlay._settings_view
 		await click(settings.tabs[1])
-		check(settings._key_labels[0].text == "鼠标滚轮" and settings._key_descriptions[1].text.contains("再次"), "settings explains normal keyboard controls")
+		check(L10n.source(settings._key_labels[0].text) == L10n.text("ui.settings.controls.number_keys") and settings._key_labels[4].is_visible_in_tree() and L10n.source(settings._key_descriptions[1].text) == L10n.text("ui.settings.controls.click_aim_hint"), "settings explains number keys and additional WASD wheel controls")
 		await capture("keyboard_settings_normal")
 		await press_key(KEY_ESCAPE)
 		await get_tree().create_timer(0.4).timeout
@@ -140,7 +143,6 @@ func _normal_casting() -> void:
 func _quick_casting() -> void:
 	await fixture(["weapon_void_blade", "weapon_plasma_cannon"])
 	CombatSettings.set_option("quick_cast", true, false)
-	controller.select_slot(0)
 	var bow := controller.current_weapon
 	var plasma := loadout.weapon_instances[1]
 	await press_mouse()
@@ -155,7 +157,7 @@ func _quick_casting() -> void:
 		await click((battle.hud as BattleHud).settings_button)
 		var settings: GameSettingsPanel = battle.utility_overlay._settings_view
 		await click(settings.tabs[1])
-		check(settings._key_descriptions[1].text == "单击立即施放当前武器", "settings explains single-click quick cast")
+		check(L10n.source(settings._key_descriptions[1].text) == L10n.text("ui.settings.controls.click_quick_cast_hint"), "settings explains single-click quick cast")
 		await capture("keyboard_settings_quick")
 		await press_key(KEY_ESCAPE)
 		await get_tree().create_timer(0.4).timeout
@@ -202,18 +204,50 @@ func _mode_boundaries() -> void:
 	await press_mouse()
 	check(bow.volley_index == 1 and controller.selected_weapon == null, "mouse movement mode still confirms with left click")
 	CombatSettings.set_option("keyboard_movement", true, false)
-	CombatSettings.set_option("wheelchair_mode", true, false)
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(true)
 	await press_mouse(MOUSE_BUTTON_WHEEL_DOWN)
 	await press_key(KEY_2)
 	await press_mouse()
-	check(controller.current_weapon == bow and controller.selected_weapon == null and not controller.cursor_icon.visible and loadout.weapon_instances[1].volley_index == 0, "wheelchair ignores manual selection and casting")
-	CombatSettings.set_option("wheelchair_mode", false, false)
+	check(controller.current_weapon == null and controller.selected_weapon == null and not controller.cursor_icon.visible and loadout.weapon_instances[1].volley_index == 0, "all-automatic attacks leave no manual wheel or click target")
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	await press_mouse()
 	controller._notification(NOTIFICATION_APPLICATION_FOCUS_OUT)
 	await frames()
 	check(controller.selected_weapon == null and not controller.cursor_icon.visible and player._held_move_keys.is_empty(), "focus loss clears aim and hides icon")
 	controller.cursor_icon.follow_pointer(Vector2(1279, 1), Vector2(1280, 720))
 	check(Rect2(Vector2.ZERO, Vector2(1280,720)).encloses(controller.cursor_icon.get_global_rect()), "cursor icon stays on-screen at top right")
+
+func _mixed_skills() -> void:
+	await fixture(["weapon_void_blade", "weapon_camp_dagger", "weapon_plasma_cannon"])
+	CombatSettings.set_option("quick_cast", false, false)
+	CombatSettings.set_weapon_auto_cast("weapon_void_blade", true, false)
+	var dagger := loadout.weapon_instances[1]
+	var plasma := loadout.weapon_instances[2]
+	check(controller.current_weapon == dagger, "making current skill automatic selects the next manual skill")
+	await press_mouse(MOUSE_BUTTON_WHEEL_UP)
+	check(controller.current_weapon == plasma, "wheel wraps across automatic skills without selecting them")
+	await press_mouse(MOUSE_BUTTON_WHEEL_DOWN)
+	check(controller.current_weapon == dagger, "wheel skips automatic skill in the other direction")
+	await press_key(KEY_2)
+	await press_key(KEY_1)
+	check(controller.selected_weapon == dagger, "automatic attack hotkey does not replace manual aim")
+	CombatSettings.set_option("quick_cast", true, false)
+	await press_key(KEY_3)
+	check(plasma.volley_index == 1 and controller.selected_weapon == null, "WASD number hotkey quick-casts the manual skill")
+	CombatSettings.set_weapon_auto_cast("weapon_plasma_cannon", true, false)
+	check(controller.current_weapon == dagger, "switching skill to auto repairs current manual selection")
+	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
+	CombatSettings.set_option("quick_cast", false, false)
+	await fixture(["weapon_void_blade", "weapon_star_tome"])
+	CombatSettings.set_weapon_auto_cast("weapon_star_tome", true, false)
+	var tome := loadout.weapon_instances[1]
+	await press_key(KEY_2)
+	check(controller.selected_weapon == tome and controller.current_weapon == loadout.weapon_instances[0], "number keys can manually aim automatic mobility without changing the manual wheel target")
+	await press_mouse()
+	check(tome.volley_index == 1 and tome.is_return_ready() and loadout.weapon_instances[0].volley_index == 0, "left click confirms the aimed mobility skill and retains manual tome return")
+	await press_key(KEY_2)
+	check(not tome.is_return_ready(), "automatic preference preserves explicit manual tome return")
+
 
 func _loadout_changes() -> void:
 	await fixture(["weapon_void_blade", "weapon_camp_dagger", "weapon_plasma_cannon"])

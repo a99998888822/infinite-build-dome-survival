@@ -171,6 +171,14 @@ func record_loan_activity(text: Variant) -> void:
 	_record_activity("loan",text)
 
 
+func consume_trade_principal(amount: int) -> bool:
+	# A purchase paid from principal, not a withdrawal into the wallet.
+	if amount <= 0 or amount >= principal: return false
+	principal -= amount
+	_emit_changed()
+	return true
+
+
 func _on_player_stats_changed() -> void:
 	_emit_changed()
 

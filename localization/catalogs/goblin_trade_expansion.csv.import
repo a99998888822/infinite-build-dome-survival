@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cp3xr0sti3s35"
+
+[deps]
+
+files=["res://localization/catalogs/goblin_trade_expansion.zh_CN.translation", "res://localization/catalogs/goblin_trade_expansion.en.translation"]
+
+source_file="res://localization/catalogs/goblin_trade_expansion.csv"
+dest_files=["res://localization/catalogs/goblin_trade_expansion.zh_CN.translation", "res://localization/catalogs/goblin_trade_expansion.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

@@ -2,9 +2,13 @@ extends Control
 class_name WeaponStrip
 
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
+const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
+var _cast_mode_buttons: Array[WeaponCastModeIcon] = []
+var _cast_mode_layer: Control
+var _automation_editing_enabled := false
 var _attachment_editing_enabled: bool = false
 var _hovered_weapon_button: WeaponSlotButton = null
 var _tooltip_attachment_rows: Array[Dictionary] = []
@@ -22,6 +26,17 @@ var _tooltip_mouse_position := Vector2.ZERO
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_weapon_strip)
+	_cast_mode_layer = Control.new()
+	_cast_mode_layer.name = "CastModesBelowFrame"
+	_cast_mode_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_cast_mode_layer.clip_contents = true
+	add_child(_cast_mode_layer)
+	resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
+	if weapon_list != null:
+		weapon_list.sort_children.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
+		var scroll := weapon_list.get_parent() as ScrollContainer
+		scroll.resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
+		scroll.get_h_scroll_bar().value_changed.connect(func(_value: float): _layout_cast_mode_icons.call_deferred())
 	if weapon_tooltip != null:
 		weapon_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -32,11 +47,12 @@ func _ready() -> void:
 	_build_attachment_tooltip()
 
 
-func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false) -> void:
+func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false) -> void:
 	if _loadout != null and _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.disconnect(_on_weapon_attachment_changed)
 	_loadout = loadout
 	_attachment_editing_enabled = allow_attachment_editing
+	_automation_editing_enabled = allow_automation_editing
 	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
 	_refresh_load_label()
@@ -54,10 +70,15 @@ func _refresh_load_label() -> void:
 
 func _refresh_weapon_strip() -> void:
 	_hide_weapon_tooltip()
-	for button in _weapon_buttons:
-		if is_instance_valid(button):
-			button.queue_free()
+	if weapon_list != null:
+		for child in weapon_list.get_children():
+			weapon_list.remove_child(child)
+			child.queue_free()
 	_weapon_buttons.clear()
+	for mode in _cast_mode_buttons:
+		_cast_mode_layer.remove_child(mode)
+		mode.queue_free()
+	_cast_mode_buttons.clear()
 	if weapon_list == null or _loadout == null:
 		return
 	for weapon in _loadout.get_weapon_instances():
@@ -66,6 +87,7 @@ func _refresh_weapon_strip() -> void:
 			continue
 		button.configure(weapon, _attachment_editing_enabled)
 		button.custom_minimum_size = Vector2(44.0, 44.0)
+		button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		button.flat = true
 		button.text = ""
 		button.tooltip_text = ""
@@ -80,8 +102,30 @@ func _refresh_weapon_strip() -> void:
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
 		weapon_list.add_child(button)
+		if _automation_editing_enabled:
+			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
+			mode.configure(weapon, true, (get_node("StripPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color)
+			_cast_mode_layer.add_child(mode)
+			mode.mouse_entered.connect(_hide_weapon_tooltip)
+			_cast_mode_buttons.append(mode)
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
+	_layout_cast_mode_icons.call_deferred()
+
+
+func _layout_cast_mode_icons() -> void:
+	if _cast_mode_layer == null or weapon_list == null: return
+	_cast_mode_layer.visible = _automation_editing_enabled and not _cast_mode_buttons.is_empty()
+	var scroll := weapon_list.get_parent() as ScrollContainer
+	var panel := get_node("StripPanel") as Control
+	# Center the glyph on the bottom border without changing the original frame.
+	# Clip only horizontally to the visible weapon row, and follow its scrolling.
+	_cast_mode_layer.position = Vector2(scroll.global_position.x - global_position.x, panel.position.y + panel.size.y - 1 - WeaponCastModeIcon.ICON_SIZE * 0.5)
+	_cast_mode_layer.size = Vector2(scroll.size.x, WeaponCastModeIcon.ICON_SIZE)
+	for i in _cast_mode_buttons.size():
+		var mode := _cast_mode_buttons[i]
+		mode.size = Vector2(28, WeaponCastModeIcon.ICON_SIZE)
+		mode.position = Vector2(roundf(_weapon_buttons[i].get_global_rect().get_center().x - _cast_mode_layer.global_position.x - mode.size.x * 0.5), 0)
 
 
 func _on_item_drop_requested(weapon_id: String, item_instance_id: String) -> void:
@@ -154,6 +198,11 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 	var target := Vector2.ZERO
 	if anchor_button != null:
 		target = anchor_button.global_position + Vector2(0, anchor_button.size.y - 2)
+		if _automation_editing_enabled:
+			# Keep the mode button clear, and keep an unbroken path into item details.
+			target = anchor_button.global_position + Vector2(anchor_button.size.x - 2, 0)
+			if target.x + weapon_tooltip.size.x > viewport_rect.size.x:
+				target.x = maxf(0, anchor_button.global_position.x - weapon_tooltip.size.x + 2)
 	if target.x + weapon_tooltip.size.x > viewport_rect.size.x:
 		target.x = maxf(viewport_rect.size.x - weapon_tooltip.size.x - 8, 0)
 	if target.y + weapon_tooltip.size.y > viewport_rect.size.y and anchor_button != null:

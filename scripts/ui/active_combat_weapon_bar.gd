@@ -4,6 +4,7 @@ signal slot_pressed(index: int)
 ## Battle-only display; the existing Esc WeaponStrip remains independent.
 
 const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
+const CAST_MODE_ICON_SCRIPT := preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 class WeaponHeader extends Control:
 	var number_source: Label
 	var status_source: Label
@@ -22,6 +23,7 @@ var icons: Array[TextureRect] = []
 var cooldown_masks: Array[ColorRect] = []
 var numbers: Array[Label] = []
 var timers: Array[Label] = []
+var cast_mode_icons: Array[WeaponCastModeIcon] = []
 var selected_index := -1
 var slot_size := 64.0
 var preview_page := 0
@@ -39,6 +41,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 	cooldown_masks.clear()
 	numbers.clear()
 	timers.clear()
+	cast_mode_icons.clear()
 	headers.clear()
 	for i in weapons.size():
 		var card := Panel.new()
@@ -79,6 +82,10 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		header.status_source = timer
 		card.add_child(header)
 		headers.append(header)
+		var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
+		mode.configure(weapons[i], false, _style(false).bg_color)
+		add_child(mode)
+		cast_mode_icons.append(mode)
 	apply_layout()
 
 
@@ -113,8 +120,8 @@ func _style(selected: bool) -> StyleBoxFlat:
 func apply_layout() -> void:
 	var viewport_size := get_viewport_rect().size
 	slot_size = clampf((viewport_size.x * 0.8 - maxf(0, weapons.size() - 1) * 7) / maxf(1, weapons.size()), 38, 64)
-	size = Vector2(weapons.size() * (slot_size + 7) - 7, slot_size)
-	position = Vector2((viewport_size.x - size.x) * 0.5, viewport_size.y - slot_size - 23)
+	size = Vector2(maxf(0, weapons.size() * (slot_size + 7) - 7), slot_size + WeaponCastModeIcon.ICON_SIZE)
+	position = Vector2((viewport_size.x - size.x) * 0.5, viewport_size.y - size.y - 23)
 	for i in cards.size():
 		cards[i].position = Vector2(i * (slot_size + 7), 0)
 		cards[i].size = Vector2.ONE * slot_size
@@ -127,6 +134,8 @@ func apply_layout() -> void:
 		timers[i].size = Vector2(slot_size - 24, 20)
 		headers[i].size = Vector2(slot_size, 22)
 		headers[i].queue_redraw()
+		cast_mode_icons[i].position = Vector2(i * (slot_size + 7) + (slot_size - WeaponCastModeIcon.ICON_SIZE) * 0.5, slot_size - 1 - WeaponCastModeIcon.ICON_SIZE * 0.5)
+		cast_mode_icons[i].size = Vector2.ONE * WeaponCastModeIcon.ICON_SIZE
 
 
 func update_slot(index: int, remaining: float, total: float, executing: bool, selected: bool) -> void:
@@ -151,10 +160,22 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		for i in cards.size():
-			if weapons[i].is_mobility_weapon() and Rect2(cards[i].position, cards[i].size).has_point(event.position):
+			# The display badge overlaps the card; clicking it must not select/cast.
+			if cast_mode_icons[i].get_rect().has_point(event.position):
+				accept_event()
+				return
+			var manual_entry := weapons[i].is_mobility_weapon() or not CombatSettings.is_weapon_automatic(weapons[i])
+			if manual_entry and Rect2(cards[i].position, cards[i].size).has_point(event.position):
 				slot_pressed.emit(i)
 				accept_event()
 				return
+
+
+func _get_tooltip(at_position: Vector2) -> String:
+	for i in cards.size():
+		if Rect2(cards[i].position, Vector2(slot_size, size.y)).has_point(at_position):
+			return cast_mode_icons[i].tooltip_text
+	return ""
 
 
 func set_preview_page(page: int) -> void:

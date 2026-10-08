@@ -98,6 +98,10 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 		_refresh_entries()
 	else:
 		_settings_view.open_page(true)
+		_settings_view.guide_button.disabled = _flow._first_guide_pending
+		_settings_view.guide_button.tooltip_text = "ui.guide.after_rewards" if _flow._first_guide_pending else ""
+		if bool(payload.get("combat_tab", false)):
+			_settings_view.select_page(1)
 	visible = true
 	_layout()
 	if is_encyclopedia:
@@ -253,6 +257,8 @@ func _build_settings() -> void:
 	_settings_view.hide()
 	_settings_view.back_requested.connect(_close)
 	_settings_view.main_menu_requested.connect(_return_to_main_menu)
+	_settings_view.combat_guide_requested.connect(func():
+		if is_instance_valid(_flow): _flow.request_combat_guide_replay())
 	# Keep the public integration handles pointed at the shared live controls.
 	_settings = _settings_view.content_scroll
 	_basic_settings = _settings_view.basic_settings

@@ -4,6 +4,7 @@ class_name GameSettingsPanel
 
 signal back_requested
 signal main_menu_requested
+signal combat_guide_requested
 
 const PAPER := Color("e2dbc3")
 const MUTED := Color("9bada7")
@@ -17,7 +18,6 @@ var combat_settings: VBoxContainer
 var tabs: Array[Button] = []
 var mode_buttons: Array[Button] = []
 var mode_checks: Array[Label] = []
-var wheelchair_mode: CheckBox
 var quick_cast: CheckBox
 var show_hints: CheckBox
 var volume_controls: Dictionary = {}
@@ -28,6 +28,7 @@ var display_note: Label
 var footer: HBoxContainer
 var return_button: Button
 var menu_button: Button
+var guide_button: Button
 var _canvas: Control
 var _sidebar: Panel
 var _sidebar_title: Label
@@ -58,8 +59,8 @@ func _ready() -> void:
 	var group := ButtonGroup.new()
 	for i in 2:
 		var tab := Button.new()
-		tab.name = "BasicSettingsTab" if i == 0 else "CombatSettingsTab"
-		tab.text = "ui.settings.general" if i == 0 else "战斗设置"
+		tab.name = ["BasicSettingsTab", "CombatSettingsTab"][i]
+		tab.text = ["ui.settings.general", "战斗设置"][i]
 		tab.toggle_mode = true
 		tab.button_group = group
 		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -71,6 +72,7 @@ func _ready() -> void:
 	content_scroll = ScrollContainer.new()
 	content_scroll.name = "Settings"
 	content_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	content_scroll.minimum_size_changed.connect(_layout, CONNECT_DEFERRED)
 	_canvas.add_child(content_scroll)
 	var pages := VBoxContainer.new()
 	pages.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -89,6 +91,7 @@ func _ready() -> void:
 func open_page(in_battle: bool) -> void:
 	return_button.text = "ui.common.return_to_battle" if in_battle else "ui.common.back"
 	menu_button.visible = in_battle
+	guide_button.visible = in_battle and not OS.has_feature("mobile")
 	sync_all()
 	select_page(0)
 	return_button.grab_focus()
@@ -132,8 +135,8 @@ func _layout() -> void:
 func select_page(index: int) -> void:
 	basic_settings.visible = index == 0
 	combat_settings.visible = index == 1
-	show_hints.visible = index == 1
-	_heading.text = "ui.settings.general" if index == 0 else "战斗设置"
+	show_hints.visible = index != 0
+	_heading.text = ["ui.settings.general", "战斗设置"][index]
 	content_scroll.scroll_vertical = 0
 	for i in tabs.size():
 		var selected := i == index
@@ -148,6 +151,7 @@ func select_page(index: int) -> void:
 		tabs[i].add_theme_color_override("font_pressed_color", ICE)
 		_tab_marks[i].visible = selected
 	_layout()
+	_layout.call_deferred()
 
 
 func _build_basic(parent: Node) -> void:
@@ -215,13 +219,6 @@ func _build_combat(parent: Node) -> void:
 	combat_settings.name = "CombatSettings"
 	combat_settings.add_theme_constant_override("separation", 0)
 	parent.add_child(combat_settings)
-	wheelchair_mode = _checkbox("ui.settings.auto_attack", PAPER)
-	wheelchair_mode.name = "WheelchairMode"
-	wheelchair_mode.custom_minimum_size.y = 28
-	wheelchair_mode.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	wheelchair_mode.toggled.connect(func(value: bool): CombatSettings.set_option("wheelchair_mode", value))
-	combat_settings.add_child(wheelchair_mode)
-	_space(combat_settings, 16)
 	_label(combat_settings, "ui.settings.movement.mode", 16).custom_minimum_size.y = 24
 	_space(combat_settings, 10)
 	var movement := HBoxContainer.new()
@@ -263,7 +260,7 @@ func _build_combat(parent: Node) -> void:
 	var keys := VBoxContainer.new()
 	keys.add_theme_constant_override("separation", 8)
 	combat_settings.add_child(keys)
-	for key_name in ["ui.settings.controls.number_keys", "ui.settings.controls.left_mouse", "ui.settings.controls.right_mouse", "Esc"]:
+	for key_name in ["ui.settings.controls.number_keys", "ui.settings.controls.left_mouse", "ui.settings.controls.right_mouse", "Esc", "ui.settings.controls.mouse_wheel"]:
 		var row := HBoxContainer.new()
 		row.custom_minimum_size.y = 28
 		row.add_theme_constant_override("separation", 16)
@@ -285,6 +282,16 @@ func _build_combat(parent: Node) -> void:
 			quick_cast.custom_minimum_size = Vector2(136, 28)
 			quick_cast.toggled.connect(func(value: bool): CombatSettings.set_option("quick_cast", value))
 			row.add_child(quick_cast)
+	_space(combat_settings, 18)
+	guide_button = Button.new()
+	guide_button.name = "ReplayCombatGuide"
+	guide_button.text = "ui.guide.replay"
+	guide_button.custom_minimum_size = Vector2(0, 36)
+	guide_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	SettingsUIStyle.apply_button(guide_button)
+	guide_button.pressed.connect(func(): combat_guide_requested.emit())
+	combat_settings.add_child(guide_button)
+	guide_button.hide()
 
 
 func _build_footer() -> void:
@@ -349,22 +356,15 @@ func sync_combat() -> void:
 		mode_buttons[i].set_pressed_no_signal(selected)
 		mode_checks[i].visible = selected
 	quick_cast.set_pressed_no_signal(CombatSettings.quick_cast)
-	wheelchair_mode.set_pressed_no_signal(CombatSettings.wheelchair_mode)
 	show_hints.set_pressed_no_signal(CombatSettings.show_hints)
-	_key_descriptions[0].text = "ui.settings.controls.number_quick_cast_hint" if CombatSettings.quick_cast else "ui.settings.controls.number_select_hint"
+	_key_descriptions[0].text = "ui.settings.skills.manual_quick" if CombatSettings.quick_cast else "ui.settings.skills.manual_select"
 	_key_descriptions[1].text = "ui.settings.controls.no_click_needed" if CombatSettings.quick_cast else "ui.settings.controls.confirm_cast_hint"
 	_key_descriptions[2].text = "ui.settings.controls.cancel_keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.cancel_mouse_hint"
 	_key_descriptions[3].text = "ui.settings.controls.escape_hint"
-	_key_labels[0].text = "ui.settings.controls.mouse_wheel" if CombatSettings.keyboard_movement else "ui.settings.controls.number_keys"
+	_key_labels[4].get_parent().get_parent().visible = CombatSettings.keyboard_movement
+	_key_descriptions[4].text = "ui.settings.controls.wheel_hint"
 	if CombatSettings.keyboard_movement:
-		_key_descriptions[0].text = "ui.settings.controls.wheel_hint"
 		_key_descriptions[1].text = "ui.settings.controls.click_quick_cast_hint" if CombatSettings.quick_cast else "ui.settings.controls.click_aim_hint"
-	if CombatSettings.wheelchair_mode:
-		_key_labels[0].text = "ui.settings.controls.auto_attack"
-		_key_descriptions[0].text = "ui.settings.controls.auto_attack_hint"
-		_key_descriptions[1].text = "ui.settings.controls.no_click_needed"
-		_key_descriptions[2].text = "ui.settings.controls.keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.mouse_move_hint"
-		_key_descriptions[3].text = "ui.settings.controls.pause_hint"
 
 
 func _basic_row(title: String) -> HBoxContainer:

@@ -425,16 +425,14 @@ func _refresh_active_combat() -> void:
 		var state := loadout.active_casting.state_for(weapon)
 		var selected := battle != null and battle.active_controller != null and battle.active_controller.selected_weapon == weapon
 		if battle != null and battle.active_controller != null and battle.active_controller.mouse_weapon_controls():
-			selected = battle.active_controller.current_weapon == weapon
+			selected = battle.active_controller.selected_weapon == weapon if battle.active_controller.selected_weapon != null else battle.active_controller.current_weapon == weapon
 		combat_bar.update_slot(i, state.remaining, state.total, state.executing, selected)
 	var move_text := L10n.text("ui.hud.controls.keyboard_move") if CombatSettings.keyboard_movement else L10n.text("ui.hud.controls.mouse_move")
-	if CombatSettings.wheelchair_mode:
-		combat_hints.text = move_text + L10n.text("ui.hud.controls.auto_attack_suffix")
-		return
+	var skills_text := L10n.text("ui.hud.controls.skill_cast_suffix")
 	if CombatSettings.keyboard_movement:
-		combat_hints.text = move_text + L10n.text("ui.hud.controls.wheel_suffix") + (L10n.text("ui.hud.controls.quick_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.click_aim_suffix")) + L10n.text("ui.hud.controls.cancel_aim_suffix")
+		combat_hints.text = move_text + skills_text + L10n.text("ui.hud.controls.manual_wheel_suffix") + (L10n.text("ui.hud.controls.quick_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.click_aim_suffix"))
 		return
-	combat_hints.text = move_text + (L10n.text("ui.hud.controls.number_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.number_select_suffix")) + L10n.text("ui.hud.controls.cancel_aim_suffix")
+	combat_hints.text = move_text + skills_text + (L10n.text("ui.hud.controls.number_cast_suffix") if CombatSettings.quick_cast else L10n.text("ui.hud.controls.number_select_suffix"))
 
 
 func _ensure_feedback_ui() -> void:
@@ -661,7 +659,8 @@ func _refresh_wave_display() -> void:
 	if wave_timer_label != null:
 		if _wave_manager.cleanup_active:
 			wave_label.text = "ui.hud.final_cleanup"
-		wave_timer_label.text = "%ds" % ceili(time_left)
+		var awaiting_first_wave := _flow.current_state == MainFlowCoordinator.STATE_COMBAT_GUIDE and _flow.current_wave_index < 0
+		wave_timer_label.text = "—" if awaiting_first_wave else "%ds" % ceili(time_left)
 		if time_left > 0.0 and time_left <= 10.0:
 			wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.25, 0.22, 1.0))
 			var warning_pulse := 0.92 + 0.08 * sin(Time.get_ticks_msec() / 160.0)
