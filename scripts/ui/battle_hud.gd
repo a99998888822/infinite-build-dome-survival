@@ -190,6 +190,9 @@ func _ready() -> void:
 	combat_bar = ActiveCombatWeaponBar.new()
 	combat_bar.name = "CombatWeaponBar"
 	status_panel.add_child(combat_bar)
+	combat_bar.slot_pressed.connect(func(index: int) -> void:
+		var battle := get_parent() as BattleRoot
+		if battle != null and battle.active_controller != null: battle.active_controller.select_slot(index))
 	combat_hints = Label.new()
 	combat_hints.name = "CombatHints"
 	combat_hints.mouse_filter = Control.MOUSE_FILTER_IGNORE

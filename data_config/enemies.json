@@ -7,6 +7,10 @@
     "tags": ["enemy", "normal", "melee", "void"],
     "enemy_type": "normal",
     "elite_replacement_id": "enemy_elite_rusher",
+    "spawn_variants": [
+      {"enemy_id": "enemy_echo_bat", "weight": 3},
+      {"enemy_id": "enemy_mutated_grub", "weight": 7}
+    ],
     "base_stats": {
       "max_hp": 30,
       "armor": 0,
@@ -18,7 +22,31 @@
     "drop_table_id": "drop_basic_enemy"
   },
   {
+    "id": "enemy_echo_bat",
+    "display_name": "回声蝙蝠",
+    "description": "保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。",
+    "enabled": true,
+    "tags": ["enemy", "normal", "ranged", "bat"],
+    "enemy_type": "normal",
+    "base_stats": {"max_hp": 24, "armor": 0, "move_speed": 80, "melee_damage": 1, "ranged_damage": 7},
+    "ai_type": "keep_distance_sonic",
+    "scene": "res://scenes/enemy/echo_bat.tscn",
+    "drop_table_id": "drop_basic_enemy",
+    "bat_profile": {
+      "attack_range": 320,
+      "charge_ms": 200,
+      "warning_ms": 500,
+      "path_width": 20,
+      "sonic_speed": 300,
+      "cooldown_ms": 2400
+    }
+  },
+  {
     "id": "enemy_elite_rusher",
+    "miniboss_variants": [
+      {"enemy_id": "enemy_elite_rusher", "weight": 1},
+      {"enemy_id": "enemy_underworld_wolf", "weight": 1}
+    ],
     "display_name": "钢甲骑士",
     "description": "全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为200，不再按普通怪生命倍增，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加100%，单波最多3只；波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。",
     "enabled": true,
@@ -52,6 +80,42 @@
       "erosion_bonus_full_at": 100,
       "erosion_bonus_max_percent": 100,
       "quota_cap": 3
+    }
+  },
+  {
+    "id": "enemy_underworld_wolf",
+    "display_name": "幽焰冥狼",
+    "description": "幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。",
+    "enabled": true,
+    "tags": ["enemy", "elite", "ranged", "void"],
+    "enemy_type": "elite",
+    "base_stats": {"max_hp": 240, "armor": 6, "move_speed": 110, "melee_damage": 8, "ranged_damage": 6, "element_damage": 18},
+    "ai_type": "underworld_wolf",
+    "scene": "res://scenes/enemy/underworld_wolf.tscn",
+    "drop_table_id": "drop_elite_enemy",
+    "wolf_profile": {
+      "spawn_warning_ms": 750,
+      "breath_range": 240,
+      "breath_cone_degrees": 60,
+      "breath_max_hits": 3,
+      "breath_tick_ms": 500,
+      "breath_charge_ms": 900,
+      "breath_duration_ms": 1500,
+      "breath_recover_ms": 500,
+      "breath_cooldown_ms": 4000,
+      "breath_knockback_speed": 160,
+      "breath_knockback_ms": 180,
+      "leap_min_range": 145,
+      "leap_max_range": 340,
+      "leap_radius": 78,
+      "leap_charge_ms": 900,
+      "leap_duration_ms": 600,
+      "landing_ms": 80,
+      "leap_recover_ms": 650,
+      "leap_cooldown_ms": 6000,
+      "leap_knockback_speed": 360,
+      "leap_knockback_ms": 280,
+      "control_duration_percent": 25
     }
   }
 ]

@@ -117,9 +117,10 @@ func _test_cluster_spawning() -> void:
 			var offset: Vector2 = enemy.global_position - player.global_position
 			in_annulus = in_annulus and offset.length() >= 399.99 and offset.length() <= 500.01
 			in_cluster = in_cluster and absf(angle_difference(angle, offset.angle())) <= deg_to_rad(8.01)
-			if enemy is EliteRusher:
+			if str(enemy.enemy_data.get("enemy_type", "")) == "elite":
 				elites += 1
-				check(enemy.current_hp == roundi(160.0 * pow(1.24, 9)), "elite HP retains independent base and compounded growth")
+				var base_hp := float(enemy.enemy_data.base_stats.max_hp)
+				check(enemy.current_hp == roundi(base_hp * 0.8 * pow(1.24, 9)), "each elite retains its independent base HP and compounded growth")
 		check(in_annulus and in_cluster and elites == 3, "translated player anchors every spawn inside the 400-500 annulus and shared sixteen-degree sector")
 		for enemy in enemies: enemy.free()
 	var changing_direction := false

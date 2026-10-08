@@ -4,6 +4,8 @@ class_name WeaponAttackIndicator
 
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
 const CLEARANCE_SHADER = preload("res://shaders/ui/attack_indicator_clearance.gdshader")
+const MOBILITY = preload("res://scripts/battle/mobility_weapon_indicator.gd")
+var mobility_indicator: Node2D
 const FILL := Color(0.66, 0.88, 1.0, 0.085)
 const EDGE := Color(0.79, 0.94, 1.0, 0.60)
 const HALO := Color(0.39, 0.72, 0.91, 0.10)
@@ -18,6 +20,14 @@ func configure(source: WeaponInstance, offset: Vector2, can_cast: bool = true) -
 	target_offset = offset
 	available = can_cast
 	clearance = FOOTPRINT.player_clearance(source)
+	if source.is_mobility_weapon():
+		if mobility_indicator == null:
+			mobility_indicator = MOBILITY.new()
+			add_child(mobility_indicator)
+		mobility_indicator.show()
+		mobility_indicator.configure_weapon(source, offset, can_cast)
+	elif mobility_indicator != null:
+		mobility_indicator.hide()
 	if material is ShaderMaterial:
 		material.set_shader_parameter("cast_origin", global_position)
 		material.set_shader_parameter("clearance", clearance)
@@ -33,7 +43,7 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	if weapon == null:
+	if weapon == null or weapon.is_mobility_weapon():
 		return
 	var reach := weapon.get_attack_range()
 	var aim := target_offset.normalized() if target_offset.length_squared() > 0.01 else Vector2.RIGHT

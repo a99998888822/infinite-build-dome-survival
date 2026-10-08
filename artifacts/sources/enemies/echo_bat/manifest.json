@@ -1,0 +1,144 @@
+{
+  "kind": "unaltered supplied originals",
+  "canvas": [
+    720,
+    720
+  ],
+  "frames": [
+    {
+      "action": "move",
+      "number": 1,
+      "original": "artifacts/sources/enemies/echo_bat/move/01.png",
+      "sha256": "b8091d6aa5592a96c3ca14872fc88d425c823d2cfa31ac8b1615aa9ac11df50b",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move1.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/01.png",
+      "production_sha256": "5654c24f7655f7d30bc631e92e3100204bcc3081aa88d10154f112138f6e7f1d"
+    },
+    {
+      "action": "move",
+      "number": 2,
+      "original": "artifacts/sources/enemies/echo_bat/move/02.png",
+      "sha256": "4d59fd486bf9198b203bf03f2d5a59790f2858f04964f726ade7e9fddc6524d1",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move2.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/02.png",
+      "production_sha256": "73456424da94a1e11a591edd80110b71a2fa1b49de14402cd30e14b94f1f1ec6"
+    },
+    {
+      "action": "move",
+      "number": 3,
+      "original": "artifacts/sources/enemies/echo_bat/move/03.png",
+      "sha256": "de2f062e6ad245c58be15cf940adf42716c044e8a68370b90f83a092b5260a10",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move3.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/03.png",
+      "production_sha256": "824fa9cd0220735e0babcd625e24611265f2f593ff16eb95d5cfbb35497eba40"
+    },
+    {
+      "action": "move",
+      "number": 4,
+      "original": "artifacts/sources/enemies/echo_bat/move/04.png",
+      "sha256": "e5b19d47aacdddf142bdf57f90bcf1eed64908193bd032fe4b380f402222c3cb",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move4.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/04.png",
+      "production_sha256": "ee8b7dd5850f43277d6e2b428b92b6c8fddf591545d0d4abb64e8ca53ac30e11"
+    },
+    {
+      "action": "move",
+      "number": 5,
+      "original": "artifacts/sources/enemies/echo_bat/move/05.png",
+      "sha256": "36dc46dc68147dd78119b21e8f6b22e0e0a73bdb965a13087af5a20a125bd3cd",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move5.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/05.png",
+      "production_sha256": "76d6650352b1b5776cf3aefa182a7b9a11c3dfc37f801858e0c2f0140aae2cfd"
+    },
+    {
+      "action": "move",
+      "number": 6,
+      "original": "artifacts/sources/enemies/echo_bat/move/06.png",
+      "sha256": "9d43a03f2399c72ce71ce41b276c5dc696960c5e4a4b70b72e2a027066c701c6",
+      "archive_member": "xiaoguai2_move/xiaoguai2_move6.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/move/06.png",
+      "production_sha256": "85d64ccd845da64bc165a0e1c3d2ee1fbc7b4c97bf281b7224471d430819ea2d"
+    },
+    {
+      "action": "attack",
+      "number": 1,
+      "original": "artifacts/sources/enemies/echo_bat/attack/01.png",
+      "sha256": "16d6ed0f2f1f1f73782d40f43250f10e5b458d581b077a394fd65a42c67e21ce",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack1.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/01.png",
+      "production_sha256": "decdd5f5128590e723c6042cf3f2d53a5dd23194fcb45d21280a6d94bf9647bc"
+    },
+    {
+      "action": "attack",
+      "number": 2,
+      "original": "artifacts/sources/enemies/echo_bat/attack/02.png",
+      "sha256": "23635aec4a47d728d60ed98408708475650031183c8ee3fe0ff0ad6f00e497d6",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack2.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/02.png",
+      "production_sha256": "3a90d483ad021313dfd5aeb00cff154a007d57a8bec2e50dd3d30b6a547b2661"
+    },
+    {
+      "action": "attack",
+      "number": 3,
+      "original": "artifacts/sources/enemies/echo_bat/attack/03.png",
+      "sha256": "8cb4153cce99279143b99d7356c6f58da04fe2c5d111718ee25de5ed24ca2cff",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack3.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/03.png",
+      "production_sha256": "b3e5092b0df59bc6de784d8b1d1a82bf1bbe8c1692349443c087c97f3656a98f"
+    },
+    {
+      "action": "attack",
+      "number": 4,
+      "original": "artifacts/sources/enemies/echo_bat/attack/04.png",
+      "sha256": "33b4cd45267f1988c6a4080f5f93236a6282659bec9c355b469018242d37e91c",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack4.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/04.png",
+      "production_sha256": "e61b921c5e50facc0fe2247544c771293c0f0714fd314bffa560aeabb9ecd8a1"
+    },
+    {
+      "action": "attack",
+      "number": 5,
+      "original": "artifacts/sources/enemies/echo_bat/attack/05.png",
+      "sha256": "b708536e912cdaacac365f097775ebcbff2ee74f238ddabec58212276332010c",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack5.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/05.png",
+      "production_sha256": "0ae5f9bbf0e942bd8845b2419b2a7c0ca8c508bb1de1ef0412f95db3687de49c"
+    },
+    {
+      "action": "attack",
+      "number": 6,
+      "original": "artifacts/sources/enemies/echo_bat/attack/06.png",
+      "sha256": "1ab36deb7e40e56bed6b8f751c14899338641781b5f976a7fd6f53d684093686",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack6.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/06.png",
+      "production_sha256": "4d3499cbd268963af119e3ff365048bb908043afbadc5fc2d768a4f6e24e74d0"
+    },
+    {
+      "action": "attack",
+      "number": 7,
+      "original": "artifacts/sources/enemies/echo_bat/attack/07.png",
+      "sha256": "3602a2a4f2c66497206771d69e4684bb49a6ddfa7df3c8ae732a63ec4c792aef",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack7.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/07.png",
+      "production_sha256": "29df60f0d817d31e05c4ce5e73625b7638f50baf8a9b8057f2f58e7f3c142509"
+    },
+    {
+      "action": "attack",
+      "number": 8,
+      "original": "artifacts/sources/enemies/echo_bat/attack/08.png",
+      "sha256": "1e6f6c16d8f435b6e5d93cb80ee7d28e7c6b1c8dcce5df40691fa67c2014c151",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack8.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/08.png",
+      "production_sha256": "1b254065710e3d547b1828a8bb544bf489108ca3147c96e2d1889485f89e6aa3"
+    },
+    {
+      "action": "attack",
+      "number": 9,
+      "original": "artifacts/sources/enemies/echo_bat/attack/09.png",
+      "sha256": "a9f68b7720d1cdc6f21d1124b5b3974e8728437482ed1bb22f9e0fdf0fbabc30",
+      "archive_member": "xiaoguai2_attack/xiaoguai2_attack9.png",
+      "production_frame": "assets/sprites/enemies/echo_bat/attack/09.png",
+      "production_sha256": "5bf64f51f6b90979079315c5dfaeb19de8ccbf42f444ed4c6eb7cf7b96e848b0"
+    }
+  ]
+}

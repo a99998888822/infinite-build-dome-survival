@@ -458,5 +458,185 @@
     "original": "artifacts/previews/finance_table_ui/20261005-scroll-r1/edit-notes.json",
     "retained": "artifacts/sources/finance/finance_table_ui_scroll_short.edit-notes.json",
     "sha256": "6a125eda780917788f633b9eaf75f34a64ba4aa9889dd70e56be91249b9cd97b"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move1.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/01.png",
+    "sha256": "b8091d6aa5592a96c3ca14872fc88d425c823d2cfa31ac8b1615aa9ac11df50b"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move2.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/02.png",
+    "sha256": "4d59fd486bf9198b203bf03f2d5a59790f2858f04964f726ade7e9fddc6524d1"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move3.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/03.png",
+    "sha256": "de2f062e6ad245c58be15cf940adf42716c044e8a68370b90f83a092b5260a10"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move4.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/04.png",
+    "sha256": "e5b19d47aacdddf142bdf57f90bcf1eed64908193bd032fe4b380f402222c3cb"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move5.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/05.png",
+    "sha256": "36dc46dc68147dd78119b21e8f6b22e0e0a73bdb965a13087af5a20a125bd3cd"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_move/xiaoguai2_move6.png",
+    "retained": "artifacts/sources/enemies/echo_bat/move/06.png",
+    "sha256": "9d43a03f2399c72ce71ce41b276c5dc696960c5e4a4b70b72e2a027066c701c6"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack1.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/01.png",
+    "sha256": "16d6ed0f2f1f1f73782d40f43250f10e5b458d581b077a394fd65a42c67e21ce"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack2.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/02.png",
+    "sha256": "23635aec4a47d728d60ed98408708475650031183c8ee3fe0ff0ad6f00e497d6"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack3.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/03.png",
+    "sha256": "8cb4153cce99279143b99d7356c6f58da04fe2c5d111718ee25de5ed24ca2cff"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack4.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/04.png",
+    "sha256": "33b4cd45267f1988c6a4080f5f93236a6282659bec9c355b469018242d37e91c"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack5.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/05.png",
+    "sha256": "b708536e912cdaacac365f097775ebcbff2ee74f238ddabec58212276332010c"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack6.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/06.png",
+    "sha256": "1ab36deb7e40e56bed6b8f751c14899338641781b5f976a7fd6f53d684093686"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack7.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/07.png",
+    "sha256": "3602a2a4f2c66497206771d69e4684bb49a6ddfa7df3c8ae732a63ec4c792aef"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack8.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/08.png",
+    "sha256": "1e6f6c16d8f435b6e5d93cb80ee7d28e7c6b1c8dcce5df40691fa67c2014c151"
+  },
+  {
+    "original": "artifacts/source/echo_bat/xiaoguai2_attack/xiaoguai2_attack9.png",
+    "retained": "artifacts/sources/enemies/echo_bat/attack/09.png",
+    "sha256": "a9f68b7720d1cdc6f21d1124b5b3974e8728437482ed1bb22f9e0fdf0fbabc30"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move1.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/01.png",
+    "sha256": "e7886f110b3e9d0c223e9746d4488c03f5a7703c16b44cf4574f59a712ff1668"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move2.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/02.png",
+    "sha256": "16eed8b918563fb52724908c087607e946f506bec14be46e9eb84fb3fec44ce7"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move3.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/03.png",
+    "sha256": "408baff6de154e47ed7b94307c8bef84126fc8b59b6291c66db2d6044ac97204"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move4.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/04.png",
+    "sha256": "673a4564364b8744d8572a838db08ed8eb8cdf9240d036bab60cf358369b499a"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move5.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/05.png",
+    "sha256": "019b03a1782cf20056f264d7f7816bf776c71a097f7817ed70703b5f6410867a"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move6.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/06.png",
+    "sha256": "6aed9259d4bb016938398cce6c66f2205be74ecc073db95fedc7ed6f59a8c74e"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_move/xiaoboss2_move7.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/move/07.png",
+    "sha256": "245dbf5494377b040753ce628272f614a538f97d1950f4748116c4ae76c9e403"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_attack/xiaoboss2_attack1.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/attack/01.png",
+    "sha256": "e3963ef87c66657b9bafc7ab600c4aa42e9d1a10b9616ba918fd344e1a7e6551"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_attack/xiaoboss2_attack2.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/attack/02.png",
+    "sha256": "db517db21bddfa2afc228fa3397e58fcc220957411203762d75b7a30594e81fd"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_attack/xiaoboss2_attack3.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/attack/03.png",
+    "sha256": "e571d3e9aa72338c3fb5ca33746dacd3aa9420243fdf1b5116f98cd15431ac80"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_attack/xiaoboss2_attack4.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/attack/04.png",
+    "sha256": "717fb525e087b59934075352429339ffb5e4c915e60c78a34791e463f5031882"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump1.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/01.png",
+    "sha256": "a149f717005488e62c0691d9959f9a981b6e868c214e7284d3a80448c7a2cc57"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump2.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/02.png",
+    "sha256": "c11c46fe662384958ae8ce0ab27af6be0fb3967cd9a35cf93930ab738a7208b1"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump3.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/03.png",
+    "sha256": "ca01b5ca707a101953e8459309753912ca7d9eb80c3ba253901adde47369d5a6"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump4.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/04.png",
+    "sha256": "483a45dfc8382847e93106ee37d7ed63aacd9272e7f83c53520d8b908a5b3f29"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump5.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/05.png",
+    "sha256": "4c47409e1e8c3884f5112684ffd3916cf5a4a000f58dab91524541250570ce08"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump6.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/06.png",
+    "sha256": "a9447615ee54a558c9517ae78d8365b2312ea584d49b611742548937db5c32e1"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump7.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/07.png",
+    "sha256": "5a1f7af518a5d5a065e5de05e9874b3371a89363578a128e56e757661db1ee17"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump8.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/08.png",
+    "sha256": "171e790a5c9cdf7da869c7882106fdfbeb1865d1f0ce223d7933510c32d5fd24"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump9.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/09.png",
+    "sha256": "6d4d230f85b705b5aa0fbc9210eb49779c0e39dd14a23690962e0a462fe1e381"
+  },
+  {
+    "original": "artifacts/previews/xiaoboss2_v02/source/xiaoboss2_jump/xiaoboss2_jump10.png",
+    "retained": "artifacts/sources/enemies/underworld_wolf/jump/10.png",
+    "sha256": "c98300c4009367ff0d09be87734cad182a6d2a848e7e56e61e016764cc3ac058"
   }
 ]

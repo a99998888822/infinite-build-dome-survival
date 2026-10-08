@@ -113,7 +113,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	var new_weapon := str(offer.get("offer_type", "")) == "new_weapon"
 	if new_weapon:
 		var weapon := DataRegistry.get_record("weapons", str(offer.get("target_id", "")))
-		_description.text = str(weapon.get("shop_description", _description.get_parsed_text().left(30)))
+		_description.text = str(weapon.get("shop_description", weapon.get("description", offer.get("description", ""))))
 	# Keep item details on the title, so an empty purchase tooltip cannot
 	# inherit the card's text through Godot's parent tooltip lookup.
 	tooltip_text = ""

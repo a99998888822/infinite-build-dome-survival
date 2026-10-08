@@ -120,7 +120,7 @@ func _test_elite() -> void:
 	var elite := manager.spawn_enemy("enemy_elite_rusher", Vector2.ZERO) as EliteRusher
 	normal.set_physics_process(false)
 	elite.set_physics_process(false)
-	check(elite.current_hp == int(elite.get_stat("max_hp")) and is_equal_approx(elite.get_stat("max_hp"), normal.get_stat("max_hp") * 20.0), "elite has 20 times normal same-wave HP")
+	check(elite.current_hp == int(elite.get_stat("max_hp")) and elite.current_hp == roundi(200.0 * 0.8 * pow(1.24, 4)), "knight uses its independent 200 base HP with difficulty and wave growth")
 	check(is_equal_approx(elite.get_stat("armor"), normal.get_stat("armor") * 2.0), "wave armor doubles after growth")
 	check(elite.get_stat("damage_taken_percent") < normal.get_stat("damage_taken_percent"), "armor affects actual damage reduction")
 	check(elite.get_drop_table_id() == "drop_elite_enemy" and normal.get_drop_table_id() == "drop_basic_enemy", "normal enemy data remains independent")

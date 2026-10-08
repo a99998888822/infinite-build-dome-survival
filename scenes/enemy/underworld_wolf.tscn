@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/underworld_wolf.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/underworld_wolf/frames/attack_01.png" id="2"]
+
+[sub_resource type="CapsuleShape2D" id="body"]
+radius = 18.4
+height = 60.8
+
+[node name="UnderworldWolf" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1")
+enemy_id = "enemy_underworld_wolf"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.4, -30.4)
+shape = SubResource("body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2")
+position = Vector2(-10.0352, -43.6224)
+scale = Vector2(0.8192, 0.8192)
+texture_filter = 1

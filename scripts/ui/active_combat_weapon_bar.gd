@@ -1,5 +1,6 @@
 extends Control
 class_name ActiveCombatWeaponBar
+signal slot_pressed(index: int)
 ## Battle-only display; the existing Esc WeaponStrip remains independent.
 
 const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
@@ -131,14 +132,29 @@ func apply_layout() -> void:
 func update_slot(index: int, remaining: float, total: float, executing: bool, selected: bool) -> void:
 	if index < 0 or index >= cards.size():
 		return
+	var returning := weapons[index].is_return_ready()
+	var icon_path := weapons[index].get_combat_icon_path()
+	if icons[index].texture == null or icons[index].texture.resource_path != icon_path:
+		icons[index].texture = load(icon_path)
+	# Tome animation/return availability must not replace its running countdown.
+	if returning or weapons[index].is_star_tome(): executing = false
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
 	(cooldown_masks[index].material as ShaderMaterial).set_shader_parameter("remaining", fraction)
-	cooldown_masks[index].visible = fraction > 0.0
+	cooldown_masks[index].visible = fraction > 0.0 and not returning
 	var text := "施放中" if executing else "%d s" % ceili(remaining) if remaining > 0 else ""
 	if timers[index].text != text:
 		timers[index].text = text
 		headers[index].queue_redraw()
 	cards[index].add_theme_stylebox_override("panel", _style(selected))
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		for i in cards.size():
+			if weapons[i].is_mobility_weapon() and Rect2(cards[i].position, cards[i].size).has_point(event.position):
+				slot_pressed.emit(i)
+				accept_event()
+				return
 
 
 func set_preview_page(page: int) -> void:

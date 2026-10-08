@@ -80,7 +80,7 @@ func _capture_suite() -> void:
 				indicator.configure(weapon, Vector2.RIGHT)
 				indicator.show()
 			elif weapon.is_ritual_tome():
-				review_subtitle.text = "按数字键直接生成固定法阵 · 本次点名 %d 次 · 间隔 %.2f 秒" % [count + 2, RitualDomain.MARK_INTERVAL]
+				review_subtitle.text = "按数字键展开随身法阵 · 本次点名 %d 次 · 间隔 %.2f 秒" % [count + 2, RitualDomain.MARK_INTERVAL]
 			else:
 				_select_weapon(index)
 				review_subtitle.text = "瞄准预览 · 共用一个扇面 · 连击期间不压缩动作" if not weapon.is_grenade() else "瞄准预览 · 一个射程椭圆 + %d 个落点椭圆%s" % [count, " · 鼠标越界时落点被限制在最大距离" if count == 5 else ""]
@@ -105,7 +105,7 @@ func _capture_suite() -> void:
 				elif weapon.is_ritual_tome():
 					if is_instance_valid(body):
 						marks_done = body.marks_completed
-					review_subtitle.text = "固定法阵 · 已点名 %d / %d 次%s" % [marks_done, count + 2, " · 同一个存活敌人可重复点名" if count == 3 else ""]
+					review_subtitle.text = "随身法阵 · 已点名 %d / %d 次%s" % [marks_done, count + 2, " · 同一个存活敌人可重复点名" if count == 3 else ""]
 				elif weapon.is_grenade():
 					review_subtitle.text = "实际攻击 · %d 枚同时抛射 · 每个椭圆独立爆炸" % count
 				elif weapon.is_camp_dagger():

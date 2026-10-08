@@ -62,6 +62,11 @@ func _automatic_weapon(id: String) -> void:
 	await get_tree().physics_frame
 	loadout.tick(0)
 	var state := loadout.active_casting.state_for(weapon)
+	if weapon.is_mobility_weapon():
+		check(weapon.volley_index == 0 and not state.executing and target.current_hp == 100000, "mobility remains manual in automatic mode " + id)
+		controller.select_slot(0)
+		check(controller.selected_weapon == weapon, "manual mobility selection stays accessible " + id)
+		return
 	check(weapon.volley_index == 1 and state.executing and state.remaining == 0, "automatic cast uses execution state " + id)
 	loadout.tick(0)
 	check(weapon.volley_index == 1, "no duplicate cast during animation " + id)
@@ -253,8 +258,8 @@ func _special_shapes() -> void:
 	domain.set_physics_process(false)
 	domain._physics_process(2)
 	loadout.tick(2)
-	check(domain.marks_remaining == 5 and domain.global_position == Vector2.ZERO and state.executing, "empty automatic tome keeps its marks at fixed cast position")
-	target.global_position = Vector2(60, 0)
+	check(domain.marks_remaining == 5 and domain.global_position == player.global_position and state.executing, "empty automatic tome follows player while keeping its marks")
+	target.global_position = player.global_position + Vector2(60, 0)
 	for step in 6:
 		domain._physics_process(0.36)
 	loadout.tick(0)

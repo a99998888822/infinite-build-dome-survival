@@ -236,7 +236,10 @@ func _weapon_execution() -> void:
 			lamp_target.current_hp = 100000
 		check(loadout.cast_weapon(source, player.global_position + Vector2(240, 0)), "cast " + source.weapon_id)
 		var state := loadout.active_casting.state_for(source)
-		check(state.executing and state.remaining == 0 and not loadout.cast_weapon(source, Vector2.ZERO), "execution rejects recast; cooldown has not started")
+		if source.is_star_tome():
+			check(state.executing and is_equal_approx(state.remaining, source.get_active_cooldown_seconds()) and source.is_return_ready(), "tome starts cooldown on blink with immediate return availability")
+		else:
+			check(state.executing and state.remaining == 0 and not loadout.cast_weapon(source, Vector2.ZERO), "execution rejects recast; cooldown has not started")
 		var body: Node2D = state.body.get_ref() if state.body is WeakRef else null
 		for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
 			effect.set_physics_process(false)
@@ -255,17 +258,28 @@ func _weapon_execution() -> void:
 				body._physics_process(5)
 				loadout.tick(5)
 				check(state.executing and state.remaining == 0 and body.marks_remaining == 5, "empty ritual waits indefinitely without cooling")
-				var fixed_origin := body.global_position
-				player.global_position += Vector2(300, 0)
-				var target := manager.spawn_enemy("enemy_mutated_grub", fixed_origin + Vector2(100, 0))
+				var cast_origin := body.global_position
+				var old_target := manager.spawn_enemy("enemy_mutated_grub", cast_origin + Vector2(100, 0))
+				old_target.current_hp = 10000
+				old_target.set_physics_process(false)
+				player.global_position += Vector2(400, 0)
+				body._physics_process(0.11)
+				check(body.global_position == player.global_position and not body.contains_enemy(old_target) and old_target.current_hp == 10000 and body.marks_remaining == 5, "ritual follows movement and leaves old targets outside without spending marks")
+				var target := manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(100, 0))
 				target.modifier_stack.set_base_stat("max_hp", 10000)
 				target.current_hp = 10000
 				target.set_physics_process(false)
 				body._physics_process(0.11)
 				body._physics_process(0.34)
-				check(body.marks_completed == 1 and body.global_position == fixed_origin, "ritual fixed in world; no second mark before 0.35s")
+				check(body.marks_completed == 1 and target.current_hp < 10000 and body.global_position == player.global_position, "moving ritual hits new in-range target; no second mark before 0.35s")
 				body._physics_process(0.02)
 				check(body.marks_completed == 2, "ritual repeats living target at 0.35s")
+				player.global_position += Vector2(400, 150)
+				var target_hp := target.current_hp
+				body._physics_process(0.36)
+				loadout.tick(0.36)
+				check(body.global_position == player.global_position and body.marks_remaining == 3 and target.current_hp == target_hp and state.executing and state.remaining == 0, "moving away mid-cast retains remaining marks without damage or cooldown")
+				target.global_position = player.global_position + Vector2(100, 0)
 			if body is CopperLamp:
 				player.last_move_direction = Vector2.UP
 				loadout.tick(0)
@@ -280,9 +294,20 @@ func _weapon_execution() -> void:
 			for i in 800:
 				if not is_instance_valid(body) or body.cancelled:
 					break
+				if body is MobilityWeaponRuntime:
+					player._physics_process(0.01)
+					for effect in body.get_children():
+						if effect.has_method("_physics_process") and not effect.is_queued_for_deletion(): effect._physics_process(0.01)
+					if body.return_ready: body.request_return()
 				body._physics_process(0.01)
+				if source.is_star_tome():
+					loadout.tick(0.01)
+					if not body.is_attacking(): break
 		loadout.tick(0.2)
-		check(not state.executing and is_equal_approx(state.remaining, source.get_active_cooldown_seconds()), "cooldown starts exactly once after authored action")
+		if source.is_star_tome():
+			check(not state.executing and state.remaining > 0 and state.remaining < state.total, "tome return keeps the first-blink cooldown running")
+		else:
+			check(not state.executing and is_equal_approx(state.remaining, source.get_active_cooldown_seconds()), "cooldown starts exactly once after authored action")
 		var remaining: float = state.remaining
 		GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 		loadout.tick(1)

@@ -43,6 +43,11 @@ var keyboard_movement := false
 var last_move_direction := Vector2.RIGHT
 var move_destination := Vector2.ZERO
 var has_move_destination := false
+var _mobility_owner: WeakRef
+var _mobility_start := Vector2.ZERO
+var _mobility_target := Vector2.ZERO
+var _mobility_elapsed := 0.0
+var _mobility_duration := 0.0
 var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
@@ -475,11 +480,23 @@ func get_remaining_revives() -> int:
 
 func _process_movement(delta: float) -> void:
 	if not alive:
+		_mobility_owner = null
 		velocity = Vector2.ZERO
 		move_and_slide()
 		_apply_idle_visual()
 		return
 
+	if is_mobility_moving():
+		_mobility_elapsed = minf(_mobility_elapsed + delta, _mobility_duration)
+		var next := _mobility_start.lerp(_mobility_target, mobility_progress(_mobility_elapsed / _mobility_duration))
+		var previous := global_position
+		global_position = resolve_mobility_destination(next)
+		velocity = (global_position - previous) / maxf(delta, 0.001)
+		_update_walk_animation(velocity.normalized(), delta)
+		if _mobility_elapsed >= _mobility_duration or global_position.distance_squared_to(next) > 0.01:
+			_mobility_owner = null
+			velocity = Vector2.ZERO
+		return
 	var direction := _read_move_input()
 	if direction.is_zero_approx():
 		velocity = Vector2.ZERO
@@ -494,6 +511,56 @@ func _process_movement(delta: float) -> void:
 		_set_facing(direction.x > 0.0)
 	move_and_slide()
 	_update_walk_animation(direction, delta)
+
+
+static func mobility_progress(ratio: float) -> float:
+	# Integral of speed 10 -> 4 over 80%, then 4 -> 0; normalized to end at 1.
+	var u := clampf(ratio, 0.0, 1.0)
+	if u <= 0.8:
+		return (10.0 * u - 3.75 * u * u) / 6.0
+	var tail := u - 0.8
+	return (5.6 + 4.0 * tail - 10.0 * tail * tail) / 6.0
+
+
+func is_mobility_moving() -> bool:
+	return _mobility_owner != null and is_instance_valid(_mobility_owner.get_ref())
+
+
+func resolve_mobility_destination(point: Vector2) -> Vector2:
+	# Sweep the real player capsule against terrain. Enemies do not block a skill.
+	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body == null or body.shape == null or not is_inside_tree():
+		return global_position
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = body.shape
+	query.transform = body.global_transform
+	query.collision_mask = 4
+	query.margin = 0.08
+	var space := get_world_2d().direct_space_state
+	if not space.intersect_shape(query, 1).is_empty():
+		return global_position
+	query.motion = point - global_position
+	var fractions := space.cast_motion(query)
+	return global_position + query.motion * fractions[0]
+
+
+func begin_mobility_motion(source: Node, target: Vector2, seconds: float) -> bool:
+	if not alive or is_mobility_moving():
+		return false
+	_clear_move_input()
+	reset_stationary_relic_state()
+	_mobility_start = global_position
+	_mobility_target = resolve_mobility_destination(target)
+	_mobility_elapsed = 0.0
+	_mobility_duration = maxf(seconds, 0.001)
+	_mobility_owner = weakref(source)
+	return true
+
+
+func cancel_mobility_motion(source: Node) -> void:
+	if _mobility_owner != null and _mobility_owner.get_ref() == source:
+		_mobility_owner = null
+		velocity = Vector2.ZERO
 
 
 func _read_move_input() -> Vector2:

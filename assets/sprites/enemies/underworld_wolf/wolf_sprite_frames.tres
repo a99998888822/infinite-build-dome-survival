@@ -1,0 +1,114 @@
+[gd_resource type="SpriteFrames" load_steps=28 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/underworld_wolf/atlases/move.png" id="move"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/underworld_wolf/atlases/attack.png" id="attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/underworld_wolf/atlases/jump.png" id="jump"]
+
+[sub_resource type="AtlasTexture" id="idle_0"]
+atlas = ExtResource("attack")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_0"]
+atlas = ExtResource("move")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_1"]
+atlas = ExtResource("move")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_2"]
+atlas = ExtResource("move")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_3"]
+atlas = ExtResource("move")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_4"]
+atlas = ExtResource("move")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_5"]
+atlas = ExtResource("move")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="move_6"]
+atlas = ExtResource("move")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="breath_charge_0"]
+atlas = ExtResource("attack")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="breath_charge_1"]
+atlas = ExtResource("attack")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="breath_charge_2"]
+atlas = ExtResource("attack")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="breath_0"]
+atlas = ExtResource("attack")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="breath_recover_0"]
+atlas = ExtResource("attack")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_0"]
+atlas = ExtResource("jump")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_1"]
+atlas = ExtResource("jump")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_2"]
+atlas = ExtResource("jump")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_3"]
+atlas = ExtResource("jump")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_4"]
+atlas = ExtResource("jump")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_charge_5"]
+atlas = ExtResource("jump")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_0"]
+atlas = ExtResource("jump")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_1"]
+atlas = ExtResource("jump")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="leap_2"]
+atlas = ExtResource("jump")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="land_0"]
+atlas = ExtResource("jump")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="recover_0"]
+atlas = ExtResource("attack")
+region = Rect2(0, 0, 128, 128)
+
+[resource]
+animations = [{"name": &"idle", "speed": 1, "loop": true, "frames": [{"duration": 1.0, "texture": SubResource("idle_0")}]},
+{"name": &"move", "speed": 10, "loop": true, "frames": [{"duration": 1.0, "texture": SubResource("move_0")}, {"duration": 1.0, "texture": SubResource("move_1")}, {"duration": 1.0, "texture": SubResource("move_2")}, {"duration": 1.0, "texture": SubResource("move_3")}, {"duration": 1.0, "texture": SubResource("move_4")}, {"duration": 1.0, "texture": SubResource("move_5")}, {"duration": 1.0, "texture": SubResource("move_6")}]},
+{"name": &"breath_charge", "speed": 3.333333333333333, "loop": false, "frames": [{"duration": 1.0, "texture": SubResource("breath_charge_0")}, {"duration": 1.0, "texture": SubResource("breath_charge_1")}, {"duration": 1.0, "texture": SubResource("breath_charge_2")}]},
+{"name": &"breath", "speed": 1, "loop": true, "frames": [{"duration": 1.0, "texture": SubResource("breath_0")}]},
+{"name": &"breath_recover", "speed": 1, "loop": true, "frames": [{"duration": 1.0, "texture": SubResource("breath_recover_0")}]},
+{"name": &"leap_charge", "speed": 6.666666666666666, "loop": false, "frames": [{"duration": 1.0, "texture": SubResource("leap_charge_0")}, {"duration": 1.0, "texture": SubResource("leap_charge_1")}, {"duration": 1.0, "texture": SubResource("leap_charge_2")}, {"duration": 1.0, "texture": SubResource("leap_charge_3")}, {"duration": 1.0, "texture": SubResource("leap_charge_4")}, {"duration": 1.0, "texture": SubResource("leap_charge_5")}]},
+{"name": &"leap", "speed": 5.0, "loop": false, "frames": [{"duration": 1.0, "texture": SubResource("leap_0")}, {"duration": 1.0, "texture": SubResource("leap_1")}, {"duration": 1.0, "texture": SubResource("leap_2")}]},
+{"name": &"land", "speed": 12.5, "loop": false, "frames": [{"duration": 1.0, "texture": SubResource("land_0")}]},
+{"name": &"recover", "speed": 1, "loop": true, "frames": [{"duration": 1.0, "texture": SubResource("recover_0")}]}]
+metadata/frame_transforms = {"move:0": {"sprite_scale": 1.024, "sprite_offset": [-8.192, -47.3088]}, "move:1": {"sprite_scale": 1.024, "sprite_offset": [-7.5776, -47.104]}, "move:2": {"sprite_scale": 1.024, "sprite_offset": [-7.168, -43.8272]}, "move:3": {"sprite_scale": 1.024, "sprite_offset": [-7.3728, -42.1888]}, "move:4": {"sprite_scale": 1.024, "sprite_offset": [-8.192, -42.5984]}, "move:5": {"sprite_scale": 1.024, "sprite_offset": [-8.3968, -43.6224]}, "move:6": {"sprite_scale": 1.024, "sprite_offset": [-8.3968, -46.2848]}, "attack:0": {"sprite_scale": 0.8192, "sprite_offset": [-10.0352, -43.6224]}, "attack:1": {"sprite_scale": 0.8192, "sprite_offset": [-12.288, -44.032]}, "attack:2": {"sprite_scale": 0.8192, "sprite_offset": [-11.6736, -44.2368]}, "attack:3": {"sprite_scale": 1.024, "sprite_offset": [-2.2528, -42.3936]}, "jump:0": {"sprite_scale": 1.024, "sprite_offset": [-9.8304, -44.8512]}, "jump:1": {"sprite_scale": 1.024, "sprite_offset": [-11.264, -44.6464]}, "jump:2": {"sprite_scale": 1.024, "sprite_offset": [-11.264, -44.4416]}, "jump:3": {"sprite_scale": 0.8192, "sprite_offset": [-11.0592, -44.4416]}, "jump:4": {"sprite_scale": 0.8192, "sprite_offset": [-10.6496, -43.8272]}, "jump:5": {"sprite_scale": 0.8192, "sprite_offset": [-10.0352, -40.7552]}, "jump:6": {"sprite_scale": 0.8192, "sprite_offset": [-14.336, -53.0432]}, "jump:7": {"sprite_scale": 0.8192, "sprite_offset": [-7.5776, -71.0656]}, "jump:8": {"sprite_scale": 1.024, "sprite_offset": [-6.3488, -77.6192]}, "jump:9": {"sprite_scale": 1.024, "sprite_offset": [-1.2288, -60.6208]}}
+metadata/animation_sequences = {"idle": ["attack", [0], 1, true], "move": ["move", [0, 1, 2, 3, 4, 5, 6], 10, true], "breath_charge": ["attack", [0, 1, 2], 3.333333333333333, false], "breath": ["attack", [3], 1, true], "breath_recover": ["attack", [0], 1, true], "leap_charge": ["jump", [0, 1, 2, 3, 4, 5], 6.666666666666666, false], "leap": ["jump", [6, 7, 8], 5.0, false], "land": ["jump", [9], 12.5, false], "recover": ["attack", [0], 1, true]}

@@ -6,6 +6,7 @@ const ICON_SIZE := Vector2(38, 38)
 var icon: TextureRect
 var weapon: WeaponInstance
 var _frame: StyleBoxFlat
+var _icon_path := ""
 
 
 func _ready() -> void:
@@ -30,9 +31,11 @@ func _ready() -> void:
 
 
 func update_weapon(source: WeaponInstance, aiming: bool, ready_to_cast: bool) -> void:
-	if weapon != source:
+	var path := source.get_combat_icon_path() if source != null else ""
+	if weapon != source or _icon_path != path:
 		weapon = source
-		icon.texture = load(str(source.weapon_data.icon)) if source != null else null
+		_icon_path = path
+		icon.texture = load(path) if not path.is_empty() else null
 	_frame.border_color = Color("c5edff") if aiming else Color("8d977d")
 	icon.modulate = Color.WHITE if ready_to_cast else Color(0.55, 0.55, 0.55, 0.9)
 

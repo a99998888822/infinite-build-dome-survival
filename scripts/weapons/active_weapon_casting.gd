@@ -10,12 +10,16 @@ func state_for(weapon: WeaponInstance) -> Dictionary:
 	return states[weapon.instance_id]
 
 func can_cast(weapon: WeaponInstance) -> bool:
+	if weapon.is_mobility_weapon() and is_instance_valid(weapon.owner_player) and weapon.owner_player.is_mobility_moving():
+		return false
+	if weapon.is_return_ready(): return true
 	var state := state_for(weapon)
 	return not state.executing and float(state.remaining) <= 0.0
 
 func auto_attack(all_weapons: bool = true) -> void:
 	# Use the same snapshots, animation and cooldown as a manual cast.
 	for weapon: WeaponInstance in loadout.weapon_instances:
+		if weapon.is_mobility_weapon(): continue # Position changes always remain manual.
 		if not all_weapons and not weapon.is_copper_lamp():
 			continue
 		if not can_cast(weapon):
@@ -55,8 +59,17 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 	return nearest
 
 func tick(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
 	for weapon: WeaponInstance in loadout.weapon_instances:
 		var state := state_for(weapon)
+		# The tome's first blink starts one clock shared by return availability and HUD.
+		# Returning/interrupting never restarts that clock.
+		if weapon.is_star_tome():
+			state.remaining = maxf(0.0, float(state.remaining) - delta)
+			if float(state.remaining) <= 0.0 and weapon.mobility_runtime != null:
+				var runtime: Variant = weapon.mobility_runtime.get_ref()
+				if is_instance_valid(runtime) and not runtime.cancelled: runtime.expire_return()
 		if state.executing:
 			state.tail = maxf(0.0, float(state.tail) - delta)
 			var body: Variant = state.body.get_ref() if state.body is WeakRef else null
@@ -72,7 +85,7 @@ func tick(delta: float) -> void:
 					playing = body.is_attacking()
 			if not playing and float(state.tail) <= 0:
 				_finish(weapon)
-		else:
+		elif not weapon.is_star_tome():
 			state.remaining = maxf(0, float(state.remaining) - delta)
 
 func _finish(weapon: WeaponInstance) -> void:
@@ -80,14 +93,18 @@ func _finish(weapon: WeaponInstance) -> void:
 	if not state.executing:
 		return
 	state.executing = false
-	state.total = weapon.get_active_cooldown_seconds()
-	state.remaining = state.total
+	if not weapon.is_star_tome():
+		state.total = weapon.get_active_cooldown_seconds()
+		state.remaining = state.total
 	var body: Variant = state.body.get_ref() if state.body is WeakRef else null
 	if is_instance_valid(body) and (body is CopperLamp or body is MutantTentacle):
 		body.cancel()
 	state.body = null
 
 func interrupt(weapon: WeaponInstance) -> void:
+	if weapon.mobility_runtime != null:
+		var runtime: Variant = weapon.mobility_runtime.get_ref()
+		if is_instance_valid(runtime): runtime.cancel()
 	_finish(weapon)
 
 func cast(source: WeaponInstance, point: Vector2) -> bool:
@@ -95,6 +112,8 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 		return false
 	if not is_instance_valid(loadout.owner_player) or not loadout.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if source.is_return_ready():
+		return source.mobility_runtime.get_ref().request_return()
 	if source.is_copper_lamp() and _auto_target(source) == null:
 		return false
 	var weapon := source.make_cast_copy()
@@ -104,7 +123,12 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 	var root: Node = loadout._get_visual_root()
 	var body: Node2D
 	weapon.begin_attack()
-	if weapon.is_copper_lamp():
+	if weapon.is_mobility_weapon():
+		var mobility := MobilityWeaponRuntime.new()
+		root.add_child(mobility)
+		mobility.initialize(weapon, source, point)
+		body = mobility
+	elif weapon.is_copper_lamp():
 		var lamp := CopperLamp.new()
 		root.add_child(lamp)
 		lamp.initialize(weapon)
@@ -163,6 +187,9 @@ func cast(source: WeaponInstance, point: Vector2) -> bool:
 	source.attack_timer = 0
 	var state := state_for(source)
 	state.executing = true
+	if source.is_star_tome():
+		state.total = weapon.get_active_cooldown_seconds()
+		state.remaining = state.total
 	state.body = weakref(body) if body != null else null
 	state.tail = float(weapon.weapon_data.get("active_recovery_ms", 180)) / 1000.0 if body == null else 0.0
 	return true

@@ -1,0 +1,100 @@
+{
+  "title": "Goblin's Guide to Dungeons",
+  "locale": "en",
+  "status": "review_candidate",
+  "method": "Custom hand-defined glyph polygons, flat-color brush facets, local raster drawing and composition.",
+  "image_generation_api_used": false,
+  "background_method": "Crop of the production pixel-art assets/ui/main_menu/bg_main_menu.png. Color adjustments at native resolution; nearest-neighbor background scaling for every export.",
+  "source_assets_unchanged": true,
+  "runtime_integration": false,
+  "inputs": {
+    "assets\\ui\\main_menu\\bg_main_menu.png": "5b4ae5d51a2edf9bbe1e2745fc66cfe30db0270c209b6db4530ff94bbd590ae0",
+    "assets\\ui\\main_menu\\title_main_menu.png": "baac875bb62d6549b7ef9a9c6781c476e69410bd5d5d88deafb05835abfd8ca6"
+  },
+  "outputs": {
+    "cover_background_pixel_2048.png": {
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "d2b9de49e4245c719ae7b2ed74b50204a94be87711de7fe6b0ef7ec1bac0cb0b"
+    },
+    "cover_en_pixel_1024.png": {
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "caafe6655e957ab1e04cc128448cba246a9b6980c9316c136946d2acd94a1b90"
+    },
+    "cover_en_pixel_2048.png": {
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "2d6d65187b7366afdb93a5d3fa576606686939acb8ad9d218afc33814d07a3b4"
+    },
+    "cover_en_pixel_256.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGB",
+      "sha256": "1571a97a5b014191f7876199bdb8406f1ce1c023bfacb2a2f699da30fd574177"
+    },
+    "cover_en_pixel_512.png": {
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "91f4eeab6733b882d37a822182458f152809c7886372ff7eaacb0af45e34d465"
+    },
+    "title_en.png": {
+      "size": [
+        1760,
+        502
+      ],
+      "mode": "RGBA",
+      "sha256": "9c8c8dba9d43ce87652ce05e18e62fa95b10fe47bb3d1fd58d0336b554858cdd",
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        70,
+        32,
+        1690,
+        442
+      ]
+    },
+    "title_en_pixel_480.png": {
+      "size": [
+        480,
+        137
+      ],
+      "mode": "RGBA",
+      "sha256": "c5a39b405c6c0c6384d77225f6c891b180356c5f48482781d093fbc499727a3c",
+      "alpha_values": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        19,
+        9,
+        461,
+        121
+      ]
+    },
+    "title_en_preview.png": {
+      "size": [
+        1760,
+        566
+      ],
+      "mode": "RGB",
+      "sha256": "74a7b6cea12d71cfb36f3a71ed9df7361c89b5b7f5f3ac2c72bb6feeb2e02b9b"
+    }
+  }
+}

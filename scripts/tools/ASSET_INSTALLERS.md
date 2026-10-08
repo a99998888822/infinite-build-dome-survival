@@ -1,5 +1,7 @@
 # 素材安装工具
 
+2026-10-08：蝙蝠、幽焰冥狼已解除对历史像素处理目录的依赖。`build_echo_bat_art.py --check` 与 `install_underworld_wolf_art.py --check`（或无参数）检查当前正式 PNG、色板、图集及动画元数据；分别传入 `--rebuild`、`--rebuild-atlases` 才重建。原始帧保存在 `artifacts/sources/enemies/echo_bat/`、`underworld_wolf/`；正式目录的 `manifest.json` 保留来源、哈希与接入参数。多轮试稿和审阅包已删除，后续直接编辑正式 PNG。
+
 2026-10-05：19张法术／附魔图标已替换为用户确认的64×64透明PNG，正式目录为 `assets/ui/icons/augmentations/`，同名PXG／PAL同步。电火花使用 `scroll_lightning.png`，落雷使用独立的 `scroll_electric_spark.png`。界面和掉落物维持32px显示区域。重建以当前PXG为准，旧 `build_attribute_enchantment_icons.py` 及历史32px稿不得覆盖本次确认稿。来源映射和验证见[接入记录](../../docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md)。
 
 2026-10-04钢甲骑士更新：256px，idle1／move7（10FPS）／windup7／dash2／recover1，idle选移动第1帧。Boss安装器、图集构建与临时对照图工具均按此规格更新。当前可编辑PXG／PAL及帧序来源清单位于资源目录的 `frames/` 和 `art_source_manifest.json`；接入与回归见[本轮记录](../../docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md)。普通怪当前为128px、移动7帧（14FPS），其独立接入记录见[小怪记录](../../docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md)；通用安装器的非Boss历史契约不作为本轮验收入口。

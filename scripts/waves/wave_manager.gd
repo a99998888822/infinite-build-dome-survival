@@ -658,7 +658,9 @@ func _process_spawn_timers(delta: float) -> void:
 			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
 			var replace_with_elite := not replacement.is_empty() and _is_elite_spawn_due()
 			if replace_with_elite:
-				id = replacement
+				id = _select_miniboss_variant(replacement)
+			else:
+				id = _select_spawn_variant(id)
 			var spawned := spawn_enemy(id, _get_batch_spawn_position(batch_positions))
 			if spawned != null:
 				available -= 1
@@ -667,16 +669,52 @@ func _process_spawn_timers(delta: float) -> void:
 				_elite_spawn_schedule.pop_front()
 
 
+func _spawn_variant_roll() -> float:
+	return randf()
+
+
+func _select_spawn_variant(base_id: String) -> String:
+	# Mix ordinary enemies only after reserving due miniboss replacements.
+	# Direct spawn_enemy calls retain their explicitly requested enemy type.
+	var variants: Array = DataRegistry.get_record("enemies", base_id).get("spawn_variants", [])
+	if variants.is_empty(): return base_id
+	var total := 0.0
+	for entry: Dictionary in variants: total += float(entry.weight)
+	var roll := _spawn_variant_roll() * total
+	for entry: Dictionary in variants:
+		roll -= float(entry.weight)
+		if roll < 0.0: return str(entry.enemy_id)
+	return str(variants.back().enemy_id)
+
+
 func _process_challenge_elites(batch_positions: Array[Vector2]) -> void:
 	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
 	# Exactly two additive spawns, independent of replacement quotas and crowd caps.
 	# Ordinary spawns remain capped; at most two extra entities can exceed that cap.
 	while not _challenge_elite_schedule.is_empty() and elapsed >= _challenge_elite_schedule[0]:
-		var elite := spawn_enemy("enemy_elite_rusher", _get_batch_spawn_position(batch_positions))
+		var elite := spawn_enemy(_select_miniboss_variant("enemy_elite_rusher"), _get_batch_spawn_position(batch_positions))
 		if elite == null: return
 		elite.set_meta("wave_challenge_elite", true)
 		_challenge_elite_schedule.pop_front()
 		_challenge_elite_spawned += 1
+
+
+func _miniboss_variant_roll() -> float:
+	return randf()
+
+
+func _select_miniboss_variant(base_id: String) -> String:
+	# One type is selected for an already-reserved slot, never an extra spawn.
+	# Ordinary mixtures and explicitly requested spawn_enemy IDs stay independent.
+	var variants: Array = DataRegistry.get_record("enemies", base_id).get("miniboss_variants", [])
+	if variants.is_empty(): return base_id
+	var total := 0.0
+	for entry: Dictionary in variants: total += float(entry.weight)
+	var roll := _miniboss_variant_roll()*total
+	for entry: Dictionary in variants:
+		roll -= float(entry.weight)
+		if roll < 0.0: return str(entry.enemy_id)
+	return str(variants.back().enemy_id)
 
 
 func _initialize_elite_schedule() -> void:

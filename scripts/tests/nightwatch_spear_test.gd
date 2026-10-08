@@ -101,7 +101,7 @@ func _run() -> void:
 	check(weapon.get_base_attack_damage() == 14 and weapon.calculate_damage_events(true)[0].damage == 21, "native damage and critical calculation")
 	check(weapon.get_load_cost() == 28 and weapon.get_attachment_slot_count() == 1, "medium load and initial attachment slot")
 	check(load(weapon.weapon_data.icon).get_size() == Vector2(128, 128), "formal 128 pixel icon")
-	check(weapon.build_full_stats_text().contains("每轮刺击"), "details describe thrusts instead of projectiles")
+	check(weapon.build_full_stats_text().contains("刺出长枪，贯穿前方敌人"), "details describe the spear attack")
 	advance(spear, 0.09)
 	check(hits.is_empty(), "windup cannot damage")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)

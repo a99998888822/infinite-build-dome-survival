@@ -184,7 +184,11 @@ func _special_weapons() -> void:
 			body._physics_process(0.01)
 			check(not body.manual_control and body.target == target and body.heading.is_equal_approx(Vector2.LEFT), "manual lamp click still targets nearest enemy instead of movement or pointer")
 		if body is RitualDomain:
-			check(body.global_position.is_equal_approx(player.global_position), "ritual retains player-origin fixed domain")
+			check(body.global_position.is_equal_approx(player.global_position), "ritual starts centered on player")
+			body.set_physics_process(false)
+			player.global_position += Vector2(400, 100)
+			body._physics_process(0.01)
+			check(body.global_position.is_equal_approx(player.global_position), "keyboard-cast ritual follows player movement")
 
 func _mode_boundaries() -> void:
 	await fixture(["weapon_void_blade", "weapon_plasma_cannon"])

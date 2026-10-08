@@ -648,6 +648,29 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 		_validate_reference(record, "drop_table_id", "drop_tables", records_by_id, path)
 		if record.has("elite_replacement_id"):
 			_validate_reference(record, "elite_replacement_id", "enemies", records_by_id, path)
+		for pool_key in ["spawn_variants", "miniboss_variants"]:
+			if not record.has(pool_key): continue
+			var variants: Variant = record[pool_key]
+			if not (variants is Array) or variants.is_empty():
+				errors.append("%s.%s must be a nonempty array." % [path, pool_key])
+			else:
+				for index in variants.size():
+					var entry: Variant = variants[index]
+					var variant_path := "%s.%s[%d]" % [path, pool_key, index]
+					if not (entry is Dictionary):
+						errors.append("%s must be an object." % variant_path)
+						continue
+					_validate_required_fields(entry, ["enemy_id", "weight"], variant_path)
+					_validate_reference(entry, "enemy_id", "enemies", records_by_id, variant_path)
+					if pool_key == "miniboss_variants":
+						var target: Dictionary = records_by_id.get("enemies", {}).get(str(entry.get("enemy_id", "")), {})
+						if target.get("enemy_type", "") != "elite" or not bool(target.get("enabled", true)):
+							errors.append("%s must select an enabled elite enemy." % variant_path)
+					var weight: Variant = entry.get("weight", 0)
+					if not (weight is int or weight is float) or not is_finite(float(weight)) or float(weight) <= 0.0:
+						errors.append("%s.weight must be positive." % variant_path)
+		if record.has("wolf_profile"):
+			_validate_wolf_profile(record.wolf_profile, path + ".wolf_profile")
 		if record.has("elite_profile"):
 			var profile: Variant = record["elite_profile"]
 			if not (profile is Dictionary):
@@ -662,6 +685,28 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 			_validate_non_negative_int(profile, "quota_cap", "%s.elite_profile" % path)
 			if float(profile.get("spawn_window_percent", 50)) <= 0.0 or float(profile.get("spawn_window_percent", 50)) > 50.0:
 				errors.append("%s.elite_profile.spawn_window_percent must be in (0, 50]." % path)
+
+
+func _validate_wolf_profile(value: Variant, path: String) -> void:
+	if not (value is Dictionary):
+		errors.append("%s must be an object." % path)
+		return
+	var profile: Dictionary = value
+	for field in ["spawn_warning_ms", "breath_range", "breath_cone_degrees", "breath_tick_ms", "breath_charge_ms", "breath_duration_ms", "breath_recover_ms", "breath_cooldown_ms", "breath_knockback_speed", "breath_knockback_ms", "leap_min_range", "leap_max_range", "leap_radius", "leap_charge_ms", "leap_duration_ms", "landing_ms", "leap_recover_ms", "leap_cooldown_ms", "leap_knockback_speed", "leap_knockback_ms", "control_duration_percent"]:
+		var number: Variant = profile.get(field)
+		if not (number is int or number is float) or not is_finite(float(number)) or float(number) <= 0:
+			errors.append("%s.%s must be positive and finite." % [path, field])
+			return
+	_validate_non_negative_int(profile, "breath_max_hits", path)
+	if not (profile.get("breath_max_hits") is int or profile.get("breath_max_hits") is float): return
+	if float(profile.breath_max_hits) < 1 or float(profile.breath_max_hits) > 3:
+		errors.append("%s.breath_max_hits must be between 1 and 3." % path)
+	if float(profile.breath_cone_degrees) >= 180 or float(profile.control_duration_percent) > 100:
+		errors.append("%s cone or control resistance is out of range." % path)
+	if float(profile.leap_max_range) < float(profile.leap_min_range):
+		errors.append("%s leap maximum must cover the minimum range." % path)
+	if (float(profile.breath_max_hits)-1)*float(profile.breath_tick_ms) >= float(profile.breath_duration_ms):
+		errors.append("%s flame duration must cover every configured pulse." % path)
 
 
 func _validate_erosion_pressure_records(records: Array) -> void:

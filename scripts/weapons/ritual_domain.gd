@@ -52,8 +52,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	if not active_cast:
-		global_position = weapon.owner_player.global_position
+	global_position = weapon.owner_player.global_position
 	domain_layer.scale = weapon.get_domain_axes() / DOMAIN
 	elapsed += delta
 	# Both cast modes retain the original star seal and drifting boundary particles.
@@ -78,7 +77,7 @@ func _physics_process(delta: float) -> void:
 func contains_enemy(enemy: EnemyController) -> bool:
 	if not is_instance_valid(enemy) or not enemy.is_alive() or not enemy.is_inside_tree():
 		return false
-	var center := global_position if active_cast else weapon.owner_player.global_position
+	var center := weapon.owner_player.global_position
 	var relative := (enemy.global_position - center) / weapon.get_domain_axes().max(Vector2.ONE)
 	return relative.length_squared() <= 1.0
 

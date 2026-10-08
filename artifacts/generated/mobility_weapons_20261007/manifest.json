@@ -1,0 +1,552 @@
+{
+  "version": 2,
+  "provenance": "Original local pixel drawing; no image model or image API.",
+  "status": "art_review_candidate_not_gameplay",
+  "icons": {
+    "dash_blade": {
+      "path": "icons/dash_blade.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        20,
+        10,
+        102,
+        126
+      ],
+      "colors": 14,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "5fb98d44a678f134eb1fa293da3f2e5db4ab55da4084cb7e60efa60fa82491d3",
+      "pixel_grid": 2
+    },
+    "recoil_gun": {
+      "path": "icons/recoil_gun.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        16,
+        12,
+        126,
+        118
+      ],
+      "colors": 13,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "7de706f3e2cbd4c658320a0c6c714bbf59b312f0725d9f4fd17ccef7fe3ea1e9",
+      "pixel_grid": 2
+    },
+    "star_tome": {
+      "path": "icons/star_tome.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        10,
+        12,
+        114,
+        124
+      ],
+      "colors": 15,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "7304d80784355f6413c0197e726bff3b9590bc414604a697431a271d3d6d3ff5",
+      "pixel_grid": 2
+    },
+    "star_tome_return": {
+      "path": "icons/star_tome_return.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        10,
+        12,
+        124,
+        126
+      ],
+      "colors": 16,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "13633c3533c4039fbbcee7910e983728a8031cd5042fc476b5c67183009e753f",
+      "pixel_grid": 2
+    }
+  },
+  "bodies": {
+    "dash_blade": {
+      "path": "bodies/dash_blade.png",
+      "size": [
+        96,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        90,
+        38
+      ],
+      "colors": 6,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "38ddd189e1d2170f70c15d9622b6109f84c3ab050141ca31b4cdda52db5720a8",
+      "pivot": [
+        34,
+        24
+      ],
+      "facing": "right",
+      "usage": "reference_only_not_displayed_in_world"
+    },
+    "recoil_gun": {
+      "path": "bodies/recoil_gun.png",
+      "size": [
+        96,
+        56
+      ],
+      "bbox": [
+        6,
+        8,
+        92,
+        52
+      ],
+      "colors": 8,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c4c518367ceea8cfdc3b1351603229f8ae86c6c72d8268d592eb5da177533983",
+      "pivot": [
+        28,
+        28
+      ],
+      "facing": "right",
+      "muzzle": [
+        88,
+        22
+      ],
+      "usage": "reference_only_not_displayed_in_world"
+    },
+    "star_tome": {
+      "path": "bodies/star_tome.png",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        4,
+        5,
+        43,
+        46
+      ],
+      "colors": 15,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "cf9e9fefc9017d6b6acbe8936a972065a9afbf57ab8119f02cef69141d1ea7b7",
+      "pivot": [
+        24,
+        36
+      ],
+      "facing": "three_quarter",
+      "usage": "reference_only_not_displayed_in_world"
+    }
+  },
+  "effects": {
+    "dash_trail": {
+      "path": "effects/dash_trail.png",
+      "size": [
+        1024,
+        64
+      ],
+      "bbox": [
+        20,
+        12,
+        1010,
+        58
+      ],
+      "colors": 3,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "b6088d0bcf4bbac00df442e5db7b14129cce85fcc81b327080f57b040c95444f",
+      "frame_size": [
+        128,
+        64
+      ],
+      "frames": 8,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        118,
+        32
+      ],
+      "unique_frames": 8
+    },
+    "dash_circle": {
+      "path": "effects/dash_circle.png",
+      "size": [
+        1600,
+        160
+      ],
+      "bbox": [
+        44,
+        4,
+        1598,
+        158
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "afdea5041f43e4ced752b6216198f8c8a8965be489aac908c9f6f7135cfa2676",
+      "frame_size": [
+        160,
+        160
+      ],
+      "frames": 10,
+      "fps": 48,
+      "loop": false,
+      "pivot": [
+        80,
+        80
+      ],
+      "unique_frames": 10
+    },
+    "muzzle": {
+      "path": "effects/muzzle.png",
+      "size": [
+        576,
+        64
+      ],
+      "bbox": [
+        6,
+        2,
+        538,
+        60
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a1fe2689b288c4ce5ef363909ea77a39e14bd78b17d8692bd1969b5d81d38340",
+      "frame_size": [
+        96,
+        64
+      ],
+      "frames": 6,
+      "fps": 30,
+      "loop": false,
+      "pivot": [
+        6,
+        32
+      ],
+      "unique_frames": 6
+    },
+    "pellet": {
+      "path": "effects/pellet.png",
+      "size": [
+        192,
+        16
+      ],
+      "bbox": [
+        4,
+        6,
+        180,
+        12
+      ],
+      "colors": 2,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c2ece0c759b814951ab23b90ff4ee2c50f85b1e01f044606e866413c039194f2",
+      "frame_size": [
+        48,
+        16
+      ],
+      "frames": 4,
+      "fps": 20,
+      "loop": true,
+      "pivot": [
+        40,
+        8
+      ],
+      "unique_frames": 4
+    },
+    "pellet_hit": {
+      "path": "effects/pellet_hit.png",
+      "size": [
+        384,
+        64
+      ],
+      "bbox": [
+        24,
+        12,
+        374,
+        54
+      ],
+      "colors": 3,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "97c51a3fcab7b42f684b0111a3dab4ddeb5854063fb4ee36937230ef7a587cc3",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frames": 6,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        32,
+        32
+      ],
+      "unique_frames": 6
+    },
+    "recoil_dust": {
+      "path": "effects/recoil_dust.png",
+      "size": [
+        1024,
+        64
+      ],
+      "bbox": [
+        6,
+        22,
+        1004,
+        58
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "553cf5c1e64618f3d6a91d0fe934743b94e73e5f94286b1f723175e7fc14aa31",
+      "frame_size": [
+        128,
+        64
+      ],
+      "frames": 8,
+      "fps": 20,
+      "loop": false,
+      "pivot": [
+        64,
+        32
+      ],
+      "unique_frames": 8
+    },
+    "star_depart": {
+      "path": "effects/star_depart.png",
+      "size": [
+        768,
+        128
+      ],
+      "bbox": [
+        32,
+        4,
+        760,
+        106
+      ],
+      "colors": 5,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "1f859f13c5f84cd9e7b2a1499e0c72007aa11aa37a544926b38e5d928234ac97",
+      "frame_size": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        48,
+        64
+      ],
+      "unique_frames": 8
+    },
+    "star_arrive": {
+      "path": "effects/star_arrive.png",
+      "size": [
+        768,
+        128
+      ],
+      "bbox": [
+        8,
+        6,
+        740,
+        120
+      ],
+      "colors": 5,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "9bc3ae11c8743d0a623f31fe1611f16ff853bbff0b0ec3521fcd77d4e5b13353",
+      "frame_size": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        48,
+        64
+      ],
+      "unique_frames": 8
+    },
+    "star_shockwave": {
+      "path": "effects/star_shockwave.png",
+      "size": [
+        1600,
+        160
+      ],
+      "bbox": [
+        64,
+        18,
+        1586,
+        144
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "f5061a3cd004f66d439a9370ca56d4b9edace79b52426c37642629df3f9f835a",
+      "frame_size": [
+        160,
+        160
+      ],
+      "frames": 10,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        80,
+        80
+      ],
+      "unique_frames": 10
+    },
+    "star_anchor": {
+      "path": "effects/star_anchor.png",
+      "size": [
+        1536,
+        128
+      ],
+      "bbox": [
+        14,
+        14,
+        1516,
+        116
+      ],
+      "colors": 7,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "4173717a0ef7bf9f19ac8a7b2d9997fae41126a37d933d8a3e6c4cc3221d75a9",
+      "frame_size": [
+        128,
+        128
+      ],
+      "frames": 12,
+      "fps": 12,
+      "loop": true,
+      "pivot": [
+        64,
+        64
+      ],
+      "unique_frames": 12
+    },
+    "star_return": {
+      "path": "effects/star_return.png",
+      "size": [
+        768,
+        128
+      ],
+      "bbox": [
+        8,
+        6,
+        756,
+        120
+      ],
+      "colors": 6,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "3f6d2a5d90f1ce206367e9c93b0fa8a33fee7d3af63d3c2c84fc0e54c5af2e81",
+      "frame_size": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        48,
+        64
+      ],
+      "unique_frames": 8
+    }
+  },
+  "world_weapon_display": false,
+  "display_names": {
+    "dash_blade": "突进短刃",
+    "recoil_gun": "巨型手持火炮",
+    "star_tome": "移星秘典"
+  },
+  "review": {
+    "fps": 50,
+    "frames_per_weapon": 100,
+    "relative_velocity": [
+      10,
+      4,
+      0
+    ],
+    "velocity_knot_time": 0.8,
+    "dash_seconds": 0.22,
+    "cannon_retreat_seconds": 0.28
+  },
+  "range_rules": {
+    "dash_and_star_movement": "ellipse; attack-distance bonus only; pointer clamped radially",
+    "dash_and_star_impact": "circle; damage-area bonus only",
+    "cannon_retreat": "fixed distance; no stat bonuses"
+  },
+  "indicators": {
+    "source": "res://scripts/battle/mobility_weapon_indicator.gd",
+    "exports": [
+      "previews/r02/godot/dash_blade_indicator_alpha.png",
+      "previews/r02/godot/recoil_gun_indicator_alpha.png",
+      "previews/r02/godot/star_tome_indicator_alpha.png",
+      "previews/r02/godot/star_tome_return_indicator_alpha.png"
+    ],
+    "canvas": [
+      640,
+      480
+    ],
+    "player_origin": [
+      260,
+      240
+    ],
+    "note": "Parameterized Godot geometry. Distances shown are art-review values."
+  }
+}

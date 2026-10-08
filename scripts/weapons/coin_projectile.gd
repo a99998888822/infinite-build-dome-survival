@@ -71,7 +71,7 @@ func _physics_process(delta: float) -> void:
 				terrain = {"position": end}
 	var contacts: Array[Dictionary] = []
 	var length := start.distance_to(end)
-	for enemy in EnemyRegistry.get_registered_enemies():
+	for enemy in _collision_candidates(start, end, radius):
 		if not is_instance_valid(enemy) or not enemy.is_alive() or volley_hits.has(enemy.get_instance_id()):
 			continue
 		var entry := _body_contact_distance(enemy, start, length, radius)
@@ -91,11 +91,15 @@ func _physics_process(delta: float) -> void:
 	distance_travelled += length
 	remaining_distance -= length
 	if not terrain.is_empty():
-		HIT.spawn(get_parent(), weapon, end, false)
+		_spawn_hit_visual(end)
 		cancel()
 	elif remaining_distance <= 0.001:
 		cancel()
 	queue_redraw()
+
+
+func _collision_candidates(_start: Vector2, _end: Vector2, _radius: float) -> Array:
+	return EnemyRegistry.get_registered_enemies()
 
 
 func _body_contact_distance(enemy: EnemyController, start: Vector2, length: float, radius: float) -> float:
@@ -145,7 +149,7 @@ func _hit_enemy(enemy: EnemyController) -> void:
 		has_split = true
 		_spawn_children(where)
 	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
-	HIT.spawn(get_parent(), weapon, where, false)
+	_spawn_hit_visual(where)
 	weapon.play_projectile_hit_sfx(str(get_instance_id()))
 	target_hit.emit(target_id, event.damage, split_generation > 0)
 	remaining_hits -= 1
@@ -176,9 +180,17 @@ func _spawn_children(origin: Vector2) -> void:
 			event.damage = maxi(1, roundi(event.damage * multiplier))
 			event.original_damage = maxi(1, roundi(event.original_damage * multiplier))
 			event.element_damage_bonus = maxi(0, roundi(event.element_damage_bonus * multiplier))
-			var child := CoinProjectile.new()
+			var child := _create_child()
 			get_parent().add_child(child)
 			child.initialize(weapon, event, origin, heading, volley_hits, split_generation + 1)
+
+
+func _create_child() -> CoinProjectile:
+	return CoinProjectile.new()
+
+
+func _spawn_hit_visual(point: Vector2) -> void:
+	HIT.spawn(get_parent(), weapon, point, false)
 
 
 func cancel() -> void:

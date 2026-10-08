@@ -143,7 +143,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _mouse_weapon_click() -> void:
 	_sync_current_weapon()
 	if current_weapon == null: return
-	if CombatSettings.quick_cast:
+	if CombatSettings.quick_cast or current_weapon.is_return_ready():
 		if loadout.cast_weapon(current_weapon, pointer_world()): cancel_aim()
 	elif selected_weapon == null:
 		selected_weapon = current_weapon
@@ -153,10 +153,14 @@ func _mouse_weapon_click() -> void:
 	_update_cursor_icon()
 
 func select_slot(index: int) -> void:
-	if CombatSettings.wheelchair_mode or not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
+	if not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
 		return
-	cancel_aim()
 	var weapon := loadout.weapon_instances[index]
+	if CombatSettings.wheelchair_mode and not weapon.is_mobility_weapon(): return
+	cancel_aim()
+	if weapon.is_return_ready():
+		loadout.cast_weapon(weapon, pointer_world())
+		return
 	if mouse_weapon_controls():
 		current_slot = index
 		current_weapon = weapon
@@ -197,7 +201,7 @@ func _process(_delta: float) -> void:
 	_update_cursor_icon()
 	if not can_control():
 		return
-	if right_held and not player.keyboard_movement:
+	if right_held and not player.keyboard_movement and not player.is_mobility_moving():
 		var hovered := get_viewport().gui_get_hovered_control()
 		if hovered == null or hovered.mouse_filter == Control.MOUSE_FILTER_IGNORE:
 			player.request_move(pointer_world())

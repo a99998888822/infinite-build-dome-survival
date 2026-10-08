@@ -1,5 +1,8 @@
 # 原始素材与来源
 
+- `enemies/echo_bat/`：蝙蝠原始移动 6 张、攻击 9 张，720×720，原始字节保留；同目录清单映射到正式像素 PNG。
+- `enemies/underworld_wolf/`：幽焰冥狼原始移动 7 张、攻击 4 张、跳跃 10 张，720×720；相同原图只保留一份，多轮处理包已删除。两套正式资源位于 `assets/sprites/enemies/`。
+
 - `enemies/iron_knight/`：本轮钢甲骑士原始图片，移动 7 张、攻击 10 张，每张 720×720，保留压缩包中的原始字节。对应正式素材为 `assets/sprites/enemies/iron_knight/` 中的 256×256 帧。攻击第 3 张锤头左侧在原图中已有裁切。
 - `enemies/xiaoguai_move/`：本轮小怪移动原始图片 7 张，每张 720×720。对应正式素材为 `assets/sprites/enemies/combat/` 中的 128×128 帧。
 - `character_frames/`：此前保留的角色与敌人高清帧，与本轮素材不同，继续作为原始来源保存。
