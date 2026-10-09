@@ -1,0 +1,79 @@
+{
+  "provenance": "Original artwork directly authored by the current coding model through local pixel drawing; no external image model or API.",
+  "editable_source": "draw_vault.py",
+  "grid": [
+    64,
+    64
+  ],
+  "palette": {
+    "ink": "#17151d",
+    "deep": "#23252b",
+    "shadow": "#303238",
+    "iron_dark": "#35423f",
+    "iron": "#495750",
+    "iron_mid": "#58665d",
+    "iron_light": "#718274",
+    "iron_edge": "#929b82",
+    "patina": "#506b5d",
+    "patina_light": "#789585",
+    "purple": "#443c49",
+    "wear": "#6b6766",
+    "brass_dark": "#534536",
+    "brass_shadow": "#71604a",
+    "brass": "#96805a",
+    "brass_light": "#b6a078",
+    "brass_edge": "#d2bd92",
+    "brass_glint": "#e0d0ab",
+    "rust": "#684b40",
+    "rust_dark": "#433731",
+    "steel": "#88877c",
+    "steel_light": "#b4b3a0"
+  },
+  "references": [
+    "assets/ui/icons/relics/relic_steel_vault.png",
+    "assets/ui/icons/relics/relic_coin_heart.png",
+    "assets/ui/main_menu/bg_main_menu.png",
+    "assets/ui/character_select/background.png",
+    "assets/ui/finance/finance_background.png"
+  ],
+  "assets": {
+    "challenge_vault_painted.png": {
+      "path": "assets/ui/finance/challenge_vault_painted.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        10,
+        10,
+        116,
+        122
+      ],
+      "colors": 22,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "6c2b6af6da59c3e96a43601a4c86fcec797eee2d3d2579e661618f6739b14248"
+    },
+    "challenge_vault_world.png": {
+      "path": "assets/ui/finance/challenge_vault_world.png",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        3,
+        2,
+        45,
+        46
+      ],
+      "colors": 22,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "54c47c50fa180c929d10a47de8384b8f40529eb41ce2f7cdb06602e5f90d98c0"
+    }
+  }
+}

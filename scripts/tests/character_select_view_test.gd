@@ -75,14 +75,14 @@ func _run() -> void:
 	var hover_bounds := view.hover_target.get_rect()
 	var name_position := view.name_label.position
 	view._process(0.75)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.0125), "inhale lifts the whole sprite while the layout anchor stays fixed")
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.025), "inhale stretches the sprite while the layout anchor stays fixed")
 	await capture("character_select_breath_in")
 	var inhale: Image = null
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
 		inhale = get_tree().root.get_texture().get_image()
 	view._process(1.5)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.0125), "exhale lowers the whole sprite without changing the layout")
+	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.025), "exhale compresses the sprite without changing the layout")
 	check(view.hover_target.get_rect() == hover_bounds and view.name_label.position == name_position, "breathing leaves name and hover bounds still")
 	await capture("character_select_breath_out")
 	if inhale != null:
@@ -90,14 +90,15 @@ func _run() -> void:
 		var exhale := get_tree().root.get_texture().get_image()
 		var rect := view.character_icon.get_global_rect()
 		var waist_y := ceili(rect.position.y + rect.size.y * 36.0 / 64.0)
-		var lower := Rect2i(int(rect.position.x), waist_y, int(rect.size.x), floori(rect.end.y) - waist_y)
+		var foot_y := floori(rect.position.y + rect.size.y * float(view._breath_material.get_shader_parameter("foot_y")))
+		var sole := Rect2i(int(rect.position.x), foot_y - 1, int(rect.size.x), 1)
 		var upper := Rect2i(int(rect.position.x), int(rect.position.y), int(rect.size.x), waist_y - int(rect.position.y))
-		check(inhale.get_region(lower).get_data() != exhale.get_region(lower).get_data(), "GPU: legs and feet move with the breathing body")
-		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper body moves with the breathing body")
+		check(inhale.get_region(sole).get_data() == exhale.get_region(sole).get_data(), "GPU: soles remain planted through breathing")
+		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper body stretches through breathing")
 	view._process(0.75)
 	check(is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "three seconds completes one breathing cycle")
 	view.reset_animation()
-	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears the whole-body offset")
+	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears breathing deformation")
 	view.set_process(true)
 	check(view.stats_list.get_child_count() == 5 and view.character_list.get_child_count() == 2, "beginner dossier and one row per character")
 	for row in view.stats_list.get_children():
@@ -121,7 +122,7 @@ func _run() -> void:
 	await move_pointer(view.hover_target.get_global_rect().get_center())
 	await get_tree().create_timer(0.38).timeout
 	check(view.walking and view.walk_frame > 0 and view.character_icon.texture is AtlasTexture, "real pointer hover advances walk sprite frames")
-	check(view.character_icon.position == view._character_rest_position, "walking does not retain idle breathing offset")
+	check(view.character_icon.position == view._character_rest_position, "walking does not retain idle breathing deformation")
 	await capture("character_select_walk")
 	await click(view.hover_target)
 	await move_pointer(Vector2(10,10))
@@ -141,7 +142,8 @@ func _run() -> void:
 	await click(view.character_list.get_child(1))
 	check(menu._selected_character_id == "character_capitalist" and view.stats_list.get_child_count() == 7, "roster hit target selects capitalist with actual stats")
 	check(_enchantment_icons(view.weapon_list.get_child(0)).is_empty(), "unenchanted weapon has no stale enchantment icons")
-	check(view.passive_list.get_child_count() == 2 and (view.passive_list.get_child(0) as Label).text == "开局获得如下四件遗物", "capitalist traits contain only the requested intro and icon row")
+	var intro := view.passive_list.get_child(0) as Label
+	check(view.passive_list.get_child_count() == 2 and intro.tr(intro.text) == L10n.text("ui.character.four_starting_relics"), "capitalist traits contain only the requested intro and icon row")
 	var relic_icons := view.passive_list.get_node("StartingRelicIcons")
 	check(relic_icons.get_child_count() == 4, "all four starting relic icons remain available")
 	for card in relic_icons.get_children():

@@ -132,10 +132,12 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 上一步,上一步,Previous
 下一步,下一步,Next
 "下一步结束，将全部金币存入本金。
-额外获得本金 +100，幸运 +10.","下一步结束，将全部金币存入本金。
-额外获得本金 +100，幸运 +10.","Deposit all your gold at the end of the next wave.
-Gain an extra +100 Principal and +10 Luck."
+额外获得本金 +100，幸运 +10.",请放心交给我理财吧,Rest assured. Let me manage your money.
+下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,Next wave's health damage -30%; each point prevented costs {单价} principal. Expires when principal runs out.
+下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值},下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值},An extra powerful boss appears at the start of the next wave. Defeat it to reduce debt by {动态值}; if it survives the time limit debt increases by {动态值}
+下一波怪物生命+30%，存活后金币+{动态值},下一波怪物生命+30%，存活后金币+{动态值},Next wave's monster health +30%; survive to gain {动态值} gold
 下一波挑战：本金 +%d（当前 %d）,下一波挑战：本金 +%d（当前 %d）,Next-wave challenge: principal +%d (now %d)
+下一波掉落金币价值提升50%，但落地2s后消失,下一波掉落金币价值提升50%，但落地2s后消失,"Next wave's dropped gold is worth 50% more, but expires 2s after dropping."
 "下一波结束，全部结息后自动还款。
 余额不足不扣款，欠款计复利。","下一波结束，全部结息后自动还款。
 余额不足不扣款，欠款计复利。","Automatically repaid after all interest at the end of the next wave.
@@ -186,6 +188,7 @@ They return on your next visit."
 位移,位移,Mobility
 余震沙漏,余震沙漏,Aftershock Hourglass
 你当前使用 WASD 模式；指引不会修改已有设置。,你当前使用 WASD 模式；指引不会修改已有设置。,You currently use WASD. This guide keeps your existing settings.
+你的钱就在这里，我替你保管一会,你的钱就在这里，我替你保管一会,Your money is right here. I'll hold it for a while.
 使用方向键 / WASD 移动,使用方向键 / WASD 移动,Move with arrows / WASD
 侵蚀,侵蚀,Corruption
 侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.
@@ -198,6 +201,10 @@ They return on your next visit."
 保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,"Flies at medium range, retreating when you approach and following when you move away. Briefly charges, marks a narrow path, then fires a pixel spiral soundwave in the locked direction. Makes up 30% of normal enemy spawns."
 保持清醒是有价值的，我可以为这份价值标上一个价格。,保持清醒是有价值的，我可以为这份价值标上一个价格。,Clarity has value. I can put a price on it.
 保留本局最近 300 条记录,保留本局最近 300 条记录,Keeps the last 300 entries this run
+保险箱 %d/%d,保险箱 %d/%d,Vault %d/%d
+保险箱已摧毁,保险箱已摧毁,Vault destroyed
+保险箱本金损失,保险箱本金损失,Vault principal lost
+保险箱本金返还,保险箱本金返还,Vault principal returned
 修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,修改立即生效并自动保存。按 Esc 或返回按钮回到原界面。,Changes apply immediately and save automatically. Press Esc or Back to return.
 借 %d,借 %d,Borrow %d
 元素,元素,Elemental
@@ -462,6 +469,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 已购买：,已购买：,Purchased: 
 已贷款：%d 金币,已贷款：%d 金币,Borrowed: %d gold
 已达最高等级,已达最高等级,Maximum level reached
+常来的客人，当然有常来的价钱。,常来的客人，当然有常来的价钱。,Regular customers deserve a regular customer's price.
 年假削减方案,年假削减方案,Leave Cutbacks
 并购重组,并购重组,Merger & Restructuring
 幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,Survivors gather beneath ancient totems to exchange relic-combination tactics.
@@ -524,6 +532,7 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 怪物属性加强30%,怪物属性加强30%,Enemy stats increased by 30%
 怪物数量增幅,怪物数量增幅,Enemy Count Bonus
 怪物更多,怪物更多,More enemies
+怪物频率+20%，存活后本金+150。,怪物频率+20%，存活后本金+150。,Monster frequency +20%; survive to gain 150 principal.
 总杀敌数,总杀敌数,Enemies Defeated
 恶意收购,恶意收购,Hostile Takeover
 我给你的，外面可买不到。,我给你的，外面可买不到。,You won't find what I'm offering anywhere else.
@@ -543,8 +552,10 @@ Choose the controls you prefer. This guide does not change your settings."
 打湿传播范围,打湿传播范围,Wet Spread Range
 打湿时间,打湿时间,Wet Duration
 打湿移速倍率,打湿移速倍率,Wet Speed Multiplier
+扣除%d本金，下一波出现保险箱；存活且保险箱未被摧毁，返还%d本金,扣除%d本金，下一波出现保险箱；存活且保险箱未被摧毁，返还%d本金,Deduct %d principal. A vault appears next wave; survive with it intact to receive %d principal.
 扩容背包束带,扩容背包束带,Expanded Backpack Straps
 扩散喷口,扩散喷口,Diffusion Nozzle
+把他解决了，我们之间的账就好商量了。,把他解决了，我们之间的账就好商量了。,Deal with him and we can talk about what you owe me.
 投射物,投射物,Projectiles
 投射物命中目标后仍可继续飞行，额外命中2个敌人,投射物命中目标后仍可继续飞行，额外命中2个敌人,"Projectiles continue after impact, hitting 2 additional enemies."
 投射物数量,投射物数量,Projectile Count
@@ -584,8 +595,10 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 按编号直接施放，无需进入瞄准,按编号直接施放，无需进入瞄准,Press a weapon number to cast immediately
 按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,Select a manual skill by number and confirm with left-click; toggle Auto/Manual below each weapon in the Esc inventory
 挑战奖励,挑战奖励,Challenge Reward
+挑战存活奖励：金币+%d。,挑战存活奖励：金币+%d。,Challenge survival reward: +%d gold.
 挑战完成 · 结息后已将全部金币存入本金。,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
 挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。,挑战完成：结息后自动存入 %d 金币，本金额外 +%d、幸运 +%d。,Challenge complete: automatically deposited %d gold after interest; bonus principal +%d and Luck +%d.
+挑战已结算。,挑战已结算。,Challenge settled.
 掉落与成长,掉落与成长,Loot & Growth
 掉落率+5%,掉落率+5%,Drop Rate +5%
 掉落率加成,掉落率加成,Drop Rate
@@ -632,6 +645,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 无法配置：请检查武器空槽和附魔归属。,无法配置：请检查武器空槽和附魔归属。,Cannot equip: check weapon slots and enchantment ownership.
 无眠账簿,无眠账簿,Sleepless Ledger
 无需点击左键确认,无需点击左键确认,No left-click confirmation needed
+既然还有力气，就多做一点。,既然还有力气，就多做一点。,Since you still have strength left do a little more.
 日志,日志,Log
 旧铜望远镜,旧铜望远镜,Old Brass Telescope
 是,是,Yes
@@ -672,6 +686,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 未知,未知,Unknown
 未结算,未结算,Not settled
 未解锁,未解锁,Locked
+本局商店价格-15%，每次购买商品理智-2。,本局商店价格-15%，每次购买商品理智-2。,Shop prices -15% this run; each item purchase costs 2 sanity.
 本局已使用,本局已使用,Used this run
 本局暂无经济记录。,本局暂无经济记录。,No economic activity this run yet.
 本局额外复活次数；复活后消耗 1 次。,本局额外复活次数；复活后消耗 1 次。,Additional revives this run. One charge is consumed per revival.
@@ -689,6 +704,7 @@ Bank actions refresh next wave."
 本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,"Manually deposit at least 50 gold before the wave to gain +6 percentage points of Interest Rate for that wave. Otherwise, interest is paid at the normal rate. Stack limit: 1."
 本波没有利息结算记录。,本波没有利息结算记录。,No interest records this wave.
 本金,本金,Principal
+本金 %d,本金 %d,Principal %d
 本金 +%d · 幸运 +%d,本金 +%d · 幸运 +%d,Principal +%d · Luck +%d
 本金+%d，直接开始下一波。,本金+%d，直接开始下一波。,Principal +%d. Start the next wave immediately.
 本金不足（需%d）,本金不足（需%d）,Insufficient principal (requires %d)
@@ -698,6 +714,7 @@ Bank actions refresh next wave."
 本金：%s,本金：%s,Principal: %s
 本金：0,本金：0,Principal: 0
 术士卷轴,术士卷轴,Warlock Scroll
+机会来了，但手慢无。,机会来了，但手慢无。,Opportunity is here. Be quick.
 条件未满足,条件未满足,Requirement not met
 构筑,构筑,Build
 查看条款,查看条款,View Terms
@@ -841,6 +858,7 @@ Pellets [color=#7FD88F]+1[/color]"
 生命力药瓶,生命力药瓶,Vitality Vial
 生存,生存,Survival
 生存防御类加成，平衡建筑,生存防御类加成，平衡建筑,Balanced survival and defensive bonuses
+生意好，就该把摊子铺大一点。,生意好，就该把摊子铺大一点。,Business is good. Time to expand.
 生成2个45%原伤害的子攻击,生成2个45%原伤害的子攻击,"Creates 2 child attacks, each dealing 45% of the original damage."
 用于训练远程弹道与精准打击的高台。,用于训练远程弹道与精准打击的高台。,An elevated range for practicing trajectories and precision strikes.
 电光黄色,电光黄色,Electric Yellow
@@ -967,6 +985,7 @@ Pellets [color=#7FD88F]+1[/color]"
 解锁全部稀有遗物,解锁全部稀有遗物,Unlock all rare relics
 解锁属性购买升级,解锁属性购买升级,Unlock purchasable stat upgrades
 解锁营地（%d 营地币）,解锁营地（%d 营地币）,Unlock camp (%d Camp Coins)
+讨债挑战：欠款 %d → %d。,讨债挑战：欠款 %d → %d。,Debt challenge: debt %d → %d.
 议事大厅,议事大厅,Council Hall
 设置,设置,Settings
 语言：,语言：,Language：
@@ -974,6 +993,7 @@ Pellets [color=#7FD88F]+1[/color]"
 请先选择背包中的附魔。,请先选择背包中的附魔。,Select an enchantment from inventory first.
 请在理财页面调整附魔或出售物品。,请在理财页面调整附魔或出售物品。,Visit the Bank to change enchantments or sell items.
 请尝试其他名称或效果关键词。,请尝试其他名称或效果关键词。,Try another name or effect keyword.
+请放心交给我理财吧,请放心交给我理财吧,Rest assured. Let me manage your money.
 请输入大于 0 的整数。,请输入大于 0 的整数。,Enter a whole number greater than 0.
 请选择存入或取出。,请选择存入或取出。,Choose deposit or withdrawal.
 请选择角色,请选择角色,Select a character
@@ -1190,6 +1210,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 钢铁保险柜,钢铁保险柜,Steel Vault
 钱不够？先拿去，后面再还！,钱不够？先拿去，后面再还！,Short on gold? Take it now. Pay me later!
 钱不够？没关系。总有可以交易的东西。,钱不够？没关系。总有可以交易的东西。,Short on gold? No problem. There's always something to trade.
+钱不能光放着，总得有点别的什么作用。,钱不能光放着，总得有点别的什么作用。,Money shouldn't just sit there. It ought to do something else.
 铸铁榴弹炮,铸铁榴弹炮,Cast-Iron Grenade Cannon
 锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。,锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。,Forge and repair survival weapons. The artisans keep refining their designs to face new enemies.
 镀金扳机,镀金扳机,Gilded Trigger

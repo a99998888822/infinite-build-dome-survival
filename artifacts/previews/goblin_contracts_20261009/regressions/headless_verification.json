@@ -1,0 +1,92 @@
+[
+  {
+    "scene": "goblin_trade_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "GOBLIN_TRADE_COMPLETE checks=126 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\goblin_trade_test.log"
+  },
+  {
+    "scene": "goblin_trade_expansion_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "GOBLIN_EXPANSION_COMPLETE checks=87 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\goblin_trade_expansion_test.log"
+  },
+  {
+    "scene": "goblin_trade_cancellation_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "TRADE_CANCELLATION_TEST checks=52 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\goblin_trade_cancellation_test.log"
+  },
+  {
+    "scene": "goblin_loan_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "GOBLIN_LOAN_COMPLETE checks=73 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\goblin_loan_test.log"
+  },
+  {
+    "scene": "wave_challenge_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "WAVE_CHALLENGE_COMPLETE checks=84 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\wave_challenge_test.log"
+  },
+  {
+    "scene": "challenge_expansion_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "CHALLENGE_EXPANSION_COMPLETE checks=63 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\challenge_expansion_test.log"
+  },
+  {
+    "scene": "humanity_economy_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "HUMANITY_ECONOMY_COMPLETE checks=52 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\humanity_economy_test.log"
+  },
+  {
+    "scene": "principal_relic_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "PRINCIPAL_RELIC_COMPLETE checks=138 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\principal_relic_test.log"
+  },
+  {
+    "scene": "localization_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "LOCALIZATION_COMPLETE checks=332 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_contracts_20261009\\regressions\\localization_test.log"
+  }
+]

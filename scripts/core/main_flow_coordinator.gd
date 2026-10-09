@@ -384,7 +384,9 @@ func close_finance_popup() -> void:
 	cancel_goblin_trade()
 	if _bound_wave_manager != null and _has_next_wave():
 		var challenges := _bound_wave_manager.wave_challenges
-		var proposal := challenges.prepare(_get_next_wave_number(), WaveChallengeSystem.combat_snapshot(_bound_player, _bound_loadout))
+		var proposal := challenges.prepare(_get_next_wave_number(), WaveChallengeSystem.combat_snapshot(_bound_player, _bound_loadout),
+			{"principal": _bound_wave_manager.finance_system.principal, "remaining_waves": DataRegistry.get_table("waves").size() - _get_next_wave_number() + 1,
+			"debt_due": int(_bound_wave_manager.goblin_loans.debt.get("due", 0)), "debt_id": _bound_wave_manager.goblin_loans.debt_identity()})
 		if not proposal.is_empty():
 			_bound_wave_manager.run_statistics.show_advice("challenge", str(proposal.token))
 			_set_battle_runtime_paused(true)
@@ -401,7 +403,7 @@ func decide_wave_challenge(token: String, accepted: bool) -> bool:
 	if current_state != STATE_WAVE_CHALLENGE or _transaction_busy or battle_resolved or not _has_next_wave() or _bound_wave_manager == null:
 		return false
 	_transaction_busy = true
-	var success := _bound_wave_manager.wave_challenges.decide(token, accepted, _bound_player, _bound_wave_manager.finance_system)
+	var success := _bound_wave_manager.wave_challenges.decide(token, accepted, _bound_player, _bound_wave_manager.finance_system, _bound_wave_manager.goblin_loans)
 	_transaction_busy = false
 	if not success: return false
 	_bound_wave_manager.run_statistics.decide_advice("challenge", token, accepted)
@@ -580,6 +582,8 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	canonical_offer["purchased"] = true
 	if sanitized_mode == "shop" and offer_type in [ShopOfferGenerator.OFFER_NEW_WEAPON, ShopOfferGenerator.OFFER_RELIC]:
 		_paid_purchase_count += 1
+	if sanitized_mode == "shop" and int(canonical_offer.get("shop_cost", 0)) > 0 and _bound_wave_manager != null:
+		_bound_wave_manager.goblin_trades.record_paid_purchase(_bound_player)
 	_transaction_busy = false
 	clear_stat_preview()
 	if sanitized_mode == "free":
@@ -1178,6 +1182,9 @@ func _prepare_goblin_trade() -> void:
 	var pressure: Dictionary = _bound_wave_manager.wave_challenges.pressure
 	context["high_pressure"] = bool(pressure.get("struggling", false))
 	context["comfortable"] = bool(pressure.get("comfortable", false))
+	context["minimum_health_ratio"] = float(pressure.get("minimum_health_ratio", 1))
+	context["low_health_seconds"] = float(pressure.get("low_health_seconds", 0))
+	context["remaining_waves"] = DataRegistry.get_table("waves").size() - _get_next_wave_number() + 1
 	var prices: Array[int] = []
 	for entry in _preparation_offers: prices.append(int(entry.get("shop_cost", 0)))
 	prices.sort()
@@ -1384,7 +1391,7 @@ func _invalidate_attachment_trade(weapon_id: String = "") -> void:
 	if _bound_wave_manager == null or current_state != STATE_FINANCE_POPUP: return
 	var proposal := _bound_wave_manager.goblin_trades.offer
 	var id := str(proposal.get("id", ""))
-	if id in ["exclusive_relic", "sanity_buyback"]:
+	if id in ["exclusive_relic", "sanity_buyback", "preferred_customer", "capital_protection"]:
 		cancel_goblin_trade()
 	elif id == "weapon_buyout":
 		var current := GoblinSpecialTrades.weapon_quote(_bound_loadout.get_weapon_instance(str(proposal.weapon_id)), _bound_player, int(proposal.price_multiplier))

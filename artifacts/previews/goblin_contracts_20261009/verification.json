@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "exact_user_text_verified": [
+    "preferred_customer",
+    "capital_protection",
+    "paid_overtime",
+    "debt_hunter"
+  ],
+  "headless_suites": 10,
+  "headless_checks": 1111,
+  "new_contract_checks": 104,
+  "regression_checks": 1007,
+  "bootstrap_passed": true,
+  "editor_passed": true,
+  "editor_existing_warnings": [
+    "Android build-tools directory unavailable",
+    "Nested temporary project ignored"
+  ],
+  "gpu": {
+    "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+    "pid": 4912,
+    "private_desktop": "CodexGodotCapture_1791549114266493400",
+    "verified_desktop": "CodexGodotCapture_1791549114266493400",
+    "foreground_samples": 0,
+    "samples": 1475,
+    "exit_code": 0,
+    "elapsed_seconds": 31.119191899953876
+  },
+  "captures": [
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\01_customer_offer.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\02_customer_accepted.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\03_protection_offer.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\04_protection_combat.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\05_overtime_offer.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\06_debt_offer.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\07_debt_offer_small.png",
+    "artifacts\\previews\\goblin_contracts_20261009\\captures\\08_debt_boss_combat.png"
+  ]
+}

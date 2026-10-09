@@ -8,25 +8,64 @@
   "preparation": { "significant_gain_ratio": 0.15 },
   "challenges": [
     {
-      "id": "extra_elites", "weight": 1, "condition": "pressure_or_low_gain",
+      "id": "extra_elites", "condition": "pressure",
       "speech": "多来几个大家伙而已，你不会连这点钱都不敢赚吧？",
       "body": "下一波额外出现 2 个精英怪。",
       "icon": "res://assets/ui/finance/challenge_elites.svg",
       "elite_count": 2, "spawn_progress": [0.18, 0.36]
     },
     {
-      "id": "rising_tide", "weight": 1, "condition": "pressure_or_low_gain",
+      "id": "rising_tide", "condition": "pressure",
       "speech": "风浪越大，鱼越贵！",
       "body": "侵蚀 +20、利率 +1%、本金 +100、幸运 +10。",
       "icon": "res://assets/ui/finance/challenge_tide.svg",
       "erosion": 20, "interest_rate": 1, "principal": 100, "luck": 10
     },
     {
-      "id": "all_in", "weight": 2, "condition": "comfortable",
-      "speech": "下一步结束，将全部金币存入本金。\n额外获得本金 +100，幸运 +10.",
+      "id": "all_in", "condition": "comfortable",
+      "speech": "请放心交给我理财吧",
       "body": "下一波结束：先结息，再将全部金币存入本金。\n额外获得本金 +100、幸运 +10。",
       "icon": "res://assets/ui/finance/challenge_deposit.svg",
       "principal": 100, "luck": 10
+    },
+    {
+      "id": "business_expansion", "condition": "comfortable_expansion",
+      "speech": "生意好，就该把摊子铺大一点。",
+      "body": "怪物频率+20%，存活后本金+150。",
+      "icon": "res://assets/ui/finance/challenge_expansion.svg",
+      "frequency_bonus": 0.2, "principal": 150, "minimum_remaining_waves": 2
+    },
+    {
+      "id": "fleeting_fortune", "condition": "pressured_cleanup",
+      "speech": "机会来了，但手慢无。",
+      "body": "下一波掉落金币价值提升50%，但落地2s后消失",
+      "icon": "res://assets/ui/finance/challenge_fortune.svg",
+      "gold_multiplier": 1.5, "gold_lifetime": 2.0,
+      "minimum_average_lifetime_seconds": 10.0
+    },
+    {
+      "id": "capital_custody", "condition": "pressured_capital",
+      "speech": "你的钱就在这里，我替你保管一会",
+      "body": "扣除%d本金，下一波出现保险箱；存活且保险箱未被摧毁，返还%d本金",
+      "icon": "res://assets/ui/finance/challenge_vault_painted.png",
+      "minimum_principal": 2000, "stake_ratio": 0.1, "maximum_stake": 1000,
+      "bonus_ratio": 0.3, "minimum_bonus": 100, "maximum_bonus": 300,
+      "health_multiplier": 3.0, "attacker_stride": 3
+    },
+    {
+      "id": "paid_overtime", "condition": "medium_pressure",
+      "speech": "既然还有力气，就多做一点。",
+      "body": "下一波怪物生命+30%，存活后金币+{动态值}",
+      "icon": "res://assets/ui/finance/challenge_overtime.svg",
+      "health_multiplier": 1.3, "gold_base": 100, "gold_per_wave": 10
+    },
+    {
+      "id": "debt_hunter", "condition": "outstanding_debt",
+      "speech": "把他解决了，我们之间的账就好商量了。",
+      "body": "下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值}",
+      "icon": "res://assets/ui/finance/challenge_debt.svg",
+      "health_multiplier": 3.0, "damage_multiplier": 2.0, "armor_multiplier": 2.0, "size_multiplier": 1.1,
+      "boss_templates": ["enemy_elite_rusher", "enemy_underworld_wolf"]
     }
   ]
 }

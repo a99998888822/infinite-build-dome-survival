@@ -1,0 +1,19 @@
+[
+  {
+    "scene": "goblin_trade_expansion_test",
+    "passed": false,
+    "exit_code": 1,
+    "issues": [
+      "FAIL minus forty sanity now buys forty-five recovery, not ninety",
+      "FAIL halved paid restoration reaches quoted five sanity, candle=false",
+      "FAIL repeat purchase preserves half-point recovery without rounding it up",
+      "FAIL second purchase restores the halved net gain without replacing the first, candle=false",
+      "FAIL repeat purchase preserves half-point recovery without rounding it up",
+      "FAIL second purchase restores the halved net gain without replacing the first, candle=true"
+    ],
+    "summaries": [
+      "GOBLIN_EXPANSION_COMPLETE checks=87 failures=6"
+    ],
+    "log": "artifacts\\previews\\goblin_balance_half_recovery_20261009\\probe\\goblin_trade_expansion_test.log"
+  }
+]

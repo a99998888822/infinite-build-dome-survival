@@ -67,6 +67,8 @@ func _ready() -> void:
 	FinanceUIStyle.label(_name_label, 12)
 	titles.add_child(_name_label)
 	_kind_label = Label.new()
+	_kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_kind_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	FinanceUIStyle.label(_kind_label, 10, FinanceUIStyle.MUTED)
 	titles.add_child(_kind_label)
 	var description_margin := MarginContainer.new()
@@ -127,6 +129,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_rarity_glow.modulate = rarity_color
 	var rarity_label := L10n.source(str(ItemInventoryCard.RARITY_LABELS.get(rarity, L10n.text("rarity.common"))))
 	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + " · " + rarity_label
+	_kind_label.tooltip_text = _kind_label.text
 	_kind_label.add_theme_color_override("font_color", rarity_color)
 	var kind := "card_" + rarity if rarity in ["uncommon", "rare", "epic", "legendary"] else "card"
 	var panel := FinanceFrameSkin.box(kind, 9)

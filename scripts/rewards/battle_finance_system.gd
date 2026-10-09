@@ -84,6 +84,7 @@ var _interest_event_serial := 0
 var _runtime_effect_cache: Dictionary = {}
 var _runtime_effect_owner_id := 0
 var _runtime_effect_revision := -1
+var capital_protection: Dictionary = {}
 
 
 func initialize(target_player: PlayerController, gold_getter: Callable, gold_delta_applier: Callable) -> void:
@@ -95,7 +96,9 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	if is_instance_valid(player) and player.lethal_damage.is_connected(_on_player_lethal_damage):
 		player.lethal_damage.disconnect(_on_player_lethal_damage)
 	player = target_player
+	capital_protection.clear()
 	if player != null:
+		player.health_damage_filter = mitigate_health_damage
 		player.stats_changed.connect(_on_player_stats_changed)
 		player.lethal_damage.connect(_on_player_lethal_damage)
 	_gold_getter = gold_getter
@@ -177,6 +180,41 @@ func consume_trade_principal(amount: int) -> bool:
 	principal -= amount
 	_emit_changed()
 	return true
+
+
+func arm_capital_protection(wave: int, reduction: float, unit_price: int) -> void:
+	capital_protection = {"wave": wave, "reduction": reduction, "unit_price": maxi(1, unit_price), "exhausted": false, "cost_remainder": 0.0, "prevented": 0.0, "spent": 0}
+	if player != null: player._health_damage_remainder = 0.0
+
+
+func mitigate_health_damage(damage: int) -> float:
+	if capital_protection.is_empty() or bool(capital_protection.exhausted) or int(capital_protection.wave) != _started_wave_number or current_wave_number != _started_wave_number:
+		return float(damage)
+	if principal <= 0:
+		capital_protection.exhausted = true
+		return float(damage)
+	var price := int(capital_protection.unit_price)
+	var remainder := float(capital_protection.cost_remainder)
+	var prevented := minf(damage * float(capital_protection.reduction), maxf(0.0, principal - remainder) / price)
+	var exact_cost := remainder + prevented * price
+	var cost := mini(principal, floori(exact_cost + 0.000001))
+	capital_protection.cost_remainder = maxf(0.0, exact_cost - cost)
+	capital_protection.prevented = float(capital_protection.prevented) + prevented
+	capital_protection.spent = int(capital_protection.spent) + cost
+	principal -= cost
+	# Reserve exhaustion before synchronous relic/stat signals can restore capital.
+	if principal <= 0: capital_protection.exhausted = true
+	if cost > 0: _emit_changed()
+	return maxf(0.0, damage - prevented)
+
+
+func end_capital_protection(wave: int) -> void:
+	if capital_protection.is_empty() or int(capital_protection.wave) != wave: return
+	var cost := mini(principal, ceili(float(capital_protection.cost_remainder) - 0.000001))
+	capital_protection.clear()
+	if cost > 0:
+		principal -= cost
+		_emit_changed()
 
 
 func _on_player_stats_changed() -> void:
@@ -649,6 +687,8 @@ func _emit_changed() -> void:
 	if _emitting_changed:
 		return
 	_emitting_changed = true
+	if principal <= 0 and not capital_protection.is_empty() and int(capital_protection.wave) == _started_wave_number:
+		capital_protection.exhausted = true
 	if player != null:
 		player.begin_modifier_update()
 		if principal > 0:

@@ -15,7 +15,7 @@ const FOOT_ANCHOR := Vector2(1380, 1148)
 const STARTING_WEAPON_ICON_SIZE := Vector2(62, 68)
 const STARTING_ENCHANTMENT_ICON_SIZE := Vector2(36, 36)
 const BREATH_PERIOD := 3.0
-const BREATH_OFFSET := 0.0125
+const BREATH_STRETCH := 0.025
 const BREATH_SHADER := preload("res://assets/shaders/character_select_breathing.gdshader")
 
 var canvas: Control
@@ -404,6 +404,7 @@ func _hide_item_tooltip() -> void:
 func _position_character() -> void:
 	if _idle == null: return
 	var used := _idle.get_image().get_used_rect()
+	_breath_material.set_shader_parameter("foot_y", float(used.end.y) / _idle.get_height())
 	# Size from idle once; every animation frame retains the same 64px canvas.
 	var side := roundf(64.0 * 376.0 / maxf(1.0, used.size.y))
 	character_icon.size = Vector2.ONE * side
@@ -464,7 +465,7 @@ func _process(delta: float) -> void:
 	if not is_visible_in_tree() or _idle == null: return
 	if not walking:
 		_breath_elapsed = fmod(_breath_elapsed + delta, BREATH_PERIOD)
-		_breath_material.set_shader_parameter("breath_amount", BREATH_OFFSET * sin(TAU * _breath_elapsed / BREATH_PERIOD))
+		_breath_material.set_shader_parameter("breath_amount", BREATH_STRETCH * sin(TAU * _breath_elapsed / BREATH_PERIOD))
 		return
 	_elapsed += delta
 	walk_frame = int(_elapsed * _walk_fps) % _walk_frames

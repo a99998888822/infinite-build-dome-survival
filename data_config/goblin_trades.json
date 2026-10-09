@@ -4,12 +4,14 @@
   "rewards": {"principal_base": 100, "principal_per_wave": 10, "income_ratio": 0.2, "cap_base": 150, "cap_per_wave": 15, "cash_ratio": 0.6, "cash_minimum": 100, "round_to": 10},
   "trades": [
     {"id": "strong_refresh", "speech": "再存一点，我给你看看真正的好东西。", "body": "存入 %d 金币，获得 1 次免费的强力刷新", "detail": "强力刷新：拥有100幸运加成，且保底一件史诗遗物。", "minimum_gold": 50, "luck_bonus": 100},
-    {"id": "principal_advance", "speech": "这些零碎有什么好买的？", "body": "本金+%d，直接开始下一波。", "detail": "", "cooldown_waves": 3},
-    {"id": "cash_price", "speech": "钱不够？没关系。总有可以交易的东西。", "body": "金币 + %d，本次关闭银行，理智-5，幸运-2", "detail": "", "minimum_principal": 100, "principal_gold_ratio": 1.5, "sanity_cost": 5, "luck_cost": 2, "cooldown_waves": 3},
-    {"id": "interest_pact", "speech": "有我帮你理财，不用担心！只是得付出一点小小的代价。", "body": "利率+3%，每回合理智-1。", "detail": "", "minimum_sanity": 95, "interest_bonus": 3, "sanity_per_wave": 1},
-    {"id": "spending_money", "speech": "别急着存钱，拿去花，下回可别忘了我。", "body": "金币+%d，本次不可存款。", "detail": "", "gold_reward": 100, "minimum_gold": 50, "maximum_principal_ratio": 2.0, "cooldown_waves": 3},
+    {"id": "principal_advance", "speech": "这些零碎有什么好买的？", "body": "本金+%d，直接开始下一波。", "detail": "", "cooldown_waves": 2},
+    {"id": "cash_price", "speech": "钱不够？没关系。总有可以交易的东西。", "body": "金币 + %d，本次关闭银行，理智-5，幸运-2", "detail": "", "minimum_principal": 100, "principal_gold_ratio": 1.5, "sanity_cost": 5, "luck_cost": 2, "cooldown_waves": 2},
+    {"id": "interest_pact", "speech": "有我帮你理财，不用担心！只是得付出一点小小的代价。", "body": "利率+3%，每回合理智-1。", "detail": "", "minimum_sanity": 65, "interest_bonus": 3, "sanity_per_wave": 1},
+    {"id": "spending_money", "speech": "别急着存钱，拿去花，下回可别忘了我。", "body": "金币+%d，本次不可存款。", "detail": "", "gold_reward": 100, "minimum_gold": 50, "maximum_principal_ratio": 2.0, "cooldown_waves": 2},
     {"id": "exclusive_relic", "speech": "我给你的，外面可买不到。", "body": "立即免费获得这件随机史诗遗物[icon]，并将商店栏位削减成1个", "detail": "", "minimum_gold": 150, "shelf_price_ratio": 3.0, "once_per_run": true},
-    {"id": "weapon_buyout", "speech": "终于走到这一步，再来一次，我相信你可以做的更好", "body": "金币+%d，出售%s及其全部附魔", "detail": "", "minimum_completed_waves": 6, "gold_below": 100, "principal_below": 300, "price_multiplier": 10, "once_per_run": true},
-    {"id": "sanity_buyback", "speech": "保持清醒是有价值的，我可以为这份价值标上一个价格。", "body": "理智+%s，本金-%d", "detail": "", "maximum_sanity": 0, "minimum_principal": 2000, "minimum_interest_loss": 100, "minimum_loss_ratio": 0.5, "target_sanity": 50, "principal_cost_ratio": 0.2, "once_per_run": true}
+    {"id": "weapon_buyout", "speech": "终于走到这一步，再来一次，我相信你可以做的更好", "body": "金币+%d，出售%s及其全部附魔", "detail": "", "minimum_completed_waves": 6, "gold_per_completed_wave": 50, "principal_below": 300, "price_multiplier": 10},
+    {"id": "sanity_buyback", "speech": "保持清醒是有价值的，我可以为这份价值标上一个价格。", "body": "理智+%s，本金-%d", "detail": "", "maximum_sanity": 0, "minimum_principal": 2000, "minimum_interest_loss": 100, "target_sanity": 50, "principal_cost_ratio": 0.2},
+    {"id": "preferred_customer", "speech": "常来的客人，当然有常来的价钱。", "body": "本局商店价格-15%，每次购买商品理智-2。", "detail": "", "minimum_gold": 150, "shelf_price_ratio": 3.0, "minimum_principal": 2000, "minimum_sanity": 70, "minimum_remaining_waves": 3, "discount_percent": 15, "sanity_per_purchase": 2, "once_per_run": true},
+    {"id": "capital_protection", "speech": "钱不能光放着，总得有点别的什么作用。", "body": "下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。", "detail": "", "minimum_principal": 2000, "maximum_minimum_health_ratio": 0.25, "minimum_low_health_seconds": 10.0, "damage_reduction": 0.3, "principal_per_damage": 5}
   ]
 }

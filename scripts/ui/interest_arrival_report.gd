@@ -56,10 +56,16 @@ static func build(payload: Dictionary) -> Dictionary:
 		elif str(loan.get("action",""))=="rollover":
 			_add(report,"notice",L10n.text("ui.interest.loan_compounded"),L10n.text("ui.interest.loan_due") % int(loan.due),float(report.total))
 	var challenge: Dictionary = last.get("challenge_settlement", {})
-	if not challenge.is_empty():
+	if challenge.has("deposited"):
 		report["auto_deposit"] = true
 		_add(report, "growth", L10n.text("ui.interest.auto_deposit"), L10n.text("ui.loan.gold_amount") % int(challenge.deposited), float(report.total))
 		_add(report, "growth", L10n.text("ui.interest.challenge_reward"), L10n.text("ui.interest.challenge_bonus") % [int(challenge.principal_bonus), int(challenge.luck_bonus)], float(report.total))
+	elif challenge.has("principal_returned"):
+		var returned := int(challenge.principal_returned)
+		_add(report, "growth" if returned > 0 else "loss", L10n.text("ui.challenge.custody_returned" if returned > 0 else "ui.challenge.custody_lost"),
+			L10n.text("ui.challenge.principal_amount") % (returned if returned > 0 else int(challenge.principal_lost)), float(report.total))
+	elif challenge.has("principal_bonus"):
+		_add(report, "growth", L10n.text("ui.interest.challenge_reward"), L10n.text("ui.challenge.principal_amount") % int(challenge.principal_bonus), float(report.total))
 	return report if not report.steps.is_empty() else {}
 
 

@@ -1,0 +1,13 @@
+keys,zh_CN,en
+data.challenge.expansion.speech,生意好，就该把摊子铺大一点。,Business is good. Time to expand.
+data.challenge.expansion.body,怪物频率+20%，存活后本金+150。,Monster frequency +20%; survive to gain 150 principal.
+data.challenge.fortune.speech,机会来了，但手慢无。,Opportunity is here. Be quick.
+data.challenge.fortune.body,下一波掉落金币价值提升50%，但落地2s后消失,"Next wave's dropped gold is worth 50% more, but expires 2s after dropping."
+data.challenge.custody.speech,你的钱就在这里，我替你保管一会,"Your money is right here. I'll hold it for a while."
+data.challenge.custody.body,扣除%d本金，下一波出现保险箱；存活且保险箱未被摧毁，返还%d本金,"Deduct %d principal. A vault appears next wave; survive with it intact to receive %d principal."
+ui.challenge.vault.health,保险箱 %d/%d,Vault %d/%d
+ui.challenge.vault.destroyed,保险箱已摧毁,Vault destroyed
+ui.challenge.custody_returned,保险箱本金返还,Vault principal returned
+ui.challenge.custody_lost,保险箱本金损失,Vault principal lost
+ui.challenge.principal_amount,本金 %d,Principal %d
+ui.challenge.settled,挑战已结算。,Challenge settled.

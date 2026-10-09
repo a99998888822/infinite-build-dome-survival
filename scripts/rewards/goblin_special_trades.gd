@@ -45,7 +45,7 @@ static func sanity_quote(player: PlayerController, finance: BattleFinanceSystem,
 	var preview_player := player.create_stat_preview_copy()
 	var preview := finance.create_preview_copy(preview_player)
 	preview.consume_trade_principal(cost)
-	var recovery := maxf(0, float(definition.target_sanity) - preview_player.get_stat("humanity"))
+	var recovery := maxf(0, float(definition.target_sanity) - preview_player.get_stat("humanity")) * 0.5
 	preview_player.restore_sanity_from_goblin_trade(recovery)
 	var gain := preview_player.get_stat("humanity") - before
 	preview_player.free()

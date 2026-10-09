@@ -10,6 +10,7 @@ var current_slot := 0
 var cursor_icon: CursorWeaponIcon
 var _cursor_layer: CanvasLayer
 var _pointer_position := Vector2.ZERO
+var _marker_pointer_position := Vector2.ZERO
 var _has_pointer_position := false
 var indicator: WeaponAttackIndicator
 var marker: MoveDestinationMarker
@@ -148,6 +149,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not player.keyboard_movement:
 				player.request_move(pointer_world())
 				marker.show_destination(player.move_destination)
+				_marker_pointer_position = _pointer_position
 			get_viewport().set_input_as_handled()
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed and selected_weapon != null:
 			if loadout.cast_weapon(selected_weapon, pointer_world()):
@@ -221,8 +223,11 @@ func _process(_delta: float) -> void:
 		var hovered := get_viewport().gui_get_hovered_control()
 		if hovered == null or hovered.mouse_filter == Control.MOUSE_FILTER_IGNORE:
 			player.request_move(pointer_world())
-			if not marker.active:
+			# Camera follow changes world coordinates even with a stationary mouse.
+			# Replay an expired cue only for new pointer intent, not camera motion.
+			if not marker.active and _marker_pointer_position.distance_squared_to(_pointer_position) > 4.0:
 				marker.show_destination(player.move_destination)
+				_marker_pointer_position = _pointer_position
 			marker.global_position = player.move_destination
 	if not player.has_move_destination:
 		marker.clear_destination()

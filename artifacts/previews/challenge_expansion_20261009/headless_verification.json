@@ -1,0 +1,32 @@
+[
+  {
+    "scene": "challenge_expansion_test",
+    "passed": false,
+    "exit_code": 1,
+    "issues": [
+      "SCRIPT ERROR: Invalid access to property or key 'deposited' on a base object of type 'Dictionary'.",
+      "SCRIPT ERROR: Invalid access to property or key 'condition' on a base object of type 'Dictionary'.",
+      "SCRIPT ERROR: Invalid access to property or key 'id' on a base object of type 'Dictionary'.",
+      "FAIL eligible offer reaches real modal fleeting_fortune",
+      "SCRIPT ERROR: Invalid access to property or key 'id' on a base object of type 'Dictionary'.",
+      "SCRIPT ERROR: Invalid access to property or key 'id' on a base object of type 'Dictionary'.",
+      "SCRIPT ERROR: Invalid access to property or key 'condition' on a base object of type 'Dictionary'.",
+      "SCRIPT ERROR: Invalid access to property or key 'id' on a base object of type 'Dictionary'.",
+      "FAIL eligible offer reaches real modal capital_custody"
+    ],
+    "summaries": [
+      "CHALLENGE_EXPANSION_COMPLETE checks=18 failures=2"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\challenge_expansion_test.log"
+  },
+  {
+    "scene": "wave_challenge_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "WAVE_CHALLENGE_COMPLETE checks=84 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\wave_challenge_test.log"
+  }
+]

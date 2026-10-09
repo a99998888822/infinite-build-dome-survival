@@ -93,7 +93,7 @@ func render_message(value: Variant) -> String:
 	var arguments: Array = []
 	for argument in value.get("message_args", []):
 		arguments.append(render_message(argument) if argument is Dictionary else source(argument) if argument is String else argument)
-	return text(str(value.get("message_key", "")), arguments)
+	return text(str(value.get("message_key", "")), arguments).format(value.get("message_replacements", {}))
 
 
 func record_text(record: Dictionary, field: String, fallback: String = "") -> String:

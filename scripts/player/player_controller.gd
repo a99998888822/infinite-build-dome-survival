@@ -43,6 +43,8 @@ var keyboard_movement := false
 var last_move_direction := Vector2.RIGHT
 var move_destination := Vector2.ZERO
 var has_move_destination := false
+var health_damage_filter: Callable
+var _health_damage_remainder := 0.0
 var _mobility_owner: WeakRef
 var _mobility_start := Vector2.ZERO
 var _mobility_target := Vector2.ZERO
@@ -124,6 +126,8 @@ func _physics_process(delta: float) -> void:
 
 
 func initialize_from_character(target_character_id: String, outgame_modifiers: Array = [], initial_weapon_ids: Array[String] = []) -> bool:
+	health_damage_filter = Callable()
+	_health_damage_remainder = 0.0
 	# 角色初始化只写入本局运行状态，不回写 characters.json。
 	var data := DataRegistry.get_record("characters", target_character_id)
 	if data.is_empty():
@@ -226,9 +230,13 @@ func restore_sanity_from_goblin_trade(amount: float) -> void:
 	# This paid restoration alone bypasses the candle. It does not disable the
 	# blocker for future healing, derived modifiers, or other relics.
 	if amount <= 0: return
+	var total := amount
+	for modifier in modifier_stack.get_all_modifiers("humanity"):
+		if modifier.source_type == "goblin_trade" and modifier.source_id == "sanity_buyback":
+			total += modifier.value
 	modifier_stack.add_modifier_from_dictionary({"id": "goblin_purchased_sanity", "source_type": "goblin_trade",
 		"source_id": "sanity_buyback", "target_scope": "player", "stat": "humanity",
-		"operation": Modifier.OPERATION_ADD_FLAT, "value": amount,
+		"operation": Modifier.OPERATION_ADD_FLAT, "value": total,
 		"duration": Modifier.PERMANENT_DURATION, "stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE})
 	_update_after_stat_change()
 
@@ -409,6 +417,11 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 	if remaining_damage > 0:
 		var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 		health_damage = maxi(1, int(roundi(float(remaining_damage) * damage_taken_percent / 100.0)))
+		if health_damage_filter.is_valid():
+			# Fractional protection accumulates instead of rounding every small hit.
+			var exact_damage := float(health_damage_filter.call(health_damage)) + _health_damage_remainder
+			health_damage = maxi(0, roundi(exact_damage))
+			_health_damage_remainder = exact_damage - health_damage
 	current_hp = maxi(current_hp - health_damage, 0)
 	if health_damage > 0:
 		health_damage_taken.emit(previous_hp, current_hp, damage_maximum_hp)

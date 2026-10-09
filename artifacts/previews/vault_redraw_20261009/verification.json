@@ -1,0 +1,39 @@
+{
+  "headless": {
+    "checks": 53,
+    "failures": 0,
+    "log": "headless.log"
+  },
+  "gpu": {
+    "checks": 61,
+    "failures": 0,
+    "log": "gpu_run.log",
+    "execution": {
+      "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+      "pid": 35156,
+      "private_desktop": "CodexGodotCapture_1791520895378650100",
+      "verified_desktop": "CodexGodotCapture_1791520895378650100",
+      "foreground_samples": 0,
+      "samples": 618,
+      "exit_code": 0,
+      "elapsed_seconds": 12.921536199981347
+    }
+  },
+  "art": "../../generated/vault_redraw_20261009/manifest.json",
+  "visual_review": [
+    "Challenge title and new icon visible at 1152x768 and 640x360",
+    "New vault shape visible in actual combat with unobstructed 221/225 health bar"
+  ],
+  "detail_image": "Nearest-neighbor 3x enlargement of actual combat screenshot crop; full original retained in captures/05_vault_defense.png",
+  "editor_import": {
+    "exit_code": 0,
+    "imported": [
+      "challenge_vault_painted.png",
+      "challenge_vault_world.png"
+    ],
+    "notes": [
+      "Initial log-file destination was missing; editor import itself completed successfully.",
+      "Existing Android build-tools and nested temporary project warnings observed."
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "checks": 265,
+  "cases": [
+    {
+      "scene": "goblin_trade_expansion_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "GOBLIN_EXPANSION_COMPLETE checks=87 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_balance_half_recovery_20261009\\final\\goblin_trade_expansion_test.log"
+    },
+    {
+      "scene": "goblin_trade_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "GOBLIN_TRADE_COMPLETE checks=126 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_balance_half_recovery_20261009\\goblin_trade_test.log"
+    },
+    {
+      "scene": "goblin_trade_cancellation_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "TRADE_CANCELLATION_TEST checks=52 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_balance_half_recovery_20261009\\goblin_trade_cancellation_test.log"
+    }
+  ],
+  "display_texts_unchanged": true,
+  "recovery": "max(0, target_sanity - post_cost_sanity) * 0.5; existing stat rounding and principal-derived effects preserved",
+  "cooldown_visits": 2
+}

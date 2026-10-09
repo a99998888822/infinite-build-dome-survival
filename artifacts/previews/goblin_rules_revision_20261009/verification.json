@@ -1,0 +1,91 @@
+{
+  "suites": 9,
+  "checks": 987,
+  "passed": true,
+  "cases": [
+    {
+      "scene": "goblin_trade_expansion_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "GOBLIN_EXPANSION_COMPLETE checks=83 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\goblin_trade_expansion_test.log"
+    },
+    {
+      "scene": "goblin_trade_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "GOBLIN_TRADE_COMPLETE checks=117 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\goblin_trade_test.log"
+    },
+    {
+      "scene": "goblin_trade_cancellation_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "TRADE_CANCELLATION_TEST checks=52 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\goblin_trade_cancellation_test.log"
+    },
+    {
+      "scene": "wave_challenge_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "WAVE_CHALLENGE_COMPLETE checks=84 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\wave_challenge_test.log"
+    },
+    {
+      "scene": "challenge_expansion_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "CHALLENGE_EXPANSION_COMPLETE checks=63 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\challenge_expansion_test.log"
+    },
+    {
+      "scene": "humanity_economy_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "HUMANITY_ECONOMY_COMPLETE checks=52 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\humanity_economy_test.log"
+    },
+    {
+      "scene": "finance_scene_regression_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "FINANCE_SCENE_REGRESSION_COMPLETE checks=58 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\finance_scene_regression_test.log"
+    },
+    {
+      "scene": "localization_test",
+      "passed": true,
+      "exit_code": 0,
+      "issues": [],
+      "summaries": [
+        "LOCALIZATION_COMPLETE checks=332 failures=0"
+      ],
+      "log": "artifacts\\previews\\goblin_rules_revision_20261009\\localization_test.log"
+    }
+  ],
+  "active_combat_summary": "ACTIVE_COMBAT_INTEGRATION checks=146 failures=0",
+  "lifetime_definition": "All spawned enemies; birth to death or cleanup timeout; active simulation seconds only; mean >= 10 seconds; high pressure and cleanup survivors required",
+  "repeat_expansion": "frequency bonus adds 0.2 per accepted offer",
+  "trade_wave_definition": "completed waves, minimum 6, gold < completed waves * 50"
+}

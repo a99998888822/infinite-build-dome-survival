@@ -103,6 +103,7 @@ func accept(token: String, index: int, finance: BattleFinanceSystem, stats: RunS
 	_busy = true
 	var chosen: Dictionary = options[index].duplicate(true)
 	debt = chosen
+	debt["loan_id"] = str(quote.token)
 	debt["due_wave"] = preparation_wave
 	debt["rollovers"] = 0
 	accepted_this_visit = true
@@ -135,6 +136,25 @@ func repay(finance: BattleFinanceSystem, automatic := false) -> Dictionary:
 	finance.record_loan_activity(L10n.message("log.loan.repaid", ["log.loan.repayment.automatic" if automatic else "log.loan.repayment.manual",amount]))
 	_busy = false
 	return {"success":true,"action":"paid","amount":amount,"borrowed":previous.amount}
+
+
+func debt_identity() -> String:
+	if debt.is_empty(): return ""
+	return str(debt.get("loan_id", "%s:%s:%s" % [_run_token, debt.get("amount", 0), debt.get("rate_percent", 0)]))
+
+
+func adjust_challenge_debt(loan_id: String, delta: int, finance: BattleFinanceSystem) -> Dictionary:
+	if _busy or debt.is_empty() or loan_id != debt_identity(): return {}
+	_busy = true
+	var before := int(debt.due)
+	var after := before + mini(delta, MAX_DEBT - before) if delta > 0 else maxi(0, before + delta)
+	debt.due = after
+	if after == 0:
+		debt.clear()
+		paid_this_visit = true
+	finance.record_loan_activity(L10n.message("log.challenge.debt_changed", [before, after]))
+	_busy = false
+	return {"debt_before": before, "debt_after": after, "debt_delta": after - before}
 
 
 func settle_wave(wave: int, finance: BattleFinanceSystem) -> Dictionary:

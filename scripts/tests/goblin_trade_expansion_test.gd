@@ -176,7 +176,21 @@ func _test_candidates() -> void:
 	check(not trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "buyout cannot appear at five completed waves")
 	c.wave = 6
 	trades.accepted_waves.weapon_buyout = 1
-	check(not trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "accepted new trades are once per run")
+	check(trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "weapon buyout can return in the same run")
+	c.gold = 299
+	check(trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "wave six allows buyout below 300 gold")
+	c.gold = 300
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "buyout gold threshold is strictly less than completed waves times 50")
+	c.wave = 7
+	check(trades.eligible_offers(c).any(func(x): return x.id == "weapon_buyout"), "buyout threshold scales on the following completed wave")
+	c = {"wave": 7, "has_next_wave": true, "sanity": 0, "principal": 2000, "interest_loss": 100, "interest_loss_ratio": 0.01, "sanity_quote": {"cost": 400, "gain": 50}}
+	trades.accepted_waves.sanity_buyback = 6
+	check(trades.eligible_offers(c).any(func(x): return x.id == "sanity_buyback"), "sanity buyback repeats and ignores lost-interest percentage")
+	c.interest_loss = 99
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "sanity_buyback"), "sanity buyback retains absolute interest loss threshold")
+	c = {"wave": 7, "has_next_wave": true, "gold": 200, "high_pressure": true, "epic_candidates": [{"target_id": "fixture"}]}
+	trades.accepted_waves.exclusive_relic = 6
+	check(not trades.eligible_offers(c).any(func(x): return x.id == "exclusive_relic"), "exclusive relic remains limited to one acceptance per run")
 	c = {"wave": 2, "has_next_wave": true, "gold": 150, "principal": 250, "sanity": 100, "struggling": true, "can_bank": true, "epic_available": true}
 	var candidates := trades.eligible_offers(c)
 	check(candidates.size() == 5, "ordinary and crisis offers all enter one pool")
@@ -273,17 +287,36 @@ func _test_sanity() -> void:
 		var hp := manager.player.get_stat("max_hp")
 		var manual := manager.finance_system.manual_operation_used
 		var quoted: Dictionary = offer.sanity_quote
+		print("SANITY_QUOTE candle=", candle, " before=", before, " quote=", quoted)
 		check(int(quoted.cost) == ceili(principal * 0.2) and float(quoted.gain) > 0, "sanity quote charges a dynamic share of capital")
+		# The ring returns 8 sanity when 10000 principal becomes 8000, unless blocked.
+		check(is_equal_approx(before, -40) and is_equal_approx(float(quoted.recovery), 45 if candle else 41) and is_equal_approx(float(quoted.gain), 45 if candle else 49), "only paid recovery is halved; principal-derived sanity follows existing relic rules")
+		var expected_after := before + float(quoted.gain)
 		check(before == manager.player.get_stat("humanity") and principal == manager.finance_system.principal, "read-only quote does not change real sanity or capital")
 		if candle: await capture_sizes("07_sanity_offer_with_candle")
 		await click(popup.trade_presentation._yes)
-		check(is_equal_approx(manager.player.get_stat("humanity"), before + float(quoted.gain)) and is_equal_approx(manager.player.get_stat("humanity"), 50), "paid restoration reaches quoted final sanity, candle=" + str(candle))
+		check(is_equal_approx(manager.player.get_stat("humanity"), expected_after) and is_equal_approx(expected_after, 5 if candle else 9), "halved paid restoration reaches exact quoted sanity, candle=" + str(candle))
 		check(manager.finance_system.principal == principal - int(quoted.cost) and manager.player.get_stat("max_hp") < hp, "capital cost refreshes principal-derived combat attributes")
 		check(manager.finance_system.manual_operation_used == manual, "paid sanity does not spend a manual banking action")
 		manager.finance_system._emit_changed()
-		check(is_equal_approx(manager.player.get_stat("humanity"), 50) and not flow.accept_goblin_trade(str(offer.token)).success, "attribute rebuild preserves purchased sanity and cannot pay twice")
+		check(is_equal_approx(manager.player.get_stat("humanity"), expected_after) and not flow.accept_goblin_trade(str(offer.token)).success, "attribute rebuild preserves purchased sanity and cannot pay twice")
 		if candle:
 			GoblinTradeSystem.apply_stat(manager.player, "ordinary_recovery", "humanity", 10)
-			check(is_equal_approx(manager.player.get_stat("humanity"), 50), "candle continues blocking ordinary recovery after this exception")
+			check(is_equal_approx(manager.player.get_stat("humanity"), expected_after), "candle continues blocking ordinary recovery after this exception")
 			popup._select_tab("bank")
 			await capture("08_sanity_accepted_with_candle")
+		# Keep the actual first purchase modifier: a second payment must add to it.
+		GoblinTradeSystem.apply_stat(manager.player, "second_wave_sanity_loss", "humanity", -100)
+		var trades := manager.goblin_trades
+		var second_before := manager.player.get_stat("humanity")
+		var second_principal := manager.finance_system.principal
+		var second_quote := GoblinSpecialTrades.sanity_quote(manager.player, manager.finance_system, trades.definition("sanity_buyback"))
+		print("SANITY_REPEAT candle=", candle, " before=", second_before, " quote=", second_quote)
+		check(is_equal_approx(second_before, -95 if candle else -91) and is_equal_approx(float(second_quote.recovery), 72.5 if candle else 66.5) and is_equal_approx(float(second_quote.gain), 72 if candle else 74), "repeat purchase retains fractional modifiers and existing integer-sanity rounding")
+		check(is_equal_approx(manager.player.get_stat("humanity"), second_before), "repeat sanity preview does not mutate the first purchase")
+		trades.prepare({"wave": trades.preparation_wave + 1, "has_next_wave": true, "sanity": second_before, "principal": second_principal, "interest_loss": 100, "sanity_quote": second_quote})
+		check(str(trades.offer.get("id", "")) == "sanity_buyback", "second low-sanity wave can offer another purchase")
+		var second_token := str(trades.offer.get("token", ""))
+		var second_result := trades.accept(second_token, manager.player, manager.finance_system, flow._bound_loadout)
+		check(bool(second_result.success) and is_equal_approx(manager.player.get_stat("humanity"), -23 if candle else -17) and is_equal_approx(manager.player.get_stat("humanity") - second_before, float(second_quote.gain)), "second purchase matches quoted net gain without replacing the first, candle=" + str(candle))
+		check(manager.finance_system.principal == second_principal - int(second_quote.cost) and not trades.accept(second_token, manager.player, manager.finance_system, flow._bound_loadout).success, "repeat purchase deducts only its locked cost once")

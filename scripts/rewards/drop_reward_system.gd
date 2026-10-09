@@ -24,6 +24,7 @@ var _augmentation_wave_number: int = 1
 var _augmentations_dropped_this_wave: int = 0
 var _augmentation_dry_waves: int = 0
 var _augmentation_wave_finished := false
+var gold_terms: Dictionary = {}
 
 
 func reset_run() -> void:
@@ -32,6 +33,7 @@ func reset_run() -> void:
 
 
 func begin_wave(wave_number: int = 1) -> void:
+	gold_terms.clear()
 	_augmentation_wave_number = maxi(1, wave_number)
 	_augmentations_dropped_this_wave = 0
 	_augmentation_wave_finished = false
@@ -350,6 +352,7 @@ func spawn_exp_orb(
 	pickup_root.add_child(orb)
 	orb.global_position = position
 	orb.initialize(amount)
+	orb.configure_gold(gold_terms)
 	orb.set_target_player(player)
 	if snapshot != null:
 		snapshot.record_spawned_drop("exp_orb", 1)

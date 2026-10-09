@@ -307,9 +307,7 @@ content.run_settlement.reactions.victory_refused.speech,啧，稳妥点当然好
 content.wave_challenges.all_in.body,"下一波结束：先结息，再将全部金币存入本金。
 额外获得本金 +100、幸运 +10。","At the end of the next wave, settle interest, then deposit all gold.
 Gain an extra +100 Principal and +10 Luck."
-content.wave_challenges.all_in.speech,"下一步结束，将全部金币存入本金。
-额外获得本金 +100，幸运 +10.","Deposit all your gold at the end of the next wave.
-Gain an extra +100 Principal and +10 Luck."
+content.wave_challenges.all_in.speech,请放心交给我理财吧,Rest assured. Let me manage your money.
 content.wave_challenges.extra_elites.body,下一波额外出现 2 个精英怪。,2 additional elite enemies appear next wave.
 content.wave_challenges.extra_elites.speech,多来几个大家伙而已，你不会连这点钱都不敢赚吧？,Just a few more big ones. Surely you're not afraid of easy money?
 content.wave_challenges.rising_tide.body,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.

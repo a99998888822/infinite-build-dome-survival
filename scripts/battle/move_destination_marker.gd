@@ -32,6 +32,9 @@ func _process(delta: float) -> void:
 	if not active or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	elapsed += delta
+	if elapsed >= FRAME_COUNT * FRAME_SECONDS:
+		clear_destination()
+		return
 	queue_redraw()
 
 

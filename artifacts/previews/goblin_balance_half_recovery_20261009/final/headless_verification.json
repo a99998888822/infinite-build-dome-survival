@@ -1,0 +1,12 @@
+[
+  {
+    "scene": "goblin_trade_expansion_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "GOBLIN_EXPANSION_COMPLETE checks=87 failures=0"
+    ],
+    "log": "artifacts\\previews\\goblin_balance_half_recovery_20261009\\final\\goblin_trade_expansion_test.log"
+  }
+]

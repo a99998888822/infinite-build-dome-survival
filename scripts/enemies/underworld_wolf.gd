@@ -197,7 +197,7 @@ func begin_skill(kind: String) -> bool:
 func mouth_position() -> Vector2:
 	var left := is_instance_valid(target_player) and target_player.global_position.x < global_position.x
 	# Attachment measured from the supplied attack-04 open-mouth pose.
-	return global_position + Vector2(-48 if left else 48,-54)
+	return global_position + Vector2(-48 if left else 48,-54) * body_scale_multiplier
 
 
 func try_breath_pulse() -> void:
@@ -259,9 +259,9 @@ func animate(delta: float) -> void:
 	var record: Dictionary = FRAME_TRANSFORMS[str(sequence[0])+":"+str(int(sequence[1][animation_index]))]
 	# Undo Picxel's per-pose fit in the shared original coordinate system.
 	# Mirroring includes the registered offset; gameplay air height is separate.
-	sprite.scale = Vector2.ONE*float(record.sprite_scale)
+	sprite.scale = Vector2.ONE*float(record.sprite_scale) * body_scale_multiplier
 	var offset: Array = record.sprite_offset
-	sprite.position = Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])-air_height)
+	sprite.position = Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * body_scale_multiplier - Vector2(0, air_height)
 
 
 func _set_movement_visual(moving: bool, _delta: float) -> void:

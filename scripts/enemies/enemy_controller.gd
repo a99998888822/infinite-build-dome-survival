@@ -50,6 +50,8 @@ var current_hp: int = 0
 var alive: bool = true
 var has_contact_damaged: bool = false
 var target_player: PlayerController = null
+var challenge_target: Node2D = null
+var body_scale_multiplier := 1.0
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -132,6 +134,19 @@ func _exit_tree() -> void:
 		EnemyRegistry.unregister_enemy(self)
 
 
+func apply_body_scale(multiplier: float) -> void:
+	# Scale the body and art together. Skill telegraphs keep their authored ranges.
+	var ratio := multiplier / body_scale_multiplier
+	body_scale_multiplier = multiplier
+	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body != null:
+		body.scale *= ratio
+		body.position *= ratio
+	if sprite != null:
+		sprite.scale *= ratio
+		sprite.position *= ratio
+
+
 func _physics_process(delta: float) -> void:
 	if not alive:
 		_set_movement_visual(false, delta)
@@ -159,7 +174,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		_set_movement_visual(false, delta)
 		return
-	if _process_special_behavior(delta):
+	if not _has_challenge_target() and _process_special_behavior(delta):
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
@@ -727,7 +742,8 @@ func _process_chase() -> void:
 		move_and_slide()
 		_set_movement_visual(false, get_physics_process_delta_time())
 		return
-	var direction := global_position.direction_to(target_player.global_position)
+	var destination := challenge_target.global_position if _has_challenge_target() else target_player.global_position
+	var direction := global_position.direction_to(destination)
 	# Dictionary.get evaluates its default argument even when the key exists.
 	var resolved_move_speed := get_stat("move_speed")
 	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", resolved_move_speed))
@@ -745,6 +761,7 @@ func _process_chase() -> void:
 
 
 func _process_contact_recovery() -> bool:
+	if _has_challenge_target(): return false
 	if target_player == null or not target_player.alive or _contact_damage_cooldown <= 0.0:
 		return false
 	if global_position.distance_to(target_player.global_position) >= CONTACT_RESET_RADIUS:
@@ -789,6 +806,12 @@ func _set_movement_visual(is_moving: bool, delta: float) -> void:
 
 
 func _process_contact_damage() -> void:
+	if _has_challenge_target():
+		if _contact_damage_cooldown <= 0 and global_position.distance_to(challenge_target.global_position) <= 42:
+			var damage := roundi(get_stat("melee_damage") * (1.0 + get_stat("damage_percent") / 100.0))
+			challenge_target.take_enemy_damage(damage)
+			_contact_damage_cooldown = CONTACT_DAMAGE_COOLDOWN_SECONDS
+		return
 	if target_player == null or not target_player.alive or _contact_damage_cooldown > 0.0:
 		return
 	if not _is_touching_player():
@@ -803,6 +826,10 @@ func _process_contact_damage() -> void:
 		has_contact_damaged = true
 		contact_damaged.emit(target_player, dealt_damage)
 	_apply_contact_knockback()
+
+
+func _has_challenge_target() -> bool:
+	return is_instance_valid(challenge_target) and not challenge_target.is_queued_for_deletion() and challenge_target.alive
 
 
 func _is_touching_player() -> bool:

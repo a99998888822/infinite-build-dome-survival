@@ -1,0 +1,11 @@
+keys,zh_CN,en
+data.trade.customer.speech,常来的客人，当然有常来的价钱。,Regular customers deserve a regular customer's price.
+data.trade.customer.body,本局商店价格-15%，每次购买商品理智-2。,Shop prices -15% this run; each item purchase costs 2 sanity.
+data.trade.protection.speech,钱不能光放着，总得有点别的什么作用。,Money shouldn't just sit there. It ought to do something else.
+data.trade.protection.body,下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,Next wave's health damage -30%; each point prevented costs {单价} principal. Expires when principal runs out.
+data.challenge.overtime.speech,既然还有力气，就多做一点。,Since you still have strength left do a little more.
+data.challenge.overtime.body,下一波怪物生命+30%，存活后金币+{动态值},Next wave's monster health +30%; survive to gain {动态值} gold
+data.challenge.debt.speech,把他解决了，我们之间的账就好商量了。,Deal with him and we can talk about what you owe me.
+data.challenge.debt.body,下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值},An extra powerful boss appears at the start of the next wave. Defeat it to reduce debt by {动态值}; if it survives the time limit debt increases by {动态值}
+log.challenge.debt_changed,讨债挑战：欠款 %d → %d。,Debt challenge: debt %d → %d.
+log.challenge.gold_granted,挑战存活奖励：金币+%d。,Challenge survival reward: +%d gold.

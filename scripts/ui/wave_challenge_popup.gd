@@ -33,7 +33,7 @@ func _ready() -> void:
 
 func present(payload: Dictionary) -> void:
 	proposal = payload.duplicate(true)
-	presentation.present(L10n.source(str(payload.speech)), L10n.source(str(payload.body)))
+	presentation.present(L10n.record_text(payload, "speech"), L10n.record_text(payload, "body"))
 	presentation.configure_challenge(int(payload.wave), str(payload.icon))
 	show()
 	_arrange()

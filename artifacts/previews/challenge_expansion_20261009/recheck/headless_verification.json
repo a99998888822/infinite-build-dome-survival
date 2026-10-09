@@ -1,0 +1,22 @@
+[
+  {
+    "scene": "challenge_expansion_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "CHALLENGE_EXPANSION_COMPLETE checks=53 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\recheck\\challenge_expansion_test.log"
+  },
+  {
+    "scene": "interest_arrival_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "INTEREST_ARRIVAL_COMPLETE checks=40 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\recheck\\interest_arrival_test.log"
+  }
+]

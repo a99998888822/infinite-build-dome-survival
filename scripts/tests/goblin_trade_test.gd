@@ -80,7 +80,7 @@ func _test_rules() -> void:
 	check(trades.eligible_offers(c).size() == 2, "high sanity and spendable wealth can both qualify")
 	c.sanity = 100
 	check(trades.eligible_offers(c).size() == 2, "starting sanity qualifies for ordinary interest offers")
-	c.sanity = 94
+	c.sanity = 64
 	trades.prepare(c)
 	check(trades.offer.id == "spending_money", "lower sanity still allows eligible spending money")
 	var token := str(trades.offer.token)
@@ -91,10 +91,17 @@ func _test_rules() -> void:
 	trades.prepare(c)
 	check(trades.offer.is_empty(), "cancelled offer cannot return this preparation")
 	trades.accepted_waves.spending_money = 3
+	c.wave = 5
+	check(trades.eligible_offers(c).is_empty(), "same offer skips two following preparations")
 	c.wave = 6
-	check(trades.eligible_offers(c).is_empty(), "same offer skips three following preparations")
-	c.wave = 7
 	check(trades.eligible_offers(c).size() == 1, "offer returns after cooldown")
+	for id in ["principal_advance", "cash_price", "spending_money"]:
+		var cooling := GoblinTradeSystem.new()
+		cooling.accepted_waves[id] = 5
+		var visit := {"wave": 6, "has_next_wave": true, "gold": 100, "principal": 150, "sanity": 0, "struggling": true}
+		for wave in [6, 7, 8]:
+			visit.wave = wave
+			check(cooling.eligible_offers(visit).any(func(x): return x.id == id) == (wave == 8), "two-visit cooldown boundary " + id + " wave=" + str(wave))
 	c.has_next_wave = false
 	check(trades.eligible_offers(c).is_empty(), "no deal after the final wave")
 	var empty_roll := ShopOfferGenerator.new().roll_paid_offers({"common": 100}, {"relic": 100}, [], 3, 1, [], "epic")
@@ -109,10 +116,10 @@ func _test_broader_eligibility() -> void:
 	var trades := GoblinTradeSystem.new()
 	var c := {"wave": 1, "has_next_wave": true, "gold": 0, "principal": 500, "sanity": 100, "struggling": false}
 	check(trades.eligible_offers(c).any(func(x): return x.id == "interest_pact"), "ordinary saver with empty wallet qualifies at starting sanity")
-	c.sanity = 95
-	check(trades.eligible_offers(c).size() == 1, "slightly reduced sanity still qualifies at 95")
-	c.sanity = 94
-	check(trades.eligible_offers(c).is_empty(), "sanity below 95 cannot offer an interest pact")
+	c.sanity = 65
+	check(trades.eligible_offers(c).size() == 1, "interest pact qualifies at the new 65 sanity boundary")
+	c.sanity = 64
+	check(trades.eligible_offers(c).is_empty(), "sanity below 65 cannot offer an interest pact")
 	c.gold = 50
 	c.principal = 100
 	check(trades.eligible_offers(c).any(func(x): return x.id == "spending_money"), "50 wallet and 100 principal qualify for spending money")

@@ -622,7 +622,10 @@ func _sync_economy(animate: bool) -> void:
 	var finance := _wave_manager.finance_system
 	var principal := maxi(finance.principal, 0) if finance != null else 0
 	if gold_label != null:
-		gold_label.text = L10n.text("ui.hud.gold") % _format_number(current_gold)
+		var gold_text := _format_number(current_gold)
+		if _wave_manager.pickup_gold_remainder_cents > 0:
+			gold_text += ".%02d" % _wave_manager.pickup_gold_remainder_cents
+		gold_label.text = L10n.text("ui.hud.gold") % gold_text
 	if finance_label != null:
 		finance_label.text = L10n.text("ui.hud.principal") % _format_number(principal)
 	if animate and _last_gold >= 0 and _last_gold != current_gold:

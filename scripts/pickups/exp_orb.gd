@@ -16,6 +16,11 @@ var force_collecting: bool = false
 var forced_attract_speed: float = WAVE_END_ATTRACT_SPEED
 var _collection_time: float = 0.0
 var _collection_start: Vector2 = Vector2.ZERO
+var gold_multiplier := 1.0
+var gold_lifetime := 0.0
+var gold_age := 0.0
+var gold_expired := false
+var _gold_locked := false
 
 
 func _ready() -> void:
@@ -32,6 +37,31 @@ func initialize(exp_amount: int) -> void:
 	amount = maxi(exp_amount, 0)
 	collected_once = false
 	force_collecting = false
+	gold_age = 0.0
+	gold_expired = false
+	_gold_locked = false
+
+
+func configure_gold(terms: Dictionary) -> void:
+	gold_multiplier = float(terms.get("multiplier", 1.0))
+	gold_lifetime = float(terms.get("lifetime", 0.0))
+	queue_redraw()
+
+
+func advance_gold_clock(delta: float) -> void:
+	if gold_lifetime <= 0 or gold_expired or _gold_locked: return
+	gold_age += maxf(0, delta)
+	if gold_age >= gold_lifetime:
+		gold_expired = true
+		var sprite := get_node_or_null("Sprite2D") as Sprite2D
+		if sprite != null: sprite.modulate = Color(0.35, 0.55, 0.65, 0.65)
+	queue_redraw()
+
+
+func _draw() -> void:
+	if gold_lifetime <= 0 or gold_expired: return
+	var ratio := clampf(1.0 - gold_age / gold_lifetime, 0, 1)
+	draw_arc(Vector2.ZERO, 8, -PI / 2, -PI / 2 + TAU * ratio, 24, Color("edc86b"), 2)
 
 
 func set_target_player(player: PlayerController) -> void:
@@ -39,6 +69,7 @@ func set_target_player(player: PlayerController) -> void:
 
 
 func start_wave_end_collection(player: PlayerController) -> void:
+	_gold_locked = true # Only still-valid coins survive the existing wave-end sweep.
 	target_player = player
 	force_collecting = true
 	forced_attract_speed = WAVE_END_ATTRACT_SPEED
@@ -51,10 +82,12 @@ func _physics_process(delta: float) -> void:
 		return
 	if target_player == null or collected_once:
 		return
+	advance_gold_clock(delta)
 	var pickup_radius := INF if force_collecting else target_player.get_stat("pickup_radius")
 	var distance_to_player := global_position.distance_to(target_player.global_position)
 	if distance_to_player > pickup_radius:
 		return
+	_gold_locked = true
 	var speed := forced_attract_speed if force_collecting else attract_speed
 	if force_collecting:
 		_collection_time += delta
@@ -75,7 +108,7 @@ func collect() -> void:
 	collected_once = true
 	if AudioManager != null:
 		AudioManager.play_exp_orb_collect_sfx()
-	collected.emit(self, amount, amount)
+	collected.emit(self, amount, 0 if gold_expired else amount)
 	queue_free()
 
 

@@ -130,7 +130,7 @@ func configure(next_payload: Dictionary) -> void:
 		_feedback.text = L10n.text("ui.bank.interest_received") % settled if settled > 0 else "ui.bank.ready_hint"
 		var settlements: Array = payload.get("settlement_results", [])
 		if not settlements.is_empty() and settlements.back().has("challenge_settlement"):
-			_feedback.text = "ui.bank.challenge_deposit_done"
+			_feedback.text = "ui.bank.challenge_deposit_done" if settlements.back().challenge_settlement.has("deposited") else "ui.challenge.settled"
 		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
 	_sync_interest_arrival()
 	_sync_live_trade()

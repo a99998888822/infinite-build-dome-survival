@@ -1,0 +1,82 @@
+[
+  {
+    "scene": "relic_consistency_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "RELIC_TEST_COMPLETE checks=162 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\relic_consistency_test.log"
+  },
+  {
+    "scene": "economy_flow_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "ECONOMY_FLOW_COMPLETE checks=57 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\economy_flow_test.log"
+  },
+  {
+    "scene": "principal_relic_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "PRINCIPAL_RELIC_COMPLETE checks=138 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\principal_relic_test.log"
+  },
+  {
+    "scene": "run_settlement_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "RUN_SETTLEMENT_COMPLETE checks=345 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\run_settlement_test.log"
+  },
+  {
+    "scene": "goblin_loan_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "GOBLIN_LOAN_COMPLETE checks=73 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\goblin_loan_test.log"
+  },
+  {
+    "scene": "enemy_adaptation_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "ENEMY_ADAPTATION_COMPLETE checks=63 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\enemy_adaptation_test.log"
+  },
+  {
+    "scene": "difficulty_balance_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "DIFFICULTY_BALANCE_COMPLETE checks=163 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\difficulty_balance_test.log"
+  },
+  {
+    "scene": "localization_test",
+    "passed": true,
+    "exit_code": 0,
+    "issues": [],
+    "summaries": [
+      "LOCALIZATION_COMPLETE checks=332 failures=0"
+    ],
+    "log": "artifacts\\previews\\challenge_expansion_20261009\\regressions\\localization_test.log"
+  }
+]

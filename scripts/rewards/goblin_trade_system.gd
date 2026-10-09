@@ -14,6 +14,7 @@ var interest_pact_count := 0
 var interest_pact: bool:
 	get: return interest_pact_count > 0
 var interest_sanity_paid := 0
+var customer_sanity_paid := 0
 var last_contract_wave := -1
 var low_health_episodes := 0
 var _health_armed := true
@@ -41,6 +42,7 @@ func reset() -> void:
 	_accepting = false
 	interest_pact_count = 0
 	interest_sanity_paid = 0
+	customer_sanity_paid = 0
 	last_contract_wave = -1
 	begin_combat()
 
@@ -124,7 +126,7 @@ func eligible_offers(context: Dictionary) -> Array[Dictionary]:
 	for entry in config.trades:
 		var id := str(entry.id)
 		if bool(entry.get("once_per_run", false)) and accepted_waves.has(id): continue
-		# A cooldown of three skips the next three preparation visits.
+		# Skip the configured number of preparation visits after acceptance.
 		if accepted_waves.has(id) and wave - int(accepted_waves[id]) <= int(entry.get("cooldown_waves", 0)): continue
 		var eligible := false
 		match id:
@@ -134,8 +136,10 @@ func eligible_offers(context: Dictionary) -> Array[Dictionary]:
 			"interest_pact": eligible = float(context.get("sanity", 100)) >= float(entry.minimum_sanity)
 			"spending_money": eligible = gold >= int(entry.minimum_gold) and principal <= gold * float(entry.maximum_principal_ratio) and bool(context.get("can_bank", true))
 			"exclusive_relic": eligible = bool(context.get("high_pressure", false)) and gold >= maxf(float(entry.minimum_gold), float(context.get("shelf_median", 0)) * float(entry.shelf_price_ratio)) and not context.get("epic_candidates", []).is_empty()
-			"weapon_buyout": eligible = wave >= int(entry.minimum_completed_waves) and bool(context.get("comfortable", false)) and gold < int(entry.gold_below) and principal < int(entry.principal_below) and not context.get("weapon_quotes", []).is_empty()
-			"sanity_buyback": eligible = float(context.get("sanity", 100)) <= float(entry.maximum_sanity) and principal >= int(entry.minimum_principal) and float(context.get("interest_loss", 0)) >= float(entry.minimum_interest_loss) and float(context.get("interest_loss_ratio", 0)) >= float(entry.minimum_loss_ratio) and not context.get("sanity_quote", {}).is_empty()
+			"weapon_buyout": eligible = wave >= int(entry.minimum_completed_waves) and bool(context.get("comfortable", false)) and gold < wave * int(entry.gold_per_completed_wave) and principal < int(entry.principal_below) and not context.get("weapon_quotes", []).is_empty()
+			"sanity_buyback": eligible = float(context.get("sanity", 100)) <= float(entry.maximum_sanity) and principal >= int(entry.minimum_principal) and float(context.get("interest_loss", 0)) >= float(entry.minimum_interest_loss) and not context.get("sanity_quote", {}).is_empty()
+			"preferred_customer": eligible = bool(context.get("high_pressure", false)) and gold >= maxf(float(entry.minimum_gold), float(context.get("shelf_median", 0)) * float(entry.shelf_price_ratio)) and principal >= int(entry.minimum_principal) and float(context.get("sanity", 100)) >= float(entry.minimum_sanity) and int(context.get("remaining_waves", 0)) >= int(entry.minimum_remaining_waves)
+			"capital_protection": eligible = bool(context.get("high_pressure", false)) and principal >= int(entry.minimum_principal) and (float(context.get("minimum_health_ratio", 1)) <= float(entry.maximum_minimum_health_ratio) or float(context.get("low_health_seconds", 0)) >= float(entry.minimum_low_health_seconds))
 		if not eligible: continue
 		var candidate: Dictionary = entry.duplicate(true)
 		candidates.append(candidate)
@@ -159,6 +163,7 @@ func prepare(context: Dictionary) -> void:
 		"principal_advance": amount = int(amounts.principal)
 		"cash_price": amount = int(amounts.gold)
 		"spending_money": amount = int(offer.gold_reward)
+		"preferred_customer": offer["minimum_offer_gold"] = ceili(maxf(float(offer.minimum_gold), float(context.get("shelf_median", 0)) * float(offer.shelf_price_ratio)))
 		"exclusive_relic":
 			var pool: Array = context.epic_candidates
 			offer["relic"] = pool[_rng.randi_range(0, pool.size() - 1)].duplicate(true)
@@ -175,6 +180,10 @@ func prepare(context: Dictionary) -> void:
 	offer["token"] = "%d:%s" % [wave, str(offer.id)]
 	offer["body_message"] = L10n.message(L10n.key_for_source(str(offer.body)), args)
 	if not args.is_empty(): offer.body = str(offer.body) % args
+	if str(offer.id) == "capital_protection":
+		var replacements := {"单价": int(offer.principal_per_damage)}
+		offer.body_message["message_replacements"] = replacements
+		offer.body = str(offer.body).format(replacements)
 
 
 func cancel() -> void:
@@ -225,6 +234,12 @@ func _accept_locked(player: PlayerController, finance: BattleFinanceSystem, load
 			if not GoblinSpecialTrades.accept_weapon(accepted, player, finance, loadout): return {"success": false, "reason": "trade_expired"}
 		"sanity_buyback":
 			if not GoblinSpecialTrades.accept_sanity(accepted, player, finance): return {"success": false, "reason": "trade_expired"}
+		"preferred_customer":
+			if accepted_waves.has(id) or finance.get_current_gold() < int(accepted.minimum_offer_gold) or finance.principal < int(accepted.minimum_principal) or player.get_stat("humanity") < float(accepted.minimum_sanity): return {"success": false, "reason": "trade_expired"}
+			apply_stat(player, id, "shop_price_percent", float(accepted.discount_percent))
+		"capital_protection":
+			if finance.principal < int(accepted.minimum_principal): return {"success": false, "reason": "trade_expired"}
+			finance.arm_capital_protection(preparation_wave + 1, float(accepted.damage_reduction), int(accepted.principal_per_damage))
 	if not bool(result.get("success", false)): return result
 	accepted_waves[id] = preparation_wave
 	offer.clear()
@@ -239,6 +254,12 @@ func settle_wave(wave: int, player: PlayerController, finance: BattleFinanceSyst
 	interest_sanity_paid += cost
 	apply_stat(player, "interest_pact", "humanity", -interest_sanity_paid)
 	finance.record_trade_activity(L10n.message("log.trade.sanity_cost", [cost, interest_sanity_paid]))
+
+
+func record_paid_purchase(player: PlayerController) -> void:
+	if not accepted_waves.has("preferred_customer"): return
+	customer_sanity_paid += int(definition("preferred_customer").sanity_per_purchase)
+	apply_stat(player, "preferred_customer", "humanity", -customer_sanity_paid)
 
 
 static func apply_stat(player: PlayerController, source: String, stat: String, value: float) -> void:
