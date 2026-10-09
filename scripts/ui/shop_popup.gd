@@ -133,6 +133,15 @@ func hide_popup() -> void:
 		main_panel.scale = Vector2.ONE
 
 
+func reset_run() -> void:
+	# The popup outlives battle scenes. Release the old run before a locale
+	# refresh or the next run can reuse its rewards, player or weapon strip.
+	hide_popup()
+	payload.clear()
+	set_bond_player(null)
+	set_loadout(null)
+
+
 func show_error(reason: String) -> void:
 	if error_label == null:
 		return

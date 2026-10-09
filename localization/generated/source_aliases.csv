@@ -245,7 +245,7 @@ Shockwave hits [color=#7FD88F]+1[/color]"
 先卸下，再出售,先卸下，再出售,Unequip before selling
 光辉剑,光辉剑,Radiant Sword
 全屏：,全屏：,Fullscreen:
-全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为200，不再按普通怪生命倍增，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加100%，单波最多3只；波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为200，不再按普通怪生命倍增，护甲2倍。首波不生成；其余波次基础期望为波次/10，侵蚀最多增加100%，单波最多3只；波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 200 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. Later waves have a base expected count of wave/10, increased by up to 100% through Corruption, capped at 3 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
+全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多3只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多3只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 3 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 全部,全部,All
 全部伤害增加20%,全部伤害增加20%,All damage +20%
 共 %d 个,共 %d 个,Total: %d
@@ -313,6 +313,7 @@ Base resale value %d; Sanity loss %d."
 办理后,办理后,After transaction
 办理后本金：%d → %d,办理后本金：%d → %d,Principal after transaction: %d → %d
 医疗削减方案,医疗削减方案,Medical Cutbacks
+升级不增加最大生命值,升级不增加最大生命值,No Max HP from levels
 升级奖励,升级奖励,Level-Up Reward
 升级已生效,升级已生效,Upgrade applied
 升级已重置,升级已重置,Upgrades reset
@@ -475,13 +476,13 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,Survivors gather beneath ancient totems to exchange relic-combination tactics.
 幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,"A training ground where survivors hone close combat, learning to wield body and blade as one."
 幸运,幸运,Luck
-幸运 + 18；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,幸运 + 18；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +18; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
-幸运 + 18；理智值 - 3,幸运 + 18；理智值 - 3,Luck +18; Sanity −3
-幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5,幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5,Luck +18; Experience Gain +12; Drop Rate +12; Sanity −5
-幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 5,幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 5,Luck +18; Load Capacity +10; Pickup Range +10; Corruption +5
-幸运 + 42；侵蚀度 + 10,幸运 + 42；侵蚀度 + 10,Luck +42; Corruption +10
-幸运 + 75；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,幸运 + 75；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,Luck +75; Experience Gain +35%. Sanity can no longer recover. Corruption +1 at each wave end. Stack limit: 1 per run.
-幸运 + 9；掉落率 + 5,幸运 + 9；掉落率 + 5,Luck +9; Drop Rate +5
+幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +36; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
+幸运 + 36；理智值 - 3,幸运 + 36；理智值 - 3,Luck +36; Sanity −3
+幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,Luck +36; Experience Gain +12; Drop Rate +12; Sanity −5
+幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +5
+幸运 + 84；侵蚀度 + 10,幸运 + 84；侵蚀度 + 10,Luck +84; Corruption +10
+幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,Luck +150; Experience Gain +35%. Sanity can no longer recover. Corruption +1 at each wave end. Stack limit: 1 per run.
+幸运 + 18；掉落率 + 5,幸运 + 18；掉落率 + 5,Luck +18; Drop Rate +5
 幸运+20,幸运+20,Luck +20
 幽焰冥狼,幽焰冥狼,Ghostflame Wolf
 幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,"A miniboss with blue spectral bone markings and a flaming tail. Shares the miniboss spawn quota with the Ironclad Knight at equal odds. Marks a landing point, leaps into a ground slam, then quickly returns to idle. A cone warns of its blue flame breath, which can hit up to 3 times per cast. Both the slam and flames knock the player back."
@@ -851,6 +852,7 @@ Pellets [color=#7FD88F]+1[/color]"
 理智变化后价格已更新，请查看新价格再购买。,理智变化后价格已更新，请查看新价格再购买。,Prices changed with Sanity. Review the new price before purchasing.
 理智折损,理智折损,Sanity Loss
 理财,理财,Bank
+理财界面无法主动取款,理财界面无法主动取款,Cannot withdraw principal
 理财经理,理财经理,Financial Adviser
 理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。,理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。,Bank: start with %d principal. Interest is calculated from principal × interest rate.
 生命,生命,HP
@@ -973,6 +975,7 @@ Pellets [color=#7FD88F]+1[/color]"
 角色名册,角色名册,Roster
 角色或敌人的最大生命值。,角色或敌人的最大生命值。,Maximum health of a character or enemy.
 角色特性,角色特性,Traits
+角色特性：无法主动取款。,角色特性：无法主动取款。,Character trait: withdrawals are disabled.
 解锁全部传说、虚空遗物,解锁全部传说、虚空遗物,Unlock all legendary and void relics
 解锁全部传说武器,解锁全部传说武器,Unlock all legendary weapons
 解锁全部史诗武器,解锁全部史诗武器,Unlock all epic weapons

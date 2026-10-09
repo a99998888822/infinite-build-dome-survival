@@ -120,7 +120,7 @@ func _test_elite() -> void:
 	var elite := manager.spawn_enemy("enemy_elite_rusher", Vector2.ZERO) as EliteRusher
 	normal.set_physics_process(false)
 	elite.set_physics_process(false)
-	check(elite.current_hp == int(elite.get_stat("max_hp")) and elite.current_hp == roundi(200.0 * 0.8 * pow(1.24, 4)), "knight uses its independent 200 base HP with difficulty and wave growth")
+	check(elite.current_hp == int(elite.get_stat("max_hp")) and elite.current_hp == roundi(600.0 * 0.8 * pow(1.24, 4)), "knight uses tripled 600 base HP with difficulty and wave growth")
 	check(is_equal_approx(elite.get_stat("armor"), normal.get_stat("armor") * 2.0), "wave armor doubles after growth")
 	check(elite.get_stat("damage_taken_percent") < normal.get_stat("damage_taken_percent"), "armor affects actual damage reduction")
 	check(elite.get_drop_table_id() == "drop_elite_enemy" and normal.get_drop_table_id() == "drop_basic_enemy", "normal enemy data remains independent")
@@ -177,7 +177,7 @@ func _test_collision_and_events() -> void:
 	manager.initialize(player)
 	manager._elite_quota_rng.seed = 20260923
 	var rng_before := manager._elite_quota_rng.state
-	for row in [[1, 1000, 0.0], [2, 0, 0.2], [5, 0, 0.5], [10, 0, 1.0], [15, 0, 1.5], [20, 0, 2.0], [10, 50, 1.5], [20, 50, 3.0], [10, 100, 2.0], [20, 1000, 3.0], [3, -20, 0.3]]:
+	for row in [[1, 1000, 0.0], [2, 0, 1.0], [5, 0, 1.0], [10, 0, 1.25], [15, 0, 1.875], [20, 0, 2.5], [10, 50, 1.875], [20, 50, 3.0], [10, 100, 2.5], [20, 1000, 3.0], [3, -20, 1.0]]:
 		check(is_equal_approx(manager.calculate_miniboss_expected_count(row[0], row[1]), row[2]), "expectation wave=%s erosion=%s" % [row[0], row[1]])
 	check(manager._elite_quota_rng.state == rng_before, "expectation preview does not consume quota RNG")
 	for expected in [0.0, 1.0, 2.0, 3.0]:

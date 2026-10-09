@@ -262,6 +262,7 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 		"manual_operation_used": manual_operation_used,
 		"trade_deposit_blocked": trade_deposit_blocked,
 		"trade_withdraw_blocked": trade_withdraw_blocked,
+		"character_withdraw_blocked": is_character_withdraw_blocked(),
 		"last_manual_operation": last_manual_operation.duplicate(true),
 		"wave_number": current_wave_number,
 		"gold": get_current_gold(),
@@ -273,7 +274,7 @@ func build_finance_popup_payload(source: String = "wave_start") -> Dictionary:
 		"interest_multiplier": get_interest_multiplier(),
 		"interest_remainder": interest_remainder,
 		"principal_revive": get_principal_revive_state(),
-		"can_withdraw": principal > 0,
+		"can_withdraw": principal > 0 and not manual_operation_used and not trade_withdraw_blocked and not is_character_withdraw_blocked(),
 		"last_deposit_wave_number": last_deposit_wave_number,
 		"has_high_yield_contract": _get_wave_deposit_requirement() > 0,
 		"deposit_bonus_rate": _get_wave_deposit_bonus_rate(),
@@ -334,7 +335,13 @@ func deposit(amount: int, free_principal: bool = false, reason: String = "manual
 	return _build_operation_result(true, ACTION_DEPOSIT, sanitized_amount, reason)
 
 
+func is_character_withdraw_blocked() -> bool:
+	return player != null and not bool(player.character_data.get("manual_withdrawal_allowed", true))
+
+
 func withdraw(amount: int) -> Dictionary:
+	if is_character_withdraw_blocked():
+		return _build_operation_result(false, ACTION_WITHDRAW, amount, "character_withdraw_blocked")
 	if trade_withdraw_blocked:
 		return _build_operation_result(false, ACTION_WITHDRAW, amount, "trade_bank_blocked")
 	var sanitized_amount := maxi(0, amount)

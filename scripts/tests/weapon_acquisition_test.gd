@@ -48,7 +48,10 @@ func _run() -> void:
 		next.candidate_pool = generator.build_shop_candidate_pool(next)
 		next.offer_mode = "free"
 		var weights := generator.get_shop_type_weights(next)
-		check(weights.new_weapon <= free.new_weapon, "owning more weapons never raises their reward weight")
+		if int(next.current_load) < ShopOfferGenerator.HIGH_LOAD_NEW_WEAPON_THRESHOLD:
+			check(weights.new_weapon <= free.new_weapon, "low-load ownership still reduces free weapon weight")
+		elif (next.candidate_pool as Array).any(func(c): return c.offer_type == "new_weapon"):
+			check(weights.new_weapon >= ShopOfferGenerator.HIGH_LOAD_NEW_WEAPON_MULTIPLIER, "usable high-load weapons retain doubled weight")
 		free = weights
 	var rarity := generator.get_shop_rarity_weights(0)
 	var pressure := {"new_weapon":1000000,"relic":1,"weapon_upgrade":1}

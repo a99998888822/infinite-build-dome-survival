@@ -59,35 +59,50 @@ func _test_new_runs() -> void:
 		manager.initialize(p)
 		check(bank.principal == 500 and manager.current_gold == 0, "four acquisitions grant exactly 500 principal and zero cash")
 		check(p.get_relic_ids().size() == 4 and p.grant_starting_relics() and bank.principal == 500, "starting grants are idempotent")
-		var expected := {"max_hp": 4, "hp_regen": -0.25, "armor": -5, "damage_percent": -30, "attack_speed": -12, "currency_gain_percent": -50, "load_capacity": 80, "move_speed": 240, "pickup_radius": 180, "humanity": 100, "divinity": 0, "luck": 0, "health_pack_heal_plus": -1, "shop_price_percent": -10}
+		var expected := {"max_hp": 39, "hp_regen": -0.25, "armor": -5, "damage_percent": -30, "attack_speed": -12, "currency_gain_percent": -50, "load_capacity": 80, "move_speed": 120, "pickup_radius": 180, "humanity": 100, "divinity": 0, "luck": 0, "health_pack_heal_plus": -1, "shop_price_percent": -10}
 		for stat_id in expected:
 			check(is_equal_approx(p.get_stat(stat_id), float(expected[stat_id])), "effective starting stat " + stat_id)
-		check(p.current_hp == 4 and bank.get_interest_rate() == 13, "full starting HP and thirteen percent interest")
+		check(p.current_hp == 39 and bank.get_interest_rate() == 13, "full starting HP and thirteen percent interest")
 		for relic_id in RELICS:
 			check(p.relic_system.get_innate_relic_count(relic_id) == 1 and not p.relic_system.remove_relic(relic_id), "innate copy cannot be removed: " + relic_id)
 		for instance_id in p.relic_system.relic_instances.keys():
 			check(not p.relic_system.remove_relic_instance(instance_id), "instance removal also protects innate relic")
 		p.relic_system.refresh_effects()
 		bank._emit_changed()
-		check(bank.principal == 500 and p.get_stat("max_hp") == 4, "stat refresh does not replay acquisition")
+		check(bank.principal == 500 and p.get_stat("max_hp") == 39, "stat refresh does not replay acquisition")
 		var preview := p.create_stat_preview_copy()
 		var preview_bank := bank.create_preview_copy(preview)
 		preview.grant_starting_relics()
 		check(preview.character_id == CAPITALIST and preview_bank.principal == 500 and not preview.relic_system.remove_relic(RELICS[0]), "purchase preview preserves character, grant state, and protection")
+		check(not preview_bank.withdraw(200).success and preview_bank.principal == 500 and not preview_bank.build_finance_popup_payload().can_withdraw, "preview preserves character withdrawal restriction")
+		preview.set_run_level(10)
+		check(preview.get_stat("max_hp") == 39, "preview preserves zero level health growth")
 		preview.free()
 		check(bank.settle_interest().gain == 65 and manager.current_gold == 65 and bank.principal == 500, "65 interest goes to wallet without increasing principal")
-		check(bank.withdraw(200).success and bank.principal == 300 and manager.current_gold == 265, "starting principal may be withdrawn manually")
-		check(bank.settle_interest().gain == 39 and manager.current_gold == 304, "300 remaining principal earns 39")
+		var blocked := bank.withdraw(200)
+		check(not blocked.success and blocked.reason == "character_withdraw_blocked" and bank.principal == 500 and manager.current_gold == 65, "direct withdrawal is rejected without changing balances")
+		blocked = bank.apply_finance_operation("withdraw", 200)
+		check(not blocked.success and not bank.manual_operation_used and bank.last_manual_operation.is_empty(), "failed manual withdrawal does not consume the bank action")
+		check(not bank.build_finance_popup_payload().can_withdraw, "bank payload disables capitalist withdrawals")
+		check(bank.settle_interest().gain == 65 and manager.current_gold == 130, "interest still pays to the wallet")
 		manager.add_exp_and_gold(0, 100)
-		check(manager.current_gold == 354, "combat gold alone is reduced by fifty percent")
+		check(manager.current_gold == 180, "combat gold alone is reduced by fifty percent")
 		manager.apply_gold_delta(100, "goblin_trade")
-		check(manager.current_gold == 454, "direct gold gift stays whole")
-		check(p.add_relic(RELICS[0]) and bank.principal == 450 and p.get_relic_count(RELICS[0]) == 2, "later same-name copy grants its normal acquisition")
+		check(manager.current_gold == 280, "direct gold gift stays whole")
+		check(p.add_relic(RELICS[0]) and bank.principal == 650 and p.get_relic_count(RELICS[0]) == 2, "later same-name copy grants its normal acquisition")
 		check(p.relic_system.remove_relic(RELICS[0]) and p.get_relic_count(RELICS[0]) == 1 and bank.get_interest_rate() == 13, "ordinary duplicate removable while innate original remains")
-		p.set_run_level(2)
-		check(p.get_stat("max_hp") == 5 and p.current_hp == 5, "level growth adds one maximum HP and heals one HP")
+		check(bank.apply_finance_operation("deposit", 20).success and bank.principal == 670, "capitalist can still actively deposit")
+		bank.prepare_wave(2)
+		check(not bank.withdraw(1).success and not bank.manual_operation_used, "withdrawal restriction survives wave preparation")
+		check(bank.consume_trade_principal(10) and bank.principal == 660, "principal expenses remain available without becoming withdrawals")
+		p.current_hp = 30
+		manager.add_exp_and_gold(manager.get_required_exp_for_next_level(), 0)
+		check(manager.player_level == 2 and p.get_stat("max_hp") == 39 and p.current_hp == 30, "actual level-up grants neither maximum HP nor level healing")
+		p.set_run_level(20)
+		p.set_run_level(20)
+		check(p.get_stat("max_hp") == 39 and p.current_hp == 30, "repeated and multi-level syncs cannot grant health")
 		p._process_regeneration(20)
-		check(p.current_hp == 5, "negative regeneration does not drain health")
+		check(p.current_hp == 30, "negative regeneration does not drain health")
 		p._update_walk_animation(Vector2.RIGHT, 0.2)
 		check(p.sprite.hframes == 7 and p.sprite.frame == 1 and p.walk_animation_fps == 7 and p.sprite.texture.get_size() == Vector2(448, 64), "approved seven-frame combat walk at seven FPS")
 		p._set_facing(false)
@@ -96,7 +111,13 @@ func _test_new_runs() -> void:
 		check(p.sprite.hframes == 1 and p.sprite.texture.resource_path.ends_with("capitalist_idle_right.png"), "stopping restores capitalist idle")
 		p.initialize_from_character(BEGINNER)
 		manager.initialize(p)
-		check(p.get_relic_ids().is_empty() and bank.principal == 0 and bank.get_interest_rate() == 5 and p.get_stat("max_hp") == 5 and p.get_stat("damage_percent") == 0 and p.get_stat("currency_gain_percent") == 0, "switch to beginner clears all capitalist effects and awards")
+		check(p.get_relic_ids().is_empty() and bank.principal == 0 and bank.get_interest_rate() == 5 and p.get_stat("max_hp") == 30 and p.get_stat("damage_percent") == 0 and p.get_stat("currency_gain_percent") == 0, "switch to beginner clears all capitalist effects and awards")
+		check(p.get_start_weapon_ids() == ["weapon_void_blade", "weapon_dash_blade"], "beginner starts with bow and dash blade")
+		p.current_hp = 25
+		manager.add_exp_and_gold(manager.get_required_exp_for_next_level(), 0)
+		check(p.get_stat("max_hp") == 31 and p.current_hp == 26, "beginner retains maximum HP growth and one HP of level healing")
+		bank.deposit(100, true)
+		check(bank.build_finance_popup_payload().can_withdraw and bank.apply_finance_operation("withdraw", 20).success and bank.principal == 80 and manager.current_gold == 20, "switching to beginner restores ordinary withdrawals")
 		check(p.sprite.texture == PlayerController.PLAYER_IDLE_TEXTURE and p.walk_animation_fps == 6 and p.walk_frame_count == 6 and p.facing_right, "switch to beginner restores approved visuals")
 		p._update_walk_animation(Vector2.RIGHT, 5.0 / 6.0 + 0.001)
 		check(p.sprite.hframes == 6 and p.sprite.frame == 5 and p.sprite.texture.get_size() == Vector2(384, 64), "beginner reaches sixth frame without cropping")
@@ -119,6 +140,12 @@ func _test_new_runs() -> void:
 	manager.initialize(other)
 	p.add_relic(RELICS[0])
 	check(bank.principal == 0, "rebound manager no longer receives old player's acquisition signals")
+	var unconfigured := other.create_stat_preview_copy()
+	unconfigured.character_data.erase("max_hp_per_level")
+	unconfigured.current_hp = 20
+	unconfigured.set_run_level(10)
+	check(unconfigured.get_stat("max_hp") == 30 and unconfigured.current_hp == 20, "characters without an explicit growth trait gain no maximum HP or healing")
+	unconfigured.free()
 	manager.free()
 	p.free()
 	other.free()
@@ -138,12 +165,18 @@ func _test_config_validation() -> void:
 	invalid.combat_visuals.idle = "res://missing.png"
 	validator._validate_character_records([invalid], DataRegistry.records_by_id)
 	check(validator.errors.size() >= 3, "validator rejects missing texture and invalid animation settings")
+	validator.errors.clear()
+	invalid = record.duplicate(true)
+	invalid.max_hp_per_level = -1
+	invalid.manual_withdrawal_allowed = "false"
+	validator._validate_character_records([invalid], DataRegistry.records_by_id)
+	check(validator.errors.size() == 2, "validator rejects invalid character growth and withdrawal rules")
 
 
 func _test_live_flow() -> void:
 	var window := get_tree().root
 	window.mode = Window.MODE_WINDOWED
-	window.size = Vector2i(1152, 768)
+	window.size = Vector2i(1920, 1080)
 	window.content_scale_size = window.size
 	if not capture_dir.is_empty(): DirAccess.make_dir_recursive_absolute(capture_dir)
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
@@ -152,10 +185,13 @@ func _test_live_flow() -> void:
 	await frames(12)
 	var menu := game.get_node("UiRoot/MainMenuUIController") as MainMenuUIController
 	menu._on_start_battle_pressed()
+	await get_tree().create_timer(0.4).timeout
+	check(menu.weapon_list.get_child_count() == 2, "beginner selection shows both starting weapons")
+	await capture("beginner_selection")
 	menu._on_character_selected(CAPITALIST)
 	await get_tree().create_timer(0.4).timeout
 	var preview_stats := menu._get_character_starting_stats(DataRegistry.get_record("characters", CAPITALIST))
-	check(preview_stats.max_hp == 4 and preview_stats.finance == 500 and preview_stats.interest_rate == 13, "selection preview shows actual post-relic stats")
+	check(preview_stats.max_hp == 39 and preview_stats.finance == 500 and preview_stats.interest_rate == 13, "selection preview shows actual post-relic stats")
 	check(menu.stats_list.get_child_count() == 7 and menu.character_icon.texture.resource_path.ends_with("capitalist_idle_right.png") and menu.character_description_label.text.is_empty(), "selection displays capitalist art, seven selected stats, and a blank description")
 	await capture("selection")
 	menu.character_details_scroll.scroll_vertical = 10000
@@ -163,7 +199,7 @@ func _test_live_flow() -> void:
 	await capture("traits")
 	menu._on_character_selected(BEGINNER)
 	menu._on_character_selected(CAPITALIST)
-	check(menu.stats_list.get_child_count() == 7 and menu.passive_list.get_node("StartingRelicIcons").get_child_count() == 4 and menu.weapon_list.get_child_count() == 1 and menu.passive_list.get_child_count() == 2, "repeated selection keeps only the relic intro and four icons without stale cards")
+	check(menu.stats_list.get_child_count() == 7 and menu.passive_list.get_node("StartingRelicIcons").get_child_count() == 4 and menu.weapon_list.get_child_count() == 1 and menu.passive_list.get_child_count() == 3, "repeated selection retains withdrawal restriction, relic intro and four icons")
 	menu._on_character_confirm_pressed()
 	await frames(8)
 	var flow := game.get_main_flow_coordinator()
@@ -171,7 +207,7 @@ func _test_live_flow() -> void:
 	var p := flow._bound_player
 	manager.set_process(false)
 	manager.clear_enemies()
-	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and p.character_id == CAPITALIST and manager.finance_system.principal == 500 and p.current_hp == 4, "actual menu confirmation begins capitalist combat with complete rewards")
+	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and p.character_id == CAPITALIST and manager.finance_system.principal == 500 and p.current_hp == 39, "actual menu confirmation begins capitalist combat with complete rewards")
 	var purse := flow._bound_loadout.get_weapon_instance("weapon_rentier_purse")
 	check(flow._bound_loadout.get_weapon_instances().size() == 1 and purse != null and purse.get_current_principal() == 500 and purse.get_attachment_slot_count() == 1 and purse.get_attached_item_instances().is_empty() and p.item_inventory.get_item_count() == 0, "starting rentier purse uses initial principal, has one empty slot, and grants no enchantments")
 	await capture("battle")
@@ -187,6 +223,19 @@ func _test_live_flow() -> void:
 	await get_tree().create_timer(2.5 if not capture_dir.is_empty() else 0.01).timeout
 	flow.close_interest_settlement()
 	await frames(8)
+	var popup := game.find_child("FinancePopup", true, false) as FinancePopup
+	check(popup.visible and popup._withdraw.disabled and not popup._deposit.disabled, "live bank disables withdrawal while allowing deposits")
+	check(popup._receipt.visible and popup._receipt.tr(popup._receipt.text) == L10n.text("ui.bank.restriction.character_withdraw"), "live bank explains the permanent character restriction")
+	popup._choose_bank_action("withdraw")
+	popup.amount_input.text = "100"
+	popup._update_bank_confirm()
+	check(popup.bank_confirm.disabled and popup._bank_amount_error() == "character_withdraw_blocked", "stale withdrawal UI cannot submit an operation")
+	var result := flow.submit_finance_operation("withdraw", 100)
+	check(not result.success and manager.finance_system.principal == 500 and manager.current_gold == 65, "live flow rejects a forced withdrawal without changing balances")
+	popup._choose_bank_action("deposit")
+	popup.amount_input.text = "10"
+	popup._update_bank_confirm()
+	check(not popup.bank_confirm.disabled, "live deposit remains available after rejected withdrawal")
 	await capture("bank")
 	check(p.grant_starting_relics() and manager.finance_system.principal == 500, "opening bank does not regrant initial principal")
 	game.queue_free()

@@ -2,6 +2,7 @@ keys,zh_CN,en
 error.bank.already_purchased,已购买,Purchased
 error.bank.bank_required,请在理财页面调整附魔或出售物品。,Visit the Bank to change enchantments or sell items.
 error.bank.busy,操作正在处理。,Operation in progress.
+error.bank.character_withdraw_blocked,角色特性：无法主动取款。,Character trait: withdrawals are disabled.
 error.bank.deposit_closed,交易限制：本次不可存款，下波恢复。,Bargain restriction: deposits are blocked until next wave.
 error.bank.deposit_exceeds_gold,存入金额超过金币余额。,Deposit exceeds your gold balance.
 error.bank.enchantment_configuration,无法配置：请检查武器空槽和附魔归属。,Cannot equip: check weapon slots and enchantment ownership.

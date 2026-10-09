@@ -44,6 +44,7 @@ ui.bank.reroll_done,货架已刷新。,Shop rerolled.
 ui.bank.restriction.all,"交易限制：本次银行存取已关闭。
 下次进入银行恢复。","Bargain restriction: bank actions are closed this visit.
 They return on your next visit."
+ui.bank.restriction.character_withdraw,角色特性：无法主动取款。,Character trait: withdrawals are disabled.
 ui.bank.restriction.deposit_only,交易限制：本次不可存款，仍可取款。,Bargain restriction: deposits are blocked; withdrawals remain available.
 ui.bank.restriction.no_deposit,交易限制：本次不可存款。,Bargain restriction: deposits are blocked this visit.
 ui.bank.return_to_inventory,归还背包,Return to Inventory
@@ -120,6 +121,8 @@ ui.character.innate_relic_tooltip,"%s
 角色固有，开局奖励仅发放一次，不可移除。","%s
 %s
 Innate trait. Starting rewards are granted once and cannot be removed."
+ui.character.no_health_per_level,升级不增加最大生命值,No Max HP from levels
+ui.character.no_withdrawal,理财界面无法主动取款,Cannot withdraw principal
 ui.character.profile,出征档案,Expedition File
 ui.character.roster,角色名册,Roster
 ui.character.select_prompt,请选择角色,Select a character

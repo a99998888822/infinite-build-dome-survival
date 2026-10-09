@@ -312,8 +312,12 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 func _build_traits(record: Dictionary) -> void:
 	var traits: Array = record.get("traits", [])
 	var relics: Array = record.get("start_relics", [])
+	var no_health_growth := int(record.get("max_hp_per_level", 0)) == 0
+	if not bool(record.get("manual_withdrawal_allowed", true)):
+		_body_label(passive_list, "ui.character.no_withdrawal", 29, INK, 40)
 	if traits.is_empty() and relics.is_empty() and record.get("passive_modifiers", []).is_empty():
-		_body_label(passive_list, "ui.character.health_per_level", 29, INK, 40)
+		if not no_health_growth:
+			_body_label(passive_list, "ui.character.health_per_level", 29, INK, 40)
 		return
 	for trait_data in traits:
 		var card := VBoxContainer.new()

@@ -143,7 +143,7 @@ func validate() -> void:
 	var all_move := true
 	for i in 7: all_move = all_move and seen.has("move:"+str(i))
 	check(all_move,"all seven movement poses rendered")
-	check(wolf.get_stat("max_hp") == 240 and wolf.get_stat("armor") == 6,"independent candidate stats loaded")
+	check(wolf.get_stat("max_hp") == 720 and wolf.get_stat("armor") == 6,"tripled independent wolf health loaded")
 	check(wolf.enemy_data.display_name == "幽焰冥狼","updated display name")
 	var registered := wolf.FRAME_TRANSFORMS.size() == 21
 	for record: Dictionary in wolf.FRAME_TRANSFORMS.values():
@@ -359,7 +359,7 @@ func validate_production() -> void:
 	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(0)
 	var cold := manager.spawn_enemy("enemy_underworld_wolf",Vector2(-120,0)) as UnderworldWolf
 	cold.set_physics_process(false)
-	check(cold.current_hp == 192 and cold.get_stat("ranged_damage") == 3 and cold.get_stat("element_damage") == 8,"normal difficulty scales independent HP and both skill damage stats")
+	check(cold.current_hp == 576 and cold.get_stat("ranged_damage") == 3 and cold.get_stat("element_damage") == 8,"normal difficulty scales tripled HP and both skill damage stats")
 	manager.current_wave_index = 4
 	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(100)
 	var hot := manager.spawn_enemy("enemy_underworld_wolf",Vector2(-120,0)) as UnderworldWolf

@@ -70,29 +70,25 @@ func _test_selection_and_slots() -> void:
 			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index]), "actual enemy multiplier: " + id + " " + stat)
 		enemy.free()
 		check(manager.calculate_enemy_spawn_count(6) == [1, 2, 2][index] and manager.calculate_enemy_spawn_count(4) == [1, 1, 2][index], "active combat smaller groups: " + id)
-		check(is_equal_approx(manager.calculate_spawn_interval(1200), [3240.0, 2880.0, 2520.0][index]), "distinct regular spawn interval: " + id)
+		check(is_equal_approx(manager.calculate_spawn_interval(1200), [3240.0, 2880.0, 2520.0][index] / 2.15), "first-wave supply is 2.15 times the previous rate: " + id)
 		if id == "1":
 			_test_slots(player, loadout)
-			for wave in 3:
-				manager.current_wave_index = wave
-				manager._initialize_elite_schedule()
-				check(manager.get_miniboss_spawn_snapshot().planned == 0, "beginner wave %d has no elites" % (wave + 1))
-			manager.current_wave_index = 3
-			manager._initialize_elite_schedule()
-			check(is_equal_approx(manager._elite_expected_count, 0.2), "beginner wave four starts low elite expectation")
+		manager.current_wave_index = 0
+		manager._initialize_elite_schedule()
+		check(manager.get_miniboss_spawn_snapshot().planned == 0, "first wave has no elites: " + id)
 		manager.current_wave_index = 1
 		manager._initialize_elite_schedule()
-		check(is_equal_approx(manager._elite_expected_count, 0.2 if id == "3" else 0.0), "only tier three allows second-wave elites")
+		check(is_equal_approx(manager._elite_expected_count, [1.0, 1.15, 1.3][index]) and manager._elite_planned_count >= 1, "every tier guarantees elites from wave two")
 		manager.current_wave_index = 9
 		manager._initialize_elite_schedule()
-		check(is_equal_approx(manager._elite_expected_count, 1.0 if id == "3" else 0.5), "tier three doubles elite expectation at the same wave")
+		check(is_equal_approx(manager._elite_expected_count, [1.25, 1.4375, 1.625][index]), "difficulty scales the increased elite expectation")
 		var late_enemy := manager.spawn_enemy("enemy_mutated_grub", Vector2(3000, 0))
 		check(late_enemy.current_hp == roundi((24.0 + 200.0 * 9.0 / 19.0) * [1.0, 1.2, 1.3][index]), "linear ordinary HP retains the exact difficulty multiplier before rounding")
 		late_enemy.free()
 		# Fill to the configured limit and exercise real group spawning.
 		manager.current_wave_index = 0
 		var cap := int(BattleDifficulty.get_profile(id).enemy_limit)
-		check(cap == [24, 36, 48][index], "active combat live enemy limit: " + id)
+		check(cap == [48, 72, 96][index], "increased supply has crowd-cap headroom: " + id)
 		for n in cap:
 			var blocker := manager.spawn_enemy("enemy_mutated_grub", Vector2(2000 + n * 3, 0))
 			blocker.set_physics_process(false)

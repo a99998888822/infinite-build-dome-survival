@@ -13,7 +13,6 @@ signal relic_added(relic_id: String)
 signal stats_changed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
-const MAX_HP_PER_LEVEL: int = 1
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
@@ -194,6 +193,8 @@ func set_run_level(level: int) -> void:
 	# Replace the total contribution, so refreshes never duplicate level growth.
 	# Fill newly gained HP capacity once; repeated level syncs cannot heal.
 	var previous_max_hp := int(get_stat("max_hp"))
+	# Level health is an explicit character trait, not universal growth.
+	var hp_per_level := maxi(0, int(character_data.get("max_hp_per_level", 0)))
 	add_runtime_modifier({
 		"id": "mod_player_level_max_hp",
 		"source_type": "level",
@@ -201,7 +202,7 @@ func set_run_level(level: int) -> void:
 		"target_scope": "player",
 		"stat": "max_hp",
 		"operation": Modifier.OPERATION_ADD_FLAT,
-		"value": maxi(0, level - 1) * MAX_HP_PER_LEVEL,
+		"value": maxi(0, level - 1) * hp_per_level,
 		"duration": Modifier.PERMANENT_DURATION,
 		"stack_rule": Modifier.STACK_RULE_REPLACE_SAME_SOURCE,
 	})

@@ -205,6 +205,7 @@ static func reason(code: String) -> String:
 		"loan_not_active": L10n.text("error.bank.no_loan"),
 		"loan_insufficient_gold": L10n.text("error.bank.repayment_insufficient_gold"),
 		"bank_operation_used": L10n.text("error.bank.transaction_used"),
+		"character_withdraw_blocked": L10n.text("error.bank.character_withdraw_blocked"),
 		"trade_bank_blocked": L10n.text("error.bank.transactions_closed"),
 		"trade_deposit_blocked": L10n.text("error.bank.deposit_closed"),
 		"trade_expired": L10n.text("error.bank.trade_expired"),

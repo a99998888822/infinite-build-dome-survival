@@ -593,6 +593,10 @@ func _validate_character_records(records: Array, records_by_id: Dictionary) -> v
 
 
 func _validate_character_starting_content(record: Dictionary, records_by_id: Dictionary, path: String) -> void:
+	if record.has("max_hp_per_level"):
+		_validate_non_negative_int(record, "max_hp_per_level", path)
+	if record.has("manual_withdrawal_allowed") and not (record.manual_withdrawal_allowed is bool):
+		errors.append("%s.manual_withdrawal_allowed must be a boolean." % path)
 	var relics: Variant = record.get("start_relics", [])
 	if not (relics is Array):
 		errors.append("%s.start_relics must be an array." % path)
@@ -679,6 +683,10 @@ func _validate_enemy_records(records: Array, records_by_id: Dictionary) -> void:
 				errors.append("%s.elite_profile.erosion_bonus_max_percent is required." % path)
 			_validate_non_negative_int(profile, "erosion_bonus_max_percent", "%s.elite_profile" % path)
 			_validate_non_negative_int(profile, "quota_cap", "%s.elite_profile" % path)
+			if profile.has("minimum_quota"):
+				_validate_non_negative_int(profile, "minimum_quota", "%s.elite_profile" % path)
+				if (profile.minimum_quota is int or profile.minimum_quota is float) and (float(profile.minimum_quota) < 1.0 or float(profile.minimum_quota) > float(profile.get("quota_cap", 3))):
+					errors.append("%s.elite_profile.minimum_quota must be between 1 and quota_cap." % path)
 			if float(profile.get("spawn_window_percent", 50)) <= 0.0 or float(profile.get("spawn_window_percent", 50)) > 50.0:
 				errors.append("%s.elite_profile.spawn_window_percent must be in (0, 50]." % path)
 

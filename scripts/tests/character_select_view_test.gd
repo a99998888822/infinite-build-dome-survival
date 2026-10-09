@@ -142,8 +142,9 @@ func _run() -> void:
 	await click(view.character_list.get_child(1))
 	check(menu._selected_character_id == "character_capitalist" and view.stats_list.get_child_count() == 7, "roster hit target selects capitalist with actual stats")
 	check(_enchantment_icons(view.weapon_list.get_child(0)).is_empty(), "unenchanted weapon has no stale enchantment icons")
-	var intro := view.passive_list.get_child(0) as Label
-	check(view.passive_list.get_child_count() == 2 and intro.tr(intro.text) == L10n.text("ui.character.four_starting_relics"), "capitalist traits contain only the requested intro and icon row")
+	var intro := view.passive_list.get_child(1) as Label
+	check(view.passive_list.get_child_count() == 3 and intro.tr(intro.text) == L10n.text("ui.character.four_starting_relics"), "capitalist traits contain withdrawal restriction, relic intro and icon row")
+	check((view.passive_list.get_child(0) as Label).tr(view.passive_list.get_child(0).text) == L10n.text("ui.character.no_withdrawal"), "selection explains withdrawal restriction without displaying level health growth")
 	var relic_icons := view.passive_list.get_node("StartingRelicIcons")
 	check(relic_icons.get_child_count() == 4, "all four starting relic icons remain available")
 	for card in relic_icons.get_children():
@@ -177,6 +178,9 @@ func _run() -> void:
 	await click(view.confirm_button)
 	var flow := game.get_main_flow_coordinator()
 	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and flow._bound_wave_manager.difficulty_id == "3", "continue starts combat with chosen difficulty")
+	var loadout := flow.get_bound_loadout()
+	check(loadout.get_weapon_instances().size() == 2 and loadout.get_weapon_instance("weapon_dash_blade") != null, "confirming beginner equips the additional dash blade in live combat")
+	check(loadout.get_weapon_instance("weapon_void_blade").get_attached_item_instances().size() == 1 and loadout.get_weapon_instance("weapon_dash_blade").get_attached_item_instances().is_empty(), "bow retains lightning and dash blade starts without an enchantment")
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
 	AudioManager._bgm_player.stream = null

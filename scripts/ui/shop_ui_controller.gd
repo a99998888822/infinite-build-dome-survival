@@ -66,6 +66,8 @@ func _bind_to_main_flow() -> void:
 		_main_flow_coordinator.modal_requested.connect(requested_callable)
 	if not _main_flow_coordinator.modal_closed.is_connected(closed_callable):
 		_main_flow_coordinator.modal_closed.connect(closed_callable)
+	if not _main_flow_coordinator.flow_reset.is_connected(_on_flow_reset):
+		_main_flow_coordinator.flow_reset.connect(_on_flow_reset)
 
 
 func _unbind_main_flow() -> void:
@@ -77,6 +79,8 @@ func _unbind_main_flow() -> void:
 		_main_flow_coordinator.modal_requested.disconnect(requested_callable)
 	if _main_flow_coordinator.modal_closed.is_connected(closed_callable):
 		_main_flow_coordinator.modal_closed.disconnect(closed_callable)
+	if _main_flow_coordinator.flow_reset.is_connected(_on_flow_reset):
+		_main_flow_coordinator.flow_reset.disconnect(_on_flow_reset)
 	_main_flow_coordinator = null
 
 
@@ -106,6 +110,11 @@ func _on_modal_closed(modal_state: String) -> void:
 				shop_popup.hide_popup()
 		_:
 			return
+
+
+func _on_flow_reset() -> void:
+	if shop_popup != null:
+		shop_popup.reset_run()
 
 
 func _show_shop_popup(payload: Dictionary) -> void:

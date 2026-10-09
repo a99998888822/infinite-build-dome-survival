@@ -40,7 +40,7 @@ def main():
             content = log.read_text(encoding="utf-8")
             issues = [line for line in content.splitlines() if re.match(r"FAIL |SCRIPT ERROR:|ERROR:", line)
                       and "resources still in use at exit" not in line]
-            summaries = re.findall(r"^[A-Z_]+(?:COMPLETE|DONE|TEST).*failures=\d+.*$", content, re.MULTILINE)
+            summaries = re.findall(r"^(?:[A-Z_]+(?:COMPLETE|DONE|TEST).*failures=\d+.*|[A-Z_]+ checks=\d+ failures=\d+)\r?$", content, re.MULTILINE)
             passed = exit_code == 0 and not issues and bool(summaries) and all(re.search(r"failures=0\b", line) for line in summaries)
             entry = {"scene": scene, "passed": passed, "exit_code": exit_code, "issues": issues,
                      "summaries": summaries, "log": str(log)}

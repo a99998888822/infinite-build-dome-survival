@@ -1359,14 +1359,14 @@
   {
     "id": "relic_incomplete_divination_dice",
     "display_name": "残缺的占卜骰子",
-    "description": "幸运 + 9；掉落率 + 5",
+    "description": "幸运 + 18；掉落率 + 5",
     "icon": "res://assets/ui/icons/relics/relic_incomplete_divination_dice.png",
     "icon_description": "磨损的六面骨骰，部分刻度模糊",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["reward"],
     "effects": [
-      {"id": "mod_relic_incomplete_divination_dice_luck", "source_type": "relic", "source_id": "relic_incomplete_divination_dice", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 9, "duration": -1},
+      {"id": "mod_relic_incomplete_divination_dice_luck", "source_type": "relic", "source_id": "relic_incomplete_divination_dice", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
       {"id": "mod_relic_incomplete_divination_dice_drop_rate_percent", "source_type": "relic", "source_id": "relic_incomplete_divination_dice", "target_scope": "player", "stat": "drop_rate_percent", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": []
@@ -1391,14 +1391,14 @@
   {
     "id": "relic_defiled_blessing_coin",
     "display_name": "被亵渎的祈福铜钱",
-    "description": "幸运 + 18；理智值 - 3",
+    "description": "幸运 + 36；理智值 - 3",
     "icon": "res://assets/ui/icons/relics/relic_defiled_blessing_coin.png",
     "icon_description": "泛黄皮面账本，写满记账笔记",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["reward", "eldritch"],
     "effects": [
-      {"id": "mod_relic_defiled_blessing_coin_luck", "source_type": "relic", "source_id": "relic_defiled_blessing_coin", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
+      {"id": "mod_relic_defiled_blessing_coin_luck", "source_type": "relic", "source_id": "relic_defiled_blessing_coin", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 36, "duration": -1},
       {"id": "mod_relic_defiled_blessing_coin_humanity", "source_type": "relic", "source_id": "relic_defiled_blessing_coin", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -3, "duration": -1}
     ],
     "runtime_effects": []
@@ -1422,7 +1422,7 @@
   {
     "id": "relic_stargazers_lens",
     "display_name": "观星者的镜片",
-    "description": "幸运 + 18；经验获取 + 12；掉落率 + 12；理智值 - 5",
+    "description": "幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5",
     "icon": "res://assets/ui/icons/relics/relic_stargazers_lens.png",
     "icon_description": "一块弧形银色碎镜片，镜中倒映扭曲星辰",
     "rarity": "rare",
@@ -1431,7 +1431,7 @@
     "effects": [
       {"id": "mod_relic_stargazers_lens_exp_gain_percent", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "exp_gain_percent", "operation": "add_flat", "value": 12, "duration": -1},
       {"id": "mod_relic_stargazers_lens_drop_rate_percent", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "drop_rate_percent", "operation": "add_flat", "value": 12, "duration": -1},
-      {"id": "mod_relic_stargazers_lens_luck", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
+      {"id": "mod_relic_stargazers_lens_luck", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 36, "duration": -1},
       {"id": "mod_relic_stargazers_lens_humanity", "source_type": "relic", "source_id": "relic_stargazers_lens", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -5, "duration": -1}
     ],
     "runtime_effects": []
@@ -1500,14 +1500,14 @@
   {
     "id": "relic_gift_mark",
     "display_name": "馈赠印记",
-    "description": "幸运 + 42；侵蚀度 + 10",
+    "description": "幸运 + 84；侵蚀度 + 10",
     "icon": "res://assets/ui/icons/relics/relic_gift_mark.png",
     "icon_description": "皮肤样式的烙印图标，淡紫光晕",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["reward", "eldritch"],
     "effects": [
-      {"id": "mod_relic_gift_mark_luck", "source_type": "relic", "source_id": "relic_gift_mark", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 42, "duration": -1},
+      {"id": "mod_relic_gift_mark_luck", "source_type": "relic", "source_id": "relic_gift_mark", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 84, "duration": -1},
       {"id": "mod_relic_gift_mark_divinity", "source_type": "relic", "source_id": "relic_gift_mark", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 10, "duration": -1}
     ],
     "runtime_effects": []
@@ -1515,14 +1515,14 @@
   {
     "id": "relic_void_storage_casket",
     "display_name": "虚空收纳匣",
-    "description": "幸运 + 18；负载 + 10；拾取范围 + 10；侵蚀度 + 5",
+    "description": "幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5",
     "icon": "res://assets/ui/icons/relics/relic_void_storage_casket.png",
     "icon_description": "半透明悬浮的立方体匣子，内部漆黑",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["reward", "eldritch", "build"],
     "effects": [
-      {"id": "mod_relic_void_storage_casket_luck", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
+      {"id": "mod_relic_void_storage_casket_luck", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 36, "duration": -1},
       {"id": "mod_relic_void_storage_casket_load_capacity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": 10, "duration": -1},
       {"id": "mod_relic_void_storage_casket_pickup_radius", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": 10, "duration": -1},
       {"id": "mod_relic_void_storage_casket_divinity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 5, "duration": -1}
@@ -1532,14 +1532,14 @@
   {
     "id": "relic_reincarnation_hellfire_candle",
     "display_name": "轮回业火之烛",
-    "description": "幸运 + 75；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件",
+    "description": "幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
     "icon_description": "幽蓝摇曳的蜡烛，火焰不消耗蜡油",
     "rarity": "mythic",
     "max_stack": 1,
     "tags": ["reward", "eldritch"],
     "effects": [
-      {"id": "mod_relic_reincarnation_hellfire_candle_luck", "source_type": "relic", "source_id": "relic_reincarnation_hellfire_candle", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 75, "duration": -1},
+      {"id": "mod_relic_reincarnation_hellfire_candle_luck", "source_type": "relic", "source_id": "relic_reincarnation_hellfire_candle", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 150, "duration": -1},
       {"id": "mod_relic_reincarnation_hellfire_candle_exp_gain_percent", "source_type": "relic", "source_id": "relic_reincarnation_hellfire_candle", "target_scope": "player", "stat": "exp_gain_percent", "operation": "add_flat", "value": 35, "duration": -1}
     ],
     "runtime_effects": [
@@ -1550,14 +1550,14 @@
   {
     "id": "relic_guarding_heart_copper_mirror",
     "display_name": "守心铜鉴",
-    "description": "幸运 + 18；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件",
+    "description": "幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件",
     "icon": "res://assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
     "icon_description": "小型青铜手镜，镜面清澈",
     "rarity": "epic",
     "max_stack": 1,
     "tags": ["reward", "eldritch", "finance"],
     "effects": [
-      {"id": "mod_relic_guarding_heart_copper_mirror_luck", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 18, "duration": -1},
+      {"id": "mod_relic_guarding_heart_copper_mirror_luck", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 36, "duration": -1},
       {"id": "mod_relic_guarding_heart_copper_mirror_currency_gain_percent", "source_type": "relic", "source_id": "relic_guarding_heart_copper_mirror", "target_scope": "player", "stat": "currency_gain_percent", "operation": "add_flat", "value": 20, "duration": -1}
     ],
     "runtime_effects": [

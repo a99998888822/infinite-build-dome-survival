@@ -596,10 +596,15 @@ func _refresh_bank() -> void:
 		var last: Dictionary = payload.get("last_manual_operation", {})
 		_receipt.text = L10n.text("ui.bank.transaction_done") % [L10n.text("ui.bank.deposit.action" if str(last.get("action", "")) == "deposit" else "ui.bank.withdraw.action"), int(last.get("amount", 0))]
 		if trade_locked: _receipt.text = "ui.bank.restriction.all"
-	elif bool(payload.get("trade_deposit_blocked", false)):
+	elif bool(payload.get("trade_deposit_blocked", false)) and not bool(payload.get("character_withdraw_blocked", false)):
 		_receipt.show()
 		_receipt.text = "ui.bank.restriction.deposit_only"
 		_bank_action = "withdraw"
+	if bool(payload.get("character_withdraw_blocked", false)):
+		_bank_action = "deposit"
+		if not locked:
+			_receipt.show()
+			_receipt.text = "ui.bank.restriction.character_withdraw"
 	_choose_bank_action(_bank_action)
 	_contract.text = ""
 	_contract.visible = bool(payload.get("has_high_yield_contract", false))
@@ -615,14 +620,17 @@ func _choose_bank_action(action: String) -> void:
 	FinanceUIStyle.bank_button(_deposit, action == "deposit")
 	FinanceUIStyle.bank_button(_withdraw, action == "withdraw")
 	bank_confirm.text = "ui.bank.deposit.confirm" if action == "deposit" else "确认取出"
-	_withdraw.disabled = int(payload.get("principal", 0)) <= 0
+	_withdraw.disabled = not bool(payload.get("can_withdraw", int(payload.get("principal", 0)) > 0))
 	_deposit.disabled = bool(payload.get("trade_deposit_blocked", false))
 	_deposit.tooltip_text = "ui.bank.restriction.no_deposit" if _deposit.disabled else ""
 	_withdraw.disabled = _withdraw.disabled or bool(payload.get("trade_withdraw_blocked", false))
+	_withdraw.disabled = _withdraw.disabled or bool(payload.get("character_withdraw_blocked", false))
+	_withdraw.tooltip_text = "ui.bank.restriction.character_withdraw" if bool(payload.get("character_withdraw_blocked", false)) else ""
 	_update_bank_confirm()
 
 
 func _bank_amount_error() -> String:
+	if _bank_action == "withdraw" and bool(payload.get("character_withdraw_blocked", false)): return "character_withdraw_blocked"
 	if bool(payload.get("trade_withdraw_blocked", false)): return "trade_bank_blocked"
 	if _bank_action == "deposit" and bool(payload.get("trade_deposit_blocked", false)): return "trade_deposit_blocked"
 	if bool(payload.get("manual_operation_used", false)):

@@ -34,8 +34,10 @@
       "humanity": 100,
       "divinity": 0
     },
+    "max_hp_per_level": 1,
     "start_weapons": [
-      "weapon_void_blade"
+      "weapon_void_blade",
+      "weapon_dash_blade"
     ],
     "passive_modifiers": [],
     "start_weapon_attachments": [
@@ -78,6 +80,8 @@
       "interest_rate": 5
     },
     "start_weapons": ["weapon_rentier_purse"],
+    "max_hp_per_level": 0,
+    "manual_withdrawal_allowed": false,
     "start_weapon_attachments": [],
     "passive_modifiers": [],
     "traits": [],

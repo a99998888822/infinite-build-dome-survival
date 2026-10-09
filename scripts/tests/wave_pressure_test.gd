@@ -3,11 +3,11 @@ extends Node
 var failures := 0
 var checks := 0
 var spawned := 0
-# Measured before the density increase, using the same real 20-second scheduler.
+# Measured immediately before the 2026-10-09 density increase.
 const PREVIOUS_SPAWNS := {
-	"1": {1: 40, 5: 57, 10: 110, 15: 162, 20: 244},
-	"2": {1: 57, 5: 90, 10: 186, 15: 273, 20: 386},
-	"3": {1: 90, 5: 157, 10: 291, 15: 420, 20: 620},
+	"1": {1: 10, 5: 19, 10: 34, 15: 42, 20: 68},
+	"2": {1: 19, 5: 26, 10: 54, 15: 76, 20: 101},
+	"3": {1: 26, 5: 39, 10: 71, 15: 104, 20: 158},
 }
 
 func _ready() -> void:
@@ -67,7 +67,10 @@ func _run() -> void:
 			if not previous_tier.is_empty():
 				check(spawned > previous_tier[wave - 1].spawned_20s, "higher tier has more actual spawns at wave " + str(wave))
 			if PREVIOUS_SPAWNS[tier].has(wave):
-				check(spawned <= int(PREVIOUS_SPAWNS[tier][wave]) * 0.4, "active supply below forty percent of former survivor density: tier %s wave %d" % [tier, wave])
+				var ratio := float(spawned) / float(PREVIOUS_SPAWNS[tier][wave])
+				# Short windows are sensitive to complete batches and opening delay.
+				# Full-wave doubling/+20% acceptance lives in spawn_density_test.
+				check(ratio > 1.0, "twenty-second supply increases: tier %s wave %d" % [tier, wave])
 				rows.append(row)
 		check(tier_rows[19].hp == roundi(224.0 * float(manager._difficulty.stat_multiplier)), "ordinary HP reaches the wave twenty target")
 		check(tier_rows[19].spawned_20s > tier_rows[0].spawned_20s * 3, "late density exceeds three times opening density")

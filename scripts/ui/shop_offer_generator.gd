@@ -26,6 +26,8 @@ const BASE_TYPE_WEIGHTS: Dictionary = {
 # for deliberately buying a second weapon without quickly filling the loadout.
 const PAID_NEW_WEAPON_WEIGHTS := [18, 12, 6, 3, 1]
 const FREE_NEW_WEAPON_WEIGHTS := [12, 6, 3, 1, 1]
+const HIGH_LOAD_NEW_WEAPON_THRESHOLD := 50
+const HIGH_LOAD_NEW_WEAPON_MULTIPLIER := 2
 
 
 func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
@@ -187,6 +189,10 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 		elif remaining_ratio > 0.0:
 			multiplier = 0.25
 		weights[OFFER_NEW_WEAPON] = maxi(1, int(ceil(float(weights[OFFER_NEW_WEAPON]) * multiplier)))
+	# Double the original rounded weight after ownership and load penalties.
+	# The pool still excludes duplicates, locked weapons and capacity overflow.
+	if current_load >= HIGH_LOAD_NEW_WEAPON_THRESHOLD and int(type_counts.get(OFFER_NEW_WEAPON, 0)) > 0:
+		weights[OFFER_NEW_WEAPON] = int(weights[OFFER_NEW_WEAPON]) * HIGH_LOAD_NEW_WEAPON_MULTIPLIER
 
 	if int(type_counts.get(OFFER_WEAPON_UPGRADE, 0)) > 0:
 		var miss_count := maxi(0, int(context.get("weapon_upgrade_miss_count", 0)))

@@ -51,8 +51,8 @@ func _run() -> void:
 	for row in [[-100, 1.0, 1.0, 1.0], [0, 1.0, 1.0, 1.0], [1, 1.018, 1.009, 1.0135], [10, 1.18, 1.09, 1.135], [30, 1.54, 1.27, 1.405], [50, 2.26, 1.51, 1.675], [60, 2.62, 1.63, 1.81], [100, 4.78, 2.23, 2.35], [150, 7.48, 2.98, 3.025], [200, 10.18, 3.73, 3.7], [1000000, 53999.38, 15000.73, 13501.0]]:
 		var pressure := manager.calculate_enemy_erosion_pressure(row[0])
 		check(is_equal_approx(pressure.max_hp_multiplier, row[1]) and is_equal_approx(pressure.damage_multiplier, row[2]) and is_equal_approx(pressure.armor_multiplier, row[3]), "uncapped stat pressure at erosion %s" % row[0])
-	check(manager.calculate_miniboss_expected_count(10, 0) == 1.0 and manager.calculate_miniboss_expected_count(20, 0) == 2.0, "zero erosion count anchors remain 1 and 2")
-	check(manager.calculate_miniboss_expected_count(10, 50) == 1.5 and manager.calculate_miniboss_expected_count(10, 100) == 2.0, "erosion count bonus doubles")
+	check(manager.calculate_miniboss_expected_count(10, 0) == 1.25 and manager.calculate_miniboss_expected_count(20, 0) == 2.5, "zero erosion count anchors increase to 1.25 and 2.5")
+	check(manager.calculate_miniboss_expected_count(10, 50) == 1.875 and manager.calculate_miniboss_expected_count(10, 100) == 2.5, "erosion count bonus doubles")
 	check(manager.calculate_miniboss_expected_count(20, 100) == 3.0, "three miniboss hard cap still applies")
 	check(manager._build_erosion_enemy_modifiers().is_empty(), "zero erosion does not modify baseline enemies")
 	manager.free()
@@ -79,7 +79,7 @@ func _test_spawns_and_damage() -> void:
 		var extreme := _spawn(extreme_manager, id)
 		hot_enemies.append(hot)
 		# Wave 15: ordinary linear HP; independent elite base retains compounded HP.
-		var wave_hp := 160.0 * pow(1.24, 14) if hot is EliteRusher else 24.0 + 200.0 * 14.0 / 19.0
+		var wave_hp := 480.0 * pow(1.24, 14) if hot is EliteRusher else 24.0 + 200.0 * 14.0 / 19.0
 		check(cold.get_stat("max_hp") == roundi(wave_hp) and hot.get_stat("max_hp") == roundi(wave_hp * 4.78), "%s HP combines difficulty, wave and erosion once" % id)
 		check(absf(hot.get_stat("armor") - cold.get_stat("armor") * 2.35) <= 1.0, "%s armor combines rank and erosion once" % id)
 		check(hot.current_hp == int(hot.get_stat("max_hp")), "%s spawns with full scaled health" % id)
@@ -109,7 +109,7 @@ func _test_spawns_and_damage() -> void:
 		check(hot.take_damage(100) < cold.take_damage(100), "%s actual incoming damage uses increased armor" % id)
 	var normal := hot_enemies[0]
 	var elite := hot_enemies[1]
-	check(elite.get_stat("max_hp") == roundi(160.0 * pow(1.24, 14) * 4.78), "erosion preserves independently scaled elite HP")
+	check(elite.get_stat("max_hp") == roundi(480.0 * pow(1.24, 14) * 4.78), "erosion preserves tripled independently scaled elite HP")
 	var frozen := hot_manager.get_enemy_erosion_snapshot()
 	var original_hp := normal.current_hp
 	hot_player.modifier_stack.set_base_stat("divinity", 0.0)

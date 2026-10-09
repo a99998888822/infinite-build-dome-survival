@@ -701,6 +701,9 @@ func _on_interest_settled(result: Dictionary) -> void:
 func _process_spawn_timers(delta: float) -> void:
 	if cleanup_active or _wave_finish_queued or (running and wave_time_left <= 0.0):
 		return
+	# Expire the first-half quota even when no regular group is due this frame.
+	if float(current_wave.get("duration_seconds", 0)) - wave_time_left >= _elite_spawn_deadline:
+		_elite_spawn_schedule.clear()
 	# All spawns due in this update share a cluster, including elite replacements.
 	var batch_positions: Array[Vector2] = []
 	_process_challenge_elites(batch_positions)
@@ -805,7 +808,7 @@ func calculate_miniboss_expected_count(wave_number: int, erosion: float) -> floa
 		return 0.0
 	var profile: Dictionary = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
 	var cap := maxi(0, int(profile.get("quota_cap", 3)))
-	var base := float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 10)))
+	var base := maxf(float(profile.get("minimum_quota", 1)), float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 8))))
 	var erosion_ratio := clampf(erosion / maxf(1.0, float(profile.get("erosion_bonus_full_at", 100))), 0.0, 1.0)
 	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 100))) / 100.0
 	return minf(base * (1.0 + bonus), float(cap))
@@ -856,7 +859,8 @@ func calculate_enemy_spawn_count(base_count: int) -> int:
 
 func calculate_spawn_interval(base_interval_ms: float) -> float:
 	var wave_growth := float(_difficulty.interval_growth) * float(maxi(current_wave_index, 0)) / 100.0
-	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth) / (1.0 + wave_challenges.spawn_frequency_bonus))
+	var density := BattleDifficulty.SPAWN_DENSITY_CURVE[clampi(current_wave_index, 0, BattleDifficulty.SPAWN_DENSITY_CURVE.size() - 1)]
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth) / density / (1.0 + wave_challenges.spawn_frequency_bonus))
 
 
 func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:
