@@ -1,0 +1,657 @@
+artifacts/README.md
+  s_2441ad77303cd9::t_67b0e3b734ced9 5-6,12-15
+artifacts/maintenance/cleanup_20261007.json
+  s_8e6b41c16cbe4f::t_1e8a3ff132689d 1-13773
+artifacts/maintenance/cleanup_20261007.md
+  s_8e6b41c16cbe4f::t_b66e51a4383090 1-21
+artifacts/maintenance/validation_log_summary_20261007.json
+  s_8e6b41c16cbe4f::t_347f76dd6916c3 1-18171
+artifacts/performance/warning_png_20261006/review.md
+  s_8b90c5f66b34ca::t_e2c9d4e8d24779 54
+artifacts/previews/attack_speed_75/validation.json
+  s_0362316acdd536::t_26259e218d10f0 1-149
+artifacts/previews/attack_speed_log/validation.json
+  s_0362316acdd536::t_ecd4573732b861 1-42
+artifacts/previews/capsule_interest_review/README.md
+  s_4eb3b3d146ed3d::t_6ea040911db956 1-11
+artifacts/previews/capsule_interest_review/gpu.json
+  s_4eb3b3d146ed3d::t_ec7a006ce7f1b7 1-10
+artifacts/previews/capsule_interest_review/headless_summary.json
+  s_4eb3b3d146ed3d::t_748acf6820cbea 1-32
+artifacts/previews/capsule_interest_review/receipt_bounds.json
+  s_4eb3b3d146ed3d::t_688c61448b8438 1
+artifacts/previews/damage_number_review/capture.json
+  s_0362316acdd536::t_8f321e78fa994c 1-10
+artifacts/previews/damage_number_review/encoding.json
+  s_0362316acdd536::t_559d084c408c4d 1-16
+artifacts/previews/damage_number_review/headless/report.json
+  s_0362316acdd536::t_f24d7d79d596b1 1-261
+artifacts/previews/damage_number_review/report.json
+  s_b4a35a6371b31b::t_41ce53b40409b7 1-261
+artifacts/previews/early_wave_ui_review/filled/gpu.json
+  s_4eb3b3d146ed3d::t_82ca9a1c9bc498 1-10
+artifacts/previews/early_wave_ui_review/filled/image_notes.json
+  s_4eb3b3d146ed3d::t_ea87026632439c 1-35
+artifacts/previews/early_wave_ui_review/gpu.json
+  s_4eb3b3d146ed3d::t_d9888689b082b9 1-10
+artifacts/previews/early_wave_ui_review/headless_summary.json
+  s_4eb3b3d146ed3d::t_4843603047d992 1-55
+artifacts/previews/early_wave_ui_review/validation_summary.json
+  s_4eb3b3d146ed3d::t_4ef2cc40c51d94 1-75
+artifacts/previews/esc_idle_review/README.md
+  s_4eb3b3d146ed3d::t_ed0d20d1e813c6 1-11
+artifacts/previews/esc_idle_review/character_gpu.json
+  s_4eb3b3d146ed3d::t_0676dcc7e1c4ae 1-10
+artifacts/previews/esc_idle_review/tooltip_gpu.json
+  s_4eb3b3d146ed3d::t_4c40352d054b04 1-10
+artifacts/previews/esc_idle_review/validation_summary.json
+  s_4eb3b3d146ed3d::t_2e90aa24903fc5 1-32
+artifacts/previews/miniboss_super_armor_v01/.gdignore
+  s_b4a35a6371b31b::t_69028ae536cf4c 1
+artifacts/previews/miniboss_super_armor_v01/.gitignore
+  s_b4a35a6371b31b::t_8f4751cac96636 1-2
+artifacts/previews/miniboss_super_armor_v01/README.md
+  s_8e6b41c16cbe4f::t_8d39c95766045f 1-24
+artifacts/previews/miniboss_super_armor_v01/assemble.py
+  s_4eb3b3d146ed3d::t_cb60ff7b978d6d 1-2,4,7,10-56
+artifacts/previews/miniboss_super_armor_v01/gpu_idle.json
+  s_0362316acdd536::t_0f0f3789b87b50 1-10
+artifacts/previews/miniboss_super_armor_v01/gpu_mirrored.json
+  s_b4a35a6371b31b::t_43aa3bd3912358 1-10
+artifacts/previews/miniboss_super_armor_v01/gpu_move.json
+  s_b4a35a6371b31b::t_5c4fe8644e6c07 1-10
+artifacts/previews/miniboss_super_armor_v01/gpu_v02_idle.json
+  s_b4a35a6371b31b::t_e4d4e7f3b9405a 1-10
+artifacts/previews/miniboss_super_armor_v01/gpu_v02_mirrored.json
+  s_4eb3b3d146ed3d::t_ab8eb585b5719e 1-10
+artifacts/previews/miniboss_super_armor_v01/gpu_v02_move.json
+  s_b4a35a6371b31b::t_aabb06ce3fc036 1-10
+artifacts/previews/miniboss_super_armor_v01/prepare.py
+  s_b4a35a6371b31b::t_7e2234620c8f7c 1,5-6,9-12,14-19,21-33
+artifacts/previews/miniboss_super_armor_v01/reference_manifest.json
+  s_8e6b41c16cbe4f::t_477334a6fd3256 1-10
+artifacts/previews/miniboss_super_armor_v01/review.html
+  s_b4a35a6371b31b::t_93fe1bca4bfe55 1-61
+artifacts/previews/miniboss_super_armor_v01/sandbox/project.godot
+  s_b4a35a6371b31b::t_5205039bbdc4bd 1-18
+artifacts/previews/miniboss_super_armor_v01/sandbox/rainbow_outline.gdshader
+  s_0362316acdd536::t_9ad9c0763ccc68 1-50
+artifacts/previews/miniboss_super_armor_v01/sandbox/rainbow_outline.gdshader.uid
+  s_0362316acdd536::t_a7ba7fc75b864e 1
+artifacts/previews/miniboss_super_armor_v01/sandbox/review.gd
+  s_4eb3b3d146ed3d::t_c09d7e5b226b92 1-17,19-21,24-26,29-141,143-148,150-152,154-159
+artifacts/previews/miniboss_super_armor_v01/sandbox/review.gd.uid
+  s_0362316acdd536::t_7f771d8545c52a 1
+artifacts/previews/miniboss_super_armor_v01/sandbox/review.tscn
+  s_b4a35a6371b31b::t_88c5294d9b47b2 3,5
+artifacts/previews/miniboss_super_armor_v01/sandbox/warm_outline.gdshader
+  s_4eb3b3d146ed3d::t_18b989a70eb501 1-47
+artifacts/previews/miniboss_super_armor_v01/sandbox/warm_outline.gdshader.uid
+  s_b4a35a6371b31b::t_482cd72d4e4207 1
+artifacts/previews/miniboss_super_armor_v01/validation.json
+  s_0362316acdd536::t_589e4dbfd6657f 1-36
+artifacts/previews/range_half_bonus_review/README.md
+  s_4eb3b3d146ed3d::t_e24b908ed34b77 3,34,49,51,53
+artifacts/previews/relic_performance/README.md
+  s_4eb3b3d146ed3d::t_ae9b1424fe31ad 1-19
+artifacts/previews/relic_performance/after_gpu.json
+  s_4eb3b3d146ed3d::t_eeb797a6d85d4f 1-10
+artifacts/previews/relic_performance/after_gpu_metrics.json
+  s_8e6b41c16cbe4f::t_1615942453f953 1-222
+artifacts/previews/relic_performance/after_headless.json
+  s_4eb3b3d146ed3d::t_6dd5a837f19295 1-222
+artifacts/previews/relic_performance/before_control_gpu.json
+  s_4eb3b3d146ed3d::t_86e2f381cd675a 1-10
+artifacts/previews/relic_performance/before_gpu.json
+  s_4eb3b3d146ed3d::t_157a3fe8e14908 1-10
+artifacts/previews/relic_performance/before_gpu_metrics.json
+  s_4eb3b3d146ed3d::t_9ed32ae7b9d16c 1-222
+artifacts/previews/relic_performance/before_headless.json
+  s_8e6b41c16cbe4f::t_4fe4211f6aab1b 1-222
+artifacts/previews/relic_performance/before_sources.json
+  s_4eb3b3d146ed3d::t_70a5c06827d5ea 1-11
+artifacts/previews/relic_performance/regressions.json
+  s_4eb3b3d146ed3d::t_c5b688ce7c5f4f 1-47
+artifacts/previews/shop_icon_text_review/README.md
+  s_4eb3b3d146ed3d::t_945347bc10f30c 1-10
+artifacts/previews/shop_icon_text_review/gpu.json
+  s_4eb3b3d146ed3d::t_7f1acbfd1b0e59 1-10
+artifacts/previews/shop_icon_text_review/headless_summary.json
+  s_4eb3b3d146ed3d::t_9d8f0823f885d5 1-16
+artifacts/previews/surplus_hud_review/validation.json
+  s_0362316acdd536::t_629aaab46fe510 1-12
+artifacts/reviews/enemy_pressure_2026-10-07/erosion_comparison.csv
+  s_1a969be0160cb0::t_797b788081a7f2 1-202
+artifacts/reviews/enemy_pressure_2026-10-07/plot_curves.py
+  s_1a969be0160cb0::t_ee8bcc477ad9c1 1,3-78,80-87
+artifacts/reviews/enemy_pressure_2026-10-07/pressure_curves.svg
+  s_1a969be0160cb0::t_235f2b62450010 1-8392
+artifacts/reviews/enemy_pressure_2026-10-07/runtime_curves.json
+  s_1a969be0160cb0::t_859602d7fbb14f 1-1267
+artifacts/reviews/enemy_pressure_2026-10-07/verification.md
+  s_1a969be0160cb0::t_416981aaa4b8ad 1-43
+artifacts/reviews/enemy_wave_strength_2026-10-07/all_difficulties.csv
+  s_1a969be0160cb0::t_ada6c4a80defed 1-241
+artifacts/reviews/enemy_wave_strength_2026-10-07/runtime_rows.json
+  s_1a969be0160cb0::t_3ed56d2ae4c82c 1-6962
+assets/effects/electric_spark_warning/manifest.json
+  s_8e6b41c16cbe4f::t_7a006c38dceb70 1-19
+assets/effects/electric_spark_warning/warning_masks.png.import
+  s_8e6b41c16cbe4f::t_5fd97daf650743 1-40
+assets/effects/lightning_ground_arcs/ground_arcs.png.import
+  s_8e6b41c16cbe4f::t_c9105a8810a0da 1-40
+assets/effects/lightning_ground_arcs/manifest.json
+  s_8e6b41c16cbe4f::t_027220717618ad 1-2176
+assets/effects/lightning_hit_png/flash_core.png.import
+  s_0362316acdd536::t_b1e04f218692ad 1-40
+assets/effects/lightning_hit_png/flash_glow.png.import
+  s_0362316acdd536::t_b4d377348c564a 1-40
+assets/effects/lightning_hit_png/impact_core.png.import
+  s_0362316acdd536::t_c8ef24a33eb73c 1-40
+assets/effects/lightning_hit_png/impact_glow.png.import
+  s_0362316acdd536::t_efcf423a4b8d82 1-40
+assets/effects/lightning_hit_png/metadata.json
+  s_8e6b41c16cbe4f::t_952253fff18507 1-458
+assets/effects/pixel_baked/coin_hit.png.import
+  s_8e6b41c16cbe4f::t_916db88ff907a0 1-40
+assets/effects/pixel_baked/conduct.png.import
+  s_8e6b41c16cbe4f::t_373c18efe863b4 1-40
+assets/effects/pixel_baked/frost_front_d0.png.import
+  s_8e6b41c16cbe4f::t_933c9c7dd0311d 1-40
+assets/effects/pixel_baked/frost_front_d1.png.import
+  s_8e6b41c16cbe4f::t_88684bd07b3271 1-40
+assets/effects/pixel_baked/grenade.png.import
+  s_8e6b41c16cbe4f::t_78e8917a4813a3 1,3-40
+assets/effects/pixel_baked/hole_d0.png.import
+  s_8e6b41c16cbe4f::t_41c2ad53ba6d8e 1-40
+assets/effects/pixel_baked/hole_d1.png.import
+  s_8e6b41c16cbe4f::t_ee4148b9baf039 1-40
+assets/effects/pixel_baked/hole_d2.png.import
+  s_8e6b41c16cbe4f::t_43f58f65dc52cd 1-40
+assets/effects/pixel_baked/hole_shadow.png.import
+  s_8e6b41c16cbe4f::t_2c6e0cc3f2f171 1-40
+assets/effects/pixel_baked/ice_d0.png.import
+  s_8e6b41c16cbe4f::t_bf852afd7eb0b3 1,3-40
+assets/effects/pixel_baked/ice_d1.png.import
+  s_8e6b41c16cbe4f::t_408aaacd8d0d2e 1-40
+assets/effects/pixel_baked/ice_d2.png.import
+  s_8e6b41c16cbe4f::t_43e7091d021b6d 1-40
+assets/effects/pixel_baked/ice_shell.png.import
+  s_8e6b41c16cbe4f::t_0246045244b5d4 1-40
+assets/effects/pixel_baked/manifest.json
+  s_8e6b41c16cbe4f::t_abb992e18c1f16 1-386
+assets/effects/pixel_baked/particle_circle.png.import
+  s_8e6b41c16cbe4f::t_a56b2919c04315 1-40
+assets/effects/pixel_baked/particle_square.png.import
+  s_8e6b41c16cbe4f::t_02fd03d70da90b 1-40
+assets/effects/pixel_baked/reflection_beam.png.import
+  s_8e6b41c16cbe4f::t_f1647e316bdd52 1-40
+assets/effects/pixel_baked/reflection_sides.png.import
+  s_8e6b41c16cbe4f::t_1054b77ba7299e 1-40
+assets/effects/pixel_baked/shard.png.import
+  s_8e6b41c16cbe4f::t_e2aebdc2ee76ba 1-40
+assets/effects/pixel_baked/slowed.png.import
+  s_8e6b41c16cbe4f::t_df92bf22291ed2 1-40
+assets/effects/pixel_baked/star.png.import
+  s_8e6b41c16cbe4f::t_10f3f54df86c48 1-40
+assets/effects/pixel_baked/steam_d0.png.import
+  s_8e6b41c16cbe4f::t_5d6874d7dd5175 1-40
+assets/effects/pixel_baked/steam_d1.png.import
+  s_8e6b41c16cbe4f::t_fa005b62febcd6 1-40
+assets/effects/pixel_baked/sword_cracks.png.import
+  s_8e6b41c16cbe4f::t_29069d6529c76b 1-40
+assets/effects/pixel_baked/sword_fall_d0.png.import
+  s_8e6b41c16cbe4f::t_682c5f149702cf 1,3-40
+assets/effects/pixel_baked/sword_fall_d1.png.import
+  s_8e6b41c16cbe4f::t_19a924c537f230 1-40
+assets/effects/pixel_baked/sword_fall_d2.png.import
+  s_8e6b41c16cbe4f::t_d372d055919495 1-40
+assets/effects/pixel_baked/sword_land_d0.png.import
+  s_8e6b41c16cbe4f::t_0242b89cd4becf 1-40
+assets/effects/pixel_baked/sword_land_d1.png.import
+  s_8e6b41c16cbe4f::t_affdabf98ab7c9 1-40
+assets/effects/pixel_baked/sword_land_d2.png.import
+  s_8e6b41c16cbe4f::t_4d438ffad7a46a 1-40
+assets/effects/pixel_baked/sword_mark.png.import
+  s_8e6b41c16cbe4f::t_dc8b8ecc01762c 1-40
+assets/effects/pixel_baked/sword_wait_d0.png.import
+  s_8e6b41c16cbe4f::t_bfadf5ca9cec37 1-40
+assets/effects/pixel_baked/sword_wait_d1.png.import
+  s_8e6b41c16cbe4f::t_87a1ad0d648fa6 1-40
+assets/effects/pixel_baked/sword_wait_d2.png.import
+  s_8e6b41c16cbe4f::t_6ea20777570d2e 1-40
+assets/effects/pixel_baked/tome.png.import
+  s_8e6b41c16cbe4f::t_b1700411df9289 1-40
+assets/shaders/character_select_breathing.gdshader
+  s_52aa659d0bafcd::t_28fb6a37662ee8 4,14,16-18
+assets/shaders/electric_spark_warning_png.gdshader
+  s_8e6b41c16cbe4f::t_3075ae54961052 1-8,10-18,21-34
+assets/shaders/electric_spark_warning_png.gdshader.uid
+  s_8e6b41c16cbe4f::t_96a6a5891d3610 1
+assets/shaders/lightning_hit_png.gdshader
+  s_8e6b41c16cbe4f::t_01662ac16ea113 1-39
+assets/shaders/lightning_hit_png.gdshader.uid
+  s_4eb3b3d146ed3d::t_741e21601abd27 1
+assets/shaders/particle_gpu.gdshader
+  s_0362316acdd536::t_481a9c53208b7e 1-72
+assets/shaders/particle_gpu.gdshader.uid
+  s_4eb3b3d146ed3d::t_adf328128d70a3 1
+augmentations_list.md
+  s_e6af46337ce4b6::t_677da0c86a3ae9 17,45,91,103
+autoloads/data_registry.gd
+  s_ef204514f35f32::t_b7f66216361035 14
+combat_active_control_refactor_plan.md
+  s_25b361477be27a::t_b57c07f0ab1976 13-14
+data_config/augmentations.json
+  s_4eb3b3d146ed3d::t_d01801d97c5463 47
+data_config/enemy_adaptation_rules.json
+  s_1a969be0160cb0::t_2ae2c5a4f4e735 1-15
+data_config/erosion_pressure_rules.json
+  s_e6af46337ce4b6::t_6561f9e5a93403 5,9-13
+data_config/relics.json
+  s_e6af46337ce4b6::t_64b57f18fa46cb 279,304-305,889,899,1586,1595,1941,1958-1959,1966-1967
+data_config/weapons.json
+  s_e6af46337ce4b6::t_220aeb610fc0a1 200,202
+docs/main/1-base_data_and_modifiers_design.md
+  s_e6af46337ce4b6::t_532be4117381fd 166,191,204
+docs/main/18-humanity_erosion_gameplay_design.md
+  s_e6af46337ce4b6::t_c8fc38c6702e86 226-229,235-240,242,244,493
+docs/main/19-capital_dependency_relic_review.md
+  s_1a969be0160cb0::t_19e731a1b19d42 43
+docs/main/20-goblin_trade_design_review.md
+  s_b4a35a6371b31b::t_b086eda20597d2 16
+docs/main/4-weapon_loadout_design.md
+  s_ef204514f35f32::t_fcb0e4719554f0 153-154,159,636-637
+docs/main/5-relic_bond_design.md
+  s_ef204514f35f32::t_7a9823530c5029 313,319,358,369,387,396,401-414
+docs/main/6-enemy_wave_design.md
+  s_2441ad77303cd9::t_c1fefeb5f6c980 42-63
+docs/main/active_combat_implementation.md
+  s_25b361477be27a::t_8151fdf58e3754 8-9,11-12,56-58,69
+docs/main/checklist/early_wave_ui_fixes_2026-10-07.md
+  s_4eb3b3d146ed3d::t_7b5ebca8a0cbd4 1-32
+docs/main/checklist/godot_verification_master_checklist.md
+  s_ef204514f35f32::t_f4b9a7bc0e7085 674
+docs/main/checklist/lightning_ground_warning_r04_2026-10-07.md
+  s_8e6b41c16cbe4f::t_246d02921af6c6 1,3,5,7-9,11,13-16,18,20,22-43
+docs/main/checklist/lightning_hit_png_r02_2026-10-07.md
+  s_8e6b41c16cbe4f::t_45273e76d0b3b3 1-41
+docs/main/checklist/pixel_effects_png_r01_2026-10-07.md
+  s_8e6b41c16cbe4f::t_de47072f1ed3bc 1-57
+docs/main/checklist/range_bonus_efficiency_2026-10-06.md
+  s_0362316acdd536::t_c59e232bb842f3 10
+docs/main/checklist/relic_performance_2026-10-07.md
+  s_4eb3b3d146ed3d::t_6269a89fd384da 1-59
+docs/main/effect_rendering_audit_2026-10-07.md
+  s_8e6b41c16cbe4f::t_3b9c20ccf0a9c0 1-92
+docs/main/enchantment_tooltip_inventory.md
+  s_4eb3b3d146ed3d::t_86518aba8b83a7 60
+docs/main/weapon_tooltip_inventory.md
+  s_86d4bdded9d3ba::t_2e830486a126b9 215,221
+scenes/enemy/elite_rusher.tscn
+  s_4eb3b3d146ed3d::t_d08de3fe32b17c 5-7,16
+scenes/tests/damage_number_visual_review.tscn
+  s_0362316acdd536::t_215531807f393b 3,5
+scenes/tests/early_wave_weapon_test.tscn
+  s_4eb3b3d146ed3d::t_468f7492c9bbb2 3,5
+scenes/tests/elite_capsule_test.tscn
+  s_4eb3b3d146ed3d::t_78772858dda882 3,5
+scenes/tests/enemy_adaptation_test.tscn
+  s_1a969be0160cb0::t_2d9d7898b494ec 1-6
+scenes/tests/lightning_ground_arc_test.tscn
+  s_8e6b41c16cbe4f::t_59bcafbedb4764 1-4
+scenes/tests/lightning_hit_png_test.tscn
+  s_8e6b41c16cbe4f::t_c42f7f9fb8d9fc 1-6
+scenes/tests/pixel_baked_runtime_test.tscn
+  s_8e6b41c16cbe4f::t_1990e7f3b19075 1-4
+scenes/tests/relic_runtime_cache_test.tscn
+  s_4eb3b3d146ed3d::t_18025cac627e22 1-4
+scenes/tests/warning_test.tscn
+  s_8e6b41c16cbe4f::t_467f3dc7298c0e 1-4
+scripts/battle/active_combat_controller.gd
+  s_52aa659d0bafcd::t_19a8573f6e4038 235-241
+scripts/core/main_flow_coordinator.gd
+  s_2441ad77303cd9::t_c8d09b9c05d724 63,117,173,985-987,1016,1018,1021-1022
+scripts/data/data_validator.gd
+  s_2441ad77303cd9::t_bc94c07a9cf18f 11,25-26,109,447,459-463,678-692,697-727
+scripts/data/stat_definitions.gd
+  s_e6af46337ce4b6::t_cf432d610ca517 5,158,197,206,434-439
+scripts/effects/baked_pixel_frames.gd
+  s_8e6b41c16cbe4f::t_d3b601631c5003 1-13
+scripts/effects/baked_pixel_frames.gd.uid
+  s_4eb3b3d146ed3d::t_fd82b43dc6941c 1
+scripts/effects/black_hole_effect.gd
+  s_e6af46337ce4b6::t_0fceed6ac9877e 3,119,123
+scripts/effects/electric_spark_effect.gd
+  s_8e6b41c16cbe4f::t_adf654a6e01aec 6,18-19,61,65-66,69,86,116-118,122
+scripts/effects/electric_spark_warning_sprite.gd
+  s_8e6b41c16cbe4f::t_aaa9cde71c4721 1-8,10-47
+scripts/effects/electric_spark_warning_sprite.gd.uid
+  s_8e6b41c16cbe4f::t_3240295e914e87 1
+scripts/effects/element_reaction_visual.gd
+  s_243ef24cb13f26::t_6c8a33f883ec93 2,82-93
+scripts/effects/enemy_status_visual.gd
+  s_8b90c5f66b34ca::t_bc298eb6c0612b 2,78-80,139-140
+scripts/effects/ice_field_effect.gd
+  s_8e6b41c16cbe4f::t_2f3be0d66ad7ef 3,34-35,127-129
+scripts/effects/light_reflection_effect.gd
+  s_8e6b41c16cbe4f::t_a5fba9d83c71f3 3,138,140-162
+scripts/effects/light_sword_effect.gd
+  s_8e6b41c16cbe4f::t_a7783648924003 3,125-126,128-133,189,191-195
+scripts/effects/lightning_ground_arc_burst.gd
+  s_8e6b41c16cbe4f::t_cfb2ad6826357f 1-10,12-42
+scripts/effects/lightning_ground_arc_burst.gd.uid
+  s_8e6b41c16cbe4f::t_d20609b7739f00 1
+scripts/effects/lightning_hit_frame_data.gd
+  s_8e6b41c16cbe4f::t_781b0a603e2b46 1-459
+scripts/effects/lightning_hit_frame_data.gd.uid
+  s_8e6b41c16cbe4f::t_4972180244f94e 1
+scripts/effects/lightning_hit_sprite_burst.gd
+  s_8e6b41c16cbe4f::t_5614423a009feb 2-28,30-32,35,37-38,40-122,127-128,131-132,134-139
+scripts/effects/lightning_hit_sprite_burst.gd.uid
+  s_8e6b41c16cbe4f::t_7b8444e8aeb1de 1
+scripts/effects/lightning_particle_effect.gd
+  s_faad774b6caa3d::t_4db9ed36a02d9b 11-12,20,305,308,329-331,334,427,430-432,443-444
+scripts/effects/particle_world.gd
+  s_8e6b41c16cbe4f::t_6e2419e27dbfe4 3-14,448-465,596-604,696-699,790-792,809,879-897
+scripts/enemies/enemy_controller.gd
+  s_faad774b6caa3d::t_7994c1ce97bd14 18-19,616-620,629-634,689,707,709,711
+scripts/modifiers/modifier_stack.gd
+  s_4eb3b3d146ed3d::t_90ec326dd32f8e 4,57-66,152-159
+scripts/player/player_controller.gd
+  s_e6af46337ce4b6::t_a0df9532a7e5b3 74-78,271,370,711
+scripts/relics/relic_bond_system.gd
+  s_4eb3b3d146ed3d::t_471b2b8548cfe6 10-14,139,141-158,174-179,219-221
+scripts/rewards/battle_finance_system.gd
+  s_1f3b9a337a97f0::t_e3b36caa33ebcb 84-86,663,665-694,820-829,839-840
+scripts/tests/active_combat_integration_test.gd
+  s_67668443088b27::t_6871fc4ea51e0d 231-236,273,291-292,294
+scripts/tests/battle_hud_damage_test.gd
+  s_ef204514f35f32::t_4c3bd6ee15a84d 64-65,140-187
+scripts/tests/camp_dagger_test.gd
+  s_0362316acdd536::t_2c1e93354f7dd5 134
+scripts/tests/character_select_view_test.gd
+  s_1f3b9a337a97f0::t_f1828c26e9cb01 77-78,84-85,95-98,100
+scripts/tests/damage_number_visual_review.gd
+  s_0362316acdd536::t_059377a8ccacc0 2,4-12,15-17,21-22,25-36,40-41,46-47,51-54,57-58,61-89,91-111,113-114,116-162
+scripts/tests/damage_number_visual_review.gd.uid
+  s_b4a35a6371b31b::t_b7f787d33179a9 1
+scripts/tests/early_wave_weapon_test.gd
+  s_4eb3b3d146ed3d::t_458280279d325b 1-91
+scripts/tests/elite_capsule_test.gd
+  s_4eb3b3d146ed3d::t_d120001938bf38 1,3-84
+scripts/tests/elite_capsule_test.gd.uid
+  s_8e6b41c16cbe4f::t_be8de983c1d8b2 1
+scripts/tests/elite_effect_revision_test.gd
+  s_4eb3b3d146ed3d::t_1a18eaf20ee88d 36
+scripts/tests/enemy_adaptation_test.gd
+  s_1a969be0160cb0::t_c0825ce39554a3 1-9,12-33,38-47,50-244
+scripts/tests/enemy_adaptation_test.gd.uid
+  s_1a969be0160cb0::t_a44edee3f933d2 1
+scripts/tests/erosion_pressure_test.gd
+  s_e6af46337ce4b6::t_30c3fea6963995 52,87,96-97,116,145,162-171
+scripts/tests/grenade_weapon_test.gd
+  s_0362316acdd536::t_3bc610716073c7 246
+scripts/tests/keyboard_mouse_cast_test.gd
+  s_25b361477be27a::t_10ccb4635dd16e 169-174,177-178,183-185
+scripts/tests/lightning_ground_arc_test.gd
+  s_8e6b41c16cbe4f::t_3c9988cffec7e1 1-6,8-12,17-25,29-115,117-123,125,127-128
+scripts/tests/lightning_ground_arc_test.gd.uid
+  s_8e6b41c16cbe4f::t_df8949bcd90349 1
+scripts/tests/lightning_hit_png_test.gd
+  s_8e6b41c16cbe4f::t_9a09f61968f556 1-13,19-72
+scripts/tests/lightning_hit_png_test.gd.uid
+  s_8e6b41c16cbe4f::t_aefda20a5c1fbd 1
+scripts/tests/meteor_flail_test.gd
+  s_0362316acdd536::t_6e81719d12109e 119
+scripts/tests/nightwatch_spear_test.gd
+  s_cfbcab1170430e::t_473071861c8683 153
+scripts/tests/pixel_baked_runtime_test.gd
+  s_8e6b41c16cbe4f::t_adf55b40571695 1-8,13-33,35-65,67,69-70
+scripts/tests/pixel_baked_runtime_test.gd.uid
+  s_8e6b41c16cbe4f::t_e206095be24d0f 1
+scripts/tests/principal_relic_test.gd
+  s_1a969be0160cb0::t_d92ae37426997b 47-48,140-218,305-313,340-342
+scripts/tests/range_relic_test.gd
+  s_e6af46337ce4b6::t_d79746988c38db 49,177-198
+scripts/tests/relic_consistency_test.gd
+  s_e6af46337ce4b6::t_80c3ccf9afe2ba 139,201,203,206,211,369-374,390,392,394,396,406
+scripts/tests/relic_runtime_cache_test.gd
+  s_4eb3b3d146ed3d::t_da36aad8c4a872 1-80
+scripts/tests/relic_runtime_cache_test.gd.uid
+  s_4eb3b3d146ed3d::t_79808f67bf249d 1
+scripts/tests/tome_purse_weapon_test.gd
+  s_0362316acdd536::t_68781003fca4be 119,296
+scripts/tests/warning_test.gd
+  s_8e6b41c16cbe4f::t_93954ca345fae5 1-13,16-69,71-72
+scripts/tests/warning_test.gd.uid
+  s_8e6b41c16cbe4f::t_9656f203aa6296 1
+scripts/tests/weapon_trio_test.gd
+  s_0362316acdd536::t_0def957a7c2656 181
+scripts/tests/weapon_upgrade_progression_test.gd
+  s_0362316acdd536::t_3aa12768da9e1f 21-29,51-52,54,57,59-64
+scripts/tests/wheelchair_mode_test.gd
+  s_92c0598951b137::t_81c0dfb60513e9 21-22,61,133-234
+scripts/tools/assemble_damage_number_review.py
+  s_0362316acdd536::t_2b54d1035706cd 1-4,6-50,53-54
+scripts/ui/battle_hud.gd
+  s_bd4b72de95f508::t_8121bc143337a5 39,376,398-399,578,616-618,648-653,672-676,947-948,1031,1036-1037,1040-1041,1148-1149,1248,1265,1271-1274,1282,1287-1288,1305-1306,1309
+scripts/ui/character_select_view.gd
+  s_1f3b9a337a97f0::t_0471eaa18cc2dc 17-18,465
+scripts/ui/esc_overlay.gd
+  s_25b361477be27a::t_d02e0240da2a61 7,36-38,54,360-364,407-417,424-439,442,449,451,501,505-511
+scripts/ui/finance_ui_style.gd
+  s_1f3b9a337a97f0::t_4e4a3fe98e5dd5 8,10,238-239,242-246
+scripts/ui/interest_arrival_presentation.gd
+  s_ef204514f35f32::t_6d39c871c0af53 14-17,83,110-112,115-119,121-125,129-130,132-133,136,138-140,171-173,181,183-187,189-191,193,277
+scripts/ui/preparation_offer_card.gd
+  s_52aa659d0bafcd::t_cfd5fd32962761 7,29,123
+scripts/ui/shop_offer_generator.gd
+  s_2441ad77303cd9::t_4ef8b7c819c105 233,251-252,284,310-311
+scripts/ui/weapon_strip.gd
+  s_25b361477be27a::t_bb3eabb02baaf8 12-15,31,117,122-123,138,145,179-248,250-252,287
+scripts/waves/enemy_wave_pressure.gd
+  s_1a969be0160cb0::t_e34c6b3d53b45c 1-124
+scripts/waves/enemy_wave_pressure.gd.uid
+  s_1a969be0160cb0::t_b2cba03f0761d2 1
+scripts/waves/wave_manager.gd
+  s_faad774b6caa3d::t_a96cfcdc18b5ce 59,104,169,235,278,310,322,326-335,762,858-859
+scripts/weapons/active_weapon_casting.gd
+  s_92c0598951b137::t_9ef4e7552c9778 16,19-20,25,28-30,98-99
+scripts/weapons/camp_dagger.gd
+  s_faad774b6caa3d::t_46b5a9766102b3 178
+scripts/weapons/coin_projectile.gd
+  s_86d4bdded9d3ba::t_4efe70d6a92f1b 172
+scripts/weapons/copper_lamp.gd
+  s_3dbef1320954a3::t_47e80371f20dc0 19
+scripts/weapons/directed_weapon_runtime.gd
+  s_3dbef1320954a3::t_02a1bdc70ce076 41-43
+scripts/weapons/grenade_projectile.gd
+  s_b11938437a28ec::t_a9db37f6cdba47 3,209
+scripts/weapons/nightwatch_spear.gd
+  s_4eb3b3d146ed3d::t_2f2bd967465d59 106,146
+scripts/weapons/projectile_instance.gd
+  s_4eb3b3d146ed3d::t_f646c3ab68829a 300
+scripts/weapons/ritual_coin_hit.gd
+  s_b11938437a28ec::t_cbc092267554aa 2,42
+scripts/weapons/weapon_instance.gd
+  s_faad774b6caa3d::t_7c4df80ae1c991 147-154,806
+scripts/weapons/weapon_loadout.gd
+  s_25b361477be27a::t_65feb2b8677f7d 263-264,337,350,367,381,470,509
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6c728ed4690d498bf6bc34e9b7a0d1c9eaaf34ca",
+  "prompts": {},
+  "sessions": {
+    "s_0362316acdd536": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11430-6663-7213-bf57-c2d001b916d5",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_1a969be0160cb0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a114cc-07fb-7491-9ba2-87dbf8d68db0",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_1f3b9a337a97f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12107-acb7-7b30-a3b8-ebd48e88689d",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_243ef24cb13f26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cbf9-050c-7dd2-b00c-0af5a10ce723",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25b361477be27a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11a3f-76c5-78b2-affc-5db5f3e6e433",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_3dbef1320954a3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eaf0-a03b-77a3-a543-fb235fa92c89",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_4eb3b3d146ed3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11121-aecd-7511-8d21-1621942cc710",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_52aa659d0bafcd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11e76-d9ec-7683-aeb3-75650390c008",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_67668443088b27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d4-9f2a-7521-a8c7-ee0846ad1b45",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_86d4bdded9d3ba": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115eb-bcb1-7042-b25b-c49135faf6fe",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8b90c5f66b34ca": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047b-584e-7ad2-8141-68611fd59975",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8e6b41c16cbe4f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11121-2185-7163-8b69-b3d9a41fd027",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b4a35a6371b31b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1142d-adc2-74a0-9044-d850ad9e6b4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bd4b72de95f508": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11b7e-b5be-7cc1-83b4-7f5ccaada02f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_cfbcab1170430e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115b9-e0c1-77a0-8dd4-6680698589fa",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_faad774b6caa3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12388-2127-79b2-9821-95230d5905dc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
