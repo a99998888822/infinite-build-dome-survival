@@ -1,0 +1,441 @@
+artifacts/README.md
+  s_2441ad77303cd9::t_6b6d1a55c5b4c9 5-8
+artifacts/generated/english_promo_20261007/brief.md
+  s_2441ad77303cd9::t_4d56e6eb9c3ac5 1-36
+artifacts/generated/english_promo_20261007/build_art.py
+  s_ef204514f35f32::t_e128e5995d45b9 1-263
+artifacts/generated/english_promo_20261007/manifest.json
+  s_2594b8cf4d3cb6::t_a32905d3e368cf 1-100
+artifacts/generated/mobility_weapons_20261007/ART_BRIEF.md
+  s_86d4bdded9d3ba::t_ff14ab7613e0dc 1-57
+artifacts/generated/mobility_weapons_20261007/manifest.json
+  s_d47e6bf650c025::t_56992c38dbc6fc 1-552
+artifacts/maintenance/cleanup_20261008.json
+  s_e2da0653a2c9ad::t_656edc297a38f9 1-17590
+artifacts/maintenance/cleanup_20261008.md
+  s_e2da0653a2c9ad::t_762c796b12b176 1-19
+artifacts/maintenance/pixel_cleanup_20261008.json
+  s_e2da0653a2c9ad::t_952d27a83e2330 1-8107
+artifacts/maintenance/pixel_cleanup_20261008.md
+  s_e2da0653a2c9ad::t_6700ae4e998b57 1-17
+artifacts/sources/README.md
+  s_67668443088b27::t_0a0c47cb5d02f8 3-5
+artifacts/sources/enemies/echo_bat/manifest.json
+  s_e2da0653a2c9ad::t_bd89aeecc3c220 1-144
+artifacts/sources/enemies/underworld_wolf/manifest.json
+  s_e2da0653a2c9ad::t_8ce20d821a5942 1-198
+artifacts/sources/index.json
+  s_e2da0653a2c9ad::t_2c88e1359f4584 461-640
+assets/sprites/enemies/echo_bat/attack.png.import
+  s_8c27971d424fd9::t_4e2b91efb018e5 1-40
+assets/sprites/enemies/echo_bat/attack/01.png.import
+  s_8c27971d424fd9::t_8a8923257aac44 1-40
+assets/sprites/enemies/echo_bat/attack/02.png.import
+  s_8c27971d424fd9::t_432d676b647477 1-40
+assets/sprites/enemies/echo_bat/attack/03.png.import
+  s_8c27971d424fd9::t_d636d989338f83 1-40
+assets/sprites/enemies/echo_bat/attack/04.png.import
+  s_8c27971d424fd9::t_5d5543c03019ac 1-40
+assets/sprites/enemies/echo_bat/attack/05.png.import
+  s_8c27971d424fd9::t_94ac2c7c8bc1a1 1-40
+assets/sprites/enemies/echo_bat/attack/06.png.import
+  s_8c27971d424fd9::t_00c87b60c14d02 1-40
+assets/sprites/enemies/echo_bat/attack/07.png.import
+  s_8c27971d424fd9::t_b10acb0d52fa1c 1-40
+assets/sprites/enemies/echo_bat/attack/08.png.import
+  s_8c27971d424fd9::t_dfd7a88558fddb 1-40
+assets/sprites/enemies/echo_bat/attack/09.png.import
+  s_8c27971d424fd9::t_ba44ded2f2af46 1-40
+assets/sprites/enemies/echo_bat/idle.png.import
+  s_8c27971d424fd9::t_57b0db80ff613e 1-40
+assets/sprites/enemies/echo_bat/manifest.json
+  s_e2da0653a2c9ad::t_cc01c597bc2d53 1-257
+assets/sprites/enemies/echo_bat/move.png.import
+  s_8c27971d424fd9::t_f4e32c7dc1dae5 1-40
+assets/sprites/enemies/echo_bat/move/01.png.import
+  s_8c27971d424fd9::t_b1c33c7f296ec0 1-40
+assets/sprites/enemies/echo_bat/move/02.png.import
+  s_8c27971d424fd9::t_56087830b0ddfd 1-40
+assets/sprites/enemies/echo_bat/move/03.png.import
+  s_8c27971d424fd9::t_5f8873cdb4a634 1-40
+assets/sprites/enemies/echo_bat/move/04.png.import
+  s_8c27971d424fd9::t_769f9adc6c6c6c 1-40
+assets/sprites/enemies/echo_bat/move/05.png.import
+  s_8c27971d424fd9::t_08c245a592c396 1-40
+assets/sprites/enemies/echo_bat/move/06.png.import
+  s_8c27971d424fd9::t_57d196f8530863 1-40
+assets/sprites/enemies/echo_bat/sonic_charge.png.import
+  s_e2da0653a2c9ad::t_5912f39356159f 1-40
+assets/sprites/enemies/echo_bat/sonic_hit.png.import
+  s_e2da0653a2c9ad::t_c450f609d406bf 1-40
+assets/sprites/enemies/echo_bat/sonic_warning.png.import
+  s_e2da0653a2c9ad::t_38389a7626a98b 1-40
+assets/sprites/enemies/echo_bat/sonic_wave.png.import
+  s_e2da0653a2c9ad::t_6042c515b8fb28 1-40
+assets/sprites/enemies/underworld_wolf/atlases/attack.png.import
+  s_ef204514f35f32::t_78d46ecc981495 1-40
+assets/sprites/enemies/underworld_wolf/atlases/jump.png.import
+  s_ef204514f35f32::t_659d777087a0de 1-40
+assets/sprites/enemies/underworld_wolf/atlases/move.png.import
+  s_ef204514f35f32::t_4752b9b38e07cb 1-40
+assets/sprites/enemies/underworld_wolf/frames/attack_01.png.import
+  s_ef204514f35f32::t_77bd118ab301c6 1-40
+assets/sprites/enemies/underworld_wolf/frames/attack_02.png.import
+  s_ef204514f35f32::t_8ba936c64e3119 1-40
+assets/sprites/enemies/underworld_wolf/frames/attack_03.png.import
+  s_ef204514f35f32::t_cfdba2d0773b1f 1-40
+assets/sprites/enemies/underworld_wolf/frames/attack_04.png.import
+  s_ef204514f35f32::t_540a192d2e7bc3 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_01.png.import
+  s_ef204514f35f32::t_b4de2bd954d6b1 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_02.png.import
+  s_ef204514f35f32::t_719cdd03cbb60d 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_03.png.import
+  s_ef204514f35f32::t_156fc88f037969 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_04.png.import
+  s_ef204514f35f32::t_1d69fea149f6db 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_05.png.import
+  s_ef204514f35f32::t_f97ce453e48799 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_06.png.import
+  s_ef204514f35f32::t_dd8f8dc7156516 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_07.png.import
+  s_ef204514f35f32::t_9ced453b377f2b 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_08.png.import
+  s_ef204514f35f32::t_5a61c450095127 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_09.png.import
+  s_ef204514f35f32::t_b3b99a6c3a023e 1-40
+assets/sprites/enemies/underworld_wolf/frames/jump_10.png.import
+  s_ef204514f35f32::t_7558bbd6dbb0f0 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_01.png.import
+  s_ef204514f35f32::t_3342ae323d55cc 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_02.png.import
+  s_ef204514f35f32::t_9937ef366f8773 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_03.png.import
+  s_ef204514f35f32::t_7e059d6efb5b69 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_04.png.import
+  s_ef204514f35f32::t_dc9a2782b9e865 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_05.png.import
+  s_ef204514f35f32::t_97042748e9e17d 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_06.png.import
+  s_ef204514f35f32::t_e21de01f861568 1-40
+assets/sprites/enemies/underworld_wolf/frames/move_07.png.import
+  s_ef204514f35f32::t_37be9cfce24ce1 1-40
+assets/sprites/enemies/underworld_wolf/ghost_flame.gdshader
+  s_8c27971d424fd9::t_5098889af0554a 1-51
+assets/sprites/enemies/underworld_wolf/ghost_flame.gdshader.uid
+  s_ef204514f35f32::t_0321c06a817184 1
+assets/sprites/enemies/underworld_wolf/manifest.json
+  s_e2da0653a2c9ad::t_31131caab96f7f 1-682
+assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres
+  s_8c27971d424fd9::t_69ad26fb0508c8 1-114
+assets/sprites/weapons/mobility/dash_circle.png.import
+  s_86d4bdded9d3ba::t_27a9568831b023 1-40
+assets/sprites/weapons/mobility/dash_trail.png.import
+  s_86d4bdded9d3ba::t_6ff3421f50c4c3 1-40
+assets/sprites/weapons/mobility/muzzle.png.import
+  s_86d4bdded9d3ba::t_d903077171e91f 1-40
+assets/sprites/weapons/mobility/pellet.png.import
+  s_86d4bdded9d3ba::t_bbb33e4ad86cf2 1-40
+assets/sprites/weapons/mobility/pellet_hit.png.import
+  s_86d4bdded9d3ba::t_b1d57c111833a4 1-40
+assets/sprites/weapons/mobility/recoil_dust.png.import
+  s_86d4bdded9d3ba::t_3e75017bd6e7f9 1-40
+assets/sprites/weapons/mobility/star_anchor.png.import
+  s_86d4bdded9d3ba::t_b0afe7fd1ae4b6 1-40
+assets/sprites/weapons/mobility/star_arrive.png.import
+  s_86d4bdded9d3ba::t_3cc840c8ca5681 1-40
+assets/sprites/weapons/mobility/star_depart.png.import
+  s_86d4bdded9d3ba::t_afc21fe64f58a0 1-40
+assets/sprites/weapons/mobility/star_return.png.import
+  s_86d4bdded9d3ba::t_9b3fdae5bceac8 1-40
+assets/sprites/weapons/mobility/star_shockwave.png.import
+  s_86d4bdded9d3ba::t_0931eb03c0f3a1 1-40
+assets/ui/icons/weapons/weapon_dash_blade.png.import
+  s_86d4bdded9d3ba::t_0acd36d496a273 1-40
+assets/ui/icons/weapons/weapon_recoil_gun.png.import
+  s_86d4bdded9d3ba::t_7155c8db45cddc 1-40
+assets/ui/icons/weapons/weapon_star_tome.png.import
+  s_86d4bdded9d3ba::t_0e4c7230fe1b72 1-40
+assets/ui/icons/weapons/weapon_star_tome_return.png.import
+  s_86d4bdded9d3ba::t_a6a15b7efb1fb0 1-40
+data_config/enemies.json
+  s_e6af46337ce4b6::t_329df6bf145f8e 10-13,24-43,46-49,84-119
+data_config/run_settlement.json
+  s_ef204514f35f32::t_b175fde474417e 13-14
+data_config/weapons.json
+  s_e6af46337ce4b6::t_e02ce55cf0d1fe 5,7,44,46,93,95,133,135,166,168,200,202,226,228,251,253,278,280,316,318,353,355,383-449
+docs/asset/asset_rules_summary.md
+  s_ef204514f35f32::t_df058148da2abb 169-172
+docs/asset/echo_bat_art_review.md
+  s_e2da0653a2c9ad::t_711568a8119b0c 1-42
+docs/asset/underworld_wolf_integration.md
+  s_8c27971d424fd9::t_2be25e62278627 1-39
+docs/main/active_combat_implementation.md
+  s_25b361477be27a::t_4dfffd1bb9c526 5-6,10,14
+docs/main/mobility_weapon_copy_review.md
+  s_86d4bdded9d3ba::t_1de6ee86115b36 1-60
+docs/main/mobility_weapons_implementation.md
+  s_86d4bdded9d3ba::t_a756d42c2b3965 1-49
+docs/main/multilingual_localization_design.md
+  s_25b361477be27a::t_0ff31e81df82b6 1-264
+docs/main/weapon_tooltip_inventory.md
+  s_86d4bdded9d3ba::t_85aca5ca22e191 3,10,12-17,26,40,53,59,71,85,91,103,117,123,135,139,149,155,167,171,181,187,199,212,218,230,242,248,260,271,277,289,291,301,307,319,321,331,337,349,351,361,367,370-388,390-394,396,405-407
+localization/catalog_meta.json
+  s_2441ad77303cd9::t_26a81f73fceef1 1-1042
+scenes/enemy/echo_bat.tscn
+  s_e2da0653a2c9ad::t_e623c3d102cb3c 1-23
+scenes/enemy/underworld_wolf.tscn
+  s_8c27971d424fd9::t_76d5b0320800fa 1-24
+scenes/tests/echo_bat_review.tscn
+  s_e2da0653a2c9ad::t_44dc356f6733bb 1-6
+scenes/tests/mobility_weapon_art_review.tscn
+  s_d47e6bf650c025::t_365a609bc6f101 1-6
+scenes/tests/mobility_weapon_integration_test.tscn
+  s_86d4bdded9d3ba::t_741df21082fcdd 1-6
+scenes/tests/underworld_wolf_review.tscn
+  s_8c27971d424fd9::t_bacc9921ed4a89 1-6
+scripts/battle/active_combat_controller.gd
+  s_52aa659d0bafcd::t_d219aaaa9fa905 146,156,159-163,204
+scripts/battle/mobility_weapon_indicator.gd
+  s_d47e6bf650c025::t_abc349dbf4a7dd 1-161
+scripts/battle/weapon_attack_indicator.gd
+  s_50bd94cb5a89d7::t_73e4da1e74836f 7-8,23-30,46
+scripts/data/data_validator.gd
+  s_2441ad77303cd9::t_3de3b9eecc058b 651-673,690-711
+scripts/effects/mobility_atlas_effect.gd
+  s_86d4bdded9d3ba::t_db81f2f8c24ead 1-60
+scripts/effects/mobility_atlas_effect.gd.uid
+  s_86d4bdded9d3ba::t_990fe5c792f745 1
+scripts/enemies/echo_bat.gd
+  s_e2da0653a2c9ad::t_7e6c79ed14f063 1-204
+scripts/enemies/echo_bat.gd.uid
+  s_e2da0653a2c9ad::t_a9d4a4d45d8ecd 1
+scripts/enemies/echo_bat_sonic.gd
+  s_e2da0653a2c9ad::t_92b596cbb20853 1-73
+scripts/enemies/echo_bat_sonic.gd.uid
+  s_e2da0653a2c9ad::t_c7c67dc3edb152 1
+scripts/enemies/underworld_wolf.gd
+  s_2441ad77303cd9::t_1169b85de76d39 1-363
+scripts/enemies/underworld_wolf.gd.uid
+  s_ef204514f35f32::t_59fac61d796dc5 1
+scripts/enemies/underworld_wolf_flame.gd
+  s_8c27971d424fd9::t_1cf3f57bafff51 1-37
+scripts/enemies/underworld_wolf_flame.gd.uid
+  s_ef204514f35f32::t_c8c5b408991952 1
+scripts/player/enemy_knockback.gd
+  s_8c27971d424fd9::t_379fc20e31b8a5 1-68
+scripts/player/enemy_knockback.gd.uid
+  s_ef204514f35f32::t_7d8f3478387a56 1
+scripts/player/player_controller.gd
+  s_e6af46337ce4b6::t_6e0c767810b620 46-50,483,489-499,516-565
+scripts/tests/active_combat_integration_test.gd
+  s_67668443088b27::t_f07dd59b11ec22 239-242,261-268,274,277-282,297-301,303-305,307-310
+scripts/tests/echo_bat_review.gd
+  s_e2da0653a2c9ad::t_294c94468d0597 1-319
+scripts/tests/echo_bat_review.gd.uid
+  s_e2da0653a2c9ad::t_277589cd391542 1
+scripts/tests/elite_relic_decay_test.gd
+  s_e6af46337ce4b6::t_5972d24168fbcc 123
+scripts/tests/keyboard_mouse_cast_test.gd
+  s_25b361477be27a::t_b84ffe59b5997f 187-191
+scripts/tests/mobility_weapon_art_review.gd
+  s_86d4bdded9d3ba::t_d351e1d9d4b46d 1-373
+scripts/tests/mobility_weapon_integration_test.gd
+  s_86d4bdded9d3ba::t_f21b32fac7b817 1-353
+scripts/tests/mobility_weapon_integration_test.gd.uid
+  s_86d4bdded9d3ba::t_d6b04a55727350 1
+scripts/tests/nightwatch_spear_test.gd
+  s_cfbcab1170430e::t_5be36f72a7681d 104
+scripts/tests/remaining_multi_projectile_review.gd
+  s_50bd94cb5a89d7::t_564b0d9d55009b 83,108
+scripts/tests/underworld_wolf_review.gd
+  s_8c27971d424fd9::t_916e76a1649768 1-494
+scripts/tests/underworld_wolf_review.gd.uid
+  s_ef204514f35f32::t_0e939bd154e959 1
+scripts/tests/wave_pressure_test.gd
+  s_2441ad77303cd9::t_c2e23784c8cbc8 120,122-123
+scripts/tests/wheelchair_mode_test.gd
+  s_92c0598951b137::t_12f3e90a307562 65-69,261-262
+scripts/tools/ASSET_INSTALLERS.md
+  s_e2da0653a2c9ad::t_7ab24bb64001a4 3-4
+scripts/tools/build_echo_bat_art.py
+  s_e2da0653a2c9ad::t_231c5bd3e9b542 1-158
+scripts/tools/build_mobility_weapon_art.py
+  s_86d4bdded9d3ba::t_dff3bcff048b44 1-391
+scripts/tools/install_underworld_wolf_art.py
+  s_8c27971d424fd9::t_33eee7131e1898 1-65
+scripts/tools/localization_inventory.py
+  s_ef204514f35f32::t_3294f2c0ac7a71 1-104
+scripts/ui/active_combat_weapon_bar.gd
+  s_50bd94cb5a89d7::t_8ad316c9585211 3,135-140,143,151-159
+scripts/ui/battle_hud.gd
+  s_bd4b72de95f508::t_871d92d584b94b 193-195
+scripts/ui/cursor_weapon_icon.gd
+  s_92c0598951b137::t_9e47a996f8a1c8 9,34-35,37-38
+scripts/ui/preparation_offer_card.gd
+  s_52aa659d0bafcd::t_f18cde571730b4 116
+scripts/waves/wave_manager.gd
+  s_faad774b6caa3d::t_36642008cf7f57 661-663,672-689,695,702-719
+scripts/weapons/active_weapon_casting.gd
+  s_92c0598951b137::t_cc30a4219c8009 13-15,22,62-63,66-72,88,96-98,105-107,115-116,126-131,190-192
+scripts/weapons/bounce_attack.gd
+  s_3dbef1320954a3::t_85cf18b425cdf4 20-24
+scripts/weapons/cannon_pellet.gd
+  s_86d4bdded9d3ba::t_71c6fa660d94b7 1-41
+scripts/weapons/cannon_pellet.gd.uid
+  s_86d4bdded9d3ba::t_7824dad7b7617b 1
+scripts/weapons/coin_projectile.gd
+  s_86d4bdded9d3ba::t_645923270e7e78 74,94,101-104,152,183,188-195
+scripts/weapons/mobility_weapon_runtime.gd
+  s_86d4bdded9d3ba::t_a46e3b3c85bb69 1-146
+scripts/weapons/mobility_weapon_runtime.gd.uid
+  s_86d4bdded9d3ba::t_ac128600131f65 1
+scripts/weapons/ritual_domain.gd
+  s_faad774b6caa3d::t_5d8421844fdf14 55,80
+scripts/weapons/weapon_instance.gd
+  s_faad774b6caa3d::t_c6f106bd60a436 54,518-519,584-617,845,847-855,859,866,868,872-873,876
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "02b3ef411e5cba5e164d203a11ab25b9a3282370",
+  "prompts": {},
+  "sessions": {
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2594b8cf4d3cb6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116e0-f753-7711-a3c4-4ee127d4c0e7",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25b361477be27a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11a3f-76c5-78b2-affc-5db5f3e6e433",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_3dbef1320954a3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eaf0-a03b-77a3-a543-fb235fa92c89",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_50bd94cb5a89d7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047a-556b-7c10-bf65-66ac4e360e27",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_52aa659d0bafcd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11e76-d9ec-7683-aeb3-75650390c008",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_67668443088b27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d4-9f2a-7521-a8c7-ee0846ad1b45",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_86d4bdded9d3ba": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115eb-bcb1-7042-b25b-c49135faf6fe",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8c27971d424fd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11702-e6a1-79b1-8581-a8136230b970",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bd4b72de95f508": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11b7e-b5be-7cc1-83b4-7f5ccaada02f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_cfbcab1170430e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115b9-e0c1-77a0-8dd4-6680698589fa",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d47e6bf650c025": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115a8-3ff2-7c31-9433-159e52a97086",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e2da0653a2c9ad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11691-2210-7820-9fe5-fbc7b5e578e3",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_faad774b6caa3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12388-2127-79b2-9821-95230d5905dc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
