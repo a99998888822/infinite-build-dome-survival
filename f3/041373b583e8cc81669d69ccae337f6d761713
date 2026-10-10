@@ -1,0 +1,1211 @@
+scripts/pickups/augmentation_pickup.gd
+  s_a3c9a2e4c843c4::t_6ce432608ccacb 8,97
+.gitignore
+  s_ef204514f35f32::t_f136fa6161bf1b 11-12
+artifacts/README.md
+  s_2441ad77303cd9::t_3d135483d1f1f8 3,8-9,15-23
+artifacts/editable/finance_background/README.md
+  s_92c0598951b137::t_3b4847ec601efd 1-14
+artifacts/editable/finance_background/scene.pal
+  s_67668443088b27::t_b26a08555b146a 1-16
+artifacts/editable/finance_background/source-map.json
+  s_92c0598951b137::t_9a21ca5b738f46 1-339
+artifacts/editable/finance_background/tiles/bank-r1-c1-128.pxg
+  s_8b90c5f66b34ca::t_5ce373b12aadb0 1-142
+artifacts/editable/finance_background/tiles/bank-r1-c1.pal
+  s_92c0598951b137::t_2f3140af98c295 1-16
+artifacts/editable/finance_background/tiles/bank-r1-c2-128.pxg
+  s_8b90c5f66b34ca::t_19661be9cd81dc 1-147
+artifacts/editable/finance_background/tiles/bank-r1-c2.pal
+  s_92c0598951b137::t_95ef69de73e666 1-16
+artifacts/editable/finance_background/tiles/bank-r1-c3-128.pxg
+  s_67668443088b27::t_f10675ea6dd1e4 1-145
+artifacts/editable/finance_background/tiles/bank-r1-c3.pal
+  s_92c0598951b137::t_5ad70ad43750be 1-16
+artifacts/editable/finance_background/tiles/bank-r1-c4-128.pxg
+  s_67668443088b27::t_69e4cb9d61f959 1-143
+artifacts/editable/finance_background/tiles/bank-r1-c4.pal
+  s_92c0598951b137::t_56430e1e9a5a7f 1-16
+artifacts/editable/finance_background/tiles/bank-r1-c5-128.pxg
+  s_8b90c5f66b34ca::t_d58b121c0801c7 1-142
+artifacts/editable/finance_background/tiles/bank-r1-c5.pal
+  s_92c0598951b137::t_00bf9e06cc18cd 1-16
+artifacts/editable/finance_background/tiles/bank-r1-c6-128.pxg
+  s_8b90c5f66b34ca::t_85bfbfdcc08270 1-135
+artifacts/editable/finance_background/tiles/bank-r1-c6.pal
+  s_92c0598951b137::t_fcbe102e65ddba 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c1-128.pxg
+  s_8b90c5f66b34ca::t_cc10b74d2a97fd 1-144
+artifacts/editable/finance_background/tiles/bank-r2-c1.pal
+  s_92c0598951b137::t_59a3f11d85a42e 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c2-128.pxg
+  s_92c0598951b137::t_a0048537716503 1-147
+artifacts/editable/finance_background/tiles/bank-r2-c2.pal
+  s_67668443088b27::t_fa98822aafaaf0 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c3-128.pxg
+  s_67668443088b27::t_7e5eeb0c1c940f 1-145
+artifacts/editable/finance_background/tiles/bank-r2-c3.pal
+  s_67668443088b27::t_a0adbca329637f 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c4-128.pxg
+  s_67668443088b27::t_df40aa906a39c3 1-144
+artifacts/editable/finance_background/tiles/bank-r2-c4.pal
+  s_67668443088b27::t_ea3e493edff835 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c5-128.pxg
+  s_67668443088b27::t_314db774f74ccf 1-145
+artifacts/editable/finance_background/tiles/bank-r2-c5.pal
+  s_67668443088b27::t_77814fc5784bdb 1-16
+artifacts/editable/finance_background/tiles/bank-r2-c6-128.pxg
+  s_67668443088b27::t_ecb21325dc81e6 1-137
+artifacts/editable/finance_background/tiles/bank-r2-c6.pal
+  s_67668443088b27::t_4fe489da38155b 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c1-128.pxg
+  s_67668443088b27::t_8280602dd0bc03 1-144
+artifacts/editable/finance_background/tiles/bank-r3-c1.pal
+  s_67668443088b27::t_c0a9514945998b 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c2-128.pxg
+  s_67668443088b27::t_caf4e7b29d46f8 1-146
+artifacts/editable/finance_background/tiles/bank-r3-c2.pal
+  s_67668443088b27::t_92a77403aa4ee8 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c3-128.pxg
+  s_67668443088b27::t_d065d8e17bd518 1-144
+artifacts/editable/finance_background/tiles/bank-r3-c3.pal
+  s_67668443088b27::t_55e7f29ffdd16d 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c4-128.pxg
+  s_67668443088b27::t_df63a246fc5899 1-144
+artifacts/editable/finance_background/tiles/bank-r3-c4.pal
+  s_67668443088b27::t_ff94e0a8487341 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c5-128.pxg
+  s_67668443088b27::t_ae4d1abf0ad87b 1-144
+artifacts/editable/finance_background/tiles/bank-r3-c5.pal
+  s_67668443088b27::t_4deae1f21f0c74 1-16
+artifacts/editable/finance_background/tiles/bank-r3-c6-128.pxg
+  s_67668443088b27::t_12923fb7ee8c64 1-137
+artifacts/editable/finance_background/tiles/bank-r3-c6.pal
+  s_67668443088b27::t_c4a071dc45c6c6 1-16
+artifacts/editable/index.json
+  s_92c0598951b137::t_c8f5045ea0088d 910-922,925,927-928,930-935,1039,1041-1042,1048,1050-1051,1057,1059-1060,1066,1068-1069,1075,1077-1078,1084,1086-1087,1093,1095-1096,1102,1104-1105,1111,1113-1114,1120,1122-1123,1129,1131-1132,1138,1140-1141,1147,1149-1150,1156,1158-1159,1165,1167-1168,1174,1176-1177,1183,1185-1186,1192,1194-1195,1259,1261-1262,1264-1265,1269,1271-1272,1274-1275,1279,1281-1282,1284-1285,1289,1291-1292,1294-1295,1299,1301-1302,1304-1305,1309,1311-1312,1314-1315,1319,1321-1322,1324-1325,1329,1331-1332,1334-1335,1339,1341-1342,1344-1345,1349,1351-1352,1354-1355,1359,1361-1362,1364-1365,1369,1371-1372,1374-1375,1379,1381-1382,1384-1385,1389,1391-1392,1394-1395,1399,1401-1402,1404-1405,1409,1411-1412,1414-1415,1419,1421-1422,1424-1425,1429,1431-1432,1434-1435,1439,1441-1442,1444-1445,1449,1451-1452,1454-1455,1459,1461-1462,1464-1465,1469,1471-1472,1474-1475,1479,1481-1482,1484-1485,1489,1491-1492,1494-1495,1499,1501-1502,1504-1505,1509,1511-1512,1514-1515,1519,1521-1522,1524-1525,1529,1531-1532,1534-1535,1539,1541-1542,1544-1545,1558,1560-1561,1563-1564,1568,1570-1571,1573-1574,1578,1580-1581,1583-1584,1588,1590-1591,1593-1594,1598,1600-1601,1603-1604,1608,1610-1611,1613-1614,1618,1620-1621,1623-1624,1637,1639-1640,1642-1643,1647,1649-1650,1652-1653,1657,1659-1660,1662-1663,1667,1669-1670,1672-1673,1677,1679-1680,1682-1683,1687,1689-1690,1692-1693,1697,1699-1700,1702-1703,1716,1718-1719,1721-1722,1726,1728-1729,1731-1732,1736,1738-1739,1741-1742,1746,1748-1749,1751-1752,1756,1758-1759,1761-1762,1766,1768-1769,1771-1772,1776,1778-1779,1781-1782,1786,1788-1789,1791-1792,1796,1798-1799,1801-1802,1806,1808-1809,1811-1812,1816,1818-1819,1821-1822,1826,1828-1829,1831-1832,1836,1838-1839,1841-1842,1846,1848-1849,1851-1852,1856,1858-1859,1861-1862,1866,1868-1869,1871-1872,1876,1878-1879,1881-1882,1886,1888-1889,1891-1892,1896,1898-1899,1901-1902,1915,1917-1918,1920-1921,1925,1927-1928,1930-1931,1935,1937-1938,1940-1941,1945,1947-1948,1950-1951,1955,1957-1958,1960-1961,1965,1967-1968,1970-1971,1975,1977-1978,1980-1981,1985,1987-1988,1990-1991,1995,1997-1998,2000-2001,2005,2007-2008,2010-2011,2015,2017-2018,2020-2021,2025,2027-2028,2030-2031,2035,2037-2038,2040-2041,2045,2047-2048,2050-2051,2055,2057-2058,2060-2061,2065,2067-2068,2070-2071,2075,2077-2078,2080-2081,2085,2087-2088,2090-2091,2095,2097-2098,2100-2101,2105,2107-2108,2110-2111,2115,2117-2118,2120-2121,2125,2127-2128,2130-2131,2135,2137-2138,2144,2146-2147,2153,2155-2156,2162,2164-2165,2171,2173-2174,2180,2182-2183,2189,2191-2192,2198,2200-2201,2207,2209-2210,2216,2218-2219,2225,2227-2228,2314,2316-2317,2319-2324,2345-2398
+artifacts/reference/effects/README.md
+  s_67668443088b27::t_4b3d41a10a5a93 1-8
+artifacts/reference/effects/ice-combos/README.md
+  s_67668443088b27::t_56693eaa98ae6a 1-14
+artifacts/reference/effects/ice-combos/manifest.json
+  s_67668443088b27::t_9c6b651834b8d4 1-36
+artifacts/sources/README.md
+  s_67668443088b27::t_3bff0d8b6fd6d0 7-12,17
+artifacts/sources/finance/finance_table_ui_scroll_short.edit-notes.json
+  s_67668443088b27::t_8d808eba2f07d8 1-25
+artifacts/sources/index.json
+  s_e2da0653a2c9ad::t_0c375d1bc619ec 343-345,411-460
+artifacts/sources/relics/yiwu_icon_manifest.json
+  s_67668443088b27::t_843635dece0b6e 1-3885
+artifacts/sources/spells/fashu_icon_manifest.json
+  s_67668443088b27::t_a8fa9e5e7b0bef 1-494
+artifacts/sources/weapons/wuqi_icon_manifest.json
+  s_67668443088b27::t_e93184447d6174 1-525
+assets/sprites/weapons/ground_cracks/review_r04/ground_cracks_r04.png.import
+  s_67668443088b27::t_cdd3470254be19 1-40
+assets/sprites/weapons/ground_cracks/review_r04/source/ground_branch-64.pxg
+  s_92c0598951b137::t_9e90074042e194 1-71
+assets/sprites/weapons/ground_cracks/review_r04/source/ground_crack_00-64.pxg
+  s_92c0598951b137::t_17a298382b575f 1-72
+assets/sprites/weapons/ground_cracks/review_r04/source/ground_crack_01-64.pxg
+  s_92c0598951b137::t_a4d6fe65e21ee5 1-71
+assets/sprites/weapons/ground_cracks/review_r04/source/ground_crack_02-64.pxg
+  s_92c0598951b137::t_4f8c958084a608 1-70
+assets/ui/finance/goblin_portraits.json
+  s_67668443088b27::t_b228b0efcaea59 3-4,10-11,16-17,22-23,28-29,34-35,46,48
+assets/ui/finance/portraits/goblin_delighted.pal
+  s_67668443088b27::t_72b8fd0196f1ac 1-16
+assets/ui/finance/portraits/goblin_delighted.png.import
+  s_50bd94cb5a89d7::t_865ddd7c26f408 5-6,13-14
+assets/ui/finance/portraits/goblin_delighted.pxg
+  s_67668443088b27::t_550554de48a8d7 1-277
+assets/ui/finance/portraits/goblin_displeased.pal
+  s_67668443088b27::t_781cc7ccbe898a 1-16
+assets/ui/finance/portraits/goblin_displeased.png.import
+  s_50bd94cb5a89d7::t_2739211f8036ea 1-40
+assets/ui/finance/portraits/goblin_displeased.pxg
+  s_67668443088b27::t_e7f39802d7c755 1-277
+assets/ui/finance/portraits/goblin_downcast.pal
+  s_67668443088b27::t_76d7cacf95af99 1-16
+assets/ui/finance/portraits/goblin_downcast.png.import
+  s_50bd94cb5a89d7::t_f9bf7fca30b27b 1-40
+assets/ui/finance/portraits/goblin_downcast.pxg
+  s_67668443088b27::t_728fd187f5c72a 1-277
+assets/ui/finance/portraits/goblin_neutral.pal
+  s_67668443088b27::t_c40573d8e964d6 1-16
+assets/ui/finance/portraits/goblin_neutral.png.import
+  s_50bd94cb5a89d7::t_59061ae1191de8 1-40
+assets/ui/finance/portraits/goblin_neutral.pxg
+  s_67668443088b27::t_84c9ae65a52307 1-277
+assets/ui/finance/portraits/goblin_smile.pal
+  s_67668443088b27::t_331686b315ca7c 1-16
+assets/ui/finance/portraits/goblin_smile.png.import
+  s_50bd94cb5a89d7::t_a2ec8d10d95132 1-40
+assets/ui/finance/portraits/goblin_smile.pxg
+  s_67668443088b27::t_3180615245f7e9 1-277
+assets/ui/finance/portraits/source_manifest.json
+  s_67668443088b27::t_52efbdf0e35d46 1-184
+assets/ui/icons/augmentations/scroll_black_hole.pal
+  s_54863ea86d9b5d::t_5a3cb9550f909c 1-16
+assets/ui/icons/augmentations/scroll_black_hole.pxg
+  s_54863ea86d9b5d::t_b9457b4a1abe05 1-2,5-11,13-76
+assets/ui/icons/augmentations/scroll_bounce.pal
+  s_54863ea86d9b5d::t_2536a5941781d6 1-16
+assets/ui/icons/augmentations/scroll_bounce.pxg
+  s_67668443088b27::t_28597bb82c1c1e 1-2,5-16,18-81
+assets/ui/icons/augmentations/scroll_domain.pal
+  s_67668443088b27::t_d8341cb59c9dab 1-16
+assets/ui/icons/augmentations/scroll_domain.pxg
+  s_3dbef1320954a3::t_58fb5aa4f07fc1 1-2,4-9,11-74
+assets/ui/icons/augmentations/scroll_electric_spark.pal
+  s_67668443088b27::t_cc3967b2c08ca0 1-16
+assets/ui/icons/augmentations/scroll_electric_spark.png.import
+  s_50bd94cb5a89d7::t_103a128fd96b81 1-40
+assets/ui/icons/augmentations/scroll_electric_spark.pxg
+  s_67668443088b27::t_65d01cfb80898f 1-81
+assets/ui/icons/augmentations/scroll_explosion.pal
+  s_54863ea86d9b5d::t_c8da005a28b8be 1-16
+assets/ui/icons/augmentations/scroll_explosion.pxg
+  s_54863ea86d9b5d::t_b42529bf5b2960 1-2,5-9,11-74
+assets/ui/icons/augmentations/scroll_fire.pal
+  s_54863ea86d9b5d::t_84090e76e085c8 1-16
+assets/ui/icons/augmentations/scroll_fire.pxg
+  s_54863ea86d9b5d::t_b8100a8ddf60d3 1-2,5-12,14-77
+assets/ui/icons/augmentations/scroll_haste.pal
+  s_67668443088b27::t_240aae3cd14c9c 1-16
+assets/ui/icons/augmentations/scroll_haste.pxg
+  s_3dbef1320954a3::t_e44323a32846ea 1-2,4-15,17-80
+assets/ui/icons/augmentations/scroll_ice.pal
+  s_54863ea86d9b5d::t_34eb1d7dbafb3a 1-16
+assets/ui/icons/augmentations/scroll_ice.pxg
+  s_54863ea86d9b5d::t_3373e60115e2fb 1-2,5-14,16-79
+assets/ui/icons/augmentations/scroll_lethality.pal
+  s_67668443088b27::t_a85e6a08108caa 1-16
+assets/ui/icons/augmentations/scroll_lethality.pxg
+  s_3dbef1320954a3::t_374c24997bb125 1-2,4-12,14-77
+assets/ui/icons/augmentations/scroll_light_sword.pal
+  s_54863ea86d9b5d::t_2aeeed7b275d21 1-16
+assets/ui/icons/augmentations/scroll_light_sword.pxg
+  s_54863ea86d9b5d::t_334464bcbe72bb 1-2,5-13,15-78
+assets/ui/icons/augmentations/scroll_lightning.pal
+  s_54863ea86d9b5d::t_486ec541d393b5 1-16
+assets/ui/icons/augmentations/scroll_lightning.pxg
+  s_54863ea86d9b5d::t_4c76d45974a4d6 1-2,5-8,10-73
+assets/ui/icons/augmentations/scroll_might.pal
+  s_67668443088b27::t_47cf59f61277a2 1-16
+assets/ui/icons/augmentations/scroll_might.pxg
+  s_3dbef1320954a3::t_404a2e35220acc 1-2,4-9,11-74
+assets/ui/icons/augmentations/scroll_multishot.pal
+  s_67668443088b27::t_575a2c30412c38 1-16
+assets/ui/icons/augmentations/scroll_multishot.pxg
+  s_3dbef1320954a3::t_0c66164aa3784c 1-2,4-11,13-76
+assets/ui/icons/augmentations/scroll_pierce.pal
+  s_54863ea86d9b5d::t_dc587e25bcfe25 1-16
+assets/ui/icons/augmentations/scroll_pierce.pxg
+  s_54863ea86d9b5d::t_1ef5f2ee4bd4ab 1-2,5-16,18-81
+assets/ui/icons/augmentations/scroll_precision.pal
+  s_67668443088b27::t_6cf1b21ddab8cf 1-16
+assets/ui/icons/augmentations/scroll_precision.pxg
+  s_3dbef1320954a3::t_0160d39e963f0d 1-2,4-12,14-77
+assets/ui/icons/augmentations/scroll_split.pal
+  s_54863ea86d9b5d::t_98c287d4aeb057 1-16
+assets/ui/icons/augmentations/scroll_split.pxg
+  s_54863ea86d9b5d::t_a3589db088cdf9 1-2,5-15,17-80
+assets/ui/icons/augmentations/scroll_water.pal
+  s_54863ea86d9b5d::t_e1fda3cbfb06db 1-16
+assets/ui/icons/augmentations/scroll_water.pxg
+  s_54863ea86d9b5d::t_43586e0fc8d6b1 1-2,5-13,15-78
+assets/ui/icons/augmentations/scroll_wind.pal
+  s_54863ea86d9b5d::t_90dde2824d6bf4 1-16
+assets/ui/icons/augmentations/scroll_wind.pxg
+  s_54863ea86d9b5d::t_73c2d9671b53eb 1-2,5-9,11-74
+assets/ui/icons/augmentations/scroll_wisdom.pal
+  s_67668443088b27::t_9152681a185267 1-16
+assets/ui/icons/augmentations/scroll_wisdom.pxg
+  s_3dbef1320954a3::t_088f6a8cc9c617 1-2,4-18,20-83
+assets/ui/icons/relics/relic_amulet_of_humanity.pal
+  s_67668443088b27::t_d830d155a70b00 1-13
+assets/ui/icons/relics/relic_amulet_of_humanity.pxg
+  s_54863ea86d9b5d::t_213d954fcc2557 2,4-17,19-146
+assets/ui/icons/relics/relic_annual_leave_cutback.pal
+  s_67668443088b27::t_9377a16392ea1f 1-11
+assets/ui/icons/relics/relic_annual_leave_cutback.pxg
+  s_54863ea86d9b5d::t_4480bf75a41211 2,4-15,17-144
+assets/ui/icons/relics/relic_bankruptcy_reorg.pal
+  s_67668443088b27::t_89a8802284c737 1-11
+assets/ui/icons/relics/relic_bankruptcy_reorg.pxg
+  s_54863ea86d9b5d::t_9c352ca6fee66c 2,4-15,17-144
+assets/ui/icons/relics/relic_barrier_crystal.pal
+  s_92c0598951b137::t_453c8b9acdf002 1-13
+assets/ui/icons/relics/relic_barrier_crystal.pxg
+  s_54863ea86d9b5d::t_1d9dcb1debb532 2,4-17,19-146
+assets/ui/icons/relics/relic_berserker_copper_badge.pal
+  s_67668443088b27::t_fd6c8fb2c15717 1-10
+assets/ui/icons/relics/relic_berserker_copper_badge.pxg
+  s_54863ea86d9b5d::t_9f077b75388a11 2,4-14,16-143
+assets/ui/icons/relics/relic_black_spot_eagle_eye.pal
+  s_67668443088b27::t_56e35c820cf979 1-11
+assets/ui/icons/relics/relic_black_spot_eagle_eye.pxg
+  s_54863ea86d9b5d::t_20866c3a10f809 2,4-15,17-144
+assets/ui/icons/relics/relic_blocking_counterweight.pal
+  s_67668443088b27::t_b529af12494074 1-11
+assets/ui/icons/relics/relic_blocking_counterweight.pxg
+  s_54863ea86d9b5d::t_502ae78f50b016 2,4-15,17-144
+assets/ui/icons/relics/relic_bloodstained_belt.pal
+  s_67668443088b27::t_448148fafc73f5 1-11
+assets/ui/icons/relics/relic_bloodstained_belt.pxg
+  s_54863ea86d9b5d::t_0a75ac9a6a323a 2,4-15,17-144
+assets/ui/icons/relics/relic_brass_pocket_watch.pal
+  s_92c0598951b137::t_5c032eaf5964e3 1-10
+assets/ui/icons/relics/relic_brass_pocket_watch.pxg
+  s_54863ea86d9b5d::t_09c9f36dcf28ad 2,4-13,15-142
+assets/ui/icons/relics/relic_broken_crystal.pal
+  s_92c0598951b137::t_081bb8af38b09d 1-12
+assets/ui/icons/relics/relic_broken_crystal.pxg
+  s_54863ea86d9b5d::t_d594cd9c44ef9e 2,4-16,18-145
+assets/ui/icons/relics/relic_chain_of_hardship.pal
+  s_67668443088b27::t_b728551197b8a8 1-10
+assets/ui/icons/relics/relic_chain_of_hardship.pxg
+  s_54863ea86d9b5d::t_f5427c73f4caf0 2,4-14,16-143
+assets/ui/icons/relics/relic_coin_heart.pal
+  s_67668443088b27::t_90f79af1a6b5ea 1-12
+assets/ui/icons/relics/relic_coin_heart.pxg
+  s_54863ea86d9b5d::t_285482065b2761 2,4-16,18-145
+assets/ui/icons/relics/relic_compound_interest_tome.pal
+  s_8b90c5f66b34ca::t_e8c3289e2a9272 1-11
+assets/ui/icons/relics/relic_compound_interest_tome.pxg
+  s_54863ea86d9b5d::t_2abceda7b5b235 2,4-15,17-144
+assets/ui/icons/relics/relic_corroded_blowpipe.pal
+  s_67668443088b27::t_c33f1c74ea20e9 1-12
+assets/ui/icons/relics/relic_corroded_blowpipe.pxg
+  s_54863ea86d9b5d::t_f23ef87d43b657 2,4-16,18-145
+assets/ui/icons/relics/relic_costly_seed_of_life.pal
+  s_67668443088b27::t_99e707a1bd42c8 1-14
+assets/ui/icons/relics/relic_costly_seed_of_life.pxg
+  s_54863ea86d9b5d::t_0742a82a837d0a 2,4-17,19-146
+assets/ui/icons/relics/relic_cracked_bronze_bell.pal
+  s_67668443088b27::t_b2b7c8b3642727 1-11
+assets/ui/icons/relics/relic_cracked_bronze_bell.pxg
+  s_54863ea86d9b5d::t_06f272e8ec6ecf 2,4-15,17-144
+assets/ui/icons/relics/relic_cracked_stone_bullet.pal
+  s_67668443088b27::t_f251631ba55d22 1-12
+assets/ui/icons/relics/relic_cracked_stone_bullet.pxg
+  s_54863ea86d9b5d::t_514c070cbed954 2,4-16,18-145
+assets/ui/icons/relics/relic_cultic_holy_shield.pal
+  s_92c0598951b137::t_8d557ad2d778cf 1-12
+assets/ui/icons/relics/relic_cultic_holy_shield.pxg
+  s_54863ea86d9b5d::t_43448acd29bd92 2,4-16,18-145
+assets/ui/icons/relics/relic_dead_shield_badge.pal
+  s_67668443088b27::t_32e243ddc965f0 1-11
+assets/ui/icons/relics/relic_dead_shield_badge.pxg
+  s_54863ea86d9b5d::t_2b4ccddbf1bf43 2,4-15,17-144
+assets/ui/icons/relics/relic_defiled_blessing_coin.pal
+  s_67668443088b27::t_37b0bdedf24dcc 1-14
+assets/ui/icons/relics/relic_defiled_blessing_coin.pxg
+  s_54863ea86d9b5d::t_ff5e4a8e28b42f 2,4-18,20-147
+assets/ui/icons/relics/relic_diffusion_nozzle.pal
+  s_67668443088b27::t_aebbbc52370923 1-11
+assets/ui/icons/relics/relic_diffusion_nozzle.pxg
+  s_54863ea86d9b5d::t_ea41f74b574727 2,4-15,17-144
+assets/ui/icons/relics/relic_dividend_check.pal
+  s_8b90c5f66b34ca::t_4dedb588f730e1 1-12
+assets/ui/icons/relics/relic_dividend_check.pxg
+  s_54863ea86d9b5d::t_3d4d244e1dc212 2,4-16,18-145
+assets/ui/icons/relics/relic_divine_fusion.pal
+  s_67668443088b27::t_53e54a478d4cab 1-13
+assets/ui/icons/relics/relic_divine_fusion.pxg
+  s_54863ea86d9b5d::t_649e3054479844 2,4-17,19-146
+assets/ui/icons/relics/relic_executioner_bracer.pal
+  s_67668443088b27::t_d179fb8d9b8012 1-11
+assets/ui/icons/relics/relic_executioner_bracer.pxg
+  s_54863ea86d9b5d::t_ed972537ce3308 2,4-15,17-144
+assets/ui/icons/relics/relic_expanded_backpack_strap.pal
+  s_67668443088b27::t_98e2fa669ccfe8 1-7
+assets/ui/icons/relics/relic_expanded_backpack_strap.pxg
+  s_54863ea86d9b5d::t_c64e06f17cc064 2,4-11,13-140
+assets/ui/icons/relics/relic_finance_manager.pal
+  s_8b90c5f66b34ca::t_d8697fe408d175 1-10
+assets/ui/icons/relics/relic_finance_manager.pxg
+  s_54863ea86d9b5d::t_43c0310d00b010 2,4-14,16-143
+assets/ui/icons/relics/relic_fixed_deposit_certificate.pal
+  s_8b90c5f66b34ca::t_48a2cb9175cd55 1-13
+assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg
+  s_54863ea86d9b5d::t_1eafa7b2b7e2cb 2,4-17,19-146
+assets/ui/icons/relics/relic_flesh_pauldron.pal
+  s_67668443088b27::t_583ca1216ded1a 1-11
+assets/ui/icons/relics/relic_flesh_pauldron.pxg
+  s_54863ea86d9b5d::t_02c5a2fee870e1 2,4-15,17-144
+assets/ui/icons/relics/relic_flyer_ad.pal
+  s_92c0598951b137::t_0924d2a83bb4fd 1-13
+assets/ui/icons/relics/relic_flyer_ad.pxg
+  s_54863ea86d9b5d::t_1a9d78df27cb00 2,4-17,19-146
+assets/ui/icons/relics/relic_frenzied_dividend.pal
+  s_8b90c5f66b34ca::t_c39c7a08cb7ebf 1-11
+assets/ui/icons/relics/relic_frenzied_dividend.pxg
+  s_54863ea86d9b5d::t_9640a92f29fd39 2,4-15,17-144
+assets/ui/icons/relics/relic_gale_roulette.pal
+  s_67668443088b27::t_93a895a22b4d91 1-11
+assets/ui/icons/relics/relic_gale_roulette.pxg
+  s_54863ea86d9b5d::t_a545bdd89ae196 2,4-15,17-144
+assets/ui/icons/relics/relic_gift_mark.pal
+  s_67668443088b27::t_bae34ce82580fd 1-10
+assets/ui/icons/relics/relic_gift_mark.pxg
+  s_54863ea86d9b5d::t_50f40442e16a53 2,4-14,16-143
+assets/ui/icons/relics/relic_gilded_trigger.pal
+  s_67668443088b27::t_acc881e0eeba16 1-11
+assets/ui/icons/relics/relic_gilded_trigger.pxg
+  s_54863ea86d9b5d::t_aa25eb65f76d8a 2,4-15,17-144
+assets/ui/icons/relics/relic_goblin_central_bank_printer.pal
+  s_67668443088b27::t_057780765a8162 1-12
+assets/ui/icons/relics/relic_goblin_central_bank_printer.pxg
+  s_54863ea86d9b5d::t_631731b4bef508 2,4-16,18-145
+assets/ui/icons/relics/relic_gold_compass.pal
+  s_92c0598951b137::t_4d95f2c35dcc24 1-11
+assets/ui/icons/relics/relic_gold_compass.pxg
+  s_54863ea86d9b5d::t_29746c6a326c2e 2,4-15,17-144
+assets/ui/icons/relics/relic_gold_digger_gloves.pal
+  s_67668443088b27::t_834b12ef40c1f8 1-10
+assets/ui/icons/relics/relic_gold_digger_gloves.pxg
+  s_54863ea86d9b5d::t_f44bfd0609fc5b 2,4-14,16-143
+assets/ui/icons/relics/relic_golden_sarcophagus.pal
+  s_67668443088b27::t_ab3e03e44d0848 1-11
+assets/ui/icons/relics/relic_golden_sarcophagus.pxg
+  s_54863ea86d9b5d::t_cdcac7d4029994 2,4-15,17-144
+assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pal
+  s_67668443088b27::t_565eac1db5bfe4 1-14
+assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pxg
+  s_54863ea86d9b5d::t_721f0ff2f74f25 2,4-18,20-147
+assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pal
+  s_67668443088b27::t_6c50d9e92d710b 1-10
+assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pxg
+  s_54863ea86d9b5d::t_bdcad46408ecac 2,4-14,16-143
+assets/ui/icons/relics/relic_hasty_spring_trigger.pal
+  s_67668443088b27::t_176d6e746b3827 1-10
+assets/ui/icons/relics/relic_hasty_spring_trigger.pxg
+  s_54863ea86d9b5d::t_23d98609be8618 2,4-14,16-143
+assets/ui/icons/relics/relic_high_yield_contract.pal
+  s_92c0598951b137::t_1cac579572c353 1-12
+assets/ui/icons/relics/relic_high_yield_contract.pxg
+  s_54863ea86d9b5d::t_b7fc3ebacab777 2,4-16,18-145
+assets/ui/icons/relics/relic_hoarders_ring.pal
+  s_67668443088b27::t_942a16f6634938 1-12
+assets/ui/icons/relics/relic_hoarders_ring.pxg
+  s_54863ea86d9b5d::t_fbddc532c56483 2,4-16,18-145
+assets/ui/icons/relics/relic_holy_silver_cup.pal
+  s_67668443088b27::t_ce2d10f0024cb4 1-13
+assets/ui/icons/relics/relic_holy_silver_cup.pxg
+  s_54863ea86d9b5d::t_696f98ecba8d61 2,4-16,18-145
+assets/ui/icons/relics/relic_hostile_takeover.pal
+  s_92c0598951b137::t_95e240dff84dd6 1-11
+assets/ui/icons/relics/relic_hostile_takeover.pxg
+  s_54863ea86d9b5d::t_651f7ea87d2648 2,4-15,17-144
+assets/ui/icons/relics/relic_incomplete_divination_dice.pal
+  s_67668443088b27::t_eef77d376688ca 1-13
+assets/ui/icons/relics/relic_incomplete_divination_dice.pxg
+  s_54863ea86d9b5d::t_db7a2b0ddf8fd6 2,4-17,19-146
+assets/ui/icons/relics/relic_judgment_eye_pendant.pal
+  s_67668443088b27::t_4131f1288d2102 1-11
+assets/ui/icons/relics/relic_judgment_eye_pendant.pxg
+  s_54863ea86d9b5d::t_4a004f724e9c20 2,4-15,17-144
+assets/ui/icons/relics/relic_load_iron_bracer.pal
+  s_67668443088b27::t_ad8ef17e1da789 1-9
+assets/ui/icons/relics/relic_load_iron_bracer.pxg
+  s_54863ea86d9b5d::t_5b14c33fb5486f 2,4-13,15-142
+assets/ui/icons/relics/relic_long_focus_eyepiece.pal
+  s_67668443088b27::t_757ae6231c0d05 1-12
+assets/ui/icons/relics/relic_long_focus_eyepiece.pxg
+  s_54863ea86d9b5d::t_f5aa11bf992572 2,4-16,18-145
+assets/ui/icons/relics/relic_lost_wayfarer_greave.pal
+  s_67668443088b27::t_41b403ed453fed 1-11
+assets/ui/icons/relics/relic_lost_wayfarer_greave.pxg
+  s_54863ea86d9b5d::t_f7b38809861733 2,4-14,16-143
+assets/ui/icons/relics/relic_lucid_vow.pal
+  s_67668443088b27::t_a26e6cdd5a4ffa 1-14
+assets/ui/icons/relics/relic_lucid_vow.pxg
+  s_54863ea86d9b5d::t_64e82bbbbb0ca6 2,4-18,20-147
+assets/ui/icons/relics/relic_medical_cutback.pal
+  s_67668443088b27::t_eaa0f507803f77 1-12
+assets/ui/icons/relics/relic_medical_cutback.pxg
+  s_54863ea86d9b5d::t_e715a43a38e726 2,4-16,18-145
+assets/ui/icons/relics/relic_merger_reorg.pal
+  s_67668443088b27::t_c59d3f6646d326 1-13
+assets/ui/icons/relics/relic_merger_reorg.pxg
+  s_54863ea86d9b5d::t_7b97678eb69eda 2,4-17,19-146
+assets/ui/icons/relics/relic_nightmare_healing_urn.pal
+  s_67668443088b27::t_20497618086301 1-12
+assets/ui/icons/relics/relic_nightmare_healing_urn.pxg
+  s_54863ea86d9b5d::t_9d7072466e39a3 2,4-16,18-145
+assets/ui/icons/relics/relic_old_brass_telescope.pal
+  s_67668443088b27::t_fec494e4c14846 1-12
+assets/ui/icons/relics/relic_old_brass_telescope.pxg
+  s_54863ea86d9b5d::t_97ad28025936f8 2,4-16,18-145
+assets/ui/icons/relics/relic_pain_vessel.pal
+  s_67668443088b27::t_8db98caf079997 1-10
+assets/ui/icons/relics/relic_pain_vessel.pxg
+  s_54863ea86d9b5d::t_a2f1d7311f78b0 2,4-14,16-143
+assets/ui/icons/relics/relic_periodic_dividend_clock.pal
+  s_67668443088b27::t_345ac699b3b010 1-11
+assets/ui/icons/relics/relic_periodic_dividend_clock.pxg
+  s_54863ea86d9b5d::t_a65c2ea708ea3f 2,4-15,17-144
+assets/ui/icons/relics/relic_perpetual_annuity_scroll.pal
+  s_67668443088b27::t_9bf6bf55e4a671 1-11
+assets/ui/icons/relics/relic_perpetual_annuity_scroll.pxg
+  s_54863ea86d9b5d::t_99d0fdb51a6c64 2,4-15,17-144
+assets/ui/icons/relics/relic_piggy_bank.pal
+  s_8b90c5f66b34ca::t_6cff062584879f 1-16
+assets/ui/icons/relics/relic_piggy_bank.pxg
+  s_54863ea86d9b5d::t_6f378e029e6932 2,4-12,14-141
+assets/ui/icons/relics/relic_poison_mist_pouch.pal
+  s_67668443088b27::t_b3f908a4ef18d5 1-9
+assets/ui/icons/relics/relic_poison_mist_pouch.pxg
+  s_54863ea86d9b5d::t_f3a60347ed6158 2,4-13,15-142
+assets/ui/icons/relics/relic_prison_copper_anklet.pal
+  s_67668443088b27::t_10f1ee7155e66c 1-10
+assets/ui/icons/relics/relic_prison_copper_anklet.pxg
+  s_54863ea86d9b5d::t_f5417f7988f96f 2,4-14,16-143
+assets/ui/icons/relics/relic_pungent_sachet.pal
+  s_67668443088b27::t_0467b897f6a6a4 1-10
+assets/ui/icons/relics/relic_pungent_sachet.pxg
+  s_54863ea86d9b5d::t_23cebe9874b4b7 2,4-13,15-142
+assets/ui/icons/relics/relic_quant_trading.pal
+  s_92c0598951b137::t_1e27a96f950163 1-12
+assets/ui/icons/relics/relic_quant_trading.pxg
+  s_54863ea86d9b5d::t_8a21a3959ef6bf 2,4-16,18-145
+assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pal
+  s_67668443088b27::t_37c52a8b89c61e 1-10
+assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pxg
+  s_54863ea86d9b5d::t_bdf8f2fab4abc3 2,4-13,15-142
+assets/ui/icons/relics/relic_rough_grinding_lens.pal
+  s_67668443088b27::t_c23e7c7744d1bc 1-13
+assets/ui/icons/relics/relic_rough_grinding_lens.pxg
+  s_54863ea86d9b5d::t_4945ac542eea90 2,4-17,19-146
+assets/ui/icons/relics/relic_runaway_amplifier.pal
+  s_67668443088b27::t_1a93b7f54f6c7e 1-11
+assets/ui/icons/relics/relic_runaway_amplifier.pxg
+  s_54863ea86d9b5d::t_a2adb175833180 2,4-15,17-144
+assets/ui/icons/relics/relic_salary_adjustment.pal
+  s_67668443088b27::t_6c773b02ef14d4 1-10
+assets/ui/icons/relics/relic_salary_adjustment.pxg
+  s_54863ea86d9b5d::t_aaa2c82938207a 2,4-13,15-142
+assets/ui/icons/relics/relic_shadowless_greave.pal
+  s_67668443088b27::t_7c217f24dc336d 1-11
+assets/ui/icons/relics/relic_shadowless_greave.pxg
+  s_54863ea86d9b5d::t_ebb730b8d05d81 2,4-15,17-144
+assets/ui/icons/relics/relic_sleepless_ledger.pal
+  s_67668443088b27::t_f4566e94cb7113 1-10
+assets/ui/icons/relics/relic_sleepless_ledger.pxg
+  s_54863ea86d9b5d::t_5379ba4b5c7ae0 2,4-14,16-143
+assets/ui/icons/relics/relic_soul_keeper_face_stone.pal
+  s_67668443088b27::t_2c737ad37be461 1-9
+assets/ui/icons/relics/relic_soul_keeper_face_stone.pxg
+  s_54863ea86d9b5d::t_cab4f7138f9278 2,4-12,14-141
+assets/ui/icons/relics/relic_split_crystal_warhead.pal
+  s_67668443088b27::t_598ea173259bd9 1-10
+assets/ui/icons/relics/relic_split_crystal_warhead.pxg
+  s_54863ea86d9b5d::t_d791cddd1d7f5a 2,4-14,16-143
+assets/ui/icons/relics/relic_stargazers_lens.pal
+  s_67668443088b27::t_176e7fdf182ea4 1-14
+assets/ui/icons/relics/relic_stargazers_lens.pxg
+  s_54863ea86d9b5d::t_1b95b310a79c1c 2,4-18,20-147
+assets/ui/icons/relics/relic_steel_vault.pal
+  s_92c0598951b137::t_c2325fd0023a3f 1-9
+assets/ui/icons/relics/relic_steel_vault.pxg
+  s_54863ea86d9b5d::t_cb04ee21820b7a 2,4-13,15-142
+assets/ui/icons/relics/relic_suffering_carapace.pal
+  s_67668443088b27::t_8224369636f077 1-11
+assets/ui/icons/relics/relic_suffering_carapace.pxg
+  s_54863ea86d9b5d::t_b57e40bbdde179 2,4-14,16-143
+assets/ui/icons/relics/relic_tip_tray.pal
+  s_92c0598951b137::t_9e3de9c1a9fd6c 1-11
+assets/ui/icons/relics/relic_tip_tray.pxg
+  s_54863ea86d9b5d::t_f9086262bc933a 2,4-15,17-144
+assets/ui/icons/relics/relic_travelers_ledger.pal
+  s_67668443088b27::t_621ee411f324c2 1-11
+assets/ui/icons/relics/relic_travelers_ledger.pxg
+  s_54863ea86d9b5d::t_27a7d2bd91a31f 2,4-15,17-144
+assets/ui/icons/relics/relic_tremor_grip.pal
+  s_67668443088b27::t_75ef527648f32d 1-9
+assets/ui/icons/relics/relic_tremor_grip.pxg
+  s_54863ea86d9b5d::t_44c65db85d8aa7 2,4-12,14-141
+assets/ui/icons/relics/relic_true_silver_armor.pal
+  s_67668443088b27::t_c3a0080dd60493 1-10
+assets/ui/icons/relics/relic_true_silver_armor.pxg
+  s_54863ea86d9b5d::t_4966ef3164cf85 2,4-14,16-143
+assets/ui/icons/relics/relic_turtle_shell_pendant.pal
+  s_67668443088b27::t_86b6dfee48b0eb 1-10
+assets/ui/icons/relics/relic_turtle_shell_pendant.pxg
+  s_54863ea86d9b5d::t_c13f8f3d00652c 2,4-14,16-143
+assets/ui/icons/relics/relic_vitality_potion.pal
+  s_67668443088b27::t_7561e7061e5cee 1-12
+assets/ui/icons/relics/relic_vitality_potion.pxg
+  s_54863ea86d9b5d::t_5bcee9b8083270 2,4-15,17-144
+assets/ui/icons/relics/relic_void_storage_casket.pal
+  s_67668443088b27::t_3940be0c373b44 1-9
+assets/ui/icons/relics/relic_void_storage_casket.pxg
+  s_54863ea86d9b5d::t_3fc4acb8fa977b 2,4-13,15-142
+assets/ui/icons/relics/relic_void_tentacle.pal
+  s_67668443088b27::t_da2c86f4cb1068 1-10
+assets/ui/icons/relics/relic_void_tentacle.pxg
+  s_54863ea86d9b5d::t_f6709f3d56b587 2,4-14,16-143
+assets/ui/icons/relics/relic_welfare_cutback.pal
+  s_67668443088b27::t_1847ac40c9d3ed 1-12
+assets/ui/icons/relics/relic_welfare_cutback.pxg
+  s_54863ea86d9b5d::t_bd9660ab00d62d 2,4-16,18-145
+assets/ui/icons/relics/relic_worn_fighting_gloves.pal
+  s_67668443088b27::t_3f9e1b58af2498 1-8
+assets/ui/icons/relics/relic_worn_fighting_gloves.pxg
+  s_54863ea86d9b5d::t_5c0bfc26f0ee25 2,4-12,14-141
+assets/ui/icons/relics/relic_worn_hemostatic_cloth.pal
+  s_67668443088b27::t_a3ec89978c7312 1-11
+assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg
+  s_54863ea86d9b5d::t_53260217e1c6ba 2,4-15,17-144
+assets/ui/icons/weapons/weapon_camp_dagger.pal
+  s_67668443088b27::t_e75e61fb7fbc7f 2-16
+assets/ui/icons/weapons/weapon_camp_dagger.pxg
+  s_67668443088b27::t_b03d3724098cbf 1-2,5-17,19-146
+assets/ui/icons/weapons/weapon_copper_lamp.pal
+  s_54863ea86d9b5d::t_abffaceebf308d 2-16
+assets/ui/icons/weapons/weapon_copper_lamp.pxg
+  s_67668443088b27::t_20abf80813fee8 1-2,5-19,21-148
+assets/ui/icons/weapons/weapon_earth_hammer.pal
+  s_54863ea86d9b5d::t_4e7e429a62408c 2-16
+assets/ui/icons/weapons/weapon_earth_hammer.pxg
+  s_67668443088b27::t_61fa13360ea881 1-2,5-18,20-147
+assets/ui/icons/weapons/weapon_iron_grenade_cannon.pal
+  s_67668443088b27::t_6cefb59fdd374e 2-16
+assets/ui/icons/weapons/weapon_iron_grenade_cannon.pxg
+  s_67668443088b27::t_da51f92b9a52f3 1-2,6-17,19-146
+assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pal
+  s_50bd94cb5a89d7::t_d50db1a3410de5 2-16
+assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pxg
+  s_67668443088b27::t_e1d3a90da2f0aa 1-2,5-18,20-147
+assets/ui/icons/weapons/weapon_meteor_flail.pal
+  s_54863ea86d9b5d::t_04e2e62a8adb46 2-16
+assets/ui/icons/weapons/weapon_meteor_flail.pxg
+  s_67668443088b27::t_bba4c1b690c162 1-2,5-16,18-145
+assets/ui/icons/weapons/weapon_mutant_tentacle.pal
+  s_67668443088b27::t_673174bda245ac 2-16
+assets/ui/icons/weapons/weapon_mutant_tentacle.pxg
+  s_67668443088b27::t_9d79b8c2913e42 1-2,5-18,20-147
+assets/ui/icons/weapons/weapon_nightwatch_spear.pal
+  s_67668443088b27::t_7da988d1f82eb2 2-16
+assets/ui/icons/weapons/weapon_nightwatch_spear.pxg
+  s_67668443088b27::t_751fe4af8d668a 1-2,5-14,16-143
+assets/ui/icons/weapons/weapon_plasma_cannon_v2.pal
+  s_67668443088b27::t_243c448ea8e52f 2-16
+assets/ui/icons/weapons/weapon_plasma_cannon_v2.pxg
+  s_67668443088b27::t_ffdd36bfe1b540 1-2,5-18,20-147
+assets/ui/icons/weapons/weapon_rentier_purse.pal
+  s_50bd94cb5a89d7::t_740e2c7a9a7cf6 2-16
+assets/ui/icons/weapons/weapon_rentier_purse.pxg
+  s_67668443088b27::t_843464abdceb77 1-2,5-17,19-146
+assets/ui/icons/weapons/weapon_wood_arrow.pal
+  s_50bd94cb5a89d7::t_c49cc3098827d4 2-16
+assets/ui/icons/weapons/weapon_wood_arrow.pxg
+  s_67668443088b27::t_365b950fe994b6 1-2,5-14,16-143
+autoloads/combat_settings.gd
+  s_92c0598951b137::t_0d255d7744497d 1-26
+autoloads/combat_settings.gd.uid
+  s_92c0598951b137::t_451478b84d6882 1
+combat_active_control_refactor_plan.md
+  s_25b361477be27a::t_ec5bd6b7ca2b38 5,30-32,39-42,90,98,122,129,347,394,421,442,448,450-451,458-679
+data_config/README.md
+  s_4eb3b3d146ed3d::t_6ccccc43b2b5cb 5-6,59-60,67,74-75
+data_config/augmentations.json
+  s_4eb3b3d146ed3d::t_fad3c59e15520f 83,326
+data_config/characters.json
+  s_1f3b9a337a97f0::t_a9f9598f73bab0 5,27,31,64,71
+data_config/drop_tables.json
+  s_ef204514f35f32::t_da7532db614a31 4,12,65,70-71,210
+data_config/enemies.json
+  s_e6af46337ce4b6::t_c4cf16d197a6bb 11,13-14,23,27,32,37
+data_config/weapons.json
+  s_e6af46337ce4b6::t_f42873cd9b4797 4-5,7,17,19,26,33-36,38-39,43,57,59,75-78,87-88,92-93,95,104,106,121,123-126,132-133,135,143,145,154,156-159,165-166,168,176,178,187,189-192,194-195,199-200,202,207-208,214,216-219,225-226,228,232-233,238,240-243,245-246,250-251,253,257-258,265,267-270,272-273,277-278,280,288,290,292,304,306-309,315-316,318,326,328,340,342-345,347-348,352-353,355,362,364,375,377-380
+docs/asset/art_refresh_plan/06_godot_delivery.md
+  s_67668443088b27::t_6a12559e9e6ffc 71,73-74
+docs/asset/art_refresh_plan/24_augmentations_sheet_01_installation.md
+  s_54863ea86d9b5d::t_2cf22f06006c06 1,3-5,9,11,19
+docs/asset/art_refresh_plan/README.md
+  s_67668443088b27::t_5ed6b2c3512024 3-6,27,49,80
+docs/asset/art_refresh_plan/asset_coverage.json
+  s_67668443088b27::t_2d5f11a9365253 892-899,930-931,935-936,1059-1060,1065-1067,1072-1073,1078-1080,1085-1086,1091-1093,1098-1099,1104-1106,1111-1112,1117-1119,1124-1125,1130-1132,1137-1138,1143-1145,1150-1151,1156-1158,1163-1164,1169-1171,1176-1177,1182-1184,1257-1258,1263-1264,1269-1270,1275-1276,1281-1282,1287-1288,1293-1294,1299-1300,1305-1306,1311-1312,1317-1318,1323-1324,1329-1330,1335-1336,1341-1342,1347-1348,1353-1354,1359-1360,1365-1366,1371-1372,1377-1378,1383-1384,1389-1390,1395-1396,1401-1402,1407-1408,1413-1414,1419-1420,1425-1426,1431-1432,1437-1438,1443-1444,1449-1450,1455-1456,1461-1462,1467-1468,1473-1474,1479-1480,1485-1486,1491-1492,1497-1498,1503-1504,1509-1510,1515-1516,1521-1522,1527-1528,1533-1534,1539-1540,1545-1546,1551-1552,1557-1558,1563-1564,1569-1570,1575-1576,1581-1582,1587-1588,1593-1594,1599-1600,1617-1618,1623-1624,1629-1630,1635-1636,1641-1642,1647-1648,1653-1654,1659-1660,1665-1666,1671-1672,1677-1678,1683-1684,1689-1690,1695-1696,1713-1714,1719-1720,1725-1726,1731-1732,1737-1738,1743-1744,1749-1750,1755-1756,1761-1762,1767-1768,1773-1774,1779-1780,1785-1786,1791-1792,1809-1810,1815-1816,1821-1822,1827-1828,1833-1834,1839-1840,1845-1846,1851-1852,1857-1858,1863-1864,1869-1870,1875-1876,1881-1882,1887-1888,1893-1894,1899-1900,1905-1906,1911-1912,1917-1918,1923-1924,1929-1930,1935-1936,1941-1942,1947-1948,1953-1954,1959-1960,1965-1966,1971-1972,1977-1978,1983-1984,1989-1990,1995-1996,2001-2002,2007-2008,2013-2014,2019-2020,2025-2026,2031-2032,2049-2050,2055-2056,2061-2062,2067-2068,2073-2074,2079-2080,2085-2086,2091-2092,2097-2098,2103-2104,2109-2110,2115-2116,2121-2122,2127-2128,2133-2134,2139-2140,2145-2146,2151-2152,2157-2158,2163-2164,2169-2170,2175-2176,2181-2182,2187-2188,2193-2194,2199-2200,2205-2206,2211-2212,2217-2218,2223-2224,2229-2230,2235-2236,2241-2242,2247-2248,2253-2254,2259-2260,2265-2266,2271-2272,2277-2278,2283-2284,2289-2290,2295-2296,2301-2302,2307-2308,2459-2460,2464-2465,2628-2632,2637-2641,2643-2650,2653,2655-2658,2660-2666,2668-2669,2671-2674,2677,2679-2694,2696-2702,2704-2705,2707-2734
+docs/asset/art_refresh_plan/batches/augmentations_sheet_01/README.md
+  s_54863ea86d9b5d::t_9c178bada54c50 1,3,5,11,15,25
+docs/asset/art_refresh_plan/batches/augmentations_sheet_01/doubao_prompt.txt
+  s_54863ea86d9b5d::t_7f214300a5ff19 1,5
+docs/asset/art_refresh_plan/batches/augmentations_sheet_01/manifest.json
+  s_54863ea86d9b5d::t_8fcc3741e7431a 3
+docs/asset/art_refresh_plan/finance_table_ui_installation_2026-10-05.md
+  s_67668443088b27::t_b919b71f122ee4 1-34
+docs/asset/art_refresh_plan/goblin_256_installation_2026-10-04.md
+  s_67668443088b27::t_1495f3386766cd 1-38
+docs/asset/art_refresh_plan/icon_manifest.json
+  s_67668443088b27::t_71b843e640c81c 513-514,516,518,540-541,545-552,581,584-585,587-588,590,607-608,615-621,651,654-655,657-658,660,677-678,685-691,721,724-725,727-728,730,747-748,755-761,791,794-796,798-799,802,816,821-827,857-858,860,862,879-880,882,884,889-895,925-926,928,930,947-948,950,952,957-963,993,996-997,999-1000,1002,1019-1020,1027-1033,1063-1064,1066,1068,1085-1086,1090,1102-1108,1138,1141-1142,1144-1145,1147,1164-1165,1172-1178,1208-1209,1211,1213,1230-1231,1233,1235,1240-1246,1276,1279-1280,1282-1283,1285,1302-1303,1310-1316,1346,1349-1351,1353-1354,1357,1364,1369-1375,1405-1406,1408,1410,1427-1428,1430,1432,1437-1443,1473,1476-1478,1480-1481,1484,1491,1496-1502,1532,1535-1537,1539-1540,1543,1550,1555-1561,1591,1594-1596,1598-1599,1602,1609,1614-1620,1650,1653-1655,1657-1658,1661,1668,1673-1679,1709,1712-1714,1716-1717,1720,1727,1732-1738,1768,1771-1773,1775-1776,1779,1786,1791-1797,1827,1830-1832,1834-1835,1838,1845,1850-1856,1886,1889-1891,1893-1894,1897,1904,1909-1915,1945,1948-1951,1953,1970-1971,1978-1984,2014,2017-2020,2022,2039-2040,2047-2053,2083,2086-2089,2091,2108-2109,2116-2122,2152,2155-2158,2160,2177-2178,2185-2191,2221,2224,2226-2227,2229,2246-2247,2249-2256,2285,2288-2291,2293,2310-2311,2318-2324,2354,2357-2360,2362,2379-2380,2387-2393,2423,2426-2429,2431,2448-2449,2456-2463,2492,2495-2498,2500,2517-2518,2525-2531,2561,2564-2567,2569,2586-2587,2594-2600,2630,2633-2636,2638,2655-2656,2663-2669,2699,2702-2705,2707,2724-2725,2732-2738,2768,2771-2773,2775-2776,2779,2786,2791-2797,2827,2830-2832,2834-2835,2838,2845,2850-2856,2886,2889-2891,2893-2894,2897,2904,2909-2915,2945,2948-2950,2952-2953,2956,2963,2968-2974,3004,3007-3009,3011-3012,3015,3022,3027-3033,3063,3066-3068,3070-3071,3074,3081,3086-3092,3122,3125-3127,3129-3130,3133,3140,3145-3151,3181,3184-3186,3188-3189,3192,3199,3204-3210,3240,3243-3245,3247-3248,3251,3258,3263-3269,3299,3302-3304,3306-3307,3310,3317,3322-3328,3358,3361-3363,3365-3366,3369,3376,3381-3387,3417,3420-3422,3424-3425,3428,3435,3440-3446,3476,3479-3481,3483-3484,3487,3494,3499-3505,3535,3538-3540,3542-3543,3546,3553,3558-3564,3594,3597-3599,3601-3602,3605,3612,3617-3623,3653,3656-3658,3660-3661,3664,3671,3676-3682,3712,3715-3717,3719-3720,3723,3730,3735-3741,3771,3774-3776,3778-3779,3782,3789,3794-3800,3830,3833-3835,3837-3838,3841,3848,3853-3859,3889,3892-3894,3896-3897,3900,3907,3912-3918,3948,3951-3953,3955-3956,3959,3966,3971-3977,4007,4010-4012,4014-4015,4018,4025,4030-4036,4066,4069-4071,4073-4074,4077,4084,4089-4095,4125,4128-4130,4132-4133,4136,4143,4148-4154,4184,4187-4189,4191-4192,4195,4202,4207-4213,4243,4246-4248,4250-4251,4254,4261,4266-4272,4302,4305-4307,4309-4310,4313,4320,4325-4331,4361,4364-4366,4368-4369,4372,4379,4384-4390,4420,4423-4425,4427-4428,4431,4438,4443-4449,4479,4482-4484,4486-4487,4490,4497,4502-4508,4538,4541-4543,4545-4546,4549,4556,4561-4567,4597,4600-4602,4604-4605,4608,4615,4620-4626,4656,4659-4661,4663-4664,4667,4674,4679-4685,4715,4718-4720,4722-4723,4726,4733,4738-4744,4774,4777-4779,4781-4782,4785,4792,4797-4803,4833,4836-4838,4840-4841,4844,4851,4856-4862,4892,4895-4897,4899-4900,4903,4910,4915-4921,4951,4954-4956,4958-4959,4962,4969,4974-4980,5010,5013-5015,5017-5018,5021,5028,5033-5039,5069,5072-5074,5076-5077,5080,5087,5092-5098,5128,5131-5133,5135-5136,5139,5146,5151-5157,5187,5190-5192,5194-5195,5198,5205,5210-5216,5246,5249-5251,5253-5254,5257,5264,5269-5275,5305,5308-5310,5312-5313,5316,5323,5328-5334,5364,5367-5369,5371-5372,5375,5382,5387-5393,5423,5426-5428,5430-5431,5434,5441,5446-5452,5482,5485-5487,5489-5490,5493,5500,5505-5511,5541,5544-5546,5548-5549,5552,5559,5564-5570,5600,5603-5605,5607-5608,5611,5618,5623-5629,5659,5662-5664,5666-5667,5670,5677,5682-5688,6030,6033-6034,6036-6037,6048,6063-6064,6066-6067,6096,6099-6100,6102-6103,6114,6129-6130,6132-6133,6162,6165-6166,6168-6169,6180,6195-6196,6198-6199,6228,6231-6232,6234-6235,6246,6261-6262,6264-6265,6294,6297-6298,6300-6301,6312,6327-6328,6330-6331,6336,6339,6360,6363-6364,6366-6367,6378,6393-6394,6396-6397,6426,6429-6430,6432-6433,6444,6459-6460,6462-6463,6492,6495-6496,6498-6499,6510,6525-6526,6528-6529,6558,6561-6562,6564-6565,6576,6591-6592,6594-6595,6624,6627-6628,6630-6631,6642,6657-6658,6660-6661,6692-6693,6695-6696,6707,6722-6723,6725-6727,6730-6732,6734,6737-6744,6746-6756,6758-6768,6772-6789,6792-6794,6798-6801,6803-6812,6814-6815,6817-6822,6824-6845,6847-6890,6892-6935
+docs/asset/art_refresh_plan/relic_icons_128_installation_2026-10-05.md
+  s_67668443088b27::t_d085cb70aebba4 1-33
+docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md
+  s_67668443088b27::t_c5696e610d13ed 1-24
+docs/asset/art_refresh_plan/weapon_icons_128_installation_2026-10-04.md
+  s_67668443088b27::t_3295642da0340c 1-20
+docs/asset/asset_checklist_summary.md
+  s_ef204514f35f32::t_edf14bbddd5933 135-164
+docs/asset/asset_rules_summary.md
+  s_ef204514f35f32::t_45820779b114b7 3-6,73,81,84-85,125,133,148,152
+docs/asset/combat_hud_style_review.md
+  s_50bd94cb5a89d7::t_147477b2cce928 1-69
+docs/asset/finance_preparation_refresh.md
+  s_67668443088b27::t_eaf925848fb4ff 38-40,44
+docs/asset/iron_knight_integration.md
+  s_92c0598951b137::t_50326d3034a26a 15
+docs/asset/multi_projectile_review_2026-10-04.md
+  s_50bd94cb5a89d7::t_d5c51db01f64d3 1-46
+docs/asset/remaining_multi_projectile_r03_2026-10-05.md
+  s_50bd94cb5a89d7::t_9da352901e9248 1-31
+docs/asset/remaining_multi_projectile_review_2026-10-04.md
+  s_50bd94cb5a89d7::t_aaaecd6543b443 1-44
+docs/asset/remaining_multi_projectile_tuning_2026-10-05.md
+  s_50bd94cb5a89d7::t_065d566e334c73 1-34
+docs/asset/weapon_range_review_2026-10-05.md
+  s_50bd94cb5a89d7::t_071de5f2beb605 1-130
+docs/main/4-weapon_loadout_design.md
+  s_ef204514f35f32::t_8d986f6c36a9fa 535,584,594,639,641,649
+docs/main/6-enemy_wave_design.md
+  s_2441ad77303cd9::t_24ef14a73b967a 12-15,17-19,26,28-30,36-40,42
+docs/main/9-drop_reward_design.md
+  s_50bd94cb5a89d7::t_d820c10f27296c 14
+docs/main/active_combat_implementation.md
+  s_25b361477be27a::t_cd71c70ff2e3c8 1-63
+docs/main/checklist/attribute_enchantments_2026-09-30.md
+  s_3dbef1320954a3::t_3cef074889ed84 3-4,25,36-37
+docs/main/checklist/bounce_2026-09-30.md
+  s_3dbef1320954a3::t_dbdfe90ba4b939 1-15
+docs/main/checklist/enchantment_balance_2026-09-30.md
+  s_3dbef1320954a3::t_028a841483267d 3-4,65
+docs/main/checklist/enchantment_order_performance_2026-09-30.md
+  s_3dbef1320954a3::t_039e47d6a80d5f 1,3-5,71,77,79
+docs/main/checklist/enchantment_stacking_2026-09-30.md
+  s_3dbef1320954a3::t_a50bdeee51b54a 3-4,27,38-39
+docs/main/checklist/shockwave_2026-09-30.md
+  s_3dbef1320954a3::t_1ec73b6a8b5860 28
+docs/main/enchantment_balance_report_2026-09-30.md
+  s_3dbef1320954a3::t_c2761f801d1387 3-4,170,222,325
+docs/performance/element_interaction_review_2026-10-04.md
+  s_8b90c5f66b34ca::t_415d79f43c5860 1-58
+docs/performance/element_interaction_visual_installation_2026-10-04.md
+  s_50bd94cb5a89d7::t_865a83c82aba50 1-28
+docs/performance/enchantment_effect_cost_analysis_2026-10-04.md
+  s_67668443088b27::t_7f8da5225eab97 1-133
+docs/performance/enchantment_optimization_v1_v4_installation_2026-10-05.md
+  s_8b90c5f66b34ca::t_f24dba52f8bbb7 1-48
+docs/performance/grass_batch_v2_installation.md
+  s_8b90c5f66b34ca::t_bacd27e1290a54 32,35-36
+docs/performance/measurements/enchantment_effect_cost_2026-10-04.json
+  s_50bd94cb5a89d7::t_1bfec0616ea462 1-545
+docs/performance/runtime_cache_and_grass_review.md
+  s_50bd94cb5a89d7::t_63629153e529c5 5
+project.godot
+  s_e6af46337ce4b6::t_c01ee6d931c468 26
+scenes/tests/active_combat_integration_test.tscn
+  s_67668443088b27::t_7cebfb9ef9d50c 1-6
+scenes/tests/active_range_rules_test.tscn
+  s_92c0598951b137::t_a7da1151564aba 3,5
+scenes/tests/bounce_live_capture.tscn
+  s_3dbef1320954a3::t_a8c1de4d45faa5 3,5
+scenes/tests/bounce_test.tscn
+  s_3dbef1320954a3::t_1b2724a5ee8e8e 1-6
+scenes/tests/combat_hud_style_review.tscn
+  s_50bd94cb5a89d7::t_aa95d47d57f09d 1-6
+scenes/tests/element_interaction_review.tscn
+  s_8b90c5f66b34ca::t_8dbbba90cbd600 1-6
+scenes/tests/enchantment_cost_review.tscn
+  s_8b90c5f66b34ca::t_0e26550a5651bf 1-6
+scenes/tests/multi_projectile_review.tscn
+  s_50bd94cb5a89d7::t_2f90dc3b466595 1-6
+scenes/tests/particle_cost_review.tscn
+  s_8b90c5f66b34ca::t_f664b6455a721e 1-6
+scenes/tests/remaining_multi_projectile_review.tscn
+  s_50bd94cb5a89d7::t_b354b26bb9f3e9 1-6
+scenes/tests/weapon_range_review.tscn
+  s_50bd94cb5a89d7::t_3d21a019d15c09 1-6
+scenes/tests/weapon_upgrade_progression_test.tscn
+  s_100130139b2d1a::t_abafd0c658a1c6 1-6
+scripts/battle/active_combat_controller.gd
+  s_52aa659d0bafcd::t_95afb8e6b7496e 1-143
+scripts/battle/active_combat_controller.gd.uid
+  s_92c0598951b137::t_d83af1fae1a19b 1
+scripts/battle/attack_footprint.gd
+  s_50bd94cb5a89d7::t_801b6a81a49b4e 36-39,42
+scripts/battle/battle_root.gd
+  s_25b361477be27a::t_cb7cdba63bbcb7 15,26-28,85-87,116-120
+scripts/battle/weapon_attack_indicator.gd
+  s_50bd94cb5a89d7::t_d705de33755fe4 49,51,57,97-104,108,112-123
+scripts/core/bootstrap.gd
+  s_e6af46337ce4b6::t_4639c0f5851940 437,703,730
+scripts/data/battle_difficulty.gd
+  s_2441ad77303cd9::t_c88c949273edc1 9,11-12,19,24,29
+scripts/data/data_validator.gd
+  s_2441ad77303cd9::t_3265d137f29c56 289-291,296-299,312,340
+scripts/data/stat_definitions.gd
+  s_e6af46337ce4b6::t_3da2717692faa9 160
+scripts/effects/black_hole_effect.gd
+  s_e6af46337ce4b6::t_60c15ddd9b5d8b 61
+scripts/effects/copper_lamp_flame.gd
+  s_50bd94cb5a89d7::t_d449e70b8e035f 1-50
+scripts/effects/element_reaction_resolver.gd
+  s_faad774b6caa3d::t_8d88734ff897f7 130-132
+scripts/effects/element_reaction_visual.gd
+  s_243ef24cb13f26::t_944085db927105 14-15,21-22,35-36,48-51,54-57,63,113-137,144,146-151
+scripts/effects/enemy_status_visual.gd
+  s_8b90c5f66b34ca::t_30d0909718542e 16,35-40,46,54-55
+scripts/effects/explosion_effect.gd
+  s_e6af46337ce4b6::t_e0ef76619ed7b1 12-17,68-72,157,177-198
+scripts/effects/fire_patch.gd
+  s_8b90c5f66b34ca::t_db4e767e6d0309 26-27,106-110,207-208,212-220
+scripts/effects/ice_field_effect.gd
+  s_8e6b41c16cbe4f::t_af0de0a300a426 24-25,54-56,97-99,106-108,120-121
+scripts/effects/light_reflection_effect.gd
+  s_8e6b41c16cbe4f::t_0c8d7b00e00220 8,11-12,23-25,44-47,61-84,87-90,94-133,143-144,146-147
+scripts/effects/light_sword_effect.gd
+  s_8e6b41c16cbe4f::t_debb00f3bad6c4 87
+scripts/effects/lightning_particle_effect.gd
+  s_faad774b6caa3d::t_0543a8c92318f3 245-246
+scripts/effects/particle_world.gd
+  s_8e6b41c16cbe4f::t_56b1857e7b2bb1 429,437,750,761-762,764-771,870,873,876,878,880
+scripts/effects/pixel_fire_visual.gd
+  s_8b90c5f66b34ca::t_ec339fc8a3ce3d 14,174-182,193
+scripts/effects/pixel_particle_batch.gd
+  s_3dbef1320954a3::t_46e3e2cae8bd69 27-45
+scripts/effects/pixel_rect_batch.gd
+  s_67668443088b27::t_edb31972f6d6f3 1-109
+scripts/effects/pixel_rect_batch.gd.uid
+  s_8b90c5f66b34ca::t_55599affa37d05 1
+scripts/effects/plasma_ball_visual.gd
+  s_67668443088b27::t_7b34e87a24e233 32
+scripts/effects/reflection_pixel_batch.gd
+  s_8b90c5f66b34ca::t_b879f976b99e15 1-46
+scripts/effects/reflection_pixel_batch.gd.uid
+  s_8b90c5f66b34ca::t_5bc6fb2817f676 1
+scripts/effects/water_wave_effect.gd
+  s_8b90c5f66b34ca::t_8097b3fb216357 7,25,63,132,138-148,153-157,171,173,183-184
+scripts/enemies/elite_rusher.gd
+  s_92c0598951b137::t_6ea52b2e25fb5b 72,291
+scripts/enemies/enemy_controller.gd
+  s_faad774b6caa3d::t_bb5a32e93694fa 24,26,421,528-532,537-540,595-596,599-601,605,621-669,676-693
+scripts/enemies/enemy_registry.gd
+  s_8b90c5f66b34ca::t_cb385ae9fb40fa 4,11,18
+scripts/player/player_controller.gd
+  s_e6af46337ce4b6::t_fa83ed190d08c9 41-45,88-89,491-493,501-507,559-576
+scripts/rewards/drop_reward_system.gd
+  s_bd4b72de95f508::t_8b0d3d8d0c7568 12,163
+scripts/tests/active_attack_revision_test.gd
+  s_50bd94cb5a89d7::t_651eb73be4fed8 36,40-42,49-52,71,78,87,113,118-133,139-140,148-244
+scripts/tests/active_combat_art_review.gd
+  s_50bd94cb5a89d7::t_c7dba1aa36f331 4,86-90,401,419,444,453-454
+scripts/tests/active_combat_integration_test.gd
+  s_67668443088b27::t_88230c63d66bde 1-367
+scripts/tests/active_combat_integration_test.gd.uid
+  s_67668443088b27::t_d45f22d58ce1cf 1
+scripts/tests/active_range_rules_test.gd
+  s_4eb3b3d146ed3d::t_0f76f07922f59e 1-121
+scripts/tests/active_range_rules_test.gd.uid
+  s_92c0598951b137::t_98c3c43efa3313 1
+scripts/tests/attribute_enchantment_test.gd
+  s_3dbef1320954a3::t_0051c581123480 1,63
+scripts/tests/augmentation_art_review.gd
+  s_54863ea86d9b5d::t_e3b8ae1133854b 5,12,31,36,38-39,54,58-66,71,73-76,80
+scripts/tests/augmentation_drop_test.gd
+  s_92c0598951b137::t_bb00451f881f25 5,69,76-77
+scripts/tests/battle_settings_test.gd
+  s_25b361477be27a::t_746c3361f63df8 91-94,100-101,116,157,159-164,166-168,171-210
+scripts/tests/bounce_live_capture.gd
+  s_3dbef1320954a3::t_6c306278819b73 3,35,87,125,135
+scripts/tests/bounce_test.gd
+  s_3dbef1320954a3::t_309598f1164135 12,117,125-129,131
+scripts/tests/camp_dagger_test.gd
+  s_0362316acdd536::t_f6415d6019bb4a 71-72,97,108,110
+scripts/tests/combat_hud_style_review.gd
+  s_50bd94cb5a89d7::t_f759b9e27bd854 1-603
+scripts/tests/combat_hud_style_review.gd.uid
+  s_50bd94cb5a89d7::t_286ce407f39f80 1
+scripts/tests/combat_optimization_test.gd
+  s_8b90c5f66b34ca::t_3a165e0bb2606c 149,151
+scripts/tests/difficulty_balance_test.gd
+  s_2441ad77303cd9::t_6636c91b4d9c52 63,66,72-73,90,95,194
+scripts/tests/economy_flow_test.gd
+  s_92c0598951b137::t_ebfb629923c102 57-59
+scripts/tests/element_interaction_review.gd
+  s_8b90c5f66b34ca::t_e900ad92203908 1-274
+scripts/tests/element_reaction_test.gd
+  s_4906a797557d74::t_c41848125466d1 80-89
+scripts/tests/elite_relic_decay_test.gd
+  s_e6af46337ce4b6::t_aa6ada4d8dfc06 137-138
+scripts/tests/enchantment_balance_test.gd
+  s_3dbef1320954a3::t_5cffb63e6db746 57
+scripts/tests/enchantment_cost_review.gd
+  s_8b90c5f66b34ca::t_13323c3c5c7c21 1-97
+scripts/tests/enchantment_cost_review.gd.uid
+  s_50bd94cb5a89d7::t_2671feabe8ab4c 1
+scripts/tests/enchantment_stacking_test.gd
+  s_3dbef1320954a3::t_f9be3ebd897445 122
+scripts/tests/erosion_pressure_test.gd
+  s_e6af46337ce4b6::t_44c4657639ecda 85-87,116,130
+scripts/tests/finance_scene_regression_test.gd
+  s_bd4b72de95f508::t_6cde1a2e0f79a3 105-117,148-149
+scripts/tests/fixtures/goblin_loan_visual_mockup.gd
+  s_67668443088b27::t_f791dd74e61656 209-210
+scripts/tests/fixtures/profiled_particle_world.gd
+  s_8b90c5f66b34ca::t_9ee1997b26f6b2 1-34
+scripts/tests/fixtures/profiled_particle_world.gd.uid
+  s_67668443088b27::t_7d56f7afa2d01e 1
+scripts/tests/goblin_trade_test.gd
+  s_bd4b72de95f508::t_c5898dc637f28e 244-245,379
+scripts/tests/grenade_weapon_test.gd
+  s_0362316acdd536::t_fe95ed9b5504fc 229
+scripts/tests/humanity_economy_test.gd
+  s_bd4b72de95f508::t_b510bd1f3e966c 154,215-218
+scripts/tests/iron_knight_test.gd
+  s_92c0598951b137::t_f5256d4e8d928e 99,101-102,104,122,144,160
+scripts/tests/meteor_flail_test.gd
+  s_0362316acdd536::t_a6014d399ef15a 83,85,89,101,125-126,133
+scripts/tests/multi_projectile_review.gd
+  s_50bd94cb5a89d7::t_bb5e61cd649031 1-167
+scripts/tests/multi_projectile_review.gd.uid
+  s_50bd94cb5a89d7::t_b5f4c61f28d0d7 1
+scripts/tests/nightwatch_spear_test.gd
+  s_cfbcab1170430e::t_0994063fee54d4 102-103,119-121,150
+scripts/tests/particle_cost_review.gd
+  s_8b90c5f66b34ca::t_1732ac5e92b003 1-165
+scripts/tests/particle_cost_review.gd.uid
+  s_67668443088b27::t_c506b537cb45bf 1
+scripts/tests/relic_art_install_test.gd
+  s_54863ea86d9b5d::t_710352b481e43e 4-7,44-47,133,217-219
+scripts/tests/relic_consistency_test.gd
+  s_e6af46337ce4b6::t_5ac1ec2e8052fd 402,404
+scripts/tests/remaining_multi_projectile_review.gd
+  s_50bd94cb5a89d7::t_a627615a43c10f 1-205
+scripts/tests/remaining_multi_projectile_review.gd.uid
+  s_50bd94cb5a89d7::t_2cc712cb7ed339 1
+scripts/tests/tome_purse_weapon_test.gd
+  s_0362316acdd536::t_4c7c4337af6246 101,163,167,170,296
+scripts/tests/wave_pressure_test.gd
+  s_2441ad77303cd9::t_2a81c361e866a5 25,54,56,68,70,72,80-144
+scripts/tests/weapon_balance_test.gd
+  s_100130139b2d1a::t_eeb22f5439f7cf 6-10,38-43,47-50,63-71,79,83-84,102-104,134
+scripts/tests/weapon_range_review.gd
+  s_50bd94cb5a89d7::t_d58a34d717b485 1-285
+scripts/tests/weapon_range_review.gd.uid
+  s_8b90c5f66b34ca::t_19febff5796037 1
+scripts/tests/weapon_trio_test.gd
+  s_0362316acdd536::t_c6c1de18fdaafb 191,244,290
+scripts/tests/weapon_upgrade_progression_test.gd
+  s_0362316acdd536::t_bcc0dccf3a2dc6 1-116
+scripts/tools/ASSET_INSTALLERS.md
+  s_e2da0653a2c9ad::t_eaf6d997e821ac 3-4,18-20,30,34-35,50
+scripts/tools/build_camp_dagger_art.py
+  s_67668443088b27::t_552a1bab9889a6 9
+scripts/tools/build_ground_cracks_r04.py
+  s_92c0598951b137::t_5a17d9e254dbc3 1-105
+scripts/tools/build_weapon_range_review.py
+  s_50bd94cb5a89d7::t_4a356eb96aa5ba 1-150
+scripts/tools/encode_multi_projectile_review.py
+  s_50bd94cb5a89d7::t_d3056cbd64c629 1-95
+scripts/tools/install_goblin_portraits.py
+  s_67668443088b27::t_dd5ee68794c0ab 4,15-16,28,39,51,83,86
+scripts/tools/validate_active_combat.py
+  s_92c0598951b137::t_d3693ffed6d06a 1-33
+scripts/tools/weapon_range_gallery.html
+  s_50bd94cb5a89d7::t_87a5317f611385 1-47
+scripts/ui/active_combat_weapon_bar.gd
+  s_50bd94cb5a89d7::t_22a65b75f78465 6-17,26-27,31,39,57,63-70,86-89,95-98,115-116,124-127
+scripts/ui/bank_counter_portrait.gd
+  s_92c0598951b137::t_e8176069655f32 8,66,81,89-94
+scripts/ui/battle_hud.gd
+  s_bd4b72de95f508::t_7b9518d0927add 45-47,189-206,253,265-274,399-419,587,624-627,637-638,742-744,746,795,800-807
+scripts/ui/battle_utility_overlay.gd
+  s_b26ecb89787365::t_b36c8bf1bac15c 29-34,41,71,92-93,95-96,100,137-138,250,254-279
+scripts/ui/enchantment_inventory_card.gd
+  s_ef204514f35f32::t_1e1ed01e9bae18 4,15-16,19,25,36,57
+scripts/ui/enchantment_slot_card.gd
+  s_ef204514f35f32::t_abb5d7e8fddb14 32
+scripts/ui/esc_overlay.gd
+  s_25b361477be27a::t_a65ef274e3065b 414
+scripts/ui/finance_popup.gd
+  s_1f3b9a337a97f0::t_248d288cdeb72c 106,298
+scripts/ui/finance_scene_layout.gd
+  s_92c0598951b137::t_c777d68df3515f 3,19-20,24,29-32,36-42,45-46,48,50-51,53-54,57,61
+scripts/ui/finance_ui_style.gd
+  s_1f3b9a337a97f0::t_eb1bba37c19d87 9,50-54,68-70
+scripts/ui/game_settings_panel.gd
+  s_92c0598951b137::t_de2414a00ce743 1-409
+scripts/ui/game_settings_panel.gd.uid
+  s_8b90c5f66b34ca::t_4ce5974f3e016c 1
+scripts/ui/goblin_loan_presentation.gd
+  s_ef204514f35f32::t_118c981f496b45 193-194
+scripts/ui/item_inventory_card.gd
+  s_ef204514f35f32::t_3b46f6c5c37eaf 119-120,123,139-141
+scripts/ui/main_menu_ui_controller.gd
+  s_ef204514f35f32::t_1394bd62542ddc 17,60,207-212,215,217-218,220-245,250-251
+scripts/ui/preparation_offer_card.gd
+  s_52aa659d0bafcd::t_b040c06f9ec342 140
+scripts/ui/reward_option.gd
+  s_ef204514f35f32::t_ee2f132ced8af8 136
+scripts/ui/run_settlement_panel.gd
+  s_ef204514f35f32::t_435448d6f39278 231-232
+scripts/ui/virtual_shop_grid.gd
+  s_67668443088b27::t_af9f3f3327b63a 42-44
+scripts/waves/wave_manager.gd
+  s_faad774b6caa3d::t_4bf8e40574054f 16-20,36-39,101-106,113,118-142,146-148,218-220,267-268,279-280,294,610-614,636,644,649,772,775-776,801,804,806,809-810,812-813,815,819-828,833-834
+scripts/weapons/active_weapon_casting.gd
+  s_92c0598951b137::t_92eb311f2e2d3f 1-128
+scripts/weapons/active_weapon_casting.gd.uid
+  s_92c0598951b137::t_37622ae36c4960 1
+scripts/weapons/bounce_attack.gd
+  s_3dbef1320954a3::t_a1a5ac40dd7aaf 18,24,41,47-48,50,68-70,73,123-124
+scripts/weapons/camp_dagger.gd
+  s_faad774b6caa3d::t_b02a03c697653b 18,31,58,79-97,112-118,130,207-216,245,257-261
+scripts/weapons/coin_projectile.gd
+  s_86d4bdded9d3ba::t_73ae7bddd869bd 201
+scripts/weapons/copper_lamp.gd
+  s_3dbef1320954a3::t_20eee1588a0b4e 5,15,17-18,45,50-51,55,65,67,81,86,131,136-146
+scripts/weapons/directed_weapon_runtime.gd
+  s_3dbef1320954a3::t_8ad926a96d2068 77-78
+scripts/weapons/earth_hammer.gd
+  s_3dbef1320954a3::t_88bd33f78500fd 7-10,16,32-38,51-52,58,80-84,89,92-93,95,97,100,102-103,105-107,112,122,126,128,130,145-152,160-173
+scripts/weapons/grenade_projectile.gd
+  s_b11938437a28ec::t_30d807305fa27d 195-197
+scripts/weapons/meteor_flail.gd
+  s_faad774b6caa3d::t_35d109840e9dd4 10-12,30,37,52-58,167,169,197
+scripts/weapons/mutant_tentacle.gd
+  s_3dbef1320954a3::t_368c6af3f54281 8,23,29-31,34-36,47-52,86,105-106,111,113-116
+scripts/weapons/nightwatch_spear.gd
+  s_4eb3b3d146ed3d::t_7a1e81152bbe75 32,37-38,97,99,106,117-118,126,139,143,179
+scripts/weapons/projectile_instance.gd
+  s_4eb3b3d146ed3d::t_fa135ceb2c94a9 99
+scripts/weapons/ritual_domain.gd
+  s_faad774b6caa3d::t_44f0d01af6c325 11,69
+scripts/weapons/weapon_instance.gd
+  s_faad774b6caa3d::t_589f36928f5c5f 36-37,49,53-56,99,113-140,152,158,163-166,171,182-186,257-258,494-497,506,510-547,591,610-611,686-690,714-715,750-751,784-785,790-792,794-798,804,807-809,825,829,843-844,848-851
+scripts/weapons/weapon_loadout.gd
+  s_25b361477be27a::t_8196469a0ebaba 24-34,47,50,239-241,274,289,306-307,332,410,430-431,437,441-446,448-451,457
+shaders/effects/copper_lamp_flame.gdshader
+  s_50bd94cb5a89d7::t_3c70dd37cfae86 1-51
+shaders/effects/pixel_fire.gdshader
+  s_8b90c5f66b34ca::t_4338e5b8910548 13,23-39,41,47,56-57,60-61,66,72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f3041373b583e8cc81669d69ccae337f6d761713",
+  "prompts": {},
+  "sessions": {
+    "s_0362316acdd536": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11430-6663-7213-bf57-c2d001b916d5",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_100130139b2d1a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a10b29-ad81-77c3-9228-47b3ddc24af3",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_1f3b9a337a97f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12107-acb7-7b30-a3b8-ebd48e88689d",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_243ef24cb13f26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cbf9-050c-7dd2-b00c-0af5a10ce723",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25b361477be27a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11a3f-76c5-78b2-affc-5db5f3e6e433",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_3dbef1320954a3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eaf0-a03b-77a3-a543-fb235fa92c89",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_4906a797557d74": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d7-fa44-7431-932d-0e2d74d950d1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_4eb3b3d146ed3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11121-aecd-7511-8d21-1621942cc710",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_50bd94cb5a89d7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047a-556b-7c10-bf65-66ac4e360e27",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_52aa659d0bafcd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11e76-d9ec-7683-aeb3-75650390c008",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_54863ea86d9b5d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eb03-2d37-7541-b33c-b0a85e0944bc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_67668443088b27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d4-9f2a-7521-a8c7-ee0846ad1b45",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_86d4bdded9d3ba": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115eb-bcb1-7042-b25b-c49135faf6fe",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8b90c5f66b34ca": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047b-584e-7ad2-8141-68611fd59975",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8e6b41c16cbe4f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11121-2185-7163-8b69-b3d9a41fd027",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a3c9a2e4c843c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a03333-78e4-7bf3-b544-fe1b0be691c0",
+        "model": "ppio/pa/gpt-5.6-luna"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b26ecb89787365": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-f6fe-7830-b9f5-0fdda1c11c07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bd4b72de95f508": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11b7e-b5be-7cc1-83b4-7f5ccaada02f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_cfbcab1170430e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115b9-e0c1-77a0-8dd4-6680698589fa",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e2da0653a2c9ad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11691-2210-7820-9fe5-fbc7b5e578e3",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_faad774b6caa3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12388-2127-79b2-9821-95230d5905dc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
