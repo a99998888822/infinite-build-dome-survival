@@ -1,0 +1,155 @@
+augmentations_list.md
+  s_e6af46337ce4b6::t_cdfbf912e8c2de 79,81,83,86-89
+data_config/characters.json
+  s_1f3b9a337a97f0::t_6ed9e375f1b257 37,39-40,83-84
+data_config/enemies.json
+  s_e6af46337ce4b6::t_0587f41d87e5ea 51,55,79-80,93
+data_config/relics.json
+  s_e6af46337ce4b6::t_089eb18086c253 1362,1369,1394,1401,1425,1434,1503,1510,1518,1525,1535,1542,1553,1560
+docs/main/3-player_and_character_design.md
+  s_1f3b9a337a97f0::t_7a50e9ebdbb5c3 34
+docs/main/6-enemy_wave_design.md
+  s_2441ad77303cd9::t_3bff3b27a47936 17,23-24,26,28-32,36
+docs/main/reward_access_balance.md
+  s_2441ad77303cd9::t_ecad71004fb150 1-39
+localization/catalog_meta.json
+  s_2441ad77303cd9::t_fea53bb4f081e6 725,864,868,872,878,880,882,884
+localization/catalogs/content.csv
+  s_e6af46337ce4b6::t_266564163806aa 104,167,192,206,222,259,275,293
+localization/catalogs/messages.csv
+  s_1f3b9a337a97f0::t_2519e89b3653e2 5
+localization/catalogs/ui.csv
+  s_1f3b9a337a97f0::t_0e19365b86400f 47,124-125
+localization/generated/source_aliases.csv
+  s_e6af46337ce4b6::t_c6e9479ddc2de8 248,316,479-485,855,978
+localization/generated/source_keys.json
+  s_ef204514f35f32::t_7404570fab63f4 725,864,868,872,878,880,882,884,1035,1050-1051
+scenes/tests/locale_after_exit_test.tscn
+  s_1f3b9a337a97f0::t_39715fe338c489 1-6
+scenes/tests/reward_access_balance_test.tscn
+  s_1f3b9a337a97f0::t_2c6d1c09fd6d35 1-6
+scenes/tests/spawn_density_test.tscn
+  s_2441ad77303cd9::t_01501e5ed59c4a 1-6
+scripts/data/battle_difficulty.gd
+  s_2441ad77303cd9::t_ff83e6cb96b6bf 6-13,17,21,27,32,37-38
+scripts/data/data_validator.gd
+  s_2441ad77303cd9::t_88680910ecca54 596-599,686-689
+scripts/player/player_controller.gd
+  s_e6af46337ce4b6::t_cdb311af7606ea 196-197,205
+scripts/rewards/battle_finance_system.gd
+  s_1f3b9a337a97f0::t_f7cc8007bcba80 265,277,338-341,343-344
+scripts/tests/capitalist_character_test.gd
+  s_1f3b9a337a97f0::t_ec96e7ca23c35a 62,65,72,77-79,82-87,89,91-92,94-103,105,114-120,143-148,168-173,179,188-190,194,202,210,226-238
+scripts/tests/character_select_view_test.gd
+  s_1f3b9a337a97f0::t_2224eeabfbb9b1 145-147,181-183
+scripts/tests/difficulty_balance_test.gd
+  s_2441ad77303cd9::t_771dd1e026a5f4 73,76-78,81,84,91
+scripts/tests/elite_relic_decay_test.gd
+  s_e6af46337ce4b6::t_71433a2a169a43 123,180
+scripts/tests/enemy_adaptation_test.gd
+  s_1a969be0160cb0::t_60bcf2e5e845af 213
+scripts/tests/erosion_pressure_test.gd
+  s_e6af46337ce4b6::t_704e58bf1822a8 54-55,82,112
+scripts/tests/locale_after_exit_test.gd
+  s_1f3b9a337a97f0::t_98037dbeade750 1-114
+scripts/tests/locale_after_exit_test.gd.uid
+  s_1f3b9a337a97f0::t_d758b5c178e52e 1
+scripts/tests/relic_consistency_test.gd
+  s_e6af46337ce4b6::t_bf0bfd33a240b9 73,173
+scripts/tests/reward_access_balance_test.gd
+  s_1f3b9a337a97f0::t_6ee5d6000281dc 1-148
+scripts/tests/reward_access_balance_test.gd.uid
+  s_2441ad77303cd9::t_da98115b4381b8 1
+scripts/tests/spawn_density_test.gd
+  s_2441ad77303cd9::t_92511be7c7a1f7 1-111
+scripts/tests/spawn_density_test.gd.uid
+  s_1f3b9a337a97f0::t_7cbaf2da36dd20 1
+scripts/tests/underworld_wolf_review.gd
+  s_8c27971d424fd9::t_0068fd8495df43 146,362
+scripts/tests/wave_pressure_test.gd
+  s_2441ad77303cd9::t_0fa143c16a94fb 6,8-10,70-73
+scripts/tests/weapon_acquisition_test.gd
+  s_2441ad77303cd9::t_3aced2b8cdde5f 51-54
+scripts/tools/plot_spawn_density.py
+  s_2441ad77303cd9::t_c3630c59a25685 1-112
+scripts/tools/validate_goblin_trade_expansion.py
+  s_2441ad77303cd9::t_6408684684884b 43
+scripts/ui/character_select_view.gd
+  s_1f3b9a337a97f0::t_f6ad5ca192d963 315-317,319-320
+scripts/ui/finance_popup.gd
+  s_1f3b9a337a97f0::t_5f146fd44ce61a 599,603-607,623,627-628,633
+scripts/ui/finance_ui_style.gd
+  s_1f3b9a337a97f0::t_7fde277c92e990 208
+scripts/ui/shop_offer_generator.gd
+  s_2441ad77303cd9::t_dc910119991a1a 29-30,192-195
+scripts/ui/shop_popup.gd
+  s_1f3b9a337a97f0::t_7435d33a5067db 136-144
+scripts/ui/shop_ui_controller.gd
+  s_1f3b9a337a97f0::t_98b1769f0027a9 69-70,82-83,115-119
+scripts/waves/wave_manager.gd
+  s_faad774b6caa3d::t_9b0feebbedaf9b 704-706,811,862-863
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b54291ad4b6b7d549a8d9c3498a3f7b54239e01e",
+  "prompts": {},
+  "sessions": {
+    "s_1a969be0160cb0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a114cc-07fb-7491-9ba2-87dbf8d68db0",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_1f3b9a337a97f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12107-acb7-7b30-a3b8-ebd48e88689d",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8c27971d424fd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11702-e6a1-79b1-8581-a8136230b970",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_faad774b6caa3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12388-2127-79b2-9821-95230d5905dc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
