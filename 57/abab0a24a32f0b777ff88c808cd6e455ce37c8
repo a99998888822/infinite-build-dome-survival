@@ -1,0 +1,255 @@
+artifacts/README.md
+  s_2441ad77303cd9::t_86a5c6fb8d24da 5-6
+assets/ui/icons/cast_auto.svg
+  s_25b361477be27a::t_a93e3e7c956399 1-5
+assets/ui/icons/cast_auto.svg.import
+  s_25b361477be27a::t_7b029d470ee586 1-43
+assets/ui/icons/cast_manual.svg
+  s_25b361477be27a::t_b9490fae114196 1-3
+assets/ui/icons/cast_manual.svg.import
+  s_25b361477be27a::t_a4ee31d5a314f9 1-43
+autoloads/combat_settings.gd
+  s_92c0598951b137::t_eb903231951ad9 8-9,13-68,71,74-77,79
+combat_active_control_refactor_plan.md
+  s_25b361477be27a::t_20ff766d9a0584 3-4
+data_config/goblin_trades.json
+  s_2441ad77303cd9::t_c95378bb32fe85 6-13
+docs/localization/glossary.md
+  s_25b361477be27a::t_4771eb4858b6ad 19
+docs/main/active_combat_implementation.md
+  s_25b361477be27a::t_611936721a56dc 3-4,12-13
+docs/main/combat_guide.md
+  s_25b361477be27a::t_fba6154f67c60d 1-26
+docs/main/goblin_trade_expansion.md
+  s_bd4b72de95f508::t_ca0a3a5d639009 1-70
+docs/main/mobility_weapons_implementation.md
+  s_86d4bdded9d3ba::t_bf14a533d9c603 3-4
+docs/main/multilingual_localization_design.md
+  s_25b361477be27a::t_e86ea2e1276414 218
+docs/main/per_skill_auto_cast.md
+  s_25b361477be27a::t_e62f44c825b80d 1-74
+goblin_trades_list.md
+  s_2441ad77303cd9::t_7f582328f576fc 3,5,9,11-16,20-21
+localization/catalogs/goblin_trade_expansion.csv
+  s_bd4b72de95f508::t_b68f94337ea084 1-7
+localization/catalogs/goblin_trade_expansion.csv.import
+  s_25b361477be27a::t_364c25f60af8f0 1-19
+localization/catalogs/ui.csv
+  s_1f3b9a337a97f0::t_31a6a7308c39c8 2-22,211,278,288,347-355,376-378
+localization/generated/source_aliases.csv
+  s_e6af46337ce4b6::t_7e99aa392ed71f 50,52,54,57,89,132-133,153,166-167,188,199,336-340,402,518-519,529,536,538-541,575-579,582-583,585,602,712,714,718,808-809,811,830,886,902,917,1018,1109,1171,1178
+localization/generated/source_keys.json
+  s_ef204514f35f32::t_db5b8f392bf648 1006-1041
+project.godot
+  s_e6af46337ce4b6::t_63d5d03942579e 54
+scenes/tests/auto_cast_live_review.tscn
+  s_25b361477be27a::t_7e5967121a0658 1-6
+scenes/tests/auto_mobility_test.tscn
+  s_25b361477be27a::t_8980db6e486636 1-6
+scenes/tests/combat_guide_test.tscn
+  s_25b361477be27a::t_d993f626d7f8e0 1-6
+scenes/tests/goblin_trade_expansion_test.tscn
+  s_bd4b72de95f508::t_e980c7581443d8 1-6
+scripts/battle/active_combat_controller.gd
+  s_52aa659d0bafcd::t_4b9e9f527be6cb 48,50-52,56,65-74,86-92,131,159-163,165,174,179,182,187,192,205,220,237-238,241,250
+scripts/battle/battle_root.gd
+  s_25b361477be27a::t_20e697a8fba676 16,30-32,127-128
+scripts/battle/mobility_weapon_indicator.gd
+  s_d47e6bf650c025::t_75200b1c8859e1 24,27,73,76-82,87,144,147
+scripts/core/main_flow_coordinator.gd
+  s_2441ad77303cd9::t_8fd7a240267889 30,56-58,109-111,178-186,198-200,256-257,315-318,483-511,909-913,990-992,1172-1173,1176-1202,1217-1219,1233-1244,1326,1377,1383-1406
+scripts/items/item_inventory.gd
+  s_bd4b72de95f508::t_3ab22c12b7777c 82-91
+scripts/player/player_controller.gd
+  s_e6af46337ce4b6::t_c68d90a7378125 225-235,576-583,592-594
+scripts/rewards/battle_finance_system.gd
+  s_1f3b9a337a97f0::t_db3766d96f5486 174-181
+scripts/rewards/goblin_special_trades.gd
+  s_bd4b72de95f508::t_e73e5fd4008e43 1-82
+scripts/rewards/goblin_trade_system.gd
+  s_2441ad77303cd9::t_a96d0cdc9ce433 11-12,40-41,118,120,126,136-138,141-142,151-177,184-192,217-227
+scripts/tests/active_combat_integration_test.gd
+  s_67668443088b27::t_b50351cd576adb 94
+scripts/tests/auto_cast_live_review.gd
+  s_25b361477be27a::t_9f5a6969387b34 1-435
+scripts/tests/auto_cast_live_review.gd.uid
+  s_25b361477be27a::t_116effa8f49463 1
+scripts/tests/auto_mobility_test.gd
+  s_25b361477be27a::t_babae855c28999 1-370
+scripts/tests/auto_mobility_test.gd.uid
+  s_25b361477be27a::t_7b23b16c902889 1
+scripts/tests/battle_settings_test.gd
+  s_25b361477be27a::t_e5dac26933cbdc 94,162,168,185,194
+scripts/tests/cast_policy_test_support.gd
+  s_25b361477be27a::t_f409b6f5b3c032 1-8
+scripts/tests/combat_guide_test.gd
+  s_25b361477be27a::t_ba53d8b5cb320a 1-187
+scripts/tests/combat_guide_test.gd.uid
+  s_bd4b72de95f508::t_52c4b1b85b83c5 1
+scripts/tests/finance_scene_regression_test.gd
+  s_bd4b72de95f508::t_192bed58222515 130
+scripts/tests/goblin_trade_expansion_test.gd
+  s_bd4b72de95f508::t_1e71cb3c2876ad 1-289
+scripts/tests/goblin_trade_test.gd
+  s_bd4b72de95f508::t_484678a5ae6446 72-73,76
+scripts/tests/humanity_economy_test.gd
+  s_bd4b72de95f508::t_c4c5ab784a6be9 182
+scripts/tests/keyboard_mouse_cast_test.gd
+  s_25b361477be27a::t_10d983f67a2777 43,60,83-85,128,138,160,207,211-212,220-251
+scripts/tests/mobility_weapon_integration_test.gd
+  s_86d4bdded9d3ba::t_dddfb0ff530920 101,292,295,299
+scripts/tests/wheelchair_mode_test.gd
+  s_92c0598951b137::t_5ae76531bca6e9 7,24,34,58,85-86,97,128,142,153,155-156,191,196,248,255
+scripts/tools/encode_auto_cast_review.py
+  s_25b361477be27a::t_6d7d30f632d222 1-116
+scripts/tools/validate_goblin_trade_expansion.py
+  s_2441ad77303cd9::t_6f5add391e872e 1-59
+scripts/ui/active_combat_weapon_bar.gd
+  s_50bd94cb5a89d7::t_57d09e0cf62c25 7,26,44,85-88,123-124,137-138,163-168,174-180
+scripts/ui/battle_hud.gd
+  s_bd4b72de95f508::t_0eb557a9802322 428,431,433,435,662-663
+scripts/ui/battle_utility_overlay.gd
+  s_b26ecb89787365::t_7610390ae02a7d 101-104,260-261
+scripts/ui/combat_guide_overlay.gd
+  s_25b361477be27a::t_f4a0a50ef0215d 1-246
+scripts/ui/combat_guide_overlay.gd.uid
+  s_25b361477be27a::t_fb82ed99c7de7b 1
+scripts/ui/esc_overlay.gd
+  s_25b361477be27a::t_4dcdcfdae0fe1d 146
+scripts/ui/finance_popup.gd
+  s_1f3b9a337a97f0::t_0720baa35ca091 207
+scripts/ui/game_settings_panel.gd
+  s_92c0598951b137::t_660573f7e77b3f 7,31,62-63,75,94,138-139,154,263,285-294,360,364-365
+scripts/ui/goblin_trade_presentation.gd
+  s_25b361477be27a::t_e39643b317384c 24,76-79,114-116,171-174,196-205
+scripts/ui/goblin_trade_relic_terms.gd
+  s_bd4b72de95f508::t_d30450a8a59744 1-61
+scripts/ui/goblin_trade_relic_terms.gd.uid
+  s_25b361477be27a::t_2016b90c3ebd3b 1
+scripts/ui/weapon_cast_mode_icon.gd
+  s_25b361477be27a::t_69e123c834800c 1-77
+scripts/ui/weapon_cast_mode_icon.gd.uid
+  s_25b361477be27a::t_0c21253725e59f 1
+scripts/ui/weapon_strip.gd
+  s_25b361477be27a::t_43f136b4f12907 5,9-11,29-39,50,55,73-76,78-81,90,105-110,113-128,201-205
+scripts/weapons/active_weapon_casting.gd
+  s_92c0598951b137::t_e50c3eac83366f 6-7,21,24-25,31,112,117,119,133
+scripts/weapons/auto_mobility_planner.gd
+  s_25b361477be27a::t_eb55531e6512c9 1-223
+scripts/weapons/mobility_weapon_runtime.gd
+  s_86d4bdded9d3ba::t_65f89c13faf98f 14,16-17,30-31,36,122
+scripts/weapons/weapon_loadout.gd
+  s_25b361477be27a::t_77563b44b38778 264-265
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "57abab0a24a32f0b777ff88c808cd6e455ce37c8",
+  "prompts": {},
+  "sessions": {
+    "s_1f3b9a337a97f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12107-acb7-7b30-a3b8-ebd48e88689d",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25b361477be27a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11a3f-76c5-78b2-affc-5db5f3e6e433",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_50bd94cb5a89d7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047a-556b-7c10-bf65-66ac4e360e27",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_52aa659d0bafcd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11e76-d9ec-7683-aeb3-75650390c008",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_67668443088b27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d4-9f2a-7521-a8c7-ee0846ad1b45",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_86d4bdded9d3ba": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115eb-bcb1-7042-b25b-c49135faf6fe",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b26ecb89787365": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-f6fe-7830-b9f5-0fdda1c11c07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bd4b72de95f508": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11b7e-b5be-7cc1-83b4-7f5ccaada02f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d47e6bf650c025": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a115a8-3ff2-7c31-9433-159e52a97086",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
