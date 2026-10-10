@@ -1,0 +1,407 @@
+artifacts/README.md
+  s_2441ad77303cd9::t_93e91381a07fb7 1,3,5,7-9,11,13,15
+artifacts/editable/index.json
+  s_92c0598951b137::t_0e4e6888e6444b 615,617-618,620,624,626-627,634,636-637,644,646-647,649-650,654,656-657,664,666-667,669-670,674,676-677,1233,1242,1251,1260,1269,1278,1287,1296,1305,1314,1323,1332,1341,1350,1359,1368,1377,1386,1395,1404,1413,1422,1431,1440,1449,1458,1467,1476,1485,1494,1503,1512,1521,1530,1539,1548,1557,1566,1575,1584,1593,1602,1611,1620,1629,1638,1647,1656,1665,1674,1683,1692,1701,1710,1719,1728,1737,1746,1755,1764,1773,1782,1791,1800,1809,1818,1827,1836,1845,1854,1863,1872,1881,1890,1899,1908,1917,1926,1935,1944,1953,1962,1971,1980,1998,2007,2016,2025,2034
+artifacts/sources/README.md
+  s_67668443088b27::t_34a078cf1b3bed 1-13
+artifacts/sources/index.json
+  s_e2da0653a2c9ad::t_06958936049760 171-408
+assets/sprites/enemies/combat/art_source_manifest.json
+  s_67668443088b27::t_e38b7882e93667 2-3,21-27,30-45,48-49,54-55,58,60-61,64,66-67,70,72-73,76,78-79,82,84-85,88,90-91,94-121,124-127
+assets/sprites/enemies/combat/frames/grub_move_01-128-final.pxg
+  s_67668443088b27::t_9dd82daf3d0c2d 1-149
+assets/sprites/enemies/combat/frames/grub_move_02-128-final.pxg
+  s_67668443088b27::t_5469591e107b7a 1,4-19,40-139
+assets/sprites/enemies/combat/frames/grub_move_03-128-final.pxg
+  s_67668443088b27::t_0c940b4e393761 1,4-20,33-140
+assets/sprites/enemies/combat/frames/grub_move_04-128-final.pxg
+  s_67668443088b27::t_0a64fc6a8b7336 1,4-19,39-139
+assets/sprites/enemies/combat/frames/grub_move_05-128-final.pxg
+  s_67668443088b27::t_9c300bcbf69f17 1,4-19,32-139
+assets/sprites/enemies/combat/frames/grub_move_06-128-final.pxg
+  s_67668443088b27::t_0cdd666e8331fb 1,4-19,33-139
+assets/sprites/enemies/combat/frames/grub_move_07-128-final.pxg
+  s_67668443088b27::t_e31828ab060dc3 1,4-19,34-139
+assets/sprites/enemies/iron_knight/art_source_manifest.json
+  s_67668443088b27::t_b1114e08c18088 2-3,6,9-15,18-24,27-28,31,35-36,39-55,57-228,230,232-247,249-252
+assets/sprites/enemies/iron_knight/frames/attack-01-256-clean.pxg
+  s_67668443088b27::t_1fed2140c13076 1-275
+assets/sprites/enemies/iron_knight/frames/attack-01.pal
+  s_67668443088b27::t_83e70522ff06de 1-16
+assets/sprites/enemies/iron_knight/frames/attack-02-256-clean.pxg
+  s_67668443088b27::t_241b652483c951 1-276
+assets/sprites/enemies/iron_knight/frames/attack-02.pal
+  s_67668443088b27::t_33a04736d2bb5b 1-16
+assets/sprites/enemies/iron_knight/frames/attack-03-256-clean.pxg
+  s_67668443088b27::t_fd078cc0c36189 1-2,4-18,20-275
+assets/sprites/enemies/iron_knight/frames/attack-03.pal
+  s_67668443088b27::t_b0fdee5c2a2e31 1-16
+assets/sprites/enemies/iron_knight/frames/attack-04-256-clean.pxg
+  s_67668443088b27::t_fa3c889f85f917 1-275
+assets/sprites/enemies/iron_knight/frames/attack-04.pal
+  s_67668443088b27::t_8c65443e4130a7 1-16
+assets/sprites/enemies/iron_knight/frames/attack-05-256-clean.pxg
+  s_67668443088b27::t_ec77cd74bdd69b 1-2,4-18,20-275
+assets/sprites/enemies/iron_knight/frames/attack-05.pal
+  s_67668443088b27::t_584157b695519c 1-16
+assets/sprites/enemies/iron_knight/frames/attack-06-256-clean.pxg
+  s_67668443088b27::t_b5b9042d00b325 1-276
+assets/sprites/enemies/iron_knight/frames/attack-06.pal
+  s_67668443088b27::t_48501ac4e23149 1-16
+assets/sprites/enemies/iron_knight/frames/attack-07-256-clean.pxg
+  s_67668443088b27::t_ccb111af2e9cfd 1-276
+assets/sprites/enemies/iron_knight/frames/attack-07.pal
+  s_67668443088b27::t_bb3eb24d5e4382 1-16
+assets/sprites/enemies/iron_knight/frames/attack-08-256-clean.pxg
+  s_67668443088b27::t_c66329ead25d29 1-2,4-19,21-276
+assets/sprites/enemies/iron_knight/frames/attack-08.pal
+  s_67668443088b27::t_50ebc91bb5c372 1-16
+assets/sprites/enemies/iron_knight/frames/attack-09-256-clean.pxg
+  s_67668443088b27::t_e43e47399b4aa2 1-276
+assets/sprites/enemies/iron_knight/frames/attack-09.pal
+  s_67668443088b27::t_2cfce50c738594 1-16
+assets/sprites/enemies/iron_knight/frames/attack-10-256-clean.pxg
+  s_67668443088b27::t_63f16af11caa30 1-275
+assets/sprites/enemies/iron_knight/frames/attack-10.pal
+  s_67668443088b27::t_6add98a6fd0a0c 1-16
+assets/sprites/enemies/iron_knight/frames/knight-walk-01.pal
+  s_67668443088b27::t_f6aad04d13db36 1-16
+assets/sprites/enemies/iron_knight/frames/move-01-256-clean.pxg
+  s_67668443088b27::t_39716c87e3709f 1-275
+assets/sprites/enemies/iron_knight/frames/move-02-256-clean.pxg
+  s_67668443088b27::t_ddfc1468b42285 1-275
+assets/sprites/enemies/iron_knight/frames/move-02.pal
+  s_67668443088b27::t_112741ba3d0240 1-16
+assets/sprites/enemies/iron_knight/frames/move-03-256-clean.pxg
+  s_67668443088b27::t_eb3baf4edcbd10 1-276
+assets/sprites/enemies/iron_knight/frames/move-03.pal
+  s_67668443088b27::t_71e6cf658d9803 1-16
+assets/sprites/enemies/iron_knight/frames/move-04-256-clean.pxg
+  s_67668443088b27::t_545eeeda776a67 1-276
+assets/sprites/enemies/iron_knight/frames/move-04.pal
+  s_67668443088b27::t_c838a9a045c609 1-16
+assets/sprites/enemies/iron_knight/frames/move-05-256-clean.pxg
+  s_67668443088b27::t_fecbb77f8562a7 1-276
+assets/sprites/enemies/iron_knight/frames/move-05.pal
+  s_67668443088b27::t_6e9d5c9728e1a7 1-16
+assets/sprites/enemies/iron_knight/frames/move-06-256-clean.pxg
+  s_67668443088b27::t_ed7ac53de4ec18 1-275
+assets/sprites/enemies/iron_knight/frames/move-06.pal
+  s_67668443088b27::t_39341767458fb4 1-16
+assets/sprites/enemies/iron_knight/frames/move-07-256-clean.pxg
+  s_67668443088b27::t_f7f5a26eb07435 1-276
+assets/sprites/enemies/iron_knight/frames/move-07.pal
+  s_67668443088b27::t_64cec707667331 1-16
+assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres
+  s_b11938437a28ec::t_b6066d2199f7df 1,3-7,11,15,19,23,27,31,35,37-39,43,47,51,55,59,63,67-79,83-86,90-99,101-114,116-127
+assets/sprites/enemies/iron_knight/manifest.json
+  s_67668443088b27::t_48774491978d16 3-4,7-8,18-19,24,37-50
+assets/ui/character_select/asset_manifest.json
+  s_4906a797557d74::t_69c397bc0e69ed 2-11,15-16,18,22-23,25-32,36-37,39,71-72,74,78-79,81,83-87
+assets/ui/character_select/character_shadow.png.import
+  s_67668443088b27::t_05a2a35acd79f6 1-40
+assets/ui/combat/move_destination.json
+  s_50bd94cb5a89d7::t_e9578cfeefe7d7 1-61
+assets/ui/combat/move_destination.png.import
+  s_50bd94cb5a89d7::t_203b77a4132074 1-40
+combat_active_control_refactor_plan.md
+  s_25b361477be27a::t_ca412e28ee2e81 1-454
+data_config/weapons.json
+  s_e6af46337ce4b6::t_6bb55d02600046 250
+docs/asset/active_combat_art_review.md
+  s_50bd94cb5a89d7::t_8ffacedeeae27b 1-62
+docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md
+  s_67668443088b27::t_5af1499986d687 1-11
+docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md
+  s_67668443088b27::t_dd6616316dfbb5 1-21
+docs/asset/asset_checklist_summary.md
+  s_ef204514f35f32::t_edcc5b33394d6e 10,127-133
+docs/asset/asset_rules_summary.md
+  s_ef204514f35f32::t_fda5954a7947ef 165,182
+docs/asset/iron_knight_integration.md
+  s_92c0598951b137::t_da7283c26495e1 3,7,9,15,35
+docs/performance/fire_v3_optimization_plan.md
+  s_50bd94cb5a89d7::t_125d09fc15e7d3 1-105
+docs/performance/grass_batch_v2_installation.md
+  s_8b90c5f66b34ca::t_5e86accf408d7f 1-34
+docs/performance/runtime_cache_and_grass_review.md
+  s_50bd94cb5a89d7::t_372c83d128f93d 1-69
+scenes/enemy/elite_rusher.tscn
+  s_4eb3b3d146ed3d::t_2cdb9f4ac5183b 18-19
+scenes/enemy/mutated_grub.tscn
+  s_67668443088b27::t_ec5ae589450dc1 8,16,19,23-24
+scenes/tests/active_attack_revision_test.tscn
+  s_50bd94cb5a89d7::t_4792cdd0df7179 1-6
+scenes/tests/active_combat_art_review.tscn
+  s_50bd94cb5a89d7::t_a08dd14d4375a6 1-6
+scenes/tests/combat_optimization_test.tscn
+  s_8b90c5f66b34ca::t_4376f898aa897f 1-4
+scenes/tests/fire_pixel_live_review.tscn
+  s_8b90c5f66b34ca::t_cbdd2c00c2e01c 1-6
+scenes/tests/fire_pixel_test.tscn
+  s_8b90c5f66b34ca::t_b3a3ec84e867d4 1-6
+scenes/tests/lightning_pixel_test.tscn
+  s_8b90c5f66b34ca::t_d473081be9fd96 1-6
+scenes/tests/meadow_grass_batch_test.tscn
+  s_8b90c5f66b34ca::t_01e9f3d7b9f44c 1-6
+scenes/tests/runtime_visual_cache_test.tscn
+  s_8b90c5f66b34ca::t_759d847667f7e3 1-6
+scripts/battle/attack_footprint.gd
+  s_50bd94cb5a89d7::t_e1ad0446145690 1-52
+scripts/battle/attack_footprint.gd.uid
+  s_8b90c5f66b34ca::t_eac73f06ea0d54 1
+scripts/battle/meadow_battle_backdrop.gd
+  s_ef204514f35f32::t_16ec585b156e15 5-6,47,83,125-130,296-331
+scripts/battle/meadow_battle_horizon.gd
+  s_ef204514f35f32::t_e6f8e4d1e1ae81 88-89
+scripts/battle/meadow_grass_bands.gd
+  s_8b90c5f66b34ca::t_a31cf878af9ca8 1-153
+scripts/battle/meadow_grass_bands.gd.uid
+  s_8b90c5f66b34ca::t_6216ddbbb26f20 1
+scripts/battle/meadow_grass_batch.gd
+  s_8b90c5f66b34ca::t_d8fb92363607fa 1-66
+scripts/battle/meadow_grass_batch.gd.uid
+  s_8b90c5f66b34ca::t_7a26784da29ca4 1
+scripts/battle/meadow_grass_rows.gd
+  s_8b90c5f66b34ca::t_af0b26a0e31d84 1-211
+scripts/battle/meadow_grass_rows.gd.uid
+  s_8b90c5f66b34ca::t_54e4c350aa90e5 1
+scripts/battle/move_destination_marker.gd
+  s_50bd94cb5a89d7::t_dfa638382d1cd6 1-42
+scripts/battle/move_destination_marker.gd.uid
+  s_50bd94cb5a89d7::t_7dee281b167c3f 1
+scripts/battle/weapon_attack_indicator.gd
+  s_50bd94cb5a89d7::t_6362266530e48a 1-155
+scripts/battle/weapon_attack_indicator.gd.uid
+  s_50bd94cb5a89d7::t_36526b38b4dc79 1
+scripts/data/stat_definitions.gd
+  s_e6af46337ce4b6::t_b5464bb66a78d4 383,385-388
+scripts/effects/enemy_status_visual.gd
+  s_8b90c5f66b34ca::t_6f6460baf8aa8b 3,7,9,14-15,30-33,37-39,45-55
+scripts/effects/fire_patch.gd
+  s_8b90c5f66b34ca::t_e6326d3ef7bd9a 5,24,74-75,137-138,146-147,170-182
+scripts/effects/fire_seed.gd
+  s_8b90c5f66b34ca::t_c8803ecda2f80f 4,48-53
+scripts/effects/lightning_particle_effect.gd
+  s_faad774b6caa3d::t_900ebc284ef672 10-16,42,309-317,320-321,323-350,372-373,433-446,449,454
+scripts/effects/lightning_pixel_bolt.gd
+  s_8b90c5f66b34ca::t_5598e1545324cf 1-115
+scripts/effects/particle_light_field.gd
+  s_67668443088b27::t_d5fb1c7f13afe3 5-8,70-73,95-126
+scripts/effects/pixel_fire_visual.gd
+  s_8b90c5f66b34ca::t_8dd52de2e59fd2 1-184
+scripts/enemies/enemy_controller.gd
+  s_faad774b6caa3d::t_1ff4f09a676f2f 55-59,65-72,74-77,79-82,84-87,90-97,106-108,189,350-362,659-662,716,737-742,745-754
+scripts/modifiers/modifier_stack.gd
+  s_4eb3b3d146ed3d::t_7f447e78dec7a1 4-18,22,27,42,70,77,84,91,105-114,126,131,150,154,160
+scripts/tests/active_attack_revision_test.gd
+  s_50bd94cb5a89d7::t_e003cd531898e7 1-120
+scripts/tests/active_attack_revision_test.gd.uid
+  s_8b90c5f66b34ca::t_312289235c44cb 1
+scripts/tests/active_combat_art_review.gd
+  s_50bd94cb5a89d7::t_52becca1dff648 1-649
+scripts/tests/active_combat_art_review.gd.uid
+  s_50bd94cb5a89d7::t_2aa2709dd0a71c 1
+scripts/tests/character_select_view_test.gd
+  s_1f3b9a337a97f0::t_831ed8014e6564 71-73,75,77-83,86,113,122,154,189-215
+scripts/tests/combat_optimization_test.gd
+  s_8b90c5f66b34ca::t_8f75055ab7dacc 1-173
+scripts/tests/fire_pixel_live_review.gd
+  s_8b90c5f66b34ca::t_d55bb935dea197 1-66
+scripts/tests/fire_pixel_review_base.gd
+  s_8b90c5f66b34ca::t_0239e5a88904dd 1-244
+scripts/tests/fire_pixel_test.gd
+  s_8b90c5f66b34ca::t_53d93d85faa864 1-116
+scripts/tests/iron_knight_test.gd
+  s_92c0598951b137::t_4b25a947bc00c8 55,59-62,67-70,73,78
+scripts/tests/lightning_pixel_test.gd
+  s_8b90c5f66b34ca::t_74c0a8a7fc2153 1-127
+scripts/tests/meadow_grass_batch_test.gd
+  s_8b90c5f66b34ca::t_2ddf42d2eb8483 1-83
+scripts/tests/meadow_grass_batch_test.gd.uid
+  s_8b90c5f66b34ca::t_3b5ce0fd370818 1
+scripts/tests/meteor_flail_test.gd
+  s_0362316acdd536::t_25f230fba133fa 92-93,103,106-107,110
+scripts/tests/runtime_visual_cache_test.gd
+  s_67668443088b27::t_7776dbc12e37db 1-104
+scripts/tests/tome_purse_weapon_test.gd
+  s_0362316acdd536::t_b3c8e35d01b167 79,258-264,289,306
+scripts/tools/ASSET_INSTALLERS.md
+  s_e2da0653a2c9ad::t_d2323f9ca75896 3
+scripts/tools/install_combat_picxel_assets.py
+  s_67668443088b27::t_70a9d65e289d11 19-20,22,66,107
+scripts/tools/install_move_destination.py
+  s_50bd94cb5a89d7::t_421c84a1c80436 1-31
+scripts/tools/package_active_combat_art.py
+  s_50bd94cb5a89d7::t_cead86e8d3f7a1 1-118
+scripts/ui/active_combat_weapon_bar.gd
+  s_50bd94cb5a89d7::t_b79331f22776e1 1-100
+scripts/ui/active_combat_weapon_bar.gd.uid
+  s_50bd94cb5a89d7::t_509a46b88ead2f 1
+scripts/ui/character_select_view.gd
+  s_1f3b9a337a97f0::t_7ee44283c09f8b 3,9-16,21,38-39,54-56,68-72,74-76,78-80,82-83,85-86,90,107-109,113-115,124,126,129,132-138,145-146,148-149,151,154-155,159,165-166,169,195,200,202,205-207,220,225,233,237,239-240,242-244,246,254-292,299,303,305-306,311,316,320,326,329-342,416,430-432,436-441,443-444,474-506,532-533
+scripts/ui/finance_scene_layout.gd
+  s_92c0598951b137::t_36526c6e54c808 28-29,38-40,43-44,46,48,51-53
+scripts/weapons/copper_lamp.gd
+  s_3dbef1320954a3::t_c4025897fac048 16-18,47-48,58,126,146,150-168
+scripts/weapons/grenade_projectile.gd
+  s_b11938437a28ec::t_931e730657eaa3 18,74-76,168,177-178,180
+scripts/weapons/meteor_flail.gd
+  s_faad774b6caa3d::t_82aaa9e05759f9 77,84,103-105,117-121,124-129,137,140,153,193-204
+scripts/weapons/ritual_domain.gd
+  s_faad774b6caa3d::t_ebba5d271c2e53 11-12,21-25,28,38-44,55-56,59,61-75,81-82,86,99-100
+shaders/battle/meadow/grass_bands.gdshader
+  s_8b90c5f66b34ca::t_6d7c2afe1f3936 1-27
+shaders/battle/meadow/grass_bands.gdshader.uid
+  s_8b90c5f66b34ca::t_46c1b7a3f9cf00 1
+shaders/battle/meadow/grass_rows.gdshader
+  s_8b90c5f66b34ca::t_ce1776934c23b9 1-15
+shaders/battle/meadow/grass_rows.gdshader.uid
+  s_8b90c5f66b34ca::t_5d6698ea4d889c 1
+shaders/effects/pixel_fire.gdshader
+  s_8b90c5f66b34ca::t_fee862dc607ac0 1-59
+shaders/ui/attack_indicator_clearance.gdshader
+  s_50bd94cb5a89d7::t_9f06fccfb3ffc4 1-15
+shaders/ui/attack_indicator_clearance.gdshader.uid
+  s_8b90c5f66b34ca::t_2f8f1f0b5ddb33 1
+shaders/ui/weapon_cooldown.gdshader
+  s_4eb3b3d146ed3d::t_a505c454ef4fca 1-10
+shaders/ui/weapon_cooldown.gdshader.uid
+  s_50bd94cb5a89d7::t_b557f212119d3f 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4849b4b698736e954c6b2521cca46e581162f64f",
+  "prompts": {},
+  "sessions": {
+    "s_0362316acdd536": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11430-6663-7213-bf57-c2d001b916d5",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_1f3b9a337a97f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12107-acb7-7b30-a3b8-ebd48e88689d",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_25b361477be27a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11a3f-76c5-78b2-affc-5db5f3e6e433",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_3dbef1320954a3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eaf0-a03b-77a3-a543-fb235fa92c89",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_4906a797557d74": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d7-fa44-7431-932d-0e2d74d950d1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_4eb3b3d146ed3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11121-aecd-7511-8d21-1621942cc710",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_50bd94cb5a89d7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047a-556b-7c10-bf65-66ac4e360e27",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_67668443088b27": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a104d4-9f2a-7521-a8c7-ee0846ad1b45",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8b90c5f66b34ca": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1047b-584e-7ad2-8141-68611fd59975",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b11938437a28ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9a0-4c06-7ec2-ad8d-66417a173bbf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e2da0653a2c9ad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11691-2210-7820-9fe5-fbc7b5e578e3",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e6af46337ce4b6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1238f-df91-7182-a348-a9b2e2a1fb4e",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ef204514f35f32": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116f8-a36c-7cc3-8f69-cfd399781885",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_faad774b6caa3d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12388-2127-79b2-9821-95230d5905dc",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
