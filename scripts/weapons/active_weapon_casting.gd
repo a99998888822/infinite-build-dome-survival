@@ -8,7 +8,7 @@ var manual_aiming := false
 
 func state_for(weapon: WeaponInstance) -> Dictionary:
 	if not states.has(weapon.instance_id):
-		states[weapon.instance_id] = {"executing": false, "remaining": 0.0, "total": 0.0, "tail": 0.0, "body": null}
+		states[weapon.instance_id] = {"executing": false, "remaining": 0.0, "total": 0.0, "tail": 0.0, "body": null, "feedback_pending": false}
 	return states[weapon.instance_id]
 
 func can_cast(weapon: WeaponInstance) -> bool:
@@ -89,6 +89,9 @@ func tick(delta: float) -> void:
 				_finish(weapon)
 		elif not weapon.is_star_tome():
 			state.remaining = maxf(0, float(state.remaining) - delta)
+		if bool(state.get("feedback_pending", false)) and not state.executing and float(state.remaining) <= 0.0:
+			state.feedback_pending = false
+			weapon.cooldown_ready_changed.emit(true)
 
 func _finish(weapon: WeaponInstance) -> void:
 	var state := state_for(weapon)
@@ -196,4 +199,6 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 		state.remaining = state.total
 	state.body = weakref(body) if body != null else null
 	state.tail = float(weapon.weapon_data.get("active_recovery_ms", 180)) / 1000.0 if body == null else 0.0
+	state.feedback_pending = true
+	source.cooldown_ready_changed.emit(false)
 	return true

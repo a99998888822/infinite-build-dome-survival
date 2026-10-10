@@ -1,4 +1,4 @@
-"""Draw custom English lettering and compose a cover from project-owned art.
+"""Maintain the installed English menu title and its drawing source.
 
 No model/API image generation or installed skill is used by this script.
 The letter contours below are drawn specifically for this title.
@@ -17,7 +17,6 @@ from PIL import Image, ImageDraw, ImageFilter, PngImagePlugin
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 TITLE = "Goblin's Guide to Dungeons"
-BACKGROUND = ROOT / 'assets/ui/main_menu/bg_main_menu.png'
 ORIGINAL_TITLE = ROOT / 'assets/ui/main_menu/title_main_menu.png'
 
 # Polygon contours in a 100-unit cap-height drawing space; holes follow outers.
@@ -178,59 +177,19 @@ def build_title() -> Image.Image:
     save_png(canvas, HERE / 'title_en.png', 'Standalone English gold lettering, transparent RGBA master.')
     pixel_width = 480
     pixel = canvas.resize((pixel_width, round(canvas.height * pixel_width / canvas.width)), Image.Resampling.NEAREST)
-    save_png(pixel, HERE / 'title_en_pixel_480.png', '480-pixel-wide optional menu candidate. Nearest-neighbor sampling; not installed.')
+    save_png(pixel, HERE / 'title_en_pixel_480.png', '480-pixel-wide installed English menu title. Nearest-neighbor sampling.')
     preview = Image.new('RGBA', (1760, height + 64), '#211d29')
     preview.alpha_composite(canvas, (0, 32))
     save_png(preview.convert('RGB'), HERE / 'title_en_preview.png', 'Title on a dark preview background; use title_en.png for transparency.')
     return canvas
 
 
-def square_base() -> Image.Image:
-    source = Image.open(BACKGROUND).convert('RGB')
-    # Preserve the actual goblin, his complete hat and hands, and the round vault.
-    side = min(source.size)
-    crop = source.crop((source.width - side, 0, source.width, side))
-    # Shade at the original pixel resolution before any nearest-neighbor scaling.
-    pixels = np.asarray(crop).astype(np.float32) / 255.0
-    y, x = np.mgrid[0:side, 0:side]
-    # Quiet the upper wall for gold lettering, with a continuous transition.
-    t = np.clip((y / side - 0.14) / 0.35, 0, 1)
-    top_shade = (1 - t * t * (3 - 2 * t)) * 0.66
-    tint = np.array([24, 19, 32], dtype=np.float32) / 255
-    pixels = pixels * (1 - top_shade[..., None]) + tint * top_shade[..., None]
-    # A restrained edge falloff keeps face and lettering central.
-    radius = ((x / side - 0.50) / 0.73) ** 2 + ((y / side - 0.53) / 0.85) ** 2
-    vignette = np.clip((radius - 0.42) * 0.15, 0, 0.2)
-    pixels *= (1 - vignette[..., None])
-    pixels = np.clip(pixels * 255, 0, 255).astype(np.uint8)
-    return Image.fromarray(pixels).convert('RGBA')
-
-
-def build_cover(title: Image.Image) -> Image.Image:
-    background = square_base()
-    # Save the independent image layer for subsequent language localizations.
-    save_png(background.convert('RGB').resize((2048, 2048), Image.Resampling.NEAREST),
-             HERE / 'cover_background_pixel_2048.png', 'Text-free square crop of assets/ui/main_menu/bg_main_menu.png, scaled with nearest-neighbor sampling.')
-    for edge in (2048, 1024, 512, 256):
-        # Composite each export independently so title filtering never blurs the background.
-        cover = background.resize((edge, edge), Image.Resampling.NEAREST)
-        logo_width = round(910 * edge / 1024)
-        logo = title.resize((logo_width, round(title.height * logo_width / title.width)), Image.Resampling.LANCZOS)
-        cover.alpha_composite(logo, ((edge - logo.width) // 2, round(49 * edge / 1024)))
-        result = cover.convert('RGB')
-        save_png(result, HERE / f'cover_en_pixel_{edge}.png', f'{edge} x {edge} English cover using the production pixel-art menu background.')
-        if edge == 2048:
-            master = result
-    return master
-
-
 def main() -> None:
-    inputs = {str(p.relative_to(ROOT)): sha256(p) for p in (BACKGROUND, ORIGINAL_TITLE)}
+    inputs = {str(p.relative_to(ROOT)): sha256(p) for p in (ORIGINAL_TITLE,)}
     title = Image.open(HERE / 'title_en.png').convert('RGBA') if (HERE / 'title_en.png').is_file() else build_title()
-    cover = build_cover(title)
     outputs = {}
     for path in sorted(HERE.glob('*.png')):
-        if not (path.name.startswith('title_en') or '_pixel_' in path.name):
+        if not (path.name.startswith('title_en')):
             continue
         with Image.open(path) as im:
             im.verify()
@@ -241,22 +200,21 @@ def main() -> None:
                 record['alpha_values'] = sorted(int(v) for v in np.unique(alpha))
                 record['content_bounds'] = list(im.getbbox())
             outputs[path.name] = record
-    assert inputs == {str(p.relative_to(ROOT)): sha256(p) for p in (BACKGROUND, ORIGINAL_TITLE)}
-    assert cover.size == (2048, 2048)
+    assert inputs == {str(p.relative_to(ROOT)): sha256(p) for p in (ORIGINAL_TITLE,)}
     manifest = {
         'title': TITLE,
         'locale': 'en',
-        'status': 'review_candidate',
+        'status': 'installed_title_source',
         'method': 'Custom hand-defined glyph polygons, flat-color brush facets, local raster drawing and composition.',
         'image_generation_api_used': False,
-        'background_method': 'Crop of the production pixel-art assets/ui/main_menu/bg_main_menu.png. Color adjustments at native resolution; nearest-neighbor background scaling for every export.',
         'source_assets_unchanged': True,
-        'runtime_integration': False,
+        'runtime_integration': True,
+        'runtime_asset': 'assets/ui/main_menu/title_main_menu_en.png',
         'inputs': inputs,
         'outputs': outputs,
     }
     (HERE / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'title_size': title.size, 'cover_size': cover.size, 'outputs': list(outputs)}, indent=2))
+    print(json.dumps({'title_size': title.size, 'outputs': list(outputs)}, indent=2))
 
 
 if __name__ == '__main__':

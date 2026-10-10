@@ -10,6 +10,7 @@ const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_
 const PIXEL_BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 const HIT_SPRITE_BURST = preload("res://scripts/effects/lightning_hit_sprite_burst.gd")
 const GROUND_ARC_BURST = preload("res://scripts/effects/lightning_ground_arc_burst.gd")
+const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
 
 const STEP_SECONDS := 0.08
 const FLASH_SECONDS := STEP_SECONDS * 2.0
@@ -52,6 +53,7 @@ var _ground_strike_position: Vector2 = Vector2.ZERO
 var _ground_strike_impact_age: float = -1.0
 var _ground_strike_damage_applied: bool = false
 var _audio_impact: RefCounted = null
+var _thunder_fire_text_shown := false
 
 
 func _exit_tree() -> void:
@@ -153,9 +155,11 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 		"hit_position": current.global_position,
 		"source_id": _damage_event.source_weapon_id,
 		"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+		"control_power": _get_cached_parameter("control_power", 0.0),
 		"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 	})
 	if bool(reaction_result.get("burning_detonated", false)):
+		_show_thunder_fire_text(current.global_position)
 		AudioManager.mark_combat_reaction("thunder_fire")
 		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
@@ -233,6 +237,7 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			"hit_position": enemy.global_position,
 			"source_id": _damage_event.source_weapon_id,
 			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+			"control_power": _get_cached_parameter("control_power", 0.0),
 			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 		})
 		var dealt_damage := enemy.take_damage(
@@ -244,11 +249,19 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		if dealt_damage > 0:
 			_emit_hit_burst(enemy.global_position, hit_direction)
 		if bool(reaction_result.get("burning_detonated", false)):
+			_show_thunder_fire_text(ground_position)
 			AudioManager.mark_combat_reaction("thunder_fire")
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 		if bool(reaction_result.get("extra_trigger", false)):
-			# Keep the extra hit; its only additional visual is the short blue cue.
+			# Preserve the extra hit independently of reaction visuals and review text.
 			enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
+
+
+func _show_thunder_fire_text(at: Vector2) -> void:
+	# One name per ground strike or chain instance, regardless of victim count.
+	if _thunder_fire_text_shown: return
+	_thunder_fire_text_shown = true
+	REACTION_TEXT.spawn(_parent_root, "thunder_fire", at)
 
 
 func _schedule_next(origin: Vector2) -> void:

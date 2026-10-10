@@ -1,0 +1,351 @@
+{
+	"fps": 20,
+	"production_scene": "res://scenes/core/game_root.tscn",
+	"samples": [
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.0,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.05,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.1,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.15,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.2,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.25,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.3,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.35,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.4,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.45,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.5,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.55,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.6,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.65,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.7,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.75,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.8,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.85,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.9,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 0.95,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.0,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.05,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.1,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.15,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.2,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.25,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.3,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.35,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.4,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.45,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.5,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.55,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.6,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.65,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.7,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.75,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.8,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.85,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.9,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": true,
+			"time": 1.95,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": true
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.0,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.05,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.1,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.15,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.2,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.25,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.3,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.35,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		},
+		{
+			"knight_frame": "res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres::idle_0",
+			"knight_visible": false,
+			"time": 2.4,
+			"wolf_frame": "res://assets/sprites/enemies/underworld_wolf/wolf_sprite_frames.tres::idle_0",
+			"wolf_visible": false
+		}
+	],
+	"scripted_review": true,
+	"trigger": "apply_slow(2.0, 0.5, 0.0)"
+}

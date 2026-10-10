@@ -1,57 +1,16 @@
 {
   "title": "Goblin's Guide to Dungeons",
   "locale": "en",
-  "status": "review_candidate",
+  "status": "installed_title_source",
   "method": "Custom hand-defined glyph polygons, flat-color brush facets, local raster drawing and composition.",
   "image_generation_api_used": false,
-  "background_method": "Crop of the production pixel-art assets/ui/main_menu/bg_main_menu.png. Color adjustments at native resolution; nearest-neighbor background scaling for every export.",
   "source_assets_unchanged": true,
-  "runtime_integration": false,
+  "runtime_integration": true,
+  "runtime_asset": "assets/ui/main_menu/title_main_menu_en.png",
   "inputs": {
-    "assets\\ui\\main_menu\\bg_main_menu.png": "5b4ae5d51a2edf9bbe1e2745fc66cfe30db0270c209b6db4530ff94bbd590ae0",
     "assets\\ui\\main_menu\\title_main_menu.png": "baac875bb62d6549b7ef9a9c6781c476e69410bd5d5d88deafb05835abfd8ca6"
   },
   "outputs": {
-    "cover_background_pixel_2048.png": {
-      "size": [
-        2048,
-        2048
-      ],
-      "mode": "RGB",
-      "sha256": "d2b9de49e4245c719ae7b2ed74b50204a94be87711de7fe6b0ef7ec1bac0cb0b"
-    },
-    "cover_en_pixel_1024.png": {
-      "size": [
-        1024,
-        1024
-      ],
-      "mode": "RGB",
-      "sha256": "caafe6655e957ab1e04cc128448cba246a9b6980c9316c136946d2acd94a1b90"
-    },
-    "cover_en_pixel_2048.png": {
-      "size": [
-        2048,
-        2048
-      ],
-      "mode": "RGB",
-      "sha256": "2d6d65187b7366afdb93a5d3fa576606686939acb8ad9d218afc33814d07a3b4"
-    },
-    "cover_en_pixel_256.png": {
-      "size": [
-        256,
-        256
-      ],
-      "mode": "RGB",
-      "sha256": "1571a97a5b014191f7876199bdb8406f1ce1c023bfacb2a2f699da30fd574177"
-    },
-    "cover_en_pixel_512.png": {
-      "size": [
-        512,
-        512
-      ],
-      "mode": "RGB",
-      "sha256": "91f4eeab6733b882d37a822182458f152809c7886372ff7eaacb0af45e34d465"
-    },
     "title_en.png": {
       "size": [
         1760,

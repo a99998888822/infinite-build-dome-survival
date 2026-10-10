@@ -49,7 +49,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 99999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "优先承受伤害的护盾值。"
+		"description": "每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。"
 	},
 	"shield_regen": {
 		"display_name": "每秒护盾",
@@ -213,7 +213,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 100,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "影响减速、定身等控制效果强度。"
+		"description": "所有软控、硬控持续时间乘以（1 + 控制强度 / 100），再受敌人控制抗性修正；保留雷电连锁目标数加成。"
 	},
 	"pickup_radius": {
 		"display_name": "拾取范围",
@@ -272,7 +272,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"min": -95,
 		"is_integer": true,
 		"is_percent": true,
-		"description": "局内或结算货币获取百分比加成。"
+		"description": "拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。"
 	},
 	"finance": {
 		"display_name": "理财",
@@ -282,7 +282,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"max": 999999999,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "每波开始前可存入或取出的局内金币本金。"
+		"description": "仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。"
 	},
 	"interest_rate": {
 		"display_name": "利率",
@@ -347,7 +347,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": DEFAULT_DIVINITY,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "影响怪物的数量和强度"
+		"description": "波初读取侵蚀度，增强怪物属性并增加精英配额；普通刷怪数量乘以（1 + 非负侵蚀度 / 100），小数余量跨批累计，不改变刷新间隔。"
 	}
 }
 
@@ -444,6 +444,10 @@ static func calculate_attack_range_multiplier(area_size: float) -> float:
 	return 1.0 + clamp_stat_value("area_size", area_size) * RANGE_BONUS_EFFICIENCY / 100.0
 
 
+static func calculate_control_duration(duration: float, control_power: float) -> float:
+	return maxf(duration, 0.0) * (1.0 + clamp_stat_value("control_power", control_power) / 100.0)
+
+
 static func calculate_damage_area_multiplier(damage_area_size: float) -> float:
 	return 1.0 + clamp_stat_value("damage_area_size", damage_area_size) * RANGE_BONUS_EFFICIENCY / 100.0
 
@@ -489,9 +493,10 @@ static func calculate_shop_offer_count(base_count: int, shop_offer_count_bonus: 
 	return maxi(2, safe_base_count + safe_bonus)
 
 
-static func calculate_enemy_spawn_count(base_count: int, enemy_spawn_rate_percent: float) -> int:
+static func calculate_enemy_spawn_count(base_count: int, enemy_spawn_rate_percent: float) -> float:
 	var spawn_rate_percent := clamp_stat_value("enemy_spawn_rate_percent", enemy_spawn_rate_percent)
-	return maxi(0, int(ceil(float(maxi(0, base_count)) * (1.0 + spawn_rate_percent / 100.0))))
+	# Keep the expected count fractional; the live scheduler carries the remainder.
+	return float(maxi(0, base_count)) * (1.0 + spawn_rate_percent / 100.0)
 
 static func get_humanity_stage(humanity: float) -> String:
 	var value := clamp_stat_value("humanity", humanity)

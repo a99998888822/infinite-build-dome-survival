@@ -1,5 +1,7 @@
 extends RefCounted
 class_name WeaponInstance
+signal feedback_mark(sequence: int)
+signal cooldown_ready_changed(ready: bool)
 
 const DAMAGE_KIND_RANGED: String = "ranged"
 const DAMAGE_KIND_MELEE: String = "melee"
@@ -793,6 +795,7 @@ func _build_damage_event(damage_kind: String, force_critical: bool, roll_critica
 		# the flat element bonus. Children/reactions inherit this captured multiplier.
 		"elemental_damage_scale": get_attachment_damage_multiplier(true),
 		"damage_area_scale": StatDefinitions.calculate_damage_area_multiplier(get_stat("damage_area_size")),
+		"control_power": get_stat("control_power"),
 		# Elemental native attacks already include this bonus; attachments must not add it twice.
 		"element_damage_bonus": 0 if damage_kind == DAMAGE_KIND_ELEMENT else maxi(0, int(roundi(get_stat("element_damage")))),
 		"damage_kind": damage_kind,

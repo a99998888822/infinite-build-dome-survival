@@ -392,7 +392,7 @@
     "rarity": "uncommon", "attack_kind": "melee", "tags": ["melee", "light"],
     "weapon_type": "light", "load_cost": 22, "max_level": 5, "attachment_slots": 1,
     "active_cooldown_ms": 5000, "attack_interval_ms": 5000,
-    "attack_range": 140, "hit_radius": 64, "movement_ms": 220,
+    "attack_range": 140, "hit_radius": 96, "movement_ms": 220,
     "projectile_speed": 0, "spread_angle": 0, "projectile_behavior": "dash_blade",
     "player_damage_coefficient": 0.8, "unsupported_effects": ["pierce", "split"],
     "base_stats": {"melee_damage": 28, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},

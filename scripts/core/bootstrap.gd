@@ -323,29 +323,29 @@ func _run_survival_relic_checks() -> bool:
 	var base_armor := player.get_stat("armor")
 	var base_move_speed := player.get_stat("move_speed")
 	passed = _print_check_result("survival relic flat stats", player.add_relic("relic_worn_hemostatic_cloth") and int(player.get_stat("max_hp")) == base_max_hp + 4) and passed
-	passed = _print_check_result("survival relic negative movement", player.add_relic("relic_load_iron_bracer") and is_equal_approx(player.get_stat("move_speed"), base_move_speed - 5.0)) and passed
+	passed = _print_check_result("survival relic melee without movement penalty", player.add_relic("relic_load_iron_bracer") and is_equal_approx(player.get_stat("move_speed"), base_move_speed) and player.get_stat("melee_damage") == 1) and passed
 
 	passed = _print_check_result("survival relic low hp armor", player.add_relic("relic_broken_crystal")) and passed
 	player.restore_full_health()
 	# Cross the 50% threshold after armor with the current 30 HP starter.
 	player.take_damage(ceili(float(player.current_hp) * 0.75), "bootstrap_relic_check")
-	passed = _print_check_result("survival relic low hp condition", is_equal_approx(player.get_stat("armor"), base_armor + 33.0)) and passed
+	passed = _print_check_result("survival relic low hp condition", is_equal_approx(player.get_stat("armor"), base_armor + 31.0)) and passed
 	player.heal(99)
-	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 8.0)) and passed
+	passed = _print_check_result("survival relic condition clears", is_equal_approx(player.get_stat("armor"), base_armor + 6.0)) and passed
 
 	passed = _print_check_result("survival relic shield start", player.add_relic("relic_dead_shield_badge")) and passed
 	player.reset_wave_shield()
 	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
-	passed = _print_check_result("survival relic shield granted", player.current_shield == 10 and player.current_shield_capacity == 10) and passed
+	passed = _print_check_result("survival relic shield granted", player.current_shield == 6 and player.current_shield_capacity == 6) and passed
 
 	passed = _print_check_result("survival relic shield regen add", player.add_relic("relic_barrier_crystal")) and passed
 	player.reset_wave_shield()
 	player._physics_process(1.0)
-	passed = _print_check_result("survival relic shield regen", player.current_shield == 0 and player.current_shield_capacity == 0) and passed
-	player._physics_process(1.0)
-	passed = _print_check_result("survival relic shield regen after two seconds", player.current_shield == 1 and player.current_shield_capacity == 1) and passed
-	player._physics_process(2.0)
-	passed = _print_check_result("survival relic shield regen continues while full", player.current_shield == 2 and player.current_shield_capacity == 2) and passed
+	passed = _print_check_result("survival relic shield regen retains starting shield", player.current_shield == 6 and player.current_shield_capacity == 6) and passed
+	player._physics_process(3.0)
+	passed = _print_check_result("survival relic shield regen after four seconds", player.current_shield == 7 and player.current_shield_capacity == 7) and passed
+	player._physics_process(4.0)
+	passed = _print_check_result("survival relic shield regen continues while full", player.current_shield == 8 and player.current_shield_capacity == 8) and passed
 
 	passed = _print_check_result("survival relic low sanity movement", player.add_relic("relic_lost_wayfarer_greave")) and passed
 	player.add_runtime_modifier({
@@ -359,7 +359,7 @@ func _run_survival_relic_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	passed = _print_check_result("survival relic conditional movement", is_equal_approx(player.get_stat("move_speed"), base_move_speed - 5.0)) and passed
+	passed = _print_check_result("survival relic conditional movement", is_equal_approx(player.get_stat("move_speed"), base_move_speed)) and passed
 
 	passed = _print_check_result("survival relic wave end trigger", player.add_relic("relic_vitality_potion")) and passed
 	player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
@@ -454,8 +454,8 @@ func _run_enemy_wave_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	# Tier one density rounds 6 * 0.15 up to 1; +20% rounds up to 2.
-	passed = _print_check_result("enemy spawn rate stacks before population multiplier", wave_manager.calculate_enemy_spawn_count(6) == 2) and passed
+	# Tier one rounds 6 * 0.15 up to 1; +20% retains a fractional expected count.
+	passed = _print_check_result("enemy spawn rate retains fractional count", is_equal_approx(wave_manager.calculate_enemy_spawn_count(6), 1.2)) and passed
 
 	var orb := wave_manager.spawn_exp_orb(4, player.global_position + Vector2(8, 0))
 	passed = _print_check_result("enemy drop table link", DataRegistry.has_record("drop_tables", "drop_basic_enemy") and orb != null) and passed

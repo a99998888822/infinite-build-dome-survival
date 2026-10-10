@@ -7,6 +7,7 @@ const RUNE = preload("res://assets/sprites/weapons/kunyu_domain_rune.png")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
 const HIT = preload("res://scripts/weapons/ritual_coin_hit.gd")
+const FEEDBACK_SETTINGS = preload("res://scripts/effects/combat_feedback_settings.gd")
 const DOMAIN := Vector2(220, 145)
 const MARK_INTERVAL := 0.35
 const MARK_RECOVERY := 0.3
@@ -127,8 +128,11 @@ func _apply_hit(enemy: EnemyController, event: DamageEvent, child: bool) -> void
 	event.hit_position = position_snapshot
 	# Dispatch before native lethal damage so attached effects retain their contact.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, position_snapshot, direction, enemy)
-	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
+	enemy.take_damage_with_feedback(event.damage, event.source_weapon_id, event.is_critical, direction, &"ritual")
 	HIT.spawn(get_parent(), weapon, position_snapshot, true)
+	if not child and FEEDBACK_SETTINGS.enabled():
+		weapon.feedback_mark.emit(marks_completed)
+		AudioManager.play_combat_sfx("ritual_mark_r02", 150)
 	weapon.play_attack_hit_sfx()
 	target_hit.emit(enemy.get_instance_id(), event.damage, child)
 
@@ -192,5 +196,3 @@ func _draw_domain() -> void:
 	# The PNG itself has max alpha 51/255; modulation remains within [0.08, 1].
 	var fade := lerpf(0.08, 1.0, (1.0 - cos(TAU * elapsed / 4.4)) * 0.5)
 	domain_layer.draw_texture(RUNE, Vector2(-192, -120), Color(1, 1, 1, fade))
-
-

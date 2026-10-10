@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "super_armor": 31,
+    "player_stats": 92,
+    "combat_feedback": 24
+  },
+  "total": 147,
+  "failures": 0,
+  "utf8_scan": "passed",
+  "removed_resource_references": [],
+  "background": {
+    "engine": "D:\\soft\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+    "pid": 30976,
+    "private_desktop": "CodexGodotCapture_1791624955590916500",
+    "verified_desktop": "CodexGodotCapture_1791624955590916500",
+    "foreground_samples": 0,
+    "samples": 1513,
+    "exit_code": 0,
+    "elapsed_seconds": 31.11308729997836
+  },
+  "installed_sha256": {
+    "scripts/effects/enemy_super_armor_visual.gd": "9a993df765e08f9a2e82fd96d61c1317a32b658ec510bdf49c5071ed8f6bdb06",
+    "assets/shaders/enemy_super_armor.gdshader": "82a0e8cadb46904b6618ba8adbd019b8103dbc297f7599ffef7cd94afa3be25c",
+    "scripts/enemies/enemy_controller.gd": "b426c71e902164da532640f9fb5af0d04a8cdf272a13986168e9ecc25f9d7e6a",
+    "scripts/effects/black_hole_effect.gd": "10c5b1956dae477aa435138bd973060ae5e6ebcaa9823d0b5dd187cbe6ff33a9",
+    "scripts/effects/combat_effect_world.gd": "bcc6fc4038817ccab96b67f308484416c9295846d337cb443ba30e36af042acd",
+    "scripts/effects/wind_blade_effect.gd": "b6f6ea5997c1705badabcaf3565976dc146a43ad2da276cf12c10d33604b74fb",
+    "scripts/effects/explosion_effect.gd": "bb78d64cc4c6563f92e244c9a91a200e70af2bbdb5415e4ade4c61d27ad2ad7a",
+    "localization/catalogs/gameplay.csv": "efe95f38cd60a4a9573e1b95eafa4df47cc06b4202a2893b732ea6d3d2d13726"
+  }
+}

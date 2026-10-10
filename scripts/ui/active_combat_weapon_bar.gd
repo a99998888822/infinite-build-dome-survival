@@ -5,6 +5,8 @@ signal slot_pressed(index: int)
 
 const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
 const CAST_MODE_ICON_SCRIPT := preload("res://scripts/ui/weapon_cast_mode_icon.gd")
+const PULSE_R02 := preload("res://scripts/ui/weapon_pulse_r02.gd")
+const COOLDOWN_FEEDBACK := preload("res://scripts/ui/weapon_cooldown_feedback.gd")
 class WeaponHeader extends Control:
 	var number_source: Label
 	var status_source: Label
@@ -17,6 +19,7 @@ class WeaponHeader extends Control:
 			draw_string(font, Vector2(6, 17), text, align, size.x - 12, 12, Color("e1f4ff"))
 
 var headers: Array[WeaponHeader] = []
+var feedbacks: Array[Control] = []
 var weapons: Array[WeaponInstance] = []
 var cards: Array[Panel] = []
 var icons: Array[TextureRect] = []
@@ -34,6 +37,8 @@ var _aim_style: StyleBoxFlat
 func setup(sources: Array[WeaponInstance]) -> void:
 	weapons = sources.duplicate()
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	for feedback in feedbacks: feedback.detach()
+	feedbacks.clear()
 	for child in get_children():
 		child.queue_free()
 	cards.clear()
@@ -82,6 +87,13 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		header.status_source = timer
 		card.add_child(header)
 		headers.append(header)
+		var pulse := PULSE_R02.new()
+		card.add_child(pulse)
+		pulse.configure(icon, weapons[i])
+		var feedback := COOLDOWN_FEEDBACK.new()
+		card.add_child(feedback)
+		feedback.configure(weapons[i])
+		feedbacks.append(feedback)
 		var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
 		mode.configure(weapons[i], false, _style(false).bg_color)
 		add_child(mode)

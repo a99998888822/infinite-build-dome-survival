@@ -6,9 +6,9 @@ const IDS := ["relic_old_brass_telescope", "relic_cracked_bronze_bell", "relic_l
 const STATIC := [
 	{"area_size": 15, "ranged_damage": 1}, {"damage_area_size": 15, "element_damage": 1},
 	{"area_size": 35, "ranged_damage": 3, "attack_speed": -8},
-	{"damage_area_size": 30, "damage_percent": 15, "attack_speed": -6}, {"attack_speed": 12},
-	{"damage_area_size": 20, "damage_percent": 12}, {},
-	{"damage_area_size": 40, "element_damage": 8, "humanity": -15},
+	{"damage_area_size": 12, "damage_percent": 5, "element_damage": 3, "attack_speed": -6}, {"attack_speed": 12},
+	{"damage_area_size": 20, "element_damage": 6, "damage_percent": 0}, {"ranged_damage": 5},
+	{"damage_area_size": 12, "element_damage": 9, "humanity": -2},
 	{"area_size": 25, "damage_area_size": 25, "damage_percent": 20, "divinity": 5},
 	{"area_size": 40, "damage_percent": 30, "damage_area_size": 20},
 ]
@@ -159,11 +159,11 @@ func _test_conversion() -> void:
 		bank.deposit(99, true)
 		check(p.get_stat("area_size") == 40 and p.get_stat("damage_area_size") == 20, "orrery includes its own range and ignores incomplete principal tier")
 		bank.deposit(1, true)
-		check(p.get_stat("area_size") == 43 and p.get_stat("damage_percent") == 33, "rangefinder full principal tier")
+		check(p.get_stat("area_size") == 43 and p.get_stat("damage_percent") == 31, "rangefinder full principal tier")
 		bank.deposit(900, true)
 		check(p.get_stat("area_size") == 70 and p.get_stat("damage_area_size") == 35, "principal range feeds orrery regardless of acquisition order")
 		p._physics_process(1)
-		check(p.get_stat("area_size") == 110 and p.get_stat("damage_area_size") == 55 and p.get_stat("damage_percent") == 80, "tripod and principal feed orrery together")
+		check(p.get_stat("area_size") == 110 and p.get_stat("damage_area_size") == 55 and p.get_stat("damage_percent") == 60, "tripod and principal feed orrery together")
 		bank.withdraw(901)
 		check(p.get_stat("area_size") == 80 and p.get_stat("damage_area_size") == 40 and p.get_stat("damage_percent") == 50, "withdrawal revokes both principal bonuses and derived area immediately")
 		p.set_mobile_move_direction(Vector2.RIGHT)
@@ -178,22 +178,22 @@ func _test_rangefinder_cap() -> void:
 	var p := player()
 	var bank := bank_for(p)
 	p.add_relic("relic_golden_rangefinder")
-	for sample in [[0, 0], [99, 0], [100, 3], [999, 27], [1000, 30], [1100, 30], [100000000, 30]]:
+	for sample in [[0, 0, 0], [99, 0, 0], [100, 3, 1], [999, 27, 9], [1000, 30, 10], [1100, 30, 10], [100000000, 30, 10]]:
 		if sample[0] > bank.principal:
 			bank.deposit(sample[0] - bank.principal, true)
-		check(p.get_stat("area_size") == sample[1] and p.get_stat("damage_percent") == sample[1], "rangefinder caps both attributes at principal %d" % sample[0])
+		check(p.get_stat("area_size") == sample[1] and p.get_stat("damage_percent") == sample[2] and p.get_stat("ranged_damage") == 5, "rangefinder separates fixed attack from capped principal bonuses at %d" % sample[0])
 	var preview_player := p.create_stat_preview_copy()
 	var preview_bank := bank.create_preview_copy(preview_player)
 	preview_bank.withdraw(preview_bank.principal - 999)
-	check(preview_player.get_stat("area_size") == 27 and preview_player.get_stat("damage_percent") == 27, "preview correctly drops below rangefinder cap")
+	check(preview_player.get_stat("area_size") == 27 and preview_player.get_stat("damage_percent") == 9 and preview_player.get_stat("ranged_damage") == 5, "preview drops below rangefinder cap while preserving fixed attack")
 	check(p.get_stat("area_size") == 30 and bank.principal == 100000000, "capped withdrawal preview preserves real state")
 	preview_player.free()
 	modify(p, "area_size", 20000)
 	modify(p, "damage_percent", 200000)
-	check(p.get_stat("area_size") == 20030 and p.get_stat("damage_percent") == 200030, "rangefinder cap does not clamp other sources beyond former global limits")
-	for sample in [[1000, 30], [999, 27], [99, 0], [0, 0]]:
+	check(p.get_stat("area_size") == 20030 and p.get_stat("damage_percent") == 200010, "rangefinder cap does not clamp other sources beyond former global limits")
+	for sample in [[1000, 30, 10], [999, 27, 9], [99, 0, 0], [0, 0, 0]]:
 		bank.withdraw(bank.principal - sample[0])
-		check(p.get_stat("area_size") == 20000 + sample[1] and p.get_stat("damage_percent") == 200000 + sample[1], "withdrawal removes only rangefinder tiers at principal %d" % sample[0])
+		check(p.get_stat("area_size") == 20000 + sample[1] and p.get_stat("damage_percent") == 200000 + sample[2] and p.get_stat("ranged_damage") == 5, "withdrawal removes only rangefinder tiers at principal %d" % sample[0])
 	p.free()
 
 func _test_bank_preview() -> void:

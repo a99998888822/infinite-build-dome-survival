@@ -1,0 +1,189 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS vitality relic regeneration halved
+PASS MD turtle max HP +3
+PASS stargazer luck is twice the original +18
+PASS relic rebuild preserves full HP
+PASS weapon refresh preserves HP
+PASS rebuild never heals injured player
+PASS real max HP loss clamps to final cap
+[PlayerController] player revived, remaining=0
+PASS seed consumes revive and adds erosion
+PASS relic rebuild never restores a spent seed revive
+PASS projectile count weapon_void_blade 1
+PASS projectile count weapon_void_blade 2
+PASS projectile count weapon_void_blade 3
+PASS projectile count weapon_plasma_cannon 1
+PASS projectile count weapon_plasma_cannon 2
+PASS projectile count weapon_plasma_cannon 3
+PASS DESIGN ranged weapon ignores melee damage
+PASS annuity rejects a second copy
+PASS contract always preserves normal periodic and annuity interest deposit=0
+PASS contract grants six rate points only at the deposit threshold
+PASS tome grows once per successful settlement deposit=0
+PASS all positive settlements apply frenzy growth and cost deposit=0
+PASS manual positive interest also grows tome
+PASS annuity rejects a second copy
+PASS contract always preserves normal periodic and annuity interest deposit=49
+PASS contract grants six rate points only at the deposit threshold
+PASS tome grows once per successful settlement deposit=49
+PASS all positive settlements apply frenzy growth and cost deposit=49
+PASS annuity rejects a second copy
+PASS contract always preserves normal periodic and annuity interest deposit=50
+PASS contract grants six rate points only at the deposit threshold
+PASS tome grows once per successful settlement deposit=50
+PASS all positive settlements apply frenzy growth and cost deposit=50
+PASS fusion combines two base points with immediate erosion scaling
+PASS first settlement uses current fusion rate
+PASS HUD rate includes static and growing tome plus fusion
+PASS shield-break erosion refreshes fusion immediately
+PASS urn keeps fractional half HP after 1.25 seconds
+PASS halved urn regenerates one HP in 2.5 seconds
+PASS urn retains one sanity loss per wave
+PASS mirror grants doubled luck and twenty percent gold
+PASS mirror recovery offsets urn decay
+PASS ledger adds four percentage points
+PASS ledger capped at one copy
+PASS ledger first settlement pays before wave-end sanity loss
+PASS ledger wave-end sanity minus three
+PASS ledger decay continues below zero
+PASS frenzy capped at one copy
+PASS no principal grants no frenzy growth or cost
+PASS second annuity payout uses unchanged principal and sanity lost after first payout
+PASS two successful payouts grant damage four and sanity minus two
+PASS manual positive settlement triggers frenzy once
+PASS unqualified contract still permits positive settlements and frenzy
+PASS zero integer payout accrues fractions without triggering frenzy
+PASS capped relics leave the candidate pool
+PASS relic_divine_fusion available before acquisition
+PASS relic_divine_fusion accepts first copy
+PASS relic_divine_fusion rejects duplicates without changing effects
+PASS relic_divine_fusion removed from shop and reward candidates
+PASS relic_divine_fusion capped preview cannot add another contribution
+PASS relic_soul_keeper_face_stone available before acquisition
+PASS relic_soul_keeper_face_stone accepts first copy
+PASS relic_soul_keeper_face_stone rejects duplicates without changing effects
+PASS relic_soul_keeper_face_stone removed from shop and reward candidates
+PASS relic_soul_keeper_face_stone capped preview cannot add another contribution
+PASS relic_guarding_heart_copper_mirror available before acquisition
+PASS relic_guarding_heart_copper_mirror accepts first copy
+PASS relic_guarding_heart_copper_mirror rejects duplicates without changing effects
+PASS relic_guarding_heart_copper_mirror removed from shop and reward candidates
+PASS relic_guarding_heart_copper_mirror capped preview cannot add another contribution
+PASS relic_reincarnation_hellfire_candle available before acquisition
+PASS relic_reincarnation_hellfire_candle accepts first copy
+PASS relic_reincarnation_hellfire_candle rejects duplicates without changing effects
+PASS relic_reincarnation_hellfire_candle removed from shop and reward candidates
+PASS relic_reincarnation_hellfire_candle capped preview cannot add another contribution
+PASS nonlethal shield break heals, caps at max HP and adds erosion [6, 2, 8]
+PASS nonlethal shield break heals, caps at max HP and adds erosion [5, 1, 8]
+PASS nonlethal shield break heals, caps at max HP and adds erosion [10, 1, 10]
+[PlayerController] player died, source=lethal_shield_break
+PASS lethal break cannot revive even with multiple tentacles copies=1
+PASS ordinary healing cannot revive a dead player
+[PlayerController] player died, source=lethal_shield_break
+PASS lethal break cannot revive even with multiple tentacles copies=2
+PASS ordinary healing cannot revive a dead player
+[PlayerController] player revived, remaining=0
+PASS lethal break consumes normal revive and applies break plus revive erosion
+[PlayerController] player revived, remaining=0
+PASS regenerated shield cannot bypass paid coffin or revive erosion
+[PlayerController] player died, source=shield_break_no_revives
+PASS regenerated shield cannot save player after all revives are spent
+[PlayerController] player revived, remaining=0
+PASS lethal break restores post-payment maximum health through coffin
+PASS coffin following shield break updates revised ring tiers and retains erosion cost
+PASS relic_gilded_trigger available in shop
+PASS relic_gilded_trigger accepts only one copy
+PASS relic_runaway_amplifier available in shop
+PASS relic_runaway_amplifier accepts only one copy
+PASS relic_lucid_vow available in shop
+PASS relic_lucid_vow accepts only one copy
+PASS three owned tradeoff relics leave shop pool
+PASS tradeoff relic damage bonuses use additive damage stat
+PASS gilded trigger trades twenty sanity for twenty-five damage
+PASS trigger immediately changes purchase and sale economics
+PASS trigger reduces actual interest with fractional carry
+PASS trigger sanity cost is not repeated at wave end
+PASS amplifier grants damage without acquisition decay at 100
+PASS amplifier first wave uses pre-trigger sanity at 100
+PASS amplifier subsequent wave keeps negative sanity decay at 100
+PASS amplifier grants damage without acquisition decay at 0
+PASS amplifier first wave uses pre-trigger sanity at 0
+PASS amplifier subsequent wave keeps negative sanity decay at 0
+PASS amplifier grants damage without acquisition decay at -1
+PASS amplifier first wave uses pre-trigger sanity at -1
+PASS amplifier subsequent wave keeps negative sanity decay at -1
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=-1 reversed=false
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=-1 reversed=true
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=0 reversed=false
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=0 reversed=true
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=1 reversed=false
+PASS wave-end condition snapshot companion=relic_sleepless_ledger sanity=1 reversed=true
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=-1 reversed=false
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=-1 reversed=true
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=0 reversed=false
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=0 reversed=true
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=1 reversed=false
+PASS wave-end condition snapshot companion=relic_lucid_vow sanity=1 reversed=true
+PASS vow offsets only part of amplifier decay while retaining thirty-two damage
+PASS vow pays damage immediately and waits for wave end
+PASS vow restores sanity across zero
+PASS vow builds buffer above 100 without extra economic bonus
+PASS candle blocks subsequent vow recovery
+PASS condition execution preserves shared relic definition
+PASS conditional event accepts negative stat changes
+PASS conditional event rejects invalid config { "condition": "unknown" }
+PASS conditional event rejects invalid config { "else_value": "invalid" }
+PASS conditional event rejects invalid config { "threshold": "invalid" }
+PASS conditional else amount requires a condition
+PASS soul stone grants sanity per three erosion at 0
+PASS soul stone grants sanity per three erosion at 1
+PASS soul stone grants sanity per three erosion at 2
+PASS soul stone grants sanity per three erosion at 3
+PASS soul stone grants sanity per three erosion at 5
+PASS soul stone grants sanity per three erosion at 6
+PASS soul stone grants sanity per three erosion at 299
+PASS soul stone grants sanity per three erosion at 300
+PASS soul stone grants sanity per three erosion at 1000
+PASS candle preserves preexisting sanity bonus
+PASS candle blocks new static and wave-end sanity gains
+PASS new soul stone cannot bypass candle
+PASS candle preserves existing derived sanity
+PASS existing stone cannot gain more sanity
+PASS blocked derived sanity can decrease
+PASS blocked derived sanity cannot recover after decrease
+PASS dependency order independent ["relic_lost_wayfarer_greave", "relic_soul_keeper_face_stone", "relic_shadowless_greave"]
+PASS dependency change recalculates condition and armor
+PASS dependency order independent ["relic_shadowless_greave", "relic_lost_wayfarer_greave", "relic_soul_keeper_face_stone"]
+PASS dependency change recalculates condition and armor
+PASS dependency order independent ["relic_soul_keeper_face_stone", "relic_shadowless_greave", "relic_lost_wayfarer_greave"]
+PASS dependency change recalculates condition and armor
+PASS 100 small pickups retain +10% gold and +8% XP
+PASS compass offsets the salary gold penalty
+PASS fractional rewards survive wave counter reset
+PASS new run resets fractional rewards
+PASS 180 previews match real acquisition including finance, bonds and candle: []
+PASS display two discounts as 15.36%
+PASS discount display and price use same multiplier
+PASS display combined discount and surcharge
+PASS fractional discount display format
+PASS bankruptcy preview accounts for purchase cost
+RELIC_TEST_COMPLETE checks=162 failures=0

@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Intel) - ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.101.5333)
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+R02_CLIP dagger before actual_hits=1
+R02_CLIP dagger r02 actual_hits=1
+R02_CLIP hammer before actual_hits=3
+R02_CLIP hammer r02 actual_hits=3
+R02_CLIP tome before actual_hits=3
+R02_CLIP tome r02 actual_hits=3
+R02_CLIP lamp before actual_hits=24
+R02_CLIP lamp r02 actual_hits=24
+R02_CLIP combo before actual_hits=6
+R02_CLIP combo r02 actual_hits=6
+R02_CLIP dense before actual_hits=105
+R02_CLIP dense r02 actual_hits=105
+R02_CAPTURE_DONE frames=40 failures=[]

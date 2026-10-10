@@ -1,0 +1,23 @@
+{
+  "status": "installed_default_on",
+  "date": "2026-10-10",
+  "files": {
+    "scripts/enemies/enemy_controller.gd": "8ea3e560d4ed1ce436557e3e2e11f14dd1813754d2ecfbf19cb5e3dbb0a6253f",
+    "scripts/weapons/camp_dagger.gd": "2a18668318d32ab7146b502b71f53367757698853874bc7efc81b597c7a096e2",
+    "scripts/weapons/directed_weapon_runtime.gd": "0e8269080f70468f7113aea0bed0532870d855f08c0b26d00d381305eb1b781e",
+    "scripts/weapons/earth_hammer.gd": "ce7444a3b618a624e8fa41d1400dd7924972650db4f1700080150d7d044b774f",
+    "scripts/weapons/ritual_domain.gd": "40cf5dda3c85e36df95ae82fb954c0ae52732c927c40102a0a3f2dd040cf843d",
+    "scripts/weapons/weapon_instance.gd": "2394427b49a163477b34999eb75e258142fea9c5047000be7185f236bb35f5a6",
+    "scripts/ui/active_combat_weapon_bar.gd": "b19e39c85dbdbb30392a65a40143d03b4ba29dd3e5f3b81119ec6a9b79347cf4",
+    "scripts/audio/combat_sound_library.gd": "7993476d605eb64d68bc684f8643daf6176532e2a16384e95c1440062311efee",
+    "scripts/tools/build_combat_audio.py": "2aa77f733a9bfe112197b33078043c5daec775d62f7b6aca0e1fb1e261619480",
+    "scripts/effects/combat_feedback_r02.gd": "8663e95ff31a8e2adc20a05e332e5b54399a7565c34fb36672d04322cb9f839a",
+    "scripts/effects/combat_impact_r02.gd": "72b6185d0db980b9e649d04a485417a3928e965f0b7aa567d4af70fb419d993e",
+    "scripts/ui/weapon_pulse_r02.gd": "24c8a00d009fcd7353c247441267be14859abea3bf057930f40328595474b5dc",
+    "scripts/tests/combat_feedback_r02_test.gd": "0417f3dc1154deeff78b933753a478884c8aafff00f7981d93963af67f39e1a8",
+    "scenes/tests/combat_feedback_r02_test.tscn": "6d3d77a88fb8dcde5dd2b7a007e21293981a15f4390487b10da177d4b353fe2e",
+    "scripts/effects/combat_feedback_settings.gd": "6357945672ca002eb7ef03b67c6240b13004ff3d251fbe93ad1ab1890cb4225b",
+    "scripts/waves/wave_manager.gd": "cf06cc2b6566dec806f676d708a5b49d929610cffc561368736a0b161f528318",
+    "assets/audio/sfx/combat/ritual_mark_r02_01.wav": "0fc2e689a589d2fccc84a0f3c8ac63521099f7651b6fc25998279d920488f77f"
+  }
+}

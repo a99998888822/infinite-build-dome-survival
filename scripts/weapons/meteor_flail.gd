@@ -6,6 +6,11 @@ signal target_hit(target_id: int, damage: int, child: bool)
 const HEAD = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_head.png")
 const LINK = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_chain_link.png")
 const GRIP = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_grip.png")
+const TRAIL = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_trail.png")
+const TRAIL_FRAME_SIZE := Vector2(320, 320)
+const TRAIL_FPS := 30.0
+const TRAIL_AUTHORED_REACH := 144.0
+const BASE_TINT := Color(0.68, 0.88, 1.0)
 const EFFECTS = preload("res://scripts/effects/combat_effect_world.gd")
 const WINDUP := 0.13
 const SWEEP := 0.37
@@ -184,10 +189,32 @@ func cancel() -> void:
 	queue_free()
 
 
+func trail_frame_for_swing(swing: Dictionary, at_time: float) -> int:
+	var elapsed := at_time - float(swing.start) - float(swing.windup)
+	var duration := float(swing.duration)
+	if elapsed < -0.000001 or elapsed > duration + 0.000001:
+		return -1
+	# Split/continuation swings use their own clock, mapped onto the approved clip.
+	var progress := clampf(elapsed / duration, 0.0, 1.0)
+	return clampi(int((WINDUP + progress * SWEEP) * TRAIL_FPS), 4, 14)
+
+
+func trail_transform_for_swing(swing: Dictionary, at_time: float, frame: int) -> Transform2D:
+	var sample_progress := clampf(((frame + 0.5) / TRAIL_FPS - WINDUP) / SWEEP, 0.0, 1.0)
+	var eased := sample_progress * sample_progress * (3.0 - 2.0 * sample_progress)
+	var half_arc := AttackFootprint.FLAIL_ARC * 0.5
+	var sample_angle := deg_to_rad(lerpf(-half_arc, half_arc, eased))
+	var head := head_position(swing, at_time)
+	var factor := head.length() / TRAIL_AUTHORED_REACH
+	# Mirror reverse swings, then align the sampled leading edge to the live head.
+	var angle := head.angle() - sample_angle * float(swing.sign)
+	return Transform2D(angle, Vector2.ZERO).scaled_local(Vector2(factor, factor * float(swing.sign)))
+
+
 func _draw() -> void:
 	if cancelled:
 		return
-	var tint := Color(0.68, 0.88, 1.0)
+	var tint := BASE_TINT
 	if weapon.has_effect("fire"): tint = Color(1.0, 0.59, 0.25)
 	elif weapon.has_effect("lightning"): tint = Color(0.57, 0.79, 1.0)
 	elif weapon.has_effect("ice"): tint = Color(0.54, 0.97, 1.0)
@@ -198,18 +225,12 @@ func _draw() -> void:
 			continue
 		var fade := minf(1.0, local_time / 0.045) * (1.0 - clampf((local_time - end) / RECOVER, 0, 1))
 		var head := head_position(swing, age)
-		if local_time >= float(swing.windup) and local_time <= end:
-			var current_angle := heading.angle_to(head)
-			var half_arc := deg_to_rad(AttackFootprint.FLAIL_ARC * 0.5)
-			var trailing_angle := clampf(current_angle - float(swing.sign) * deg_to_rad(25), -half_arc, half_arc)
-			var fan := PackedVector2Array()
-			for i in 17:
-				fan.append(heading.rotated(lerpf(trailing_angle, current_angle, i / 16.0)) * weapon.get_attack_range())
-			for i in range(16, -1, -1):
-				fan.append(heading.rotated(lerpf(trailing_angle, current_angle, i / 16.0)) * 20)
-			if absf(trailing_angle - current_angle) > 0.001:
-				draw_colored_polygon(fan, Color(tint, 0.16 * fade))
-			draw_arc(Vector2.ZERO, weapon.get_attack_range(), heading.angle() + minf(trailing_angle, current_angle), heading.angle() + maxf(trailing_angle, current_angle), 20, Color(tint, 0.6 * fade), 2, true)
+		var trail_frame := trail_frame_for_swing(swing, age)
+		if trail_frame >= 0:
+			var trail_tint := Color(tint.r / BASE_TINT.r, tint.g / BASE_TINT.g, tint.b / BASE_TINT.b, fade)
+			draw_set_transform_matrix(trail_transform_for_swing(swing, age, trail_frame))
+			draw_texture_rect_region(TRAIL, Rect2(-TRAIL_FRAME_SIZE * 0.5, TRAIL_FRAME_SIZE), Rect2(Vector2(trail_frame * TRAIL_FRAME_SIZE.x, 0), TRAIL_FRAME_SIZE), trail_tint)
+			draw_set_transform(Vector2.ZERO)
 		var radial := head.normalized()
 		var grip := heading * 14.0
 		var length := grip.distance_to(head)

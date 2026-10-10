@@ -45,7 +45,7 @@ func _run() -> void:
 	player._process_regeneration(1.0)
 	check(player.current_shield == 3 and player.current_shield_capacity == 3, "regeneration grows only after closing deficit")
 	player.reset_wave_shield()
-	check(player.current_shield == player._initial_wave_shield and player.current_shield_capacity == player._initial_wave_shield and player._shield_regen_remainder == 0, "next wave resets current capacity and fractional remainder")
+	check(player.current_shield == player.get_stat("shield") and player.current_shield_capacity == player.get_stat("shield") and player._shield_regen_remainder == 0, "next wave resets current capacity from the current stat and clears fractional remainder")
 	player.current_shield = 0
 	player.current_shield_capacity = 0
 	player.grant_shield(2)

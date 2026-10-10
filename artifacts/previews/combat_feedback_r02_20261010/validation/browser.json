@@ -1,0 +1,10 @@
+{
+  "clips": 6,
+  "all_chunks": true,
+  "controls": true,
+  "animation": true,
+  "zoom": true,
+  "narrow": true,
+  "image_failure_retry": true,
+  "page_errors": []
+}

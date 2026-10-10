@@ -1,0 +1,2428 @@
+{
+  "definitions": [
+    {
+      "id": "max_hp",
+      "name": "最大生命",
+      "line": 25,
+      "description": "角色或敌人的最大生命值。"
+    },
+    {
+      "id": "hp_regen",
+      "name": "每秒回血",
+      "line": 34,
+      "description": "每秒恢复的生命值；负值会抵扣正向回血，战斗结算时以 0 为下限（不会掉血），面板仍显示真实数值。"
+    },
+    {
+      "id": "shield",
+      "name": "护盾",
+      "line": 44,
+      "description": "优先承受伤害的护盾值。"
+    },
+    {
+      "id": "shield_regen",
+      "name": "每秒护盾",
+      "line": 54,
+      "description": "每秒恢复护盾，优先补满已有上限；溢出部分使当前护盾与上限一起增长。"
+    },
+    {
+      "id": "revive_count",
+      "name": "额外复活",
+      "line": 64,
+      "description": "本局额外复活次数；复活后消耗 1 次。"
+    },
+    {
+      "id": "on_kill_heal",
+      "name": "击杀回血",
+      "line": 74,
+      "description": "每次击杀敌人后恢复的固定生命值。"
+    },
+    {
+      "id": "armor",
+      "name": "护甲",
+      "line": 84,
+      "description": "通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。"
+    },
+    {
+      "id": "damage_taken_percent",
+      "name": "受到伤害百分比",
+      "line": 92,
+      "description": "最终承受伤害百分比，整数100表示承受100%伤害，89表示承受89%伤害。"
+    },
+    {
+      "id": "move_speed",
+      "name": "移动速度",
+      "line": 102,
+      "description": "实体移动速度。"
+    },
+    {
+      "id": "melee_damage",
+      "name": "近战伤害",
+      "line": 112,
+      "description": "近战伤害固定数值加成。"
+    },
+    {
+      "id": "ranged_damage",
+      "name": "远程伤害",
+      "line": 122,
+      "description": "远程伤害固定数值加成。"
+    },
+    {
+      "id": "element_damage",
+      "name": "元素伤害",
+      "line": 132,
+      "description": "元素武器、元素附魔及元素反应造成的固定伤害加成。"
+    },
+    {
+      "id": "damage_percent",
+      "name": "伤害加成",
+      "line": 142,
+      "description": "通用伤害百分比加成，影响近战、远程和元素武器伤害。"
+    },
+    {
+      "id": "attack_speed",
+      "name": "攻击速度",
+      "line": 151,
+      "description": "正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。"
+    },
+    {
+      "id": "crit_chance",
+      "name": "暴击率",
+      "line": 160,
+      "description": "攻击造成暴击的概率。"
+    },
+    {
+      "id": "crit_damage",
+      "name": "暴击伤害",
+      "line": 170,
+      "description": "暴击时的伤害百分比，150表示造成150%伤害。"
+    },
+    {
+      "id": "projectile_count",
+      "name": "投射物数量",
+      "line": 180,
+      "description": "一次攻击产生的投射物数量。"
+    },
+    {
+      "id": "area_size",
+      "name": "攻击距离",
+      "line": 190,
+      "description": "影响武器的攻击距离与索敌距离。"
+    },
+    {
+      "id": "damage_area_size",
+      "name": "伤害范围",
+      "line": 199,
+      "description": "影响适用攻击的伤害半径或宽度，并同步对应视觉大小。"
+    },
+    {
+      "id": "control_power",
+      "name": "控制强度",
+      "line": 208,
+      "description": "影响减速、定身等控制效果强度。"
+    },
+    {
+      "id": "pickup_radius",
+      "name": "拾取范围",
+      "line": 218,
+      "description": "自动吸附经验球、奖励物的半径。"
+    },
+    {
+      "id": "exp_gain_percent",
+      "name": "经验获取加成",
+      "line": 228,
+      "description": "经验获取百分比加成。"
+    },
+    {
+      "id": "drop_rate_percent",
+      "name": "掉落率加成",
+      "line": 238,
+      "description": "局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。"
+    },
+    {
+      "id": "health_pack_heal_plus",
+      "name": "血包恢复量加成",
+      "line": 248,
+      "description": "血包拾取后的固定生命恢复量加成，可为负，不影响血包掉落概率。"
+    },
+    {
+      "id": "luck",
+      "name": "幸运",
+      "line": 258,
+      "description": "影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。"
+    },
+    {
+      "id": "currency_gain_percent",
+      "name": "货币获取加成",
+      "line": 268,
+      "description": "局内或结算货币获取百分比加成。"
+    },
+    {
+      "id": "finance",
+      "name": "理财",
+      "line": 277,
+      "description": "每波开始前可存入或取出的局内金币本金。"
+    },
+    {
+      "id": "interest_rate",
+      "name": "利率",
+      "line": 287,
+      "description": "当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。"
+    },
+    {
+      "id": "shop_price_percent",
+      "name": "商店折扣",
+      "line": 296,
+      "description": "局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。"
+    },
+    {
+      "id": "shop_offer_count_bonus",
+      "name": "商店选择数量加成",
+      "line": 306,
+      "description": "共享奖励和局内商店的候选数量加成，无上限；购买货架至少 3 件，升级奖励沿用原有数量规则。"
+    },
+    {
+      "id": "load_capacity",
+      "name": "负载上限",
+      "line": 316,
+      "description": "玩家可装备武器的总负载上限。"
+    },
+    {
+      "id": "enemy_spawn_rate_percent",
+      "name": "怪物数量增幅",
+      "line": 326,
+      "description": "每次刷怪的数量增幅；20 表示每组生成数量增加 20%。"
+    },
+    {
+      "id": "humanity",
+      "name": "人性",
+      "line": 336,
+      "description": "理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。"
+    },
+    {
+      "id": "divinity",
+      "name": "侵蚀度",
+      "line": 344,
+      "description": "影响怪物的数量和强度"
+    }
+  ],
+  "usage": {
+    "max_hp": [
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 6,
+        "text": "var max_hp := 1"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 16,
+        "text": "max_hp = maxi(1, health)"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 17,
+        "text": "current_hp = max_hp"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 44,
+        "text": "caption.text = L10n.text(\"ui.challenge.vault.health\") % [current_hp, max_hp] if alive else L10n.text(\"ui.challenge.vault.destroyed\")"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 50,
+        "text": "draw_rect(Rect2(-27, -35, 54.0 * current_hp / max_hp, 4), Color(\"e2bc66\") if alive else Color(\"674132\"))"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 42,
+        "text": "if stat_id == \"max_hp\":"
+      },
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 283,
+        "text": "draw_rect(Rect2(-26, -118, 52 * clampf(float(current_hp) / maxf(get_stat(\"max_hp\"), 1.0), 0.0, 1.0), 4), Color(\"dbc584\"))"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 210,
+        "text": "current_hp = int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/enemies/underworld_wolf.gd",
+        "line": 363,
+        "text": "draw_rect(Rect2(-25.6,y,51.2*clampf(float(current_hp)/get_stat(\"max_hp\"),0,1),4),Color(\"8cddf0\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 4,
+        "text": "signal hp_changed(current_hp: int, max_hp: int, current_shield: int)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 158,
+        "text": "current_hp = int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 175,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 195,
+        "text": "var previous_max_hp := int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 203,
+        "text": "\"stat\": \"max_hp\","
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 209,
+        "text": "heal(maxi(0, int(get_stat(\"max_hp\")) - previous_max_hp))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 413,
+        "text": "var damage_maximum_hp := int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 432,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 456,
+        "text": "current_hp = mini(current_hp + amount, int(get_stat(\"max_hp\")))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 458,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 465,
+        "text": "var max_hp := int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 467,
+        "text": "current_hp = max_hp"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 470,
+        "text": "hp_changed.emit(current_hp, max_hp, current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 481,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 489,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 683,
+        "text": "var max_hp := int(get_stat(\"max_hp\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 685,
+        "text": "if current_hp < max_hp:"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 802,
+        "text": "current_hp = mini(current_hp, int(get_stat(\"max_hp\")))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 805,
+        "text": "hp_changed.emit(current_hp, int(get_stat(\"max_hp\")), current_shield)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 886,
+        "text": "source = \"max_hp\""
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 916,
+        "text": "var max_hp := maxf(float(get_stat(\"max_hp\")), 1.0)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 917,
+        "text": "return float(current_hp) / max_hp * 100.0 < threshold"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 999,
+        "text": "current_hp = maxi(1, ceili(get_stat(\"max_hp\") * clampf(health_percent / 100.0, 0.0, 1.0)))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 128,
+        "text": "var durability := maxf(1, player.get_stat(\"max_hp\") + player.get_stat(\"shield\"))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 275,
+        "text": "if str(active.id) == \"paid_overtime\": factors.max_hp = float(active.health_multiplier)"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 277,
+        "text": "factors = {\"max_hp\": float(active.health_multiplier), \"armor\": float(active.armor_multiplier),"
+      },
+      {
+        "path": "scripts/waves/enemy_wave_pressure.gd",
+        "line": 117,
+        "text": "\"target_scope\": \"enemy\", \"stat\": \"max_hp\", \"operation\": Modifier.OPERATION_MULTIPLY,"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 119,
+        "text": "wave_challenges.sample_health(delta, player.current_hp, int(player.get_stat(\"max_hp\")))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 269,
+        "text": "player.heal(int(player.get_stat(\"max_hp\")))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 327,
+        "text": "var key := \"health\" if stat == \"max_hp\" else (\"speed\" if stat == \"move_speed\" else (\"armor\" if stat == \"armor\" else \"damage\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 367,
+        "text": "challenge_vault.initialize(ceili(player.get_stat(\"max_hp\") * float(wave_challenges.active.health_multiplier)), player.get_stat(\"armor\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 889,
+        "text": "\"max_hp\": float(_wave_erosion_pressure.get(\"max_hp_multiplier\", 1.0)),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 911,
+        "text": "modifiers.append(_build_wave_modifier(\"max_hp\", Modifier.OPERATION_MULTIPLY, hp_multiplier))"
+      }
+    ],
+    "hp_regen": [
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 686,
+        "text": "_hp_regen_remainder += maxf(get_stat(\"hp_regen\"), 0.0) * delta"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 130,
+        "text": "durability += maxf(0, player.get_stat(\"hp_regen\")) * 5.0"
+      }
+    ],
+    "shield": [
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 148,
+        "text": "# Camp talents contribute to the shield granted at the start of every wave."
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 151,
+        "text": "_initial_wave_shield = maxi(0, int(roundf(get_stat(\"shield\"))))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 479,
+        "text": "# Refill damage first; only shield above the existing capacity grows it."
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 128,
+        "text": "var durability := maxf(1, player.get_stat(\"max_hp\") + player.get_stat(\"shield\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 637,
+        "text": "func _record_trade_health(hp: int, maximum: int, shield: int) -> void:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 638,
+        "text": "if running: goblin_trades.record_health(hp, maximum, shield)"
+      }
+    ],
+    "shield_regen": [
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 694,
+        "text": "var shield_regen := maxf(get_stat(\"shield_regen\"), 0.0)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 695,
+        "text": "if shield_regen <= 0.0:"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 698,
+        "text": "_shield_regen_remainder += shield_regen * delta"
+      }
+    ],
+    "revive_count": [
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 161,
+        "text": "remaining_revives = int(get_stat(\"revive_count\"))"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 797,
+        "text": "var configured_revives := int(get_stat(\"revive_count\"))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 803,
+        "text": "\"stat\": \"revive_count\","
+      }
+    ],
+    "on_kill_heal": [
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 983,
+        "text": "player.heal(int(player.get_stat(\"on_kill_heal\")))"
+      }
+    ],
+    "armor": [
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 8,
+        "text": "var armor := 0.0"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 18,
+        "text": "armor = copied_armor"
+      },
+      {
+        "path": "scripts/battle/challenge_vault.gd",
+        "line": 25,
+        "text": "var damage := maxi(1, roundi(amount * StatDefinitions.calculate_damage_taken_from_armor(armor) / 100.0))"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/data/battle_difficulty.gd",
+        "line": 16,
+        "text": "\"health\": 0.8, \"damage\": 0.45, \"speed\": 0.85, \"armor\": 1.0,"
+      },
+      {
+        "path": "scripts/data/battle_difficulty.gd",
+        "line": 53,
+        "text": "for stat in [\"health\", \"damage\", \"speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 24,
+        "text": "var factors := {\"armor\": float(_profile.get(\"armor_multiplier\", 2)), \"melee_damage\": float(_profile.get(\"contact_damage_percent\", 115)) / 100.0}"
+      },
+      {
+        "path": "scripts/modifiers/modifier_stack.gd",
+        "line": 124,
+        "text": "var armor_rate := StatDefinitions.calculate_damage_taken_from_armor(get_stat(\"armor\"))"
+      },
+      {
+        "path": "scripts/modifiers/modifier_stack.gd",
+        "line": 201,
+        "text": "debug_data[\"armor\"] = get_stat(\"armor\")"
+      },
+      {
+        "path": "scripts/modifiers/modifier_stack.gd",
+        "line": 202,
+        "text": "debug_data[\"armor_damage_taken_rate\"] = StatDefinitions.calculate_damage_taken_from_armor(get_stat(\"armor\"))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 127,
+        "text": "# damage_taken_percent already includes armor in the player's derived stats."
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 277,
+        "text": "factors = {\"max_hp\": float(active.health_multiplier), \"armor\": float(active.armor_multiplier),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 327,
+        "text": "var key := \"health\" if stat == \"max_hp\" else (\"speed\" if stat == \"move_speed\" else (\"armor\" if stat == \"armor\" else \"damage\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 367,
+        "text": "challenge_vault.initialize(ceili(player.get_stat(\"max_hp\") * float(wave_challenges.active.health_multiplier)), player.get_stat(\"armor\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 890,
+        "text": "\"armor\": float(_wave_erosion_pressure.get(\"armor_multiplier\", 1.0)),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 915,
+        "text": "modifiers.append(_build_wave_modifier(\"armor\", Modifier.OPERATION_ADD_FLAT, float(_difficulty.armor_growth) * wave_step))"
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 115,
+        "text": "print(\"[DataRegistry] stat check: armor=100 => damage_taken_percent %d\" % int(armor_damage_taken))"
+      }
+    ],
+    "damage_taken_percent": [
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 485,
+        "text": "var damage_taken_percent := get_stat(\"damage_taken_percent\", 100.0)"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 494,
+        "text": "var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))"
+      },
+      {
+        "path": "scripts/modifiers/modifier_stack.gd",
+        "line": 123,
+        "text": "if stat_id == \"damage_taken_percent\":"
+      },
+      {
+        "path": "scripts/modifiers/modifier_stack.gd",
+        "line": 200,
+        "text": "if stat_id == \"damage_taken_percent\":"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 419,
+        "text": "var damage_taken_percent := get_stat(\"damage_taken_percent\", 100.0)"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 420,
+        "text": "health_damage = maxi(1, int(roundi(float(remaining_damage) * damage_taken_percent / 100.0)))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 127,
+        "text": "# damage_taken_percent already includes armor in the player's derived stats."
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 129,
+        "text": "durability /= maxf(0.01, player.get_stat(\"damage_taken_percent\", 100) / 100.0)"
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 115,
+        "text": "print(\"[DataRegistry] stat check: armor=100 => damage_taken_percent %d\" % int(armor_damage_taken))"
+      }
+    ],
+    "move_speed": [
+      {
+        "path": "scripts/enemies/echo_bat.gd",
+        "line": 167,
+        "text": "var speed := minf(get_stat(\"move_speed\"), float(enemy_data.get(\"base_stats\", {}).get(\"move_speed\", 80)) * MAX_MOVE_SPEED_MULTIPLIER)"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 748,
+        "text": "var resolved_move_speed := get_stat(\"move_speed\")"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 749,
+        "text": "var base_move_speed := float(enemy_data.get(\"base_stats\", {}).get(\"move_speed\", resolved_move_speed))"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 750,
+        "text": "var move_speed := minf(resolved_move_speed, base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 752,
+        "text": "move_speed *= _slow_multiplier"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 754,
+        "text": "move_speed *= _wet_slow_multiplier"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 755,
+        "text": "var target_velocity := direction * move_speed"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 531,
+        "text": "velocity = direction * get_stat(\"move_speed\")"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 533,
+        "text": "velocity = direction * minf(get_stat(\"move_speed\"), global_position.distance_to(move_destination) / maxf(delta, 0.001))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 131,
+        "text": "return {\"offense\": offense, \"durability\": durability, \"mobility\": maxf(1, player.get_stat(\"move_speed\")), \"control\": 100 + player.get_stat(\"control_power\")}"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 327,
+        "text": "var key := \"health\" if stat == \"max_hp\" else (\"speed\" if stat == \"move_speed\" else (\"armor\" if stat == \"armor\" else \"damage\"))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 914,
+        "text": "modifiers.append(_build_wave_modifier(\"move_speed\", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))"
+      }
+    ],
+    "melee_damage": [
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 24,
+        "text": "var factors := {\"armor\": float(_profile.get(\"armor_multiplier\", 2)), \"melee_damage\": float(_profile.get(\"contact_damage_percent\", 115)) / 100.0}"
+      },
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 168,
+        "text": "var damage := roundi(get_stat(\"melee_damage\") * (1.0 + get_stat(\"damage_percent\") / 100.0) * float(_profile.get(\"dash_damage_percent\", 120)) / 100.0)"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 811,
+        "text": "var damage := roundi(get_stat(\"melee_damage\") * (1.0 + get_stat(\"damage_percent\") / 100.0))"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 819,
+        "text": "var base_damage := get_stat(\"melee_damage\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 278,
+        "text": "\"melee_damage\": float(active.damage_multiplier), \"ranged_damage\": float(active.damage_multiplier), \"element_damage\": float(active.damage_multiplier)}"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 339,
+        "text": "if is_instance_valid(challenge_vault) and challenge_vault.alive and str(enemy_data.get(\"enemy_type\", \"normal\")) != \"elite\" and enemy.get_stat(\"melee_damage\") > 0:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 891,
+        "text": "\"melee_damage\": float(_wave_erosion_pressure.get(\"damage_multiplier\", 1.0)),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 912,
+        "text": "for stat in [\"melee_damage\", \"ranged_damage\", \"element_damage\"]:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 20,
+        "text": "\"melee_damage\": \"#EE7777\","
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 656,
+        "text": "DAMAGE_KIND_MELEE: return \"melee_damage\""
+      }
+    ],
+    "ranged_damage": [
+      {
+        "path": "scripts/enemies/echo_bat.gd",
+        "line": 115,
+        "text": "wave.damage = maxi(1, roundi(get_stat(\"ranged_damage\", 7) * (1.0 + get_stat(\"damage_percent\") / 100.0)))"
+      },
+      {
+        "path": "scripts/enemies/underworld_wolf.gd",
+        "line": 208,
+        "text": "var dealt := target_player.take_damage(roundi(get_stat(\"ranged_damage\")*(1.0+get_stat(\"damage_percent\")/100.0)),enemy_id+\"_breath\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 278,
+        "text": "\"melee_damage\": float(active.damage_multiplier), \"ranged_damage\": float(active.damage_multiplier), \"element_damage\": float(active.damage_multiplier)}"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 892,
+        "text": "\"ranged_damage\": float(_wave_erosion_pressure.get(\"damage_multiplier\", 1.0)),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 912,
+        "text": "for stat in [\"melee_damage\", \"ranged_damage\", \"element_damage\"]:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 21,
+        "text": "\"ranged_damage\": \"#7FD88F\","
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 658,
+        "text": "return \"ranged_damage\""
+      }
+    ],
+    "element_damage": [
+      {
+        "path": "scripts/enemies/underworld_wolf.gd",
+        "line": 165,
+        "text": "area_damage(locked_point, float(profile.leap_radius), roundi(get_stat(\"element_damage\")))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 278,
+        "text": "\"melee_damage\": float(active.damage_multiplier), \"ranged_damage\": float(active.damage_multiplier), \"element_damage\": float(active.damage_multiplier)}"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 326,
+        "text": "for stat in [\"max_hp\", \"melee_damage\", \"ranged_damage\", \"element_damage\", \"move_speed\", \"armor\"]:"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 893,
+        "text": "\"element_damage\": float(_wave_erosion_pressure.get(\"damage_multiplier\", 1.0)),"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 912,
+        "text": "for stat in [\"melee_damage\", \"ranged_damage\", \"element_damage\"]:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 22,
+        "text": "\"element_damage\": \"#78B7FF\","
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 657,
+        "text": "DAMAGE_KIND_ELEMENT: return \"element_damage\""
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 797,
+        "text": "\"element_damage_bonus\": 0 if damage_kind == DAMAGE_KIND_ELEMENT else maxi(0, int(roundi(get_stat(\"element_damage\")))),"
+      }
+    ],
+    "damage_percent": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1269,
+        "text": "var unit := \"%\" if stat_id in [\"damage_percent\", \"currency_gain_percent\"] else \"\""
+      },
+      {
+        "path": "scripts/enemies/echo_bat.gd",
+        "line": 115,
+        "text": "wave.damage = maxi(1, roundi(get_stat(\"ranged_damage\", 7) * (1.0 + get_stat(\"damage_percent\") / 100.0)))"
+      },
+      {
+        "path": "scripts/enemies/elite_rusher.gd",
+        "line": 168,
+        "text": "var damage := roundi(get_stat(\"melee_damage\") * (1.0 + get_stat(\"damage_percent\") / 100.0) * float(_profile.get(\"dash_damage_percent\", 120)) / 100.0)"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 811,
+        "text": "var damage := roundi(get_stat(\"melee_damage\") * (1.0 + get_stat(\"damage_percent\") / 100.0))"
+      },
+      {
+        "path": "scripts/enemies/enemy_controller.gd",
+        "line": 820,
+        "text": "var damage := int(roundf(base_damage * (1.0 + get_stat(\"damage_percent\") / 100.0)))"
+      },
+      {
+        "path": "scripts/enemies/underworld_wolf.gd",
+        "line": 208,
+        "text": "var dealt := target_player.take_damage(roundi(get_stat(\"ranged_damage\")*(1.0+get_stat(\"damage_percent\")/100.0)),enemy_id+\"_breath\")"
+      },
+      {
+        "path": "scripts/enemies/underworld_wolf.gd",
+        "line": 227,
+        "text": "var dealt := target_player.take_damage(roundi(amount * (1.0 + get_stat(\"damage_percent\") / 100.0)), enemy_id + \"_\" + state)"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 121,
+        "text": "var damage := maxf(1, weapon.get_base_attack_damage() * (1 + weapon.get_stat(\"damage_percent\") / 100.0))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 782,
+        "text": "var damage := base_damage * (1.0 + get_stat(\"damage_percent\") / 100.0)"
+      }
+    ],
+    "attack_speed": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 26,
+        "text": "const ATTACHMENT_BONUS_KEYS := [\"all_damage_percent\", \"element_damage_percent\", \"projectile_count\", \"damage_area_size\", \"crit_chance\", \"crit_damage\", \"attack_speed\"]"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 732,
+        "text": "return maxf(StatDefinitions.calculate_attack_interval(base_interval, get_stat(\"attack_speed\")), MIN_ATTACK_INTERVAL_SECONDS)"
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 114,
+        "text": "print(\"[DataRegistry] stat check: attack_speed=100 => interval %.2fs from 1.00s\" % attack_interval)"
+      }
+    ],
+    "crit_chance": [
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 122,
+        "text": "var critical := 1 + clampf(weapon.get_stat(\"crit_chance\") / 100.0, 0, 1) * maxf(0, weapon.get_stat(\"crit_damage\") / 100.0 - 1)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 26,
+        "text": "const ATTACHMENT_BONUS_KEYS := [\"all_damage_percent\", \"element_damage_percent\", \"projectile_count\", \"damage_area_size\", \"crit_chance\", \"crit_damage\", \"attack_speed\"]"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 783,
+        "text": "var critical := force_critical or (roll_critical and randf() * 100.0 < get_stat(\"crit_chance\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 846,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.critical\") % [int(get_stat(\"crit_chance\")), int(get_stat(\"crit_damage\"))])"
+      }
+    ],
+    "crit_damage": [
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 122,
+        "text": "var critical := 1 + clampf(weapon.get_stat(\"crit_chance\") / 100.0, 0, 1) * maxf(0, weapon.get_stat(\"crit_damage\") / 100.0 - 1)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 26,
+        "text": "const ATTACHMENT_BONUS_KEYS := [\"all_damage_percent\", \"element_damage_percent\", \"projectile_count\", \"damage_area_size\", \"crit_chance\", \"crit_damage\", \"attack_speed\"]"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 785,
+        "text": "damage *= get_stat(\"crit_damage\") / 100.0"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 846,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.critical\") % [int(get_stat(\"crit_chance\")), int(get_stat(\"crit_damage\"))])"
+      }
+    ],
+    "projectile_count": [
+      {
+        "path": "scripts/battle/attack_footprint.gd",
+        "line": 34,
+        "text": "var count := maxi(1, int(source.get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/effects/effect_parameter_resolver.gd",
+        "line": 10,
+        "text": "context.parameters[\"projectile_count\"] = _get_weapon_stat(weapon, \"projectile_count\", 1.0)"
+      },
+      {
+        "path": "scripts/effects/fire_seed.gd",
+        "line": 30,
+        "text": "var seed_count := maxi(2, int(roundi(context.get_resolved_parameter(\"seed_count\", 3.0) + context.get_resolved_parameter(\"projectile_count\", 1.0))))"
+      },
+      {
+        "path": "scripts/effects/lightning_particle_effect.gd",
+        "line": 401,
+        "text": "\"projectile_count\": _context.get_resolved_parameter(\"projectile_count\", 1.0),"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 123,
+        "text": "var coverage := sqrt(maxf(1, weapon.get_stat(\"projectile_count\"))) if weapon.get_attack_kind() != \"melee\" else 1.0"
+      },
+      {
+        "path": "scripts/weapons/active_weapon_casting.gd",
+        "line": 188,
+        "text": "loadout.weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/camp_dagger.gd",
+        "line": 63,
+        "text": "var count := maxi(1, int(weapon.get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/weapons/meteor_flail.gd",
+        "line": 35,
+        "text": "var count := maxi(1, int(weapon.get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/weapons/mobility_weapon_runtime.gd",
+        "line": 88,
+        "text": "for segment in maxi(1, int(weapon.get_stat(\"projectile_count\"))):"
+      },
+      {
+        "path": "scripts/weapons/ritual_domain.gd",
+        "line": 40,
+        "text": "marks_remaining = 3 + maxi(0, int(weapon.get_stat(\"projectile_count\")) - 1)"
+      },
+      {
+        "path": "scripts/weapons/ritual_domain.gd",
+        "line": 98,
+        "text": "var requested := primary_limit if primary_limit >= 0 else maxi(1, int(weapon.get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 26,
+        "text": "const ATTACHMENT_BONUS_KEYS := [\"all_damage_percent\", \"element_damage_percent\", \"projectile_count\", \"damage_area_size\", \"crit_chance\", \"crit_damage\", \"attack_speed\"]"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 743,
+        "text": "var projectile_count: int = maxi(1, int(get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 748,
+        "text": "for index in projectile_count:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 749,
+        "text": "angles.append((index - (projectile_count - 1) * 0.5) * gap)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 751,
+        "text": "if projectile_count == 1:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 755,
+        "text": "var step := spread_angle / float(projectile_count - 1)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 756,
+        "text": "for index in range(projectile_count):"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 848,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.targets\") % (maxi(1, int(get_stat(\"projectile_count\"))) + 2))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 850,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.projectiles\") % maxi(1, int(get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 854,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.hit_count\") % maxi(1, int(get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 896,
+        "text": "return maxf(0.001, float(weapon_data.get(\"lamp_spray_ms\", 1800)) / 1000.0) * maxi(1, int(get_stat(\"projectile_count\")))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 342,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 371,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 385,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 401,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 407,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 422,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\"))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 438,
+        "text": "weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat(\"projectile_count\")))))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 487,
+        "text": "var count := maxi(1, int(weapon.get_stat(\"projectile_count\")))"
+      }
+    ],
+    "area_size": [
+      {
+        "path": "scripts/battle/mobility_weapon_indicator.gd",
+        "line": 32,
+        "text": "var next := [source.instance_id, offset, can_cast, source.get_stat(\"area_size\"), source.get_stat(\"damage_area_size\"), source.is_return_ready(), anchor, source.owner_player.global_position]"
+      },
+      {
+        "path": "scripts/battle/mobility_weapon_indicator.gd",
+        "line": 39,
+        "text": "attack_range_bonus = source.get_stat(\"area_size\")"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/effects/effect_parameter_resolver.gd",
+        "line": 11,
+        "text": "context.parameters[\"attack_range_multiplier\"] = StatDefinitions.calculate_attack_range_multiplier(_get_weapon_stat(weapon, \"area_size\", 0.0))"
+      },
+      {
+        "path": "scripts/effects/wind_blade_effect.gd",
+        "line": 39,
+        "text": "effect._hit_radius = maxf(StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.get(\"hit_radius\", 0)), weapon.get_stat(\"area_size\")), DEFAULT_RADIUS * 0.5) * effect._area_scale"
+      },
+      {
+        "path": "scripts/terrain/destructible_test_area.gd",
+        "line": 122,
+        "text": "var area_size := Vector2(float(GRID_SIZE.x) * CELL_SIZE, float(GRID_SIZE.y) * CELL_SIZE)"
+      },
+      {
+        "path": "scripts/terrain/destructible_test_area.gd",
+        "line": 123,
+        "text": "draw_rect(Rect2(GRID_ORIGIN, area_size), Color(0.04, 0.05, 0.045, 0.9), true)"
+      },
+      {
+        "path": "scripts/terrain/destructible_test_area.gd",
+        "line": 133,
+        "text": "draw_rect(Rect2(GRID_ORIGIN, area_size), Color(0.62, 0.72, 0.62, 0.7), false, 2.0)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 529,
+        "text": "return StatDefinitions.calculate_damage_area_radius(StatDefinitions.calculate_attack_radius(base_radius, get_stat(\"area_size\")), get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 540,
+        "text": "var bonus := get_stat(\"area_size\")"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 572,
+        "text": "body_reach = StatDefinitions.calculate_attack_radius(get_base_attack_range(), get_stat(\"area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 602,
+        "text": "var reach := StatDefinitions.calculate_attack_radius(get_base_attack_range(), get_stat(\"area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 662,
+        "text": "return Vector2(get_attack_range(), StatDefinitions.calculate_attack_radius(float(weapon_data.get(\"domain_minor_axis\", 145)), get_stat(\"area_size\")))"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 392,
+        "text": "var targeting_radius := StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.get(\"hit_radius\", 0)), weapon.get_stat(\"area_size\"))"
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 116,
+        "text": "print(\"[DataRegistry] stat check: area_size=40 => radius %d from 100\" % int(attack_radius))"
+      }
+    ],
+    "damage_area_size": [
+      {
+        "path": "scripts/battle/mobility_weapon_indicator.gd",
+        "line": 32,
+        "text": "var next := [source.instance_id, offset, can_cast, source.get_stat(\"area_size\"), source.get_stat(\"damage_area_size\"), source.is_return_ready(), anchor, source.owner_player.global_position]"
+      },
+      {
+        "path": "scripts/battle/mobility_weapon_indicator.gd",
+        "line": 40,
+        "text": "damage_area_bonus = source.get_stat(\"damage_area_size\")"
+      },
+      {
+        "path": "scripts/battle/weapon_attack_indicator.gd",
+        "line": 110,
+        "text": "return StatDefinitions.calculate_damage_area_radius(base, weapon.get_stat(\"damage_area_size\")) if weapon.has_combat_tag(L10n.text(\"combat.tag.area\")) else base"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/effects/effect_parameter_resolver.gd",
+        "line": 12,
+        "text": "context.parameters[\"damage_area_size_multiplier\"] = StatDefinitions.calculate_damage_area_multiplier(_get_weapon_stat(weapon, \"damage_area_size\", 0.0))"
+      },
+      {
+        "path": "scripts/weapons/nightwatch_spear.gd",
+        "line": 160,
+        "text": "shard._hit_shape.radius = StatDefinitions.calculate_damage_area_radius(6.0, weapon.get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 26,
+        "text": "const ATTACHMENT_BONUS_KEYS := [\"all_damage_percent\", \"element_damage_percent\", \"projectile_count\", \"damage_area_size\", \"crit_chance\", \"crit_damage\", \"attack_speed\"]"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 519,
+        "text": "return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 522,
+        "text": "return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 525,
+        "text": "return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 528,
+        "text": "return maxf(StatDefinitions.calculate_damage_area_radius(base_radius, get_stat(\"damage_area_size\")), 4.0)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 529,
+        "text": "return StatDefinitions.calculate_damage_area_radius(StatDefinitions.calculate_attack_radius(base_radius, get_stat(\"area_size\")), get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 542,
+        "text": "bonus += get_stat(\"damage_area_size\")"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 559,
+        "text": "return StatDefinitions.calculate_damage_area_multiplier(get_stat(\"damage_area_size\"))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 702,
+        "text": "return maxf(1.0, StatDefinitions.calculate_damage_area_radius(grenade_blast_radius, get_stat(\"damage_area_size\")))"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 795,
+        "text": "\"damage_area_scale\": StatDefinitions.calculate_damage_area_multiplier(get_stat(\"damage_area_size\")),"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 842,
+        "text": "if get_stat(\"damage_area_size\") != 0:"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 843,
+        "text": "lines.append(L10n.text(\"ui.weapon.stats.area_bonus\") % get_stat(\"damage_area_size\"))"
+      }
+    ],
+    "control_power": [
+      {
+        "path": "scripts/effects/effect_parameter_resolver.gd",
+        "line": 13,
+        "text": "context.parameters[\"control_power\"] = _get_weapon_stat(weapon, \"control_power\", 0.0)"
+      },
+      {
+        "path": "scripts/effects/lightning_particle_effect.gd",
+        "line": 88,
+        "text": "effect._remaining_jumps = 1 + maxi(0, int(roundi(effect._get_cached_parameter(\"chain_count\", DEFAULT_CHAIN_COUNT) + effect._get_cached_parameter(\"control_power\", 0.0) / 10.0)))"
+      },
+      {
+        "path": "scripts/effects/lightning_particle_effect.gd",
+        "line": 399,
+        "text": "\"control_power\": _context.get_resolved_parameter(\"control_power\", 0.0),"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 131,
+        "text": "return {\"offense\": offense, \"durability\": durability, \"mobility\": maxf(1, player.get_stat(\"move_speed\")), \"control\": 100 + player.get_stat(\"control_power\")}"
+      }
+    ],
+    "pickup_radius": [
+      {
+        "path": "scripts/pickups/augmentation_pickup.gd",
+        "line": 58,
+        "text": "var pickup_radius := target_player.get_stat(\"pickup_radius\")"
+      },
+      {
+        "path": "scripts/pickups/augmentation_pickup.gd",
+        "line": 59,
+        "text": "if global_position.distance_to(target_player.global_position) > pickup_radius:"
+      },
+      {
+        "path": "scripts/pickups/exp_orb.gd",
+        "line": 86,
+        "text": "var pickup_radius := INF if force_collecting else target_player.get_stat(\"pickup_radius\")"
+      },
+      {
+        "path": "scripts/pickups/exp_orb.gd",
+        "line": 88,
+        "text": "if distance_to_player > pickup_radius:"
+      },
+      {
+        "path": "scripts/pickups/health_pack.gd",
+        "line": 42,
+        "text": "var pickup_radius := target_player.get_stat(\"pickup_radius\")"
+      },
+      {
+        "path": "scripts/pickups/health_pack.gd",
+        "line": 43,
+        "text": "if global_position.distance_to(target_player.global_position) > pickup_radius:"
+      },
+      {
+        "path": "scripts/pickups/relic_pickup.gd",
+        "line": 47,
+        "text": "if global_position.distance_to(target_player.global_position) <= target_player.get_stat(\"pickup_radius\"):"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 968,
+        "text": "circle.radius = maxf(get_stat(\"pickup_radius\"), 1.0)"
+      }
+    ],
+    "exp_gain_percent": [
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 542,
+        "text": "var final_exp := _apply_percent_bonus(exp_amount, \"exp_gain_percent\")"
+      }
+    ],
+    "drop_rate_percent": [
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 82,
+        "text": "var drop_rate_bonus := _get_player_stat(player, \"drop_rate_percent\")"
+      }
+    ],
+    "health_pack_heal_plus": [
+      {
+        "path": "scripts/pickups/health_pack.gd",
+        "line": 56,
+        "text": "var heal_plus := target_player.get_stat(\"health_pack_heal_plus\")"
+      }
+    ],
+    "luck": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 984,
+        "text": "if strong and not context.is_empty(): context[\"luck\"] = float(context.luck) + float(_bound_wave_manager.goblin_trades.definition(\"strong_refresh\").luck_bonus)"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1017,
+        "text": "var rarity_weights := generator.get_shop_rarity_weights(int(context.get(\"luck\", 0)))"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1072,
+        "text": "\"luck\": _get_shop_stat(\"luck\"),"
+      },
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 127,
+        "text": "var augmentation := _build_augmentation_action(drop_table, drop_rate_bonus, _get_player_stat(player, \"luck\"))"
+      },
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 133,
+        "text": "static func calculate_augmentation_chance(base_chance: float, drop_rate_bonus: float = 0.0, luck: float = 0.0) -> float:"
+      },
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 134,
+        "text": "var safe_luck := maxf(luck, 0.0)"
+      },
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 182,
+        "text": "func _build_augmentation_action(table: Dictionary, drop_rate_bonus: float, luck: float = 0.0) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/drop_reward_system.gd",
+        "line": 185,
+        "text": "var chance := calculate_augmentation_chance(float(table.get(\"augmentation_chance_percent\", 0.0)), drop_rate_bonus, luck)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 221,
+        "text": "apply_stat(player, \"cash_price\", \"luck\", -float(accepted.luck_cost) * times)"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 216,
+        "text": "_add_stat(player, \"luck\", float(chosen.luck))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 253,
+        "text": "_add_stat(player, \"luck\", float(completed.luck))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 254,
+        "text": "finance.record_trade_activity(L10n.message(\"log.challenge.completed\", [transferred, int(completed.principal), int(completed.luck)]))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 255,
+        "text": "return {\"deposited\": transferred, \"principal_bonus\": int(completed.principal), \"luck_bonus\": int(completed.luck)}"
+      }
+    ],
+    "currency_gain_percent": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1269,
+        "text": "var unit := \"%\" if stat_id in [\"damage_percent\", \"currency_gain_percent\"] else \"\""
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 543,
+        "text": "var bonus := player.get_stat(\"currency_gain_percent\") if player != null else 0.0"
+      }
+    ],
+    "finance": [
+      {
+        "path": "scripts/battle/debt_target_marker.gd",
+        "line": 3,
+        "text": "const ICON := preload(\"res://assets/ui/finance/challenge_debt.svg\")"
+      },
+      {
+        "path": "scripts/core/game_root.gd",
+        "line": 65,
+        "text": "var finance := find_child(\"FinancePopup\", true, false) as FinancePopup"
+      },
+      {
+        "path": "scripts/core/game_root.gd",
+        "line": 66,
+        "text": "if finance != null:"
+      },
+      {
+        "path": "scripts/core/game_root.gd",
+        "line": 67,
+        "text": "finance.handle_back_request()"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 669,
+        "text": "var finance := _bound_wave_manager.finance_system if _bound_wave_manager != null else null"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 671,
+        "text": "_stat_preview = StatPreviewBuilder.build_offer_stat_preview(offer, _bound_player, finance, cost)"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1175,
+        "text": "var finance := _bound_wave_manager.finance_system"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1178,
+        "text": "\"has_next_wave\": _has_next_wave(), \"gold\": get_current_gold(), \"principal\": finance.principal,"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1179,
+        "text": "\"sanity\": _bound_player.get_stat(\"humanity\"), \"can_bank\": not finance.manual_operation_used,"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1200,
+        "text": "if not sanity.is_empty() and float(context.sanity) <= float(sanity.maximum_sanity) and finance.principal >= int(sanity.minimum_principal):"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1201,
+        "text": "context[\"sanity_quote\"] = GoblinSpecialTrades.sanity_quote(_bound_player, finance, sanity)"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1204,
+        "text": "for settlement in finance.last_settlement_results:"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1256,
+        "text": "var finance := _bound_wave_manager.finance_system"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1257,
+        "text": "var preview := finance.create_preview_copy(preview_player)"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1261,
+        "text": "lines.append(L10n.text(\"ui.trade.preview.principal\") % [finance.principal, preview.principal])"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1262,
+        "text": "if not is_equal_approx(finance.get_interest_rate(), preview.get_interest_rate()):"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1263,
+        "text": "lines.append(L10n.text(\"ui.trade.preview.interest_rate\") % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1275,
+        "text": "var protection_before := finance.get_principal_revive_state()"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 107,
+        "text": "principal = maxi(0, int(roundf(player.get_stat(\"finance\", 0.0)))) if player != null else 0"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 131,
+        "text": "_record_activity(\"initial\", L10n.message(\"log.finance.initial_balance\", [principal, HumanityEconomy.number(get_interest_rate())]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 254,
+        "text": "var contract_text := L10n.message(\"log.finance.high_yield.fulfilled\", [HumanityEconomy.number(_get_wave_deposit_bonus_rate())]) if has_deposited_before_current_wave else L10n.message(\"log.finance.high_yield.unfulfilled\", [_get_wave_deposit_requirement()])"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 324,
+        "text": "var text := L10n.message(\"log.finance.deposit\", [sanitized_amount, principal - sanitized_amount, principal])"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 326,
+        "text": "text = L10n.message(\"log.finance.principal_granted\", [\"ui.trade.title\" if reason == \"goblin_trade\" else _relic_name(reason), sanitized_amount, principal])"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 357,
+        "text": "_record_activity(\"withdraw\", L10n.message(\"log.finance.withdraw\", [sanitized_amount, principal + sanitized_amount, principal]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 473,
+        "text": "_record_activity(\"relic_principal\", L10n.message(\"log.finance.principal_granted\", [_relic_name(relic_id), amount, principal]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 479,
+        "text": "_record_activity(\"relic_principal\", L10n.message(\"log.finance.principal_granted\", [_relic_name(relic_id), amount, principal]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 550,
+        "text": "_record_activity(\"relic_principal\", L10n.message(\"log.finance.revival_cost\", [protection.display_name, protection.principal_cost, principal]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 627,
+        "text": "_record_activity(\"relic_growth\", L10n.message(\"log.finance.interest_rate_growth\", [_relic_name(str(effect.get(\"relic_id\", \"\"))), HumanityEconomy.number(growth)]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 635,
+        "text": "_record_activity(\"relic_growth\", L10n.message(\"log.finance.stat_growth\", [_relic_name(str(effect.get(\"relic_id\", \"\"))), StatDefinitions.get_stat_definition(stat_id).get(\"display_name\", stat_id), \"+\" if amount >= 0 else \"\", HumanityEconomy.number(amount), unit]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 708,
+        "text": "_record_activity(\"rate\", L10n.message(\"log.finance.effective_rate_changed\", [HumanityEconomy.number(_last_activity_rate), HumanityEconomy.number(rate)]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 797,
+        "text": "_record_activity(\"relic_principal\", L10n.message(\"log.finance.bankruptcy_reorganization\", [recovery, principal]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 821,
+        "text": "return str(DataRegistry.get_record(\"relics\", relic_id).get(\"display_name\", \"log.finance.reason.principal_gift\"))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 825,
+        "text": "var label: Variant = \"log.finance.reason.extra_interest\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 827,
+        "text": "SETTLE_WAVE_END: label = \"log.finance.reason.wave_interest\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 828,
+        "text": "SETTLE_PERIODIC: label = \"log.finance.reason.dividend_clock\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 829,
+        "text": "SETTLE_ANNUITY_EXTRA: label = \"log.finance.reason.perpetual_annuity\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 833,
+        "text": "label = L10n.message(\"log.finance.reason.relic_interest\", [relic_data.get(\"display_name\", \"ui.common.relic\")])"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 837,
+        "text": "var reason_text := \"log.finance.reason.requirements_unmet\" if bool(result.get(\"blocked\", false)) else \"log.finance.reason.not_settled\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 838,
+        "text": "if reason == \"no_principal\": reason_text = \"log.finance.reason.no_principal\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 839,
+        "text": "elif reason == \"gold_delta_failed\": reason_text = \"log.finance.reason.credit_failed\""
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 840,
+        "text": "parts.append(L10n.message(\"log.finance.interest_not_received\", [label, reason_text]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 842,
+        "text": "parts.append(L10n.message(\"log.finance.interest_received\", [label, int(result.get(\"gain\", 0)), int(result.get(\"principal_before\", principal)), HumanityEconomy.number(float(result.get(\"interest_rate\", 0)))]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 844,
+        "text": "parts.append(L10n.message(\"log.finance.dividend_multiplier_suffix\", [int(result.get(\"dividend_multiplier\", 2))]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 847,
+        "text": "parts.append(L10n.message(\"log.finance.sanity_loss_suffix\", [HumanityEconomy.number(loss)]))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 849,
+        "text": "parts.append(\"log.finance.fraction_carried_suffix\" if float(result.get(\"interest_remainder\", 0)) > 0 else \"log.finance.no_interest_suffix\")"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 56,
+        "text": "func record_attempt(finance: BattleFinanceSystem, stats: RunStatistics) -> bool:"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 57,
+        "text": "if not can_offer() or finance == null: return false"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 61,
+        "text": "var baseline := finance.project_next_wave_interest(0, false)"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 67,
+        "text": "var extra := maxf(0, maxf(finance.project_next_wave_interest(amount, true), finance.project_next_wave_interest(amount, false)) - baseline)"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 98,
+        "text": "func accept(token: String, index: int, finance: BattleFinanceSystem, stats: RunStatistics) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 111,
+        "text": "if not finance.apply_loan_gold_delta(int(chosen.amount)):"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 118,
+        "text": "finance.record_loan_activity(L10n.message(\"log.loan.borrowed\", [chosen.amount,preparation_wave,chosen.due,HumanityEconomy.number(float(chosen.rate_percent))]))"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 123,
+        "text": "func repay(finance: BattleFinanceSystem, automatic := false) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 126,
+        "text": "if finance.get_current_gold() < amount: return {\"success\":false,\"reason\":\"loan_insufficient_gold\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 130,
+        "text": "if not finance.apply_loan_gold_delta(-amount):"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 136,
+        "text": "finance.record_loan_activity(L10n.message(\"log.loan.repaid\", [\"log.loan.repayment.automatic\" if automatic else \"log.loan.repayment.manual\",amount]))"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 146,
+        "text": "func adjust_challenge_debt(loan_id: String, delta: int, finance: BattleFinanceSystem) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 155,
+        "text": "finance.record_loan_activity(L10n.message(\"log.challenge.debt_changed\", [before, after]))"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 160,
+        "text": "func settle_wave(wave: int, finance: BattleFinanceSystem) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 165,
+        "text": "if finance.get_current_gold() >= int(debt.due):"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 166,
+        "text": "result = repay(finance,true)"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 172,
+        "text": "result = {\"success\":true,\"action\":\"rollover\",\"before\":before,\"due\":debt.due,\"interest\":int(debt.due)-before,\"gold\":finance.get_current_gold()}"
+      },
+      {
+        "path": "scripts/rewards/goblin_loan_system.gd",
+        "line": 173,
+        "text": "finance.record_loan_activity(L10n.message(\"log.loan.unpaid\", [result.gold,before,result.interest,result.due]))"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 40,
+        "text": "static func sanity_quote(player: PlayerController, finance: BattleFinanceSystem, definition: Dictionary) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 41,
+        "text": "if player == null or finance == null: return {}"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 43,
+        "text": "var cost := ceili(finance.principal * float(definition.principal_cost_ratio))"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 44,
+        "text": "if cost <= 0 or cost >= finance.principal: return {}"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 46,
+        "text": "var preview := finance.create_preview_copy(preview_player)"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 53,
+        "text": "return {\"principal_before\": finance.principal, \"sanity_before\": before, \"cost\": cost,"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 57,
+        "text": "static func accept_weapon(offer: Dictionary, player: PlayerController, finance: BattleFinanceSystem, loadout: WeaponLoadout) -> bool:"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 68,
+        "text": "if not finance.grant_trade_gold(int(offer.amount)):"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 77,
+        "text": "static func accept_sanity(offer: Dictionary, player: PlayerController, finance: BattleFinanceSystem) -> bool:"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 78,
+        "text": "var current := sanity_quote(player, finance, offer)"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 80,
+        "text": "if not finance.consume_trade_principal(int(current.cost)): return false"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 193,
+        "text": "func accept(token: String, player: PlayerController, finance: BattleFinanceSystem, loadout: WeaponLoadout = null) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 196,
+        "text": "var result := _accept_locked(player, finance, loadout)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 201,
+        "text": "func _accept_locked(player: PlayerController, finance: BattleFinanceSystem, loadout: WeaponLoadout) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 208,
+        "text": "if strong_refresh or amount != finance.get_current_gold(): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 209,
+        "text": "result = finance.apply_finance_operation(\"deposit\", amount)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 211,
+        "text": "\"principal_advance\": result = finance.deposit(amount, true, \"goblin_trade\")"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 213,
+        "text": "if not finance.grant_trade_gold(amount): return {\"success\": false, \"reason\": \"transaction_failed\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 214,
+        "text": "finance.trade_deposit_blocked = true"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 216,
+        "text": "finance.trade_withdraw_blocked = true"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 234,
+        "text": "if not GoblinSpecialTrades.accept_weapon(accepted, player, finance, loadout): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 236,
+        "text": "if not GoblinSpecialTrades.accept_sanity(accepted, player, finance): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 238,
+        "text": "if accepted_waves.has(id) or finance.get_current_gold() < int(accepted.minimum_offer_gold) or finance.principal < int(accepted.minimum_principal) or player.get_stat(\"humanity\") < float(accepted.minimum_sanity): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 241,
+        "text": "if finance.principal < int(accepted.minimum_principal): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 242,
+        "text": "finance.arm_capital_protection(preparation_wave + 1, float(accepted.damage_reduction), int(accepted.principal_per_damage))"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 246,
+        "text": "finance.record_trade_activity(accepted.get(\"body_message\", str(accepted.body)))"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 250,
+        "text": "func settle_wave(wave: int, player: PlayerController, finance: BattleFinanceSystem) -> void:"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 256,
+        "text": "finance.record_trade_activity(L10n.message(\"log.trade.sanity_cost\", [cost, interest_sanity_paid]))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 198,
+        "text": "func decide(token: String, accepted: bool, player: PlayerController, finance: BattleFinanceSystem, loans: GoblinLoanSystem = null) -> bool:"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 203,
+        "text": "if finance == null or not finance.consume_trade_principal(int(offer.stake)): return false"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 218,
+        "text": "finance.deposit(int(chosen.principal), true, \"wave_challenge\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 219,
+        "text": "finance.record_trade_activity({\"message_parts\": [\"log.challenge.accepted_prefix\", chosen.get(\"body_message\", L10n.message(L10n.key_for_source(str(chosen.body))))]})"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 227,
+        "text": "func settle_wave(wave: int, player: PlayerController, finance: BattleFinanceSystem) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 234,
+        "text": "finance.grant_trade_gold(reward)"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 235,
+        "text": "finance.record_trade_activity(L10n.message(\"log.challenge.gold_granted\", [reward]))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 239,
+        "text": "finance.deposit(int(completed.principal), true, \"wave_challenge\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 244,
+        "text": "if returned > 0: finance.deposit(returned, true, \"wave_challenge\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 247,
+        "text": "var transferred := finance.get_current_gold()"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 249,
+        "text": "if transferred > 0 and not bool(finance.deposit(transferred, false, \"wave_challenge\").get(\"success\", false)):"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 252,
+        "text": "finance.deposit(int(completed.principal), true, \"wave_challenge\")"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 254,
+        "text": "finance.record_trade_activity(L10n.message(\"log.challenge.completed\", [transferred, int(completed.principal), int(completed.luck)]))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 285,
+        "text": "func resolve_debt_target(wave: int, killed: bool, loans: GoblinLoanSystem, finance: BattleFinanceSystem) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 288,
+        "text": "var result := loans.adjust_challenge_debt(str(active.debt_id), int(active.debt_amount) * (-1 if killed else 1), finance)"
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 18,
+        "text": "const EMPTY_ATTACHMENT_ICON := \"res://assets/ui/finance/empty_enchantment_slot.svg\""
+      },
+      {
+        "path": "scripts/weapons/weapon_instance.gd",
+        "line": 672,
+        "text": "# The finance stat is a starting talent, not the live bank balance."
+      },
+      {
+        "path": "autoloads/audio_manager.gd",
+        "line": 28,
+        "text": "\"interest_reveal\": \"res://assets/audio/sfx/finance/sfx_interest_settle.ogg\","
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 117,
+        "text": "print(\"[DataRegistry] stat check: finance=101 interest_rate=5 => gain %d\" % finance_interest)"
+      }
+    ],
+    "interest_rate": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1263,
+        "text": "lines.append(L10n.text(\"ui.trade.preview.interest_rate\") % [HumanityEconomy.number(finance.get_interest_rate()), HumanityEconomy.number(preview.get_interest_rate())])"
+      },
+      {
+        "path": "scripts/debug/ui_visual_audit.gd",
+        "line": 221,
+        "text": "\"interest_rate\": 12.5,"
+      },
+      {
+        "path": "scripts/debug/ui_visual_audit.gd",
+        "line": 242,
+        "text": "\"interest_rate\": 12.5,"
+      },
+      {
+        "path": "scripts/debug/ui_visual_audit.gd",
+        "line": 244,
+        "text": "{\"source\": \"wave_end\", \"success\": true, \"gain\": 60, \"interest_rate\": 12.5},"
+      },
+      {
+        "path": "scripts/debug/ui_visual_audit.gd",
+        "line": 245,
+        "text": "{\"source\": \"annuity_extra\", \"success\": true, \"gain\": 20, \"interest_rate\": 12.5},"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 270,
+        "text": "\"interest_rate\": get_interest_rate(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 494,
+        "text": "base_rate = player.get_stat(\"interest_rate\", DEFAULT_INTEREST_RATE)"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 495,
+        "text": "return StatDefinitions.clamp_stat_value(\"interest_rate\", base_rate + interest_rate_bonus)"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 559,
+        "text": "\"interest_rate\": get_interest_rate(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 657,
+        "text": "\"interest_rate\": get_interest_rate(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 676,
+        "text": "\"interest_rate\": get_interest_rate(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 727,
+        "text": "player.add_runtime_modifier(_build_derived_modifier(relic_id, \"interest_rate\", deposit_rate))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 749,
+        "text": "player.add_runtime_modifier(_build_derived_modifier(relic_id, \"interest_rate\", derived_rate))"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 842,
+        "text": "parts.append(L10n.message(\"log.finance.interest_received\", [label, int(result.get(\"gain\", 0)), int(result.get(\"principal_before\", principal)), HumanityEconomy.number(float(result.get(\"interest_rate\", 0)))]))"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 225,
+        "text": "apply_stat(player, id, \"interest_rate\", float(get_interest_pact_terms().interest_bonus))"
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 215,
+        "text": "_add_stat(player, \"interest_rate\", float(chosen.interest_rate))"
+      },
+      {
+        "path": "autoloads/data_registry.gd",
+        "line": 117,
+        "text": "print(\"[DataRegistry] stat check: finance=101 interest_rate=5 => gain %d\" % finance_interest)"
+      }
+    ],
+    "shop_price_percent": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1074,
+        "text": "\"shop_price_percent\": _get_shop_stat(\"shop_price_percent\"),"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 271,
+        "text": "var modifiers := modifier_stack.get_all_modifiers(\"shop_price_percent\")"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 277,
+        "text": "var aggregate := get_stat(\"shop_price_percent\")"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 279,
+        "text": "var base_value := modifier_stack.get_base_stat(\"shop_price_percent\", 0.0)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 239,
+        "text": "apply_stat(player, id, \"shop_price_percent\", float(accepted.discount_percent))"
+      }
+    ],
+    "shop_offer_count_bonus": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 990,
+        "text": "var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat(\"shop_offer_count_bonus\"))"
+      }
+    ],
+    "load_capacity": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1071,
+        "text": "\"load_capacity\": _bound_loadout.get_load_capacity(),"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/weapons/weapon_loadout.gd",
+        "line": 608,
+        "text": "return int(owner_player.get_stat(\"load_capacity\"))"
+      }
+    ],
+    "enemy_spawn_rate_percent": [
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 210,
+        "text": "if str(chosen.id) == \"business_expansion\": _add_stat(player, \"enemy_spawn_rate_percent\", float(chosen.enemy_spawn_rate_percent))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 856,
+        "text": "var spawn_rate_percent := player.get_stat(\"enemy_spawn_rate_percent\") if player != null else 0.0"
+      }
+    ],
+    "humanity": [
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1075,
+        "text": "\"humanity\": _get_shop_stat(\"humanity\"),"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1179,
+        "text": "\"sanity\": _bound_player.get_stat(\"humanity\"), \"can_bank\": not finance.manual_operation_used,"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1264,
+        "text": "for stat_id in [\"max_hp\", \"armor\", \"attack_speed\", \"damage_percent\", \"area_size\", \"damage_area_size\", \"load_capacity\", \"currency_gain_percent\", \"humanity\"]:"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1273,
+        "text": "if not is_equal_approx(_bound_player.get_stat(\"humanity\"), preview_player.get_stat(\"humanity\")):"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1274,
+        "text": "lines.append(L10n.text(\"ui.trade.preview.after\") + HumanityEconomy.describe(preview_player.get_stat(\"humanity\")))"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1421,
+        "text": "quote = _trade_service.quote_weapon(_bound_loadout.get_weapon_instance(target_id), _bound_player.get_stat(\"humanity\"))"
+      },
+      {
+        "path": "scripts/core/main_flow_coordinator.gd",
+        "line": 1426,
+        "text": "quote = _trade_service.quote_item(item, _bound_player.get_stat(\"humanity\"))"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 6,
+        "text": "static func get_multipliers(humanity: float) -> Dictionary:"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 7,
+        "text": "var deficit := maxf(0.0, 100.0 - humanity)"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 19,
+        "text": "static func describe(humanity: float) -> String:"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 20,
+        "text": "var factors := get_multipliers(humanity)"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 22,
+        "text": "number(humanity), number((float(factors.purchase) - 1.0) * 100.0),"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 27,
+        "text": "static func tooltip(humanity: float) -> String:"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 28,
+        "text": "return describe(humanity) + L10n.text(\"economy.sanity.rules\")"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 31,
+        "text": "static func reprice_offer(offer: Dictionary, humanity: float) -> void:"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 37,
+        "text": "offer[\"shop_cost\"] = maxi(1, ceili(basis * float(get_multipliers(humanity).purchase))) if basis > 0 else 0"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 38,
+        "text": "offer[\"humanity\"] = humanity"
+      },
+      {
+        "path": "scripts/data/humanity_economy.gd",
+        "line": 50,
+        "text": "describe(float(offer.get(\"humanity\", 100))),"
+      },
+      {
+        "path": "scripts/debug/recording_session.gd",
+        "line": 117,
+        "text": "for pair in [[\"humanity\", \"sanity_delta\"], [\"divinity\", \"erosion_delta\"]]:"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 235,
+        "text": "for modifier in modifier_stack.get_all_modifiers(\"humanity\"):"
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 239,
+        "text": "\"source_id\": \"sanity_buyback\", \"target_scope\": \"player\", \"stat\": \"humanity\","
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 884,
+        "text": "source = \"humanity\""
+      },
+      {
+        "path": "scripts/player/player_controller.gd",
+        "line": 919,
+        "text": "return get_stat(\"humanity\") < threshold"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 273,
+        "text": "\"humanity\": get_humanity(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 507,
+        "text": "return player.get_stat(\"humanity\", 100.0) if player != null else 100.0"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 563,
+        "text": "\"humanity\": get_humanity(),"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 659,
+        "text": "\"humanity\": get_humanity(),"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 9,
+        "text": "var humanity := player.get_stat(\"humanity\")"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 10,
+        "text": "var quote := service.quote_weapon(weapon, humanity)"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 18,
+        "text": "for item in items: value += int(service.quote_item(item, humanity).total)"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 22,
+        "text": "weapon.trade_base_basis, weapon.trade_upgrade_basis.duplicate(true), attached, items, humanity]}"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 42,
+        "text": "var before := player.get_stat(\"humanity\")"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 48,
+        "text": "var recovery := maxf(0, float(definition.target_sanity) - preview_player.get_stat(\"humanity\")) * 0.5"
+      },
+      {
+        "path": "scripts/rewards/goblin_special_trades.gd",
+        "line": 50,
+        "text": "var gain := preview_player.get_stat(\"humanity\") - before"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 220,
+        "text": "apply_stat(player, \"cash_price\", \"humanity\", -float(accepted.sanity_cost) * times)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 238,
+        "text": "if accepted_waves.has(id) or finance.get_current_gold() < int(accepted.minimum_offer_gold) or finance.principal < int(accepted.minimum_principal) or player.get_stat(\"humanity\") < float(accepted.minimum_sanity): return {\"success\": false, \"reason\": \"trade_expired\"}"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 255,
+        "text": "apply_stat(player, \"interest_pact\", \"humanity\", -interest_sanity_paid)"
+      },
+      {
+        "path": "scripts/rewards/goblin_trade_system.gd",
+        "line": 262,
+        "text": "apply_stat(player, \"preferred_customer\", \"humanity\", -customer_sanity_paid)"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 15,
+        "text": "func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 42,
+        "text": "}, humanity)"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 45,
+        "text": "func quote_item(item: Dictionary, humanity: float = 100.0) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 57,
+        "text": "}, humanity)"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 60,
+        "text": "func _with_humanity(quote: Dictionary, humanity: float) -> Dictionary:"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 63,
+        "text": "quote[\"humanity\"] = humanity"
+      },
+      {
+        "path": "scripts/rewards/inventory_trade_service.gd",
+        "line": 64,
+        "text": "quote[\"total\"] = floori(float(neutral) * float(HumanityEconomy.get_multipliers(humanity).sale))"
+      }
+    ],
+    "divinity": [
+      {
+        "path": "scripts/debug/recording_session.gd",
+        "line": 117,
+        "text": "for pair in [[\"humanity\", \"sanity_delta\"], [\"divinity\", \"erosion_delta\"]]:"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 747,
+        "text": "var derived_rate := floorf(player.get_stat(\"divinity\") / erosion_divisor) * erosion_per_unit * float(relic_count)"
+      },
+      {
+        "path": "scripts/rewards/battle_finance_system.gd",
+        "line": 765,
+        "text": "\"stat\": \"divinity\","
+      },
+      {
+        "path": "scripts/rewards/wave_challenge_system.gd",
+        "line": 214,
+        "text": "_add_stat(player, \"divinity\", float(chosen.erosion))"
+      },
+      {
+        "path": "scripts/waves/wave_manager.gd",
+        "line": 270,
+        "text": "_wave_erosion_pressure = calculate_enemy_erosion_pressure(player.get_stat(\"divinity\") if player != null else 0.0)"
+      }
+    ]
+  }
+}

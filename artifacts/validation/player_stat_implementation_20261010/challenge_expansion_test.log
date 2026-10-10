@@ -1,0 +1,117 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS fifty live batches preserve exact percent supply: 0
+PASS count bonus never changes the interval: 0
+PASS fifty live batches preserve exact percent supply: 2
+PASS count bonus never changes the interval: 2
+PASS twenty percent emits one extra on batch five: 0
+PASS twenty percent emits one extra on batch five: 1
+PASS twenty percent emits one extra on batch five: 2
+PASS twenty percent emits one extra on batch five: 3
+PASS twenty percent emits one extra on batch five: 4
+PASS fifty live batches preserve exact percent supply: 20
+PASS count bonus never changes the interval: 20
+PASS fifty live batches preserve exact percent supply: 40
+PASS count bonus never changes the interval: 40
+PASS fifty live batches preserve exact percent supply: 300
+PASS count bonus never changes the interval: 300
+PASS empty and negative base counts add no supply
+PASS spawn percentage retains its zero to three-hundred clamp
+PASS multiple groups share the wave remainder and produce twelve from ten base enemies
+PASS read-only supply previews do not consume fractional spawn credit
+PASS fractional count growth respects the live population cap
+PASS capped batches do not create a deferred spawn burst
+PASS scheduler carries only the remaining fraction
+PASS starting a new wave clears the old fractional remainder
+PASS initializing a new run clears the fractional remainder
+[GameGlobal] game root ready
+PASS comfortable expansion eligibility
+PASS expansion needs a future wave for its permanent cost
+PASS expansion can return in the same run
+PASS cleanup leftovers alone do not qualify below ten-second average
+PASS cleanup leftovers qualify at ten-second average boundary
+PASS early wave finish cannot count as cleanup timeout
+PASS finishing all enemies before deadline excludes the challenge
+PASS cleanup terms retain high-pressure requirement
+PASS custody requires high capital
+PASS all eligible challenges share uniform pool
+PASS all spawned enemies average dead five seconds and surviving fifteen seconds exactly once
+PASS mixed killed and surviving population reaches actual trigger
+PASS reading final lifetime snapshot cannot accumulate it twice
+PASS new wave clears lifetime data and empty population cannot qualify
+PASS real run starts business_expansion
+PASS eligible offer reaches real modal business_expansion
+PASS requested expansion copy matches the live translation
+PASS challenge header and icon retained
+PASS small viewport keeps decisions reachable
+PASS accepted expansion adds twenty to the real player stat
+PASS expansion leaves the production spawn interval unchanged
+PASS expansion increases fractional batch supply
+PASS duplicate acceptance cannot grant the stat twice
+PASS survival pays 150 once
+PASS reward is idempotent and count stat survives settlement
+PASS second expansion in the same run can be offered and accepted
+PASS repeated expansion adds another twenty percentage points
+PASS challenge and camp count modifiers add on the same player stat
+PASS second expansion pays its own survival reward only once
+PASS declining expansion grants no additional stat
+PASS accept expansion before failed survival
+PASS failed survival cannot grant principal or claim it again
+PASS real run starts fleeting_fortune
+PASS eligible offer reaches real modal fleeting_fortune
+PASS new run clears prior challenge and camp fixture count modifiers
+PASS challenge header and icon retained
+PASS small viewport keeps decisions reachable
+PASS production drop receives wave-only terms
+PASS 1.5 times 1.2345 keeps two decimals, no whole-coin ceiling
+PASS pause freezes expiration
+PASS expired coin keeps its experience pickup
+PASS expired pickup grants experience only
+PASS wave income rounds the combined total only once
+PASS repeated settlement cannot round twice
+PASS next wave drops lose temporary terms
+PASS ordinary bonus drops also retain cents
+PASS unfinished wave cannot claim rounding bonus
+PASS real run starts capital_custody
+PASS eligible offer reaches real modal capital_custody
+PASS stake and reward are locked before presentation
+PASS challenge header and icon retained
+PASS small viewport keeps decisions reachable
+PASS acceptance deducts principal and spawns official vault
+PASS vault snapshots triple post-deduction maximum health and same armor
+PASS custody does not use a bank action
+PASS only part of the crowd targets the vault
+PASS hostile contact damages the vault
+PASS vault remains stationary
+PASS custody settlement destruction=false
+PASS custody settlement cannot repeat
+PASS real run starts capital_custody
+PASS eligible offer reaches real modal capital_custody
+PASS stake and reward are locked before presentation
+PASS acceptance deducts principal and spawns official vault
+PASS vault snapshots triple post-deduction maximum health and same armor
+PASS custody does not use a bank action
+PASS only part of the crowd targets the vault
+PASS hostile contact damages the vault
+PASS vault remains stationary
+PASS destruction records contract failure
+PASS custody settlement destruction=true
+PASS custody settlement cannot repeat
+CHALLENGE_EXPANSION_COMPLETE checks=96 failures=0

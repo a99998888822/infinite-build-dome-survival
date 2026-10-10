@@ -1,0 +1,38 @@
+[
+  {
+    "name": "editor",
+    "exit_code": 0,
+    "errors": [],
+    "summary": []
+  },
+  {
+    "name": "headless",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "COOLDOWN_FEEDBACK checks=29 captured=0 failures=[]"
+    ]
+  },
+  {
+    "name": "active_combat",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ACTIVE_COMBAT_INTEGRATION checks=146 failures=0"
+    ]
+  },
+  {
+    "name": "r02",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "COMBAT_FEEDBACK_R02 checks=24 failures=0"
+    ]
+  },
+  {
+    "name": "main",
+    "exit_code": 0,
+    "errors": [],
+    "summary": []
+  }
+]

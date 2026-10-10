@@ -65,13 +65,27 @@ func _fire_cannon(point: Vector2, contact: EnemyController = null) -> void:
 
 func _impact(point: Vector2) -> void:
 	var shock := weapon.is_star_tome()
-	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, Vector2.ONE * weapon.get_hit_radius() / 64.0)
+	var visual_scale := weapon.get_hit_radius() / 64.0
+	if not shock:
+		# The atlas reaches 82 px including sparks: 1.1x stays inside the 96 px hit circle.
+		visual_scale = weapon.get_hit_radius() / 96.0 * 1.1
+	# Project every slash frame onto the same ground ellipse as its indicator.
+	# The circular physics query below keeps its existing radius.
+	var visual_axes := Vector2.ONE if shock else Vector2(1.0, AttackFootprint.ELLIPSE_RATIO)
+	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, visual_axes * visual_scale)
 	# Copy only matching contacts before native damage/reactions mutate the registry.
 	var victims: Array[EnemyController] = []
-	var radius_squared := weapon.get_hit_radius() * weapon.get_hit_radius()
-	for node in EnemyRegistry.get_registered_enemies():
-		var enemy := node as EnemyController
-		if is_instance_valid(enemy) and enemy.is_inside_tree() and enemy.is_alive() and point.distance_squared_to(enemy.global_position) <= radius_squared and clear_path(self, point, enemy.global_position):
+	var shape := CircleShape2D.new()
+	shape.radius = weapon.get_hit_radius()
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, point)
+	query.collision_mask = 2
+	query.collide_with_areas = false
+	# Use body overlap, including collider offsets/scale, rather than enemy origins.
+	for contact in get_world_2d().direct_space_state.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size())):
+		var enemy := contact.collider as EnemyController
+		if is_instance_valid(enemy) and enemy.is_inside_tree() and enemy.is_alive() and not victims.has(enemy) and clear_path(self, point, enemy.global_position):
 			victims.append(enemy)
 	AudioManager.begin_combat_audio()
 	for segment in maxi(1, int(weapon.get_stat("projectile_count"))):
@@ -83,7 +97,7 @@ func _impact(point: Vector2) -> void:
 			deal_hit(enemy, event, direction)
 			hit_count += 1
 			if shock and segment == 0 and is_instance_valid(enemy) and enemy.is_alive():
-				enemy.apply_knockback(direction, float(weapon.weapon_data.get("shock_speed", 360)), 0.24)
+				enemy.apply_knockback(direction, float(weapon.weapon_data.get("shock_speed", 360)), 0.24, weapon.get_stat("control_power"))
 	AudioManager.end_combat_audio()
 
 func request_return() -> bool:

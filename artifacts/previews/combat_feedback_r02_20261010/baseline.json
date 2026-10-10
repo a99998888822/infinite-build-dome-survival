@@ -1,0 +1,11 @@
+{
+  "scripts/enemies/enemy_controller.gd": "c739ad961ad7b9128b0f1a7892e4359db1805345c490ef8a2220878d3642da8f",
+  "scripts/weapons/camp_dagger.gd": "7f7ebabc65e037c39c4f329b4166f16cf820fc090e93e1d1da6bdbb2b98afe07",
+  "scripts/weapons/directed_weapon_runtime.gd": "31def94fec619cc4acaa65a7e514df841db552c3f562ea56d17e7474662280d6",
+  "scripts/weapons/earth_hammer.gd": "b79a770771c74d28b896c2cef7b223c1b1d08f92ec7082eb18ac47558fbe287f",
+  "scripts/weapons/ritual_domain.gd": "098d3bb13c71ab137fba30e85cea46e26081305f104143718f80e0bc0bb3a470",
+  "scripts/weapons/weapon_instance.gd": "6784ca5ad6b0482af7f8e268232947b56d43afeb53485b8f3cf82129d39b5440",
+  "scripts/ui/active_combat_weapon_bar.gd": "384020dd4a6ed9e6b7a92166229a95d658eefbb64e76c053067dd1aa46ed2e1a",
+  "scripts/audio/combat_sound_library.gd": "80bcac971f7c7e9542ac11374f784a24bd114bfb64acf0a276dc1596db3a64eb",
+  "scripts/tools/build_combat_audio.py": "4af4c2068a9220944780578f4f4b8a7d31173c736b4585c5458d19128ddd14dc"
+}

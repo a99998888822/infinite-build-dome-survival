@@ -1,6 +1,9 @@
 extends Node2D
 class_name WindBladeEffect
 const PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
+const ATLAS = preload("res://assets/sprites/effects/wind_blade.png")
+const FRAME_SIZE := Vector2(128, 96)
+const FRAME_COUNT := 12
 
 const DEFAULT_SPEED: float = 480.0
 const DEFAULT_LIFETIME: float = 0.46
@@ -19,6 +22,10 @@ var _knockback_speed := 450.0
 var _knockback_duration := 0.3
 var _hit_targets: Dictionary = {}
 var _ground_contact := Callable()
+
+
+func _init() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed: float = DEFAULT_SPEED, lifetime: float = DEFAULT_LIFETIME, weapon: WeaponInstance = null, damage_event: DamageEvent = null, ignored_target_id: int = 0, ground_contact: Callable = Callable(), attachment_item_id: String = "") -> void:
@@ -73,27 +80,15 @@ func _damage_path_enemies() -> void:
 			_ground_contact.call(enemy)
 			continue
 		if enemy.can_be_pushed_by_wind():
-			enemy.apply_knockback(_direction, _knockback_speed, _knockback_duration)
+			enemy.apply_knockback(_direction, _knockback_speed, _knockback_duration, _weapon.get_stat("control_power"))
+		else:
+			enemy.show_control_resistance()
 		enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 
 
 func _draw() -> void:
 	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
-	var fade := 1.0 - progress
-	var radius := DEFAULT_RADIUS * _area_scale * (1.0 + progress * 0.32)
-	var outer := PackedVector2Array()
-	var inner := PackedVector2Array()
-	for index in range(19):
-		var ratio := float(index) / 18.0
-		# Use a broad, shallow arc rather than wrapping most of the way around
-		# the origin. The compressed vertical axis keeps the blade visually flat.
-		var angle := lerpf(-PI * 0.52, PI * 0.52, ratio)
-		outer.append(Vector2(cos(angle), sin(angle) * 0.62) * radius)
-		inner.append(Vector2(cos(angle), sin(angle) * 0.62) * radius * 0.56)
-	var shape := outer.duplicate()
-	for index in range(inner.size() - 1, -1, -1):
-		shape.append(inner[index])
-	draw_colored_polygon(shape, Color(0.72, 0.98, 1.0, 0.18 * fade))
-	draw_polyline(outer, Color(0.82, 1.0, 1.0, 0.96 * fade), 4.0, true)
-	draw_polyline(inner, Color(0.24, 0.78, 0.88, 0.64 * fade), 2.0, true)
-	draw_line(Vector2(-radius * 0.12, 0.0), Vector2(radius * 0.92, 0.0), Color(0.96, 1.0, 1.0, 0.72 * fade), 1.0, true)
+	var frame := mini(int(progress * FRAME_COUNT), FRAME_COUNT - 1)
+	var size := FRAME_SIZE * _area_scale
+	# Rotation still belongs to the moving node; only the visual extent scales.
+	draw_texture_rect_region(ATLAS, Rect2(-size * 0.5, size), Rect2(Vector2(frame * FRAME_SIZE.x, 0), FRAME_SIZE))

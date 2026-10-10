@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://artifacts/validation/confirmed_relic_balance_20261010/verify.gd" id="1"]
+
+[node name="ConfirmedRelicBalance" type="Node"]
+script = ExtResource("1")

@@ -1,0 +1,13 @@
+{
+  "scripts/effects/lightning_particle_effect.gd": "b6051dfe085b3fb4aeab136ad1ea5913270c2173cf077a32a6763bd353bd9b17",
+  "scripts/effects/element_reaction_resolver.gd": "9aae6da216e0bfc2fc59c275d8875298fb1425ce06a7cc800de113b68b441519",
+  "scripts/waves/wave_manager.gd": "c685b18be9e7161769b365ee2578e43209717b005564c7cdbfe7eb39ceef8199",
+  "localization/catalogs/gameplay.csv": "efe95f38cd60a4a9573e1b95eafa4df47cc06b4202a2893b732ea6d3d2d13726",
+  "scripts/effects/element_reaction_text.gd": "f84ccaea0624b18534414106a3e0d9b7c9d4234f448b9b00094af00f9cd41068",
+  "artifacts\\previews\\reaction_text_r04_20261010\\capture.gd": "eb8b30ddd0c16fa74fd0dbcc4580b34ab95d0ac62aac9879a5b537d7c94c0843",
+  "artifacts\\previews\\reaction_text_r04_20261010\\launch.gd": "44efbd8d82292ebb98b1f12e163d3ca2a7a9848f6b349a67261f5ce107fdc648",
+  "artifacts\\previews\\reaction_text_r04_20261010\\package_review.py": "0805c455e9c086cef31cf310ac4c2d2ae9bc2075dc8d7299edf656414bafc532",
+  "artifacts\\previews\\reaction_text_r04_20261010\\check_browser.cjs": "c6b308432489208bdf73c6cfd11885e2534c198cc97e811bff35e3e75cee3a27",
+  "artifacts\\validation\\element_reaction_text_install_20261010\\validate.py": "73747d9a75938e6cf9f999f962fe59a05d0e9f090159827942fd234ba3cd39b3",
+  "artifacts\\validation\\element_reaction_text_install_20261010\\verify_visual.py": "edb33082d2b5263176cc3b2c38b801f74d7141e2c5d84bf4d4ecf9d6fded4297"
+}

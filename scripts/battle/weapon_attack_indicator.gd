@@ -1,14 +1,13 @@
 extends Node2D
 class_name WeaponAttackIndicator
-## Plain range silhouettes shared by live previews and transparent exports.
+## Pixel range silhouettes shared by live previews and transparent exports.
 
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
-const CLEARANCE_SHADER = preload("res://shaders/ui/attack_indicator_clearance.gdshader")
+const STYLE = preload("res://scripts/battle/pixel_indicator_style.gd")
 const MOBILITY = preload("res://scripts/battle/mobility_weapon_indicator.gd")
 var mobility_indicator: Node2D
-const FILL := Color(0.66, 0.88, 1.0, 0.085)
-const EDGE := Color(0.79, 0.94, 1.0, 0.60)
-const HALO := Color(0.39, 0.72, 0.91, 0.10)
+var _style := STYLE.new()
+var _shape_transform := Transform2D.IDENTITY
 var weapon: WeaponInstance
 var target_offset := Vector2(180, 0)
 var available := true
@@ -28,21 +27,19 @@ func configure(source: WeaponInstance, offset: Vector2, can_cast: bool = true) -
 		mobility_indicator.configure_weapon(source, offset, can_cast)
 	elif mobility_indicator != null:
 		mobility_indicator.hide()
-	if material is ShaderMaterial:
-		material.set_shader_parameter("cast_origin", global_position)
-		material.set_shader_parameter("clearance", clearance)
+	STYLE.sync_material(self, clearance, available)
 	queue_redraw()
 
 
 func _ready() -> void:
 	z_index = -1
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	var shader_material := ShaderMaterial.new()
-	shader_material.shader = CLEARANCE_SHADER
-	material = shader_material
+	material = STYLE.make_material()
 
 
 func _draw() -> void:
+	STYLE.sync_material(self, clearance, available)
+	_shape_transform = Transform2D.IDENTITY
 	if weapon == null or weapon.is_mobility_weapon():
 		return
 	var reach := weapon.get_attack_range()
@@ -54,7 +51,7 @@ func _draw() -> void:
 		for point in grenade_landings(weapon, target_offset):
 			_range_ellipse(point, FOOTPRINT.grenade_blast_axes(weapon), true)
 	else:
-		draw_set_transform(Vector2.ZERO, aim.angle())
+		_shape_transform = Transform2D(aim.angle(), Vector2.ZERO)
 		if weapon.is_camp_dagger():
 			_fan(clearance, maxf(clearance + 8, weapon.get_dagger_outer_radius()), deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))))
 		elif weapon.is_copper_lamp():
@@ -63,45 +60,22 @@ func _draw() -> void:
 			_fan(clearance, reach, deg_to_rad(FOOTPRINT.FLAIL_ARC))
 		else:
 			for angle in weapon.get_projectile_angles():
-				draw_set_transform(Vector2.ZERO, aim.angle() + deg_to_rad(angle))
+				_shape_transform = Transform2D(aim.angle() + deg_to_rad(angle), Vector2.ZERO)
 				_arrow(reach, get_arrow_width_parameter())
-	draw_set_transform(Vector2.ZERO)
+	_shape_transform = Transform2D.IDENTITY
 
 
 static func grenade_landings(source: WeaponInstance, landing: Vector2) -> Array[Vector2]:
 	return FOOTPRINT.grenade_landings(source, landing)
 
 
-func _tint(color: Color) -> Color:
-	return color if available else Color(0.58, 0.66, 0.70, color.a * 0.5)
-
-
 func _outline(points: PackedVector2Array, closed: bool = false, opacity: float = 1.0) -> void:
-	if points.size() < 2:
-		return
-	var path := points.duplicate()
-	if closed:
-		path.append(points[0])
-	draw_polyline(path, _tint(Color(HALO, HALO.a * opacity)), 3.0, true)
-	draw_polyline(path, _tint(Color(EDGE, EDGE.a * opacity)), 1.0, true)
+	_style.outline(self, _shape_transform * points, available, closed, opacity)
 
 
 func _polygon(points: PackedVector2Array) -> void:
-	draw_colored_polygon(points, _tint(FILL))
+	draw_colored_polygon(_shape_transform * points, STYLE.fill_color(available))
 	_outline(points, true)
-
-
-func _rounded(points: PackedVector2Array, fraction: float = 0.22) -> PackedVector2Array:
-	var result := PackedVector2Array()
-	for i in points.size():
-		var previous := points[(i + points.size() - 1) % points.size()]
-		var next := points[(i + 1) % points.size()]
-		var a := points[i].lerp(previous, fraction)
-		var b := points[i].lerp(next, fraction)
-		for j in 7:
-			var t := j / 6.0
-			result.append(a.lerp(points[i], t).lerp(points[i].lerp(b, t), t))
-	return result
 
 
 func get_arrow_width_parameter() -> float:
@@ -115,18 +89,11 @@ func arrow_points(reach: float, width: float) -> PackedVector2Array:
 	var begin := clearance + 2.0
 	var length := maxf(12, reach - begin)
 	var shoulder := reach - minf(length * 0.32, maxf(22, width * 2.4))
-	# Keep the original rounded head vertices, including their old tangents.
-	var raw := PackedVector2Array([Vector2(begin, -width * 0.62), Vector2(shoulder, -width * 0.62),
-		Vector2(shoulder, -width * 1.2), Vector2(reach, 0), Vector2(shoulder, width * 1.2),
-		Vector2(shoulder, width * 0.62), Vector2(begin, width * 0.62)])
-	var rounded := _rounded(raw)
 	var shaft := width * 0.62 * 0.8
-	var result := PackedVector2Array([Vector2(begin, -shaft), Vector2(shoulder, -shaft)])
-	for i in range(14, 35):
-		result.append(rounded[i])
-	result.append(Vector2(shoulder, shaft))
-	result.append(Vector2(begin, shaft))
-	return result
+	# Sharp shoulders retain the original reach/width and read as a pixel arrow.
+	return PackedVector2Array([Vector2(begin, -shaft), Vector2(shoulder, -shaft),
+		Vector2(shoulder, -width * 1.2), Vector2(reach, 0), Vector2(shoulder, width * 1.2),
+		Vector2(shoulder, shaft), Vector2(begin, shaft)])
 
 
 func _arrow(reach: float, width: float) -> void:
@@ -144,7 +111,7 @@ func _range_ellipse(center: Vector2, axes: Vector2, filled: bool) -> void:
 	var border := _arc_points(center, axes, 0, TAU, 160)
 	border.remove_at(border.size() - 1)
 	if filled:
-		draw_colored_polygon(border, _tint(FILL))
+		draw_colored_polygon(border, STYLE.fill_color(available))
 	_outline(border, true, 1.0 if filled else 0.70)
 
 

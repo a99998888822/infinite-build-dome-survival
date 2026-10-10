@@ -2,6 +2,7 @@ extends RefCounted
 class_name ElementReactionResolver
 
 const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.gd")
+const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
 const REFLECTION = preload("res://scripts/effects/light_reflection_effect.gd")
 
 const ELEMENT_WATER: String = "water"
@@ -43,6 +44,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 	var parent: Node = reaction_data.get("parent", enemy.get_parent())
 	var hit_position: Vector2 = reaction_data.get("hit_position", enemy.global_position)
 	var source_id := str(reaction_data.get("source_id", "element_%s" % element_id))
+	var control_power := _get_control_power(reaction_data)
 	var was_holy: bool = enemy.has_status("holy_flame")
 	var was_dark_flame: bool = enemy.has_status("dark_flame")
 	match element_id:
@@ -70,6 +72,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				enemy.apply_wet(
 					maxf(float(reaction_data.get("wet_duration", DEFAULT_WET_DURATION)), 0.1),
 					clampf(float(reaction_data.get("wet_slow_multiplier", DEFAULT_WET_SLOW_MULTIPLIER)), 0.05, 1.0),
+					control_power,
 				)
 		ELEMENT_FIRE:
 			if enemy.has_status("wet"):
@@ -116,9 +119,10 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				enemy.apply_slow(
 					maxf(float(reaction_data.get("slow_duration", DEFAULT_ICE_SLOW_DURATION)), 0.1),
 					clampf(float(reaction_data.get("slow_multiplier", DEFAULT_ICE_SLOW_MULTIPLIER)), 0.05, 1.0),
+					control_power,
 				)
 		ELEMENT_ELECTRIC:
-			enemy.apply_lightning_stun(maxf(float(reaction_data.get("stun_duration", DEFAULT_STUN_DURATION)), 0.1))
+			enemy.apply_lightning_stun(maxf(float(reaction_data.get("stun_duration", DEFAULT_STUN_DURATION)), 0.1), control_power)
 			if enemy.has_status("burning") and float(reaction_data.get("detonate_burning", 0.0)) > 0.0:
 				enemy.clear_burning()
 				result["burning_detonated"] = true
@@ -143,7 +147,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				result["neutralized"] = true
 				emit_feedback(parent, "cancel", hit_position)
 			else:
-				enemy.apply_blind(maxf(float(reaction_data.get("dark_duration", DEFAULT_DARK_DURATION)), 0.1))
+				enemy.apply_blind(maxf(float(reaction_data.get("dark_duration", DEFAULT_DARK_DURATION)), 0.1), control_power)
 	if not was_holy and enemy.has_status("holy_flame"):
 		emit_feedback(parent, "holy", hit_position)
 	if not was_dark_flame and enemy.has_status("dark_flame"):
@@ -178,12 +182,20 @@ static func _freeze(enemy: Node, data: Dictionary, parent: Node, hit_position: V
 	enemy.clear_wet()
 	var thaw_data := data.duplicate()
 	thaw_data["wet_duration"] = DEFAULT_WET_DURATION
-	enemy.apply_freeze(maxf(float(data.get("freeze_duration", DEFAULT_FREEZE_DURATION)), 0.1), thaw_data)
+	enemy.apply_freeze(maxf(float(data.get("freeze_duration", DEFAULT_FREEZE_DURATION)), 0.1), thaw_data, _get_control_power(data))
 	_emit_ice_crystal(parent, hit_position)
+
+
+static func _get_control_power(data: Dictionary) -> float:
+	if data.has("control_power"):
+		return float(data.control_power)
+	var event: DamageEvent = data.get("damage_event")
+	return event.control_power if event != null else -1.0
 
 
 static func emit_feedback(parent: Node, kind: String, hit_position: Vector2, options: Dictionary = {}) -> void:
 	if not is_instance_valid(parent) or not parent.is_inside_tree():
 		return
 	AudioManager.play_reaction_sfx(kind)
+	if kind == "conduct": REACTION_TEXT.spawn(parent, kind, hit_position)
 	REACTION_VISUAL.spawn(parent, kind, hit_position, options)

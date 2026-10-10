@@ -19,6 +19,7 @@ const SPAWN_SEPARATION_DISTANCE: float = 32.0
 const SPAWN_CLUSTER_HALF_ANGLE: float = PI / 22.5 # Eight degrees either side.
 const SPAWN_POSITION_ATTEMPTS: int = 24
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
+const SPAWN_COUNT_PRECISION: int = 10000
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
 
@@ -31,6 +32,7 @@ var current_wave_index: int = -1
 var current_wave: Dictionary = {}
 var wave_time_left: float = 0.0
 var spawn_timers_ms: Array[float] = []
+var _enemy_spawn_remainder_units: int = 0
 var running: bool = false
 const CLEANUP_SECONDS := 10.0
 var cleanup_active := false
@@ -183,6 +185,7 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	economy_journal.clear()
 	_wave_income_recorded = false
 	current_wave_index = -1
+	_enemy_spawn_remainder_units = 0
 	running = false
 	player_level = DEFAULT_PLAYER_LEVEL
 	if CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
@@ -253,6 +256,7 @@ func start_next_wave() -> bool:
 	_augmentation_valid_kills = 0
 	wave_time_left = float(current_wave.get("duration_seconds", 0))
 	spawn_timers_ms.clear()
+	_enemy_spawn_remainder_units = 0
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
 	for index in spawn_groups.size():
 		# Stagger the groups instead of surrounding a new player immediately.
@@ -433,6 +437,10 @@ func clear_battle_entities() -> void:
 			grenade.cancel()
 		for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
 			effect.cancel()
+		for decoration in get_tree().get_nodes_in_group("combat_impacts_r02"):
+			decoration.cancel()
+		for reaction_text in get_tree().get_nodes_in_group("element_reaction_texts"):
+			reaction_text.cancel()
 	_pending_reward_batches.clear()
 	_elite_spawn_schedule.clear()
 	_clear_non_exp_reward_pickups()
@@ -720,7 +728,7 @@ func _process_spawn_timers(delta: float) -> void:
 		if spawn_timers_ms[index] > 0.0:
 			continue
 		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
-		var spawn_count := mini(available, calculate_enemy_spawn_count(int(group.get("count_per_spawn", 1))))
+		var spawn_count := mini(available, _take_enemy_spawn_count(int(group.get("count_per_spawn", 1))))
 		for count_index in range(spawn_count):
 			var id := str(group.get("enemy_id", ""))
 			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
@@ -789,7 +797,7 @@ func _initialize_elite_schedule() -> void:
 	_elite_profile = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
 	_elite_erosion_snapshot = float(_wave_erosion_pressure.get("erosion", 0.0))
 	_elite_expected_count = calculate_miniboss_expected_count(current_wave_index + 1, _elite_erosion_snapshot)
-	_elite_expected_count = minf(float(_elite_profile.get("quota_cap", 3)), _elite_expected_count * float(_difficulty.elite_count))
+	_elite_expected_count = minf(float(_elite_profile.get("quota_cap", 9)), _elite_expected_count * float(_difficulty.elite_count))
 	if current_wave_index + 1 < int(_difficulty.first_elite_wave):
 		_elite_expected_count = 0.0
 	_elite_planned_count = _sample_miniboss_quota(_elite_expected_count)
@@ -807,7 +815,7 @@ func calculate_miniboss_expected_count(wave_number: int, erosion: float) -> floa
 	if wave_number <= 1:
 		return 0.0
 	var profile: Dictionary = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
-	var cap := maxi(0, int(profile.get("quota_cap", 3)))
+	var cap := maxi(0, int(profile.get("quota_cap", 9)))
 	var base := maxf(float(profile.get("minimum_quota", 1)), float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 8))))
 	var erosion_ratio := clampf(erosion / maxf(1.0, float(profile.get("erosion_bonus_full_at", 100))), 0.0, 1.0)
 	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 100))) / 100.0
@@ -849,18 +857,29 @@ func complete_relic_choice(reward_id: String, selected: bool) -> void:
 		reward_snapshot.selected_relics += 1
 
 
-func calculate_enemy_spawn_count(base_count: int) -> int:
+func calculate_enemy_spawn_count(base_count: int) -> float:
 	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
 	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier)))
-	# Apply the selected tier's population multiplier after rounding and player modifiers.
-	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * int(_difficulty.spawn_count_multiplier)
+	# A read-only expected count: only real scheduled batches consume the fraction.
+	var erosion_multiplier := float(_wave_erosion_pressure.get("spawn_count_multiplier", 1.0))
+	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * erosion_multiplier * int(_difficulty.spawn_count_multiplier)
+
+
+func _take_enemy_spawn_count(base_count: int) -> int:
+	# Two integer percentages multiply to ten-thousandths. Retain both bonuses
+	# exactly (e.g. 1.33 * 1.01 = 1.3433) until the scheduled batch is consumed.
+	# All groups share one wave's remainder. Capped whole enemies are discarded,
+	# never saved as a backlog to burst out when population falls again.
+	var units := roundi(calculate_enemy_spawn_count(base_count) * SPAWN_COUNT_PRECISION) + _enemy_spawn_remainder_units
+	_enemy_spawn_remainder_units = units % SPAWN_COUNT_PRECISION
+	return floori(float(units) / SPAWN_COUNT_PRECISION)
 
 
 func calculate_spawn_interval(base_interval_ms: float) -> float:
 	var wave_growth := float(_difficulty.interval_growth) * float(maxi(current_wave_index, 0)) / 100.0
 	var density := BattleDifficulty.SPAWN_DENSITY_CURVE[clampi(current_wave_index, 0, BattleDifficulty.SPAWN_DENSITY_CURVE.size() - 1)]
-	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth) / density / (1.0 + wave_challenges.spawn_frequency_bonus))
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth) / density)
 
 
 func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:

@@ -1,0 +1,275 @@
+{
+  "frames": 60,
+  "full_hud_identical": 2,
+  "region": [
+    247,
+    128,
+    473,
+    224
+  ],
+  "results": [
+    {
+      "frame": 0,
+      "identical": false
+    },
+    {
+      "frame": 1,
+      "identical": false
+    },
+    {
+      "frame": 2,
+      "identical": false
+    },
+    {
+      "frame": 3,
+      "identical": false
+    },
+    {
+      "frame": 4,
+      "identical": false
+    },
+    {
+      "frame": 5,
+      "identical": false
+    },
+    {
+      "frame": 6,
+      "identical": false
+    },
+    {
+      "frame": 7,
+      "identical": false
+    },
+    {
+      "frame": 8,
+      "identical": false
+    },
+    {
+      "frame": 9,
+      "identical": false
+    },
+    {
+      "frame": 10,
+      "identical": false
+    },
+    {
+      "frame": 11,
+      "identical": false
+    },
+    {
+      "frame": 12,
+      "identical": false
+    },
+    {
+      "frame": 13,
+      "identical": true
+    },
+    {
+      "frame": 14,
+      "identical": true
+    },
+    {
+      "frame": 15,
+      "identical": false
+    },
+    {
+      "frame": 16,
+      "identical": false
+    },
+    {
+      "frame": 17,
+      "identical": false
+    },
+    {
+      "frame": 18,
+      "identical": false
+    },
+    {
+      "frame": 19,
+      "identical": false
+    },
+    {
+      "frame": 20,
+      "identical": false
+    },
+    {
+      "frame": 21,
+      "identical": false
+    },
+    {
+      "frame": 22,
+      "identical": false
+    },
+    {
+      "frame": 23,
+      "identical": false
+    },
+    {
+      "frame": 24,
+      "identical": false
+    },
+    {
+      "frame": 25,
+      "identical": false
+    },
+    {
+      "frame": 26,
+      "identical": false
+    },
+    {
+      "frame": 27,
+      "identical": false
+    },
+    {
+      "frame": 28,
+      "identical": false
+    },
+    {
+      "frame": 29,
+      "identical": false
+    },
+    {
+      "frame": 30,
+      "identical": false
+    },
+    {
+      "frame": 31,
+      "identical": false
+    },
+    {
+      "frame": 32,
+      "identical": false
+    },
+    {
+      "frame": 33,
+      "identical": false
+    },
+    {
+      "frame": 34,
+      "identical": false
+    },
+    {
+      "frame": 35,
+      "identical": false
+    },
+    {
+      "frame": 36,
+      "identical": false
+    },
+    {
+      "frame": 37,
+      "identical": false
+    },
+    {
+      "frame": 38,
+      "identical": false
+    },
+    {
+      "frame": 39,
+      "identical": false
+    },
+    {
+      "frame": 40,
+      "identical": false
+    },
+    {
+      "frame": 41,
+      "identical": false
+    },
+    {
+      "frame": 42,
+      "identical": false
+    },
+    {
+      "frame": 43,
+      "identical": false
+    },
+    {
+      "frame": 44,
+      "identical": false
+    },
+    {
+      "frame": 45,
+      "identical": false
+    },
+    {
+      "frame": 46,
+      "identical": false
+    },
+    {
+      "frame": 47,
+      "identical": false
+    },
+    {
+      "frame": 48,
+      "identical": false
+    },
+    {
+      "frame": 49,
+      "identical": false
+    },
+    {
+      "frame": 50,
+      "identical": false
+    },
+    {
+      "frame": 51,
+      "identical": false
+    },
+    {
+      "frame": 52,
+      "identical": false
+    },
+    {
+      "frame": 53,
+      "identical": false
+    },
+    {
+      "frame": 54,
+      "identical": false
+    },
+    {
+      "frame": 55,
+      "identical": false
+    },
+    {
+      "frame": 56,
+      "identical": false
+    },
+    {
+      "frame": 57,
+      "identical": false
+    },
+    {
+      "frame": 58,
+      "identical": false
+    },
+    {
+      "frame": 59,
+      "identical": false
+    }
+  ],
+  "opaque_border_checks": [
+    {
+      "frame": 22,
+      "pixels": 1728,
+      "identical": true
+    },
+    {
+      "frame": 23,
+      "pixels": 1728,
+      "identical": true
+    },
+    {
+      "frame": 24,
+      "pixels": 1800,
+      "identical": true
+    },
+    {
+      "frame": 25,
+      "pixels": 1800,
+      "identical": true
+    }
+  ],
+  "note": "Translucent background differs with world shader time; opaque peak borders match exactly."
+}

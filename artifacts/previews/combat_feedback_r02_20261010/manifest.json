@@ -1,0 +1,78 @@
+{
+  "status": "approved_installed_archive",
+  "flag": "combat_feedback_r02_enabled",
+  "default_enabled": true,
+  "hash_scope": "Approved review scripts before production activation",
+  "installation": "../../validation/combat_feedback_r02_install_20261010/README.md",
+  "date": "2026-10-10",
+  "script_sha256": {
+    "scripts/enemies/enemy_controller.gd": "8ea3e560d4ed1ce436557e3e2e11f14dd1813754d2ecfbf19cb5e3dbb0a6253f",
+    "scripts/weapons/camp_dagger.gd": "2a18668318d32ab7146b502b71f53367757698853874bc7efc81b597c7a096e2",
+    "scripts/weapons/directed_weapon_runtime.gd": "0e8269080f70468f7113aea0bed0532870d855f08c0b26d00d381305eb1b781e",
+    "scripts/weapons/earth_hammer.gd": "10ad77d5cf77a78f6261505c594b34790131d7e775fbe8b0b3452165e0661579",
+    "scripts/weapons/ritual_domain.gd": "6b4a8783397fceae85930a54021ad57a9875c3a30dceec66083bac51f01e99ae",
+    "scripts/weapons/weapon_instance.gd": "2394427b49a163477b34999eb75e258142fea9c5047000be7185f236bb35f5a6",
+    "scripts/ui/active_combat_weapon_bar.gd": "b19e39c85dbdbb30392a65a40143d03b4ba29dd3e5f3b81119ec6a9b79347cf4",
+    "scripts/audio/combat_sound_library.gd": "7993476d605eb64d68bc684f8643daf6176532e2a16384e95c1440062311efee",
+    "scripts/tools/build_combat_audio.py": "2aa77f733a9bfe112197b33078043c5daec775d62f7b6aca0e1fb1e261619480",
+    "scripts/effects/combat_feedback_r02.gd": "c399e065579f5b09c39be69039eac0000fda7f3b9ec52451862569b329f619bd",
+    "scripts/effects/combat_impact_r02.gd": "4ab6b66eefc4d99d27b09acd2bdacc5cd3f2f68c4904adf20fdc1e64384772f5",
+    "scripts/ui/weapon_pulse_r02.gd": "821dc0cc811a7467c8f0bcb67aaef036ff9c5636618025ba806a4b72f4155680",
+    "scripts/tests/combat_feedback_r02_test.gd": "9424e08518e00ba7e7a78cf7296528375006d8b1490d2492fd26e89eb3759b81",
+    "scenes/tests/combat_feedback_r02_test.tscn": "6d3d77a88fb8dcde5dd2b7a007e21293981a15f4390487b10da177d4b353fe2e"
+  },
+  "clips": {
+    "combo_comparison.gif": {
+      "frames": 42,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 7262158
+    },
+    "dagger_comparison.gif": {
+      "frames": 36,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 6193395
+    },
+    "dense_comparison.gif": {
+      "frames": 72,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 14318585
+    },
+    "hammer_comparison.gif": {
+      "frames": 54,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 9401006
+    },
+    "lamp_comparison.gif": {
+      "frames": 66,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 11843855
+    },
+    "tome_comparison.gif": {
+      "frames": 48,
+      "size": [
+        1240,
+        482
+      ],
+      "bytes": 9032702
+    }
+  },
+  "sound_seconds": 0.105,
+  "gpu_frames": 636,
+  "gameplay_pairs": 6,
+  "passed_test_checks": 166
+}

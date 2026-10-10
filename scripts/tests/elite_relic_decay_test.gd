@@ -177,10 +177,10 @@ func _test_collision_and_events() -> void:
 	manager.initialize(player)
 	manager._elite_quota_rng.seed = 20260923
 	var rng_before := manager._elite_quota_rng.state
-	for row in [[1, 1000, 0.0], [2, 0, 1.0], [5, 0, 1.0], [10, 0, 1.25], [15, 0, 1.875], [20, 0, 2.5], [10, 50, 1.875], [20, 50, 3.0], [10, 100, 2.5], [20, 1000, 3.0], [3, -20, 1.0]]:
+	for row in [[1, 1000, 0.0], [2, 0, 1.0], [5, 0, 1.0], [10, 0, 1.25], [15, 0, 1.875], [20, 0, 2.5], [10, 50, 1.875], [20, 50, 3.75], [10, 100, 2.5], [20, 1000, 5.0], [100, 1000, 9.0], [3, -20, 1.0]]:
 		check(is_equal_approx(manager.calculate_miniboss_expected_count(row[0], row[1]), row[2]), "expectation wave=%s erosion=%s" % [row[0], row[1]])
 	check(manager._elite_quota_rng.state == rng_before, "expectation preview does not consume quota RNG")
-	for expected in [0.0, 1.0, 2.0, 3.0]:
+	for expected in [0.0, 1.0, 2.0, 3.0, 9.0]:
 		check(manager._sample_miniboss_quota(expected) == int(expected), "integer expectation has no count variance: %s" % expected)
 	check(manager._elite_quota_rng.state == rng_before, "integer quotas do not consume randomness")
 	for expected in [0.2, 0.5, 1.25, 1.5, 2.5]:

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "editor",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [
+      "Unable to open Android 'build-tools' directory.",
+      "WARNING: Detected another project.godot at res://tmp/enchantment_sale_review/minimal. The folder will be ignored."
+    ],
+    "summary": []
+  },
+  {
+    "name": "reaction_text",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "REACTION_TEXT_DONE checks=43 captured=0 failures=[]"
+    ]
+  }
+]

@@ -1,0 +1,307 @@
+{
+  "relic_worn_fighting_gloves": {
+    "stats": {
+      "melee_damage": 2,
+      "armor": -3
+    },
+    "zh": "近战伤害 +2；护甲 -3",
+    "en": "Melee Damage +2; Armor -3",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_cracked_stone_bullet": {
+    "stats": {
+      "ranged_damage": 2,
+      "pickup_radius": -10
+    },
+    "zh": "远程伤害 +2；拾取范围 -10",
+    "en": "Ranged Damage +2; Pickup Range -10",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_bloodstained_belt": {
+    "stats": {
+      "melee_damage": 5,
+      "hp_regen": -0.1
+    },
+    "zh": "近战伤害 +5；每秒回血 -0.1",
+    "en": "Melee Damage +5; HP Regen -0.1/s",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_poison_mist_pouch": {
+    "stats": {
+      "ranged_damage": 4,
+      "hp_regen": -0.1
+    },
+    "zh": "远程伤害 +4；每秒回血 -0.1",
+    "en": "Ranged Damage +4; HP Regen -0.1/s",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_berserker_copper_badge": {
+    "stats": {
+      "melee_damage": 8,
+      "armor": -8
+    },
+    "zh": "近战伤害 +8；护甲 -8",
+    "en": "Melee Damage +8; Armor -8",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_corroded_blowpipe": {
+    "stats": {
+      "ranged_damage": 7,
+      "max_hp": -3
+    },
+    "zh": "远程伤害 +7；最大生命 -3",
+    "en": "Ranged Damage +7; Max HP -3",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_executioner_bracer": {
+    "stats": {
+      "melee_damage": 11,
+      "move_speed": -10
+    },
+    "zh": "近战伤害 +11；移动速度 -10",
+    "en": "Melee Damage +11; Move Speed -10",
+    "rarity": "epic",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_abyssal_echo_shell": {
+    "stats": {
+      "element_damage": 9,
+      "humanity": -2,
+      "damage_area_size": 12
+    },
+    "zh": "元素伤害 +9；理智值 -2；伤害范围 +12",
+    "en": "Elemental Damage +9; Sanity -2; Damage Area +12",
+    "rarity": "epic",
+    "max_stack": 1,
+    "runtime_effects": []
+  },
+  "relic_load_iron_bracer": {
+    "stats": {
+      "armor": 6,
+      "melee_damage": 1
+    },
+    "zh": "护甲 +6；近战伤害 +1",
+    "en": "Armor +6; Melee Damage +1",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_rough_grinding_lens": {
+    "stats": {
+      "ranged_damage": 1,
+      "crit_chance": 3
+    },
+    "zh": "远程伤害 +1；暴击几率 +3 个百分点",
+    "en": "Ranged Damage +1; Crit Chance +3 percentage points",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_blocking_counterweight": {
+    "stats": {
+      "control_power": 4,
+      "element_damage": 2
+    },
+    "zh": "控制强度 +4；元素伤害 +2",
+    "en": "Control Power +4; Elemental Damage +2",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_turtle_shell_pendant": {
+    "stats": {
+      "armor": 8,
+      "max_hp": 2,
+      "melee_damage": 2
+    },
+    "zh": "护甲 +8；最大生命 +2；近战伤害 +2",
+    "en": "Armor +8; Max HP +2; Melee Damage +2",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_black_spot_eagle_eye": {
+    "stats": {
+      "crit_chance": 7,
+      "ranged_damage": 2
+    },
+    "zh": "暴击几率 +7 个百分点；远程伤害 +2",
+    "en": "Crit Chance +7 percentage points; Ranged Damage +2",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_dead_shield_badge": {
+    "stats": {
+      "shield": 6,
+      "element_damage": 2
+    },
+    "zh": "每波初始护盾 +6；元素伤害 +2",
+    "en": "Starting Shield each wave +6; Elemental Damage +2",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_diffusion_nozzle": {
+    "stats": {
+      "damage_percent": 8,
+      "damage_area_size": 15,
+      "element_damage": 4,
+      "attack_speed": -6
+    },
+    "zh": "通用伤害 +8%；伤害范围 +15；元素伤害 +4；攻击速度 -6",
+    "en": "Damage Bonus +8%; Damage Area +15; Elemental Damage +4; Attack Speed -6",
+    "rarity": "uncommon",
+    "max_stack": 1,
+    "runtime_effects": []
+  },
+  "relic_flesh_pauldron": {
+    "stats": {
+      "max_hp": 4,
+      "armor": 12,
+      "melee_damage": 3
+    },
+    "zh": "最大生命 +4；护甲 +12；近战伤害 +3",
+    "en": "Max HP +4; Armor +12; Melee Damage +3",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_gold_compass": {
+    "stats": {
+      "pickup_radius": 10,
+      "currency_gain_percent": 8,
+      "ranged_damage": 3
+    },
+    "zh": "拾取范围 +10；金币获取 +8%；远程伤害 +3",
+    "en": "Pickup Range +10; Gold Gain +8%; Ranged Damage +3",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_barrier_crystal": {
+    "stats": {
+      "shield_regen": 0.3,
+      "element_damage": 3
+    },
+    "zh": "每秒护盾 +0.3；元素伤害 +3",
+    "en": "Shield Regen +0.3/s; Elemental Damage +3",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_aftershock_hourglass": {
+    "stats": {
+      "damage_area_size": 20,
+      "element_damage": 6
+    },
+    "zh": "伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2",
+    "en": "Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.",
+    "rarity": "rare",
+    "max_stack": 1,
+    "runtime_effects": [
+      {
+        "trigger": "wave_end",
+        "effect": "add_stat",
+        "stat": "damage_area_size",
+        "value": 2
+      }
+    ]
+  },
+  "relic_suffering_carapace": {
+    "stats": {
+      "armor": 20,
+      "max_hp": 4,
+      "melee_damage": 5
+    },
+    "zh": "护甲 +20；最大生命 +4；近战伤害 +5",
+    "en": "Armor +20; Max HP +4; Melee Damage +5",
+    "rarity": "epic",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_golden_rangefinder": {
+    "stats": {
+      "ranged_damage": 5
+    },
+    "zh": "远程伤害 +5；每满100本金，攻击距离 +3（上限30）、通用伤害 +1%（上限10%）",
+    "en": "Ranged Damage +5; every full 100 Principal grants Attack Range +3 (up to +30) and Damage Bonus +1% (up to +10%).",
+    "rarity": "epic",
+    "max_stack": 1,
+    "runtime_effects": [
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "area_size",
+        "divisor": 100,
+        "per_unit": 3,
+        "max_bonus": 30
+      },
+      {
+        "trigger": "derived",
+        "effect": "derived_stat_from_principal",
+        "stat": "damage_percent",
+        "divisor": 100,
+        "per_unit": 1,
+        "max_bonus": 10
+      }
+    ]
+  },
+  "relic_pain_vessel": {
+    "stats": {
+      "hp_regen": 0.5,
+      "element_damage": 4
+    },
+    "zh": "每秒回血 +0.5；元素伤害 +4",
+    "en": "HP Regen +0.5/s; Elemental Damage +4",
+    "rarity": "epic",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_hasty_spring_trigger": {
+    "stats": {
+      "attack_speed": 5,
+      "move_speed": -2
+    },
+    "zh": "攻击速度 +5；移动速度 -2",
+    "en": "Attack Speed +5; Move Speed -2",
+    "rarity": "common",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_tremor_grip": {
+    "stats": {
+      "attack_speed": 10,
+      "damage_percent": -3
+    },
+    "zh": "攻击速度 +10；通用伤害 -3%",
+    "en": "Attack Speed +10; Damage Bonus -3%",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "runtime_effects": []
+  },
+  "relic_gale_roulette": {
+    "stats": {
+      "attack_speed": 18,
+      "damage_percent": -5
+    },
+    "zh": "攻击速度 +18；通用伤害 -5%",
+    "en": "Attack Speed +18; Damage Bonus -5%",
+    "rarity": "rare",
+    "max_stack": 0,
+    "runtime_effects": []
+  }
+}

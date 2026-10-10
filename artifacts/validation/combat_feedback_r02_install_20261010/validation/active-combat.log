@@ -1,0 +1,169 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+PASS real battle starts
+GUI input/layout assertions run in the private-desktop GPU pass.
+PASS cast weapon_void_blade
+PASS execution rejects recast; cooldown has not started
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_plasma_cannon
+PASS execution rejects recast; cooldown has not started
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_iron_grenade_cannon
+PASS execution rejects recast; cooldown has not started
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_kunyu_ritual_tome
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS empty ritual waits indefinitely without cooling
+PASS ritual follows movement and leaves old targets outside without spending marks
+PASS moving ritual hits new in-range target; no second mark before 0.35s
+PASS ritual repeats living target at 0.35s
+PASS moving away mid-cast retains remaining marks without damage or cooldown
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_rentier_purse
+PASS execution rejects recast; cooldown has not started
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_copper_lamp
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS lamp follows nearest enemy and three projectiles spray for 5.4s
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_mutant_tentacle
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS tentacle preserves 1.5x animation duration
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_earth_hammer
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_camp_dagger
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS three dagger cuts have no gaps and take 0.55s despite attack speed
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_nightwatch_spear
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_meteor_flail
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS three full flail swings take 1.8s
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_dash_blade
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_hand_cannon
+PASS execution rejects recast; cooldown has not started
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS pause freezes execution
+PASS cooldown starts exactly once after authored action
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS cast weapon_star_tome
+PASS tome starts cooldown on blink with immediate return availability
+PASS cast owns immutable snapshot
+PASS live stat changes apply only to next cast
+PASS pause freezes execution
+PASS tome return keeps the first-blink cooldown running
+PASS pause freezes cooldown
+PASS cooldown completes without repeat when no automatic target remains
+PASS different weapons can execute together
+PASS tenth battle slot maps to zero
+PASS Escape weapon tooltip renders above the attribute drawer
+PASS weapon tooltip retains viewport placement after reparenting
+PASS Escape relic tooltip renders in shared foreground layer
+PASS Escape enchantment tooltip renders in shared foreground layer
+PASS closing Escape clears weapon relic and item tooltips
+PASS real battle starts
+PASS living miniboss enters ten-second combat cleanup
+PASS cleanup counts both ordinary enemies and minibosses
+PASS cleanup HUD shows the count without reinforcement text
+PASS cleanup blocks all reinforcements
+PASS direct scheduler call cannot spawn in cleanup
+PASS Escape freezes cleanup
+PASS Escape also freezes enemy lifespan accounting
+PASS reward popup freezes cleanup
+PASS reward popup does not inflate average enemy lifespan
+PASS cleanup remains in combat until deadline
+PASS timeout ends without rewarding un-killed enemies
+PASS real cleanup timeout snapshots remaining ordinary and elite enemies before deletion
+PASS lifespan includes ten active cleanup seconds and clamps frame overshoot
+PASS timeout advances normal finance flow
+PASS repeated timeout cannot settle twice
+PASS real battle starts
+PASS countdown boundary blocks spawns before cleanup transition
+PASS expired wave blocks direct scheduler before cleanup transition
+PASS last miniboss death does not skip remaining ordinary enemies
+PASS last ordinary enemy death finishes cleanup early
+PASS early clear snapshot never qualifies as timeout with survivors
+PASS real battle starts
+PASS ordinary-only wave enters full ten-second cleanup
+PASS ordinary-only cleanup forces finance at ten seconds
+PASS real battle starts
+PASS no living enemies finishes directly without cleanup
+PASS real battle starts
+[PlayerController] player died, source=test_death_at_timeout
+PASS death on timeout frame wins without wave rewards
+ACTIVE_COMBAT_INTEGRATION checks=146 failures=0

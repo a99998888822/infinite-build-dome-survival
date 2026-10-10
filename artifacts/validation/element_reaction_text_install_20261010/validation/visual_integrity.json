@@ -1,0 +1,125 @@
+{
+  "samples": [
+    {
+      "frame": "conduct_chain_r04_025.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 269,
+      "same": true
+    },
+    {
+      "frame": "conduct_chain_r04_034.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 154,
+      "same": true
+    },
+    {
+      "frame": "conduct_repeat_r04_025.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 192,
+      "same": true
+    },
+    {
+      "frame": "conduct_repeat_r04_034.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 77,
+      "same": true
+    },
+    {
+      "frame": "conduct_repeat_r04_040.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 231,
+      "same": true
+    },
+    {
+      "frame": "conduct_repeat_r04_050.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 116,
+      "same": true
+    },
+    {
+      "frame": "mixed_r04_034.png",
+      "color": [
+        255,
+        195,
+        101
+      ],
+      "pixels": 135,
+      "same": true
+    },
+    {
+      "frame": "mixed_r04_034.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 192,
+      "same": true
+    },
+    {
+      "frame": "mixed_r04_040.png",
+      "color": [
+        255,
+        195,
+        101
+      ],
+      "pixels": 119,
+      "same": true
+    },
+    {
+      "frame": "mixed_r04_040.png",
+      "color": [
+        197,
+        234,
+        255
+      ],
+      "pixels": 193,
+      "same": true
+    },
+    {
+      "frame": "thunder_fire_r04_034.png",
+      "color": [
+        255,
+        195,
+        101
+      ],
+      "pixels": 215,
+      "same": true
+    },
+    {
+      "frame": "thunder_fire_r04_040.png",
+      "color": [
+        255,
+        195,
+        101
+      ],
+      "pixels": 197,
+      "same": true
+    }
+  ],
+  "all_match": true
+}

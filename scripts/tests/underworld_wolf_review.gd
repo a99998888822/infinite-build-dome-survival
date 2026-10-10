@@ -331,7 +331,7 @@ func validate_production() -> void:
 		var id := manager._select_miniboss_variant("enemy_elite_rusher")
 		counts[id] += 1
 	check(counts.enemy_elite_rusher == 50 and counts.enemy_underworld_wolf == 50,"weighted miniboss pool selects both types equally")
-	check(manager.calculate_miniboss_expected_count(1,200) == 0 and manager.calculate_miniboss_expected_count(20,200) == 3,"shared first-wave exclusion and three-miniboss cap preserved")
+	check(manager.calculate_miniboss_expected_count(1,200) == 0 and manager.calculate_miniboss_expected_count(20,200) == 5 and manager.calculate_miniboss_expected_count(100,200) == 9,"shared first-wave exclusion and expanded nine-miniboss cap")
 	manager.rolls = 1
 	manager._elite_spawn_deadline = 15
 	manager._elite_spawn_schedule.assign([0.0])

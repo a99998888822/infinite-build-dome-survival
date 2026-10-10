@@ -1,0 +1,35 @@
+{
+  "candidate_pixels_visible": {
+    "dash_circle": 10,
+    "star_depart": 8,
+    "star_arrive": 8,
+    "star_return": 8,
+    "star_anchor": 12,
+    "star_shockwave": 10,
+    "dash_trail": 8,
+    "wind_blade": 12,
+    "flail_trail": 18
+  },
+  "production_files_unchanged": {
+    "scripts/effects/wind_blade_effect.gd": true,
+    "scripts/weapons/meteor_flail.gd": true,
+    "scripts/effects/mobility_atlas_effect.gd": true,
+    "scripts/weapons/mobility_weapon_runtime.gd": true,
+    "data_config/weapons.json": true,
+    "assets/sprites/weapons/mobility/dash_circle.png": true,
+    "assets/sprites/weapons/mobility/star_depart.png": true,
+    "assets/sprites/weapons/mobility/star_arrive.png": true,
+    "assets/sprites/weapons/mobility/star_return.png": true,
+    "assets/sprites/weapons/mobility/star_anchor.png": true,
+    "assets/sprites/weapons/mobility/star_shockwave.png": true,
+    "assets/sprites/weapons/mobility/dash_trail.png": true
+  },
+  "captures": 207,
+  "authored_grid_px": 2,
+  "candidate_alpha": [
+    0,
+    255
+  ],
+  "model_used": null,
+  "note": "Controlled Godot frame sampling. Browser playback uses the captured frame order and declared FPS. No combat integration or balance test claimed."
+}

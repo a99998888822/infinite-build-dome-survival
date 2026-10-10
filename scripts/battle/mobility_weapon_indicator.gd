@@ -1,8 +1,8 @@
 extends Node2D
 ## Dynamic aim geometry only; attack animation uses imported PNG atlases.
-const FILL := Color(0.66, 0.88, 1.0, 0.085)
-const EDGE := Color(0.79, 0.94, 1.0, 0.60)
-const HALO := Color(0.39, 0.72, 0.91, 0.10)
+const STYLE = preload("res://scripts/battle/pixel_indicator_style.gd")
+var _style := STYLE.new()
+var _shape_transform := Transform2D.IDENTITY
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
 enum Kind { DASH_BLADE, RECOIL_GUN, STAR_TOME }
 
@@ -45,24 +45,19 @@ func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool) -
 	available = can_cast
 	clearance = FOOTPRINT.player_clearance(source)
 	resolved_landing = source.owner_player.resolve_mobility_destination(source.owner_player.global_position + source.get_mobility_landing(offset)) - source.owner_player.global_position
+	STYLE.sync_material(self, clearance, available)
 	queue_redraw()
 
 
 func _ready() -> void:
 	z_index = -1
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	material = STYLE.make_material()
 	queue_redraw()
 
 
-func tint(color: Color) -> Color:
-	return color if available else Color(0.58, 0.66, 0.70, color.a * 0.5)
-
-
 func outline(points: PackedVector2Array, strength: float = 1.0) -> void:
-	if points.size() < 2:
-		return
-	draw_polyline(points, tint(Color(HALO, HALO.a * strength)), 3, true)
-	draw_polyline(points, tint(Color(EDGE, EDGE.a * strength)), 1, true)
+	_style.outline(self, _shape_transform * points, available, false, strength)
 
 
 func ring(at: Vector2, radius: float, filled: bool, strength: float = 1.0) -> void:
@@ -82,11 +77,11 @@ func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) ->
 		border.append(border[0])
 		_rings[axes] = border
 	var points: PackedVector2Array = _rings[axes]
-	draw_set_transform(at)
+	_shape_transform = Transform2D(0, at)
 	if filled:
-		draw_colored_polygon(_ring_fills[axes], tint(FILL))
+		draw_colored_polygon(_shape_transform * _ring_fills[axes], STYLE.fill_color(available))
 	outline(points, strength)
-	draw_set_transform(Vector2.ZERO)
+	_shape_transform = Transform2D.IDENTITY
 
 
 func get_movement_axes() -> Vector2:
@@ -125,6 +120,8 @@ func arrowhead(point: Vector2, heading: Vector2) -> void:
 
 
 func _draw() -> void:
+	STYLE.sync_material(self, clearance, available)
+	_shape_transform = Transform2D.IDENTITY
 	var direction := aim_offset.normalized() if aim_offset.length_squared() > 0.01 else Vector2.RIGHT
 	match kind:
 		Kind.DASH_BLADE:
@@ -132,7 +129,7 @@ func _draw() -> void:
 			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.70)
 			dashed(direction * minf(clearance, landing.length()), landing)
 			arrowhead(landing, direction)
-			ring(landing, get_impact_radius(), true)
+			ellipse(landing, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * get_impact_radius(), true)
 		Kind.RECOIL_GUN:
 			if _fan_key != [shot_range, shot_angle, clearance]:
 				_fan_key = [shot_range, shot_angle, clearance]
@@ -143,10 +140,10 @@ func _draw() -> void:
 					_fan_points.append(Vector2.from_angle(deg_to_rad(lerpf(shot_angle * 0.5, -shot_angle * 0.5, i / 48.0))) * clearance)
 				_fan_fill = _fan_points.duplicate()
 				_fan_points.append(_fan_points[0])
-			draw_set_transform(Vector2.ZERO, direction.angle())
-			draw_colored_polygon(_fan_fill, tint(FILL))
+			_shape_transform = Transform2D(direction.angle(), Vector2.ZERO)
+			draw_colored_polygon(_shape_transform * _fan_fill, STYLE.fill_color(available))
 			outline(_fan_points)
-			draw_set_transform(Vector2.ZERO)
+			_shape_transform = Transform2D.IDENTITY
 			var retreat := get_landing_offset()
 			dashed(-direction * clearance, retreat)
 			arrowhead(retreat, -direction)

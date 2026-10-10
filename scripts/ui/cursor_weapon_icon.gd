@@ -3,6 +3,7 @@ class_name CursorWeaponIcon
 ## Screen-space display only; never consumes mouse input.
 
 const ICON_SIZE := Vector2(38, 38)
+const INDICATOR_STYLE = preload("res://scripts/battle/pixel_indicator_style.gd")
 var icon: TextureRect
 var weapon: WeaponInstance
 var _frame: StyleBoxFlat
@@ -17,8 +18,8 @@ func _ready() -> void:
 	_frame = StyleBoxFlat.new()
 	_frame.bg_color = Color("14201ce8")
 	_frame.border_color = Color("8d977d")
-	_frame.set_border_width_all(1)
-	_frame.set_corner_radius_all(3)
+	_frame.set_border_width_all(2)
+	_frame.set_corner_radius_all(0)
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		_frame.set_content_margin(side, 4)
 	add_theme_stylebox_override("panel", _frame)
@@ -36,8 +37,10 @@ func update_weapon(source: WeaponInstance, aiming: bool, ready_to_cast: bool) ->
 		weapon = source
 		_icon_path = path
 		icon.texture = load(path) if not path.is_empty() else null
-	_frame.border_color = Color("c5edff") if aiming else Color("8d977d")
-	icon.modulate = Color.WHITE if ready_to_cast else Color(0.55, 0.55, 0.55, 0.9)
+	_frame.border_color = INDICATOR_STYLE.EDGE if ready_to_cast else INDICATOR_STYLE.LOCKED_EDGE
+	_frame.bg_color = Color("273335f0")
+	_frame.set_border_width_all(3 if aiming else 2)
+	icon.modulate = Color.WHITE if ready_to_cast else Color(0.55, 0.65, 0.66, 0.9)
 
 
 func follow_pointer(point: Vector2, viewport_size: Vector2) -> void:

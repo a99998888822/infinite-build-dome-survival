@@ -5,6 +5,8 @@ signal node_created(index: int, point: Vector2)
 const HAMMER := preload("res://assets/sprites/weapons/earth_hammer/earth_hammer.png")
 const CRACKS := preload("res://assets/sprites/weapons/ground_cracks/ground_cracks.png")
 const REVIEW_CRACKS := preload("res://assets/sprites/weapons/ground_cracks/review_r04/ground_cracks_r04.png")
+const IMPACT_R02 = preload("res://scripts/effects/combat_impact_r02.gd")
+const FEEDBACK_SETTINGS = preload("res://scripts/effects/combat_feedback_settings.gd")
 var crack_texture: Texture2D = CRACKS
 var crack_layer: Node2D
 var crack_clearance := 42.0
@@ -127,6 +129,8 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 		return
 	var when := appear + slam + index * interval
 	nodes.append({"point": point - global_position, "at": when, "child": false, "direction": direction, "length": spacing})
+	if index == 0:
+		IMPACT_R02.spawn(get_parent(), point, &"ground", direction, minf(1.5, weapon.get_projectile_visual_scale()))
 	# Resolve the node once; real enemies below do not fire this dispatcher again.
 	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "", "electric_spark" if lightning_count > 0 else "")
 	var start := global_position if index == 0 else point - direction * spacing * 0.5
@@ -221,4 +225,8 @@ func _draw_ground_cracks() -> void:
 		var region := Rect2(frame * 64 + crop, 0, 64 - crop, 64)
 		crack_layer.draw_set_transform(point, direction.angle(), dimensions)
 		crack_layer.draw_texture_rect_region(crack_texture, rect, region, Color(1, 1, 1, minf(1, (1.25 - elapsed) * 3)))
+		# Briefly brighten the existing pixels, preserving the crack shape and crop.
+		if FEEDBACK_SETTINGS.enabled() and not child and elapsed < 0.075:
+			var emphasis := 0.65 if point.length() < first_offset + spacing * 0.5 else 0.25
+			crack_layer.draw_texture_rect_region(crack_texture, rect, region, Color(2.4, 2.1, 1.65, emphasis * (1.0 - elapsed / 0.075)))
 	crack_layer.draw_set_transform(Vector2.ZERO)

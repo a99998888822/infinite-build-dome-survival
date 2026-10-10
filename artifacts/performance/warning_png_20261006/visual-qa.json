@@ -1,8 +1,0 @@
-{
-  "delayed_landing_passed": true,
-  "frames": 48,
-  "max_channel_error": 5,
-  "mean_channel_error": 0.0744137234157986,
-  "radius_fallback_passed": true,
-  "visible_pixel_mean_channel_error": 0.5480346618719408
-}

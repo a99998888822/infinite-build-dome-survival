@@ -1,0 +1,6 @@
+{
+  "scripts/ui/weapon_cooldown_feedback.gd": "210d7596ece96143fcff5a5d29abf60cc2c6089cf3cbfefcdea121c9b78fb3a6",
+  "scripts/ui/active_combat_weapon_bar.gd": "7eadcacdd58abfea11a716bfd960c87e01856ac7703e518495c2d9e727600075",
+  "scripts/weapons/weapon_instance.gd": "e090259f5a23e4c6633c6224a1e9583b44ec0f50c00a1f4e217496a4df299217",
+  "scripts/weapons/active_weapon_casting.gd": "193b809b9235c1d3948936420428ae8341d4193cc16e93f88f9f4565e6e11c14"
+}

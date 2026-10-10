@@ -94,12 +94,15 @@ func _shockwave() -> void:
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		# Radial pressure respects the same displacement immunity as wind.
-		if not is_instance_valid(enemy) or not enemy.is_alive() or not enemy.can_be_pushed_by_wind():
+		if not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
 		var offset := enemy.global_position - _hit_position
 		if offset.length_squared() > radius * radius:
 			continue
-		enemy.apply_knockback(offset.normalized() if not offset.is_zero_approx() else fallback, speed, duration)
+		if not enemy.can_be_pushed_by_wind():
+			enemy.show_control_resistance()
+			continue
+		enemy.apply_knockback(offset.normalized() if not offset.is_zero_approx() else fallback, speed, duration, context.get_resolved_parameter("control_power", 0.0))
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_enchantment_sfx("explosion")
 	AudioManager.end_combat_audio()

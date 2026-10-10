@@ -1,0 +1,792 @@
+{
+  "version": "r01",
+  "status": "approved_installed_archive",
+  "installation": {
+    "date": "2026-10-10",
+    "assets": "../../validation/pixel_effects_install_20261010/installed_assets.json",
+    "report": "../../validation/pixel_effects_install_20261010/README.md",
+    "captures": "Original review captures retained; do not rebuild this archive."
+  },
+  "provenance": "Original deterministic local pixel drawing; no image model or API.",
+  "pixel_grid": 2,
+  "ellipse_ratio": 0.6590909090909091,
+  "effects": {
+    "dash_circle": {
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 10,
+      "fps": 48,
+      "pivot": [
+        80,
+        80
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/dash_circle.png",
+      "frame_bounds": [
+        [
+          38,
+          28,
+          130,
+          130
+        ],
+        [
+          18,
+          16,
+          146,
+          142
+        ],
+        [
+          12,
+          12,
+          154,
+          150
+        ],
+        [
+          6,
+          10,
+          152,
+          156
+        ],
+        [
+          6,
+          18,
+          154,
+          152
+        ],
+        [
+          8,
+          6,
+          156,
+          154
+        ],
+        [
+          6,
+          4,
+          160,
+          154
+        ],
+        [
+          8,
+          4,
+          158,
+          154
+        ],
+        [
+          10,
+          12,
+          142,
+          158
+        ],
+        [
+          8,
+          6,
+          152,
+          158
+        ]
+      ],
+      "unique_frames": 10,
+      "display_scale": [
+        1.1,
+        0.725
+      ],
+      "sha256": "f1f9e9346e6f5778bc3e399079e652f59e1332c58b7719db8a80b8d64a244ad5"
+    },
+    "star_depart": {
+      "cell": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "pivot": [
+        48,
+        64
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/star_depart.png",
+      "frame_bounds": [
+        [
+          16,
+          16,
+          82,
+          122
+        ],
+        [
+          18,
+          18,
+          80,
+          116
+        ],
+        [
+          20,
+          22,
+          78,
+          112
+        ],
+        [
+          22,
+          26,
+          76,
+          108
+        ],
+        [
+          26,
+          32,
+          72,
+          102
+        ],
+        [
+          30,
+          36,
+          70,
+          96
+        ],
+        [
+          34,
+          42,
+          66,
+          92
+        ],
+        [
+          46,
+          60,
+          50,
+          68
+        ]
+      ],
+      "unique_frames": 8,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "ebce51eb12c15299af3b74273be65cc9d8a736d6c584f94bed2402527e19543b"
+    },
+    "star_arrive": {
+      "cell": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "pivot": [
+        48,
+        64
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/star_arrive.png",
+      "frame_bounds": [
+        [
+          36,
+          44,
+          62,
+          86
+        ],
+        [
+          30,
+          36,
+          68,
+          94
+        ],
+        [
+          32,
+          38,
+          66,
+          96
+        ],
+        [
+          26,
+          32,
+          72,
+          104
+        ],
+        [
+          20,
+          22,
+          76,
+          110
+        ],
+        [
+          16,
+          16,
+          82,
+          118
+        ],
+        [
+          16,
+          18,
+          84,
+          118
+        ],
+        [
+          16,
+          18,
+          72,
+          92
+        ]
+      ],
+      "unique_frames": 8,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "e75c68680348abd5d80b0baa1bd3bee5605ce6b5b2232eea17e1940e776bd043"
+    },
+    "star_return": {
+      "cell": [
+        96,
+        128
+      ],
+      "frames": 8,
+      "fps": 24,
+      "pivot": [
+        48,
+        64
+      ],
+      "colors": 5,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/star_return.png",
+      "frame_bounds": [
+        [
+          22,
+          4,
+          78,
+          114
+        ],
+        [
+          24,
+          10,
+          76,
+          108
+        ],
+        [
+          26,
+          14,
+          78,
+          104
+        ],
+        [
+          28,
+          18,
+          74,
+          102
+        ],
+        [
+          30,
+          22,
+          70,
+          96
+        ],
+        [
+          32,
+          30,
+          68,
+          92
+        ],
+        [
+          36,
+          36,
+          64,
+          88
+        ],
+        [
+          40,
+          48,
+          60,
+          82
+        ]
+      ],
+      "unique_frames": 8,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "b9f38461db71cc6d48708000894a8f2704858d4a6fff09e82c42f8e9800e09e6"
+    },
+    "star_anchor": {
+      "cell": [
+        128,
+        128
+      ],
+      "frames": 12,
+      "fps": 12,
+      "pivot": [
+        64,
+        64
+      ],
+      "colors": 6,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/star_anchor.png",
+      "frame_bounds": [
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ],
+        [
+          14,
+          28,
+          116,
+          106
+        ]
+      ],
+      "unique_frames": 4,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "4849a33b2441b5da34ba9c284e6c9495cf3a38dc7d3fa385b87340ab279ae69d"
+    },
+    "star_shockwave": {
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 10,
+      "fps": 24,
+      "pivot": [
+        80,
+        80
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/star_shockwave.png",
+      "frame_bounds": [
+        [
+          56,
+          58,
+          106,
+          102
+        ],
+        [
+          48,
+          48,
+          114,
+          112
+        ],
+        [
+          40,
+          32,
+          128,
+          124
+        ],
+        [
+          34,
+          24,
+          136,
+          130
+        ],
+        [
+          28,
+          18,
+          142,
+          136
+        ],
+        [
+          22,
+          12,
+          148,
+          142
+        ],
+        [
+          18,
+          8,
+          152,
+          146
+        ],
+        [
+          16,
+          4,
+          156,
+          150
+        ],
+        [
+          12,
+          10,
+          158,
+          150
+        ],
+        [
+          12,
+          8,
+          158,
+          150
+        ]
+      ],
+      "unique_frames": 10,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "08d056cb70073637b13e874ee8a114fdcab1018cd72618b659c56a42e064952e"
+    },
+    "dash_trail": {
+      "cell": [
+        128,
+        64
+      ],
+      "frames": 8,
+      "fps": 24,
+      "pivot": [
+        118,
+        32
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/dash_trail.png",
+      "frame_bounds": [
+        [
+          18,
+          10,
+          122,
+          54
+        ],
+        [
+          22,
+          10,
+          120,
+          52
+        ],
+        [
+          22,
+          10,
+          118,
+          52
+        ],
+        [
+          28,
+          12,
+          118,
+          50
+        ],
+        [
+          34,
+          12,
+          116,
+          50
+        ],
+        [
+          38,
+          12,
+          114,
+          50
+        ],
+        [
+          44,
+          14,
+          114,
+          50
+        ],
+        [
+          48,
+          14,
+          112,
+          50
+        ]
+      ],
+      "unique_frames": 8,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "907fa1de024948a75ac94e1bd40dc44f3e74134883278f4875406f32c9cc6919"
+    },
+    "wind_blade": {
+      "cell": [
+        128,
+        96
+      ],
+      "frames": 12,
+      "fps": 26.08695652173913,
+      "pivot": [
+        64,
+        48
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/wind_blade.png",
+      "frame_bounds": [
+        [
+          42,
+          30,
+          92,
+          66
+        ],
+        [
+          40,
+          30,
+          94,
+          66
+        ],
+        [
+          38,
+          30,
+          94,
+          66
+        ],
+        [
+          38,
+          30,
+          96,
+          68
+        ],
+        [
+          36,
+          28,
+          96,
+          68
+        ],
+        [
+          34,
+          28,
+          96,
+          68
+        ],
+        [
+          34,
+          28,
+          98,
+          68
+        ],
+        [
+          32,
+          28,
+          98,
+          68
+        ],
+        [
+          30,
+          26,
+          98,
+          70
+        ],
+        [
+          30,
+          26,
+          100,
+          70
+        ],
+        [
+          28,
+          26,
+          100,
+          70
+        ],
+        [
+          26,
+          26,
+          102,
+          70
+        ]
+      ],
+      "unique_frames": 12,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "f8c6633cc6f4454df7fd89c37feb3eed0bd9ad82cd22b53e8360e34483046fd4"
+    },
+    "flail_trail": {
+      "cell": [
+        320,
+        320
+      ],
+      "frames": 18,
+      "fps": 30,
+      "pivot": [
+        160,
+        160
+      ],
+      "colors": 4,
+      "alpha": [
+        0,
+        255
+      ],
+      "candidate": "candidate/flail_trail.png",
+      "frame_bounds": [
+        null,
+        null,
+        null,
+        null,
+        [
+          218,
+          32,
+          222,
+          40
+        ],
+        [
+          220,
+          30,
+          236,
+          46
+        ],
+        [
+          222,
+          32,
+          256,
+          62
+        ],
+        [
+          236,
+          42,
+          280,
+          86
+        ],
+        [
+          266,
+          68,
+          296,
+          122
+        ],
+        [
+          288,
+          104,
+          302,
+          162
+        ],
+        [
+          286,
+          146,
+          304,
+          204
+        ],
+        [
+          272,
+          184,
+          300,
+          240
+        ],
+        [
+          252,
+          216,
+          290,
+          266
+        ],
+        [
+          232,
+          238,
+          280,
+          282
+        ],
+        [
+          220,
+          250,
+          268,
+          288
+        ],
+        null,
+        null,
+        null
+      ],
+      "unique_frames": 12,
+      "display_scale": [
+        1,
+        1
+      ],
+      "sha256": "085439764373659ed11d99d3a3fe2b3ec9ea58bab8eee8deacebbda86b2a500f"
+    }
+  },
+  "protected_sha256": {
+    "scripts/effects/wind_blade_effect.gd": "51dae2240e1386273aa8fd1feb6c5a1f67f3def8b8c0d5e4198b7ab93a4b8a78",
+    "scripts/weapons/meteor_flail.gd": "c453e193b25dcab5fa5adf5b557bfbefe522a3b43968129dd8badbee70bc6f31",
+    "scripts/effects/mobility_atlas_effect.gd": "9b00a863a56e0b146a2577edcc6263afd22ee0f1a0dfce59a9e3f0ffb0acd746",
+    "scripts/weapons/mobility_weapon_runtime.gd": "f15dfc47c43fdf720de7385810e36d38380da4e4b84c0b84597986ce54ec3b03",
+    "data_config/weapons.json": "08b22353676a5e77eefb5cf68c444451dbb3e42965cea98eb25bef0091ca523e",
+    "assets/sprites/weapons/mobility/dash_circle.png": "afdea5041f43e4ced752b6216198f8c8a8965be489aac908c9f6f7135cfa2676",
+    "assets/sprites/weapons/mobility/star_depart.png": "1f859f13c5f84cd9e7b2a1499e0c72007aa11aa37a544926b38e5d928234ac97",
+    "assets/sprites/weapons/mobility/star_arrive.png": "9bc3ae11c8743d0a623f31fe1611f16ff853bbff0b0ec3521fcd77d4e5b13353",
+    "assets/sprites/weapons/mobility/star_return.png": "3f6d2a5d90f1ce206367e9c93b0fa8a33fee7d3af63d3c2c84fc0e54c5af2e81",
+    "assets/sprites/weapons/mobility/star_anchor.png": "4173717a0ef7bf9f19ac8a7b2d9997fae41126a37d933d8a3e6c4cc3221d75a9",
+    "assets/sprites/weapons/mobility/star_shockwave.png": "f5061a3cd004f66d439a9370ca56d4b9edace79b52426c37642629df3f9f835a",
+    "assets/sprites/weapons/mobility/dash_trail.png": "b6088d0bcf4bbac00df442e5db7b14129cce85fcc81b327080f57b040c95444f"
+  }
+}

@@ -43,7 +43,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"dark_duration": DEFAULT_DARK_DURATION,
 	}, attachment_item_id)
 	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 24.0)
-	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.1)
+	effect._duration = StatDefinitions.calculate_control_duration(maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.1), effect._context.get_resolved_parameter("control_power", 0.0))
 	effect._pull_speed = maxf(effect._context.get_resolved_parameter("pull_speed", DEFAULT_PULL_SPEED), 1.0)
 	effect._dark_duration = maxf(effect._context.get_resolved_parameter("dark_duration", DEFAULT_DARK_DURATION), 0.1)
 	effect.call_deferred("_arm")
@@ -71,6 +71,8 @@ func _process(delta: float) -> void:
 	for enemy in _targets:
 		if enemy == null or not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
+		if delta > 0.0 and not enemy.global_position.is_equal_approx(global_position):
+			enemy.show_control_resistance()
 		enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta * enemy.get_control_multiplier())
 	if _elapsed >= _duration:
 		queue_free()
@@ -104,6 +106,7 @@ func _collect_targets() -> void:
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"dark_duration": _dark_duration,
+				"damage_event": _damage_event,
 			})
 		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
 		if not had_light:
@@ -112,6 +115,7 @@ func _collect_targets() -> void:
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"dark_duration": _dark_duration,
+				"damage_event": _damage_event,
 			})
 
 

@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+PASS capture uses active combat HUD; run with --transient-session
+PASS initial ready slots do not flash
+PASS actual manual cast succeeds
+PASS successful cast has no icon motion
+PASS icon uses the original card hierarchy
+PASS cast does not start a cooldown border animation
+PASS rejected cast does not flash
+PASS paused cast remains rejected
+PASS real cooldown lights only its source instance by default
+PASS ready cue matches actual casting availability
+PASS pause freezes cooldown and border
+PASS ready cue ends and does not repeat
+PASS cooldown feedback never transforms the icon
+PASS rebuilding disconnects old listeners immediately
+PASS reordering duplicate weapons preserves instance identity
+PASS reordered cooldown lights the new slot once
+PASS manual recast clears an active ready border
+PASS hidden HUD ignores ready cues
+PASS showing HUD does not synthesize ready cues
+PASS automatic attack rate remains unchanged
+PASS immediate automatic recasts consume the ready flash
+PASS automatic weapon lights once when it stays ready
+PASS actual star return still succeeds
+PASS star return does not create a ready cue
+PASS shared star cooldown emits ready exactly once
+PASS lamp with no target does not emit a readiness transition
+PASS dead owner emits no readiness transition
+PASS previously installed R02 mark response is preserved
+PASS R02 restores independently of cooldown feedback
+COOLDOWN_FEEDBACK checks=29 captured=0 failures=[]

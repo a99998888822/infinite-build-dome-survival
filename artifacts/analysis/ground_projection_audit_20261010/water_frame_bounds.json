@@ -1,0 +1,62 @@
+{
+  "water_d0_p0.png": {
+    "samples": 31,
+    "height_width_min": 0.9545,
+    "height_width_max": 1.0385
+  },
+  "water_d0_p1.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.0588
+  },
+  "water_d0_p2.png": {
+    "samples": 31,
+    "height_width_min": 0.9545,
+    "height_width_max": 1.05
+  },
+  "water_d0_p3.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.037
+  },
+  "water_d1_p0.png": {
+    "samples": 31,
+    "height_width_min": 0.9535,
+    "height_width_max": 1.0385
+  },
+  "water_d1_p1.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.0588
+  },
+  "water_d1_p2.png": {
+    "samples": 31,
+    "height_width_min": 0.9615,
+    "height_width_max": 1.05
+  },
+  "water_d1_p3.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.037
+  },
+  "water_d2_p0.png": {
+    "samples": 31,
+    "height_width_min": 0.9535,
+    "height_width_max": 1.0385
+  },
+  "water_d2_p1.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.0588
+  },
+  "water_d2_p2.png": {
+    "samples": 31,
+    "height_width_min": 0.9615,
+    "height_width_max": 1.05
+  },
+  "water_d2_p3.png": {
+    "samples": 31,
+    "height_width_min": 0.9524,
+    "height_width_max": 1.037
+  }
+}

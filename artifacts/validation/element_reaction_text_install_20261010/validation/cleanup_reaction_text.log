@@ -1,0 +1,72 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+PASS approved reaction text is default on
+PASS production default displays the actual conduction
+PASS comparison override preserves reaction behavior without text
+PASS one ground strike detonates several targets but shows one name
+PASS exact orange reaction name
+PASS visual lightning echo does not repeat damage or text
+PASS a new independent strike gets its own name
+PASS one chain instance displays thunderfire once
+PASS each wet chain target produces one conduction name
+PASS exact blue-white text and 14 px review size
+PASS five rapid actual conductions produce five names without throttling
+PASS every repeated label starts at contact and moves straight upward
+PASS pause freezes text
+PASS dry target does not repeat conduction
+PASS text expires without accumulating nodes
+PASS lethal contact still shows the actual reaction
+PASS target removal does not cut off the floating text
+PASS wave cleanup clears reaction labels immediately
+PASS steam and freeze do not receive extra text
+R04_CLIP thunder_fire before texts=[]
+PASS thunder_fire exact thunderfire count
+PASS thunder_fire exact conduction count
+R04_CLIP thunder_fire r04 texts=[[55, "thunder_fire", "雷火爆燃"]]
+PASS thunder_fire preserves health
+PASS thunder_fire preserves hits
+PASS thunder_fire preserves states
+PASS thunder_fire preserves rng_next
+R04_CLIP conduct_chain before texts=[]
+PASS conduct_chain exact thunderfire count
+PASS conduct_chain exact conduction count
+R04_CLIP conduct_chain r04 texts=[[24, "conduct", "导电"], [35, "conduct", "导电"], [46, "conduct", "导电"]]
+PASS conduct_chain preserves health
+PASS conduct_chain preserves hits
+PASS conduct_chain preserves states
+PASS conduct_chain preserves rng_next
+R04_CLIP conduct_repeat before texts=[]
+PASS conduct_repeat exact thunderfire count
+PASS conduct_repeat exact conduction count
+R04_CLIP conduct_repeat r04 texts=[[24, "conduct", "导电"], [48, "conduct", "导电"], [72, "conduct", "导电"]]
+PASS conduct_repeat preserves health
+PASS conduct_repeat preserves hits
+PASS conduct_repeat preserves states
+PASS conduct_repeat preserves rng_next
+R04_CLIP mixed before texts=[]
+PASS mixed exact thunderfire count
+PASS mixed exact conduction count
+R04_CLIP mixed r04 texts=[[55, "thunder_fire", "雷火爆燃"], [55, "conduct", "导电"], [55, "conduct", "导电"]]
+PASS mixed preserves health
+PASS mixed preserves hits
+PASS mixed preserves states
+PASS mixed preserves rng_next
+REACTION_TEXT_DONE checks=43 captured=0 failures=[]

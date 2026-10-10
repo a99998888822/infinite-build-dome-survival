@@ -1,0 +1,46 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[Bootstrap] survival relic checks
+[Bootstrap] - survival relic scene instantiate: passed
+[Bootstrap] - survival relic player initialize: passed
+[Bootstrap] - survival relic flat stats: passed
+[Bootstrap] - survival relic melee without movement penalty: passed
+[Bootstrap] - survival relic low hp armor: passed
+[Bootstrap] - survival relic low hp condition: passed
+[Bootstrap] - survival relic condition clears: passed
+[Bootstrap] - survival relic shield start: passed
+[Bootstrap] - survival relic shield granted: passed
+[Bootstrap] - survival relic shield regen add: passed
+[Bootstrap] - survival relic shield regen retains starting shield: passed
+[Bootstrap] - survival relic shield regen after four seconds: passed
+[Bootstrap] - survival relic shield regen continues while full: passed
+[Bootstrap] - survival relic low sanity movement: passed
+[Bootstrap] - survival relic conditional movement: passed
+[Bootstrap] - survival relic wave end trigger: passed
+[Bootstrap] - survival relic wave end stat: passed
+[Bootstrap] - survival relic revive trigger: passed
+[PlayerController] player revived, remaining=0
+[Bootstrap] - survival relic revive effect: passed
+[Bootstrap] - survival relic derived stat: passed
+[Bootstrap] - survival relic derived armor: passed
+[Bootstrap] - survival relic move speed armor: passed
+[Bootstrap] - survival relic negative regen keeps true value: passed
+[Bootstrap] - survival relic negative regen does not drain: passed
+BOOTSTRAP_SURVIVAL_COMPLETE passed=true

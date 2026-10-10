@@ -1,0 +1,28 @@
+{
+  "old_renderer_failures": [
+    "native melee damage event",
+    "ranged damage never scales flail",
+    "melee stat scales damage",
+    "large step sweeps fan once, with distinct outer and inner damage",
+    "inner fan hits while rear remains unharmed",
+    "four upgrades reach forty-two and stop at level five",
+    "inner fan gives baseline damage",
+    "player melee bonus uses the configured 1.2 coefficient",
+    "split and outer multipliers apply once",
+    "elemental base scales both weapon and bonus once without early rounding"
+  ],
+  "new_renderer_failures": [
+    "native melee damage event",
+    "ranged damage never scales flail",
+    "melee stat scales damage",
+    "large step sweeps fan once, with distinct outer and inner damage",
+    "inner fan hits while rear remains unharmed",
+    "four upgrades reach forty-two and stop at level five",
+    "inner fan gives baseline damage",
+    "player melee bonus uses the configured 1.2 coefficient",
+    "split and outer multipliers apply once",
+    "elemental base scales both weapon and bonus once without early rounding"
+  ],
+  "identical": true,
+  "pixel_effect_water_failure": "water area modifier still applies"
+}

@@ -1,0 +1,51 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS ordinary enemies never show super armor
+PASS zero duration does not trigger feedback
+PASS real freeze triggers resistance caption
+PASS freeze preserves control power and boss resistance
+PASS repeated control extends outline without caption spam
+PASS slow keeps existing duration
+PASS outline tracks live mirrored and shaken sprite
+PASS overlay leaves the body material untouched
+PASS battle pause freezes the overlay
+PASS overlay disappears two seconds after last resistance
+PASS new control burst restores caption
+PASS knockback keeps existing duration
+PASS native hit resistance coexists with R02 hit feedback
+PASS real freeze triggers resistance caption
+PASS freeze preserves control power and boss resistance
+PASS repeated control extends outline without caption spam
+PASS slow keeps existing duration
+PASS outline tracks live mirrored and shaken sprite
+PASS overlay leaves the body material untouched
+PASS battle pause freezes the overlay
+PASS overlay disappears two seconds after last resistance
+PASS new control burst restores caption
+PASS knockback keeps existing duration
+PASS native hit resistance coexists with R02 hit feedback
+PASS immune shockwave target shows feedback only inside radius
+PASS shockwave does not move immune bosses
+PASS wind deals damage, shows resistance, and preserves displacement immunity
+PASS black hole shows resistance and preserves reduced pull distance
+PASS reinitialization clears old feedback
+PASS knight death clears overlay immediately
+PASS wave cleanup clears overlay immediately
+ENEMY_SUPER_ARMOR checks=31 failures=0

@@ -34,6 +34,8 @@ const DEATH_FADE_SECONDS: float = 0.2
 const LIGHTNING_STUN_MAX_SECONDS: float = 3.0
 const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/lightning_status_visual.gd")
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
+const FEEDBACK_R02 = preload("res://scripts/effects/combat_feedback_r02.gd")
+const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -101,9 +103,11 @@ var _blinded_remaining: float = 0.0:
 		if (_blinded_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
 		_blinded_remaining = value
 var _visual_tween: Tween = null
+var _next_feedback_kind: StringName = &""
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
 var _lightning_visual: Node2D = null
+var _super_armor_visual: Node2D = null
 var _is_move_animation_active: bool = false
 var _move_animation_frame: int = 0
 var _move_animation_timer: float = 0.0
@@ -204,6 +208,8 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
+	if is_instance_valid(_super_armor_visual):
+		_super_armor_visual.call("clear")
 	modifier_stack.cache_enabled = true
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_runtime_modifiers(runtime_modifiers)
@@ -280,19 +286,19 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 	_burn_tick_timer = minf(_burn_tick_timer, 0.5) if _burn_tick_timer > 0.0 else 0.5
 
 
-func apply_slow(duration: float, multiplier: float) -> void:
+func apply_slow(duration: float, multiplier: float, control_power: float = -1.0) -> void:
 	if not alive:
 		return
 	var susceptibility := get_control_multiplier()
-	_slowed_remaining = maxf(_slowed_remaining, duration * susceptibility)
+	_slowed_remaining = maxf(_slowed_remaining, _control_duration(duration, control_power) * susceptibility)
 	_slow_multiplier = minf(_slow_multiplier, lerpf(1.0, clampf(multiplier, 0.05, 1.0), susceptibility))
 
 
-func apply_wet(duration: float = 5.0, slow_multiplier: float = 0.8) -> void:
+func apply_wet(duration: float = 5.0, slow_multiplier: float = 0.8, control_power: float = -1.0) -> void:
 	if not alive:
 		return
 	var susceptibility := get_control_multiplier()
-	_wet_remaining = maxf(_wet_remaining, duration * susceptibility)
+	_wet_remaining = maxf(_wet_remaining, _control_duration(duration, control_power) * susceptibility)
 	_wet_slow_multiplier = minf(_wet_slow_multiplier, lerpf(1.0, clampf(slow_multiplier, 0.05, 1.0), susceptibility))
 
 
@@ -301,12 +307,12 @@ func clear_wet() -> void:
 	_wet_slow_multiplier = 1.0
 
 
-func apply_freeze(duration: float = 1.0, thaw_reaction_data: Dictionary = {}) -> void:
+func apply_freeze(duration: float = 1.0, thaw_reaction_data: Dictionary = {}, control_power: float = -1.0) -> void:
 	if not alive:
 		return
 	if _frozen_remaining <= 0.0:
 		_light_freeze_reacted = false
-	_frozen_remaining = maxf(_frozen_remaining, minf(duration, 3.0) * get_control_multiplier())
+	_frozen_remaining = maxf(_frozen_remaining, _control_duration(minf(duration, 3.0), control_power) * get_control_multiplier())
 	_slowed_remaining = 0.0
 	_slow_multiplier = 1.0
 	_thaw_reaction_data = thaw_reaction_data.duplicate()
@@ -351,10 +357,10 @@ func clear_light() -> void:
 	_holy_flame = false
 
 
-func apply_blind(duration: float = 2.0) -> void:
+func apply_blind(duration: float = 2.0, control_power: float = -1.0) -> void:
 	if not alive:
 		return
-	_blinded_remaining = maxf(_blinded_remaining, minf(duration, 5.0) * get_control_multiplier())
+	_blinded_remaining = maxf(_blinded_remaining, _control_duration(minf(duration, 5.0), control_power) * get_control_multiplier())
 	if _burning_remaining > 0.0:
 		_burning_remaining = maxf(_burning_remaining, 10.0)
 		_dark_flame = true
@@ -415,17 +421,42 @@ func get_control_multiplier() -> float:
 	return 1.0
 
 
+func _control_duration(duration: float, source_control_power: float = -1.0) -> float:
+	# Source snapshots take precedence; native hit/contact pushback uses the live player.
+	var power := source_control_power
+	if power < 0.0:
+		power = target_player.get_stat("control_power") if is_instance_valid(target_player) else 0.0
+	var scaled := StatDefinitions.calculate_control_duration(duration, power)
+	if scaled > 0.0:
+		show_control_resistance()
+	return scaled
+
+
+func show_control_resistance() -> void:
+	if not alive or not is_inside_tree() or sprite == null or not sprite.visible:
+		return
+	if str(enemy_data.get("enemy_type", "")) != "elite" or get_control_multiplier() >= 1.0:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	if not is_instance_valid(_super_armor_visual):
+		_super_armor_visual = SUPER_ARMOR_VISUAL.new()
+		_super_armor_visual.name = "SuperArmorVisual"
+		add_child(_super_armor_visual)
+	_super_armor_visual.call("pulse")
+
+
 func can_be_pushed_by_wind() -> bool:
 	return true
 
 
-func apply_knockback(hit_direction: Vector2, speed: float, duration: float) -> void:
+func apply_knockback(hit_direction: Vector2, speed: float, duration: float, control_power: float = -1.0) -> void:
 	if not alive:
 		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	_knockback_velocity = safe_direction * maxf(speed, 1.0) * get_control_multiplier()
 	velocity = _knockback_velocity
-	var safe_duration := maxf(duration, 0.05) * get_control_multiplier()
+	var safe_duration := _control_duration(maxf(duration, 0.05), control_power) * get_control_multiplier()
 	_knockback_deceleration = _knockback_velocity.length() / safe_duration
 	_knockback_timer = maxf(_knockback_timer, safe_duration)
 
@@ -440,10 +471,10 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration, LIGHTNING_STATUS_VISUAL_SCRIPT)
 
 
-func apply_lightning_stun(duration: float = 0.65) -> void:
+func apply_lightning_stun(duration: float = 0.65, control_power: float = -1.0) -> void:
 	if not alive:
 		return
-	var resisted_duration := minf(duration, LIGHTNING_STUN_MAX_SECONDS) * get_control_multiplier()
+	var resisted_duration := _control_duration(minf(duration, LIGHTNING_STUN_MAX_SECONDS), control_power) * get_control_multiplier()
 	_stunned_remaining = maxf(_stunned_remaining, resisted_duration)
 	apply_lightning_visual(resisted_duration)
 
@@ -472,6 +503,15 @@ func _process_burning(delta: float) -> void:
 		clear_burning()
 
 
+func take_damage_with_feedback(raw_damage: int, source_id: String, is_critical: bool, hit_direction: Vector2, kind: StringName) -> int:
+	var previous := _next_feedback_kind
+	_next_feedback_kind = kind
+	# Retain subclass mitigation/phase overrides of the existing public method.
+	var dealt := take_damage(raw_damage, source_id, is_critical, hit_direction)
+	_next_feedback_kind = previous
+	return dealt
+
+
 func take_damage(
 	raw_damage: int,
 	source_id: String = "",
@@ -480,6 +520,8 @@ func take_damage(
 	damage_components: Array[int] = [],
 	allow_light_bonus: bool = true
 ) -> int:
+	var feedback_kind := _next_feedback_kind
+	_next_feedback_kind = &""
 	if not alive or raw_damage <= 0:
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
@@ -502,7 +544,7 @@ func take_damage(
 		var display_components := _split_damage_for_display(final_damage, damage_components)
 		for index in range(display_components.size()):
 			_spawn_damage_number(display_components[index], is_critical, index, display_components.size(), light_amplified, roundi(display_components[index] / light_multiplier))
-	_apply_hit_feedback(hit_direction)
+	_apply_hit_feedback(hit_direction, feedback_kind)
 	if current_hp <= 0:
 		_die(source_id)
 	return final_damage
@@ -537,10 +579,18 @@ func _split_damage_for_display(final_damage: int, damage_components: Array[int])
 	return display_components
 
 
-func _apply_hit_feedback(hit_direction: Vector2) -> void:
+func _apply_hit_feedback(hit_direction: Vector2, feedback_kind: StringName = &"") -> void:
 	if sprite == null:
 		return
 	_capture_base_sprite_modulate()
+	# Consume the same visual RNG sample in both versions so combat RNG is stable.
+	var shake_angle := randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
+	if FEEDBACK_R02.enabled() and FEEDBACK_R02.handles(feedback_kind):
+		if not hit_direction.is_zero_approx():
+			_apply_weapon_knockback(hit_direction)
+		FEEDBACK_R02.apply(self, feedback_kind, hit_direction, shake_angle)
+		return
+	FEEDBACK_R02.interrupt(self)
 	# A pending Tween reads its starting values when it first advances. Repeated
 	# hits before that point only replace those values, not the animation itself.
 	# Once it has advanced (or was stopped), retain the original restart behavior.
@@ -549,7 +599,7 @@ func _apply_hit_feedback(hit_direction: Vector2) -> void:
 		_visual_tween.kill()
 	# The untinted sprite still needs a visible brightness pulse on impact.
 	sprite.modulate = Color(1.35, 1.35, 1.35, _base_sprite_modulate.a)
-	sprite.rotation = randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
+	sprite.rotation = shake_angle
 	if not pending_feedback:
 		_visual_tween = create_tween()
 		_visual_tween.tween_property(sprite, "modulate", _base_sprite_modulate, HIT_FLASH_SECONDS)
@@ -571,7 +621,7 @@ func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
 		_knockback_velocity = regular_velocity
 		velocity = _knockback_velocity
-		var safe_duration := maxf(HIT_KNOCKBACK_SECONDS, 0.05) * get_control_multiplier()
+		var safe_duration := _control_duration(maxf(HIT_KNOCKBACK_SECONDS, 0.05)) * get_control_multiplier()
 		_knockback_deceleration = _knockback_velocity.length() / safe_duration
 		_knockback_timer = maxf(_knockback_timer, safe_duration)
 
@@ -579,6 +629,9 @@ func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 func fade_out_and_free() -> void:
 	if not is_inside_tree():
 		return
+	if is_instance_valid(_super_armor_visual):
+		_super_armor_visual.call("clear")
+	FEEDBACK_R02.interrupt(self)
 	if _visual_tween != null and _visual_tween.is_valid():
 		_visual_tween.kill()
 	if sprite == null:
@@ -867,7 +920,7 @@ func _apply_contact_knockback() -> void:
 		direction = Vector2.RIGHT
 	_knockback_velocity = direction.normalized() * knockback_speed * get_control_multiplier()
 	velocity = _knockback_velocity
-	var safe_duration := maxf(knockback_seconds, 0.05) * get_control_multiplier()
+	var safe_duration := _control_duration(maxf(knockback_seconds, 0.05)) * get_control_multiplier()
 	_knockback_deceleration = _knockback_velocity.length() / safe_duration
 	_knockback_timer = safe_duration
 

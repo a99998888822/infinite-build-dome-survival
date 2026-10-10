@@ -1,0 +1,15 @@
+{
+  "dash_visible_radius": 87.61888441568975,
+  "physics_radius_unchanged": 96,
+  "pixel_grid_checks": {
+    "dash_circle": true,
+    "star_depart": true,
+    "star_arrive": true,
+    "star_return": true,
+    "star_anchor": true,
+    "star_shockwave": true,
+    "dash_trail": true,
+    "wind_blade": true,
+    "flail_trail": true
+  }
+}

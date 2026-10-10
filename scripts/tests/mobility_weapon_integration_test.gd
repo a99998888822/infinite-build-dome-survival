@@ -94,6 +94,82 @@ func capture(label: String) -> void:
 	await RenderingServer.frame_post_draw
 	check(get_tree().root.get_texture().get_image().save_png(capture_dir.path_join(label + ".png")) == OK, "GPU " + label)
 
+func _capture_dash_boundary(weapon: WeaponInstance) -> void:
+	if capture_dir.is_empty() or DisplayServer.get_name() == "headless": return
+	var boundary := Line2D.new()
+	boundary.width = 1.0
+	boundary.default_color = Color("f5c968")
+	boundary.z_index = 90
+	for index in 129:
+		boundary.add_point(Vector2.from_angle(TAU * float(index) / 128.0) * weapon.get_hit_radius())
+	player.get_parent().add_child(boundary)
+	boundary.global_position = player.global_position
+	await capture("dash_slash_hit_boundary")
+	boundary.queue_free()
+
+func _test_impact_geometry() -> void:
+	for index in [0, 2]:
+		await reset()
+		var weapon := loadout.get_weapon_instance(IDS[index])
+		var radius := weapon.get_hit_radius()
+		var edge := enemy(Vector2(140 + radius + 12, 7.04))
+		var outside := enemy(Vector2(140 + radius + 31, 7.04))
+		var disabled := enemy(Vector2(140, 20))
+		(disabled.get_node("CollisionShape2D") as CollisionShape2D).disabled = true
+		var offset_body := enemy(Vector2(140, -50))
+		(offset_body.get_node("CollisionShape2D") as CollisionShape2D).position = Vector2(0, -radius - 100)
+		var inside := enemy(Vector2(140, 0))
+		inside.add_child(inside.get_node("CollisionShape2D").duplicate())
+		await frames()
+		var runtime := cast(index, Vector2(140, 0))
+		await step(0.05, 5)
+		check(edge.current_hp < 10000, "arrival hits an overlapping body whose origin is outside: " + IDS[index])
+		check(outside.current_hp == 10000, "arrival excludes a fully outside collision body: " + IDS[index])
+		check(disabled.current_hp == 10000 and offset_body.current_hp == 10000, "arrival respects disabled shapes and collider offsets: " + IDS[index])
+		check(inside.current_hp < 10000 and runtime.hit_count == 2, "multiple shapes on one enemy do not duplicate arrival damage: " + IDS[index])
+		await reset()
+		wall(Vector2(175, 0))
+		var blocked := enemy(Vector2(190, 0))
+		await frames()
+		cast(index, Vector2(140, 0))
+		await step(0.05, 5)
+		check(blocked.current_hp == 10000, "terrain still blocks the arrival circle: " + IDS[index])
+		await reset()
+		weapon.runtime_stats.damage_area_size = 100
+		var enlarged_edge := enemy(Vector2(140 + weapon.get_hit_radius() + 12, 7.04))
+		await frames()
+		cast(index, Vector2(140, 0))
+		await step(0.05, 5)
+		check(enlarged_edge.current_hp < 10000, "damage-area bonus scales the real arrival hit shape: " + IDS[index])
+		weapon.runtime_stats.damage_area_size = 0
+	await reset()
+
+func _test_mobility_enchantments() -> void:
+	for index in IDS.size():
+		await reset()
+		var weapon := loadout.get_weapon_instance(IDS[index])
+		var ice := player.item_inventory.add_item_from_base("scroll_ice", "mobility_hit_review")
+		check(weapon.attach_item_instance(ice), "ice attaches to mobility weapon: " + IDS[index])
+		var missed := enemy(Vector2(-50, 0) if index == 1 else Vector2(20, 0))
+		await frames()
+		cast(index, Vector2(140, 0))
+		await step(0.05, 10)
+		check(missed.current_hp == 10000 and get_tree().get_nodes_in_group("ice_fields").is_empty(), "movement or an empty attack does not trigger enchantments: " + IDS[index])
+		await reset()
+		var target := enemy(Vector2(50, 0) if index == 1 else Vector2(140 + weapon.get_hit_radius() + 12, 7.04))
+		await frames()
+		var runtime := cast(index, Vector2(140, 0))
+		await step(0.05, 5)
+		var fields := get_tree().get_nodes_in_group("ice_fields")
+		check(target.current_hp < 10000 and not fields.is_empty(), "actual mobility contact causes damage and triggers ice: " + IDS[index])
+		check(fields.all(func(field): return field._damage_event.source_weapon_id == IDS[index]), "enchantment damage retains the mobility weapon source: " + IDS[index])
+		if index == 2:
+			check(runtime.request_return(), "enchanted tome can return")
+			check(get_tree().get_nodes_in_group("ice_fields").size() == fields.size(), "tome return creates no extra enchantment trigger")
+		for field in fields: field.free()
+		weapon.detach_item_instance(str(ice.item_instance_id))
+	await reset()
+
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
@@ -134,6 +210,7 @@ func _run() -> void:
 		card.queue_free()
 	var base_axes := blade.get_mobility_axes()
 	var base_radius := blade.get_hit_radius()
+	check(is_equal_approx(base_radius, 96), "dash blade base slash radius is ninety-six pixels")
 	blade.runtime_stats.area_size = 100
 	check(blade.get_mobility_axes().is_equal_approx(base_axes * 1.5) and is_equal_approx(blade.get_hit_radius(), base_radius), "attack distance changes only dash ellipse")
 	blade.runtime_stats.area_size = 0
@@ -149,9 +226,9 @@ func _run() -> void:
 	cannon.runtime_stats.area_size = 0
 	cannon.runtime_stats.damage_area_size = 0
 	check(blade.get_mobility_landing(Vector2(0,1000)).is_equal_approx(Vector2(0,140 * AttackFootprint.ELLIPSE_RATIO)), "vertical dash respects ellipse")
-	var path_enemy := enemy(Vector2(45,0))
+	var path_enemy := enemy(Vector2(20,0))
 	var hit_enemy := enemy(Vector2(160,25))
-	var outside := enemy(Vector2(210,0))
+	var outside := enemy(Vector2(270,0))
 	await frames()
 	battle.active_controller.select_slot(0)
 	battle.active_controller.indicator.configure(blade, Vector2(140,0))
@@ -174,6 +251,9 @@ func _run() -> void:
 	check(dash.hit_count == 1, "native slash hits once")
 	await step(0.035)
 	await capture("dash_slash")
+	await step(0.16)
+	await capture("dash_slash_expanded")
+	await _capture_dash_boundary(blade)
 	await step(0.05,5)
 	check(not loadout.active_casting.state_for(blade).executing and loadout.active_casting.state_for(blade).remaining > 0, "slash ends near 0.21s then cooldown begins")
 	await reset()
@@ -298,6 +378,8 @@ func _run() -> void:
 	check(battle.active_controller.selected_weapon == blade, "manual mobility remains accessible in automatic mode")
 	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	await reset()
+	await _test_impact_geometry()
+	await _test_mobility_enchantments()
 	var pierce := player.item_inventory.add_item_from_base("scroll_pierce", "mobility_test")
 	var split := player.item_inventory.add_item_from_base("scroll_split", "mobility_test")
 	check(not blade.get_attachment_incompatibility(pierce).is_empty() and not tome.get_attachment_incompatibility(split).is_empty(), "ineffective attachments rejected explicitly")

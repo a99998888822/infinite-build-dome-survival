@@ -10,7 +10,6 @@ var decided_wave := -1
 var active: Dictionary = {}
 var totals: Dictionary = {}
 var accepted: Dictionary = {}
-var spawn_frequency_bonus := 0.0
 var vault_intact := false
 var _enemy_clock := 0.0
 var _enemy_birth_times: Dictionary = {}
@@ -37,7 +36,6 @@ func reset() -> void:
 	active.clear()
 	totals.clear()
 	accepted.clear()
-	spawn_frequency_bonus = 0.0
 	vault_intact = false
 	pressure.clear()
 	preparation_baseline.clear()
@@ -209,7 +207,7 @@ func decide(token: String, accepted: bool, player: PlayerController, finance: Ba
 	if not accepted: return true
 	active = chosen
 	self.accepted[str(chosen.id)] = prepared_wave
-	if str(chosen.id) == "business_expansion": spawn_frequency_bonus += float(chosen.frequency_bonus)
+	if str(chosen.id) == "business_expansion": _add_stat(player, "enemy_spawn_rate_percent", float(chosen.enemy_spawn_rate_percent))
 	if str(chosen.id) == "capital_custody": vault_intact = true
 	if str(chosen.id) == "rising_tide":
 		player.begin_modifier_update()

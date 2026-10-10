@@ -1,0 +1,47 @@
+[
+  {
+    "path": "scripts/effects/lightning_particle_effect.gd",
+    "expected": "b6051dfe085b3fb4aeab136ad1ea5913270c2173cf077a32a6763bd353bd9b17",
+    "actual": "b6051dfe085b3fb4aeab136ad1ea5913270c2173cf077a32a6763bd353bd9b17"
+  },
+  {
+    "path": "scripts/effects/element_reaction_resolver.gd",
+    "expected": "9aae6da216e0bfc2fc59c275d8875298fb1425ce06a7cc800de113b68b441519",
+    "actual": "9aae6da216e0bfc2fc59c275d8875298fb1425ce06a7cc800de113b68b441519"
+  },
+  {
+    "path": "scripts/waves/wave_manager.gd",
+    "expected": "c685b18be9e7161769b365ee2578e43209717b005564c7cdbfe7eb39ceef8199",
+    "actual": "c685b18be9e7161769b365ee2578e43209717b005564c7cdbfe7eb39ceef8199"
+  },
+  {
+    "path": "localization/catalogs/gameplay.csv",
+    "expected": "efe95f38cd60a4a9573e1b95eafa4df47cc06b4202a2893b732ea6d3d2d13726",
+    "actual": "efe95f38cd60a4a9573e1b95eafa4df47cc06b4202a2893b732ea6d3d2d13726"
+  },
+  {
+    "path": "scripts/effects/element_reaction_text.gd",
+    "expected": "47a3d071330f6267773830c7756319262dad62ead36cefcd6d3662767f60bfb4",
+    "actual": "47a3d071330f6267773830c7756319262dad62ead36cefcd6d3662767f60bfb4"
+  },
+  {
+    "path": "artifacts\\previews\\reaction_text_r04_20261010\\capture.gd",
+    "expected": "e40c67645815cc7588e3f30ac27db3d7a7b35374542183e039e8d3176da1fa13",
+    "actual": "e40c67645815cc7588e3f30ac27db3d7a7b35374542183e039e8d3176da1fa13"
+  },
+  {
+    "path": "artifacts\\previews\\reaction_text_r04_20261010\\launch.gd",
+    "expected": "44efbd8d82292ebb98b1f12e163d3ca2a7a9848f6b349a67261f5ce107fdc648",
+    "actual": "44efbd8d82292ebb98b1f12e163d3ca2a7a9848f6b349a67261f5ce107fdc648"
+  },
+  {
+    "path": "artifacts\\previews\\reaction_text_r04_20261010\\package_review.py",
+    "expected": "1743326cde1e88b8f85bea020ead5f67b960b53365e52dcef5476070e825cdc7",
+    "actual": "1743326cde1e88b8f85bea020ead5f67b960b53365e52dcef5476070e825cdc7"
+  },
+  {
+    "path": "artifacts\\previews\\reaction_text_r04_20261010\\check_browser.cjs",
+    "expected": "c6b308432489208bdf73c6cfd11885e2534c198cc97e811bff35e3e75cee3a27",
+    "actual": "c6b308432489208bdf73c6cfd11885e2534c198cc97e811bff35e3e75cee3a27"
+  }
+]

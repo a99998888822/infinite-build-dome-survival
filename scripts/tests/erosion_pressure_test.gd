@@ -53,12 +53,15 @@ func _run() -> void:
 		check(is_equal_approx(pressure.max_hp_multiplier, row[1]) and is_equal_approx(pressure.damage_multiplier, row[2]) and is_equal_approx(pressure.armor_multiplier, row[3]), "uncapped stat pressure at erosion %s" % row[0])
 	check(manager.calculate_miniboss_expected_count(10, 0) == 1.25 and manager.calculate_miniboss_expected_count(20, 0) == 2.5, "zero erosion count anchors increase to 1.25 and 2.5")
 	check(manager.calculate_miniboss_expected_count(10, 50) == 1.875 and manager.calculate_miniboss_expected_count(10, 100) == 2.5, "erosion count bonus doubles")
-	check(manager.calculate_miniboss_expected_count(20, 100) == 3.0, "three miniboss hard cap still applies")
+	check(manager.calculate_miniboss_expected_count(20, 100) == 5.0, "wave twenty at one hundred erosion now permits five minibosses")
+	check(manager.calculate_miniboss_expected_count(100, 100) == 9.0, "expanded independent cap still limits high expectations to nine")
 	check(manager._build_erosion_enemy_modifiers().is_empty(), "zero erosion does not modify baseline enemies")
 	manager.free()
 	player.free()
 	_test_spawns_and_damage()
 	_test_wave_start_snapshot()
+	_test_spawn_count_scaling()
+	_test_expanded_elite_cap()
 	_test_rules_validation()
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -140,6 +143,77 @@ func _test_wave_start_snapshot() -> void:
 	check(is_equal_approx(manager.get_enemy_erosion_snapshot().max_hp_multiplier, 2.26), "wave-start relic is included in stat pressure")
 	manager.free()
 	player.free()
+
+func _test_spawn_count_scaling() -> void:
+	var player := _make_player(33)
+	player.modifier_stack.set_base_stat("enemy_spawn_rate_percent", 1)
+	var manager := WaveManager.new()
+	add_child(manager)
+	manager.set_process(false)
+	manager.initialize(player)
+	manager.start_next_wave()
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), 1.3433), "count bonus and erosion multiply after baseline rounding")
+	var total := 0
+	for batch in 10000: total += manager._take_enemy_spawn_count(6)
+	check(total == 13433 and manager._enemy_spawn_remainder_units == 0, "two percentage bonuses preserve all four decimal places across batches")
+	var interval := manager.calculate_spawn_interval(1200)
+	player.modifier_stack.set_base_stat("divinity", 200)
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), 1.3433), "mid-wave erosion changes do not alter the current snapshot")
+	manager.start_next_wave()
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), 3.03), "next wave captures erosion above one hundred without a count cap")
+	for erosion in [-100, 0, 50, 100, 200]:
+		manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(erosion)
+		manager.current_wave_index = 0
+		check(is_equal_approx(manager.calculate_enemy_spawn_count(6), 1.01 * (1 + maxf(erosion, 0) / 100.0)), "normal supply scales at erosion %d" % erosion)
+		check(is_equal_approx(manager.calculate_spawn_interval(1200), interval), "erosion never changes spawn intervals")
+	player.modifier_stack.set_base_stat("divinity", 100)
+	player.modifier_stack.set_base_stat("enemy_spawn_rate_percent", 20)
+	manager.initialize(player)
+	manager.start_next_wave()
+	var spawned := 0
+	for batch in 5:
+		manager.spawn_timers_ms.fill(0.0)
+		manager._process_spawn_timers(0.0)
+		for enemy in EnemyRegistry.get_registered_enemies().duplicate():
+			spawned += 1
+			check(str(enemy.enemy_data.enemy_type) == "normal", "first-wave erosion additions are ordinary enemies")
+			enemy.free()
+	check(spawned == 24, "real two-group scheduler generates 24 enemies from ten baseline slots with 100 erosion and 20 percent count")
+	check(manager._elite_planned_count == 0, "normal count growth does not create new elite quotas")
+	manager._difficulty.enemy_limit = 1
+	manager.spawn_timers_ms.fill(0.0)
+	manager._process_spawn_timers(0.0)
+	check(EnemyRegistry.get_registered_enemies().size() == 1, "erosion cannot bypass the ordinary population cap")
+	for enemy in EnemyRegistry.get_registered_enemies().duplicate(): enemy.free()
+	manager.free()
+	player.free()
+
+
+func _test_expanded_elite_cap() -> void:
+	var player := _make_player(100)
+	var manager := WaveManager.new()
+	add_child(manager)
+	manager.set_process(false)
+	for index in BattleDifficulty.IDS.size():
+		manager.initialize(player, BattleDifficulty.IDS[index])
+		manager.current_wave_index = 18
+		manager.start_next_wave()
+		var expected: float = [5.0, 5.75, 6.5][index]
+		check(is_equal_approx(manager._elite_expected_count, expected), "late-wave quotas no longer truncate at three in tier %d" % (index + 1))
+		check(manager._elite_planned_count >= floori(expected) and manager._elite_planned_count <= ceili(expected), "higher quota retains adjacent-integer sampling")
+	# Exercise the actual ceiling, beyond expectations reached by the current 20 waves.
+	manager._difficulty.elite_count = 10.0
+	manager._initialize_elite_schedule()
+	check(manager._elite_expected_count == 9 and manager._elite_planned_count == 9 and manager._elite_spawn_schedule.size() == 9, "difficulty multiplication still respects the nine-elite cap")
+	for time in manager._elite_spawn_schedule.duplicate():
+		manager.wave_time_left = float(manager.current_wave.duration_seconds) - float(time) - 0.05
+		manager.spawn_timers_ms.fill(0.0)
+		manager._process_spawn_timers(0.0)
+		for enemy in EnemyRegistry.get_registered_enemies().duplicate(): enemy.free()
+	check(manager._elite_spawned_count == 9, "production scheduler can place all nine reserved elites before the deadline")
+	manager.free()
+	player.free()
+
 
 func _test_rules_validation() -> void:
 	for field in ["erosion_full_at", "max_hp_bonus_percent", "damage_bonus_percent", "armor_bonus_percent"]:

@@ -1,0 +1,9 @@
+{
+  "effects": 10,
+  "controls": true,
+  "animation_advances": true,
+  "narrow_layout": true,
+  "image_failure_retry": true,
+  "background_failure_retry": true,
+  "page_errors": []
+}

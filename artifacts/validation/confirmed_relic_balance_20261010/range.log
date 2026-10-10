@@ -1,0 +1,157 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS catalog loads
+PASS relic_old_brass_telescope in shop pool
+PASS relic_old_brass_telescope imported icon
+PASS relic_old_brass_telescope area_size
+PASS relic_old_brass_telescope ranged_damage
+PASS relic_old_brass_telescope stack
+PASS relic_old_brass_telescope stack
+PASS relic_old_brass_telescope cap
+PASS relic_old_brass_telescope capped offer removed
+PASS relic_cracked_bronze_bell in shop pool
+PASS relic_cracked_bronze_bell imported icon
+PASS relic_cracked_bronze_bell damage_area_size
+PASS relic_cracked_bronze_bell element_damage
+PASS relic_cracked_bronze_bell stack
+PASS relic_cracked_bronze_bell stack
+PASS relic_cracked_bronze_bell cap
+PASS relic_cracked_bronze_bell capped offer removed
+PASS relic_long_focus_eyepiece in shop pool
+PASS relic_long_focus_eyepiece imported icon
+PASS relic_long_focus_eyepiece area_size
+PASS relic_long_focus_eyepiece ranged_damage
+PASS relic_long_focus_eyepiece attack_speed
+PASS relic_long_focus_eyepiece cap
+PASS relic_long_focus_eyepiece capped offer removed
+PASS relic_diffusion_nozzle in shop pool
+PASS relic_diffusion_nozzle imported icon
+PASS relic_diffusion_nozzle damage_area_size
+PASS relic_diffusion_nozzle damage_percent
+PASS relic_diffusion_nozzle element_damage
+PASS relic_diffusion_nozzle attack_speed
+PASS relic_diffusion_nozzle cap
+PASS relic_diffusion_nozzle capped offer removed
+PASS relic_range_tripod in shop pool
+PASS relic_range_tripod imported icon
+PASS relic_range_tripod attack_speed
+PASS relic_range_tripod cap
+PASS relic_range_tripod capped offer removed
+PASS relic_aftershock_hourglass in shop pool
+PASS relic_aftershock_hourglass imported icon
+PASS relic_aftershock_hourglass damage_area_size
+PASS relic_aftershock_hourglass element_damage
+PASS relic_aftershock_hourglass damage_percent
+PASS relic_aftershock_hourglass cap
+PASS relic_aftershock_hourglass capped offer removed
+PASS relic_golden_rangefinder in shop pool
+PASS relic_golden_rangefinder imported icon
+PASS relic_golden_rangefinder ranged_damage
+PASS relic_golden_rangefinder cap
+PASS relic_golden_rangefinder capped offer removed
+PASS relic_abyssal_echo_shell in shop pool
+PASS relic_abyssal_echo_shell imported icon
+PASS relic_abyssal_echo_shell damage_area_size
+PASS relic_abyssal_echo_shell element_damage
+PASS relic_abyssal_echo_shell humanity
+PASS relic_abyssal_echo_shell cap
+PASS relic_abyssal_echo_shell capped offer removed
+PASS relic_folded_star_chart in shop pool
+PASS relic_folded_star_chart imported icon
+PASS relic_folded_star_chart area_size
+PASS relic_folded_star_chart damage_area_size
+PASS relic_folded_star_chart damage_percent
+PASS relic_folded_star_chart divinity
+PASS relic_folded_star_chart cap
+PASS relic_folded_star_chart capped offer removed
+PASS relic_horizon_orrery in shop pool
+PASS relic_horizon_orrery imported icon
+PASS relic_horizon_orrery area_size
+PASS relic_horizon_orrery damage_percent
+PASS relic_horizon_orrery damage_area_size
+PASS relic_horizon_orrery cap
+PASS relic_horizon_orrery capped offer removed
+PASS acquiring tripod does not count earlier idle time
+PASS tripod waits full second
+PASS pause cannot charge tripod
+PASS tripod activates after one combat second
+PASS sustained idle does not rebuild or stack each frame
+PASS preview preserves charged tripod without mutating live stats
+PASS keyboard immediately cancels only conditional bonuses
+PASS blocked movement input cannot charge tripod
+PASS mobile input immediately cancels tripod
+PASS external displacement resets tripod
+PASS wave end clears stance
+PASS new wave starts uncharged
+[PlayerController] player died, source=
+PASS death clears stance
+PASS new run starts uncharged
+PASS hourglass has no retroactive wave growth
+PASS wave start does not grow hourglass
+PASS completed wave adds exactly two despite duplicate finish
+PASS wave start does not grow hourglass
+PASS completed wave adds exactly two despite duplicate finish
+PASS wave start does not grow hourglass
+PASS completed wave adds exactly two despite duplicate finish
+PASS preview includes earned wave growth without adding waves
+PASS new run clears permanent in-run growth
+PASS orrery includes its own range and ignores incomplete principal tier
+PASS rangefinder full principal tier
+PASS principal range feeds orrery regardless of acquisition order
+PASS tripod and principal feed orrery together
+PASS withdrawal revokes both principal bonuses and derived area immediately
+PASS movement revokes tripod-derived area
+PASS orrery requires full ten points
+PASS negative range cannot subtract damage area
+PASS orrery includes its own range and ignores incomplete principal tier
+PASS rangefinder full principal tier
+PASS principal range feeds orrery regardless of acquisition order
+PASS tripod and principal feed orrery together
+PASS withdrawal revokes both principal bonuses and derived area immediately
+PASS movement revokes tripod-derived area
+PASS orrery requires full ten points
+PASS negative range cannot subtract damage area
+PASS rangefinder separates fixed attack from capped principal bonuses at 0
+PASS rangefinder separates fixed attack from capped principal bonuses at 99
+PASS rangefinder separates fixed attack from capped principal bonuses at 100
+PASS rangefinder separates fixed attack from capped principal bonuses at 999
+PASS rangefinder separates fixed attack from capped principal bonuses at 1000
+PASS rangefinder separates fixed attack from capped principal bonuses at 1100
+PASS rangefinder separates fixed attack from capped principal bonuses at 100000000
+PASS preview drops below rangefinder cap while preserving fixed attack
+PASS capped withdrawal preview preserves real state
+PASS rangefinder cap does not clamp other sources beyond former global limits
+PASS withdrawal removes only rangefinder tiers at principal 1000
+PASS withdrawal removes only rangefinder tiers at principal 999
+PASS withdrawal removes only rangefinder tiers at principal 99
+PASS withdrawal removes only rangefinder tiers at principal 0
+PASS bank preview includes exact range and derived area changes
+PASS bank hover preserves live principal and stats
+PASS withdrawal agrees with bank preview
+PASS stationary condition validates
+PASS invalid stationary threshold rejected
+PASS invalid stationary threshold rejected
+PASS invalid stationary threshold rejected
+PASS invalid source clamp rejected
+PASS right-edge relic tooltip avoids stats drawer at (1152, 768)
+PASS orrery tooltip retains full description
+PASS right-edge relic tooltip avoids stats drawer at (640, 360)
+PASS orrery tooltip retains full description
+RANGE_RELIC_COMPLETE checks=136 failures=0

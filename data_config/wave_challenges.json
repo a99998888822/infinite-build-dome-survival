@@ -31,9 +31,9 @@
     {
       "id": "business_expansion", "condition": "comfortable_expansion",
       "speech": "生意好，就该把摊子铺大一点。",
-      "body": "怪物频率+20%，存活后本金+150。",
+      "body": "怪物频率 +20%，存活后本金 +150",
       "icon": "res://assets/ui/finance/challenge_expansion.svg",
-      "frequency_bonus": 0.2, "principal": 150, "minimum_remaining_waves": 2
+      "enemy_spawn_rate_percent": 20, "principal": 150, "minimum_remaining_waves": 2
     },
     {
       "id": "fleeting_fortune", "condition": "pressured_cleanup",

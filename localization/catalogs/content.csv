@@ -101,7 +101,7 @@ content.drop_tables.drop_elite_enemy.description,附魔基础掉率15%，每次�
 content.drop_tables.drop_elite_enemy.display_name,精英怪掉落表,Elite Enemy Loot Table
 content.enemies.enemy_echo_bat.description,保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,"Flies at medium range, retreating when you approach and following when you move away. Briefly charges, marks a narrow path, then fires a pixel spiral soundwave in the locked direction. Makes up 30% of normal enemy spawns."
 content.enemies.enemy_echo_bat.display_name,回声蝙蝠,Echo Bat
-content.enemies.enemy_elite_rusher.description,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多3只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 3 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
+content.enemies.enemy_elite_rusher.description,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 9 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 content.enemies.enemy_elite_rusher.display_name,钢甲骑士,Ironclad Knight
 content.enemies.enemy_mutated_grub.description,最基础的近战追踪小怪示例。,A basic melee enemy that pursues the player.
 content.enemies.enemy_mutated_grub.display_name,天外幼体,Otherworld Larva
@@ -122,9 +122,9 @@ content.goblin_trades.spending_money.speech,别急着存钱，拿去花，下回
 content.goblin_trades.strong_refresh.body,存入 %d 金币，获得 1 次免费的强力刷新,Deposit %d gold to gain 1 free Power Reroll
 content.goblin_trades.strong_refresh.detail,强力刷新：拥有100幸运加成，且保底一件史诗遗物。,Power Reroll grants +100 Luck and guarantees at least one Epic relic.
 content.goblin_trades.strong_refresh.speech,再存一点，我给你看看真正的好东西。,"Deposit a little more, and I'll show you the good stuff."
-content.relics.relic_abyssal_echo_shell.description,伤害范围 +40，元素伤害 +8，理智值 −15。,Damage Area +40; Elemental Damage +8; Sanity −15.
+content.relics.relic_abyssal_echo_shell.description,元素伤害 +9；理智值 -2；伤害范围 +12,Elemental Damage +9; Sanity -2; Damage Area +12
 content.relics.relic_abyssal_echo_shell.display_name,深海回声螺,Abyssal Echo Shell
-content.relics.relic_aftershock_hourglass.description,伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。,Damage Area +20; Damage Bonus +12. Each wave completed after acquisition grants another +2 Damage Area.
+content.relics.relic_aftershock_hourglass.description,伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.
 content.relics.relic_aftershock_hourglass.display_name,余震沙漏,Aftershock Hourglass
 content.relics.relic_amulet_of_humanity.description,理智值 + 10；幸运 - 5,Sanity +10; Luck −5
 content.relics.relic_amulet_of_humanity.display_name,人性护符,Amulet of Humanity
@@ -132,15 +132,15 @@ content.relics.relic_annual_leave_cutback.description,获得时：本金 +100；
 content.relics.relic_annual_leave_cutback.display_name,年假削减方案,Leave Cutbacks
 content.relics.relic_bankruptcy_reorg.description,本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,"When Principal reaches zero, immediately gain Principal equal to twice your current gold and +1 Revive."
 content.relics.relic_bankruptcy_reorg.display_name,破产重组,Bankruptcy Reorganization
-content.relics.relic_barrier_crystal.description,每两秒生成 1 点护盾；侵蚀度 + 5,Generate 1 Shield every 2 seconds; Corruption +5
+content.relics.relic_barrier_crystal.description,每秒护盾 +0.3；元素伤害 +3,Shield Regen +0.3/s; Elemental Damage +3
 content.relics.relic_barrier_crystal.display_name,屏障结晶,Barrier Crystal
-content.relics.relic_berserker_copper_badge.description,近战伤害 + 8；护甲 - 10,Melee Damage +8; Armor −10
+content.relics.relic_berserker_copper_badge.description,近战伤害 +8；护甲 -8,Melee Damage +8; Armor -8
 content.relics.relic_berserker_copper_badge.display_name,狂战士铜质徽章,Berserker's Copper Badge
-content.relics.relic_black_spot_eagle_eye.description,暴击几率 + 7,Crit Chance +7
+content.relics.relic_black_spot_eagle_eye.description,暴击几率 +7 个百分点；远程伤害 +2,Crit Chance +7 percentage points; Ranged Damage +2
 content.relics.relic_black_spot_eagle_eye.display_name,黑斑鹰眼水晶,Spotted Hawkeye Crystal
-content.relics.relic_blocking_counterweight.description,控制强度 + 6,Control Strength +6
+content.relics.relic_blocking_counterweight.description,控制强度 +4；元素伤害 +2,Control Power +4; Elemental Damage +2
 content.relics.relic_blocking_counterweight.display_name,阻滞配重石,Hindering Counterweight
-content.relics.relic_bloodstained_belt.description,近战伤害 + 3；每秒回血 - 0.25,Melee Damage +3; HP Regen/s −0.25
+content.relics.relic_bloodstained_belt.description,近战伤害 +5；每秒回血 -0.1,Melee Damage +5; HP Regen -0.1/s
 content.relics.relic_bloodstained_belt.display_name,嗜血皮带,Bloodthirsty Belt
 content.relics.relic_brass_pocket_watch.description,护甲 + 8；理智值 + 2,Armor +8; Sanity +2
 content.relics.relic_brass_pocket_watch.display_name,黄铜怀表,Brass Pocket Watch
@@ -152,26 +152,26 @@ content.relics.relic_coin_heart.description,每满100本金，最大生命 + 1�
 content.relics.relic_coin_heart.display_name,金币心脏,Coin Heart
 content.relics.relic_compound_interest_tome.description,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
 content.relics.relic_compound_interest_tome.display_name,复利宝典,Tome of Compound Interest
-content.relics.relic_corroded_blowpipe.description,远程伤害 + 6；最大生命 - 3,Ranged Damage +6; Max HP −3
+content.relics.relic_corroded_blowpipe.description,远程伤害 +7；最大生命 -3,Ranged Damage +7; Max HP -3
 content.relics.relic_corroded_blowpipe.display_name,蚀腐吹管,Corroded Blowpipe
 content.relics.relic_costly_seed_of_life.description,每秒回血 +0.5；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件,"HP Regen/s +0.5. Grants 1 extra Revive, consumed on use. While held, every revival adds +20 Corruption. Stack limit: 1."
 content.relics.relic_costly_seed_of_life.display_name,代价生命之种,Costly Seed of Life
 content.relics.relic_cracked_bronze_bell.description,伤害范围 +15，元素伤害 +1。,Damage Area +15; Elemental Damage +1.
 content.relics.relic_cracked_bronze_bell.display_name,裂纹铜铃,Cracked Bronze Bell
-content.relics.relic_cracked_stone_bullet.description,远程伤害 + 1；拾取范围 - 10,Ranged Damage +1; Pickup Range −10
+content.relics.relic_cracked_stone_bullet.description,远程伤害 +2；拾取范围 -10,Ranged Damage +2; Pickup Range -10
 content.relics.relic_cracked_stone_bullet.display_name,裂痕石子弹,Cracked Stone Bullet
 content.relics.relic_cultic_holy_shield.description,护甲 + 30；侵蚀度 + 5,Armor +30; Corruption +5
 content.relics.relic_cultic_holy_shield.display_name,密教圣盾,Cultic Holy Shield
-content.relics.relic_dead_shield_badge.description,每波开始生成10点护盾,Gain 10 Shield at each wave start
+content.relics.relic_dead_shield_badge.description,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
 content.relics.relic_dead_shield_badge.display_name,死寂护盾徽章,Deathly Shield Badge
 content.relics.relic_defiled_blessing_coin.description,幸运 + 36；理智值 - 3,Luck +36; Sanity −3
 content.relics.relic_defiled_blessing_coin.display_name,被亵渎的祈福铜钱,Defiled Blessing Coin
-content.relics.relic_diffusion_nozzle.description,伤害范围 +30，伤害加成 +15，攻击速度 −6。,Damage Area +30; Damage Bonus +15; Attack Speed −6.
+content.relics.relic_diffusion_nozzle.description,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
 content.relics.relic_diffusion_nozzle.display_name,扩散喷口,Diffusion Nozzle
 content.relics.relic_dividend_check.description,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
 content.relics.relic_divine_fusion.description,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.5 per full 5 Corruption. Corruption +1 at each wave start. Stack limit: 1 per run."
 content.relics.relic_divine_fusion.display_name,神性融合,Divine Fusion
-content.relics.relic_executioner_bracer.description,近战伤害 + 10；移速 - 20,Melee Damage +10; Movement Speed −20
+content.relics.relic_executioner_bracer.description,近战伤害 +11；移动速度 -10,Melee Damage +11; Move Speed -10
 content.relics.relic_executioner_bracer.display_name,屠戮者臂铠,Executioner's Bracers
 content.relics.relic_expanded_backpack_strap.description,负载 + 10；移动速度 - 12；拾取范围 - 10,Load Capacity +10; Movement Speed −12; Pickup Range −10
 content.relics.relic_expanded_backpack_strap.display_name,扩容背包束带,Expanded Backpack Straps
@@ -179,7 +179,7 @@ content.relics.relic_finance_manager.description,利率 + 1.5%,Interest Rate +1.
 content.relics.relic_finance_manager.display_name,理财经理,Financial Adviser
 content.relics.relic_fixed_deposit_certificate.description,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
 content.relics.relic_fixed_deposit_certificate.display_name,定期存单,Fixed Deposit Certificate
-content.relics.relic_flesh_pauldron.description,最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2,Max HP +5; Armor +15; HP Regen/s −0.1; Corruption +2; Sanity −2
+content.relics.relic_flesh_pauldron.description,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
 content.relics.relic_flesh_pauldron.display_name,血肉肩甲,Flesh Pauldron
 content.relics.relic_flyer_ad.description,商店折扣 + 8%,Shop Discount +8%
 content.relics.relic_flyer_ad.display_name,传单广告,Advertising Flyer
@@ -187,7 +187,7 @@ content.relics.relic_folded_star_chart.description,攻击距离 +25，伤害范�
 content.relics.relic_folded_star_chart.display_name,折叠星图,Folded Star Chart
 content.relics.relic_frenzied_dividend.description,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
 content.relics.relic_frenzied_dividend.display_name,狂热分红,Frenzied Dividend
-content.relics.relic_gale_roulette.description,攻击速度 +30%；通用伤害 -8%,Attack Speed +30%; All Damage −8%
+content.relics.relic_gale_roulette.description,攻击速度 +18；通用伤害 -5%,Attack Speed +18; Damage Bonus -5%
 content.relics.relic_gale_roulette.display_name,疾风轮盘,Gale Roulette
 content.relics.relic_gift_mark.description,幸运 + 84；侵蚀度 + 10,Luck +84; Corruption +10
 content.relics.relic_gift_mark.display_name,馈赠印记,Mark of Bounty
@@ -195,11 +195,11 @@ content.relics.relic_gilded_trigger.description,通用伤害 + 25%；理智值 -
 content.relics.relic_gilded_trigger.display_name,镀金扳机,Gilded Trigger
 content.relics.relic_goblin_central_bank_printer.description,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
 content.relics.relic_goblin_central_bank_printer.display_name,哥布林金币铸造机,Goblin Coin Mint
-content.relics.relic_gold_compass.description,拾取范围 +40；金币获取 +10%,Pickup Range +40; Gold Gain +10%
+content.relics.relic_gold_compass.description,拾取范围 +10；金币获取 +8%；远程伤害 +3,Pickup Range +10; Gold Gain +8%; Ranged Damage +3
 content.relics.relic_gold_compass.display_name,吸金罗盘,Gold Compass
 content.relics.relic_gold_digger_gloves.description,拾取范围 + 10；经验获取 + 8,Pickup Range +10; Experience Gain +8
 content.relics.relic_gold_digger_gloves.display_name,淘金者的手套,Prospector's Gloves
-content.relics.relic_golden_rangefinder.description,每满100本金，攻击距离＋3、伤害加成＋3%，上限30,"Every full 100 Principal grants Attack Range +3 and Damage Bonus +3%, each capped at +30."
+content.relics.relic_golden_rangefinder.description,远程伤害 +5；每满100本金，攻击距离 +3（上限30）、通用伤害 +1%（上限10%）,Ranged Damage +5; every full 100 Principal grants Attack Range +3 (up to +30) and Damage Bonus +1% (up to +10%).
 content.relics.relic_golden_rangefinder.display_name,黄金测距仪,Golden Rangefinder
 content.relics.relic_golden_sarcophagus.description,已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,"After all other Revives are spent, if Principal is at least 1,000, lethal damage consumes 500 Principal and restores 50% of your Max HP after payment. Triggers once per run. Stack limit: 1."
 content.relics.relic_golden_sarcophagus.display_name,黄金棺椁,Golden Sarcophagus
@@ -207,7 +207,7 @@ content.relics.relic_guarding_heart_copper_mirror.description,幸运 + 36；每�
 content.relics.relic_guarding_heart_copper_mirror.display_name,守心铜鉴,Heartguard Bronze Mirror
 content.relics.relic_harvest_sacrificial_vessel.description,金币获取 +15%；经验获取 +15%；最大生命值 -2,Gold Gain +15%; Experience Gain +15%; Max HP −2
 content.relics.relic_harvest_sacrificial_vessel.display_name,丰收的牺牲祭器,Harvest Sacrificial Vessel
-content.relics.relic_hasty_spring_trigger.description,攻击速度 + 8；移动速度 - 5,Attack Speed +8; Movement Speed −5
+content.relics.relic_hasty_spring_trigger.description,攻击速度 +5；移动速度 -2,Attack Speed +5; Move Speed -2
 content.relics.relic_hasty_spring_trigger.display_name,急促弹簧扳机,Hasty Spring Trigger
 content.relics.relic_high_yield_contract.description,本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,"Manually deposit at least 50 gold before the wave to gain +6 percentage points of Interest Rate for that wave. Otherwise, interest is paid at the normal rate. Stack limit: 1."
 content.relics.relic_high_yield_contract.display_name,高利契约,High-Yield Contract
@@ -223,7 +223,7 @@ content.relics.relic_incomplete_divination_dice.description,幸运 + 18；掉落
 content.relics.relic_incomplete_divination_dice.display_name,残缺的占卜骰子,Broken Divination Dice
 content.relics.relic_judgment_eye_pendant.description,暴击几率 +12 个百分点；暴击伤害 +35 个百分点,Crit Chance +12 percentage points; Crit Damage +35 percentage points
 content.relics.relic_judgment_eye_pendant.display_name,裁决之眼吊坠,Eye of Judgment Pendant
-content.relics.relic_load_iron_bracer.description,护甲 + 8；移动速度 - 5,Armor +8; Movement Speed −5
+content.relics.relic_load_iron_bracer.description,护甲 +6；近战伤害 +1,Armor +6; Melee Damage +1
 content.relics.relic_load_iron_bracer.display_name,负重铁皮护腕,Weighted Iron Bracers
 content.relics.relic_long_focus_eyepiece.description,攻击距离 +35，远程伤害 +3，攻击速度 −8。,Attack Range +35; Ranged Damage +3; Attack Speed −8.
 content.relics.relic_long_focus_eyepiece.display_name,长焦目镜,Long-Focus Eyepiece
@@ -239,14 +239,14 @@ content.relics.relic_nightmare_healing_urn.description,每秒回血 + 0.4；每�
 content.relics.relic_nightmare_healing_urn.display_name,梦魇治愈圣壶,Nightmare Healing Urn
 content.relics.relic_old_brass_telescope.description,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
 content.relics.relic_old_brass_telescope.display_name,旧铜望远镜,Old Brass Telescope
-content.relics.relic_pain_vessel.description,每秒回血 + 0.6；最大生命值 - 1；理智值 - 3,HP Regen/s +0.6; Max HP −1; Sanity −3
+content.relics.relic_pain_vessel.description,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
 content.relics.relic_pain_vessel.display_name,苦痛祭皿,Vessel of Pain
 content.relics.relic_periodic_dividend_clock.description,每经过 3 波，额外触发一次利息结算,"Every 3 waves, trigger one extra interest settlement."
 content.relics.relic_perpetual_annuity_scroll.description,每个回合结息次数 + 1；每局最多持有 1 件,One additional interest settlement per wave. Stack limit: 1 per run.
 content.relics.relic_perpetual_annuity_scroll.display_name,永续年金卷轴,Perpetual Annuity Scroll
 content.relics.relic_piggy_bank.description,每波开始自动本金 + 15,Automatically gain +15 Principal at the start of each wave.
 content.relics.relic_piggy_bank.display_name,猪猪存钱罐,Piggy Bank
-content.relics.relic_poison_mist_pouch.description,远程伤害 + 3；每秒回血 - 0.25,Ranged Damage +3; HP Regen/s −0.25
+content.relics.relic_poison_mist_pouch.description,远程伤害 +4；每秒回血 -0.1,Ranged Damage +4; HP Regen -0.1/s
 content.relics.relic_poison_mist_pouch.display_name,毒雾投囊,Poison Mist Pouch
 content.relics.relic_prison_copper_anklet.description,最大生命值 + 3；移动速度 + 10；理智值 - 5,Max HP +3; Movement Speed +10; Sanity −5
 content.relics.relic_prison_copper_anklet.display_name,监狱铜制脚环,Prisoner's Copper Anklet
@@ -258,7 +258,7 @@ content.relics.relic_range_tripod.description,攻击速度 +12；连续静止1�
 content.relics.relic_range_tripod.display_name,定距脚架,Range Tripod
 content.relics.relic_reincarnation_hellfire_candle.description,幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,Luck +150; Experience Gain +35%. Sanity can no longer recover. Corruption +1 at each wave end. Stack limit: 1 per run.
 content.relics.relic_reincarnation_hellfire_candle.display_name,轮回业火之烛,Candle of Rebirth's Hellfire
-content.relics.relic_rough_grinding_lens.description,暴击几率 + 3；暴击伤害 + 10,Crit Chance +3; Crit Damage +10
+content.relics.relic_rough_grinding_lens.description,远程伤害 +1；暴击几率 +3 个百分点,Ranged Damage +1; Crit Chance +3 percentage points
 content.relics.relic_rough_grinding_lens.display_name,粗糙研磨透镜,Rough-Ground Lens
 content.relics.relic_runaway_amplifier.description,通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 3 Sanity, or 5 if Sanity is already below 0. Stack limit: 1 per run."
 content.relics.relic_runaway_amplifier.display_name,失控增幅器,Runaway Amplifier
@@ -276,17 +276,17 @@ content.relics.relic_stargazers_lens.description,幸运 + 36；经验获取 + 12
 content.relics.relic_stargazers_lens.display_name,观星者的镜片,Stargazer's Lens
 content.relics.relic_steel_vault.description,每 50 本金 +1 护甲,Armor +1 per 50 Principal
 content.relics.relic_steel_vault.display_name,钢铁保险柜,Steel Vault
-content.relics.relic_suffering_carapace.description,最大生命值 + 12；护甲 + 8；移动速度 - 15,Max HP +12; Armor +8; Movement Speed −15
+content.relics.relic_suffering_carapace.description,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
 content.relics.relic_suffering_carapace.display_name,受难甲壳,Carapace of Suffering
-content.relics.relic_tip_tray.description,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验1和基础金币1,Kills have a 10% chance to drop an extra experience orb worth 1 base XP and 1 base gold.
+content.relics.relic_tip_tray.description,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,Kills have a 10% chance to drop an extra experience orb worth 2 base XP and 2 base gold.
 content.relics.relic_tip_tray.display_name,小费托盘,Tip Tray
 content.relics.relic_travelers_ledger.description,金币获取 + 10；获取时本金 + 20；负载 - 5,Gold Gain +10; Principal +20 on acquisition; Load Capacity −5
 content.relics.relic_travelers_ledger.display_name,商旅账本,Merchant's Ledger
-content.relics.relic_tremor_grip.description,攻击速度 + 18；通用伤害 - 5,Attack Speed +18; All Damage −5
+content.relics.relic_tremor_grip.description,攻击速度 +10；通用伤害 -3%,Attack Speed +10; Damage Bonus -3%
 content.relics.relic_tremor_grip.display_name,震颤握柄,Tremor Grip
 content.relics.relic_true_silver_armor.description,最大生命值 + 10；护甲 + 5；理智值 + 2,Max HP +10; Armor +5; Sanity +2
 content.relics.relic_true_silver_armor.display_name,真银护甲,Truesilver Armor
-content.relics.relic_turtle_shell_pendant.description,护甲 + 10；最大生命值 + 3,Armor +10; Max HP +3
+content.relics.relic_turtle_shell_pendant.description,护甲 +8；最大生命 +2；近战伤害 +2,Armor +8; Max HP +2; Melee Damage +2
 content.relics.relic_turtle_shell_pendant.display_name,龟壳吊坠,Turtle Shell Pendant
 content.relics.relic_vitality_potion.description,每秒回血 + 0.25；每波过后，侵蚀度 + 1,HP Regen/s +0.25; Corruption +1 after each wave
 content.relics.relic_vitality_potion.display_name,生命力药瓶,Vitality Vial
@@ -296,7 +296,7 @@ content.relics.relic_void_tentacle.description,每波开始护盾 + 20；每秒�
 content.relics.relic_void_tentacle.display_name,虚空触手,Void Tentacle
 content.relics.relic_welfare_cutback.description,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5.
 content.relics.relic_welfare_cutback.display_name,福利削减方案,Welfare Cutbacks
-content.relics.relic_worn_fighting_gloves.description,近战伤害 + 1；护甲 - 3,Melee Damage +1; Armor −3
+content.relics.relic_worn_fighting_gloves.description,近战伤害 +2；护甲 -3,Melee Damage +2; Armor -3
 content.relics.relic_worn_fighting_gloves.display_name,磨损格斗拳套,Worn Fighting Gloves
 content.relics.relic_worn_hemostatic_cloth.description,最大生命值 + 4,Max HP +4
 content.relics.relic_worn_hemostatic_cloth.display_name,磨损的止血布条,Worn Hemostatic Cloth

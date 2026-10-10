@@ -1,0 +1,132 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+[GameGlobal] game root ready
+PASS production battle starts with mobility weapon
+PASS all three config records equip
+PASS finance card uses actual short copy weapon_dash_blade
+PASS finance card uses actual short copy weapon_hand_cannon
+PASS finance card uses actual short copy weapon_star_tome
+PASS dash blade base slash radius is ninety-six pixels
+PASS attack distance changes only dash ellipse
+PASS damage area changes only slash radius
+PASS blink range uses attack distance only
+PASS cannon retreat fixed while range scales
+PASS vertical dash respects ellipse
+PASS cast weapon_dash_blade
+PASS overlapping displacements rejected
+PASS dash trail has no damage
+PASS dash decelerates to exact destination
+PASS only arrival circle damages
+PASS native slash hits once
+PASS slash ends near 0.21s then cooldown begins
+PASS cast weapon_dash_blade
+PASS dash capsule stops before terrain
+PASS cast weapon_hand_cannon
+PASS five actual PNG shotgun projectiles
+PASS cannon decelerates continuously
+PASS cannon stops at fixed 96 retreat
+PASS close target receives stacking native pellets
+PASS cast weapon_star_tome
+PASS first blink immediately starts cooldown and permits return
+PASS initial return icon has countdown without grey mask
+PASS blink teleports and damages destination
+PASS shock knocks outward
+PASS same skill becomes available to return
+PASS return countdown and PNG badge stay synchronized
+PASS pause freezes return window and blocks input
+PASS same slot returns with no additional damage
+PASS early return restores base icon and grey mask without resetting countdown
+PASS early-return mask shows remaining fraction instead of full execution disk
+PASS return is single-use and cannot bypass remaining cooldown
+PASS return animation finishes without starting another cooldown
+PASS remaining cooldown completes normally after early return
+PASS cast weapon_star_tome
+PASS return available until cooldown deadline
+PASS expiry removes mark without automatic return
+PASS expiry restores ready base icon with neither timer nor mask
+PASS cast weapon_star_tome
+PASS next cast owns a fresh anchor after expiry
+PASS cast weapon_star_tome
+PASS short cooldown cannot rearm expired return when arrival animation ends
+PASS cast weapon_star_tome
+PASS blocked return retains anchor without resetting countdown
+PASS cast weapon_dash_blade
+PASS pause freezes movement and effects
+PASS unequip cleanup releases movement lock
+PASS cast weapon_star_tome
+PASS death clears return state
+PASS automatic mode never drives displacement
+PASS manual mobility remains accessible in automatic mode
+PASS cast weapon_dash_blade
+PASS arrival hits an overlapping body whose origin is outside: weapon_dash_blade
+PASS arrival excludes a fully outside collision body: weapon_dash_blade
+PASS arrival respects disabled shapes and collider offsets: weapon_dash_blade
+PASS multiple shapes on one enemy do not duplicate arrival damage: weapon_dash_blade
+PASS cast weapon_dash_blade
+PASS terrain still blocks the arrival circle: weapon_dash_blade
+PASS cast weapon_dash_blade
+PASS damage-area bonus scales the real arrival hit shape: weapon_dash_blade
+PASS cast weapon_star_tome
+PASS arrival hits an overlapping body whose origin is outside: weapon_star_tome
+PASS arrival excludes a fully outside collision body: weapon_star_tome
+PASS arrival respects disabled shapes and collider offsets: weapon_star_tome
+PASS multiple shapes on one enemy do not duplicate arrival damage: weapon_star_tome
+PASS cast weapon_star_tome
+PASS terrain still blocks the arrival circle: weapon_star_tome
+PASS cast weapon_star_tome
+PASS damage-area bonus scales the real arrival hit shape: weapon_star_tome
+PASS ice attaches to mobility weapon: weapon_dash_blade
+PASS cast weapon_dash_blade
+PASS movement or an empty attack does not trigger enchantments: weapon_dash_blade
+PASS cast weapon_dash_blade
+PASS actual mobility contact causes damage and triggers ice: weapon_dash_blade
+PASS enchantment damage retains the mobility weapon source: weapon_dash_blade
+PASS ice attaches to mobility weapon: weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS movement or an empty attack does not trigger enchantments: weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS actual mobility contact causes damage and triggers ice: weapon_hand_cannon
+PASS enchantment damage retains the mobility weapon source: weapon_hand_cannon
+PASS ice attaches to mobility weapon: weapon_star_tome
+PASS cast weapon_star_tome
+PASS movement or an empty attack does not trigger enchantments: weapon_star_tome
+PASS cast weapon_star_tome
+PASS actual mobility contact causes damage and triggers ice: weapon_star_tome
+PASS enchantment damage retains the mobility weapon source: weapon_star_tome
+PASS enchanted tome can return
+PASS tome return creates no extra enchantment trigger
+PASS ineffective attachments rejected explicitly
+PASS cannon accepts pierce and split
+PASS cannon equips both attachments
+PASS cast weapon_hand_cannon
+PASS cannon pierce/split reaches additional targets
+PASS split uses a bounded per-cast budget
+PASS bounce attaches
+PASS cast weapon_dash_blade
+PASS bounce repeats damage without repeating movement
+PASS cast weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS cast weapon_hand_cannon
+PASS repeated casts release runtime/effect nodes
+MOBILITY_STRESS_CPU_MS p50=0.102 p95=0.269 max=1.165 enemies=160 steps=180
+MOBILITY_STEP_CPU_MS average=0.367 max=77.466 samples=382 (includes native collision + damage + rendering state; not GPU frame time)
+MOBILITY_INTEGRATION checks=109 failures=0

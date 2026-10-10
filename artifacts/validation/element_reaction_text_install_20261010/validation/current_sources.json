@@ -1,0 +1,10 @@
+{
+  "scripts/effects/element_reaction_text.gd": "f84ccaea0624b18534414106a3e0d9b7c9d4234f448b9b00094af00f9cd41068",
+  "scripts/effects/element_reaction_resolver.gd": "9aae6da216e0bfc2fc59c275d8875298fb1425ce06a7cc800de113b68b441519",
+  "scripts/effects/lightning_particle_effect.gd": "b6051dfe085b3fb4aeab136ad1ea5913270c2173cf077a32a6763bd353bd9b17",
+  "scripts/waves/wave_manager.gd": "c685b18be9e7161769b365ee2578e43209717b005564c7cdbfe7eb39ceef8199",
+  "localization/catalogs/gameplay.csv": "efe95f38cd60a4a9573e1b95eafa4df47cc06b4202a2893b732ea6d3d2d13726",
+  "artifacts\\validation\\element_reaction_text_install_20261010\\capture.gd": "9592404a56cb4e1437ca8111fc446c384cac78b4749ebf57ae3e35b96246dd0c",
+  "artifacts\\validation\\element_reaction_text_install_20261010\\launch.gd": "48a11f72cdd231c2ce1e47354eea5236cca128bc24fccc4b90aa6fc01b7578e2",
+  "artifacts\\validation\\element_reaction_text_install_20261010\\validate.py": "8bbf9f36402345b147670b7ebe77290eab16aabbeb2e3fc4de47202f7360c1c6"
+}

@@ -1,0 +1,56 @@
+func capture_live_variants() -> void:
+	var cases := [
+		{"id":"reverse","direction":Vector2(-0.6,0.8),"bonus":0,"scrolls":[],"volley":1},
+		{"id":"range","direction":Vector2(-0.6,0.8),"bonus":100,"scrolls":[],"volley":0},
+		{"id":"fire_split","direction":Vector2(-0.6,0.8),"bonus":100,"scrolls":["scroll_split","scroll_fire"],"volley":0},
+		{"id":"ice","direction":Vector2.RIGHT,"bonus":0,"scrolls":["scroll_ice"],"volley":0},
+		{"id":"lightning","direction":Vector2.RIGHT,"bonus":0,"scrolls":["scroll_lightning"],"volley":1}
+	]
+	for entry: Dictionary in cases:
+		var weapon := WeaponInstance.new()
+		weapon.initialize("weapon_meteor_flail", battle.player)
+		weapon.use_active_range_rules = true
+		weapon.runtime_stats.area_size = entry.bonus
+		weapon.volley_index = int(entry.volley)
+		for scroll: String in entry.scrolls:
+			var item: Dictionary = battle.player.item_inventory.add_item_from_base(scroll, "pixel_install")
+			if not weapon.attach_item_instance(item): failures.append("attachment " + scroll)
+		var flail := MeteorFlail.new()
+		battle.player.get_parent().add_child(flail)
+		flail.initialize(weapon, entry.direction)
+		flail.set_physics_process(false)
+		var target: EnemyController
+		if entry.id == "fire_split":
+			target = battle.wave_manager.spawn_enemy("enemy_mutated_grub", weapon.get_attack_origin() + Vector2(entry.direction) * 100)
+			target.current_hp = 10000
+			target.set_physics_process(false)
+			await frames(3)
+		GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+		flail._physics_process(0.32)
+		if entry.id == "fire_split":
+			if flail.swings.size() < 2:
+				failures.append("real contact did not create a split swing")
+			else:
+				var child: Dictionary = flail.swings[1]
+				var target_age := float(child.start) + float(child.windup) + float(child.duration) * 0.58
+				flail._physics_process(target_age - flail.age)
+		GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+		await capture("renders/live_flail_" + str(entry.id) + ".png")
+		flail.cancel()
+		if is_instance_valid(target): target.queue_free()
+		await frames(3)
+	for direction in [Vector2.RIGHT, Vector2(-0.6,0.8)]:
+		var weapon := WeaponInstance.new()
+		weapon.initialize("weapon_meteor_flail",battle.player)
+		weapon.runtime_stats.damage_area_size = 100
+		var point := battle.player.global_position
+		WindBladeEffect.spawn(battle.player.get_parent(), point, direction, 480, 0.46, weapon, weapon.calculate_damage_events()[0])
+		var wind := battle.player.get_parent().get_child(battle.player.get_parent().get_child_count()-1) as WindBladeEffect
+		wind.set_process(false)
+		GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+		wind._process(0.12)
+		GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+		if not wind.global_position.is_equal_approx(point + direction * 57.6): failures.append("wind travel")
+		await capture("renders/live_wind_" + ("right" if direction == Vector2.RIGHT else "diagonal") + ".png")
+		wind.queue_free()
+		await frames(2)

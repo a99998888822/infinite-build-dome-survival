@@ -1,0 +1,127 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=2
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS white core and blue rim share one mesh surface
+PASS core and rim masks do not overlap
+PASS all mesh corners align to the shared world grid
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS pixel path is four-connected in every octant, size=3
+PASS pixel path includes endpoint cell
+PASS merged quads exactly cover cells without alpha overlap
+PASS white core and blue rim share one mesh surface
+PASS core and rim masks do not overlap
+PASS all mesh corners align to the shared world grid
+PASS one initial path, ground=false
+PASS 200px arc uses ten control points instead of dense samples
+PASS contact endpoints stay anchored
+PASS alpha at 0.01s = 1.0
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.09s = 0.6
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.17s = 0.0
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.21s = 1.0
+PASS echo is a new node with different geometry
+PASS echo fades independently with no third path
+PASS redrawn path preserves both contact endpoints
+PASS alpha at 0.29s = 0.6
+PASS echo is a new node with different geometry
+PASS echo fades independently with no third path
+PASS redrawn path preserves both contact endpoints
+PASS battle pause freezes fade and flashback
+PASS both flashes expire without path particles
+PASS effect retires after final hop and flashback
+PASS one initial path, ground=true
+PASS 200px arc uses ten control points instead of dense samples
+PASS contact endpoints stay anchored
+PASS alpha at 0.01s = 1.0
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.09s = 0.6
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.17s = 0.0
+PASS initial geometry remains fixed while fading
+PASS cached pixel mesh is reused during fading
+PASS alpha at 0.21s = 1.0
+PASS echo is a new node with different geometry
+PASS echo fades independently with no third path
+PASS redrawn path preserves both contact endpoints
+PASS alpha at 0.29s = 0.6
+PASS echo is a new node with different geometry
+PASS echo fades independently with no third path
+PASS redrawn path preserves both contact endpoints
+PASS battle pause freezes fade and flashback
+PASS both flashes expire without path particles
+PASS effect retires after final hop and flashback
+PASS jitter increases by two thirds without adding main-path samples
+LIGHTNING_PIXEL_TEST checks=107 failures=0

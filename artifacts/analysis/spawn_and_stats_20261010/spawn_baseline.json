@@ -1,0 +1,1328 @@
+{
+	"enemy_spawn_bonus": 0,
+	"erosion": 0,
+	"method": "Production spawn timer; enemies removed after each frame; no crowd-cap truncation.",
+	"rows": [
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 30.0,
+			"elite_expected": 0.0,
+			"elite_spawned": 0,
+			"first_elite_seconds": -1.0,
+			"groups": [
+				{
+					"count": 1.0,
+					"interval_ms": 1506.97674418605
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 2260.46511627907
+				}
+			],
+			"normal_spawned": 32,
+			"rate": 1.1059670781893,
+			"spawned": 32,
+			"wave": 1
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 35.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 6.4,
+			"groups": [
+				{
+					"count": 1.0,
+					"interval_ms": 1451.84344866705
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 2174.7022121384
+				}
+			],
+			"normal_spawned": 37,
+			"rate": 1.1486125693055,
+			"spawned": 38,
+			"wave": 2
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 40.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 6.2,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1399.33554817276
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 2093.02325581395
+				}
+			],
+			"normal_spawned": 73,
+			"rate": 1.90702754036087,
+			"spawned": 74,
+			"wave": 3
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 45.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 6.05,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1349.26987560844
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 2015.1433207139
+				}
+			],
+			"normal_spawned": 85,
+			"rate": 1.97852576838084,
+			"spawned": 86,
+			"wave": 4
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 50.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.95,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1301.4799154334
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 1940.80338266385
+				}
+			],
+			"normal_spawned": 98,
+			"rate": 2.05196269540955,
+			"spawned": 99,
+			"wave": 5
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 55.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.9,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1293.92764548299
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 1926.51449438579
+				}
+			],
+			"normal_spawned": 109,
+			"rate": 2.06475362078496,
+			"spawned": 110,
+			"wave": 6
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.9,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1288.0187396627
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1914.62245084997
+				}
+			],
+			"normal_spawned": 149,
+			"rate": 2.59736480723147,
+			"spawned": 150,
+			"wave": 7
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.0,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.9,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1283.76031263569
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1905.12375162831
+				}
+			],
+			"normal_spawned": 149,
+			"rate": 2.60772378982425,
+			"spawned": 150,
+			"wave": 8
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.125,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.85,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1281.19282742913
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1898.06344804315
+				}
+			],
+			"normal_spawned": 153,
+			"rate": 2.61475082304527,
+			"spawned": 154,
+			"wave": 9
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.25,
+			"elite_spawned": 1,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1320.57413631099
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1952.96175088245
+				}
+			],
+			"normal_spawned": 191,
+			"rate": 3.29582477250333,
+			"spawned": 192,
+			"wave": 10
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.375,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1319.94762112615
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1948.49410737669
+				}
+			],
+			"normal_spawned": 190,
+			"rate": 3.29925115207373,
+			"spawned": 192,
+			"wave": 11
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.5,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1319.3467003054
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1943.96494489444
+				}
+			],
+			"normal_spawned": 190,
+			"rate": 3.30267779361685,
+			"spawned": 192,
+			"wave": 12
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.625,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1318.82087644602
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1939.4424653618
+				}
+			],
+			"normal_spawned": 190,
+			"rate": 3.30598345679012,
+			"spawned": 192,
+			"wave": 13
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.75,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1318.32430705078
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1934.85408248746
+				}
+			],
+			"normal_spawned": 190,
+			"rate": 3.30928576608483,
+			"spawned": 192,
+			"wave": 14
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.875,
+			"elite_spawned": 1,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1317.84751572432
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1930.18070484875
+				}
+			],
+			"normal_spawned": 191,
+			"rate": 3.3126118077325,
+			"spawned": 192,
+			"wave": 15
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.0,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.0,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1317.35081127167
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1925.35887801244
+				}
+			],
+			"normal_spawned": 190,
+			"rate": 3.31606510221423,
+			"spawned": 192,
+			"wave": 16
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.125,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.2,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1396.58784278904
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 2036.69060406735
+				}
+			],
+			"normal_spawned": 208,
+			"rate": 3.62107037037037,
+			"spawned": 210,
+			"wave": 17
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.25,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.2,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1396.31785809273
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 2031.6794231508
+				}
+			],
+			"normal_spawned": 253,
+			"rate": 4.34128815776816,
+			"spawned": 255,
+			"wave": 18
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.375,
+			"elite_spawned": 2,
+			"first_elite_seconds": 6.2,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1396.00007894544
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 2026.45172750145
+				}
+			],
+			"normal_spawned": 253,
+			"rate": 4.34574951546529,
+			"spawned": 255,
+			"wave": 19
+		},
+		{
+			"cap": 48,
+			"difficulty": "1",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.5,
+			"elite_spawned": 3,
+			"first_elite_seconds": 6.2,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1395.76271186441
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 2021.18644067797
+				}
+			],
+			"normal_spawned": 252,
+			"rate": 4.35009336586819,
+			"spawned": 255,
+			"wave": 20
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 30.0,
+			"elite_expected": 0.0,
+			"elite_spawned": 0,
+			"first_elite_seconds": -1.0,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1339.53488372093
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 2009.3023255814
+				}
+			],
+			"normal_spawned": 56,
+			"rate": 1.99074074074074,
+			"spawned": 56,
+			"wave": 1
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 35.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.9,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1290.52750992626
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 1933.06863301191
+				}
+			],
+			"normal_spawned": 68,
+			"rate": 2.06706607436461,
+			"spawned": 69,
+			"wave": 2
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 40.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.75,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1243.85382059801
+				},
+				{
+					"count": 1.0,
+					"interval_ms": 1860.46511627907
+				}
+			],
+			"normal_spawned": 82,
+			"rate": 2.14540598290598,
+			"spawned": 83,
+			"wave": 3
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 45.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.6,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1199.35100054083
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1791.23850730124
+				}
+			],
+			"normal_spawned": 118,
+			"rate": 2.78411443628835,
+			"spawned": 120,
+			"wave": 4
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 50.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.5,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1156.8710359408
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1725.15856236786
+				}
+			],
+			"normal_spawned": 138,
+			"rate": 2.88811489508084,
+			"spawned": 140,
+			"wave": 5
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 55.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.5,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1150.157907096
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1712.45732834293
+				}
+			],
+			"normal_spawned": 199,
+			"rate": 3.77624981343284,
+			"spawned": 200,
+			"wave": 6
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.45,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1144.90554636685
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1701.88662297775
+				}
+			],
+			"normal_spawned": 219,
+			"rate": 3.79546990513241,
+			"spawned": 221,
+			"wave": 7
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.15,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.45,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1141.12027789839
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1693.44333478072
+				}
+			],
+			"normal_spawned": 220,
+			"rate": 3.8100210748156,
+			"spawned": 221,
+			"wave": 8
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.29375,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.45,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1138.83806882589
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1687.16750937169
+				}
+			],
+			"normal_spawned": 220,
+			"rate": 3.81968263888889,
+			"spawned": 221,
+			"wave": 9
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.4375,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1173.84367672088
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1735.9660007844
+				}
+			],
+			"normal_spawned": 298,
+			"rate": 5.13575320813772,
+			"spawned": 299,
+			"wave": 10
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.58125,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1173.28677433435
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1731.99476211261
+				}
+			],
+			"normal_spawned": 301,
+			"rate": 5.1413330453149,
+			"spawned": 302,
+			"wave": 11
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.725,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1172.75262249369
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1727.96883990617
+				}
+			],
+			"normal_spawned": 300,
+			"rate": 5.14692140354003,
+			"spawned": 302,
+			"wave": 12
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.86875,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1172.28522350758
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1723.94885809938
+				}
+			],
+			"normal_spawned": 300,
+			"rate": 5.15232972222222,
+			"spawned": 302,
+			"wave": 13
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.0125,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1171.84382848958
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1719.87029554441
+				}
+			],
+			"normal_spawned": 300,
+			"rate": 5.157741714099,
+			"spawned": 302,
+			"wave": 14
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.15625,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1171.42001397717
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1715.71618208778
+				}
+			],
+			"normal_spawned": 350,
+			"rate": 6.01686481191223,
+			"spawned": 352,
+			"wave": 15
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.55,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1170.97849890815
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1711.43011378883
+				}
+			],
+			"normal_spawned": 350,
+			"rate": 6.02285318263608,
+			"spawned": 352,
+			"wave": 16
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.44375,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.75,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1241.41141581248
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1810.39164805986
+				}
+			],
+			"normal_spawned": 360,
+			"rate": 6.23714027777778,
+			"spawned": 363,
+			"wave": 17
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.5875,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.75,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1241.17142941576
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1805.93726502294
+				}
+			],
+			"normal_spawned": 360,
+			"rate": 6.24336874458874,
+			"spawned": 363,
+			"wave": 18
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.73125,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.75,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1240.88895906262
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1801.29042444573
+				}
+			],
+			"normal_spawned": 360,
+			"rate": 6.24999964655516,
+			"spawned": 363,
+			"wave": 19
+		},
+		{
+			"cap": 72,
+			"difficulty": "2",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.875,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.75,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1240.67796610169
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1796.61016949153
+				}
+			],
+			"normal_spawned": 360,
+			"rate": 6.25646973914837,
+			"spawned": 363,
+			"wave": 20
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 30.0,
+			"elite_expected": 0.0,
+			"elite_spawned": 0,
+			"first_elite_seconds": -1.0,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1172.09302325581
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1758.13953488372
+				}
+			],
+			"normal_spawned": 80,
+			"rate": 2.84391534391534,
+			"spawned": 80,
+			"wave": 1
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 35.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.4,
+			"groups": [
+				{
+					"count": 2.0,
+					"interval_ms": 1129.21157118548
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1691.43505388542
+				}
+			],
+			"normal_spawned": 99,
+			"rate": 2.95357517821415,
+			"spawned": 100,
+			"wave": 2
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 40.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.3,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1088.37209302326
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1627.90697674419
+				}
+			],
+			"normal_spawned": 149,
+			"rate": 3.98498168498168,
+			"spawned": 151,
+			"wave": 3
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 45.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.15,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1049.43212547323
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1567.33369388859
+				}
+			],
+			"normal_spawned": 175,
+			"rate": 4.134741380083,
+			"spawned": 177,
+			"wave": 4
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 50.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.05,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1012.2621564482
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1509.51374207188
+				}
+			],
+			"normal_spawned": 206,
+			"rate": 4.28858911985847,
+			"spawned": 208,
+			"wave": 5
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 55.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.05,
+			"groups": [
+				{
+					"count": 3.0,
+					"interval_ms": 1006.388168709
+				},
+				{
+					"count": 2.0,
+					"interval_ms": 1498.40016230006
+				}
+			],
+			"normal_spawned": 227,
+			"rate": 4.31571407249467,
+			"spawned": 229,
+			"wave": 6
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.05,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 1001.79235307099
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1489.15079510553
+				}
+			],
+			"normal_spawned": 347,
+			"rate": 6.00741441051441,
+			"spawned": 349,
+			"wave": 7
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.3,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.0,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 998.480243161094
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1481.76291793313
+				}
+			],
+			"normal_spawned": 348,
+			"rate": 6.03070366467627,
+			"spawned": 349,
+			"wave": 8
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.4625,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.0,
+			"groups": [
+				{
+					"count": 4.0,
+					"interval_ms": 996.483310222653
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1476.27157070023
+				}
+			],
+			"normal_spawned": 348,
+			"rate": 6.04626283068783,
+			"spawned": 349,
+			"wave": 9
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.625,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1027.11321713077
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1518.97025068635
+				}
+			],
+			"normal_spawned": 397,
+			"rate": 6.84303474178404,
+			"spawned": 399,
+			"wave": 10
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.7875,
+			"elite_spawned": 1,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1026.62592754256
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1515.49541684854
+				}
+			],
+			"normal_spawned": 398,
+			"rate": 6.84987382049594,
+			"spawned": 399,
+			"wave": 11
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 1.95,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 5.0,
+					"interval_ms": 1026.15854468198
+				},
+				{
+					"count": 3.0,
+					"interval_ms": 1511.9727349179
+				}
+			],
+			"normal_spawned": 397,
+			"rate": 6.85670417133354,
+			"spawned": 399,
+			"wave": 12
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.1125,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 6.0,
+					"interval_ms": 1025.74957056913
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1508.45525083695
+				}
+			],
+			"normal_spawned": 492,
+			"rate": 8.50110031746032,
+			"spawned": 494,
+			"wave": 13
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.275,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 6.0,
+					"interval_ms": 1025.36334992838
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1504.88650860136
+				}
+			],
+			"normal_spawned": 492,
+			"rate": 8.50959196993242,
+			"spawned": 494,
+			"wave": 14
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.4375,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 6.0,
+					"interval_ms": 1024.99251223002
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1501.2516593268
+				}
+			],
+			"normal_spawned": 492,
+			"rate": 8.51814464845499,
+			"spawned": 494,
+			"wave": 15
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.6,
+			"elite_spawned": 2,
+			"first_elite_seconds": 5.1,
+			"groups": [
+				{
+					"count": 6.0,
+					"interval_ms": 1024.60618654463
+				},
+				{
+					"count": 4.0,
+					"interval_ms": 1497.50134956523
+				}
+			],
+			"normal_spawned": 496,
+			"rate": 8.52702454855086,
+			"spawned": 498,
+			"wave": 16
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.7625,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.3,
+			"groups": [
+				{
+					"count": 6.0,
+					"interval_ms": 1086.23498883592
+				},
+				{
+					"count": 5.0,
+					"interval_ms": 1584.09269205238
+				}
+			],
+			"normal_spawned": 495,
+			"rate": 8.68004761904762,
+			"spawned": 498,
+			"wave": 17
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 2.925,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.3,
+			"groups": [
+				{
+					"count": 7.0,
+					"interval_ms": 1086.02500073879
+				},
+				{
+					"count": 5.0,
+					"interval_ms": 1580.19510689507
+				}
+			],
+			"normal_spawned": 553,
+			"rate": 9.60969004329004,
+			"spawned": 556,
+			"wave": 18
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 3.0,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.3,
+			"groups": [
+				{
+					"count": 7.0,
+					"interval_ms": 1085.77783917979
+				},
+				{
+					"count": 5.0,
+					"interval_ms": 1576.12912139002
+				}
+			],
+			"normal_spawned": 553,
+			"rate": 9.61931996358878,
+			"spawned": 556,
+			"wave": 19
+		},
+		{
+			"cap": 96,
+			"difficulty": "3",
+			"duration_seconds": 60.0,
+			"elite_expected": 3.0,
+			"elite_spawned": 3,
+			"first_elite_seconds": 5.3,
+			"groups": [
+				{
+					"count": 7.0,
+					"interval_ms": 1085.59322033898
+				},
+				{
+					"count": 6.0,
+					"interval_ms": 1572.03389830508
+				}
+			],
+			"normal_spawned": 590,
+			"rate": 10.2647990219905,
+			"spawned": 593,
+			"wave": 20
+		}
+	],
+	"sample_hz": 60
+}

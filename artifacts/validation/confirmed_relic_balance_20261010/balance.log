@@ -1,0 +1,120 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS seed grants one available revive
+[PlayerController] player revived, remaining=0
+PASS seed revive is consumed and still costs erosion
+PASS preview cannot replenish spent revive: relic_piggy_bank
+PASS purchase cannot replenish spent revive: relic_piggy_bank
+PASS preview cannot replenish spent revive: relic_coin_heart
+PASS purchase cannot replenish spent revive: relic_coin_heart
+PASS preview cannot replenish spent revive: relic_compound_interest_tome
+PASS purchase cannot replenish spent revive: relic_compound_interest_tome
+PASS preview cannot replenish spent revive: relic_high_yield_contract
+PASS purchase cannot replenish spent revive: relic_high_yield_contract
+PASS weapon and bond refresh cannot replenish spent revive
+PASS finance and derived-stat refresh cannot replenish spent revive
+PASS new bankruptcy reward grants one new revive
+[PlayerController] player revived, remaining=0
+PASS second genuine charge is consumed normally
+PASS refresh preserves both spent charges
+[PlayerController] player died, source=
+PASS no unearned third revive
+PASS new run can acquire a fresh seed charge
+PASS gift principal never qualifies contract
+PASS deposit preview matches committed conditional rate
+PASS contract UI exposes bonus eligibility
+PASS contract exact 49/50 boundary
+PASS finance UI describes the actual bonus rule
+PASS qualified bonus or ordinary interest pays correctly
+PASS new wave clears conditional bonus without changing permanent rates
+PASS deposit after combat starts cannot qualify retroactively
+PASS gift principal never qualifies contract
+PASS deposit preview matches committed conditional rate
+PASS contract UI exposes bonus eligibility
+PASS contract exact 49/50 boundary
+PASS finance UI describes the actual bonus rule
+PASS qualified bonus or ordinary interest pays correctly
+PASS new wave clears conditional bonus without changing permanent rates
+PASS deposit after combat starts cannot qualify retroactively
+PASS gift principal never qualifies contract
+PASS deposit preview matches committed conditional rate
+PASS contract UI exposes bonus eligibility
+PASS contract exact 49/50 boundary
+PASS finance UI describes the actual bonus rule
+PASS qualified bonus or ordinary interest pays correctly
+PASS new wave clears conditional bonus without changing permanent rates
+PASS deposit after combat starts cannot qualify retroactively
+PASS buying contract after a valid preparatory deposit qualifies
+PASS judgment eye improves base expected hit: weapon_void_blade
+PASS confirmed gale speed and cost reach every damage type: weapon_void_blade
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_void_blade
+PASS judgment eye improves base expected hit: weapon_plasma_cannon
+PASS confirmed gale speed and cost reach every damage type: weapon_plasma_cannon
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_plasma_cannon
+PASS judgment eye improves base expected hit: weapon_iron_grenade_cannon
+PASS confirmed gale speed and cost reach every damage type: weapon_iron_grenade_cannon
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_iron_grenade_cannon
+PASS judgment eye improves base expected hit: weapon_kunyu_ritual_tome
+PASS confirmed gale speed and cost reach every damage type: weapon_kunyu_ritual_tome
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_kunyu_ritual_tome
+PASS judgment eye improves base expected hit: weapon_rentier_purse
+PASS confirmed gale speed and cost reach every damage type: weapon_rentier_purse
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_rentier_purse
+PASS judgment eye improves base expected hit: weapon_copper_lamp
+PASS confirmed gale speed and cost reach every damage type: weapon_copper_lamp
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_copper_lamp
+PASS judgment eye improves base expected hit: weapon_mutant_tentacle
+PASS confirmed gale speed and cost reach every damage type: weapon_mutant_tentacle
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_mutant_tentacle
+PASS judgment eye improves base expected hit: weapon_earth_hammer
+PASS confirmed gale speed and cost reach every damage type: weapon_earth_hammer
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_earth_hammer
+PASS judgment eye improves base expected hit: weapon_camp_dagger
+PASS confirmed gale speed and cost reach every damage type: weapon_camp_dagger
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_camp_dagger
+PASS judgment eye improves base expected hit: weapon_nightwatch_spear
+PASS confirmed gale speed and cost reach every damage type: weapon_nightwatch_spear
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_nightwatch_spear
+PASS judgment eye improves base expected hit: weapon_meteor_flail
+PASS confirmed gale speed and cost reach every damage type: weapon_meteor_flail
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_meteor_flail
+PASS judgment eye improves base expected hit: weapon_dash_blade
+PASS confirmed gale speed and cost reach every damage type: weapon_dash_blade
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_dash_blade
+PASS judgment eye improves base expected hit: weapon_hand_cannon
+PASS confirmed gale speed and cost reach every damage type: weapon_hand_cannon
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_hand_cannon
+PASS judgment eye improves base expected hit: weapon_star_tome
+PASS confirmed gale speed and cost reach every damage type: weapon_star_tome
+PASS gale shorter cooldown retains its per-hit damage tradeoff: weapon_star_tome
+PASS first certificate pays 200 at wave ten
+PASS certificate remains obtainable below five copies
+PASS certificate acquisition pays once for copy 2
+PASS certificate acquisition pays once for copy 3
+PASS certificate acquisition pays once for copy 4
+PASS certificate acquisition pays once for copy 5
+PASS sixth certificate is rejected without granting principal
+PASS certificate principal remains normally withdrawable
+PASS split warhead cannot accumulate damage penalties through extra copies
+PASS both new limits remove owned relics from shop candidates
+PASS reject malformed conditional interest configuration
+PASS reject malformed conditional interest configuration
+PASS reject malformed conditional interest configuration
+RELIC_BALANCE_COMPLETE checks=97 failures=0

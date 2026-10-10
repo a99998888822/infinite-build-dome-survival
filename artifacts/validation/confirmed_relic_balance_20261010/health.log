@@ -1,0 +1,84 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+FAIL actual character starts at level one with five HP
+FAIL XP below threshold does not grant health
+FAIL growth is applied before reward preview opens
+FAIL exact XP threshold grows maximum and heals one HP without filling existing damage
+FAIL HUD and reward signals include new maximum
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL one XP grant heals each earned level and preserves remainder
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL level ten has fourteen base HP and retains one missing HP
+FAIL repeated level sync neither stacks growth nor heals again
+FAIL wave start retains full recovery with new health cap
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL growth is applied before reward preview opens
+FAIL level twenty has twenty-four base HP and stays full when leveling at full HP
+FAIL wave transition does not duplicate level growth
+FAIL character reinitialization clears previous run level bonus
+FAIL new run resets level and experience
+FAIL level growth adds to revised cloth and turtle bonuses
+FAIL coin heart adds principal health on top of level and relics
+FAIL withdrawal preview preserves level growth and reduces principal HP
+FAIL preview cannot mutate live maximum or current health
+FAIL real withdrawal matches preview cap and current health
+FAIL relic weapon and level refresh preserve full health
+FAIL redeposit restores maximum without healing
+FAIL welfare costs three HP while its principal gift adds one heart tier
+FAIL level growth heals only the added capacity alongside stat penalties
+PASS ordinary contact test spawns two real enemies
+FAIL first ordinary contact deals three with no shared protection
+FAIL second enemy in same frame can kill five-HP player
+FAIL level growth cannot revive a dead player
+[PlayerController] player revived, remaining=0
+FAIL revival restores half of level-scaled maximum
+FAIL one-second revival protection remains
+FAIL level growth heals one HP after revival without restoring the spent revival
+FAIL camp's two starting levels grant two maximum HP
+FAIL camp starting level enters battle at full seven HP
+FAIL first earned level after camp bonus grants exactly one maximum and current HP
+FAIL camp max-HP training adds ten to level-three health
+PASS saved regen training levels use new per-level rate
+FAIL camp max-HP training adds ten to level-three health
+PASS saved regen training levels use new per-level rate
+PASS training retains price cap and purchased levels
+FAIL level ten and full camp training yield twenty-four HP and 0.5 regen
+PASS halved silver cup plus unchanged training yields 1.25 regen and retains interest cost
+PASS fractional regeneration waits for a whole HP
+PASS fractional regeneration accumulates without loss
+PASS twenty-four HP with 1.25 regen recovers half health in 9.6 seconds
+FAIL regeneration is capped at current maximum
+PASS silver cup halves two-second regeneration and retains fractional HP
+PASS silver cup fractional carry restores three HP across four seconds
+HEALTH_GROWTH_COMPLETE checks=63 failures=53

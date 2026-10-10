@@ -172,7 +172,7 @@
   {
     "id": "relic_gold_compass",
     "display_name": "吸金罗盘",
-    "description": "拾取范围 +40；金币获取 +10%",
+    "description": "拾取范围 +10；金币获取 +8%；远程伤害 +3",
     "icon": "res://assets/ui/icons/relics/relic_gold_compass.png",
     "rarity": "rare",
     "max_stack": 0,
@@ -180,33 +180,16 @@
       "finance"
     ],
     "effects": [
-      {
-        "id": "mod_relic_gold_compass_pickup_radius",
-        "source_type": "relic",
-        "source_id": "relic_gold_compass",
-        "target_scope": "player",
-        "stat": "pickup_radius",
-        "operation": "add_flat",
-        "value": 40,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_gold_compass_currency_gain_percent",
-        "source_type": "relic",
-        "source_id": "relic_gold_compass",
-        "target_scope": "player",
-        "stat": "currency_gain_percent",
-        "operation": "add_flat",
-        "value": 10,
-        "duration": -1
-      }
+      {"id": "mod_relic_gold_compass_pickup_radius", "source_type": "relic", "source_id": "relic_gold_compass", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": 10, "duration": -1},
+      {"id": "mod_relic_gold_compass_currency_gain_percent", "source_type": "relic", "source_id": "relic_gold_compass", "target_scope": "player", "stat": "currency_gain_percent", "operation": "add_flat", "value": 8, "duration": -1},
+      {"id": "mod_relic_gold_compass_ranged_damage", "source_type": "relic", "source_id": "relic_gold_compass", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 3, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_tip_tray",
     "display_name": "小费托盘",
-    "description": "击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验1和基础金币1",
+    "description": "击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2",
     "icon": "res://assets/ui/icons/relics/relic_tip_tray.png",
     "rarity": "rare",
     "max_stack": 0,
@@ -219,7 +202,7 @@
         "trigger": "enemy_kill",
         "effect": "tip_tray_drop",
         "chance_percent": 10,
-        "amount": 1
+        "amount": 2
       }
     ]
   },
@@ -639,15 +622,15 @@
   {
     "id": "relic_load_iron_bracer",
     "display_name": "负重铁皮护腕",
-    "description": "护甲 + 8；移动速度 - 5",
+    "description": "护甲 +6；近战伤害 +1",
     "icon": "res://assets/ui/icons/relics/relic_load_iron_bracer.png",
     "icon_description": "厚重笨重的铸铁护腕",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["survival", "movement"],
     "effects": [
-      {"id": "mod_relic_load_iron_bracer_armor", "source_type": "relic", "source_id": "relic_load_iron_bracer", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 8, "duration": -1},
-      {"id": "mod_relic_load_iron_bracer_move_speed", "source_type": "relic", "source_id": "relic_load_iron_bracer", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -5, "duration": -1}
+      {"id": "mod_relic_load_iron_bracer_armor", "source_type": "relic", "source_id": "relic_load_iron_bracer", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 6, "duration": -1},
+      {"id": "mod_relic_load_iron_bracer_melee_damage", "source_type": "relic", "source_id": "relic_load_iron_bracer", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 1, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -699,7 +682,7 @@
   {
     "id": "relic_dead_shield_badge",
     "display_name": "死寂护盾徽章",
-    "description": "每波开始生成10点护盾",
+    "description": "每波初始护盾 +6；元素伤害 +2",
     "icon": "res://assets/ui/icons/relics/relic_dead_shield_badge.png",
     "icon_description": "哑光灰色金属胸针",
     "rarity": "uncommon",
@@ -708,37 +691,24 @@
       "survival"
     ],
     "effects": [
-      {
-        "id": "mod_relic_dead_shield_badge_shield",
-        "source_type": "relic",
-        "source_id": "relic_dead_shield_badge",
-        "target_scope": "player",
-        "stat": "shield",
-        "operation": "add_flat",
-        "value": 10,
-        "duration": -1
-      }
+      {"id": "mod_relic_dead_shield_badge_shield", "source_type": "relic", "source_id": "relic_dead_shield_badge", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 6, "duration": -1},
+      {"id": "mod_relic_dead_shield_badge_element_damage", "source_type": "relic", "source_id": "relic_dead_shield_badge", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 2, "duration": -1}
     ],
-    "runtime_effects": [
-      {
-        "trigger": "wave_start",
-        "effect": "grant_shield",
-        "value": 10
-      }
-    ]
+    "runtime_effects": []
   },
   {
     "id": "relic_turtle_shell_pendant",
     "display_name": "龟壳吊坠",
-    "description": "护甲 + 10；最大生命值 + 3",
+    "description": "护甲 +8；最大生命 +2；近战伤害 +2",
     "icon": "res://assets/ui/icons/relics/relic_turtle_shell_pendant.png",
     "icon_description": "带着细小虫洞纹路的老旧龟壳挂坠",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["survival"],
     "effects": [
-      {"id": "mod_relic_turtle_shell_pendant_armor", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 3, "duration": -1}
+      {"id": "mod_relic_turtle_shell_pendant_armor", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 8, "duration": -1},
+      {"id": "mod_relic_turtle_shell_pendant_max_hp", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 2, "duration": -1},
+      {"id": "mod_relic_turtle_shell_pendant_melee_damage", "source_type": "relic", "source_id": "relic_turtle_shell_pendant", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 2, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -776,18 +746,16 @@
   {
     "id": "relic_flesh_pauldron",
     "display_name": "血肉肩甲",
-    "description": "最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2",
+    "description": "最大生命 +4；护甲 +12；近战伤害 +3",
     "icon": "res://assets/ui/icons/relics/relic_flesh_pauldron.png",
     "icon_description": "附着鲜活蠕动皮肉的深色肩铠",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_flesh_pauldron_max_hp", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 5, "duration": -1},
-      {"id": "mod_relic_flesh_pauldron_armor", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 15, "duration": -1},
-      {"id": "mod_relic_flesh_pauldron_hp_regen", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.1, "duration": -1},
-      {"id": "mod_relic_flesh_pauldron_divinity", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 2, "duration": -1},
-      {"id": "mod_relic_flesh_pauldron_humanity", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -2, "duration": -1}
+      {"id": "mod_relic_flesh_pauldron_max_hp", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1},
+      {"id": "mod_relic_flesh_pauldron_armor", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 12, "duration": -1},
+      {"id": "mod_relic_flesh_pauldron_melee_damage", "source_type": "relic", "source_id": "relic_flesh_pauldron", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 3, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -810,15 +778,15 @@
   {
     "id": "relic_barrier_crystal",
     "display_name": "屏障结晶",
-    "description": "每两秒生成 1 点护盾；侵蚀度 + 5",
+    "description": "每秒护盾 +0.3；元素伤害 +3",
     "icon": "res://assets/ui/icons/relics/relic_barrier_crystal.png",
     "icon_description": "边角缺损、萦绕暗色烟气的菱形晶体",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_barrier_crystal_shield_regen", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 0.5, "duration": -1},
-      {"id": "mod_relic_barrier_crystal_divinity", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "divinity", "operation": "add_flat", "value": 5, "duration": -1}
+      {"id": "mod_relic_barrier_crystal_shield_regen", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 0.3, "duration": -1},
+      {"id": "mod_relic_barrier_crystal_element_damage", "source_type": "relic", "source_id": "relic_barrier_crystal", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 3, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -902,16 +870,15 @@
   {
     "id": "relic_pain_vessel",
     "display_name": "苦痛祭皿",
-    "description": "每秒回血 + 0.6；最大生命值 - 1；理智值 - 3",
+    "description": "每秒回血 +0.5；元素伤害 +4",
     "icon": "res://assets/ui/icons/relics/relic_pain_vessel.png",
     "icon_description": "盆内漂浮细碎黑雾的金色圆盘",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "eldritch"],
     "effects": [
-      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.6, "duration": -1},
-      {"id": "mod_relic_pain_vessel_max_hp", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -1, "duration": -1},
-      {"id": "mod_relic_pain_vessel_humanity", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -3, "duration": -1}
+      {"id": "mod_relic_pain_vessel_hp_regen", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.5, "duration": -1},
+      {"id": "mod_relic_pain_vessel_element_damage", "source_type": "relic", "source_id": "relic_pain_vessel", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 4, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -949,16 +916,16 @@
   {
     "id": "relic_suffering_carapace",
     "display_name": "受难甲壳",
-    "description": "最大生命值 + 12；护甲 + 8；移动速度 - 15",
+    "description": "护甲 +20；最大生命 +4；近战伤害 +5",
     "icon": "res://assets/ui/icons/relics/relic_suffering_carapace.png",
     "icon_description": "带着虫眼孔洞的厚重爬虫背甲碎片",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["survival", "movement"],
     "effects": [
-      {"id": "mod_relic_suffering_carapace_max_hp", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 12, "duration": -1},
-      {"id": "mod_relic_suffering_carapace_armor", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 8, "duration": -1},
-      {"id": "mod_relic_suffering_carapace_move_speed", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -15, "duration": -1}
+      {"id": "mod_relic_suffering_carapace_armor", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 20, "duration": -1},
+      {"id": "mod_relic_suffering_carapace_max_hp", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1},
+      {"id": "mod_relic_suffering_carapace_melee_damage", "source_type": "relic", "source_id": "relic_suffering_carapace", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 5, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1051,7 +1018,6 @@
       {"id": "mod_relic_void_tentacle_shield_regen", "source_type": "relic", "source_id": "relic_void_tentacle", "target_scope": "player", "stat": "shield_regen", "operation": "add_flat", "value": 1, "duration": -1}
     ],
     "runtime_effects": [
-      {"trigger": "wave_start", "effect": "grant_shield", "value": 20},
       {"trigger": "shield_break", "effect": "heal", "value": 3},
       {"trigger": "shield_break", "effect": "add_stat", "stat": "divinity", "value": 1}
     ]
@@ -1059,14 +1025,14 @@
   {
     "id": "relic_worn_fighting_gloves",
     "display_name": "磨损格斗拳套",
-    "description": "近战伤害 + 1；护甲 - 3",
+    "description": "近战伤害 +2；护甲 -3",
     "icon": "res://assets/ui/icons/relics/relic_worn_fighting_gloves.png",
     "icon_description": "表层掉皮的粗布拳套",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["combat"],
     "effects": [
-      {"id": "mod_relic_worn_fighting_gloves_melee_damage", "source_type": "relic", "source_id": "relic_worn_fighting_gloves", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_worn_fighting_gloves_melee_damage", "source_type": "relic", "source_id": "relic_worn_fighting_gloves", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 2, "duration": -1},
       {"id": "mod_relic_worn_fighting_gloves_armor", "source_type": "relic", "source_id": "relic_worn_fighting_gloves", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": -3, "duration": -1}
     ],
     "runtime_effects": []
@@ -1074,14 +1040,14 @@
   {
     "id": "relic_cracked_stone_bullet",
     "display_name": "裂痕石子弹",
-    "description": "远程伤害 + 1；拾取范围 - 10",
+    "description": "远程伤害 +2；拾取范围 -10",
     "icon": "res://assets/ui/icons/relics/relic_cracked_stone_bullet.png",
     "icon_description": "边角破损的灰色卵石弹药",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["combat", "projectile"],
     "effects": [
-      {"id": "mod_relic_cracked_stone_bullet_ranged_damage", "source_type": "relic", "source_id": "relic_cracked_stone_bullet", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_cracked_stone_bullet_ranged_damage", "source_type": "relic", "source_id": "relic_cracked_stone_bullet", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 2, "duration": -1},
       {"id": "mod_relic_cracked_stone_bullet_pickup_radius", "source_type": "relic", "source_id": "relic_cracked_stone_bullet", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": -10, "duration": -1}
     ],
     "runtime_effects": []
@@ -1089,110 +1055,112 @@
   {
     "id": "relic_hasty_spring_trigger",
     "display_name": "急促弹簧扳机",
-    "description": "攻击速度 + 8；移动速度 - 5",
+    "description": "攻击速度 +5；移动速度 -2",
     "icon": "res://assets/ui/icons/relics/relic_hasty_spring_trigger.png",
     "icon_description": "小型金属弹簧零件",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["combat", "movement"],
     "effects": [
-      {"id": "mod_relic_hasty_spring_trigger_attack_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 8, "duration": -1},
-      {"id": "mod_relic_hasty_spring_trigger_move_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -5, "duration": -1}
+      {"id": "mod_relic_hasty_spring_trigger_attack_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 5, "duration": -1},
+      {"id": "mod_relic_hasty_spring_trigger_move_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -2, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_rough_grinding_lens",
     "display_name": "粗糙研磨透镜",
-    "description": "暴击几率 + 3；暴击伤害 + 10",
+    "description": "远程伤害 +1；暴击几率 +3 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_rough_grinding_lens.png",
     "icon_description": "磨得凹凸不平的玻璃镜片",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["combat", "critical"],
     "effects": [
-      {"id": "mod_relic_rough_grinding_lens_crit_chance", "source_type": "relic", "source_id": "relic_rough_grinding_lens", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 3, "duration": -1},
-      {"id": "mod_relic_rough_grinding_lens_crit_damage", "source_type": "relic", "source_id": "relic_rough_grinding_lens", "target_scope": "player", "stat": "crit_damage", "operation": "add_flat", "value": 10, "duration": -1}
+      {"id": "mod_relic_rough_grinding_lens_ranged_damage", "source_type": "relic", "source_id": "relic_rough_grinding_lens", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_rough_grinding_lens_crit_chance", "source_type": "relic", "source_id": "relic_rough_grinding_lens", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 3, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_blocking_counterweight",
     "display_name": "阻滞配重石",
-    "description": "控制强度 + 6",
+    "description": "控制强度 +4；元素伤害 +2",
     "icon": "res://assets/ui/icons/relics/relic_blocking_counterweight.png",
     "icon_description": "掌心大小的沉重鹅卵石",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["combat"],
     "effects": [
-      {"id": "mod_relic_blocking_counterweight_control_power", "source_type": "relic", "source_id": "relic_blocking_counterweight", "target_scope": "player", "stat": "control_power", "operation": "add_flat", "value": 6, "duration": -1}
+      {"id": "mod_relic_blocking_counterweight_control_power", "source_type": "relic", "source_id": "relic_blocking_counterweight", "target_scope": "player", "stat": "control_power", "operation": "add_flat", "value": 4, "duration": -1},
+      {"id": "mod_relic_blocking_counterweight_element_damage", "source_type": "relic", "source_id": "relic_blocking_counterweight", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 2, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_bloodstained_belt",
     "display_name": "嗜血皮带",
-    "description": "近战伤害 + 3；每秒回血 - 0.25",
+    "description": "近战伤害 +5；每秒回血 -0.1",
     "icon": "res://assets/ui/icons/relics/relic_bloodstained_belt.png",
     "icon_description": "沾染少量干涸血迹的皮质腰带",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["combat", "survival"],
     "effects": [
-      {"id": "mod_relic_bloodstained_belt_melee_damage", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 3, "duration": -1},
-      {"id": "mod_relic_bloodstained_belt_hp_regen", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.25, "duration": -1}
+      {"id": "mod_relic_bloodstained_belt_melee_damage", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 5, "duration": -1},
+      {"id": "mod_relic_bloodstained_belt_hp_regen", "source_type": "relic", "source_id": "relic_bloodstained_belt", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.1, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_poison_mist_pouch",
     "display_name": "毒雾投囊",
-    "description": "远程伤害 + 3；每秒回血 - 0.25",
+    "description": "远程伤害 +4；每秒回血 -0.1",
     "icon": "res://assets/ui/icons/relics/relic_poison_mist_pouch.png",
     "icon_description": "密封的褐色胶质小包",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["combat", "survival"],
     "effects": [
-      {"id": "mod_relic_poison_mist_pouch_ranged_damage", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 3, "duration": -1},
-      {"id": "mod_relic_poison_mist_pouch_hp_regen", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.25, "duration": -1}
+      {"id": "mod_relic_poison_mist_pouch_ranged_damage", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 4, "duration": -1},
+      {"id": "mod_relic_poison_mist_pouch_hp_regen", "source_type": "relic", "source_id": "relic_poison_mist_pouch", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": -0.1, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_tremor_grip",
     "display_name": "震颤握柄",
-    "description": "攻击速度 + 18；通用伤害 - 5",
+    "description": "攻击速度 +10；通用伤害 -3%",
     "icon": "res://assets/ui/icons/relics/relic_tremor_grip.png",
     "icon_description": "包裹防滑橡胶的武器把手",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["combat"],
     "effects": [
-      {"id": "mod_relic_tremor_grip_attack_speed", "source_type": "relic", "source_id": "relic_tremor_grip", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 18, "duration": -1},
-      {"id": "mod_relic_tremor_grip_damage_percent", "source_type": "relic", "source_id": "relic_tremor_grip", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -5, "duration": -1}
+      {"id": "mod_relic_tremor_grip_attack_speed", "source_type": "relic", "source_id": "relic_tremor_grip", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 10, "duration": -1},
+      {"id": "mod_relic_tremor_grip_damage_percent", "source_type": "relic", "source_id": "relic_tremor_grip", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -3, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_black_spot_eagle_eye",
     "display_name": "黑斑鹰眼水晶",
-    "description": "暴击几率 + 7",
+    "description": "暴击几率 +7 个百分点；远程伤害 +2",
     "icon": "res://assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
     "icon_description": "带有黑色斑点的透明晶石",
     "rarity": "uncommon",
     "max_stack": 0,
     "tags": ["combat", "critical"],
     "effects": [
-      {"id": "mod_relic_black_spot_eagle_eye_crit_chance", "source_type": "relic", "source_id": "relic_black_spot_eagle_eye", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 7, "duration": -1}
+      {"id": "mod_relic_black_spot_eagle_eye_crit_chance", "source_type": "relic", "source_id": "relic_black_spot_eagle_eye", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 7, "duration": -1},
+      {"id": "mod_relic_black_spot_eagle_eye_ranged_damage", "source_type": "relic", "source_id": "relic_black_spot_eagle_eye", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 2, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_berserker_copper_badge",
     "display_name": "狂战士铜质徽章",
-    "description": "近战伤害 + 8；护甲 - 10",
+    "description": "近战伤害 +8；护甲 -8",
     "icon": "res://assets/ui/icons/relics/relic_berserker_copper_badge.png",
     "icon_description": "带有黑色斑点的透明晶石",
     "rarity": "rare",
@@ -1200,21 +1168,21 @@
     "tags": ["combat"],
     "effects": [
       {"id": "mod_relic_berserker_copper_badge_melee_damage", "source_type": "relic", "source_id": "relic_berserker_copper_badge", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 8, "duration": -1},
-      {"id": "mod_relic_berserker_copper_badge_armor", "source_type": "relic", "source_id": "relic_berserker_copper_badge", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": -10, "duration": -1}
+      {"id": "mod_relic_berserker_copper_badge_armor", "source_type": "relic", "source_id": "relic_berserker_copper_badge", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": -8, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_corroded_blowpipe",
     "display_name": "蚀腐吹管",
-    "description": "远程伤害 + 6；最大生命 - 3",
+    "description": "远程伤害 +7；最大生命 -3",
     "icon": "res://assets/ui/icons/relics/relic_corroded_blowpipe.png",
     "icon_description": "内壁附着粘液的空心骨管",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["combat", "survival"],
     "effects": [
-      {"id": "mod_relic_corroded_blowpipe_ranged_damage", "source_type": "relic", "source_id": "relic_corroded_blowpipe", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 6, "duration": -1},
+      {"id": "mod_relic_corroded_blowpipe_ranged_damage", "source_type": "relic", "source_id": "relic_corroded_blowpipe", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 7, "duration": -1},
       {"id": "mod_relic_corroded_blowpipe_max_hp", "source_type": "relic", "source_id": "relic_corroded_blowpipe", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -3, "duration": -1}
     ],
     "runtime_effects": []
@@ -1222,7 +1190,7 @@
   {
     "id": "relic_gale_roulette",
     "display_name": "疾风轮盘",
-    "description": "攻击速度 +30%；通用伤害 -8%",
+    "description": "攻击速度 +18；通用伤害 -5%",
     "icon": "res://assets/ui/icons/relics/relic_gale_roulette.png",
     "icon_description": "内壁附着粘液的空心骨管",
     "rarity": "rare",
@@ -1231,41 +1199,23 @@
       "combat"
     ],
     "effects": [
-      {
-        "id": "mod_relic_gale_roulette_attack_speed",
-        "source_type": "relic",
-        "source_id": "relic_gale_roulette",
-        "target_scope": "player",
-        "stat": "attack_speed",
-        "operation": "add_flat",
-        "value": 30,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_gale_roulette_damage_percent",
-        "source_type": "relic",
-        "source_id": "relic_gale_roulette",
-        "target_scope": "player",
-        "stat": "damage_percent",
-        "operation": "add_flat",
-        "value": -8,
-        "duration": -1
-      }
+      {"id": "mod_relic_gale_roulette_attack_speed", "source_type": "relic", "source_id": "relic_gale_roulette", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 18, "duration": -1},
+      {"id": "mod_relic_gale_roulette_damage_percent", "source_type": "relic", "source_id": "relic_gale_roulette", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": -5, "duration": -1}
     ],
     "runtime_effects": []
   },
   {
     "id": "relic_executioner_bracer",
     "display_name": "屠戮者臂铠",
-    "description": "近战伤害 + 10；移速 - 20",
+    "description": "近战伤害 +11；移动速度 -10",
     "icon": "res://assets/ui/icons/relics/relic_executioner_bracer.png",
     "icon_description": "布满划痕的厚重铁质臂铠",
     "rarity": "epic",
     "max_stack": 0,
     "tags": ["combat", "movement"],
     "effects": [
-      {"id": "mod_relic_executioner_bracer_melee_damage", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 10, "duration": -1},
-      {"id": "mod_relic_executioner_bracer_move_speed", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -20, "duration": -1}
+      {"id": "mod_relic_executioner_bracer_melee_damage", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 11, "duration": -1},
+      {"id": "mod_relic_executioner_bracer_move_speed", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -10, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1806,7 +1756,7 @@
   {
     "id": "relic_diffusion_nozzle",
     "display_name": "扩散喷口",
-    "description": "伤害范围 +30，伤害加成 +15，攻击速度 −6。",
+    "description": "通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6",
     "icon": "res://assets/ui/icons/relics/relic_diffusion_nozzle.png",
     "icon_description": "张开的短金属喷口、烧黑内壁、橙红余烬。",
     "rarity": "uncommon",
@@ -1816,36 +1766,10 @@
       "build"
     ],
     "effects": [
-      {
-        "id": "mod_relic_diffusion_nozzle_damage_area_size",
-        "source_type": "relic",
-        "source_id": "relic_diffusion_nozzle",
-        "target_scope": "player",
-        "stat": "damage_area_size",
-        "operation": "add_flat",
-        "value": 30,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_diffusion_nozzle_damage_percent",
-        "source_type": "relic",
-        "source_id": "relic_diffusion_nozzle",
-        "target_scope": "player",
-        "stat": "damage_percent",
-        "operation": "add_flat",
-        "value": 15,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_diffusion_nozzle_attack_speed",
-        "source_type": "relic",
-        "source_id": "relic_diffusion_nozzle",
-        "target_scope": "player",
-        "stat": "attack_speed",
-        "operation": "add_flat",
-        "value": -6,
-        "duration": -1
-      }
+      {"id": "mod_relic_diffusion_nozzle_damage_percent", "source_type": "relic", "source_id": "relic_diffusion_nozzle", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 5, "duration": -1},
+      {"id": "mod_relic_diffusion_nozzle_damage_area_size", "source_type": "relic", "source_id": "relic_diffusion_nozzle", "target_scope": "player", "stat": "damage_area_size", "operation": "add_flat", "value": 12, "duration": -1},
+      {"id": "mod_relic_diffusion_nozzle_element_damage", "source_type": "relic", "source_id": "relic_diffusion_nozzle", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 3, "duration": -1},
+      {"id": "mod_relic_diffusion_nozzle_attack_speed", "source_type": "relic", "source_id": "relic_diffusion_nozzle", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": -6, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1895,7 +1819,7 @@
   {
     "id": "relic_aftershock_hourglass",
     "display_name": "余震沙漏",
-    "description": "伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。",
+    "description": "伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2",
     "icon": "res://assets/ui/icons/relics/relic_aftershock_hourglass.png",
     "icon_description": "铁灰沙漏、琥珀沙粒、底部断续回声弧。",
     "rarity": "rare",
@@ -1905,26 +1829,8 @@
       "build"
     ],
     "effects": [
-      {
-        "id": "mod_relic_aftershock_hourglass_damage_area_size",
-        "source_type": "relic",
-        "source_id": "relic_aftershock_hourglass",
-        "target_scope": "player",
-        "stat": "damage_area_size",
-        "operation": "add_flat",
-        "value": 20,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_aftershock_hourglass_damage_percent",
-        "source_type": "relic",
-        "source_id": "relic_aftershock_hourglass",
-        "target_scope": "player",
-        "stat": "damage_percent",
-        "operation": "add_flat",
-        "value": 12,
-        "duration": -1
-      }
+      {"id": "mod_relic_aftershock_hourglass_damage_area_size", "source_type": "relic", "source_id": "relic_aftershock_hourglass", "target_scope": "player", "stat": "damage_area_size", "operation": "add_flat", "value": 20, "duration": -1},
+      {"id": "mod_relic_aftershock_hourglass_element_damage", "source_type": "relic", "source_id": "relic_aftershock_hourglass", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 6, "duration": -1}
     ],
     "runtime_effects": [
       {
@@ -1938,7 +1844,7 @@
   {
     "id": "relic_golden_rangefinder",
     "display_name": "黄金测距仪",
-    "description": "每满100本金，攻击距离＋3、伤害加成＋3%，上限30",
+    "description": "远程伤害 +5；每满100本金，攻击距离 +3（上限30）、通用伤害 +1%（上限10%）",
     "icon": "res://assets/ui/icons/relics/relic_golden_rangefinder.png",
     "icon_description": "打开的黄铜圆规、悬挂金币、绿色铰链宝石。",
     "rarity": "epic",
@@ -1948,30 +1854,18 @@
       "build",
       "finance"
     ],
-    "effects": [],
+    "effects": [
+      {"id": "mod_relic_golden_rangefinder_ranged_damage", "source_type": "relic", "source_id": "relic_golden_rangefinder", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 5, "duration": -1}
+    ],
     "runtime_effects": [
-      {
-        "trigger": "derived",
-        "effect": "derived_stat_from_principal",
-        "stat": "area_size",
-        "divisor": 100,
-        "per_unit": 3,
-        "max_bonus": 30
-      },
-      {
-        "trigger": "derived",
-        "effect": "derived_stat_from_principal",
-        "stat": "damage_percent",
-        "divisor": 100,
-        "per_unit": 3,
-        "max_bonus": 30
-      }
+      {"trigger": "derived", "effect": "derived_stat_from_principal", "stat": "area_size", "divisor": 100, "per_unit": 3, "max_bonus": 30},
+      {"trigger": "derived", "effect": "derived_stat_from_principal", "stat": "damage_percent", "divisor": 100, "per_unit": 1, "max_bonus": 10}
     ]
   },
   {
     "id": "relic_abyssal_echo_shell",
     "display_name": "深海回声螺",
-    "description": "伤害范围 +40，元素伤害 +8，理智值 −15。",
+    "description": "元素伤害 +9；理智值 -2；伤害范围 +12",
     "icon": "res://assets/ui/icons/relics/relic_abyssal_echo_shell.png",
     "icon_description": "蓝绿螺壳、幽蓝壳口、少量深色海藻。",
     "rarity": "epic",
@@ -1982,36 +1876,9 @@
       "eldritch"
     ],
     "effects": [
-      {
-        "id": "mod_relic_abyssal_echo_shell_damage_area_size",
-        "source_type": "relic",
-        "source_id": "relic_abyssal_echo_shell",
-        "target_scope": "player",
-        "stat": "damage_area_size",
-        "operation": "add_flat",
-        "value": 40,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_abyssal_echo_shell_element_damage",
-        "source_type": "relic",
-        "source_id": "relic_abyssal_echo_shell",
-        "target_scope": "player",
-        "stat": "element_damage",
-        "operation": "add_flat",
-        "value": 8,
-        "duration": -1
-      },
-      {
-        "id": "mod_relic_abyssal_echo_shell_humanity",
-        "source_type": "relic",
-        "source_id": "relic_abyssal_echo_shell",
-        "target_scope": "player",
-        "stat": "humanity",
-        "operation": "add_flat",
-        "value": -15,
-        "duration": -1
-      }
+      {"id": "mod_relic_abyssal_echo_shell_element_damage", "source_type": "relic", "source_id": "relic_abyssal_echo_shell", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 9, "duration": -1},
+      {"id": "mod_relic_abyssal_echo_shell_humanity", "source_type": "relic", "source_id": "relic_abyssal_echo_shell", "target_scope": "player", "stat": "humanity", "operation": "add_flat", "value": -2, "duration": -1},
+      {"id": "mod_relic_abyssal_echo_shell_damage_area_size", "source_type": "relic", "source_id": "relic_abyssal_echo_shell", "target_scope": "player", "stat": "damage_area_size", "operation": "add_flat", "value": 12, "duration": -1}
     ],
     "runtime_effects": []
   },

@@ -1,0 +1,274 @@
+[
+  {
+    "label": "移星：原位星印",
+    "path": "assets/sprites/weapons/mobility/star_anchor.png",
+    "frame": 0,
+    "cell": [
+      128,
+      128
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      14,
+      28,
+      116,
+      106
+    ],
+    "note": "运行时等比显示"
+  },
+  {
+    "label": "移星：落地冲击环",
+    "path": "assets/sprites/weapons/mobility/star_shockwave.png",
+    "frame": 4,
+    "cell": [
+      160,
+      160
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      28,
+      18,
+      142,
+      136
+    ],
+    "note": "运行时等比显示"
+  },
+  {
+    "label": "突进短刃：落地斩击",
+    "path": "assets/sprites/weapons/mobility/dash_circle.png",
+    "frame": 3,
+    "cell": [
+      160,
+      160
+    ],
+    "vertical_scale": 0.6590909090909091,
+    "alpha_bbox": [
+      6,
+      10,
+      152,
+      156
+    ],
+    "note": "按正式纵向比例 0.659 展示"
+  },
+  {
+    "label": "移星：闪现抵达",
+    "path": "assets/sprites/weapons/mobility/star_arrive.png",
+    "frame": 3,
+    "cell": [
+      96,
+      128
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      26,
+      32,
+      72,
+      104
+    ],
+    "note": "竖向晶片，不是地面圆环"
+  },
+  {
+    "label": "光剑：落点标记",
+    "path": "assets/effects/pixel_baked/sword_mark.png",
+    "frame": 0,
+    "cell": [
+      32,
+      32
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      6,
+      6,
+      28,
+      28
+    ],
+    "note": "正式等比显示"
+  },
+  {
+    "label": "黑洞：本体与吸入线",
+    "path": "assets/effects/pixel_baked/hole_d1.png",
+    "frame": 24,
+    "cell": [
+      208,
+      208
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      76,
+      26,
+      170,
+      126
+    ],
+    "note": "需区分悬浮核心与地面范围"
+  },
+  {
+    "label": "黑洞：地面阴影",
+    "path": "assets/effects/pixel_baked/hole_shadow.png",
+    "frame": 24,
+    "cell": [
+      48,
+      20
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      8,
+      4,
+      40,
+      16
+    ],
+    "note": "素材已经扁平"
+  },
+  {
+    "label": "手雷：主动模式爆炸",
+    "path": "assets/effects/pixel_baked/grenade.png",
+    "frame": 10,
+    "cell": [
+      144,
+      144
+    ],
+    "vertical_scale": 0.6590909090909091,
+    "alpha_bbox": [
+      8,
+      6,
+      138,
+      136
+    ],
+    "note": "按正式纵向比例 0.659 展示"
+  },
+  {
+    "label": "冰霜领域",
+    "path": "assets/effects/pixel_baked/ice_d2.png",
+    "frame": 20,
+    "cell": [
+      128,
+      80
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      20,
+      14,
+      108,
+      66
+    ],
+    "note": "等比显示已经烘焙的形状"
+  },
+  {
+    "label": "冰霜扩散前沿",
+    "path": "assets/effects/pixel_baked/frost_front_d1.png",
+    "frame": 20,
+    "cell": [
+      160,
+      96
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      8,
+      11,
+      154,
+      86
+    ],
+    "note": "等比显示已经烘焙的形状"
+  },
+  {
+    "label": "减速：脚下纹理",
+    "path": "assets/effects/pixel_baked/slowed.png",
+    "frame": 0,
+    "cell": [
+      64,
+      40
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      16,
+      10,
+      48,
+      30
+    ],
+    "note": "等比显示已经烘焙的形状"
+  },
+  {
+    "label": "秘仪书：命中符印",
+    "path": "assets/effects/pixel_baked/tome.png",
+    "frame": 9,
+    "cell": [
+      96,
+      96
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      32,
+      30,
+      65,
+      63
+    ],
+    "note": "附在目标上的命中图形"
+  },
+  {
+    "label": "钱币：命中图形",
+    "path": "assets/effects/pixel_baked/coin_hit.png",
+    "frame": 8,
+    "cell": [
+      80,
+      80
+    ],
+    "vertical_scale": 1,
+    "alpha_bbox": [
+      30,
+      22,
+      53,
+      43
+    ],
+    "note": "附在目标上的命中图形"
+  },
+  {
+    "label": "水波：地面扩散",
+    "path": "assets/sprites/effects/water_wave/water_d1_p0.png",
+    "frame": 28,
+    "cell": [
+      112,
+      112
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      20,
+      18,
+      94,
+      92
+    ],
+    "note": "运行时等比显示"
+  },
+  {
+    "label": "秘仪书：领域符文",
+    "path": "assets/sprites/weapons/kunyu_domain_rune.png",
+    "frame": 0,
+    "cell": [
+      384,
+      240
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      17,
+      12,
+      368,
+      229
+    ],
+    "note": "增强透明度以便检查轮廓"
+  },
+  {
+    "label": "蝙蝠：飞行声波",
+    "path": "assets/sprites/enemies/echo_bat/sonic_wave.png",
+    "frame": 3,
+    "cell": [
+      48,
+      32
+    ],
+    "vertical_scale": 1.0,
+    "alpha_bbox": [
+      2,
+      4,
+      46,
+      30
+    ],
+    "note": "随飞行方向旋转的弹体"
+  }
+]

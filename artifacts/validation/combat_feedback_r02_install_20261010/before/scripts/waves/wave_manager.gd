@@ -1,0 +1,1075 @@
+extends Node
+class_name WaveManager
+
+signal wave_started(wave_id: String, duration_seconds: int)
+signal wave_finished(wave_id: String)
+signal exp_changed(current_exp: int, required_exp: int, level: int)
+signal gold_changed(current_gold: int)
+signal finance_changed(snapshot: Dictionary)
+signal interest_settled(result: Dictionary)
+signal shared_reward_shop_requested(level: int)
+signal wave_end_absorb_started(wave_id: String)
+signal relic_choice_requested(reward_id: String)
+signal weapon_damage_changed
+
+const DEFAULT_PLAYER_LEVEL: int = 1
+const SPAWN_MIN_DISTANCE: float = 400.0
+const SPAWN_MAX_DISTANCE: float = 500.0
+const SPAWN_SEPARATION_DISTANCE: float = 32.0
+const SPAWN_CLUSTER_HALF_ANGLE: float = PI / 22.5 # Eight degrees either side.
+const SPAWN_POSITION_ATTEMPTS: int = 24
+const MIN_SPAWN_INTERVAL_MS: float = 300.0
+const SPAWN_COUNT_PRECISION: int = 10000
+const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
+const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
+
+@export var auto_start: bool = false
+@export var enemy_root_path: NodePath
+@export var pickup_root_path: NodePath
+
+var player: PlayerController = null
+var current_wave_index: int = -1
+var current_wave: Dictionary = {}
+var wave_time_left: float = 0.0
+var spawn_timers_ms: Array[float] = []
+var _enemy_spawn_remainder_units: int = 0
+var running: bool = false
+const CLEANUP_SECONDS := 10.0
+var cleanup_active := false
+var cleanup_time_left := 0.0
+var _wave_finish_queued := false
+var difficulty_id: String = BattleDifficulty.DEFAULT_ID
+var _difficulty: Dictionary = BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID)
+var player_level: int = DEFAULT_PLAYER_LEVEL
+var current_exp: int = 0
+var current_gold: int = 0
+var collected_exp_this_wave: int = 0
+var collected_gold_this_wave: int = 0
+var pickup_gold_remainder_cents := 0
+var challenge_vault: ChallengeVault
+var _vault_attacker_counter := 0
+var weapon_damage_this_wave: Dictionary = {}
+var _reward_remainders: Dictionary = {}
+
+var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
+var run_statistics := RunStatistics.new()
+var goblin_loans := GoblinLoanSystem.new()
+var economy_journal: EconomyJournal = EconomyJournal.new()
+var _wave_income_recorded: bool = false
+var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
+var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
+var goblin_trades := GoblinTradeSystem.new()
+var wave_challenges := WaveChallengeSystem.new()
+var enemy_pressure := EnemyWavePressure.new()
+var _challenge_elite_schedule: Array[float] = []
+var _challenge_elite_spawned := 0
+var _challenge_elite_planned := 0
+var _last_settled_wave := -1
+var enemy_scene_cache: Dictionary = {}
+var _pending_wave_end_absorb_count: int = 0
+var _finishing_wave_id: String = ""
+var _pending_reward_batches: Array[Dictionary] = []
+var _elite_profile: Dictionary = {}
+var _elite_spawn_schedule: Array[float] = []
+var _elite_planned_count: int = 0
+var _elite_expected_count: float = 0.0
+var _elite_quota_rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _elite_spawned_count: int = 0
+var _elite_spawn_deadline: float = 0.0
+var _elite_erosion_snapshot: float = 0.0
+var _wave_erosion_pressure: Dictionary = {}
+var _augmentation_valid_kills: int = 0
+var _pending_relic_choices: Dictionary = {}
+
+@onready var enemy_root: Node = _get_optional_node(enemy_root_path)
+@onready var pickup_root: Node = _get_optional_node(pickup_root_path)
+
+
+func _ready() -> void:
+	if enemy_root == null:
+		enemy_root = get_node_or_null("EnemyRoot")
+	if pickup_root == null:
+		pickup_root = get_node_or_null("PickupRoot")
+	if enemy_root == null:
+		enemy_root = self
+	if pickup_root == null:
+		pickup_root = self
+	if auto_start:
+		start_next_wave()
+
+
+func _process(delta: float) -> void:
+	if not running:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	if player == null or not player.is_alive() or run_statistics.frozen:
+		return
+	var active_delta := maxf(0.0, minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
+	enemy_pressure.advance(active_delta)
+	wave_challenges.advance_enemy_lifetimes(active_delta)
+	if cleanup_active:
+		cleanup_time_left = maxf(0.0, cleanup_time_left - delta)
+	else:
+		wave_time_left = maxf(0.0, wave_time_left - delta)
+	var live_enemies := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive(): live_enemies += 1
+	goblin_trades.sample_enemies(delta, live_enemies)
+	if player != null:
+		wave_challenges.sample_health(delta, player.current_hp, int(player.get_stat("max_hp")))
+	if wave_time_left > 0.0 and not cleanup_active:
+		_process_spawn_timers(delta)
+	if finance_system != null:
+		finance_system.tick(delta)
+	if wave_time_left <= 0.0:
+		if not cleanup_active:
+			spawn_timers_ms.clear()
+			_elite_spawn_schedule.clear()
+			_challenge_elite_schedule.clear()
+			if get_living_enemy_count() > 0:
+				cleanup_active = true
+				cleanup_time_left = CLEANUP_SECONDS
+		if not cleanup_active or cleanup_time_left <= 0.0 or get_living_enemy_count() == 0:
+			if not _wave_finish_queued:
+				_wave_finish_queued = true
+				_finish_elapsed_wave.call_deferred()
+
+
+func get_living_enemy_count() -> int:
+	var count := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive() and enemy_root.is_ancestor_of(enemy):
+			count += 1
+	return count
+
+
+func get_living_miniboss_count() -> int:
+	var count := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_alive() and enemy_root.is_ancestor_of(enemy) and str(enemy.enemy_data.get("enemy_type", "")) == "elite":
+			count += 1
+	return count
+
+
+func _finish_elapsed_wave() -> void:
+	_wave_finish_queued = false
+	if not running or player == null or not player.is_alive() or run_statistics.frozen or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	finish_current_wave()
+
+
+func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
+	cleanup_active = false
+	cleanup_time_left = 0.0
+	_wave_finish_queued = false
+	if is_instance_valid(player):
+		if player.relic_added.is_connected(_on_player_relic_added): player.relic_added.disconnect(_on_player_relic_added)
+		if player.health_damage_taken.is_connected(_record_trade_damage): player.health_damage_taken.disconnect(_record_trade_damage)
+		if player.hp_changed.is_connected(_record_trade_health): player.hp_changed.disconnect(_record_trade_health)
+	player = target_player
+	run_statistics.reset()
+	goblin_loans.reset()
+	goblin_trades.reset()
+	wave_challenges.reset()
+	enemy_pressure.reset()
+	_challenge_elite_schedule.clear()
+	_challenge_elite_spawned = 0
+	_challenge_elite_planned = 0
+	_last_settled_wave = -1
+	if player != null:
+		player.health_damage_taken.connect(_record_trade_damage)
+		player.hp_changed.connect(_record_trade_health)
+	difficulty_id = BattleDifficulty.normalize(selected_difficulty)
+	_difficulty = BattleDifficulty.get_profile(difficulty_id)
+	economy_journal.clear()
+	_wave_income_recorded = false
+	current_wave_index = -1
+	_enemy_spawn_remainder_units = 0
+	running = false
+	player_level = DEFAULT_PLAYER_LEVEL
+	if CampProgression != null and CampProgression.has_method("has_unlock") and CampProgression.has_unlock("run_start_double_level"):
+		player_level += 2
+	if player != null:
+		player.set_run_level(player_level)
+	current_exp = 0
+	current_gold = 0
+	pickup_gold_remainder_cents = 0
+	_reward_remainders.clear()
+	collected_exp_this_wave = 0
+	collected_gold_this_wave = 0
+	weapon_damage_this_wave.clear()
+	weapon_damage_changed.emit()
+	_pending_wave_end_absorb_count = 0
+	_finishing_wave_id = ""
+	_pending_reward_batches.clear()
+	_elite_spawn_schedule.clear()
+	_elite_planned_count = 0
+	_elite_expected_count = 0.0
+	_elite_quota_rng.randomize()
+	_elite_spawned_count = 0
+	_elite_erosion_snapshot = 0.0
+	_wave_erosion_pressure = calculate_enemy_erosion_pressure(0.0)
+	_pending_relic_choices.clear()
+	if not drop_reward_system.relic_choice_collected.is_connected(_on_relic_choice_collected):
+		drop_reward_system.relic_choice_collected.connect(_on_relic_choice_collected)
+	if finance_system != null:
+		_connect_finance_system()
+		finance_system.initialize(player, Callable(self, "get_current_gold"), Callable(self, "apply_gold_delta"))
+	_connect_player_relic_signal()
+	if player != null and not player.grant_starting_relics():
+		push_error("[WaveManager] failed to grant character starting relics.")
+	reward_snapshot.reset()
+	drop_reward_system.reset_run()
+	_augmentation_valid_kills = 0
+	clear_battle_entities()
+
+
+func _get_optional_node(path: NodePath) -> Node:
+	if path.is_empty():
+		return null
+	return get_node_or_null(path)
+
+
+func start_next_wave() -> bool:
+	var waves := DataRegistry.get_table("waves")
+	if current_wave_index + 1 >= waves.size():
+		return false
+	cleanup_active = false
+	cleanup_time_left = 0.0
+	_wave_finish_queued = false
+	goblin_loans.leave_preparation(run_statistics)
+	current_wave_index += 1
+	enemy_pressure.begin_wave(current_wave_index + 1)
+	goblin_trades.begin_combat()
+	wave_challenges.begin_combat()
+	collected_exp_this_wave = 0
+	collected_gold_this_wave = 0
+	_wave_income_recorded = false
+	pickup_gold_remainder_cents = 0
+	current_wave = waves[current_wave_index]
+	weapon_damage_this_wave.clear()
+	weapon_damage_changed.emit()
+	reward_snapshot.reset(str(current_wave.get("id", "")))
+	drop_reward_system.begin_wave(current_wave_index + 1)
+	drop_reward_system.gold_terms = wave_challenges.gold_terms(current_wave_index + 1)
+	_augmentation_valid_kills = 0
+	wave_time_left = float(current_wave.get("duration_seconds", 0))
+	spawn_timers_ms.clear()
+	_enemy_spawn_remainder_units = 0
+	var spawn_groups: Array = current_wave.get("spawn_groups", [])
+	for index in spawn_groups.size():
+		# Stagger the groups instead of surrounding a new player immediately.
+		spawn_timers_ms.append((float(_difficulty.opening_delay) + index * 0.6) * 1000.0)
+	if finance_system != null:
+		finance_system.begin_wave(current_wave_index + 1)
+	if player != null and player.is_alive():
+		player.reset_wave_shield()
+		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_START)
+	if player != null and player.is_alive():
+		player.heal(int(player.get_stat("max_hp")))
+	_wave_erosion_pressure = calculate_enemy_erosion_pressure(player.get_stat("divinity") if player != null else 0.0)
+	_initialize_elite_schedule()
+	_challenge_elite_schedule.clear()
+	_challenge_elite_spawned = 0
+	_challenge_elite_planned = wave_challenges.extra_elites(current_wave_index + 1)
+	var challenge_progress: Array = wave_challenges.definition("extra_elites").get("spawn_progress", [0.18, 0.36])
+	for index in _challenge_elite_planned:
+		_challenge_elite_schedule.append(wave_time_left * float(challenge_progress[mini(index, challenge_progress.size() - 1)]))
+	_spawn_challenge_vault()
+	running = true
+	_spawn_debt_target()
+	wave_started.emit(str(current_wave.get("id", "")), int(current_wave.get("duration_seconds", 0)))
+	return true
+
+
+func finish_current_wave() -> void:
+	if not running:
+		return
+	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
+	wave_challenges.finish_combat(goblin_trades.pressure_snapshot, cleanup_active and cleanup_time_left <= 0.0, get_living_enemy_count())
+	if cleanup_active and cleanup_time_left <= 0.0:
+		wave_challenges.resolve_debt_target(current_wave_index + 1, false, goblin_loans, finance_system)
+	finance_system.end_capital_protection(current_wave_index + 1)
+	enemy_pressure.finish_wave(wave_challenges.pressure)
+	running = false
+	# Include deaths deferred from this frame before clearing or settling rewards.
+	cleanup_active = false
+	cleanup_time_left = 0.0
+	_flush_pending_reward_batches()
+	_finishing_wave_id = str(current_wave.get("id", ""))
+	wave_end_absorb_started.emit(_finishing_wave_id)
+	collect_all_relic_pickups()
+	collect_all_augmentation_pickups()
+	clear_battle_entities()
+	_start_wave_end_exp_absorb()
+
+
+func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO, debt_target := false) -> EnemyController:
+	if cleanup_active or _wave_finish_queued or not _finishing_wave_id.is_empty() or (running and wave_time_left <= 0.0):
+		return null
+	var enemy_data := DataRegistry.get_record("enemies", enemy_id)
+	if enemy_data.is_empty():
+		return null
+	var enemy_scene := _load_enemy_scene(enemy_data)
+	if enemy_scene == null:
+		return null
+	var enemy := enemy_scene.instantiate() as EnemyController
+	if enemy == null:
+		return null
+	enemy.auto_initialize_on_ready = false
+	enemy_root.add_child(enemy)
+	enemy.global_position = position
+	var runtime_modifiers := _build_wave_enemy_modifiers(str(enemy_data.get("enemy_type", "normal")))
+	runtime_modifiers.append_array(_build_erosion_enemy_modifiers())
+	runtime_modifiers.append_array(enemy_pressure.build_modifiers(str(enemy_data.get("enemy_type", "normal"))))
+	runtime_modifiers.append_array(wave_challenges.enemy_modifiers(current_wave_index + 1, debt_target))
+	for stat in ["max_hp", "melee_damage", "ranged_damage", "element_damage", "move_speed", "armor"]:
+		var key := "health" if stat == "max_hp" else ("speed" if stat == "move_speed" else ("armor" if stat == "armor" else "damage"))
+		runtime_modifiers.append({"id": "difficulty_" + stat, "source_type": "difficulty", "source_id": difficulty_id,
+			"target_scope": "enemy", "stat": stat, "operation": Modifier.OPERATION_MULTIPLY,
+			"value": float(_difficulty[key]), "duration": Modifier.PERMANENT_DURATION, "stack_rule": Modifier.STACK_RULE_UNIQUE})
+	if not enemy.initialize(enemy_id, player, runtime_modifiers):
+		push_error("[WaveManager] enemy initialization failed: %s" % enemy_id)
+		enemy.queue_free()
+		return null
+	enemy.died.connect(_on_enemy_died)
+	wave_challenges.record_enemy_spawn(enemy.get_instance_id())
+	enemy.damage_received.connect(_on_enemy_damage_received)
+	enemy.damage_received.connect(_on_enemy_pressure_damage.bind(enemy, current_wave_index + 1))
+	if is_instance_valid(challenge_vault) and challenge_vault.alive and str(enemy_data.get("enemy_type", "normal")) != "elite" and enemy.get_stat("melee_damage") > 0:
+		_vault_attacker_counter += 1
+		if _vault_attacker_counter % int(wave_challenges.active.get("attacker_stride", 3)) == 0:
+			enemy.challenge_target = challenge_vault
+	return enemy
+
+
+func _spawn_debt_target() -> void:
+	var contract := wave_challenges.active
+	if str(contract.get("id", "")) != "debt_hunter" or int(contract.get("wave", -1)) != current_wave_index + 1: return
+	var positions: Array[Vector2] = []
+	var target := spawn_enemy(str(contract.boss_template), _get_batch_spawn_position(positions), true)
+	if target == null:
+		push_error("Debt challenge target could not spawn")
+		contract.debt_resolved = true # A missing target must never incur a penalty.
+		return
+	contract.target_instance = target.get_instance_id()
+	target.set_meta("debt_challenge_target", true)
+	target.apply_body_scale(float(contract.size_multiplier))
+	target.add_child(preload("res://scripts/battle/debt_target_marker.gd").new())
+
+
+func _spawn_challenge_vault() -> void:
+	_vault_attacker_counter = 0
+	if str(wave_challenges.active.get("id", "")) != "capital_custody" or int(wave_challenges.active.get("wave", -1)) != current_wave_index + 1: return
+	challenge_vault = preload("res://scenes/battle/challenge_vault.tscn").instantiate() as ChallengeVault
+	pickup_root.add_child(challenge_vault)
+	challenge_vault.global_position = player.resolve_mobility_destination(player.global_position + Vector2(100, 0))
+	challenge_vault.initialize(ceili(player.get_stat("max_hp") * float(wave_challenges.active.health_multiplier)), player.get_stat("armor"))
+	challenge_vault.destroyed.connect(func(): wave_challenges.vault_intact = false)
+
+
+func _on_enemy_pressure_damage(_source_id: String, damage: int, enemy: EnemyController, wave: int) -> void:
+	if not running or wave != current_wave_index + 1 or damage <= 0 or run_statistics.frozen:
+		return
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)) or player == null or not player.is_alive():
+		return
+	if bool(enemy.get_meta("exclude_reward_progress", false)) or (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
+		return
+	enemy_pressure.record_damage(enemy.get_instance_id(), str(enemy.enemy_data.get("enemy_type", "normal")))
+
+
+func _on_enemy_damage_received(source_id: String, damage: int) -> void:
+	if not running or damage <= 0 or not DataRegistry.has_record("weapons", source_id):
+		return
+	weapon_damage_this_wave[source_id] = int(weapon_damage_this_wave.get(source_id, 0)) + damage
+	weapon_damage_changed.emit()
+
+
+func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:
+	return drop_reward_system.spawn_exp_orb(amount, position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
+
+
+func spawn_health_pack(amount: int, position: Vector2) -> HealthPack:
+	return drop_reward_system.spawn_health_pack(amount, position, pickup_root, player, reward_snapshot, Callable(self, "_on_health_pack_collected"))
+
+
+func collect_all_exp_orbs() -> void:
+	collect_exp_orbs_in_root(pickup_root)
+
+
+func collect_all_reward_pickups() -> void:
+	collect_all_relic_pickups()
+	collect_all_augmentation_pickups()
+	collect_all_exp_orbs()
+
+
+func collect_all_augmentation_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if is_instance_valid(pickup) and pickup is AugmentationPickup and not pickup.is_queued_for_deletion():
+			pickup.collect()
+
+
+func collect_all_relic_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if is_instance_valid(pickup) and pickup is RelicPickup and not pickup.is_queued_for_deletion():
+			pickup.collect()
+
+
+func clear_enemies() -> void:
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if enemy is EnemyController and enemy.is_inside_tree():
+			enemy.fade_out_and_free()
+
+
+func clear_battle_entities() -> void:
+	if is_instance_valid(challenge_vault):
+		challenge_vault.queue_free()
+		challenge_vault = null
+	if is_inside_tree():
+		for grenade in get_tree().get_nodes_in_group("grenade_projectiles"):
+			grenade.cancel()
+		for effect in get_tree().get_nodes_in_group("weapon_runtime_effects"):
+			effect.cancel()
+	_pending_reward_batches.clear()
+	_elite_spawn_schedule.clear()
+	_clear_non_exp_reward_pickups()
+	clear_enemies()
+
+
+func _collect_exp_orbs_recursive(node: Node, result: Array[ExpOrb]) -> void:
+	if node is ExpOrb:
+		result.append(node)
+	for child in node.get_children():
+		if child is Node:
+			_collect_exp_orbs_recursive(child, result)
+
+
+func collect_exp_orbs_in_root(root: Node) -> void:
+	var exp_orbs: Array[ExpOrb] = []
+	if root != null:
+		_collect_exp_orbs_recursive(root, exp_orbs)
+	for orb in exp_orbs:
+		if is_instance_valid(orb) and orb.is_inside_tree():
+			orb.collect()
+
+
+func _start_wave_end_exp_absorb() -> void:
+	var exp_orbs: Array[ExpOrb] = []
+	if pickup_root != null:
+		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
+	_pending_wave_end_absorb_count = 0
+	for orb in exp_orbs:
+		if not is_instance_valid(orb) or not orb.is_inside_tree() or orb.is_queued_for_deletion() or orb.collected_once:
+			continue
+		_pending_wave_end_absorb_count += 1
+		var absorbed_callable := Callable(self, "_on_wave_end_exp_orb_absorbed")
+		if not orb.collected.is_connected(absorbed_callable):
+			orb.collected.connect(absorbed_callable)
+		orb.start_wave_end_collection(player)
+	if _pending_wave_end_absorb_count <= 0:
+		_complete_wave_end_absorb()
+
+
+func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount: int) -> void:
+	if _pending_wave_end_absorb_count <= 0:
+		return
+	_pending_wave_end_absorb_count -= 1
+	if _pending_wave_end_absorb_count <= 0:
+		_complete_wave_end_absorb()
+
+
+func _complete_wave_end_absorb() -> void:
+	if _finishing_wave_id.is_empty() or run_statistics.frozen or player == null or not player.is_alive(): return
+	_pending_wave_end_absorb_count = 0
+	record_wave_income()
+	process_wave_end_settlements()
+	drop_reward_system.finish_wave(_augmentation_valid_kills, player, reward_snapshot)
+	run_statistics.complete_wave(current_wave_index + 1)
+	var finished_wave_id := _finishing_wave_id
+	_finishing_wave_id = ""
+	wave_finished.emit(finished_wave_id)
+
+
+func record_wave_income(completed: bool = true) -> void:
+	if _wave_income_recorded or current_wave_index < 0:
+		return
+	settle_pickup_gold(completed)
+	_wave_income_recorded = true
+	var income_message := L10n.message("log.combat.gold_earned", [collected_gold_this_wave, "" if completed else "log.combat.incomplete_wave_suffix"])
+	economy_journal.append({"wave": current_wave_index + 1, "kind": "wave_income", "text": L10n.render_message(income_message), "message": income_message, "gold": collected_gold_this_wave})
+
+
+func _clear_non_exp_reward_pickups() -> void:
+	var pickups: Array[Node] = []
+	if pickup_root != null:
+		_collect_reward_pickups_recursive(pickup_root, pickups)
+	for pickup in pickups:
+		if pickup is ExpOrb:
+			continue
+		# A failed grant stays visible for retry; successful ones already queue_free.
+		if pickup is RelicPickup and not _finishing_wave_id.is_empty() and not pickup.collected_once:
+			continue
+		if pickup is AugmentationPickup and not _finishing_wave_id.is_empty() and not pickup.collected_once:
+			continue
+		if is_instance_valid(pickup) and pickup.is_inside_tree():
+			pickup.queue_free()
+
+
+func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
+	if node.is_in_group("reward_pickups"):
+		result.append(node)
+	for child in node.get_children():
+		if child is Node:
+			_collect_reward_pickups_recursive(child, result)
+
+
+func calculate_wave_duration(wave_index: int) -> int:
+	return mini(30 + 5 * wave_index, 60)
+
+
+func get_required_exp_for_next_level() -> int:
+	return ceili(0.45 * pow(float(player_level) + 1.8, 2.9))
+
+
+func add_exp_and_gold(exp_amount: int, gold_amount: float) -> void:
+	if run_statistics.frozen: return
+	var final_exp := _apply_percent_bonus(exp_amount, "exp_gain_percent")
+	var bonus := player.get_stat("currency_gain_percent") if player != null else 0.0
+	# Integer cents avoid repeated whole-coin rounding and floating-point drift.
+	var cents := roundi(maxf(0, gold_amount) * maxf(0, 1.0 + bonus / 100.0) * 100.0)
+	cents += pickup_gold_remainder_cents
+	var final_gold := cents / 100
+	pickup_gold_remainder_cents = cents % 100
+	current_exp += final_exp
+	current_gold += final_gold
+	collected_exp_this_wave += final_exp
+	collected_gold_this_wave += final_gold
+	run_statistics.record_combat_gold(final_gold)
+	_process_level_ups()
+	exp_changed.emit(current_exp, get_required_exp_for_next_level(), player_level)
+	gold_changed.emit(current_gold)
+
+
+func get_precise_gold() -> float:
+	return current_gold + pickup_gold_remainder_cents / 100.0
+
+
+func settle_pickup_gold(completed: bool = true) -> void:
+	var top_up := 1 if completed and pickup_gold_remainder_cents > 0 else 0
+	pickup_gold_remainder_cents = 0
+	if top_up > 0:
+		current_gold += top_up
+		collected_gold_this_wave += top_up
+		run_statistics.record_combat_gold(top_up)
+	gold_changed.emit(current_gold)
+
+
+func get_current_gold() -> int:
+	return current_gold
+
+
+func apply_gold_delta(delta: int, reason: String = "") -> bool:
+	var next_gold := current_gold + delta
+	if next_gold < 0:
+		return false
+	current_gold = next_gold
+	gold_changed.emit(current_gold)
+	return true
+
+
+func deposit_finance(amount: int, free_principal: bool = false, reason: String = "manual") -> Dictionary:
+	if finance_system == null:
+		return {"success": false, "reason": "finance_system_missing"}
+	return finance_system.deposit(amount, free_principal, reason)
+
+
+func withdraw_finance(amount: int) -> Dictionary:
+	if finance_system == null:
+		return {"success": false, "reason": "finance_system_missing"}
+	return finance_system.withdraw(amount)
+
+
+func apply_finance_operation(action: String, amount: int) -> Dictionary:
+	if finance_system == null:
+		return {"success": false, "reason": "finance_system_missing"}
+	return finance_system.apply_finance_operation(action, amount)
+
+
+func trigger_finance_interest(source: String = "manual") -> Dictionary:
+	if finance_system == null:
+		return {"success": false, "reason": "finance_system_missing"}
+	return finance_system.trigger_manual_interest(source)
+
+
+func process_wave_end_settlements() -> Array[Dictionary]:
+	if _last_settled_wave == current_wave_index:
+		return finance_system.last_settlement_results.duplicate(true) if finance_system != null else []
+	_last_settled_wave = current_wave_index
+	var results: Array[Dictionary] = []
+	if finance_system != null:
+		results = finance_system.process_wave_end_settlements()
+	if player != null and player.is_alive():
+		player.process_relic_runtime_trigger(BattleFinanceSystem.TRIGGER_WAVE_END)
+		goblin_trades.settle_wave(current_wave_index + 1, player, finance_system)
+	var loan_result: Dictionary = {}
+	if player != null and player.is_alive():
+		loan_result = goblin_loans.settle_wave(current_wave_index + 1,finance_system)
+	if not loan_result.is_empty() and not results.is_empty():
+		results.back()["loan_settlement"] = loan_result
+	var challenge_result := wave_challenges.settle_wave(current_wave_index + 1, player, finance_system)
+	if not challenge_result.is_empty() and not results.is_empty():
+		results.back()["challenge_settlement"] = challenge_result
+	if finance_system != null: finance_system.last_settlement_results = results.duplicate(true)
+	return results
+
+
+func _record_trade_damage(before: int, after: int, maximum: int) -> void:
+	if running: goblin_trades.record_damage(before, after, maximum)
+	if running: wave_challenges.record_health(after, maximum)
+
+
+func _record_trade_health(hp: int, maximum: int, shield: int) -> void:
+	if running: goblin_trades.record_health(hp, maximum, shield)
+	if running: wave_challenges.record_health(hp, maximum)
+
+
+func tick_finance(delta: float) -> void:
+	if finance_system != null:
+		finance_system.tick(delta)
+
+
+func get_finance_popup_payload(source: String = "wave_start") -> Dictionary:
+	if finance_system == null:
+		return {}
+	return finance_system.build_finance_popup_payload(source)
+
+
+func get_finance_snapshot() -> Dictionary:
+	if finance_system == null:
+		return {}
+	return finance_system.get_state_snapshot()
+
+
+func prepare_finance_for_wave(wave_number: int) -> Dictionary:
+	if finance_system == null:
+		return {}
+	return finance_system.prepare_wave(wave_number)
+
+
+func add_relic(relic_id: String) -> bool:
+	return player != null and player.add_relic(relic_id)
+
+
+func _connect_player_relic_signal() -> void:
+	if player == null:
+		return
+	var relic_added_callable := Callable(self, "_on_player_relic_added")
+	if not player.relic_added.is_connected(relic_added_callable):
+		player.relic_added.connect(relic_added_callable)
+
+
+func _on_player_relic_added(relic_id: String) -> void:
+	if finance_system != null:
+		finance_system.on_relic_added(relic_id)
+
+
+func _connect_finance_system() -> void:
+	if finance_system == null:
+		return
+	if not finance_system.activity_recorded.is_connected(economy_journal.append):
+		finance_system.activity_recorded.connect(economy_journal.append)
+	var changed_callable := Callable(self, "_on_finance_changed")
+	var settled_callable := Callable(self, "_on_interest_settled")
+	if not finance_system.finance_changed.is_connected(changed_callable):
+		finance_system.finance_changed.connect(changed_callable)
+	if not finance_system.interest_settled.is_connected(settled_callable):
+		finance_system.interest_settled.connect(settled_callable)
+
+
+func _on_finance_changed(snapshot: Dictionary) -> void:
+	finance_changed.emit(snapshot.duplicate(true))
+
+
+func _on_interest_settled(result: Dictionary) -> void:
+	run_statistics.record_interest(result)
+	interest_settled.emit(result.duplicate(true))
+
+
+func _process_spawn_timers(delta: float) -> void:
+	if cleanup_active or _wave_finish_queued or (running and wave_time_left <= 0.0):
+		return
+	# Expire the first-half quota even when no regular group is due this frame.
+	if float(current_wave.get("duration_seconds", 0)) - wave_time_left >= _elite_spawn_deadline:
+		_elite_spawn_schedule.clear()
+	# All spawns due in this update share a cluster, including elite replacements.
+	var batch_positions: Array[Vector2] = []
+	_process_challenge_elites(batch_positions)
+	var population := EnemyRegistry.get_registered_enemies()
+	var ordinary_population := population.size()
+	for enemy in population:
+		if is_instance_valid(enemy) and (enemy.has_meta("wave_challenge_elite") or enemy.has_meta("debt_challenge_target")):
+			ordinary_population -= 1
+	var available := maxi(0, int(_difficulty.enemy_limit) - ordinary_population)
+	var spawn_groups: Array = current_wave.get("spawn_groups", [])
+	for index in range(spawn_groups.size()):
+		var group: Dictionary = spawn_groups[index]
+		spawn_timers_ms[index] -= delta * 1000.0
+		if spawn_timers_ms[index] > 0.0:
+			continue
+		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
+		var spawn_count := mini(available, _take_enemy_spawn_count(int(group.get("count_per_spawn", 1))))
+		for count_index in range(spawn_count):
+			var id := str(group.get("enemy_id", ""))
+			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
+			var replace_with_elite := not replacement.is_empty() and _is_elite_spawn_due()
+			if replace_with_elite:
+				id = _select_miniboss_variant(replacement)
+			else:
+				id = _select_spawn_variant(id)
+			var spawned := spawn_enemy(id, _get_batch_spawn_position(batch_positions))
+			if spawned != null:
+				available -= 1
+			if replace_with_elite and spawned != null:
+				_elite_spawned_count += 1
+				_elite_spawn_schedule.pop_front()
+
+
+func _spawn_variant_roll() -> float:
+	return randf()
+
+
+func _select_spawn_variant(base_id: String) -> String:
+	# Mix ordinary enemies only after reserving due miniboss replacements.
+	# Direct spawn_enemy calls retain their explicitly requested enemy type.
+	var variants: Array = DataRegistry.get_record("enemies", base_id).get("spawn_variants", [])
+	if variants.is_empty(): return base_id
+	var total := 0.0
+	for entry: Dictionary in variants: total += float(entry.weight)
+	var roll := _spawn_variant_roll() * total
+	for entry: Dictionary in variants:
+		roll -= float(entry.weight)
+		if roll < 0.0: return str(entry.enemy_id)
+	return str(variants.back().enemy_id)
+
+
+func _process_challenge_elites(batch_positions: Array[Vector2]) -> void:
+	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
+	# Exactly two additive spawns, independent of replacement quotas and crowd caps.
+	# Ordinary spawns remain capped; at most two extra entities can exceed that cap.
+	while not _challenge_elite_schedule.is_empty() and elapsed >= _challenge_elite_schedule[0]:
+		var elite := spawn_enemy(_select_miniboss_variant("enemy_elite_rusher"), _get_batch_spawn_position(batch_positions))
+		if elite == null: return
+		elite.set_meta("wave_challenge_elite", true)
+		_challenge_elite_schedule.pop_front()
+		_challenge_elite_spawned += 1
+
+
+func _miniboss_variant_roll() -> float:
+	return randf()
+
+
+func _select_miniboss_variant(base_id: String) -> String:
+	# One type is selected for an already-reserved slot, never an extra spawn.
+	# Ordinary mixtures and explicitly requested spawn_enemy IDs stay independent.
+	var variants: Array = DataRegistry.get_record("enemies", base_id).get("miniboss_variants", [])
+	if variants.is_empty(): return base_id
+	var total := 0.0
+	for entry: Dictionary in variants: total += float(entry.weight)
+	var roll := _miniboss_variant_roll()*total
+	for entry: Dictionary in variants:
+		roll -= float(entry.weight)
+		if roll < 0.0: return str(entry.enemy_id)
+	return str(variants.back().enemy_id)
+
+
+func _initialize_elite_schedule() -> void:
+	_elite_profile = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
+	_elite_erosion_snapshot = float(_wave_erosion_pressure.get("erosion", 0.0))
+	_elite_expected_count = calculate_miniboss_expected_count(current_wave_index + 1, _elite_erosion_snapshot)
+	_elite_expected_count = minf(float(_elite_profile.get("quota_cap", 9)), _elite_expected_count * float(_difficulty.elite_count))
+	if current_wave_index + 1 < int(_difficulty.first_elite_wave):
+		_elite_expected_count = 0.0
+	_elite_planned_count = _sample_miniboss_quota(_elite_expected_count)
+	_elite_spawned_count = 0
+	_elite_spawn_schedule.clear()
+	var duration := float(current_wave.get("duration_seconds", 0))
+	# Reserve enough time for the warning to finish before the halfway mark.
+	_elite_spawn_deadline = maxf(0.0, duration * minf(50.0, float(_elite_profile.get("spawn_window_percent", 50))) / 100.0 - float(_elite_profile.get("spawn_warning_ms", 750)) / 1000.0)
+	var first := minf(float(_elite_profile.get("spawn_first_ms", 5000)) / 1000.0, _elite_spawn_deadline * 0.5)
+	for index in _elite_planned_count:
+		_elite_spawn_schedule.append(first + (_elite_spawn_deadline - first) * float(index) / float(_elite_planned_count))
+
+
+func calculate_miniboss_expected_count(wave_number: int, erosion: float) -> float:
+	if wave_number <= 1:
+		return 0.0
+	var profile: Dictionary = DataRegistry.get_record("enemies", "enemy_elite_rusher").get("elite_profile", {})
+	var cap := maxi(0, int(profile.get("quota_cap", 9)))
+	var base := maxf(float(profile.get("minimum_quota", 1)), float(wave_number) / maxf(1.0, float(profile.get("expectation_wave_divisor", 8))))
+	var erosion_ratio := clampf(erosion / maxf(1.0, float(profile.get("erosion_bonus_full_at", 100))), 0.0, 1.0)
+	var bonus := erosion_ratio * maxf(0.0, float(profile.get("erosion_bonus_max_percent", 100))) / 100.0
+	return minf(base * (1.0 + bonus), float(cap))
+
+
+func _sample_miniboss_quota(expected_count: float) -> int:
+	# Sample once at wave start: adjacent integers preserve E[N] without large spikes.
+	var whole := floori(expected_count)
+	var fraction := expected_count - float(whole)
+	if fraction <= 0.0:
+		return whole
+	return whole + (1 if _elite_quota_rng.randf() < fraction else 0)
+
+
+func _is_elite_spawn_due() -> bool:
+	var elapsed := float(current_wave.get("duration_seconds", 0)) - wave_time_left
+	if elapsed >= _elite_spawn_deadline:
+		_elite_spawn_schedule.clear()
+		return false
+	return not _elite_spawn_schedule.is_empty() and elapsed >= _elite_spawn_schedule[0]
+
+
+func get_miniboss_spawn_snapshot() -> Dictionary:
+	return {"expected": _elite_expected_count, "planned": _elite_planned_count, "spawned": _elite_spawned_count, "erosion": _elite_erosion_snapshot, "spawn_deadline": _elite_spawn_deadline, "schedule": _elite_spawn_schedule.duplicate(),
+		"challenge_planned": _challenge_elite_planned, "challenge_spawned": _challenge_elite_spawned, "challenge_schedule": _challenge_elite_schedule.duplicate()}
+
+
+func _on_relic_choice_collected(reward_id: String) -> void:
+	_pending_relic_choices[reward_id] = true
+	relic_choice_requested.emit(reward_id)
+
+
+func complete_relic_choice(reward_id: String, selected: bool) -> void:
+	if not _pending_relic_choices.has(reward_id):
+		return
+	_pending_relic_choices.erase(reward_id)
+	if selected:
+		reward_snapshot.selected_relics += 1
+
+
+func calculate_enemy_spawn_count(base_count: int) -> float:
+	var spawn_rate_percent := player.get_stat("enemy_spawn_rate_percent") if player != null else 0.0
+	var wave_multiplier := 1.0 + float(_difficulty.count_growth) * float(maxi(current_wave_index, 0)) / 100.0
+	var scaled_count := maxi(0, int(ceil(float(maxi(base_count, 0)) * float(_difficulty.spawn_count) * wave_multiplier)))
+	# A read-only expected count: only real scheduled batches consume the fraction.
+	var erosion_multiplier := float(_wave_erosion_pressure.get("spawn_count_multiplier", 1.0))
+	return StatDefinitions.calculate_enemy_spawn_count(scaled_count, spawn_rate_percent) * erosion_multiplier * int(_difficulty.spawn_count_multiplier)
+
+
+func _take_enemy_spawn_count(base_count: int) -> int:
+	# Two integer percentages multiply to ten-thousandths. Retain both bonuses
+	# exactly (e.g. 1.33 * 1.01 = 1.3433) until the scheduled batch is consumed.
+	# All groups share one wave's remainder. Capped whole enemies are discarded,
+	# never saved as a backlog to burst out when population falls again.
+	var units := roundi(calculate_enemy_spawn_count(base_count) * SPAWN_COUNT_PRECISION) + _enemy_spawn_remainder_units
+	_enemy_spawn_remainder_units = units % SPAWN_COUNT_PRECISION
+	return floori(float(units) / SPAWN_COUNT_PRECISION)
+
+
+func calculate_spawn_interval(base_interval_ms: float) -> float:
+	var wave_growth := float(_difficulty.interval_growth) * float(maxi(current_wave_index, 0)) / 100.0
+	var density := BattleDifficulty.SPAWN_DENSITY_CURVE[clampi(current_wave_index, 0, BattleDifficulty.SPAWN_DENSITY_CURVE.size() - 1)]
+	return maxf(MIN_SPAWN_INTERVAL_MS, maxf(base_interval_ms, 0.0) * float(_difficulty.spawn_interval) / (1.0 + wave_growth) / density)
+
+
+func calculate_enemy_erosion_pressure(erosion: float) -> Dictionary:
+	return EnemyWavePressure.calculate_erosion(erosion)
+
+
+func get_enemy_erosion_snapshot() -> Dictionary:
+	return _wave_erosion_pressure.duplicate(true)
+
+
+func _build_erosion_enemy_modifiers() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var factors := {
+		"max_hp": float(_wave_erosion_pressure.get("max_hp_multiplier", 1.0)),
+		"armor": float(_wave_erosion_pressure.get("armor_multiplier", 1.0)),
+		"melee_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+		"ranged_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+		"element_damage": float(_wave_erosion_pressure.get("damage_multiplier", 1.0)),
+	}
+	for stat in factors:
+		if is_equal_approx(float(factors[stat]), 1.0):
+			continue
+		result.append({
+			"id": "erosion_enemy_" + stat, "source_type": "erosion", "source_id": "wave_start",
+			"target_scope": "enemy", "stat": stat, "operation": Modifier.OPERATION_MULTIPLY,
+			"value": factors[stat], "duration": Modifier.PERMANENT_DURATION,
+			"stack_rule": Modifier.STACK_RULE_UNIQUE,
+		})
+	return result
+
+
+func _build_wave_enemy_modifiers(enemy_type: String = "normal") -> Array[Dictionary]:
+	var modifiers: Array[Dictionary] = []
+	var wave_step := float(maxi(current_wave_index, 0))
+	var hp_multiplier := 1.0 + float(_difficulty.normal_hp_growth) * wave_step if enemy_type == "normal" else pow(1.0 + float(_difficulty.hp_growth), wave_step)
+	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, hp_multiplier))
+	for stat in ["melee_damage", "ranged_damage", "element_damage"]:
+		modifiers.append(_build_wave_modifier(stat, Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
+	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))
+	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, float(_difficulty.armor_growth) * wave_step))
+	return modifiers
+
+
+func _build_wave_modifier(stat_id: String, operation: String, value: float) -> Dictionary:
+	var source_id := str(current_wave.get("id", ""))
+	if source_id.is_empty():
+		source_id = "wave_%d" % (current_wave_index + 1)
+	return {
+		"id": "wave_%d_%s" % [current_wave_index + 1, stat_id],
+		"source_type": "wave",
+		"source_id": source_id,
+		"target_scope": "enemy",
+		"stat": stat_id,
+		"operation": operation,
+		"value": value,
+		"duration": Modifier.PERMANENT_DURATION,
+		"stack_rule": Modifier.STACK_RULE_UNIQUE,
+	}
+
+
+func get_random_spawn_position(cluster_angle: float = NAN) -> Vector2:
+	var origin := player.global_position if player != null else Vector2.ZERO
+	var fallback := origin
+	var best_clearance := -1.0
+	for attempt in range(SPAWN_POSITION_ATTEMPTS):
+		var angle := randf() * TAU if is_nan(cluster_angle) else cluster_angle + randf_range(-SPAWN_CLUSTER_HALF_ANGLE, SPAWN_CLUSTER_HALF_ANGLE)
+		var distance := randf_range(SPAWN_MIN_DISTANCE, SPAWN_MAX_DISTANCE)
+		var candidate := origin + Vector2.RIGHT.rotated(angle) * distance
+		var clearance := _get_spawn_clearance_squared(candidate)
+		if clearance > best_clearance:
+			fallback = candidate
+			best_clearance = clearance
+		if clearance >= SPAWN_SEPARATION_DISTANCE * SPAWN_SEPARATION_DISTANCE:
+			return candidate
+	# Crowding may relax spacing, but never the annulus or the batch's sector.
+	return fallback
+
+
+func _get_batch_spawn_position(batch_positions: Array[Vector2]) -> Vector2:
+	var origin := player.global_position if player != null else Vector2.ZERO
+	var angle := NAN if batch_positions.is_empty() else (batch_positions[0] - origin).angle()
+	var position := get_random_spawn_position(angle)
+	batch_positions.append(position)
+	return position
+
+
+func _get_spawn_clearance_squared(candidate: Vector2) -> float:
+	var nearest := INF
+	for node in get_tree().get_nodes_in_group("enemies"):
+		var enemy := node as Node2D
+		if enemy == null or not enemy.is_inside_tree():
+			continue
+		nearest = minf(nearest, candidate.distance_squared_to(enemy.global_position))
+	return nearest
+
+
+func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_position: Vector2) -> void:
+	if not is_instance_valid(enemy) or not run_statistics.record_kill(enemy.get_instance_id(), enemy.enemy_id): return
+	if enemy.get_instance_id() == int(wave_challenges.active.get("target_instance", -1)):
+		wave_challenges.resolve_debt_target(current_wave_index + 1, true, goblin_loans, finance_system)
+	if player == null or not player.is_alive(): return
+	if running and not bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		enemy_pressure.record_kill(enemy.get_instance_id())
+		wave_challenges.record_enemy_death(enemy.get_instance_id())
+	if running and DataRegistry.has_record("enemies", enemy.enemy_id) and not bool(enemy.get_meta("exclude_reward_progress", false)) and not (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
+		_augmentation_valid_kills += 1
+	if player != null:
+		player.heal(int(player.get_stat("on_kill_heal")))
+	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
+	if Engine.is_in_physics_frame():
+		_pending_reward_batches.append({"actions": actions, "position": death_position})
+		call_deferred("_flush_pending_reward_batches")
+	else:
+		_spawn_drop_actions(actions, death_position)
+	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0
+	if tip_tray_amount > 0:
+		if Engine.is_in_physics_frame():
+			call_deferred("_spawn_tip_tray_drop", tip_tray_amount, death_position)
+		else:
+			_spawn_tip_tray_drop(tip_tray_amount, death_position)
+
+
+func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
+	if amount <= 0 or pickup_root == null or player == null or run_statistics.frozen or not player.is_alive():
+		return
+	drop_reward_system.spawn_exp_orb(amount, drop_position, pickup_root, player, reward_snapshot, Callable(self, "_on_exp_orb_collected"))
+
+
+func _flush_pending_reward_batches() -> void:
+	var batches := _pending_reward_batches.duplicate()
+	_pending_reward_batches.clear()
+	for batch in batches:
+		_spawn_drop_actions(batch.actions, batch.position)
+
+
+func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:
+	if pickup_root == null or player == null or run_statistics.frozen or not player.is_alive():
+		return
+	for action in actions:
+		drop_reward_system.spawn_action(
+			action,
+			drop_position,
+			pickup_root,
+			player,
+			reward_snapshot,
+			Callable(self, "_on_exp_orb_collected"),
+			Callable(self, "_on_health_pack_collected")
+		)
+
+
+func _on_exp_orb_collected(orb: ExpOrb, exp_amount: int, gold_amount: int) -> void:
+	if player == null or not player.is_alive() or run_statistics.frozen: return
+	add_exp_and_gold(exp_amount, gold_amount * orb.gold_multiplier)
+	reward_snapshot.record_exp_collection(exp_amount, gold_amount)
+
+
+func _on_health_pack_collected(_pickup: HealthPack, heal_amount: int) -> void:
+	reward_snapshot.record_health_collection(heal_amount)
+
+
+func _apply_percent_bonus(base_amount: int, stat_id: String) -> int:
+	if base_amount <= 0:
+		return 0
+	var bonus := player.get_stat(stat_id) if player != null else StatDefinitions.get_default_value(stat_id)
+	var accumulated := float(base_amount) * maxf(0.0, 1.0 + bonus / 100.0) + float(_reward_remainders.get(stat_id, 0.0))
+	var whole_amount := floori(accumulated + 0.00000001)
+	_reward_remainders[stat_id] = maxf(0.0, accumulated - float(whole_amount))
+	return whole_amount
+
+
+func _process_level_ups() -> void:
+	while current_exp >= get_required_exp_for_next_level():
+		current_exp -= get_required_exp_for_next_level()
+		player_level += 1
+		if player != null:
+			player.set_run_level(player_level)
+		reward_snapshot.record_level_up()
+		shared_reward_shop_requested.emit(player_level)
+
+
+func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:
+	var scene_path := str(enemy_data.get("scene", ""))
+	if scene_path.is_empty():
+		return null
+	if enemy_scene_cache.has(scene_path):
+		return enemy_scene_cache[scene_path]
+	var loaded_scene := load(scene_path) as PackedScene
+	if loaded_scene != null:
+		enemy_scene_cache[scene_path] = loaded_scene
+	return loaded_scene
+
+
+func get_reward_snapshot() -> Dictionary:
+	var snapshot := reward_snapshot.to_dictionary()
+	snapshot["elite_relics_dropped"] = drop_reward_system.get_elite_relics_dropped_this_wave()
+	snapshot.merge(drop_reward_system.get_augmentation_snapshot())
+	return snapshot

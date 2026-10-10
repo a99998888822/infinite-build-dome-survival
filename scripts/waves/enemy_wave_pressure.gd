@@ -24,7 +24,8 @@ static func calculate_erosion(erosion: float) -> Dictionary:
 		var excess := maxf(0.0, value - float(step.erosion)) / reference / 100.0
 		hp += excess * float(step.max_hp_bonus_percent)
 		damage += excess * float(step.damage_bonus_percent)
-	return {"erosion": value, "max_hp_multiplier": 1.0 + hp, "damage_multiplier": 1.0 + damage,
+	return {"erosion": value, "spawn_count_multiplier": 1.0 + value / 100.0,
+		"max_hp_multiplier": 1.0 + hp, "damage_multiplier": 1.0 + damage,
 		"armor_multiplier": 1.0 + value / reference * float(config.get("armor_bonus_percent", 135)) / 100.0}
 
 

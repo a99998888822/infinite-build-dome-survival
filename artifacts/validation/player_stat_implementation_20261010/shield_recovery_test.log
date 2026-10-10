@@ -1,0 +1,32 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 90 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 20 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 50
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS damage retains established shield capacity
+PASS 3/10 plus 4 refills to 7/10
+PASS 7/10 plus 5 overflows to 12/12
+PASS full shield grows current and capacity together
+PASS HUD signals expose refill and overflow capacity after each grant
+PASS invalid grants do not mutate shield or emit changes
+PASS fractional regeneration waits for a whole shield point
+PASS whole regeneration refills missing shield first
+PASS regeneration grows only after closing deficit
+PASS next wave resets current capacity from the current stat and clears fractional remainder
+PASS zero-capacity shield can still be generated
+PASS dead player cannot gain shield
+SHIELD_RECOVERY_COMPLETE checks=12 failures=0

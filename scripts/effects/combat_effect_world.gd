@@ -147,7 +147,9 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 	if emit_blade:
 		WIND_BLADE_EFFECT_SCRIPT.spawn(parent, hit_position, away_direction, context.get_resolved_parameter("blade_speed", 480.0), context.get_resolved_parameter("blade_lifetime", 0.46), weapon, damage_event, enemy.get_instance_id(), Callable(), attachment_item_id)
 	if enemy.can_be_pushed_by_wind():
-		enemy.apply_knockback(away_direction, context.get_resolved_parameter("knockback_speed", 900.0), context.get_resolved_parameter("knockback_duration", 0.34))
+		enemy.apply_knockback(away_direction, context.get_resolved_parameter("knockback_speed", 900.0), context.get_resolved_parameter("knockback_duration", 0.34), context.get_resolved_parameter("control_power", 0.0))
+	else:
+		enemy.show_control_resistance()
 	var wind_damage := damage_event.get_elemental_damage(context.get_resolved_parameter("damage_multiplier", 0.7))
 	enemy.take_damage(wind_damage, damage_event.source_weapon_id, false, away_direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 	var search_radius := maxf(context.get_resolved_parameter("field_search_radius", 18.0), 0.0)

@@ -1,0 +1,64 @@
+[
+  {
+    "name": "editor",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [
+      "Unable to open Android 'build-tools' directory.",
+      "WARNING: Detected another project.godot at res://tmp/enchantment_sale_review/minimal. The folder will be ignored."
+    ],
+    "summary": []
+  },
+  {
+    "name": "reaction_text",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "REACTION_TEXT_DONE checks=43 captured=0 failures=[]"
+    ]
+  },
+  {
+    "name": "elements",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "REACTION_TEST checks=68 failures=0"
+    ]
+  },
+  {
+    "name": "lightning",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "LIGHTNING_PIXEL_TEST checks=107 failures=0"
+    ]
+  },
+  {
+    "name": "r02",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "COMBAT_FEEDBACK_R02 checks=24 failures=0"
+    ]
+  },
+  {
+    "name": "active",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": [
+      "ACTIVE_COMBAT_INTEGRATION checks=146 failures=0"
+    ]
+  },
+  {
+    "name": "main",
+    "exit_code": 0,
+    "errors": [],
+    "warnings": [],
+    "summary": []
+  }
+]

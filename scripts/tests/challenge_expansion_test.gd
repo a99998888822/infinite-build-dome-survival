@@ -97,6 +97,7 @@ func offer_captures(name: String) -> void:
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	L10n.set_locale("zh_CN", false)
+	_test_spawn_accumulation()
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
@@ -114,8 +115,88 @@ func _run() -> void:
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
 	AudioManager._bgm_player.stream = null
+	# Let the audio thread release decoder playback before the test process exits.
+	await get_tree().create_timer(0.15).timeout
 	print("CHALLENGE_EXPANSION_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
+
+
+func _test_spawn_accumulation() -> void:
+	var player := PlayerController.new()
+	player.auto_initialize_on_ready = false
+	add_child(player)
+	player.initialize_from_character("character_void_hunter")
+	player.set_physics_process(false)
+	var scheduler := WaveManager.new()
+	add_child(scheduler)
+	scheduler.set_process(false)
+	scheduler.initialize(player)
+	var ordinary_group := {"enemy_id": "enemy_mutated_grub", "count_per_spawn": 6, "spawn_interval_ms": 1200}
+	var original_interval := scheduler.calculate_spawn_interval(1200)
+	for percent in [0, 2, 20, 40, 300]:
+		player.modifier_stack.set_base_stat("enemy_spawn_rate_percent", percent)
+		scheduler.current_wave_index = -1
+		scheduler.start_next_wave()
+		scheduler.current_wave = scheduler.current_wave.duplicate(true)
+		scheduler.current_wave.spawn_groups = [ordinary_group]
+		scheduler.spawn_timers_ms.resize(1)
+		var total := 0
+		for batch in 50:
+			scheduler.spawn_timers_ms.fill(0.0)
+			scheduler._process_spawn_timers(0.0)
+			var batch_count := _drain_spawned_enemies()
+			if percent == 20 and batch < 5:
+				check(batch_count == (2 if batch == 4 else 1), "twenty percent emits one extra on batch five: %d" % batch)
+			total += batch_count
+		check(total == 50 + percent / 2, "fifty live batches preserve exact percent supply: %d" % percent)
+		check(is_equal_approx(scheduler.calculate_spawn_interval(1200), original_interval), "count bonus never changes the interval: %d" % percent)
+	check(StatDefinitions.calculate_enemy_spawn_count(0, 20) == 0 and StatDefinitions.calculate_enemy_spawn_count(-1, 20) == 0, "empty and negative base counts add no supply")
+	check(StatDefinitions.calculate_enemy_spawn_count(1, -20) == 1 and StatDefinitions.calculate_enemy_spawn_count(1, 400) == 4, "spawn percentage retains its zero to three-hundred clamp")
+	player.modifier_stack.set_base_stat("enemy_spawn_rate_percent", 20)
+	scheduler.current_wave_index = -1
+	scheduler.start_next_wave()
+	scheduler.current_wave = scheduler.current_wave.duplicate(true)
+	scheduler.current_wave.spawn_groups = [ordinary_group, ordinary_group.duplicate()]
+	scheduler.spawn_timers_ms.resize(2)
+	var combined := 0
+	for batch in 5:
+		scheduler.spawn_timers_ms.fill(0.0)
+		scheduler._process_spawn_timers(0.0)
+		combined += _drain_spawned_enemies()
+	check(combined == 12, "multiple groups share the wave remainder and produce twelve from ten base enemies")
+	scheduler.current_wave.spawn_groups = [ordinary_group]
+	scheduler.spawn_timers_ms.resize(1)
+	for batch in 4:
+		scheduler.spawn_timers_ms.fill(0.0)
+		scheduler._process_spawn_timers(0.0)
+		_drain_spawned_enemies()
+	for preview in 10: scheduler.calculate_enemy_spawn_count(6)
+	scheduler.spawn_timers_ms.fill(0.0)
+	scheduler._process_spawn_timers(0.0)
+	check(_drain_spawned_enemies() == 2, "read-only supply previews do not consume fractional spawn credit")
+	scheduler._difficulty.enemy_limit = 1
+	for batch in 10:
+		scheduler.spawn_timers_ms.fill(0.0)
+		scheduler._process_spawn_timers(0.0)
+	check(_drain_spawned_enemies() == 1, "fractional count growth respects the live population cap")
+	scheduler._difficulty.enemy_limit = 48
+	scheduler.spawn_timers_ms.fill(0.0)
+	scheduler._process_spawn_timers(0.0)
+	check(_drain_spawned_enemies() == 1, "capped batches do not create a deferred spawn burst")
+	check(scheduler._enemy_spawn_remainder_units == 2000, "scheduler carries only the remaining fraction")
+	scheduler.start_next_wave()
+	check(scheduler._enemy_spawn_remainder_units == 0, "starting a new wave clears the old fractional remainder")
+	scheduler._take_enemy_spawn_count(6)
+	scheduler.initialize(player)
+	check(scheduler._enemy_spawn_remainder_units == 0, "initializing a new run clears the fractional remainder")
+	scheduler.free()
+	player.free()
+
+
+func _drain_spawned_enemies() -> int:
+	var enemies := EnemyRegistry.get_registered_enemies().duplicate()
+	for enemy in enemies: enemy.free()
+	return enemies.size()
 
 
 func _test_rules() -> void:
@@ -171,32 +252,50 @@ func _test_enemy_lifetimes() -> void:
 func _test_expansion() -> void:
 	var proposal := await offer("business_expansion")
 	if str(proposal.get("id", "")) != "business_expansion": return
+	check(str(proposal.body) == "怪物频率 +20%，存活后本金 +150" and L10n.text("data.challenge.expansion.body") == str(proposal.body), "requested expansion copy matches the live translation")
 	await offer_captures("01_expansion_offer")
 	await click(ui.presentation._yes)
-	var boosted := manager.calculate_spawn_interval(1200)
-	manager.wave_challenges.spawn_frequency_bonus = 0
-	var original := manager.calculate_spawn_interval(1200)
-	manager.wave_challenges.spawn_frequency_bonus = 0.2
-	check(is_equal_approx(boosted, original / 1.2), "frequency changes interval rather than batch count")
+	check(manager.player.get_stat("enemy_spawn_rate_percent") == 20, "accepted expansion adds twenty to the real player stat")
+	var baseline := WaveManager.new()
+	baseline.current_wave_index = manager.current_wave_index
+	baseline._difficulty = manager._difficulty.duplicate()
+	check(is_equal_approx(manager.calculate_spawn_interval(1200), baseline.calculate_spawn_interval(1200)), "expansion leaves the production spawn interval unchanged")
+	baseline.free()
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), 1.2), "expansion increases fractional batch supply")
+	check(not manager.wave_challenges.decide(str(proposal.token), true, manager.player, manager.finance_system) and manager.player.get_stat("enemy_spawn_rate_percent") == 20, "duplicate acceptance cannot grant the stat twice")
 	var principal := manager.finance_system.principal
 	flow.finish_current_wave()
 	await frames(18)
 	check(manager.finance_system.principal == principal + 150, "survival pays 150 once")
 	manager.process_wave_end_settlements()
-	check(manager.finance_system.principal == principal + 150 and manager.wave_challenges.spawn_frequency_bonus == 0.2, "reward is idempotent and frequency survives settlement")
+	check(manager.finance_system.principal == principal + 150 and manager.player.get_stat("enemy_spawn_rate_percent") == 20, "reward is idempotent and count stat survives settlement")
 	var c := manager.wave_challenges
 	c.pressure = {"comfortable": true}
 	var repeated := c.prepare(3, {}, {"remaining_waves": 3})
 	check(str(repeated.get("id", "")) == "business_expansion" and c.decide(str(repeated.token), true, manager.player, manager.finance_system), "second expansion in the same run can be offered and accepted")
-	check(is_equal_approx(c.spawn_frequency_bonus, 0.4), "repeated expansion adds another twenty percentage points")
+	check(manager.player.get_stat("enemy_spawn_rate_percent") == 40, "repeated expansion adds another twenty percentage points")
+	manager.player.add_runtime_modifier({"id": "expansion_camp_fixture", "source_type": "camp", "source_id": "spawn_count_fixture",
+		"target_scope": "player", "stat": "enemy_spawn_rate_percent", "operation": "add_flat", "value": 2, "duration": -1, "stack_rule": "unique"})
+	check(manager.player.get_stat("enemy_spawn_rate_percent") == 42 and is_equal_approx(manager.calculate_enemy_spawn_count(6), 1.42), "challenge and camp count modifiers add on the same player stat")
 	var repeated_principal := manager.finance_system.principal
 	c.settle_wave(3, manager.player, manager.finance_system)
 	c.settle_wave(3, manager.player, manager.finance_system)
 	check(manager.finance_system.principal == repeated_principal + 150, "second expansion pays its own survival reward only once")
+	var declined := c.prepare(4, {}, {"remaining_waves": 3})
+	check(c.decide(str(declined.token), false, manager.player, manager.finance_system) and manager.player.get_stat("enemy_spawn_rate_percent") == 42, "declining expansion grants no additional stat")
+	var failed := c.prepare(5, {}, {"remaining_waves": 3})
+	check(c.decide(str(failed.token), true, manager.player, manager.finance_system), "accept expansion before failed survival")
+	var before_death := manager.finance_system.principal
+	manager.player.current_hp = 0
+	manager.player.alive = false
+	c.settle_wave(5, manager.player, manager.finance_system)
+	c.settle_wave(5, manager.player, manager.finance_system)
+	check(manager.finance_system.principal == before_death, "failed survival cannot grant principal or claim it again")
 
 
 func _test_gold() -> void:
 	var proposal := await offer("fleeting_fortune")
+	check(manager.player.get_stat("enemy_spawn_rate_percent") == 0, "new run clears prior challenge and camp fixture count modifiers")
 	if str(proposal.get("id", "")) != "fleeting_fortune": return
 	await offer_captures("02_fortune_offer")
 	await click(ui.presentation._yes)

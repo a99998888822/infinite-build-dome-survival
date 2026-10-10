@@ -1,4 +1,5 @@
 keys,zh_CN,en
+combat.super_armor,霸体,Super Armor
 combat.tag.area,范围,Area
 combat.tag.cone,扇形,Cone
 combat.tag.melee,近战,Melee
@@ -60,13 +61,13 @@ stat.category.movement,移动,Movement
 stat.category.projectiles,投射物,Projectiles
 stat.category.survival,生存,Survival
 stat.category.waves,波次,Waves
-stat.control_strength.description,影响减速、定身等控制效果强度。,Affects control effects such as slows and roots.
+stat.control_strength.description,所有软控、硬控持续时间乘以（1 + 控制强度 / 100），再受敌人控制抗性修正；保留雷电连锁目标数加成。,"Multiplies all soft and hard crowd-control durations by (1 + Control Strength / 100), before enemy resistance. Retains the bonus to lightning chain targets."
 stat.control_strength.name,控制强度,Control Strength
 stat.crit_chance.description,攻击造成暴击的概率。,Chance for an attack to critically hit.
 stat.crit_chance.name,暴击率,Crit Chance
 stat.crit_damage.description,暴击时的伤害百分比，150表示造成150%伤害。,Damage percentage on a critical hit. 150 means 150% damage.
 stat.crit_damage.name,暴击伤害,Crit Damage
-stat.currency_bonus.description,局内或结算货币获取百分比加成。,Percentage bonus to currency earned during a run or at settlement.
+stat.currency_bonus.description,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Camp Coins."
 stat.currency_bonus.name,货币获取加成,Gold Gain
 stat.damage.name,伤害,Damage
 stat.damage_area.description,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.
@@ -75,7 +76,7 @@ stat.damage_bonus.description,通用伤害百分比加成，影响近战、远�
 stat.damage_bonus.name,伤害加成,Damage Bonus
 stat.damage_taken.description,最终承受伤害百分比，整数100表示承受100%伤害，89表示承受89%伤害。,Final percentage of incoming damage taken. 100 means 100% damage; 89 means 89%.
 stat.damage_taken.name,受到伤害百分比,Damage Taken
-stat.divinity.description,影响怪物的数量和强度,Affects the number and strength of enemies.
+stat.divinity.description,波初读取侵蚀度，增强怪物属性并增加精英配额；普通刷怪数量乘以（1 + 非负侵蚀度 / 100），小数余量跨批累计，不改变刷新间隔。,"Snapshots Corruption at wave start to strengthen enemies and raise the elite quota. Regular spawn counts are multiplied by (1 + nonnegative Corruption / 100), carrying fractional remainders between batches without changing spawn intervals."
 stat.divinity.name,侵蚀度,Corruption
 stat.divinity.short_name,侵蚀,Corruption
 stat.drop_rate.description,局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。,Bonus to drop chances. Enchantment drops have diminishing returns: positive bonuses increase the rate by up to 40%; negative bonuses reduce it by up to 75%. Other drops use percentage scaling.
@@ -113,7 +114,7 @@ stat.move_speed.name,移动速度,Move Speed
 stat.move_speed.short_name,移速,Speed
 stat.pickup_range.description,自动吸附经验球、奖励物的半径。,Radius for automatically collecting XP and reward pickups.
 stat.pickup_range.name,拾取范围,Pickup Range
-stat.principal.description,每波开始前可存入或取出的局内金币本金。,Run gold deposited as principal. May be deposited or withdrawn before each wave.
+stat.principal.description,仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。,"Only determines starting principal. Deposits, withdrawals and rewards independently change the live principal balance."
 stat.principal.name,理财,Bank
 stat.principal.short_name,本金,Principal
 stat.projectile_count.description,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
@@ -122,7 +123,7 @@ stat.ranged_damage.description,远程伤害固定数值加成。,Flat bonus to r
 stat.ranged_damage.name,远程伤害,Ranged Damage
 stat.revive_count.description,本局额外复活次数；复活后消耗 1 次。,Additional revives this run. One charge is consumed per revival.
 stat.revive_count.name,额外复活,Extra Revives
-stat.shield.description,优先承受伤害的护盾值。,Absorbs damage before health.
+stat.shield.description,每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,"Initial Shield at each wave start, read from the current stat. Absorbs damage before health."
 stat.shield.name,护盾,Shield
 stat.shield_regen.description,每秒恢复护盾，优先补满已有上限；溢出部分使当前护盾与上限一起增长。,"Restores shield each second, filling existing capacity first. Excess restoration increases both current shield and capacity."
 stat.shield_regen.name,每秒护盾,Shield Regen/s
@@ -130,3 +131,5 @@ stat.shop_choices.description,共享奖励和局内商店的候选数量加成�
 stat.shop_choices.name,商店选择数量加成,Extra Shop Offers
 stat.shop_discount.description,局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。,Shop price discount. 10 means prices are 10% lower; negative values raise prices. Multiple sources multiply sequentially.
 stat.shop_discount.name,商店折扣,Shop Discount
+ui.combat.reaction.thunder_fire,雷火爆燃,Thunderfire
+ui.combat.reaction.conduct,导电,Conduct
