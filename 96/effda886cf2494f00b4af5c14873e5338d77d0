@@ -1,0 +1,73 @@
+artifacts/editable/index.json
+  s_92c0598951b137::t_20cb13dfdcef71 2160
+assets/ui/main_menu/README.md
+  s_b67da42b8c17fa::t_b263c5e6bb26a8 29
+data_config/goblin_trades.json
+  s_2441ad77303cd9::t_51c6d747b99622 3,6,8-10
+docs/main/checklist/finance_layout_trade_check_2026-10-03.md
+  s_ce78724a40e500::t_99a93d450a957d 1-20
+docs/main/checklist/goblin_trades_2026-09-27.md
+  s_ce78724a40e500::t_c217ca25c02269 33,37-41,48-51
+scenes/tests/finance_scene_regression_test.tscn
+  s_ce78724a40e500::t_64be882ba66892 1-6
+scripts/core/main_flow_coordinator.gd
+  s_2441ad77303cd9::t_300bd9dd4c3761 1174
+scripts/rewards/goblin_trade_system.gd
+  s_2441ad77303cd9::t_6c40d978f4e7a2 103-106,108-109
+scripts/tests/finance_scene_regression_test.gd
+  s_bd4b72de95f508::t_db6ed0ce70033d 1-160
+scripts/tests/finance_scene_regression_test.gd.uid
+  s_ce78724a40e500::t_9b6c0e39ec5f4e 1
+scripts/tests/goblin_trade_test.gd
+  s_bd4b72de95f508::t_ea4ae1d5744866 81-82,84,104-155
+scripts/ui/finance_scene_layout.gd
+  s_92c0598951b137::t_6b878fb55af7cc 54-55,62-64,66,68,77-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "96effda886cf2494f00b4af5c14873e5338d77d0",
+  "prompts": {},
+  "sessions": {
+    "s_2441ad77303cd9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ff2-1243-76b2-90ae-d1047c42ed07",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_92c0598951b137": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a109c9-f1be-7770-8685-f811764dfea1",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b67da42b8c17fa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0fd2e-a37f-7881-bcbf-6e5996e74851",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bd4b72de95f508": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11b7e-b5be-7cc1-83b4-7f5ccaada02f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_ce78724a40e500": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0fd2b-fdbe-71d2-91e8-659b3c6444db",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
