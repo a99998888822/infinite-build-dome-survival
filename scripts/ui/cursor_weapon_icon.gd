@@ -36,7 +36,7 @@ func update_weapon(source: WeaponInstance, aiming: bool, ready_to_cast: bool) ->
 	if weapon != source or _icon_path != path:
 		weapon = source
 		_icon_path = path
-		icon.texture = load(path) if not path.is_empty() else null
+		ItemIconArt.bind_texture(icon, load(path) if not path.is_empty() else null)
 	_frame.border_color = INDICATOR_STYLE.EDGE if ready_to_cast else INDICATOR_STYLE.LOCKED_EDGE
 	_frame.bg_color = Color("273335f0")
 	_frame.set_border_width_all(3 if aiming else 2)

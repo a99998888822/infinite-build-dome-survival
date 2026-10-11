@@ -9,6 +9,10 @@ error.bank.enchantment_configuration,无法配置：请检查武器空槽和附�
 error.bank.enchantment_equipped,已装备的附魔需要先卸下。,Unequip this enchantment before selling.
 error.bank.enchantment_incompatible,此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,This weapon cannot use that enchantment. The Cast-Iron Grenade Launcher does not currently support Pierce.
 error.bank.insufficient_gold,金币不足,Not enough gold
+error.bank.insufficient_principal,本金不足,Not enough principal
+error.bank.specialization_effect_blocked,专精属性无法生效，未扣除本金。,Specialization could not be applied. No principal was spent.
+error.bank.specialization_expired,本次专精报价已失效，请重新选择。,This specialization offer has expired. Select again.
+log.finance.specialization_purchased,购买「%s」：支付 %d 本金，剩余 %d。,Purchased %s for %d principal. Remaining: %d.
 error.bank.insufficient_load,武器负载不足,Insufficient load capacity
 error.bank.invalid_amount,请输入大于 0 的整数。,Enter a whole number greater than 0.
 error.bank.item_missing,物品已不存在，请重新选择。,This item no longer exists. Select again.

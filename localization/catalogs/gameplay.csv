@@ -45,7 +45,7 @@ rarity.legendary,传说,Legendary
 rarity.mythic,神话,Mythic
 rarity.rare,稀有,Rare
 rarity.uncommon,优秀,Uncommon
-stat.armor.description,通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,Converted to damage taken through an armor curve. Positive armor reduces damage; negative armor increases it.
+stat.armor.description,100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。,100 armor reduces damage by 25%; 300 armor reduces it by 50%. Damage reduction is capped at 95%. Armor only reduces health damage and does not protect shields. Negative armor increases damage taken.
 stat.armor.name,护甲,Armor
 stat.attack_range.description,影响武器的攻击距离与索敌距离。,Affects weapon reach and targeting range.
 stat.attack_range.name,攻击距离,Attack Range

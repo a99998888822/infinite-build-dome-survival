@@ -98,3 +98,9 @@
 - [16 项正式素材抽帧核对图](D:/project/useless/resources/infinite-build-dome-survival/artifacts/analysis/ground_projection_audit_20261010/asset_contact_sheet.png)：不是实机截图；按有关显示纵横比例展示，图块未统一为游戏大小，秘仪领域符文仅在检查图中提高了透明度。
 - [抽帧来源与可见范围](D:/project/useless/resources/infinite-build-dome-survival/artifacts/analysis/ground_projection_audit_20261010/asset_samples.json)。可见范围只作辅助证据，不能代替地面主体轮廓判断。
 - [12 张水波图集的 372 帧范围统计](D:/project/useless/resources/infinite-build-dome-survival/artifacts/analysis/ground_projection_audit_20261010/water_frame_bounds.json)。
+
+## 9. 指定 10 处的 R05 实机审阅（2026-10-10）
+
+已按用户指定实现本清单中的 10 处地面椭圆候选，统一采用 145∶220 投影。当前审阅开关默认关闭，正式战斗仍保留此前表现。实现与主战斗截图见 [R05 审阅记录](D:/project/useless/resources/infinite-build-dome-survival/artifacts/previews/ground_projection_r05_20261010/README.md)。
+
+本轮只修改视觉；冥狼跳扑伤害是否同步改为椭圆已向用户询问，尚待确定。保留已有椭圆素材、竖向效果、方形粒子尺寸和五类未指定扇形。

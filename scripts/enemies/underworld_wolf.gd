@@ -6,6 +6,7 @@ static var FRAME_TRANSFORMS: Dictionary = FRAMES.get_meta("frame_transforms")
 static var SEQUENCES: Dictionary = FRAMES.get_meta("animation_sequences")
 const GHOST_FLAME = preload("res://scripts/enemies/underworld_wolf_flame.gd")
 const KNOCKBACK = preload("res://scripts/player/enemy_knockback.gd")
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 
 var profile: Dictionary
 var state := "spawn"
@@ -325,7 +326,7 @@ func draw_ground(canvas: Node2D) -> void:
 	canvas.draw_circle(Vector2.ZERO, 33.6, Color(0.02,0.04,0.08,0.28))
 	canvas.draw_set_transform(Vector2.ZERO)
 	if state == "spawn":
-		canvas.draw_arc(Vector2.ZERO,36,0,TAU,64,Color(0.5,0.85,1,0.55),2)
+		GROUND.arc(canvas,Vector2.ZERO,36,0,TAU,64,Color(0.5,0.85,1,0.55),2)
 	if state in ["breath_charge","breath"]:
 		canvas.draw_set_transform(breath_origin-global_position,breath_direction.angle())
 		canvas.draw_colored_polygon(breath_polygon,Color(1,0.19,0.13,0.12 if state == "breath_charge" else 0.04))
@@ -342,17 +343,17 @@ func draw_ground(canvas: Node2D) -> void:
 		var radius := float(profile.leap_radius)
 		var progress := clampf(state_time / float(profile.leap_charge),0,1)
 		if state == "leap": progress = 1
-		canvas.draw_circle(center,radius,Color(1,0.19,0.13,0.12))
-		canvas.draw_arc(center,radius,0,TAU,80,Color(1,0.38,0.26,0.78),1.5)
-		canvas.draw_arc(center,radius+4,-PI*.5,-PI*.5+TAU*progress,80,Color(1,0.75,0.45,0.95),2)
+		GROUND.disk(canvas,center,radius,Color(1,0.19,0.13,0.12))
+		GROUND.arc(canvas,center,radius,0,TAU,80,Color(1,0.38,0.26,0.78),1.5)
+		GROUND.arc(canvas,center,radius+4,-PI*.5,-PI*.5+TAU*progress,80,Color(1,0.75,0.45,0.95),2)
 		for offset in [Vector2(-7,0),Vector2(0,-7)]:
 			canvas.draw_line(center+offset,center-offset,Color(1,0.55,0.4,0.8),1)
 	if impact_time > 0:
 		var radius := float(profile.leap_radius)
 		var progress := 1.0-impact_time/0.3
-		canvas.draw_arc(Vector2.ZERO,radius*(0.7+progress*.3),0,TAU,64,Color(0.45,0.9,1,1-progress),3)
+		GROUND.arc(canvas,Vector2.ZERO,radius*(0.7+progress*.3),0,TAU,64,Color(0.45,0.9,1,1-progress),3)
 		for i in 12:
-			var pos := Vector2.from_angle(i*TAU/12)*(radius*(0.6+progress*.5))
+			var pos := Vector2.from_angle(i*TAU/12)*(radius*(0.6+progress*.5)) * GROUND.axes()
 			canvas.draw_rect(Rect2(pos-Vector2(2,2),Vector2(4,4)),Color(0.5,0.9,1,1-progress))
 
 

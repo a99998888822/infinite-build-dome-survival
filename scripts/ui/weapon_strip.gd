@@ -1,6 +1,8 @@
 extends Control
 class_name WeaponStrip
 
+signal minimum_height_changed
+
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
 const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 
@@ -33,6 +35,7 @@ func _ready() -> void:
 	add_child(_cast_mode_layer)
 	resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
 	if weapon_list != null:
+		weapon_list.minimum_size_changed.connect(func(): minimum_height_changed.emit())
 		weapon_list.sort_children.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
 		var scroll := weapon_list.get_parent() as ScrollContainer
 		scroll.resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
@@ -99,6 +102,7 @@ func _refresh_weapon_strip() -> void:
 				button.expand_icon = true
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				button.add_theme_constant_override("icon_max_width", 34)
+				ItemIconArt.bind_button(button, texture, 32.0)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
 		weapon_list.add_child(button)
@@ -111,6 +115,11 @@ func _refresh_weapon_strip() -> void:
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
 	_layout_cast_mode_icons.call_deferred()
+
+
+func get_required_height() -> float:
+	# Panel borders (4) + vertical margins (8), including the complete icon row.
+	return weapon_list.get_combined_minimum_size().y + 12.0 if weapon_list != null else 62.0
 
 
 func _layout_cast_mode_icons() -> void:

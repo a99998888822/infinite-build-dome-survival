@@ -1,9 +1,8 @@
 extends Node2D
-## V02 resistance feedback; draws over the sprite without owning its material.
+## Outline and caption follow the actual immunity clock, never a refreshable hit timer.
 const OUTLINE = preload("res://assets/shaders/enemy_super_armor.gdshader")
 const FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
-const DURATION := 2.0
-const TEXT_DURATION := 0.8
+const TEXT_DURATION := 1.0
 
 var enemy: Node2D
 var outline: Sprite2D
@@ -45,11 +44,12 @@ func _ready() -> void:
 
 
 func pulse() -> void:
-	if remaining <= 0.0:
-		elapsed = 0.0
-		pulses += 1
-		caption.text = L10n.text("combat.super_armor")
-	remaining = DURATION
+	if not enemy.is_control_immune() or remaining > 0.0:
+		return
+	elapsed = 0.0
+	pulses += 1
+	caption.text = L10n.text("combat.super_armor")
+	remaining = enemy._super_armor_remaining
 	show()
 	set_process(true)
 	_sync()
@@ -62,14 +62,14 @@ func clear() -> void:
 	set_process(false)
 
 
-func _process(delta: float) -> void:
-	if not is_instance_valid(enemy) or not enemy.is_alive():
+func _process(_delta: float) -> void:
+	if not is_instance_valid(enemy) or not enemy.is_control_immune():
 		clear()
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	elapsed += delta
-	remaining = maxf(0.0, remaining - delta)
+	remaining = enemy._super_armor_remaining
+	elapsed = enemy.SUPER_ARMOR_SECONDS - remaining
 	if remaining <= 0.0:
 		clear()
 		return

@@ -85,6 +85,7 @@ Innate trait. Starting rewards are granted once and cannot be removed."
 %s：本金 +%d（当前 %d）,%s：本金 +%d（当前 %d）,%s: principal +%d (now %d)
 +%d 利息,+%d 利息,+%d interest
 +0 利息,+0 利息,+0 interest
+100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。,100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。,100 armor reduces damage by 25%; 300 armor reduces it by 50%. Damage reduction is capped at 95%. Armor only reduces health damage and does not protect shields. Negative armor increases damage taken.
 BOSS掉落表,BOSS掉落表,Boss Loot Table
 Esc 武器栏：逐个选择自动或手动,Esc 武器栏：逐个选择自动或手动,Esc inventory: choose auto or manual
 FPS %d   怪物 %d   粒子 %d,FPS %d   怪物 %d   粒子 %d,FPS %d   Enemies %d   Particles %d
@@ -125,6 +126,7 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 ● 否,● 否,● No
 ● 是,● 是,● Yes
 ⛓ %s：未收息（条件未满足）,⛓ %s：未收息（条件未满足）,⛓ %s: no interest (requirement not met)
+✓ 已选择,✓ 已选择,✓ Selected
 ✦ %s：+%d 金币（利率 %.1f%%）,✦ %s：+%d 金币（利率 %.1f%%）,✦ %s: +%d gold (rate %.1f%%)
 ⬅ 返回,⬅ 返回,⬅ Back
 一次性还清 %d 金币,一次性还清 %d 金币,Repay all: %d gold
@@ -150,6 +152,10 @@ Gain an extra +100 Principal and +10 Luck."
 下波归还,下波归还,Repay Next Wave
 下波结束结算,下波结束结算,Settles at next wave end
 不可购买,不可购买,Unavailable
+专精 · 可选,专精 · 可选,Spec · Available
+专精 · 已购,专精 · 已购,Spec · Purchased
+专精属性无法生效，未扣除本金。,专精属性无法生效，未扣除本金。,Specialization could not be applied. No principal was spent.
+专精本局生效，可继续购买或附魔。,专精本局生效，可继续购买或附魔。,Active for this run. You may continue shopping or enchanting.
 丰收的牺牲祭器,丰收的牺牲祭器,Harvest Sacrificial Vessel
 主动,主动,manual
 也可以使用 WASD 移动,也可以使用 WASD 移动,You can also move with WASD
@@ -177,6 +183,7 @@ They return on your next visit."
 传单广告,传单广告,Advertising Flyer
 传说,传说,Legendary
 伤害,伤害,Damage
+伤害专精,伤害专精,Damage
 伤害加成,伤害加成,Damage Bonus
 伤害次数 [color=#7FD88F]+1[/color],伤害次数 [color=#7FD88F]+1[/color],Damage ticks [color=#7FD88F]+1[/color]
 伤害范围,伤害范围,Damage Area
@@ -184,7 +191,7 @@ They return on your next visit."
 伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。,伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.
 伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.
 伤害范围 +30，伤害加成 +15，攻击速度 −6。,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
-伤害范围 +40，元素伤害 +8，理智值 −15。,元素伤害 +9；理智值 -2；伤害范围 +12,Elemental Damage +9; Sanity -2; Damage Area +12
+伤害范围 +40，元素伤害 +8，理智值 −15。,元素伤害 +9；理智值 -5；伤害范围 +12,Elemental Damage +9; Sanity -5; Damage Area +12
 伤害范围+30,伤害范围+30,Damage Area +30
 伤害范围训练,伤害范围训练,Damage Area Training
 位移,位移,Mobility
@@ -211,7 +218,7 @@ They return on your next visit."
 借 %d,借 %d,Borrow %d
 元素,元素,Elemental
 元素伤害,元素伤害,Elemental Damage
-元素伤害 +9；理智值 -2；伤害范围 +12,元素伤害 +9；理智值 -2；伤害范围 +12,Elemental Damage +9; Sanity -2; Damage Area +12
+元素伤害 +9；理智值 -5；伤害范围 +12,元素伤害 +9；理智值 -5；伤害范围 +12,Elemental Damage +9; Sanity -5; Damage Area +12
 元素伤害增加30%,元素伤害增加30%,Elemental Damage +30%
 元素伤害训练,元素伤害训练,Elemental Damage Training
 "元素基础伤害 [color=#7FD88F]+1[/color]
@@ -298,8 +305,10 @@ Base resale value %d; Sanity loss %d."
 利息自动加入随身金币，本金保持不变。,利息自动加入随身金币，本金保持不变。,Interest is added to carried gold; principal is unchanged.
 利率,利率,Interest Rate
 利率 + 1.5%,利率 + 1.5%,Interest Rate +1.5%
-利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.5 per full 5 Corruption. Corruption +1 at each wave start. Stack limit: 1 per run."
-利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −3 at each wave end. Stack limit: 1 per run.
+利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
+利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
+利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −1 at each wave end. Stack limit: 1 per run.
+利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −1 at each wave end. Stack limit: 1 per run.
 利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
 利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
 利率+3%，每回合理智-1。,利率+3%，每回合理智-1。,Interest Rate +3%. Sanity −1 each wave.
@@ -414,6 +423,8 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 增益,增益,Buff
 处理完开局奖励后，将自动显示操作指引。,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
 复利宝典,复利宝典,Tome of Compound Interest
+复活专精,复活专精,Revival
+复活次数,复活次数,Revives
 多投,多投,Multishot
 多来几个大家伙而已，你不会连这点钱都不敢赚吧？,多来几个大家伙而已，你不会连这点钱都不敢赚吧？,Just a few more big ones. Surely you're not afraid of easy money?
 大力,大力,Mighty
@@ -464,9 +475,11 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 已应用的营地成长,已应用的营地成长,Applied camp bonuses
 已拥有此武器,已拥有此武器,Weapon already owned
 已接受,已接受,Accepted
+已支付 %d 本金 · 剩余 %d,已支付 %d 本金 · 剩余 %d,Paid %d principal · Remaining %d
 已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。,已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。,"Automatically triggers when other revives are exhausted. Costs %d principal, then restores %s%% of max HP calculated after payment. Adds no carried gold and does not use a bank action."
 已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,"After all other Revives are spent, if Principal is at least 1,000, lethal damage consumes 500 Principal and restores 50% of your Max HP after payment. Triggers once per run. Stack limit: 1."
 已结算,已结算,Reward saved
+已获得,已获得,Obtained
 已装备的附魔需要先卸下。,已装备的附魔需要先卸下。,Unequip this enchantment before selling.
 已解锁,已解锁,Unlocked
 已解锁 %d 项,已解锁 %d 项,Unlocked: %d
@@ -482,13 +495,16 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。,Survivors gather beneath ancient totems to exchange relic-combination tactics.
 幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,"A training ground where survivors hone close combat, learning to wield body and blade as one."
 幸运,幸运,Luck
-幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,Luck +150; Experience Gain +35%. Sanity can no longer recover. Corruption +1 at each wave end. Stack limit: 1 per run.
+幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,Luck +128; Experience Gain +35%. Sanity can no longer recover. Corruption +4 at each wave end. Stack limit: 1 per run.
+幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,Luck +128; Experience Gain +35%. Sanity can no longer recover. Corruption +4 at each wave end. Stack limit: 1 per run.
 幸运 + 18；掉落率 + 5,幸运 + 18；掉落率 + 5,Luck +18; Drop Rate +5
 幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +36; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
 幸运 + 36；理智值 - 3,幸运 + 36；理智值 - 3,Luck +36; Sanity −3
 幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,Luck +36; Experience Gain +12; Drop Rate +12; Sanity −5
-幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +5
-幸运 + 84；侵蚀度 + 10,幸运 + 84；侵蚀度 + 10,Luck +84; Corruption +10
+幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +25
+幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +25
+幸运 + 64；侵蚀度 + 12,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
+幸运 + 84；侵蚀度 + 10,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
 幸运+20,幸运+20,Luck +20
 幽焰冥狼,幽焰冥狼,Ghostflame Wolf
 幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,"A miniboss with blue spectral bone markings and a flaming tail. Shares the miniboss spawn quota with the Ironclad Knight at equal odds. Marks a landing point, leaps into a ground slam, then quickly returns to idle. A cone warns of its blue flame breath, which can hit up to 3 times per cast. Both the slam and flames knock the player back."
@@ -520,6 +536,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 不足不扣款，按合同利率计复利。","Currently due: %d gold. Your wallet is checked after all interest at the end of wave %d.
 No partial payment is taken. Unpaid debt compounds at the contract rate."
 当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。,当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。,"Current effective interest rate, starting at 5. Supports fractional growth. Nominal interest is ceil(principal × rate / 100), then adjusted by Sanity. Interest goes to carried gold, not automatically to principal."
+当前本金 %d · 需要 %d · 还差 %d,当前本金 %d · 需要 %d · 还差 %d,Principal %d · Cost %d · Shortfall %d
 当前武器没有空槽，可将背包附魔拖到已有槽位进行替换。,当前武器没有空槽，可将背包附魔拖到已有槽位进行替换。,This weapon has no empty slots. Drag an inventory enchantment onto an occupied slot to replace it.
 当前没有可购买的史诗遗物，强力刷新资格已保留。,当前没有可购买的史诗遗物，强力刷新资格已保留。,No Epic relic is currently available. Your Power Reroll has been retained.
 当前没有需要偿还的贷款。,当前没有需要偿还的贷款。,There is no outstanding loan.
@@ -542,9 +559,13 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 怪物频率 +20%，存活后本金 +150,怪物频率 +20%，存活后本金 +150,Monster frequency +20%; survive to gain 150 principal.
 总杀敌数,总杀敌数,Enemies Defeated
 恶意收购,恶意收购,Hostile Takeover
+成长专精,成长专精,Growth
 我给你的，外面可买不到。,我给你的，外面可买不到。,You won't find what I'm offering anywhere else.
 战地急救训练,战地急救训练,Field Medicine Training
 战斗 +%d　│　利息 +%d 金币,战斗 +%d　│　利息 +%d 金币,Combat +%d  │  Interest +%d gold
+战斗专精,战斗专精,Battle Specialization
+战斗专精 · 可选,战斗专精 · 可选,Specialization · Available
+战斗专精 · 已购,战斗专精 · 已购,Specialization · Purchased
 战斗操作,战斗操作,Combat Controls
 战斗获得 %d 金币%s,战斗获得 %d 金币%s,Combat earnings: %d gold%s
 战斗设置,战斗设置,Combat
@@ -564,6 +585,7 @@ Choose the controls you prefer. This guide does not change your settings."
 扩容背包束带,扩容背包束带,Expanded Backpack Straps
 扩散喷口,扩散喷口,Diffusion Nozzle
 把他解决了，我们之间的账就好商量了。,把他解决了，我们之间的账就好商量了。,Deal with him and we can talk about what you owe me.
+投射专精,投射专精,Projectiles
 投射物,投射物,Projectiles
 投射物命中目标后仍可继续飞行，额外命中2个敌人,投射物命中目标后仍可继续飞行，额外命中2个敌人,"Projectiles continue after impact, hitting 2 additional enemies."
 投射物数量,投射物数量,Projectile Count
@@ -575,9 +597,12 @@ Choose the controls you prefer. This guide does not change your settings."
 抛射榴弹，%.2f秒后在落点爆炸。,抛射榴弹，%.2f秒后在落点爆炸。,Lobs a grenade that explodes after %.2f seconds.
 护甲,护甲,Armor
 护甲 + 10；最大生命值 + 3,护甲 +8；最大生命 +2；近战伤害 +2,Armor +8; Max HP +2; Melee Damage +2
-护甲 + 15；每点侵蚀度提供 1 点护甲,护甲 + 15；每点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per point of Corruption
-护甲 + 30；侵蚀度 + 5,护甲 + 30；侵蚀度 + 5,Armor +30; Corruption +5
-护甲 + 8；理智值 + 2,护甲 + 8；理智值 + 2,Armor +8; Sanity +2
+护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per full 2 Corruption
+护甲 + 15；每点侵蚀度提供 1 点护甲,护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per full 2 Corruption
+护甲 + 30；侵蚀度 + 12,护甲 + 30；侵蚀度 + 12,Armor +30; Corruption +12
+护甲 + 30；侵蚀度 + 5,护甲 + 30；侵蚀度 + 12,Armor +30; Corruption +12
+护甲 + 8；理智值 + 2,护甲 + 8；理智值 + 3,Armor +8; Sanity +3
+护甲 + 8；理智值 + 3,护甲 + 8；理智值 + 3,Armor +8; Sanity +3
 护甲 + 8；移动速度 - 5,护甲 +6；近战伤害 +1,Armor +6; Melee Damage +1
 护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成,护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成,Armor +12; Movement Speed +18. The +18 speed bonus is disabled below 60 Sanity.
 护甲 +20；最大生命 +4；近战伤害 +5,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
@@ -626,14 +651,17 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。,波初读取侵蚀度，增强怪物属性并增加精英配额；普通刷怪数量乘以（1 + 非负侵蚀度 / 100），小数余量跨批累计，不改变刷新间隔。,"Snapshots Corruption at wave start to strengthen enemies and raise the elite quota. Regular spawn counts are multiplied by (1 + nonnegative Corruption / 100), carrying fractional remainders between batches without changing spawn intervals."
 搜索名称或效果,搜索名称或效果,Search names or effects
 操作失败  请重试,操作失败  请重试,Action failed. Please try again.
+操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
 操作指引 · 静态示意 · 战斗已暂停,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
 操作未成功，请重试。,操作未成功，请重试。,Operation failed. Please try again.
 操作正在处理。,操作正在处理。,Operation in progress.
 收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,Stores strange objects brought back by survivors. Each new relic helps them understand their enemies.
 攻击,攻击,Attack
+攻击专精,攻击专精,Attack
 攻击距离,攻击距离,Attack Range
 攻击距离 +15，远程伤害 +1。,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
-攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。,攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。,Attack Range +25; Damage Area +25; Damage Bonus +20; Corruption +5.
+攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
+攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
 攻击距离 +35，远程伤害 +3，攻击速度 −8。,攻击距离 +35，远程伤害 +3，攻击速度 −8。,Attack Range +35; Ranged Damage +3; Attack Speed −8.
 攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。,攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。,Attack Range +40; Damage Bonus +30. Every full 10 points of positive Attack Range bonus grants another +5 Damage Area.
 攻击距离训练,攻击距离训练,Attack Range Training
@@ -684,9 +712,11 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 最基础的近战追踪小怪示例。,最基础的近战追踪小怪示例。,A basic melee enemy that pursues the player.
 最大生命,最大生命,Max HP
 最大生命 +4；护甲 +12；近战伤害 +3,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
-最大生命值 + 10；护甲 + 5；理智值 + 2,最大生命值 + 10；护甲 + 5；理智值 + 2,Max HP +10; Armor +5; Sanity +2
+最大生命值 + 10；护甲 + 5；理智值 + 2,最大生命值 + 10；护甲 + 5；理智值 + 3,Max HP +10; Armor +5; Sanity +3
+最大生命值 + 10；护甲 + 5；理智值 + 3,最大生命值 + 10；护甲 + 5；理智值 + 3,Max HP +10; Armor +5; Sanity +3
 最大生命值 + 12；护甲 + 8；移动速度 - 15,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
-最大生命值 + 3；移动速度 + 10；理智值 - 5,最大生命值 + 3；移动速度 + 10；理智值 - 5,Max HP +3; Movement Speed +10; Sanity −5
+最大生命值 + 3；移动速度 + 10；理智值 - 3,最大生命值 + 3；移动速度 + 10；理智值 - 3,Max HP +3; Movement Speed +10; Sanity −3
+最大生命值 + 3；移动速度 + 10；理智值 - 5,最大生命值 + 3；移动速度 + 10；理智值 - 3,Max HP +3; Movement Speed +10; Sanity −3
 最大生命值 + 4,最大生命值 + 4,Max HP +4
 最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
 最大生命训练,最大生命训练,Max HP Training
@@ -709,8 +739,13 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 本局已使用,本局已使用,Used this run
 本局暂无经济记录。,本局暂无经济记录。,No economic activity this run yet.
 本局额外复活次数；复活后消耗 1 次。,本局额外复活次数；复活后消耗 1 次。,Additional revives this run. One charge is consumed per revival.
+本次专精报价已失效，请重新选择。,本次专精报价已失效，请重新选择。,This specialization offer has expired. Select again.
+本次已完成 · %s,本次已完成 · %s,Purchased · %s
+本次已购买,本次已购买,Purchased this visit
+本次报价保留，补足本金后可购买。,本次报价保留，补足本金后可购买。,Offer reserved. Add enough principal to purchase.
 本次未击败敌人,本次未击败敌人,No enemies defeated this run
 本次未结息,本次未结息,No interest this time
+本次未选,本次未选,Not chosen
 本次获得营地币,本次获得营地币,Camp Coins Earned
 本波利息 +%d 金币 · 已入随身金币,本波利息 +%d 金币 · 已入随身金币,Interest this wave: +%d gold · Added to carried gold
 本波利息 +%d，足够购买「%s」,本波利息 +%d，足够购买「%s」,"Interest +%d this wave, enough to buy %s"
@@ -724,10 +759,12 @@ Bank actions refresh next wave."
 本波没有利息结算记录。,本波没有利息结算记录。,No interest records this wave.
 本金,本金,Principal
 本金 %d,本金 %d,Principal %d
+本金 %d → %d,本金 %d → %d,Principal %d → %d
 本金 +%d · 幸运 +%d,本金 +%d · 幸运 +%d,Principal +%d · Luck +%d
 本金+%d，直接开始下一波。,本金+%d，直接开始下一波。,Principal +%d. Start the next wave immediately.
+本金不足,本金不足,Not enough principal
 本金不足（需%d）,本金不足（需%d）,Insufficient principal (requires %d)
-本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,"When Principal reaches zero, immediately gain Principal equal to twice your current gold and +1 Revive."
+本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
 本金赠予,本金赠予,Principal Grant
 本金：%d    ·    当前利率：%.1f%%,本金：%d    ·    当前利率：%.1f%%,Principal: %d    ·    Current rate: %.1f%%
 本金：%s,本金：%s,Principal: %s
@@ -769,9 +806,9 @@ Upgrade resale: %d"
 每 %d 只敌人折算 1 营地币。,每 %d 只敌人折算 1 营地币。,Every %d enemies defeated earns 1 Camp Coin.
 每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,"Every %d interest received earns 1 Camp Coin, capped at %d coins per completed wave."
 每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Camp Coin. Spending and deposits do not reduce this total.
-每 100 本金提供通用伤害加成 + 1%,每 100 本金提供通用伤害加成 + 1%,All damage +1% per 100 Principal
-每 50 本金 +1 护甲,每 50 本金 +1 护甲,Armor +1 per 50 Principal
-每 50 本金 +1 攻速,每 50 本金 +1 攻速,Attack Speed +1 per 50 Principal
+每 100 本金提供通用伤害加成 + 1%,每满100本金，通用伤害 +1%，上限30%；最多持有1件,"All Damage +1% per full 100 Principal, up to +30%. Stack limit: 1 per run."
+每 50 本金 +1 护甲,每满50本金，护甲 +1，上限40；最多持有1件,"Armor +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
+每 50 本金 +1 攻速,每满50本金，攻击速度 +1，上限40；最多持有1件,"Attack Speed +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
 每两秒生成 1 点护盾；侵蚀度 + 5,每秒护盾 +0.3；元素伤害 +3,Shield Regen +0.3/s; Elemental Damage +3
 每个回合结息次数 + 1；每局最多持有 1 件,每个回合结息次数 + 1；每局最多持有 1 件,One additional interest settlement per wave. Stack limit: 1 per run.
 "每发基础伤害 [color=#7FD88F]+2[/color]
@@ -787,22 +824,31 @@ Pellets [color=#7FD88F]+1[/color]"
 每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,Percentage increase in enemies per spawn group. 20 means 20% more.
 每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
 每次结算利息的时候有20%的概率翻倍,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
+每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
 每波初始护盾 +6；元素伤害 +2,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
 每波利息 %d%%,每波利息 %d%%,Interest: %d%% per wave
 每波利息 %s%%,每波利息 %s%%,Interest: %s%% per wave
 每波开始前可存入或取出的局内金币本金。,仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。,"Only determines starting principal. Deposits, withdrawals and rewards independently change the live principal balance."
-每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值,每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值,"Shield +20 at each wave start; Shield Regen/s +1. When your shield breaks, Corruption +1; if you survive the hit, restore 3 HP."
+每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
 每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,"Initial Shield at each wave start, read from the current stat. Absorbs damage before health."
 每波开始生成10点护盾,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
 每波开始自动本金 + 15,每波开始自动本金 + 15,Automatically gain +15 Principal at the start of each wave.
 每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件,每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件,Sanity +2 at each wave end; All Damage −8%. Stack limit: 1 per run.
 每满100本金，攻击距离＋3、伤害加成＋3%，上限30,远程伤害 +5；每满100本金，攻击距离 +3（上限30）、通用伤害 +1%（上限10%）,Ranged Damage +5; every full 100 Principal grants Attack Range +3 (up to +30) and Damage Bonus +1% (up to +10%).
-每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件,每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件,Max HP +1 per full 100 Principal. The bonus falls when Principal decreases; increasing Max HP does not heal you. Stack limit: 1 per run.
-每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件,每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件,Every full 500 Principal grants Gold Gain +10% and Sanity −2. Withdrawals remove the corresponding bonus and cost; Sanity recovery is still blocked by Candle of Rebirth's Hellfire. Stack limit: 1 per run.
+每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件,每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,"Max HP +1 per full 100 Principal, up to +20. Losing Principal removes the corresponding bonus; increasing Max HP does not heal. Stack limit: 1 per run."
+每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,"Max HP +1 per full 100 Principal, up to +20. Losing Principal removes the corresponding bonus; increasing Max HP does not heal. Stack limit: 1 per run."
+每满100本金，通用伤害 +1%，上限30%；最多持有1件,每满100本金，通用伤害 +1%，上限30%；最多持有1件,"All Damage +1% per full 100 Principal, up to +30%. Stack limit: 1 per run."
+每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件,每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,"For each full 500 Principal: Coin Gain +10% and Sanity -2, up to 5 tiers (+50% Coin Gain and -10 Sanity). Withdrawing Principal removes the corresponding bonus and cost; sanity recovery is still blocked by the Candle of Rebirth's Hellfire. Stack limit: 1 per run."
+每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,"For each full 500 Principal: Coin Gain +10% and Sanity -2, up to 5 tiers (+50% Coin Gain and -10 Sanity). Withdrawing Principal removes the corresponding bonus and cost; sanity recovery is still blocked by the Candle of Rebirth's Hellfire. Stack limit: 1 per run."
+每满50本金，护甲 +1，上限40；最多持有1件,每满50本金，护甲 +1，上限40；最多持有1件,"Armor +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
+每满50本金，攻击速度 +1，上限40；最多持有1件,每满50本金，攻击速度 +1，上限40；最多持有1件,"Attack Speed +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
 每秒回血,每秒回血,HP Regen/s
-每秒回血 + 0.1；理智值 + 1,每秒回血 + 0.1；理智值 + 1,HP Regen/s +0.1; Sanity +1
-每秒回血 + 0.25；每波过后，侵蚀度 + 1,每秒回血 + 0.25；每波过后，侵蚀度 + 1,HP Regen/s +0.25; Corruption +1 after each wave
-每秒回血 + 0.4；每波过后，理智值 - 1,每秒回血 + 0.4；每波过后，理智值 - 1,HP Regen/s +0.4; Sanity −1 after each wave
+每秒回血 + 0.1；理智值 + 1,每秒回血 + 0.1；理智值 + 2,HP Regen/s +0.1; Sanity +2
+每秒回血 + 0.1；理智值 + 2,每秒回血 + 0.1；理智值 + 2,HP Regen/s +0.1; Sanity +2
+每秒回血 + 0.25；侵蚀度 + 5,每秒回血 + 0.25；侵蚀度 + 5,HP Regen/s +0.25; Corruption +5
+每秒回血 + 0.25；每波过后，侵蚀度 + 1,每秒回血 + 0.25；侵蚀度 + 5,HP Regen/s +0.25; Corruption +5
+每秒回血 + 0.4；每波过后，理智值 - 1,每秒回血 + 0.4；理智值 - 8,HP Regen/s +0.4; Sanity −8
+每秒回血 + 0.4；理智值 - 8,每秒回血 + 0.4；理智值 - 8,HP Regen/s +0.4; Sanity −8
 每秒回血 + 0.6；最大生命值 - 1；理智值 - 3,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
 每秒回血 + 0.75；利率 - 1 个百分点,每秒回血 + 0.75；利率 - 1 个百分点,HP Regen/s +0.75; Interest Rate −1 percentage point
 每秒回血 +0.5；元素伤害 +4,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
@@ -851,6 +897,7 @@ Pellets [color=#7FD88F]+1[/color]"
 点击地面移动 · S 停止移动,点击地面移动 · S 停止移动,Click ground to move · S to stop
 点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 点击空白处 / 空格快进,点击空白处 / 空格快进,Click an empty area / Space to skip ahead
+点击选择,点击选择,Select
 燃烧伤害,燃烧伤害,Burn Damage
 燃烧引爆,燃烧引爆,Ignite Detonation
 燃烧时间,燃烧时间,Burn Duration
@@ -870,7 +917,8 @@ Pellets [color=#7FD88F]+1[/color]"
 理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,"Sanity %s: purchase prices +%s%%, sale proceeds −%s%%, interest income −%s%%."
 理智+%s，本金-%d,理智+%s，本金-%d,"Sanity +%s, principal -%d."
 理智值,理智值,Sanity
-理智值 + 10；幸运 - 5,理智值 + 10；幸运 - 5,Sanity +10; Luck −5
+理智值 + 10；幸运 - 5,理智值 + 12；幸运 - 5,Sanity +12; Luck −5
+理智值 + 12；幸运 - 5,理智值 + 12；幸运 - 5,Sanity +12; Luck −5
 理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,"Sanity starts at 100 and has no upper or lower bound. Below 100, purchases cost more and sale proceeds and interest decrease. At 100, prices and interest are normal."
 理智变化后价格已更新，请查看新价格再购买。,理智变化后价格已更新，请查看新价格再购买。,Prices changed with Sanity. Review the new price before purchasing.
 理智折损,理智折损,Sanity Loss
@@ -882,6 +930,7 @@ Pellets [color=#7FD88F]+1[/color]"
 生命值低于 50% 时，护甲 + 25,生命值低于 50% 时，护甲 + 25,Armor +25 while below 50% HP
 生命力药瓶,生命力药瓶,Vitality Vial
 生存,生存,Survival
+生存专精,生存专精,Survival
 生存防御类加成，平衡建筑,生存防御类加成，平衡建筑,Balanced survival and defensive bonuses
 生意好，就该把摊子铺大一点。,生意好，就该把摊子铺大一点。,Business is good. Time to expand.
 生成2个45%原伤害的子攻击,生成2个45%原伤害的子攻击,"Creates 2 child attacks, each dealing 45% of the original damage."
@@ -900,7 +949,9 @@ Pellets [color=#7FD88F]+1[/color]"
 确认,确认,Confirm
 确认出售,确认出售,Confirm Sale
 确认取出,确认取出,Confirm Withdrawal
+确认后获得该组全部属性；本次只能购买一组。,确认后获得该组全部属性；本次只能购买一组。,Receive all stats in this group. One purchase per visit.
 确认存入,确认存入,Confirm Deposit
+确认购买 · %d 本金,确认购买 · %d 本金,Confirm purchase · %d principal
 磨损格斗拳套,磨损格斗拳套,Worn Fighting Gloves
 磨损的止血布条,磨损的止血布条,Worn Hemostatic Cloth
 神射手,神射手,Sharpshooter
@@ -943,6 +994,7 @@ Pellets [color=#7FD88F]+1[/color]"
 精神/外神,精神/外神,Mind / Eldritch
 精英怪掉落表,精英怪掉落表,Elite Enemy Loot Table
 终于走到这一步，再来一次，我相信你可以做的更好,终于走到这一步，再来一次，我相信你可以做的更好,You've come so far. Start again. I believe you can do even better.
+经验获取,经验获取,XP gain
 经验获取加成,经验获取加成,XP Gain
 经验获取百分比加成。,经验获取百分比加成。,Percentage bonus to experience gained.
 经验获取训练,经验获取训练,Experience Training
@@ -968,10 +1020,14 @@ Pellets [color=#7FD88F]+1[/color]"
 范围与控制,范围与控制,Area & Control
 范围伤害倍率,范围伤害倍率,Area Damage Multiplier
 获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。,获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。,"Receive %d gold; at the end of wave %d, repay %d gold. Interest: %s%% per wave."
-获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%.
-获得时：本金 +100；利率 +2%；攻击速度 -12,获得时：本金 +100；利率 +2%；攻击速度 -12,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12.
-获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5.
-获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1.
+获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%. Stack limit: 1 per run.
+获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%. Stack limit: 1 per run.
+获得时：本金 +100；利率 +2%；攻击速度 -12,获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12. Stack limit: 1 per run.
+获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12. Stack limit: 1 per run.
+获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5. Stack limit: 1 per run.
+获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5. Stack limit: 1 per run.
+获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1. Stack limit: 1 per run.
+获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1. Stack limit: 1 per run.
 获得时：本金 +（20×当前波次）；最多持有 5 件,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
 营地币：%d,营地币：%d,Camp Coins: %d
 营地建筑,营地建筑,Camp Buildings
@@ -1021,6 +1077,7 @@ Pellets [color=#7FD88F]+1[/color]"
 请尝试其他名称或效果关键词。,请尝试其他名称或效果关键词。,Try another name or effect keyword.
 请放心交给我理财吧,请放心交给我理财吧,Rest assured. Let me manage your money.
 请输入大于 0 的整数。,请输入大于 0 的整数。,Enter a whole number greater than 0.
+请选择一组专精,请选择一组专精,Select a specialization
 请选择存入或取出。,请选择存入或取出。,Choose deposit or withdrawal.
 请选择角色,请选择角色,Select a character
 调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。,调整窗口或全屏请先关闭编辑器的“嵌入游戏”，再独立运行。,"To resize or use fullscreen, disable the editor's embedded game and run separately."
@@ -1037,6 +1094,7 @@ Pellets [color=#7FD88F]+1[/color]"
 货架已刷新。,货架已刷新。,Shop rerolled.
 购买,购买,Buy
 购买 %d,购买 %d,Buy %d
+购买「%s」：支付 %d 本金，剩余 %d。,购买「%s」：支付 %d 本金，剩余 %d。,Purchased %s for %d principal. Remaining: %d.
 购买价格 + %s%%，出售价格 - %s%%，利息收益 - %s%%,购买价格 + %s%%，出售价格 - %s%%，利息收益 - %s%%,Purchase prices +%s%%; sale proceeds −%s%%; interest income −%s%%
 "购买价格：%s 金币
 括号为不计理智的价格与理智价差。
@@ -1211,13 +1269,16 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 选择,选择,Select
 选择一个建筑查看详情,选择一个建筑查看详情,Select a building for details
 选择一张附魔，可装备、转移或出售,选择一张附魔，可装备、转移或出售,"Select an enchantment to equip, transfer or sell"
+选择一组，直接用本金购买。,选择一组，直接用本金购买。,Select a group to purchase with principal.
 通关！,通关！,Victory!
-通用伤害 + 25%；理智值 - 20；每局最多持有 1 件,通用伤害 + 25%；理智值 - 20；每局最多持有 1 件,All Damage +25%; Sanity −20. Stack limit: 1 per run.
-通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 3 Sanity, or 5 if Sanity is already below 0. Stack limit: 1 per run."
+通用伤害 + 25%；理智值 - 20；每局最多持有 1 件,通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,All Damage +25%; Sanity −8. Stack limit: 1 per run.
+通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,All Damage +25%; Sanity −8. Stack limit: 1 per run.
+通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 1 Sanity, or 2 if Sanity is already below 0. Stack limit: 1 per run."
+通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 1 Sanity, or 2 if Sanity is already below 0. Stack limit: 1 per run."
 通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
 通用伤害+4%,通用伤害+4%,All damage +4%
 通用伤害百分比加成，影响近战、远程和元素武器伤害。,通用伤害百分比加成，影响近战、远程和元素武器伤害。,"General percentage damage bonus affecting melee, ranged and elemental weapons."
-通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,Converted to damage taken through an armor curve. Positive armor reduces damage; negative armor increases it.
+通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。,100 armor reduces damage by 25%; 300 armor reduces it by 50%. Damage reduction is capped at 95%. Armor only reduces health damage and does not protect shields. Negative armor increases damage taken.
 遗物,遗物,Relic
 遗物图鉴解锁、遗物套装预览,遗物图鉴解锁、遗物套装预览,Unlock relics and preview synergies
 遗物已达叠加上限,遗物已达叠加上限,Relic stack limit reached
@@ -1229,7 +1290,8 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 重置属性升级并返还货币,重置属性升级并返还货币,Reset stat upgrades and refund currency
 量化操盘,量化操盘,Quant Trading
 金币,金币,Gold
-金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,Gold %d  │  Principal %d  │  Rate %.1f%%  │  Est. interest +%d
+金币 %d　│　本金 %d　│　利率 %.1f%%,金币 %d　│　本金 %d　│　利率 %.1f%%,Gold %d  │  Principal %d  │  Rate %.1f%%
+金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,金币 %d　│　本金 %d　│　利率 %.1f%%,Gold %d  │  Principal %d  │  Rate %.1f%%
 金币 + %d，本次关闭银行，理智-5，幸运-2,金币 + %d，本次关闭银行，理智-5，幸运-2,"Gold +%d. The bank closes for this visit. Sanity −5, Luck −2."
 金币+%d，出售%s及其全部附魔,金币+%d，出售%s及其全部附魔,"Gold +%d, sell %s and all its enchantments."
 金币+%d，本次不可存款。,金币+%d，本次不可存款。,Gold +%d. Deposits are unavailable this visit.
@@ -1238,6 +1300,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 金币不足，无法刷新。,金币不足，无法刷新。,Not enough gold to reroll.
 金币入账失败,金币入账失败,Gold payment failed
 金币心脏,金币心脏,Coin Heart
+金币获取,金币获取,Gold gain
 金币获取 + 10；获取时本金 + 20；负载 - 5,金币获取 + 10；获取时本金 + 20；负载 - 5,Gold Gain +10; Principal +20 on acquisition; Load Capacity −5
 金币获取 +15%；经验获取 +15%；最大生命值 -2,金币获取 +15%；经验获取 +15%；最大生命值 -2,Gold Gain +15%; Experience Gain +15%; Max HP −2
 金币：%s,金币：%s,Gold: %s

@@ -54,6 +54,7 @@ static func _glowing_icon(path: String) -> Texture2D:
 			canvas.set_pixel(x, y, Color(0.66, 0.32, 0.95, alpha))
 	var texture := FinanceUIStyle.item_icon(path)
 	if texture != null:
+		texture = ItemIconArt.texture_for(texture, 32)
 		var source := texture.get_image()
 		source.convert(Image.FORMAT_RGBA8)
 		source.resize(32, 32, Image.INTERPOLATE_NEAREST)

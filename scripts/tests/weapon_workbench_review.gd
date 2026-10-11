@@ -36,6 +36,8 @@ func _run() -> void:
 	check(flow.confirm_character_selection(), "real battle starts")
 	await frames()
 	var loadout := flow.get_bound_loadout()
+	# This is a five-card overflow fixture, independent of character balance.
+	flow.get_bound_player().add_runtime_modifier({"id": "workbench_review_capacity", "source_id": "workbench_review", "source_type": "test", "stat": "load_capacity", "operation": "override", "value": 1000, "duration": -1, "stack_rule": "unique", "target_scope": "player"})
 	for id in ["weapon_copper_lamp", "weapon_mutant_tentacle", "weapon_earth_hammer", "weapon_camp_dagger"]:
 		check(loadout.equip_weapon(id), "fixture equips " + id)
 	flow.get_bound_player().set_physics_process(false)
@@ -85,6 +87,8 @@ func _run() -> void:
 	game.queue_free()
 	await frames()
 	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	AudioManager._bgm_player.stream = null
 	await get_tree().create_timer(0.25).timeout
 	CampProgression.end_transient_session()
 	print("WEAPON_WORKBENCH_TEST checks=",checks," failures=",failures," layout=",JSON.stringify(measurements))

@@ -45,7 +45,8 @@ const NATIVE_RELIC_ICONS := [
 
 
 static func is_native_relic_icon(texture: Texture2D) -> bool:
-	return texture != null and texture.resource_path.get_base_dir() == "res://assets/ui/icons/relics" and texture.resource_path.get_file().get_basename() in NATIVE_RELIC_ICONS
+	var path := ItemIconArt.source_path(texture)
+	return path.get_base_dir() == "res://assets/ui/icons/relics" and path.get_file().get_basename() in NATIVE_RELIC_ICONS
 
 
 static func relic_icon_size(texture: Texture2D, display_scale: float = 1.0) -> Vector2:
@@ -87,6 +88,7 @@ static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale
 		control.texture_filter = previous[1]
 		control.custom_minimum_size = previous[2]
 		control.remove_meta("legacy_icon_layout")
+	ItemIconArt.bind_texture(control, texture)
 
 
 static func principal_revive_status(state: Dictionary) -> String:
@@ -201,6 +203,9 @@ static func bank_horizontal_scroll(control: ScrollContainer) -> void:
 static func reason(code: String) -> String:
 	return str({
 		"loan_dialog_open": L10n.text("error.bank.loan_terms_open"),
+		"specialization_expired": L10n.text("error.bank.specialization_expired"),
+		"specialization_effect_blocked": L10n.text("error.bank.specialization_effect_blocked"),
+		"insufficient_principal": L10n.text("error.bank.insufficient_principal"),
 		"loan_expired": L10n.text("error.bank.loan_terms_expired"),
 		"loan_not_active": L10n.text("error.bank.no_loan"),
 		"loan_insufficient_gold": L10n.text("error.bank.repayment_insufficient_gold"),

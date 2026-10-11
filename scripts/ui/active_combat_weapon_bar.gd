@@ -61,6 +61,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(icon)
+		ItemIconArt.bind_texture(icon, icon.texture)
 		icons.append(icon)
 		# A separate disk also covers transparent pixels around narrow weapon art.
 		var mask := ColorRect.new()
@@ -155,8 +156,8 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 		return
 	var returning := weapons[index].is_return_ready()
 	var icon_path := weapons[index].get_combat_icon_path()
-	if icons[index].texture == null or icons[index].texture.resource_path != icon_path:
-		icons[index].texture = load(icon_path)
+	if icons[index].texture == null or ItemIconArt.source_path(icons[index].texture) != icon_path:
+		ItemIconArt.bind_texture(icons[index], load(icon_path))
 	# Tome animation/return availability must not replace its running countdown.
 	if returning or weapons[index].is_star_tome(): executing = false
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)

@@ -373,6 +373,19 @@ func submit_finance_operation(action: String, amount: int) -> Dictionary:
 	return result
 
 
+func purchase_battle_specialization(token: String, choice_id: String) -> Dictionary:
+	if is_loan_dialog_open(): return {"success": false, "reason": "loan_dialog_open"}
+	if current_state != STATE_FINANCE_POPUP or _bound_wave_manager == null or battle_resolved or not _has_next_wave():
+		return {"success": false, "reason": "specialization_expired"}
+	if _transaction_busy: return {"success": false, "reason": "transaction_busy"}
+	_transaction_busy = true
+	var result := _bound_wave_manager.battle_specialization.purchase(token, choice_id, _bound_wave_manager.finance_system)
+	_transaction_busy = false
+	if bool(result.get("success", false)): clear_stat_preview()
+	_notify_preparation_changed()
+	return result
+
+
 func close_finance_popup() -> void:
 	if is_loan_dialog_open():
 		dismiss_goblin_loan()
@@ -771,6 +784,7 @@ func get_state_snapshot() -> Dictionary:
 		"pending_finance_payload": _pending_finance_payload.duplicate(true),
 		"pending_wave_start_after_finance": _pending_wave_start_after_finance,
 		"finance_state": _bound_wave_manager.get_finance_snapshot() if _bound_wave_manager != null else {},
+		"battle_specialization": _bound_wave_manager.battle_specialization.snapshot() if _bound_wave_manager != null else {},
 	}
 
 
@@ -1126,6 +1140,12 @@ func get_preparation_payload() -> Dictionary:
 	payload["combat_gold_earned"] = _pending_interest_payload.get("combat_gold_earned", 0)
 	if _bound_wave_manager != null:
 		payload["goblin_trade"] = _bound_wave_manager.goblin_trades.offer.duplicate(true)
+		var specialization := _bound_wave_manager.battle_specialization
+		if current_state == STATE_FINANCE_POPUP and not battle_resolved:
+			specialization.prepare(_get_next_wave_number(), int(payload.get("principal", 0)), _has_next_wave())
+		payload["battle_specialization"] = specialization.offer.duplicate(true)
+		if not specialization.offer.is_empty() and not bool(specialization.offer.purchased):
+			payload["battle_specialization"]["principal_after_payment"] = _bound_wave_manager.finance_system.project_specialization_principal(int(specialization.offer.price))
 		payload["goblin_loan"] = _bound_wave_manager.goblin_loans.snapshot(get_current_gold())
 		payload["strong_refresh"] = has_strong_refresh()
 		payload["interest_pact"] = _bound_wave_manager.goblin_trades.interest_pact

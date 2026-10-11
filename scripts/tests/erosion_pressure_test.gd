@@ -138,9 +138,9 @@ func _test_wave_start_snapshot() -> void:
 	var player := _make_player(49.0)
 	player.add_relic("relic_divine_fusion")
 	var manager := _make_manager(player)
-	check(player.get_stat("divinity") == 50.0, "wave-start relic adds erosion once")
-	check(manager.get_enemy_erosion_snapshot().erosion == 50.0 and manager.get_miniboss_spawn_snapshot().erosion == 50.0, "enemy stats and miniboss count share post-relic erosion")
-	check(is_equal_approx(manager.get_enemy_erosion_snapshot().max_hp_multiplier, 2.26), "wave-start relic is included in stat pressure")
+	check(player.get_stat("divinity") == 52.0, "wave-start relic adds three erosion once")
+	check(manager.get_enemy_erosion_snapshot().erosion == 52.0 and manager.get_miniboss_spawn_snapshot().erosion == 52.0, "enemy stats and miniboss count share post-relic erosion")
+	check(is_equal_approx(manager.get_enemy_erosion_snapshot().max_hp_multiplier, 2.332), "wave-start relic is included in stat pressure")
 	manager.free()
 	player.free()
 

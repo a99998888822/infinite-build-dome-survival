@@ -195,6 +195,7 @@ func _fit_composition() -> void:
 	var factor := minf(size.x / DESIGN_SIZE.x, size.y / DESIGN_SIZE.y)
 	canvas.scale = Vector2.ONE * factor
 	canvas.position = ((size - DESIGN_SIZE * factor) * 0.5).round()
+	ItemIconArt.refresh_branch(canvas)
 
 
 func rebuild_roster(records: Array) -> String:
@@ -283,6 +284,7 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 	weapon_icon.name = "WeaponIcon"
 	weapon_icon.custom_minimum_size = STARTING_WEAPON_ICON_SIZE
 	weapon_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	ItemIconArt.bind_texture(weapon_icon, _crop_icon(str(weapon.get("icon", ""))), true, 26.0, null, STARTING_WEAPON_ICON_SIZE.x)
 	# Wrap additional enchantments within the paper, beside their own weapon.
 	var content := HFlowContainer.new()
 	content.name = "WeaponContent"
@@ -489,6 +491,7 @@ func _image(parent: Node, texture: Texture2D, rect: Rect2, keep_aspect := false)
 	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if keep_aspect else TextureRect.STRETCH_SCALE
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_place(parent, image, rect)
+	ItemIconArt.bind_texture(image, texture, true)
 	return image
 
 

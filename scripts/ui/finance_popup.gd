@@ -21,6 +21,9 @@ var interest_arrival: InterestArrivalPresentation
 var loan_presentation: GoblinLoanPresentation
 var shop_grid: VirtualShopGrid
 var workbench: EnchantmentWorkbench
+var specialization_panel: BattleSpecializationPanel
+var _specialization_tab: Button
+var _specialization_wave := -1
 var amount_input: LineEdit
 var bank_confirm: Button
 var start_button: Button
@@ -100,7 +103,14 @@ func configure(next_payload: Dictionary) -> void:
 		shop_grid.set_offers(payload.get("offers", []), true)
 	else:
 		shop_grid.refresh_availability()
-	_summary.text = L10n.text("ui.bank.balance_summary") % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0)), int(payload.get("estimated_interest", 0))]
+	_summary.text = L10n.text("ui.bank.balance_summary") % [int(payload.get("gold", 0)), int(payload.get("principal", 0)), float(payload.get("interest_rate", 0))]
+	var specialization: Dictionary = payload.get("battle_specialization", {})
+	var wave := int(payload.get("wave_number", 0))
+	if wave != _specialization_wave:
+		_specialization_wave = wave
+		if _active_tab == "specialization": _active_tab = "shop"
+	specialization_panel.configure(specialization, int(payload.get("principal", 0)))
+	if specialization.is_empty() and _active_tab == "specialization": _active_tab = "shop"
 	var protection: Dictionary = payload.get("principal_revive", {})
 	_principal_protection.visible = not protection.is_empty()
 	if not protection.is_empty():
@@ -396,6 +406,16 @@ func _build() -> void:
 	workbench.feedback_requested.connect(_feedback_message)
 	workbench.tooltip_requested.connect(_show_tooltip)
 	workbench.tooltip_hidden.connect(func(): _tooltip.hide())
+	_specialization_tab = _button("ui.bank.specialization.tab_available", _tabs)
+	_specialization_tab.name = "SpecializationEntry"
+	_specialization_tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_specialization_tab.pressed.connect(_select_tab.bind("specialization"))
+	_specialization_tab.hide()
+	specialization_panel = BattleSpecializationPanel.new()
+	specialization_panel.name = "BattleSpecializationPanel"
+	main_panel.add_child(specialization_panel)
+	specialization_panel.purchase_requested.connect(_buy_specialization)
+	specialization_panel.hide()
 	_feedback = _label("", main_panel, 12, FinanceUIStyle.MUTED)
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_feedback.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -573,12 +593,21 @@ func _layout() -> void:
 
 
 func _select_tab(tab: String) -> void:
+	if tab == "specialization" and specialization_panel.offer.is_empty(): tab = "shop"
 	_active_tab = tab
 	_bank.visible = not _compact or tab == "bank"
 	_bank_header.show()
 	_scene_enchant_back.visible = _scene_wide and tab == "enchant"
 	_shop.visible = tab == "shop"
 	_enchant_scroll.visible = tab == "enchant"
+	_specialization_tab.visible = not specialization_panel.offer.is_empty()
+	var purchased := bool(specialization_panel.offer.get("purchased", false))
+	_specialization_tab.text = L10n.text("ui.bank.specialization." + (("tab_short_purchased" if purchased else "tab_short_available") if _compact else ("tab_purchased" if purchased else "tab_available")))
+	FinanceUIStyle.bank_tab(_specialization_tab, tab == "specialization")
+	if tab != "specialization": _specialization_tab.add_theme_color_override("font_color", FinanceUIStyle.GOLD)
+	specialization_panel.visible = tab == "specialization" and _specialization_tab.visible
+	_place(specialization_panel, _shop.get_rect())
+	specialization_panel.arrange()
 	for key in _tab_buttons:
 		var button: Button = _tab_buttons[key]
 		button.visible = key != "bank" or _compact
@@ -684,6 +713,17 @@ func _buy(offer: Dictionary) -> void:
 	else: show_error(str(result.get("reason", "")))
 
 
+func _buy_specialization(token: String, choice_id: String) -> void:
+	if flow == null: return
+	var result := flow.purchase_battle_specialization(token, choice_id)
+	if bool(result.get("success", false)):
+		interest_arrival.skip()
+		_feedback_message(L10n.text("ui.bank.purchase_done_prefix") + L10n.text(str(result.name_key)), true)
+	else:
+		show_error(str(result.get("reason", "")))
+		specialization_panel.refresh()
+
+
 func _on_locale_changed() -> void:
 	if payload.is_empty() or not is_node_ready():
 		return
@@ -712,7 +752,7 @@ func _open_sale(kind: String, id: String) -> void:
 		return
 	interest_arrival.skip()
 	_tooltip.hide()
-	_sale_icon.texture = FinanceUIStyle.item_icon(str(_quote.get("icon", "")))
+	ItemIconArt.bind_texture(_sale_icon, FinanceUIStyle.item_icon(str(_quote.get("icon", ""))))
 	for child in _sale_items.get_children():
 		_sale_items.remove_child(child)
 		child.queue_free()

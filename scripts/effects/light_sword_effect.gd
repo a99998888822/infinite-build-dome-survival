@@ -1,6 +1,7 @@
 extends Node2D
 class_name LightSwordEffect
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -189,7 +190,7 @@ func _draw_ground() -> void:
 	if _visual_detail == 0: return
 	if not _landed:
 		var alpha := (0.25 + clampf(_elapsed / _delay, 0.0, 1.0) * 0.3) / 0.55
-		BAKED.draw(_ground_layer, "sword_mark", 0, Vector2.ONE, Color(1,1,1,alpha))
+		BAKED.draw(_ground_layer, "sword_mark", 0, GROUND.axes(), Color(1,1,1,alpha))
 	else:
 		var fade := 1.0 - smoothstep(0.25, 1.0, clampf((_elapsed - _delay - _fall_seconds) / _dissolve_seconds,0,1))
 		BAKED.draw(_ground_layer, "sword_cracks", 0, Vector2.ONE, Color(1,1,1,fade))

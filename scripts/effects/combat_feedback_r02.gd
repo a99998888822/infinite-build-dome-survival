@@ -101,8 +101,12 @@ func paint() -> void:
 	var kick := pow(1.0 - p, 2.0)
 	var displacement := 4.0 if active_kind == &"heavy" else 2.0 if active_kind == &"light" else 0.0
 	var recoil := kick if p < 0.45 else -sin((p - 0.45) / 0.55 * PI) * 0.15
-	sprite.position = origin + (direction * displacement * recoil).round()
-	sprite.rotation = shake * (1.6 if active_kind == &"heavy" else 0.55 if active_kind == &"light" else 0.0) * recoil
+	if enemy.is_control_immune():
+		# Keep the hit flash without suggesting that an immune boss was staggered.
+		sprite.rotation = 0.0
+	else:
+		sprite.position = origin + (direction * displacement * recoil).round()
+		sprite.rotation = shake * (1.6 if active_kind == &"heavy" else 0.55 if active_kind == &"light" else 0.0) * recoil
 	var strength := 0.55 if active_kind == &"heavy" else 0.38 if active_kind == &"light" else 0.30 if active_kind == &"ritual" else 0.13
 	var flash := 1.0 - clampf(age / (0.075 if active_kind == &"heavy" else 0.05), 0, 1)
 	sprite.modulate = base_color.lerp(Color(1.0 + strength, 1.0 + strength, 1.0 + strength, base_color.a), flash)

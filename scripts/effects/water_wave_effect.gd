@@ -4,6 +4,7 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 # Shared resources load with the effect script, before the first combat hit.
 const ATLAS_RADIUS: float = 45.696
 const ATLAS_TILE := 112
@@ -140,6 +141,6 @@ func _get_atlas_frame() -> int:
 
 func _draw() -> void:
 	var frame := _get_atlas_frame()
-	var extent := Vector2.ONE * ATLAS_TILE * _radius / ATLAS_RADIUS
+	var extent := GROUND.axes() * ATLAS_TILE * _radius / ATLAS_RADIUS
 	var region := Rect2(Vector2((frame % ATLAS_COLUMNS) * ATLAS_TILE, (frame / ATLAS_COLUMNS) * ATLAS_TILE), Vector2.ONE * ATLAS_TILE)
 	draw_texture_rect_region(ATLASES[_atlas_index], Rect2(-extent * 0.5, extent), region)

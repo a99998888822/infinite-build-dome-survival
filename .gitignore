@@ -4,6 +4,14 @@
 artifacts/ui_visual_audit/
 tmp/
 temp/
+# Temporary reviews and validation output. Preserve art sources under
+# artifacts/sources, reference, editable, generated, or the production assets tree.
+artifacts/analysis/
+artifacts/previews/
+artifacts/reviews/
+artifacts/validation/
+artifacts/performance/
+artifacts/maintenance/
 # Disposable capture frames and logs; keep only curated review outputs.
 artifacts/**/[0-9][0-9][0-9].png
 artifacts/**/capture.log

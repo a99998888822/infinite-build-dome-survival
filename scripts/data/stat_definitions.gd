@@ -1,7 +1,7 @@
 extends RefCounted
 class_name StatDefinitions
 
-const ARMOR_K: float = 100
+const ARMOR_K: float = 300
 const ATTACK_SPEED_SCALE: float = 300.0
 const RANGE_BONUS_EFFICIENCY: float = 0.5
 const MIN_DAMAGE_TAKEN_PERCENT: float = 5
@@ -87,7 +87,7 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": 0,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。"
+		"description": "100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。"
 	},
 	"damage_taken_percent": {
 		"display_name": "受到伤害百分比",

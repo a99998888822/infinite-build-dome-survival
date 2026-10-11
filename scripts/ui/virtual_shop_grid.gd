@@ -16,6 +16,9 @@ var _columns := 3
 var _last_start := -1
 var _logical_focus := 0
 var _card_height := CARD_HEIGHT
+var _base_card_height := CARD_HEIGHT
+var _pending_card_height := 0.0
+var _height_update_queued := false
 var _card_min_width := CARD_MIN_WIDTH
 
 
@@ -42,6 +45,7 @@ func set_offers(next_offers: Array, reset_scroll: bool = false) -> void:
 			var extent := FinanceUIStyle.relic_icon_size(texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
 			_card_height = maxf(_card_height, 96.0 + extent.y)
 			_card_min_width = maxf(_card_min_width, 96.0 + extent.x)
+	_base_card_height = _card_height
 	if reset_scroll:
 		_logical_focus = 0
 		scroll.scroll_vertical = 0
@@ -56,6 +60,8 @@ func refresh_availability() -> void:
 func _layout() -> void:
 	if scroll == null:
 		return
+	_card_height = _base_card_height
+	_pending_card_height = 0.0
 	var usable := maxf(100.0, size.x - 16.0)
 	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 3)
 	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
@@ -79,6 +85,7 @@ func _refresh_pool(force: bool = false) -> void:
 		card.purchase_requested.connect(func(offer): purchase_requested.emit(offer))
 		card.preview_requested.connect(func(offer): preview_requested.emit(offer))
 		card.preview_cleared.connect(func(): preview_cleared.emit())
+		card.minimum_height_requested.connect(_grow_card_height)
 		card.buy_button.gui_input.connect(_on_card_key.bind(card))
 		card.buy_button.focus_entered.connect(func(): _logical_focus = int(card.get_meta("offer_index", 0)))
 		_pool.append(card)
@@ -93,6 +100,26 @@ func _refresh_pool(force: bool = false) -> void:
 		card.configure(offers[index], flow.get_offer_unavailable_reason(offers[index]) if flow != null else "", flow.get_current_gold() if flow != null else 0)
 		card.position = Vector2((index % _columns) * (width + GAP), (index / _columns) * (_card_height + GAP))
 		card.size = Vector2(width, _card_height)
+
+
+func _grow_card_height(height: float) -> void:
+	if height <= _card_height:
+		return
+	_pending_card_height = maxf(_pending_card_height, height)
+	if _height_update_queued:
+		return
+	_height_update_queued = true
+	_apply_card_height.call_deferred()
+
+
+func _apply_card_height() -> void:
+	_height_update_queued = false
+	if _pending_card_height <= _card_height:
+		return
+	_card_height = _pending_card_height
+	_pending_card_height = 0.0
+	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
+	_refresh_pool(true)
 
 
 func _on_card_key(event: InputEvent, card: PreparationOfferCard) -> void:

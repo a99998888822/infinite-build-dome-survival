@@ -1,0 +1,127 @@
+{
+  "archive": "C:\\Users\\mi\\Downloads\\sucai.rar",
+  "archive_sha256": "36fe20c133db225dd3eb15fe49b8f11fa8edc7c874c6b3c421282abf2224790d",
+  "files": [
+    {
+      "name": "ground_Barier1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 2510036,
+      "sha256": "cdbb2bb8bea8db37d99c7cf2782a4387e5b406bc28776472284f8c269cca9a85"
+    },
+    {
+      "name": "ground_Barier2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 3209111,
+      "sha256": "1a746f6638f406aabf6dd1e9c704e99789c23e05facc517018af314c88b0da4a"
+    },
+    {
+      "name": "ground_block1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 4241726,
+      "sha256": "6c196af60c2ddf63404628d6485704a09013e404dab2daf762b70f196f3867b0"
+    },
+    {
+      "name": "ground_block2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 4076833,
+      "sha256": "a66fa0b3574abb16c833f4cd6a8adfbb320171e1b8d42e703bb0ada165331584"
+    },
+    {
+      "name": "ground_block3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 2992291,
+      "sha256": "8f419b1e02aa77e234f412e95c4c7bb012a1b92da915c519e58f23d83a5ccc28"
+    },
+    {
+      "name": "ground_block4.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 1717486,
+      "sha256": "3ddaca3228a35529fd2c9bbf6ddea001828246881e6d58283b62e8fefb57111d"
+    },
+    {
+      "name": "ground_block5.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 3229353,
+      "sha256": "78dfca4e6867ef8896a51ea739c4fde4a067c83b579612ed1054f20ad54509df"
+    },
+    {
+      "name": "ground_part1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 7241208,
+      "sha256": "93f26ee803a322c7675337f3f776e97b1956dc3c200b5b5a995291d0e6a70927"
+    },
+    {
+      "name": "ground_part2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 6034915,
+      "sha256": "87b11bfc9b6c0fb3babcd99e42f308b06d6cc30afefad636a884584aae7197e6"
+    },
+    {
+      "name": "ground_part3.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 2450380,
+      "sha256": "a5bf11e155d0eba3e60447d866575d875e63c2cea7f21048083016e63c917f8a"
+    },
+    {
+      "name": "ground_wood1.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "bytes": 3089543,
+      "sha256": "f840e1434d418ede910f69f690b8e44ef4a0f1d4eb02ffc5270ca155cc6a0319"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ const STYLE = preload("res://scripts/battle/pixel_indicator_style.gd")
 var _style := STYLE.new()
 var _shape_transform := Transform2D.IDENTITY
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 enum Kind { DASH_BLADE, RECOIL_GUN, STAR_TOME }
 
 var kind := Kind.DASH_BLADE
@@ -61,7 +62,7 @@ func outline(points: PackedVector2Array, strength: float = 1.0) -> void:
 
 
 func ring(at: Vector2, radius: float, filled: bool, strength: float = 1.0) -> void:
-	ellipse(at, Vector2.ONE * radius, filled, strength)
+	ellipse(at, GROUND.axes() * radius, filled, strength)
 
 
 func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) -> void:

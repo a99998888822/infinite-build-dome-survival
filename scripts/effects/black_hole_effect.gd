@@ -71,9 +71,8 @@ func _process(delta: float) -> void:
 	for enemy in _targets:
 		if enemy == null or not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		if delta > 0.0 and not enemy.global_position.is_equal_approx(global_position):
-			enemy.show_control_resistance()
-		enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta * enemy.get_control_multiplier())
+		if delta > 0.0 and _pull_speed > 0.0 and not enemy.global_position.is_equal_approx(global_position) and enemy.can_receive_control():
+			enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta * enemy.get_control_multiplier())
 	if _elapsed >= _duration:
 		queue_free()
 		return

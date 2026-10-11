@@ -89,12 +89,13 @@ func _test_new_runs() -> void:
 		check(manager.current_gold == 180, "combat gold alone is reduced by fifty percent")
 		manager.apply_gold_delta(100, "goblin_trade")
 		check(manager.current_gold == 280, "direct gold gift stays whole")
-		check(p.add_relic(RELICS[0]) and bank.principal == 650 and p.get_relic_count(RELICS[0]) == 2, "later same-name copy grants its normal acquisition")
-		check(p.relic_system.remove_relic(RELICS[0]) and p.get_relic_count(RELICS[0]) == 1 and bank.get_interest_rate() == 13, "ordinary duplicate removable while innate original remains")
-		check(bank.apply_finance_operation("deposit", 20).success and bank.principal == 670, "capitalist can still actively deposit")
+		for relic_id in RELICS:
+			check(not p.add_relic(relic_id) and bank.principal == 500 and p.get_relic_count(relic_id) == 1, "one-copy scheme cannot grant duplicate principal: " + relic_id)
+		check(not p.relic_system.remove_relic(RELICS[0]) and bank.get_interest_rate() == 13, "original innate scheme remains protected")
+		check(bank.apply_finance_operation("deposit", 20).success and bank.principal == 520, "capitalist can still actively deposit")
 		bank.prepare_wave(2)
 		check(not bank.withdraw(1).success and not bank.manual_operation_used, "withdrawal restriction survives wave preparation")
-		check(bank.consume_trade_principal(10) and bank.principal == 660, "principal expenses remain available without becoming withdrawals")
+		check(bank.consume_trade_principal(10) and bank.principal == 510, "principal expenses remain available without becoming withdrawals")
 		p.current_hp = 30
 		manager.add_exp_and_gold(manager.get_required_exp_for_next_level(), 0)
 		check(manager.player_level == 2 and p.get_stat("max_hp") == 39 and p.current_hp == 30, "actual level-up grants neither maximum HP nor level healing")

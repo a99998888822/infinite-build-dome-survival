@@ -198,7 +198,7 @@ func _run_modifier_stack_checks() -> bool:
 
 	var damage_taken_debug := stack.debug_stat("damage_taken_percent")
 	var melee_debug := stack.debug_stat("melee_damage")
-	var debug_ok := int(melee_debug.get("modifiers", []).size()) == 2 and int(damage_taken_debug.get("armor_damage_taken_rate", 0)) == 50
+	var debug_ok := int(melee_debug.get("modifiers", []).size()) == 2 and int(damage_taken_debug.get("armor_damage_taken_rate", 0)) == 75
 	passed = _print_check_result("debug_stat source chain", debug_ok) and passed
 	print("[Bootstrap] - melee_damage final: %s" % str(melee_debug.get("final_value", 0)))
 	print("[Bootstrap] - melee_damage modifier sources: %d" % int(melee_debug.get("modifiers", []).size()))

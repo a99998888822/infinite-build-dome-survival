@@ -3,6 +3,7 @@ class_name MobilityWeaponRuntime
 ## A cast owns motion, contacts and sprite lifetimes. No floating weapon body.
 const SLASH_SECONDS := 10.0 / 48.0
 const SHOCK_SECONDS := 10.0 / 24.0
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 var live_source: WeaponInstance
 var return_ready := false
 var anchor_position := Vector2.ZERO
@@ -71,7 +72,7 @@ func _impact(point: Vector2) -> void:
 		visual_scale = weapon.get_hit_radius() / 96.0 * 1.1
 	# Project every slash frame onto the same ground ellipse as its indicator.
 	# The circular physics query below keeps its existing radius.
-	var visual_axes := Vector2.ONE if shock else Vector2(1.0, AttackFootprint.ELLIPSE_RATIO)
+	var visual_axes := GROUND.axes() if shock else Vector2(1.0, AttackFootprint.ELLIPSE_RATIO)
 	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, visual_axes * visual_scale)
 	# Copy only matching contacts before native damage/reactions mutate the registry.
 	var victims: Array[EnemyController] = []

@@ -22,6 +22,9 @@ static func build_item_bond_text(record: Dictionary, relic_system: RelicBondSyst
 	var bond_id := get_bond_id(record)
 	if bond_id.is_empty():
 		return ""
+	# Retired groupings (such as Surplus Value) have no synergy to advertise.
+	if DataRegistry.get_record("bonds", bond_id).get("thresholds", {}).is_empty():
+		return ""
 	var line := L10n.text("ui.synergy.heading") % [BOND_LABEL_COLOR, get_bond_name(bond_id)]
 	if relic_system != null:
 		var count := relic_system.get_bond_count(bond_id)

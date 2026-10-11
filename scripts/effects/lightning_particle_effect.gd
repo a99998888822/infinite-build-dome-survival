@@ -1,5 +1,6 @@
 extends Node2D
 class_name LightningParticleEffect
+const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 
 signal ground_strike_landed
 
@@ -471,5 +472,5 @@ func _draw() -> void:
 		var impact_center := to_local(_ground_strike_position)
 		var impact_radius := lerpf(GROUND_STRIKE_IMPACT_RING_START_RADIUS, _ground_strike_damage_radius, impact_ratio)
 		var impact_alpha := (1.0 - impact_ratio) * 0.68
-		draw_circle(impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
-		draw_arc(impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)
+		GROUND.disk(self, impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
+		GROUND.arc(self, impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)

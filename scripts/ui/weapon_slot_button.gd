@@ -8,6 +8,7 @@ var attachment_editing_enabled: bool = false
 
 
 func configure(next_weapon: WeaponInstance, allow_attachment_editing: bool) -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	weapon = next_weapon
 	attachment_editing_enabled = allow_attachment_editing
 	custom_minimum_size = Vector2(142.0, 50.0)

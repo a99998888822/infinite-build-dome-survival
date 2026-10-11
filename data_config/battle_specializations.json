@@ -1,0 +1,14 @@
+{
+  "minimum_principal": 3000,
+  "offer_chance": 0.5,
+  "choice_count": 3,
+  "prices": [300, 600, 1200, 2000, 3600, 5600],
+  "choices": [
+    {"id": "survival", "name_key": "ui.bank.specialization.survival", "minimum_wave": 1, "stats": {"max_hp": 5, "armor": 15}},
+    {"id": "damage", "name_key": "ui.bank.specialization.damage", "minimum_wave": 1, "stats": {"melee_damage": 5, "ranged_damage": 5, "element_damage": 5}},
+    {"id": "attack", "name_key": "ui.bank.specialization.attack", "minimum_wave": 1, "stats": {"area_size": 12, "damage_area_size": 12, "attack_speed": 12}},
+    {"id": "growth", "name_key": "ui.bank.specialization.growth", "minimum_wave": 1, "stats": {"currency_gain_percent": 12, "exp_gain_percent": 12, "pickup_radius": 12}},
+    {"id": "projectile", "name_key": "ui.bank.specialization.projectile", "minimum_wave": 4, "stats": {"projectile_count": 1}},
+    {"id": "revival", "name_key": "ui.bank.specialization.revival", "minimum_wave": 4, "stats": {"revive_count": 1}}
+  ]
+}

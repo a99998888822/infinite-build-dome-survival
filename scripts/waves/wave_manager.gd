@@ -59,6 +59,7 @@ var _wave_income_recorded: bool = false
 var drop_reward_system: DropRewardSystem = DROP_REWARD_SYSTEM_SCRIPT.new()
 var finance_system: BattleFinanceSystem = BATTLE_FINANCE_SYSTEM_SCRIPT.new()
 var goblin_trades := GoblinTradeSystem.new()
+var battle_specialization := BattleSpecializationSystem.new()
 var wave_challenges := WaveChallengeSystem.new()
 var enemy_pressure := EnemyWavePressure.new()
 var _challenge_elite_schedule: Array[float] = []
@@ -171,6 +172,7 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	run_statistics.reset()
 	goblin_loans.reset()
 	goblin_trades.reset()
+	battle_specialization.reset()
 	wave_challenges.reset()
 	enemy_pressure.reset()
 	_challenge_elite_schedule.clear()

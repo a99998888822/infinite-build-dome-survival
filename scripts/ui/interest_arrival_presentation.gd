@@ -129,6 +129,7 @@ func present(data: Dictionary) -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		icon.texture = FinanceUIStyle.item_icon(str(step.icon))
 		columns.add_child(icon)
+		ItemIconArt.bind_texture(icon, icon.texture)
 		var color := LOSS if step.kind == "loss" else (FinanceUIStyle.GREEN if step.kind == "growth" else FinanceUIStyle.TEXT)
 		var label := _label(columns, 12, color)
 		label.name = "Description"

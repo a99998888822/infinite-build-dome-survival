@@ -8,8 +8,8 @@ const STATIC := [
 	{"area_size": 35, "ranged_damage": 3, "attack_speed": -8},
 	{"damage_area_size": 12, "damage_percent": 5, "element_damage": 3, "attack_speed": -6}, {"attack_speed": 12},
 	{"damage_area_size": 20, "element_damage": 6, "damage_percent": 0}, {"ranged_damage": 5},
-	{"damage_area_size": 12, "element_damage": 9, "humanity": -2},
-	{"area_size": 25, "damage_area_size": 25, "damage_percent": 20, "divinity": 5},
+	{"damage_area_size": 12, "element_damage": 9, "humanity": -5},
+	{"area_size": 25, "damage_area_size": 25, "damage_percent": 12, "divinity": 22},
 	{"area_size": 40, "damage_percent": 30, "damage_area_size": 20},
 ]
 

@@ -76,6 +76,7 @@ var trade_withdraw_blocked := false
 var last_manual_operation: Dictionary = {}
 var _emitting_changed: bool = false
 var _settling_interest: bool = false
+var _deducting_principal: bool = false
 var _journal_ready: bool = false
 var _last_activity_rate: float = DEFAULT_INTEREST_RATE
 var _principal_revive_uses: Dictionary = {}
@@ -91,6 +92,7 @@ func initialize(target_player: PlayerController, gold_getter: Callable, gold_del
 	_run_serial += 1
 	_journal_ready = false
 	_settling_interest = false
+	_deducting_principal = false
 	if is_instance_valid(player) and player.stats_changed.is_connected(_on_player_stats_changed):
 		player.stats_changed.disconnect(_on_player_stats_changed)
 	if is_instance_valid(player) and player.lethal_damage.is_connected(_on_player_lethal_damage):
@@ -177,9 +179,32 @@ func record_loan_activity(text: Variant) -> void:
 func consume_trade_principal(amount: int) -> bool:
 	# A purchase paid from principal, not a withdrawal into the wallet.
 	if amount <= 0 or amount >= principal: return false
-	principal -= amount
+	if not _deduct_principal(amount): return false
 	_emit_changed()
 	return true
+
+
+func consume_specialization_principal(amount: int) -> bool:
+	# Direct service payment can exhaust principal and uses the same reorganization order.
+	if not _deduct_principal(amount): return false
+	_emit_changed()
+	return true
+
+
+func project_specialization_principal(amount: int) -> int:
+	if amount <= 0 or amount > principal: return principal
+	if amount < principal or player == null: return principal - amount
+	# Exhaustion can grant reorganization principal. Quote the real payment order.
+	var preview_player := player.create_stat_preview_copy()
+	var preview := create_preview_copy(preview_player)
+	preview.consume_specialization_principal(amount)
+	var remaining := preview.principal
+	preview_player.free()
+	return remaining
+
+
+func record_specialization_activity(text: Variant) -> void:
+	_record_activity("specialization", text)
 
 
 func arm_capital_protection(wave: int, reduction: float, unit_price: int) -> void:
@@ -201,9 +226,9 @@ func mitigate_health_damage(damage: int) -> float:
 	capital_protection.cost_remainder = maxf(0.0, exact_cost - cost)
 	capital_protection.prevented = float(capital_protection.prevented) + prevented
 	capital_protection.spent = int(capital_protection.spent) + cost
-	principal -= cost
-	# Reserve exhaustion before synchronous relic/stat signals can restore capital.
-	if principal <= 0: capital_protection.exhausted = true
+	# A reorganization reward cannot restart an exhausted protection contract.
+	if cost >= principal: capital_protection.exhausted = true
+	if cost > 0: _deduct_principal(cost)
 	if cost > 0: _emit_changed()
 	return maxf(0.0, damage - prevented)
 
@@ -213,7 +238,7 @@ func end_capital_protection(wave: int) -> void:
 	var cost := mini(principal, ceili(float(capital_protection.cost_remainder) - 0.000001))
 	capital_protection.clear()
 	if cost > 0:
-		principal -= cost
+		_deduct_principal(cost)
 		_emit_changed()
 
 
@@ -349,11 +374,9 @@ func withdraw(amount: int) -> Dictionary:
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "amount_must_be_positive")
 	if sanitized_amount > principal:
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "amount_exceeds_principal")
-	principal -= sanitized_amount
-	last_action_wave_number = current_wave_number
-	if not _apply_gold_delta(sanitized_amount, "finance_withdraw"):
-		principal += sanitized_amount
+	if not _deduct_principal(sanitized_amount, "finance_withdraw"):
 		return _build_operation_result(false, ACTION_WITHDRAW, sanitized_amount, "gold_delta_failed")
+	last_action_wave_number = current_wave_number
 	_record_activity("withdraw", L10n.message("log.finance.withdraw", [sanitized_amount, principal + sanitized_amount, principal]))
 	_emit_changed()
 	return _build_operation_result(true, ACTION_WITHDRAW, sanitized_amount, "manual")
@@ -546,7 +569,7 @@ func _on_player_lethal_damage() -> void:
 	var relic_id := str(protection.relic_id)
 	# Reserve the one-shot charge before any synchronous stat/UI callbacks.
 	_principal_revive_uses[relic_id] = int(_principal_revive_uses.get(relic_id, 0)) + 1
-	principal -= int(protection.principal_cost)
+	_deduct_principal(int(protection.principal_cost))
 	_record_activity("relic_principal", L10n.message("log.finance.revival_cost", [protection.display_name, protection.principal_cost, principal]))
 	# This is an expense, not a withdrawal: no gold credit or manual action used.
 	_emit_changed()
@@ -701,7 +724,6 @@ func _emit_changed() -> void:
 		if principal > 0:
 			has_principal_ever = true
 		_refresh_derived_stats()
-		_check_bankruptcy_trigger()
 		player.end_modifier_update()
 	var rate := get_interest_rate()
 	if _journal_ready and not is_equal_approx(rate, _last_activity_rate):
@@ -732,9 +754,9 @@ func _refresh_derived_stats() -> void:
 				var divisor := maxf(1.0, float(effect.get("divisor", 100)))
 				var per_unit := float(effect.get("per_unit", 1))
 				var per_copy_bonus := floorf(float(principal) / divisor) * per_unit
-				# The optional cap covers this relic's principal bonus, not its flat stats.
+				# Cap both benefits and costs by magnitude; fixed stats are unaffected.
 				if effect.has("max_bonus"):
-					per_copy_bonus = minf(per_copy_bonus, float(effect.max_bonus))
+					per_copy_bonus = clampf(per_copy_bonus, -float(effect.max_bonus), float(effect.max_bonus))
 				var derived_value := per_copy_bonus * float(relic_count)
 				if player._is_stat_increase_blocked(stat_id):
 					var modifier_id := "derived_%s_%s" % [relic_id, stat_id]
@@ -785,16 +807,35 @@ func _build_derived_modifier(relic_id: String, stat_id: String, value: float) ->
 	}
 
 
-func _check_bankruptcy_trigger() -> void:
-	if player == null or _bankruptcy_triggered or principal > 0 or not has_principal_ever:
-		return
-	for effect in _collect_runtime_effects(TRIGGER_PRINCIPAL_ZERO):
-		if str(effect.get("effect", "")) != EFFECT_BANKRUPTCY_RECOVERY:
-			continue
-		var multiplier := maxi(1, int(effect.get("gold_multiplier", 2)))
-		var recovery := get_current_gold() * multiplier
+func _deduct_principal(amount: int, wallet_reason: String = "") -> bool:
+	if _deducting_principal or amount <= 0 or amount > principal:
+		return false
+	var bankruptcy := false
+	var recovery := 0
+	if player != null and not _bankruptcy_triggered and amount == principal:
+		for effect in _collect_runtime_effects(TRIGGER_PRINCIPAL_ZERO):
+			if str(effect.get("effect", "")) == EFFECT_BANKRUPTCY_RECOVERY:
+				bankruptcy = true
+				recovery = get_current_gold() * maxi(1, int(effect.get("gold_multiplier", 2)))
+				break
+	var previous_principal := principal
+	var previous_emitting := _emitting_changed
+	_deducting_principal = true
+	_emitting_changed = true
+	# Reserve the reward before callbacks, and never count this withdrawal's cash.
+	if bankruptcy:
+		_bankruptcy_triggered = true
 		principal += recovery
-		_record_activity("relic_principal", L10n.message("log.finance.bankruptcy_reorganization", [recovery, principal]))
+	principal -= amount
+	if not wallet_reason.is_empty() and not _apply_gold_delta(amount, wallet_reason):
+		principal = previous_principal
+		if bankruptcy: _bankruptcy_triggered = false
+		_emitting_changed = previous_emitting
+		_deducting_principal = false
+		return false
+	if bankruptcy:
+		player.begin_modifier_update()
+		_record_activity("relic_principal", L10n.message("log.finance.bankruptcy_reorganization", [recovery, previous_principal + recovery]))
 		player.add_runtime_modifier({
 			"id": "bankruptcy_recovery_revive",
 			"source_type": "finance_recovery",
@@ -806,9 +847,11 @@ func _check_bankruptcy_trigger() -> void:
 			"duration": Modifier.PERMANENT_DURATION,
 			"stack_rule": Modifier.STACK_RULE_UNIQUE,
 		})
-		_bankruptcy_triggered = true
 		_refresh_derived_stats()
-		break
+		player.end_modifier_update()
+	_emitting_changed = previous_emitting
+	_deducting_principal = false
+	return true
 
 
 func _record_activity(kind: String, text: Variant, details: Dictionary = {}) -> void:

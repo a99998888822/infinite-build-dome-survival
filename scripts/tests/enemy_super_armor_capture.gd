@@ -44,17 +44,21 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(capture_dir)
 	await frames(4)
 	# Controlled real battle: only placement and time are scripted for review.
-	# The visual is triggered through production knockback resistance.
-	knight.apply_knockback(Vector2.LEFT, 450.0, 0.3, 0.0)
-	wolf.apply_knockback(Vector2.RIGHT, 450.0, 0.3, 0.0)
+	# Use the production three-control threshold, then advance its gameplay clock.
+	for unit in [knight, wolf]:
+		unit.apply_freeze(1.0, {}, 0.0)
+		unit._tick_super_armor(0.31)
+		unit.apply_freeze(1.0, {}, 0.0)
+		unit._tick_super_armor(0.31)
+		unit.apply_knockback(Vector2.RIGHT, 450.0, 0.3, 0.0)
 	for unit in [knight, wolf]: unit._super_armor_visual.set_process(false)
 	var samples: Array = []
-	for index in 49:
+	for index in 25:
 		var elapsed := index / 20.0
 		knight._animate(0.05)
 		wolf.animate(0.05)
-		for unit in [knight, wolf]: unit._super_armor_visual._process(0.05 if index > 0 else 0.0)
-		if index == 24:
+		for unit in [knight, wolf]: unit._tick_super_armor(0.05 if index > 0 else 0.0)
+		if index == 10:
 			knight.sprite.flip_h = true
 			wolf.sprite.flip_h = false
 		for unit in [knight, wolf]: unit._super_armor_visual._sync()
@@ -68,7 +72,7 @@ func _run() -> void:
 			"wolf_frame": str(wolf.sprite.texture.resource_path)})
 	var file := FileAccess.open(capture_dir.path_join("capture.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify({"production_scene": "res://scenes/core/game_root.tscn",
-		"scripted_review": true, "trigger": "apply_knockback(direction, 450.0, 0.3, 0.0)", "fps": 20, "samples": samples}, "\t"))
+		"scripted_review": true, "trigger": "three controls spaced 0.31 seconds apart", "fps": 20, "samples": samples}, "\t"))
 	print("SUPER_ARMOR_CAPTURE_COMPLETE samples=", samples.size())
 	manager.clear_battle_entities()
 	AudioManager.stop_combat_sfx()

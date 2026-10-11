@@ -5,8 +5,8 @@ var failures := 0
 var report := {}
 const LUCK_VALUES := {
 	"relic_incomplete_divination_dice": 18, "relic_defiled_blessing_coin": 36,
-	"relic_stargazers_lens": 36, "relic_gift_mark": 84,
-	"relic_void_storage_casket": 36, "relic_reincarnation_hellfire_candle": 150,
+	"relic_stargazers_lens": 36, "relic_gift_mark": 64,
+	"relic_void_storage_casket": 36, "relic_reincarnation_hellfire_candle": 128,
 	"relic_guarding_heart_copper_mirror": 36,
 }
 
@@ -58,11 +58,13 @@ func _test_luck() -> void:
 	player.add_relic("relic_defiled_blessing_coin")
 	check(player.get_stat("luck") == 54 and generator.get_shop_rarity_weights(54).epic > 0 and generator.get_shop_rarity_weights(54).mythic == 0, "common plus uncommon luck relics open epic rarity")
 	player.add_relic("relic_gift_mark")
-	check(player.get_stat("luck") == 138 and generator.get_shop_rarity_weights(138).mythic == 0, "one gift mark does not skip the mythic gate")
+	check(player.get_stat("luck") == 118 and generator.get_shop_rarity_weights(118).mythic == 0, "one gift mark does not skip the mythic gate")
 	player.add_relic("relic_gift_mark")
-	check(player.get_stat("luck") == 222 and generator.get_shop_rarity_weights(222).mythic > 0, "stacked gift marks open mythic rarity")
+	check(player.get_stat("luck") == 182 and generator.get_shop_rarity_weights(182).mythic > 0, "stacked gift marks open mythic rarity")
 	player.add_relic("relic_reincarnation_hellfire_candle")
-	check(player.get_stat("luck") == 372 and generator.get_shop_rarity_weights(372).legendary > 0, "continued investment opens legendary rarity")
+	check(player.get_stat("luck") == 310 and generator.get_shop_rarity_weights(310).legendary == 0, "rebalanced mark and candle stay below the legendary gate")
+	player.add_relic("relic_gift_mark")
+	check(player.get_stat("luck") == 374 and generator.get_shop_rarity_weights(374).legendary > 0, "another mark opens legendary rarity through continued investment")
 	var before := player.get_stat("luck")
 	player.add_relic("relic_amulet_of_humanity")
 	check(player.get_stat("luck") == before - 5, "negative luck tradeoff remains five points")

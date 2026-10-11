@@ -4,7 +4,10 @@ class_name PreparationOfferCard
 signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
+signal minimum_height_requested(height: float)
 const ICON_FRAME_SIZE := Vector2(44, 44)
+const DESCRIPTION_FONT_SIZE := 11
+const DESCRIPTION_MIN_FONT_SIZE := 9
 var offer: Dictionary = {}
 var _icon: TextureRect
 var _icon_frame: Control
@@ -14,6 +17,7 @@ var _kind_label: Label
 var _description: RichTextLabel
 var _price: Label
 var buy_button: Button
+var _description_fit_queued := false
 
 
 func _ready() -> void:
@@ -82,9 +86,10 @@ func _ready() -> void:
 	_description.scroll_active = false
 	_description.custom_minimum_size.y = 32
 	_description.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_description.add_theme_font_size_override("normal_font_size", 11)
+	_description.add_theme_font_size_override("normal_font_size", DESCRIPTION_FONT_SIZE)
 	_description.add_theme_color_override("default_color", FinanceUIStyle.MUTED)
 	description_margin.add_child(_description)
+	_description.resized.connect(_queue_description_fit)
 	var footer := HBoxContainer.new()
 	body.add_child(footer)
 	_price = WrappedTooltipLabel.new()
@@ -123,6 +128,8 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	var path := str(offer.get("icon", ""))
 	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), FinanceUIStyle.RELIC_LIST_ICON_SCALE)
 	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE.max(_icon.custom_minimum_size)
+	if ItemIconArt.is_weapon(_icon.texture):
+		ItemIconArt.bind_texture(_icon, _icon.texture, false, 32.0, _icon_frame, ICON_FRAME_SIZE.x)
 	var rarity := str(offer.get("rarity", "common"))
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"
@@ -145,3 +152,29 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	if unavailable == "insufficient_gold":
 		buy_button.text = L10n.text("ui.shop.gold_shortfall") % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE
+	_queue_description_fit()
+
+
+func _queue_description_fit() -> void:
+	if _description_fit_queued:
+		return
+	_description_fit_queued = true
+	# Wait for the nested containers to settle after pooled cards are resized.
+	get_tree().process_frame.connect(_fit_description, CONNECT_ONE_SHOT)
+
+
+func _fit_description() -> void:
+	_description_fit_queued = false
+	if not is_inside_tree() or _description.size.x <= 0 or _description.size.y <= 0:
+		return
+	# Measure shaped, wrapped text after layout; character counts miss newlines,
+	# translation lengths and changes in the available card width.
+	var available_height := floorf(_description.size.y)
+	for font_size in range(DESCRIPTION_FONT_SIZE, DESCRIPTION_MIN_FONT_SIZE - 1, -1):
+		for font_key in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
+			_description.add_theme_font_size_override(font_key, font_size)
+		if _description.get_content_height() <= available_height:
+			return
+	# Keep very long descriptions readable. The virtual grid reserves more row
+	# height only if shrinking to the minimum still cannot show the complete text.
+	minimum_height_requested.emit(ceilf(size.y + _description.get_content_height() - available_height))

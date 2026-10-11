@@ -36,6 +36,11 @@ const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/li
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
 const FEEDBACK_R02 = preload("res://scripts/effects/combat_feedback_r02.gd")
 const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
+const SUPER_ARMOR_SECONDS := 1.0
+const SUPER_ARMOR_COOLDOWN_SECONDS := 5.0
+const SUPER_ARMOR_CONTROL_WINDOW := 2.0
+const SUPER_ARMOR_CONTROL_INTERVAL := 0.3
+const SUPER_ARMOR_CONTROL_COUNT := 3
 
 @export var enemy_id: String = DEFAULT_ENEMY_ID
 @export var auto_initialize_on_ready: bool = true
@@ -108,6 +113,10 @@ var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
 var _lightning_visual: Node2D = null
 var _super_armor_visual: Node2D = null
+var _super_armor_remaining := 0.0
+var _super_armor_cooldown := 0.0
+var _super_armor_clock := 0.0
+var _super_armor_control_times: Array[float] = []
 var _is_move_animation_active: bool = false
 var _move_animation_frame: int = 0
 var _move_animation_timer: float = 0.0
@@ -159,6 +168,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		_set_movement_visual(false, delta)
 		return
+	_tick_super_armor(delta)
 	_contact_damage_cooldown = maxf(_contact_damage_cooldown - delta, 0.0)
 	_process_burning(delta)
 	if not alive:
@@ -208,8 +218,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
-	if is_instance_valid(_super_armor_visual):
-		_super_armor_visual.call("clear")
+	_reset_super_armor()
 	modifier_stack.cache_enabled = true
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
 	_apply_runtime_modifiers(runtime_modifiers)
@@ -287,7 +296,7 @@ func apply_burning(duration: float, damage_per_tick: float, source_id: String = 
 
 
 func apply_slow(duration: float, multiplier: float, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0 or multiplier >= 1.0 or not can_receive_control():
 		return
 	var susceptibility := get_control_multiplier()
 	_slowed_remaining = maxf(_slowed_remaining, _control_duration(duration, control_power) * susceptibility)
@@ -295,11 +304,14 @@ func apply_slow(duration: float, multiplier: float, control_power: float = -1.0)
 
 
 func apply_wet(duration: float = 5.0, slow_multiplier: float = 0.8, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0:
 		return
+	# Wet still participates in elemental damage reactions; only its slow is control.
+	var allow_slow := can_receive_control(slow_multiplier < 1.0)
 	var susceptibility := get_control_multiplier()
 	_wet_remaining = maxf(_wet_remaining, _control_duration(duration, control_power) * susceptibility)
-	_wet_slow_multiplier = minf(_wet_slow_multiplier, lerpf(1.0, clampf(slow_multiplier, 0.05, 1.0), susceptibility))
+	if allow_slow:
+		_wet_slow_multiplier = minf(_wet_slow_multiplier, lerpf(1.0, clampf(slow_multiplier, 0.05, 1.0), susceptibility))
 
 
 func clear_wet() -> void:
@@ -308,7 +320,7 @@ func clear_wet() -> void:
 
 
 func apply_freeze(duration: float = 1.0, thaw_reaction_data: Dictionary = {}, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0 or not can_receive_control():
 		return
 	if _frozen_remaining <= 0.0:
 		_light_freeze_reacted = false
@@ -358,9 +370,10 @@ func clear_light() -> void:
 
 
 func apply_blind(duration: float = 2.0, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0:
 		return
-	_blinded_remaining = maxf(_blinded_remaining, _control_duration(minf(duration, 5.0), control_power) * get_control_multiplier())
+	if can_receive_control():
+		_blinded_remaining = maxf(_blinded_remaining, _control_duration(minf(duration, 5.0), control_power) * get_control_multiplier())
 	if _burning_remaining > 0.0:
 		_burning_remaining = maxf(_burning_remaining, 10.0)
 		_dark_flame = true
@@ -426,18 +439,84 @@ func _control_duration(duration: float, source_control_power: float = -1.0) -> f
 	var power := source_control_power
 	if power < 0.0:
 		power = target_player.get_stat("control_power") if is_instance_valid(target_player) else 0.0
-	var scaled := StatDefinitions.calculate_control_duration(duration, power)
-	if scaled > 0.0:
-		show_control_resistance()
-	return scaled
+	return StatDefinitions.calculate_control_duration(duration, power)
+
+
+func is_control_immune() -> bool:
+	return alive and _super_armor_remaining > 0.0
+
+
+func can_receive_control(count_for_super_armor: bool = true) -> bool:
+	if not alive or is_control_immune():
+		return false
+	if not count_for_super_armor or str(enemy_data.get("enemy_type", "")) != "elite":
+		return true
+	if _super_armor_cooldown > 0.0 or not is_inside_tree() or sprite == null or not sprite.visible:
+		return true
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return true
+	# Coalesce multi-element hits and per-frame pulls into spaced control events.
+	while not _super_armor_control_times.is_empty() and _super_armor_clock - _super_armor_control_times[0] > SUPER_ARMOR_CONTROL_WINDOW:
+		_super_armor_control_times.pop_front()
+	if not _super_armor_control_times.is_empty() and _super_armor_clock - _super_armor_control_times.back() < SUPER_ARMOR_CONTROL_INTERVAL - 0.000001:
+		return true
+	_super_armor_control_times.append(_super_armor_clock)
+	if _super_armor_control_times.size() < SUPER_ARMOR_CONTROL_COUNT:
+		return true
+	_start_super_armor()
+	return false
+
+
+func _start_super_armor() -> void:
+	_super_armor_remaining = SUPER_ARMOR_SECONDS
+	_super_armor_cooldown = SUPER_ARMOR_SECONDS + SUPER_ARMOR_COOLDOWN_SECONDS
+	_super_armor_control_times.clear()
+	_stunned_remaining = 0.0
+	_slowed_remaining = 0.0
+	_slow_multiplier = 1.0
+	_wet_slow_multiplier = 1.0
+	_frozen_remaining = 0.0
+	_thaw_reaction_data.clear()
+	_light_freeze_reacted = false
+	_blinded_remaining = 0.0
+	if _knockback_timer > 0.0:
+		velocity = Vector2.ZERO
+	_knockback_timer = 0.0
+	_knockback_velocity = Vector2.ZERO
+	_knockback_deceleration = 0.0
+	if is_instance_valid(_lightning_visual):
+		_lightning_visual.hide()
+	FEEDBACK_R02.interrupt(self)
+	if _visual_tween != null and _visual_tween.is_valid():
+		_visual_tween.kill()
+	if sprite != null:
+		sprite.rotation = 0.0
+		sprite.modulate = _base_sprite_modulate
+	show_control_resistance()
+
+
+func _tick_super_armor(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return
+	_super_armor_clock += delta
+	_super_armor_remaining = maxf(0.0, _super_armor_remaining - delta)
+	_super_armor_cooldown = maxf(0.0, _super_armor_cooldown - delta)
+	if is_instance_valid(_super_armor_visual):
+		_super_armor_visual.call("_process", 0.0)
+
+
+func _reset_super_armor() -> void:
+	_super_armor_remaining = 0.0
+	_super_armor_cooldown = 0.0
+	_super_armor_clock = 0.0
+	_super_armor_control_times.clear()
+	if is_instance_valid(_super_armor_visual):
+		_super_armor_visual.call("clear")
 
 
 func show_control_resistance() -> void:
-	if not alive or not is_inside_tree() or sprite == null or not sprite.visible:
-		return
-	if str(enemy_data.get("enemy_type", "")) != "elite" or get_control_multiplier() >= 1.0:
-		return
-	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+	# Only the gameplay state may show this cue; resisted hits cannot refresh it.
+	if not is_control_immune() or not is_inside_tree() or sprite == null or not sprite.visible:
 		return
 	if not is_instance_valid(_super_armor_visual):
 		_super_armor_visual = SUPER_ARMOR_VISUAL.new()
@@ -451,7 +530,7 @@ func can_be_pushed_by_wind() -> bool:
 
 
 func apply_knockback(hit_direction: Vector2, speed: float, duration: float, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0 or speed <= 0.0 or not can_receive_control():
 		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	_knockback_velocity = safe_direction * maxf(speed, 1.0) * get_control_multiplier()
@@ -472,7 +551,7 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 
 
 func apply_lightning_stun(duration: float = 0.65, control_power: float = -1.0) -> void:
-	if not alive:
+	if not alive or duration <= 0.0 or not can_receive_control():
 		return
 	var resisted_duration := _control_duration(minf(duration, LIGHTNING_STUN_MAX_SECONDS), control_power) * get_control_multiplier()
 	_stunned_remaining = maxf(_stunned_remaining, resisted_duration)
@@ -585,6 +664,8 @@ func _apply_hit_feedback(hit_direction: Vector2, feedback_kind: StringName = &""
 	_capture_base_sprite_modulate()
 	# Consume the same visual RNG sample in both versions so combat RNG is stable.
 	var shake_angle := randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
+	if is_control_immune():
+		shake_angle = 0.0
 	if FEEDBACK_R02.enabled() and FEEDBACK_R02.handles(feedback_kind):
 		if not hit_direction.is_zero_approx():
 			_apply_weapon_knockback(hit_direction)
@@ -616,6 +697,9 @@ func _capture_base_sprite_modulate() -> void:
 
 
 func _apply_weapon_knockback(hit_direction: Vector2) -> void:
+	# Native hit recoil never builds armor, but is also blocked during immunity.
+	if not can_receive_control(false):
+		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED * get_control_multiplier()
 	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
@@ -629,8 +713,7 @@ func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 func fade_out_and_free() -> void:
 	if not is_inside_tree():
 		return
-	if is_instance_valid(_super_armor_visual):
-		_super_armor_visual.call("clear")
+	_reset_super_armor()
 	FEEDBACK_R02.interrupt(self)
 	if _visual_tween != null and _visual_tween.is_valid():
 		_visual_tween.kill()
@@ -913,7 +996,7 @@ func _is_touching_player() -> bool:
 
 
 func _apply_contact_knockback() -> void:
-	if target_player == null:
+	if target_player == null or not can_receive_control(false):
 		return
 	var direction := target_player.global_position.direction_to(global_position)
 	if direction.is_zero_approx():

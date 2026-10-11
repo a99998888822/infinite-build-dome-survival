@@ -20,6 +20,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	resized.connect(queue_redraw)
+	get_viewport().size_changed.connect(queue_redraw)
 
 
 func bind_context(manager: WaveManager, loadout: WeaponLoadout) -> void:
@@ -93,6 +94,7 @@ func _draw() -> void:
 		draw_rect(rect, Color(0.43, 0.46, 0.34, 0.45), false, 1.0)
 		var icon := entry.icon as Texture2D
 		if icon != null:
+			icon = ItemIconArt.texture_for(icon, ItemIconArt.physical_extent(self, 16))
 			var icon_size := icon.get_size() * (16.0 / maxf(icon.get_width(), icon.get_height()))
 			draw_texture_rect(icon, Rect2(Vector2(11, y + ROW_HEIGHT * 0.5) - icon_size * 0.5, icon_size), false)
 		var amount := _format_damage(int(entry.damage))

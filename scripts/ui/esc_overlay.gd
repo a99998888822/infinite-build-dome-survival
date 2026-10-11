@@ -52,6 +52,8 @@ static var _relic_glow_textures: Dictionary = {}
 
 func _ready() -> void:
 	visibility_changed.connect(_sync_relic_pulses)
+	if weapon_strip != null:
+		weapon_strip.minimum_height_changed.connect(_layout_overlay, CONNECT_DEFERRED)
 	if relic_tooltip != null:
 		relic_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 	_ensure_backdrop()
@@ -249,13 +251,16 @@ func _layout_overlay() -> void:
 	var safe := _get_modal_safe_rect()
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return
+	var strip_height := maxf(WEAPON_STRIP_HEIGHT, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
+	var modal_top := maxf(MODAL_TOP_OFFSET, WEAPON_STRIP_TOP_OFFSET + strip_height + 16.0)
 	if center_container != null:
 		center_container.anchor_left = 0.0
 		center_container.anchor_top = 0.0
 		center_container.anchor_right = 0.0
 		center_container.anchor_bottom = 0.0
-		center_container.position = safe.position + Vector2(0.0, MODAL_TOP_OFFSET)
-		var target_size := Vector2(safe.size.x, minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0)))
+		center_container.position = safe.position + Vector2(0.0, modal_top)
+		var base_height := minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0))
+		var target_size := Vector2(safe.size.x, maxf(0.0, base_height - (modal_top - MODAL_TOP_OFFSET)))
 		var panel := center_container.get_node("RelicPanel") as PanelContainer
 		var panel_size := Vector2(minf(760.0, safe.size.x), target_size.y)
 		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
@@ -286,7 +291,7 @@ func _layout_overlay() -> void:
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
 		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
-		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
+		weapon_strip.size = Vector2(strip_width, strip_height)
 	_update_relic_grid_columns()
 	_update_item_grid_columns()
 

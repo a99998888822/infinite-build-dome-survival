@@ -45,6 +45,8 @@ func _run() -> void:
 	_test_heart()
 	_test_ring()
 	_test_merger_cap()
+	_test_confirmed_caps()
+	_test_bankruptcy_order()
 	_test_uncapped_stats()
 	_test_protection()
 	_test_revive_priority_and_preview()
@@ -59,12 +61,13 @@ func _test_catalog() -> void:
 	var p := make_player()
 	var generator := ShopOfferGenerator.new()
 	var pool := generator.build_shop_candidate_pool({})
-	for id in IDS:
+	var limited := IDS + ["relic_steel_vault", "relic_quant_trading", "relic_hostile_takeover", "relic_medical_cutback", "relic_welfare_cutback", "relic_annual_leave_cutback", "relic_salary_adjustment"]
+	for id in limited:
 		check(pool.any(func(offer): return offer.get("target_id", "") == id), id + " enters offer pool")
 		check(p.add_relic(id) and not p.add_relic(id), id + " accepts one copy")
 		check(ResourceLoader.exists(str(DataRegistry.get_record("relics", id).icon)), id + " has imported icon")
 	pool = generator.build_shop_candidate_pool({"owned_relic_counts": p.get_relic_counts()})
-	check(pool.all(func(offer): return offer.get("target_id", "") not in IDS), "owned capped relics leave offers")
+	check(pool.all(func(offer): return offer.get("target_id", "") not in limited), "owned capped relics leave offers")
 	p.free()
 
 
@@ -87,9 +90,9 @@ func _test_heart() -> void:
 	bank.withdraw(1000)
 	check(p.get_stat("max_hp") == 10 and p.current_hp == 7, "principal removal preserves injured HP below new cap")
 	bank.deposit(100000, true)
-	check(p.get_stat("max_hp") == 1010 and p.current_hp == 7, "heart principal scaling has no additional cap")
+	check(p.get_stat("max_hp") == 30 and p.current_hp == 7, "heart caps its maximum-health bonus at twenty without healing")
 	p.add_relic("relic_piggy_bank")
-	check(p.current_hp == 7 and p.get_stat("max_hp") == 1010, "unrelated relic rebuild does not damage or heal heart owner")
+	check(p.current_hp == 7 and p.get_stat("max_hp") == 30, "unrelated relic rebuild does not damage or heal heart owner")
 	p.free()
 
 
@@ -112,7 +115,7 @@ func _test_ring() -> void:
 	var settled := bank.settle_interest()
 	check(settled.gain == 25 and bank.principal == 490 and p.get_stat("humanity") == 100, "cash interest cannot cross a principal tier or add ring sanity cost")
 	bank.deposit(50000 - bank.principal, true)
-	check(p.get_stat("humanity") == -100 and p.get_stat("currency_gain_percent") == 1000, "ring penalty and bonus keep growing past negative sanity")
+	check(p.get_stat("humanity") == 90 and p.get_stat("currency_gain_percent") == 50, "ring caps both bonus and sanity cost at five tiers")
 	bank.withdraw(bank.principal - 1000)
 	check(p.get_stat("humanity") == 96 and p.get_stat("currency_gain_percent") == 20, "withdrawal restores exact reversible ring tiers")
 	p.add_relic("relic_reincarnation_hellfire_candle")
@@ -171,6 +174,98 @@ func _test_merger_cap() -> void:
 	p.free()
 
 
+func _test_confirmed_caps() -> void:
+	var p := make_player()
+	var bank := make_bank(p)
+	for id in ["relic_steel_vault", "relic_quant_trading", "relic_hostile_takeover", "relic_coin_heart", "relic_hoarders_ring"]:
+		p.add_relic(id)
+	# Principal, armor/speed, damage, maximum HP, gold gain, sanity.
+	for row in [[1999, 39, 19, 29, 30, 94], [2000, 40, 20, 30, 40, 92], [2499, 40, 24, 30, 40, 92], [2500, 40, 25, 30, 50, 90], [2999, 40, 29, 30, 50, 90], [3000, 40, 30, 30, 50, 90], [1000000, 40, 30, 30, 50, 90]]:
+		bank.deposit(row[0] - bank.principal, true)
+		check(p.get_stat("armor") == row[1] and p.get_stat("attack_speed") == row[1] and p.get_stat("damage_percent") == row[2], "combat caps at principal %d" % row[0])
+		check(p.get_stat("max_hp") == row[3] and p.get_stat("currency_gain_percent") == row[4] and p.get_stat("humanity") == row[5], "health and signed ring caps at principal %d" % row[0])
+	var preview_player := p.create_stat_preview_copy()
+	var preview_bank := bank.create_preview_copy(preview_player)
+	preview_bank.withdraw(bank.principal - 2499)
+	check(preview_player.get_stat("damage_percent") == 24 and preview_player.get_stat("humanity") == 92 and preview_player.get_stat("currency_gain_percent") == 40, "withdrawal preview crosses below capped tiers")
+	check(bank.principal == 1000000 and p.get_stat("humanity") == 90, "capped withdrawal preview leaves live values unchanged")
+	preview_player.free()
+	bank.withdraw(bank.principal - 2499)
+	check(p.get_stat("damage_percent") == 24 and p.get_stat("humanity") == 92 and p.get_stat("currency_gain_percent") == 40, "actual withdrawal matches capped preview")
+	p.add_relic("relic_load_iron_bracer")
+	check(p.get_stat("armor") == 46, "vault cap does not limit armor from other relics")
+	p.free()
+
+
+func _test_bankruptcy_order() -> void:
+	for reject_first in [false, true]:
+		var p := make_player()
+		var bank := BattleFinanceSystem.new()
+		var wallet := {"value": 100, "accept": not reject_first, "observed_principal": -1, "reentrant_rejected": false}
+		bank.initialize(p, func(): return wallet.value, func(delta, _reason):
+			wallet.observed_principal = bank.principal
+			wallet.reentrant_rejected = not bank.withdraw(1).success
+			if not wallet.accept: return false
+			wallet.value += delta
+			return true
+		)
+		p.relic_added.connect(bank.on_relic_added)
+		bank.prepare_wave(1)
+		bank.deposit(1000, true)
+		p.add_relic("relic_coin_heart")
+		p.add_relic("relic_bankruptcy_reorg")
+		p.restore_full_health()
+		var events: Array[String] = []
+		bank.activity_recorded.connect(func(entry): events.append(str(entry.kind)))
+		check(not bank.withdraw(1001).success and not bank._bankruptcy_triggered, "prospective bankruptcy reward cannot fund an overdraft")
+		if reject_first:
+			var rejected := bank.apply_finance_operation("withdraw", 1000)
+			check(not rejected.success and bank.principal == 1000 and wallet.value == 100, "rejected wallet credit rolls back staged bankruptcy principal")
+			check(not bank._bankruptcy_triggered and not bank.manual_operation_used and p.remaining_revives == 0 and p.current_hp == 20 and events.is_empty(), "failed withdrawal preserves reward, health, action and logs")
+			wallet.accept = true
+		var preview_player := p.create_stat_preview_copy()
+		var preview_bank := bank.create_preview_copy(preview_player)
+		preview_bank.apply_finance_operation("withdraw", 1000)
+		check(preview_bank.principal == 200 and preview_bank.get_current_gold() == 1100 and preview_player.remaining_revives == 1, "bankruptcy preview uses pre-withdrawal cash")
+		check(bank.principal == 1000 and wallet.value == 100 and not bank._bankruptcy_triggered and p.current_hp == 20, "bankruptcy preview is read-only for the real run")
+		preview_player.free()
+		var result := bank.apply_finance_operation("withdraw", 1000)
+		check(result.success and bank.principal == 200 and wallet.value == 1100 and p.remaining_revives == 1, "reward precedes original withdrawal: 100 cash grants 200 principal")
+		check(wallet.observed_principal == 200 and wallet.reentrant_rejected, "wallet callback sees final principal and cannot reenter the transaction")
+		check(p.get_stat("max_hp") == 12 and p.current_hp == 12, "withdrawal never exposes temporary zero principal to heart health")
+		check(events == ["relic_principal", "withdraw"], "journal records the reorganization before the withdrawal")
+		bank.prepare_wave(2)
+		bank.apply_finance_operation("withdraw", 200)
+		check(bank.principal == 0 and wallet.value == 1300 and p.remaining_revives == 1, "subsequent depletion cannot repeat bankruptcy")
+		p.relic_system.remove_relic("relic_bankruptcy_reorg")
+		p.add_relic("relic_bankruptcy_reorg")
+		bank.deposit(100, true)
+		bank.withdraw(100)
+		check(bank.principal == 0 and p.remaining_revives == 1, "reacquiring bankruptcy cannot reset its run charge")
+		bank._gold_delta_applier = Callable()
+		p.free()
+	var p := make_player()
+	var bank := BattleFinanceSystem.new()
+	var wallet := {"value": 0}
+	bank.initialize(p, func(): return wallet.value, func(delta, _reason): wallet.value += delta; return true)
+	p.relic_added.connect(bank.on_relic_added)
+	p.add_relic("relic_bankruptcy_reorg")
+	bank.deposit(1000, true)
+	bank.withdraw(1000)
+	check(bank.principal == 0 and wallet.value == 1000 and p.remaining_revives == 1 and bank._bankruptcy_triggered, "empty pre-withdrawal wallet grants no principal but still grants one revive")
+	p.free()
+	p = make_player()
+	bank = make_bank(p)
+	bank.deposit(50, true)
+	p.add_relic("relic_bankruptcy_reorg")
+	bank.begin_wave(1)
+	bank.arm_capital_protection(1, 0.3, 5)
+	check(bank.mitigate_health_damage(100) == 90 and bank.principal == 4000 and bank.get_current_gold() == 2000, "damage expense also grants bankruptcy from pre-operation cash")
+	check(bank.capital_protection.exhausted and bank.capital_protection.spent == 50 and p.remaining_revives == 1, "protection exhausts based on its original affordable budget")
+	check(bank.mitigate_health_damage(100) == 100 and bank.principal == 4000, "bankruptcy cannot restart exhausted protection")
+	p.free()
+
+
 func _test_uncapped_stats() -> void:
 	var p := make_player()
 	var values := {"max_hp": 200000, "armor": 200000, "damage_percent": 200000, "attack_speed": 20000, "area_size": 20000, "damage_area_size": 20000, "currency_gain_percent": 20000, "interest_rate": 20000.5}
@@ -208,8 +303,8 @@ func _test_uncapped_stats() -> void:
 	for id in ["relic_coin_heart", "relic_steel_vault", "relic_quant_trading", "relic_hostile_takeover", "relic_hoarders_ring"]:
 		p.add_relic(id)
 	bank.deposit(100000000, true)
-	check(p.get_stat("max_hp") == 1000010 and p.get_stat("armor") == 2000000, "principal-derived health and armor exceed former global limits")
-	check(p.get_stat("attack_speed") == 2000000 and p.get_stat("damage_percent") == 1000000 and p.get_stat("currency_gain_percent") == 2000000, "principal-derived offense and currency exceed former global limits")
+	check(p.get_stat("max_hp") == 30 and p.get_stat("armor") == 40, "principal relics cap their bonuses independently of global stat limits")
+	check(p.get_stat("attack_speed") == 40 and p.get_stat("damage_percent") == 30 and p.get_stat("currency_gain_percent") == 50 and p.get_stat("humanity") == 90, "extreme principal cannot exceed offense or ring caps")
 	bank.withdraw(99999500)
 	check(p.get_stat("max_hp") == 15 and p.get_stat("armor") == 10 and p.get_stat("attack_speed") == 10 and p.get_stat("damage_percent") == 5 and p.get_stat("currency_gain_percent") == 10, "withdrawal correctly removes very large derived bonuses")
 	p.free()

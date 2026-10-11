@@ -183,7 +183,8 @@ static func _freeze(enemy: Node, data: Dictionary, parent: Node, hit_position: V
 	var thaw_data := data.duplicate()
 	thaw_data["wet_duration"] = DEFAULT_WET_DURATION
 	enemy.apply_freeze(maxf(float(data.get("freeze_duration", DEFAULT_FREEZE_DURATION)), 0.1), thaw_data, _get_control_power(data))
-	_emit_ice_crystal(parent, hit_position)
+	if enemy.has_status("frozen"):
+		_emit_ice_crystal(parent, hit_position)
 
 
 static func _get_control_power(data: Dictionary) -> float:

@@ -21,7 +21,37 @@ ui.guide.body.settings,"打开设置 → 战斗设置，在「移动方式」中
 选择适合你的操作习惯；本次指引不会替你切换设置。","Open Settings → Combat Settings and choose Arrow Keys / WASD under Movement Mode.
 Choose the controls you prefer. This guide does not change your settings."
 ui.bank.amount_placeholder,输入金额,Enter amount
-ui.bank.balance_summary,金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,Gold %d  │  Principal %d  │  Rate %.1f%%  │  Est. interest +%d
+ui.bank.balance_summary,金币 %d　│　本金 %d　│　利率 %.1f%%,Gold %d  │  Principal %d  │  Rate %.1f%%
+ui.bank.specialization.attack,攻击专精,Attack
+ui.bank.specialization.choose,点击选择,Select
+ui.bank.specialization.completed,本次已完成 · %s,Purchased · %s
+ui.bank.specialization.confirm,确认购买 · %d 本金,Confirm purchase · %d principal
+ui.bank.specialization.confirm_hint,确认后获得该组全部属性；本次只能购买一组。,Receive all stats in this group. One purchase per visit.
+ui.bank.specialization.damage,伤害专精,Damage
+ui.bank.specialization.done_hint,专精本局生效，可继续购买或附魔。,Active for this run. You may continue shopping or enchanting.
+ui.bank.specialization.growth,成长专精,Growth
+ui.bank.specialization.insufficient,本金不足,Not enough principal
+ui.bank.specialization.not_chosen,本次未选,Not chosen
+ui.bank.specialization.obtained,已获得,Obtained
+ui.bank.specialization.paid,已支付 %d 本金 · 剩余 %d,Paid %d principal · Remaining %d
+ui.bank.specialization.principal_preview,本金 %d → %d,Principal %d → %d
+ui.bank.specialization.projectile,投射专精,Projectiles
+ui.bank.specialization.purchased,本次已购买,Purchased this visit
+ui.bank.specialization.revival,复活专精,Revival
+ui.bank.specialization.select_first,请选择一组专精,Select a specialization
+ui.bank.specialization.select_hint,选择一组，直接用本金购买。,Select a group to purchase with principal.
+ui.bank.specialization.selected,✓ 已选择,✓ Selected
+ui.bank.specialization.shortfall,当前本金 %d · 需要 %d · 还差 %d,Principal %d · Cost %d · Shortfall %d
+ui.bank.specialization.shortfall_hint,本次报价保留，补足本金后可购买。,Offer reserved. Add enough principal to purchase.
+ui.bank.specialization.stat.currency_gain_percent,金币获取,Gold gain
+ui.bank.specialization.stat.exp_gain_percent,经验获取,XP gain
+ui.bank.specialization.stat.revive_count,复活次数,Revives
+ui.bank.specialization.survival,生存专精,Survival
+ui.bank.specialization.tab_available,战斗专精 · 可选,Specialization · Available
+ui.bank.specialization.tab_purchased,战斗专精 · 已购,Specialization · Purchased
+ui.bank.specialization.tab_short_available,专精 · 可选,Spec · Available
+ui.bank.specialization.tab_short_purchased,专精 · 已购,Spec · Purchased
+ui.bank.specialization.title,战斗专精,Battle Specialization
 ui.bank.challenge_deposit_done,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
 ui.bank.deposit.action,存入,Deposit
 ui.bank.deposit.confirm,确认存入,Confirm Deposit

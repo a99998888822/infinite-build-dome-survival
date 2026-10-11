@@ -123,12 +123,13 @@ func refresh() -> void:
 		button.add_theme_constant_override("icon_max_width", 36)
 		button.focus_mode = Control.FOCUS_ALL
 		FinanceUIStyle.bank_button(button, weapon.weapon_id == selected_weapon_id)
+		ItemIconArt.bind_button(button, button.icon, 32.0)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
 		button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
 		button.mouse_exited.connect(func(): tooltip_hidden.emit())
 	var current := loadout.get_weapon_instance(selected_weapon_id)
-	_weapon_icon.texture = FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null
+	ItemIconArt.bind_texture(_weapon_icon, FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null, false, 26.0, null, 26.0)
 	_weapon_name.text = "%s · Lv.%d" % [L10n.source(str(current.weapon_data.get("display_name", ""))), current.level] if current != null else "尚无武器"
 	_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1
