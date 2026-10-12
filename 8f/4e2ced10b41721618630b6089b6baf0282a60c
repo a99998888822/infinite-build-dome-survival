@@ -1,0 +1,432 @@
+scripts/tests/grenade_weapon_test.gd
+  s_70f3c13fa7df8b::t_d2947195f7326f 230
+scripts/effects/light_reflection_effect.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 27,38,62-85,164,171,173,176
+scripts/tests/underworld_wolf_hit_feedback_test.gd.uid
+  s_70f3c13fa7df8b::t_f91df4e2537502 1
+scripts/data/data_validator.gd
+  s_d1c0a5d4b00d5c::t_356c82089fdb83 393-394
+  s_d1c0a5d4b00d5c::t_25a1f26772ee5c 287-289
+scenes/tests/weapon_attachment_progression_test.tscn
+  s_d1c0a5d4b00d5c::t_ddec3821180e73 1-6
+data_config/weapons.json
+  s_d1c0a5d4b00d5c::t_f3feeab38afff7 35-36,77,79,82,126,128,131,160-161,165,195-196,222,224,247,249,275,277,280,316-317,352,354,388,390,393,412,414,429,436,438,452,459,461
+  s_d1c0a5d4b00d5c::t_f4e040504000fd 4,44,94,135,169,204,231,257,285,324,362,397,420,444
+scripts/effects/water_wave_effect.gd
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 144
+data_config/goblin_trades.json
+  s_70f3c13fa7df8b::t_09f6e6ca1c2700 12
+scripts/tests/camp_dagger_test.gd
+  s_70f3c13fa7df8b::t_d2947195f7326f 88
+scenes/tests/lightning_hit_batch_review.tscn
+  s_d1c0a5d4b00d5c::t_04290baaf1a3c2 1-6
+scripts/tests/finance_talent_regression_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 149
+scenes/tests/campaign_16_waves_review.tscn
+  s_70f3c13fa7df8b::t_23c7c20b22151d 1-6
+docs/main/4-weapon_loadout_design.md
+  s_d1c0a5d4b00d5c::t_eafec2e18bf88e 489
+  s_70f3c13fa7df8b::t_d2947195f7326f 493-501
+scripts/tests/enemy_super_armor_test.gd
+  s_70f3c13fa7df8b::t_6b2075cf6c66d9 80,124,128,131-135
+scripts/modifiers/modifier_stack.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 113-114
+scripts/weapons/mobility_weapon_runtime.gd
+  s_70f3c13fa7df8b::t_7115f91ac618b4 73
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 75
+docs/performance/combat_reward_hitch_2026_10_12.md
+  s_d1c0a5d4b00d5c::t_795ae6bd1a195b 51-82
+  s_d1c0a5d4b00d5c::t_f08e0409400333 97-116
+  s_d1c0a5d4b00d5c::t_13b38e281e8372 118-151,154
+  s_d1c0a5d4b00d5c::t_5160454c0821a7 1-50
+  s_d1c0a5d4b00d5c::t_5b1c9137b9cbe7 152-153
+  s_d1c0a5d4b00d5c::t_473f1393d0d950 117
+  s_d1c0a5d4b00d5c::t_d816b53656dabb 83-96
+scenes/tests/underworld_wolf_hit_feedback_test.tscn
+  s_70f3c13fa7df8b::t_2e94e4f19b4097 1-6
+scripts/weapons/weapon_loadout.gd
+  s_d1c0a5d4b00d5c::t_808c5d00f2e400 214,218
+  s_d1c0a5d4b00d5c::t_6c887d2d48ef86 243-265
+scripts/enemies/enemy_controller.gd
+  s_d1c0a5d4b00d5c::t_b33cc3155c4ed2 752,789,796-797,802-805
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 125,128-134,140-141,154,674
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 816-822,824-826,860,878
+  s_d1c0a5d4b00d5c::t_8992eafdb4e9b9 823
+  s_70f3c13fa7df8b::t_6b2075cf6c66d9 36,126-127,827-828,953,957
+scripts/core/main_flow_coordinator.gd
+  s_70f3c13fa7df8b::t_cd57577c698cb9 65,119,173,577,1212,1471,1550,1562
+  s_70f3c13fa7df8b::t_5b795415be788a 407,825
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 544-545,645,653
+  s_70f3c13fa7df8b::t_e7e2c6101022f1 1378-1437
+scripts/tests/no_text_hit_benchmark.gd
+  s_d1c0a5d4b00d5c::t_6183ece1658a7c 14-15,30,32,67-69,93-94,96
+  s_d1c0a5d4b00d5c::t_fcffcab1209269 16,31,72-87,97,171
+  s_d1c0a5d4b00d5c::t_a87ee7756bb541 175
+  s_d1c0a5d4b00d5c::t_1677b4ffdafa0a 8-11,116,166-168
+  s_d1c0a5d4b00d5c::t_70bc6d947be54c 1-7,12-13,17-29,33-66,70-71,88-92,95,98-115,117-165,169-170,172-174,177-181
+  s_d1c0a5d4b00d5c::t_5303a76f7ad87e 176
+docs/main/checklist/campaign_16_waves_settlement_2026-10-12.md
+  s_70f3c13fa7df8b::t_744a3c859f7da4 1-35
+scripts/tests/underworld_wolf_hit_feedback_test.gd
+  s_70f3c13fa7df8b::t_2e94e4f19b4097 1-105
+scenes/tests/combat_hitch_benchmark.tscn
+  s_d1c0a5d4b00d5c::t_3c65d64889d71e 1-6
+scripts/tests/combat_hitch_regression_test.gd
+  s_d1c0a5d4b00d5c::t_8992eafdb4e9b9 115-119
+  s_d1c0a5d4b00d5c::t_41f358f7133c02 1-114,120-127,129-139,143-185
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 140-142
+  s_d1c0a5d4b00d5c::t_2e43d87303ad48 128
+scripts/effects/explosion_effect.gd
+  s_d1c0a5d4b00d5c::t_6183ece1658a7c 85,90
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 126-131
+  s_d1c0a5d4b00d5c::t_6ee76c1e62ebf2 13-17,63,164-165,168-174,177,179-182,222-224,227-228,237-241
+  s_d1c0a5d4b00d5c::t_5303a76f7ad87e 8,70-79,82,89,154-163
+  s_d1c0a5d4b00d5c::t_7b1916bbb6afa7 225,229
+scripts/tests/principal_weapon_upgrade_test.gd
+  s_70f3c13fa7df8b::t_2ce89af393e9a3 1-248
+docs/performance/enchantment_performance_checklist_2026-10-12.md
+  s_d1c0a5d4b00d5c::t_ece638b5814d51 1-171
+scripts/ui/run_settlement_panel.gd
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 153,214,230-238,254-257
+scripts/tests/dense_combat_regression_test.gd
+  s_d1c0a5d4b00d5c::t_16a5d9d4b08834 1-36,38-62,79-201,218-234
+  s_d1c0a5d4b00d5c::t_7b1916bbb6afa7 37,63-78
+  s_d1c0a5d4b00d5c::t_39e4890f066ff9 202-217
+scripts/waves/enemy_wave_pressure.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 64-67
+scripts/waves/wave_manager.gd
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 564-565
+  s_d1c0a5d4b00d5c::t_1677b4ffdafa0a 73-77,108,214-222,469-470,1019,1022,1032-1067,1069-1070
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 392-394
+  s_d1c0a5d4b00d5c::t_3120e3fd5c41b1 418,423,430,440
+scripts/effects/lightning_hit_sprite_burst.gd
+  s_d1c0a5d4b00d5c::t_d5ba1387a02a46 2,15-17,24-29,47-66,72-87,90-91,93-98,104,107,117-138,154,160,174-178,189-205,207-208,213,218-234,236
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 34-43,101,110
+scripts/rewards/goblin_special_trades.gd
+  s_70f3c13fa7df8b::t_09f6e6ca1c2700 6,17-20,23,26,61
+scripts/effects/ground_projection_r05.gd
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 2,10-13,17
+scripts/tests/nightwatch_spear_test.gd
+  s_70f3c13fa7df8b::t_d2947195f7326f 116
+scripts/ui/shop_offer_generator.gd
+  s_d1c0a5d4b00d5c::t_ff58721723d702 369
+  s_d1c0a5d4b00d5c::t_25a1f26772ee5c 68,227,239-246,290,373,398
+  s_d1c0a5d4b00d5c::t_808c5d00f2e400 17-19,23,208,268,314-323,416
+scripts/rewards/drop_reward_system.gd
+  s_d1c0a5d4b00d5c::t_adb098e25d9de8 28-30,40-41,288-294,299-303,309,313,328-364,383,386-387,429-430,434,439-440
+scenes/tests/dense_combat_regression_test.tscn
+  s_d1c0a5d4b00d5c::t_16a5d9d4b08834 1-6
+scripts/ui/enchantment_workbench.gd
+  s_70f3c13fa7df8b::t_8df72a8abd6466 15-16,84-88,171,213-241
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 28-36,41,44,46-47,51-52,57,62-70,104-106,137,150-152,159,209,212,242-315,428
+scripts/core/bootstrap.gd
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 419
+  s_d1c0a5d4b00d5c::t_808c5d00f2e400 733
+  s_70f3c13fa7df8b::t_a7c03d9222ab34 750
+scripts/tests/goblin_trade_expansion_test.gd
+  s_70f3c13fa7df8b::t_d3e57526c58fa5 293-294,299-300,316,322,324-329
+  s_70f3c13fa7df8b::t_bf386a3f402947 330,335
+  s_70f3c13fa7df8b::t_2699158e6a265e 331-334
+  s_70f3c13fa7df8b::t_56218095e7ebdf 260-263
+scripts/debug/recording_studio.gd
+  s_d1c0a5d4b00d5c::t_356c82089fdb83 286-295,350
+scripts/tools/build_ground_projection_review.py
+  s_70f3c13fa7df8b::t_a4c77c3c558f7d 1-44
+scenes/tests/advice_occurrence_log_test.tscn
+  s_70f3c13fa7df8b::t_01ab14e84c5ffb 1-6
+scripts/tests/run_settlement_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 91,98,101,104-105,107-112,207,230,273,296
+  s_70f3c13fa7df8b::t_2e00d91387b7a8 97,113
+  s_70f3c13fa7df8b::t_d7333a6ea9c7da 183-184
+scripts/enemies/enemy_registry.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 5-59,67,75
+scripts/ui/finance_ui_style.gd
+  s_d1c0a5d4b00d5c::t_b33cc3155c4ed2 11,246-267,277-281
+  s_70f3c13fa7df8b::t_8df72a8abd6466 210-212
+scenes/tests/principal_weapon_upgrade_test.tscn
+  s_70f3c13fa7df8b::t_2ce89af393e9a3 1-6
+scenes/tests/finance_compact_review.tscn
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 1-6
+scripts/tests/locale_after_exit_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 105-106
+scripts/tests/combat_hitch_benchmark.gd
+  s_d1c0a5d4b00d5c::t_3c65d64889d71e 1-20,24-58,63-101,127-128
+  s_d1c0a5d4b00d5c::t_261da311323e99 21-23,102-126
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 59-62
+scenes/tests/combat_hitch_regression_test.tscn
+  s_d1c0a5d4b00d5c::t_41f358f7133c02 1-6
+scripts/weapons/weapon_instance.gd
+  s_d1c0a5d4b00d5c::t_808c5d00f2e400 35,84,260,266-268
+  s_d1c0a5d4b00d5c::t_356c82089fdb83 345,348-356,776
+scripts/tests/advice_occurrence_log_test.gd
+  s_70f3c13fa7df8b::t_01ab14e84c5ffb 1-95
+scripts/battle/mobility_weapon_indicator.gd
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 151
+scripts/ui/shop_popup.gd
+  s_d1c0a5d4b00d5c::t_2e43d87303ad48 80,83,86-88,90,94-96,98,104
+  s_d1c0a5d4b00d5c::t_8c11e8a3f8bfe7 26,75-78,189-191,270,275,374,378-390
+  s_d1c0a5d4b00d5c::t_b33cc3155c4ed2 79,108-121
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 81-82,84-85,89,91-93,97,99-103,105-107
+  s_d1c0a5d4b00d5c::t_bd929770ceb2cd 391-392
+scripts/rewards/run_statistics.gd
+  s_70f3c13fa7df8b::t_5b795415be788a 16-17,37,67,69-72,80
+scripts/tests/difficulty_balance_test.gd
+  s_d1c0a5d4b00d5c::t_ddec3821180e73 111-113,115,123-128
+scripts/enemies/underworld_wolf.gd
+  s_70f3c13fa7df8b::t_6638110066e51d 268-269
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 31-32,222,225-230,360
+scenes/tests/thunder_fire_lod_review.tscn
+  s_d1c0a5d4b00d5c::t_d36c7c1e3d01b7 1-6
+scripts/rewards/inventory_trade_service.gd
+  s_70f3c13fa7df8b::t_09f6e6ca1c2700 15,20-22,25-38,51,60,71-73
+  s_d1c0a5d4b00d5c::t_7d73bf03c86f60 74-75
+scripts/tests/meteor_flail_test.gd
+  s_d1c0a5d4b00d5c::t_ddec3821180e73 83
+scripts/tests/finance_preparation_test.gd
+  s_70f3c13fa7df8b::t_d2947195f7326f 391
+  s_d1c0a5d4b00d5c::t_8ddca3273549cd 448
+scripts/ui/reward_option.gd
+  s_d1c0a5d4b00d5c::t_8c11e8a3f8bfe7 87,94-118,260-261,381,421,460-461
+scripts/tests/lightning_hit_batch_review.gd
+  s_d1c0a5d4b00d5c::t_bbc52b6f245bb2 54-56
+  s_d1c0a5d4b00d5c::t_133d1a4551c6e0 51-53,57-64,77-80
+  s_d1c0a5d4b00d5c::t_04290baaf1a3c2 1-50,65-76,81-89
+scripts/debug/recording_session.gd
+  s_d1c0a5d4b00d5c::t_356c82089fdb83 67-69
+scripts/battle/battle_root.gd
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 25-26
+scripts/ui/goblin_trade_presentation.gd
+  s_70f3c13fa7df8b::t_f0103714363723 46,211-221
+  s_70f3c13fa7df8b::t_34253cb6a55dcd 132-133
+scripts/effects/element_reaction_text.gd
+  s_d1c0a5d4b00d5c::t_b33cc3155c4ed2 1,12,16,33,37,52,56,60,64-79,82-83
+  s_d1c0a5d4b00d5c::t_8c11e8a3f8bfe7 10-11,36,38-41,44-50,53-54,84-85,101-102,104-116
+  s_d1c0a5d4b00d5c::t_2e43d87303ad48 42-43
+  s_d1c0a5d4b00d5c::t_669e7bbd1864c4 80-81
+  s_d1c0a5d4b00d5c::t_8992eafdb4e9b9 19-26
+  s_70f3c13fa7df8b::t_af5a5b643affaa 17-18
+data_config/run_settlement.json
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 4
+scripts/tests/new_weapon_probability_test.gd
+  s_d1c0a5d4b00d5c::t_eafec2e18bf88e 1-143
+scripts/tests/finance_compact_review.gd
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 1-183
+localization/catalogs/ui.csv
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 441-445
+  s_70f3c13fa7df8b::t_8df72a8abd6466 219-225
+scripts/effects/particle_light_field.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 33-37
+scripts/effects/light_sword_effect.gd
+  s_70f3c13fa7df8b::t_9ca4790a0a3c7c 193
+scripts/tests/ground_projection_review.gd
+  s_70f3c13fa7df8b::t_d41bf58909376f 79,216
+  s_70f3c13fa7df8b::t_a92d7278ce9e0a 147,175-177
+  s_d1c0a5d4b00d5c::t_347009d545eb40 1-78,80-91,95-98,101-111,114-146,148-174,178-215,217-236
+  s_70f3c13fa7df8b::t_b6db902b73c4d4 112-113
+  s_70f3c13fa7df8b::t_7115f91ac618b4 92-94,99-100
+localization/catalogs/content.csv
+  s_d1c0a5d4b00d5c::t_f3feeab38afff7 320-324,334-338,350-354,363-367,379-383,399-403,421-427,441-447,459-463,476-480,490-494
+scripts/tests/spawn_density_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 48
+scripts/tests/lightning_hit_batch_review.gd.uid
+  s_d1c0a5d4b00d5c::t_d56c70c0e0b415 1
+docs/main/checklist/super_armor_rules_2026-10-11.md
+  s_70f3c13fa7df8b::t_6b2075cf6c66d9 3,8
+scenes/tests/thunder_fire_lod_test.tscn
+  s_d1c0a5d4b00d5c::t_ef312bfe8e5bdc 1-6
+scripts/tests/campaign_16_waves_review.gd
+  s_70f3c13fa7df8b::t_23c7c20b22151d 1-114
+scenes/tests/no_text_hit_benchmark.tscn
+  s_d1c0a5d4b00d5c::t_70bc6d947be54c 1-6
+scripts/effects/electric_spark_warning_sprite.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 48-59
+scripts/tests/lightning_hit_png_test.gd
+  s_d1c0a5d4b00d5c::t_334cf51d1a5c40 55,63,65
+scripts/tests/weapon_trio_test.gd
+  s_70f3c13fa7df8b::t_d2947195f7326f 287
+scripts/rewards/run_settlement.gd
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 13,29-41,43-44
+scripts/ui/game_settings_panel.gd
+  s_70f3c13fa7df8b::t_63718ecbcee5c4 319
+scripts/effects/lightning_particle_effect.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 287-289,302-304
+scripts/tests/weapon_attachment_progression_test.gd
+  s_d1c0a5d4b00d5c::t_ddec3821180e73 1-138
+scripts/pickups/reward_pickup_pool.gd.uid
+  s_d1c0a5d4b00d5c::t_a3eb8be1e93e8a 1
+scripts/ui/enchantment_slot_card.gd
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 44
+scripts/effects/effect_visual_budget.gd.uid
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 1
+scripts/tests/wave_pressure_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 43
+  s_70f3c13fa7df8b::t_2e00d91387b7a8 75-76
+scripts/rewards/advice_occurrence_log.gd
+  s_70f3c13fa7df8b::t_a7b484443b3b24 9,55
+  s_70f3c13fa7df8b::t_5b795415be788a 1-8,10-54,56-84
+scripts/ui/enchantment_inventory_card.gd
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 4,32
+battle_ground_projection_audit.md
+  s_70f3c13fa7df8b::t_7115f91ac618b4 3-4
+scripts/effects/wind_blade_effect.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 72-100
+scripts/tests/recording_studio_test.gd
+  s_d1c0a5d4b00d5c::t_ddec3821180e73 78,89-91,111-112
+  s_70f3c13fa7df8b::t_d2947195f7326f 168-170
+localization/generated/source_keys.json
+  s_d1c0a5d4b00d5c::t_59802ab3b7e781 1160-1166
+  s_d1c0a5d4b00d5c::t_0a6fe201b5556d 1073-1083
+  s_70f3c13fa7df8b::t_21dc37ca0b3292 1183-1188
+scenes/tests/ground_projection_review.tscn
+  s_d1c0a5d4b00d5c::t_347009d545eb40 1-6
+scripts/tests/weapon_attachment_progression_test.gd.uid
+  s_d1c0a5d4b00d5c::t_0a6fe201b5556d 1
+scripts/ui/wave_challenge_popup.gd
+  s_70f3c13fa7df8b::t_34253cb6a55dcd 55-56
+scripts/pickups/reward_pickup_pool.gd
+  s_d1c0a5d4b00d5c::t_098962ef16d8af 1-30
+data_config/waves.json
+  s_70f3c13fa7df8b::t_87fe9f4f098269 4,20,36,52,68,84,100,116,132,148,164,180,196,212,228,244
+scripts/tests/battle_settings_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 148-149
+  s_70f3c13fa7df8b::t_502ec0db176bb3 150
+scripts/tests/thunder_fire_lod_test.gd
+  s_d1c0a5d4b00d5c::t_a87ee7756bb541 35
+  s_d1c0a5d4b00d5c::t_ef312bfe8e5bdc 1-34,36-135
+scripts/ui/finance_popup.gd
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 314,515-517,535,538,833-834
+scripts/effects/effect_parameter_resolver.gd
+  s_d1c0a5d4b00d5c::t_7b1916bbb6afa7 33,36-37,57
+  s_d1c0a5d4b00d5c::t_787b3007031210 4-6,10-32,34-35,38-42,45-49,58,76-77,81-82
+todo.md
+  s_70f3c13fa7df8b::t_5572a50bed9709 18
+  s_d1c0a5d4b00d5c::t_dbf65fee6d6917 17
+  s_70f3c13fa7df8b::t_3addf77e8ecb3a 22
+  s_5efd0b7ce7a3fe::t_c26b1391be6f22 8
+  s_5efd0b7ce7a3fe::t_786686ecd9e685 10
+  s_70f3c13fa7df8b::t_426994173ac849 3-4
+  s_d1c0a5d4b00d5c::t_f47e196ad38615 14-16
+  s_70f3c13fa7df8b::t_fc12c5ac1f3113 19-21
+  s_70f3c13fa7df8b::t_288eacb993789b 23-25
+scenes/tests/new_weapon_probability_test.tscn
+  s_d1c0a5d4b00d5c::t_eafec2e18bf88e 1-6
+scripts/tests/thunder_fire_lod_review.gd
+  s_d1c0a5d4b00d5c::t_d36c7c1e3d01b7 1-64,66-87
+  s_d1c0a5d4b00d5c::t_dd7467037e3153 65
+scripts/rewards/weapon_upgrade_rules.gd
+  s_d1c0a5d4b00d5c::t_808c5d00f2e400 1-13
+scripts/tests/no_text_hit_benchmark.gd.uid
+  s_70f3c13fa7df8b::t_c7c0fb79e50c75 1
+scripts/pickups/exp_orb.gd
+  s_d1c0a5d4b00d5c::t_098962ef16d8af 24,47-56,58-74,144-152
+  s_d1c0a5d4b00d5c::t_efcbd99fdad910 25,29-30,57
+scripts/ui/finance_scene_layout.gd
+  s_d1c0a5d4b00d5c::t_738a601a01e5e8 41-44
+scripts/tests/tome_purse_weapon_test.gd
+  s_70f3c13fa7df8b::t_368b3ef5378a52 256
+  s_70f3c13fa7df8b::t_d2947195f7326f 101,185
+scripts/effects/thunder_fire_visual_budget.gd
+  s_d1c0a5d4b00d5c::t_a87ee7756bb541 17,30
+  s_d1c0a5d4b00d5c::t_d9b3e9f02ddc50 1-16,18-29,31-90
+scripts/effects/effect_visual_budget.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 1-18
+scripts/effects/electric_spark_effect.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 31,38-39,68-71,78
+scripts/effects/combat_feedback_r02.gd
+  s_70f3c13fa7df8b::t_6638110066e51d 50-60
+scripts/effects/ice_field_effect.gd
+  s_d1c0a5d4b00d5c::t_23d989e6dc5f15 35-36,129
+localization/generated/source_aliases.csv
+  s_d1c0a5d4b00d5c::t_0a6fe201b5556d 230-236,255-261,266-272,850-855,1186-1192,1202-1211,1217-1226,1231-1237,1278-1284,1324-1330,1344-1348,1350
+  s_d1c0a5d4b00d5c::t_59802ab3b7e781 203,353,356,507,536,787,797
+  s_70f3c13fa7df8b::t_21dc37ca0b3292 161,459,681,1024,1041
+  s_70f3c13fa7df8b::t_8e107efcd822d8 856,1349
+scenes/tests/contact_revive_reorder_review.tscn
+  s_70f3c13fa7df8b::t_8fa17c7df6275a 1-6
+scripts/effects/revive_angel_wings.gd
+  s_70f3c13fa7df8b::t_7b635177f9c808 1-52
+scripts/effects/revive_angel_wings.gd.uid
+  s_70f3c13fa7df8b::t_7743ae8259ea20 1
+scripts/effects/thunder_fire_visual_budget.gd.uid
+  s_d1c0a5d4b00d5c::t_b4730061eb7058 1
+scripts/player/player_controller.gd
+  s_70f3c13fa7df8b::t_346f67f0987ba2 19-20,57-58,124-126,167-168,454-485,1020-1021,1041-1043
+scripts/rewards/advice_occurrence_log.gd.uid
+  s_70f3c13fa7df8b::t_2c5e6633e78a25 1
+scripts/rewards/weapon_upgrade_rules.gd.uid
+  s_70f3c13fa7df8b::t_c43d8896ef9e0f 1
+scripts/tests/advice_occurrence_log_test.gd.uid
+  s_70f3c13fa7df8b::t_783f98f833a8da 1
+scripts/tests/campaign_16_waves_review.gd.uid
+  s_70f3c13fa7df8b::t_510fae55c7dd47 1
+scripts/tests/combat_hitch_benchmark.gd.uid
+  s_d1c0a5d4b00d5c::t_b6cc4926adbb58 1
+scripts/tests/combat_hitch_regression_test.gd.uid
+  s_d1c0a5d4b00d5c::t_0480ed3293c768 1
+scripts/tests/contact_revive_reorder_review.gd
+  s_70f3c13fa7df8b::t_300f79d0597633 1-340
+scripts/tests/contact_revive_reorder_review.gd.uid
+  s_70f3c13fa7df8b::t_fa4ef490a45c88 1
+scripts/tests/dense_combat_regression_test.gd.uid
+  s_d1c0a5d4b00d5c::t_160b987f283432 1
+scripts/tests/finance_compact_review.gd.uid
+  s_70f3c13fa7df8b::t_74735bb2052478 1
+scripts/tests/ground_projection_review.gd.uid
+  s_70f3c13fa7df8b::t_ddf2bea696318e 1
+scripts/tests/new_weapon_probability_test.gd.uid
+  s_d1c0a5d4b00d5c::t_a2adac22451add 1
+scripts/tests/principal_weapon_upgrade_test.gd.uid
+  s_d1c0a5d4b00d5c::t_428dcf33a05512 1
+scripts/tests/thunder_fire_lod_review.gd.uid
+  s_d1c0a5d4b00d5c::t_8e03cb7c9e8820 1
+scripts/tests/thunder_fire_lod_test.gd.uid
+  s_d1c0a5d4b00d5c::t_9d5774ad75e141 1
+scripts/ui/weapon_strip.gd
+  s_70f3c13fa7df8b::t_19b867758d93b7 8-21,28-30,71-72,80-86,91-209,226,232,234-238,260-282,288-289,292,344-345,358
+shaders/effects/revive_angel_wings.gdshader
+  s_70f3c13fa7df8b::t_05396004f68788 1-64
+shaders/effects/revive_angel_wings.gdshader.uid
+  s_70f3c13fa7df8b::t_5d7c11f643d8f1 1
+docs/performance/enchantment_optimization_installation_2026-10-12.md
+  s_a8af0ad3db017e::t_583456f145d919 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8f4e2ced10b41721618630b6089b6baf0282a60c",
+  "prompts": {},
+  "sessions": {
+    "s_5efd0b7ce7a3fe": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12f01-1d81-7d01-8325-a38df3836b97",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_70f3c13fa7df8b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12dd2-3a64-7de3-b510-5d012f459721",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a8af0ad3db017e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12ec7-7c8c-7472-9f5a-5d11f3c77896",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_d1c0a5d4b00d5c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12dd8-51a2-74c1-8892-b98624804498",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
