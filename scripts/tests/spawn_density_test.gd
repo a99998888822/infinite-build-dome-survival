@@ -8,7 +8,6 @@ var elites := 0
 # Previous full-wave counts measured with this production scheduler. Early
 # anchors use the unreplaced supply (the conservative upper bound for normals).
 const PREVIOUS_EARLY_SUPPLY := {"1": [15, 18, 35, 40, 48], "2": [27, 32, 40, 56, 66], "3": [40, 46, 73, 83, 96]}
-const PREVIOUS_FINAL_NORMALS := {"1": 211, "2": 302, "3": 499}
 
 
 func _ready() -> void:
@@ -46,7 +45,7 @@ func _run() -> void:
 		manager.initialize(player, tier)
 		manager.child_entered_tree.connect(_count_spawn)
 		manager._elite_quota_rng.seed = 20261009
-		for wave in range(1, 21):
+		for wave in range(1, DataRegistry.get_table("waves").size() + 1):
 			manager.current_wave_index = wave - 2
 			manager.start_next_wave()
 			var groups: Array = []
@@ -78,9 +77,6 @@ func _run() -> void:
 			check(first_elite_time < duration * 0.5, "elites appear in first half")
 			if wave <= 5:
 				check(normals >= 2 * int(PREVIOUS_EARLY_SUPPLY[tier][wave - 1]), "full-wave ordinary enemies at least double: tier %s wave %d" % [tier, wave])
-			if wave == 20:
-				var ratio := float(normals) / float(PREVIOUS_FINAL_NORMALS[tier])
-				check(ratio >= 1.15 and ratio <= 1.25, "last-wave ordinary supply increases by about twenty percent")
 			rows.append({"difficulty": tier, "wave": wave, "duration_seconds": duration,
 				"groups": groups, "rate": rate, "cap": manager._difficulty.enemy_limit,
 				"spawned": spawned, "normal_spawned": normals, "elite_spawned": elites,

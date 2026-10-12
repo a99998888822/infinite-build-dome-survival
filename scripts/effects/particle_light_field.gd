@@ -30,6 +30,11 @@ func _ready() -> void:
 func add_light(global_position: Vector2, color: Color, energy: float, radius: float, duration: float = 0.18) -> void:
 	if energy <= 0.0 or radius <= 0.0:
 		return
+	# Lightning's two lamp colors each retain four complete initial contacts.
+	var budget = preload("res://scripts/effects/effect_visual_budget.gd")
+	var tier: int = budget.claim_visual(self, "light_" + color.to_html(), global_position)
+	if tier >= 2: return
+	if tier == 1: energy *= 0.5
 	var slot := -1
 	if _order.size() >= MAX_LIGHTS:
 		slot = _order[0]

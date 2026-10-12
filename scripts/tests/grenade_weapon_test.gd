@@ -227,7 +227,7 @@ func _run() -> void:
 	weapon = loadout.get_weapon_instance(WEAPON)
 	weapon.runtime_stats.crit_chance = 0
 	check(weapon != null and loadout.get_total_load_cost() == 32, "config equips with correct load")
-	check(weapon.get_attachment_slot_count() == 2, "two attachment slots")
+	check(weapon.get_attachment_slot_count() == 1, "one initial attachment slot")
 	check(weapon.calculate_damage_events()[0].damage == 16, "base native damage 16")
 	check(weapon.calculate_damage_events(true)[0].damage == 24, "critical damage 150 percent")
 	check(is_equal_approx(weapon.get_actual_attack_interval_seconds(), 1.8), "base interval 1.8 seconds")

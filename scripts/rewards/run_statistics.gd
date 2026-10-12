@@ -13,6 +13,8 @@ var _enemies: Dictionary = {}
 var _interest_events: Dictionary = {}
 var _waves: Dictionary = {}
 var _advice: Dictionary = {}
+var _advice_offer_ids: Dictionary = {}
+var advice_log := AdviceOccurrenceLog.new()
 var _last_accepted := false
 
 
@@ -32,6 +34,7 @@ func reset() -> void:
 	_interest_events.clear()
 	_waves.clear()
 	_advice.clear()
+	_advice_offer_ids.clear()
 	_last_accepted = false
 
 
@@ -61,9 +64,12 @@ func complete_wave(wave_number: int) -> void:
 	completed_waves += 1
 
 
-func show_advice(kind: String, token: String) -> void:
+func show_advice(kind: String, token: String, offer_id: String = "") -> void:
 	var key := kind + ":" + token
-	if not frozen and not token.is_empty() and not _advice.has(key): _advice[key] = -1
+	if frozen or token.is_empty() or _advice.has(key): return
+	_advice[key] = -1
+	_advice_offer_ids[key] = offer_id
+	advice_log.record(kind, offer_id, false)
 
 
 func decide_advice(kind: String, token: String, accepted: bool) -> void:
@@ -71,6 +77,7 @@ func decide_advice(kind: String, token: String, accepted: bool) -> void:
 	if frozen or int(_advice.get(key, -2)) != -1: return
 	_advice[key] = 1 if accepted else 0
 	_last_accepted = accepted
+	if accepted: advice_log.record(kind, str(_advice_offer_ids.get(key, "")), true)
 
 
 func snapshot() -> Dictionary:

@@ -257,9 +257,10 @@ func _test_buyout() -> void:
 	check(str(offer.weapon_id) == "weapon_plasma_cannon" and int(offer.amount) > 0, "highest damage weapon and positive bundle price are selected")
 	var service := InventoryTradeService.new()
 	var weapon := flow._bound_loadout.get_weapon_instance(str(offer.weapon_id))
-	var normal := int(service.quote_weapon(weapon, manager.player.get_stat("humanity")).total)
-	normal += int(service.quote_item(manager.player.item_inventory.find_item(attached_id), manager.player.get_stat("humanity")).total)
-	check(int(offer.amount) == normal * 10, "quote is ten times weapon plus enchantment resale value")
+	var cost := int(service.weapon_costs(weapon).total_cost)
+	cost += service.item_cost(manager.player.item_inventory.find_item(attached_id))
+	var expected := floori(cost * 1.5 * float(HumanityEconomy.get_multipliers(manager.player.get_stat("humanity")).sale))
+	check(int(offer.amount) == expected, "quote is 1.5 times weapon and enchantment full costs")
 	await capture_sizes("05_weapon_buyout_offer")
 	var gold := manager.current_gold
 	await click(popup.trade_presentation._yes)
@@ -289,14 +290,14 @@ func _test_sanity() -> void:
 		var quoted: Dictionary = offer.sanity_quote
 		print("SANITY_QUOTE candle=", candle, " before=", before, " quote=", quoted)
 		check(int(quoted.cost) == ceili(principal * 0.2) and float(quoted.gain) > 0, "sanity quote charges a dynamic share of capital")
-		# The ring returns 8 sanity when 10000 principal becomes 8000, unless blocked.
-		check(is_equal_approx(before, -40) and is_equal_approx(float(quoted.recovery), 45 if candle else 41) and is_equal_approx(float(quoted.gain), 45 if candle else 49), "only paid recovery is halved; principal-derived sanity follows existing relic rules")
+		# Both relics remain capped at 10000 -> 8000 principal; no derived recovery.
+		check(is_equal_approx(before, -40) and is_equal_approx(float(quoted.recovery), 45) and is_equal_approx(float(quoted.gain), 45), "paid recovery respects the current principal-derived relic caps")
 		var expected_after := before + float(quoted.gain)
 		check(before == manager.player.get_stat("humanity") and principal == manager.finance_system.principal, "read-only quote does not change real sanity or capital")
 		if candle: await capture_sizes("07_sanity_offer_with_candle")
 		await click(popup.trade_presentation._yes)
-		check(is_equal_approx(manager.player.get_stat("humanity"), expected_after) and is_equal_approx(expected_after, 5 if candle else 9), "halved paid restoration reaches exact quoted sanity, candle=" + str(candle))
-		check(manager.finance_system.principal == principal - int(quoted.cost) and manager.player.get_stat("max_hp") < hp, "capital cost refreshes principal-derived combat attributes")
+		check(is_equal_approx(manager.player.get_stat("humanity"), expected_after) and is_equal_approx(expected_after, 5), "halved paid restoration reaches exact quoted sanity, candle=" + str(candle))
+		check(manager.finance_system.principal == principal - int(quoted.cost) and manager.player.get_stat("max_hp") == hp, "capital deduction preserves the capped health bonus")
 		check(manager.finance_system.manual_operation_used == manual, "paid sanity does not spend a manual banking action")
 		manager.finance_system._emit_changed()
 		check(is_equal_approx(manager.player.get_stat("humanity"), expected_after) and not flow.accept_goblin_trade(str(offer.token)).success, "attribute rebuild preserves purchased sanity and cannot pay twice")
@@ -312,11 +313,23 @@ func _test_sanity() -> void:
 		var second_principal := manager.finance_system.principal
 		var second_quote := GoblinSpecialTrades.sanity_quote(manager.player, manager.finance_system, trades.definition("sanity_buyback"))
 		print("SANITY_REPEAT candle=", candle, " before=", second_before, " quote=", second_quote)
-		check(is_equal_approx(second_before, -95 if candle else -91) and is_equal_approx(float(second_quote.recovery), 72.5 if candle else 66.5) and is_equal_approx(float(second_quote.gain), 72 if candle else 74), "repeat purchase retains fractional modifiers and existing integer-sanity rounding")
+		check(is_equal_approx(second_before, -95) and is_equal_approx(float(second_quote.recovery), 72.5) and is_equal_approx(float(second_quote.gain), 72), "repeat purchase retains fractional modifiers and existing integer-sanity rounding")
 		check(is_equal_approx(manager.player.get_stat("humanity"), second_before), "repeat sanity preview does not mutate the first purchase")
 		trades.prepare({"wave": trades.preparation_wave + 1, "has_next_wave": true, "sanity": second_before, "principal": second_principal, "interest_loss": 100, "sanity_quote": second_quote})
 		check(str(trades.offer.get("id", "")) == "sanity_buyback", "second low-sanity wave can offer another purchase")
 		var second_token := str(trades.offer.get("token", ""))
 		var second_result := trades.accept(second_token, manager.player, manager.finance_system, flow._bound_loadout)
-		check(bool(second_result.success) and is_equal_approx(manager.player.get_stat("humanity"), -23 if candle else -17) and is_equal_approx(manager.player.get_stat("humanity") - second_before, float(second_quote.gain)), "second purchase matches quoted net gain without replacing the first, candle=" + str(candle))
+		check(bool(second_result.success) and is_equal_approx(manager.player.get_stat("humanity"), -23) and is_equal_approx(manager.player.get_stat("humanity") - second_before, float(second_quote.gain)), "second purchase matches quoted net gain without replacing the first, candle=" + str(candle))
 		check(manager.finance_system.principal == second_principal - int(second_quote.cost) and not trades.accept(second_token, manager.player, manager.finance_system, flow._bound_loadout).success, "repeat purchase deducts only its locked cost once")
+		# Exercise uncapped derived stats separately, below the live relic caps.
+		manager.finance_system.consume_trade_principal(manager.finance_system.principal - 2000)
+		GoblinTradeSystem.apply_stat(manager.player, "uncapped_fixture_sanity", "humanity", -40 - manager.player.get_stat("humanity"))
+		var uncapped := trades.definition("sanity_buyback").duplicate(true)
+		uncapped.sanity_quote = GoblinSpecialTrades.sanity_quote(manager.player, manager.finance_system, uncapped)
+		var uncapped_hp := manager.player.get_stat("max_hp")
+		print("SANITY_UNCAPPED candle=", candle, " before=", manager.player.get_stat("humanity"), " hp=", uncapped_hp, " quote=", uncapped.sanity_quote)
+		# The earlier 72.5 restoration retains its fraction; final integer rounding
+		# crosses zero here, adding one to the displayed gain in both scenarios.
+		check(is_equal_approx(float(uncapped.sanity_quote.recovery), 45 if candle else 44) and is_equal_approx(float(uncapped.sanity_quote.gain), 46 if candle else 47), "uncapped ring recovery preserves prior fractions and respects the candle")
+		check(GoblinSpecialTrades.accept_sanity(uncapped, manager.player, manager.finance_system) and manager.finance_system.principal == 1600 and manager.player.get_stat("max_hp") == uncapped_hp - 4 and is_equal_approx(manager.player.get_stat("humanity"), 6 if candle else 7), "uncapped capital payment refreshes health and applies exact sanity recovery")
+		print("SANITY_UNCAPPED_AFTER principal=", manager.finance_system.principal, " sanity=", manager.player.get_stat("humanity"), " hp=", manager.player.get_stat("max_hp"))

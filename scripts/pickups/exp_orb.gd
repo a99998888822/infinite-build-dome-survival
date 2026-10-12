@@ -21,9 +21,13 @@ var gold_lifetime := 0.0
 var gold_age := 0.0
 var gold_expired := false
 var _gold_locked := false
+var recycle_callback: Callable
+var _sprite_color := Color.WHITE
 
 
 func _ready() -> void:
+	var sprite := get_node_or_null("Sprite2D") as Sprite2D
+	if sprite != null: _sprite_color = sprite.modulate
 	add_to_group("exp_orbs")
 	add_to_group("reward_pickups")
 	body_entered.connect(_on_body_entered)
@@ -40,6 +44,34 @@ func initialize(exp_amount: int) -> void:
 	gold_age = 0.0
 	gold_expired = false
 	_gold_locked = false
+	gold_multiplier = 1.0
+	gold_lifetime = 0.0
+	rotation = 0.0
+	scale = Vector2.ONE
+	modulate = Color.WHITE
+	_collection_time = 0.0
+	_collection_start = Vector2.ZERO
+	forced_attract_speed = WAVE_END_ATTRACT_SPEED
+	attract_speed = DEFAULT_ATTRACT_SPEED
+	var sprite := get_node_or_null("Sprite2D") as Sprite2D
+	if sprite != null: sprite.modulate = _sprite_color
+	show()
+	monitoring = true
+	set_physics_process(true)
+	queue_redraw()
+
+
+func park_for_pool() -> void:
+	collected_once = true
+	target_player = null
+	force_collecting = false
+	hide()
+	set_physics_process(false)
+	monitoring = false
+	remove_from_group("exp_orbs")
+	remove_from_group("reward_pickups")
+	for connection in collected.get_connections():
+		collected.disconnect(connection.callable)
 
 
 func configure_gold(terms: Dictionary) -> void:
@@ -109,7 +141,15 @@ func collect() -> void:
 	if AudioManager != null:
 		AudioManager.play_exp_orb_collect_sfx()
 	collected.emit(self, amount, 0 if gold_expired else amount)
-	queue_free()
+	if recycle_callback.is_valid():
+		hide()
+		set_physics_process(false)
+		remove_from_group("exp_orbs")
+		remove_from_group("reward_pickups")
+		# Collection can run inside a physics query. Reparent only after it exits.
+		recycle_callback.call_deferred(self)
+	else:
+		queue_free()
 
 
 func _on_body_entered(body: Node) -> void:

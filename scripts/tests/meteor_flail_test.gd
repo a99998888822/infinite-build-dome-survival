@@ -80,7 +80,7 @@ func _run() -> void:
 	weapon.runtime_stats.melee_damage += 10
 	check(weapon.calculate_damage_events()[0].damage == 32, "melee stat scales damage")
 	weapon.runtime_stats.melee_damage -= 10
-	check(weapon.get_load_cost() == 32 and weapon.get_attachment_slot_count() == 2, "load and rare attachment slots")
+	check(weapon.get_load_cost() == 32 and weapon.get_attachment_slot_count() == 1, "load and initial attachment slot")
 	check(weapon.build_full_stats_text().contains("[color=#EE7777]+0[/color]") and not weapon.build_full_stats_text().contains("伸展至"), "details retain red melee contribution and omit the outer-reach explanation")
 	advance(flail, 0.12)
 	check(hits.is_empty(), "windup has no damage")

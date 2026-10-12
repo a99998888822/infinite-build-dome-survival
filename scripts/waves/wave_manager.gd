@@ -70,6 +70,11 @@ var enemy_scene_cache: Dictionary = {}
 var _pending_wave_end_absorb_count: int = 0
 var _finishing_wave_id: String = ""
 var _pending_reward_batches: Array[Dictionary] = []
+const REWARD_SPAWNS_PER_FRAME := 12
+const REWARD_SPAWN_BUDGET_USEC := 1500
+var _pending_reward_cursor := 0
+var _pending_reward_action := 0
+var _reward_clock := 0.0
 var _elite_profile: Dictionary = {}
 var _elite_spawn_schedule: Array[float] = []
 var _elite_planned_count: int = 0
@@ -100,6 +105,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_process_pending_rewards(delta)
 	if not running:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
@@ -205,6 +211,15 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	_pending_wave_end_absorb_count = 0
 	_finishing_wave_id = ""
 	_pending_reward_batches.clear()
+	_pending_reward_cursor = 0
+	_pending_reward_action = 0
+	_reward_clock = 0.0
+	if not is_instance_valid(drop_reward_system.pickup_pool):
+		var pool := preload("res://scripts/pickups/reward_pickup_pool.gd").new()
+		pool.name = "RewardPickupPool"
+		add_child(pool)
+		drop_reward_system.pickup_pool = pool
+		drop_reward_system.pickup_pool.warmup()
 	_elite_spawn_schedule.clear()
 	_elite_planned_count = 0
 	_elite_expected_count = 0.0
@@ -374,6 +389,9 @@ func _spawn_challenge_vault() -> void:
 func _on_enemy_pressure_damage(_source_id: String, damage: int, enemy: EnemyController, wave: int) -> void:
 	if not running or wave != current_wave_index + 1 or damage <= 0 or run_statistics.frozen:
 		return
+	# Adaptation records only the first hit per enemy. Avoid repeating player,
+	# metadata and tag checks after that sample has already been recorded.
+	if not enemy_pressure.needs_damage_sample(enemy.get_instance_id()): return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)) or player == null or not player.is_alive():
 		return
 	if bool(enemy.get_meta("exclude_reward_progress", false)) or (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
@@ -397,16 +415,19 @@ func spawn_health_pack(amount: int, position: Vector2) -> HealthPack:
 
 
 func collect_all_exp_orbs() -> void:
+	_flush_pending_reward_batches()
 	collect_exp_orbs_in_root(pickup_root)
 
 
 func collect_all_reward_pickups() -> void:
+	_flush_pending_reward_batches()
 	collect_all_relic_pickups()
 	collect_all_augmentation_pickups()
 	collect_all_exp_orbs()
 
 
 func collect_all_augmentation_pickups() -> void:
+	_flush_pending_reward_batches()
 	var pickups: Array[Node] = []
 	if pickup_root != null:
 		_collect_reward_pickups_recursive(pickup_root, pickups)
@@ -416,6 +437,7 @@ func collect_all_augmentation_pickups() -> void:
 
 
 func collect_all_relic_pickups() -> void:
+	_flush_pending_reward_batches()
 	var pickups: Array[Node] = []
 	if pickup_root != null:
 		_collect_reward_pickups_recursive(pickup_root, pickups)
@@ -444,6 +466,8 @@ func clear_battle_entities() -> void:
 		for reaction_text in get_tree().get_nodes_in_group("element_reaction_texts"):
 			reaction_text.cancel()
 	_pending_reward_batches.clear()
+	_pending_reward_cursor = 0
+	_pending_reward_action = 0
 	_elite_spawn_schedule.clear()
 	_clear_non_exp_reward_pickups()
 	clear_enemies()
@@ -537,7 +561,8 @@ func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
 
 
 func calculate_wave_duration(wave_index: int) -> int:
-	return mini(30 + 5 * wave_index, 60)
+	var waves := DataRegistry.get_table("waves")
+	return int(waves[clampi(wave_index, 0, waves.size() - 1)].duration_seconds) if not waves.is_empty() else 35
 
 
 func get_required_exp_for_next_level() -> int:
@@ -991,17 +1016,10 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 	if player != null:
 		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
-	if Engine.is_in_physics_frame():
-		_pending_reward_batches.append({"actions": actions, "position": death_position})
-		call_deferred("_flush_pending_reward_batches")
-	else:
-		_spawn_drop_actions(actions, death_position)
+	_queue_drop_actions(actions, death_position)
 	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0
 	if tip_tray_amount > 0:
-		if Engine.is_in_physics_frame():
-			call_deferred("_spawn_tip_tray_drop", tip_tray_amount, death_position)
-		else:
-			_spawn_tip_tray_drop(tip_tray_amount, death_position)
+		_queue_drop_actions([{"type": "exp_orb", "amount": tip_tray_amount}], death_position)
 
 
 func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
@@ -1011,10 +1029,45 @@ func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:
 
 
 func _flush_pending_reward_batches() -> void:
-	var batches := _pending_reward_batches.duplicate()
+	_drain_reward_batches(true)
+
+
+func _queue_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:
+	var prepared: Array[Dictionary] = []
+	for action in actions:
+		var recipe := drop_reward_system.prepare_action(action, pickup_root, player)
+		if not recipe.is_empty(): prepared.append(recipe)
+	if not prepared.is_empty():
+		_pending_reward_batches.append({"actions": prepared, "position": drop_position, "born": _reward_clock})
+
+
+func _process_pending_rewards(delta: float) -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)) or get_tree().paused:
+		return
+	if not is_instance_valid(player) or not player.is_alive() or run_statistics.frozen: return
+	_reward_clock += maxf(delta, 0.0)
+	_drain_reward_batches(false)
+
+
+func _drain_reward_batches(flush_all: bool) -> void:
+	var started := Time.get_ticks_usec()
+	var spawned := 0
+	while _pending_reward_cursor < _pending_reward_batches.size():
+		var batch := _pending_reward_batches[_pending_reward_cursor]
+		var actions: Array = batch.actions
+		while _pending_reward_action < actions.size():
+			var action: Dictionary = actions[_pending_reward_action]
+			_pending_reward_action += 1
+			action.pending_age = maxf(0.0, _reward_clock - float(batch.get("born", _reward_clock)))
+			_spawn_drop_actions([action], batch.position)
+			spawned += 1
+			if not flush_all and (spawned >= REWARD_SPAWNS_PER_FRAME or Time.get_ticks_usec() - started >= REWARD_SPAWN_BUDGET_USEC):
+				return
+		_pending_reward_cursor += 1
+		_pending_reward_action = 0
 	_pending_reward_batches.clear()
-	for batch in batches:
-		_spawn_drop_actions(batch.actions, batch.position)
+	_pending_reward_cursor = 0
+	_pending_reward_action = 0
 
 
 func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> void:

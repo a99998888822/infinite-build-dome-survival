@@ -23,6 +23,7 @@ const MAX_PANEL_HEIGHT: float = 620.0
 
 var payload: Dictionary = {}
 var _offer_cards: Array[RewardOption] = []
+var _card_pool: Array[RewardOption] = []
 var _submitted: bool = false
 var _refreshing: bool = false
 var _loadout: WeaponLoadout = null
@@ -71,6 +72,53 @@ func _ready() -> void:
 	_update_skip_button()
 	_layout_popup()
 	hide_popup()
+	# Build the usual page during UI setup, before the first combat reward.
+	if offer_grid != null:
+		for index in OFFER_LAYOUT_COLUMNS:
+			_create_card()
+	_preload_reward_icons()
+	_warm_popup_rendering.call_deferred()
+
+
+func _warm_popup_rendering() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	# Draw the actual modal's fonts, panels and card glow during UI startup.
+	# No scripts/signals on the duplicate: it cannot run a second shop or warmup.
+	var preview := duplicate(0) as Control
+	var viewport := SubViewport.new()
+	viewport.size = Vector2i(get_viewport_rect().size)
+	viewport.disable_3d = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	add_child(viewport)
+	viewport.add_child(preview)
+	preview.show()
+	preview.get_node("Backdrop").show()
+	var card := REWARD_OPTION_SCENE.instantiate() as RewardOption
+	preview.get_node("CenterContainer/MainPanel/Content/OfferScroll/OfferGrid").add_child(card)
+	var records := DataRegistry.get_table("relics")
+	if not records.is_empty():
+		var offer: Dictionary = records[0].duplicate(true)
+		offer["offer_type"] = "relic"
+		card.configure(offer)
+	card.set_available_size(180, 272)
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	viewport.queue_free()
+
+
+func _preload_reward_icons() -> void:
+	# Request from the loading/menu phase; never start a synchronous batch in
+	# the combat event that opens a reward. The shared cache retains completion.
+	for table in ["weapons", "relics"]:
+		for record: Dictionary in DataRegistry.get_table(table):
+			FinanceUIStyle.request_item_icon(str(record.get("icon", "")))
+	set_process(true)
+
+
+func _process(_delta: float) -> void:
+	if FinanceUIStyle.collect_item_icons():
+		set_process(false)
 
 
 func configure(next_payload: Dictionary) -> void:
@@ -138,6 +186,9 @@ func reset_run() -> void:
 	# refresh or the next run can reuse its rewards, player or weapon strip.
 	hide_popup()
 	payload.clear()
+	for card in _card_pool:
+		card.queue_free()
+	_card_pool.clear()
 	set_bond_player(null)
 	set_loadout(null)
 
@@ -216,17 +267,12 @@ func _refresh_visual() -> void:
 	for offer in payload.get("offers", []):
 		if not (offer is Dictionary):
 			continue
-		var card := REWARD_OPTION_SCENE.instantiate() as RewardOption
+		var card := _card_pool[index] if index < _card_pool.size() else _create_card()
 		if card == null:
 			continue
-		offer_grid.add_child(card)
 		card.configure(offer, RewardOption.ENTRY_SHOP if mode == ENTRY_SHOP else RewardOption.ENTRY_FREE)
-		card.set_available_height(RewardOption.COMPACT_MINIMUM_HEIGHT)
-		card.set_fill_width(false)
 		card.set_bond_player(_bond_player)
-		card.selected.connect(_on_offer_selected)
-		card.stat_preview_requested.connect(_on_card_stat_preview_requested)
-		card.stat_preview_cleared.connect(_on_card_stat_preview_cleared.bind(card))
+		card.show()
 		_offer_cards.append(card)
 		if visible:
 			card.animate_in(index)
@@ -325,8 +371,23 @@ func _update_skip_button() -> void:
 func _clear_cards() -> void:
 	for card in _offer_cards:
 		if is_instance_valid(card):
-			card.queue_free()
+			card.release_offer()
 	_offer_cards.clear()
+
+
+func _create_card() -> RewardOption:
+	var card := REWARD_OPTION_SCENE.instantiate() as RewardOption
+	if card == null:
+		return null
+	card.hide()
+	offer_grid.add_child(card)
+	card.set_available_height(RewardOption.COMPACT_MINIMUM_HEIGHT)
+	card.set_fill_width(false)
+	card.selected.connect(_on_offer_selected)
+	card.stat_preview_requested.connect(_on_card_stat_preview_requested)
+	card.stat_preview_cleared.connect(_on_card_stat_preview_cleared.bind(card))
+	_card_pool.append(card)
+	return card
 
 
 func set_loadout(loadout: WeaponLoadout) -> void:

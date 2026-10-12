@@ -102,6 +102,8 @@ func _exercise_run(exit_mode: String) -> void:
 		battle.hud.settings_button.pressed.emit()
 		await frames()
 		battle.utility_overlay._menu_button.pressed.emit()
+		check(flow.current_state == MainFlowCoordinator.STATE_BATTLE_RESULT and flow.current_battle_summary.outcome == "retreat", exit_mode + " shows retreat settlement before leaving")
+		flow.confirm_battle_result()
 	await frames(12)
 	check(menu.start_page.visible and flow.current_state == MainFlowCoordinator.STATE_START_PAGE and not is_instance_valid(battle), exit_mode + " releases the battle and returns to main menu")
 	check(shop.payload.is_empty() and shop._bond_player == null and shop._loadout == null and shop.weapon_strip._loadout == null, exit_mode + " clears retained reward data and battle references")

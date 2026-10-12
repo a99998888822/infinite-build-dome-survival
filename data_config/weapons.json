@@ -1,6 +1,7 @@
 [
   {
     "id": "weapon_void_blade",
+    "shop_weight": 100,
     "combat_tags": ["远程", "投射物"],
     "shop_description": "朝瞄准方向射出木箭",
     "display_name": "木质弓箭",
@@ -31,8 +32,8 @@
     },
     "level_upgrades": {
       "2": {"rarity": "uncommon", "description": "额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "projectile_count", "value": 1}]},
-      "3": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "3": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
+      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
@@ -40,6 +41,7 @@
   },
   {
     "id": "weapon_plasma_cannon",
+    "shop_weight": 80,
     "combat_tags": ["远程", "投射物"],
     "shop_description": "发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次",
     "display_name": "电浆炮",
@@ -72,12 +74,12 @@
       "projectile_count": 1
     },
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "远程基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
-    "attachment_slots": 2,
+    "attachment_slots": 1,
     "plasma_contact_speed": 20,
     "plasma_contact_hold_ms": 160,
     "plasma_speed_recovery_ms": 120,
@@ -89,6 +91,7 @@
   },
   {
     "id": "weapon_iron_grenade_cannon",
+    "shop_weight": 80,
     "combat_tags": ["投射物", "范围"],
     "shop_description": "抛射榴弹炮，延迟后在落点爆炸",
     "display_name": "铸铁榴弹炮",
@@ -120,15 +123,16 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"ranged_damage": 36, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+10[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 10}, {"stat": "projectile_count", "value": 1}]}
     },
-    "attachment_slots": 2
+    "attachment_slots": 1
   },
   {
     "id": "weapon_kunyu_ritual_tome",
+    "shop_weight": 80,
     "combat_tags": ["范围", "法阵"],
     "shop_description": "施展法阵，每0.35s点名一次造成伤害",
     "display_name": "坤舆秘仪书",
@@ -153,15 +157,16 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"element_damage": 16, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}]},
-      "3": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
+      "3": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害次数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]},
       "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害次数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
-    "attachment_slots": 2
+    "attachment_slots": 1
   },
   {
     "id": "weapon_rentier_purse",
+    "shop_weight": 90,
     "combat_tags": ["远程", "投射物"],
     "shop_description": "向瞄准方向扇形散射金币，受到远程伤害和本金双加成",
     "display_name": "食利者钱袋",
@@ -187,8 +192,8 @@
     "base_stats": {"ranged_damage": 12, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 3},
     "level_upgrades": {
       "2": {"rarity": "uncommon", "description": "额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "projectile_count", "value": 1}]},
-      "3": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "3": {"rarity": "rare", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
+      "4": {"rarity": "epic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "远程基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
@@ -196,6 +201,7 @@
   },
   {
     "id": "weapon_copper_lamp",
+    "shop_weight": 90,
     "combat_tags": ["扇形", "范围"],
     "shop_description": "最近的敌人持续喷射火流",
     "display_name": "赤铜炉灯",
@@ -213,15 +219,16 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"element_damage": 4, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "uncommon", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+1[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 1}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+20[/color]", "effects": [{"stat": "element_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 20}]}
     },
     "attachment_slots": 1
   },
   {
     "id": "weapon_mutant_tentacle",
+    "shop_weight": 90,
     "combat_tags": ["近战", "范围"],
     "shop_description": "卷曲展开后瞬间拍地。",
     "display_name": "异化触手",
@@ -237,9 +244,9 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 40, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
+      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害范围 [color=#7FD88F]+5[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "damage_area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
@@ -247,6 +254,7 @@
   },
   {
     "id": "weapon_earth_hammer",
+    "shop_weight": 80,
     "combat_tags": ["近战", "投射物"],
     "shop_description": "向前砸出延伸的地裂。",
     "display_name": "裂地战锤",
@@ -264,16 +272,17 @@
     "ground_branch_length": 44, "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 30, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
-    "attachment_slots": 2,
+    "attachment_slots": 1,
     "projectile_spacing_degrees": 10
   },
   {
     "id": "weapon_camp_dagger",
+    "shop_weight": 100,
     "combat_tags": ["近战", "扇形", "范围"],
     "shop_description": "正反手交替斩击",
     "display_name": "营地短刀",
@@ -304,14 +313,15 @@
     "base_stats": {"melee_damage": 16, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
       "2": {"rarity": "uncommon", "description": "伤害次数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "projectile_count", "value": 1}]},
-      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
+      "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n伤害次数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1
   },
   {
     "id": "weapon_nightwatch_spear",
+    "shop_weight": 90,
     "combat_tags": ["近战"],
     "shop_description": "刺出长枪，贯穿前方敌人",
     "display_name": "守夜长枪",
@@ -339,9 +349,9 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 26, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
+      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+3[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 3}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击距离 [color=#7FD88F]+5[/color]\n额外投射物 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "area_size", "value": 5}, {"stat": "projectile_count", "value": 1}]}
     },
     "attachment_slots": 1,
@@ -349,6 +359,7 @@
   },
   {
     "id": "weapon_meteor_flail",
+    "shop_weight": 80,
     "combat_tags": ["近战", "扇形", "范围"],
     "shop_description": "流星锤头挥击前方扇面",
     "display_name": "流星摆锤",
@@ -374,15 +385,16 @@
     "unsupported_effects": ["pierce"],
     "base_stats": {"melee_damage": 36, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击次数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -100}, {"stat": "projectile_count", "value": 1}]}
     },
-    "attachment_slots": 2
+    "attachment_slots": 1
   },
   {
     "id": "weapon_dash_blade",
+    "shop_weight": 90,
     "display_name": "突进短刃",
     "description": "朝鼠标位置短冲，抵达后以自身为中心快速圆斩。突进距离受攻击距离加成，圆斩半径受伤害范围加成。",
     "shop_description": "朝前方位移一小段，然后斩击周围敌人",
@@ -397,14 +409,15 @@
     "player_damage_coefficient": 0.8, "unsupported_effects": ["pierce", "split"],
     "base_stats": {"melee_damage": 28, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 4}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "uncommon", "description": "近战基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 4}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "rare", "description": "近战基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 4}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "melee_damage", "value": 4}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "近战基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 4}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "近战基础伤害 [color=#7FD88F]+6[/color]\n圆斩伤害段数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "melee_damage", "value": 6}, {"stat": "projectile_count", "value": 1}]}
     }
   },
   {
     "id": "weapon_hand_cannon",
+    "shop_weight": 80,
     "display_name": "巨型手持火炮",
     "description": "朝瞄准方向发射近距离散弹，同时向后滑退。",
     "shop_description": "向前喷射近距散弹，同时向后滑退",
@@ -413,21 +426,22 @@
     "launch_sfx": "res://assets/audio/sfx/combat/grenade_launch_01.wav",
     "hit_sfx": "res://assets/audio/sfx/combat/wood_arrow_01.wav",
     "rarity": "rare", "attack_kind": "ranged", "tags": ["ranged", "heavy"],
-    "weapon_type": "heavy", "load_cost": 35, "max_level": 5, "attachment_slots": 2,
+    "weapon_type": "heavy", "load_cost": 35, "max_level": 5, "attachment_slots": 1,
     "active_cooldown_ms": 6000, "attack_interval_ms": 6000,
     "attack_range": 150, "hit_radius": 3, "movement_ms": 280, "retreat_distance": 96,
     "projectile_speed": 600, "spread_angle": 56, "projectile_behavior": "hand_cannon",
     "player_damage_coefficient": 0.35,
     "base_stats": {"ranged_damage": 12, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 5},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
+      "2": {"rarity": "rare", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
-      "4": {"rarity": "epic", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}]},
+      "4": {"rarity": "epic", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"field": "active_cooldown_ms", "value": -100}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "每发基础伤害 [color=#7FD88F]+2[/color]\n散弹数量 [color=#7FD88F]+1[/color]", "effects": [{"stat": "ranged_damage", "value": 2}, {"stat": "projectile_count", "value": 1}]}
     }
   },
   {
     "id": "weapon_star_tome",
+    "shop_weight": 80,
     "display_name": "移星秘典",
     "description": "闪现到鼠标位置，震开落点周围敌人并造成伤害。起点留下印记，再次施放返回。",
     "shop_description": "闪现震开敌人，再次施放返回起点",
@@ -435,16 +449,16 @@
     "icon": "res://assets/ui/icons/weapons/weapon_star_tome.png",
     "return_icon": "res://assets/ui/icons/weapons/weapon_star_tome_return.png",
     "rarity": "rare", "attack_kind": "element", "tags": ["element"],
-    "weapon_type": "medium", "load_cost": 30, "max_level": 5, "attachment_slots": 2,
+    "weapon_type": "medium", "load_cost": 30, "max_level": 5, "attachment_slots": 1,
     "active_cooldown_ms": 8000, "attack_interval_ms": 8000,
     "attack_range": 210, "hit_radius": 64, "shock_speed": 360,
     "projectile_speed": 0, "spread_angle": 0, "projectile_behavior": "star_tome",
     "player_damage_coefficient": 1.0, "unsupported_effects": ["pierce", "split"],
     "base_stats": {"element_damage": 32, "attack_speed": 0, "crit_chance": 5, "crit_damage": 150, "projectile_count": 1},
     "level_upgrades": {
-      "2": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}]},
+      "2": {"rarity": "rare", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}, {"field": "attachment_slots", "value": 1}]},
       "3": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}]},
-      "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}]},
+      "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+8[/color]\n震击伤害段数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 8}, {"stat": "projectile_count", "value": 1}]}
     }
   }

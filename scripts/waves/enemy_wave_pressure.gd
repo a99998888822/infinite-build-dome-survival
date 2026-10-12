@@ -61,6 +61,10 @@ func record_damage(instance_id: int, enemy_type: String) -> void:
 	_engaged[instance_id] = {"type": enemy_type, "first_hit": elapsed}
 
 
+func needs_damage_sample(instance_id: int) -> bool:
+	return not _finished and not _engaged.has(instance_id)
+
+
 func record_kill(instance_id: int) -> void:
 	if _finished or not _engaged.has(instance_id): return
 	var entry: Dictionary = _engaged[instance_id]

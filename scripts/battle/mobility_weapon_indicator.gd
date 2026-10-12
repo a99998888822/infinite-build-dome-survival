@@ -148,7 +148,7 @@ func _draw() -> void:
 			var retreat := get_landing_offset()
 			dashed(-direction * clearance, retreat)
 			arrowhead(retreat, -direction)
-			ring(retreat, 12, false)
+			ellipse(retreat, GROUND.projected_axes() * 12.0, false)
 		Kind.STAR_TOME:
 			if return_ready:
 				var heading := anchor_offset.normalized()

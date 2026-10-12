@@ -52,7 +52,7 @@ func _run() -> void:
 				burst._process(0.06)
 				check(is_equal_approx(burst.batches[0].material.get_shader_parameter("elapsed"), 0.06), "PNG frame clock advances")
 				burst._process(1.0)
-				check(burst.is_queued_for_deletion(), "finished animation releases both batches")
+				check(not burst._active and not burst.visible and not burst.is_processing(), "finished animation parks both batches without processing")
 				effect.queue_free()
 				await get_tree().process_frame
 	# More than 900 simultaneous lightning particles must also remain present.
@@ -60,7 +60,9 @@ func _run() -> void:
 	for i in 80:
 		var burst = BURST.spawn(self, Vector2.ZERO, Vector2.RIGHT, 1.0, {"count_multiplier": 0.6, "distance_multiplier": 0.5, "glow_radius_multiplier": 0.25})
 		burst.set_process(false)
+	for burst in get_tree().get_nodes_in_group("lightning_hit_sprite_bursts"):
 		total += burst.get_active_particle_count()
+	check(get_tree().get_nodes_in_group("lightning_hit_sprite_bursts").size() == 1, "80 compatible hits share two batches")
 	check(total == 1680, "80 reduced-count hits retain all 1680 PNG particles beyond old pool cap")
 	check(world.get_active_particle_count() == 900, "ordinary pool stays full without evicting live hit animations")
 	for burst in get_tree().get_nodes_in_group("lightning_hit_sprite_bursts"):

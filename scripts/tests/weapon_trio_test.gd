@@ -284,7 +284,7 @@ func _run() -> void:
 	for id in [LAMP, TENTACLE, HAMMER]:
 		await fixture(id, [])
 		for level in range(2,6): check(loadout.upgrade_weapon(id), "upgrade %s to %d" % [id,level])
-		check(not weapon.upgrade() and weapon.get_attachment_slot_count() == 2, "rarity slots and level cap " + id)
+		check(not weapon.upgrade() and weapon.get_attachment_slot_count() == 3, "upgraded slots and level cap " + id)
 		var pool := ShopOfferGenerator.new().build_shop_candidate_pool({"load_capacity":100,"current_load":0,"luck":350})
 		check(pool.any(func(offer): return offer.target_id == id), "shop/reward candidate " + id)
 		check(load(weapon.weapon_data.icon).get_size() == Vector2(128,128), "installed icon " + id)

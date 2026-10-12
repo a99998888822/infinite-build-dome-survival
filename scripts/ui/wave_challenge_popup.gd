@@ -52,8 +52,8 @@ func _arrange() -> void:
 	var width := minf(560, bounds.size.x)
 	var header := 94.0 if size.y < 450 else 142.0
 	var height := minf(presentation.get_preferred_height(width), maxf(110, bounds.size.y - header - 34))
-	var origin := Vector2((size.x - width) * 0.5, maxf(12, (size.y - header - height - 34) * 0.5))
-	var portrait_rect := Rect2(origin + Vector2(width * 0.5 - 160, 0), Vector2(170, header))
+	var origin := Vector2((size.x - width) * 0.5, maxf(12, (size.y - header - height - 34) * 0.5)).round()
+	var portrait_rect := Rect2((origin + Vector2(width * 0.5 - 160, 0)).round(), Vector2(170, header))
 	portrait.position = portrait_rect.position
 	portrait.size = portrait_rect.size
 	presentation.arrange(Rect2(origin + Vector2(0, header), Vector2(width, height)), portrait_rect, bounds)

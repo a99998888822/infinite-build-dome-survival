@@ -64,11 +64,9 @@ static func validate(data: Dictionary) -> String:
 		used.append(id)
 		if not (row.get("level") is int or row.get("level") is float): return "武器等级无效。"
 		if float(row.level) != floorf(float(row.level)) or int(row.level) < 1 or int(row.level) > int(weapon.get("max_level", 1)): return "武器等级超限：" + str(weapon.display_name)
-		if not row.get("attachments") is Array or row.attachments.size() > 2: return "每把武器最多配置两个附魔。"
-		var rarity := str(weapon.get("rarity", "common"))
-		for level in range(2, int(row.level) + 1):
-			rarity = str(weapon.get("level_upgrades", {}).get(str(level), {}).get("rarity", rarity))
-		if row.attachments.size() > WeaponInstance.get_attachment_slots_for_rarity(rarity): return "%s 当前品质只有一个附魔槽，请升级或移除附魔2。" % weapon.display_name
+		if not row.get("attachments") is Array: return "附魔配置无效。"
+		var slots := WeaponInstance.get_attachment_slots_for_level(weapon, int(row.level))
+		if row.attachments.size() > slots: return "%s 当前等级有 %d 个附魔槽，请升级或移除多余附魔。" % [weapon.display_name, slots]
 		for item_id in row.attachments:
 			var item := DataRegistry.get_record("augmentations", str(item_id))
 			if item.is_empty() or str(item.get("category", "")) not in WeaponLoadout.ATTACHABLE_ITEM_CATEGORIES: return "附魔不存在：" + str(item_id)

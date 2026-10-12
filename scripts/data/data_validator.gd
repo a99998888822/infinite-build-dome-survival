@@ -284,6 +284,9 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 		if behavior != "copper_lamp" and str(record.get("attack_kind", "")) != "melee":
 			errors.append("%s requires melee damage." % path)
 	_validate_non_negative_int(record, "load_cost", path)
+	_validate_non_negative_int(record, "shop_weight", path)
+	if int(record.get("shop_weight", 100)) <= 0:
+		errors.append("%s.shop_weight must be a positive integer." % path)
 	_validate_non_negative_int(record, "attack_interval_ms", path)
 	_validate_non_negative_int(record, "active_cooldown_ms", path)
 	if int(record.get("active_cooldown_ms", 0)) <= 0:
@@ -321,8 +324,6 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 			if int(record.get(field, 0)) <= 0:
 				errors.append("%s.%s must be positive." % [path, field])
 	_validate_non_negative_int(record, "attachment_slots", path)
-	if int(record.get("attachment_slots", 0)) != WeaponInstance.get_attachment_slots_for_rarity(str(record.get("rarity", "common"))):
-		errors.append("%s.attachment_slots must match rarity: common/uncommon=1, rare or higher=2." % path)
 	if str(record.get("projectile_behavior", "")) == "meteor_flail":
 		if str(record.get("attack_kind", "")) != "melee" or float(record.get("attack_range", 0)) <= 0 or float(record.get("hit_radius", 0)) <= 0:
 			errors.append("%s requires melee damage and positive flail reach/head radius." % path)
@@ -389,6 +390,8 @@ func _validate_weapon_level_upgrades(record: Dictionary, path: String) -> void:
 				errors.append("Missing required field: %s.value" % effect_path)
 			if not upgrade.has("stat") and not upgrade.has("field"):
 				errors.append("%s must define stat or field." % effect_path)
+			if str(upgrade.get("field", "")) == "attachment_slots":
+				_validate_non_negative_int(upgrade, "value", effect_path)
 
 
 func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:

@@ -62,6 +62,7 @@ var _pending_relic_choices: Array[String] = []
 var _active_relic_choice: String = ""
 var _relic_choice_selected: bool = false
 var _weapon_upgrade_miss_count: int = 0
+var _principal_weapon_upgrade_wave := -1
 var _early_wave_weapon_offered: Dictionary = {}
 var _wave_end_ready: bool = false
 var _pending_interest_payload: Dictionary = {}
@@ -115,6 +116,7 @@ func reset_flow() -> void:
 	_active_relic_choice = ""
 	_relic_choice_selected = false
 	_weapon_upgrade_miss_count = 0
+	_principal_weapon_upgrade_wave = -1
 	_early_wave_weapon_offered.clear()
 	_wave_end_ready = false
 	_pending_interest_payload.clear()
@@ -168,6 +170,7 @@ func confirm_character_selection() -> bool:
 	current_victory = false
 	_pending_death_run_id = ""
 	current_battle_summary.clear()
+	_principal_weapon_upgrade_wave = -1
 	_paid_purchase_count = 0
 	_early_wave_weapon_offered.clear()
 	_active_level_up_level = 0
@@ -401,7 +404,7 @@ func close_finance_popup() -> void:
 			{"principal": _bound_wave_manager.finance_system.principal, "remaining_waves": DataRegistry.get_table("waves").size() - _get_next_wave_number() + 1,
 			"debt_due": int(_bound_wave_manager.goblin_loans.debt.get("due", 0)), "debt_id": _bound_wave_manager.goblin_loans.debt_identity()})
 		if not proposal.is_empty():
-			_bound_wave_manager.run_statistics.show_advice("challenge", str(proposal.token))
+			_bound_wave_manager.run_statistics.show_advice("challenge", str(proposal.token), str(proposal.id))
 			_set_battle_runtime_paused(true)
 			_set_state(STATE_WAVE_CHALLENGE)
 			modal_requested.emit(STATE_WAVE_CHALLENGE, proposal)
@@ -538,15 +541,8 @@ func close_battle_utility() -> void:
 func return_to_main_menu_from_settings() -> void:
 	if current_state != STATE_BATTLE_UTILITY or _utility_page != "settings" or _transaction_busy:
 		return
-	battle_resolved = true
-	if _bound_wave_manager != null:
-		_bound_wave_manager.running = false
-		_bound_wave_manager.drop_reward_system.begin_wave()
-		_bound_wave_manager.clear_battle_entities()
-	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
-		modal_closed.emit(modal)
-	# Abandon the run without invoking victory/loss settlement or granting choices.
-	reset_flow()
+	_utility_page = ""
+	present_battle_result(false, {"reason": "retreat"})
 
 
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
@@ -578,7 +574,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	if sanitized_mode == "shop" and not _try_pay_shop_cost(canonical_offer):
 		_transaction_busy = false
 		return {"success": false, "reason": "insufficient_gold"}
-	var applied := _apply_shop_offer(offer_type, target_id, canonical_offer)
+	var applied := _apply_shop_offer(offer_type, target_id, canonical_offer, "gold" if sanitized_mode == "shop" else "free")
 	if not applied:
 		if sanitized_mode == "shop":
 			_refund_shop_cost(canonical_offer)
@@ -589,8 +585,6 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 		if bought_weapon != null:
 			if offer_type == ShopOfferGenerator.OFFER_NEW_WEAPON:
 				bought_weapon.trade_base_basis = int(canonical_offer.get("shop_cost", 0))
-			elif offer_type == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
-				bought_weapon.trade_upgrade_basis[bought_weapon.level] = int(canonical_offer.get("shop_cost", 0))
 	_active_shop_offers.erase(offer_id)
 	canonical_offer["purchased"] = true
 	if sanitized_mode == "shop" and offer_type in [ShopOfferGenerator.OFFER_NEW_WEAPON, ShopOfferGenerator.OFFER_RELIC]:
@@ -648,7 +642,7 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 	battle_resolved = true
 	_pending_death_run_id = ""
 	var statistics := _bound_wave_manager.run_statistics if _bound_wave_manager != null else RunStatistics.new()
-	current_battle_summary = RunSettlement.build(statistics.freeze(), victory, current_difficulty_id)
+	current_battle_summary = RunSettlement.build(statistics.freeze(), victory, current_difficulty_id, str(summary.get("reason", "")) == "retreat")
 	current_battle_summary["end_wave"] = maxi(current_wave_index + 1, 1)
 	current_battle_summary["reason"] = str(summary.get("reason", ""))
 	current_battle_summary["paid"] = CampProgression.apply_final_settlement(int(current_battle_summary.camp_currency), str(current_battle_summary.run_id))
@@ -656,7 +650,7 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 		_bound_wave_manager.running = false
 		_bound_wave_manager.clear_battle_entities()
 	current_victory = victory
-	for modal in [STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
+	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
 		modal_closed.emit(modal)
 	_pending_level_up_levels.clear()
 	_pending_relic_choices.clear()
@@ -828,7 +822,7 @@ func _request_wave_end_finance() -> bool:
 	_preparation_offers = _build_shop_payload("shop", 0).get("offers", [])
 	_prepare_goblin_trade()
 	var shown_trade := _bound_wave_manager.goblin_trades.offer
-	if not shown_trade.is_empty(): _bound_wave_manager.run_statistics.show_advice("trade", str(shown_trade.token))
+	if not shown_trade.is_empty(): _bound_wave_manager.run_statistics.show_advice("trade", str(shown_trade.token), str(shown_trade.id))
 	_set_battle_runtime_paused(true)
 	_set_state(STATE_FINANCE_POPUP)
 	modal_requested.emit(STATE_FINANCE_POPUP, get_preparation_payload())
@@ -1215,7 +1209,7 @@ func _prepare_goblin_trade() -> void:
 	context["epic_candidates"] = epics
 	var buyout := trades.definition("weapon_buyout")
 	if not buyout.is_empty():
-		context["weapon_quotes"] = GoblinSpecialTrades.best_weapon_quotes(_bound_loadout, _bound_player, _bound_wave_manager.weapon_damage_this_wave, int(buyout.price_multiplier))
+		context["weapon_quotes"] = GoblinSpecialTrades.best_weapon_quotes(_bound_loadout, _bound_player, _bound_wave_manager.weapon_damage_this_wave, float(buyout.price_multiplier))
 	var sanity := trades.definition("sanity_buyback")
 	if not sanity.is_empty() and float(context.sanity) <= float(sanity.maximum_sanity) and finance.principal >= int(sanity.minimum_principal):
 		context["sanity_quote"] = GoblinSpecialTrades.sanity_quote(_bound_player, finance, sanity)
@@ -1381,6 +1375,66 @@ func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) ->
 	return ""
 
 
+func get_principal_weapon_upgrade_quote(weapon_id: String) -> Dictionary:
+	if _bound_loadout == null or _bound_wave_manager == null or _bound_player == null:
+		return {"success": false, "reason": "enchantment_page_required"}
+	var weapon := _bound_loadout.get_weapon_instance(weapon_id)
+	if weapon == null: return {"success": false, "reason": "item_not_found"}
+	var finance := _bound_wave_manager.finance_system
+	var target_level := weapon.level + 1
+	var entry: Dictionary = weapon.weapon_data.get("level_upgrades", {}).get(str(target_level), {})
+	var price := WeaponUpgradeRules.principal_cost(target_level)
+	var quote := {"success": false, "reason": "", "weapon_id": weapon_id, "instance_id": weapon.instance_id,
+		"from_level": weapon.level, "to_level": target_level, "price": price, "wave": finance.current_wave_number,
+		"description": str(entry.get("description", ""))}
+	quote["quote_token"] = str([weapon.instance_id, weapon.level, price, finance.current_wave_number].hash())
+	if current_state != STATE_FINANCE_POPUP or battle_resolved or not _has_next_wave() or finance._started_wave_number >= finance.current_wave_number:
+		quote.reason = "enchantment_page_required"
+	elif is_loan_dialog_open(): quote.reason = "loan_dialog_open"
+	elif _transaction_busy: quote.reason = "transaction_busy"
+	elif weapon.level >= int(weapon.weapon_data.get("max_level", 1)):
+		quote.reason = "principal_upgrade_max_level"
+	elif entry.is_empty() or price <= 0: quote.reason = "upgrade_no_longer_available"
+	elif _principal_weapon_upgrade_wave == finance.current_wave_number:
+		quote.reason = "principal_upgrade_used"
+	elif _get_shop_stat("luck") < ShopOfferGenerator.new().get_rarity_luck_requirement(str(entry.get("rarity", "common"))):
+		quote.reason = "principal_upgrade_luck"
+	elif finance.principal < price: quote.reason = "insufficient_principal"
+	else: quote.success = true
+	return quote
+
+
+func purchase_principal_weapon_upgrade(weapon_id: String, quote_token: String) -> Dictionary:
+	var quote := get_principal_weapon_upgrade_quote(weapon_id)
+	if not bool(quote.get("success", false)): return quote
+	if quote_token != str(quote.quote_token): return {"success": false, "reason": "sale_quote_changed"}
+	var weapon := _bound_loadout.get_weapon_instance(weapon_id)
+	var finance := _bound_wave_manager.finance_system
+	# Weapon upgrades stage without signals. Restore all upgraded fields if payment
+	# fails; finance observers only see the complete level, cost and wave reservation.
+	var before := {}
+	for field in ["level", "runtime_stats", "attack_interval_ms", "active_cooldown_ms", "grenade_blast_radius", "trade_upgrade_basis", "trade_upgrade_sources"]:
+		var value: Variant = weapon.get(field)
+		before[field] = value.duplicate(true) if value is Dictionary else value
+	var previous_wave := _principal_weapon_upgrade_wave
+	_transaction_busy = true
+	_principal_weapon_upgrade_wave = int(quote.wave)
+	var upgraded := weapon.upgrade(int(quote.price), "principal")
+	if not upgraded or not finance.consume_specialization_principal(int(quote.price)):
+		for field in before: weapon.set(field, before[field])
+		_principal_weapon_upgrade_wave = previous_wave
+		_transaction_busy = false
+		return {"success": false, "reason": "transaction_busy"}
+	_bound_loadout.weapon_upgraded.emit(weapon_id, weapon.level)
+	_bound_loadout._notify_loadout_changed()
+	finance.record_trade_activity(L10n.message("ui.enchantment.principal_upgrade_log", [str(weapon.weapon_data.get("display_name", weapon_id)), weapon.level, int(quote.price)]))
+	cancel_goblin_trade()
+	_transaction_busy = false
+	clear_stat_preview()
+	_notify_preparation_changed()
+	return {"success": true, "weapon_id": weapon_id, "level": weapon.level, "price": int(quote.price)}
+
+
 func submit_enchantment_operation(action: String, weapon_id: String, item_id: String, target_index: int = -1) -> Dictionary:
 	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state != STATE_FINANCE_POPUP or _bound_loadout == null or _transaction_busy:
@@ -1414,7 +1468,7 @@ func _invalidate_attachment_trade(weapon_id: String = "") -> void:
 	if id in ["exclusive_relic", "sanity_buyback", "preferred_customer", "capital_protection"]:
 		cancel_goblin_trade()
 	elif id == "weapon_buyout":
-		var current := GoblinSpecialTrades.weapon_quote(_bound_loadout.get_weapon_instance(str(proposal.weapon_id)), _bound_player, int(proposal.price_multiplier))
+		var current := GoblinSpecialTrades.weapon_quote(_bound_loadout.get_weapon_instance(str(proposal.weapon_id)), _bound_player, float(proposal.price_multiplier))
 		if str(proposal.weapon_id) == weapon_id or current.get("fingerprint", []) != proposal.fingerprint:
 			cancel_goblin_trade()
 
@@ -1493,7 +1547,7 @@ func _refund_shop_cost(offer: Dictionary) -> void:
 	_bound_wave_manager.apply_gold_delta(cost, "shop_purchase_refund")
 
 
-func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary) -> bool:
+func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary, payment_source: String = "free") -> bool:
 	match offer_type:
 		ShopOfferGenerator.OFFER_RELIC:
 			return _bound_player != null and _bound_player.add_relic(target_id)
@@ -1505,6 +1559,6 @@ func _apply_shop_offer(offer_type: String, target_id: String, offer: Dictionary)
 			var weapon: WeaponInstance = _bound_loadout.get_weapon_instance(target_id)
 			if weapon == null or weapon.level != int(offer.get("from_level", 0)):
 				return false
-			return _bound_loadout.upgrade_weapon(target_id)
+			return _bound_loadout.upgrade_weapon(target_id, int(offer.get("shop_cost", 0)) if payment_source == "gold" else -1, payment_source)
 		_:
 			return false

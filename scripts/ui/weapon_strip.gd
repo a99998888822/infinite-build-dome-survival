@@ -5,12 +5,29 @@ signal minimum_height_changed
 
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
 const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
+const WEAPON_DRAG_TYPE := "esc_weapon_reorder"
+
+class ReorderButton extends Button:
+	var direction := 1
+	func _draw() -> void:
+		var center := (size * 0.5).round()
+		var color := Color("666b56") if disabled else Color("dec48a")
+		var points := PackedVector2Array([
+			center + Vector2(direction * 3, 0),
+			center + Vector2(-direction * 3, -4),
+			center + Vector2(-direction * 3, 4)])
+		# A dark one-pixel edge keeps the small corner mark readable over art.
+		draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[0]]), Color("10180f"), 2.0)
+		draw_colored_polygon(points, color)
 
 var _loadout: WeaponLoadout = null
 var _weapon_buttons: Array[Button] = []
 var _cast_mode_buttons: Array[WeaponCastModeIcon] = []
 var _cast_mode_layer: Control
 var _automation_editing_enabled := false
+var _selected_weapon_id := ""
+var _reorder_buttons: Array[Dictionary] = []
+var _drag_scroll_remainder := 0.0
 var _attachment_editing_enabled: bool = false
 var _hovered_weapon_button: WeaponSlotButton = null
 var _tooltip_attachment_rows: Array[Dictionary] = []
@@ -51,6 +68,8 @@ func _ready() -> void:
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false) -> void:
+	if _loadout != null and _loadout.loadout_changed.is_connected(_on_loadout_changed):
+		_loadout.loadout_changed.disconnect(_on_loadout_changed)
 	if _loadout != null and _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.disconnect(_on_weapon_attachment_changed)
 	_loadout = loadout
@@ -58,8 +77,134 @@ func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false,
 	_automation_editing_enabled = allow_automation_editing
 	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
+	if _loadout != null:
+		_loadout.loadout_changed.connect(_on_loadout_changed)
 	_refresh_load_label()
 	_refresh_weapon_strip()
+
+
+func _on_loadout_changed() -> void:
+	_refresh_load_label()
+	_refresh_weapon_strip()
+
+
+func _make_reorder_button(weapon_id: String, direction: int) -> ReorderButton:
+	var arrow := ReorderButton.new()
+	arrow.direction = direction
+	arrow.name = "MoveLeft" if direction < 0 else "MoveRight"
+	arrow.custom_minimum_size = Vector2(14, 14)
+	arrow.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT if direction < 0 else Control.PRESET_BOTTOM_RIGHT)
+	arrow.offset_top = -14
+	arrow.offset_bottom = 0
+	arrow.offset_left = 0 if direction < 0 else -14
+	arrow.offset_right = 14 if direction < 0 else 0
+	arrow.focus_mode = Control.FOCUS_NONE
+	arrow.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	arrow.tooltip_text = "向左移动一位" if direction < 0 else "向右移动一位"
+	arrow.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	for state in ["hover", "pressed"]:
+		arrow.add_theme_stylebox_override(state, FinanceUIStyle.box("394336", "8c7b4c", 0))
+	arrow.pressed.connect(_move_weapon.bind(weapon_id, direction))
+	arrow.mouse_entered.connect(_hide_weapon_tooltip)
+	return arrow
+
+
+func _select_weapon(weapon_id: String) -> void:
+	_selected_weapon_id = weapon_id
+	_refresh_reorder_state()
+
+
+func _refresh_reorder_state() -> void:
+	for i in _weapon_buttons.size():
+		var button := _weapon_buttons[i] as WeaponSlotButton
+		var matches := button.weapon.weapon_id == _selected_weapon_id
+		button.set_pressed_no_signal(_automation_editing_enabled and matches)
+
+
+func _move_weapon(weapon_id: String, direction: int) -> void:
+	if not _automation_editing_enabled or _loadout == null: return
+	_hide_weapon_tooltip()
+	_selected_weapon_id = weapon_id
+	if _loadout.move_weapon(weapon_id, direction):
+		_reveal_selected_weapon.call_deferred()
+
+
+func _get_weapon_drag_data(_at_position: Vector2, button: WeaponSlotButton) -> Variant:
+	if not _automation_editing_enabled or _loadout == null or _weapon_buttons.size() < 2:
+		return null
+	if button.weapon == null or not _loadout.has_weapon(button.weapon.weapon_id):
+		return null
+	_hide_weapon_tooltip()
+	_select_weapon(button.weapon.weapon_id)
+	var preview := Control.new()
+	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var art := TextureRect.new()
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	art.size = Vector2(32, 32)
+	art.position = -art.size * 0.5
+	var icon_path := str(button.weapon.weapon_data.get("icon", ""))
+	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+		art.texture = ItemIconArt.texture_for(load(icon_path) as Texture2D, 32.0)
+	preview.add_child(art)
+	button.set_drag_preview(preview)
+	return {"type": WEAPON_DRAG_TYPE, "loadout": _loadout, "weapon_id": button.weapon.weapon_id}
+
+
+func _is_weapon_drag_data(data: Variant) -> bool:
+	return _automation_editing_enabled and _loadout != null and data is Dictionary \
+		and data.get("type") == WEAPON_DRAG_TYPE and data.get("loadout") == _loadout \
+		and _loadout.has_weapon(str(data.get("weapon_id", "")))
+
+
+func _can_drop_weapon(_at_position: Vector2, data: Variant, button: WeaponSlotButton) -> bool:
+	return is_visible_in_tree() and _is_weapon_drag_data(data) and button.weapon != null \
+		and button.weapon.weapon_id != str(data.get("weapon_id", "")) \
+		and _loadout.weapon_instances.has(button.weapon)
+
+
+func _drop_weapon(at_position: Vector2, data: Variant, button: WeaponSlotButton) -> void:
+	if not _can_drop_weapon(at_position, data, button): return
+	_selected_weapon_id = str(data.weapon_id)
+	_hide_weapon_tooltip()
+	if _loadout.move_weapon_to_index(_selected_weapon_id, _loadout.weapon_instances.find(button.weapon)):
+		_reveal_selected_weapon.call_deferred()
+
+
+func _scroll_during_weapon_drag(delta: float) -> void:
+	if not is_visible_in_tree() or not get_viewport().gui_is_dragging() \
+		or not _is_weapon_drag_data(get_viewport().gui_get_drag_data()):
+		_drag_scroll_remainder = 0.0
+		return
+	var scroll := weapon_list.get_parent() as ScrollContainer
+	var rect := scroll.get_global_rect()
+	var direction := 0
+	if rect.has_point(_tooltip_mouse_position):
+		if _tooltip_mouse_position.x < rect.position.x + 20: direction = -1
+		elif _tooltip_mouse_position.x > rect.end.x - 20: direction = 1
+	if direction == 0:
+		_drag_scroll_remainder = 0.0
+		return
+	_drag_scroll_remainder += direction * 220.0 * delta
+	var pixels := int(_drag_scroll_remainder)
+	_drag_scroll_remainder -= pixels
+	scroll.scroll_horizontal += pixels
+
+
+func _reveal_selected_weapon() -> void:
+	# Rebuilt nested containers need their final positions before scrolling.
+	await get_tree().process_frame
+	if weapon_list == null: return
+	for button in _weapon_buttons:
+		if (button as WeaponSlotButton).weapon.weapon_id == _selected_weapon_id:
+			var scroll := weapon_list.get_parent() as ScrollContainer
+			scroll.ensure_control_visible(button.get_parent() as Control)
+			# ensure_control_visible also adds a vertical scroll margin.
+			# This is a single horizontal row; retain its original baseline.
+			scroll.scroll_vertical = 0
+	_layout_cast_mode_icons()
 
 
 func _refresh_load_label() -> void:
@@ -78,13 +223,19 @@ func _refresh_weapon_strip() -> void:
 			weapon_list.remove_child(child)
 			child.queue_free()
 	_weapon_buttons.clear()
+	_reorder_buttons.clear()
 	for mode in _cast_mode_buttons:
 		_cast_mode_layer.remove_child(mode)
 		mode.queue_free()
 	_cast_mode_buttons.clear()
 	if weapon_list == null or _loadout == null:
+		_refresh_reorder_state()
 		return
-	for weapon in _loadout.get_weapon_instances():
+	if not _loadout.has_weapon(_selected_weapon_id):
+		_selected_weapon_id = "" if _loadout.weapon_instances.is_empty() else _loadout.weapon_instances[0].weapon_id
+	var weapons := _loadout.get_weapon_instances()
+	for index in weapons.size():
+		var weapon := weapons[index]
 		var button := WEAPON_SLOT_BUTTON_SCRIPT.new() as WeaponSlotButton
 		if button == null:
 			continue
@@ -105,15 +256,40 @@ func _refresh_weapon_strip() -> void:
 				ItemIconArt.bind_button(button, texture, 32.0)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
-		weapon_list.add_child(button)
 		if _automation_editing_enabled:
+			button.set_drag_forwarding(_get_weapon_drag_data.bind(button), _can_drop_weapon.bind(button), _drop_weapon.bind(button))
+			var group := MarginContainer.new()
+			group.name = "Weapon_" + weapon.weapon_id
+			group.custom_minimum_size = Vector2(44, 44)
+			group.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+			group.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			weapon_list.add_child(group)
+			group.add_child(button)
+			button.resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
+			var arrows := {"left": null, "right": null}
+			if index > 0:
+				arrows.left = _make_reorder_button(weapon.weapon_id, -1)
+				button.add_child(arrows.left)
+			if index < weapons.size() - 1:
+				arrows.right = _make_reorder_button(weapon.weapon_id, 1)
+				button.add_child(arrows.right)
+			_reorder_buttons.append(arrows)
+			button.flat = false
+			button.toggle_mode = true
+			button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+			button.add_theme_stylebox_override("pressed", FinanceUIStyle.box("394336", "dec48a", 0))
+			button.add_theme_stylebox_override("hover_pressed", FinanceUIStyle.box("394336", "dec48a", 0))
+			button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
 			mode.configure(weapon, true, (get_node("StripPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color)
 			_cast_mode_layer.add_child(mode)
 			mode.mouse_entered.connect(_hide_weapon_tooltip)
 			_cast_mode_buttons.append(mode)
+		else:
+			weapon_list.add_child(button)
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
+	_refresh_reorder_state()
 	_layout_cast_mode_icons.call_deferred()
 
 
@@ -165,7 +341,8 @@ func _restore_weapon_tooltip(weapon_id: String, preserved_position: Vector2) -> 
 			return
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_scroll_during_weapon_drag(delta)
 	if weapon_tooltip == null or not weapon_tooltip.visible:
 		return
 	var mouse_position := _tooltip_mouse_position
@@ -178,6 +355,7 @@ func _process(_delta: float) -> void:
 
 
 func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserved_position: Vector2 = Vector2.ZERO, keep_position: bool = false) -> void:
+	if get_viewport().gui_is_dragging(): return
 	if weapon_tooltip == null or weapon_tooltip_label == null or weapon == null:
 		return
 	_hide_weapon_tooltip()

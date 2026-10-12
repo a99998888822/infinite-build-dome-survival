@@ -14,12 +14,13 @@ const RARITY_LUCK_REQUIREMENTS: Dictionary = {
 	"mythic": 150,
 	"legendary": 350,
 }
-const WEAPON_UPGRADE_MISS_WEIGHT: int = 2
-const WEAPON_UPGRADE_WEIGHT_CAP: int = 20
+const WEAPON_UPGRADE_MISS_WEIGHT: int = 1
+const WEAPON_UPGRADE_WEIGHT_CAP: int = 10
+const WEAPON_UPGRADE_ROLL_CHANCE := 1.0 / 3.0
 const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_NEW_WEAPON: 12,
 	OFFER_RELIC: 60,
-	OFFER_WEAPON_UPGRADE: 8,
+	OFFER_WEAPON_UPGRADE: 4,
 }
 # The index is the number of distinct weapons already owned, capped at four.
 # Free level rewards arrive several times per wave; paid shelves stay more useful
@@ -64,6 +65,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		candidates.append(_build_candidate_entry({
 			"offer_id": "new_weapon:%s" % weapon_id,
 			"offer_type": OFFER_NEW_WEAPON,
+			"weight": int(weapon_data.get("shop_weight", 100)),
 			"rarity": str(weapon_data.get("rarity", "common")),
 			"target_id": weapon_id,
 			"display_name": str(weapon_data.get("display_name", weapon_id)),
@@ -203,7 +205,7 @@ func get_shop_type_weights(context: Dictionary) -> Dictionary:
 
 func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidate_pool: Array, offer_count: int, guarantee_new_weapon: bool = false) -> Array[Dictionary]:
 	var remaining: Array[Dictionary] = []
-	for candidate in candidate_pool:
+	for candidate in _gate_weapon_upgrades(candidate_pool):
 		if candidate is Dictionary:
 			remaining.append(candidate.duplicate(true))
 	var offers: Array[Dictionary] = []
@@ -222,7 +224,7 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		if guarantee_new_weapon and not new_weapon_selected and not _filter_candidates_by_type(available, OFFER_NEW_WEAPON).is_empty():
 			offer_type = OFFER_NEW_WEAPON
 		var typed_candidates := _filter_candidates_by_type(available, offer_type)
-		var candidate := _pick_candidate_by_rarity(typed_candidates, rarity_weights)
+		var candidate := _pick_candidate(typed_candidates, rarity_weights)
 		if candidate.is_empty():
 			break
 		if candidate.get("offer_type", "") == OFFER_WEAPON_UPGRADE:
@@ -232,6 +234,14 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		remaining.erase(candidate)
 		offers.append(candidate)
 	return offers
+
+
+func _pick_candidate(candidates: Array[Dictionary], rarity_weights: Dictionary) -> Dictionary:
+	# Each new weapon has its own weight. Do not split a rarity's budget among
+	# its weapons or apply the luck curve used by relics and weapon upgrades.
+	if not candidates.is_empty() and str(candidates[0].get("offer_type", "")) == OFFER_NEW_WEAPON:
+		return _pick_weighted_candidate(candidates)
+	return _pick_candidate_by_rarity(candidates, rarity_weights)
 
 
 func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Dictionary) -> Dictionary:
@@ -255,10 +265,7 @@ func _pick_candidate_by_rarity(candidates: Array[Dictionary], rarity_weights: Di
 func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, candidates: Array, count: int, generation: int, previous_ids: Array = [], guaranteed_relic_rarity: String = "", guarantee_new_weapon: bool = false) -> Array[Dictionary]:
 	# Paid shelves can exceed the number of distinct relics. Prefer distinct
 	# products first, then refill stackable stock. Free reward rolls stay unchanged.
-	var stock: Array[Dictionary] = []
-	for candidate in candidates:
-		if int(rarity_weights.get(str(candidate.get("rarity", "common")), 0)) > 0:
-			stock.append(candidate)
+	var stock := _filter_candidates_by_rarity_weights(_gate_weapon_upgrades(candidates), rarity_weights)
 	var available: Array[Dictionary] = []
 	for candidate in stock:
 		if not previous_ids.has(str(candidate.get("offer_id", ""))):
@@ -280,7 +287,7 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		var kind := _roll_weighted_key(_get_available_type_weights(type_weights, available))
 		if guaranteed.is_empty() and guarantee_new_weapon and not new_weapon_selected and not _filter_candidates_by_type(available, OFFER_NEW_WEAPON).is_empty():
 			kind = OFFER_NEW_WEAPON
-		var chosen := _pick_candidate_by_rarity(_filter_candidates_by_type(available, kind), rarity_weights) if guaranteed.is_empty() else _pick_weighted_candidate(guaranteed)
+		var chosen := _pick_candidate(_filter_candidates_by_type(available, kind), rarity_weights) if guaranteed.is_empty() else _pick_weighted_candidate(guaranteed)
 		if chosen.is_empty():
 			break
 		available.erase(chosen)
@@ -302,6 +309,16 @@ func roll_paid_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		stock = _filter_available_candidates(stock, upgrade_selected, new_weapon_selected)
 		available = _filter_available_candidates(available, upgrade_selected, new_weapon_selected)
 	return result
+
+
+func _gate_weapon_upgrades(candidates: Array) -> Array:
+	# Gate once per refresh, not per card: large shelves and pity cannot undo
+	# the reduction in the chance of seeing any upgrade on a page.
+	if not candidates.any(func(candidate): return str(candidate.get("offer_type", "")) == OFFER_WEAPON_UPGRADE):
+		return candidates
+	if randf() < WEAPON_UPGRADE_ROLL_CHANCE:
+		return candidates
+	return candidates.filter(func(candidate): return str(candidate.get("offer_type", "")) != OFFER_WEAPON_UPGRADE)
 
 
 func _pick_weighted_candidate(candidates: Array[Dictionary]) -> Dictionary:
@@ -349,11 +366,11 @@ func _filter_candidates_by_type(candidates: Array[Dictionary], offer_type: Strin
 	return result
 
 
-func _filter_candidates_by_rarity_weights(candidates: Array[Dictionary], rarity_weights: Dictionary) -> Array[Dictionary]:
+func _filter_candidates_by_rarity_weights(candidates: Array, rarity_weights: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for candidate in candidates:
 		var rarity := str(candidate.get("rarity", "common"))
-		if int(rarity_weights.get(rarity, 0)) > 0:
+		if str(candidate.get("offer_type", "")) == OFFER_NEW_WEAPON or int(rarity_weights.get(rarity, 0)) > 0:
 			result.append(candidate)
 	return result
 
@@ -378,7 +395,7 @@ func _read_shop_price_discounts(context: Dictionary) -> Array[float]:
 
 
 func _build_candidate_entry(candidate: Dictionary, shop_price_discounts: Array[float]) -> Dictionary:
-	candidate["weight"] = 100
+	candidate["weight"] = maxi(1, int(candidate.get("weight", 100)))
 	candidate["shop_base_price"] = int(_calculate_shop_basis(candidate, []))
 	candidate["shop_price_basis"] = _calculate_shop_basis(candidate, shop_price_discounts)
 	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_discounts)
@@ -396,7 +413,7 @@ func _calculate_shop_basis(candidate: Dictionary, shop_price_discounts: Array[fl
 	var base_cost := 15
 	var offer_type := str(candidate.get("offer_type", ""))
 	if offer_type == OFFER_WEAPON_UPGRADE:
-		base_cost = 10
+		return float(WeaponUpgradeRules.gold_cost(candidate)) * StatDefinitions.calculate_shop_price_multiplier(shop_price_discounts)
 	return float(base_cost + rarity_index * 5) * StatDefinitions.calculate_shop_price_multiplier(shop_price_discounts)
 
 

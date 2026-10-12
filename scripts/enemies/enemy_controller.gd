@@ -8,10 +8,7 @@ signal damage_received(source_id: String, damage: int)
 const DEFAULT_ENEMY_ID: String = "enemy_mutated_grub"
 const DEFAULT_KNOCKBACK_SPEED: float = 450.0
 const DEFAULT_KNOCKBACK_SECONDS: float = 0.18
-const CONTACT_RESET_RADIUS: float = 68.0
 const CONTACT_MARGIN: float = 1.0
-const CONTACT_DAMAGE_COOLDOWN_SECONDS: float = 0.55
-const CONTACT_RECOVERY_SPEED: float = 180.0
 const CHASE_ACCELERATION: float = 900.0
 const DAMAGE_NUMBER_FONT: Font = preload("res://assets/font/VT323-Regular.ttf")
 const DAMAGE_NUMBER_FONT_SIZE: int = 18
@@ -36,7 +33,7 @@ const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/li
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
 const FEEDBACK_R02 = preload("res://scripts/effects/combat_feedback_r02.gd")
 const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
-const SUPER_ARMOR_SECONDS := 1.0
+const SUPER_ARMOR_SECONDS := 2.0
 const SUPER_ARMOR_COOLDOWN_SECONDS := 5.0
 const SUPER_ARMOR_CONTROL_WINDOW := 2.0
 const SUPER_ARMOR_CONTROL_INTERVAL := 0.3
@@ -63,7 +60,6 @@ var body_scale_multiplier := 1.0
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _knockback_deceleration: float = 0.0
-var _contact_damage_cooldown: float = 0.0
 var status_visual_revision := 0
 var _burning_remaining: float = 0.0:
 	set(value):
@@ -126,11 +122,23 @@ var _contact_player_body: CollisionShape2D
 
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
+var _spatial_tracking := false
+
+
+func _spatial_tracking_marker() -> void:
+	pass
+
+
+func _notification(what: int) -> void:
+	if _spatial_tracking and what in [NOTIFICATION_LOCAL_TRANSFORM_CHANGED, NOTIFICATION_PARENTED]:
+		EnemyRegistry.invalidate_spatial()
 
 
 func _ready() -> void:
 	add_to_group("enemies")
 	EnemyRegistry.register_enemy(self)
+	_spatial_tracking = true
+	set_notify_local_transform(true)
 	if idle_texture == null and sprite != null:
 		idle_texture = sprite.texture
 	_set_movement_visual(false, 0.0)
@@ -143,6 +151,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	_spatial_tracking = false
 	if is_instance_valid(EnemyRegistry):
 		EnemyRegistry.unregister_enemy(self)
 
@@ -169,7 +178,6 @@ func _physics_process(delta: float) -> void:
 		_set_movement_visual(false, delta)
 		return
 	_tick_super_armor(delta)
-	_contact_damage_cooldown = maxf(_contact_damage_cooldown - delta, 0.0)
 	_process_burning(delta)
 	if not alive:
 		return
@@ -196,8 +204,6 @@ func _physics_process(delta: float) -> void:
 		_knockback_velocity = velocity
 		move_and_slide()
 		_set_movement_visual(true, delta)
-		return
-	if _process_contact_recovery():
 		return
 	_process_chase()
 	_process_contact_damage()
@@ -228,7 +234,6 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_knockback_timer = 0.0
 	_knockback_velocity = Vector2.ZERO
 	_knockback_deceleration = 0.0
-	_contact_damage_cooldown = 0.0
 	has_contact_damaged = false
 	_burning_remaining = 0.0
 	_burn_tick_timer = 0.0
@@ -666,7 +671,7 @@ func _apply_hit_feedback(hit_direction: Vector2, feedback_kind: StringName = &""
 	var shake_angle := randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
 	if is_control_immune():
 		shake_angle = 0.0
-	if FEEDBACK_R02.enabled() and FEEDBACK_R02.handles(feedback_kind):
+	if FEEDBACK_R02.handles(feedback_kind) and FEEDBACK_R02.enabled():
 		if not hit_direction.is_zero_approx():
 			_apply_weapon_knockback(hit_direction)
 		FEEDBACK_R02.apply(self, feedback_kind, hit_direction, shake_angle)
@@ -744,11 +749,9 @@ func _spawn_damage_number(
 	var damage_number_parent := get_parent()
 	if damage_number_parent == null or not damage_number_parent.is_inside_tree():
 		return
-	var damage_number := _acquire_damage_number(damage_number_parent)
-	damage_number.text = str(final_damage)
+	var damage_number := _acquire_damage_number(damage_number_parent, str(final_damage), _get_damage_number_theme(final_damage, is_critical))
 	damage_number.scale = Vector2(0.84, 0.84) if not is_critical else Vector2(0.92, 0.92)
 	damage_number.modulate.a = 0.0
-	damage_number.theme = _get_damage_number_theme(final_damage, is_critical)
 	damage_number.reset_size()
 	damage_number.size = DAMAGE_NUMBER_SIZE
 
@@ -783,17 +786,23 @@ static func _animate_critical_damage_number(elapsed: float, label: Label, origin
 	label.global_position = origin + Vector2(0.0, -DAMAGE_NUMBER_RISE * elapsed / DAMAGE_NUMBER_ANIMATION_SECONDS) + shake.round()
 
 
-static func _acquire_damage_number(parent: Node) -> Label:
+static func _acquire_damage_number(parent: Node, display_text: String, style: Theme) -> Label:
 	var idle: Array = parent.get_meta(DAMAGE_NUMBER_POOL_META, [])
 	while not idle.is_empty():
 		var candidate: Variant = idle.pop_back()
 		if not is_instance_valid(candidate) or candidate.is_queued_for_deletion():
 			continue
 		var label := candidate as Label
+		label.text = display_text
+		label.theme = style
 		# Reused numbers occupy the same painter position as newly added nodes.
 		parent.move_child(label, -1)
 		return label
 	var label := Label.new()
+	# Set text and font before entering the tree, avoiding a default-font layout
+	# immediately followed by a second font/theme propagation for every hit.
+	label.theme = style
+	label.text = display_text
 	label.name = "DamageNumber"
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -802,6 +811,19 @@ static func _acquire_damage_number(parent: Node) -> Label:
 	label.pivot_offset = DAMAGE_NUMBER_SIZE * 0.5
 	parent.add_child(label)
 	return label
+
+
+static func prepare_damage_number_pool(parent: Node) -> void:
+	if parent == null or parent.has_meta(DAMAGE_NUMBER_POOL_META):
+		return
+	# Battle setup owns the first allocation, before attacks can land. No budget
+	# slots are consumed; the encounter owns and frees these dormant labels.
+	var idle: Array = []
+	for index in MAX_DAMAGE_NUMBERS:
+		var label := _acquire_damage_number(parent, "0", _get_damage_number_theme(1, index < 32))
+		label.hide()
+		idle.append(label)
+	parent.set_meta(DAMAGE_NUMBER_POOL_META, idle)
 
 
 static func _queue_recycle_damage_number(label: Label) -> void:
@@ -835,7 +857,7 @@ static func release_damage_number() -> void:
 	active_damage_numbers = maxi(0, active_damage_numbers - 1)
 
 
-func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
+static func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
 	# Four magnitude colors and two font/outline sizes: at most eight themes.
 	var key := Vector2i(int(is_critical), clampi(ceili(str(absi(final_damage)).length() / 2.0), 1, 4))
 	if _damage_number_themes.has(key): return _damage_number_themes[key]
@@ -853,7 +875,7 @@ func _get_damage_number_theme(final_damage: int, is_critical: bool) -> Theme:
 	return style
 
 
-func _get_damage_number_color(final_damage: int) -> Color:
+static func _get_damage_number_color(final_damage: int) -> Color:
 	var digit_count := str(absi(final_damage)).length()
 	if digit_count <= 2:
 		return Color.WHITE
@@ -896,21 +918,6 @@ func _process_chase() -> void:
 	_set_movement_visual(true, get_physics_process_delta_time())
 
 
-func _process_contact_recovery() -> bool:
-	if _has_challenge_target(): return false
-	if target_player == null or not target_player.alive or _contact_damage_cooldown <= 0.0:
-		return false
-	if global_position.distance_to(target_player.global_position) >= CONTACT_RESET_RADIUS:
-		return false
-	var direction := target_player.global_position.direction_to(global_position)
-	if direction.is_zero_approx():
-		direction = Vector2.RIGHT
-	velocity = direction.normalized() * CONTACT_RECOVERY_SPEED
-	move_and_slide()
-	_set_movement_visual(true, get_physics_process_delta_time())
-	return true
-
-
 func _set_movement_visual(is_moving: bool, delta: float) -> void:
 	if sprite == null:
 		return
@@ -943,12 +950,11 @@ func _set_movement_visual(is_moving: bool, delta: float) -> void:
 
 func _process_contact_damage() -> void:
 	if _has_challenge_target():
-		if _contact_damage_cooldown <= 0 and global_position.distance_to(challenge_target.global_position) <= 42:
+		if global_position.distance_to(challenge_target.global_position) <= 42:
 			var damage := roundi(get_stat("melee_damage") * (1.0 + get_stat("damage_percent") / 100.0))
 			challenge_target.take_enemy_damage(damage)
-			_contact_damage_cooldown = CONTACT_DAMAGE_COOLDOWN_SECONDS
 		return
-	if target_player == null or not target_player.alive or _contact_damage_cooldown > 0.0:
+	if target_player == null or not target_player.alive:
 		return
 	if not _is_touching_player():
 		return
@@ -957,7 +963,6 @@ func _process_contact_damage() -> void:
 	if damage <= 0:
 		return
 	var dealt_damage := target_player.take_damage(damage, enemy_id)
-	_contact_damage_cooldown = CONTACT_DAMAGE_COOLDOWN_SECONDS
 	if dealt_damage > 0:
 		has_contact_damaged = true
 		contact_damaged.emit(target_player, dealt_damage)

@@ -12,19 +12,30 @@ func _init() -> void:
 		rules = parsed
 
 
-func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary:
+func weapon_costs(weapon: WeaponInstance) -> Dictionary:
 	if weapon == null:
 		return {}
 	var rarity := maxi(0, RARITIES.find(str(weapon.weapon_data.get("rarity", "common"))))
 	var reference := 15 + rarity * 5
-	var basis := reference if weapon.trade_base_basis < 0 else mini(reference, weapon.trade_base_basis)
-	var base_value := floori(float(basis) * float(rules.get("weapon_sell_ratio", 0.5)))
-	var upgrade_value := 0
+	var base_cost := reference if weapon.trade_base_basis < 0 else weapon.trade_base_basis
+	var upgrade_cost := 0
+	var upgrades: Array[Dictionary] = []
 	for level in range(2, weapon.level + 1):
 		var upgrade: Dictionary = weapon.weapon_data.get("level_upgrades", {}).get(str(level), {})
-		var upgrade_reference := 10 + maxi(0, RARITIES.find(str(upgrade.get("rarity", "common")))) * 5
-		var paid := int(weapon.trade_upgrade_basis.get(level, upgrade_reference))
-		upgrade_value += floori(float(mini(upgrade_reference, paid)) * float(rules.get("upgrade_sell_ratio", 0.5)))
+		var paid := maxi(0, int(weapon.trade_upgrade_basis.get(level, WeaponUpgradeRules.gold_cost(upgrade))))
+		upgrade_cost += paid
+		upgrades.append({"level": level, "cost": paid, "source": str(weapon.trade_upgrade_sources.get(level, "free" if not weapon.trade_upgrade_basis.has(level) else "gold"))})
+	return {"base_cost": base_cost, "upgrade_cost": upgrade_cost, "total_cost": base_cost + upgrade_cost, "upgrades": upgrades}
+
+
+func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary:
+	if weapon == null:
+		return {}
+	var costs := weapon_costs(weapon)
+	var exact_base := float(costs.base_cost) * float(rules.get("weapon_sell_ratio", 0.5))
+	var exact_upgrade := float(costs.upgrade_cost) * float(rules.get("upgrade_sell_ratio", 0.5))
+	var base_value := floori(exact_base)
+	var upgrade_value := floori(exact_base + exact_upgrade) - base_value
 	var title_bonus := maxi(0, int(weapon.battle_title.get("sale_bonus", 0)))
 	var returned_items: Array[String] = []
 	var returned_ids: Array[String] = []
@@ -37,6 +48,7 @@ func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary
 		"level": weapon.level, "icon": str(weapon.weapon_data.get("icon", "")),
 		"title": str(weapon.battle_title.get("display_name", "")),
 		"base_value": base_value, "upgrade_value": upgrade_value, "title_bonus": title_bonus,
+		"cost_basis": costs,
 		"total": base_value + upgrade_value + title_bonus,
 		"returned_items": returned_items, "returned_ids": returned_ids,
 	}, humanity)
@@ -45,8 +57,7 @@ func quote_weapon(weapon: WeaponInstance, humanity: float = 100.0) -> Dictionary
 func quote_item(item: Dictionary, humanity: float = 100.0) -> Dictionary:
 	if item.is_empty():
 		return {}
-	var rarity := maxi(0, RARITIES.find(str(item.get("rarity", "common"))))
-	var basis := int(rules.get("enchantment_base_value", 15)) + rarity * int(rules.get("rarity_value_step", 5))
+	var basis := item_cost(item)
 	var total := floori(float(basis) * float(rules.get("enchantment_sell_ratio", 0.5)))
 	return _with_humanity({
 		"kind": "enchantment", "target_id": str(item.get("item_instance_id", "")),
@@ -55,6 +66,11 @@ func quote_item(item: Dictionary, humanity: float = 100.0) -> Dictionary:
 		"rolled_parameters": item.get("rolled_parameters", {}).duplicate(true),
 		"equipped_weapon_id": str(item.get("equipped_weapon_id", "")), "total": total,
 	}, humanity)
+
+
+func item_cost(item: Dictionary) -> int:
+	var rarity := maxi(0, RARITIES.find(str(item.get("rarity", "common"))))
+	return int(rules.get("enchantment_base_value", 15)) + rarity * int(rules.get("rarity_value_step", 5))
 
 
 func _with_humanity(quote: Dictionary, humanity: float) -> Dictionary:

@@ -388,6 +388,7 @@ func _test_bank_and_trades() -> void:
 	check(not popup._bank_form.visible and popup._receipt.visible and popup.portrait.expression == 3, "receipt and small deposit smile")
 	check(not flow.submit_finance_operation("withdraw", 1).success, "cannot withdraw after depositing")
 	check(loadout.equip_weapon("weapon_plasma_cannon"), "equip second weapon fixture")
+	check(loadout.upgrade_weapon("weapon_plasma_cannon"), "unlock second cannon slot for transfer fixture")
 	for existing in loadout.get_weapon_instance("weapon_void_blade").get_attached_item_instances():
 		flow.submit_enchantment_operation("detach", "weapon_void_blade", str(existing.get("item_instance_id", "")))
 	var inv := player.item_inventory
@@ -444,6 +445,7 @@ func _test_bank_and_trades() -> void:
 	check(int(flow.get_inventory_sale_quote("weapon", cannon.weapon_id).total) == 9, "title bonus extension contributes to quote")
 	cannon.battle_title.clear()
 	cannon.trade_base_basis = -1
+	check(loadout.upgrade_weapon(cannon.weapon_id), "replacement cannon unlocks second slot before workbench tests")
 	flow.submit_enchantment_operation("attach", cannon.weapon_id, fire_id)
 	flow.submit_enchantment_operation("attach", "weapon_void_blade", water_id)
 	popup.workbench.selected_weapon_id = "weapon_plasma_cannon"

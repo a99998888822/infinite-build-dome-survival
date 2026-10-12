@@ -38,12 +38,10 @@ static func arrange(ui) -> void:
 	ui._title.add_theme_constant_override("shadow_offset_x", 0)
 	ui._title.add_theme_constant_override("shadow_offset_y", 0)
 	place(ui._title, Rect2(582 * sx, 112 * sy, 230 * sx, 36 * sy))
-	place(ui._scene_summary_back, Rect2(work_x, 212 * sy, work_w, 32))
-	place(ui._summary, Rect2(work_x + 14, 212 * sy, work_w - 28, 32))
-	FinanceUIStyle.label(ui._summary, 12, FinanceUIStyle.GOLD)
-	ui._summary.show()
-	place(ui._tabs, Rect2(work_x, 254 * sy, work_w, 30))
-	var content_y := 254 * sy + 38
+	ui._scene_summary_back.hide()
+	ui._summary.hide()
+	place(ui._tabs, Rect2(work_x, 212 * sy, work_w, 30))
+	var content_y := 212 * sy + 38
 	var content_h := maxf(80, content_bottom - content_y)
 	place(ui._enchant_scroll, Rect2(work_x + 12, content_y + 12, work_w - 24, maxf(24, content_h - 24)))
 	ui.workbench.custom_minimum_size.y = 276

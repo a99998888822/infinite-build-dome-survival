@@ -75,7 +75,7 @@ func _run() -> void:
 	check(not RecordingSession.validate(invalid).is_empty(), "reject missing wave")
 	invalid = RecordingSession.default_config()
 	invalid.weapons[0].level = 1
-	check(not RecordingSession.validate(invalid).is_empty(), "reject excess slots at low rarity")
+	check(not RecordingSession.validate(invalid).is_empty(), "reject excess slots at level one")
 	invalid.weapons[0].attachments = ["scroll_pierce"]
 	check(not RecordingSession.validate(invalid).is_empty(), "reject incompatible spear piercing")
 	invalid = RecordingSession.default_config()
@@ -86,6 +86,9 @@ func _run() -> void:
 	check(not RecordingSession.validate(invalid).is_empty(), "reject duplicate weapons")
 	var config := RecordingSession.default_config()
 	config.countdown = 0
+	config.weapons[0].level = 4
+	config.weapons[0].attachments.append("scroll_ice")
+	check(RecordingSession.validate(config).is_empty(), "level four spear accepts three enchantments")
 	config.weapons.append({"id": "weapon_void_blade", "level": 3, "attachments": ["scroll_ice"]})
 	studio.set_config(config)
 	check(studio.get_config() == config, "preset switching preserves changed numeric values")
@@ -105,7 +108,8 @@ func _run() -> void:
 	check(manager.current_gold == 200 and manager.finance_system.principal == 1000, "exact starting cash and bank principal")
 	check(manager.player.get_stat("armor") == 20, "principal relic produces real armor")
 	check(session.battle.loadout.get_weapon_instances().size() == 2, "multiple configured weapons")
-	check(session.battle.loadout.get_weapon_instance("weapon_nightwatch_spear").level == 3, "weapon upgraded before attachments")
+	var spear := session.battle.loadout.get_weapon_instance("weapon_nightwatch_spear")
+	check(spear.level == 4 and spear.get_attached_item_instances().size() == 3, "weapon upgraded before all three attachments")
 	var bow := session.battle.loadout.get_weapon_instance("weapon_void_blade")
 	check(bow.get_attached_item_instances().size() == 1 and bow.has_effect("ice"), "explicit attachments replace character default lightning")
 	await key(KEY_F7)
@@ -161,5 +165,8 @@ func _run() -> void:
 	await studio.return_to_studio()
 	studio.queue_free()
 	await frames(4)
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	await get_tree().create_timer(0.25).timeout
 	print("RECORDING_STUDIO_COMPLETE checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)

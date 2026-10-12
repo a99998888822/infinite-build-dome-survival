@@ -211,11 +211,11 @@ func apply_augmentation(augmentation_id: String) -> bool:
 	return false
 
 
-func upgrade_weapon(weapon_id: String) -> bool:
+func upgrade_weapon(weapon_id: String, paid_cost: int = -1, payment_source: String = "free") -> bool:
 	var weapon := get_weapon_instance(weapon_id)
 	if weapon == null:
 		return false
-	var upgraded := weapon.upgrade()
+	var upgraded := weapon.upgrade(paid_cost, payment_source)
 	if upgraded:
 		weapon_upgraded.emit(weapon_id, weapon.level)
 		_notify_loadout_changed()
@@ -238,6 +238,29 @@ func get_weapon_instances() -> Array[WeaponInstance]:
 	for weapon in weapon_instances:
 		result.append(weapon)
 	return result
+
+
+func move_weapon(weapon_id: String, direction: int) -> bool:
+	if direction != -1 and direction != 1:
+		return false
+	var weapon := get_weapon_instance(weapon_id)
+	var index := weapon_instances.find(weapon)
+	if index < 0:
+		return false
+	return move_weapon_to_index(weapon_id, index + direction)
+
+
+func move_weapon_to_index(weapon_id: String, destination: int) -> bool:
+	var weapon := get_weapon_instance(weapon_id)
+	var index := weapon_instances.find(weapon)
+	if index < 0 or destination < 0 or destination >= weapon_instances.size() or destination == index:
+		return false
+	# Reorder the same instances: attachments, cast policy and cooldown stay put.
+	# Insert at the destination and retain the relative order of the other weapons.
+	weapon_instances.remove_at(index)
+	weapon_instances.insert(destination, weapon)
+	loadout_changed.emit()
+	return true
 
 
 func get_total_load_cost() -> int:

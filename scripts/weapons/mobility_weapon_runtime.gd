@@ -70,9 +70,9 @@ func _impact(point: Vector2) -> void:
 	if not shock:
 		# The atlas reaches 82 px including sparks: 1.1x stays inside the 96 px hit circle.
 		visual_scale = weapon.get_hit_radius() / 96.0 * 1.1
-	# Project every slash frame onto the same ground ellipse as its indicator.
+	# Project slash and star shockwave frames onto the shared ground plane.
 	# The circular physics query below keeps its existing radius.
-	var visual_axes := GROUND.axes() if shock else Vector2(1.0, AttackFootprint.ELLIPSE_RATIO)
+	var visual_axes := GROUND.projected_axes()
 	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, visual_axes * visual_scale)
 	# Copy only matching contacts before native damage/reactions mutate the registry.
 	var victims: Array[EnemyController] = []

@@ -317,6 +317,11 @@ content.weapons.weapon_camp_dagger.level_2.description,伤害次数 [color=#7FD8
 content.weapons.weapon_camp_dagger.level_3.description,"近战基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_camp_dagger.level_3.with_slot.description,"近战基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_camp_dagger.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害次数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
@@ -326,6 +331,11 @@ content.weapons.weapon_copper_lamp.display_name,赤铜炉灯,Copper Furnace Lamp
 content.weapons.weapon_copper_lamp.level_2.description,"元素基础伤害 [color=#7FD88F]+1[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Elemental Damage [color=#7FD88F]+1[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_copper_lamp.level_2.with_slot.description,"元素基础伤害 [color=#7FD88F]+1[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+1[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_copper_lamp.level_5.description,"元素基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害范围 [color=#7FD88F]+20[/color]","Base Elemental Damage [color=#7FD88F]+2[/color]
@@ -337,6 +347,11 @@ content.weapons.weapon_dash_blade.display_name,突进短刃,Dash Blade
 content.weapons.weapon_dash_blade.level_2.description,"近战基础伤害 [color=#7FD88F]+4[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+4[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_dash_blade.level_2.with_slot.description,"近战基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+4[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_dash_blade.level_5.description,"近战基础伤害 [color=#7FD88F]+6[/color]
 圆斩伤害段数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+6[/color]
 Circular slash hits [color=#7FD88F]+1[/color]"
@@ -345,6 +360,11 @@ content.weapons.weapon_earth_hammer.display_name,裂地战锤,Earthsplitter Hamm
 content.weapons.weapon_earth_hammer.level_2.description,"近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_earth_hammer.level_2.with_slot.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_earth_hammer.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
@@ -356,6 +376,11 @@ content.weapons.weapon_hand_cannon.display_name,巨型手持火炮,Heavy Hand Ca
 content.weapons.weapon_hand_cannon.level_2.description,"每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_hand_cannon.level_2.with_slot.description,"每发基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_hand_cannon.level_5.description,"每发基础伤害 [color=#7FD88F]+2[/color]
 散弹数量 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
 Pellets [color=#7FD88F]+1[/color]"
@@ -371,6 +396,11 @@ content.weapons.weapon_kunyu_ritual_tome.display_name,坤舆秘仪书,Tome of Ea
 content.weapons.weapon_kunyu_ritual_tome.level_2.description,"元素基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_kunyu_ritual_tome.level_2.with_slot.description,"元素基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_kunyu_ritual_tome.level_4.description,"元素基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害次数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
@@ -388,6 +418,13 @@ content.weapons.weapon_mutant_tentacle.level_2.description,"近战基础伤害 [
 伤害范围 [color=#7FD88F]+5[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Damage Area [color=#7FD88F]+5[/color]"
+content.weapons.weapon_mutant_tentacle.level_2.with_slot.description,"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+5[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_mutant_tentacle.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害范围 [color=#7FD88F]+5[/color]
@@ -401,6 +438,13 @@ content.weapons.weapon_nightwatch_spear.level_2.description,"近战基础伤害 
 攻击距离 [color=#7FD88F]+5[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Attack Range [color=#7FD88F]+5[/color]"
+content.weapons.weapon_nightwatch_spear.level_2.with_slot.description,"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击距离 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Attack Range [color=#7FD88F]+5[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_nightwatch_spear.level_5.description,"近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 攻击距离 [color=#7FD88F]+5[/color]
@@ -412,6 +456,11 @@ content.weapons.weapon_plasma_cannon.display_name,电浆炮,Plasma Cannon
 content.weapons.weapon_plasma_cannon.level_2.description,"远程基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_plasma_cannon.level_2.with_slot.description,"远程基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_plasma_cannon.level_5.description,"远程基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+3[/color]
@@ -424,6 +473,11 @@ content.weapons.weapon_star_tome.display_name,移星秘典,Starshift Codex
 content.weapons.weapon_star_tome.level_2.description,"元素基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.2s[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
 Base Cooldown [color=#7FD88F]−0.2s[/color]"
+content.weapons.weapon_star_tome.level_2.with_slot.description,"元素基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.2s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.2s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_star_tome.level_5.description,"元素基础伤害 [color=#7FD88F]+8[/color]
 震击伤害段数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+8[/color]
 Shockwave hits [color=#7FD88F]+1[/color]"
@@ -433,6 +487,11 @@ content.weapons.weapon_void_blade.level_2.description,额外投射物 [color=#7F
 content.weapons.weapon_void_blade.level_3.description,"远程基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+content.weapons.weapon_void_blade.level_3.with_slot.description,"远程基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 content.weapons.weapon_void_blade.level_5.description,"远程基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]

@@ -282,14 +282,17 @@ func _add_weapon(data: Dictionary) -> void:
 	level.value = int(data.get("level", 1))
 	var second := HBoxContainer.new()
 	box.add_child(second)
-	var first := _record_picker("augmentations", second, true)
-	var last := _record_picker("augmentations", second, true)
-	first.tooltip_text = "附魔 1"
-	last.tooltip_text = "附魔 2（随武器品质开放）"
 	var attachments: Array = data.get("attachments", [])
-	if not attachments.is_empty(): _select(first, str(attachments[0]))
-	if attachments.size() > 1: _select(last, str(attachments[1]))
-	var row := {"picker": picker, "level": level, "first": first, "last": last, "panel": box.get_parent()}
+	var enchantments: Array[OptionButton] = []
+	var max_slots := 0
+	for record in DataRegistry.get_table("weapons"):
+		max_slots = maxi(max_slots, WeaponInstance.get_attachment_slots_for_level(record, int(record.get("max_level", 1))))
+	for index in max_slots:
+		var enchantment := _record_picker("augmentations", second, true)
+		enchantment.tooltip_text = "附魔 %d（按武器升级开放）" % (index + 1)
+		if index < attachments.size(): _select(enchantment, str(attachments[index]))
+		enchantments.append(enchantment)
+	var row := {"picker": picker, "level": level, "enchantments": enchantments, "panel": box.get_parent()}
 	weapon_rows.append(row)
 	_button("移除", line, func():
 		weapon_rows.erase(row)
@@ -344,7 +347,7 @@ func get_config() -> Dictionary:
 	for row in weapon_rows:
 		if row.level.get_line_edit().has_focus(): row.level.apply()
 		var attachments: Array[String] = []
-		for picker in [row.first, row.last]:
+		for picker in row.enchantments:
 			var id := _selected(picker)
 			if not id.is_empty(): attachments.append(id)
 		result.weapons.append({"id": _selected(row.picker), "level": int(row.level.value), "attachments": attachments})

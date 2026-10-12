@@ -12,6 +12,8 @@ var selected_item_id := ""
 var _weapon_row: HBoxContainer
 var _weapon_name: Label
 var _sell_weapon: Button
+var _upgrade_weapon: Button
+var _principal_upgrade_quote: Dictionary = {}
 var _slots: HBoxContainer
 var _inventory: GridContainer
 var _inventory_scroll: ScrollContainer
@@ -23,29 +25,49 @@ var _move_left: Button
 var _move_right: Button
 var _weapon_icon: TextureRect
 var _weapon_scroll: ScrollContainer
+var _weapon_scroll_left: Button
+var _weapon_scroll_right: Button
+var _weapon_scroll_direction := 0
+var _weapon_scroll_elapsed := 0.0
+var _weapon_scroll_position := 0.0
+
+const WEAPON_SCROLL_STEP := 32.0
+const WEAPON_SCROLL_SPEED := 320.0
+const WEAPON_SCROLL_DELAY := 0.22
 
 
 func _ready() -> void:
 	L10n.locale_changed.connect(refresh)
+	set_process(false)
 	add_theme_constant_override("separation", 4)
-	# Separate the card edges, scroll track and sale heading instead of letting
-	# the default scrollbar touch both rows. Keep the remaining form compact.
 	var weapon_section := MarginContainer.new()
-	weapon_section.add_theme_constant_override("margin_bottom", 14)
+	weapon_section.add_theme_constant_override("margin_bottom", 6)
 	add_child(weapon_section)
+	var weapon_view := MarginContainer.new()
+	weapon_section.add_child(weapon_view)
 	_weapon_scroll = TouchScrollContainer.new()
 	_weapon_scroll.follow_focus = true
 	FinanceUIStyle.bank_horizontal_scroll(_weapon_scroll)
-	weapon_section.add_child(_weapon_scroll)
+	_weapon_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	weapon_view.add_child(_weapon_scroll)
 	var weapon_padding := MarginContainer.new()
 	weapon_padding.add_theme_constant_override("margin_left", 4)
 	weapon_padding.add_theme_constant_override("margin_right", 4)
 	weapon_padding.add_theme_constant_override("margin_top", 4)
-	weapon_padding.add_theme_constant_override("margin_bottom", 18)
+	weapon_padding.add_theme_constant_override("margin_bottom", 4)
 	_weapon_scroll.add_child(weapon_padding)
 	_weapon_row = HBoxContainer.new()
 	_weapon_row.add_theme_constant_override("separation", 8)
 	weapon_padding.add_child(_weapon_row)
+	# Overlay the clipped edges without changing the viewport as arrows appear.
+	var navigation := Control.new()
+	navigation.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weapon_view.add_child(navigation)
+	_weapon_scroll_left = _weapon_scroll_button("◀", -1, navigation)
+	_weapon_scroll_right = _weapon_scroll_button("▶", 1, navigation)
+	_weapon_scroll.get_h_scroll_bar().changed.connect(_sync_weapon_scroll_buttons)
+	_weapon_scroll.get_h_scroll_bar().value_changed.connect(func(_value): _sync_weapon_scroll_buttons())
+	visibility_changed.connect(_stop_weapon_scroll)
 	var heading := HBoxContainer.new()
 	add_child(heading)
 	_weapon_icon = TextureRect.new()
@@ -59,6 +81,11 @@ func _ready() -> void:
 	_weapon_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	FinanceUIStyle.label(_weapon_name, 14)
 	heading.add_child(_weapon_name)
+	_upgrade_weapon = _button("ui.enchantment.principal_upgrade", heading)
+	_upgrade_weapon.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_upgrade_weapon.pressed.connect(_purchase_principal_upgrade)
+	_upgrade_weapon.mouse_entered.connect(_show_principal_upgrade_tooltip)
+	_upgrade_weapon.mouse_exited.connect(func(): tooltip_hidden.emit())
 	_sell_weapon = _button("ui.enchantment.sell_weapon", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
@@ -74,6 +101,9 @@ func _ready() -> void:
 	add_child(_title)
 	_inventory_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_inventory_scroll)
+	# Keep six columns even in small windows; allow access without squeezing art.
+	_inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	FinanceFrameSkin.scrollbar(_inventory_scroll.get_h_scroll_bar())
 	_inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_inventory_scroll.custom_minimum_size.y = 52
 	add_child(_inventory_scroll)
@@ -104,6 +134,7 @@ func _ready() -> void:
 
 func refresh() -> void:
 	if flow == null or _weapon_row == null: return
+	_stop_weapon_scroll()
 	tooltip_hidden.emit()
 	var loadout := flow.get_bound_loadout()
 	var player := flow.get_bound_player()
@@ -116,13 +147,16 @@ func refresh() -> void:
 		var button := WeaponSlotButton.new()
 		_weapon_row.add_child(button)
 		button.configure(weapon, true)
-		button.custom_minimum_size = Vector2(180, 46)
+		button.custom_minimum_size = Vector2(120, 46)
+		button.clip_text = true
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
 		button.expand_icon = true
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.add_theme_constant_override("icon_max_width", 36)
 		button.focus_mode = Control.FOCUS_ALL
 		FinanceUIStyle.bank_button(button, weapon.weapon_id == selected_weapon_id)
+		button.add_theme_font_size_override("font_size", 10)
 		ItemIconArt.bind_button(button, button.icon, 32.0)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
@@ -134,6 +168,7 @@ func refresh() -> void:
 	_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1
 	_sell_weapon.tooltip_text = "ui.enchantment.keep_one_weapon" if _sell_weapon.disabled else "ui.enchantment.sale_returns_enchantments"
+	_refresh_principal_upgrade()
 	_clear(_slots)
 	if current != null:
 		var attached := current.get_attached_item_instances()
@@ -165,16 +200,119 @@ func refresh() -> void:
 		var card := _item_card(item, _inventory)
 		card.pressed.connect(_select_item.bind(str(item.get("item_instance_id", ""))))
 	if _inventory.get_child_count() == 0:
-		_inventory.columns = 1
 		var empty := Label.new()
 		empty.name = "EmptyEnchantmentLabel"
 		empty.text = "ui.enchantment.inventory.empty"
 		empty.autowrap_mode = TextServer.AUTOWRAP_OFF
 		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		FinanceUIStyle.label(empty, 12, Color("8b9089"))
+		FinanceUIStyle.label(empty, 10, Color("8b9089"))
 		_inventory.add_child(empty)
 	_update_selection()
+	_sync_weapon_scroll_buttons.call_deferred()
+
+
+func _refresh_principal_upgrade() -> void:
+	_principal_upgrade_quote = flow.get_principal_weapon_upgrade_quote(selected_weapon_id)
+	_upgrade_weapon.disabled = not bool(_principal_upgrade_quote.get("success", false))
+	var reason := str(_principal_upgrade_quote.get("reason", ""))
+	if reason == "principal_upgrade_max_level":
+		_upgrade_weapon.text = "ui.enchantment.upgrade_max_level"
+	elif reason == "principal_upgrade_used":
+		_upgrade_weapon.text = "ui.enchantment.upgrade_used"
+	else:
+		_upgrade_weapon.text = L10n.text("ui.enchantment.principal_upgrade_price") % int(_principal_upgrade_quote.get("price", 0))
+
+
+func _show_principal_upgrade_tooltip() -> void:
+	var description := L10n.source(str(_principal_upgrade_quote.get("description", "")))
+	var reason := str(_principal_upgrade_quote.get("reason", ""))
+	if not reason.is_empty():
+		if not description.is_empty(): description += "\n"
+		description += FinanceUIStyle.reason(reason)
+	if not description.is_empty(): tooltip_requested.emit(description)
+
+
+func _purchase_principal_upgrade() -> void:
+	tooltip_hidden.emit()
+	var result := flow.purchase_principal_weapon_upgrade(selected_weapon_id, str(_principal_upgrade_quote.get("quote_token", "")))
+	var success := bool(result.get("success", false))
+	feedback_requested.emit(L10n.text("ui.enchantment.principal_upgrade_done") if success else FinanceUIStyle.reason(str(result.get("reason", ""))), success)
+	refresh()
+
+
+func _weapon_scroll_button(caption: String, direction: int, parent: Control) -> Button:
+	var button := Button.new()
+	button.text = caption
+	button.custom_minimum_size = Vector2(24, 46)
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	FinanceUIStyle.bank_button(button)
+	button.add_theme_font_size_override("font_size", 10)
+	parent.add_child(button)
+	button.anchor_left = 0.0 if direction < 0 else 1.0
+	button.anchor_right = button.anchor_left
+	button.anchor_bottom = 1.0
+	button.offset_left = 0.0 if direction < 0 else -24.0
+	button.offset_right = 24.0 if direction < 0 else 0.0
+	button.offset_top = 4.0
+	button.offset_bottom = -4.0
+	button.hide()
+	button.button_down.connect(_start_weapon_scroll.bind(direction))
+	button.button_up.connect(_stop_weapon_scroll)
+	button.mouse_exited.connect(_stop_weapon_scroll)
+	button.mouse_entered.connect(func(): tooltip_hidden.emit())
+	return button
+
+
+func _start_weapon_scroll(direction: int) -> void:
+	_weapon_scroll_direction = direction
+	_weapon_scroll_elapsed = 0.0
+	_weapon_scroll_position = _weapon_scroll.scroll_horizontal
+	set_process(true)
+	_scroll_weapons(WEAPON_SCROLL_STEP * direction)
+
+
+func _stop_weapon_scroll() -> void:
+	_weapon_scroll_direction = 0
+	set_process(false)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_stop_weapon_scroll()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		_stop_weapon_scroll()
+
+
+func _process(delta: float) -> void:
+	if not is_visible_in_tree():
+		_stop_weapon_scroll()
+		return
+	var previous := _weapon_scroll_elapsed
+	_weapon_scroll_elapsed += delta
+	var active_delta := maxf(0.0, _weapon_scroll_elapsed - WEAPON_SCROLL_DELAY) - maxf(0.0, previous - WEAPON_SCROLL_DELAY)
+	if active_delta > 0:
+		_scroll_weapons(WEAPON_SCROLL_SPEED * active_delta * _weapon_scroll_direction)
+
+
+func _scroll_weapons(distance: float) -> void:
+	var bar := _weapon_scroll.get_h_scroll_bar()
+	_weapon_scroll_position = clampf(_weapon_scroll_position + distance, 0.0, maxf(0.0, bar.max_value - bar.page))
+	_weapon_scroll.scroll_horizontal = roundi(_weapon_scroll_position)
+	_sync_weapon_scroll_buttons()
+
+
+func _sync_weapon_scroll_buttons() -> void:
+	if _weapon_scroll_left == null or _weapon_scroll_right == null: return
+	var bar := _weapon_scroll.get_h_scroll_bar()
+	var limit := maxi(0, roundi(bar.max_value - bar.page))
+	_weapon_scroll_left.visible = _weapon_scroll.scroll_horizontal > 0
+	_weapon_scroll_right.visible = _weapon_scroll.scroll_horizontal < limit
+	if (_weapon_scroll_direction < 0 and not _weapon_scroll_left.visible) or (_weapon_scroll_direction > 0 and not _weapon_scroll_right.visible):
+		_stop_weapon_scroll()
 
 
 func _select_weapon(id: String) -> void:
@@ -287,11 +425,7 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 
 
 func _layout_inventory() -> void:
-	var usable := maxf(1, _inventory_scroll.size.x - _inventory_scroll.get_v_scroll_bar().get_combined_minimum_size().x)
-	var gap := _inventory.get_theme_constant("h_separation")
-	_inventory.columns = clampi(floori((usable + gap) / (EnchantmentInventoryCard.CARD_SIZE.x + gap)), 1, 4)
-	if _inventory.get_child_count() == 1 and _inventory.get_child(0) is Label:
-		_inventory.columns = 1
+	_inventory.columns = 6
 
 
 func _item_card(item: Dictionary, parent: Control) -> ItemInventoryCard:

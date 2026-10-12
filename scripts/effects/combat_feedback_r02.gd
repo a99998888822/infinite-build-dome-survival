@@ -47,6 +47,17 @@ static func interrupt(target: Node2D) -> void:
 		response.age = response.duration
 
 
+static func set_animation_origin(target: Node2D, position: Vector2) -> void:
+	# Registered animation frames and airborne height own the base position.
+	# Retain only the current hit offset, never the pose from the first hit.
+	target.sprite.position = position
+	var response = target.get_meta(META) if target.has_meta(META) else null
+	if is_instance_valid(response):
+		response.origin = position
+		if response.age < response.duration and enabled() and target.is_alive():
+			response.paint()
+
+
 func pulse(kind: StringName, incoming: Vector2, legacy_shake: float) -> void:
 	var gap := clock - last_sustain
 	if kind == &"sustain":

@@ -25,6 +25,9 @@ var _augmentations_dropped_this_wave: int = 0
 var _augmentation_dry_waves: int = 0
 var _augmentation_wave_finished := false
 var gold_terms: Dictionary = {}
+var _prepared_rewards: Dictionary = {}
+var _next_prepared_id := 0
+var pickup_pool: Node
 
 
 func reset_run() -> void:
@@ -34,6 +37,8 @@ func reset_run() -> void:
 
 func begin_wave(wave_number: int = 1) -> void:
 	gold_terms.clear()
+	_prepared_rewards.clear()
+	_next_prepared_id = 0
 	_augmentation_wave_number = maxi(1, wave_number)
 	_augmentations_dropped_this_wave = 0
 	_augmentation_wave_finished = false
@@ -280,44 +285,36 @@ func spawn_action(
 ) -> Node:
 	if action.is_empty():
 		return null
+	if not action.has("prepared_id"):
+		action = prepare_action(action, pickup_root, player)
+	if action.is_empty() or int(action.get("prepared_generation", -1)) != _reward_generation:
+		return null
+	var prepared_id := int(action.prepared_id)
+	if not _prepared_rewards.has(prepared_id): return null
+	_prepared_rewards.erase(prepared_id)
 	var drop_type := str(action.get("type", ""))
 	var amount := maxi(0, int(action.get("amount", 0)))
 	match drop_type:
 		"exp_orb":
-			return spawn_exp_orb(amount, position, pickup_root, player, snapshot, on_exp_collected)
+			var orb := spawn_exp_orb(amount, position, pickup_root, player, snapshot, on_exp_collected)
+			if orb != null:
+				orb.configure_gold(action.get("gold_terms", {}))
+				orb.advance_gold_clock(float(action.get("pending_age", 0.0)))
+			return orb
 		"health_pack":
 			return spawn_health_pack(amount, position, pickup_root, player, snapshot, on_health_collected)
 		"augmentation":
-			if action.has("augmentation_roll_id"):
-				var roll_id := int(action.augmentation_roll_id)
-				if int(action.get("reward_generation", -1)) != _reward_generation or _claimed_augmentation_rolls.has(roll_id):
-					return null
-				if not is_instance_valid(pickup_root) or not is_instance_valid(player):
-					return null
-				_claimed_augmentation_rolls[roll_id] = true
-				# Deferred kills share live quota/decay. Failed rolls cannot be replayed.
-				if _augmentation_wave_finished or _augmentations_dropped_this_wave >= get_augmentation_wave_limit():
-					return null
-				if bool(action.get("augmentation_ordinary", false)) and not _roll_drop_chance(100.0 * pow(AUGMENTATION_WAVE_DECAY, _augmentations_dropped_this_wave)):
-					return null
 			var entry: Dictionary = action.get("entry", {})
 			var augmentation_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
-			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot)
+			return spawn_augmentation(augmentation_id, amount, position, pickup_root, player, snapshot, true)
 		"relic":
 			if not is_instance_valid(pickup_root) or not is_instance_valid(player):
 				return null
-			var is_elite_relic := bool(action.get("elite_relic_reward", false))
-			if is_elite_relic and not _resolve_elite_relic_roll(action):
-				return null
-			var token := "relic_choice_%d_%d" % [_reward_generation, _next_choice_id]
-			_next_choice_id += 1
-			_choice_tokens[token] = false
+			var token := str(action.choice_token)
 			var pickup := RELIC_PICKUP_SCENE.instantiate() as RelicPickup
 			pickup.initialize_choice(player, _claim_relic_choice.bind(token), snapshot)
 			pickup_root.add_child(pickup)
 			pickup.global_position = position
-			if is_elite_relic:
-				_elite_relics_dropped_this_wave += 1
 			if snapshot != null:
 				snapshot.record_spawned_drop("relic", 1)
 			return pickup
@@ -326,6 +323,43 @@ func spawn_action(
 				snapshot.record_spawned_drop("unknown", 1)
 			push_warning("[DropRewardSystem] unknown reward type: %s" % drop_type)
 			return null
+
+
+# Resolve all RNG/quota changes at death, before delaying only node creation.
+# A prepared recipe is single-use and scoped to this wave generation.
+func prepare_action(action: Dictionary, pickup_root: Node, player: PlayerController) -> Dictionary:
+	if action.is_empty() or not is_instance_valid(pickup_root) or not is_instance_valid(player): return {}
+	var prepared := action.duplicate(true)
+	var drop_type := str(action.get("type", ""))
+	if drop_type == "augmentation":
+		if action.has("augmentation_roll_id"):
+			var roll_id := int(action.augmentation_roll_id)
+			if int(action.get("reward_generation", -1)) != _reward_generation or _claimed_augmentation_rolls.has(roll_id): return {}
+			_claimed_augmentation_rolls[roll_id] = true
+			if _augmentation_wave_finished or _augmentations_dropped_this_wave >= get_augmentation_wave_limit(): return {}
+			if bool(action.get("augmentation_ordinary", false)) and not _roll_drop_chance(100.0 * pow(AUGMENTATION_WAVE_DECAY, _augmentations_dropped_this_wave)): return {}
+		var entry: Dictionary = action.get("entry", {})
+		var item_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
+		var amount := mini(maxi(0, int(action.get("amount", 0))), get_augmentation_wave_limit() - _augmentations_dropped_this_wave)
+		if _augmentation_wave_finished or amount <= 0 or not DataRegistry.has_record("augmentations", item_id): return {}
+		prepared.amount = amount
+		_augmentations_dropped_this_wave += amount
+		_augmentation_dry_waves = 0
+	elif drop_type == "relic":
+		if bool(action.get("elite_relic_reward", false)):
+			if not _resolve_elite_relic_roll(action): return {}
+			_elite_relics_dropped_this_wave += 1
+		var token := "relic_choice_%d_%d" % [_reward_generation, _next_choice_id]
+		_next_choice_id += 1
+		_choice_tokens[token] = false
+		prepared.choice_token = token
+	elif drop_type == "exp_orb":
+		prepared.gold_terms = gold_terms.duplicate(true)
+	prepared.prepared_id = _next_prepared_id
+	prepared.prepared_generation = _reward_generation
+	_prepared_rewards[_next_prepared_id] = true
+	_next_prepared_id += 1
+	return prepared
 
 
 func _claim_relic_choice(token: String) -> bool:
@@ -346,10 +380,11 @@ func spawn_exp_orb(
 ) -> ExpOrb:
 	if pickup_root == null or player == null:
 		return null
-	var orb := EXP_ORB_SCENE.instantiate() as ExpOrb
+	var orb := pickup_pool.acquire_exp() as ExpOrb if is_instance_valid(pickup_pool) else EXP_ORB_SCENE.instantiate() as ExpOrb
 	if orb == null:
 		return null
-	pickup_root.add_child(orb)
+	if orb.get_parent() != null: orb.reparent(pickup_root)
+	else: pickup_root.add_child(orb)
 	orb.global_position = position
 	orb.initialize(amount)
 	orb.configure_gold(gold_terms)
@@ -391,17 +426,18 @@ func spawn_augmentation(
 	position: Vector2,
 	pickup_root: Node,
 	player: PlayerController,
-	snapshot: RewardSnapshot = null
+	snapshot: RewardSnapshot = null,
+	reserved := false
 ) -> AugmentationPickup:
 	if not is_instance_valid(pickup_root) or not is_instance_valid(player) or not DataRegistry.has_record("augmentations", augmentation_id):
 		return null
-	if _augmentation_wave_finished or _augmentations_dropped_this_wave >= get_augmentation_wave_limit() or amount <= 0:
+	if amount <= 0 or (not reserved and (_augmentation_wave_finished or _augmentations_dropped_this_wave >= get_augmentation_wave_limit())):
 		return null
 	var pickup := AUGMENTATION_PICKUP_SCENE.instantiate() as AugmentationPickup
 	if pickup == null:
 		return null
-	var granted_amount := mini(amount, get_augmentation_wave_limit() - _augmentations_dropped_this_wave)
-	_augmentations_dropped_this_wave += granted_amount
+	var granted_amount := amount if reserved else mini(amount, get_augmentation_wave_limit() - _augmentations_dropped_this_wave)
+	if not reserved: _augmentations_dropped_this_wave += granted_amount
 	_augmentation_dry_waves = 0
 	pickup_root.add_child(pickup)
 	pickup.global_position = position

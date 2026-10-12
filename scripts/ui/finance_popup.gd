@@ -79,7 +79,6 @@ func _ready() -> void:
 	_notice_timer.wait_time = 3.0
 	_notice_timer.timeout.connect(func():
 		if get_viewport().get_visible_rect().size.y < 480:
-			_summary.show()
 			_feedback.hide()
 	)
 	add_child(_notice_timer)
@@ -312,6 +311,7 @@ func _build() -> void:
 	_scene_footer_back = _scene_surface("slim")
 	_title = _label("ui.bank.title", main_panel, 22, FinanceUIStyle.TEXT)
 	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
+	_summary.hide()
 	_summary.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -512,7 +512,9 @@ func _scene_surface(kind: String) -> Panel:
 func _layout() -> void:
 	_scene_wide = FinanceSceneLayout.supports(get_viewport_rect().size)
 	portrait.background_counter = _scene_wide
-	for panel in [_scene_summary_back, _scene_bank_back, _scene_enchant_back, _scene_footer_back]:
+	_summary.hide()
+	_scene_summary_back.hide()
+	for panel in [_scene_bank_back, _scene_enchant_back, _scene_footer_back]:
 		panel.visible = _scene_wide
 	if _scene_wide:
 		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
@@ -530,11 +532,10 @@ func _layout() -> void:
 	var short_window := get_viewport().get_visible_rect().size.y < 480
 	FinanceUIStyle.label(_title, 18 if short_window else 22)
 	_place(_title, Rect2(20, 6 if short_window else 12, w - 40, 26 if short_window else 30))
-	_place(_summary, Rect2(20, 32 if short_window else 46, w - 40, 18 if short_window else 22))
-	var body_y := (46.0 if loan_space>0 and _compact else 54.0) if short_window else 78.0
+	var body_y := 36.0 if short_window else 48.0
 	if short_window and loan_space>0 and _compact:
 		_place(_title,Rect2(20,4,w-40,22))
-		_place(_summary,Rect2(20,27,w-40,18))
+		body_y = 32.0
 	var body_bottom := footer_bottom - (46.0 if short_window else 60.0)
 	var bank_width := clampf(w * 0.23, 112.0, 150.0) if _compact else 226.0
 	var work_x := 20.0 + bank_width + (12.0 if _compact else 16.0)
@@ -581,7 +582,6 @@ func _layout() -> void:
 	_place(_refresh, Rect2(0 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
 	_place(_feedback, Rect2(84, footer_bottom - 50, maxf(50, w - 252), 38))
 	_feedback.visible = not short_window
-	_summary.show()
 	_place(start_button, Rect2(w - 154, footer_bottom - 38 if short_window else footer_bottom - 50, 134, 30 if short_window else 36))
 	_place(economy_log, Rect2(Vector2.ZERO, main_panel.size))
 	economy_log.apply_finance_layout(Rect2(20, body_y, w - 40, body_bottom - body_y), Rect2(20, start_button.position.y, 52, start_button.size.y))
@@ -830,8 +830,8 @@ func _feedback_message(message: String, success: bool) -> void:
 	_feedback.text = message
 	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GREEN if success else Color("e1a184"))
 	if get_viewport().get_visible_rect().size.y < 480:
-		_summary.hide()
-		_place(_feedback, Rect2(20, 32, main_panel.size.x - 40, 18))
+		# The removed summary no longer reserves a notification row above tabs.
+		_place(_feedback, Rect2(84, start_button.position.y + 4, maxf(40, start_button.position.x - 92), 22))
 		_feedback.show()
 		_notice_timer.start()
 

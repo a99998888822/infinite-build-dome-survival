@@ -22,6 +22,8 @@ func _ready() -> void:
 	if player != null:
 		player.position = PLAYER_START_POSITION
 	_attach_world_nodes_to_low_resolution_viewport()
+	if wave_manager != null:
+		EnemyController.prepare_damage_number_pool(wave_manager.enemy_root)
 	_bind_mobile_joystick()
 	_bind_to_flow()
 	active_controller = ActiveCombatController.new()

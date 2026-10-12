@@ -5,11 +5,16 @@ const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
 const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.gd")
+const VISUAL_BUDGET = preload("res://scripts/effects/thunder_fire_visual_budget.gd")
 
 const BASE_DAMAGE_RADIUS: float = 96.0
 const BASE_SHOCKWAVE_RADIUS: float = 55.2
 
-# Cache both hits and misses, invalidated by any scene hierarchy change.
+# Reuse query resources, but always query physics again: callbacks may move,
+# remove or spawn targets between explosions, and physics result order matters.
+static var _damage_shape := CircleShape2D.new()
+static var _damage_query := PhysicsShapeQueryParameters2D.new()
+# Scene mutations unrelated to terrain must not trigger a recursive search.
 static var _terrain_cache_tree: SceneTree
 static var _terrain_cache_root: Node
 static var _terrain_cache_node: Node
@@ -55,24 +60,34 @@ func _detonate() -> void:
 		# use the damaging explosion path below; this enchantment is pure control.
 		_shockwave()
 		return
-	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(_weapon, _reaction_id, {
+	var context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_cached_weapon_context(_weapon, _reaction_id, {
 		"damage": maxf(_damage_event.get_elemental_base_damage() * (0.8 if _damage_multiplier_override <= 0.0 else _damage_multiplier_override), 1.0),
 		"radius": BASE_DAMAGE_RADIUS if _radius_override <= 0.0 else _radius_override,
 		"damage_falloff": 0.0,
 	}, _attachment_item_id)
 	var radius := maxf(context.get_resolved_parameter("radius", BASE_DAMAGE_RADIUS) * context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 12.0)
 	var damage := maxi(1, int(roundi(context.get_resolved_parameter("damage", 1.0))))
-	var particle_parameters := _build_particle_parameters(context, radius)
+	var visual_tier := VISUAL_BUDGET.Tier.FULL
+	if _reaction_id == "thunder_fire":
+		# The debug modes isolate visual cost without touching damage or audio.
+		var mode := str(GameGlobal.get_runtime_flag("thunder_fire_visual_mode", "adaptive"))
+		if mode == "off": visual_tier = VISUAL_BUDGET.Tier.SUPPRESSED
+		elif mode != "full": visual_tier = VISUAL_BUDGET.for_parent(get_parent()).claim(_hit_position)
+	var particle_parameters: Dictionary = {}
+	if visual_tier != VISUAL_BUDGET.Tier.SUPPRESSED:
+		particle_parameters = _build_particle_parameters(context, radius)
+		_apply_visual_tier(particle_parameters, visual_tier)
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_reaction_sfx(_reaction_id)
-	if _reaction_id == "thunder_fire":
+	if _reaction_id == "thunder_fire" and visual_tier != VISUAL_BUDGET.Tier.SUPPRESSED:
 		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
 			Vector2.ZERO, 1.0, Color(1.0, 0.72, 0.12), particle_parameters)
-	else:
+	elif _reaction_id != "thunder_fire":
 		REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
 	var destroyed_materials := _damage_terrain(radius)
-	_emit_material_debris(destroyed_materials, particle_parameters)
+	if visual_tier <= VISUAL_BUDGET.Tier.REDUCED:
+		_emit_material_debris(destroyed_materials, particle_parameters)
 	AudioManager.end_combat_audio()
 	queue_free()
 
@@ -108,8 +123,12 @@ func _shockwave() -> void:
 	AudioManager.end_combat_audio()
 	# Reuse the original square burst. Override its warm palette only here;
 	# reactions and terrain debris still use their own colors and full radius.
-	PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
-		Vector2.ZERO, 1.0, Color.WHITE, _build_particle_parameters(context, radius))
+	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(get_parent(), "shockwave", _hit_position)
+	if tier != VISUAL_BUDGET.Tier.SUPPRESSED:
+		var parameters := _build_particle_parameters(context, radius)
+		_apply_visual_tier(parameters, tier)
+		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
+			Vector2.ZERO, 1.0, Color.WHITE, parameters)
 	queue_free()
 
 
@@ -132,23 +151,35 @@ func _build_particle_parameters(context: RefCounted, radius: float) -> Dictionar
 	}
 
 
+static func _apply_visual_tier(parameters: Dictionary, tier: int) -> void:
+	if tier == VISUAL_BUDGET.Tier.REDUCED:
+		parameters.count_multiplier *= 0.5
+		parameters.glow_multiplier *= 0.5
+	elif tier == VISUAL_BUDGET.Tier.SPARK:
+		# Up to four original square sparks, without a halo. No new profile,
+		# wider radius, or intensity multiplier can inflate this dense tier.
+		var base_count := float(PARTICLE_WORLD_SCRIPT.PROFILE_DEFINITIONS.explosion_burst.count)
+		parameters.count_multiplier = minf(float(parameters.count_multiplier), 4.0 / base_count)
+		parameters.glow_multiplier = 0.0
+
+
 func _damage_enemies(radius: float, damage: int, damage_falloff: float) -> void:
 	var space_state := get_world_2d().direct_space_state
-	var shape := CircleShape2D.new()
-	shape.radius = radius
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
-	query.transform = Transform2D(0.0, _hit_position)
-	query.collision_mask = 2
-	query.collide_with_bodies = true
-	var results := space_state.intersect_shape(query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	_damage_shape.radius = radius
+	_damage_query.shape = _damage_shape
+	_damage_query.transform = Transform2D(0.0, _hit_position)
+	_damage_query.collision_mask = 2
+	_damage_query.collide_with_bodies = true
+	var results := space_state.intersect_shape(_damage_query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	var falloff := clampf(damage_falloff, 0.0, 1.0)
 	for result in results:
 		var enemy := result.get("collider") as EnemyController
-		if enemy == null or not enemy.is_alive():
+		if not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		var distance_ratio := clampf(enemy.global_position.distance_to(_hit_position) / radius, 0.0, 1.0)
-		var falloff := clampf(damage_falloff, 0.0, 1.0)
-		var scaled_damage := maxi(1, int(roundi(float(damage) * (1.0 - distance_ratio * falloff))))
+		var scaled_damage := damage
+		if falloff > 0.0:
+			var distance_ratio := clampf(enemy.global_position.distance_to(_hit_position) / radius, 0.0, 1.0)
+			scaled_damage = maxi(1, int(roundi(float(damage) * (1.0 - distance_ratio * falloff))))
 		enemy.take_damage(scaled_damage, _damage_event.source_weapon_id, false, enemy.global_position.direction_to(_hit_position))
 
 
@@ -188,10 +219,14 @@ static func _invalidate_terrain_cache() -> void:
 static func _find_terrain_cached(root: Node) -> Node:
 	var tree := root.get_tree()
 	if tree != _terrain_cache_tree:
-		if is_instance_valid(_terrain_cache_tree) and _terrain_cache_tree.tree_changed.is_connected(_invalidate_terrain_cache):
-			_terrain_cache_tree.tree_changed.disconnect(_invalidate_terrain_cache)
+		if is_instance_valid(_terrain_cache_tree):
+			_terrain_cache_tree.node_added.disconnect(_terrain_node_changed)
+			_terrain_cache_tree.node_removed.disconnect(_terrain_node_changed)
+			_terrain_cache_tree.node_renamed.disconnect(_terrain_node_changed)
 		_terrain_cache_tree = tree
-		tree.tree_changed.connect(_invalidate_terrain_cache)
+		tree.node_added.connect(_terrain_node_changed)
+		tree.node_removed.connect(_terrain_node_changed)
+		tree.node_renamed.connect(_terrain_node_changed)
 		_invalidate_terrain_cache()
 	if _terrain_cache_valid and _terrain_cache_root == root:
 		return _terrain_cache_node if is_instance_valid(_terrain_cache_node) else null
@@ -199,3 +234,8 @@ static func _find_terrain_cached(root: Node) -> Node:
 	_terrain_cache_node = root.find_child("DestructibleTestArea", true, false)
 	_terrain_cache_valid = true
 	return _terrain_cache_node
+
+
+static func _terrain_node_changed(node: Node) -> void:
+	if node == _terrain_cache_root or node == _terrain_cache_node or node.name == &"DestructibleTestArea":
+		_invalidate_terrain_cache()

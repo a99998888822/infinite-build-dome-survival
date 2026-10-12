@@ -43,6 +43,7 @@ var start_wave_on_accept := false
 var accept_text := ""
 var decline_text := "拒绝"
 var _challenge_header := false
+var _challenge_font: FontFile
 
 
 func _ready() -> void:
@@ -128,6 +129,8 @@ func _text_height(label: Label, width: float) -> float:
 
 
 func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
+	if _challenge_header:
+		card_rect = Rect2(card_rect.position.round(), card_rect.size.floor())
 	_card_rect = card_rect
 	_compact = card_rect.size.x < 180
 	_card.position = card_rect.position
@@ -205,6 +208,17 @@ func configure_offer(offer: Dictionary) -> void:
 
 func configure_challenge(wave: int, icon: String) -> void:
 	_challenge_header = true
+	if _challenge_font == null:
+		_challenge_font = _body.get_theme_font("font").duplicate() as FontFile
+		# Rasterize Ark on its native grid, then scale whole pixels to the existing
+		# 16px/18px sizes instead of clipping pixel outlines at fractional sizes.
+		_challenge_font.fixed_size = 12
+		_challenge_font.fixed_size_scale_mode = TextServer.FIXED_SIZE_SCALE_ENABLED
+		_challenge_font.oversampling = 1.0
+		_challenge_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+		_challenge_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+	_body.add_theme_font_override("font", _challenge_font)
+	_title.add_theme_font_override("font", _challenge_font)
 	_title.text = L10n.text("ui.challenge.wave_title") % wave
 	accept_text = L10n.text("ui.challenge.accept_and_start")
 	decline_text = L10n.text("ui.challenge.start_normal")

@@ -416,7 +416,7 @@ func _run_enemy_wave_checks() -> bool:
 	wave_manager.initialize(player)
 	passed = _print_check_result("enemy config load", DataRegistry.has_record("enemies", "enemy_mutated_grub")) and passed
 	passed = _print_check_result("wave config load", DataRegistry.has_record("waves", "wave_stage_01")) and passed
-	passed = _print_check_result("wave duration formula", wave_manager.calculate_wave_duration(0) == 30 and wave_manager.calculate_wave_duration(6) == 60) and passed
+	passed = _print_check_result("wave duration configuration", wave_manager.calculate_wave_duration(0) == 35 and wave_manager.calculate_wave_duration(6) == 65 and DataRegistry.get_table("waves").size() == 16) and passed
 
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
 	var expected_enemy_hp := roundi(float(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0)) * float(BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID).health))
@@ -730,7 +730,7 @@ func _run_weapon_checks() -> bool:
 	var maximum_upgrade_weight_context := shop_context_with_candidates.duplicate(true)
 	maximum_upgrade_weight_context["weapon_upgrade_miss_count"] = 99
 	var maximum_upgrade_type_weights := shop_generator.get_shop_type_weights(maximum_upgrade_weight_context)
-	var weapon_upgrade_weight_check := int(shop_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 8 and int(maximum_upgrade_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 20
+	var weapon_upgrade_weight_check := int(shop_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 4 and int(maximum_upgrade_type_weights.get(ShopOfferGenerator.OFFER_WEAPON_UPGRADE, 0)) == 10
 	passed = _print_check_result("weapon upgrade lower pity weights", weapon_upgrade_weight_check) and passed
 	var default_shop_offer_count := StatDefinitions.calculate_shop_offer_count(MainFlowCoordinator.BASE_SHOP_OFFER_COUNT, 0.0)
 	var shop_offers := shop_generator.roll_shop_offers(shop_rarity_weights, shop_type_weights, shop_candidates, default_shop_offer_count)
@@ -747,7 +747,7 @@ func _run_weapon_checks() -> bool:
 		if str(candidate.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE and str(candidate.get("target_id", "")) == "weapon_void_blade":
 			discounted_weapon_cost = int(candidate.get("shop_cost", -1))
 			break
-	passed = _print_check_result("weapon upgrade shop price", discounted_weapon_cost == 16) and passed
+	passed = _print_check_result("weapon upgrade shop price", discounted_weapon_cost == 32) and passed
 	var locked_epic_upgrade_context := shop_context.duplicate(true)
 	locked_epic_upgrade_context["equipped_weapons"] = [{"weapon_id": "weapon_void_blade", "level": 3}]
 	locked_epic_upgrade_context["luck"] = 39

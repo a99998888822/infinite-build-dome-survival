@@ -150,10 +150,7 @@ func present(data: Dictionary) -> void:
 	_last_stage = -1
 	_voice_started = false
 	_skipped = false
-	_title.text = "ui.settlement.defeat"
-	_subtitle.text = L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
-	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
-	_heading.text = L10n.text("ui.settlement.multiplier") % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
+	_refresh_result_heading()
 	_title.add_theme_color_override("font_color", GOLD if bool(report.victory) else Color("c78f79"))
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
 	_speech_text = L10n.source(str(reaction.get("speech", "")))
@@ -214,9 +211,7 @@ func _process(delta: float) -> void:
 func _refresh_language() -> void:
 	if report.is_empty():
 		return
-	_subtitle.text = L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % int(report.get("end_wave", int(report.get("waves", 0)) + 1))
-	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
-	_heading.text = L10n.text("ui.settlement.multiplier") % roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0)
+	_refresh_result_heading()
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
 	_speech_text = L10n.source(reaction.get("speech", ""))
 	for monster in _monster_nodes:
@@ -230,6 +225,15 @@ func _refresh_language() -> void:
 		_rows[index].panel.tooltip_text = tips[index]
 	# Retain progress, payout state, and audio playback.
 	seek(_elapsed)
+
+
+func _refresh_result_heading() -> void:
+	var retreat := str(report.get("outcome", "")) == "retreat"
+	_title.text = "ui.settlement.retreat" if retreat else "ui.settlement.defeat"
+	var wave := int(report.get("end_wave", int(report.get("waves", 0)) + 1))
+	_subtitle.text = L10n.text("ui.settlement.retreat_wave") % wave if retreat else (L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % wave)
+	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
+	_heading.text = L10n.text("ui.settlement.retreat_multiplier") % roundi(float(report.get("retreat_multiplier", 0.5)) * 100.0) if retreat else L10n.text("ui.settlement.multiplier") % roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0)
 
 
 func seek(seconds: float) -> void:
@@ -247,7 +251,10 @@ func seek(seconds: float) -> void:
 	_status.text = ("ui.settlement.saved" if bool(report.get("paid", false)) else "ui.settlement.save_failed") if _progress(4) >= 1 else "ui.settlement.counting"
 	_conversion.text = "ui.settlement.base_conversion_hint"
 	if _progress(4) >= 1:
-		_conversion.text = L10n.text("ui.settlement.conversion") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("difficulty_multiplier", 1.0)) * 100.0), _number(int(report.camp_currency))]
+		if str(report.get("outcome", "")) == "retreat":
+			_conversion.text = L10n.text("ui.settlement.retreat_conversion") % [_number(int(report.defeat_camp_currency)), roundi(float(report.retreat_multiplier) * 100.0), _number(int(report.camp_currency))]
+		else:
+			_conversion.text = L10n.text("ui.settlement.conversion") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0), _number(int(report.camp_currency))]
 	if bool(report.interest_capped) and _progress(3) >= 1:
 		_conversion.text += L10n.text("ui.settlement.interest_cap_suffix")
 	var voice_time := float(_config.presentation.voice_time)

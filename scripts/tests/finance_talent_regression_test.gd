@@ -146,6 +146,7 @@ func _run() -> void:
 
 	flow.request_battle_utility("settings")
 	flow.return_to_main_menu_from_settings()
+	flow.confirm_battle_result()
 	await frames()
 	check(not popup.visible, "finance closes before returning to talents")
 	window.size = Vector2i(1152, 768)

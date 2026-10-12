@@ -216,6 +216,13 @@ ui.enchantment.replace_hint,"
 将背包附魔拖到已有槽位可替换，原附魔归还背包。","
 Drag an inventory enchantment onto an occupied slot to replace it. The old enchantment returns to inventory."
 ui.enchantment.sale_done,已出售，获得 %d 金币。,Sold for %d gold.
+ui.enchantment.principal_upgrade,本金升级,Principal Upgrade
+ui.enchantment.principal_upgrade_price,升级 · %d本金,Upgrade · %d principal
+ui.enchantment.upgrade_max_level,已满级,Max Level
+ui.enchantment.upgrade_used,本波已升级,Used This Wave
+ui.enchantment.upgrade_luck_required,幸运不足，尚未解锁该级升级。,Not enough Luck to unlock this upgrade.
+ui.enchantment.principal_upgrade_done,升级完成，本波本金升级次数已使用。,Upgrade complete. This wave's principal upgrade has been used.
+ui.enchantment.principal_upgrade_log,使用本金升级：%s → Lv.%d，本金 -%d,Principal upgrade: %s → Lv.%d; principal -%d
 ui.enchantment.sale_returns_enchantments,出售后，附魔自动归还背包,Enchantments return to inventory when sold
 ui.enchantment.select_hint,选择一张附魔，可装备、转移或出售,"Select an enchantment to equip, transfer or sell"
 ui.enchantment.select_inventory_first,请先选择背包中的附魔。,Select an enchantment from inventory first.
@@ -431,6 +438,11 @@ ui.settlement.conversion_hint,右列为各项折算的营地币,Right column: co
 ui.settlement.counting,正在清点…,Counting…
 ui.settlement.death_wave,第%d波 阵亡,Fell on Wave %d
 ui.settlement.defeat,冒险结束,Expedition Over
+ui.settlement.retreat,主动撤离,Expedition Withdrawn
+ui.settlement.retreat_wave,第%d波 撤离,Withdrew on Wave %d
+ui.settlement.retreat_multiplier,撤离结算 ×%d%%,Withdrawal ×%d%%
+ui.settlement.retreat_conversion,失败结算 %s ×%d%% = %s,Defeat reward %s ×%d%% = %s
+ui.settlement.retreat_hint,结束本次冒险，按失败奖励的50%结算营地币（向下取整）。,End this expedition and receive 50% of its defeat reward in Camp Coins (rounded down).
 ui.settlement.difficulty_suffix, · 难度 %s, · Difficulty %s
 ui.settlement.gold_earned,赚取金币,Gold Earned
 ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Camp Coin. Spending and deposits do not reduce this total.

@@ -32,7 +32,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	parent.add_child(effect)
 	effect.global_position = hit_position
 	PIXEL.register(effect, "ice")
-	effect._visual_detail = 2
+	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(parent, "ice_detail", hit_position)
+	effect._visual_detail = 2 - mini(tier, 2)
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "ice", {
@@ -125,5 +126,4 @@ func _damage_enemies() -> void:
 
 func _draw() -> void:
 	var fade := 1.0 - smoothstep(0.64, 1.0, clampf(_elapsed / _lifetime, 0.0, 1.0))
-	BAKED.draw(self, "ice_d2", mini(36, int(_elapsed * 60.0)), Vector2.ONE * (_radius / DEFAULT_RADIUS), Color(1,1,1,fade))
-
+	BAKED.draw(self, "ice_d%d" % _visual_detail, mini(36, int(_elapsed * 60.0)), Vector2.ONE * (_radius / DEFAULT_RADIUS), Color(1,1,1,fade))

@@ -8,6 +8,7 @@ const GREEN := Color("a9c498")
 const RELIC_LIST_ICON_SCALE := 0.625
 const RELIC_DISPLAY_SIZE := 64.0
 static var _item_icon_cache: Dictionary = {}
+static var _pending_item_icons: Array[String] = []
 
 # Opt in only after a batch has passed art review. Legacy assets keep their layout.
 const NATIVE_RELIC_ICONS := [
@@ -206,6 +207,9 @@ static func reason(code: String) -> String:
 		"specialization_expired": L10n.text("error.bank.specialization_expired"),
 		"specialization_effect_blocked": L10n.text("error.bank.specialization_effect_blocked"),
 		"insufficient_principal": L10n.text("error.bank.insufficient_principal"),
+		"principal_upgrade_max_level": L10n.text("ui.enchantment.upgrade_max_level"),
+		"principal_upgrade_used": L10n.text("ui.enchantment.upgrade_used"),
+		"principal_upgrade_luck": L10n.text("ui.enchantment.upgrade_luck_required"),
 		"loan_expired": L10n.text("error.bank.loan_terms_expired"),
 		"loan_not_active": L10n.text("error.bank.no_loan"),
 		"loan_insufficient_gold": L10n.text("error.bank.repayment_insufficient_gold"),
@@ -239,6 +243,28 @@ static func reason(code: String) -> String:
 	}.get(code, L10n.text("error.bank.operation_failed")))
 
 
+static func request_item_icon(path: String) -> void:
+	if path.is_empty() or _item_icon_cache.has(path) or path in _pending_item_icons:
+		return
+	if ResourceLoader.exists(path) and ResourceLoader.load_threaded_request(path, "Texture2D") == OK:
+		_pending_item_icons.append(path)
+
+
+static func collect_item_icons() -> bool:
+	var started := Time.get_ticks_usec()
+	for index in range(_pending_item_icons.size() - 1, -1, -1):
+		var path := _pending_item_icons[index]
+		var status := ResourceLoader.load_threaded_get_status(path)
+		if status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			continue
+		if status == ResourceLoader.THREAD_LOAD_LOADED:
+			_item_icon_cache[path] = ResourceLoader.load_threaded_get(path) as Texture2D
+		_pending_item_icons.remove_at(index)
+		if Time.get_ticks_usec() - started >= 2000:
+			break
+	return _pending_item_icons.is_empty()
+
+
 static func item_icon(path: String, table: String = "", record_id: String = "") -> Texture2D:
 	var resolved := path
 	if _item_icon_cache.has(resolved):
@@ -248,5 +274,9 @@ static func item_icon(path: String, table: String = "", record_id: String = "") 
 	if resolved.is_empty() or not ResourceLoader.exists(resolved):
 		return null
 	if not _item_icon_cache.has(resolved):
-		_item_icon_cache[resolved] = load(resolved) as Texture2D
+		if resolved in _pending_item_icons and ResourceLoader.load_threaded_get_status(resolved) == ResourceLoader.THREAD_LOAD_LOADED:
+			_item_icon_cache[resolved] = ResourceLoader.load_threaded_get(resolved) as Texture2D
+			_pending_item_icons.erase(resolved)
+		else:
+			_item_icon_cache[resolved] = load(resolved) as Texture2D
 	return _item_icon_cache[resolved]

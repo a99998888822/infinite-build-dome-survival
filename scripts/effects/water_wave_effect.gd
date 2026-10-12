@@ -141,6 +141,6 @@ func _get_atlas_frame() -> int:
 
 func _draw() -> void:
 	var frame := _get_atlas_frame()
-	var extent := GROUND.axes() * ATLAS_TILE * _radius / ATLAS_RADIUS
+	var extent := GROUND.projected_axes() * ATLAS_TILE * _radius / ATLAS_RADIUS
 	var region := Rect2(Vector2((frame % ATLAS_COLUMNS) * ATLAS_TILE, (frame / ATLAS_COLUMNS) * ATLAS_TILE), Vector2.ONE * ATLAS_TILE)
 	draw_texture_rect_region(ATLASES[_atlas_index], Rect2(-extent * 0.5, extent), region)

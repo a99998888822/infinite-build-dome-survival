@@ -28,6 +28,8 @@ var breath_hits := 0
 var breath_pulses := 0
 var breath_shape := ConvexPolygonShape2D.new()
 var breath_polygon := PackedVector2Array()
+var leap_shape := ConvexPolygonShape2D.new()
+var leap_shape_radius := -1.0
 var impact_time := 0.0
 var air_height := 0.0
 
@@ -217,14 +219,15 @@ func try_breath_pulse() -> void:
 
 func area_damage(center: Vector2, radius: float, amount: int) -> void:
 	if not is_instance_valid(target_player) or not target_player.is_alive(): return
-	# Compare the warning disk with the player's real capsule, not its origin.
+	# Use the same projected boundary as the warning, with the real player body.
 	var body := target_player.get_node("CollisionShape2D") as CollisionShape2D
 	if body.disabled: return
-	var capsule := body.shape as CapsuleShape2D
-	var half_segment := maxf(0, capsule.height * 0.5 - capsule.radius)
-	var nearest := Geometry2D.get_closest_point_to_segment(center, body.to_global(Vector2(0,-half_segment)), body.to_global(Vector2(0,half_segment)))
-	var body_radius := capsule.radius * maxf(absf(body.global_scale.x),absf(body.global_scale.y))
-	if nearest.distance_to(center) > radius + body_radius: return
+	if not is_equal_approx(leap_shape_radius, radius):
+		var points := GROUND.arc_points(Vector2.ZERO, radius, 0.0, TAU, 97)
+		points.remove_at(points.size() - 1)
+		leap_shape.points = points
+		leap_shape_radius = radius
+	if not leap_shape.collide(Transform2D(0.0, center), body.shape, body.global_transform): return
 	var dealt := target_player.take_damage(roundi(amount * (1.0 + get_stat("damage_percent") / 100.0)), enemy_id + "_" + state)
 	if dealt > 0:
 		damage_events += 1
@@ -262,7 +265,8 @@ func animate(delta: float) -> void:
 	# Mirroring includes the registered offset; gameplay air height is separate.
 	sprite.scale = Vector2.ONE*float(record.sprite_scale) * body_scale_multiplier
 	var offset: Array = record.sprite_offset
-	sprite.position = Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * body_scale_multiplier - Vector2(0, air_height)
+	var pose_origin := Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * body_scale_multiplier - Vector2(0, air_height)
+	FEEDBACK_R02.set_animation_origin(self, pose_origin)
 
 
 func _set_movement_visual(moving: bool, _delta: float) -> void:
@@ -353,7 +357,7 @@ func draw_ground(canvas: Node2D) -> void:
 		var progress := 1.0-impact_time/0.3
 		GROUND.arc(canvas,Vector2.ZERO,radius*(0.7+progress*.3),0,TAU,64,Color(0.45,0.9,1,1-progress),3)
 		for i in 12:
-			var pos := Vector2.from_angle(i*TAU/12)*(radius*(0.6+progress*.5)) * GROUND.axes()
+			var pos := Vector2.from_angle(i*TAU/12)*(radius*(0.6+progress*.5)) * GROUND.projected_axes()
 			canvas.draw_rect(Rect2(pos-Vector2(2,2),Vector2(4,4)),Color(0.5,0.9,1,1-progress))
 
 

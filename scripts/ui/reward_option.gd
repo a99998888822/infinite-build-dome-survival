@@ -84,12 +84,38 @@ func _ready() -> void:
 
 
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
+	_reset_animation_state()
 	offer_data = offer.duplicate(true)
 	entry_mode = mode
 	_hovered = false
 	_button_hovered = false
 	_interaction_locked = false
 	_refresh_visual(explicit_cost)
+	set_interaction_locked(false)
+
+
+func release_offer() -> void:
+	hide()
+	_reset_animation_state()
+	offer_data.clear()
+	_bond_player = null
+	set_interaction_locked(true)
+
+
+func _reset_animation_state() -> void:
+	for tween in [_animation_tween, _hover_tween]:
+		if tween != null:
+			tween.kill()
+	_animation_tween = null
+	_hover_tween = null
+	_stop_icon_float()
+	_hide_bond_tooltip()
+	_hovered = false
+	_button_hovered = false
+	z_index = 0
+	scale = Vector2.ONE
+	modulate = Color.WHITE
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 func set_bond_player(player: PlayerController) -> void:
@@ -231,14 +257,14 @@ func get_color_for_rarity(rarity: String) -> Color:
 
 
 func _refresh_visual(explicit_cost: int = -1) -> void:
+	if offer_data.is_empty():
+		return
 	var rarity := str(offer_data.get("rarity", "common"))
 	var rarity_color := get_color_for_rarity(rarity)
 	var offer_type := str(offer_data.get("offer_type", ""))
 	var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
-	_update_panel_style(rarity_color)
 	_update_rarity_lines(rarity_color)
 	_update_rarity_glow(rarity_color)
-	_update_type_style(type_color)
 	if type_label != null:
 		type_label.text = get_title_for_offer_type(offer_type)
 		type_label.add_theme_color_override("font_color", type_color)
@@ -352,11 +378,7 @@ func _update_rarity_lines(rarity_color: Color) -> void:
 
 func _update_icon(icon_path: String) -> void:
 	_stop_icon_float()
-	var loaded_texture: Texture2D = null
-	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-		var resource := load(icon_path)
-		if resource is Texture2D:
-			loaded_texture = resource
+	var loaded_texture := FinanceUIStyle.item_icon(icon_path)
 	if icon_texture != null:
 		FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, RELIC_ICON_SCALE)
 		if not FinanceUIStyle.is_native_relic_icon(loaded_texture):
@@ -396,7 +418,7 @@ func _update_rarity_glow(rarity_color: Color) -> void:
 
 
 func _start_icon_float() -> void:
-	if icon_texture == null or not icon_texture.visible or not is_inside_tree():
+	if icon_texture == null or not icon_texture.is_visible_in_tree() or offer_data.is_empty():
 		return
 	_stop_icon_float()
 	var base_top := icon_texture.offset_top
@@ -435,6 +457,8 @@ func _on_card_mouse_exited() -> void:
 
 
 func _refresh_card_hover_from_pointer() -> void:
+	if not is_visible_in_tree() or offer_data.is_empty():
+		return
 	var pointer_inside := Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position())
 	_set_card_hovered(pointer_inside)
 

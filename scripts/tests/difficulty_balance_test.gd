@@ -108,11 +108,11 @@ func _test_slots(player: PlayerController, loadout: WeaponLoadout) -> void:
 	check(bow.get_attachment_slot_count() == 1 and attached.size() == 1 and attached[0].base_item_id == "scroll_lightning", "starter has exactly one working lightning enchantment")
 	var fire := player.item_inventory.add_item_from_base("scroll_fire", "balance_test")
 	check(not loadout.attach_item_to_weapon(bow.weapon_id, fire.item_instance_id), "common bow rejects second enchantment")
-	check(loadout.upgrade_weapon(bow.weapon_id) and bow.get_attachment_slot_count() == 1, "uncommon still has one slot")
-	check(loadout.upgrade_weapon(bow.weapon_id) and bow.get_attachment_slot_count() == 2, "upgrading to rare unlocks second slot")
-	check(loadout.attach_item_to_weapon(bow.weapon_id, fire.item_instance_id), "new rare slot accepts inventory enchantment")
+	check(loadout.upgrade_weapon(bow.weapon_id) and bow.get_attachment_slot_count() == 1, "bow level two still has one slot")
+	check(loadout.upgrade_weapon(bow.weapon_id) and bow.get_attachment_slot_count() == 2, "bow level three unlocks second slot")
+	check(loadout.attach_item_to_weapon(bow.weapon_id, fire.item_instance_id), "new slot accepts inventory enchantment")
 	var ice := player.item_inventory.add_item_from_base("scroll_ice", "balance_test")
-	check(not loadout.attach_item_to_weapon(bow.weapon_id, ice.item_instance_id), "rare rejects third enchantment")
+	check(not loadout.attach_item_to_weapon(bow.weapon_id, ice.item_instance_id), "level three bow rejects third enchantment")
 	check(loadout.equip_weapon("weapon_rentier_purse"), "equip uncommon target for full-slot transfer")
 	check(loadout.attach_item_to_weapon("weapon_rentier_purse", ice.item_instance_id), "uncommon target accepts first item")
 	check(not loadout.attach_item_to_weapon("weapon_rentier_purse", fire.item_instance_id) and player.item_inventory.find_item(fire.item_instance_id).equipped_weapon_id == bow.weapon_id and bow.get_attached_item_instances().size() == 2, "full destination preserves source and inventory ownership")
@@ -120,8 +120,12 @@ func _test_slots(player: PlayerController, loadout: WeaponLoadout) -> void:
 		var weapon := WeaponInstance.new()
 		weapon.initialize(str(record.id), player)
 		for level in 5:
-			var expected := 1 if weapon.get_visual_rarity() in ["common", "uncommon"] else 2
-			check(weapon.get_attachment_slot_count() == expected, "%s level %d slots match current rarity" % [record.id, level + 1])
+			var slots := [1, 2, 2, 3, 3]
+			if record.id in ["weapon_void_blade", "weapon_rentier_purse", "weapon_camp_dagger"]:
+				slots = [1, 1, 2, 3, 3]
+			elif record.id == "weapon_kunyu_ritual_tome":
+				slots = [1, 2, 3, 3, 3]
+			check(weapon.get_attachment_slot_count() == slots[level], "%s level %d slots follow weapon progression" % [record.id, level + 1])
 			weapon.upgrade()
 
 func _test_drops() -> void:

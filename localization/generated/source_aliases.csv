@@ -158,6 +158,7 @@ Gain an extra +100 Principal and +10 Luck."
 专精本局生效，可继续购买或附魔。,专精本局生效，可继续购买或附魔。,Active for this run. You may continue shopping or enchanting.
 丰收的牺牲祭器,丰收的牺牲祭器,Harvest Sacrificial Vessel
 主动,主动,manual
+主动撤离,主动撤离,Expedition Withdrawn
 也可以使用 WASD 移动,也可以使用 WASD 移动,You can also move with WASD
 交易,交易,Bargain
 交易已接受。,交易已接受。,Bargain accepted.
@@ -199,6 +200,7 @@ They return on your next visit."
 你当前使用 WASD 模式；指引不会修改已有设置。,你当前使用 WASD 模式；指引不会修改已有设置。,You currently use WASD. This guide keeps your existing settings.
 你的钱就在这里，我替你保管一会,你的钱就在这里，我替你保管一会,Your money is right here. I'll hold it for a while.
 使用方向键 / WASD 移动,使用方向键 / WASD 移动,Move with arrows / WASD
+使用本金升级：%s → Lv.%d，本金 -%d,使用本金升级：%s → Lv.%d，本金 -%d,Principal upgrade: %s → Lv.%d; principal -%d
 侵蚀,侵蚀,Corruption
 侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.
 侵蚀度,侵蚀度,Corruption
@@ -225,6 +227,13 @@ They return on your next visit."
 基础冷却 [color=#7FD88F]-0.1s[/color]","元素基础伤害 [color=#7FD88F]+1[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Elemental Damage [color=#7FD88F]+1[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"元素基础伤害 [color=#7FD88F]+1[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+1[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+1[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "元素基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害范围 [color=#7FD88F]+20[/color]","元素基础伤害 [color=#7FD88F]+2[/color]
@@ -243,10 +252,24 @@ Base Cooldown [color=#7FD88F]−0.1s[/color]"
 伤害次数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Damage ticks [color=#7FD88F]+1[/color]"
+"元素基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "元素基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.2s[/color]","元素基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.2s[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
 Base Cooldown [color=#7FD88F]−0.2s[/color]"
+"元素基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.2s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.2s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.2s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "元素基础伤害 [color=#7FD88F]+8[/color]
 震击伤害段数 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+8[/color]
 震击伤害段数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+8[/color]
@@ -327,8 +350,10 @@ Base resale value %d; Sanity loss %d."
 办理后,办理后,After transaction
 办理后本金：%d → %d,办理后本金：%d → %d,Principal after transaction: %d → %d
 医疗削减方案,医疗削减方案,Medical Cutbacks
+升级 · %d本金,升级 · %d本金,Upgrade · %d principal
 升级不增加最大生命值,升级不增加最大生命值,No Max HP from levels
 升级奖励,升级奖励,Level-Up Reward
+升级完成，本波本金升级次数已使用。,升级完成，本波本金升级次数已使用。,Upgrade complete. This wave's principal upgrade has been used.
 升级已生效,升级已生效,Upgrade applied
 升级已重置,升级已重置,Upgrades reset
 升级建筑（Lv.%d → Lv.%d，%d 营地币）,升级建筑（Lv.%d → Lv.%d，%d 营地币）,"Upgrade building (Lv.%d → Lv.%d, %d Camp Coins)"
@@ -431,6 +456,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 天外幼体,天外幼体,Otherworld Larva
 天赋,天赋,Talents
 失控增幅器,失控增幅器,Runaway Amplifier
+失败结算 %s ×%d%% = %s,失败结算 %s ×%d%% = %s,Defeat reward %s ×%d%% = %s
 奖励名称,奖励名称,Reward Name
 存入,存入,Deposit
 存入 %d 金币，本金 %d → %d,存入 %d 金币，本金 %d → %d,Deposited %d gold; principal %d → %d
@@ -478,6 +504,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 已支付 %d 本金 · 剩余 %d,已支付 %d 本金 · 剩余 %d,Paid %d principal · Remaining %d
 已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。,已有复活次数用尽后自动触发。先消耗%d本金，再按扣款后的最大生命恢复%s%%；不增加随身金币，也不占用银行操作次数。,"Automatically triggers when other revives are exhausted. Costs %d principal, then restores %s%% of max HP calculated after payment. Adds no carried gold and does not use a bank action."
 已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,已有复活次数用尽后，若本金至少1000，致死伤害会消耗500本金并恢复扣款后最大生命的50%；每局仅触发一次，最多持有 1 件,"After all other Revives are spent, if Principal is at least 1,000, lethal damage consumes 500 Principal and restores 50% of your Max HP after payment. Triggers once per run. Stack limit: 1."
+已满级,已满级,Max Level
 已结算,已结算,Reward saved
 已获得,已获得,Obtained
 已装备的附魔需要先卸下。,已装备的附魔需要先卸下。,Unequip this enchantment before selling.
@@ -506,6 +533,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 幸运 + 64；侵蚀度 + 12,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
 幸运 + 84；侵蚀度 + 10,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
 幸运+20,幸运+20,Luck +20
+幸运不足，尚未解锁该级升级。,幸运不足，尚未解锁该级升级。,Not enough Luck to unlock this upgrade.
 幽焰冥狼,幽焰冥狼,Ghostflame Wolf
 幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,幽蓝骨纹与尾焰的小Boss，与钢甲骑士等概率共用小Boss刷新配额。锁定落点预警后扑跃震地，落地迅速回到待机；喷吐幽蓝火焰前显示扇形预警，单次喷吐最多命中3次。震地与火焰命中均击退玩家。,"A miniboss with blue spectral bone markings and a flaming tail. Shares the miniboss spawn quota with the Ironclad Knight at equal odds. Marks a landing point, leaps into a ground slam, then quickly returns to idle. A cone warns of its blue flame breath, which can hit up to 3 times per cast. Both the slam and flames knock the player back."
 应急复苏训练,应急复苏训练,Emergency Revival Training
@@ -650,6 +678,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 控制强度 +4；元素伤害 +2,控制强度 +4；元素伤害 +2,Control Power +4; Elemental Damage +2
 提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。,波初读取侵蚀度，增强怪物属性并增加精英配额；普通刷怪数量乘以（1 + 非负侵蚀度 / 100），小数余量跨批累计，不改变刷新间隔。,"Snapshots Corruption at wave start to strengthen enemies and raise the elite quota. Regular spawn counts are multiplied by (1 + nonnegative Corruption / 100), carrying fractional remainders between batches without changing spawn intervals."
 搜索名称或效果,搜索名称或效果,Search names or effects
+撤离结算 ×%d%%,撤离结算 ×%d%%,Withdrawal ×%d%%
 操作失败  请重试,操作失败  请重试,Action failed. Please try again.
 操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
 操作指引 · 静态示意 · 战斗已暂停,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
@@ -755,6 +784,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 下波可再次办理存取。","%s: %d gold this wave.
 Bank actions refresh next wave."
 本波已办理存取，下波恢复。,本波已办理存取，下波恢复。,Bank action already used this wave. Refreshes next wave.
+本波已升级,本波已升级,Used This Wave
 本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,本波开战前手动存入至少50金币，本波利率 +6 个百分点；未达标仍按原利率结息；最多持有 1 件,"Manually deposit at least 50 gold before the wave to gain +6 percentage points of Interest Rate for that wave. Otherwise, interest is paid at the normal rate. Stack limit: 1."
 本波没有利息结算记录。,本波没有利息结算记录。,No interest records this wave.
 本金,本金,Principal
@@ -764,6 +794,7 @@ Bank actions refresh next wave."
 本金+%d，直接开始下一波。,本金+%d，直接开始下一波。,Principal +%d. Start the next wave immediately.
 本金不足,本金不足,Not enough principal
 本金不足（需%d）,本金不足（需%d）,Insufficient principal (requires %d)
+本金升级,本金升级,Principal Upgrade
 本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
 本金赠予,本金赠予,Principal Grant
 本金：%d    ·    当前利率：%.1f%%,本金：%d    ·    当前利率：%.1f%%,Principal: %d    ·    Current rate: %.1f%%
@@ -815,6 +846,13 @@ Upgrade resale: %d"
 基础冷却 [color=#7FD88F]-0.1s[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"每发基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "每发基础伤害 [color=#7FD88F]+2[/color]
 散弹数量 [color=#7FD88F]+1[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
 散弹数量 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
@@ -983,6 +1021,7 @@ Pellets [color=#7FD88F]+1[/color]"
 第 %d 波 · %s,第 %d 波 · %s,Wave %d · %s
 第 %d 波 · 利息结算,第 %d 波 · 利息结算,Wave %d · Interest
 第 1 波,第 1 波,Wave 1
+第%d波 撤离,第%d波 撤离,Withdrew on Wave %d
 第%d波 阵亡,第%d波 阵亡,Fell on Wave %d
 第%d波·挑战,第%d波·挑战,Wave %d · Challenge
 等级 1  经验 0/0,等级 1  经验 0/0,Level 1  XP 0/0
@@ -999,6 +1038,7 @@ Pellets [color=#7FD88F]+1[/color]"
 经验获取百分比加成。,经验获取百分比加成。,Percentage bonus to experience gained.
 经验获取训练,经验获取训练,Experience Training
 结息后自动存入本金,结息后自动存入本金,Auto-deposited after interest
+结束本次冒险，按失败奖励的50%结算营地币（向下取整）。,结束本次冒险，按失败奖励的50%结算营地币（向下取整）。,End this expedition and receive 50% of its defeat reward in Camp Coins (rounded down).
 结算 ×%d%%,结算 ×%d%%,Reward ×%d%%
 结霜,结霜,Frost
 统计,统计,Damage
@@ -1143,6 +1183,13 @@ Brackets show the price before Sanity and the Sanity adjustment.
 基础冷却 [color=#7FD88F]-0.1s[/color]","近战基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"近战基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "近战基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害范围 [color=#7FD88F]+5[/color]","近战基础伤害 [color=#7FD88F]+3[/color]
@@ -1152,15 +1199,42 @@ Base Cooldown [color=#7FD88F]−0.1s[/color]
 Damage Area [color=#7FD88F]+5[/color]"
 "近战基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+伤害范围 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Damage Area [color=#7FD88F]+5[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
+"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
 攻击距离 [color=#7FD88F]+5[/color]","近战基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 攻击距离 [color=#7FD88F]+5[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Attack Range [color=#7FD88F]+5[/color]"
+"近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击距离 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+3[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+攻击距离 [color=#7FD88F]+5[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+3[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Attack Range [color=#7FD88F]+5[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "近战基础伤害 [color=#7FD88F]+4[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","近战基础伤害 [color=#7FD88F]+4[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+4[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"近战基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+4[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
@@ -1199,6 +1273,13 @@ Attack count [color=#7FD88F]+1[/color]"
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Attack Range [color=#7FD88F]+5[/color]
 Extra projectiles [color=#7FD88F]+1[/color]"
+"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "近战基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+5[/color]
@@ -1240,6 +1321,13 @@ Circular slash hits [color=#7FD88F]+1[/color]"
 基础冷却 [color=#7FD88F]-0.1s[/color]","远程基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+2[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"远程基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","远程基础伤害 [color=#7FD88F]+2[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+2[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "远程基础伤害 [color=#7FD88F]+3[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","远程基础伤害 [color=#7FD88F]+3[/color]
@@ -1251,6 +1339,13 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 基础冷却 [color=#7FD88F]-0.1s[/color]","远程基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]"
+"远程基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","远程基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base Ranged Damage [color=#7FD88F]+5[/color]
+Base Cooldown [color=#7FD88F]−0.1s[/color]
+Enchantment Slots [color=#7FD88F]+1[/color]"
 "远程基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 额外投射物 [color=#7FD88F]+1[/color]","远程基础伤害 [color=#7FD88F]+5[/color]

@@ -110,10 +110,10 @@ func has_modifier(modifier_id: String) -> bool:
 
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
+	if cache_enabled and _stat_cache.has(stat_id):
+		return float(_stat_cache[stat_id])
 	if not cache_enabled or not StatDefinitions.has_stat(stat_id):
 		return _resolve_stat(stat_id, fallback_base_value)
-	if _stat_cache.has(stat_id):
-		return float(_stat_cache[stat_id])
 	var value := _resolve_stat(stat_id, fallback_base_value)
 	_stat_cache[stat_id] = value
 	return value

@@ -32,6 +32,7 @@ static var _next_instance_id: int = 1
 var instance_id: String = ""
 var trade_base_basis: int = -1
 var trade_upgrade_basis: Dictionary = {}
+var trade_upgrade_sources: Dictionary = {}
 # Reserved for earned, instance-bound titles; combat title scoring is a later feature.
 var battle_title: Dictionary = {}
 var weapon_data: Dictionary = {}
@@ -80,6 +81,7 @@ func initialize(target_weapon_id: String, player: PlayerController) -> bool:
 	_next_instance_id += 1
 	trade_base_basis = -1
 	trade_upgrade_basis.clear()
+	trade_upgrade_sources.clear()
 	battle_title.clear()
 	weapon_data = data
 	owner_player = player
@@ -255,12 +257,15 @@ func has_played_projectile_hit_sfx(projectile_id: String) -> bool:
 	return _projectile_hit_sfx_played.has(projectile_id.strip_edges())
 
 
-func upgrade() -> bool:
+func upgrade(paid_cost: int = -1, payment_source: String = "free") -> bool:
 	var max_level := int(weapon_data.get("max_level", 1))
 	if level >= max_level:
 		return false
 	level += 1
 	_apply_level_upgrades(level)
+	var entry: Dictionary = weapon_data.get("level_upgrades", {}).get(str(level), {})
+	trade_upgrade_basis[level] = WeaponUpgradeRules.gold_cost(entry) if paid_cost < 0 else paid_cost
+	trade_upgrade_sources[level] = payment_source
 	return true
 
 
@@ -337,11 +342,18 @@ func add_effect_by_id(effect_id: String) -> bool:
 
 
 func get_attachment_slot_count() -> int:
-	return get_attachment_slots_for_rarity(get_visual_rarity())
+	return get_attachment_slots_for_level(weapon_data, level)
 
 
-static func get_attachment_slots_for_rarity(rarity: String) -> int:
-	return 2 if rarity in ["rare", "epic", "mythic", "legendary"] else 1
+static func get_attachment_slots_for_level(data: Dictionary, target_level: int) -> int:
+	var slots := int(data.get("attachment_slots", 1))
+	var upgrades: Dictionary = data.get("level_upgrades", {})
+	for unlocked_level in range(2, mini(target_level, int(data.get("max_level", 1))) + 1):
+		var entry: Dictionary = upgrades.get(str(unlocked_level), {})
+		for effect in entry.get("effects", []):
+			if str(effect.get("field", "")) == "attachment_slots":
+				slots += int(effect.get("value", 0))
+	return maxi(0, slots)
 
 
 func has_attachment_slot() -> bool:
@@ -761,6 +773,7 @@ func get_projectile_angles() -> Array[float]:
 
 
 func _apply_level_upgrades(target_level: int) -> void:
+	# Attachment capacity is derived from the level and config, including cast snapshots.
 	var upgrades: Dictionary = weapon_data.get("level_upgrades", {})
 	var upgrade_entry: Dictionary = upgrades.get(str(target_level), {})
 	var upgrade_list: Array = upgrade_entry.get("effects", [])

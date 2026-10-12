@@ -113,7 +113,7 @@ func _run() -> void:
 	check(enemies[2].current_hp == 10000 and enemies[3].current_hp == 10000 and enemies[4].current_hp == 10000, "rear, off-width and out-of-range enemies are untouched")
 	check(spear.cancelled and not spear.visible, "recovery hides and retires spear")
 	for index in 4: check(loadout.upgrade_weapon(SPEAR_ID), "upgrade to level " + str(index + 2))
-	check(weapon.get_base_attack_damage() == 26 and weapon.get_attachment_slot_count() == 2 and not weapon.upgrade(), "level five damage and rarity slots, capped upgrades")
+	check(weapon.get_base_attack_damage() == 26 and weapon.get_attachment_slot_count() == 3 and not weapon.upgrade(), "level five damage and upgraded slots, capped upgrades")
 
 	spear = await fixture([Vector2(150, 0)])
 	var body := enemies[0].get_node("CollisionShape2D") as CollisionShape2D

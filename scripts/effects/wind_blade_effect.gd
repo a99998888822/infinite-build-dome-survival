@@ -69,21 +69,35 @@ func _damage_path_enemies() -> void:
 		return
 	var radius_squared := _hit_radius * _hit_radius
 	var wind_damage := _damage_event.get_elemental_damage(_damage_multiplier)
-	for node in EnemyRegistry.get_registered_enemies():
-		var enemy := node as EnemyController
-		if enemy == null or not enemy.is_alive() or _hit_targets.has(enemy.get_instance_id()):
-			continue
-		if global_position.distance_squared_to(enemy.global_position) > radius_squared:
-			continue
-		_hit_targets[enemy.get_instance_id()] = true
-		if _ground_contact.is_valid():
-			_ground_contact.call(enemy)
-			continue
-		if enemy.can_be_pushed_by_wind():
-			enemy.apply_knockback(_direction, _knockback_speed, _knockback_duration, _weapon.get_stat("control_power"))
-		else:
-			enemy.show_control_resistance()
-		enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
+	var registry := EnemyRegistry.get_registered_enemies()
+	var candidates := EnemyRegistry.candidates_in_radius(global_position, _hit_radius)
+	var scan_origin := global_position
+	var version := EnemyRegistry.spatial_revision
+	for index in candidates:
+		if not _damage_target(registry[index] as EnemyController, radius_squared, wind_damage): continue
+		if EnemyRegistry.sync_spatial_revision() != version or global_position != scan_origin:
+			# A callback can teleport/spawn/reparent a later target. Continue the
+			# original live-array iterator from the same next index in that case.
+			var cursor := index + 1
+			while cursor < registry.size():
+				_damage_target(registry[cursor] as EnemyController, radius_squared, wind_damage)
+				cursor += 1
+			return
+
+
+func _damage_target(enemy: EnemyController, radius_squared: float, wind_damage: int) -> bool:
+	if enemy == null or not enemy.is_alive() or _hit_targets.has(enemy.get_instance_id()): return false
+	if global_position.distance_squared_to(enemy.global_position) > radius_squared: return false
+	_hit_targets[enemy.get_instance_id()] = true
+	if _ground_contact.is_valid():
+		_ground_contact.call(enemy)
+		return true
+	if enemy.can_be_pushed_by_wind():
+		enemy.apply_knockback(_direction, _knockback_speed, _knockback_duration, _weapon.get_stat("control_power"))
+	else:
+		enemy.show_control_resistance()
+	enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
+	return true
 
 
 func _draw() -> void:

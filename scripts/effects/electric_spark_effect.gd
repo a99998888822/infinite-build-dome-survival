@@ -28,12 +28,15 @@ var _elapsed: float = 0.0
 var _struck: bool = false
 var _strike_landed: bool = false
 var _ring_fade_start_elapsed: float = 0.0
+var _visual_count: int = 24
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
 	var effect := ElectricSparkEffect.new()
+	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(parent, "lightning_warning", hit_position)
+	effect._visual_count = [24, 12, 4, 0][tier]
 	parent.add_child(effect)
 	effect._weapon = weapon
 	effect._damage_event = damage_event
@@ -62,15 +65,17 @@ func _arm() -> void:
 
 
 func _ready() -> void:
-	_warning_sprite = WARNING_SPRITE.new()
-	add_child(_warning_sprite)
+	if _visual_count > 0:
+		_warning_sprite = WARNING_SPRITE.new()
+		add_child(_warning_sprite)
+		_warning_sprite.set_density(_visual_count)
 	add_to_group("combat_particle_counters")
 	z_index = 81
 	_sync_warning()
 
 
 func get_active_particle_count() -> int:
-	return PARTICLE_ROWS * PARTICLES_PER_ROW
+	return _visual_count
 
 
 func _process(delta: float) -> void:

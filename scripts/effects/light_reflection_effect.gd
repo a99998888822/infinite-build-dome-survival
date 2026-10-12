@@ -24,6 +24,7 @@ var _visual_detail: int = 2
 var _candidate_revision: int = -1
 var _candidate_hit_count: int = 0
 var _candidate_indices := PackedInt32Array()
+var _visual_tier := 0
 
 
 static func spawn(parent: Node, origin: Vector2, direction: Vector2, damage_event: DamageEvent, radius: float = DEFAULT_RADIUS, damage_multiplier: float = DEFAULT_DAMAGE_MULTIPLIER) -> void:
@@ -34,6 +35,7 @@ static func spawn(parent: Node, origin: Vector2, direction: Vector2, damage_even
 	effect.global_position = origin
 	effect._orientation = direction.angle() if not direction.is_zero_approx() else 0.0
 	effect._visual_detail = PIXEL.register(effect, "reflection")
+	effect._visual_tier = preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(parent, "reflection", origin)
 	effect.z_index = 81
 	effect._damage_event = damage_event
 	effect._radius = maxf(radius, 48.0)
@@ -57,6 +59,30 @@ func _process(delta: float) -> void:
 
 
 func _damage_sweep() -> void:
+	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
+	var sweep_angle := lerpf(_sweep_start, _sweep_end, progress)
+	var radius_squared := _radius * _radius
+	var registry := EnemyRegistry.get_registered_enemies()
+	var candidates := EnemyRegistry.candidates_in_radius(global_position, _radius)
+	if candidates.size() * 2 > registry.size():
+		_damage_sweep_dense()
+		return
+	_candidate_revision = -1
+	var scan_origin := global_position
+	var version := EnemyRegistry.spatial_revision
+	for index in candidates:
+		if _hit_targets.has(registry[index].get_instance_id()): continue
+		var previous_hits := _hit_targets.size()
+		_sweep_target(registry[index] as EnemyController, sweep_angle, radius_squared)
+		if _hit_targets.size() != previous_hits and (EnemyRegistry.sync_spatial_revision() != version or global_position != scan_origin):
+			var cursor := index + 1
+			while cursor < registry.size():
+				_sweep_target(registry[cursor] as EnemyController, sweep_angle, radius_squared)
+				cursor += 1
+			return
+
+
+func _damage_sweep_dense() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
 	var sweep_angle := lerpf(_sweep_start, _sweep_end, progress)
 	var radius_squared := _radius * _radius
@@ -135,17 +161,19 @@ func _sweep_target(enemy: EnemyController, sweep_angle: float, radius_squared: f
 
 
 func _draw() -> void:
+	if _visual_tier == 3: return
 	var progress := clampf(_elapsed / _duration, 0, 1)
 	var fade := 1.0 - progress * 0.72
 	var angle := lerpf(_sweep_start, _sweep_end, progress) + _orientation
 	var direction := Vector2.from_angle(angle)
 	draw_set_transform(Vector2.ZERO, angle)
 	BAKED.draw(self, "reflection_beam", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))
-	if _visual_detail > 0: BAKED.draw(self, "reflection_sides", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))
+	if _visual_detail > 0 and _visual_tier == 0: BAKED.draw(self, "reflection_sides", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))
 	draw_set_transform(Vector2.ZERO)
+	if _visual_tier >= 2: return
 	_draw_png_shard( Vector2(0,-8), Vector2.UP, 38, 11, fade)
 	_draw_png_star( direction * 16, 11, Color(0.93,1,0.92,fade))
-	for index in (7 if _visual_detail > 0 else 3):
+	for index in (7 if _visual_detail > 0 and _visual_tier == 0 else 3):
 		var trail_angle := lerpf(_sweep_start, angle - _orientation, float(index) / 7.0) + _orientation
 		var axis := Vector2.from_angle(trail_angle)
 		var point := axis * _radius * (0.24 + fmod(index * 0.137,0.6))

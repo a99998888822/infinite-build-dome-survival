@@ -45,3 +45,15 @@ func sync(time: float, radius: float, opacity: float) -> void:
 		# The shader moves centers only; particle size stays fixed at all radii.
 		var extent := Vector2(25.8,15.26) * absf(radius) + Vector2(5,5)
 		multimesh.custom_aabb = AABB(Vector3(-extent.x,-extent.y,-1),Vector3(extent.x*2,extent.y*2,2))
+
+
+func set_density(count: int) -> void:
+	count = clampi(count, 1, PARTICLE_COUNT)
+	if count == PARTICLE_COUNT: return
+	var selected := PackedFloat32Array()
+	selected.resize(count * 16)
+	for index in count:
+		var source := index * PARTICLE_COUNT / count
+		for channel in 16: selected[index * 16 + channel] = _buffer[source * 16 + channel]
+	multimesh.instance_count = count
+	multimesh.buffer = selected

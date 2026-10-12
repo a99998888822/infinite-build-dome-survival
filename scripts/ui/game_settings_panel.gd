@@ -316,6 +316,7 @@ func _build_footer() -> void:
 	menu_button = Button.new()
 	menu_button.name = "MainMenuButton"
 	menu_button.text = "ui.settings.return_to_main_menu"
+	menu_button.tooltip_text = "ui.settlement.retreat_hint"
 	menu_button.custom_minimum_size = Vector2(160, 40)
 	SettingsUIStyle.apply_button(menu_button)
 	menu_button.pressed.connect(func(): main_menu_requested.emit())

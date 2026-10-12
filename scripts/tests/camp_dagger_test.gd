@@ -85,7 +85,7 @@ func _run() -> void:
 	check(enemies[2].current_hp == 10000 and enemies[3].current_hp == 10000 and enemies[4].current_hp == 10000, "rear and out-of-range enemies remain unharmed")
 	check(dagger.cancelled and not dagger.visible, "recovery retires blade")
 	for level in range(2, 6): check(loadout.upgrade_weapon(DAGGER), "upgrade to level " + str(level))
-	check(weapon.get_base_attack_damage() == 15 and weapon.get_attachment_slot_count() == 2 and not weapon.upgrade(), "level five cap and rarity slots")
+	check(weapon.get_base_attack_damage() == 15 and weapon.get_attachment_slot_count() == 3 and not weapon.upgrade(), "level five cap and upgraded slots")
 	player.add_runtime_modifier({"id": "dagger_melee", "source_type": "test", "source_id": "dagger_test", "stat": "melee_damage", "operation": "add_flat", "value": 10, "duration": -1, "stack_rule": "unique", "target_scope": "player"})
 	check(weapon.get_base_attack_damage() == 23, "player melee coefficient is 0.8")
 	check(weapon.build_full_stats_text().contains("（[color=#FFFFFF]15[/color][color=#EE7777]+8[/color]）"), "tooltip includes upgraded base and coefficient-scaled player contribution")

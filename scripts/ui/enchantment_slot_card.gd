@@ -41,7 +41,7 @@ func _ready() -> void:
 	_caption = Label.new()
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_caption, 10)
+	FinanceUIStyle.label(_caption, 8)
 	body.add_child(_caption)
 	for label in [_empty_mark, _caption]: label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 

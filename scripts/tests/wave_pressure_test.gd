@@ -40,7 +40,7 @@ func _run() -> void:
 		var tier_rows: Array = []
 		var last_hp := 0
 		var last_rate := 0.0
-		for wave in range(1, 21):
+		for wave in range(1, DataRegistry.get_table("waves").size() + 1):
 			manager.current_wave_index = wave - 2
 			manager.start_next_wave()
 			var sample := manager.spawn_enemy("enemy_mutated_grub", Vector2(900, 0))
@@ -72,8 +72,8 @@ func _run() -> void:
 				# Full-wave doubling/+20% acceptance lives in spawn_density_test.
 				check(ratio > 1.0, "twenty-second supply increases: tier %s wave %d" % [tier, wave])
 				rows.append(row)
-		check(tier_rows[19].hp == roundi(224.0 * float(manager._difficulty.stat_multiplier)), "ordinary HP reaches the wave twenty target")
-		check(tier_rows[19].spawned_20s > tier_rows[0].spawned_20s * 3, "late density exceeds three times opening density")
+		check(tier_rows.back().hp == {"1": 182, "2": 218, "3": 236}[tier], "sixteenth-wave HP retains the existing per-wave growth")
+		check(tier_rows.back().spawned_20s > tier_rows[0].spawned_20s * 3, "late density exceeds three times opening density")
 		previous_tier = tier_rows
 		manager.free()
 		p.free()

@@ -98,7 +98,7 @@ func _run() -> void:
 	tome.runtime_stats.crit_chance = 0
 	purse.runtime_stats.crit_chance = 0
 	_test_body_sizes_and_contact()
-	check(loadout.get_total_load_cost() == 50 and tome.get_attachment_slot_count() == 2 and purse.get_attachment_slot_count() == 1, "load and rarity attachment slots integrate")
+	check(loadout.get_total_load_cost() == 50 and tome.get_attachment_slot_count() == 1 and purse.get_attachment_slot_count() == 1, "load and initial attachment slots integrate")
 	check(tome.calculate_damage_events()[0].damage == 10 and tome.calculate_damage_events()[0].damage_kind == "element", "native tome is ten elemental damage")
 	check(purse.calculate_damage_events()[0].damage == 4 and purse.get_stat("projectile_count") == 3, "native purse has three four-damage coins at zero principal")
 	manager.finance_system.deposit(400, true, "test")
@@ -182,7 +182,7 @@ func _run() -> void:
 	check(enemies.all(func(e): return e.current_hp == 996), "pierce processes ordered contacts in one large frame")
 	check(not loadout.attach_item_to_weapon(TOME, pierce.item_instance_id) and player.item_inventory.find_item(pierce.item_instance_id).equipped_weapon_id == PURSE, "incompatible pierce transfer preserves its purse owner")
 	loadout.detach_item_from_weapon(PURSE, pierce.item_instance_id)
-	check(loadout.upgrade_weapon(PURSE) and loadout.upgrade_weapon(PURSE) and purse.get_attachment_slot_count() == 2, "rare purse unlocks a second slot")
+	check(loadout.upgrade_weapon(PURSE) and loadout.upgrade_weapon(PURSE) and purse.get_attachment_slot_count() == 2, "level three purse unlocks a second slot")
 	fixture([Vector2(90,0),Vector2(180,40),Vector2(180,-40)])
 	split = attach(purse, "scroll_split")
 	fire = attach(purse, "scroll_fire")
@@ -253,6 +253,7 @@ func _run() -> void:
 	check(flow.submit_enchantment_operation("attach", TOME, pierce.item_instance_id).reason == "incompatible_enchantment", "finance authority rejects tome pierce")
 	flow.request_battle_utility("settings")
 	flow.return_to_main_menu_from_settings()
+	flow.confirm_battle_result()
 	await frames(12)
 	check(get_tree().get_nodes_in_group("coin_projectiles").is_empty() and get_tree().get_nodes_in_group("ritual_domains").is_empty(), "return to menu removes weapon runtime nodes")
 	game.queue_free()

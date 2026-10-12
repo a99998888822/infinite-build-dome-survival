@@ -88,22 +88,29 @@ func _rules() -> void:
 	check(s.run_id != before_id and s.kills == 0 and s.interest == 0 and not s.frozen and not s.snapshot().has_advice, "new run resets all statistics and identity")
 	var example := {"kills": 1800, "gold": 2500, "waves": 8, "interest": 1600, "has_advice": true, "followed": true}
 	var report := RunSettlement.build(example, false)
-	check(report.camp_currency == 497 and report.reaction == "death_followed", "reviewed death example awards 497")
+	check(report.camp_currency == 596 and report.reaction == "death_followed", "death example receives twenty percent more")
 	for index in BattleDifficulty.IDS.size():
 		var id := BattleDifficulty.IDS[index]
 		for victory in [false, true]:
 			var scaled := RunSettlement.build(example, victory, id)
 			check(scaled.difficulty_id == id and is_equal_approx(scaled.difficulty_multiplier, [1.0, 2.0, 3.0][index]), "receipt freezes selected difficulty and multiplier: " + id)
-			check(scaled.base_camp_currency == 497 and scaled.camp_currency == [497, 994, 1491][index] and scaled.difficulty_bonus == [0, 497, 994][index], "difficulty scales subtotal once: " + id)
+			var expected: int = [1243, 2485, 3728][index] if victory else [596, 1193, 1789][index]
+			check(scaled.base_camp_currency == 497 and scaled.camp_currency == expected and scaled.difficulty_bonus == [0, 497, 994][index], "difficulty and outcome scale subtotal once: " + id)
 			check(scaled.contributions == report.contributions and scaled.values == report.values, "difficulty preserves original statistics and base contributions: " + id)
 		check(RunSettlement.build({}, false, id).camp_currency == 0, "empty run remains zero on difficulty " + id)
-	check(RunSettlement.build(example, false, "unknown").camp_currency == 497 and RunSettlement.build(example, false, "nightmare").camp_currency == 1491, "settlement normalizes missing and legacy difficulties")
+	check(RunSettlement.build(example, false, "unknown").camp_currency == 596 and RunSettlement.build(example, false, "nightmare").camp_currency == 1789, "settlement normalizes missing and legacy difficulties")
 	example.interest = 40000
 	report = RunSettlement.build(example, false)
-	check(report.camp_currency == 625 and report.interest_capped and report.interest == 40000, "only camp contribution capped, actual interest intact")
-	check(RunSettlement.build(example, false, "2").camp_currency == 1250 and RunSettlement.build(example, true, "3").camp_currency == 1875, "interest cap applies before difficulty multiplier and final rounding")
+	check(report.camp_currency == 750 and report.interest_capped and report.interest == 40000, "only camp contribution capped, actual interest intact")
+	check(RunSettlement.build(example, false, "2").camp_currency == 1500 and RunSettlement.build(example, true, "3").camp_currency == 4688, "interest cap applies before difficulty and outcome multipliers")
 	example.followed = false
-	check(RunSettlement.build(example, true).camp_currency == 625 and RunSettlement.build(example, true).reaction == "victory_refused", "victory and obedience do not multiply payout")
+	check(RunSettlement.build(example, true).camp_currency == 1563 and RunSettlement.build(example, true).reaction == "victory_refused", "victory awards 2.5 times the old base regardless of advice")
+	for id in BattleDifficulty.IDS:
+		var defeat := RunSettlement.build(example, false, id)
+		var retreat := RunSettlement.build(example, false, id, true)
+		check(retreat.camp_currency == floori(int(defeat.camp_currency) * 0.5) and retreat.reaction.is_empty(), "retreat pays half the defeat receipt without a death taunt: " + id)
+	check(RunSettlement.build({"kills": 30}, false, "1", true).camp_currency == 2, "retreat halves the rounded defeat award, not the unrounded subtotal")
+	check(RunSettlement.build({"kills": 10}, false, "1", true).camp_currency == 0, "odd defeat awards round down after halving")
 	check(RunSettlement.build({}, false).camp_currency == 0 and RunSettlement.build({}, false).reaction == "", "zero income and no advice produce no accusation")
 	var balance := CampProgression.get_camp_currency()
 	check(CampProgression.apply_final_settlement(497, "test-receipt"), "receipt stored successfully")
@@ -173,6 +180,8 @@ func _live() -> void:
 	var token := str(manager.goblin_trades.offer.get("token", ""))
 	check(not token.is_empty() and flow.accept_goblin_trade(token).success, "visible bank advice accepted")
 	check(manager.run_statistics.snapshot().accepted == 1 and not flow.accept_goblin_trade(token).success, "one valid decision for bank advice")
+	# This accelerated fixture has no observation interval; explicitly make a challenge eligible.
+	manager.wave_challenges.pressure.struggling = true
 	flow.close_finance_popup()
 	await frames()
 	check(flow.current_state == flow.STATE_WAVE_CHALLENGE, "challenge is shown before next wave")
@@ -195,7 +204,7 @@ func _live() -> void:
 	check(flow.current_state == flow.STATE_BATTLE_RESULT and report.paid and manager.run_statistics.frozen, "death freezes and persists receipt before presentation")
 	check(report.kills == 2 and report.waves == 1 and report.interest == interest_before_death and report.gold == gold_before_death, "same-frame kills included, incomplete wave and uncollected gold excluded")
 	check(report.reaction == "death_refused" and CampProgression.get_camp_currency() == balance + int(report.camp_currency), "live taunt and four-factor currency payout")
-	check(report.difficulty_id == "2" and is_equal_approx(report.difficulty_multiplier, 2.0) and report.camp_currency == int(report.base_camp_currency) * 2, "live death receipt uses the selected difficulty before persistence")
+	check(report.difficulty_id == "2" and is_equal_approx(report.difficulty_multiplier, 2.0) and report.camp_currency == roundi(int(report.base_camp_currency) * 2.4), "live death receipt includes difficulty and twenty percent bonus")
 	flow.present_battle_result(true, {"gold": 999999})
 	check(flow.current_battle_summary == report and CampProgression.get_camp_currency() == balance + int(report.camp_currency), "duplicate outcome cannot change frozen result or award again")
 	var ui := game.find_child("BattleResultPanel", true, false) as RunSettlementPanel
@@ -218,7 +227,7 @@ func _live() -> void:
 	ui.sound_enabled = false
 	ui.skip()
 	check(not ui._cue.playing and not ui._voice.playing and ui._total_value.text == "+ " + ui._number(int(report.camp_currency)), "skip finishes every number and cancels queued audio")
-	check(ui._subtitle.text.contains("难度 2") and ui._heading.text == "结算 ×200%" and ui._conversion.text.contains("×200% = " + ui._number(int(report.camp_currency))), "result shows selected tier, multiplier and the same paid total")
+	check(ui._subtitle.text.contains("难度 2") and ui._heading.text == "结算 ×240%" and ui._conversion.text.contains("×240% = " + ui._number(int(report.camp_currency))), "result shows selected tier, total multiplier and the same paid total")
 	ui.present(report)
 	check(ui._skipped and ui._elapsed == 20, "same receipt presentation does not restart animation")
 	await _capture_variants(ui)
@@ -261,7 +270,7 @@ func _live() -> void:
 	check(flow.current_victory and flow.current_battle_summary.interest > 0 and manager.current_gold == 0 and manager.finance_system.principal > 1100, "final-wave interest and all-in transfer finish before victory receipt")
 	check(flow.current_battle_summary.gold == 100 and flow.current_battle_summary.waves == 1, "fixture counts actual completed waves and earnings despite empty victory wallet")
 	var victory_report := flow.current_battle_summary
-	check(victory_report.difficulty_id == "3" and victory_report.camp_currency == int(victory_report.base_camp_currency) * 3 and CampProgression.get_camp_currency() == victory_balance + int(victory_report.camp_currency), "next run uses tier three victory multiplier and pays that exact amount")
+	check(victory_report.difficulty_id == "3" and victory_report.camp_currency == roundi(int(victory_report.base_camp_currency) * 7.5) and CampProgression.get_camp_currency() == victory_balance + int(victory_report.camp_currency), "next run uses tier three victory bonus and pays that exact amount")
 	completed = true
 
 
@@ -284,7 +293,7 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 		receipt.paid = true
 		ui.present(receipt)
 		ui.skip()
-		check(ui._heading.text == "结算 ×%d%%" % roundi(float(receipt.difficulty_multiplier) * 100.0) and ui._total_value.text == "+ " + ui._number(int(receipt.camp_currency)), "each difficulty preview shows its final receipt: " + id)
+		check(ui._heading.text == "结算 ×%d%%" % roundi(float(receipt.reward_multiplier) * 100.0) and ui._total_value.text == "+ " + ui._number(int(receipt.camp_currency)), "each difficulty preview shows its final receipt: " + id)
 		await _capture(ui, "difficulty_" + id)
 	for bounds in [Vector2i(2560, 1440), Vector2i(1920, 1080), Vector2i(1280, 720), Vector2i(1152, 648), Vector2i(1024, 576), Vector2i(900, 600), Vector2i(640, 360), Vector2i(360, 640)]:
 		get_tree().root.size = bounds
