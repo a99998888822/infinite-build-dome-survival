@@ -135,7 +135,7 @@ func _reorder_checks() -> void:
 	await capture("01_esc_selected")
 	await _press(strip._reorder_buttons[2].right)
 	check(loadout.weapon_instances[3] == cannon and strip._reorder_buttons[3].right == null, "own right arrow directly moves cannon one slot and disappears at last slot")
-	check(strip._weapon_buttons[3].button_pressed and not strip._weapon_buttons[3].flat, "moved weapon retains a visible highlight")
+	check(not strip._weapon_buttons[3].button_pressed and strip._weapon_buttons[3].flat, "moved weapon has no persistent selection highlight")
 	_check_arrow_layout(strip)
 	await capture("02_esc_moved_right")
 	await _press(strip._reorder_buttons[3].left)

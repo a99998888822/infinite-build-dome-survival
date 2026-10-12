@@ -62,6 +62,15 @@ func _ready() -> void:
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		weapon_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
 	if weapon_tooltip_label != null:
+		# Preserve Ark's native pixel grid before scaling to the existing font size.
+		# Rasterizing its outlines directly at 16px introduces broken/noisy strokes.
+		var tooltip_font := weapon_tooltip_label.get_theme_font("normal_font").duplicate() as FontFile
+		tooltip_font.fixed_size = 12
+		tooltip_font.fixed_size_scale_mode = TextServer.FIXED_SIZE_SCALE_ENABLED
+		tooltip_font.oversampling = 1.0
+		tooltip_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+		tooltip_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+		weapon_tooltip_label.add_theme_font_override("normal_font", tooltip_font)
 		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
 		weapon_tooltip_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_build_attachment_tooltip()
@@ -111,14 +120,6 @@ func _make_reorder_button(weapon_id: String, direction: int) -> ReorderButton:
 
 func _select_weapon(weapon_id: String) -> void:
 	_selected_weapon_id = weapon_id
-	_refresh_reorder_state()
-
-
-func _refresh_reorder_state() -> void:
-	for i in _weapon_buttons.size():
-		var button := _weapon_buttons[i] as WeaponSlotButton
-		var matches := button.weapon.weapon_id == _selected_weapon_id
-		button.set_pressed_no_signal(_automation_editing_enabled and matches)
 
 
 func _move_weapon(weapon_id: String, direction: int) -> void:
@@ -229,7 +230,6 @@ func _refresh_weapon_strip() -> void:
 		mode.queue_free()
 	_cast_mode_buttons.clear()
 	if weapon_list == null or _loadout == null:
-		_refresh_reorder_state()
 		return
 	if not _loadout.has_weapon(_selected_weapon_id):
 		_selected_weapon_id = "" if _loadout.weapon_instances.is_empty() else _loadout.weapon_instances[0].weapon_id
@@ -274,11 +274,7 @@ func _refresh_weapon_strip() -> void:
 				arrows.right = _make_reorder_button(weapon.weapon_id, 1)
 				button.add_child(arrows.right)
 			_reorder_buttons.append(arrows)
-			button.flat = false
-			button.toggle_mode = true
 			button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
-			button.add_theme_stylebox_override("pressed", FinanceUIStyle.box("394336", "dec48a", 0))
-			button.add_theme_stylebox_override("hover_pressed", FinanceUIStyle.box("394336", "dec48a", 0))
 			button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
 			mode.configure(weapon, true, (get_node("StripPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color)
@@ -289,7 +285,6 @@ func _refresh_weapon_strip() -> void:
 			weapon_list.add_child(button)
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
-	_refresh_reorder_state()
 	_layout_cast_mode_icons.call_deferred()
 
 
@@ -379,7 +374,7 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 		_update_tooltip_attachment_rows()
 		call_deferred("_update_tooltip_attachment_rows")
 	if keep_position:
-		weapon_tooltip.global_position = preserved_position
+		weapon_tooltip.global_position = preserved_position.round()
 		return
 	var viewport_rect := get_viewport_rect()
 	var target := Vector2.ZERO
@@ -394,7 +389,7 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 		target.x = maxf(viewport_rect.size.x - weapon_tooltip.size.x - 8, 0)
 	if target.y + weapon_tooltip.size.y > viewport_rect.size.y and anchor_button != null:
 		target.y = maxf(anchor_button.global_position.y - weapon_tooltip.size.y + 2, 0)
-	weapon_tooltip.global_position = target
+	weapon_tooltip.global_position = target.round()
 
 
 func _update_tooltip_attachment_rows() -> void:
@@ -420,6 +415,7 @@ func _build_attachment_tooltip() -> void:
 	_attachment_tooltip.z_index = 4096
 	_attachment_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
 	_attachment_tooltip_label = Label.new()
+	_attachment_tooltip_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_attachment_tooltip_label.position = Vector2(10, 8)
 	_attachment_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_attachment_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
