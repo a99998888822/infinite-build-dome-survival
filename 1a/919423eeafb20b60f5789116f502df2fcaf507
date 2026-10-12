@@ -1,0 +1,28 @@
+scripts/ui/weapon_strip.gd
+  s_70f3c13fa7df8b::t_0938627d550ff6 65-73,377,392,418
+scripts/tests/weapon_tooltip_pixel_review.gd
+  s_70f3c13fa7df8b::t_dcddbc2ee56b7b 44
+  s_70f3c13fa7df8b::t_5f5a520b976103 1-43,45-80
+scripts/tests/weapon_tooltip_pixel_review.gd.uid
+  s_70f3c13fa7df8b::t_f971aacfd943ab 1
+scenes/tests/weapon_tooltip_pixel_review.tscn
+  s_70f3c13fa7df8b::t_5f5a520b976103 1-6
+scripts/tests/contact_revive_reorder_review.gd
+  s_70f3c13fa7df8b::t_fc6d892a07a6df 138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1a919423eeafb20b60f5789116f502df2fcaf507",
+  "prompts": {},
+  "sessions": {
+    "s_70f3c13fa7df8b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12dd2-3a64-7de3-b510-5d012f459721",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
