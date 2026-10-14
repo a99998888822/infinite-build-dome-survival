@@ -62,6 +62,7 @@ const TOP_BAR_HEIGHT := 56.0
 const TOP_BAR_MARGIN := 12.0
 const TOP_BAR_GAP := 12.0
 const TOP_BAR_ACTIONS_WIDTH := 86.0
+const TOP_BAR_ACTIONS_SHIFT := 120.0
 const MODAL_ECONOMY_WIDTH := 190.0
 const WAVE_PANEL_SIZE := Vector2(136.0, 48.0)
 const MODAL_SAFE_EDGE_MARGIN := 16.0
@@ -791,13 +792,16 @@ func _apply_combat_layout() -> void:
 		wave_panel.custom_minimum_size = timer_size
 		wave_panel.size = timer_size
 	var actions := encyclopedia_button.get_parent() as Control
-	actions.offset_left = -TOP_BAR_MARGIN - TOP_BAR_ACTIONS_WIDTH
-	actions.offset_right = -TOP_BAR_MARGIN
+	# Leave room for the corner scenery, reducing the inset on narrow windows.
+	var actions_shift := clampf((viewport_width - 800.0) * 0.25, 0.0, TOP_BAR_ACTIONS_SHIFT)
+	var actions_margin := TOP_BAR_MARGIN + actions_shift
+	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH
+	actions.offset_right = -actions_margin
 	actions.offset_top = 8.0
 	actions.offset_bottom = 48.0
 	if economy_panel != null:
 		var wave_right := (viewport_width + timer_size.x) * 0.5
-		var actions_left := viewport_width - TOP_BAR_MARGIN - TOP_BAR_ACTIONS_WIDTH
+		var actions_left := viewport_width + actions.offset_left
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
 		var economy_width := 168.0

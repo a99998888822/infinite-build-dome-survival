@@ -8,25 +8,25 @@
       "index": 0,
       "expression": "neutral",
       "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_neutral.png",
-      "sha256": "efbf56a01bbfb1739d4ed148ea1540c77372439e31254d076152e57b176374dd"
+      "sha256": "e0163d3248489826de4d25be946678b622d4c3f7285b5540b6b170aba6aeb6c9"
     },
     {
       "index": 1,
       "expression": "downcast",
       "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_downcast.png",
-      "sha256": "004d2486646c271bc99cc447eb4a21c658042a2d22cc12718ef88e4a66674436"
+      "sha256": "caca37171145fced4f8b3a3c7d5831d6b512e9ba664dc49e7471d8174500e554"
     },
     {
       "index": 2,
       "expression": "displeased",
       "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_displeased.png",
-      "sha256": "3f46aea02e90caddc20ea47f0eb0d7cc49c001e9ea36085a4ae6f6a64f8aca3d"
+      "sha256": "eff83e129390275d2fb3ee8ef5b9b3fba6db53457498979ba64e1d15039a2386"
     },
     {
       "index": 3,
       "expression": "smile",
       "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\assets\\ui\\finance\\portraits\\goblin_smile.png",
-      "sha256": "2477bdd24f274360d1f040db5047f5e759f088e4b1199178609a465246dda2ef"
+      "sha256": "9d10307bb8d0ee8696f711b1c600e63b38faf213cfff8a61e915f12757798408"
     },
     {
       "index": 4,

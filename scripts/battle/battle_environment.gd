@@ -51,6 +51,12 @@ static func get_sky_height(view_width: float) -> float:
 func _apply_sky_layout() -> void:
 	if sky == null or get_viewport() == null:
 		return
+	if ground is CavernBattleBackdrop:
+		# The cave owns its reduced panorama and overlapping darkness fade.
+		sky.hide()
+		# Crisp cavern pixels should not inherit the legacy scanline wash.
+		if crt_overlay != null: crt_overlay.hide()
+		return
 	var view_size := get_viewport().get_visible_rect().size
 	var top_height := 0.0 if ground is MeadowBattleBackdrop else TOP_BAR_HEIGHT
 	var sky_bottom := top_height + get_sky_height(view_size.x)
@@ -79,7 +85,7 @@ func _apply_sky_layout() -> void:
 func _update_horizon_view() -> void:
 	if ground == null or fold == null or ruins == null or not ground.is_node_ready():
 		return
-	if ground is MeadowBattleBackdrop:
+	if ground is MeadowBattleBackdrop or ground is CavernBattleBackdrop:
 		# The meadow owns the exact terrain projection shared by its ruin roots.
 		fold.hide()
 		return

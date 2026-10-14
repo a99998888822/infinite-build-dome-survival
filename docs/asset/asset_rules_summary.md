@@ -1,5 +1,7 @@
 # 素材规则汇总
 
+> 2026-10-14：初心者战斗动作采用用户确认的 128×128 透明像素帧，共 7 类 50 帧，正式图集在 `assets/sprites/player/actions/novice_128/`。由 `characters.json` 的 `combat_visuals.action_animations` 引用，按 50% 最近邻显示；本条取代下文初心者旧六帧战斗规格。资本家及选角展示图沿用原规格。可编辑源稿和确认记录在 `artifacts/editable/player_actions/novice_128/`，详见[接入与验证记录](novice_actions_128_review_20261014.md)。
+
 > 2026-10-11：105 张武器／遗物图标的小尺寸清晰度版本正式接入，按物理显示尺寸选择 18 张无损图集中的区域，统一最近邻过滤。当前遗物列表／商店为 40 逻辑像素，百科64、奖励48；原有 PNG 母版与原图保留，历史预览已按用户要求清理，正式实机截图保留在 artifacts/validation。下方 10-05 的列表32px为当时记录。见[清晰度接入记录](art_refresh_plan/icon_clarity_installation_2026-10-11.md)。
 
 > 2026-10-05：84件遗物采用用户确认的128×128透明PNG，狂乱分红用B、裂纹铜铃用D；其余6件维持64×64。列表／商店32px、百科／收款64px、奖励48px的显示大小固定，统一最近邻缩放。见[遗物接入记录](art_refresh_plan/relic_icons_128_installation_2026-10-05.md)。

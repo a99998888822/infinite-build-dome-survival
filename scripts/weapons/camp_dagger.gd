@@ -19,7 +19,7 @@ var continuous_combo := false
 var split_triggered := false
 var cuts: Array[Dictionary] = []
 var split_profiles: Array[Dictionary] = []
-var _shape := CapsuleShape2D.new()
+var _shape := ConvexPolygonShape2D.new()
 var _query := PhysicsShapeQueryParameters2D.new()
 
 
@@ -27,8 +27,7 @@ static func find_target(source: WeaponInstance) -> EnemyController:
 	# Acquire by collider edge, using the same outer reach as the rendered blade.
 	# A center-only radius cannot engage enemies that retreat after contact damage.
 	var origin := source.get_attack_origin()
-	var shape := CircleShape2D.new()
-	shape.radius = source.get_dagger_outer_radius()
+	var shape := AttackFootprint.projected_disk(source.get_dagger_outer_radius())
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0, origin)
@@ -41,7 +40,7 @@ static func find_target(source: WeaponInstance) -> EnemyController:
 		var enemy := result.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		var next_distance := origin.distance_squared_to(enemy.global_position)
+		var next_distance := AttackFootprint.unproject(enemy.global_position - origin).length_squared()
 		if next_distance >= distance:
 			continue
 		if not space.intersect_ray(PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)).is_empty():
@@ -119,7 +118,7 @@ func cut_opacity(cut: Dictionary, at: float) -> float:
 func blade_direction(cut: Dictionary, at: float) -> Vector2:
 	var t := clampf((at - float(cut.start) - float(cut.windup)) / float(cut.sweep), 0, 1)
 	var half_angle := deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))) * 0.5
-	return heading.rotated(lerpf(-half_angle, half_angle, smoothstep(0, 1, t)) * float(cut.sign))
+	return AttackFootprint.ground_direction(heading).rotated(lerpf(-half_angle, half_angle, smoothstep(0, 1, t)) * float(cut.sign))
 
 
 func blade_segment(cut: Dictionary, at: float) -> PackedVector2Array:
@@ -127,7 +126,7 @@ func blade_segment(cut: Dictionary, at: float) -> PackedVector2Array:
 	var scale_factor := weapon.get_attack_range() / BASE_REACH
 	# Keep the inner slash reachable when extending the outer arc: increased
 	# range must not create a blind ring where touching enemies cannot be hit.
-	return PackedVector2Array([radial * 21.0 * minf(scale_factor, 1.0), radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius())])
+	return PackedVector2Array([AttackFootprint.project(radial * 21.0 * minf(scale_factor, 1.0)), AttackFootprint.project(radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius()))])
 
 
 func _physics_process(delta: float) -> void:
@@ -166,16 +165,25 @@ func _physics_process(delta: float) -> void:
 
 func _contact(cut: Dictionary, origin: Vector2, at: float) -> void:
 	var segment := blade_segment(cut, at)
-	_shape.radius = maxf(weapon.get_hit_radius(), 1.0)
-	_shape.height = segment[0].distance_to(segment[1]) + 2 * _shape.radius
-	_query.transform = Transform2D((segment[1] - segment[0]).angle() - PI / 2, origin + (segment[0] + segment[1]) * 0.5)
+	var first := AttackFootprint.unproject(segment[0])
+	var last := AttackFootprint.unproject(segment[1])
+	var angle := (last - first).angle()
+	var radius := maxf(weapon.get_hit_radius(), 1.0)
+	var points := PackedVector2Array()
+	# Bake the projected capsule so physics never receives a scaled transform.
+	for i in 17:
+		points.append(AttackFootprint.project(last + Vector2.from_angle(angle - PI / 2 + PI * i / 16.0) * radius))
+	for i in 17:
+		points.append(AttackFootprint.project(first + Vector2.from_angle(angle + PI / 2 + PI * i / 16.0) * radius))
+	_shape.points = points
+	_query.transform = Transform2D(0, origin)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
 	AudioManager.begin_combat_audio()
 	for result in contacts:
 		var enemy := result.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or cut.hits.has(enemy.get_instance_id()):
 			continue
-		if (weapon.get_auto_target_position(enemy) - origin).dot(heading) < 0:
+		if AttackFootprint.unproject(weapon.get_auto_target_position(enemy) - origin).dot(AttackFootprint.ground_direction(heading)) < 0:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
@@ -245,19 +253,20 @@ func _draw() -> void:
 		var fade := cut_opacity(cut, age)
 		if age >= begin:
 			# Reveal the approved crescent only behind the moving edge, then fade it.
-			var angle := heading.angle_to(radial)
+			var angle := AttackFootprint.ground_direction(heading).angle_to(radial)
 			var edge_y := clampi(roundi(32 + 29 * sin(angle)), 0, 64)
 			var y0 := 0 if float(cut.sign) > 0 else edge_y
 			var height := edge_y if float(cut.sign) > 0 else 64 - edge_y
 			var slash_scale := weapon.get_attack_range() / 29.0
-			draw_set_transform(Vector2.ZERO, heading.angle())
+			draw_set_transform_matrix(AttackFootprint.ground_transform(heading))
 			draw_texture_rect_region(SLASH, Rect2(Vector2(-22, y0 - 32) * slash_scale, Vector2(64, height) * slash_scale),
 				Rect2(0, y0, 64, height), Color(tint, 0.58 * fade))
-		var grip := radial * 14.0 * scale_factor
+		var screen_radial := AttackFootprint.project(radial).normalized()
+		var grip := AttackFootprint.project(radial * 14.0 * scale_factor)
 		var body_scale := weapon.get_dagger_body_scale()
 		if weapon.use_active_range_rules:
 			# Move the fixed-size blade out to the new arc; only the slash trail grows.
-			grip = radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius() - 22.0 * body_scale.x)
-		draw_set_transform(grip.round(), radial.angle(), body_scale)
+			grip = blade_segment(cut, age)[1] - screen_radial * 22.0 * body_scale.x
+		draw_set_transform(grip.round(), screen_radial.angle(), body_scale)
 		draw_texture(BLADE, -GRIP, Color(tint if bool(cut.child) else Color.WHITE, fade))
 		draw_set_transform(Vector2.ZERO)

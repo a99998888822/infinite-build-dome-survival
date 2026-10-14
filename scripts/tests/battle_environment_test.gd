@@ -1,1 +1,1 @@
-extends "res://scripts/tests/meadow_install_review.gd"
+extends "res://scripts/tests/cavern_scene_review.gd"

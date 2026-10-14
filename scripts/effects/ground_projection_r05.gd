@@ -1,5 +1,5 @@
 extends RefCounted
-## Ground-only projection. The legacy toggle now covers only star-tome aim rings.
+## Production ground projection. The old flag remains readable by historical reviews.
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
 const FLAG := "ground_projection_r05_enabled"
 
@@ -7,7 +7,7 @@ static func enabled() -> bool:
 	return bool(GameGlobal.get_runtime_flag(FLAG, false))
 
 static func axes() -> Vector2:
-	return projected_axes() if enabled() else Vector2.ONE
+	return projected_axes()
 
 static func projected_axes() -> Vector2:
 	return Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO)

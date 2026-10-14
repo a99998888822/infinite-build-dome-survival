@@ -100,11 +100,11 @@ func _run() -> void:
 	flail = await fixture([Vector2(140, 0)])
 	var near_time := MeteorFlail.WINDUP
 	var head := flail.head_position(flail.swings[0], near_time)
-	enemies[0].position = head.normalized() * (weapon.get_attack_range() + 0.8)
+	enemies[0].position = AttackFootprint.project(AttackFootprint.unproject(head).normalized() * (weapon.get_attack_range() + 0.8))
 	await frames()
 	flail._sweep_contacts(flail.swings[0], head, head, near_time)
 	check(hits.is_empty(), "outside fan radius stays unharmed")
-	enemies[0].position = head.normalized() * 45
+	enemies[0].position = AttackFootprint.project(AttackFootprint.unproject(head).normalized() * 45)
 	await frames()
 	flail._sweep_contacts(flail.swings[0], head, head, near_time)
 	check(hits.size() == 1 and hits[0].damage == 22, "inner fan gives baseline damage")
@@ -113,7 +113,7 @@ func _run() -> void:
 		"stack_rule": "unique", "target_scope": "player"})
 	check(weapon.get_base_attack_damage() == 34, "player melee bonus uses the configured 1.2 coefficient")
 	weapon.runtime_stats.area_size = 100
-	check(flail.head_radius(flail.swings[0]) == 24 and is_equal_approx(flail.head_position(flail.swings[0], 0.455).length(), 216), "range growth updates rendered trajectory and contact radius together")
+	check(flail.head_radius(flail.swings[0]) == 24 and is_equal_approx(AttackFootprint.unproject(flail.head_position(flail.swings[0], 0.455)).length(), 216), "range growth updates projected trajectory and contact radius together")
 	flail.cancel()
 	weapon.runtime_stats.area_size = 0
 	weapon.runtime_stats.attack_speed = 700

@@ -52,6 +52,8 @@ func _draw() -> void:
 			_range_ellipse(point, FOOTPRINT.grenade_blast_axes(weapon), true)
 	else:
 		_shape_transform = Transform2D(aim.angle(), Vector2.ZERO)
+		if weapon.is_camp_dagger() or weapon.is_copper_lamp() or weapon.is_meteor_flail():
+			_shape_transform = FOOTPRINT.ground_transform(aim)
 		if weapon.is_camp_dagger():
 			_fan(clearance, maxf(clearance + 8, weapon.get_dagger_outer_radius()), deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))))
 		elif weapon.is_copper_lamp():

@@ -54,6 +54,9 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		elif weapon.is_grenade():
 			if (offset / AttackFootprint.grenade_range_axes(weapon).max(Vector2.ONE)).length_squared() > 1.0:
 				continue
+		elif weapon.is_meteor_flail() or weapon.is_camp_dagger():
+			if AttackFootprint.unproject(offset).length_squared() > reach * reach:
+				continue
 		elif distance > reach * reach:
 			continue
 		nearest = enemy
@@ -201,4 +204,5 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 	state.tail = float(weapon.weapon_data.get("active_recovery_ms", 180)) / 1000.0 if body == null else 0.0
 	state.feedback_pending = true
 	source.cooldown_ready_changed.emit(false)
+	loadout.owner_player.play_weapon_action(source.weapon_id, body)
 	return true

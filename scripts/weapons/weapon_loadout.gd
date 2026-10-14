@@ -36,6 +36,7 @@ func cast_weapon(weapon: WeaponInstance, point: Vector2) -> bool:
 
 func _ready() -> void:
 	add_to_group("weapon_loadout")
+	weapon_fired.connect(_play_legacy_player_action)
 	targeting_service = get_node_or_null("TargetingService") as TargetingService
 	if targeting_service == null:
 		targeting_service = TargetingService.new()
@@ -59,6 +60,20 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 		if not equip_weapon(weapon_id):
 			return false
 	return true
+
+
+func _play_legacy_player_action(weapon_id: String, _count: int) -> void:
+	if active_combat_enabled or not is_instance_valid(owner_player):
+		return
+	var weapon := get_weapon_instance(weapon_id)
+	if weapon == null:
+		return
+	if weapon.is_copper_lamp():
+		owner_player.play_weapon_action(weapon_id, _directed_runtimes.get(weapon.instance_id))
+	elif weapon.is_ritual_tome():
+		owner_player.play_weapon_action(weapon_id, null, 0.75)
+	else:
+		owner_player.play_weapon_action(weapon_id)
 
 
 func equip_weapon(weapon_id: String) -> bool:
@@ -412,8 +427,7 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 		for active in get_tree().get_nodes_in_group("meteor_flails"):
 			if active.weapon == weapon and active.is_swinging():
 				return false
-		var targeting_radius := StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.get("hit_radius", 0)), weapon.get_stat("area_size"))
-		var target := targeting_service.find_nearest_enemy_in_radius(owner_player.global_position, weapon.get_attack_range() + targeting_radius) as EnemyController
+		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 		if target == null or not target.is_alive():
 			return false
 		var flail := MeteorFlail.new()

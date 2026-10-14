@@ -62,7 +62,7 @@ func outline(points: PackedVector2Array, strength: float = 1.0) -> void:
 
 
 func ring(at: Vector2, radius: float, filled: bool, strength: float = 1.0) -> void:
-	ellipse(at, GROUND.axes() * radius, filled, strength)
+	ellipse(at, GROUND.projected_axes() * radius, filled, strength)
 
 
 func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) -> void:
@@ -141,7 +141,7 @@ func _draw() -> void:
 					_fan_points.append(Vector2.from_angle(deg_to_rad(lerpf(shot_angle * 0.5, -shot_angle * 0.5, i / 48.0))) * clearance)
 				_fan_fill = _fan_points.duplicate()
 				_fan_points.append(_fan_points[0])
-			_shape_transform = Transform2D(direction.angle(), Vector2.ZERO)
+			_shape_transform = FOOTPRINT.ground_transform(direction)
 			draw_colored_polygon(_shape_transform * _fan_fill, STYLE.fill_color(available))
 			outline(_fan_points)
 			_shape_transform = Transform2D.IDENTITY

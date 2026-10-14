@@ -19,17 +19,12 @@
   ],
   "groups": {
     "wall": [
-      "ruin_curved_wall",
-      "ruin_sloped_wall",
-      "ruin_brick_wall",
       "ruin_twin_pillar_wall",
       "ruin_broken_arch"
     ],
     "pillar": [
       "ruin_square_pillar",
-      "ruin_broken_column",
       "ruin_short_column",
-      "ruin_stone_block",
       "ruin_eroded_pillar"
     ],
     "brick": [
@@ -66,49 +61,10 @@
     ]
   },
   "assets": {
-    "ruin_curved_wall": {
-      "texture": "res://assets/sprites/background/wetland/ruin_curved_wall.png",
-      "source_file": "ruin_curved_wall-64.png",
-      "sha256": "74d569e9abe22d0f5246ca379aa70bca1cd970f6ce8e7ab70f530b3c9ab1d59b",
-      "content_rect": [
-        4,
-        20,
-        56,
-        24
-      ],
-      "world_extent": 176,
-      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
-    },
-    "ruin_sloped_wall": {
-      "texture": "res://assets/sprites/background/wetland/ruin_sloped_wall.png",
-      "source_file": "ruin_sloped_wall-64.png",
-      "sha256": "ab33d4742e33bdb049c019851a1d67fd3907a591e8681f24af68f233d1c13a8f",
-      "content_rect": [
-        4,
-        12,
-        57,
-        40
-      ],
-      "world_extent": 176,
-      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
-    },
-    "ruin_brick_wall": {
-      "texture": "res://assets/sprites/background/wetland/ruin_brick_wall.png",
-      "source_file": "ruin_brick_wall-64.png",
-      "sha256": "b33c82c3b87bb9a6d1bb332a3dd57476508c0d6c8f847740328b0c239f12050b",
-      "content_rect": [
-        3,
-        22,
-        58,
-        20
-      ],
-      "world_extent": 176,
-      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
-    },
     "ruin_twin_pillar_wall": {
       "texture": "res://assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
       "source_file": "ruin_twin_pillar_wall-64.png",
-      "sha256": "1738e628d0fdee82466410f0b3c5b1c02abf1b985fae558af813b51a8ef9b642",
+      "sha256": "59c5ad0e33c17581bfcd5e7855af65471bab18825e1d883f575383afa44f614c",
       "content_rect": [
         4,
         21,
@@ -121,7 +77,7 @@
     "ruin_broken_arch": {
       "texture": "res://assets/sprites/background/wetland/ruin_broken_arch.png",
       "source_file": "ruin_broken_arch-64.png",
-      "sha256": "db8ec98abbab724564faa583f64e50a0846466a5805a122387ca9d76d5434337",
+      "sha256": "a8d2aef714bec8b37baf5ea1aa76894f9dc877fed55cfa79fd53dcdba281c8c9",
       "content_rect": [
         7,
         11,
@@ -134,7 +90,7 @@
     "ruin_square_pillar": {
       "texture": "res://assets/sprites/background/wetland/ruin_square_pillar.png",
       "source_file": "ruin_square_pillar-64.png",
-      "sha256": "d22d3a2a676e370ae176f0d49cc2b8bb64b33b3654826edfd0d9182179723d1b",
+      "sha256": "0ebc69bd84aaf2e785e2049fdfa94a415a7afe1b6ae22f7a50ac60e65c4c352b",
       "content_rect": [
         13,
         4,
@@ -144,23 +100,10 @@
       "world_extent": 104,
       "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
-    "ruin_broken_column": {
-      "texture": "res://assets/sprites/background/wetland/ruin_broken_column.png",
-      "source_file": "ruin_broken_column-64.png",
-      "sha256": "18e436529baadef8237b8a43bc2c772173ab9de8ebd4532a1456a628a62adced",
-      "content_rect": [
-        11,
-        0,
-        43,
-        64
-      ],
-      "world_extent": 100,
-      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
-    },
     "ruin_short_column": {
       "texture": "res://assets/sprites/background/wetland/ruin_short_column.png",
       "source_file": "ruin_short_column-64.png",
-      "sha256": "21c2d2e87b566e63b8244e96f7f473dcef49ee175442c0c6f05d270c3551c515",
+      "sha256": "4e692e049cd7ae6f0abd3dde0f7eccbc15643a77a6d80fe73e10a4506c7313f0",
       "content_rect": [
         10,
         5,
@@ -170,23 +113,10 @@
       "world_extent": 70,
       "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
     },
-    "ruin_stone_block": {
-      "texture": "res://assets/sprites/background/wetland/ruin_stone_block.png",
-      "source_file": "ruin_stone_block-64.png",
-      "sha256": "a7eba2bf3881eba87e5694be4a6a866707e64945823638c3250ce803d8774d72",
-      "content_rect": [
-        4,
-        3,
-        56,
-        57
-      ],
-      "world_extent": 64,
-      "source_package": "artifacts/previews/art_refresh_v1/battle_ground_01/environment_tone_r02/exports"
-    },
     "ruin_eroded_pillar": {
       "texture": "res://assets/sprites/background/wetland/ruin_eroded_pillar.png",
       "source_file": "ruin_eroded_pillar-64.png",
-      "sha256": "6b34d5a8ac86912babf931032d2e73a7d21be1c50b5060502ba5f718b38dbea8",
+      "sha256": "de3e70438e63c7d8eda5375f5ddb9388c9005fc87ec4c71a2dea933c898fc3c1",
       "content_rect": [
         15,
         3,
@@ -199,7 +129,7 @@
     "decal_single_brick": {
       "texture": "res://assets/sprites/background/wetland/decal_single_brick.png",
       "source_file": "decal_single_brick-64.png",
-      "sha256": "b94d9c4b1875ba35d8454232e505582035bd5ecd0c4911772910d6c6e1a223bd",
+      "sha256": "d8a240e7ad7d7445f5d8b5bc2baeec11096866c31d51e4c8252331dc6c53a56b",
       "content_rect": [
         5,
         18,
@@ -212,7 +142,7 @@
     "decal_stacked_bricks": {
       "texture": "res://assets/sprites/background/wetland/decal_stacked_bricks.png",
       "source_file": "decal_stacked_bricks-64.png",
-      "sha256": "ed64124e01a7d5a48efbc33795e24d13f870a7ac2619cc92f1f15338a99f9be9",
+      "sha256": "9d1b89967721d2bf9ee0e8065b2d006ce61b765eee6592a2decad14d2b1786e7",
       "content_rect": [
         6,
         21,
@@ -225,7 +155,7 @@
     "decal_brick_fragments": {
       "texture": "res://assets/sprites/background/wetland/decal_brick_fragments.png",
       "source_file": "decal_brick_fragments-64.png",
-      "sha256": "3979454451b6e609885cc9ecfdb87f492fe55c69391d56a18cddb75695af5426",
+      "sha256": "d0081a385d50b73d0e44558231301e6c8bde3327f46ac0dd69956d4078dc32f3",
       "content_rect": [
         2,
         21,
@@ -238,7 +168,7 @@
     "decal_scattered_stones": {
       "texture": "res://assets/sprites/background/wetland/decal_scattered_stones.png",
       "source_file": "decal_scattered_stones-64.png",
-      "sha256": "42a4ec9aaacfab0d4a421609a5dbf31ed1a4486a754eeb66cb3685f69522d21a",
+      "sha256": "f7e2598b03d108932273e4a746bf40cd6fb34f0b583033224b9fd977953f9158",
       "content_rect": [
         2,
         28,
@@ -251,7 +181,7 @@
     "decal_high_rubble": {
       "texture": "res://assets/sprites/background/wetland/decal_high_rubble.png",
       "source_file": "decal_high_rubble-64.png",
-      "sha256": "7584a1763ac6c271edf6605ec159476dbc70634c3b456a6e5401cee71c21848b",
+      "sha256": "0c99ed704b8f64edc0f99503b7cf69307230ec2495e380db106b0630b7d9cb93",
       "content_rect": [
         7,
         17,
@@ -264,7 +194,7 @@
     "decal_low_rubble": {
       "texture": "res://assets/sprites/background/wetland/decal_low_rubble.png",
       "source_file": "decal_low_rubble-64.png",
-      "sha256": "d0a2231e96727252b1c938175e5da7322e5996bcc44b7877f7dc29329371fb57",
+      "sha256": "57c8bf8c9083fad74010b3d2b1a8beb680e0f9830884193b28e7b568f3f168c3",
       "content_rect": [
         2,
         17,
@@ -277,7 +207,7 @@
     "decal_flat_stones": {
       "texture": "res://assets/sprites/background/wetland/decal_flat_stones.png",
       "source_file": "decal_flat_stones-64.png",
-      "sha256": "557475f0c1a530897c840822b6566b47513c223f29a0b8042297b60a3fd734f2",
+      "sha256": "a7bd8e64738fd1ed40dc5ae711ce11808441f025aae9f93aa06d7f96928c0f0d",
       "content_rect": [
         5,
         23,
@@ -446,5 +376,6 @@
       ],
       "world_extent": 58
     }
-  }
+  },
+  "edge_repair_revision": "20261013-local-contours"
 }

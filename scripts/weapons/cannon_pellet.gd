@@ -5,6 +5,21 @@ const ATLAS := preload("res://assets/sprites/weapons/mobility/pellet.png")
 var _candidate_shape := RectangleShape2D.new()
 var _candidate_query := PhysicsShapeQueryParameters2D.new()
 
+func initialize(source: WeaponInstance, event: DamageEvent, origin: Vector2, heading: Vector2,
+		shared_hits: Dictionary, generation: int = 0) -> void:
+	super.initialize(source, event, origin, heading, shared_hits, generation)
+	# Ground distance projects to a shorter screen distance near vertical aim.
+	# Scaling speed by the same factor preserves the original flight duration.
+	var factor := AttackFootprint.project(AttackFootprint.ground_direction(direction)).length()
+	remaining_distance *= factor
+	speed *= factor
+
+func _target_distance_squared(offset: Vector2) -> float:
+	return AttackFootprint.unproject(offset).length_squared()
+
+func _split_heading(radians: float) -> Vector2:
+	return AttackFootprint.spread_direction(direction, radians)
+
 func _collision_candidates(start: Vector2, end: Vector2, radius: float) -> Array:
 	# Broad phase avoids scanning the entire enemy registry for every pellet/frame.
 	_candidate_shape.size = Vector2(start.distance_to(end) + radius * 2, radius * 2)

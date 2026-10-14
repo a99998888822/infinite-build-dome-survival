@@ -1,6 +1,90 @@
 {
   "assets": [
     {
+      "asset": "assets/sprites/player/actions/novice_128/idle.png",
+      "sha256": "a4ef3e713d4dd9ad97b36e7c745acb0d0f7bcff6884f49976fbbfe76cdff9dbb",
+      "size": [
+        128,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "idle",
+      "frame_count": 1
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "sha256": "6419be69fcebe8d6c9931fedeb8053cc3ada1adbddcdd44bafae2586510b423b",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "move",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "sha256": "4bd1464727f867bece7a98e72cde67394bd71a315fa150d838bea7c9c0cb4880",
+      "size": [
+        896,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "attack",
+      "frame_count": 7
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "sha256": "343ec7d72a2563a20270e335d0b54a3db22c7ae71a97ffecc1db3a8c1f6ebd01",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "sustain",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "sha256": "3778e75f0974be397cfadd16c3ff346f6d13f571e1e4375a475eeaca73648be6",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "move_sustain",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "sha256": "2ec59f77e6cf906c9cd6d91bb4976ce3266d1d7c4582021d7477c57104d6c1b3",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "jump_forward",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "sha256": "5ffe25f41ce57b3c3e3ae190f28a38606f86df23a33140c46395e842aa996955",
+      "size": [
+        1280,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "jump_backward",
+      "frame_count": 10
+    },
+    {
       "asset": "assets/sprites/background/background-icon-baike.png",
       "sha256": "bfa046802ec402bb9fb0ddd1a77e0171ff048d5debebf90956d68a66828f66f6",
       "size": [
@@ -321,16 +405,6 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/ruin_brick_wall.png",
-      "sha256": "b33c82c3b87bb9a6d1bb332a3dd57476508c0d6c8f847740328b0c239f12050b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_brick_wall.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/ruin_broken_arch.png",
       "sha256": "db8ec98abbab724564faa583f64e50a0846466a5805a122387ca9d76d5434337",
       "size": [
@@ -338,26 +412,6 @@
         64
       ],
       "editable": "assets/sprites/background/wetland/ruin_broken_arch.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_broken_column.png",
-      "sha256": "18e436529baadef8237b8a43bc2c772173ab9de8ebd4532a1456a628a62adced",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_broken_column.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_curved_wall.png",
-      "sha256": "74d569e9abe22d0f5246ca379aa70bca1cd970f6ce8e7ab70f530b3c9ab1d59b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_curved_wall.png",
       "mode": "native_png"
     },
     {
@@ -381,16 +435,6 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/ruin_sloped_wall.png",
-      "sha256": "ab33d4742e33bdb049c019851a1d67fd3907a591e8681f24af68f233d1c13a8f",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_sloped_wall.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/ruin_square_pillar.png",
       "sha256": "d22d3a2a676e370ae176f0d49cc2b8bb64b33b3654826edfd0d9182179723d1b",
       "size": [
@@ -398,16 +442,6 @@
         64
       ],
       "editable": "assets/sprites/background/wetland/ruin_square_pillar.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_stone_block.png",
-      "sha256": "a7eba2bf3881eba87e5694be4a6a866707e64945823638c3250ce803d8774d72",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_stone_block.png",
       "mode": "native_png"
     },
     {

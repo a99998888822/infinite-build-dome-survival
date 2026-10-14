@@ -89,7 +89,7 @@ func _build_beams() -> void:
 		for i in int(profile.child_count):
 			var fraction := float(i + 1) / float(int(profile.child_count) + 1)
 			var angle := lerpf(-float(profile.spread_angle), float(profile.spread_angle), fraction)
-			beams.append({"direction": heading.rotated(deg_to_rad(angle)), "reach": weapon.get_attack_range() * 0.65, "power": profile.damage_multiplier, "child": true, "enchantment_start": profile.enchantment_start})
+			beams.append({"direction": AttackFootprint.spread_direction(heading, deg_to_rad(angle)), "reach": weapon.get_attack_range() * 0.65, "power": profile.damage_multiplier, "child": true, "enchantment_start": profile.enchantment_start})
 
 
 func _tick_damage() -> void:

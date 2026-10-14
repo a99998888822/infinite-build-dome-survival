@@ -1,0 +1,308 @@
+{
+  "ground": [
+    {
+      "id": "reference_moss",
+      "textures": [
+        "res://assets/sprites/background/cavern/reference_moss_full.png"
+      ],
+      "catalog_number": 1,
+      "source_sha256": "138189635b08b852f0c0b4b0c1ea4bb4e9b1038e073d796da7b374ff773b6ded",
+      "relative_y_correction": 0.84
+    }
+  ],
+  "details": [
+    {
+      "id": "reference_crack_0",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_0.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    },
+    {
+      "id": "reference_crack_1",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_1.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    },
+    {
+      "id": "reference_crack_2",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_2.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    },
+    {
+      "id": "reference_crack_3",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_3.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    },
+    {
+      "id": "reference_crack_4",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_4.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    },
+    {
+      "id": "reference_crack_5",
+      "texture": "res://assets/sprites/background/cavern/detail_crack_5.png",
+      "source": "reference_moss_full",
+      "scale": 1
+    }
+  ],
+  "rubble": [
+    {
+      "id": "loose_stone_0",
+      "texture": "res://assets/sprites/background/cavern/rubble_0.png",
+      "texture_density": 4.0
+    },
+    {
+      "id": "loose_stone_1",
+      "texture": "res://assets/sprites/background/cavern/rubble_1.png",
+      "texture_density": 4.0
+    }
+  ],
+  "grass": [
+    {
+      "id": "G09_grass_short-32",
+      "texture": "res://assets/sprites/background/cavern/grass_grass_short.png",
+      "source": "res://assets/sprites/background/green_ground/G09_grass_short-32.png"
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "texture": "res://assets/sprites/background/cavern/grass_grass_dense.png",
+      "source": "res://assets/sprites/background/green_ground/G10_grass_dense-32.png"
+    },
+    {
+      "id": "G11_grass_long-32",
+      "texture": "res://assets/sprites/background/cavern/grass_grass_long.png",
+      "source": "res://assets/sprites/background/green_ground/G11_grass_long-32.png"
+    }
+  ],
+  "ruins": [
+    {
+      "id": "arch",
+      "texture": "res://assets/sprites/background/cavern/ruin_arch.png",
+      "display_size": [
+        62,
+        54
+      ]
+    },
+    {
+      "id": "pillar",
+      "texture": "res://assets/sprites/background/cavern/ruin_pillar.png",
+      "display_size": [
+        26,
+        46
+      ]
+    },
+    {
+      "id": "obelisk",
+      "texture": "res://assets/sprites/background/cavern/ruin_obelisk.png",
+      "display_size": [
+        22,
+        37
+      ]
+    },
+    {
+      "id": "lamp",
+      "texture": "res://assets/sprites/background/cavern/ruin_lamp.png",
+      "display_size": [
+        25,
+        39
+      ]
+    }
+  ],
+  "props": [
+    {
+      "id": "rock",
+      "texture": "res://assets/sprites/background/cavern/prop_rock.png",
+      "catalog_id": "A01"
+    },
+    {
+      "id": "log",
+      "texture": "res://assets/sprites/background/cavern/prop_log.png",
+      "catalog_id": "A05"
+    }
+  ],
+  "foreground": [
+    {
+      "texture": "res://assets/sprites/background/cavern/foreground_0.png",
+      "corner": [
+        0,
+        0
+      ],
+      "offset": [
+        -6.705882352941177,
+        -12.854237288135593
+      ],
+      "display_size": [
+        85.83529411764707,
+        85.69491525423729
+      ]
+    },
+    {
+      "texture": "res://assets/sprites/background/cavern/foreground_1.png",
+      "corner": [
+        1,
+        0
+      ],
+      "offset": [
+        -84.55401662049861,
+        -6.915254237288136
+      ],
+      "display_size": [
+        92.18836565096953,
+        92.20338983050848
+      ]
+    },
+    {
+      "texture": "res://assets/sprites/background/cavern/foreground_2.png",
+      "corner": [
+        0,
+        1
+      ],
+      "offset": [
+        -5.038461538461538,
+        -115.96273291925466
+      ],
+      "display_size": [
+        132.92307692307693,
+        132.3726708074534
+      ]
+    },
+    {
+      "texture": "res://assets/sprites/background/cavern/foreground_3.png",
+      "corner": [
+        1,
+        1
+      ],
+      "offset": [
+        -138.3290203327172,
+        -117.95215311004785
+      ],
+      "display_size": [
+        149.0573012939002,
+        148.82296650717706
+      ]
+    }
+  ],
+  "ground_texture_density": 1,
+  "parallax": {
+    "ground": 1.0,
+    "ruins": 0.26,
+    "cavern": 0.08
+  },
+  "method": "Solid source-colour floor, complete catalog 01, source-derived cracks, rubble and existing grass; exterior-connected cutouts; no image model.",
+  "panorama_modules": [
+    {
+      "source": "far_background_1.png",
+      "crop": [
+        0.07,
+        0.07,
+        0.91,
+        0.88
+      ],
+      "opening_top": 12,
+      "opening_bottom": 90,
+      "width": 207,
+      "wall_gap": 115,
+      "repair": "source-colour rocky cap and blended outer wall"
+    },
+    {
+      "source": "far_background_5.png",
+      "crop": [
+        0.14,
+        0,
+        0.88,
+        0.63
+      ],
+      "opening_top": 12,
+      "opening_bottom": 90,
+      "width": 259,
+      "wall_gap": 135,
+      "repair": "source-colour rocky cap and blended outer wall"
+    },
+    {
+      "source": "far_background_3.png",
+      "crop": [
+        0.18,
+        0,
+        0.76,
+        0.67
+      ],
+      "opening_top": 12,
+      "opening_bottom": 90,
+      "width": 149,
+      "wall_gap": 120,
+      "repair": "source-colour rocky cap and blended outer wall"
+    },
+    {
+      "source": "far_background_2.png",
+      "crop": [
+        0.48,
+        0.03,
+        0.87,
+        0.64
+      ],
+      "opening_top": 12,
+      "opening_bottom": 90,
+      "width": 123,
+      "wall_gap": 105,
+      "repair": "source-colour rocky cap and blended outer wall"
+    },
+    {
+      "source": "far_background_4.png",
+      "crop": [
+        0.38,
+        0.12,
+        0.88,
+        0.63
+      ],
+      "opening_top": 12,
+      "opening_bottom": 90,
+      "width": 211,
+      "wall_gap": 125,
+      "repair": "source-colour rocky cap and blended outer wall"
+    }
+  ],
+  "panorama": "res://assets/sprites/background/cavern/panorama_aligned.png",
+  "floor_color": [
+    0.30980392156862746,
+    0.32941176470588235,
+    0.3058823529411765,
+    1.0
+  ],
+  "grass_anchors": [
+    [
+      -523.0,
+      -73.5
+    ],
+    [
+      -344.0,
+      103.5
+    ],
+    [
+      -114.0,
+      -122.5
+    ],
+    [
+      83.0,
+      14.5
+    ],
+    [
+      333.0,
+      104.5
+    ],
+    [
+      528.0,
+      -82.5
+    ],
+    [
+      463.0,
+      121.5
+    ],
+    [
+      -153.0,
+      142.5
+    ]
+  ]
+}

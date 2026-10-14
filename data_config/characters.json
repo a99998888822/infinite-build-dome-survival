@@ -11,10 +11,13 @@
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
     "display_sprite": "res://assets/sprites/player/void_hunter_idle_right.png",
     "combat_visuals": {
-      "idle": "res://assets/sprites/player/combat/void_hunter_idle_right.png",
-      "walk": "res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
+      "idle": "res://assets/sprites/display_clarity/player/void_hunter_idle.png",
+      "walk": "res://assets/sprites/display_clarity/player/void_hunter_walk.png",
       "walk_frames": 6,
-      "walk_fps": 6
+      "walk_fps": 6,
+      "action_animations": "res://assets/sprites/player/actions/novice_128/animations.json",
+      "action_scale_percent": 50,
+      "action_offset": [0, -4]
     },
     "display_stats": [
       "max_hp",
@@ -56,8 +59,8 @@
     "icon": "res://assets/ui/icons/characters/icon_capitalist.png",
     "display_sprite": "res://assets/sprites/player/capitalist_idle_right.png",
     "combat_visuals": {
-      "idle": "res://assets/sprites/player/combat/capitalist_idle_right.png",
-      "walk": "res://assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
+      "idle": "res://assets/sprites/display_clarity/player/capitalist_idle.png",
+      "walk": "res://assets/sprites/display_clarity/player/capitalist_walk.png",
       "walk_frames": 7,
       "walk_fps": 7
     },

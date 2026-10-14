@@ -264,17 +264,6 @@
     "sha256": "1bada516cf5042899223f82a4de27255f0b7c2b225e0dd209ccff317db0987ab"
   },
   {
-    "path": "assets/sprites/background/wetland/ruin_brick_wall.png",
-    "current_canvas": [
-      128,
-      128
-    ],
-    "recipe": "04_scenery_prompts.md",
-    "phase": "P4",
-    "status": "planned",
-    "sha256": "10efdc0a6aa663fe644df8d666522a92c2ee092534f674dd53bbd412de831833"
-  },
-  {
     "path": "assets/sprites/background/wetland/ruin_broken_arch.png",
     "current_canvas": [
       128,
@@ -284,28 +273,6 @@
     "phase": "P4",
     "status": "planned",
     "sha256": "4875adb4bec455ed1e79732feac78d79fa2e64939d9d3c6f4e1bf5a7b4a8e2bb"
-  },
-  {
-    "path": "assets/sprites/background/wetland/ruin_broken_column.png",
-    "current_canvas": [
-      128,
-      128
-    ],
-    "recipe": "04_scenery_prompts.md",
-    "phase": "P4",
-    "status": "planned",
-    "sha256": "fb422bae9627c7ad222833189a96db8206a7469dbf394668a3d8ce59fbcdacb4"
-  },
-  {
-    "path": "assets/sprites/background/wetland/ruin_curved_wall.png",
-    "current_canvas": [
-      128,
-      128
-    ],
-    "recipe": "04_scenery_prompts.md",
-    "phase": "P4",
-    "status": "planned",
-    "sha256": "79ecb7fdcb003d1ff2e43cd2405ecb3e8ff72fb723a1e6dde33c05a239e724ed"
   },
   {
     "path": "assets/sprites/background/wetland/ruin_eroded_pillar.png",
@@ -330,17 +297,6 @@
     "sha256": "3559d7f7c9c0151d130e54a8915238272164d9b50a9aa6953b7da2b54727668c"
   },
   {
-    "path": "assets/sprites/background/wetland/ruin_sloped_wall.png",
-    "current_canvas": [
-      128,
-      128
-    ],
-    "recipe": "04_scenery_prompts.md",
-    "phase": "P4",
-    "status": "planned",
-    "sha256": "9e0d33954fecc158d629a7fffefee9d686d1c415f825c620bbec1f61ce63c11a"
-  },
-  {
     "path": "assets/sprites/background/wetland/ruin_square_pillar.png",
     "current_canvas": [
       128,
@@ -350,17 +306,6 @@
     "phase": "P4",
     "status": "planned",
     "sha256": "fa04cd7dda2771c5bb365ecd85c94a6d27549fac43602d125d3f782d8706e241"
-  },
-  {
-    "path": "assets/sprites/background/wetland/ruin_stone_block.png",
-    "current_canvas": [
-      128,
-      128
-    ],
-    "recipe": "04_scenery_prompts.md",
-    "phase": "P4",
-    "status": "planned",
-    "sha256": "a70189b64389f799076b1af57c58bc882d950a0e1d68836eefaf4a35256b28ea"
   },
   {
     "path": "assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
@@ -891,7 +836,10 @@
   },
   {
     "path": "assets/ui/finance/finance_background.png",
-    "current_canvas": [2752, 1536],
+    "current_canvas": [
+      2752,
+      1536
+    ],
     "recipe": "finance_table_ui_installation_2026-10-05.md",
     "phase": "P1",
     "status": "installed",

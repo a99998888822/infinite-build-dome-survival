@@ -1,0 +1,306 @@
+{
+  "status": "user_approved_production",
+  "approved_on": "2026-10-14",
+  "character_id": "character_void_hunter",
+  "frame_size": [
+    128,
+    128
+  ],
+  "frame_count": 50,
+  "root_motion": false,
+  "closed_gloves": true,
+  "approved_package_sha256": "d385e811abaaf48576138ff0b885a31187722901e5ace5809811e1cbfabdadd6",
+  "runtime_manifest": "assets/sprites/player/actions/novice_128/animations.json",
+  "assets": [
+    {
+      "asset": "assets/sprites/player/actions/novice_128/idle.png",
+      "sha256": "a4ef3e713d4dd9ad97b36e7c745acb0d0f7bcff6884f49976fbbfe76cdff9dbb",
+      "size": [
+        128,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "idle",
+      "frame_count": 1
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "sha256": "6419be69fcebe8d6c9931fedeb8053cc3ada1adbddcdd44bafae2586510b423b",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "move",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "sha256": "4bd1464727f867bece7a98e72cde67394bd71a315fa150d838bea7c9c0cb4880",
+      "size": [
+        896,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "attack",
+      "frame_count": 7
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "sha256": "343ec7d72a2563a20270e335d0b54a3db22c7ae71a97ffecc1db3a8c1f6ebd01",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "sustain",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "sha256": "3778e75f0974be397cfadd16c3ff346f6d13f571e1e4375a475eeaca73648be6",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "move_sustain",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "sha256": "2ec59f77e6cf906c9cd6d91bb4976ce3266d1d7c4582021d7477c57104d6c1b3",
+      "size": [
+        1024,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "jump_forward",
+      "frame_count": 8
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "sha256": "5ffe25f41ce57b3c3e3ae190f28a38606f86df23a33140c46395e842aa996955",
+      "size": [
+        1280,
+        128
+      ],
+      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
+      "mode": "picxel_animation_frames",
+      "action": "jump_backward",
+      "frame_count": 10
+    }
+  ],
+  "editable_sources": [
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_00.pxg",
+      "sha256": "0f240e9f3434bdbd4cce5b3ea3a00ba65bec3d8f18018be5b32b51aee82a5db5"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_01.pxg",
+      "sha256": "909123ea89f29a1fb5c3a8efe46278f3333a0ef8ae3624984460353dad2f793c"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_02.pxg",
+      "sha256": "6ea6354634a94407ed4123f3bc6d1fcc9478e797ce60bc309a2115183b780dfa"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_03.pxg",
+      "sha256": "b0ed4727906c04b71e350674203dc63e5b3cab7fdc1bdc3ed9c8269273f6e259"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_04.pxg",
+      "sha256": "9de0b1212cbdd7f2101d51860f8a5e815d79dd41e55f6ca90d200e119cd5ab47"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_05.pxg",
+      "sha256": "14982b3e6d3fcd32bcf825fcd09574521fb4efcf299640bd0a422091bd75f9e3"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/attack_06.pxg",
+      "sha256": "c5ba40927b46bed2e398f238aa76e142bb7c738494a471a9ff1e727e3462c025"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/idle_00.pxg",
+      "sha256": "8e67ac8c8a7909b93882aea7ca38f03326ea5b4456b41e494dfa2b1c88c0d676"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_00.pxg",
+      "sha256": "ead1fe707b1cc98bbda746795c55d791006567882fdc2b91751fd6a9d0e22863"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_01.pxg",
+      "sha256": "2231715b1d6acd265f108956dc55c93f671db42d4e6868aab7e530eff427bfa3"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_02.pxg",
+      "sha256": "da214b49800cfa0d506be5f8efbe366676c87239ac6aff7739df1d68253adf29"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_03.pxg",
+      "sha256": "985f741c4958cdee09aeeae2fcd25250fb5c6c6a1d2171fe5481a628a7e7aaca"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_04.pxg",
+      "sha256": "cdf681df826c9ddafd7d81a9f8908b8bbd3daedaf363f422db4a808a2f031e1b"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_05.pxg",
+      "sha256": "d1a9fb6969a668091adafcddc70303798525ce7b90367a54b871cdb43e3027a1"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_06.pxg",
+      "sha256": "b16c356a8a84eac0e3ecedbcba3df8a0037f8cd5314925e977b34617c42bdece"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_07.pxg",
+      "sha256": "b8ab61e148f86c413db11af0788c72c573625501ec80cd6256f8963adb7f272c"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_08.pxg",
+      "sha256": "8f5e27bb0998e207628b4d514fc08b5b8393c3d9d442c459dbf5a3d4d59d2398"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_backward_09.pxg",
+      "sha256": "672bf4645b9276e5ceec4791638159f09e937ac73302aad48b21cd0fa1a949b7"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_00.pxg",
+      "sha256": "5535682c0c07226bebfeb701a479dc198dbb0c4c69c15acf7bb3667f5d39442f"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_01.pxg",
+      "sha256": "8ac41b7297fc2f119439dd19760dcdc8816d45eb954d6dec25e1849b2d5efee6"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_02.pxg",
+      "sha256": "62ec93b19ac3abb63e4b86d91bf156d288fc06f6d81fa70506c4a99f9a1301e3"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_03.pxg",
+      "sha256": "12046f3057856b36dab5a502c64671d87a66aabb305a981293bb786b5962ad22"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_04.pxg",
+      "sha256": "74623f53d29b422b7e16adfc949b277d116eb086742251d1a492381bbdd3107f"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_05.pxg",
+      "sha256": "bf4cb8e2e20c29ba17472f52e98cb34e7f8dffb1aada07cab4f3e249a9e728a7"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_06.pxg",
+      "sha256": "3223875e812b1816a1de2b76383091c844b8a2dfd3f85e2575b81811872efa35"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/jump_forward_07.pxg",
+      "sha256": "0b2a27be57f454f883190a0468041bd1163af00fac8831837d798c0071fd7d02"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_00.pxg",
+      "sha256": "571deec82e4735a23175ac6b3fedcfceb748cd1508841fd54b937e906745024b"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_01.pxg",
+      "sha256": "c71bff5db3115be0a0aefbbefe63a467099ba3f82b1770ec2cf5425c96ea5d31"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_02.pxg",
+      "sha256": "f11d21997085e00d3d5e99d2e1e26883dc7d94cc50e9117f93dbd9e646845570"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_03.pxg",
+      "sha256": "da639dd54abbe5b597e41b560c5f47c5f81afc062f4540b329ed50a4dcddb3ee"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_04.pxg",
+      "sha256": "7cc253af544a749b8d8d5f8cc638ac5c8734bf3a67896346e232aa7986296fc2"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_05.pxg",
+      "sha256": "ca52e79ef0a61acdaee1c9d670489ac5c35d49d05b585bffafe975d0c7beb053"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_06.pxg",
+      "sha256": "086012195d5761f83e32952bc0348c7d0043206025aeb42bdcd615d2f2445181"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_07.pxg",
+      "sha256": "eaed2124ed4cabd96ca655c80d7e0faf22d3ed2204c55d83e50723a28f49d782"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_00.pxg",
+      "sha256": "567fdbb9c3bbe131627bff0b705b84000b0f759813da223a5bef5927f40fbdbc"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_01.pxg",
+      "sha256": "7ef89e7051cd31c5ef0b7ba6e45d21169c198557dbede1dedc5f9d6811253036"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_02.pxg",
+      "sha256": "faa51e3b4c9ca9c1d199828677f20aab6b2b43c94f8371f626939e1462354973"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_03.pxg",
+      "sha256": "4e729ef88d20eb24a35458d31d5652ecdf6a0ff189e9545be11aed03ce9fdb98"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_04.pxg",
+      "sha256": "9f105feedc97b2b054d6b0ab00660fe6fca33c368ef370078dc49621023e64c1"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_05.pxg",
+      "sha256": "d2f3e925a104d0aea9b18702ca9e51ac782c2d788329dab5bacd24efd8e746ab"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_06.pxg",
+      "sha256": "287b3bf9764c463d4a3b5d06999c0005fd594c835c9859fc4d602563bbe4e58b"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/move_sustain_07.pxg",
+      "sha256": "f9dbf0c40795ab29f1d333cdf94c2cb4e264918af36b457c6501a6928e0b4570"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/player_actions.pal",
+      "sha256": "d423ea5a4ae119e36f85076f72478b7b167d87102512d1f3cd4d7e39b541401f"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_00.pxg",
+      "sha256": "8df6ac6b13003e319526b9383d098b2655753bcef51d5b3642aa29e13fa5ec6f"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_01.pxg",
+      "sha256": "77fff0b3ba05a338d0658d5b17f1739b739e8aa6b0daa86ea76faef86ee9116c"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_02.pxg",
+      "sha256": "c6dc7d864c707c337bba152ed533bc987774fc516fc5a5d2e058fbf84f0ea7cc"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_03.pxg",
+      "sha256": "928fb04890f60ac61f6cc76a5192bae05c14a73964b11c043388ffa51aa47205"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_04.pxg",
+      "sha256": "9a47462cd709afc3b7768f581e1992d69c419ad3d470846472b6710065f7343e"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_05.pxg",
+      "sha256": "009b99e2589c64f56644059bd408fd8050762144af4f9a4de3fde3db324a387d"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_06.pxg",
+      "sha256": "61414c1e590367be86df632a774c577dfb10d880a9c3307d649a286f14472203"
+    },
+    {
+      "file": "artifacts/editable/player_actions/novice_128/sustain_07.pxg",
+      "sha256": "e25080fb043117c6d0649881ac28a426792896029ad5981e15fa6848426dd02c"
+    }
+  ]
+}

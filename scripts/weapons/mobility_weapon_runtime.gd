@@ -25,6 +25,7 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	heading = anchor_position.direction_to(point)
 	if heading.is_zero_approx(): heading = player.last_move_direction
 	var landing := player.resolve_mobility_destination(anchor_position + weapon.get_mobility_landing(point - anchor_position))
+	player.play_mobility_action(weapon.weapon_id, landing - anchor_position)
 	if weapon.is_star_tome():
 		player.reset_stationary_relic_state()
 		MobilityAtlasEffect.spawn(self, weapon, "star_depart", anchor_position)
@@ -60,7 +61,7 @@ func _fire_cannon(point: Vector2, contact: EnemyController = null) -> void:
 	for angle in weapon.get_projectile_angles():
 		var pellet := CannonPellet.new()
 		add_child(pellet)
-		pellet.initialize(weapon, weapon.calculate_damage_events()[0], point, heading.rotated(deg_to_rad(angle)), {})
+		pellet.initialize(weapon, weapon.calculate_damage_events()[0], point, AttackFootprint.spread_direction(heading, deg_to_rad(angle)), {})
 		if is_instance_valid(contact) and contact.is_alive(): pellet._hit_enemy(contact)
 	AudioManager.play_sfx_path(str(weapon.weapon_data.get("launch_sfx", "")), 100, "hand_cannon_launch")
 
@@ -71,13 +72,18 @@ func _impact(point: Vector2) -> void:
 		# The atlas reaches 82 px including sparks: 1.1x stays inside the 96 px hit circle.
 		visual_scale = weapon.get_hit_radius() / 96.0 * 1.1
 	# Project slash and star shockwave frames onto the shared ground plane.
-	# The circular physics query below keeps its existing radius.
+	# Star impact follows its projected warning. Dash keeps its approved body query.
 	var visual_axes := GROUND.projected_axes()
 	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, visual_axes * visual_scale)
 	# Copy only matching contacts before native damage/reactions mutate the registry.
 	var victims: Array[EnemyController] = []
-	var shape := CircleShape2D.new()
-	shape.radius = weapon.get_hit_radius()
+	var shape: Shape2D
+	if shock:
+		shape = AttackFootprint.projected_disk(weapon.get_hit_radius())
+	else:
+		var circle := CircleShape2D.new()
+		circle.radius = weapon.get_hit_radius()
+		shape = circle
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0.0, point)
@@ -108,6 +114,7 @@ func request_return() -> bool:
 	# A blocked return keeps the mark available, instead of consuming it halfway.
 	if landing.distance_squared_to(anchor_position) > 1.0: return false
 	var departure := player.global_position
+	player.play_mobility_action(weapon.weapon_id, landing - departure)
 	player.reset_stationary_relic_state()
 	player.global_position = landing
 	MobilityAtlasEffect.spawn(self, weapon, "star_depart", departure)

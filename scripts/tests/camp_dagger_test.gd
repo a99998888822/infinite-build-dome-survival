@@ -93,7 +93,11 @@ func _run() -> void:
 	check(weapon.get_base_attack_damage() == 23, "ranged damage cannot scale dagger")
 
 	dagger = await fixture([Vector2(36, 0)])
-	var radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
+	var edge_body := enemies[0].get_node("CollisionShape2D") as CollisionShape2D
+	var radius: float = edge_body.shape.radius
+	# Center the actual offset body on the blade axis for this +/-1 px edge test.
+	# An off-axis body has a different support distance after ground projection.
+	enemies[0].position.y -= edge_body.global_position.y - enemies[0].global_position.y
 	enemies[0].position.x = 90 + 8 + radius + 1
 	await frames()
 	dagger._contact(dagger.cuts[0], Vector2.ZERO, 0.11)

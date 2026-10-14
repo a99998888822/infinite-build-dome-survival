@@ -157,7 +157,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r2-c2-128.pxg",
-      "sha256": "58d671e813b279463346fdf7e21e09e8042250a239f764ed8075f72a4410bf82",
+      "sha256": "2ec3458369917b192d6cf186a88264a7716f3e7d9303a1df9ecde36cfe3fcf7a",
       "palette": "artifacts/editable/finance_background/tiles/bank-r2-c2.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -173,7 +173,7 @@
       ],
       "reprocessed": true,
       "grid": "artifacts/editable/finance_background/tiles/bank-r2-c3-128.pxg",
-      "sha256": "c10be6aa03b31b91d29604d7f4a56536bc846e5bf1fc889e81dca4236240d691",
+      "sha256": "2c7c9d0baced801b5012a49d64f370fc9b9c532b920331082fc108e63b62df02",
       "palette": "artifacts/editable/finance_background/tiles/bank-r2-c3.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -189,7 +189,7 @@
       ],
       "reprocessed": true,
       "grid": "artifacts/editable/finance_background/tiles/bank-r2-c4-128.pxg",
-      "sha256": "16a7eabc73cb7d3df17020c4a56e8623141e7ca7f90e25bdebe19105090b2a9d",
+      "sha256": "bffa633cea5b2d9ad4bc4d8ca02ef0de3b2f166f4783e4c0fad6da484837869c",
       "palette": "artifacts/editable/finance_background/tiles/bank-r2-c4.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -205,7 +205,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r2-c5-128.pxg",
-      "sha256": "9f9702e01c9d8ca6b5c5ce87b951e67b7dbc1aa094a322959f1814f224ca75bf",
+      "sha256": "74ca156db91ac46eeaf0810f6e19465972aa4c66dd19542cf3c86bd554a30c62",
       "palette": "artifacts/editable/finance_background/tiles/bank-r2-c5.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -237,7 +237,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r3-c1-128.pxg",
-      "sha256": "d3dc560eebe34e862e9a12e85f7ddaf76bf996cce48a5d780dbc7a6cf85b2fd5",
+      "sha256": "d565170bdfa6b5b7cdcde2595dbb38d035ab6299ab05238acf625e5ede597f2e",
       "palette": "artifacts/editable/finance_background/tiles/bank-r3-c1.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -253,7 +253,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r3-c2-128.pxg",
-      "sha256": "84da04dde63d1d2bbe456baf2979a0b7dfc9189610b8a7fe50309ba297b77c69",
+      "sha256": "5229ac6d4173780820932ea6486633da03bdd23b6f2689da5c9d312376df4745",
       "palette": "artifacts/editable/finance_background/tiles/bank-r3-c2.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -269,7 +269,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r3-c3-128.pxg",
-      "sha256": "cc33a961f80775ed83bfaf6e1a748758778b7d53a52083d9960c057ceb00d162",
+      "sha256": "14b99039546e1991ac451e6e80dd031ab9fd365860cfe969b65e0295bb8700b1",
       "palette": "artifacts/editable/finance_background/tiles/bank-r3-c3.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -285,7 +285,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r3-c4-128.pxg",
-      "sha256": "d6a9b60635459809178e9edc45c18c69d7424c5e172590e65dca525e9c6d31a3",
+      "sha256": "69c93e8d61635d54253998232553ec5df49c17b9bd2833ce22713fbd56aeae62",
       "palette": "artifacts/editable/finance_background/tiles/bank-r3-c4.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -301,7 +301,7 @@
       ],
       "reprocessed": false,
       "grid": "artifacts/editable/finance_background/tiles/bank-r3-c5-128.pxg",
-      "sha256": "90a64e86d73066391a7b8e0e3e402be0eddf637b19f1fbf05d0488de196046f3",
+      "sha256": "5bd939067e036d8669f238a10b679e34baff91e4cbc08862e227d4599768c099",
       "palette": "artifacts/editable/finance_background/tiles/bank-r3-c5.pal",
       "palette_sha256": "8844e1461b85d3c5076117358232fd387d105c8da1d4aeb16b7229a327b3d266"
     },
@@ -334,6 +334,7 @@
   "asset": "assets/ui/finance/finance_background.png",
   "pixel_background": "artifacts/editable/finance_background/pixel_background.png",
   "scroll_mask": "artifacts/editable/finance_background/scroll_mask.png",
-  "asset_sha256": "31449d9a8159e0f760b351956d476063bf9ec251f6f83aa45bc9a005b515e2ff",
-  "composition": "Image.composite(short_scroll_RGBA, pixel_background_RGBA.resize((2752,1536), NEAREST), scroll_mask_L)"
+  "asset_sha256": "dcf1ee91b4824fdb080665f4de7663bcade38f916d343c76bda099c2ca38d784",
+  "composition": "Image.composite(short_scroll_RGBA, pixel_background_RGBA.resize((2752,1536), NEAREST), scroll_mask_L)",
+  "edge_repair_revision": "20261013-local-wood-structure-lines"
 }

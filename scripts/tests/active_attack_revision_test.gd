@@ -60,7 +60,7 @@ func _run() -> void:
 	grenade.set_physics_process(false)
 	grenade._detonate()
 	check(enemies[0].current_hp < 10000 and enemies[1].current_hp == 10000 and enemies[2].current_hp < 10000, "real grenade damage uses the landing ellipse")
-	await fixture("weapon_copper_lamp", [Vector2(16, 0) + Vector2.from_angle(deg_to_rad(29)) * 80, Vector2(16, 0) + Vector2.from_angle(deg_to_rad(31)) * 80, Vector2(145, 0), Vector2(-10, 0)])
+	await fixture("weapon_copper_lamp", [AttackFootprint.project(Vector2(16, 0) + Vector2.from_angle(deg_to_rad(29)) * 80), AttackFootprint.project(Vector2(16, 0) + Vector2.from_angle(deg_to_rad(31)) * 80), Vector2(145, 0), Vector2(-10, 0)])
 	check(is_equal_approx(weapon.get_lamp_cone_degrees(), 60), "base lamp cone is 60 degrees")
 	var lamp := CopperLamp.new()
 	host.add_child(lamp)
@@ -75,11 +75,11 @@ func _run() -> void:
 	lamp.manual_direction = Vector2.UP
 	lamp._physics_process(0.01)
 	check(lamp.heading == Vector2.UP, "manual flame turns with movement")
-	check(lamp.flame_visuals.size() == 1 and is_equal_approx(lamp.flame_visuals[0].rotation, -PI / 2), "continuous flame visual follows the real spray heading")
+	check(lamp.flame_visuals.size() == 1 and lamp.flame_visuals[0].flame_material.get_shader_parameter("ground_forward").is_equal_approx(Vector2.UP), "continuous flame shader follows the real spray heading")
 	lamp.manual_direction = Vector2.ZERO
 	lamp._physics_process(0.01)
 	check(lamp.heading == Vector2.UP, "stationary flame keeps last movement direction")
-	await fixture("weapon_meteor_flail", [Vector2(40, 0), Vector2.from_angle(deg_to_rad(64)) * 90, Vector2.from_angle(deg_to_rad(67)) * 90, Vector2(150, 0), Vector2(-30, 0)])
+	await fixture("weapon_meteor_flail", [Vector2(40, 0), AttackFootprint.project(Vector2.from_angle(deg_to_rad(64)) * 90), AttackFootprint.project(Vector2.from_angle(deg_to_rad(67)) * 90), Vector2(150, 0), Vector2(-30, 0)])
 	var flail := MeteorFlail.new()
 	host.add_child(flail)
 	flail.initialize(weapon, Vector2.RIGHT)

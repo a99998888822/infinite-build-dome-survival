@@ -43,6 +43,8 @@ static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
 		if enemy is EliteRusher and enemy.skill_state == "spawn":
 			continue
 		var next := origin.distance_squared_to(enemy.global_position)
+		if source.is_copper_lamp() or source.is_meteor_flail() or source.is_camp_dagger():
+			next = AttackFootprint.unproject(enemy.global_position - origin).length_squared()
 		if next < distance and clear_path(source.owner_player, origin, enemy.global_position):
 			best = enemy
 			distance = next

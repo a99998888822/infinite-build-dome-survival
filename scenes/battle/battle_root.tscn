@@ -21,8 +21,8 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-sky-Recovered.png" id="21_battle_sky"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-baike.png" id="22_icon_baike"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-plugin.png" id="23_icon_plugin"]
-[ext_resource type="Script" path="res://scripts/battle/meadow_battle_backdrop.gd" id="24_wetland"]
-[ext_resource type="Script" path="res://scripts/battle/meadow_battle_horizon.gd" id="26_ruins"]
+[ext_resource type="Script" path="res://scripts/battle/cavern_population_backdrop.gd" id="24_wetland"]
+[ext_resource type="Script" path="res://scripts/battle/cavern_pit_horizon.gd" id="26_ruins"]
 [ext_resource type="Script" path="res://scripts/ui/battle_utility_overlay.gd" id="27_utility"]
 [ext_resource type="Script" path="res://scripts/battle/wetland_horizon_fold.gd" id="28_horizon_fold"]
 [ext_resource type="Shader" path="res://shaders/battle/horizon_sky.gdshader" id="29_horizon_sky"]
@@ -88,7 +88,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.008, 0.045, 0.047, 1)
+color = Color(0.051, 0.039, 0.071, 1)
 
 [node name="BattleSky" type="CanvasLayer" parent="."]
 layer = -2
@@ -142,7 +142,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.58)
 
 [node name="DistantRuins" type="Node2D" parent="BattleSky"]
-texture_filter = 1
+texture_filter = 2
 script = ExtResource("26_ruins")
 
 [node name="CombatRenderWorld" type="Node2D" parent="."]
@@ -155,6 +155,7 @@ script = ExtResource("27_utility")
 
 [node name="Backdrop" type="Node2D" parent="CombatRenderWorld"]
 script = ExtResource("24_wetland")
+scenery_config_path = "res://data_config/cavern_meadow_battlefield.json"
 
 [node name="StoneBrickFloor" type="Sprite2D" parent="CombatRenderWorld"]
 visible = false

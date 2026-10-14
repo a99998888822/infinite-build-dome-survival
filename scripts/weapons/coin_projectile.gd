@@ -167,11 +167,11 @@ func _spawn_children(origin: Vector2) -> void:
 			for candidate in EnemyRegistry.get_registered_enemies():
 				if not candidate.is_alive() or reserved.has(candidate.get_instance_id()):
 					continue
-				var distance := origin.distance_squared_to(candidate.global_position)
+				var distance := _target_distance_squared(candidate.global_position - origin)
 				if distance < nearest_distance:
 					nearest = candidate
 					nearest_distance = distance
-			var heading := direction.rotated(deg_to_rad(lerpf(-float(profile.spread_angle) * 0.5, float(profile.spread_angle) * 0.5, float(index) / maxf(count - 1, 1))))
+			var heading := _split_heading(deg_to_rad(lerpf(-float(profile.spread_angle) * 0.5, float(profile.spread_angle) * 0.5, float(index) / maxf(count - 1, 1))))
 			if nearest != null:
 				heading = origin.direction_to(weapon.get_auto_target_position(nearest))
 				reserved[nearest.get_instance_id()] = true
@@ -187,6 +187,14 @@ func _spawn_children(origin: Vector2) -> void:
 
 func _create_child() -> CoinProjectile:
 	return CoinProjectile.new()
+
+
+func _target_distance_squared(offset: Vector2) -> float:
+	return offset.length_squared()
+
+
+func _split_heading(radians: float) -> Vector2:
+	return direction.rotated(radians)
 
 
 func _spawn_hit_visual(point: Vector2) -> void:

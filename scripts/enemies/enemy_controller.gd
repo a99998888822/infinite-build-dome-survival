@@ -107,6 +107,7 @@ var _visual_tween: Tween = null
 var _next_feedback_kind: StringName = &""
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
+var _cavern_scenery: Node2D = null
 var _lightning_visual: Node2D = null
 var _super_armor_visual: Node2D = null
 var _super_armor_remaining := 0.0
@@ -136,6 +137,7 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	add_to_group("enemies")
+	_cavern_scenery = get_tree().get_first_node_in_group("battle_cavern") as Node2D
 	EnemyRegistry.register_enemy(self)
 	_spatial_tracking = true
 	set_notify_local_transform(true)
@@ -196,6 +198,10 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		_set_movement_visual(false, delta)
 		return
+	# The cave backdrop is not a playable firing position. Approach its dark
+	# entrance before resuming attacks, so ranged enemies cannot camp invisibly
+	# over the panorama. Spawn distance/count and ordinary combat stay intact.
+	if _knockback_timer<=0.0 and _advance_cavern_entry(delta): return
 	if not _has_challenge_target() and _process_special_behavior(delta):
 		return
 	if _knockback_timer > 0.0:
@@ -211,6 +217,19 @@ func _physics_process(delta: float) -> void:
 
 func _process_special_behavior(_delta: float) -> bool:
 	return false
+
+func _advance_cavern_entry(delta: float) -> bool:
+	if not is_instance_valid(_cavern_scenery): return false
+	var direction: Vector2 = _cavern_scenery.get_darkness_entry_direction(global_position)
+	if direction.is_zero_approx(): return false
+	_on_control_interrupted()
+	var speed := minf(get_stat("move_speed"),float(enemy_data.get("base_stats",{}).get("move_speed",60))*MAX_MOVE_SPEED_MULTIPLIER)
+	if _slowed_remaining>0.0: speed *= _slow_multiplier
+	if _wet_remaining>0.0: speed *= _wet_slow_multiplier
+	velocity = velocity.move_toward(direction*speed,CHASE_ACCELERATION*delta)
+	move_and_slide()
+	_set_movement_visual(true,delta)
+	return true
 
 
 func _on_control_interrupted() -> void:

@@ -12,6 +12,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 DEST = ROOT / 'assets/sprites/background/wetland'
+REJECTED = {'ruin_curved_wall','ruin_sloped_wall','ruin_stone_block','ruin_broken_column','ruin_brick_wall'}
 # Physical extent is the longest visible side in world units before depth.
 SPECS = [
     ('ruin_curved_wall',176), ('ruin_sloped_wall',176), ('ruin_brick_wall',176),
@@ -41,6 +42,7 @@ def main():
     # Validate every source before modifying the project.
     entries = []
     for n,(asset_id,extent) in enumerate(SPECS,1):
+        if asset_id in REJECTED: continue
         matches = list(source.glob(f'{n:02d}_*.png'))
         assert len(matches)==1, (n,matches)
         path = matches[0]
@@ -76,6 +78,7 @@ def main():
                   'rubble':ids[13:17],'moss':ids[17:20],'crack':ids[20:26],
                   'wet':ids[26:28],'ripple':ids[28:30]},
         'assets':{asset_id:entry for path,asset_id,entry in entries}}
+    config['groups']={key:[value for value in values if value not in REJECTED] for key,values in config['groups'].items()}
     (ROOT/'data_config/battle_scenery.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'copied':len(entries),'removed':removed},indent=2))
 

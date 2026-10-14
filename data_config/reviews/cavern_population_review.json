@@ -1,0 +1,161 @@
+{
+  "source": "Review only: approved A, B, C, D, Q with production meadow and grass",
+  "method": "Terrain-matched batched grass, medium B/Q, sparse world-space A; inherited approved PNGs",
+  "surface_texture": "res://assets/sprites/background/meadow/meadow-ground.png",
+  "surface_context": "res://assets/sprites/background/meadow/ground-context.png",
+  "floor_color": [
+    0.26,
+    0.28,
+    0.25,
+    1.0
+  ],
+  "ground": [],
+  "details": [],
+  "grass": [
+    {
+      "id": "G09_grass_short-32",
+      "texture": "res://assets/sprites/background/green_ground/G09_grass_short-32.png",
+      "anchor": [
+        16.5,
+        24
+      ],
+      "source_sha256": "1424b61359b18c4f98cee9b1882e67245b51d3a02ba21502f8fd71904a5cfa42"
+    },
+    {
+      "id": "G10_grass_dense-32",
+      "texture": "res://assets/sprites/background/green_ground/G10_grass_dense-32.png",
+      "anchor": [
+        16.0,
+        26
+      ],
+      "source_sha256": "42a5f51fb18ed71232880809be3baa08e12e3bed33ba8d6efc34a6d8f86e7340"
+    },
+    {
+      "id": "G11_grass_long-32",
+      "texture": "res://assets/sprites/background/green_ground/G11_grass_long-32.png",
+      "anchor": [
+        16.0,
+        25
+      ],
+      "source_sha256": "be49e096cb89fab683d3ac939c156910053ec9861a2746fb49f36d4bc80b7a93"
+    },
+    {
+      "id": "G12_grass_dry_mix-32",
+      "texture": "res://assets/sprites/background/green_ground/G12_grass_dry_mix-32.png",
+      "anchor": [
+        16.0,
+        28
+      ],
+      "source_sha256": "e29daf5924ea489df51d40e5e4ac9082f121c46798c72ba0a3ed53596097478e"
+    }
+  ],
+  "rubble": [
+    {
+      "id": "loose_stone_0",
+      "texture": "res://assets/sprites/background/cavern/rubble_0.png",
+      "texture_density": 4.0,
+      "anchor": [
+        50.0,
+        60
+      ]
+    },
+    {
+      "id": "loose_stone_1",
+      "texture": "res://assets/sprites/background/cavern/rubble_1.png",
+      "texture_density": 4.0,
+      "anchor": [
+        32.0,
+        44
+      ]
+    },
+    {
+      "id": "decal_single_brick",
+      "texture": "res://assets/sprites/background/wetland/decal_single_brick.png",
+      "anchor": [
+        32.0,
+        46
+      ],
+      "source_sha256": "d8a240e7ad7d7445f5d8b5bc2baeec11096866c31d51e4c8252331dc6c53a56b"
+    },
+    {
+      "id": "decal_stacked_bricks",
+      "texture": "res://assets/sprites/background/wetland/decal_stacked_bricks.png",
+      "anchor": [
+        32.0,
+        43
+      ],
+      "source_sha256": "9d1b89967721d2bf9ee0e8065b2d006ce61b765eee6592a2decad14d2b1786e7"
+    },
+    {
+      "id": "decal_brick_fragments",
+      "texture": "res://assets/sprites/background/wetland/decal_brick_fragments.png",
+      "anchor": [
+        32.0,
+        43
+      ],
+      "source_sha256": "d0081a385d50b73d0e44558231301e6c8bde3327f46ac0dd69956d4078dc32f3"
+    },
+    {
+      "id": "decal_scattered_stones",
+      "texture": "res://assets/sprites/background/wetland/decal_scattered_stones.png",
+      "anchor": [
+        31.5,
+        36
+      ],
+      "source_sha256": "f7e2598b03d108932273e4a746bf40cd6fb34f0b583033224b9fd977953f9158"
+    },
+    {
+      "id": "decal_high_rubble",
+      "texture": "res://assets/sprites/background/wetland/decal_high_rubble.png",
+      "anchor": [
+        32.5,
+        46
+      ],
+      "source_sha256": "0c99ed704b8f64edc0f99503b7cf69307230ec2495e380db106b0630b7d9cb93"
+    },
+    {
+      "id": "decal_low_rubble",
+      "texture": "res://assets/sprites/background/wetland/decal_low_rubble.png",
+      "anchor": [
+        32.0,
+        48
+      ],
+      "source_sha256": "57c8bf8c9083fad74010b3d2b1a8beb680e0f9830884193b28e7b568f3f168c3"
+    },
+    {
+      "id": "decal_flat_stones",
+      "texture": "res://assets/sprites/background/wetland/decal_flat_stones.png",
+      "anchor": [
+        32.5,
+        41
+      ],
+      "source_sha256": "a7bd8e64738fd1ed40dc5ae711ce11808441f025aae9f93aa06d7f96928c0f0d"
+    }
+  ],
+  "props": [
+    {
+      "id": "rock",
+      "texture": "res://assets/sprites/background/cavern/prop_rock.png",
+      "catalog_id": "A01",
+      "anchor": [
+        37.5,
+        65
+      ]
+    },
+    {
+      "id": "log",
+      "texture": "res://assets/sprites/background/cavern/prop_log.png",
+      "catalog_id": "A05",
+      "anchor": [
+        34.5,
+        31
+      ]
+    }
+  ],
+  "initial_groups": [],
+  "preserved_depth_config": "res://data_config/cavern_battlefield.json",
+  "surface_texture_sha256": "68993dc8149df5ef4ab98fde22aba528355e2d90b7b2def3705d4ca0a0dbfe2c",
+  "surface_context_sha256": "6dc9b06c643382f0f08f79fc9aae85076279ca5b64787e537b8a235a9f0d43b3",
+  "edge_repair_revision": "20261013-local-contours",
+  "review_only": true
+}

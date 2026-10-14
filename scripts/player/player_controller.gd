@@ -18,9 +18,10 @@ const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const REVIVE_BLINK_STEP_SECONDS: float = 0.1
 const REVIVE_WINGS_SCRIPT = preload("res://scripts/effects/revive_angel_wings.gd")
-const PLAYER_VISUAL_SCALE: float = 1.2
-const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_idle_right.png")
-const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png")
+const PLAYER_VISUAL_SCALE: float = 1.0
+# Display frames bake the former 1.2 visual scale, preserving the world size.
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/display_clarity/player/void_hunter_idle.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/display_clarity/player/void_hunter_walk.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
@@ -73,6 +74,7 @@ var _stationary_position := Vector2.ZERO
 var _starting_relics_granted: int = 0
 var _idle_texture: Texture2D = PLAYER_IDLE_TEXTURE
 var _walk_texture: Texture2D = PLAYER_WALK_TEXTURE
+var action_animator := PlayerActionAnimator.new()
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
@@ -116,7 +118,8 @@ func _notification(what: int) -> void:
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		velocity = Vector2.ZERO
-		_apply_idle_visual()
+		if not action_animator.enabled:
+			_apply_idle_visual()
 		_sync_camera()
 		return
 	modifier_stack.tick(delta)
@@ -758,6 +761,7 @@ func _setup_visuals() -> void:
 
 
 func _configure_character_visuals(visuals: Dictionary) -> void:
+	action_animator.configure(sprite, visuals)
 	_idle_texture = PLAYER_IDLE_TEXTURE
 	_walk_texture = PLAYER_WALK_TEXTURE
 	var idle_path := str(visuals.get("idle", ""))
@@ -782,6 +786,9 @@ func _sync_camera() -> void:
 func _update_walk_animation(direction: Vector2, delta: float) -> void:
 	if sprite == null:
 		return
+	if action_animator.enabled:
+		action_animator.tick(delta, not direction.is_zero_approx())
+		return
 	if direction.length_squared() <= 0.0:
 		_walk_animation_time = 0.0
 		_apply_idle_visual()
@@ -799,6 +806,9 @@ func _update_walk_animation(direction: Vector2, delta: float) -> void:
 func _apply_idle_visual() -> void:
 	if sprite == null:
 		return
+	if action_animator.enabled:
+		action_animator.reset()
+		return
 	sprite.texture = _idle_texture
 	sprite.hframes = 1
 	sprite.frame = 0
@@ -808,6 +818,25 @@ func _apply_walk_visual() -> void:
 	if sprite != null:
 		sprite.texture = _walk_texture
 		sprite.hframes = maxi(walk_frame_count, 1)
+
+
+func play_weapon_action(weapon_id: String, runtime: Node = null, sustain_seconds: float = 0.0) -> void:
+	if not alive or not action_animator.enabled:
+		return
+	if weapon_id in ["weapon_kunyu_ritual_tome", "weapon_copper_lamp"]:
+		action_animator.start_sustain(runtime, sustain_seconds)
+	elif weapon_id not in ["weapon_dash_blade", "weapon_hand_cannon", "weapon_star_tome"]:
+		action_animator.play("attack")
+
+
+func play_mobility_action(weapon_id: String, displacement: Vector2) -> void:
+	if not alive or not action_animator.enabled:
+		return
+	var backward := weapon_id == "weapon_hand_cannon"
+	if weapon_id == "weapon_star_tome":
+		var facing := Vector2.RIGHT if facing_right else Vector2.LEFT
+		backward = displacement.dot(facing) < -0.001
+	action_animator.play("jump_backward" if backward else "jump_forward")
 
 
 func _resolve_start_weapons(data: Dictionary, override_weapon_ids: Array[String]) -> Array[String]:

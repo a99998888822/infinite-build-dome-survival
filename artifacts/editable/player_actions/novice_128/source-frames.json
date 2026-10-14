@@ -1,0 +1,1652 @@
+[
+  {
+    "name": "idle_00",
+    "action": "idle",
+    "index": 0,
+    "frame_id": 60,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\00_idle_transition\\01_frame_0060_t02500ms.png",
+    "source_sha256": "8a8b633e7ead87e05ea48319a0b6773bc25fa8ad46d97548da508ae35bcdf907",
+    "bbox": [
+      216,
+      200,
+      480,
+      818
+    ],
+    "head_box": [
+      250,
+      204,
+      475,
+      382
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 116,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      238,
+      194,
+      452,
+      364
+    ]
+  },
+  {
+    "name": "move_00",
+    "action": "move",
+    "index": 0,
+    "frame_id": 5,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\02_frame_0005_t00208ms.png",
+    "source_sha256": "ce7a1250f8b2fae438f7dfad58be6adc0ccda5c563cbc0b9710159e7f5a87022",
+    "bbox": [
+      200,
+      198,
+      493,
+      812
+    ],
+    "head_box": [
+      254,
+      202,
+      474,
+      377
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 18,
+    "crop_origin": [
+      25,
+      140
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      242,
+      192,
+      451,
+      359
+    ]
+  },
+  {
+    "name": "move_01",
+    "action": "move",
+    "index": 1,
+    "frame_id": 9,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\03_frame_0009_t00375ms.png",
+    "source_sha256": "aeac26e2427e172745237115af8deed899af198157789683ff07810827a79ee3",
+    "bbox": [
+      189,
+      204,
+      510,
+      816
+    ],
+    "head_box": [
+      253,
+      207,
+      476,
+      412
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 490,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      197,
+      453,
+      392
+    ]
+  },
+  {
+    "name": "move_02",
+    "action": "move",
+    "index": 2,
+    "frame_id": 13,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\04_frame_0013_t00542ms.png",
+    "source_sha256": "4fb119b402b2f0bfce35dc9228d35e4a23648424f1c2b6e7ca0f0f7b0774b5ef",
+    "bbox": [
+      186,
+      199,
+      494,
+      816
+    ],
+    "head_box": [
+      253,
+      203,
+      477,
+      379
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 18,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      193,
+      454,
+      361
+    ]
+  },
+  {
+    "name": "move_03",
+    "action": "move",
+    "index": 3,
+    "frame_id": 17,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\05_frame_0017_t00708ms.png",
+    "source_sha256": "e1409e95d0a7363659adaaeef9cb98b733f35ea56848d7accb2805ffa3984788",
+    "bbox": [
+      184,
+      198,
+      481,
+      814
+    ],
+    "head_box": [
+      253,
+      202,
+      477,
+      386
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 16,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      192,
+      454,
+      368
+    ]
+  },
+  {
+    "name": "move_04",
+    "action": "move",
+    "index": 4,
+    "frame_id": 21,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\06_frame_0021_t00875ms.png",
+    "source_sha256": "cc247893344e4b7b78951421c29d251511e1d6505ae54f543f13378f3b4568db",
+    "bbox": [
+      184,
+      204,
+      507,
+      814
+    ],
+    "head_box": [
+      253,
+      208,
+      477,
+      385
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 17,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      198,
+      454,
+      367
+    ]
+  },
+  {
+    "name": "move_05",
+    "action": "move",
+    "index": 5,
+    "frame_id": 25,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\07_frame_0025_t01042ms.png",
+    "source_sha256": "1ef5cddaf3284bec359a0bcb08f3952bbb27cde3edec075bdc0e7876882ae8b4",
+    "bbox": [
+      198,
+      198,
+      482,
+      810
+    ],
+    "head_box": [
+      253,
+      202,
+      478,
+      378
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 32,
+    "crop_origin": [
+      30,
+      140
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      192,
+      455,
+      360
+    ]
+  },
+  {
+    "name": "move_06",
+    "action": "move",
+    "index": 6,
+    "frame_id": 30,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\08_frame_0030_t01250ms.png",
+    "source_sha256": "e80d94c9e8c4e5ad3ceb1f83c5805542ae2a2251436eae9b5e7056da8ce947f4",
+    "bbox": [
+      192,
+      202,
+      506,
+      818
+    ],
+    "head_box": [
+      253,
+      205,
+      478,
+      383
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 500,
+    "crop_origin": [
+      30,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      195,
+      455,
+      365
+    ]
+  },
+  {
+    "name": "move_07",
+    "action": "move",
+    "index": 7,
+    "frame_id": 0,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\01_move\\01_frame_0000_t00000ms.png",
+    "source_sha256": "d09ef2d55cfe72fe771f8e38bed1f06760516e901264de9e6953a30252c868d3",
+    "bbox": [
+      200,
+      199,
+      478,
+      818
+    ],
+    "head_box": [
+      251,
+      203,
+      470,
+      388
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1894,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      239,
+      193,
+      448,
+      370
+    ]
+  },
+  {
+    "name": "attack_00",
+    "action": "attack",
+    "index": 0,
+    "frame_id": 36,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\01_frame_0036_t01500ms.png",
+    "source_sha256": "3ac05234ab755960d822b579203500741bf8861bdc5dd77bff8a59b95f53b121",
+    "bbox": [
+      186,
+      207,
+      523,
+      826
+    ],
+    "head_box": [
+      259,
+      211,
+      487,
+      420
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 25,
+    "crop_origin": [
+      35,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      247,
+      201,
+      464,
+      400
+    ]
+  },
+  {
+    "name": "attack_01",
+    "action": "attack",
+    "index": 1,
+    "frame_id": 39,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\02_frame_0039_t01625ms.png",
+    "source_sha256": "013802be737de372fbc250c4d5b288668e3302f018834466ada788f04f4b94cc",
+    "bbox": [
+      181,
+      212,
+      536,
+      826
+    ],
+    "head_box": [
+      270,
+      216,
+      500,
+      390
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 26,
+    "crop_origin": [
+      45,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      257,
+      206,
+      476,
+      371
+    ]
+  },
+  {
+    "name": "attack_02",
+    "action": "attack",
+    "index": 2,
+    "frame_id": 42,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\03_frame_0042_t01750ms.png",
+    "source_sha256": "606c6da98ef4e67e766cad571bc3c82cc0e21a81ec348c5cb2ad416106d128f9",
+    "bbox": [
+      147,
+      215,
+      676,
+      826
+    ],
+    "head_box": [
+      284,
+      218,
+      514,
+      405
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 182,
+    "crop_origin": [
+      60,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      270,
+      208,
+      490,
+      386
+    ]
+  },
+  {
+    "name": "attack_03",
+    "action": "attack",
+    "index": 3,
+    "frame_id": 45,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\04_frame_0045_t01875ms.png",
+    "source_sha256": "8417c458e0830dfd0a28d979aea0f10ce3a39ae35d09150583f7a9e426ad7c0c",
+    "bbox": [
+      142,
+      214,
+      654,
+      826
+    ],
+    "head_box": [
+      285,
+      218,
+      514,
+      385
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 204,
+    "crop_origin": [
+      60,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      271,
+      208,
+      490,
+      367
+    ]
+  },
+  {
+    "name": "attack_04",
+    "action": "attack",
+    "index": 4,
+    "frame_id": 49,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\05_frame_0049_t02042ms.png",
+    "source_sha256": "31833df3f8bdee6c8cbaf33962ac541204df3f954c5ce3b806c64caa11f03215",
+    "bbox": [
+      151,
+      213,
+      621,
+      826
+    ],
+    "head_box": [
+      282,
+      217,
+      511,
+      385
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 314,
+    "crop_origin": [
+      60,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      269,
+      207,
+      487,
+      367
+    ]
+  },
+  {
+    "name": "attack_05",
+    "action": "attack",
+    "index": 5,
+    "frame_id": 53,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\06_frame_0053_t02208ms.png",
+    "source_sha256": "77da6a63d5e87207876cf06987b17e5cad2c2381eaa56c2d5d372df1ef070c38",
+    "bbox": [
+      181,
+      208,
+      534,
+      824
+    ],
+    "head_box": [
+      270,
+      211,
+      496,
+      396
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 907,
+    "crop_origin": [
+      45,
+      155
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      257,
+      201,
+      472,
+      377
+    ]
+  },
+  {
+    "name": "attack_06",
+    "action": "attack",
+    "index": 6,
+    "frame_id": 59,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\02_attack\\07_frame_0059_t02458ms.png",
+    "source_sha256": "bc15cce8d209968d6fab22680d09103044db763bdda30226427ab3fe485d2e5e",
+    "bbox": [
+      219,
+      200,
+      484,
+      818
+    ],
+    "head_box": [
+      251,
+      204,
+      475,
+      382
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 44,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      239,
+      194,
+      452,
+      364
+    ]
+  },
+  {
+    "name": "sustain_00",
+    "action": "sustain",
+    "index": 0,
+    "frame_id": 75,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\01_frame_0075_t03125ms.png",
+    "source_sha256": "3512c0b42b6a7c9887a2a2510fd03488e69bae47fd66545de9cd77795f745a57",
+    "bbox": [
+      200,
+      199,
+      502,
+      818
+    ],
+    "head_box": [
+      248,
+      203,
+      472,
+      381
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 47,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      236,
+      193,
+      450,
+      363
+    ]
+  },
+  {
+    "name": "sustain_01",
+    "action": "sustain",
+    "index": 1,
+    "frame_id": 79,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\02_frame_0079_t03292ms.png",
+    "source_sha256": "8216da7f45e463ad3b5b1c43054db1466fc15234e191fce435a3156bdaa7d35d",
+    "bbox": [
+      203,
+      199,
+      590,
+      818
+    ],
+    "head_box": [
+      245,
+      203,
+      470,
+      380
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 44,
+    "crop_origin": [
+      20,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      233,
+      193,
+      448,
+      362
+    ]
+  },
+  {
+    "name": "sustain_02",
+    "action": "sustain",
+    "index": 2,
+    "frame_id": 83,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\03_frame_0083_t03458ms.png",
+    "source_sha256": "4e664b2e7984dde4c73ab231761446b003c229a49088e6575b7dae28ce54e95a",
+    "bbox": [
+      206,
+      199,
+      627,
+      818
+    ],
+    "head_box": [
+      244,
+      203,
+      469,
+      407
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 15,
+    "crop_origin": [
+      20,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      232,
+      193,
+      447,
+      388
+    ]
+  },
+  {
+    "name": "sustain_03",
+    "action": "sustain",
+    "index": 3,
+    "frame_id": 87,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\04_frame_0087_t03625ms.png",
+    "source_sha256": "a4c446794c5e62b4517f9d3b04192b9d467e8157a8eb54de26cd886c7529ab8e",
+    "bbox": [
+      207,
+      198,
+      621,
+      818
+    ],
+    "head_box": [
+      243,
+      202,
+      465,
+      380
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1,
+    "crop_origin": [
+      15,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      231,
+      192,
+      443,
+      362
+    ]
+  },
+  {
+    "name": "sustain_04",
+    "action": "sustain",
+    "index": 4,
+    "frame_id": 100,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\05_frame_0100_t04167ms.png",
+    "source_sha256": "1c9bd895b87fd60cbffc806b3571f688f54b128df9b0fb83804aa8489b464f38",
+    "bbox": [
+      205,
+      198,
+      619,
+      818
+    ],
+    "head_box": [
+      243,
+      202,
+      464,
+      405
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 5,
+    "crop_origin": [
+      15,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      231,
+      192,
+      442,
+      386
+    ]
+  },
+  {
+    "name": "sustain_05",
+    "action": "sustain",
+    "index": 5,
+    "frame_id": 128,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\06_frame_0128_t05333ms.png",
+    "source_sha256": "5ec755bc2f8d84b78d36adbb9452c9def85bf547258f4b45ed03bfbbf49354a6",
+    "bbox": [
+      205,
+      198,
+      619,
+      818
+    ],
+    "head_box": [
+      243,
+      202,
+      467,
+      380
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1,
+    "crop_origin": [
+      20,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      231,
+      192,
+      445,
+      362
+    ]
+  },
+  {
+    "name": "sustain_06",
+    "action": "sustain",
+    "index": 6,
+    "frame_id": 135,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\07_frame_0135_t05625ms.png",
+    "source_sha256": "cc7634c5371649d44705beb3c1835a3d5b1fa167107618685065d9cc2d7ea698",
+    "bbox": [
+      202,
+      199,
+      604,
+      818
+    ],
+    "head_box": [
+      246,
+      203,
+      471,
+      380
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 29,
+    "crop_origin": [
+      20,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      234,
+      193,
+      449,
+      362
+    ]
+  },
+  {
+    "name": "sustain_07",
+    "action": "sustain",
+    "index": 7,
+    "frame_id": 141,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\03_sustain\\08_frame_0141_t05875ms.png",
+    "source_sha256": "2515b9687aaaf30dcc1626181e9c6470e4039e9cb78ea3cce170360f63d179ea",
+    "bbox": [
+      200,
+      199,
+      496,
+      818
+    ],
+    "head_box": [
+      249,
+      203,
+      474,
+      387
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 19,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      237,
+      193,
+      451,
+      369
+    ]
+  },
+  {
+    "name": "move_sustain_00",
+    "action": "move_sustain",
+    "index": 0,
+    "frame_id": 5,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_02_from_F0005.png",
+    "source_sha256": "6ebe320951e715419464c5b36767036d7c143674fa4e3f1bb833ab8397a3fa29",
+    "bbox": [
+      200,
+      198,
+      631,
+      812
+    ],
+    "head_box": [
+      254,
+      202,
+      474,
+      377
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 14,
+    "crop_origin": [
+      25,
+      140
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      242,
+      192,
+      451,
+      359
+    ]
+  },
+  {
+    "name": "move_sustain_01",
+    "action": "move_sustain",
+    "index": 1,
+    "frame_id": 9,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_03_from_F0009.png",
+    "source_sha256": "9ff4f9924e18a6df402a4dc2200b66ab439580d05e0273bf09c91d0e5a260f20",
+    "bbox": [
+      189,
+      204,
+      629,
+      816
+    ],
+    "head_box": [
+      253,
+      207,
+      476,
+      411
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 491,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      197,
+      453,
+      391
+    ]
+  },
+  {
+    "name": "move_sustain_02",
+    "action": "move_sustain",
+    "index": 2,
+    "frame_id": 13,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_04_from_F0013.png",
+    "source_sha256": "66635b117513f9f81b1428058a49e75e66ed8691fe1b3a9ee9771b4051ef5cb2",
+    "bbox": [
+      186,
+      199,
+      632,
+      816
+    ],
+    "head_box": [
+      253,
+      203,
+      477,
+      379
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 16,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      193,
+      454,
+      361
+    ]
+  },
+  {
+    "name": "move_sustain_03",
+    "action": "move_sustain",
+    "index": 3,
+    "frame_id": 17,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_05_from_F0017.png",
+    "source_sha256": "7977b8f563b7692050da39820d8d391128ae150c6a46a725582a664189cd7c23",
+    "bbox": [
+      184,
+      198,
+      635,
+      814
+    ],
+    "head_box": [
+      253,
+      202,
+      477,
+      386
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 21,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      192,
+      454,
+      368
+    ]
+  },
+  {
+    "name": "move_sustain_04",
+    "action": "move_sustain",
+    "index": 4,
+    "frame_id": 21,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_06_from_F0021.png",
+    "source_sha256": "58e278abb77babf64f772268b37fb9d2146daec4f22266efc9eba58306e86438",
+    "bbox": [
+      184,
+      204,
+      636,
+      814
+    ],
+    "head_box": [
+      253,
+      208,
+      477,
+      385
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 127,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      198,
+      454,
+      367
+    ]
+  },
+  {
+    "name": "move_sustain_05",
+    "action": "move_sustain",
+    "index": 5,
+    "frame_id": 25,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_07_from_F0025.png",
+    "source_sha256": "260393edb2f115241128c767de1571eb2a9dabf0e86a3a2b275a6432c2020dec",
+    "bbox": [
+      198,
+      198,
+      634,
+      810
+    ],
+    "head_box": [
+      253,
+      202,
+      478,
+      378
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 20,
+    "crop_origin": [
+      30,
+      140
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      192,
+      455,
+      360
+    ]
+  },
+  {
+    "name": "move_sustain_06",
+    "action": "move_sustain",
+    "index": 6,
+    "frame_id": 30,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_08_from_F0030.png",
+    "source_sha256": "68d454ea99430b1f33bd104e699804b4f3a4b1b7e544af636045469cbb0fd378",
+    "bbox": [
+      192,
+      202,
+      629,
+      818
+    ],
+    "head_box": [
+      253,
+      205,
+      478,
+      383
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 403,
+    "crop_origin": [
+      30,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      195,
+      455,
+      365
+    ]
+  },
+  {
+    "name": "move_sustain_07",
+    "action": "move_sustain",
+    "index": 7,
+    "frame_id": 0,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\moving_sustain_r01\\frames\\move_sustain_01_from_F0000.png",
+    "source_sha256": "22418ea0f929e9b482094d5ae76259423dc134d355ca4394d45a4538ff72a1c3",
+    "bbox": [
+      200,
+      199,
+      631,
+      818
+    ],
+    "head_box": [
+      251,
+      203,
+      470,
+      388
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1871,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      239,
+      193,
+      448,
+      370
+    ]
+  },
+  {
+    "name": "jump_forward_00",
+    "action": "jump_forward",
+    "index": 0,
+    "frame_id": 149,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\01_frame_0149_t06208ms.png",
+    "source_sha256": "5887ee39a684bc4d99cf6c747e96eb512908c1973790d5f5082576a2266f1666",
+    "bbox": [
+      195,
+      200,
+      480,
+      818
+    ],
+    "head_box": [
+      251,
+      204,
+      476,
+      387
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1893,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      239,
+      194,
+      453,
+      369
+    ]
+  },
+  {
+    "name": "jump_forward_01",
+    "action": "jump_forward",
+    "index": 1,
+    "frame_id": 152,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\02_frame_0152_t06333ms.png",
+    "source_sha256": "30c6bec4c0d30e07dab3106cd2be0b033205832562841ee4268ba9f3a39b6314",
+    "bbox": [
+      165,
+      238,
+      528,
+      820
+    ],
+    "head_box": [
+      289,
+      243,
+      525,
+      454
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1413,
+    "crop_origin": [
+      65,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      275,
+      231,
+      500,
+      432
+    ]
+  },
+  {
+    "name": "jump_forward_02",
+    "action": "jump_forward",
+    "index": 2,
+    "frame_id": 156,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\03_frame_0156_t06500ms.png",
+    "source_sha256": "9c40b9093e2099e98dcbf30010208972169bfc46ec023056275523a654503c4d",
+    "bbox": [
+      124,
+      270,
+      547,
+      820
+    ],
+    "head_box": [
+      307,
+      274,
+      543,
+      482
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 933,
+    "crop_origin": [
+      85,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      292,
+      261,
+      517,
+      459
+    ]
+  },
+  {
+    "name": "jump_forward_03",
+    "action": "jump_forward",
+    "index": 3,
+    "frame_id": 160,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\04_frame_0160_t06667ms.png",
+    "source_sha256": "9a9dd496d94571f17cb418015d46201e4f9e04fadaa60f80ef12c263c8d4f9eb",
+    "bbox": [
+      110,
+      269,
+      545,
+      820
+    ],
+    "head_box": [
+      308,
+      272,
+      541,
+      481
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 976,
+    "crop_origin": [
+      85,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      293,
+      259,
+      515,
+      458
+    ]
+  },
+  {
+    "name": "jump_forward_04",
+    "action": "jump_forward",
+    "index": 4,
+    "frame_id": 162,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\05_frame_0162_t06750ms.png",
+    "source_sha256": "5068b019bfed1bbf3682358d2cd3aed443c2a70703e56ffef52588e365cc5f71",
+    "bbox": [
+      78,
+      208,
+      494,
+      820
+    ],
+    "head_box": [
+      266,
+      212,
+      490,
+      415
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2494,
+    "crop_origin": [
+      40,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      253,
+      202,
+      467,
+      395
+    ]
+  },
+  {
+    "name": "jump_forward_05",
+    "action": "jump_forward",
+    "index": 5,
+    "frame_id": 166,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\06_frame_0166_t06917ms.png",
+    "source_sha256": "b39afd0822e6fe73b44b8b99d58567be14dbd454cf39333a7a69a54f6136182b",
+    "bbox": [
+      59,
+      199,
+      482,
+      818
+    ],
+    "head_box": [
+      253,
+      203,
+      477,
+      408
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2493,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      241,
+      193,
+      454,
+      389
+    ]
+  },
+  {
+    "name": "jump_forward_06",
+    "action": "jump_forward",
+    "index": 6,
+    "frame_id": 172,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\07_frame_0172_t07167ms.png",
+    "source_sha256": "e1b123d298c040fe77eb3d4e1560bfc714ad6e8e56898768542598dc00854730",
+    "bbox": [
+      42,
+      198,
+      482,
+      818
+    ],
+    "head_box": [
+      251,
+      202,
+      478,
+      408
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2452,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      239,
+      192,
+      455,
+      389
+    ]
+  },
+  {
+    "name": "jump_forward_07",
+    "action": "jump_forward",
+    "index": 7,
+    "frame_id": 177,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\04_forward_candidate\\08_frame_0177_t07375ms.png",
+    "source_sha256": "46b47dd3751736a95bf24169902f3b5018bac025892261ea86031bcaf3d09955",
+    "bbox": [
+      73,
+      202,
+      489,
+      820
+    ],
+    "head_box": [
+      256,
+      207,
+      485,
+      412
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2373,
+    "crop_origin": [
+      35,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      244,
+      197,
+      462,
+      392
+    ]
+  },
+  {
+    "name": "jump_backward_00",
+    "action": "jump_backward",
+    "index": 0,
+    "frame_id": 178,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\01_frame_0178_t07417ms.png",
+    "source_sha256": "827b58e7aa480e245d3d10c0f47d5ac5df58502b0a13f3774edad11806340461",
+    "bbox": [
+      82,
+      226,
+      517,
+      820
+    ],
+    "head_box": [
+      277,
+      231,
+      512,
+      443
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2121,
+    "crop_origin": [
+      55,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      264,
+      220,
+      488,
+      422
+    ]
+  },
+  {
+    "name": "jump_backward_01",
+    "action": "jump_backward",
+    "index": 1,
+    "frame_id": 184,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\02_frame_0184_t07667ms.png",
+    "source_sha256": "224844b174d1eed3f86f409b0df7bfaf85fef779a1348003ef8a3cccd9b23dcf",
+    "bbox": [
+      116,
+      313,
+      562,
+      820
+    ],
+    "head_box": [
+      324,
+      317,
+      558,
+      525
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 641,
+    "crop_origin": [
+      100,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      309,
+      302,
+      531,
+      500
+    ]
+  },
+  {
+    "name": "jump_backward_02",
+    "action": "jump_backward",
+    "index": 2,
+    "frame_id": 190,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\03_frame_0190_t07917ms.png",
+    "source_sha256": "ae469d3004b0a6b77f8b70c942bfe0a70e9d01046c48928e49d785d2bf669f74",
+    "bbox": [
+      165,
+      261,
+      536,
+      820
+    ],
+    "head_box": [
+      312,
+      265,
+      535,
+      466
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 202,
+    "crop_origin": [
+      85,
+      150
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      297,
+      252,
+      510,
+      444
+    ]
+  },
+  {
+    "name": "jump_backward_03",
+    "action": "jump_backward",
+    "index": 3,
+    "frame_id": 192,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\04_frame_0192_t08000ms.png",
+    "source_sha256": "dfaaabf8b802e1ded1c8ffe330b0ada46b9e668d6a75ff91142f110f02a039db",
+    "bbox": [
+      226,
+      127,
+      523,
+      778
+    ],
+    "head_box": [
+      259,
+      130,
+      482,
+      308
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 212,
+    "crop_origin": [
+      35,
+      110
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      247,
+      124,
+      459,
+      293
+    ]
+  },
+  {
+    "name": "jump_backward_04",
+    "action": "jump_backward",
+    "index": 4,
+    "frame_id": 196,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\05_frame_0196_t08167ms.png",
+    "source_sha256": "a071cf218f3611ecc7248d9a4d6a26ecbdf55570e3434734903bd94da9369857",
+    "bbox": [
+      148,
+      101,
+      580,
+      715
+    ],
+    "head_box": [
+      242,
+      105,
+      476,
+      269
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 42,
+    "crop_origin": [
+      20,
+      50
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      230,
+      100,
+      453,
+      256
+    ]
+  },
+  {
+    "name": "jump_backward_05",
+    "action": "jump_backward",
+    "index": 5,
+    "frame_id": 204,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\06_frame_0204_t08500ms.png",
+    "source_sha256": "0e06581d17c74dd34effd87ba943c4bd9ead94b679f50a2d76da53521feda9f4",
+    "bbox": [
+      94,
+      93,
+      624,
+      704
+    ],
+    "head_box": [
+      237,
+      96,
+      475,
+      258
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 434,
+    "crop_origin": [
+      20,
+      40
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      226,
+      91,
+      452,
+      246
+    ]
+  },
+  {
+    "name": "jump_backward_06",
+    "action": "jump_backward",
+    "index": 6,
+    "frame_id": 210,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\07_frame_0210_t08750ms.png",
+    "source_sha256": "0e49a12eb6c0793e532222311ddca282df5c41468aaa16add785a7b8fbb78884",
+    "bbox": [
+      62,
+      146,
+      638,
+      796
+    ],
+    "head_box": [
+      244,
+      149,
+      481,
+      356
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 156,
+    "crop_origin": [
+      25,
+      125
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      232,
+      142,
+      458,
+      339
+    ]
+  },
+  {
+    "name": "jump_backward_07",
+    "action": "jump_backward",
+    "index": 7,
+    "frame_id": 214,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\08_frame_0214_t08917ms.png",
+    "source_sha256": "f8bb22d6490bed14fc37944874264a297272ed6edabf44e6ef43de07ceeb3d3f",
+    "bbox": [
+      53,
+      231,
+      627,
+      818
+    ],
+    "head_box": [
+      262,
+      233,
+      496,
+      442
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1718,
+    "crop_origin": [
+      40,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      250,
+      222,
+      472,
+      421
+    ]
+  },
+  {
+    "name": "jump_backward_08",
+    "action": "jump_backward",
+    "index": 8,
+    "frame_id": 218,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\09_frame_0218_t09083ms.png",
+    "source_sha256": "50c44dbd45f447940d4bcdcbb31ff7387a7dfba40ac6c914f122be166332ddc2",
+    "bbox": [
+      84,
+      205,
+      592,
+      818
+    ],
+    "head_box": [
+      257,
+      208,
+      478,
+      382
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 2455,
+    "crop_origin": [
+      30,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      245,
+      198,
+      455,
+      364
+    ]
+  },
+  {
+    "name": "jump_backward_09",
+    "action": "jump_backward",
+    "index": 9,
+    "frame_id": 228,
+    "source": "D:\\project\\useless\\resources\\infinite-build-dome-survival\\artifacts\\previews\\player_actions_video_20261014\\keyframes\\05_backward_candidate\\10_frame_0228_t09500ms.png",
+    "source_sha256": "176df33e1bb666f2fedc9e8b849e0bb7943214d02e16307fbe4ff041580ebcdf",
+    "bbox": [
+      162,
+      199,
+      538,
+      818
+    ],
+    "head_box": [
+      249,
+      203,
+      474,
+      388
+    ],
+    "pixel_block": 5,
+    "internal_background_pixels_retained": 1852,
+    "crop_origin": [
+      25,
+      145
+    ],
+    "source_scale": 0.9523809523809523,
+    "scaled_head_box": [
+      237,
+      193,
+      451,
+      370
+    ]
+  }
+]

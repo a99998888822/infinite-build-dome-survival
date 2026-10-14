@@ -119,7 +119,7 @@ func head_position(swing: Dictionary, at_time: float) -> Vector2:
 		reach *= lerpf(0.70, 1.0, maxf(local_time / float(swing.windup), 0))
 	elif local_time > float(swing.windup) + float(swing.duration):
 		reach *= lerpf(1.0, 0.45, clampf((local_time - float(swing.windup) - float(swing.duration)) / RECOVER, 0, 1))
-	return heading.rotated(angle) * reach
+	return AttackFootprint.project(AttackFootprint.ground_direction(heading).rotated(angle) * reach)
 
 
 func head_radius(swing: Dictionary) -> float:
@@ -127,8 +127,9 @@ func head_radius(swing: Dictionary) -> float:
 
 
 func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: float, from_origin: Vector2 = Vector2.INF, to_origin: Vector2 = Vector2.INF) -> void:
-	var first_angle := heading.angle_to(from - (global_position if from_origin == Vector2.INF else from_origin))
-	var last_angle := heading.angle_to(to - (global_position if to_origin == Vector2.INF else to_origin))
+	var forward := AttackFootprint.ground_direction(heading)
+	var first_angle := forward.angle_to(AttackFootprint.unproject(from - (global_position if from_origin == Vector2.INF else from_origin)))
+	var last_angle := forward.angle_to(AttackFootprint.unproject(to - (global_position if to_origin == Vector2.INF else to_origin)))
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or swing.hits.has(enemy.get_instance_id()):
@@ -136,7 +137,7 @@ func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: flo
 		var offset := enemy.global_position - global_position
 		if not AttackFootprint.in_flail_fan(offset, heading, weapon.get_attack_range()):
 			continue
-		var angle := heading.angle_to(offset)
+		var angle := forward.angle_to(AttackFootprint.unproject(offset))
 		if angle < minf(first_angle, last_angle) - 0.001 or angle > maxf(first_angle, last_angle) + 0.001:
 			continue
 		# A chain cannot reach through blocking terrain.
@@ -149,7 +150,7 @@ func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: flo
 func damage_for_contact(swing: Dictionary, at_time: float, contact_distance: float = -1.0) -> DamageEvent:
 	var event: DamageEvent = swing.event.duplicate_event()
 	var multiplier := float(swing.multiplier)
-	var extension := (head_position(swing, at_time).length() if contact_distance < 0 else contact_distance) / maxf(weapon.get_attack_range(), 1)
+	var extension := (AttackFootprint.unproject(head_position(swing, at_time)).length() if contact_distance < 0 else contact_distance) / maxf(weapon.get_attack_range(), 1)
 	if extension >= float(weapon.weapon_data.get("flail_outer_threshold", 0.8)):
 		multiplier *= float(weapon.weapon_data.get("flail_outer_multiplier", 1.5))
 	event.damage = maxi(1, roundi(event.damage * multiplier))
@@ -162,7 +163,7 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 	var id := enemy.get_instance_id()
 	swing.hits[id] = true
 	var where := enemy.global_position
-	var event := damage_for_contact(swing, at_time, global_position.distance_to(where))
+	var event := damage_for_contact(swing, at_time, AttackFootprint.unproject(where - global_position).length())
 	event.hit_position = where
 	if not bool(swing.child) and not split_triggered:
 		split_triggered = true
@@ -204,11 +205,12 @@ func trail_transform_for_swing(swing: Dictionary, at_time: float, frame: int) ->
 	var eased := sample_progress * sample_progress * (3.0 - 2.0 * sample_progress)
 	var half_arc := AttackFootprint.FLAIL_ARC * 0.5
 	var sample_angle := deg_to_rad(lerpf(-half_arc, half_arc, eased))
-	var head := head_position(swing, at_time)
+	var head := AttackFootprint.unproject(head_position(swing, at_time))
 	var factor := head.length() / TRAIL_AUTHORED_REACH
 	# Mirror reverse swings, then align the sampled leading edge to the live head.
 	var angle := head.angle() - sample_angle * float(swing.sign)
-	return Transform2D(angle, Vector2.ZERO).scaled_local(Vector2(factor, factor * float(swing.sign)))
+	var ground := Transform2D(angle, Vector2.ZERO).scaled_local(Vector2(factor, factor * float(swing.sign)))
+	return Transform2D(AttackFootprint.project(ground.x), AttackFootprint.project(ground.y), Vector2.ZERO)
 
 
 func _draw() -> void:
@@ -232,7 +234,7 @@ func _draw() -> void:
 			draw_texture_rect_region(TRAIL, Rect2(-TRAIL_FRAME_SIZE * 0.5, TRAIL_FRAME_SIZE), Rect2(Vector2(trail_frame * TRAIL_FRAME_SIZE.x, 0), TRAIL_FRAME_SIZE), trail_tint)
 			draw_set_transform(Vector2.ZERO)
 		var radial := head.normalized()
-		var grip := heading * 14.0
+		var grip := AttackFootprint.project(AttackFootprint.ground_direction(heading) * 14.0)
 		var length := grip.distance_to(head)
 		var chain_angle := (head - grip).angle()
 		for index in maxi(1, int(length / 7)):

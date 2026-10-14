@@ -35,12 +35,12 @@ func _run() -> void:
 					check(frame >= 4 and frame <= 14, "normal and delayed split swings select occupied frames")
 					if frame < 4 or frame > 14: continue
 					var transform := flail.trail_transform_for_swing(swing, at_time, frame)
-					var head := flail.head_position(swing, at_time)
+					var head := AttackFootprint.unproject(flail.head_position(swing, at_time))
 					var points := pixels_for_frame(frame)
 					var aligned := not points.is_empty()
 					var nearest := INF
 					for pixel in points:
-						var point := transform * pixel
+						var point := AttackFootprint.unproject(transform * pixel)
 						var behind := head.angle_to(point) * float(swing.sign)
 						aligned = aligned and behind <= 0.04 and behind >= -0.52
 						aligned = aligned and point.length() <= head.length() * 1.03 and point.length() >= head.length() * 0.80

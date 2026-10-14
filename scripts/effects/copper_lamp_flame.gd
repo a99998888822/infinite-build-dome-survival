@@ -35,7 +35,9 @@ func _init() -> void:
 
 
 func configure(direction: Vector2, distance: float, degrees: float, elapsed: float, child: bool) -> void:
-	rotation = direction.angle()
+	rotation = 0.0
+	flame_material.set_shader_parameter("ground_forward", AttackFootprint.ground_direction(direction))
+	flame_material.set_shader_parameter("projection_ratio", AttackFootprint.ELLIPSE_RATIO)
 	half_angle = deg_to_rad(degrees) * 0.5
 	if not is_equal_approx(reach, distance):
 		reach = distance
@@ -47,4 +49,4 @@ func configure(direction: Vector2, distance: float, degrees: float, elapsed: flo
 
 
 func _draw() -> void:
-	draw_rect(Rect2(0, -reach, reach, reach * 2), Color.WHITE)
+	draw_rect(Rect2(-reach, -reach, reach * 2, reach * 2), Color.WHITE)

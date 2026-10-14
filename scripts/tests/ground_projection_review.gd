@@ -89,7 +89,7 @@ func _run() -> void:
 		caption.add_theme_color_override("font_outline_color", Color("102019"))
 		overlay.add_child(caption)
 		await _capture_all()
-	check(not GROUND.enabled(), "selected effects work without enabling other star-tome aim rings")
+	check(not GROUND.enabled(), "production ground projection works without the legacy review flag")
 	if not samples.is_empty():
 		var report := FileAccess.open(capture_dir.path_join("review.json"), FileAccess.WRITE)
 		report.store_string(JSON.stringify({"production_battle": true, "staged_checkpoints": true,
