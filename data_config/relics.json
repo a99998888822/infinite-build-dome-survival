@@ -85,7 +85,7 @@
   {
     "id": "relic_flyer_ad",
     "display_name": "传单广告",
-    "description": "商店折扣 + 8%",
+    "description": "商店折扣 +8%；最多持有3件",
     "icon": "res://assets/ui/icons/relics/relic_flyer_ad.png",
     "rarity": "uncommon",
     "max_stack": 3,
@@ -574,7 +574,7 @@
   {
     "id": "relic_perpetual_annuity_scroll",
     "display_name": "永续年金卷轴",
-    "description": "每个回合结息次数 + 1；每局最多持有 1 件",
+    "description": "每波结息次数 +1；每局最多持有1件",
     "icon": "res://assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
     "rarity": "mythic",
     "max_stack": 1,
@@ -611,14 +611,15 @@
   {
     "id": "relic_worn_hemostatic_cloth",
     "display_name": "磨损的止血布条",
-    "description": "最大生命值 + 4",
+    "description": "最大生命值 +4；血包恢复量 +1",
     "icon": "res://assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
     "icon_description": "边缘起毛、沾有干涸血迹的粗纱布",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["survival"],
     "effects": [
-      {"id": "mod_relic_worn_hemostatic_cloth_max_hp", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1}
+      {"id": "mod_relic_worn_hemostatic_cloth_max_hp", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1},
+      {"id": "mod_relic_worn_hemostatic_cloth_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 1, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1389,7 +1390,7 @@
   {
     "id": "relic_harvest_sacrificial_vessel",
     "display_name": "丰收的牺牲祭器",
-    "description": "金币获取 +15%；经验获取 +15%；最大生命值 -2",
+    "description": "怪物数量增幅 +5%；金币获取 +15%；经验获取 +15%；最大生命值 -2",
     "icon": "res://assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
     "icon_description": "古朴陶瓮，内壁残留暗色痕迹",
     "rarity": "rare",
@@ -1407,6 +1408,16 @@
         "stat": "currency_gain_percent",
         "operation": "add_flat",
         "value": 15,
+        "duration": -1
+      },
+      {
+        "id": "mod_relic_harvest_sacrificial_vessel_enemy_spawn_rate_percent",
+        "source_type": "relic",
+        "source_id": "relic_harvest_sacrificial_vessel",
+        "target_scope": "player",
+        "stat": "enemy_spawn_rate_percent",
+        "operation": "add_flat",
+        "value": 5,
         "duration": -1
       },
       {
@@ -1985,5 +1996,173 @@
         "positive_source_only": true
       }
     ]
+  },
+  {
+    "id": "relic_crimson_coagulation_vial",
+    "display_name": "绯红凝血瓶",
+    "description": "每秒回血 +0.1；血包恢复量 +1",
+    "icon": "res://assets/ui/icons/relics/relic_crimson_coagulation_vial.png",
+    "icon_description": "黄铜瓶塞的圆形药瓶，内盛暗红药液，淡紫玻璃与垂落的封蜡",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": ["survival", "reward"],
+    "effects": [
+      {"id": "mod_relic_crimson_coagulation_vial_hp_regen", "source_type": "relic", "source_id": "relic_crimson_coagulation_vial", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.1, "duration": -1},
+      {"id": "mod_relic_crimson_coagulation_vial_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_crimson_coagulation_vial", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 1, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_goblin_trade_charter",
+    "display_name": "哥布林特许状",
+    "description": "商店选择数量 +1；商店折扣 +5%",
+    "icon": "res://assets/ui/icons/relics/relic_goblin_trade_charter.png",
+    "icon_description": "象牙色商会特许卷书，青绿绶带与黄铜镶边，右下有红色蜡封",
+    "rarity": "mythic",
+    "max_stack": 0,
+    "tags": ["finance", "reward"],
+    "effects": [
+      {"id": "mod_relic_goblin_trade_charter_shop_offer_count_bonus", "source_type": "relic", "source_id": "relic_goblin_trade_charter", "target_scope": "player", "stat": "shop_offer_count_bonus", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_goblin_trade_charter_shop_price_percent", "source_type": "relic", "source_id": "relic_goblin_trade_charter", "target_scope": "player", "stat": "shop_price_percent", "operation": "add_flat", "value": 5, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_void_market_key",
+    "display_name": "虚市通行钥匙",
+    "description": "商店选择数量 +1；利率 +2 个百分点",
+    "icon": "res://assets/ui/icons/relics/relic_void_market_key.png",
+    "icon_description": "斜置的古金钥匙，圆形柄镶紫色虚空宝石，末端双层齿，轮廓清晰",
+    "rarity": "legendary",
+    "max_stack": 0,
+    "tags": ["finance", "reward", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_void_market_key_shop_offer_count_bonus", "source_type": "relic", "source_id": "relic_void_market_key", "target_scope": "player", "stat": "shop_offer_count_bonus", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_void_market_key_interest_rate", "source_type": "relic", "source_id": "relic_void_market_key", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": 2, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_hunting_bone_whistle",
+    "display_name": "猎群骨哨",
+    "description": "怪物数量增幅 +5%；拾取范围 +15；护甲 +5",
+    "icon": "res://assets/ui/icons/relics/relic_hunting_bone_whistle.png",
+    "icon_description": "斜置的象牙色弯曲骨哨，三个深色吹孔，青绿皮绳垂挂",
+    "rarity": "common",
+    "max_stack": 0,
+    "tags": ["reward"],
+    "effects": [
+      {"id": "mod_relic_hunting_bone_whistle_enemy_spawn_rate_percent", "source_type": "relic", "source_id": "relic_hunting_bone_whistle", "target_scope": "player", "stat": "enemy_spawn_rate_percent", "operation": "add_flat", "value": 5, "duration": -1},
+      {"id": "mod_relic_hunting_bone_whistle_pickup_radius", "source_type": "relic", "source_id": "relic_hunting_bone_whistle", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": 15, "duration": -1},
+      {"id": "mod_relic_hunting_bone_whistle_armor", "source_type": "relic", "source_id": "relic_hunting_bone_whistle", "target_scope": "player", "stat": "armor", "operation": "add_flat", "value": 5, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_hungry_tide_bell",
+    "display_name": "锈蚀祭铃",
+    "description": "怪物数量增幅 +10%；掉落率 +12%；最大生命值 +5",
+    "icon": "res://assets/ui/icons/relics/relic_hungry_tide_bell.png",
+    "icon_description": "宽裙摆的古铜祭铃，暗红眼形纹样，深紫绳结与厚重铃舌",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": ["reward", "survival", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_hungry_tide_bell_enemy_spawn_rate_percent", "source_type": "relic", "source_id": "relic_hungry_tide_bell", "target_scope": "player", "stat": "enemy_spawn_rate_percent", "operation": "add_flat", "value": 10, "duration": -1},
+      {"id": "mod_relic_hungry_tide_bell_drop_rate_percent", "source_type": "relic", "source_id": "relic_hungry_tide_bell", "target_scope": "player", "stat": "drop_rate_percent", "operation": "add_flat", "value": 12, "duration": -1},
+      {"id": "mod_relic_hungry_tide_bell_max_hp", "source_type": "relic", "source_id": "relic_hungry_tide_bell", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 5, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_falcon_sighting_pin",
+    "display_name": "猎隼瞄针",
+    "description": "暴击率 +10 个百分点；攻击速度 +5%",
+    "icon": "res://assets/ui/icons/relics/relic_falcon_sighting_pin.png",
+    "icon_description": "古铜瞄针配猎隼羽毛和青绿瞄准环",
+    "rarity": "rare",
+    "max_stack": 0,
+    "tags": ["attack"],
+    "effects": [
+      {"id": "mod_relic_falcon_sighting_pin_crit_chance", "source_type": "relic", "source_id": "relic_falcon_sighting_pin", "target_scope": "player", "stat": "crit_chance", "operation": "add_flat", "value": 10, "duration": -1},
+      {"id": "mod_relic_falcon_sighting_pin_attack_speed", "source_type": "relic", "source_id": "relic_falcon_sighting_pin", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 5, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_executioner_whetstone",
+    "display_name": "刽子手磨石",
+    "description": "暴击伤害加成 +20 个百分点；近战伤害 +2",
+    "icon": "res://assets/ui/icons/relics/relic_executioner_whetstone.png",
+    "icon_description": "倾斜的灰青磨石，宽红磨痕，棕色皮带包角",
+    "rarity": "uncommon",
+    "max_stack": 0,
+    "tags": ["attack"],
+    "effects": [
+      {"id": "mod_relic_executioner_whetstone_crit_damage", "source_type": "relic", "source_id": "relic_executioner_whetstone", "target_scope": "player", "stat": "crit_damage", "operation": "add_flat", "value": 20, "duration": -1},
+      {"id": "mod_relic_executioner_whetstone_melee_damage", "source_type": "relic", "source_id": "relic_executioner_whetstone", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 2, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_crimson_execution_seal",
+    "display_name": "猩红断头印",
+    "description": "暴击伤害加成 +30 个百分点；通用伤害 +10%；最大生命值 -3",
+    "icon": "res://assets/ui/icons/relics/relic_crimson_execution_seal.png",
+    "icon_description": "暗红方形古印，金色刀刃纹样，黑色手柄与垂落红绶带",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": ["attack", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_crimson_execution_seal_crit_damage", "source_type": "relic", "source_id": "relic_crimson_execution_seal", "target_scope": "player", "stat": "crit_damage", "operation": "add_flat", "value": 30, "duration": -1},
+      {"id": "mod_relic_crimson_execution_seal_damage_percent", "source_type": "relic", "source_id": "relic_crimson_execution_seal", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 10, "duration": -1},
+      {"id": "mod_relic_crimson_execution_seal_max_hp", "source_type": "relic", "source_id": "relic_crimson_execution_seal", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -3, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_faded_ward_talisman",
+    "display_name": "褪色护身符",
+    "description": "每波初始护盾 +4",
+    "icon": "res://assets/ui/icons/relics/relic_faded_ward_talisman.png",
+    "icon_description": "褪色青绿布制护身符，象牙色盾纹，棕色系绳",
+    "rarity": "common",
+    "max_stack": 0,
+    "tags": ["survival"],
+    "effects": [
+      {"id": "mod_relic_faded_ward_talisman_shield", "source_type": "relic", "source_id": "relic_faded_ward_talisman", "target_scope": "player", "stat": "shield", "operation": "add_flat", "value": 4, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_twin_chamber_magazine",
+    "display_name": "双腔弹匣",
+    "description": "投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中",
+    "icon": "res://assets/ui/icons/relics/relic_twin_chamber_magazine.png",
+    "icon_description": "并排两枚铜色弹头，深青双腔弹匣，宽铜箍连接",
+    "rarity": "mythic",
+    "max_stack": 0,
+    "tags": ["attack"],
+    "effects": [
+      {"id": "mod_relic_twin_chamber_magazine_projectile_count", "source_type": "relic", "source_id": "relic_twin_chamber_magazine", "target_scope": "player", "stat": "projectile_count", "operation": "add_flat", "value": 1, "duration": -1},
+      {"id": "mod_relic_twin_chamber_magazine_attack_speed", "source_type": "relic", "source_id": "relic_twin_chamber_magazine", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": -15, "duration": -1}
+    ],
+    "runtime_effects": []
+  },
+  {
+    "id": "relic_stilltime_amber",
+    "display_name": "凝时琥珀",
+    "description": "控制强度 +20；元素伤害 +5；移动速度 -5",
+    "icon": "res://assets/ui/icons/relics/relic_stilltime_amber.png",
+    "icon_description": "不规则金棕琥珀封住深色蜻蜓，大片切面，古铜底托",
+    "rarity": "epic",
+    "max_stack": 0,
+    "tags": ["control", "eldritch"],
+    "effects": [
+      {"id": "mod_relic_stilltime_amber_control_power", "source_type": "relic", "source_id": "relic_stilltime_amber", "target_scope": "player", "stat": "control_power", "operation": "add_flat", "value": 20, "duration": -1},
+      {"id": "mod_relic_stilltime_amber_element_damage", "source_type": "relic", "source_id": "relic_stilltime_amber", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 5, "duration": -1},
+      {"id": "mod_relic_stilltime_amber_move_speed", "source_type": "relic", "source_id": "relic_stilltime_amber", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -5, "duration": -1}
+    ],
+    "runtime_effects": []
   }
 ]

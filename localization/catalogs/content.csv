@@ -77,7 +77,6 @@ content.camp_buildings.camp_upgrade_load_capacity.name,负载扩容训练,Load C
 content.camp_buildings.camp_upgrade_max_hp.name,最大生命训练,Max HP Training
 content.camp_buildings.camp_upgrade_melee_damage.name,近战伤害训练,Melee Damage Training
 content.camp_buildings.camp_upgrade_move_speed.name,移动速度训练,Movement Speed Training
-content.camp_buildings.camp_upgrade_on_kill_heal.name,战地急救训练,Field Medicine Training
 content.camp_buildings.camp_upgrade_pickup_radius.name,拾取范围训练,Pickup Range Training
 content.camp_buildings.camp_upgrade_projectile_count.name,投射物数量训练,Projectile Training
 content.camp_buildings.camp_upgrade_ranged_damage.name,远程伤害训练,Ranged Damage Training
@@ -160,6 +159,10 @@ content.relics.relic_cracked_bronze_bell.description,伤害范围 +15，元素�
 content.relics.relic_cracked_bronze_bell.display_name,裂纹铜铃,Cracked Bronze Bell
 content.relics.relic_cracked_stone_bullet.description,远程伤害 +2；拾取范围 -10,Ranged Damage +2; Pickup Range -10
 content.relics.relic_cracked_stone_bullet.display_name,裂痕石子弹,Cracked Stone Bullet
+content.relics.relic_crimson_coagulation_vial.description,每秒回血 +0.1；血包恢复量 +1,HP Regen/s +0.1; Health Pickup Recovery +1
+content.relics.relic_crimson_coagulation_vial.display_name,绯红凝血瓶,Crimson Coagulation Vial
+content.relics.relic_crimson_execution_seal.description,暴击伤害加成 +30 个百分点；通用伤害 +10%；最大生命值 -3,Critical Damage +30 percentage points; Damage +10%; Max HP -3
+content.relics.relic_crimson_execution_seal.display_name,猩红断头印,Crimson Execution Seal
 content.relics.relic_cultic_holy_shield.description,护甲 + 30；侵蚀度 + 12,Armor +30; Corruption +12
 content.relics.relic_cultic_holy_shield.display_name,密教圣盾,Cultic Holy Shield
 content.relics.relic_dead_shield_badge.description,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
@@ -173,15 +176,21 @@ content.relics.relic_divine_fusion.description,利率 + 2 个百分点；每满 
 content.relics.relic_divine_fusion.display_name,神性融合,Divine Fusion
 content.relics.relic_executioner_bracer.description,近战伤害 +11；移动速度 -10,Melee Damage +11; Move Speed -10
 content.relics.relic_executioner_bracer.display_name,屠戮者臂铠,Executioner's Bracers
+content.relics.relic_executioner_whetstone.description,暴击伤害加成 +20 个百分点；近战伤害 +2,Critical Damage +20 percentage points; Melee Damage +2
+content.relics.relic_executioner_whetstone.display_name,刽子手磨石,Executioner's Whetstone
 content.relics.relic_expanded_backpack_strap.description,负载 + 10；移动速度 - 12；拾取范围 - 10,Load Capacity +10; Movement Speed −12; Pickup Range −10
 content.relics.relic_expanded_backpack_strap.display_name,扩容背包束带,Expanded Backpack Straps
+content.relics.relic_faded_ward_talisman.description,每波初始护盾 +4,Starting Shield each wave +4
+content.relics.relic_faded_ward_talisman.display_name,褪色护身符,Faded Ward Talisman
+content.relics.relic_falcon_sighting_pin.description,暴击率 +10 个百分点；攻击速度 +5%,Critical Chance +10 percentage points; Attack Speed +5%
+content.relics.relic_falcon_sighting_pin.display_name,猎隼瞄针,Falcon Sighting Pin
 content.relics.relic_finance_manager.description,利率 + 1.5%,Interest Rate +1.5%
 content.relics.relic_finance_manager.display_name,理财经理,Financial Adviser
 content.relics.relic_fixed_deposit_certificate.description,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
 content.relics.relic_fixed_deposit_certificate.display_name,定期存单,Fixed Deposit Certificate
 content.relics.relic_flesh_pauldron.description,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
 content.relics.relic_flesh_pauldron.display_name,血肉肩甲,Flesh Pauldron
-content.relics.relic_flyer_ad.description,商店折扣 + 8%,Shop Discount +8%
+content.relics.relic_flyer_ad.description,商店折扣 +8%；最多持有3件,Shop Discount +8%; Maximum 3 copies
 content.relics.relic_flyer_ad.display_name,传单广告,Advertising Flyer
 content.relics.relic_folded_star_chart.description,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
 content.relics.relic_folded_star_chart.display_name,折叠星图,Folded Star Chart
@@ -195,6 +204,8 @@ content.relics.relic_gilded_trigger.description,通用伤害 + 25%；理智值 -
 content.relics.relic_gilded_trigger.display_name,镀金扳机,Gilded Trigger
 content.relics.relic_goblin_central_bank_printer.description,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
 content.relics.relic_goblin_central_bank_printer.display_name,哥布林金币铸造机,Goblin Coin Mint
+content.relics.relic_goblin_trade_charter.description,商店选择数量 +1；商店折扣 +5%,Shop Choices +1; Shop Discount +5%
+content.relics.relic_goblin_trade_charter.display_name,哥布林特许状,Goblin Trade Charter
 content.relics.relic_gold_compass.description,拾取范围 +10；金币获取 +8%；远程伤害 +3,Pickup Range +10; Gold Gain +8%; Ranged Damage +3
 content.relics.relic_gold_compass.display_name,吸金罗盘,Gold Compass
 content.relics.relic_gold_digger_gloves.description,拾取范围 + 10；经验获取 + 8,Pickup Range +10; Experience Gain +8
@@ -205,7 +216,7 @@ content.relics.relic_golden_sarcophagus.description,已有复活次数用尽后�
 content.relics.relic_golden_sarcophagus.display_name,黄金棺椁,Golden Sarcophagus
 content.relics.relic_guarding_heart_copper_mirror.description,幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +36; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
 content.relics.relic_guarding_heart_copper_mirror.display_name,守心铜鉴,Heartguard Bronze Mirror
-content.relics.relic_harvest_sacrificial_vessel.description,金币获取 +15%；经验获取 +15%；最大生命值 -2,Gold Gain +15%; Experience Gain +15%; Max HP −2
+content.relics.relic_harvest_sacrificial_vessel.description,怪物数量增幅 +5%；金币获取 +15%；经验获取 +15%；最大生命值 -2,Enemy Count +5%; Gold Gain +15%; Experience Gain +15%; Max HP -2
 content.relics.relic_harvest_sacrificial_vessel.display_name,丰收的牺牲祭器,Harvest Sacrificial Vessel
 content.relics.relic_hasty_spring_trigger.description,攻击速度 +5；移动速度 -2,Attack Speed +5; Move Speed -2
 content.relics.relic_hasty_spring_trigger.display_name,急促弹簧扳机,Hasty Spring Trigger
@@ -219,6 +230,10 @@ content.relics.relic_horizon_orrery.description,攻击距离 +40，伤害加成 
 content.relics.relic_horizon_orrery.display_name,地平线星仪,Horizon Orrery
 content.relics.relic_hostile_takeover.description,每满100本金，通用伤害 +1%，上限30%；最多持有1件,"All Damage +1% per full 100 Principal, up to +30%. Stack limit: 1 per run."
 content.relics.relic_hostile_takeover.display_name,恶意收购,Hostile Takeover
+content.relics.relic_hungry_tide_bell.description,怪物数量增幅 +10%；掉落率 +12%；最大生命值 +5,Enemy Count +10%; Drop Rate +12%; Max HP +5
+content.relics.relic_hungry_tide_bell.display_name,锈蚀祭铃,Rusted Ritual Bell
+content.relics.relic_hunting_bone_whistle.description,怪物数量增幅 +5%；拾取范围 +15；护甲 +5,Enemy Count +5%; Pickup Range +15; Armor +5
+content.relics.relic_hunting_bone_whistle.display_name,猎群骨哨,Hunting Bone Whistle
 content.relics.relic_incomplete_divination_dice.description,幸运 + 18；掉落率 + 5,Luck +18; Drop Rate +5
 content.relics.relic_incomplete_divination_dice.display_name,残缺的占卜骰子,Broken Divination Dice
 content.relics.relic_judgment_eye_pendant.description,暴击几率 +12 个百分点；暴击伤害 +35 个百分点,Crit Chance +12 percentage points; Crit Damage +35 percentage points
@@ -242,7 +257,7 @@ content.relics.relic_old_brass_telescope.display_name,旧铜望远镜,Old Brass 
 content.relics.relic_pain_vessel.description,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
 content.relics.relic_pain_vessel.display_name,苦痛祭皿,Vessel of Pain
 content.relics.relic_periodic_dividend_clock.description,每经过 3 波，额外触发一次利息结算,"Every 3 waves, trigger one extra interest settlement."
-content.relics.relic_perpetual_annuity_scroll.description,每个回合结息次数 + 1；每局最多持有 1 件,One additional interest settlement per wave. Stack limit: 1 per run.
+content.relics.relic_perpetual_annuity_scroll.description,每波结息次数 +1；每局最多持有1件,One additional interest settlement per wave; Maximum 1 copy per run
 content.relics.relic_perpetual_annuity_scroll.display_name,永续年金卷轴,Perpetual Annuity Scroll
 content.relics.relic_piggy_bank.description,每波开始自动本金 + 15,Automatically gain +15 Principal at the start of each wave.
 content.relics.relic_piggy_bank.display_name,猪猪存钱罐,Piggy Bank
@@ -276,6 +291,8 @@ content.relics.relic_stargazers_lens.description,幸运 + 36；经验获取 + 12
 content.relics.relic_stargazers_lens.display_name,观星者的镜片,Stargazer's Lens
 content.relics.relic_steel_vault.description,每满50本金，护甲 +1，上限40；最多持有1件,"Armor +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
 content.relics.relic_steel_vault.display_name,钢铁保险柜,Steel Vault
+content.relics.relic_stilltime_amber.description,控制强度 +20；元素伤害 +5；移动速度 -5,Control Power +20; Elemental Damage +5; Move Speed -5
+content.relics.relic_stilltime_amber.display_name,凝时琥珀,Stilltime Amber
 content.relics.relic_suffering_carapace.description,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
 content.relics.relic_suffering_carapace.display_name,受难甲壳,Carapace of Suffering
 content.relics.relic_tip_tray.description,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,Kills have a 10% chance to drop an extra experience orb worth 2 base XP and 2 base gold.
@@ -288,8 +305,12 @@ content.relics.relic_true_silver_armor.description,最大生命值 + 10；护甲
 content.relics.relic_true_silver_armor.display_name,真银护甲,Truesilver Armor
 content.relics.relic_turtle_shell_pendant.description,护甲 +8；最大生命 +2；近战伤害 +2,Armor +8; Max HP +2; Melee Damage +2
 content.relics.relic_turtle_shell_pendant.display_name,龟壳吊坠,Turtle Shell Pendant
+content.relics.relic_twin_chamber_magazine.description,投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中,Projectile Count +1; Attack Speed -15%; Affects attacks that support projectile count; some attacks cannot hit the same target repeatedly
+content.relics.relic_twin_chamber_magazine.display_name,双腔弹匣,Twin-Chamber Magazine
 content.relics.relic_vitality_potion.description,每秒回血 + 0.25；侵蚀度 + 5,HP Regen/s +0.25; Corruption +5
 content.relics.relic_vitality_potion.display_name,生命力药瓶,Vitality Vial
+content.relics.relic_void_market_key.description,商店选择数量 +1；利率 +2 个百分点,Shop Choices +1; Interest Rate +2 percentage points
+content.relics.relic_void_market_key.display_name,虚市通行钥匙,Void Market Key
 content.relics.relic_void_storage_casket.description,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +25
 content.relics.relic_void_storage_casket.display_name,虚空收纳匣,Void Storage Casket
 content.relics.relic_void_tentacle.description,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
@@ -298,7 +319,7 @@ content.relics.relic_welfare_cutback.description,获得时：本金 +150；利�
 content.relics.relic_welfare_cutback.display_name,福利削减方案,Welfare Cutbacks
 content.relics.relic_worn_fighting_gloves.description,近战伤害 +2；护甲 -3,Melee Damage +2; Armor -3
 content.relics.relic_worn_fighting_gloves.display_name,磨损格斗拳套,Worn Fighting Gloves
-content.relics.relic_worn_hemostatic_cloth.description,最大生命值 + 4,Max HP +4
+content.relics.relic_worn_hemostatic_cloth.description,最大生命值 +4；血包恢复量 +1,Max HP +4; Health Pack Healing +1
 content.relics.relic_worn_hemostatic_cloth.display_name,磨损的止血布条,Worn Hemostatic Cloth
 content.run_settlement.reactions.death_followed.speech,哥布林包赚，但不包活哈哈哈！,"A goblin guarantees profit, not survival! Hahaha!"
 content.run_settlement.reactions.death_refused.speech,嘬嘬嘬，不听哥布林，吃亏在眼前！,"Tsk, tsk. Ignore a goblin's advice and see what happens!"

@@ -87,7 +87,7 @@ def main():
                           bbox=box, original_pixels_preserved=True, palette_unchanged=True))
     after.save(OUTPUT / 'ground_cracks_r04.png')
     # Magnified reference plate, separate from the actual transparent atlas.
-    preview = ROOT / 'artifacts/previews/active_combat/ground_cracks_r04'
+    preview = ROOT / 'temp/artifacts/previews/active_combat/ground_cracks_r04'
     preview.mkdir(parents=True, exist_ok=True)
     plate = Image.new('RGB', (1024, 240), '#696d5c')
     draw = ImageDraw.Draw(plate)

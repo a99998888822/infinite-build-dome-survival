@@ -18,7 +18,7 @@ SCENES = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", required=True)
-    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/previews/goblin_trade_expansion_20261008")
+    parser.add_argument("--output", type=Path, default=ROOT / "temp/artifacts/previews/goblin_trade_expansion_20261008")
     parser.add_argument("--scenes", nargs="*", default=SCENES)
     parser.add_argument("--review-logs", action="store_true", help="Recheck recorded results without rerunning Godot")
     args = parser.parse_args()

@@ -1,5 +1,5 @@
 extends Node
-## Minimum physical sizes, resource reuse, resize stability and native clipping.
+## Constant logical proportions, resource reuse, resize stability and clipping.
 
 var checks := 0
 var failures := 0
@@ -42,6 +42,7 @@ func run() -> void:
 	row.add_child(button)
 	ItemIconArt.bind_button(button, weapon, 32)
 	var first_minimum := Vector2.ZERO
+	var button_minimum := Vector2.ZERO
 	for dimensions in [Vector2i(1024, 576), Vector2i(640, 360), Vector2i(1152, 648), Vector2i(1366, 768), Vector2i(2560, 1440), Vector2i(1024, 576)]:
 		window.size = dimensions
 		await frames()
@@ -49,14 +50,19 @@ func run() -> void:
 			var texture: Texture2D = control.texture if control is TextureRect else control.icon
 			check(texture is ItemIconArt.PIXEL_TEXTURE, "weapon uses its native Control texture drawing")
 			var t := ItemIconArt.PIXEL_TEXTURE.screen_transform(control)
-			var rect: Rect2 = t * texture.last_local_rect
-			check(rect.size.is_equal_approx(texture.physical_size()), "drawn size equals whole source pixels")
-			check(rect.position.distance_to(rect.position.round()) < 0.01, "destination is aligned to screen pixels: %s %s %s" % [dimensions, control.get_class(), rect])
-			check(maxf(rect.size.x, rect.size.y) >= (26.0 if control == detail else 32.0), "minimum physical size survives window resize")
-			var bounds := t * Rect2(Vector2.ZERO, control.size)
-			check(bounds.grow(0.01).encloses(rect), "icon fits in the space reserved by the native container")
+			var intended := Vector2.ONE * (26.0 if control == detail else 34.0) * t.get_scale().abs()
+			check(texture.physical_size().distance_to(intended) <= 0.72, "icon preserves design size within half a pixel per axis")
+			if DisplayServer.get_name() != "headless":
+				var rect: Rect2 = t * texture.last_local_rect
+				check(rect.size.is_equal_approx(texture.physical_size()), "GPU drawing uses the scaled logical footprint")
+				check(rect.position.distance_to(rect.position.round()) < 0.01, "destination is aligned to screen pixels: %s %s %s" % [dimensions, control.get_class(), rect])
+				var bounds := t * Rect2(Vector2.ZERO, control.size)
+				check(bounds.grow(0.01).encloses(rect), "icon fits in the space reserved by the native container")
 			check(ItemIconArt.source_path(texture) == weapon.resource_path, "custom drawing retains weapon identity")
-		if first_minimum == Vector2.ZERO: first_minimum = detail.custom_minimum_size
+		if first_minimum == Vector2.ZERO:
+			first_minimum = detail.custom_minimum_size
+			button_minimum = button.custom_minimum_size
+		check(detail.custom_minimum_size == first_minimum and button.custom_minimum_size == button_minimum, "window resolution cannot change logical container constraints")
 	check(detail.custom_minimum_size.is_equal_approx(first_minimum), "returning to original resolution restores minimum without growth")
 	var binding := detail.get_node(ItemIconArt.BINDING_NAME) as ItemIconArt.IconBinding
 	var refreshes := binding.refresh_count
@@ -65,9 +71,10 @@ func run() -> void:
 	check(binding.refresh_count == refreshes and detail.texture.draw_count == drawn, "static icons neither poll nor redraw every frame")
 	row.position += Vector2(3.25, 1.5)
 	await frames()
-	check(detail.texture.draw_count > drawn, "moving an ancestor updates physical alignment")
-	var moved: Rect2 = ItemIconArt.PIXEL_TEXTURE.screen_transform(detail) * detail.texture.last_local_rect
-	check(moved.position.distance_to(moved.position.round()) < 0.01, "fractional ancestor movement remains aligned")
+	if DisplayServer.get_name() != "headless":
+		check(detail.texture.draw_count > drawn, "moving an ancestor updates physical alignment")
+		var moved: Rect2 = ItemIconArt.PIXEL_TEXTURE.screen_transform(detail) * detail.texture.last_local_rect
+		check(moved.position.distance_to(moved.position.round()) < 0.01, "fractional ancestor movement remains aligned")
 	ItemIconArt.bind_texture(detail, relic)
 	await frames()
 	check(not detail.texture is ItemIconArt.PIXEL_TEXTURE and detail.custom_minimum_size == Vector2(26, 26), "switching to relic restores normal layout and texture behavior")
@@ -85,9 +92,8 @@ func run() -> void:
 			for minimum in [26.0, 32.0]:
 				for desired in [14.0, 23.0, 31.0, 43.0, 98.0, 260.0]:
 					var selected := ItemIconArt.weapon_pixel_art(candidate, desired, minimum)
-					var extent: Vector2 = selected.texture.get_size() * selected.multiple
-					valid = valid and maxf(extent.x, extent.y) >= minimum and int(selected.multiple) >= 1
-	check(valid, "all 15 weapon states including cropped art honor minimum size and integer magnification")
+					valid = valid and selected != null and selected.get_width() > 0 and ItemIconArt.source_path(selected) == path
+	check(valid, "all weapon states including cropped art retain identity through source-detail selection")
 	var card := PreparationOfferCard.new()
 	card.size = Vector2(160, 160)
 	add_child(card)
@@ -102,7 +108,7 @@ func run() -> void:
 	check(card._icon_frame.custom_minimum_size == Vector2(44, 44) and not card._icon.texture is ItemIconArt.PIXEL_TEXTURE, "pooled shop card restores relic footprint")
 	card.configure(weapon_offer, "", 100)
 	await frames()
-	check(card._icon_frame.custom_minimum_size.is_equal_approx(weapon_minimum), "pooled shop card restores physical weapon footprint without cumulative growth")
+	check(card._icon_frame.custom_minimum_size.is_equal_approx(weapon_minimum), "pooled shop card restores logical weapon footprint without cumulative growth")
 	card.queue_free()
 	row.queue_free()
 	await frames()

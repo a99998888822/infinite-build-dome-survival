@@ -12,7 +12,7 @@ from scipy.io import wavfile
 from build_electric_spark_options import COUNT, GAIN, RATE, TIME, sequence, uri, weighted_energy, write
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/electric_spark_c_clean_20260925"
+OUT = ROOT / "temp/artifacts/electric_spark_c_clean_20260925"
 REFERENCE = ROOT / "scripts/tools/audio_sources/electric_spark_reference/option_C_source.wav"
 
 

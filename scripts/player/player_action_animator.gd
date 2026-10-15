@@ -1,11 +1,13 @@
 extends RefCounted
 class_name PlayerActionAnimator
 ## Visual-only actions. Movement and collision remain on PlayerController.
+const PIXEL_MINIFY = preload("res://shaders/player/pixel_minify.gdshader")
 
 var enabled := false
 var current_clip := "idle"
 var current_frame := 0
 var action := ""
+var facing_direction := Vector2.ZERO
 var _elapsed := 0.0
 var _move_time := 0.0
 var _hold_time := 0.0
@@ -13,6 +15,7 @@ var _moving := false
 var _sprite: Sprite2D
 var _clips: Dictionary = {}
 var _sustains: Array[Dictionary] = []
+var _minify_material: ShaderMaterial
 
 
 func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
@@ -22,6 +25,8 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 	reset()
 	if sprite == null:
 		return
+	if sprite.material == _minify_material:
+		sprite.material = null
 	sprite.scale = Vector2.ONE
 	sprite.position = Vector2.ZERO
 	var path := str(visuals.get("action_animations", ""))
@@ -38,9 +43,14 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 			return
 		clip.texture = load(texture_path) as Texture2D
 		_clips[key] = clip
-	enabled = _clips.has_all(["idle", "move", "attack", "sustain", "move_sustain", "jump_forward", "jump_backward"])
+	enabled = _clips.has_all(["idle", "move", "attack", "move_attack", "sustain", "move_sustain", "jump_forward", "jump_backward"])
 	if not enabled:
 		return
+	if bool(visuals.get("preserve_pixel_outline", false)):
+		if _minify_material == null:
+			_minify_material = ShaderMaterial.new()
+			_minify_material.shader = PIXEL_MINIFY
+		sprite.material = _minify_material
 	sprite.scale = Vector2.ONE * float(visuals.get("action_scale_percent", 50)) / 100.0
 	var offset: Array = visuals.get("action_offset", [0.0, -4.0])
 	sprite.position = Vector2(float(offset[0]), float(offset[1]))
@@ -49,6 +59,7 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 
 func reset() -> void:
 	action = ""
+	facing_direction = Vector2.ZERO
 	_elapsed = 0.0
 	_move_time = 0.0
 	_hold_time = 0.0
@@ -57,21 +68,23 @@ func reset() -> void:
 		_show("idle", 0)
 
 
-func play(next: String) -> void:
+func play(next: String, direction: Vector2 = Vector2.ZERO) -> void:
 	if not enabled or not _clips.has(next):
 		return
 	# Every new request replaces the prior action, including the same action.
 	action = next
+	facing_direction = direction
 	_elapsed = 0.0
 	_show(next, 0)
 
 
-func start_sustain(source: Node = null, seconds: float = 0.0) -> void:
+func start_sustain(source: Node = null, seconds: float = 0.0, direction: Vector2 = Vector2.ZERO) -> void:
 	if not enabled:
 		return
 	_sustains.append({"source": weakref(source) if is_instance_valid(source) else null,
-		"remaining": seconds, "timed": seconds > 0.0})
+		"remaining": seconds, "timed": seconds > 0.0, "direction": direction})
 	action = "sustain_enter"
+	facing_direction = direction
 	_elapsed = 0.0
 	_hold_time = 0.0
 	_show("sustain", 0)
@@ -101,6 +114,8 @@ func tick(delta: float, moving: bool) -> void:
 	if action in ["sustain_enter", "sustain_hold"] and _sustains.is_empty():
 		action = "sustain_exit"
 		_elapsed = 0.0
+	if action in ["sustain_enter", "sustain_hold"]:
+		_update_sustain_facing()
 	if action == "sustain_enter":
 		if _elapsed < 4.0 / _fps("sustain"):
 			_show("sustain", mini(3, int(_elapsed * _fps("sustain"))))
@@ -118,7 +133,7 @@ func tick(delta: float, moving: bool) -> void:
 			return
 		action = ""
 	elif not action.is_empty():
-		var frame := int(_elapsed * _fps(action))
+		var frame := _frame_at_time(action, _elapsed)
 		if frame < _count(action):
 			_show(action, frame)
 			return
@@ -126,14 +141,28 @@ func tick(delta: float, moving: bool) -> void:
 	if not _sustains.is_empty():
 		# Resume the hold, not the interrupted windup or an expired action.
 		action = "sustain_hold"
+		_update_sustain_facing()
 		if moving:
 			_show("move_sustain", int(_move_time * _fps("move_sustain")) % _count("move_sustain"))
 		else:
 			_show("sustain", 4 + int(_hold_time * 3.0) % 2)
 	elif moving:
+		facing_direction = Vector2.ZERO
 		_show("move", int(_move_time * _fps("move")) % _count("move"))
 	else:
+		facing_direction = Vector2.ZERO
 		_show("idle", 0)
+
+
+func _update_sustain_facing() -> void:
+	# The latest live sustain owns the pose, including after an interrupt ends.
+	var state: Dictionary = _sustains.back()
+	var direction: Vector2 = state.direction
+	var live: Variant = state.source.get_ref() if state.source is WeakRef else null
+	if is_instance_valid(live) and live is CopperLamp:
+		direction = live.heading
+	if not is_zero_approx(direction.x):
+		facing_direction = direction
 
 
 func _fps(clip: String) -> float:
@@ -142,6 +171,18 @@ func _fps(clip: String) -> float:
 
 func _count(clip: String) -> int:
 	return maxi(1, int(_clips[clip].get("frames", 1)))
+
+
+func _frame_at_time(clip: String, seconds: float) -> int:
+	var durations: Array = _clips[clip].get("frame_durations", [])
+	if durations.size() == _count(clip):
+		var end := 0.0
+		for index in durations.size():
+			end += maxf(0.001, float(durations[index]))
+			if seconds < end - 0.000001:
+				return index
+		return _count(clip)
+	return int(seconds * _fps(clip))
 
 
 func _show(clip: String, frame: int) -> void:

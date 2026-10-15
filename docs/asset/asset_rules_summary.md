@@ -1,6 +1,10 @@
 # 素材规则汇总
 
-> 2026-10-14：初心者战斗动作采用用户确认的 128×128 透明像素帧，共 7 类 50 帧，正式图集在 `assets/sprites/player/actions/novice_128/`。由 `characters.json` 的 `combat_visuals.action_animations` 引用，按 50% 最近邻显示；本条取代下文初心者旧六帧战斗规格。资本家及选角展示图沿用原规格。可编辑源稿和确认记录在 `artifacts/editable/player_actions/novice_128/`，详见[接入与验证记录](novice_actions_128_review_20261014.md)。
+> 2026-10-15 清理：已删除本次盘点中 78 个未发现运行引用的素材和 39 个残留或未生效素材，并移除配套原图、导入文件及废弃实现。7 个仅独立场景引用的营地素材保留。历史接入说明用于追溯，不表示旧文件仍保留；当前库存与执行结果见[素材清理记录](assets_cleanup_20261015.md)。
+
+> 2026-10-15：初心者新增移动攻击 9 帧并替换后跳 10 帧，沿用确认样例的 128×128、16 色透明像素风格。前跳保留此前指定的旧后跳 10 帧并使用独立图集；当前共 8 类 61 帧。移动攻击按源视频原速播放；后跳按用户最新要求加速至 2 倍，时长 0.875 秒。配置支持逐帧停留时间，正式显示尺度和最近邻轮廓采样保持原约定。详见[新增动作接入记录](novice_new_actions_installation_20261015.md)。
+
+> 2026-10-14：初心者战斗动作采用用户确认的 128×128 透明像素帧，共 7 类 50 帧，正式图集在 `assets/sprites/player/actions/novice_128/`。由 `characters.json` 的 `combat_visuals.action_animations` 引用，战斗按 50% 最近邻显示；选人页共用本版待机和八帧行走，按实际帧尺寸裁切。旧初心者展示图和两代战斗图共 5 张 PNG 及对应导入文件已删除。本条取代下文初心者旧六帧规格。可编辑源稿和确认记录在 `artifacts/editable/player_actions/novice_128/`，详见[接入与验证记录](novice_actions_128_review_20261014.md)。
 
 > 2026-10-11：105 张武器／遗物图标的小尺寸清晰度版本正式接入，按物理显示尺寸选择 18 张无损图集中的区域，统一最近邻过滤。当前遗物列表／商店为 40 逻辑像素，百科64、奖励48；原有 PNG 母版与原图保留，历史预览已按用户要求清理，正式实机截图保留在 artifacts/validation。下方 10-05 的列表32px为当时记录。见[清晰度接入记录](art_refresh_plan/icon_clarity_installation_2026-10-11.md)。
 
@@ -35,7 +39,6 @@
 |---|---|---|
 | `assets/sprites/player/void_hunter_idle_right.png` | 已接入，256x256，128 像素稿最近邻放大 2 倍 | 仅用于展示；战斗使用 `combat/` 下的64x64描边稿 |
 | `assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png` | 已接入，384x64，六帧，6 FPS | 64x64单帧；第一帧同时作为idle |
-| `assets/sprites/player/combat/capitalist_walk_right_spritesheet.png` | 已接入，448x64，七帧，7 FPS | 64x64单帧；第一帧同时作为idle |
 
 2026-09-30：用户确认的1px描边版已正式接入两名玩家，见[玩家描边版接入记录](art_refresh_plan/25_players_outline_installation.md)。选角展示图与头像仍为独立资源。
 

@@ -39,7 +39,6 @@ func _ready() -> void:
 		sprite.centered = false
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		foreground_root.add_child(sprite)
-	get_node("../Sky").hide()
 	configure_view(view_size,0.0,1.0)
 
 func configure_view(size: Vector2, x: float, zoom_scale: float) -> void:
@@ -67,11 +66,17 @@ func ruin_display_size(index: int) -> Vector2:
 func far_height() -> float:
 	return 103.0*art_scale
 
+func far_period() -> float:
+	return panorama.get_width()*art_scale*.5
+
 func darkness_end() -> float:
 	return far_height()+4.0*art_scale
 
 func reveal_end() -> float:
 	return far_height()+39.0*art_scale
+
+func ground_fade_end() -> float:
+	return far_height()+68.0*art_scale
 
 func _update_entries() -> void:
 	entries.clear()
@@ -98,8 +103,7 @@ func snapshot() -> Dictionary:
 func _draw() -> void:
 	if panorama == null: return
 	# The full-width opaque upper band and its lower fade are drawn by darkness.
-	var scale_factor := art_scale*.5
-	var period := panorama.get_width()*scale_factor
+	var period := far_period()
 	var offset := fposmod(camera_x*camera_scale*FAR_SPEED+45*art_scale,period)
 	for i in range(-1,ceili(view_size.x/period)+2):
 		draw_texture_rect(panorama,Rect2(Vector2(i*period-offset,0),Vector2(period,far_height())),false,Color(.67,.67,.67,1))

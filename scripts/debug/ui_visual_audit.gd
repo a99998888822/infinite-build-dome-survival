@@ -5,7 +5,7 @@ extends Node
 
 const GAME_ROOT_SCENE: PackedScene = preload("res://scenes/core/game_root.tscn")
 
-const OUTPUT_ROOT := "res://artifacts/ui_visual_audit"
+const OUTPUT_ROOT := "res://temp/artifacts/ui_visual_audit"
 const VIEWPORT_MARGIN := 1.0
 
 var _resolution := Vector2i(1152, 648)

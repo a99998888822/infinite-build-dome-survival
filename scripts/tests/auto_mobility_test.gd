@@ -109,7 +109,7 @@ func _pursuit_and_escape(index: int, keyboard: bool) -> void:
 	check(weapon.volley_index == (0 if index == 1 else 1), "pursuit respects movement and recoil " + label)
 	if weapon.volley_index > 0:
 		var body: MobilityWeaponRuntime = weapon.mobility_runtime.get_ref()
-		check(player.movement_intent().dot(Vector2.RIGHT) > 0.99, "pursuit preserves movement command " + label)
+		check(player.movement_intent().is_zero_approx() if index == 2 else player.movement_intent().dot(Vector2.RIGHT) > 0.99, "blink clears pursuit; other mobility preserves it " + label)
 		if index == 2:
 			check(not body.return_ready and body.anchor == null and not weapon.is_return_ready(), "automatic blink has no return mark")
 			var landing := player.global_position
@@ -121,7 +121,10 @@ func _pursuit_and_escape(index: int, keyboard: bool) -> void:
 	var destination := player.move_destination
 	decide()
 	check(weapon.volley_index == 1, "high-pressure retreat releases " + label)
-	check(keyboard and bool(player._held_move_keys.get(KEY_D, false)) or not keyboard and player.has_move_destination and player.move_destination == destination, "retreat retains keyboard or click command " + label)
+	if index == 2:
+		check(player.movement_intent().is_zero_approx() and not player.has_move_destination and player._held_move_keys.is_empty(), "blink clears retreat command " + label)
+	else:
+		check(keyboard and bool(player._held_move_keys.get(KEY_D, false)) or not keyboard and player.has_move_destination and player.move_destination == destination, "retreat retains keyboard or click command " + label)
 	await step(0.05, 7)
 	check(player.global_position.x > origin.x + 40, "actual movement travels away from crowd " + label)
 	if index == 1:

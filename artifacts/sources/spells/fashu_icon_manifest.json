@@ -2,7 +2,6 @@
   "installed_on": "2026-10-05",
   "source": "artifacts/sources/spells/fashu_icon.png",
   "source_sha256": "6e49212e7e824843fbb0d4815d668d8226202bf7ee72a67c8d1fe9183f8348ad",
-  "approved_package": "artifacts/previews/spell_icons/20261005-all64-r2",
   "method": "Approved Picxel local conversion and AI-guided pixel cleanup; no model generation.",
   "ignored_cells_one_based": [
     [

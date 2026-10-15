@@ -516,7 +516,6 @@
     }
   ],
   "image_model_used": false,
-  "approved_sample": "artifacts/previews/weapon_icons/20261004-dagger-r1",
   "palette_policy": "Source material palette per distinct weapon, at most 16 colors; same sampling and outline cleanup as approved dagger.",
   "installed_on": "2026-10-04",
   "method": "Source extraction, Picxel quantization and AI-guided local grid cleanup; no image-generation model.",

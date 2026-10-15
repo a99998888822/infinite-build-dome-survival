@@ -170,6 +170,73 @@ func _test_mobility_enchantments() -> void:
 		weapon.detach_item_instance(str(ice.item_instance_id))
 	await reset()
 
+func _test_blink_follow() -> void:
+	await reset()
+	var controller := battle.active_controller
+	var tome := loadout.get_weapon_instance(IDS[2])
+	player._sync_camera(1.0)
+	var view_origin := player.camera_2d.global_position
+	player.request_move(origin + Vector2(-250, 0))
+	controller.right_held = true
+	controller.marker.show_destination(player.move_destination)
+	cast(2, Vector2(170, 0))
+	var landing := player.global_position
+	check(landing == origin + Vector2(170, 0) and player.camera_2d.global_position == view_origin, "blink moves body immediately and keeps departure camera")
+	check(not player.has_move_destination and not controller.right_held and not controller.marker.active and player.velocity.is_zero_approx(), "blink clears clicked goal, held right button, marker and velocity")
+	var previous_x := view_origin.x
+	for i in 5:
+		await step(0.04)
+		var camera_x := player.camera_2d.global_position.x
+		check(camera_x > previous_x and camera_x < landing.x and player.global_position == landing, "camera catches up monotonically while body stays at landing %d" % i)
+		previous_x = camera_x
+	var paused_camera := player.camera_2d.global_position
+	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+	await step(1.0)
+	check(player.camera_2d.global_position == paused_camera, "pause freezes in-progress camera drag")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+	await step(0.16)
+	check(player.camera_2d.global_position == landing.round(), "camera reaches player within 0.36 seconds")
+	await step(0.1, 6)
+	check(player.global_position == landing and not player.has_move_destination, "old input stays cleared after arrival animation")
+	player.request_move(landing + Vector2(80, 0))
+	await step(0.05)
+	check(player.global_position.x > landing.x, "fresh movement works after blink")
+	var return_view := player.camera_2d.global_position
+	check(loadout.cast_weapon(tome, origin), "manual return succeeds")
+	check(player.global_position == origin and player.camera_2d.global_position == return_view and not player.has_move_destination, "return also clears input and retains current view")
+	await step(0.4)
+	check(player.camera_2d.global_position == origin.round(), "return camera settles at anchor")
+	await reset()
+	player._sync_camera(1.0)
+	cast(2, Vector2(170, 0))
+	await step(0.08)
+	return_view = player.camera_2d.global_position
+	check(loadout.cast_weapon(tome, origin) and player.camera_2d.global_position == return_view, "early return starts from unfinished drag without snapping")
+	player.request_move(origin + Vector2(-80, 0))
+	await step(0.05, 8)
+	check(player.global_position.x < origin.x and player.has_move_destination, "new command survives camera drag completion")
+	await reset()
+	CombatSettings.set_option("keyboard_movement", true, false)
+	var held := InputEventKey.new()
+	held.physical_keycode = KEY_D
+	held.pressed = true
+	player.accept_move_key(held)
+	player.set_mobile_move_direction(Vector2.RIGHT)
+	cast(2, Vector2(170, 0))
+	check(player._held_move_keys.is_empty() and player.movement_intent().is_zero_approx(), "blink clears old keyboard and mobile movement")
+	await step(0.4)
+	player.accept_move_key(held)
+	await step(0.05)
+	check(player.global_position.x > origin.x + 170, "fresh key press works after blink")
+	CombatSettings.set_option("keyboard_movement", false, false)
+	await reset()
+	cast(2, Vector2(170, 0))
+	wall(Vector2(85, 0))
+	await frames()
+	player.request_move(origin + Vector2(230, 0))
+	check(not loadout.cast_weapon(tome, origin) and player.has_move_destination, "blocked return preserves movement because no blink occurred")
+	await reset()
+
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
@@ -293,7 +360,8 @@ func _run() -> void:
 	var bar: ActiveCombatWeaponBar = battle.hud.combat_bar
 	check(is_equal_approx(star_state.remaining, tome.get_active_cooldown_seconds()) and tome.is_return_ready(), "first blink immediately starts cooldown and permits return")
 	battle.hud._refresh_active_combat()
-	check(bar.timers[2].text == "%d s" % ceili(star_state.remaining) and not bar.cooldown_masks[2].visible and bar.icons[2].texture.resource_path.ends_with("star_tome_return.png"), "initial return icon has countdown without grey mask")
+	await frames() # IconBinding applies its atlas texture after layout settles.
+	check(bar.timers[2].text == "%d s" % ceili(star_state.remaining) and not bar.cooldown_masks[2].visible and ItemIconArt.source_path(bar.icons[2].texture).ends_with("star_tome_return.png"), "initial return icon has countdown without grey mask")
 	check(player.global_position.is_equal_approx(origin + Vector2(170,0)) and shock_enemy.current_hp < 10000, "blink teleports and damages destination")
 	check(shock_enemy._knockback_velocity.dot(shock_enemy.global_position - player.global_position) > 0, "shock knocks outward")
 	await step(0.05)
@@ -301,7 +369,7 @@ func _run() -> void:
 	await step(0.05,8)
 	check(tome.is_return_ready() and loadout.active_casting.can_cast(tome), "same skill becomes available to return")
 	battle.hud._refresh_active_combat()
-	check(bar.timers[2].text == "%d s" % ceili(star_state.remaining) and not bar.cooldown_masks[2].visible and bar.icons[2].texture.resource_path.ends_with("star_tome_return.png"), "return countdown and PNG badge stay synchronized")
+	check(bar.timers[2].text == "%d s" % ceili(star_state.remaining) and not bar.cooldown_masks[2].visible and ItemIconArt.source_path(bar.icons[2].texture).ends_with("star_tome_return.png"), "return countdown and PNG badge stay synchronized")
 	await capture("star_return_ready")
 	var before_return := float(star_state.remaining)
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
@@ -313,7 +381,8 @@ func _run() -> void:
 	freeze_effects()
 	check(player.global_position.is_equal_approx(origin) and not tome.is_return_ready() and shock_enemy.current_hp == before_hp, "same slot returns with no additional damage")
 	battle.hud._refresh_active_combat()
-	check(is_equal_approx(star_state.remaining, before_return) and bar.icons[2].texture.resource_path.ends_with("weapon_star_tome.png") and bar.cooldown_masks[2].visible and bar.timers[2].text == "%d s" % ceili(before_return), "early return restores base icon and grey mask without resetting countdown")
+	await frames()
+	check(is_equal_approx(star_state.remaining, before_return) and ItemIconArt.source_path(bar.icons[2].texture).ends_with("weapon_star_tome.png") and bar.cooldown_masks[2].visible and bar.timers[2].text == "%d s" % ceili(before_return), "early return restores base icon and grey mask without resetting countdown")
 	check(is_equal_approx(bar.cooldown_masks[2].material.get_shader_parameter("remaining"), before_return / float(star_state.total)), "early-return mask shows remaining fraction instead of full execution disk")
 	check(not loadout.cast_weapon(tome, origin + Vector2(80,0)) and tome.volley_index == 1, "return is single-use and cannot bypass remaining cooldown")
 	await step(0.05)
@@ -332,7 +401,7 @@ func _run() -> void:
 	await step(0.02)
 	battle.hud._refresh_active_combat()
 	check(not tome.is_return_ready() and (not is_instance_valid(star.anchor) or star.anchor.cancelled) and player.global_position == expiry_position, "expiry removes mark without automatic return")
-	check(loadout.active_casting.can_cast(tome) and bar.icons[2].texture.resource_path.ends_with("weapon_star_tome.png") and bar.timers[2].text.is_empty() and not bar.cooldown_masks[2].visible, "expiry restores ready base icon with neither timer nor mask")
+	check(loadout.active_casting.can_cast(tome) and ItemIconArt.source_path(bar.icons[2].texture).ends_with("weapon_star_tome.png") and bar.timers[2].text.is_empty() and not bar.cooldown_masks[2].visible, "expiry restores ready base icon with neither timer nor mask")
 	await capture("star_return_expired")
 	var next_star := cast(2,Vector2(70,0))
 	await step(0.01)
@@ -379,11 +448,13 @@ func _run() -> void:
 	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	await reset()
 	await _test_impact_geometry()
+	await _test_blink_follow()
 	await _test_mobility_enchantments()
 	var pierce := player.item_inventory.add_item_from_base("scroll_pierce", "mobility_test")
 	var split := player.item_inventory.add_item_from_base("scroll_split", "mobility_test")
 	check(not blade.get_attachment_incompatibility(pierce).is_empty() and not tome.get_attachment_incompatibility(split).is_empty(), "ineffective attachments rejected explicitly")
 	check(cannon.get_attachment_incompatibility(pierce).is_empty() and cannon.get_attachment_incompatibility(split).is_empty(), "cannon accepts pierce and split")
+	check(cannon.upgrade() and cannon.get_attachment_slot_count() >= 2, "level two cannon unlocks the second attachment slot")
 	check(cannon.attach_item_instance(pierce) and cannon.attach_item_instance(split), "cannon equips both attachments")
 	var near_target := enemy(Vector2(50,0))
 	var far_target := enemy(Vector2(110,0))
@@ -431,5 +502,6 @@ func _run() -> void:
 	await frames(6)
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
+	await get_tree().create_timer(0.3).timeout
 	print("MOBILITY_INTEGRATION checks=%d failures=%d" % [checks,failures])
 	get_tree().quit(1 if failures else 0)

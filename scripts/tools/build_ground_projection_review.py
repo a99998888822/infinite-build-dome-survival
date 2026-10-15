@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/previews/ground_projection_20261012"
+OUT = ROOT / "temp/artifacts/previews/ground_projection_20261012"
 FONT = "C:/Windows/Fonts/msyh.ttc"
 
 

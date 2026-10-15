@@ -14,7 +14,7 @@ def main():
     parser.add_argument('--godot', default=DEFAULT_GODOT)
     parser.add_argument('--locale', default='zh_CN')
     args = parser.parse_args()
-    output = ROOT / 'artifacts/localization/validation'
+    output = ROOT / 'temp/artifacts/localization/validation'
     output.mkdir(parents=True, exist_ok=True)
     failed = False
     for scene in args.scenes:

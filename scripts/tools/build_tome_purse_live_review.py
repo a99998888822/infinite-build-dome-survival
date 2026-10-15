@@ -6,7 +6,7 @@ import subprocess
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/tome_purse_implementation"
+OUT = ROOT / "temp/artifacts/tome_purse_implementation"
 TEMP = Path("C:/Users/mi/AppData/Local/Temp")
 FFMPEG = "D:/soft/ffmpeg-N-116796-gb730defd52-win64-gpl-shared/bin/ffmpeg.exe"
 LABELS = {

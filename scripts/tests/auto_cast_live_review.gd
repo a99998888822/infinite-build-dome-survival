@@ -58,6 +58,7 @@ func _run() -> void:
 	if capture_variant in ["all", "mouse"]: await mouse_clip()
 	if capture_variant in ["all", "restraint"]: await restraint_clip()
 	if capture_variant in ["all", "return"]: await manual_return_clip()
+	if capture_variant == "blink": await blink_follow_clip()
 	clip = ""
 	controller.clear_input()
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
@@ -151,6 +152,8 @@ func take(seconds: float) -> void:
 			var sample := {"file": name, "tick": Engine.get_physics_frames(), "caption": detail_label.text}
 			if is_instance_valid(player):
 				sample["player"] = [player.global_position.x, player.global_position.y]
+				sample["camera"] = [player.camera_2d.global_position.x, player.camera_2d.global_position.y]
+				sample["right_held"] = controller.right_held
 				sample["destination"] = [player.move_destination.x, player.move_destination.y] if player.has_move_destination else []
 				sample["keys"] = player._held_move_keys.duplicate()
 			samples[clip].append(sample)
@@ -358,11 +361,10 @@ func tome_clip() -> void:
 	begin_clip("05_mouse_blink", "右键追击：自动闪现，不建立返回入口", "只右键点一次目的地；系统顺着追击意图闪现（静止目标）")
 	await take(0.6)
 	await click_at(world_pointer(Vector2(440, -45)), MOUSE_BUTTON_RIGHT)
-	var goal := player.move_destination
 	var weapon := loadout.get_weapon_instance(TOME)
 	check(await await_auto(weapon), "live right-click pursuit triggers blink")
-	check(player.has_move_destination and player.move_destination == goal, "recorded blink retains clicked goal")
-	caption("闪现后继续走向原目的地；图标直接显示冷却，没有返回印记")
+	check(not player.has_move_destination and player.movement_intent().is_zero_approx(), "recorded blink clears clicked goal")
+	caption("闪现后清除原目的地并停步，镜头拖拽跟上；图标显示冷却，没有返回印记")
 	await take(0.8)
 	press_key(KEY_S, true)
 	await take(0.08)
@@ -433,3 +435,60 @@ func manual_return_clip() -> void:
 	press_key(KEY_1, false)
 	await take(1.4)
 	check(player.global_position.length() < 2.0 and not weapon.is_return_ready(), "recorded manual tome returns to origin")
+
+func blink_follow_clip() -> void:
+	await fixture([TOME], false, [])
+	# Fixed targets keep the production battlefield readable during the short review.
+	enemy_at(Vector2(235, 95))
+	enemy_at(Vector2(-155, -85))
+	begin_clip("09_blink_follow", "移星秘典 · 镜头拖拽与落地停步", "先右键向左行走，再向右闪现；保留原移动指令用于验证")
+	await take(0.8)
+	await click_at(world_pointer(Vector2(-250, 0)), MOUSE_BUTTON_RIGHT, 0.02)
+	await take(0.4)
+	move_pointer(world_pointer(player.global_position + Vector2(200, -25)))
+	press_key(KEY_1, true)
+	await take(0.05)
+	press_key(KEY_1, false)
+	await take(0.15)
+	var anchor_point := player.global_position
+	caption("向右闪现：镜头用 0.36 秒拖拽跟上，旧移动目标立即清除")
+	await click_at(pointer, MOUSE_BUTTON_LEFT, 0.02)
+	var landing := player.global_position
+	var weapon := loadout.get_weapon_instance(TOME)
+	check(weapon.is_return_ready() and landing.distance_to(anchor_point) > 100, "live manual input blinks while walking")
+	check(not player.has_move_destination and player.camera_2d.global_position.distance_to(landing) > 10, "live camera trails blink while movement clears")
+	await take(1.0)
+	check(player.global_position == landing and player.camera_2d.global_position == landing.round(), "live player stays at landing after camera settles")
+	caption("落地后不再自行走动；现在重新右键移动，再按 1 返回")
+	await take(0.7)
+	await click_at(world_pointer(landing + Vector2(120, 0)), MOUSE_BUTTON_RIGHT, 0.02)
+	await take(0.3)
+	check(player.global_position.x > landing.x + 20, "live new click resumes walking")
+	caption("返回同样拖拽镜头，并清除返回前的移动指令")
+	press_key(KEY_1, true)
+	await take(0.05)
+	press_key(KEY_1, false)
+	var returned := player.global_position
+	await take(1.6)
+	check(player.global_position == returned and not player.has_move_destination and not weapon.is_return_ready(), "live return clears walking and stays stopped")
+	clip = ""
+	await fixture([TOME], false, [TOME])
+	enemy_at(Vector2(295, 55))
+	enemy_at(Vector2(350, 100))
+	begin_clip("10_auto_blink_stop", "移星秘典 · 自动闪现也会停步", "按住右键向右追击，等待自动闪现触发")
+	await take(0.7)
+	move_pointer(world_pointer(Vector2(440, -45)))
+	var held := InputEventMouseButton.new()
+	held.position = pointer
+	held.button_index = MOUSE_BUTTON_RIGHT
+	held.pressed = true
+	Input.parse_input_event(held)
+	weapon = loadout.get_weapon_instance(TOME)
+	check(await await_auto(weapon), "live held right click triggers automatic blink")
+	landing = player.global_position
+	caption("闪现后清除按住右键的旧指令；镜头跟上，人物保持停步")
+	check(not controller.right_held and not player.has_move_destination, "automatic blink clears held right click")
+	await take(1.8)
+	check(player.global_position == landing and not weapon.is_return_ready(), "automatic blink remains stopped without return")
+	held.pressed = false
+	Input.parse_input_event(held)

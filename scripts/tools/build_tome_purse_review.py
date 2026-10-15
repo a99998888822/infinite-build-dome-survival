@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/"artifacts/tome_purse_review"
+OUT=ROOT/"temp/artifacts/tome_purse_review"
 TEMP=Path("C:/Users/mi/AppData/Local/Temp")
 FFMPEG=Path("D:/soft/ffmpeg-N-116796-gb730defd52-win64-gpl-shared/bin/ffmpeg.exe")
 LABELS={"tome":("坤舆秘仪书 · 方粒虚线领域", "粒子间距大幅波动 / 随机朝向与轻微旋转 / 符文缓慢明灭", "#a5d4dd"),

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dni3qchq8ptrc"]
 
 [ext_resource type="Script" uid="uid://nte7pxrv4fli" path="res://scripts/player/player_controller.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/display_clarity/player/void_hunter_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/actions/novice_128/idle.png" id="2_idle"]
 [ext_resource type="Script" path="res://scripts/player/player_ground_marker.gd" id="3_marker"]
 [ext_resource type="Script" path="res://scripts/player/player_visibility_glow.gd" id="4_glow"]
 [ext_resource type="Shader" path="res://shaders/player/visibility_glow.gdshader" id="5_glow_shader"]

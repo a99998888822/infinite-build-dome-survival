@@ -4,8 +4,23 @@ extends CanvasLayer
 ## The layer belongs to its source UI and follows all of its ancestors' visibility.
 
 const TOOLTIP_LAYER := 100
+static var _pixel_font: FontFile
 var _flow: MainFlowCoordinator
 var _inside_utility := false
+
+
+static func apply_pixel_text(control: Control) -> void:
+	if _pixel_font == null:
+		_pixel_font = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf").duplicate() as FontFile
+		# Rasterize Ark on its native grid before scaling to the requested size.
+		_pixel_font.fixed_size = 12
+		_pixel_font.fixed_size_scale_mode = TextServer.FIXED_SIZE_SCALE_ENABLED
+		_pixel_font.oversampling = 1.0
+		_pixel_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+		_pixel_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+	var keys := ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"] if control is RichTextLabel else ["font"]
+	for key: String in keys: control.add_theme_font_override(key, _pixel_font)
+	control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 static func for_owner(source: Node) -> GameTooltipLayer:

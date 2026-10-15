@@ -1,5 +1,7 @@
 # 素材安装工具
 
+> 2026-10-15 来源整理：现行原图在 `artifacts/sources/`，角色有效网格在 `artifacts/editable/player_actions/current/`。旧审阅包、旧角色来源目录及专用转换工具已清理。本文下方日期条目用于追溯；涉及旧路径的重建说明已失效。当前来源核对入口为 `python scripts/tools/art_source_archive.py --check`，加 `--output <目录>` 可重建当前角色图集和银行底图。可复用绘制函数见 [source_art/README.md](source_art/README.md)，临时输出统一写入 `temp/`。
+
 2026-10-08：蝙蝠、幽焰冥狼已解除对历史像素处理目录的依赖。`build_echo_bat_art.py --check` 与 `install_underworld_wolf_art.py --check`（或无参数）检查当前正式 PNG、色板、图集及动画元数据；分别传入 `--rebuild`、`--rebuild-atlases` 才重建。原始帧保存在 `artifacts/sources/enemies/echo_bat/`、`underworld_wolf/`；正式目录的 `manifest.json` 保留来源、哈希与接入参数。多轮试稿和审阅包已删除，后续直接编辑正式 PNG。
 
 2026-10-05：19张法术／附魔图标已替换为用户确认的64×64透明PNG，正式目录为 `assets/ui/icons/augmentations/`，同名PXG／PAL同步。电火花使用 `scroll_lightning.png`，落雷使用独立的 `scroll_electric_spark.png`。界面和掉落物维持32px显示区域。重建以当前PXG为准，旧 `build_attribute_enchantment_icons.py` 及历史32px稿不得覆盖本次确认稿。来源映射和验证见[接入记录](../../docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md)。

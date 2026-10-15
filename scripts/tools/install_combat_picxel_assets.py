@@ -27,15 +27,17 @@ def asset_pairs(subjects=SUBJECTS):
     for character, prefix in (("beginner", "void_hunter"), ("capitalist", "capitalist")):
         if character not in subjects:
             continue
-        for destination, size in (
-            (f"sprites/player/combat/{prefix}_idle_right.png", (64, 64)),
-            (f"sprites/player/combat/{prefix}_walk_right_spritesheet.png", (384 if character == "beginner" else 448, 64)),
-            (f"sprites/player/{prefix}_idle_right.png", (256, 256)),
-            (f"ui/icons/characters/icon_{prefix}.png", (128, 128)),
-        ):
-            yield destination, size
+        yield f"ui/icons/characters/icon_{prefix}.png", (128, 128)
+        if character == "capitalist":
+            yield "sprites/display_clarity/player/capitalist_idle.png", (80, 80)
+            yield "sprites/display_clarity/player/capitalist_walk.png", (560, 80)
+        else:
+            manifest = json.loads((ASSETS / "sprites/player/actions/novice_128/animations.json").read_text(encoding="utf-8"))
+            for clip in manifest["clips"].values():
+                destination = clip["texture"].removeprefix("res://assets/")
+                yield destination, (128 * int(clip["frames"]), 128)
     if "enemy" in subjects:
-        for name, size in (("enemy_gloom_mite_idle.png", (32, 32)), ("enemy_gloom_mite_move.png", (224, 32))):
+        for name, size in (("enemy_gloom_mite_idle.png", (128, 128)), ("enemy_gloom_mite_move.png", (896, 128))):
             yield f"sprites/enemies/combat/{name}", size
     if "boss" in subjects:
         for action, (count, _, _) in BOSS_ACTIONS.items():

@@ -1013,8 +1013,6 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 		wave_challenges.record_enemy_death(enemy.get_instance_id())
 	if running and DataRegistry.has_record("enemies", enemy.enemy_id) and not bool(enemy.get_meta("exclude_reward_progress", false)) and not (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
 		_augmentation_valid_kills += 1
-	if player != null:
-		player.heal(int(player.get_stat("on_kill_heal")))
 	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
 	_queue_drop_actions(actions, death_position)
 	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0

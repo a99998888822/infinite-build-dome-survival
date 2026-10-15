@@ -1,27 +1,29 @@
 extends Texture2D
 ## Draw inside the owning Control's canvas item, retaining its clips and states.
-## Only the destination rectangle changes; source pixels are never resampled.
+## Art variants share one logical footprint, rounded only at the screen boundary.
 
 var texture: Texture2D
-var pixel_scale := 1
+var logical_size := Vector2.ZERO
 var owner_ref: WeakRef
 var last_local_rect := Rect2()
 var last_modulate := Color.WHITE
 var draw_count := 0
 
 
-func configure(owner: Control, image: Texture2D, multiple: int) -> void:
+func configure(owner: Control, image: Texture2D, display_size: Vector2) -> void:
 	owner_ref = weakref(owner)
-	if texture == image and pixel_scale == multiple: return
+	if texture == image and logical_size == display_size: return
 	texture = image
-	pixel_scale = multiple
+	logical_size = display_size
 	set_meta("item_icon_source", image.get_meta("item_icon_source", image.resource_path))
 	set_meta("item_icon_pixels", image.get_meta("item_icon_pixels", image.get_width()))
 	emit_changed()
 
 
 func physical_size() -> Vector2:
-	return texture.get_size() * pixel_scale if texture != null else Vector2.ZERO
+	var owner := owner_ref.get_ref() as Control if owner_ref != null else null
+	if texture == null or owner == null or not owner.is_inside_tree(): return Vector2.ZERO
+	return (logical_size * screen_transform(owner).get_scale().abs()).round().max(Vector2.ONE)
 
 
 static func screen_transform(owner: CanvasItem) -> Transform2D:
@@ -47,11 +49,11 @@ static func screen_transform(owner: CanvasItem) -> Transform2D:
 
 
 func _get_width() -> int:
-	return texture.get_width() if texture != null else 0
+	return ceili(logical_size.x) if texture != null else 0
 
 
 func _get_height() -> int:
-	return texture.get_height() if texture != null else 0
+	return ceili(logical_size.y) if texture != null else 0
 
 
 func _has_alpha() -> bool: return true
@@ -66,7 +68,9 @@ func _get_image() -> Image:
 
 
 func _is_pixel_opaque(x: int, y: int) -> bool:
-	return texture != null and texture.is_pixel_opaque(x, y)
+	if texture == null: return false
+	var point := Vector2(x, y) * texture.get_size() / get_size()
+	return texture.is_pixel_opaque(int(point.x), int(point.y))
 
 
 func _draw(item: RID, pos: Vector2, color: Color, transpose: bool) -> void:
@@ -83,10 +87,12 @@ func _draw_rect(item: RID, rect: Rect2, tile: bool, color: Color, transpose: boo
 
 func _draw_rect_region(item: RID, rect: Rect2, region: Rect2, color: Color, transpose: bool, clip_uv: bool) -> void:
 	if texture == null: return
-	last_local_rect = _fit_rect(rect, region.size.abs() * pixel_scale)
+	var source_factor := texture.get_size() / get_size()
+	var source_region := Rect2(region.position * source_factor, region.size * source_factor)
+	last_local_rect = _fit_rect(rect, physical_size() * region.size.abs() / get_size())
 	last_modulate = color
 	draw_count += 1
-	texture.draw_rect_region(item, last_local_rect, region, color, transpose, clip_uv)
+	texture.draw_rect_region(item, last_local_rect, source_region, color, transpose, clip_uv)
 
 
 func _fit_rect(rect: Rect2, pixels: Vector2) -> Rect2:

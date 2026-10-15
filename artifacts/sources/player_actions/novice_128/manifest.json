@@ -1,0 +1,641 @@
+{
+  "frame_size": [
+    128,
+    128
+  ],
+  "clips": {
+    "idle": {
+      "texture": "res://assets/sprites/player/actions/novice_128/idle.png",
+      "frames": 1,
+      "fps": 1
+    },
+    "move": {
+      "texture": "res://assets/sprites/player/actions/novice_128/move.png",
+      "frames": 8,
+      "fps": 8
+    },
+    "attack": {
+      "texture": "res://assets/sprites/player/actions/novice_128/attack.png",
+      "frames": 7,
+      "fps": 14
+    },
+    "sustain": {
+      "texture": "res://assets/sprites/player/actions/novice_128/sustain.png",
+      "frames": 8,
+      "fps": 10
+    },
+    "move_sustain": {
+      "texture": "res://assets/sprites/player/actions/novice_128/move_sustain.png",
+      "frames": 8,
+      "fps": 8
+    },
+    "jump_forward": {
+      "texture": "res://assets/sprites/player/actions/novice_128/jump_forward.png",
+      "frames": 10,
+      "fps": 18
+    },
+    "jump_backward": {
+      "texture": "res://assets/sprites/player/actions/novice_128/jump_backward.png",
+      "frames": 10,
+      "fps": 11.428571428571429,
+      "frame_durations": [
+        0.125,
+        0.08333333333333333,
+        0.0625,
+        0.0625,
+        0.125,
+        0.0625,
+        0.0625,
+        0.10416666666666667,
+        0.125,
+        0.0625
+      ]
+    },
+    "move_attack": {
+      "texture": "res://assets/sprites/player/actions/novice_128/move_attack.png",
+      "frames": 9,
+      "fps": 12,
+      "frame_durations": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333
+      ]
+    }
+  },
+  "frames": [
+    {
+      "action": "idle",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/idle.png",
+      "source": "artifacts/sources/player_actions/novice_128/idle/00.png",
+      "source_sha256": "8a8b633e7ead87e05ea48319a0b6773bc25fa8ad46d97548da508ae35bcdf907",
+      "editable": "artifacts/editable/player_actions/current/idle/00.pxg",
+      "editable_sha256": "8e67ac8c8a7909b93882aea7ca38f03326ea5b4456b41e494dfa2b1c88c0d676"
+    },
+    {
+      "action": "attack",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/00.png",
+      "source_sha256": "3ac05234ab755960d822b579203500741bf8861bdc5dd77bff8a59b95f53b121",
+      "editable": "artifacts/editable/player_actions/current/attack/00.pxg",
+      "editable_sha256": "0f240e9f3434bdbd4cce5b3ea3a00ba65bec3d8f18018be5b32b51aee82a5db5"
+    },
+    {
+      "action": "attack",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/01.png",
+      "source_sha256": "013802be737de372fbc250c4d5b288668e3302f018834466ada788f04f4b94cc",
+      "editable": "artifacts/editable/player_actions/current/attack/01.pxg",
+      "editable_sha256": "909123ea89f29a1fb5c3a8efe46278f3333a0ef8ae3624984460353dad2f793c"
+    },
+    {
+      "action": "attack",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/02.png",
+      "source_sha256": "606c6da98ef4e67e766cad571bc3c82cc0e21a81ec348c5cb2ad416106d128f9",
+      "editable": "artifacts/editable/player_actions/current/attack/02.pxg",
+      "editable_sha256": "6ea6354634a94407ed4123f3bc6d1fcc9478e797ce60bc309a2115183b780dfa"
+    },
+    {
+      "action": "attack",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/03.png",
+      "source_sha256": "8417c458e0830dfd0a28d979aea0f10ce3a39ae35d09150583f7a9e426ad7c0c",
+      "editable": "artifacts/editable/player_actions/current/attack/03.pxg",
+      "editable_sha256": "b0ed4727906c04b71e350674203dc63e5b3cab7fdc1bdc3ed9c8269273f6e259"
+    },
+    {
+      "action": "attack",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/04.png",
+      "source_sha256": "31833df3f8bdee6c8cbaf33962ac541204df3f954c5ce3b806c64caa11f03215",
+      "editable": "artifacts/editable/player_actions/current/attack/04.pxg",
+      "editable_sha256": "9de0b1212cbdd7f2101d51860f8a5e815d79dd41e55f6ca90d200e119cd5ab47"
+    },
+    {
+      "action": "attack",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/05.png",
+      "source_sha256": "77da6a63d5e87207876cf06987b17e5cad2c2381eaa56c2d5d372df1ef070c38",
+      "editable": "artifacts/editable/player_actions/current/attack/05.pxg",
+      "editable_sha256": "14982b3e6d3fcd32bcf825fcd09574521fb4efcf299640bd0a422091bd75f9e3"
+    },
+    {
+      "action": "attack",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/attack/06.png",
+      "source_sha256": "bc15cce8d209968d6fab22680d09103044db763bdda30226427ab3fe485d2e5e",
+      "editable": "artifacts/editable/player_actions/current/attack/06.pxg",
+      "editable_sha256": "c5ba40927b46bed2e398f238aa76e142bb7c738494a471a9ff1e727e3462c025"
+    },
+    {
+      "action": "sustain",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/00.png",
+      "source_sha256": "3512c0b42b6a7c9887a2a2510fd03488e69bae47fd66545de9cd77795f745a57",
+      "editable": "artifacts/editable/player_actions/current/sustain/00.pxg",
+      "editable_sha256": "8df6ac6b13003e319526b9383d098b2655753bcef51d5b3642aa29e13fa5ec6f"
+    },
+    {
+      "action": "sustain",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/01.png",
+      "source_sha256": "8216da7f45e463ad3b5b1c43054db1466fc15234e191fce435a3156bdaa7d35d",
+      "editable": "artifacts/editable/player_actions/current/sustain/01.pxg",
+      "editable_sha256": "77fff0b3ba05a338d0658d5b17f1739b739e8aa6b0daa86ea76faef86ee9116c"
+    },
+    {
+      "action": "sustain",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/02.png",
+      "source_sha256": "4e664b2e7984dde4c73ab231761446b003c229a49088e6575b7dae28ce54e95a",
+      "editable": "artifacts/editable/player_actions/current/sustain/02.pxg",
+      "editable_sha256": "c6dc7d864c707c337bba152ed533bc987774fc516fc5a5d2e058fbf84f0ea7cc"
+    },
+    {
+      "action": "sustain",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/03.png",
+      "source_sha256": "a4c446794c5e62b4517f9d3b04192b9d467e8157a8eb54de26cd886c7529ab8e",
+      "editable": "artifacts/editable/player_actions/current/sustain/03.pxg",
+      "editable_sha256": "928fb04890f60ac61f6cc76a5192bae05c14a73964b11c043388ffa51aa47205"
+    },
+    {
+      "action": "sustain",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/04.png",
+      "source_sha256": "1c9bd895b87fd60cbffc806b3571f688f54b128df9b0fb83804aa8489b464f38",
+      "editable": "artifacts/editable/player_actions/current/sustain/04.pxg",
+      "editable_sha256": "9a47462cd709afc3b7768f581e1992d69c419ad3d470846472b6710065f7343e"
+    },
+    {
+      "action": "sustain",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/05.png",
+      "source_sha256": "5ec755bc2f8d84b78d36adbb9452c9def85bf547258f4b45ed03bfbbf49354a6",
+      "editable": "artifacts/editable/player_actions/current/sustain/05.pxg",
+      "editable_sha256": "009b99e2589c64f56644059bd408fd8050762144af4f9a4de3fde3db324a387d"
+    },
+    {
+      "action": "sustain",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/06.png",
+      "source_sha256": "cc7634c5371649d44705beb3c1835a3d5b1fa167107618685065d9cc2d7ea698",
+      "editable": "artifacts/editable/player_actions/current/sustain/06.pxg",
+      "editable_sha256": "61414c1e590367be86df632a774c577dfb10d880a9c3307d649a286f14472203"
+    },
+    {
+      "action": "sustain",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/sustain/07.png",
+      "source_sha256": "2515b9687aaaf30dcc1626181e9c6470e4039e9cb78ea3cce170360f63d179ea",
+      "editable": "artifacts/editable/player_actions/current/sustain/07.pxg",
+      "editable_sha256": "e25080fb043117c6d0649881ac28a426792896029ad5981e15fa6848426dd02c"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/00.png",
+      "source_sha256": "6ebe320951e715419464c5b36767036d7c143674fa4e3f1bb833ab8397a3fa29",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/00.pxg",
+      "editable_sha256": "567fdbb9c3bbe131627bff0b705b84000b0f759813da223a5bef5927f40fbdbc"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/01.png",
+      "source_sha256": "9ff4f9924e18a6df402a4dc2200b66ab439580d05e0273bf09c91d0e5a260f20",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/01.pxg",
+      "editable_sha256": "7ef89e7051cd31c5ef0b7ba6e45d21169c198557dbede1dedc5f9d6811253036"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/02.png",
+      "source_sha256": "66635b117513f9f81b1428058a49e75e66ed8691fe1b3a9ee9771b4051ef5cb2",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/02.pxg",
+      "editable_sha256": "faa51e3b4c9ca9c1d199828677f20aab6b2b43c94f8371f626939e1462354973"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/03.png",
+      "source_sha256": "7977b8f563b7692050da39820d8d391128ae150c6a46a725582a664189cd7c23",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/03.pxg",
+      "editable_sha256": "4e729ef88d20eb24a35458d31d5652ecdf6a0ff189e9545be11aed03ce9fdb98"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/04.png",
+      "source_sha256": "58e278abb77babf64f772268b37fb9d2146daec4f22266efc9eba58306e86438",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/04.pxg",
+      "editable_sha256": "9f105feedc97b2b054d6b0ab00660fe6fca33c368ef370078dc49621023e64c1"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/05.png",
+      "source_sha256": "260393edb2f115241128c767de1571eb2a9dabf0e86a3a2b275a6432c2020dec",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/05.pxg",
+      "editable_sha256": "d2f3e925a104d0aea9b18702ca9e51ac782c2d788329dab5bacd24efd8e746ab"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/06.png",
+      "source_sha256": "68d454ea99430b1f33bd104e699804b4f3a4b1b7e544af636045469cbb0fd378",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/06.pxg",
+      "editable_sha256": "287b3bf9764c463d4a3b5d06999c0005fd594c835c9859fc4d602563bbe4e58b"
+    },
+    {
+      "action": "move_sustain",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/move_sustain.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_sustain/07.png",
+      "source_sha256": "22418ea0f929e9b482094d5ae76259423dc134d355ca4394d45a4538ff72a1c3",
+      "editable": "artifacts/editable/player_actions/current/move_sustain/07.pxg",
+      "editable_sha256": "f9dbf0c40795ab29f1d333cdf94c2cb4e264918af36b457c6501a6928e0b4570"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/00.png",
+      "source_sha256": "827b58e7aa480e245d3d10c0f47d5ac5df58502b0a13f3774edad11806340461",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/00.pxg",
+      "editable_sha256": "9a2bff49d0ca45c5098e4a14514e3efe92f8dde9849a54b08a5560997f9bb046"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/01.png",
+      "source_sha256": "224844b174d1eed3f86f409b0df7bfaf85fef779a1348003ef8a3cccd9b23dcf",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/01.pxg",
+      "editable_sha256": "f57c1e590b12ae220053cae7423c565e7f2a8bdf7ede8c9b0d41350b16a638bb"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/02.png",
+      "source_sha256": "ae469d3004b0a6b77f8b70c942bfe0a70e9d01046c48928e49d785d2bf669f74",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/02.pxg",
+      "editable_sha256": "2bacc29f8adb80f60e938b4dcb3479802130283901bd51d5c7f0b319687ad111"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/03.png",
+      "source_sha256": "dfaaabf8b802e1ded1c8ffe330b0ada46b9e668d6a75ff91142f110f02a039db",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/03.pxg",
+      "editable_sha256": "c8f5881d1d4cabc1fae5a644aa377432831c30959eb588072c7841e8c8512a7e"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/04.png",
+      "source_sha256": "a071cf218f3611ecc7248d9a4d6a26ecbdf55570e3434734903bd94da9369857",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/04.pxg",
+      "editable_sha256": "71045eac964c918a807e0de81afb9fd279a8e0aec2eda52bd7ab0a661cf7ae34"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/05.png",
+      "source_sha256": "0e06581d17c74dd34effd87ba943c4bd9ead94b679f50a2d76da53521feda9f4",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/05.pxg",
+      "editable_sha256": "2dd0ec05b66f12e9755b81aa47aa75a572cbed5e05f2f77d21962b52e163d9a3"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/06.png",
+      "source_sha256": "0e49a12eb6c0793e532222311ddca282df5c41468aaa16add785a7b8fbb78884",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/06.pxg",
+      "editable_sha256": "3e7a1cabb878330b70cbe790da7b8d2d3bc64c180b4f38aea25787c461d28a13"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/07.png",
+      "source_sha256": "f8bb22d6490bed14fc37944874264a297272ed6edabf44e6ef43de07ceeb3d3f",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/07.pxg",
+      "editable_sha256": "978b57a0f5fae202203ade41871290df6799d0096c6c750c956cc0a515d0a428"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 8,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/08.png",
+      "source_sha256": "50c44dbd45f447940d4bcdcbb31ff7387a7dfba40ac6c914f122be166332ddc2",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/08.pxg",
+      "editable_sha256": "43dde1a48954d1713a602f96e295949cd6c25dc72bb5236433d2e0684084d00b"
+    },
+    {
+      "action": "jump_forward",
+      "frame": 9,
+      "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_forward/09.png",
+      "source_sha256": "176df33e1bb666f2fedc9e8b849e0bb7943214d02e16307fbe4ff041580ebcdf",
+      "editable": "artifacts/editable/player_actions/current/jump_forward/09.pxg",
+      "editable_sha256": "267b579ee1d397b1874433e6d6d08e42aa18a15b368efbec65517437be09b58e"
+    },
+    {
+      "action": "move",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/00.png",
+      "source_sha256": "92bf0f620c256b11905f2c94210c8d2f3eeb176f44764851992715307264ad78",
+      "editable": "artifacts/editable/player_actions/current/move/00.pxg",
+      "editable_sha256": "73b315cd0eed8c9f4cf2a9bd3fc91604686414d29fdb50459493facee60d65f1"
+    },
+    {
+      "action": "move",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/01.png",
+      "source_sha256": "0842017e35403282bd80a1d333661e0c29c999a13cab4651fd9de13d43902cd1",
+      "editable": "artifacts/editable/player_actions/current/move/01.pxg",
+      "editable_sha256": "61d81558d544279ce5157344b844cf4b1edd4b3576dbec77e7a8b1b07e168c9a"
+    },
+    {
+      "action": "move",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/02.png",
+      "source_sha256": "cf3f658f98fe76f0b4881de52b56c1e2d67f27688e78df46b4ca6ff7b25ad4fb",
+      "editable": "artifacts/editable/player_actions/current/move/02.pxg",
+      "editable_sha256": "ecd9925557f40da4b356f261614aa3e6eab58b64db08291f1d19d035642defa9"
+    },
+    {
+      "action": "move",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/03.png",
+      "source_sha256": "4b506567101d6553fbfb10c64df0dd33e8b17c4fff2eac81ffc71c5be1ab09a7",
+      "editable": "artifacts/editable/player_actions/current/move/03.pxg",
+      "editable_sha256": "27b998afc2ab69b9c3d440633349a48dd3f9522880bc49c0002f563d46741e64"
+    },
+    {
+      "action": "move",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/04.png",
+      "source_sha256": "20897f9de50184b08cb4d632dfd424cab6e13257b9a7df66bc33ac892da58f4c",
+      "editable": "artifacts/editable/player_actions/current/move/04.pxg",
+      "editable_sha256": "3a4edac0774a94814bc5ca374b1633bb6b9d636c1257f4d8e34dfac01ad8dfac"
+    },
+    {
+      "action": "move",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/05.png",
+      "source_sha256": "04ebfa75422894ef3a643237c76934b9e3ca248938ac60a1907e708419c35df8",
+      "editable": "artifacts/editable/player_actions/current/move/05.pxg",
+      "editable_sha256": "b5b16adf62c22b3075ab40fd99e84d7d7a2d96023735decf97e697a06ca1ffda"
+    },
+    {
+      "action": "move",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/06.png",
+      "source_sha256": "0880ae004a49bb73d55d7a023b4c88678ad62f7b57d98e1a3c1a41b25a730e0d",
+      "editable": "artifacts/editable/player_actions/current/move/06.pxg",
+      "editable_sha256": "16d1b8dbd6beb650e2bf7810d1f6e241d4b60ed9119e330c195d2a71d974cab9"
+    },
+    {
+      "action": "move",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/move.png",
+      "source": "artifacts/sources/player_actions/novice_128/move/07.png",
+      "source_sha256": "8a4ce545aaf6658bff90a57080b1380d625a01df23aae816dcf656c047f85a90",
+      "editable": "artifacts/editable/player_actions/current/move/07.pxg",
+      "editable_sha256": "0f68be06db3f3f9b5750b262dbedc6678703496a7fbb3c30ab7d47949c739270"
+    },
+    {
+      "action": "move_attack",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/00.png",
+      "source_sha256": "536cfd0cceb37e76f358c3ae18f31e8a094084baccf4d9b2f61846606d18ee0b",
+      "editable": "artifacts/editable/player_actions/current/move_attack/00.pxg",
+      "editable_sha256": "4a6c750b3a73febec540af713844c50b28a7323461d11a23c04283b659858556",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/01.png",
+      "source_sha256": "f44e3e9d858918ad729856bf1f23a9e9d6110295d2042d897c2d07064545c53a",
+      "editable": "artifacts/editable/player_actions/current/move_attack/01.pxg",
+      "editable_sha256": "30a4d0e5f2fb7424f870b4cfa10cead23b4250775ba114838f5e8b4b96b6a75f",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/02.png",
+      "source_sha256": "cdecaadf3a5dd3000d51015bbea0557df139bc88184698c0db1db7be8d023ffd",
+      "editable": "artifacts/editable/player_actions/current/move_attack/02.pxg",
+      "editable_sha256": "14b9935846f352a445bd34ff7847f07f327050b49e99e3b17d8054123f8ed0e4",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/03.png",
+      "source_sha256": "aa10dc0894ed44eb4adf59343d0900b7a7783fbad7fd487be351fcda96f8baa4",
+      "editable": "artifacts/editable/player_actions/current/move_attack/03.pxg",
+      "editable_sha256": "446b2b38d7d7be02a35380729ae2c840481c5a3781ed76adc36d19e091c7ad75",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/04.png",
+      "source_sha256": "2a0e7ee9974a2228250b0c209ddd326190724549dfe998873f1ba8637439ea5b",
+      "editable": "artifacts/editable/player_actions/current/move_attack/04.pxg",
+      "editable_sha256": "7ff692f55d0e6e63ace73c4efe08df8e76294444b7b47918062872269cd2c58f",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/05.png",
+      "source_sha256": "66a27d417705a861d77964006d1bb85b43a5f09ba304b6707ea5238ec4a09418",
+      "editable": "artifacts/editable/player_actions/current/move_attack/05.pxg",
+      "editable_sha256": "9b5be190bf8019a1b109aa82f12dd56b6ebfbe257cc1ea718d9bef6f9d9e7a7a",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/06.png",
+      "source_sha256": "56cbb76a0021bfb7ba79d5eb814d5e5aa5d5f3d0adf20e2304d8f240492cd956",
+      "editable": "artifacts/editable/player_actions/current/move_attack/06.pxg",
+      "editable_sha256": "8e0327a5d786882aea92cc460d660370abd3db7f317c8d3d0407b04ce8375cde",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/07.png",
+      "source_sha256": "0474c5eba62739a8c091c02c1b82bada8ae5a4bc09be33de96e6be8d1e59737d",
+      "editable": "artifacts/editable/player_actions/current/move_attack/07.pxg",
+      "editable_sha256": "fc3e2504df2e0755d652ff3ede3081cf2efc5925ed8d93303ec8d31a44f7e18d",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "move_attack",
+      "frame": 8,
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "source": "artifacts/sources/player_actions/novice_128/move_attack/08.png",
+      "source_sha256": "d69b311520564c05e1065cf62654188157634fb655ae728f3e0fa8898e72b386",
+      "editable": "artifacts/editable/player_actions/current/move_attack/08.pxg",
+      "editable_sha256": "47552a2f8079445ea67489d1614a19161bf6d9b70df2cb901bc0a223d7a9261c",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "jump_backward",
+      "frame": 0,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/00.png",
+      "source_sha256": "1fcb1493d1375b412b48107848223a5bcdb206dcc5e5b7873b28cc80a3bf52ab",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/00.pxg",
+      "editable_sha256": "6f6d843ab947b7d40460da6891766a47adfd35bfc5bacc167cd1297be64812a3",
+      "duration": 0.125
+    },
+    {
+      "action": "jump_backward",
+      "frame": 1,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/01.png",
+      "source_sha256": "3563752c27d9bd9fe1d07c6b22a9d6c267e7588d1aa5fdbe4b38c5e12aab03a5",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/01.pxg",
+      "editable_sha256": "b38d5fddb09aa5fcbfbda27931598e74ad946856820b34b1896864e82f76db19",
+      "duration": 0.08333333333333333
+    },
+    {
+      "action": "jump_backward",
+      "frame": 2,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/02.png",
+      "source_sha256": "31e559a4ad16e05a0a62ed581e6a011b9a89adb8b56c4b07119a9b5402a872b3",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/02.pxg",
+      "editable_sha256": "814c21290b53e38ed97b179132ac075b9d4c8ae647cf59ba03739c3e72b63eb3",
+      "duration": 0.0625
+    },
+    {
+      "action": "jump_backward",
+      "frame": 3,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/03.png",
+      "source_sha256": "0e2f2c9ef3b99ea8a14a24ac7e84e16b8a4783ef6af5c00c0192c20fea201621",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/03.pxg",
+      "editable_sha256": "96466f66d34c76f16f84121bcfd21f3360e33c34e47ba1431e2023b39d73e2a3",
+      "duration": 0.0625
+    },
+    {
+      "action": "jump_backward",
+      "frame": 4,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/04.png",
+      "source_sha256": "37422273e1ad49208e17de8a64402d27e460c7e5b9ed70967177a1aa1ee0ce27",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/04.pxg",
+      "editable_sha256": "482828882d011fdc76a4115d7767cc598bab7109da1c1b973f0f042364840b57",
+      "duration": 0.125
+    },
+    {
+      "action": "jump_backward",
+      "frame": 5,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/05.png",
+      "source_sha256": "1ea6a1862fdf037a10dd7208b48daf52b4d058214c3a43dccc24ed4e36315906",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/05.pxg",
+      "editable_sha256": "61e87c71bac443f71b8a6d41894114a566c14fab2f14d8c3e0f4e7ccdeb743b3",
+      "duration": 0.0625
+    },
+    {
+      "action": "jump_backward",
+      "frame": 6,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/06.png",
+      "source_sha256": "18f3d3a7e4c0103458e53508cf25868527a50c024e95ff31220d9a9d2a9dc9e2",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/06.pxg",
+      "editable_sha256": "41f562796a39a888c92eb82e4940ad84015b3aebd084d8c3894fe9e64b069873",
+      "duration": 0.0625
+    },
+    {
+      "action": "jump_backward",
+      "frame": 7,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/07.png",
+      "source_sha256": "747ae18ea131b57c5ceecf63ed6a6997da7167dd754dd8873e6caf2468dd9f92",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/07.pxg",
+      "editable_sha256": "a15bf3e4b0bdbcb4af447ec99be8ae445292ce34bad9cf28cca538ef5e9ae74f",
+      "duration": 0.10416666666666667
+    },
+    {
+      "action": "jump_backward",
+      "frame": 8,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/08.png",
+      "source_sha256": "435fcb76f0a1ee5f832c07e6dca1361a38deb3fd17063bc134f159efeab55bb0",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/08.pxg",
+      "editable_sha256": "0f0022924e14f0a557c6ffc83ebe092c46b40d4c0e9723677b44a217411aefa4",
+      "duration": 0.125
+    },
+    {
+      "action": "jump_backward",
+      "frame": 9,
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "source": "artifacts/sources/player_actions/novice_128/jump_backward/09.png",
+      "source_sha256": "c406eb1801ef3af106073d8a762d1a98679d3ed4a58eac7e49d9bcb3409efeac",
+      "editable": "artifacts/editable/player_actions/current/jump_backward/09.pxg",
+      "editable_sha256": "2a8d67bad590322401ffaa3463028949743c893254ea540e61b0bb4732f3a39f",
+      "duration": 0.0625
+    }
+  ]
+}

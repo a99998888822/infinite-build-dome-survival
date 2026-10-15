@@ -13,7 +13,7 @@ from scipy import signal
 from scipy.io import wavfile
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/electric_spark_options_20260925"
+OUT = ROOT / "temp/artifacts/electric_spark_options_20260925"
 RATE = 48000
 DURATION = .28
 COUNT = round(RATE * DURATION)

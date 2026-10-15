@@ -1,6 +1,6 @@
 """Install approved PXG sources once; rebuild/check production PNGs without previews.
 
-python scripts/tools/build_weapon_trio_art.py --source artifacts/previews/weapon_trio
+python scripts/tools/build_weapon_trio_art.py --source temp/artifacts/previews/weapon_trio
 python scripts/tools/build_weapon_trio_art.py --write
 """
 from pathlib import Path

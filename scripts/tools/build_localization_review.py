@@ -7,7 +7,7 @@ import shutil
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/localization/review'
+OUT = ROOT / 'temp/artifacts/localization/review'
 
 
 def main():

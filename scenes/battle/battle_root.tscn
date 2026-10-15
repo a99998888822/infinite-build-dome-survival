@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -7,8 +7,6 @@
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="5_battle_hud"]
 [ext_resource type="Shader" path="res://shaders/ui/modal_backdrop.gdshader" id="6_modal_backdrop"]
 [ext_resource type="PackedScene" path="res://scenes/ui/esc/esc_overlay.tscn" id="7_esc_overlay"]
-[ext_resource type="Script" path="res://scripts/battle/battle_environment.gd" id="8_battle_environment"]
-[ext_resource type="Shader" path="res://shaders/battle/crt_ambience.gdshader" id="10_crt_ambience"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_hp.png" id="11_hud_hp"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/hud/icon_hud_shield.png" id="12_hud_shield"]
 [ext_resource type="Texture2D" path="res://assets/ui/finance/finance_coin.svg" id="13_finance_coin"]
@@ -18,23 +16,13 @@
 [ext_resource type="Script" path="res://scripts/effects/particle_world.gd" id="17_particle_world"]
 [ext_resource type="Script" path="res://scripts/effects/particle_light_field.gd" id="19_particle_light_field"]
 [ext_resource type="Script" path="res://scripts/effects/combat_render_world.gd" id="20_combat_render_world"]
-[ext_resource type="Texture2D" path="res://assets/sprites/background/background-sky-Recovered.png" id="21_battle_sky"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-baike.png" id="22_icon_baike"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/background-icon-plugin.png" id="23_icon_plugin"]
-[ext_resource type="Script" path="res://scripts/battle/cavern_population_backdrop.gd" id="24_wetland"]
+[ext_resource type="Script" path="res://scripts/battle/cavern_sunlight_backdrop.gd" id="24_wetland"]
 [ext_resource type="Script" path="res://scripts/battle/cavern_pit_horizon.gd" id="26_ruins"]
 [ext_resource type="Script" path="res://scripts/ui/battle_utility_overlay.gd" id="27_utility"]
-[ext_resource type="Script" path="res://scripts/battle/wetland_horizon_fold.gd" id="28_horizon_fold"]
-[ext_resource type="Shader" path="res://shaders/battle/horizon_sky.gdshader" id="29_horizon_sky"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_horizon_sky"]
-shader = ExtResource("29_horizon_sky")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt_ambience"]
-shader = ExtResource("10_crt_ambience")
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
 bg_color = Color(0.035, 0.049, 0.031, 0.5)
@@ -79,7 +67,6 @@ script = ExtResource("4_battle_root")
 
 [node name="BattleEnvironment" type="CanvasLayer" parent="."]
 layer = -4
-script = ExtResource("8_battle_environment")
 
 [node name="FloorBase" type="ColorRect" parent="BattleEnvironment"]
 anchors_preset = 15
@@ -92,54 +79,6 @@ color = Color(0.051, 0.039, 0.071, 1)
 
 [node name="BattleSky" type="CanvasLayer" parent="."]
 layer = -2
-
-[node name="Sky" type="TextureRect" parent="BattleSky"]
-texture_filter = 1
-material = SubResource("ShaderMaterial_horizon_sky")
-anchor_right = 1.0
-offset_top = 0.0
-offset_bottom = 36.0
-grow_horizontal = 2
-mouse_filter = 2
-texture = ExtResource("21_battle_sky")
-expand_mode = 1
-stretch_mode = 0
-
-[node name="TopEdgeHighlight" type="ColorRect" parent="BattleSky"]
-visible = false
-anchor_right = 1.0
-offset_top = 56.0
-offset_bottom = 58.0
-grow_horizontal = 2
-mouse_filter = 2
-color = Color(0.32, 0.22, 0.08, 0.72)
-
-[node name="TopEdgeShadow" type="ColorRect" parent="BattleSky"]
-visible = false
-anchor_right = 1.0
-offset_top = 58.0
-offset_bottom = 65.0
-grow_horizontal = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.5)
-
-[node name="BottomEdgeGlow" type="ColorRect" parent="BattleSky"]
-visible = false
-anchor_right = 1.0
-offset_top = 124.0
-offset_bottom = 130.0
-grow_horizontal = 2
-mouse_filter = 2
-color = Color(0.42, 0.13, 0.07, 0.34)
-
-[node name="BottomEdgeShadow" type="ColorRect" parent="BattleSky"]
-visible = false
-anchor_right = 1.0
-offset_top = 128.0
-offset_bottom = 138.0
-grow_horizontal = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.58)
 
 [node name="DistantRuins" type="Node2D" parent="BattleSky"]
 texture_filter = 2
@@ -164,11 +103,6 @@ position = Vector2(0, -24.64)
 scale = Vector2(0.64, 0.64)
 z_index = -100
 
-[node name="HorizonFold" type="Node2D" parent="CombatRenderWorld"]
-visible = false
-z_index = -105
-script = ExtResource("28_horizon_fold")
-
 [node name="ParticleLightField" type="Node2D" parent="CombatRenderWorld"]
 z_index = 15
 script = ExtResource("19_particle_light_field")
@@ -183,18 +117,6 @@ auto_initialize_on_ready = false
 [node name="Loadout" parent="." instance=ExtResource("2_loadout")]
 
 [node name="WaveManager" parent="." instance=ExtResource("3_wave_manager")]
-
-[node name="BattleAmbience" type="CanvasLayer" parent="."]
-layer = 19
-
-[node name="CrtOverlay" type="ColorRect" parent="BattleAmbience"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-material = SubResource("ShaderMaterial_crt_ambience")
-mouse_filter = 2
 
 [node name="ModalBackdrop" type="CanvasLayer" parent="."]
 layer = 20

@@ -7,20 +7,20 @@
         128,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "idle",
       "frame_count": 1
     },
     {
       "asset": "assets/sprites/player/actions/novice_128/move.png",
-      "sha256": "6419be69fcebe8d6c9931fedeb8053cc3ada1adbddcdd44bafae2586510b423b",
+      "sha256": "a5b91026d9e8a31fd48e8936d1d15b253ef074339aed49bace5fb0e565475896",
       "size": [
         1024,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "move",
       "frame_count": 8
     },
@@ -31,8 +31,8 @@
         896,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "attack",
       "frame_count": 7
     },
@@ -43,8 +43,8 @@
         1024,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "sustain",
       "frame_count": 8
     },
@@ -55,32 +55,32 @@
         1024,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "move_sustain",
       "frame_count": 8
     },
     {
       "asset": "assets/sprites/player/actions/novice_128/jump_forward.png",
-      "sha256": "2ec59f77e6cf906c9cd6d91bb4976ce3266d1d7c4582021d7477c57104d6c1b3",
-      "size": [
-        1024,
-        128
-      ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
-      "action": "jump_forward",
-      "frame_count": 8
-    },
-    {
-      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
       "sha256": "5ffe25f41ce57b3c3e3ae190f28a38606f86df23a33140c46395e842aa996955",
       "size": [
         1280,
         128
       ],
-      "editable": "artifacts/editable/player_actions/novice_128/source-map.json",
-      "mode": "picxel_animation_frames",
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
+      "action": "jump_forward",
+      "frame_count": 10
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/jump_backward.png",
+      "sha256": "8fc997aff06bd2f11cb723f02d61b88969e9ee4e8a095462407a4195bf89d127",
+      "size": [
+        1280,
+        128
+      ],
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
       "action": "jump_backward",
       "frame_count": 10
     },
@@ -102,16 +102,6 @@
         16
       ],
       "editable": "assets/sprites/background/background-icon-plugin.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/background/background-sky-Recovered.png",
-      "sha256": "a497b7e893d09a1cc22b36cf0169d89c7a29c0fd0d2f8d946fa99a1fa8717862",
-      "size": [
-        256,
-        16
-      ],
-      "editable": "assets/sprites/background/background-sky-Recovered.png",
       "mode": "native_png_or_existing_asset_frame_sources"
     },
     {
@@ -155,58 +145,8 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/green_ground/green-ground-repeat.png",
-      "sha256": "94976449be755afe7acf6f8a257dd1a1ea0ac226cbf8a1ed8d37ceb5876f5c51",
-      "size": [
-        2176,
-        1600
-      ],
-      "editable": "assets/sprites/background/green_ground/green-ground-repeat.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/background/meadow/grass-atlas.png",
-      "sha256": "d6e78cf4f2898f019ae66085bfa67b8178ada5821c2f161980f0fc73641920ea",
-      "size": [
-        256,
-        32
-      ],
-      "editable": "assets/sprites/background/meadow/grass-atlas.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/background/meadow/ground-context.png",
-      "sha256": "6dc9b06c643382f0f08f79fc9aae85076279ca5b64787e537b8a235a9f0d43b3",
-      "size": [
-        272,
-        200
-      ],
-      "editable": "assets/sprites/background/meadow/ground-context.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/background/meadow/meadow-ground.png",
-      "sha256": "68993dc8149df5ef4ab98fde22aba528355e2d90b7b2def3705d4ca0a0dbfe2c",
-      "size": [
-        2176,
-        1600
-      ],
-      "editable": "assets/sprites/background/meadow/meadow-ground.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/background/meadow/root-shadow.png",
-      "sha256": "13047dd2904dc8b5ff62ad73a2e5802bc44323a656db69a7b2d72618cbdcb235",
-      "size": [
-        22,
-        7
-      ],
-      "editable": "assets/sprites/background/meadow/root-shadow.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_brick_fragments.png",
-      "sha256": "3979454451b6e609885cc9ecfdb87f492fe55c69391d56a18cddb75695af5426",
+      "sha256": "d0081a385d50b73d0e44558231301e6c8bde3327f46ac0dd69956d4078dc32f3",
       "size": [
         64,
         64
@@ -215,38 +155,8 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/decal_compact_moss.png",
-      "sha256": "78ced046f4cdd9d418a770b082f13c05e83b84bcf3f1659a7c1c4a1d4a2328e0",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_compact_moss.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_cyan_crack.png",
-      "sha256": "c89e0c66cc554ffa1b180ca6f7b7128a8f0356bc310051d059cc51c4c0545c35",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_cyan_crack.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_fine_crack.png",
-      "sha256": "85ef4a159be38706b33178368f347230d6c31f40abecabfa51dc4e921384f777",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_fine_crack.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_flat_stones.png",
-      "sha256": "557475f0c1a530897c840822b6566b47513c223f29a0b8042297b60a3fd734f2",
+      "sha256": "a7bd8e64738fd1ed40dc5ae711ce11808441f025aae9f93aa06d7f96928c0f0d",
       "size": [
         64,
         64
@@ -255,18 +165,8 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/decal_forked_crack.png",
-      "sha256": "60bf4f7ed635c1396efeb662a8ac5c403d44ff50d37f388bfa40aaba6567100b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_forked_crack.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_high_rubble.png",
-      "sha256": "7584a1763ac6c271edf6605ec159476dbc70634c3b456a6e5401cee71c21848b",
+      "sha256": "0c99ed704b8f64edc0f99503b7cf69307230ec2495e380db106b0630b7d9cb93",
       "size": [
         64,
         64
@@ -275,18 +175,8 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/decal_long_moss.png",
-      "sha256": "759c0142925a897304f875fcfc7f35f10fc2998e1be66cb5202e14bdaa21f353",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_long_moss.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_low_rubble.png",
-      "sha256": "d0a2231e96727252b1c938175e5da7322e5996bcc44b7877f7dc29329371fb57",
+      "sha256": "57c8bf8c9083fad74010b3d2b1a8beb680e0f9830884193b28e7b568f3f168c3",
       "size": [
         64,
         64
@@ -295,28 +185,8 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/decal_mossy_crack.png",
-      "sha256": "71de283cc7d2e493a72fe7eb5717febab0ad85edbbc51c02353c10c24545908c",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_mossy_crack.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_puddle.png",
-      "sha256": "db85af2f76b79ce4cc0d94db1f59a1469ec753a8297d4ae5594efd39a5a2c2b1",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_puddle.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_scattered_stones.png",
-      "sha256": "42a4ec9aaacfab0d4a421609a5dbf31ed1a4486a754eeb66cb3685f69522d21a",
+      "sha256": "f7e2598b03d108932273e4a746bf40cd6fb34f0b583033224b9fd977953f9158",
       "size": [
         64,
         64
@@ -326,7 +196,7 @@
     },
     {
       "asset": "assets/sprites/background/wetland/decal_single_brick.png",
-      "sha256": "b94d9c4b1875ba35d8454232e505582035bd5ecd0c4911772910d6c6e1a223bd",
+      "sha256": "d8a240e7ad7d7445f5d8b5bc2baeec11096866c31d51e4c8252331dc6c53a56b",
       "size": [
         64,
         64
@@ -335,123 +205,13 @@
       "mode": "native_png"
     },
     {
-      "asset": "assets/sprites/background/wetland/decal_spreading_crack.png",
-      "sha256": "f8d85408a7254e260220d7b9e1be36b5579ee098c79b5106473cfbc01c2b165b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_spreading_crack.png",
-      "mode": "native_png"
-    },
-    {
       "asset": "assets/sprites/background/wetland/decal_stacked_bricks.png",
-      "sha256": "ed64124e01a7d5a48efbc33795e24d13f870a7ac2619cc92f1f15338a99f9be9",
+      "sha256": "9d1b89967721d2bf9ee0e8065b2d006ce61b765eee6592a2decad14d2b1786e7",
       "size": [
         64,
         64
       ],
       "editable": "assets/sprites/background/wetland/decal_stacked_bricks.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_vertical_crack.png",
-      "sha256": "6cff34f776f12d6969cbd7e351c21fabe712e1f71df0c6ab5a62cd1686909a4b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_vertical_crack.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_wet_moss.png",
-      "sha256": "4a44795ff4c316994c92406054acd8d5c341748463edac9da9d78e530ff36319",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_wet_moss.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/decal_wet_patch.png",
-      "sha256": "2346eca536ed123092fb6edb24940bbea1b94a5fca52e296bc41dbef2f2af9ec",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/decal_wet_patch.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/fx_cyan_ripples.png",
-      "sha256": "f0e887ad1d0ab46120dc0923e2bca52ef579385ddd1f455a779c8d99a4839e9b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/fx_cyan_ripples.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/fx_fine_ripples.png",
-      "sha256": "72dfe290711d0e9178521ce55c729a0491a5e11fe349f9f6810c16c78a500abf",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/fx_fine_ripples.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_broken_arch.png",
-      "sha256": "db8ec98abbab724564faa583f64e50a0846466a5805a122387ca9d76d5434337",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_broken_arch.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_eroded_pillar.png",
-      "sha256": "6b34d5a8ac86912babf931032d2e73a7d21be1c50b5060502ba5f718b38dbea8",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_eroded_pillar.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_short_column.png",
-      "sha256": "21c2d2e87b566e63b8244e96f7f473dcef49ee175442c0c6f05d270c3551c515",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_short_column.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_square_pillar.png",
-      "sha256": "d22d3a2a676e370ae176f0d49cc2b8bb64b33b3654826edfd0d9182179723d1b",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_square_pillar.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
-      "sha256": "1738e628d0fdee82466410f0b3c5b1c02abf1b985fae558af813b51a8ef9b642",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/background/wetland/ruin_twin_pillar_wall.png",
       "mode": "native_png"
     },
     {
@@ -734,76 +494,6 @@
       "mode": "native_png_or_existing_asset_frame_sources"
     },
     {
-      "asset": "assets/sprites/player/capitalist_idle_right.png",
-      "sha256": "2c9f7774a2ae9785f4b05997fd8e957ebbbe30233ac3a380601e4dadb59498e5",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/sprites/player/capitalist_idle_right.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
-      "asset": "assets/sprites/player/combat/capitalist_idle_right.png",
-      "sha256": "8e3d637dec2ea20d250450dc0344b3e2a374d805b61b2d0f2379cb9caad1082d",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/player/combat/capitalist_idle_right.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
-      "sha256": "ba27e04bf45b3c2c270db2f88704b903df0dd2ae37e400c943d4b59ed62a65d3",
-      "size": [
-        448,
-        64
-      ],
-      "editable": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
-      "mode": "native_png",
-      "frame_size": [
-        64,
-        64
-      ],
-      "frame_count": 7
-    },
-    {
-      "asset": "assets/sprites/player/combat/void_hunter_idle_right.png",
-      "sha256": "a8b9d3bddf6d05dcb82e4c91dc2a3419a57ded0e5624c3d8ea6e999f8e090260",
-      "size": [
-        64,
-        64
-      ],
-      "editable": "assets/sprites/player/combat/void_hunter_idle_right.png",
-      "mode": "native_png"
-    },
-    {
-      "asset": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
-      "sha256": "434540298c90a59815ddceb59b578439057fd563b27cfef6ef316cb5dab6ff9b",
-      "size": [
-        384,
-        64
-      ],
-      "editable": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
-      "mode": "native_png",
-      "frame_size": [
-        64,
-        64
-      ],
-      "frame_count": 6
-    },
-    {
-      "asset": "assets/sprites/player/void_hunter_idle_right.png",
-      "sha256": "30a52e39968f231ae0b4f5f69dc88329e520de32536875cad141bed8854c24f6",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/sprites/player/void_hunter_idle_right.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
-    },
-    {
       "asset": "assets/sprites/weapons/camp_dagger.png",
       "sha256": "ce68f18bdb10b079e9b72fa13ca2a6089370a4cf149724aed657fdd6cf601d9f",
       "size": [
@@ -811,16 +501,6 @@
         32
       ],
       "editable": "assets/sprites/weapons/camp_dagger.pxg"
-    },
-    {
-      "asset": "assets/sprites/weapons/copper_lamp/copper_lamp.png",
-      "sha256": "39a6c412f0e73a82b53a27e98ef51dafc00467ddb2e32dcb1836887f8c21238b",
-      "size": [
-        768,
-        128
-      ],
-      "editable": "assets/sprites/weapons/copper_lamp/copper_lamp.png",
-      "mode": "native_png_or_existing_asset_frame_sources"
     },
     {
       "asset": "assets/sprites/weapons/earth_hammer/earth_hammer.png",
@@ -933,7 +613,7 @@
     },
     {
       "asset": "assets/ui/finance/bank_counter_desk_picxel.png",
-      "sha256": "0bfcad6372eaef76b5e9b275d89ed39b8666a167812c25cade641e8687e0cb42",
+      "sha256": "840860ff433800c0a30621863c36938a7c1d6e81226bd9b0e668e4ea5eac9ad8",
       "size": [
         128,
         64
@@ -943,7 +623,7 @@
     },
     {
       "asset": "assets/ui/finance/finance_background.png",
-      "sha256": "31449d9a8159e0f760b351956d476063bf9ec251f6f83aa45bc9a005b515e2ff",
+      "sha256": "dcf1ee91b4824fdb080665f4de7663bcade38f916d343c76bda099c2ca38d784",
       "size": [
         2752,
         1536
@@ -956,13 +636,13 @@
     },
     {
       "asset": "assets/ui/finance/goblin_banker_states.png",
-      "sha256": "a1cf146f8c80b49d4686cd100901e33b61d5dfa8e125891882a610e0478806ce",
+      "sha256": "6af8eeac43bcd160550e71d7f4e86292691c45370c87c88841989b9d9d034e0e",
       "size": [
         1280,
         256
       ],
-      "editable": "assets/ui/finance/portraits/source_manifest.json",
-      "mode": "assembled_from_editable_portraits",
+      "editable": "assets/ui/finance/goblin_banker_states.png",
+      "mode": "current_atlas_bitmap",
       "frame_size": [
         256,
         256
@@ -2345,13 +2025,13 @@
     },
     {
       "asset": "assets/ui/settlement/goblin_reactions.png",
-      "sha256": "c4b33a6e8acb29b4026686a9003ffece498ec3339e39ae1e6f1fc5a497f48123",
+      "sha256": "440b0caad8a67a9207590cb08894631070b07ad6a5cbabc13b9bc054c9d8d1ff",
       "size": [
         1024,
         1024
       ],
-      "editable": "assets/ui/finance/portraits/source_manifest.json",
-      "mode": "assembled_from_editable_portraits",
+      "editable": "assets/ui/settlement/goblin_reactions.png",
+      "mode": "current_atlas_bitmap",
       "frame_size": [
         256,
         256
@@ -2378,51 +2058,6 @@
       "mode": "native_png_or_existing_asset_frame_sources"
     },
     {
-      "asset": "assets/ui/finance/portraits/goblin_neutral.png",
-      "sha256": "efbf56a01bbfb1739d4ed148ea1540c77372439e31254d076152e57b176374dd",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/ui/finance/portraits/goblin_neutral.pxg"
-    },
-    {
-      "asset": "assets/ui/finance/portraits/goblin_downcast.png",
-      "sha256": "004d2486646c271bc99cc447eb4a21c658042a2d22cc12718ef88e4a66674436",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/ui/finance/portraits/goblin_downcast.pxg"
-    },
-    {
-      "asset": "assets/ui/finance/portraits/goblin_displeased.png",
-      "sha256": "3f46aea02e90caddc20ea47f0eb0d7cc49c001e9ea36085a4ae6f6a64f8aca3d",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/ui/finance/portraits/goblin_displeased.pxg"
-    },
-    {
-      "asset": "assets/ui/finance/portraits/goblin_smile.png",
-      "sha256": "2477bdd24f274360d1f040db5047f5e759f088e4b1199178609a465246dda2ef",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/ui/finance/portraits/goblin_smile.pxg"
-    },
-    {
-      "asset": "assets/ui/finance/portraits/goblin_delighted.png",
-      "sha256": "32a32e3fc5c75573688e51b0ff0bbd1fd0f750ed57b3130bea6b66c6912a46d1",
-      "size": [
-        256,
-        256
-      ],
-      "editable": "assets/ui/finance/portraits/goblin_delighted.pxg"
-    },
-    {
       "asset": "assets/ui/icons/augmentations/scroll_electric_spark.png",
       "sha256": "4cbc6037ddcc271090164e740c83677697ca2b0a20ffd97d28f6a0cb340a6ff7",
       "size": [
@@ -2430,57 +2065,1688 @@
         64
       ],
       "editable": "assets/ui/icons/augmentations/scroll_electric_spark.pxg"
+    },
+    {
+      "asset": "assets/sprites/player/actions/novice_128/move_attack.png",
+      "sha256": "698d04ca371803940dd10bf55d841925a3884e7ab5c8535f29190f5606d8ebde",
+      "size": [
+        1152,
+        128
+      ],
+      "editable": "artifacts/sources/player_actions/novice_128/manifest.json",
+      "mode": "verified_current_animation_grids",
+      "action": "move_attack",
+      "frame_count": 9
+    },
+    {
+      "asset": "assets/effects/electric_spark_warning/warning_masks.png",
+      "editable": "assets/effects/electric_spark_warning/warning_masks.png",
+      "mode": "native_image",
+      "sha256": "95f1269cddecd01bc6a8c8e866985edc144be59e405395faafd90340f0cbd108",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/effects/lightning_ground_arcs/ground_arcs.png",
+      "editable": "assets/effects/lightning_ground_arcs/ground_arcs.png",
+      "mode": "native_image",
+      "sha256": "0ba6f91630f252f1c5a86f644163f6818b898ec814cdee1262c9ebd09d4060b2",
+      "size": [
+        1280,
+        224
+      ]
+    },
+    {
+      "asset": "assets/effects/lightning_hit_png/flash_core.png",
+      "editable": "assets/effects/lightning_hit_png/flash_core.png",
+      "mode": "native_image",
+      "sha256": "a293735bfbb2361a0c9d2863ebe5e95a4b2cb815efa03316c2d0e7cb65775b62",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "asset": "assets/effects/lightning_hit_png/flash_glow.png",
+      "editable": "assets/effects/lightning_hit_png/flash_glow.png",
+      "mode": "native_image",
+      "sha256": "e53dbc73141ba87d2be39c14dccf9019d934c8803683b364b9e59931f8d22e96",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "asset": "assets/effects/lightning_hit_png/impact_core.png",
+      "editable": "assets/effects/lightning_hit_png/impact_core.png",
+      "mode": "native_image",
+      "sha256": "8dd35f2e504b5bb509c550a4a8641907d9d4fdc5e78cb957fff1c96747242ba0",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "asset": "assets/effects/lightning_hit_png/impact_glow.png",
+      "editable": "assets/effects/lightning_hit_png/impact_glow.png",
+      "mode": "native_image",
+      "sha256": "990fe9d552824d67af4f3f905bac4d8d2e8ceea9fb5e4122d9367188f2710abb",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/coin_hit.png",
+      "editable": "assets/effects/pixel_baked/coin_hit.png",
+      "mode": "native_image",
+      "sha256": "97c4264e2f2cb362559af521c4934c85364ab4d787bf1d52fba991c0789e5b30",
+      "size": [
+        640,
+        320
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/conduct.png",
+      "editable": "assets/effects/pixel_baked/conduct.png",
+      "mode": "native_image",
+      "sha256": "3d49a19982beb9a71bb0be1c6fd0d58798d0823563de5421545e0d44ff9d1c65",
+      "size": [
+        384,
+        64
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/frost_front_d0.png",
+      "editable": "assets/effects/pixel_baked/frost_front_d0.png",
+      "mode": "native_image",
+      "sha256": "41349f9e800ccbbe529cd5b95a1bb5f27fec78dfa491fd0385bf0db0f48c96e9",
+      "size": [
+        1280,
+        576
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/frost_front_d1.png",
+      "editable": "assets/effects/pixel_baked/frost_front_d1.png",
+      "mode": "native_image",
+      "sha256": "048d6e1dcfed4533f6edcc3039f149010f7091ad2f4d8f273fa600bc7b073fe2",
+      "size": [
+        1280,
+        576
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/grenade.png",
+      "editable": "assets/effects/pixel_baked/grenade.png",
+      "mode": "native_image",
+      "sha256": "5119aa33b248d28268ea7bbdc27348f0f946b14ba3c10b02982a7e6f17d4b8c0",
+      "size": [
+        1152,
+        576
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/hole_d0.png",
+      "editable": "assets/effects/pixel_baked/hole_d0.png",
+      "mode": "native_image",
+      "sha256": "fbac01a0161c90894b6ca3e54452c7f4dabad2fc464be6b97d2a13dc2aa55070",
+      "size": [
+        1664,
+        1456
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/hole_d1.png",
+      "editable": "assets/effects/pixel_baked/hole_d1.png",
+      "mode": "native_image",
+      "sha256": "2e108b17c6bef3ee88473a4838bda9252ec2636a200d619d663ed62b9adeb6ba",
+      "size": [
+        1664,
+        1456
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/hole_d2.png",
+      "editable": "assets/effects/pixel_baked/hole_d2.png",
+      "mode": "native_image",
+      "sha256": "a443351c7d112415ccdafab7cf190f42d91d3ea6989f8d82bbb233a2c8c57b8b",
+      "size": [
+        1664,
+        1456
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/hole_shadow.png",
+      "editable": "assets/effects/pixel_baked/hole_shadow.png",
+      "mode": "native_image",
+      "sha256": "743fc8d4baac689e987c52232780c2b166051499d606ab4381052d3057db3736",
+      "size": [
+        384,
+        140
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/ice_d0.png",
+      "editable": "assets/effects/pixel_baked/ice_d0.png",
+      "mode": "native_image",
+      "sha256": "a9aa03fbd8c70dfaa375f3914959e7dd38198394131b199f8dc1d5e65925e4b3",
+      "size": [
+        1024,
+        400
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/ice_d1.png",
+      "editable": "assets/effects/pixel_baked/ice_d1.png",
+      "mode": "native_image",
+      "sha256": "2546afb8e651bd51abb83a63f577fce21006ef7a45a3fc086c84615d56268ffc",
+      "size": [
+        1024,
+        400
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/ice_d2.png",
+      "editable": "assets/effects/pixel_baked/ice_d2.png",
+      "mode": "native_image",
+      "sha256": "ecf7f97fb12a0642709adb1dbbc163022fbd857def22b6a4d6071cdf98d45a85",
+      "size": [
+        1024,
+        400
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/ice_shell.png",
+      "editable": "assets/effects/pixel_baked/ice_shell.png",
+      "mode": "native_image",
+      "sha256": "365beb893d8572b2db1660d52564c5930e8c029655d7a20c57401f65711076d0",
+      "size": [
+        576,
+        144
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/particle_circle.png",
+      "editable": "assets/effects/pixel_baked/particle_circle.png",
+      "mode": "native_image",
+      "sha256": "2a395eb2451a3d91bb98e3b03de0758ca7f4ece39613bbd840cab0d1b6eeed9b",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/particle_square.png",
+      "editable": "assets/effects/pixel_baked/particle_square.png",
+      "mode": "native_image",
+      "sha256": "508e92238640e05034d4f6ac7d906a3288e82dbe047b7e8f55ff4d993a7523ef",
+      "size": [
+        4,
+        4
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/reflection_beam.png",
+      "editable": "assets/effects/pixel_baked/reflection_beam.png",
+      "mode": "native_image",
+      "sha256": "f199b2350a3b924c63149091b4352eca6c0c861ce75a725d5f361b382cd03de1",
+      "size": [
+        1888,
+        20
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/reflection_sides.png",
+      "editable": "assets/effects/pixel_baked/reflection_sides.png",
+      "mode": "native_image",
+      "sha256": "114dfed5404f3da8963f5c13712315de2bd2081ef06faa31f5ff30be26bc106a",
+      "size": [
+        1760,
+        20
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/shard.png",
+      "editable": "assets/effects/pixel_baked/shard.png",
+      "mode": "native_image",
+      "sha256": "91c69125ad592f5ef5942b17c5415d0b0dd5d559f231079456cf6ffe1ac18554",
+      "size": [
+        512,
+        32
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/slowed.png",
+      "editable": "assets/effects/pixel_baked/slowed.png",
+      "mode": "native_image",
+      "sha256": "de7480b7f039592fc73f7df8dd0ad22347287e7620892e0db5c6727e335fa509",
+      "size": [
+        512,
+        40
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/star.png",
+      "editable": "assets/effects/pixel_baked/star.png",
+      "mode": "native_image",
+      "sha256": "2424dfcd80e02432d6fede9f7cac94d4619b384a55fb54347a622f119e793ea0",
+      "size": [
+        192,
+        28
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/steam_d0.png",
+      "editable": "assets/effects/pixel_baked/steam_d0.png",
+      "mode": "native_image",
+      "sha256": "fb837ead967f360dedc8dced9a2052333b877dc60dbb5b968b3d729b4d91c868",
+      "size": [
+        768,
+        864
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/steam_d1.png",
+      "editable": "assets/effects/pixel_baked/steam_d1.png",
+      "mode": "native_image",
+      "sha256": "927cd9cf54b2533a351cb64b7b074a0cc952d47b559db4cef3e4ba0b6b50e307",
+      "size": [
+        768,
+        864
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_cracks.png",
+      "editable": "assets/effects/pixel_baked/sword_cracks.png",
+      "mode": "native_image",
+      "sha256": "a2d5b731160b8882bad0b5c626c881bd043cd142dc00a0a382b8f3401a8a4cbb",
+      "size": [
+        576,
+        16
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_fall_d0.png",
+      "editable": "assets/effects/pixel_baked/sword_fall_d0.png",
+      "mode": "native_image",
+      "sha256": "d02a1c4f364645baa0303269ccc869fbd3f301de10296c703f1892f56e675d94",
+      "size": [
+        640,
+        544
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_fall_d1.png",
+      "editable": "assets/effects/pixel_baked/sword_fall_d1.png",
+      "mode": "native_image",
+      "sha256": "4cc6f1dc597044bd7a890c2482f280186be6b598067fb311ded840a563188923",
+      "size": [
+        640,
+        544
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_fall_d2.png",
+      "editable": "assets/effects/pixel_baked/sword_fall_d2.png",
+      "mode": "native_image",
+      "sha256": "4cc6f1dc597044bd7a890c2482f280186be6b598067fb311ded840a563188923",
+      "size": [
+        640,
+        544
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_land_d0.png",
+      "editable": "assets/effects/pixel_baked/sword_land_d0.png",
+      "mode": "native_image",
+      "sha256": "d1a29b7294fecbe7a605527cd83c89b7deb262fd5f647b2694db157fbc286a68",
+      "size": [
+        640,
+        864
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_land_d1.png",
+      "editable": "assets/effects/pixel_baked/sword_land_d1.png",
+      "mode": "native_image",
+      "sha256": "31b50267a12c891d8521b361fd27a692eb5660dea86b1263b05ad906b9dfe661",
+      "size": [
+        640,
+        864
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_land_d2.png",
+      "editable": "assets/effects/pixel_baked/sword_land_d2.png",
+      "mode": "native_image",
+      "sha256": "9a6bf036885f87e722e920ac43be2cb8982c846d3d34bd974a4bce24b51306b8",
+      "size": [
+        640,
+        864
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_mark.png",
+      "editable": "assets/effects/pixel_baked/sword_mark.png",
+      "mode": "native_image",
+      "sha256": "ac505ebf30d79058980a6a966e67c334657b854fefea55dbab9625778feaa988",
+      "size": [
+        256,
+        32
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_wait_d0.png",
+      "editable": "assets/effects/pixel_baked/sword_wait_d0.png",
+      "mode": "native_image",
+      "sha256": "b4f1ec6cc37f528e3b1406857ae8038595c06b33fc22d2a67a13c77819b7cb61",
+      "size": [
+        640,
+        272
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_wait_d1.png",
+      "editable": "assets/effects/pixel_baked/sword_wait_d1.png",
+      "mode": "native_image",
+      "sha256": "b4f1ec6cc37f528e3b1406857ae8038595c06b33fc22d2a67a13c77819b7cb61",
+      "size": [
+        640,
+        272
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/sword_wait_d2.png",
+      "editable": "assets/effects/pixel_baked/sword_wait_d2.png",
+      "mode": "native_image",
+      "sha256": "b4f1ec6cc37f528e3b1406857ae8038595c06b33fc22d2a67a13c77819b7cb61",
+      "size": [
+        640,
+        272
+      ]
+    },
+    {
+      "asset": "assets/effects/pixel_baked/tome.png",
+      "editable": "assets/effects/pixel_baked/tome.png",
+      "mode": "native_image",
+      "sha256": "4a1a0d661e6e828e3932f1ec0ff1ce95b6eef8af08d05838f1c439f12aeec708",
+      "size": [
+        768,
+        480
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/foreground_0.png",
+      "editable": "assets/sprites/background/cavern/foreground_0.png",
+      "mode": "native_image",
+      "sha256": "544a2f0f8e223dd9b8d40a5d446ed7f1249860ffe6ae8e50ede41e3c0cef4f26",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/foreground_1.png",
+      "editable": "assets/sprites/background/cavern/foreground_1.png",
+      "mode": "native_image",
+      "sha256": "8669c89de0bcc98e8b494abdf4f340c7267aa3bdf4ffb859b060a16e18f6a4ed",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/foreground_2.png",
+      "editable": "assets/sprites/background/cavern/foreground_2.png",
+      "mode": "native_image",
+      "sha256": "fcf3c0d03828c831faf3608689b5039ac23f93a6fd5052b772917813d96d3947",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/foreground_3.png",
+      "editable": "assets/sprites/background/cavern/foreground_3.png",
+      "mode": "native_image",
+      "sha256": "1993f23743a08bf70f512222e8ec960541991f09177c095cd7edc5c927e9e57b",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/panorama_aligned.png",
+      "editable": "assets/sprites/background/cavern/panorama_aligned.png",
+      "mode": "native_image",
+      "sha256": "7b06fed212b876e2943b6246bbe5732c15306983d5f4f1162b7b67059cdf851a",
+      "size": [
+        3098,
+        206
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/prop_log.png",
+      "editable": "assets/sprites/background/cavern/prop_log.png",
+      "mode": "native_image",
+      "sha256": "96f1b60eb7f55c32672563d6d7afd73e198b4ec43dab04907f2e103b38e22100",
+      "size": [
+        69,
+        31
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/prop_rock.png",
+      "editable": "assets/sprites/background/cavern/prop_rock.png",
+      "mode": "native_image",
+      "sha256": "ba6d38bf0c70d0ae02966aec50f64df187b97b7b23707b4133ae1b819b4d3716",
+      "size": [
+        75,
+        65
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/rubble_0.png",
+      "editable": "assets/sprites/background/cavern/rubble_0.png",
+      "mode": "native_image",
+      "sha256": "8b16a00fd5b61e993f6afbb18cab4094615b0746f7d04b44b23f879016a7791e",
+      "size": [
+        100,
+        60
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/rubble_1.png",
+      "editable": "assets/sprites/background/cavern/rubble_1.png",
+      "mode": "native_image",
+      "sha256": "63e90ddfa91e5f6033b17a140901cee02b31542b71609f38e825766e92486981",
+      "size": [
+        64,
+        44
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/ruin_arch.png",
+      "editable": "assets/sprites/background/cavern/ruin_arch.png",
+      "mode": "native_image",
+      "sha256": "a3931346a442c414477e38b833c546f8a19e260bb7b5a8767f175477790ff496",
+      "size": [
+        248,
+        216
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/ruin_lamp.png",
+      "editable": "assets/sprites/background/cavern/ruin_lamp.png",
+      "mode": "native_image",
+      "sha256": "404e89c08f3020ec8643476e721c2a255750224b7ce6eb77d69c654dd777fc33",
+      "size": [
+        100,
+        156
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/ruin_obelisk.png",
+      "editable": "assets/sprites/background/cavern/ruin_obelisk.png",
+      "mode": "native_image",
+      "sha256": "0da9e273f0ccfd21ad166acf29d598fabc93a51a874e02305b1603adf0ff864f",
+      "size": [
+        88,
+        148
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/cavern/ruin_pillar.png",
+      "editable": "assets/sprites/background/cavern/ruin_pillar.png",
+      "mode": "native_image",
+      "sha256": "eb95eeb1e6450fbbdef61762312066980aa4782ba5321e909a572065e9554a87",
+      "size": [
+        104,
+        184
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/meadow/pit-contact-shadow.png",
+      "editable": "assets/sprites/background/meadow/pit-contact-shadow.png",
+      "mode": "native_image",
+      "sha256": "e779cc5eb797ccf5d2c5e64054d3e06a58e325a6643a6c04b37f5e7560f2b6e2",
+      "size": [
+        96,
+        48
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/meadow/pit-ground-context.png",
+      "editable": "assets/sprites/background/meadow/pit-ground-context.png",
+      "mode": "native_image",
+      "sha256": "51d12d6a27f706cd486e8b5ddc4f67326a50e327783e2fc428f8f810b48d5b8f",
+      "size": [
+        272,
+        200
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/meadow/pit-ground.png",
+      "editable": "assets/sprites/background/meadow/pit-ground.png",
+      "mode": "native_image",
+      "sha256": "fa90e4d02aa1288d841955e949c53af874c9b156dcb60937d5e19ddaad5d3a5c",
+      "size": [
+        2176,
+        1600
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/meadow/sunlight/cloud_noise.png",
+      "editable": "assets/sprites/background/meadow/sunlight/cloud_noise.png",
+      "mode": "native_image",
+      "sha256": "6556c6b779bd9044f63b4d62b52a967f63a200f70051867b6e29cc048668909b",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "asset": "assets/sprites/background/meadow/sunlight/rock_face_mask.png",
+      "editable": "assets/sprites/background/meadow/sunlight/rock_face_mask.png",
+      "mode": "native_image",
+      "sha256": "473fb13138275e5d57e000ad1123c2a3c9711a7780d03ebddcdea4781e1fa66a",
+      "size": [
+        75,
+        65
+      ]
+    },
+    {
+      "asset": "assets/sprites/display_clarity/player/capitalist_idle.png",
+      "editable": "assets/sprites/display_clarity/player/capitalist_idle.png",
+      "mode": "native_image",
+      "sha256": "8ad2fa2bf9478de42786e0c5195e806f37aecb926d5616f1db4cfb8ab5e3733d",
+      "size": [
+        80,
+        80
+      ]
+    },
+    {
+      "asset": "assets/sprites/display_clarity/player/capitalist_walk.png",
+      "editable": "assets/sprites/display_clarity/player/capitalist_walk.png",
+      "mode": "native_image",
+      "sha256": "e2fddacdec8b110b32eafab7defef48c43a1192d5d079dc4e3a2a98146879cee",
+      "size": [
+        560,
+        80
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/ice_shards/freeze_d0.png",
+      "editable": "assets/sprites/effects/ice_shards/freeze_d0.png",
+      "mode": "native_image",
+      "sha256": "3f7013c3f0b398dcb1ba1c6a38d58c2e82f26f19ebfff82fb01d5ec0840e0f23",
+      "size": [
+        896,
+        560
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/ice_shards/freeze_d1.png",
+      "editable": "assets/sprites/effects/ice_shards/freeze_d1.png",
+      "mode": "native_image",
+      "sha256": "85eaef28a459c693f55ad0151f04b63ea7372b7ba736974b8793e481b17111a1",
+      "size": [
+        896,
+        560
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/ice_shards/thaw_d0.png",
+      "editable": "assets/sprites/effects/ice_shards/thaw_d0.png",
+      "mode": "native_image",
+      "sha256": "3e5a3db09de43a414643edb806723a0993e57365a37056b353e37edde4946809",
+      "size": [
+        896,
+        672
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/ice_shards/thaw_d1.png",
+      "editable": "assets/sprites/effects/ice_shards/thaw_d1.png",
+      "mode": "native_image",
+      "sha256": "4464657093f4d6de445c88c80e17961b7c47d4d5eb9d6a094a3e2c537cac9583",
+      "size": [
+        896,
+        672
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d0_p0.png",
+      "editable": "assets/sprites/effects/water_wave/water_d0_p0.png",
+      "mode": "native_image",
+      "sha256": "450358dd4f022dc4c607f44bd5c733cc285abb5b486b0745b7f461cbcc87f7d1",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d0_p1.png",
+      "editable": "assets/sprites/effects/water_wave/water_d0_p1.png",
+      "mode": "native_image",
+      "sha256": "69bfd664747f37ebfaac051a14a3e779704a31c21c610e46ad315dc5768901dc",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d0_p2.png",
+      "editable": "assets/sprites/effects/water_wave/water_d0_p2.png",
+      "mode": "native_image",
+      "sha256": "f1bff1a21d7e3525849cc75712dbb61a5cb3d8d89b0744296c7a0d64dace8884",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d0_p3.png",
+      "editable": "assets/sprites/effects/water_wave/water_d0_p3.png",
+      "mode": "native_image",
+      "sha256": "62edc4517244012490b427f20ba2d96fc43460824897966db85d86c839e1387a",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d1_p0.png",
+      "editable": "assets/sprites/effects/water_wave/water_d1_p0.png",
+      "mode": "native_image",
+      "sha256": "20a978e4276c76105f73af9b2ea1c5bbd07893c9a255e87d25d28fc90e3b6f46",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d1_p1.png",
+      "editable": "assets/sprites/effects/water_wave/water_d1_p1.png",
+      "mode": "native_image",
+      "sha256": "66c0778711567e29931dc17fb870a9947c7b4bc3e3b85ba9e0bc435f2be635df",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d1_p2.png",
+      "editable": "assets/sprites/effects/water_wave/water_d1_p2.png",
+      "mode": "native_image",
+      "sha256": "1b4757eb31cd91a28b1ba70f03b9f898195f68b916f2ecd8c3681cb25d304c41",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d1_p3.png",
+      "editable": "assets/sprites/effects/water_wave/water_d1_p3.png",
+      "mode": "native_image",
+      "sha256": "743bdb59b69ddb718de865bf5d4d2d0eb6913c746bccfc4dbd596177af4c6ba2",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d2_p0.png",
+      "editable": "assets/sprites/effects/water_wave/water_d2_p0.png",
+      "mode": "native_image",
+      "sha256": "46af13798026803632668f1d365465370e5931990a32f0ad1040cc9740ca6ac8",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d2_p1.png",
+      "editable": "assets/sprites/effects/water_wave/water_d2_p1.png",
+      "mode": "native_image",
+      "sha256": "fa334e230232c4e30c98ff4a19785cc80b9bff166ad28270061a313f8160c57f",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d2_p2.png",
+      "editable": "assets/sprites/effects/water_wave/water_d2_p2.png",
+      "mode": "native_image",
+      "sha256": "f8faedb0c3c4e1b51aca9f7e1752f80b482b3505d422a2cb87704bfeaf1d55a3",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/water_wave/water_d2_p3.png",
+      "editable": "assets/sprites/effects/water_wave/water_d2_p3.png",
+      "mode": "native_image",
+      "sha256": "2f031bf804fba8801f096545a4332c590f720ac2d485d4a0895046b3f87aa26f",
+      "size": [
+        896,
+        784
+      ]
+    },
+    {
+      "asset": "assets/sprites/effects/wind_blade.png",
+      "editable": "assets/sprites/effects/wind_blade.png",
+      "mode": "native_image",
+      "sha256": "f8c6633cc6f4454df7fd89c37feb3eed0bd9ad82cd22b53e8360e34483046fd4",
+      "size": [
+        1536,
+        96
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/attack.png",
+      "editable": "assets/sprites/enemies/echo_bat/attack.png",
+      "mode": "native_image",
+      "sha256": "e24bcd5faf7c10db90172043ee4b5385392ec5db798740bbc1917ac4d5ac9710",
+      "size": [
+        1152,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/idle.png",
+      "editable": "assets/sprites/enemies/echo_bat/idle.png",
+      "mode": "native_image",
+      "sha256": "5654c24f7655f7d30bc631e92e3100204bcc3081aa88d10154f112138f6e7f1d",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/move.png",
+      "editable": "assets/sprites/enemies/echo_bat/move.png",
+      "mode": "native_image",
+      "sha256": "2460a4f94a13736e9d8e66cbacde7e06aa84783137a0fad66dbdcfba3f83f9b9",
+      "size": [
+        768,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/sonic_charge.png",
+      "editable": "assets/sprites/enemies/echo_bat/sonic_charge.png",
+      "mode": "native_image",
+      "sha256": "76749eea0698c70ce57045eaf1355382cd5eeffa4acd1368429cc104e1ff981d",
+      "size": [
+        240,
+        40
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/sonic_hit.png",
+      "editable": "assets/sprites/enemies/echo_bat/sonic_hit.png",
+      "mode": "native_image",
+      "sha256": "aafb648467b4e7e4dca1a950c7663d0d1c3fda141df5f22767956e9c83d0d0ae",
+      "size": [
+        288,
+        48
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/sonic_warning.png",
+      "editable": "assets/sprites/enemies/echo_bat/sonic_warning.png",
+      "mode": "native_image",
+      "sha256": "2dd9e028d4409b84ce2c196ea05688f612c4a10c506b9d45451685459db92b5f",
+      "size": [
+        320,
+        20
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/echo_bat/sonic_wave.png",
+      "editable": "assets/sprites/enemies/echo_bat/sonic_wave.png",
+      "mode": "native_image",
+      "sha256": "1a418c203a507acab30b6173d94975ae5be37b4989b5e29a15ceec0dab81bee9",
+      "size": [
+        384,
+        32
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/underworld_wolf/atlases/attack.png",
+      "editable": "assets/sprites/enemies/underworld_wolf/atlases/attack.png",
+      "mode": "native_image",
+      "sha256": "5f90ca64ed8f7143487ce0d1c5a6d84410ad730c90d7c73a84201b7f05e2377a",
+      "size": [
+        512,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/underworld_wolf/atlases/jump.png",
+      "editable": "assets/sprites/enemies/underworld_wolf/atlases/jump.png",
+      "mode": "native_image",
+      "sha256": "4a5bbc8fe851b99a314315eda3bc44def89c91e464dd76223a301d977dd4b794",
+      "size": [
+        1280,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/underworld_wolf/atlases/move.png",
+      "editable": "assets/sprites/enemies/underworld_wolf/atlases/move.png",
+      "mode": "native_image",
+      "sha256": "8485a23ab73d3f45ac08ba6c4ab804824c16e42539b0f76a6e2baaec14f0c486",
+      "size": [
+        896,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/enemies/underworld_wolf/frames/attack_01.png",
+      "editable": "assets/sprites/enemies/underworld_wolf/frames/attack_01.png",
+      "mode": "native_image",
+      "sha256": "022fae45b43e0042bccd55049cefb52b37589d58c3667b48af605db2f706eb40",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/ground_cracks/review_r04/ground_cracks_r04.png",
+      "editable": "assets/sprites/weapons/ground_cracks/review_r04/ground_cracks_r04.png",
+      "mode": "native_image",
+      "sha256": "fb0ea5859e21ca327e1ff5fbbf11d817f2d208cdf2b0dd4e4cff7269d7398060",
+      "size": [
+        256,
+        64
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/meteor_flail/meteor_flail_trail.png",
+      "editable": "assets/sprites/weapons/meteor_flail/meteor_flail_trail.png",
+      "mode": "native_image",
+      "sha256": "085439764373659ed11d99d3a3fe2b3ec9ea58bab8eee8deacebbda86b2a500f",
+      "size": [
+        5760,
+        320
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/dash_circle.png",
+      "editable": "assets/sprites/weapons/mobility/dash_circle.png",
+      "mode": "native_image",
+      "sha256": "f1f9e9346e6f5778bc3e399079e652f59e1332c58b7719db8a80b8d64a244ad5",
+      "size": [
+        1600,
+        160
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/dash_trail.png",
+      "editable": "assets/sprites/weapons/mobility/dash_trail.png",
+      "mode": "native_image",
+      "sha256": "907fa1de024948a75ac94e1bd40dc44f3e74134883278f4875406f32c9cc6919",
+      "size": [
+        1024,
+        64
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/muzzle.png",
+      "editable": "assets/sprites/weapons/mobility/muzzle.png",
+      "mode": "native_image",
+      "sha256": "a1fe2689b288c4ce5ef363909ea77a39e14bd78b17d8692bd1969b5d81d38340",
+      "size": [
+        576,
+        64
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/pellet.png",
+      "editable": "assets/sprites/weapons/mobility/pellet.png",
+      "mode": "native_image",
+      "sha256": "c2ece0c759b814951ab23b90ff4ee2c50f85b1e01f044606e866413c039194f2",
+      "size": [
+        192,
+        16
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/pellet_hit.png",
+      "editable": "assets/sprites/weapons/mobility/pellet_hit.png",
+      "mode": "native_image",
+      "sha256": "97c51a3fcab7b42f684b0111a3dab4ddeb5854063fb4ee36937230ef7a587cc3",
+      "size": [
+        384,
+        64
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/recoil_dust.png",
+      "editable": "assets/sprites/weapons/mobility/recoil_dust.png",
+      "mode": "native_image",
+      "sha256": "553cf5c1e64618f3d6a91d0fe934743b94e73e5f94286b1f723175e7fc14aa31",
+      "size": [
+        1024,
+        64
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/star_anchor.png",
+      "editable": "assets/sprites/weapons/mobility/star_anchor.png",
+      "mode": "native_image",
+      "sha256": "4849a33b2441b5da34ba9c284e6c9495cf3a38dc7d3fa385b87340ab279ae69d",
+      "size": [
+        1536,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/star_arrive.png",
+      "editable": "assets/sprites/weapons/mobility/star_arrive.png",
+      "mode": "native_image",
+      "sha256": "e75c68680348abd5d80b0baa1bd3bee5605ce6b5b2232eea17e1940e776bd043",
+      "size": [
+        768,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/star_depart.png",
+      "editable": "assets/sprites/weapons/mobility/star_depart.png",
+      "mode": "native_image",
+      "sha256": "ebce51eb12c15299af3b74273be65cc9d8a736d6c584f94bed2402527e19543b",
+      "size": [
+        768,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/star_return.png",
+      "editable": "assets/sprites/weapons/mobility/star_return.png",
+      "mode": "native_image",
+      "sha256": "b9f38461db71cc6d48708000894a8f2704858d4a6fff09e82c42f8e9800e09e6",
+      "size": [
+        768,
+        128
+      ]
+    },
+    {
+      "asset": "assets/sprites/weapons/mobility/star_shockwave.png",
+      "editable": "assets/sprites/weapons/mobility/star_shockwave.png",
+      "mode": "native_image",
+      "sha256": "08d056cb70073637b13e874ee8a114fdcab1018cd72618b659c56a42e064952e",
+      "size": [
+        1600,
+        160
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/back_button.png",
+      "editable": "assets/ui/character_select/back_button.png",
+      "mode": "native_image",
+      "sha256": "582e6a476dc6b75bac05b173ddbc0d681127152055438d22efed43f3645b2311",
+      "size": [
+        224,
+        92
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/background.png",
+      "editable": "assets/ui/character_select/background.png",
+      "mode": "native_image",
+      "sha256": "a617cc249f5db2b19dd794687f18fec3b2b00a8b987a76b3beaa02f4870b3216",
+      "size": [
+        2752,
+        1536
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/character_shadow.png",
+      "editable": "assets/ui/character_select/character_shadow.png",
+      "mode": "native_image",
+      "sha256": "d0a46a81f81c7cf08ae4963db6d5a6ec53c04173ebfba984ec3509d4999f2b37",
+      "size": [
+        308,
+        24
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/continue_button.png",
+      "editable": "assets/ui/character_select/continue_button.png",
+      "mode": "native_image",
+      "sha256": "78e2410bd768ebdf0e9ad4ed1d46e9a9cf7a05180876e28504d3d164b1e1e325",
+      "size": [
+        224,
+        92
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/difficulty_normal.png",
+      "editable": "assets/ui/character_select/difficulty_normal.png",
+      "mode": "native_image",
+      "sha256": "d4dfc95330da0ccb7464debc1d0377d12177f5e4e044a392e3d87074e04c1397",
+      "size": [
+        32,
+        32
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/difficulty_selected.png",
+      "editable": "assets/ui/character_select/difficulty_selected.png",
+      "mode": "native_image",
+      "sha256": "da783704a5295aa50d58ca12818ec21e6bfe6055f894597d0084ed3627da7d31",
+      "size": [
+        32,
+        32
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/roster_normal.png",
+      "editable": "assets/ui/character_select/roster_normal.png",
+      "mode": "native_image",
+      "sha256": "935b86d9570b1cfb4a741e3fd11bd1c4cf0da0fd369f627199759693742db869",
+      "size": [
+        336,
+        91
+      ]
+    },
+    {
+      "asset": "assets/ui/character_select/roster_selected.png",
+      "editable": "assets/ui/character_select/roster_selected.png",
+      "mode": "native_image",
+      "sha256": "dd038d1727dcfc4571f0530f8812da4de5ea67f3a8720634e462474421fef556",
+      "size": [
+        336,
+        91
+      ]
+    },
+    {
+      "asset": "assets/ui/combat/move_destination.png",
+      "editable": "assets/ui/combat/move_destination.png",
+      "mode": "native_image",
+      "sha256": "99048ca1ca05dac21aacf1e8e4d56100a60ffd050446c92e692b1e3443103a24",
+      "size": [
+        512,
+        64
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/challenge_debt.svg",
+      "editable": "assets/ui/finance/challenge_debt.svg",
+      "mode": "native_image",
+      "sha256": "e5a56c3e72931df18236a3b91ea6c343ab7b030e60053aa3c6d436708aced091"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_deposit.svg",
+      "editable": "assets/ui/finance/challenge_deposit.svg",
+      "mode": "native_image",
+      "sha256": "a64507fec467f0d01e7f61af631a6fb01951fddddad9016a20ceebf6f6f2c529"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_elites.svg",
+      "editable": "assets/ui/finance/challenge_elites.svg",
+      "mode": "native_image",
+      "sha256": "c57aec6848057f87fc62f62c6cd8e829709074fc040eafeeb0a32c383c594f21"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_expansion.svg",
+      "editable": "assets/ui/finance/challenge_expansion.svg",
+      "mode": "native_image",
+      "sha256": "ef04098b22bf8b80775230d338cd9840e5131ac7e0ae5b3501a6dfa9097764e5"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_fortune.svg",
+      "editable": "assets/ui/finance/challenge_fortune.svg",
+      "mode": "native_image",
+      "sha256": "5433f7568b21867463713fa1d11a2d9f18f247681419deb54d2d1023b2eb9919"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_overtime.svg",
+      "editable": "assets/ui/finance/challenge_overtime.svg",
+      "mode": "native_image",
+      "sha256": "0f6565c6810cfb81a063563e3d53616ca5f548b08c6289f7af9a00dbaef273f5"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_tide.svg",
+      "editable": "assets/ui/finance/challenge_tide.svg",
+      "mode": "native_image",
+      "sha256": "ef6bb5c79bc47e839fff046321ad56629b099a737633c893963a00d72cd320eb"
+    },
+    {
+      "asset": "assets/ui/finance/challenge_vault_painted.png",
+      "editable": "assets/ui/finance/challenge_vault_painted.png",
+      "mode": "native_image",
+      "sha256": "6c2b6af6da59c3e96a43601a4c86fcec797eee2d3d2579e661618f6739b14248",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/challenge_vault_world.png",
+      "editable": "assets/ui/finance/challenge_vault_world.png",
+      "mode": "native_image",
+      "sha256": "54c47c50fa180c929d10a47de8384b8f40529eb41ce2f7cdb06602e5f90d98c0",
+      "size": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/button.png",
+      "editable": "assets/ui/finance/clean_frames/button.png",
+      "mode": "native_image",
+      "sha256": "0d3dfdc434e880f2244a39c955a774a4b510fd2c6ee66df435a03fb7a759623e",
+      "size": [
+        216,
+        30
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/card.png",
+      "editable": "assets/ui/finance/clean_frames/card.png",
+      "mode": "native_image",
+      "sha256": "4564f9031f59020884c96876359f8b05bd09badb8247042f16a8388ebc0ff264",
+      "size": [
+        150,
+        144
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/card_epic.png",
+      "editable": "assets/ui/finance/clean_frames/card_epic.png",
+      "mode": "native_image",
+      "sha256": "792bb1d485c801072ce67034ed89d7650d2abc7d71f73dc2fc386b1472633005",
+      "size": [
+        150,
+        144
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/card_legendary.png",
+      "editable": "assets/ui/finance/clean_frames/card_legendary.png",
+      "mode": "native_image",
+      "sha256": "41e76ac88554a712492192a5f3a476bab81b5befbfe5c726f5f40c5a12c4e717",
+      "size": [
+        150,
+        144
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/card_rare.png",
+      "editable": "assets/ui/finance/clean_frames/card_rare.png",
+      "mode": "native_image",
+      "sha256": "e114c6ae5c2cc0cff804ce6ca965a4b307a92f883f1aeaf0df3dd6be29cef20e",
+      "size": [
+        150,
+        144
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/card_uncommon.png",
+      "editable": "assets/ui/finance/clean_frames/card_uncommon.png",
+      "mode": "native_image",
+      "sha256": "6c766b161fc4ffe96b97a3f91b67903bf31766b3c3e175715eba31c677a110a7",
+      "size": [
+        150,
+        144
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/input.png",
+      "editable": "assets/ui/finance/clean_frames/input.png",
+      "mode": "native_image",
+      "sha256": "860378f905e4bb92ae98e35d9672808a35c6f9b330e6bd490d1daaba8b69911b",
+      "size": [
+        216,
+        30
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/panel.png",
+      "editable": "assets/ui/finance/clean_frames/panel.png",
+      "mode": "native_image",
+      "sha256": "4ba28d992c228099335deff13122583d27cd8c4626d539b1d2ff6bf9cc7f623c",
+      "size": [
+        308,
+        160
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/selected.png",
+      "editable": "assets/ui/finance/clean_frames/selected.png",
+      "mode": "native_image",
+      "sha256": "aae651046749588cf4b7efebf9c85fb8637a0c5102699a5375f19b69d2df856b",
+      "size": [
+        216,
+        30
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/slim.png",
+      "editable": "assets/ui/finance/clean_frames/slim.png",
+      "mode": "native_image",
+      "sha256": "81fef64bfb430ad1d4e12a6614d3eb8c855ce90b0201ef9ed4b7a75d97e81a6c",
+      "size": [
+        320,
+        44
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/slot.png",
+      "editable": "assets/ui/finance/clean_frames/slot.png",
+      "mode": "native_image",
+      "sha256": "799bdf6228a71bc53d62b314ac72fd50569103ae77cef171161dc4519162cbbe",
+      "size": [
+        68,
+        54
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/clean_frames/thumb.png",
+      "editable": "assets/ui/finance/clean_frames/thumb.png",
+      "mode": "native_image",
+      "sha256": "2357facd72ace6c218d1a9c3cadd37853b17f64a86e9ce53228e576f734ba91f",
+      "size": [
+        12,
+        36
+      ]
+    },
+    {
+      "asset": "assets/ui/finance/empty_enchantment_slot.svg",
+      "editable": "assets/ui/finance/empty_enchantment_slot.svg",
+      "mode": "native_image",
+      "sha256": "3ed2de761aeac6004f83bb855d54c25105f761075cba2ce34178418893a1a586"
+    },
+    {
+      "asset": "assets/ui/finance/finance_bill.svg",
+      "editable": "assets/ui/finance/finance_bill.svg",
+      "mode": "native_image",
+      "sha256": "fca79b94e2ebb34405fb46b20abdb1560739b5db6ef3bf6b729302c1ad2d986c"
+    },
+    {
+      "asset": "assets/ui/finance/finance_coin.svg",
+      "editable": "assets/ui/finance/finance_coin.svg",
+      "mode": "native_image",
+      "sha256": "9c0a82a4963b108bad1ceb585be624a8dc8aef63bcfa32290858a7f054c0aff7"
+    },
+    {
+      "asset": "assets/ui/finance/inspect_enchantment.svg",
+      "editable": "assets/ui/finance/inspect_enchantment.svg",
+      "mode": "native_image",
+      "sha256": "ab63bc178ba753b5a249c39d816722cb5e71da6f2059435021e8f5915575e2f1"
+    },
+    {
+      "asset": "assets/ui/icons/cast_auto.svg",
+      "editable": "assets/ui/icons/cast_auto.svg",
+      "mode": "native_image",
+      "sha256": "5555647802c1e3728a5f337d65650e1c04a4be818dfcf6d2c27fb15ffa744627"
+    },
+    {
+      "asset": "assets/ui/icons/cast_manual.svg",
+      "editable": "assets/ui/icons/cast_manual.svg",
+      "mode": "native_image",
+      "sha256": "e94c49d03120eec7cd648787de48dfbff3f30508a3bc92c99c43b7b9e2d92ffc"
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_026.png",
+      "editable": "assets/ui/icons/clarity/atlas_026.png",
+      "mode": "native_image",
+      "sha256": "6076d21a9c63a45167441bdc9c23089441a0504e881d2bd9b87e9c1de804f234",
+      "size": [
+        300,
+        330
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_032.png",
+      "editable": "assets/ui/icons/clarity/atlas_032.png",
+      "mode": "native_image",
+      "sha256": "6cd507e435463ee66f4b803d38ea3453ed61024de183b37bba3ea77741a3098b",
+      "size": [
+        360,
+        396
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_034.png",
+      "editable": "assets/ui/icons/clarity/atlas_034.png",
+      "mode": "native_image",
+      "sha256": "8e32f2e2abe29344be2a254d68cd265c216a1ca8ad25aa4cc2da87ee5ad7f5b3",
+      "size": [
+        380,
+        418
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_036.png",
+      "editable": "assets/ui/icons/clarity/atlas_036.png",
+      "mode": "native_image",
+      "sha256": "36e6eecb757f3789cac49c609491f6e1c904f952e1d3708449372a60e56669fd",
+      "size": [
+        400,
+        440
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_038.png",
+      "editable": "assets/ui/icons/clarity/atlas_038.png",
+      "mode": "native_image",
+      "sha256": "9cc4aa4a4dea2388c2d25b08eedc76087946d90a020c8d53f4a890a05cf765da",
+      "size": [
+        420,
+        462
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_040.png",
+      "editable": "assets/ui/icons/clarity/atlas_040.png",
+      "mode": "native_image",
+      "sha256": "a29f503d90a775b9575317c1977fb21a571c8c73d57a7f09047e141d9f669b80",
+      "size": [
+        440,
+        484
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_044.png",
+      "editable": "assets/ui/icons/clarity/atlas_044.png",
+      "mode": "native_image",
+      "sha256": "b1d13008ea115bdeeb3d3e059c13436e48b81512eba5e5191316850ccb2a7fe1",
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_046.png",
+      "editable": "assets/ui/icons/clarity/atlas_046.png",
+      "mode": "native_image",
+      "sha256": "e466272c9a1cacb5ed30cd895229bf97deb5a1d9dfb1be7a78bb8f88d71f3c33",
+      "size": [
+        500,
+        550
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_048.png",
+      "editable": "assets/ui/icons/clarity/atlas_048.png",
+      "mode": "native_image",
+      "sha256": "8afc55bfc7d5583f771477b03f3f8381f70c796a7f375dfb2f29d488da7d031d",
+      "size": [
+        520,
+        572
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_058.png",
+      "editable": "assets/ui/icons/clarity/atlas_058.png",
+      "mode": "native_image",
+      "sha256": "3c1dc46c4a208576e0728bb002b7208722680f306c70bd586da247b3f7cd020c",
+      "size": [
+        620,
+        682
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_064.png",
+      "editable": "assets/ui/icons/clarity/atlas_064.png",
+      "mode": "native_image",
+      "sha256": "c653ac2b7af85e2a7bc820dcba7c1c0dda2c9961f297cc6e73097e632c6ba7d0",
+      "size": [
+        680,
+        680
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_076.png",
+      "editable": "assets/ui/icons/clarity/atlas_076.png",
+      "mode": "native_image",
+      "sha256": "8897bb024b2c10c8fc5e5f8a5fedb9fcc6b10b4e4eed39effe0357c522de44b7",
+      "size": [
+        800,
+        800
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_080.png",
+      "editable": "assets/ui/icons/clarity/atlas_080.png",
+      "mode": "native_image",
+      "sha256": "c4640692e8c788be0fcaf5847c2e83c061dc370537560f06b0a5dc0b31d72900",
+      "size": [
+        840,
+        840
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_084.png",
+      "editable": "assets/ui/icons/clarity/atlas_084.png",
+      "mode": "native_image",
+      "sha256": "8cf56c6a7b91b71431daa349d9b5a5218615426b3a6b61eaf9b85c064958e52b",
+      "size": [
+        880,
+        880
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_089.png",
+      "editable": "assets/ui/icons/clarity/atlas_089.png",
+      "mode": "native_image",
+      "sha256": "12476302f94402d620cec54bcbd4d68994f761fa234fce1427f83a79eb2beabc",
+      "size": [
+        930,
+        930
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_098.png",
+      "editable": "assets/ui/icons/clarity/atlas_098.png",
+      "mode": "native_image",
+      "sha256": "ae86bdb1977b2f7124326cfc277ca16e945ca95f39dcda2868e5e0668dfb5519",
+      "size": [
+        1020,
+        1020
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_102.png",
+      "editable": "assets/ui/icons/clarity/atlas_102.png",
+      "mode": "native_image",
+      "sha256": "fea0b37028692a0e6d77afb9731fd7615407a768387d5bd1d8a8e469963c9875",
+      "size": [
+        1060,
+        1060
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/clarity/atlas_107.png",
+      "editable": "assets/ui/icons/clarity/atlas_107.png",
+      "mode": "native_image",
+      "sha256": "8a3794975dc859192c6e9520214ea5f216fcb61600472a787ca19e4f8e7308b8",
+      "size": [
+        1110,
+        1110
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_crimson_coagulation_vial.png",
+      "editable": "assets/ui/icons/relics/relic_crimson_coagulation_vial.png",
+      "mode": "native_image",
+      "sha256": "e68ed6184d27d1b0b1e1a58ead10840d4d7274edf17916675e85ca219929ff2e",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_crimson_execution_seal.png",
+      "editable": "assets/ui/icons/relics/relic_crimson_execution_seal.png",
+      "mode": "native_image",
+      "sha256": "853b23478691c281113d2b9d4b57dbd76143b84bd227b6b5bb4a8600e02fa0c5",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_executioner_whetstone.png",
+      "editable": "assets/ui/icons/relics/relic_executioner_whetstone.png",
+      "mode": "native_image",
+      "sha256": "6df0c2adbe702d3cd4ca2e268ddaba09a337b6d7b2b11125fce730bd0277a0f6",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_faded_ward_talisman.png",
+      "editable": "assets/ui/icons/relics/relic_faded_ward_talisman.png",
+      "mode": "native_image",
+      "sha256": "fd7d98f60969a1233582a886f532311e3b305ba6f0cdbcef8dcc2a49a99b287d",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_falcon_sighting_pin.png",
+      "editable": "assets/ui/icons/relics/relic_falcon_sighting_pin.png",
+      "mode": "native_image",
+      "sha256": "8d9abeb3120404e8f00ee38d6564317a06dec1ecee10a9d0a47f5280a5bd6257",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_goblin_trade_charter.png",
+      "editable": "assets/ui/icons/relics/relic_goblin_trade_charter.png",
+      "mode": "native_image",
+      "sha256": "22b467c05c6bb0fcf771b74798d0153618926306af3d556b226406a09bcebf87",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_hungry_tide_bell.png",
+      "editable": "assets/ui/icons/relics/relic_hungry_tide_bell.png",
+      "mode": "native_image",
+      "sha256": "c4ab68b5f12c117f613468f3cf244fade90f9eba7294c668009769627aaa24ef",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_hunting_bone_whistle.png",
+      "editable": "assets/ui/icons/relics/relic_hunting_bone_whistle.png",
+      "mode": "native_image",
+      "sha256": "11a05ade3ffa02cb0485abfca8ef0e7c9b1de11162a4363b689e8e9d4c7dbb45",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_stilltime_amber.png",
+      "editable": "assets/ui/icons/relics/relic_stilltime_amber.png",
+      "mode": "native_image",
+      "sha256": "da364a60806b001c2caf4bde9a4629d3fa4c31359c4b33e65516465bb07545f0",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_twin_chamber_magazine.png",
+      "editable": "assets/ui/icons/relics/relic_twin_chamber_magazine.png",
+      "mode": "native_image",
+      "sha256": "b532db691fc394063a570cf0be4edf0926da49a9a2fb782bd976f9c9d85cc14d",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/relics/relic_void_market_key.png",
+      "editable": "assets/ui/icons/relics/relic_void_market_key.png",
+      "mode": "native_image",
+      "sha256": "e405aeba779b70b8879eaf456df1e87d6c620f5b6c30d358cd292f8b8904bbe0",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/weapons/weapon_dash_blade.png",
+      "editable": "assets/ui/icons/weapons/weapon_dash_blade.png",
+      "mode": "native_image",
+      "sha256": "5fb98d44a678f134eb1fa293da3f2e5db4ab55da4084cb7e60efa60fa82491d3",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/weapons/weapon_recoil_gun.png",
+      "editable": "assets/ui/icons/weapons/weapon_recoil_gun.png",
+      "mode": "native_image",
+      "sha256": "7de706f3e2cbd4c658320a0c6c714bbf59b312f0725d9f4fd17ccef7fe3ea1e9",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/weapons/weapon_star_tome.png",
+      "editable": "assets/ui/icons/weapons/weapon_star_tome.png",
+      "mode": "native_image",
+      "sha256": "7304d80784355f6413c0197e726bff3b9590bc414604a697431a271d3d6d3ff5",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/icons/weapons/weapon_star_tome_return.png",
+      "editable": "assets/ui/icons/weapons/weapon_star_tome_return.png",
+      "mode": "native_image",
+      "sha256": "13633c3533c4039fbbcee7910e983728a8031cd5042fc476b5c67183009e753f",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "asset": "assets/ui/main_menu/title_main_menu_en.png",
+      "editable": "assets/ui/main_menu/title_main_menu_en.png",
+      "mode": "native_image",
+      "sha256": "c5a39b405c6c0c6384d77225f6c891b180356c5f48482781d093fbc499727a3c",
+      "size": [
+        480,
+        137
+      ]
+    },
+    {
+      "asset": "assets/ui/stats_drawer/stats_parchment_panel.png",
+      "editable": "assets/ui/stats_drawer/stats_parchment_panel.png",
+      "mode": "native_image",
+      "sha256": "2fd0efb6858667028831a844ac33b5b7a63a528178da185332e49fdf76681749",
+      "size": [
+        128,
+        256
+      ]
     }
   ],
-  "ground_tiles": [
-    {
-      "tile": "T01_ground_A1-128",
-      "editable": "artifacts/editable/ground_tiles/T01_ground_A1-128.png"
-    },
-    {
-      "tile": "T02_ground_A2-128",
-      "editable": "artifacts/editable/ground_tiles/T02_ground_A2-128.png"
-    },
-    {
-      "tile": "T03_ground_A3-128",
-      "editable": "artifacts/editable/ground_tiles/T03_ground_A3-128.png"
-    },
-    {
-      "tile": "T04_ground_A4-128",
-      "editable": "artifacts/editable/ground_tiles/T04_ground_A4-128.png"
-    },
-    {
-      "tile": "T05_ground_B1-128",
-      "editable": "artifacts/editable/ground_tiles/T05_ground_B1-128.png"
-    },
-    {
-      "tile": "T06_ground_B2-128",
-      "editable": "artifacts/editable/ground_tiles/T06_ground_B2-128.png"
-    },
-    {
-      "tile": "T07_ground_B3-128",
-      "editable": "artifacts/editable/ground_tiles/T07_ground_B3-128.png"
-    },
-    {
-      "tile": "T08_ground_B4-128",
-      "editable": "artifacts/editable/ground_tiles/T08_ground_B4-128.png"
-    },
-    {
-      "tile": "T09_ground_C1-128",
-      "editable": "artifacts/editable/ground_tiles/T09_ground_C1-128.png"
-    },
-    {
-      "tile": "T10_ground_C2-128",
-      "editable": "artifacts/editable/ground_tiles/T10_ground_C2-128.png"
-    },
-    {
-      "tile": "T11_ground_C3-128",
-      "editable": "artifacts/editable/ground_tiles/T11_ground_C3-128.png"
-    },
-    {
-      "tile": "T12_ground_C4-128",
-      "editable": "artifacts/editable/ground_tiles/T12_ground_C4-128.png"
-    }
-  ],
-  "note": "Native PNGs are canonical for duplicate single-layer grids. Player frame_size/frame_count preserve atlas layout; unique ground tiles are lossless PNGs. Existing asset PXG/PAL and layered sources remain unchanged."
+  "note": "Current image edit entries only. Player animation grids and finance layered sources are retained under artifacts; other entries use their existing asset sources or canonical PNG. Obsolete ground tile candidates were removed.",
+  "verified_on": "2026-10-15"
 }

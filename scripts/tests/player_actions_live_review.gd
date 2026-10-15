@@ -93,6 +93,8 @@ func _stage(label: String, ids: Array, seconds: float, move := Vector2.ZERO, int
 		player.set_mobile_move_direction(move)
 		loadout.active_casting.tick(1.0/30.0)
 		var animator := player.action_animator
+		if move.x < 0.0 and animator.action in ["attack", "move_attack", "jump_forward", "jump_backward"]:
+			check(player.facing_right, "rightward cast keeps facing while movement points left")
 		subtitle.text = "%s  ·  %02d / %02d  |  128 × 128  |  实机镜头 2×" % [animator.current_clip,animator.current_frame+1,animator._count(animator.current_clip)]
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
@@ -151,28 +153,32 @@ func _run() -> void:
 	_overlay()
 	await _stage("01  待机 · 完整封口手套", [], 1.5)
 	await _stage("02  移动 · 连续步态", [], 2.0, Vector2(0.25,0))
+	await _stage("02b  移动攻击 · 单次挥拳", ["weapon_void_blade"], 1.6, Vector2(0.25,0))
 	for entry in [
 		["木质弓箭","weapon_void_blade"],["电浆炮","weapon_plasma_cannon"],
 		["铸铁榴弹炮","weapon_iron_grenade_cannon"],["食利者钱袋","weapon_rentier_purse"],
 		["异化触手","weapon_mutant_tentacle"],["裂地战锤","weapon_earth_hammer"],
 		["营地短刀","weapon_camp_dagger"],["守夜长枪","weapon_nightwatch_spear"],
 		["流星摆锤","weapon_meteor_flail"]]:
-		await _stage("03  单手挥击 · " + entry[0], [entry[1]], 1.6)
+		await _stage("03  单手挥击 · " + entry[0], [entry[1]], 1.6, Vector2(-0.25,0) if entry[1] == "weapon_void_blade" else Vector2.ZERO)
 	await _stage("04  静止抬手 · 坤舆秘仪书", ["weapon_kunyu_ritual_tome"], 2.2)
 	await _stage("05  移动抬手 · 赤铜炉灯", ["weapon_copper_lamp"], 2.5, Vector2(0.2,0.08))
 	await _stage("06  炉灯 → 弓箭打断 → 恢复抬手", ["weapon_copper_lamp","weapon_void_blade"], 2.5, Vector2.ZERO, true)
-	await _stage("07  前跃姿态 · 突进短刃", ["weapon_dash_blade"], 1.6)
-	await _stage("08  后跃姿态 · 巨型手持火炮", ["weapon_hand_cannon"], 1.6)
-	await _stage("09  移星秘典 · 向前瞬移 / 向后返回", ["weapon_star_tome"], 2.8, Vector2.ZERO, false, true)
+	await _stage("07  前跃姿态 · 突进短刃", ["weapon_dash_blade"], 1.6, Vector2(-0.25,0))
+	await _stage("08  后跃姿态 · 巨型手持火炮", ["weapon_hand_cannon"], 2.3, Vector2(-0.25,0))
+	await _stage("09  移星秘典 · 向前瞬移 / 向后返回", ["weapon_star_tome"], 3.3, Vector2.ZERO, false, true)
 	await _stage("10  移动衔接 · 左向镜像", [], 1.5, Vector2(-0.25,0))
 	player.set_mobile_move_direction(Vector2.ZERO)
 	for enemy in targets: damage_total += maxi(0,100000-enemy.current_hp)
-	check(coverage.size() == 50, "all 50 selected cells rendered, got " + str(coverage.size()))
+	var expected_cells := 0
+	for clip: String in player.action_animator._clips:
+		expected_cells += player.action_animator._count(clip)
+	check(coverage.size() == expected_cells, "all configured action cells rendered, expected %d got %d" % [expected_cells, coverage.size()])
 	check(resume_seen, "sustain resumes after real bow interruption")
-	check(casts.size() == 17, "all weapon casts plus interruption and return")
+	check(casts.size() == 18, "all weapon casts plus moving punch, interruption and return")
 	check(damage_total > 0, "real enemy damage recorded")
 	var report := {"valid":failures.is_empty(),"failures":failures,"frames":frame_index,"fps":30,
-		"coverage":coverage,"covered_frames":coverage.size(),"casts":casts,"weapon_fired":launches,
+		"coverage":coverage,"covered_frames":coverage.size(),"expected_cells":expected_cells,"casts":casts,"weapon_fired":launches,
 		"sustain_resume_seen":resume_seen,"damage_total":damage_total,"timeline":timeline,
 		"review_fixtures":{"stationary_enemies":4,"enemy_hp":100000,"player_hp":1000,"principal":400,"camera_zoom":2}}
 	if not capture_dir.is_empty():

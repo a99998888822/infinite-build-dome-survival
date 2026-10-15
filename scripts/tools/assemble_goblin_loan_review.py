@@ -6,7 +6,7 @@ import shutil
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/"artifacts/reviews/ui/goblin_loan"
+OUT=ROOT/"temp/artifacts/reviews/ui/goblin_loan"
 
 
 def main(source):

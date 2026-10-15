@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/iron_grenade_cannon_review"
+OUT = ROOT / "temp/artifacts/iron_grenade_cannon_review"
 ASSET = ROOT / "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png"
 INK = "#111b1c"
 P = {

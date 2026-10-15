@@ -29,7 +29,7 @@ func _count_spawn(node: Node) -> void:
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	var output := "res://artifacts/reviews/spawn_density_20261009/after.json"
+	var output := "res://temp/artifacts/reviews/spawn_density_20261009/after.json"
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--density-output="): output = arg.trim_prefix("--density-output=")
 	var rows: Array = []

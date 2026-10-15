@@ -421,7 +421,7 @@ res://
 
 ### 必须包含的属性
 
-1. 生存：`max_hp`、`hp_regen`、`shield`、`revive_count`、`on_kill_heal`、`armor`、`damage_taken_percent`
+1. 生存：`max_hp`、`hp_regen`、`shield`、`revive_count`、`armor`、`damage_taken_percent`
 2. 移动：`move_speed`
 4. 暴击：`crit_chance`、`crit_damage`
 5. 投射物：`projectile_count`
@@ -1170,7 +1170,6 @@ res://
 [Bootstrap] - enemy instantiate: passed
 [Bootstrap] - enemy contact damage knockback: passed
 [Bootstrap] - enemy damage and death: passed
-[Bootstrap] - enemy kill heal: passed
 [Bootstrap] - enemy spawn rate: passed
 [Bootstrap] - enemy drop table link: passed
 [Bootstrap] - wave collect exp orbs: passed

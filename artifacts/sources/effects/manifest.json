@@ -1,0 +1,38 @@
+{
+  "dash_circle": {
+    "path": "assets/sprites/weapons/mobility/dash_circle.png",
+    "sha256": "f1f9e9346e6f5778bc3e399079e652f59e1332c58b7719db8a80b8d64a244ad5"
+  },
+  "star_depart": {
+    "path": "assets/sprites/weapons/mobility/star_depart.png",
+    "sha256": "ebce51eb12c15299af3b74273be65cc9d8a736d6c584f94bed2402527e19543b"
+  },
+  "star_arrive": {
+    "path": "assets/sprites/weapons/mobility/star_arrive.png",
+    "sha256": "e75c68680348abd5d80b0baa1bd3bee5605ce6b5b2232eea17e1940e776bd043"
+  },
+  "star_return": {
+    "path": "assets/sprites/weapons/mobility/star_return.png",
+    "sha256": "b9f38461db71cc6d48708000894a8f2704858d4a6fff09e82c42f8e9800e09e6"
+  },
+  "star_anchor": {
+    "path": "assets/sprites/weapons/mobility/star_anchor.png",
+    "sha256": "4849a33b2441b5da34ba9c284e6c9495cf3a38dc7d3fa385b87340ab279ae69d"
+  },
+  "star_shockwave": {
+    "path": "assets/sprites/weapons/mobility/star_shockwave.png",
+    "sha256": "08d056cb70073637b13e874ee8a114fdcab1018cd72618b659c56a42e064952e"
+  },
+  "dash_trail": {
+    "path": "assets/sprites/weapons/mobility/dash_trail.png",
+    "sha256": "907fa1de024948a75ac94e1bd40dc44f3e74134883278f4875406f32c9cc6919"
+  },
+  "wind_blade": {
+    "path": "assets/sprites/effects/wind_blade.png",
+    "sha256": "f8c6633cc6f4454df7fd89c37feb3eed0bd9ad82cd22b53e8360e34483046fd4"
+  },
+  "flail_trail": {
+    "path": "assets/sprites/weapons/meteor_flail/meteor_flail_trail.png",
+    "sha256": "085439764373659ed11d99d3a3fe2b3ec9ea58bab8eee8deacebbda86b2a500f"
+  }
+}

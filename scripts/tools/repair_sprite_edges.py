@@ -18,13 +18,13 @@ from PIL import Image, ImageDraw
 from scipy import ndimage as ndi
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK = ROOT / 'artifacts/previews/edge_repair_20261013'
+TASK = ROOT / 'temp/artifacts/previews/edge_repair_20261013'
 BEFORE = TASK / 'before'
 AFTER = TASK / 'after'
 DISPLAY = 'assets/sprites/display_clarity'
 STATES = ['neutral', 'downcast', 'displeased', 'smile', 'delighted']
-# User selected every review category except the four monster families.
-APPROVED_CATEGORIES = {'stone', 'goblin', 'finance', 'player'}
+# Retired stone, portrait and old player sources were removed on 2026-10-15.
+APPROVED_CATEGORIES = {'finance'}
 SKILL = ROOT / '.agents/skills/picxel-external-images'
 sys.path.insert(0, str(SKILL / 'vendor/picxel/scripts'))
 import picxel as px
@@ -47,6 +47,7 @@ def sha(path):
 def snapshot():
     if (TASK/'before_manifest.json').exists():
         for entry in read(TASK/'before_manifest.json'):
+            if not (BEFORE/entry['path']).is_file(): continue
             assert sha(BEFORE/entry['path']) == entry['sha256'], entry['path']
         return
     patterns = ['assets/sprites/background/wetland/ruin_*.png',
@@ -56,7 +57,6 @@ def snapshot():
                 'assets/ui/finance/goblin*', 'assets/ui/finance/bank_counter_desk_picxel.png',
                 'assets/ui/finance/finance_background.png', 'assets/ui/settlement/goblin_reactions.png',
                 'artifacts/editable/finance_background/*', 'data_config/characters.json',
-                'data_config/battle_scenery.json','data_config/green_battlefield.json',
                 'data_config/cavern_meadow_battlefield.json','scenes/player/player_root.tscn',
                 'scenes/enemy/*.tscn','scripts/player/player_controller.gd',
                 'scripts/enemies/echo_bat.gd','scripts/enemies/elite_rusher.gd',
@@ -175,16 +175,6 @@ def original(rel):
 
 def build():
     snapshot(); records=[]
-    for path in sorted((BEFORE/'assets/sprites/background/wetland').glob('ruin_*.png')):
-        rel=path.relative_to(BEFORE).as_posix();im=original(rel)
-        fixed=repair_contour(im,'stone');put(fixed,rel)
-        save_grid(fixed,TASK/'editable/stone'/f'{path.stem}.pxg')
-        records.append({'id':path.stem,'category':'stone','before':rel,'after':rel,'frames':1,'frame_size':64})
-    for state in STATES:
-        rel=f'assets/ui/finance/portraits/goblin_{state}.png'
-        fixed=repair_contour(original(rel),'portrait');put(fixed,rel)
-        save_grid(fixed,AFTER/rel.replace('.png','.pxg'))
-        records.append({'id':'goblin_'+state,'category':'goblin','before':rel,'after':rel,'frames':1,'frame_size':256})
     rel='assets/ui/finance/bank_counter_desk_picxel.png'
     put(repair_contour(original(rel),'desk'),rel)
     records.append({'id':'small_desk','category':'finance','before':rel,'after':rel,'frames':1})
@@ -214,13 +204,6 @@ def build():
             visible=bank.crop((col*128,row*128,min(bank.width,(col+1)*128),(row+1)*128))
             tile.paste(visible,(0,0))
             save_grid(tile,dest,'tile')
-    for key,count in [('void_hunter',6),('capitalist',7)]:
-        src=f'assets/sprites/player/combat/{key}_walk_right_spritesheet.png'
-        im=original(src)
-        frames=[display_frame(im.crop((i*64,0,(i+1)*64,64)),1.2,80,'player') for i in range(count)]
-        dest=f'{DISPLAY}/player/{key}_walk.png';atlas(frames,dest)
-        idle=f'{DISPLAY}/player/{key}_idle.png';put(frames[0],idle)
-        records.append({'id':key,'category':'player','before':src,'after':dest,'frames':count,'frame_size':80,'before_frame_size':64,'factor':1.2})
     factors={}
     for rec in records:
         rec['before_sha256']=sha(BEFORE/rec['before']);rec['after_sha256']=sha(AFTER/rec['after'])
@@ -231,7 +214,7 @@ def build():
 
 
 def contact_sheets(records):
-    for category in ['stone','goblin','player','finance']:
+    for category in sorted(APPROVED_CATEGORIES):
         rows=[r for r in records if r['category']==category]
         canvas=Image.new('RGB',(1024,len(rows)*310),(37,42,48));draw=ImageDraw.Draw(canvas)
         for i,r in enumerate(rows):
@@ -280,6 +263,7 @@ def approved_output(path):
 
 def install():
     report=read(TASK/'repair_manifest.json')
+    report['records']=[r for r in report['records'] if r['category'] in APPROVED_CATEGORIES]
     validate_frames(report['records'],report['wolf_source_scales'])
     for r in report['records']:
         assert sha(AFTER/r['after'])==r['after_sha256']
@@ -287,47 +271,20 @@ def install():
     for p in sorted(AFTER.rglob('*')):
         if not p.is_file():continue
         rel=p.relative_to(AFTER);dest=ROOT/rel
-        if not approved_output(rel):continue
+        if rel.as_posix() not in {r['after'] for r in report['records']} and not rel.as_posix().startswith('artifacts/editable/finance_background/'):continue
         dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)
         installed.append({'path':rel.as_posix(),'sha256':sha(dest)})
     write(TASK/'installed_files.json',installed)
-    from install_goblin_portraits import install_assets
-    install_assets(ROOT/'assets/ui/finance/portraits')
     refresh_metadata(report)
     print('INSTALLED',len(installed),'files')
 
 
 def refresh_metadata(report):
-    for rel in ['data_config/battle_scenery.json','data_config/green_battlefield.json',
-                'data_config/cavern_meadow_battlefield.json']:
-        data=read(ROOT/rel)
-        def visit(value):
-            if isinstance(value,dict):
-                texture=value.get('texture','')
-                if texture.startswith('res://assets/sprites/background/wetland/ruin_'):
-                    for key in ['sha256','source_sha256']:
-                        if key in value:value[key]=sha(ROOT/texture[6:])
-                for child in value.values():visit(child)
-            elif isinstance(value,list):
-                for child in value:visit(child)
-        visit(data);data['edge_repair_revision']='20261013-local-contours';write(ROOT/rel,data)
-    rel='assets/ui/finance/portraits/source_manifest.json'
-    data=read(BEFORE/rel);data['previous_revision']=data['revision']
-    data['revision']='20261013-exterior-contour-repair'
-    data['neutral_unchanged']=False;data['hands_unchanged']=False
-    data['repair_method']='Local exterior contour repair on existing 256px grids; face interiors and alpha unchanged; no image generation.'
-    for record in data['portraits']:
-        record['sha256']=sha((ROOT/rel).parent/record['png'])
-        record['grid_sha256']=sha((ROOT/rel).parent/record['grid'])
-    write(ROOT/rel,data)
     rel='artifacts/editable/finance_background/source-map.json';data=read(BEFORE/rel)
     data['asset_sha256']=sha(ROOT/data['asset']);data['edge_repair_revision']='20261013-local-wood-structure-lines'
     for row in data['tiles']:row['sha256']=sha(ROOT/row['grid'])
     write(ROOT/rel,data)
-    write(ROOT/DISPLAY/'manifest.json',{'revision':'20261013','method':report['method'],
-        'runtime_scale':1.0,'source_pngs_preserved':True,
-        'approved_categories':sorted(APPROVED_CATEGORIES),'excluded_categories':['enemy'],
-        'frames':[entry for entry in report['records'] if entry['category']=='player']})
+
 
 
 if __name__=='__main__':

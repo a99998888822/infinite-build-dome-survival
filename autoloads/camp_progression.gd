@@ -11,7 +11,7 @@ const SAVE_PATH: String = "user://saves/profile_01.json"
 const BACKUP_PATH: String = "user://saves/profile_01.backup.json"
 const TEMP_PATH: String = "user://saves/profile_01.tmp.json"
 const LEGACY_SAVE_PATH: String = "user://camp_progression.json"
-# Removed duplicate purchase routes. Keep their historical prices for refunds.
+# Removed purchase routes. Keep only historical IDs and prices for save refunds.
 const RETIRED_UPGRADE_OPTIONS: Dictionary = {
 	"camp_upgrade_damage_percent_melee": {"cost": 200, "max_level": 5},
 	"camp_upgrade_attack_speed_melee": {"cost": 200, "max_level": 5},
@@ -19,6 +19,7 @@ const RETIRED_UPGRADE_OPTIONS: Dictionary = {
 	"camp_upgrade_crit_damage_melee": {"cost": 300, "max_level": 5},
 	"camp_upgrade_luck": {"cost": 800, "max_level": 10},
 	"camp_upgrade_relic_drop_rate": {"cost": 500, "max_level": 5},
+	"camp_upgrade_on_kill_heal": {"cost": 500, "max_level": 2},
 }
 const DEFAULT_VOLUME_SETTINGS: Dictionary = {
 	"master_volume": 100,

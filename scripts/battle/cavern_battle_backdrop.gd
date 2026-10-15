@@ -6,7 +6,7 @@ const ART_SCALE := 2.15
 const PATCH_SCALE := 1.0
 const GROUND_SHADER = preload("res://shaders/battle/cavern_ground.gdshader")
 const DECAL_SHADER = preload("res://shaders/battle/cavern_decoration.gdshader")
-@export_file("*.json") var scenery_config_path := "res://data_config/cavern_battlefield.json"
+@export_file("*.json") var scenery_config_path := "res://data_config/cavern_meadow_battlefield.json"
 var player: PlayerController
 var horizon: CavernBattleHorizon
 var initialized := false
@@ -18,7 +18,7 @@ var decals: Node2D
 var proxy: Node2D
 var old_visual_position := Vector2.ZERO
 var foot_offset := Vector2.ZERO
-var foot_texture: Texture2D
+var foot_bounds_cache: Dictionary = {}
 var cells: Dictionary = {}
 var cell_rect := Rect2i()
 var ground_textures: Array = []
@@ -86,12 +86,28 @@ func _setup() -> void:
 	set_process(true)
 
 func _refresh_player_foot() -> void:
-	if foot_texture == player._idle_texture: return
-	foot_texture = player._idle_texture
-	var image := foot_texture.get_image()
-	if image.is_compressed(): image.decompress()
-	var bounds := image.get_used_rect()
-	foot_offset = Vector2(0,(bounds.end.y-foot_texture.get_height()*.5+player.sprite.position.y)*absf(player.visual_anchor.scale.y)+old_visual_position.y)
+	var sprite := player.sprite
+	if sprite.texture == null: return
+	var grid := Vector2i(sprite.hframes,sprite.vframes)
+	if not foot_bounds_cache.has(sprite.texture): foot_bounds_cache[sprite.texture] = {}
+	var layouts: Dictionary = foot_bounds_cache[sprite.texture]
+	if not layouts.has(grid):
+		var image := sprite.texture.get_image()
+		if image.is_compressed(): image.decompress()
+		var frame_size := image.get_size()/grid
+		var frames: Array[Rect2i] = []
+		for y in grid.y:
+			for x in grid.x:
+				frames.append(image.get_region(Rect2i(Vector2i(x,y)*frame_size,frame_size)).get_used_rect())
+		layouts[grid] = frames
+	var bounds: Rect2i = layouts[grid][sprite.frame]
+	var rect := sprite.get_rect()
+	var bottom := rect.position.y + (rect.size.y-bounds.position.y if sprite.flip_v else float(bounds.end.y))
+	# Use the current animation frame and both visual transforms. Moving the
+	# sort anchor must not move the rendered player, camera or collision body.
+	var visual_transform := player.visual_anchor.transform
+	visual_transform.origin = old_visual_position
+	foot_offset = Vector2(0,(visual_transform*sprite.transform*Vector2(0,bottom)).y)
 	player.visual_anchor.position = old_visual_position-foot_offset
 
 func detach_player() -> void:
@@ -125,7 +141,7 @@ func _update_area() -> void:
 	world_to_ui = Transform2D(inverse.x*ratio.x,inverse.y*ratio.y,inverse.origin).affine_inverse()
 	horizon.configure_view(ui_size,player.camera_2d.get_screen_center_position().x,1.0/(inverse.x.length()*ratio.x))
 	var fade_start := horizon.far_height()*.62
-	var fade_end := horizon.far_height()+68.0*horizon.art_scale
+	var fade_end := horizon.ground_fade_end()
 	for material: ShaderMaterial in [ground_material,decoration_material]:
 		material.set_shader_parameter("view_size",ui_size)
 		material.set_shader_parameter("fade_start",fade_start)

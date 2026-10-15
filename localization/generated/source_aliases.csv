@@ -49,7 +49,6 @@ Fast-kill adaptation this wave: normal enemy HP +%d%%; miniboss HP +%d%%."
   ·  左键瞄准，再次左键施放,  ·  左键瞄准，再次左键施放,"  ·  Left-click to aim, again to cast"
   ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
   ·  滚轮切换武器,  ·  滚轮切换武器,  ·  Wheel to switch weapons
-  ·  轮椅模式：自动攻击  ·  Esc 暂停,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
  · 利息贡献已达上限, · 利息贡献已达上限, · Interest contribution capped
  · 各技能独立自动／手动, · 各技能独立自动／手动, · Per-skill Auto/Manual
  · 强化, · 强化, · Enhanced
@@ -133,8 +132,6 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 一次攻击产生的投射物数量。,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
 上一步,上一步,Previous
 下一步,下一步,Next
-"下一步结束，将全部金币存入本金。
-额外获得本金 +100，幸运 +10.",请放心交给我理财吧,Rest assured. Let me manage your money.
 下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,Next wave's health damage -30%; each point prevented costs {单价} principal. Expires when principal runs out.
 下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值},下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值},An extra powerful boss appears at the start of the next wave. Defeat it to reduce debt by {动态值}; if it survives the time limit debt increases by {动态值}
 下一波怪物生命+30%，存活后金币+{动态值},下一波怪物生命+30%，存活后金币+{动态值},Next wave's monster health +30%; survive to gain {动态值} gold
@@ -172,13 +169,11 @@ They return on your next visit."
 交易限制：本次银行存取已关闭，下波恢复。,交易限制：本次银行存取已关闭，下波恢复。,Bargain restriction: bank actions are closed until next wave.
 人性,人性,Sanity
 人性护符,人性护符,Amulet of Humanity
-仅供查看 · ESC 返回,武器下方图标切换自动／手动 · ESC 返回,Toggle Auto/Manual below each weapon · ESC to return
 仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。,仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。,"Only determines starting principal. Deposits, withdrawals and rewards independently change the live principal balance."
 仅辅助持续追击或高压力撤退；停步时不自动位移,仅辅助持续追击或高压力撤退；停步时不自动位移,Only assists sustained pursuit or retreat under pressure; never moves you while standing still
 从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。,从第4波起，上一波战斗观察至少15秒，且同类敌人中至少80%在首次受伤后1秒内死亡、玩家未明显吃力时，下一波额外加血。小怪至少20个样本，每次加10个百分点、最多60%；小Boss至少1个样本，每次加5个百分点、最多30%。吃力时回退一档，或连续两波秒怪比例低于50%时回退一档。,"From wave 4, the next wave gains HP if the previous combat lasted at least 15 seconds, at least 80% of an enemy type died within 1 second of first damage, and the player was not struggling. Requires 20 normal-enemy samples or 1 miniboss sample. Normal enemies gain 10 percentage points per step, capped at 60%; minibosses gain 5, capped at 30%. Drops one step if the player struggles or rapid kills stay below 50% for two consecutive waves."
 代价生命之种,代价生命之种,Costly Seed of Life
 优先取消瞄准；未瞄准时打开暂停,优先取消瞄准；未瞄准时打开暂停,Cancel aim first; otherwise pause
-优先承受伤害的护盾值。,每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,"Initial Shield at each wave start, read from the current stat. Absorbs damage before health."
 优秀,优秀,Uncommon
 会心,会心,Precision
 传单广告,传单广告,Advertising Flyer
@@ -189,10 +184,7 @@ They return on your next visit."
 伤害次数 [color=#7FD88F]+1[/color],伤害次数 [color=#7FD88F]+1[/color],Damage ticks [color=#7FD88F]+1[/color]
 伤害范围,伤害范围,Damage Area
 伤害范围 +15，元素伤害 +1。,伤害范围 +15，元素伤害 +1。,Damage Area +15; Elemental Damage +1.
-伤害范围 +20，伤害加成 +12；获得后每完成一波，伤害范围再 +2。,伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.
 伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,伤害范围 +20；元素伤害 +6；获得后每完成一波，伤害范围再 +2,Damage Area +20; Elemental Damage +6. Each wave completed after acquisition grants another +2 Damage Area.
-伤害范围 +30，伤害加成 +15，攻击速度 −6。,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
-伤害范围 +40，元素伤害 +8，理智值 −15。,元素伤害 +9；理智值 -5；伤害范围 +12,Elemental Damage +9; Sanity -5; Damage Area +12
 伤害范围+30,伤害范围+30,Damage Area +30
 伤害范围训练,伤害范围训练,Damage Area Training
 位移,位移,Mobility
@@ -205,9 +197,6 @@ They return on your next visit."
 侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,侵蚀 +20、利率 +1%、本金 +100、幸运 +10。,Corruption +20; Interest Rate +1%; Principal +100; Luck +10.
 侵蚀度,侵蚀度,Corruption
 侵蚀敌人属性压力,侵蚀敌人属性压力,Corruption Enemy Scaling
-"侵蚀越高，怪物越强；超过30、60后加速增长。
-按当前侵蚀：生命×%.2f、伤害×%.2f、护甲×%.2f
-每波开始锁定；同时影响小Boss数量。",影响怪物的数量和强度,Affects the number and strength of enemies.
 保存失败，返回时重试,保存失败，返回时重试,Save failed; retrying when you return
 保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,保持中距离飞行，靠近时后退、远离时追近。短暂蓄力后显示狭窄音波路径，随后向锁定方向喷吐像素螺旋音波。占普通小怪生成概率的30%。,"Flies at medium range, retreating when you approach and following when you move away. Briefly charges, marks a narrow path, then fires a pixel spiral soundwave in the locked direction. Makes up 30% of normal enemy spawns."
 保持清醒是有价值的，我可以为这份价值标上一个价格。,保持清醒是有价值的，我可以为这份价值标上一个价格。,Clarity has value. I can put a price on it.
@@ -278,7 +267,6 @@ Shockwave hits [color=#7FD88F]+1[/color]"
 先卸下，再出售,先卸下，再出售,Unequip before selling
 光辉剑,光辉剑,Radiant Sword
 全屏：,全屏：,Fullscreen:
-全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多3只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 9 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 9 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 全部,全部,All
 全部伤害增加20%,全部伤害增加20%,All damage +20%
@@ -295,6 +283,7 @@ Shockwave hits [color=#7FD88F]+1[/color]"
 冰蓝色,冰蓝色,Ice Blue
 冻结时间,冻结时间,Freeze Duration
 准备完成后，点击开始下一波。,准备完成后，点击开始下一波。,"When ready, start the next wave."
+凝时琥珀,凝时琥珀,Stilltime Amber
 出售 · %d 金币,出售 · %d 金币,Sell · %d Gold
 出售后，附魔自动归还背包,出售后，附魔自动归还背包,Enchantments return to inventory when sold
 出售失败，物品已恢复。,出售失败，物品已恢复。,Sale failed. The item was restored.
@@ -306,8 +295,6 @@ Base resale value %d; Sanity loss %d."
 出售附魔,出售附魔,Sell Enchantment
 出售附魔(%d),出售附魔(%d),Sell Enchantment (%d)
 出征档案,出征档案,Expedition File
-击杀回血,击杀回血,HP on Kill
-击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验1和基础金币1,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,Kills have a 10% chance to drop an extra experience orb worth 2 base XP and 2 base gold.
 击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,Kills have a 10% chance to drop an extra experience orb worth 2 base XP and 2 base gold.
 击杀记录,击杀记录,Kill Record
 击退力度,击退力度,Knockback Force
@@ -329,9 +316,7 @@ Base resale value %d; Sanity loss %d."
 利率,利率,Interest Rate
 利率 + 1.5%,利率 + 1.5%,Interest Rate +1.5%
 利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
-利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.5 个百分点；每波开始时侵蚀度 + 1；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
 利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −1 at each wave end. Stack limit: 1 per run.
-利率 + 4 个百分点；每波结束理智值 - 3；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −1 at each wave end. Stack limit: 1 per run.
 利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
 利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
 利率+3%，每回合理智-1。,利率+3%，每回合理智-1。,Interest Rate +3%. Sanity −1 each wave.
@@ -344,6 +329,7 @@ Base resale value %d; Sanity loss %d."
 刷新失败  金币不足,刷新失败  金币不足,Reroll failed: not enough gold
 刺出长枪，贯穿前方敌人,刺出长枪，贯穿前方敌人,Thrusts a spear through enemies ahead.
 刺鼻香包,刺鼻香包,Pungent Sachet
+刽子手磨石,刽子手磨石,Executioner's Whetstone
 剩余 %d / %d 件,剩余 %d / %d 件,Remaining: %d / %d
 剩余价值,剩余价值,Surplus Value
 剩余敌人：%d,剩余敌人：%d,Enemies left: %d
@@ -364,6 +350,7 @@ Base resale value %d; Sanity loss %d."
 单击立即施放当前武器,单击立即施放当前武器,Click once to cast the current weapon
 卷曲展开后瞬间拍地。,卷曲展开后瞬间拍地。,"Uncoils, then slams the ground."
 卸下附魔,卸下附魔,Unequip
+双腔弹匣,双腔弹匣,Twin-Chamber Magazine
 发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次,发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次,"Fires a slow lightning orb that repeatedly burns enemies touching it, up to 5 times."
 取出,取出,Withdraw
 取出 %d 金币，本金 %d → %d,取出 %d 金币，本金 %d → %d,Withdrew %d gold; principal %d → %d
@@ -410,6 +397,7 @@ Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
 哥布林交易：理智-%d（本局累计-%d）,哥布林交易：理智-%d（本局累计-%d）,Goblin Bargain: Sanity −%d (−%d total this run)
 哥布林包赚，但不包活哈哈哈！,哥布林包赚，但不包活哈哈哈！,"A goblin guarantees profit, not survival! Hahaha!"
 哥布林教你地下城,哥布林教你地下城,Goblin's Guide to Dungeons
+哥布林特许状,哥布林特许状,Goblin Trade Charter
 哥布林贷款,哥布林贷款,Goblin Loan
 哥布林贷款：获得 %d 金币，第%d波结束应还 %d 金币（每波利息 %s%%）,哥布林贷款：获得 %d 金币，第%d波结束应还 %d 金币（每波利息 %s%%）,Goblin Loan: received %d gold; repay at the end of wave %d: %d gold (interest %s%% per wave)
 哥布林金币铸造机,哥布林金币铸造机,Goblin Coin Mint
@@ -417,8 +405,10 @@ Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
 商品,商品,Item
 商店,商店,Shop
 商店折扣,商店折扣,Shop Discount
-商店折扣 + 8%,商店折扣 + 8%,Shop Discount +8%
+商店折扣 +8%；最多持有3件,商店折扣 +8%；最多持有3件,Shop Discount +8%; Maximum 3 copies
 商店议价训练,商店议价训练,Shop Bargaining Training
+商店选择数量 +1；利率 +2 个百分点,商店选择数量 +1；利率 +2 个百分点,Shop Choices +1; Interest Rate +2 percentage points
+商店选择数量 +1；商店折扣 +5%,商店选择数量 +1；商店折扣 +5%,Shop Choices +1; Shop Discount +5%
 商店选择数量加成,商店选择数量加成,Extra Shop Offers
 商店选项扩容,商店选项扩容,Expanded Shop Selection
 商旅账本,商旅账本,Merchant's Ledger
@@ -484,7 +474,6 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 尚无武器,尚无武器,No weapons yet
 局内商店,局内商店,Shop
 局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。,局内商店价格折扣；10 表示商店价格降低 10%，负值表示涨价；多个来源逐层乘算叠加。,Shop price discount. 10 means prices are 10% lower; negative values raise prices. Multiple sources multiply sequentially.
-局内或结算货币获取百分比加成。,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Camp Coins."
 局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。,局内掉落概率加成。附魔采用递减收益：正加成最多提高40%，负加成最多降低75%；其余掉落仍按百分比计算。,Bonus to drop chances. Enchantment drops have diminishing returns: positive bonuses increase the rate by up to 40%; negative bonuses reduce it by up to 75%. Other drops use percentage scaling.
 屏障结晶,屏障结晶,Barrier Crystal
 展开 / 收起本局经济日志；查看战斗收入、结息与存取款,展开 / 收起本局经济日志；查看战斗收入、结息与存取款,"Show / hide this run's economic log: combat income, interest, deposits and withdrawals"
@@ -523,15 +512,12 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。,"A training ground where survivors hone close combat, learning to wield body and blade as one."
 幸运,幸运,Luck
 幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,Luck +128; Experience Gain +35%. Sanity can no longer recover. Corruption +4 at each wave end. Stack limit: 1 per run.
-幸运 + 150；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 1；每局最多持有 1 件,幸运 + 128；经验获取 + 35%；理智值无法再回复；每波结束侵蚀度 + 4；每局最多持有 1 件,Luck +128; Experience Gain +35%. Sanity can no longer recover. Corruption +4 at each wave end. Stack limit: 1 per run.
 幸运 + 18；掉落率 + 5,幸运 + 18；掉落率 + 5,Luck +18; Drop Rate +5
 幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,幸运 + 36；每波结束理智值 + 1；金币获取 + 20%；每局最多持有 1 件,Luck +36; Sanity +1 at each wave end; Gold Gain +20%. Stack limit: 1 per run.
 幸运 + 36；理智值 - 3,幸运 + 36；理智值 - 3,Luck +36; Sanity −3
 幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,幸运 + 36；经验获取 + 12；掉落率 + 12；理智值 - 5,Luck +36; Experience Gain +12; Drop Rate +12; Sanity −5
 幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +25
-幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 5,幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25,Luck +36; Load Capacity +10; Pickup Range +10; Corruption +25
 幸运 + 64；侵蚀度 + 12,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
-幸运 + 84；侵蚀度 + 10,幸运 + 64；侵蚀度 + 12,Luck +64; Corruption +12
 幸运+20,幸运+20,Luck +20
 幸运不足，尚未解锁该级升级。,幸运不足，尚未解锁该级升级。,Not enough Luck to unlock this upgrade.
 幽焰冥狼,幽焰冥狼,Ghostflame Wolf
@@ -543,7 +529,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 建筑已解锁,建筑已解锁,Building unlocked
 建筑等级收益,建筑等级收益,Building Level Bonuses
 开始下一波,开始下一波,Next Wave
-开始战斗,开始战斗,Start Run
+开始战斗,开始战斗,Start battle
 开局属性,开局属性,Starting Stats
 开局本金 %d，利率 %s%%,开局本金 %d，利率 %s%%,Starting principal %d; interest rate %s%%
 开局获得如下四件遗物,开局获得如下四件遗物,Starts with these four relics
@@ -570,12 +556,10 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 当前没有需要偿还的贷款。,当前没有需要偿还的贷款。,There is no outstanding loan.
 当前生命：%d → %d,当前生命：%d → %d,Current HP: %d → %d
 当前设备使用系统屏幕尺寸。音量修改会自动保存。,当前设备使用系统屏幕尺寸。音量修改会自动保存。,This device uses the system screen size. Volume changes save automatically.
-影响减速、定身等控制效果强度。,所有软控、硬控持续时间乘以（1 + 控制强度 / 100），再受敌人控制抗性修正；保留雷电连锁目标数加成。,"Multiplies all soft and hard crowd-control durations by (1 + Control Strength / 100), before enemy resistance. Retains the bonus to lightning chain targets."
 影响怪物的数量和强度,影响怪物的数量和强度,Affects the number and strength of enemies.
 影响武器的攻击距离与索敌距离。,影响武器的攻击距离与索敌距离。,Affects weapon reach and targeting range.
 影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。,影响稀有遗物与升级选项；附魔掉率随幸运递减增长，最多相对提高60%。每波每掉1个附魔，普通怪后续掉率乘45%；前5波最多3个，之后4个。连续两次完成且击杀至少8个敌人的战斗未掉附魔，第二次结算补1个。,"Affects rare relics and upgrade offers. Enchantment drop bonuses diminish with Luck, up to a relative +60%. Each enchantment drop multiplies further normal-enemy chances that wave by 45%; the cap is 3 in waves 1–5, then 4. After two completed battles with at least 8 kills each and no enchantment drops, the second settlement grants one."
 影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.
-循环切换当前武器，鼠标旁图标同步切换,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
 循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
 快捷施法,快捷施法,Quick Cast
 急促弹簧扳机,急促弹簧扳机,Hasty Spring Trigger
@@ -583,13 +567,15 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 怪物属性加强20%,怪物属性加强20%,Enemy stats increased by 20%
 怪物属性加强30%,怪物属性加强30%,Enemy stats increased by 30%
 怪物数量增幅,怪物数量增幅,Enemy Count Bonus
+怪物数量增幅 +10%；掉落率 +12%；最大生命值 +5,怪物数量增幅 +10%；掉落率 +12%；最大生命值 +5,Enemy Count +10%; Drop Rate +12%; Max HP +5
+怪物数量增幅 +5%；拾取范围 +15；护甲 +5,怪物数量增幅 +5%；拾取范围 +15；护甲 +5,Enemy Count +5%; Pickup Range +15; Armor +5
+怪物数量增幅 +5%；金币获取 +15%；经验获取 +15%；最大生命值 -2,怪物数量增幅 +5%；金币获取 +15%；经验获取 +15%；最大生命值 -2,Enemy Count +5%; Gold Gain +15%; Experience Gain +15%; Max HP -2
 怪物更多,怪物更多,More enemies
 怪物频率 +20%，存活后本金 +150,怪物频率 +20%，存活后本金 +150,Monster frequency +20%; survive to gain 150 principal.
 总杀敌数,总杀敌数,Enemies Defeated
 恶意收购,恶意收购,Hostile Takeover
 成长专精,成长专精,Growth
 我给你的，外面可买不到。,我给你的，外面可买不到。,You won't find what I'm offering anywhere else.
-战地急救训练,战地急救训练,Field Medicine Training
 战斗 +%d　│　利息 +%d 金币,战斗 +%d　│　利息 +%d 金币,Combat +%d  │  Interest +%d gold
 战斗专精,战斗专精,Battle Specialization
 战斗专精 · 可选,战斗专精 · 可选,Specialization · Available
@@ -617,6 +603,7 @@ Choose the controls you prefer. This guide does not change your settings."
 投射物,投射物,Projectiles
 投射物命中目标后仍可继续飞行，额外命中2个敌人,投射物命中目标后仍可继续飞行，额外命中2个敌人,"Projectiles continue after impact, hitting 2 additional enemies."
 投射物数量,投射物数量,Projectile Count
+投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中,投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中,Projectile Count +1; Attack Speed -15%; Affects attacks that support projectile count; some attacks cannot hit the same target repeatedly
 投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件,投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件,Projectiles +1; All Damage −15%. Extra projectiles increase coverage; some weapons cannot hit the same target repeatedly. Stack limit: 1.
 投射物数量+1,投射物数量+1,Projectiles +1
 投射物数量训练,投射物数量训练,Projectile Training
@@ -624,14 +611,9 @@ Choose the controls you prefer. This guide does not change your settings."
 抛射榴弹炮，延迟后在落点爆炸,抛射榴弹炮，延迟后在落点爆炸,Lobs a grenade that explodes at its landing point after a delay.
 抛射榴弹，%.2f秒后在落点爆炸。,抛射榴弹，%.2f秒后在落点爆炸。,Lobs a grenade that explodes after %.2f seconds.
 护甲,护甲,Armor
-护甲 + 10；最大生命值 + 3,护甲 +8；最大生命 +2；近战伤害 +2,Armor +8; Max HP +2; Melee Damage +2
 护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per full 2 Corruption
-护甲 + 15；每点侵蚀度提供 1 点护甲,护甲 + 15；每满 2 点侵蚀度提供 1 点护甲,Armor +15; Armor +1 per full 2 Corruption
 护甲 + 30；侵蚀度 + 12,护甲 + 30；侵蚀度 + 12,Armor +30; Corruption +12
-护甲 + 30；侵蚀度 + 5,护甲 + 30；侵蚀度 + 12,Armor +30; Corruption +12
-护甲 + 8；理智值 + 2,护甲 + 8；理智值 + 3,Armor +8; Sanity +3
 护甲 + 8；理智值 + 3,护甲 + 8；理智值 + 3,Armor +8; Sanity +3
-护甲 + 8；移动速度 - 5,护甲 +6；近战伤害 +1,Armor +6; Melee Damage +1
 护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成,护甲 +12；移动速度 +18；理智值低于60时，取消这18点移速加成,Armor +12; Movement Speed +18. The +18 speed bonus is disabled below 60 Sanity.
 护甲 +20；最大生命 +4；近战伤害 +5,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
 护甲 +6；近战伤害 +1,护甲 +6；近战伤害 +1,Armor +6; Melee Damage +1
@@ -646,7 +628,6 @@ Choose the controls you prefer. This guide does not change your settings."
 拾取范围,拾取范围,Pickup Range
 拾取范围 + 10；经验获取 + 8,拾取范围 + 10；经验获取 + 8,Pickup Range +10; Experience Gain +8
 拾取范围 +10；金币获取 +8%；远程伤害 +3,拾取范围 +10；金币获取 +8%；远程伤害 +3,Pickup Range +10; Gold Gain +8%; Ranged Damage +3
-拾取范围 +40；金币获取 +10%,拾取范围 +10；金币获取 +8%；远程伤害 +3,Pickup Range +10; Gold Gain +8%; Ranged Damage +3
 拾取范围训练,拾取范围训练,Pickup Range Training
 拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Camp Coins."
 "按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
@@ -674,9 +655,8 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 接受并开战,接受并开战,Accept & Fight
 接触时每%.2f秒灼击，每球最多5次。,接触时每%.2f秒灼击，每球最多5次。,"Burns enemies on contact every %.2f seconds, up to 5 times per orb."
 控制强度,控制强度,Control Strength
-控制强度 + 6,控制强度 +4；元素伤害 +2,Control Power +4; Elemental Damage +2
+控制强度 +20；元素伤害 +5；移动速度 -5,控制强度 +20；元素伤害 +5；移动速度 -5,Control Power +20; Elemental Damage +5; Move Speed -5
 控制强度 +4；元素伤害 +2,控制强度 +4；元素伤害 +2,Control Power +4; Elemental Damage +2
-提高小Boss出现数量的期望，并提高所有怪物的生命、攻击和护甲。每波开始结算遗物效果后固定，战斗中变化于下一波生效。原始属性不设上下限；侵蚀超过100后怪物属性倍率继续增长，小Boss数量贡献仍有上限。,波初读取侵蚀度，增强怪物属性并增加精英配额；普通刷怪数量乘以（1 + 非负侵蚀度 / 100），小数余量跨批累计，不改变刷新间隔。,"Snapshots Corruption at wave start to strengthen enemies and raise the elite quota. Regular spawn counts are multiplied by (1 + nonnegative Corruption / 100), carrying fractional remainders between batches without changing spawn intervals."
 搜索名称或效果,搜索名称或效果,Search names or effects
 撤离结算 ×%d%%,撤离结算 ×%d%%,Withdrawal ×%d%%
 操作失败  请重试,操作失败  请重试,Action failed. Please try again.
@@ -689,18 +669,14 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 攻击专精,攻击专精,Attack
 攻击距离,攻击距离,Attack Range
 攻击距离 +15，远程伤害 +1。,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
-攻击距离 +25，伤害范围 +25，伤害加成 +20，侵蚀度 +5。,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
 攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
 攻击距离 +35，远程伤害 +3，攻击速度 −8。,攻击距离 +35，远程伤害 +3，攻击速度 −8。,Attack Range +35; Ranged Damage +3; Attack Speed −8.
 攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。,攻击距离 +40，伤害加成 +30；每满10点正攻击距离加成，额外伤害范围 +5。,Attack Range +40; Damage Bonus +30. Every full 10 points of positive Attack Range bonus grants another +5 Damage Area.
 攻击距离训练,攻击距离训练,Attack Range Training
 攻击速度,攻击速度,Attack Speed
-攻击速度 + 18；通用伤害 - 5,攻击速度 +10；通用伤害 -3%,Attack Speed +10; Damage Bonus -3%
-攻击速度 + 8；移动速度 - 5,攻击速度 +5；移动速度 -2,Attack Speed +5; Move Speed -2
 攻击速度 +10；通用伤害 -3%,攻击速度 +10；通用伤害 -3%,Attack Speed +10; Damage Bonus -3%
 攻击速度 +12；连续静止1秒后，额外攻击距离 +40、伤害加成 +20；移动立即取消额外加成。,攻击速度 +12；连续静止1秒后，额外攻击距离 +40、伤害加成 +20；移动立即取消额外加成。,"Attack Speed +12. After standing still for 1 second, gain Attack Range +40 and Damage Bonus +20. Moving immediately removes these extra bonuses."
 攻击速度 +18；通用伤害 -5%,攻击速度 +18；通用伤害 -5%,Attack Speed +18; Damage Bonus -5%
-攻击速度 +30%；通用伤害 -8%,攻击速度 +18；通用伤害 -5%,Attack Speed +18; Damage Bonus -5%
 攻击速度 +5；移动速度 -2,攻击速度 +5；移动速度 -2,Attack Speed +5; Move Speed -2
 攻击速度+10%,攻击速度+10%,Attack Speed +10%
 攻击速度+25%,攻击速度+25%,Attack Speed +25%
@@ -730,24 +706,21 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 暂时不用,暂时不用,Not Now
 暴击,暴击,Critical
 暴击伤害,暴击伤害,Crit Damage
+暴击伤害加成 +20 个百分点；近战伤害 +2,暴击伤害加成 +20 个百分点；近战伤害 +2,Critical Damage +20 percentage points; Melee Damage +2
+暴击伤害加成 +30 个百分点；通用伤害 +10%；最大生命值 -3,暴击伤害加成 +30 个百分点；通用伤害 +10%；最大生命值 -3,Critical Damage +30 percentage points; Damage +10%; Max HP -3
 暴击伤害增加50%,暴击伤害增加50%,Crit Damage +50%
-暴击几率 + 3；暴击伤害 + 10,远程伤害 +1；暴击几率 +3 个百分点,Ranged Damage +1; Crit Chance +3 percentage points
-暴击几率 + 7,暴击几率 +7 个百分点；远程伤害 +2,Crit Chance +7 percentage points; Ranged Damage +2
 暴击几率 +12 个百分点；暴击伤害 +35 个百分点,暴击几率 +12 个百分点；暴击伤害 +35 个百分点,Crit Chance +12 percentage points; Crit Damage +35 percentage points
 暴击几率 +7 个百分点；远程伤害 +2,暴击几率 +7 个百分点；远程伤害 +2,Crit Chance +7 percentage points; Ranged Damage +2
 暴击时的伤害百分比，150表示造成150%伤害。,暴击时的伤害百分比，150表示造成150%伤害。,Damage percentage on a critical hit. 150 means 150% damage.
 暴击率,暴击率,Crit Chance
+暴击率 +10 个百分点；攻击速度 +5%,暴击率 +10 个百分点；攻击速度 +5%,Critical Chance +10 percentage points; Attack Speed +5%
 暴击率增加25%,暴击率增加25%,Crit Chance +25%
 最基础的近战追踪小怪示例。,最基础的近战追踪小怪示例。,A basic melee enemy that pursues the player.
 最大生命,最大生命,Max HP
 最大生命 +4；护甲 +12；近战伤害 +3,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
-最大生命值 + 10；护甲 + 5；理智值 + 2,最大生命值 + 10；护甲 + 5；理智值 + 3,Max HP +10; Armor +5; Sanity +3
 最大生命值 + 10；护甲 + 5；理智值 + 3,最大生命值 + 10；护甲 + 5；理智值 + 3,Max HP +10; Armor +5; Sanity +3
-最大生命值 + 12；护甲 + 8；移动速度 - 15,护甲 +20；最大生命 +4；近战伤害 +5,Armor +20; Max HP +4; Melee Damage +5
 最大生命值 + 3；移动速度 + 10；理智值 - 3,最大生命值 + 3；移动速度 + 10；理智值 - 3,Max HP +3; Movement Speed +10; Sanity −3
-最大生命值 + 3；移动速度 + 10；理智值 - 5,最大生命值 + 3；移动速度 + 10；理智值 - 3,Max HP +3; Movement Speed +10; Sanity −3
-最大生命值 + 4,最大生命值 + 4,Max HP +4
-最大生命值 + 5、护甲 + 15；每秒回血 - 0.1；侵蚀度 + 2；理智值 - 2,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
+最大生命值 +4；血包恢复量 +1,最大生命值 +4；血包恢复量 +1,Max HP +4; Health Pack Healing +1
 最大生命训练,最大生命训练,Max HP Training
 最大生命＋5；每3点侵蚀度＋1理智,最大生命＋5；每3点侵蚀度＋1理智,Max HP +5; Sanity +1 per 3 Corruption
 最终承受伤害百分比，整数100表示承受100%伤害，89表示承受89%伤害。,最终承受伤害百分比，整数100表示承受100%伤害，89表示承受89%伤害。,Final percentage of incoming damage taken. 100 means 100% damage; 89 means 89%.
@@ -795,7 +768,6 @@ Bank actions refresh next wave."
 本金不足,本金不足,Not enough principal
 本金不足（需%d）,本金不足（需%d）,Insufficient principal (requires %d)
 本金升级,本金升级,Principal Upgrade
-本金归零时触发：立即获得当前金币 ×2 的本金，并获得复活次数 + 1,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
 本金赠予,本金赠予,Principal Grant
 本金：%d    ·    当前利率：%.1f%%,本金：%d    ·    当前利率：%.1f%%,Principal: %d    ·    Current rate: %.1f%%
 本金：%s,本金：%s,Principal: %s
@@ -813,13 +785,11 @@ Bank actions refresh next wave."
 正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,"Positive attack speed: cooldown multiplier = 1 / (1 + log2(1 + attack_speed / 100) / 3). At 100, cooldown is 75%; at 300, 60%. Negative attack speed uses 1 / (1 + attack_speed / 300). Does not speed up attack animations or spray ticks."
 此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,This weapon cannot use that enchantment. The Cast-Iron Grenade Launcher does not currently support Pierce.
 此武器暂不支持%s附魔,此武器暂不支持%s附魔,This weapon does not support %s enchantments yet
-此页仅供查看，附魔操作请前往理财页面；再次按 ESC 或点击返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 武器,武器,Weapon
 武器下方图标切换自动／手动 · ESC 返回,武器下方图标切换自动／手动 · ESC 返回,Toggle Auto/Manual below each weapon · ESC to return
 武器伤害训练,武器伤害训练,Weapon Damage Training
 武器升级,武器升级,Weapon Upgrade
 武器图鉴解锁、武器基础强化,武器图鉴解锁、武器基础强化,Unlock weapons and improve their base stats
-武器在范围内自动攻击；位移武器仍需手动施放,按每种技能的选择自动施放；Esc 武器下方图标切换自动／手动,Auto-casts according to each skill's choice; toggle Auto/Manual below each weapon in the Esc inventory
 武器攻速训练,武器攻速训练,Attack Speed Training
 武器暴击训练,武器暴击训练,Critical Chance Training
 武器爆伤训练,武器爆伤训练,Critical Damage Training
@@ -837,11 +807,6 @@ Upgrade resale: %d"
 每 %d 只敌人折算 1 营地币。,每 %d 只敌人折算 1 营地币。,Every %d enemies defeated earns 1 Camp Coin.
 每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,"Every %d interest received earns 1 Camp Coin, capped at %d coins per completed wave."
 每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Camp Coin. Spending and deposits do not reduce this total.
-每 100 本金提供通用伤害加成 + 1%,每满100本金，通用伤害 +1%，上限30%；最多持有1件,"All Damage +1% per full 100 Principal, up to +30%. Stack limit: 1 per run."
-每 50 本金 +1 护甲,每满50本金，护甲 +1，上限40；最多持有1件,"Armor +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
-每 50 本金 +1 攻速,每满50本金，攻击速度 +1，上限40；最多持有1件,"Attack Speed +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
-每两秒生成 1 点护盾；侵蚀度 + 5,每秒护盾 +0.3；元素伤害 +3,Shield Regen +0.3/s; Elemental Damage +3
-每个回合结息次数 + 1；每局最多持有 1 件,每个回合结息次数 + 1；每局最多持有 1 件,One additional interest settlement per wave. Stack limit: 1 per run.
 "每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
@@ -858,37 +823,29 @@ Enchantment Slots [color=#7FD88F]+1[/color]"
 散弹数量 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
 Pellets [color=#7FD88F]+1[/color]"
 每完整度过一波获得 %d 营地币。,每完整度过一波获得 %d 营地币。,Each completed wave earns %d Camp Coins.
-每次击杀敌人后恢复的固定生命值。,每次击杀敌人后恢复的固定生命值。,Flat health restored per enemy killed.
 每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,Percentage increase in enemies per spawn group. 20 means 20% more.
 每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
 每次结算利息的时候有20%的概率翻倍,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
 每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
+每波初始护盾 +4,每波初始护盾 +4,Starting Shield each wave +4
 每波初始护盾 +6；元素伤害 +2,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
 每波利息 %d%%,每波利息 %d%%,Interest: %d%% per wave
 每波利息 %s%%,每波利息 %s%%,Interest: %s%% per wave
-每波开始前可存入或取出的局内金币本金。,仅影响开局初始本金；局内存取款和奖励独立修改实际本金余额。,"Only determines starting principal. Deposits, withdrawals and rewards independently change the live principal balance."
-每波开始护盾 + 20；每秒护盾 + 1；护盾被击碎时侵蚀度 + 1，若承伤后仍存活则恢复 3 生命值,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
 每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,每波开始时的初始护盾值；波初读取当前属性，优先承受伤害。,"Initial Shield at each wave start, read from the current stat. Absorbs damage before health."
-每波开始生成10点护盾,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
 每波开始自动本金 + 15,每波开始自动本金 + 15,Automatically gain +15 Principal at the start of each wave.
+每波结息次数 +1；每局最多持有1件,每波结息次数 +1；每局最多持有1件,One additional interest settlement per wave; Maximum 1 copy per run
 每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件,每波结束理智值 + 2；通用伤害 - 8%；每局最多持有 1 件,Sanity +2 at each wave end; All Damage −8%. Stack limit: 1 per run.
-每满100本金，攻击距离＋3、伤害加成＋3%，上限30,远程伤害 +5；每满100本金，攻击距离 +3（上限30）、通用伤害 +1%（上限10%）,Ranged Damage +5; every full 100 Principal grants Attack Range +3 (up to +30) and Damage Bonus +1% (up to +10%).
-每满100本金，最大生命 + 1；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有 1 件,每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,"Max HP +1 per full 100 Principal, up to +20. Losing Principal removes the corresponding bonus; increasing Max HP does not heal. Stack limit: 1 per run."
 每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,"Max HP +1 per full 100 Principal, up to +20. Losing Principal removes the corresponding bonus; increasing Max HP does not heal. Stack limit: 1 per run."
 每满100本金，通用伤害 +1%，上限30%；最多持有1件,每满100本金，通用伤害 +1%，上限30%；最多持有1件,"All Damage +1% per full 100 Principal, up to +30%. Stack limit: 1 per run."
-每满500本金，金币获取 + 10%，理智 - 2；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有 1 件,每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,"For each full 500 Principal: Coin Gain +10% and Sanity -2, up to 5 tiers (+50% Coin Gain and -10 Sanity). Withdrawing Principal removes the corresponding bonus and cost; sanity recovery is still blocked by the Candle of Rebirth's Hellfire. Stack limit: 1 per run."
 每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,每满500本金，金币获取 +10%，理智 -2，最多5档（金币获取上限 +50%，理智最多 -10）；取出本金会撤销对应加成与代价，理智回升仍受轮回业火之烛限制；每局最多持有1件,"For each full 500 Principal: Coin Gain +10% and Sanity -2, up to 5 tiers (+50% Coin Gain and -10 Sanity). Withdrawing Principal removes the corresponding bonus and cost; sanity recovery is still blocked by the Candle of Rebirth's Hellfire. Stack limit: 1 per run."
 每满50本金，护甲 +1，上限40；最多持有1件,每满50本金，护甲 +1，上限40；最多持有1件,"Armor +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
 每满50本金，攻击速度 +1，上限40；最多持有1件,每满50本金，攻击速度 +1，上限40；最多持有1件,"Attack Speed +1 per full 50 Principal, up to +40. Stack limit: 1 per run."
 每秒回血,每秒回血,HP Regen/s
-每秒回血 + 0.1；理智值 + 1,每秒回血 + 0.1；理智值 + 2,HP Regen/s +0.1; Sanity +2
 每秒回血 + 0.1；理智值 + 2,每秒回血 + 0.1；理智值 + 2,HP Regen/s +0.1; Sanity +2
 每秒回血 + 0.25；侵蚀度 + 5,每秒回血 + 0.25；侵蚀度 + 5,HP Regen/s +0.25; Corruption +5
-每秒回血 + 0.25；每波过后，侵蚀度 + 1,每秒回血 + 0.25；侵蚀度 + 5,HP Regen/s +0.25; Corruption +5
-每秒回血 + 0.4；每波过后，理智值 - 1,每秒回血 + 0.4；理智值 - 8,HP Regen/s +0.4; Sanity −8
 每秒回血 + 0.4；理智值 - 8,每秒回血 + 0.4；理智值 - 8,HP Regen/s +0.4; Sanity −8
-每秒回血 + 0.6；最大生命值 - 1；理智值 - 3,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
 每秒回血 + 0.75；利率 - 1 个百分点,每秒回血 + 0.75；利率 - 1 个百分点,HP Regen/s +0.75; Interest Rate −1 percentage point
+每秒回血 +0.1；血包恢复量 +1,每秒回血 +0.1；血包恢复量 +1,HP Regen/s +0.1; Health Pickup Recovery +1
 每秒回血 +0.5；元素伤害 +4,每秒回血 +0.5；元素伤害 +4,HP Regen +0.5/s; Elemental Damage +4
 每秒回血 +0.5；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件,每秒回血 +0.5；额外复活次数 +1，使用后消耗；持有期间每次复活后侵蚀度 +20；最多持有 1 件,"HP Regen/s +0.5. Grants 1 extra Revive, consumed on use. While held, every revival adds +20 Corruption. Stack limit: 1."
 每秒回血训练,每秒回血训练,Health Regeneration Training
@@ -949,13 +906,15 @@ Pellets [color=#7FD88F]+1[/color]"
 特殊物品,特殊物品,Special Item
 狂战士铜质徽章,狂战士铜质徽章,Berserker's Copper Badge
 狂热分红,狂热分红,Frenzied Dividend
+猎群骨哨,猎群骨哨,Hunting Bone Whistle
+猎隼瞄针,猎隼瞄针,Falcon Sighting Pin
+猩红断头印,猩红断头印,Crimson Execution Seal
 猪猪存钱罐,猪猪存钱罐,Piggy Bank
 玩家可装备武器的总负载上限。,玩家可装备武器的总负载上限。,Maximum combined load of equipped weapons.
 理智,理智,Sanity
 理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,"Sanity %s: purchase prices +%s%%, sale proceeds −%s%%, interest income −%s%%."
 理智+%s，本金-%d,理智+%s，本金-%d,"Sanity +%s, principal -%d."
 理智值,理智值,Sanity
-理智值 + 10；幸运 - 5,理智值 + 12；幸运 - 5,Sanity +12; Luck −5
 理智值 + 12；幸运 - 5,理智值 + 12；幸运 - 5,Sanity +12; Luck −5
 理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,理智初始为100，不设上下限。低于100时购买更贵、出售收益和利息降低；达到100时按原有价格和全额利息结算。,"Sanity starts at 100 and has no upper or lower bound. Below 100, purchases cost more and sale proceeds and interest decrease. At 100, prices and interest are normal."
 理智变化后价格已更新，请查看新价格再购买。,理智变化后价格已更新，请查看新价格再购买。,Prices changed with Sanity. Review the new price before purchasing.
@@ -1043,6 +1002,7 @@ Pellets [color=#7FD88F]+1[/color]"
 结霜,结霜,Frost
 统计,统计,Damage
 继续,继续,Continue
+绯红凝血瓶,绯红凝血瓶,Crimson Coagulation Vial
 羁绊,羁绊,Synergy
 背景音乐,背景音乐,Music
 自动,自动,automatic
@@ -1060,13 +1020,9 @@ Pellets [color=#7FD88F]+1[/color]"
 范围与控制,范围与控制,Area & Control
 范围伤害倍率,范围伤害倍率,Area Damage Multiplier
 获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。,获得 %d 金币；第%d波结束应还 %d 金币。每波利息 %s%%。,"Receive %d gold; at the end of wave %d, repay %d gold. Interest: %s%% per wave."
-获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%. Stack limit: 1 per run.
 获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,获得时：本金 +100；利率 +2 个百分点；金币获取 -10%；商店价格 +10%；最多持有1件,On acquisition: Principal +100. Interest Rate +2 percentage points; Gold Gain −10%; Shop Prices +10%. Stack limit: 1 per run.
-获得时：本金 +100；利率 +2%；攻击速度 -12,获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12. Stack limit: 1 per run.
 获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,获得时：本金 +100；利率 +2%；攻击速度 -12；最多持有1件,On acquisition: Principal +100. Interest Rate +2%; Attack Speed −12. Stack limit: 1 per run.
-获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5. Stack limit: 1 per run.
 获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5. Stack limit: 1 per run.
-获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1. Stack limit: 1 per run.
 获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1. Stack limit: 1 per run.
 获得时：本金 +（20×当前波次）；最多持有 5 件,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
 营地币：%d,营地币：%d,Camp Coins: %d
@@ -1076,6 +1032,7 @@ Pellets [color=#7FD88F]+1[/color]"
 营地结算,营地结算,Camp Settlement
 落雷,落雷,Lightning
 薪酬调整方案,薪酬调整方案,Salary Adjustment
+虚市通行钥匙,虚市通行钥匙,Void Market Key
 虚空刃 升至2级,虚空刃 升至2级,Void Blade to Lv.2
 虚空收纳匣,虚空收纳匣,Void Storage Casket
 虚空触手,虚空触手,Void Tentacle
@@ -1090,6 +1047,7 @@ Pellets [color=#7FD88F]+1[/color]"
 裂纹铜铃,裂纹铜铃,Cracked Bronze Bell
 装备到当前武器,装备到当前武器,Equip on Current Weapon
 装备至此武器,装备至此武器,Equip on This Weapon
+褪色护身符,褪色护身符,Faded Ward Talisman
 观星者的镜片,观星者的镜片,Stargazer's Lens
 角色名册,角色名册,Roster
 角色或敌人的最大生命值。,角色或敌人的最大生命值。,Maximum health of a character or enemy.
@@ -1169,10 +1127,6 @@ Brackets show the price before Sanity and the Sanity adjustment.
 近战,近战,Melee
 近战专属营地建筑，解锁近战物理升级选项,近战专属营地建筑，解锁近战物理升级选项,Melee camp building; unlocks physical melee upgrades
 近战伤害,近战伤害,Melee Damage
-近战伤害 + 10；移速 - 20,近战伤害 +11；移动速度 -10,Melee Damage +11; Move Speed -10
-近战伤害 + 1；护甲 - 3,近战伤害 +2；护甲 -3,Melee Damage +2; Armor -3
-近战伤害 + 3；每秒回血 - 0.25,近战伤害 +5；每秒回血 -0.1,Melee Damage +5; HP Regen -0.1/s
-近战伤害 + 8；护甲 - 10,近战伤害 +8；护甲 -8,Melee Damage +8; Armor -8
 近战伤害 +11；移动速度 -10,近战伤害 +11；移动速度 -10,Melee Damage +11; Move Speed -10
 近战伤害 +2；护甲 -3,近战伤害 +2；护甲 -3,Melee Damage +2; Armor -3
 近战伤害 +5；每秒回血 -0.1,近战伤害 +5；每秒回血 -0.1,Melee Damage +5; HP Regen -0.1/s
@@ -1307,9 +1261,6 @@ Circular slash hits [color=#7FD88F]+1[/color]"
 远程,远程,Ranged
 远程专属营地建筑，解锁远程与投射物相关升级选项,远程专属营地建筑，解锁远程与投射物相关升级选项,Ranged camp building; unlocks ranged and projectile upgrades
 远程伤害,远程伤害,Ranged Damage
-远程伤害 + 1；拾取范围 - 10,远程伤害 +2；拾取范围 -10,Ranged Damage +2; Pickup Range -10
-远程伤害 + 3；每秒回血 - 0.25,远程伤害 +4；每秒回血 -0.1,Ranged Damage +4; HP Regen -0.1/s
-远程伤害 + 6；最大生命 - 3,远程伤害 +7；最大生命 -3,Ranged Damage +7; Max HP -3
 远程伤害 +1；暴击几率 +3 个百分点,远程伤害 +1；暴击几率 +3 个百分点,Ranged Damage +1; Crit Chance +3 percentage points
 远程伤害 +2；拾取范围 -10,远程伤害 +2；拾取范围 -10,Ranged Damage +2; Pickup Range -10
 远程伤害 +4；每秒回血 -0.1,远程伤害 +4；每秒回血 -0.1,Ranged Damage +4; HP Regen -0.1/s
@@ -1366,14 +1317,11 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 选择一张附魔，可装备、转移或出售,选择一张附魔，可装备、转移或出售,"Select an enchantment to equip, transfer or sell"
 选择一组，直接用本金购买。,选择一组，直接用本金购买。,Select a group to purchase with principal.
 通关！,通关！,Victory!
-通用伤害 + 25%；理智值 - 20；每局最多持有 1 件,通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,All Damage +25%; Sanity −8. Stack limit: 1 per run.
 通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,All Damage +25%; Sanity −8. Stack limit: 1 per run.
 通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 1 Sanity, or 2 if Sanity is already below 0. Stack limit: 1 per run."
-通用伤害 + 40%；每波结束理智值 - 3，触发前理智低于0时改为 - 5；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 1 Sanity, or 2 if Sanity is already below 0. Stack limit: 1 per run."
 通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
 通用伤害+4%,通用伤害+4%,All damage +4%
 通用伤害百分比加成，影响近战、远程和元素武器伤害。,通用伤害百分比加成，影响近战、远程和元素武器伤害。,"General percentage damage bonus affecting melee, ranged and elemental weapons."
-通过曲线函数换算为受到伤害百分比；正护甲减伤，负护甲增伤。,100 护甲减伤 25%，300 护甲减伤 50%；减伤上限 95%。护甲只影响生命伤害，护盾不享受减伤；负护甲增加受到的伤害。,100 armor reduces damage by 25%; 300 armor reduces it by 50%. Damage reduction is capped at 95%. Armor only reduces health damage and does not protect shields. Negative armor increases damage taken.
 遗物,遗物,Relic
 遗物图鉴解锁、遗物套装预览,遗物图鉴解锁、遗物套装预览,Unlock relics and preview synergies
 遗物已达叠加上限,遗物已达叠加上限,Relic stack limit reached
@@ -1386,7 +1334,6 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 量化操盘,量化操盘,Quant Trading
 金币,金币,Gold
 金币 %d　│　本金 %d　│　利率 %.1f%%,金币 %d　│　本金 %d　│　利率 %.1f%%,Gold %d  │  Principal %d  │  Rate %.1f%%
-金币 %d　│　本金 %d　│　利率 %.1f%%　│　预计利息 +%d,金币 %d　│　本金 %d　│　利率 %.1f%%,Gold %d  │  Principal %d  │  Rate %.1f%%
 金币 + %d，本次关闭银行，理智-5，幸运-2,金币 + %d，本次关闭银行，理智-5，幸运-2,"Gold +%d. The bank closes for this visit. Sanity −5, Luck −2."
 金币+%d，出售%s及其全部附魔,金币+%d，出售%s及其全部附魔,"Gold +%d, sell %s and all its enchantments."
 金币+%d，本次不可存款。,金币+%d，本次不可存款。,Gold +%d. Deposits are unavailable this visit.
@@ -1397,7 +1344,6 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 金币心脏,金币心脏,Coin Heart
 金币获取,金币获取,Gold gain
 金币获取 + 10；获取时本金 + 20；负载 - 5,金币获取 + 10；获取时本金 + 20；负载 - 5,Gold Gain +10; Principal +20 on acquisition; Load Capacity −5
-金币获取 +15%；经验获取 +15%；最大生命值 -2,金币获取 +15%；经验获取 +15%；最大生命值 -2,Gold Gain +15%; Experience Gain +15%; Max HP −2
 金币：%s,金币：%s,Gold: %s
 金币：0,金币：0,Gold: 0
 钢甲骑士,钢甲骑士,Ironclad Knight
@@ -1406,6 +1352,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 钱不够？没关系。总有可以交易的东西。,钱不够？没关系。总有可以交易的东西。,Short on gold? No problem. There's always something to trade.
 钱不能光放着，总得有点别的什么作用。,钱不能光放着，总得有点别的什么作用。,Money shouldn't just sit there. It ought to do something else.
 铸铁榴弹炮,铸铁榴弹炮,Cast-Iron Grenade Cannon
+锈蚀祭铃,锈蚀祭铃,Rusted Ritual Bell
 锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。,锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。,Forge and repair survival weapons. The artisans keep refining their designs to face new enemies.
 镀金扳机,镀金扳机,Gilded Trigger
 长焦目镜,长焦目镜,Long-Focus Eyepiece

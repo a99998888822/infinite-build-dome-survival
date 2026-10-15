@@ -1,5 +1,7 @@
 # 资产总清单汇总
 
+> 2026-10-15 清理：按用户确认删除 78 个未发现运行引用的素材、39 个残留或未生效素材及其配套原图、导入文件和废弃代码。7 个仅独立场景引用的营地素材保留；正式媒体文件由 543 减至 426。下方移除本次删除项，其他历史规格以最新接入记录为准。详见[素材清理记录](assets_cleanup_20261015.md)。
+
 > 汇总来源：`assets/` 实际源素材 + 已迁移的原分模块 asset checklist 目标清单；后续只维护本文档和 `asset_rules_summary.md`。
 > 判定规则：已存在表按磁盘上实际在用的文件列出，缺失表按清单目标路径列出；`.import`、“节点实现/无需 PNG”条目不纳入文件表。
 > 文件表范围：只收 `assets/` 下的 PNG 与音频（OGG/WAV）；字体（`assets/font/`）、`.svg`、`.aseprite`、`.tres` 和说明性 `.md` 不纳入。
@@ -34,11 +36,11 @@
 | 已存在 | wood2 | `wood2.png` | `assets/sprites/camp/wood2.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 经验球 | `pickup_exp_orb.png` | `assets/sprites/pickups/pickup_exp_orb.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
-| 已存在 | 玩家右向基础单帧 | `void_hunter_idle_right.png` | `assets/sprites/player/void_hunter_idle_right.png` | 256x256 / 1:1 / PNG |  |
-| 已接入 | 玩家右向行走帧表 | `void_hunter_walk_right_spritesheet.png` | `assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png` | 384x64 / 6:1 / PNG | 1px描边版，完整六帧，6 FPS |
-| 已接入 | 初心者战斗待机 | `void_hunter_idle_right.png` | `assets/sprites/player/combat/void_hunter_idle_right.png` | 64x64 / 1:1 / PNG | 与walk第一帧一致 |
-| 已接入 | 资本家战斗行走 | `capitalist_walk_right_spritesheet.png` | `assets/sprites/player/combat/capitalist_walk_right_spritesheet.png` | 448x64 / 7:1 / PNG | 1px描边版，完整七帧，7 FPS |
-| 已接入 | 资本家战斗待机 | `capitalist_idle_right.png` | `assets/sprites/player/combat/capitalist_idle_right.png` | 64x64 / 1:1 / PNG | 与walk第一帧一致 |
+| 已接入 | 初心者选人／战斗待机 | `idle.png` | `assets/sprites/player/actions/novice_128/idle.png` | 128x128 / 1:1 / PNG | 共用确认版；旧展示图和两代旧战斗图已删除 |
+| 已接入 | 初心者选人／战斗行走 | `move.png` | `assets/sprites/player/actions/novice_128/move.png` | 1024x128 / 8:1 / PNG | 用户重供八帧确认版，腿间透明，连续描边；8 FPS，选人悬停播放 |
+| 已接入 | 初心者移动攻击 | `move_attack.png` | `assets/sprites/player/actions/novice_128/move_attack.png` | 1152x128 / 9:1 / PNG | 2026-10-15：确认样例风格，9 帧单次挥拳、原速 0.75 秒，16 色透明像素帧 |
+| 已接入 | 初心者后跳 | `jump_backward.png` | `assets/sprites/player/actions/novice_128/jump_backward.png` | 1280x128 / 10:1 / PNG | 2026-10-15：新视频 10 帧，从下蹲开始，按最新要求加速至 2 倍，0.875 秒播放完毕 |
+| 已接入 | 初心者前跳 | `jump_forward.png` | `assets/sprites/player/actions/novice_128/jump_forward.png` | 1280x128 / 10:1 / PNG | 使用此前指定给前跳的旧后跳素材，18 FPS，与新后跳独立 |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |

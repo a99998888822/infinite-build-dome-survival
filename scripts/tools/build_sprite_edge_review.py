@@ -37,32 +37,7 @@ def archive(path, name):
 
 def source_for(rec):
     key=rec['id'];category=rec['category'];crop=None
-    if category=='stone':
-        dest=T/'originals'/(key+'_historical_128.png')
-        blob=subprocess.check_output(['git','show','f1f746e:'+rec['before']],cwd=r.ROOT)
-        Image.open(io.BytesIO(blob)).verify();dest.write_bytes(blob)
-        return dest,'历史像素源 128×128；高清原图未留存',None,'git:f1f746e:'+rec['before']
-    if category=='goblin':
-        path=r.ROOT/'artifacts/sources/goblin/gobline_face.png'
-        dest=archive(path,'goblin_original_sheet.png')
-        state=next((s for s in r.read(r.BEFORE/'assets/ui/finance/portraits/source_manifest.json')['batch_manifest']['states'] if s['name']==key),None)
-        crop=state['crop'] if state else [0,0,768,930]
-        return dest,'原始表情图（按表情裁取）',crop,str(path)
-    if category=='player':
-        folder='初心者' if key=='void_hunter' else '资本家'
-        path=r.ROOT/f'artifacts/sources/character_frames/{folder}/{folder}_walk1.png'
-        return archive(path,key+'_source.png'),'保留的角色原始输入；旧逐帧映射未留存',None,str(path)
-    if key=='grub':path=r.ROOT/'artifacts/sources/enemies/xiaoguai_move/move-01.png'
-    elif key.startswith('bat_'):path=r.ROOT/f'artifacts/sources/enemies/echo_bat/{key[4:]}/01.png'
-    elif key.startswith('wolf_'):
-        action={'move':'move','attack':'attack','jump':'jump'}[key[5:]]
-        path=r.ROOT/f'artifacts/sources/enemies/underworld_wolf/{action}/01.png'
-    elif key.startswith('knight_'):
-        action=key[7:]
-        manifest=r.read(r.BEFORE/'assets/sprites/enemies/iron_knight/art_source_manifest.json')
-        frame=manifest['atlas_sources']['knight_'+action+'.png'][0]
-        path=r.ROOT/f'artifacts/sources/enemies/iron_knight/{frame}.png'
-    elif key=='wide_desk':
+    if key=='wide_desk':
         path=r.ROOT/'artifacts/sources/finance/finance_table_ui_scroll_short.png'
         return archive(path,'finance_background_source.png'),'原始短卷轴场景图（柜台局部）',[0,730,940,1390],str(path)
     else:
@@ -159,6 +134,7 @@ def main():
     # Animated crops are actual successive GPU frames at a fixed world-space box.
     for key in ['void_hunter','capitalist']:
         samples=[s for s in shots.values() if s['name'].startswith(key+'_walk_')]
+        if not samples: continue
         rect=samples[0]['subjects'][0]['rect'];x,y,w,h=rect
         box=(round(x)-8,round(y)-8,round(x+w)+8,round(y+h)+8)
         frames=[Image.open(RUNTIME/(s['name']+'.png')).crop(box).resize((int(w+16)*4,int(h+16)*4),Image.Resampling.NEAREST) for s in samples]

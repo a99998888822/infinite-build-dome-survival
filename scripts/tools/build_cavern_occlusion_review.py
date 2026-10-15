@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/analysis/cavern_population_refine_20261013'
+OUT = ROOT / 'temp/artifacts/analysis/cavern_population_refine_20261013'
 FRAMES = OUT / 'frames'
 
 

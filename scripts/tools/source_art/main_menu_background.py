@@ -12,7 +12,7 @@ import random
 from PIL import Image, ImageDraw, ImageColor
 
 
-OUT = Path(__file__).resolve().parents[3] / 'artifacts/previews/main_menu'
+OUT = Path(__file__).resolve().parents[3] / 'temp/artifacts/previews/main_menu'
 WIDTH, HEIGHT = 640, 360
 RNG = random.Random(92326)
 NEAREST = Image.Resampling.NEAREST

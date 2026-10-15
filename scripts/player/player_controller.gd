@@ -11,24 +11,27 @@ signal start_weapons_changed(weapon_ids: Array[String])
 signal relics_changed(relic_ids: Array[String])
 signal relic_added(relic_id: String)
 signal stats_changed
+signal blink_completed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
 const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const REVIVE_BLINK_STEP_SECONDS: float = 0.1
+const BLINK_CAMERA_DRAG_SECONDS: float = 0.36
+const CAMERA_SUBJECT_Y: float = 0.57
 const REVIVE_WINGS_SCRIPT = preload("res://scripts/effects/revive_angel_wings.gd")
 const PLAYER_VISUAL_SCALE: float = 1.0
-# Display frames bake the former 1.2 visual scale, preserving the world size.
-const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/display_clarity/player/void_hunter_idle.png")
-const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/display_clarity/player/void_hunter_walk.png")
+# Defaults share the approved beginner sheets with the action animator.
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_128/idle.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_128/move.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
 @export var auto_initialize_on_ready: bool = true
 @export var invincibility_seconds: float = DEFAULT_INVINCIBILITY_SECONDS
-@export var walk_animation_fps: float = 6.0
-@export var walk_frame_count: int = 6
+@export var walk_animation_fps: float = 8.0
+@export var walk_frame_count: int = 8
 
 var character_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
@@ -52,6 +55,8 @@ var _mobility_start := Vector2.ZERO
 var _mobility_target := Vector2.ZERO
 var _mobility_elapsed := 0.0
 var _mobility_duration := 0.0
+var _blink_camera_origin := Vector2.ZERO
+var _blink_camera_remaining := 0.0
 var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
@@ -130,7 +135,7 @@ func _physics_process(delta: float) -> void:
 	_process_regeneration(delta)
 	_process_movement(delta)
 	_tick_stationary_relic_state(delta)
-	_sync_camera()
+	_sync_camera(delta)
 
 
 func initialize_from_character(target_character_id: String, outgame_modifiers: Array = [], initial_weapon_ids: Array[String] = []) -> bool:
@@ -174,6 +179,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_relic_runtime_sequence = 0
 	_refreshing_relic_dynamic_effects = false
 	_resolving_death = false
+	_blink_camera_remaining = 0.0
 	reset_stationary_relic_state()
 	_clear_move_input()
 	_configure_character_visuals(data.get("combat_visuals", {}))
@@ -572,8 +578,6 @@ func _process_movement(delta: float) -> void:
 	if active_controls and not keyboard_movement and has_move_destination:
 		velocity = direction * minf(get_stat("move_speed"), global_position.distance_to(move_destination) / maxf(delta, 0.001))
 	last_move_direction = direction.normalized()
-	if not is_zero_approx(direction.x):
-		_set_facing(direction.x > 0.0)
 	move_and_slide()
 	_update_walk_animation(direction, delta)
 
@@ -625,6 +629,18 @@ func cancel_mobility_motion(source: Node) -> void:
 	if _mobility_owner != null and _mobility_owner.get_ref() == source:
 		_mobility_owner = null
 		velocity = Vector2.ZERO
+
+
+func blink_to(point: Vector2) -> void:
+	# Start from the current view, including an unfinished outbound camera drag.
+	if camera_2d != null:
+		_blink_camera_origin = camera_2d.global_position
+		_blink_camera_remaining = BLINK_CAMERA_DRAG_SECONDS
+	global_position = point
+	reset_stationary_relic_state()
+	_clear_move_input()
+	# The input controller also owns held right-click intent and its marker.
+	blink_completed.emit()
 
 
 func movement_intent() -> Vector2:
@@ -777,10 +793,19 @@ func _configure_character_visuals(visuals: Dictionary) -> void:
 	_setup_visuals()
 
 
-func _sync_camera() -> void:
+func _sync_camera(delta: float = 0.0) -> void:
 	if camera_2d != null:
+		# Viewport-relative composition also survives zoom, resizing and blink drag.
+		var framing_y := get_viewport_rect().size.y * (0.5 - CAMERA_SUBJECT_Y)
+		camera_2d.offset.y = roundf(framing_y) / camera_2d.zoom.y
+		var target := global_position
+		if _blink_camera_remaining > 0.0:
+			_blink_camera_remaining = maxf(0.0, _blink_camera_remaining - delta)
+			var ratio := _blink_camera_remaining / BLINK_CAMERA_DRAG_SECONDS
+			# Ease out to the live player position, so new movement remains responsive.
+			target = _blink_camera_origin.lerp(global_position, 1.0 - ratio * ratio * ratio)
 		# Snap the view only; physics keeps its subpixel movement precision.
-		camera_2d.global_position = global_position.round()
+		camera_2d.global_position = target.round()
 
 
 func _update_walk_animation(direction: Vector2, delta: float) -> void:
@@ -788,7 +813,12 @@ func _update_walk_animation(direction: Vector2, delta: float) -> void:
 		return
 	if action_animator.enabled:
 		action_animator.tick(delta, not direction.is_zero_approx())
+		var visual_direction := action_animator.facing_direction if not action_animator.action.is_empty() else direction
+		if not is_zero_approx(visual_direction.x):
+			_set_facing(visual_direction.x > 0.0)
 		return
+	if not is_mobility_moving() and not is_zero_approx(direction.x):
+		_set_facing(direction.x > 0.0)
 	if direction.length_squared() <= 0.0:
 		_walk_animation_time = 0.0
 		_apply_idle_visual()
@@ -820,23 +850,39 @@ func _apply_walk_visual() -> void:
 		sprite.hframes = maxi(walk_frame_count, 1)
 
 
-func play_weapon_action(weapon_id: String, runtime: Node = null, sustain_seconds: float = 0.0) -> void:
+func play_weapon_action(weapon_id: String, runtime: Node = null, sustain_seconds: float = 0.0, attack_direction: Vector2 = Vector2.ZERO) -> void:
 	if not alive or not action_animator.enabled:
 		return
+	# Side-view art keeps its current side for a strictly vertical cast.
+	var direction := attack_direction if not is_zero_approx(attack_direction.x) else (Vector2.RIGHT if facing_right else Vector2.LEFT)
 	if weapon_id in ["weapon_kunyu_ritual_tome", "weapon_copper_lamp"]:
-		action_animator.start_sustain(runtime, sustain_seconds)
+		action_animator.start_sustain(runtime, sustain_seconds, direction)
 	elif weapon_id not in ["weapon_dash_blade", "weapon_hand_cannon", "weapon_star_tome"]:
-		action_animator.play("attack")
+		# The new strip depicts forward steps. Retreating casts retain the
+		# planted punch until a dedicated backward-walking attack is available.
+		var advancing := _read_move_input().dot(direction.normalized()) > 0.001
+		action_animator.play("move_attack" if advancing else "attack", direction)
+	else:
+		return # Mobility has already selected its pose and facing from the motion.
+	_set_facing(direction.x > 0.0)
 
 
-func play_mobility_action(weapon_id: String, displacement: Vector2) -> void:
+func play_mobility_action(weapon_id: String, displacement: Vector2, attack_direction: Vector2 = Vector2.ZERO) -> void:
 	if not alive or not action_animator.enabled:
 		return
 	var backward := weapon_id == "weapon_hand_cannon"
+	var direction := Vector2.RIGHT if facing_right else Vector2.LEFT
 	if weapon_id == "weapon_star_tome":
-		var facing := Vector2.RIGHT if facing_right else Vector2.LEFT
-		backward = displacement.dot(facing) < -0.001
-	action_animator.play("jump_backward" if backward else "jump_forward")
+		backward = displacement.dot(direction) < -0.001
+	else:
+		# A dash faces its landing; recoil faces the shot, opposite its travel.
+		var desired := attack_direction if backward else displacement
+		if desired.is_zero_approx():
+			desired = -displacement if backward else attack_direction
+		if not is_zero_approx(desired.x):
+			direction = desired
+	_set_facing(direction.x > 0.0)
+	action_animator.play("jump_backward" if backward else "jump_forward", direction)
 
 
 func _resolve_start_weapons(data: Dictionary, override_weapon_ids: Array[String]) -> Array[String]:

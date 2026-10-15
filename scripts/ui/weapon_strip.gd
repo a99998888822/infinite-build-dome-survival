@@ -62,17 +62,8 @@ func _ready() -> void:
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		weapon_tooltip.add_theme_stylebox_override("panel", FinanceUIStyle.box("17231c", "98956a", 0))
 	if weapon_tooltip_label != null:
-		# Preserve Ark's native pixel grid before scaling to the existing font size.
-		# Rasterizing its outlines directly at 16px introduces broken/noisy strokes.
-		var tooltip_font := weapon_tooltip_label.get_theme_font("normal_font").duplicate() as FontFile
-		tooltip_font.fixed_size = 12
-		tooltip_font.fixed_size_scale_mode = TextServer.FIXED_SIZE_SCALE_ENABLED
-		tooltip_font.oversampling = 1.0
-		tooltip_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
-		tooltip_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
-		weapon_tooltip_label.add_theme_font_override("normal_font", tooltip_font)
+		GameTooltipLayer.apply_pixel_text(weapon_tooltip_label)
 		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
-		weapon_tooltip_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_build_attachment_tooltip()
 
 

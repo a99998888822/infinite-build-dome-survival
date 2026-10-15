@@ -122,18 +122,18 @@ func capture_sizes(name: String) -> void:
 
 
 func hover_relic() -> void:
-	# Locate the inline image, then let real pointer input open the native tooltip.
+	# Exercise actual pointer hit testing, without calling hover signals.
 	var terms := popup.trade_presentation._relic_body
-	var rect := terms.get_global_rect()
+	var rect := terms.get_global_rect().intersection(popup.trade_presentation._body_scroll.get_global_rect())
 	for y in range(int(rect.position.y + 4), int(rect.end.y), 8):
 		for x in range(int(rect.position.x + 4), int(rect.end.x), 8):
-			if terms.get_tooltip(Vector2(x, y) - rect.position).is_empty(): continue
 			var motion := InputEventMouseMotion.new()
 			motion.position = Vector2(x, y)
 			get_viewport().push_input(motion, true)
-			await get_tree().create_timer(0.8).timeout
-			await frames(5)
-			return
+			await frames(1)
+			if is_instance_valid(terms.active_tooltip) and terms.active_tooltip.is_visible_in_tree():
+				await frames(2)
+				return
 
 
 func _run() -> void:
@@ -213,6 +213,12 @@ func _test_exclusive() -> void:
 	await hover_relic()
 	var tip := popup.trade_presentation._relic_body.active_tooltip
 	check(is_instance_valid(tip) and tip.is_visible_in_tree() and (tip.get_child(0) as Label).text.contains(L10n.source(offer.relic.display_name)), "actual inline icon hover shows this relic's tooltip")
+	if is_instance_valid(tip):
+		check((tip.get_child(0) as Label).text.contains(L10n.record_text(offer.relic, "description")), "free relic tooltip includes its actual effect description")
+		check(tip.get_parent() is GameTooltipLayer, "free relic uses the in-game foreground tooltip layer")
+		check(get_viewport().get_visible_rect().encloses(tip.get_global_rect()), "free relic tooltip fits the viewport")
+		var tip_label := tip.get_child(0) as Label
+		check(tip.size.y <= tip_label.get_line_count() * tip_label.get_line_height() + 32, "simple relic tooltip has no excess blank height on first hover")
 	check(not manager.goblin_trades.offer.is_empty(), "inspection does not cancel the trade")
 	await capture("02_exclusive_tooltip")
 	var leave := InputEventMouseMotion.new()
@@ -220,6 +226,20 @@ func _test_exclusive() -> void:
 	get_viewport().push_input(leave, true)
 	await frames(3)
 	check(not is_instance_valid(tip) or not tip.is_visible_in_tree(), "leaving the inline icon closes its tooltip")
+	get_tree().root.size = Vector2i(640, 360)
+	get_tree().root.content_scale_size = Vector2i(640, 360)
+	await frames(12)
+	await hover_relic()
+	tip = popup.trade_presentation._relic_body.active_tooltip
+	check(is_instance_valid(tip) and tip.is_visible_in_tree() and get_viewport().get_visible_rect().encloses(tip.get_global_rect()), "free relic hover remains readable inside a compact viewport")
+	await capture("02_exclusive_tooltip_small")
+	popup.trade_presentation.hide()
+	check(not is_instance_valid(tip) or not tip.is_visible_in_tree(), "hiding the trade immediately closes its relic tooltip")
+	popup.trade_presentation.show()
+	check(not is_instance_valid(tip) or not tip.is_visible_in_tree(), "reopening the trade does not restore a stale tooltip")
+	get_tree().root.size = Vector2i(1152, 768)
+	get_tree().root.content_scale_size = Vector2i(1152, 768)
+	await frames(12)
 	var removed_offer: Dictionary = flow._preparation_offers[1].duplicate(true)
 	var retained_id := str(flow._preparation_offers[0].offer_id)
 	var count := manager.player.get_relic_count(str(offer.relic.target_id))

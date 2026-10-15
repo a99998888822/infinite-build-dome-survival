@@ -198,11 +198,9 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		_set_movement_visual(false, delta)
 		return
-	# The cave backdrop is not a playable firing position. Approach its dark
-	# entrance before resuming attacks, so ranged enemies cannot camp invisibly
-	# over the panorama. Spawn distance/count and ordinary combat stay intact.
-	if _knockback_timer<=0.0 and _advance_cavern_entry(delta): return
-	if not _has_challenge_target() and _process_special_behavior(delta):
+	# Darkness is not a moving wall. Attack entry points check visibility;
+	# an active skill keeps its own timing and movement rules.
+	if (not _has_challenge_target() or is_movement_locked()) and _process_special_behavior(delta):
 		return
 	if _knockback_timer > 0.0:
 		_knockback_timer = maxf(_knockback_timer - delta, 0.0)
@@ -218,18 +216,14 @@ func _physics_process(delta: float) -> void:
 func _process_special_behavior(_delta: float) -> bool:
 	return false
 
-func _advance_cavern_entry(delta: float) -> bool:
-	if not is_instance_valid(_cavern_scenery): return false
+func is_in_visible_combat_area() -> bool:
+	if not is_instance_valid(_cavern_scenery): return true
 	var direction: Vector2 = _cavern_scenery.get_darkness_entry_direction(global_position)
-	if direction.is_zero_approx(): return false
-	_on_control_interrupted()
-	var speed := minf(get_stat("move_speed"),float(enemy_data.get("base_stats",{}).get("move_speed",60))*MAX_MOVE_SPEED_MULTIPLIER)
-	if _slowed_remaining>0.0: speed *= _slow_multiplier
-	if _wet_remaining>0.0: speed *= _wet_slow_multiplier
-	velocity = velocity.move_toward(direction*speed,CHASE_ACCELERATION*delta)
-	move_and_slide()
-	_set_movement_visual(true,delta)
-	return true
+	return direction.is_zero_approx()
+
+
+func is_movement_locked() -> bool:
+	return false
 
 
 func _on_control_interrupted() -> void:
@@ -554,7 +548,7 @@ func can_be_pushed_by_wind() -> bool:
 
 
 func apply_knockback(hit_direction: Vector2, speed: float, duration: float, control_power: float = -1.0) -> void:
-	if not alive or duration <= 0.0 or speed <= 0.0 or not can_receive_control():
+	if not alive or is_movement_locked() or duration <= 0.0 or speed <= 0.0 or not can_receive_control():
 		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	_knockback_velocity = safe_direction * maxf(speed, 1.0) * get_control_multiplier()
@@ -722,7 +716,7 @@ func _capture_base_sprite_modulate() -> void:
 
 func _apply_weapon_knockback(hit_direction: Vector2) -> void:
 	# Native hit recoil never builds armor, but is also blocked during immunity.
-	if not can_receive_control(false):
+	if is_movement_locked() or not can_receive_control(false):
 		return
 	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
 	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED * get_control_multiplier()
@@ -1020,7 +1014,7 @@ func _is_touching_player() -> bool:
 
 
 func _apply_contact_knockback() -> void:
-	if target_player == null or not can_receive_control(false):
+	if target_player == null or is_movement_locked() or not can_receive_control(false):
 		return
 	var direction := target_player.global_position.direction_to(global_position)
 	if direction.is_zero_approx():

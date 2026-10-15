@@ -144,6 +144,11 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 		lamp.initialize(weapon)
 		lamp.externally_driven = true
 		lamp.burst_active = true
+		# The lamp tracks an enemy even on manual casts; use the real spray aim.
+		var target := _auto_target(source)
+		if target != null:
+			aim = origin.direction_to(target.global_position)
+		lamp.heading = aim
 		body = lamp
 	elif weapon.is_mutant_tentacle():
 		var tentacle := MutantTentacle.new()
@@ -204,5 +209,5 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 	state.tail = float(weapon.weapon_data.get("active_recovery_ms", 180)) / 1000.0 if body == null else 0.0
 	state.feedback_pending = true
 	source.cooldown_ready_changed.emit(false)
-	loadout.owner_player.play_weapon_action(source.weapon_id, body)
+	loadout.owner_player.play_weapon_action(source.weapon_id, body, 0.0, aim)
 	return true

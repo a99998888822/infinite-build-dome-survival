@@ -130,8 +130,8 @@ func _run() -> void:
 		await capture("shop_bottom_%dx%d" % [viewport_size.x, viewport_size.y], popup.shop_grid)
 		for pooled in popup.shop_grid._pool:
 			if not pooled.visible: continue
-			check(pooled._icon.size == Vector2(32, 32), "shop relic remains thirty-two pixels")
-			check(pooled._icon_frame.get_global_rect().encloses(pooled._icon.get_global_rect()), "shop parent contains centered half-size icon")
+			check(pooled._icon.size == Vector2(40, 40), "shop relic retains the current forty-pixel footprint")
+			check(pooled._icon_frame.get_global_rect().encloses(pooled._icon.get_global_rect()), "shop parent contains centered list icon")
 			check(pooled._name_label.global_position.x >= pooled._icon.get_global_rect().end.x + 10, "shop title clear of icon")
 			check(pooled.size.y <= popup.shop_grid._card_height, "shop card fits virtual row")
 	var card: PreparationOfferCard = popup.shop_grid._pool[0]
@@ -139,9 +139,9 @@ func _run() -> void:
 	old["offer_type"] = "new_weapon"
 	card.configure(old, "", 500)
 	check(card._icon.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED and card._icon.custom_minimum_size == Vector2.ZERO, "pooled card restores legacy weapon size")
-	check(card._icon_frame.custom_minimum_size == Vector2(36, 36), "pooled parent restores legacy size")
+	check(card._icon_frame.custom_minimum_size == Vector2(44, 44), "pooled parent restores current weapon frame size")
 	card.configure(offers[0], "", 500)
-	check(card._icon.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED and card._icon.size == Vector2(32, 32), "pooled card returns to half-size relic")
+	check(card._icon.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED and card._icon.size == Vector2(40, 40), "pooled card returns to current relic list size")
 	popup.shop_grid.set_offers([old], true)
 	await frames()
 	check(popup.shop_grid._card_height == VirtualShopGrid.CARD_HEIGHT, "legacy-only shop restores row height")
@@ -155,7 +155,7 @@ func _run() -> void:
 	receipt.present({"wave": 1, "steps": steps, "total": steps.size() * 10, "combat": 10, "special": false})
 	receipt.seek(receipt.duration)
 	await frames()
-	for row: Control in receipt._row_nodes: check(row.size.y >= 64, "receipt row accommodates native icon")
+	for row: Control in receipt._row_nodes: check(row.size.y >= 32, "receipt row accommodates twenty-pixel icon and padding")
 	receipt._scroll.scroll_vertical = 10000
 	await frames()
 	var bar := receipt._scroll.get_v_scroll_bar()
@@ -213,11 +213,12 @@ func capture(label: String, scope: Node) -> void:
 	var icons: Array = []
 	for rect in found:
 		var list_icon := label.begins_with("relic_list") or label.begins_with("shop_") or label.begins_with("reward_")
-		var icon_scale := 0.75 if label.begins_with("reward_") else (0.5 if list_icon else 1.0)
-		var extent := Vector2(64, 64) * icon_scale
-		var mode := TextureRect.STRETCH_KEEP_ASPECT_CENTERED if list_icon or rect.texture.get_width() == 128 else TextureRect.STRETCH_KEEP_CENTERED
-		check(rect.stretch_mode == mode and rect.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel filter and display mode: " + rect.texture.resource_path.get_file())
-		check(rect.size == extent if list_icon else rect.size.x >= extent.x and rect.size.y >= extent.y, "slot fits expected icon size")
+		var receipt_icon := label.begins_with("receipt_")
+		var side := 20.0 if receipt_icon else (48.0 if label.begins_with("reward_") else (40.0 if list_icon else 64.0))
+		var extent := Vector2(side, side)
+		var mode := TextureRect.STRETCH_KEEP_ASPECT_CENTERED if list_icon or receipt_icon or rect.texture.get_width() == 128 else TextureRect.STRETCH_KEEP_CENTERED
+		check(rect.stretch_mode == mode and effective_filter(rect) == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel filter and display mode: " + rect.texture.resource_path.get_file())
+		check(rect.size == extent if list_icon or receipt_icon else rect.size.x >= extent.x and rect.size.y >= extent.y, "slot fits expected icon size")
 		var origin := rect.get_global_rect().get_center() - extent * 0.5
 		var drawn := Rect2(origin, extent)
 		if not fully_visible(rect, drawn): continue
@@ -228,6 +229,15 @@ func capture(label: String, scope: Node) -> void:
 		check(not root.always_on_top, "not topmost")
 		root.get_texture().get_image().save_png(output.path_join(label + ".png"))
 	captures.append({"name": label, "icons": icons})
+
+
+func effective_filter(node: Node) -> int:
+	# Receipt slots deliberately inherit nearest filtering from their owner.
+	while node != null:
+		if node is CanvasItem and node.texture_filter != CanvasItem.TEXTURE_FILTER_PARENT_NODE:
+			return node.texture_filter
+		node = node.get_parent()
+	return CanvasItem.TEXTURE_FILTER_PARENT_NODE
 
 
 func fully_visible(rect: Control, drawn: Rect2) -> bool:

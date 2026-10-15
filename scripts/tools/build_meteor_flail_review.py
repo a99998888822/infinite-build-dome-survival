@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/meteor_flail_review"
+OUT = ROOT / "temp/artifacts/meteor_flail_review"
 ASSETS = ROOT / "assets/sprites/weapons/meteor_flail"
 ICON = ROOT / "assets/ui/icons/weapons/weapon_meteor_flail.png"
 INK = "#111c22"
@@ -136,7 +136,7 @@ def animation():
     for _ in range(530):
         x, y = rng.randrange(350), rng.randrange(230)
         d.rectangle((x, y, x + rng.randrange(1, 4), y + 1), fill=rng.choice(["#2e3935", "#303e36", "#202d2a"]))
-    player = Image.open(ROOT / "assets/sprites/player/combat/void_hunter_idle_right.png").convert("RGBA")
+    player = Image.open(ROOT / "assets/sprites/player/actions/novice_128/idle.png").convert("RGBA")
     enemy = Image.open(ROOT / "assets/sprites/enemies/combat/enemy_gloom_mite_idle.png").convert("RGBA")
     player = player.crop(player.getbbox()).resize((27, 40), Image.Resampling.NEAREST)
     enemy = enemy.crop(enemy.getbbox()).resize((37, 33), Image.Resampling.NEAREST)

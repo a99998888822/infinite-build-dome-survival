@@ -158,7 +158,6 @@ flowchart TD
 | ---- | ---- | ---- | ---- |
 | 生存 | `shield` | 每波开始读取当前属性，作为本波初始护盾值 | 玩家 |
 | 生存 | `revive_count` | 本局额外复活次数；每次复活消耗 1 次 | 玩家 |
-| 生存 | `on_kill_heal` | 每次击杀敌人后恢复的固定生命值 | 玩家 |
 | 攻击 | `melee_damage` | 近战伤害，固定数值加成 | 近战武器/近战效果 |
 | 攻击 | `ranged_damage` | 远程伤害，固定数值加成 | 远程武器/投射物效果 |
 | 攻击 | `element_damage` | 元素伤害，固定数值加成 | 火、水、冰、雷、风、光、暗及爆炸等元素附魔与元素反应 |
@@ -226,8 +225,7 @@ flowchart TD
 1. `shop_price_percent` 使用折扣语义：`shop_price_percent = 10` 表示商店价格为 `ceil(基础价格 * 0.9)`；HUD 直接显示为 `10%`。
 2. `shop_offer_count_bonus` 是整数候选数加成，同时作用于升级奖励和局内商店。候选目标数为 `max(2, 3 + round(shop_offer_count_bonus))`；例如加成为 `2` 时展示 5 项，负值不会使目标数低于 2。
 3. `revive_count` 是本局可消耗资源；生命归零时优先消耗 1 次，以 50% 最大生命、0 护盾和 1 秒无敌复活，不触发失败结算。
-4. `on_kill_heal` 是固定数值：每次敌人死亡后，玩家恢复该数值生命，最高不超过最大生命。
-5. `enemy_spawn_rate_percent` 使用数量增幅语义：`20` 表示刷怪数量期望为 `基础数量 * 1.2`；小数余量在本波各批次间累计，满1只生成1只，新波及新局清零，不再对每批独立向上取整。它只影响 `count_per_spawn`，不缩短刷怪间隔，仍受场上人数上限限制。
+4. `enemy_spawn_rate_percent` 使用数量增幅语义：`20` 表示刷怪数量期望为 `基础数量 * 1.2`；小数余量在本波各批次间累计，满1只生成1只，新波及新局清零，不再对每批独立向上取整。它只影响 `count_per_spawn`，不缩短刷怪间隔，仍受场上人数上限限制。
 
 ### 6.3 护甲减伤曲线
 
@@ -395,7 +393,6 @@ func debug_stat(stat_id: String) -> Dictionary
 1. 神秘伤害加成：`tagged_damage_percent` + `target_tags: ["mystic"]`。
 2. 对Boss伤害加成：`tagged_damage_percent` + `target_tags: ["boss"]`。
 3. 命中触发流血：后续可扩展 `effect_type: "on_hit_apply_status"`。
-4. 击杀回复生命：通用常驻数值使用 `on_kill_heal`；带条件、标签或一次性效果仍使用 `extra_effects`。
 
 原则：只有“稳定、通用、常驻、可展示”的数值进入 `StatDefinitions`；条件型、标签型、触发型效果进入 `extra_effects`。
 ## 8. DataRegistry设计
@@ -975,5 +972,4 @@ func find_refs(config_id: String) -> Array[Dictionary]
 5. 能打印某个最终属性的来源链。
 6. 业务模块不需要知道 JSON 文件路径，只依赖 `DataRegistry` 接口。
 7. 后续新增武器、遗物、羁绊、营地建筑时，不需要修改基础数据模块核心逻辑。
-
 

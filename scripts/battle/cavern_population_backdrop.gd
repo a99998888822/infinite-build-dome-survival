@@ -4,9 +4,10 @@ class_name CavernPopulationBackdrop
 const LANDMARK_STEP := Vector2(1850,1100)
 const GRASS_SHADER = preload("res://shaders/battle/cavern_grass_batch.gdshader")
 const OCCLUSION_SHADER = preload("res://shaders/battle/cavern_player_occlusion.gdshader")
-const RUBBLE_REPEAT_DISTANCE := 290.0
-const RUBBLE_ORDER := [5,2,0,7,3,8,1,6,4]
+# Zero requests a fresh per-battle seed; explicit seeds reproduce review layouts.
+@export var population_seed: int = 0
 var grass_atlas: ImageTexture
+var grass_bottoms: Array[float] = []
 var grass_material: ShaderMaterial
 var grass_cells: Dictionary = {}
 var peak_cells := 0
@@ -24,6 +25,10 @@ func _stream_margin() -> float:
 
 func _setup() -> void:
 	if initialized or not is_instance_valid(player) or not is_inside_tree(): return
+	if population_seed == 0:
+		var seed_rng := RandomNumberGenerator.new()
+		seed_rng.randomize()
+		population_seed = maxi(1, seed_rng.randi())
 	# Build a tiny runtime atlas from the accepted, unmodified grass sprites.
 	var sheet := Image.create(128,32,false,Image.FORMAT_RGBA8)
 	var rows: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(scenery_config_path))
@@ -32,6 +37,7 @@ func _setup() -> void:
 		var source := texture.get_image()
 		if source.is_compressed(): source.decompress()
 		source.convert(Image.FORMAT_RGBA8)
+		grass_bottoms.append(float(source.get_used_rect().end.y))
 		sheet.blit_rect(source,Rect2i(0,0,32,32),Vector2i(index*32,0))
 	grass_atlas = ImageTexture.create_from_image(sheet)
 	grass_material = ShaderMaterial.new()
@@ -40,11 +46,12 @@ func _setup() -> void:
 
 func landmark(key: Vector2i) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
-	rng.seed = absi(key.x*83492791 ^ key.y*297121507 ^ 20261013)
-	var point := Vector2(key)*LANDMARK_STEP+Vector2(370,155)
-	if key != Vector2i.ZERO:
-		point += Vector2(rng.randf_range(-95,95),rng.randf_range(-80,80))
-	return _placement("prop",posmod(key.x+key.y,2),point,2.0)
+	rng.seed = absi(key.x*83492791 ^ key.y*297121507 ^ population_seed ^ 20261013)
+	# One obstacle per broad region, with enough margin between adjacent regions.
+	var point := Vector2(key)*LANDMARK_STEP+Vector2(rng.randf_range(-660,660),rng.randf_range(-380,380))
+	if point.length()<260.0:
+		point = (point.normalized() if not point.is_zero_approx() else Vector2.RIGHT)*260.0
+	return _placement("prop",rng.randi_range(0,config.props.size()-1),point,2.0,rng.randf()<.5)
 
 func _nearby_landmarks(point: Vector2) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -61,27 +68,26 @@ func _clear_of_large(point: Vector2, nearby: Array[Dictionary], margin: float) -
 
 func _solid_plan(key: Vector2i) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
-	rng.seed = absi(key.x*73856093 ^ key.y*19349663 ^ 14102026)
+	rng.seed = absi(key.x*73856093 ^ key.y*19349663 ^ population_seed ^ 14102026)
 	var origin := Vector2(key)*CELL
 	var plan: Array[Dictionary] = []
 	var nearby := _nearby_landmarks(origin+CELL*.5)
 	for entry: Dictionary in nearby:
 		if Vector2i((entry.point/CELL).floor())==key: plan.append(entry)
-	# A moderately filled, jittered grid prevents piles and crosses cell edges
-	# with a guaranteed gap. B keeps its approved four-times source resolution.
-	for row in 2:
-		for col in 4:
-			if rng.randf()>.64: continue
-			var point := origin+Vector2((col+.5)*CELL.x/4,(row+.5)*CELL.y/2)
-			point += Vector2(rng.randf_range(-38,38),rng.randf_range(-34,34))
-			if not _clear_of_large(point,nearby,12): continue
-			# Colour the infinite jitter grid, not each streamed cell separately.
-			# Equal shapes are at least three rows or three columns apart, even
-			# across negative coordinates and cells loaded in a different order.
-			var slot := key*Vector2i(4,2)+Vector2i(col,row)
-			var index: int = RUBBLE_ORDER[posmod(slot.x*2+slot.y*3,9)]
-			var factor := 1.45 if index<2 else rng.randf_range(.85,1.16)
-			plan.append(_placement("rubble",index,point,factor,rng.randf()<.5))
+	# At most two small objects per cell. Choose distinct jitter slots so gaps
+	# also hold across streamed cell borders, independent of loading order.
+	var slots: Array[int] = [0,1,2,3,4,5,6,7]
+	var previous_index := -1
+	for attempt in rng.randi_range(0,2):
+		var slot: int = slots.pop_at(rng.randi_range(0,slots.size()-1))
+		var point := origin+Vector2((slot%4+.5)*CELL.x/4,((slot/4)+.5)*CELL.y/2)
+		point += Vector2(rng.randf_range(-38,38),rng.randf_range(-34,34))
+		if not _clear_of_large(point,nearby,12): continue
+		var index := rng.randi_range(0,config.rubble.size()-1)
+		if index==previous_index: index = (index+rng.randi_range(1,config.rubble.size()-1))%config.rubble.size()
+		previous_index = index
+		var factor := 1.45 if index<2 else rng.randf_range(.85,1.16)
+		plan.append(_placement("rubble",index,point,factor,rng.randf()<.5))
 	return {"entries":plan,"rng":rng,"nearby":nearby}
 
 func _plan_cell(key: Vector2i) -> Array[Dictionary]:
@@ -155,14 +161,14 @@ func _grass_depth_bands(blades: Array[Dictionary], key: Vector2i) -> Array:
 		for x in range(key.x-1,key.x+2):
 			for solid: Dictionary in _solid_plan(Vector2i(x,y)).entries:
 				if solid.point.x<origin.x-100 or solid.point.x>origin.x+CELL.x+100: continue
-				if solid.point.y>blades[0].point.y and solid.point.y<blades.back().point.y:
+				if solid.point.y>blades[0].sort_y and solid.point.y<blades.back().sort_y:
 					cuts.append(solid.point.y)
 	cuts.sort()
 	var groups: Array = []
 	var band: Array[Dictionary] = []
 	var cut := 0
 	for blade: Dictionary in blades:
-		while cut<cuts.size() and blade.point.y>=cuts[cut]:
+		while cut<cuts.size() and blade.sort_y>=cuts[cut]:
 			if not band.is_empty(): groups.append(band); band = []
 			cut += 1
 		band.append(blade)
@@ -173,7 +179,12 @@ func _make_cell(key: Vector2i) -> void:
 	var nodes: Array[Node] = []
 	var blades: Array[Dictionary] = []
 	for entry: Dictionary in _plan_cell(key):
-		if entry.kind=="grass": blades.append(entry); continue
+		if entry.kind=="grass":
+			# Transparent padding is not a foot. Keep the authored placement and
+			# lighting root, but sort by the visible, scaled lower edge.
+			entry.sort_y = entry.point.y+(grass_bottoms[entry.index]-entry.anchor.y)*float(entry.scale)
+			blades.append(entry)
+			continue
 		var sprite := Sprite2D.new()
 		sprite.texture = prop_textures[entry.index] if entry.kind=="prop" else rubble_textures[entry.index]
 		sprite.position = entry.point
@@ -207,7 +218,7 @@ func _make_cell(key: Vector2i) -> void:
 				sprite.material = occlusion_material
 				occluding_rocks.append(sprite)
 	if not blades.is_empty():
-		blades.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.point.y<b.point.y)
+		blades.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.sort_y<b.sort_y)
 		var bands: Array = []
 		for band: Array[Dictionary] in _grass_depth_bands(blades,key):
 			var back := _grass_batch(band,key,false)
@@ -263,14 +274,16 @@ func _update_area() -> void:
 			var high: int = band.blades.size()
 			while low<high:
 				var mid := (low+high)/2
-				if band.blades[mid].point.y<=proxy.global_position.y: low = mid+1
+				if band.blades[mid].sort_y<=proxy.global_position.y: low = mid+1
 				else: high = mid
 			if low==band.get("split",-1): continue
 			band.split = low
 			band.back.multimesh.visible_instance_count = low
 			band.front.multimesh.visible_instance_count = band.blades.size()-low
-			var back_y: float = band.blades[maxi(0,low-1)].point.y-.001
-			var front_y: float = band.blades[mini(low,band.blades.size()-1)].point.y+.001
+			# Pixel-snapped transforms can erase a .001 separation. Whole-pixel
+			# anchors preserve the ordering, including grass level with the feet.
+			var back_y := floorf(band.blades[maxi(0,low-1)].sort_y)-1.0
+			var front_y := ceilf(band.blades[mini(low,band.blades.size()-1)].sort_y)+1.0
 			for item: Array in [[band.back,back_y],[band.front,front_y]]:
 				var batch: MultiMeshInstance2D = item[0]
 				var anchor := batch.get_parent() as Node2D
@@ -279,7 +292,7 @@ func _update_area() -> void:
 	if grass_material!=null:
 		grass_material.set_shader_parameter("view_size",horizon.view_size)
 		grass_material.set_shader_parameter("fade_start",horizon.far_height()*.62)
-		grass_material.set_shader_parameter("fade_end",horizon.far_height()+68.0*horizon.art_scale)
+		grass_material.set_shader_parameter("fade_end",horizon.ground_fade_end())
 	_update_player_shadow()
 	if profile_enabled:
 		update_profile.append({"microseconds":Time.get_ticks_usec()-started,"streamed":previous_rect!=cell_rect})
@@ -305,7 +318,7 @@ func _update_player_shadow() -> void:
 		material.set_shader_parameter("shadow_strength",1.0 if active else 0.0)
 		material.set_shader_parameter("view_size",horizon.view_size)
 		material.set_shader_parameter("fade_start",horizon.far_height()*.62)
-		material.set_shader_parameter("fade_end",horizon.far_height()+68.0*horizon.art_scale)
+		material.set_shader_parameter("fade_end",horizon.ground_fade_end())
 		if not active: continue
 		shadow_active_count += 1
 		material.set_shader_parameter("player_texture",source.texture)

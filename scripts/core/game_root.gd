@@ -2,7 +2,6 @@ extends Node
 class_name GameRoot
 
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
-const ANDROID_CONTENT_SCALE_SIZE := Vector2i(1280, 720)
 
 var core_root: Node = null
 var world_root: Node2D = null
@@ -16,7 +15,7 @@ var _world_viewport_root: Node2D = null
 
 
 func _enter_tree() -> void:
-	_configure_android_content_scale()
+	_configure_content_scale()
 
 
 func _ready() -> void:
@@ -32,15 +31,17 @@ func _ready() -> void:
 	GameGlobal.log_debug("game root ready")
 
 
-func _configure_android_content_scale() -> void:
-	if not OS.has_feature("android"):
-		return
+func _configure_content_scale() -> void:
 	var window := get_window()
 	if window == null:
 		return
 	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
-	window.content_scale_size = ANDROID_CONTENT_SCALE_SIZE
+	# All platforms and review entry points use the production design canvas.
+	window.content_scale_size = Vector2i(
+		int(ProjectSettings.get_setting("display/window/size/viewport_width")),
+		int(ProjectSettings.get_setting("display/window/size/viewport_height")),
+	)
 
 
 func _notification(what: int) -> void:

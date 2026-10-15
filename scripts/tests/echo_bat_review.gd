@@ -122,6 +122,13 @@ func _run() -> void:
 		await capture_storyboard()
 		var file := FileAccess.open(captures.path_join("samples.json"), FileAccess.WRITE)
 		file.store_string(JSON.stringify(sample_log, "\t"))
+	AudioManager.stop_combat_sfx()
+	AudioManager.stop_bgm()
+	for audio in AudioManager.get_children():
+		if audio is AudioStreamPlayer:
+			audio.stop()
+			audio.stream = null
+	await get_tree().create_timer(0.25).timeout
 	print("ECHO_BAT_REVIEW checks=%d failures=%d captures=%d" % [checks, failures, sample_log.size()])
 	get_tree().quit(1 if failures else 0)
 

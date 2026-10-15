@@ -114,8 +114,21 @@ func _run() -> void:
 	for key in ruins:
 		if not shifted.has(key): continue
 		common += 1
-		check(is_equal_approx(float(shifted[key].root[0])-float(ruins[key].root[0]),-36.0),"ruin movement is 18 percent")
+		check(is_equal_approx(float(shifted[key].root[0])-float(ruins[key].root[0]),-16.0),"ruins share eight-percent cave parallax")
 		check(shifted[key].scale == ruins[key].scale and shifted[key].root[1] == ruins[key].root[1],"ruins keep height and scale")
+	# Narrower panorama modules can occlude both starting slots. Find a visible
+	# persistent slot without requiring ruins at a particular camera position.
+	if common==0:
+		for camera_x in range(-1200,1201,240):
+			ground.horizon.configure_view(Vector2(1280,720),float(camera_x),1.0)
+			var first: Dictionary = ground.horizon.snapshot()
+			ground.horizon.configure_view(Vector2(1280,720),float(camera_x)+200.0,1.0)
+			var second: Dictionary = ground.horizon.snapshot()
+			for key in first:
+				if not second.has(key): continue
+				common += 1
+				check(is_equal_approx(float(second[key].root[0])-float(first[key].root[0]),-16.0),"visible ruins share eight-percent cave parallax")
+		ground._update_area()
 	check(common>=1,"a sparse ruin landmark remains visible for the parallax measurement")
 	move_to(Vector2(200,-1800))
 	await frames()
@@ -134,23 +147,14 @@ func _run() -> void:
 	ground._plan_cell(Vector2i(93,-51))
 	ground.horizon._update_entries()
 	check(randi()==expected,"scenery leaves gameplay RNG untouched")
-	if ground is CavernMeadowBackdrop:
-		check(ground.ground_textures.is_empty() and ground.detail_textures.is_empty(),"production meadow replaces imported 01 patches")
-		check(ground.grass_textures.size()==4 and ground.rubble_textures.size()==9,"approved grass and all B/Q rubble are loaded")
-		check(ground.ground_material.get_shader_parameter("surface_texture").resource_path=="res://assets/sprites/background/meadow/meadow-ground.png","ground references the original production texture")
-		check(is_equal_approx(ground.ground_material.get_shader_parameter("projection_y"),AttackFootprint.ELLIPSE_RATIO),"surface tilt uses the weapon footprint ratio")
-		var scenery_count := 0
-		for nodes: Array in ground.cells.values(): scenery_count += nodes.size()
-		check(scenery_count<ground.cells.size()*60,"production scenery remains bounded")
-	else:
-		check(ground.ground_textures.size()==1 and int(ground.config.ground[0].catalog_number)==1,"only catalog 01 is used on the floor")
-		check(not ground.grass_textures.is_empty(),"grass cutouts are loaded")
-		check(ground.detail_textures.size()==6 and ground.rubble_textures.size()==2,"source-derived cracks and loose stones are loaded")
-		var local_detail_count := 0
-		for key: Vector2i in ground.cells:
-			for node: Node in ground.cells[key]:
-				if node.get_meta("scenery").kind=="detail": local_detail_count += 1
-		check(local_detail_count>0 and local_detail_count<=ground.cells.size()*2,"small detail groups remain sparse and bounded")
+	check(ground is CavernMeadowBackdrop,"production uses the configured grassland")
+	check(ground.ground_textures.is_empty() and ground.detail_textures.is_empty(),"retired ground patches are absent")
+	check(ground.grass_textures.size()==4 and ground.rubble_textures.size()==9,"approved grass and all B/Q rubble are loaded")
+	check(ground.ground_material.get_shader_parameter("surface_texture").resource_path=="res://assets/sprites/background/meadow/pit-ground.png","ground uses the current pit texture")
+	check(is_equal_approx(ground.ground_material.get_shader_parameter("projection_y"),AttackFootprint.ELLIPSE_RATIO),"surface tilt uses the weapon footprint ratio")
+	var scenery_count := 0
+	for nodes: Array in ground.cells.values(): scenery_count += nodes.size()
+	check(scenery_count<ground.cells.size()*60,"production scenery remains bounded")
 	check(player.visual_anchor.get_parent()==ground.proxy,"player depth proxy preserved")
 	check(player.get_parent()==game.get_world_viewport_root(),"player physics ownership preserved")
 	player.camera_2d.zoom = Vector2(.75,.75)
@@ -167,11 +171,18 @@ func _run() -> void:
 	await capture("cavern_still.png")
 	if foreground_review: await capture_foreground_details()
 	check((ground.horizon.get_parent() as CanvasLayer).layer>-3,"darkness occludes the complete combat viewport")
-	check(ground.horizon.darkness_end()>=ground.horizon.far_height(),"all cave artwork is outside the monster reveal band")
-	var mean_width := 0.0
-	for variants: Array in ground.ground_textures: mean_width += (variants[0] as Texture2D).get_width()*CavernBattleBackdrop.PATCH_SCALE/float(ground.config.get("ground_texture_density",1.0))/float(ground.ground_textures.size())
-	if not ground is CavernMeadowBackdrop:
-		check(mean_width>=1200,"complete 01 remains large in world space")
+	# The current panorama has empty bottom padding. Check visible cave openings
+	# and ruin bounds instead of requiring that padding to remain fully dark.
+	var pit_horizon := ground.horizon as CavernPitHorizon
+	var art_inside_darkness := pit_horizon != null
+	if pit_horizon != null:
+		for opening: Dictionary in pit_horizon.cave_openings():
+			art_inside_darkness = art_inside_darkness and opening.rect.end.y<=pit_horizon.darkness_end()
+		for sprite: Sprite2D in pit_horizon.ruin_sprites:
+			if not sprite.visible: continue
+			var bounds: Rect2 = sprite.transform*sprite.get_rect()
+			art_inside_darkness = art_inside_darkness and bounds.end.y<=pit_horizon.darkness_end()
+	check(art_inside_darkness and ground.horizon.darkness_end()<ground.horizon.reveal_end(),"visible cave artwork stays above the monster reveal band")
 	var entry_probe := battle.wave_manager.spawn_enemy("enemy_echo_bat",Vector2(100,-420)) as EchoBat
 	entry_probe.set_physics_process(false)
 	check(not ground.get_darkness_entry_direction(entry_probe.global_position).is_zero_approx(),"enemy above the dark band must approach")

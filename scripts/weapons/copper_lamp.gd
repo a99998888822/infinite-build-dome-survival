@@ -1,7 +1,6 @@
 extends DirectedWeaponRuntime
 class_name CopperLamp
 
-const FIRE := preload("res://assets/sprites/weapons/copper_lamp/copper_lamp.png")
 const FLAME_VISUAL := preload("res://scripts/effects/copper_lamp_flame.gd")
 signal spray_started
 var heat := 0.0

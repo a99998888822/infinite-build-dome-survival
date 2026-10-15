@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/analysis/cavern_horizontal_parallax_review_20261013'
+OUT = ROOT / 'temp/artifacts/analysis/cavern_horizontal_parallax_review_20261013'
 FRAMES = OUT / 'frames'
 
 
@@ -20,7 +20,7 @@ def main():
     parser.add_argument('--production-install', action='store_true')
     args = parser.parse_args()
     if args.production_install:
-        OUT = ROOT / 'artifacts/analysis/cavern_production_install_20261014'
+        OUT = ROOT / 'temp/artifacts/analysis/cavern_production_install_20261014'
         FRAMES = OUT / 'frames'
     data = json.loads((FRAMES / 'verification.json').read_text(encoding='utf-8'))
     runtime = json.loads((OUT / 'capture.json').read_text(encoding='utf-8'))

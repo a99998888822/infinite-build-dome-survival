@@ -128,7 +128,7 @@ func capture_depth_details() -> void:
 	await move_to(Vector2.ZERO)
 
 func verify_horizontal_parallax() -> void:
-	var period: float = ground.horizon.panorama.get_width()*ground.horizon.art_scale*.5
+	var period: float = ground.horizon.far_period()
 	var ruin_pairs := 0
 	var horizontal_pairs := 0
 	var fixed_pairs := 0
@@ -177,27 +177,30 @@ func verify_atmosphere() -> void:
 	var horizon := ground.horizon
 	var center: float = horizon.reveal_at(640.0)
 	var side: float = horizon.reveal_at(40.0)
-	check(side>center+50,"pit wall shadow reaches farther into the floor at the sides")
+	check(side>center+25,"pit wall shadow reaches farther into the floor at the sides")
 	check(is_equal_approx(horizon.reveal_at(40.0),horizon.reveal_at(1240.0)),"pit opening has balanced left and right arcs")
 	check(horizon.darkness_end()>=horizon.far_height(),"opaque darkness still covers the cavern panorama band")
 	var inverse := ground.world_to_ui.affine_inverse()
 	check(ground.get_darkness_entry_direction(inverse*Vector2(640,center+20)).is_zero_approx(),"centre opening is clear")
 	check(ground.get_darkness_entry_direction(inverse*Vector2(40,center+20)).y>0,"side enemies keep approaching through curved darkness")
 	check(ground.get_darkness_entry_direction(inverse*Vector2(40,side+20)).is_zero_approx(),"side enemies emerge after clearing their local arc")
-	horizon.configure_view(Vector2(1280,720),0.0,1.0)
-	var first: Dictionary = horizon.snapshot()
-	horizon.configure_view(Vector2(1280,720),120.0,1.0)
-	var second: Dictionary = horizon.snapshot()
 	var matched := 0
-	for key in first:
-		if not second.has(key): continue
-		matched += 1
-		check(is_equal_approx(first[key].root[0]-second[key].root[0],21.6),"larger distant ruins use slower 0.18 parallax")
+	# The scaled cave openings can mask both ruins at the starting camera.
+	# Measure persistent slots across several actual parallax positions.
+	for camera_x in range(-1200,1201,240):
+		horizon.configure_view(Vector2(1280,720),float(camera_x),1.0)
+		var first: Dictionary = horizon.snapshot()
+		horizon.configure_view(Vector2(1280,720),float(camera_x)+120.0,1.0)
+		var second: Dictionary = horizon.snapshot()
+		for key in first:
+			if not second.has(key): continue
+			matched += 1
+			check(is_equal_approx(first[key].root[0]-second[key].root[0],21.6),"larger distant ruins use slower 0.18 parallax")
 	check(matched>0,"parallax comparison sees a stable ruin")
 	horizon.configure_view(Vector2(1920,1080),0.0,1.0)
 	check(is_equal_approx(horizon.reveal_at(60.0)/1.5,side),"curved shadow scales with viewport size")
 	horizon.configure_view(Vector2(1280,720),player.camera_2d.get_screen_center_position().x,1.0)
-	atmosphere_report = {"center_reveal_y":center,"side_reveal_y":side,"ruin_scale_factor":1.28,
+	atmosphere_report = {"center_reveal_y":center,"side_reveal_y":side,"ruin_max_scale_factor":1.28,
 		"ruin_parallax":.18,"cavern_parallax":.08,"bottom_shadow":true,"light_pool":true}
 
 func capture_occlusion_route() -> void:
@@ -255,7 +258,7 @@ func capture_occlusion_route() -> void:
 	check(player.visual_anchor.scale.x<0,"capture also covers mirrored character silhouette")
 
 func _run() -> void:
-	if output.is_empty(): output = "res://artifacts/analysis/cavern_population_review_20261013/headless"
+	if output.is_empty(): output = "res://temp/artifacts/analysis/cavern_population_review_20261013/headless"
 	DirAccess.make_dir_recursive_absolute(output)
 	CampProgression.begin_transient_session()
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot

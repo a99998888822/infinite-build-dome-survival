@@ -71,16 +71,6 @@ const STAT_DEFINITIONS: Dictionary = {
 		"is_percent": false,
 		"description": "本局额外复活次数；复活后消耗 1 次。"
 	},
-	"on_kill_heal": {
-		"display_name": "击杀回血",
-		"category": CATEGORY_SURVIVAL,
-		"default": 0,
-		"min": 0,
-		"max": 99999,
-		"is_integer": true,
-		"is_percent": false,
-		"description": "每次击杀敌人后恢复的固定生命值。"
-	},
 	"armor": {
 		"display_name": "护甲",
 		"category": CATEGORY_SURVIVAL,

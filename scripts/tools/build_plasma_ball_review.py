@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path("C:/Users/mi/AppData/Local/Temp/codex-plasma-ball-live")
 STAGING = Path("C:/Users/mi/AppData/Local/Temp/codex-plasma-ball-export")
-OUT = ROOT / "artifacts/plasma_ball_implementation"
+OUT = ROOT / "temp/artifacts/plasma_ball_implementation"
 FFMPEG = "D:/soft/ffmpeg-N-116796-gb730defd52-win64-gpl-shared/bin/ffmpeg.exe"
 
 

@@ -2,24 +2,11 @@
   "revision": "20261013",
   "method": "Local contour repair and palette-constrained coverage resampling; no image generation",
   "runtime_scale": 1.0,
-  "source_pngs_preserved": true,
+  "source_pngs_preserved": false,
   "frames": [
-    {
-      "id": "void_hunter",
-      "category": "player",
-      "before": "assets/sprites/player/combat/void_hunter_walk_right_spritesheet.png",
-      "after": "assets/sprites/display_clarity/player/void_hunter_walk.png",
-      "frames": 6,
-      "frame_size": 80,
-      "before_frame_size": 64,
-      "factor": 1.2,
-      "before_sha256": "434540298c90a59815ddceb59b578439057fd563b27cfef6ef316cb5dab6ff9b",
-      "after_sha256": "71e369b155a826852dcf2109d56ad05bef436380ad3a10340076f6d35cb0b7f2"
-    },
     {
       "id": "capitalist",
       "category": "player",
-      "before": "assets/sprites/player/combat/capitalist_walk_right_spritesheet.png",
       "after": "assets/sprites/display_clarity/player/capitalist_walk.png",
       "frames": 7,
       "frame_size": 80,

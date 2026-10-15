@@ -236,7 +236,7 @@ func _export_curves() -> void:
 		feed(system, "elite", 1, 1, 100)
 		finish(system)
 		adaptive.append({"qualifying_waves": n + 1, "normal": system.next_bonus.normal, "elite": system.next_bonus.elite})
-	var output_dir := "res://artifacts/reviews/enemy_pressure_2026-10-07"
+	var output_dir := "res://temp/artifacts/reviews/enemy_pressure_2026-10-07"
 	DirAccess.make_dir_recursive_absolute(output_dir)
 	var file := FileAccess.open(output_dir + "/runtime_curves.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"erosion": curves, "adaptation": adaptive}, "\t"))

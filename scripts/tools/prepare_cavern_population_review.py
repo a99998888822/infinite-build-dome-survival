@@ -5,7 +5,7 @@ import json
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/analysis/cavern_population_review_20261013'
+OUT = ROOT / 'temp/artifacts/analysis/cavern_population_review_20261013'
 CONFIG = ROOT / 'data_config/reviews/cavern_population_review.json'
 
 
@@ -19,7 +19,7 @@ def main():
     for name in ('scenes/battle/battle_root.tscn', 'project.godot',
                  'data_config/cavern_meadow_battlefield.json', 'data_config/cavern_battlefield.json',
                  'scripts/battle/cavern_meadow_backdrop.gd', 'scripts/battle/cavern_battle_backdrop.gd',
-                 'scripts/battle/cavern_battle_horizon.gd', 'scripts/battle/battle_environment.gd'):
+                 'scripts/battle/cavern_battle_horizon.gd'):
         tracked.add(ROOT / name)
     OUT.mkdir(parents=True, exist_ok=True)
     snapshot = OUT / 'production_before.json'

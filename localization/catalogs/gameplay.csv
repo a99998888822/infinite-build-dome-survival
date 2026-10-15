@@ -98,8 +98,6 @@ stat.humanity.legacy_name,人性,Sanity
 stat.humanity.name,理智,Sanity
 stat.interest_rate.description,当前有效利率，默认 5；支持小数成长。名义利息为 ceil(本金×利率/100)，再受理智修正；实际利息加入随身金币，不自动增加本金。,"Current effective interest rate, starting at 5. Supports fractional growth. Nominal interest is ceil(principal × rate / 100), then adjusted by Sanity. Interest goes to carried gold, not automatically to principal."
 stat.interest_rate.name,利率,Interest Rate
-stat.life_on_kill.description,每次击杀敌人后恢复的固定生命值。,Flat health restored per enemy killed.
-stat.life_on_kill.name,击杀回血,HP on Kill
 stat.load.short_name,负载,Load
 stat.load_capacity.description,玩家可装备武器的总负载上限。,Maximum combined load of equipped weapons.
 stat.load_capacity.name,负载上限,Load Capacity

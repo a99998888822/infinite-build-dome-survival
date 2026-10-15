@@ -74,14 +74,14 @@ static func _texture_at(source: Texture2D, selected: int) -> Texture2D:
 	return result
 
 
-static func weapon_pixel_art(source: Texture2D, desired: float, minimum: float) -> Dictionary:
+static func weapon_pixel_art(source: Texture2D, desired: float, minimum: float) -> Texture2D:
+	# The detail floor only selects source art; it never sets the drawing size.
 	var item: Dictionary = CATALOG.ITEMS[source_path(source)]
 	var cropped := source is AtlasTexture and not source.has_meta(SOURCE_META)
 	var target := maxf(desired, minimum)
 	var native_extent := maxf(source.get_width(), source.get_height())
-	var multiple := maxi(1, maxi(roundi(target / native_extent), ceili(minimum / native_extent)))
 	var selected := int(item.native_size)
-	var error := absf(native_extent * multiple - target)
+	var error := absf(native_extent - target)
 	for size: int in item.variants:
 		var region: Array = item.variants[size]
 		var extent := maxf(region[6], region[7]) if cropped else float(size)
@@ -90,8 +90,7 @@ static func weapon_pixel_art(source: Texture2D, desired: float, minimum: float) 
 		if difference < error or (is_equal_approx(difference, error) and size < selected):
 			error = difference
 			selected = size
-			multiple = 1
-	return {"texture": _texture_at(source, selected), "multiple": multiple}
+	return _texture_at(source, selected)
 
 
 static func bind_texture(control: TextureRect, source: Texture2D, respect_parent_scale := false, minimum_pixels := 0.0, layout_owner: Control = null, logical_extent := 0.0) -> void:
@@ -205,21 +204,21 @@ class IconBinding extends Node2D:
 		_reserve_layout()
 		_factor = _screen_factor()
 		var art := ItemIconArt.weapon_pixel_art(source, _logical_extent * minf(_factor.x, _factor.y), minimum_pixels)
-		var pixels: Vector2 = art.texture.get_size() * art.multiple
-		# One physical pixel on each side accommodates destination rounding.
-		var minimum := _base_minimum.max((pixels + Vector2(2, 2)) / _factor)
+		# Preserve the original aspect ratio and logical footprint across variants.
+		var logical_size := source.get_size() * (_logical_extent / maxf(source.get_width(), source.get_height()))
+		var minimum := _base_minimum.max(logical_size + Vector2(2, 2))
 		if control is Button:
 			var padding := Vector2.ZERO
 			for state in ["normal", "hover", "pressed", "disabled"]:
 				padding = padding.max(control.get_theme_stylebox(state).get_minimum_size())
-			minimum = _base_minimum.max((pixels + Vector2(2, 2)) / _factor + padding)
-			var icon_width := ceili((pixels.x + 2.0) / _factor.x)
+			minimum = _base_minimum.max(logical_size + Vector2(2, 2) + padding)
+			var icon_width := ceili(logical_size.x + 2.0)
 			if control.get_theme_constant("icon_max_width") != icon_width:
 				control.add_theme_constant_override("icon_max_width", icon_width)
 		if not _layout_owner.custom_minimum_size.is_equal_approx(minimum):
 			_layout_owner.custom_minimum_size = minimum
 		if pixel_texture == null: pixel_texture = ItemIconArt.PIXEL_TEXTURE.new()
-		pixel_texture.configure(control, art.texture, art.multiple)
+		pixel_texture.configure(control, art, logical_size)
 		pixel_texture.set_meta(ItemIconArt.SOURCE_META, ItemIconArt.source_path(source))
 		control.queue_redraw()
 		return pixel_texture

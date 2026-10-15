@@ -393,16 +393,6 @@
         "max_level": 1,
         "value_per_level": 1,
         "required_building_level": 1
-      },
-      {
-        "id": "camp_upgrade_on_kill_heal",
-        "name": "战地急救训练",
-        "stat": "on_kill_heal",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 2,
-        "value_per_level": 0.2,
-        "required_building_level": 1
       }
     ]
   },

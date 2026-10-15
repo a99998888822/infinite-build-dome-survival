@@ -5,7 +5,7 @@ import sys
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "artifacts/reviews/ui/interest_arrival"
+OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "temp/artifacts/reviews/ui/interest_arrival"
 
 
 def assemble(name):

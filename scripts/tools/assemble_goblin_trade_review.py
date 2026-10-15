@@ -9,7 +9,7 @@ import wave
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/reviews/ui/goblin_trade"
+OUT = ROOT / "temp/artifacts/reviews/ui/goblin_trade"
 
 
 def sound_track(path, small):

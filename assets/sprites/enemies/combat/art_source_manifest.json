@@ -125,5 +125,6 @@
     "source": "artifacts/previews/xiaoguai_move/20261004-128-14fps-r4",
     "record": "docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md",
     "method": "Approved 16-color transparent Picxel seven-frame animation. 14 FPS. Display and collision enlarged 1.1x; movement speed retained."
-  }
+  },
+  "source": "artifacts/sources/enemies/xiaoguai_move/"
 }

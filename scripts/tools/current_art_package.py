@@ -9,7 +9,7 @@ from PIL import Image
 ROOT=Path(__file__).resolve().parents[2]
 GROUPS={
     'stats_drawer': ('assets/ui/stats_drawer',None),
-    'green_ground': ('assets/sprites/background/green_ground','data_config/green_battlefield.json'),
+    'green_ground': ('assets/sprites/background/green_ground',None),
     'meadow': ('assets/sprites/background/meadow',None),
 }
 

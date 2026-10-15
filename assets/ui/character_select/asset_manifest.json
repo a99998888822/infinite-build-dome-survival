@@ -1,5 +1,4 @@
 {
-  "approved_review": "artifacts/previews/character_select_basement/20261004-layout-r5/review",
   "background_grid": [
     688,
     384
@@ -51,20 +50,6 @@
         32
       ],
       "sha256": "da783704a5295aa50d58ca12818ec21e6bfe6055f894597d0084ed3627da7d31"
-    },
-    "roster_empty.png": {
-      "size": [
-        88,
-        20
-      ],
-      "sha256": "8c3d40caf859463438175f67d7983dafd6ba94f7b35fe8ba67ee249e7b05bb07"
-    },
-    "roster_frame.png": {
-      "size": [
-        114,
-        178
-      ],
-      "sha256": "bf2fda63d832fa0baa3c8a7738d4455afabd99d4d6744552bef22bee49dab963"
     },
     "roster_normal.png": {
       "size": [

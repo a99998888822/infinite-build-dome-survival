@@ -10,7 +10,7 @@ import math
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[3]
-OUTPUT = ROOT / 'artifacts/reviews/ui/range_relics'
+OUTPUT = ROOT / 'temp/artifacts/reviews/ui/range_relics'
 INK = '#29283b'
 BRASS_D, BRASS, BRASS_L, BRASS_H = '#865b3a', '#c18a4d', '#ebbc70', '#ffe4a0'
 IRON_D, IRON, IRON_L, IRON_H = '#343c50', '#52677b', '#8cabb5', '#d5e8dd'

@@ -25,13 +25,12 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	heading = anchor_position.direction_to(point)
 	if heading.is_zero_approx(): heading = player.last_move_direction
 	var landing := player.resolve_mobility_destination(anchor_position + weapon.get_mobility_landing(point - anchor_position))
-	player.play_mobility_action(weapon.weapon_id, landing - anchor_position)
+	player.play_mobility_action(weapon.weapon_id, landing - anchor_position, heading)
 	if weapon.is_star_tome():
-		player.reset_stationary_relic_state()
 		MobilityAtlasEffect.spawn(self, weapon, "star_depart", anchor_position)
 		if allow_return:
 			anchor = MobilityAtlasEffect.spawn(self, weapon, "star_anchor", anchor_position, 0, Vector2.ONE, true)
-		player.global_position = landing
+		player.blink_to(landing)
 		MobilityAtlasEffect.spawn(self, weapon, "star_arrive", landing)
 		_impact(landing)
 		phase = "arriving"
@@ -115,8 +114,7 @@ func request_return() -> bool:
 	if landing.distance_squared_to(anchor_position) > 1.0: return false
 	var departure := player.global_position
 	player.play_mobility_action(weapon.weapon_id, landing - departure)
-	player.reset_stationary_relic_state()
-	player.global_position = landing
+	player.blink_to(landing)
 	MobilityAtlasEffect.spawn(self, weapon, "star_depart", departure)
 	MobilityAtlasEffect.spawn(self, weapon, "star_return", landing)
 	if is_instance_valid(anchor): anchor.cancel()

@@ -299,7 +299,6 @@
 - [ordinary_max_hp.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_max_hp.png>)
 - [ordinary_melee_damage.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_melee_damage.png>)
 - [ordinary_move_speed.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_move_speed.png>)
-- [ordinary_on_kill_heal.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_on_kill_heal.png>)
 - [ordinary_pickup_radius.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_pickup_radius.png>)
 - [ordinary_projectile_count.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_projectile_count.png>)
 - [ordinary_ranged_damage.png](<C:/Users/mi/AppData/Local/Temp/bank_hud_complete/ordinary_ranged_damage.png>)

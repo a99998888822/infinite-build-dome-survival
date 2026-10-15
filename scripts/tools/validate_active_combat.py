@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('scenes', nargs='+')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
-out = root / 'artifacts/previews/active_combat/formal_r01/validation'
+out = root / 'temp/artifacts/previews/active_combat/formal_r01/validation'
 out.mkdir(parents=True, exist_ok=True)
 godot = Path('D:/soft/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64.exe')
 failed = False

@@ -87,7 +87,6 @@
       ]
     ]
   },
-  "excluded_cells_sheet": 4,
   "coordinate_convention": "Sheet, row and column are 1-based. Crop bounds use original source pixels.",
   "assets": [
     {

@@ -104,6 +104,8 @@ func _process_special_behavior(delta: float) -> bool:
 func start_dash() -> bool:
 	if not alive or skill_state != "chase" or _cooldown > 0.0:
 		return false
+	if not is_in_visible_combat_area():
+		return false
 	if not is_instance_valid(target_player) or not target_player.is_alive():
 		return false
 	var distance := float(_profile.get("dash_distance", 240))

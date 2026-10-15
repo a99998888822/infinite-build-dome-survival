@@ -9,7 +9,7 @@ import json
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[3]
-OUT = ROOT / "artifacts/previews/vault_redraw"
+OUT = ROOT / "temp/artifacts/previews/vault_redraw"
 ASSETS = ROOT / "assets/ui/finance"
 P = {
     "ink": "#17151d", "deep": "#23252b", "shadow": "#303238",

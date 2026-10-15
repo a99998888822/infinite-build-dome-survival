@@ -1,8 +1,8 @@
 {
   "source": "Review only: approved A, B, C, D, Q with production meadow and grass",
   "method": "Terrain-matched batched grass, medium B/Q, sparse world-space A; inherited approved PNGs",
-  "surface_texture": "res://assets/sprites/background/meadow/meadow-ground.png",
-  "surface_context": "res://assets/sprites/background/meadow/ground-context.png",
+  "surface_texture": "res://assets/sprites/background/meadow/pit-ground.png",
+  "surface_context": "res://assets/sprites/background/meadow/pit-ground-context.png",
   "floor_color": [
     0.26,
     0.28,
@@ -154,8 +154,8 @@
   ],
   "initial_groups": [],
   "preserved_depth_config": "res://data_config/cavern_battlefield.json",
-  "surface_texture_sha256": "68993dc8149df5ef4ab98fde22aba528355e2d90b7b2def3705d4ca0a0dbfe2c",
-  "surface_context_sha256": "6dc9b06c643382f0f08f79fc9aae85076279ca5b64787e537b8a235a9f0d43b3",
+  "surface_texture_sha256": "fa90e4d02aa1288d841955e949c53af874c9b156dcb60937d5e19ddaad5d3a5c",
+  "surface_context_sha256": "51d12d6a27f706cd486e8b5ddc4f67326a50e327783e2fc428f8f810b48d5b8f",
   "edge_repair_revision": "20261013-local-contours",
   "review_only": true
 }

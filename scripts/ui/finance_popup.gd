@@ -437,7 +437,8 @@ func _build() -> void:
 	_tooltip_text.bbcode_enabled = true
 	_tooltip_text.scroll_active = false
 	_tooltip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_tooltip_text.add_theme_font_size_override("normal_font_size", 12)
+	GameTooltipLayer.apply_pixel_text(_tooltip_text)
+	_tooltip_text.add_theme_font_size_override("normal_font_size", 16)
 	_tooltip_text.add_theme_constant_override("line_separation", 4)
 	_tooltip.add_child(_tooltip_text)
 	_tooltip.hide()

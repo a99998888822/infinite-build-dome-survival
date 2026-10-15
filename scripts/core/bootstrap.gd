@@ -427,21 +427,10 @@ func _run_enemy_wave_checks() -> bool:
 		var previous_hp := player.current_hp
 		enemy._process_contact_damage()
 		passed = _print_check_result("enemy contact damage knockback", player.current_hp < previous_hp and enemy.has_contact_damaged and enemy.velocity.length() > 0.0) and passed
-		player.add_runtime_modifier({
-			"id": "mod_test_on_kill_heal",
-			"source_type": "test",
-			"source_id": "bootstrap_enemy_wave_check",
-			"target_scope": "player",
-			"stat": "on_kill_heal",
-			"operation": "add_flat",
-			"value": 2,
-			"duration": -1,
-			"stack_rule": "unique",
-		})
 		var hp_before_kill := player.current_hp
 		var dealt_damage := enemy.take_damage(999, "bootstrap")
 		passed = _print_check_result("enemy damage and death", dealt_damage > 0 and not enemy.alive) and passed
-		passed = _print_check_result("enemy kill heal", player.current_hp == mini(int(player.get_stat("max_hp")), hp_before_kill + 2)) and passed
+		passed = _print_check_result("enemy death preserves player health", player.current_hp == hp_before_kill) and passed
 
 	player.add_runtime_modifier({
 		"id": "mod_test_enemy_spawn_rate",

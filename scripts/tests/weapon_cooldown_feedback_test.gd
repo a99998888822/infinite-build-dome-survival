@@ -1,6 +1,6 @@
 extends Node
 ## Real casting/HUD regression and GPU checks for the installed cooldown border.
-const BASE := "res://artifacts/validation/weapon_cooldown_feedback_install_20261010/"
+const BASE := "res://temp/artifacts/validation/weapon_cooldown_feedback_install_20261010/"
 const PULSE = preload("res://scripts/ui/weapon_pulse_r02.gd")
 var game: GameRoot
 var battle: BattleRoot

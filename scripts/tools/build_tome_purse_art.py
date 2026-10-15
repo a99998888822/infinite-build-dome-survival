@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/tome_purse_review"
+OUT = ROOT / "temp/artifacts/tome_purse_review"
 ICONS = ROOT / "assets/ui/icons/weapons"
 WORLD = ROOT / "assets/sprites/weapons"
 INK = "#10191e"

@@ -49,6 +49,9 @@ func snapshot(p: PlayerController, bank: BattleFinanceSystem) -> Dictionary:
 
 func _run() -> void:
 	_test_config_and_health()
+	_test_health_pickup_and_spawn_relics()
+	_test_new_attribute_relics()
+	_test_combat_attribute_relics()
 	_test_projectiles()
 	_test_interest()
 	_test_confirmed_balance()
@@ -100,6 +103,226 @@ func _test_config_and_health() -> void:
 	p.add_relic("relic_piggy_bank")
 	check(p.remaining_revives == 0, "relic rebuild never restores a spent seed revive")
 	p.free()
+
+
+func _collect_health_pack(p: PlayerController) -> int:
+	var pack := HealthPack.new()
+	add_child(pack)
+	pack.set_physics_process(false)
+	pack.initialize(3)
+	pack.set_target_player(p)
+	var previous_hp := p.current_hp
+	pack.collect()
+	pack.collect()
+	return p.current_hp - previous_hp
+
+
+func _test_health_pickup_and_spawn_relics() -> void:
+	var p := make_player()
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 3, "ordinary health pack restores its authored amount only once")
+	p.add_relic("relic_worn_hemostatic_cloth")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 4, "cloth increases actual pickup healing without altering base pack data")
+	p.add_relic("relic_worn_hemostatic_cloth")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 5, "two cloths stack through actual health pickup collection")
+	p.add_relic("relic_medical_cutback")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 4, "medical cutback subtracts one from the same pickup bonus")
+	p.relic_system.remove_relic("relic_worn_hemostatic_cloth")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 3, "removing one cloth removes exactly one healing bonus")
+	p.current_hp = int(p.get_stat("max_hp")) - 1
+	check(_collect_health_pack(p) == 1, "boosted health packs still respect maximum health")
+	p.free()
+	p = make_player()
+	var manager := WaveManager.new()
+	manager.player = p
+	var baseline := manager.calculate_enemy_spawn_count(6)
+	p.add_relic("relic_harvest_sacrificial_vessel")
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), baseline * 1.05), "harvest increases the live scheduler count by five percent")
+	p.add_relic("relic_harvest_sacrificial_vessel")
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), baseline * 1.10), "two harvest relics add ten points rather than multiplying each other")
+	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(20.0)
+	var spawned := 0
+	for index in 100: spawned += manager._take_enemy_spawn_count(6)
+	check(spawned == roundi(baseline * 1.10 * 1.20 * 100), "fractional scheduled batches preserve both harvest and erosion multipliers")
+	p.relic_system.remove_relic("relic_harvest_sacrificial_vessel")
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), baseline * 1.05 * 1.20), "removing harvest reduces the actual spawn supply while retaining erosion")
+	manager.free()
+	p.free()
+
+
+func _test_new_attribute_relics() -> void:
+	var p := make_player()
+	check(p.add_relic("relic_crimson_coagulation_vial"), "acquire coagulation vial")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 4, "vial adds one actual pickup healing")
+	check(p.add_relic("relic_crimson_coagulation_vial"), "vial accepts a second copy")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.2), "two vials grant two tenths health per second")
+	p.current_hp = 1
+	p._process_regeneration(10.0)
+	check(p.current_hp == 3, "two vials regenerate two actual health over ten seconds")
+	p.add_relic("relic_worn_hemostatic_cloth")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 6, "two vials and cloth stack their actual pickup healing")
+	p.add_relic("relic_vitality_potion")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.45), "two vials stack with other positive regeneration")
+	p.relic_system.remove_relic("relic_crimson_coagulation_vial")
+	p.current_hp = 1
+	check(_collect_health_pack(p) == 5, "removing one vial retains the other vial and cloth healing")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.35), "removing one vial retains the other regeneration sources")
+	p.relic_system.remove_relic("relic_crimson_coagulation_vial")
+	check(is_equal_approx(p.get_stat("hp_regen"), 0.25), "removing both vials retains the original regeneration source")
+	p.current_hp = int(p.get_stat("max_hp")) - 1
+	check(_collect_health_pack(p) == 1, "new healing relics still respect maximum health")
+	p.free()
+	p = make_player()
+	var manager := WaveManager.new()
+	manager.player = p
+	var baseline := manager.calculate_enemy_spawn_count(6)
+	var pickup_baseline := p.get_stat("pickup_radius")
+	for count in range(1, 6):
+		check(p.add_relic("relic_hunting_bone_whistle"), "bone whistle copy %d is accepted" % count)
+	check(is_equal_approx(p.get_stat("pickup_radius"), pickup_baseline + 75), "five whistles increase pickup range by seventy-five")
+	check(p.get_stat("armor") == 25, "five whistles also grant twenty-five armor")
+	check(p.add_relic("relic_hungry_tide_bell"), "acquire rusted ritual bell")
+	check(p.add_relic("relic_hungry_tide_bell"), "rusted bell accepts a second copy")
+	check(p.get_stat("drop_rate_percent") == 24 and p.get_stat("max_hp") == 20, "two rusted bells stack drop rate and maximum health")
+	p.add_relic("relic_harvest_sacrificial_vessel")
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), baseline * 1.50), "five whistles two bells and harvest add fifty spawn percentage points")
+	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(20.0)
+	var spawned := 0
+	for index in 100: spawned += manager._take_enemy_spawn_count(6)
+	check(spawned == roundi(baseline * 1.50 * 1.20 * 100), "new spawn bonuses preserve fractional batches and erosion multiplication")
+	p.relic_system.remove_relic("relic_hungry_tide_bell")
+	p.relic_system.remove_relic("relic_hunting_bone_whistle")
+	check(is_equal_approx(manager.calculate_enemy_spawn_count(6), baseline * 1.35 * 1.20), "removal subtracts one bell and one whistle from live spawn supply")
+	check(p.get_stat("armor") == 20 and p.get_stat("max_hp") == 13, "removal withdraws only one bell health and one whistle armor bonus")
+	manager.free()
+	p.free()
+	p = make_player()
+	var bank := make_finance(p)
+	bank.prepare_wave(1)
+	bank.deposit(1000, true)
+	var base_rate := bank.get_interest_rate()
+	var base_sanity := p.get_stat("humanity")
+	p.add_relic("relic_void_market_key")
+	check(is_equal_approx(bank.get_interest_rate(), base_rate + 2.0), "market key increases live bank rate by two percentage points")
+	check(bank.settle_interest().gain == 70, "market key pays seventy interest on one thousand principal")
+	check(p.add_relic("relic_void_market_key"), "market key accepts a second copy")
+	check(is_equal_approx(bank.get_interest_rate(), base_rate + 4.0) and bank.settle_interest().gain == 90, "two market keys pay ninety interest on one thousand principal")
+	check(p.get_stat("humanity") == base_sanity, "market key no longer costs sanity")
+	p.relic_system.remove_relic("relic_void_market_key")
+	check(is_equal_approx(bank.get_interest_rate(), base_rate + 2.0), "removing one market key retains the other key rate bonus")
+	p.relic_system.remove_relic("relic_void_market_key")
+	check(is_equal_approx(bank.get_interest_rate(), base_rate), "removing both market keys restores the original interest rate")
+	p.free()
+	# Extra choices remain rare to obtain, while owned copies can now stack.
+	for record: Dictionary in DataRegistry.get_table("relics"):
+		for effect: Dictionary in record.get("effects", []):
+			if str(effect.get("stat", "")) == "shop_offer_count_bonus" and float(effect.get("value", 0)) > 0:
+				check(str(record.get("rarity", "")) in ["mythic", "legendary"], "extra shop choices remain high rarity: " + str(record.id))
+	var new_ids := ["relic_crimson_coagulation_vial", "relic_goblin_trade_charter", "relic_void_market_key", "relic_hunting_bone_whistle", "relic_hungry_tide_bell"]
+	var many_owned := {}
+	var generator := ShopOfferGenerator.new()
+	var pool := generator.build_shop_candidate_pool({"luck": 350})
+	for id: String in new_ids:
+		check(pool.any(func(offer): return str(offer.get("target_id", "")) == id), "new relic is available in normal shop pool: " + id)
+		check(int(DataRegistry.get_record("relics", id).max_stack) == 0, "confirmed relic has no stack cap: " + id)
+		many_owned[id] = 100
+	var repeated_pool := generator.build_shop_candidate_pool({"luck": 350, "owned_relic_counts": many_owned})
+	for id: String in new_ids:
+		check(repeated_pool.any(func(offer): return str(offer.get("target_id", "")) == id), "relic stays in the pool after one hundred copies: " + id)
+
+
+func _test_combat_attribute_relics() -> void:
+	var p := make_player()
+	var weapon := WeaponInstance.new()
+	weapon.initialize("weapon_void_blade", p)
+	var base_chance := weapon.get_stat("crit_chance")
+	var base_interval := weapon.get_actual_attack_interval_seconds()
+	p.add_relic("relic_falcon_sighting_pin")
+	check(is_equal_approx(weapon.get_stat("crit_chance"), base_chance + 10), "pin adds ten crit percentage points to real weapon")
+	check(weapon.get_actual_attack_interval_seconds() < base_interval, "sighting pin reduces actual weapon cooldown")
+	p.add_relic("relic_falcon_sighting_pin")
+	p.relic_system.remove_relic("relic_falcon_sighting_pin")
+	check(is_equal_approx(weapon.get_stat("crit_chance"), base_chance + 10), "removing one stacked pin retains the other pin")
+	for i in 10: p.add_relic("relic_falcon_sighting_pin")
+	check(weapon.get_stat("crit_chance") == 100 and weapon.calculate_damage_events()[0].is_critical, "unlimited pins still respect crit cap and trigger actual critical hit")
+	p.free()
+	p = make_player()
+	weapon = WeaponInstance.new()
+	weapon.initialize("weapon_void_blade", p)
+	var base_damage := weapon.get_base_attack_damage()
+	p.add_relic("relic_executioner_whetstone")
+	check(weapon.get_stat("crit_damage") == 170, "whetstone increases default crit multiplier to 170 percent")
+	check(weapon.calculate_damage_events(true)[0].damage == roundi(base_damage * 1.7), "whetstone increases actual critical damage without adding melee bonus to ranged weapon")
+	p.add_relic("relic_crimson_execution_seal")
+	check(weapon.get_stat("crit_damage") == 200 and weapon.calculate_damage_events(true)[0].damage == roundi(base_damage * 1.1 * 2.0), "confirmed seal adds thirty crit points and combines general damage in real hit")
+	check(p.get_stat("max_hp") == 7 and p.current_hp == 7, "seal health cost trims current health to reduced maximum")
+	p.relic_system.remove_relic("relic_crimson_execution_seal")
+	check(p.get_stat("max_hp") == 10 and p.current_hp == 7 and weapon.get_stat("crit_damage") == 170, "removing seal restores cap and retains whetstone without healing")
+	p.free()
+	p = make_player()
+	p.add_relic("relic_faded_ward_talisman")
+	check(p.current_shield == 0, "acquiring initial-shield relics does not refill current shield")
+	p.reset_wave_shield()
+	check(p.current_shield == 4 and p.current_shield_capacity == 4, "next wave initializes talisman shield to four")
+	p.current_shield = 3
+	p.add_relic("relic_faded_ward_talisman")
+	check(p.current_shield == 3, "stacking talisman mid-wave does not refill spent shield")
+	p.reset_wave_shield()
+	check(p.current_shield == 8, "stacked talismans apply on following wave")
+	p.relic_system.remove_relic("relic_faded_ward_talisman")
+	p.reset_wave_shield()
+	check(p.current_shield == 4, "removing one talisman retains the other talisman shield")
+	p.free()
+	for weapon_id in ["weapon_void_blade", "weapon_plasma_cannon"]:
+		p = make_player()
+		weapon = WeaponInstance.new()
+		weapon.initialize(weapon_id, p)
+		var original_count := weapon.get_projectile_angles().size()
+		base_interval = weapon.get_actual_attack_interval_seconds()
+		base_damage = weapon.get_base_attack_damage()
+		p.add_relic("relic_twin_chamber_magazine")
+		check(weapon.get_projectile_angles().size() == original_count + 1 and weapon.get_actual_attack_interval_seconds() > base_interval, "magazine adds actual shot and lengthens cooldown: " + weapon_id)
+		p.add_relic("relic_twin_chamber_magazine")
+		check(weapon.get_projectile_angles().size() == original_count + 2 and weapon.get_stat("attack_speed") == -30, "two magazines stack projectile outputs and attack speed cost: " + weapon_id)
+		check(weapon._build_damage_event(weapon.get_attack_kind(), false, false).damage == maxi(1, roundi(base_damage)), "magazine affects cooldown but retains per-hit damage: " + weapon_id)
+		p.relic_system.remove_relic("relic_twin_chamber_magazine")
+		check(weapon.get_projectile_angles().size() == original_count + 1 and weapon.get_stat("attack_speed") == -15, "removing one magazine retains the other magazine output and cost: " + weapon_id)
+		p.free()
+	p = make_player()
+	weapon = WeaponInstance.new()
+	weapon.initialize("weapon_plasma_cannon", p)
+	p.add_relic("relic_stilltime_amber")
+	var event := weapon.calculate_damage_events(true)[0]
+	check(event.control_power == 20, "amber propagates twenty control power into damage event")
+	var enemy := EnemyController.new()
+	enemy.initialize("enemy_mutated_grub", p)
+	enemy.apply_slow(2.0, 0.5, event.control_power)
+	check(is_equal_approx(enemy._slowed_remaining, 2.4), "amber extends actual two-second slow to 2.4 seconds")
+	enemy.apply_freeze(1.0, {}, event.control_power)
+	check(is_equal_approx(enemy._frozen_remaining, 1.2), "amber extends actual one-second freeze to 1.2 seconds")
+	p.relic_system.remove_relic("relic_stilltime_amber")
+	check(weapon.calculate_damage_events(true)[0].control_power == 0 and event.control_power == 20, "removing amber updates new hits while in-flight hit retains its control snapshot")
+	enemy.initialize("enemy_mutated_grub", p)
+	enemy.apply_freeze(1.0)
+	check(is_equal_approx(enemy._frozen_remaining, 1.0), "removal restores base duration for next control")
+	for i in 6: p.add_relic("relic_stilltime_amber")
+	enemy.initialize("enemy_mutated_grub", p)
+	enemy.apply_freeze(1.0)
+	check(p.get_stat("control_power") == 100 and is_equal_approx(enemy._frozen_remaining, 2.0), "unlimited amber respects control cap and doubles base duration")
+	enemy.free()
+	p.free()
+	var ids := ["relic_falcon_sighting_pin", "relic_executioner_whetstone", "relic_crimson_execution_seal", "relic_faded_ward_talisman", "relic_twin_chamber_magazine", "relic_stilltime_amber"]
+	var owned := {}
+	for id: String in ids: owned[id] = 100
+	var pool := ShopOfferGenerator.new().build_shop_candidate_pool({"luck": 350, "owned_relic_counts": owned})
+	for id: String in ids:
+		check(int(DataRegistry.get_record("relics", id).max_stack) == 0 and pool.any(func(offer): return str(offer.get("target_id", "")) == id), "combat relic remains available beyond one hundred copies: " + id)
 
 
 func _test_projectiles() -> void:

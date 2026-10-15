@@ -4,7 +4,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "artifacts/reviews/ui/goblin_trade/all_five"
+OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "temp/artifacts/reviews/ui/goblin_trade/all_five"
 FONT = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 19)
 ENTRIES = [
     ("01_deposit_offer", "1  存款获得强力刷新"),

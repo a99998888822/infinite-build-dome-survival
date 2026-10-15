@@ -336,5 +336,7 @@
   "scroll_mask": "artifacts/editable/finance_background/scroll_mask.png",
   "asset_sha256": "dcf1ee91b4824fdb080665f4de7663bcade38f916d343c76bda099c2ca38d784",
   "composition": "Image.composite(short_scroll_RGBA, pixel_background_RGBA.resize((2752,1536), NEAREST), scroll_mask_L)",
-  "edge_repair_revision": "20261013-local-wood-structure-lines"
+  "edge_repair_revision": "20261013-local-wood-structure-lines",
+  "production_asset": "assets/ui/finance/finance_background.png",
+  "production_sha256": "dcf1ee91b4824fdb080665f4de7663bcade38f916d343c76bda099c2ca38d784"
 }

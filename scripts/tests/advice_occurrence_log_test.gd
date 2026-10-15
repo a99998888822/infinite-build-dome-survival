@@ -44,7 +44,7 @@ func _run() -> void:
 	var rows := reopened._empty_rows()
 	check(reopened._read(rows) and rows.size() == 18 and int(rows["trade:weapon_buyout"].selected) == 2, "fresh logger restores totals and keeps zero-count entries")
 	await _test_real_flow()
-	var artifact := "res://artifacts/reviews/advice_occurrence_log_20261012/sample_counts.csv"
+	var artifact := "res://temp/artifacts/reviews/advice_occurrence_log_20261012/sample_counts.csv"
 	DirAccess.copy_absolute(log_file.storage_path, artifact)
 	DirAccess.remove_absolute(log_file.storage_path)
 	AudioManager.stop_combat_sfx()

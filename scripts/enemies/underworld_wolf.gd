@@ -97,6 +97,11 @@ func initialize(id: String, player: PlayerController = null, modifiers: Array = 
 
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)): return
+	if is_movement_locked():
+		velocity = Vector2.ZERO
+		_knockback_timer = 0.0
+		_knockback_velocity = Vector2.ZERO
+		_knockback_deceleration = 0.0
 	super._physics_process(delta)
 	if not alive: return
 	impact_time = maxf(0,impact_time-delta)
@@ -178,6 +183,7 @@ func _process_special_behavior(delta: float) -> bool:
 
 func begin_skill(kind: String) -> bool:
 	if not alive or state != "chase" or not is_instance_valid(target_player) or not target_player.is_alive(): return false
+	if not is_in_visible_combat_area(): return false
 	var distance := global_position.distance_to(target_player.global_position)
 	if kind == "leap" and (leap_cooldown > 0 or distance < float(profile.leap_min_range) or distance > float(profile.leap_max_range)): return false
 	if kind == "breath" and (breath_cooldown > 0 or AttackFootprint.unproject(target_player.global_position - mouth_position()).length() > float(profile.breath_range)): return false
@@ -284,6 +290,11 @@ func get_control_multiplier() -> float:
 
 func can_be_pushed_by_wind() -> bool:
 	return false
+
+
+func is_movement_locked() -> bool:
+	# The warning, flame origin and recovery all share one stationary body.
+	return state in ["breath_charge", "breath", "breath_recover"]
 
 
 func _on_control_interrupted() -> void:

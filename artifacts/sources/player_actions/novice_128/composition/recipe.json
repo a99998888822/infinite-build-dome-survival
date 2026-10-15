@@ -1,0 +1,37 @@
+{
+  "donor": "artifacts/sources/player_actions/novice_128/sustain/04.png",
+  "frames": [
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_00.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/07.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_01.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/00.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_02.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/01.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_03.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/02.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_04.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/03.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_05.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/04.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_06.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/05.png"
+    },
+    {
+      "source": "artifacts/sources/player_actions/novice_128/composition/gait_07.png",
+      "output": "artifacts/sources/player_actions/novice_128/move_sustain/06.png"
+    }
+  ]
+}

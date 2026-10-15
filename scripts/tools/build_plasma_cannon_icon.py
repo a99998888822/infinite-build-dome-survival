@@ -14,7 +14,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/plasma_cannon_icon_review"
+OUT = ROOT / "temp/artifacts/plasma_cannon_icon_review"
 PLASMA = ROOT / "assets/ui/icons/weapons/weapon_plasma_cannon_v2.png"
 GRENADE = ROOT / "assets/ui/icons/weapons/weapon_iron_grenade_cannon.png"
 INK = "#101924"

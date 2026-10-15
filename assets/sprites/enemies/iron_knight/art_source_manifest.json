@@ -250,5 +250,6 @@
     "review": "artifacts/previews/iron_knight/20261004-animation256-r4",
     "method": "Approved fixed-scale 256px local conversion, binary alpha, shared 16-color palette; per-pose fringe, shadow and armor speck cleanup. No image model.",
     "installation_record": "docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md"
-  }
+  },
+  "source": "artifacts/sources/enemies/iron_knight/"
 }

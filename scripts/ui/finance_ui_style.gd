@@ -42,6 +42,11 @@ const NATIVE_RELIC_ICONS := [
 	"relic_merger_reorg", "relic_divine_fusion", "relic_goblin_central_bank_printer",
 	"relic_medical_cutback", "relic_welfare_cutback", "relic_annual_leave_cutback",
 	"relic_salary_adjustment", "relic_perpetual_annuity_scroll", "relic_bankruptcy_reorg",
+	"relic_crimson_coagulation_vial", "relic_goblin_trade_charter",
+	"relic_void_market_key", "relic_hunting_bone_whistle", "relic_hungry_tide_bell",
+	"relic_falcon_sighting_pin",
+	"relic_executioner_whetstone", "relic_crimson_execution_seal",
+	"relic_faded_ward_talisman", "relic_twin_chamber_magazine", "relic_stilltime_amber",
 ]
 
 

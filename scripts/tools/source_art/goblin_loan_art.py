@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "assets/ui/finance/loan"
-REVIEW = ROOT / "artifacts/reviews/ui/goblin_loan"
+REVIEW = ROOT / "temp/artifacts/reviews/ui/goblin_loan"
 INK = "#151e19"
 SHADE = "#544329"
 GOLD = "#b99555"

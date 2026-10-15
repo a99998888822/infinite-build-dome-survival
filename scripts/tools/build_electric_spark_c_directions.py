@@ -16,7 +16,7 @@ from scipy.io import wavfile
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "scripts/tools/audio_sources/electric_spark_reference/option_C_preview.wav"
-OUT = ROOT / "artifacts/electric_spark_c_directions_20260925"
+OUT = ROOT / "temp/artifacts/electric_spark_c_directions_20260925"
 RATE = 48000
 OPTIONS = [
     ("1", "原味提亮", "保留原音高和颗粒，只把噼啪的亮度往上推一点。", "treble=g=3:f=2800:w=0.5,equalizer=f=650:t=q:w=0.8:g=-1"),

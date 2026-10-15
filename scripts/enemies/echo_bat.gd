@@ -131,7 +131,7 @@ func _process_special_behavior(delta: float) -> bool:
 
 
 func begin_attack() -> bool:
-	if skill_state != "move" or not alive or not is_instance_valid(target_player): return false
+	if skill_state != "move" or not alive or not is_instance_valid(target_player) or not is_in_visible_combat_area(): return false
 	skill_state = "charge"
 	state_time = 0.0
 	cooldown = float(profile.get("cooldown_ms", 2400)) / 1000.0
@@ -162,7 +162,9 @@ func _process_chase() -> void:
 	var distance := offset.length()
 	var direction := offset.normalized() if distance > 0.01 else Vector2.RIGHT
 	var movement := Vector2.ZERO
-	if distance > attack_range() * 0.9: movement = direction
+	# A hidden bat approaches its world-space target instead of hovering where
+	# it cannot begin an attack. Never steer toward a camera-relative edge.
+	if distance > attack_range() * 0.9 or not is_in_visible_combat_area(): movement = direction
 	elif distance < attack_range() * 0.3: movement = -direction
 	var speed := minf(get_stat("move_speed"), float(enemy_data.get("base_stats", {}).get("move_speed", 80)) * MAX_MOVE_SPEED_MULTIPLIER)
 	if _slowed_remaining > 0: speed *= _slow_multiplier

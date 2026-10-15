@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--directory", type=Path, default=ROOT / "artifacts/reviews/spawn_density_20261009")
+    parser.add_argument("--directory", type=Path, default=ROOT / "temp/artifacts/reviews/spawn_density_20261009")
     args = parser.parse_args()
     directory = args.directory
     before = json.loads((directory / "before.json").read_text(encoding="utf-8"))

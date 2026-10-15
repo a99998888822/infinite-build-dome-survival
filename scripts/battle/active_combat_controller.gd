@@ -37,6 +37,7 @@ func initialize(context: BattleRoot) -> void:
 	CombatSettings.settings_changed.connect(_settings_changed)
 	loadout.loadout_changed.connect(_on_loadout_changed)
 	player.died.connect(clear_input)
+	player.blink_completed.connect(stop_movement)
 	_settings_changed()
 
 func _exit_tree() -> void:

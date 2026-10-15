@@ -8,7 +8,7 @@ import subprocess
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/elite_elements_20260925"
+OUT = ROOT / "temp/artifacts/elite_elements_20260925"
 TEMP = Path(os.environ["TEMP"]) / "codex-elite-elements-20260925"
 PROJECT = TEMP / "project"
 GODOT = Path("D:/soft/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe")

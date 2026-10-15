@@ -1,7 +1,7 @@
 extends Node
 ## Real production scenes with isolated, deterministic review state. No save writes.
 
-var output := "res://artifacts/localization/review"
+var output := "res://temp/artifacts/localization/review"
 var section := "all"
 var shots: Array[Dictionary] = []
 var findings: Array[Dictionary] = []

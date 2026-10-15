@@ -5,7 +5,7 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/meteor_flail_implementation"
+OUT = ROOT / "temp/artifacts/meteor_flail_implementation"
 LABELS = {
     "base": "原版：距离与节奏",
     "split": "分裂：追加两次弱化挥击",

@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 TEMP = Path(os.environ["TEMP"]) / "codex-water-combinations-20260925"
 PROJECT = TEMP / "project"
-OUT = ROOT / "artifacts/water_combinations_20260925"
+OUT = ROOT / "temp/artifacts/water_combinations_20260925"
 GODOT = Path("D:/soft/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe")
 FFMPEG = shutil.which("ffmpeg")
 VARIANTS = {

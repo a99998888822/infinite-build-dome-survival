@@ -43,6 +43,7 @@ var _bold_font: FontFile
 var _idle: Texture2D
 var _walk: AtlasTexture
 var _walk_frames := 1
+var _walk_frame_size := Vector2.ONE
 var _walk_fps := 6.0
 var _elapsed := 0.0
 var _breath_elapsed := 0.0
@@ -245,7 +246,8 @@ func show_character(record: Dictionary, stats: Dictionary) -> void:
 	_walk_fps = maxf(1.0, float(visuals.get("walk_fps", 6.0)))
 	_walk = AtlasTexture.new()
 	_walk.atlas = load(str(visuals.get("walk", visuals.get("idle", "")))) as Texture2D
-	_walk.region = Rect2(0,0,64,64)
+	_walk_frame_size = Vector2(_walk.atlas.get_width() / _walk_frames, _walk.atlas.get_height())
+	_walk.region = Rect2(Vector2.ZERO, _walk_frame_size)
 	var stat_ids: Array = record.get("display_stats", ["max_hp", "move_speed", "load_capacity"])
 	var names := {"max_hp":L10n.text("stat.health.short_name"), "move_speed":L10n.text("stat.move_speed.short_name"), "load_capacity":L10n.text("stat.load.short_name"), "humanity":L10n.text("stat.humanity.name"), "divinity":L10n.text("stat.divinity.short_name"), "finance":L10n.text("stat.principal.short_name"), "currency_gain_percent":L10n.text("stat.gold.name"), "damage_percent":L10n.text("stat.damage.name"), "interest_rate":L10n.text("stat.interest_rate.name")}
 	var row_height := _compact_text_height(29, 48)
@@ -366,7 +368,7 @@ func _build_item_tooltip() -> void:
 	_item_tooltip_label.position = Vector2(10, 10)
 	_item_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_item_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_item_tooltip_label.add_theme_font_override("font", _font)
+	GameTooltipLayer.apply_pixel_text(_item_tooltip_label)
 	_item_tooltip_label.add_theme_font_size_override("font_size", 16)
 	_item_tooltip_label.add_theme_color_override("font_color", Color("f1e6d2"))
 	_item_tooltip.add_child(_item_tooltip_label)
@@ -387,7 +389,7 @@ func _show_item_tooltip(anchor: Control, text: String) -> void:
 	var paragraph := TextParagraph.new()
 	paragraph.width = width
 	paragraph.break_flags = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
-	paragraph.add_string(text, _font, 16)
+	paragraph.add_string(text, _item_tooltip_label.get_theme_font("font"), 16)
 	_item_tooltip_label.size.x = width
 	_item_tooltip_label.text = text
 	# Size before showing, so the first frame wraps and clamps correctly.
@@ -411,15 +413,17 @@ func _position_character() -> void:
 	if _idle == null: return
 	var used := _idle.get_image().get_used_rect()
 	_breath_material.set_shader_parameter("foot_y", float(used.end.y) / _idle.get_height())
-	# Size from idle once; every animation frame retains the same 64px canvas.
-	var side := roundf(64.0 * 376.0 / maxf(1.0, used.size.y))
-	character_icon.size = Vector2.ONE * side
-	character_icon.position = FOOT_ANCHOR - (Vector2(32,58) * side / 64.0).round()
+	# Fit the visible body once; every frame keeps its full authored canvas.
+	var display_scale := 376.0 / maxf(1.0, used.size.y)
+	character_icon.size = (_idle.get_size() * display_scale).round()
+	var pixel_scale := character_icon.size / _idle.get_size()
+	var foot := Vector2(_idle.get_width() * 0.5, used.end.y)
+	character_icon.position = FOOT_ANCHOR - (foot * pixel_scale).round()
 	_character_rest_position = character_icon.position
-	var name_y := character_icon.position.y + roundf(used.position.y * side / 64.0) - 80
+	var name_y := character_icon.position.y + roundf(used.position.y * pixel_scale.y) - 80
 	name_label.position = Vector2(FOOT_ANCHOR.x - name_label.size.x / 2.0, name_y)
 	hover_target.position = Vector2(character_icon.position.x, name_y)
-	hover_target.size = Vector2(side, character_icon.position.y + side - name_y)
+	hover_target.size = Vector2(character_icon.size.x, character_icon.position.y + character_icon.size.y - name_y)
 
 
 func set_difficulty(id: String) -> void:
@@ -457,7 +461,7 @@ func _update_walking() -> void:
 	_elapsed = 0.0
 	walk_frame = 0
 	if walking:
-		_walk.region = Rect2(0,0,64,64)
+		_walk.region = Rect2(Vector2.ZERO, _walk_frame_size)
 		character_icon.texture = _walk
 	else:
 		character_icon.texture = _idle
@@ -475,7 +479,7 @@ func _process(delta: float) -> void:
 		return
 	_elapsed += delta
 	walk_frame = int(_elapsed * _walk_fps) % _walk_frames
-	_walk.region = Rect2(walk_frame*64,0,64,64)
+	_walk.region = Rect2(Vector2(walk_frame * _walk_frame_size.x, 0), _walk_frame_size)
 
 
 func _place(parent: Node, control: Control, rect: Rect2) -> void:

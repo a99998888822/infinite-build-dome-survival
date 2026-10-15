@@ -17,7 +17,7 @@ def main():
     capture = json.loads((args.capture_dir / "capture.json").read_text(encoding="utf-8"))
     assert capture["production"] and capture["valid"] and capture["loot_seen"]
     assert len(list(args.capture_dir.glob("frame_*.png"))) == capture["frames"]
-    out = ROOT / "artifacts/reviews/effects/iron_knight"
+    out = ROOT / "temp/artifacts/reviews/effects/iron_knight"
     out.mkdir(parents=True, exist_ok=True)
     ffmpeg = shutil.which("ffmpeg")
     assert ffmpeg, "ffmpeg required"

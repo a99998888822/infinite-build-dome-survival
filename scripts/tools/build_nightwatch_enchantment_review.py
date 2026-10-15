@@ -9,7 +9,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "artifacts/nightwatch_spear_enchantments"
+OUT = ROOT / "temp/artifacts/nightwatch_spear_enchantments"
 TEMP = Path("C:/Users/mi/AppData/Local/Temp")
 FFMPEG = Path("D:/soft/ffmpeg-N-116796-gb730defd52-win64-gpl-shared/bin/ffmpeg.exe")
 TITLES = {"split": "分裂：命中后分出短矛", "fire": "火焰：燃烧与火焰池",

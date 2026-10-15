@@ -1,53 +1,6 @@
 {
-  "ground": [
-    {
-      "id": "reference_moss",
-      "textures": [
-        "res://assets/sprites/background/cavern/reference_moss_full.png"
-      ],
-      "catalog_number": 1,
-      "source_sha256": "138189635b08b852f0c0b4b0c1ea4bb4e9b1038e073d796da7b374ff773b6ded",
-      "relative_y_correction": 0.84
-    }
-  ],
-  "details": [
-    {
-      "id": "reference_crack_0",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_0.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    },
-    {
-      "id": "reference_crack_1",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_1.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    },
-    {
-      "id": "reference_crack_2",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_2.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    },
-    {
-      "id": "reference_crack_3",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_3.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    },
-    {
-      "id": "reference_crack_4",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_4.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    },
-    {
-      "id": "reference_crack_5",
-      "texture": "res://assets/sprites/background/cavern/detail_crack_5.png",
-      "source": "reference_moss_full",
-      "scale": 1
-    }
-  ],
+  "ground": [],
+  "details": [],
   "rubble": [
     {
       "id": "loose_stone_0",
@@ -60,23 +13,7 @@
       "texture_density": 4.0
     }
   ],
-  "grass": [
-    {
-      "id": "G09_grass_short-32",
-      "texture": "res://assets/sprites/background/cavern/grass_grass_short.png",
-      "source": "res://assets/sprites/background/green_ground/G09_grass_short-32.png"
-    },
-    {
-      "id": "G10_grass_dense-32",
-      "texture": "res://assets/sprites/background/cavern/grass_grass_dense.png",
-      "source": "res://assets/sprites/background/green_ground/G10_grass_dense-32.png"
-    },
-    {
-      "id": "G11_grass_long-32",
-      "texture": "res://assets/sprites/background/cavern/grass_grass_long.png",
-      "source": "res://assets/sprites/background/green_ground/G11_grass_long-32.png"
-    }
-  ],
+  "grass": [],
   "ruins": [
     {
       "id": "arch",

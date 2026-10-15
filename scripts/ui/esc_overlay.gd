@@ -56,6 +56,8 @@ func _ready() -> void:
 		weapon_strip.minimum_height_changed.connect(_layout_overlay, CONNECT_DEFERRED)
 	if relic_tooltip != null:
 		relic_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
+	if relic_tooltip_label != null:
+		GameTooltipLayer.apply_pixel_text(relic_tooltip_label)
 	_ensure_backdrop()
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
