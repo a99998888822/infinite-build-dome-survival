@@ -16,6 +16,7 @@ var update_profile: Array[Dictionary] = []
 var occluding_rocks: Array[Sprite2D] = []
 var shadow_enabled := true
 var shadow_active_count := 0
+var scenery_bounds: Dictionary = {}
 
 func _init() -> void:
 	scenery_config_path = "res://data_config/cavern_meadow_battlefield.json"
@@ -133,19 +134,31 @@ func _plan_cell(key: Vector2i) -> Array[Dictionary]:
 				entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 				entry.suitability = surface.a
 				plan.append(entry)
-	# A few grounded tufts in front of a prop's base soften the contact edge.
-	# Dry tufts follow brown ground; green tufts still require green terrain.
+	# Sparse, staggered tufts soften the visible lower edge of every object.
+	# Size the fringe to the artwork, including padding and high-density stones.
 	var companions: Array[Dictionary] = []
 	for solid: Dictionary in plan:
 		if solid.kind not in ["prop","rubble"]: continue
-		if solid.kind=="rubble" and rng.randf()>.38: continue
-		var count := 2 if solid.kind=="prop" else 1
+		var row: Dictionary = config.props[solid.index] if solid.kind=="prop" else config.rubble[solid.index]
+		var bounds := _scenery_bounds(row.texture)
+		var factor := float(solid.scale)/float(row.get("texture_density",1.0))
+		var anchor: Vector2 = solid.anchor
+		var width := bounds.size.x*factor
+		var center_x := (bounds.get_center().x-anchor.x)*factor
+		if solid.flip: center_x = -center_x
+		var bottom := (bounds.end.y-anchor.y)*factor
+		var count := clampi(ceili(width/24.0),2,6)
+		var tuft_height := clampf(bounds.size.y*factor*.42,10.0,22.0)
 		for i in count:
-			var half_width := 44.0 if solid.kind=="prop" else 11.0
-			var point: Vector2 = solid.point+Vector2(rng.randf_range(-half_width,half_width),rng.randf_range(7,16))
+			var across := (float(i)+rng.randf_range(.15,.85))/float(count)-.5
+			# Stay just in front of the host's depth boundary, even for padded art.
+			var offset_y := maxf(1.0,bottom+rng.randf_range(1,3))
+			var point: Vector2 = solid.point+Vector2(center_x+across*width*.94,offset_y)
 			var surface := sample_surface(point)
 			var index := rng.randi_range(0,1) if surface.a>=.30 else 3
-			var entry := _placement("grass",index,point,1.05 if solid.kind=="prop" else .9,rng.randf()<.5)
+			var grass_height := _scenery_bounds(config.grass[index].texture).size.y
+			var scale := tuft_height/grass_height*rng.randf_range(.9,1.1)
+			var entry := _placement("grass",index,point,scale,rng.randf()<.5)
 			entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 			entry.suitability = surface.a
 			entry.companion = true
@@ -153,6 +166,14 @@ func _plan_cell(key: Vector2i) -> Array[Dictionary]:
 			companions.append(entry)
 	plan.append_array(companions)
 	return plan
+
+func _scenery_bounds(path: String) -> Rect2:
+	# Read alpha bounds once per texture, never during per-frame updates.
+	if not scenery_bounds.has(path):
+		var source := (load(path) as Texture2D).get_image()
+		if source.is_compressed(): source.decompress()
+		scenery_bounds[path] = Rect2(source.get_used_rect())
+	return scenery_bounds[path]
 
 func _grass_depth_bands(blades: Array[Dictionary], key: Vector2i) -> Array:
 	var cuts: Array[float] = []
