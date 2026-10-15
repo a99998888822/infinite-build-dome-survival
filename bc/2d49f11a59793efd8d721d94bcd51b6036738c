@@ -1,0 +1,30 @@
+scripts/battle/cavern_population_backdrop.gd
+  s_39bd6d57be1926::t_fd6637f23da2cd 19,138,142-144,146,148,151,153,159-161,170-176
+  s_39bd6d57be1926::t_ab8d3fe4926634 137,150,154-156
+  s_39bd6d57be1926::t_35b41dbcca685f 145,147,149
+  s_a004d956546c62::t_ca355dd7c731a1 177
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bc2d49f11a59793efd8d721d94bcd51b6036738c",
+  "prompts": {},
+  "sessions": {
+    "s_39bd6d57be1926": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a13f5f-f410-7cc3-ac98-ad52601f99ed",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a004d956546c62": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1307e-9124-7611-aafd-c66edbb27865",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
