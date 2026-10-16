@@ -6,9 +6,9 @@ No arguments only validates. Historical pixel-processing directories are unused.
 from pathlib import Path
 import argparse
 import hashlib
+import io
 import json
 import math
-import shutil
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -118,36 +118,54 @@ def main():
     if args.output_gif:
         parser.error('--output-gif requires --assemble-captures')
     manifest = json.loads((OUT/'manifest.json').read_text(encoding='utf-8'))
-    records = {record['frame']:record for record in manifest['frames']}
-    expected = {f'assets/sprites/enemies/echo_bat/{action}/{i:02}.png'
-                for action,count in (('move',6),('attack',9)) for i in range(1,count+1)}
+    records = {}
+    for record in manifest['frames']:
+        if 'atlas' in record:
+            key = (Path(record['atlas']).stem,int(record['atlas_frame']))
+        else:
+            path = Path(record['frame'])
+            key = (path.parent.name,int(path.stem)-1)
+        assert key not in records, key
+        records[key] = record
+    expected = {(action,i) for action,count in (('move',6),('attack',9)) for i in range(count)}
     assert records.keys() == expected
     palette = {tuple(bytes.fromhex(color[1:])) for color in manifest['palette']}
     groups = {}
     for action,count in (('move',6),('attack',9)):
+        sheet = Image.open(OUT/f'{action}.png').convert('RGBA')
+        assert sheet.size == (128*count,128)
         frames = []
         for i in range(1,count+1):
-            path = OUT/action/f'{i:02}.png'
-            record = records[path.relative_to(ROOT).as_posix()]
-            assert hashlib.sha256(path.read_bytes()).hexdigest() == record['frame_sha256'], path
-            image = Image.open(path).convert('RGBA')
-            assert image.size == (128,128), path
-            assert set(image.getchannel('A').tobytes()) == {0,255}, path
+            record = records[action,i-1]
+            if 'frame' in record:
+                path = ROOT/record['frame']
+                encoded = path.read_bytes()
+                image = Image.open(path).convert('RGBA')
+            else:
+                assert record['atlas'] == (OUT/f'{action}.png').relative_to(ROOT).as_posix()
+                image = sheet.crop((128*(i-1),0,128*i,128))
+                buffer = io.BytesIO()
+                image.save(buffer,format='PNG')
+                encoded = buffer.getvalue()
+            assert hashlib.sha256(encoded).hexdigest() == record['frame_sha256'], (action,i)
+            assert image.size == (128,128), (action,i)
+            assert set(image.getchannel('A').tobytes()) == {0,255}, (action,i)
             colors = {rgba[:3] for _,rgba in image.getcolors(128*128) if rgba[3]}
-            assert len(colors) <= 16 and colors <= palette, path
+            assert len(colors) <= 16 and colors <= palette, (action,i)
             frames.append(image)
         groups[action] = frames
     if args.rebuild:
         for action,frames in groups.items():
             atlas(frames,action)
-        shutil.copyfile(OUT/'move/01.png',OUT/'idle.png')
+        groups['move'][0].save(OUT/'idle.png')
         sonic_art()
     for action,frames in groups.items():
         sheet = Image.open(OUT/f'{action}.png').convert('RGBA')
         assert sheet.size == (128*len(frames),128)
         for i,frame in enumerate(frames):
             assert sheet.crop((i*128,0,(i+1)*128,128)).tobytes() == frame.tobytes()
-    assert (OUT/'idle.png').read_bytes() == (OUT/'move/01.png').read_bytes()
+    idle = Image.open(OUT/'idle.png').convert('RGBA')
+    assert idle.size == groups['move'][0].size and idle.tobytes() == groups['move'][0].tobytes()
     for name,size in {'sonic_wave':(384,32),'sonic_charge':(240,40),
                       'sonic_hit':(288,48),'sonic_warning':(320,20)}.items():
         assert Image.open(OUT/f'{name}.png').size == size

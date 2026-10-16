@@ -2,6 +2,9 @@ extends CavernMeadowBackdrop
 class_name CavernPopulationBackdrop
 ## Approved cavern population, terrain-matched grass and base-sorted props.
 const LANDMARK_STEP := Vector2(1850,1100)
+# Large, changing grass draws can crash Godot's ANGLE/D3D11 renderer.
+# Keep each draw bounded while preserving the complete logical depth band.
+const MAX_GRASS_BATCH_INSTANCES := 128
 const GRASS_SHADER = preload("res://shaders/battle/cavern_grass_batch.gdshader")
 const OCCLUSION_SHADER = preload("res://shaders/battle/cavern_player_occlusion.gdshader")
 # Zero requests a fresh per-battle seed; explicit seeds reproduce review layouts.
@@ -242,10 +245,13 @@ func _make_cell(key: Vector2i) -> void:
 		blades.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.sort_y<b.sort_y)
 		var bands: Array = []
 		for band: Array[Dictionary] in _grass_depth_bands(blades,key):
-			var back := _grass_batch(band,key,false)
-			var front := _grass_batch(band,key,true)
-			nodes.append_array([back.get_parent(),front.get_parent()])
-			bands.append({"blades":band,"back":back,"front":front,"origin":Vector2(key)*CELL})
+			for offset in range(0,band.size(),MAX_GRASS_BATCH_INSTANCES):
+				var end := mini(offset+MAX_GRASS_BATCH_INSTANCES,band.size())
+				var back := _grass_batch(band.slice(offset,end),key,false)
+				# Reverse the whole band, including chunk order, just as before.
+				var front := _grass_batch(band.slice(band.size()-end,band.size()-offset),key,true)
+				nodes.append_array([back.get_parent(),front.get_parent()])
+				bands.append({"blades":band,"offset":offset,"back":back,"front":front,"origin":Vector2(key)*CELL})
 		grass_cells[key] = {"blades":blades,"bands":bands}
 	cells[key] = nodes
 	peak_cells = maxi(peak_cells,cells.size())
@@ -269,14 +275,22 @@ func _grass_batch(blades: Array[Dictionary], key: Vector2i, reverse: bool) -> Mu
 	multi.use_custom_data = true
 	multi.mesh = mesh
 	multi.instance_count = blades.size()
+	# Prefix visibility can leave the renderer's cached bounds empty/stale.
+	# Geometry is static: bound all instances once, including shader wind sway.
+	var quad_bounds := Rect2(-mesh.size*.5,mesh.size).grow(2.0)
+	var bounds := Rect2()
 	for i in blades.size():
 		var entry := blades[blades.size()-1-i if reverse else i]
 		var factor := float(entry.scale)
 		var scale_xy := Vector2(-factor if entry.flip else factor,factor)
 		var center: Vector2 = entry.point-node.position+(Vector2(16,16)-entry.anchor)*scale_xy
-		multi.set_instance_transform_2d(i,Transform2D(0.0,scale_xy,0.0,center))
+		var transform := Transform2D(0.0,scale_xy,0.0,center)
+		multi.set_instance_transform_2d(i,transform)
+		var instance_bounds := transform*quad_bounds
+		bounds = instance_bounds if i==0 else bounds.merge(instance_bounds)
 		multi.set_instance_color(i,entry.tint)
 		multi.set_instance_custom_data(i,Color(float(entry.index),0,0,0))
+	multi.custom_aabb = AABB(Vector3(bounds.position.x,bounds.position.y,-1),Vector3(bounds.size.x,bounds.size.y,2))
 	node.multimesh = multi
 	node.set_meta("scenery",{"kind":"grass_batch","count":blades.size(),"reverse":reverse})
 	anchor.add_child(node)
@@ -299,10 +313,12 @@ func _update_area() -> void:
 				else: high = mid
 			if low==band.get("split",-1): continue
 			band.split = low
-			band.back.multimesh.visible_instance_count = low
-			band.front.multimesh.visible_instance_count = band.blades.size()-low
+			var offset := int(band.get("offset",0))
+			band.back.multimesh.visible_instance_count = clampi(low-offset,0,band.back.multimesh.instance_count)
+			band.front.multimesh.visible_instance_count = clampi(band.blades.size()-low-offset,0,band.front.multimesh.instance_count)
 			# Pixel-snapped transforms can erase a .001 separation. Whole-pixel
 			# anchors preserve the ordering, including grass level with the feet.
+			# All chunks retain their original band's anchor and painter order.
 			var back_y := floorf(band.blades[maxi(0,low-1)].sort_y)-1.0
 			var front_y := ceilf(band.blades[mini(low,band.blades.size()-1)].sort_y)+1.0
 			for item: Array in [[band.back,back_y],[band.front,front_y]]:

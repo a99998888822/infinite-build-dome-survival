@@ -7,6 +7,9 @@ static var SEQUENCES: Dictionary = FRAMES.get_meta("animation_sequences")
 const GHOST_FLAME = preload("res://scripts/enemies/underworld_wolf_flame.gd")
 const KNOCKBACK = preload("res://scripts/player/enemy_knockback.gd")
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
+# Match the knight's visible height while preserving the registered pose ratios.
+# The scene's base collider uses this size; challenge scaling remains independent.
+const BASE_BODY_SCALE := 2.0
 
 var profile: Dictionary
 var state := "spawn"
@@ -206,7 +209,7 @@ func begin_skill(kind: String) -> bool:
 func mouth_position() -> Vector2:
 	var left := is_instance_valid(target_player) and target_player.global_position.x < global_position.x
 	# Attachment measured from the supplied attack-04 open-mouth pose.
-	return global_position + Vector2(-48 if left else 48,-54) * body_scale_multiplier
+	return global_position + Vector2(-48 if left else 48,-54) * BASE_BODY_SCALE * body_scale_multiplier
 
 
 func projected_breath_polygon() -> PackedVector2Array:
@@ -274,10 +277,11 @@ func animate(delta: float) -> void:
 	var record: Dictionary = FRAME_TRANSFORMS[str(sequence[0])+":"+str(int(sequence[1][animation_index]))]
 	# Undo Picxel's per-pose fit in the shared original coordinate system.
 	# Mirroring includes the registered offset; gameplay air height is separate.
-	sprite.scale = Vector2.ONE*float(record.sprite_scale) * body_scale_multiplier
+	var visual_scale := BASE_BODY_SCALE * body_scale_multiplier
+	sprite.scale = Vector2.ONE*float(record.sprite_scale) * visual_scale
 	var offset: Array = record.sprite_offset
-	var pose_origin := Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * body_scale_multiplier - Vector2(0, air_height)
-	FEEDBACK_R02.set_animation_origin(self, pose_origin)
+	var pose_origin := Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * visual_scale - Vector2(0, air_height)
+	sprite.position = pose_origin
 
 
 func _set_movement_visual(moving: bool, _delta: float) -> void:
@@ -342,11 +346,12 @@ func _exit_tree() -> void:
 
 func draw_ground(canvas: Node2D) -> void:
 	if not alive: return
-	canvas.draw_set_transform(Vector2(0,-2),0,Vector2(1,0.3))
+	var visual_scale := BASE_BODY_SCALE * body_scale_multiplier
+	canvas.draw_set_transform(Vector2(0,-2)*visual_scale,0,Vector2(1,0.3)*visual_scale)
 	canvas.draw_circle(Vector2.ZERO, 33.6, Color(0.02,0.04,0.08,0.28))
 	canvas.draw_set_transform(Vector2.ZERO)
 	if state == "spawn":
-		GROUND.arc(canvas,Vector2.ZERO,36,0,TAU,64,Color(0.5,0.85,1,0.55),2)
+		GROUND.arc(canvas,Vector2.ZERO,36*visual_scale,0,TAU,64,Color(0.5,0.85,1,0.55),2)
 	if state in ["breath_charge","breath"]:
 		canvas.draw_set_transform(breath_origin-global_position)
 		var polygon := projected_breath_polygon()
@@ -384,6 +389,7 @@ func draw_ground(canvas: Node2D) -> void:
 
 func _draw() -> void:
 	if not alive or state == "spawn": return
-	var y := -113.6 - air_height
-	draw_rect(Rect2(-25.6,y,51.2,4),Color("243232"))
-	draw_rect(Rect2(-25.6,y,51.2*clampf(float(current_hp)/get_stat("max_hp"),0,1),4),Color("8cddf0"))
+	var visual_scale := BASE_BODY_SCALE * body_scale_multiplier
+	var y := -113.6 * visual_scale - air_height
+	draw_rect(Rect2(-25.6*visual_scale,y,51.2*visual_scale,4),Color("243232"))
+	draw_rect(Rect2(-25.6*visual_scale,y,51.2*visual_scale*clampf(float(current_hp)/get_stat("max_hp"),0,1),4),Color("8cddf0"))

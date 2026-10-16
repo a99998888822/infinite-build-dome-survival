@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/enemies/echo_bat/idle.png" id="2"]
 
 [sub_resource type="CircleShape2D" id="body"]
-radius = 9.6
+radius = 16.0
 
 [node name="EchoBat" type="CharacterBody2D"]
 collision_layer = 2
@@ -13,11 +13,10 @@ script = ExtResource("1")
 enemy_id = "enemy_echo_bat"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2.4, -4)
+position = Vector2(4, -7)
 shape = SubResource("body")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -9.514667)
-scale = Vector2(0.60444445, 0.60444445)
+position = Vector2(0, -16)
 texture_filter = 1
 texture = ExtResource("2")

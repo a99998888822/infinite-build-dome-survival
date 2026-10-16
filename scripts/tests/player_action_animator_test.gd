@@ -25,7 +25,7 @@ func _run() -> void:
 	check(player.initialize_from_character("character_void_hunter"), "novice initialized")
 	var animator := player.action_animator
 	check(animator.enabled, "eight action strips enabled")
-	check(player.sprite.material is ShaderMaterial and player.sprite.scale == Vector2(0.5,0.5), "outline-preserving sampler keeps the authored combat size")
+	check(player.sprite.scale == Vector2.ONE, "128px actions render at their authored pixel size")
 	for clip in {"idle":1,"move":8,"attack":7,"move_attack":9,"sustain":8,"move_sustain":8,"jump_forward":10,"jump_backward":10}:
 		var count: int = animator._count(clip)
 		check((animator._clips[clip].texture as Texture2D).get_width() == count * 128, "128px cells: " + clip)
@@ -114,7 +114,7 @@ func _run() -> void:
 	player.cancel_mobility_motion(source)
 	player.initialize_from_character("character_void_hunter")
 	check(animator.enabled and animator.current_clip == "idle" and animator._sustains.is_empty(), "new run resets novice state")
-	check(player.sprite.material is ShaderMaterial, "returning to beginner restores its sampling material")
+	check(player.sprite.scale == Vector2.ONE, "returning to beginner restores native pixel scale")
 	source.free()
 	print("PLAYER_ACTION_TEST_COMPLETE checks=", checks, " failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)

@@ -112,8 +112,9 @@ func _test_impact_geometry() -> void:
 		await reset()
 		var weapon := loadout.get_weapon_instance(IDS[index])
 		var radius := weapon.get_hit_radius()
-		var edge := enemy(Vector2(140 + radius + 12, 7.04))
-		var outside := enemy(Vector2(140 + radius + 31, 7.04))
+		# Native grub body is 100px wide, centered at (-1,2).
+		var edge := enemy(Vector2(140 + radius + 46, -2))
+		var outside := enemy(Vector2(140 + radius + 56, -2))
 		var disabled := enemy(Vector2(140, 20))
 		(disabled.get_node("CollisionShape2D") as CollisionShape2D).disabled = true
 		var offset_body := enemy(Vector2(140, -50))
@@ -136,7 +137,7 @@ func _test_impact_geometry() -> void:
 		check(blocked.current_hp == 10000, "terrain still blocks the arrival circle: " + IDS[index])
 		await reset()
 		weapon.runtime_stats.damage_area_size = 100
-		var enlarged_edge := enemy(Vector2(140 + weapon.get_hit_radius() + 12, 7.04))
+		var enlarged_edge := enemy(Vector2(140 + weapon.get_hit_radius() + 46, -2))
 		await frames()
 		cast(index, Vector2(140, 0))
 		await step(0.05, 5)
@@ -150,13 +151,13 @@ func _test_mobility_enchantments() -> void:
 		var weapon := loadout.get_weapon_instance(IDS[index])
 		var ice := player.item_inventory.add_item_from_base("scroll_ice", "mobility_hit_review")
 		check(weapon.attach_item_instance(ice), "ice attaches to mobility weapon: " + IDS[index])
-		var missed := enemy(Vector2(-50, 0) if index == 1 else Vector2(20, 0))
+		var missed := enemy(Vector2(-80, 0) if index == 1 else Vector2(0, 50))
 		await frames()
 		cast(index, Vector2(140, 0))
 		await step(0.05, 10)
 		check(missed.current_hp == 10000 and get_tree().get_nodes_in_group("ice_fields").is_empty(), "movement or an empty attack does not trigger enchantments: " + IDS[index])
 		await reset()
-		var target := enemy(Vector2(50, 0) if index == 1 else Vector2(140 + weapon.get_hit_radius() + 12, 7.04))
+		var target := enemy(Vector2(50, 0) if index == 1 else Vector2(140 + weapon.get_hit_radius() + 46, -2))
 		await frames()
 		var runtime := cast(index, Vector2(140, 0))
 		await step(0.05, 5)
@@ -293,9 +294,9 @@ func _run() -> void:
 	cannon.runtime_stats.area_size = 0
 	cannon.runtime_stats.damage_area_size = 0
 	check(blade.get_mobility_landing(Vector2(0,1000)).is_equal_approx(Vector2(0,140 * AttackFootprint.ELLIPSE_RATIO)), "vertical dash respects ellipse")
-	var path_enemy := enemy(Vector2(20,0))
+	var path_enemy := enemy(Vector2(0,50))
 	var hit_enemy := enemy(Vector2(160,25))
-	var outside := enemy(Vector2(270,0))
+	var outside := enemy(Vector2(300,0))
 	await frames()
 	battle.active_controller.select_slot(0)
 	battle.active_controller.indicator.configure(blade, Vector2(140,0))
@@ -328,7 +329,7 @@ func _run() -> void:
 	await frames()
 	cast(0,Vector2(140,0))
 	await step(0.011,21)
-	check(player.global_position.x < origin.x + 70 and player.global_position.x > origin.x, "dash capsule stops before terrain")
+	check(player.global_position.x < origin.x + 70 and player.global_position.x > origin.x, "dash lower-body circle stops before terrain")
 	await reset()
 	var target := enemy(Vector2(52,0))
 	var shape := target.get_node("CollisionShape2D") as CollisionShape2D

@@ -1,13 +1,12 @@
 extends Node
 ## Compare a damaged wolf with an untouched wolf through the same animation poses.
 const WOLF = preload("res://scenes/enemy/underworld_wolf.tscn")
-const RESPONSE = preload("res://scripts/effects/combat_feedback_r02.gd")
+const SETTINGS = preload("res://scripts/effects/combat_feedback_settings.gd")
 var checks := 0
 var failures := 0
 var host: Node2D
 var baseline: UnderworldWolf
 var candidate: UnderworldWolf
-var response: Node
 var max_error := 0.0
 
 func _ready() -> void:
@@ -39,40 +38,47 @@ func pose(action: StringName, time: float, height: float = 0, flipped: bool = fa
 
 func hit(kind: StringName = &"light") -> void:
 	candidate.take_damage_with_feedback(5, "wolf_pose_regression", false, Vector2.RIGHT, kind)
-	response = candidate.get_meta(RESPONSE.META)
-	response.set_physics_process(false)
+	check(candidate._hit_visual != null and not candidate._hit_visual.flash_white and candidate.sprite.offset.length() > 0, "small boss shakes without flashing white")
 
 func pose_matches(label: String) -> void:
+	candidate._hit_visual._sync()
 	var error := candidate.sprite.position.distance_to(baseline.sprite.position)
 	max_error = maxf(max_error, error)
-	check(error <= 4.01, "%s: only the authored 0-4px hit offset (actual %.3f)" % [label, error])
+	check(error <= 0.001, "%s: no hit offset (actual %.3f)" % [label, error])
 	check(candidate.sprite.texture == baseline.sprite.texture and candidate.sprite.scale == baseline.sprite.scale, label + ": animation frame and fit remain intact")
+	var displacement := candidate.sprite.global_transform.basis_xform(candidate._hit_visual.applied_offset)
+	check(displacement.is_equal_approx(Vector2(14, -5)), label + ": strong shake keeps its world amplitude across poses/scales")
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	GameGlobal.clear_runtime_flag(RESPONSE.SETTINGS.FLAG)
+	GameGlobal.clear_runtime_flag(SETTINGS.FLAG)
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	host = Node2D.new()
 	add_child(host)
 	baseline = make_wolf()
 	candidate = make_wolf()
-	# Reproduce the reported intermittent hop: first feedback is cached in midair.
+	pose(&"idle", 0)
+	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*1.6384), "base wolf enlargement survives an animation update")
+	var body := baseline.get_node("CollisionShape2D") as CollisionShape2D
+	pose(&"idle", 0, 0, false, 1.5)
+	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*2.4576) and is_equal_approx(body.shape.height*body.scale.y,182.4), "challenge modifier scales the enlarged art and collider together")
+	check(baseline.mouth_position().is_equal_approx(baseline.global_position+Vector2(144,-162)), "breath socket follows base and challenge enlargement")
+	pose(&"idle", 0)
+	check(body.position.is_equal_approx(Vector2(12.8,-60.8)) and body.scale.is_equal_approx(Vector2.ONE), "restoring challenge scale retains the new base collider")
+	# Damage in midair must not leave an old origin for a later ground pose.
 	pose(&"leap", 0.21, 66)
 	hit()
-	response._physics_process(0.3)
 	pose(&"idle", 0)
 	hit()
 	pose_matches("ground hit after first midair hit")
-	response._physics_process(0.3)
-	check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), "response ends at current ground pose, not old airborne origin")
-	# A reaction with no native feedback category interrupts the response too.
+	check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), "damage keeps the current ground pose")
+	# Element reactions must also leave the current animated pose unchanged.
 	pose(&"breath", 0, 0, true)
 	hit(&"heavy")
 	candidate.take_damage(3, "element_reaction")
-	check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), "legacy reaction restores current mirrored pose")
-	# Every response kind must follow frame registration, facing and body scale.
+	check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), "reaction retains current mirrored pose")
+	# Old feedback categories must never override frame, facing or body scale.
 	for kind: StringName in [&"light", &"heavy", &"ritual", &"sustain"]:
-		response._physics_process(0.5)
 		pose(&"idle", 0)
 		hit(kind)
 		for sample in [
@@ -84,11 +90,10 @@ func _run() -> void:
 		]:
 			pose(sample[0], sample[1], sample[2], sample[3], sample[4])
 			pose_matches(str(kind) + " after animation update")
-			response._physics_process(0.01)
-			pose_matches(str(kind) + " after feedback update")
-		response._physics_process(0.5)
-		check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), str(kind) + " finishes at latest pose")
-	# Completed feedback must also forget its old anchor before a later hit.
+			hit(kind)
+			pose_matches(str(kind) + " after another hit")
+		check(candidate.sprite.position.is_equal_approx(baseline.sprite.position), str(kind) + " retains latest pose")
+	# Later damage also respects pose changes made while no damage was arriving.
 	pose(&"leap", 0.2, 60)
 	pose(&"move", 0.4, 0, true)
 	hit(&"heavy")

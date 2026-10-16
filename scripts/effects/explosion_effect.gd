@@ -180,7 +180,7 @@ func _damage_enemies(radius: float, damage: int, damage_falloff: float) -> void:
 		if falloff > 0.0:
 			var distance_ratio := clampf(enemy.global_position.distance_to(_hit_position) / radius, 0.0, 1.0)
 			scaled_damage = maxi(1, int(roundi(float(damage) * (1.0 - distance_ratio * falloff))))
-		enemy.take_damage(scaled_damage, _damage_event.source_weapon_id, false, enemy.global_position.direction_to(_hit_position))
+		enemy.take_attack_damage(scaled_damage, _damage_event, false, enemy.global_position.direction_to(_hit_position))
 
 
 func _damage_terrain(radius: float) -> Array[Dictionary]:

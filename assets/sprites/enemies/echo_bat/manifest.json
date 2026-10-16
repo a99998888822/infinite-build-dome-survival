@@ -12,12 +12,12 @@
   "background": "Binary alpha 0/255, shared 16-color palette, per-pose contour and face repairs.",
   "anchor": "Fixed source scale 1/5 and crop origin (42,1); body x220..520 unchanged; extreme outer wing tips compressed only where required.",
   "sprite_scale": [
-    0.60444445,
-    0.60444445
+    1.0,
+    1.0
   ],
   "sprite_position": [
     0,
-    -9.514667
+    -16
   ],
   "release_mouth_pixel": [
     83,

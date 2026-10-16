@@ -117,7 +117,7 @@ func _profile_hits() -> void:
 		var started := Time.get_ticks_usec()
 		for enemy in enemies:
 			if stage == "numbers": enemy._spawn_damage_number(10)
-			else: enemy._apply_hit_feedback(Vector2.RIGHT, &"heavy")
+			else: enemy._show_hit_visual()
 		var sync := (Time.get_ticks_usec() - started) / 1000.0
 		await draw_frame()
 		print("HIT_PROFILE ", stage, " sync_ms=", sync, " draw_ms=", (Time.get_ticks_usec() - started) / 1000.0)

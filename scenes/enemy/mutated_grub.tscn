@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png" id="2_idle"]
 [ext_resource type="Texture2D" path="res://assets/sprites/enemies/combat/enemy_gloom_mite_move.png" id="3_move"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_enemy_body"]
-radius = 19.36
+[sub_resource type="CapsuleShape2D" id="CircleShape2D_enemy_body"]
+radius = 22.0
+height = 100.0
 
 [node name="MutatedGrub" type="CharacterBody2D" unique_id=82577481]
 collision_layer = 2
@@ -16,11 +17,11 @@ move_frame_count = 7
 move_frame_duration = 0.0714285714
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911008082]
-position = Vector2(0, -7.04)
+position = Vector2(-1, 2)
+rotation = 1.5707963
 shape = SubResource("CircleShape2D_enemy_body")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479700477]
-position = Vector2(0, 1.76)
-scale = Vector2(0.44, 0.44)
+position = Vector2(0, 4)
 texture_filter = 1
 texture = ExtResource("2_idle")

@@ -1,5 +1,6 @@
 extends Node2D
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
 
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const TOME_LIFETIME := 0.60
@@ -39,7 +40,11 @@ func cancel() -> void:
 
 
 func _draw() -> void:
-	if not cancelled: BAKED.draw(self,"tome" if tome else "coin_hit",int(age*60.0))
+	if cancelled: return
+	if tome:
+		BLOCK_VFX.draw(self, "tome", age / TOME_LIFETIME, Rect2(-48, -72, 96, 128))
+	else:
+		BAKED.draw(self, "coin_hit", int(age * 60.0))
 
 
 func _draw_tome_impact() -> void:

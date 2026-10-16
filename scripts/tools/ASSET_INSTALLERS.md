@@ -1,5 +1,9 @@
 # 素材安装工具
 
+> 2026-10-16 武器动效已正式采用：当前八张正式特效图集位于 `assets/sprites/weapons/effects/block_vfx/`，七把武器直接引用确认稿；战锤／长枪保留第二轮显示倍率，手炮枪口由 `cannon_jet_flame.gdshader` 喷焰取代旧 `muzzle` 图集。`build_weapon_block_vfx.py` 保留确定性像素绘制源。旧 `build_weapon_trio_art.py` 的地裂和旧枪口焰输出不代表当前生效资源，不得用于回退确认稿。参见[正式采用记录](../../docs/main/weapon_block_visuals_2026-10-16.md)。
+
+> 2026-10-16 正式显示配置已确认，见[显示与碰撞规范](../../docs/asset/combat_sprite_clarity.md)。冥狼和蝙蝠检查器支持清理后的图集来源清单：逐帧从正式图集裁切，在内存中按原 PNG 编码核对保留哈希，同时检查色板、透明度和动画注册。默认只读，不重建已删除的单帧目录。显示倍率保留在正式场景／控制器中，不烘焙进 PNG。
+
 > 2026-10-15 来源整理：现行原图在 `artifacts/sources/`，角色有效网格在 `artifacts/editable/player_actions/current/`。旧审阅包、旧角色来源目录及专用转换工具已清理。本文下方日期条目用于追溯；涉及旧路径的重建说明已失效。当前来源核对入口为 `python scripts/tools/art_source_archive.py --check`，加 `--output <目录>` 可重建当前角色图集和银行底图。可复用绘制函数见 [source_art/README.md](source_art/README.md)，临时输出统一写入 `temp/`。
 
 2026-10-08：蝙蝠、幽焰冥狼已解除对历史像素处理目录的依赖。`build_echo_bat_art.py --check` 与 `install_underworld_wolf_art.py --check`（或无参数）检查当前正式 PNG、色板、图集及动画元数据；分别传入 `--rebuild`、`--rebuild-atlases` 才重建。原始帧保存在 `artifacts/sources/enemies/echo_bat/`、`underworld_wolf/`；正式目录的 `manifest.json` 保留来源、哈希与接入参数。多轮试稿和审阅包已删除，后续直接编辑正式 PNG。

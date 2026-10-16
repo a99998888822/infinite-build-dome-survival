@@ -26,6 +26,7 @@ WindowSettings="*res://autoloads/window_settings.gd"
 CombatSettings="*res://autoloads/combat_settings.gd"
 EnemyRegistry="*res://scripts/enemies/enemy_registry.gd"
 EffectScheduler="*res://scripts/effects/effect_scheduler.gd"
+CombatHitFeedback="*res://scripts/effects/combat_hit_feedback.gd"
 
 [display]
 

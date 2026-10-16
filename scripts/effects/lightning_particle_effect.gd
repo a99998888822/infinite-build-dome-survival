@@ -164,9 +164,9 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 		AudioManager.mark_combat_reaction("thunder_fire")
 		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
-	current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
+	current.take_attack_damage(damage, _damage_event, false, from_position.direction_to(current.global_position))
 	if bool(reaction_result.get("extra_trigger", false)):
-		current.take_damage(damage, _damage_event.source_weapon_id, false, from_position.direction_to(current.global_position))
+		current.take_attack_damage(damage, _damage_event, false, from_position.direction_to(current.global_position))
 	AudioManager.end_combat_audio()
 	if _remaining_jumps <= 0:
 		_finish_chain()
@@ -241,9 +241,9 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			"control_power": _get_cached_parameter("control_power", 0.0),
 			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
 		})
-		var dealt_damage := enemy.take_damage(
+		var dealt_damage := enemy.take_attack_damage(
 			damage,
-			strike_damage_event.source_weapon_id,
+			strike_damage_event,
 			strike_damage_event.is_critical,
 			hit_direction,
 		)
@@ -255,7 +255,7 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 		if bool(reaction_result.get("extra_trigger", false)):
 			# Preserve the extra hit independently of reaction visuals and review text.
-			enemy.take_damage(damage, _damage_event.source_weapon_id, false, hit_direction)
+			enemy.take_attack_damage(damage, _damage_event, false, hit_direction)
 
 
 func _show_thunder_fire_text(at: Vector2) -> void:

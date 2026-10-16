@@ -4,6 +4,7 @@ class_name MobilityWeaponRuntime
 const SLASH_SECONDS := 10.0 / 48.0
 const SHOCK_SECONDS := 10.0 / 24.0
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
+const CANNON_JET = preload("res://scripts/effects/cannon_jet_flame.gd")
 var live_source: WeaponInstance
 var return_ready := false
 var anchor_position := Vector2.ZERO
@@ -56,7 +57,7 @@ func initialize_replay(source: WeaponInstance, point: Vector2, direction: Vector
 		_impact(point)
 
 func _fire_cannon(point: Vector2, contact: EnemyController = null) -> void:
-	MobilityAtlasEffect.spawn(self, weapon, "muzzle", point + heading * 20, heading.angle())
+	CANNON_JET.spawn(self, weapon, point, heading)
 	for angle in weapon.get_projectile_angles():
 		var pellet := CannonPellet.new()
 		add_child(pellet)

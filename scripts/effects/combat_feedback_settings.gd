@@ -1,5 +1,5 @@
 extends RefCounted
-## Approved combat feedback is on by default; comparisons may override it locally.
+## Independent hammer ground and ritual source cues; not the general hit response.
 const FLAG := "combat_feedback_r02_enabled"
 
 

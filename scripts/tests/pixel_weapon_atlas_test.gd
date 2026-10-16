@@ -42,8 +42,9 @@ func _run() -> void:
 					for pixel in points:
 						var point := AttackFootprint.unproject(transform * pixel)
 						var behind := head.angle_to(point) * float(swing.sign)
-						aligned = aligned and behind <= 0.04 and behind >= -0.52
-						aligned = aligned and point.length() <= head.length() * 1.03 and point.length() >= head.length() * 0.80
+						# The new broad crescent occupies up to 78 degrees behind the head.
+						aligned = aligned and behind <= 0.04 and behind >= -1.43
+						aligned = aligned and point.length() <= head.length() * 1.03 and point.length() >= head.length() * 0.76
 						nearest = minf(nearest, point.distance_to(head))
 					check(aligned and nearest < 16.0 * head.length() / 144.0, "actual atlas pixels follow the head for direction, reverse, range and split variants")
 	flail.cancel()

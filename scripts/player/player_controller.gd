@@ -596,7 +596,7 @@ func is_mobility_moving() -> bool:
 
 
 func resolve_mobility_destination(point: Vector2) -> Vector2:
-	# Sweep the real player capsule against terrain. Enemies do not block a skill.
+	# Sweep the real, offset body shape against terrain. Enemies do not block a skill.
 	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if body == null or body.shape == null or not is_inside_tree():
 		return global_position
@@ -778,6 +778,7 @@ func _setup_visuals() -> void:
 
 func _configure_character_visuals(visuals: Dictionary) -> void:
 	action_animator.configure(sprite, visuals)
+	_configure_visual_body(visuals)
 	_idle_texture = PLAYER_IDLE_TEXTURE
 	_walk_texture = PLAYER_WALK_TEXTURE
 	var idle_path := str(visuals.get("idle", ""))
@@ -791,6 +792,28 @@ func _configure_character_visuals(visuals: Dictionary) -> void:
 	_walk_animation_time = 0.0
 	facing_right = true
 	_setup_visuals()
+
+
+func _configure_visual_body(visuals: Dictionary) -> void:
+	# Absolute values keep character switching/reinitialization from compounding.
+	# Pickup and weapon ranges remain gameplay stats, independent of body size.
+	var factor := maxf(0.1, float(visuals.get("body_scale_percent", 100)) / 100.0)
+	var body := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body != null:
+		var circle := CircleShape2D.new()
+		circle.radius = 12.0 * factor
+		body.shape = circle
+		body.position = Vector2(0, 15) * factor
+	var marker := get_node_or_null("GroundMarker") as Node2D
+	if marker != null:
+		marker.scale = Vector2.ONE * 1.2 * factor
+	var glow := get_node_or_null("VisibilityGlow") as Control
+	if glow != null:
+		glow.position = Vector2(-52, -56) * factor
+		glow.size = Vector2(104, 112) * factor
+	var anchor := get_node_or_null("WeaponAnchor") as Node2D
+	if anchor != null:
+		anchor.position = Vector2(3, -1.2) * factor
 
 
 func _sync_camera(delta: float = 0.0) -> void:

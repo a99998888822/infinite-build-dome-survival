@@ -292,7 +292,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/00.png",
       "source_sha256": "827b58e7aa480e245d3d10c0f47d5ac5df58502b0a13f3774edad11806340461",
       "editable": "artifacts/editable/player_actions/current/jump_forward/00.pxg",
-      "editable_sha256": "9a2bff49d0ca45c5098e4a14514e3efe92f8dde9849a54b08a5560997f9bb046"
+      "editable_sha256": "ff4ae8a800dc7f4c18ecc9f01b4be4eb07bff240f3937209be670f7d52bc2117"
     },
     {
       "action": "jump_forward",
@@ -301,7 +301,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/01.png",
       "source_sha256": "224844b174d1eed3f86f409b0df7bfaf85fef779a1348003ef8a3cccd9b23dcf",
       "editable": "artifacts/editable/player_actions/current/jump_forward/01.pxg",
-      "editable_sha256": "f57c1e590b12ae220053cae7423c565e7f2a8bdf7ede8c9b0d41350b16a638bb"
+      "editable_sha256": "638bdc46a7c1203d2e2b8c2e9c0ccf591c8a1fed413e8af61c566b1f565e577e"
     },
     {
       "action": "jump_forward",
@@ -337,7 +337,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/05.png",
       "source_sha256": "0e06581d17c74dd34effd87ba943c4bd9ead94b679f50a2d76da53521feda9f4",
       "editable": "artifacts/editable/player_actions/current/jump_forward/05.pxg",
-      "editable_sha256": "2dd0ec05b66f12e9755b81aa47aa75a572cbed5e05f2f77d21962b52e163d9a3"
+      "editable_sha256": "ecdfd8f9516592ecd7060c7f694f564d71aaacf6bfb09f1f4ef663735b6f90f3"
     },
     {
       "action": "jump_forward",
@@ -355,7 +355,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/07.png",
       "source_sha256": "f8bb22d6490bed14fc37944874264a297272ed6edabf44e6ef43de07ceeb3d3f",
       "editable": "artifacts/editable/player_actions/current/jump_forward/07.pxg",
-      "editable_sha256": "978b57a0f5fae202203ade41871290df6799d0096c6c750c956cc0a515d0a428"
+      "editable_sha256": "65218a60047349dcd716c93975e8bcb0f8425259b34d700ebbcf885ea2a4f698"
     },
     {
       "action": "jump_forward",
@@ -364,7 +364,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/08.png",
       "source_sha256": "50c44dbd45f447940d4bcdcbb31ff7387a7dfba40ac6c914f122be166332ddc2",
       "editable": "artifacts/editable/player_actions/current/jump_forward/08.pxg",
-      "editable_sha256": "43dde1a48954d1713a602f96e295949cd6c25dc72bb5236433d2e0684084d00b"
+      "editable_sha256": "052c9f7c2b83ad64eb74453f38539524508f5b9927bb0731539bc660c8b805c6"
     },
     {
       "action": "jump_forward",
@@ -373,7 +373,7 @@
       "source": "artifacts/sources/player_actions/novice_128/jump_forward/09.png",
       "source_sha256": "176df33e1bb666f2fedc9e8b849e0bb7943214d02e16307fbe4ff041580ebcdf",
       "editable": "artifacts/editable/player_actions/current/jump_forward/09.pxg",
-      "editable_sha256": "267b579ee1d397b1874433e6d6d08e42aa18a15b368efbec65517437be09b58e"
+      "editable_sha256": "f4c4cc2d887d4ac9ff948e839a6662afa34503f6689395c45592dd450f3371ba"
     },
     {
       "action": "move",

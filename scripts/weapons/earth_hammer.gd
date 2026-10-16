@@ -3,10 +3,10 @@ class_name EarthHammer
 
 signal node_created(index: int, point: Vector2)
 const HAMMER := preload("res://assets/sprites/weapons/earth_hammer/earth_hammer.png")
-const CRACKS := preload("res://assets/sprites/weapons/ground_cracks/ground_cracks.png")
-const REVIEW_CRACKS := preload("res://assets/sprites/weapons/ground_cracks/review_r04/ground_cracks_r04.png")
+const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
+const CRACKS := preload("res://assets/sprites/weapons/effects/block_vfx/hammer_crack.png")
+const HAMMER_VISUAL_SCALE := 2.2
 const IMPACT_R02 = preload("res://scripts/effects/combat_impact_r02.gd")
-const FEEDBACK_SETTINGS = preload("res://scripts/effects/combat_feedback_settings.gd")
 var crack_texture: Texture2D = CRACKS
 var crack_layer: Node2D
 var crack_clearance := 42.0
@@ -36,7 +36,7 @@ var lightning_duration := 0.4
 
 func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	bind_weapon(source, "earth_hammers")
-	crack_texture = REVIEW_CRACKS if source.use_active_range_rules else CRACKS
+	crack_texture = CRACKS
 	crack_clearance = maxf(42.0, AttackFootprint.player_clearance(source) + 8.0)
 	crack_layer = Node2D.new()
 	crack_layer.z_as_relative = false
@@ -130,7 +130,7 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 	var when := appear + slam + index * interval
 	nodes.append({"point": point - global_position, "at": when, "child": false, "direction": direction, "length": spacing})
 	if index == 0:
-		IMPACT_R02.spawn(get_parent(), point, &"ground", direction, minf(1.5, weapon.get_projectile_visual_scale()))
+		IMPACT_R02.spawn(get_parent(), point, &"ground", direction, minf(2.5, 1.8 * weapon.get_projectile_visual_scale()))
 	# Resolve the node once; real enemies below do not fire this dispatcher again.
 	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "", "electric_spark" if lightning_count > 0 else "")
 	var start := global_position if index == 0 else point - direction * spacing * 0.5
@@ -199,7 +199,17 @@ func _draw() -> void:
 			frame = 5 + mini(3, int((age - appear) / maxf(slam, 0.001) * 3))
 		for ray in rays:
 			var direction: Vector2 = ray.direction
-			draw_atlas(HAMMER, 64, frame, Vector2(30, 43), direction * 10 + Vector2(0, 2), direction.angle(), Vector2.ONE * weapon.get_projectile_visual_scale(), opacity)
+			var visual_scale := weapon.get_projectile_visual_scale() * HAMMER_VISUAL_SCALE
+			var grip := direction * 10 + Vector2(0, 2)
+			if age >= appear * 0.9:
+				var visual_frame := maxi(0, frame - 4)
+				if age >= appear + slam:
+					visual_frame = mini(7, 4 + int((age - appear - slam) / maxf(contact + fade, 0.001) * 4.0))
+				# Grow the head and wind together around the authored grip.
+				draw_set_transform(grip - direction * 10 * visual_scale, direction.angle(), Vector2.ONE * visual_scale)
+				BLOCK_VFX.draw(self, "hammer", visual_frame / 8.0, Rect2(-32, -100, 128, 128))
+				draw_set_transform(Vector2.ZERO)
+			draw_atlas(HAMMER, 64, frame, Vector2(30, 43), grip, direction.angle(), Vector2.ONE * visual_scale, opacity)
 
 
 func _draw_ground_cracks() -> void:
@@ -209,24 +219,20 @@ func _draw_ground_cracks() -> void:
 		var elapsed := age - float(node.at)
 		if elapsed < 0 or elapsed > 1.25:
 			continue
-		var frame := 0 if elapsed < 0.12 else 1 if elapsed < 0.35 else 2
+		var frame := 0 if elapsed < 0.065 else 1 if elapsed < 0.12 else 2 if elapsed < 0.22 else 3 if elapsed < 0.45 else 4 if elapsed < 0.85 else 5
 		var direction: Vector2 = node.direction
 		var point: Vector2 = node.point
 		var child := bool(node.child)
-		var pivot := Vector2(3 if child else 32, 32)
-		var dimensions := Vector2(float(node.length) / 57.0, 0.65) if child else Vector2(spacing / 64.0, 1)
+		var pivot := Vector2(0 if child else 48, 48)
+		var dimensions := Vector2(float(node.length) / 96.0, 0.90) if child else Vector2(spacing / 96.0, 1.30)
 		dimensions *= weapon.get_projectile_visual_scale()
 		# Clip the artwork, not the node positions or damage cells. This also
 		# prevents enlarged strips from growing backwards through the caster.
-		var crop := clampf(pivot.x + (crack_clearance - point.dot(direction)) / maxf(dimensions.x, 0.001), 0, 64)
-		if crop >= 64:
+		var crop := clampf(pivot.x + (crack_clearance - point.dot(direction)) / maxf(dimensions.x, 0.001), 0, 96)
+		if crop >= 96:
 			continue
-		var rect := Rect2(Vector2(crop, 0) - pivot, Vector2(64 - crop, 64))
-		var region := Rect2(frame * 64 + crop, 0, 64 - crop, 64)
+		var rect := Rect2(Vector2(crop, 0) - pivot, Vector2(96 - crop, 96))
+		var region := Rect2(frame * 96 + crop, 0, 96 - crop, 96)
 		crack_layer.draw_set_transform(point, direction.angle(), dimensions)
 		crack_layer.draw_texture_rect_region(crack_texture, rect, region, Color(1, 1, 1, minf(1, (1.25 - elapsed) * 3)))
-		# Briefly brighten the existing pixels, preserving the crack shape and crop.
-		if FEEDBACK_SETTINGS.enabled() and not child and elapsed < 0.075:
-			var emphasis := 0.65 if point.length() < first_offset + spacing * 0.5 else 0.25
-			crack_layer.draw_texture_rect_region(crack_texture, rect, region, Color(2.4, 2.1, 1.65, emphasis * (1.0 - elapsed / 0.075)))
 	crack_layer.draw_set_transform(Vector2.ZERO)

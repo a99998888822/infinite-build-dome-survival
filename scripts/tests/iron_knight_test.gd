@@ -45,7 +45,7 @@ func _run() -> void:
 	add_child(player)
 	player.initialize_from_character("character_void_hunter")
 	player.set_physics_process(false)
-	# Preserve the actual capsule for hit tests without blocking a full sweep.
+	# Preserve the actual body for hit tests without blocking a full sweep.
 	player.collision_layer = 0
 	knight = load("res://scenes/enemy/elite_rusher.tscn").instantiate() as EliteRusher
 	add_child(knight)
@@ -66,7 +66,7 @@ func _run() -> void:
 	grub.set_physics_process(false)
 	check(grub.idle_texture.get_size() == Vector2(128, 128), "Grub native idle is 128px")
 	check(visible_pixels_match(grub.idle_texture.get_image(), grub.move_texture.get_image().get_region(Rect2i(0, 0, 128, 128))), "Grub idle equals first move frame")
-	check((grub.idle_texture.get_size() * grub.sprite.scale).is_equal_approx(Vector2(56.32, 56.32)), "Grub battle display is enlarged by 1.1")
+	check((grub.idle_texture.get_size() * grub.sprite.scale).is_equal_approx(Vector2(128, 128)), "Grub battle display uses native pixels")
 	check(is_equal_approx(grub.move_frame_duration, 1.0 / 14.0), "Grub movement animation plays at 14 FPS")
 	grub._set_movement_visual(true, 0.0)
 	for frame_index in 7:
@@ -75,7 +75,7 @@ func _run() -> void:
 	check(grub.sprite.frame == 0, "Grub movement wraps without blank frame")
 	grub._set_movement_visual(false, 0.0)
 	check(grub.sprite.texture == grub.idle_texture and grub.sprite.hframes == 1, "Grub stop restores single-frame idle")
-	check(is_equal_approx(grub.sprite.position.y + 28.0 * grub.sprite.scale.y, 14.08), "Grub retains its approved enlarged foot anchor")
+	check(is_equal_approx(grub.sprite.position.y + 28.0 * grub.sprite.scale.y, 32.0), "Grub retains its native-size foot anchor")
 	grub.free()
 	player.position = Vector2(600, 0)
 	check(not knight.start_dash(), "far target cannot manually trigger dash")
@@ -113,8 +113,9 @@ func _run() -> void:
 	player.position = knight.position + Vector2(100, 0)
 	check(not knight.start_dash() and is_equal_approx(knight._cooldown, 6.0), "recovery retains six-second cooldown")
 	# A single low-frame-rate step must hit the swept target, not just the endpoint.
-	var capsule := player.get_node("CollisionShape2D").shape as CapsuleShape2D
-	var boundary := float(knight._profile.dash_half_width) + capsule.height * 0.5
+	var player_body := player.get_node("CollisionShape2D") as CollisionShape2D
+	var circle := player_body.shape as CircleShape2D
+	var boundary := float(knight._profile.dash_half_width) + circle.radius - player_body.position.y
 	for offset in [Vector2(120, 0), Vector2(120, boundary - 1.0), Vector2(120, boundary + 1.0)]:
 		reset_knight()
 		knight.start_dash()
@@ -122,7 +123,7 @@ func _run() -> void:
 		knight._process_special_behavior(1.0)
 		knight._process_special_behavior(0.16)
 		var should_hit: bool = offset.y < boundary
-		check((player.current_hp < 1000) == should_hit, "swept capsule boundary y=%s" % offset.y)
+		check((player.current_hp < 1000) == should_hit, "swept lower-body circle boundary y=%s" % offset.y)
 		var health := player.current_hp
 		player._invincibility_timer = 0.0
 		knight._try_dash_damage(0.0, 240.0)

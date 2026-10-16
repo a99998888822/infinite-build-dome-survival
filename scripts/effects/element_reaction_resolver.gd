@@ -54,7 +54,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				_emit_steam(parent, hit_position)
 				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
 				var damage_components: Array[int] = [original_damage, maxi(steam_damage - original_damage, 0)]
-				enemy.take_damage(
+				_deal_reaction_damage(enemy, reaction_data,
 					steam_damage,
 					source_id,
 					false,
@@ -81,7 +81,7 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				_emit_steam(parent, hit_position)
 				var original_damage := maxi(int(roundi(float(reaction_data.get("original_damage", reaction_data.get("damage", 0.0))))), 1)
 				var damage_components: Array[int] = [original_damage, maxi(steam_damage - original_damage, 0)]
-				enemy.take_damage(
+				_deal_reaction_damage(enemy, reaction_data,
 					steam_damage,
 					source_id,
 					false,
@@ -161,6 +161,16 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 		REFLECTION.spawn(parent, hit_position, direction, damage_event, REFLECTION.DEFAULT_RADIUS * damage_event.damage_area_scale)
 	AudioManager.end_combat_audio()
 	return result
+
+
+static func _deal_reaction_damage(enemy: Node, data: Dictionary, damage: int, source_id: String,
+		critical: bool, direction: Vector2, components: Array[int]) -> int:
+	var event := data.get("damage_event") as DamageEvent
+	if event != null and enemy.has_method("take_attack_damage"):
+		var reaction_event := event.duplicate_event()
+		reaction_event.source_weapon_id = source_id
+		return enemy.take_attack_damage(damage, reaction_event, critical, direction, components)
+	return enemy.take_damage(damage, source_id, critical, direction, components)
 
 
 static func _emit_steam(parent: Node, hit_position: Vector2) -> void:

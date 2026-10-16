@@ -151,7 +151,7 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 	else:
 		enemy.show_control_resistance()
 	var wind_damage := damage_event.get_elemental_damage(context.get_resolved_parameter("damage_multiplier", 0.7))
-	enemy.take_damage(wind_damage, damage_event.source_weapon_id, false, away_direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
+	enemy.take_attack_damage(wind_damage, damage_event, false, away_direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 	var search_radius := maxf(context.get_resolved_parameter("field_search_radius", 18.0), 0.0)
 	var field_multiplier := maxf(context.get_resolved_parameter("field_radius_multiplier", 1.35), 1.0)
 	_expand_wind_fields(parent, enemy.global_position, search_radius, field_multiplier)

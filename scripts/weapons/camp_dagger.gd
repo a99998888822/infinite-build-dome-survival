@@ -195,7 +195,7 @@ func _contact(cut: Dictionary, origin: Vector2, at: float) -> void:
 			split_triggered = true
 			_append_split_cuts(event)
 		EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, event.hit_position, heading, enemy)
-		enemy.take_damage_with_feedback(event.damage, event.source_weapon_id, event.is_critical, heading, &"light")
+		enemy.take_attack_damage(event.damage, event, event.is_critical, heading)
 		weapon.play_attack_hit_sfx()
 		target_hit.emit(enemy.get_instance_id(), event.damage, bool(cut.child))
 	AudioManager.end_combat_audio()

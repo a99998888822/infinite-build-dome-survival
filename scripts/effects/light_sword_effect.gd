@@ -110,7 +110,7 @@ func _land() -> void:
 				"light_duration": _light_duration,
 				"damage_event": _damage_event,
 			})
-		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
+		enemy.take_attack_damage(damage, _damage_event, false, global_position.direction_to(enemy.global_position))
 		if not had_dark:
 			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "light", {
 				"parent": get_parent(),

@@ -2,7 +2,7 @@ extends EnemyController
 class_name EliteRusher
 
 const FRAMES: SpriteFrames = preload("res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres")
-const BODY_SCALE := 1.12
+const BODY_SCALE := 1.7
 const CONTROL_MULTIPLIER := 0.1
 
 var skill_state: String = "spawn"
@@ -266,8 +266,6 @@ func _die(_source_id: String = "") -> void:
 	set_physics_process(false)
 	queue_redraw()
 	died.emit(self, get_drop_table_id(), global_position)
-	if _visual_tween != null and _visual_tween.is_valid():
-		_visual_tween.kill()
 	sprite.modulate = _base_sprite_modulate
 	# No death poses were supplied. Keep the current approved pose and fade it.
 	var tween := create_tween()

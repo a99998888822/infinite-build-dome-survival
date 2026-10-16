@@ -117,7 +117,7 @@ func _damage_sweep_dense() -> void:
 		remaining -= 1
 		_hit_targets[enemy.get_instance_id()] = true
 		var damage := _damage_event.get_elemental_damage(_damage_multiplier)
-		enemy.take_damage(damage, _damage_event.source_weapon_id, false, offset)
+		enemy.take_attack_damage(damage, _damage_event, false, offset)
 		if _candidate_revision != EnemyRegistry.revision:
 			# A damage callback may add/remove an enemy. Continue the live array at
 			# the same index as the original iterator, including same-scan spawns.
@@ -156,7 +156,7 @@ func _sweep_target(enemy: EnemyController, sweep_angle: float, radius_squared: f
 		return false
 	_hit_targets[enemy.get_instance_id()] = true
 	var damage := _damage_event.get_elemental_damage(_damage_multiplier)
-	enemy.take_damage(damage, _damage_event.source_weapon_id, false, offset)
+	enemy.take_attack_damage(damage, _damage_event, false, offset)
 	return true
 
 

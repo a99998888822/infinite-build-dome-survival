@@ -4,8 +4,7 @@ class_name MobilityAtlasEffect
 const CLIPS := {
 	"dash_trail": [preload("res://assets/sprites/weapons/mobility/dash_trail.png"), Vector2(128,64), 8, 24.0, Vector2(118,32)],
 	"dash_circle": [preload("res://assets/sprites/weapons/mobility/dash_circle.png"), Vector2(160,160), 10, 48.0, Vector2(80,80)],
-	"muzzle": [preload("res://assets/sprites/weapons/mobility/muzzle.png"), Vector2(96,64), 6, 30.0, Vector2(6,32)],
-	"pellet_hit": [preload("res://assets/sprites/weapons/mobility/pellet_hit.png"), Vector2(64,64), 6, 24.0, Vector2(32,32)],
+	"pellet_hit": [preload("res://assets/sprites/weapons/effects/block_vfx/pellet_hit.png"), Vector2(64,64), 6, 24.0, Vector2(32,32)],
 	"recoil_dust": [preload("res://assets/sprites/weapons/mobility/recoil_dust.png"), Vector2(128,64), 8, 20.0, Vector2(64,32)],
 	"star_depart": [preload("res://assets/sprites/weapons/mobility/star_depart.png"), Vector2(96,128), 8, 24.0, Vector2(48,64)],
 	"star_arrive": [preload("res://assets/sprites/weapons/mobility/star_arrive.png"), Vector2(96,128), 8, 24.0, Vector2(48,64)],

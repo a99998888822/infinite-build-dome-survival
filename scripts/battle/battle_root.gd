@@ -22,6 +22,12 @@ func _ready() -> void:
 	if player != null:
 		player.position = PLAYER_START_POSITION
 	_attach_world_nodes_to_low_resolution_viewport()
+	var game_root := _find_game_root()
+	if game_root != null and player != null:
+		var layers: Array[CanvasLayer] = []
+		var sky := get_node_or_null("BattleSky") as CanvasLayer
+		if sky != null: layers.append(sky)
+		CombatHitFeedback.bind_battle(player.get_viewport(), layers, game_root.get_world_presentation_surface())
 	if wave_manager != null:
 		EnemyController.prepare_damage_number_pool(wave_manager.enemy_root)
 	_bind_mobile_joystick()
@@ -29,12 +35,16 @@ func _ready() -> void:
 	active_controller = ActiveCombatController.new()
 	add_child(active_controller)
 	active_controller.initialize(self)
+	var input_receivers: Array[Node] = [player, active_controller]
+	if mobile_joystick != null: input_receivers.append(mobile_joystick)
+	CombatHitFeedback.set_input_receivers(input_receivers)
 	combat_guide = CombatGuideOverlay.new()
 	add_child(combat_guide)
 	combat_guide.initialize(self, _main_flow_coordinator)
 
 
 func _exit_tree() -> void:
+	CombatHitFeedback.unbind_battle()
 	restore_world_nodes()
 
 
@@ -119,6 +129,8 @@ func _bind_to_flow() -> void:
 
 
 func _on_flow_state_changed(previous_state: String, current_state: String) -> void:
+	if current_state != MainFlowCoordinator.STATE_WAVE_COMBAT:
+		CombatHitFeedback.clear()
 	if active_controller != null:
 		active_controller.clear_input()
 	if loadout != null and loadout.active_combat_enabled and current_state in [MainFlowCoordinator.STATE_WAVE_END_ABSORB, MainFlowCoordinator.STATE_BATTLE_RESULT]:

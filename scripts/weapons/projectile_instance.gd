@@ -171,7 +171,7 @@ func _on_body_entered(body: Node) -> void:
 	COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, damage_event, enemy_hit_position, direction, enemy, split_root)
 	if split_root:
 		_spawn_split_projectiles(enemy_hit_position)
-	enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, direction)
+	enemy.take_attack_damage(damage_event.damage, damage_event, damage_event.is_critical, direction)
 	if weapon != null:
 		if ENABLE_ENEMY_HIT_GREEN_PARTICLES and weapon.register_hit_feedback_frame(true):
 			_spawn_hit_sparks(enemy_hit_position, direction)
@@ -247,7 +247,7 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 		if _split_depth == 0 and not _has_split and weapon.has_effect("split"):
 			_has_split = true
 			_spawn_split_projectiles(enemy.global_position)
-		enemy.take_damage(tick_event.damage, tick_event.source_weapon_id, tick_event.is_critical, direction)
+		enemy.take_attack_damage(tick_event.damage, tick_event, tick_event.is_critical, direction)
 		plasma_target_hit.emit(enemy, tick_event.damage)
 		contacted = true
 	if contacted:

@@ -150,7 +150,7 @@ func validate() -> void:
 		registered = registered and (is_equal_approx(record.sprite_scale,0.8192) or is_equal_approx(record.sprite_scale,1.024))
 	check(registered,"all 21 frames retain approved source-space registration in exported resources")
 	var collider := wolf.get_node("CollisionShape2D") as CollisionShape2D
-	check(is_equal_approx(collider.shape.radius,18.4) and is_equal_approx(collider.shape.height,60.8),"body collider shrinks with visual")
+	check(is_equal_approx(collider.shape.radius,36.8) and is_equal_approx(collider.shape.height,121.6) and collider.position.is_equal_approx(Vector2(12.8,-60.8)),"body collider follows doubled visual")
 	wolf.transition("spawn", &"idle")
 	check(wolf.take_damage(20) == 0,"spawn grace rejects damage")
 	await step(46)
@@ -219,7 +219,9 @@ func validate() -> void:
 	wolf.begin_skill("breath")
 	var aim: Vector2 = wolf.breath_direction
 	hp = player.current_hp
-	await step(45,Vector2(0,-180))
+	# Sidestep perpendicular to the locked cone; the enlarged mouth sits higher.
+	var dodge := AttackFootprint.project(AttackFootprint.ground_direction(aim).orthogonal()).normalized()
+	await step(45,dodge*260)
 	await step(95)
 	check(player.current_hp == hp and wolf.breath_hits == 0,"sidestep avoids all flame pulses")
 	check(wolf.breath_direction.is_equal_approx(aim),"flame direction stays locked after warning")
@@ -277,7 +279,7 @@ func validate() -> void:
 	wolf.sprite.flip_h = false
 	wolf.animate(0)
 	var right_offset: Vector2 = wolf.sprite.position
-	check(wolf.sprite.scale.is_equal_approx(Vector2.ONE*0.8192),"approved idle grid uses original four-source-pixel cells")
+	check(wolf.sprite.scale.is_equal_approx(Vector2.ONE*1.6384),"registered idle grid retains the doubled base body size")
 	wolf.sprite.flip_h = true
 	wolf.animate(0)
 	check(wolf.sprite.position.is_equal_approx(Vector2(-right_offset.x,right_offset.y)),"left-facing pixel pose mirrors registration around shared foot anchor")

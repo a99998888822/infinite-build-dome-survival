@@ -1,0 +1,78 @@
+{
+  "method": "local deterministic pixel geometry; no image model",
+  "pixel_grid": 2,
+  "clips": {
+    "grenade": {
+      "frame_size": [
+        128,
+        128
+      ],
+      "frames": 12,
+      "colors": 4
+    },
+    "tome": {
+      "frame_size": [
+        96,
+        128
+      ],
+      "frames": 10,
+      "colors": 3
+    },
+    "tentacle": {
+      "frame_size": [
+        160,
+        128
+      ],
+      "frames": 8,
+      "colors": 4
+    },
+    "hammer": {
+      "frame_size": [
+        128,
+        128
+      ],
+      "frames": 8,
+      "colors": 4
+    },
+    "spear": {
+      "frame_size": [
+        192,
+        64
+      ],
+      "frames": 7,
+      "colors": 4
+    },
+    "flail": {
+      "frame_size": [
+        320,
+        320
+      ],
+      "frames": 18,
+      "colors": 4
+    },
+    "muzzle": {
+      "frame_size": [
+        128,
+        96
+      ],
+      "frames": 6,
+      "colors": 3
+    },
+    "pellet_hit": {
+      "frame_size": [
+        64,
+        64
+      ],
+      "frames": 6,
+      "colors": 3
+    },
+    "hammer_crack": {
+      "frame_size": [
+        96,
+        96
+      ],
+      "frames": 6,
+      "colors": 12
+    }
+  }
+}

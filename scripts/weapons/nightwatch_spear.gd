@@ -5,6 +5,7 @@ signal target_hit(target_id: int, damage: int, thrust_index: int)
 signal shard_launched(shard: ProjectileInstance)
 
 const SPEAR := preload("res://assets/sprites/weapons/weapon_nightwatch_spear.png")
+const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
 const EFFECTS := preload("res://scripts/effects/combat_effect_world.gd")
 const SOURCE_RECT := Rect2(4, 0, 238, 28)
 
@@ -115,7 +116,7 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 		event.hit_position = enemy.global_position
 		thrust.contacts.append({"position": enemy.global_position, "event": event})
 		EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, event.hit_position, direction, enemy)
-		enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
+		enemy.take_attack_damage(event.damage, event, event.is_critical, direction)
 		weapon.play_attack_hit_sfx()
 		target_hit.emit(id, event.damage, index)
 	AudioManager.end_combat_audio()
@@ -186,9 +187,8 @@ func _draw() -> void:
 		if diagnostic:
 			draw_rect(Rect2(0, -half_width, tip, half_width * 2.0), Color(0.34, 0.73, 0.65, 0.2))
 		if local_time >= windup and local_time < windup + extend + 0.08:
-			for index in 16:
-				var x := tip - index * 7.0
-				if x > 15:
-					draw_rect(Rect2(roundf(x), -half_width + index % 3 * 2, 3, 2), Color(tint, 0.5 * (1.0 - float(index) / 16)))
+			var height := 140.8 * maxf(0.75, half_width / 12.0)
+			var color := Color.WHITE if not (weapon.has_effect("fire") or weapon.has_effect("ice") or weapon.has_effect("lightning")) else tint
+			BLOCK_VFX.draw(self, "spear", (local_time - windup) / (extend + 0.08), Rect2(0, -height * 0.5, tip * 1.12, height), color)
 		draw_texture_rect_region(SPEAR, Rect2(roundf(tip - length), -half_width, length, half_width * 2.0), SOURCE_RECT)
 	draw_set_transform(Vector2.ZERO)

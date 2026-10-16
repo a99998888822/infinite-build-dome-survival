@@ -75,6 +75,7 @@ func snapshot(player: PlayerController) -> Dictionary:
 	var player_radius := body_radius(player, 14.0)
 	var half_segment := 0.0
 	var player_shape := player.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	var body_offset := player_shape.global_position - player.global_position if player_shape != null else Vector2.ZERO
 	if player_shape != null and player_shape.shape is CapsuleShape2D:
 		var capsule := player_shape.shape as CapsuleShape2D
 		var scale := maxf(absf(player_shape.global_scale.x), absf(player_shape.global_scale.y))
@@ -94,12 +95,13 @@ func snapshot(player: PlayerController) -> Dictionary:
 		var prediction := enemy.velocity.limit_length(120.0) * 0.2
 		var collision := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
 		var center := collision.global_position if collision != null else enemy.global_position
+		var body_distance := center.distance_to(player.global_position + body_offset)
 		threats.append({"enemy": enemy, "position": enemy.global_position, "predicted": enemy.global_position + prediction, "center": center, "future_center": center + prediction, "segment": half_segment, "safety": safety, "targetable": not spawning})
 		if not spawning and distance <= 260.0:
 			crowd += offset.normalized() * (1.0 - distance / 300.0)
 			if distance <= 150.0: close_count += 1
-			if distance < safety + 20.0: pressure = true
-			if (enemy is EliteRusher or enemy is UnderworldWolf) and distance < safety + 55.0: pressure = true
+			if body_distance < safety + 20.0: pressure = true
+			if (enemy is EliteRusher or enemy is UnderworldWolf) and body_distance < safety + 55.0: pressure = true
 		_append_hazards(enemy, hazards, player_radius + half_segment)
 	for node in player.get_tree().get_nodes_in_group("echo_bat_projectiles"):
 		var sonic := node as EchoBatSonic
@@ -108,7 +110,7 @@ func snapshot(player: PlayerController) -> Dictionary:
 		if hazards.size() >= MAX_NEARBY: return {}
 		hazards.append({"start": sonic.global_position, "end": sonic.global_position + sonic.direction * minf(sonic.speed * 0.6, sonic.max_distance - sonic.travelled), "radius": 10.0 + player_radius + half_segment + SAFETY_MARGIN})
 	threats.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return player.global_position.distance_squared_to(a.position) < player.global_position.distance_squared_to(b.position))
-	return {"threats": threats, "hazards": hazards, "crowd": crowd, "pressure": pressure or close_count >= 3}
+	return {"threats": threats, "hazards": hazards, "crowd": crowd, "pressure": pressure or close_count >= 3, "body_offset": body_offset}
 
 static func body_radius(body: Node2D, fallback: float) -> float:
 	var collision := body.get_node_or_null("CollisionShape2D") as CollisionShape2D
@@ -166,8 +168,9 @@ func propose(weapon: WeaponInstance, player: PlayerController, intent: Vector2, 
 					var sight := PhysicsRayQueryParameters2D.create(landing, threat.position, 4)
 					if player.get_world_2d().direct_space_state.intersect_ray(sight).is_empty(): hits += 1
 		if not retreat and hits == 0: continue
-		var before := nearest_clearance(origin, context.threats)
-		var after := nearest_clearance(landing, context.threats)
+		var body_offset: Vector2 = context.get("body_offset", Vector2.ZERO)
+		var before := nearest_clearance(origin + body_offset, context.threats)
+		var after := nearest_clearance(landing + body_offset, context.threats)
 		if retreat and after < before + 30.0: continue
 		var score := after - before + mini(hits, 3) * 8.0 if retreat else hits * 12.0 - displacement.length() * 0.04
 		if best.is_empty() or score > float(best.score):
@@ -182,6 +185,10 @@ static func nearest_clearance(point: Vector2, threats: Array) -> float:
 	return nearest
 
 static func safe_path(origin: Vector2, landing: Vector2, retreat: bool, blink: bool, context: Dictionary) -> bool:
+	# Candidate destinations describe the root; collision/hazard checks use the body center.
+	var body_offset: Vector2 = context.get("body_offset", Vector2.ZERO)
+	origin += body_offset
+	landing += body_offset
 	for threat: Dictionary in context.threats:
 		for center: Vector2 in [threat.center, threat.future_center]:
 			var safe := float(threat.safety)

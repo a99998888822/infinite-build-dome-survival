@@ -81,7 +81,7 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 		if body is EnemyController and body.is_alive():
 			var event := replay.calculate_damage_events()[0]
 			CombatEffectWorld.trigger_weapon_impact(self, replay, event, point, heading, body)
-			body.take_damage(event.damage, event.source_weapon_id, event.is_critical, heading)
+			body.take_attack_damage(event.damage, event, event.is_critical, heading)
 	else:
 		var shared_hits: Dictionary = {}
 		var angles := replay.get_projectile_angles()

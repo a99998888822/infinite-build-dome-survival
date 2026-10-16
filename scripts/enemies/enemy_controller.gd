@@ -22,17 +22,13 @@ const MAX_DAMAGE_NUMBERS := 160
 const DAMAGE_NUMBER_POOL_META := &"_idle_damage_numbers"
 static var active_damage_numbers := 0
 static var _damage_number_themes: Dictionary = {}
-const HIT_KNOCKBACK_SPEED: float = 60.0
-const HIT_KNOCKBACK_SECONDS: float = 0.06
 const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
-const HIT_FLASH_SECONDS: float = 0.1
-const HIT_SHAKE_ANGLE: float = 0.08
 const DEATH_FADE_SECONDS: float = 0.2
 const LIGHTNING_STUN_MAX_SECONDS: float = 3.0
 const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/lightning_status_visual.gd")
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
-const FEEDBACK_R02 = preload("res://scripts/effects/combat_feedback_r02.gd")
 const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
+const HIT_VISUAL = preload("res://scripts/effects/enemy_hit_visual.gd")
 const SUPER_ARMOR_SECONDS := 2.0
 const SUPER_ARMOR_COOLDOWN_SECONDS := 5.0
 const SUPER_ARMOR_CONTROL_WINDOW := 2.0
@@ -103,13 +99,12 @@ var _blinded_remaining: float = 0.0:
 	set(value):
 		if (_blinded_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
 		_blinded_remaining = value
-var _visual_tween: Tween = null
-var _next_feedback_kind: StringName = &""
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
 var _cavern_scenery: Node2D = null
 var _lightning_visual: Node2D = null
 var _super_armor_visual: Node2D = null
+var _hit_visual: Node = null
 var _super_armor_remaining := 0.0
 var _super_armor_cooldown := 0.0
 var _super_armor_clock := 0.0
@@ -237,6 +232,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
+	if is_instance_valid(_hit_visual): _hit_visual.reset()
 	_reset_super_armor()
 	modifier_stack.cache_enabled = true
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
@@ -504,9 +500,6 @@ func _start_super_armor() -> void:
 	_knockback_deceleration = 0.0
 	if is_instance_valid(_lightning_visual):
 		_lightning_visual.hide()
-	FEEDBACK_R02.interrupt(self)
-	if _visual_tween != null and _visual_tween.is_valid():
-		_visual_tween.kill()
 	if sprite != null:
 		sprite.rotation = 0.0
 		sprite.modulate = _base_sprite_modulate
@@ -600,12 +593,19 @@ func _process_burning(delta: float) -> void:
 		clear_burning()
 
 
-func take_damage_with_feedback(raw_damage: int, source_id: String, is_critical: bool, hit_direction: Vector2, kind: StringName) -> int:
-	var previous := _next_feedback_kind
-	_next_feedback_kind = kind
-	# Retain subclass mitigation/phase overrides of the existing public method.
-	var dealt := take_damage(raw_damage, source_id, is_critical, hit_direction)
-	_next_feedback_kind = previous
+func take_damage_with_feedback(raw_damage: int, source_id: String, is_critical: bool, hit_direction: Vector2, _kind: StringName) -> int:
+	# Legacy categories all use the same general hit response.
+	# Keep dispatching through subclass mitigation and phase overrides.
+	return take_damage(raw_damage, source_id, is_critical, hit_direction)
+
+
+func take_attack_damage(raw_damage: int, event: DamageEvent, is_critical: bool = false,
+		hit_direction: Vector2 = Vector2.ZERO, damage_components: Array[int] = [], allow_light_bonus: bool = true) -> int:
+	var at := global_position
+	# Virtual dispatch preserves elite phase immunity and subclass mitigation.
+	var dealt := take_damage(raw_damage, event.source_weapon_id, is_critical, hit_direction, damage_components, allow_light_bonus)
+	if dealt > 0 and is_inside_tree():
+		CombatHitFeedback.record_damage(self, DamageEvent.feedback_attack_id(event.attack_context), at)
 	return dealt
 
 
@@ -617,8 +617,6 @@ func take_damage(
 	damage_components: Array[int] = [],
 	allow_light_bonus: bool = true
 ) -> int:
-	var feedback_kind := _next_feedback_kind
-	_next_feedback_kind = &""
 	if not alive or raw_damage <= 0:
 		return 0
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
@@ -633,6 +631,7 @@ func take_damage(
 	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	current_hp = maxi(current_hp - final_damage, 0)
+	_show_hit_visual()
 	# One notification after mitigation, shared by direct hits, effects and burn ticks.
 	damage_received.emit(source_id, final_damage)
 	if damage_components.is_empty():
@@ -641,7 +640,7 @@ func take_damage(
 		var display_components := _split_damage_for_display(final_damage, damage_components)
 		for index in range(display_components.size()):
 			_spawn_damage_number(display_components[index], is_critical, index, display_components.size(), light_amplified, roundi(display_components[index] / light_multiplier))
-	_apply_hit_feedback(hit_direction, feedback_kind)
+	_consume_legacy_hit_random_sample()
 	if current_hp <= 0:
 		_die(source_id)
 	return final_damage
@@ -676,35 +675,20 @@ func _split_damage_for_display(final_damage: int, damage_components: Array[int])
 	return display_components
 
 
-func _apply_hit_feedback(hit_direction: Vector2, feedback_kind: StringName = &"") -> void:
-	if sprite == null:
-		return
-	_capture_base_sprite_modulate()
-	# Consume the same visual RNG sample in both versions so combat RNG is stable.
-	var shake_angle := randf_range(-HIT_SHAKE_ANGLE, HIT_SHAKE_ANGLE)
-	if is_control_immune():
-		shake_angle = 0.0
-	if FEEDBACK_R02.handles(feedback_kind) and FEEDBACK_R02.enabled():
-		if not hit_direction.is_zero_approx():
-			_apply_weapon_knockback(hit_direction)
-		FEEDBACK_R02.apply(self, feedback_kind, hit_direction, shake_angle)
-		return
-	FEEDBACK_R02.interrupt(self)
-	# A pending Tween reads its starting values when it first advances. Repeated
-	# hits before that point only replace those values, not the animation itself.
-	# Once it has advanced (or was stopped), retain the original restart behavior.
-	var pending_feedback := _visual_tween != null and _visual_tween.is_valid() and _visual_tween.is_running() and _visual_tween.get_total_elapsed_time() == 0.0
-	if not pending_feedback and _visual_tween != null and _visual_tween.is_valid():
-		_visual_tween.kill()
-	# The untinted sprite still needs a visible brightness pulse on impact.
-	sprite.modulate = Color(1.35, 1.35, 1.35, _base_sprite_modulate.a)
-	sprite.rotation = shake_angle
-	if not pending_feedback:
-		_visual_tween = create_tween()
-		_visual_tween.tween_property(sprite, "modulate", _base_sprite_modulate, HIT_FLASH_SECONDS)
-		_visual_tween.parallel().tween_property(sprite, "rotation", 0.0, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	if not hit_direction.is_zero_approx():
-		_apply_weapon_knockback(hit_direction)
+func _consume_legacy_hit_random_sample() -> void:
+	# The removed sprite shake consumed one random sample on every visible hit.
+	# Preserve that sequence so later damage rolls and drops do not change.
+	if sprite != null:
+		randf_range(-0.08, 0.08)
+
+
+func _show_hit_visual() -> void:
+	if sprite == null or not is_inside_tree(): return
+	if not is_instance_valid(_hit_visual):
+		_hit_visual = HIT_VISUAL.new()
+		_hit_visual.name = "EnemyHitVisual"
+		add_child(_hit_visual)
+	_hit_visual.pulse(str(enemy_data.get("enemy_type", "normal")) not in ["elite", "boss"])
 
 
 func _capture_base_sprite_modulate() -> void:
@@ -714,27 +698,10 @@ func _capture_base_sprite_modulate() -> void:
 	_base_sprite_modulate_captured = true
 
 
-func _apply_weapon_knockback(hit_direction: Vector2) -> void:
-	# Native hit recoil never builds armor, but is also blocked during immunity.
-	if is_movement_locked() or not can_receive_control(false):
-		return
-	var safe_direction := hit_direction.normalized() if not hit_direction.is_zero_approx() else Vector2.RIGHT
-	var regular_velocity := safe_direction * HIT_KNOCKBACK_SPEED * get_control_multiplier()
-	if _knockback_timer <= 0.0 or _knockback_velocity.length_squared() < regular_velocity.length_squared():
-		_knockback_velocity = regular_velocity
-		velocity = _knockback_velocity
-		var safe_duration := _control_duration(maxf(HIT_KNOCKBACK_SECONDS, 0.05)) * get_control_multiplier()
-		_knockback_deceleration = _knockback_velocity.length() / safe_duration
-		_knockback_timer = maxf(_knockback_timer, safe_duration)
-
-
 func fade_out_and_free() -> void:
 	if not is_inside_tree():
 		return
 	_reset_super_armor()
-	FEEDBACK_R02.interrupt(self)
-	if _visual_tween != null and _visual_tween.is_valid():
-		_visual_tween.kill()
 	if sprite == null:
 		queue_free()
 		return

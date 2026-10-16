@@ -1,6 +1,6 @@
 extends Node2D
 class_name GrenadeProjectile
-const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
 
 signal detonated(hit_count: int)
 
@@ -108,7 +108,7 @@ func _detonate() -> void:
 	for enemy in victims:
 		if not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		enemy.take_damage(damage_event.damage, damage_event.source_weapon_id, damage_event.is_critical, target_position.direction_to(enemy.global_position))
+		enemy.take_attack_damage(damage_event.damage, damage_event, damage_event.is_critical, target_position.direction_to(enemy.global_position))
 	if not cancelled and not is_queued_for_deletion() and not split_profiles.is_empty():
 		_spawn_split_grenades(contacts, split_profiles)
 	AudioManager.play_weapon_hit_sfx(weapon.weapon_id, 150)
@@ -206,7 +206,8 @@ func _draw_shell(center: Vector2) -> void:
 
 
 func _draw_explosion() -> void:
-	BAKED.draw(self, "grenade", int((elapsed-flight_seconds)*60.0), Vector2.ONE * blast_radius/64.0)
+	BLOCK_VFX.draw(self, "grenade", (elapsed - flight_seconds) / BLAST_LIFETIME,
+		Rect2(Vector2.ONE * -blast_radius, Vector2.ONE * blast_radius * 2.0))
 
 
 func _draw_pixel(center: Vector2, size: float, color: Color) -> void:

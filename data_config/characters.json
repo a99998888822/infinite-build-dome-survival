@@ -16,9 +16,10 @@
       "walk_frames": 8,
       "walk_fps": 8,
       "action_animations": "res://assets/sprites/player/actions/novice_128/animations.json",
-      "action_scale_percent": 50,
-      "preserve_pixel_outline": true,
-      "action_offset": [0, -4]
+      "action_scale_percent": 100,
+      "body_scale_percent": 200,
+      "preserve_pixel_outline": false,
+      "action_offset": [0, -8]
     },
     "display_stats": [
       "max_hp",

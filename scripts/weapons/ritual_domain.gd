@@ -128,7 +128,7 @@ func _apply_hit(enemy: EnemyController, event: DamageEvent, child: bool) -> void
 	event.hit_position = position_snapshot
 	# Dispatch before native lethal damage so attached effects retain their contact.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, position_snapshot, direction, enemy)
-	enemy.take_damage_with_feedback(event.damage, event.source_weapon_id, event.is_critical, direction, &"ritual")
+	enemy.take_attack_damage(event.damage, event, event.is_critical, direction)
 	HIT.spawn(get_parent(), weapon, position_snapshot, true)
 	if not child and FEEDBACK_SETTINGS.enabled():
 		weapon.feedback_mark.emit(marks_completed)

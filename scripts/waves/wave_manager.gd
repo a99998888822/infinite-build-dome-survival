@@ -453,6 +453,7 @@ func clear_enemies() -> void:
 
 
 func clear_battle_entities() -> void:
+	CombatHitFeedback.clear()
 	if is_instance_valid(challenge_vault):
 		challenge_vault.queue_free()
 		challenge_vault = null

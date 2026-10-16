@@ -96,7 +96,7 @@ func _damage_target(enemy: EnemyController, radius_squared: float, wind_damage: 
 		enemy.apply_knockback(_direction, _knockback_speed, _knockback_duration, _weapon.get_stat("control_power"))
 	else:
 		enemy.show_control_resistance()
-	enemy.take_damage(wind_damage, _damage_event.source_weapon_id, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
+	enemy.take_attack_damage(wind_damage, _damage_event, false, _direction if enemy.can_be_pushed_by_wind() else Vector2.ZERO)
 	return true
 
 

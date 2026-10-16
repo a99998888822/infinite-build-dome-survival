@@ -101,11 +101,15 @@ func crowd(behind: bool = true) -> void:
 
 func _pursuit_and_escape(index: int, keyboard: bool) -> void:
 	var weapon := await fixture(index, keyboard)
-	enemy(Vector2(150, 0))
-	enemy(Vector2(180, 65))
+	enemy(Vector2(250, 0))
+	enemy(Vector2(280, 65))
 	move(Vector2.RIGHT)
 	decide()
 	var label: String = IDS[index] + " keyboard=" + str(keyboard)
+	check(weapon.volley_index == 0, "base skill cannot safely pursue enlarged bodies " + label)
+	# Exercise successful pursuit with a real area bonus, keeping production body sizes.
+	weapon.runtime_stats.damage_area_size = 200
+	decide()
 	check(weapon.volley_index == (0 if index == 1 else 1), "pursuit respects movement and recoil " + label)
 	if weapon.volley_index > 0:
 		var body: MobilityWeaponRuntime = weapon.mobility_runtime.get_ref()
@@ -115,6 +119,7 @@ func _pursuit_and_escape(index: int, keyboard: bool) -> void:
 			var landing := player.global_position
 			decide()
 			check(player.global_position == landing and weapon.volley_index == 1, "automatic blink does not immediately return")
+	weapon.runtime_stats.damage_area_size = 0
 	weapon = await fixture(index, keyboard)
 	crowd()
 	move(Vector2.RIGHT)
@@ -210,6 +215,14 @@ func _boundaries() -> void:
 	var context := {"threats": [], "hazards": [{"start": origin + Vector2(60, 0), "end": origin + Vector2(60, 0), "radius": 30.0}]}
 	check(not planner.safe_path(origin, origin + Vector2(100, 0), true, false, context), "visible hazard rejects a crossing dash")
 	check(not planner.safe_path(origin, origin + Vector2(60, 0), true, true, context), "visible hazard rejects a blink landing")
+	context = {"threats": [], "hazards": [{"start": origin + Vector2(60,30), "end": origin + Vector2(60,30), "radius": 25.0}], "body_offset": Vector2(0,30)}
+	check(not planner.safe_path(origin, origin + Vector2(100,0), false, false, context), "offset feet crossing a hazard are unsafe even when root path is clear")
+	context.hazards[0].start = origin + Vector2(60,-30)
+	context.hazards[0].end = origin + Vector2(60,-30)
+	check(planner.safe_path(origin, origin + Vector2(100,0), false, false, context), "upper-body hazard does not block a clear lower-body path")
+	context.hazards.clear()
+	context.threats = [{"center": origin+Vector2(60,30), "future_center": origin+Vector2(60,30), "segment": 0.0, "safety": 25.0}]
+	check(not planner.safe_path(origin, origin+Vector2(100,0), false, false, context), "offset feet also reject enemy body crossings")
 
 func _during_motion_input() -> void:
 	var weapon := await fixture(0, true)

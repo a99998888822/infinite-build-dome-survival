@@ -119,7 +119,7 @@ func _damage_enemies() -> void:
 			"original_damage": _damage_event.get_elemental_base_damage(),
 			"damage_event": _damage_event,
 		})
-		enemy.take_damage(damage, _damage_event.source_weapon_id, false, global_position.direction_to(enemy.global_position))
+		enemy.take_attack_damage(damage, _damage_event, false, global_position.direction_to(enemy.global_position))
 	if _excluded_bodies.size() != previous_excluded_count:
 		_query.exclude = _excluded_bodies
 	AudioManager.end_combat_audio()

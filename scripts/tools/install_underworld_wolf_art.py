@@ -6,6 +6,7 @@ folders are unused. No arguments only validates, without writing any resource.
 from pathlib import Path
 import argparse
 import hashlib
+import io
 import json
 from PIL import Image
 
@@ -27,12 +28,21 @@ def main():
     palette = {tuple(bytes.fromhex(c[1:])) for c in manifest['palette']}
     groups = {}
     for action,count in counts.items():
+        sheet = Image.open(DEST/'atlases'/f'{action}.png').convert('RGBA')
+        assert sheet.size == (128*count,128)
         frames = []
         for number in range(1,count+1):
             record = records[action,number]
-            path = DEST/record['output']
-            assert hashlib.sha256(path.read_bytes()).hexdigest() == record['sha256'], path
-            image = Image.open(path).convert('RGBA')
+            if 'output' in record:
+                path = DEST/record['output']
+                assert hashlib.sha256(path.read_bytes()).hexdigest() == record['sha256'], path
+                image = Image.open(path).convert('RGBA')
+            else:
+                # Split sources were retired; the approved frames live in the atlas.
+                image = sheet.crop((128*(number-1),0,128*number,128))
+                encoded = io.BytesIO()
+                image.save(encoded,format='PNG')
+                assert hashlib.sha256(encoded.getvalue()).hexdigest() == record['sha256'], (action,number)
             assert image.size == (128,128) and set(image.getchannel('A').tobytes()) == {0,255}
             colors = {rgba[:3] for _,rgba in image.getcolors(128*128) if rgba[3]}
             assert len(colors) <= 16 and colors <= palette

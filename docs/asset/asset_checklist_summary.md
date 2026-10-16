@@ -1,5 +1,9 @@
 # 资产总清单汇总
 
+> 2026-10-16 武器动效已正式采用：七把武器使用确认的大色块像素版本，战锤／长枪／手炮采用第二轮放大稿。手炮喷焰由 `shaders/effects/cannon_jet_flame.gdshader` 实现，不计入 PNG 表；正式接入与回归见[动效记录](../main/weapon_block_visuals_2026-10-16.md)。
+
+> 2026-10-16 正式配置：世界固定 1920×1080；初心者／幼体／蝙蝠使用原生 128px 帧，钢甲骑士使用原生 256px 帧，冥狼逐帧注册后放大 2 倍；玩家采用下半身圆形碰撞。PNG 像素与动作帧序保留确认稿，当前运行尺寸与碰撞参数见[正式显示规范](combat_sprite_clarity.md)。
+
 > 2026-10-15 清理：按用户确认删除 78 个未发现运行引用的素材、39 个残留或未生效素材及其配套原图、导入文件和废弃代码。7 个仅独立场景引用的营地素材保留；正式媒体文件由 543 减至 426。下方移除本次删除项，其他历史规格以最新接入记录为准。详见[素材清理记录](assets_cleanup_20261015.md)。
 
 > 汇总来源：`assets/` 实际源素材 + 已迁移的原分模块 asset checklist 目标清单；后续只维护本文档和 `asset_rules_summary.md`。
@@ -16,6 +20,14 @@
 
 | 状态 | 素材名 | 文件名 | 路径 | 尺寸/比例/格式 | 提示词 |
 |---|---|---|---|---|---|
+| 已接入 | 铸铁榴弹炮块状爆焰 | `grenade.png` | `assets/sprites/weapons/effects/block_vfx/grenade.png` | 1536×128 / 12 帧 / RGBA PNG | 确认版，4 色硬边像素 |
+| 已接入 | 坤舆秘仪书厚符印 | `tome.png` | `assets/sprites/weapons/effects/block_vfx/tome.png` | 960×128 / 10 帧 / RGBA PNG | 确认版，青白大色块 |
+| 已接入 | 异化触手甩击带 | `tentacle.png` | `assets/sprites/weapons/effects/block_vfx/tentacle.png` | 1280×128 / 8 帧 / RGBA PNG | 确认版，紫粉宽带 |
+| 已接入 | 裂地战锤锤风 | `hammer.png` | `assets/sprites/weapons/effects/block_vfx/hammer.png` | 1024×128 / 8 帧 / RGBA PNG | 第二轮确认版，随锤头围绕握点放大 2.2 倍 |
+| 已接入 | 裂地战锤地裂 | `hammer_crack.png` | `assets/sprites/weapons/effects/block_vfx/hammer_crack.png` | 576×96 / 6 帧 / RGBA PNG | 第二轮确认版，宽裂口、翻起的石板和沉降 |
+| 已接入 | 守夜长枪枪芒 | `spear.png` | `assets/sprites/weapons/effects/block_vfx/spear.png` | 1344×64 / 7 帧 / RGBA PNG | 第二轮确认版，厚度 2.2 倍、长度 1.12 倍 |
+| 已接入 | 流星摆锤宽弧拖尾 | `flail.png` | `assets/sprites/weapons/effects/block_vfx/flail.png` | 5760×320 / 18 帧 / RGBA PNG | 确认版，跟随锤头方向与分裂挥击 |
+| 已接入 | 巨型手持火炮弹丸命中 | `pellet_hit.png` | `assets/sprites/weapons/effects/block_vfx/pellet_hit.png` | 384×64 / 6 帧 / RGBA PNG | 确认版；枪口使用独立喷焰着色器 |
 | 已存在 | background1 | `background1.png` | `assets/sprites/camp/background1.png` | 512x512 / 1:1 / PNG |  |
 | 已存在 | background2 | `background2.png` | `assets/sprites/camp/background2.png` | 512x512 / 1:1 / PNG |  |
 | 已存在 | 遗物档案馆建筑 | `camp_relic_archive.png` | `assets/sprites/camp/buildings/unlocked/camp_relic_archive.png` | 256x256 / 1:1 / PNG |  |

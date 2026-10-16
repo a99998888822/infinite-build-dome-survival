@@ -95,14 +95,12 @@ func _run() -> void:
 		unit.apply_knockback(Vector2.RIGHT, 5000, 3, 1000)
 		unit._apply_contact_knockback()
 		var old_hp := unit.current_hp
+		var pose := unit.sprite.transform
+		var tint := unit.sprite.modulate
 		unit.take_damage_with_feedback(10, "probe", false, Vector2.RIGHT, &"heavy")
 		check(unit._stunned_remaining == 0 and not unit.has_status("frozen") and not unit.has_status("slowed") and not unit.has_status("blinded") and unit._knockback_timer == 0 and unit._wet_slow_multiplier == 1, label + "all controls are blocked even with extreme control power")
 		check(unit.velocity == Vector2(23, 7) and unit.current_hp < old_hp, label + "immune boss still takes damage without physical recoil")
-		var response: Node = unit.get_meta(unit.FEEDBACK_R02.META)
-		var pose := unit.sprite.position
-		response.age = 0.05
-		response.paint()
-		check(unit.sprite.position == pose and unit.sprite.rotation == 0, label + "hit flash has no false stagger during armor")
+		check(unit.sprite.transform == pose and unit.sprite.modulate == tint and unit.sprite.offset.length() > 0 and not unit._hit_visual.flash_white, label + "armored small boss shakes without white or pose changes")
 		unit.apply_burning(3, 5, "burn")
 		old_hp = unit.current_hp
 		unit._process_burning(0.5)

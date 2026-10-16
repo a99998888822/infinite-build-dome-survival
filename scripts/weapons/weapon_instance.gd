@@ -185,6 +185,7 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 			copy._attached_item_instances.append(item.duplicate(true))
 	copy._rebuild_attachment_effects()
 	copy.begin_attack()
+	copy.attack_context["hit_feedback_id"] = DamageEvent.feedback_attack_id(attack_context)
 	return copy
 
 

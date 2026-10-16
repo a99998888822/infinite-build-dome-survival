@@ -72,8 +72,7 @@ func deal_hit(enemy: EnemyController, source: DamageEvent, direction: Vector2, c
 	event.hit_position = enemy.global_position
 	if trigger_effects:
 		EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, event.hit_position, direction, enemy)
-	var feedback_kind: StringName = &"heavy" if weapon.is_earth_hammer() else &"sustain" if weapon.is_copper_lamp() else &""
-	enemy.take_damage_with_feedback(event.damage, event.source_weapon_id, event.is_critical, direction, feedback_kind)
+	enemy.take_attack_damage(event.damage, event, event.is_critical, direction)
 	weapon.play_attack_hit_sfx()
 	target_hit.emit(enemy.get_instance_id(), event.damage, child)
 

@@ -30,6 +30,8 @@
     650
   ],
   "body_scale_vs_v01": 0.8,
+  "runtime_base_body_scale": 2.0,
+  "runtime_body_scale_confirmed_on": "2026-10-16",
   "method": "Project Picxel local conversion, shared approved 16-color palette, hard transparency; no image generation.",
   "registration": "Each 128px grid carries inverse crop/pad/scale metadata in original 720px coordinates. Mirror X offset with facing; subtract gameplay air height from Y. SpriteFrames alone is insufficient.",
   "animation_sequences": {

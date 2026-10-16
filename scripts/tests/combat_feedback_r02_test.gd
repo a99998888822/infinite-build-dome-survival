@@ -1,5 +1,7 @@
 extends "res://scripts/tests/pixel_combat_effect_test.gd"
-const RESPONSE = preload("res://scripts/effects/combat_feedback_r02.gd")
+## General feedback replaces legacy categories; retain damage/control invariants.
+const SETTINGS = preload("res://scripts/effects/combat_feedback_settings.gd")
+const IMPACT = preload("res://scripts/effects/combat_impact_r02.gd")
 const PULSE = preload("res://scripts/ui/weapon_pulse_r02.gd")
 
 class MitigatedEnemy extends EnemyController:
@@ -9,67 +11,64 @@ class MitigatedEnemy extends EnemyController:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	GameGlobal.clear_runtime_flag(RESPONSE.SETTINGS.FLAG)
-	check(RESPONSE.enabled(), "approved feedback is enabled without a review override")
-	await setup([Vector2.ZERO, Vector2(100, 0)])
+	await setup([Vector2.ZERO])
 	Engine.time_scale = 0
-	var baseline := enemies[0]
-	var candidate := enemies[1]
-	var baseline_origin := baseline.sprite.position
-	var candidate_origin := candidate.sprite.position
+	var candidate := enemies[0]
+	var pose := candidate.sprite.transform
+	var tint := candidate.sprite.modulate
+	var at := candidate.global_position
 	var receipts: Array = []
 	candidate.damage_received.connect(func(id: String, amount: int): receipts.append([id, amount]))
-	GameGlobal.set_runtime_flag(RESPONSE.SETTINGS.FLAG, false)
+	for enabled in [false, true]:
+		GameGlobal.set_runtime_flag(SETTINGS.FLAG, enabled)
+		for kind: StringName in [&"", &"light", &"heavy", &"ritual", &"sustain"]:
+			var hp := candidate.current_hp
+			var count := receipts.size()
+			for i in 10:
+				if kind == &"": candidate.take_damage(5, "native", i == 0, Vector2.RIGHT)
+				else: candidate.take_damage_with_feedback(5, "native", i == 0, Vector2.RIGHT, kind)
+			check(candidate.current_hp == hp - 50 and receipts.size() == count + 10, "%s: all damage and receipts survive flag=%s" % [kind, enabled])
+			check(candidate.sprite.transform == pose and candidate.sprite.modulate == tint and candidate.sprite.offset.length() > 0 and candidate.sprite.material == candidate._hit_visual.white_material, "%s: general white/shake preserves animation pose and tint" % kind)
+			check(candidate.global_position == at and candidate.velocity == Vector2.ZERO and candidate._knockback_timer == 0, "%s: no automatic damage knockback" % kind)
+			check(not candidate.has_meta(&"combat_feedback_r02") and get_tree().get_nodes_in_group("combat_impacts_r02").is_empty(), "%s: no response node or contact decoration" % kind)
+	check(EnemyController.active_damage_numbers > 0, "normal and critical damage numbers remain")
+	candidate._hit_visual._process(1.0)
+	check(candidate._hit_visual.elapsed == 0, "a long pre-contact frame cannot consume the first white pose")
+	Engine.time_scale = 1
+	await get_tree().create_timer(1.1).timeout
+	check(candidate.sprite.transform == pose and candidate.sprite.modulate == tint and candidate.sprite.offset == Vector2.ZERO and candidate.sprite.material == null, "general response restores offset and material")
+	Engine.time_scale = 0
 	seed(1204)
-	for i in 10: baseline.take_damage_with_feedback(5, "lamp", false, Vector2.RIGHT, &"sustain")
-	var next_random := randf()
-	check(not baseline.has_meta(RESPONSE.META), "review disabled leaves normal feedback in place")
-	GameGlobal.clear_runtime_flag(RESPONSE.SETTINGS.FLAG)
-	check(RESPONSE.enabled(), "clearing a comparison override restores production feedback")
+	randf_range(-14.0, 14.0)
+	randf_range(-4.0, 4.0)
+	randf_range(-0.08, 0.08)
+	var expected_random := randf()
 	seed(1204)
-	for i in 10:
-		candidate.take_damage_with_feedback(5, "lamp", false, Vector2.RIGHT, &"sustain")
-		candidate.get_meta(RESPONSE.META)._physics_process(0.06)
-	var response = candidate.get_meta(RESPONSE.META)
-	response.set_physics_process(false)
-	check(is_equal_approx(next_random, randf()), "feedback does not alter the global combat RNG stream")
-	check(candidate.current_hp == baseline.current_hp and receipts.size() == 10, "all ten sustained ticks still deal and report damage")
-	check(candidate._knockback_velocity == baseline._knockback_velocity and candidate._knockback_timer == baseline._knockback_timer, "sustained feedback throttle preserves physical knockback")
-	check(response.response_count == 2 and response.suppressed_count == 8, "continuous contact accents at 280 ms intervals")
-	check(candidate.position == Vector2(100, 0) and baseline.sprite.position == baseline_origin, "response never translates the collision body")
-	response._physics_process(0.5)
-	candidate.take_damage_with_feedback(5, "lamp", false, Vector2.RIGHT, &"sustain")
-	check(response.response_count == 3, "contact after a gap immediately restores the first-hit accent")
-	response._physics_process(0.1)
-	candidate.take_damage_with_feedback(9, "hammer", false, Vector2.RIGHT, &"heavy")
-	check(response.active_kind == &"heavy" and response.duration > 0.2, "heavy hit has a longer response")
-	var count: int = response.response_count
-	candidate.take_damage_with_feedback(5, "lamp", false, Vector2.RIGHT, &"sustain")
-	candidate.take_damage_with_feedback(7, "knife", false, Vector2.RIGHT, &"light")
-	check(response.response_count == count and response.active_kind == &"heavy", "smaller overlapping hits preserve the heavy visual accent")
-	var at: float = response.age
-	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
-	response._physics_process(0.4)
-	check(response.age == at, "battle pause freezes the response")
-	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	response._physics_process(0.5)
-	check(candidate.sprite.position == candidate_origin and candidate.sprite.rotation == 0 and candidate.sprite.modulate == candidate._base_sprite_modulate, "response restores the exact sprite pose and color")
-	candidate.take_damage_with_feedback(7, "knife", false, Vector2.RIGHT, &"light")
-	check(response.duration == 0.12, "light hit returns promptly")
-	candidate.take_damage(3, "reaction")
-	check(response.age >= response.duration and candidate.sprite.position == candidate_origin, "independent reaction damage retains its original feedback")
+	candidate.take_damage(3, "rng")
+	check(is_equal_approx(randf(), expected_random), "removal preserves later damage and drop random rolls")
 	var nested := [false]
 	candidate.damage_received.connect(func(id: String, _amount: int):
 		if id == "outer":
 			candidate.take_damage(2, "nested")
-			nested[0] = candidate._next_feedback_kind == &"")
-	candidate.take_damage_with_feedback(4, "outer", false, Vector2.RIGHT, &"light")
-	check(nested[0], "reentrant reaction does not inherit the native feedback category")
+			nested[0] = true)
+	var hp := candidate.current_hp
+	candidate.take_damage_with_feedback(4, "outer", false, Vector2.RIGHT, &"heavy")
+	check(nested[0] and candidate.current_hp == hp - 6 and candidate.sprite.transform == pose, "reentrant damage retains accounting and the current pose")
+	candidate.apply_burning(3, 5, "burn")
+	hp = candidate.current_hp
+	candidate._process_burning(0.5)
+	check(candidate.current_hp < hp and candidate.sprite.transform == pose and candidate.sprite.modulate == tint and candidate._hit_visual.elapsed == 0, "burn damage uses the same general response")
+	candidate.clear_burning()
+	candidate.apply_knockback(Vector2.LEFT, 450, 0.3, 0)
+	var control_velocity := candidate.velocity
+	var control_timer := candidate._knockback_timer
+	candidate.take_damage_with_feedback(5, "native", false, Vector2.RIGHT, &"heavy")
+	check(control_velocity.x < 0 and control_timer > 0 and candidate.velocity == control_velocity and candidate._knockback_timer == control_timer, "explicit skill knockback survives an overlapping native hit")
 	var special := MitigatedEnemy.new()
 	special.auto_initialize_on_ready = false
 	host.add_child(special)
 	special.current_hp = 100
-	check(special.take_damage_with_feedback(20, "probe", false, Vector2.ZERO, &"heavy") == 10, "wrapper respects enemy subclass damage overrides")
+	check(special.take_damage_with_feedback(20, "probe", false, Vector2.ZERO, &"heavy") == 10, "compatibility wrapper retains subclass mitigation")
 	var card := Panel.new()
 	host.add_child(card)
 	card.size = Vector2(64, 64)
@@ -80,32 +79,26 @@ func _run() -> void:
 	card.add_child(pulse)
 	pulse.configure(icon, weapon)
 	weapon.feedback_mark.emit(0)
-	check(icon.scale.x < 1 and pulse.pulses == 1, "real source signal compresses the weapon icon")
+	check(icon.scale.x < 1 and pulse.pulses == 1, "independent ritual source icon still compresses")
 	pulse._physics_process(0.06)
-	check(icon.scale.x > 1, "weapon icon rebounds after the mark")
+	check(icon.scale.x > 1, "ritual source icon still rebounds")
 	pulse._physics_process(0.20)
-	check(icon.scale == Vector2.ONE and icon.modulate == Color.WHITE, "weapon icon restores cleanly")
-	GameGlobal.set_runtime_flag(RESPONSE.SETTINGS.FLAG, false)
-	weapon.feedback_mark.emit(1)
-	check(pulse.pulses == 1, "disabled review produces no icon pulse")
-	GameGlobal.clear_runtime_flag(RESPONSE.SETTINGS.FLAG)
+	check(icon.scale == Vector2.ONE and icon.modulate == Color.WHITE, "ritual source icon restores cleanly")
 	candidate.current_hp = 1
 	candidate.take_damage_with_feedback(10, "lethal", false, Vector2.RIGHT, &"heavy")
-	check(not candidate.alive and response.age >= response.duration, "lethal damage hands the sprite over to the death fade")
+	check(not candidate.alive and candidate.sprite.transform == pose and candidate.sprite.modulate == tint and candidate._hit_visual.elapsed == 0, "lethal hit retains feedback and the normal death fade")
+	IMPACT.spawn(host, Vector2.ZERO, &"ground", Vector2.RIGHT)
 	var decorations := get_tree().get_nodes_in_group("combat_impacts_r02")
-	var loadout := WeaponLoadout.new()
-	host.add_child(loadout)
-	loadout._clear_weapon_runtime(weapon)
-	check(not decorations.is_empty() and decorations.all(func(node: Node): return not node.is_in_group("weapon_runtime_effects")), "contact decoration does not enter weapon ownership cleanup")
+	check(decorations.size() == 1, "independent hammer ground debris remains")
 	var manager := WaveManager.new()
 	host.add_child(manager)
 	manager.clear_battle_entities()
-	check(decorations.all(func(node: Node2D): return node.is_queued_for_deletion() and not node.visible), "wave transition clears all contact decoration immediately")
-	GameGlobal.clear_runtime_flag(RESPONSE.SETTINGS.FLAG)
+	check(decorations.all(func(node: Node2D): return node.is_queued_for_deletion() and not node.visible), "wave cleanup still removes ground debris")
+	GameGlobal.clear_runtime_flag(SETTINGS.FLAG)
 	Engine.time_scale = 1
 	host.queue_free()
 	await frames()
 	AudioManager.stop_combat_sfx()
 	CampProgression.end_transient_session()
-	print("COMBAT_FEEDBACK_R02 checks=", checks, " failures=", failures)
+	print("COMBAT_GENERAL_FEEDBACK_COMPATIBILITY checks=", checks, " failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)

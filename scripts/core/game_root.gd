@@ -2,6 +2,7 @@ extends Node
 class_name GameRoot
 
 const MAIN_FLOW_COORDINATOR_SCENE: PackedScene = preload("res://scenes/core/main_flow_coordinator.tscn")
+const WORLD_RENDER_SIZE := Vector2i(1920, 1080)
 
 var core_root: Node = null
 var world_root: Node2D = null
@@ -98,6 +99,10 @@ func get_world_viewport_root() -> Node2D:
 	return _world_viewport_root if _world_viewport_root != null else world_root
 
 
+func get_world_presentation_surface() -> CanvasItem:
+	return _world_viewport_container
+
+
 func get_debug_root() -> Node:
 	return debug_root
 
@@ -126,7 +131,9 @@ func _setup_world_viewport() -> void:
 	add_child(_world_viewport_layer)
 	_world_viewport_container = SubViewportContainer.new()
 	_world_viewport_container.name = "WorldViewportContainer"
-	_world_viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# Keep the HUD's design canvas independent from the world's pixel budget.
+	# The container occupies 1920x1080 internally and fits the logical UI canvas.
+	_world_viewport_container.size = Vector2(WORLD_RENDER_SIZE)
 	_world_viewport_container.stretch = true
 	_world_viewport_container.stretch_shrink = 1
 	_world_viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -134,8 +141,7 @@ func _setup_world_viewport() -> void:
 	_world_viewport_layer.add_child(_world_viewport_container)
 	_world_viewport = SubViewport.new()
 	_world_viewport.name = "WorldViewport"
-	# Render at the container's full size; sample pixel sprites before compositing.
-	_world_viewport.size = Vector2i(get_viewport().get_visible_rect().size)
+	_world_viewport.size = WORLD_RENDER_SIZE
 	_world_viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
 	_world_viewport.snap_2d_transforms_to_pixel = true
 	_world_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -145,6 +151,15 @@ func _setup_world_viewport() -> void:
 	_world_viewport_root = Node2D.new()
 	_world_viewport_root.name = "WorldViewportRoot"
 	_world_viewport.add_child(_world_viewport_root)
+	_fit_world_viewport()
+	get_viewport().size_changed.connect(_fit_world_viewport)
+
+
+func _fit_world_viewport() -> void:
+	if not is_instance_valid(_world_viewport_container):
+		return
+	var canvas_size := get_viewport().get_visible_rect().size
+	_world_viewport_container.scale = canvas_size / Vector2(WORLD_RENDER_SIZE)
 
 
 

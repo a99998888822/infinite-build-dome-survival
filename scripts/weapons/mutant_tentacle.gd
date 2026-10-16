@@ -2,6 +2,7 @@ extends DirectedWeaponRuntime
 class_name MutantTentacle
 
 const BODY := preload("res://assets/sprites/weapons/mutant_tentacle/mutant_tentacle.png")
+const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
 const FRAME_ENDS := [0.30, 0.46, 0.60, 0.64, 0.68, 0.72, 0.76, 0.80, 0.84, 0.87, 0.90, 0.93, 0.96, 1.04, 1.12, 1.24, 1.32, 1.40, 1.50]
 var attacking := false
 var hit_done := false
@@ -103,15 +104,13 @@ func _draw() -> void:
 	var dimensions := Vector2(weapon.get_attack_range() / 140.0, weapon.get_hit_radius() / 20.0)
 	if attacking:
 		for direction in directions:
+			draw_set_transform(Vector2.ZERO, direction.angle(), dimensions)
+			BLOCK_VFX.draw(self, "tentacle", (age - hit_time + 0.06) / 0.15, Rect2(0, -96, 160, 128))
+			draw_set_transform(Vector2.ZERO)
 			draw_atlas(BODY, 128, pose_index(), Vector2(14, 103), direction * 20 + Vector2(0, 5), direction.angle(), dimensions)
 	for branch in branches:
 		var direction: Vector2 = branch.direction
+		draw_set_transform(Vector2.ZERO, direction.angle(), dimensions * 0.65)
+		BLOCK_VFX.draw(self, "tentacle", (float(branch.age) + 0.06) / 0.15, Rect2(0, -96, 160, 128))
+		draw_set_transform(Vector2.ZERO)
 		draw_atlas(BODY, 128, 13, Vector2(14, 103), direction * 20 + Vector2(0, 5), direction.angle(), dimensions * 0.65, 1 - float(branch.age) / 0.18)
-	if attacking:
-		var since_hit := age - hit_time
-		if since_hit >= 0 and since_hit < 0.16:
-			for direction in directions:
-				draw_set_transform(Vector2.ZERO, direction.angle(), dimensions)
-				for i in 6:
-					draw_rect(Rect2(40 + i * 15, 8 - (i % 3) * 3 - since_hit * 30, 2, 2), Color("939b83"))
-			draw_set_transform(Vector2.ZERO)

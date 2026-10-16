@@ -1,6 +1,15 @@
 extends RefCounted
 class_name DamageEvent
 
+static var _next_feedback_attack_id := 1
+
+
+static func feedback_attack_id(context: Dictionary) -> int:
+	if not context.has("hit_feedback_id"):
+		context["hit_feedback_id"] = _next_feedback_attack_id
+		_next_feedback_attack_id += 1
+	return int(context.hit_feedback_id)
+
 var source_player: PlayerController = null
 var source_weapon_id: String = ""
 var damage: int = 0

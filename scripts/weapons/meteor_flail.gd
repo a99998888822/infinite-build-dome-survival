@@ -6,7 +6,7 @@ signal target_hit(target_id: int, damage: int, child: bool)
 const HEAD = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_head.png")
 const LINK = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_chain_link.png")
 const GRIP = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_grip.png")
-const TRAIL = preload("res://assets/sprites/weapons/meteor_flail/meteor_flail_trail.png")
+const TRAIL = preload("res://assets/sprites/weapons/effects/block_vfx/flail.png")
 const TRAIL_FRAME_SIZE := Vector2(320, 320)
 const TRAIL_FPS := 30.0
 const TRAIL_AUTHORED_REACH := 144.0
@@ -175,7 +175,7 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 			_add_swing(maxf(sequence_duration(), at_time), 0.03, 0.32, float(children[index].damage_multiplier), true, swings.size(), int(children[index].enchantment_start))
 	# Every contacted victim gets attachments, including a lethal native hit.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, heading, enemy)
-	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, heading)
+	enemy.take_attack_damage(event.damage, event, event.is_critical, heading)
 	weapon.play_attack_hit_sfx()
 	for index in 7:
 		var direction := heading.rotated(index * TAU / 7.0)
@@ -233,7 +233,6 @@ func _draw() -> void:
 			draw_set_transform_matrix(trail_transform_for_swing(swing, age, trail_frame))
 			draw_texture_rect_region(TRAIL, Rect2(-TRAIL_FRAME_SIZE * 0.5, TRAIL_FRAME_SIZE), Rect2(Vector2(trail_frame * TRAIL_FRAME_SIZE.x, 0), TRAIL_FRAME_SIZE), trail_tint)
 			draw_set_transform(Vector2.ZERO)
-		var radial := head.normalized()
 		var grip := AttackFootprint.project(AttackFootprint.ground_direction(heading) * 14.0)
 		var length := grip.distance_to(head)
 		var chain_angle := (head - grip).angle()
@@ -244,9 +243,6 @@ func _draw() -> void:
 		draw_set_transform(grip.round(), heading.angle() + PI / 2)
 		draw_texture_rect(GRIP, Rect2(-3, -8, 6, 16), false, Color(1, 1, 1, fade))
 		draw_set_transform(Vector2.ZERO)
-		for entry in swing.trail:
-			var opacity := (1.0 - (age - float(entry.time)) / 0.10) * 0.50 * fade
-			draw_rect(Rect2((Vector2(entry.point) - radial * 9).round(), Vector2(3, 3)), Color(tint, opacity))
 		var radius := head_radius(swing)
 		draw_set_transform(head.round(), chain_angle + age * float(swing.sign) * 5.0)
 		draw_texture_rect(HEAD, Rect2(Vector2.ONE * -radius, Vector2.ONE * radius * 2), false, Color(1, 1, 1, fade))

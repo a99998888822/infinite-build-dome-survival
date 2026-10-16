@@ -58,8 +58,9 @@ func _test_direct_controls() -> void:
 			check(is_equal_approx(enemy._knockback_timer, 0.3 * factor), "explicit pushback duration scales")
 			check(is_equal_approx(enemy._knockback_velocity.x, 112.5 if resistant else 450.0), "pushback initial speed stays unchanged")
 			enemy._knockback_timer = 0
-			enemy._apply_weapon_knockback(Vector2.RIGHT)
-			check(is_equal_approx(enemy._knockback_timer, EnemyController.HIT_KNOCKBACK_SECONDS * factor), "native hit pushback also scales")
+			enemy.current_hp = 100
+			enemy.take_damage(1, "native_hit", false, Vector2.RIGHT)
+			check(enemy._knockback_timer == 0, "native damage adds no pushback at any control power")
 			enemy._apply_contact_knockback()
 			check(is_equal_approx(enemy._knockback_timer, enemy.knockback_seconds * factor), "contact repulsion duration scales")
 			enemy._slowed_remaining = 0

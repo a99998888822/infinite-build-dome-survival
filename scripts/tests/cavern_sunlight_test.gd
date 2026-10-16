@@ -102,7 +102,40 @@ func verify_receivers() -> void:
 	for material: ShaderMaterial in [ground.ground_material, ground.grass_material, ground.hero_material]:
 		check(material.shader.resource_path.begins_with(CavernSunlightBackdrop.SHADERS), "receiver shader uses a production path")
 		check(material.get_shader_parameter("cloud_texture") == CavernSunlightBackdrop.CLOUD_TEXTURE, "receiver uses the imported cloud texture")
-	check(ground.cells.size() <= 30, "streaming stays bounded")
+	var visible_world: Rect2 = ground.get_viewport().get_canvas_transform().affine_inverse()*ground.get_viewport_rect()
+	var streamed := visible_world.grow(ground._stream_margin())
+	var cell_limit := (ceili(streamed.size.x/CavernBattleBackdrop.CELL.x)+1)*(ceili(streamed.size.y/CavernBattleBackdrop.CELL.y)+1)
+	check(ground.cells.size() <= cell_limit, "streaming stays bounded by the visible world and margin")
+	var bounded_batches := true
+	var complete_grass := true
+	var ordered_chunks := true
+	var complete_bounds := true
+	var gpu := DisplayServer.get_name() != "headless"
+	for group: Dictionary in ground.grass_cells.values():
+		var visible_blades := 0
+		var next_offset := 0
+		for band: Dictionary in group.bands:
+			var offset := int(band.get("offset",0))
+			if offset == 0: next_offset = 0
+			ordered_chunks = ordered_chunks and offset == next_offset
+			for batch: MultiMeshInstance2D in [band.back,band.front]:
+				var count := batch.multimesh.instance_count
+				bounded_batches = bounded_batches and count > 0 and count <= CavernPopulationBackdrop.MAX_GRASS_BATCH_INSTANCES
+				visible_blades += batch.multimesh.visible_instance_count
+				complete_bounds = complete_bounds and batch.multimesh.custom_aabb.has_volume()
+				# The dummy renderer returns identity instance transforms. Verify
+				# actual GPU transforms, including maximum sway of hidden blades.
+				if gpu:
+					for i in count:
+						var transform := batch.multimesh.get_instance_transform_2d(i)
+						for corner in [Vector2(-17.25,-16),Vector2(17.25,-16),Vector2(-17.25,16),Vector2(17.25,16)]:
+							var point: Vector2 = transform*corner
+							complete_bounds = complete_bounds and batch.multimesh.custom_aabb.has_point(Vector3(point.x,point.y,0))
+			next_offset += band.back.multimesh.instance_count
+		complete_grass = complete_grass and visible_blades == group.blades.size()
+	check(bounded_batches, "grass draw counts stay within the tested ANGLE batch bound")
+	check(complete_grass and ordered_chunks, "chunked depth bands draw every grass blade exactly once in order")
+	check(complete_bounds, "fixed grass bounds cover every instance including wind sway and hidden prefixes" if gpu else "fixed grass bounds are set (instance transforms require GPU verification)")
 
 func solid_signature(backdrop: CavernPopulationBackdrop) -> Array:
 	var result: Array = []
@@ -167,8 +200,10 @@ func verify_horizon() -> void:
 	await move_to(Vector2(100,0))
 	var moved := horizon.snapshot()
 	var parallax := false
+	var world_to_ui_scale := horizon.view_size.x/player.get_viewport_rect().size.x
 	for key: String in start:
-		if moved.has(key): parallax = is_equal_approx(float(moved[key].root[0])-float(start[key].root[0]),-8.0)
+		# The world moves by 100 units; landmarks are rounded on the UI canvas.
+		if moved.has(key): parallax = absf(float(moved[key].root[0])-float(start[key].root[0])+8.0*world_to_ui_scale)<=1.0
 	check(parallax, "ruins share eight-percent cave parallax and stay attached to their openings")
 	var wrap_stable := true
 	for boundary in [-1725.0,21510.0]:
@@ -178,7 +213,7 @@ func verify_horizon() -> void:
 		var after := horizon.snapshot()
 		for key: String in before:
 			if after.has(key):
-				wrap_stable = wrap_stable and before[key].index==after[key].index and absf(float(after[key].root[0])-float(before[key].root[0])+.64)<=1.0
+				wrap_stable = wrap_stable and before[key].index==after[key].index and absf(float(after[key].root[0])-float(before[key].root[0])+.64*world_to_ui_scale)<=1.0
 	check(wrap_stable,"panorama wrapping preserves each ruin identity and wall placement")
 	await move_to(Vector2(100,300))
 	check(horizon.snapshot()==moved, "vertical movement leaves screen-space ruins stable")
@@ -356,7 +391,7 @@ func _run() -> void:
 	for row: Dictionary in ground.config.props: obstacle_ids.append(row.catalog_id)
 	check(obstacle_ids.has("A01") and obstacle_ids.has("A05") and ground.prop_textures.size()==2,
 		"A01 rock and A05 log remain loaded as production combat obstacles")
-	check(player.get_viewport_rect().size == Vector2(1152, 648) and player.camera_2d.zoom == Vector2.ONE, "normal 1x world resolution and camera")
+	check(player.get_viewport_rect().size == Vector2(1920, 1080) and player.camera_2d.zoom == Vector2.ONE, "1080p world resolution with a native 1x camera")
 	check(not (ground.horizon as CavernPitHorizon).pit_light.visible, "old additive light is replaced rather than doubled")
 	check(CavernSunlightBackdrop.CLOUD_TEXTURE.resource_path == "res://assets/sprites/background/meadow/sunlight/cloud_noise.png" and CavernSunlightBackdrop.ROCK_FACE_MASK.resource_path == "res://assets/sprites/background/meadow/sunlight/rock_face_mask.png", "cloud and rock mask load through exportable resource paths")
 	if DisplayServer.get_name() != "headless":

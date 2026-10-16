@@ -148,7 +148,7 @@ func _hit_enemy(enemy: EnemyController) -> void:
 	if split_generation == 0 and not has_split:
 		has_split = true
 		_spawn_children(where)
-	enemy.take_damage(event.damage, event.source_weapon_id, event.is_critical, direction)
+	enemy.take_attack_damage(event.damage, event, event.is_critical, direction)
 	_spawn_hit_visual(where)
 	weapon.play_projectile_hit_sfx(str(get_instance_id()))
 	target_hit.emit(target_id, event.damage, split_generation > 0)
