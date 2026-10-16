@@ -1,0 +1,384 @@
+artifacts/sources/player_actions/novice_128/manifest.json
+  s_6defd4a5e5de6f::t_d63d471dd85fad 295,304,340,358,367,376
+scripts/battle/battle_root.gd
+  s_27696a98a95b7d::t_a66b563dcaba2b 38-40
+  s_27696a98a95b7d::t_095da20c37ec47 25-26,28-29,47,132-133
+  s_27696a98a95b7d::t_021bdf058eb2be 27,30
+scripts/weapons/bounce_attack.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 84
+scripts/weapons/coin_projectile.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 151
+assets/sprites/weapons/effects/block_vfx/muzzle.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scripts/weapons/ritual_coin_hit.gd
+  s_27696a98a95b7d::t_2eadc0de5947c1 3,43-47
+scripts/effects/cannon_jet_flame.gd
+  s_27696a98a95b7d::t_18f5acb43bd4ec 1-27,31-33,35,37-40,43-47
+assets/sprites/weapons/effects/block_vfx/manifest.json
+  s_27696a98a95b7d::t_d48ef0a028b61c 11
+  s_27696a98a95b7d::t_9dc98232e58b84 68-75
+  s_27696a98a95b7d::t_a244a49ef16488 1-10,12-67,76-78
+scripts/effects/weapon_block_vfx.gd
+  s_27696a98a95b7d::t_24d0c38f2e90dd 1-18
+docs/asset/novice_actions_128_review_20261014.md
+  s_8ff5b622625e17::t_45277b13d37b34 3-4
+docs/asset/asset_checklist_summary.md
+  s_27696a98a95b7d::t_753f6fd6b13735 3-4,23-30
+  s_8ff5b622625e17::t_26cd8e6f12d01e 5-6
+assets/sprites/weapons/effects/block_vfx/hammer_crack.png.import
+  s_27696a98a95b7d::t_9dc98232e58b84 1-40
+assets/sprites/weapons/effects/block_vfx/grenade.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+assets/sprites/weapons/effects/block_vfx/hammer.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scripts/tests/combat_general_feedback_capture.gd
+  s_27696a98a95b7d::t_7054734d5b7e34 1-26,28-79,81-82,85-88,91-116
+  s_27696a98a95b7d::t_ae0257ddba15c9 83-84
+  s_27696a98a95b7d::t_756e8524431dc8 80,89-90
+  s_27696a98a95b7d::t_2fc0176a2eb974 27
+scripts/enemies/elite_rusher.gd
+  s_8ff5b622625e17::t_a401348d15a0f3 5
+scripts/effects/light_reflection_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 120,159
+scripts/tests/combat_feedback_r02_test.gd
+  s_27696a98a95b7d::t_d97f9c182209c3 35-36
+  s_27696a98a95b7d::t_3ee6190b81e077 2,31,39,60,89,103
+  s_27696a98a95b7d::t_9d391915eddca6 3-4,14,16-19,22-30,32-34,37-38,40,42-45,47-48,53-59,61-66,71,82,84,86,90,92,96-97
+assets/sprites/weapons/effects/block_vfx/flail.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scenes/tests/native_resolution_review.tscn
+  s_8ff5b622625e17::t_c42d5c4bbe126c 1-6
+docs/main/weapon_block_visuals_2026-10-16.md
+  s_27696a98a95b7d::t_b4be9078f0c40e 1-2,25-49
+  s_27696a98a95b7d::t_753f6fd6b13735 3-4
+  s_27696a98a95b7d::t_2632c9597c9d51 7-24
+  s_27696a98a95b7d::t_34f74211bc27c9 5-6
+docs/main/combat_effects_inventory_2026-10-16.md
+  s_27696a98a95b7d::t_756e8524431dc8 7
+  s_27696a98a95b7d::t_8099e2d0f575eb 16
+  s_27696a98a95b7d::t_9807587628c0aa 10,19-48,50-186
+  s_27696a98a95b7d::t_b7e68378c9b689 1-2,8-9
+  s_27696a98a95b7d::t_b4be9078f0c40e 5-6
+  s_27696a98a95b7d::t_2632c9597c9d51 3-4
+  s_27696a98a95b7d::t_9474df170fd31e 11-14,17-18,49
+  s_27696a98a95b7d::t_1a8f1e465f40c3 15
+scripts/effects/black_hole_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 110
+scripts/effects/combat_effect_world.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 154
+scripts/weapons/earth_hammer.gd
+  s_27696a98a95b7d::t_188e0613df0c63 7-8,39,133,202-209,212,222,226-227,231-232,234-235
+  s_27696a98a95b7d::t_2eadc0de5947c1 6,211
+  s_27696a98a95b7d::t_5f3e37950786ad 210
+scripts/tests/first_wave_crash_test.gd
+  s_6defd4a5e5de6f::t_a133f0c88c363f 21,90,164-166
+  s_6defd4a5e5de6f::t_af4b9cbf4bf01f 61-68
+  s_6defd4a5e5de6f::t_eb5225baeb569b 172-173,180-181
+  s_6defd4a5e5de6f::t_eed4d12a723d21 12,34,58-60,84,113-114
+  s_6defd4a5e5de6f::t_eacef9a1151d9c 1-7,9-11,13-20,22-33,35-57,69-83,85-89,91-112,115-163,167-171,174-179,182-224
+  s_6defd4a5e5de6f::t_760e1dc133dcbe 8
+data_config/characters.json
+  s_8ff5b622625e17::t_c2f239017bf39f 19-22
+scenes/tests/combat_general_feedback_capture.tscn
+  s_27696a98a95b7d::t_7054734d5b7e34 1-6
+scripts/tests/weapon_block_visual_review.gd
+  s_27696a98a95b7d::t_e5493d93863ec4 1-54,60-66,68,70-83
+  s_27696a98a95b7d::t_53bffe947d4d04 55-57,67
+  s_27696a98a95b7d::t_8506c5964ee790 58-59,84-99
+  s_27696a98a95b7d::t_188e0613df0c63 69
+scripts/effects/enemy_hit_visual.gd
+  s_27696a98a95b7d::t_021bdf058eb2be 16,28,43-44
+  s_27696a98a95b7d::t_a6100548997191 57
+  s_27696a98a95b7d::t_095da20c37ec47 1-15,17-27,29-42,45-56,58-76
+scripts/weapons/meteor_flail.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 178
+  s_27696a98a95b7d::t_2eadc0de5947c1 9
+assets/sprites/weapons/effects/block_vfx/tome.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scenes/enemy/echo_bat.tscn
+  s_8ff5b622625e17::t_c2f239017bf39f 7,16,20
+scripts/tests/player_action_animator_test.gd
+  s_8ff5b622625e17::t_c2f239017bf39f 28
+  s_8ff5b622625e17::t_1555f5926c8667 117
+scripts/tests/pixel_weapon_atlas_test.gd
+  s_27696a98a95b7d::t_2eadc0de5947c1 45-47
+scripts/effects/combat_hit_feedback.gd.uid
+  s_27696a98a95b7d::t_54a8dfb4949702 1
+scripts/weapons/weapon_instance.gd
+  s_27696a98a95b7d::t_9acdf876fcfd7a 188
+project.godot
+  s_27696a98a95b7d::t_095da20c37ec47 29
+scripts/effects/lightning_particle_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 167,169,258
+  s_27696a98a95b7d::t_71edc102233759 244,246
+docs/asset/iron_knight_integration.md
+  s_8ff5b622625e17::t_45277b13d37b34 9
+scripts/tests/cavern_sunlight_test.gd
+  s_8ff5b622625e17::t_333a29b1264148 203,205-206,216
+  s_6defd4a5e5de6f::t_eb5225baeb569b 113,125-133,138
+  s_6defd4a5e5de6f::t_a133f0c88c363f 109-111,114-124,134-135,137
+  s_6defd4a5e5de6f::t_696f79a6f54eaf 112,136
+  s_6defd4a5e5de6f::t_267b70c2e4cddd 106-108
+  s_b70015d222876d::t_827ba60b9b123e 105,394
+scenes/enemy/mutated_grub.tscn
+  s_8ff5b622625e17::t_c2f239017bf39f 7-9,20-21,25
+scripts/tools/build_echo_bat_art.py
+  s_8ff5b622625e17::t_26cd8e6f12d01e 121
+  s_8ff5b622625e17::t_cb5ba47564a8fe 9,122-130,135-136,139-152,154,160,167-168
+scripts/waves/wave_manager.gd
+  s_27696a98a95b7d::t_a66b563dcaba2b 456
+scripts/tests/weapon_hit_feedback_review.gd
+  s_27696a98a95b7d::t_db1cd505ebc736 1-176
+scenes/player/player_root.tscn
+  s_8ff5b622625e17::t_3f23bcc9379089 13-14,24-25
+scenes/enemy/underworld_wolf.tscn
+  s_8ff5b622625e17::t_3f23bcc9379089 7-8,17,22-23
+scripts/tests/iron_knight_test.gd
+  s_8ff5b622625e17::t_ccbb87caff7917 48,69,78,116-118,126
+scripts/weapons/camp_dagger.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 198
+scripts/effects/ice_field_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 122
+scripts/weapons/nightwatch_spear.gd
+  s_27696a98a95b7d::t_188e0613df0c63 190,192
+  s_27696a98a95b7d::t_2eadc0de5947c1 8,191
+  s_27696a98a95b7d::t_0b6cdb2d756133 119
+shaders/effects/cannon_jet_flame.gdshader
+  s_27696a98a95b7d::t_18f5acb43bd4ec 1-56
+docs/main/combat_general_feedback_2026-10-16.md
+  s_27696a98a95b7d::t_c81dd6383c61cd 37,39,41
+  s_27696a98a95b7d::t_756e8524431dc8 3,10-14,16,18,20-21,34-36,38,40,43
+  s_27696a98a95b7d::t_b7e68378c9b689 1-2,4-9,15,17,19,22-33,42,44,47
+  s_27696a98a95b7d::t_ff9acd3a175870 45-46
+assets/shaders/combat_screen_shake.gdshader
+  s_27696a98a95b7d::t_021bdf058eb2be 1-16
+docs/asset/underworld_wolf_integration.md
+  s_8ff5b622625e17::t_45277b13d37b34 9
+scripts/weapons/auto_mobility_planner.gd
+  s_8ff5b622625e17::t_3f23bcc9379089 78,98,103-104,113,171-173,188-191
+scenes/enemy/elite_rusher.tscn
+  s_8ff5b622625e17::t_c2f239017bf39f 6-7,16,20
+scenes/tests/combat_general_feedback_test.tscn
+  s_27696a98a95b7d::t_3ee6190b81e077 1-4,6
+  s_27696a98a95b7d::t_c0d395404a07bb 5
+scripts/weapons/mutant_tentacle.gd
+  s_27696a98a95b7d::t_2eadc0de5947c1 5,107-109,113-115
+scripts/weapons/directed_weapon_runtime.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 75
+assets/shaders/enemy_hit_white.gdshader.uid
+  s_27696a98a95b7d::t_54a8dfb4949702 1
+assets/sprites/weapons/effects/block_vfx/tentacle.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+docs/asset/combat_sprite_clarity.md
+  s_8ff5b622625e17::t_45277b13d37b34 3-18,22,26,29,66
+  s_8ff5b622625e17::t_d8f333bc8c6636 59-65
+assets/sprites/enemies/underworld_wolf/manifest.json
+  s_8ff5b622625e17::t_26cd8e6f12d01e 33-34
+scripts/tests/reviews/native_collision_overlay.gd
+  s_8ff5b622625e17::t_ccbb87caff7917 12,59
+  s_8ff5b622625e17::t_1555f5926c8667 36
+  s_8ff5b622625e17::t_c42d5c4bbe126c 1-11,13-35,37-53,58,60-84
+  s_8ff5b622625e17::t_c232c8d596514a 54-57
+assets/sprites/weapons/effects/block_vfx/pellet_hit.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scripts/effects/cannon_jet_flame.gd.uid
+  s_27696a98a95b7d::t_9dc98232e58b84 1
+scripts/effects/combat_impact_r02.gd
+  s_27696a98a95b7d::t_55667a2390012e 2,8,13,22,48-58
+assets/shaders/enemy_hit_white.gdshader
+  s_27696a98a95b7d::t_095da20c37ec47 1-9
+scripts/weapons/grenade_projectile.gd
+  s_27696a98a95b7d::t_2eadc0de5947c1 3,209-210
+  s_27696a98a95b7d::t_0b6cdb2d756133 111
+scripts/tests/native_resolution_review.gd
+  s_8ff5b622625e17::t_c42d5c4bbe126c 1-3,5-72,76-79,93-109,111,116,118-125,128-130,142,145-146,148-149,152-190,192-193,196-197,205-207
+  s_8ff5b622625e17::t_c232c8d596514a 73-75,147,150-151,194-195,198-204
+  s_8ff5b622625e17::t_9eac6f7b646fff 80-92,143
+  s_8ff5b622625e17::t_ccbb87caff7917 4,110,112-115,117,126-127,131-141,144,191
+scenes/tests/weapon_block_visual_review.tscn
+  s_27696a98a95b7d::t_e5493d93863ec4 1-6
+scripts/tests/combat_hitch_benchmark.gd
+  s_27696a98a95b7d::t_2fc0176a2eb974 120
+scripts/tools/ASSET_INSTALLERS.md
+  s_27696a98a95b7d::t_753f6fd6b13735 3-4
+  s_8ff5b622625e17::t_26cd8e6f12d01e 5-6
+scripts/tools/install_underworld_wolf_art.py
+  s_8ff5b622625e17::t_cb5ba47564a8fe 9,31-32,36-45
+scripts/core/game_root.gd
+  s_27696a98a95b7d::t_095da20c37ec47 104-105
+  s_8ff5b622625e17::t_c2f239017bf39f 5,134-136,144,154-162
+  s_27696a98a95b7d::t_021bdf058eb2be 102-103
+scripts/enemies/underworld_wolf.gd
+  s_27696a98a95b7d::t_55667a2390012e 284
+  s_8ff5b622625e17::t_3f23bcc9379089 10-12,212,280-281,283,349-350,354,392-395
+scripts/effects/water_wave_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 134
+scripts/tools/build_weapon_block_vfx.py
+  s_27696a98a95b7d::t_18b8addae6fd7c 1-32,35-49,52-55,65-117,129,131-149,175-178,180,188-221,223-231,234-235
+  s_27696a98a95b7d::t_24d0c38f2e90dd 179
+  s_27696a98a95b7d::t_08554d57e57a00 33-34,50-51,56-64
+  s_27696a98a95b7d::t_188e0613df0c63 150-174,222
+  s_27696a98a95b7d::t_2eadc0de5947c1 181-187
+  s_27696a98a95b7d::t_b4be9078f0c40e 232-233
+  s_27696a98a95b7d::t_eb57028194c6e1 118-128,130
+scripts/effects/enemy_hit_visual.gd.uid
+  s_27696a98a95b7d::t_54a8dfb4949702 1
+scripts/tests/auto_mobility_test.gd
+  s_8ff5b622625e17::t_c4f38417f25a61 104-105,109-110,112,122
+  s_8ff5b622625e17::t_6911efd9da3a8f 218-225
+  s_8ff5b622625e17::t_05999ddf48bf89 111
+scripts/weapons/projectile_instance.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 174,250
+scripts/tests/underworld_wolf_review.gd
+  s_8ff5b622625e17::t_c4f38417f25a61 222-224,282
+  s_8ff5b622625e17::t_ccbb87caff7917 153
+scripts/effects/element_reaction_resolver.gd
+  s_27696a98a95b7d::t_95581c4660df06 166-169,173-175
+  s_27696a98a95b7d::t_b1b2aab0f4d468 170-172
+  s_27696a98a95b7d::t_4397ee833762b3 57,84
+docs/asset/asset_rules_summary.md
+  s_27696a98a95b7d::t_753f6fd6b13735 3-4
+  s_8ff5b622625e17::t_45277b13d37b34 5-6
+scripts/tests/player_stat_implementation_test.gd
+  s_27696a98a95b7d::t_462ed98d167a81 61-63
+shaders/effects/cannon_jet_flame.gdshader.uid
+  s_27696a98a95b7d::t_9dc98232e58b84 1
+scripts/effects/wind_blade_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 99
+scripts/tests/underworld_wolf_hit_feedback_test.gd
+  s_27696a98a95b7d::t_3ee6190b81e077 41,44,49-50
+  s_8ff5b622625e17::t_6911efd9da3a8f 60-67
+  s_27696a98a95b7d::t_d4de7fa5a2d838 4,47,54,68,74-75,79-80,93-96
+scripts/tests/weapon_block_visual_review.gd.uid
+  s_27696a98a95b7d::t_d48ef0a028b61c 1
+scripts/tests/mobility_weapon_integration_test.gd
+  s_8ff5b622625e17::t_9d5eef3ab153e0 115-117,140,154,160,297,299,332
+scripts/player/player_controller.gd
+  s_8ff5b622625e17::t_3f23bcc9379089 599,803-806
+  s_8ff5b622625e17::t_c2f239017bf39f 781,797-802,807-816
+  s_70f3c13fa7df8b::t_5c376bd3f80610 817-818
+assets/sprites/enemies/echo_bat/manifest.json
+  s_8ff5b622625e17::t_26cd8e6f12d01e 15-16,20
+scripts/weapons/damage_event.gd
+  s_27696a98a95b7d::t_9acdf876fcfd7a 4-12
+scripts/effects/explosion_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 183
+scripts/effects/weapon_block_vfx.gd.uid
+  s_27696a98a95b7d::t_d48ef0a028b61c 1
+scripts/effects/light_sword_effect.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 113
+scenes/tests/weapon_hit_feedback_review.tscn
+  s_27696a98a95b7d::t_db1cd505ebc736 1-4
+scripts/weapons/ritual_domain.gd
+  s_27696a98a95b7d::t_0b6cdb2d756133 131
+scripts/effects/combat_feedback_settings.gd
+  s_27696a98a95b7d::t_2fc0176a2eb974 2
+assets/sprites/weapons/effects/block_vfx/spear.png.import
+  s_27696a98a95b7d::t_d48ef0a028b61c 1-40
+scripts/weapons/mobility_weapon_runtime.gd
+  s_27696a98a95b7d::t_18f5acb43bd4ec 7,60
+scripts/tests/enemy_super_armor_test.gd
+  s_27696a98a95b7d::t_462ed98d167a81 98-99
+  s_27696a98a95b7d::t_3ee6190b81e077 103
+scenes/tests/first_wave_crash_test.tscn
+  s_6defd4a5e5de6f::t_eacef9a1151d9c 1-6
+scripts/enemies/enemy_controller.gd
+  s_27696a98a95b7d::t_d8b70415b79def 596,598-601,643,678-682
+  s_27696a98a95b7d::t_9acdf876fcfd7a 602-608
+  s_27696a98a95b7d::t_095da20c37ec47 31,107,235,597,634,683-691
+scripts/effects/mobility_atlas_effect.gd
+  s_27696a98a95b7d::t_2eadc0de5947c1 7
+scripts/effects/combat_hit_feedback.gd
+  s_27696a98a95b7d::t_a66b563dcaba2b 28,64-78
+  s_27696a98a95b7d::t_095da20c37ec47 1,3-6,10,12-21,24-26,32-35,37-38,40-43,50-54,60-63,79-80,84-86,90,94-114,178-199,203,207-223,228-238,243-247,251-258,261-268
+  s_27696a98a95b7d::t_f4ce6218c1e365 240-241
+  s_27696a98a95b7d::t_021bdf058eb2be 8,29-31,36,39,44-49,55-59,239,242
+  s_27696a98a95b7d::t_80cec080b07919 27,224-227,248-250
+  s_27696a98a95b7d::t_9acdf876fcfd7a 2,7,9,11,22-23,81-83,87-89,91-93,115-177,200-202,204-206,259-260
+scripts/battle/cavern_population_backdrop.gd
+  s_6defd4a5e5de6f::t_809d0c180da909 7
+  s_6defd4a5e5de6f::t_a400bf4605fdd7 248-254,316-318,321
+  s_6defd4a5e5de6f::t_f936747d46dd18 5-6,278-281,287-290,293
+scripts/tests/combat_general_feedback_test.gd
+  s_27696a98a95b7d::t_3ee6190b81e077 1-11,24-27,29-43,45-46,49-51,55-67,70-75,133-139,141-144,146-165,194-196,202-203,206-207,210-213,216-223
+  s_27696a98a95b7d::t_a66b563dcaba2b 166-193
+  s_27696a98a95b7d::t_d97f9c182209c3 197-201,204-205,208-209
+  s_27696a98a95b7d::t_7c3758c702e0bc 14,19-23,28,44,47,53-54,68,76-107,109-110,112-119,140,145,214
+  s_27696a98a95b7d::t_c81dd6383c61cd 120-132
+  s_27696a98a95b7d::t_0eae897ba7dda4 12-13,15-18,48,52,69,108,111,215
+docs/main/combat_hitfeel_plan_2026-10-15.md
+  s_c5f36bec9715db::t_58db90e970c287 1-4,6-88,91,93,96-97
+  s_c5f36bec9715db::t_a67aedeba62763 5,89-90,92,94-95
+assets/shaders/combat_screen_shake.gdshader.uid
+  s_27696a98a95b7d::t_e49edf4bad13cc 1
+scripts/tests/combat_general_feedback_capture.gd.uid
+  s_27696a98a95b7d::t_24de360d2166c5 1
+scripts/tests/combat_general_feedback_test.gd.uid
+  s_27696a98a95b7d::t_5f66425d73ae7a 1
+scripts/tests/first_wave_crash_test.gd.uid
+  s_6defd4a5e5de6f::t_c7d2cb2ebc6402 1
+scripts/tests/native_resolution_review.gd.uid
+  s_6defd4a5e5de6f::t_6887c58555a0f0 1
+scripts/tests/reviews/native_collision_overlay.gd.uid
+  s_6defd4a5e5de6f::t_7df9d613163f06 1
+scripts/tests/weapon_hit_feedback_review.gd.uid
+  s_27696a98a95b7d::t_a085b92651dc3c 1
+todo.md
+  s_27696a98a95b7d::t_28b0cc665420aa 10-12,18-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8e608702cc681e003f5ad8eae1d5ad8126da6c90",
+  "prompts": {},
+  "sessions": {
+    "s_27696a98a95b7d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a14301-799e-7ab1-85a3-74eb9d9754d6",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_6defd4a5e5de6f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a14269-4665-7382-aa1f-1173290e5219",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_70f3c13fa7df8b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12dd2-3a64-7de3-b510-5d012f459721",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_8ff5b622625e17": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a14270-6f78-7480-b17f-e3fd567dfd3f",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b70015d222876d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1426a-0a34-75f0-a053-d5f377a4a225",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_c5f36bec9715db": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a13ffc-1e30-7be1-92d8-f86c4c02322b",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
