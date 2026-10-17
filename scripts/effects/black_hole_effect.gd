@@ -1,6 +1,6 @@
 extends Node2D
 class_name BlackHoleEffect
-const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -21,8 +21,9 @@ var _dark_duration: float = DEFAULT_DARK_DURATION
 var _elapsed: float = 0.0
 var _targets: Array[EnemyController] = []
 var _visual_detail: int = 2
-var _shadow_layer: Node2D
 var _audio_impact: RefCounted = null
+var _vortex_back: Node2D
+var _vortex_front: Node2D
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
@@ -51,7 +52,8 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 func _ready() -> void:
 	z_index = 79
-	_shadow_layer = PIXEL.layer(self, -6, _draw_shadow)
+	_vortex_back = PIXEL.layer(self, 78, _draw_vortex.bind(false))
+	_vortex_front = PIXEL.layer(self, 80, _draw_vortex.bind(true))
 	queue_redraw()
 
 
@@ -77,7 +79,8 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 	queue_redraw()
-	_shadow_layer.queue_redraw()
+	_vortex_back.queue_redraw()
+	_vortex_front.queue_redraw()
 
 
 func _collect_targets() -> void:
@@ -119,33 +122,42 @@ func _collect_targets() -> void:
 
 
 func _draw() -> void:
-	BAKED.draw(self, "hole_d%d" % _visual_detail, int(_elapsed / _duration * 51.0), Vector2.ONE * (_radius / DEFAULT_RADIUS))
+	BLOCK_VFX.paint(self,2,Rect2(-_radius,-_radius,_radius*2,_radius*2),_radius,_elapsed,_elapsed/_duration,_visual_detail)
 
 
-func _draw_shadow() -> void:
-	BAKED.draw(_shadow_layer, "hole_shadow", int(_elapsed / _duration * 51.0), Vector2.ONE * (_radius / DEFAULT_RADIUS))
-
-
-func _draw_accretion_rings(fade: float, core_radius: float, front: bool) -> void:
-	var clock := floorf(_elapsed * 16.0) / 16.0
-	for index in range(8):
-		var angle := fposmod(float(index) * TAU / 8.0 + clock * 0.8, TAU)
-		if (angle < PI) != front:
+func _draw_vortex(front: bool) -> void:
+	var canvas := _vortex_front if front else _vortex_back
+	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
+	var opening := minf(1.0, progress * 7.0) * (1.0 - smoothstep(0.78, 1.0, progress) * 0.4)
+	var fade := (1.0 - smoothstep(0.80, 1.0, progress)) * minf(1.0, progress * 9.0)
+	if opening <= 0.0 or fade <= 0.0:
+		return
+	# Independent curved streamlines arrive from every direction. Each short
+	# line moves inward along its own fixed path, then disappears at the sphere.
+	var count := 12 if _visual_detail > 0 else 6
+	var clock := floorf(_elapsed * 18.0) / 18.0
+	var center := Vector2(0.0, -_radius * 0.22)
+	for index in count:
+		var base_angle := float(index) / count * TAU + 0.17
+		if (sin(base_angle) >= 0.0) != front:
 			continue
-		var color := Color(0.34, 0.42, 0.55, fade * 0.75) if front else Color(0.23, 0.25, 0.37, fade * 0.65)
-		PIXEL.arc(self, core_radius * 1.5, angle, minf(angle + 0.34, PI if front else TAU), color, 2, Vector2(1.0, 0.34), -0.2)
-
-
-func _draw_absorbing_segments(core_radius: float, fade: float, center: Vector2) -> void:
-	var count := 12 if _visual_detail == 2 else 6
-	var clock := floorf(_elapsed * 20.0) / 20.0
-	for index in range(count):
-		var phase := fposmod(float(index) * 0.381 + clock * (0.9 + float(index % 3) * 0.12), 1.0)
-		var angle := float(index) * 2.399 + clock * 0.25
-		var radius := lerpf(_radius * 0.92, maxf(core_radius, 3.0), phase)
-		var head := Vector2.from_angle(angle - phase * 0.85) * radius + center * phase
-		var tail := Vector2.from_angle(angle - phase * 0.85 + 0.06) * (radius + 5.0) + center * maxf(phase - 0.05, 0.0)
-		var tint := Color(0.48, 0.55, 0.66, fade * (0.9 - phase * 0.3))
-		PIXEL.line(self, tail, head, tint, 2.0)
-		if index % 3 == 0:
-			PIXEL.block(self, head, Vector2(4, 2), Color(0.69, 0.67, 0.79, fade * 0.8))
+		var life := fposmod(clock / 0.50 + float(index) * 0.618, 1.0)
+		var head := 0.20 + life * 1.15
+		var start := maxf(0.0, head - 0.50)
+		var end := minf(1.0, head)
+		if end - start < 0.10:
+			continue
+		var points := PackedVector2Array()
+		var outer_radius := _radius * (1.02 + sin(float(index) * 2.4) * 0.08)
+		for step in 25:
+			var ratio := lerpf(start, end, float(step) / 24.0)
+			var angle := base_angle + ratio * 1.15
+			var distance := lerpf(outer_radius, _radius * 0.35, ratio) * opening
+			var point := (center + Vector2(cos(angle), sin(angle) * 0.85) * distance).round()
+			if points.is_empty() or points[-1] != point:
+				points.append(point)
+		if points.size() < 2:
+			continue
+		var alpha := fade * minf(1.0, life * 7.0) * (1.0 - smoothstep(0.85, 1.0, life))
+		var color := Color(0.63, 0.47, 0.82, alpha) if front else Color(0.45, 0.32, 0.64, alpha)
+		canvas.draw_polyline(points, color, 1.0, false)

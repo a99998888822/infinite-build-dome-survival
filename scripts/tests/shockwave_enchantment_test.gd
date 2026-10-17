@@ -29,27 +29,20 @@ func _run() -> void:
 		check(is_equal_approx(enemies[index]._knockback_velocity.dot(offset.normalized()), 450), "outward push at half speed from impact point, direction " + str(index))
 	check(is_equal_approx(enemies[4]._knockback_velocity.length(), 450), "enemy exactly at center receives finite outward fallback")
 	check(enemies[5]._knockback_timer == 0, "enemy outside radius remains unaffected")
-	var particles := host.get_node("ParticleWorld")
-	check(waves().is_empty() and particles._particle_order.size() > 0, "burst emits into shared particles and releases the impact node")
-	var white := true
-	var compact := true
-	for slot in particles._particle_order:
-		var color: Color = particles._particle_colors[slot]
-		white = white and is_equal_approx(color.r, color.g) and is_equal_approx(color.g, color.b) and color.r >= 0.83
-		var distance: float = particles._particle_velocities[slot].length() * particles._particle_lifetimes[slot]
-		compact = compact and distance >= 37.37 and distance <= 66.13
-	check(white, "all shockwave particles use the white palette, without warm tint")
-	check(compact, "original burst travel follows the restored 55.2-pixel radius")
-	var positions: PackedVector2Array = particles._particle_positions.duplicate()
+	var visuals := get_tree().get_nodes_in_group("enchantment_block_shockwaves")
+	check(waves().is_empty() and visuals.size() == 1, "shockwave keeps its block visual and releases the control node")
+	var visual: Node2D = visuals[0]
+	check(is_equal_approx(visual.radius,55.2), "block visual follows the unchanged 55.2-pixel control radius")
+	var elapsed: float = visual.elapsed
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
-	particles._process(1)
-	check(particles._particle_positions == positions, "pause freezes shockwave particles")
+	visual._process(1)
+	check(is_equal_approx(visual.elapsed,elapsed), "pause freezes the block shockwave")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	var start := enemies[0].global_position
 	enemies[0]._physics_process(0.1)
 	check(enemies[0].global_position.distance_to(POINT) > start.distance_to(POINT), "real enemy movement moves away from the impact")
-	particles._process(0.77)
-	check(particles._particle_order.is_empty(), "original burst particles expire within 0.76 seconds")
+	visual._process(0.56)
+	check(visual.is_queued_for_deletion(), "block shockwave expires after its short visual lifetime")
 
 	await fixture(BOW, [POINT + Vector2(75, 0)], ["scroll_explosion"])
 	weapon.runtime_stats.area_size = 200

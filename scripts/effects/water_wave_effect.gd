@@ -4,32 +4,12 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
-const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
-# Shared resources load with the effect script, before the first combat hit.
-const ATLAS_RADIUS: float = 45.696
-const ATLAS_TILE := 112
-const ATLAS_COLUMNS := 8
-const ATLAS_FRAMES := 52
-const ATLASES: Array[Texture2D] = [
-	preload("res://assets/sprites/effects/water_wave/water_d0_p0.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d0_p1.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d0_p2.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d0_p3.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d1_p0.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d1_p1.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d1_p2.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d1_p3.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d2_p0.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d2_p1.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d2_p2.png"),
-	preload("res://assets/sprites/effects/water_wave/water_d2_p3.png"),
-]
-
+const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.45
 const SIZE_MULTIPLIER: float = 0.7
-# Approved PNG footprint: 0.8 times the prior 0.85 scale, for art and collision.
+# Preserve the approved collision footprint independently of the raised crest.
 const RADIUS_SCALE: float = 0.68
 
 var _weapon: WeaponInstance = null
@@ -40,8 +20,8 @@ var _duration: float = DEFAULT_DURATION
 var _elapsed: float = 0.0
 var _damage_applied: bool = false
 var _visual_detail: int = 2
-var _atlas_index := 0
-var _atlas_frame := -1
+var _phase := 0.0
+var _visual_frame := -1
 
 
 static func spawn(
@@ -72,16 +52,14 @@ static func spawn(
 		32.0,
 	) * SIZE_MULTIPLIER * RADIUS_SCALE
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
-	# Preserve the reviewed four phases and one random sample per spawned wave.
-	var phase := randf_range(0.0, TAU)
-	var phase_index := posmod(roundi(phase / TAU * 4.0), 4)
-	effect._atlas_index = effect._visual_detail * 4 + phase_index
+	# Preserve one RNG sample per wave so combat random sequences stay stable.
+	effect._phase = randf_range(0.0, TAU)
 	# Apply contact synchronously so the following slot observes the wet state.
 	effect._apply_wave()
 
 
 func _ready() -> void:
-	z_index = -8
+	z_index = 78
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	queue_redraw()
 
@@ -90,9 +68,9 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_elapsed += delta
-	var frame := _get_atlas_frame()
-	if frame != _atlas_frame:
-		_atlas_frame = frame
+	var frame := _get_visual_frame()
+	if frame != _visual_frame:
+		_visual_frame = frame
 		queue_redraw()
 	if _elapsed >= _duration:
 		queue_free()
@@ -135,12 +113,11 @@ func _apply_wave() -> void:
 	AudioManager.end_combat_audio()
 
 
-func _get_atlas_frame() -> int:
-	return clampi(int(_elapsed / _duration * (ATLAS_FRAMES - 1) + 0.00001), 0, ATLAS_FRAMES - 1)
+func _get_visual_frame() -> int:
+	return int(_elapsed * 18.0)
 
 
 func _draw() -> void:
-	var frame := _get_atlas_frame()
-	var extent := GROUND.projected_axes() * ATLAS_TILE * _radius / ATLAS_RADIUS
-	var region := Rect2(Vector2((frame % ATLAS_COLUMNS) * ATLAS_TILE, (frame / ATLAS_COLUMNS) * ATLAS_TILE), Vector2.ONE * ATLAS_TILE)
-	draw_texture_rect_region(ATLASES[_atlas_index], Rect2(-extent * 0.5, extent), region)
+	# Visual water spread only; immediate damage keeps the original radius.
+	var visual_radius := _radius * 1.65
+	BLOCK_VFX.paint(self,1,Rect2(-visual_radius*1.25,-visual_radius*1.4,visual_radius*2.5,visual_radius*2.6),visual_radius,_elapsed+_phase,_elapsed/_duration,_visual_detail)

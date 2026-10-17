@@ -1,8 +1,12 @@
 # 资产总清单汇总
 
+> 2026-10-17 附魔动效已审阅通过并正式采用：风刃使用中间宽、两端尖的刀锋；黑洞保留球体并使用四周弯曲吸入的独立细线；水流使用去掉浪头的连片水体。震荡保留确认的厚冲击带，光辉剑保留回退后的原版。四种新动效由正式脚本和 `shaders/effects/enchantment_blocks.gdshader` 绘制，无需新增 PNG；见[正式附魔动效记录](../main/enchantment_block_visuals_2026-10-17.md)。
+
+> 2026-10-17 敌人阴影已审阅通过并正式采用：天外幼体、回声蝙蝠、钢甲骑士、幽焰冥狼使用确认的阶梯边缘像素阴影；冥狼旧椭圆阴影已替换，跳跃时投影留地并缩小变淡。由 `scripts/effects/enemy_ground_shadow.gd` 生成共享纹理，无需新增 PNG。详见[正式阴影记录](enemy_ground_shadows.md)。
+
 > 2026-10-16 武器动效已正式采用：七把武器使用确认的大色块像素版本，战锤／长枪／手炮采用第二轮放大稿。手炮喷焰由 `shaders/effects/cannon_jet_flame.gdshader` 实现，不计入 PNG 表；正式接入与回归见[动效记录](../main/weapon_block_visuals_2026-10-16.md)。
 
-> 2026-10-16 正式配置：世界固定 1920×1080；初心者／幼体／蝙蝠使用原生 128px 帧，钢甲骑士使用原生 256px 帧，冥狼逐帧注册后放大 2 倍；玩家采用下半身圆形碰撞。PNG 像素与动作帧序保留确认稿，当前运行尺寸与碰撞参数见[正式显示规范](combat_sprite_clarity.md)。
+> 2026-10-16 正式配置：世界固定 1920×1080；初心者使用确认的 96px 帧，幼体／蝙蝠使用原生 128px 帧，钢甲骑士使用原生 256px 帧，冥狼逐帧注册后放大 2 倍；玩家采用下半身圆形碰撞。PNG 像素与动作帧序保留确认稿，当前运行尺寸与碰撞参数见[正式显示规范](combat_sprite_clarity.md)。
 
 > 2026-10-15 清理：按用户确认删除 78 个未发现运行引用的素材、39 个残留或未生效素材及其配套原图、导入文件和废弃代码。7 个仅独立场景引用的营地素材保留；正式媒体文件由 543 减至 426。下方移除本次删除项，其他历史规格以最新接入记录为准。详见[素材清理记录](assets_cleanup_20261015.md)。
 
@@ -48,11 +52,14 @@
 | 已存在 | wood2 | `wood2.png` | `assets/sprites/camp/wood2.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | 经验球 | `pickup_exp_orb.png` | `assets/sprites/pickups/pickup_exp_orb.png` | 16x16 / 1:1 / PNG |  |
 | 已存在 | 血包 | `pickup_health_pack.png` | `assets/sprites/pickups/pickup_health_pack.png` | 16x16 / 1:1 / PNG |  |
-| 已接入 | 初心者选人／战斗待机 | `idle.png` | `assets/sprites/player/actions/novice_128/idle.png` | 128x128 / 1:1 / PNG | 共用确认版；旧展示图和两代旧战斗图已删除 |
-| 已接入 | 初心者选人／战斗行走 | `move.png` | `assets/sprites/player/actions/novice_128/move.png` | 1024x128 / 8:1 / PNG | 用户重供八帧确认版，腿间透明，连续描边；8 FPS，选人悬停播放 |
-| 已接入 | 初心者移动攻击 | `move_attack.png` | `assets/sprites/player/actions/novice_128/move_attack.png` | 1152x128 / 9:1 / PNG | 2026-10-15：确认样例风格，9 帧单次挥拳、原速 0.75 秒，16 色透明像素帧 |
-| 已接入 | 初心者后跳 | `jump_backward.png` | `assets/sprites/player/actions/novice_128/jump_backward.png` | 1280x128 / 10:1 / PNG | 2026-10-15：新视频 10 帧，从下蹲开始，按最新要求加速至 2 倍，0.875 秒播放完毕 |
-| 已接入 | 初心者前跳 | `jump_forward.png` | `assets/sprites/player/actions/novice_128/jump_forward.png` | 1280x128 / 10:1 / PNG | 使用此前指定给前跳的旧后跳素材，18 FPS，与新后跳独立 |
+| 已接入 | 初心者选人／战斗待机 | `idle.png` | `assets/sprites/player/actions/novice_96/idle.png` | 96x96 / 1:1 / PNG | 2026-10-16：采用已确认的 96 像素预览，战斗 1 倍绘制 |
+| 已接入 | 初心者选人／战斗行走 | `move.png` | `assets/sprites/player/actions/novice_96/move.png` | 768x96 / 8:1 / PNG | 8 帧、8 FPS；选人悬停共用，原时序保留 |
+| 已接入 | 初心者攻击 | `attack.png` | `assets/sprites/player/actions/novice_96/attack.png` | 672x96 / 7:1 / PNG | 7 帧、14 FPS |
+| 已接入 | 初心者持续施法 | `sustain.png` | `assets/sprites/player/actions/novice_96/sustain.png` | 768x96 / 8:1 / PNG | 8 帧、10 FPS；抬手、保持及收手规则不变 |
+| 已接入 | 初心者移动持续施法 | `move_sustain.png` | `assets/sprites/player/actions/novice_96/move_sustain.png` | 768x96 / 8:1 / PNG | 8 帧、8 FPS |
+| 已接入 | 初心者移动攻击 | `move_attack.png` | `assets/sprites/player/actions/novice_96/move_attack.png` | 864x96 / 9:1 / PNG | 9 帧单次挥拳，原速 0.75 秒 |
+| 已接入 | 初心者后跳 | `jump_backward.png` | `assets/sprites/player/actions/novice_96/jump_backward.png` | 960x96 / 10:1 / PNG | 10 帧，从下蹲开始，保留既有逐帧时长，全长 0.875 秒 |
+| 已接入 | 初心者前跳 | `jump_forward.png` | `assets/sprites/player/actions/novice_96/jump_forward.png` | 960x96 / 10:1 / PNG | 10 帧、18 FPS，与后跳独立 |
 | 已存在 | 角色小图标 | `icon_void_hunter.png` | `assets/ui/icons/characters/icon_void_hunter.png` | 128x128 / 1:1 / PNG |  |
 | 已存在 | HUD 血条图标 | `icon_hud_hp.png` | `assets/ui/icons/hud/icon_hud_hp.png` | 32x32 / 1:1 / PNG |  |
 | 已存在 | HUD 护盾图标 | `icon_hud_shield.png` | `assets/ui/icons/hud/icon_hud_shield.png` | 32x32 / 1:1 / PNG |  |

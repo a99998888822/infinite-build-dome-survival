@@ -1,5 +1,6 @@
 extends Node2D
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
 
 ## Short, render-only reaction cues. They never own damage or status timing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -79,6 +80,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if BLOCK_PREVIEW.enabled and BLOCK_PREVIEW.draw_cue(self): return
 	if kind == "steam":
 		BAKED.draw(self, "steam_d%d" % (0 if detail == 0 else 1), int(elapsed / duration * 66.0))
 		return

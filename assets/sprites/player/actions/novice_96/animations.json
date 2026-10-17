@@ -1,0 +1,75 @@
+{
+  "frame_size": [
+    96,
+    96
+  ],
+  "source_frames": 61,
+  "facing": "right",
+  "root_motion": false,
+  "clips": {
+    "idle": {
+      "texture": "res://assets/sprites/player/actions/novice_96/idle.png",
+      "frames": 1,
+      "fps": 1
+    },
+    "move": {
+      "texture": "res://assets/sprites/player/actions/novice_96/move.png",
+      "frames": 8,
+      "fps": 8
+    },
+    "attack": {
+      "texture": "res://assets/sprites/player/actions/novice_96/attack.png",
+      "frames": 7,
+      "fps": 14
+    },
+    "sustain": {
+      "texture": "res://assets/sprites/player/actions/novice_96/sustain.png",
+      "frames": 8,
+      "fps": 10
+    },
+    "move_sustain": {
+      "texture": "res://assets/sprites/player/actions/novice_96/move_sustain.png",
+      "frames": 8,
+      "fps": 8
+    },
+    "jump_forward": {
+      "texture": "res://assets/sprites/player/actions/novice_96/jump_forward.png",
+      "frames": 10,
+      "fps": 18
+    },
+    "jump_backward": {
+      "texture": "res://assets/sprites/player/actions/novice_96/jump_backward.png",
+      "frames": 10,
+      "fps": 11.428571428571429,
+      "frame_durations": [
+        0.125,
+        0.08333333333333333,
+        0.0625,
+        0.0625,
+        0.125,
+        0.0625,
+        0.0625,
+        0.10416666666666667,
+        0.125,
+        0.0625
+      ]
+    },
+    "move_attack": {
+      "texture": "res://assets/sprites/player/actions/novice_96/move_attack.png",
+      "frames": 9,
+      "fps": 12,
+      "frame_durations": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333
+      ]
+    }
+  },
+  "historical_source_frames": 50
+}

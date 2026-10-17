@@ -25,11 +25,11 @@ func _run() -> void:
 	check(player.initialize_from_character("character_void_hunter"), "novice initialized")
 	var animator := player.action_animator
 	check(animator.enabled, "eight action strips enabled")
-	check(player.sprite.scale == Vector2.ONE, "128px actions render at their authored pixel size")
+	check(player.sprite.scale == Vector2.ONE, "96px actions render at their authored pixel size")
 	for clip in {"idle":1,"move":8,"attack":7,"move_attack":9,"sustain":8,"move_sustain":8,"jump_forward":10,"jump_backward":10}:
 		var count: int = animator._count(clip)
-		check((animator._clips[clip].texture as Texture2D).get_width() == count * 128, "128px cells: " + clip)
-	check(animator._count("jump_forward") == 10 and animator._clips.jump_forward.texture == preload("res://assets/sprites/player/actions/novice_128/jump_forward.png"), "forward jump keeps all ten approved former backward frames")
+		check((animator._clips[clip].texture as Texture2D).get_size() == Vector2(count * 96, 96), "96px cells: " + clip)
+	check(animator._count("jump_forward") == 10 and animator._clips.jump_forward.texture == preload("res://assets/sprites/player/actions/novice_96/jump_forward.png"), "forward jump keeps all ten approved former backward frames")
 	check(animator._clips.jump_forward.texture != animator._clips.jump_backward.texture, "new backward jump has its own texture")
 	var origin := player.position
 	player.play_weapon_action("weapon_void_blade")

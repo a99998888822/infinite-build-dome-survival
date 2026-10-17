@@ -29,6 +29,7 @@ const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/li
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
 const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
 const HIT_VISUAL = preload("res://scripts/effects/enemy_hit_visual.gd")
+const GROUND_SHADOW = preload("res://scripts/effects/enemy_ground_shadow.gd")
 const SUPER_ARMOR_SECONDS := 2.0
 const SUPER_ARMOR_COOLDOWN_SECONDS := 5.0
 const SUPER_ARMOR_CONTROL_WINDOW := 2.0
@@ -145,6 +146,10 @@ func _ready() -> void:
 	add_child(status_visual)
 	if auto_initialize_on_ready:
 		initialize(enemy_id)
+	var ground_shadow := GROUND_SHADOW.new()
+	ground_shadow.name = "GroundShadow"
+	add_child(ground_shadow)
+	ground_shadow.configure(self)
 
 
 func _exit_tree() -> void:

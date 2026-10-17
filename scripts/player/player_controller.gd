@@ -23,8 +23,8 @@ const CAMERA_SUBJECT_Y: float = 0.57
 const REVIVE_WINGS_SCRIPT = preload("res://scripts/effects/revive_angel_wings.gd")
 const PLAYER_VISUAL_SCALE: float = 1.0
 # Defaults share the approved beginner sheets with the action animator.
-const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_128/idle.png")
-const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_128/move.png")
+const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_96/idle.png")
+const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_96/move.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
 
 @export var character_id: String = DEFAULT_CHARACTER_ID

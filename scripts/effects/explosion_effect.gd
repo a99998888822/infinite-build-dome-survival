@@ -1,11 +1,13 @@
 extends Node2D
 class_name ExplosionEffect
+const REACTION_BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
 const REACTION_VISUAL = preload("res://scripts/effects/element_reaction_visual.gd")
 const VISUAL_BUDGET = preload("res://scripts/effects/thunder_fire_visual_budget.gd")
+const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
 
 const BASE_DAMAGE_RADIUS: float = 96.0
 const BASE_SHOCKWAVE_RADIUS: float = 55.2
@@ -80,8 +82,11 @@ func _detonate() -> void:
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_reaction_sfx(_reaction_id)
 	if _reaction_id == "thunder_fire" and visual_tier != VISUAL_BUDGET.Tier.SUPPRESSED:
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
-			Vector2.ZERO, 1.0, Color(1.0, 0.72, 0.12), particle_parameters)
+		if REACTION_BLOCK_PREVIEW.enabled:
+			REACTION_BLOCK_PREVIEW.spawn_blast(get_parent(),_hit_position,radius,visual_tier)
+		else:
+			PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
+				Vector2.ZERO, 1.0, Color(1.0, 0.72, 0.12), particle_parameters)
 	elif _reaction_id != "thunder_fire":
 		REACTION_VISUAL.spawn(get_parent(), _reaction_id, _hit_position, {"radius": radius})
 	_damage_enemies(radius, damage, context.get_resolved_parameter("damage_falloff", 0.0))
@@ -121,14 +126,11 @@ func _shockwave() -> void:
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_enchantment_sfx("explosion")
 	AudioManager.end_combat_audio()
-	# Reuse the original square burst. Override its warm palette only here;
-	# reactions and terrain debris still use their own colors and full radius.
+	# The pure-control enchantment gets a joined pixel pressure band. Elemental
+	# reactions and terrain debris retain their independent particle rendering.
 	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(get_parent(), "shockwave", _hit_position)
 	if tier != VISUAL_BUDGET.Tier.SUPPRESSED:
-		var parameters := _build_particle_parameters(context, radius)
-		_apply_visual_tier(parameters, tier)
-		PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
-			Vector2.ZERO, 1.0, Color.WHITE, parameters)
+		BLOCK_VFX.spawn_shockwave(get_parent(), _hit_position, radius, tier)
 	queue_free()
 
 

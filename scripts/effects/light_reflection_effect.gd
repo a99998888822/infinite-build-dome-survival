@@ -1,6 +1,7 @@
 extends Node2D
 class_name LightReflectionEffect
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
+const BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
 
 const DEFAULT_RADIUS: float = 220.0
 const DEFAULT_DURATION: float = 0.58
@@ -165,6 +166,9 @@ func _draw() -> void:
 	var progress := clampf(_elapsed / _duration, 0, 1)
 	var fade := 1.0 - progress * 0.72
 	var angle := lerpf(_sweep_start, _sweep_end, progress) + _orientation
+	if BLOCK_PREVIEW.enabled:
+		BLOCK_PREVIEW.draw_reflection(self,_radius,_elapsed,_duration,angle,_visual_detail)
+		return
 	var direction := Vector2.from_angle(angle)
 	draw_set_transform(Vector2.ZERO, angle)
 	BAKED.draw(self, "reflection_beam", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))

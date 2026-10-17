@@ -8,7 +8,7 @@ func _run() -> void:
 	await setup([Vector2.ZERO, Vector2.ZERO], {"radius": 96.0})
 	for index in enemies.size():
 		var shape := enemies[index].get_node("CollisionShape2D") as CollisionShape2D
-		var radius: float = shape.shape.radius
+		var radius: float = shape.shape.height * 0.5 if shape.shape is CapsuleShape2D else shape.shape.radius
 		enemies[index].position = Vector2(45.696 + radius + (-2.0 if index == 0 else 2.0), 0) - shape.position
 	await frames()
 	var wave := spawn_effect("water_wave") as WaterWaveEffect
@@ -17,22 +17,19 @@ func _run() -> void:
 	check(enemies[1].current_hp == 10000 and not enemies[1].has_status("wet"), "outside reduced body edge receives no water hit")
 	check(wave.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "water uses nearest sampling")
 	wave._elapsed = wave._duration * 0.5
-	check(wave._get_atlas_frame() == 25, "water frame follows normalized duration")
+	check(wave._get_visual_frame() == 7, "water block flow advances at 18 visual frames per second")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	wave._process(1.0)
-	check(is_equal_approx(wave._elapsed, wave._duration * 0.5), "water PNG animation pauses")
+	check(is_equal_approx(wave._elapsed, wave._duration * 0.5), "water block animation pauses")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	wave._process(wave._duration)
-	check(wave.is_queued_for_deletion(), "water PNG expires on the original clock")
+	check(wave.is_queued_for_deletion(), "water block effect expires on the original clock")
 
-	await setup([Vector2(80, 0), Vector2(110, 0)], {"radius": 96.0})
+	await setup([Vector2(80, 0), Vector2(130, 0)], {"radius": 96.0})
 	weapon.runtime_stats.damage_area_size = 100.0
 	wave = spawn_effect("water_wave") as WaterWaveEffect
 	check(is_equal_approx(wave._radius, 68.544), "area bonus scales the reduced water radius")
 	check(enemies[0].current_hp == 9955 and enemies[1].current_hp == 10000, "area bonus preserves physical coverage")
-	check(WaterWaveEffect.ATLASES.size() == 12, "all water phase and detail textures are preloaded")
-	for texture in WaterWaveEffect.ATLASES:
-		check(texture.get_size() == Vector2(896, 784), "water atlas is imported at its reviewed resolution")
 	check(CUE.SHARD_ATLASES.size() == 4, "both shard kinds and detail tiers are preloaded")
 	for index in CUE.SHARD_ATLASES.size():
 		check(CUE.SHARD_ATLASES[index].get_size() == Vector2(896, 560 if index < 2 else 672), "shard atlas is imported at its reviewed resolution")

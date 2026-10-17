@@ -72,7 +72,9 @@ func snapshot(label: String) -> void:
 	result_log.append({"label": label, "enemies": states})
 
 func _run() -> void:
-	await setup([Vector2.ZERO, Vector2(64, 0), Vector2(84, 0)], {"radius": 132.0})
+	# Grubs now use a horizontal capsule with a 50px half-width. Keep the
+	# outside probe fully beyond the circle plus collider, not just its center.
+	await setup([Vector2.ZERO, Vector2(64, 0), Vector2(120, 0)], {"radius": 132.0})
 	var water := spawn_effect("water_wave")
 	await frames()
 	check(enemies[0].current_hp == 9955 and enemies[1].current_hp == 9955 and enemies[2].current_hp == 10000, "water immediate radius and damage")
@@ -108,7 +110,7 @@ func _run() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	hole.call("_process", 0.76)
 	check(hole.is_queued_for_deletion(), "black hole lifetime")
-	await setup([Vector2(40, 0), Vector2(110, 0)])
+	await setup([Vector2(40, 0), Vector2(140, 0)])
 	var sword := spawn_effect("light_sword")
 	await frames()
 	sword.call("_process", 0.49)

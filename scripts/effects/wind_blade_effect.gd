@@ -1,9 +1,7 @@
 extends Node2D
 class_name WindBladeEffect
 const PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
-const ATLAS = preload("res://assets/sprites/effects/wind_blade.png")
-const FRAME_SIZE := Vector2(128, 96)
-const FRAME_COUNT := 12
+const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
 
 const DEFAULT_SPEED: float = 480.0
 const DEFAULT_LIFETIME: float = 0.46
@@ -26,6 +24,7 @@ var _ground_contact := Callable()
 
 func _init() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	z_index = 78
 
 
 static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed: float = DEFAULT_SPEED, lifetime: float = DEFAULT_LIFETIME, weapon: WeaponInstance = null, damage_event: DamageEvent = null, ignored_target_id: int = 0, ground_contact: Callable = Callable(), attachment_item_id: String = "") -> void:
@@ -102,7 +101,4 @@ func _damage_target(enemy: EnemyController, radius_squared: float, wind_damage: 
 
 func _draw() -> void:
 	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
-	var frame := mini(int(progress * FRAME_COUNT), FRAME_COUNT - 1)
-	var size := FRAME_SIZE * _area_scale
-	# Rotation still belongs to the moving node; only the visual extent scales.
-	draw_texture_rect_region(ATLAS, Rect2(-size * 0.5, size), Rect2(Vector2(frame * FRAME_SIZE.x, 0), FRAME_SIZE))
+	BLOCK_VFX.paint(self,5,Rect2(Vector2(-100,-72)*_area_scale,Vector2(164,144)*_area_scale),_area_scale,_elapsed,progress)

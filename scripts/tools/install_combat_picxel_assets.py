@@ -32,10 +32,10 @@ def asset_pairs(subjects=SUBJECTS):
             yield "sprites/display_clarity/player/capitalist_idle.png", (80, 80)
             yield "sprites/display_clarity/player/capitalist_walk.png", (560, 80)
         else:
-            manifest = json.loads((ASSETS / "sprites/player/actions/novice_128/animations.json").read_text(encoding="utf-8"))
+            manifest = json.loads((ASSETS / "sprites/player/actions/novice_96/animations.json").read_text(encoding="utf-8"))
             for clip in manifest["clips"].values():
                 destination = clip["texture"].removeprefix("res://assets/")
-                yield destination, (128 * int(clip["frames"]), 128)
+                yield destination, (96 * int(clip["frames"]), 96)
     if "enemy" in subjects:
         for name, size in (("enemy_gloom_mite_idle.png", (128, 128)), ("enemy_gloom_mite_move.png", (896, 128))):
             yield f"sprites/enemies/combat/{name}", size

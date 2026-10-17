@@ -9,17 +9,17 @@
       "starter"
     ],
     "icon": "res://assets/ui/icons/characters/icon_void_hunter.png",
-    "display_sprite": "res://assets/sprites/player/actions/novice_128/idle.png",
+    "display_sprite": "res://assets/sprites/player/actions/novice_96/idle.png",
     "combat_visuals": {
-      "idle": "res://assets/sprites/player/actions/novice_128/idle.png",
-      "walk": "res://assets/sprites/player/actions/novice_128/move.png",
+      "idle": "res://assets/sprites/player/actions/novice_96/idle.png",
+      "walk": "res://assets/sprites/player/actions/novice_96/move.png",
       "walk_frames": 8,
       "walk_fps": 8,
-      "action_animations": "res://assets/sprites/player/actions/novice_128/animations.json",
+      "action_animations": "res://assets/sprites/player/actions/novice_96/animations.json",
       "action_scale_percent": 100,
-      "body_scale_percent": 200,
+      "body_scale_percent": 150,
       "preserve_pixel_outline": false,
-      "action_offset": [0, -8]
+      "action_offset": [0, -6]
     },
     "display_stats": [
       "max_hp",
@@ -33,7 +33,7 @@
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,
-      "move_speed": 120,
+      "move_speed": 140,
       "load_capacity": 100,
       "pickup_radius": 180,
       "humanity": 100,
@@ -74,7 +74,7 @@
       "damage_percent": -30,
       "attack_speed": 0,
       "currency_gain_percent": -40,
-      "move_speed": 120,
+      "move_speed": 140,
       "load_capacity": 80,
       "pickup_radius": 180,
       "humanity": 100,

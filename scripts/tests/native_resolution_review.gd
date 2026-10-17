@@ -107,12 +107,12 @@ func run() -> void:
 	check(control.pointer_world().distance_to(player.global_position+Vector2(200,-50))<.01,"HUD pointer maps to the correct world point")
 	control._has_pointer_position = false
 	var body := player.get_node("CollisionShape2D") as CollisionShape2D
-	check(body.shape is CircleShape2D and is_equal_approx(body.shape.radius,24) and body.position==Vector2(0,30),"player lower-body circle: radius 24, center y=30")
-	player._configure_visual_body({"body_scale_percent":200})
-	check(is_equal_approx(body.shape.radius,24) and body.position==Vector2(0,30),"body configuration does not compound")
+	check(body.shape is CircleShape2D and is_equal_approx(body.shape.radius,18) and body.position==Vector2(0,22.5),"player lower-body circle: radius 18, center y=22.5")
+	player._configure_visual_body({"body_scale_percent":150})
+	check(is_equal_approx(body.shape.radius,18) and body.position==Vector2(0,22.5),"body configuration does not compound")
 	player._configure_visual_body({})
 	check(is_equal_approx(body.shape.radius,12) and body.position==Vector2(0,15),"smaller character restores its lower-body circle")
-	player._configure_visual_body({"body_scale_percent":200})
+	player._configure_visual_body({"body_scale_percent":150})
 	var ids := ["enemy_mutated_grub","enemy_elite_rusher","enemy_echo_bat","enemy_underworld_wolf"]
 	var positions := [Vector2(-510,30),Vector2(-265,70),Vector2(325,50),Vector2(575,70)]
 	var enemies: Array[EnemyController] = []

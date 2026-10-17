@@ -347,9 +347,6 @@ func _exit_tree() -> void:
 func draw_ground(canvas: Node2D) -> void:
 	if not alive: return
 	var visual_scale := BASE_BODY_SCALE * body_scale_multiplier
-	canvas.draw_set_transform(Vector2(0,-2)*visual_scale,0,Vector2(1,0.3)*visual_scale)
-	canvas.draw_circle(Vector2.ZERO, 33.6, Color(0.02,0.04,0.08,0.28))
-	canvas.draw_set_transform(Vector2.ZERO)
 	if state == "spawn":
 		GROUND.arc(canvas,Vector2.ZERO,36*visual_scale,0,TAU,64,Color(0.5,0.85,1,0.55),2)
 	if state in ["breath_charge","breath"]:
