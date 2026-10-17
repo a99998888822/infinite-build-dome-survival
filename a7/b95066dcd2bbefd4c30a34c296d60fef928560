@@ -1,0 +1,227 @@
+scripts/effects/enemy_ground_shadow.gd
+  s_27696a98a95b7d::t_46ce6f9766f91e 1-5,7,9-21,23-46,48-66,68-79,81-86
+  s_27696a98a95b7d::t_c2080305bc20df 22,47,67,80
+  s_27696a98a95b7d::t_96caea71d22871 6
+  s_27696a98a95b7d::t_75df22ef736da9 8
+docs/asset/asset_rules_summary.md
+  s_27696a98a95b7d::t_73b9ba92ca7c17 3-4
+  s_27696a98a95b7d::t_d0bc5c970f3021 13
+scripts/tests/release_lock_visual_review.gd
+  s_27696a98a95b7d::t_ca9c0bf7b5e48d 50
+  s_27696a98a95b7d::t_1e33f1b19f5490 49,70-71,84-89,92-93,96-97,100-103,105
+  s_27696a98a95b7d::t_4756909d967df9 1-48,51-69,72-83,90-91,98-99,106-116
+  s_27696a98a95b7d::t_53b753b597cbb2 94-95,104
+docs/asset/asset_checklist_summary.md
+  s_27696a98a95b7d::t_73b9ba92ca7c17 3-4
+  s_27696a98a95b7d::t_c42f4b3d2f4bf0 5-6,9
+  s_27696a98a95b7d::t_d0bc5c970f3021 55-62
+docs/asset/enemy_ground_shadows.md
+  s_27696a98a95b7d::t_c42f4b3d2f4bf0 3-22
+  s_27696a98a95b7d::t_34a70af49aa2a0 1-2
+scripts/effects/enchantment_block_vfx.gd.uid
+  s_27696a98a95b7d::t_7977ce23a0272a 1
+assets/sprites/player/actions/novice_96/attack.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+scripts/tests/pixel_combat_effect_test.gd
+  s_27696a98a95b7d::t_94e3e072b72810 75-77,113
+docs/main/enchantment_block_visuals_2026-10-17.md
+  s_27696a98a95b7d::t_93d59eeeb0ee14 10-15,27-36,38-39
+  s_27696a98a95b7d::t_73b9ba92ca7c17 3-4,18-25
+  s_27696a98a95b7d::t_5ae0b9c61e51e5 37
+  s_27696a98a95b7d::t_7666af0f332549 1-2,5-9,16-17,26,40-81
+scenes/tests/reaction_block_visual_review.tscn
+  s_27696a98a95b7d::t_9d531de3a87960 1-6
+scenes/tests/release_lock_visual_review.tscn
+  s_27696a98a95b7d::t_4756909d967df9 1-6
+scripts/effects/reviews/reaction_block_preview.gd
+  s_27696a98a95b7d::t_9446e23ddf6e06 74
+  s_27696a98a95b7d::t_447c21df173e01 44,48,54-73,75-84
+  s_27696a98a95b7d::t_984e499238976a 92-93
+  s_27696a98a95b7d::t_2dcf412d9842ac 1-43,45-47,49-53,85-91,94-109
+assets/sprites/player/actions/novice_96/jump_forward.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+assets/sprites/player/actions/novice_96/README.md
+  s_27696a98a95b7d::t_d0bc5c970f3021 1-7
+assets/sprites/player/actions/novice_96/sustain.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+docs/asset/combat_sprite_clarity.md
+  s_27696a98a95b7d::t_d0bc5c970f3021 3,9,18
+scripts/tests/reviews/release_lock_preview.gd
+  s_27696a98a95b7d::t_1e33f1b19f5490 8-18,67-69,72,76-78,80,88-95,171,177
+  s_27696a98a95b7d::t_b4690fbe4210f8 100-103
+  s_27696a98a95b7d::t_4756909d967df9 1-7,19-66,70-71,73-75,79,81-87,96-99,104-170,172-176,178
+shaders/effects/enchantment_blocks.gdshader
+  s_27696a98a95b7d::t_e237a219a85f5f 1-18,27,33-79,86,89,93-107
+  s_27696a98a95b7d::t_d714b28f1aa0da 19-21,24-26
+  s_27696a98a95b7d::t_ea2297bc6b6142 28-32
+  s_27696a98a95b7d::t_3751a13be844c8 80-85
+  s_27696a98a95b7d::t_c5edab0918edd6 87-88
+  s_27696a98a95b7d::t_e936d0ee43ec40 90-92
+  s_b1c1f545a66b09::t_2917539e28ce36 22-23
+shaders/reviews/reaction_blocks.gdshader
+  s_27696a98a95b7d::t_2dcf412d9842ac 1-96,98-130,132-220
+  s_27696a98a95b7d::t_bb406a8031b9df 97,131
+shaders/effects/enchantment_blocks.gdshader.uid
+  s_27696a98a95b7d::t_7977ce23a0272a 1
+scripts/tests/enchantment_block_visual_review.gd
+  s_27696a98a95b7d::t_94e3e072b72810 151
+  s_27696a98a95b7d::t_23728cdf939750 61-64,66-67
+  s_27696a98a95b7d::t_75b6a5bdcc1d01 1-48,50-60,65,68-70,73-133,135-146,152-172
+  s_27696a98a95b7d::t_5ff80e6dbf9573 49,71-72,134,147-150
+assets/sprites/player/actions/novice_96/move_attack.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+assets/sprites/player/actions/novice_96/jump_backward.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+scripts/tests/weapon_crowd_visual_review.gd.uid
+  s_27696a98a95b7d::t_ae51859da5ec3a 1
+scripts/tests/enemy_ground_shadow_review.gd
+  s_27696a98a95b7d::t_0ef488eb622725 23
+  s_27696a98a95b7d::t_01013708484d0b 1-22,24-199
+scripts/effects/element_reaction_visual.gd
+  s_27696a98a95b7d::t_2dcf412d9842ac 3,83
+scripts/effects/water_wave_effect.gd
+  s_27696a98a95b7d::t_e74f7cdb26f144 7
+  s_27696a98a95b7d::t_5ff80e6dbf9573 62,122
+  s_27696a98a95b7d::t_1af90a08656073 23-24,55-56,71-73,116-117,123
+  s_27696a98a95b7d::t_ad6de690332d82 12
+  s_27696a98a95b7d::t_6f30beb1bdaeac 121
+scripts/enemies/enemy_controller.gd
+  s_27696a98a95b7d::t_46ce6f9766f91e 32,149-152
+scripts/tests/reaction_style_audit.gd
+  s_27696a98a95b7d::t_9d531de3a87960 45,60,63-64
+  s_27696a98a95b7d::t_54dd0352d3b379 65
+  s_27696a98a95b7d::t_cdcddc63a3c9d2 1-44,46-59,61-62,66-73
+data_config/characters.json
+  s_27696a98a95b7d::t_6f31ce966528dc 36,77
+  s_27696a98a95b7d::t_03a0a871cc4e87 12,14-15,18,20,22
+scenes/tests/reaction_style_audit.tscn
+  s_27696a98a95b7d::t_cdcddc63a3c9d2 1-6
+scripts/tests/enemy_ground_shadow_review.gd.uid
+  s_27696a98a95b7d::t_f3ebafcb33ed46 1
+scripts/effects/wind_blade_effect.gd
+  s_27696a98a95b7d::t_e74f7cdb26f144 4,104
+  s_27696a98a95b7d::t_5ff80e6dbf9573 27
+docs/main/reaction_style_audit_2026-10-17.md
+  s_27696a98a95b7d::t_8f0c541d8e01e8 32
+  s_27696a98a95b7d::t_03862acdf48f80 29-31
+  s_27696a98a95b7d::t_e7a2d60b08d43a 33-35
+  s_9c4da0b23ee0d5::t_50fac04e38ec21 1-28,36-43
+scripts/effects/light_reflection_effect.gd
+  s_27696a98a95b7d::t_2dcf412d9842ac 4,169-171
+scripts/tests/weapon_crowd_visual_review.gd
+  s_27696a98a95b7d::t_9dc815466f9b5c 1-108
+scripts/tests/water_ice_atlas_test.gd
+  s_27696a98a95b7d::t_edc2c8738d540a 11,20,23,26,28
+assets/sprites/player/actions/novice_96/animations.json
+  s_27696a98a95b7d::t_683570e72f1c2e 1-75
+assets/sprites/player/actions/novice_96/approved_frames.json
+  s_27696a98a95b7d::t_683570e72f1c2e 1-107
+assets/sprites/player/actions/novice_96/idle.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+scenes/tests/reaction_block_preview_test.tscn
+  s_27696a98a95b7d::t_984e499238976a 1-6
+scripts/effects/enchantment_block_vfx.gd
+  s_27696a98a95b7d::t_ad6de690332d82 2,12-13,15,24,27,29,33-38,44,53-54,56,63-64
+  s_27696a98a95b7d::t_24340d204afcad 1,3-11,16-23,25-26,28,30-32,39-43,45-52,55,57-62
+  s_27696a98a95b7d::t_c9a06cb5235fa8 14
+scripts/effects/ice_field_effect.gd
+  s_27696a98a95b7d::t_2dcf412d9842ac 4,51-52,130-132
+scripts/effects/explosion_effect.gd
+  s_27696a98a95b7d::t_e74f7cdb26f144 10,129-130,133
+  s_27696a98a95b7d::t_2dcf412d9842ac 3,85-89
+scenes/tests/enchantment_block_visual_review.tscn
+  s_27696a98a95b7d::t_75b6a5bdcc1d01 1-4
+scripts/tests/shockwave_enchantment_test.gd
+  s_27696a98a95b7d::t_94e3e072b72810 32-36,38-39,44-45
+assets/sprites/player/actions/novice_96/move_sustain.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+scenes/tests/weapon_crowd_visual_review.tscn
+  s_27696a98a95b7d::t_9dc815466f9b5c 1-6
+assets/sprites/player/actions/novice_96/move.png.import
+  s_27696a98a95b7d::t_2cbe7658773fd0 1-40
+scripts/effects/enemy_ground_shadow.gd.uid
+  s_27696a98a95b7d::t_f3ebafcb33ed46 1
+scripts/tests/reaction_block_preview_test.gd
+  s_27696a98a95b7d::t_984e499238976a 1-67
+scenes/tests/enemy_ground_shadow_review.tscn
+  s_27696a98a95b7d::t_01013708484d0b 1-6
+scripts/effects/black_hole_effect.gd
+  s_27696a98a95b7d::t_23728cdf939750 25-26,55-56,82-83,125,128-134,138
+  s_27696a98a95b7d::t_e74f7cdb26f144 3
+  s_27696a98a95b7d::t_3d59815dfa4492 135-137
+  s_27696a98a95b7d::t_08acb876ecaadc 139-141
+  s_b1c1f545a66b09::t_7655a027ab6a2f 142-159,161-163
+scripts/tests/reaction_block_visual_review.gd
+  s_27696a98a95b7d::t_9d531de3a87960 1-9,15-22,27-77
+  s_27696a98a95b7d::t_bb406a8031b9df 23-24
+  s_27696a98a95b7d::t_4da6249f5ef297 10-14
+  s_27696a98a95b7d::t_b4bda62331a845 25-26
+scripts/effects/reviews/reaction_block_preview.gd.uid
+  s_27696a98a95b7d::t_1cb4186a2dbe51 1
+scripts/player/player_controller.gd
+  s_70f3c13fa7df8b::t_801166012a5772 26-27
+scripts/tests/enchantment_block_visual_review.gd.uid
+  s_27696a98a95b7d::t_c08e35b6de8786 1
+scripts/tests/reaction_block_visual_review.gd.uid
+  s_27696a98a95b7d::t_e64c3b22a9abd9 1
+scripts/tests/reaction_style_audit.gd.uid
+  s_27696a98a95b7d::t_0af0790e53beff 1
+scripts/tests/release_lock_visual_review.gd.uid
+  s_27696a98a95b7d::t_444ac7bde4ea2d 1
+scripts/tests/reviews/release_lock_preview.gd.uid
+  s_27696a98a95b7d::t_931ccd2f6eb071 1
+shaders/reviews/reaction_blocks.gdshader.uid
+  s_27696a98a95b7d::t_b9d1fbe8ff50b9 1
+scenes/player/player_root.tscn
+  s_27696a98a95b7d::t_e9ec86d204b80a 4
+scripts/tests/character_select_view_test.gd
+  s_27696a98a95b7d::t_02cc21ffe794a8 123-125,130
+scripts/tests/native_resolution_review.gd
+  s_27696a98a95b7d::t_a950598cc55e27 110-112,115
+scripts/tests/player_action_animator_test.gd
+  s_27696a98a95b7d::t_37fca5c41d2da5 28,31-32
+scripts/tools/install_combat_picxel_assets.py
+  s_27696a98a95b7d::t_369de462529836 35,38
+todo.md
+  s_9c4da0b23ee0d5::t_5d8d60f84b74bd 16-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a7b95066dcd2bbefd4c30a34c296d60fef928560",
+  "prompts": {},
+  "sessions": {
+    "s_27696a98a95b7d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a14301-799e-7ab1-85a3-74eb9d9754d6",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_70f3c13fa7df8b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12dd2-3a64-7de3-b510-5d012f459721",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_9c4da0b23ee0d5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a147be-30cc-78a2-8908-d7a2cd656faf",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_b1c1f545a66b09": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a14587-1473-7320-8a94-21d15807f65f",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
