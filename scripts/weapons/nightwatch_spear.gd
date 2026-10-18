@@ -170,6 +170,7 @@ func cancel() -> void:
 
 
 func _draw() -> void:
+	BLOCK_VFX.begin(self)
 	if cancelled or weapon == null:
 		return
 	var tint := Color("a9bfba")
@@ -189,6 +190,6 @@ func _draw() -> void:
 		if local_time >= windup and local_time < windup + extend + 0.08:
 			var height := 140.8 * maxf(0.75, half_width / 12.0)
 			var color := Color.WHITE if not (weapon.has_effect("fire") or weapon.has_effect("ice") or weapon.has_effect("lightning")) else tint
-			BLOCK_VFX.draw(self, "spear", (local_time - windup) / (extend + 0.08), Rect2(0, -height * 0.5, tip * 1.12, height), color)
+			BLOCK_VFX.draw(self,"spear",(local_time-windup)/(extend+0.08),Rect2(0,-height*0.5,tip*1.12,height),color,Transform2D((thrust.direction as Vector2).angle(),Vector2.ZERO))
 		draw_texture_rect_region(SPEAR, Rect2(roundf(tip - length), -half_width, length, half_width * 2.0), SOURCE_RECT)
 	draw_set_transform(Vector2.ZERO)

@@ -34,6 +34,7 @@ static func spawn(parent: Node, source: WeaponInstance, key: String, point: Vect
 	effect.global_position = point
 	effect.rotation = angle
 	effect.scale = dimensions
+	preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(effect,2.0)
 	return effect
 
 func _physics_process(delta: float) -> void:
@@ -51,6 +52,7 @@ func _physics_process(delta: float) -> void:
 		global_position = follow.get_ref().global_position
 	next %= hframes
 	if frame != next: frame = next
+	preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(self,2.0)
 
 func cancel() -> void:
 	cancelled = true

@@ -62,7 +62,7 @@
     {
       "id": "debt_hunter", "condition": "outstanding_debt",
       "speech": "把他解决了，我们之间的账就好商量了。",
-      "body": "下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果时间结束未能击杀，则欠款+{动态值}",
+      "body": "下一波开始额外出现一个强力boss，击败后，欠款-{动态值}；如果进入地堡前未能击杀，则欠款+{动态值}",
       "icon": "res://assets/ui/finance/challenge_debt.svg",
       "health_multiplier": 3.0, "damage_multiplier": 2.0, "armor_multiplier": 2.0, "size_multiplier": 1.1,
       "boss_templates": ["enemy_elite_rusher", "enemy_underworld_wolf"]

@@ -30,14 +30,18 @@ CombatHitFeedback="*res://scripts/effects/combat_hit_feedback.gd"
 
 [display]
 
-window/size/viewport_width=1152
-window/size/viewport_height=648
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [gui]
 
 theme/custom="res://assets/font/theme_global.tres"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/catalogs/challenge_expansion.zh_CN.translation", "res://localization/catalogs/challenge_expansion.en.translation", "res://localization/catalogs/content.zh_CN.translation", "res://localization/catalogs/content.en.translation", "res://localization/catalogs/gameplay.zh_CN.translation", "res://localization/catalogs/gameplay.en.translation", "res://localization/catalogs/goblin_contracts.zh_CN.translation", "res://localization/catalogs/goblin_contracts.en.translation", "res://localization/catalogs/goblin_trade_expansion.zh_CN.translation", "res://localization/catalogs/goblin_trade_expansion.en.translation", "res://localization/catalogs/messages.zh_CN.translation", "res://localization/catalogs/messages.en.translation", "res://localization/catalogs/talent_tree.zh_CN.translation", "res://localization/catalogs/talent_tree.en.translation", "res://localization/catalogs/ui.zh_CN.translation", "res://localization/catalogs/ui.en.translation", "res://localization/generated/source_aliases.zh_CN.translation", "res://localization/generated/source_aliases.en.translation")
+locale/fallback="zh_CN"
 
 [physics]
 
@@ -51,8 +55,3 @@ renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_transforms_to_pixel=true
-
-[internationalization]
-
-locale/translations=PackedStringArray("res://localization/catalogs/challenge_expansion.zh_CN.translation", "res://localization/catalogs/challenge_expansion.en.translation", "res://localization/catalogs/content.zh_CN.translation", "res://localization/catalogs/content.en.translation", "res://localization/catalogs/gameplay.zh_CN.translation", "res://localization/catalogs/gameplay.en.translation", "res://localization/catalogs/goblin_contracts.zh_CN.translation", "res://localization/catalogs/goblin_contracts.en.translation", "res://localization/catalogs/goblin_trade_expansion.zh_CN.translation", "res://localization/catalogs/goblin_trade_expansion.en.translation", "res://localization/catalogs/messages.zh_CN.translation", "res://localization/catalogs/messages.en.translation", "res://localization/catalogs/ui.zh_CN.translation", "res://localization/catalogs/ui.en.translation", "res://localization/generated/source_aliases.zh_CN.translation", "res://localization/generated/source_aliases.en.translation")
-locale/fallback="zh_CN"

@@ -53,12 +53,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -224.0
-offset_top = -31.0
+offset_left = -384.0
+offset_top = -56.0
 offset_right = -44.0
-offset_bottom = -14.0
-theme_override_colors/font_color = Color(0.77, 0.84, 0.78, 0.48)
-theme_override_font_sizes/font_size = 10
+offset_bottom = -24.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.77, 0.84, 0.78, 0.8)
+theme_override_font_sizes/font_size = 20
 text = "ui.main_menu.version"
 horizontal_alignment = 2
 
@@ -81,7 +82,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 
 [node name="TitleArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1055827538]
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 333)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -109,11 +110,11 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="MiddleSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=605045204]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 53)
 layout_mode = 2
 
 [node name="ButtonArea" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=1647143214]
-custom_minimum_size = Vector2(0, 248)
+custom_minimum_size = Vector2(0, 413)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -128,7 +129,7 @@ theme = ExtResource("2_menu_theme")
 theme_override_constants/separation = 8
 
 [node name="StartBattleShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=304726107]
-custom_minimum_size = Vector2(216, 56)
+custom_minimum_size = Vector2(360, 93)
 layout_mode = 2
 
 [node name="StartBattleButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell" unique_id=1844054139]
@@ -147,7 +148,7 @@ icon_alignment = 0
 expand_icon = true
 
 [node name="CampEntryShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1695527156]
-custom_minimum_size = Vector2(216, 56)
+custom_minimum_size = Vector2(360, 93)
 layout_mode = 2
 
 [node name="CampEntryButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell" unique_id=1204232876]
@@ -166,7 +167,7 @@ icon_alignment = 0
 expand_icon = true
 
 [node name="SettingsShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow"]
-custom_minimum_size = Vector2(216, 56)
+custom_minimum_size = Vector2(360, 93)
 layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell"]
@@ -185,7 +186,7 @@ icon_alignment = 0
 expand_icon = true
 
 [node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
-custom_minimum_size = Vector2(216, 56)
+custom_minimum_size = Vector2(360, 93)
 layout_mode = 2
 
 [node name="QuitButton" type="Button" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell" unique_id=1911587221]

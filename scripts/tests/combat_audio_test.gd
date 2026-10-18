@@ -20,12 +20,23 @@ func _run() -> void:
 	reset_audio()
 	var assets_valid := true
 	var assets_count := 0
+	var unique_assets: Dictionary = {}
 	for profile: Dictionary in AudioManager.COMBAT_LIBRARY.PROFILES.values():
 		assets_valid = assets_valid and profile.streams.size() == 1
 		for stream: AudioStreamWAV in profile.streams:
 			assets_count += 1
+			unique_assets[stream.resource_path] = true
 			assets_valid = assets_valid and stream != null and stream.mix_rate == 48000 and not stream.stereo and stream.loop_mode == AudioStreamWAV.LOOP_DISABLED and stream.get_length() > 0.1
-	check(assets_valid and assets_count == 23, "each active cue imports one of 23 non-looping mono WAVs at 48 kHz")
+	check(assets_valid and assets_count == 20 and unique_assets.size() == 18, "20 active cues share 18 non-looping mono WAVs at 48 kHz")
+	for cue: String in AudioManager.COMBAT_LIBRARY.SOUND_REUSE:
+		var source: String = AudioManager.COMBAT_LIBRARY.SOUND_REUSE[cue]
+		var canonical: Dictionary = AudioManager.COMBAT_LIBRARY.PROFILES[source]
+		reset_audio()
+		check(AudioManager.play_combat_sfx(cue) and paths == [canonical.streams[0].resource_path], "reaction plays canonical resource: " + cue)
+		check(not AudioManager.play_combat_sfx(source), "reaction shares source cooldown: " + cue)
+		reset_audio()
+		check(AudioManager.play_combat_sfx(source) and not AudioManager.play_combat_sfx(cue), "source prevents duplicate reaction sound: " + cue)
+	reset_audio()
 	check(AudioServer.get_bus_send(AudioServer.get_bus_index("CombatSFX")) == "SFX", "combat follows existing SFX volume setting")
 	check(AudioServer.get_bus_effect_count(AudioServer.get_bus_index("CombatSFX")) == 2, "combat compressor and limiter installed")
 	check(AudioManager.play_weapon_hit_sfx("weapon_void_blade"), "bow configured hit plays")
@@ -42,6 +53,7 @@ func _run() -> void:
 	check(not AudioManager.play_weapon_hit_sfx("unknown_weapon"), "unknown weapon safely rejected")
 	reset_audio()
 	check(not AudioManager.play_enchantment_sfx("ice") and not AudioManager.play_reaction_sfx("freeze"), "ice and freeze are intentionally silent")
+	check(not AudioManager.play_reaction_sfx("cancel") and not AudioManager._play_combat_sfx_now("reaction_cancel") and not AudioManager.play_sfx_path("res://assets/audio/sfx/combat/reaction_cancel_01.wav"), "light-dark cancellation is silent through every playback API")
 	check(not AudioManager.play_weapon_hit_sfx("weapon_kunyu_ritual_tome"), "tome sharing the ice cue has no hit audio")
 	check(not AudioManager.play_sfx_path("res://assets/audio/sfx/combat/ice_01.wav") and not AudioManager.play_sfx_path("res://assets/audio/sfx/combat/reaction_freeze_01.wav"), "raw asset paths cannot bypass disabled sounds")
 	var muted_impact := AudioManager.begin_combat_audio()
@@ -50,9 +62,9 @@ func _run() -> void:
 	AudioManager.flush_combat_audio(true)
 	check(heard.is_empty() and muted_impact.requests.is_empty() and AudioManager._pending_audio_impacts.is_empty() and AudioManager._combat_bursts.is_empty(), "disabled requests allocate no pending sounds or burst budget")
 	check(not AudioManager._play_combat_sfx_now("ice") and not AudioManager._play_combat_sfx_now("reaction_freeze"), "immediate playback also rejects disabled cues")
-	for cue in ["lightning", "water", "fire"]:
+	for cue in ["lightning", "water", "wind"]:
 		check(AudioManager.play_combat_sfx(cue), "burst detail accepted: " + cue)
-	check(not AudioManager.play_combat_sfx("wind"), "fourth simultaneous detail suppressed")
+	check(not AudioManager.play_combat_sfx("reaction_ice_expand"), "fourth simultaneous detail suppressed")
 	check(AudioManager.play_combat_sfx("wood_arrow") and AudioManager.play_combat_sfx("electric_spark") and AudioManager.play_combat_sfx("light_sword"), "important impacts retain separate burst budget")
 	var streams_before: Array[AudioStream] = []
 	for player: AudioStreamPlayer in AudioManager._combat_players:
@@ -116,7 +128,7 @@ func _run() -> void:
 	check(not heard.has("light_sword"), "sword descent is not an impact")
 	sword.call("_process", .03)
 	AudioManager.flush_combat_audio(true)
-	check(heard.count("light_sword") == 1 and enemies[0].current_hp == 9910, "sword sound coincides with landing")
+	check(heard.count("light_sword") == 1 and enemies[0].current_hp == 9935, "sword sound coincides with landing and current 0.65 damage multiplier")
 	sword.call("_land")
 	check(heard.count("light_sword") == 1, "sword landing stays idempotent")
 	await setup([Vector2.ZERO, Vector2(30, 0)])

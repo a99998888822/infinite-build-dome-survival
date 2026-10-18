@@ -159,9 +159,8 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	if not accept_text.is_empty(): _yes.text = accept_text
 	_no.text = decline_text
 	_speech.size = Vector2(220, 58)
-	if _challenge_header:
-		_speech.size.y = maxf(58, ceilf(_text_height(_speech_text, 196)) + 20)
-	_speech_text.size = Vector2(196, _speech.size.y - 20 if _challenge_header else 40)
+	_speech.size.y = maxf(58, ceilf(_text_height(_speech_text, 196)) + 20)
+	_speech_text.size = Vector2(196, _speech.size.y - 20)
 	_speech_tail.position.y = _speech.size.y - 5
 	_speech.position = Vector2(
 		clampf(portrait_rect.end.x - 16, bounds.position.x, bounds.end.x - 224),

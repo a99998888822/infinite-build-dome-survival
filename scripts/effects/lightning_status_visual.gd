@@ -2,6 +2,7 @@ extends Node2D
 
 const ORBIT_PARTICLES: int = 8
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
+const ANCHORS = preload("res://scripts/effects/enemy_visual_anchors.gd")
 
 var _enemy: Node = null
 var _remaining: float = 0.65
@@ -45,11 +46,8 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	var fade: float = clampf(_remaining / maxf(_duration, 0.01), 0.0, 1.0)
 	var body_radius := 10.0
-	if _enemy != null:
-		var collision_shape := _enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
-		if collision_shape != null and collision_shape.shape is CircleShape2D:
-			body_radius = (collision_shape.shape as CircleShape2D).radius
-	var center := Vector2(0.0, -body_radius - 10.0)
+	if _enemy != null: body_radius = ANCHORS.radius(_enemy)
+	var center: Vector2 = ANCHORS.head(_enemy) if _enemy != null else Vector2(0,-20)
 	var orbit_radius := clampf(body_radius * 0.48, 7.0, 12.0)
 	var orbit_x := orbit_radius * 1.35
 	var orbit_y := orbit_radius * 0.62

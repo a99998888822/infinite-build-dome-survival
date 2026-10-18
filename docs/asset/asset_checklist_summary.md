@@ -182,7 +182,7 @@
 | 已接入 | 电浆炮武器图标 | `weapon_plasma_cannon_v2.png` | `assets/ui/icons/weapons/weapon_plasma_cannon_v2.png` | 128x128 / 1:1 / RGBA PNG | 蓝青电浆核心、金属炮管与木柄 |
 | 已接入 | 食利者钱袋武器图标 | `weapon_rentier_purse.png` | `assets/ui/icons/weapons/weapon_rentier_purse.png` | 128x128 / 1:1 / RGBA PNG | 保留钱袋旁独立金币 |
 | 已接入 | 木质弓箭武器图标 | `weapon_wood_arrow.png` | `assets/ui/icons/weapons/weapon_wood_arrow.png` | 128x128 / 1:1 / RGBA PNG | 用户称“木质短弓”，沿用原图箭矢与现有配置名；11 张均保留同名 PXG/PAL，见[接入记录](art_refresh_plan/weapon_icons_128_installation_2026-10-04.md) |
-| 已接入 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1024x572 / PNG | 哥布林地牢混合像素尺度，脸与金币精修、瞳孔上移确认版；最近邻显示 |
+| 已接入 | 主菜单背景 | `bg_main_menu.png` | `assets/ui/main_menu/bg_main_menu.png` | 1024x572 / PNG | 2026-10-18 确认版：背景按 1024 精度重做，哥布林、符石与金币精修区域原样保留；最近邻显示 |
 | 已接入 | 角色选择背景 | `background.png` | `assets/ui/character_select/background.png` | 640x360 / PNG | 用户确认的像素版，1280×720 等比布局，最近邻显示 |
 | 已接入 | 角色选择按钮与难度底图 | `back_button.png`、`continue_button.png`、`difficulty_*.png` | `assets/ui/character_select/` | 98x25、66x25、32x32 / PNG | 旧木暗铜风格；文字、状态与难度说明由实时控件显示 |
 | 已存在 | 主菜单按钮底图 | `button_main_menu.png` | `assets/ui/main_menu/button_main_menu.png` | 600x186 / PNG |  |

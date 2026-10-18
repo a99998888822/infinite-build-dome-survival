@@ -209,6 +209,7 @@ func cancel() -> void:
 
 
 func _draw() -> void:
+	preload("res://scripts/effects/aligned_atlas.gd").begin(self)
 	if cancelled:
 		return
 	for index in 3:
@@ -219,4 +220,4 @@ func _draw() -> void:
 	var frame := int(age * 18.0) % 8
 	var side := 12.0 if split_generation > 0 else 16.0
 	side *= weapon.get_projectile_visual_scale()
-	draw_texture_rect_region(COIN, Rect2(Vector2.ONE * (-side * 0.5), Vector2.ONE * side), Rect2(frame * 16, 0, 16, 16))
+	preload("res://scripts/effects/aligned_atlas.gd").draw(self,COIN,Rect2(Vector2.ONE*(-side*0.5),Vector2.ONE*side),Rect2(frame*16,0,16,16),Color.WHITE,Transform2D.IDENTITY,1.0)

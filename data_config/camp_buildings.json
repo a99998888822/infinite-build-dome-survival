@@ -4,111 +4,120 @@
     "name": "军械工坊",
     "initial_unlocked": true,
     "type": "human",
-    "role": "武器图鉴解锁、武器基础强化",
+    "role": "武器基础强化",
     "description": "锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。",
     "building_upgrade_costs": {
-      "2": 200,
-      "3": 400,
-      "4": 700,
-      "5": 1200
+      "2": 400,
+      "3": 700
     },
     "levels": {
       "1": [
-        {
-          "unlock": "weapon_pool_basic_fine",
-          "name": "解锁全部基础、精良武器"
-        }
-      ],
-      "2": [
-        {
-          "unlock": "weapon_pool_rare",
-          "name": "解锁全部稀有武器库"
-        },
         {
           "unlock": "camp_upgrade_armory",
           "name": "解锁属性购买升级"
         }
       ],
-      "3": [
-        {
-          "unlock": "weapon_pool_epic",
-          "name": "解锁全部史诗武器"
-        },
+      "2": [
         {
           "stat": "damage_percent",
           "value": 4,
           "name": "通用伤害+4%"
         }
       ],
-      "4": [
-        {
-          "unlock": "weapon_pool_legendary",
-          "name": "解锁全部传说武器"
-        },
+      "3": [
         {
           "stat": "attack_speed",
           "value": 10,
           "name": "攻击速度+10%"
-        }
-      ],
-      "5": [
-        {
-          "unlock": "weapon_pool_precious",
-          "name": "解锁全部珍奇武器"
         }
       ]
     },
     "upgrade_options": [
       {
         "id": "camp_upgrade_weapon_damage",
-        "name": "武器伤害训练",
+        "name": "伤害升级",
         "stat": "damage_percent",
         "currency": "camp_currency",
         "cost": 200,
         "max_level": 10,
         "value_per_level": 1,
-        "required_building_level": 2
-      },
-      {
-        "id": "camp_upgrade_weapon_attack_speed",
-        "name": "武器攻速训练",
-        "stat": "attack_speed",
-        "currency": "camp_currency",
-        "cost": 300,
-        "max_level": 10,
-        "value_per_level": 1,
-        "required_building_level": 2
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/damage.png",
+        "tree_position": [
+          -72,
+          -312
+        ],
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_weapon_crit_chance",
-        "name": "武器暴击训练",
+        "name": "暴击升级",
         "stat": "crit_chance",
         "currency": "camp_currency",
         "cost": 400,
         "max_level": 10,
         "value_per_level": 0.5,
-        "required_building_level": 2
-      },
-      {
-        "id": "camp_upgrade_weapon_crit_damage",
-        "name": "武器爆伤训练",
-        "stat": "crit_damage",
-        "currency": "camp_currency",
-        "cost": 400,
-        "max_level": 10,
-        "value_per_level": 1,
-        "required_building_level": 2
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/crit.png",
+        "tree_position": [
+          -102,
+          -446
+        ],
+        "requires_upgrade": "camp_upgrade_weapon_damage"
       },
       {
         "id": "camp_upgrade_load_capacity",
-        "name": "负载扩容训练",
+        "name": "负载扩容",
         "stat": "load_capacity",
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 5,
         "value_per_level": 2,
-        "required_building_level": 2
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/load.png",
+        "tree_position": [
+          -194,
+          -562
+        ],
+        "requires_upgrade": "camp_upgrade_weapon_crit_chance"
+      },
+      {
+        "id": "camp_upgrade_weapon_crit_damage",
+        "name": "爆伤升级",
+        "stat": "crit_damage",
+        "currency": "camp_currency",
+        "cost": 400,
+        "max_level": 10,
+        "value_per_level": 1,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/crit_damage.png",
+        "tree_position": [
+          56,
+          -452
+        ],
+        "requires_upgrade": "camp_upgrade_weapon_damage"
+      },
+      {
+        "id": "camp_upgrade_weapon_attack_speed",
+        "name": "攻速升级",
+        "stat": "attack_speed",
+        "currency": "camp_currency",
+        "cost": 300,
+        "max_level": 10,
+        "value_per_level": 1,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/speed.png",
+        "tree_position": [
+          84,
+          -290
+        ],
+        "requires_upgrade": ""
       }
+    ],
+    "icon": "res://assets/ui/talents/armory.png",
+    "tree_position": [
+      0,
+      -176
     ]
   },
   {
@@ -116,71 +125,88 @@
     "name": "遗物档案馆",
     "initial_unlocked": true,
     "type": "mixed",
-    "role": "遗物图鉴解锁、遗物套装预览",
+    "role": "幸运与战利品强化",
     "description": "收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。",
     "building_upgrade_costs": {
-      "2": 200,
-      "3": 400,
-      "4": 700,
-      "5": 1200
+      "2": 400,
+      "3": 700
     },
     "levels": {
       "1": [
-        {
-          "unlock": "relic_pool_common_fine",
-          "name": "解锁全部普通、精良遗物库"
-        }
-      ],
-      "2": [
-        {
-          "unlock": "relic_pool_rare",
-          "name": "解锁全部稀有遗物"
-        },
         {
           "unlock": "camp_upgrade_relic_archive",
           "name": "解锁属性购买升级"
         }
       ],
-      "3": [
-        {
-          "unlock": "relic_pool_epic",
-          "name": "解锁全部史诗遗物"
-        },
+      "2": [
         {
           "stat": "drop_rate_percent",
           "value": 5,
           "name": "掉落率+5%"
         }
       ],
-      "4": [
-        {
-          "unlock": "relic_pool_legendary_void",
-          "name": "解锁全部传说、虚空遗物"
-        },
+      "3": [
         {
           "stat": "luck",
           "value": 20,
           "name": "幸运+20"
-        }
-      ],
-      "5": [
-        {
-          "unlock": "relic_pool_precious",
-          "name": "解锁全部珍奇遗物"
         }
       ]
     },
     "upgrade_options": [
       {
         "id": "camp_upgrade_relic_luck",
-        "name": "遗物鉴定训练",
+        "name": "幸运升级",
         "stat": "luck",
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 10,
         "value_per_level": 1,
-        "required_building_level": 2
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/luck.png",
+        "tree_position": [
+          234,
+          -218
+        ],
+        "requires_upgrade": ""
+      },
+      {
+        "id": "camp_upgrade_drop_rate_percent",
+        "name": "掉落率升级",
+        "stat": "drop_rate_percent",
+        "currency": "camp_currency",
+        "cost": 500,
+        "max_level": 10,
+        "value_per_level": 2,
+        "icon": "res://assets/ui/talents/drop.png",
+        "tree_position": [
+          292,
+          -72
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
+      },
+      {
+        "id": "camp_upgrade_shop_offer_count",
+        "name": "商店扩容选项",
+        "stat": "shop_offer_count_bonus",
+        "currency": "camp_currency",
+        "cost": 1200,
+        "max_level": 5,
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/offers.png",
+        "tree_position": [
+          334,
+          -312
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_relic_luck"
       }
+    ],
+    "icon": "res://assets/ui/talents/archive.png",
+    "tree_position": [
+      154,
+      -88
     ]
   },
   {
@@ -193,12 +219,7 @@
       "currency": "camp_currency",
       "cost": 120
     },
-    "building_upgrade_costs": {
-      "2": 250,
-      "3": 500,
-      "4": 900,
-      "5": 1500
-    },
+    "building_upgrade_costs": {},
     "description": "幸存者锤炼近身搏杀技艺的训练场，锤炼肉身与兵器的配合，近战流派基础特训设施。",
     "levels": {
       "1": [
@@ -211,13 +232,73 @@
     "upgrade_options": [
       {
         "id": "camp_upgrade_melee_damage",
-        "name": "近战伤害训练",
+        "name": "近战伤害升级",
         "stat": "melee_damage",
         "currency": "camp_currency",
         "cost": 100,
         "max_level": 5,
-        "value_per_level": 1
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/melee.png",
+        "tree_position": [
+          -306,
+          -94
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
+      },
+      {
+        "id": "camp_upgrade_move_speed",
+        "name": "移速升级",
+        "stat": "move_speed",
+        "currency": "camp_currency",
+        "cost": 300,
+        "max_level": 5,
+        "value_per_level": 2,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/move.png",
+        "tree_position": [
+          -438,
+          -134
+        ],
+        "requires_upgrade": "camp_upgrade_melee_damage"
+      },
+      {
+        "id": "camp_upgrade_control_power_ranged",
+        "name": "控制强度升级",
+        "stat": "control_power",
+        "currency": "camp_currency",
+        "cost": 600,
+        "max_level": 5,
+        "value_per_level": 2,
+        "icon": "res://assets/ui/talents/control.png",
+        "tree_position": [
+          -364,
+          -274
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_melee_damage"
+      },
+      {
+        "id": "camp_upgrade_enemy_spawn_rate",
+        "name": "怪物频率升级",
+        "stat": "enemy_spawn_rate_percent",
+        "currency": "camp_currency",
+        "cost": 300,
+        "max_level": 10,
+        "value_per_level": 2,
+        "icon": "res://assets/ui/talents/frequency.png",
+        "tree_position": [
+          -584,
+          -114
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_move_speed"
       }
+    ],
+    "icon": "res://assets/ui/talents/blade.png",
+    "tree_position": [
+      -154,
+      -88
     ]
   },
   {
@@ -230,12 +311,7 @@
       "currency": "camp_currency",
       "cost": 140
     },
-    "building_upgrade_costs": {
-      "2": 300,
-      "3": 600,
-      "4": 1000,
-      "5": 1800
-    },
+    "building_upgrade_costs": {},
     "description": "用于训练远程弹道与精准打击的高台。",
     "levels": {
       "1": [
@@ -248,58 +324,89 @@
     "upgrade_options": [
       {
         "id": "camp_upgrade_ranged_damage",
-        "name": "远程伤害训练",
+        "name": "远程伤害升级",
         "stat": "ranged_damage",
         "currency": "camp_currency",
         "cost": 100,
         "max_level": 5,
-        "value_per_level": 1
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/ranged.png",
+        "tree_position": [
+          306,
+          94
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_element_damage",
-        "name": "元素伤害训练",
+        "name": "元素伤害升级",
         "stat": "element_damage",
         "currency": "camp_currency",
         "cost": 250,
         "max_level": 10,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_projectile_count",
-        "name": "投射物数量训练",
-        "stat": "projectile_count",
-        "currency": "camp_currency",
-        "cost": 10000,
-        "max_level": 2,
-        "value_per_level": 1
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/element.png",
+        "tree_position": [
+          210,
+          216
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_area_size_ranged",
-        "name": "攻击距离训练",
+        "name": "攻击距离升级",
         "stat": "area_size",
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 10,
-        "value_per_level": 5
+        "value_per_level": 5,
+        "icon": "res://assets/ui/talents/reach.png",
+        "tree_position": [
+          438,
+          134
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_ranged_damage"
       },
       {
         "id": "camp_upgrade_damage_area_size",
-        "name": "伤害范围训练",
+        "name": "伤害范围升级",
         "stat": "damage_area_size",
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 5,
-        "value_per_level": 2
+        "value_per_level": 2,
+        "icon": "res://assets/ui/talents/area.png",
+        "tree_position": [
+          364,
+          274
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_ranged_damage"
       },
       {
-        "id": "camp_upgrade_control_power_ranged",
-        "name": "远程控制训练",
-        "stat": "control_power",
+        "id": "camp_upgrade_projectile_count",
+        "name": "投射物数量升级",
+        "stat": "projectile_count",
         "currency": "camp_currency",
-        "cost": 600,
-        "max_level": 5,
-        "value_per_level": 2
+        "cost": 10000,
+        "max_level": 2,
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/projectiles.png",
+        "tree_position": [
+          584,
+          114
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_area_size_ranged"
       }
+    ],
+    "icon": "res://assets/ui/talents/range.png",
+    "tree_position": [
+      154,
+      88
     ]
   },
   {
@@ -314,10 +421,7 @@
       "cost": 180
     },
     "building_upgrade_costs": {
-      "2": 400,
-      "3": 800,
-      "4": 1400,
-      "5": 2600
+      "2": 400
     },
     "levels": {
       "1": [
@@ -336,64 +440,89 @@
     "upgrade_options": [
       {
         "id": "camp_upgrade_max_hp",
-        "name": "最大生命训练",
+        "name": "最大生命值升级",
         "stat": "max_hp",
         "currency": "camp_currency",
         "cost": 100,
         "max_level": 10,
         "value_per_level": 1,
-        "required_building_level": 1
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/hp.png",
+        "tree_position": [
+          -234,
+          218
+        ],
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_hp_regen",
-        "name": "每秒回血训练",
+        "name": "回血升级",
         "stat": "hp_regen",
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 5,
         "value_per_level": 0.1,
-        "required_building_level": 1
-      },
-      {
-        "id": "camp_upgrade_shield",
-        "name": "护盾训练",
-        "stat": "shield",
-        "currency": "camp_currency",
-        "cost": 300,
-        "max_level": 5,
-        "value_per_level": 3,
-        "required_building_level": 1
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/regen.png",
+        "tree_position": [
+          -292,
+          72
+        ],
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_armor",
-        "name": "护甲训练",
+        "name": "护甲升级",
         "stat": "armor",
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 5,
         "value_per_level": 3,
-        "required_building_level": 1
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/armor.png",
+        "tree_position": [
+          -334,
+          312
+        ],
+        "requires_upgrade": "camp_upgrade_max_hp"
       },
       {
-        "id": "camp_upgrade_move_speed",
-        "name": "移动速度训练",
-        "stat": "move_speed",
+        "id": "camp_upgrade_shield",
+        "name": "护盾升级",
+        "stat": "shield",
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 5,
-        "value_per_level": 2,
-        "required_building_level": 1
+        "value_per_level": 3,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/shield.png",
+        "tree_position": [
+          -418,
+          178
+        ],
+        "requires_upgrade": "camp_upgrade_max_hp"
       },
       {
         "id": "camp_upgrade_revive_count",
-        "name": "应急复苏训练",
+        "name": "复活次数升级",
         "stat": "revive_count",
         "currency": "camp_currency",
         "cost": 8000,
         "max_level": 1,
         "value_per_level": 1,
-        "required_building_level": 1
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/revive.png",
+        "tree_position": [
+          -390,
+          450
+        ],
+        "requires_upgrade": "camp_upgrade_armor"
       }
+    ],
+    "icon": "res://assets/ui/talents/shelter.png",
+    "tree_position": [
+      -154,
+      88
     ]
   },
   {
@@ -408,10 +537,7 @@
       "cost": 100
     },
     "building_upgrade_costs": {
-      "2": 300,
-      "3": 650,
-      "4": 1100,
-      "5": 2000
+      "2": 300
     },
     "levels": {
       "1": [
@@ -430,39 +556,51 @@
     "upgrade_options": [
       {
         "id": "camp_upgrade_pickup_radius",
-        "name": "拾取范围训练",
+        "name": "拾取范围升级",
         "stat": "pickup_radius",
         "currency": "camp_currency",
         "cost": 100,
         "max_level": 10,
-        "value_per_level": 10
+        "value_per_level": 10,
+        "icon": "res://assets/ui/talents/pickup.png",
+        "tree_position": [
+          72,
+          312
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
       },
       {
         "id": "camp_upgrade_exp_gain_percent",
-        "name": "经验获取训练",
+        "name": "经验获取升级",
         "stat": "exp_gain_percent",
         "currency": "camp_currency",
         "cost": 300,
         "max_level": 10,
-        "value_per_level": 2
-      },
-      {
-        "id": "camp_upgrade_drop_rate_percent",
-        "name": "掉落率训练",
-        "stat": "drop_rate_percent",
-        "currency": "camp_currency",
-        "cost": 500,
-        "max_level": 10,
-        "value_per_level": 2
+        "value_per_level": 2,
+        "icon": "res://assets/ui/talents/exp.png",
+        "tree_position": [
+          102,
+          446
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_pickup_radius"
       },
       {
         "id": "camp_upgrade_currency_gain_percent",
-        "name": "货币获取训练",
+        "name": "货币获取升级",
         "stat": "currency_gain_percent",
         "currency": "camp_currency",
         "cost": 400,
         "max_level": 10,
-        "value_per_level": 3
+        "value_per_level": 3,
+        "icon": "res://assets/ui/talents/currency.png",
+        "tree_position": [
+          -56,
+          452
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_pickup_radius"
       },
       {
         "id": "camp_upgrade_initial_principal",
@@ -471,44 +609,52 @@
         "currency": "camp_currency",
         "cost": 500,
         "max_level": 10,
-        "value_per_level": 10
+        "value_per_level": 10,
+        "icon": "res://assets/ui/talents/principal.png",
+        "tree_position": [
+          232,
+          548
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_exp_gain_percent"
       },
       {
         "id": "camp_upgrade_interest_rate",
-        "name": "利率训练",
+        "name": "初始利率",
         "stat": "interest_rate",
         "currency": "camp_currency",
         "cost": 1000,
         "max_level": 5,
-        "value_per_level": 1
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/interest.png",
+        "tree_position": [
+          52,
+          594
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": "camp_upgrade_exp_gain_percent"
       },
       {
         "id": "camp_upgrade_shop_price",
-        "name": "商店议价训练",
+        "name": "商店议价",
         "stat": "shop_price_percent",
         "currency": "camp_currency",
         "cost": 800,
         "max_level": 5,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_shop_offer_count",
-        "name": "商店选项扩容",
-        "stat": "shop_offer_count_bonus",
-        "currency": "camp_currency",
-        "cost": 1200,
-        "max_level": 2,
-        "value_per_level": 1
-      },
-      {
-        "id": "camp_upgrade_enemy_spawn_rate",
-        "name": "敌潮承压训练",
-        "stat": "enemy_spawn_rate_percent",
-        "currency": "camp_currency",
-        "cost": 300,
-        "max_level": 10,
-        "value_per_level": 2
+        "value_per_level": 1,
+        "icon": "res://assets/ui/talents/bargain.png",
+        "tree_position": [
+          -84,
+          290
+        ],
+        "required_building_level": 1,
+        "requires_upgrade": ""
       }
+    ],
+    "icon": "res://assets/ui/talents/council.png",
+    "tree_position": [
+      0,
+      176
     ]
   }
 ]

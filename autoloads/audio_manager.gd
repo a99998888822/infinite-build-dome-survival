@@ -74,7 +74,7 @@ func _ensure_combat_audio() -> void:
 	_ensure_bus(BUS_COMBAT)
 	var bus_index := AudioServer.get_bus_index(BUS_COMBAT)
 	AudioServer.set_bus_send(bus_index, BUS_SFX)
-	# This bus contains only combat one-shots; UI and music retain their mix.
+	# Combat audio shares this mix; UI and music stay separate.
 	if AudioServer.get_bus_effect_count(bus_index) == 0:
 		var compressor := AudioEffectCompressor.new()
 		compressor.threshold = -12.0

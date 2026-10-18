@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cwmesfwr7r7e1"
+
+[deps]
+
+files=["res://localization/catalogs/talent_tree.zh_CN.translation", "res://localization/catalogs/talent_tree.en.translation"]
+
+source_file="res://localization/catalogs/talent_tree.csv"
+dest_files=["res://localization/catalogs/talent_tree.zh_CN.translation", "res://localization/catalogs/talent_tree.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

@@ -47,7 +47,7 @@ func pose_matches(label: String) -> void:
 	check(error <= 0.001, "%s: no hit offset (actual %.3f)" % [label, error])
 	check(candidate.sprite.texture == baseline.sprite.texture and candidate.sprite.scale == baseline.sprite.scale, label + ": animation frame and fit remain intact")
 	var displacement := candidate.sprite.global_transform.basis_xform(candidate._hit_visual.applied_offset)
-	check(displacement.is_equal_approx(Vector2(14, -5)), label + ": strong shake keeps its world amplitude across poses/scales")
+	check(displacement.is_equal_approx(Vector2(5, -2)), label + ": reduced shake keeps its world amplitude across poses/scales")
 
 func _run() -> void:
 	CampProgression.begin_transient_session()

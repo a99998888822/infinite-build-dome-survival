@@ -42,7 +42,7 @@ func _run() -> void:
 	root.unfocusable = true
 	root.always_on_top = false
 	root.size = Vector2i(1152, 648)
-	root.content_scale_size = Vector2i(1152, 648)
+	root.content_scale_size = Vector2i(1920, 1080)
 	await frames()
 	var flow := game.get_main_flow_coordinator()
 	var starting: Array[String] = ["weapon_void_blade"]
@@ -61,19 +61,21 @@ func _run() -> void:
 	skin = hud.find_child("ParchmentPanelSkin", true, false) as Control
 	check(skin.get_script().resource_path == "res://scripts/ui/stats_drawer_skin.gd", "uses production skin")
 	var panel: Texture2D = skin.get("PANEL")
-	check(panel.resource_path == "res://assets/ui/stats_drawer/stats_parchment_panel.png" and panel.get_size() == Vector2(128, 256), "uses selected 128x256 production parchment")
+	check(panel.resource_path == "res://assets/ui/stats_drawer/stats_parchment_panel.png" and panel.get_size() == Vector2(288, 516), "uses selected A+ 288x516 production parchment")
 	check(hud.find_child("LeatherPullHandle", true, false) == null, "old leather handle removed")
 	check(hud.stats_drawer.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "nearest pixel filtering")
 	for viewport_size in [Vector2i(1152, 648), Vector2i(1024, 576), Vector2i(1920, 1080), Vector2i(640, 360)]:
 		root.size = viewport_size
-		root.content_scale_size = viewport_size
+		root.content_scale_size = Vector2i(1920, 1080)
 		await frames(12)
 		hud._set_drawer_open(true, false)
 		await frames(3)
 		check(hud.drawer_toggle_button.text == ">", "open drawer has close arrow")
-		check(hud.stats_scroll.get_global_rect().position.y >= skin.global_position.y + 84, "attributes clear the brass clip")
-		check(hud.stats_scroll.get_global_rect().end.y <= skin.get_global_rect().end.y - 76, "attributes retain bottom padding")
-		check(hud.stats_scroll.get_global_rect().end.y + 8 <= hud._drawer_scroll_hint.get_global_rect().position.y, "scroll hint has its own padded space on paper")
+		check(hud.stats_scroll.get_global_rect().position.y >= skin.global_position.y + 144, "attributes retain padding below the A+ rolled parchment")
+		var art_left := skin.global_position.x + floorf((skin.size.x - 416.0) / 2.0)
+		check(hud.stats_scroll.get_global_rect().position.x >= art_left + 64.0 and hud.stats_scroll.get_global_rect().end.x <= art_left + 352.0, "attributes stay on paper inside the A+ metal frame")
+		check(hud.stats_scroll.get_global_rect().end.y <= skin.get_global_rect().end.y - 84, "attributes retain bottom padding")
+		check(not hud._drawer_scroll_hint.visible or hud.stats_scroll.get_global_rect().end.y + 8 <= hud._drawer_scroll_hint.get_global_rect().position.y, "visible scroll hint has its own padded space on paper")
 		await capture("battle_%dx%d" % [viewport_size.x, viewport_size.y])
 		await click_toggle()
 		check(not hud.is_stats_drawer_open() and hud.drawer_toggle_button.text == "<", "mouse click closes drawer and exposes open arrow")
@@ -89,7 +91,7 @@ func _run() -> void:
 		check(is_equal_approx(bar.value, maxf(0, bar.max_value - bar.page)), "last attribute remains reachable")
 		hud.stats_scroll.scroll_vertical = 0
 	root.size = Vector2i(1152, 648)
-	root.content_scale_size = Vector2i(1152, 648)
+	root.content_scale_size = Vector2i(1920, 1080)
 	await frames(10)
 	hud._set_drawer_open(true, false)
 	flow.finish_current_wave()
@@ -117,6 +119,13 @@ func _run() -> void:
 	hud.stats_scroll.scroll_vertical = 100000
 	await frames(4)
 	await capture("finance_scrolled_1152x648")
+	hud.stats_scroll.scroll_vertical = 0
+	root.size = Vector2i(1920, 1080)
+	await frames(12)
+	await capture("finance_1920x1080")
+	popup._select_tab("bank")
+	await frames(8)
+	await capture("bank_1920x1080")
 	if not output.is_empty():
 		var file := FileAccess.open(output.path_join("capture_report.json"), FileAccess.WRITE)
 		file.store_string(JSON.stringify({"failures": failures, "records": records}, "\t") + "\n")
@@ -146,7 +155,7 @@ func click_toggle() -> void:
 
 func capture(label: String) -> void:
 	await frames(3)
-	var record := {"name": label, "window": str(root.size), "skin": str(skin.get_global_rect()), "godot_focus": root.has_focus(), "always_on_top": root.always_on_top}
+	var record := {"name": label, "window": str(root.size), "skin": str(skin.get_global_rect()), "scroll": str(hud.stats_scroll.get_global_rect()), "list_minimum": str(hud.stats_list.get_combined_minimum_size()), "godot_focus": root.has_focus(), "always_on_top": root.always_on_top}
 	if DisplayServer.get_name() != "headless" and not output.is_empty():
 		await RenderingServer.frame_post_draw
 		var im := root.get_texture().get_image()

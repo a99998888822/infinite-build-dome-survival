@@ -2,6 +2,7 @@ extends "res://scripts/tests/pixel_combat_effect_test.gd"
 
 var heard: Array[String] = []
 var gains: Dictionary = {}
+var played_paths: Dictionary = {}
 var projectile_serial := 0
 
 
@@ -11,6 +12,7 @@ func reset_audio() -> void:
 	AudioManager._combat_bursts.clear()
 	heard.clear()
 	gains.clear()
+	played_paths.clear()
 
 
 func prepare(ids: Array, positions: Array = [Vector2.ZERO]) -> void:
@@ -49,8 +51,9 @@ func drain() -> void:
 
 
 func _run() -> void:
-	AudioManager.combat_sfx_played.connect(func(cue: String, _path: String):
+	AudioManager.combat_sfx_played.connect(func(cue: String, path: String):
 		heard.append(cue)
+		played_paths[cue] = path
 		for player: AudioStreamPlayer in AudioManager._combat_players:
 			if player.playing and str(player.get_meta("cue_id", "")) == cue:
 				gains[cue] = player.volume_db)
@@ -92,6 +95,7 @@ func _run() -> void:
 	hit(enemies[0])
 	await drain()
 	check(heard.count("reaction_conduct") == 1 and not heard.has("water") and not heard.has("lightning"), "deferred first lightning shares water contact and substitutes conduction")
+	check(played_paths.get("reaction_conduct") == "res://assets/audio/sfx/combat/lightning_01.wav" and gains.get("reaction_conduct") == -10.0, "wet electric arc reuses ordinary arc audio and gain")
 	check(is_equal_approx(float(gains.get("wood_arrow", 0)), -12.0), "deferred conduction still attenuates the original weapon hit")
 
 	await prepare(["scroll_fire", "scroll_lightning"])
@@ -117,12 +121,13 @@ func _run() -> void:
 	# Another light source tags the enemy after the arrow but before the hole arms.
 	enemies[0].apply_light(5.0)
 	await drain()
-	check(heard.has("reaction_cancel") and not heard.has("black_hole"), "deferred black-hole arm substitutes light-dark cancellation: " + str(heard))
+	check(not heard.has("reaction_cancel") and not heard.has("black_hole") and not enemies[0].has_status("light"), "deferred light-dark cancellation clears light silently: " + str(heard))
 
 	await prepare(["scroll_fire", "scroll_black_hole"])
 	hit(enemies[0])
 	await drain()
-	check(heard.has("reaction_dark_flame") and not heard.has("black_hole"), "dark flame replaces the black-hole onset")
+	check(not heard.has("reaction_dark_flame") and not heard.has("black_hole"), "silent dark flame still suppresses the black-hole onset")
+	check(enemies[0].has_status("dark_flame") and not played_paths.values().has("res://assets/audio/sfx/combat/fire_01.wav"), "dark-flame status applies without fire-pool audio")
 	for child in host.get_children():
 		if child is FireSeed:
 			child.set_process(false)
@@ -138,7 +143,8 @@ func _run() -> void:
 			child.set_process(false)
 			child._land()
 	await drain()
-	check(heard.has("reaction_holy") and not heard.has("light_sword"), "holy flame replaces ordinary sword impact")
+	check(not heard.has("reaction_holy") and not heard.has("light_sword"), "silent holy flame still suppresses ordinary sword impact")
+	check(enemies[0].has_status("holy_flame") and not played_paths.values().has("res://assets/audio/sfx/combat/fire_01.wav"), "holy-flame status applies without fire-pool audio")
 
 	await prepare(["scroll_wind"], [Vector2.ZERO, Vector2(60, 0)])
 	enemies[0].apply_wet(5.0, 0.8)
@@ -182,6 +188,7 @@ func _run() -> void:
 	spark._process(0.51)
 	await drain()
 	check(heard.has("reaction_conduct_strike") and not heard.has("reaction_conduct") and not heard.has("electric_spark") and not heard.has("spark_charge"), "later wet landing retains thunder inside its combined cue without replaying charge")
+	check(played_paths.get("reaction_conduct_strike") == "res://assets/audio/sfx/combat/electric_spark_01.wav" and gains.get("reaction_conduct_strike") == -14.0, "wet landing reuses ordinary thunder audio and gain")
 
 	await prepare(["scroll_electric_spark"], [Vector2.ZERO, Vector2(10, 0)])
 	enemies[0].apply_wet(5.0, 0.8)

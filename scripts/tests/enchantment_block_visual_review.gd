@@ -92,11 +92,14 @@ func _spawn(id: String, at: Vector2) -> void:
 
 
 func _targets(kind: String) -> Vector2:
-	var center := battle.player.global_position + Vector2(220, 30)
+	var review_angle := 0.0
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--review-angle="): review_angle = deg_to_rad(float(arg.trim_prefix("--review-angle=")))
+	var center := battle.player.global_position + Vector2(220, 30).rotated(review_angle)
 	_spawn("enemy_mutated_grub", center)
 	if kind == "wind":
 		for offset in [Vector2(85, 0), Vector2(150, 0), Vector2(210, 0)]:
-			_spawn("enemy_mutated_grub", center + offset)
+			_spawn("enemy_mutated_grub", center + offset.rotated(review_angle))
 	else:
 		for offset in [Vector2(35,-34),Vector2(35,34),Vector2(70,0),Vector2(100,-65),Vector2(100,65)]:
 			_spawn("enemy_echo_bat",center+offset)

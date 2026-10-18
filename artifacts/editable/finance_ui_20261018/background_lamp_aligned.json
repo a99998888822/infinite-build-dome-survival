@@ -1,0 +1,20 @@
+{
+  "source": "artifacts/sources/finance_ui_20261018/finance_background_r03_restyle_16x9.png",
+  "source_sha256": "3390e24822729ce510c24693befc9e1727ee606366442c2e0414e348a3c24550",
+  "old_center": [
+    727,
+    284
+  ],
+  "light_center": [
+    752,
+    207
+  ],
+  "size": [
+    1672,
+    941
+  ],
+  "method": "local tint separation and repositioning",
+  "fixture_pixels_unchanged": true,
+  "outside_light_regions_unchanged": true,
+  "sha256": "00f6cb8c470f91a18da109cb31d13dda930a5cbf441780527ba07b2e16a4214b"
+}

@@ -7,6 +7,7 @@ uniform int detail = 2;
 uniform float reach = 55.2;
 uniform float effect_time = 0.0;
 uniform float progress = 0.0;
+uniform vec2 direction = vec2(1.0,0.0);
 varying vec2 point;
 
 void vertex() { point = VERTEX; }
@@ -102,6 +103,6 @@ void fragment() {
     if(kind==0) c=shock(p,t,progress);
     else if(kind==1) c=water(p,t,progress);
     else if(kind==2) c=hole(p,t,progress);
-    else c=wind(p,t,progress);
+    else c=wind(vec2(dot(p,direction),dot(p,vec2(-direction.y,direction.x))),t,progress);
     COLOR=c;
 }

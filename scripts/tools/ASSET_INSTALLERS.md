@@ -23,9 +23,9 @@ python scripts/tools/install_goblin_portraits.py --check
 
 安装用户确认的新 PNG 时，给前三种工具传入 `--source <目录>`。输入目录采用与 `assets/` 相同的相对布局，例如 `sprites/player/combat/void_hunter_idle_right.png`；文件名、帧数和尺寸须符合当前游戏配置。先完整校验输入，再复制文件并核对复制前后哈希，沿用现有 `.import`。Boss 工具同时重建当前五组动作帧表。
 
-哥布林工具使用 `--source <目录>`，目录内需要五张 256×256 RGBA PNG：`goblin_neutral.png`、`goblin_downcast.png`、`goblin_displeased.png`、`goblin_smile.png`、`goblin_delighted.png`。它组装1280×256理财图集和1024×1024结算图集，并校验表情对应关系。当前可编辑源保存在 `assets/ui/finance/portraits/`，详见[256版接入记录](../../docs/asset/art_refresh_plan/goblin_256_installation_2026-10-04.md)。
+哥布林工具使用 `--source <目录>`，当前接入五张 320×320 RGBA PNG，最多16色、硬透明。运行表情名为 `neutral/downcast/displeased/smile/delighted`，同时接受确认稿的 `neutral/worried/angry/sly/excited` 文件名（均带 `goblin_` 前缀）。工具组装1600×320理财图集和1280×1280结算图集，并校验表情映射和浮动帧没有裁掉不透明像素。
 
-当前哥布林正式稿为用户确认的 r8 分层阴影版，已同步脸部、帽子、衣服的阴影并保持手部原样。重建须使用上述正式立绘目录内当前PNG或PXG，不能使用历史平涂稿覆盖。
+2026-10-18：当前哥布林正式稿为用户确认的 A+++，重建来源为 `artifacts/editable/finance_ui_20261018/portraits/`；面板采用该目录上一级的 `panel_Aplus.png`，理财背景采用同级 `background_lamp_aligned.png`（以原始附件为底，按用户要求将紫色光晕移到吊灯中心）。`align_finance_lamp_glow.py --output <新路径>` 可重建背景校正版。旧256px立绘和旧背景合成方式均已被取代，详见[接入记录](../../docs/asset/finance_ui_installation_2026-10-18.md)。
 
 环境素材工具 `install_battle_environment_assets.py <目录>` 保留原接口，输入为该目录中的 `128px/` 编号 PNG。
 

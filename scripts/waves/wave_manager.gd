@@ -37,6 +37,7 @@ var running: bool = false
 const CLEANUP_SECONDS := 10.0
 var cleanup_active := false
 var cleanup_time_left := 0.0
+var evacuation: Node
 var _wave_finish_queued := false
 var difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _difficulty: Dictionary = BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID)
@@ -112,12 +113,13 @@ func _process(delta: float) -> void:
 		return
 	if player == null or not player.is_alive() or run_statistics.frozen:
 		return
-	var active_delta := maxf(0.0, minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
+	var evacuating: bool = is_instance_valid(evacuation) and evacuation.is_active()
+	var active_delta := maxf(0.0,delta if evacuating else minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
 	enemy_pressure.advance(active_delta)
 	wave_challenges.advance_enemy_lifetimes(active_delta)
-	if cleanup_active:
+	if cleanup_active and not evacuating:
 		cleanup_time_left = maxf(0.0, cleanup_time_left - delta)
-	else:
+	elif not evacuating:
 		wave_time_left = maxf(0.0, wave_time_left - delta)
 	var live_enemies := 0
 	for enemy in EnemyRegistry.get_registered_enemies():
@@ -129,7 +131,13 @@ func _process(delta: float) -> void:
 		_process_spawn_timers(delta)
 	if finance_system != null:
 		finance_system.tick(delta)
+	if evacuating:
+		evacuation.advance(delta)
+		return
 	if wave_time_left <= 0.0:
+		if is_instance_valid(evacuation):
+			evacuation.begin()
+			return
 		if not cleanup_active:
 			spawn_timers_ms.clear()
 			_elite_spawn_schedule.clear()
@@ -167,6 +175,7 @@ func _finish_elapsed_wave() -> void:
 
 
 func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
+	if is_instance_valid(evacuation): evacuation.reset()
 	cleanup_active = false
 	cleanup_time_left = 0.0
 	_wave_finish_queued = false
@@ -304,8 +313,11 @@ func finish_current_wave() -> void:
 	if not running:
 		return
 	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
-	wave_challenges.finish_combat(goblin_trades.pressure_snapshot, cleanup_active and cleanup_time_left <= 0.0, get_living_enemy_count())
-	if cleanup_active and cleanup_time_left <= 0.0:
+	var evacuated: bool = is_instance_valid(evacuation) and evacuation.extraction_pending
+	wave_challenges.finish_combat(goblin_trades.pressure_snapshot, not evacuated and cleanup_active and cleanup_time_left <= 0.0, get_living_enemy_count())
+	wave_challenges.pressure["evacuated"] = evacuated
+	wave_challenges.pressure["evacuation_seconds"] = evacuation.elapsed if evacuated else 0.0
+	if evacuated or (cleanup_active and cleanup_time_left <= 0.0):
 		wave_challenges.resolve_debt_target(current_wave_index + 1, false, goblin_loans, finance_system)
 	finance_system.end_capital_protection(current_wave_index + 1)
 	enemy_pressure.finish_wave(wave_challenges.pressure)
@@ -323,7 +335,8 @@ func finish_current_wave() -> void:
 
 
 func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO, debt_target := false) -> EnemyController:
-	if cleanup_active or _wave_finish_queued or not _finishing_wave_id.is_empty() or (running and wave_time_left <= 0.0):
+	var evacuation_spawn: bool = is_instance_valid(evacuation) and evacuation.allows_spawn(position)
+	if _wave_finish_queued or not _finishing_wave_id.is_empty() or ((cleanup_active or (running and wave_time_left <= 0.0)) and not evacuation_spawn):
 		return null
 	var enemy_data := DataRegistry.get_record("enemies", enemy_id)
 	if enemy_data.is_empty():
@@ -1014,11 +1027,14 @@ func _on_enemy_died(enemy: EnemyController, drop_table_id: String, death_positio
 		wave_challenges.record_enemy_death(enemy.get_instance_id())
 	if running and DataRegistry.has_record("enemies", enemy.enemy_id) and not bool(enemy.get_meta("exclude_reward_progress", false)) and not (enemy.enemy_data.get("tags", []) as Array).has("summoned"):
 		_augmentation_valid_kills += 1
-	var actions := drop_reward_system.build_drop_actions(drop_table_id, player)
-	_queue_drop_actions(actions, death_position)
+	var reward_table := "drop_basic_enemy" if bool(enemy.get_meta("evacuation_hunter",false)) else drop_table_id
+	var actions := drop_reward_system.build_drop_actions(reward_table, player)
 	var tip_tray_amount := finance_system.roll_enemy_kill_bonus_drops() if finance_system != null else 0
 	if tip_tray_amount > 0:
-		_queue_drop_actions([{"type": "exp_orb", "amount": tip_tray_amount}], death_position)
+		actions.append({"type": "exp_orb", "amount": tip_tray_amount})
+	if bool(enemy.get_meta("evacuation_enemy",false)) and is_instance_valid(evacuation):
+		actions = evacuation.scale_reward_actions(actions)
+	_queue_drop_actions(actions, death_position)
 
 
 func _spawn_tip_tray_drop(amount: int, drop_position: Vector2) -> void:

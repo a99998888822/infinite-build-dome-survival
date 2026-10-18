@@ -623,29 +623,29 @@
     },
     {
       "asset": "assets/ui/finance/finance_background.png",
-      "sha256": "dcf1ee91b4824fdb080665f4de7663bcade38f916d343c76bda099c2ca38d784",
+      "sha256": "00f6cb8c470f91a18da109cb31d13dda930a5cbf441780527ba07b2e16a4214b",
       "size": [
-        2752,
-        1536
+        1672,
+        941
       ],
-      "editable": "artifacts/editable/finance_background/source-map.json",
-      "mode": "hybrid_png_with_pxg_tiles_and_mask",
-      "source": "artifacts/sources/finance/finance_table_ui.png",
-      "recipe": "docs/asset/art_refresh_plan/finance_table_ui_installation_2026-10-05.md",
-      "revised_source": "artifacts/sources/finance/finance_table_ui_scroll_short.png"
+      "editable": "artifacts/editable/finance_ui_20261018/manifest.json",
+      "mode": "locally_adjusted_original_png",
+      "source": "artifacts/sources/finance_ui_20261018/finance_background_r03_restyle_16x9.png",
+      "recipe": "docs/asset/finance_ui_installation_2026-10-18.md",
+      "revised_source": "artifacts/editable/finance_ui_20261018/background_lamp_aligned.png"
     },
     {
       "asset": "assets/ui/finance/goblin_banker_states.png",
-      "sha256": "6af8eeac43bcd160550e71d7f4e86292691c45370c87c88841989b9d9d034e0e",
+      "sha256": "a897a5d87bdca80b04f8e624dd4cfcdf65465cacd90bec92a77b9619e851f9ed",
       "size": [
-        1280,
-        256
+        1600,
+        320
       ],
-      "editable": "assets/ui/finance/goblin_banker_states.png",
-      "mode": "current_atlas_bitmap",
+      "editable": "artifacts/editable/finance_ui_20261018/manifest.json",
+      "mode": "reviewed_pixel_atlas",
       "frame_size": [
-        256,
-        256
+        320,
+        320
       ]
     },
     {
@@ -1945,7 +1945,7 @@
     },
     {
       "asset": "assets/ui/main_menu/bg_main_menu.png",
-      "sha256": "5b4ae5d51a2edf9bbe1e2745fc66cfe30db0270c209b6db4530ff94bbd590ae0",
+      "sha256": "cade26bc55d14af206303670b4061f3a689ca20500e75bf35440905b12658dfd",
       "size": [
         1024,
         572
@@ -2025,16 +2025,16 @@
     },
     {
       "asset": "assets/ui/settlement/goblin_reactions.png",
-      "sha256": "440b0caad8a67a9207590cb08894631070b07ad6a5cbabc13b9bc054c9d8d1ff",
+      "sha256": "87d7dd72036e5ad614d5e68363bd19ac7e8a0de89ad306c99d60553911e242be",
       "size": [
-        1024,
-        1024
+        1280,
+        1280
       ],
-      "editable": "assets/ui/settlement/goblin_reactions.png",
-      "mode": "current_atlas_bitmap",
+      "editable": "artifacts/editable/finance_ui_20261018/manifest.json",
+      "mode": "reviewed_pixel_atlas",
       "frame_size": [
-        256,
-        256
+        320,
+        320
       ]
     },
     {
@@ -3738,12 +3738,12 @@
     },
     {
       "asset": "assets/ui/stats_drawer/stats_parchment_panel.png",
-      "editable": "assets/ui/stats_drawer/stats_parchment_panel.png",
-      "mode": "native_image",
-      "sha256": "2fd0efb6858667028831a844ac33b5b7a63a528178da185332e49fdf76681749",
+      "editable": "artifacts/editable/finance_ui_20261018/manifest.json",
+      "mode": "reviewed_pixel_panel",
+      "sha256": "b035afad0a6a873c6d20064740bdef7df3d106807a103245347598c9962ef69c",
       "size": [
-        128,
-        256
+        288,
+        516
       ]
     }
   ],

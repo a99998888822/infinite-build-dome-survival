@@ -1,7 +1,6 @@
 extends Node2D
 class_name IceFieldEffect
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
-const BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
@@ -48,8 +47,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._maximum_radius = effect._radius * 2.0
 	AudioManager.begin_combat_audio()
 	AudioManager.play_enchantment_sfx("ice")
-	if not BLOCK_PREVIEW.enabled:
-		PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 0.6, Color(0.62, 0.80, 0.93, 0.55), {"count_multiplier": 0.3, "size_multiplier": 0.52})
+	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 0.6, Color(0.62, 0.80, 0.93, 0.55), {"count_multiplier": 0.3, "size_multiplier": 0.52})
 	effect._damage_enemies()
 	AudioManager.end_combat_audio()
 
@@ -127,8 +125,6 @@ func _damage_enemies() -> void:
 	AudioManager.end_combat_audio()
 
 func _draw() -> void:
-	if BLOCK_PREVIEW.enabled:
-		BLOCK_PREVIEW.draw_ice(self,_radius,_elapsed,_lifetime)
-		return
+	BAKED.ALIGNED.begin(self)
 	var fade := 1.0 - smoothstep(0.64, 1.0, clampf(_elapsed / _lifetime, 0.0, 1.0))
-	BAKED.draw(self, "ice_d%d" % _visual_detail, mini(36, int(_elapsed * 60.0)), Vector2.ONE * (_radius / DEFAULT_RADIUS), Color(1,1,1,fade))
+	BAKED.draw_aligned(self,"ice_d%d" % _visual_detail,mini(36,int(_elapsed*60.0)),Vector2.ONE*(_radius/DEFAULT_RADIUS),Color(1,1,1,fade),Transform2D.IDENTITY,1.0)

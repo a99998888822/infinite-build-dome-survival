@@ -65,7 +65,7 @@ func _run() -> void:
 			and bow.get_stat("projectile_count") == (3 if next_level == 5 else 2),
 			"bow upgrades alternate projectile and damage/cooldown gains: %d" % next_level)
 		check(plasma.calculate_damage_events()[0].damage == [14, 16, 18, 21][next_level - 2]
-			and is_equal_approx(plasma.get_active_cooldown_seconds(), 3.0 - 0.1 * (next_level - 1)) and plasma.get_hit_radius() == 12.0,
+			and is_equal_approx(plasma.get_active_cooldown_seconds(), 3.0 - 0.1 * (next_level - 1)) and plasma.get_hit_radius() == 20.0,
 			"plasma gains damage and fixed cooldown reduction while preserving contact size: %d" % next_level)
 		check(loadout.get_total_load_cost() == 127, "upgrades never increase equipped load")
 	check(bow.get_base_attack_damage() == 27 and is_equal_approx(bow.get_active_cooldown_seconds(), 1.7), "max-level bow has three fixed cooldown reductions")

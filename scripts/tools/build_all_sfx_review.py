@@ -61,11 +61,14 @@ def inventory():
                  if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "SPECS" for t in n.targets))
     labels = {row[0]: (row[1], "元素联动" if row[2] == "联动" else row[2]) for row in specs}
     profiles = {}
+    profile_cues = {}
     for line in (ROOT / "scripts/audio/combat_sound_library.gd").read_text(encoding="utf-8").splitlines():
         found = re.search(r'^\s*"([^"]+)":.*?preload\("([^"]+)"\).*?"gain_db":\s*(-?[\d.]+)', line)
         if found:
             key, path, gain = found.groups()
-            profiles[path[6:]] = (key, float(gain))
+            # Canonical profiles precede their reaction aliases; don't overwrite names.
+            profiles.setdefault(path[6:], (key, float(gain)))
+            profile_cues.setdefault(path[6:], []).append(key)
     references = {}
     for directory in ["autoloads", "scripts", "scenes", "data_config"]:
         for path in (ROOT/directory).rglob("*"):
@@ -79,7 +82,7 @@ def inventory():
     weapons = json.loads((ROOT/"data_config/weapons.json").read_text(encoding="utf-8"))
     uses = {}
     for weapon in weapons:
-        for field, action in [("hit_sfx", "命中"), ("launch_sfx", "发射")]:
+        for field, action in [("hit_sfx", "命中"), ("launch_sfx", "发射"), ("spray_loop_sfx", "持续释放")]:
             path = str(weapon.get(field, "")).removeprefix("res://")
             if path:
                 uses.setdefault(path, []).append(weapon["display_name"] + " · " + action)
@@ -102,6 +105,7 @@ def inventory():
         entries.append({"path": rel, "title": title, "category": category, "gain_db": gain,
                         "description": description, "status": status, "exists": True,
                         "seconds": duration, "channels": channels, "rate": rate, "cue": cue,
+                        "cue_ids": profile_cues.get(rel, []),
                         "uses": uses.get(rel, []), "references": sorted(set(references.get(rel, []))),
                         "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
     for rel, refs in references.items():

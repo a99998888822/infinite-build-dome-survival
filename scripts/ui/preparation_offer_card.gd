@@ -5,9 +5,9 @@ signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
 signal minimum_height_requested(height: float)
-const ICON_FRAME_SIZE := Vector2(44, 44)
-const DESCRIPTION_FONT_SIZE := 11
-const DESCRIPTION_MIN_FONT_SIZE := 9
+const ICON_FRAME_SIZE := Vector2(72, 72)
+const DESCRIPTION_FONT_SIZE := 18
+const DESCRIPTION_MIN_FONT_SIZE := 16
 var offer: Dictionary = {}
 var _icon: TextureRect
 var _icon_frame: Control

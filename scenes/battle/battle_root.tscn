@@ -32,9 +32,9 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.235, 0.274, 0.184, 0.5)
 content_margin_left = 10.0
-content_margin_top = 3.0
+content_margin_top = 8.0
 content_margin_right = 10.0
-content_margin_bottom = 3.0
+content_margin_bottom = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_bar_background"]
 bg_color = Color(0.025, 0.033, 0.022, 0.98)
@@ -240,13 +240,13 @@ theme_override_styles/panel = SubResource("StyleBox_wave_panel")
 
 [node name="Content" type="VBoxContainer" parent="BattleTopBar/WavePanel"]
 alignment = 1
-theme_override_constants/separation = 0
+theme_override_constants/separation = 6
 
 [node name="WaveLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
 theme_override_colors/font_color = Color(0.64, 0.65, 0.56, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 12
 text = "ui.hud.preview.wave"
 horizontal_alignment = 1
 
@@ -254,7 +254,7 @@ horizontal_alignment = 1
 theme_override_colors/font_color = Color(0.89, 0.8, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 12
 text = "60s"
 horizontal_alignment = 1
 
@@ -365,9 +365,9 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -28.0
-offset_top = 72.0
+offset_top = 90.0
 offset_right = 292.0
-offset_bottom = -56.0
+offset_bottom = -90.0
 mouse_filter = 0
 
 [node name="DrawerPanel" type="PanelContainer" parent="HUD/StatsDrawer"]
@@ -394,10 +394,10 @@ flat = true
 
 [node name="ContentMargin" type="MarginContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody"]
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 44
-theme_override_constants/margin_top = 84
-theme_override_constants/margin_right = 44
-theme_override_constants/margin_bottom = 76
+theme_override_constants/margin_left = 84
+theme_override_constants/margin_top = 144
+theme_override_constants/margin_right = 84
+theme_override_constants/margin_bottom = 84
 
 [node name="Content" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin"]
 
@@ -411,7 +411,7 @@ script = ExtResource("16_touch_scroll")
 [node name="StatsList" type="VBoxContainer" parent="HUD/StatsDrawer/DrawerPanel/DrawerBody/ContentMargin/Content/StatsScroll"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
+alignment = 0
 
 [node name="MobileControls" type="CanvasLayer" parent="."]
 layer = 25

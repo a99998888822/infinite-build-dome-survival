@@ -1,0 +1,35 @@
+[
+  {
+    "file": "icon_background.png",
+    "crop": [
+      12,
+      12,
+      54,
+      53
+    ],
+    "source_sha256": "f6c406882d7567bc17eaffac788629ab514420ea531060817599197447d945af",
+    "asset_sha256": "261633e981baf133bf01bd5beac370c87e880d407259cec39a76d8b4912fae8d"
+  },
+  {
+    "file": "hud_background.png",
+    "crop": [
+      11,
+      19,
+      57,
+      50
+    ],
+    "source_sha256": "96978c46d36c3c9dba115b7bebb9a422b3c84fff50e92e8f0bef9b4d7fb40f37",
+    "asset_sha256": "cd22eff29eab0a6b8652c72357b9cf552f473ba93907928bfac71f1fa539a634"
+  },
+  {
+    "file": "hud_border_background.png",
+    "crop": [
+      10,
+      10,
+      54,
+      54
+    ],
+    "source_sha256": "bb56ba8872c6cb270787c94f440f9cf8277e404c64b8b559e8607655c6a47efc",
+    "asset_sha256": "80dc886d699105d7e9ecb3afa0b2293f79a2ff71a08dcb4b152f6794e12c309a"
+  }
+]

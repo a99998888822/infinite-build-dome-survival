@@ -226,6 +226,7 @@ func _live() -> void:
 	check(ui._voice_started and voice_ok and ui._speech.visible, "optional goblin audio respects configuration while dialogue stays visible")
 	ui.sound_enabled = false
 	ui.skip()
+	check(ui._total_title.tr(ui._total_title.text) == "本次获得天赋点", "settlement names the permanent reward Talent Points")
 	check(not ui._cue.playing and not ui._voice.playing and ui._total_value.text == "+ " + ui._number(int(report.camp_currency)), "skip finishes every number and cancels queued audio")
 	check(ui._subtitle.text.contains("难度 2") and ui._heading.text == "结算 ×240%" and ui._conversion.text.contains("×240% = " + ui._number(int(report.camp_currency))), "result shows selected tier, total multiplier and the same paid total")
 	ui.present(report)

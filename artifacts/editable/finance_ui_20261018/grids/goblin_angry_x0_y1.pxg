@@ -1,0 +1,146 @@
+name: goblin_angry_x0_y1-128-reviewed
+size: 128
+kind: tile
+palette: custom
+A: #171923
+B: #444733
+C: #4a4a4a
+D: #25272e
+E: #37383c
+F: #555a40
+G: #737854
+H: #e6dfcf
+I: #f6eed7
+J: #a8a194
+K: #91966b
+L: #673d40
+M: #80644b
+---
+..........................................................................................AAABBBBBBBCDDEEEAAACCABAFABBBBAEEGAAHI
+............................................................................................AABBBBBBBBBDEEEEAACACAFABBBBBAEEDJAA
+.............................................................................................AABBBBBBBBBCBEEEACAAAAFABBBBBAEEBBK
+..............................................................................................AACBBBBBBBBBFAAACCACAFAFBBBBBADBBF
+...............................................................................................AABBBBBBBBBFFAFBCABAAFABBBBBBBGGF
+................................................................................................AABBBBBBBBBFFFBBAAEAFFABBBBBKKGG
+.................................................................................................AACBBBBBFFFFBBBAAEAALAABBEBKKKK
+.................................................................................................AAACBBBBBFFBBFBBAEEAAFAABBBKKKK
+................................................................................................AAAAAACBBFFBBBBBBAAEEAAMAACBKKKK
+.................................................................................................D.ADAAACCFFFBBBBAAEEBAAAGAAKKKK
+...................................................................................................AAAAAACCBBBBBBEAEEBBEAAGJAAAA
+..................................................................................................AAAAAAAAAFBBBBBBAAEBBBEAAAABKA
+.................................................................................................AAAAAAACAAACBBBBCEAEEBEBBBAAAAA
+................................................................................................AAAAAA..AAAAACBBBBBAAEBEBBBBBBBA
+.................................................................................................AAA.....AAAAAABBBEAABBBBBBBBBBB
+.........................................................................................................ADAAAAAAEAAAABBBBBBBBBB
+.........................................................................................................AAAAAAAAAAAAABBBBBBBBBB
+.........................................................................................................AAAAAAAAAAAAAABBBBBBBKK
+.........................................................................................................AAAAAAAAAAAAAABBBBBBBKK
+.........................................................................................................ADAA.AAAAAAAAAABBBBBBBK
+........................................................................................................AAAAA..AAAAAAAAACBBBBBBB
+........................................................................................................AAA....AAAAAAAAAABBBBBBB
+................................................................................................................AAAAAAAAAABBBBBB
+.................................................................................................................AAAAAAAAACBBBBB
+..................................................................................................................AAAAAAAAACBBBB
+..................................................................................................................AAAAAAAAAABBBB
+.................................................................................................................AAAAAAAAAAAABBB
+.................................................................................................................AAAAA.DAADAAABB
+.................................................................................................................AAA....AAAAAAAB
+.......................................................................................................................AAA.AAAAA
+...........................................................................................................................AAAAA
+...........................................................................................................................DAAAA
+...............................................................................................................................A
+...............................................................................................................................A
+................................................................................................................................
+................................................................................................................................
+...............................................................................................................................A
+..............................................................................................................................AA
+.............................................................................................................................AAA
+............................................................................................................................AAAA
+............................................................................................................................AAAA
+..........................................................................................................................AAAAAA
+..........................................................................................................................AAAAAA
+........................................................................................................................EAAAAAAA
+.......................................................................................................................AAAAAAAAA
+.....................................................................................................................AAAAAAAAAAA
+...................................................................................................................AAAAAAAAAAAAA
+...............................................................................................................AAAAAAAAAAAAAAAAA
+............................................................................................................AAAAAAAAAAAAAAAAAAAA
+.....................................................................................................DAAAAAAAAAAAAAAAAAAAAAAAAAA
+...........................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+....................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+................................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+...............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+...............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+............................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+...........................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+...........................................................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+...........................................................................AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..........................................................................AAAAAAAAAAAAAAAAAEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..........................................................................AAAAAAAAAAAAAAAAAEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+..........................................................................AAAAAAAAAAAAAAAAAEEEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.........................................................................AAAAAAAAAAAAAAAAAAEEEEEEEEEEEEAAAAAAAAAAAAEEEEEAAAAAAAA
+.........................................................................AAAAAAAAAAAAAAAAAAEEEEEEEEEEEEAAAAAAAAAAEEEEEEEEEEEAAAA
+........................................................................AAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEAAAAAAAAAEEEEEEEEEEEEEEEE
+.......................................................................AAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEAAAAAAEEEEEEEEEEEEEEEEEE
+......................................................................AAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEAAAAEEEEEEEEEEEEEEEEEEEE
+....................................................................AAAAAAAAAAAAAAEEAAAAAAAEEEEEEEEEEEEEAAEEEEEEEEEEEEEEEEEEEEEE
+...................................................................AAAAAAAAAAAAAAAEEAAAAAAAEEEEEEEEEEEAAAEEEEEEEEEEEEEEEEEEEEEEE
+..................................................................AAAAAAAAAAAAAAAAEEAAAAAAAEEEEEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEEE
+..................................................................AAAAAAAAAAAAAAAAEEAAAAAAAAEEEEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEEE
+.................................................................AAAAAAAAAAAAAAAAAEEAAAAAAAAEEEEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEEE
+.................................................................AAAAAAAAAAAAAAAAAAEEAAAAAAAAEEEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEEE
+.................................................................AAAAAAAAAAAAAAAAAAEEAAAAAAAAEEEEEEEEAAAAAAEEEEEEEEEEEEEEEEEEEEE
+.................................................................AAAAAAAAAAAAAAAAAAEEAAAAAAAAAEDEEEEEAAAAAAEEEEEEEEEEEEEEEEEEEEE
+.................................................................AAAAAAAAAAAAAAAAAAAEAAAAAAAAAEDEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEE
+................................................................AAAAAAAAAAAAAAAAEEAAAEAAAAAAAAADEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEEE
+...............................................................AAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAADDEEEEEAAAAAAEEEEEEEEEEEEEEEEEEEE
+..............................................................AAAAAAAAAAAAAEEEAAAAAEAAAAAAAAAAAADEEEEEEAAAAAEEEEEEEEEEEEEEEEEEEE
+.............................................................AAAAAAAAAAAAAEEEEAAAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEEEEEEEE
+............................................................AAAAAAAAAAAAAEEEEEEAAAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEEEEE
+...........................................................AAAAAAAAAAAAAEEEEEEEAAAAAAAAAAAAAAAAAAAEEEEEEAAAAAEEEEEEEEEEEEEEEEEEE
+..........................................................AAAAAAAAAAAAAAEEEEEEEEAAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEEEEEEE
+..........................................................AAAAAAAAAAAAAEEEEEEEEEEAAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEEEE
+.........................................................AAAAAAAAAAAAAEEEEEEEEEEEEAAAAAAAAAAAAAAAAAEEEEEEAAAAAEEEEEEEEEEEEEEEEEE
+........................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEEE
+.......................................................AAAAAAAAAAAAAEEEEEEEEEEEEEAAEAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEEE
+......................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAEEEEEEAAAAAEEEEEEEEEEEEEEEEE
+.....................................................AAAAAAAAAAAAAAEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEE
+....................................................AAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEEE
+...................................................AAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEEEE
+...................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEEE
+..................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEEE
+.................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEEE
+................................................AAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAEEEEEAAAAAAEEEEEEEEEEEEEE
+................................................AAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEE
+...............................................AAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEEE
+..............................................AAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAA.AAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEE
+.............................................AAAAAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAA..AAAAAAAAEEEEEEAAAAAAEEEEEEEEEEEE
+............................................AAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEEEEAAAAAAAAAAAAA....AAAAAAAEEEEEEAAAAAAAEEEEEEEEEEE
+............................................AAAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEAAAAAAAAAAAAA.....AAAAAAAAEEEEEEAAAAAAEEEEEEEEEEE
+...........................................AAAAAAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEAAAAAAAAAAAAA......AAAAAAAAEEEEEEAAAAAAAEEEEEEEEEE
+.........................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEEEEAAAAAAAAAAAAA........AAAAAAAAEEEEEEAAAAAAEEEEEEEEEE
+.......................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEEAAAAAAAAAAAA..........AAAAAAAAAEEEEEAAAAAAAEEEEEEEEE
+.....................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEAAAAAAAAAAA...........AAAAAAAAAAEEEEAAAAAAAEEEEEEEEE
+....................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAA............AAAAAAAAAAAEEEEAAAAAAAEEEEEEEE
+....................................AAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEAAAAAAAAAAAAAAAAAA..............AAAAAAAAAAAEEEAAAAAAAEEEEEEEE
+...................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEAAAAAAAAAAAAAAAAA..............AAAAAAAAAAAAEEEAAAAAAAEEEEEEE
+..................................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEAAAAAAAAAAAAAAA...............AAAAAAAAAAAAAEEAAAAAAAEEEEEEE
+..................................AAAAAAAAAAAAAAAAAEEEEEEEEEAAAAAAEEEAAAAAAAAAAAAAA................AAAAAAAAAAAAAAEEAAAAAAAEEEEEE
+..................................AAAAAAAAAAAAAAAEEEEEEEEEEEEEEEAAAEEEAAAAAAAAAAAA..................AAAAAAAAAAAAAAEAAAAAAAEEEEEE
+.................................AAAAAAAAAAAAAAAEEEEEEEEEEEEAAAAAAAAAAEAAAAAAAAAA...................AAAAAAAAAAAAAAAEAAAAAAAEEEEE
+.................................AAAAAAAAAAAAAAAAAEEEEEEAAAAAAAEEEEAAAAAAAAAAAAA....................AAAAAAAAAAAAAAAAAAAAAAAEEEEE
+................................AAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEAAAAAAA......................AAAAAAAAAAAAAAAAAAAAAAAEEEE
+...............................AAAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEAAAAA......................AAAAAAAAAAAAAAAAAAAAAAAEEEE
+...............................AAAAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEEEEEEAAAAAAAAA....................AAAAAAAAAAAAAAAAAAAAAAAAEEE
+..............................AAAAAAAAAAAAAAAAAAAAAAAAAAEEEEEEEEEEEEEAAAAAAAAAAAAA....................AAAAAAAAAAAAAAAAAAAAAAAEEE
+.............................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEEEEEAAAIIHHHHHHIIAAAA...................AAAAAAAAAAAAAAAAAAAAAAAAEE
+.............................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEEEEEAAIHHHHHHHHHHHIIIAA..................AAAAAAAAAAAAAAAAAAAAAAAAEE

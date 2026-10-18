@@ -168,13 +168,21 @@ func _initialize_domain_particles() -> void:
 			"rotation": visual_rng.randf_range(-PI / 4.0, PI / 4.0)})
 
 
-func _draw_domain_square(point: Vector2, size: float, color: Color, rotation_angle: float) -> void:
-	domain_layer.draw_set_transform(point, rotation_angle)
-	domain_layer.draw_rect(Rect2(Vector2.ONE * (-size * 0.5), Vector2.ONE * size), color)
+func _draw_domain_square(point: Vector2, size: float, color: Color, _rotation_angle: float) -> void:
+	# The domain scales with range; rebuild each square in world pixels first.
+	var world := domain_layer.global_transform
+	var center := (world*point).round()
+	var side := maxf(2.0,roundf(size*maxf(world.x.length(),world.y.length())))
+	var top_left := (center-Vector2.ONE*side*0.5).round()
+	var corners := PackedVector2Array()
+	for offset in [Vector2.ZERO,Vector2.RIGHT,Vector2.ONE,Vector2.DOWN]:
+		corners.append(world.affine_inverse()*(top_left+offset*side))
+	domain_layer.draw_colored_polygon(corners,color)
 	domain_layer.draw_set_transform(Vector2.ZERO)
 
 
 func _draw_domain() -> void:
+	preload("res://scripts/effects/aligned_atlas.gd").begin(domain_layer)
 	# Preserve particle count while gaps visibly expand and contract along the ellipse.
 	for particle in boundary_particles:
 		var motion := elapsed * float(particle.speed) + float(particle.phase)
@@ -195,4 +203,4 @@ func _draw_domain() -> void:
 	# One centered glyph slowly breathes from almost invisible to 20% opacity.
 	# The PNG itself has max alpha 51/255; modulation remains within [0.08, 1].
 	var fade := lerpf(0.08, 1.0, (1.0 - cos(TAU * elapsed / 4.4)) * 0.5)
-	domain_layer.draw_texture(RUNE, Vector2(-192, -120), Color(1, 1, 1, fade))
+	preload("res://scripts/effects/aligned_atlas.gd").draw(domain_layer,RUNE,Rect2(Vector2(-192,-120),RUNE.get_size()),Rect2(Vector2.ZERO,RUNE.get_size()),Color(1,1,1,fade),Transform2D.IDENTITY,2.0)

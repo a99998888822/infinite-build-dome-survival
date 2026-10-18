@@ -1,7 +1,7 @@
 extends Node2D
 class_name LightReflectionEffect
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
-const BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
+const BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
 
 const DEFAULT_RADIUS: float = 220.0
 const DEFAULT_DURATION: float = 0.58
@@ -162,17 +162,18 @@ func _sweep_target(enemy: EnemyController, sweep_angle: float, radius_squared: f
 
 
 func _draw() -> void:
+	BAKED.ALIGNED.begin(self)
 	if _visual_tier == 3: return
 	var progress := clampf(_elapsed / _duration, 0, 1)
 	var fade := 1.0 - progress * 0.72
 	var angle := lerpf(_sweep_start, _sweep_end, progress) + _orientation
-	if BLOCK_PREVIEW.enabled:
-		BLOCK_PREVIEW.draw_reflection(self,_radius,_elapsed,_duration,angle,_visual_detail)
+	if BLOCKS.enabled:
+		BLOCKS.draw_reflection(self,_radius,_elapsed,_duration,angle,_visual_detail)
 		return
 	var direction := Vector2.from_angle(angle)
 	draw_set_transform(Vector2.ZERO, angle)
-	BAKED.draw(self, "reflection_beam", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))
-	if _visual_detail > 0 and _visual_tier == 0: BAKED.draw(self, "reflection_sides", 0, Vector2(_radius / 220.0,1), Color(1,1,1,fade))
+	BAKED.draw_aligned(self,"reflection_beam",0,Vector2(_radius/220.0,1),Color(1,1,1,fade),Transform2D(angle,Vector2.ZERO))
+	if _visual_detail > 0 and _visual_tier == 0: BAKED.draw_aligned(self,"reflection_sides",0,Vector2(_radius/220.0,1),Color(1,1,1,fade),Transform2D(angle,Vector2.ZERO))
 	draw_set_transform(Vector2.ZERO)
 	if _visual_tier >= 2: return
 	_draw_png_shard( Vector2(0,-8), Vector2.UP, 38, 11, fade)
@@ -186,9 +187,9 @@ func _draw() -> void:
 
 func _draw_png_shard(center: Vector2, direction: Vector2, length: float, width: float, fade: float) -> void:
 	draw_set_transform(center, direction.angle())
-	BAKED.draw(self, "shard", 0, Vector2(length/38.0,width/11.0), Color(1,1,1,fade))
+	BAKED.draw_aligned(self,"shard",0,Vector2(length/38.0,width/11.0),Color(1,1,1,fade),Transform2D(direction.angle(),center),1.0)
 	draw_set_transform(Vector2.ZERO)
 func _draw_png_star(center: Vector2, radius: float, color: Color) -> void:
 	draw_set_transform(center)
-	BAKED.draw(self, "star", 0, Vector2.ONE*radius/11.0,color)
+	BAKED.draw_aligned(self,"star",0,Vector2.ONE*radius/11.0,color,Transform2D(0,center),1.0)
 	draw_set_transform(Vector2.ZERO)

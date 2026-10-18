@@ -132,9 +132,12 @@ func _style(selected: bool) -> StyleBoxFlat:
 
 func apply_layout() -> void:
 	var viewport_size := get_viewport_rect().size
-	slot_size = clampf((viewport_size.x * 0.8 - maxf(0, weapons.size() - 1) * 7) / maxf(1, weapons.size()), 38, 64)
+	# Scale this component's authored icon layout inside the native UI canvas.
+	var ui_scale := minf(5.0 / 3.0, viewport_size.x / 1152.0)
+	scale = Vector2.ONE * ui_scale
+	slot_size = clampf((viewport_size.x / ui_scale * 0.8 - maxf(0, weapons.size() - 1) * 7) / maxf(1, weapons.size()), 38, 64)
 	size = Vector2(maxf(0, weapons.size() * (slot_size + 7) - 7), slot_size + WeaponCastModeIcon.ICON_SIZE)
-	position = Vector2((viewport_size.x - size.x) * 0.5, viewport_size.y - size.y - 23)
+	position = Vector2((viewport_size.x - size.x * ui_scale) * 0.5, viewport_size.y - (size.y + 23) * ui_scale)
 	for i in cards.size():
 		cards[i].position = Vector2(i * (slot_size + 7), 0)
 		cards[i].size = Vector2.ONE * slot_size

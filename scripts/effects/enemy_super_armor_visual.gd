@@ -1,6 +1,7 @@
 extends Node2D
 ## Outline and caption follow the actual immunity clock, never a refreshable hit timer.
 const OUTLINE = preload("res://assets/shaders/enemy_super_armor.gdshader")
+const ANCHORS = preload("res://scripts/effects/enemy_visual_anchors.gd")
 const FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
 const TEXT_DURATION := 1.0
 
@@ -28,7 +29,7 @@ func _ready() -> void:
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
 	font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
 	caption.add_theme_font_override("font", font)
-	caption.add_theme_font_size_override("font_size", 18)
+	caption.add_theme_font_size_override("font_size", 12)
 	caption.add_theme_color_override("font_color", Color("ffe369"))
 	caption.add_theme_color_override("font_outline_color", Color("342912"))
 	caption.add_theme_constant_override("outline_size", 3)
@@ -36,7 +37,7 @@ func _ready() -> void:
 	caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	caption.size = Vector2(160, 30)
 	caption.pivot_offset = caption.size * 0.5
-	caption.scale = Vector2.ONE * 0.7
+	caption.scale = Vector2.ONE
 	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	caption.z_index = 20
 	add_child(caption)
@@ -104,5 +105,5 @@ func _sync() -> void:
 	outline.material.set_shader_parameter("strength", smoothstep(0.0, 0.08, elapsed) * smoothstep(0.0, 0.14, remaining))
 	var rise := 1.0 - pow(1.0 - clampf(elapsed / TEXT_DURATION, 0.0, 1.0), 1.65)
 	# Stay on the body's vertical axis; label never inherits sprite mirroring.
-	caption.position = Vector2(body.position.x - 80.0, lerpf(body.position.y * 0.4, body.position.y * 1.29, rise))
+	caption.position = (ANCHORS.head(enemy)+Vector2(-80,-16-rise*18)).round()
 	caption.modulate.a = (1.0 - smoothstep(0.30, TEXT_DURATION, elapsed)) if body.visible else 0.0

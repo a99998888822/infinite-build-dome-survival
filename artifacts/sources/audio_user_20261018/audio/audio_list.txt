@@ -1,0 +1,18 @@
+player_walk.mp3 人物移动的音效
+A_heavy_cast-iron_ca_#4-1792331487179.mp3 炮械发射（铸铁榴弹炮 / 巨型手持火炮共用）音效
+A_massive_heavy_weap_#3-1792331588194.mp3 异化触手的命中音效
+A_massive_heavy_weap_#1-1792331700630.mp3 流星摆锤/裂地战锤共用的命中音效
+a-jet-of-flame-burst-4-1792332089511_AvOv45Yx.mp3  赤铜炉灯接触音频（注意释放时循环播放）
+a-mystical-arcane-ma-2-1792332332366_JJ1ksidH.mp3 坤舆秘仪书命中音效
+An_artillery_shell_d_#2-1792332486020.mp3 爆炸（爆炸附魔 / 榴弹炮引爆）音效
+a-glowing-blade-of-l-3-1792332939896_jfOalrme.mp3 光辉剑 · 落地音效
+Wind_spreads_water_i_#4-1792333557716.mp3 水流附魔 · 泼溅音效
+不要音频 光暗附魔 · 相互湮灭音效
+Light_strikes_a_froz_#4-1792333231104.mp3 光冰接触 · 棱镜反射音效
+A_burst_of_freezing__#1-1792333264169.mp3 风冰接触 · 霜线推进音效
+the_sound_of_Water_h_#1-1792333478631.mp3 水火接触 · 蒸汽音效
+A_frozen_body_shatte_#3-1792333519093.mp3 冻结解除 · 冰块碎裂音效
+Wind_spreads_water_i_#2-1792333582542.mp3 风水接触 · 湿润扩散音效
+a-low-burning-fire-p-1-1792334585674_EJsGkaT6.mp3 火焰附魔火池音效
+a-heavy-cloth-or-rop-4-1792334766253_qIVB8fdm.mp3 风刃 · 切风音效
+a-tiny-high-voltage-3-1792334962145_xCgDDwFD.mp3 电浆球的命中音效

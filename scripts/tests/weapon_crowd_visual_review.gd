@@ -4,6 +4,13 @@ var hit_batches: Dictionary = {}
 
 
 func _clip(name: String, caption: String, weapon_id: String, _aim: Vector2, _expected: Array) -> void:
+	var aligned_review := OS.get_cmdline_user_args().has("--aligned-review")
+	var review_angle := 0.0
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--review-angle="): review_angle = deg_to_rad(float(arg.trim_prefix("--review-angle=")))
+	if aligned_review:
+		get_tree().root.size = Vector2i(1920,1080)
+		title.get_parent().hide()
 	_clear_units()
 	for previous in battle.loadout.weapon_instances.duplicate():
 		battle.loadout.remove_weapon(previous.weapon_id)
@@ -53,7 +60,9 @@ func _clip(name: String, caption: String, weapon_id: String, _aim: Vector2, _exp
 			for angle in [-28, 0, 28]:
 				# Place each real collider on a native pellet's path.
 				points.append(AttackFootprint.project(Vector2.RIGHT.rotated(deg_to_rad(angle)) * 120) - Vector2(4, -7))
-	for point in points:
+	aim = origin+(aim-origin).rotated(review_angle)
+	for raw_point in points:
+		var point := raw_point.rotated(review_angle)
 		_spawn("enemy_echo_bat", origin + point)
 		var unit := units[-1]
 		var id := unit.get_instance_id()
@@ -71,6 +80,7 @@ func _clip(name: String, caption: String, weapon_id: String, _aim: Vector2, _exp
 	var samples: Array[Dictionary] = []
 	var cast_id := 0
 	var cast_count := 0
+	var next_capture := 0
 	clip_start = Time.get_ticks_usec()
 	var duration_usec := 3600000 if name == "hammer" or name == "tome" else 3000000
 	while Time.get_ticks_usec() - clip_start < duration_usec:
@@ -84,7 +94,11 @@ func _clip(name: String, caption: String, weapon_id: String, _aim: Vector2, _exp
 		if DisplayServer.get_name() == "headless": await get_tree().process_frame
 		else: await RenderingServer.frame_post_draw
 		var at := Time.get_ticks_usec()
-		if DisplayServer.get_name() != "headless": images.append(get_tree().root.get_texture().get_image())
+		if aligned_review and at < next_capture: continue
+		next_capture = at + 50000
+		if DisplayServer.get_name() != "headless":
+			var image := get_tree().root.get_texture().get_image()
+			images.append(image.get_region(Rect2i(720,340,900,650)) if aligned_review else image)
 		var offset := CombatHitFeedback.screen_offset
 		samples.append({"time_ms": (at - clip_start) / 1000.0, "paused": get_tree().paused,
 			"offset": [offset.x, offset.y], "local_count": CombatHitFeedback.last_local_count})
@@ -97,7 +111,9 @@ func _clip(name: String, caption: String, weapon_id: String, _aim: Vector2, _exp
 		failures += 1
 	var directory := capture_dir.path_join(name)
 	DirAccess.make_dir_recursive_absolute(directory)
-	for index in images.size(): images[index].save_jpg(directory.path_join("frame_%04d.jpg" % index), 0.96)
+	for index in images.size():
+		if aligned_review: images[index].save_png(directory.path_join("frame_%04d.png" % index))
+		else: images[index].save_jpg(directory.path_join("frame_%04d.jpg" % index), 0.96)
 	records.append({"name": name, "weapon": weapon_id, "casts": cast_count, "attack_id": cast_id,
 		"enemy_count": points.size(), "enemy_type": "enemy_echo_bat", "stationary_targets": true,
 		"attachments": attachments, "range": weapon.get_attack_range(), "hit_radius": weapon.get_hit_radius(),

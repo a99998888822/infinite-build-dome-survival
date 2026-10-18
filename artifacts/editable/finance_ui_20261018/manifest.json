@@ -1,0 +1,421 @@
+{
+  "date": "2026-10-18",
+  "background": {
+    "source": "artifacts/sources/finance_ui_20261018/finance_background_r03_restyle_16x9.png",
+    "sha256": "3390e24822729ce510c24693befc9e1727ee606366442c2e0414e348a3c24550",
+    "external_source": "C:\\Users\\mi\\Downloads\\telant\\telant\\finance_background_r03_restyle_16x9.png",
+    "revised_source": "artifacts/editable/finance_ui_20261018/background_lamp_aligned.png",
+    "revised_sha256": "00f6cb8c470f91a18da109cb31d13dda930a5cbf441780527ba07b2e16a4214b",
+    "revision_recipe": "scripts/tools/align_finance_lamp_glow.py",
+    "light_center": [
+      752,
+      207
+    ],
+    "original_light_center": [
+      727,
+      284
+    ]
+  },
+  "goblin": {
+    "version": "A+++",
+    "frame_size": [
+      320,
+      320
+    ],
+    "source": {
+      "source": "artifacts/sources/finance_ui_20261018/gobline_face_shaded_9x16_raw.png",
+      "sha256": "d6d89ae26bd714a29437677369c017c5d84916b44fd4c090929d86562aaea730",
+      "external_source": "C:\\Users\\mi\\Downloads\\telant\\telant\\gobline_face_shaded_9x16_raw.png"
+    },
+    "editable_portraits": "artifacts/editable/finance_ui_20261018/portraits",
+    "expression_order": [
+      "neutral",
+      "worried",
+      "angry",
+      "sly",
+      "excited"
+    ],
+    "bank_atlas": "assets/ui/finance/goblin_banker_states.png",
+    "settlement_atlas": "assets/ui/settlement/goblin_reactions.png"
+  },
+  "panel": {
+    "version": "A+",
+    "size": [
+      288,
+      516
+    ],
+    "source": {
+      "source": "artifacts/sources/finance_ui_20261018/stats_drawer_panel_9x16_raw.png",
+      "sha256": "3b36250b4a96111f5c85695f045f03ec0710fcb4615a1ca769e4052953ec71d9",
+      "external_source": "C:\\Users\\mi\\Downloads\\telant\\telant\\stats_drawer_panel_9x16_raw.png"
+    },
+    "selected": "artifacts/editable/finance_ui_20261018/panel_Aplus.png",
+    "sha256": "b035afad0a6a873c6d20064740bdef7df3d106807a103245347598c9962ef69c"
+  },
+  "grids": [
+    {
+      "asset": "panel",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x0_y0.pxg",
+      "sha256": "7730162bac7a2a97f71086dc02d2ca843fed4801a401b97e3137495c9081380c"
+    },
+    {
+      "asset": "panel",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x1_y0.pxg",
+      "sha256": "704993f87831bf323b008235ad7c7be76f62ad66b41861d8373042398c0e7cca"
+    },
+    {
+      "asset": "panel",
+      "x": 256,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x2_y0.pxg",
+      "sha256": "502b0a726b384eb0578706240daa505bbac569f2bdb11f3c7b3bd6b711554b5c"
+    },
+    {
+      "asset": "panel",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x0_y1.pxg",
+      "sha256": "845d1663902f22ea7ee14d52f9c61196fcc59bcffef74d589986dd5fefaea82d"
+    },
+    {
+      "asset": "panel",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x1_y1.pxg",
+      "sha256": "c708a88cb1bfca372866721629e7b8cf023c5be13ee8e29f0d6b74bce22ded8b"
+    },
+    {
+      "asset": "panel",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x2_y1.pxg",
+      "sha256": "98662e417cb417a44eadc7cfb221d2870595a986d8bc22c55ab947ff63f69266"
+    },
+    {
+      "asset": "panel",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x0_y2.pxg",
+      "sha256": "8e2b976d6e556fec11d2589d55a0eac594d971f8ffa953c0185259f842ecf090"
+    },
+    {
+      "asset": "panel",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x1_y2.pxg",
+      "sha256": "1b6d18f3339ed4d2de10df8dd25a8d0118a0d7d8432f00b7f2ca34f645e88d72"
+    },
+    {
+      "asset": "panel",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x2_y2.pxg",
+      "sha256": "49ff2817878aedf5286dee571e99dc27c5a334a14e0f341ff421cc40dad99ec2"
+    },
+    {
+      "asset": "panel",
+      "x": 0,
+      "y": 384,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x0_y3.pxg",
+      "sha256": "24e220136b7230fdc48f26046d36feec0a6e0b68d239183708cf4472a84ab103"
+    },
+    {
+      "asset": "panel",
+      "x": 128,
+      "y": 384,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x1_y3.pxg",
+      "sha256": "c609e0ea449cd5a1d3ad3b4733c8c7d73f1db948ecbfd6736ae45d1143a61306"
+    },
+    {
+      "asset": "panel",
+      "x": 256,
+      "y": 384,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/panel_x2_y3.pxg",
+      "sha256": "c348dc8666113b0b9f9218f9308a7ccb39dbf01eabe6a737a11d3b72e4261760"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x0_y0.pxg",
+      "sha256": "3acdf84b6f9aff5cdf09a6293aa736e91a08d2992d9f79b9b2d71c4d67a69113"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x1_y0.pxg",
+      "sha256": "8560e1fc7d996cade11a27d76f036ea79027244b6f5b911eb357f1e55842f272"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x0_y1.pxg",
+      "sha256": "929b48e00e16c0d2b53d0f8198db5798d818d3eb3c3d88281135314763d4cf2f"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x1_y1.pxg",
+      "sha256": "06cf489b9980296ff24fcb32b17e439736b77507e1daad0c1b6d3c080b861e88"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x2_y1.pxg",
+      "sha256": "7d41891fc6b914f24372f59e02d295fd5a83d1f4c1797dadc8982213af5cbb29"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x0_y2.pxg",
+      "sha256": "a7f15dc1199db0c7b7c16a1f439df5a3ced15e1d6ef2434de218393dd9a81f6b"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x1_y2.pxg",
+      "sha256": "309c46d16f38542874026282d1f61b56ba91f34b9aece24282857ca28458ed8d"
+    },
+    {
+      "asset": "goblin_neutral",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_neutral_x2_y2.pxg",
+      "sha256": "7e478246393288c22d63b3c894db5df74a464b14a7dfb5e766bc75f5c7de2691"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x0_y0.pxg",
+      "sha256": "a42cef8014bd7b04f7d31fbd28be010c50e5fe26ff905c6568fa0b4f01614776"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x1_y0.pxg",
+      "sha256": "68123cc78f4d377fbdbaafb7742345bf2ec6290127172eb21b9addbaf1223b6d"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x0_y1.pxg",
+      "sha256": "35e272efb6acdf4b5f87f72727ebe8ab1d263fede27d1cf33937032ca54289d8"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x1_y1.pxg",
+      "sha256": "5e3b0396edc9cba5f9d4452bdb913115ff4c827ddd3b6c9b44e34752d0ad7b15"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x2_y1.pxg",
+      "sha256": "cdf3aabef352e17edef3509808f0ef9ea7d1e5c8fb8f59e3b845149e1b394ee5"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x0_y2.pxg",
+      "sha256": "d49a477d8198ec69f5d62eb63d0db34aae3c710aebb1bb69e6fbc4c528ad1a94"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x1_y2.pxg",
+      "sha256": "af11eaec5b8909f16026c88c6cebe944f1ea5fb587adc016ab690e54c77f851c"
+    },
+    {
+      "asset": "goblin_worried",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_worried_x2_y2.pxg",
+      "sha256": "cef462e2a5538b21bd9dcf0c8009ff7e38e743141eddd7f0ef94b6d149e5c259"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x0_y0.pxg",
+      "sha256": "e7932d8c995dcb5a7b98517224fdd81dc403b896542d5217e59f2865802f25e8"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x1_y0.pxg",
+      "sha256": "62b3e8bce4d740de0261fe1efed5747305033938310628bf3e55c4fd72eea566"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x0_y1.pxg",
+      "sha256": "c2c21d225472929852baf2288eec2813e0c531f960037f16c778fb54ae2df498"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x1_y1.pxg",
+      "sha256": "a9cc65749d080d556fc37f9b2b97f8de6204c7b180df708ccc49a9937e087867"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x2_y1.pxg",
+      "sha256": "f70e5f54d9548c35d496b7c2a7209403a928ad02a6b10f055f2ac85f824bd8b8"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x0_y2.pxg",
+      "sha256": "bc70771b5671e57e591c1ad6f17badb3a39b6cb40e0144abd1a09fd5cc20cdea"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x1_y2.pxg",
+      "sha256": "aee5605752d6638f8b419ce34484f45362c732c9621b03ec8aa74fe92cfee113"
+    },
+    {
+      "asset": "goblin_angry",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_angry_x2_y2.pxg",
+      "sha256": "d6860cd57a9f6a9549d01a1633de2531f1d7428c7663de332641e17b38ca439e"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x0_y0.pxg",
+      "sha256": "700bc94c6f8963204c5024672aaf32a486fef30869dc3f4f3db63be6b4ba54a9"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x1_y0.pxg",
+      "sha256": "c900382f65911f9b8d273eedde5b28506e3f41a55d8302460d51ab39460b90e0"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x0_y1.pxg",
+      "sha256": "0d0691ef40ea2dc654a98088466fb4f3315b6fa76b9796384c2a69c0aacbf789"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x1_y1.pxg",
+      "sha256": "e8e5d36278a1f1598afb2c5884023b4699f1992ae4d0f4825a230c02471fb9ad"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x2_y1.pxg",
+      "sha256": "6b1011ccad7095889e741aa7d11cdb939b050f7e7dde30fd8c875afc108a1324"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x0_y2.pxg",
+      "sha256": "a7781b824a53507bb0451e0f2f20302aa9415fe4d3a7f90919077a76f289045c"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x1_y2.pxg",
+      "sha256": "5582b759c89e4265c1c760c709a01b16f711ee66c6ba9016ed695002c405be59"
+    },
+    {
+      "asset": "goblin_sly",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_sly_x2_y2.pxg",
+      "sha256": "f50de3374b6bc3939cb9e9dd5e762105c1d23e030b8319904707dff9ee404fdc"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 0,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x0_y0.pxg",
+      "sha256": "38f9df9f690057fe6a691b23b9877a737a788207f476ae3440e7e14159a1d636"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 128,
+      "y": 0,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x1_y0.pxg",
+      "sha256": "b86ba81728ee31f7759425e03fc2a02145c0f8f01a753ec23006f291c1177eca"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 0,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x0_y1.pxg",
+      "sha256": "48ff2e118a91992e31a71e4f13b8274a9e9efcb4312a12bca148f3189c47fd46"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 128,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x1_y1.pxg",
+      "sha256": "594104600a18fbaf366df4967d17750cb21af101ae560bd5d35c27fdade2beed"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 256,
+      "y": 128,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x2_y1.pxg",
+      "sha256": "8ae023d1831355616fee18a71b139a2041c55185933799a588030d686eeb3ddc"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 0,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x0_y2.pxg",
+      "sha256": "5ae5ad6691409ade6b854781f6fba6c30927521f2e255ca147cfa7e8d9c204cf"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 128,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x1_y2.pxg",
+      "sha256": "6966b19319c50a1d9749e657596ec63aea45bb3b9bc9011693262d2c6ba5010b"
+    },
+    {
+      "asset": "goblin_excited",
+      "x": 256,
+      "y": 256,
+      "grid": "artifacts/editable/finance_ui_20261018/grids/goblin_excited_x2_y2.pxg",
+      "sha256": "f0bb2c216c70ff77f805ef2ebc7d3fc8c26918a683a55734f25af15d961d0fd7"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 extends Node2D
 class_name ExplosionEffect
-const REACTION_BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
+const REACTION_BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
@@ -82,8 +82,8 @@ func _detonate() -> void:
 	AudioManager.begin_combat_audio(_audio_impact)
 	AudioManager.play_reaction_sfx(_reaction_id)
 	if _reaction_id == "thunder_fire" and visual_tier != VISUAL_BUDGET.Tier.SUPPRESSED:
-		if REACTION_BLOCK_PREVIEW.enabled:
-			REACTION_BLOCK_PREVIEW.spawn_blast(get_parent(),_hit_position,radius,visual_tier)
+		if REACTION_BLOCKS.enabled or REACTION_BLOCKS.thunder_fire_enabled:
+			REACTION_BLOCKS.spawn_blast(get_parent(),_hit_position,radius,visual_tier)
 		else:
 			PARTICLE_WORLD_SCRIPT.emit_profile(get_parent(), "explosion_burst", _hit_position,
 				Vector2.ZERO, 1.0, Color(1.0, 0.72, 0.12), particle_parameters)

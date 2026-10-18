@@ -4,6 +4,22 @@ class_name CavernGrasslandBackdrop
 
 var contact_texture: Texture2D
 var cast_shadow_material: ShaderMaterial
+var shelter_clearance := Rect2()
+
+func reserve_shelter(area: Rect2) -> void:
+	var changed := shelter_clearance.merge(area) if shelter_clearance.has_area() and area.has_area() else (shelter_clearance if not area.has_area() else area)
+	shelter_clearance = area
+	if not initialized or not is_inside_tree(): return
+	for key: Vector2i in cells.keys():
+		if not Rect2(Vector2(key)*CELL,CELL).grow(40).intersects(changed): continue
+		for node: Node in cells[key]:
+			if is_instance_valid(node):
+				if node is CanvasItem: node.hide()
+				node.queue_free()
+		cells.erase(key)
+		grass_cells.erase(key)
+	cell_rect = Rect2i()
+	_update_area()
 
 func _setup() -> void:
 	if initialized or not is_instance_valid(player) or not is_inside_tree(): return
@@ -61,6 +77,8 @@ func _plan_cell(key: Vector2i) -> Array[Dictionary]:
 				entry.suitability = surface.a
 				entry.undergrowth = true
 				plan.append(entry)
+	if shelter_clearance.has_area():
+		plan = plan.filter(func(entry: Dictionary): return not shelter_clearance.has_point(entry.point))
 	return plan
 
 func _make_cell(key: Vector2i) -> void:

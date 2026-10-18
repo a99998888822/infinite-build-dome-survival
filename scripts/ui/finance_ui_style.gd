@@ -127,7 +127,7 @@ static func button(control: Button, selected: bool = false) -> void:
 	control.add_theme_stylebox_override("focus", box("3c483300", "d4bc81", 1))
 	control.add_theme_color_override("font_color", TEXT)
 	control.add_theme_color_override("font_disabled_color", Color("737c64"))
-	control.add_theme_font_size_override("font_size", 12)
+	control.add_theme_font_size_override("font_size", 20)
 	control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
@@ -153,7 +153,7 @@ static func bank_tab(control: Button, selected: bool) -> void:
 
 
 static func label(control: Label, font_size: int = 14, color: Color = TEXT) -> void:
-	control.add_theme_font_size_override("font_size", font_size)
+	control.add_theme_font_size_override("font_size", roundi(font_size * 5.0 / 3.0))
 	control.add_theme_color_override("font_color", color)
 
 
@@ -167,7 +167,7 @@ static func tab(control: Button, selected: bool) -> void:
 	control.add_theme_stylebox_override("pressed", normal)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 		control.add_theme_color_override(state, Color("25291c") if selected else MUTED)
-	control.add_theme_font_size_override("font_size", 14)
+	control.add_theme_font_size_override("font_size", 23)
 	control.toggle_mode = true
 	control.set_pressed_no_signal(selected)
 

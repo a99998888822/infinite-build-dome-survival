@@ -236,12 +236,15 @@ func _update_shake() -> void:
 
 func _set_screen_offset(value: Vector2) -> void:
 	screen_offset = value
+	var layer_offset := value
 	if is_instance_valid(_presentation):
 		var viewport := _presentation.get_viewport()
-		var size := viewport.get_visible_rect().size.max(Vector2.ONE) if viewport != null else Vector2.ONE
+		var ui_size := viewport.get_visible_rect().size.max(Vector2.ONE) if viewport != null else Vector2.ONE
+		var size := _world_viewport.get_visible_rect().size.max(Vector2.ONE) if is_instance_valid(_world_viewport) else ui_size
 		_presentation_material.set_shader_parameter("shake_uv", value / size)
+		layer_offset = value * ui_size / size
 	for index in _layers.size():
-		if is_instance_valid(_layers[index]): _layers[index].offset = _base_offsets[index] + value
+		if is_instance_valid(_layers[index]): _layers[index].offset = _base_offsets[index] + layer_offset
 
 
 func _release_hitstop() -> void:

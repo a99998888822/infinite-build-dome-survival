@@ -97,13 +97,13 @@ func run() -> void:
 		get_tree().root.size = size
 		await frames(6)
 		check(game._world_viewport.size==Vector2i(1920,1080),"world pixel budget independent of window "+str(size))
-		check(get_tree().root.content_scale_size==Vector2i(1152,648),"HUD design canvas preserved")
+		check(get_tree().root.content_scale_size==Vector2i(1920,1080),"HUD and world share the native canvas")
 		check(player.sprite.get_global_transform_with_canvas().get_scale().is_equal_approx(Vector2.ONE),"one source pixel per world pixel")
 	get_tree().root.size = Vector2i(1920,1080)
 	await frames()
 	var control := battle.active_controller
 	control._has_pointer_position = true
-	control._pointer_position = (player.get_global_transform_with_canvas().origin+Vector2(200,-50))*Vector2(1152,648)/Vector2(1920,1080)
+	control._pointer_position = player.get_global_transform_with_canvas().origin+Vector2(200,-50)
 	check(control.pointer_world().distance_to(player.global_position+Vector2(200,-50))<.01,"HUD pointer maps to the correct world point")
 	control._has_pointer_position = false
 	var body := player.get_node("CollisionShape2D") as CollisionShape2D
@@ -119,11 +119,11 @@ func run() -> void:
 	for i in ids.size():
 		var enemy := add_enemy(ids[i],anchor+positions[i])
 		enemies.append(enemy)
-		if i<3: check(enemy.sprite.scale==Vector2.ONE,"native sprite size "+ids[i])
+		if i<3: check(enemy.sprite.scale==Vector2.ONE * [0.6, 0.75, 0.6][i],"calibrated sprite size "+ids[i])
 		var collider := enemy.get_node("CollisionShape2D") as CollisionShape2D
 		subjects.append({"id":ids[i],"sprite_scale":str(enemy.sprite.scale),"frame_size":str(enemy.sprite.get_rect().size),"collision_type":collider.shape.get_class(),"collision_bounds":str(collider.global_transform*collider.shape.get_rect())})
 	var grub := enemies[0]
-	grub.global_position = player.global_position+Vector2(55,30)
+	grub.global_position = player.global_position+Vector2(40,30)
 	check(grub._is_touching_player(),"lower-body circle makes actual contact")
 	grub.global_position = player.global_position+Vector2(200,0)
 	check(not grub._is_touching_player(),"separated bodies do not inflict contact damage")

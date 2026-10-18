@@ -74,7 +74,6 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 	patch.monitoring = true
 	patch.monitorable = false
 	patch._create_flame_visual()
-	patch._play_ignition_sound(context)
 	return patch
 
 
@@ -142,7 +141,6 @@ func _absorb_seed(patch_position: Vector2, context: RefCounted, field_strength: 
 		_source_weapon_id = _get_source_weapon_id(context)
 	_update_collision_radius()
 	_update_flame_extent()
-	_play_ignition_sound(context)
 
 
 func expand_from_wind(radius_multiplier: float = 1.35) -> void:
@@ -151,7 +149,6 @@ func expand_from_wind(radius_multiplier: float = 1.35) -> void:
 	_base_radius = maxf(_base_radius, _radius)
 	_update_collision_radius()
 	_update_flame_extent()
-	_play_ignition_sound()
 
 
 static func expand_nearby_fields(center: Vector2, search_radius: float, radius_multiplier: float) -> void:
@@ -184,13 +181,6 @@ func _create_flame_visual() -> void:
 func _update_flame_extent() -> void:
 	if is_instance_valid(_flame_visual):
 		_flame_visual.setup_field(_radius, _get_flame_color_tint())
-
-
-func _play_ignition_sound(source_context: RefCounted = null) -> void:
-	var audio_impact: RefCounted = source_context.get_meta("combat_audio_impact") if source_context != null and source_context.has_meta("combat_audio_impact") else null
-	AudioManager.begin_combat_audio(audio_impact)
-	AudioManager.play_enchantment_sfx("fire")
-	AudioManager.end_combat_audio()
 
 
 func _refresh_field_light() -> void:

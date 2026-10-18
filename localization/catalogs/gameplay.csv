@@ -67,7 +67,7 @@ stat.crit_chance.description,攻击造成暴击的概率。,Chance for an attack
 stat.crit_chance.name,暴击率,Crit Chance
 stat.crit_damage.description,暴击时的伤害百分比，150表示造成150%伤害。,Damage percentage on a critical hit. 150 means 150% damage.
 stat.crit_damage.name,暴击伤害,Crit Damage
-stat.currency_bonus.description,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Camp Coins."
+stat.currency_bonus.description,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终天赋点。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Talent Points."
 stat.currency_bonus.name,货币获取加成,Gold Gain
 stat.damage.name,伤害,Damage
 stat.damage_area.description,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.

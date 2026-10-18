@@ -134,22 +134,19 @@ func menus() -> void:
 			if node.get_script() == load("res://scripts/ui/camp_blueprint_ui_controller.gd"): talents = node
 	assert(talents != null)
 	for record: Dictionary in CampProgression.get_building_records():
-		talents._selected_building_id = str(record.id)
-		talents._refresh_all(false, false)
+		talents.select_node(str(record.id))
 		await capture("camp_initial_" + str(record.id), "营地 / 初始状态 / " + str(record.name), "camp", talents)
 	CampProgression.set_camp_currency(10000)
 	for record: Dictionary in CampProgression.get_building_records():
 		CampProgression.set_building_level(str(record.id), CampProgression.get_building_max_level(str(record.id)))
 	for record: Dictionary in CampProgression.get_building_records():
-		talents._selected_building_id = str(record.id)
-		talents._refresh_all(false, false)
+		talents.select_node(str(record.id))
 		await capture("camp_unlocked_" + str(record.id), "营地 / 全部升级选项 / " + str(record.name), "camp", talents)
-		talents._options_list.get_parent().scroll_vertical = 10000
-		await capture("camp_options_bottom_" + str(record.id), "营地 / 升级选项末页 / " + str(record.name), "camp", talents)
-		talents._options_list.get_parent().scroll_vertical = 0
-	for page in range(1, 6):
-		talents._options_list.get_parent().scroll_vertical = page * 270
-		await capture("camp_all_upgrades_page_%d" % page, "营地 / 全部升级列表 / 第 %d 页" % (page + 1), "camp", talents)
+	for record: Dictionary in CampProgression.get_building_records():
+		for option: Dictionary in record.get("upgrade_options", []):
+			CampProgression.state.upgrade_levels[option.id] = 1
+	CampProgression.state_changed.emit()
+	await capture("camp_all_branches", "营地 / 全部链路", "camp", talents)
 	talents._on_back_pressed()
 	CampProgression.state = CampProgression._build_default_state()
 	await frames()

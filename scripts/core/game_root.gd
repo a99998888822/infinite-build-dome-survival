@@ -131,8 +131,8 @@ func _setup_world_viewport() -> void:
 	add_child(_world_viewport_layer)
 	_world_viewport_container = SubViewportContainer.new()
 	_world_viewport_container.name = "WorldViewportContainer"
-	# Keep the HUD's design canvas independent from the world's pixel budget.
-	# The container occupies 1920x1080 internally and fits the logical UI canvas.
+	# World and UI share the native 1920x1080 canvas. Window stretching is
+	# applied once by the root viewport, including on smaller displays.
 	_world_viewport_container.size = Vector2(WORLD_RENDER_SIZE)
 	_world_viewport_container.stretch = true
 	_world_viewport_container.stretch_shrink = 1

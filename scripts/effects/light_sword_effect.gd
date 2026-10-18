@@ -187,10 +187,11 @@ func _draw_impact(dissolve: float) -> void:
 
 
 func _draw_ground() -> void:
+	BAKED.ALIGNED.begin(_ground_layer)
 	if _visual_detail == 0: return
 	if not _landed:
 		var alpha := (0.25 + clampf(_elapsed / _delay, 0.0, 1.0) * 0.3) / 0.55
-		BAKED.draw(_ground_layer, "sword_mark", 0, GROUND.projected_axes(), Color(1,1,1,alpha))
+		BAKED.draw_aligned(_ground_layer,"sword_mark",0,GROUND.projected_axes(),Color(1,1,1,alpha),Transform2D.IDENTITY,1.0)
 	else:
 		var fade := 1.0 - smoothstep(0.25, 1.0, clampf((_elapsed - _delay - _fall_seconds) / _dissolve_seconds,0,1))
 		BAKED.draw(_ground_layer, "sword_cracks", 0, Vector2.ONE, Color(1,1,1,fade))

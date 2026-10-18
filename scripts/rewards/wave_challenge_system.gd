@@ -149,7 +149,9 @@ func eligible_offers(_snapshot: Dictionary, context: Dictionary = {}) -> Array[D
 			"comfortable": eligible = bool(pressure.get("comfortable", false))
 			"pressure": eligible = risky
 			"comfortable_expansion": eligible = bool(pressure.get("comfortable", false)) and int(context.get("remaining_waves", 0)) >= int(entry.minimum_remaining_waves)
-			"pressured_cleanup": eligible = risky and bool(pressure.get("cleanup_timed_out", false)) and int(pressure.get("cleanup_remaining_enemies", 0)) > 0 and int(pressure.get("enemy_spawned_count", 0)) > 0 and float(pressure.get("average_enemy_lifetime", 0)) >= float(entry.minimum_average_lifetime_seconds)
+			"pressured_cleanup":
+				var pressured_exit := bool(pressure.get("cleanup_timed_out",false)) or (bool(pressure.get("evacuated",false)) and float(pressure.get("evacuation_seconds",0))>=10.0)
+				eligible = risky and pressured_exit and int(pressure.get("cleanup_remaining_enemies",0))>0 and int(pressure.get("enemy_spawned_count",0))>0 and float(pressure.get("average_enemy_lifetime",0))>=float(entry.minimum_average_lifetime_seconds)
 			"pressured_capital": eligible = bool(pressure.get("struggling", false)) and int(context.get("principal", 0)) >= int(entry.minimum_principal)
 			"medium_pressure": eligible = float(pressure.get("observed_seconds", 0)) >= float(config.pressure.minimum_observed_seconds) and not risky and not bool(pressure.get("comfortable", false))
 			"outstanding_debt": eligible = int(context.get("debt_due", 0)) > 0 and not str(context.get("debt_id", "")).is_empty() and not boss_templates(entry).is_empty()

@@ -16,7 +16,7 @@ const SHOP_POPUP_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_popup.t
 const SHOP_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/shop/shop_ui_controller.tscn")
 const BATTLE_ROOT_SCENE: PackedScene = preload("res://scenes/battle/battle_root.tscn")
 const MAIN_MENU_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/main_menu/main_menu_ui_controller.tscn")
-const CAMP_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/camp/camp_ui_controller.tscn")
+const CAMP_UI_CONTROLLER_SCENE: PackedScene = preload("res://scenes/ui/camp/camp_blueprint_ui_controller.tscn")
 const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const TABLE_NAMES: Array[String] = [
 	"weapons",
@@ -41,6 +41,9 @@ func _ready() -> void:
 func run_data_self_test() -> bool:
 	# 启动后只做最小自检，避免把玩法逻辑塞进入口。
 	print("[Bootstrap] data self-test started")
+	# Keep every check isolated, including settlement after the camp checks.
+	var owns_camp_session := not CampProgression._transient_session_active
+	CampProgression.begin_transient_session()
 	GameGlobal.reset_runtime_state()
 	GameGlobal.set_runtime_flag("bootstrap_self_test", true)
 	GameGlobal.log_debug("bootstrap runtime ready")
@@ -66,6 +69,8 @@ func run_data_self_test() -> bool:
 		print("[Bootstrap] data self-test passed")
 	else:
 		push_error("[Bootstrap] data self-test failed; behavioral checks failed; data_errors=%d" % DataRegistry.get_load_errors().size())
+	if owns_camp_session:
+		CampProgression.end_transient_session()
 	return passed
 
 
@@ -495,7 +500,7 @@ func _run_enemy_wave_checks() -> bool:
 func _run_camp_meta_checks() -> bool:
 	print("[Bootstrap] camp meta progression checks")
 	var passed := true
-	CampProgression.begin_transient_session()
+	var before_camp_checks := CampProgression.state.duplicate(true)
 	passed = _print_check_result("camp config load", DataRegistry.has_record("camp_buildings", "camp_armory_workshop") and DataRegistry.get_record_count("camp_buildings") == 6) and passed
 	passed = _print_check_result("camp state init", CampProgression.is_building_unlocked("camp_armory_workshop") and CampProgression.get_building_level("camp_armory_workshop") == 1) and passed
 	var camp_save_state := CampProgression.get_state()
@@ -523,7 +528,8 @@ func _run_camp_meta_checks() -> bool:
 	passed = _print_check_result("camp upgrade option", purchase_ok and CampProgression.get_upgrade_option_level("camp_upgrade_melee_damage") == 1) and passed
 	if camp_root != null:
 		camp_root.queue_free()
-	CampProgression.end_transient_session()
+	CampProgression.state = before_camp_checks
+	CampProgression.state_changed.emit()
 	return passed
 
 
@@ -587,7 +593,7 @@ func _run_ui_flow_checks() -> bool:
 	if main_menu_controller != null:
 		main_menu_controller.queue_free()
 	var camp_ui_controller := CAMP_UI_CONTROLLER_SCENE.instantiate()
-	passed = _print_check_result("camp ui controller instantiate", camp_ui_controller != null and camp_ui_controller.get_node_or_null("MainSplit/BuildingListPanel/BuildingList") != null and camp_ui_controller.get_node_or_null("MainSplit/DetailPanel/DetailContent/UpgradeOptionsList") != null) and passed
+	passed = _print_check_result("talent tree ui controller instantiate", camp_ui_controller is CampBlueprintUIController) and passed
 	if camp_ui_controller != null:
 		camp_ui_controller.queue_free()
 	return passed
@@ -607,13 +613,14 @@ func _run_weapon_checks() -> bool:
 	add_child(loadout)
 	player.initialize_from_character("character_void_hunter")
 	var initialized := loadout.initialize(player)
-	passed = _print_check_result("weapon loadout initialize", initialized and loadout.get_weapon_instances().size() == 1) and passed
-	passed = _print_check_result("weapon load cost", loadout.get_total_load_cost() == 20 and loadout.get_load_capacity() == 100) and passed
+	var starting_weapons_equipped := loadout.get_weapon_instances().size() == 2 and loadout.has_weapon("weapon_void_blade") and loadout.has_weapon("weapon_dash_blade")
+	passed = _print_check_result("weapon loadout initialize", initialized and starting_weapons_equipped) and passed
+	passed = _print_check_result("weapon load cost", loadout.get_total_load_cost() == 42 and loadout.get_load_capacity() == 100) and passed
 
 	var weapon := loadout.get_weapon_instance("weapon_void_blade")
 	passed = _print_check_result("weapon instance lookup", weapon != null) and passed
 	if weapon != null:
-		passed = _print_check_result("weapon config runtime fields", int(weapon.get_attack_range()) == 280 and int(weapon.get_hit_radius()) == 10 and int(weapon.get_projectile_speed()) == 500 and int(weapon.get_spread_angle()) == 12) and passed
+		passed = _print_check_result("weapon config runtime fields", int(weapon.get_attack_range()) == 467 and int(weapon.get_hit_radius()) == 17 and int(weapon.get_projectile_speed()) == 833 and int(weapon.get_spread_angle()) == 12) and passed
 		passed = _print_check_result("weapon area_size radius", int(StatDefinitions.calculate_attack_radius(100, 40)) == 120) and passed
 		passed = _print_check_result("weapon attack interval base", is_equal_approx(weapon.get_actual_attack_interval_seconds(), 0.7)) and passed
 		player.add_runtime_modifier({
@@ -663,19 +670,25 @@ func _run_weapon_checks() -> bool:
 
 	var duplicate_purchase_rejected := not loadout.try_buy_weapon("weapon_void_blade")
 	passed = _print_check_result("weapon duplicate purchase rejected", duplicate_purchase_rejected) and passed
+	# Leave room for the current loadout, but one point too little for a new dagger.
+	var current_load := loadout.get_total_load_cost()
+	var dagger_load := int(DataRegistry.get_record("weapons", "weapon_camp_dagger").get("load_cost", 0))
+	var limited_capacity := current_load + dagger_load - 1
 	player.add_runtime_modifier({
 		"id": "mod_test_weapon_load_capacity_limit",
 		"source_type": "test",
-		"source_id": "bootstrap_weapon_check",
+		"source_id": "bootstrap_load_capacity_check",
 		"target_scope": "player",
 		"stat": "load_capacity",
 		"operation": "add_flat",
-		"value": -80,
+		"value": limited_capacity - loadout.get_load_capacity(),
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	var load_capacity_rejected := not loadout.can_add_weapon("weapon_void_blade")
-	passed = _print_check_result("weapon load capacity check", load_capacity_rejected and loadout.get_total_load_cost() <= loadout.get_load_capacity()) and passed
+	var load_capacity_rejected := not loadout.can_add_weapon("weapon_camp_dagger") and not loadout.try_buy_weapon("weapon_camp_dagger")
+	passed = _print_check_result("weapon load capacity check", load_capacity_rejected and not loadout.has_weapon("weapon_camp_dagger") and loadout.get_total_load_cost() == current_load and current_load <= loadout.get_load_capacity()) and passed
+	player.remove_runtime_modifiers_by_source("test", "bootstrap_load_capacity_check")
+	passed = _print_check_result("weapon load capacity restored", loadout.get_load_capacity() == 100 and loadout.can_add_weapon("weapon_camp_dagger")) and passed
 
 	var shop_generator := ShopOfferGenerator.new()
 	var shop_context := {
@@ -898,8 +911,9 @@ func _run_finance_checks() -> bool:
 	passed = _print_check_result("finance steel vault principal armor", derived_principal >= 50 and is_equal_approx(player.get_stat("armor") - armor_before_derived, floorf(float(derived_principal) / 50.0))) and passed
 	passed = _print_check_result("finance hostile takeover damage percent", is_equal_approx(player.get_stat("damage_percent") - damage_before_derived, floorf(float(derived_principal) / 100.0))) and passed
 
-	wave_manager.add_relic("relic_divine_fusion")
 	var rate_before_divine := float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0))
+	wave_manager.add_relic("relic_divine_fusion")
+	passed = _print_check_result("finance divine fusion base rate", is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, 2.0)) and passed
 	player.add_runtime_modifier({
 		"id": "mod_bootstrap_divinity_seed",
 		"source_type": "test",
@@ -911,11 +925,12 @@ func _run_finance_checks() -> bool:
 		"duration": -1,
 		"stack_rule": "unique",
 	})
-	passed = _print_check_result("finance divine fusion updates immediately", is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, 1.0)) and passed
+	# Twelve erosion grants two complete groups of five: 2 base points + 0.4.
+	passed = _print_check_result("finance divine fusion updates immediately", is_equal_approx(player.get_stat("divinity"), 12.0) and is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, 2.4)) and passed
 	wave_manager.prepare_finance_for_wave(10)
 	wave_manager.finance_system.begin_wave(10)
-	var expected_divine_rate := floorf(player.get_stat("divinity") / 5.0) * 0.5
-	passed = _print_check_result("finance divine fusion fractional rate", expected_divine_rate > 0.0 and is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, expected_divine_rate)) and passed
+	# Wave start adds three erosion, reaching the next 0.2-point threshold.
+	passed = _print_check_result("finance divine fusion fractional rate", is_equal_approx(player.get_stat("divinity"), 15.0) and is_equal_approx(float(wave_manager.get_finance_snapshot().get("interest_rate", 0.0)) - rate_before_divine, 2.6)) and passed
 
 	wave_manager.queue_free()
 	player.queue_free()
@@ -950,7 +965,8 @@ func _run_main_flow_checks() -> bool:
 	flow.enter_battle_selection("character_void_hunter")
 	var selection_ok := flow.confirm_character_selection()
 	passed = _print_check_result("main flow character selection", selection_ok and flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.current_wave_index == 0) and passed
-	passed = _print_check_result("main flow start weapon sync", player.get_start_weapon_ids().size() == 1 and player.get_start_weapon_ids()[0] == "weapon_void_blade" and loadout.get_weapon_instances().size() == 1) and passed
+	var starting_weapons_synced := player.get_start_weapon_ids() == ["weapon_void_blade", "weapon_dash_blade"] and loadout.get_weapon_instances().size() == 2 and loadout.has_weapon("weapon_void_blade") and loadout.has_weapon("weapon_dash_blade")
+	passed = _print_check_result("main flow start weapon sync", starting_weapons_synced) and passed
 	passed = _print_check_result("main flow first wave auto start", flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT and flow.get_state_snapshot().get("pending_finance_payload", {}).is_empty()) and passed
 	var default_shop_payload := flow._build_shop_payload("free", 1)
 	var default_shop_offers: Array = default_shop_payload.get("offers", [])

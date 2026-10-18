@@ -779,6 +779,7 @@ func _validate_enemy_adaptation_records(records: Array) -> void:
 
 func _validate_camp_building_records(records: Array, records_by_id: Dictionary) -> void:
 	# 营地建筑既包含等级效果，也包含局外升级项，需分开校验。
+	_validate_talent_chains(records)
 	var upgrade_stats: Dictionary = {}
 	for record_index in records.size():
 		var record: Variant = records[record_index]
@@ -809,6 +810,45 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 					upgrade_stats[stat_id] = option_path
 			if option.has("required_building_level") and int(option["required_building_level"]) < 1:
 				errors.append("%s.upgrade_options[%d].required_building_level must be at least 1." % [path, option_index])
+
+
+func _validate_talent_chains(records: Array) -> void:
+	var options: Dictionary = {}
+	var owners: Dictionary = {}
+	for building in records:
+		if not building is Dictionary or not building.get("upgrade_options", []) is Array:
+			continue
+		var max_level := 1
+		if building.get("levels", {}) is Dictionary:
+			for level in building.get("levels", {}):
+				max_level = maxi(max_level, int(str(level)))
+		for option in building.get("upgrade_options", []):
+			if not option is Dictionary:
+				continue
+			var id := str(option.get("id", ""))
+			if options.has(id):
+				errors.append("Duplicate talent upgrade id: %s." % id)
+			options[id] = option
+			owners[id] = str(building.get("id", ""))
+			if int(option.get("max_level", 0)) < 1:
+				errors.append("Talent %s max_level must be positive." % id)
+			if int(option.get("required_building_level", 1)) > max_level:
+				errors.append("Talent %s required_building_level exceeds building maximum." % id)
+	for id in options:
+		var visited: Dictionary = {}
+		var cursor := str(id)
+		while not cursor.is_empty():
+			if not options.has(cursor):
+				errors.append("Talent %s has missing prerequisite %s." % [id, cursor])
+				break
+			if owners[cursor] != owners[id]:
+				errors.append("Talent %s prerequisite must belong to the same building." % id)
+				break
+			if visited.has(cursor):
+				errors.append("Talent %s has a prerequisite cycle." % id)
+				break
+			visited[cursor] = true
+			cursor = str(options[cursor].get("requires_upgrade", ""))
 
 
 func _validate_camp_levels(levels: Variant, path: String) -> void:

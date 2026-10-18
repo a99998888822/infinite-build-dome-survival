@@ -1,6 +1,6 @@
 extends Node2D
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
-const BLOCK_PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
+const BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
 
 ## Short, render-only reaction cues. They never own damage or status timing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -80,7 +80,11 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	if BLOCK_PREVIEW.enabled and BLOCK_PREVIEW.draw_cue(self): return
+	BAKED.ALIGNED.begin(self)
+	if kind == "thaw":
+		BLOCKS.draw_thaw(self)
+		return
+	if BLOCKS.enabled and BLOCKS.draw_cue(self): return
 	if kind == "steam":
 		BAKED.draw(self, "steam_d%d" % (0 if detail == 0 else 1), int(elapsed / duration * 66.0))
 		return
@@ -91,7 +95,7 @@ func _draw() -> void:
 		var growth := smoothstep(0,0.65,clampf(elapsed/duration,0,1))
 		var radius := lerpf(float(options.get("from_radius",51.2)),float(options.get("radius",69.12)),growth)
 		var radius_scale := radius / lerpf(51.2,69.12,growth)
-		BAKED.draw(self, "frost_front_d1", int(elapsed / duration * 43.2), Vector2.ONE * radius_scale)
+		BAKED.draw_aligned(self,"frost_front_d1",int(elapsed/duration*43.2),Vector2.ONE*radius_scale,Color.WHITE,Transform2D.IDENTITY,1.0)
 		return
 	if kind in ["freeze", "thaw"]:
 		_draw_shard_animation()

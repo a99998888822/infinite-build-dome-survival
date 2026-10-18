@@ -1,4 +1,11 @@
 keys,zh_CN,en
+ui.evacuation.title,夜幕降临,NIGHTFALL
+ui.evacuation.elapsed,逗留 %ds,STAY %ds
+ui.evacuation.open,夜幕降临 · 地堡已开放，跟随金色指引避难。,Night falls · Follow the golden arrow to shelter.
+ui.evacuation.hunters,追猎者正在逼近 · 前往地堡避难！,Hunters are approaching · Reach the bunker!
+ui.evacuation.distance,地堡 · %d 米,BUNKER · %d m
+ui.evacuation.enter,进入光圈避难,ENTER TO TAKE SHELTER
+ui.evacuation.pressure,增援 ×%.1f · 新增敌人收益 %d%%,Reinforcements ×%.1f · New enemy rewards %d%%
 ui.guide.replay,重看操作指引,Replay control guide
 ui.guide.after_rewards,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
 ui.guide.context,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
@@ -112,16 +119,16 @@ ui.bank.withdraw.tab,取出本金,Withdraw
 ui.camp.building.level,等级：%d / %d,Level: %d / %d
 ui.camp.building.level_benefits,建筑等级收益,Building Level Bonuses
 ui.camp.building.level_required,需建筑 Lv.%d,Requires building Lv.%d
-ui.camp.building.purchase_unlock,购买解锁（%d 营地币）,Unlock (%d Camp Coins)
+ui.camp.building.purchase_unlock,购买解锁（%d 天赋点）,Unlock (%d Talent Points)
 ui.camp.building.select_hint,选择一个建筑查看详情,Select a building for details
 ui.camp.building.unlocked,建筑已解锁,Building unlocked
-ui.camp.building.upgrade,升级建筑（Lv.%d → Lv.%d，%d 营地币）,"Upgrade building (Lv.%d → Lv.%d, %d Camp Coins)"
+ui.camp.building.upgrade,升级建筑（Lv.%d → Lv.%d，%d 天赋点）,"Upgrade building (Lv.%d → Lv.%d, %d Talent Points)"
 ui.camp.buildings.subtitle,固定设施与成长入口,Facilities and progression
 ui.camp.buildings.title,营地建筑,Camp Buildings
 ui.camp.clear_save_tooltip,清除存档并返还货币,Clear save data and refund currency
-ui.camp.currency,营地币：%d,Camp Coins: %d
+ui.camp.currency,天赋点：%d,Talent Points: %d
 ui.camp.finance.description,理财：开局自动获得初始本金 %d，结算利息时按本金 × 利率计算收益。,Bank: start with %d principal. Interest is calculated from principal × interest rate.
-ui.camp.purchase,购买（%d 营地币）,Buy (%d Camp Coins)
+ui.camp.purchase,购买（%d 天赋点）,Buy (%d Talent Points)
 ui.camp.purchase_amount,购买 %d,Buy %d
 ui.camp.reset_upgrades,重置升级,Reset Upgrades
 ui.camp.reset_upgrades_tooltip,重置属性升级并返还货币,Reset stat upgrades and refund currency
@@ -131,9 +138,9 @@ ui.camp.stats.empty,尚无已应用属性,No applied bonuses yet
 ui.camp.stats.subtitle,已应用的营地成长,Applied camp bonuses
 ui.camp.stats.title,属性总览,Stat Overview
 ui.camp.title,营地搭建,Camp Building
-ui.camp.unlock_camp,解锁营地（%d 营地币）,Unlock camp (%d Camp Coins)
+ui.camp.unlock_camp,解锁营地（%d 天赋点）,Unlock camp (%d Talent Points)
 ui.camp.unlocked_count,已解锁 %d 项,Unlocked: %d
-ui.camp.upgrade_to_level,升级至 Lv.%d（%d 营地币）,Upgrade to Lv.%d (%d Camp Coins)
+ui.camp.upgrade_to_level,升级至 Lv.%d（%d 天赋点）,Upgrade to Lv.%d (%d Talent Points)
 ui.camp.upgrades.applied,升级已生效,Upgrade applied
 ui.camp.upgrades.reset_done,升级已重置,Upgrades reset
 ui.camp.upgrades.subtitle,已解锁的属性成长,Unlocked stat upgrades
@@ -371,7 +378,7 @@ ui.main_menu.language,语言：,Language：
 ui.main_menu.quit,退出,Quit
 ui.main_menu.start_run,开始战斗,Start Run
 ui.main_menu.talents,天赋,Talents
-ui.main_menu.version,版本：v.0106.260816,Version: v.0106.260816
+ui.main_menu.version,版本 v.0106.261018,Version v.0106.261018
 ui.performance.counter,FPS %d   怪物 %d   粒子 %d,FPS %d   Enemies %d   Particles %d
 ui.performance.tooltip,实时帧率、存活怪物、共享粒子与闪电采样点。每0.5秒更新。,"Live FPS, enemies, shared particles and lightning samples. Updates every 0.5 seconds."
 ui.preview.void_blade_upgrade,虚空刃 升至2级,Void Blade to Lv.2
@@ -430,11 +437,11 @@ ui.settings.return_to_main_menu,返回主菜单,Main Menu
 ui.settings.title,设置,Settings
 ui.settings.yes_selected,● 是,● Yes
 ui.settings.yes_unselected,○ 是,○ Yes
-ui.settlement.base_conversion_hint,右列为基础营地币,The right column shows base Camp Coins
-ui.settlement.camp_coins_earned,本次获得营地币,Camp Coins Earned
-ui.settlement.camp_title,营地结算,Camp Settlement
+ui.settlement.base_conversion_hint,右列为基础天赋点,The right column shows base Talent Points
+ui.settlement.camp_coins_earned,本次获得天赋点,Talent Points Earned
+ui.settlement.camp_title,天赋点结算,Talent Point Settlement
 ui.settlement.conversion,基础 %s ×%d%% = %s,Base %s ×%d%% = %s
-ui.settlement.conversion_hint,右列为各项折算的营地币,Right column: converted Camp Coins
+ui.settlement.conversion_hint,右列为各项折算的天赋点,Right column: converted Talent Points
 ui.settlement.counting,正在清点…,Counting…
 ui.settlement.death_wave,第%d波 阵亡,Fell on Wave %d
 ui.settlement.defeat,冒险结束,Expedition Over
@@ -442,15 +449,15 @@ ui.settlement.retreat,主动撤离,Expedition Withdrawn
 ui.settlement.retreat_wave,第%d波 撤离,Withdrew on Wave %d
 ui.settlement.retreat_multiplier,撤离结算 ×%d%%,Withdrawal ×%d%%
 ui.settlement.retreat_conversion,失败结算 %s ×%d%% = %s,Defeat reward %s ×%d%% = %s
-ui.settlement.retreat_hint,结束本次冒险，按失败奖励的50%结算营地币（向下取整）。,End this expedition and receive 50% of its defeat reward in Camp Coins (rounded down).
+ui.settlement.retreat_hint,结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。,End this expedition and receive 50% of its defeat reward in Talent Points (rounded down).
 ui.settlement.difficulty_suffix, · 难度 %s, · Difficulty %s
 ui.settlement.gold_earned,赚取金币,Gold Earned
-ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Camp Coin. Spending and deposits do not reduce this total.
+ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Talent Point. Spending and deposits do not reduce this total.
 ui.settlement.interest_cap_suffix, · 利息贡献已达上限, · Interest contribution capped
 ui.settlement.interest_earned,赚取利息,Interest Earned
-ui.settlement.interest_tooltip,每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,"Every %d interest received earns 1 Camp Coin, capped at %d coins per completed wave."
+ui.settlement.interest_tooltip,每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,"Every %d interest received earns 1 Talent Point, capped at %d points per completed wave."
 ui.settlement.kill_records,击杀记录,Kill Record
-ui.settlement.kills_tooltip,每 %d 只敌人折算 1 营地币。,Every %d enemies defeated earns 1 Camp Coin.
+ui.settlement.kills_tooltip,每 %d 只敌人折算 1 天赋点。,Every %d enemies defeated earns 1 Talent Point.
 ui.settlement.multiplier,结算 ×%d%%,Reward ×%d%%
 ui.settlement.no_kills,本次未击败敌人,No enemies defeated this run
 ui.settlement.save_failed,保存失败，返回时重试,Save failed; retrying when you return
@@ -459,7 +466,7 @@ ui.settlement.skip_hint,点击空白处 / 空格快进,Click an empty area / Spa
 ui.settlement.total_kills,总杀敌数,Enemies Defeated
 ui.settlement.victory,通关！,Victory!
 ui.settlement.waves_survived,度过波次,Waves Survived
-ui.settlement.waves_tooltip,每完整度过一波获得 %d 营地币。,Each completed wave earns %d Camp Coins.
+ui.settlement.waves_tooltip,每完整度过一波获得 %d 天赋点。,Each completed wave earns %d Talent Points.
 ui.shop.gold_price,%s 金币,%s gold
 ui.shop.gold_shortfall,差 %d,Need %d more
 ui.shop.new_weapon,新武器,New Weapon

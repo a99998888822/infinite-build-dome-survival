@@ -324,9 +324,29 @@ func get_upgrade_option_parent_building_id(option_id: String) -> String:
 	return ""
 
 
+func is_upgrade_visible(option_id: String) -> bool:
+	# Follow the whole chain defensively: invalid/cyclic data must never unlock a purchase.
+	var owner := get_upgrade_option_parent_building_id(option_id)
+	if owner.is_empty() or not is_building_unlocked(owner):
+		return false
+	var visited: Dictionary = {}
+	var cursor := option_id
+	while not cursor.is_empty():
+		if visited.has(cursor) or get_upgrade_option_parent_building_id(cursor) != owner:
+			return false
+		visited[cursor] = true
+		var record := get_upgrade_option_record(cursor)
+		if record.is_empty() or get_building_level(owner) < int(record.get("required_building_level", 1)):
+			return false
+		cursor = str(record.get("requires_upgrade", ""))
+		if not cursor.is_empty() and get_upgrade_option_level(cursor) < 1:
+			return false
+	return true
+
+
 func can_purchase_upgrade(option_id: String) -> bool:
 	var option := get_upgrade_option_record(option_id)
-	if option.is_empty():
+	if option.is_empty() or not is_upgrade_visible(option_id):
 		return false
 	var owner_building_id := get_upgrade_option_parent_building_id(option_id)
 	if owner_building_id.is_empty():
@@ -388,40 +408,6 @@ func set_camp_currency(amount: int) -> void:
 
 func add_camp_currency(amount: int) -> void:
 	set_camp_currency(get_camp_currency() + amount)
-
-
-func clear_save_and_refund() -> int:
-	var refund := get_camp_currency()
-	for record in get_building_records():
-		if not (record is Dictionary):
-			continue
-		var building_id := str(record.get("id", ""))
-		var building_level := get_building_level(building_id)
-		if building_level > 0:
-			var unlock_condition: Variant = record.get("unlock_condition", {})
-			if not bool(record.get("initial_unlocked", false)) and unlock_condition is Dictionary:
-				refund += int((unlock_condition as Dictionary).get("cost", 0))
-			var building_upgrade_costs: Variant = record.get("building_upgrade_costs", {})
-			if building_upgrade_costs is Dictionary:
-				for level_key in (building_upgrade_costs as Dictionary).keys():
-					if int(str(level_key)) <= building_level:
-						refund += int((building_upgrade_costs as Dictionary).get(level_key, 0))
-		for option in record.get("upgrade_options", []):
-			if not (option is Dictionary):
-				continue
-			var option_id := str(option.get("id", ""))
-			var option_level := get_upgrade_option_level(option_id)
-			for purchased_level in range(1, option_level + 1):
-				refund += get_upgrade_cost(option_id, purchased_level)
-
-	var settings := (state.get("settings", {}) as Dictionary).duplicate(true)
-	_reset_state()
-	state["settings"] = settings
-	_set_camp_currency_value(refund)
-	if not _transient_session_active:
-		save_state()
-	state_changed.emit()
-	return refund
 
 
 func apply_final_settlement(camp_currency_gain: int, run_id: String = "") -> bool:

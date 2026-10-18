@@ -99,18 +99,19 @@ func pose_index() -> int:
 
 
 func _draw() -> void:
+	BLOCK_VFX.begin(self)
 	if cancelled:
 		return
 	var dimensions := Vector2(weapon.get_attack_range() / 140.0, weapon.get_hit_radius() / 20.0)
 	if attacking:
 		for direction in directions:
 			draw_set_transform(Vector2.ZERO, direction.angle(), dimensions)
-			BLOCK_VFX.draw(self, "tentacle", (age - hit_time + 0.06) / 0.15, Rect2(0, -96, 160, 128))
+			BLOCK_VFX.draw(self,"tentacle",(age-hit_time+0.06)/0.15,Rect2(0,-96,160,128),Color.WHITE,Transform2D(direction.angle(),dimensions,0,Vector2.ZERO))
 			draw_set_transform(Vector2.ZERO)
 			draw_atlas(BODY, 128, pose_index(), Vector2(14, 103), direction * 20 + Vector2(0, 5), direction.angle(), dimensions)
 	for branch in branches:
 		var direction: Vector2 = branch.direction
 		draw_set_transform(Vector2.ZERO, direction.angle(), dimensions * 0.65)
-		BLOCK_VFX.draw(self, "tentacle", (float(branch.age) + 0.06) / 0.15, Rect2(0, -96, 160, 128))
+		BLOCK_VFX.draw(self,"tentacle",(float(branch.age)+0.06)/0.15,Rect2(0,-96,160,128),Color.WHITE,Transform2D(direction.angle(),dimensions*0.65,0,Vector2.ZERO))
 		draw_set_transform(Vector2.ZERO)
 		draw_atlas(BODY, 128, 13, Vector2(14, 103), direction * 20 + Vector2(0, 5), direction.angle(), dimensions * 0.65, 1 - float(branch.age) / 0.18)

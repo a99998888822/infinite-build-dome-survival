@@ -69,6 +69,7 @@ func _draw_ground() -> void:
 
 
 func _draw() -> void:
+	preload("res://scripts/effects/aligned_atlas.gd").begin(self)
 	if weapon == null:
 		return
 	for index in _arcs.size():
@@ -104,7 +105,7 @@ func _draw_core() -> void:
 	var pulse := 0.5 + sin(elapsed * TAU * 2.0 + phase) * 0.5
 	PIXEL.ellipse(self, Vector2.ONE * core_radius * 1.20, Color(0.25, 0.69, 1.0, 0.07 + pulse * 0.05))
 	var frame := int(floor((elapsed + phase) * CORE_FRAME_COUNT)) % CORE_FRAME_COUNT
-	draw_texture_rect(_core_frames[frame], Rect2(-Vector2.ONE * core_radius, Vector2.ONE * core_radius * 2.0), false)
+	preload("res://scripts/effects/aligned_atlas.gd").draw(self,_core_frames[frame],Rect2(-Vector2.ONE*core_radius,Vector2.ONE*core_radius*2.0),Rect2(0,0,24,24),Color.WHITE,Transform2D.IDENTITY,1.0,false)
 	# Detached, short-lived square sparks suggest an ionized edge, not surface arcs.
 	for index in 6:
 		var clock := elapsed / 0.24 + phase + index / 6.0

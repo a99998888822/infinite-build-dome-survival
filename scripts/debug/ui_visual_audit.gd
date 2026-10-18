@@ -1,14 +1,14 @@
 extends Node
 
 # Run with:
-# godot --path <project> res://scenes/debug/ui_visual_audit.tscn -- --audit-resolution=1152x648
+# godot --path <project> res://scenes/debug/ui_visual_audit.tscn -- --audit-resolution=1920x1080
 
 const GAME_ROOT_SCENE: PackedScene = preload("res://scenes/core/game_root.tscn")
 
 const OUTPUT_ROOT := "res://temp/artifacts/ui_visual_audit"
 const VIEWPORT_MARGIN := 1.0
 
-var _resolution := Vector2i(1152, 648)
+var _resolution := Vector2i(1920, 1080)
 var _output_directory := ""
 var _report_lines: Array[String] = []
 var _failure_count := 0

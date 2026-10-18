@@ -123,8 +123,9 @@ func _test_emission() -> void:
 			explosion._detonate()
 		check(ProbeExplosion.damage_calls == 96 and ProbeExplosion.terrain_calls == 96 and ProbeExplosion.total_damage == 1728, mode + ": every explosion still executes damage and terrain work")
 		check(randf() == expected_random, mode + ": visual admission does not consume gameplay RNG")
-		var expected_particles := 900 if mode == "full" else 772 if mode == "adaptive" else 0
-		check(world.get_active_particle_count() == expected_particles, mode + ": particle admission matches the visual tier before creation")
+		var expected_bursts := 96 if mode == "full" else 13 if mode == "adaptive" else 0
+		var bursts := get_tree().get_nodes_in_group("reaction_block_blasts")
+		check(bursts.size() == expected_bursts and world.get_active_particle_count() == 0, mode + ": approved block bursts obey admission without duplicate legacy particles")
 		if mode == "adaptive":
 			var budget = BUDGET.for_parent(host)
 			check(budget.tier_counts == [4, 8, 1, 83], "identical overlapping explosions retain representative bursts and one spark patch")

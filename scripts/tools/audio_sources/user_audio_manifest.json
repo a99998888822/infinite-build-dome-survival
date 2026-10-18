@@ -1,0 +1,155 @@
+{
+  "mapping_source": "artifacts/sources/audio_user_20261018/audio/audio_list.txt",
+  "conversion": "48 kHz mono PCM16; no normalization; per-asset edits recorded in processing",
+  "disabled_cues": [
+    "reaction_cancel",
+    "fire",
+    "reaction_holy",
+    "reaction_dark_flame"
+  ],
+  "sounds": [
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/player_walk.mp3",
+      "description": "人物移动的音效",
+      "asset": "assets/audio/sfx/player/player_walk.wav",
+      "source_sha256": "2b0c7837fa145336e5ce53a83bf743cec48532e012447756f4ee3bc45073a730",
+      "asset_sha256": "93e328c7b97d9b987d698228c74e1d47d292b4ad9a55918d850b98704368958e",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/A_heavy_cast-iron_ca_#4-1792331487179.mp3",
+      "description": "炮械发射（铸铁榴弹炮 / 巨型手持火炮共用）音效",
+      "asset": "assets/audio/sfx/combat/grenade_launch_01.wav",
+      "source_sha256": "629fcf2c092b0a7880b8e331745a9c57a36716b37757cbc183e55551d4193239",
+      "asset_sha256": "df0ed0466b1b5adcc62e8dc48b7d63bfe569c89cecfe3359f017b3534c86d576",
+      "seconds": 2.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/A_massive_heavy_weap_#3-1792331588194.mp3",
+      "description": "异化触手的命中音效",
+      "asset": "assets/audio/sfx/combat/mutant_tentacle_hit.wav",
+      "source_sha256": "cf997a487b5e22433eddacfd330275890cae82e36fcddb78e70235aa72865e61",
+      "asset_sha256": "8d52f6f0ff999812a5019227ef03c7d9674d8ebd479d04186d5d01c2e4dc6a89",
+      "seconds": 2.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/A_massive_heavy_weap_#1-1792331700630.mp3",
+      "description": "流星摆锤/裂地战锤共用的命中音效",
+      "asset": "assets/audio/sfx/combat/meteor_flail_hit.wav",
+      "source_sha256": "1631aadd6e785a2154f27d596b1152bb0abf8fa8d92d0446944da17774fa0221",
+      "asset_sha256": "f30e4e7dc294ce0f734a7ef9f75e22e3cf13dbcca5e481ac25f6e8d516e40e2d",
+      "seconds": 2.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-jet-of-flame-burst-4-1792332089511_AvOv45Yx.mp3",
+      "description": "赤铜炉灯接触音频（注意释放时循环播放）",
+      "asset": "assets/audio/sfx/combat/copper_lamp_loop.wav",
+      "source_sha256": "3e767b17a9f5a59c5d45563e63f558c48263d1deaa78664fc5f69c477956c79f",
+      "asset_sha256": "63c2d8cff70143b4f0b47f89d630744d4b85a3c51ba5ea9466fbc34091fde186",
+      "seconds": 0.21
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-mystical-arcane-ma-2-1792332332366_JJ1ksidH.mp3",
+      "description": "坤舆秘仪书命中音效",
+      "asset": "assets/audio/sfx/combat/ritual_mark_r02_01.wav",
+      "source_sha256": "24d0500ae6c53c31f90c1582749c16f79d22d5589128b4f0e5e2480b7363354a",
+      "asset_sha256": "5bf47b2da030e239264eb17319864d340bb7344bc84cb11ec90cb3c82a565dd0",
+      "seconds": 0.988
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/An_artillery_shell_d_#2-1792332486020.mp3",
+      "description": "爆炸（爆炸附魔 / 榴弹炮引爆）音效",
+      "asset": "assets/audio/sfx/combat/explosion_01.wav",
+      "source_sha256": "3cea9a8b6bf45a2b32b5dc9b278a293b19c7aa49e7df6c9e2c914c79bc51ce07",
+      "asset_sha256": "e1c0dd738bcd12bc840ffce4c0445830daca472a6cb81f3342500109510fe6eb",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-glowing-blade-of-l-3-1792332939896_jfOalrme.mp3",
+      "description": "光辉剑 · 落地音效",
+      "asset": "assets/audio/sfx/combat/light_sword_01.wav",
+      "source_sha256": "2b88c73de620bdedcbf19d844af8e6996bd75a71671983d65bed23edee6d16cd",
+      "asset_sha256": "75b5a46b04cb3250c4dacd7fe94e61b2a2978062ad1c7380ce5c8c78431195b4",
+      "seconds": 1.67
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/Wind_spreads_water_i_#4-1792333557716.mp3",
+      "description": "水流附魔 · 泼溅音效",
+      "asset": "assets/audio/sfx/combat/water_01.wav",
+      "source_sha256": "d264bfb9ab566f40756b02ce17bf43c6fd1e091fefd53e52a990b65c7da710d4",
+      "asset_sha256": "d4ca7abd225a889f1640b954137e94028aef04caa06a626032c5e2946d2aef6d",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/Light_strikes_a_froz_#4-1792333231104.mp3",
+      "description": "光冰接触 · 棱镜反射音效",
+      "asset": "assets/audio/sfx/combat/reaction_reflection_01.wav",
+      "source_sha256": "308fc3c06ec36e42640de4f6a98c43bcd166f9f9affbb64707e3bd7e5c5b978f",
+      "asset_sha256": "a20b9ed87ab13f27696591bbaea6b48958b3729edad8d923881175e547a3fd2d",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/A_burst_of_freezing__#1-1792333264169.mp3",
+      "description": "风冰接触 · 霜线推进音效",
+      "asset": "assets/audio/sfx/combat/reaction_ice_expand_01.wav",
+      "source_sha256": "ddc4662d33a68b155876d16aaf4f4f23ffac4ad03bf69cfe957eb0487213e060",
+      "asset_sha256": "008b1f27dbd8c505ee4670179f0e40976531949dbc12ec0afb38562270dc2cf9",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/the_sound_of_Water_h_#1-1792333478631.mp3",
+      "description": "水火接触 · 蒸汽音效",
+      "asset": "assets/audio/sfx/combat/reaction_steam_01.wav",
+      "source_sha256": "4a5d0ab12c63dc3465ff4f17bf4038fd14a02f9a91ae187fc7d3398d7cae4703",
+      "asset_sha256": "555c0b0b0c40859279194e16dcc3fb0f9454ae4926334ed0294233e02ccf9e8d",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/A_frozen_body_shatte_#3-1792333519093.mp3",
+      "description": "冻结解除 · 冰块碎裂音效",
+      "asset": "assets/audio/sfx/combat/reaction_thaw_01.wav",
+      "source_sha256": "d4a3dc9e5e92ac576140ef99cb84dc38e07fc73a33eeb99a9507140ee877aaef",
+      "asset_sha256": "717f20f9e9efd0959f05648acf07ff9f4711bf125d8c7fb1ff7bda4cd7074f8d",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/Wind_spreads_water_i_#2-1792333582542.mp3",
+      "description": "风水接触 · 湿润扩散音效",
+      "asset": "assets/audio/sfx/combat/reaction_wet_spread_01.wav",
+      "source_sha256": "c4c00bf422a1a82cc37adb5f7fd207c43072523b6c8d03feea527b40444c3d84",
+      "asset_sha256": "89e8db1b54030073832c32c0d49b1b4a58ce7eeb19602401acae28ed99844ff9",
+      "seconds": 1.0
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-low-burning-fire-p-1-1792334585674_EJsGkaT6.mp3",
+      "description": "火焰附魔火池音效",
+      "asset": "assets/audio/sfx/combat/fire_01.wav",
+      "status": "disabled",
+      "source_sha256": "402c75cf79c17a57281514b4ac0da583e906de1a3eeb83d85843bd4b4f61f2f2",
+      "asset_sha256": "825c050c930ed619311ab41aec42767835f74632fa1502563c528099c2b0a3fa",
+      "seconds": 0.315,
+      "processing": {
+        "keep_start_fraction": 0.5,
+        "decoded_source_seconds": 0.63,
+        "retained_frames": 15120,
+        "edge_fade_ms": 3
+      }
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-heavy-cloth-or-rop-4-1792334766253_qIVB8fdm.mp3",
+      "description": "风刃 · 切风音效",
+      "asset": "assets/audio/sfx/combat/wind_01.wav",
+      "source_sha256": "3c78e6dc96a13f13000fe13a8cc4d83f891869d3ee9dba2e3e11d263f2dbc478",
+      "asset_sha256": "f13c3c54e56ed1ef47e82830b33c13b021f163b3ff8e9fdf1baf6b6b4535c1ab",
+      "seconds": 0.59
+    },
+    {
+      "source": "artifacts/sources/audio_user_20261018/audio/a-tiny-high-voltage-3-1792334962145_xCgDDwFD.mp3",
+      "description": "电浆球的命中音效",
+      "asset": "assets/audio/sfx/combat/plasma_hit_01.wav",
+      "source_sha256": "2a758a3d058ef4a8529ce941c1836d1683d5fbc21f3154dd13db20215e1d2ae8",
+      "asset_sha256": "c91c4e87474e3c91fa08569b4a8e274e8c12ec58be5ec4f4a38bbbb293aa292b",
+      "seconds": 0.26
+    }
+  ]
+}

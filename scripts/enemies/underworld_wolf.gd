@@ -9,7 +9,7 @@ const KNOCKBACK = preload("res://scripts/player/enemy_knockback.gd")
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 # Match the knight's visible height while preserving the registered pose ratios.
 # The scene's base collider uses this size; challenge scaling remains independent.
-const BASE_BODY_SCALE := 2.0
+const BASE_BODY_SCALE := 1.5
 
 var profile: Dictionary
 var state := "spawn"

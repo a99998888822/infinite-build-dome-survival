@@ -14,7 +14,7 @@ const RESOLUTION_PRESETS: Array[Vector2i] = [
 	Vector2i(1920, 1080),
 	Vector2i(2560, 1440),
 ]
-const DEFAULT_RESOLUTION_INDEX: int = 1
+const DEFAULT_RESOLUTION_INDEX: int = 5
 const DEFAULT_FULLSCREEN: bool = false
 const LEGACY_RESOLUTION_PRESETS: Array[Vector2i] = [
 	Vector2i(1280, 720),
@@ -101,7 +101,8 @@ func _apply_startup_settings() -> void:
 	var settings_version := int(config.get_value("display", "settings_version", 0)) if has_saved_settings else 0
 	var has_current_settings := has_saved_settings and settings_version >= SETTINGS_VERSION
 	if has_current_settings and config.has_section_key("display", "resolution_width") and config.has_section_key("display", "resolution_height"):
-		var saved_size := Vector2i(int(config.get_value("display", "resolution_width", 1152)), int(config.get_value("display", "resolution_height", 648)))
+		var default_size := RESOLUTION_PRESETS[DEFAULT_RESOLUTION_INDEX]
+		var saved_size := Vector2i(int(config.get_value("display", "resolution_width", default_size.x)), int(config.get_value("display", "resolution_height", default_size.y)))
 		_resolution_index = _find_resolution_index(saved_size)
 	elif has_current_settings and config.has_section_key("display", "resolution_index"):
 		_resolution_index = _resolve_legacy_resolution_index(int(config.get_value("display", "resolution_index", DEFAULT_RESOLUTION_INDEX)))
@@ -215,7 +216,9 @@ func _find_best_resolution_index() -> int:
 	if usable_size.x <= 0 or usable_size.y <= 0:
 		return DEFAULT_RESOLUTION_INDEX
 	var best_index := 0
-	for index in range(RESOLUTION_PRESETS.size()):
+	# Start at 1080p, or the largest smaller window that fits the desktop.
+	# Higher output resolutions remain explicit user preferences.
+	for index in range(DEFAULT_RESOLUTION_INDEX + 1):
 		var candidate := RESOLUTION_PRESETS[index]
 		if candidate.x <= usable_size.x and candidate.y <= usable_size.y:
 			best_index = index

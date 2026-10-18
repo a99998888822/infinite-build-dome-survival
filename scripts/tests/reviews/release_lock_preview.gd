@@ -5,37 +5,17 @@ const PIXEL_FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.ot
 
 
 static func apply_talents(page: CampBlueprintUIController) -> void:
-	var archive: Button
-	var shelter: Button
-	for row in page._building_list.get_children():
-		match str(row.get_meta("building_id", "")):
-			"camp_relic_archive": archive = row
-			"camp_dome_shelter": shelter = row
-	# Swap only the presentation order; the candidate does not change saved data.
-	var archive_index := archive.get_index()
-	var shelter_index := shelter.get_index()
-	page._building_list.move_child(shelter, archive_index)
-	page._building_list.move_child(archive, shelter_index)
-	var rows := page._building_list.get_children()
-	for i in range(2, rows.size()):
-		var button := rows[i] as Button
-		var record := CampProgression.get_building_record(str(button.get_meta("building_id")))
+	# Candidate only: use the new building nodes, without changing saved data.
+	for id in page._nodes:
+		var button: TalentNodeButton = page._nodes[id]
+		if not button.building or id in ["camp_armory_workshop", "camp_dome_shelter"]: continue
 		button.disabled = true
-		button.focus_mode = Control.FOCUS_NONE
-		button.text = ""
-		button.add_theme_stylebox_override("disabled", page._button_style(Color("252629"), Color("626366"), 1))
-		var name := _label(button, L10n.source(str(record.name)), 12, Color("828387"))
-		name.position = Vector2(12, 3)
-		name.size = Vector2(button.size.x-24, 20)
-		var veil := _veil(button, 0.53)
-		veil.anchor_top = 0.48
-		veil.anchor_bottom = 0.94
-		veil.offset_left = 2
-		veil.offset_right = -2
-		var notice := _label(veil, NOTICE, 10, Color("bfc0c0"))
-		notice.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		button.lit = false
+		button.queue_redraw()
+		var notice := _label(button, NOTICE, 12, Color("bfc0c0"))
+		notice.position = Vector2(-10, 34)
+		notice.size = Vector2(100, 20)
 		notice.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		notice.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		button.set_meta("release_locked", true)
 
 

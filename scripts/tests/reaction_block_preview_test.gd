@@ -1,5 +1,5 @@
 extends Node
-const PREVIEW = preload("res://scripts/effects/reviews/reaction_block_preview.gd")
+const BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
 const BUDGET = preload("res://scripts/effects/thunder_fire_visual_budget.gd")
 class Probe extends ExplosionEffect:
 	static var hits := 0
@@ -23,14 +23,16 @@ func _ready() -> void:
 	_run.call_deferred()
 
 func _run() -> void:
-	check(not PREVIEW.enabled,"candidate stays disabled in normal gameplay")
+	check(BLOCKS.enabled,"approved block styles are enabled in normal gameplay")
+	check(BLOCKS.thunder_fire_enabled,"approved irregular thunder-fire is enabled in normal gameplay")
 	CampProgression.begin_transient_session()
 	var weapon := WeaponInstance.new()
 	check(weapon.initialize("weapon_void_blade",null),"weapon fixture initializes")
 	var event := DamageEvent.create({"damage":20,"original_damage":20,"source_weapon_id":weapon.weapon_id})
 	var baseline := 0
 	for enabled in [false,true]:
-		PREVIEW.enabled = enabled
+		BLOCKS.enabled = enabled
+		BLOCKS.thunder_fire_enabled = enabled
 		var host := Node2D.new()
 		add_child(host)
 		Probe.hits = 0; Probe.total_damage = 0; Probe.terrain = 0
@@ -43,7 +45,7 @@ func _run() -> void:
 			probe._radius_override = 72
 			probe._detonate()
 		check(Probe.hits==24 and Probe.terrain==24,"density reduction preserves every damage and terrain call")
-		if enabled: check(Probe.total_damage==baseline,"candidate keeps the original reaction damage")
+		if enabled: check(Probe.total_damage==baseline,"production effect keeps the original reaction damage")
 		else: baseline = Probe.total_damage
 		if enabled:
 			var bursts := get_tree().get_nodes_in_group("reaction_block_blasts")
@@ -53,15 +55,18 @@ func _run() -> void:
 			var age: float = burst.elapsed
 			GameGlobal.set_runtime_flag("battle_runtime_paused",true)
 			burst._process(0.1)
-			check(burst.elapsed==age,"hit stop and pause freeze candidate animation")
+			check(burst.elapsed==age,"hit stop and pause freeze production effect animation")
 			GameGlobal.set_runtime_flag("battle_runtime_paused",false)
 			burst._process(0.6)
-			check(burst.is_queued_for_deletion(),"candidate expires with no persistent tail")
+			check(burst.is_queued_for_deletion(),"production effect expires with no persistent tail")
 		host.queue_free()
 		for frame in 3: await get_tree().process_frame
-	PREVIEW.enabled = false
+	BLOCKS.enabled = true
+	BLOCKS.thunder_fire_enabled = true
 	AudioManager.stop_combat_sfx()
 	AudioManager.stop_bgm()
+	# Let the audio mixer release its stopped playback before quitting the engine.
+	await get_tree().create_timer(0.12).timeout
 	CampProgression.end_transient_session()
 	print("REACTION_BLOCK_PREVIEW_TEST checks=",checks," failures=",failures)
 	get_tree().quit(1 if failures else 0)

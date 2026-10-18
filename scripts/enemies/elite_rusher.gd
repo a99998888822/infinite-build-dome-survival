@@ -2,7 +2,7 @@ extends EnemyController
 class_name EliteRusher
 
 const FRAMES: SpriteFrames = preload("res://assets/sprites/enemies/iron_knight/iron_knight_sprite_frames.tres")
-const BODY_SCALE := 1.7
+const BODY_SCALE := 1.275
 const CONTROL_MULTIPLIER := 0.1
 
 var skill_state: String = "spawn"

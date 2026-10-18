@@ -2,7 +2,7 @@ extends Node
 ## Presentation offset is independent of animation pose, jump height and collision.
 const WHITE_SHADER = preload("res://assets/shaders/enemy_hit_white.gdshader")
 const SHAKE_SECONDS := 0.18
-const SHAKE_PIXELS := 14.0
+const SHAKE_PIXELS := 14.0 / 3.0
 const WHITE_HOLD_SECONDS := 0.07
 const WHITE_FADE_SECONDS := 0.05
 const DIRECTIONS := [Vector2(1, -0.35), Vector2(-1, 0.55), Vector2(0.65, 1), Vector2(-0.8, -0.7)]

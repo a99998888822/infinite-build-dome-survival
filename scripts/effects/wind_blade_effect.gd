@@ -48,7 +48,8 @@ static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed
 	effect._ground_contact = ground_contact
 	if ignored_target_id > 0:
 		effect._hit_targets[ignored_target_id] = true
-	effect.rotation = effect._direction.angle()
+	# Direction is evaluated inside the fixed pixel grid, not by rotating it.
+	effect.rotation = 0.0
 	AudioManager.play_enchantment_sfx("wind")
 
 
@@ -101,4 +102,5 @@ func _damage_target(enemy: EnemyController, radius_squared: float, wind_damage: 
 
 func _draw() -> void:
 	var progress := clampf(_elapsed / _lifetime, 0.0, 1.0)
-	BLOCK_VFX.paint(self,5,Rect2(Vector2(-100,-72)*_area_scale,Vector2(164,144)*_area_scale),_area_scale,_elapsed,progress)
+	BLOCK_VFX.paint(self,5,Rect2(Vector2(-124,-124)*_area_scale,Vector2(248,248)*_area_scale),_area_scale,_elapsed,progress)
+	material.set_shader_parameter("direction",_direction)

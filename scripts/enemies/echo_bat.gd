@@ -74,6 +74,8 @@ func _physics_process(delta: float) -> void:
 	if has_status("frozen") or has_status("stunned") or has_status("blinded"): return
 	if skill_state != "move": _process_contact_damage()
 	_animate(delta)
+	if charge.visible: preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(charge,2.0)
+	if warning.visible: preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(warning,2.0)
 
 
 func _process_special_behavior(delta: float) -> bool:

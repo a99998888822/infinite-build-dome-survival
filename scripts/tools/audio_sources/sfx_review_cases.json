@@ -1,0 +1,565 @@
+[
+  {
+    "id": "lightning",
+    "title": "lightning",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "lightning"
+        ],
+        "label": "lightning",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "electric_spark",
+    "title": "electric_spark",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "electric_spark"
+        ],
+        "label": "electric_spark",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "fire",
+    "title": "fire",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "fire"
+        ],
+        "label": "fire",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "explosion",
+    "title": "explosion",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "explosion"
+        ],
+        "label": "explosion",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "water",
+    "title": "water",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "water",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "wind",
+    "title": "wind",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "wind"
+        ],
+        "label": "wind",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "light_sword",
+    "title": "light_sword",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "light_sword"
+        ],
+        "label": "light_sword",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "black_hole",
+    "title": "black_hole",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "black_hole"
+        ],
+        "label": "black_hole",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "steam",
+    "title": "steam",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "steam",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "fire"
+        ],
+        "label": "steam",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "thaw",
+    "title": "thaw",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "thaw",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "ice"
+        ],
+        "label": "thaw",
+        "body_aim": true
+      }
+    ],
+    "seconds": 5
+  },
+  {
+    "id": "holy",
+    "title": "holy",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "light_sword"
+        ],
+        "label": "holy",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "fire"
+        ],
+        "label": "holy",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "dark_flame",
+    "title": "dark_flame",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "black_hole"
+        ],
+        "label": "dark_flame",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "fire"
+        ],
+        "label": "dark_flame",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "cancel",
+    "title": "cancel",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "light_sword"
+        ],
+        "label": "cancel",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "black_hole"
+        ],
+        "label": "cancel",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "conduct",
+    "title": "conduct",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "conduct",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "lightning"
+        ],
+        "label": "conduct",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "thunder_fire",
+    "title": "thunder_fire",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "fire"
+        ],
+        "label": "thunder_fire",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "lightning"
+        ],
+        "label": "thunder_fire",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "conduct_strike",
+    "title": "conduct_strike",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "conduct_strike",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "electric_spark"
+        ],
+        "label": "conduct_strike",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "thunder_fire_strike",
+    "title": "thunder_fire_strike",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "fire"
+        ],
+        "label": "thunder_fire_strike",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "electric_spark"
+        ],
+        "label": "thunder_fire_strike",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "wet_spread",
+    "title": "wet_spread",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "wet_spread",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "wind"
+        ],
+        "label": "wet_spread",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "ice_expand",
+    "title": "ice_expand",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "ice"
+        ],
+        "label": "ice_expand",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "wind"
+        ],
+        "label": "ice_expand",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4
+  },
+  {
+    "id": "reflection",
+    "title": "reflection",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [
+          "water"
+        ],
+        "label": "reflection",
+        "body_aim": true
+      },
+      {
+        "time": 1.3,
+        "spells": [
+          "ice"
+        ],
+        "label": "reflection",
+        "body_aim": true
+      },
+      {
+        "time": 2.2,
+        "spells": [
+          "light_sword"
+        ],
+        "label": "reflection",
+        "body_aim": true
+      }
+    ],
+    "seconds": 5
+  },
+  {
+    "id": "wood_arrow",
+    "title": "wood_arrow",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "wood_arrow",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "weapon": "weapon_void_blade"
+  },
+  {
+    "id": "plasma_hit",
+    "title": "plasma_hit",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "plasma_hit",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "weapon": "weapon_plasma_cannon"
+  },
+  {
+    "id": "grenade",
+    "title": "grenade",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "grenade",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "weapon": "weapon_iron_grenade_cannon"
+  },
+  {
+    "id": "meteor",
+    "title": "meteor",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "meteor",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "weapon": "weapon_meteor_flail"
+  },
+  {
+    "id": "ritual",
+    "title": "ritual",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "ritual",
+        "body_aim": true
+      }
+    ],
+    "seconds": 5,
+    "weapon": "weapon_kunyu_ritual_tome"
+  },
+  {
+    "id": "drawer",
+    "title": "drawer",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "drawer",
+        "body_aim": true
+      },
+      {
+        "time": 2.2,
+        "spells": [],
+        "label": "close"
+      }
+    ],
+    "seconds": 4,
+    "ui": "drawer"
+  },
+  {
+    "id": "bank_deposit",
+    "title": "bank_deposit",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "bank_deposit",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "ui": "bank_deposit"
+  },
+  {
+    "id": "bank_withdraw",
+    "title": "bank_withdraw",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "bank_withdraw",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "ui": "bank_withdraw"
+  },
+  {
+    "id": "trade",
+    "title": "trade",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "trade",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "ui": "trade"
+  },
+  {
+    "id": "interest",
+    "title": "interest",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "interest",
+        "body_aim": true
+      }
+    ],
+    "seconds": 4,
+    "ui": "interest"
+  },
+  {
+    "id": "settlement",
+    "title": "settlement",
+    "actions": [
+      {
+        "time": 0.4,
+        "spells": [],
+        "label": "settlement",
+        "body_aim": true
+      }
+    ],
+    "seconds": 6,
+    "ui": "settlement"
+  }
+]

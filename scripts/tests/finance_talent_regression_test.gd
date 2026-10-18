@@ -200,15 +200,15 @@ func _run() -> void:
 	window.size = Vector2i(1152, 768)
 	window.content_scale_size = Vector2i(1152, 768)
 	for building in CampProgression.get_building_records():
-		CampProgression.state.building_levels[building.id] = 5
+		CampProgression.state.building_levels[building.id] = CampProgression.get_building_max_level(building.id)
 	CampProgression.state_changed.emit()
 	flow.enter_talents_flow()
 	await frames(15)
 	var talents := game.find_child("CampBlueprintUIController", true, false) as CampBlueprintUIController
 	talents.show_talents_page()
-	talents._refresh_options(false)
+	talents._refresh_all()
 	await frames()
-	check(talents._options_count_label.text.contains("28"), "actual talents page displays twenty-eight available upgrades")
+	check(talents._summary_values.size() == 28, "actual talent summary includes all twenty-eight attributes")
 	await capture("talents_deduplicated")
 	CampProgression.end_transient_session()
 	game.queue_free()

@@ -261,7 +261,7 @@
     "assets": [
       "assets/ui/stats_drawer/stats_parchment_panel.png"
     ],
-    "kind": "current_original"
+    "kind": "superseded_original"
   },
   {
     "retained": "artifacts/sources/finance/finance_table_ui.png",
@@ -269,7 +269,7 @@
     "assets": [
       "assets/ui/finance/finance_background.png"
     ],
-    "kind": "current_original"
+    "kind": "superseded_original"
   },
   {
     "retained": "artifacts/sources/finance/finance_table_ui_scroll_short.png",
@@ -277,7 +277,7 @@
     "assets": [
       "assets/ui/finance/finance_background.png"
     ],
-    "kind": "current_original"
+    "kind": "superseded_original"
   },
   {
     "retained": "artifacts/sources/ui/move_indictor.png",
@@ -1084,5 +1084,30 @@
       "assets/sprites/player/actions/novice_128/move_sustain.png"
     ],
     "kind": "moving_cast_composition_input"
+  },
+  {
+    "retained": "artifacts/sources/finance_ui_20261018/finance_background_r03_restyle_16x9.png",
+    "sha256": "3390e24822729ce510c24693befc9e1727ee606366442c2e0414e348a3c24550",
+    "assets": [
+      "assets/ui/finance/finance_background.png"
+    ],
+    "kind": "current_original"
+  },
+  {
+    "retained": "artifacts/sources/finance_ui_20261018/stats_drawer_panel_9x16_raw.png",
+    "sha256": "3b36250b4a96111f5c85695f045f03ec0710fcb4615a1ca769e4052953ec71d9",
+    "assets": [
+      "assets/ui/stats_drawer/stats_parchment_panel.png"
+    ],
+    "kind": "current_original"
+  },
+  {
+    "retained": "artifacts/sources/finance_ui_20261018/gobline_face_shaded_9x16_raw.png",
+    "sha256": "d6d89ae26bd714a29437677369c017c5d84916b44fd4c090929d86562aaea730",
+    "assets": [
+      "assets/ui/finance/goblin_banker_states.png",
+      "assets/ui/settlement/goblin_reactions.png"
+    ],
+    "kind": "current_original"
   }
 ]

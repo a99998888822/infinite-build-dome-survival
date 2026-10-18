@@ -4,9 +4,9 @@ class_name VirtualShopGrid
 signal purchase_requested(offer: Dictionary)
 signal preview_requested(offer: Dictionary)
 signal preview_cleared
-const CARD_HEIGHT := 144.0
-const CARD_MIN_WIDTH := 136.0
-const GAP := 8.0
+const CARD_HEIGHT := 240.0
+const CARD_MIN_WIDTH := 227.0
+const GAP := 13.0
 var offers: Array = []
 var flow: MainFlowCoordinator
 var scroll: ScrollContainer

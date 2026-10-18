@@ -1,4 +1,4 @@
-"""Original procedural combat Foley. Requires numpy/scipy; no external samples.
+"""Combat Foley generator, preserving supplied assets in user_audio_manifest.json.
 
 python scripts/tools/build_combat_audio.py --review-dir <outside-project-folder>
 Regenerates only this pack, its GDScript catalogue, and the optional offline review.
@@ -14,6 +14,7 @@ import numpy as np
 from scipy import signal
 from scipy.io import wavfile
 from combat_audio_revision_round2 import REVISED_CUES, synthesize as synthesize_round2
+from import_user_audio import source_owned
 
 ROOT = Path(__file__).resolve().parents[2]
 RATE = 48000
@@ -50,9 +51,14 @@ SPECS = [
 ]
 # All landing variants share one cooldown and voice budget, including reactions.
 THUNDER_CUES = {"electric_spark", "reaction_conduct_strike", "reaction_thunder_fire_strike"}
-# User decision: ice enchantment / ice weapon and freezing have no audio.
-# Retired WAVs are archived outside the project; do not regenerate or preload them.
-DISABLED_CUES = {"ice", "reaction_freeze"}
+# User decision: ice, freezing, cancellation and all fire pools have no audio.
+# Retired WAVs are archival only; do not regenerate or preload them.
+DISABLED_CUES = {"ice", "reaction_freeze", "reaction_cancel", "fire", "reaction_holy", "reaction_dark_flame"}
+# Keep reaction IDs for timing/arbitration; reuse the canonical audio and budget.
+SOUND_REUSE = {
+    "reaction_conduct": "lightning",
+    "reaction_conduct_strike": "electric_spark",
+}
 
 
 class Synth:
@@ -169,14 +175,19 @@ def approved_lightning():
 
 
 def synthesize(key, variant):
+    if key in SOUND_REUSE:
+        return synthesize(SOUND_REUSE[key], variant)
+    imported = ASSET / f"{key}_{variant+1:02}.wav"
+    if source_owned(imported):
+        rate, pcm = wavfile.read(imported)
+        assert rate == RATE and pcm.dtype == np.int16 and pcm.ndim == 1
+        return pcm.astype(np.float64) / 32768.0
     if key == "ritual_mark_r02":
         t = np.arange(round(.105 * RATE)) / RATE
         envelope = (1 - np.exp(-t / .002)) * np.exp(-t / .023) * np.clip((.105 - t) / .012, 0, 1)
         return envelope * (.42 * np.sin(2*np.pi*740*t) + .12 * np.sin(2*np.pi*1110*t))
     if key == "lightning":
         return approved_lightning()
-    if key == "reaction_holy":
-        return synthesize("reaction_dark_flame", variant)
     if key == "reaction_ice_expand":
         return synthesize("wind", variant)
     if key in REVISED_CUES:
@@ -296,7 +307,7 @@ def build_review(folder, profiles, audio):
     folder.mkdir(parents=True,exist_ok=True)
     items = []
     for key, label, category, *_ in SPECS:
-        if key in DISABLED_CUES:
+        if key in DISABLED_CUES or key in SOUND_REUSE:
             continue
         paths = [ASSET / Path(p).name for p in profiles[key]["paths"]]
         controls = "".join(f'<audio controls preload="none" src="{data_uri(p)}"></audio>' for p in paths)
@@ -328,8 +339,8 @@ def build_review(folder, profiles, audio):
     write_wav(folder/"spark_charge_and_strike.wav",spark)
     page = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>战斗音效 · 当前试听</title>
 <style>body{margin:0;background:#171b1c;color:#e5dbc9;font:16px/1.65 system-ui}main{max-width:1140px;margin:auto;padding:36px 28px}h1{font-size:30px}h2{margin-top:38px}p{color:#b6b5a8}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}article{padding:18px;background:#292822;border:1px solid #4f4a3e;border-radius:9px}h3{margin:3px 0 8px;font-size:18px}small{color:#9cc0ad}audio{width:100%;height:38px;margin:4px 0}button{padding:9px 16px;margin:4px;border:1px solid #72694c;border-radius:5px;background:#35372d;color:#eee;cursor:pointer}header{border-bottom:1px solid #504b3d;padding-bottom:20px}</style>
-<main><header><small>ORIGINAL PROCEDURAL SFX · 48 kHz / 16-bit PCM / MONO</small><h1>战斗音效 · 当前试听</h1>
-<p>短促的材质撞击与元素音色，少量空腔、颤动用于黑洞和暗焰。全部由程序合成，无外部采样。此页可离线使用。</p>
+<main><header><small>COMBAT SFX · 48 kHz / 16-bit PCM / MONO</small><h1>战斗音效 · 当前试听</h1>
+<p>当前使用的战斗音效：包含 audio.rar 指定素材及原有程序合成音。导入清单记录每段替换素材的来源。此页可离线使用。</p>
 <p>共 @@CUE_COUNT@@ 类正式音效，每类一个播放器。电火花为密集噼啪电弧；落雷为近处雷击与低沉滚雷，蓄能和雷击分开播放。水、火联动各有保留落雷轰鸣的组合音。</p>
 <p>单项展示素材原始音量；游戏还会按表中增益降低音量、限制重复与并发。原版电音保持原始音量，仅供音色对照，不是等响度测评。</p></header>
 <h2>组合试听</h2><section><article><h3>落雷：蓄能 → 0.5 秒后落雷</h3><audio controls src="@@SPARK@@"></audio></article><article><h3>连续交战 · 合成示意</h3><p>按游戏增益拼接，非实机录音；不含背景音乐。</p><audio controls src="@@MIX@@"></audio></article></section>
@@ -337,28 +348,30 @@ def build_review(folder, profiles, audio):
 <h2>原版电音</h2><section>@@OLD@@</section><p>审阅重点：木箭是否够实、不像敲水鼓；电火花和落雷是否好区分；冰与光是否刺耳；连续播放是否疲劳。</p></main>
 <script>function filter(k){document.querySelectorAll('#sounds article').forEach(e=>e.hidden=!!k&&e.dataset.kind!==k)}document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')document.querySelectorAll('audio').forEach(a=>{if(a!==e.target)a.pause()})},true)</script></html>'''
     page=page.replace("@@SPARK@@",data_uri(folder/"spark_charge_and_strike.wav")).replace("@@MIX@@",data_uri(folder/"combat_sequence.wav")).replace("@@CARDS@@","".join(items)).replace("@@OLD@@","".join(old))
-    page=page.replace("@@CUE_COUNT@@",str(len(SPECS)-len(DISABLED_CUES)))
+    page=page.replace("@@CUE_COUNT@@",str(len(profiles)-len(SOUND_REUSE)))
+    page=page.replace("水、火联动各有保留落雷轰鸣的组合音。", "导电复用电火花或落雷；火池、暗焰与神圣火焰无声；雷火保留独立组合音。")
     (folder/"combat_audio_review.html").write_text(page,encoding="utf-8")
 
 
-def main():
-    parser=argparse.ArgumentParser()
-    parser.add_argument("--review-dir",type=Path)
-    args=parser.parse_args()
-    profiles={}; audio={}; report=[]
+def build_profiles():
+    specs = {row[0]: row for row in SPECS}
+    profiles = {}
     for key,label,category,count,gain,cooldown,voices,priority,pitch in SPECS:
         if key in DISABLED_CUES:
             continue
-        paths=[]; audio[key]=[]
-        for v in range(count):
-            x=synthesize(key,v); path=ASSET/f"{key}_{v+1:02}.wav"
-            write_wav(path,x); audio[key].append(x)
-            paths.append("res://"+path.relative_to(ROOT).as_posix())
-            report.append({"file":path.name,"seconds":len(x)/RATE,"peak_db":round(20*np.log10(max(abs(x))),2),
-                           "rms_db":round(20*np.log10(np.sqrt(np.mean(x*x))),2),"end_sample":float(x[-1])})
+        source = SOUND_REUSE.get(key, key)
+        # Reactions retain their reserved impact priority, sharing all sound settings.
+        _,_,_,count,gain,cooldown,voices,_,pitch = specs[source]
+        paths = [f"res://assets/audio/sfx/combat/{source}_{v+1:02}.wav" for v in range(count)]
         profiles[key]={"paths":paths,"gain_db":gain,"cooldown_ms":cooldown,"max_voices":voices,"priority":priority,"pitch_spread":pitch}
-        if key in THUNDER_CUES:
+        if source in THUNDER_CUES:
             profiles[key]["voice_group"] = "thunder_landing"
+        elif source != key:
+            profiles[key]["voice_group"] = source
+    return profiles
+
+
+def write_catalogue(profiles):
     # Preloads also make every WAV an explicit export dependency.
     catalogue="extends RefCounted\n\n# Generated by scripts/tools/build_combat_audio.py. Tune profiles there.\nconst PROFILES: Dictionary = {\n"
     for key,profile in profiles.items():
@@ -366,6 +379,7 @@ def main():
         stream_text=", ".join('preload('+json.dumps(p)+')' for p in profile["paths"])
         catalogue+='\t'+json.dumps(key)+': {"streams": ['+stream_text+'], '+json.dumps(fields)[1:] + ",\n"
     catalogue+="}\n"
+    catalogue += "\nconst SOUND_REUSE: Dictionary = " + json.dumps(SOUND_REUSE) + "\n"
     catalogue += "\nconst DISABLED_CUES: Dictionary = " + json.dumps({key: True for key in sorted(DISABLED_CUES)}) + "\n"
     disabled_paths = {f"res://assets/audio/sfx/combat/{key}_{v+1:02}.wav": True
                       for key, _, _, count, *_ in SPECS if key in DISABLED_CUES for v in range(count)}
@@ -375,6 +389,31 @@ def main():
     newline = "\r\n" if target.exists() and b"\r\n" in target.read_bytes() else "\n"
     with target.open("w", encoding="utf-8", newline="") as output:
         output.write(catalogue.replace("\n", newline))
+
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--review-dir",type=Path)
+    parser.add_argument("--catalogue-only",action="store_true",help="Update resource references without rewriting any WAV")
+    args=parser.parse_args()
+    if args.catalogue_only and args.review_dir:
+        parser.error("--catalogue-only cannot be combined with --review-dir")
+    profiles=build_profiles(); audio={}; report=[]
+    if not args.catalogue_only:
+        for key,profile in profiles.items():
+            if key in SOUND_REUSE:
+                continue
+            audio[key]=[]
+            for v,resource in enumerate(profile["paths"]):
+                x=synthesize(key,v); path=ROOT/resource.removeprefix("res://")
+                if not source_owned(path):
+                    write_wav(path,x)
+                audio[key].append(x)
+                report.append({"file":path.name,"seconds":len(x)/RATE,"peak_db":round(20*np.log10(max(abs(x))),2),
+                               "rms_db":round(20*np.log10(np.sqrt(np.mean(x*x))),2),"end_sample":float(x[-1])})
+        for key,source in SOUND_REUSE.items():
+            audio[key]=audio[source]
+    write_catalogue(profiles)
     if args.review_dir:
         build_review(args.review_dir,profiles,audio)
         (args.review_dir/"audio_metrics.json").write_text(json.dumps(report,indent=2),encoding="utf-8")

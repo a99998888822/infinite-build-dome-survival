@@ -7,7 +7,7 @@ const SLOT := 158.0
 var config: Dictionary
 var panorama: Texture2D
 var ruins: Array[Texture2D] = []
-var view_size := Vector2(1152,768)
+var view_size := Vector2(1920,1080)
 var camera_x := 0.0
 var camera_scale := 1.0
 var art_scale := 1.5

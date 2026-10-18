@@ -190,6 +190,7 @@ func _native_damage(origin: Vector2, direction: Vector2, length: float, power: f
 
 
 func _draw() -> void:
+	BLOCK_VFX.begin(self)
 	if cancelled:
 		return
 	var opacity := hammer_opacity()
@@ -206,13 +207,13 @@ func _draw() -> void:
 				if age >= appear + slam:
 					visual_frame = mini(7, 4 + int((age - appear - slam) / maxf(contact + fade, 0.001) * 4.0))
 				# Grow the head and wind together around the authored grip.
-				draw_set_transform(grip - direction * 10 * visual_scale, direction.angle(), Vector2.ONE * visual_scale)
-				BLOCK_VFX.draw(self, "hammer", visual_frame / 8.0, Rect2(-32, -100, 128, 128))
-				draw_set_transform(Vector2.ZERO)
+				var pose := Transform2D(direction.angle(),Vector2.ONE*visual_scale,0,grip-direction*10*visual_scale)
+				BLOCK_VFX.draw(self,"hammer",visual_frame/8.0,Rect2(-32,-100,128,128),Color.WHITE,pose)
 			draw_atlas(HAMMER, 64, frame, Vector2(30, 43), grip, direction.angle(), Vector2.ONE * visual_scale, opacity)
 
 
 func _draw_ground_cracks() -> void:
+	BLOCK_VFX.ALIGNED.begin(crack_layer)
 	if cancelled:
 		return
 	for node in nodes:
@@ -233,6 +234,5 @@ func _draw_ground_cracks() -> void:
 			continue
 		var rect := Rect2(Vector2(crop, 0) - pivot, Vector2(96 - crop, 96))
 		var region := Rect2(frame * 96 + crop, 0, 96 - crop, 96)
-		crack_layer.draw_set_transform(point, direction.angle(), dimensions)
-		crack_layer.draw_texture_rect_region(crack_texture, rect, region, Color(1, 1, 1, minf(1, (1.25 - elapsed) * 3)))
+		BLOCK_VFX.ALIGNED.draw(crack_layer,crack_texture,rect,region,Color(1,1,1,minf(1,(1.25-elapsed)*3)),Transform2D(direction.angle(),dimensions,0,point))
 	crack_layer.draw_set_transform(Vector2.ZERO)

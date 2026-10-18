@@ -2,6 +2,8 @@ extends DirectedWeaponRuntime
 class_name CopperLamp
 
 const FLAME_VISUAL := preload("res://scripts/effects/copper_lamp_flame.gd")
+const LOOP_AUDIO := preload("res://scripts/audio/gameplay_loop.gd")
+var spray_audio: AudioStreamPlayer
 signal spray_started
 var heat := 0.0
 var cooling := 0.0
@@ -22,10 +24,21 @@ var manual_direction := Vector2.RIGHT
 
 func initialize(source: WeaponInstance) -> void:
 	bind_weapon(source, "copper_lamps")
+	spray_audio = LOOP_AUDIO.new()
+	add_child(spray_audio)
+	spray_audio.configure(load(str(weapon.weapon_data.spray_loop_sfx)), -16.0, "CombatSFX")
+
+
+func cancel() -> void:
+	if is_instance_valid(spray_audio):
+		spray_audio.stop()
+	super.cancel()
 
 
 func _physics_process(delta: float) -> void:
 	if not ready_to_tick():
+		if is_instance_valid(spray_audio):
+			spray_audio.set_active(false)
 		return
 	age += delta
 	global_position = weapon.get_attack_origin()
@@ -78,6 +91,7 @@ func _physics_process(delta: float) -> void:
 			heat = maxf(0, heat - delta / weapon.get_actual_attack_interval_seconds())
 			tick_left = 0
 	_sync_flame_visuals()
+	spray_audio.set_active(firing)
 	queue_redraw()
 
 

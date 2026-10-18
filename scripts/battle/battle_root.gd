@@ -32,6 +32,10 @@ func _ready() -> void:
 		EnemyController.prepare_damage_number_pool(wave_manager.enemy_root)
 	_bind_mobile_joystick()
 	_bind_to_flow()
+	if wave_manager != null and player != null:
+		var evacuation := NightEvacuation.new()
+		wave_manager.add_child(evacuation)
+		evacuation.initialize(wave_manager,player)
 	active_controller = ActiveCombatController.new()
 	add_child(active_controller)
 	active_controller.initialize(self)

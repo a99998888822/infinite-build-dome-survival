@@ -50,6 +50,16 @@ def player_atlases():
 
 
 def finance_background():
+    # Retain the selected original and any explicitly requested local revision.
+    selected = ROOT/'artifacts/editable/finance_ui_20261018/manifest.json'
+    if selected.is_file():
+        record = json.loads(selected.read_text(encoding='utf-8'))['background']
+        source = ROOT/record['source']
+        assert digest(source) == record['sha256'], record['source']
+        if record.get('revised_source'):
+            source = ROOT/record['revised_source']
+            assert digest(source) == record['revised_sha256'], record['revised_source']
+        return Image.open(source).convert('RGBA')
     base = ROOT/'artifacts/editable/finance_background'
     mapping = json.loads((base/'source-map.json').read_text(encoding='utf-8'))
     source = Image.open(ROOT/mapping['source']).convert('RGBA')

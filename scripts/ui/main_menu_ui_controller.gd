@@ -258,13 +258,13 @@ func _on_settings_pressed() -> void:
 	overlay.visible = true
 	_settings_panel.pivot_offset = _settings_panel.size * 0.5
 	_settings_panel.modulate.a = 0.0
-	_settings_panel.scale = Vector2(0.94, 0.94)
+	_settings_panel.scale = Vector2.ONE * _settings_panel.presentation_scale * 0.94
 	if _settings_tween != null and _settings_tween.is_valid():
 		_settings_tween.kill()
 	_settings_tween = create_tween().set_parallel(true)
 	_settings_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_settings_tween.tween_property(_settings_panel, "modulate:a", 1.0, 0.20)
-	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE, 0.26)
+	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE * _settings_panel.presentation_scale, 0.26)
 	AudioManager.play_ui_sfx("modal_open")
 
 func _close_settings() -> void:
@@ -278,10 +278,10 @@ func _close_settings() -> void:
 	_settings_tween = create_tween().set_parallel(true)
 	_settings_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_settings_tween.tween_property(_settings_panel, "modulate:a", 0.0, 0.14)
-	_settings_tween.tween_property(_settings_panel, "scale", Vector2(0.94, 0.94), 0.14)
+	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE * _settings_panel.presentation_scale * 0.94, 0.14)
 	_settings_tween.chain().tween_callback(func() -> void:
 		overlay.visible = false
-		_settings_panel.scale = Vector2.ONE
+		_settings_panel.scale = Vector2.ONE * _settings_panel.presentation_scale
 	)
 	AudioManager.play_ui_sfx("modal_close")
 

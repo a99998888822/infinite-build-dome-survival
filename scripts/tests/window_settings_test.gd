@@ -51,6 +51,8 @@ func _run() -> void:
 	manager = TestSettings.new()
 	manager.directory = directory
 	add_child(manager)
+	check(manager.get_resolution() == Vector2i(1920,1080), "fresh preferences default to the native 1080p resolution")
+	check(manager._find_resolution_index(Vector2i(2560,1440)) == 6, "saved higher resolutions remain available")
 	var config := ConfigFile.new()
 	config.set_value("audio", "sentinel", 37)
 	config.save(manager._get_settings_path())

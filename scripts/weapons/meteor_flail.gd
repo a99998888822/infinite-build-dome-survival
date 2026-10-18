@@ -214,6 +214,7 @@ func trail_transform_for_swing(swing: Dictionary, at_time: float, frame: int) ->
 
 
 func _draw() -> void:
+	preload("res://scripts/effects/aligned_atlas.gd").begin(self)
 	if cancelled:
 		return
 	var tint := BASE_TINT
@@ -230,9 +231,7 @@ func _draw() -> void:
 		var trail_frame := trail_frame_for_swing(swing, age)
 		if trail_frame >= 0:
 			var trail_tint := Color(tint.r / BASE_TINT.r, tint.g / BASE_TINT.g, tint.b / BASE_TINT.b, fade)
-			draw_set_transform_matrix(trail_transform_for_swing(swing, age, trail_frame))
-			draw_texture_rect_region(TRAIL, Rect2(-TRAIL_FRAME_SIZE * 0.5, TRAIL_FRAME_SIZE), Rect2(Vector2(trail_frame * TRAIL_FRAME_SIZE.x, 0), TRAIL_FRAME_SIZE), trail_tint)
-			draw_set_transform(Vector2.ZERO)
+			preload("res://scripts/effects/aligned_atlas.gd").draw(self,TRAIL,Rect2(-TRAIL_FRAME_SIZE*0.5,TRAIL_FRAME_SIZE),Rect2(Vector2(trail_frame*TRAIL_FRAME_SIZE.x,0),TRAIL_FRAME_SIZE),trail_tint,trail_transform_for_swing(swing,age,trail_frame))
 		var grip := AttackFootprint.project(AttackFootprint.ground_direction(heading) * 14.0)
 		var length := grip.distance_to(head)
 		var chain_angle := (head - grip).angle()

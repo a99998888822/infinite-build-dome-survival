@@ -1,0 +1,46 @@
+keys,zh_CN,en
+ui.talent_tree.summary,升级属性汇总,Permanent bonuses
+ui.talent_tree.balance,天赋点：%s,Talent points: %s
+ui.talent_tree.navigation,滚轮缩放 · 鼠标点击拖动,Scroll to zoom · Click and drag to pan
+ui.talent_tree.upgrade_tooltip,花费 %d 天赋点升级,Spend %d talent points to upgrade
+ui.talent_tree.cost,升级花费 %d天赋点,Upgrade cost %d talent points
+ui.talent_tree.maxed,已升满,Max level
+ui.talent_tree.offers_stat,商店选项,Shop options
+ui.talent_tree.obtained,已获得：%s,Owned: %s
+ui.talent_tree.after_upgrade,升级后：%s,After upgrade: %s
+ui.talent_tree.empty,暂无属性加成,No bonuses yet
+ui.talent_tree.none,无,None
+ui.talent_tree.first_tier_obtained,首层升级已开启,First upgrades unlocked
+ui.talent_tree.start_relic,开局随机遗物+1,Starting random relic +1
+ui.talent_tree.start_levels,开局等级+2,Starting levels +2
+ui.talent_tree.benefit_separator,、," / "
+talent.node.damage,伤害升级,Damage
+talent.node.speed,攻速升级,Attack speed
+talent.node.crit,暴击升级,Critical chance
+talent.node.crit_damage,爆伤升级,Critical damage
+talent.node.load,负载扩容,Load capacity
+talent.node.luck,幸运升级,Luck
+talent.node.drop,掉落率升级,Drop rate
+talent.node.offers,商店扩容选项,Shop expansion
+talent.node.melee,近战伤害升级,Melee damage
+talent.node.move,移速升级,Move speed
+talent.node.control,控制强度升级,Control power
+talent.node.frequency,怪物频率升级,Enemy frequency
+talent.node.ranged,远程伤害升级,Ranged damage
+talent.node.element,元素伤害升级,Elemental damage
+talent.node.reach,攻击距离升级,Attack range
+talent.node.area,伤害范围升级,Damage area
+talent.node.projectiles,投射物数量升级,Projectile count
+talent.node.hp,最大生命值升级,Maximum health
+talent.node.regen,回血升级,Health regeneration
+talent.node.armor,护甲升级,Armor
+talent.node.shield,护盾升级,Shield
+talent.node.revive,复活次数升级,Revive charges
+talent.node.pickup,拾取范围升级,Pickup range
+talent.node.exp,经验获取升级,Experience gain
+talent.node.currency,货币获取升级,Currency gain
+talent.node.principal,初始本金,Starting principal
+talent.node.interest,初始利率,Starting interest
+talent.node.bargain,商店议价,Shop bargaining
+talent.role.armory,武器基础强化,Weapon improvements
+talent.role.archive,幸运与战利品强化,Luck and loot improvements

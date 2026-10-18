@@ -172,6 +172,7 @@ func _spawn_split_grenades(contacts: Array[DamageEvent], profiles: Array) -> voi
 
 
 func _draw() -> void:
+	BLOCK_VFX.begin(self)
 	if cancelled:
 		return
 	if exploded:
@@ -207,7 +208,8 @@ func _draw_shell(center: Vector2) -> void:
 
 func _draw_explosion() -> void:
 	BLOCK_VFX.draw(self, "grenade", (elapsed - flight_seconds) / BLAST_LIFETIME,
-		Rect2(Vector2.ONE * -blast_radius, Vector2.ONE * blast_radius * 2.0))
+		Rect2(Vector2.ONE * -blast_radius, Vector2.ONE * blast_radius * 2.0),Color.WHITE,
+		Transform2D.IDENTITY.scaled(Vector2(1,AttackFootprint.ELLIPSE_RATIO)) if elliptical_blast else Transform2D.IDENTITY)
 
 
 func _draw_pixel(center: Vector2, size: float, color: Color) -> void:

@@ -45,6 +45,10 @@ func _run() -> void:
 		CombatHitFeedback.clear()
 		events.clear()
 		for index in count: enemies[index].take_attack_damage(1, event)
+		if count == 1:
+			var visual := enemies[0]._hit_visual
+			var displacement := enemies[0].sprite.global_transform.basis_xform(visual.applied_offset)
+			check(displacement.is_equal_approx(Vector2(5,-2)), "body shake is one third of 14 pixels, rounded to whole screen pixels")
 		await settle_damage()
 		var expected := 3 if count >= 12 else (2 if count >= 6 else (1 if count >= 3 else 0))
 		check(CombatHitFeedback.last_local_count == count, "%d unique nearby damaged enemies counted" % count)

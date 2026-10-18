@@ -1,12 +1,8 @@
 extends Sprite2D
 ## Pixel ground contact, independent of sprite hit offsets and animation poses.
 ## Textures are shared by footprint / air-height step, never rebuilt per frame.
-const PROFILES := {
-	"enemy_mutated_grub": {"size": Vector2i(108, 28), "origin": Vector2(-5, 27), "alpha": Vector3(0.16, 0.30, 0.44), "pads": []},
-	"enemy_echo_bat": {"size": Vector2i(68, 20), "origin": Vector2(4, 42), "alpha": Vector3(0.15, 0.26, 0.36), "pads": []},
-	"enemy_elite_rusher": {"size": Vector2i(116, 30), "origin": Vector2(0, 1), "alpha": Vector3(0.16, 0.29, 0.40), "pads": [Rect2(-37, -4, 27, 9), Rect2(15, -3, 27, 9)]},
-	"enemy_underworld_wolf": {"size": Vector2i(164, 42), "origin": Vector2(10, 2), "alpha": Vector3(0.20, 0.34, 0.48), "pads": [Rect2(-43, -5, 24, 10), Rect2(22, -4, 28, 10)]},
-}
+const VISUAL_PROFILES = preload("res://scripts/effects/enemy_visual_profiles.gd")
+const PROFILES = VISUAL_PROFILES.PROFILES
 const INK := Color(0.035, 0.05, 0.055)
 static var _textures: Dictionary = {}
 var body: Node2D
@@ -38,7 +34,7 @@ func refresh() -> void:
 		return
 	visible = source.visible and source.modulate.a * source.self_modulate.a > 0.001
 	if not visible: return
-	var factor := float(body.get("body_scale_multiplier"))
+	var factor := VISUAL_PROFILES.body_factor(body)
 	var elevation := 0.0
 	if kind == "enemy_underworld_wolf":
 		elevation = clampf(float(body.get("air_height")) / 66.0, 0.0, 1.0)

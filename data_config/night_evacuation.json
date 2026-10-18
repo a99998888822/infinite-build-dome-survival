@@ -1,0 +1,19 @@
+{
+  "grace_seconds": 3.0,
+  "night_seconds": 24.0,
+  "night_darkness": 0.88,
+  "base_travel_distance": 1250.0,
+  "offscreen_margin": 80.0,
+  "ring_axes": [320.0, 175.0],
+  "ring_offset": [-10.0, -10.0],
+  "rear_half_angle_degrees": 62.0,
+  "spawn_min_distance": 540.0,
+  "spawn_max_distance": 690.0,
+  "route_half_width": 170.0,
+  "entrance_spawn_clearance": 360.0,
+  "pressure_growth_start": 30.0,
+  "pressure_growth_period": 15.0,
+  "reward_decay_start": 30.0,
+  "reward_decay_period": 20.0,
+  "minimum_reward_multiplier": 0.2
+}

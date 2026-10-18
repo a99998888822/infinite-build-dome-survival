@@ -40,6 +40,7 @@ func cancel() -> void:
 
 
 func _draw() -> void:
+	BLOCK_VFX.begin(self)
 	if cancelled: return
 	if tome:
 		BLOCK_VFX.draw(self, "tome", age / TOME_LIFETIME, Rect2(-48, -72, 96, 128))

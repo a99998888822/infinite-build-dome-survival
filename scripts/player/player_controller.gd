@@ -26,6 +26,9 @@ const PLAYER_VISUAL_SCALE: float = 1.0
 const PLAYER_IDLE_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_96/idle.png")
 const PLAYER_WALK_TEXTURE: Texture2D = preload("res://assets/sprites/player/actions/novice_96/move.png")
 const ITEM_INVENTORY_SCRIPT = preload("res://scripts/items/item_inventory.gd")
+const WALK_AUDIO = preload("res://assets/audio/sfx/player/player_walk.wav")
+const LOOP_AUDIO = preload("res://scripts/audio/gameplay_loop.gd")
+var walk_audio: AudioStreamPlayer
 
 @export var character_id: String = DEFAULT_CHARACTER_ID
 @export var auto_initialize_on_ready: bool = true
@@ -49,6 +52,8 @@ var last_move_direction := Vector2.RIGHT
 var move_destination := Vector2.ZERO
 var has_move_destination := false
 var health_damage_filter: Callable
+var evacuation_safety_check: Callable
+var evacuation_sheltered := false
 var _health_damage_remainder := 0.0
 var _mobility_owner: WeakRef
 var _mobility_start := Vector2.ZERO
@@ -95,6 +100,10 @@ func _init() -> void:
 func _ready() -> void:
 	_clear_move_input()
 	_setup_visuals()
+	walk_audio = LOOP_AUDIO.new()
+	add_child(walk_audio)
+	# The supplied footsteps are quiet (peak -29.6 dBFS); keep them audible.
+	walk_audio.configure(WALK_AUDIO, 6.0, "SFX")
 	if auto_initialize_on_ready:
 		initialize_from_character(character_id)
 
@@ -123,6 +132,7 @@ func _notification(what: int) -> void:
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		velocity = Vector2.ZERO
+		walk_audio.set_active(false)
 		if not action_animator.enabled:
 			_apply_idle_visual()
 		_sync_camera()
@@ -133,12 +143,16 @@ func _physics_process(delta: float) -> void:
 	if _revive_wings != null:
 		_revive_wings.advance(delta)
 	_process_regeneration(delta)
+	var previous_position := global_position
+	var mobility_motion := is_mobility_moving()
 	_process_movement(delta)
+	walk_audio.set_active(alive and not mobility_motion and not _read_move_input().is_zero_approx() and global_position.distance_squared_to(previous_position) > 0.001)
 	_tick_stationary_relic_state(delta)
 	_sync_camera(delta)
 
 
 func initialize_from_character(target_character_id: String, outgame_modifiers: Array = [], initial_weapon_ids: Array[String] = []) -> bool:
+	evacuation_sheltered = false
 	health_damage_filter = Callable()
 	_health_damage_remainder = 0.0
 	# 角色初始化只写入本局运行状态，不回写 characters.json。
@@ -417,6 +431,8 @@ func get_character_icon_path() -> String:
 
 
 func take_damage(raw_damage: int, source_id: String = "") -> int:
+	if evacuation_sheltered or (alive and evacuation_safety_check.is_valid() and bool(evacuation_safety_check.call())):
+		return 0
 	# 护盾优先承伤且不受护甲影响；只有穿透护盾的生命伤害经过护甲换算。
 	if not alive or _resolving_death or raw_damage <= 0 or _invincibility_timer > 0.0:
 		return 0
@@ -1115,6 +1131,8 @@ func _die(source_id: String = "") -> void:
 	lethal_damage.emit()
 	if current_hp <= 0:
 		alive = false
+		if is_instance_valid(walk_audio):
+			walk_audio.stop()
 		_clear_revive_blink()
 		_clear_revive_wings()
 		velocity = Vector2.ZERO

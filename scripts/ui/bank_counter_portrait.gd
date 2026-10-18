@@ -4,8 +4,9 @@ class_name BankCounterPortrait
 const GOBLIN: Texture2D = preload("res://assets/ui/finance/goblin_banker_states.png")
 const DESK: Texture2D = preload("res://assets/ui/finance/bank_counter_desk_picxel.png")
 const ACTOR_SCALE := 0.60
-const HAND_CONTACT := Vector2(64, 119)
-const WAIST_CONTACT := Vector2(64, 110)
+# A+++ source anchors (160, 314) and (160, 282), in the 128-unit layout.
+const HAND_CONTACT := Vector2(64, 125.6)
+const WAIST_CONTACT := Vector2(64, 112.8)
 const DESK_CONTACT_Y := 24.0
 const DESK_BASE_Y := 56.0
 var expression: int = 0

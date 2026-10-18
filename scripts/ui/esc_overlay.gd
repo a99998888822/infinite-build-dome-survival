@@ -261,10 +261,10 @@ func _layout_overlay() -> void:
 		center_container.anchor_right = 0.0
 		center_container.anchor_bottom = 0.0
 		center_container.position = safe.position + Vector2(0.0, modal_top)
-		var base_height := minf(460.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0))
+		var base_height := minf(767.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0))
 		var target_size := Vector2(safe.size.x, maxf(0.0, base_height - (modal_top - MODAL_TOP_OFFSET)))
 		var panel := center_container.get_node("RelicPanel") as PanelContainer
-		var panel_size := Vector2(minf(760.0, safe.size.x), target_size.y)
+		var panel_size := Vector2(minf(1267.0, safe.size.x), target_size.y)
 		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
 		var content := panel.get_node("Content") as VBoxContainer
 		content.add_theme_constant_override("separation", 6 if compact else 10)

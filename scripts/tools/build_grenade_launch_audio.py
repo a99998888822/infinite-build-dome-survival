@@ -4,8 +4,12 @@ import random
 import struct
 import wave
 from pathlib import Path
+from import_user_audio import source_owned
 
 path = Path(__file__).resolve().parents[2] / "assets/audio/sfx/combat/grenade_launch_01.wav"
+if source_owned(path):
+    print("Preserved user-supplied cannon audio:", path)
+    raise SystemExit(0)
 rng = random.Random(1800)
 rate = 44100
 noise = 0.0

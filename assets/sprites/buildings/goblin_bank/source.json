@@ -1,0 +1,28 @@
+{
+  "revision": "r04",
+  "source_canvas": [
+    432,
+    269
+  ],
+  "display_canvas": [
+    609,
+    379
+  ],
+  "foot_anchor": [
+    316,
+    258
+  ],
+  "player_over_door": 0.8,
+  "files": [
+    {
+      "source": "artifacts\\previews\\goblin_bank_bunker_20261018\\r04\\delivery\\goblin_bank_scene_1x.png",
+      "file": "bank.png",
+      "sha256": "a8db981095ec634e61f6ee5e73b4c62e245c5cad0c6fd6a6192b6a4a51ced610"
+    },
+    {
+      "source": "artifacts\\previews\\goblin_bank_bunker_20261018\\r04\\delivery\\goblin_bank_ground_shadow_1x.png",
+      "file": "ground_shadow.png",
+      "sha256": "72fab5f367c99c0d69b547c6dc80512978f322c66e8baf94157dd93396a6947c"
+    }
+  ]
+}

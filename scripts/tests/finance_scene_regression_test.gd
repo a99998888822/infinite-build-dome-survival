@@ -41,7 +41,7 @@ func _run() -> void:
 	game.get_node("UiRoot/MainMenuUIController").hide()
 	await frames(12)
 	get_tree().root.size = Vector2i(1152, 648)
-	get_tree().root.content_scale_size = Vector2i(1152, 648)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	flow = game.get_main_flow_coordinator()
 	flow.enter_battle_selection("character_void_hunter", ["weapon_void_blade"])
 	await frames()
@@ -70,11 +70,11 @@ func _run() -> void:
 		check(popup.trade_presentation._card.is_visible_in_tree(), "live trade remains visible after receipt and loan close")
 	for resolution in [Vector2i(1152, 648), Vector2i(1536, 864), Vector2i(1000, 540)]:
 		get_tree().root.size = resolution
-		get_tree().root.content_scale_size = resolution
+		get_tree().root.content_scale_size = Vector2i(1920, 1080)
 		await frames(12)
 		await verify_scene(str(resolution.x))
 	get_tree().root.size = Vector2i(1152, 648)
-	get_tree().root.content_scale_size = Vector2i(1152, 648)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	await frames()
 	var hud := game.find_child("HUD", true, false) as BattleHud
 	hud._set_drawer_open(true, false)
@@ -108,13 +108,13 @@ func _run() -> void:
 	await verify_tooltips(hud)
 	for resolution in [Vector2i(1152, 648), Vector2i(1536, 864), Vector2i(1000, 540)]:
 		get_tree().root.size = resolution
-		get_tree().root.content_scale_size = resolution
+		get_tree().root.content_scale_size = Vector2i(1920, 1080)
 		await frames(12)
 		var actual_waist := popup.portrait.position + BankCounterPortrait.WAIST_CONTACT * (popup.portrait.size.x / 128.0)
-		check(absf(actual_waist.y - 356.0 * resolution.y / 648.0) < 1.0, "portrait waist follows the wooden tabletop at " + str(resolution))
+		check(absf(actual_waist.y - 593.333333) < 1.0, "portrait waist follows the native wooden tabletop at " + str(resolution))
 		await capture("counter_%d" % resolution.x)
 	get_tree().root.size = Vector2i(1152, 648)
-	get_tree().root.content_scale_size = Vector2i(1152, 648)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	await frames(12)
 	for i in 3:
 		await next_preparation(80)
@@ -154,7 +154,7 @@ func verify_tooltips(hud: BattleHud) -> void:
 	var motion := InputEventMouseMotion.new()
 	motion.position = point
 	motion.global_position = point
-	Input.parse_input_event(motion)
+	get_viewport().push_input(motion, true)
 	await frames()
 	print("TOOLTIP_HOVER point=", point, " hovered=", get_viewport().gui_get_hovered_control(), " card=", card.get_global_rect())
 	check(get_viewport().gui_get_hovered_control() == card._inspect, "actual enchantment magnifier remains reachable with drawer open")

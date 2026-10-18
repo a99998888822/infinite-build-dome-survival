@@ -1,33 +1,39 @@
 {
+  "version": "A+++",
   "frame_size": [
-    256,
-    256
+    320,
+    320
   ],
   "states": [
     {
       "index": 0,
       "expression": "neutral",
-      "sha256": "e0163d3248489826de4d25be946678b622d4c3f7285b5540b6b170aba6aeb6c9"
+      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_neutral.png",
+      "sha256": "1a7090f996d64ce57106c240532bb4b75dd8493220de2554bd56caf90db012f9"
     },
     {
       "index": 1,
       "expression": "downcast",
-      "sha256": "caca37171145fced4f8b3a3c7d5831d6b512e9ba664dc49e7471d8174500e554"
+      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_worried.png",
+      "sha256": "c956a5123b4a47689da3437b90e91d4a01a8d6509da0705c4818d59617e2fb25"
     },
     {
       "index": 2,
       "expression": "displeased",
-      "sha256": "eff83e129390275d2fb3ee8ef5b9b3fba6db53457498979ba64e1d15039a2386"
+      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_angry.png",
+      "sha256": "1c9428cf7a3cca13a7dd8b6ee94fd094cf009175ef2ed5c5f8e461d9b8eb4645"
     },
     {
       "index": 3,
       "expression": "smile",
-      "sha256": "9d10307bb8d0ee8696f711b1c600e63b38faf213cfff8a61e915f12757798408"
+      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_sly.png",
+      "sha256": "39756936f5a30df9a57f96a415895f202306f2ca1120ca22f04e3c8859344633"
     },
     {
       "index": 4,
       "expression": "delighted",
-      "sha256": "32a32e3fc5c75573688e51b0ff0bbd1fd0f750ed57b3130bea6b66c6912a46d1"
+      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_excited.png",
+      "sha256": "0916acedc53681b71c1510d387ce8e1008a5749066ca4aae6689105cd6580490"
     }
   ],
   "settlement_rows": [
@@ -41,6 +47,5 @@
     -2,
     0,
     2
-  ],
-  "split_sources_removed_on": "2026-10-15"
+  ]
 }

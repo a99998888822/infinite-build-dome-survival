@@ -47,10 +47,10 @@ var combat_bar: ActiveCombatWeaponBar
 var combat_hints: Label
 var cleanup_label: Label
 
-const DRAWER_OPEN_LEFT := -320.0
+const DRAWER_OPEN_LEFT := -480.0
 const DRAWER_OPEN_RIGHT := 0.0
-const DRAWER_CLOSED_LEFT := -28.0
-const DRAWER_CLOSED_RIGHT := 292.0
+const DRAWER_CLOSED_LEFT := -42.0
+const DRAWER_CLOSED_RIGHT := 438.0
 const DRAWER_ANIMATION_SECONDS := 0.36
 const DRAWER_CLOSE_SECONDS := 0.32
 const DRAWER_SKIN = preload("res://scripts/ui/stats_drawer_skin.gd")
@@ -67,8 +67,8 @@ const MODAL_ECONOMY_WIDTH := 190.0
 const WAVE_PANEL_SIZE := Vector2(136.0, 48.0)
 const MODAL_SAFE_EDGE_MARGIN := 16.0
 const MODAL_FALLBACK_TOP := 16.0
-const MODAL_FALLBACK_RIGHT_OPEN := 336.0
-const MODAL_FALLBACK_RIGHT_CLOSED := 44.0
+const MODAL_FALLBACK_RIGHT_OPEN := 496.0
+const MODAL_FALLBACK_RIGHT_CLOSED := 58.0
 const STAT_PREVIEW_GAIN_COLOR := Color("315b34")
 const STAT_PREVIEW_LOSS_COLOR := Color("903c38")
 const ELDRITCH_NAMING_THRESHOLD := 60.0
@@ -257,7 +257,7 @@ func _style_combat_hud() -> void:
 		label.add_theme_font_size_override("font_size", 14)
 		label.add_theme_constant_override("outline_size", 2)
 	wave_label.add_theme_font_size_override("font_size", 12)
-	wave_timer_label.add_theme_font_size_override("font_size", 22)
+	wave_timer_label.add_theme_font_size_override("font_size", 12)
 	wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.86, 0.65))
 	gold_label.add_theme_color_override("font_color", Color(0.89, 0.76, 0.45))
 	finance_label.add_theme_color_override("font_color", Color(0.65, 0.8, 0.67))
@@ -312,7 +312,7 @@ func _create_stats_drawer_skin() -> void:
 	stats_drawer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var content := stats_scroll.get_parent() as VBoxContainer
 	content.add_theme_constant_override("separation", 4)
-	stats_list.add_theme_constant_override("separation", 8)
+	stats_list.add_theme_constant_override("separation", 3)
 	_drawer_scroll_hint = Label.new()
 	_drawer_scroll_hint.name = "ScrollHint"
 	_drawer_scroll_hint.custom_minimum_size.y = 12.0
@@ -642,6 +642,17 @@ func _refresh_wave_display() -> void:
 		return
 	var wave_number := maxi(_wave_manager.current_wave_index + 1, 1)
 	var time_left := maxf(_wave_manager.wave_time_left, 0.0)
+	var evacuation := _wave_manager.evacuation
+	if is_instance_valid(evacuation) and evacuation.is_active():
+		cleanup_label.visible = _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
+		cleanup_label.position = Vector2(get_viewport().get_visible_rect().size.x*.5-230,86)
+		cleanup_label.size = Vector2(460,22)
+		wave_label.text = L10n.text("ui.evacuation.title")
+		wave_timer_label.text = L10n.text("ui.evacuation.elapsed") % floori(evacuation.elapsed)
+		wave_timer_label.add_theme_color_override("font_color",Color("8fdbf0"))
+		wave_timer_label.modulate = Color.WHITE
+		cleanup_label.text = L10n.text("ui.evacuation.pressure") % [evacuation.spawn_multiplier(),roundi(evacuation.reward_multiplier()*100)]
+		return
 	cleanup_label.visible = _wave_manager.cleanup_active and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
 	if _wave_manager.cleanup_active:
 		time_left = _wave_manager.cleanup_time_left
@@ -759,22 +770,25 @@ func _apply_combat_layout() -> void:
 	var finance_scene := _uses_finance_scene_layout()
 	if finance_scene != _drawer_scene_layout:
 		_drawer_scene_layout = finance_scene
-		stats_drawer.offset_top = 68 if finance_scene else 72
-		stats_drawer.offset_bottom = -28 if finance_scene else -56
+		stats_drawer.offset_top = 90
+		stats_drawer.offset_bottom = -90
 		drawer_toggle_button.offset_left = 4 if finance_scene else 0
 		drawer_toggle_button.offset_right = 32 if finance_scene else 28
 		_set_drawer_open(_drawer_open, false)
 	_finance_economy_back.visible = finance_scene
 	var viewport_width := get_viewport().get_visible_rect().size.x
+	var density := minf(5.0 / 3.0, viewport_width / 1152.0)
+	for widget in [top_left, _vitals_frame, _performance_line, _weapon_damage_meter, wave_panel, economy_panel, _finance_economy_back]:
+		widget.scale = Vector2.ONE * density
 	var bar_width := clampf(viewport_width * 0.24, 120.0, 226.0)
 	var timer_size := WAVE_PANEL_SIZE if viewport_width >= 800.0 else Vector2(112, 48)
 	top_left.position = Vector2(18, 6)
 	_vitals_frame.position = Vector2(10, 2)
 	_vitals_frame.size = Vector2(bar_width + 44, 70)
 	level_label.add_theme_font_size_override("font_size", 12)
-	_performance_line.position = Vector2(16, 78)
+	_performance_line.position = Vector2(16, 78) * density
 	_performance_line.size = Vector2(maxf(bar_width + 32, 210), 18)
-	_weapon_damage_meter.position = Vector2(10, 102)
+	_weapon_damage_meter.position = Vector2(10, 102) * density
 	_weapon_damage_meter.size.x = (bar_width + 44) * 0.5
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
@@ -786,31 +800,32 @@ func _apply_combat_layout() -> void:
 		wave_panel.anchor_right = 0.0
 		wave_panel.anchor_bottom = 0.0
 		wave_panel.position = Vector2(
-			(viewport_width - timer_size.x) * 0.5,
+			(viewport_width - timer_size.x * density) * 0.5,
 			(TOP_BAR_HEIGHT - timer_size.y) * 0.5
 		)
 		wave_panel.custom_minimum_size = timer_size
 		wave_panel.size = timer_size
 	var actions := encyclopedia_button.get_parent() as Control
+	actions.scale = Vector2.ONE * density
 	# Leave room for the corner scenery, reducing the inset on narrow windows.
 	var actions_shift := clampf((viewport_width - 800.0) * 0.25, 0.0, TOP_BAR_ACTIONS_SHIFT)
 	var actions_margin := TOP_BAR_MARGIN + actions_shift
-	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH
-	actions.offset_right = -actions_margin
+	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH * density
+	actions.offset_right = actions.offset_left + TOP_BAR_ACTIONS_WIDTH
 	actions.offset_top = 8.0
 	actions.offset_bottom = 48.0
 	if economy_panel != null:
-		var wave_right := (viewport_width + timer_size.x) * 0.5
+		var wave_right := (viewport_width + timer_size.x * density) * 0.5
 		var actions_left := viewport_width + actions.offset_left
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
 		var economy_width := 168.0
 		if timer_hidden:
-			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0))
-			economy_left = actions_left - TOP_BAR_GAP - economy_width
+			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0) / density)
+			economy_left = actions_left - TOP_BAR_GAP - economy_width * density
 		else:
 			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
-			economy_width = minf(economy_width, available_width)
+			economy_width = minf(economy_width, available_width / density)
 		var economy_size := Vector2(economy_width, 42.0 if finance_scene else 44.0)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
@@ -831,7 +846,7 @@ func _apply_combat_layout() -> void:
 		_experience_frame.position = Vector2(viewport_width * exp_panel.anchor_left - 10, get_viewport().get_visible_rect().size.y - 43)
 		_experience_frame.size = Vector2(viewport_width * (exp_panel.anchor_right - exp_panel.anchor_left) + 20, 37)
 	if _bond_row != null:
-		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 148)
+		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 148 * density)
 	if combat_bar != null:
 		combat_bar.apply_layout()
 		combat_hints.position = Vector2(8, combat_bar.position.y - 27)
@@ -868,7 +883,7 @@ func get_modal_safe_rect() -> Rect2:
 		return Rect2()
 	# HUD controls are positioned in the stretched logical canvas.  Using the
 	# physical window size here makes modal panels too tall whenever it differs
-	# from the 1152x648 design canvas.
+	# from the 1920x1080 design canvas.
 	var viewport_size := viewport.get_visible_rect().size
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
@@ -966,8 +981,8 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 	var target_left := DRAWER_OPEN_LEFT if open else DRAWER_CLOSED_LEFT
 	var target_right := DRAWER_OPEN_RIGHT if open else DRAWER_CLOSED_RIGHT
 	if _uses_finance_scene_layout():
-		target_left = -282.0 if open else -32.0
-		target_right = -6.0 if open else 244.0
+		target_left = -470.0 if open else -42.0
+		target_right = -10.0 if open else 418.0
 	if _drawer_tween != null:
 		_drawer_tween.kill()
 		_drawer_tween = null
@@ -1084,6 +1099,8 @@ func _ensure_stat_rows() -> void:
 		var row_style := StyleBoxEmpty.new()
 		row_style.content_margin_left = 5.0
 		row_style.content_margin_right = 5.0
+		row_style.content_margin_top = 2.0
+		row_style.content_margin_bottom = 2.0
 		backing.add_theme_stylebox_override("panel", row_style)
 		backing.add_child(row)
 
@@ -1091,7 +1108,7 @@ func _ensure_stat_rows() -> void:
 		name_label.text = _get_stat_display_name(stat_id)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		name_label.add_theme_font_size_override("font_size", 11)
+		name_label.add_theme_font_size_override("font_size", 22)
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		name_label.add_theme_constant_override("outline_size", 0)
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1106,7 +1123,7 @@ func _ensure_stat_rows() -> void:
 		value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value_label.custom_minimum_size = Vector2(44.0, 0.0)
-		value_label.add_theme_font_size_override("font_size", 11)
+		value_label.add_theme_font_size_override("font_size", 22)
 		value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		value_label.add_theme_constant_override("outline_size", 0)
 
@@ -1129,11 +1146,11 @@ func _create_stat_section(section_name: String, special: bool) -> VBoxContainer:
 	style.border_width_top = 2 if special else 0
 	style.content_margin_left = 4
 	style.content_margin_right = 2
-	style.content_margin_top = 8 if special else 3
+	style.content_margin_top = 6 if special else 3
 	style.content_margin_bottom = 3
 	section.add_theme_stylebox_override("panel", style)
 	var rows := VBoxContainer.new()
-	rows.add_theme_constant_override("separation", 1)
+	rows.add_theme_constant_override("separation", 0)
 	section.add_child(rows)
 	return rows
 

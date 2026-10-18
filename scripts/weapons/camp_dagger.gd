@@ -237,6 +237,7 @@ func cancel() -> void:
 
 
 func _draw() -> void:
+	preload("res://scripts/effects/aligned_atlas.gd").begin(self)
 	if cancelled or weapon == null:
 		return
 	var scale_factor := weapon.get_attack_range() / BASE_REACH
@@ -258,9 +259,8 @@ func _draw() -> void:
 			var y0 := 0 if float(cut.sign) > 0 else edge_y
 			var height := edge_y if float(cut.sign) > 0 else 64 - edge_y
 			var slash_scale := weapon.get_attack_range() / 29.0
-			draw_set_transform_matrix(AttackFootprint.ground_transform(heading))
-			draw_texture_rect_region(SLASH, Rect2(Vector2(-22, y0 - 32) * slash_scale, Vector2(64, height) * slash_scale),
-				Rect2(0, y0, 64, height), Color(tint, 0.58 * fade))
+			preload("res://scripts/effects/aligned_atlas.gd").draw(self,SLASH,Rect2(Vector2(-22,y0-32)*slash_scale,Vector2(64,height)*slash_scale),
+				Rect2(0,y0,64,height),Color(tint,0.58*fade),AttackFootprint.ground_transform(heading))
 		var screen_radial := AttackFootprint.project(radial).normalized()
 		var grip := AttackFootprint.project(radial * 14.0 * scale_factor)
 		var body_scale := weapon.get_dagger_body_scale()
