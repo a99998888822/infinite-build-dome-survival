@@ -143,9 +143,23 @@ grow_vertical = 2
 text = "ui.main_menu.start_run"
 focus_neighbor_top = NodePath("../../QuitShell/QuitButton")
 focus_neighbor_bottom = NodePath("../../CampEntryShell/CampEntryButton")
-icon = ExtResource("5_icon_battle")
-icon_alignment = 0
-expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/StartBattleShell/StartBattleButton"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 56.0
+offset_top = -16.0
+offset_right = 88.0
+offset_bottom = 16.0
+grow_horizontal = 1
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_icon_battle")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="CampEntryShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1695527156]
 custom_minimum_size = Vector2(360, 93)
@@ -162,9 +176,23 @@ grow_vertical = 2
 text = "ui.main_menu.talents"
 focus_neighbor_top = NodePath("../../StartBattleShell/StartBattleButton")
 focus_neighbor_bottom = NodePath("../../SettingsShell/SettingsButton")
-icon = ExtResource("6_icon_talent")
-icon_alignment = 0
-expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/CampEntryShell/CampEntryButton"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 56.0
+offset_top = -16.0
+offset_right = 88.0
+offset_bottom = 16.0
+grow_horizontal = 1
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_icon_talent")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="SettingsShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow"]
 custom_minimum_size = Vector2(360, 93)
@@ -181,9 +209,23 @@ grow_vertical = 2
 text = "ui.settings.title"
 focus_neighbor_top = NodePath("../../CampEntryShell/CampEntryButton")
 focus_neighbor_bottom = NodePath("../../QuitShell/QuitButton")
-icon = ExtResource("7_icon_settings")
-icon_alignment = 0
-expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/SettingsShell/SettingsButton"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 56.0
+offset_top = -16.0
+offset_right = 88.0
+offset_bottom = 16.0
+grow_horizontal = 1
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_icon_settings")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="QuitShell" type="Control" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow" unique_id=1796380840]
 custom_minimum_size = Vector2(360, 93)
@@ -200,9 +242,23 @@ grow_vertical = 2
 text = "ui.main_menu.quit"
 focus_neighbor_top = NodePath("../../SettingsShell/SettingsButton")
 focus_neighbor_bottom = NodePath("../../StartBattleShell/StartBattleButton")
-icon = ExtResource("8_icon_quit")
-icon_alignment = 0
-expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 56.0
+offset_top = -16.0
+offset_right = 88.0
+offset_bottom = 16.0
+grow_horizontal = 1
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_icon_quit")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="BottomSpacer" type="Control" parent="StartPage/ContentMargin/ContentColumn" unique_id=2100011599]
 layout_mode = 2
