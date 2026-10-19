@@ -11,15 +11,20 @@ const ENTRY_FREE: String = "free"
 const ENTRY_SHOP: String = "shop"
 const REWARD_OPTION_SCENE: PackedScene = preload("res://scenes/ui/rewards/reward_option.tscn")
 const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.svg")
-const MODAL_TOP_OFFSET: float = 90.0
-const MODAL_BOTTOM_MARGIN: float = 14.0
-const MODAL_SIDE_MARGIN: float = 44.0
-const WEAPON_STRIP_TOP_OFFSET: float = 12.0
-const WEAPON_STRIP_HEIGHT: float = 62.0
+const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
+const PALETTE = HUD_STYLE.PALETTE
+# Native 1920x1080 canvas pixels. Window scaling belongs to GameRoot.
+const MODAL_TOP_OFFSET: float = 128.0
+const MODAL_BOTTOM_MARGIN: float = 24.0
+const MODAL_SIDE_MARGIN: float = 48.0
+const WEAPON_STRIP_TOP_OFFSET: float = 20.0
+const WEAPON_STRIP_HEIGHT: float = 90.0
+const WEAPON_STRIP_WIDTH: float = 880.0
 const OFFER_LAYOUT_COLUMNS: int = 4
 const OFFER_VISIBLE_ROWS: int = 2
-const DRAWER_RESERVED_RIGHT: float = 336.0
-const MAX_PANEL_HEIGHT: float = 620.0
+const DRAWER_RESERVED_RIGHT: float = 496.0
+const MAX_PANEL_SIZE := Vector2(1312.0, 896.0)
+const PANEL_HORIZONTAL_PADDING: float = 48.0
 
 var payload: Dictionary = {}
 var _offer_cards: Array[RewardOption] = []
@@ -30,8 +35,8 @@ var _loadout: WeaponLoadout = null
 var _bond_player: PlayerController = null
 var _active_preview_offer_id: String = ""
 var _safe_rect: Rect2 = Rect2()
+var _panel_layout_size := Vector2.ZERO
 var _show_tween: Tween = null
-var _scanline_overlay: TextureRect = null
 
 @onready var backdrop: ColorRect = get_node_or_null("Backdrop")
 @onready var coin_particles: Control = get_node_or_null("CoinParticles")
@@ -50,7 +55,7 @@ var _scanline_overlay: TextureRect = null
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_visual)
-	_create_scanline_overlay()
+	_apply_hud_style()
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
 	if refresh_button != null and not refresh_button.pressed.is_connected(_on_refresh_pressed):
@@ -60,6 +65,8 @@ func _ready() -> void:
 		if not get_viewport().size_changed.is_connected(viewport_callable):
 			get_viewport().size_changed.connect(viewport_callable)
 	if offer_scroll != null:
+		# Containers settle after the popup opens; refit against the final area.
+		offer_scroll.resized.connect(_fit_offer_grid, CONNECT_DEFERRED)
 		offer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		offer_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 		# Hovered cards grow slightly beyond their grid cell. Let the card's z_index
@@ -80,10 +87,34 @@ func _ready() -> void:
 	_warm_popup_rendering.call_deferred()
 
 
+func _apply_hud_style() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	main_panel.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4(24, 24, 24, 24)))
+	title_label.add_theme_color_override("font_color", PALETTE.TEXT)
+	title_label.add_theme_color_override("font_shadow_color", PALETTE.SHADOW)
+	get_node("CenterContainer/MainPanel/Content/Divider").color = PALETTE.BORDER
+	backdrop.color = Color(PALETTE.SHADOW, 0.78)
+	for button in [skip_button, refresh_button]:
+		HUD_STYLE.apply_button(button, Vector4(14, 7, 14, 7))
+	if weapon_strip != null:
+		weapon_strip.icon_slot_theme = HUD_STYLE.weapon_slot_theme()
+		var strip_margin := weapon_strip.get_node("StripPanel/StripMargin") as MarginContainer
+		strip_margin.add_theme_constant_override("margin_top", 10)
+		strip_margin.add_theme_constant_override("margin_bottom", 10)
+		weapon_strip.get_node("StripPanel").add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4(2, 2, 2, 2)))
+		weapon_strip.load_label.add_theme_color_override("font_color", PALETTE.TEXT)
+		weapon_strip.weapon_tooltip.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4.ZERO))
+		weapon_strip.weapon_tooltip_label.add_theme_color_override("default_color", PALETTE.TEXT)
+	var scrollbar := offer_scroll.get_v_scroll_bar()
+	scrollbar.add_theme_stylebox_override("scroll", HUD_STYLE.inset())
+	for state in ["grabber", "grabber_highlight", "grabber_pressed"]:
+		scrollbar.add_theme_stylebox_override(state, HUD_STYLE.skin(false, state != "grabber", Vector4(6, 6, 6, 6)))
+
+
 func _warm_popup_rendering() -> void:
 	if DisplayServer.get_name() == "headless":
 		return
-	# Draw the actual modal's fonts, panels and card glow during UI startup.
+	# Draw the actual modal's fonts and panels during UI startup.
 	# No scripts/signals on the duplicate: it cannot run a second shop or warmup.
 	var preview := duplicate(0) as Control
 	var viewport := SubViewport.new()
@@ -101,7 +132,7 @@ func _warm_popup_rendering() -> void:
 		var offer: Dictionary = records[0].duplicate(true)
 		offer["offer_type"] = "relic"
 		card.configure(offer)
-	card.set_available_size(180, 272)
+	card.set_available_size(298, 350)
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	viewport.queue_free()
@@ -161,7 +192,7 @@ func show_popup() -> void:
 	_refresh_visual()
 	_set_cards_locked(false)
 	if weapon_strip != null and _loadout != null:
-		weapon_strip.set_loadout(_loadout)
+		weapon_strip.set_loadout(_loadout, false, true)
 
 
 func hide_popup() -> void:
@@ -233,7 +264,7 @@ func refresh_gold(current_gold: int) -> void:
 	_update_gold_labels(current_gold)
 	_update_refresh_button()
 	if weapon_strip != null and _loadout != null:
-		weapon_strip.set_loadout(_loadout)
+		weapon_strip.set_loadout(_loadout, false, true)
 
 
 func remove_offer(offer_id: String) -> void:
@@ -393,7 +424,7 @@ func _create_card() -> RewardOption:
 func set_loadout(loadout: WeaponLoadout) -> void:
 	_loadout = loadout
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout)
+		weapon_strip.set_loadout(loadout, false, true)
 
 
 func set_bond_player(player: PlayerController) -> void:
@@ -418,12 +449,13 @@ func _layout_popup() -> void:
 	center_container.anchor_bottom = 0.0
 	# A hovered card is intentionally drawn slightly beyond its layout bounds.
 	center_container.clip_contents = false
-	var panel_width := minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), 980.0)
-	var panel_height := minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_HEIGHT)
-	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET)
-	center_container.size = Vector2(panel_width, panel_height)
+	var panel_width := floorf(minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), MAX_PANEL_SIZE.x))
+	var panel_height := floorf(minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_SIZE.y))
+	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET).round()
+	_panel_layout_size = Vector2(panel_width, panel_height)
+	center_container.size = _panel_layout_size
 	if offer_scroll != null:
-		var content_width := maxf(panel_width - 44.0, 0.0)
+		var content_width := maxf(panel_width - PANEL_HORIZONTAL_PADDING, 0.0)
 		offer_scroll.custom_minimum_size = Vector2(content_width, 0.0)
 		if content != null:
 			content.custom_minimum_size.x = content_width
@@ -437,12 +469,12 @@ func _layout_popup() -> void:
 		backdrop.position = Vector2.ZERO
 		backdrop.size = Vector2(safe.end.x, viewport_size.y)
 	if weapon_strip != null:
-		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
+		var strip_width := minf(WEAPON_STRIP_WIDTH, maxf(safe.size.x - 32.0, 0.0))
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
-		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
+		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET).round()
 		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
 	call_deferred("_fit_offer_grid")
 
@@ -451,10 +483,10 @@ func _fit_offer_grid() -> void:
 	if offer_scroll == null or offer_grid == null or not is_instance_valid(offer_grid):
 		return
 	var scroll_width := offer_scroll.size.x
-	if center_container != null and center_container.size.x > 0.0:
+	if _panel_layout_size.x > 0.0:
 		# Keep the grid inside the panel's content width. Using the current
 		# scroll width alone can create a self-reinforcing oversized minimum.
-		var panel_content_width := maxf(center_container.size.x - 44.0, 0.0)
+		var panel_content_width := maxf(_panel_layout_size.x - PANEL_HORIZONTAL_PADDING, 0.0)
 		scroll_width = panel_content_width if scroll_width <= 0.0 else minf(scroll_width, panel_content_width)
 	if scroll_width <= 0.0:
 		return
@@ -464,11 +496,14 @@ func _fit_offer_grid() -> void:
 			cards.append(child as RewardOption)
 	if cards.is_empty():
 		return
+	# Preserve the established four-column, two-row page even with fewer offers.
+	# Empty slots must not enlarge or reposition the remaining reward cards.
+	offer_grid.columns = OFFER_LAYOUT_COLUMNS
 	var separation := float(offer_grid.get_theme_constant("h_separation"))
 	var row_separation := float(offer_grid.get_theme_constant("v_separation"))
-	var slot_width := maxf((scroll_width - separation * float(OFFER_LAYOUT_COLUMNS - 1)) / float(OFFER_LAYOUT_COLUMNS), 0.0)
+	var slot_width := maxf(floorf((scroll_width - separation * float(OFFER_LAYOUT_COLUMNS - 1)) / float(OFFER_LAYOUT_COLUMNS)), 0.0)
 	var available_height := offer_scroll.size.y
-	var card_height := maxf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS), 0.0)
+	var card_height := maxf(floorf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS)), 0.0)
 	for card in cards:
 		card.set_available_size(slot_width, card_height)
 		card.set_layout_width(slot_width)
@@ -476,6 +511,9 @@ func _fit_offer_grid() -> void:
 	# The scroll container supplies the width. Do not feed the current width
 	# back into the panel's minimum-size calculation.
 	offer_grid.custom_minimum_size.x = 0.0
+	# A previous card density can temporarily enlarge the CenterContainer's
+	# minimum. Restore the requested bounds after new card minima propagate.
+	center_container.set_deferred("size", _panel_layout_size)
 	center_container.queue_sort()
 
 
@@ -483,7 +521,7 @@ func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
 	var left := 16.0
-	var right := minf(336.0, viewport_size.x * 0.30)
+	var right := minf(DRAWER_RESERVED_RIGHT, viewport_size.x * 0.30)
 	var top := 16.0
 	var bottom := 16.0
 	var safe_left := clampf(left, 0.0, viewport_size.x)
@@ -513,25 +551,6 @@ func _is_compact_layout() -> bool:
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return true
 	return safe.size.x < 760.0 or safe.size.y < 620.0
-
-
-func _create_scanline_overlay() -> void:
-	if _scanline_overlay != null:
-		return
-	var scanline_image := Image.create(2, 4, false, Image.FORMAT_RGBA8)
-	scanline_image.fill(Color.TRANSPARENT)
-	scanline_image.set_pixel(0, 0, Color(0.0, 0.0, 0.0, 0.08))
-	scanline_image.set_pixel(1, 0, Color(0.0, 0.0, 0.0, 0.08))
-	_scanline_overlay = TextureRect.new()
-	_scanline_overlay.texture = ImageTexture.create_from_image(scanline_image)
-	_scanline_overlay.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	_scanline_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_scanline_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_scanline_overlay.stretch_mode = TextureRect.STRETCH_TILE
-	_scanline_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_scanline_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_scanline_overlay.z_index = 1
-	add_child(_scanline_overlay)
 
 
 func _spawn_coin_particles(source_position: Vector2) -> void:

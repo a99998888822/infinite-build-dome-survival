@@ -1,4 +1,5 @@
 keys,zh_CN,en
+ui.loading.dungeon,正在进入地下城,Entering the dungeon
 ui.evacuation.title,夜幕降临,NIGHTFALL
 ui.evacuation.elapsed,逗留 %ds,STAY %ds
 ui.evacuation.open,夜幕降临 · 地堡已开放，跟随金色指引避难。,Night falls · Follow the golden arrow to shelter.
@@ -162,6 +163,7 @@ ui.character.no_health_per_level,升级不增加最大生命值,No Max HP from l
 ui.character.no_withdrawal,理财界面无法主动取款,Cannot withdraw principal
 ui.character.profile,出征档案,Expedition File
 ui.character.roster,角色名册,Roster
+ui.character.release_locked,正式版可用,Full release only
 ui.character.select_prompt,请选择角色,Select a character
 ui.character.starting_relics,开局获得如下遗物,Starts with these relics
 ui.character.starting_stats,开局属性,Starting Stats

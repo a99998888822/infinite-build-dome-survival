@@ -79,7 +79,7 @@ func _ready() -> void:
 	_weapon_name = Label.new()
 	_weapon_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_weapon_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_weapon_name, 14)
+	FinanceUIStyle.label(_weapon_name, 23)
 	heading.add_child(_weapon_name)
 	_upgrade_weapon = _button("ui.enchantment.principal_upgrade", heading)
 	_upgrade_weapon.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -97,7 +97,7 @@ func _ready() -> void:
 	slot_scroll.add_child(_slots)
 	_title = Label.new()
 	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_title, 12, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(_title, 20, FinanceUIStyle.MUTED)
 	add_child(_title)
 	_inventory_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_inventory_scroll)
@@ -114,7 +114,7 @@ func _ready() -> void:
 	_inventory_scroll.add_child(_inventory)
 	_selection = Label.new()
 	_selection.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_selection, 12, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(_selection, 20, FinanceUIStyle.MUTED)
 	add_child(_selection)
 	var actions := HBoxContainer.new()
 	add_child(actions)
@@ -176,7 +176,7 @@ func refresh() -> void:
 			if index > 0:
 				var arrow := Label.new()
 				arrow.text = "→"
-				FinanceUIStyle.label(arrow, 12, FinanceUIStyle.GOLD)
+				FinanceUIStyle.label(arrow, 20, FinanceUIStyle.GOLD)
 				_slots.add_child(arrow)
 			var item: Dictionary = attached[index] if index < attached.size() else {}
 			var slot := EnchantmentSlotCard.new()
@@ -206,7 +206,7 @@ func refresh() -> void:
 		empty.autowrap_mode = TextServer.AUTOWRAP_OFF
 		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		FinanceUIStyle.label(empty, 10, Color("8b9089"))
+		FinanceUIStyle.label(empty, 17, Color("8b9089"))
 		_inventory.add_child(empty)
 	_update_selection()
 	_sync_weapon_scroll_buttons.call_deferred()

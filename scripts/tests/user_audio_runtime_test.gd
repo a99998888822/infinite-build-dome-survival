@@ -2,6 +2,7 @@ extends "res://scripts/tests/pixel_combat_effect_test.gd"
 
 func _run() -> void:
 	await setup([Vector2(110, 0)])
+	_check_impact_gains()
 	var player := load("res://scenes/player/player_root.tscn").instantiate() as PlayerController
 	host.add_child(player)
 	await frames()
@@ -76,3 +77,20 @@ func _run() -> void:
 	AudioManager.stop_combat_sfx()
 	print("USER_AUDIO_RUNTIME_TEST checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures else 0)
+
+
+func _check_impact_gains() -> void:
+	var expected := {"weapon_meteor_flail": -13.0, "weapon_earth_hammer": -13.0, "weapon_mutant_tentacle": -16.0}
+	for weapon_id: String in expected:
+		var voice: AudioStreamPlayer = AudioManager._sfx_players[AudioManager._sfx_cursor]
+		check(AudioManager.play_weapon_hit_sfx(weapon_id), "adjusted impact starts: " + weapon_id)
+		check(voice.playing and is_equal_approx(voice.volume_db, float(expected[weapon_id])), "actual impact voice applies gain: " + weapon_id)
+	# Fill the complete pool, then reuse an attenuated voice for an ordinary cue.
+	for _index in AudioManager._sfx_players.size():
+		AudioManager.play_weapon_hit_sfx("weapon_mutant_tentacle")
+	var reused: AudioStreamPlayer = AudioManager._sfx_players[AudioManager._sfx_cursor]
+	check(is_equal_approx(reused.volume_db, -16.0), "reused voice starts with the previous impact gain")
+	var ui_path := "res://assets/audio/sfx/ui/stats_chain_open.wav"
+	check(AudioManager.play_sfx_path(ui_path) and reused.stream.resource_path == ui_path and is_zero_approx(reused.volume_db), "ordinary SFX resets pooled impact gain to zero")
+	for voice: AudioStreamPlayer in AudioManager._sfx_players:
+		voice.stop()

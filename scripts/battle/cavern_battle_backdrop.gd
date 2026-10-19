@@ -21,6 +21,7 @@ var foot_offset := Vector2.ZERO
 var foot_bounds_cache: Dictionary = {}
 var cells: Dictionary = {}
 var cell_rect := Rect2i()
+var _pending_cells: Array[Vector2i] = []
 var ground_textures: Array = []
 var prop_textures: Array[Texture2D] = []
 var grass_textures: Array[Texture2D] = []
@@ -82,24 +83,15 @@ func _setup() -> void:
 	player.visual_anchor.reparent(proxy,false)
 	_refresh_player_foot()
 	initialized = true
-	_update_area()
+	# Subclasses finish their materials and surface data before the first stream.
 	set_process(true)
 
 func _refresh_player_foot() -> void:
 	var sprite := player.sprite
 	if sprite.texture == null: return
 	var grid := Vector2i(sprite.hframes,sprite.vframes)
-	if not foot_bounds_cache.has(sprite.texture): foot_bounds_cache[sprite.texture] = {}
+	cache_player_frame_bounds(sprite.texture, grid)
 	var layouts: Dictionary = foot_bounds_cache[sprite.texture]
-	if not layouts.has(grid):
-		var image := sprite.texture.get_image()
-		if image.is_compressed(): image.decompress()
-		var frame_size := image.get_size()/grid
-		var frames: Array[Rect2i] = []
-		for y in grid.y:
-			for x in grid.x:
-				frames.append(image.get_region(Rect2i(Vector2i(x,y)*frame_size,frame_size)).get_used_rect())
-		layouts[grid] = frames
 	var bounds: Rect2i = layouts[grid][sprite.frame]
 	var rect := sprite.get_rect()
 	var bottom := rect.position.y + (rect.size.y-bounds.position.y if sprite.flip_v else float(bounds.end.y))
@@ -109,6 +101,22 @@ func _refresh_player_foot() -> void:
 	visual_transform.origin = old_visual_position
 	foot_offset = Vector2(0,(visual_transform*sprite.transform*Vector2(0,bottom)).y)
 	player.visual_anchor.position = old_visual_position-foot_offset
+
+func cache_player_frame_bounds(texture: Texture2D, grid: Vector2i) -> void:
+	if not foot_bounds_cache.has(texture): foot_bounds_cache[texture] = {}
+	var layouts: Dictionary = foot_bounds_cache[texture]
+	if layouts.has(grid): return
+	var image := texture.get_image()
+	if image.is_compressed(): image.decompress()
+	var frame_size := image.get_size()/grid
+	var frames: Array[Rect2i] = []
+	for y in grid.y:
+		for x in grid.x:
+			frames.append(image.get_region(Rect2i(Vector2i(x,y)*frame_size,frame_size)).get_used_rect())
+	layouts[grid] = frames
+
+func is_initial_stream_ready() -> bool:
+	return initialized and cell_rect.has_area() and _pending_cells.is_empty()
 
 func detach_player() -> void:
 	set_process(false)
@@ -149,16 +157,22 @@ func _update_area() -> void:
 	var first := Vector2i((area.position/CELL).floor())
 	var last := Vector2i((area.end/CELL).floor())+Vector2i.ONE
 	var wanted := Rect2i(first,last-first)
-	if wanted == cell_rect: return
-	cell_rect = wanted
-	for key in cells.keys():
-		if not wanted.has_point(key):
-			for node: Node in cells[key]: node.queue_free()
-			cells.erase(key)
-	for y in range(first.y,last.y):
-		for x in range(first.x,last.x):
-			var key := Vector2i(x,y)
-			if not cells.has(key): _make_cell(key)
+	if wanted != cell_rect:
+		cell_rect = wanted
+		_pending_cells.clear()
+		for key in cells.keys():
+			if not wanted.has_point(key):
+				for node: Node in cells[key]: node.queue_free()
+				cells.erase(key)
+		for y in range(first.y,last.y):
+			for x in range(first.x,last.x):
+				var key := Vector2i(x,y)
+				if not cells.has(key): _pending_cells.append(key)
+	var loading := bool(GameGlobal.get_runtime_flag("battle_loading", false))
+	var started := Time.get_ticks_usec()
+	while not _pending_cells.is_empty():
+		_make_cell(_pending_cells.pop_front())
+		if loading and Time.get_ticks_usec() - started >= 4000: break
 
 func get_darkness_entry_direction(world_point: Vector2) -> Vector2:
 	if not initialized: return Vector2.ZERO

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene load_steps=29 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player_root.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/weapon_loadout.tscn" id="2_loadout"]
@@ -21,39 +21,40 @@
 [ext_resource type="Script" path="res://scripts/battle/cavern_sunlight_backdrop.gd" id="24_wetland"]
 [ext_resource type="Script" path="res://scripts/battle/cavern_pit_horizon.gd" id="26_ruins"]
 [ext_resource type="Script" path="res://scripts/ui/battle_utility_overlay.gd" id="27_utility"]
+[ext_resource type="Script" path="res://scripts/ui/native_hud_box.gd" id="28_native_box"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_modal_backdrop"]
 shader = ExtResource("6_modal_backdrop")
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_wave_panel"]
 bg_color = Color(0.035, 0.049, 0.031, 0.5)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0.235, 0.274, 0.184, 0.5)
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 8.0
+content_margin_left = 16.666667
+content_margin_top = 13.333333
+content_margin_right = 16.666667
+content_margin_bottom = 13.333333
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_bar_background"]
 bg_color = Color(0.025, 0.033, 0.022, 0.98)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0.015, 0.02, 0.012, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_hp_fill"]
 bg_color = Color(0.73, 0.122, 0.105, 1)
-border_width_top = 2
-border_width_bottom = 2
+border_width_top = 3
+border_width_bottom = 3
 border_color = Color(0.98, 0.29, 0.24, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_shield_fill"]
 bg_color = Color(0.285, 0.2, 0.47, 1)
-border_width_top = 2
-border_width_bottom = 2
+border_width_top = 3
+border_width_bottom = 3
 border_color = Color(0.64, 0.47, 0.83, 0.46)
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_exp_fill"]
@@ -141,30 +142,34 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TopLeft" type="VBoxContainer" parent="HUD/StatusPanel"]
+[node name="TopLeft" type="Container" parent="HUD/StatusPanel"]
+script = ExtResource("28_native_box")
+vertical = true
+separation = 3.333333
 offset_left = 18.0
 offset_top = 16.0
-theme_override_constants/separation = 7
 
 [node name="LevelLabel" type="Label" parent="HUD/StatusPanel/TopLeft"]
 visible = false
 theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 14
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 23
 text = "Lv. 1"
 
-[node name="HpRow" type="HBoxContainer" parent="HUD/StatusPanel/TopLeft"]
-theme_override_constants/separation = 8
+[node name="HpRow" type="Container" parent="HUD/StatusPanel/TopLeft"]
+script = ExtResource("28_native_box")
+vertical = false
+separation = 13.333333
 
 [node name="Icon" type="TextureRect" parent="HUD/StatusPanel/TopLeft/HpRow"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(33.333333, 33.333333)
 texture = ExtResource("11_hud_hp")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="HpBar" type="ProgressBar" parent="HUD/StatusPanel/TopLeft/HpRow"]
-custom_minimum_size = Vector2(220, 19)
+custom_minimum_size = Vector2(366.666667, 31.666667)
 max_value = 100.0
 value = 100.0
 show_percentage = false
@@ -180,23 +185,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 11
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
 text = "0/0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ShieldRow" type="HBoxContainer" parent="HUD/StatusPanel/TopLeft"]
-theme_override_constants/separation = 8
+[node name="ShieldRow" type="Container" parent="HUD/StatusPanel/TopLeft"]
+script = ExtResource("28_native_box")
+vertical = false
+separation = 13.333333
 
 [node name="Icon" type="TextureRect" parent="HUD/StatusPanel/TopLeft/ShieldRow"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(33.333333, 33.333333)
 texture = ExtResource("12_hud_shield")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="ShieldBar" type="ProgressBar" parent="HUD/StatusPanel/TopLeft/ShieldRow"]
-custom_minimum_size = Vector2(220, 19)
+custom_minimum_size = Vector2(366.666667, 31.666667)
 max_value = 100.0
 show_percentage = false
 theme_override_styles/background = SubResource("StyleBox_bar_background")
@@ -211,8 +218,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 11
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
 text = "0/0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -238,38 +245,44 @@ offset_right = 632.0
 offset_bottom = 50.0
 theme_override_styles/panel = SubResource("StyleBox_wave_panel")
 
-[node name="Content" type="VBoxContainer" parent="BattleTopBar/WavePanel"]
+[node name="Content" type="Container" parent="BattleTopBar/WavePanel"]
+script = ExtResource("28_native_box")
+vertical = true
+separation = 10
 alignment = 1
-theme_override_constants/separation = 6
 
 [node name="WaveLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
 theme_override_colors/font_color = Color(0.64, 0.65, 0.56, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
 text = "ui.hud.preview.wave"
 horizontal_alignment = 1
 
 [node name="TimerLabel" type="Label" parent="BattleTopBar/WavePanel/Content"]
 theme_override_colors/font_color = Color(0.89, 0.8, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
 text = "60s"
 horizontal_alignment = 1
 
-[node name="EconomyPanel" type="VBoxContainer" parent="BattleTopBar"]
+[node name="EconomyPanel" type="Container" parent="BattleTopBar"]
+script = ExtResource("28_native_box")
+vertical = true
+separation = 3.333333
 mouse_filter = 2
 alignment = 1
-theme_override_constants/separation = 2
 
-[node name="GoldRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
-custom_minimum_size = Vector2(0, 20)
+[node name="GoldRow" type="Container" parent="BattleTopBar/EconomyPanel"]
+script = ExtResource("28_native_box")
+vertical = false
+separation = 8.333333
+custom_minimum_size = Vector2(0, 33.333333)
 size_flags_horizontal = 3
-theme_override_constants/separation = 5
 
 [node name="Icon" type="TextureRect" parent="BattleTopBar/EconomyPanel/GoldRow"]
-custom_minimum_size = Vector2(18, 18)
+custom_minimum_size = Vector2(30, 30)
 texture = ExtResource("13_finance_coin")
 expand_mode = 1
 stretch_mode = 5
@@ -278,18 +291,20 @@ stretch_mode = 5
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.78, 0.62, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
 text = "ui.hud.preview.gold"
 vertical_alignment = 1
 
-[node name="FinanceRow" type="HBoxContainer" parent="BattleTopBar/EconomyPanel"]
-custom_minimum_size = Vector2(0, 20)
+[node name="FinanceRow" type="Container" parent="BattleTopBar/EconomyPanel"]
+script = ExtResource("28_native_box")
+vertical = false
+separation = 8.333333
+custom_minimum_size = Vector2(0, 33.333333)
 size_flags_horizontal = 3
-theme_override_constants/separation = 5
 
 [node name="Icon" type="TextureRect" parent="BattleTopBar/EconomyPanel/FinanceRow"]
-custom_minimum_size = Vector2(18, 18)
+custom_minimum_size = Vector2(30, 30)
 texture = ExtResource("14_finance_bill")
 expand_mode = 1
 stretch_mode = 5
@@ -298,12 +313,15 @@ stretch_mode = 5
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.66, 0.54, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
 text = "ui.hud.preview.principal"
 vertical_alignment = 1
 
-[node name="TopRightActions" type="HBoxContainer" parent="BattleTopBar"]
+[node name="TopRightActions" type="Container" parent="BattleTopBar"]
+script = ExtResource("28_native_box")
+vertical = false
+separation = 10
 texture_filter = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -312,10 +330,9 @@ offset_top = 12.0
 offset_right = -12.0
 offset_bottom = 44.0
 grow_horizontal = 0
-theme_override_constants/separation = 6
 
 [node name="BaikeButton" type="TextureButton" parent="BattleTopBar/TopRightActions"]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(53.333333, 53.333333)
 focus_mode = 0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("22_icon_baike")
@@ -323,7 +340,7 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="PluginButton" type="TextureButton" parent="BattleTopBar/TopRightActions"]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(53.333333, 53.333333)
 focus_mode = 0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("23_icon_plugin")

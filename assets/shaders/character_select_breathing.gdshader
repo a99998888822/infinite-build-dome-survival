@@ -4,6 +4,7 @@ render_mode unshaded;
 // Stretch around the opaque sprite's sole; breathing never lifts the feet.
 uniform float breath_amount = 0.0;
 uniform float foot_y = 0.90625;
+uniform bool release_locked = false;
 varying vec4 sprite_tint;
 
 void vertex() {
@@ -14,6 +15,10 @@ void fragment() {
 	vec2 source_uv = UV;
 	source_uv.y = foot_y + (UV.y - foot_y) / (1.0 + breath_amount);
 	COLOR = texture(TEXTURE, source_uv) * sprite_tint;
+	if (release_locked) {
+		float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114)) * 0.8;
+		COLOR.rgb = vec3(gray);
+	}
 	if (source_uv.y < 0.0 || source_uv.y > 1.0) {
 		COLOR.a = 0.0;
 	}

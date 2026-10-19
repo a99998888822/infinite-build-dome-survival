@@ -1,0 +1,8 @@
+ERROR: Parameter "t" is null.
+   at: texture_2d_initialize (./servers/rendering/dummy/storage/texture_storage.h:85)
+   GDScript backtrace (most recent call first):
+       [0] _apply_skin (res://scripts/ui/character_select_view.gd:596)
+       [1] set_difficulty (res://scripts/ui/character_select_view.gd:469)
+       [2] _ready (res://scripts/ui/character_select_view.gd:200)
+       [3] _setup_role_select_runtime_ui (res://scripts/ui/main_menu_ui_controller.gd:332)
+       [4] _ready (res://scripts/ui/main_menu_ui_controller.gd:63)

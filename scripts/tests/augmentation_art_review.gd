@@ -56,7 +56,7 @@ func _run() -> void:
 		get_tree().root.content_scale_size = dimensions
 		await frames(20)
 		var right := popup._tabs.get_global_rect().end.x
-		for frame in [popup._scene_summary_back, popup._scene_enchant_back, popup._scene_footer_back]:
+		for frame in [popup._scene_enchant_back, popup._scene_footer_back]:
 			check(absf(frame.get_global_rect().end.x - right) < 1.0, "four finance frames share the right edge")
 		check(bench._inventory.columns == 4, "enchantment inventory displays four columns")
 		print("ENCHANTMENT_LAYOUT viewport=", dimensions, " right=", right, " columns=", bench._inventory.columns, " inventory_width=", bench._inventory.size.x)

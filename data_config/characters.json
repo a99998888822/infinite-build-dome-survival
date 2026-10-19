@@ -54,6 +54,7 @@
   },
   {
     "id": "character_capitalist",
+    "release_locked": true,
     "display_name": "资本家",
     "description": "",
     "enabled": true,

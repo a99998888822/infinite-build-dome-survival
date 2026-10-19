@@ -168,7 +168,7 @@ func _test_finance_esc_round_trip(game: GameRoot) -> void:
 		await _press_escape()
 		check(flow.current_state == flow.STATE_ESC_OVERLAY and overlay.visible and not popup.visible, "Escape opens inspection from finance despite amount focus " + tab)
 		var list_panel := overlay.center_container.get_node("RelicPanel") as Control
-		check(list_panel.get_global_rect().end.y <= root.get_visible_rect().end.y and overlay.center_container.size.y <= 461.0, "inspection panel stays inside viewport " + tab)
+		check(root.get_visible_rect().encloses(list_panel.get_global_rect()), "inspection panel stays inside viewport " + tab)
 		check(not overlay.weapon_strip._attachment_editing_enabled and not flow.submit_finance_operation("deposit", 1).success, "inspection is read only and hides finance actions " + tab)
 		if tab == "shop":
 			await _press_escape()
@@ -519,6 +519,9 @@ func _test_resolutions(hud: BattleHud) -> void:
 				check(popup._enchant_scroll.get_global_rect().intersects(popup.workbench._apply.get_global_rect()), "enchant controls reachable " + str(resolution))
 				for card in popup.workbench._inventory.get_children():
 					if not card is EnchantmentInventoryCard: continue
+					popup.workbench._inventory_scroll.ensure_control_visible(card)
+					popup._enchant_scroll.ensure_control_visible(card)
+					await frames()
 					await _hover_control(card._inspect)
 					check(popup._tooltip.visible and popup._tooltip_text.size.y >= popup._tooltip_text.get_content_height(), "magnifier details fit " + str(resolution))
 					await capture("detail_" + str(resolution.x))

@@ -384,6 +384,15 @@ func _initialize_starting_items(data: Dictionary) -> void:
 		item_inventory.add_item_from_base(item_id, "starter", weapon_id)
 
 
+func get_combat_frame_layouts() -> Array[Dictionary]:
+	if action_animator.enabled:
+		return action_animator.get_frame_layouts()
+	var layouts: Array[Dictionary] = []
+	if _idle_texture != null: layouts.append({"texture": _idle_texture, "grid": Vector2i.ONE})
+	if _walk_texture != null: layouts.append({"texture": _walk_texture, "grid": Vector2i(walk_frame_count, 1)})
+	return layouts
+
+
 func get_start_weapon_ids() -> Array[String]:
 	return start_weapon_ids.duplicate()
 

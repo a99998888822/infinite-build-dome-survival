@@ -116,8 +116,9 @@ func _run() -> void:
 	check(bool(choose().success) and flow.current_state == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP, "first wave-end choice leaves second open")
 	check(bool(choose().success) and flow.current_state == MainFlowCoordinator.STATE_FINANCE_POPUP, "all choices complete before finance opens")
 	check(manager.reward_snapshot.selected_relics == 3, "snapshot counts selected relics separately from collected tokens")
-	manager.current_wave_index = 18
-	flow.current_wave_index = 18
+	# Start the configured final wave, even when the campaign length changes.
+	manager.current_wave_index = DataRegistry.get_table("waves").size() - 2
+	flow.current_wave_index = manager.current_wave_index
 	manager.start_next_wave()
 	drop()
 	drop()

@@ -104,6 +104,7 @@ func _play(index: int) -> void:
 	menu._on_difficulty_selected(difficulty)
 	mark("character_select")
 	menu.character_confirm_button.pressed.emit()
+	await menu.dungeon_loading.finished
 	backdrop = get_tree().get_first_node_in_group("battle_cavern") as CavernPopulationBackdrop
 	if backdrop != null: backdrop.population_seed = rng_seed + index
 	manager = flow._bound_wave_manager

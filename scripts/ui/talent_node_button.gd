@@ -1,6 +1,7 @@
 extends Button
 class_name TalentNodeButton
-## Selection uses the supplied texture, without an added frame.
+## Palette-matched rings communicate state without tinting the item artwork.
+const PALETTE = preload("res://scripts/ui/hud_palette.gd")
 var icon_texture: Texture2D
 var background_texture: Texture2D
 var gray_icon: Texture2D
@@ -29,11 +30,15 @@ func configure(record: Dictionary, is_building: bool, background: Texture2D) -> 
 
 func _draw() -> void:
 	if background_texture == null: return
-	var tint := Color(1.16, 1.12, 1.03) if selected or is_hovered() else Color.WHITE
-	draw_texture_rect(background_texture if lit else gray_background, Rect2(Vector2.ZERO, size), false, tint)
+	var ring: Texture2D = background_texture if lit else PALETTE.NODE_LOCKED
+	if selected:
+		ring = PALETTE.WARM_NODE
+	elif is_hovered():
+		ring = PALETTE.NODE_SELECTED
+	draw_texture_rect(ring, Rect2(Vector2.ZERO, size), false)
 	var extent := BUILDING_ICON_EXTENT if building else UPGRADE_ICON_EXTENT
 	var icon_rect := Rect2(((size - Vector2.ONE * extent) * 0.5).round(), Vector2.ONE * extent)
-	draw_texture_rect(icon_texture if lit else gray_icon, icon_rect, false, tint)
+	draw_texture_rect(icon_texture if lit else gray_icon, icon_rect, false)
 
 static func _grayscale(texture: Texture2D) -> Texture2D:
 	var source := texture.get_image()

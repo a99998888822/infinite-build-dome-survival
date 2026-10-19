@@ -22,12 +22,12 @@ var _fullscreen_yes: Button
 var _fullscreen_no: Button
 var _display_note: Label
 var _close_button: Button
-var _settings_footer: HBoxContainer
+var _settings_footer: NativeHudBox
 var _return_button: Button
 var _menu_button: Button
 var _showing_settings: bool = false
-var _basic_settings: VBoxContainer
-var _combat_settings: VBoxContainer
+var _basic_settings: NativeHudBox
+var _combat_settings: NativeHudBox
 var _settings_tabs: Array[Button] = []
 var _settings_view: GameSettingsPanel
 var _quick_cast: CheckBox
@@ -95,6 +95,8 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 	_panel.visible = is_encyclopedia
 	_settings_view.visible = not is_encyclopedia
 	if is_encyclopedia:
+		var source := str(payload.get("return_state", ""))
+		_close_button.text = "ui.common.return_to_battle" if source in [MainFlowCoordinator.STATE_WAVE_COMBAT, MainFlowCoordinator.STATE_BATTLE_PREPARE] else "ui.common.back"
 		_refresh_entries()
 	else:
 		_settings_view.open_page(true)

@@ -28,7 +28,7 @@ func move_pointer(point: Vector2) -> void:
 	var event := InputEventMouseMotion.new()
 	event.position = point
 	event.global_position = point
-	get_tree().root.push_input(event)
+	get_tree().root.push_input(event, true)
 	await frames(2)
 
 
@@ -41,7 +41,7 @@ func click(control: Control) -> void:
 		event.global_position = point
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = pressed
-		get_tree().root.push_input(event)
+		get_tree().root.push_input(event, true)
 	await frames()
 
 
@@ -60,7 +60,7 @@ func _run() -> void:
 	await frames(16)
 	var window := get_window()
 	window.size = Vector2i(1280,720)
-	window.content_scale_size = window.size
+	window.content_scale_size = Vector2i(1920, 1080)
 	await frames(8)
 	menu = game.get_node("UiRoot/MainMenuUIController") as MainMenuUIController
 	view = menu.character_view
@@ -68,11 +68,11 @@ func _run() -> void:
 	await frames(8)
 	await move_pointer(Vector2(10,10))
 	check(menu.character_select_page.visible and not menu.start_page.visible, "start button opens production character selection")
-	check(view.background.texture.get_size() == Vector2(2752,1536) and view.canvas.size == Vector2(2752,1536), "approved basement composition sizes")
+	check(view.background.texture.get_size() == Vector2(2752,1536) and view.canvas.size == Vector2(1920,1080) and view.canvas.scale == Vector2.ONE, "approved art uses the native 1920 canvas")
 	var used := view._idle.get_image().get_used_rect()
 	var foot := view.character_icon.position + Vector2(view.character_icon.size.x * 0.5, used.end.y * view.character_icon.size.y / view._idle.get_height())
 	check(foot.distance_to(view.FOOT_ANCHOR) <= 1.0, "new sprite soles retain the approved platform anchor")
-	check(absf(used.size.y * view.character_icon.size.y / view._idle.get_height() - 376.0) <= 1.0, "preview fits the full visible character at its intended height")
+	check(absf(used.size.y * view.character_icon.size.y / view._idle.get_height() - 262.325581) <= 1.0, "preview retains the approved visible height in native pixels")
 	view.set_process(false)
 	view.reset_animation()
 	var hover_bounds := view.hover_target.get_rect()
@@ -92,6 +92,8 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		var exhale := get_tree().root.get_texture().get_image()
 		var rect := view.character_icon.get_global_rect()
+		var image_scale := Vector2(inhale.get_size()) / view.get_viewport_rect().size
+		rect = Rect2(rect.position * image_scale, rect.size * image_scale)
 		var waist_y := ceili(rect.position.y + rect.size.y * 36.0 / 64.0)
 		var foot_y := floori(rect.position.y + rect.size.y * float(view._breath_material.get_shader_parameter("foot_y")))
 		var sole := Rect2i(int(rect.position.x), foot_y - 1, int(rect.size.x), 1)
@@ -103,11 +105,12 @@ func _run() -> void:
 	view.reset_animation()
 	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "animation reset clears breathing deformation")
 	view.set_process(true)
-	check(view.stats_list.get_child_count() == 5 and view.character_list.get_child_count() == 2, "beginner dossier and one row per character")
+	check(view.stats_list.get_child_count() == 5 and view.character_list.get_child_count() == 14, "beginner dossier, two named characters and twelve release slots")
+	await _test_release_roster()
 	for row in view.stats_list.get_children():
-		check(row.size.y < 48 and row.size.y >= view._font.get_height(29), "compact stat rows retain room for the full text line")
+		check(row.size.y < 33.488372 and row.size.y >= view._font.get_height(20), "compact stat rows retain room for the full text line")
 		for label in row.get_children():
-			check(label.get_theme_font_size("font_size") == 29, "compact dossier retains the approved font size")
+			check(label.get_theme_font_size("font_size") == 20, "compact dossier uses native font metrics")
 	var beginner_weapon := view.weapon_list.get_child(0)
 	var beginner_enchantments := _enchantment_icons(beginner_weapon)
 	check(beginner_enchantments.size() == 1 and str(beginner_enchantments[0].get_meta("enchantment_id")) == "scroll_lightning", "beginner weapon shows its configured lightning enchantment")
@@ -116,7 +119,7 @@ func _run() -> void:
 	check(lightning_icon.size.x < beginner_weapon.get_node("WeaponIcon").size.x and lightning_icon.size.y < beginner_weapon.get_node("WeaponIcon").size.y, "enchantment icon is smaller than its weapon icon")
 	check(view.hover_target.tooltip_text.is_empty(), "hover animation has no tooltip text")
 	for button in [view.back_button, view.confirm_button]:
-		check(button.size == Vector2(224,92) and button.has_node("NavigationContent"), "approved narrow navigation frames and labels remain intact")
+		check(button.size.is_equal_approx(Vector2(156.27907,64.186047)) and button.has_node("NavigationContent"), "approved narrow navigation frames and labels remain intact")
 	await click(view.character_list.get_child(0))
 	check((view.character_list.get_child(0) as Button).button_pressed, "selected character cannot be toggled off")
 	await move_pointer(Vector2(10,10))
@@ -147,6 +150,12 @@ func _run() -> void:
 	await capture("character_select_difficulty_3")
 	await click(view.character_list.get_child(1))
 	check(menu._selected_character_id == "character_capitalist" and view.stats_list.get_child_count() == 7, "roster hit target selects capitalist with actual stats")
+	check(view.confirm_button.disabled and view.error_label.visible and view.error_label.text == "ui.character.release_locked", "capitalist preview explains its unavailable start button")
+	check(bool(view._breath_material.get_shader_parameter("release_locked")), "capitalist full-body preview is gray during idle and walk")
+	await click(view.confirm_button)
+	var previous_state := menu._main_flow_coordinator.current_state
+	menu._on_character_confirm_pressed()
+	check(menu.character_select_page.visible and menu._main_flow_coordinator.current_state == previous_state, "click and direct confirm cannot start the capitalist")
 	check(view._walk_frames == 7 and view._walk_frame_size == Vector2(80,80), "switching characters restores the capitalist sheet dimensions")
 	check(_enchantment_icons(view.weapon_list.get_child(0)).is_empty(), "unenchanted weapon has no stale enchantment icons")
 	var intro := view.passive_list.get_child(1) as Label
@@ -164,12 +173,13 @@ func _run() -> void:
 	await _test_dossier_padding_and_scroll()
 	await click(view.character_list.get_child(0))
 	check(view.details_scroll.scroll_vertical == 0 and view.stats_list.get_child_count() == 5, "selection resets scroll and removes previous character rows")
+	check(not view.confirm_button.disabled and not view.error_label.visible and not bool(view._breath_material.get_shader_parameter("release_locked")), "returning to novice restores color and enables starting")
 	for dimensions in [Vector2i(1024,576), Vector2i(1152,768), Vector2i(1920,1080)]:
 		window.size = dimensions
-		window.content_scale_size = dimensions
+		window.content_scale_size = Vector2i(1920, 1080)
 		await frames(10)
-		check(is_equal_approx(view.canvas.scale.x, view.canvas.scale.y), "uniform layout scaling " + str(dimensions))
-		check(Rect2(Vector2.ZERO,Vector2(dimensions)).encloses(view.canvas.get_global_rect()), "composition stays within viewport " + str(dimensions))
+		check(view.canvas.scale == Vector2.ONE, "native composition at window size " + str(dimensions))
+		check(view.get_global_rect().encloses(view.background.get_global_rect()), "art stays within logical viewport " + str(dimensions))
 		await click(view.character_list.get_child(1))
 		await _test_relic_tooltips()
 		await click(view.character_list.get_child(0))
@@ -199,6 +209,91 @@ func _run() -> void:
 	get_tree().quit(1 if failures else 0)
 
 
+func _test_release_roster() -> void:
+	var novice := view.character_list.get_child(0) as Button
+	var capitalist := view.character_list.get_child(1) as Button
+	check(not capitalist.disabled and capitalist.focus_mode != Control.FOCUS_NONE, "capitalist remains clickable and keyboard focusable")
+	var capitalist_portrait := (capitalist.get_node("Portrait") as TextureRect).texture.get_image()
+	var gray := true
+	for y in capitalist_portrait.get_height():
+		for x in capitalist_portrait.get_width():
+			var pixel := capitalist_portrait.get_pixel(x, y)
+			if pixel.a > 0 and (not is_equal_approx(pixel.r, pixel.g) or not is_equal_approx(pixel.g, pixel.b)): gray = false
+	check(gray, "capitalist portrait pixels are desaturated")
+	var portraits := {}
+	for index in range(2, view.character_list.get_child_count()):
+		var card := view.character_list.get_child(index) as Button
+		check(card.disabled and card.focus_mode == Control.FOCUS_NONE and card.get_node("CharacterName").text == "ui.character.release_locked", "release slot is disabled with release-only title " + str(index))
+		check(card.size.is_equal_approx(novice.size) and card.get_theme_stylebox("disabled").texture == load(view.ART + "roster_normal.png"), "release slot shares the novice frame and size " + str(index))
+		var texture := (card.get_node("Portrait") as TextureRect).texture
+		portraits[texture.get_image().get_data().hex_encode()] = true
+	check(portraits.size() == 12, "all twelve silhouette portraits differ")
+	await click(view.character_list.get_child(2))
+	check(menu._selected_character_id == "character_void_hunter", "clicking a release slot leaves the current selection intact")
+	var scroll := view.roster_scroll
+	var bar := scroll.get_v_scroll_bar()
+	check(bar.visible and bar.max_value > bar.page, "release slots overflow and expose the roster scrollbar")
+	var point := scroll.get_global_rect().get_center()
+	await _drag_roster(point, Vector2(0, -220))
+	check(scroll.scroll_vertical > 150 and menu._selected_character_id == "character_void_hunter", "mouse drag scrolls over disabled cards without selecting them")
+	await _drag_roster(point - Vector2(0, 180), Vector2(0, 200))
+	check(scroll.scroll_vertical < 40, "mouse drag scrolls back upward")
+	scroll.scroll_vertical = 100000
+	await frames()
+	var last := view.character_list.get_child(view.character_list.get_child_count() - 1) as Button
+	check(scroll.get_global_rect().grow(1).encloses(last.get_global_rect()), "last release card is fully reachable")
+	await click(last)
+	check(menu._selected_character_id == "character_void_hunter", "last release slot cannot select a character")
+	await move_pointer(Vector2(10, 10))
+	await capture("character_roster_bottom")
+	scroll.scroll_vertical = 0
+	await frames()
+	var event := InputEventMouseButton.new()
+	event.position = point
+	event.button_index = MOUSE_BUTTON_WHEEL_DOWN
+	event.pressed = true
+	get_tree().root.push_input(event, true)
+	event = event.duplicate()
+	event.pressed = false
+	get_tree().root.push_input(event, true)
+	await frames()
+	check(scroll.scroll_vertical > 0, "mouse wheel also scrolls over disabled cards")
+	scroll.scroll_vertical = 0
+	await frames()
+	# Dragging a clickable card must not select it when the pointer is released.
+	await _drag_roster(capitalist.get_global_rect().get_center(), Vector2(0, -65))
+	check(menu._selected_character_id == "character_void_hunter", "dragging the capitalist card does not activate it")
+	scroll.scroll_vertical = 0
+	var flow := menu._main_flow_coordinator
+	flow.enter_battle_selection("character_capitalist")
+	check(not flow.confirm_character_selection() and flow.current_state == MainFlowCoordinator.STATE_CHARACTER_SELECT, "run coordinator independently rejects the locked capitalist")
+	flow.enter_start_page()
+	await frames()
+	await click(menu.start_battle_button)
+	await frames(8)
+
+
+func _drag_roster(point: Vector2, delta: Vector2) -> void:
+	await move_pointer(point)
+	var press := InputEventMouseButton.new()
+	press.position = point
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	get_tree().root.push_input(press, true)
+	for step in range(1, 6):
+		var motion := InputEventMouseMotion.new()
+		motion.position = point + delta * float(step) / 5.0
+		motion.relative = delta / 5.0
+		motion.button_mask = MOUSE_BUTTON_MASK_LEFT
+		get_tree().root.push_input(motion, true)
+		await frames(1)
+	var release := press.duplicate() as InputEventMouseButton
+	release.position = point + delta
+	release.pressed = false
+	get_tree().root.push_input(release, true)
+	await frames()
+
+
 func _test_relic_tooltips() -> void:
 	var cards := view.passive_list.get_node("StartingRelicIcons").get_children()
 	var relics: Array = DataRegistry.get_record("characters", "character_capitalist").start_relics
@@ -208,7 +303,7 @@ func _test_relic_tooltips() -> void:
 		var event := InputEventMouseMotion.new()
 		event.position = card.get_global_rect().get_center()
 		event.global_position = event.position
-		get_tree().root.push_input(event)
+		get_tree().root.push_input(event, true)
 		check(view._item_tooltip.visible, "relic tooltip opens in the hover event without a timer")
 		await frames(2)
 		var record := DataRegistry.get_record("relics", str(relics[index]))
@@ -229,7 +324,7 @@ func _test_relic_tooltips() -> void:
 func _test_dossier_padding_and_scroll() -> void:
 	var body := view.canvas.get_node("DossierBody") as MarginContainer
 	var viewport_box := view.details_scroll.get_global_rect()
-	check(body.get_theme_constant("margin_top") == 6 and body.get_theme_constant("margin_bottom") == 6, "dossier padding is halved while its safe boundary remains")
+	check(body.get_theme_constant("margin_top") == 4 and body.get_theme_constant("margin_bottom") == 4, "dossier retains its native safe padding")
 	check(view.details_scroll.clip_contents and view.details_scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_AUTO, "dossier clips overflowing contents and enables vertical scrolling")
 	var icons := view.passive_list.get_node("StartingRelicIcons") as Control
 	check(viewport_box.encloses(icons.get_global_rect()), "capitalist relic row fits inside the padded paper viewport")
@@ -248,10 +343,10 @@ func _test_dossier_padding_and_scroll() -> void:
 	event.position = point
 	event.global_position = point
 	event.pressed = true
-	get_tree().root.push_input(event)
+	get_tree().root.push_input(event, true)
 	var release := event.duplicate() as InputEventMouseButton
 	release.pressed = false
-	get_tree().root.push_input(release)
+	get_tree().root.push_input(release, true)
 	await frames()
 	check(view.details_scroll.scroll_vertical > 0, "mouse wheel scrolls the overflowing dossier")
 	view.details_scroll.scroll_vertical = 100000

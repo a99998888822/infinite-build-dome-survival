@@ -6,6 +6,7 @@ const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_ma
 const CHARACTER_SELECT_VIEW: Script = preload("res://scripts/ui/character_select_view.gd")
 
 var character_view: CharacterSelectView
+var dungeon_loading: DungeonLoadingScreen
 
 var _main_flow_coordinator: MainFlowCoordinator = null
 var _selected_character_id: String = ""
@@ -35,11 +36,11 @@ var _language_option: OptionButton
 @onready var quit_button: Button = get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow/QuitShell/QuitButton")
 @onready var character_select_page: Control = get_node_or_null("CharacterSelectPage")
 @onready var stats_list: Control = null
-@onready var weapon_list: VBoxContainer = null
-@onready var passive_list: VBoxContainer = null
+@onready var weapon_list: NativeHudBox = null
+@onready var passive_list: NativeHudBox = null
 @onready var difficulty_list: Control = null
 @onready var character_details_scroll: ScrollContainer = null
-@onready var character_list: VBoxContainer = null
+@onready var character_list: NativeHudBox = null
 @onready var character_icon: TextureRect = null
 @onready var character_name_label: Label = null
 @onready var character_description_label: Label = null
@@ -55,6 +56,10 @@ var role_select_backdrop: Control = null
 
 
 func _ready() -> void:
+	dungeon_loading = DungeonLoadingScreen.new()
+	dungeon_loading.name = "DungeonLoadingScreen"
+	add_child(dungeon_loading)
+	dungeon_loading.finished.connect(_on_dungeon_entry_finished)
 	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
 	_create_language_selector()
@@ -258,13 +263,13 @@ func _on_settings_pressed() -> void:
 	overlay.visible = true
 	_settings_panel.pivot_offset = _settings_panel.size * 0.5
 	_settings_panel.modulate.a = 0.0
-	_settings_panel.scale = Vector2.ONE * _settings_panel.presentation_scale * 0.94
+	_settings_panel.scale = Vector2.ONE * 0.94
 	if _settings_tween != null and _settings_tween.is_valid():
 		_settings_tween.kill()
 	_settings_tween = create_tween().set_parallel(true)
 	_settings_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_settings_tween.tween_property(_settings_panel, "modulate:a", 1.0, 0.20)
-	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE * _settings_panel.presentation_scale, 0.26)
+	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE, 0.26)
 	AudioManager.play_ui_sfx("modal_open")
 
 func _close_settings() -> void:
@@ -278,10 +283,10 @@ func _close_settings() -> void:
 	_settings_tween = create_tween().set_parallel(true)
 	_settings_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_settings_tween.tween_property(_settings_panel, "modulate:a", 0.0, 0.14)
-	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE * _settings_panel.presentation_scale * 0.94, 0.14)
+	_settings_tween.tween_property(_settings_panel, "scale", Vector2.ONE * 0.94, 0.14)
 	_settings_tween.chain().tween_callback(func() -> void:
 		overlay.visible = false
-		_settings_panel.scale = Vector2.ONE * _settings_panel.presentation_scale
+		_settings_panel.scale = Vector2.ONE
 	)
 	AudioManager.play_ui_sfx("modal_close")
 
@@ -303,26 +308,20 @@ func _on_character_back_pressed() -> void:
 
 
 func _on_character_confirm_pressed() -> void:
-	if _main_flow_coordinator == null or _selected_character_id.is_empty():
+	if _main_flow_coordinator == null or _selected_character_id.is_empty() or dungeon_loading.active or not _can_start_selected_character():
 		return
 	if character_confirm_button != null:
 		character_confirm_button.disabled = true
-	_confirm_character_selection_now()
+	var modifiers: Array = CampProgression.get_outgame_modifiers()
+	dungeon_loading.begin(_main_flow_coordinator, _selected_character_id, modifiers, _selected_difficulty_id)
 
 
-func _confirm_character_selection_now() -> void:
-	var modifiers: Array = []
-	if CampProgression != null and CampProgression.has_method("get_outgame_modifiers"):
-		modifiers = CampProgression.get_outgame_modifiers()
-	_main_flow_coordinator.enter_battle_selection(_selected_character_id, [], modifiers, _selected_difficulty_id)
-	var confirmed := _main_flow_coordinator.confirm_character_selection()
-	if not confirmed:
+func _on_dungeon_entry_finished(success: bool) -> void:
+	if not success:
+		if character_confirm_button != null: character_confirm_button.disabled = false
 		if character_error_label != null:
 			character_error_label.text = "error.main_menu.battle_start_failed"
 			character_error_label.visible = true
-		if character_confirm_button != null:
-			character_confirm_button.disabled = false
-		return
 
 
 func _setup_role_select_runtime_ui() -> void:
@@ -371,8 +370,13 @@ func _on_character_selected(character_id: String) -> void:
 	_selected_character_id = character_id
 	_selected_character_record = DataRegistry.get_record("characters", character_id) if DataRegistry != null else {}
 	character_view.show_character(_selected_character_record, _get_character_starting_stats(_selected_character_record))
-	character_error_label.visible = false
-	character_confirm_button.disabled = _selected_character_record.is_empty()
+	character_error_label.text = "ui.character.release_locked"
+	character_error_label.visible = bool(_selected_character_record.get("release_locked", false))
+	character_confirm_button.disabled = not _can_start_selected_character()
+
+
+func _can_start_selected_character() -> bool:
+	return not _selected_character_record.is_empty() and bool(_selected_character_record.get("enabled", true)) and not bool(_selected_character_record.get("release_locked", false))
 
 
 func _on_difficulty_selected(difficulty_id: String) -> void:

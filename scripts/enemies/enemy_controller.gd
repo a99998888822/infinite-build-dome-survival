@@ -29,6 +29,7 @@ const LIGHTNING_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/li
 const ENEMY_STATUS_VISUAL_SCRIPT: Script = preload("res://scripts/effects/enemy_status_visual.gd")
 const SUPER_ARMOR_VISUAL = preload("res://scripts/effects/enemy_super_armor_visual.gd")
 const HIT_VISUAL = preload("res://scripts/effects/enemy_hit_visual.gd")
+const HIT_VISUAL_QUEUE = preload("res://scripts/effects/enemy_hit_visual_queue.gd")
 const GROUND_SHADOW = preload("res://scripts/effects/enemy_ground_shadow.gd")
 const SUPER_ARMOR_SECONDS := 2.0
 const SUPER_ARMOR_COOLDOWN_SECONDS := 5.0
@@ -106,6 +107,7 @@ var _cavern_scenery: Node2D = null
 var _lightning_visual: Node2D = null
 var _super_armor_visual: Node2D = null
 var _hit_visual: Node = null
+var _hit_visual_pending := false
 var _super_armor_remaining := 0.0
 var _super_armor_cooldown := 0.0
 var _super_armor_clock := 0.0
@@ -116,6 +118,7 @@ var _move_animation_timer: float = 0.0
 var _contact_probe := CircleShape2D.new()
 var _contact_body: CollisionShape2D
 var _contact_player_body: CollisionShape2D
+var _bunker_route := EvacuationBunker.Route.new()
 
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
@@ -133,6 +136,7 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	add_to_group("enemies")
+	set_collision_mask_value(EvacuationBunker.ENEMY_BARRIER_LAYER, true)
 	_cavern_scenery = get_tree().get_first_node_in_group("battle_cavern") as Node2D
 	EnemyRegistry.register_enemy(self)
 	_spatial_tracking = true
@@ -153,6 +157,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	_hit_visual_pending = false
 	_spatial_tracking = false
 	if is_instance_valid(EnemyRegistry):
 		EnemyRegistry.unregister_enemy(self)
@@ -237,6 +242,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
+	_hit_visual_pending = false
 	if is_instance_valid(_hit_visual): _hit_visual.reset()
 	_reset_super_armor()
 	modifier_stack.cache_enabled = true
@@ -688,12 +694,35 @@ func _consume_legacy_hit_random_sample() -> void:
 
 
 func _show_hit_visual() -> void:
+	# Damage and its signals still resolve per hit. Repeated contacts in this
+	# idle batch need only one final pose update. Keep the cheap material guard
+	# so an external replacement before another hit still has the old ordering.
+	if _hit_visual_pending and _hit_visual.is_processing():
+		if not _hit_visual.flash_white or sprite.material == _hit_visual.white_material: return
 	if sprite == null or not is_inside_tree(): return
 	if not is_instance_valid(_hit_visual):
 		_hit_visual = HIT_VISUAL.new()
 		_hit_visual.name = "EnemyHitVisual"
 		add_child(_hit_visual)
-	_hit_visual.pulse(str(enemy_data.get("enemy_type", "normal")) not in ["elite", "boss"])
+	var enemy_type := str(enemy_data.get("enemy_type", "normal"))
+	_hit_visual.pulse(enemy_type != "elite" and enemy_type != "boss")
+	_hit_visual_pending = true
+	HIT_VISUAL_QUEUE.enqueue(self)
+
+
+func _cancel_pending_hit_visual() -> void:
+	_hit_visual_pending = false
+
+
+func _flush_hit_visual() -> void:
+	if not _hit_visual_pending: return
+	_hit_visual_pending = false
+	# First contact was immediate. Refit shake to the final animation pose;
+	# do not restart its clock or overwrite a later material assignment.
+	if is_instance_valid(_hit_visual) and _hit_visual.is_processing():
+		_hit_visual._sync()
+	if is_instance_valid(_super_armor_visual) and _super_armor_visual.visible:
+		_super_armor_visual._sync()
 
 
 func _capture_base_sprite_modulate() -> void:
@@ -886,7 +915,7 @@ func _process_chase() -> void:
 		_set_movement_visual(false, get_physics_process_delta_time())
 		return
 	var destination := challenge_target.global_position if _has_challenge_target() else target_player.global_position
-	var direction := global_position.direction_to(destination)
+	var direction := _bunker_route.direction(self, destination)
 	# Dictionary.get evaluates its default argument even when the key exists.
 	var resolved_move_speed := get_stat("move_speed")
 	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", resolved_move_speed))

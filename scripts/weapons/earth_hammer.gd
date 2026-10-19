@@ -6,6 +6,8 @@ const HAMMER := preload("res://assets/sprites/weapons/earth_hammer/earth_hammer.
 const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
 const CRACKS := preload("res://assets/sprites/weapons/effects/block_vfx/hammer_crack.png")
 const HAMMER_VISUAL_SCALE := 2.2
+# Convex outline of the opaque contact pose in the 64px atlas (frame 8).
+const CONTACT_OUTLINE := [Vector2(27,44), Vector2(29,40), Vector2(54,39), Vector2(55,39), Vector2(61,43), Vector2(61,45), Vector2(59,50), Vector2(56,57), Vector2(54,61), Vector2(49,63), Vector2(48,63), Vector2(42,60), Vector2(27,45)]
 const IMPACT_R02 = preload("res://scripts/effects/combat_impact_r02.gd")
 var crack_texture: Texture2D = CRACKS
 var crack_layer: Node2D
@@ -32,6 +34,7 @@ var next_lightning := 0
 var lightning_first := 40.0
 var lightning_spacing := 64.0
 var lightning_duration := 0.4
+var contact_cells: Array[Dictionary] = []
 
 
 func initialize(source: WeaponInstance, direction: Vector2) -> void:
@@ -94,6 +97,7 @@ func _physics_process(delta: float) -> void:
 	var hit_at := appear + slam
 	if age >= hit_at:
 		impact_age = age - hit_at
+		var resolve_head := not impacted or age <= hit_at + contact
 		if not impacted:
 			impacted = true
 			weapon.play_attack_hit_sfx()
@@ -104,6 +108,8 @@ func _physics_process(delta: float) -> void:
 					_emit_node(next_node, ray)
 				blocked = blocked and bool(ray.blocked)
 			next_node += 1
+		if resolve_head:
+			_damage_hammer_heads()
 		# This queue has its own wall state: a blocked distant native node must
 		# not discard nearer lightning samples that still lie before the wall.
 		while _has_pending_lightning():
@@ -114,6 +120,10 @@ func _physics_process(delta: float) -> void:
 				if not ray.lightning_blocked:
 					_emit_lightning_sample(next_lightning, ray)
 			next_lightning += 1
+		for cell in contact_cells:
+			if age <= float(cell.until):
+				_native_damage(cell.origin, cell.direction, cell.length, cell.power, cell.hits)
+		contact_cells = contact_cells.filter(func(cell): return age <= float(cell.until))
 	if age > hit_at + (node_count - 1) * interval + 1.25:
 		cancel()
 	queue_redraw()
@@ -124,20 +134,22 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 	var direction: Vector2 = ray.direction
 	var offset := first_offset + index * spacing
 	var point := global_position + direction * offset
+	var when := appear + slam + index * interval
+	var extent := spacing * weapon.get_projectile_visual_scale() * 0.5
+	var start_offset := 0.0 if index == 0 else maxf(0.0, offset - extent)
+	var start := global_position + direction * start_offset
+	# A blocked node center must not discard the hittable interval before it.
+	var end_distance := _clear_distance(global_position, direction, offset + extent)
 	if not clear_path(self, global_position, point):
+		_queue_contact_cell(start, direction, maxf(0, end_distance - start_offset), 1.0, ray.hits, when)
 		ray.blocked = true
 		return
-	var when := appear + slam + index * interval
 	nodes.append({"point": point - global_position, "at": when, "child": false, "direction": direction, "length": spacing})
 	if index == 0:
 		IMPACT_R02.spawn(get_parent(), point, &"ground", direction, minf(2.5, 1.8 * weapon.get_projectile_visual_scale()))
 	# Resolve the node once; real enemies below do not fire this dispatcher again.
 	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "", "electric_spark" if lightning_count > 0 else "")
-	var start := global_position if index == 0 else point - direction * spacing * 0.5
-	var length := offset + spacing * 0.5 if index == 0 else spacing
-	if weapon.use_active_range_rules:
-		length = minf(length, maxf(0.0, weapon.get_attack_range() - (start - global_position).dot(direction)))
-	_native_damage(start, direction, length, 1.0, ray.hits)
+	_queue_contact_cell(start, direction, maxf(0, end_distance - start_offset), 1.0, ray.hits, when)
 	for profile in weapon.get_split_profiles():
 		for child_index in int(profile.child_count):
 			var sign_value := -1.0 if child_index % 2 == 0 else 1.0
@@ -145,14 +157,16 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 			var branch_direction := direction.rotated(deg_to_rad(angle))
 			var branch_length := float(weapon.weapon_data.ground_branch_length)
 			var endpoint := point + branch_direction * branch_length
+			var contact_length := _clear_distance(point, branch_direction, branch_length * weapon.get_projectile_visual_scale())
 			if not clear_path(self, point, endpoint):
+				_queue_contact_cell(point, branch_direction, contact_length, float(profile.damage_multiplier), ray.hits, when)
 				continue
 			nodes.append({"point": point - global_position, "at": when, "child": true, "direction": branch_direction, "length": branch_length})
 			var branch_event := event.continue_after_split(profile)
 			branch_event.damage = maxi(1, roundi(branch_event.damage * float(profile.damage_multiplier)))
 			branch_event.elemental_damage_scale *= float(profile.damage_multiplier)
 			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "", "electric_spark" if lightning_count > 0 else "")
-			_native_damage(point, branch_direction, branch_length, float(profile.damage_multiplier), ray.hits)
+			_queue_contact_cell(point, branch_direction, contact_length, float(profile.damage_multiplier), ray.hits, when)
 	node_created.emit(index, point)
 
 
@@ -178,15 +192,46 @@ func _emit_lightning_sample(index: int, ray: Dictionary) -> void:
 			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "electric_spark")
 
 
+func _clear_distance(origin: Vector2, direction: Vector2, length: float) -> float:
+	var query := PhysicsRayQueryParameters2D.create(origin, origin + direction * length, 4)
+	query.hit_from_inside = true
+	var wall := get_world_2d().direct_space_state.intersect_ray(query)
+	return length if wall.is_empty() else maxf(0, origin.distance_to(wall.position) - 0.1)
+
+
+func _queue_contact_cell(origin: Vector2, direction: Vector2, length: float, power: float, ray_hits: Dictionary, when: float) -> void:
+	if length <= 0.001: return
+	_native_damage(origin, direction, length, power, ray_hits)
+	contact_cells.append({"origin": origin, "direction": direction, "length": length, "power": power, "hits": ray_hits, "until": when + contact})
+
+
+func _damage_hammer_heads() -> void:
+	var shape := ConvexPolygonShape2D.new()
+	var size_scale := weapon.get_projectile_visual_scale() * HAMMER_VISUAL_SCALE
+	for ray in rays:
+		var direction: Vector2 = ray.direction
+		var grip := (direction * 10 + Vector2(0, 2)).round()
+		var points := PackedVector2Array()
+		for point: Vector2 in CONTACT_OUTLINE:
+			points.append(grip + ((point - Vector2(30, 43)) * size_scale).rotated(direction.angle()))
+		shape.points = points
+		for enemy in EnemyRegistry.get_registered_enemies():
+			if AttackFootprint.body_overlaps(shape, Transform2D(0, global_position), enemy) and clear_path(self, global_position, enemy.global_position):
+				_native_hit(enemy, direction, 1.0, ray.hits)
+
+
 func _native_damage(origin: Vector2, direction: Vector2, length: float, power: float, ray_hits: Dictionary) -> void:
 	for enemy in rectangle_contacts(origin, direction, length, weapon.get_hit_radius()):
-		if ray_hits.has(enemy.get_instance_id()):
-			continue
-		ray_hits[enemy.get_instance_id()] = true
-		hits[enemy.get_instance_id()] = true
-		var hit := event.duplicate_event()
-		hit.damage = maxi(1, roundi(hit.damage * power))
-		deal_hit(enemy, hit, direction, power != 1.0, false)
+		_native_hit(enemy, direction, power, ray_hits)
+
+
+func _native_hit(enemy: EnemyController, direction: Vector2, power: float, ray_hits: Dictionary) -> void:
+	if ray_hits.has(enemy.get_instance_id()): return
+	ray_hits[enemy.get_instance_id()] = true
+	hits[enemy.get_instance_id()] = true
+	var hit := event.duplicate_event()
+	hit.damage = maxi(1, roundi(hit.damage * power))
+	deal_hit(enemy, hit, direction, power != 1.0, false)
 
 
 func _draw() -> void:

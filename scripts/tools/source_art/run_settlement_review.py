@@ -272,8 +272,6 @@ def draw_preview(case,sheet,seconds=20):
     frame=int(seconds*5)%4 if speech_on else 0
     goblin=sheet.crop((frame*128,row*128,(frame+1)*128,(row+1)*128)).resize((168,168),Image.Resampling.NEAREST)
     im.alpha_composite(goblin,(133,500))
-    desk=Image.open(ROOT/'assets/ui/finance/bank_counter_desk_picxel.png').convert('RGBA').resize((240,120),Image.Resampling.NEAREST)
-    im.alpha_composite(desk,(94,604))
     panel(im,(632,649,218,44),'#212a23','#46523f')
     text(im,(741,662),'返回主界面',18,TEXT,'ma')
     text(im,(1074,669),'点击空白处快进',12,MUTED,'ra')

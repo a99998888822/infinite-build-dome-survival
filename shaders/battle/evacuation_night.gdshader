@@ -14,7 +14,7 @@ float pool(vec2 p, vec2 center, vec2 radius) {
 }
 void fragment() {
 	vec2 p = floor(UV*view_size/(3.0*pixel_scale))*3.0*pixel_scale;
-	float hero_light = pool(p,hero,vec2(255.0,205.0));
+	float hero_light = pool(p,hero,vec2(510.0,410.0));
 	float bank_light = pool(p,bank,vec2(340.0,245.0))*.42;
 	float door_light = pool(p,entrance,vec2(225.0,125.0))*.62;
 	float lamps = max(pool(p,lamp_left,vec2(78.0,96.0)),pool(p,lamp_right,vec2(78.0,96.0)))*.76;

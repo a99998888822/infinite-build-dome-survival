@@ -1,15 +1,18 @@
 extends Control
 class_name CampBlueprintUIController
 
-const NODE_BACKGROUND = preload("res://assets/ui/talents/icon_background.png")
-const HUD_BACKGROUND = preload("res://assets/ui/talents/hud_background.png")
-const HUD_BORDER_BACKGROUND = preload("res://assets/ui/talents/hud_border_background.png")
-const UPGRADE_ARROW = preload("res://assets/ui/talents/upgrade_arrow.png")
+const PALETTE = preload("res://scripts/ui/hud_palette.gd")
+const NODE_BACKGROUND = PALETTE.NODE
+const HUD_BACKGROUND = PALETTE.BUTTON
+const HUD_BORDER_BACKGROUND = PALETTE.FRAME
+const HOVER_SKIN = PALETTE.BUTTON_SELECTED
+const UPGRADE_ARROW = PALETTE.UPGRADE_ARROW
 const PIXEL_FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
+const PANEL_FONT = preload("res://assets/font/native_hud/interface.res")
 const PAGE_FRAME = preload("res://scripts/ui/talent_page_frame.gd")
-const TEXT := Color("d1c5ac")
-const GOLD := Color("d9b978")
-const MUTED := Color("86808a")
+const TEXT := PALETTE.TEXT
+const GOLD := PALETTE.BRONZE
+const MUTED := PALETTE.MUTED
 
 var _main_flow_coordinator: MainFlowCoordinator
 var _content: Control
@@ -35,9 +38,8 @@ var _upgrade_button: TextureButton
 var _upgrade_tooltip: Panel
 var _upgrade_tooltip_text: Label
 var _selected_id := ""
-var _zoom := 0.8
+var _zoom := 1.0
 var _pan := Vector2.ZERO
-var _density := 1.0
 var _dragging := false
 var _drag_button := MOUSE_BUTTON_NONE
 var _layout_initialized := false
@@ -58,9 +60,9 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("100f14"))
+	draw_rect(Rect2(Vector2.ZERO, size), PALETTE.BACKDROP)
 	for y in range(0, int(size.y), 8):
-		draw_rect(Rect2(0, y, size.x, 1), Color(0.16, 0.14, 0.18, 0.12))
+		draw_rect(Rect2(0, y, size.x, 1), Color(0.5, 0.5, 0.5, 0.018))
 
 
 func _build_interface() -> void:
@@ -89,51 +91,52 @@ func _build_interface() -> void:
 	_upgrade_button.visible = false
 	_detail_panel = _panel()
 	_content.add_child(_detail_panel)
-	_detail_title = _label(16, GOLD)
-	_detail_effect = _label(12, TEXT)
-	_detail_next = _label(12, GOLD)
-	_detail_cost = _label(12, GOLD)
+	_detail_title = _label(27, TEXT)
+	_detail_effect = _label(20, TEXT)
+	_detail_next = _label(20, PALETTE.ACTIVE)
+	_detail_cost = _label(20, GOLD)
 	for label in [_detail_title, _detail_effect, _detail_next, _detail_cost]: _detail_panel.add_child(label)
-	_detail_title.position = Vector2(18, 14)
-	_detail_effect.position = Vector2(18, 42)
-	_detail_next.position = Vector2(18, 64)
-	_detail_cost.position = Vector2(18, 90)
+	_detail_title.position = Vector2(30, 23.333333)
+	_detail_effect.position = Vector2(30, 70)
+	_detail_next.position = Vector2(30, 106.666667)
+	_detail_cost.position = Vector2(30, 150)
 	_summary_panel = _panel()
 	_content.add_child(_summary_panel)
-	_summary_title = _label(16, GOLD)
-	_summary_title.position = Vector2(16, 14)
+	_summary_title = _label(27, TEXT)
+	_summary_title.position = Vector2(26.666667, 23.333333)
 	_summary_panel.add_child(_summary_title)
-	_summary_empty = _label(12, MUTED)
-	_summary_empty.position = Vector2(16, 52)
+	_summary_empty = _label(20, MUTED)
+	_summary_empty.position = Vector2(26.666667, 86.666667)
 	_summary_panel.add_child(_summary_empty)
-	_currency_label = _label(20, GOLD)
+	_currency_label = _label(33, TEXT)
 	_currency_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_content.add_child(_currency_label)
 	var index := 0
 	for building in CampProgression.get_building_records():
 		for option in building.get("upgrade_options", []):
-			var row := _label(12, MUTED)
-			row.position = Vector2(16 + floori(index / 14.0) * 142, 52 + (index % 14) * 20)
-			row.size = Vector2(140, 20)
+			var row := _label(20, MUTED)
+			row.position = Vector2(26.666667 + floori(index / 14.0) * 236.666667, 86.666667 + (index % 14) * 33.333333)
+			row.size = Vector2(233.333333, 33.333333)
 			_summary_panel.add_child(row)
 			_summary_values[str(option.stat)] = row
 			index += 1
-	_reset_button = _button("", 12)
+	_reset_button = _button("", 20)
 	_reset_button.pressed.connect(_on_reset_pressed)
 	_content.add_child(_reset_button)
-	_back_button = _button("", 14)
+	_back_button = _button("", 23)
 	_back_button.pressed.connect(_on_back_pressed)
 	_content.add_child(_back_button)
-	_hint = _label(12, MUTED)
+	_hint = _label(20, MUTED)
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_content.add_child(_hint)
 	# A local hover panel appears immediately, independent of the global tooltip delay.
 	_upgrade_tooltip = _panel()
+	_upgrade_tooltip.add_theme_stylebox_override("panel", PixelTooltipStyle.new())
 	_upgrade_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_upgrade_tooltip.z_index = 10
 	_upgrade_tooltip.visible = false
-	_upgrade_tooltip_text = _label(12, GOLD)
-	_upgrade_tooltip_text.position = Vector2(12, 8)
+	_upgrade_tooltip_text = _label(20, PALETTE.ACTIVE)
+	_upgrade_tooltip_text.position = Vector2(20, 13.333333)
 	_upgrade_tooltip.add_child(_upgrade_tooltip_text)
 	_content.add_child(_upgrade_tooltip)
 	var page_frame := Control.new()
@@ -159,13 +162,13 @@ func _add_node(record: Dictionary, building: bool) -> void:
 	_tree.add_child(node)
 	_nodes[id] = node
 	_records[id] = record
-	var caption := _label(12, TEXT)
+	var caption := _label(12, TEXT, false)
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	caption.position = Vector2(0, extent + 6)
 	node.add_child(caption)
 	_node_labels[id] = caption
-	var level := _label(18, TEXT)
-	level.add_theme_color_override("font_outline_color", Color("100f14"))
+	var level := _label(18, TEXT, false)
+	level.add_theme_color_override("font_outline_color", PALETTE.BACKDROP)
 	level.add_theme_constant_override("outline_size", 3)
 	node.add_child(level)
 	_node_levels[id] = level
@@ -178,13 +181,14 @@ func _panel() -> Panel:
 	return panel
 
 
-func _skin(tint: Color = Color.WHITE, texture: Texture2D = HUD_BACKGROUND) -> StyleBoxTexture:
-	var skin := StyleBoxTexture.new()
+func _skin(tint: Color = Color.WHITE, texture: Texture2D = HUD_BACKGROUND) -> StyleBox:
+	var skin := NativeHudTextureStyle.new()
 	skin.texture = texture
 	skin.modulate_color = tint
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		skin.set_texture_margin(side, 6 if texture == HUD_BORDER_BACKGROUND else 4)
-		skin.set_content_margin(side, 8)
+		skin.set_native_margin(side, 10.0 if texture == HUD_BORDER_BACKGROUND else 6.666667)
+		skin.set_content_margin(side, 13.333333)
 	return skin
 
 
@@ -194,51 +198,51 @@ func _button(caption: String, font_size: int) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.mouse_filter = Control.MOUSE_FILTER_STOP
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	button.add_theme_font_override("font", PIXEL_FONT)
+	button.add_theme_font_override("font", PANEL_FONT)
 	button.add_theme_font_size_override("font_size", font_size)
-	button.add_theme_color_override("font_color", GOLD)
+	button.add_theme_color_override("font_color", TEXT)
+	button.add_theme_color_override("font_hover_color", PALETTE.ACTIVE)
+	button.add_theme_color_override("font_pressed_color", PALETTE.ACTIVE)
 	button.add_theme_stylebox_override("normal", _skin())
-	button.add_theme_stylebox_override("hover", _skin(Color(1.35, 1.28, 1.1)))
-	button.add_theme_stylebox_override("pressed", _skin(Color(0.8, 0.8, 0.8)))
+	button.add_theme_stylebox_override("hover", _skin(Color.WHITE, HOVER_SKIN))
+	button.add_theme_stylebox_override("pressed", _skin(Color(0.8, 0.8, 0.8), HOVER_SKIN))
 	button.add_theme_stylebox_override("disabled", _skin(Color(0.65, 0.65, 0.65)))
 	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	return button
 
 
-func _label(font_size: int, color: Color) -> Label:
+func _label(font_size: int, color: Color, panel_text := true) -> Label:
 	var label := Label.new()
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_override("font", PIXEL_FONT)
+	label.add_theme_font_override("font", PANEL_FONT if panel_text else PIXEL_FONT)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", color)
-	label.add_theme_color_override("font_shadow_color", Color("100f14"))
-	label.add_theme_constant_override("shadow_offset_x", 1)
-	label.add_theme_constant_override("shadow_offset_y", 1)
+	label.add_theme_color_override("font_shadow_color", PALETTE.BACKDROP)
+	label.add_theme_constant_override("shadow_offset_x", 2 if panel_text else 1)
+	label.add_theme_constant_override("shadow_offset_y", 2 if panel_text else 1)
 	return label
 
 
 func _layout_content() -> void:
 	if _content == null: return
 	var viewport_size := get_viewport_rect().size
-	_density = minf(5.0 / 3.0, minf(viewport_size.x / 1152.0, viewport_size.y / 648.0))
-	_content.scale = Vector2.ONE * _density
-	_content.size = viewport_size / _density
+	_content.size = viewport_size
 	var extent := _content.size
-	_detail_panel.position = Vector2(32, 32)
-	_detail_panel.size = Vector2(320, 124)
-	_summary_panel.position = Vector2(extent.x - 334, 32)
-	_summary_panel.size = Vector2(302, 348)
-	_currency_label.position = Vector2(extent.x * 0.47 - 180, 30)
-	_currency_label.size = Vector2(360, 36)
-	_reset_button.position = _summary_panel.position - Vector2(102, 0)
-	_reset_button.size = Vector2(94, 32)
-	_back_button.position = Vector2(32, extent.y - 64)
-	_back_button.size = Vector2(132, 32)
-	_hint.position = Vector2(extent.x - 266, extent.y - 56)
-	_hint.size = Vector2(234, 24)
+	_detail_panel.position = Vector2(53.333333, 53.333333)
+	_detail_panel.size = Vector2(533.333333, 206.666667)
+	_summary_panel.position = Vector2(extent.x - 556.666667, 53.333333)
+	_summary_panel.size = Vector2(503.333333, 580)
+	_currency_label.position = Vector2(extent.x * 0.47 - 300, 50)
+	_currency_label.size = Vector2(600, 60)
+	_reset_button.position = _summary_panel.position - Vector2(170, 0)
+	_reset_button.size = Vector2(156.666667, 53.333333)
+	_back_button.position = Vector2(53.333333, extent.y - 106.666667)
+	_back_button.size = Vector2(220, 53.333333)
+	_hint.position = Vector2(extent.x - 443.333333, extent.y - 93.333333)
+	_hint.size = Vector2(390, 40)
 	if not _layout_initialized:
 		# Preserve the readable default scale as branches open; icons keep HUD padding.
-		_zoom = 0.6
+		_zoom = 1.0
 		_layout_initialized = true
 	_apply_view()
 	queue_redraw()
@@ -247,12 +251,12 @@ func _layout_content() -> void:
 func _apply_view() -> void:
 	_hide_upgrade_tooltip()
 	_tree.scale = Vector2.ONE * _zoom
-	_tree.position = (_content.size * Vector2(0.47, 0.54) + _pan).round()
+	_tree.position = _content.size * Vector2(0.47, 0.54) + Vector2(-0.733333, 0.133333) + _pan
 
 
 func zoom_at(pointer: Vector2, factor: float) -> void:
 	var old_zoom := _zoom
-	_zoom = clampf(_zoom * factor, 0.3, 1.8)
+	_zoom = clampf(_zoom * factor, 0.5, 3.0)
 	var origin := _tree.position
 	_pan += (pointer - origin) * (1.0 - _zoom / old_zoom)
 	_apply_view()
@@ -273,7 +277,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 	if _dragging and event is InputEventMouseMotion:
-		_pan += event.relative / _density
+		_pan += event.relative
 		_apply_view()
 		get_viewport().set_input_as_handled()
 
@@ -281,7 +285,7 @@ func _input(event: InputEvent) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-			zoom_at(get_local_mouse_position() / _density, 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
+			zoom_at(get_local_mouse_position(), 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
 			accept_event()
 		elif event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			select_node("")
@@ -309,7 +313,7 @@ func _notification(what: int) -> void:
 func _on_node_input(event: InputEvent, source: Control) -> void:
 	if not event is InputEventMouseButton: return
 	if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		var pointer: Vector2 = (source.get_global_transform() * event.position) / _density
+		var pointer: Vector2 = (source.get_global_transform() * event.position)
 		zoom_at(pointer, 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
 		source.accept_event()
 
@@ -335,12 +339,12 @@ func _refresh_all() -> void:
 		caption.text = L10n.source(str(_records[id].name))
 		caption.size = caption.get_minimum_size()
 		caption.position = Vector2(roundf((node.size.x - caption.size.x) / 2.0), node.size.y + 6)
-		caption.add_theme_color_override("font_color", GOLD if node.selected else TEXT if node.lit else MUTED)
+		caption.add_theme_color_override("font_color", PALETTE.WARM_ACTIVE if node.selected else TEXT if node.lit else MUTED)
 		var badge: Label = _node_levels[id]
 		badge.text = "%d/%d" % [level, maximum]
 		badge.size = badge.get_minimum_size()
 		badge.position = Vector2(roundf((node.size.x - badge.size.x) / 2.0), node.size.y - badge.size.y - 2)
-		badge.add_theme_color_override("font_color", GOLD if node.lit or node.selected else TEXT)
+		badge.add_theme_color_override("font_color", PALETTE.WARM_ACTIVE if node.selected else TEXT if node.lit else MUTED)
 		if not node.building and node.visible:
 			var parent := str(_records[id].get("requires_upgrade", ""))
 			if parent.is_empty(): parent = CampProgression.get_upgrade_option_parent_building_id(id)
@@ -364,8 +368,8 @@ func _refresh_summary() -> void:
 		label.visible = not is_zero_approx(value)
 		label.text = "%s %s" % [_stat_name(stat), _signed_number(value)] if label.visible else ""
 		if not label.visible: continue
-		label.position = Vector2(16 + floori(visible_count / 14.0) * 142, 52 + (visible_count % 14) * 20)
-		label.add_theme_color_override("font_color", GOLD)
+		label.position = Vector2(26.666667 + floori(visible_count / 14.0) * 236.666667, 86.666667 + (visible_count % 14) * 33.333333)
+		label.add_theme_color_override("font_color", PALETTE.ACTIVE)
 		visible_count += 1
 	_summary_empty.text = L10n.text("ui.talent_tree.empty")
 	_summary_empty.visible = visible_count == 0
@@ -401,7 +405,7 @@ func _refresh_detail() -> void:
 	_detail_title.text = L10n.source(str(record.name)) + "："
 	_detail_next.visible = level < maximum
 	_detail_cost.text = L10n.source("已升满") if level >= maximum else L10n.text("ui.talent_tree.cost") % cost
-	_detail_cost.position.y = 90 if level < maximum else 68
+	_detail_cost.position.y = 150 if level < maximum else 113.333333
 	_detail_cost.add_theme_color_override("font_color", Color("bd786d") if cost > CampProgression.get_camp_currency() and level < maximum else GOLD)
 	_upgrade_button.position = node.position + Vector2(node.size.x + 6, (node.size.y - _upgrade_button.size.y) / 2)
 	_upgrade_button.move_to_front()
@@ -421,13 +425,13 @@ func _hide_upgrade_tooltip() -> void:
 
 func _position_upgrade_tooltip() -> void:
 	_upgrade_tooltip_text.size = _upgrade_tooltip_text.get_minimum_size()
-	_upgrade_tooltip.size = _upgrade_tooltip_text.size + Vector2(24, 16)
+	_upgrade_tooltip.size = _upgrade_tooltip_text.size + Vector2(40, 26.666667)
 	var arrow := _upgrade_button.get_global_rect()
 	var point := _content.get_global_transform().affine_inverse() * Vector2(arrow.end.x, arrow.position.y)
-	point += Vector2(10, 0)
-	if point.x + _upgrade_tooltip.size.x > _content.size.x - 8:
-		point.x -= _upgrade_tooltip.size.x + arrow.size.x / _density + 20
-	_upgrade_tooltip.position = point.clamp(Vector2(8, 8), _content.size - _upgrade_tooltip.size - Vector2(8, 8)).round()
+	point += Vector2(16.666667, 0)
+	if point.x + _upgrade_tooltip.size.x > _content.size.x - 13.333333:
+		point.x -= _upgrade_tooltip.size.x + arrow.size.x + 33.333333
+	_upgrade_tooltip.position = point.clamp(Vector2(13.333333, 13.333333), _content.size - _upgrade_tooltip.size - Vector2(13.333333, 13.333333)).round()
 
 
 func _upgrade_benefits(record: Dictionary, level: int) -> String:

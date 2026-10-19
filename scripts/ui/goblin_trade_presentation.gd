@@ -39,6 +39,9 @@ var _playing := false
 var _compact := false
 var sound_enabled := true
 var finance_skin := false
+var speech_width := 220.0
+var speech_padding := Vector2(12, 10)
+var speech_font_size := 20
 var start_wave_on_accept := false
 var accept_text := ""
 var decline_text := "拒绝"
@@ -58,7 +61,7 @@ func _ready() -> void:
 	_seal.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_seal.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(_seal)
-	_title = _label(_card, "ui.trade.action", 18, FinanceUIStyle.GOLD)
+	_title = _label(_card, "ui.trade.action", 30, FinanceUIStyle.GOLD)
 	# A header must not acquire a wrapped minimum height before its first layout.
 	_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -72,13 +75,13 @@ func _ready() -> void:
 	_terms.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_terms.add_theme_constant_override("separation", 8)
 	_body_scroll.add_child(_terms)
-	_body = _label(_terms, "", 12, FinanceUIStyle.TEXT)
+	_body = _label(_terms, "", 20, FinanceUIStyle.TEXT)
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_relic_body = GoblinTradeRelicTerms.new()
 	_relic_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_terms.add_child(_relic_body)
 	_relic_body.hide()
-	_detail = _label(_terms, "", 12, FinanceUIStyle.GREEN)
+	_detail = _label(_terms, "", 20, FinanceUIStyle.GREEN)
 	_detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_yes = _button("ui.trade.accept", true)
 	_no = _button("ui.trade.decline", false)
@@ -95,7 +98,7 @@ func _ready() -> void:
 	_speech_tail.position = Vector2(10, 53)
 	_speech_tail.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_speech.add_child(_speech_tail)
-	_speech_text = _label(_speech, "", 12, FinanceUIStyle.TEXT)
+	_speech_text = _label(_speech, "", speech_font_size, FinanceUIStyle.TEXT)
 	_speech_text.position = Vector2(12, 10)
 	_speech_text.size = Vector2(196, 40)
 	_audio = AudioStreamPlayer.new()
@@ -142,7 +145,7 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_seal.position = Vector2(padding, 10 if _compact else 12)
 	_seal.size = Vector2(20, 20) if _compact else Vector2(28, 28)
 	_title.position = Vector2(padding + (24 if _compact else 36), 10 if _compact else 12)
-	FinanceUIStyle.label(_title, 12 if _compact else 18, FinanceUIStyle.GOLD)
+	FinanceUIStyle.label(_title, 20 if _compact else 30, FinanceUIStyle.GOLD)
 	_title.size = Vector2(w - _title.position.x - padding, 18 if _compact else 26)
 	if _challenge_header:
 		_title.size.y = _seal.size.y
@@ -158,12 +161,14 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	_yes.text = ("ui.challenge.start_battle" if _compact else "ui.challenge.accept_and_start") if start_wave_on_accept else "ui.trade.accept"
 	if not accept_text.is_empty(): _yes.text = accept_text
 	_no.text = decline_text
-	_speech.size = Vector2(220, 58)
-	_speech.size.y = maxf(58, ceilf(_text_height(_speech_text, 196)) + 20)
-	_speech_text.size = Vector2(196, _speech.size.y - 20)
+	var bubble_width := minf(speech_width, bounds.size.x - 4)
+	var text_width := maxf(1, bubble_width - speech_padding.x * 2)
+	_speech.size = Vector2(bubble_width, maxf(58, ceilf(_text_height(_speech_text, text_width)) + speech_padding.y * 2))
+	_speech_text.position = speech_padding
+	_speech_text.size = _speech.size - speech_padding * 2
 	_speech_tail.position.y = _speech.size.y - 5
 	_speech.position = Vector2(
-		clampf(portrait_rect.end.x - 16, bounds.position.x, bounds.end.x - 224),
+		clampf(portrait_rect.end.x - 16, bounds.position.x, bounds.end.x - bubble_width - 4),
 		maxf(bounds.position.y, portrait_rect.position.y + 6))
 	_accents.queue_redraw()
 
@@ -222,7 +227,7 @@ func configure_challenge(wave: int, icon: String) -> void:
 	accept_text = L10n.text("ui.challenge.accept_and_start")
 	decline_text = L10n.text("ui.challenge.start_normal")
 	ItemIconArt.bind_texture(_seal, FinanceUIStyle.item_icon(icon))
-	FinanceUIStyle.label(_body, 16, FinanceUIStyle.TEXT)
+	FinanceUIStyle.label(_body, 27, FinanceUIStyle.TEXT)
 
 
 func _process(delta: float) -> void:
@@ -282,7 +287,7 @@ func _draw_accents() -> void:
 	if not _playing or _card.modulate.a < 0.99: return
 	var rule_x := _body_scroll.position.x
 	var rule_y := _body_scroll.position.y - (10 if _compact else 12)
-	_accents.draw_line(_card_rect.position + Vector2(rule_x, rule_y), _card_rect.position + Vector2(_card_rect.size.x - rule_x, rule_y), Color("76623f"))
+	_accents.draw_line(_card_rect.position + Vector2(rule_x, rule_y), _card_rect.position + Vector2(_card_rect.size.x - rule_x, rule_y), FinanceFrameSkin.PALETTE.LINE_IDLE if finance_skin else Color("76623f"))
 	var phase := fmod(maxf(0, _elapsed - 1.2), 3.0)
 	if phase < 0.8:
 		var frame := clampi(int(phase * 10), 0, 7)

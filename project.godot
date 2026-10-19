@@ -32,6 +32,8 @@ CombatHitFeedback="*res://scripts/effects/combat_hit_feedback.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/resizable=false
+window/size/maximize_disabled=true
 window/stretch/mode="canvas_items"
 
 [gui]

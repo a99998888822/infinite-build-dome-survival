@@ -9,7 +9,7 @@ const FRAME := preload("res://assets/ui/finance/trade_panel.png")
 const TICK := preload("res://assets/audio/sfx/finance/interest_tick.wav")
 const BONUS := preload("res://assets/audio/sfx/finance/interest_bonus.wav")
 const ARRIVE := preload("res://assets/audio/sfx/finance/interest_arrive.wav")
-const GOLD := Color("f2d58a")
+const GOLD := FinanceUIStyle.GOLD
 const LOSS := Color("de9380")
 const ROW_ICON_SIZE := Vector2(20, 20)
 const ROW_PADDING := 6
@@ -49,7 +49,7 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = 35
 	_shade = ColorRect.new()
-	_shade.color = Color("0b100bb3")
+	_shade.color = Color(FinanceFrameSkin.PALETTE.SHADOW, 0.7)
 	_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_shade)
 	_card = Control.new()
@@ -66,14 +66,14 @@ func _ready() -> void:
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_child(frame)
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_heading = _label(_card, 20, GOLD)
-	_amount = _label(_card, 40, GOLD)
-	_caption = _label(_card, 12, FinanceUIStyle.TEXT)
+	_heading = _label(_card, 33, GOLD)
+	_amount = _label(_card, 67, GOLD)
+	_caption = _label(_card, 20, FinanceUIStyle.TEXT)
 	_caption.text = "ui.interest.actual_received"
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_amount, _caption]: label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_comparison = _label(_card, 12, FinanceUIStyle.GREEN)
-	_skip_hint = _label(_card, 11, FinanceUIStyle.MUTED)
+	_comparison = _label(_card, 20, FinanceUIStyle.GREEN)
+	_skip_hint = _label(_card, 18, FinanceUIStyle.MUTED)
 	_skip_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_scroll = ScrollContainer.new()
 	FinanceUIStyle.bank_scroll(_scroll)
@@ -131,13 +131,13 @@ func present(data: Dictionary) -> void:
 		columns.add_child(icon)
 		ItemIconArt.bind_texture(icon, icon.texture)
 		var color := LOSS if step.kind == "loss" else (FinanceUIStyle.GREEN if step.kind == "growth" else FinanceUIStyle.TEXT)
-		var label := _label(columns, 12, color)
+		var label := _label(columns, 20, color)
 		label.name = "Description"
 		label.text = str(step.label)
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		var value := _label(columns, 14, GOLD if step.kind == "bonus" else color)
+		var value := _label(columns, 23, GOLD if step.kind == "bonus" else color)
 		value.name = "Value"
 		value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		value.text = str(step.amount)
@@ -200,10 +200,10 @@ func arrange(bounds: Vector2, wallet_target: Vector2, receipt_bounds := Rect2())
 	_heading.size = Vector2(w - 40, 26)
 	_amount.position = Vector2(20, 38 if _compact else 44)
 	_amount.size = Vector2(w - 40, 34 if _compact else 50)
-	FinanceUIStyle.label(_amount, 28 if _compact else 40, GOLD)
+	FinanceUIStyle.label(_amount, 47 if _compact else 67, GOLD)
 	_caption.position = Vector2(20, 74 if _compact else 96)
 	_caption.size = Vector2(w - 40, 16 if _compact else 18)
-	FinanceUIStyle.label(_caption, 11 if _compact else 12, FinanceUIStyle.TEXT)
+	FinanceUIStyle.label(_caption, 18 if _compact else 20, FinanceUIStyle.TEXT)
 	_scroll.position = Vector2(20, rows_top)
 	_scroll.size = Vector2(w - 40, maxf(ROW_ICON_SIZE.y + ROW_PADDING * 2, h - rows_top - footer_height))
 	_comparison.position = Vector2(20, h - (42 if _compact else 46))
@@ -293,7 +293,7 @@ func stop() -> void:
 func _draw_effects() -> void:
 	if not _active: return
 	var divider_y := _card.position.y + _scroll.position.y
-	_effects.draw_line(Vector2(_card.position.x + 20, divider_y), Vector2(_card.get_rect().end.x - 20, divider_y), Color("74603e"))
+	_effects.draw_line(Vector2(_card.position.x + 20, divider_y), Vector2(_card.get_rect().end.x - 20, divider_y), FinanceFrameSkin.PALETTE.LINE_IDLE)
 	if _elapsed < final_time or int(report.total) <= 0: return
 	var t := _elapsed - final_time
 	var origin := _card.position + _amount.position + _amount.size * 0.5

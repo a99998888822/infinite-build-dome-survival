@@ -12,7 +12,7 @@ var flow: MainFlowCoordinator
 var scroll: ScrollContainer
 var canvas: Control
 var _pool: Array[PreparationOfferCard] = []
-var _columns := 3
+var _columns := 4
 var _last_start := -1
 var _logical_focus := 0
 var _card_height := CARD_HEIGHT
@@ -63,7 +63,7 @@ func _layout() -> void:
 	_card_height = _base_card_height
 	_pending_card_height = 0.0
 	var usable := maxf(100.0, size.x - 16.0)
-	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 3)
+	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 4)
 	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
 	_last_start = -1
 	_refresh_pool(true)

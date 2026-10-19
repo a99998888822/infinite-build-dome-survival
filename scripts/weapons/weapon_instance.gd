@@ -533,7 +533,7 @@ func get_hit_radius() -> float:
 	if is_mobility_weapon():
 		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 	if use_active_range_rules:
-		if is_mutant_tentacle():
+		if is_mutant_tentacle() or has_combat_tag(L10n.text("stat.category.projectiles")):
 			return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 		return maxf(base_radius, 4.0) if str(weapon_data.get("projectile_behavior", "")) == "plasma" else base_radius
 	if is_nightwatch_spear() or is_camp_dagger() or is_copper_lamp() or is_mutant_tentacle() or is_earth_hammer():

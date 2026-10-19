@@ -310,7 +310,7 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 				check(monster.icon.texture.resource_path == str(RunSettlement.configuration().monster_portraits[monster.id]), "enemy uses its own formal portrait " + str(monster.id))
 				var name_width: float = monster.label.get_theme_font("font").get_string_size(monster.label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, monster.label.get_theme_font_size("font_size")).x
 				check(name_width <= monster.label.size.x, "complete enemy name fits " + locale + str(monster.id) + str(bounds))
-		check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._desk.get_global_rect()), "total and goblin desk fit above the footer " + str(bounds))
+		check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._portrait.get_global_rect()), "total and goblin portrait fit above the footer " + str(bounds))
 		for row in ui._rows:
 			check(ui._scroll.get_global_rect().encloses(row.panel.get_global_rect()), "settlement row fits " + str(bounds))
 		await _capture(ui, "layout_%dx%d" % [bounds.x, bounds.y])

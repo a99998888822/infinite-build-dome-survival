@@ -2,13 +2,12 @@ extends Control
 class_name BankCounterPortrait
 
 const GOBLIN: Texture2D = preload("res://assets/ui/finance/goblin_banker_states.png")
-const DESK: Texture2D = preload("res://assets/ui/finance/bank_counter_desk_picxel.png")
 const ACTOR_SCALE := 0.60
 # A+++ source anchors (160, 314) and (160, 282), in the 128-unit layout.
 const HAND_CONTACT := Vector2(64, 125.6)
 const WAIST_CONTACT := Vector2(64, 112.8)
-const DESK_CONTACT_Y := 24.0
-const DESK_BASE_Y := 56.0
+const HAND_ANCHOR_Y := 24.0
+const LAYOUT_BASE_Y := 56.0
 var expression: int = 0
 var _reaction_left := 0.0
 var _elapsed := 0.0
@@ -52,18 +51,16 @@ func _draw() -> void:
 		return
 	var unit := minf(2.0, size.x / 128.0)
 	var actor_unit := unit * ACTOR_SCALE
-	# Fit from the hat to the actual feet, excluding the PNG's transparent padding.
-	var content_height := (DESK_BASE_Y - DESK_CONTACT_Y) * unit + HAND_CONTACT.y * actor_unit
+	# Preserve the compact portrait placement and space for the coin animation.
+	var content_height := (LAYOUT_BASE_Y - HAND_ANCHOR_Y) * unit + HAND_CONTACT.y * actor_unit
 	var fit := minf(1.0, maxf(0, size.y - 2.0) / maxf(1.0, content_height))
 	unit *= fit
 	actor_unit *= fit
-	var origin := Vector2((size.x - 128.0 * unit) * 0.5, size.y - DESK_BASE_Y * unit)
+	var origin := Vector2((size.x - 128.0 * unit) * 0.5, size.y - LAYOUT_BASE_Y * unit)
 	var actor_size := Vector2(128, 128) * actor_unit
-	var actor_pos := Vector2(size.x * 0.5, origin.y + DESK_CONTACT_Y * unit) - HAND_CONTACT * actor_unit
+	var actor_pos := Vector2(size.x * 0.5, origin.y + HAND_ANCHOR_Y * unit) - HAND_CONTACT * actor_unit
 	var breathing := Vector2(0, roundf(sin(_elapsed * 1.5) * 0.6 * minf(1.0, actor_unit)))
-	# The complete bust leans over the counter. Draw it once, so sleeves, palms
-	# and fingers share the same transform and cannot be cut by tabletop props.
-	draw_texture_rect(DESK, Rect2(origin.round(), Vector2(128, 64) * unit), false)
+	# Draw the complete bust once so sleeves, palms and fingers move together.
 	draw_texture_rect_region(GOBLIN, Rect2((actor_pos + breathing).round(), actor_size.round()), _expression_region())
 	if _reaction_left > 0.3:
 		var t := clampf((1.4 - _reaction_left) / 1.1, 0, 1)

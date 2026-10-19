@@ -1,0 +1,130 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 101 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 16 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 75
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS body shake is one third of 14 pixels, rounded to whole screen pixels
+PASS physics batch closes before timeout
+PASS 1 unique nearby damaged enemies counted
+PASS 1 contacts emit one threshold at most
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 2 unique nearby damaged enemies counted
+PASS 2 contacts emit one threshold at most
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 3 unique nearby damaged enemies counted
+PASS 3 contacts emit one threshold at most
+PASS 3 contacts choose correct shake and fixed hitstop
+PASS 3 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 5 unique nearby damaged enemies counted
+PASS 5 contacts emit one threshold at most
+PASS 5 contacts choose correct shake and fixed hitstop
+PASS 5 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 6 unique nearby damaged enemies counted
+PASS 6 contacts emit one threshold at most
+PASS 6 contacts choose correct shake and fixed hitstop
+PASS 6 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 11 unique nearby damaged enemies counted
+PASS 11 contacts emit one threshold at most
+PASS 11 contacts choose correct shake and fixed hitstop
+PASS 11 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 12 unique nearby damaged enemies counted
+PASS 12 contacts emit one threshold at most
+PASS 12 contacts choose correct shake and fixed hitstop
+PASS 12 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS 18 unique nearby damaged enemies counted
+PASS 18 contacts emit one threshold at most
+PASS 18 contacts choose correct shake and fixed hitstop
+PASS 18 contacts use reduced amplitude
+PASS HUD remains stable
+PASS presentation layers return to their original offsets
+PASS physics batch closes before timeout
+PASS duplicate stays local and deduplicated
+PASS physics batch closes before timeout
+PASS scattered stays local and deduplicated
+PASS physics batch closes before timeout
+PASS two_pockets stays local and deduplicated
+PASS physics batch closes before timeout
+PASS chain stays local and deduplicated
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS repeat hits on the same two targets across frames do not inflate count
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS one attack re-triggers at 3, 6, 12, 15, 18 across frames
+PASS later milestones repeat the reduced highest tier
+PASS chain count no longer caps at twelve
+PASS split/duplicate events share the attack identity
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS a gap over 0.2 active seconds starts a new chain
+PASS physics batch closes before timeout
+PASS different casts never add two plus two together
+PASS physics batch closes before timeout
+PASS second cast advances only its own local chain
+PASS burn ticks only shake enemy bodies, never accumulate screen hitstop
+PASS physics batch closes before timeout
+PASS physics batch closes before timeout
+PASS reaction preserves its damage source without mutating the weapon event
+PASS reaction and native contacts share the attack chain
+PASS rejected damage never counts
+PASS radius boundary is inclusive
+PASS outside radius is excluded
+PASS hitstop pauses the simulation immediately
+PASS idle and physics clocks freeze during hitstop
+PASS hitstop restores on wall time: 0.0586 seconds
+PASS simulation resumes after hitstop
+PASS hitstop pauses the simulation immediately
+PASS idle and physics clocks freeze during hitstop
+PASS hitstop restores on wall time: 0.0608 seconds
+PASS simulation resumes after hitstop
+PASS hitstop pauses the simulation immediately
+PASS idle and physics clocks freeze during hitstop
+PASS hitstop restores on wall time: 0.0615 seconds
+PASS simulation resumes after hitstop
+PASS feedback never releases a preexisting scene pause
+PASS menu cancels hitstop and keeps its own pause flag
+PASS keyboard, mouse and touch releases survive hitstop
+PASS contact image freezes GPU rendering after its first draw
+PASS screen shader shifts presentation without changing layout or aim
+PASS battle teardown restores pause, rendering and layer transform
+PASS detached presentation restores its original material without a viewport
+PASS physics batch closes before timeout
+PASS lethal contacts count using position snapshots
+GENERAL_HIT_FEEDBACK checks=110 failures=0

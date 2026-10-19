@@ -194,7 +194,7 @@ func _get_shop_safe_rect() -> Rect2:
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return Rect2()
 	var left := 16.0
-	var right := minf(336.0, viewport_size.x * 0.30)
+	var right := minf(ShopPopup.DRAWER_RESERVED_RIGHT, viewport_size.x * 0.30)
 	var top := 16.0
 	var bottom := 16.0
 	var safe_left := clampf(left, 0.0, viewport_size.x)

@@ -18,18 +18,22 @@ var _description: RichTextLabel
 var _price: Label
 var buy_button: Button
 var _description_fit_queued := false
+var _hovered := false
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", FinanceUIStyle.box("232a21", "576048", 6))
+	add_theme_stylebox_override("panel", FinanceFrameSkin.box("card", 9))
 	mouse_filter = Control.MOUSE_FILTER_PASS
+	mouse_entered.connect(func(): _hovered = true; _update_frame())
+	mouse_exited.connect(_update_pointer_frame)
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 4)
 	add_child(body)
 	var heading := HBoxContainer.new()
 	heading.add_theme_constant_override("separation", 12)
 	body.add_child(heading)
-	_icon_frame = Control.new()
+	_icon_frame = Panel.new()
+	_icon_frame.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot"))
 	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE
 	_icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	heading.add_child(_icon_frame)
@@ -68,12 +72,12 @@ func _ready() -> void:
 	_name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_name_label.max_lines_visible = 2
-	FinanceUIStyle.label(_name_label, 12)
+	FinanceUIStyle.label(_name_label, 20)
 	titles.add_child(_name_label)
 	_kind_label = Label.new()
 	_kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_kind_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	FinanceUIStyle.label(_kind_label, 10, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(_kind_label, 17, FinanceUIStyle.MUTED)
 	titles.add_child(_kind_label)
 	var description_margin := MarginContainer.new()
 	description_margin.add_theme_constant_override("margin_top", 8)
@@ -95,11 +99,13 @@ func _ready() -> void:
 	_price = WrappedTooltipLabel.new()
 	_price.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_price.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_price, 11, FinanceUIStyle.GOLD)
+	FinanceUIStyle.label(_price, 18, FinanceUIStyle.GOLD)
 	footer.add_child(_price)
 	buy_button = Button.new()
 	buy_button.custom_minimum_size = Vector2(58, 26)
 	FinanceUIStyle.bank_button(buy_button)
+	buy_button.mouse_entered.connect(func(): _hovered = true; _update_frame())
+	buy_button.mouse_exited.connect(_update_pointer_frame)
 	buy_button.clip_text = true
 	footer.add_child(buy_button)
 	buy_button.pressed.connect(func(): purchase_requested.emit(offer))
@@ -138,10 +144,7 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + " · " + rarity_label
 	_kind_label.tooltip_text = _kind_label.text
 	_kind_label.add_theme_color_override("font_color", rarity_color)
-	var kind := "card_" + rarity if rarity in ["uncommon", "rare", "epic", "legendary"] else "card"
-	var panel := FinanceFrameSkin.box(kind, 9)
-	panel.content_margin_top = 10
-	add_theme_stylebox_override("panel", panel)
+	_update_frame()
 	var cost := int(offer.get("shop_cost", 0))
 	_price.text = L10n.text("ui.shop.gold_price") % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))
 	_price.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -151,8 +154,19 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":
 		buy_button.text = L10n.text("ui.shop.gold_shortfall") % maxi(0, cost - gold)
-	modulate = Color(0.62, 0.66, 0.58) if bool(offer.get("purchased", false)) else Color.WHITE
+	modulate = Color(0.62, 0.62, 0.62) if bool(offer.get("purchased", false)) else Color.WHITE
 	_queue_description_fit()
+
+
+func _update_pointer_frame() -> void:
+	_hovered = get_global_rect().has_point(get_global_mouse_position())
+	_update_frame()
+
+
+func _update_frame() -> void:
+	var panel := FinanceFrameSkin.box("card_hover" if _hovered and not bool(offer.get("purchased", false)) else "card", 9)
+	panel.content_margin_top = 10
+	add_theme_stylebox_override("panel", panel)
 
 
 func _queue_description_fit() -> void:
@@ -177,4 +191,8 @@ func _fit_description() -> void:
 			return
 	# Keep very long descriptions readable. The virtual grid reserves more row
 	# height only if shrinking to the minimum still cannot show the complete text.
-	minimum_height_requested.emit(ceilf(size.y + _description.get_content_height() - available_height))
+	# Derive the height from intrinsic content. Pooled cards may still have the
+	# previous row's allocated height; adding to that makes repeated binds grow
+	# an entire shelf even when the description has not changed.
+	var required := get_combined_minimum_size().y + maxf(0, _description.get_content_height() - _description.custom_minimum_size.y)
+	minimum_height_requested.emit(ceilf(required))

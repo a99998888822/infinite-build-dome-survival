@@ -7,11 +7,12 @@ var sample: Dictionary = {}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_theme_font_size_override("font_size", 10)
+	add_theme_font_override("font", preload("res://assets/font/native_hud/interface.res"))
+	add_theme_font_size_override("font_size", 17)
 	add_theme_color_override("font_color", Color("b8c9b6"))
 	add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
-	add_theme_constant_override("shadow_offset_x", 1)
-	add_theme_constant_override("shadow_offset_y", 1)
+	add_theme_constant_override("shadow_offset_x", 2)
+	add_theme_constant_override("shadow_offset_y", 2)
 	tooltip_text = "ui.performance.tooltip"
 	refresh()
 

@@ -35,12 +35,19 @@ static func clear_path(source: Node2D, from: Vector2, to: Vector2) -> bool:
 static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
 	var origin := source.get_attack_origin()
 	var best: EnemyController
-	var distance := radius * radius + 0.001
+	var distance := INF
+	var footprint: Shape2D = AttackFootprint.targeting_shape(source)
+	if not is_equal_approx(radius, source.get_attack_range()):
+		var circle := CircleShape2D.new()
+		circle.radius = radius
+		footprint = circle
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_alive():
 			continue
 		if enemy is EliteRusher and enemy.skill_state == "spawn":
+			continue
+		if not AttackFootprint.body_overlaps(footprint, Transform2D(0, origin), enemy):
 			continue
 		var next := origin.distance_squared_to(enemy.global_position)
 		if source.is_copper_lamp() or source.is_meteor_flail() or source.is_camp_dagger():

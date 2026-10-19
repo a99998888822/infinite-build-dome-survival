@@ -50,6 +50,7 @@ func _test_selection_and_slots() -> void:
 				clicked = true
 		check(clicked and menu._selected_difficulty_id == id, "compact difficulty card click selects " + id)
 		menu.character_confirm_button.pressed.emit()
+		await menu.dungeon_loading.finished
 		await frames()
 		var manager := flow._bound_wave_manager
 		var player := flow.get_bound_player()

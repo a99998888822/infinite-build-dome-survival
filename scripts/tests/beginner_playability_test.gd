@@ -61,6 +61,7 @@ func _play(id: String, rng_seed: int) -> void:
 		await frames(3)
 	seed(rng_seed)
 	menu.character_confirm_button.pressed.emit()
+	await menu.dungeon_loading.finished
 	await frames(4)
 	var manager := flow._bound_wave_manager
 	var player := flow.get_bound_player()

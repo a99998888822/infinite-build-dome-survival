@@ -29,7 +29,8 @@ func initialize(source: WeaponInstance, identity: String) -> void:
 
 func advance(delta: float) -> void:
 	elapsed += delta
-	core_radius = weapon.get_hit_radius() * weapon.get_projectile_visual_scale()
+	# The physical radius already includes the cast's size bonus.
+	core_radius = weapon.get_hit_radius()
 	radius = core_radius * DISCHARGE_RADIUS_MULTIPLIER
 	var count := clampi(int(weapon.weapon_data.get("plasma_arc_count", 3)), 1, 6)
 	_arcs.resize(count)

@@ -27,7 +27,6 @@ func _setup() -> void:
 	# Receiver materials replace the old additive screen-space light pool.
 	(horizon as CavernPitHorizon).pit_light.visible = false
 	lighting_ready = true
-	_update_area()
 
 func _bind_light(material: ShaderMaterial) -> void:
 	material.set_shader_parameter("cloud_texture", CLOUD_TEXTURE)

@@ -1,0 +1,74 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 101 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 16 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 75
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS : all damage and receipts survive flag=false
+PASS : general white/shake preserves animation pose and tint
+PASS : no automatic damage knockback
+PASS : no response node or contact decoration
+PASS light: all damage and receipts survive flag=false
+PASS light: general white/shake preserves animation pose and tint
+PASS light: no automatic damage knockback
+PASS light: no response node or contact decoration
+PASS heavy: all damage and receipts survive flag=false
+PASS heavy: general white/shake preserves animation pose and tint
+PASS heavy: no automatic damage knockback
+PASS heavy: no response node or contact decoration
+PASS ritual: all damage and receipts survive flag=false
+PASS ritual: general white/shake preserves animation pose and tint
+PASS ritual: no automatic damage knockback
+PASS ritual: no response node or contact decoration
+PASS sustain: all damage and receipts survive flag=false
+PASS sustain: general white/shake preserves animation pose and tint
+PASS sustain: no automatic damage knockback
+PASS sustain: no response node or contact decoration
+PASS : all damage and receipts survive flag=true
+PASS : general white/shake preserves animation pose and tint
+PASS : no automatic damage knockback
+PASS : no response node or contact decoration
+PASS light: all damage and receipts survive flag=true
+PASS light: general white/shake preserves animation pose and tint
+PASS light: no automatic damage knockback
+PASS light: no response node or contact decoration
+PASS heavy: all damage and receipts survive flag=true
+PASS heavy: general white/shake preserves animation pose and tint
+PASS heavy: no automatic damage knockback
+PASS heavy: no response node or contact decoration
+PASS ritual: all damage and receipts survive flag=true
+PASS ritual: general white/shake preserves animation pose and tint
+PASS ritual: no automatic damage knockback
+PASS ritual: no response node or contact decoration
+PASS sustain: all damage and receipts survive flag=true
+PASS sustain: general white/shake preserves animation pose and tint
+PASS sustain: no automatic damage knockback
+PASS sustain: no response node or contact decoration
+PASS normal and critical damage numbers remain
+PASS a long pre-contact frame cannot consume the first white pose
+PASS general response restores offset and material
+PASS removal preserves later damage and drop random rolls
+PASS reentrant damage retains accounting and the current pose
+PASS burn damage uses the same general response
+PASS explicit skill knockback survives an overlapping native hit
+PASS compatibility wrapper retains subclass mitigation
+PASS independent ritual source icon still compresses
+PASS ritual source icon still rebounds
+PASS ritual source icon restores cleanly
+PASS lethal hit retains feedback and the normal death fade
+PASS independent hammer ground debris remains
+PASS wave cleanup still removes ground debris
+COMBAT_GENERAL_FEEDBACK_COMPATIBILITY checks=54 failures=0

@@ -21,7 +21,8 @@ AUDIO_EXTENSIONS = {".wav", ".ogg", ".mp3", ".flac", ".aac", ".m4a"}
 CATEGORIES = ["武器", "附魔", "元素联动", "界面与银行", "环境", "旧版备用", "其他", "待补音效"]
 EXTRAS = {
     "combat/grenade_launch_01.wav": ("榴弹炮 · 发射", "武器", 0, "铸铁榴弹炮发射；爆炸命中另用爆炸音效。"),
-    "combat/meteor_flail_hit.wav": ("流星摆锤 · 命中", "武器", 0, "流星摆锤的独立金属撞击。"),
+    "combat/meteor_flail_hit.wav": ("流星摆锤 / 裂地战锤 · 命中", "武器", None, "两把锤共用重击声，播放增益读取武器配置。"),
+    "combat/mutant_tentacle_hit.wav": ("异化触手 · 命中", "武器", None, "独立触手命中声，播放增益读取武器配置。"),
     "ui/bank_deposit.wav": ("银行 · 存入", "界面与银行", -8, "向银行存入资金。"),
     "ui/bank_withdraw.wav": ("银行 · 取出", "界面与银行", -8, "从银行取出资金。"),
     "ui/stats_chain_open.wav": ("战斗统计抽屉 · 展开", "界面与银行", -2, "统计抽屉展开；游戏播放速度随动画时长变化。"),
@@ -81,7 +82,10 @@ def inventory():
                     references.setdefault(resource, []).append(path.relative_to(ROOT).as_posix())
     weapons = json.loads((ROOT/"data_config/weapons.json").read_text(encoding="utf-8"))
     uses = {}
+    hit_gains = {}
     for weapon in weapons:
+        if "hit_sfx_gain_db" in weapon and not weapon.get("hit_sfx_cue"):
+            hit_gains[weapon["hit_sfx"].removeprefix("res://")] = float(weapon["hit_sfx_gain_db"])
         for field, action in [("hit_sfx", "命中"), ("launch_sfx", "发射"), ("spray_loop_sfx", "持续释放")]:
             path = str(weapon.get(field, "")).removeprefix("res://")
             if path:
@@ -98,6 +102,7 @@ def inventory():
             description = NOTES.get(cue, "对应事件触发的单次音效。")
         else:
             title, category, gain, description = EXTRAS.get(key, (path.stem, "其他", None, "按现有资源收录，播放用途待核对。"))
+            gain = hit_gains.get(rel, gain)
         status = "active" if rel in profiles or (key in EXTRAS and category != "旧版备用") or rel in references else "legacy"
         with wave.open(str(path)) as stream:
             duration = stream.getnframes()/stream.getframerate()

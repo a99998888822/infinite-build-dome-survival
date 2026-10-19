@@ -61,10 +61,10 @@ const DRAWER_TEXT_COLOR := Color("39372e")
 const TOP_BAR_HEIGHT := 56.0
 const TOP_BAR_MARGIN := 12.0
 const TOP_BAR_GAP := 12.0
-const TOP_BAR_ACTIONS_WIDTH := 86.0
+const TOP_BAR_ACTIONS_WIDTH := 143.333333
 const TOP_BAR_ACTIONS_SHIFT := 120.0
-const MODAL_ECONOMY_WIDTH := 190.0
-const WAVE_PANEL_SIZE := Vector2(136.0, 48.0)
+const MODAL_ECONOMY_WIDTH := 316.666667
+const WAVE_PANEL_SIZE := Vector2(226.666667, 80.0)
 const MODAL_SAFE_EDGE_MARGIN := 16.0
 const MODAL_FALLBACK_TOP := 16.0
 const MODAL_FALLBACK_RIGHT_OPEN := 496.0
@@ -150,7 +150,7 @@ const STAT_VALUES_WITHOUT_PERCENT: Array[String] = [
 ]
 
 @onready var status_panel: Control = get_node_or_null("StatusPanel")
-@onready var top_left: VBoxContainer = get_node_or_null("StatusPanel/TopLeft")
+@onready var top_left: NativeHudBox = get_node_or_null("StatusPanel/TopLeft")
 @onready var level_label: Label = get_node_or_null("StatusPanel/TopLeft/LevelLabel")
 @onready var hp_bar: ProgressBar = get_node_or_null("StatusPanel/TopLeft/HpRow/HpBar")
 @onready var hp_label: Label = get_node_or_null("StatusPanel/TopLeft/HpRow/HpBar/Text")
@@ -160,7 +160,7 @@ const STAT_VALUES_WITHOUT_PERCENT: Array[String] = [
 @onready var wave_panel: PanelContainer = get_node_or_null("../BattleTopBar/WavePanel")
 @onready var wave_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/WaveLabel")
 @onready var wave_timer_label: Label = get_node_or_null("../BattleTopBar/WavePanel/Content/TimerLabel")
-@onready var economy_panel: VBoxContainer = get_node_or_null("../BattleTopBar/EconomyPanel")
+@onready var economy_panel: NativeHudBox = get_node_or_null("../BattleTopBar/EconomyPanel")
 @onready var encyclopedia_button: TextureButton = get_node_or_null("../BattleTopBar/TopRightActions/BaikeButton")
 @onready var settings_button: TextureButton = get_node_or_null("../BattleTopBar/TopRightActions/PluginButton")
 @onready var gold_label: Label = get_node_or_null("../BattleTopBar/EconomyPanel/GoldRow/Label")
@@ -216,7 +216,8 @@ func _ready() -> void:
 	_finance_economy_back = Panel.new()
 	_finance_economy_back.name = "FinanceEconomyBacking"
 	_finance_economy_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_finance_economy_back.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slim"))
+	var economy_skin := FinanceFrameSkin.box("slim")
+	_finance_economy_back.add_theme_stylebox_override("panel", economy_skin)
 	_finance_economy_back.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	battle_top_bar.add_child(_finance_economy_back)
 	battle_top_bar.move_child(_finance_economy_back, economy_panel.get_index())
@@ -230,11 +231,11 @@ func _ready() -> void:
 	_set_modal_backdrop_visible(false)
 
 
-func _hud_frame_style() -> StyleBoxFlat:
+func _hud_frame_style(border_width := 1) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.027, 0.044, 0.039, 0.94)
 	style.border_color = Color(0.34, 0.36, 0.25, 0.95)
-	style.set_border_width_all(1)
+	style.set_border_width_all(border_width)
 	return style
 
 
@@ -242,7 +243,7 @@ func _style_combat_hud() -> void:
 	_vitals_frame = Panel.new()
 	_vitals_frame.name = "VitalsFrame"
 	_vitals_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_vitals_frame.add_theme_stylebox_override("panel", _hud_frame_style())
+	_vitals_frame.add_theme_stylebox_override("panel", CombatHudFrame.make(3))
 	status_panel.add_child(_vitals_frame)
 	status_panel.move_child(_vitals_frame, 0)
 	_experience_frame = Panel.new()
@@ -251,13 +252,22 @@ func _style_combat_hud() -> void:
 	_experience_frame.add_theme_stylebox_override("panel", _hud_frame_style())
 	status_panel.add_child(_experience_frame)
 	status_panel.move_child(_experience_frame, 0)
-	top_left.add_theme_constant_override("separation", 2)
+	top_left.separation = 3.333333
+	for bar in [hp_bar, shield_bar]:
+		bar.add_theme_stylebox_override("background", NativeHudFlatStyle.from_flat(bar.get_theme_stylebox("background"), Vector4.ONE * 3.333333))
+		bar.add_theme_stylebox_override("fill", NativeHudFlatStyle.from_flat(bar.get_theme_stylebox("fill"), Vector4(0, 3.333333, 0, 3.333333)))
+	var wave_skin := CombatHudFrame.make(2, false, Vector4(17, 13, 17, 13))
+	wave_panel.add_theme_stylebox_override("panel", wave_skin)
+	wave_label.add_theme_color_override("font_color", CombatHudFrame.PALETTE.TEXT)
+	level_label.add_theme_color_override("font_color", CombatHudFrame.PALETTE.TEXT)
 	level_label.visible = true
+	for label in [level_label, hp_label, shield_label, gold_label, finance_label, wave_label, wave_timer_label]:
+		label.add_theme_font_override("font", preload("res://assets/font/native_hud/interface.res"))
 	for label in [hp_label, shield_label, gold_label, finance_label]:
-		label.add_theme_font_size_override("font_size", 14)
-		label.add_theme_constant_override("outline_size", 2)
-	wave_label.add_theme_font_size_override("font_size", 12)
-	wave_timer_label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_font_size_override("font_size", 23)
+		label.add_theme_constant_override("outline_size", 3)
+	wave_label.add_theme_font_size_override("font_size", 20)
+	wave_timer_label.add_theme_font_size_override("font_size", 20)
 	wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.86, 0.65))
 	gold_label.add_theme_color_override("font_color", Color(0.89, 0.76, 0.45))
 	finance_label.add_theme_color_override("font_color", Color(0.65, 0.8, 0.67))
@@ -275,7 +285,7 @@ func _style_combat_hud() -> void:
 	exp_fill.bg_color = Color("8ea968")
 	exp_bar.add_theme_stylebox_override("fill", exp_fill)
 	for button in [encyclopedia_button, settings_button]:
-		button.custom_minimum_size = Vector2(40, 40)
+		button.custom_minimum_size = Vector2(66.666667, 66.666667)
 		button.mouse_entered.connect(func() -> void: button.modulate = Color(1.2, 1.16, 1.03))
 		button.mouse_exited.connect(func() -> void: button.modulate = Color.WHITE)
 		button.button_down.connect(func() -> void: button.modulate = Color(0.76, 0.84, 0.75))
@@ -777,19 +787,16 @@ func _apply_combat_layout() -> void:
 		_set_drawer_open(_drawer_open, false)
 	_finance_economy_back.visible = finance_scene
 	var viewport_width := get_viewport().get_visible_rect().size.x
-	var density := minf(5.0 / 3.0, viewport_width / 1152.0)
-	for widget in [top_left, _vitals_frame, _performance_line, _weapon_damage_meter, wave_panel, economy_panel, _finance_economy_back]:
-		widget.scale = Vector2.ONE * density
-	var bar_width := clampf(viewport_width * 0.24, 120.0, 226.0)
-	var timer_size := WAVE_PANEL_SIZE if viewport_width >= 800.0 else Vector2(112, 48)
-	top_left.position = Vector2(18, 6)
+	var bar_width := clampf(viewport_width * 0.24, 200.0, 376.666667)
+	var timer_size := WAVE_PANEL_SIZE
+	top_left.position = Vector2(24, 14)
 	_vitals_frame.position = Vector2(10, 2)
-	_vitals_frame.size = Vector2(bar_width + 44, 70)
-	level_label.add_theme_font_size_override("font_size", 12)
-	_performance_line.position = Vector2(16, 78) * density
-	_performance_line.size = Vector2(maxf(bar_width + 32, 210), 18)
-	_weapon_damage_meter.position = Vector2(10, 102) * density
-	_weapon_damage_meter.size.x = (bar_width + 44) * 0.5
+	_vitals_frame.size = Vector2(bar_width + 90, 128)
+	level_label.add_theme_font_size_override("font_size", 20)
+	_performance_line.position = Vector2(26.666667, 142)
+	_performance_line.size = Vector2(maxf(bar_width + 53.333333, 350), 30)
+	_weapon_damage_meter.position = Vector2(16.666667, 182)
+	_weapon_damage_meter.size.x = (bar_width + 73.333333) * 0.5
 	if hp_bar != null:
 		hp_bar.custom_minimum_size.x = bar_width
 	if shield_bar != null:
@@ -800,41 +807,40 @@ func _apply_combat_layout() -> void:
 		wave_panel.anchor_right = 0.0
 		wave_panel.anchor_bottom = 0.0
 		wave_panel.position = Vector2(
-			(viewport_width - timer_size.x * density) * 0.5,
-			(TOP_BAR_HEIGHT - timer_size.y) * 0.5
+			(viewport_width - timer_size.x) * 0.5,
+			4.0
 		)
 		wave_panel.custom_minimum_size = timer_size
 		wave_panel.size = timer_size
 	var actions := encyclopedia_button.get_parent() as Control
-	actions.scale = Vector2.ONE * density
 	# Leave room for the corner scenery, reducing the inset on narrow windows.
 	var actions_shift := clampf((viewport_width - 800.0) * 0.25, 0.0, TOP_BAR_ACTIONS_SHIFT)
 	var actions_margin := TOP_BAR_MARGIN + actions_shift
-	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH * density
+	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH
 	actions.offset_right = actions.offset_left + TOP_BAR_ACTIONS_WIDTH
 	actions.offset_top = 8.0
-	actions.offset_bottom = 48.0
+	actions.offset_bottom = 74.666667
 	if economy_panel != null:
-		var wave_right := (viewport_width + timer_size.x * density) * 0.5
+		var wave_right := (viewport_width + timer_size.x) * 0.5
 		var actions_left := viewport_width + actions.offset_left
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
-		var economy_width := 168.0
+		var economy_width := 280.0
 		if timer_hidden:
-			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0) / density)
-			economy_left = actions_left - TOP_BAR_GAP - economy_width * density
+			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0))
+			economy_left = actions_left - TOP_BAR_GAP - economy_width
 		else:
 			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
-			economy_width = minf(economy_width, available_width / density)
-		var economy_size := Vector2(economy_width, 42.0 if finance_scene else 44.0)
+			economy_width = minf(economy_width, available_width)
+		var economy_size := Vector2(economy_width, 70.0 if finance_scene else 73.333333)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
 		economy_panel.anchor_right = 0.0
 		economy_panel.anchor_bottom = 0.0
-		economy_panel.position = Vector2(economy_left, (TOP_BAR_HEIGHT - economy_size.y) * 0.5)
+		economy_panel.position = Vector2(economy_left, 7.0 if finance_scene else 6.0)
 		economy_panel.size = economy_size
 		_finance_economy_back.position = economy_panel.position - Vector2(10, 4)
-		_finance_economy_back.size = economy_size + Vector2(18, 8)
+		_finance_economy_back.size = economy_size + Vector2(30, 13.333333)
 	if exp_panel != null:
 		if OS.has_feature("mobile"):
 			exp_panel.anchor_left = 0.28
@@ -846,7 +852,7 @@ func _apply_combat_layout() -> void:
 		_experience_frame.position = Vector2(viewport_width * exp_panel.anchor_left - 10, get_viewport().get_visible_rect().size.y - 43)
 		_experience_frame.size = Vector2(viewport_width * (exp_panel.anchor_right - exp_panel.anchor_left) + 20, 37)
 	if _bond_row != null:
-		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 148 * density)
+		_bond_row.position = Vector2(viewport_width * exp_panel.anchor_left, get_viewport().get_visible_rect().size.y - 246.666667)
 	if combat_bar != null:
 		combat_bar.apply_layout()
 		combat_hints.position = Vector2(8, combat_bar.position.y - 27)

@@ -91,8 +91,15 @@ func _wolf_boundaries(directions: Array) -> void:
 	var body_offset := body.global_position - player.global_position
 	for direction: Vector2 in directions:
 		wolf.breath_direction = direction
-		var transform := AttackFootprint.ground_transform(direction)
-		for pair in [[Vector2(150, 0), true], [Vector2(290, 0), false], [Vector2(150, 140), false]]:
+		var transform := Transform2D(direction.angle(), Vector2.ZERO)
+		var polygon := wolf.get_breath_polygon()
+		var circular := true
+		for point in polygon:
+			if not point.is_zero_approx():
+				circular = circular and is_equal_approx(point.length(), float(wolf.profile.breath_range))
+		check(circular, "wolf breath arc keeps its radius at every bearing " + str(direction))
+		check(is_equal_approx(polygon[1].angle_to(polygon[-1]), deg_to_rad(float(wolf.profile.breath_cone_degrees))), "wolf breath preserves its full opening angle " + str(direction))
+		for pair in [[Vector2(150, 0), true], [Vector2(225, 0), true], [Vector2(290, 0), false], [Vector2(150, 140), false]]:
 			player.global_position = transform * pair[0] - body_offset
 			player.current_hp = int(player.get_stat("max_hp"))
 			player.current_shield = 0
@@ -100,14 +107,14 @@ func _wolf_boundaries(directions: Array) -> void:
 			wolf.breath_hits = 0
 			var before := player.current_hp
 			wolf.try_breath_pulse()
-			check((player.current_hp < before) == pair[1], "wolf actual body against projected breath " + str(direction) + " " + str(pair[0]))
-			check(wolf.breath_shape.points == wolf.projected_breath_polygon(), "wolf warning and pulse use identical polygon")
+			check((player.current_hp < before) == pair[1], "wolf actual body against circular breath " + str(direction) + " " + str(pair[0]))
+			check(wolf.breath_shape.points == wolf.get_breath_polygon(), "wolf warning and pulse use identical polygon")
 			wolf.push_controller.cancel()
-	# Inside the old upward circle, fully outside the new short axis.
+	# The formerly compressed vertical tip now belongs to the circular sector.
 	wolf.breath_direction = Vector2.UP
 	player.global_position = Vector2(0, -225) - body_offset
 	player._invincibility_timer = 0
 	wolf.breath_hits = 0
 	var before := player.current_hp
 	wolf.try_breath_pulse()
-	check(player.current_hp == before, "wolf old-circle-only area is safe")
+	check(player.current_hp < before, "wolf vertical breath reaches the full circular radius")

@@ -24,6 +24,8 @@ var marks_remaining := 0
 var marks_completed := 0
 var next_mark_at := 0.22
 var finished_at := -1.0
+var _contact_axes := Vector2.ZERO
+var _contact_shape: ConvexPolygonShape2D
 
 
 func initialize(source: WeaponInstance, directed_cast: bool = false) -> void:
@@ -79,8 +81,11 @@ func contains_enemy(enemy: EnemyController) -> bool:
 	if not is_instance_valid(enemy) or not enemy.is_alive() or not enemy.is_inside_tree():
 		return false
 	var center := weapon.owner_player.global_position
-	var relative := (enemy.global_position - center) / weapon.get_domain_axes().max(Vector2.ONE)
-	return relative.length_squared() <= 1.0
+	var axes := weapon.get_domain_axes().max(Vector2.ONE)
+	if _contact_shape == null or axes != _contact_axes:
+		_contact_axes = axes
+		_contact_shape = AttackFootprint.ellipse_shape(axes)
+	return AttackFootprint.body_overlaps(_contact_shape, Transform2D(0, center), enemy)
 
 
 func try_attack(primary_limit: int = -1) -> bool:

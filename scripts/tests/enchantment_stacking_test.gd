@@ -101,14 +101,21 @@ func _run() -> void:
 	for child in host.get_children():
 		if child is IceFieldEffect: check(is_equal_approx(child._radius, 51.2 * 1.15), "ice area scales exactly once")
 
-	await fixture(BOW, [Vector2(15.5, 0)], ["scroll_domain", "scroll_wind"])
+	await fixture(BOW, [Vector2.ZERO, Vector2.ZERO], ["scroll_domain", "scroll_wind"])
+	# Authored bow contact radius is configurable; Domain scales the resulting
+	# wind width by 1.15 without changing its 480 px/s, 0.46 s travel.
+	var wind_base_radius := maxf(14.0, StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.hit_radius), weapon.get_stat("area_size")))
+	enemies[0].position = Vector2(wind_base_radius * 1.075, 0)
+	enemies[1].position = Vector2(wind_base_radius * 1.15 + 1.0, 0)
+	await frames()
 	WindBladeEffect.spawn(host, Vector2.ZERO, Vector2.RIGHT, 480, 0.46, weapon, weapon.calculate_damage_events()[0], 0, Callable(), str(weapon.get_effect_instances("wind")[0].item_instance_id))
 	for child in host.get_children():
 		if child is WindBladeEffect:
 			child.set_process(false)
 			child._damage_path_enemies()
-			check(is_equal_approx(child._hit_radius, 16.1) and child._speed == 480 and child._lifetime == 0.46, "domain scales wind damage width without changing flight distance")
-	check(enemies[0].current_hp < 10000, "expanded wind blade hits outside its original 14px width")
+			check(is_equal_approx(child._hit_radius / wind_base_radius, 1.15) and child._speed == 480 and child._lifetime == 0.46, "domain scales wind damage width without changing flight distance")
+	check(enemies[0].current_hp < 10000, "expanded wind blade hits outside its unscaled width")
+	check(enemies[1].current_hp == 10000, "expanded wind blade rejects a target beyond its scaled width")
 	var wind_item := str(weapon.get_effect_instances("wind")[0].item_instance_id)
 	ctx = PARAMS.build_weapon_context(weapon, "wind", {}, wind_item)
 	check(ctx.get_resolved_parameter("wet_propagation_radius") == 92 and ctx.get_resolved_parameter("field_search_radius") == 18, "domain leaves wind propagation and field-search distances unchanged")

@@ -135,10 +135,63 @@ func _physics_process(delta: float) -> void:
 		if not active:
 			return
 	var step := minf(speed * delta, maxf(remaining_distance, 0.0))
-	global_position += direction * step
-	remaining_distance -= step
+	_sweep_flight(step)
+	if not active: return
 	if remaining_distance <= 0.0:
 		_destroy()
+
+
+func _sweep_flight(step: float) -> void:
+	var start := global_position
+	var space := get_world_2d().direct_space_state
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = _hit_shape
+	query.transform = Transform2D(0, start)
+	query.collision_mask = TERRAIN_COLLISION_LAYER
+	var terrain := space.intersect_shape(query, 1)
+	var wall_distance := step
+	var wall: Object = terrain[0].collider if not terrain.is_empty() else null
+	if wall != null:
+		wall_distance = 0.0
+	else:
+		query.motion = direction * step
+		var fractions := space.cast_motion(query)
+		if fractions[0] < 1.0:
+			wall_distance = step * fractions[0]
+			var rest := space.get_rest_info(query)
+			if not rest.is_empty(): wall = instance_from_id(int(rest.collider_id))
+	var broad := RectangleShape2D.new()
+	broad.size = Vector2(wall_distance + _hit_shape.radius * 2, _hit_shape.radius * 2)
+	query.shape = broad
+	query.transform = Transform2D(direction.angle(), start + direction * wall_distance * 0.5)
+	query.motion = Vector2.ZERO
+	query.collision_mask = ENEMY_COLLISION_LAYER
+	var contacts: Array[Dictionary] = []
+	for result in space.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size())):
+		var enemy := result.collider as EnemyController
+		if enemy == null or (not _is_plasma_projectile() and hit_targets.has(enemy.get_instance_id())): continue
+		var fraction := AttackFootprint.body_entry_fraction(_hit_shape, Transform2D(0, start), direction * wall_distance, enemy)
+		if not is_inf(fraction): contacts.append({"enemy": enemy, "distance": fraction * wall_distance})
+	contacts.sort_custom(func(a: Dictionary, b: Dictionary): return a.distance < b.distance)
+	for contact in contacts:
+		var enemy: EnemyController = contact.enemy
+		if not is_instance_valid(enemy) or not enemy.is_alive(): continue
+		if _is_plasma_projectile():
+			if float(contact.distance) <= 0.001: continue # Already ticked at this frame's start.
+			# Stop at first surface contact so a long step cannot leap over a body.
+			var travel := minf(wall_distance, float(contact.distance) + 0.05)
+			global_position = start + direction * travel
+			remaining_distance -= travel
+			_process_plasma_contact(0.0)
+			return
+		global_position = start + direction * float(contact.distance)
+		_on_body_entered(enemy)
+		if not active: return
+	global_position = start + direction * wall_distance
+	remaining_distance -= wall_distance
+	if wall != null or wall_distance < step:
+		if is_instance_valid(wall): _on_body_entered(wall)
+		if active: _destroy()
 
 func _on_body_entered(body: Node) -> void:
 	if not active:
@@ -157,6 +210,9 @@ func _on_body_entered(body: Node) -> void:
 		return
 	var enemy := body as EnemyController
 	if enemy == null or not enemy.is_alive():
+		if body is PhysicsBody2D and (body.collision_layer & TERRAIN_COLLISION_LAYER) != 0:
+			_spawn_terrain_sparks(global_position, direction)
+			_destroy()
 		return
 	var target_key := enemy.get_instance_id()
 	if hit_targets.has(target_key):
@@ -216,7 +272,7 @@ func _query_plasma_enemies() -> Array[EnemyController]:
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = ENEMY_COLLISION_LAYER
 	query.collide_with_bodies = true
-	var results := get_world_2d().direct_space_state.intersect_shape(query, 64)
+	var results := get_world_2d().direct_space_state.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
 	var found_ids: Dictionary = {}
 	for result in results:
 		var enemy := result.get("collider") as EnemyController

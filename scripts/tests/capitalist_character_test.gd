@@ -202,6 +202,7 @@ func _test_live_flow() -> void:
 	menu._on_character_selected(CAPITALIST)
 	check(menu.stats_list.get_child_count() == 7 and menu.passive_list.get_node("StartingRelicIcons").get_child_count() == 4 and menu.weapon_list.get_child_count() == 1 and menu.passive_list.get_child_count() == 3, "repeated selection retains withdrawal restriction, relic intro and four icons")
 	menu._on_character_confirm_pressed()
+	if menu.dungeon_loading.active: await menu.dungeon_loading.finished
 	await frames(8)
 	var flow := game.get_main_flow_coordinator()
 	var manager := flow._bound_wave_manager

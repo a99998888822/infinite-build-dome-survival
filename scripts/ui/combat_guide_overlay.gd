@@ -1,5 +1,6 @@
 extends CanvasLayer
 class_name CombatGuideOverlay
+const PALETTE = preload("res://scripts/ui/hud_palette.gd")
 ## Static walkthrough: production views under an input-blocking spotlight.
 ## Flow owns pause/resume and the first-wave gate; this layer only presents it.
 
@@ -8,7 +9,7 @@ class Spotlight extends Control:
 	var ground_demo := false
 	var origin := Vector2.ZERO
 	var destination := Vector2.ZERO
-	const ACCENT := Color("e2c682")
+	const ACCENT := PALETTE.WARM_ACTIVE
 
 	func _draw() -> void:
 		var hole := focus_rect.intersection(Rect2(Vector2.ZERO, size))
@@ -31,7 +32,7 @@ class Spotlight extends Control:
 		# Fixed mouse illustration: the right button is filled, no synthetic click.
 		var mouse := destination + Vector2(34, -54)
 		var shell := StyleBoxFlat.new()
-		shell.bg_color = Color("19231e")
+		shell.bg_color = PALETTE.PANEL_FILL
 		shell.border_color = ACCENT
 		shell.set_border_width_all(2)
 		shell.set_corner_radius_all(14)
@@ -73,6 +74,7 @@ func _ready() -> void:
 	_root.add_child(_previews)
 	_previews.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	spotlight = Spotlight.new()
+	spotlight.z_index = 50
 	spotlight.mouse_filter = Control.MOUSE_FILTER_STOP
 	_root.add_child(spotlight)
 	spotlight.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -107,12 +109,8 @@ func _input(event: InputEvent) -> void:
 func _build_card() -> void:
 	card = PanelContainer.new()
 	card.name = "GuideCard"
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("15231c")
-	style.border_color = Color("ab9361")
-	style.set_border_width_all(1)
-	style.set_content_margin_all(20)
-	card.add_theme_stylebox_override("panel", style)
+	card.z_index = 51
+	card.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 20))
 	_root.add_child(card)
 	card.minimum_size_changed.connect(_layout, CONNECT_DEFERRED)
 	var content := VBoxContainer.new()
@@ -120,13 +118,13 @@ func _build_card() -> void:
 	card.add_child(content)
 	var header := HBoxContainer.new()
 	content.add_child(header)
-	_context = _label(header, 12, Color("b3bdb5"))
+	_context = _label(header, 12, PALETTE.MUTED)
 	_context.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_context.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_progress = _label(header, 14, Color("e2c682"))
-	_heading = _label(content, 24, Color("f0dfb5"))
+	_progress = _label(header, 14, PALETTE.WARM_ACTIVE)
+	_heading = _label(content, 24, PALETTE.TEXT)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_body = _label(content, 16, Color("e2e5dc"))
+	_body = _label(content, 16, PALETTE.TEXT)
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_legend = HBoxContainer.new()
 	_legend.add_theme_constant_override("separation", 26)
@@ -142,7 +140,7 @@ func _build_card() -> void:
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		row.add_child(icon)
-		_label(row, 14, Color("e2e5dc")).text = "ui.weapon.cast_mode.auto" if automatic else "ui.weapon.cast_mode.manual"
+		_label(row, 14, PALETTE.TEXT).text = "ui.weapon.cast_mode.auto" if automatic else "ui.weapon.cast_mode.manual"
 	var actions := HBoxContainer.new()
 	actions.add_theme_constant_override("separation", 12)
 	content.add_child(actions)
@@ -173,7 +171,7 @@ func _button(parent: Node, key: String) -> Button:
 	button.text = key
 	button.custom_minimum_size = Vector2(112, 36)
 	button.focus_mode = Control.FOCUS_NONE
-	SettingsUIStyle.apply_button(button)
+	FinanceFrameSkin.button(button)
 	parent.add_child(button)
 	return button
 
@@ -232,13 +230,23 @@ func _layout() -> void:
 		preview_esc._layout_overlay()
 		spotlight.focus_rect = preview_esc.weapon_strip.get_global_rect().grow(12)
 	elif step == 2 and preview_settings != null:
-		preview_settings.fit_to_viewport(viewport_size)
+		# Keep the production card proportions and text readable in small previews.
+		var preview_size := Vector2(maxf(1280, viewport_size.x), maxf(720, viewport_size.y))
+		preview_settings.fit_to_viewport(preview_size)
+		preview_settings.pivot_offset = Vector2.ZERO
+		preview_settings.scale = Vector2.ONE * minf(1, viewport_size.x / 1280.0)
+		preview_settings.position = (viewport_size - preview_settings.size * preview_settings.scale) * 0.5
 		spotlight.focus_rect = preview_settings.mode_buttons[0].get_global_rect().merge(preview_settings.mode_buttons[1].get_global_rect()).grow(8)
 	var beside_ground := step == 0 and viewport_size.y < 650
 	var width := minf(720, viewport_size.x - 48)
 	if beside_ground: width = minf(400, spotlight.focus_rect.position.x - 48)
 	card.size = Vector2(width, 0)
 	card.position = Vector2(24, (viewport_size.y - card.size.y) * 0.5).floor() if beside_ground else Vector2((viewport_size.x - card.size.x) * 0.5, viewport_size.y - card.size.y - 24).floor()
+	if step == 2 and preview_settings != null and spotlight.focus_rect.end.y > card.position.y - 16:
+		# Keep the demonstrated movement choices above the explanation on short screens.
+		var shift := ceilf(spotlight.focus_rect.end.y - card.position.y + 16)
+		preview_settings.position.y -= shift
+		spotlight.focus_rect.position.y -= shift
 	spotlight.queue_redraw()
 
 

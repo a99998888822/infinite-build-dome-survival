@@ -20,7 +20,6 @@ func _setup() -> void:
 	ground_material.set_shader_parameter("surface_texture",surface)
 	ground_material.set_shader_parameter("sample_offset",sample_offset)
 	ground_material.set_shader_parameter("projection_y",AttackFootprint.ELLIPSE_RATIO)
-	_update_area()
 
 func sample_surface(point: Vector2) -> Color:
 	var pixel := Vector2(point.x,point.y/AttackFootprint.ELLIPSE_RATIO)+sample_offset

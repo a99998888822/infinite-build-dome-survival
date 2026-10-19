@@ -127,8 +127,11 @@ func choose_location() -> Vector2:
 	return best.round()
 
 func placement_clear(candidate: Vector2, origin: Vector2) -> bool:
-	if not is_instance_valid(scenery): return true
 	var bounds := Rect2(candidate-BANK_ANCHOR,BANK_SIZE).grow(95)
+	# Do not create an impassable body around an enemy already in the world.
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if is_instance_valid(enemy) and enemy.is_alive() and bounds.has_point(enemy.global_position): return false
+	if not is_instance_valid(scenery): return true
 	var seen: Dictionary = {}
 	for point in [candidate,origin.lerp(candidate,.25),origin.lerp(candidate,.5),origin.lerp(candidate,.75)]:
 		for entry: Dictionary in scenery._nearby_landmarks(point):

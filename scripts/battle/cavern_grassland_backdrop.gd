@@ -28,20 +28,13 @@ func _setup() -> void:
 	cast_shadow_material.shader = load("res://shaders/battle/meadow/pit_shadow.gdshader")
 	super._setup()
 	grass_material.shader = load("res://shaders/battle/meadow/pit_grass.gdshader")
-	# Rebuild the initial stream against the approved grassland context.
+	# Configure the final surface before generating the initial stream.
 	surface_context = (load("res://assets/sprites/background/meadow/pit-ground-context.png") as Texture2D).get_image()
 	sample_offset = Vector2(1320,1120)
 	ground_material.shader = load("res://shaders/battle/meadow/pit_ground.gdshader")
 	ground_material.set_shader_parameter("surface_texture",load("res://assets/sprites/background/meadow/pit-ground.png"))
 	ground_material.set_shader_parameter("sample_offset",sample_offset)
 	ground_material.set_shader_parameter("projection_y",AttackFootprint.ELLIPSE_RATIO)
-	for nodes: Array in cells.values():
-		for node: Node in nodes: node.queue_free()
-	cells.clear()
-	grass_cells.clear()
-	occluding_rocks.clear()
-	cell_rect = Rect2i()
-	_update_area()
 
 func _plan_cell(key: Vector2i) -> Array[Dictionary]:
 	# Keep the approved grass assets around this battle's sparse object layout.

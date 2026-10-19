@@ -80,7 +80,7 @@ func _run() -> void:
 	root.content_scale_size = root.size
 	popup._select_tab("shop")
 	await frames(12)
-	check(not popup._summary.visible and not popup._scene_summary_back.visible, "shop tab also removes central summary")
+	check(not popup._summary.visible, "shop tab also removes central summary")
 	await capture("06_shop_1280")
 	flow.enter_start_page()
 	await frames(8)
@@ -100,7 +100,7 @@ func _inspect_layout(viewport: Vector2i, shot: String) -> void:
 	work._inventory_scroll.scroll_horizontal = 0
 	work._inventory_scroll.scroll_vertical = 0
 	await frames(8)
-	check(not popup._summary.visible and not popup._scene_summary_back.visible, "summary absent " + str(viewport))
+	check(not popup._summary.visible, "summary absent " + str(viewport))
 	check(work._inventory.columns == 6, "inventory fixed at six columns " + str(viewport))
 	for child in work._weapon_row.get_children():
 		check(child.get_theme_font_size("font_size") == 10 and child.custom_minimum_size.x == 120 and child.clip_text, "weapon card width and font " + str(viewport))

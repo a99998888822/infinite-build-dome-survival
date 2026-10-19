@@ -1,10 +1,12 @@
 extends Button
 class_name WeaponCastModeIcon
-## Shared preference indicator. Only inventory instances accept clicks.
+## Shared preference indicator. Inventory and reward instances accept clicks.
 
 const AUTO_ICON := preload("res://assets/ui/icons/cast_auto.svg")
 const MANUAL_ICON := preload("res://assets/ui/icons/cast_manual.svg")
 const ICON_SIZE := 14.0 # 70% of the original 20px glyph.
+var icon_extent := ICON_SIZE
+var mask_padding := 1.0
 var weapon: WeaponInstance
 var automatic := false
 var editable := false
@@ -16,7 +18,7 @@ func _ready() -> void:
 	flat = true
 	expand_icon = true
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_theme_constant_override("icon_max_width", int(ICON_SIZE))
+	add_theme_constant_override("icon_max_width", roundi(icon_extent) if editable else 0)
 	add_theme_constant_override("h_separation", 0)
 	var plain := StyleBoxEmpty.new()
 	add_theme_stylebox_override("normal", plain)
@@ -28,19 +30,19 @@ func _ready() -> void:
 	hover.set_corner_radius_all(3)
 	hover.set_content_margin_all(0)
 	for state in ["hover", "pressed", "hover_pressed"]:
-		add_theme_stylebox_override(state, hover)
+		add_theme_stylebox_override(state, get_theme_stylebox("cast_mode_hover") if has_theme_stylebox("cast_mode_hover") else hover)
 	# Opaque backing masks the border through the glyph's transparent pixels.
 	var backing := ColorRect.new()
 	backing.name = "BorderMask"
-	backing.color = _frame_color
+	backing.color = get_theme_color("cast_mode_backdrop") if has_theme_color("cast_mode_backdrop") else _frame_color
 	backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	backing.show_behind_parent = true
 	add_child(backing)
 	backing.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	backing.offset_left = -ICON_SIZE * 0.5 - 1
-	backing.offset_right = ICON_SIZE * 0.5 + 1
-	backing.offset_top = -ICON_SIZE * 0.5
-	backing.offset_bottom = ICON_SIZE * 0.5
+	backing.offset_left = -icon_extent * 0.5 - mask_padding
+	backing.offset_right = icon_extent * 0.5 + mask_padding
+	backing.offset_top = -icon_extent * 0.5
+	backing.offset_bottom = icon_extent * 0.5
 	pressed.connect(_toggle)
 	CombatSettings.settings_changed.connect(sync_policy)
 	L10n.locale_changed.connect(sync_policy)

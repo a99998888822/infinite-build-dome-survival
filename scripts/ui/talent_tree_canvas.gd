@@ -1,5 +1,6 @@
 extends Control
 class_name TalentTreeCanvas
+const PALETTE = preload("res://scripts/ui/hud_palette.gd")
 var edges: Array[Dictionary] = []
 
 func _ready() -> void:
@@ -8,8 +9,8 @@ func _ready() -> void:
 
 func _draw() -> void:
 	for edge in edges:
-		_pixel_line(edge.from, edge.to, Color("151319"), 4.0)
-		_pixel_line(edge.from, edge.to, Color("a88c56") if edge.lit else Color("48424b"), 2.0)
+		_pixel_line(edge.from, edge.to, PALETTE.SHADOW, 4.0)
+		_pixel_line(edge.from, edge.to, PALETTE.LINE_ACTIVE if edge.lit else PALETTE.LINE_IDLE, 2.0)
 
 func _pixel_line(from: Vector2, to: Vector2, color: Color, width: float) -> void:
 	# Fixed two-pixel staircase. Overlapping blocks keep diagonal strokes connected.

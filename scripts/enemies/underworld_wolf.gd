@@ -130,7 +130,7 @@ func _process_special_behavior(delta: float) -> bool:
 		breath_cooldown = maxf(0, breath_cooldown - delta)
 		leap_cooldown = maxf(0, leap_cooldown - delta)
 		var distance := global_position.distance_to(target_player.global_position)
-		if AttackFootprint.unproject(target_player.global_position - mouth_position()).length() <= float(profile.breath_range) and breath_cooldown <= 0:
+		if mouth_position().distance_to(target_player.global_position) <= float(profile.breath_range) and breath_cooldown <= 0:
 			return begin_skill("breath")
 		if distance >= float(profile.leap_min_range) and distance <= float(profile.leap_max_range) and leap_cooldown <= 0:
 			return begin_skill("leap")
@@ -189,7 +189,7 @@ func begin_skill(kind: String) -> bool:
 	if not is_in_visible_combat_area(): return false
 	var distance := global_position.distance_to(target_player.global_position)
 	if kind == "leap" and (leap_cooldown > 0 or distance < float(profile.leap_min_range) or distance > float(profile.leap_max_range)): return false
-	if kind == "breath" and (breath_cooldown > 0 or AttackFootprint.unproject(target_player.global_position - mouth_position()).length() > float(profile.breath_range)): return false
+	if kind == "breath" and (breath_cooldown > 0 or mouth_position().distance_to(target_player.global_position) > float(profile.breath_range)): return false
 	if kind not in ["leap", "breath"]: return false
 	locked_point = target_player.global_position
 	leap_origin = global_position
@@ -212,15 +212,16 @@ func mouth_position() -> Vector2:
 	return global_position + Vector2(-48 if left else 48,-54) * BASE_BODY_SCALE * body_scale_multiplier
 
 
-func projected_breath_polygon() -> PackedVector2Array:
-	return AttackFootprint.ground_transform(breath_direction) * breath_polygon
+func get_breath_polygon() -> PackedVector2Array:
+	# Breath keeps a circular sector in every direction, without ground compression.
+	return Transform2D(breath_direction.angle(), Vector2.ZERO) * breath_polygon
 
 
 func try_breath_pulse() -> void:
 	breath_pulses += 1
 	if breath_hits >= int(profile.breath_max_hits) or not is_instance_valid(target_player) or not target_player.alive: return
 	var body := target_player.get_node("CollisionShape2D") as CollisionShape2D
-	breath_shape.points = projected_breath_polygon()
+	breath_shape.points = get_breath_polygon()
 	if body.disabled or not breath_shape.collide(Transform2D(0,breath_origin),body.shape,body.global_transform): return
 	var dealt := target_player.take_damage(roundi(get_stat("ranged_damage")*(1.0+get_stat("damage_percent")/100.0)),enemy_id+"_breath")
 	if dealt > 0:
@@ -351,7 +352,7 @@ func draw_ground(canvas: Node2D) -> void:
 		GROUND.arc(canvas,Vector2.ZERO,36*visual_scale,0,TAU,64,Color(0.5,0.85,1,0.55),2)
 	if state in ["breath_charge","breath"]:
 		canvas.draw_set_transform(breath_origin-global_position)
-		var polygon := projected_breath_polygon()
+		var polygon := get_breath_polygon()
 		canvas.draw_colored_polygon(polygon,Color(1,0.19,0.13,0.12 if state == "breath_charge" else 0.04))
 		var outline := PackedVector2Array(polygon)
 		outline.append(Vector2.ZERO)
@@ -360,7 +361,7 @@ func draw_ground(canvas: Node2D) -> void:
 			var half := deg_to_rad(float(profile.breath_cone_degrees))*0.5
 			var progress := clampf(state_time/float(profile.breath_charge),0,1)
 			var arc := PackedVector2Array()
-			var transform := AttackFootprint.ground_transform(breath_direction)
+			var transform := Transform2D(breath_direction.angle(), Vector2.ZERO)
 			for i in 49:
 				arc.append(transform * (Vector2.from_angle(lerpf(-half,lerpf(-half,half,progress),i/48.0)) * (float(profile.breath_range)+3)))
 			canvas.draw_polyline(arc,Color(1,0.8,0.48,0.95),2)

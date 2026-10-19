@@ -48,6 +48,10 @@ func saved_config() -> ConfigFile:
 	return config
 
 func _run() -> void:
+	# The dummy headless display cannot report native window flags.
+	if DisplayServer.get_name() != "headless":
+		check(get_tree().root.unresizable, "window blocks manual resizing before settings startup")
+		check(get_tree().root.maximize_disabled, "window blocks native maximizing before settings startup")
 	manager = TestSettings.new()
 	manager.directory = directory
 	add_child(manager)
@@ -119,6 +123,8 @@ func _run() -> void:
 	# The dummy headless display reports a fixed mode; check native mode on GPU.
 	var mode_ok := DisplayServer.get_name() == "headless" or get_tree().root.mode == Window.MODE_WINDOWED
 	check(mode_ok and not manager.is_fullscreen() and get_tree().root.size == Vector2i(1920,1080), "fullscreen round trip restores requested window size")
+	if DisplayServer.get_name() != "headless":
+		check(get_tree().root.unresizable, "fullscreen round trip keeps manual resizing disabled")
 	check(DirAccess.get_files_at(directory) == PackedStringArray(["settings.cfg"]), "display changes only write settings, with no diagnostic log files")
 	manager.free()
 	# Startup uses the same queue and applies the persisted state only once.
@@ -140,5 +146,18 @@ func _run() -> void:
 	manager._apply_startup_settings()
 	await frames()
 	check(manager.get_resolution() == Vector2i(1600,900) and get_tree().root.size == Vector2i(1600,900), "late startup cannot overwrite explicit input")
+	var canvas_size := get_tree().root.content_scale_size
+	var canvas_mode := get_tree().root.content_scale_mode
+	var canvas_aspect := get_tree().root.content_scale_aspect
+	var presets := manager.get_resolution_presets()
+	for index in presets.size():
+		manager.set_resolution_index(index)
+		await frames()
+		var window := get_tree().root
+		check(window.size == presets[index], "preset %s applies (actual=%s, mode=%d)" % [presets[index], window.size, window.mode])
+		check(window.content_scale_size == canvas_size and window.content_scale_mode == canvas_mode and window.content_scale_aspect == canvas_aspect, "preset %s preserves the HUD canvas and scaling" % presets[index])
+		if DisplayServer.get_name() != "headless":
+			check(DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, window.get_window_id()), "native resize lock remains active at %s" % presets[index])
+			check(window.maximize_disabled, "native maximize lock remains active at %s" % presets[index])
 	print("WINDOW_SETTINGS_COMPLETE checks=%d failures=%d directory=%s" % [checks,failures,directory])
 	get_tree().quit(1 if failures else 0)

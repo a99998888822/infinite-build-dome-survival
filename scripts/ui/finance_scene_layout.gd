@@ -16,7 +16,10 @@ static func arrange(ui) -> void:
 	var viewport: Vector2 = ui.get_viewport_rect().size
 	var sx := viewport.x / 1920.0
 	var sy := viewport.y / 1080.0
-	var work_x := roundf(647 * sx)
+	var bank_x := roundf(57 * sx)
+	var bank_w := 340 * sx
+	# Give the bank's former 170 pixels to both workspaces; retain the 80px gap.
+	var work_x := roundf(bank_x + bank_w + 80 * sx)
 	var right := minf(1580 * sx, minf(viewport.x - 60, ui._safe_rect.end.x))
 	var work_w := maxf(260, right - work_x)
 	var loan_space: float = ui.loan_presentation.reserved_height()
@@ -33,12 +36,11 @@ static func arrange(ui) -> void:
 	ui.portrait.show()
 	ui._title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ui._title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	FinanceUIStyle.label(ui._title, 24, Color("45352d"))
+	FinanceUIStyle.label(ui._title, 40, Color("45352d"))
 	ui._title.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 	ui._title.add_theme_constant_override("shadow_offset_x", 0)
 	ui._title.add_theme_constant_override("shadow_offset_y", 0)
 	place(ui._title, Rect2(970 * sx, 187 * sy, 383 * sx, 60 * sy))
-	ui._scene_summary_back.hide()
 	ui._summary.hide()
 	place(ui._tabs, Rect2(work_x, 353 * sy, work_w, 50))
 	var content_y := 353 * sy + 63
@@ -54,8 +56,6 @@ static func arrange(ui) -> void:
 	ui._stock.show()
 	place(ui._refresh, Rect2(work_w - 227, stock_y - content_y - 1, 227, 50))
 	# All left-column frames share one pixel-aligned edge at every resolution.
-	var bank_x := roundf(57 * sx)
-	var bank_w := 510 * sx
 	var bank_y := 650 * sy
 	var body: Control = ui._bank.get_child(0)
 	var bank_h := minf(maxf(154, body.get_combined_minimum_size().y + 20), footer_y - bank_y - 10)
@@ -73,7 +73,7 @@ static func arrange(ui) -> void:
 	if ui.trade_presentation != null and ui.trade_presentation.is_active():
 		var height: float = minf(ui.trade_presentation.get_preferred_height(bank_w), bank_y - 82)
 		ui.trade_presentation.arrange(Rect2(bank_x, bank_y - height - 12, bank_w, height), ui.portrait.get_rect(), Rect2(Vector2.ZERO, viewport))
-	var sale_size := Vector2(minf(420, right - 48), minf(360, viewport.y - 112))
+	var sale_size := Vector2(minf(560, right - 48), minf(440, viewport.y - 112))
 	place(ui._sale_box, Rect2((viewport - sale_size) * 0.5, sale_size))
 	ui.interest_arrival.arrange(viewport, Vector2(88, 56), Rect2(16, 56, viewport.x - 32, viewport.y - 112))
 	# The loan presenter insets its strip by 20 on each side of the supplied rect.

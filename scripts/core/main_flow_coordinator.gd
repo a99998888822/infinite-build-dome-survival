@@ -150,13 +150,17 @@ func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[S
 	_set_state(STATE_CHARACTER_SELECT)
 
 
-func confirm_character_selection() -> bool:
+func confirm_character_selection(defer_start: bool = false) -> bool:
 	if _bound_player == null or _bound_loadout == null:
 		push_error("[MainFlowCoordinator] missing battle context before character confirm.")
 		return false
 
 	if current_character_id.is_empty():
 		current_character_id = PlayerController.DEFAULT_CHARACTER_ID
+
+	var character := DataRegistry.get_record("characters", current_character_id)
+	if character.is_empty() or not character.get("enabled", true) or character.get("release_locked", false):
+		return false
 
 	var player_ok := _bound_player.initialize_from_character(current_character_id, current_outgame_modifiers, current_start_weapon_ids)
 	var loadout_ok: bool = _bound_loadout.initialize(_bound_player, _bound_wave_manager.finance_system if _bound_wave_manager != null else null)
@@ -178,6 +182,15 @@ func confirm_character_selection() -> bool:
 	_wave_end_ready = false
 	_set_mode(MODE_BATTLE)
 	_set_state(STATE_BATTLE_PREPARE)
+	if defer_start:
+		_set_battle_runtime_paused(true)
+		return true
+	return start_confirmed_battle()
+
+
+func start_confirmed_battle() -> bool:
+	if current_mode != MODE_BATTLE or current_state != STATE_BATTLE_PREPARE or _bound_player == null:
+		return false
 	_first_guide_pending = CombatSettings.should_show_combat_guide()
 	if _first_guide_pending:
 		_set_battle_runtime_paused(true)
@@ -477,9 +490,9 @@ func close_esc_overlay() -> void:
 func can_open_battle_utility(page: String) -> bool:
 	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
 		return false
-	if page == "settings":
+	if page in ["settings", "encyclopedia"]:
 		return current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE, STATE_ESC_OVERLAY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_WAVE_CHALLENGE]
-	return page == "encyclopedia" and current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE]
+	return false
 
 
 func get_battle_display_state() -> String:

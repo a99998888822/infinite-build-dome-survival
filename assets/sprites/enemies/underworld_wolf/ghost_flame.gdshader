@@ -6,8 +6,7 @@ uniform float flame_time = 0.0;
 uniform float reach = 240.0;
 uniform float half_angle = 0.5235988;
 uniform float opacity = 0.95;
-uniform vec2 ground_forward = vec2(1.0, 0.0);
-uniform float projection_ratio = 0.6590909;
+uniform vec2 flame_forward = vec2(1.0, 0.0);
 varying vec2 local_point;
 
 void vertex() {
@@ -18,9 +17,8 @@ void fragment() {
     // Model-authored variant of the copper lamp's stepped, flowing pixel fire.
     // The visual and warning use exactly the same muzzle, angle and radius.
     vec2 screen_p = (floor(local_point / 2.0) + 0.5) * 2.0;
-    vec2 ground_p = screen_p / vec2(1.0, projection_ratio);
-    vec2 side = vec2(-ground_forward.y, ground_forward.x);
-    vec2 p = vec2(dot(ground_p, ground_forward), dot(ground_p, side));
+    vec2 side = vec2(-flame_forward.y, flame_forward.x);
+    vec2 p = vec2(dot(screen_p, flame_forward), dot(screen_p, side));
     float t = floor(flame_time * 18.0) / 18.0;
     float s = p.x / reach;
     float span = max(p.x * tan(half_angle), 1.0);
@@ -46,7 +44,7 @@ void fragment() {
         float age = fract(t * 0.95 + phase);
         float angle = sin(phase * 13.7) * half_angle * 0.80;
         vec2 center = vec2(cos(angle), sin(angle)) * reach * (0.48 + age * 0.52);
-        center = (ground_forward * center.x + side * center.y) * vec2(1.0, projection_ratio);
+        center = flame_forward * center.x + side * center.y;
         center = (floor(center / 2.0) + 0.5) * 2.0;
         if (age > 0.15 && age < 0.95 && max(abs(screen_p.x-center.x),abs(screen_p.y-center.y)) < 2.1 && result.a == 0.0) {
             result = vec4(0.40, 0.82, 1.0, 0.9);

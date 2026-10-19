@@ -7,6 +7,7 @@ const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
 const CAST_MODE_ICON_SCRIPT := preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 const PULSE_R02 := preload("res://scripts/ui/weapon_pulse_r02.gd")
 const COOLDOWN_FEEDBACK := preload("res://scripts/ui/weapon_cooldown_feedback.gd")
+const ICON_ART_PIXELS := 48.0
 class WeaponHeader extends Control:
 	var number_source: Label
 	var status_source: Label
@@ -15,8 +16,8 @@ class WeaponHeader extends Control:
 		for side in 2:
 			var text := number_source.text if side == 0 else status_source.text
 			var align := HORIZONTAL_ALIGNMENT_LEFT if side == 0 else HORIZONTAL_ALIGNMENT_RIGHT
-			draw_string_outline(font, Vector2(6, 17), text, align, size.x - 12, 12, 1, Color("101c20"))
-			draw_string(font, Vector2(6, 17), text, align, size.x - 12, 12, Color("e1f4ff"))
+			draw_string_outline(font, Vector2(10, 28.333333), text, align, size.x - 20, 20, 2, Color("101c20"))
+			draw_string(font, Vector2(10, 28.333333), text, align, size.x - 20, 20, Color("e1f4ff"))
 
 var headers: Array[WeaponHeader] = []
 var feedbacks: Array[Control] = []
@@ -28,10 +29,11 @@ var numbers: Array[Label] = []
 var timers: Array[Label] = []
 var cast_mode_icons: Array[WeaponCastModeIcon] = []
 var selected_index := -1
-var slot_size := 64.0
+const CAST_MODE_SIZE := 23.333333
+var slot_size := 106.666667
 var preview_page := 0
-var _normal_style: StyleBoxFlat
-var _aim_style: StyleBoxFlat
+var _normal_style: CombatHudFrame
+var _aim_style: CombatHudFrame
 
 
 func setup(sources: Array[WeaponInstance]) -> void:
@@ -61,7 +63,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(icon)
-		ItemIconArt.bind_texture(icon, icon.texture)
+		ItemIconArt.bind_texture(icon, icon.texture, false, 0.0, null, ICON_ART_PIXELS)
 		icons.append(icon)
 		# A separate disk also covers transparent pixels around narrow weapon art.
 		var mask := ColorRect.new()
@@ -74,10 +76,10 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		mask.hide()
 		card.add_child(mask)
 		cooldown_masks.append(mask)
-		var number := _label(card, 12)
+		var number := _label(card, 20)
 		number.text = str(i + 1) if i < 9 else "0" if i == 9 else "Tab·1"
 		numbers.append(number)
-		var timer := _label(card, 12)
+		var timer := _label(card, 20)
 		timer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		timers.append(timer)
 		number.hide()
@@ -96,6 +98,8 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		feedback.configure(weapons[i])
 		feedbacks.append(feedback)
 		var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
+		mode.icon_extent = CAST_MODE_SIZE
+		mode.mask_padding = 1.666667
 		mode.configure(weapons[i], false, _style(false).bg_color)
 		add_child(mode)
 		cast_mode_icons.append(mode)
@@ -105,24 +109,21 @@ func setup(sources: Array[WeaponInstance]) -> void:
 func _label(parent: Control, font_size: int) -> Label:
 	var label := Label.new()
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_override("font", preload("res://assets/font/native_hud/interface.res"))
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", Color("e1f4ff"))
 	label.add_theme_color_override("font_outline_color", Color("101c20"))
-	label.add_theme_constant_override("outline_size", 3)
+	label.add_theme_constant_override("outline_size", 5)
 	parent.add_child(label)
 	return label
 
 
-func _style(selected: bool) -> StyleBoxFlat:
+func _style(selected: bool) -> CombatHudFrame:
 	if selected and _aim_style != null:
 		return _aim_style
 	if not selected and _normal_style != null:
 		return _normal_style
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(0.028, 0.049, 0.052, 0.90)
-	box.border_color = Color("c5edff") if selected else Color("455857")
-	box.set_border_width_all(2 if selected else 1)
-	box.set_corner_radius_all(3)
+	var box := CombatHudFrame.make(1, selected)
 	if selected:
 		_aim_style = box
 	else:
@@ -132,26 +133,23 @@ func _style(selected: bool) -> StyleBoxFlat:
 
 func apply_layout() -> void:
 	var viewport_size := get_viewport_rect().size
-	# Scale this component's authored icon layout inside the native UI canvas.
-	var ui_scale := minf(5.0 / 3.0, viewport_size.x / 1152.0)
-	scale = Vector2.ONE * ui_scale
-	slot_size = clampf((viewport_size.x / ui_scale * 0.8 - maxf(0, weapons.size() - 1) * 7) / maxf(1, weapons.size()), 38, 64)
-	size = Vector2(maxf(0, weapons.size() * (slot_size + 7) - 7), slot_size + WeaponCastModeIcon.ICON_SIZE)
-	position = Vector2((viewport_size.x - size.x * ui_scale) * 0.5, viewport_size.y - (size.y + 23) * ui_scale)
+	slot_size = clampf((viewport_size.x * 0.8 - maxf(0, weapons.size() - 1) * 11.666667) / maxf(1, weapons.size()), 63.333333, 106.666667)
+	size = Vector2(maxf(0, weapons.size() * (slot_size + 11.666667) - 11.666667), slot_size + CAST_MODE_SIZE)
+	position = Vector2((viewport_size.x - size.x) * 0.5, viewport_size.y - (size.y + 38.333333))
 	for i in cards.size():
-		cards[i].position = Vector2(i * (slot_size + 7), 0)
+		cards[i].position = Vector2(i * (slot_size + 11.666667), 0)
 		cards[i].size = Vector2.ONE * slot_size
-		icons[i].position = Vector2(8, 14)
-		icons[i].size = Vector2(slot_size - 16, slot_size - 18)
-		cooldown_masks[i].position = Vector2(4, 4)
-		cooldown_masks[i].size = Vector2.ONE * (slot_size - 8)
-		numbers[i].position = Vector2(4, 0)
-		timers[i].position = Vector2(20, 0)
-		timers[i].size = Vector2(slot_size - 24, 20)
-		headers[i].size = Vector2(slot_size, 22)
+		icons[i].position = Vector2(13.333333, 23.333333)
+		icons[i].size = Vector2(slot_size - 26.666667, slot_size - 30)
+		cooldown_masks[i].position = Vector2(6.666667, 6.666667)
+		cooldown_masks[i].size = Vector2.ONE * (slot_size - 13.333333)
+		numbers[i].position = Vector2(6.666667, 0)
+		timers[i].position = Vector2(33.333333, 0)
+		timers[i].size = Vector2(slot_size - 40, 33.333333)
+		headers[i].size = Vector2(slot_size, 36.666667)
 		headers[i].queue_redraw()
-		cast_mode_icons[i].position = Vector2(i * (slot_size + 7) + (slot_size - WeaponCastModeIcon.ICON_SIZE) * 0.5, slot_size - 1 - WeaponCastModeIcon.ICON_SIZE * 0.5)
-		cast_mode_icons[i].size = Vector2.ONE * WeaponCastModeIcon.ICON_SIZE
+		cast_mode_icons[i].position = Vector2(i * (slot_size + 11.666667) + (slot_size - CAST_MODE_SIZE) * 0.5, slot_size - 1.666667 - CAST_MODE_SIZE * 0.5)
+		cast_mode_icons[i].size = Vector2.ONE * CAST_MODE_SIZE
 
 
 func update_slot(index: int, remaining: float, total: float, executing: bool, selected: bool) -> void:
@@ -160,7 +158,7 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	var returning := weapons[index].is_return_ready()
 	var icon_path := weapons[index].get_combat_icon_path()
 	if icons[index].texture == null or ItemIconArt.source_path(icons[index].texture) != icon_path:
-		ItemIconArt.bind_texture(icons[index], load(icon_path))
+		ItemIconArt.bind_texture(icons[index], load(icon_path), false, 0.0, null, ICON_ART_PIXELS)
 	# Tome animation/return availability must not replace its running countdown.
 	if returning or weapons[index].is_star_tome(): executing = false
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
@@ -170,7 +168,10 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	if timers[index].text != text:
 		timers[index].text = text
 		headers[index].queue_redraw()
-	cards[index].add_theme_stylebox_override("panel", _style(selected))
+	var hovered := cards[index].get_global_rect().has_point(get_global_mouse_position())
+	var frame := _style(selected or hovered)
+	if cards[index].get_theme_stylebox("panel") != frame:
+		cards[index].add_theme_stylebox_override("panel", frame)
 
 
 func _gui_input(event: InputEvent) -> void:

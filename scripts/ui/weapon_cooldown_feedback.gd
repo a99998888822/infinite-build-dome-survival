@@ -57,29 +57,29 @@ func _physics_process(delta: float) -> void:
 
 
 func _pixel_box(rect: Rect2, color: Color) -> void:
-	draw_rect(Rect2(rect.position.round(), rect.size.round()), color)
+	draw_rect(rect, color)
 
 
 func _corners(inset: float, length: float, color: Color) -> void:
-	var extent: Vector2 = get_parent().size.round()
+	var extent: Vector2 = get_parent().size
 	for xsign in [-1, 1]:
 		for ysign in [-1, 1]:
 			var corner := Vector2(inset if xsign < 0 else extent.x - inset, inset if ysign < 0 else extent.y - inset)
-			_pixel_box(Rect2(corner + Vector2(0 if xsign < 0 else -length, 0 if ysign < 0 else -2), Vector2(length, 2)), color)
-			_pixel_box(Rect2(corner + Vector2(0 if xsign < 0 else -2, 2 if ysign < 0 else -length), Vector2(2, length - 2)), color)
+			_pixel_box(Rect2(corner + Vector2(0 if xsign < 0 else -length, 0 if ysign < 0 else -3.333333), Vector2(length, 3.333333)), color)
+			_pixel_box(Rect2(corner + Vector2(0 if xsign < 0 else -3.333333, 3.333333 if ysign < 0 else -length), Vector2(3.333333, length - 3.333333)), color)
 
 
 func _draw() -> void:
-	var extent: Vector2 = get_parent().size.round()
+	var extent: Vector2 = get_parent().size
 	if ready_age < READY_DURATION:
 		var fade := 1.0 if ready_age < 0.14 else 1.0 - (ready_age - 0.14) / 0.24
-		var spread := 0.0 if ready_age < 0.07 else 2.0 if ready_age < 0.15 else 4.0
-		_corners(-spread, 14, Color(INK, fade))
-		_corners(2 - spread, 10, Color(LIGHT, fade))
+		var spread := 0.0 if ready_age < 0.07 else 3.333333 if ready_age < 0.15 else 6.666667
+		_corners(-spread, 23.333333, Color(INK, fade))
+		_corners(3.333333 - spread, 16.666667, Color(LIGHT, fade))
 		if ready_age < 0.16:
-			_pixel_box(Rect2(12, 0, extent.x - 24, 2), Color(GRAY, fade))
-			_pixel_box(Rect2(0, 12, 2, extent.y - 24), Color(GRAY, fade))
-			_pixel_box(Rect2(extent.x - 2, 12, 2, extent.y - 24), Color(GRAY, fade))
+			_pixel_box(Rect2(20, 0, extent.x - 40, 3.333333), Color(GRAY, fade))
+			_pixel_box(Rect2(0, 20, 3.333333, extent.y - 40), Color(GRAY, fade))
+			_pixel_box(Rect2(extent.x - 3.333333, 20, 3.333333, extent.y - 40), Color(GRAY, fade))
 		# Only two tiny square glints, confined to the top of this slot.
 		for side in [-1, 1]:
-			_pixel_box(Rect2(extent.x * 0.5 + side * (8 + spread) - 1, -4 - spread, 2, 2), Color(LIGHT, fade))
+			_pixel_box(Rect2(extent.x * 0.5 + side * (13.333333 + spread) - 1.666667, -6.666667 - spread, 3.333333, 3.333333), Color(LIGHT, fade))

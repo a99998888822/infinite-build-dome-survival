@@ -26,6 +26,8 @@ var swings: Array[Dictionary] = []
 var sparks: Array[Dictionary] = []
 var split_profiles: Array[Dictionary] = []
 var split_triggered := false
+var _chain_contact := ConvexPolygonShape2D.new()
+var _head_contact := CircleShape2D.new()
 
 
 func initialize(source: WeaponInstance, direction: Vector2) -> void:
@@ -127,21 +129,25 @@ func head_radius(swing: Dictionary) -> float:
 
 
 func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: float, from_origin: Vector2 = Vector2.INF, to_origin: Vector2 = Vector2.INF) -> void:
-	var forward := AttackFootprint.ground_direction(heading)
-	var first_angle := forward.angle_to(AttackFootprint.unproject(from - (global_position if from_origin == Vector2.INF else from_origin)))
-	var last_angle := forward.angle_to(AttackFootprint.unproject(to - (global_position if to_origin == Vector2.INF else to_origin)))
+	var first_origin := global_position if from_origin == Vector2.INF else from_origin
+	var last_origin := global_position if to_origin == Vector2.INF else to_origin
+	var grip := AttackFootprint.project(AttackFootprint.ground_direction(heading) * 14.0)
+	# Sweep the actual chain and iron head against bodies, including movement
+	# between samples. Enemy root points need not be inside the nominal fan.
+	var points := PackedVector2Array()
+	for point: Vector2 in [first_origin + grip, last_origin + grip, from, to]:
+		for offset in [Vector2(-3.5, -3.5), Vector2(3.5, -3.5), Vector2(3.5, 3.5), Vector2(-3.5, 3.5)]:
+			points.append(point - first_origin + offset)
+	_chain_contact.points = Geometry2D.convex_hull(points)
+	_head_contact.radius = head_radius(swing)
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or swing.hits.has(enemy.get_instance_id()):
 			continue
-		var offset := enemy.global_position - global_position
-		if not AttackFootprint.in_flail_fan(offset, heading, weapon.get_attack_range()):
-			continue
-		var angle := forward.angle_to(AttackFootprint.unproject(offset))
-		if angle < minf(first_angle, last_angle) - 0.001 or angle > maxf(first_angle, last_angle) + 0.001:
+		if not AttackFootprint.body_overlaps(_chain_contact, Transform2D(0, first_origin), enemy) and not AttackFootprint.body_overlaps(_head_contact, Transform2D(0, from), enemy, to - from):
 			continue
 		# A chain cannot reach through blocking terrain.
-		var ray := PhysicsRayQueryParameters2D.create(global_position, enemy.global_position, 4)
+		var ray := PhysicsRayQueryParameters2D.create(last_origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
 			continue
 		_apply_hit(swing, enemy, at_time)

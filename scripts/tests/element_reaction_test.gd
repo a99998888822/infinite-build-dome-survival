@@ -27,6 +27,11 @@ func count_reflections() -> int:
 	return count
 
 
+func body_bounds(enemy: EnemyController) -> Rect2:
+	var body := enemy.get_node("CollisionShape2D") as CollisionShape2D
+	return body.transform * body.shape.get_rect()
+
+
 func _run() -> void:
 	await _test_projected_frost_coverage()
 	await setup([Vector2.ZERO])
@@ -92,7 +97,10 @@ func _run() -> void:
 	equip(["scroll_water", "scroll_ice"])
 	CombatEffectWorld.trigger_weapon_impact(host, weapon, event, Vector2.ZERO, Vector2.RIGHT, enemies[0])
 	check(enemies[0].has_status("frozen"), "same impact water and ice freeze synchronously")
-	await setup([Vector2.ZERO, Vector2(70, 0)])
+	await setup([Vector2.ZERO, Vector2.ZERO])
+	# Keep the full body outside the initial field, inside the expanded field.
+	enemies[1].position.x = IceFieldEffect.DEFAULT_RADIUS - body_bounds(enemies[1]).position.x + 4.0
+	await frames()
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
 	var ice: IceFieldEffect
 	for child in host.get_children():
@@ -149,13 +157,21 @@ func _run() -> void:
 	LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
 	await frames()
 	check(enemies[0].current_hp == 9765 and not enemies[0].has_status("burning"), "electric fire detonates for 55 plus 180")
-	await setup([Vector2.ZERO, Vector2(50, 0)])
+	await setup([Vector2.ZERO, Vector2(50, 0), Vector2(80, 0)])
 	element(enemies[0], "fire")
 	enemies[0].current_hp = 1
 	LightningParticleEffect.spawn_ground_strike(host, Vector2.ZERO, weapon, event)
 	await frames()
-	check(enemies[1].current_hp == 9820, "lethal electric spark still detonates burning into nearby targets")
-	await setup([Vector2.ZERO, Vector2(55, 0)])
+	# The spark schedules a separate explosion; physics frames alone need not
+	# include both scheduler turns. Wait for contact within a bounded window.
+	for attempt in 6:
+		if enemies[2].current_hp < 10000: break
+		await get_tree().process_frame
+	check(enemies[0].current_hp == 0 and enemies[2].current_hp == 9820, "lethal electric spark still detonates burning into nearby targets")
+	check(enemies[1].current_hp == 9760, "spark body contact and nearby explosion each apply once")
+	await setup([Vector2.ZERO, Vector2.ZERO])
+	enemies[1].position.x = 30.0 - body_bounds(enemies[1]).position.x + 4.0
+	await frames()
 	var fire_context := PARAMS.build_weapon_context(weapon, "fire", {"original_damage": 100.0, "burn_duration": 3.0})
 	var patch := FirePatch.spawn(host, Vector2.ZERO, fire_context)
 	patch.set_physics_process(false)
@@ -236,10 +252,11 @@ func _run() -> void:
 func _test_projected_frost_coverage() -> void:
 	await setup([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
 	equip(["scroll_ice"])
-	var body_radius: float = enemies[0].get_node("CollisionShape2D").shape.radius
-	var body_offset: Vector2 = enemies[0].get_node("CollisionShape2D").position
-	var positions := [Vector2(51.2 + body_radius - 1.0, 0), Vector2(51.2 + body_radius + 1.0, 0),
-		Vector2(0, 28.16 + body_radius - 1.0), Vector2(0, 28.16 + body_radius + 1.0), Vector2(0, 60)]
+	var bounds := body_bounds(enemies[0])
+	var body_half_size := bounds.size * 0.5
+	var body_offset := bounds.get_center()
+	var positions := [Vector2(51.2 + body_half_size.x - 1.0, 0), Vector2(51.2 + body_half_size.x + 1.0, 0),
+		Vector2(0, 28.16 + body_half_size.y - 1.0), Vector2(0, 28.16 + body_half_size.y + 1.0), Vector2(0, 60)]
 	for index in positions.size(): enemies[index].position = positions[index] - body_offset
 	await frames()
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
@@ -254,7 +271,7 @@ func _test_projected_frost_coverage() -> void:
 	field.expand_from_wind(1.35)
 	check(enemies[1].current_hp == 9975 and enemies[3].current_hp == 9975, "wind expands both ellipse axes and reaches newly covered bodies")
 	check(enemies[0].current_hp == 9975 and enemies[2].current_hp == 9975, "projected expansion does not repeat damage")
-	var outside_expanded_edge := Vector2(0, 51.2 * 1.5 * 0.55 + body_radius + 2.0)
+	var outside_expanded_edge := Vector2(0, 51.2 * 1.5 * 0.55 + body_half_size.y + 2.0)
 	await setup([Vector2(75, 0) - body_offset, outside_expanded_edge - body_offset])
 	equip(["scroll_ice"])
 	weapon.runtime_stats.damage_area_size = 100.0

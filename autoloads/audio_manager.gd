@@ -238,7 +238,7 @@ func play_weapon_hit_sfx(weapon_id: String, minimum_interval_ms: int = 0) -> boo
 		return _request_combat_sfx(cue, minimum_interval_ms, true)
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
-	return play_sfx_path(str(weapon_data.get("hit_sfx", "")), minimum_interval_ms, weapon_id)
+	return play_sfx_path(str(weapon_data.get("hit_sfx", "")), minimum_interval_ms, weapon_id, float(weapon_data.get("hit_sfx_gain_db", 0.0)))
 
 
 func play_enchantment_sfx(enchantment_id: String) -> bool:
@@ -307,7 +307,7 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 	return true
 
 
-func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_key: String = "") -> bool:
+func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_key: String = "", gain_db: float = 0.0) -> bool:
 	if COMBAT_LIBRARY.DISABLED_PATHS.has(resource_path):
 		return false
 	if resource_path.is_empty() or not ResourceLoader.exists(resource_path) or _sfx_players.is_empty():
@@ -322,6 +322,8 @@ func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_k
 	var player := _sfx_players[_sfx_cursor]
 	_sfx_cursor = (_sfx_cursor + 1) % _sfx_players.size()
 	player.stream = stream
+	# Pooled voices must reset gain for every sound, including ordinary UI cues.
+	player.volume_db = gain_db
 	player.play()
 	_last_sfx_time_ms[key] = now_ms
 	return true

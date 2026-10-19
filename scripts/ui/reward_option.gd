@@ -12,6 +12,8 @@ const NORMAL_MINIMUM_HEIGHT: float = 360.0
 const COMPACT_MINIMUM_HEIGHT: float = 272.0
 const SMALL_MINIMUM_HEIGHT: float = 156.0
 const RELIC_ICON_SCALE := 0.75
+const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
+const PALETTE = HUD_STYLE.PALETTE
 
 const OFFER_TYPE_TITLES: Dictionary = {
 	"weapon_upgrade": "武器升级",
@@ -20,18 +22,12 @@ const OFFER_TYPE_TITLES: Dictionary = {
 }
 
 const RARITY_COLORS: Dictionary = {
-	"common": Color(0.74, 0.72, 0.62, 1.0),
-	"uncommon": Color(0.42, 0.78, 0.32, 1.0),
-	"rare": Color(0.37, 0.63, 0.92, 1.0),
-	"epic": Color(0.72, 0.34, 0.84, 1.0),
-	"mythic": Color(0.91, 0.59, 0.22, 1.0),
-	"legendary": Color(0.91, 0.28, 0.24, 1.0),
-}
-
-const TYPE_COLORS: Dictionary = {
-	"weapon_upgrade": Color(0.82, 0.63, 0.25, 1.0),
-	"new_weapon": Color(0.49, 0.78, 0.29, 1.0),
-	"relic": Color(0.76, 0.30, 0.82, 1.0),
+	"common": Color("a5a69f"),
+	"uncommon": Color("8fa990"),
+	"rare": Color("7e9fb8"),
+	"epic": Color("a28aae"),
+	"mythic": Color("c2a174"),
+	"legendary": Color("bf827a"),
 }
 
 var offer_data: Dictionary = {}
@@ -44,7 +40,6 @@ var _animation_tween: Tween = null
 var _hover_tween: Tween = null
 var _icon_float_tween: Tween = null
 var _icon_float_base_offsets := Vector2.ZERO
-var _rarity_glow_material: ShaderMaterial = null
 var _compact_layout: bool = false
 var _small_layout: bool = false
 var _layout_width: float = 0.0
@@ -57,18 +52,20 @@ var _layout_height: float = 0.0
 @onready var icon_frame: PanelContainer = get_node_or_null("Content/IconFrame")
 @onready var icon_texture: TextureRect = get_node_or_null("Content/IconFrame/IconVisual/IconTexture")
 @onready var icon_placeholder: ColorRect = get_node_or_null("Content/IconFrame/IconPlaceholder")
-@onready var rarity_glow: ColorRect = get_node_or_null("Content/IconFrame/RarityGlow")
 @onready var name_label: Label = get_node_or_null("Content/NameLabel")
 @onready var description_label: RichTextLabel = get_node_or_null("Content/DescriptionLabel")
 @onready var bottom_rarity_line: ColorRect = get_node_or_null("Content/BottomRarityLine")
 @onready var select_button: Button = get_node_or_null("Content/SelectButton")
 var bond_tooltip: PanelContainer = null
 var bond_tooltip_label: RichTextLabel = null
+var _rarity_label: Label
+var _rarity_rule: ColorRect
 
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_visual)
-	_prepare_rarity_glow()
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_create_rarity_marker()
 	if select_button != null:
 		if not select_button.pressed.is_connected(_on_select_button_pressed):
 			select_button.pressed.connect(_on_select_button_pressed)
@@ -76,11 +73,30 @@ func _ready() -> void:
 			select_button.mouse_entered.connect(_on_select_button_mouse_entered)
 		if not select_button.mouse_exited.is_connected(_on_select_button_mouse_exited):
 			select_button.mouse_exited.connect(_on_select_button_mouse_exited)
+		select_button.focus_entered.connect(_update_interaction_style)
+		select_button.focus_exited.connect(_update_interaction_style)
 	if not mouse_entered.is_connected(_on_card_mouse_entered):
 		mouse_entered.connect(_on_card_mouse_entered)
 	if not mouse_exited.is_connected(_on_card_mouse_exited):
 		mouse_exited.connect(_on_card_mouse_exited)
 	_refresh_visual()
+
+
+func _create_rarity_marker() -> void:
+	var overlay := get_node("Content/IconFrame/IconOverlay")
+	_rarity_label = Label.new()
+	_rarity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_rarity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_rarity_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_rarity_label.offset_left = -110
+	_rarity_label.offset_right = -8
+	_rarity_label.offset_top = 5
+	overlay.add_child(_rarity_label)
+	_rarity_rule = ColorRect.new()
+	_rarity_rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_rarity_rule.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_rarity_rule.offset_top = -2
+	overlay.add_child(_rarity_rule)
 
 
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
@@ -144,33 +160,35 @@ func set_available_size(available_width: float, available_height: float) -> void
 
 func _apply_layout_density() -> void:
 	if not offer_data.is_empty():
-		_update_panel_style(get_color_for_rarity(str(offer_data.get("rarity", "common"))))
+		_update_panel_style()
 	if content != null:
 		content.add_theme_constant_override("separation", 5 if _small_layout else (8 if _compact_layout else 10))
 	if type_badge != null:
-		type_badge.custom_minimum_size = Vector2(28.0, 12.0 if _small_layout else (18.0 if _compact_layout else 20.0))
+		type_badge.custom_minimum_size = Vector2(28.0, 12.0) if _small_layout else Vector2(48.0, 24.0)
 	if type_label != null:
-		type_label.add_theme_font_size_override("font_size", 9)
+		type_label.add_theme_font_size_override("font_size", 9 if _small_layout else 14)
 	if not offer_data.is_empty():
 		var offer_type := str(offer_data.get("offer_type", ""))
-		var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
-		_update_type_style(type_color)
+		_update_type_style()
 		_update_type_badge_layout(offer_type)
+	if _rarity_label != null:
+		_rarity_label.add_theme_font_size_override("font_size", 9 if _small_layout else 12)
 	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (88.0 if _compact_layout else 104.0)
+		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (112.0 if _compact_layout else 128.0)
 		if icon_texture != null and FinanceUIStyle.is_native_relic_icon(icon_texture.texture):
 			# Reserve space for the displayed icon, not its full source dimensions.
 			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(FinanceUIStyle.relic_icon_size(icon_texture.texture, RELIC_ICON_SCALE).y / 0.8) + 4.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
+		description_label.add_theme_font_size_override("normal_font_size", 10 if _small_layout else 18)
 		# Leave a little more room below the description so the action stays
 		# visually clear while keeping the button higher in the card.
 		description_label.custom_minimum_size.y = 28.0 if _small_layout else (76.0 if _compact_layout else 98.0)
 	if select_button != null:
 		select_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		select_button.custom_minimum_size = _get_select_button_size()
-		select_button.add_theme_font_size_override("font_size", 10)
+		select_button.add_theme_font_size_override("font_size", 10 if _small_layout else 18)
 	_update_card_minimum_size()
 
 
@@ -197,7 +215,7 @@ func _update_card_minimum_size() -> void:
 func _get_select_button_size() -> Vector2:
 	var card_width := _layout_width if _layout_width > 0.0 else (160.0 if _small_layout else (180.0 if _compact_layout else 220.0))
 	var content_width := maxf(card_width - (12.0 if _small_layout else 24.0), 0.0)
-	return Vector2(content_width * 0.8, 19.2)
+	return Vector2(floorf(content_width * 0.8), 19.2 if _small_layout else 36.0)
 
 
 func set_interaction_locked(locked: bool) -> void:
@@ -262,16 +280,12 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 	var rarity := str(offer_data.get("rarity", "common"))
 	var rarity_color := get_color_for_rarity(rarity)
 	var offer_type := str(offer_data.get("offer_type", ""))
-	var type_color: Color = TYPE_COLORS.get(offer_type, Color(0.78, 0.72, 0.58, 1.0))
 	_update_rarity_lines(rarity_color)
-	_update_rarity_glow(rarity_color)
 	if type_label != null:
 		type_label.text = get_title_for_offer_type(offer_type)
-		type_label.add_theme_color_override("font_color", type_color)
 	_update_type_badge_layout(offer_type)
 	if name_label != null:
 		name_label.text = L10n.record_text(offer_data, "display_name", str(offer_data.get("target_id", "")))
-		name_label.add_theme_color_override("font_color", rarity_color)
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
 		description_label.text = _build_description_text(offer_data)
@@ -283,43 +297,47 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 			select_button.add_theme_constant_override("icon_max_width", 11)
 		else:
 			select_button.remove_theme_constant_override("icon_max_width")
-		_update_button_style(rarity_color)
+		_update_button_style()
 	_update_icon(str(offer_data.get("icon", "")))
+	_update_interaction_style()
 
 
 func _get_name_font_size() -> int:
 	# Keep relic, new-weapon, and weapon-upgrade titles at the same visual size.
-	return 10
+	return 10 if _small_layout else 18
 
 
-func _update_panel_style(rarity_color: Color) -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.04, 0.08, 0.06, 0.96)
-	style.border_color = rarity_color
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(0)
-	style.content_margin_left = 6.0 if _small_layout else 12.0
-	style.content_margin_top = 6.0 if _small_layout else 14.0
-	style.content_margin_right = 6.0 if _small_layout else 12.0
-	style.content_margin_bottom = 6.0 if _small_layout else 12.0
-	style.shadow_color = Color(0.0, 0.0, 0.0, 0.38)
-	style.shadow_size = 5
-	add_theme_stylebox_override("panel", style)
+func _is_highlighted() -> bool:
+	return _hovered or (select_button != null and select_button.has_focus())
 
 
-func _update_type_style(type_color: Color) -> void:
+func _update_interaction_style() -> void:
+	if offer_data.is_empty(): return
+	_update_panel_style()
+	_update_type_style()
+	_update_button_style()
+	var warm := _is_highlighted()
+	if icon_frame != null: icon_frame.add_theme_stylebox_override("panel", HUD_STYLE.inset(warm))
+	if name_label != null: name_label.add_theme_color_override("font_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
+	if description_label != null: description_label.add_theme_color_override("default_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
+
+
+func _update_panel_style() -> void:
+	var padding := Vector4(6, 6, 6, 6) if _small_layout else Vector4(12, 14, 12, 12)
+	add_theme_stylebox_override("panel", HUD_STYLE.skin(true, _is_highlighted(), padding))
+
+
+func _update_type_style() -> void:
 	if type_badge == null:
 		return
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(type_color.r * 0.22, type_color.g * 0.22, type_color.b * 0.22, 0.98)
-	style.border_color = type_color
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(0)
+	var style := HUD_STYLE.inset(_is_highlighted())
 	style.content_margin_left = 2.0 if _small_layout else 8.0
 	style.content_margin_top = 0.0 if _small_layout else 3.0
 	style.content_margin_right = 2.0 if _small_layout else 8.0
 	style.content_margin_bottom = 0.0 if _small_layout else 3.0
 	type_badge.add_theme_stylebox_override("panel", style)
+	if type_label != null:
+		type_label.add_theme_color_override("font_color", PALETTE.WARM_ACTIVE if _is_highlighted() else PALETTE.MUTED)
 
 
 func _update_type_badge_layout(offer_type: String) -> void:
@@ -330,43 +348,20 @@ func _update_type_badge_layout(offer_type: String) -> void:
 		badge_width = 42.0
 	elif offer_type == "weapon_upgrade":
 		badge_width = 50.0
+	if not _small_layout:
+		badge_width = 48.0
+		if offer_type == "new_weapon":
+			badge_width = 80.0
+		elif offer_type == "weapon_upgrade":
+			badge_width = 96.0
 	type_badge.offset_right = badge_width
 	type_badge.custom_minimum_size.x = badge_width
 
 
-func _update_button_style(rarity_color: Color) -> void:
+func _update_button_style() -> void:
 	if select_button == null:
 		return
-	var normal := _talent_button_style(Color(0.09, 0.13, 0.11, 1.0), rarity_color, 1)
-	var hover := _talent_button_style(Color(0.18, 0.20, 0.14, 1.0), rarity_color.lightened(0.12), 2)
-	var pressed := _talent_button_style(Color(0.24, 0.18, 0.08, 1.0), rarity_color, 1, true)
-	var disabled := _talent_button_style(Color(0.07, 0.08, 0.07, 1.0), Color(0.27, 0.26, 0.22, 1.0), 1)
-	select_button.add_theme_stylebox_override("normal", normal)
-	select_button.add_theme_stylebox_override("hover", hover)
-	select_button.add_theme_stylebox_override("pressed", pressed)
-	select_button.add_theme_stylebox_override("disabled", disabled)
-
-
-func _talent_button_style(color: Color, border: Color, width: int, pressed: bool = false) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = color
-	var light_edge := border.lightened(0.22)
-	var dark_edge := color.darkened(0.70)
-	style.border_color = dark_edge if pressed else light_edge
-	style.border_width_left = width
-	style.border_width_top = width
-	style.border_width_right = 0
-	style.border_width_bottom = 0
-	style.shadow_color = light_edge if pressed else dark_edge
-	style.shadow_size = width
-	style.shadow_offset = Vector2(width, width)
-	style.set_corner_radius_all(0)
-	style.anti_aliasing = false
-	style.content_margin_left = 10 + (width if pressed else 0)
-	style.content_margin_right = 10
-	style.content_margin_top = width if pressed else 0
-	style.content_margin_bottom = 0
-	return style
+	HUD_STYLE.apply_button(select_button, Vector4(10, 0, 10, 0), _is_highlighted())
 
 
 func _update_rarity_lines(rarity_color: Color) -> void:
@@ -374,6 +369,10 @@ func _update_rarity_lines(rarity_color: Color) -> void:
 		top_rarity_line.color = rarity_color
 	if bottom_rarity_line != null:
 		bottom_rarity_line.color = rarity_color
+	if _rarity_label != null:
+		_rarity_label.text = L10n.text("rarity." + str(offer_data.get("rarity", "common")))
+		_rarity_label.add_theme_color_override("font_color", rarity_color)
+	if _rarity_rule != null: _rarity_rule.color = rarity_color
 
 
 func _update_icon(icon_path: String) -> void:
@@ -394,27 +393,6 @@ func _update_icon(icon_path: String) -> void:
 	_apply_layout_density()
 	if loaded_texture != null:
 		call_deferred("_start_icon_float")
-
-
-func _prepare_rarity_glow() -> void:
-	if rarity_glow == null:
-		return
-	var base_material := rarity_glow.material as ShaderMaterial
-	if base_material == null:
-		return
-	_rarity_glow_material = base_material.duplicate() as ShaderMaterial
-	rarity_glow.material = _rarity_glow_material
-
-
-func _update_rarity_glow(rarity_color: Color) -> void:
-	if rarity_glow == null:
-		return
-	if _rarity_glow_material == null:
-		_prepare_rarity_glow()
-	if _rarity_glow_material == null:
-		return
-	_rarity_glow_material.set_shader_parameter("glow_color", rarity_color)
-	_rarity_glow_material.set_shader_parameter("intensity", 0.18)
 
 
 func _start_icon_float() -> void:
@@ -469,6 +447,7 @@ func _set_card_hovered(hovered: bool) -> void:
 	if _interaction_locked and hovered:
 		return
 	_hovered = hovered
+	_update_interaction_style()
 	if _hover_tween != null and _hover_tween.is_valid():
 		_hover_tween.kill()
 	_hover_tween = create_tween()
@@ -506,11 +485,12 @@ func _show_bond_tooltip() -> void:
 	bond_tooltip.visible = true
 	bond_tooltip.reset_size()
 	var viewport_rect := get_viewport_rect()
-	var target := global_position + Vector2(0, size.y + 6)
+	var card_rect := get_global_rect()
+	var target := Vector2(card_rect.position.x, card_rect.end.y + 6)
 	if target.x + bond_tooltip.size.x > viewport_rect.size.x:
 		target.x = maxf(viewport_rect.size.x - bond_tooltip.size.x - 8, 0)
 	if target.y + bond_tooltip.size.y > viewport_rect.size.y:
-		target.y = maxf(global_position.y - bond_tooltip.size.y - 6, 0)
+		target.y = maxf(card_rect.position.y - bond_tooltip.size.y - 6, 0)
 	bond_tooltip.global_position = target
 
 
@@ -529,12 +509,7 @@ func _ensure_bond_tooltip() -> void:
 	bond_tooltip.name = "BondTooltip"
 	bond_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bond_tooltip.z_index = 100
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.04, 0.05, 0.07, 0.96)
-	panel_style.border_color = Color(0.96, 0.84, 0.45, 1.0)
-	panel_style.set_border_width_all(1)
-	panel_style.set_corner_radius_all(0)
-	bond_tooltip.add_theme_stylebox_override("panel", panel_style)
+	bond_tooltip.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4.ZERO))
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 10)
 	margin.add_theme_constant_override("margin_top", 8)
@@ -545,6 +520,7 @@ func _ensure_bond_tooltip() -> void:
 	bond_tooltip_label.bbcode_enabled = true
 	bond_tooltip_label.fit_content = true
 	bond_tooltip_label.scroll_active = false
+	bond_tooltip_label.add_theme_color_override("default_color", PALETTE.TEXT)
 	bond_tooltip_label.custom_minimum_size = Vector2(240, 0)
 	margin.add_child(bond_tooltip_label)
 	layer.add_child(bond_tooltip)

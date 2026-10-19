@@ -36,12 +36,12 @@ func _ready() -> void:
 	_empty_mark.text = "+"
 	_empty_mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_empty_mark.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	FinanceUIStyle.label(_empty_mark, 18, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(_empty_mark, 30, FinanceUIStyle.MUTED)
 	image_area.add_child(_empty_mark)
 	_caption = Label.new()
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_caption, 8)
+	FinanceUIStyle.label(_caption, 13)
 	body.add_child(_caption)
 	for label in [_empty_mark, _caption]: label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -59,12 +59,6 @@ func configure_slot(index: int, item: Dictionary) -> void:
 
 func set_selected(selected: bool) -> void:
 	FinanceUIStyle.bank_button(self, selected)
-	var normal := FinanceUIStyle.box("3a4933" if selected else ("1a241e" if drag_enabled else "20231d"), "d8ba74" if selected else ("89946a" if drag_enabled else "665f48"), 0)
-	normal.set_border_width_all(2)
-	add_theme_stylebox_override("normal", normal)
-	var hover := FinanceUIStyle.box("3c4c35", "dbbd79", 0)
-	hover.set_border_width_all(2)
-	add_theme_stylebox_override("hover", hover)
 	FinanceFrameSkin.button(self, selected, true)
 
 

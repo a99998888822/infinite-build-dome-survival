@@ -14,6 +14,8 @@ static func register(effect: Node2D, kind: String) -> int:
 		total += 1
 		if peer.get_meta("pixel_effect_kind", "") == kind and effect.global_position.distance_squared_to(peer.global_position) < 25600.0:
 			nearby += 1
+		# Higher counts cannot change the lowest detail tier.
+		if nearby >= 4 or total >= 48: break
 	effect.set_meta("pixel_effect_kind", kind)
 	effect.add_to_group(DETAIL_GROUP)
 	# Only decoration is reduced. Even the lowest tier draws the main silhouette

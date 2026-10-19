@@ -9,6 +9,7 @@ const DEFAULT_DAMAGE_MULTIPLIER: float = 3.5
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const RASTER = preload("res://scripts/effects/reflection_pixel_batch.gd")
 const SHAPES = preload("res://scripts/effects/reaction_pixel_shapes.gd")
+const QUERY_CACHE = preload("res://scripts/effects/reflection_query_cache.gd")
 
 var _rects := RASTER.new()
 
@@ -18,13 +19,13 @@ var _duration: float = DEFAULT_DURATION
 var _damage_multiplier: float = DEFAULT_DAMAGE_MULTIPLIER
 var _elapsed: float = 0.0
 var _hit_targets: Dictionary = {}
+var _hit_mask := PackedInt64Array()
+var _hit_mask_revision := -1
+var _hit_mask_count := 0
 var _sweep_start: float = -PI * 0.5
 var _sweep_end: float = PI * 0.5
 var _orientation: float = 0.0
 var _visual_detail: int = 2
-var _candidate_revision: int = -1
-var _candidate_hit_count: int = 0
-var _candidate_indices := PackedInt32Array()
 var _visual_tier := 0
 
 
@@ -35,14 +36,21 @@ static func spawn(parent: Node, origin: Vector2, direction: Vector2, damage_even
 	parent.add_child(effect)
 	effect.global_position = origin
 	effect._orientation = direction.angle() if not direction.is_zero_approx() else 0.0
-	effect._visual_detail = PIXEL.register(effect, "reflection")
 	effect._visual_tier = preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(parent, "reflection", origin)
+	if effect._visual_tier == 3:
+		# Suppressed beams still count toward other effects' visual density.
+		# Their own detail is never drawn, so no group-wide scan is needed.
+		effect.set_meta("pixel_effect_kind", "reflection")
+		effect.add_to_group(PIXEL.DETAIL_GROUP)
+		effect._visual_detail = 0
+	else:
+		effect._visual_detail = PIXEL.register(effect, "reflection")
 	effect.z_index = 81
 	effect._damage_event = damage_event
 	effect._radius = maxf(radius, 48.0)
 	effect._damage_multiplier = maxf(damage_multiplier, 1.0)
 	AudioManager.play_reaction_sfx("reflection")
-	effect.queue_redraw()
+	if effect._visual_tier != 3: effect.queue_redraw()
 
 
 func _ready() -> void:
@@ -54,7 +62,7 @@ func _process(delta: float) -> void:
 		return
 	_elapsed += delta
 	_damage_sweep()
-	queue_redraw()
+	if _visual_tier != 3: queue_redraw()
 	if _elapsed >= _duration:
 		queue_free()
 
@@ -63,74 +71,50 @@ func _damage_sweep() -> void:
 	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
 	var sweep_angle := lerpf(_sweep_start, _sweep_end, progress)
 	var radius_squared := _radius * _radius
+	var origin := global_position
+	var radius := _radius
+	var orientation := _orientation
+	var start_angle := _sweep_start
 	var registry := EnemyRegistry.get_registered_enemies()
-	var candidates := EnemyRegistry.candidates_in_radius(global_position, _radius)
-	if candidates.size() * 2 > registry.size():
-		_damage_sweep_dense()
-		return
-	_candidate_revision = -1
-	var scan_origin := global_position
+	_prepare_hit_mask(registry)
+	var candidates := QUERY_CACHE.candidates(origin, radius, orientation, start_angle, sweep_angle)
+	if _hit_mask_count > 0:
+		candidates = QUERY_CACHE.excluding_hits(candidates, _hit_mask)
+	var revision := EnemyRegistry.revision
 	var version := EnemyRegistry.spatial_revision
-	for index in candidates:
-		if _hit_targets.has(registry[index].get_instance_id()): continue
-		var previous_hits := _hit_targets.size()
-		_sweep_target(registry[index] as EnemyController, sweep_angle, radius_squared)
-		if _hit_targets.size() != previous_hits and (EnemyRegistry.sync_spatial_revision() != version or global_position != scan_origin):
-			var cursor := index + 1
-			while cursor < registry.size():
-				_sweep_target(registry[cursor] as EnemyController, sweep_angle, radius_squared)
-				cursor += 1
-			return
-
-
-func _damage_sweep_dense() -> void:
-	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var sweep_angle := lerpf(_sweep_start, _sweep_end, progress)
-	var radius_squared := _radius * _radius
-	var radius_with_slack := radius_squared + maxf(0.01, radius_squared * 0.000001)
-	var registry := EnemyRegistry.get_registered_enemies()
-	if _candidate_revision != EnemyRegistry.revision or _hit_targets.size() < _candidate_hit_count:
-		_candidate_revision = EnemyRegistry.revision
-		_candidate_indices.clear()
-		for index in registry.size():
-			var node := registry[index]
-			if is_instance_valid(node) and not _hit_targets.has(node.get_instance_id()):
-				_candidate_indices.append(index)
-	# Compact in registry order, dropping only targets already hit by THIS beam.
-	# Out-of-range and currently dead targets stay eligible for future scans.
-	var remaining := 0
-	for cursor in _candidate_indices.size():
-		var index := _candidate_indices[cursor]
+	for cursor in candidates.indices.size():
+		var index: int = candidates.indices[cursor]
 		var enemy := registry[index] as EnemyController
-		if enemy == null: continue
-		_candidate_indices[remaining] = index
-		remaining += 1
-		if not enemy.is_alive(): continue
-		# Inline the common unhit path: no repeated dictionary lookup or helper
-		# dispatch per target. Keep the original boundary/angle calculations.
-		if global_position.distance_squared_to(enemy.global_position) > radius_with_slack: continue
-		if global_position.distance_to(enemy.global_position) > _radius: continue
-		var offset := global_position.direction_to(enemy.global_position)
-		var angle := atan2(offset.y, offset.x) - _orientation
-		while angle > PI: angle -= TAU
-		while angle < -PI: angle += TAU
-		if angle < _sweep_start or angle > sweep_angle: continue
-		remaining -= 1
+		if not is_instance_valid(enemy) or not enemy.is_alive(): continue
+		if _hit_targets.has(enemy.get_instance_id()): continue
 		_hit_targets[enemy.get_instance_id()] = true
+		_hit_mask[index >> 6] |= 1 << (index & 63)
+		_hit_mask_count += 1
 		var damage := _damage_event.get_elemental_damage(_damage_multiplier)
-		enemy.take_attack_damage(damage, _damage_event, false, offset)
-		if _candidate_revision != EnemyRegistry.revision:
-			# A damage callback may add/remove an enemy. Continue the live array at
-			# the same index as the original iterator, including same-scan spawns.
-			_candidate_revision = -1
+		enemy.take_attack_damage(damage, _damage_event, false, candidates.directions[cursor])
+		if revision != EnemyRegistry.revision or version != EnemyRegistry.sync_spatial_revision() or origin != global_position or radius != _radius or orientation != _orientation or start_angle != _sweep_start or _hit_mask_count != _hit_targets.size():
+			# Damage callbacks can move/spawn/remove targets or move this beam.
+			# Finish in the legacy live registry order instead of a stale snapshot.
 			index += 1
 			while index < registry.size():
 				_sweep_target(registry[index] as EnemyController, sweep_angle, radius_squared)
 				index += 1
-			_candidate_hit_count = _hit_targets.size()
 			return
-	_candidate_indices.resize(remaining)
-	_candidate_hit_count = _hit_targets.size()
+
+
+func _prepare_hit_mask(registry: Array[Node]) -> void:
+	if _hit_mask_revision == EnemyRegistry.revision and _hit_mask_count == _hit_targets.size(): return
+	_hit_mask_revision = EnemyRegistry.revision
+	_hit_mask_count = _hit_targets.size()
+	_hit_mask.resize((registry.size() + 63) >> 6)
+	_hit_mask.fill(0)
+	if _hit_targets.is_empty(): return
+	# Registry edits change bit positions. Rebuild from this beam's authoritative
+	# instance-id ledger; dead targets never count as hit merely by being dead.
+	for index in registry.size():
+		var enemy := registry[index]
+		if is_instance_valid(enemy) and _hit_targets.has(enemy.get_instance_id()):
+			_hit_mask[index >> 6] |= 1 << (index & 63)
 
 
 func _sweep_target(enemy: EnemyController, sweep_angle: float, radius_squared: float) -> bool:

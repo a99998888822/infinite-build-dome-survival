@@ -17,6 +17,9 @@ func initialize(source: WeaponInstance, event: DamageEvent, origin: Vector2, hea
 func _target_distance_squared(offset: Vector2) -> float:
 	return AttackFootprint.unproject(offset).length_squared()
 
+func get_contact_radius() -> float:
+	return maxf(1.0, weapon.get_hit_radius() * (0.65 if split_generation > 0 else 1.0))
+
 func _split_heading(radians: float) -> Vector2:
 	return AttackFootprint.spread_direction(direction, radians)
 

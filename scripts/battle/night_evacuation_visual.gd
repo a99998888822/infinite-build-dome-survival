@@ -7,6 +7,7 @@ const RING_PARTICLES := 144
 const RING_COMPANIONS := 18
 var phase: NightEvacuation
 var building: Node2D
+var enemy_barrier: EvacuationBunker
 var bank: Sprite2D
 var bank_material: ShaderMaterial
 var lamp_materials: Array[ShaderMaterial] = []
@@ -112,6 +113,9 @@ func begin() -> void:
 		shape.shape = box
 		shape.position = rect.get_center()
 		body.add_child(shape)
+	enemy_barrier = EvacuationBunker.new()
+	enemy_barrier.name = "EnemyBarrier"
+	building.add_child(enemy_barrier)
 	for center in [Vector2(-79,-82),Vector2(72,-66)]:
 		var lamp := ColorRect.new()
 		lamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -135,6 +139,8 @@ func begin() -> void:
 
 func reset() -> void:
 	lit = false
+	if is_instance_valid(enemy_barrier): enemy_barrier.deactivate()
+	enemy_barrier = null
 	if is_instance_valid(building):
 		building.hide()
 		building.queue_free()

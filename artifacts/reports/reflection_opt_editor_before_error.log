@@ -1,0 +1,49 @@
+Unable to open Android 'build-tools' directory.
+SCRIPT ERROR: Parse Error: Identifier "EvacuationBunker" not declared in the current scope.
+   at: GDScript::reload (res://scripts/enemies/enemy_controller.gd:119)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "_bunker_route" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://scripts/enemies/enemy_controller.gd:119)
+SCRIPT ERROR: Parse Error: Identifier "EvacuationBunker" not declared in the current scope.
+   at: GDScript::reload (res://scripts/enemies/enemy_controller.gd:137)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "direction" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://scripts/enemies/enemy_controller.gd:891)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "target_velocity" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://scripts/enemies/enemy_controller.gd:900)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/weapons/weapon_instance.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/effects/combat_effect_world.gd:0)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnemyController".
+   at: GDScript::reload (res://scripts/enemies/elite_rusher.gd:1)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnemyController".
+   at: GDScript::reload (res://scripts/enemies/elite_rusher.gd:1)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/weapons/directed_weapon_runtime.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/weapons/copper_lamp.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/player/player_action_animator.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/player/player_controller.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/rewards/battle_finance_system.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/data/data_validator.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://autoloads/data_registry.gd:0)
+ERROR: Failed to load script "res://autoloads/data_registry.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Parse Error: Could not find type "EvacuationBunker" in the current scope.
+   at: GDScript::reload (res://scripts/battle/night_evacuation_visual.gd:10)
+SCRIPT ERROR: Parse Error: Identifier "EvacuationBunker" not declared in the current scope.
+   at: GDScript::reload (res://scripts/battle/night_evacuation_visual.gd:116)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/battle/night_evacuation.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/battle/battle_root.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/ui/battle_hud.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/ui/finance_ui_controller.gd:0)
+ERROR: Failed to load script "res://scripts/ui/finance_ui_controller.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

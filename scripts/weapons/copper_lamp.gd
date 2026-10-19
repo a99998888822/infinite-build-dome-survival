@@ -120,11 +120,12 @@ func _tick_damage() -> void:
 		event.damage = maxi(1, roundi(event.damage * float(beam.power)))
 		event.elemental_damage_scale *= float(beam.power)
 		var direction: Vector2 = beam.direction
+		var footprint := AttackFootprint.lamp_shape(direction, float(beam.reach), weapon.get_lamp_cone_degrees())
 		for node in enemies:
 			var enemy := node as EnemyController
 			if not is_instance_valid(enemy) or not enemy.is_alive():
 				continue
-			if not AttackFootprint.in_lamp_cone(enemy.global_position - global_position, direction, float(beam.reach), weapon.get_lamp_cone_degrees()):
+			if not AttackFootprint.body_overlaps(footprint, Transform2D(0, global_position), enemy):
 				continue
 			if not clear_path(self, global_position, enemy.global_position):
 				continue

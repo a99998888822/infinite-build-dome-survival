@@ -1,0 +1,188 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DataRegistry] config load summary
+[DataRegistry] - weapons: 14 records
+[DataRegistry] - relics: 101 records
+[DataRegistry] - bonds: 4 records
+[DataRegistry] - characters: 2 records
+[DataRegistry] - enemies: 4 records
+[DataRegistry] - erosion_pressure_rules: 1 records
+[DataRegistry] - enemy_adaptation_rules: 1 records
+[DataRegistry] - camp_buildings: 6 records
+[DataRegistry] - waves: 16 records
+[DataRegistry] - drop_tables: 3 records
+[DataRegistry] - augmentations: 19 records
+[DataRegistry] stat check: attack_speed=100 => interval 0.75s from 1.00s
+[DataRegistry] stat check: armor=100 => damage_taken_percent 75
+[DataRegistry] stat check: area_size=40 => radius 120 from 100
+[DataRegistry] stat check: finance=101 interest_rate=5 => gain 6
+[DataRegistry] load completed without errors
+PASS production wolf initialized
+PASS production wolf initialized
+PASS base wolf enlargement survives an animation update
+PASS challenge modifier scales the enlarged art and collider together
+PASS breath socket follows base and challenge enlargement
+PASS restoring challenge scale retains the new base collider
+PASS small boss shakes without flashing white
+PASS small boss shakes without flashing white
+PASS ground hit after first midair hit: no hit offset (actual 0.000)
+PASS ground hit after first midair hit: animation frame and fit remain intact
+PASS ground hit after first midair hit: reduced shake keeps its world amplitude across poses/scales
+PASS damage keeps the current ground pose
+PASS small boss shakes without flashing white
+PASS reaction retains current mirrored pose
+PASS small boss shakes without flashing white
+PASS light after animation update: no hit offset (actual 0.000)
+PASS light after animation update: animation frame and fit remain intact
+PASS light after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS light after another hit: no hit offset (actual 0.000)
+PASS light after another hit: animation frame and fit remain intact
+PASS light after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS light after animation update: no hit offset (actual 0.000)
+PASS light after animation update: animation frame and fit remain intact
+PASS light after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS light after another hit: no hit offset (actual 0.000)
+PASS light after another hit: animation frame and fit remain intact
+PASS light after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS light after animation update: no hit offset (actual 0.000)
+PASS light after animation update: animation frame and fit remain intact
+PASS light after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS light after another hit: no hit offset (actual 0.000)
+PASS light after another hit: animation frame and fit remain intact
+PASS light after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS light after animation update: no hit offset (actual 0.000)
+PASS light after animation update: animation frame and fit remain intact
+PASS light after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS light after another hit: no hit offset (actual 0.000)
+PASS light after another hit: animation frame and fit remain intact
+PASS light after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS light after animation update: no hit offset (actual 0.000)
+PASS light after animation update: animation frame and fit remain intact
+PASS light after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS light after another hit: no hit offset (actual 0.000)
+PASS light after another hit: animation frame and fit remain intact
+PASS light after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS light retains latest pose
+PASS small boss shakes without flashing white
+PASS heavy after animation update: no hit offset (actual 0.000)
+PASS heavy after animation update: animation frame and fit remain intact
+PASS heavy after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS heavy after another hit: no hit offset (actual 0.000)
+PASS heavy after another hit: animation frame and fit remain intact
+PASS heavy after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS heavy after animation update: no hit offset (actual 0.000)
+PASS heavy after animation update: animation frame and fit remain intact
+PASS heavy after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS heavy after another hit: no hit offset (actual 0.000)
+PASS heavy after another hit: animation frame and fit remain intact
+PASS heavy after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS heavy after animation update: no hit offset (actual 0.000)
+PASS heavy after animation update: animation frame and fit remain intact
+PASS heavy after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS heavy after another hit: no hit offset (actual 0.000)
+PASS heavy after another hit: animation frame and fit remain intact
+PASS heavy after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS heavy after animation update: no hit offset (actual 0.000)
+PASS heavy after animation update: animation frame and fit remain intact
+PASS heavy after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS heavy after another hit: no hit offset (actual 0.000)
+PASS heavy after another hit: animation frame and fit remain intact
+PASS heavy after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS heavy after animation update: no hit offset (actual 0.000)
+PASS heavy after animation update: animation frame and fit remain intact
+PASS heavy after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS heavy after another hit: no hit offset (actual 0.000)
+PASS heavy after another hit: animation frame and fit remain intact
+PASS heavy after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS heavy retains latest pose
+PASS small boss shakes without flashing white
+PASS ritual after animation update: no hit offset (actual 0.000)
+PASS ritual after animation update: animation frame and fit remain intact
+PASS ritual after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS ritual after another hit: no hit offset (actual 0.000)
+PASS ritual after another hit: animation frame and fit remain intact
+PASS ritual after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS ritual after animation update: no hit offset (actual 0.000)
+PASS ritual after animation update: animation frame and fit remain intact
+PASS ritual after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS ritual after another hit: no hit offset (actual 0.000)
+PASS ritual after another hit: animation frame and fit remain intact
+PASS ritual after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS ritual after animation update: no hit offset (actual 0.000)
+PASS ritual after animation update: animation frame and fit remain intact
+PASS ritual after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS ritual after another hit: no hit offset (actual 0.000)
+PASS ritual after another hit: animation frame and fit remain intact
+PASS ritual after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS ritual after animation update: no hit offset (actual 0.000)
+PASS ritual after animation update: animation frame and fit remain intact
+PASS ritual after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS ritual after another hit: no hit offset (actual 0.000)
+PASS ritual after another hit: animation frame and fit remain intact
+PASS ritual after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS ritual after animation update: no hit offset (actual 0.000)
+PASS ritual after animation update: animation frame and fit remain intact
+PASS ritual after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS ritual after another hit: no hit offset (actual 0.000)
+PASS ritual after another hit: animation frame and fit remain intact
+PASS ritual after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS ritual retains latest pose
+PASS small boss shakes without flashing white
+PASS sustain after animation update: no hit offset (actual 0.000)
+PASS sustain after animation update: animation frame and fit remain intact
+PASS sustain after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS sustain after another hit: no hit offset (actual 0.000)
+PASS sustain after another hit: animation frame and fit remain intact
+PASS sustain after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS sustain after animation update: no hit offset (actual 0.000)
+PASS sustain after animation update: animation frame and fit remain intact
+PASS sustain after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS sustain after another hit: no hit offset (actual 0.000)
+PASS sustain after another hit: animation frame and fit remain intact
+PASS sustain after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS sustain after animation update: no hit offset (actual 0.000)
+PASS sustain after animation update: animation frame and fit remain intact
+PASS sustain after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS sustain after another hit: no hit offset (actual 0.000)
+PASS sustain after another hit: animation frame and fit remain intact
+PASS sustain after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS sustain after animation update: no hit offset (actual 0.000)
+PASS sustain after animation update: animation frame and fit remain intact
+PASS sustain after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS sustain after another hit: no hit offset (actual 0.000)
+PASS sustain after another hit: animation frame and fit remain intact
+PASS sustain after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS sustain after animation update: no hit offset (actual 0.000)
+PASS sustain after animation update: animation frame and fit remain intact
+PASS sustain after animation update: reduced shake keeps its world amplitude across poses/scales
+PASS small boss shakes without flashing white
+PASS sustain after another hit: no hit offset (actual 0.000)
+PASS sustain after another hit: animation frame and fit remain intact
+PASS sustain after another hit: reduced shake keeps its world amplitude across poses/scales
+PASS sustain retains latest pose
+PASS small boss shakes without flashing white
+PASS later hit after inactive pose changes: no hit offset (actual 0.000)
+PASS later hit after inactive pose changes: animation frame and fit remain intact
+PASS later hit after inactive pose changes: reduced shake keeps its world amplitude across poses/scales
+PASS visual feedback never teleports the collision body
+PASS death fade keeps the final animated pose
+WOLF_HIT_FEEDBACK checks=168 failures=0 max_visual_offset=0.000

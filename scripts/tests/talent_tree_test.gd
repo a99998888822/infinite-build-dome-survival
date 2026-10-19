@@ -61,7 +61,7 @@ func check_node_clearance() -> void:
 			var b: Control = page._nodes[keys[j]]
 			if not b.visible: continue
 			var b_regions := node_regions(keys[j])
-			var gap := 8.0 * page._density * page._zoom
+			var gap := 8.0 * page._zoom
 			var overlaps := false
 			for a_region: Rect2 in a_regions:
 				for b_region: Rect2 in b_regions:
@@ -74,7 +74,7 @@ func check_node_clearance() -> void:
 func node_regions(id: String) -> Array[Rect2]:
 	var node: Control = page._nodes[id]
 	var icon := node.get_global_rect()
-	var scale_factor := page._density * page._zoom
+	var scale_factor := page._zoom
 	var arrow := Rect2(Vector2(icon.end.x + 6 * scale_factor, icon.get_center().y - 8.5 * scale_factor), Vector2(16, 17) * scale_factor)
 	return [icon, page._node_labels[id].get_global_rect(), arrow]
 
@@ -186,7 +186,7 @@ func _run() -> void:
 	await click(page._upgrade_button.get_global_rect().get_center())
 	check(CampProgression.get_upgrade_option_level(ids.damage) == 1 and page._nodes[ids.crit].visible and not page._nodes[ids.load].visible, "arrow buys one level and reveals only immediate children")
 	check(page._summary_values.damage_percent.text.ends_with("+1"), "summary updates from real modifiers")
-	check(visible_summary_count() == 1 and page._summary_values.damage_percent.position == Vector2(16, 52) and not page._summary_empty.visible, "only acquired attribute appears at first summary row")
+	check(visible_summary_count() == 1 and page._summary_values.damage_percent.position.is_equal_approx(Vector2(26.666667, 86.666667)) and not page._summary_empty.visible, "only acquired attribute appears at first summary row")
 	check(page._node_levels[ids.damage].text == "1/10" and page._detail_effect.text == "已获得：伤害加成+1" and page._detail_next.text == "升级后：伤害加成+2", "purchase updates node level and cumulative benefit preview")
 	check(CampProgression.get_upgrade_cost(ids.damage) == 400, "next cost scales with target level")
 	check(page._upgrade_tooltip.visible and page._upgrade_tooltip_text.text == "花费 400 天赋点升级", "hover cost updates after purchase")
@@ -198,7 +198,7 @@ func _run() -> void:
 	CampProgression.set_camp_currency(10000)
 	var pan_initial := page._pan
 	drag_from(Vector2(300, 600), MOUSE_BUTTON_LEFT, Vector2(40, 30))
-	check(page._pan.is_equal_approx(pan_initial + Vector2(40, 30) / page._density) and not page._dragging, "left drag on blank space pans by pointer delta and stops on release")
+	check(page._pan.is_equal_approx(pan_initial + Vector2(40, 30)) and not page._dragging, "left drag on blank space pans by pointer delta and stops on release")
 	var pan_released := page._pan
 	var released_motion := InputEventMouseMotion.new()
 	released_motion.position = Vector2(370, 650)
@@ -211,7 +211,7 @@ func _run() -> void:
 	for target: Control in [page._summary_panel, page._detail_panel, page._reset_button, page._back_button, page._nodes[ids.damage], page._upgrade_button]:
 		var pan_start := page._pan
 		drag_from(target.get_global_rect().get_center(), MOUSE_BUTTON_RIGHT, Vector2(12, 6))
-		check(page._pan.is_equal_approx(pan_start + Vector2(12, 6) / page._density) and not page._dragging, "right drag starts over " + target.get_class())
+		check(page._pan.is_equal_approx(pan_start + Vector2(12, 6)) and not page._dragging, "right drag starts over " + target.get_class())
 	check(page.visible and page._selected_id == ids.damage and CampProgression.get_camp_currency() == currency_before_drag and page._summary_panel.get_global_rect() == summary_rect, "right drag does not activate buttons or move HUD")
 	check(not page._upgrade_tooltip.visible, "drag hides upgrade tooltip")
 	page._pan = Vector2.ZERO
@@ -227,25 +227,25 @@ func _run() -> void:
 	check(page._detail_title.text == "商店扩容选项：" and page._detail_effect.text == "已获得：商店选项+0" and page._detail_next.text == "升级后：商店选项+1" and page._detail_cost.text == "升级花费 1200天赋点", "shop detail separates obtained and next totals from node level")
 	check(page._node_levels[ids.offers].text == "0/5" and visible_summary_count() == 27 and not page._summary_values.shop_offer_count_bonus.visible, "unbought shop attribute omitted from compact summary")
 	await capture("03_expanded")
-	for zoom in [0.3, 0.6, 1.8]:
+	for zoom in [0.5, 1.0, 3.0]:
 		page._zoom = zoom
 		page._apply_view()
 		await frames()
 		check_node_clearance()
 	page.select_node("")
-	page._zoom = 0.46
-	page._pan = Vector2(-100, -10)
+	page._zoom = 0.766667
+	page._pan = Vector2(-166.666667, -16.666667)
 	page._apply_view()
 	await capture("03_overview")
 	page.select_node(ids.offers)
-	page._zoom = 0.6
+	page._zoom = 1.0
 	page._pan = Vector2.ZERO
 	page._apply_view()
 	# Pointer-anchored zoom and actual right-button drag leave HUD fixed.
 	var hud_rect := page._summary_panel.get_global_rect()
 	var center := page._tree.position
 	var zoom_before := page._zoom
-	await click(center * page._density, MOUSE_BUTTON_WHEEL_UP)
+	await click(center, MOUSE_BUTTON_WHEEL_UP)
 	check(page._zoom > zoom_before and page._summary_panel.get_global_rect() == hud_rect, "wheel zoom affects tree only")
 	var right := InputEventMouseButton.new()
 	right.position = Vector2(300, 600)
@@ -260,8 +260,8 @@ func _run() -> void:
 	right.pressed = false
 	get_viewport().push_input(right, true)
 	check(page._pan != pan_before and not page._dragging and page._summary_panel.get_global_rect() == hud_rect, "right drag pans and release stops without moving HUD")
-	page._zoom = 0.75
-	page._pan = Vector2(-120, 95)
+	page._zoom = 1.25
+	page._pan = Vector2(-200, 158.333333)
 	page._apply_view()
 	await capture("04_zoomed")
 	CampProgression.set_camp_currency(100000)
@@ -282,9 +282,9 @@ func _run() -> void:
 	page._on_reset_pressed()
 	check(not page._nodes[ids.offers].visible and page._selected_id.is_empty() and not page._detail_panel.visible, "reset hides descendants and clears hidden selection")
 	check(page._summary_values.damage_percent.text.ends_with("+4"), "reset retains building bonus")
-	check(visible_summary_count() == 1 and page._node_levels[ids.damage].text == "0/10" and page._summary_values.damage_percent.position == Vector2(16, 52), "reset removes refunded summary entries and resets node levels")
+	check(visible_summary_count() == 1 and page._node_levels[ids.damage].text == "0/10" and page._summary_values.damage_percent.position.is_equal_approx(Vector2(26.666667, 86.666667)), "reset removes refunded summary entries and resets node levels")
 	window.size = Vector2i(1152, 768)
-	window.content_scale_size = Vector2i(1152, 768)
+	window.content_scale_size = Vector2i(1920, 1080)
 	await frames(8)
 	check(page.get_global_rect().encloses(page._summary_panel.get_global_rect()) and page.get_global_rect().encloses(page._back_button.get_global_rect()), "fixed controls fit smaller viewport")
 	await capture("05_reset_small")

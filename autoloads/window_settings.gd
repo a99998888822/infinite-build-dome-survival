@@ -161,6 +161,11 @@ func _apply_window_settings(target_size: Vector2i, target_fullscreen: bool) -> v
 	var window := _get_main_window()
 	if window == null or window.is_embedded():
 		return
+	# Presets may resize the window in code; native border resizing stays disabled.
+	if not window.unresizable:
+		window.unresizable = true
+	if not window.maximize_disabled:
+		window.maximize_disabled = true
 	var target_mode := Window.MODE_FULLSCREEN if target_fullscreen else Window.MODE_WINDOWED
 	if window.mode != target_mode:
 		window.mode = target_mode

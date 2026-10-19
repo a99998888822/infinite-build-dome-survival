@@ -1,0 +1,24 @@
+{
+	"attack_0_frames": {
+		"max_ms": 198.402,
+		"median_ms": 15.542
+	},
+	"attack_1_frames": {
+		"max_ms": 21.236,
+		"median_ms": 14.886
+	},
+	"cast_0": {
+		"cpu_ms": 9.869,
+		"fired": true
+	},
+	"cast_1": {
+		"cpu_ms": 0.076,
+		"fired": false
+	},
+	"click_return_ms": 325.786,
+	"entry_frames": {
+		"max_ms": 2176.547,
+		"median_ms": 16.239
+	},
+	"entry_ms": 2908.464
+}

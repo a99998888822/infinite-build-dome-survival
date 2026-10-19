@@ -168,6 +168,9 @@ func _process_chase() -> void:
 	# it cannot begin an attack. Never steer toward a camera-relative edge.
 	if distance > attack_range() * 0.9 or not is_in_visible_combat_area(): movement = direction
 	elif distance < attack_range() * 0.3: movement = -direction
+	if not movement.is_zero_approx():
+		var destination := target_player.global_position if movement.dot(direction) > 0 else global_position + movement * attack_range()
+		movement = _bunker_route.direction(self, destination)
 	var speed := minf(get_stat("move_speed"), float(enemy_data.get("base_stats", {}).get("move_speed", 80)) * MAX_MOVE_SPEED_MULTIPLIER)
 	if _slowed_remaining > 0: speed *= _slow_multiplier
 	if _wet_remaining > 0: speed *= _wet_slow_multiplier

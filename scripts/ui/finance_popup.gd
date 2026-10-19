@@ -7,7 +7,6 @@ signal trade_choice_made(accepted: bool)
 const BACKGROUND: Texture2D = preload("res://assets/ui/finance/finance_background.png")
 var scene_background: TextureRect
 var _scene_wide := false
-var _scene_summary_back: Panel
 var _scene_bank_back: Panel
 var _scene_enchant_back: Panel
 var _scene_footer_back: Panel
@@ -123,7 +122,7 @@ func configure(next_payload: Dictionary) -> void:
 	_stock.text = L10n.text("ui.bank.shop.remaining") % [remaining, shop_grid.offers.size()]
 	_refresh.text = L10n.text("ui.bank.shop.reroll_price") % int(payload.get("refresh_cost", 0))
 	_refresh.disabled = int(payload.get("gold", 0)) < int(payload.get("refresh_cost", 0))
-	FinanceUIStyle.bank_button(_refresh)
+	FinanceUIStyle.bank_button(_refresh, false, false)
 	if bool(payload.get("strong_refresh", false)):
 		_refresh.text = "ui.bank.shop.power_reroll"
 		_refresh.add_theme_stylebox_override("normal", _refresh_glow)
@@ -140,7 +139,7 @@ func configure(next_payload: Dictionary) -> void:
 		var settlements: Array = payload.get("settlement_results", [])
 		if not settlements.is_empty() and settlements.back().has("challenge_settlement"):
 			_feedback.text = "ui.bank.challenge_deposit_done" if settlements.back().challenge_settlement.has("deposited") else "ui.challenge.settled"
-		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.MUTED)
+		FinanceUIStyle.label(_feedback, 20, FinanceUIStyle.MUTED)
 	_sync_interest_arrival()
 	_sync_live_trade()
 	loan_presentation.configure(payload.get("goblin_loan",{}))
@@ -168,7 +167,7 @@ func _on_interest_arrived(amount: int) -> void:
 	_arrival_pulse.tween_property(_summary, "modulate", Color.WHITE, 0.6)
 	if bool(interest_arrival.report.get("auto_deposit", false)):
 		_feedback.text = "ui.bank.challenge_deposit_done"
-		FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
+		FinanceUIStyle.label(_feedback, 20, FinanceUIStyle.GOLD)
 		return
 	if amount <= 0: return
 	_feedback.text = L10n.text("ui.bank.interest_received") % amount
@@ -180,7 +179,7 @@ func _on_interest_arrived(amount: int) -> void:
 				affordable = offer
 	if not affordable.is_empty():
 		_feedback.text = L10n.text("ui.bank.interest_purchase_hint") % [amount, L10n.record_text(affordable, "display_name", "ui.bank.shop.product")]
-	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GOLD)
+	FinanceUIStyle.label(_feedback, 20, FinanceUIStyle.GOLD)
 
 
 func _process(delta: float) -> void:
@@ -305,12 +304,11 @@ func _build() -> void:
 	main_panel.name = "MainPanel"
 	main_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
 	add_child(main_panel)
-	_scene_summary_back = _scene_surface("slim")
 	_scene_bank_back = _scene_surface("panel")
 	_scene_enchant_back = _scene_surface("panel")
 	_scene_footer_back = _scene_surface("slim")
-	_title = _label("ui.bank.title", main_panel, 22, FinanceUIStyle.TEXT)
-	_summary = _label("", main_panel, 13, FinanceUIStyle.GOLD)
+	_title = _label("ui.bank.title", main_panel, 37, FinanceUIStyle.TEXT)
+	_summary = _label("", main_panel, 22, FinanceUIStyle.GOLD)
 	_summary.hide()
 	_summary.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_summary.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -328,7 +326,7 @@ func _build() -> void:
 	portrait = BankCounterPortrait.new()
 	portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	main_panel.add_child(portrait)
-	_principal_protection = _label("", bank_body, 12, FinanceUIStyle.GOLD)
+	_principal_protection = _label("", bank_body, 20, FinanceUIStyle.GOLD)
 	_principal_protection.name = "PrincipalReviveStatus"
 	_principal_protection.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_principal_protection.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -351,6 +349,14 @@ func _build() -> void:
 	amount_input.add_theme_font_size_override("font_size", 12)
 	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
+	var input_focus := StyleBoxFlat.new()
+	input_focus.draw_center = false
+	input_focus.border_color = FinanceFrameSkin.PALETTE.WARM_ACTIVE
+	input_focus.set_border_width_all(1)
+	input_focus.anti_aliasing = false
+	amount_input.add_theme_stylebox_override("focus", input_focus)
+	amount_input.add_theme_color_override("caret_color", FinanceUIStyle.GOLD)
+	amount_input.add_theme_color_override("selection_color", FinanceFrameSkin.PALETTE.WARM.BORDER)
 	amount_input.add_theme_color_override("font_color", FinanceUIStyle.TEXT)
 	_bank_form.add_child(amount_input)
 	amount_input.text_submitted.connect(func(_value): _submit_bank())
@@ -363,15 +369,15 @@ func _build() -> void:
 			amount_input.text = str(floori(float(payload.get("gold" if _bank_action == "deposit" else "principal", 0)) * portion))
 			_update_bank_confirm()
 		)
-	_bank_preview = _label("", _bank_form, 12, FinanceUIStyle.GOLD)
+	_bank_preview = _label("", _bank_form, 20, FinanceUIStyle.GOLD)
 	_bank_preview.name = "PrincipalStatPreview"
 	_bank_preview.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bank_confirm = _button("ui.bank.deposit.confirm", _bank_form)
 	bank_confirm.pressed.connect(_submit_bank)
 	amount_input.text_changed.connect(func(_value): _update_bank_confirm())
-	_receipt = _label("", bank_body, 14, FinanceUIStyle.GREEN)
+	_receipt = _label("", bank_body, 23, FinanceUIStyle.GREEN)
 	_receipt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_contract = _label("", bank_body, 12, FinanceUIStyle.MUTED)
+	_contract = _label("", bank_body, 20, FinanceUIStyle.MUTED)
 	_contract.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tabs = HBoxContainer.new()
 	_tabs.add_theme_constant_override("separation", 8)
@@ -392,7 +398,7 @@ func _build() -> void:
 	shop_grid.preview_cleared.connect(func():
 		if flow != null: flow.clear_stat_preview()
 	)
-	_stock = _label("", _shop, 12, FinanceUIStyle.MUTED)
+	_stock = _label("", _shop, 20, FinanceUIStyle.MUTED)
 	_refresh = _button("ui.common.reroll", _shop)
 	_refresh.pressed.connect(_refresh_shop)
 	_enchant_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
@@ -416,11 +422,11 @@ func _build() -> void:
 	main_panel.add_child(specialization_panel)
 	specialization_panel.purchase_requested.connect(_buy_specialization)
 	specialization_panel.hide()
-	_feedback = _label("", main_panel, 12, FinanceUIStyle.MUTED)
+	_feedback = _label("", main_panel, 20, FinanceUIStyle.MUTED)
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_feedback.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	start_button = _button("ui.bank.next_wave", main_panel)
-	FinanceUIStyle.bank_button(start_button, true)
+	FinanceUIStyle.bank_button(start_button, true, false)
 	start_button.pressed.connect(func():
 		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
 	)
@@ -435,6 +441,7 @@ func _build() -> void:
 	GameTooltipLayer.for_owner(main_panel).add_child(_tooltip)
 	_tooltip_text = RichTextLabel.new()
 	_tooltip_text.bbcode_enabled = true
+	_tooltip_text.add_theme_color_override("default_color", FinanceUIStyle.TEXT)
 	_tooltip_text.scroll_active = false
 	_tooltip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	GameTooltipLayer.apply_pixel_text(_tooltip_text)
@@ -464,11 +471,11 @@ func _build_sale_dialog() -> void:
 	_sale_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	main_panel.add_child(_sale_layer)
 	var dimmer := ColorRect.new()
-	dimmer.color = Color(0.025, 0.04, 0.03, 0.88)
+	dimmer.color = Color(FinanceFrameSkin.PALETTE.SHADOW, 0.88)
 	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_sale_layer.add_child(dimmer)
 	_sale_box = PanelContainer.new()
-	_sale_box.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 18))
+	_sale_box.add_theme_stylebox_override("panel", FinanceFrameSkin.box("dialog", 20))
 	_sale_layer.add_child(_sale_box)
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 12)
@@ -480,23 +487,34 @@ func _build_sale_dialog() -> void:
 	_sale_icon.custom_minimum_size = Vector2(44, 44)
 	_sale_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_sale_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	sale_heading.add_child(_sale_icon)
-	_label("ui.bank.sale.confirm", sale_heading, 20, FinanceUIStyle.GOLD)
+	var icon_well := PanelContainer.new()
+	icon_well.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot", 6))
+	sale_heading.add_child(icon_well)
+	icon_well.add_child(_sale_icon)
+	_label("ui.bank.sale.confirm", sale_heading, 26, FinanceUIStyle.TEXT)
+	var details := PanelContainer.new()
+	details.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	details.add_theme_stylebox_override("panel", FinanceFrameSkin.box("input", 12))
+	body.add_child(details)
 	_sale_text = RichTextLabel.new()
 	_sale_text.bbcode_enabled = true
 	_sale_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_sale_text.add_theme_color_override("default_color", FinanceUIStyle.TEXT)
-	_sale_text.add_theme_font_size_override("normal_font_size", 14)
-	body.add_child(_sale_text)
+	_sale_text.add_theme_font_size_override("normal_font_size", 16)
+	_sale_text.add_theme_constant_override("line_separation", 3)
+	FinanceFrameSkin.scrollbar(_sale_text.get_v_scroll_bar())
+	details.add_child(_sale_text)
 	_sale_items = HBoxContainer.new()
 	_sale_items.add_theme_constant_override("separation", 8)
 	body.add_child(_sale_items)
 	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 12)
 	body.add_child(actions)
 	var cancel := _button("ui.common.cancel", actions)
 	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cancel.pressed.connect(func(): _sale_layer.hide())
 	_sale_confirm = _button("ui.bank.sale.confirm", actions)
+	FinanceUIStyle.bank_button(_sale_confirm, true)
 	_sale_confirm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_sale_confirm.pressed.connect(_confirm_sale)
 	_sale_layer.hide()
@@ -514,7 +532,6 @@ func _layout() -> void:
 	_scene_wide = FinanceSceneLayout.supports(get_viewport_rect().size)
 	portrait.background_counter = _scene_wide
 	_summary.hide()
-	_scene_summary_back.hide()
 	for panel in [_scene_bank_back, _scene_enchant_back, _scene_footer_back]:
 		panel.visible = _scene_wide
 	if _scene_wide:
@@ -531,7 +548,7 @@ func _layout() -> void:
 	var footer_bottom := h-loan_space
 	_compact = w < 700
 	var short_window := get_viewport().get_visible_rect().size.y < 480
-	FinanceUIStyle.label(_title, 18 if short_window else 22)
+	FinanceUIStyle.label(_title, 30 if short_window else 37)
 	_place(_title, Rect2(20, 6 if short_window else 12, w - 40, 26 if short_window else 30))
 	var body_y := 36.0 if short_window else 48.0
 	if short_window and loan_space>0 and _compact:
@@ -586,7 +603,7 @@ func _layout() -> void:
 	_place(start_button, Rect2(w - 154, footer_bottom - 38 if short_window else footer_bottom - 50, 134, 30 if short_window else 36))
 	_place(economy_log, Rect2(Vector2.ZERO, main_panel.size))
 	economy_log.apply_finance_layout(Rect2(20, body_y, w - 40, body_bottom - body_y), Rect2(20, start_button.position.y, 52, start_button.size.y))
-	var sale_size := Vector2(minf(420, w - 32), minf(360, h - 32))
+	var sale_size := Vector2(minf(560, w - 32), minf(440, h - 32))
 	_place(_sale_box, Rect2((Vector2(w, h) - sale_size) * 0.5, sale_size))
 	if not _compact and _active_tab == "bank": _active_tab = "shop"
 	_select_tab(_active_tab)
@@ -759,7 +776,7 @@ func _open_sale(kind: String, id: String) -> void:
 		child.queue_free()
 	_sale_items.visible = kind == "weapon" and not (_quote.get("returned_ids", []) as Array).is_empty()
 	if _sale_items.visible:
-		_label("ui.bank.return_to_inventory", _sale_items, 12, FinanceUIStyle.MUTED)
+		_label("ui.bank.return_to_inventory", _sale_items, 20, FinanceUIStyle.MUTED)
 		for returned_id in _quote.get("returned_ids", []):
 			var returned_item := flow.get_bound_player().item_inventory.find_item(str(returned_id))
 			var icon := TextureRect.new()
@@ -768,7 +785,10 @@ func _open_sale(kind: String, id: String) -> void:
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.texture = FinanceUIStyle.item_icon(str(returned_item.get("icon", "")))
 			icon.tooltip_text = L10n.source(str(returned_item.get("display_name", "")))
-			_sale_items.add_child(icon)
+			var well := PanelContainer.new()
+			well.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot", 4))
+			_sale_items.add_child(well)
+			well.add_child(icon)
 	var lines: Array[String] = ["[b]%s[/b]" % L10n.source(str(_quote.get("display_name", "")))]
 	if kind == "weapon":
 		lines.append(L10n.text("ui.bank.sale.weapon_breakdown") % [int(_quote.get("level", 1)), int(_quote.get("base_value", 0)), int(_quote.get("upgrade_value", 0))])
@@ -782,7 +802,7 @@ func _open_sale(kind: String, id: String) -> void:
 		lines.append(detail._build_tooltip(false))
 		detail.free()
 	lines.append(HumanityEconomy.sale_tooltip(_quote))
-	lines.append(L10n.text("ui.bank.sale.proceeds") % int(_quote.get("total", 0)))
+	lines.append("[color=#%s]%s[/color]" % [FinanceUIStyle.GOLD.to_html(false), L10n.text("ui.bank.sale.proceeds") % int(_quote.get("total", 0))])
 	_sale_text.text = "\n\n".join(lines)
 	_sale_text.scroll_to_line(0)
 	_sale_confirm.text = L10n.text("ui.bank.sale.price") % int(_quote.get("total", 0))
@@ -829,7 +849,7 @@ func _fit_tooltip(mouse: Vector2) -> void:
 
 func _feedback_message(message: String, success: bool) -> void:
 	_feedback.text = message
-	FinanceUIStyle.label(_feedback, 12, FinanceUIStyle.GREEN if success else Color("e1a184"))
+	FinanceUIStyle.label(_feedback, 20, FinanceUIStyle.GREEN if success else Color("e1a184"))
 	if get_viewport().get_visible_rect().size.y < 480:
 		# The removed summary no longer reserves a notification row above tabs.
 		_place(_feedback, Rect2(84, start_button.position.y + 4, maxf(40, start_button.position.x - 92), 22))

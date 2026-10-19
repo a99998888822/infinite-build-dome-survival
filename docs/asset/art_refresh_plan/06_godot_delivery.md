@@ -72,8 +72,8 @@ artifacts/previews/art_refresh_v1/<batch>/r01/
 
 - 银行：`ui/finance/goblin_banker_states.png`，1280×256，横排五表情。
 - 结算：`ui/settlement/goblin_reactions.png`，1024×1024；四行对应表情索引 `[4,2,3,1]`，每行四帧上下位移 `[0,-2,0,2]`。头顶/底部必须留出这2px活动余量，显示缩放后维持原有呼吸幅度。
-- 柜台：`ui/finance/bank_counter_desk_picxel.png`，128×64，单独导出，不能压扁方形图。
-- `scripts/ui/bank_counter_portrait.gd` 当前人物接触点 `(64,119)`、桌面接触线 y=24、桌底 y=56、人物相对比例0.60；重绘后观察手是否真实搭在桌沿上。五张人物保持同一身体尺度，标准流程逐图自动紧裁可能破坏接触线，需在最终组装前统一画布与锚点。
+- 独立柜台：2026-10-19 已按用户要求删除，不再交付。结算、理财小窗口和下一波挑战只使用人物立绘。
+- `scripts/ui/bank_counter_portrait.gd` 保留现有立绘布局锚点与宽屏背景定位。五张人物保持同一身体尺度，标准流程逐图自动紧裁可能破坏接触线，需在最终组装前统一画布与锚点。
 
 ### UI与首页
 

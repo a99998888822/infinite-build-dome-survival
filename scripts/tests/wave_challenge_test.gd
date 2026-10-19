@@ -93,9 +93,9 @@ func _open(id: String) -> void:
 
 
 func _check_header_layout(stage: String) -> void:
-	var title := ui.presentation._title.get_global_rect()
-	var body := ui.presentation._body_scroll.get_global_rect()
-	check(title.size.y <= 28 and title.end.y + 12 <= body.position.y, "challenge header clear of terms: " + stage)
+	var title := ui.presentation._title.get_rect()
+	var body := ui.presentation._body_scroll.get_rect()
+	check(title.size.y >= ui.presentation._title.get_minimum_size().y and title.end.y + 12 <= body.position.y, "challenge header fits text and clears terms: " + stage)
 
 
 func _capture(name: String) -> void:
@@ -150,7 +150,8 @@ func _test_flow() -> void:
 	get_tree().root.size = Vector2i(640, 360)
 	get_tree().root.content_scale_size = Vector2i(640, 360)
 	await frames()
-	check(ui.portrait.get_rect().position.y >= 0 and ui._back.get_rect().end.y <= 360 and ui.presentation._card.get_rect().end.x <= 640, "compact screen keeps portrait card and navigation inside viewport")
+	var viewport_rect := get_tree().root.get_visible_rect()
+	check(viewport_rect.encloses(ui.portrait.get_global_rect()) and viewport_rect.encloses(ui._back.get_global_rect()) and viewport_rect.encloses(ui.presentation._card.get_global_rect()), "compact screen keeps portrait card and navigation inside viewport")
 	_check_header_layout("compact viewport")
 	check((ui.get_parent() as CanvasLayer).layer > (game.find_child("HUD", true, false) as BattleHud).layer, "challenge sits above the stats drawer on every screen size")
 	await _capture("04_compact")

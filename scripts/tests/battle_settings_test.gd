@@ -36,13 +36,13 @@ func click(control: Control) -> void:
 	var position := control.get_global_transform_with_canvas() * (control.size * 0.5)
 	var motion := InputEventMouseMotion.new()
 	motion.position = position
-	Input.parse_input_event(motion)
+	get_viewport().push_input(motion, true)
 	for down in [true, false]:
 		var event := InputEventMouseButton.new()
 		event.position = position
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = down
-		Input.parse_input_event(event)
+		get_viewport().push_input(event, true)
 		await frames(2)
 
 func escape() -> void:
@@ -51,7 +51,7 @@ func escape() -> void:
 		event.keycode = KEY_ESCAPE
 		event.physical_keycode = KEY_ESCAPE
 		event.pressed = down
-		Input.parse_input_event(event)
+		get_viewport().push_input(event, true)
 		await frames(2)
 
 func capture(name: String) -> void:
@@ -99,7 +99,7 @@ func _run() -> void:
 	await frames(12)
 	get_tree().root.mode = Window.MODE_WINDOWED
 	get_tree().root.size = Vector2i(1280, 720)
-	get_tree().root.content_scale_size = Vector2i(1280, 720)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	flow = game.get_main_flow_coordinator()
 	flow.enter_battle_selection("character_void_hunter", ["weapon_void_blade"])
 	await frames()
@@ -198,7 +198,7 @@ func _run() -> void:
 func _test_review_layout() -> void:
 	await click(hud.settings_button)
 	var view := overlay._settings_view
-	check(view.size == Vector2(952, 562) and view.basic_settings.visible, "production panel matches approved 952 by 562 layout")
+	check(view.size.is_equal_approx(Vector2(1586.666667, 936.666667)) and view.scale == Vector2.ONE and view.basic_settings.visible, "production panel retains approved bounds in native coordinates")
 	await capture("08_review_basic")
 	await click(view.tabs[1])
 	check(view.combat_settings.visible and view.mode_buttons.size() == 2, "combat settings use two movement cards")
@@ -217,16 +217,16 @@ func _test_review_layout() -> void:
 	await capture("10_review_keyboard_quick")
 	for viewport_size in [Vector2i(1024, 576), Vector2i(960, 540)]:
 		get_tree().root.size = viewport_size
-		get_tree().root.content_scale_size = viewport_size
+		get_tree().root.content_scale_size = Vector2i(1920, 1080)
 		await frames(10)
-		check(Rect2(Vector2.ZERO, Vector2(viewport_size)).encloses(view.get_global_rect()), "settings panel stays inside small viewport")
+		check(view.get_viewport_rect().encloses(view.get_global_rect()), "settings panel stays inside logical viewport at small window sizes")
 		check(view.get_global_rect().encloses(view.return_button.get_global_rect()) and view.get_global_rect().encloses(view.menu_button.get_global_rect()), "both return buttons remain accessible")
 		view.content_scroll.scroll_vertical = 1000
 		await frames(5)
 		check(view.content_scroll.get_global_rect().encloses(view._key_descriptions.back().get_global_rect()), "scroll reaches final operation row at small resolution")
 		await capture("11_review_%d" % viewport_size.x)
 	get_tree().root.size = Vector2i(1280, 720)
-	get_tree().root.content_scale_size = Vector2i(1280, 720)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	await frames(8)
 	CombatSettings.set_option("show_hints", true, false)
 	await escape()

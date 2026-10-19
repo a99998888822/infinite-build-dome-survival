@@ -66,15 +66,15 @@ func cancel() -> void:
 
 func _collect_victims() -> Array[EnemyController]:
 	var victims: Array[EnemyController] = []
+	var axes := Vector2(blast_radius, blast_radius * (AttackFootprint.ELLIPSE_RATIO if elliptical_blast else 1.0)).max(Vector2.ONE)
+	var footprint := AttackFootprint.ellipse_shape(axes)
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if enemy == null or not enemy.is_alive() or not enemy.is_inside_tree():
 			continue
 		if excluded_target_ids.has(enemy.get_instance_id()):
 			continue
-		var offset := enemy.global_position - target_position
-		var axes := Vector2(blast_radius, blast_radius * (AttackFootprint.ELLIPSE_RATIO if elliptical_blast else 1.0)).max(Vector2.ONE)
-		if (offset / axes).length_squared() > 1.0:
+		if not AttackFootprint.body_overlaps(footprint, Transform2D(0, target_position), enemy):
 			continue
 		victims.append(enemy)
 	return victims

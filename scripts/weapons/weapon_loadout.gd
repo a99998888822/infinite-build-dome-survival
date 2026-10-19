@@ -19,6 +19,7 @@ var finance_system: BattleFinanceSystem = null
 var weapon_instances: Array[WeaponInstance] = []
 var targeting_service: TargetingService = null
 var _projectile_sequence: int = 0
+var _weapon_textures: Dictionary = {}
 var _ritual_domains: Dictionary = {}
 var _directed_runtimes: Dictionary = {}
 var active_combat_enabled := false
@@ -52,6 +53,7 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	owner_player = player
 	finance_system = bank
 	weapon_instances.clear()
+	_weapon_textures.clear()
 	if owner_player == null:
 		push_error("[WeaponLoadout] missing owner player.")
 		return false
@@ -340,6 +342,7 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 			if not weapon.attach_item_instance(starting_item):
 				owner_player.item_inventory.clear_equipped_weapon(str(starting_item.get("item_instance_id", "")))
 	weapon_instances.append(weapon)
+	_load_weapon_texture(weapon, "projectile_texture")
 	weapon_equipped.emit(weapon_id)
 	_notify_loadout_changed()
 	return true
@@ -621,9 +624,12 @@ func _load_weapon_texture(weapon: WeaponInstance, field_name: String) -> Texture
 	if weapon == null:
 		return null
 	var texture_path := str(weapon.weapon_data.get(field_name, ""))
+	if _weapon_textures.has(texture_path):
+		return _weapon_textures[texture_path]
 	if texture_path.is_empty() or not ResourceLoader.exists(texture_path):
 		return null
 	var resource := load(texture_path)
+	_weapon_textures[texture_path] = resource as Texture2D
 	return resource as Texture2D
 
 

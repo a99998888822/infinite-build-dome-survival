@@ -14,6 +14,9 @@ var white_material: ShaderMaterial
 var original_material: Material
 var flash_white := false
 var _pulse_frame := -1
+var _pulse_offset := Vector2.ZERO
+var _pulse_transform := Transform2D.IDENTITY
+var _pulse_material: Material
 
 
 func _ready() -> void:
@@ -24,8 +27,16 @@ func _ready() -> void:
 
 func pulse(allow_white: bool) -> void:
 	if not is_instance_valid(sprite): return
+	var frame := Engine.get_process_frames()
+	# Repeated contacts in one frame restart the same pose. Avoid resubmitting
+	# identical offsets/material uniforms, but respect animation or material edits
+	# made between damage callbacks. Damage and its signals remain synchronous.
+	if frame == _pulse_frame and elapsed == 0.0 and flash_white == allow_white and is_processing() \
+			and sprite.offset == _pulse_offset and sprite.global_transform == _pulse_transform \
+			and sprite.material == _pulse_material:
+		return
 	elapsed = 0.0
-	_pulse_frame = Engine.get_process_frames()
+	_pulse_frame = frame
 	flash_white = allow_white
 	if flash_white:
 		if white_material == null:
@@ -36,6 +47,9 @@ func pulse(allow_white: bool) -> void:
 		sprite.material = white_material
 	set_process(true)
 	_sync()
+	_pulse_offset = sprite.offset
+	_pulse_transform = sprite.global_transform
+	_pulse_material = sprite.material
 
 
 func _process(delta: float) -> void:
@@ -63,6 +77,9 @@ func _sync() -> void:
 
 
 func reset() -> void:
+	var actor := get_parent()
+	if actor != null and actor.has_method("_cancel_pending_hit_visual"):
+		actor._cancel_pending_hit_visual()
 	if is_instance_valid(sprite):
 		sprite.offset -= applied_offset
 		if sprite.material == white_material and white_material != null:

@@ -1,0 +1,30 @@
+{
+	"body": {
+		"bounds": "[P: (-30.6, -12.0), S: (60.0, 26.40001)]",
+		"kind": "CapsuleShape2D",
+		"offset": "(-0.6, 1.2)"
+	},
+	"fire_at_55": {
+		"burning": true,
+		"radius": 30.0
+	},
+	"ice_at_70": 9975,
+	"lethal_spark_hp": [
+		0,
+		9760,
+		9820
+	],
+	"lethal_spark_settled_hp": [
+		0,
+		9760,
+		9820
+	],
+	"wind": {
+		"area_scale": 1.15,
+		"area_size": 0.0,
+		"base_weapon_radius": 17.0,
+		"lifetime": 0.46,
+		"radius": 19.55,
+		"speed": 480.0
+	}
+}

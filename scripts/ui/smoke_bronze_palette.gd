@@ -1,0 +1,25 @@
+extends RefCounted
+## Shared colors and pixel textures for the approved talent and settings HUDs.
+
+const BACKDROP := Color("211e1b")
+const PANEL_FILL := Color("2c2722")
+const NODE_FILL := Color("342d26")
+const SHADOW := Color("14120f")
+const BORDER := Color("715b44")
+const METAL := Color("95764f")
+const BRONZE := Color("b88c5c")
+const TEXT := Color("d6c5a8")
+const MUTED := Color("998e80")
+const ACTIVE := Color("c7ad82")
+const ACTIVE_MID := Color("a48b62")
+const LINE_ACTIVE := Color("827052")
+const LINE_IDLE := Color("4c4338")
+
+const NODE = preload("res://assets/ui/hud/smoke_bronze/node_idle.png")
+const NODE_LOCKED = preload("res://assets/ui/hud/smoke_bronze/node_locked.png")
+const NODE_SELECTED = preload("res://assets/ui/hud/smoke_bronze/node_selected.png")
+const BUTTON = preload("res://assets/ui/hud/smoke_bronze/button.png")
+const BUTTON_SELECTED = preload("res://assets/ui/hud/smoke_bronze/button_hover.png")
+const FRAME = preload("res://assets/ui/hud/smoke_bronze/panel.png")
+const FRAME_SELECTED = preload("res://assets/ui/hud/smoke_bronze/panel_selected.png")
+const UPGRADE_ARROW = preload("res://assets/ui/hud/smoke_bronze/upgrade_arrow.png")

@@ -7,17 +7,27 @@ const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.g
 const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 const WEAPON_DRAG_TYPE := "esc_weapon_reorder"
 
+@export var slot_size: int = 44
+@export var icon_size: int = 34
+@export var load_font_size: int = 16
+@export var icon_slot_theme: Theme
+@export var cast_mode_icon_size: float = WeaponCastModeIcon.ICON_SIZE
+
 class ReorderButton extends Button:
 	var direction := 1
 	func _draw() -> void:
 		var center := (size * 0.5).round()
 		var color := Color("666b56") if disabled else Color("dec48a")
+		var shadow := Color("10180f")
+		if has_theme_color("reorder_color"):
+			color = get_theme_color("reorder_hover_color" if is_hovered() else "reorder_color")
+			shadow = get_theme_color("reorder_shadow")
 		var points := PackedVector2Array([
 			center + Vector2(direction * 3, 0),
 			center + Vector2(-direction * 3, -4),
 			center + Vector2(-direction * 3, 4)])
 		# A dark one-pixel edge keeps the small corner mark readable over art.
-		draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[0]]), Color("10180f"), 2.0)
+		draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[0]]), shadow, 2.0)
 		draw_colored_polygon(points, color)
 
 var _loadout: WeaponLoadout = null
@@ -25,6 +35,7 @@ var _weapon_buttons: Array[Button] = []
 var _cast_mode_buttons: Array[WeaponCastModeIcon] = []
 var _cast_mode_layer: Control
 var _automation_editing_enabled := false
+var _reordering_enabled := false
 var _selected_weapon_id := ""
 var _reorder_buttons: Array[Dictionary] = []
 var _drag_scroll_remainder := 0.0
@@ -45,6 +56,8 @@ var _tooltip_mouse_position := Vector2.ZERO
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_weapon_strip)
+	if load_label != null:
+		load_label.add_theme_font_size_override("font_size", load_font_size)
 	_cast_mode_layer = Control.new()
 	_cast_mode_layer.name = "CastModesBelowFrame"
 	_cast_mode_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -67,7 +80,7 @@ func _ready() -> void:
 	_build_attachment_tooltip()
 
 
-func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false) -> void:
+func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false, allow_reordering: bool = false) -> void:
 	if _loadout != null and _loadout.loadout_changed.is_connected(_on_loadout_changed):
 		_loadout.loadout_changed.disconnect(_on_loadout_changed)
 	if _loadout != null and _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
@@ -75,6 +88,7 @@ func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false,
 	_loadout = loadout
 	_attachment_editing_enabled = allow_attachment_editing
 	_automation_editing_enabled = allow_automation_editing
+	_reordering_enabled = allow_reordering or allow_automation_editing
 	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
 	if _loadout != null:
@@ -101,9 +115,12 @@ func _make_reorder_button(weapon_id: String, direction: int) -> ReorderButton:
 	arrow.focus_mode = Control.FOCUS_NONE
 	arrow.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	arrow.tooltip_text = "向左移动一位" if direction < 0 else "向右移动一位"
+	if icon_slot_theme != null:
+		arrow.theme = icon_slot_theme
 	arrow.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	for state in ["hover", "pressed"]:
-		arrow.add_theme_stylebox_override(state, FinanceUIStyle.box("394336", "8c7b4c", 0))
+		var feedback := arrow.get_theme_stylebox("reorder_hover") if icon_slot_theme != null else FinanceUIStyle.box("394336", "8c7b4c", 0)
+		arrow.add_theme_stylebox_override(state, feedback)
 	arrow.pressed.connect(_move_weapon.bind(weapon_id, direction))
 	arrow.mouse_entered.connect(_hide_weapon_tooltip)
 	return arrow
@@ -114,7 +131,7 @@ func _select_weapon(weapon_id: String) -> void:
 
 
 func _move_weapon(weapon_id: String, direction: int) -> void:
-	if not _automation_editing_enabled or _loadout == null: return
+	if not _reordering_enabled or _loadout == null: return
 	_hide_weapon_tooltip()
 	_selected_weapon_id = weapon_id
 	if _loadout.move_weapon(weapon_id, direction):
@@ -122,7 +139,7 @@ func _move_weapon(weapon_id: String, direction: int) -> void:
 
 
 func _get_weapon_drag_data(_at_position: Vector2, button: WeaponSlotButton) -> Variant:
-	if not _automation_editing_enabled or _loadout == null or _weapon_buttons.size() < 2:
+	if not _reordering_enabled or _loadout == null or _weapon_buttons.size() < 2:
 		return null
 	if button.weapon == null or not _loadout.has_weapon(button.weapon.weapon_id):
 		return null
@@ -146,7 +163,7 @@ func _get_weapon_drag_data(_at_position: Vector2, button: WeaponSlotButton) -> V
 
 
 func _is_weapon_drag_data(data: Variant) -> bool:
-	return _automation_editing_enabled and _loadout != null and data is Dictionary \
+	return _reordering_enabled and _loadout != null and data is Dictionary \
 		and data.get("type") == WEAPON_DRAG_TYPE and data.get("loadout") == _loadout \
 		and _loadout.has_weapon(str(data.get("weapon_id", "")))
 
@@ -231,9 +248,12 @@ func _refresh_weapon_strip() -> void:
 		if button == null:
 			continue
 		button.configure(weapon, _attachment_editing_enabled)
-		button.custom_minimum_size = Vector2(44.0, 44.0)
+		button.custom_minimum_size = Vector2.ONE * slot_size
 		button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		button.flat = true
+		if icon_slot_theme != null:
+			button.theme = icon_slot_theme
+			button.flat = false
 		button.text = ""
 		button.tooltip_text = ""
 		var icon_path := str(weapon.weapon_data.get("icon", ""))
@@ -243,15 +263,15 @@ func _refresh_weapon_strip() -> void:
 				button.icon = texture
 				button.expand_icon = true
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-				button.add_theme_constant_override("icon_max_width", 34)
+				button.add_theme_constant_override("icon_max_width", icon_size)
 				ItemIconArt.bind_button(button, texture, 32.0)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
-		if _automation_editing_enabled:
+		if _reordering_enabled:
 			button.set_drag_forwarding(_get_weapon_drag_data.bind(button), _can_drop_weapon.bind(button), _drop_weapon.bind(button))
 			var group := MarginContainer.new()
 			group.name = "Weapon_" + weapon.weapon_id
-			group.custom_minimum_size = Vector2(44, 44)
+			group.custom_minimum_size = Vector2.ONE * slot_size
 			group.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 			group.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			weapon_list.add_child(group)
@@ -265,15 +285,21 @@ func _refresh_weapon_strip() -> void:
 				arrows.right = _make_reorder_button(weapon.weapon_id, 1)
 				button.add_child(arrows.right)
 			_reorder_buttons.append(arrows)
-			button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+			if icon_slot_theme == null:
+				button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 			button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
+		else:
+			weapon_list.add_child(button)
+		if _automation_editing_enabled:
 			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
-			mode.configure(weapon, true, (get_node("StripPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color)
+			mode.icon_extent = cast_mode_icon_size
+			mode.theme = icon_slot_theme
+			var panel_style: StyleBox = get_node("StripPanel").get_theme_stylebox("panel")
+			var frame_color: Color = panel_style.bg_color if panel_style is StyleBoxFlat else Color("05080a")
+			mode.configure(weapon, true, frame_color)
 			_cast_mode_layer.add_child(mode)
 			mode.mouse_entered.connect(_hide_weapon_tooltip)
 			_cast_mode_buttons.append(mode)
-		else:
-			weapon_list.add_child(button)
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
 	_layout_cast_mode_icons.call_deferred()
@@ -291,11 +317,11 @@ func _layout_cast_mode_icons() -> void:
 	var panel := get_node("StripPanel") as Control
 	# Center the glyph on the bottom border without changing the original frame.
 	# Clip only horizontally to the visible weapon row, and follow its scrolling.
-	_cast_mode_layer.position = Vector2(scroll.global_position.x - global_position.x, panel.position.y + panel.size.y - 1 - WeaponCastModeIcon.ICON_SIZE * 0.5)
-	_cast_mode_layer.size = Vector2(scroll.size.x, WeaponCastModeIcon.ICON_SIZE)
+	_cast_mode_layer.position = Vector2(scroll.global_position.x - global_position.x, panel.position.y + panel.size.y - 1 - cast_mode_icon_size * 0.5)
+	_cast_mode_layer.size = Vector2(scroll.size.x, cast_mode_icon_size)
 	for i in _cast_mode_buttons.size():
 		var mode := _cast_mode_buttons[i]
-		mode.size = Vector2(28, WeaponCastModeIcon.ICON_SIZE)
+		mode.size = Vector2(maxf(28, cast_mode_icon_size + 8), cast_mode_icon_size)
 		mode.position = Vector2(roundf(_weapon_buttons[i].get_global_rect().get_center().x - _cast_mode_layer.global_position.x - mode.size.x * 0.5), 0)
 
 
@@ -370,10 +396,15 @@ func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserv
 	var viewport_rect := get_viewport_rect()
 	var target := Vector2.ZERO
 	if anchor_button != null:
-		target = anchor_button.global_position + Vector2(0, anchor_button.size.y - 2)
-		if _automation_editing_enabled:
+		# The tooltip lives on an unscaled canvas layer; use the displayed bounds.
+		var anchor_rect := anchor_button.get_global_rect()
+		target = Vector2(anchor_rect.position.x, anchor_rect.end.y - 2)
+		if _automation_editing_enabled and not _attachment_editing_enabled:
+			# Reward details start below the cast controls so every button stays usable.
+			target.y = maxf(target.y, _cast_mode_layer.get_global_rect().end.y + 2)
+		elif _automation_editing_enabled:
 			# Keep the mode button clear, and keep an unbroken path into item details.
-			target = anchor_button.global_position + Vector2(anchor_button.size.x - 2, 0)
+			target = Vector2(anchor_rect.end.x - 2, anchor_rect.position.y)
 			if target.x + weapon_tooltip.size.x > viewport_rect.size.x:
 				target.x = maxf(0, anchor_button.global_position.x - weapon_tooltip.size.x + 2)
 	if target.x + weapon_tooltip.size.x > viewport_rect.size.x:

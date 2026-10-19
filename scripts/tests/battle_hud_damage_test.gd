@@ -15,6 +15,7 @@ var player: PlayerController
 
 
 func _ready() -> void:
+	WindowSettings._startup_applied = true
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-dir="):
 			capture_dir = argument.trim_prefix("--capture-dir=")
@@ -41,6 +42,7 @@ func check(ok: bool, label: String) -> void:
 
 
 func _run() -> void:
+	CampProgression.begin_transient_session()
 	seed(250925)
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
@@ -48,7 +50,7 @@ func _run() -> void:
 	await frames(12)
 	get_tree().root.mode = Window.MODE_WINDOWED
 	get_tree().root.size = Vector2i(1152, 648)
-	get_tree().root.content_scale_size = Vector2i(1152, 648)
+	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	flow = game.get_main_flow_coordinator()
 	flow.enter_battle_selection("character_void_hunter", [BLADE])
 	await frames()
@@ -122,7 +124,7 @@ func _run() -> void:
 	for label: Label in hud._stat_value_labels.values():
 		if scroll_rect.encloses(label.get_global_rect()):
 			visible_values += 1
-	check(visible_values >= 22 and is_equal_approx(hud.stats_drawer.size.x, 320), "compact single-column drawer retains original width and shows more attributes")
+	check(visible_values >= 22 and is_equal_approx(hud.stats_drawer.size.x, 480), "native single-column drawer retains its approved width and visible attributes")
 	check(hud._weapon_damage_meter.position.y >= hud._vitals_frame.get_rect().end.y, "damage meter is below vitals")
 	hud._performance_line.refresh()
 	# The accepted compact HUD uses 6px gaps. Guard separation without forcing
@@ -140,6 +142,7 @@ func _run() -> void:
 	game.queue_free()
 	await frames(8)
 	await get_tree().create_timer(0.4).timeout
+	CampProgression.end_transient_session()
 	get_tree().quit(0 if failures == 0 else 1)
 
 
@@ -173,19 +176,20 @@ func _test_vitals_tween_replacement() -> void:
 	var original_max := player.get_stat("max_hp")
 	var original_hp := player.current_hp
 	player.modifier_stack.set_base_stat("max_hp", 48)
-	player.current_hp = 48
+	var full_hp := int(player.get_stat("max_hp"))
+	player.current_hp = full_hp
 	hud._sync_vitals(false)
-	player.current_hp = 36
+	player.current_hp = int(full_hp * 0.75)
 	hud._sync_vitals(true)
-	player.current_hp = 48
+	player.current_hp = full_hp
 	hud._sync_vitals(true)
-	check(hud.hp_label.text == "48/48" and is_equal_approx(hud.hp_bar.value, 100), "full HP label and red bar agree immediately after same-frame damage and heal")
+	check(hud.hp_label.text == "%d/%d" % [full_hp, full_hp] and is_equal_approx(hud.hp_bar.value, 100), "full HP label and red bar agree immediately after same-frame damage and heal")
 	await get_tree().create_timer(0.3).timeout
 	check(is_equal_approx(hud.hp_bar.value, 100), "obsolete damage tween cannot lower the healed bar later")
-	player.current_hp = 24
+	player.current_hp = int(full_hp * 0.5)
 	hud._sync_vitals(true)
 	await get_tree().create_timer(0.08).timeout
-	player.current_hp = 48
+	player.current_hp = full_hp
 	hud._sync_vitals(true)
 	check(is_equal_approx(hud.hp_bar.value, 100), "healing during a running tween fills the bar immediately")
 	await get_tree().create_timer(0.3).timeout
@@ -198,6 +202,9 @@ func _test_vitals_tween_replacement() -> void:
 func _capture_live_combat() -> void:
 	DirAccess.make_dir_recursive_absolute(capture_dir)
 	# Exercise the shipped weapons and enchantment in a real rendered battle.
+	# The fixture must not inherit a user's manual-only cast preferences.
+	for weapon in battle.loadout.get_weapon_instances():
+		CombatSettings.set_weapon_auto_cast(weapon.weapon_id, true, false)
 	player._invincibility_timer = 100.0
 	var purse := battle.loadout.get_weapon_instance(PURSE)
 	check(purse.attach_item_instance({"item_instance_id": "capture_fire", "base_item_id": "scroll_fire",

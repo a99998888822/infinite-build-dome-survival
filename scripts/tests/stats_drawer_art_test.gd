@@ -104,8 +104,8 @@ func _run() -> void:
 	popup.cancel_trade("art_test")
 	popup._select_tab("shop")
 	check(popup.visible and hud.is_stats_drawer_open() and not hud.drawer_toggle_button.disabled, "finance opens stats with an active close arrow")
-	check(popup.start_button.get_theme_stylebox("normal") is StyleBoxTexture and popup.start_button.get_theme_stylebox("normal").texture == FinanceFrameSkin.TEXTURES.selected, "approved clean finance button texture")
-	check(popup._tab_buttons.shop.get_theme_stylebox("normal") is StyleBoxTexture and popup._tab_buttons.shop.get_theme_stylebox("normal").texture == FinanceFrameSkin.TEXTURES.selected, "approved clean finance tab texture")
+	check(popup.start_button.get_theme_stylebox("normal") is FinanceHudBox and popup.start_button.get_theme_stylebox("normal").texture == FinanceFrameSkin.PALETTE.WARM.BUTTON_SELECTED, "approved smoke-bronze finance button texture")
+	check(popup._tab_buttons.shop.get_theme_stylebox("normal") is FinanceHudBox and popup._tab_buttons.shop.get_theme_stylebox("normal").texture == FinanceFrameSkin.PALETTE.WARM.BUTTON_SELECTED, "approved smoke-bronze finance tab texture")
 	for control in [popup._tabs, popup.shop_grid, popup.start_button, popup._bank]:
 		check(not hud.stats_drawer.get_global_rect().intersects(control.get_global_rect()), "finance controls clear stats drawer")
 	await frames(10)

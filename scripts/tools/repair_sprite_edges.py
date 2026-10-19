@@ -54,7 +54,7 @@ def snapshot():
                 'assets/sprites/player/combat/*', 'assets/sprites/enemies/combat/*',
                 'assets/sprites/enemies/iron_knight/*', 'assets/sprites/enemies/echo_bat/*',
                 'assets/sprites/enemies/underworld_wolf/*', 'assets/ui/finance/portraits/*',
-                'assets/ui/finance/goblin*', 'assets/ui/finance/bank_counter_desk_picxel.png',
+                'assets/ui/finance/goblin*',
                 'assets/ui/finance/finance_background.png', 'assets/ui/settlement/goblin_reactions.png',
                 'artifacts/editable/finance_background/*', 'data_config/characters.json',
                 'data_config/cavern_meadow_battlefield.json','scenes/player/player_root.tscn',
@@ -175,9 +175,6 @@ def original(rel):
 
 def build():
     snapshot(); records=[]
-    rel='assets/ui/finance/bank_counter_desk_picxel.png'
-    put(repair_contour(original(rel),'desk'),rel)
-    records.append({'id':'small_desk','category':'finance','before':rel,'after':rel,'frames':1})
     # Repair selected structural lines on the existing 688x384 editable scene.
     base_rel='artifacts/editable/finance_background/pixel_background.png'
     bank=original(base_rel);d=ImageDraw.Draw(bank)
@@ -263,7 +260,7 @@ def approved_output(path):
 
 def install():
     report=read(TASK/'repair_manifest.json')
-    report['records']=[r for r in report['records'] if r['category'] in APPROVED_CATEGORIES]
+    report['records']=[r for r in report['records'] if r['category'] in APPROVED_CATEGORIES and r['id'] != 'small_desk']
     validate_frames(report['records'],report['wolf_source_scales'])
     for r in report['records']:
         assert sha(AFTER/r['after'])==r['after_sha256']

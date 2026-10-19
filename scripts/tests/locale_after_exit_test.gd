@@ -71,6 +71,7 @@ func _exercise_run(exit_mode: String) -> void:
 	await frames()
 	if exit_mode == "reward_closed": menu._on_character_selected("character_capitalist")
 	menu.character_confirm_button.pressed.emit()
+	await menu.dungeon_loading.finished
 	await frames(20)
 	var battle := (game.get_node("SceneDirector") as GameSceneDirector).battle_root as BattleRoot
 	check(battle != null and flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT, exit_mode + " starts a fresh battle")

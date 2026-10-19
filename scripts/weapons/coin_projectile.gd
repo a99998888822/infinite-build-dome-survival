@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	var start := global_position
 	var step := minf(speed * delta, remaining_distance)
 	var end := start + direction * step
-	var radius := maxf(1.0, weapon.get_hit_radius())
+	var radius := get_contact_radius()
 	_sweep_shape.radius = radius
 	# Sweep terrain first, so a large frame cannot shoot through a wall or a target.
 	var terrain: Dictionary = {}
@@ -100,6 +100,10 @@ func _physics_process(delta: float) -> void:
 
 func _collision_candidates(_start: Vector2, _end: Vector2, _radius: float) -> Array:
 	return EnemyRegistry.get_registered_enemies()
+
+
+func get_contact_radius() -> float:
+	return maxf(1.0, weapon.get_hit_radius() * (0.75 if split_generation > 0 else 1.0))
 
 
 func _body_contact_distance(enemy: EnemyController, start: Vector2, length: float, radius: float) -> float:

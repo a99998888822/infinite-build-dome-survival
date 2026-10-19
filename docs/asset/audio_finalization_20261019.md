@@ -12,6 +12,8 @@
 
 来源文件、用途 TXT 和原始备份保存在 `artifacts/sources/audio_user_20261018/`。精确映射和 SHA-256 见 [user_audio_manifest.json](../../scripts/tools/audio_sources/user_audio_manifest.json)，播放规则见 [combat_audio.md](combat_audio.md)。清理前逐项核对全部 17 份来源与正式 WAV 哈希一致；清理后 `assets/audio/` 的 92 个文件（含导入设置）与清理前完全一致。
 
+本日后续音量校准：以最响连续 50 ms 的 RMS 电平约 −20 dBFS 为目标，流星摆锤与裂地战锤的命中增益设为 −13 dB（原 −7.2 → −20.2 dBFS），异化触手命中增益设为 −16 dB（原 −4.1 → −20.1 dBFS）。增益保存在 `weapons.json` 的 `hit_sfx_gain_db`，由实际播放入口应用；原始音频不变，其他音效复用播放器时恢复自身增益。上述电平为单次声音进入总线前的测量估计。
+
 ## 清理结果
 
 | 项目 | 清理前 | 清理后 |

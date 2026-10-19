@@ -29,12 +29,68 @@ static func spread_direction(screen_direction: Vector2, radians: float) -> Vecto
 
 
 static func projected_disk(radius: float) -> ConvexPolygonShape2D:
+	return ellipse_shape(Vector2(radius, radius * ELLIPSE_RATIO))
+
+
+static func ellipse_shape(axes: Vector2) -> ConvexPolygonShape2D:
 	var shape := ConvexPolygonShape2D.new()
 	var points := PackedVector2Array()
 	for i in 96:
-		points.append(project(Vector2.from_angle(TAU * i / 96.0) * radius))
+		points.append(Vector2.from_angle(TAU * i / 96.0) * axes)
 	shape.points = points
 	return shape
+
+
+static func body_overlaps(shape: Shape2D, transform: Transform2D, enemy: EnemyController, motion := Vector2.ZERO) -> bool:
+	if not is_instance_valid(enemy) or not enemy.is_inside_tree() or not enemy.is_alive():
+		return false
+	var body := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body == null or body.disabled or body.shape == null or (enemy.collision_layer & 2) == 0:
+		return false
+	if motion.is_zero_approx():
+		return shape.collide(transform, body.shape, body.global_transform)
+	return shape.collide_with_motion(transform, motion, body.shape, body.global_transform, Vector2.ZERO)
+
+
+static func lamp_shape(direction: Vector2, reach: float, degrees: float) -> ConvexPolygonShape2D:
+	var shape := ConvexPolygonShape2D.new()
+	var pose := ground_transform(direction)
+	var muzzle := Vector2(16, 0)
+	var points := PackedVector2Array([pose * muzzle])
+	var half_angle := deg_to_rad(degrees) * 0.5
+	for i in 49:
+		var ray := Vector2.from_angle(lerpf(-half_angle, half_angle, i / 48.0))
+		var along := muzzle.dot(ray)
+		var distance := -along + sqrt(maxf(0, along * along + reach * reach - muzzle.length_squared()))
+		points.append(pose * (muzzle + ray * maxf(0.01, distance)))
+	shape.points = points
+	return shape
+
+
+static func body_entry_fraction(shape: Shape2D, transform: Transform2D, motion: Vector2, enemy: EnemyController) -> float:
+	if body_overlaps(shape, transform, enemy): return 0.0
+	if not body_overlaps(shape, transform, enemy, motion): return INF
+	var low := 0.0
+	var high := 1.0
+	for i in 14:
+		var middle := (low + high) * 0.5
+		if body_overlaps(shape, transform, enemy, motion * middle): high = middle
+		else: low = middle
+	return high
+
+
+static func targeting_shape(source: WeaponInstance) -> Shape2D:
+	var reach := source.get_attack_range()
+	if source.is_ritual_tome(): return ellipse_shape(source.get_domain_axes())
+	if source.is_grenade(): return ellipse_shape(grenade_range_axes(source))
+	if source.is_copper_lamp() or source.is_camp_dagger(): return projected_disk(reach)
+	if source.is_meteor_flail():
+		return ellipse_shape(Vector2(reach, reach * ELLIPSE_RATIO) + Vector2.ONE * source.get_hit_radius())
+	var circle := CircleShape2D.new()
+	circle.radius = reach
+	if source.has_combat_tag(L10n.text("stat.category.projectiles")):
+		circle.radius += source.get_hit_radius()
+	return circle
 
 
 static func player_clearance(source: WeaponInstance) -> float:

@@ -5,9 +5,9 @@ class_name GoblinLoanPresentation
 signal error_requested(reason: String)
 const ART := "res://assets/ui/finance/loan/"
 const SPEECH := "钱不够？先拿去，后面再还！"
-const GOLD := Color("d9b675")
-const TEXT := Color("e4dcc5")
-const MUTED := Color("a5ad94")
+const GOLD := FinanceUIStyle.GOLD
+const TEXT := FinanceUIStyle.TEXT
+const MUTED := FinanceUIStyle.MUTED
 const DEBT := Color("d39a72")
 var flow: MainFlowCoordinator
 var state := "hidden"
@@ -169,7 +169,7 @@ func _build_modal() -> void:
 	_modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_modal)
 	_dimmer = ColorRect.new()
-	_dimmer.color = Color(0.025, 0.04, 0.03, 0.73)
+	_dimmer.color = Color(FinanceFrameSkin.PALETTE.SHADOW, 0.73)
 	_dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_modal.add_child(_dimmer)
 	_box = _panel(_modal, "232d23", "ad905d")
@@ -184,7 +184,7 @@ func _build_modal() -> void:
 	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_box.add_child(inner)
 	_seal = _image(_box, ART + "loan_note.png")
-	_title = _label(_box, "ui.loan.title", 24, GOLD)
+	_title = _label(_box, "ui.loan.title", 40, GOLD)
 	_close = _button(_box, "×")
 	_close.pressed.connect(dismiss_quote)
 	_portrait = _image(_box, "")
@@ -194,26 +194,26 @@ func _build_modal() -> void:
 	atlas.region = Rect2(3 * frame_size, 0, frame_size, frame_size)
 	_portrait.texture = atlas
 	_bubble = _panel(_box, "303c2c", "778463")
-	_bubble.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slim"))
-	_speech = _label(_bubble, SPEECH, 18, TEXT)
+	_bubble.add_theme_stylebox_override("panel", FinanceUIStyle.box("2a3023", "998252", 0))
+	_speech = _label(_bubble, SPEECH, 30, TEXT)
 	_speech.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tail = _image(_box, "res://assets/ui/finance/trade_bubble_tail.png")
 	for i in 3:
 		var amount: int = [100, 200, 500][i]
 		var card := _panel(_box, "283326" if i < 2 else "343724", "67734f" if i < 2 else "bba066")
 		card.add_theme_stylebox_override("panel", FinanceFrameSkin.box("card"))
-		var gain := _label(card, "ui.loan.receive_now", 12, MUTED)
-		var value := _label(card, "+ %d" % amount, 30, Color("ecce8a"))
-		var money := _label(card, "stat.gold.name", 12, MUTED)
+		var gain := _label(card, "ui.loan.receive_now", 20, MUTED)
+		var value := _label(card, "+ %d" % amount, 50, GOLD)
+		var money := _label(card, "stat.gold.name", 20, MUTED)
 		var icon := _image(card, ART + "loan_%d.png" % amount)
 		var line := ColorRect.new()
-		line.color = Color("526043")
+		line.color = FinanceFrameSkin.PALETTE.LINE_IDLE
 		line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(line)
-		var caption := _label(card, "ui.loan.repay_next_wave", 12, MUTED)
-		var repayment := _label(card, L10n.text("ui.loan.gold_amount") % [140,260,600][i], 18, TEXT)
+		var caption := _label(card, "ui.loan.repay_next_wave", 20, MUTED)
+		var repayment := _label(card, L10n.text("ui.loan.gold_amount") % [140,260,600][i], 30, TEXT)
 		repayment.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var rate := _label(card, L10n.text("ui.loan.integer_interest_rate") % [40,30,20][i], 12, DEBT)
+		var rate := _label(card, L10n.text("ui.loan.integer_interest_rate") % [40,30,20][i], 20, DEBT)
 		var button := _button(card, L10n.text("ui.loan.borrow_amount") % amount)
 		FinanceUIStyle.button(button, i == 2)
 		FinanceFrameSkin.button(button, i == 2)
@@ -221,7 +221,7 @@ func _build_modal() -> void:
 		_cards.append({"panel":card,"icon":icon,"gain":gain,"value":value,"money":money,
 			"line":line,"caption":caption,"due":repayment,"rate":rate,"button":button,
 			"amount_value":amount,"repayment":[140,260,600][i]})
-	_rule = _label(_box, "ui.loan.automatic_repayment_hint", 12, MUTED)
+	_rule = _label(_box, "ui.loan.automatic_repayment_hint", 20, MUTED)
 	_rule.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_decline = _button(_box, "ui.loan.decline")
 	_decline.pressed.connect(dismiss_quote)
@@ -286,14 +286,14 @@ func _layout_modal() -> void:
 func _build_strip() -> void:
 	_strip = _panel(self, "1d281fd9", "706446")
 	_strip_icon = _image(_strip, ART+"loan_note.png")
-	_strip_label = _label(_strip, "ui.loan.title", 14, GOLD)
-	_strip_detail = _label(_strip, "", 12, MUTED)
+	_strip_label = _label(_strip, "ui.loan.title", 23, GOLD)
+	_strip_detail = _label(_strip, "", 20, MUTED)
 	reopen = _button(_strip,"ui.loan.view_terms")
 	reopen.pressed.connect(show_quote)
 	repay = _button(_strip,"ui.loan.repay")
 	repay.pressed.connect(_repay)
 	_line = ColorRect.new()
-	_line.color = Color("675b3a")
+	_line.color = FinanceFrameSkin.PALETTE.LINE_IDLE
 	_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_strip.add_child(_line)
 

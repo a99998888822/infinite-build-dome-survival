@@ -58,13 +58,14 @@ func _run() -> void:
 	baseline = make_wolf()
 	candidate = make_wolf()
 	pose(&"idle", 0)
-	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*1.6384), "base wolf enlargement survives an animation update")
+	# Current authored wolf uses BASE_BODY_SCALE=1.5 (the old fixture used 2.0).
+	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*1.2288), "base wolf enlargement survives an animation update")
 	var body := baseline.get_node("CollisionShape2D") as CollisionShape2D
 	pose(&"idle", 0, 0, false, 1.5)
-	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*2.4576) and is_equal_approx(body.shape.height*body.scale.y,182.4), "challenge modifier scales the enlarged art and collider together")
-	check(baseline.mouth_position().is_equal_approx(baseline.global_position+Vector2(144,-162)), "breath socket follows base and challenge enlargement")
+	check(baseline.sprite.scale.is_equal_approx(Vector2.ONE*1.8432) and is_equal_approx(body.shape.height*body.scale.y,136.8), "challenge modifier scales the enlarged art and collider together")
+	check(baseline.mouth_position().is_equal_approx(baseline.global_position+Vector2(108,-121.5)), "breath socket follows base and challenge enlargement")
 	pose(&"idle", 0)
-	check(body.position.is_equal_approx(Vector2(12.8,-60.8)) and body.scale.is_equal_approx(Vector2.ONE), "restoring challenge scale retains the new base collider")
+	check(body.position.is_equal_approx(Vector2(9.6,-45.6)) and body.scale.is_equal_approx(Vector2.ONE), "restoring challenge scale retains the new base collider")
 	# Damage in midair must not leave an old origin for a later ground pose.
 	pose(&"leap", 0.21, 66)
 	hit()

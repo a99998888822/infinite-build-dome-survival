@@ -35,7 +35,7 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		# Acquisition and continuous tracking use the same range and line of sight.
 		return DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 	var origin := weapon.get_attack_origin()
-	var reach := weapon.get_attack_range()
+	var footprint := AttackFootprint.targeting_shape(weapon)
 	var nearest: EnemyController
 	var nearest_distance := INF
 	for node in EnemyRegistry.get_registered_enemies():
@@ -48,16 +48,7 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		var distance := offset.length_squared()
 		if distance >= nearest_distance:
 			continue
-		if weapon.is_ritual_tome():
-			if (offset / weapon.get_domain_axes().max(Vector2.ONE)).length_squared() > 1.0:
-				continue
-		elif weapon.is_grenade():
-			if (offset / AttackFootprint.grenade_range_axes(weapon).max(Vector2.ONE)).length_squared() > 1.0:
-				continue
-		elif weapon.is_meteor_flail() or weapon.is_camp_dagger():
-			if AttackFootprint.unproject(offset).length_squared() > reach * reach:
-				continue
-		elif distance > reach * reach:
+		if not AttackFootprint.body_overlaps(footprint, Transform2D(0, origin), enemy):
 			continue
 		nearest = enemy
 		nearest_distance = distance

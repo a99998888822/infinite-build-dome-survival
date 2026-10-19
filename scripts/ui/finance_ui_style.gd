@@ -1,9 +1,10 @@
 extends RefCounted
 class_name FinanceUIStyle
 
-const TEXT := Color("e0d6b6")
-const MUTED := Color("a79f87")
-const GOLD := Color("c5a16a")
+const PALETTE = preload("res://scripts/ui/hud_palette.gd")
+const TEXT := PALETTE.TEXT
+const MUTED := PALETTE.MUTED
+const GOLD := PALETTE.WARM_ACTIVE
 const GREEN := Color("a9c498")
 const RELIC_LIST_ICON_SCALE := 0.625
 const RELIC_DISPLAY_SIZE := 64.0
@@ -131,29 +132,20 @@ static func button(control: Button, selected: bool = false) -> void:
 	control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
-static func bank_button(control: Button, selected: bool = false) -> void:
-	button(control, selected)
-	var normal := box("756943" if selected else "293228f2", "b59b61" if selected else "786e4d", 6)
-	normal.border_width_bottom = 2
-	control.add_theme_stylebox_override("normal", normal)
-	control.add_theme_stylebox_override("hover", box("414b34", "b59b61", 6))
-	control.add_theme_stylebox_override("pressed", box("293228", "b59b61", 6))
-	control.add_theme_stylebox_override("disabled", box("20281fed", "53543d", 6))
-	control.add_theme_color_override("font_color", Color("e8dbb9"))
-	control.add_theme_color_override("font_disabled_color", Color("97987f"))
-	FinanceFrameSkin.button(control, selected)
+static func bank_button(control: Button, selected: bool = false, small: bool = true) -> void:
+	control.add_theme_font_size_override("font_size", 20)
+	FinanceFrameSkin.button(control, selected, false, small)
 
 
 static func bank_tab(control: Button, selected: bool) -> void:
 	control.toggle_mode = true
 	control.set_pressed_no_signal(selected)
-	bank_button(control, selected)
-	for state in ["font_color", "font_pressed_color", "font_focus_color"]:
-		control.add_theme_color_override(state, Color("f7e4ad") if selected else Color("b9b59a"))
+	bank_button(control, selected, false)
+	control.add_theme_stylebox_override("normal", FinanceFrameSkin.box("tab_selected" if selected else "button", 4))
 
 
-static func label(control: Label, font_size: int = 14, color: Color = TEXT) -> void:
-	control.add_theme_font_size_override("font_size", roundi(font_size * 5.0 / 3.0))
+static func label(control: Label, font_size: int = 23, color: Color = TEXT) -> void:
+	control.add_theme_font_size_override("font_size", font_size)
 	control.add_theme_color_override("font_color", color)
 
 

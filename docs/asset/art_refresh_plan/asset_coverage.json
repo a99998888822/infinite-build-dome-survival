@@ -792,17 +792,6 @@
     "sha256": "5adf07d89e11fb698b833b402ddc38733fdc40e7a87e91a2ca8fc1683e73f26a"
   },
   {
-    "path": "assets/ui/finance/bank_counter_desk_picxel.png",
-    "current_canvas": [
-      128,
-      64
-    ],
-    "recipe": "02_doubao_recipes.md#ui组件与银行",
-    "phase": "P1",
-    "status": "planned",
-    "sha256": "0bfcad6372eaef76b5e9b275d89ed39b8666a167812c25cade641e8687e0cb42"
-  },
-  {
     "path": "assets/ui/finance/challenge_deposit.svg",
     "current_canvas": null,
     "recipe": "02_doubao_recipes.md#ui组件与银行",

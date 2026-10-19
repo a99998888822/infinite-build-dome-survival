@@ -57,6 +57,13 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 	_show("idle", 0)
 
 
+func get_frame_layouts() -> Array[Dictionary]:
+	var layouts: Array[Dictionary] = []
+	for clip: Dictionary in _clips.values():
+		layouts.append({"texture": clip.texture, "grid": Vector2i(int(clip.get("frames", 1)), 1)})
+	return layouts
+
+
 func reset() -> void:
 	action = ""
 	facing_direction = Vector2.ZERO

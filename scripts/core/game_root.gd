@@ -51,6 +51,8 @@ func _notification(what: int) -> void:
 
 
 func _handle_android_back_request() -> void:
+	if bool(GameGlobal.get_runtime_flag("battle_loading", false)):
+		return
 	var flow := get_main_flow_coordinator()
 	if flow == null:
 		return

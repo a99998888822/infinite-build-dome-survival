@@ -34,6 +34,7 @@ static func for_owner(source: Node) -> GameTooltipLayer:
 
 
 func _ready() -> void:
+	child_entered_tree.connect(_queue_tooltip_skin)
 	L10n.locale_changed.connect(_clear_tooltips)
 	var ancestor := get_parent()
 	while ancestor != null:
@@ -43,6 +44,26 @@ func _ready() -> void:
 		ancestor = ancestor.get_parent()
 	_sync_visibility()
 	_bind_flow.call_deferred()
+	for child in get_children(): _queue_tooltip_skin(child)
+
+
+func _queue_tooltip_skin(child: Node) -> void:
+	# Owners finish building labels and applying their old overrides in this frame.
+	# Apply once afterwards; reused hidden panels keep the same style.
+	_skin_tooltip.call_deferred(child)
+
+
+func _skin_tooltip(child: Node) -> void:
+	if not is_instance_valid(child): return
+	if child is Panel or child is PanelContainer:
+		child.add_theme_stylebox_override("panel", PixelTooltipStyle.preserving(child.get_theme_stylebox("panel")))
+	if child is Control:
+		child.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if child is Label:
+			child.add_theme_color_override("font_color", PixelTooltipStyle.PALETTE.TEXT)
+		elif child is RichTextLabel:
+			child.add_theme_color_override("default_color", PixelTooltipStyle.PALETTE.TEXT)
+	for nested in child.get_children(): _skin_tooltip(nested)
 
 
 func _bind_flow() -> void:

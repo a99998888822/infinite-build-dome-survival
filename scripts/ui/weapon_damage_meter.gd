@@ -1,10 +1,10 @@
 extends Control
 ## Damage is recorded by the wave, so opening UI or rebinding the HUD cannot reset it.
 
-const ROW_HEIGHT := 24.0
-const ROW_GAP := 7.0
-const HEADER_HEIGHT := 22.0
-const FONT_SIZE := 10
+const ROW_HEIGHT := 40.0
+const ROW_GAP := 11.666667
+const HEADER_HEIGHT := 36.666667
+const FONT_SIZE := 17
 const COLORS: Array[Color] = [Color("8d7542"), Color("4b8179"), Color("796393"), Color("8c5749"), Color("577c9a"), Color("748653")]
 
 var _manager: WaveManager
@@ -13,9 +13,11 @@ var _dirty := true
 var _elapsed := 0.0
 var _entries: Array[Dictionary] = []
 var _icons: Dictionary = {}
+var _frame := PixelTooltipStyle.new()
 
 
 func _ready() -> void:
+	_frame.bg_color = CombatHudFrame.PALETTE.PANEL_FILL
 	L10n.locale_changed.connect(refresh)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -80,35 +82,38 @@ func refresh() -> void:
 func _draw() -> void:
 	if _entries.is_empty():
 		return
-	var font := get_theme_font("font", "Label")
-	draw_string(font, Vector2(3, 15), L10n.text("ui.damage_meter.title"), HORIZONTAL_ALIGNMENT_LEFT, size.x, 11, Color("c7c6a7"))
+	var font := preload("res://assets/font/native_hud/interface.res")
+	draw_style_box(_frame, Rect2(Vector2.ZERO, size))
+	draw_string(font, Vector2(12, 25), L10n.text("ui.damage_meter.title"), HORIZONTAL_ALIGNMENT_LEFT, size.x - 24, 18, CombatHudFrame.PALETTE.TEXT)
+	draw_rect(Rect2(10, 31, size.x - 20, 1), CombatHudFrame.PALETTE.LINE_IDLE)
 	var maximum := maxi(int(_entries[0].damage), 1)
 	for index in _entries.size():
 		var entry := _entries[index]
 		var y := HEADER_HEIGHT + index * (ROW_HEIGHT + ROW_GAP)
-		var rect := Rect2(0, y, size.x, ROW_HEIGHT)
-		draw_rect(rect, Color(0.025, 0.04, 0.035, 0.87))
-		var fill_width := size.x * float(entry.damage) / float(maximum)
+		var rect := Rect2(8, y, size.x - 16, ROW_HEIGHT)
+		draw_rect(rect, CombatHudFrame.PALETTE.BACKDROP)
+		var fill_width := rect.size.x * float(entry.damage) / float(maximum)
 		if fill_width > 0:
-			draw_rect(Rect2(0, y, fill_width, ROW_HEIGHT), entry.color)
-		draw_rect(rect, Color(0.43, 0.46, 0.34, 0.45), false, 1.0)
+			draw_rect(Rect2(8, y, fill_width, ROW_HEIGHT), Color(entry.color, 0.42))
+			draw_rect(Rect2(8, y + ROW_HEIGHT - 3, fill_width, 2), entry.color)
 		var icon := entry.icon as Texture2D
 		if icon != null:
+			# Retain the approved 16 px source-art variant inside the native icon box.
 			icon = ItemIconArt.texture_for(icon, ItemIconArt.physical_extent(self, 16))
-			var icon_size := icon.get_size() * (16.0 / maxf(icon.get_width(), icon.get_height()))
-			draw_texture_rect(icon, Rect2(Vector2(11, y + ROW_HEIGHT * 0.5) - icon_size * 0.5, icon_size), false)
+			var icon_size := icon.get_size() * (26.666667 / maxf(icon.get_width(), icon.get_height()))
+			draw_texture_rect(icon, Rect2(Vector2(27, y + ROW_HEIGHT * 0.5) - icon_size * 0.5, icon_size), false)
 		var amount := _format_damage(int(entry.damage))
 		var amount_width := font.get_string_size(amount, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE).x
-		var name_width := maxf(size.x - amount_width - 32, 0)
+		var name_width := maxf(size.x - amount_width - 65, 0)
 		var weapon_name := str(entry.name)
 		while weapon_name.length() > 1 and font.get_string_size(weapon_name, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE).x > name_width:
 			weapon_name = weapon_name.substr(0, weapon_name.length() - 2) + "…"
-		_draw_text(font, Vector2(23, y + 16), weapon_name)
-		_draw_text(font, Vector2(size.x - amount_width - 5, y + 16), amount)
+		_draw_text(font, Vector2(47, y + 26.666667), weapon_name)
+		_draw_text(font, Vector2(size.x - amount_width - 13, y + 26.666667), amount)
 
 
 func _draw_text(font: Font, at: Vector2, text: String) -> void:
-	draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE, 2, Color(0.015, 0.025, 0.02, 0.9))
+	draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE, 3, Color(0.015, 0.025, 0.02, 0.9))
 	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE, Color("f0ecda"))
 
 

@@ -6,10 +6,11 @@ signal back_requested
 const ICONS := preload("res://assets/ui/settlement/settlement_icons.png")
 const GOBLIN := preload("res://assets/ui/settlement/goblin_reactions.png")
 const GLINT := preload("res://assets/ui/settlement/payout_glint.png")
-const DESK := preload("res://assets/ui/finance/bank_counter_desk_picxel.png")
-const TEXT := Color("e4d9bd")
-const GOLD := Color("d6b476")
-const MUTED := Color("999e89")
+const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
+const PALETTE = HUD_STYLE.PALETTE
+const TEXT := PALETTE.TEXT
+const GOLD := PALETTE.WARM_ACTIVE
+const MUTED := PALETTE.MUTED
 var report: Dictionary = {}
 var sound_enabled := true
 var _config := RunSettlement.configuration()
@@ -35,7 +36,6 @@ var _monster_nodes: Array[Dictionary] = []
 var _speech: Panel
 var _speech_label: Label
 var _portrait: TextureRect
-var _desk: TextureRect
 var _rows: Array[Dictionary] = []
 var _conversion: Label
 var _total: Panel
@@ -56,18 +56,22 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var shade := ColorRect.new()
-	shade.color = Color("080f0d")
+	shade.color = PALETTE.SHADOW
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(shade)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_card = _panel(self, "151e19", "8d7953")
-	_title = _label(_card, "", 36, GOLD)
-	_subtitle = _label(_card, "", 14, MUTED)
-	_heading = _label(_card, "ui.settlement.camp_title", 20, GOLD)
+	_card = _panel(self)
+	_title = _label(_card, "", 60, TEXT)
+	_subtitle = _label(_card, "", 23, MUTED)
+	_heading = _label(_card, "ui.settlement.camp_title", 33, TEXT)
 	_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_scroll = ScrollContainer.new()
-	FinanceUIStyle.scroll(_scroll)
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	var scrollbar := _scroll.get_v_scroll_bar()
+	scrollbar.add_theme_stylebox_override("scroll", HUD_STYLE.inset())
+	for state in ["grabber", "grabber_highlight", "grabber_pressed"]:
+		scrollbar.add_theme_stylebox_override(state, HUD_STYLE.skin(false, state != "grabber", Vector4(6, 6, 6, 6)))
 	_card.add_child(_scroll)
 	_scroll.gui_input.connect(_gui_input)
 	_content = Control.new()
@@ -79,7 +83,7 @@ func _ready() -> void:
 	_right = Control.new()
 	_right.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_content.add_child(_right)
-	_monster_heading = _label(_left, "ui.settlement.kill_records", 20)
+	_monster_heading = _label(_left, "ui.settlement.kill_records", 33)
 	_monster_scroll = ScrollContainer.new()
 	_monster_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_monster_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -87,38 +91,38 @@ func _ready() -> void:
 	_monster_list = Control.new()
 	_monster_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_monster_scroll.add_child(_monster_list)
-	_speech = _panel(_left, "2a3023", "998252")
-	_speech_label = _label(_speech, "", 18)
+	_speech = _panel(_left, false)
+	_speech.add_theme_stylebox_override("panel", FinanceUIStyle.box("2a3023", "998252", 0))
+	_speech_label = _label(_speech, "", 30, Color("e4d9bd"))
 	_speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_portrait = _texture(_left, null)
-	_desk = _texture(_left, DESK)
 	var names := ["ui.settlement.total_kills", "ui.settlement.gold_earned", "ui.settlement.waves_survived", "ui.settlement.interest_earned"]
 	for i in 4:
-		var row := _panel(_right, "1b261f", "3f4b3b")
+		var row := _panel(_right, false, true)
 		var icon := _texture(row, _atlas(ICONS, Rect2(i * 32, 0, 32, 32)))
-		var label := _label(row, names[i], 18)
+		var label := _label(row, names[i], 30)
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
-		var value := _label(row, "0", 24)
+		var value := _label(row, "0", 40)
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var points := _label(row, "+0", 20, GOLD)
+		var points := _label(row, "+0", 33, GOLD)
 		points.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_rows.append({"panel": row, "icon": icon, "label": label, "value": value, "points": points})
-	_conversion = _label(_right, "ui.settlement.conversion_hint", 12, MUTED)
+	_conversion = _label(_right, "ui.settlement.conversion_hint", 20, MUTED)
 	_conversion.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_total = _panel(_right, "292c20", "9c834e")
+	_total = _panel(_right)
 	_total_icon = _texture(_total, _atlas(ICONS, Rect2(128, 0, 32, 32)))
-	_total_title = _label(_total, "ui.settlement.camp_coins_earned", 18, GOLD)
-	_total_value = _label(_total, "+ 0", 48, Color("ffe6a2"))
-	_status = _label(_total, "", 12, Color("96bda3"))
+	_total_title = _label(_total, "ui.settlement.camp_coins_earned", 30, TEXT)
+	_total_value = _label(_total, "+ 0", 80, GOLD)
+	_status = _label(_total, "", 20, Color("96bda3"))
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	back_button = Button.new()
 	back_button.name = "ResultBackButton"
 	back_button.text = "ui.common.return_to_main_menu"
-	FinanceUIStyle.button(back_button)
+	HUD_STYLE.apply_button(back_button, Vector4(10, 0, 10, 0))
 	back_button.pressed.connect(func(): stop_audio(); back_requested.emit())
 	_card.add_child(back_button)
-	_skip_hint = _label(_card, "ui.settlement.skip_hint", 12, MUTED)
+	_skip_hint = _label(_card, "ui.settlement.skip_hint", 20, MUTED)
 	_skip_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_cue = AudioStreamPlayer.new()
 	_cue.bus = "SFX"
@@ -151,7 +155,7 @@ func present(data: Dictionary) -> void:
 	_voice_started = false
 	_skipped = false
 	_refresh_result_heading()
-	_title.add_theme_color_override("font_color", GOLD if bool(report.victory) else Color("c78f79"))
+	_title.add_theme_color_override("font_color", GOLD if bool(report.victory) else TEXT)
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
 	_speech_text = L10n.source(str(reaction.get("speech", "")))
 	_voice_path = str(reaction.get("voice_path", "")).strip_edges()
@@ -165,17 +169,17 @@ func present(data: Dictionary) -> void:
 	var ids := counts.keys()
 	ids.sort_custom(func(a: String, b: String): return int(counts[a]) > int(counts[b]) if counts[a] != counts[b] else a < b)
 	for id: String in ids:
-		var tile := _panel(_monster_list, "1e2821", "756748")
+		var tile := _panel(_monster_list, false)
 		var path := str(_config.monster_portraits.get(id, ""))
 		var icon := _texture(tile, load(path) as Texture2D if ResourceLoader.exists(path) else _atlas(ICONS, Rect2(0, 0, 32, 32)))
-		var label := _label(tile, L10n.source(str(DataRegistry.get_record("enemies", id).get("display_name", id))), 16)
+		var label := _label(tile, L10n.source(str(DataRegistry.get_record("enemies", id).get("display_name", id))), 27)
 		label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var count := _label(tile, "× 0", 18, GOLD)
+		var count := _label(tile, "× 0", 30, GOLD)
 		count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_monster_nodes.append({"id": id, "tile": tile, "icon": icon, "label": label, "count": count, "amount": int(counts[id])})
 	if ids.is_empty():
-		_label(_monster_list, "ui.settlement.no_kills", 14, MUTED)
+		_label(_monster_list, "ui.settlement.no_kills", 23, MUTED)
 	var rates: Dictionary = _config.formula
 	var tips := [L10n.text("ui.settlement.kills_tooltip") % int(rates.kills_per_coin),
 		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
@@ -347,9 +351,7 @@ func _arrange() -> void:
 	var portrait_y := speech_y + speech_height + 2
 	var portrait_height := maxf(52, _left.size.y - portrait_y)
 	_portrait.position = Vector2(0, portrait_y)
-	_portrait.size = Vector2(left_width, portrait_height * 0.84)
-	_desk.position = Vector2(0, portrait_y + portrait_height * 0.57)
-	_desk.size = Vector2(left_width, portrait_height * 0.43)
+	_portrait.size = Vector2(left_width, portrait_height)
 	var rw := _right.size.x
 	var row_height := 31.0 if short_window else (34.0 if compact else 46.0)
 	var row_gap := 4.0 if short_window else (5.0 if compact else 7.0)
@@ -373,7 +375,7 @@ func _arrange() -> void:
 	_total_icon.size = Vector2.ONE * icon_size
 	_place(_total_title, Vector2(icon_size + 24, 5 if compact else 8), Vector2(rw - icon_size - 36, 24), 12 if compact else 16)
 	_place(_total_value, Vector2(icon_size + 24, 22 if compact else 28), Vector2(rw - icon_size - 36, 36 if compact else 52), 28 if compact else 40)
-	_place(_status, Vector2(8, _total.size.y - 18), Vector2(rw - 16, 18), 10 if compact else 12)
+	_place(_status, Vector2(16, _total.size.y - 26), Vector2(rw - 32, 18), 10 if compact else 12)
 	var button_width := minf(218, width * 0.45)
 	back_button.position = Vector2(padding + (width - button_width) * 0.5, _card.size.y - (42 if compact else 48))
 	back_button.size = Vector2(button_width, 30 if compact else 36)
@@ -421,10 +423,15 @@ static func _atlas(texture: Texture2D, region: Rect2) -> AtlasTexture:
 	return atlas
 
 
-func _panel(parent: Node, fill: String, edge: String) -> Panel:
+func _panel(parent: Node, framed := true, hover_feedback := false) -> Panel:
 	var node := Panel.new()
 	node.mouse_filter = Control.MOUSE_FILTER_PASS
-	node.add_theme_stylebox_override("panel", FinanceUIStyle.box(fill, edge, 0))
+	var normal: StyleBox = HUD_STYLE.skin(true, false, Vector4.ZERO) if framed else HUD_STYLE.inset()
+	node.add_theme_stylebox_override("panel", normal)
+	if hover_feedback:
+		var hover: StyleBox = HUD_STYLE.skin(true, true, Vector4.ZERO) if framed else HUD_STYLE.inset(true)
+		node.mouse_entered.connect(func(): node.add_theme_stylebox_override("panel", hover))
+		node.mouse_exited.connect(func(): node.add_theme_stylebox_override("panel", normal))
 	parent.add_child(node)
 	return node
 
@@ -435,7 +442,8 @@ func _label(parent: Node, value: String, font_size: int, color := TEXT) -> Label
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(label, font_size, color)
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", color)
 	parent.add_child(label)
 	return label
 

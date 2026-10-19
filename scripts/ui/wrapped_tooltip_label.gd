@@ -18,13 +18,10 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	paragraph.add_string(for_text, face, 14)
 	# Popup placement happens before its first layout pass: provide height upfront.
 	content.custom_minimum_size.y = paragraph.get_size().y + maxf(0, paragraph.get_line_count() - 1) * content.get_theme_constant("line_spacing")
-	content.add_theme_color_override("font_color", Color("f1e6d2"))
+	content.add_theme_color_override("font_color", PixelTooltipStyle.PALETTE.TEXT)
 	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var panel := PanelContainer.new()
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("14201dfc")
-	style.border_color = Color("8c9274")
-	style.set_border_width_all(1)
+	var style := PixelTooltipStyle.new()
 	style.content_margin_left = 8
 	style.content_margin_right = 8
 	style.content_margin_top = 6

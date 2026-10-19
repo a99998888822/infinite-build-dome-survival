@@ -3,6 +3,7 @@ class_name EconomyLogPanel
 
 const PANEL_HEIGHT := 160.0
 const COMPACT_PANEL_HEIGHT := 128.0
+const LEFT_INSET := 28.0
 
 var toggle_button: Button
 var panel: PanelContainer
@@ -90,17 +91,19 @@ func apply_layout() -> void:
 	var viewport_size := get_viewport().get_visible_rect().size
 	var mobile := OS.has_feature("mobile")
 	var button_y := maxf(50, viewport_size.y - (200 if mobile else 82))
-	toggle_button.position = Vector2(10, button_y)
+	toggle_button.position = Vector2(LEFT_INSET, button_y)
 	toggle_button.size = Vector2(52, 32)
 	var height := minf(_panel_height_limit(), maxf(0, button_y - 60))
-	panel.position = Vector2(10, button_y - height - 6)
-	panel.size = Vector2(minf(400, viewport_size.x - 24), height)
+	panel.position = Vector2(LEFT_INSET, button_y - height - 6)
+	panel.size = Vector2(minf(400, viewport_size.x - LEFT_INSET - 14), height)
 
 
 func apply_finance_layout(content_rect: Rect2, button_rect: Rect2) -> void:
 	if not _finance_style:
 		panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(panel, "panel", "panel"))
 		FinanceFrameSkin.scrollbar(log_text.get_v_scroll_bar())
+		(panel.find_child("LogTitle", true, false) as Label).add_theme_color_override("font_color", FinanceUIStyle.TEXT)
+		log_text.add_theme_color_override("default_color", FinanceUIStyle.TEXT)
 	_finance_style = true
 	FinanceUIStyle.bank_button(toggle_button, _open)
 	toggle_button.position = button_rect.position

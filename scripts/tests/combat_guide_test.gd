@@ -27,6 +27,9 @@ func _layout_check(label: String) -> void:
 	check(viewport.encloses(guide.card.get_global_rect()), label + " card within viewport")
 	check(viewport.encloses(guide.spotlight.focus_rect), label + " highlight within viewport")
 	check(not guide.card.get_global_rect().intersects(guide.spotlight.focus_rect), label + " instructions do not cover highlighted controls")
+	if guide.step == 2:
+		for button in guide.preview_settings.mode_buttons:
+			check(guide.preview_settings.content_scroll.get_global_rect().grow(1).encloses(button.get_global_rect()), label + " complete movement choice visible")
 
 
 func _run() -> void:
@@ -153,7 +156,8 @@ func _replay(source: String) -> void:
 	battle.utility_overlay._settings_view.content_scroll.ensure_control_visible(replay)
 	await frames(6)
 	check(replay.is_visible_in_tree(), "replay button exists inside combat settings")
-	check(battle.utility_overlay._settings_view.content_scroll.get_global_rect().encloses(replay.get_global_rect()), "replay button scrolled into view")
+	# Scroll offsets are integer pixels; the native HUD's margins can be fractional.
+	check(battle.utility_overlay._settings_view.content_scroll.get_global_rect().grow(1).encloses(replay.get_global_rect()), "replay button scrolled into view")
 	if source == MainFlowCoordinator.STATE_WAVE_COMBAT: await capture("04_replay_entry")
 	await _press(replay)
 	check(guide.visible and flow.current_state == MainFlowCoordinator.STATE_COMBAT_GUIDE, "replay opens from " + source)

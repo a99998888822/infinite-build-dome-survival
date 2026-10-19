@@ -1,0 +1,111 @@
+{
+	"failures": 0,
+	"method": "CPU diagnostic only; 21804 synchronous contacts on 96 real grubs; per-hit signal accounting; no scene rendering/physics/reactions or gameplay hitstop; ablations are not production changes",
+	"rows": [
+		{
+			"cpu_ms": 337.52,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "full",
+			"repeat": 0
+		},
+		{
+			"cpu_ms": 145.858,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_stats",
+			"repeat": 0
+		},
+		{
+			"cpu_ms": 120.559,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_visual",
+			"repeat": 0
+		},
+		{
+			"cpu_ms": 143.924,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_numbers",
+			"repeat": 0
+		},
+		{
+			"cpu_ms": 212.317,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_random",
+			"repeat": 0
+		},
+		{
+			"cpu_ms": 188.307,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_random",
+			"repeat": 1
+		},
+		{
+			"cpu_ms": 155.46,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_numbers",
+			"repeat": 1
+		},
+		{
+			"cpu_ms": 206.318,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_visual",
+			"repeat": 1
+		},
+		{
+			"cpu_ms": 305.109,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_stats",
+			"repeat": 1
+		},
+		{
+			"cpu_ms": 254.209,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "full",
+			"repeat": 1
+		},
+		{
+			"cpu_ms": 168.834,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "full",
+			"repeat": 2
+		},
+		{
+			"cpu_ms": 144.884,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_stats",
+			"repeat": 2
+		},
+		{
+			"cpu_ms": 110.374,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_visual",
+			"repeat": 2
+		},
+		{
+			"cpu_ms": 132.256,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_numbers",
+			"repeat": 2
+		},
+		{
+			"cpu_ms": 145.063,
+			"damage": 763140,
+			"hits": 21804,
+			"mode": "no_random",
+			"repeat": 2
+		}
+	]
+}

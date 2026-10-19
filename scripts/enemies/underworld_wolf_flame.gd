@@ -25,8 +25,7 @@ func _init() -> void:
 
 func configure(direction: Vector2, distance: float, degrees: float, time: float) -> void:
 	rotation = 0.0
-	flame_material.set_shader_parameter("ground_forward", AttackFootprint.ground_direction(direction))
-	flame_material.set_shader_parameter("projection_ratio", AttackFootprint.ELLIPSE_RATIO)
+	flame_material.set_shader_parameter("flame_forward", direction.normalized())
 	reach = distance
 	flame_material.set_shader_parameter("reach",reach)
 	flame_material.set_shader_parameter("half_angle",deg_to_rad(degrees)*0.5)

@@ -12,18 +12,23 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var shade := ColorRect.new()
-	shade.color = Color("080e0be8")
+	shade.color = Color(FinanceFrameSkin.PALETTE.SHADOW, 0.91)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	shade.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(shade)
 	portrait = BankCounterPortrait.new()
+	portrait.background_counter = true
 	add_child(portrait)
 	presentation = GoblinTradePresentation.new()
+	presentation.finance_skin = true
+	presentation.speech_width = 360
+	presentation.speech_padding = Vector2(24, 20)
+	presentation.speech_font_size = 24
 	add_child(presentation)
 	presentation.choice_made.connect(_choose)
 	_back = Button.new()
 	_back.text = "ui.shop.return_to_bank"
-	FinanceUIStyle.button(_back)
+	FinanceUIStyle.bank_button(_back)
 	_back.pressed.connect(func():
 		if flow != null: flow.return_from_wave_challenge())
 	add_child(_back)
@@ -48,17 +53,21 @@ func dismiss() -> void:
 
 func _arrange() -> void:
 	if presentation == null or not is_node_ready(): return
-	var bounds := Rect2(Vector2(12, 12), size - Vector2(24, 24))
-	var width := minf(560, bounds.size.x)
-	var header := 94.0 if size.y < 450 else 142.0
-	var height := minf(presentation.get_preferred_height(width), maxf(110, bounds.size.y - header - 34))
-	var origin := Vector2((size.x - width) * 0.5, maxf(12, (size.y - header - height - 34) * 0.5)).round()
-	var portrait_rect := Rect2((origin + Vector2(width * 0.5 - 160, 0)).round(), Vector2(170, header))
-	portrait.position = portrait_rect.position
-	portrait.size = portrait_rect.size
+	var ui_scale := clampf(minf(size.x / 1280.0, size.y / 720.0), 0.75, 1.25)
+	var canvas := size / ui_scale
+	var bounds := Rect2(Vector2(16, 16), canvas - Vector2(32, 32))
+	var width := minf(760, bounds.size.x)
+	var header := 136.0 if size.y < 450 else 256.0
+	var height := minf(maxf(200, presentation.get_preferred_height(width)), maxf(110, bounds.size.y - header - 48))
+	var origin := Vector2((canvas.x - width) * 0.5, maxf(16, (canvas.y - header - height - 48) * 0.5)).round()
+	var portrait_rect := Rect2(origin + Vector2(maxf(0, width * 0.5 - header - 60), 0), Vector2.ONE * header)
+	portrait.position = (portrait_rect.position * ui_scale).round()
+	portrait.size = (portrait_rect.size * ui_scale).round()
+	presentation.scale = Vector2.ONE * ui_scale
 	presentation.arrange(Rect2(origin + Vector2(0, header), Vector2(width, height)), portrait_rect, bounds)
-	_back.position = origin + Vector2(width - 100, header + height + 6)
-	_back.size = Vector2(100, 28)
+	_back.scale = Vector2.ONE * ui_scale
+	_back.position = ((origin + Vector2(width - 132, header + height + 12)) * ui_scale).round()
+	_back.size = Vector2(132, 36)
 
 
 func _choose(accepted: bool) -> void:

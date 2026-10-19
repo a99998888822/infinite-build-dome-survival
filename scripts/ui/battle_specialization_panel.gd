@@ -44,7 +44,7 @@ func _ready() -> void:
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		card.add_theme_stylebox_override("normal", FinanceFrameSkin.box("card", 8))
-		card.add_theme_stylebox_override("hover", FinanceFrameSkin.box("card_epic", 8))
+		card.add_theme_stylebox_override("hover", FinanceFrameSkin.box("card_hover", 8))
 		card.add_theme_stylebox_override("pressed", FinanceFrameSkin.box("selected", 8))
 		card.add_theme_stylebox_override("disabled", FinanceFrameSkin.box("card", 8))
 		card_row.add_child(card)
@@ -77,7 +77,7 @@ func _label(value: String, color: Color, parent: Control = null) -> Label:
 	item.text = value
 	item.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	item.clip_text = true
-	FinanceUIStyle.label(item, 14, color)
+	FinanceUIStyle.label(item, 23, color)
 	item.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if parent == null: _body.add_child(item)
 	else: parent.add_child(item)
@@ -135,7 +135,7 @@ func refresh() -> void:
 		cards[i].add_theme_stylebox_override("normal", box)
 		cards[i].add_theme_stylebox_override("disabled", box)
 		marks[i].text = L10n.text("ui.bank.specialization." + (("obtained" if active else "not_chosen") if purchased else ("selected" if active else "choose")))
-		FinanceUIStyle.label(marks[i], 12, FinanceUIStyle.GOLD if active else FinanceUIStyle.MUTED)
+		FinanceUIStyle.label(marks[i], 20, FinanceUIStyle.GOLD if active else FinanceUIStyle.MUTED)
 		cards[i].modulate = Color.WHITE if not purchased or active else Color(0.72, 0.72, 0.72)
 	if purchased:
 		quote.text = L10n.text("ui.bank.specialization.paid") % [price, principal]
@@ -164,10 +164,10 @@ func arrange() -> void:
 	var title_h := 21.0 if compact else 26.0
 	var header_h := 28.0 if compact else 39.0
 	var footer_h := 52.0 if short else (78.0 if compact else 88.0)
-	var font := 11 if compact else 13
-	FinanceUIStyle.label(heading, 14 if compact else 17, FinanceUIStyle.TEXT)
+	var font := 18 if compact else 22
+	FinanceUIStyle.label(heading, 23 if compact else 28, FinanceUIStyle.TEXT)
 	FinanceUIStyle.label(quote, font, FinanceUIStyle.GOLD)
-	FinanceUIStyle.label(note, 11 if compact else 12, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(note, 18 if compact else 20, FinanceUIStyle.MUTED)
 	_place(heading, Rect2(margin, margin - 3, width - margin * 2, title_h))
 	_place(card_row, Rect2(margin, header_h, width - margin * 2, maxf(70, height - header_h - footer_h)))
 	card_row.add_theme_constant_override("separation", 5 if compact else 8)
@@ -175,7 +175,7 @@ func arrange() -> void:
 		var card := cards[i]
 		var w := card.size.x
 		var h := card.size.y
-		FinanceUIStyle.label(names[i], 12 if compact else 15, FinanceUIStyle.TEXT)
+		FinanceUIStyle.label(names[i], 20 if compact else 25, FinanceUIStyle.TEXT)
 		FinanceUIStyle.label(details[i], font, FinanceUIStyle.GREEN)
 		details[i].add_theme_constant_override("line_spacing", 3 if compact else 6)
 		_place(names[i], Rect2(3, 2 if short else (4 if compact else 10), w - 6, 18 if short else 22))

@@ -3,8 +3,10 @@ class_name EscOverlay
 
 signal back_pressed
 
-const RELIC_CELL_SIZE: Vector2 = Vector2(48, 48)
-const RELIC_ICON_SCALE := 0.625 # 40px icons inside the shared 48px inventory cell.
+const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
+const PALETTE = HUD_STYLE.PALETTE
+const RELIC_CELL_SIZE: Vector2 = Vector2(96, 96)
+const RELIC_ICON_SCALE := 1.25 # 80px icons inside the enlarged 96px inventory cell.
 const GRID_EDGE_PADDING := 4
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
@@ -12,7 +14,7 @@ const MODAL_FALLBACK_RIGHT: float = 336.0
 const MODAL_TOP_OFFSET: float = 90.0
 const MODAL_BOTTOM_MARGIN: float = 14.0
 const WEAPON_STRIP_TOP_OFFSET: float = 12.0
-const WEAPON_STRIP_HEIGHT: float = 62.0
+const WEAPON_STRIP_HEIGHT: float = 116.0
 const RARITY_ORDER: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.86, 0.86, 0.86, 1.0),
@@ -36,6 +38,7 @@ var _grid_layout_retry_in_progress: bool = false
 var _listed_relic_player: PlayerController
 var _listed_relic_counts: Dictionary = {}
 static var _relic_glow_textures: Dictionary = {}
+var _display_scale := 0.0
 
 @onready var weapon_strip: WeaponStrip = get_node_or_null("WeaponStrip")
 @onready var center_container: CenterContainer = get_node_or_null("CenterContainer")
@@ -59,6 +62,7 @@ func _ready() -> void:
 	if relic_tooltip_label != null:
 		GameTooltipLayer.apply_pixel_text(relic_tooltip_label)
 	_ensure_backdrop()
+	_apply_hud_style()
 	if back_button != null and not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
 	if relic_grid != null:
@@ -80,6 +84,28 @@ func _ready() -> void:
 		if not get_viewport().size_changed.is_connected(viewport_callable):
 			get_viewport().size_changed.connect(viewport_callable)
 	_layout_overlay()
+
+
+func _apply_hud_style() -> void:
+	var panel := get_node("CenterContainer/RelicPanel") as PanelContainer
+	panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(panel, "panel", "panel"))
+	for label in panel.find_children("*", "Label", true, false):
+		label.add_theme_color_override("font_color", PALETTE.TEXT if label.name in ["TitleLabel", "ItemTitleLabel"] else PALETTE.MUTED)
+	back_button.flat = false
+	FinanceFrameSkin.button(back_button)
+	for scroll in [relic_scroll, item_scroll]:
+		FinanceFrameSkin.scrollbar(scroll.get_v_scroll_bar())
+		FinanceFrameSkin.scrollbar(scroll.get_h_scroll_bar())
+	relic_tooltip.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel"))
+	relic_tooltip_label.add_theme_color_override("default_color", PALETTE.TEXT)
+	weapon_strip.icon_slot_theme = HUD_STYLE.weapon_slot_theme()
+	var strip_panel := weapon_strip.get_node("StripPanel") as PanelContainer
+	strip_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(strip_panel, "panel", "panel"))
+	weapon_strip.load_label.add_theme_color_override("font_color", PALETTE.TEXT)
+	weapon_strip.weapon_tooltip.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel"))
+	weapon_strip.weapon_tooltip_label.add_theme_color_override("default_color", PALETTE.TEXT)
+	weapon_strip._attachment_tooltip.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel"))
+	weapon_strip._attachment_tooltip_label.add_theme_color_override("font_color", PALETTE.TEXT)
 
 
 func show_overlay() -> void:
@@ -137,7 +163,7 @@ func _ensure_backdrop() -> void:
 	_backdrop = ColorRect.new()
 	_backdrop.name = "EscBackdrop"
 	_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_backdrop.color = Color(0.01, 0.015, 0.02, 0.82)
+	_backdrop.color = Color(PALETTE.SHADOW, 0.82)
 	_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_backdrop.z_index = -5
 	add_child(_backdrop)
@@ -176,6 +202,8 @@ func _refresh_item_list() -> void:
 		if card == null:
 			continue
 		card.configure(item, false)
+		FinanceFrameSkin.button(card, false, true)
+		_size_item_card(card)
 		card.item_tooltip_requested.connect(_show_item_tooltip)
 		card.item_tooltip_hidden.connect(_hide_item_tooltip)
 		item_grid.add_child(card)
@@ -192,12 +220,7 @@ func _show_item_tooltip(anchor_card: ItemInventoryCard, bbcode_text: String) -> 
 	_item_tooltip_panel = PanelContainer.new()
 	_item_tooltip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_item_tooltip_panel.z_index = 120
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.035, 0.045, 0.07, 0.98)
-	panel_style.border_color = Color(0.72, 0.78, 0.92, 0.92)
-	panel_style.set_border_width_all(1)
-	panel_style.set_corner_radius_all(4)
-	_item_tooltip_panel.add_theme_stylebox_override("panel", panel_style)
+	_item_tooltip_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel"))
 	GameTooltipLayer.for_owner(self).add_child(_item_tooltip_panel)
 
 	var margin := MarginContainer.new()
@@ -214,6 +237,7 @@ func _show_item_tooltip(anchor_card: ItemInventoryCard, bbcode_text: String) -> 
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size = Vector2(280.0, 0.0)
 	label.add_theme_font_size_override("normal_font_size", 16)
+	label.add_theme_color_override("default_color", PALETTE.TEXT)
 	label.add_theme_constant_override("line_separation", 2)
 	label.text = bbcode_text
 	margin.add_child(label)
@@ -250,10 +274,13 @@ func _on_viewport_resized() -> void:
 func _layout_overlay() -> void:
 	if get_viewport() == null:
 		return
+	_sync_display_sizes()
 	var safe := _get_modal_safe_rect()
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return
-	var strip_height := maxf(WEAPON_STRIP_HEIGHT, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
+	var strip_height := maxf(WEAPON_STRIP_HEIGHT * _display_scale, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
+	if weapon_strip != null:
+		strip_height = maxf(strip_height, weapon_strip.get_node("StripPanel").get_combined_minimum_size().y)
 	var modal_top := maxf(MODAL_TOP_OFFSET, WEAPON_STRIP_TOP_OFFSET + strip_height + 16.0)
 	if center_container != null:
 		center_container.anchor_left = 0.0
@@ -287,7 +314,7 @@ func _layout_overlay() -> void:
 		_backdrop.position = Vector2.ZERO
 		_backdrop.size = Vector2(safe.end.x, get_viewport().get_visible_rect().size.y)
 	if weapon_strip != null:
-		var strip_width := minf(560.0, maxf(safe.size.x - 32.0, 0.0))
+		var strip_width := minf(840.0 * _display_scale, maxf(safe.size.x - 32.0, 0.0))
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
@@ -298,15 +325,55 @@ func _layout_overlay() -> void:
 	_update_item_grid_columns()
 
 
+func _sync_display_sizes() -> void:
+	var viewport := get_viewport_rect().size
+	var next_scale := clampf(minf(viewport.x / 1280.0, viewport.y / 720.0), 0.5, 1.0)
+	if is_equal_approx(next_scale, _display_scale): return
+	_display_scale = next_scale
+	weapon_strip.slot_size = roundi(88 * _display_scale)
+	weapon_strip.icon_size = roundi(76 * _display_scale)
+	weapon_strip.cast_mode_icon_size = roundf(28 * _display_scale)
+	var strip_margin := weapon_strip.get_node("StripPanel/StripMargin") as MarginContainer
+	strip_margin.add_theme_constant_override("margin_top", roundi(10 * _display_scale))
+	strip_margin.add_theme_constant_override("margin_bottom", roundi(10 * _display_scale))
+	weapon_strip.load_label.add_theme_font_size_override("font_size", roundi(22 * maxf(0.75, _display_scale)))
+	weapon_strip._refresh_weapon_strip()
+	for cell in _relic_cells: _size_relic_cell(cell)
+	for card in _item_cards: _size_item_card(card)
+
+
+func _size_item_card(card: ItemInventoryCard) -> void:
+	card.custom_minimum_size = (RELIC_CELL_SIZE * _display_scale).round()
+	card.size = card.custom_minimum_size
+	var augmentation := str(card.item_instance.get("icon", "")).get_base_dir() == "res://assets/ui/icons/augmentations"
+	card.add_theme_constant_override("icon_max_width", roundi((64 if augmentation else 88) * _display_scale))
+
+
+func _size_relic_cell(cell: Control) -> void:
+	cell.custom_minimum_size = (RELIC_CELL_SIZE * _display_scale).round()
+	var icon := cell.get_node_or_null("RelicIcon") as TextureRect
+	if icon != null:
+		FinanceUIStyle.set_item_icon(icon, icon.texture, RELIC_ICON_SCALE * _display_scale)
+		if FinanceUIStyle.is_native_relic_icon(icon.texture):
+			cell.custom_minimum_size = cell.custom_minimum_size.max(icon.custom_minimum_size + Vector2(8, 8))
+	cell.size = cell.custom_minimum_size
+	cell.pivot_offset = cell.size * 0.5
+	var badge := cell.get_node_or_null("CountBadge") as Label
+	if badge != null:
+		badge.add_theme_font_size_override("font_size", roundi(18 * _display_scale))
+		badge.offset_left = -28 * _display_scale
+		badge.offset_top = -28 * _display_scale
+
+
 func _update_relic_grid_columns() -> void:
-	var cell_width := RELIC_CELL_SIZE.x
+	var cell_width := RELIC_CELL_SIZE.x * _display_scale
 	for cell in _relic_cells:
 		cell_width = maxf(cell_width, cell.custom_minimum_size.x)
 	_update_grid_columns(relic_grid, relic_scroll, cell_width)
 
 
 func _update_item_grid_columns() -> void:
-	_update_grid_columns(item_grid, item_scroll, ItemInventoryCard.INVENTORY_ICON_SIZE.x)
+	_update_grid_columns(item_grid, item_scroll, roundf(RELIC_CELL_SIZE.x * _display_scale))
 
 
 func _update_grid_columns(grid: GridContainer, scroll: ScrollContainer, cell_width: float) -> void:
@@ -413,15 +480,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 	var cell := Button.new()
 	cell.flat = false
 	var rarity_color: Color = RARITY_COLORS.get(rarity, RARITY_COLORS["common"])
-	var frame := StyleBoxFlat.new()
-	frame.bg_color = Color("292c31")
-	frame.border_color = Color("62666d")
-	frame.set_border_width_all(1)
-	frame.set_corner_radius_all(3)
-	frame.shadow_color = Color(rarity_color, 0.35)
-	frame.shadow_size = 3
-	for state in ["normal", "hover", "pressed", "hover_pressed"]:
-		cell.add_theme_stylebox_override(state, frame)
+	FinanceFrameSkin.button(cell, false, true)
 	cell.custom_minimum_size = RELIC_CELL_SIZE
 	cell.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -449,6 +508,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		var texture := FinanceUIStyle.item_icon(icon_path)
 		if texture is Texture2D:
 			var icon_rect := TextureRect.new()
+			icon_rect.name = "RelicIcon"
 			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			cell.add_child(icon_rect)
@@ -478,6 +538,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		placeholder.add_child(name_label)
 	if count > 1:
 		var badge := Label.new()
+		badge.name = "CountBadge"
 		badge.text = str(count)
 		badge.anchor_left = 1.0
 		badge.anchor_top = 1.0
@@ -495,7 +556,7 @@ func _create_relic_cell(relic_id: String, count: int) -> Control:
 		badge.add_theme_color_override("font_outline_color", Color(0.05, 0.05, 0.06, 0.95))
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(badge)
-	cell.pivot_offset = cell.custom_minimum_size * 0.5
+	_size_relic_cell(cell)
 	cell.mouse_entered.connect(_on_relic_cell_hovered.bind(cell, relic_data))
 	cell.mouse_exited.connect(_on_relic_cell_unhovered.bind(cell))
 	_relic_cells.append(cell)

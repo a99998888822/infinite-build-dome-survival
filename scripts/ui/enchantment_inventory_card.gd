@@ -29,7 +29,7 @@ func _ready() -> void:
 	_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FinanceUIStyle.label(_caption, 9)
+	FinanceUIStyle.label(_caption, 15)
 	body.add_child(_caption)
 	_inspect = TextureRect.new()
 	_inspect.texture = INSPECT_ICON

@@ -1,0 +1,2952 @@
+{
+	"draws": [
+		{
+			"camera": [
+				0.0,
+				0.0
+			],
+			"clip": "idle",
+			"clip_frame": 0,
+			"distance": 0.0,
+			"frame": 27,
+			"frame_ms": 19.979,
+			"position": [
+				0.0,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 55,
+			"time_ms": 19.979
+		},
+		{
+			"camera": [
+				2.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333349227905,
+			"frame": 28,
+			"frame_ms": 25.456,
+			"position": [
+				2.33333349227905,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 56,
+			"time_ms": 45.435
+		},
+		{
+			"camera": [
+				5.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333349227905,
+			"frame": 29,
+			"frame_ms": 19.347,
+			"position": [
+				4.66666698455811,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 57,
+			"time_ms": 64.782
+		},
+		{
+			"camera": [
+				7.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333349227905,
+			"frame": 30,
+			"frame_ms": 17.221,
+			"position": [
+				7.00000047683716,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 58,
+			"time_ms": 82.003
+		},
+		{
+			"camera": [
+				9.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333349227905,
+			"frame": 31,
+			"frame_ms": 16.551,
+			"position": [
+				9.33333396911621,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 59,
+			"time_ms": 98.554
+		},
+		{
+			"camera": [
+				12.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333396911621,
+			"frame": 32,
+			"frame_ms": 19.08,
+			"position": [
+				11.6666679382324,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 60,
+			"time_ms": 117.634
+		},
+		{
+			"camera": [
+				14.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333396911621,
+			"frame": 33,
+			"frame_ms": 19.011,
+			"position": [
+				14.0000019073486,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 61,
+			"time_ms": 136.645
+		},
+		{
+			"camera": [
+				16.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 0,
+			"distance": 2.33333396911621,
+			"frame": 34,
+			"frame_ms": 21.539,
+			"position": [
+				16.3333358764648,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 62,
+			"time_ms": 158.184
+		},
+		{
+			"camera": [
+				21.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 4.66666793823242,
+			"frame": 35,
+			"frame_ms": 17.032,
+			"position": [
+				21.0000038146973,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 64,
+			"time_ms": 175.216
+		},
+		{
+			"camera": [
+				23.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33333396911621,
+			"frame": 36,
+			"frame_ms": 17.804,
+			"position": [
+				23.3333377838135,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 65,
+			"time_ms": 193.02
+		},
+		{
+			"camera": [
+				26.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33333396911621,
+			"frame": 37,
+			"frame_ms": 19.386,
+			"position": [
+				25.6666717529297,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 66,
+			"time_ms": 212.406
+		},
+		{
+			"camera": [
+				28.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33333396911621,
+			"frame": 38,
+			"frame_ms": 112.695,
+			"position": [
+				28.0000057220459,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 67,
+			"time_ms": 325.101
+		},
+		{
+			"camera": [
+				42.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 13.9999942779541,
+			"frame": 39,
+			"frame_ms": 43.446,
+			"position": [
+				42.0,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 73,
+			"time_ms": 368.547
+		},
+		{
+			"camera": [
+				51.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 9.33332824707031,
+			"frame": 40,
+			"frame_ms": 19.216,
+			"position": [
+				51.3333282470703,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 77,
+			"time_ms": 387.763
+		},
+		{
+			"camera": [
+				54.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33333206176758,
+			"frame": 41,
+			"frame_ms": 13.947,
+			"position": [
+				53.6666603088379,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 78,
+			"time_ms": 401.71
+		},
+		{
+			"camera": [
+				56.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33333206176758,
+			"frame": 42,
+			"frame_ms": 41.059,
+			"position": [
+				55.9999923706055,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 79,
+			"time_ms": 442.769
+		},
+		{
+			"camera": [
+				61.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 0,
+			"distance": 4.66666412353516,
+			"frame": 43,
+			"frame_ms": 54.623,
+			"position": [
+				60.6666564941406,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 81,
+			"time_ms": 497.392
+		},
+		{
+			"camera": [
+				65.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 0,
+			"distance": 4.66666412353516,
+			"frame": 44,
+			"frame_ms": 76.839,
+			"position": [
+				65.3333206176758,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 83,
+			"time_ms": 574.231
+		},
+		{
+			"camera": [
+				77.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 1,
+			"distance": 11.6666793823242,
+			"frame": 45,
+			"frame_ms": 69.524,
+			"position": [
+				77.0,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 88,
+			"time_ms": 643.755
+		},
+		{
+			"camera": [
+				89.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 2,
+			"distance": 11.6666793823242,
+			"frame": 46,
+			"frame_ms": 25.066,
+			"position": [
+				88.6666793823242,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 93,
+			"time_ms": 668.821
+		},
+		{
+			"camera": [
+				93.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 2,
+			"distance": 4.66667175292969,
+			"frame": 47,
+			"frame_ms": 20.11,
+			"position": [
+				93.3333511352539,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 95,
+			"time_ms": 688.931
+		},
+		{
+			"camera": [
+				96.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 3,
+			"distance": 2.33333587646484,
+			"frame": 48,
+			"frame_ms": 16.425,
+			"position": [
+				95.6666870117188,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 96,
+			"time_ms": 705.356
+		},
+		{
+			"camera": [
+				98.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 3,
+			"distance": 2.33333587646484,
+			"frame": 49,
+			"frame_ms": 19.127,
+			"position": [
+				98.0000228881836,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 97,
+			"time_ms": 724.483
+		},
+		{
+			"camera": [
+				100.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 3,
+			"distance": 2.33333587646484,
+			"frame": 50,
+			"frame_ms": 13.855,
+			"position": [
+				100.333358764648,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 98,
+			"time_ms": 738.338
+		},
+		{
+			"camera": [
+				103.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 3,
+			"distance": 2.33333587646484,
+			"frame": 51,
+			"frame_ms": 18.263,
+			"position": [
+				102.666694641113,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 99,
+			"time_ms": 756.601
+		},
+		{
+			"camera": [
+				105.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 3,
+			"distance": 2.33333587646484,
+			"frame": 52,
+			"frame_ms": 15.862,
+			"position": [
+				105.000030517578,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 100,
+			"time_ms": 772.463
+		},
+		{
+			"camera": [
+				107.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 2.33333587646484,
+			"frame": 53,
+			"frame_ms": 14.463,
+			"position": [
+				107.333366394043,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 101,
+			"time_ms": 786.926
+		},
+		{
+			"camera": [
+				110.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 2.33333587646484,
+			"frame": 54,
+			"frame_ms": 13.052,
+			"position": [
+				109.666702270508,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 102,
+			"time_ms": 799.978
+		},
+		{
+			"camera": [
+				112.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 2.33333587646484,
+			"frame": 55,
+			"frame_ms": 14.779,
+			"position": [
+				112.000038146973,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 103,
+			"time_ms": 814.757
+		},
+		{
+			"camera": [
+				114.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 2.33333587646484,
+			"frame": 56,
+			"frame_ms": 13.402,
+			"position": [
+				114.333374023438,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 104,
+			"time_ms": 828.159
+		},
+		{
+			"camera": [
+				114.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 0.0,
+			"frame": 57,
+			"frame_ms": 10.817,
+			"position": [
+				114.333374023438,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 104,
+			"time_ms": 838.976
+		},
+		{
+			"camera": [
+				117.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 4,
+			"distance": 2.33333587646484,
+			"frame": 58,
+			"frame_ms": 12.366,
+			"position": [
+				116.666709899902,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 105,
+			"time_ms": 851.342
+		},
+		{
+			"camera": [
+				119.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 2.33333587646484,
+			"frame": 59,
+			"frame_ms": 11.015,
+			"position": [
+				119.000045776367,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 106,
+			"time_ms": 862.357
+		},
+		{
+			"camera": [
+				119.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 0.0,
+			"frame": 60,
+			"frame_ms": 11.559,
+			"position": [
+				119.000045776367,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 106,
+			"time_ms": 873.916
+		},
+		{
+			"camera": [
+				121.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 2.33333587646484,
+			"frame": 61,
+			"frame_ms": 16.504,
+			"position": [
+				121.333381652832,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 107,
+			"time_ms": 890.42
+		},
+		{
+			"camera": [
+				124.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 2.33333587646484,
+			"frame": 62,
+			"frame_ms": 16.133,
+			"position": [
+				123.666717529297,
+				0.0
+			],
+			"sprite_screen": [
+				959.666748046875,
+				610.0
+			],
+			"tick": 108,
+			"time_ms": 906.553
+		},
+		{
+			"camera": [
+				126.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 2.33333587646484,
+			"frame": 63,
+			"frame_ms": 16.269,
+			"position": [
+				126.000053405762,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 109,
+			"time_ms": 922.822
+		},
+		{
+			"camera": [
+				126.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 0.0,
+			"frame": 64,
+			"frame_ms": 12.627,
+			"position": [
+				126.000053405762,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 109,
+			"time_ms": 935.449
+		},
+		{
+			"camera": [
+				128.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 5,
+			"distance": 2.33333587646484,
+			"frame": 65,
+			"frame_ms": 11.675,
+			"position": [
+				128.333389282227,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 110,
+			"time_ms": 947.124
+		},
+		{
+			"camera": [
+				131.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 2.33332824707031,
+			"frame": 66,
+			"frame_ms": 11.562,
+			"position": [
+				130.666717529297,
+				0.0
+			],
+			"sprite_screen": [
+				959.666748046875,
+				610.0
+			],
+			"tick": 111,
+			"time_ms": 958.686
+		},
+		{
+			"camera": [
+				133.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 2.33332824707031,
+			"frame": 67,
+			"frame_ms": 15.418,
+			"position": [
+				133.000045776367,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 112,
+			"time_ms": 974.104
+		},
+		{
+			"camera": [
+				133.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 0.0,
+			"frame": 68,
+			"frame_ms": 14.101,
+			"position": [
+				133.000045776367,
+				0.0
+			],
+			"sprite_screen": [
+				960.000061035156,
+				610.0
+			],
+			"tick": 112,
+			"time_ms": 988.205
+		},
+		{
+			"camera": [
+				135.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 2.33332824707031,
+			"frame": 69,
+			"frame_ms": 12.168,
+			"position": [
+				135.333374023438,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 113,
+			"time_ms": 1000.373
+		},
+		{
+			"camera": [
+				138.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 2.33332824707031,
+			"frame": 70,
+			"frame_ms": 14.143,
+			"position": [
+				137.666702270508,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 114,
+			"time_ms": 1014.516
+		},
+		{
+			"camera": [
+				140.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 2.33332824707031,
+			"frame": 71,
+			"frame_ms": 15.433,
+			"position": [
+				140.000030517578,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 115,
+			"time_ms": 1029.949
+		},
+		{
+			"camera": [
+				140.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 6,
+			"distance": 0.0,
+			"frame": 72,
+			"frame_ms": 13.471,
+			"position": [
+				140.000030517578,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 115,
+			"time_ms": 1043.42
+		},
+		{
+			"camera": [
+				142.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 7,
+			"distance": 2.33332824707031,
+			"frame": 73,
+			"frame_ms": 15.681,
+			"position": [
+				142.333358764648,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 116,
+			"time_ms": 1059.101
+		},
+		{
+			"camera": [
+				145.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 7,
+			"distance": 2.33332824707031,
+			"frame": 74,
+			"frame_ms": 12.218,
+			"position": [
+				144.666687011719,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 117,
+			"time_ms": 1071.319
+		},
+		{
+			"camera": [
+				147.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 7,
+			"distance": 2.33332824707031,
+			"frame": 75,
+			"frame_ms": 17.867,
+			"position": [
+				147.000015258789,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 118,
+			"time_ms": 1089.186
+		},
+		{
+			"camera": [
+				149.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 7,
+			"distance": 2.33332824707031,
+			"frame": 76,
+			"frame_ms": 11.074,
+			"position": [
+				149.333343505859,
+				0.0
+			],
+			"sprite_screen": [
+				960.333374023438,
+				610.0
+			],
+			"tick": 119,
+			"time_ms": 1100.26
+		},
+		{
+			"camera": [
+				152.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 7,
+			"distance": 2.33332824707031,
+			"frame": 77,
+			"frame_ms": 17.635,
+			"position": [
+				151.66667175293,
+				0.0
+			],
+			"sprite_screen": [
+				959.666687011719,
+				610.0
+			],
+			"tick": 120,
+			"time_ms": 1117.895
+		},
+		{
+			"camera": [
+				154.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 2.33332824707031,
+			"frame": 78,
+			"frame_ms": 11.512,
+			"position": [
+				154.0,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 121,
+			"time_ms": 1129.407
+		},
+		{
+			"camera": [
+				154.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 0.0,
+			"frame": 79,
+			"frame_ms": 10.054,
+			"position": [
+				154.0,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 121,
+			"time_ms": 1139.461
+		},
+		{
+			"camera": [
+				156.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 2.33332824707031,
+			"frame": 80,
+			"frame_ms": 15.3,
+			"position": [
+				156.33332824707,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 122,
+			"time_ms": 1154.761
+		},
+		{
+			"camera": [
+				159.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 2.33332824707031,
+			"frame": 81,
+			"frame_ms": 12.439,
+			"position": [
+				158.666656494141,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 123,
+			"time_ms": 1167.2
+		},
+		{
+			"camera": [
+				161.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 2.33332824707031,
+			"frame": 82,
+			"frame_ms": 11.223,
+			"position": [
+				160.999984741211,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 124,
+			"time_ms": 1178.423
+		},
+		{
+			"camera": [
+				163.0,
+				0.0
+			],
+			"clip": "move_attack",
+			"clip_frame": 8,
+			"distance": 2.33332824707031,
+			"frame": 83,
+			"frame_ms": 11.694,
+			"position": [
+				163.333312988281,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 125,
+			"time_ms": 1190.117
+		},
+		{
+			"camera": [
+				166.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33332824707031,
+			"frame": 84,
+			"frame_ms": 13.504,
+			"position": [
+				165.666641235352,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 126,
+			"time_ms": 1203.621
+		},
+		{
+			"camera": [
+				166.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 0.0,
+			"frame": 85,
+			"frame_ms": 14.522,
+			"position": [
+				165.666641235352,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 126,
+			"time_ms": 1218.143
+		},
+		{
+			"camera": [
+				168.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33332824707031,
+			"frame": 86,
+			"frame_ms": 17.805,
+			"position": [
+				167.999969482422,
+				0.0
+			],
+			"sprite_screen": [
+				960.0,
+				610.0
+			],
+			"tick": 127,
+			"time_ms": 1235.948
+		},
+		{
+			"camera": [
+				170.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33332824707031,
+			"frame": 87,
+			"frame_ms": 16.638,
+			"position": [
+				170.333297729492,
+				0.0
+			],
+			"sprite_screen": [
+				960.333312988281,
+				610.0
+			],
+			"tick": 128,
+			"time_ms": 1252.586
+		},
+		{
+			"camera": [
+				173.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 1,
+			"distance": 2.33332824707031,
+			"frame": 88,
+			"frame_ms": 19.949,
+			"position": [
+				172.666625976563,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 129,
+			"time_ms": 1272.535
+		},
+		{
+			"camera": [
+				175.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 89,
+			"frame_ms": 14.94,
+			"position": [
+				174.999954223633,
+				0.0
+			],
+			"sprite_screen": [
+				959.999938964844,
+				610.0
+			],
+			"tick": 130,
+			"time_ms": 1287.475
+		},
+		{
+			"camera": [
+				177.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 90,
+			"frame_ms": 18.066,
+			"position": [
+				177.333282470703,
+				0.0
+			],
+			"sprite_screen": [
+				960.333251953125,
+				610.0
+			],
+			"tick": 131,
+			"time_ms": 1305.541
+		},
+		{
+			"camera": [
+				180.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 91,
+			"frame_ms": 15.65,
+			"position": [
+				179.666610717773,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 132,
+			"time_ms": 1321.191
+		},
+		{
+			"camera": [
+				182.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 92,
+			"frame_ms": 14.106,
+			"position": [
+				181.999938964844,
+				0.0
+			],
+			"sprite_screen": [
+				959.999938964844,
+				610.0
+			],
+			"tick": 133,
+			"time_ms": 1335.297
+		},
+		{
+			"camera": [
+				184.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 93,
+			"frame_ms": 12.443,
+			"position": [
+				184.333267211914,
+				0.0
+			],
+			"sprite_screen": [
+				960.333251953125,
+				610.0
+			],
+			"tick": 134,
+			"time_ms": 1347.74
+		},
+		{
+			"camera": [
+				187.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 94,
+			"frame_ms": 12.849,
+			"position": [
+				186.666595458984,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 135,
+			"time_ms": 1360.589
+		},
+		{
+			"camera": [
+				187.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 0.0,
+			"frame": 95,
+			"frame_ms": 11.29,
+			"position": [
+				186.666595458984,
+				0.0
+			],
+			"sprite_screen": [
+				959.666625976563,
+				610.0
+			],
+			"tick": 135,
+			"time_ms": 1371.879
+		},
+		{
+			"camera": [
+				189.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 96,
+			"frame_ms": 11.33,
+			"position": [
+				188.999923706055,
+				0.0
+			],
+			"sprite_screen": [
+				959.999938964844,
+				610.0
+			],
+			"tick": 136,
+			"time_ms": 1383.209
+		},
+		{
+			"camera": [
+				191.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 2,
+			"distance": 2.33332824707031,
+			"frame": 97,
+			"frame_ms": 11.384,
+			"position": [
+				191.333251953125,
+				0.0
+			],
+			"sprite_screen": [
+				960.333251953125,
+				610.0
+			],
+			"tick": 137,
+			"time_ms": 1394.593
+		},
+		{
+			"camera": [
+				194.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 98,
+			"frame_ms": 14.373,
+			"position": [
+				193.666580200195,
+				0.0
+			],
+			"sprite_screen": [
+				959.666564941406,
+				610.0
+			],
+			"tick": 138,
+			"time_ms": 1408.966
+		},
+		{
+			"camera": [
+				196.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 99,
+			"frame_ms": 12.173,
+			"position": [
+				195.999908447266,
+				0.0
+			],
+			"sprite_screen": [
+				959.999877929688,
+				610.0
+			],
+			"tick": 139,
+			"time_ms": 1421.139
+		},
+		{
+			"camera": [
+				198.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 100,
+			"frame_ms": 12.776,
+			"position": [
+				198.333236694336,
+				0.0
+			],
+			"sprite_screen": [
+				960.333251953125,
+				610.0
+			],
+			"tick": 140,
+			"time_ms": 1433.915
+		},
+		{
+			"camera": [
+				201.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 101,
+			"frame_ms": 10.571,
+			"position": [
+				200.666564941406,
+				0.0
+			],
+			"sprite_screen": [
+				959.666564941406,
+				610.0
+			],
+			"tick": 141,
+			"time_ms": 1444.486
+		},
+		{
+			"camera": [
+				201.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 0.0,
+			"frame": 102,
+			"frame_ms": 13.097,
+			"position": [
+				200.666564941406,
+				0.0
+			],
+			"sprite_screen": [
+				959.666564941406,
+				610.0
+			],
+			"tick": 141,
+			"time_ms": 1457.583
+		},
+		{
+			"camera": [
+				203.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 103,
+			"frame_ms": 12.25,
+			"position": [
+				202.999893188477,
+				0.0
+			],
+			"sprite_screen": [
+				959.999877929688,
+				610.0
+			],
+			"tick": 142,
+			"time_ms": 1469.833
+		},
+		{
+			"camera": [
+				205.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 104,
+			"frame_ms": 13.005,
+			"position": [
+				205.333221435547,
+				0.0
+			],
+			"sprite_screen": [
+				960.333251953125,
+				610.0
+			],
+			"tick": 143,
+			"time_ms": 1482.838
+		},
+		{
+			"camera": [
+				208.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 105,
+			"frame_ms": 11.073,
+			"position": [
+				207.666549682617,
+				0.0
+			],
+			"sprite_screen": [
+				959.666564941406,
+				610.0
+			],
+			"tick": 144,
+			"time_ms": 1493.911
+		},
+		{
+			"camera": [
+				208.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 0.0,
+			"frame": 106,
+			"frame_ms": 10.13,
+			"position": [
+				207.666549682617,
+				0.0
+			],
+			"sprite_screen": [
+				959.666564941406,
+				610.0
+			],
+			"tick": 144,
+			"time_ms": 1504.041
+		},
+		{
+			"camera": [
+				210.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 2.33332824707031,
+			"frame": 107,
+			"frame_ms": 9.951,
+			"position": [
+				209.999877929688,
+				0.0
+			],
+			"sprite_screen": [
+				959.999877929688,
+				610.0
+			],
+			"tick": 145,
+			"time_ms": 1513.992
+		},
+		{
+			"camera": [
+				210.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 3,
+			"distance": 0.0,
+			"frame": 108,
+			"frame_ms": 12.093,
+			"position": [
+				209.999877929688,
+				0.0
+			],
+			"sprite_screen": [
+				959.999877929688,
+				610.0
+			],
+			"tick": 145,
+			"time_ms": 1526.085
+		},
+		{
+			"camera": [
+				212.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 2.33332824707031,
+			"frame": 109,
+			"frame_ms": 11.225,
+			"position": [
+				212.333206176758,
+				0.0
+			],
+			"sprite_screen": [
+				960.333190917969,
+				610.0
+			],
+			"tick": 146,
+			"time_ms": 1537.31
+		},
+		{
+			"camera": [
+				215.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 2.33332824707031,
+			"frame": 110,
+			"frame_ms": 10.032,
+			"position": [
+				214.666534423828,
+				0.0
+			],
+			"sprite_screen": [
+				959.66650390625,
+				610.0
+			],
+			"tick": 147,
+			"time_ms": 1547.342
+		},
+		{
+			"camera": [
+				215.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 0.0,
+			"frame": 111,
+			"frame_ms": 10.999,
+			"position": [
+				214.666534423828,
+				0.0
+			],
+			"sprite_screen": [
+				959.66650390625,
+				610.0
+			],
+			"tick": 147,
+			"time_ms": 1558.341
+		},
+		{
+			"camera": [
+				217.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 2.33332824707031,
+			"frame": 112,
+			"frame_ms": 12.657,
+			"position": [
+				216.999862670898,
+				0.0
+			],
+			"sprite_screen": [
+				959.999877929688,
+				610.0
+			],
+			"tick": 148,
+			"time_ms": 1570.998
+		},
+		{
+			"camera": [
+				219.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 2.33332824707031,
+			"frame": 113,
+			"frame_ms": 10.678,
+			"position": [
+				219.333190917969,
+				0.0
+			],
+			"sprite_screen": [
+				960.333190917969,
+				610.0
+			],
+			"tick": 149,
+			"time_ms": 1581.676
+		},
+		{
+			"camera": [
+				219.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 0.0,
+			"frame": 114,
+			"frame_ms": 9.175,
+			"position": [
+				219.333190917969,
+				0.0
+			],
+			"sprite_screen": [
+				960.333190917969,
+				610.0
+			],
+			"tick": 149,
+			"time_ms": 1590.851
+		},
+		{
+			"camera": [
+				222.0,
+				0.0
+			],
+			"clip": "move",
+			"clip_frame": 4,
+			"distance": 2.33332824707031,
+			"frame": 115,
+			"frame_ms": 11.309,
+			"position": [
+				221.666519165039,
+				0.0
+			],
+			"sprite_screen": [
+				959.66650390625,
+				610.0
+			],
+			"tick": 150,
+			"time_ms": 1602.16
+		}
+	],
+	"physics": [
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333349227905,
+			"mobility": false,
+			"position": [
+				2.33333349227905,
+				0.0
+			],
+			"tick": 56
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333349227905,
+			"mobility": false,
+			"position": [
+				4.66666698455811,
+				0.0
+			],
+			"tick": 57
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333349227905,
+			"mobility": false,
+			"position": [
+				7.00000047683716,
+				0.0
+			],
+			"tick": 58
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333349227905,
+			"mobility": false,
+			"position": [
+				9.33333396911621,
+				0.0
+			],
+			"tick": 59
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				11.6666679382324,
+				0.0
+			],
+			"tick": 60
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				14.0000019073486,
+				0.0
+			],
+			"tick": 61
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				16.3333358764648,
+				0.0
+			],
+			"tick": 62
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				18.6666698455811,
+				0.0
+			],
+			"tick": 63
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				21.0000038146973,
+				0.0
+			],
+			"tick": 64
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				23.3333377838135,
+				0.0
+			],
+			"tick": 65
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				25.6666717529297,
+				0.0
+			],
+			"tick": 66
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				28.0000057220459,
+				0.0
+			],
+			"tick": 67
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333396911621,
+			"mobility": false,
+			"position": [
+				30.3333396911621,
+				0.0
+			],
+			"tick": 68
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				32.6666717529297,
+				0.0
+			],
+			"tick": 69
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				35.0000038146973,
+				0.0
+			],
+			"tick": 70
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				37.3333358764648,
+				0.0
+			],
+			"tick": 71
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				39.6666679382324,
+				0.0
+			],
+			"tick": 72
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				42.0,
+				0.0
+			],
+			"tick": 73
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				44.3333320617676,
+				0.0
+			],
+			"tick": 74
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				46.6666641235352,
+				0.0
+			],
+			"tick": 75
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				48.9999961853027,
+				0.0
+			],
+			"tick": 76
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				51.3333282470703,
+				0.0
+			],
+			"tick": 77
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				53.6666603088379,
+				0.0
+			],
+			"tick": 78
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				55.9999923706055,
+				0.0
+			],
+			"tick": 79
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				58.333324432373,
+				0.0
+			],
+			"tick": 80
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				60.6666564941406,
+				0.0
+			],
+			"tick": 81
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				62.9999885559082,
+				0.0
+			],
+			"tick": 82
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333206176758,
+			"mobility": false,
+			"position": [
+				65.3333206176758,
+				0.0
+			],
+			"tick": 83
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				67.6666564941406,
+				0.0
+			],
+			"tick": 84
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				69.9999923706055,
+				0.0
+			],
+			"tick": 85
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				72.3333282470703,
+				0.0
+			],
+			"tick": 86
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				74.6666641235352,
+				0.0
+			],
+			"tick": 87
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				77.0,
+				0.0
+			],
+			"tick": 88
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				79.3333358764648,
+				0.0
+			],
+			"tick": 89
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				81.6666717529297,
+				0.0
+			],
+			"tick": 90
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				84.0000076293945,
+				0.0
+			],
+			"tick": 91
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				86.3333435058594,
+				0.0
+			],
+			"tick": 92
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				88.6666793823242,
+				0.0
+			],
+			"tick": 93
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				91.0000152587891,
+				0.0
+			],
+			"tick": 94
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				93.3333511352539,
+				0.0
+			],
+			"tick": 95
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				95.6666870117188,
+				0.0
+			],
+			"tick": 96
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				98.0000228881836,
+				0.0
+			],
+			"tick": 97
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				100.333358764648,
+				0.0
+			],
+			"tick": 98
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				102.666694641113,
+				0.0
+			],
+			"tick": 99
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				105.000030517578,
+				0.0
+			],
+			"tick": 100
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				107.333366394043,
+				0.0
+			],
+			"tick": 101
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				109.666702270508,
+				0.0
+			],
+			"tick": 102
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				112.000038146973,
+				0.0
+			],
+			"tick": 103
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				114.333374023438,
+				0.0
+			],
+			"tick": 104
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				116.666709899902,
+				0.0
+			],
+			"tick": 105
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				119.000045776367,
+				0.0
+			],
+			"tick": 106
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				121.333381652832,
+				0.0
+			],
+			"tick": 107
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				123.666717529297,
+				0.0
+			],
+			"tick": 108
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				126.000053405762,
+				0.0
+			],
+			"tick": 109
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33333587646484,
+			"mobility": false,
+			"position": [
+				128.333389282227,
+				0.0
+			],
+			"tick": 110
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				130.666717529297,
+				0.0
+			],
+			"tick": 111
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				133.000045776367,
+				0.0
+			],
+			"tick": 112
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				135.333374023438,
+				0.0
+			],
+			"tick": 113
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				137.666702270508,
+				0.0
+			],
+			"tick": 114
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				140.000030517578,
+				0.0
+			],
+			"tick": 115
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				142.333358764648,
+				0.0
+			],
+			"tick": 116
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				144.666687011719,
+				0.0
+			],
+			"tick": 117
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				147.000015258789,
+				0.0
+			],
+			"tick": 118
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				149.333343505859,
+				0.0
+			],
+			"tick": 119
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				151.66667175293,
+				0.0
+			],
+			"tick": 120
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				154.0,
+				0.0
+			],
+			"tick": 121
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				156.33332824707,
+				0.0
+			],
+			"tick": 122
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				158.666656494141,
+				0.0
+			],
+			"tick": 123
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				160.999984741211,
+				0.0
+			],
+			"tick": 124
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				163.333312988281,
+				0.0
+			],
+			"tick": 125
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				165.666641235352,
+				0.0
+			],
+			"tick": 126
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				167.999969482422,
+				0.0
+			],
+			"tick": 127
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				170.333297729492,
+				0.0
+			],
+			"tick": 128
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				172.666625976563,
+				0.0
+			],
+			"tick": 129
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				174.999954223633,
+				0.0
+			],
+			"tick": 130
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				177.333282470703,
+				0.0
+			],
+			"tick": 131
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				179.666610717773,
+				0.0
+			],
+			"tick": 132
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				181.999938964844,
+				0.0
+			],
+			"tick": 133
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				184.333267211914,
+				0.0
+			],
+			"tick": 134
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				186.666595458984,
+				0.0
+			],
+			"tick": 135
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				188.999923706055,
+				0.0
+			],
+			"tick": 136
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				191.333251953125,
+				0.0
+			],
+			"tick": 137
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				193.666580200195,
+				0.0
+			],
+			"tick": 138
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				195.999908447266,
+				0.0
+			],
+			"tick": 139
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				198.333236694336,
+				0.0
+			],
+			"tick": 140
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				200.666564941406,
+				0.0
+			],
+			"tick": 141
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				202.999893188477,
+				0.0
+			],
+			"tick": 142
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				205.333221435547,
+				0.0
+			],
+			"tick": 143
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				207.666549682617,
+				0.0
+			],
+			"tick": 144
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				209.999877929688,
+				0.0
+			],
+			"tick": 145
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				212.333206176758,
+				0.0
+			],
+			"tick": 146
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				214.666534423828,
+				0.0
+			],
+			"tick": 147
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				216.999862670898,
+				0.0
+			],
+			"tick": 148
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				219.333190917969,
+				0.0
+			],
+			"tick": 149
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				221.666519165039,
+				0.0
+			],
+			"tick": 150
+		},
+		{
+			"allowed": 2.33333333333333,
+			"delta": 0.0166666666666667,
+			"distance": 2.33332824707031,
+			"mobility": false,
+			"position": [
+				223.999847412109,
+				0.0
+			],
+			"tick": 151
+		}
+	],
+	"summary": {
+		"blink_count": 0,
+		"entry": "cold",
+		"failures": [],
+		"fires": [
+			{
+				"tick": 81,
+				"time_ms": 450.957,
+				"weapon": "weapon_void_blade"
+			}
+		],
+		"input": "mouse",
+		"max_attack_draw_step": 11.6666793823242,
+		"max_attack_frame_ms": 76.839,
+		"max_draw_step": 13.9999942779541,
+		"max_frame_ms": 112.695,
+		"max_physics_step": 2.33333587646484,
+		"max_sprite_screen_step": 0.66668701171875,
+		"physics_ticks": 96,
+		"rendered_frames": 89
+	}
+}
