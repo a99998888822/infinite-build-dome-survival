@@ -13,8 +13,12 @@ const REACTION_WEAPON_GAIN_DB: float = -5.0
 const MAX_PENDING_AUDIO_IMPACTS: int = 256
 const COMBAT_VOICES: int = 12
 const COMBAT_DETAIL_VOICES: int = 8
-# Full music volume now matches the previous 50% setting (about -6 dB).
-const BGM_PLAYBACK_GAIN_DB: float = 6.0
+# Static mix trim on top of the user sliders (dB). Music is trimmed so 100%
+# matches the loudness the mix used to need at 50% (about -6 dB); the whole mix
+# then sits a little hotter here. Keep both values together so the balance
+# between music and effects stays put when the mix is nudged.
+const BGM_PLAYBACK_GAIN_DB: float = 2.0
+const SFX_PLAYBACK_GAIN_DB: float = 2.0
 const VOLUME_SETTING_BY_BUS: Dictionary = {
 	"Master": "master_volume",
 	"BGM": "bgm_volume",
@@ -380,7 +384,14 @@ func _apply_bus_volume(bus_name: String, volume_percent: int) -> void:
 	if bus_index < 0:
 		return
 	var clamped_percent := clampi(volume_percent, 0, 100)
-	AudioServer.set_bus_volume_db(bus_index, linear_to_db(float(clamped_percent) / 100.0) if clamped_percent > 0 else -80.0)
+	if clamped_percent <= 0:
+		AudioServer.set_bus_volume_db(bus_index, -80.0)
+		return
+	var bus_db := linear_to_db(float(clamped_percent) / 100.0)
+	if bus_name == BUS_SFX:
+		# Lifts the effect pool and the combat bus feeding into it.
+		bus_db += SFX_PLAYBACK_GAIN_DB
+	AudioServer.set_bus_volume_db(bus_index, bus_db)
 
 
 func _ensure_bus(bus_name: String) -> void:

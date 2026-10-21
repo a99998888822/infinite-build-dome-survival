@@ -7,14 +7,14 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_normal"]
 content_margin_left = 28.0
 content_margin_top = 10.0
-content_margin_right = 34.0
+content_margin_right = 28.0
 content_margin_bottom = 10.0
 texture = ExtResource("1_selected_button")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pressed"]
 content_margin_left = 28.0
 content_margin_top = 12.0
-content_margin_right = 34.0
+content_margin_right = 28.0
 content_margin_bottom = 8.0
 texture = ExtResource("1_selected_button")
 
@@ -36,8 +36,6 @@ Button/colors/font_hover_pressed_color = Color(0.858823529, 0.776470588, 0.56078
 Button/colors/font_disabled_color = Color(0.474509804, 0.505882353, 0.462745098, 1)
 Button/colors/font_outline_color = Color(0.090196078, 0.141176471, 0.133333333, 1)
 Button/constants/outline_size = 1
-Button/constants/h_separation = 23
-Button/constants/icon_max_width = 33
 Button/font_sizes/font_size = 30
 Button/styles/normal = SubResource("StyleBoxTexture_normal")
 Button/styles/hover = SubResource("StyleBoxTexture_normal")

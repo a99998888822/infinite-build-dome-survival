@@ -6,8 +6,8 @@
 | --- | --- | --- | --- |
 | `bg_main_menu.png` | 首页全屏背景 | 当前确认版 1024x572；最近邻等比铺满 | PNG，不透明；不要包含标题、按钮、文字、水印 |
 | `title_main_menu.png` | 标题艺术字 | 当前确认版 240x128；等比显示于高 200 的标题区域 | 透明 PNG；上行“哥布林”，下行向右错位“教你地下城”；最近邻采样 |
-| `button_main_menu.png` | 四个首页按钮共用底图 | 已确认 Picxel 108x28；两倍最近邻显示为 216x56 | 透明 PNG，14 个可见颜色，二值透明；不包含按钮文字或图标 |
-| `icon_battle.png`、`icon_talent.png`、`icon_settings.png`、`icon_quit.png` | 四个按钮的独立图标 | 原图 24x24，显示宽度 20px | 透明 PNG，最近邻采样 |
+| `button_main_menu.png` | 四个首页按钮共用底图 | 已确认 Picxel 108x28；按按钮尺寸 360x93 最近邻拉伸 | 透明 PNG，14 个可见颜色，二值透明；不包含按钮文字或图标 |
+| `icon_battle.png`、`icon_talent.png`、`icon_settings.png`、`icon_quit.png` | 四个按钮的独立图标 | 原图 24x24，按钮内显示 32x32，距按钮左边缘 56px | 透明 PNG，最近邻采样 |
 | `button_focus.png` | 键盘焦点四角标记 | 原图 240x56，按主题配置显示 | 透明 PNG |
 | `menu_button_theme.tres` | 按钮字体、颜色、状态与内边距 | 文字 18px、描边 1px | Godot Theme，引用正式 PNG 与项目字体 |
 
@@ -19,6 +19,8 @@ Godot 导入建议：
 - 保留透明通道，尤其是标题和按钮底图
 
 2026-10-02 已将用户确认的 108x28 版本及缩小的图标、文字接入正式主界面。按钮之间间隔 8px，标题与按钮列表的布局间距为 32px。四个按钮共用底图，默认文字为浅米色，悬停/焦点时提亮；按下时文字下移 2px，键盘焦点显示浅金四角。按钮保持稳定的尺寸和方向，完整点击区域为 216x56。
+
+2026-10-19 按用户本轮提供的同名素材替换 `button_main_menu.png` 与四个图标。图标不再走 `Button.icon`，改为按钮内的独立 `TextureRect`（Nearest、32x32、忽略鼠标），左边缘固定在按钮左侧 56px（按钮内深色面板左沿约 37px，留约 19px 空隙），垂直居中；按钮文字因此回到水平与垂直正中。为配合居中，主题左右 content margin 统一为 28px，并移除只服务于按钮图标的 `h_separation` 与 `icon_max_width`。
 
 场景通过 `menu_button_theme.tres` 加载按钮样式。唯一的 [1728x448 按钮高清原图](../../../artifacts/sources/originals/263cf9a972-button_copper_oil_hd.png) 已归入原稿目录，迁移路径与哈希记录在 `artifacts/sources/index.json`；正式 PNG 及当前哈希登记在 `artifacts/editable/index.json`。本轮分辨率候选、Picxel 分块网格、绘图/预览脚本、截图及临时备份已清理。
 
