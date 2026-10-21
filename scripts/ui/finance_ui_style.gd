@@ -6,8 +6,8 @@ const TEXT := PALETTE.TEXT
 const MUTED := PALETTE.MUTED
 const GOLD := PALETTE.WARM_ACTIVE
 const GREEN := Color("a9c498")
-const RELIC_LIST_ICON_SCALE := 0.625
-const RELIC_DISPLAY_SIZE := 64.0
+const RELIC_LIST_ICON_SCALE := 0.5
+const RELIC_DISPLAY_SIZE := 72.0
 static var _item_icon_cache: Dictionary = {}
 static var _pending_item_icons: Array[String] = []
 
@@ -57,8 +57,12 @@ static func is_native_relic_icon(texture: Texture2D) -> bool:
 
 
 static func relic_icon_size(texture: Texture2D, display_scale: float = 1.0) -> Vector2:
-	# Keep the established UI footprint when an approved source gains resolution.
+	# Reviewed 36px sources use a 72px detail tier and a 36px list tier.
 	return texture.get_size() * (RELIC_DISPLAY_SIZE / maxf(texture.get_width(), 1.0)) * display_scale
+
+
+static func is_native_item_icon(texture: Texture2D) -> bool:
+	return is_native_relic_icon(texture) or ItemIconArt.is_weapon(texture)
 
 
 static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale: float = 1.0) -> void:
@@ -67,27 +71,23 @@ static func set_item_icon(control: TextureRect, texture: Texture2D, native_scale
 		control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		control.remove_meta("scaled_relic_icon")
 	control.texture = texture
-	var native_pixel := is_native_relic_icon(texture)
+	var native_pixel := is_native_item_icon(texture)
 	if native_pixel:
 		if not control.has_meta("legacy_icon_layout"):
 			control.set_meta("legacy_icon_layout", [control.stretch_mode, control.texture_filter, control.custom_minimum_size])
-		control.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 		control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		var previous: Array = control.get_meta("legacy_icon_layout")
 		var extent := relic_icon_size(texture, native_scale)
-		control.custom_minimum_size = (previous[2] as Vector2).max(extent)
-		if extent != texture.get_size():
-			# Center an explicit drawing rect; shrinking only the minimum size leaves
-			# STRETCH_KEEP_CENTERED drawing the full source texture.
-			control.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			control.custom_minimum_size = extent
-			control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-			control.size = extent
-			control.offset_left = -extent.x * 0.5
-			control.offset_top = -extent.y * 0.5
-			control.offset_right = extent.x * 0.5
-			control.offset_bottom = extent.y * 0.5
-			control.set_meta("scaled_relic_icon", true)
+		if ItemIconArt.is_weapon(texture): extent = Vector2.ONE * (36.0 if native_scale <= 0.5 else 72.0)
+		# A fixed drawing rect keeps pooled 1x and 2x icons independent of the frame.
+		control.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		control.custom_minimum_size = extent
+		control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		control.size = extent
+		control.offset_left = -extent.x * 0.5
+		control.offset_top = -extent.y * 0.5
+		control.offset_right = extent.x * 0.5
+		control.offset_bottom = extent.y * 0.5
+		control.set_meta("scaled_relic_icon", true)
 	elif control.has_meta("legacy_icon_layout"):
 		# Shop cards and encyclopedia details are reused for different items.
 		var previous: Array = control.get_meta("legacy_icon_layout")

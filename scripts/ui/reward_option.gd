@@ -11,7 +11,8 @@ const COIN_TEXTURE: Texture2D = preload("res://assets/ui/finance/finance_coin.sv
 const NORMAL_MINIMUM_HEIGHT: float = 360.0
 const COMPACT_MINIMUM_HEIGHT: float = 272.0
 const SMALL_MINIMUM_HEIGHT: float = 156.0
-const RELIC_ICON_SCALE := 0.75
+const RELIC_ICON_SCALE := 1.0
+const SMALL_RELIC_ICON_SCALE := 1.0
 const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
 const PALETTE = HUD_STYLE.PALETTE
 
@@ -60,12 +61,15 @@ var bond_tooltip: PanelContainer = null
 var bond_tooltip_label: RichTextLabel = null
 var _rarity_label: Label
 var _rarity_rule: ColorRect
+var _relic_glow: TextureRect
+var _icon_source: Texture2D
 
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_visual)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_create_rarity_marker()
+	_create_relic_glow()
 	if select_button != null:
 		if not select_button.pressed.is_connected(_on_select_button_pressed):
 			select_button.pressed.connect(_on_select_button_pressed)
@@ -97,6 +101,34 @@ func _create_rarity_marker() -> void:
 	_rarity_rule.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_rarity_rule.offset_top = -2
 	overlay.add_child(_rarity_rule)
+
+
+func _create_relic_glow() -> void:
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color.WHITE)
+	gradient.add_point(0.35, Color(1, 1, 1, 0.6))
+	gradient.set_color(gradient.get_point_count() - 1, Color(1, 1, 1, 0))
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.width = 64
+	texture.height = 64
+	texture.fill = GradientTexture2D.FILL_RADIAL
+	texture.fill_from = Vector2(0.5, 0.5)
+	texture.fill_to = Vector2(1.0, 0.5)
+	_relic_glow = TextureRect.new()
+	_relic_glow.name = "RelicRarityGlow"
+	_relic_glow.texture = texture
+	_relic_glow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_relic_glow.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_relic_glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_relic_glow.show_behind_parent = true
+	icon_texture.add_child(_relic_glow)
+	_relic_glow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_relic_glow.offset_left = -18
+	_relic_glow.offset_top = -18
+	_relic_glow.offset_right = 18
+	_relic_glow.offset_bottom = 18
+	_relic_glow.hide()
 
 
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
@@ -175,9 +207,15 @@ func _apply_layout_density() -> void:
 		_rarity_label.add_theme_font_size_override("font_size", 9 if _small_layout else 12)
 	if icon_frame != null:
 		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (112.0 if _compact_layout else 128.0)
-		if icon_texture != null and FinanceUIStyle.is_native_relic_icon(icon_texture.texture):
+		if icon_texture != null and FinanceUIStyle.is_native_item_icon(_icon_source):
 			# Reserve space for the displayed icon, not its full source dimensions.
-			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(FinanceUIStyle.relic_icon_size(icon_texture.texture, RELIC_ICON_SCALE).y / 0.8) + 4.0)
+			var icon_scale := SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(_icon_source) else RELIC_ICON_SCALE
+			var extent := FinanceUIStyle.relic_icon_size(_icon_source, icon_scale)
+			if not icon_texture.size.is_equal_approx(extent):
+				_stop_icon_float()
+				FinanceUIStyle.set_item_icon(icon_texture, _icon_source, icon_scale)
+				call_deferred("_start_icon_float")
+			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(extent.y / 0.8) + 4.0)
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
@@ -231,7 +269,7 @@ func animate_in(index: int = 0) -> void:
 		_animation_tween.kill()
 	pivot_offset = size * 0.5
 	modulate.a = 0.0
-	scale = Vector2(0.94, 0.94)
+	scale = Vector2.ONE if FinanceUIStyle.is_native_item_icon(_icon_source) else Vector2(0.94, 0.94)
 	_animation_tween = create_tween().set_parallel(true)
 	_animation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_animation_tween.tween_property(self, "modulate:a", 1.0, 0.24).set_delay(index * 0.08)
@@ -249,7 +287,8 @@ func play_claim_animation(preserve_slot: bool = false) -> void:
 	_animation_tween = create_tween().set_parallel(true)
 	_animation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_animation_tween.tween_property(self, "modulate:a", 0.0, 0.20)
-	_animation_tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.20)
+	if not FinanceUIStyle.is_native_item_icon(_icon_source):
+		_animation_tween.tween_property(self, "scale", Vector2(0.92, 0.92), 0.20)
 	if not preserve_slot:
 		_animation_tween.chain().tween_callback(queue_free)
 
@@ -378,9 +417,10 @@ func _update_rarity_lines(rarity_color: Color) -> void:
 func _update_icon(icon_path: String) -> void:
 	_stop_icon_float()
 	var loaded_texture := FinanceUIStyle.item_icon(icon_path)
+	_icon_source = loaded_texture
 	if icon_texture != null:
-		FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, RELIC_ICON_SCALE)
-		if not FinanceUIStyle.is_native_relic_icon(loaded_texture):
+		FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(loaded_texture) else RELIC_ICON_SCALE)
+		if not FinanceUIStyle.is_native_item_icon(loaded_texture):
 			# A reused card must restore the weapon's original inset layout.
 			icon_texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			icon_texture.anchor_left = 0.1
@@ -390,12 +430,18 @@ func _update_icon(icon_path: String) -> void:
 		icon_texture.visible = loaded_texture != null
 	if icon_placeholder != null:
 		icon_placeholder.visible = loaded_texture == null
+	if _relic_glow != null:
+		_relic_glow.visible = loaded_texture != null and str(offer_data.get("offer_type", "")) == "relic"
+		var relic := DataRegistry.get_record("relics", str(offer_data.get("target_id", "")))
+		var rarity := str(relic.get("rarity", offer_data.get("rarity", "common")))
+		_relic_glow.self_modulate = get_color_for_rarity(rarity)
 	_apply_layout_density()
 	if loaded_texture != null:
 		call_deferred("_start_icon_float")
 
 
 func _start_icon_float() -> void:
+	if FinanceUIStyle.is_native_item_icon(_icon_source): return
 	if icon_texture == null or not icon_texture.is_visible_in_tree() or offer_data.is_empty():
 		return
 	_stop_icon_float()
@@ -455,7 +501,8 @@ func _set_card_hovered(hovered: bool) -> void:
 	if _hovered:
 		z_index = 10
 		pivot_offset = size * 0.5
-		_hover_tween.tween_property(self, "scale", Vector2(1.025, 1.025), 0.12)
+		var hover_scale := Vector2.ONE if FinanceUIStyle.is_native_item_icon(_icon_source) else Vector2(1.025, 1.025)
+		_hover_tween.tween_property(self, "scale", hover_scale, 0.12)
 		_show_bond_tooltip()
 		stat_preview_requested.emit(offer_data.duplicate(true))
 	else:

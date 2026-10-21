@@ -132,8 +132,11 @@ static func ensure_material(viewport: Viewport) -> ShaderMaterial:
 		viewport.add_child.call_deferred(clock)
 	return shared_material
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	visual_count += 1
+	# Reparenting exits and re-enters the tree without calling _ready again.
+	# The shared clock may be new, even when its slot/epoch numbers match.
+	_batch_slot = -1
 	ensure_material(get_viewport())
 	clock.sources.append(self)
 	add_to_group("pixel_fire_visuals")

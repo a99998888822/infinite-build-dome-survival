@@ -2,6 +2,7 @@ extends MultiMeshInstance2D
 ## PNG orientation frames share one instanced batch for all 24 warning particles.
 const ATLAS = preload("res://assets/effects/electric_spark_warning/warning_masks.png")
 const SHADER = preload("res://assets/shaders/electric_spark_warning_png.gdshader")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 const PARTICLE_COUNT := 24
 static var _quad: QuadMesh
 static var _buffer := PackedFloat32Array()
@@ -34,16 +35,17 @@ func _init() -> void:
 	shader_material.set_shader_parameter("shape_frames", ATLAS)
 	material = shader_material
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	sync(0.0,1.0,1.0)
+	sync(0.0,30.0,1.0)
 
 func sync(time: float, radius: float, opacity: float) -> void:
 	material.set_shader_parameter("elapsed",time)
 	material.set_shader_parameter("fade",opacity)
 	if not is_equal_approx(_last_radius,radius):
 		_last_radius = radius
-		material.set_shader_parameter("radius_scale",radius)
+		var axes := FOOTPRINT.axes(radius)
+		material.set_shader_parameter("footprint_axes", axes)
 		# The shader moves centers only; particle size stays fixed at all radii.
-		var extent := Vector2(25.8,15.26) * absf(radius) + Vector2(5,5)
+		var extent := axes + Vector2(5,5)
 		multimesh.custom_aabb = AABB(Vector3(-extent.x,-extent.y,-1),Vector3(extent.x*2,extent.y*2,2))
 
 

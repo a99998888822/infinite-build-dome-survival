@@ -37,6 +37,7 @@ var _active_preview_offer_id: String = ""
 var _safe_rect: Rect2 = Rect2()
 var _panel_layout_size := Vector2.ZERO
 var _show_tween: Tween = null
+var _fit_queued := false
 
 @onready var backdrop: ColorRect = get_node_or_null("Backdrop")
 @onready var coin_particles: Control = get_node_or_null("CoinParticles")
@@ -66,7 +67,7 @@ func _ready() -> void:
 			get_viewport().size_changed.connect(viewport_callable)
 	if offer_scroll != null:
 		# Containers settle after the popup opens; refit against the final area.
-		offer_scroll.resized.connect(_fit_offer_grid, CONNECT_DEFERRED)
+		offer_scroll.resized.connect(_queue_fit_offer_grid)
 		offer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		offer_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 		# Hovered cards grow slightly beyond their grid cell. Let the card's z_index
@@ -174,7 +175,7 @@ func show_popup() -> void:
 	if main_panel != null:
 		main_panel.pivot_offset = main_panel.size * 0.5
 		main_panel.modulate.a = 0.0
-		main_panel.scale = Vector2(0.96, 0.96)
+		main_panel.scale = Vector2.ONE
 	if weapon_strip != null:
 		weapon_strip.modulate.a = 0.0
 	if _show_tween != null:
@@ -186,13 +187,10 @@ func show_popup() -> void:
 		_show_tween.tween_property(backdrop, "modulate:a", 1.0, 0.24)
 	if main_panel != null:
 		_show_tween.tween_property(main_panel, "modulate:a", 1.0, 0.28)
-		_show_tween.tween_property(main_panel, "scale", Vector2.ONE, 0.32)
 	if weapon_strip != null:
 		_show_tween.tween_property(weapon_strip, "modulate:a", 1.0, 0.24).set_delay(0.08)
 	_refresh_visual()
 	_set_cards_locked(false)
-	if weapon_strip != null and _loadout != null:
-		weapon_strip.set_loadout(_loadout, false, true)
 
 
 func hide_popup() -> void:
@@ -308,7 +306,7 @@ func _refresh_visual() -> void:
 		if visible:
 			card.animate_in(index)
 		index += 1
-	call_deferred("_fit_offer_grid")
+	_queue_fit_offer_grid()
 
 
 func _update_gold_labels(_current_gold: int) -> void:
@@ -476,10 +474,20 @@ func _layout_popup() -> void:
 		weapon_strip.anchor_bottom = 0.0
 		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET).round()
 		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
-	call_deferred("_fit_offer_grid")
+	_queue_fit_offer_grid()
+
+
+func _queue_fit_offer_grid() -> void:
+	# Safe-rect, show and resize notifications often arrive together. Fit once
+	# after them; a later container resize still schedules another settled fit.
+	if _fit_queued:
+		return
+	_fit_queued = true
+	_fit_offer_grid.call_deferred()
 
 
 func _fit_offer_grid() -> void:
+	_fit_queued = false
 	if offer_scroll == null or offer_grid == null or not is_instance_valid(offer_grid):
 		return
 	var scroll_width := offer_scroll.size.x

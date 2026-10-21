@@ -8,5 +8,6 @@ enemy_root_path = NodePath("EnemyRoot")
 pickup_root_path = NodePath("PickupRoot")
 
 [node name="EnemyRoot" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="PickupRoot" type="Node2D" parent="."]

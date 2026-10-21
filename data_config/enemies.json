@@ -17,7 +17,6 @@
       "move_speed": 60,
       "melee_damage": 9
     },
-    "ai_type": "chase_player",
     "scene": "res://scenes/enemy/mutated_grub.tscn",
     "drop_table_id": "drop_basic_enemy"
   },
@@ -29,7 +28,6 @@
     "tags": ["enemy", "normal", "ranged", "bat"],
     "enemy_type": "normal",
     "base_stats": {"max_hp": 24, "armor": 0, "move_speed": 80, "melee_damage": 1, "ranged_damage": 7},
-    "ai_type": "keep_distance_sonic",
     "scene": "res://scenes/enemy/echo_bat.tscn",
     "drop_table_id": "drop_basic_enemy",
     "bat_profile": {
@@ -53,7 +51,6 @@
     "tags": ["enemy", "elite", "melee", "void"],
     "enemy_type": "elite",
     "base_stats": {"max_hp": 600, "armor": 0, "move_speed": 120, "melee_damage": 12},
-    "ai_type": "elite_rusher",
     "scene": "res://scenes/enemy/elite_rusher.tscn",
     "drop_table_id": "drop_elite_enemy",
     "elite_profile": {
@@ -91,7 +88,6 @@
     "tags": ["enemy", "elite", "ranged", "void"],
     "enemy_type": "elite",
     "base_stats": {"max_hp": 720, "armor": 6, "move_speed": 110, "melee_damage": 8, "ranged_damage": 6, "element_damage": 18},
-    "ai_type": "underworld_wolf",
     "scene": "res://scenes/enemy/underworld_wolf.tscn",
     "drop_table_id": "drop_elite_enemy",
     "wolf_profile": {

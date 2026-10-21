@@ -7,8 +7,8 @@ const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.g
 const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 const WEAPON_DRAG_TYPE := "esc_weapon_reorder"
 
-@export var slot_size: int = 44
-@export var icon_size: int = 34
+@export var slot_size: int = 88
+@export var icon_size: int = 72
 @export var load_font_size: int = 16
 @export var icon_slot_theme: Theme
 @export var cast_mode_icon_size: float = WeaponCastModeIcon.ICON_SIZE
@@ -152,11 +152,11 @@ func _get_weapon_drag_data(_at_position: Vector2, button: WeaponSlotButton) -> V
 	art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	art.size = Vector2(32, 32)
+	art.size = Vector2(36, 36)
 	art.position = -art.size * 0.5
 	var icon_path := str(button.weapon.weapon_data.get("icon", ""))
 	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-		art.texture = ItemIconArt.texture_for(load(icon_path) as Texture2D, 32.0)
+		art.texture = ItemIconArt.texture_for(load(icon_path) as Texture2D, 36.0)
 	preview.add_child(art)
 	button.set_drag_preview(preview)
 	return {"type": WEAPON_DRAG_TYPE, "loadout": _loadout, "weapon_id": button.weapon.weapon_id}

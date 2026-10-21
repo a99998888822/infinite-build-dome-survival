@@ -1,10 +1,10 @@
 {
-  "revision": "production-128",
+  "revision": "production-192",
   "display_name": "幽焰冥狼",
   "source_count": 21,
   "canvas": [
-    128,
-    128
+    192,
+    192
   ],
   "palette": [
     "#10121c",
@@ -24,16 +24,16 @@
     "#788592",
     "#a3b5bf"
   ],
-  "world_units_per_source_pixel": 0.2048,
+  "world_units_per_source_pixel": 0.3072,
   "source_foot_anchor": [
     360,
     650
   ],
   "body_scale_vs_v01": 0.8,
-  "runtime_base_body_scale": 2.0,
+  "runtime_base_body_scale": 1.5,
   "runtime_body_scale_confirmed_on": "2026-10-16",
   "method": "Project Picxel local conversion, shared approved 16-color palette, hard transparency; no image generation.",
-  "registration": "Each 128px grid carries inverse crop/pad/scale metadata in original 720px coordinates. Mirror X offset with facing; subtract gameplay air height from Y. SpriteFrames alone is insufficient.",
+  "registration": "All frames share one source-to-world transform baked into the 192px canvas; scale 1, offset (0,-91), subtract gameplay air height",
   "animation_sequences": {
     "idle": [
       "attack",
@@ -127,7 +127,7 @@
     {
       "action": "move",
       "number": 1,
-      "sha256": "78fe109395a5e02bc893437ece8fd72ace778733cb40a974bd8c1b561edf5e7f",
+      "sha256": "e37ad1bd6ef6f377e1487e8c7f2af332bae873e276a390246b5206ed421dbaa5",
       "source_sha256": "e7886f110b3e9d0c223e9746d4488c03f5a7703c16b44cf4574f59a712ff1668",
       "source_bbox": [
         66,
@@ -135,23 +135,24 @@
         573,
         636
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        0,
-        99
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -8.192,
-        -47.3088
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/01.png",
+      "visible_bbox": [
+        6,
+        49,
+        161,
+        182
+      ]
     },
     {
       "action": "move",
       "number": 2,
-      "sha256": "731ffc08ec180a3878139e17bb0e0bb225cb0b765907ab062895716efba33af1",
+      "sha256": "9bf4fcc76db8a8ae110f7e60b0ee6446ed4978c4f3fbba02f44c1e4696a658c4",
       "source_sha256": "16eed8b918563fb52724908c087607e946f506bec14be46e9eb84fb3fec44ce7",
       "source_bbox": [
         66,
@@ -159,23 +160,24 @@
         579,
         634
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        3,
-        100
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -7.5776,
-        -47.104
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/02.png",
+      "visible_bbox": [
+        6,
+        51,
+        163,
+        181
+      ]
     },
     {
       "action": "move",
       "number": 3,
-      "sha256": "c4e344fd835eb38147c3da919a3b22187a630dfb0f1acf55716b1858c393b674",
+      "sha256": "7d656b2d99efbc88f8c70ce78b1b06574e4255e6d3b250bf328c1fa7a7f0a271",
       "source_sha256": "408baff6de154e47ed7b94307c8bef84126fc8b59b6291c66db2d6044ac97204",
       "source_bbox": [
         67,
@@ -183,23 +185,24 @@
         583,
         658
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        5,
-        116
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -7.168,
-        -43.8272
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/03.png",
+      "visible_bbox": [
+        6,
+        53,
+        164,
+        183
+      ]
     },
     {
       "action": "move",
       "number": 4,
-      "sha256": "5af6dce86a7b35ea926a0354b24f109bc69c75d1177f7abc4f9c812a4b24dd5b",
+      "sha256": "0d7708cb4cdf6eb1835f9b9bf07a1cd1d6d735d99ad4093e2cf2c785cdfdc1f2",
       "source_sha256": "673a4564364b8744d8572a838db08ed8eb8cdf9240d036bab60cf358369b499a",
       "source_bbox": [
         60,
@@ -207,23 +210,24 @@
         587,
         659
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        4,
-        124
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -7.3728,
-        -42.1888
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/04.png",
+      "visible_bbox": [
+        4,
+        58,
+        166,
+        189
+      ]
     },
     {
       "action": "move",
       "number": 5,
-      "sha256": "e79f34011f43c267eeee282966793e7b354503b10fa137035ab8fead2be656f0",
+      "sha256": "3d6e6aeb157059d864e1815c8f047ac4f5b625231899e797fa8750bbbd98697c",
       "source_sha256": "019b03a1782cf20056f264d7f7816bf776c71a097f7817ed70703b5f6410867a",
       "source_bbox": [
         54,
@@ -231,23 +235,24 @@
         586,
         650
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        0,
-        122
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -8.192,
-        -42.5984
+        0,
+        -91
       ],
-      "colors": 15,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/move/05.png",
+      "visible_bbox": [
+        2,
+        59,
+        165,
+        187
+      ]
     },
     {
       "action": "move",
       "number": 6,
-      "sha256": "e468e3b70a9f7d2ca81984e721b543eb7ee2dcf332567ca9e0fb9a3b339b22b0",
+      "sha256": "cde7fdf8c1d965bb12e8bb8d877b4e326713cfab4b71a1eee33b4ef021bb00be",
       "source_sha256": "6aed9259d4bb016938398cce6c66f2205be74ecc073db95fedc7ed6f59a8c74e",
       "source_bbox": [
         54,
@@ -255,23 +260,24 @@
         584,
         648
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        -1,
-        117
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -8.3968,
-        -43.6224
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/06.png",
+      "visible_bbox": [
+        2,
+        57,
+        165,
+        186
+      ]
     },
     {
       "action": "move",
       "number": 7,
-      "sha256": "ddd8b478b23024799e921c1f387750948aa36759bcb9f5ad1fe77801c4e49558",
+      "sha256": "b45d9440d5b5fae34b31229d6539b2eb76a25c5998280230df9d929a6896bfb6",
       "source_sha256": "245dbf5494377b040753ce628272f614a538f97d1950f4748116c4ae76c9e403",
       "source_bbox": [
         57,
@@ -279,24 +285,25 @@
         581,
         636
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        -1,
-        104
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -8.3968,
-        -46.2848
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/move/07.png",
+      "visible_bbox": [
+        3,
+        53,
+        164,
+        182
+      ]
     },
     {
       "action": "attack",
       "number": 1,
       "output": "frames/attack_01.png",
-      "sha256": "022fae45b43e0042bccd55049cefb52b37589d58c3667b48af605db2f706eb40",
+      "sha256": "73ec619dbb990d819c99074e8c4d33337913af60b9b9c2791d0e99dcd970bdd9",
       "source": "artifacts/sources/enemies/underworld_wolf/attack/01.png",
       "source_sha256": "e3963ef87c66657b9bafc7ab600c4aa42e9d1a10b9616ba918fd344e1a7e6551",
       "source_bbox": [
@@ -305,23 +312,23 @@
         558,
         661
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        55,
-        181
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -10.0352,
-        -43.6224
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": true
+      "visible_bbox": [
+        5,
+        53,
+        157,
+        190
+      ]
     },
     {
       "action": "attack",
       "number": 2,
-      "sha256": "30cdea0c062791173b038a0360b95a86b5b3892136c60d897b433122519bb7bf",
+      "sha256": "9e9c2fd59cd4c829f656cb79bc817d33a4925cc42f5a147c489068391a27f296",
       "source_sha256": "db517db21bddfa2afc228fa3397e58fcc220957411203762d75b7a30594e81fd",
       "source_bbox": [
         58,
@@ -329,23 +336,24 @@
         542,
         661
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        44,
-        179
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -12.288,
-        -44.032
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/attack/02.png",
+      "visible_bbox": [
+        3,
+        52,
+        152,
+        190
+      ]
     },
     {
       "action": "attack",
       "number": 3,
-      "sha256": "3861cf4d5e293cc67fb3cb51ae5597edf41201d580cb2e1cf64e4842d635f42c",
+      "sha256": "90064abf259c0e37a4d0e5ac1f7284028d73f79c8a41db1898ba32ddfd0883c0",
       "source_sha256": "e571d3e9aa72338c3fb5ca33746dacd3aa9420243fdf1b5116f98cd15431ac80",
       "source_bbox": [
         53,
@@ -353,23 +361,24 @@
         552,
         661
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        47,
-        178
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -11.6736,
-        -44.2368
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/attack/03.png",
+      "visible_bbox": [
+        2,
+        51,
+        155,
+        190
+      ]
     },
     {
       "action": "attack",
       "number": 4,
-      "sha256": "a321691f18767da7d1609634ad1250337a0912a484732801298867ffeef5eb44",
+      "sha256": "fa18798a701840db7199b3811e28e3aaa6741ab6704d5650a03405a39745b2be",
       "source_sha256": "717fb525e087b59934075352429339ffb5e4c915e60c78a34791e463f5031882",
       "source_bbox": [
         59,
@@ -377,23 +386,24 @@
         639,
         661
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        29,
-        123
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -2.2528,
-        -42.3936
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/attack/04.png",
+      "visible_bbox": [
+        4,
+        57,
+        181,
+        190
+      ]
     },
     {
       "action": "jump",
       "number": 1,
-      "sha256": "f91407c3981a15516f33eb36ae46fd8eb699ef7296939e1edd3ef1a3da18d621",
+      "sha256": "12959b64bdd1922a9df33dac6a64c2b21f2d199c55fe0403611445083bc153e9",
       "source_sha256": "a149f717005488e62c0691d9959f9a981b6e868c214e7284d3a80448c7a2cc57",
       "source_bbox": [
         50,
@@ -401,23 +411,24 @@
         574,
         639
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        -8,
-        111
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -9.8304,
-        -44.8512
+        0,
+        -91
       ],
-      "colors": 14,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/01.png",
+      "visible_bbox": [
+        1,
+        56,
+        162,
+        184
+      ]
     },
     {
       "action": "jump",
       "number": 2,
-      "sha256": "8d52ba2c661dcd1c9f866afb3de67092aef13158c2a0860c556502f46b5c783e",
+      "sha256": "aefd5bac9c96d7addb421b7305bab06edf7db36c25129fcf842811b3223b4af4",
       "source_sha256": "c11c46fe662384958ae8ce0ab27af6be0fb3967cd9a35cf93930ab738a7208b1",
       "source_bbox": [
         48,
@@ -425,23 +436,24 @@
         562,
         665
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        -15,
-        112
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -11.264,
-        -44.6464
+        0,
+        -91
       ],
-      "colors": 14,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/02.png",
+      "visible_bbox": [
+        1,
+        60,
+        158,
+        191
+      ]
     },
     {
       "action": "jump",
       "number": 3,
-      "sha256": "5ed68f8218ec822ca2f37475eb13589119896a7083fb38c78f66b515960b51d8",
+      "sha256": "7e5ff3ee3040d1171525b240adc8b8418dd57a476ab566503b4a1f6662346178",
       "source_sha256": "ca01b5ca707a101953e8459309753912ca7d9eb80c3ba253901adde47369d5a6",
       "source_bbox": [
         52,
@@ -449,23 +461,24 @@
         558,
         664
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        -15,
-        113
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -11.264,
-        -44.4416
+        0,
+        -91
       ],
-      "colors": 13,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/03.png",
+      "visible_bbox": [
+        1,
+        49,
+        156,
+        191
+      ]
     },
     {
       "action": "jump",
       "number": 4,
-      "sha256": "390427f4ad51a4eb9ab81adf7d8e66bb053258ef95fee1fd6a28be837a675d26",
+      "sha256": "2e23d3f15d8fa44fb47563ac6367feb13af57853e24afa27102b6e56401120b4",
       "source_sha256": "483a45dfc8382847e93106ee37d7ed63aacd9272e7f83c53520d8b908a5b3f29",
       "source_bbox": [
         55,
@@ -473,23 +486,24 @@
         557,
         664
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        50,
-        177
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -11.0592,
-        -44.4416
+        0,
+        -91
       ],
       "colors": 15,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/04.png",
+      "visible_bbox": [
+        3,
+        49,
+        156,
+        191
+      ]
     },
     {
       "action": "jump",
       "number": 5,
-      "sha256": "3097b9efb2757d374277dc32cfd8a6ac73c522d8463b60affefdf253402ff7f9",
+      "sha256": "7f97831b1bad341a48d4938772b29b6dc7315d08e978eaa0f772cca097430931",
       "source_sha256": "4c47409e1e8c3884f5112684ffd3916cf5a4a000f58dab91524541250570ce08",
       "source_bbox": [
         59,
@@ -497,23 +511,24 @@
         557,
         664
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        52,
-        180
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -10.6496,
-        -43.8272
+        0,
+        -91
       ],
-      "colors": 15,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/05.png",
+      "visible_bbox": [
+        4,
+        52,
+        156,
+        191
+      ]
     },
     {
       "action": "jump",
       "number": 6,
-      "sha256": "a1c8df3d3911f094d1a624f0f476c070bf1780206fe46da7bfb6d525f74eed09",
+      "sha256": "3834b207c64159aa2199e3f84ad622f0a4ea8cad3e4ba1e82f43c486e303b39f",
       "source_sha256": "a9447615ee54a558c9517ae78d8365b2312ea584d49b611742548937db5c32e1",
       "source_bbox": [
         64,
@@ -521,23 +536,24 @@
         557,
         664
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        55,
-        195
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -10.0352,
-        -40.7552
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/06.png",
+      "visible_bbox": [
+        5,
+        61,
+        156,
+        191
+      ]
     },
     {
       "action": "jump",
       "number": 7,
-      "sha256": "0bed78344fa4870951aaa2a188d49d9fa89de8d98d79efe95ea96de71ebbbf64",
+      "sha256": "51772212549ef8f8639210094fe3c810052a4192ec58f95a7f60b71e9a586406",
       "source_sha256": "5a1f7af518a5d5a065e5de05e9874b3371a89363578a128e56e757661db1ee17",
       "source_bbox": [
         49,
@@ -545,23 +561,24 @@
         530,
         638
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        34,
-        135
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -14.336,
-        -53.0432
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/07.png",
+      "visible_bbox": [
+        1,
+        32,
+        148,
+        183
+      ]
     },
     {
       "action": "jump",
       "number": 8,
-      "sha256": "eec8df523198bc9a2c9df0d4d3dfb8d7634ea8c441e50212627b0193bde138e7",
+      "sha256": "c909589002a1697d4365d82fcb72c524c304f870846ed9d5c8be0d37da18a205",
       "source_sha256": "171e790a5c9cdf7da869c7882106fdfbeb1865d1f0ce223d7933510c32d5fd24",
       "source_bbox": [
         82,
@@ -569,23 +586,24 @@
         563,
         541
       ],
-      "source_pixels_per_cell": 4,
-      "source_origin": [
-        67,
-        47
-      ],
-      "sprite_scale": 0.8192,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -7.5776,
-        -71.0656
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/08.png",
+      "visible_bbox": [
+        11,
+        7,
+        158,
+        153
+      ]
     },
     {
       "action": "jump",
       "number": 9,
-      "sha256": "d8072befee8b6d3f41b315e48eb6a1b6cb76ed38f008a1903d2818489ee44561",
+      "sha256": "d676acb3d6612007d4fef33f11676973b0801fc127eff1022a7f94efa2df199c",
       "source_sha256": "6d4d230f85b705b5aa0fbc9210eb49779c0e39dd14a23690962e0a462fe1e381",
       "source_bbox": [
         76,
@@ -593,23 +611,24 @@
         581,
         478
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        9,
-        -49
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -6.3488,
-        -77.6192
+        0,
+        -91
       ],
-      "colors": 15,
-      "approved_sample_reused": false
+      "colors": 16,
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/09.png",
+      "visible_bbox": [
+        9,
+        15,
+        163,
+        133
+      ]
     },
     {
       "action": "jump",
       "number": 10,
-      "sha256": "cc04429b85fabe17d1ee1be85f07f4b344803bca224436e2e248b78d7be679f1",
+      "sha256": "e8db38bdea063b8bb7f5f4f116621c8f6903396cef3bd9491000d1a6d0248ee4",
       "source_sha256": "c98300c4009367ff0d09be87734cad182a6d2a848e7e56e61e016764cc3ac058",
       "source_bbox": [
         110,
@@ -617,18 +636,19 @@
         598,
         662
       ],
-      "source_pixels_per_cell": 5,
-      "source_origin": [
-        34,
-        34
-      ],
-      "sprite_scale": 1.024,
+      "sprite_scale": 1.0,
       "sprite_offset": [
-        -1.2288,
-        -60.6208
+        0,
+        -91
       ],
       "colors": 16,
-      "approved_sample_reused": false
+      "source": "artifacts/sources/enemies/underworld_wolf/jump/10.png",
+      "visible_bbox": [
+        19,
+        2,
+        169,
+        190
+      ]
     }
   ],
   "landing_pose_seconds": 0.08,
@@ -641,5 +661,29 @@
     "reach": 240,
     "cone_degrees": 60
   },
-  "split_sources_removed_on": "2026-10-15"
+  "split_sources_removed_on": "2026-10-15",
+  "runtime_sprite_scale": 1,
+  "source_pixels_per_output_pixel": 3.2552083333333335,
+  "frame_foot_anchor": [
+    96,
+    187
+  ],
+  "processing": {
+    "revision": "native96_192_20261021",
+    "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
+    "originals_revision": "02b3ef4",
+    "source": "720px originals restored from Git; hashes verified",
+    "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
+    "size": 192,
+    "scale": 0.3072,
+    "origin": [
+      -14.591999999999985,
+      -12.679999999999978
+    ],
+    "offset": [
+      0,
+      -91
+    ],
+    "folder": "underworld_wolf"
+  }
 }

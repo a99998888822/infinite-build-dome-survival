@@ -14,10 +14,11 @@ const MUTED := INK
 const CREAM := Color("#c4a787")
 const PAPER_WIDTH := 323.720930
 const FOOT_ANCHOR := Vector2(962.790698, 800.930233)
-const STARTING_WEAPON_ICON_SIZE := Vector2(43.255814, 47.44186)
-const STARTING_ENCHANTMENT_ICON_SIZE := Vector2(25.116279, 25.116279)
+const STARTING_WEAPON_ICON_SIZE := Vector2(36, 36)
+const STARTING_ENCHANTMENT_ICON_SIZE := Vector2(32, 32)
 const BREATH_PERIOD := 3.0
 const BREATH_STRETCH := 0.025
+const NOVICE_PREVIEW_SIZE := Vector2(288, 288)
 const BREATH_SHADER := preload("res://assets/shaders/character_select_breathing.gdshader")
 const ROSTER_ART := preload("res://scripts/ui/character_roster_art.gd")
 const ROSTER_CARD_SIZE := Vector2(234.418605, 63.488372)
@@ -287,7 +288,7 @@ func show_character(record: Dictionary, stats: Dictionary) -> void:
 		var id := str(stat_ids[index])
 		var row := Control.new()
 		_place(stats_list, row, Rect2(0,index*row_height,PAPER_WIDTH,row_height))
-		row.tooltip_text = StatDefinitions.get_display_name(id)
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_label(row, L10n.source(str(names.get(id, StatDefinitions.get_display_name(id)))), Vector2.ZERO, 20, INK, 188)
 		var number := _label(row, _number(float(stats.get(id, 0))) + ("%" if StatDefinitions.is_percent_stat(id) else ""), Vector2.ZERO, 20, INK, 265)
 		number.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -314,11 +315,12 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 	card.separation = 7.674419
 	_bind_item_tooltip(card, "%s\n%s" % [L10n.source(weapon.get("display_name", weapon_id)), L10n.source(weapon.get("description", ""))])
 	weapon_list.add_child(card)
-	var weapon_icon := _image(card, _crop_icon(str(weapon.get("icon", ""))), Rect2(Vector2.ZERO, STARTING_WEAPON_ICON_SIZE), true)
+	var source := FinanceUIStyle.item_icon(str(weapon.get("icon", "")))
+	var weapon_icon := _image(card, source, Rect2(Vector2.ZERO, STARTING_WEAPON_ICON_SIZE), true)
 	weapon_icon.name = "WeaponIcon"
 	weapon_icon.custom_minimum_size = STARTING_WEAPON_ICON_SIZE
 	weapon_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	ItemIconArt.bind_texture(weapon_icon, _crop_icon(str(weapon.get("icon", ""))), true, 26.0, null, STARTING_WEAPON_ICON_SIZE.x)
+	ItemIconArt.bind_texture(weapon_icon, source, true, 36.0, null, STARTING_WEAPON_ICON_SIZE.x)
 	# Wrap additional enchantments within the paper, beside their own weapon.
 	var content := HFlowContainer.new()
 	content.name = "WeaponContent"
@@ -335,11 +337,12 @@ func _build_starting_weapon(record: Dictionary, weapon_id: String) -> void:
 			continue
 		var item_id := str(attachment.get("item_id", ""))
 		var item := DataRegistry.get_record("augmentations", item_id)
-		var texture := _crop_icon(str(item.get("icon", "")))
+		var texture := FinanceUIStyle.item_icon(str(item.get("icon", "")))
 		if texture == null: continue
 		var icon := _image(content, texture, Rect2(Vector2.ZERO, STARTING_ENCHANTMENT_ICON_SIZE), true)
 		icon.set_meta("enchantment_id", item_id)
 		icon.custom_minimum_size = STARTING_ENCHANTMENT_ICON_SIZE
+		ItemIconArt.bind_texture(icon, texture, true, 32.0, null, 32.0)
 		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		icon.mouse_filter = Control.MOUSE_FILTER_PASS
 		_bind_item_tooltip(icon, "%s\n%s" % [L10n.source(item.get("display_name", item_id)), L10n.source(item.get("description", ""))])
@@ -380,10 +383,11 @@ func _build_traits(record: Dictionary) -> void:
 	for id in relics:
 		var relic := DataRegistry.get_record("relics", str(id))
 		var card := Control.new()
-		card.custom_minimum_size = Vector2(50.232558,50.232558)
+		card.custom_minimum_size = Vector2(50, 50)
 		_bind_item_tooltip(card, L10n.text("ui.character.innate_relic_tooltip") % [L10n.source(relic.display_name), L10n.source(relic.description)])
 		grid.add_child(card)
-		_image(card, _crop_icon(str(relic.get("icon", ""))), Rect2(2.790698,2.790698,44.651163,44.651163), true)
+		var relic_icon := _image(card, FinanceUIStyle.item_icon(str(relic.get("icon", ""))), Rect2(7, 7, 36, 36), true)
+		relic_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 func _build_item_tooltip() -> void:
@@ -445,12 +449,14 @@ func _position_character() -> void:
 	if _idle == null: return
 	var used := _idle.get_image().get_used_rect()
 	_breath_material.set_shader_parameter("foot_y", float(used.end.y) / _idle.get_height())
-	# Fit the visible body once; every frame keeps its full authored canvas.
+	# The novice shares its full 96px battle frame, displayed at exactly 3x.
+	var native_novice := _idle.resource_path.ends_with("novice_96/idle.png")
 	var display_scale := 262.325581 / maxf(1.0, used.size.y)
-	character_icon.size = (_idle.get_size() * display_scale).snapped(Vector2.ONE * ART_PIXEL_PITCH)
+	character_icon.size = NOVICE_PREVIEW_SIZE if native_novice else (_idle.get_size() * display_scale).snapped(Vector2.ONE * ART_PIXEL_PITCH)
 	var pixel_scale := character_icon.size / _idle.get_size()
 	var foot := Vector2(_idle.get_width() * 0.5, used.end.y)
 	character_icon.position = FOOT_ANCHOR - (foot * pixel_scale).snapped(Vector2.ONE * ART_PIXEL_PITCH)
+	if native_novice: character_icon.position = (FOOT_ANCHOR - foot * pixel_scale).round()
 	_character_rest_position = character_icon.position
 	var name_y := character_icon.position.y + snappedf(used.position.y * pixel_scale.y, ART_PIXEL_PITCH) - 55.813953
 	name_label.position = Vector2(FOOT_ANCHOR.x - name_label.size.x / 2.0, name_y)
@@ -506,6 +512,9 @@ func _notification(what: int) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree() or _idle == null: return
 	if not walking:
+		if _idle.resource_path.ends_with("novice_96/idle.png"):
+			_breath_material.set_shader_parameter("breath_amount", 0.0)
+			return
 		_breath_elapsed = fmod(_breath_elapsed + delta, BREATH_PERIOD)
 		_breath_material.set_shader_parameter("breath_amount", BREATH_STRETCH * sin(TAU * _breath_elapsed / BREATH_PERIOD))
 		return

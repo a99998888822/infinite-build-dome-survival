@@ -48,6 +48,8 @@ var _combat_clock_ms: float = 0.0
 var _combat_rng := RandomNumberGenerator.new()
 var _audio_impact_stack: Array[RefCounted] = []
 var _pending_audio_impacts: Array[RefCounted] = []
+var _prepared_launch_streams: Dictionary = {}
+var _prepared_loop_streams: Dictionary = {}
 
 
 func _ready() -> void:
@@ -305,6 +307,34 @@ func _play_combat_sfx_now(cue_id: String, minimum_interval_ms: int = 0, gain_off
 	_combat_bursts[lane] = burst
 	combat_sfx_played.emit(cue_id, available.stream.resource_path)
 	return true
+
+
+func prepare_weapon_launch_sfx() -> void:
+	# Keep configured launch resources resident after the loading curtain.
+	# Later-acquired weapons use these too; no voice, cooldown or RNG is touched.
+	for weapon_data: Dictionary in DataRegistry.get_table("weapons"):
+		var path := str(weapon_data.get("launch_sfx", ""))
+		if path.is_empty() or COMBAT_LIBRARY.DISABLED_PATHS.has(path) or _prepared_launch_streams.has(path):
+			continue
+		if not ResourceLoader.exists(path):
+			continue
+		var stream := load(path) as AudioStream
+		if stream != null:
+			_prepared_launch_streams[path] = stream
+
+
+func prepare_weapon_loop_sfx() -> void:
+	# GameplayLoop owns a private looping copy, so it does not retain the source.
+	# Keep configured sources alive across casts without creating playback voices.
+	for weapon_data: Dictionary in DataRegistry.get_table("weapons"):
+		var path := str(weapon_data.get("spray_loop_sfx", ""))
+		if path.is_empty() or COMBAT_LIBRARY.DISABLED_PATHS.has(path) or _prepared_loop_streams.has(path):
+			continue
+		if not ResourceLoader.exists(path):
+			continue
+		var stream := load(path) as AudioStreamWAV
+		if stream != null:
+			_prepared_loop_streams[path] = stream
 
 
 func play_sfx_path(resource_path: String, minimum_interval_ms: int = 0, dedupe_key: String = "", gain_db: float = 0.0) -> bool:

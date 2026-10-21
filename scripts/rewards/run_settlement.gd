@@ -41,6 +41,11 @@ static func build(statistics: Dictionary, victory: bool, difficulty_id: String =
 		report.camp_currency = floori(int(report.defeat_camp_currency) * float(report.retreat_multiplier))
 	report["interest_capped"] = raw_interest >= interest_cap and raw_interest > 0
 	report["victory"] = victory and not retreated
-	report["reaction"] = ("victory_" if victory else "death_") + ("followed" if bool(statistics.get("followed", false)) else "refused") if bool(statistics.get("has_advice", false)) and not retreated else ""
+	report["reaction"] = ""
+	if not retreated:
+		if bool(statistics.get("has_advice", false)):
+			report["reaction"] = ("victory_" if victory else "death_") + ("followed" if bool(statistics.get("followed", false)) else "refused")
+		else:
+			report["reaction"] = "victory_followed" if victory else "death_no_advice"
 	report["paid"] = false
 	return report

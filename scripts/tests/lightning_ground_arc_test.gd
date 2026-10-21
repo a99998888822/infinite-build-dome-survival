@@ -1,7 +1,7 @@
 extends Node2D
-const ARC = preload("res://scripts/effects/lightning_ground_arc_burst.gd")
 const LIGHTNING = preload("res://scripts/effects/lightning_particle_effect.gd")
 const WORLD = preload("res://scripts/effects/particle_world.gd")
+const ENEMY = preload("res://scenes/enemy/mutated_grub.tscn")
 var checks := 0
 var failures := 0
 
@@ -26,34 +26,16 @@ func fixture(multiplier: float = 1.0) -> Node2D:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	var image: Image = ARC.ATLAS.get_image()
-	check(image.get_size() == Vector2i(1280, 224), "native atlas dimensions")
-	var aligned := true
-	for y in range(0, image.get_height(), 2):
-		for x in range(0, image.get_width(), 2):
-			var color := image.get_pixel(x, y)
-			if image.get_pixel(x+1,y) != color or image.get_pixel(x,y+1) != color or image.get_pixel(x+1,y+1) != color:
-				aligned = false
-	check(aligned, "all PNG texels obey two-pixel grid")
-	for variant in 8:
-		var first := image.get_region(Rect2i(variant*160,0,160,112)).get_data()
-		var second := image.get_region(Rect2i(variant*160,112,160,112)).get_data()
-		check(first != second, "two distinct shapes per variant")
+	# The ground arc was removed; the main bolt must retain its timing and damage.
 	# Exercise the real controller with wall-clock deltas around every boundary.
 	var samples := [0.0, 0.07999, 0.08001, 0.15999, 0.16001, 0.19999, 0.20001, 0.27999, 0.28001, 0.35999]
 	var alphas := [1.0, 1.0, 0.6, 0.6, 0.0, 0.0, 1.0, 1.0, 0.6, 0.6]
 	for multiplier in [0.1, 0.5, 1.0, 2.0, 4.0]:
 		var strike = fixture(multiplier)
 		var pulse: Dictionary = strike._path_pulses[0]
-		var arc = pulse.ground_arc
 		var lifetime_scale := clampf(multiplier, 0.5, 2.0)
 		check(is_equal_approx(pulse.scale, lifetime_scale), "lifetime scale follows main bolt clamp")
-		check(not arc.is_processing(), "ground sprite has no independent clock")
-		check(arc.get_parent() == strike, "lightning controller owns the ground sprite")
-		check(arc.global_position == Vector2(122,102), "world-space pixel alignment")
-		check(arc.scale == Vector2.ONE and arc.rotation == 0.0 and arc.top_level, "fixed native world grid")
-		check(not arc.z_as_relative and arc.z_index == 16, "ground layer independent of lightning layer")
-		check(is_equal_approx(arc.modulate.a, pulse.bolt.base_alpha), "base opacity multiplier matches main bolt")
+		check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "ground strike creates no ground arc")
 		var previous := 0.0
 		for index in samples.size():
 			var age: float = samples[index]
@@ -61,30 +43,28 @@ func _run() -> void:
 			previous = age
 			check(is_equal_approx(pulse.age, age), "shared normalized clock")
 			check(is_equal_approx(pulse.bolt.modulate.a, alphas[index]), "main bolt brightness boundary")
-			check(is_equal_approx(arc.self_modulate.a, pulse.bolt.modulate.a), "ground brightness matches in same update")
-			check(arc._phase == (1 if age >= 0.20 else 0), "ground shape switches with echo")
-			check(arc._phase == int(pulse.echoed) and arc.frame == arc.variant_index + arc._phase * 8, "texture row follows actual echo state")
+			check(pulse.echoed == (age >= 0.20), "main bolt still switches to echo")
+			check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "echo creates no ground arc")
 			GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 			strike._process(1.0)
-			check(is_equal_approx(pulse.age, age) and is_equal_approx(arc.self_modulate.a, alphas[index]), "pause freezes both arcs")
+			check(is_equal_approx(pulse.age, age) and is_equal_approx(pulse.bolt.modulate.a, alphas[index]), "pause freezes the main bolt")
 			GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 		var bolt = pulse.bolt
 		strike._process(0.00002 * lifetime_scale)
 		check(strike._path_pulses.is_empty() and bolt.is_queued_for_deletion(), "main bolt ends on scaled lifetime")
-		check(arc.is_queued_for_deletion() and not arc.visible, "ground ends in same update")
 		strike.free()
 	# A dropped frame may cross the gap, shape switch, or entire lifetime.
 	var skipped = fixture()
 	skipped._process(0.31)
-	var skipped_arc = skipped._path_pulses[0].ground_arc
-	check(skipped_arc._phase == 1 and is_equal_approx(skipped_arc.self_modulate.a, 0.6), "large delta catches up to second shape")
+	var skipped_bolt = skipped._path_pulses[0].bolt
+	check(skipped._path_pulses[0].echoed and is_equal_approx(skipped_bolt.modulate.a, 0.6), "large delta catches up to echo")
 	skipped._process(1.0)
-	check(skipped_arc.is_queued_for_deletion(), "large delta ends both paths")
+	check(skipped_bolt.is_queued_for_deletion(), "large delta ends the bolt")
 	skipped.free()
 	var early = fixture()
-	var owned_arc = early._path_pulses[0].ground_arc
+	var owned_bolt = early._path_pulses[0].bolt
 	early.free()
-	check(not is_instance_valid(owned_arc), "early controller removal leaves no orphan ground sprite")
+	check(not is_instance_valid(owned_bolt), "early controller removal leaves no orphan bolt")
 	# Keep the ordinary pool full while triggering the real ground-strike path.
 	var world := WORLD.new()
 	world.name = "ParticleWorld"
@@ -97,19 +77,33 @@ func _run() -> void:
 	chain._parent_root = self
 	chain._emit_bolt(Vector2(100,100), Vector2(150,100))
 	chain._emit_hit_burst(Vector2(120,100), Vector2.RIGHT)
-	check(chain._path_pulses[0].ground_arc == null, "chain hits do not add ground arcs")
+	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "chain hits still create no ground arc")
 	var weapon := WeaponInstance.new()
 	check(weapon.initialize("weapon_void_blade", null), "fixture weapon")
 	var event := DamageEvent.create({"damage":20,"original_damage":20,"source_weapon_id":weapon.weapon_id})
+	var enemy := ENEMY.instantiate() as EnemyController
+	add_child(enemy)
+	enemy.set_physics_process(false)
+	enemy.global_position = Vector2(121.2,101.4)
+	enemy.current_hp = 1000
 	var real_strike := LIGHTNING.spawn_ground_strike(self, Vector2(121.2,101.4), weapon, event)
 	EffectScheduler.cancel_owner(real_strike)
 	real_strike.set_process(false)
+	var landings := [0]
+	real_strike.ground_strike_landed.connect(func(): landings[0] += 1)
 	real_strike._strike_ground(Vector2(121.2,101.4))
-	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").size() == 1, "one arc sprite per real landing")
-	check(world.get_active_particle_count() == 900, "ground arcs bypass full particle pool")
+	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "real landing creates no ground arc")
+	check(real_strike._path_pulses.size() == 1 and real_strike._ground_strike_impact_age == 0.0, "main bolt and impact ring still start")
+	check(landings[0] == 1 and enemy.current_hp < 1000, "landing signal and damage still occur")
+	var hp_after := enemy.current_hp
+	check(world.get_active_particle_count() == 900, "landing works with a full particle pool")
 	real_strike._strike_ground(Vector2(121.2,101.4))
-	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").size() == 1, "duplicate landing cannot add extra ground set")
+	check(enemy.current_hp == hp_after, "duplicate landing cannot deal damage twice")
+	real_strike._process(0.21)
+	check(enemy.current_hp == hp_after and real_strike._path_pulses[0].echoed, "echo stays visual only")
+	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "real echo creates no ground arc")
 	real_strike.free()
+	enemy.free()
 	chain.free()
 	world.free()
 	for burst in get_tree().get_nodes_in_group("lightning_hit_sprite_bursts"): burst.queue_free()

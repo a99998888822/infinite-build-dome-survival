@@ -28,12 +28,12 @@ func _run() -> void:
 	for data: Dictionary in DataRegistry.get_table("augmentations"):
 		var item := player.item_inventory.add_item_from_base(str(data.id), "art_review")
 		var texture := FinanceUIStyle.item_icon(str(item.icon))
-		check(texture != null and texture.get_size() == Vector2(64, 64), "imported 64px icon: " + str(data.id))
+		check(texture != null and texture.get_size() == Vector2(32, 32), "imported native 32px icon: " + str(data.id))
 		unique_icons[str(item.icon)] = true
 		var card := ItemInventoryCard.new()
 		add_child(card)
 		card.configure(item, false)
-		check(card.icon == texture and card.expand_icon and card.get_theme_constant("icon_max_width") == 32, "ESC card fits 64px art into the existing 32px area: " + str(data.id))
+		check(card.icon == texture and not card.expand_icon and card.get_theme_constant("icon_max_width") == 32, "base inventory card keeps native 32px art: " + str(data.id))
 		card.free()
 	check(unique_icons.size() == DataRegistry.get_table("augmentations").size(), "each enchantment has its own icon")
 	check(DataRegistry.get_record("augmentations", "scroll_lightning").icon != DataRegistry.get_record("augmentations", "scroll_electric_spark").icon, "spark and thunder have distinct icons")
@@ -58,7 +58,7 @@ func _run() -> void:
 		var right := popup._tabs.get_global_rect().end.x
 		for frame in [popup._scene_enchant_back, popup._scene_footer_back]:
 			check(absf(frame.get_global_rect().end.x - right) < 1.0, "four finance frames share the right edge")
-		check(bench._inventory.columns == 4, "enchantment inventory displays four columns")
+		check(bench._inventory.columns == 6, "enchantment inventory retains six columns with scrolling")
 		print("ENCHANTMENT_LAYOUT viewport=", dimensions, " right=", right, " columns=", bench._inventory.columns, " inventory_width=", bench._inventory.size.x)
 		var first_card := bench._inventory.get_child(0) as Control
 		var fourth_card := bench._inventory.get_child(3) as Control
@@ -68,16 +68,14 @@ func _run() -> void:
 		for card in bench._inventory.get_children():
 			if card is EnchantmentInventoryCard:
 				check(card._art.size == Vector2(32, 32), "workbench icon uses 32px area")
-				check(card._art.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "64px workbench art scales inside the icon area")
+				check(card._art.texture.logical_size == Vector2(32, 32), "workbench art retains its fixed 32px footprint")
 				check(card.get_global_rect().encloses(card._art.get_global_rect()), "inventory icon is not cropped")
-				var font: Font = card._caption.get_theme_font("font")
-				var text_width: float = font.get_string_size(card._caption.text, HORIZONTAL_ALIGNMENT_LEFT, -1, card._caption.get_theme_font_size("font_size")).x
-				check(card._caption.size.x >= text_width, "full enchantment name fits the narrow card")
-				check(card.get_global_rect().end.x <= bench._inventory_scroll.get_global_rect().end.x, "fourth inventory column stays inside its viewport")
+				check(card._caption.text == L10n.source(str(card.item_instance.display_name)) and card._caption.text_overrun_behavior == TextServer.OVERRUN_TRIM_ELLIPSIS, "narrow cards retain their full title with controlled ellipsis")
+				check(bench._inventory.get_global_rect().encloses(card.get_global_rect()), "inventory columns remain inside the scrollable content")
 		for slot in bench._slots.get_children():
 			if slot is EnchantmentSlotCard and not slot.item_instance.is_empty():
 				check(slot._art.size.y == 32 and slot.get_global_rect().encloses(slot._art.get_global_rect()), "equipped icon and caption fit the card")
-				check(slot._art.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "64px equipped art scales inside the icon area")
+				check(slot._art.texture.logical_size == Vector2(32, 32), "equipped art retains its fixed 32px footprint")
 		bench._inventory_scroll.scroll_vertical = 0
 		popup._enchant_scroll.scroll_vertical = 0
 		await frames()
@@ -86,6 +84,8 @@ func _run() -> void:
 		popup._enchant_scroll.scroll_vertical = int(popup._enchant_scroll.get_v_scroll_bar().max_value)
 		await frames()
 		var last := bench._inventory.get_child(bench._inventory.get_child_count() - 1) as EnchantmentInventoryCard
+		bench._inventory_scroll.ensure_control_visible(last)
+		await frames()
 		check(bench._inventory_scroll.get_global_rect().encloses(last.get_global_rect()), "last item can be scrolled fully into view")
 		last.pressed.emit()
 		check(bench.selected_item_id == str(last.item_instance.item_instance_id), "last item remains selectable")

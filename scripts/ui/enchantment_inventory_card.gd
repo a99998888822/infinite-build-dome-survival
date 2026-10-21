@@ -1,7 +1,7 @@
 extends ItemInventoryCard
 class_name EnchantmentInventoryCard
 
-const CARD_SIZE := Vector2(68, 40)
+const CARD_SIZE := Vector2(136, 48)
 const INSPECT_ICON: Texture2D = preload("res://assets/ui/finance/inspect_enchantment.svg")
 var _art: TextureRect
 var _caption: Label
@@ -12,11 +12,11 @@ func _ready() -> void:
 	super._ready()
 	var body := HBoxContainer.new()
 	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	body.offset_left = 2
-	body.offset_right = -2
-	body.offset_top = 4
-	body.offset_bottom = -4
-	body.add_theme_constant_override("separation", 1)
+	body.offset_left = 8
+	body.offset_right = -8
+	body.offset_top = 8
+	body.offset_bottom = -8
+	body.add_theme_constant_override("separation", 4)
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
 	_art = TextureRect.new()
@@ -55,8 +55,9 @@ func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	custom_minimum_size = CARD_SIZE
 	size = CARD_SIZE
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_stretch_ratio = 1.0
 	focus_mode = Control.FOCUS_ALL
-	_art.texture = FinanceUIStyle.item_icon(str(item_instance.get("icon", "")), "augmentations", str(item_instance.get("base_item_id", "")))
+	ItemIconArt.bind_texture(_art, FinanceUIStyle.item_icon(str(item_instance.get("icon", "")), "augmentations", str(item_instance.get("base_item_id", ""))), false, 32.0, null, 32.0)
 	_caption.text = L10n.source(str(item_instance.get("display_name", "ui.common.enchantments")))
 	FinanceUIStyle.bank_button(self)
 

@@ -153,11 +153,12 @@ func _flail_edge() -> void:
 func _point_based_edges() -> void:
 	await prepare(LAMP, [Vector2(80, 0), AttackFootprint.project(Vector2(16, 0) + Vector2.from_angle(deg_to_rad(34)) * 110)])
 	var lamp := start_cast() as CopperLamp
+	var reach := weapon.get_attack_range()
 	var points := PackedVector2Array([AttackFootprint.project(Vector2(16, 0))])
 	for i in 33:
 		var ray := Vector2.from_angle(lerpf(-PI / 6, PI / 6, i / 32.0))
 		var projection := Vector2(16, 0).dot(ray)
-		points.append(AttackFootprint.project(Vector2(16, 0) + ray * (-projection + sqrt(projection * projection + 200 * 200 - 16 * 16))))
+		points.append(AttackFootprint.project(Vector2(16, 0) + ray * (-projection + sqrt(projection * projection + reach * reach - 16 * 16))))
 	var cone := ConvexPolygonShape2D.new()
 	cone.points = points
 	check(overlaps_shape(cone, Vector2.ZERO, enemies[1]), "lamp edge body overlaps the same cone clipped by flame shader")
@@ -168,12 +169,17 @@ func _point_based_edges() -> void:
 	for id in [GRENADE, TOME]:
 		await prepare(id, [])
 		var edge := weapon.get_grenade_blast_radius() if id == GRENADE else weapon.get_domain_axes().x
-		await prepare(id, [Vector2(50, 0), Vector2(edge + 10, 0)])
+		# Ritual marks choose one random target per hit. Isolate the edge body
+		# so this contact check does not require a particular random sequence.
+		# The central target is already covered by _controls().
+		var positions := [Vector2(edge + 10, 0)]
+		if id == GRENADE: positions.push_front(Vector2(50, 0))
+		await prepare(id, positions)
 		var runtime := start_cast(Vector2.ZERO)
 		var shape := AttackFootprint.projected_disk(edge) if id == GRENADE else _ellipse(weapon.get_domain_axes())
-		check(overlaps_shape(shape, Vector2.ZERO, enemies[1]), "body overlaps drawn area " + id)
+		check(overlaps_shape(shape, Vector2.ZERO, enemies.back()), "body overlaps drawn area " + id)
 		tick(runtime, 0.5 if id == GRENADE else 1.1)
-		check(enemies[0].current_hp < 10000 and enemies[1].current_hp < 10000, "area includes actual body edge " + id)
+		check(enemies.all(func(enemy): return enemy.current_hp < 10000), "area includes actual body edge " + id)
 		record("area_root_only_edge", {"body_overlaps_area": true, "radius_x": edge})
 
 func _ellipse(axes: Vector2) -> ConvexPolygonShape2D:

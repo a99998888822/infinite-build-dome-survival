@@ -132,7 +132,7 @@ func _test_slots(player: PlayerController, loadout: WeaponLoadout) -> void:
 func _test_drops() -> void:
 	var drops := DropRewardSystem.new()
 	seed(872341)
-	for table_id in ["drop_basic_enemy", "drop_elite_enemy", "drop_boss_enemy"]:
+	for table_id in ["drop_basic_enemy", "drop_elite_enemy"]:
 		var table := DataRegistry.get_record("drop_tables", table_id)
 		var count := 0
 		var distribution: Dictionary = {}

@@ -13,6 +13,7 @@ var _move_time := 0.0
 var _hold_time := 0.0
 var _moving := false
 var _sprite: Sprite2D
+var _base_position := Vector2.ZERO
 var _clips: Dictionary = {}
 var _sustains: Array[Dictionary] = []
 var _minify_material: ShaderMaterial
@@ -29,6 +30,7 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 		sprite.material = null
 	sprite.scale = Vector2.ONE
 	sprite.position = Vector2.ZERO
+	_base_position = Vector2.ZERO
 	var path := str(visuals.get("action_animations", ""))
 	if path.is_empty() or not FileAccess.file_exists(path):
 		return
@@ -53,7 +55,8 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 		sprite.material = _minify_material
 	sprite.scale = Vector2.ONE * float(visuals.get("action_scale_percent", 50)) / 100.0
 	var offset: Array = visuals.get("action_offset", [0.0, -4.0])
-	sprite.position = Vector2(float(offset[0]), float(offset[1]))
+	_base_position = Vector2(float(offset[0]), float(offset[1]))
+	sprite.position = _base_position
 	_show("idle", 0)
 
 
@@ -202,3 +205,5 @@ func _show(clip: String, frame: int) -> void:
 	current_clip = clip
 	current_frame = clampi(frame, 0, _count(clip) - 1)
 	_sprite.frame = current_frame
+	var offset: Array = _clips[clip].get("offset", [0.0, 0.0])
+	_sprite.position = _base_position + Vector2(float(offset[0]), float(offset[1]))

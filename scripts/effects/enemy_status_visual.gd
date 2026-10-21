@@ -1,6 +1,7 @@
 extends Node2D
 const ANCHORS = preload("res://scripts/effects/enemy_visual_anchors.gd")
 const FROST_VISUAL = preload("res://scripts/effects/enemy_frost_visual.gd")
+const VISUAL_QUEUE = preload("res://scripts/effects/enemy_status_visual_queue.gd")
 
 const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -16,12 +17,28 @@ var _draw_status_mask: int = -1
 var _status_revision := -1
 var _status_mask := 0
 var _draw_body_radius := -1.0
+var _pending := false
+var _flame_mask := -1
+var _flame_radius := -1.0
 
 
 func _ready() -> void:
 	z_index = 25
 	_enemy = get_parent()
-	queue_redraw()
+	request_sync()
+
+
+func _exit_tree() -> void:
+	_pending = false
+
+
+func request_sync() -> void:
+	# Empty actors sleep until a status boundary changes. Active actors still
+	# follow collider resizing and sprite facing once per idle batch.
+	set_process(true)
+	if _pending or not is_inside_tree(): return
+	_pending = true
+	VISUAL_QUEUE.enqueue(self)
 
 func _ensure_frost() -> void:
 	if is_instance_valid(_foot_frost): return
@@ -42,48 +59,69 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
 	_elapsed += delta
-	var factor := ANCHORS.factor(_enemy)
-	if _status_revision != _enemy.status_visual_revision or factor != _anchor_factor:
+	request_sync()
+
+
+func _flush_visual() -> void:
+	_pending = false
+	if not is_instance_valid(_enemy) or _enemy.is_queued_for_deletion(): return
+	if not can_process() or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)): return
+	var changed: bool = _status_revision != _enemy.status_visual_revision
+	if changed:
 		_status_revision = _enemy.status_visual_revision
 		_status_mask = _enemy.get_status_visual_mask()
-		_anchor_factor = factor
-		_sync_flame()
 		queue_redraw()
-	var bounds := ANCHORS.body_bounds(_enemy)
-	var frosted: bool = _enemy.has_status("slowed") or _enemy.has_status("frozen")
+	# One collider query supplies all radius/position work for this actor.
+	var bounds := ANCHORS.body_bounds(_enemy) if _status_mask != 0 else Rect2()
+	var radius := maxf(4.0, minf(bounds.size.x, bounds.size.y) * 0.5) if _status_mask != 0 else -1.0
+	var flame_mask := _status_mask & (128 | 32 | 64)
+	if changed or flame_mask != _flame_mask or radius != _flame_radius:
+		_flame_mask = flame_mask
+		_flame_radius = radius
+		_sync_flame(radius)
+	var slowed := (_status_mask & 16) != 0
+	var frozen := (_status_mask & 8) != 0
+	var frosted := slowed or frozen
 	if frosted:
 		_ensure_frost()
 		_foot_frost.position = ANCHORS.foot(_enemy)
-		_foot_frost.configure(_get_body_radius(),false)
+		_foot_frost.configure(radius,false)
 		# The original shell frame is centered six pixels above its drawing origin.
 		_body_ice.position = (bounds.get_center()+Vector2(0,6)).round()
-		_body_ice.configure(_get_body_radius(),true)
+		_body_ice.configure(radius,true)
 	if is_instance_valid(_foot_frost):
-		_foot_frost.visible = _enemy.has_status("slowed") and not _enemy.has_status("frozen")
-		_body_ice.visible = _enemy.has_status("frozen")
+		_foot_frost.visible = slowed and not frozen
+		_body_ice.visible = frozen
 	if is_instance_valid(_flame_visual):
-		_flame_visual.position = (bounds.get_center()-Vector2(0,8)).round()
+		var point := (bounds.get_center()-Vector2(0,8)).round()
+		if _flame_visual.position != point:
+			_flame_visual.position = point
+			VISUAL_QUEUE.request_flame_flush(FIRE_VISUAL.clock)
 	var mask := _status_mask & 31
 	# These icons, the ice shell and the slowed footprint contain no clock.
 	# Position is inherited; flames continue to animate on their shared clock.
-	var radius := _get_body_radius() if mask != 0 else -1.0
-	if mask != _draw_status_mask or radius != _draw_body_radius:
+	var factor := ANCHORS.factor(_enemy) if mask != 0 else -1.0
+	if mask != _draw_status_mask or radius != _draw_body_radius or factor != _anchor_factor:
 		_draw_body_radius = radius
 		_draw_status_mask = mask
+		_anchor_factor = factor
 		queue_redraw()
+	set_process(_status_mask != 0)
 
 
-func _sync_flame() -> void:
+func _sync_flame(radius: float) -> void:
 	var burning := (_status_mask & (128 | 32 | 64)) != 0
 	if burning and not is_instance_valid(_flame_visual):
 		_flame_visual = FIRE_VISUAL.new()
 		add_child(_flame_visual)
 	elif not burning and is_instance_valid(_flame_visual):
+		_flame_visual.hide()
 		_flame_visual.queue_free()
 		_flame_visual = null
 	if is_instance_valid(_flame_visual):
-		_flame_visual.setup_status(_get_body_radius())
+		_flame_visual.setup_status(radius)
 		_flame_visual.set_palette(2 if (_status_mask & 64) != 0 else (1 if (_status_mask & 32) != 0 else 0))
+	VISUAL_QUEUE.request_flame_flush(FIRE_VISUAL.clock)
 
 
 func _draw() -> void:

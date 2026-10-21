@@ -54,10 +54,12 @@ func run() -> void:
 		await capture("loading_dots")
 	var count := 0
 	var frozen := true
+	var no_early_enemies := true
 	while loading.active and count < 1200:
 		frozen = frozen and bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
 		var player := flow.get_bound_player()
 		if player != null:
+			no_early_enemies = no_early_enemies and flow._bound_wave_manager.get_living_enemy_count() == 0
 			frozen = frozen and player.global_position == Vector2.ZERO
 			if flow._bound_wave_manager.running:
 				frozen = frozen and is_equal_approx(flow._bound_wave_manager.wave_time_left, float(flow.current_wave_duration_seconds))
@@ -65,9 +67,18 @@ func run() -> void:
 		count += 1
 	check(not loading.active, "loading completes within frame budget")
 	check(frozen, "player and wave clock remain frozen throughout preparation and fade")
+	check(no_early_enemies, "scene preparation never spawns live enemies under the curtain")
 	check(not loading.visible and not bool(GameGlobal.get_runtime_flag("battle_loading", true)), "loading barrier releases on success")
 	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and not bool(GameGlobal.get_runtime_flag("battle_runtime_paused", true)), "combat starts and resumes after reveal")
 	var battle := (game.get_node("SceneDirector") as GameSceneDirector).battle_root as BattleRoot
+	var lamp_data := DataRegistry.get_record("weapons", "weapon_copper_lamp")
+	var hud := battle.hud as BattleHud
+	check(not hud._stat_value_labels.is_empty() and not hud.is_stats_drawer_open(), "attribute rows are prepared before reveal without opening the drawer")
+	check(is_equal_approx(hud.stats_drawer.offset_left, BattleHud.DRAWER_CLOSED_LEFT), "attribute drawer returns to its closed position before reveal")
+	check(AudioManager._prepared_loop_streams.has(str(lamp_data.spray_loop_sfx)), "entry prepares the spray source even before acquiring the lamp")
+	for enemy_data: Dictionary in DataRegistry.get_table("enemies"):
+		if not bool(enemy_data.get("enabled", true)): continue
+		check(battle.wave_manager.enemy_scene_cache.has(str(enemy_data.scene)), "enemy scene is resident before reveal: " + str(enemy_data.id))
 	var backdrop := battle.loadout._get_visual_root().get_node("Backdrop") as CavernBattleBackdrop
 	check(backdrop.is_initial_stream_ready(), "all initial scenery cells are present before reveal")
 	var cached := true
@@ -75,6 +86,8 @@ func run() -> void:
 		cached = cached and backdrop.foot_bounds_cache.get(layout.texture, {}).has(layout.grid)
 	check(cached, "all action alpha bounds are cached before first movement and attack")
 	check(battle.loadout._get_visual_root().get_node_or_null("EntryRenderWarmup") == null, "render samples leave no live effects behind")
+	var fire_script = preload("res://scripts/effects/pixel_fire_visual.gd")
+	check(fire_script.visual_count == 0 and not is_instance_valid(fire_script.clock) and fire_script.shared_material == null, "successful entry leaves no prewarm fire or shared clock")
 	check(battle.loadout._projectile_sequence == 0 and battle.loadout.weapon_instances[0].volley_index == 0, "warmup does not fire weapons or consume cooldowns")
 	await capture("battle_revealed")
 	flow.enter_start_page()
@@ -86,6 +99,23 @@ func run() -> void:
 	await frames(8)
 	check(not loading.active and not loading.visible and not bool(GameGlobal.get_runtime_flag("battle_loading", true)), "reset cancels an in-progress load and clears the barrier")
 	check((game.get_node("SceneDirector") as GameSceneDirector).battle_root == null, "cancelled load cannot attach a stale battle later")
+	var prepared_types := 0
+	for enemy_data: Dictionary in DataRegistry.get_table("enemies"):
+		if bool(enemy_data.get("enabled", true)): prepared_types += 1
+	for stage in range(1, prepared_types + 1):
+		menu._on_start_battle_pressed()
+		menu._on_character_confirm_pressed()
+		var reached := false
+		for attempt in 1200:
+			if flow._bound_wave_manager != null and flow._bound_wave_manager.enemy_scene_cache.size() == stage:
+				reached = true
+				break
+			if not loading.active: break
+			await frames(1)
+		check(reached and loading.active and loading.curtain.modulate.a == 1.0, "enemy preparation stage stays under black curtain: %d" % stage)
+		flow.enter_start_page()
+		await frames(8)
+		check(not loading.active and not loading.visible and (game.get_node("SceneDirector") as GameSceneDirector).battle_root == null, "enemy preparation cancellation cannot resume a stale entry: %d" % stage)
 	loading.begin(flow, "invalid_character", [], "1")
 	await loading.finished
 	await frames(4)

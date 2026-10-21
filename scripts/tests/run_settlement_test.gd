@@ -111,7 +111,7 @@ func _rules() -> void:
 		check(retreat.camp_currency == floori(int(defeat.camp_currency) * 0.5) and retreat.reaction.is_empty(), "retreat pays half the defeat receipt without a death taunt: " + id)
 	check(RunSettlement.build({"kills": 30}, false, "1", true).camp_currency == 2, "retreat halves the rounded defeat award, not the unrounded subtotal")
 	check(RunSettlement.build({"kills": 10}, false, "1", true).camp_currency == 0, "odd defeat awards round down after halving")
-	check(RunSettlement.build({}, false).camp_currency == 0 and RunSettlement.build({}, false).reaction == "", "zero income and no advice produce no accusation")
+	check(RunSettlement.build({}, false).camp_currency == 0 and RunSettlement.build({}, false).reaction == "death_no_advice", "first-wave death gets its own dialogue without accusing an unseen refusal")
 	var balance := CampProgression.get_camp_currency()
 	check(CampProgression.apply_final_settlement(497, "test-receipt"), "receipt stored successfully")
 	check(CampProgression.apply_final_settlement(497, "test-receipt") and CampProgression.get_camp_currency() == balance + 497, "duplicate persisted receipt never pays twice")
@@ -276,6 +276,22 @@ func _live() -> void:
 
 
 func _capture_variants(ui: RunSettlementPanel) -> void:
+	var first_wave := RunSettlement.build({"run_id": "first-wave-no-advice", "end_wave": 1}, false)
+	first_wave.paid = true
+	ui.present(first_wave)
+	var voice_time := float(RunSettlement.configuration().presentation.voice_time)
+	ui.seek(voice_time + 1.0)
+	check(ui._speech.visible and not ui._speech_label.text.is_empty() and ui._speech_label.visible_characters > 0, "first-wave death displays goblin dialogue")
+	L10n.set_locale("en", false)
+	check(ui._speech_label.text == L10n.text("ui.settlement.death_no_advice"), "first-wave dialogue updates with language")
+	L10n.set_locale("zh_CN", false)
+	ui.seek(0.3)
+	check((ui._portrait.texture as AtlasTexture).region.position.x == 0, "goblin keeps first frame for 0.4 seconds")
+	ui.seek(0.5)
+	check((ui._portrait.texture as AtlasTexture).region.position.x == ui.GOBLIN.get_width() / 4.0, "goblin advances at half the previous animation frequency")
+	ui.skip()
+	check(ui._speech.visible and ui._speech_label.visible_characters == -1, "skip retains complete first-wave dialogue")
+	await _capture(ui, "death_no_advice")
 	var sample := {"kills": 1800, "gold": 2500, "waves": 8, "interest": 1600, "has_advice": true, "monsters": {"enemy_mutated_grub": 1782, "enemy_elite_rusher": 18}}
 	sample.monsters = {"enemy_mutated_grub": 1400, "enemy_echo_bat": 370, "enemy_elite_rusher": 18, "enemy_underworld_wolf": 12}
 	for victory in [false, true]:

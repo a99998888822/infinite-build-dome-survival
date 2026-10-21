@@ -26,6 +26,13 @@ var next_mark_at := 0.22
 var finished_at := -1.0
 var _contact_axes := Vector2.ZERO
 var _contact_shape: ConvexPolygonShape2D
+var _square_vertices := PackedVector2Array()
+var _square_colors := PackedColorArray()
+var _square_indices := PackedInt32Array()
+var _square_cursor := 0
+var _draw_world := Transform2D.IDENTITY
+var _draw_inverse := Transform2D.IDENTITY
+var _draw_scale := 1.0
 
 
 func initialize(source: WeaponInstance, directed_cast: bool = false) -> void:
@@ -171,23 +178,47 @@ func _initialize_domain_particles() -> void:
 		outer_particles.append({"angle": TAU * index / 24.0 + visual_rng.randf_range(-0.03, 0.03),
 			"phase": visual_rng.randf_range(0.0, TAU), "speed": visual_rng.randf_range(0.6, 0.95),
 			"rotation": visual_rng.randf_range(-PI / 4.0, PI / 4.0)})
+	# Reuse one ordered quad batch for the lifetime of the seal. Each particle
+	# keeps its own alpha, including when neighboring squares overlap.
+	var count := boundary_particles.size() + outer_particles.size()
+	_square_vertices.resize(count * 4)
+	_square_colors.resize(count * 4)
+	_square_indices.resize(count * 6)
+	for index in count:
+		var vertex := index * 4
+		var triangle := index * 6
+		_square_indices[triangle] = vertex
+		_square_indices[triangle + 1] = vertex + 1
+		_square_indices[triangle + 2] = vertex + 2
+		_square_indices[triangle + 3] = vertex
+		_square_indices[triangle + 4] = vertex + 2
+		_square_indices[triangle + 5] = vertex + 3
 
 
 func _draw_domain_square(point: Vector2, size: float, color: Color, _rotation_angle: float) -> void:
-	# The domain scales with range; rebuild each square in world pixels first.
-	var world := domain_layer.global_transform
-	var center := (world*point).round()
-	var side := maxf(2.0,roundf(size*maxf(world.x.length(),world.y.length())))
+	# Match the original world-pixel corners before converting back to local
+	# space. The transform and its inverse are shared by all 168 squares.
+	var center := (_draw_world*point).round()
+	var side := maxf(2.0,roundf(size*_draw_scale))
 	var top_left := (center-Vector2.ONE*side*0.5).round()
-	var corners := PackedVector2Array()
-	for offset in [Vector2.ZERO,Vector2.RIGHT,Vector2.ONE,Vector2.DOWN]:
-		corners.append(world.affine_inverse()*(top_left+offset*side))
-	domain_layer.draw_colored_polygon(corners,color)
-	domain_layer.draw_set_transform(Vector2.ZERO)
+	var vertex := _square_cursor * 4
+	_square_vertices[vertex] = _draw_inverse * top_left
+	_square_vertices[vertex + 1] = _draw_inverse * (top_left + Vector2.RIGHT * side)
+	_square_vertices[vertex + 2] = _draw_inverse * (top_left + Vector2.ONE * side)
+	_square_vertices[vertex + 3] = _draw_inverse * (top_left + Vector2.DOWN * side)
+	_square_colors[vertex] = color
+	_square_colors[vertex + 1] = color
+	_square_colors[vertex + 2] = color
+	_square_colors[vertex + 3] = color
+	_square_cursor += 1
 
 
 func _draw_domain() -> void:
 	preload("res://scripts/effects/aligned_atlas.gd").begin(domain_layer)
+	_square_cursor = 0
+	_draw_world = domain_layer.global_transform
+	_draw_inverse = _draw_world.affine_inverse()
+	_draw_scale = maxf(_draw_world.x.length(), _draw_world.y.length())
 	# Preserve particle count while gaps visibly expand and contract along the ellipse.
 	for particle in boundary_particles:
 		var motion := elapsed * float(particle.speed) + float(particle.phase)
@@ -205,6 +236,9 @@ func _draw_domain() -> void:
 		var point := Vector2(cos(angle), sin(angle)) * (DOMAIN + Vector2.ONE * (4.0 + pulse * 3.0))
 		var rotation_angle := float(particle.rotation) + sin(motion * 0.85) * deg_to_rad(8.0)
 		_draw_domain_square(point, 1.0, Color(0.67, 0.86, 0.97, 0.20 + pulse * 0.30), rotation_angle)
+	if _square_cursor > 0:
+		RenderingServer.canvas_item_add_triangle_array(domain_layer.get_canvas_item(),
+			_square_indices, _square_vertices, _square_colors)
 	# One centered glyph slowly breathes from almost invisible to 20% opacity.
 	# The PNG itself has max alpha 51/255; modulation remains within [0.08, 1].
 	var fade := lerpf(0.08, 1.0, (1.0 - cos(TAU * elapsed / 4.4)) * 0.5)

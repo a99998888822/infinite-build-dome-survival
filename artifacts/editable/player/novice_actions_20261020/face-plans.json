@@ -1,0 +1,1422 @@
+{
+  "idle_01": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "move_01": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_02": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_03": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      37
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_04": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_05": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_06": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_07": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      37
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "move_08": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          34,
+          16,
+          43,
+          28
+        ],
+        "replace": {
+          "J": "E",
+          "I": "F"
+        },
+        "reason": "Warm shadow specks inside observed left hair plane"
+      }
+    ]
+  },
+  "attack_01": {
+    "near": {
+      "xy": [
+        51,
+        31
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        57,
+        32
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      55,
+      37
+    ]
+  },
+  "attack_02": {
+    "near": {
+      "xy": [
+        53,
+        32
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        58,
+        33
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      57,
+      38
+    ]
+  },
+  "attack_03": {
+    "near": {
+      "xy": [
+        54,
+        32
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        33
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      38
+    ]
+  },
+  "attack_04": {
+    "near": {
+      "xy": [
+        54,
+        32
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        33
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      38
+    ]
+  },
+  "attack_05": {
+    "near": {
+      "xy": [
+        54,
+        32
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        33
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      38
+    ]
+  },
+  "attack_06": {
+    "near": {
+      "xy": [
+        52,
+        31
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        58,
+        32
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      56,
+      37
+    ]
+  },
+  "attack_07": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "sustain_01": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        55,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          52,
+          24,
+          54,
+          25
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed isolated dark dot in crown hair plane"
+      }
+    ]
+  },
+  "sustain_02": {
+    "near": {
+      "xy": [
+        49,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        55,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "sustain_03": {
+    "near": {
+      "xy": [
+        49,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        54,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      53,
+      36
+    ]
+  },
+  "sustain_04": {
+    "near": {
+      "xy": [
+        49,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        54,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      53,
+      36
+    ]
+  },
+  "sustain_05": {
+    "near": {
+      "xy": [
+        49,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        54,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      53,
+      36
+    ]
+  },
+  "sustain_06": {
+    "near": {
+      "xy": [
+        49,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        54,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      53,
+      36
+    ]
+  },
+  "sustain_07": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        55,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          51,
+          24,
+          53,
+          25
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F"
+        },
+        "reason": "Observed isolated dark dot in crown hair plane"
+      }
+    ]
+  },
+  "sustain_08": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "move_sustain_01": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          48,
+          23,
+          55,
+          26
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed broken dark fragments in upper bang, above the actual eyelid"
+      }
+    ]
+  },
+  "move_sustain_02": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "move_sustain_03": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "move_sustain_04": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          48,
+          23,
+          55,
+          26
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed broken dark fragments in upper bang, above the actual eyelid"
+      }
+    ]
+  },
+  "move_sustain_05": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ]
+  },
+  "move_sustain_06": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        30
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          48,
+          23,
+          55,
+          26
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed broken dark fragments in upper bang, above the actual eyelid"
+      }
+    ]
+  },
+  "move_sustain_07": {
+    "near": {
+      "xy": [
+        50,
+        30
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        56,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      36
+    ],
+    "local": [
+      {
+        "box": [
+          48,
+          23,
+          55,
+          26
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed broken dark fragments in upper bang, above the actual eyelid"
+      }
+    ]
+  },
+  "move_sustain_08": {
+    "near": {
+      "xy": [
+        50,
+        29
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        55,
+        31
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      54,
+      35
+    ],
+    "local": [
+      {
+        "box": [
+          48,
+          23,
+          55,
+          26
+        ],
+        "replace": {
+          "A": "F",
+          "B": "F",
+          "C": "F"
+        },
+        "reason": "Observed broken dark fragments in upper bang, above the actual eyelid"
+      }
+    ]
+  },
+  "move_attack_01": {
+    "near": {
+      "xy": [
+        52,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        58,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      56,
+      42
+    ]
+  },
+  "move_attack_02": {
+    "near": {
+      "xy": [
+        53,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        59,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      57,
+      42
+    ]
+  },
+  "move_attack_03": {
+    "near": {
+      "xy": [
+        54,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        59,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      42
+    ]
+  },
+  "move_attack_04": {
+    "near": {
+      "xy": [
+        54,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      41
+    ]
+  },
+  "move_attack_05": {
+    "near": {
+      "xy": [
+        54,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      41
+    ]
+  },
+  "move_attack_06": {
+    "near": {
+      "xy": [
+        54,
+        36
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        37
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      42
+    ]
+  },
+  "move_attack_07": {
+    "near": {
+      "xy": [
+        54,
+        36
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        60,
+        37
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      58,
+      42
+    ]
+  },
+  "move_attack_08": {
+    "near": {
+      "xy": [
+        55,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        61,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      59,
+      42
+    ]
+  },
+  "move_attack_09": {
+    "near": {
+      "xy": [
+        55,
+        35
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ]
+    },
+    "far": {
+      "xy": [
+        62,
+        36
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    "mouth": [
+      60,
+      42
+    ]
+  }
+}

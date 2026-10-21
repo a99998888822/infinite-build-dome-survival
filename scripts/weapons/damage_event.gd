@@ -73,7 +73,28 @@ func to_dictionary() -> Dictionary:
 
 
 func duplicate_event() -> DamageEvent:
-	return DamageEvent.create(to_dictionary())
+	# Custom serializers remain authoritative for derived event types.
+	if get_script() != DamageEvent:
+		return DamageEvent.create(to_dictionary())
+	# Dense ground strikes copy one event per target. Avoid constructing a
+	# dictionary and converting already-typed fields for every contact.
+	var event := DamageEvent.new()
+	event.source_player = source_player
+	event.source_weapon_id = source_weapon_id
+	event.damage = damage
+	event.original_damage = original_damage
+	event.element_damage_bonus = maxi(0, element_damage_bonus)
+	event.elemental_damage_scale = maxf(elemental_damage_scale, 0.0)
+	event.damage_area_scale = maxf(damage_area_scale, 0.01)
+	event.control_power = control_power
+	event.damage_kind = damage_kind
+	event.is_critical = is_critical
+	event.tags = tags.duplicate()
+	event.hit_position = hit_position
+	event.attack_context = attack_context
+	event.enchantment_start = enchantment_start
+	event.split_child = split_child
+	return event
 
 
 func continue_after_split(profile: Dictionary) -> DamageEvent:

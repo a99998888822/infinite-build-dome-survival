@@ -20,7 +20,7 @@
     picxel.py batch  <DIR> [-o OUT] [--provider P] [--sizes 64,32] [--only NAME ...]
                                                    every <name>.anchor.json + image in DIR -> base sheets + batch-report.json
 
-Only Pillow is required. Sizes are fixed at 32, 64, 128.
+Only Pillow is required. Project sizes are 32, 64, 96, 128, 192.
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(errors="replace")   # paths and notes may be Chinese
 
-SIZES = (32, 64, 128)
+SIZES = (32, 64, 96, 128, 192)
 KINDS = ("tile", "item", "sprite")
 SYMBOLS = "ABCDEFGHIJKLMNOP"
 TRANSPARENT = "."
@@ -138,7 +138,7 @@ def _palette_from_image(img: Image.Image, count: int, anchor: dict | None = None
         return {color: mass for mass, color in bins.values()}
 
     weights = candidates(hist)
-    target = anchor.get("size", SIZES[-1])
+    target = anchor.get("size", 128)
     # Less than a quarter target pixel of weighted support is unreliable noise.
     support = min(max(weights.values()), sum(hist.values()) / (4 * target * target))
     weights = {c: mass for c, mass in weights.items() if mass >= support}
@@ -443,14 +443,16 @@ def import_png(src: Path, size: int, name: str | None, kind: str, palette: str, 
 
 
 def _import_image(img: Image.Image, size: int, name: str, kind: str, palette: str,
-                  master: list[str] | None, colors: int = 16) -> Sheet:
+                  master: list[str] | None, colors: int = 16, preserve_canvas: bool = False) -> Sheet:
     """Import one size; batch callers share a decoded concept and its palette."""
     if size not in SIZES or kind not in KINDS:
         raise ValueError("unsupported size or kind")
     if not 2 <= colors <= 16:
         raise ValueError("colors must be between 2 and 16")
     # Native pixel art is already aligned. Preserve it byte-for-byte in geometry.
-    if kind != "tile" and img.size != (size, size):
+    if preserve_canvas and (img.width != img.height or img.width < size or img.width % size):
+        raise ValueError("preserve_canvas requires a square source with an integer multiple of target size")
+    if kind != "tile" and img.size != (size, size) and not preserve_canvas:
         img = _square(img, size)
     w, h = img.size
     if w != h:

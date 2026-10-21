@@ -1,0 +1,5275 @@
+[
+  {
+    "key": "weapon_wood_arrow",
+    "names": [
+      "木质弓箭"
+    ],
+    "config_ids": [
+      "weapon_void_blade"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_wood_arrow.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "895171f1903648812594f597c179adaa698577814a5efdf1a673569e5a364a63",
+    "pixel_source": "assets/ui/icons/weapons/weapon_wood_arrow.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_wood_arrow.pal"
+  },
+  {
+    "key": "weapon_plasma_cannon_v2",
+    "names": [
+      "电浆炮"
+    ],
+    "config_ids": [
+      "weapon_plasma_cannon"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_plasma_cannon_v2.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      3,
+      34,
+      33
+    ],
+    "colors": 12,
+    "installed_sha256": "baf90ca42ba1809452a7547e33500fe07403f3e000b1d2de0fd8587b287211b2",
+    "pixel_source": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pal"
+  },
+  {
+    "key": "weapon_iron_grenade_cannon",
+    "names": [
+      "铸铁榴弹炮"
+    ],
+    "config_ids": [
+      "weapon_iron_grenade_cannon"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_iron_grenade_cannon.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "343eba481a89584a51f02c45d0d1f84650f9b2a7140563368e5355ed0f3adc59",
+    "pixel_source": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pal"
+  },
+  {
+    "key": "weapon_kunyu_ritual_tome",
+    "names": [
+      "坤舆秘仪书"
+    ],
+    "config_ids": [
+      "weapon_kunyu_ritual_tome"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_kunyu_ritual_tome.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "3c20391e1081382ff1e8f110985014151b6de5049ab4cbff82c61041d0554fde",
+    "pixel_source": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pal"
+  },
+  {
+    "key": "weapon_rentier_purse",
+    "names": [
+      "食利者钱袋"
+    ],
+    "config_ids": [
+      "weapon_rentier_purse"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_rentier_purse.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 6,
+    "installed_sha256": "8263b7ddd890d618616ec11a4e278e8a1efdcc06b5354d6029507b71e445ff28",
+    "pixel_source": "assets/ui/icons/weapons/weapon_rentier_purse.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_rentier_purse.pal"
+  },
+  {
+    "key": "weapon_nightwatch_spear",
+    "names": [
+      "守夜长枪"
+    ],
+    "config_ids": [
+      "weapon_nightwatch_spear"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_nightwatch_spear.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "79d38563a14351acaee94b15ad554fe2be99f1dee2e17e93f19dd54c56b6d103",
+    "pixel_source": "assets/ui/icons/weapons/weapon_nightwatch_spear.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_nightwatch_spear.pal"
+  },
+  {
+    "key": "weapon_meteor_flail",
+    "names": [
+      "流星摆锤"
+    ],
+    "config_ids": [
+      "weapon_meteor_flail"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_meteor_flail.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 8,
+    "installed_sha256": "18f8c22500736cdda010eddc26dbfd0f838e69042371b1c0b6cb63a03909de21",
+    "pixel_source": "assets/ui/icons/weapons/weapon_meteor_flail.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_meteor_flail.pal"
+  },
+  {
+    "key": "weapon_copper_lamp",
+    "names": [
+      "赤铜炉灯"
+    ],
+    "config_ids": [
+      "weapon_copper_lamp"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_copper_lamp.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      9,
+      2,
+      27,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "edf76e9791e5c763d763c2383452cd6af42f92645281068b08ad5562fecdff80",
+    "pixel_source": "assets/ui/icons/weapons/weapon_copper_lamp.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_copper_lamp.pal"
+  },
+  {
+    "key": "weapon_mutant_tentacle",
+    "names": [
+      "异化触手"
+    ],
+    "config_ids": [
+      "weapon_mutant_tentacle"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_mutant_tentacle.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "3b83cd1ea1e844d6efe326f27c0365569ab66bb1fefb63a5dc796cff50c0cc0d",
+    "pixel_source": "assets/ui/icons/weapons/weapon_mutant_tentacle.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_mutant_tentacle.pal"
+  },
+  {
+    "key": "weapon_earth_hammer",
+    "names": [
+      "裂地战锤"
+    ],
+    "config_ids": [
+      "weapon_earth_hammer"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_earth_hammer.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 8,
+    "installed_sha256": "42fc6ed98d476da44ed64d2ce0d34e9ef7ea84865e9741dbc2df3ea82770c150",
+    "pixel_source": "assets/ui/icons/weapons/weapon_earth_hammer.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_earth_hammer.pal"
+  },
+  {
+    "key": "weapon_camp_dagger",
+    "names": [
+      "营地短刀"
+    ],
+    "config_ids": [
+      "weapon_camp_dagger"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_camp_dagger.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "0e81f762665b654bf1e5d53f54820640b6ead9ab006ce65635201d96b71a056a",
+    "pixel_source": "assets/ui/icons/weapons/weapon_camp_dagger.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_camp_dagger.pal"
+  },
+  {
+    "key": "relic_piggy_bank",
+    "names": [
+      "猪猪存钱罐"
+    ],
+    "config_ids": [
+      "relic_piggy_bank"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_piggy_bank.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      30,
+      118,
+      507,
+      586
+    ],
+    "original_crop_size": [
+      477,
+      468
+    ],
+    "original_crop_sha256": "de43ab5bb9c9944b67a0df1cbf4993b7628eeffc9a3a0f070687eb664a33ccfa",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      2,
+      35,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "4a32ca78ef189ee4cbbe6acd92f12722e70fb47e6a8c15b981e9bc972edf0134",
+    "pixel_source": "assets/ui/icons/relics/relic_piggy_bank.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_piggy_bank.pal"
+  },
+  {
+    "key": "relic_finance_manager",
+    "names": [
+      "理财经理"
+    ],
+    "config_ids": [
+      "relic_finance_manager"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_finance_manager.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      519,
+      80,
+      1017,
+      630
+    ],
+    "original_crop_size": [
+      498,
+      550
+    ],
+    "original_crop_sha256": "648c82f0e40ec9fecf0ab8f4349baf1ea2b7c90dace7d40df293846865226151",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      4,
+      34,
+      32
+    ],
+    "colors": 12,
+    "installed_sha256": "54fb5d8e08e3a670edfdee342f2de98ad168f1d3f16eab99a13e76d1efb4ef44",
+    "pixel_source": "assets/ui/icons/relics/relic_finance_manager.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_finance_manager.pal"
+  },
+  {
+    "key": "relic_dividend_check",
+    "names": [
+      "分红支票"
+    ],
+    "config_ids": [
+      "relic_dividend_check"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_dividend_check.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      80,
+      1529,
+      630
+    ],
+    "original_crop_size": [
+      498,
+      550
+    ],
+    "original_crop_sha256": "0ead8ce879275e2c326f2c8b6cd595cd55db37e9de15c08c1eb27f358c5577f9",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      1,
+      34,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "b550531c0a76c1eaeb8142e838d85f65535f690950d905af1c470dac1df35686",
+    "pixel_source": "assets/ui/icons/relics/relic_dividend_check.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_dividend_check.pal"
+  },
+  {
+    "key": "relic_fixed_deposit_certificate",
+    "names": [
+      "定期存单"
+    ],
+    "config_ids": [
+      "relic_fixed_deposit_certificate"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_fixed_deposit_certificate.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1543,
+      80,
+      2041,
+      630
+    ],
+    "original_crop_size": [
+      498,
+      550
+    ],
+    "original_crop_sha256": "00ce0c1418d48367a267decb28e02ec46323d5ab46afe0629898911ae714e140",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "4d8add622c6ce0692e74744cd1c179d3551dccf04f72346288adf307f83502e0",
+    "pixel_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pal"
+  },
+  {
+    "key": "relic_flyer_ad",
+    "names": [
+      "传单广告"
+    ],
+    "config_ids": [
+      "relic_flyer_ad"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_flyer_ad.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      720,
+      505,
+      1310
+    ],
+    "original_crop_size": [
+      498,
+      590
+    ],
+    "original_crop_sha256": "7390ce59c72ab6ab0fe6d62450156de45b449245d3781c1416610a60cc54a83d",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      1,
+      31,
+      35
+    ],
+    "colors": 11,
+    "installed_sha256": "479de3d3f74ae22671570a75f5885947df65dc1e1bdb495922d9d6ad82e1baba",
+    "pixel_source": "assets/ui/icons/relics/relic_flyer_ad.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_flyer_ad.pal"
+  },
+  {
+    "key": "relic_steel_vault",
+    "names": [
+      "钢铁保险柜"
+    ],
+    "config_ids": [
+      "relic_steel_vault"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_steel_vault.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      519,
+      720,
+      1017,
+      1310
+    ],
+    "original_crop_size": [
+      498,
+      590
+    ],
+    "original_crop_sha256": "17611e98524f757bff83fa24ad4fed1e915eda91ec522cbb71481426807590f8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "68c6657ef5dcd898f6ef61b5d3663cdfe049099ad2c38299a78e46e499f9d127",
+    "pixel_source": "assets/ui/icons/relics/relic_steel_vault.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_steel_vault.pal"
+  },
+  {
+    "key": "relic_quant_trading",
+    "names": [
+      "量化操盘"
+    ],
+    "config_ids": [
+      "relic_quant_trading"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_quant_trading.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      720,
+      1529,
+      1310
+    ],
+    "original_crop_size": [
+      498,
+      590
+    ],
+    "original_crop_sha256": "2cc8f23d2bad702f924e09e009bf2202078cca7df3ce3b4716838f2838597fcb",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      1,
+      34,
+      35
+    ],
+    "colors": 11,
+    "installed_sha256": "2f7f744dd841bb30b867f1fb393d76bfc8d564106be8d37b9b9f8fcdc53ebb22",
+    "pixel_source": "assets/ui/icons/relics/relic_quant_trading.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_quant_trading.pal"
+  },
+  {
+    "key": "relic_hostile_takeover",
+    "names": [
+      "恶意收购"
+    ],
+    "config_ids": [
+      "relic_hostile_takeover"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_hostile_takeover.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1543,
+      720,
+      2041,
+      1310
+    ],
+    "original_crop_size": [
+      498,
+      590
+    ],
+    "original_crop_sha256": "cf7cf5b384e75adbc0266af3da270b2458b7dadd69153fd2744643904c2800bc",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      34,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "4798a00a86b2f3e514164f146442c9cb0439f281e7daa5422a37fa489f605908",
+    "pixel_source": "assets/ui/icons/relics/relic_hostile_takeover.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_hostile_takeover.pal"
+  },
+  {
+    "key": "relic_gold_compass",
+    "names": [
+      "吸金罗盘"
+    ],
+    "config_ids": [
+      "relic_gold_compass"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_gold_compass.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      1420,
+      505,
+      1980
+    ],
+    "original_crop_size": [
+      498,
+      560
+    ],
+    "original_crop_sha256": "f7f31cc01c8f38002a6e057fe4f21a0a1f6b50769c13e4e356bfa842fb82bbf1",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "0487d3bc5a6455f07fe158675e26b1b9eb7f209a2f1cb1d15333cef8819103e9",
+    "pixel_source": "assets/ui/icons/relics/relic_gold_compass.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_gold_compass.pal"
+  },
+  {
+    "key": "relic_tip_tray",
+    "names": [
+      "小费托盘"
+    ],
+    "config_ids": [
+      "relic_tip_tray"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_tip_tray.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      519,
+      1420,
+      1017,
+      1980
+    ],
+    "original_crop_size": [
+      498,
+      560
+    ],
+    "original_crop_sha256": "1b3d6074734fa81f882b6189d6f2690e13ecb8856fa250f31640cde7737cf9cd",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      9,
+      35,
+      27
+    ],
+    "colors": 12,
+    "installed_sha256": "645d1bca136fed631f24272974bdfbb14b4387ccc27d3b45f12f92a3fafb35e8",
+    "pixel_source": "assets/ui/icons/relics/relic_tip_tray.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_tip_tray.pal"
+  },
+  {
+    "key": "relic_compound_interest_tome",
+    "names": [
+      "复利宝典"
+    ],
+    "config_ids": [
+      "relic_compound_interest_tome"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_compound_interest_tome.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      1420,
+      1529,
+      1980
+    ],
+    "original_crop_size": [
+      498,
+      560
+    ],
+    "original_crop_sha256": "17eefa358fae476a65b65364a6bcd42eb03b2d4cee16d44f8a751edf2022446c",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "283fe139359f90548215462215312b04a519d3fac12655d2bc7ecd1c6958dc2b",
+    "pixel_source": "assets/ui/icons/relics/relic_compound_interest_tome.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_compound_interest_tome.pal"
+  },
+  {
+    "key": "relic_high_yield_contract",
+    "names": [
+      "高利契约"
+    ],
+    "config_ids": [
+      "relic_high_yield_contract"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_high_yield_contract.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon1.png",
+    "original_input_sha256": "c8e2bf1309d4e841ecc4d1975b4d588b063341fce5ccbbe1f40c5f5df17a3ac4",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1543,
+      1420,
+      2041,
+      1980
+    ],
+    "original_crop_size": [
+      498,
+      560
+    ],
+    "original_crop_sha256": "2900a92cd5349ab55460c2fb3f9282448aa161034198eb12f673de69d297d242",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      1,
+      32,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "51d2f7bd9eb2f5be527029a75e7ef2313894882b7c896d6b145bc9ad9e2af03c",
+    "pixel_source": "assets/ui/icons/relics/relic_high_yield_contract.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_high_yield_contract.pal"
+  },
+  {
+    "key": "relic_merger_reorg",
+    "names": [
+      "并购重组"
+    ],
+    "config_ids": [
+      "relic_merger_reorg"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_merger_reorg.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      24,
+      334,
+      420
+    ],
+    "original_crop_size": [
+      327,
+      396
+    ],
+    "original_crop_sha256": "393d08fe033c8c58bed07ebf2e71cee50539fd41a52ef0285e0693fea996ccf2",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      1,
+      35,
+      35
+    ],
+    "colors": 13,
+    "installed_sha256": "a05c1ba921429fa2cbf372e0616f64dce16fb26fe40478a5874683063c4204d0",
+    "pixel_source": "assets/ui/icons/relics/relic_merger_reorg.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_merger_reorg.pal"
+  },
+  {
+    "key": "relic_periodic_dividend_clock",
+    "names": [
+      "周期分红钟"
+    ],
+    "config_ids": [
+      "relic_periodic_dividend_clock"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_periodic_dividend_clock.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      24,
+      676,
+      420
+    ],
+    "original_crop_size": [
+      328,
+      396
+    ],
+    "original_crop_sha256": "fa598f0d105236049c55421ee752efb4ad6cd81c950daa5cae43850669c5bed8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "34490ad5c60e622e1d1654a3b0926e78d4427f668d4c899c6e63fc64fdb7e569",
+    "pixel_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pal"
+  },
+  {
+    "key": "relic_medical_cutback",
+    "names": [
+      "医疗削减方案"
+    ],
+    "config_ids": [
+      "relic_medical_cutback"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_medical_cutback.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      24,
+      1017,
+      420
+    ],
+    "original_crop_size": [
+      327,
+      396
+    ],
+    "original_crop_sha256": "699124a2326ff6a313dbdbbd72c1df91ad5c7c343de874f73be8a5cc0bb07ca5",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      2,
+      28,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "f8bf940745c8c62aa6d064637f1f590166deafbd285f39b980d4f37bbf6621fd",
+    "pixel_source": "assets/ui/icons/relics/relic_medical_cutback.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_medical_cutback.pal"
+  },
+  {
+    "key": "relic_welfare_cutback",
+    "names": [
+      "福利削减方案"
+    ],
+    "config_ids": [
+      "relic_welfare_cutback"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_welfare_cutback.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      24,
+      1358,
+      420
+    ],
+    "original_crop_size": [
+      327,
+      396
+    ],
+    "original_crop_sha256": "73bd6452252508b7e27b5b4d5038e726fede7fa5ec495fa0e29789cf5938b1e3",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      7,
+      34,
+      29
+    ],
+    "colors": 12,
+    "installed_sha256": "663e7e49fce5fd48ce13a3c15154517b414c4f99e20fc74ac18dfcd83cc9ecb5",
+    "pixel_source": "assets/ui/icons/relics/relic_welfare_cutback.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_welfare_cutback.pal"
+  },
+  {
+    "key": "relic_annual_leave_cutback",
+    "names": [
+      "年假削减方案"
+    ],
+    "config_ids": [
+      "relic_annual_leave_cutback"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_annual_leave_cutback.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      24,
+      1700,
+      420
+    ],
+    "original_crop_size": [
+      328,
+      396
+    ],
+    "original_crop_sha256": "f8ccceee9a2578081833f5864a71c14fdcd7353a41b810b2533312f5113660e3",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      3,
+      35,
+      33
+    ],
+    "colors": 9,
+    "installed_sha256": "861a971742303c8061de5c7138007c439d8b41da7eea56c2a4da5914c0827dc4",
+    "pixel_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pal"
+  },
+  {
+    "key": "relic_salary_adjustment",
+    "names": [
+      "薪酬调整方案"
+    ],
+    "config_ids": [
+      "relic_salary_adjustment"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_salary_adjustment.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      24,
+      2041,
+      420
+    ],
+    "original_crop_size": [
+      327,
+      396
+    ],
+    "original_crop_sha256": "9ede1a76e2e026e95017b2ec5f3364be6f7460b33611689fba80fbf6eecd30ee",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "51eb52ce38e54ed34f7ccd06a4dc46937963602abaca12deea41bb96e048d814",
+    "pixel_source": "assets/ui/icons/relics/relic_salary_adjustment.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_salary_adjustment.pal"
+  },
+  {
+    "key": "relic_divine_fusion",
+    "names": [
+      "神性融合"
+    ],
+    "config_ids": [
+      "relic_divine_fusion"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_divine_fusion.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      490,
+      334,
+      910
+    ],
+    "original_crop_size": [
+      327,
+      420
+    ],
+    "original_crop_sha256": "d720514ca64b36fab301e4ddde9a4b084eadf18f67f6eb7ac3229067cbeb1f55",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "48c008ece01155b94675e540a6448cf1d35665f5245448f73351e187a5a6395f",
+    "pixel_source": "assets/ui/icons/relics/relic_divine_fusion.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_divine_fusion.pal"
+  },
+  {
+    "key": "relic_goblin_central_bank_printer",
+    "names": [
+      "哥布林金币铸造机"
+    ],
+    "config_ids": [
+      "relic_goblin_central_bank_printer"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_goblin_central_bank_printer.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      490,
+      676,
+      910
+    ],
+    "original_crop_size": [
+      328,
+      420
+    ],
+    "original_crop_sha256": "e8e01b034bc55cfcf285d1e8dc101d6ff8a217eac6920fa2fbed70d25de96718",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "ccbddf63514588eb4a11823a0786ce4e277c397206d120d8c0373621ae727a52",
+    "pixel_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pal"
+  },
+  {
+    "key": "relic_perpetual_annuity_scroll",
+    "names": [
+      "永续年金卷轴"
+    ],
+    "config_ids": [
+      "relic_perpetual_annuity_scroll"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      490,
+      1017,
+      910
+    ],
+    "original_crop_size": [
+      327,
+      420
+    ],
+    "original_crop_sha256": "840484b2561ae47933b8fe3129bde6426165964c6b574fa7cd90acfda5c4cb81",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "9438468a0ac5599b68b0fca071fb6f4af9007779adc87f893ef03a18569feaf6",
+    "pixel_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pal"
+  },
+  {
+    "key": "relic_bankruptcy_reorg",
+    "names": [
+      "破产重组"
+    ],
+    "config_ids": [
+      "relic_bankruptcy_reorg"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_bankruptcy_reorg.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      490,
+      1358,
+      910
+    ],
+    "original_crop_size": [
+      327,
+      420
+    ],
+    "original_crop_sha256": "0d3d6099cfe567524b52ee0817c224180c489426762bb9e5eb2621b0a2a062f0",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "2374b2e371e6f6054b187dfeabb07b232a24e34c13babd6c3885ff847264ed2a",
+    "pixel_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pal"
+  },
+  {
+    "key": "relic_worn_hemostatic_cloth",
+    "names": [
+      "磨损的止血布条"
+    ],
+    "config_ids": [
+      "relic_worn_hemostatic_cloth"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      490,
+      1700,
+      910
+    ],
+    "original_crop_size": [
+      328,
+      420
+    ],
+    "original_crop_sha256": "169654b9f55e7bc1919922be3edb807ce59dd3f39964bfc6a802a3c7e0bfcfa8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "5d2dab7337789c12011cc4125cc009d8a41a1ed5da84fdc9dd613ccea81f61f9",
+    "pixel_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pal"
+  },
+  {
+    "key": "relic_load_iron_bracer",
+    "names": [
+      "负重铁皮护腕"
+    ],
+    "config_ids": [
+      "relic_load_iron_bracer"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_load_iron_bracer.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      490,
+      2041,
+      910
+    ],
+    "original_crop_size": [
+      327,
+      420
+    ],
+    "original_crop_sha256": "70cf698468304cddcccecfda81b791506fe499aad4dac0405f0fc5d26f474daf",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "7e5c1386053277b07b9456d9ad352fcb83483c2acaec0601cebd7b71ed5b7fb6",
+    "pixel_source": "assets/ui/icons/relics/relic_load_iron_bracer.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_load_iron_bracer.pal"
+  },
+  {
+    "key": "relic_pungent_sachet",
+    "names": [
+      "刺鼻香包"
+    ],
+    "config_ids": [
+      "relic_pungent_sachet"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_pungent_sachet.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      982,
+      334,
+      1420
+    ],
+    "original_crop_size": [
+      327,
+      438
+    ],
+    "original_crop_sha256": "1be6abc02fbd360b5e1ed51e17c0c57df32bf082e438b6c745fbbe8305917724",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      6,
+      2,
+      30,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "aa64e7aa67b4d7380939ad45fcb6d36674e7ce05a3861661fbb301f55e5b740e",
+    "pixel_source": "assets/ui/icons/relics/relic_pungent_sachet.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_pungent_sachet.pal"
+  },
+  {
+    "key": "relic_broken_crystal",
+    "names": [
+      "残破晶石"
+    ],
+    "config_ids": [
+      "relic_broken_crystal"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_broken_crystal.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      982,
+      676,
+      1420
+    ],
+    "original_crop_size": [
+      328,
+      438
+    ],
+    "original_crop_sha256": "9137fc7029761df3f273471abe9c31c73ec88748638dd4fcfcc7603d32df2f8d",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      2,
+      28,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "a87fc67eddaef09d541b27dd657f63d770684ee2624d9c7e03d439302ff76aa5",
+    "pixel_source": "assets/ui/icons/relics/relic_broken_crystal.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_broken_crystal.pal"
+  },
+  {
+    "key": "relic_vitality_potion",
+    "names": [
+      "生命力药瓶"
+    ],
+    "config_ids": [
+      "relic_vitality_potion"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_vitality_potion.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      982,
+      1017,
+      1420
+    ],
+    "original_crop_size": [
+      327,
+      438
+    ],
+    "original_crop_sha256": "1b1c34e008095e0e389c7b5b86702b7f5638502dd6e3ad5236d3a89748f35ddf",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      2,
+      29,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "b78884dd5e5684dcdca39b37e51f4fb2070b31b367f55193c191b9cf380dc22b",
+    "pixel_source": "assets/ui/icons/relics/relic_vitality_potion.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_vitality_potion.pal"
+  },
+  {
+    "key": "relic_dead_shield_badge",
+    "names": [
+      "死寂护盾徽章"
+    ],
+    "config_ids": [
+      "relic_dead_shield_badge"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_dead_shield_badge.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      982,
+      1358,
+      1420
+    ],
+    "original_crop_size": [
+      327,
+      438
+    ],
+    "original_crop_sha256": "2477456e34daa5a147e902cff9128697de5d6d9af8587caeb93dc5e1767f21f6",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "7da935d490c3e38bc2c0450c100d035871e1a1bb60c830c8cde5ff4a1fd60f62",
+    "pixel_source": "assets/ui/icons/relics/relic_dead_shield_badge.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_dead_shield_badge.pal"
+  },
+  {
+    "key": "relic_turtle_shell_pendant",
+    "names": [
+      "龟壳吊坠"
+    ],
+    "config_ids": [
+      "relic_turtle_shell_pendant"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_turtle_shell_pendant.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      982,
+      1700,
+      1420
+    ],
+    "original_crop_size": [
+      328,
+      438
+    ],
+    "original_crop_sha256": "2043c2d939160fe1e932a97deab9c45ca0b093fbc4004f5dc61227b057d268e6",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      30,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "615289715a684f63c5667d9f25c88e5f94b658258a5e655a39ff8ac86f5a19b6",
+    "pixel_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pal"
+  },
+  {
+    "key": "relic_prison_copper_anklet",
+    "names": [
+      "监狱铜制脚环"
+    ],
+    "config_ids": [
+      "relic_prison_copper_anklet"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_prison_copper_anklet.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      982,
+      2041,
+      1420
+    ],
+    "original_crop_size": [
+      327,
+      438
+    ],
+    "original_crop_sha256": "c334a207fc8c54ae20c3ae8ed6b367347657ba7219f8c4eafe658183d89abac8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "669e525f6c890fbc745967229b6f0b8e9319aa587aeec68300cd1d57b15076cd",
+    "pixel_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pal"
+  },
+  {
+    "key": "relic_brass_pocket_watch",
+    "names": [
+      "黄铜怀表"
+    ],
+    "config_ids": [
+      "relic_brass_pocket_watch"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_brass_pocket_watch.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      1485,
+      334,
+      1960
+    ],
+    "original_crop_size": [
+      327,
+      475
+    ],
+    "original_crop_sha256": "fd5548db9429d3316c851c259c1c96bc021350e3ea5538046e33bad8d817697c",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      1,
+      32,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "2cae53ccd012b7abf88a9a8dc894ebdba22a90f03a9c7e5d9d757df624afcae3",
+    "pixel_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pal"
+  },
+  {
+    "key": "relic_flesh_pauldron",
+    "names": [
+      "血肉肩甲"
+    ],
+    "config_ids": [
+      "relic_flesh_pauldron"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_flesh_pauldron.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      1485,
+      676,
+      1960
+    ],
+    "original_crop_size": [
+      328,
+      475
+    ],
+    "original_crop_sha256": "087d9926b691914d8a493be2dbaea55dadc3db9b78c0ee79f731d5b2da982aeb",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "bcce9f01eb196c80260758e80c141e492eb2e0e4ea68acdcb49c41527e6511fb",
+    "pixel_source": "assets/ui/icons/relics/relic_flesh_pauldron.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_flesh_pauldron.pal"
+  },
+  {
+    "key": "relic_nightmare_healing_urn",
+    "names": [
+      "梦魇治愈圣壶"
+    ],
+    "config_ids": [
+      "relic_nightmare_healing_urn"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_nightmare_healing_urn.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      1485,
+      1017,
+      1960
+    ],
+    "original_crop_size": [
+      327,
+      475
+    ],
+    "original_crop_sha256": "54d68ce37e88c92e3da30b48632ae3603eec2ab1ee8c69002c7451ed2d26194f",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      2,
+      29,
+      35
+    ],
+    "colors": 13,
+    "installed_sha256": "ca27fee05b97cebc33be8cbd4f96182b4cd202fa828356bc8fd0b7ca5a487edf",
+    "pixel_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pal"
+  },
+  {
+    "key": "relic_barrier_crystal",
+    "names": [
+      "屏障结晶"
+    ],
+    "config_ids": [
+      "relic_barrier_crystal"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_barrier_crystal.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      1485,
+      1358,
+      1960
+    ],
+    "original_crop_size": [
+      327,
+      475
+    ],
+    "original_crop_sha256": "6523e9e6482048f0779420182fa454925d001a0c69084e399ae6c9b10f856d5c",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      9,
+      2,
+      28,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "98719c5931159b4a06746c31e489d2d14b7955e557214152e36252bb99f6f634",
+    "pixel_source": "assets/ui/icons/relics/relic_barrier_crystal.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_barrier_crystal.pal"
+  },
+  {
+    "key": "relic_cultic_holy_shield",
+    "names": [
+      "密教圣盾"
+    ],
+    "config_ids": [
+      "relic_cultic_holy_shield"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_cultic_holy_shield.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      1485,
+      1700,
+      1960
+    ],
+    "original_crop_size": [
+      328,
+      475
+    ],
+    "original_crop_sha256": "4ea54ef12c3eb2635b8ff74d0b59065b3c2ed44b35fa1319fb5cae3f712a1951",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      6,
+      2,
+      29,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "5bda785f2d6a7f3a5052a8f676b8eaf2c9a27bf2f1c22db9beba9ecd612cb703",
+    "pixel_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pal"
+  },
+  {
+    "key": "relic_lost_wayfarer_greave",
+    "names": [
+      "迷途者胫环"
+    ],
+    "config_ids": [
+      "relic_lost_wayfarer_greave"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_lost_wayfarer_greave.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon2.png",
+    "original_input_sha256": "261055afbd6d4de18ed59e44c82c2f106466c74978111a27e7cb87636c0a483e",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      1485,
+      2041,
+      1960
+    ],
+    "original_crop_size": [
+      327,
+      475
+    ],
+    "original_crop_sha256": "2ca95828eab480f467ae5aa4a0a3179de503ba9576c37e9f64ac03a4fcb9a583",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "d2002fb277bb1dc2cd49967f8090dc5c81fa3721f97efd54b1c1ca1bce32c425",
+    "pixel_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pal"
+  },
+  {
+    "key": "relic_soul_keeper_face_stone",
+    "names": [
+      "守魂人面石雕"
+    ],
+    "config_ids": [
+      "relic_soul_keeper_face_stone"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_soul_keeper_face_stone.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      48,
+      334,
+      425
+    ],
+    "original_crop_size": [
+      327,
+      377
+    ],
+    "original_crop_sha256": "bed6844312619eca8a4cdc67ef8f54cb9fe4b8131781862988fb399eed7ca7fd",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      1,
+      31,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "1b148da5492ec96698b4b0890f128a169962aca8686c4a90d9f668d196481c6d",
+    "pixel_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pal"
+  },
+  {
+    "key": "relic_pain_vessel",
+    "names": [
+      "苦痛祭皿"
+    ],
+    "config_ids": [
+      "relic_pain_vessel"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_pain_vessel.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      48,
+      676,
+      425
+    ],
+    "original_crop_size": [
+      328,
+      377
+    ],
+    "original_crop_sha256": "bdeda38cdd010eed95da4e798eef5d28e46334a757825fc78e60523f229868f1",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "097f74fd533ce1461ebb8dace96313a54009defc53e7b4b94b902d2ced63dd85",
+    "pixel_source": "assets/ui/icons/relics/relic_pain_vessel.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_pain_vessel.pal"
+  },
+  {
+    "key": "relic_true_silver_armor",
+    "names": [
+      "真银护甲"
+    ],
+    "config_ids": [
+      "relic_true_silver_armor"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_true_silver_armor.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      48,
+      1017,
+      425
+    ],
+    "original_crop_size": [
+      327,
+      377
+    ],
+    "original_crop_sha256": "b703db6e1de51e20195ee84e596f144bea3c01728d0175fe92f16b414548fb67",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "760a426fcc34e471ae7efe17bddf19904fb3f194a1177c0d3f1d0e1d58712af9",
+    "pixel_source": "assets/ui/icons/relics/relic_true_silver_armor.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_true_silver_armor.pal"
+  },
+  {
+    "key": "relic_holy_silver_cup",
+    "names": [
+      "圣质银杯"
+    ],
+    "config_ids": [
+      "relic_holy_silver_cup"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_holy_silver_cup.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      48,
+      1358,
+      425
+    ],
+    "original_crop_size": [
+      327,
+      377
+    ],
+    "original_crop_sha256": "957d2b0d23823680c53c6573cc52ac9555a98658893df01aa00ad9ea04817fb0",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      2,
+      28,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "a0519ddfe3280308b49e69c9d73f8102991599d235ad1eafbffd31f717157c18",
+    "pixel_source": "assets/ui/icons/relics/relic_holy_silver_cup.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_holy_silver_cup.pal"
+  },
+  {
+    "key": "relic_suffering_carapace",
+    "names": [
+      "受难甲壳"
+    ],
+    "config_ids": [
+      "relic_suffering_carapace"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_suffering_carapace.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      48,
+      1700,
+      425
+    ],
+    "original_crop_size": [
+      328,
+      377
+    ],
+    "original_crop_sha256": "531ac8d3dad0eed7fb86d61f6312bed6993f62f28e2694491b5fa303e10613af",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      1,
+      34,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "d947bb623ac73107114c03e5617554d10221e126c78f3a97c0bc2e29ff22619e",
+    "pixel_source": "assets/ui/icons/relics/relic_suffering_carapace.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_suffering_carapace.pal"
+  },
+  {
+    "key": "relic_costly_seed_of_life",
+    "names": [
+      "代价生命之种"
+    ],
+    "config_ids": [
+      "relic_costly_seed_of_life"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_costly_seed_of_life.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      48,
+      2041,
+      425
+    ],
+    "original_crop_size": [
+      327,
+      377
+    ],
+    "original_crop_sha256": "78596a55dbeb4d4a61a2f4b6392d57f960ee2a5169471e6b8dbf30080ebc6230",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      2,
+      29,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "f6bf59c64be8972d42f0e7dce262d9194e458b604feeb21adb848c6f48b16f97",
+    "pixel_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pal"
+  },
+  {
+    "key": "relic_shadowless_greave",
+    "names": [
+      "无影遁形胫甲"
+    ],
+    "config_ids": [
+      "relic_shadowless_greave"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_shadowless_greave.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      552,
+      334,
+      924
+    ],
+    "original_crop_size": [
+      327,
+      372
+    ],
+    "original_crop_sha256": "f1c4722e5298d21ee1ba1cf7edb49e1081108d714cecf3cb7e5072f0039cce59",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      1,
+      28,
+      35
+    ],
+    "colors": 11,
+    "installed_sha256": "543e8f55fe6b7727aec2ce24df644670398d050a72351fb7e67d99e7baff1345",
+    "pixel_source": "assets/ui/icons/relics/relic_shadowless_greave.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_shadowless_greave.pal"
+  },
+  {
+    "key": "relic_chain_of_hardship",
+    "names": [
+      "苦难前行之枷锁"
+    ],
+    "config_ids": [
+      "relic_chain_of_hardship"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_chain_of_hardship.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      552,
+      676,
+      924
+    ],
+    "original_crop_size": [
+      328,
+      372
+    ],
+    "original_crop_sha256": "43d9f1602279b3a2d5e2c41ebaacdbd43b99a10cd7743b4d9c781856ba91c405",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      1,
+      32,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "d8fcbb74069ccbaa0c94f9c80bd1e51253e91a259663a661672796ec42333bc2",
+    "pixel_source": "assets/ui/icons/relics/relic_chain_of_hardship.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_chain_of_hardship.pal"
+  },
+  {
+    "key": "relic_void_tentacle",
+    "names": [
+      "虚空触手"
+    ],
+    "config_ids": [
+      "relic_void_tentacle"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_void_tentacle.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      552,
+      1017,
+      924
+    ],
+    "original_crop_size": [
+      327,
+      372
+    ],
+    "original_crop_sha256": "32686e8299eec86a67f3707ddaa67fb6bdc8a441b42409f832777e4bc9302576",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      6,
+      1,
+      30,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "ad87194180884e0d01a979b20af28674db52b54ea48f4f158b75eb76b4203b20",
+    "pixel_source": "assets/ui/icons/relics/relic_void_tentacle.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_void_tentacle.pal"
+  },
+  {
+    "key": "relic_worn_fighting_gloves",
+    "names": [
+      "磨损格斗拳套"
+    ],
+    "config_ids": [
+      "relic_worn_fighting_gloves"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_worn_fighting_gloves.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      552,
+      1358,
+      924
+    ],
+    "original_crop_size": [
+      327,
+      372
+    ],
+    "original_crop_sha256": "3fbe5c10d80a2c2e66a83683f337c6c80889c6ab29caa6b37b863598247d9d00",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      4,
+      34,
+      32
+    ],
+    "colors": 12,
+    "installed_sha256": "c293856fcf57d1db6d7cdffe3f88b579d58b9dcaa1f3b9382f2ee85c63aaa378",
+    "pixel_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pal"
+  },
+  {
+    "key": "relic_cracked_stone_bullet",
+    "names": [
+      "裂痕石子弹"
+    ],
+    "config_ids": [
+      "relic_cracked_stone_bullet"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_cracked_stone_bullet.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      552,
+      1700,
+      924
+    ],
+    "original_crop_size": [
+      328,
+      372
+    ],
+    "original_crop_sha256": "cc788d531d0dd642bfdbc64143b89b6d7c050a1d6917ecabefaa7606f0763118",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "9e62d4459efd022ce9103f32384dfa924ff34499705337f79e47ba4d5b899825",
+    "pixel_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pal"
+  },
+  {
+    "key": "relic_hasty_spring_trigger",
+    "names": [
+      "急促弹簧扳机"
+    ],
+    "config_ids": [
+      "relic_hasty_spring_trigger"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_hasty_spring_trigger.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      552,
+      2041,
+      924
+    ],
+    "original_crop_size": [
+      327,
+      372
+    ],
+    "original_crop_sha256": "41ddc62168689aa34b481f651fdb565b486998e8fb9a1f3b8bbc1b8eb45a57e4",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      3,
+      34,
+      33
+    ],
+    "colors": 11,
+    "installed_sha256": "9ac6f24257f5639f7ab6b9313116930ea831f8af1b3911954215277c113f60e1",
+    "pixel_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pal"
+  },
+  {
+    "key": "relic_rough_grinding_lens",
+    "names": [
+      "粗糙研磨透镜"
+    ],
+    "config_ids": [
+      "relic_rough_grinding_lens"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_rough_grinding_lens.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      1060,
+      334,
+      1425
+    ],
+    "original_crop_size": [
+      327,
+      365
+    ],
+    "original_crop_sha256": "d953b7c404210116da4bfbba604edda0df898abc8c6b38cf36c9255b8930c710",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "83df1ed80c175f70d4cc0e658b927f8443474a4b7302371ac93ce4cf88b4df18",
+    "pixel_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pal"
+  },
+  {
+    "key": "relic_blocking_counterweight",
+    "names": [
+      "阻滞配重石"
+    ],
+    "config_ids": [
+      "relic_blocking_counterweight"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_blocking_counterweight.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      1060,
+      676,
+      1425
+    ],
+    "original_crop_size": [
+      328,
+      365
+    ],
+    "original_crop_sha256": "c5b64b694c5ad6de8085555637bb248e4be5817fc485009edb6329eb8d279720",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      1,
+      29,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "1011b3cce926189a07409771908d4ded7883856c9539b1fcf89cf418c62c7386",
+    "pixel_source": "assets/ui/icons/relics/relic_blocking_counterweight.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_blocking_counterweight.pal"
+  },
+  {
+    "key": "relic_bloodstained_belt",
+    "names": [
+      "嗜血皮带"
+    ],
+    "config_ids": [
+      "relic_bloodstained_belt"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_bloodstained_belt.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      1060,
+      1017,
+      1425
+    ],
+    "original_crop_size": [
+      327,
+      365
+    ],
+    "original_crop_sha256": "d2b244d302871e18831ed8acc687e751c81e476ecd54d902f06050b5876fbe19",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      4,
+      35,
+      32
+    ],
+    "colors": 13,
+    "installed_sha256": "648811d0865f6b11fdbd206c5edef67ad27b510a9828edb3902eb93233d1de4c",
+    "pixel_source": "assets/ui/icons/relics/relic_bloodstained_belt.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_bloodstained_belt.pal"
+  },
+  {
+    "key": "relic_poison_mist_pouch",
+    "names": [
+      "毒雾投囊"
+    ],
+    "config_ids": [
+      "relic_poison_mist_pouch"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_poison_mist_pouch.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      1060,
+      1358,
+      1425
+    ],
+    "original_crop_size": [
+      327,
+      365
+    ],
+    "original_crop_sha256": "4f3fbd86d1292ed1d708f6f1aad3559d0fe1e4b582b5a78581a078537dd55487",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      1,
+      31,
+      35
+    ],
+    "colors": 13,
+    "installed_sha256": "f4e8edd1eadd6db95cc2a4a11a3238f88de4ab84aa8d2d31d53cab96f082d58a",
+    "pixel_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pal"
+  },
+  {
+    "key": "relic_tremor_grip",
+    "names": [
+      "震颤握柄"
+    ],
+    "config_ids": [
+      "relic_tremor_grip"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_tremor_grip.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      1060,
+      1700,
+      1425
+    ],
+    "original_crop_size": [
+      328,
+      365
+    ],
+    "original_crop_sha256": "7f5b448befcc8fa89b9ac091f15cf81b6defe25dcd74d2207fa9aa5d884a1ed6",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      1,
+      32,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "dc2d2176fb1a8ecf35065a9acee525989ea72cadf481301e1c04c78b29a95c0e",
+    "pixel_source": "assets/ui/icons/relics/relic_tremor_grip.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_tremor_grip.pal"
+  },
+  {
+    "key": "relic_black_spot_eagle_eye",
+    "names": [
+      "黑斑鹰眼水晶"
+    ],
+    "config_ids": [
+      "relic_black_spot_eagle_eye"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_black_spot_eagle_eye.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      1060,
+      2041,
+      1425
+    ],
+    "original_crop_size": [
+      327,
+      365
+    ],
+    "original_crop_sha256": "3345a496fb8d98eb1a3531ae02aed2aa30e7190760d6310fc56cab9ca53dd1eb",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      33
+    ],
+    "colors": 13,
+    "installed_sha256": "99d1f9faaa239ae63b741cfedcdfd70b0a18f9e6261cd57db43c32503d50c537",
+    "pixel_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pal"
+  },
+  {
+    "key": "relic_berserker_copper_badge",
+    "names": [
+      "狂战士铜质徽章"
+    ],
+    "config_ids": [
+      "relic_berserker_copper_badge"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_berserker_copper_badge.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      7,
+      1590,
+      334,
+      1914
+    ],
+    "original_crop_size": [
+      327,
+      324
+    ],
+    "original_crop_sha256": "76c13d4fd9f96ab5deed621dd3d5fcb638489f074fe4094c9f46d1b4a71dd143",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      1,
+      34,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "721911db46d2e0b0e76f7b8e5fc8ff7187dac66a0ba41c6ee92f10a5f1eda272",
+    "pixel_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pal"
+  },
+  {
+    "key": "relic_corroded_blowpipe",
+    "names": [
+      "蚀腐吹管"
+    ],
+    "config_ids": [
+      "relic_corroded_blowpipe"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_corroded_blowpipe.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      348,
+      1590,
+      676,
+      1914
+    ],
+    "original_crop_size": [
+      328,
+      324
+    ],
+    "original_crop_sha256": "18c748c51984e56e65807498f3ed5fc650b28a2d80cfa1aca9b410ea76eeed96",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "ea8e56c2bc06da61723be6abfc0face73f82720199ea779dd58b894e8437e871",
+    "pixel_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pal"
+  },
+  {
+    "key": "relic_gale_roulette",
+    "names": [
+      "疾风轮盘"
+    ],
+    "config_ids": [
+      "relic_gale_roulette"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_gale_roulette.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      690,
+      1590,
+      1017,
+      1914
+    ],
+    "original_crop_size": [
+      327,
+      324
+    ],
+    "original_crop_sha256": "453e65a4ffdf778336da37519a1e9dbc7141f785e88acb7f5f2a401e00059c1b",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      3,
+      34,
+      33
+    ],
+    "colors": 10,
+    "installed_sha256": "0ffdc6f07393d476b5a4c38e9a727b3fb994c35fbbbc90b087cae614e1588b9a",
+    "pixel_source": "assets/ui/icons/relics/relic_gale_roulette.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_gale_roulette.pal"
+  },
+  {
+    "key": "relic_executioner_bracer",
+    "names": [
+      "屠戮者臂铠"
+    ],
+    "config_ids": [
+      "relic_executioner_bracer"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_executioner_bracer.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1031,
+      1590,
+      1358,
+      1914
+    ],
+    "original_crop_size": [
+      327,
+      324
+    ],
+    "original_crop_sha256": "0556a647ecb18b5bf2fd77ed9d3ad4981e171d0f834faba4854c6f449c3fc565",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      35
+    ],
+    "colors": 11,
+    "installed_sha256": "79e12e39a202f477def37e8d3b32f73f8082eabc3bdbc1a22f3570680bc93b11",
+    "pixel_source": "assets/ui/icons/relics/relic_executioner_bracer.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_executioner_bracer.pal"
+  },
+  {
+    "key": "relic_judgment_eye_pendant",
+    "names": [
+      "裁决之眼吊坠"
+    ],
+    "config_ids": [
+      "relic_judgment_eye_pendant"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_judgment_eye_pendant.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1372,
+      1590,
+      1700,
+      1914
+    ],
+    "original_crop_size": [
+      328,
+      324
+    ],
+    "original_crop_sha256": "c81b6b99f588313d190d90f337e394fd334cd02d15710639335063a041b76c66",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      2,
+      28,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "bebe90d153e92f5b63fb491fe7fac64db03384c4757cc6441c82e9de26ed7f98",
+    "pixel_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pal"
+  },
+  {
+    "key": "relic_split_crystal_warhead",
+    "names": [
+      "分裂晶石弹头"
+    ],
+    "config_ids": [
+      "relic_split_crystal_warhead"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_split_crystal_warhead.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon3.png",
+    "original_input_sha256": "269c68171a21c3de9e2216be157400af1f5d5381d1f0a657e92919fdc7a53a41",
+    "original_input_size": [
+      2048,
+      2048
+    ],
+    "original_crop_box": [
+      1714,
+      1590,
+      2041,
+      1914
+    ],
+    "original_crop_size": [
+      327,
+      324
+    ],
+    "original_crop_sha256": "0fbec57622fd879c675bd8b54c9d38368bc116aeb2ac87be265cb41c47948df7",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      1,
+      32,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "0a56a5d30898288918992f7cbb73bcf798c4988818a235038edda48e722d7201",
+    "pixel_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pal"
+  },
+  {
+    "key": "relic_gold_digger_gloves",
+    "names": [
+      "淘金者的手套"
+    ],
+    "config_ids": [
+      "relic_gold_digger_gloves"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_gold_digger_gloves.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      8,
+      377,
+      394
+    ],
+    "original_crop_size": [
+      370,
+      386
+    ],
+    "original_crop_sha256": "d90a6ed67c48e1bbc7045b142b73c9bfbad8844326a039311a1e19e51b1b877f",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "1bb78b44c6cd6fca1730fee6bdf52a048812572509c827d973f294af2cfa027e",
+    "pixel_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pal"
+  },
+  {
+    "key": "relic_incomplete_divination_dice",
+    "names": [
+      "残缺的占卜骰子"
+    ],
+    "config_ids": [
+      "relic_incomplete_divination_dice"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_incomplete_divination_dice.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      8,
+      761,
+      394
+    ],
+    "original_crop_size": [
+      370,
+      386
+    ],
+    "original_crop_sha256": "0b09a0777ac4e5a0c24516b61ae0ec898c14f629814d0c331d976f7e849493a2",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      3,
+      35,
+      33
+    ],
+    "colors": 11,
+    "installed_sha256": "1b1cabb488a3e3afcca422393803759b4af97ac1dc8651abf3637dff677f4cfa",
+    "pixel_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pal"
+  },
+  {
+    "key": "relic_travelers_ledger",
+    "names": [
+      "商旅账本"
+    ],
+    "config_ids": [
+      "relic_travelers_ledger"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_travelers_ledger.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      8,
+      1145,
+      394
+    ],
+    "original_crop_size": [
+      370,
+      386
+    ],
+    "original_crop_sha256": "6324a99c3c0d3a073b69b1ab38a5328de3dd55616f1b89c5673665cef844c276",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "e492d9c5fc60e4112106169e59b23caa652b3998567864b51878dd33908fdb46",
+    "pixel_source": "assets/ui/icons/relics/relic_travelers_ledger.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_travelers_ledger.pal"
+  },
+  {
+    "key": "relic_defiled_blessing_coin",
+    "names": [
+      "被亵渎的祈福铜钱"
+    ],
+    "config_ids": [
+      "relic_defiled_blessing_coin"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_defiled_blessing_coin.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      1159,
+      8,
+      1529,
+      394
+    ],
+    "original_crop_size": [
+      370,
+      386
+    ],
+    "original_crop_sha256": "32edab0f87da9e0c07b8c56e05afa77f485a365285e3a20a87c30fa3d6c46992",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      1,
+      34,
+      35
+    ],
+    "colors": 13,
+    "installed_sha256": "6643bbe821c1ae847807a8d71f8a471863189d84df5c9bd8b04efb43de83437e",
+    "pixel_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pal"
+  },
+  {
+    "key": "relic_expanded_backpack_strap",
+    "names": [
+      "扩容背包束带"
+    ],
+    "config_ids": [
+      "relic_expanded_backpack_strap"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_expanded_backpack_strap.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      408,
+      377,
+      786
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "5af469381ec24cae47260389ac7e4302eb160792bb2a85fbdfce7e9ab3bbb4da",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      31,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "3096a181e0dfb7067a10a63dc80c9a81b934f442fd1b209ea2d7c153a6ac2ae8",
+    "pixel_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pal"
+  },
+  {
+    "key": "relic_stargazers_lens",
+    "names": [
+      "观星者的镜片"
+    ],
+    "config_ids": [
+      "relic_stargazers_lens"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_stargazers_lens.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      408,
+      761,
+      786
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "b9699927888bf90934e62e86d146ca9df5e4a2c89193782bd56ae3c524aed506",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      3,
+      33,
+      33
+    ],
+    "colors": 12,
+    "installed_sha256": "5244422ce6afd2fc9ce8b6cc1cb077b1a6465746e66ad8ded6558ec94d95a357",
+    "pixel_source": "assets/ui/icons/relics/relic_stargazers_lens.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_stargazers_lens.pal"
+  },
+  {
+    "key": "relic_harvest_sacrificial_vessel",
+    "names": [
+      "丰收的牺牲祭器"
+    ],
+    "config_ids": [
+      "relic_harvest_sacrificial_vessel"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      408,
+      1145,
+      786
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "e297b600625af2338b527c6e61ef3207e1b42971b2fad154c4f588c4d21cb352",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      4,
+      35,
+      32
+    ],
+    "colors": 14,
+    "installed_sha256": "52a6388f0282650d05fb8bc028832a1324471abd3cdb3820b9b3a0b23bd801a3",
+    "pixel_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pal"
+  },
+  {
+    "key": "relic_amulet_of_humanity",
+    "names": [
+      "人性护符"
+    ],
+    "config_ids": [
+      "relic_amulet_of_humanity"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_amulet_of_humanity.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      1159,
+      408,
+      1529,
+      786
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "eff4aa10d638465e84588b4a8ec95ce4647f9d770ddd575932ec70b798296a90",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      1,
+      29,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "aeac871a068187738771635c474d471b10dc1b9babec15b4717e9d1138d2d048",
+    "pixel_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pal"
+  },
+  {
+    "key": "relic_gift_mark",
+    "names": [
+      "馈赠印记"
+    ],
+    "config_ids": [
+      "relic_gift_mark"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_gift_mark.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      800,
+      377,
+      1178
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "eeaefdbde55bce129da7f3b02165f10b9e628da398848ef674a58425d90a4aaf",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      3,
+      32,
+      33
+    ],
+    "colors": 9,
+    "installed_sha256": "7f37544c4d5d8a35644c7f23bfe70676cdb424c782bd92622d9d66ba66bd485a",
+    "pixel_source": "assets/ui/icons/relics/relic_gift_mark.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_gift_mark.pal"
+  },
+  {
+    "key": "relic_void_storage_casket",
+    "names": [
+      "虚空收纳匣"
+    ],
+    "config_ids": [
+      "relic_void_storage_casket"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_void_storage_casket.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      800,
+      761,
+      1178
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "d892a0fcc54232aab12200403700eddaffc1d525aa7b3d74734b3d4bf862602a",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "ef1f7434057f139d5be216e5976efaa54157d25f90b103ea0dbb5a4f70953887",
+    "pixel_source": "assets/ui/icons/relics/relic_void_storage_casket.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_void_storage_casket.pal"
+  },
+  {
+    "key": "relic_reincarnation_hellfire_candle",
+    "names": [
+      "轮回业火之烛"
+    ],
+    "config_ids": [
+      "relic_reincarnation_hellfire_candle"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      800,
+      1145,
+      1178
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "910ec081f232833df2b7bd98e024e64b01911b53ecf0b8886eab6607a20919d7",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      3,
+      28,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "36d312fad4b3133d4e54e8be4e0ce134db4c7fa78788ed1be1c7c95d6e6d16c7",
+    "pixel_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pal"
+  },
+  {
+    "key": "relic_guarding_heart_copper_mirror",
+    "names": [
+      "守心铜鉴"
+    ],
+    "config_ids": [
+      "relic_guarding_heart_copper_mirror"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      1159,
+      800,
+      1529,
+      1178
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "41688fd7819d2c0372f7d95a4ccadb4bb3047d691143dcaf8d06f2df839ce4f3",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "4674b012a86299570975d37a29a3785baf9a35605cdb4ff9b284b67411e92927",
+    "pixel_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pal"
+  },
+  {
+    "key": "relic_sleepless_ledger",
+    "names": [
+      "无眠账簿"
+    ],
+    "config_ids": [
+      "relic_sleepless_ledger"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_sleepless_ledger.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      1192,
+      377,
+      1570
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "b1839f931a809a77e5219eaf37611a8125a9b1a06d0b9d8aaa50ce1f0fc77163",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      7,
+      34,
+      30
+    ],
+    "colors": 12,
+    "installed_sha256": "b5a4eb69677d4276c072e277810f6995214755e9968e8eec6c59190b49021e34",
+    "pixel_source": "assets/ui/icons/relics/relic_sleepless_ledger.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_sleepless_ledger.pal"
+  },
+  {
+    "key": "relic_frenzied_dividend",
+    "names": [
+      "狂热分红"
+    ],
+    "config_ids": [
+      "relic_frenzied_dividend"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_frenzied_dividend.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      1192,
+      1145,
+      1570
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "2028bbcc6c802693cd868ff9c83325020c544b1561100b294a6e8edb56f6caed",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      4,
+      34,
+      32
+    ],
+    "colors": 13,
+    "installed_sha256": "3756d577e62b3d1941103a4b401802579fd63744c5142523d8d6cc67a1261a5c",
+    "pixel_source": "assets/ui/icons/relics/relic_frenzied_dividend.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_frenzied_dividend.pal"
+  },
+  {
+    "key": "relic_gilded_trigger",
+    "names": [
+      "镀金扳机"
+    ],
+    "config_ids": [
+      "relic_gilded_trigger"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_gilded_trigger.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      1584,
+      377,
+      1962
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "2fb1d8dd7ed9bb026d0c5f02bfe88beefd7160f43017af88116be4bcf9fb07ce",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      5,
+      34,
+      31
+    ],
+    "colors": 11,
+    "installed_sha256": "7cd18f02e5c697b318adc71e098749af1f0c6bdd6eb362c8b1f85d750d1efb7a",
+    "pixel_source": "assets/ui/icons/relics/relic_gilded_trigger.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_gilded_trigger.pal"
+  },
+  {
+    "key": "relic_runaway_amplifier",
+    "names": [
+      "失控增幅器"
+    ],
+    "config_ids": [
+      "relic_runaway_amplifier"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_runaway_amplifier.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      1584,
+      761,
+      1962
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "6d1236f50b9d6034e6e38dac9ceb7dcc07b7625890dbf3a870e199712003080f",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      3,
+      34,
+      33
+    ],
+    "colors": 12,
+    "installed_sha256": "3618624a9289b186d1dcd91a703ed9dfaf6541ea30f416de5381cf2295e7fbf9",
+    "pixel_source": "assets/ui/icons/relics/relic_runaway_amplifier.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_runaway_amplifier.pal"
+  },
+  {
+    "key": "relic_lucid_vow",
+    "names": [
+      "清醒誓言"
+    ],
+    "config_ids": [
+      "relic_lucid_vow"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_lucid_vow.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      1584,
+      1145,
+      1962
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "76702d5c43ee62b8addb1d47aa267e089ed25e131090621b3a2f4d35f29215b0",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "1b166db367ac60a323ed6f810804dff15b680b722f7421e486e4b5ac6d2df582",
+    "pixel_source": "assets/ui/icons/relics/relic_lucid_vow.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_lucid_vow.pal"
+  },
+  {
+    "key": "relic_coin_heart",
+    "names": [
+      "金币心脏"
+    ],
+    "config_ids": [
+      "relic_coin_heart"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_coin_heart.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      1159,
+      1584,
+      1529,
+      1962
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "7fa1e78c11a08347c68c8eb599a3f5de820eb6949a1690fde3b1f85ba669e254",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      4,
+      33,
+      32
+    ],
+    "colors": 12,
+    "installed_sha256": "92ff4657db70544251e75039f0a60083b2b37dda13ece7de2a8edba6d4878b28",
+    "pixel_source": "assets/ui/icons/relics/relic_coin_heart.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_coin_heart.pal"
+  },
+  {
+    "key": "relic_hoarders_ring",
+    "names": [
+      "囤积者戒指"
+    ],
+    "config_ids": [
+      "relic_hoarders_ring"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_hoarders_ring.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      7,
+      1976,
+      377,
+      2354
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "ad3aba9888c27faf42f0e1bcdf370b57a5ee9b52e12b749be17ee78872289819",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "d973bea2190a43bacbe0bb279b3178ac5779aa4eab67d4825a1f0f5a80231653",
+    "pixel_source": "assets/ui/icons/relics/relic_hoarders_ring.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_hoarders_ring.pal"
+  },
+  {
+    "key": "relic_golden_sarcophagus",
+    "names": [
+      "黄金棺椁"
+    ],
+    "config_ids": [
+      "relic_golden_sarcophagus"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_golden_sarcophagus.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      1976,
+      761,
+      2354
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "47fc167600e042511a47b50d87ed35184e5e2ee5bb07ee51914807face897f38",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      2,
+      29,
+      34
+    ],
+    "colors": 12,
+    "installed_sha256": "f6489620d07048bc36cc2d024f1f6332dd1791d6a3b8f24b5ea99e05df37e4b1",
+    "pixel_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pal"
+  },
+  {
+    "key": "relic_old_brass_telescope",
+    "names": [
+      "旧铜望远镜"
+    ],
+    "config_ids": [
+      "relic_old_brass_telescope"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_old_brass_telescope.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      1976,
+      1145,
+      2354
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "a08ade534145e7b388f94e21ab72e1b4e1a631f7e3d18492ce67c156aeace915",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      7,
+      34,
+      29
+    ],
+    "colors": 13,
+    "installed_sha256": "09411b6f94d9a2cc444c4ff59872f2a30cf306dbc7575f56ca1ef51b49e1a8a8",
+    "pixel_source": "assets/ui/icons/relics/relic_old_brass_telescope.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_old_brass_telescope.pal"
+  },
+  {
+    "key": "relic_cracked_bronze_bell",
+    "names": [
+      "裂纹铜铃"
+    ],
+    "config_ids": [
+      "relic_cracked_bronze_bell"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_cracked_bronze_bell.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      1159,
+      1976,
+      1529,
+      2354
+    ],
+    "original_crop_size": [
+      370,
+      378
+    ],
+    "original_crop_sha256": "57a8974baa8ff8d8460c0525da3eea85c89f902f1ee9f5e97602fa3b6e9503c1",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      1,
+      33,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "071f359fad9478416b8584eef8868e20e7ca02155c4ef8e84bf4ec065de3f150",
+    "pixel_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pal"
+  },
+  {
+    "key": "relic_long_focus_eyepiece",
+    "names": [
+      "长焦目镜"
+    ],
+    "config_ids": [
+      "relic_long_focus_eyepiece"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_long_focus_eyepiece.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      391,
+      2368,
+      761,
+      2744
+    ],
+    "original_crop_size": [
+      370,
+      376
+    ],
+    "original_crop_sha256": "68b278898e81b229e1d5ea584343482d7499dadb4696023d119feab6e26f99d0",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      4,
+      35,
+      32
+    ],
+    "colors": 13,
+    "installed_sha256": "9e91fa23633db1401a3c9d028a776e144721135c739e4b66e30998c46d0aef6f",
+    "pixel_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pal"
+  },
+  {
+    "key": "relic_diffusion_nozzle",
+    "names": [
+      "扩散喷口"
+    ],
+    "config_ids": [
+      "relic_diffusion_nozzle"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_diffusion_nozzle.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/yiwu_icon4.png",
+    "original_input_sha256": "78d5d57227912768e08dd6d0a8ef5b1c4baa77af3041700a9c0c83f253de6fa7",
+    "original_input_size": [
+      1536,
+      2752
+    ],
+    "original_crop_box": [
+      775,
+      2368,
+      1145,
+      2744
+    ],
+    "original_crop_size": [
+      370,
+      376
+    ],
+    "original_crop_sha256": "3d74aff8b594584bb916fe72718faef296d366fd8345b105eb93fc0950e62829",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      1,
+      4,
+      35,
+      32
+    ],
+    "colors": 11,
+    "installed_sha256": "74b14003670376c5272fb28dd8db4dc6bb2688591d7d7399fff86824a7cb7280",
+    "pixel_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pal"
+  },
+  {
+    "key": "relic_range_tripod",
+    "names": [
+      "定距脚架"
+    ],
+    "config_ids": [
+      "relic_range_tripod"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_range_tripod.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      1182,
+      0,
+      1773,
+      591
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "48d7e84ac742138bfd270ddf05613abaf59341e8ef0ac13025f2cf202aab03f3",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      1,
+      31,
+      35
+    ],
+    "colors": 12,
+    "installed_sha256": "d364563b271ec275c5255972681c04cc8494bbab967d7d2dd38cbb4828dd95b3",
+    "pixel_source": "assets/ui/icons/relics/relic_range_tripod.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_range_tripod.pal"
+  },
+  {
+    "key": "relic_aftershock_hourglass",
+    "names": [
+      "余震沙漏"
+    ],
+    "config_ids": [
+      "relic_aftershock_hourglass"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_aftershock_hourglass.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      1773,
+      0,
+      2364,
+      591
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "1a0fff4fbf09939b3a178716117f18b6b0c171f147339275f42ce286c3a1ad1b",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      8,
+      2,
+      28,
+      35
+    ],
+    "colors": 14,
+    "installed_sha256": "b1dea4a6676301e574e10229e9672a119ec7ea995bbd3331c245a4f11968d005",
+    "pixel_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pal"
+  },
+  {
+    "key": "relic_golden_rangefinder",
+    "names": [
+      "黄金测距仪"
+    ],
+    "config_ids": [
+      "relic_golden_rangefinder"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_golden_rangefinder.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      0,
+      591,
+      591,
+      1182
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "acde2b895a36c5979291ee7a05a640ab5d4bf6f252471544023040b63f1c6c15",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "0ea8a14b3180072e1aba835e3d866c16164435fa23a055143ef7751019efd55a",
+    "pixel_source": "assets/ui/icons/relics/relic_golden_rangefinder.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_golden_rangefinder.pal"
+  },
+  {
+    "key": "relic_abyssal_echo_shell",
+    "names": [
+      "深海回声螺"
+    ],
+    "config_ids": [
+      "relic_abyssal_echo_shell"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_abyssal_echo_shell.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      591,
+      591,
+      1182,
+      1182
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "a1c534b9cba6333eb0845eff700cfabfacfca854112ae7cf9872716035b63766",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 14,
+    "installed_sha256": "c1e00ede13c2d6a9d5f0be5a9d02c2764b30047305ba74de94e4c5eee7646d2d",
+    "pixel_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pal"
+  },
+  {
+    "key": "relic_folded_star_chart",
+    "names": [
+      "折叠星图"
+    ],
+    "config_ids": [
+      "relic_folded_star_chart"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_folded_star_chart.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      1182,
+      591,
+      1773,
+      1182
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "acf38c294c8e9d57a4ddbf619f18b7de140908adcde71d67a2be78c82559af38",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      5,
+      34,
+      31
+    ],
+    "colors": 13,
+    "installed_sha256": "385a80fd2d02887fab712630ce65e5d1d535daf81230ea7aa3e4ccb258416f4d",
+    "pixel_source": "assets/ui/icons/relics/relic_folded_star_chart.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_folded_star_chart.pal"
+  },
+  {
+    "key": "relic_horizon_orrery",
+    "names": [
+      "地平线星仪"
+    ],
+    "config_ids": [
+      "relic_horizon_orrery"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_horizon_orrery.png",
+    "source_kind": "original_sheet",
+    "original_input": "artifacts/sources/relics/a9acdbf404-relics_sheet_08_source.png",
+    "original_input_sha256": "a9acdbf404ecbbf8cbbdc6291aa14fd2005d10a7b0720800339c134fa7000c84",
+    "original_input_size": [
+      2364,
+      1773
+    ],
+    "original_crop_box": [
+      1773,
+      591,
+      2364,
+      1182
+    ],
+    "original_crop_size": [
+      591,
+      591
+    ],
+    "original_crop_sha256": "a6fd2989a13871b2b79ba0a76f1afe946f945843596f23ac150d694d1f3989ff",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      5,
+      2,
+      30,
+      34
+    ],
+    "colors": 8,
+    "installed_sha256": "5ae01cf7bdb060c76234da3c82f3aab7bfa562339fd9b36d23bc14a46a6f3b24",
+    "pixel_source": "assets/ui/icons/relics/relic_horizon_orrery.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_horizon_orrery.pal"
+  },
+  {
+    "key": "scroll_water",
+    "names": [
+      "水流"
+    ],
+    "config_ids": [
+      "scroll_water"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_water.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "a7bdf0671c02426f203991cbbb7fbad6d8f7833086a21e58da41b030e3295c8e",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_water.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_water.pal"
+  },
+  {
+    "key": "scroll_light_sword",
+    "names": [
+      "光辉剑"
+    ],
+    "config_ids": [
+      "scroll_light_sword"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_light_sword.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      11,
+      3,
+      21,
+      30
+    ],
+    "colors": 8,
+    "installed_sha256": "d65039488d1ba340052cf4a98dd686ddc2da9eddb7eeae15822ed9be138a071d",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_light_sword.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_light_sword.pal"
+  },
+  {
+    "key": "scroll_black_hole",
+    "names": [
+      "黑洞"
+    ],
+    "config_ids": [
+      "scroll_black_hole"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_black_hole.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      29,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "5abe47aa0132077b0101f7b156d07045261b73d7e495dbcaab1afbbd8e7c56a1",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_black_hole.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_black_hole.pal"
+  },
+  {
+    "key": "scroll_fire",
+    "names": [
+      "火焰"
+    ],
+    "config_ids": [
+      "scroll_fire"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_fire.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      6,
+      2,
+      26,
+      30
+    ],
+    "colors": 5,
+    "installed_sha256": "181c05d107a02f31d6f4e13d342bd4596e3576b0beb34488d9afcea22574a118",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_fire.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_fire.pal"
+  },
+  {
+    "key": "scroll_explosion",
+    "names": [
+      "震荡"
+    ],
+    "config_ids": [
+      "scroll_explosion"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_explosion.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      3,
+      30,
+      29
+    ],
+    "colors": 4,
+    "installed_sha256": "4b4c78786e7cd75422f4b33c9b08bbc76dc35121553a78e3f562f35da47d9a3c",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_explosion.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_explosion.pal"
+  },
+  {
+    "key": "scroll_lightning",
+    "names": [
+      "电火花"
+    ],
+    "config_ids": [
+      "scroll_lightning"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_lightning.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      29,
+      30
+    ],
+    "colors": 5,
+    "installed_sha256": "9100ac0373ade02bea94cdcc8be4e0caa96d7921fc633dae30a6f2843d574d91",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_lightning.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_lightning.pal"
+  },
+  {
+    "key": "scroll_split",
+    "names": [
+      "分裂"
+    ],
+    "config_ids": [
+      "scroll_split"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_split.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "b1a15ac3915897352b3bd24af5d2cd55a31d657dd1ac6435f5f27ad28e4e594d",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_split.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_split.pal"
+  },
+  {
+    "key": "scroll_pierce",
+    "names": [
+      "穿透"
+    ],
+    "config_ids": [
+      "scroll_pierce"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_pierce.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "57ef160cb1c5e69170aab496ea0da69474d3d20d7c4f870ca7fe055bdb5696c3",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_pierce.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_pierce.pal"
+  },
+  {
+    "key": "scroll_ice",
+    "names": [
+      "结霜"
+    ],
+    "config_ids": [
+      "scroll_ice"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_ice.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      28,
+      30
+    ],
+    "colors": 4,
+    "installed_sha256": "873ffe78019768e9b018c17fdc76dcc653e11b6dc62abc39eafc2dc8becd816f",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_ice.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_ice.pal"
+  },
+  {
+    "key": "scroll_wind",
+    "names": [
+      "风刃"
+    ],
+    "config_ids": [
+      "scroll_wind"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_wind.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      29
+    ],
+    "colors": 4,
+    "installed_sha256": "306c572496f19d52787463229e73431ebff0856d6fcf24fe9d5d44f459a6e3cd",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_wind.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_wind.pal"
+  },
+  {
+    "key": "scroll_bounce",
+    "names": [
+      "弹跳"
+    ],
+    "config_ids": [
+      "scroll_bounce"
+    ],
+    "table": "augmentations",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_bounce.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      6,
+      30,
+      26
+    ],
+    "colors": 5,
+    "installed_sha256": "3058ee8f018a09e69e9ac918fe65246afdfb2279ef6915202df8a17b38377206",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_bounce.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_bounce.pal"
+  },
+  {
+    "key": "scroll_might",
+    "table": "augmentations",
+    "names": [
+      "巨力"
+    ],
+    "config_ids": [
+      "scroll_might"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_might.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      29,
+      30
+    ],
+    "colors": 4,
+    "installed_sha256": "f5d4fdb1a0097c020e665a78e8e400e15f7dc0a47d0ce9ba233a563ffa4bffce",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_might.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_might.pal"
+  },
+  {
+    "key": "scroll_wisdom",
+    "table": "augmentations",
+    "names": [
+      "智慧"
+    ],
+    "config_ids": [
+      "scroll_wisdom"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_wisdom.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      4,
+      3,
+      28,
+      29
+    ],
+    "colors": 5,
+    "installed_sha256": "237e5b0d9b74da16020ecfb8d55cf7b79ca98a42c950e3117016cc18940a5d3a",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_wisdom.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_wisdom.pal"
+  },
+  {
+    "key": "scroll_multishot",
+    "table": "augmentations",
+    "names": [
+      "多投"
+    ],
+    "config_ids": [
+      "scroll_multishot"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_multishot.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      4,
+      30,
+      28
+    ],
+    "colors": 4,
+    "installed_sha256": "4c1a6c18f075c8885d23019d512b759a1c76c48033aeb0baa551230f5e030491",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_multishot.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_multishot.pal"
+  },
+  {
+    "key": "scroll_domain",
+    "table": "augmentations",
+    "names": [
+      "领域"
+    ],
+    "config_ids": [
+      "scroll_domain"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_domain.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "colors": 5,
+    "installed_sha256": "53ac7113accbbe3b64dedce0773454226b41cb0c3aedb329bb2e70659e8efdcd",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_domain.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_domain.pal"
+  },
+  {
+    "key": "scroll_precision",
+    "table": "augmentations",
+    "names": [
+      "会心"
+    ],
+    "config_ids": [
+      "scroll_precision"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_precision.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      29,
+      30
+    ],
+    "colors": 5,
+    "installed_sha256": "4774dcc96feea82c1bf1054baefe4bcfe9f2935e23c1370d4265094bd83b332f",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_precision.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_precision.pal"
+  },
+  {
+    "key": "scroll_lethality",
+    "table": "augmentations",
+    "names": [
+      "致命"
+    ],
+    "config_ids": [
+      "scroll_lethality"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_lethality.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      29,
+      30
+    ],
+    "colors": 4,
+    "installed_sha256": "60cde1c0de9115fcaf8992d8d21cdcb66e6fed97ceda8d0c76e4d5eaa1957dd5",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_lethality.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_lethality.pal"
+  },
+  {
+    "key": "scroll_haste",
+    "table": "augmentations",
+    "names": [
+      "迅捷"
+    ],
+    "config_ids": [
+      "scroll_haste"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_haste.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      29,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "fe22a428530a217d10bc73ad68937b62d302fbde32c4c2a66290b918d26df1c3",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_haste.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_haste.pal"
+  },
+  {
+    "key": "scroll_electric_spark",
+    "table": "augmentations",
+    "names": [
+      "落雷"
+    ],
+    "config_ids": [
+      "scroll_electric_spark"
+    ],
+    "status": "installed",
+    "installed_path": "assets/ui/icons/augmentations/scroll_electric_spark.png",
+    "installed_size": [
+      32,
+      32
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "colors": 6,
+    "installed_sha256": "f23320c0fef7960d59a0adf5ef644bac1e26b5c73cf0cf9dd0f326866feabc87",
+    "pixel_source": "assets/ui/icons/augmentations/scroll_electric_spark.pxg",
+    "palette_source": "assets/ui/icons/augmentations/scroll_electric_spark.pal"
+  },
+  {
+    "key": "relic_crimson_coagulation_vial",
+    "names": [
+      "绯红凝血瓶"
+    ],
+    "config_ids": [
+      "relic_crimson_coagulation_vial"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_crimson_coagulation_vial.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/attribute_relics.py",
+    "original_input_sha256": "c2f0897840c09aedc7d5b11f11fad8c4b37b688f2acee9ba95e7d1b097523ff6",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "22ec9e03eb1f8156cb2808aedc975f0b6f9f7582dd11266d57ff4a8d1e2dbd92",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      31,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "b20c78ff75d06af03e2936346888ca3cbae56d8c595aea4d36cec8cc9d661414",
+    "pixel_source": "assets/ui/icons/relics/relic_crimson_coagulation_vial.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_crimson_coagulation_vial.pal"
+  },
+  {
+    "key": "relic_goblin_trade_charter",
+    "names": [
+      "哥布林特许状"
+    ],
+    "config_ids": [
+      "relic_goblin_trade_charter"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_goblin_trade_charter.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/attribute_relics.py",
+    "original_input_sha256": "c2f0897840c09aedc7d5b11f11fad8c4b37b688f2acee9ba95e7d1b097523ff6",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "60e2ea4f823db76fe67b3b80bacebed7f97bf82608ce3058c8bd98b32f264429",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 13,
+    "installed_sha256": "baea1207f882ccd6b46e45df516b6a30d108600c22bb65e5fb23369bbb0197e9",
+    "pixel_source": "assets/ui/icons/relics/relic_goblin_trade_charter.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_goblin_trade_charter.pal"
+  },
+  {
+    "key": "relic_void_market_key",
+    "names": [
+      "虚市通行钥匙"
+    ],
+    "config_ids": [
+      "relic_void_market_key"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_void_market_key.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/attribute_relics.py",
+    "original_input_sha256": "c2f0897840c09aedc7d5b11f11fad8c4b37b688f2acee9ba95e7d1b097523ff6",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "22fc2247d3953cb6595a38ff9d80936db9f16292c7cbef8ed25993bd7a9be3a9",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      2,
+      34,
+      34
+    ],
+    "colors": 7,
+    "installed_sha256": "6e0a50bf2ea65d4b8141d9f9a834416cfcb3bddada4cebcd628b9d518914fae7",
+    "pixel_source": "assets/ui/icons/relics/relic_void_market_key.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_void_market_key.pal"
+  },
+  {
+    "key": "relic_hunting_bone_whistle",
+    "names": [
+      "猎群骨哨"
+    ],
+    "config_ids": [
+      "relic_hunting_bone_whistle"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_hunting_bone_whistle.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/attribute_relics.py",
+    "original_input_sha256": "c2f0897840c09aedc7d5b11f11fad8c4b37b688f2acee9ba95e7d1b097523ff6",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "0ecfb1f5e95892d703494e61ed530dde07328f6560720b3190662b48e56490b8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 7,
+    "installed_sha256": "942302bf30ab292e156d7e58071eba12ba1dfab412143c2f50f4216b678d9e2d",
+    "pixel_source": "assets/ui/icons/relics/relic_hunting_bone_whistle.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_hunting_bone_whistle.pal"
+  },
+  {
+    "key": "relic_hungry_tide_bell",
+    "names": [
+      "锈蚀祭铃"
+    ],
+    "config_ids": [
+      "relic_hungry_tide_bell"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_hungry_tide_bell.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/attribute_relics.py",
+    "original_input_sha256": "c2f0897840c09aedc7d5b11f11fad8c4b37b688f2acee9ba95e7d1b097523ff6",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "8285f86b09e95ffbeafb3d6e14ecd2fbfc07470d12a121ef0a057b16007553eb",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      32,
+      34
+    ],
+    "colors": 8,
+    "installed_sha256": "e14ce7a537e71656215a6e896e2177cfeb7b4695b4890e39a56f78a7706e6a93",
+    "pixel_source": "assets/ui/icons/relics/relic_hungry_tide_bell.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_hungry_tide_bell.pal"
+  },
+  {
+    "key": "relic_falcon_sighting_pin",
+    "names": [
+      "猎隼瞄针"
+    ],
+    "config_ids": [
+      "relic_falcon_sighting_pin"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_falcon_sighting_pin.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "4524c6f075137fd2b26e0e0fb0ea5f0565ef1478d1361b90ffa1987dbb04c496",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "85537aeacc9f0a3f9e0152d02b80adf42d47da1586409e1501fdcf3efa8926bb",
+    "pixel_source": "assets/ui/icons/relics/relic_falcon_sighting_pin.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_falcon_sighting_pin.pal"
+  },
+  {
+    "key": "relic_executioner_whetstone",
+    "names": [
+      "刽子手磨石"
+    ],
+    "config_ids": [
+      "relic_executioner_whetstone"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_executioner_whetstone.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "248a206c3622ca83ec13adfbc80f0b3507e702d15ba94430699e490466ccb9e3",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      4,
+      34,
+      32
+    ],
+    "colors": 11,
+    "installed_sha256": "191c06172a0b12658ea50f4572fcabc7ec55ab8a641f72f6e48009349f2d02ce",
+    "pixel_source": "assets/ui/icons/relics/relic_executioner_whetstone.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_executioner_whetstone.pal"
+  },
+  {
+    "key": "relic_crimson_execution_seal",
+    "names": [
+      "猩红断头印"
+    ],
+    "config_ids": [
+      "relic_crimson_execution_seal"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_crimson_execution_seal.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "0fc3b6ac2f4e4e1b9a974e3b01fcc0925185787691743c46684443df3a9f674d",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      2,
+      33,
+      34
+    ],
+    "colors": 9,
+    "installed_sha256": "347a6856223f0cc67805d2e571dbdaf4ae46504d09184d7382466f108a2f9f19",
+    "pixel_source": "assets/ui/icons/relics/relic_crimson_execution_seal.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_crimson_execution_seal.pal"
+  },
+  {
+    "key": "relic_faded_ward_talisman",
+    "names": [
+      "褪色护身符"
+    ],
+    "config_ids": [
+      "relic_faded_ward_talisman"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_faded_ward_talisman.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "8f93dd47b3cfb6e42f70608c34643038065c98f142d5ed0f5d8835e296991bee",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      2,
+      29,
+      34
+    ],
+    "colors": 8,
+    "installed_sha256": "c25cbec931fb541a5f5cab1f9a3438bb2cc8b25e9bce6c30201d10903927359d",
+    "pixel_source": "assets/ui/icons/relics/relic_faded_ward_talisman.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_faded_ward_talisman.pal"
+  },
+  {
+    "key": "relic_twin_chamber_magazine",
+    "names": [
+      "双腔弹匣"
+    ],
+    "config_ids": [
+      "relic_twin_chamber_magazine"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_twin_chamber_magazine.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "68ce38ae198ce9e06a8c641fe399591bbedf0b2bd87786f8d9691f339d9464ab",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 7,
+    "installed_sha256": "2f529c7158b92310dfa7531a69572a1f49f4cd8e7a2a5b02f254ea19b1c88a5f",
+    "pixel_source": "assets/ui/icons/relics/relic_twin_chamber_magazine.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_twin_chamber_magazine.pal"
+  },
+  {
+    "key": "relic_stilltime_amber",
+    "names": [
+      "凝时琥珀"
+    ],
+    "config_ids": [
+      "relic_stilltime_amber"
+    ],
+    "table": "relics",
+    "status": "installed",
+    "installed_path": "assets/ui/icons/relics/relic_stilltime_amber.png",
+    "source_kind": "original_code_canvas",
+    "original_input": "scripts/tools/source_art/combat_attribute_relics.py",
+    "original_input_sha256": "520eddd789cfdd539eb8f79879e70a8911ca729e66b4720196a5d2a82ab826bd",
+    "original_input_size": [
+      64,
+      64
+    ],
+    "original_crop_box": null,
+    "original_crop_size": [
+      64,
+      64
+    ],
+    "original_crop_sha256": "cf2423768f6ec849bc8295816b12046ed27c57ba5c66a1d8529c7cc38d9994f8",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      2,
+      32,
+      34
+    ],
+    "colors": 6,
+    "installed_sha256": "57e96bf4271c5938919376a7a0bf7640684f49f10873a167afd4397e3133350e",
+    "pixel_source": "assets/ui/icons/relics/relic_stilltime_amber.pxg",
+    "palette_source": "assets/ui/icons/relics/relic_stilltime_amber.pal"
+  },
+  {
+    "key": "weapon_dash_blade",
+    "names": [
+      "突进短刃"
+    ],
+    "config_ids": [
+      "weapon_dash_blade"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_dash_blade.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      7,
+      3,
+      29,
+      34
+    ],
+    "colors": 11,
+    "installed_sha256": "d4f15bec58d2cf01cfdacdfd0d7e2fb0057c18ea6a86ebf348bccd1e3a7c1f91",
+    "pixel_source": "assets/ui/icons/weapons/weapon_dash_blade.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_dash_blade.pal"
+  },
+  {
+    "key": "weapon_recoil_gun",
+    "names": [
+      "巨型手持火炮"
+    ],
+    "config_ids": [
+      "weapon_hand_cannon"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_recoil_gun.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      2,
+      3,
+      34,
+      33
+    ],
+    "colors": 10,
+    "installed_sha256": "6be7b79a8565d20e790aa55b81e174f43b5ee494bdefc86a23233234e2561513",
+    "pixel_source": "assets/ui/icons/weapons/weapon_recoil_gun.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_recoil_gun.pal"
+  },
+  {
+    "key": "weapon_star_tome",
+    "names": [
+      "移星秘典"
+    ],
+    "config_ids": [
+      "weapon_star_tome"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_star_tome.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      3,
+      34,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "998f1cec27aef3bf1dc63282d87d4512eb56743a62ba4570764ccc51284d51d3",
+    "pixel_source": "assets/ui/icons/weapons/weapon_star_tome.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_star_tome.pal"
+  },
+  {
+    "key": "weapon_star_tome_return",
+    "names": [
+      "移星秘典（返程状态）"
+    ],
+    "config_ids": [
+      "weapon_star_tome"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_star_tome_return.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      3,
+      3,
+      34,
+      34
+    ],
+    "colors": 10,
+    "installed_sha256": "934ef037ec690d66bf3e4efe677179587d0718db6007f97ca2f0a6abb52fa5f7",
+    "pixel_source": "assets/ui/icons/weapons/weapon_star_tome_return.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_star_tome_return.pal"
+  }
+]

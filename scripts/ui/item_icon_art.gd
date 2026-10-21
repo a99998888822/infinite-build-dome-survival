@@ -1,6 +1,6 @@
 extends RefCounted
 class_name ItemIconArt
-## Approved icon reductions, selected on layout changes and shared through atlases.
+## Native 36px weapons/relics and 32px enchantments; preserve installed source art.
 
 const CATALOG = preload("res://assets/ui/icons/clarity/catalog.gd")
 const PIXEL_TEXTURE = preload("res://scripts/ui/weapon_pixel_texture.gd")
@@ -19,11 +19,23 @@ static func source_path(texture: Texture2D) -> String:
 
 
 static func supports(texture: Texture2D) -> bool:
-	return CATALOG.ITEMS.has(source_path(texture))
+	return is_augmentation(texture) or (not is_relic(texture) and CATALOG.ITEMS.has(source_path(texture)))
+
+
+static func is_relic(texture: Texture2D) -> bool:
+	return source_path(texture).begins_with("res://assets/ui/icons/relics/")
 
 
 static func is_weapon(texture: Texture2D) -> bool:
-	return supports(texture) and source_path(texture).begins_with("res://assets/ui/icons/weapons/")
+	return source_path(texture).begins_with("res://assets/ui/icons/weapons/")
+
+
+static func is_augmentation(texture: Texture2D) -> bool:
+	return source_path(texture).begins_with("res://assets/ui/icons/augmentations/")
+
+
+static func is_fixed_source(texture: Texture2D) -> bool:
+	return is_weapon(texture) or is_augmentation(texture)
 
 
 static func physical_extent(control: Control, logical_extent: float, respect_parent_scale := false) -> float:
@@ -37,6 +49,8 @@ static func physical_extent(control: Control, logical_extent: float, respect_par
 
 static func texture_for(source: Texture2D, physical_pixels: float) -> Texture2D:
 	var path := source_path(source)
+	# Relics use the reviewed 36px source at 1x/2x, never the legacy clarity atlas.
+	if is_relic(source) or is_fixed_source(source): return load(path) as Texture2D
 	if not CATALOG.ITEMS.has(path): return source
 	var item: Dictionary = CATALOG.ITEMS[path]
 	var native := int(item.native_size)
@@ -75,6 +89,7 @@ static func _texture_at(source: Texture2D, selected: int) -> Texture2D:
 
 
 static func weapon_pixel_art(source: Texture2D, desired: float, minimum: float) -> Texture2D:
+	if is_fixed_source(source): return load(source_path(source)) as Texture2D
 	# The detail floor only selects source art; it never sets the drawing size.
 	var item: Dictionary = CATALOG.ITEMS[source_path(source)]
 	var cropped := source is AtlasTexture and not source.has_meta(SOURCE_META)
@@ -150,7 +165,7 @@ class IconBinding extends Node2D:
 
 
 	func configure(texture: Texture2D, parent_scale: bool, minimum: float, layout_owner: Control, logical_extent: float) -> void:
-		if _reserved and (not ItemIconArt.is_weapon(texture) or minimum <= 0.0):
+		if _reserved and (not ItemIconArt.is_fixed_source(texture) or minimum <= 0.0):
 			_restore_layout()
 		source = texture
 		respect_parent_scale = parent_scale
@@ -206,13 +221,14 @@ class IconBinding extends Node2D:
 		var art := ItemIconArt.weapon_pixel_art(source, _logical_extent * minf(_factor.x, _factor.y), minimum_pixels)
 		# Preserve the original aspect ratio and logical footprint across variants.
 		var logical_size := source.get_size() * (_logical_extent / maxf(source.get_width(), source.get_height()))
-		var minimum := _base_minimum.max(logical_size + Vector2(2, 2))
+		var alignment_padding := Vector2.ZERO if ItemIconArt.is_augmentation(source) else Vector2(2, 2)
+		var minimum := _base_minimum.max(logical_size + alignment_padding)
 		if control is Button:
 			var padding := Vector2.ZERO
 			for state in ["normal", "hover", "pressed", "disabled"]:
 				padding = padding.max(control.get_theme_stylebox(state).get_minimum_size())
-			minimum = _base_minimum.max(logical_size + Vector2(2, 2) + padding)
-			var icon_width := ceili(logical_size.x + 2.0)
+			minimum = _base_minimum.max(logical_size + alignment_padding + padding)
+			var icon_width := ceili(logical_size.x + alignment_padding.x)
 			if control.get_theme_constant("icon_max_width") != icon_width:
 				control.add_theme_constant_override("icon_max_width", icon_width)
 		if not _layout_owner.custom_minimum_size.is_equal_approx(minimum):
@@ -235,7 +251,7 @@ class IconBinding extends Node2D:
 		if not is_inside_tree(): return
 		refresh_count += 1
 		var result := source
-		if minimum_pixels > 0.0 and ItemIconArt.is_weapon(source):
+		if minimum_pixels > 0.0 and ItemIconArt.is_fixed_source(source):
 			result = _fit_weapon()
 			control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		elif ItemIconArt.supports(source):
@@ -246,6 +262,8 @@ class IconBinding extends Node2D:
 				var maximum := control.get_theme_constant("icon_max_width")
 				if maximum > 0: extent = minf(extent, maximum)
 			result = ItemIconArt.texture_for(source, ItemIconArt.physical_extent(control, extent, respect_parent_scale))
+			control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		elif ItemIconArt.is_relic(source):
 			control.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		else:
 			control.texture_filter = _original_filter

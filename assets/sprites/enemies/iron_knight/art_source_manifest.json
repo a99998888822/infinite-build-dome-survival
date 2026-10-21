@@ -1,5 +1,5 @@
 {
-  "frame_size": 256,
+  "frame_size": 192,
   "idle_source": "move-01",
   "atlas_sources": {
     "knight_idle.png": [
@@ -36,23 +36,23 @@
     "Recover holds attack-10; no invented return poses."
   ],
   "editable": {
-    "move-01": "move-01-256-clean.pxg",
-    "move-02": "move-02-256-clean.pxg",
-    "move-03": "move-03-256-clean.pxg",
-    "move-04": "move-04-256-clean.pxg",
-    "move-05": "move-05-256-clean.pxg",
-    "move-06": "move-06-256-clean.pxg",
-    "move-07": "move-07-256-clean.pxg",
-    "attack-01": "attack-01-256-clean.pxg",
-    "attack-02": "attack-02-256-clean.pxg",
-    "attack-03": "attack-03-256-clean.pxg",
-    "attack-04": "attack-04-256-clean.pxg",
-    "attack-05": "attack-05-256-clean.pxg",
-    "attack-06": "attack-06-256-clean.pxg",
-    "attack-07": "attack-07-256-clean.pxg",
-    "attack-08": "attack-08-256-clean.pxg",
-    "attack-09": "attack-09-256-clean.pxg",
-    "attack-10": "attack-10-256-clean.pxg"
+    "attack-01": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-01-192-clean.pxg",
+    "attack-02": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-02-192-clean.pxg",
+    "attack-03": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-03-192-clean.pxg",
+    "attack-04": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-04-192-clean.pxg",
+    "attack-05": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-05-192-clean.pxg",
+    "attack-06": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-06-192-clean.pxg",
+    "attack-07": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-07-192-clean.pxg",
+    "attack-08": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-08-192-clean.pxg",
+    "attack-09": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-09-192-clean.pxg",
+    "attack-10": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-10-192-clean.pxg",
+    "move-01": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-01-192-clean.pxg",
+    "move-02": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-02-192-clean.pxg",
+    "move-03": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-03-192-clean.pxg",
+    "move-04": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-04-192-clean.pxg",
+    "move-05": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-05-192-clean.pxg",
+    "move-06": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-06-192-clean.pxg",
+    "move-07": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-07-192-clean.pxg"
   },
   "sources": [
     {
@@ -227,29 +227,228 @@
     }
   ],
   "processing": {
-    "revision": "picxel256_2026-10-04",
-    "palette": [
-      "#000000",
-      "#b3bcce",
-      "#070c20",
-      "#4f606e",
-      "#798d94",
-      "#3d434f",
-      "#1f2437",
-      "#12172a",
-      "#687582",
-      "#454f5d",
-      "#2c3346",
-      "#0b1326",
-      "#73878e",
-      "#00000c",
-      "#000515",
-      "#4e586a"
+    "revision": "native96_192_20261021",
+    "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
+    "originals_revision": "02b3ef4",
+    "source": "720px originals restored from Git; hashes verified",
+    "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
+    "size": 192,
+    "scale": 0.25,
+    "origin": [
+      6,
+      3.5
     ],
-    "approved_sample": "artifacts/previews/iron_knight/20261004-clean256-r3/results/steel-knight-256-clean.png",
-    "review": "artifacts/previews/iron_knight/20261004-animation256-r4",
-    "method": "Approved fixed-scale 256px local conversion, binary alpha, shared 16-color palette; per-pose fringe, shadow and armor speck cleanup. No image model.",
-    "installation_record": "docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md"
+    "offset": [
+      0,
+      -70
+    ],
+    "folder": "iron_knight"
   },
-  "source": "artifacts/sources/enemies/iron_knight/"
+  "source": "artifacts/previews/enemies_native_96_192/20261021-r01/sources/knight",
+  "frames": [
+    {
+      "name": "attack-01",
+      "source_sha256": "c3b850ba9fbf5ac3b4d7e3045e9c405324a47e62da12c26628941752de24c602",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-01.png",
+      "frame_sha256": "c445fe294716f8cae1902e2f7d3b464b74995c22b888bc6f60567c39afc95300",
+      "visible_bbox": [
+        44,
+        23,
+        152,
+        164
+      ]
+    },
+    {
+      "name": "attack-02",
+      "source_sha256": "0a868e8cf9b012cb02ea5f53bb55159067d8e3a2e3cdf8c83d66b5d90db963d9",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-02.png",
+      "frame_sha256": "a15e4e80dca12e8494d8149f661b27842d7d8862295309efb2060f7409dcf09a",
+      "visible_bbox": [
+        47,
+        26,
+        155,
+        164
+      ]
+    },
+    {
+      "name": "attack-03",
+      "source_sha256": "7dae7ca768a6309d69c1854b91b56a78ccc9f64995a7e767228796bacf72333d",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-03.png",
+      "frame_sha256": "5c77d369d5614c393a4b23e3e0cb507f80db6718415c285e054f73a21765616d",
+      "visible_bbox": [
+        6,
+        28,
+        155,
+        164
+      ]
+    },
+    {
+      "name": "attack-04",
+      "source_sha256": "c850402d87fd89efd4a4dec6ce094393acbeed087b57a55e7950a738af6a1a5c",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-04.png",
+      "frame_sha256": "11005a8e69309036206c80db611e5be126f68f318f538801f976a1b3507126cd",
+      "visible_bbox": [
+        20,
+        19,
+        156,
+        165
+      ]
+    },
+    {
+      "name": "attack-05",
+      "source_sha256": "f4482a74377b3a7d11833d1e2c617c7b6e77b397dbc93d43fa2b9394912d34f6",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-05.png",
+      "frame_sha256": "4619a6ee1590443e251e1f93f253cfc20d4b6e26437f2c12763cd83a467570b8",
+      "visible_bbox": [
+        22,
+        11,
+        157,
+        165
+      ]
+    },
+    {
+      "name": "attack-06",
+      "source_sha256": "7235e008dbe22387f25161ba331b1e8390cd922f5a85a069fc393722738d0095",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-06.png",
+      "frame_sha256": "7f7f034e84e032b096e3b34ef6bdf3bc5d1f570e8f35346eb87a57841d4df86d",
+      "visible_bbox": [
+        25,
+        13,
+        157,
+        165
+      ]
+    },
+    {
+      "name": "attack-07",
+      "source_sha256": "0e5387fd3179b1862c1ac84b0f49862119b85b0193285f38bb1f3b4a70576519",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-07.png",
+      "frame_sha256": "cb172ebacb9fd99f79cbb8442190e907b56a4412d6722b0dbb4feca5c8a3db78",
+      "visible_bbox": [
+        26,
+        14,
+        158,
+        165
+      ]
+    },
+    {
+      "name": "attack-08",
+      "source_sha256": "ad8d80e1d22d6fc2d78a678cf2378b250c961c919623b998bc7246fdb4ec3381",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-08.png",
+      "frame_sha256": "f82a3febe7334deb4feea234974a58a6af37b732970bda4bc8d419a284aa0573",
+      "visible_bbox": [
+        36,
+        8,
+        164,
+        165
+      ]
+    },
+    {
+      "name": "attack-09",
+      "source_sha256": "c4d3d7ac3acf584dc3327796c46f837f53e520a6dcecd45608c819211af4c2fd",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-09.png",
+      "frame_sha256": "dc55be0438f6b092a3ddcc0ca53debb926df211a99c8d3f3745596aa9859eebe",
+      "visible_bbox": [
+        49,
+        46,
+        157,
+        169
+      ]
+    },
+    {
+      "name": "attack-10",
+      "source_sha256": "b6a052e52b3e77979849a1e223c7e47dee6c99924e17c95437ec4685d369d58d",
+      "source_path": "artifacts/sources/enemies/iron_knight/attack-10.png",
+      "frame_sha256": "acc35929574bcb0c5b65e6fd39e2c8db4370908ccdee24cb1d051f91a02ff0e8",
+      "visible_bbox": [
+        47,
+        45,
+        156,
+        169
+      ]
+    },
+    {
+      "name": "move-01",
+      "source_sha256": "9db8e6c7a1c9fc75b1c64b2391526310c90fb403f67179088926d158ab7f7892",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-01.png",
+      "frame_sha256": "4ed3766fe73255acbb42a6c25e41c0cd940d023bebf0ca6e1e31017e9cc942c8",
+      "visible_bbox": [
+        41,
+        22,
+        141,
+        166
+      ]
+    },
+    {
+      "name": "move-02",
+      "source_sha256": "106895720d68d52f4d4ceb6097bbcd5aa2f53bc0f91965bc04eaa4b2bf8c55bd",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-02.png",
+      "frame_sha256": "1ba9bc442637de0cd07debdb98a9a318f3f8768f3ad914429cee43129e3f602c",
+      "visible_bbox": [
+        41,
+        22,
+        143,
+        166
+      ]
+    },
+    {
+      "name": "move-03",
+      "source_sha256": "fd74ed399e01c8cde5a81b9dd3f68e62ae545ccb1600005ec4ebaf36a67f4d53",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-03.png",
+      "frame_sha256": "baf62df07596a7709ffa6ce3dea7354f803c4419e90d1125998dc9f486f876e4",
+      "visible_bbox": [
+        37,
+        21,
+        144,
+        166
+      ]
+    },
+    {
+      "name": "move-04",
+      "source_sha256": "3e77c755cb03e8f2debb6faee8eb73805ca838f7b9ff5c85e5f5b2f9875867e0",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-04.png",
+      "frame_sha256": "820b976b33fd70b6b4c8a411583b1ed23ff9a37ffa8a0c9dfe0df3dcb0a05f52",
+      "visible_bbox": [
+        35,
+        21,
+        145,
+        167
+      ]
+    },
+    {
+      "name": "move-05",
+      "source_sha256": "4845e95a2bcf72e2abeddc3181c87f6252b8e6968d18ed4010dac11e6f00203d",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-05.png",
+      "frame_sha256": "bf2062f6514d65b2e145ba680aaf2577185f7016e404e6440c4807ae42a09547",
+      "visible_bbox": [
+        34,
+        23,
+        144,
+        167
+      ]
+    },
+    {
+      "name": "move-06",
+      "source_sha256": "efd084bb14abf15e2a7a8b544032fe1ccde55c16f8e6310b047b283b358c2345",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-06.png",
+      "frame_sha256": "2e2357463b8503a6e8feb374c5a01850cef35a7d687a0059568fb3b1b13df1a2",
+      "visible_bbox": [
+        36,
+        21,
+        142,
+        166
+      ]
+    },
+    {
+      "name": "move-07",
+      "source_sha256": "108f284189caac9db4a6cade48d1dc2d48613820e0a89975d17b0092ab01137e",
+      "source_path": "artifacts/sources/enemies/iron_knight/move-07.png",
+      "frame_sha256": "11a78c5a505e2d4a3939d57ba387048947a66d17fd0b97c89a77dcf78bc350a7",
+      "visible_bbox": [
+        39,
+        21,
+        141,
+        166
+      ]
+    }
+  ]
 }

@@ -27,6 +27,7 @@ var _sweep_end: float = PI * 0.5
 var _orientation: float = 0.0
 var _visual_detail: int = 2
 var _visual_tier := 0
+var _query_geometry: QUERY_CACHE.Geometry
 
 
 static func spawn(parent: Node, origin: Vector2, direction: Vector2, damage_event: DamageEvent, radius: float = DEFAULT_RADIUS, damage_multiplier: float = DEFAULT_DAMAGE_MULTIPLIER) -> void:
@@ -77,7 +78,9 @@ func _damage_sweep() -> void:
 	var start_angle := _sweep_start
 	var registry := EnemyRegistry.get_registered_enemies()
 	_prepare_hit_mask(registry)
-	var candidates := QUERY_CACHE.candidates(origin, radius, orientation, start_angle, sweep_angle)
+	if _query_geometry == null or _query_geometry.origin != origin or _query_geometry.radius != radius or _query_geometry.orientation != orientation:
+		_query_geometry = QUERY_CACHE.bind_geometry(origin, radius, orientation)
+	var candidates := QUERY_CACHE.candidates_for(_query_geometry, start_angle, sweep_angle)
 	if _hit_mask_count > 0:
 		candidates = QUERY_CACHE.excluding_hits(candidates, _hit_mask)
 	var revision := EnemyRegistry.revision

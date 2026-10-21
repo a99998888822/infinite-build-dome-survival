@@ -1,6 +1,6 @@
 extends Node
 ## Real casting/HUD regression and GPU checks for the installed cooldown border.
-const BASE := "res://temp/artifacts/validation/weapon_cooldown_feedback_install_20261010/"
+const BASE := "res://artifacts/validation/weapons_36_installed_20261021/cooldown/"
 const PULSE = preload("res://scripts/ui/weapon_pulse_r02.gd")
 var game: GameRoot
 var battle: BattleRoot
@@ -99,6 +99,7 @@ func cast_at(index: int, automatic: bool = false) -> bool:
 
 func run() -> void:
 	graphical = DisplayServer.get_name() != "headless"
+	if graphical: DirAccess.make_dir_recursive_absolute(BASE + "frames")
 	CampProgression.begin_transient_session()
 	preload("res://scripts/tests/cast_policy_test_support.gd").apply(false)
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
@@ -145,6 +146,7 @@ func run() -> void:
 	await test_events()
 	if graphical: await capture_ready()
 	var path := "validation/gpu_capture.json" if graphical else "validation/headless.json"
+	DirAccess.make_dir_recursive_absolute(BASE + "validation")
 	FileAccess.open(BASE + path, FileAccess.WRITE).store_string(JSON.stringify({"captured":captured,"checks":checks,"failures":failures},"\t"))
 	Engine.time_scale = 1
 	game.queue_free()
@@ -234,9 +236,9 @@ func test_events() -> void:
 	check(not loadout.cast_weapon(loadout.weapon_instances[0], home) and events.is_empty(), "dead owner emits no readiness transition")
 	battle.player.alive = true
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
-	# Earlier R02 behavior still owns its own icon pulse; readiness only draws borders.
+	# Mark feedback retains brightness/border feedback without scaling native pixels.
 	loadout.weapon_instances[0].feedback_mark.emit(0)
-	check(bar.icons[0].scale.x < 1.0, "previously installed R02 mark response is preserved")
+	check(bar.icons[0].scale == Vector2.ONE and bar.icons[0].modulate.r > 1.0, "R02 mark retains brightness feedback at integer icon scale")
 	for i in 30: advance()
 	check(bar.icons[0].scale == Vector2.ONE, "R02 restores independently of cooldown feedback")
 

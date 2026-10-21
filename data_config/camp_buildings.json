@@ -4,7 +4,6 @@
     "name": "军械工坊",
     "initial_unlocked": true,
     "type": "human",
-    "role": "武器基础强化",
     "description": "锻造、修复各类求生兵器，工匠不断改良武器来适配敌人。",
     "building_upgrade_costs": {
       "2": 400,
@@ -125,7 +124,6 @@
     "name": "遗物档案馆",
     "initial_unlocked": true,
     "type": "mixed",
-    "role": "幸运与战利品强化",
     "description": "收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。",
     "building_upgrade_costs": {
       "2": 400,
@@ -214,7 +212,6 @@
     "name": "利刃演武场",
     "initial_unlocked": false,
     "type": "human",
-    "role": "近战专属营地建筑，解锁近战物理升级选项",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 120
@@ -306,7 +303,6 @@
     "name": "远星射靶台",
     "initial_unlocked": false,
     "type": "human",
-    "role": "远程专属营地建筑，解锁远程与投射物相关升级选项",
     "unlock_condition": {
       "currency": "camp_currency",
       "cost": 140
@@ -414,7 +410,6 @@
     "name": "穹顶庇护所",
     "initial_unlocked": false,
     "type": "human",
-    "role": "生存防御类加成，平衡建筑",
     "description": "穹顶内最基础的防御与修整设施，为幸存者提供稳定庇护。",
     "unlock_condition": {
       "currency": "camp_currency",
@@ -530,7 +525,6 @@
     "name": "议事大厅",
     "initial_unlocked": false,
     "type": "mixed",
-    "role": "强化套装与通用成长收益",
     "description": "幸存者在此交流遗物组合战术，议事厅墙上悬挂的古老图腾。",
     "unlock_condition": {
       "currency": "camp_currency",

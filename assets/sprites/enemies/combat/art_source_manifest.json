@@ -1,30 +1,30 @@
 {
-  "frame_size": 128,
+  "frame_size": 96,
   "frames_per_second": 14,
   "loop": true,
-  "idle_source": "grub_move_01",
+  "idle_source": "move-01",
   "atlas_sources": {
     "enemy_gloom_mite_idle.png": [
-      "grub_move_01"
+      "move-01"
     ],
     "enemy_gloom_mite_move.png": [
-      "grub_move_01",
-      "grub_move_02",
-      "grub_move_03",
-      "grub_move_04",
-      "grub_move_05",
-      "grub_move_06",
-      "grub_move_07"
+      "move-01",
+      "move-02",
+      "move-03",
+      "move-04",
+      "move-05",
+      "move-06",
+      "move-07"
     ]
   },
   "editable": {
-    "grub_move_01": "grub_move_01-128-final.pxg",
-    "grub_move_02": "grub_move_02-128-final.pxg",
-    "grub_move_03": "grub_move_03-128-final.pxg",
-    "grub_move_04": "grub_move_04-128-final.pxg",
-    "grub_move_05": "grub_move_05-128-final.pxg",
-    "grub_move_06": "grub_move_06-128-final.pxg",
-    "grub_move_07": "grub_move_07-128-final.pxg"
+    "move-01": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-01-96.pxg",
+    "move-02": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-02-96.pxg",
+    "move-03": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-03-96.pxg",
+    "move-04": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-04-96.pxg",
+    "move-05": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-05-96.pxg",
+    "move-06": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-06-96.pxg",
+    "move-07": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-07-96.pxg"
   },
   "palette": [
     "#000000",
@@ -51,80 +51,167 @@
     [
       0,
       0,
-      128,
-      128
+      96,
+      96
     ],
     [
-      128,
+      96,
       0,
-      128,
-      128
+      96,
+      96
     ],
     [
-      256,
+      192,
       0,
-      128,
-      128
+      96,
+      96
+    ],
+    [
+      288,
+      0,
+      96,
+      96
     ],
     [
       384,
       0,
-      128,
-      128
+      96,
+      96
     ],
     [
-      512,
+      480,
       0,
-      128,
-      128
+      96,
+      96
     ],
     [
-      640,
+      576,
       0,
-      128,
-      128
-    ],
-    [
-      768,
-      0,
-      128,
-      128
+      96,
+      96
     ]
   ],
-  "baseline_exclusive": 92,
+  "baseline_exclusive": 65,
   "game_display": {
-    "size_multiplier": 1.1,
-    "reference_canvas_world_size": [
-      51.2,
-      51.2
-    ],
     "canvas_world_size": [
-      56.32,
-      56.32
+      96,
+      96
     ],
     "sprite_scale": [
-      0.44,
-      0.44
+      1,
+      1
     ],
     "sprite_offset": [
       0,
-      1.76
+      2
     ],
-    "baseline_world_y": 14.08,
-    "collision_radius_before": 17.6,
-    "collision_radius_after": 19.36,
-    "collision_offset": [
-      0,
-      -7.04
-    ],
+    "baseline_world_y": 19,
     "frame_duration": 0.07142857142857142
   },
   "source_limitations": [],
   "processing": {
-    "revision": "xiaoguai_128_14fps_2026-10-04",
-    "source": "artifacts/previews/xiaoguai_move/20261004-128-14fps-r4",
-    "record": "docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md",
-    "method": "Approved 16-color transparent Picxel seven-frame animation. 14 FPS. Display and collision enlarged 1.1x; movement speed retained."
+    "revision": "native96_192_20261021",
+    "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
+    "originals_revision": "02b3ef4",
+    "source": "720px originals restored from Git; hashes verified",
+    "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
+    "size": 96,
+    "scale": 0.1,
+    "origin": [
+      12,
+      12
+    ],
+    "offset": [
+      0,
+      2
+    ],
+    "folder": "combat"
   },
-  "source": "artifacts/sources/enemies/xiaoguai_move/"
+  "source": "artifacts/previews/enemies_native_96_192/20261021-r01/sources/mite",
+  "frames": [
+    {
+      "name": "move-01",
+      "source_sha256": "d3298c136ade94d35fac85bd0dc76c12cb8922fee7272af4539b93404db07e98",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-01.png",
+      "frame_sha256": "b6206c33de31aa27031f133c0bd513aa58bb1ae8c3119a9c789c8560e805af4f",
+      "visible_bbox": [
+        13,
+        29,
+        83,
+        64
+      ]
+    },
+    {
+      "name": "move-02",
+      "source_sha256": "871bc2b423c92b166e9d8d9865c83f55f2995cb13818b9dc91589bd939ac0994",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-02.png",
+      "frame_sha256": "2ba64bc7d8cb1b7a3bd8c770efdb33f7cc88aecc8664cf41a889fb384557529b",
+      "visible_bbox": [
+        13,
+        30,
+        84,
+        64
+      ]
+    },
+    {
+      "name": "move-03",
+      "source_sha256": "836423cc5d7a88f7ab7b7bfedd771939c974e13141419a27e4f58f2d7cc0ae72",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-03.png",
+      "frame_sha256": "de0198b92e1653ff46ba56f97e7bbbca4fc82856ff66158a1735a6b0f33269b2",
+      "visible_bbox": [
+        14,
+        31,
+        83,
+        64
+      ]
+    },
+    {
+      "name": "move-04",
+      "source_sha256": "59caa68104e26ad360f0b58bad45a79502a384659508ec273f9152d962e6ee55",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-04.png",
+      "frame_sha256": "46ad3ce39b67cccdccb8a765b1a0ca4e7ff5b142d06a0575774c55fcb965982f",
+      "visible_bbox": [
+        15,
+        28,
+        83,
+        65
+      ]
+    },
+    {
+      "name": "move-05",
+      "source_sha256": "733171124c97340409b466d757ce0033db144fc1c78d5f7d1c5967b8070ddc43",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-05.png",
+      "frame_sha256": "4487760b8faee94aadcd2103060b4e2b89c50c08066d1fe59fe3191915fd9fae",
+      "visible_bbox": [
+        16,
+        28,
+        81,
+        65
+      ]
+    },
+    {
+      "name": "move-06",
+      "source_sha256": "cbe3c73009e8d1e7a762f8917cf3e6be380413b9189501e98bd347f17b010cc6",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-06.png",
+      "frame_sha256": "54cf43bdc07dc26d10402b56ebbffc487c8b79fece1f52bde7364ec88ee9e45f",
+      "visible_bbox": [
+        16,
+        29,
+        82,
+        65
+      ]
+    },
+    {
+      "name": "move-07",
+      "source_sha256": "19c26b61584533fbd50ffab900b54eec01ed1a4d03ab14046a5e20e2d21d78ee",
+      "source_path": "artifacts/sources/enemies/xiaoguai_move/move-07.png",
+      "frame_sha256": "22c36cd4be1be70c59f1476c0999969eda28567f62c0ec6e2522cfdd04a661e3",
+      "visible_bbox": [
+        14,
+        30,
+        84,
+        64
+      ]
+    }
+  ]
 }

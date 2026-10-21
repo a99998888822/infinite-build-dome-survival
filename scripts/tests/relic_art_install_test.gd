@@ -175,9 +175,9 @@ func _run() -> void:
 		reward.configure(offer)
 		reward.size = Vector2(160, 200)
 		await frames()
-		check(reward.icon_texture.size == Vector2(48, 48), "floating reward relic stays at forty-eight pixels")
+		check(reward.icon_texture.size == Vector2(64, 64), "compact reward relic is enlarged to sixty-four pixels")
 		reward._stop_icon_float()
-		check(reward.icon_texture.size == Vector2(48, 48), "stopping float preserves enlarged reward icon")
+		check(reward.icon_texture.size == Vector2(64, 64), "stopping float preserves enlarged reward icon")
 		check(reward.icon_frame.get_global_rect().encloses(reward.icon_texture.get_global_rect()), "small reward frame contains centered enlarged icon")
 		check(reward.select_button.get_global_rect().end.y <= reward.get_global_rect().end.y, "reward action inside card")
 		await capture("reward_" + str(offer.target_id), reward)
@@ -214,7 +214,7 @@ func capture(label: String, scope: Node) -> void:
 	for rect in found:
 		var list_icon := label.begins_with("relic_list") or label.begins_with("shop_") or label.begins_with("reward_")
 		var receipt_icon := label.begins_with("receipt_")
-		var side := 20.0 if receipt_icon else (48.0 if label.begins_with("reward_") else (40.0 if list_icon else 64.0))
+		var side := 20.0 if receipt_icon else (64.0 if label.begins_with("reward_") else (40.0 if list_icon else 64.0))
 		var extent := Vector2(side, side)
 		var mode := TextureRect.STRETCH_KEEP_ASPECT_CENTERED if list_icon or receipt_icon or rect.texture.get_width() == 128 else TextureRect.STRETCH_KEEP_CENTERED
 		check(rect.stretch_mode == mode and effective_filter(rect) == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel filter and display mode: " + rect.texture.resource_path.get_file())

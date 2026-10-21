@@ -13,6 +13,7 @@ var target: EnemyController
 var tick_left := 0.0
 var proc_left := 0.0
 var beams: Array[Dictionary] = []
+var _beam_queries: Array[WeaponContactQuery] = []
 var externally_driven := false
 var burst_active := false
 var burst_duration := 1.8
@@ -105,14 +106,38 @@ func _build_beams() -> void:
 			beams.append({"direction": AttackFootprint.spread_direction(heading, deg_to_rad(angle)), "reach": weapon.get_attack_range() * 0.65, "power": profile.damage_multiplier, "child": true, "enchantment_start": profile.enchantment_start})
 
 
+func _ordered_damage_targets() -> Array[Node]:
+	var registered := EnemyRegistry.get_registered_enemies()
+	var count := registered.size()
+	var indices: Array[int] = []
+	indices.resize(count)
+	var distances := PackedFloat64Array()
+	distances.resize(count)
+	var origin := global_position
+	for i in count:
+		indices[i] = i
+		distances[i] = origin.distance_squared_to((registered[i] as Node2D).global_position)
+	# Same input length and comparison as the original sort, including ties.
+	# Snapshot only this settlement's distances; hits may move/kill targets later.
+	indices.sort_custom(func(a: int, b: int): return distances[a] < distances[b])
+	var ordered: Array[Node] = []
+	ordered.resize(count)
+	for i in count:
+		ordered[i] = registered[indices[i]]
+	return ordered
+
+
 func _tick_damage() -> void:
 	var can_proc := proc_left <= 0
-	# Sorting the registry's backing array changes target order for other weapons.
-	var enemies := EnemyRegistry.get_registered_enemies().duplicate()
-	enemies.sort_custom(func(a: Node, b: Node): return global_position.distance_squared_to((a as Node2D).global_position) < global_position.distance_squared_to((b as Node2D).global_position))
+	var enemies := _ordered_damage_targets()
 	AudioManager.begin_combat_audio()
 	weapon.reset_hit_sfx_state()
-	for beam in beams:
+	while _beam_queries.size() < beams.size():
+		_beam_queries.append(WeaponContactQuery.new())
+	if _beam_queries.size() > beams.size():
+		_beam_queries.resize(beams.size())
+	for beam_index in beams.size():
+		var beam := beams[beam_index]
 		var proc_used := false
 		var event := weapon.calculate_damage_events()[0]
 		event.split_child = bool(beam.child)
@@ -120,12 +145,14 @@ func _tick_damage() -> void:
 		event.damage = maxi(1, roundi(event.damage * float(beam.power)))
 		event.elemental_damage_scale *= float(beam.power)
 		var direction: Vector2 = beam.direction
-		var footprint := AttackFootprint.lamp_shape(direction, float(beam.reach), weapon.get_lamp_cone_degrees())
+		var query := _beam_queries[beam_index]
+		query.configure_lamp(direction, float(beam.reach), weapon.get_lamp_cone_degrees())
+		query.place(Transform2D(0, global_position))
 		for node in enemies:
 			var enemy := node as EnemyController
 			if not is_instance_valid(enemy) or not enemy.is_alive():
 				continue
-			if not AttackFootprint.body_overlaps(footprint, Transform2D(0, global_position), enemy):
+			if not query.overlaps(enemy):
 				continue
 			if not clear_path(self, global_position, enemy.global_position):
 				continue

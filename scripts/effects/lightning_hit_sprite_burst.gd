@@ -3,6 +3,7 @@ extends Node2D
 ## selection run on the GPU; live hits never compete with ParticleWorld slots.
 
 const WORLD = preload("res://scripts/effects/particle_world.gd")
+const VISUAL_BUDGET = preload("res://scripts/effects/effect_visual_budget.gd")
 const DATA = preload("res://scripts/effects/lightning_hit_frame_data.gd")
 const SHADER = preload("res://assets/shaders/lightning_hit_png.gdshader")
 const FLASH_CORE = preload("res://assets/effects/lightning_hit_png/flash_core.png")
@@ -28,11 +29,18 @@ var _birth_frame := -1
 var _active := false
 var _upload_pending := false
 
-static func spawn(parent: Node, point: Vector2, direction: Vector2, intensity: float, parameters: Dictionary) -> Node2D:
+static func claim_tier(parent: Node, point: Vector2) -> int:
 	if parent == null or not is_instance_valid(parent):
-		return null
-	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(parent, "lightning_hit", point)
-	if tier == 3: return null
+		return VISUAL_BUDGET.Tier.SUPPRESSED
+	return VISUAL_BUDGET.claim_visual(parent, "lightning_hit", point)
+
+static func spawn(parent: Node, point: Vector2, direction: Vector2, intensity: float, parameters: Dictionary) -> Node2D:
+	return spawn_admitted(parent, point, direction, intensity, parameters, claim_tier(parent, point))
+
+## Consumes an already claimed tier. Never claims again: callers can avoid
+## building visual parameters for suppressed hits without changing density.
+static func spawn_admitted(parent: Node, point: Vector2, direction: Vector2, intensity: float, parameters: Dictionary, tier: int) -> Node2D:
+	if tier == VISUAL_BUDGET.Tier.SUPPRESSED or not is_instance_valid(parent): return null
 	if tier > 0:
 		parameters = parameters.duplicate()
 		parameters.count_multiplier = float(parameters.get("count_multiplier", 1.0)) * 0.5

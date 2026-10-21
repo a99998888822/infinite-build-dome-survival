@@ -65,7 +65,7 @@ func _run() -> void:
 	var hud := battle.hud as BattleHud
 	for control in [hud.top_left, hud._vitals_frame, hud._performance_line, hud._weapon_damage_meter, hud.wave_panel, hud.economy_panel, hud.combat_bar]:
 		check(control.scale == Vector2.ONE, "combat HUD retains legacy scale on " + control.name)
-	check(hud.combat_bar.cards.size() > 0 and is_equal_approx(hud.combat_bar.slot_size, 106.666667), "native weapon slot footprint changed")
+	check(hud.combat_bar.cards.size() > 0 and hud.combat_bar.icons[0].size == Vector2(72, 72) and hud.combat_bar.icons[0].texture.get_size() == Vector2(36, 36), "native weapon bar preserves the 36px grid at 2x")
 	game.queue_free()
 	await frames()
 	CampProgression.end_transient_session()

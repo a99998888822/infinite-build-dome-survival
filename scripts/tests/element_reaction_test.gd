@@ -156,6 +156,11 @@ func _run() -> void:
 	element(enemies[0], "fire")
 	LightningParticleEffect.spawn(host, Vector2.ZERO, enemies[0], weapon, event, Vector2.RIGHT)
 	await frames()
+	# The chain schedules the detonation for a subsequent scheduler turn.
+	# Two physics ticks do not guarantee that both idle callbacks have run.
+	for attempt in 6:
+		if enemies[0].current_hp <= 9765: break
+		await get_tree().process_frame
 	check(enemies[0].current_hp == 9765 and not enemies[0].has_status("burning"), "electric fire detonates for 55 plus 180")
 	await setup([Vector2.ZERO, Vector2(50, 0), Vector2(80, 0)])
 	element(enemies[0], "fire")

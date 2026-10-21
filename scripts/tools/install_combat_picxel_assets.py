@@ -19,7 +19,7 @@ BOSS_ACTIONS = {
     "idle": (1, 1.0, True), "move": (7, 10.0, True),
     "windup": (7, 17.5, False), "dash": (2, 12.5, False), "recover": (1, 2.0, False),
 }
-BOSS_FRAME_SIZE = 256
+BOSS_FRAME_SIZE = 192
 BOSS_TARGET = "assets/sprites/enemies/iron_knight"
 
 
@@ -37,7 +37,7 @@ def asset_pairs(subjects=SUBJECTS):
                 destination = clip["texture"].removeprefix("res://assets/")
                 yield destination, (96 * int(clip["frames"]), 96)
     if "enemy" in subjects:
-        for name, size in (("enemy_gloom_mite_idle.png", (128, 128)), ("enemy_gloom_mite_move.png", (896, 128))):
+        for name, size in (("enemy_gloom_mite_idle.png", (96, 96)), ("enemy_gloom_mite_move.png", (672, 96))):
             yield f"sprites/enemies/combat/{name}", size
     if "boss" in subjects:
         for action, (count, _, _) in BOSS_ACTIONS.items():
@@ -106,7 +106,7 @@ def install_assets(subjects=SUBJECTS, source=None, asset_root=ASSETS):
     if "boss" in subjects:
         target = Path(asset_root) / "sprites/enemies/iron_knight"
         (target / "iron_knight_sprite_frames.tres").write_text(boss_resource(), encoding="utf-8")
-        report = {"frame_size": [BOSS_FRAME_SIZE, BOSS_FRAME_SIZE], "movement_foot_anchor": [128, 221], "death": "freeze_current_pose_and_fade",
+        report = {"frame_size": [BOSS_FRAME_SIZE, BOSS_FRAME_SIZE], "movement_foot_anchor": [96, 166], "death": "freeze_current_pose_and_fade",
                   "actions": {name: {"frames": n, "fps": fps, "loop": loop} for name, (n, fps, loop) in BOSS_ACTIONS.items()}}
         (target / "manifest.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     check_installed(subjects, asset_root)

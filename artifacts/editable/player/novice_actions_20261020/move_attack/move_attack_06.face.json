@@ -1,0 +1,65 @@
+{
+  "source": "move_attack_06-96-detail",
+  "size": 96,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        54,
+        36,
+        57,
+        39
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ],
+      "eyes": [
+        {
+          "box": [
+            54,
+            36,
+            57,
+            39
+          ],
+          "light": "K",
+          "dark": "L"
+        }
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        60,
+        37,
+        61,
+        39
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "mouth",
+      "box": [
+        58,
+        42,
+        58,
+        42
+      ],
+      "rows": [
+        "J"
+      ]
+    }
+  ],
+  "colors": {
+    "H": "#fff0d7"
+  }
+}

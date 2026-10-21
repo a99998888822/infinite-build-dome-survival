@@ -1,13 +1,7 @@
-# 性能测试记录
+# 工作产物
 
-2026-10-19 按用户要求清理：本目录仅保留性能测试、性能分析及配套验证材料。
+性能优化当前进度见根目录的[战斗性能优化进度](../battle_performance_optimization_checklist.md)。2026-10-21 已清理性能对照的采样、截图、日志、实验代码和临时工程；这些历史输出不作为运行依赖。
 
-- `reports/`：战斗加载、首次攻击、密集战斗开销、伤害结算／缓存、受击表现批处理、反射优化的指标、日志、对照基线与回归材料。
-- `previews/battle_loading_20261019/`：加载性能验证的配套截图。
-- `.gdignore`：阻止 Godot 导入报告中的基线脚本等材料。
+其它素材或功能任务的当前产物按原路径保留，包含 `sources/`、`editable/`、`previews/`、`reviews/`、`validation/` 和剩余 `reports/`。不要因目录名或 Git 未跟踪状态将素材源文件当作临时文件删除。
 
-本次已删除非性能审阅图、普通功能验证日志，以及 `sources/`、`editable/` 下的美术原图与编辑稿。游戏正式资源仍位于 `assets/`；本次清理未修改正式资源或运行脚本。
-
-历史美术文档和制作工具中的 `artifacts/sources/`、`artifacts/editable/`、`artifacts/reviews/` 路径仅作为来源记录，清理后不再保证可访问。需要原图的重建工具需先恢复输入文件。
-
-清理明细和保留文件哈希见[清理记录](../docs/asset/artifacts_cleanup_20261019_performance_only.json)。
+`.gdignore` 阻止 Godot 将产物目录中的报告、脚本副本与截图导入正式资源。

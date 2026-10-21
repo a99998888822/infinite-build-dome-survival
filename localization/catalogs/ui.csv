@@ -75,6 +75,8 @@ ui.bank.high_yield.requirement,达标后利率 +%s 个百分点；未达标仍�
 ui.bank.interest_purchase_hint,本波利息 +%d，足够购买「%s」,"Interest +%d this wave, enough to buy %s"
 ui.bank.interest_received,本波利息 +%d 金币 · 已入随身金币,Interest this wave: +%d gold · Added to carried gold
 ui.bank.next_wave,开始下一波,Next Wave
+ui.bank.unused_enchantment_notice,注意，有未装备的附魔法术,You have unequipped enchantment spells.
+ui.bank.unused_enchantment_dismiss,点击/空格关闭提示,Click / Space to dismiss
 ui.bank.power_reroll_done,强力刷新已使用，保底史诗遗物。,Power Reroll used. Epic relic guaranteed.
 ui.bank.purchase_done_prefix,已购买：,Purchased: 
 ui.bank.ready_hint,准备完成后，点击开始下一波。,"When ready, start the next wave."
@@ -446,6 +448,7 @@ ui.settlement.conversion,基础 %s ×%d%% = %s,Base %s ×%d%% = %s
 ui.settlement.conversion_hint,右列为各项折算的天赋点,Right column: converted Talent Points
 ui.settlement.counting,正在清点…,Counting…
 ui.settlement.death_wave,第%d波 阵亡,Fell on Wave %d
+ui.settlement.death_no_advice,这么快就回来了？下次记得先保住小命！,Back already? Try staying alive a little longer next time!
 ui.settlement.defeat,冒险结束,Expedition Over
 ui.settlement.retreat,主动撤离,Expedition Withdrawn
 ui.settlement.retreat_wave,第%d波 撤离,Withdrew on Wave %d

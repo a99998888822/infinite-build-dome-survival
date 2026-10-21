@@ -11,6 +11,7 @@ const PALETTE = HUD_STYLE.PALETTE
 const TEXT := PALETTE.TEXT
 const GOLD := PALETTE.WARM_ACTIVE
 const MUTED := PALETTE.MUTED
+const GOBLIN_ANIMATION_FPS := 2.5
 var report: Dictionary = {}
 var sound_enabled := true
 var _config := RunSettlement.configuration()
@@ -218,6 +219,7 @@ func _refresh_language() -> void:
 	_refresh_result_heading()
 	var reaction: Dictionary = _config.reactions.get(str(report.reaction), {})
 	_speech_text = L10n.source(reaction.get("speech", ""))
+	_speech_label.text = _speech_text
 	for monster in _monster_nodes:
 		monster.label.text = L10n.source(DataRegistry.get_record("enemies", str(monster.id)).get("display_name", monster.id))
 	var rates: Dictionary = _config.formula
@@ -264,7 +266,7 @@ func seek(seconds: float) -> void:
 	var voice_time := float(_config.presentation.voice_time)
 	_speech.visible = seconds >= voice_time and not _speech_text.is_empty()
 	_speech_label.visible_characters = -1 if _skipped else maxi(0, int((seconds - voice_time) * 18))
-	var frame := int(seconds * 5) % 4 if not _skipped else 0
+	var frame := int(seconds * GOBLIN_ANIMATION_FPS) % 4 if not _skipped else 0
 	var frame_size := GOBLIN.get_width() / 4.0
 	_portrait.texture = _atlas(GOBLIN, Rect2(frame * frame_size, _reaction_row * frame_size, frame_size, frame_size))
 	_effects.queue_redraw()

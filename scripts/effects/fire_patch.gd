@@ -4,6 +4,8 @@ class_name FirePatch
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const FIRE_VISUAL = preload("res://scripts/effects/pixel_fire_visual.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
+const GROUND_AREA = preload("res://scripts/effects/spell_ground_area.gd")
 
 const MERGE_DISTANCE: float = 64.0
 const MAX_ACTIVE_FIELDS: int = 6
@@ -22,6 +24,7 @@ var _stack_strength: float = 1.0
 var _source_weapon_id: String = ""
 var _collision_shape: CollisionShape2D = null
 var _flame_visual: Node2D
+var _ground_area: Node2D
 var _light_field: Node = null
 var _visual_palette := 0
 var _palette_remaining := 0.0
@@ -65,9 +68,7 @@ static func spawn(parent: Node, patch_position: Vector2, context: RefCounted, fi
 	patch._stack_strength = maxf(field_strength, 0.05)
 	patch._source_weapon_id = _get_source_weapon_id(context)
 	patch._collision_shape = CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = patch._radius
-	patch._collision_shape.shape = circle
+	patch._collision_shape.shape = FOOTPRINT.shape(patch.get_terminal_footprint_axes())
 	patch.add_child(patch._collision_shape)
 	patch.collision_layer = 0
 	patch.collision_mask = 2
@@ -166,9 +167,7 @@ static func expand_nearby_fields(center: Vector2, search_radius: float, radius_m
 func _update_collision_radius() -> void:
 	if _collision_shape == null:
 		return
-	var circle := _collision_shape.shape as CircleShape2D
-	if circle != null:
-		circle.radius = _radius
+	_collision_shape.shape = FOOTPRINT.shape(get_terminal_footprint_axes())
 
 
 func _create_flame_visual() -> void:
@@ -176,11 +175,22 @@ func _create_flame_visual() -> void:
 	_flame_visual = FIRE_VISUAL.new()
 	add_child(_flame_visual)
 	_flame_visual.setup_field(_radius, _get_flame_color_tint())
+	_ground_area = GROUND_AREA.new()
+	add_child(_ground_area)
+	_sync_ground_area()
 
 
 func _update_flame_extent() -> void:
 	if is_instance_valid(_flame_visual):
 		_flame_visual.setup_field(_radius, _get_flame_color_tint())
+	_sync_ground_area()
+
+func get_terminal_footprint_axes() -> Vector2:
+	return FOOTPRINT.axes(_radius)
+
+func _sync_ground_area() -> void:
+	if _ground_area != null:
+		_ground_area.setup(get_terminal_footprint_axes(), Color(0.65,0.19,0.04,0.22), Color(1.0,0.42,0.07,0.6))
 
 
 func _refresh_field_light() -> void:

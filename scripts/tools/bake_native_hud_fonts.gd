@@ -64,3 +64,8 @@ func _bake(filename: String, sizes: Array, ratio: float, characters: Dictionary)
 				output.set_texture_image(0, native_key, index, SOURCE.get_texture_image(0, source_key, index))
 		print(filename, " size=", native_size, " height=", output.get_height(native_size))
 	assert(ResourceSaver.save(output, OUTPUT.path_join(filename), ResourceSaver.FLAG_COMPRESS) == OK)
+	# Verify the saved artifact, not only the authoring object's configuration.
+	var saved := ResourceLoader.load(OUTPUT.path_join(filename), "FontFile", ResourceLoader.CACHE_MODE_IGNORE) as FontFile
+	assert(saved != null and is_equal_approx(saved.oversampling, 1.0), "Bitmap fonts must not request unbaked viewport-scale caches")
+	for pair in sizes:
+		assert(saved.get_texture_count(0, Vector2i(pair[1], 0)) > 0, "Saved bitmap font is missing an atlas")

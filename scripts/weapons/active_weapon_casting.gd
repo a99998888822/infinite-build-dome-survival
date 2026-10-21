@@ -35,7 +35,9 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		# Acquisition and continuous tracking use the same range and line of sight.
 		return DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
 	var origin := weapon.get_attack_origin()
-	var footprint := AttackFootprint.targeting_shape(weapon)
+	var query := weapon.targeting_query
+	query.configure_targeting(weapon)
+	query.place(Transform2D(0, origin))
 	var nearest: EnemyController
 	var nearest_distance := INF
 	for node in EnemyRegistry.get_registered_enemies():
@@ -48,7 +50,7 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 		var distance := offset.length_squared()
 		if distance >= nearest_distance:
 			continue
-		if not AttackFootprint.body_overlaps(footprint, Transform2D(0, origin), enemy):
+		if not query.overlaps(enemy):
 			continue
 		nearest = enemy
 		nearest_distance = distance

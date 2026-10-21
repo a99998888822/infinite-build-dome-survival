@@ -86,9 +86,9 @@ func _run() -> void:
 	var data := DataRegistry.get_record("augmentations", "scroll_explosion")
 	check(data.rarity == "common" and data.display_name == "震荡", "legacy scroll ID now displays shockwave at white rarity")
 	check(data.modifiers.is_empty() and not data.effect_parameters.has("damage"), "scroll has no obsolete damage bonuses")
-	for id in ["drop_basic_enemy", "drop_elite_enemy", "drop_boss_enemy"]:
+	for id in ["drop_basic_enemy", "drop_elite_enemy"]:
 		var table := DataRegistry.get_record("drop_tables", id)
-		check((table.augmentation_rarity_weights.get("common", 0) > 0) == (id != "drop_boss_enemy") and table.entries.any(func(entry): return entry.get("item_id", "") == "scroll_explosion"), "white shockwave uses ordinary/elite pools; boss pool starts at green: " + id)
+		check(table.augmentation_rarity_weights.get("common", 0) > 0 and table.entries.any(func(entry): return entry.get("item_id", "") == "scroll_explosion"), "white shockwave remains obtainable from the production pool: " + id)
 	var validator := DataValidator.new()
 	check(validator.validate_all(DataRegistry.tables, DataRegistry.records_by_id), "full data validation")
 	host.queue_free()

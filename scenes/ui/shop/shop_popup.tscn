@@ -104,8 +104,8 @@ anchor_right = 0.68
 offset_top = 14.0
 offset_bottom = 76.0
 mouse_filter = 2
-slot_size = 64
-icon_size = 48
+slot_size = 88
+icon_size = 72
 load_font_size = 20
 
 [node name="CenterContainer" type="CenterContainer" parent="."]

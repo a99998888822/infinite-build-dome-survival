@@ -4,6 +4,7 @@
   "outcome_multipliers": {"defeat": 1.2, "victory": 2.5, "retreat_vs_defeat": 0.5},
   "presentation": {"stage_times": [0.55, 1.35, 2.15, 2.95, 3.85], "count_seconds": 0.6, "voice_time": 4.6, "voice_volume_db": -4, "cue_volume_db": -6},
   "reactions": {
+    "death_no_advice": {"speech": "ui.settlement.death_no_advice", "voice_path": "", "row": 0},
     "death_followed": {"speech": "哥布林包赚，但不包活哈哈哈！", "voice_path": "", "row": 0},
     "death_refused": {"speech": "嘬嘬嘬，不听哥布林，吃亏在眼前！", "voice_path": "", "row": 1},
     "victory_followed": {"speech": "再来，再来！", "voice_path": "", "row": 2},

@@ -10,11 +10,15 @@ const DEFAULT_RADIUS: float = 90.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_PULL_SPEED: float = 150.0
 const DEFAULT_DARK_DURATION: float = 2.0
+const SPHERE_FRACTION := 0.35
+const DAMAGE_TO_SPHERE_RATIO := 3.0
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _context: RefCounted = null
 var _radius: float = DEFAULT_RADIUS
+var _visual_reach := DEFAULT_RADIUS
+var _sphere_radius := DEFAULT_RADIUS * SPHERE_FRACTION
 var _duration: float = DEFAULT_DURATION
 var _pull_speed: float = DEFAULT_PULL_SPEED
 var _dark_duration: float = DEFAULT_DARK_DURATION
@@ -43,7 +47,9 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"pull_speed": DEFAULT_PULL_SPEED,
 		"dark_duration": DEFAULT_DARK_DURATION,
 	}, attachment_item_id)
-	effect._radius = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 24.0)
+	effect._visual_reach = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 24.0)
+	effect._sphere_radius = effect._visual_reach * SPHERE_FRACTION
+	effect._radius = effect._sphere_radius * DAMAGE_TO_SPHERE_RATIO
 	effect._duration = StatDefinitions.calculate_control_duration(maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.1), effect._context.get_resolved_parameter("control_power", 0.0))
 	effect._pull_speed = maxf(effect._context.get_resolved_parameter("pull_speed", DEFAULT_PULL_SPEED), 1.0)
 	effect._dark_duration = maxf(effect._context.get_resolved_parameter("dark_duration", DEFAULT_DARK_DURATION), 0.1)
@@ -122,7 +128,8 @@ func _collect_targets() -> void:
 
 
 func _draw() -> void:
-	BLOCK_VFX.paint(self,2,Rect2(-_radius,-_radius,_radius*2,_radius*2),_radius,_elapsed,_elapsed/_duration,_visual_detail)
+	BLOCK_VFX.paint(self,2,Rect2(-_visual_reach,-_visual_reach,_visual_reach*2,_visual_reach*2),_visual_reach,_elapsed,_elapsed/_duration,_visual_detail)
+	material.set_shader_parameter("sphere_radius", _sphere_radius)
 
 
 func _draw_vortex(front: bool) -> void:
@@ -136,7 +143,7 @@ func _draw_vortex(front: bool) -> void:
 	# line moves inward along its own fixed path, then disappears at the sphere.
 	var count := 12 if _visual_detail > 0 else 6
 	var clock := floorf(_elapsed * 18.0) / 18.0
-	var center := Vector2(0.0, -_radius * 0.22)
+	var center := Vector2(0.0, -_visual_reach * 0.22)
 	for index in count:
 		var base_angle := float(index) / count * TAU + 0.17
 		if (sin(base_angle) >= 0.0) != front:
@@ -148,11 +155,11 @@ func _draw_vortex(front: bool) -> void:
 		if end - start < 0.10:
 			continue
 		var points := PackedVector2Array()
-		var outer_radius := _radius * (1.02 + sin(float(index) * 2.4) * 0.08)
+		var outer_radius := _visual_reach * (1.02 + sin(float(index) * 2.4) * 0.08)
 		for step in 25:
 			var ratio := lerpf(start, end, float(step) / 24.0)
 			var angle := base_angle + ratio * 1.15
-			var distance := lerpf(outer_radius, _radius * 0.35, ratio) * opening
+			var distance := lerpf(outer_radius, _sphere_radius, ratio) * opening
 			var point := (center + Vector2(cos(angle), sin(angle) * 0.85) * distance).round()
 			if points.is_empty() or points[-1] != point:
 				points.append(point)

@@ -2,6 +2,8 @@ extends RefCounted
 class_name FinanceSceneLayout
 ## Short-scroll bank artwork, with live content and drawer-safe bounds.
 
+const BANK_FORM_HEIGHT := 200.0
+
 
 static func supports(size: Vector2) -> bool:
 	return size.x >= 1000 and size.y >= 540
@@ -57,8 +59,9 @@ static func arrange(ui) -> void:
 	place(ui._refresh, Rect2(work_w - 227, stock_y - content_y - 1, 227, 50))
 	# All left-column frames share one pixel-aligned edge at every resolution.
 	var bank_y := 650 * sy
-	var body: Control = ui._bank.get_child(0)
-	var bank_h := minf(maxf(154, body.get_combined_minimum_size().y + 20), footer_y - bank_y - 10)
+	# Amount previews can contain many principal-dependent stat changes. Keep
+	# the frame stable while the existing scroll container reveals that content.
+	var bank_h := minf(BANK_FORM_HEIGHT, maxf(44, footer_y - bank_y - 10))
 	place(ui._scene_bank_back, Rect2(bank_x, bank_y, bank_w, bank_h))
 	place(ui._bank, Rect2(bank_x + 12, bank_y + 10, bank_w - 24, maxf(24, bank_h - 20)))
 	place(ui._scene_footer_back, Rect2(bank_x, footer_y, right - bank_x, 67))

@@ -2,6 +2,8 @@ extends Node2D
 class_name LightSwordEffect
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
+const GROUND_AREA = preload("res://scripts/effects/spell_ground_area.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -26,6 +28,7 @@ var _strike_started: bool = false
 var _landed: bool = false
 var _visual_detail: int = 2
 var _ground_layer: Node2D
+var _ground_area: Node2D
 var _ground_cracks: Array[PackedVector2Array] = []
 
 
@@ -51,12 +54,16 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._fall_seconds = maxf(effect._context.get_resolved_parameter("fall_seconds", DEFAULT_FALL_SECONDS), 0.05)
 	effect._dissolve_seconds = maxf(effect._context.get_resolved_parameter("dissolve_seconds", DEFAULT_DISSOLVE_SECONDS), 0.2)
 	effect._light_duration = maxf(effect._context.get_resolved_parameter("light_duration", DEFAULT_LIGHT_DURATION), 0.1)
+	effect._sync_ground_area()
 	effect.call_deferred("_arm")
 
 
 func _ready() -> void:
 	z_index = 82
 	_ground_layer = PIXEL.layer(self, -7, _draw_ground)
+	_ground_area = GROUND_AREA.new()
+	add_child(_ground_area)
+	_ground_area.z_index = -8
 	queue_redraw()
 
 
@@ -77,6 +84,7 @@ func _process(delta: float) -> void:
 		return
 	queue_redraw()
 	_ground_layer.queue_redraw()
+	_sync_ground_area()
 
 
 func _land() -> void:
@@ -88,8 +96,7 @@ func _land() -> void:
 	_build_ground_cracks()
 	FirePatch.tint_nearby_fields(get_tree(), global_position, _radius, 1, _light_duration)
 	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", 0.65))
-	var shape := CircleShape2D.new()
-	shape.radius = _radius
+	var shape := FOOTPRINT.shape(get_terminal_footprint_axes())
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0.0, global_position)
@@ -185,6 +192,16 @@ func _draw_impact(dissolve: float) -> void:
 			var point := Vector2(side * (6.0 + dissolve * 40.0), -sin(dissolve * PI * 2.0) * 5.0)
 			PIXEL.block(self, point, Vector2(2, 2), Color(0.85, 0.93, 0.85, (1.0 - dissolve * 2.0) * 0.7))
 
+
+func get_terminal_footprint_axes() -> Vector2:
+	return FOOTPRINT.axes(_radius)
+
+func _sync_ground_area() -> void:
+	if _ground_area == null: return
+	var age := maxf(0.0, _elapsed - _delay - _fall_seconds)
+	var expansion := smoothstep(0.0, 0.18, age) if _landed else 1.0
+	var fade := 1.0 - smoothstep(0.25, 1.0, age / _dissolve_seconds) if _landed else 0.8
+	_ground_area.setup(get_terminal_footprint_axes(), Color(0.76,0.84,0.56,0.15), Color(0.92,1.0,0.77,0.65), expansion, fade)
 
 func _draw_ground() -> void:
 	BAKED.ALIGNED.begin(_ground_layer)

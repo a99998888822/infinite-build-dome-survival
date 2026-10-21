@@ -1,6 +1,7 @@
 extends Node2D
 class_name LightningParticleEffect
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 
 signal ground_strike_landed
 
@@ -10,8 +11,8 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL_BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 const HIT_SPRITE_BURST = preload("res://scripts/effects/lightning_hit_sprite_burst.gd")
-const GROUND_ARC_BURST = preload("res://scripts/effects/lightning_ground_arc_burst.gd")
 const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
+const RANGE_QUERY = preload("res://scripts/effects/lightning_range_query.gd")
 
 const STEP_SECONDS := 0.08
 const FLASH_SECONDS := STEP_SECONDS * 2.0
@@ -151,21 +152,16 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 	_audio_impact = null # Later hops are separate contacts with their own reactions.
 	AudioManager.play_enchantment_sfx("lightning")
 	_emit_hit_burst(current.global_position, from_position.direction_to(current.global_position))
-	var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(current, "electric", {
-		"parent": _parent_root,
-		"hit_position": current.global_position,
-		"source_id": _damage_event.source_weapon_id,
-		"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
-		"control_power": _get_cached_parameter("control_power", 0.0),
-		"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
-	})
-	if bool(reaction_result.get("burning_detonated", false)):
+	var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_electric_contact(current, _parent_root,
+		current.global_position, _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+		_get_cached_parameter("control_power", 0.0), _get_cached_parameter("detonate_burning", 1.0))
+	if reaction_result & ELEMENT_REACTION_RESOLVER_SCRIPT.ElectricContact.BURNING_DETONATED:
 		_show_thunder_fire_text(current.global_position)
 		AudioManager.mark_combat_reaction("thunder_fire")
 		EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, current.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
 	current.take_attack_damage(damage, _damage_event, false, from_position.direction_to(current.global_position))
-	if bool(reaction_result.get("extra_trigger", false)):
+	if reaction_result & ELEMENT_REACTION_RESOLVER_SCRIPT.ElectricContact.EXTRA_TRIGGER:
 		current.take_attack_damage(damage, _damage_event, false, from_position.direction_to(current.global_position))
 	AudioManager.end_combat_audio()
 	if _remaining_jumps <= 0:
@@ -196,6 +192,8 @@ func _strike_ground(ground_position: Vector2) -> void:
 
 func _damage_ground_enemies(ground_position: Vector2) -> void:
 	var radius := _ground_strike_damage_radius
+	var shape := FOOTPRINT.shape(FOOTPRINT.axes(radius))
+	var transform := Transform2D(0.0, ground_position)
 	var damage := maxi(1, int(roundi(_get_cached_parameter("damage", 1.0))))
 	var candidate_enemies: Dictionary = {}
 	if radius <= 0.0 or _damage_event == null:
@@ -208,15 +206,13 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		var enemy := node as EnemyController
 		if enemy == null or not enemy.is_alive():
 			continue
-		if enemy.global_position.distance_squared_to(ground_position) <= radius * radius:
+		if FOOTPRINT.ATTACK.body_overlaps(shape, transform, enemy):
 			candidate_enemies[enemy.get_instance_id()] = enemy
 
-	var shape := CircleShape2D.new()
-	shape.radius = radius
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
-	query.transform = Transform2D(0.0, ground_position)
-	query.collision_mask = 0xFFFFFFFF
+	query.transform = transform
+	query.collision_mask = 2
 	query.collide_with_bodies = true
 	for result in get_world_2d().direct_space_state.intersect_shape(query, 64):
 		var enemy := result.get("collider") as EnemyController
@@ -233,14 +229,9 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		var strike_damage_event := _damage_event.duplicate_event()
 		strike_damage_event.hit_position = enemy.global_position
 		# Capture the reaction on contact, including a lethal first strike.
-		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "electric", {
-			"parent": _parent_root,
-			"hit_position": enemy.global_position,
-			"source_id": _damage_event.source_weapon_id,
-			"stun_duration": _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
-			"control_power": _get_cached_parameter("control_power", 0.0),
-			"detonate_burning": _get_cached_parameter("detonate_burning", 1.0),
-		})
+		var reaction_result := ELEMENT_REACTION_RESOLVER_SCRIPT.apply_electric_contact(enemy, _parent_root,
+			enemy.global_position, _get_cached_parameter("stun_duration", DEFAULT_STUN_DURATION),
+			_get_cached_parameter("control_power", 0.0), _get_cached_parameter("detonate_burning", 1.0))
 		var dealt_damage := enemy.take_attack_damage(
 			damage,
 			strike_damage_event,
@@ -249,11 +240,11 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 		)
 		if dealt_damage > 0:
 			_emit_hit_burst(enemy.global_position, hit_direction)
-		if bool(reaction_result.get("burning_detonated", false)):
+		if reaction_result & ELEMENT_REACTION_RESOLVER_SCRIPT.ElectricContact.BURNING_DETONATED:
 			_show_thunder_fire_text(ground_position)
 			AudioManager.mark_combat_reaction("thunder_fire")
 			EXPLOSION_EFFECT_SCRIPT.spawn(_parent_root, enemy.global_position, _weapon, _damage_event, "", 1.8, 72.0, "thunder_fire")
-		if bool(reaction_result.get("extra_trigger", false)):
+		if reaction_result & ELEMENT_REACTION_RESOLVER_SCRIPT.ElectricContact.EXTRA_TRIGGER:
 			# Preserve the extra hit independently of reaction visuals and review text.
 			enemy.take_attack_damage(damage, _damage_event, false, hit_direction)
 
@@ -283,14 +274,15 @@ func _schedule_next(origin: Vector2) -> void:
 func _find_farthest_enemy(origin: Vector2) -> EnemyController:
 	var farthest: EnemyController = null
 	var farthest_distance := -1.0
-	var jump_radius_squared := _jump_radius * _jump_radius
 	var registry := EnemyRegistry.get_registered_enemies()
-	for index in EnemyRegistry.candidates_in_radius(origin, _jump_radius):
+	var query := RANGE_QUERY.candidates(origin, _jump_radius)
+	for cursor in query.indices.size():
+		var index: int = query.indices[cursor]
 		var enemy := registry[index] as EnemyController
 		if enemy == null or not enemy.is_alive() or _visited.has(enemy.get_instance_id()):
 			continue
-		var distance := origin.distance_squared_to(enemy.global_position)
-		if distance <= jump_radius_squared and distance >= farthest_distance:
+		var distance: float = query.distances[cursor]
+		if distance >= farthest_distance:
 			farthest_distance = distance
 			farthest = enemy
 	return farthest
@@ -298,11 +290,11 @@ func _find_farthest_enemy(origin: Vector2) -> EnemyController:
 
 func _find_random_enemy(origin: Vector2) -> EnemyController:
 	var candidates: Array[EnemyController] = []
-	var jump_radius_squared := _jump_radius * _jump_radius
 	var registry := EnemyRegistry.get_registered_enemies()
-	for index in EnemyRegistry.candidates_in_radius(origin, _jump_radius):
+	var query := RANGE_QUERY.candidates(origin, _jump_radius)
+	for index in query.indices:
 		var enemy := registry[index] as EnemyController
-		if enemy != null and enemy.is_alive() and not _visited.has(enemy.get_instance_id()) and origin.distance_squared_to(enemy.global_position) <= jump_radius_squared:
+		if enemy != null and enemy.is_alive() and not _visited.has(enemy.get_instance_id()):
 			candidates.append(enemy)
 	if candidates.is_empty():
 		return null
@@ -310,6 +302,8 @@ func _find_random_enemy(origin: Vector2) -> EnemyController:
 
 
 func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
+	var tier := HIT_SPRITE_BURST.claim_tier(_parent_root, hit_position)
+	if tier == HIT_SPRITE_BURST.VISUAL_BUDGET.Tier.SUPPRESSED: return
 	var context_parameters := {
 		"count_multiplier": _get_cached_parameter("count_multiplier", 1.0) * HIT_BURST_COUNT_MULTIPLIER,
 		"speed_multiplier": _get_cached_parameter("speed_multiplier", 1.0),
@@ -321,7 +315,7 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 		"distance_multiplier": _get_cached_parameter("attack_range_multiplier", 1.0) * HIT_BURST_DISTANCE_MULTIPLIER,
 	}
 	var intensity: float = _get_cached_parameter("attack_range_multiplier", 1.0)
-	HIT_SPRITE_BURST.spawn(_parent_root, hit_position, burst_direction, intensity, context_parameters)
+	HIT_SPRITE_BURST.spawn_admitted(_parent_root, hit_position, burst_direction, intensity, context_parameters, tier)
 
 
 static func alpha_at(age: float) -> float:
@@ -342,12 +336,9 @@ func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
 	_control_point_envelope_power = 0.65
 	var lifetime_scale := clampf(_get_cached_parameter("lifetime_multiplier", 1.0), 0.5, 2.0)
 	var bolt := _create_bolt_path(start_position, end_position)
-	var ground_arc: Sprite2D = null
-	if _is_ground_strike and not _ground_strike_damage_applied:
-		ground_arc = GROUND_ARC_BURST.spawn(self, end_position, bolt.base_alpha)
 	# One initial path per contact, followed by one independently drawn echo path.
 	_path_pulses.append({"bolt": bolt, "age": 0.0, "scale": lifetime_scale,
-		"start": start_position, "end": end_position, "initial_points": bolt.points.duplicate(), "echoed": false, "ground_arc": ground_arc})
+		"start": start_position, "end": end_position, "initial_points": bolt.points.duplicate(), "echoed": false})
 
 
 func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_points := PackedVector2Array()) -> Node2D:
@@ -366,7 +357,7 @@ func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_
 	bolt.rim_enabled = false
 	bolt.cell_size = 2
 	bolt.grid_origin = to_local(Vector2.ZERO)
-	bolt.build()
+	bolt.build(true)
 	add_child(bolt)
 	return bolt
 
@@ -440,12 +431,8 @@ func _process(delta: float) -> void:
 		return
 	for index in range(_path_pulses.size() - 1, -1, -1):
 		var pulse := _path_pulses[index]
-		var ground_arc := pulse.get("ground_arc") as Sprite2D
 		pulse.age += delta / float(pulse.scale)
 		if pulse.age >= TOTAL_SECONDS:
-			if is_instance_valid(ground_arc):
-				ground_arc.hide()
-				ground_arc.queue_free()
 			pulse.bolt.queue_free()
 			_path_pulses.remove_at(index)
 			continue
@@ -456,8 +443,6 @@ func _process(delta: float) -> void:
 			pulse.echoed = true
 			# New node and new random geometry; no second strike or damage event.
 		pulse.bolt.modulate.a = alpha_at(pulse.age)
-		if is_instance_valid(ground_arc):
-			ground_arc.sync_pulse(pulse.echoed, pulse.bolt.modulate.a)
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
 		queue_redraw()
@@ -472,7 +457,8 @@ func _draw() -> void:
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0 and _ground_strike_impact_age < GROUND_STRIKE_IMPACT_RING_LIFETIME:
 		var impact_ratio := clampf(_ground_strike_impact_age / GROUND_STRIKE_IMPACT_RING_LIFETIME, 0.0, 1.0)
 		var impact_center := to_local(_ground_strike_position)
-		var impact_radius := lerpf(GROUND_STRIKE_IMPACT_RING_START_RADIUS, _ground_strike_damage_radius, impact_ratio)
+		# Reach the terminal boundary while visible, then fade without growing it.
+		var impact_radius := lerpf(GROUND_STRIKE_IMPACT_RING_START_RADIUS, _ground_strike_damage_radius, smoothstep(0.0,0.6,impact_ratio))
 		var impact_alpha := (1.0 - impact_ratio) * 0.68
 		GROUND.disk(self, impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
 		GROUND.arc(self, impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)

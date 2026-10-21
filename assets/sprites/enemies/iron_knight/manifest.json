@@ -1,11 +1,11 @@
 {
   "frame_size": [
-    256,
-    256
+    192,
+    192
   ],
   "movement_foot_anchor": [
-    128,
-    221
+    96,
+    166
   ],
   "death": "freeze_current_pose_and_fade",
   "actions": {
@@ -35,17 +35,24 @@
       "loop": false
     }
   },
-  "sprite_scale": 0.56,
+  "sprite_scale": 1,
   "sprite_offset": [
     0,
-    -52.08
+    -70
   ],
-  "collision_radius": 33.6,
   "attack_source_frames": 10,
   "movement_source_frames": 7,
   "skill_ms": [
     400,
     160,
     500
-  ]
+  ],
+  "collision_capsule": {
+    "radius": 24,
+    "height": 102,
+    "position": [
+      0,
+      -61.5
+    ]
+  }
 }

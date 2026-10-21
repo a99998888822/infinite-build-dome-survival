@@ -26,11 +26,12 @@ func _run() -> void:
 	var animator := player.action_animator
 	check(animator.enabled, "eight action strips enabled")
 	check(player.sprite.scale == Vector2.ONE, "96px actions render at their authored pixel size")
-	for clip in {"idle":1,"move":8,"attack":7,"move_attack":9,"sustain":8,"move_sustain":8,"jump_forward":10,"jump_backward":10}:
+	var expected_counts := {"idle":1,"move":8,"attack":7,"move_attack":9,"sustain":8,"move_sustain":8,"jump_forward":6,"jump_backward":6}
+	for clip in expected_counts:
 		var count: int = animator._count(clip)
-		check((animator._clips[clip].texture as Texture2D).get_size() == Vector2(count * 96, 96), "96px cells: " + clip)
-	check(animator._count("jump_forward") == 10 and animator._clips.jump_forward.texture == preload("res://assets/sprites/player/actions/novice_96/jump_forward.png"), "forward jump keeps all ten approved former backward frames")
-	check(animator._clips.jump_forward.texture != animator._clips.jump_backward.texture, "new backward jump has its own texture")
+		check(count == expected_counts[clip] and (animator._clips[clip].texture as Texture2D).get_size() == Vector2(count * 96, 96), "approved frame count and 96px cells: " + clip)
+	check(animator._count("jump_forward") == 6 and animator._clips.jump_forward.texture == preload("res://assets/sprites/player/actions/novice_96/jump.png"), "forward jump uses six approved scene-preview frames")
+	check(animator._clips.jump_forward.texture == animator._clips.jump_backward.texture, "forward and backward jump share one atlas")
 	var origin := player.position
 	player.play_weapon_action("weapon_void_blade")
 	animator.tick(0.15, false)
@@ -39,6 +40,7 @@ func _run() -> void:
 	check(animator.current_clip == "jump_forward" and animator.current_frame == 0, "new jump interrupts attack")
 	player.play_weapon_action("weapon_plasma_cannon")
 	check(animator.current_clip == "attack" and animator.current_frame == 0, "new attack interrupts jump")
+	check(player.sprite.position == Vector2(0, -3), "attack interruption preserves the shared foot alignment")
 	animator.tick(0.2, false)
 	player.play_weapon_action("weapon_void_blade")
 	check(animator.current_frame == 0, "same action restarts on latest cast")
@@ -206,17 +208,18 @@ func _test_new_actions(player: PlayerController) -> void:
 		player.play_weapon_action("weapon_void_blade", null, 0.0, aim)
 		check(animator.current_clip == "attack", "retreat uses planted punch without false forward steps")
 	player._clear_move_input()
-	var elapsed := 0.0
-	var durations: Array = animator._clips.jump_backward.frame_durations
-	for index in durations.size():
-		animator.play("jump_backward", Vector2.RIGHT)
-		animator.tick(elapsed + float(durations[index]) * 0.5, false)
-		check(animator.current_clip == "jump_backward" and animator.current_frame == index, "backward source timing reaches frame " + str(index))
-		elapsed += float(durations[index])
-	check(is_equal_approx(elapsed, 0.875), "ten-frame backward jump plays twice as fast in 0.875 seconds")
-	animator.play("jump_backward", Vector2.RIGHT)
-	animator.tick(0.874, false)
-	check(animator.current_frame == 9, "backward final recovery is displayed")
-	animator.tick(0.002, false)
-	check(animator.current_clip == "idle", "backward jump returns idle after final hold")
+	for clip in ["jump_forward", "jump_backward"]:
+		for index in 6:
+			animator.play(clip, Vector2.RIGHT)
+			animator.tick(index * 0.12 + 0.06, false)
+			check(animator.current_clip == clip and animator.current_frame == index, clip + " shows approved frame " + str(index))
+			check(player.sprite.position == Vector2(0, -3), clip + " keeps the preview foot alignment without accumulating offset")
+		animator.play(clip, Vector2.RIGHT)
+		animator.tick(0.719, false)
+		check(animator.current_clip == clip and animator.current_frame == 5, clip + " displays final landing frame")
+		animator.tick(0.002, false)
+		check(animator.current_clip == "idle" and player.sprite.position == Vector2(0, -3), clip + " returns to aligned idle after 0.72 seconds")
+		animator.play(clip, Vector2.LEFT)
+		animator.tick(0.721, true)
+		check(animator.current_clip == "move" and player.sprite.position == Vector2(0, -3), clip + " returns to aligned movement")
 	animator.reset()

@@ -11,13 +11,15 @@ CONFIG = ROOT / 'data_config/reviews/cavern_population_review.json'
 
 def main():
     meadow = json.loads((ROOT / 'data_config/cavern_meadow_battlefield.json').read_text(encoding='utf-8'))
-    cave = json.loads((ROOT / 'data_config/cavern_battlefield.json').read_text(encoding='utf-8'))
+    reference = json.loads((ROOT / 'docs/asset/config_reference_metadata.json').read_text(encoding='utf-8'))
+    cave = reference['legacy_cavern_ground']
     tracked = set()
     for folder in ('assets/sprites/background/cavern', 'assets/sprites/background/wetland',
                    'assets/sprites/background/green_ground', 'assets/sprites/background/meadow'):
         tracked.update((ROOT / folder).glob('*.png'))
     for name in ('scenes/battle/battle_root.tscn', 'project.godot',
                  'data_config/cavern_meadow_battlefield.json', 'data_config/cavern_battlefield.json',
+                 'docs/asset/config_reference_metadata.json',
                  'scripts/battle/cavern_meadow_backdrop.gd', 'scripts/battle/cavern_battle_backdrop.gd',
                  'scripts/battle/cavern_battle_horizon.gd'):
         tracked.add(ROOT / name)

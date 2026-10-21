@@ -26,6 +26,8 @@ var _specialization_wave := -1
 var amount_input: LineEdit
 var bank_confirm: Button
 var start_button: Button
+var _enchantment_notice: PanelContainer
+var _enchantment_notice_shown := false
 var _title: Label
 var _summary: Label
 var _principal_protection: Label
@@ -219,12 +221,15 @@ func _sync_live_trade() -> void:
 func show_popup() -> void:
 	_sale_layer.hide()
 	_tooltip.hide()
+	_enchantment_notice.hide()
+	_enchantment_notice_shown = false
 	show()
 	_layout()
 	if interest_arrival.is_active(): interest_arrival.grab_focus()
 
 
 func hide_popup() -> void:
+	_enchantment_notice.hide()
 	interest_arrival.stop()
 	cancel_trade("finance_closed")
 	hide()
@@ -427,9 +432,8 @@ func _build() -> void:
 	_feedback.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	start_button = _button("ui.bank.next_wave", main_panel)
 	FinanceUIStyle.bank_button(start_button, true, false)
-	start_button.pressed.connect(func():
-		if flow != null and not _sale_layer.visible: flow.close_finance_popup()
-	)
+	start_button.pressed.connect(_request_next_wave)
+	_build_enchantment_notice()
 	economy_log = EconomyLogPanel.new()
 	economy_log.name = "FinanceLog"
 	main_panel.add_child(economy_log)
@@ -465,6 +469,63 @@ func _build() -> void:
 	_sync_loan_visibility()
 
 
+func _build_enchantment_notice() -> void:
+	_enchantment_notice = PanelContainer.new()
+	_enchantment_notice.name = "UnusedEnchantmentNotice"
+	_enchantment_notice.z_index = 30
+	_enchantment_notice.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := FinanceFrameSkin.box("dialog", 18)
+	style.content_margin_top = 14
+	style.content_margin_bottom = 14
+	_enchantment_notice.add_theme_stylebox_override("panel", style)
+	main_panel.add_child(_enchantment_notice)
+	var body := VBoxContainer.new()
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	body.add_theme_constant_override("separation", 10)
+	_enchantment_notice.add_child(body)
+	var message := _label("ui.bank.unused_enchantment_notice", body, 24, FinanceUIStyle.TEXT)
+	message.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	var hint := _label("ui.bank.unused_enchantment_dismiss", body, 16, Color("8b9089"))
+	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_enchantment_notice.hide()
+	_enchantment_notice.resized.connect(_layout_enchantment_notice)
+
+
+func _has_unused_enchantments() -> bool:
+	if flow == null: return false
+	var player := flow.get_bound_player()
+	var loadout := flow.get_bound_loadout()
+	if player == null or loadout == null or player.item_inventory == null: return false
+	if player.item_inventory.get_available_items().is_empty(): return false
+	for weapon in loadout.get_weapon_instances():
+		if weapon.has_available_attachment_slot(): return true
+	return false
+
+
+func _request_next_wave() -> void:
+	if flow == null or _sale_layer.visible or flow.get_current_state() != MainFlowCoordinator.STATE_FINANCE_POPUP: return
+	if not _enchantment_notice_shown and _has_unused_enchantments():
+		_enchantment_notice_shown = true
+		_tooltip.hide()
+		_enchantment_notice.show()
+		_layout_enchantment_notice()
+		return
+	_enchantment_notice.hide()
+	flow.close_finance_popup()
+
+
+func _layout_enchantment_notice() -> void:
+	if _enchantment_notice == null or not _enchantment_notice.visible: return
+	_enchantment_notice.size = Vector2(minf(440, main_panel.size.x - 32), 0)
+	var button_rect := start_button.get_rect()
+	_enchantment_notice.position = Vector2(
+		clampf(button_rect.end.x - _enchantment_notice.size.x, 16, maxf(16, main_panel.size.x - _enchantment_notice.size.x - 16)),
+		button_rect.position.y - _enchantment_notice.size.y - 14
+	).round()
+
+
 func _build_sale_dialog() -> void:
 	_sale_layer = Control.new()
 	_sale_layer.z_index = 40
@@ -484,7 +545,7 @@ func _build_sale_dialog() -> void:
 	sale_heading.add_theme_constant_override("separation", 12)
 	body.add_child(sale_heading)
 	_sale_icon = TextureRect.new()
-	_sale_icon.custom_minimum_size = Vector2(44, 44)
+	_sale_icon.custom_minimum_size = Vector2(36, 36)
 	_sale_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_sale_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	var icon_well := PanelContainer.new()
@@ -537,6 +598,7 @@ func _layout() -> void:
 	if _scene_wide:
 		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		FinanceSceneLayout.arrange(self)
+		_layout_enchantment_notice()
 		return
 	main_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -608,6 +670,7 @@ func _layout() -> void:
 	if not _compact and _active_tab == "bank": _active_tab = "shop"
 	_select_tab(_active_tab)
 	if loan_presentation != null: loan_presentation.arrange(main_panel.get_global_rect())
+	_layout_enchantment_notice()
 
 
 func _select_tab(tab: String) -> void:
@@ -770,7 +833,11 @@ func _open_sale(kind: String, id: String) -> void:
 		return
 	interest_arrival.skip()
 	_tooltip.hide()
-	ItemIconArt.bind_texture(_sale_icon, FinanceUIStyle.item_icon(str(_quote.get("icon", ""))))
+	var sale_extent := 32.0 if kind == "enchantment" else 36.0
+	# Reset a reused dialog's previous binding so weapon/enchantment tiers stay distinct.
+	ItemIconArt.bind_texture(_sale_icon, null)
+	_sale_icon.custom_minimum_size = Vector2.ONE * sale_extent
+	ItemIconArt.bind_texture(_sale_icon, FinanceUIStyle.item_icon(str(_quote.get("icon", ""))), false, sale_extent, null, sale_extent)
 	for child in _sale_items.get_children():
 		_sale_items.remove_child(child)
 		child.queue_free()
@@ -780,7 +847,7 @@ func _open_sale(kind: String, id: String) -> void:
 		for returned_id in _quote.get("returned_ids", []):
 			var returned_item := flow.get_bound_player().item_inventory.find_item(str(returned_id))
 			var icon := TextureRect.new()
-			icon.custom_minimum_size = Vector2(30, 30)
+			icon.custom_minimum_size = Vector2(32, 32)
 			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.texture = FinanceUIStyle.item_icon(str(returned_item.get("icon", "")))
@@ -789,6 +856,7 @@ func _open_sale(kind: String, id: String) -> void:
 			well.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot", 4))
 			_sale_items.add_child(well)
 			well.add_child(icon)
+			ItemIconArt.bind_texture(icon, icon.texture, false, 32.0, null, 32.0)
 	var lines: Array[String] = ["[b]%s[/b]" % L10n.source(str(_quote.get("display_name", "")))]
 	if kind == "weapon":
 		lines.append(L10n.text("ui.bank.sale.weapon_breakdown") % [int(_quote.get("level", 1)), int(_quote.get("base_value", 0)), int(_quote.get("upgrade_value", 0))])
@@ -873,6 +941,17 @@ func handle_back_request() -> bool:
 
 
 func _input(event: InputEvent) -> void:
+	if _enchantment_notice != null and _enchantment_notice.is_visible_in_tree() and flow != null and flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP:
+		if event is InputEventKey and (event.keycode == KEY_SPACE or event.physical_keycode == KEY_SPACE):
+			if event.pressed and not event.echo: _enchantment_notice.hide()
+			get_viewport().set_input_as_handled()
+			return
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_enchantment_notice.hide()
+			# The next-wave button still receives this click and opens the challenge.
+			if not start_button.get_global_rect().has_point(event.position):
+				get_viewport().set_input_as_handled()
+			return
 	if event is InputEventMouseMotion and get_viewport_rect().has_point(event.position):
 		# Use the pointer event that opens the tooltip, in viewport coordinates.
 		_tooltip_mouse_position = event.position

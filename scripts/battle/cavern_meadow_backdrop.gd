@@ -2,6 +2,7 @@ extends CavernBattleBackdrop
 class_name CavernMeadowBackdrop
 ## Configured grassland surface inside the approved cavern depth layers.
 const SURFACE_SHADER = preload("res://shaders/battle/meadow/pit_ground.gdshader")
+var surface_texture: Texture2D
 var surface_context: Image
 var sample_offset := Vector2(1320,1120)
 
@@ -12,12 +13,12 @@ func _stream_margin() -> float:
 func _setup() -> void:
 	if initialized or not is_instance_valid(player) or not is_inside_tree(): return
 	var surface_config: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(scenery_config_path))
-	var surface := load(str(surface_config.surface_texture)) as Texture2D
+	surface_texture = load(str(surface_config.surface_texture)) as Texture2D
 	surface_context = (load(str(surface_config.surface_context)) as Texture2D).get_image()
 	if surface_context.is_compressed(): surface_context.decompress()
 	super._setup()
 	ground_material.shader = SURFACE_SHADER
-	ground_material.set_shader_parameter("surface_texture",surface)
+	ground_material.set_shader_parameter("surface_texture",surface_texture)
 	ground_material.set_shader_parameter("sample_offset",sample_offset)
 	ground_material.set_shader_parameter("projection_y",AttackFootprint.ELLIPSE_RATIO)
 

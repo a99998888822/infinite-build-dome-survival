@@ -37,7 +37,8 @@ func timing_test() -> void:
 		check(pulse_count == 1, "one initial path, ground=%s" % ground)
 		var snapshot: PackedVector2Array = effect._path_pulses[0].bolt.points.duplicate()
 		var initial_node_id: int = effect._path_pulses[0].bolt.get_instance_id()
-		var initial_mesh = effect._path_pulses[0].bolt.cached_mesh
+		var initial_mesh = effect._path_pulses[0].bolt.cached_instances
+		check(initial_mesh != null, "production path has immutable instance geometry")
 		var echo_snapshot := PackedVector2Array()
 		check(snapshot.size() == 10, "200px arc uses ten control points instead of dense samples")
 		check(snapshot[0] == Vector2(-13, -7) and snapshot[-1] == Vector2(187, 33), "contact endpoints stay anchored")
@@ -51,7 +52,7 @@ func timing_test() -> void:
 			var bolt = effect._path_pulses[0].bolt
 			if times[i] < LIGHTNING.FLASH_SECONDS + LIGHTNING.DARK_SECONDS:
 				check(bolt.points == snapshot, "initial geometry remains fixed while fading")
-				check(bolt.cached_mesh == initial_mesh and bolt.build_count == 1, "cached pixel mesh is reused during fading")
+				check(bolt.cached_instances == initial_mesh and bolt.build_count == 1, "cached pixel instances are reused during fading")
 			else:
 				if echo_snapshot.is_empty():
 					echo_snapshot = bolt.points.duplicate()

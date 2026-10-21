@@ -62,15 +62,3 @@ python scripts/tools/open_recording_studio.py --godot "D:/path/to/Godot.exe"
 重拍恢复配置，不保证相同的随机掉落、怪物位置或战斗过程。正常角色动作、武器攻击、命中、伤害和画面效果均复用正式场景。
 
 自定义方案保存在 Godot 用户目录下的 `recording_studio/presets.json`。这是录制方案文件，与 `saves/profile_01.json` 正式进度分开；录制中的营地币结算不会写入正式存档。
-
-## 验证记录
-
-- Godot 4.7.2 无头编辑器检查与录制场景启动完成，无解析／编译错误。
-- 专项无头回归：42项通过，0失败；后台实际渲染回归：46项通过，0失败。
-- 覆盖配置切换、方案保存重载、武器等级、双附魔与兼容限制、多武器、指定第5／20波、角色固有遗物、额外理智侵蚀、银行取款撤销护甲、暂停、隐藏HUD、返回清场、重拍恢复余额、结算存档隔离。
-- 不携带 `--transient-session`，直接启动录制场景，正式存档目录中2个文件的前后字节摘要一致。
-- 检查1280×720与640×360界面，以及战斗和银行实机画面。GPU运行的 `private_desktop` 与 `verified_desktop` 一致，`foreground_samples=0`。
-- 普通主场景120帧无头启动完成；退出仍出现既有的4个ObjectDB实例、2个资源释放提示。编辑器仍提示本机Android build-tools目录不可用，本次不涉及Android打包。
-- 双击启动器通过 `--print-command` 验证引擎发现与启动参数；未自动打开普通可见游戏窗口。
-
-实现入口：`scripts/debug/recording_studio.gd`；临时场景组装：`scripts/debug/recording_session.gd`；测试：`scenes/tests/recording_studio_test.tscn`。

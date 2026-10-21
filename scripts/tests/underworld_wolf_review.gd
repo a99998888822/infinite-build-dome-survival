@@ -147,10 +147,10 @@ func validate() -> void:
 	check(wolf.enemy_data.display_name == "幽焰冥狼","updated display name")
 	var registered := wolf.FRAME_TRANSFORMS.size() == 21
 	for record: Dictionary in wolf.FRAME_TRANSFORMS.values():
-		registered = registered and (is_equal_approx(record.sprite_scale,0.8192) or is_equal_approx(record.sprite_scale,1.024))
+		registered = registered and is_equal_approx(record.sprite_scale,1.0) and record.sprite_offset == [0,-91]
 	check(registered,"all 21 frames retain approved source-space registration in exported resources")
 	var collider := wolf.get_node("CollisionShape2D") as CollisionShape2D
-	check(is_equal_approx(collider.shape.radius,36.8) and is_equal_approx(collider.shape.height,121.6) and collider.position.is_equal_approx(Vector2(12.8,-60.8)),"body collider follows doubled visual")
+	check(is_equal_approx(collider.shape.radius,27.6) and is_equal_approx(collider.shape.height,91.2) and collider.position.is_equal_approx(Vector2(9.6,-45.6)),"body collider retains the current gameplay geometry")
 	wolf.transition("spawn", &"idle")
 	check(wolf.take_damage(20) == 0,"spawn grace rejects damage")
 	await step(46)
@@ -193,7 +193,7 @@ func validate() -> void:
 	wolf.breath_cooldown = 0
 	check(wolf.begin_skill("breath"),"ranged target starts breath")
 	var lamp := DataRegistry.get_record("weapons","weapon_copper_lamp")
-	check(is_equal_approx(wolf.profile.breath_range,float(lamp.attack_range)*2),"breath reach is twice the initial copper lamp reach")
+	check(is_equal_approx(wolf.profile.breath_range,240.0),"art migration preserves the wolf's independent 240-unit breath range")
 	check(is_equal_approx(wolf.profile.breath_cone_degrees,float(lamp.lamp_cone_degrees)),"breath keeps copper lamp cone angle")
 	hp = player.current_hp
 	await step(53)
@@ -272,14 +272,14 @@ func validate() -> void:
 		for i in wolf.FRAMES.get_frame_count(action):
 			var tex: AtlasTexture = wolf.FRAMES.get_frame_texture(action,i)
 			unique[str(tex.atlas.get_instance_id())+str(tex.region)] = true
-			correct_size = correct_size and tex.region.size == Vector2(128,128)
+			correct_size = correct_size and tex.region.size == Vector2(192,192)
 	check(unique.size() == 21,"all 21 source poses mapped into nine runtime animations")
-	check(correct_size,"all runtime atlas regions are exactly 128 by 128")
+	check(correct_size and wolf.sprite.scale == Vector2.ONE,"all runtime atlas regions are 192 by 192 at 1x")
 	wolf.transition("chase", &"idle")
 	wolf.sprite.flip_h = false
 	wolf.animate(0)
 	var right_offset: Vector2 = wolf.sprite.position
-	check(wolf.sprite.scale.is_equal_approx(Vector2.ONE*1.6384),"registered idle grid retains the doubled base body size")
+	check(wolf.sprite.scale == Vector2.ONE and right_offset == Vector2(0,-91),"registered 192px idle uses native scale and a shared foot anchor")
 	wolf.sprite.flip_h = true
 	wolf.animate(0)
 	check(wolf.sprite.position.is_equal_approx(Vector2(-right_offset.x,right_offset.y)),"left-facing pixel pose mirrors registration around shared foot anchor")
@@ -304,7 +304,7 @@ func make_overlay() -> void:
 	subtitle.position = Vector2(43,64)
 	subtitle.add_theme_font_size_override("font_size",16)
 	subtitle.modulate = Color("a2c8dc")
-	subtitle.text = "128×128 / 21 帧  ·  已加入小 Boss 刷新池  ·  正式数值成长与掉落  ·  幽蓝喷焰 / 震地击退"
+	subtitle.text = "192×192 / 21 帧 / 1倍  ·  已加入小 Boss 刷新池  ·  正式数值成长与掉落  ·  幽蓝喷焰 / 震地击退"
 	layer.add_child(subtitle)
 	caption = Label.new()
 	caption.position = Vector2(42,620)
@@ -426,7 +426,7 @@ func validate_production() -> void:
 
 func capture_storyboard() -> void:
 	await capture_comparison()
-	var captions := ["01 / 正式场景与 128 像素移动循环", "02 / 扑跃：侧移躲避，落地 0.08 秒后回到 idle", "03 / 震地命中：按当前难度结算伤害，并击退玩家", "04 / 幽蓝喷焰：最多 3 次伤害，每次命中均击退", "05 / 喷焰方向锁定：提前侧移可完全躲开"]
+	var captions := ["01 / 正式场景与 192 像素移动循环", "02 / 扑跃：侧移躲避，落地 0.08 秒后回到 idle", "03 / 震地命中：按当前难度结算伤害，并击退玩家", "04 / 幽蓝喷焰：最多 3 次伤害，每次命中均击退", "05 / 喷焰方向锁定：提前侧移可完全躲开"]
 	var names := {"chase":"追击", "leap_charge":"扑跃蓄力 0.9 秒", "leap":"腾空 0.6 秒", "land":"落地冲击", "recover":"idle 收招", "breath_charge":"扇形预警 0.9 秒", "breath":"幽蓝火焰喷吐", "breath_recover":"idle 收招"}
 	var lengths: Array[int] = [58,55,55,72,72]
 	for chapter in 5:

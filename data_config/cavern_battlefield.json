@@ -1,19 +1,4 @@
 {
-  "ground": [],
-  "details": [],
-  "rubble": [
-    {
-      "id": "loose_stone_0",
-      "texture": "res://assets/sprites/background/cavern/rubble_0.png",
-      "texture_density": 4.0
-    },
-    {
-      "id": "loose_stone_1",
-      "texture": "res://assets/sprites/background/cavern/rubble_1.png",
-      "texture_density": 4.0
-    }
-  ],
-  "grass": [],
   "ruins": [
     {
       "id": "arch",
@@ -46,18 +31,6 @@
         25,
         39
       ]
-    }
-  ],
-  "props": [
-    {
-      "id": "rock",
-      "texture": "res://assets/sprites/background/cavern/prop_rock.png",
-      "catalog_id": "A01"
-    },
-    {
-      "id": "log",
-      "texture": "res://assets/sprites/background/cavern/prop_log.png",
-      "catalog_id": "A05"
     }
   ],
   "foreground": [
@@ -122,124 +95,42 @@
       ]
     }
   ],
-  "ground_texture_density": 1,
-  "parallax": {
-    "ground": 1.0,
-    "ruins": 0.26,
-    "cavern": 0.08
-  },
-  "method": "Solid source-colour floor, complete catalog 01, source-derived cracks, rubble and existing grass; exterior-connected cutouts; no image model.",
   "panorama_modules": [
     {
       "source": "far_background_1.png",
-      "crop": [
-        0.07,
-        0.07,
-        0.91,
-        0.88
-      ],
       "opening_top": 12,
       "opening_bottom": 90,
       "width": 207,
-      "wall_gap": 115,
-      "repair": "source-colour rocky cap and blended outer wall"
+      "wall_gap": 115
     },
     {
       "source": "far_background_5.png",
-      "crop": [
-        0.14,
-        0,
-        0.88,
-        0.63
-      ],
       "opening_top": 12,
       "opening_bottom": 90,
       "width": 259,
-      "wall_gap": 135,
-      "repair": "source-colour rocky cap and blended outer wall"
+      "wall_gap": 135
     },
     {
       "source": "far_background_3.png",
-      "crop": [
-        0.18,
-        0,
-        0.76,
-        0.67
-      ],
       "opening_top": 12,
       "opening_bottom": 90,
       "width": 149,
-      "wall_gap": 120,
-      "repair": "source-colour rocky cap and blended outer wall"
+      "wall_gap": 120
     },
     {
       "source": "far_background_2.png",
-      "crop": [
-        0.48,
-        0.03,
-        0.87,
-        0.64
-      ],
       "opening_top": 12,
       "opening_bottom": 90,
       "width": 123,
-      "wall_gap": 105,
-      "repair": "source-colour rocky cap and blended outer wall"
+      "wall_gap": 105
     },
     {
       "source": "far_background_4.png",
-      "crop": [
-        0.38,
-        0.12,
-        0.88,
-        0.63
-      ],
       "opening_top": 12,
       "opening_bottom": 90,
       "width": 211,
-      "wall_gap": 125,
-      "repair": "source-colour rocky cap and blended outer wall"
+      "wall_gap": 125
     }
   ],
-  "panorama": "res://assets/sprites/background/cavern/panorama_aligned.png",
-  "floor_color": [
-    0.30980392156862746,
-    0.32941176470588235,
-    0.3058823529411765,
-    1.0
-  ],
-  "grass_anchors": [
-    [
-      -523.0,
-      -73.5
-    ],
-    [
-      -344.0,
-      103.5
-    ],
-    [
-      -114.0,
-      -122.5
-    ],
-    [
-      83.0,
-      14.5
-    ],
-    [
-      333.0,
-      104.5
-    ],
-    [
-      528.0,
-      -82.5
-    ],
-    [
-      463.0,
-      121.5
-    ],
-    [
-      -153.0,
-      142.5
-    ]
-  ]
+  "panorama": "res://assets/sprites/background/cavern/panorama_aligned.png"
 }

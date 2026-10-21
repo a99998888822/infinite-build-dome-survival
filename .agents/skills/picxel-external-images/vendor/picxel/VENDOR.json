@@ -6,7 +6,16 @@
     "date": "2026-09-29",
     "commit": "4dc28f9dab520cbac5b1a9f4863689c4a686fcaa",
     "skill_sha256": "c90fab22b60679acfa757a3a3564ee075350a42c572c4d3ead616a766d82f121",
-    "verified_equal": ["scripts/picxel.py", "scripts/px.py", "scripts/start_panel.py", "references/anchor.md", "references/faces.md", "references/checklist.md", "SPEC.md", "LICENSE"],
+    "verified_equal": [
+      "scripts/picxel.py",
+      "scripts/px.py",
+      "scripts/start_panel.py",
+      "references/anchor.md",
+      "references/faces.md",
+      "references/checklist.md",
+      "SPEC.md",
+      "LICENSE"
+    ],
     "note": "Core files match this commit byte-for-byte. The original snapshot commit remains unknown; panel adaptations are retained. The project workflow omits model generation intentionally."
   },
   "license": "GPL-3.0-only",
@@ -14,7 +23,8 @@
   "files": [
     {
       "path": "scripts/picxel.py",
-      "sha256": "d9a4c463b44c68fc28005ff94ff61366c85baeed938b89c80d71a506ac6f3912"
+      "sha256": "541b34d145efc4f3f721a78602f429c6ee36123a7bad016a2b47ff68c7e247f4",
+      "upstream_sha256": "d9a4c463b44c68fc28005ff94ff61366c85baeed938b89c80d71a506ac6f3912"
     },
     {
       "path": "scripts/px.py",
@@ -22,12 +32,12 @@
     },
     {
       "path": "scripts/panel.py",
-      "sha256": "55b2ef879f5bac10988438248fd28d7018d818c60326d4372b86ecd544257b18",
+      "sha256": "0b46e7b9fdd809ca902065a911d29c87b31bee2d12414d8d4915978f19b98403",
       "upstream_sha256": "895b009053be6da098a9e1122ae3979644a1f8e778764e4ee7cb2b1bce141639"
     },
     {
       "path": "scripts/panel.html",
-      "sha256": "cc502565d58e3e2f14b2fabc1f44b1d10bef38125144b62ed5bb20524991011f",
+      "sha256": "0b918454f102cf51aee8d2cef0a8cb535741ee059649fbe0c0e663c73cef4961",
       "upstream_sha256": "d5527b9136e1f47aeba282e7cd22b712003ea9c03bc655ae320aadde4bb6471a"
     },
     {
@@ -48,7 +58,8 @@
     },
     {
       "path": "SPEC.md",
-      "sha256": "65f06dbfb30a845f88ef61299ef0f739680196f19484ba177ef795afb8f2e398"
+      "sha256": "72d80f6a38f82766271e9194dfa4a550f4b38980832e79b44a2ebc8e76fbd095",
+      "upstream_sha256": "65f06dbfb30a845f88ef61299ef0f739680196f19484ba177ef795afb8f2e398"
     },
     {
       "path": "LICENSE",
@@ -57,6 +68,7 @@
   ],
   "local_changes": [
     "panel.py: use a skill-local job file instead of the global Picxel job; describe external-image processing",
-    "panel.html: replace image-generation wording with external-image preparation and pixelization labels"
+    "panel.html: replace image-generation wording with external-image preparation and pixelization labels",
+    "2026-10-21: project 96/192px support across grid validation, panel and SPEC; optional preserve_canvas imports registered sprite frames without per-pose fitting; default palette target remains 128."
   ]
 }

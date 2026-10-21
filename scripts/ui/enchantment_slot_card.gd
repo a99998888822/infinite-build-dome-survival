@@ -50,7 +50,7 @@ func configure_slot(index: int, item: Dictionary) -> void:
 	slot_index = index
 	item_instance = item.duplicate(true)
 	drag_enabled = not item.is_empty()
-	_art.texture = FinanceUIStyle.item_icon(str(item.get("icon", "")), "augmentations", str(item.get("base_item_id", "")))
+	ItemIconArt.bind_texture(_art, FinanceUIStyle.item_icon(str(item.get("icon", "")), "augmentations", str(item.get("base_item_id", ""))), false, 32.0, null, 32.0)
 	_empty_mark.visible = not drag_enabled
 	_caption.text = L10n.source(str(item.get("display_name", "ui.enchantment.empty_slot")))
 	tooltip_text = "" if drag_enabled else L10n.text("ui.enchantment.empty_slot_tooltip")

@@ -85,6 +85,13 @@ func verify_layout(label: String) -> void:
 		var font_scale := card.get_global_transform_with_canvas().get_scale().y
 		check(is_equal_approx(font_scale, 1.0), label + " card renders directly on native canvas")
 		check(card.name_label.get_theme_font_size("font_size") >= 18, label + " native title font size")
+		if card.offer_data.offer_type == "relic":
+			check(card.icon_texture.size.is_equal_approx(Vector2(72, 72)), label + " relic icon displays at exact 2x")
+			check(card.icon_frame.get_global_rect().encloses(card.icon_texture.get_global_rect()), label + " enlarged relic stays within its frame")
+			var relic := DataRegistry.get_record("relics", str(card.offer_data.target_id))
+			check(card._relic_glow.visible and card._relic_glow.self_modulate == card.get_color_for_rarity(str(relic.rarity)), label + " glow uses the relic's own rarity")
+		else:
+			check(not card._relic_glow.visible, label + " reused weapon card has no relic glow")
 	print("REWARD_LAYOUT ", label, " safe=", safe, " panel=", panel, " scroll=", popup.offer_scroll.get_global_rect())
 
 
@@ -114,7 +121,18 @@ func _run() -> void:
 	battle.set_process(false)
 	battle.wave_manager.current_gold = 1000
 	popup = game.find_child("ShopPopup", true, false) as ShopPopup
+	var hud := battle.hud as BattleHud
+	check(not hud._stat_value_labels.is_empty(), "battle prepares attribute rows before first reward")
+	var prepared_rows := hud._stat_value_labels.duplicate()
+	var armor_before := battle.player.modifier_stack.get_base_stat("armor")
+	battle.player.modifier_stack.set_base_stat("armor", armor_before + 3.0)
 	flow.request_shared_reward_shop_popup(4)
+	check(hud._stat_value_labels == prepared_rows, "opening reward reuses the prepared attribute rows")
+	check(hud._stat_value_labels.armor.text == hud._format_stat_value("armor", hud._get_display_stat_value("armor")), "prepared rows show current attributes on opening")
+	battle.player.modifier_stack.set_base_stat("armor", armor_before)
+	var prepared_buttons := popup.weapon_strip._weapon_buttons.duplicate()
+	popup.show_popup()
+	check(popup.weapon_strip._weapon_buttons == prepared_buttons, "showing configured popup keeps the bound weapon buttons")
 	await get_tree().create_timer(1.0).timeout
 	verify_layout("level_1920")
 	await capture("level_1920")
@@ -158,8 +176,45 @@ func _run() -> void:
 	await click(popup._offer_cards[0].select_button)
 	check(battle.player.relic_system.get_total_relic_count() == relics_before + 1, "native selection grants exactly one relic")
 	check(not popup.visible, "selection closes miniboss reward")
+	await _verify_relic_sizes_and_glows()
 	game.queue_free()
 	await frames()
 	CampProgression.end_transient_session()
 	print("REWARD_POPUP_LAYOUT_COMPLETE checks=%d failures=%d" % [checks, failures.size()])
 	get_tree().quit(0 if baseline or failures.is_empty() else 1)
+
+
+func _verify_relic_sizes_and_glows() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 120
+	add_child(layer)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.position = Vector2(470, 100)
+	layer.add_child(grid)
+	var covered := {}
+	for record: Dictionary in DataRegistry.get_table("relics"):
+		var rarity := str(record.rarity)
+		if covered.has(rarity): continue
+		covered[rarity] = true
+		var card := load("res://scenes/ui/rewards/reward_option.tscn").instantiate() as RewardOption
+		grid.add_child(card)
+		var offer := record.duplicate(true)
+		offer.merge({"offer_type": "relic", "target_id": record.id, "rarity": "common"}, true)
+		card.configure(offer)
+		card.set_available_size(160, 200)
+		await frames(2)
+		check(card.icon_texture.size == Vector2(72, 72), rarity + " compact icon uses the same 2x tier")
+		check(card._relic_glow.self_modulate == card.get_color_for_rarity(rarity), rarity + " uses original relic rarity even if offer rarity differs")
+		card.configure({"offer_type": "new_weapon", "icon": DataRegistry.get_record("weapons", "weapon_void_blade").icon})
+		check(not card._relic_glow.visible, rarity + " glow clears when card is reused for weapon")
+		offer.rarity = rarity
+		card.configure(offer)
+		card.set_available_size(298, 350)
+		await frames(2)
+		check(card.icon_texture.size == Vector2(72, 72), rarity + " regular layout retains the 2x tier")
+		card._stop_icon_float()
+	check(covered.size() == RewardOption.RARITY_COLORS.size(), "all six relic rarity colors covered")
+	await frames()
+	await capture("relic_rarity_glows")
+	layer.queue_free()

@@ -23,10 +23,10 @@ func _ready() -> void:
 	visual.texture = WAVE
 	visual.hframes = 8
 	visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	visual.scale = Vector2.ONE * 0.625
+	visual.scale = Vector2.ONE
 	visual.rotation = direction.angle()
 	add_child(visual)
-	preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(visual,2.0)
+	# Native 32px frames use nearest sampling without a second 2px quantization.
 	sweep = ShapeCast2D.new()
 	var shape := CircleShape2D.new()
 	shape.radius = 10.0
@@ -45,7 +45,6 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	if impacted:
 		visual.frame = mini(5, int(age * 24))
-		preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(visual,2.0)
 		if age >= 0.25: queue_free()
 		return
 	var distance := minf(speed * delta, maxf(0.0, max_distance - travelled))
@@ -62,7 +61,6 @@ func _physics_process(delta: float) -> void:
 	global_position += direction * distance
 	travelled += distance
 	visual.frame = int(age * 24) % 8
-	preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(visual,2.0)
 	if travelled >= max_distance: queue_free()
 
 
@@ -72,6 +70,5 @@ func impact() -> void:
 	visual.texture = HIT
 	visual.hframes = 6
 	visual.frame = 0
-	visual.scale = Vector2.ONE * 0.75
+	visual.scale = Vector2.ONE
 	visual.rotation = 0.0
-	preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(visual,2.0)

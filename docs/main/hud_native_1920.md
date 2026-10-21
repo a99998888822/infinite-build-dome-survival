@@ -13,5 +13,3 @@
 - `scenes/tests/hud_native_layout_test.tscn`：不同实际窗口尺寸下的原生布局和坐标点击。
 - `scenes/tests/reward_popup_layout_test.tscn`：奖励 4×2、滚动范围、刷新和选择。
 - `scenes/tests/hud_native_visual_review.tscn`：固定状态的修改前后截图；GPU 验证使用 `scripts/tools/run_godot_background.py`。
-
-本次截图和差异数据位于 `artifacts/reviews/hud_native_1920/`。奖励面板区域逐像素一致；其他 HUD 尚有字体栅格化和分数坐标取整差异，不能将当前静态对照视为全界面、全动画的零差异证明。

@@ -136,7 +136,7 @@ func _run() -> void:
 func validate_behavior() -> void:
 	await reset(Vector2(-400, 0), Vector2.ZERO, 99)
 	await step(60)
-	check(bat.global_position.x > -330, "outside 0.9 range approaches player")
+	check(bat.global_position.distance_to(player.global_position) < 380 and bat.velocity.x > 0, "outside 0.9 range approaches player after acceleration")
 	await reset(Vector2(-45, 0), Vector2.ZERO, 99)
 	await step(60)
 	check(bat.global_position.x < -90, "inside 0.3 range retreats")
@@ -144,19 +144,20 @@ func validate_behavior() -> void:
 	await step(20)
 	check(bat.global_position.is_equal_approx(Vector2(-180, 0)), "holds position inside preferred range")
 	check(seen_frames.size() >= 6, "hover and move animate all six source frames")
-	var visible_width := EchoBat.MOVE.get_image().get_region(Rect2i(0, 0, 128, 128)).get_used_rect().size.x * bat.sprite.scale.x
-	check(visible_width > 71.0 and visible_width < 74.0, "pixel art preserves the approved 80 percent world size")
+	var visible_width := EchoBat.MOVE.get_image().get_region(Rect2i(0, 0, 96, 96)).get_used_rect().size.x * bat.sprite.scale.x
+	check(bat.sprite.scale == Vector2.ONE and visible_width >= 71.0 and visible_width <= 76.0, "96px padded canvas preserves bat body size at 1x")
 	check(is_equal_approx((bat.get_node("CollisionShape2D").shape as CircleShape2D).radius, 9.6), "bat collision shrinks with body")
 	var mouth_right := bat.mouth_position() - bat.global_position
-	check(absf(mouth_right.x - 11.2) < 0.5 and absf(mouth_right.y + 12) < 0.5, "new lip socket remains aligned to smaller bat")
+	check(mouth_right.is_equal_approx(Vector2(12, -12)), "lip socket follows the new native frame")
 	bat.sprite.flip_h = true
 	check((bat.mouth_position() - bat.global_position).is_equal_approx(Vector2(-mouth_right.x, mouth_right.y)), "lip socket mirrors with left-facing artwork")
 	bat.sprite.flip_h = false
-	check(EchoBat.MOVE.get_size() == Vector2(768, 128) and EchoBat.ATTACK.get_size() == Vector2(1152, 128), "production atlases contain 6 and 9 full 128px frames")
+	check(EchoBat.MOVE.get_size() == Vector2(576, 96) and EchoBat.ATTACK.get_size() == Vector2(864, 96), "production atlases contain 6 and 9 full 96px frames")
 	check(bat.sprite.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "pixel art uses nearest texture sampling")
 	check(is_equal_approx(float(bat.profile.path_width), 20.0), "warning width 20 versus miniboss 71.68")
 	bat.cooldown = 0
 	check(bat.begin_attack(), "begins charge")
+	check(bat.charge.get_rect().size == Vector2(20,20) and bat.charge.global_scale == Vector2.ONE and bat.charge.material == null, "charge preserves its native 20px pixels without coarse resampling")
 	await step(11)
 	check(bat.skill_state == "charge" and not bat.warning.visible and shot_count == 0, "no warning or damage before 0.2s")
 	await step()
@@ -173,6 +174,15 @@ func validate_behavior() -> void:
 	await step(12)
 	check(is_equal_approx(wave.travelled - start_distance, 60.0), "doubled sonic speed travels 60 units in 0.2s")
 	check(wave.visual.hframes == 8, "pixel spiral uses eight baked animation frames")
+	check(wave.visual.get_rect().size == Vector2(32,32) and wave.visual.global_scale == Vector2.ONE and wave.visual.material == null, "flying wave preserves native 32px pixels")
+	check(is_equal_approx((wave.sweep.shape as CircleShape2D).radius,10.0), "new artwork leaves the swept damage radius unchanged")
+	var hit_probe := EchoBatSonic.new()
+	hit_probe.target = player
+	bat.add_child(hit_probe)
+	hit_probe.set_physics_process(false)
+	hit_probe.impact()
+	check(hit_probe.visual.get_rect().size == Vector2(32,32) and hit_probe.visual.global_scale == Vector2.ONE and hit_probe.visual.material == null and hit_probe.visual.rotation == 0, "impact keeps native 32px size and clears flight rotation")
+	hit_probe.free()
 	bat.cooldown = 99
 	var before := player.current_hp
 	await step(140)
@@ -201,6 +211,9 @@ func validate_behavior() -> void:
 	bat._on_control_interrupted()
 	check(not bat.warning.visible and not bat.charge.visible, "control interruption removes warning")
 	await reset(Vector2(16, 0), Vector2.ZERO, 99)
+	# Root overlap is insufficient after the player's body-offset revision.
+	# Align the actual collision centers for this contact-damage case.
+	bat.global_position += player.get_node("CollisionShape2D").global_position - bat.get_node("CollisionShape2D").global_position
 	before = player.current_hp
 	bat._process_contact_damage()
 	check(player.current_hp == before - 1, "body contact inflicts only one damage")
@@ -258,7 +271,7 @@ func make_overlay() -> void:
 	title = Label.new()
 	title.position = Vector2(42, 26)
 	title.add_theme_font_size_override("font_size", 25)
-	title.text = "回声蝙蝠 · 128 像素描线版实机"
+	title.text = "回声蝙蝠 · 96 像素正式版实机"
 	layer.add_child(title)
 	var detail := Label.new()
 	detail.position = Vector2(43, 63)

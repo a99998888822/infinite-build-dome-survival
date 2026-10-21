@@ -1,0 +1,215 @@
+{
+  "revision": "native96_192_20261021",
+  "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
+  "originals_revision": "02b3ef4",
+  "source": "720px originals restored from Git; hashes verified",
+  "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
+  "size": 96,
+  "scale": 0.12,
+  "origin": [
+    4.8,
+    9.48
+  ],
+  "offset": [
+    0,
+    -10
+  ],
+  "folder": "echo_bat",
+  "frames": [
+    {
+      "source_sha256": "16d6ed0f2f1f1f73782d40f43250f10e5b458d581b077a394fd65a42c67e21ce",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/01.png",
+      "frame_sha256": "2a5332e089553957c2c2f9009f2466ddefc58da728ee99fe5b3145f85fd0ceb0",
+      "visible_bbox": [
+        10,
+        30,
+        86,
+        70
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 0
+    },
+    {
+      "source_sha256": "23635aec4a47d728d60ed98408708475650031183c8ee3fe0ff0ad6f00e497d6",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/02.png",
+      "frame_sha256": "af15493e7ab8e556d5ea7707affd9c963c759f0a6150d9c9e0d847473fd37b95",
+      "visible_bbox": [
+        8,
+        34,
+        88,
+        70
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 1
+    },
+    {
+      "source_sha256": "8cb4153cce99279143b99d7356c6f58da04fe2c5d111718ee25de5ed24ca2cff",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/03.png",
+      "frame_sha256": "f76b1ed10760d1f5bb65ae890d6af4954dbacfe35f9f63e94c46689add25166c",
+      "visible_bbox": [
+        34,
+        34,
+        65,
+        75
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 2
+    },
+    {
+      "source_sha256": "33b4cd45267f1988c6a4080f5f93236a6282659bec9c355b469018242d37e91c",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/04.png",
+      "frame_sha256": "a7f1452900d763e2606eabc1994fcada7471059c4a0221a52778ff493bdd3fdb",
+      "visible_bbox": [
+        36,
+        33,
+        62,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 3
+    },
+    {
+      "source_sha256": "b708536e912cdaacac365f097775ebcbff2ee74f238ddabec58212276332010c",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/05.png",
+      "frame_sha256": "f2a1cd22cec51a1e1faa0b17d26720608539ef178ab23ed903408ff162b15ac6",
+      "visible_bbox": [
+        36,
+        34,
+        62,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 4
+    },
+    {
+      "source_sha256": "1ab36deb7e40e56bed6b8f751c14899338641781b5f976a7fd6f53d684093686",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/06.png",
+      "frame_sha256": "6992541faefe75a6650c1660b058f2958ca6c2d154d79d676d89c396c5606fe5",
+      "visible_bbox": [
+        36,
+        33,
+        62,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 5
+    },
+    {
+      "source_sha256": "3602a2a4f2c66497206771d69e4684bb49a6ddfa7df3c8ae732a63ec4c792aef",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/07.png",
+      "frame_sha256": "7910556512c05200bc85259c94222a00aab476d7ccba7a1e012337831547c62b",
+      "visible_bbox": [
+        36,
+        33,
+        62,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 6
+    },
+    {
+      "source_sha256": "1e6f6c16d8f435b6e5d93cb80ee7d28e7c6b1c8dcce5df40691fa67c2014c151",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/08.png",
+      "frame_sha256": "80ced35b6423236d0723ac8c12d37965d10043bab004f58369e192e7778274d4",
+      "visible_bbox": [
+        36,
+        33,
+        62,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 7
+    },
+    {
+      "source_sha256": "a9f68b7720d1cdc6f21d1124b5b3974e8728437482ed1bb22f9e0fdf0fbabc30",
+      "source_path": "artifacts/sources/enemies/echo_bat/attack/09.png",
+      "frame_sha256": "51ed1d7d4cad3e82616b139b8eb0f6943e74117526994293ad0a793bfee5529a",
+      "visible_bbox": [
+        36,
+        35,
+        63,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/attack.png",
+      "atlas_frame": 8
+    },
+    {
+      "source_sha256": "b8091d6aa5592a96c3ca14872fc88d425c823d2cfa31ac8b1615aa9ac11df50b",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/01.png",
+      "frame_sha256": "8423f0451ff55ee695ce00f46b093c0a5d2282d0ef8a56b2bb8d818b854e8fb8",
+      "visible_bbox": [
+        12,
+        26,
+        85,
+        69
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 0
+    },
+    {
+      "source_sha256": "4d59fd486bf9198b203bf03f2d5a59790f2858f04964f726ade7e9fddc6524d1",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/02.png",
+      "frame_sha256": "c529cc8dc21cbc05b10dfea1c4cd622726d81447b2b214c0233158ba8c72bb86",
+      "visible_bbox": [
+        11,
+        27,
+        84,
+        69
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 1
+    },
+    {
+      "source_sha256": "de2f062e6ad245c58be15cf940adf42716c044e8a68370b90f83a092b5260a10",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/03.png",
+      "frame_sha256": "c58a1943b4619d6e8e0e282be0677cf2092beb4db367f5c2415cbcea0b862aa8",
+      "visible_bbox": [
+        10,
+        34,
+        86,
+        69
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 2
+    },
+    {
+      "source_sha256": "e5b19d47aacdddf142bdf57f90bcf1eed64908193bd032fe4b380f402222c3cb",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/04.png",
+      "frame_sha256": "43ab7f98899f1d8336f75cf1de1239b10a160e771e6c81ec1f94deea18961ffd",
+      "visible_bbox": [
+        9,
+        35,
+        88,
+        69
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 3
+    },
+    {
+      "source_sha256": "36dc46dc68147dd78119b21e8f6b22e0e0a73bdb965a13087af5a20a125bd3cd",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/05.png",
+      "frame_sha256": "9c8d41556bd12bcb31d34999eab62e13961b617ed3b4e7ccf8bb6ad0420c8e2e",
+      "visible_bbox": [
+        12,
+        35,
+        85,
+        72
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 4
+    },
+    {
+      "source_sha256": "9d43a03f2399c72ce71ce41b276c5dc696960c5e4a4b70b72e2a027066c701c6",
+      "source_path": "artifacts/sources/enemies/echo_bat/move/06.png",
+      "frame_sha256": "87584cba3cb6c6d3f7d35b7ca07f32354c547086d42f053540b65d4a38f4cc00",
+      "visible_bbox": [
+        8,
+        35,
+        87,
+        69
+      ],
+      "atlas": "assets/sprites/enemies/echo_bat/move.png",
+      "atlas_frame": 5
+    }
+  ]
+}

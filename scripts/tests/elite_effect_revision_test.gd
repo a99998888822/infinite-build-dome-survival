@@ -89,7 +89,7 @@ func _run() -> void:
 	for child in get_children():
 		if child is WaterWaveEffect:
 			water = child
-	check(water != null and is_equal_approx(water._radius, 19.635), "fallback water footprint follows approved additional fifteen percent reduction")
+	check(water != null and is_equal_approx(water._radius, 25.9182), "fallback water footprint follows the terminal visual spread")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	var age := water._elapsed
 	water._process(1.0)

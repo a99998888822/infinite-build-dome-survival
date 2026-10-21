@@ -3,55 +3,87 @@
     96,
     96
   ],
-  "source_frames": 61,
+  "source_frames": 53,
   "facing": "right",
   "root_motion": false,
   "clips": {
     "idle": {
       "texture": "res://assets/sprites/player/actions/novice_96/idle.png",
       "frames": 1,
-      "fps": 1
+      "fps": 1,
+      "offset": [
+        0,
+        3
+      ]
     },
     "move": {
       "texture": "res://assets/sprites/player/actions/novice_96/move.png",
       "frames": 8,
-      "fps": 8
+      "fps": 8,
+      "offset": [
+        0,
+        3
+      ]
     },
     "attack": {
       "texture": "res://assets/sprites/player/actions/novice_96/attack.png",
       "frames": 7,
-      "fps": 14
+      "fps": 14,
+      "offset": [
+        0,
+        3
+      ]
     },
     "sustain": {
       "texture": "res://assets/sprites/player/actions/novice_96/sustain.png",
       "frames": 8,
-      "fps": 10
+      "fps": 10,
+      "offset": [
+        0,
+        3
+      ]
     },
     "move_sustain": {
       "texture": "res://assets/sprites/player/actions/novice_96/move_sustain.png",
       "frames": 8,
-      "fps": 8
+      "fps": 8,
+      "offset": [
+        0,
+        3
+      ]
     },
     "jump_forward": {
-      "texture": "res://assets/sprites/player/actions/novice_96/jump_forward.png",
-      "frames": 10,
-      "fps": 18
+      "texture": "res://assets/sprites/player/actions/novice_96/jump.png",
+      "frames": 6,
+      "fps": 8.333333333333334,
+      "frame_durations": [
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12
+      ],
+      "offset": [
+        0,
+        3
+      ]
     },
     "jump_backward": {
-      "texture": "res://assets/sprites/player/actions/novice_96/jump_backward.png",
-      "frames": 10,
-      "fps": 11.428571428571429,
+      "texture": "res://assets/sprites/player/actions/novice_96/jump.png",
+      "frames": 6,
+      "fps": 8.333333333333334,
       "frame_durations": [
-        0.125,
-        0.08333333333333333,
-        0.0625,
-        0.0625,
-        0.125,
-        0.0625,
-        0.0625,
-        0.10416666666666667,
-        0.125,
-        0.0625
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12
+      ],
+      "offset": [
+        0,
+        3
       ]
     },
     "move_attack": {
@@ -68,8 +100,13 @@
         0.08333333333333333,
         0.08333333333333333,
         0.08333333333333333
+      ],
+      "offset": [
+        0,
+        3
       ]
     }
   },
-  "historical_source_frames": 50
+  "historical_source_frames": 50,
+  "unique_source_frames": 47
 }

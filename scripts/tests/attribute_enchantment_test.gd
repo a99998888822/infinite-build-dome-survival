@@ -60,12 +60,12 @@ func _run() -> void:
 		loadout.detach_item_from_weapon(weapon.weapon_id, item.item_instance_id)
 		check(copy.get_attachment_bonus(BONUS_KEYS[index]) == AMOUNTS[index] and weapon.get_attachment_bonus(BONUS_KEYS[index]) == 0, "bounce snapshot and original stay independent")
 		var texture := load(item.icon) as Texture2D
-		check(texture != null and texture.get_size() == Vector2(64, 64), "installed 64px icon: " + IDS[index])
+		check(texture != null and texture.get_size() == Vector2(32, 32), "installed native 32px icon: " + IDS[index])
 		var card := ItemInventoryCard.new()
 		host.add_child(card)
 		card.configure(item, false)
 		check(card._get_effect_names() == item.display_name and card._build_tooltip().contains(item.description), "item card exposes name and scope")
-		for table_id in ["drop_basic_enemy", "drop_elite_enemy", "drop_boss_enemy"]:
+		for table_id in ["drop_basic_enemy", "drop_elite_enemy"]:
 			check(DataRegistry.get_record("drop_tables", table_id).entries.any(func(entry): return entry.get("item_id", "") == item.base_item_id), "obtainable from " + table_id)
 
 	# The same percentage is applied once on every native weapon type. Elemental

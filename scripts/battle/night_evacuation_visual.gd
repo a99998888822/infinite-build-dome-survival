@@ -165,27 +165,30 @@ func _exit_tree() -> void:
 	reset()
 
 func _process(_delta: float) -> void:
-	if lit: refresh()
+	if lit or (is_instance_valid(phase.manager) and phase.manager.running and phase.manager.wave_time_left<=float(phase.config.dusk_lead_seconds)): refresh()
 
 func to_screen(point: Vector2) -> Vector2:
 	var view := phase.player.get_viewport()
 	return (view.get_canvas_transform()*point)*get_tree().root.get_visible_rect().size/view.get_visible_rect().size
 
 func refresh() -> void:
-	if not lit or not is_instance_valid(bank): return
 	var size := get_tree().root.get_visible_rect().size
 	guide_scale = size.y/1080.0
-	var night := smoothstep(0.0,float(phase.config.night_seconds),phase.elapsed)
-	announcement.size = Vector2(size.x,50*guide_scale)
-	announcement.position = Vector2(0,112*guide_scale)
-	announcement.add_theme_font_size_override("font_size",maxi(12,roundi(24*guide_scale)))
-	announcement.visible = phase.elapsed<4.5 or (phase.elapsed>=phase.next_hunter_at-3.0 and phase.elapsed<phase.next_hunter_at)
-	announcement.text = L10n.text("ui.evacuation.open" if phase.elapsed<4.5 else "ui.evacuation.hunters")
+	var night := phase.night_progress()
+	night_rect.visible = night>0.0 and (lit or phase.manager.running)
 	night_rect.size = size
 	night_material.set_shader_parameter("darkness",night*float(phase.config.night_darkness))
 	night_material.set_shader_parameter("view_size",size)
 	night_material.set_shader_parameter("pixel_scale",guide_scale)
 	night_material.set_shader_parameter("hero",to_screen(phase.foot_position()+Vector2(0,-38)))
+	night_material.set_shader_parameter("bunker_light_enabled",lit and is_instance_valid(bank))
+	if glow_material != null: glow_material.set_shader_parameter("strength",lerpf(saved_glow_strength,.36,night))
+	if not lit or not is_instance_valid(bank): return
+	announcement.size = Vector2(size.x,50*guide_scale)
+	announcement.position = Vector2(0,112*guide_scale)
+	announcement.add_theme_font_size_override("font_size",maxi(12,roundi(24*guide_scale)))
+	announcement.visible = phase.elapsed<4.5 or (phase.elapsed>=phase.next_hunter_at-3.0 and phase.elapsed<phase.next_hunter_at)
+	announcement.text = L10n.text("ui.evacuation.open" if phase.elapsed<4.5 else "ui.evacuation.hunters")
 	night_material.set_shader_parameter("bank",to_screen(phase.bank_anchor+Vector2(-10,-90)))
 	night_material.set_shader_parameter("lamp_left",to_screen(phase.bank_anchor+Vector2(-79,-82)))
 	night_material.set_shader_parameter("lamp_right",to_screen(phase.bank_anchor+Vector2(72,-66)))
@@ -194,7 +197,6 @@ func refresh() -> void:
 	for light in lamp_materials: light.set_shader_parameter("night",night)
 	bank_material.set_shader_parameter("object_root",phase.bank_anchor)
 	bank_material.set_shader_parameter("sun_time",phase.scenery.environment_time if is_instance_valid(phase.scenery) else 0.0)
-	if glow_material != null: glow_material.set_shader_parameter("strength",lerpf(saved_glow_strength,.36,night))
 	if is_instance_valid(ring): ring.queue_redraw()
 	if not phase.active:
 		hide_guidance()

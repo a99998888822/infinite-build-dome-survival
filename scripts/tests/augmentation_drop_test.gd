@@ -30,7 +30,7 @@ func _run() -> void:
 	for data: Dictionary in DataRegistry.get_table("augmentations"):
 		check(data.rarity == RARITIES.get(str(data.id), "uncommon"), "configured rarity " + str(data.id))
 	var drops := DropRewardSystem.new()
-	for table_id in ["drop_basic_enemy", "drop_elite_enemy", "drop_boss_enemy"]:
+	for table_id in ["drop_basic_enemy", "drop_elite_enemy"]:
 		var table := DataRegistry.get_record("drop_tables", table_id).duplicate(true)
 		table.augmentation_chance_percent = 100
 		drops.begin_wave()

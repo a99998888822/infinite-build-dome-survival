@@ -2,6 +2,7 @@ extends Node2D
 class_name WindBladeEffect
 const PARAMETERS = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 
 const DEFAULT_SPEED: float = 480.0
 const DEFAULT_LIFETIME: float = 0.46
@@ -14,7 +15,7 @@ var _elapsed: float = 0.0
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _damage_multiplier := 0.7
-var _hit_radius := DEFAULT_RADIUS * 0.5
+var _hit_radius := FOOTPRINT.WIND_RADIUS
 var _area_scale := 1.0
 var _knockback_speed := 450.0
 var _knockback_duration := 0.3
@@ -42,7 +43,8 @@ static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed
 		var context := PARAMETERS.build_weapon_context(weapon, "wind", {"damage_multiplier": 0.7, "knockback_speed": 450.0, "knockback_duration": 0.3}, attachment_item_id)
 		effect._damage_multiplier = context.get_resolved_parameter("damage_multiplier", 0.7)
 		effect._area_scale = maxf(0.01, context.get_resolved_parameter("damage_area_size_multiplier", 1))
-		effect._hit_radius = maxf(StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.get("hit_radius", 0)), weapon.get_stat("area_size")), DEFAULT_RADIUS * 0.5) * effect._area_scale
+		# One reviewed circle for this spell, independent of its source weapon.
+		effect._hit_radius = FOOTPRINT.WIND_RADIUS * effect._area_scale
 		effect._knockback_speed = context.get_resolved_parameter("knockback_speed", 450)
 		effect._knockback_duration = context.get_resolved_parameter("knockback_duration", 0.3)
 	effect._ground_contact = ground_contact

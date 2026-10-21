@@ -7,17 +7,27 @@ const COOLDOWN_SHADER := preload("res://shaders/ui/weapon_cooldown.gdshader")
 const CAST_MODE_ICON_SCRIPT := preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 const PULSE_R02 := preload("res://scripts/ui/weapon_pulse_r02.gd")
 const COOLDOWN_FEEDBACK := preload("res://scripts/ui/weapon_cooldown_feedback.gd")
-const ICON_ART_PIXELS := 48.0
+const ICON_ART_PIXELS := 36.0
+const LARGE_ICON_SIZE := 72.0
+const SMALL_ICON_SIZE := 36.0
+const LARGE_SLOT_SIZE := 108.0
+const SMALL_SLOT_SIZE := 72.0
+const LARGE_GAP := 10.0
+const SMALL_GAP := 8.0
+const ROW_GAP := 20.0
 class WeaponHeader extends Control:
 	var number_source: Label
 	var status_source: Label
+	var compact := false
 	func _draw() -> void:
 		var font := number_source.get_theme_font("font")
 		for side in 2:
 			var text := number_source.text if side == 0 else status_source.text
 			var align := HORIZONTAL_ALIGNMENT_LEFT if side == 0 else HORIZONTAL_ALIGNMENT_RIGHT
-			draw_string_outline(font, Vector2(10, 28.333333), text, align, size.x - 20, 20, 2, Color("101c20"))
-			draw_string(font, Vector2(10, 28.333333), text, align, size.x - 20, 20, Color("e1f4ff"))
+			var pixels := 14 if compact else 20
+			var inset := 6 if compact else 10
+			draw_string_outline(font, Vector2(inset, 21), text, align, size.x - inset * 2, pixels, 2, Color("101c20"))
+			draw_string(font, Vector2(inset, 21), text, align, size.x - inset * 2, pixels, Color("e1f4ff"))
 
 var headers: Array[WeaponHeader] = []
 var feedbacks: Array[Control] = []
@@ -30,7 +40,10 @@ var timers: Array[Label] = []
 var cast_mode_icons: Array[WeaponCastModeIcon] = []
 var selected_index := -1
 const CAST_MODE_SIZE := 23.333333
-var slot_size := 106.666667
+var slot_size := LARGE_SLOT_SIZE
+var icon_size := LARGE_ICON_SIZE
+var slot_gap := LARGE_GAP
+var columns := 1
 var preview_page := 0
 var _normal_style: CombatHudFrame
 var _aim_style: CombatHudFrame
@@ -57,13 +70,12 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		add_child(card)
 		cards.append(card)
 		var icon := TextureRect.new()
-		icon.texture = load(str(weapons[i].weapon_data.icon))
+		icon.texture = combat_icon(load(str(weapons[i].weapon_data.icon)))
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(icon)
-		ItemIconArt.bind_texture(icon, icon.texture, false, 0.0, null, ICON_ART_PIXELS)
 		icons.append(icon)
 		# A separate disk also covers transparent pixels around narrow weapon art.
 		var mask := ColorRect.new()
@@ -131,24 +143,45 @@ func _style(selected: bool) -> CombatHudFrame:
 	return box
 
 
+static func combat_icon(source: Texture2D) -> Texture2D:
+	# A single 36px grid at both tiers, independent of window output scaling.
+	# Future approved native sources bypass the historical atlas.
+	if source == null or source.get_size() == Vector2.ONE * ICON_ART_PIXELS:
+		return source
+	return ItemIconArt.texture_for(source, ICON_ART_PIXELS)
+
+
 func apply_layout() -> void:
 	var viewport_size := get_viewport_rect().size
-	slot_size = clampf((viewport_size.x * 0.8 - maxf(0, weapons.size() - 1) * 11.666667) / maxf(1, weapons.size()), 63.333333, 106.666667)
-	size = Vector2(maxf(0, weapons.size() * (slot_size + 11.666667) - 11.666667), slot_size + CAST_MODE_SIZE)
-	position = Vector2((viewport_size.x - size.x) * 0.5, viewport_size.y - (size.y + 38.333333))
+	var available := maxf(1.0, floorf(minf(viewport_size.x * 0.8, viewport_size.x - 32.0)))
+	var count := weapons.size()
+	var compact := count * LARGE_SLOT_SIZE + maxi(0, count - 1) * LARGE_GAP > available
+	icon_size = SMALL_ICON_SIZE if compact else LARGE_ICON_SIZE
+	slot_size = SMALL_SLOT_SIZE if compact else LARGE_SLOT_SIZE
+	slot_gap = SMALL_GAP if compact else LARGE_GAP
+	columns = maxi(1, mini(count, floori((available + slot_gap) / (slot_size + slot_gap))))
+	var rows := ceili(float(count) / columns)
+	var width := columns * slot_size + (columns - 1) * slot_gap if count > 0 else 0.0
+	size = Vector2(width, rows * slot_size + maxi(0, rows - 1) * ROW_GAP + ceili(CAST_MODE_SIZE))
+	position = Vector2(floorf((viewport_size.x - size.x) * 0.5), floorf(viewport_size.y - size.y - 38))
 	for i in cards.size():
-		cards[i].position = Vector2(i * (slot_size + 11.666667), 0)
+		var row := i / columns
+		var row_count := mini(columns, count - row * columns)
+		var row_width := row_count * slot_size + (row_count - 1) * slot_gap
+		cards[i].position = Vector2(floorf((width - row_width) * 0.5) + (i % columns) * (slot_size + slot_gap), row * (slot_size + ROW_GAP))
 		cards[i].size = Vector2.ONE * slot_size
-		icons[i].position = Vector2(13.333333, 23.333333)
-		icons[i].size = Vector2(slot_size - 26.666667, slot_size - 30)
-		cooldown_masks[i].position = Vector2(6.666667, 6.666667)
-		cooldown_masks[i].size = Vector2.ONE * (slot_size - 13.333333)
+		icons[i].position = Vector2((slot_size - icon_size) * 0.5, 24)
+		icons[i].size = Vector2.ONE * icon_size
+		icons[i].scale = Vector2.ONE
+		cooldown_masks[i].position = Vector2(6, 6)
+		cooldown_masks[i].size = Vector2.ONE * (slot_size - 12)
 		numbers[i].position = Vector2(6.666667, 0)
-		timers[i].position = Vector2(33.333333, 0)
-		timers[i].size = Vector2(slot_size - 40, 33.333333)
-		headers[i].size = Vector2(slot_size, 36.666667)
+		timers[i].position = Vector2(28, 0)
+		timers[i].size = Vector2(slot_size - 34, 24)
+		headers[i].size = Vector2(slot_size, 24)
+		headers[i].compact = compact
 		headers[i].queue_redraw()
-		cast_mode_icons[i].position = Vector2(i * (slot_size + 11.666667) + (slot_size - CAST_MODE_SIZE) * 0.5, slot_size - 1.666667 - CAST_MODE_SIZE * 0.5)
+		cast_mode_icons[i].position = cards[i].position + Vector2((slot_size - CAST_MODE_SIZE) * 0.5, slot_size - 1 - CAST_MODE_SIZE * 0.5)
 		cast_mode_icons[i].size = Vector2.ONE * CAST_MODE_SIZE
 
 
@@ -158,7 +191,7 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	var returning := weapons[index].is_return_ready()
 	var icon_path := weapons[index].get_combat_icon_path()
 	if icons[index].texture == null or ItemIconArt.source_path(icons[index].texture) != icon_path:
-		ItemIconArt.bind_texture(icons[index], load(icon_path), false, 0.0, null, ICON_ART_PIXELS)
+		icons[index].texture = combat_icon(load(icon_path))
 	# Tome animation/return availability must not replace its running countdown.
 	if returning or weapons[index].is_star_tome(): executing = false
 	var fraction := 1.0 if executing else clampf(remaining / maxf(total, 0.001), 0, 1)
@@ -190,7 +223,7 @@ func _gui_input(event: InputEvent) -> void:
 
 func _get_tooltip(at_position: Vector2) -> String:
 	for i in cards.size():
-		if Rect2(cards[i].position, Vector2(slot_size, size.y)).has_point(at_position):
+		if cards[i].get_rect().grow_individual(0, 0, 0, CAST_MODE_SIZE * 0.5).has_point(at_position):
 			return cast_mode_icons[i].tooltip_text
 	return ""
 

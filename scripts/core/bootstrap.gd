@@ -85,7 +85,6 @@ func _print_lookup_checks() -> void:
 	_print_lookup_result("weapons", "weapon_void_blade")
 	_print_lookup_result("relics", "relic_finance_manager")
 	_print_lookup_result("relics", "relic_piggy_bank")
-	_print_lookup_result("bonds", "bond_mighty")
 	_print_lookup_result("characters", "character_void_hunter")
 	_print_lookup_result("enemies", "enemy_mutated_grub")
 	_print_lookup_result("drop_tables", "drop_basic_enemy")
@@ -226,9 +225,8 @@ func _run_relic_bond_checks() -> bool:
 	passed = _print_check_result("relic system init", relic_system != null and relic_system.get_total_relic_count() == 0) and passed
 	passed = _print_check_result("relic max_stack zero", int(DataRegistry.get_record("relics", "relic_piggy_bank").get("max_stack", -1)) == 0) and passed
 	passed = _print_check_result("relic add modifier interest rate 6.5", relic_system.add_relic("relic_finance_manager") and is_equal_approx(player.get_stat("interest_rate"), 6.5)) and passed
-	passed = _print_check_result("bond count zero without bond relic", relic_system.get_bond_count("bond_chosen") == 0) and passed
-	passed = _print_check_result("bond count stays zero without bond relic", relic_system.add_relic("relic_high_yield_contract") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
-	passed = _print_check_result("bond count still zero after second relic", relic_system.add_relic("relic_goblin_central_bank_printer") and relic_system.get_bond_count("bond_chosen") == 0 and relic_system.get_active_bond_layers("bond_chosen") == 0) and passed
+	passed = _print_check_result("finance relic works without a bond", relic_system.add_relic("relic_high_yield_contract") and relic_system.get_active_special_effects().is_empty()) and passed
+	passed = _print_check_result("second finance relic works without a bond", relic_system.add_relic("relic_goblin_central_bank_printer") and relic_system.get_active_special_effects().is_empty()) and passed
 	passed = _print_check_result("relic stack unlimited", relic_system.can_add_relic("relic_piggy_bank")) and passed
 	player.queue_free()
 	return passed

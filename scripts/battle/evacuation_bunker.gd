@@ -103,10 +103,13 @@ class Route:
 
 
 	func direction(body: CharacterBody2D, destination: Vector2) -> Vector2:
+		return body.global_position.direction_to(waypoint(body, destination))
+
+	func waypoint(body: CharacterBody2D, destination: Vector2) -> Vector2:
 		var active := EvacuationBunker.current
 		if not is_instance_valid(active):
 			points.clear()
-			return body.global_position.direction_to(destination)
+			return destination
 		var next_bounds := active.routing_bounds(body)
 		if bunker != active or bounds != next_bounds:
 			bunker = active
@@ -116,11 +119,11 @@ class Route:
 		var escape := EvacuationBunker.outside_point(bounds, start)
 		if not start.is_equal_approx(escape):
 			points.clear()
-			return start.direction_to(escape)
+			return escape
 		var finish := EvacuationBunker.outside_point(bounds, destination)
 		if not EvacuationBunker.crosses(bounds, start, finish):
 			points.clear()
-			return start.direction_to(finish)
+			return finish
 		# Cache the chosen side until the target moves appreciably, avoiding jitter
 		# and per-frame path searches for every member of a pursuing crowd.
 		if points.is_empty() or target.distance_squared_to(finish) > 32.0 * 32.0:
@@ -128,4 +131,4 @@ class Route:
 			points = EvacuationBunker.find_route(bounds, start, finish)
 		while points.size() > 1 and not EvacuationBunker.crosses(bounds, start, points[1]):
 			points.remove_at(0)
-		return start.direction_to(points[0]) if not points.is_empty() else Vector2.ZERO
+		return points[0] if not points.is_empty() else start

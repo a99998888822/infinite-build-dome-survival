@@ -16,12 +16,24 @@ var decoration_material: ShaderMaterial
 var roots: Node2D
 var decals: Node2D
 var proxy: Node2D
+var enemy_sort_root: Node2D
+var enemy_sort_parent: Node
 var old_visual_position := Vector2.ZERO
 var foot_offset := Vector2.ZERO
 var foot_bounds_cache: Dictionary = {}
 var cells: Dictionary = {}
 var cell_rect := Rect2i()
 var _pending_cells: Array[Vector2i] = []
+const STREAM_BUDGET_USEC := 2500
+const NEAR_VIEW_BUDGET_USEC := 5000
+const LOADING_BUDGET_USEC := 4000
+const MAX_RETIRE_NODES := 8
+const MAX_RETIRE_BACKLOG := 1024
+var _cell_jobs: Dictionary = {}
+var _retiring_nodes: Array[Node] = []
+var last_stream_usec := 0
+var last_stream_steps := 0
+var _stream_urgent := false
 var ground_textures: Array = []
 var prop_textures: Array[Texture2D] = []
 var grass_textures: Array[Texture2D] = []
@@ -38,8 +50,9 @@ func _ready() -> void:
 	horizon = get_node("../../BattleSky/DistantRuins")
 	set_process(false)
 
-func set_world_context(subject: PlayerController, _wave_manager: WaveManager) -> void:
+func set_world_context(subject: PlayerController, wave_manager: WaveManager) -> void:
 	player = subject
+	if is_instance_valid(wave_manager): enemy_sort_root = wave_manager.enemy_root as Node2D
 	_setup.call_deferred()
 
 func _setup() -> void:
@@ -76,6 +89,11 @@ func _setup() -> void:
 	roots.name = "RootDepthSort"
 	roots.y_sort_enabled = true
 	add_child(roots)
+	# Keep the manager's enemy container intact; sort its children with scenery.
+	if is_instance_valid(enemy_sort_root):
+		enemy_sort_parent = enemy_sort_root.get_parent()
+		enemy_sort_root.y_sort_enabled = true
+		enemy_sort_root.reparent(roots, true)
 	proxy = Node2D.new()
 	proxy.name = "PlayerFeetSortAnchor"
 	roots.add_child(proxy)
@@ -116,10 +134,14 @@ func cache_player_frame_bounds(texture: Texture2D, grid: Vector2i) -> void:
 	layouts[grid] = frames
 
 func is_initial_stream_ready() -> bool:
-	return initialized and cell_rect.has_area() and _pending_cells.is_empty()
+	return initialized and cell_rect.has_area() and _pending_cells.is_empty() and _stream_prewarm_ready()
 
 func detach_player() -> void:
 	set_process(false)
+	_cell_jobs.clear()
+	_pending_cells.clear()
+	if is_instance_valid(enemy_sort_root) and is_instance_valid(enemy_sort_parent) and enemy_sort_root.get_parent() == roots:
+		enemy_sort_root.reparent(enemy_sort_parent, true)
 	if is_instance_valid(player) and is_instance_valid(player.visual_anchor) and player.visual_anchor.get_parent() == proxy:
 		player.visual_anchor.reparent(player,false)
 		player.visual_anchor.position = old_visual_position
@@ -141,7 +163,8 @@ func _update_area() -> void:
 	proxy.global_position = player.global_position+foot_offset
 	var inverse := get_viewport().get_canvas_transform().affine_inverse()
 	# Broad authored patches may extend well beyond their generating cell.
-	var area: Rect2 = (inverse*get_viewport_rect()).grow(_stream_margin())
+	var visible_area: Rect2 = inverse*get_viewport_rect()
+	var area := visible_area.grow(_stream_margin())
 	ground.position = area.position.floor()
 	ground.size = area.end.ceil()-ground.position
 	var ui_size := get_tree().root.get_visible_rect().size
@@ -162,17 +185,89 @@ func _update_area() -> void:
 		_pending_cells.clear()
 		for key in cells.keys():
 			if not wanted.has_point(key):
-				for node: Node in cells[key]: node.queue_free()
+				_retire_cell(key)
 				cells.erase(key)
+				_cell_jobs.erase(key)
+		for key in _cell_jobs.keys():
+			if not wanted.has_point(key): _cell_jobs.erase(key)
 		for y in range(first.y,last.y):
 			for x in range(first.x,last.x):
 				var key := Vector2i(x,y)
-				if not cells.has(key): _pending_cells.append(key)
-	var loading := bool(GameGlobal.get_runtime_flag("battle_loading", false))
+				if not cells.has(key) or _cell_jobs.has(key): _pending_cells.append(key)
+		# Establish cheap prop/collision skeletons before spending time on grass.
+		# A dash must never enter an unblocked rock while its grass is pending.
+		for key in _pending_cells:
+			if not _cell_jobs.has(key): _cell_jobs[key] = _begin_cell_job(key)
+	_prioritize_cells(visible_area)
+	_advance_stream()
+
+func _prioritize_cells(view: Rect2) -> void:
+	_stream_urgent = false
+	if _pending_cells.is_empty(): return
+	var priorities: Dictionary = {}
+	for key: Vector2i in _pending_cells:
+		# Measure distance to the view rectangle, not its center: a corner
+		# entering the picture must beat a distant cell along the centerline.
+		var bounds := Rect2(Vector2(key)*CELL,CELL).grow(32.0)
+		var gap := (bounds.position-view.end).max(Vector2.ZERO)+(view.position-bounds.end).max(Vector2.ZERO)
+		priorities[key] = Vector2(gap.length_squared(), bounds.get_center().distance_squared_to(view.get_center()))
+		if gap.length_squared()<160.0*160.0: _stream_urgent = true
+	# Refresh even without a cell-rectangle change, since the view keeps moving.
+	_pending_cells.sort_custom(func(a: Vector2i, b: Vector2i):
+		var first: Vector2 = priorities[a]
+		var second: Vector2 = priorities[b]
+		return first.x<second.x if first.x!=second.x else first.y<second.y)
+
+func _retire_cell(key: Vector2i) -> void:
+	for node: Node in cells[key]:
+		if not is_instance_valid(node): continue
+		if node is CanvasItem: node.hide()
+		for child in node.get_children():
+			if child is BattleTerrainObstacle:
+				child.collision_layer = 0
+				BattleTerrainObstacle.active.erase(child)
+		_retiring_nodes.append(node)
+
+func _advance_stream() -> void:
 	var started := Time.get_ticks_usec()
+	last_stream_steps = 0
+	# Queueing every old mesh at once only moves the spike to end-of-frame.
+	# Bound retained memory even under repeated multi-screen teleports. That
+	# exceptional overflow can exceed the normal per-frame retirement allowance.
+	var retire_count := maxi(MAX_RETIRE_NODES, _retiring_nodes.size()-MAX_RETIRE_BACKLOG)
+	for i in mini(retire_count, _retiring_nodes.size()):
+		var node: Node = _retiring_nodes.pop_back()
+		if is_instance_valid(node): node.queue_free()
+	# A dash can consume most of the lookahead in one frame. Temporarily give
+	# approaching cells more time, while keeping distant work at the low budget.
+	var budget := NEAR_VIEW_BUDGET_USEC if _stream_urgent else STREAM_BUDGET_USEC
+	if bool(GameGlobal.get_runtime_flag("battle_loading", false)): budget = LOADING_BUDGET_USEC
+	while not _stream_prewarm_ready():
+		_step_stream_prewarm()
+		if Time.get_ticks_usec() - started >= budget:
+			last_stream_usec = Time.get_ticks_usec() - started
+			return
 	while not _pending_cells.is_empty():
-		_make_cell(_pending_cells.pop_front())
-		if loading and Time.get_ticks_usec() - started >= 4000: break
+		var key: Vector2i = _pending_cells[0]
+		if _step_cell_job(_cell_jobs[key]):
+			_cell_jobs.erase(key)
+			_pending_cells.pop_front()
+		last_stream_steps += 1
+		if Time.get_ticks_usec() - started >= budget: break
+	last_stream_usec = Time.get_ticks_usec() - started
+
+func _stream_prewarm_ready() -> bool:
+	return true
+
+func _step_stream_prewarm() -> void:
+	pass
+
+func _begin_cell_job(key: Vector2i) -> Dictionary:
+	return {"key":key}
+
+func _step_cell_job(job: Dictionary) -> bool:
+	_make_cell(job.key)
+	return true
 
 func get_darkness_entry_direction(world_point: Vector2) -> Vector2:
 	if not initialized: return Vector2.ZERO

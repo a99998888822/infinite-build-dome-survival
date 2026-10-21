@@ -1,0 +1,65 @@
+{
+  "source": "sustain_07-96-detail",
+  "size": 96,
+  "patches": [
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        50,
+        30,
+        53,
+        33
+      ],
+      "rows": [
+        "AAAA",
+        "KLNA",
+        "KMNA",
+        "IMNI"
+      ],
+      "eyes": [
+        {
+          "box": [
+            50,
+            30,
+            53,
+            33
+          ],
+          "light": "K",
+          "dark": "L"
+        }
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "eye",
+      "box": [
+        55,
+        31,
+        56,
+        33
+      ],
+      "rows": [
+        "AA",
+        "NA",
+        "MA"
+      ]
+    },
+    {
+      "face": 0,
+      "feature": "mouth",
+      "box": [
+        54,
+        36,
+        54,
+        36
+      ],
+      "rows": [
+        "J"
+      ]
+    }
+  ],
+  "colors": {
+    "H": "#fff0d7"
+  }
+}

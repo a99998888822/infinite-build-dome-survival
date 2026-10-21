@@ -17,6 +17,10 @@ func _ready() -> void:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
+	# This test checks full-detail batch counts beyond ParticleWorld's cap.
+	# Adaptive visual admission has separate budget tests and may skip a hit.
+	var previous_adaptive: bool = GameGlobal.get_runtime_flag("review_visual_adaptive", true)
+	GameGlobal.set_runtime_flag("review_visual_adaptive", false)
 	var field := FIELD.new()
 	field.name = "ParticleLightField"
 	add_child(field)
@@ -38,7 +42,13 @@ func _run() -> void:
 				effect._is_ground_strike = ground
 				effect._resolved_parameters = {"count_multiplier": multiplier, "attack_range_multiplier": intensity, "glow_multiplier": 1.3}
 				effect._emit_hit_burst(Vector2(150, 120), Vector2.RIGHT)
-				var burst = get_tree().get_nodes_in_group("lightning_hit_sprite_bursts")[-1]
+				var active_bursts := get_tree().get_nodes_in_group("lightning_hit_sprite_bursts")
+				check(not active_bursts.is_empty(), "full-detail hit creates a batch")
+				if active_bursts.is_empty():
+					GameGlobal.set_runtime_flag("review_visual_adaptive", previous_adaptive)
+					get_tree().quit(1)
+					return
+				var burst = active_bursts[-1]
 				burst.set_process(false)
 				check(burst.flash_count == roundi(5 * multiplier * intensity * 0.5) and burst.impact_count == roundi(30 * multiplier * intensity * 0.5), "reduced count preserved while pool is full: ground=%s count=%.2f range=%.1f" % [ground, multiplier, intensity])
 				check(burst.batches.size() == 2 and world.get_active_particle_count() == 900, "PNG batches bypass shared particle slots")
@@ -69,6 +79,7 @@ func _run() -> void:
 		burst._process(1.0)
 	await get_tree().process_frame
 	check(get_tree().get_nodes_in_group("lightning_hit_sprite_bursts").is_empty(), "all simultaneous hits retire cleanly")
+	GameGlobal.set_runtime_flag("review_visual_adaptive", previous_adaptive)
 	CampProgression.end_transient_session()
 	print("LIGHTNING_HIT_PNG_TEST checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(0 if failures == 0 else 1)

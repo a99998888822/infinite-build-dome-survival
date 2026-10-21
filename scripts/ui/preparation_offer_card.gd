@@ -8,6 +8,7 @@ signal minimum_height_requested(height: float)
 const ICON_FRAME_SIZE := Vector2(72, 72)
 const DESCRIPTION_FONT_SIZE := 18
 const DESCRIPTION_MIN_FONT_SIZE := 16
+const TEXT_LEFT_PADDING := 8
 var offer: Dictionary = {}
 var _icon: TextureRect
 var _icon_frame: Control
@@ -81,6 +82,7 @@ func _ready() -> void:
 	titles.add_child(_kind_label)
 	var description_margin := MarginContainer.new()
 	description_margin.add_theme_constant_override("margin_top", 8)
+	description_margin.add_theme_constant_override("margin_left", TEXT_LEFT_PADDING)
 	description_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description_margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(description_margin)
@@ -94,8 +96,11 @@ func _ready() -> void:
 	_description.add_theme_color_override("default_color", FinanceUIStyle.MUTED)
 	description_margin.add_child(_description)
 	_description.resized.connect(_queue_description_fit)
+	var footer_margin := MarginContainer.new()
+	footer_margin.add_theme_constant_override("margin_left", TEXT_LEFT_PADDING)
+	body.add_child(footer_margin)
 	var footer := HBoxContainer.new()
-	body.add_child(footer)
+	footer_margin.add_child(footer)
 	_price = WrappedTooltipLabel.new()
 	_price.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_price.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -103,6 +108,7 @@ func _ready() -> void:
 	footer.add_child(_price)
 	buy_button = Button.new()
 	buy_button.custom_minimum_size = Vector2(58, 26)
+	buy_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	FinanceUIStyle.bank_button(buy_button)
 	buy_button.mouse_entered.connect(func(): _hovered = true; _update_frame())
 	buy_button.mouse_exited.connect(_update_pointer_frame)
@@ -132,7 +138,8 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	tooltip_text = ""
 	_name_label.tooltip_text = "" if new_weapon else title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
-	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), FinanceUIStyle.RELIC_LIST_ICON_SCALE)
+	var item_scale := FinanceUIStyle.RELIC_LIST_ICON_SCALE if str(offer.get("offer_type", "")) == "relic" else 1.0
+	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), item_scale)
 	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE.max(_icon.custom_minimum_size)
 	if ItemIconArt.is_weapon(_icon.texture):
 		ItemIconArt.bind_texture(_icon, _icon.texture, false, 32.0, _icon_frame, ICON_FRAME_SIZE.x)
@@ -150,6 +157,10 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	_price.mouse_filter = Control.MOUSE_FILTER_PASS
 	_price.tooltip_text = HumanityEconomy.purchase_tooltip(offer)
 	buy_button.disabled = not unavailable.is_empty()
+	# Let the completed-state caption set its natural width in every language.
+	# Clipping a three-character label into the old two-character slot also
+	# makes the remaining visible text appear off-center.
+	buy_button.clip_text = unavailable != "already_purchased"
 	buy_button.text = "ui.common.buy" if unavailable.is_empty() else ("error.bank.already_purchased" if unavailable == "already_purchased" else "不可购买")
 	buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":

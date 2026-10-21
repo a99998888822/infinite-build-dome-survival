@@ -121,6 +121,39 @@ func check_pixel_registration() -> void:
 		check(actual == expected, "pixel tier %d" % i)
 		if i % 7 == 0: probe.queue_free()
 
+func check_persistent_bindings() -> void:
+	await setup([Vector2(30, -10), Vector2(70, 30), Vector2(220, 0)])
+	var cache = CURRENT.QUERY_CACHE
+	var oracle = preload("res://scripts/tests/fixtures/lifecycle_baseline_reflection_query.gd")
+	var binding = cache.bind_geometry(Vector2.ZERO, 220.0, 0.0)
+	check(binding == cache.bind_geometry(Vector2.ZERO, 220.0, 0.0), "identical shapes share a persistent binding")
+	check(binding != cache.bind_geometry(Vector2.ZERO, 220.0 + 1e-10, 0.0), "binding key retains double precision")
+	for step in 4:
+		if step == 1: enemies[1].position = Vector2(10, -10)
+		if step == 2: host.position = Vector2(15, 0)
+		if step == 3:
+			await frames()
+			var other = cache.bind_geometry(Vector2.ONE, 220.0, 0.0)
+			cache.candidates_for(other, -PI, PI)
+			check(binding.sweeps.is_empty() and binding.last_result.is_empty(), "inactive bindings release previous-frame hit filters")
+		var expected: Dictionary = oracle.candidates(Vector2.ZERO, 220.0, 0.0, -PI * 0.5, 0.0)
+		var actual: Dictionary = cache.candidates_for(binding, -PI * 0.5, 0.0)
+		check(actual.indices == expected.indices and actual.directions == expected.directions, "retained binding refreshes local/ancestor/frame changes %d" % step)
+	# Evict the shared lookup while a beam still owns its old binding.
+	for i in cache.MAX_GEOMETRIES + 2:
+		cache.bind_geometry(Vector2(1000 + i, 0), 220.0, 0.0)
+	check(cache._geometry_count <= cache.MAX_GEOMETRIES, "geometry lookup remains bounded")
+	var after_eviction: Dictionary = cache.candidates_for(binding, -PI * 0.5, 0.0)
+	var expected: Dictionary = oracle.candidates(Vector2.ZERO, 220.0, 0.0, -PI * 0.5, 0.0)
+	check(after_eviction.indices == expected.indices, "lookup eviction preserves a live beam binding")
+	var matches := true
+	for i in cache.MAX_SWEEPS + 2:
+		var angle: float = -1.0 + float(i) / cache.MAX_SWEEPS
+		var actual: Dictionary = cache.candidates_for(binding, -PI * 0.5, angle)
+		var old: Dictionary = oracle.candidates(Vector2.ZERO, 220.0, 0.0, -PI * 0.5, angle)
+		matches = matches and actual.indices == old.indices and actual.directions == old.directions
+	check(matches and binding.sweep_count <= cache.MAX_SWEEPS, "sweep cache eviction retains exact ordered contacts")
+
 func _run() -> void:
 	CampProgression.begin_transient_session()
 	for sparse in [false, true]:
@@ -142,6 +175,7 @@ func _run() -> void:
 			for index in [63, 64, 127, 128, 159]:
 				check(updated.trace.any(func(hit): return hit[2] == index), "contact across mask word boundary %d" % index)
 	await check_pixel_registration()
+	await check_persistent_bindings()
 	await setup([Vector2(50, 0)])
 	beams.clear()
 	var beam := spawn_beam(CURRENT, Vector2.ZERO, Vector2.RIGHT, 220)

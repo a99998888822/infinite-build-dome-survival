@@ -20,9 +20,3 @@
 两处动态欠款金额都等于展示时的应还总额D，绑定同一贷款与选定模板。击杀指定目标立即减债D，无须再存活到波末；其他敌人死亡不触发。清剿阶段倒计时结束仍未击杀，先加债D，再处理原有自动还款或展期复利。已成功不再处罚；清场删除不算击杀；已还清后原提案失效，不重新抽取。减债最低到0，不生成现金。
 
 自动回归及GPU审阅场景：`scenes/tests/goblin_contracts_test.tscn`。审阅只设置起始资产、压力观测与候选池，实际展示、购买、伤害、刷怪、借款与结算均走正式流程。
-
-## 正式资源确认与清理
-
-用户确认后，正式配置继续引用 `assets/ui/finance/challenge_overtime.svg` 和 `challenge_debt.svg`，讨债标识复用同一正式图标；小boss使用 `assets/sprites/enemies/` 中现有正式动画。交易和挑战从 `data_config/goblin_trades.json`、`wave_challenges.json` 加载，不依赖 `artifacts/` 的截图或审阅资源。
-
-本次定向实测104项、其余回归1007项通过；GPU审阅112项通过，后台私有桌面与实际引擎窗口一致，前台占用次数为0。审阅截图、录像和运行日志在用户确认后清理，必要验证摘要保留在 `artifacts/previews/goblin_contracts_20261009/verification.json`；可通过上述正式测试场景重新生成截图。

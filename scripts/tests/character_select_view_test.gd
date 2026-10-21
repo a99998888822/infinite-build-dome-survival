@@ -68,24 +68,28 @@ func _run() -> void:
 	await frames(8)
 	await move_pointer(Vector2(10,10))
 	check(menu.character_select_page.visible and not menu.start_page.visible, "start button opens production character selection")
+	for row in view.stats_list.get_children():
+		check(row.tooltip_text.is_empty(), "starting attribute row has no hover tooltip")
+		for label in row.get_children():
+			check(label.tooltip_text.is_empty(), "starting attribute label has no hover tooltip")
 	check(view.background.texture.get_size() == Vector2(2752,1536) and view.canvas.size == Vector2(1920,1080) and view.canvas.scale == Vector2.ONE, "approved art uses the native 1920 canvas")
 	var used := view._idle.get_image().get_used_rect()
 	var foot := view.character_icon.position + Vector2(view.character_icon.size.x * 0.5, used.end.y * view.character_icon.size.y / view._idle.get_height())
 	check(foot.distance_to(view.FOOT_ANCHOR) <= 1.0, "new sprite soles retain the approved platform anchor")
-	check(absf(used.size.y * view.character_icon.size.y / view._idle.get_height() - 262.325581) <= 1.0, "preview retains the approved visible height in native pixels")
+	check(view.character_icon.size == Vector2(288, 288) and view.character_icon.position == view.character_icon.position.round(), "novice preview retains the full 96px canvas at exactly 3x with integer placement")
 	view.set_process(false)
 	view.reset_animation()
 	var hover_bounds := view.hover_target.get_rect()
 	var name_position := view.name_label.position
 	view._process(0.75)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), 0.025), "inhale stretches the sprite while the layout anchor stays fixed")
+	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "novice idle keeps a fixed 3x pixel grid")
 	await capture("character_select_breath_in")
 	var inhale: Image = null
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
 		inhale = get_tree().root.get_texture().get_image()
 	view._process(1.5)
-	check(view.character_icon.position == view._character_rest_position and is_equal_approx(float(view._breath_material.get_shader_parameter("breath_amount")), -0.025), "exhale compresses the sprite without changing the layout")
+	check(view.character_icon.position == view._character_rest_position and is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "novice idle never compresses the source pixels")
 	check(view.hover_target.get_rect() == hover_bounds and view.name_label.position == name_position, "breathing leaves name and hover bounds still")
 	await capture("character_select_breath_out")
 	if inhale != null:
@@ -99,7 +103,7 @@ func _run() -> void:
 		var sole := Rect2i(int(rect.position.x), foot_y - 1, int(rect.size.x), 1)
 		var upper := Rect2i(int(rect.position.x), int(rect.position.y), int(rect.size.x), waist_y - int(rect.position.y))
 		check(inhale.get_region(sole).get_data() == exhale.get_region(sole).get_data(), "GPU: soles remain planted through breathing")
-		check(inhale.get_region(upper).get_data() != exhale.get_region(upper).get_data(), "GPU: upper body stretches through breathing")
+		check(inhale.get_region(upper).get_data() == exhale.get_region(upper).get_data(), "GPU: upper body retains identical pixels through idle")
 	view._process(0.75)
 	check(is_zero_approx(float(view._breath_material.get_shader_parameter("breath_amount"))), "three seconds completes one breathing cycle")
 	view.reset_animation()
@@ -115,7 +119,8 @@ func _run() -> void:
 	var beginner_enchantments := _enchantment_icons(beginner_weapon)
 	check(beginner_enchantments.size() == 1 and str(beginner_enchantments[0].get_meta("enchantment_id")) == "scroll_lightning", "beginner weapon shows its configured lightning enchantment")
 	var lightning_icon := beginner_enchantments[0] as TextureRect
-	check((lightning_icon.texture as AtlasTexture).atlas.resource_path == str(DataRegistry.get_record("augmentations", "scroll_lightning").icon), "enchantment uses the actual augmentation icon")
+	check(ItemIconArt.source_path(lightning_icon.texture) == str(DataRegistry.get_record("augmentations", "scroll_lightning").icon), "enchantment uses the actual augmentation icon")
+	check(lightning_icon.texture.logical_size == Vector2(32, 32) and lightning_icon.texture.texture.get_size() == Vector2(32, 32), "starting enchantment displays the complete 32px source at 1x")
 	check(lightning_icon.size.x < beginner_weapon.get_node("WeaponIcon").size.x and lightning_icon.size.y < beginner_weapon.get_node("WeaponIcon").size.y, "enchantment icon is smaller than its weapon icon")
 	check(view.hover_target.tooltip_text.is_empty(), "hover animation has no tooltip text")
 	for button in [view.back_button, view.confirm_button]:
@@ -165,6 +170,8 @@ func _run() -> void:
 	check(relic_icons.get_child_count() == 4, "all four starting relic icons remain available")
 	for card in relic_icons.get_children():
 		check(card.get_child_count() == 1 and card.get_child(0) is TextureRect, "relic card shows only its icon")
+		var relic_icon := card.get_child(0) as TextureRect
+		check(relic_icon.size == Vector2(36, 36) and relic_icon.texture.get_size() == Vector2(36, 36) and not relic_icon.texture is AtlasTexture, "starting relic uses the uncropped 36px source at 1x")
 	await _test_relic_tooltips()
 	await move_pointer(Vector2(10,10))
 	await capture("character_select_capitalist")
@@ -193,6 +200,8 @@ func _run() -> void:
 	check(menu._selected_difficulty_id == "1" and menu._selected_character_id == "character_void_hunter", "new selection defaults to beginner and difficulty one")
 	await click(view.difficulty_list.get_child(2))
 	await click(view.confirm_button)
+	if menu.dungeon_loading.active:
+		await menu.dungeon_loading.finished
 	var flow := game.get_main_flow_coordinator()
 	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and flow._bound_wave_manager.difficulty_id == "3", "continue starts combat with chosen difficulty")
 	var loadout := flow.get_bound_loadout()

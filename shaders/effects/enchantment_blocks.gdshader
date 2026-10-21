@@ -8,6 +8,8 @@ uniform float reach = 55.2;
 uniform float effect_time = 0.0;
 uniform float progress = 0.0;
 uniform vec2 direction = vec2(1.0,0.0);
+uniform vec2 terminal_axes = vec2(1.0);
+uniform float sphere_radius = 31.5;
 varying vec2 point;
 
 void vertex() { point = VERTEX; }
@@ -18,12 +20,13 @@ float flow(vec2 p, float t) {
 
 vec4 water(vec2 p, float t, float u) {
     // Restore the broad water body, without either raised curling crest.
-    vec2 q=p/vec2(reach,reach*0.66);
+    vec2 q=p/max(terminal_axes,vec2(0.001));
     float a=atan(q.y,q.x);
     float n=flow(q+vec2(cos(a-t),sin(a-t))*0.3,t);
     float r=length(q);
-    float front=0.27+0.77*sqrt(u);
-    float crest=front+n*0.18+sin(a*3.0-t*5.0)*0.05;
+    float growth=smoothstep(0.0,0.55,u);
+    float front=0.27+0.73*growth;
+    float crest=min(1.0,front+(n*0.18+sin(a*3.0-t*5.0)*0.05)*(1.0-growth));
     float d=crest-r;
     vec4 c = vec4(0.0);
     if(r<crest) {
@@ -37,12 +40,13 @@ vec4 water(vec2 p, float t, float u) {
 }
 
 vec4 shock(vec2 p, float t, float u) {
-    vec2 q=p/vec2(reach,reach*0.72);
+    vec2 q=p/vec2(reach);
     float r=length(q);
     float a=atan(q.y,q.x);
     float n=flow(q,t);
-    float front=0.16+0.90*sqrt(u);
-    float d=front+n*0.11-r;
+    float growth=smoothstep(0.0,0.55,u);
+    float front=0.16+0.84*growth;
+    float d=min(1.0,front+n*0.11*(1.0-growth))-r;
     vec4 c=vec4(0.0);
     if (d>0.0 && d<0.32-u*0.17) {
         c=vec4(0.39,0.43,0.48,0.85);
@@ -58,7 +62,7 @@ vec4 hole(vec2 p, float t, float u) {
     // Plasma-style fixed circular mask and internal clouds, with a lit sphere.
     // The one-pixel 3D airflow is drawn in separate front/back canvas layers.
     float opening=min(1.0,u*7.0)*(1.0-smoothstep(0.78,1.0,u)*0.40);
-    float radius=max(reach*0.35*opening,0.01);
+    float radius=max(sphere_radius*opening,0.01);
     vec2 q=(p-vec2(0.0,-reach*0.22))/radius;
     float r2=dot(q,q);
     vec4 c=vec4(0.0);

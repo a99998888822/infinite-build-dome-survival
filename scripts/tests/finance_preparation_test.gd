@@ -544,6 +544,9 @@ func _test_wave_start_and_free_rewards() -> void:
 	check(manager.finance_system.principal == principal_before, "new wave-start relic waits for start")
 	var wave_before := manager.finance_system.wave_counter
 	popup.start_button.pressed.emit()
+	if popup._enchantment_notice.visible:
+		check(flow.current_state == flow.STATE_FINANCE_POPUP and manager.finance_system.wave_counter == wave_before, "unused enchantment notice keeps preparation paused")
+		popup.start_button.pressed.emit()
 	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
 		flow.decide_wave_challenge(str(manager.wave_challenges.offer.token), false)
 	check(flow.current_state == flow.STATE_WAVE_COMBAT and manager.finance_system.wave_counter == wave_before + 1 and manager.finance_system.principal > principal_before, "start button runs newly acquired wave-start relic once")

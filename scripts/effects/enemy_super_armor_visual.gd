@@ -4,6 +4,8 @@ const OUTLINE = preload("res://assets/shaders/enemy_super_armor.gdshader")
 const ANCHORS = preload("res://scripts/effects/enemy_visual_anchors.gd")
 const FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
 const TEXT_DURATION := 1.0
+const VISUAL_QUEUE = preload("res://scripts/effects/enemy_status_visual_queue.gd")
+static var caption_font: FontFile
 
 var enemy: Node2D
 var outline: Sprite2D
@@ -12,6 +14,7 @@ var elapsed := 0.0
 var remaining := 0.0
 var pulses := 0
 var _last_texture: Texture2D
+var _pending := false
 
 
 func _ready() -> void:
@@ -25,10 +28,13 @@ func _ready() -> void:
 	outline.material = shader_material
 	add_child(outline)
 	caption = Label.new()
-	var font := FONT.duplicate() as FontFile
-	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
-	font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
-	caption.add_theme_font_override("font", font)
+	# Every caption uses identical font settings. Duplicating this CJK font for
+	# every newly armored enemy repeats font initialization in a burst frame.
+	if caption_font == null:
+		caption_font = FONT.duplicate() as FontFile
+		caption_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+		caption_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+	caption.add_theme_font_override("font", caption_font)
 	caption.add_theme_font_size_override("font_size", 12)
 	caption.add_theme_color_override("font_color", Color("ffe369"))
 	caption.add_theme_color_override("font_outline_color", Color("342912"))
@@ -63,7 +69,7 @@ func clear() -> void:
 	set_process(false)
 
 
-func _process(_delta: float) -> void:
+func update_clock() -> void:
 	if not is_instance_valid(enemy) or not enemy.is_control_immune():
 		clear()
 		return
@@ -73,8 +79,27 @@ func _process(_delta: float) -> void:
 	elapsed = enemy.SUPER_ARMOR_SECONDS - remaining
 	if remaining <= 0.0:
 		clear()
-		return
+
+
+func _process(_delta: float) -> void:
+	update_clock()
+	if remaining > 0.0: request_sync()
+
+
+func request_sync() -> void:
+	if _pending or not is_inside_tree(): return
+	_pending = true
+	VISUAL_QUEUE.enqueue(self)
+
+
+func _flush_visual() -> void:
+	_pending = false
+	if not visible or not can_process() or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)): return
 	_sync()
+
+
+func _exit_tree() -> void:
+	_pending = false
 
 
 func _sync() -> void:

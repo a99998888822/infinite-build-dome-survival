@@ -27,7 +27,6 @@ def export(output):
 
     config = {'ground': [], 'details': [], 'rubble': [], 'grass': [], 'ruins': [], 'props': [], 'foreground': [],
               'ground_texture_density': 1,
-              'parallax': {'ground': 1.0, 'ruins': .26, 'cavern': .08},
               'method': 'Solid source-colour floor, complete catalog 01, source-derived cracks, rubble and existing grass; exterior-connected cutouts; no image model.'}
 
     def aligned_panorama():

@@ -2,8 +2,8 @@ extends Control
 ## Damage is recorded by the wave, so opening UI or rebinding the HUD cannot reset it.
 
 const ROW_HEIGHT := 40.0
-const ROW_GAP := 11.666667
-const HEADER_HEIGHT := 36.666667
+const ROW_GAP := 12.0
+const HEADER_HEIGHT := 36.0
 const FONT_SIZE := 17
 const COLORS: Array[Color] = [Color("8d7542"), Color("4b8179"), Color("796393"), Color("8c5749"), Color("577c9a"), Color("748653")]
 
@@ -98,18 +98,16 @@ func _draw() -> void:
 			draw_rect(Rect2(8, y + ROW_HEIGHT - 3, fill_width, 2), entry.color)
 		var icon := entry.icon as Texture2D
 		if icon != null:
-			# Retain the approved 16 px source-art variant inside the native icon box.
-			icon = ItemIconArt.texture_for(icon, ItemIconArt.physical_extent(self, 16))
-			var icon_size := icon.get_size() * (26.666667 / maxf(icon.get_width(), icon.get_height()))
-			draw_texture_rect(icon, Rect2(Vector2(27, y + ROW_HEIGHT * 0.5) - icon_size * 0.5, icon_size), false)
+			icon = ItemIconArt.texture_for(icon, 36.0)
+			draw_texture_rect(icon, Rect2(Vector2(12, y + 2), Vector2(36, 36)), false)
 		var amount := _format_damage(int(entry.damage))
 		var amount_width := font.get_string_size(amount, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE).x
-		var name_width := maxf(size.x - amount_width - 65, 0)
+		var name_width := maxf(size.x - amount_width - 73, 0)
 		var weapon_name := str(entry.name)
 		while weapon_name.length() > 1 and font.get_string_size(weapon_name, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE).x > name_width:
 			weapon_name = weapon_name.substr(0, weapon_name.length() - 2) + "…"
-		_draw_text(font, Vector2(47, y + 26.666667), weapon_name)
-		_draw_text(font, Vector2(size.x - amount_width - 13, y + 26.666667), amount)
+		_draw_text(font, Vector2(55, y + 27), weapon_name)
+		_draw_text(font, Vector2(size.x - amount_width - 13, y + 27), amount)
 
 
 func _draw_text(font: Font, at: Vector2, text: String) -> void:

@@ -53,6 +53,13 @@ func move_to(point: Vector2) -> void:
 	player._sync_camera()
 	player.camera_2d.force_update_scroll()
 	await frames()
+	await wait_for_stream()
+
+func wait_for_stream() -> void:
+	for i in 600:
+		if ground.is_initial_stream_ready() and ground._retiring_nodes.is_empty(): return
+		await frames(1)
+	check(false, "terrain stream and retired nodes finish within 600 frames")
 
 func verify_framing() -> void:
 	for size in [Vector2i(1152, 648), Vector2i(1600, 900), Vector2i(1152, 864)]:
@@ -400,6 +407,7 @@ func _run() -> void:
 	battle.wave_manager.clear_battle_entities()
 	player.set_physics_process(false)
 	player._clear_move_input()
+	await wait_for_stream()
 	await verify_grass_depth()
 	if depth_only:
 		print("CAVERN_DEPTH_REVIEW_COMPLETE checks=",checks," failures=",failures)

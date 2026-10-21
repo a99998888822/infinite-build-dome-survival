@@ -1,0 +1,239 @@
+{
+  "description": "Design and art provenance moved out of runtime configuration on 2026-10-21.",
+  "relic_icon_descriptions": {
+    "relic_worn_hemostatic_cloth": "边缘起毛、沾有干涸血迹的粗纱布",
+    "relic_load_iron_bracer": "厚重笨重的铸铁护腕",
+    "relic_pungent_sachet": "散发刺鼻迷雾的粗布小包",
+    "relic_broken_crystal": "表面布满裂纹、散发暗红微光的矿石",
+    "relic_vitality_potion": "晃动时漂浮血色气泡的玻璃药罐",
+    "relic_dead_shield_badge": "哑光灰色金属胸针",
+    "relic_turtle_shell_pendant": "带着细小虫洞纹路的老旧龟壳挂坠",
+    "relic_prison_copper_anklet": "刻有细碎纹路的铜制脚环",
+    "relic_brass_pocket_watch": "表盘干净、指针平稳转动的老式怀表",
+    "relic_flesh_pauldron": "附着鲜活蠕动皮肉的深色肩铠",
+    "relic_nightmare_healing_urn": "壶口飘出朦胧黑雾的青铜水壶",
+    "relic_barrier_crystal": "边角缺损、萦绕暗色烟气的菱形晶体",
+    "relic_cultic_holy_shield": "刻印扭曲触手符文的银色金属牌",
+    "relic_lost_wayfarer_greave": "缠绕细小触须纹路的银质腿环",
+    "relic_soul_keeper_face_stone": "人脸神情哀伤、表面渗出水珠的小型石像",
+    "relic_pain_vessel": "盆内漂浮细碎黑雾的金色圆盘",
+    "relic_true_silver_armor": "精致、银色中世纪上半身甲",
+    "relic_holy_silver_cup": "杯身雕刻人形纹路、盛放澄澈净水的银杯",
+    "relic_suffering_carapace": "带着虫眼孔洞的厚重爬虫背甲碎片",
+    "relic_costly_seed_of_life": "外壳通透、胚芽不停蠕动的奇异种子",
+    "relic_shadowless_greave": "银色、轻盈、没有包裹完全的胫甲",
+    "relic_chain_of_hardship": "缠绕活触手、锈蚀厚重的颈间枷锁",
+    "relic_void_tentacle": "内部不断翻滚混沌雾气的一截章鱼触手",
+    "relic_worn_fighting_gloves": "表层掉皮的粗布拳套",
+    "relic_cracked_stone_bullet": "边角破损的灰色卵石弹药",
+    "relic_hasty_spring_trigger": "小型金属弹簧零件",
+    "relic_rough_grinding_lens": "磨得凹凸不平的玻璃镜片",
+    "relic_blocking_counterweight": "掌心大小的沉重鹅卵石",
+    "relic_bloodstained_belt": "沾染少量干涸血迹的皮质腰带",
+    "relic_poison_mist_pouch": "密封的褐色胶质小包",
+    "relic_tremor_grip": "包裹防滑橡胶的武器把手",
+    "relic_black_spot_eagle_eye": "带有黑色斑点的透明晶石",
+    "relic_berserker_copper_badge": "带有黑色斑点的透明晶石",
+    "relic_corroded_blowpipe": "内壁附着粘液的空心骨管",
+    "relic_gale_roulette": "内壁附着粘液的空心骨管",
+    "relic_executioner_bracer": "布满划痕的厚重铁质臂铠",
+    "relic_judgment_eye_pendant": "内嵌眼球结晶的银挂坠",
+    "relic_split_crystal_warhead": "多边棱角的结晶子弹",
+    "relic_gold_digger_gloves": "破旧皮革手套，指尖沾金色碎屑",
+    "relic_incomplete_divination_dice": "磨损的六面骨骰，部分刻度模糊",
+    "relic_travelers_ledger": "泛黄皮面账本，写满记账笔记",
+    "relic_defiled_blessing_coin": "泛黄皮面账本，写满记账笔记",
+    "relic_expanded_backpack_strap": "粗麻布束带，缝有多只小布袋",
+    "relic_stargazers_lens": "一块弧形银色碎镜片，镜中倒映扭曲星辰",
+    "relic_harvest_sacrificial_vessel": "古朴陶瓮，内壁残留暗色痕迹",
+    "relic_amulet_of_humanity": "古朴陶瓮，内壁残留暗色痕迹",
+    "relic_gift_mark": "皮肤样式的烙印图标，淡紫光晕",
+    "relic_void_storage_casket": "半透明悬浮的立方体匣子，内部漆黑",
+    "relic_reincarnation_hellfire_candle": "幽蓝摇曳的蜡烛，火焰不消耗蜡油",
+    "relic_guarding_heart_copper_mirror": "小型青铜手镜，镜面清澈",
+    "relic_sleepless_ledger": "摊开的深蓝账簿，书页中央嵌着一只睁开的眼，红色书签垂下",
+    "relic_frenzied_dividend": "盖着猩红封蜡的分红信封，上沿露出两枚金币",
+    "relic_gilded_trigger": "金色弯钩扳机装在短铁座上，露出暗紫色轴心",
+    "relic_runaway_amplifier": "铜制三角支架包住开裂紫晶，两侧装着小电极",
+    "relic_lucid_vow": "水滴形银色护符，嵌着清澈青色宝石和一枚细小银翼",
+    "relic_coin_heart": "金币嵌入金属心脏，中央留一枚暗红心核",
+    "relic_hoarders_ring": "爪形镶座紧扣金币，币面刻着紫色眼睛",
+    "relic_golden_sarcophagus": "厚金棺盖以金币封印，缝隙透出一线青光",
+    "relic_old_brass_telescope": "短黄铜望远镜、棕色握套、青色镜片。",
+    "relic_cracked_bronze_bell": "裂纹铜铃、外扩的铃口、短弧回声。",
+    "relic_long_focus_eyepiece": "细长黑铁镜筒、红色镜片、黄铜旋钮。",
+    "relic_diffusion_nozzle": "张开的短金属喷口、烧黑内壁、橙红余烬。",
+    "relic_range_tripod": "三条撑脚、金属固定环、青色测距晶体。",
+    "relic_aftershock_hourglass": "铁灰沙漏、琥珀沙粒、底部断续回声弧。",
+    "relic_golden_rangefinder": "打开的黄铜圆规、悬挂金币、绿色铰链宝石。",
+    "relic_abyssal_echo_shell": "蓝绿螺壳、幽蓝壳口、少量深色海藻。",
+    "relic_folded_star_chart": "三折旧星图、紫黑裂缝、跨越折痕的星座。",
+    "relic_horizon_orrery": "三道倾斜黄铜轨道、黑色星核、暖金缺口光。",
+    "relic_crimson_coagulation_vial": "黄铜瓶塞的圆形药瓶，内盛暗红药液，淡紫玻璃与垂落的封蜡",
+    "relic_goblin_trade_charter": "象牙色商会特许卷书，青绿绶带与黄铜镶边，右下有红色蜡封",
+    "relic_void_market_key": "斜置的古金钥匙，圆形柄镶紫色虚空宝石，末端双层齿，轮廓清晰",
+    "relic_hunting_bone_whistle": "斜置的象牙色弯曲骨哨，三个深色吹孔，青绿皮绳垂挂",
+    "relic_hungry_tide_bell": "宽裙摆的古铜祭铃，暗红眼形纹样，深紫绳结与厚重铃舌",
+    "relic_falcon_sighting_pin": "古铜瞄针配猎隼羽毛和青绿瞄准环",
+    "relic_executioner_whetstone": "倾斜的灰青磨石，宽红磨痕，棕色皮带包角",
+    "relic_crimson_execution_seal": "暗红方形古印，金色刀刃纹样，黑色手柄与垂落红绶带",
+    "relic_faded_ward_talisman": "褪色青绿布制护身符，象牙色盾纹，棕色系绳",
+    "relic_twin_chamber_magazine": "并排两枚铜色弹头，深青双腔弹匣，宽铜箍连接",
+    "relic_stilltime_amber": "不规则金棕琥珀封住深色蜻蜓，大片切面，古铜底托"
+  },
+  "camp_building_roles": {
+    "camp_armory_workshop": "武器基础强化",
+    "camp_relic_archive": "幸运与战利品强化",
+    "camp_blade_arena": "近战专属营地建筑，解锁近战物理升级选项",
+    "camp_farstar_range": "远程专属营地建筑，解锁远程与投射物相关升级选项",
+    "camp_dome_shelter": "生存防御类加成，平衡建筑",
+    "camp_council_hall": "强化套装与通用成长收益"
+  },
+  "legacy_cavern_ground": {
+    "ground": [],
+    "details": [],
+    "grass": [],
+    "rubble": [
+      {
+        "id": "loose_stone_0",
+        "texture": "res://assets/sprites/background/cavern/rubble_0.png",
+        "texture_density": 4.0
+      },
+      {
+        "id": "loose_stone_1",
+        "texture": "res://assets/sprites/background/cavern/rubble_1.png",
+        "texture_density": 4.0
+      }
+    ],
+    "props": [
+      {
+        "id": "rock",
+        "texture": "res://assets/sprites/background/cavern/prop_rock.png",
+        "catalog_id": "A01"
+      },
+      {
+        "id": "log",
+        "texture": "res://assets/sprites/background/cavern/prop_log.png",
+        "catalog_id": "A05"
+      }
+    ],
+    "floor_color": [
+      0.30980392156862746,
+      0.32941176470588235,
+      0.3058823529411765,
+      1.0
+    ],
+    "grass_anchors": [
+      [
+        -523.0,
+        -73.5
+      ],
+      [
+        -344.0,
+        103.5
+      ],
+      [
+        -114.0,
+        -122.5
+      ],
+      [
+        83.0,
+        14.5
+      ],
+      [
+        333.0,
+        104.5
+      ],
+      [
+        528.0,
+        -82.5
+      ],
+      [
+        463.0,
+        121.5
+      ],
+      [
+        -153.0,
+        142.5
+      ]
+    ],
+    "ground_texture_density": 1
+  },
+  "cavern_provenance": {
+    "method": "Solid source-colour floor, complete catalog 01, source-derived cracks, rubble and existing grass; exterior-connected cutouts; no image model.",
+    "panorama_modules": [
+      {
+        "source": "far_background_1.png",
+        "crop": [
+          0.07,
+          0.07,
+          0.91,
+          0.88
+        ],
+        "repair": "source-colour rocky cap and blended outer wall"
+      },
+      {
+        "source": "far_background_5.png",
+        "crop": [
+          0.14,
+          0,
+          0.88,
+          0.63
+        ],
+        "repair": "source-colour rocky cap and blended outer wall"
+      },
+      {
+        "source": "far_background_3.png",
+        "crop": [
+          0.18,
+          0,
+          0.76,
+          0.67
+        ],
+        "repair": "source-colour rocky cap and blended outer wall"
+      },
+      {
+        "source": "far_background_2.png",
+        "crop": [
+          0.48,
+          0.03,
+          0.87,
+          0.64
+        ],
+        "repair": "source-colour rocky cap and blended outer wall"
+      },
+      {
+        "source": "far_background_4.png",
+        "crop": [
+          0.38,
+          0.12,
+          0.88,
+          0.63
+        ],
+        "repair": "source-colour rocky cap and blended outer wall"
+      }
+    ]
+  },
+  "meadow_provenance": {
+    "source": "Approved R03 dark grassland, installed 2026-10-14",
+    "method": "Dark terrain, layered batched grass, sparse per-battle seeded B/Q and A placement, preserved collisions and contact shadows",
+    "preserved_depth_config": "res://data_config/cavern_battlefield.json",
+    "surface_texture_sha256": "fa90e4d02aa1288d841955e949c53af874c9b156dcb60937d5e19ddaad5d3a5c",
+    "surface_context_sha256": "51d12d6a27f706cd486e8b5ddc4f67326a50e327783e2fc428f8f810b48d5b8f",
+    "edge_repair_revision": "20261013-local-contours",
+    "approved_review": "ground_reference_r03",
+    "source_sha256": {
+      "G09_grass_short-32": "1424b61359b18c4f98cee9b1882e67245b51d3a02ba21502f8fd71904a5cfa42",
+      "G10_grass_dense-32": "42a5f51fb18ed71232880809be3baa08e12e3bed33ba8d6efc34a6d8f86e7340",
+      "G11_grass_long-32": "be49e096cb89fab683d3ac939c156910053ec9861a2746fb49f36d4bc80b7a93",
+      "G12_grass_dry_mix-32": "e29daf5924ea489df51d40e5e4ac9082f121c46798c72ba0a3ed53596097478e",
+      "decal_single_brick": "d8a240e7ad7d7445f5d8b5bc2baeec11096866c31d51e4c8252331dc6c53a56b",
+      "decal_stacked_bricks": "9d1b89967721d2bf9ee0e8065b2d006ce61b765eee6592a2decad14d2b1786e7",
+      "decal_brick_fragments": "d0081a385d50b73d0e44558231301e6c8bde3327f46ac0dd69956d4078dc32f3",
+      "decal_scattered_stones": "f7e2598b03d108932273e4a746bf40cd6fb34f0b583033224b9fd977953f9158",
+      "decal_high_rubble": "0c99ed704b8f64edc0f99503b7cf69307230ec2495e380db106b0630b7d9cb93",
+      "decal_low_rubble": "57c8bf8c9083fad74010b3d2b1a8beb680e0f9830884193b28e7b568f3f168c3",
+      "decal_flat_stones": "a7bd8e64738fd1ed40dc5ae711ce11808441f025aae9f93aa06d7f96928c0f0d"
+    }
+  }
+}

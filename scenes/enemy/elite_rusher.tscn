@@ -17,6 +17,6 @@ position = Vector2(0, -61.5)
 shape = SubResource("body")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -69.75)
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -70)
+scale = Vector2(1, 1)
 texture_filter = 1

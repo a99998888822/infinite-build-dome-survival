@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'localization'
 CJK = re.compile(r'[\u3400-\u9fff]')
 TOKEN = re.compile(r'#[^\n]*|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'')
-FIELDS = {'display_name', 'name', 'title', 'description', 'shop_description', 'speech', 'body', 'detail', 'role'}
+FIELDS = {'display_name', 'name', 'title', 'description', 'shop_description', 'speech', 'body', 'detail'}
 CATALOG = read_catalogs()
 
 

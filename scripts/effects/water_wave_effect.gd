@@ -5,12 +5,12 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.45
-const SIZE_MULTIPLIER: float = 0.7
-# Preserve the approved collision footprint independently of the raised crest.
-const RADIUS_SCALE: float = 0.68
+# Preserve the reviewed terminal water spread; collision now uses that spread.
+const TERMINAL_RADIUS_SCALE := 0.7 * 0.68 * 1.65
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -50,7 +50,7 @@ static func spawn(
 		effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS)
 			* effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0),
 		32.0,
-	) * SIZE_MULTIPLIER * RADIUS_SCALE
+	) * TERMINAL_RADIUS_SCALE
 	effect._duration = maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.12)
 	# Preserve one RNG sample per wave so combat random sequences stay stable.
 	effect._phase = randf_range(0.0, TAU)
@@ -82,8 +82,7 @@ func _apply_wave() -> void:
 	_damage_applied = true
 	AudioManager.begin_combat_audio()
 	AudioManager.play_enchantment_sfx("water")
-	var shape := CircleShape2D.new()
-	shape.radius = _radius
+	var shape := FOOTPRINT.shape(get_terminal_footprint_axes())
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0.0, global_position)
@@ -118,6 +117,9 @@ func _get_visual_frame() -> int:
 
 
 func _draw() -> void:
-	# Visual water spread only; immediate damage keeps the original radius.
-	var visual_radius := _radius * 1.65
-	BLOCK_VFX.paint(self,1,Rect2(-visual_radius*1.25,-visual_radius*1.4,visual_radius*2.5,visual_radius*2.6),visual_radius,_elapsed+_phase,_elapsed/_duration,_visual_detail)
+	var axes := get_terminal_footprint_axes()
+	BLOCK_VFX.paint(self,1,Rect2(-axes-Vector2.ONE*3.0,axes*2.0+Vector2.ONE*6.0),_radius,_elapsed+_phase,_elapsed/_duration,_visual_detail)
+	material.set_shader_parameter("terminal_axes", axes)
+
+func get_terminal_footprint_axes() -> Vector2:
+	return FOOTPRINT.axes(_radius, FOOTPRINT.WATER_FLATTEN)

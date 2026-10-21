@@ -1130,6 +1130,11 @@ func _process_level_ups() -> void:
 		shared_reward_shop_requested.emit(player_level)
 
 
+func prepare_enemy_scene(enemy_data: Dictionary) -> bool:
+	# Keep only the resource; spawning still creates/initializes the live enemy.
+	return _load_enemy_scene(enemy_data) != null
+
+
 func _load_enemy_scene(enemy_data: Dictionary) -> PackedScene:
 	var scene_path := str(enemy_data.get("scene", ""))
 	if scene_path.is_empty():

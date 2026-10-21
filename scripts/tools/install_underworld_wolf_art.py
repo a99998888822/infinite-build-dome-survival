@@ -21,7 +21,7 @@ def main():
     mode.add_argument('--rebuild-atlases', action='store_true')
     args = parser.parse_args()
     manifest = json.loads((DEST/'manifest.json').read_text(encoding='utf-8'))
-    assert manifest['canvas'] == [128,128]
+    assert manifest['canvas'] == [192,192]
     records = {(r['action'],r['number']):r for r in manifest['frames']}
     counts = {'move':7,'attack':4,'jump':10}
     assert records.keys() == {(a,i) for a,n in counts.items() for i in range(1,n+1)}
@@ -29,7 +29,7 @@ def main():
     groups = {}
     for action,count in counts.items():
         sheet = Image.open(DEST/'atlases'/f'{action}.png').convert('RGBA')
-        assert sheet.size == (128*count,128)
+        assert sheet.size == (192*count,192)
         frames = []
         for number in range(1,count+1):
             record = records[action,number]
@@ -39,12 +39,12 @@ def main():
                 image = Image.open(path).convert('RGBA')
             else:
                 # Split sources were retired; the approved frames live in the atlas.
-                image = sheet.crop((128*(number-1),0,128*number,128))
+                image = sheet.crop((192*(number-1),0,192*number,192))
                 encoded = io.BytesIO()
                 image.save(encoded,format='PNG')
                 assert hashlib.sha256(encoded.getvalue()).hexdigest() == record['sha256'], (action,number)
-            assert image.size == (128,128) and set(image.getchannel('A').tobytes()) == {0,255}
-            colors = {rgba[:3] for _,rgba in image.getcolors(128*128) if rgba[3]}
+            assert image.size == (192,192) and set(image.getchannel('A').tobytes()) == {0,255}
+            colors = {rgba[:3] for _,rgba in image.getcolors(192*192) if rgba[3]}
             assert len(colors) <= 16 and colors <= palette
             frames.append(image)
         groups[action] = frames
@@ -61,9 +61,9 @@ def main():
     assert 'res://artifacts/' not in text
     for action,frames in groups.items():
         atlas = DEST/'atlases'/f'{action}.png'
-        expected = Image.new('RGBA',(128*len(frames),128))
+        expected = Image.new('RGBA',(192*len(frames),192))
         for i,frame in enumerate(frames):
-            expected.paste(frame,(128*i,0))
+            expected.paste(frame,(192*i,0))
         if args.rebuild_atlases:
             expected.save(atlas)
         actual = Image.open(atlas).convert('RGBA')

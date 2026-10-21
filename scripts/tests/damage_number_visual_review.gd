@@ -128,7 +128,7 @@ func _validate_boundaries() -> void:
 func _record_labels(frame: int) -> void:
 	var labels: Array[Dictionary] = []
 	for child in targets[1].get_parent().get_children():
-		if child is Label and child.visible and child.tree_exiting.is_connected(EnemyController.release_damage_number):
+		if child is CombatDamageNumber and child.visible and child.active:
 			labels.append({"text": child.text, "font_size": child.get_theme_font_size("font_size"), "color": child.get_theme_color("font_color").to_html(), "position": [child.position.x, child.position.y]})
 	check(labels.size() == 8, "eight displayed damage labels at frame %d" % frame)
 	observations.append({"frame": frame, "labels": labels})

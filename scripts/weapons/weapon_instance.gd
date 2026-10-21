@@ -15,7 +15,7 @@ const RARITY_COLORS: Dictionary = {
 	"legendary": Color(1.0, 0.82, 0.28, 1.0),
 }
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
-const ATTACHMENT_ICON_SIZE := 24
+const ATTACHMENT_ICON_SIZE := 32
 const ATTACHMENT_ICON_GAP := " "
 const EMPTY_ATTACHMENT_ICON := "res://assets/ui/finance/empty_enchantment_slot.svg"
 const DAMAGE_SOURCE_COLORS := {
@@ -55,6 +55,7 @@ var volley_index: int = 0
 var attack_context: Dictionary = {}
 var source_instance_id := ""
 var mobility_runtime: WeakRef
+var targeting_query := WeaponContactQuery.new()
 var _cast_stats: Dictionary = {}
 var _cast_player_stats: Dictionary = {}
 var _cast_principal := -1.0

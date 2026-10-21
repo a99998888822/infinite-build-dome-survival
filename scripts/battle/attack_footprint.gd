@@ -80,16 +80,28 @@ static func body_entry_fraction(shape: Shape2D, transform: Transform2D, motion: 
 
 
 static func targeting_shape(source: WeaponInstance) -> Shape2D:
+	return shape_for_targeting_dimensions(targeting_dimensions(source))
+
+
+static func targeting_dimensions(source: WeaponInstance) -> Vector3:
 	var reach := source.get_attack_range()
-	if source.is_ritual_tome(): return ellipse_shape(source.get_domain_axes())
-	if source.is_grenade(): return ellipse_shape(grenade_range_axes(source))
-	if source.is_copper_lamp() or source.is_camp_dagger(): return projected_disk(reach)
-	if source.is_meteor_flail():
-		return ellipse_shape(Vector2(reach, reach * ELLIPSE_RATIO) + Vector2.ONE * source.get_hit_radius())
+	var axes := Vector2.ZERO
+	if source.is_ritual_tome(): axes = source.get_domain_axes()
+	elif source.is_grenade(): axes = grenade_range_axes(source)
+	elif source.is_copper_lamp() or source.is_camp_dagger(): axes = Vector2(reach, reach * ELLIPSE_RATIO)
+	elif source.is_meteor_flail(): axes = Vector2(reach, reach * ELLIPSE_RATIO) + Vector2.ONE * source.get_hit_radius()
+	else:
+		if source.has_combat_tag(L10n.text("stat.category.projectiles")):
+			reach += source.get_hit_radius()
+		return Vector3(reach, reach, 1.0)
+	return Vector3(axes.x, axes.y, 0.0)
+
+
+static func shape_for_targeting_dimensions(dimensions: Vector3) -> Shape2D:
+	if dimensions.z == 0.0:
+		return ellipse_shape(Vector2(dimensions.x, dimensions.y))
 	var circle := CircleShape2D.new()
-	circle.radius = reach
-	if source.has_combat_tag(L10n.text("stat.category.projectiles")):
-		circle.radius += source.get_hit_radius()
+	circle.radius = dimensions.x
 	return circle
 
 

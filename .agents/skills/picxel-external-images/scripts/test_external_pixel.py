@@ -67,6 +67,23 @@ class ExternalWorkflowTest(unittest.TestCase):
         self.assertEqual(workflow.panel.load_status(self.out)["state"], "done")
         self.assertEqual(workflow.panel.scan_results(workflow.panel.load_job())["done"], 1)
 
+    def test_registered_animation_preserves_common_points_at_96_and_192(self):
+        for size in (96, 192):
+            source = Image.new("RGBA", (size * 4, size * 4))
+            ImageDraw.Draw(source).rectangle((80, 120, 119, 159), fill="#728648")
+            other = source.copy()
+            ImageDraw.Draw(other).rectangle((size * 3, 20, size * 3 + 15, 35), fill="#141b20")
+            grids = [workflow.px._import_image(image, size, "pose", "sprite", "custom",
+                     ["#728648", "#141b20"], preserve_canvas=True) for image in (source, other)]
+            for grid in grids:
+                self.assertEqual(grid.image().convert("RGBA").getpixel((20, 30)), (114, 134, 72, 255))
+                self.assertFalse(workflow.px.check(grid)[0])
+            self.assertEqual(grids[0].image().crop((20, 30, 30, 40)).tobytes(),
+                             grids[1].image().crop((20, 30, 30, 40)).tobytes())
+        with self.assertRaisesRegex(ValueError, "integer multiple"):
+            workflow.px._import_image(Image.new("RGBA", (720, 720)), 192,
+                                     "pose", "sprite", "custom", ["#728648"], preserve_canvas=True)
+
     def test_existing_outputs_and_changed_sources_are_protected(self):
         self.build()
         with self.assertRaisesRegex(ValueError, "already contains"):

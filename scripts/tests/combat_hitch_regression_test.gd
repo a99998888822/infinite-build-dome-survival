@@ -139,7 +139,7 @@ func _damage() -> void:
 	add_child(arena)
 	EnemyController.prepare_damage_number_pool(arena)
 	EnemyController.prepare_damage_number_pool(arena)
-	check(arena.get_child_count() == 160 and EnemyController.active_damage_numbers == 0, "battle preparation is idempotent and reserves no active budget")
+	check(arena.get_children().filter(func(child): return child is Label).size() == 160 and arena.get_child_count() == 161 and EnemyController.active_damage_numbers == 0, "battle preparation is idempotent and reserves no active budget")
 	var enemy := preload("res://scenes/enemy/mutated_grub.tscn").instantiate() as EnemyController
 	arena.add_child(enemy)
 	enemy.set_physics_process(false)

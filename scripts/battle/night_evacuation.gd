@@ -16,12 +16,14 @@ var bank_anchor := Vector2.ZERO
 var ring_center := Vector2.ZERO
 var previous_foot := Vector2.ZERO
 var spawn_authorized := false
+var flank_spawn_authorized := false
 var spawn_timers: Array[float] = []
 var rng := RandomNumberGenerator.new()
 var reward_remainder := 0.0
 var spawned_count := 0
 var extracted_count := 0
 var next_hunter_at := 33.0
+var next_flank_at := 12.0
 
 func initialize(source: WaveManager, subject: PlayerController) -> void:
 	manager = source
@@ -44,10 +46,12 @@ func reset() -> void:
 	active = false
 	extraction_pending = false
 	spawn_authorized = false
+	flank_spawn_authorized = false
 	elapsed = 0.0
 	reward_remainder = 0.0
 	spawned_count = 0
 	next_hunter_at = 33.0
+	next_flank_at = float(config.flank_first_seconds)
 	spawn_timers.clear()
 	if is_instance_valid(scenery) and scenery is CavernGrasslandBackdrop:
 		(scenery as CavernGrasslandBackdrop).reserve_shelter(Rect2())
@@ -180,6 +184,7 @@ func advance(delta: float) -> void:
 	if not active: return
 	elapsed += maxf(0.0,delta)
 	if try_enter_shelter(): return
+	_process_flank_spawn()
 	var groups: Array = manager.current_wave.get("spawn_groups",[])
 	for i in groups.size():
 		spawn_timers[i] -= delta
@@ -221,13 +226,28 @@ func spawn_multiplier() -> float:
 	if elapsed<=float(config.grace_seconds): return 1.0
 	return lerpf(1.0,3.0,clampf((elapsed-float(config.grace_seconds))/27.0,0,1))
 
-func pressure_level() -> float:
-	return maxf(0.0,(elapsed-float(config.pressure_growth_start))/float(config.pressure_growth_period))
+func night_progress() -> float:
+	# One continuous fade across the countdown/evacuation boundary.
+	if not is_instance_valid(manager) and not is_active() and not (is_instance_valid(visual) and visual.lit): return 0.0
+	var seconds := elapsed if is_active() or (is_instance_valid(visual) and visual.lit) else -manager.wave_time_left
+	return smoothstep(-float(config.dusk_lead_seconds),float(config.night_seconds),seconds)
+
+func pressure_multiplier(start_seconds: float) -> float:
+	var periods := maxf(0.0,elapsed-start_seconds)/float(config.pressure_double_seconds)
+	return 1.0+minf(periods,1.0)+maxf(0.0,periods-1.0)*float(config.pressure_late_gain_per_period)
 
 func apply_pressure(enemy: EnemyController) -> void:
-	var level := pressure_level()
-	var factors := {"max_hp":1.0+level*.32,"move_speed":minf(2.6,1.1+elapsed*.016),"melee_damage":1.0+level*.18}
-	if bool(enemy.get_meta("evacuation_hunter",false)): factors.move_speed = minf(1.5,1.1+level*.06)
+	# Capture growth once at birth: living enemies never heal or gain damage.
+	var damage := pressure_multiplier(float(config.damage_growth_start))
+	var factors := {"max_hp":pressure_multiplier(float(config.health_growth_start)),
+		"melee_damage":damage,"ranged_damage":damage,"element_damage":damage}
+	var base_speed := enemy.get_chase_speed()
+	var speed_progress := smoothstep(0.0,float(config.speed_growth_seconds),elapsed-float(config.speed_growth_start))
+	var speed_limit := maxf(0.0,player.get_stat("move_speed"))*float(config.speed_player_ratio)
+	var grown_speed := lerpf(minf(base_speed,speed_limit),speed_limit,speed_progress)
+	var resolved_speed := enemy.get_stat("move_speed")
+	if resolved_speed > 0.0: factors.move_speed = grown_speed/resolved_speed
+	enemy.night_speed_player_ratio = float(config.speed_player_ratio)
 	for stat: String in factors:
 		enemy.modifier_stack.add_modifier_from_dictionary({"id":"evacuation_"+stat,"source_type":"evacuation","source_id":"night",
 			"target_scope":"enemy","stat":stat,"operation":"multiply","value":factors[stat],"duration":-1,"stack_rule":"replace_same_source"})
@@ -250,15 +270,21 @@ func scale_reward_actions(actions: Array[Dictionary]) -> Array[Dictionary]:
 
 func allows_spawn(point: Vector2) -> bool:
 	if not active or not spawn_authorized: return false
-	return spawn_position_valid(point)
+	return spawn_position_valid(point,flank_spawn_authorized)
 
-func spawn_position_valid(point: Vector2) -> bool:
+func spawn_position_valid(point: Vector2, flank := false) -> bool:
+	if not point.is_finite(): return false
 	var origin := foot_position()
 	var forward := origin.direction_to(ring_center)
 	var offset := point-origin
 	if offset.length()<float(config.spawn_min_distance)-1.0: return false
-	if offset.normalized().dot(-forward)<cos(deg_to_rad(float(config.rear_half_angle_degrees))): return false
 	if point.distance_to(ring_center)<float(config.entrance_spawn_clearance): return false
+	if flank:
+		var bank_offset := point-ring_center
+		if bank_offset.length()<float(config.flank_min_radius) or bank_offset.length()>float(config.flank_max_radius): return false
+		if bank_offset.normalized().dot(forward)<cos(deg_to_rad(float(config.flank_half_angle_degrees))): return false
+		return not Rect2(bank_anchor-BANK_ANCHOR,BANK_SIZE).grow(48.0).has_point(point)
+	if offset.normalized().dot(-forward)<cos(deg_to_rad(float(config.rear_half_angle_degrees))): return false
 	if point.distance_to(Geometry2D.get_closest_point_to_segment(point,origin,ring_center))<float(config.route_half_width): return false
 	return true
 
@@ -273,6 +299,39 @@ func choose_spawn_position() -> Vector2:
 		if is_instance_valid(scenery) and not scenery._clear_of_large(point,scenery._nearby_landmarks(point),20): continue
 		return point
 	return Vector2(INF,INF)
+
+func choose_flank_spawn_position() -> Vector2:
+	var forward := foot_position().direction_to(ring_center)
+	for attempt in 24:
+		var direction := forward.rotated(deg_to_rad(rng.randf_range(-float(config.flank_half_angle_degrees),float(config.flank_half_angle_degrees))))
+		var point := ring_center+direction*rng.randf_range(float(config.flank_min_radius),float(config.flank_max_radius))
+		if not spawn_position_valid(point,true): continue
+		if manager._get_spawn_clearance_squared(point)<WaveManager.SPAWN_SEPARATION_DISTANCE*WaveManager.SPAWN_SEPARATION_DISTANCE: continue
+		if is_instance_valid(scenery) and not scenery._clear_of_large(point,scenery._nearby_landmarks(point),32): continue
+		return point
+	return Vector2(INF,INF)
+
+func _process_flank_spawn() -> void:
+	if elapsed<next_flank_at: return
+	# Missed opportunities are discarded, never accumulated into a burst.
+	next_flank_at = elapsed+rng.randf_range(float(config.flank_interval_min),float(config.flank_interval_max))
+	if manager.get_living_enemy_count()>=int(manager._difficulty.enemy_limit): return
+	var flankers := 0
+	for enemy in EnemyRegistry.get_registered_enemies():
+		if is_instance_valid(enemy) and enemy.is_alive() and bool(enemy.get_meta("evacuation_flanker",false)): flankers += 1
+	if flankers>=int(config.flank_alive_limit): return
+	var point := choose_flank_spawn_position()
+	if not point.is_finite(): return
+	spawn_authorized = true
+	flank_spawn_authorized = true
+	var enemy := manager.spawn_enemy("enemy_mutated_grub",point)
+	spawn_authorized = false
+	flank_spawn_authorized = false
+	if enemy == null: return
+	enemy.set_meta("evacuation_enemy",true)
+	enemy.set_meta("evacuation_flanker",true)
+	apply_pressure(enemy)
+	spawned_count += 1
 
 func distance_to_shelter() -> int:
 	var offset := foot_position()-ring_center

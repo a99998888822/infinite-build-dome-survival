@@ -51,8 +51,8 @@ func _ready() -> void:
 	_weapon_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	weapon_view.add_child(_weapon_scroll)
 	var weapon_padding := MarginContainer.new()
-	weapon_padding.add_theme_constant_override("margin_left", 4)
-	weapon_padding.add_theme_constant_override("margin_right", 4)
+	weapon_padding.add_theme_constant_override("margin_left", 0)
+	weapon_padding.add_theme_constant_override("margin_right", 0)
 	weapon_padding.add_theme_constant_override("margin_top", 4)
 	weapon_padding.add_theme_constant_override("margin_bottom", 4)
 	_weapon_scroll.add_child(weapon_padding)
@@ -71,7 +71,7 @@ func _ready() -> void:
 	var heading := HBoxContainer.new()
 	add_child(heading)
 	_weapon_icon = TextureRect.new()
-	_weapon_icon.custom_minimum_size = Vector2(26, 26)
+	_weapon_icon.custom_minimum_size = Vector2(36, 36)
 	_weapon_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_weapon_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_weapon_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -101,17 +101,26 @@ func _ready() -> void:
 	add_child(_title)
 	_inventory_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_inventory_scroll)
+	_inventory_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	# Keep six columns even in small windows; allow access without squeezing art.
 	_inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	FinanceFrameSkin.scrollbar(_inventory_scroll.get_h_scroll_bar())
 	_inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_inventory_scroll.custom_minimum_size.y = 52
 	add_child(_inventory_scroll)
+	var inventory_padding := MarginContainer.new()
+	inventory_padding.name = "InventoryPadding"
+	inventory_padding.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	inventory_padding.add_theme_constant_override("margin_left", 0)
+	inventory_padding.add_theme_constant_override("margin_right", 0)
+	inventory_padding.add_theme_constant_override("margin_top", 12)
+	inventory_padding.add_theme_constant_override("margin_bottom", 12)
+	_inventory_scroll.add_child(inventory_padding)
 	_inventory = GridContainer.new()
 	_inventory.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_inventory.add_theme_constant_override("h_separation", 4)
-	_inventory.add_theme_constant_override("v_separation", 6)
-	_inventory_scroll.add_child(_inventory)
+	_inventory.add_theme_constant_override("h_separation", 16)
+	_inventory.add_theme_constant_override("v_separation", 8)
+	inventory_padding.add_child(_inventory)
 	_selection = Label.new()
 	_selection.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	FinanceUIStyle.label(_selection, 20, FinanceUIStyle.MUTED)
@@ -163,7 +172,7 @@ func refresh() -> void:
 		button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
 		button.mouse_exited.connect(func(): tooltip_hidden.emit())
 	var current := loadout.get_weapon_instance(selected_weapon_id)
-	ItemIconArt.bind_texture(_weapon_icon, FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null, false, 26.0, null, 26.0)
+	ItemIconArt.bind_texture(_weapon_icon, FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null, false, 36.0, null, 36.0)
 	_weapon_name.text = "%s · Lv.%d" % [L10n.source(str(current.weapon_data.get("display_name", ""))), current.level] if current != null else "尚无武器"
 	_weapon_name.tooltip_text = ""
 	_sell_weapon.disabled = weapons.size() <= 1

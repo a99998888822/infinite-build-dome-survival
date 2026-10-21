@@ -4,6 +4,8 @@ class_name ElectricSparkEffect
 const LIGHTNING_EFFECT_SCRIPT = preload("res://scripts/effects/lightning_particle_effect.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const WARNING_SPRITE = preload("res://scripts/effects/electric_spark_warning_sprite.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
+const GROUND_AREA = preload("res://scripts/effects/spell_ground_area.gd")
 
 const ACTIVATION_DELAY_SECONDS: float = 0.5
 const RING_FADE_SECONDS: float = 0.28
@@ -16,6 +18,7 @@ const BODY_RADIUS: Vector2 = Vector2(23.0, 14.0)
 const PARTICLE_SIZE: Vector2 = Vector2(3.0, 2.0)
 
 var _warning_sprite: MultiMeshInstance2D = null
+var _ground_area: Node2D
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -46,12 +49,12 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"radius": DEFAULT_RADIUS,
 		"strike_height": DEFAULT_STRIKE_HEIGHT,
 	}, attachment_item_id)
-	effect._ring_radius = maxf(
+	effect._radius = maxf(
 		effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS)
 			* effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0),
 		18.0,
-	)
-	effect._radius = effect._ring_radius * DAMAGE_RADIUS_MULTIPLIER
+	) * DAMAGE_RADIUS_MULTIPLIER
+	effect._ring_radius = effect._radius
 	effect.global_position = hit_position
 	effect.call_deferred("_arm")
 
@@ -65,6 +68,8 @@ func _arm() -> void:
 
 
 func _ready() -> void:
+	_ground_area = GROUND_AREA.new()
+	add_child(_ground_area)
 	if _visual_count > 0:
 		_warning_sprite = WARNING_SPRITE.new()
 		add_child(_warning_sprite)
@@ -119,9 +124,13 @@ func _on_ground_strike_landed() -> void:
 
 
 func _sync_warning() -> void:
-	if _warning_sprite == null:
-		return
 	var fade := 1.0
 	if _strike_landed:
 		fade = 1.0 - clampf((_elapsed - _ring_fade_start_elapsed) / RING_FADE_SECONDS, 0.0, 1.0)
-	_warning_sprite.sync(_elapsed, _ring_radius / DEFAULT_RADIUS, fade)
+	if _ground_area != null:
+		_ground_area.setup(get_terminal_footprint_axes(), Color(0.8,0.56,0.06,0.12), Color(1.0,0.86,0.24,0.7), 1.0, fade)
+	if _warning_sprite != null:
+		_warning_sprite.sync(_elapsed, _radius, fade)
+
+func get_terminal_footprint_axes() -> Vector2:
+	return FOOTPRINT.axes(_radius)

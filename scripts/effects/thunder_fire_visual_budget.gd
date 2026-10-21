@@ -57,13 +57,15 @@ func claim(point: Vector2) -> int:
 	# Fixed anchors prevent a chain of nearby hits joining distant screen areas.
 	for y in range(cell.y - 1, cell.y + 2):
 		for x in range(cell.x - 1, cell.x + 2):
-			for candidate: Dictionary in _cells.get(Vector2i(x, y), []):
+			var neighbor := Vector2i(x, y)
+			if not _cells.has(neighbor): continue
+			for candidate: Dictionary in _cells[neighbor]:
 				var distance := point.distance_squared_to(candidate.position)
 				if distance <= nearest:
 					region = candidate
 					nearest = distance
 	if region.is_empty():
-		region = {"position": point, "last_seen": _clock, "times": [], "spark_patches": {}}
+		region = {"position": point, "last_seen": _clock, "times": [], "spark_patches": {}, "spark_cleanup_clock": -INF}
 		if not _cells.has(cell): _cells[cell] = []
 		_cells[cell].append(region)
 	region.last_seen = _clock
@@ -76,8 +78,12 @@ func claim(point: Vector2) -> int:
 	var tier := Tier.FULL
 	if times.size() > REDUCED_LIMIT:
 		var patches: Dictionary = region.spark_patches
-		for key in patches.keys():
-			if float(patches[key]) <= cutoff: patches.erase(key)
+		# New patches cannot expire while combat time is unchanged. Keep this
+		# separate from contact history: sparse contacts do not clean sparks.
+		if float(region.spark_cleanup_clock) != _clock:
+			for key in patches.keys():
+				if float(patches[key]) <= cutoff: patches.erase(key)
+			region.spark_cleanup_clock = _clock
 		var patch := Vector2i(floori(point.x / SPARK_CELL_SIZE), floori(point.y / SPARK_CELL_SIZE))
 		if patches.has(patch) or patches.size() >= SPARK_PATCH_LIMIT:
 			tier = Tier.SUPPRESSED

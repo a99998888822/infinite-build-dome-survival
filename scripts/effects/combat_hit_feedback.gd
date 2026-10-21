@@ -102,6 +102,7 @@ static func local_hit_count(positions: Array) -> int:
 		for point: Vector2 in positions:
 			if center.distance_squared_to(point) <= radius_squared: count += 1
 		highest = maxi(highest, count)
+		if highest == positions.size(): return highest
 	return highest
 
 
@@ -148,15 +149,19 @@ func _accumulate(attack_id: int, hits: Dictionary, at: float) -> int:
 		pending.erase(id)
 	# Seed each new pocket at the densest hit position in this contact batch.
 	while not pending.is_empty():
-		var center: Vector2 = pending.values()[0]
+		var positions := pending.values()
+		var center: Vector2 = positions[0]
 		var best_count := 0
-		for candidate: Vector2 in pending.values():
+		for candidate: Vector2 in positions:
 			var count := 0
-			for point: Vector2 in pending.values():
+			for point: Vector2 in positions:
 				if candidate.distance_squared_to(point) <= LOCAL_RADIUS * LOCAL_RADIUS: count += 1
 			if count > best_count:
 				center = candidate
 				best_count = count
+			# A dense slash often fits in the first pocket. No later center can
+			# improve a full match; preserve the original first-center tie rule.
+			if best_count == positions.size(): break
 		var chain := {"attack_id": attack_id, "center": center, "hits": {}, "last_hit": at, "milestone": 0}
 		for id in pending.keys():
 			if center.distance_squared_to(pending[id]) <= LOCAL_RADIUS * LOCAL_RADIUS:

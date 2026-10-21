@@ -71,7 +71,8 @@ func _test_drops() -> void:
 		check(drops.get_elite_relics_dropped_this_wave() == expected, "ground token advances tier %d" % expected)
 	check(is_equal_approx(drops.get_elite_relic_drop_chance(10000.0), 6.25), "bonus cap precedes decay")
 	var before := drops.get_elite_relics_dropped_this_wave()
-	drops.spawn_action(pending(drops, player, "", "drop_boss_enemy"), Vector2.ZERO, root, player)
+	var non_elite := drops.spawn_action({"type": "relic", "amount": 1}, Vector2.ZERO, root, player)
+	check(non_elite is RelicPickup, "non-elite source creates a real relic choice token")
 	player.add_relic("relic_finance_manager")
 	check(drops.get_elite_relics_dropped_this_wave() == before, "other sources do not change elite decay")
 	var expected_chances := {"exp_orb": 100.0, "health_pack": 20.0}

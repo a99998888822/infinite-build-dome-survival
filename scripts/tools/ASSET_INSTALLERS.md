@@ -1,62 +1,34 @@
-# 素材安装工具
+# 素材安装与检查工具
 
-> 2026-10-16 武器动效已正式采用：当前八张正式特效图集位于 `assets/sprites/weapons/effects/block_vfx/`，七把武器直接引用确认稿；战锤／长枪保留第二轮显示倍率，手炮枪口由 `cannon_jet_flame.gdshader` 喷焰取代旧 `muzzle` 图集。`build_weapon_block_vfx.py` 保留确定性像素绘制源。旧 `build_weapon_trio_art.py` 的地裂和旧枪口焰输出不代表当前生效资源，不得用于回退确认稿。参见[正式采用记录](../../docs/main/weapon_block_visuals_2026-10-16.md)。
+正式资源位于 `assets/`，尺寸、显示倍率与图集约定见[当前素材规则](../../docs/asset/asset_rules_summary.md)和[精灵规范](../../docs/asset/combat_sprite_clarity.md)。武器图标为 36px、遗物为 36px、附魔为 32px；历史生成器的旧输出不能覆盖当前 PNG/PXG/PAL。
 
-> 2026-10-16 正式显示配置已确认，见[显示与碰撞规范](../../docs/asset/combat_sprite_clarity.md)。冥狼和蝙蝠检查器支持清理后的图集来源清单：逐帧从正式图集裁切，在内存中按原 PNG 编码核对保留哈希，同时检查色板、透明度和动画注册。默认只读，不重建已删除的单帧目录。显示倍率保留在正式场景／控制器中，不烘焙进 PNG。
+## 来源与重建
 
-> 2026-10-15 来源整理：现行原图在 `artifacts/sources/`，角色有效网格在 `artifacts/editable/player_actions/current/`。旧审阅包、旧角色来源目录及专用转换工具已清理。本文下方日期条目用于追溯；涉及旧路径的重建说明已失效。当前来源核对入口为 `python scripts/tools/art_source_archive.py --check`，加 `--output <目录>` 可重建当前角色图集和银行底图。可复用绘制函数见 [source_art/README.md](source_art/README.md)，临时输出统一写入 `temp/`。
+原图和可编辑源使用 `artifacts/sources/`、`artifacts/editable/` 及正式 PNG 旁的文件。逐件图标信息见[当前索引](../../docs/asset/icon_manifest.json)。`art_source_archive.py --check` 核对其管理的来源；`--output <目录>` 可输出相应重建结果。可复用绘制函数见 [source_art/README.md](source_art/README.md)，临时输出放在 `temp/`。
 
-2026-10-08：蝙蝠、幽焰冥狼已解除对历史像素处理目录的依赖。`build_echo_bat_art.py --check` 与 `install_underworld_wolf_art.py --check`（或无参数）检查当前正式 PNG、色板、图集及动画元数据；分别传入 `--rebuild`、`--rebuild-atlases` 才重建。原始帧保存在 `artifacts/sources/enemies/echo_bat/`、`underworld_wolf/`；正式目录的 `manifest.json` 保留来源、哈希与接入参数。多轮试稿和审阅包已删除，后续直接编辑正式 PNG。
+现有工具的管理范围不完全相同，旧数值或逐字资源检查不能替代当前场景和配置验证。尤其 `.tres` 的 UID、属性顺序与 Godot 序列化变化可能造成纯文本差异，应检查资源解析与对应测试。
 
-2026-10-05：19张法术／附魔图标已替换为用户确认的64×64透明PNG，正式目录为 `assets/ui/icons/augmentations/`，同名PXG／PAL同步。电火花使用 `scroll_lightning.png`，落雷使用独立的 `scroll_electric_spark.png`。界面和掉落物维持32px显示区域。重建以当前PXG为准，旧 `build_attribute_enchantment_icons.py` 及历史32px稿不得覆盖本次确认稿。来源映射和验证见[接入记录](../../docs/asset/art_refresh_plan/spell_icons_64_installation_2026-10-05.md)。
-
-2026-10-04钢甲骑士更新：256px，idle1／move7（10FPS）／windup7／dash2／recover1，idle选移动第1帧。Boss安装器、图集构建与临时对照图工具均按此规格更新。当前可编辑PXG／PAL及帧序来源清单位于资源目录的 `frames/` 和 `art_source_manifest.json`；接入与回归见[本轮记录](../../docs/asset/art_refresh_plan/knight_256_installation_2026-10-04.md)。普通怪当前为128px、移动7帧（14FPS），其独立接入记录见[小怪记录](../../docs/asset/art_refresh_plan/grub_128_installation_2026-10-04.md)；通用安装器的非Boss历史契约不作为本轮验收入口。
-
-正式资源位于 `assets/`。安装工具保留在本目录，不依赖 `artifacts` 中的审阅包。默认运行或传入 `--check` 仅检查现有资源的尺寸、色板、透明度和图集布局；旧审阅包已删除，不再进行与历史审阅文件的哈希比对。
+## 通用入口
 
 ```powershell
 python scripts/tools/install_combat_picxel_assets.py --check
 python scripts/tools/install_player_picxel_assets.py --check
 python scripts/tools/install_iron_knight_assets.py --check
 python scripts/tools/install_goblin_portraits.py --check
-```
-
-安装用户确认的新 PNG 时，给前三种工具传入 `--source <目录>`。输入目录采用与 `assets/` 相同的相对布局，例如 `sprites/player/combat/void_hunter_idle_right.png`；文件名、帧数和尺寸须符合当前游戏配置。先完整校验输入，再复制文件并核对复制前后哈希，沿用现有 `.import`。Boss 工具同时重建当前五组动作帧表。
-
-哥布林工具使用 `--source <目录>`，当前接入五张 320×320 RGBA PNG，最多16色、硬透明。运行表情名为 `neutral/downcast/displeased/smile/delighted`，同时接受确认稿的 `neutral/worried/angry/sly/excited` 文件名（均带 `goblin_` 前缀）。工具组装1600×320理财图集和1280×1280结算图集，并校验表情映射和浮动帧没有裁掉不透明像素。
-
-2026-10-18：当前哥布林正式稿为用户确认的 A+++，重建来源为 `artifacts/editable/finance_ui_20261018/portraits/`；面板采用该目录上一级的 `panel_Aplus.png`，理财背景采用同级 `background_lamp_aligned.png`（以原始附件为底，按用户要求将紫色光晕移到吊灯中心）。`align_finance_lamp_glow.py --output <新路径>` 可重建背景校正版。旧256px立绘和旧背景合成方式均已被取代，详见[接入记录](../../docs/asset/finance_ui_installation_2026-10-18.md)。
-
-环境素材工具 `install_battle_environment_assets.py <目录>` 保留原接口，输入为该目录中的 `128px/` 编号 PNG。
-
-`build_combat_sprites.py` 是通用安装工具的兼容入口，同样需显式传入 `--source` 才写入资源。`build_iron_knight_review.py` 可从当前正式 Boss 图集生成临时逐帧对照图。安装新素材后再由 Godot 导入；修改动画帧数时仍需同步游戏配置。
-
-`build_nightwatch_spear_art.py` 从保留的像素几何绘制正式守夜长枪，只写入 `assets/` 下的64×64图标和248×28枪身；检查最多16色、透明通道仅0或255，不生成中间审阅包。
-
-`build_camp_dagger_art.py` 默认检查正式营地短刀图标、刀身与斩击PNG是否与旁边的可编辑 `.pxg` 像素源一致；传入 `--write` 才重建这三项PNG，沿用Godot生成的 `.import`。各PXG自带色板，后续修改无需旧参考图。
-
-`build_weapon_trio_art.py` 管理赤铜炉灯、异化触手、裂地战锤的三个128×128图标和四组动画图集。默认核对正式PNG与PXG；`--write` 从 `assets/` 内的可编辑源重建，检查每帧最多16色、透明通道仅0或255以及透明边界。火流6帧、触手19帧、战锤9帧、裂缝4帧；后续改图无需审阅包。`--source <已批准的weapon_trio目录>` 仅用于首次安装R02/R03设计源，不用于重建当前图标。
-
-2026-09-30：11张武器UI图标已替换为用户确认的64×64 Picxel稿，当前PNG旁均有自带色板的PXG和PAL。短刀图标允许最多16色，刀身与斩击规格保持原样。旧版程序绘图工具（如 `build_nightwatch_spear_art.py`）会重画旧图标，其历史图标输出不能覆盖本次确认稿；需要重建图标时以当前同名PXG为准。战斗贴图不属于本次更新。
-
-2026-10-04：以上11张武器UI图标已更新为用户选定的128×128版，来源为 `artifacts/sources/weapons/wuqi_icon.png`。PNG、PXG、PAL同步；短刀检查器按128检查图标，刀身与斩击尺寸保持原样。历史64图标生成器不能覆盖当前稿；以当前同名PXG为重建依据。见[接入记录](../../docs/asset/art_refresh_plan/weapon_icons_128_installation_2026-10-04.md)。
-
-需要录制实机审阅时，使用[后台录制入口](BACKGROUND_CAPTURE.md)，避免Godot遮挡正在使用的浏览器。
-
-当前正式战场采用已确认的 C 方案。地表分布图 `ground-context.png.import` 必须保持 `process/fix_alpha_border=false`，其透明像素保留地面颜色数据。复验入口为 `scenes/tests/battle_environment_test.tscn`。
-
-2026-10-02：属性栏、地面与草地安装器已解除对旧 r03/r05 处理包的依赖。以下命令只检查当前 PNG 尺寸和 JSON 可读性，不覆盖文件：
-
-```powershell
 python scripts/tools/install_stats_drawer_art.py --check
 python scripts/tools/install_green_battlefield.py --check
 python scripts/tools/install_meadow_battle_assets.py --check
 ```
 
-这三个工具通过 `current_art_package.py` 实现。安装新批准的资源时传入 `--source <包目录> --backup-dir <新备份目录>`；包内使用项目根目录相对路径，例如 `assets/sprites/background/meadow/grass-atlas.png`，地面包还需包含 `data_config/green_battlefield.json`。全部输入验证后才备份并复制，保留 `.import`；新 PNG 与旧网格不再相同时，索引改用新 PNG 作为编辑源，避免误报旧网格仍匹配。备份目录须尚不存在。
+前三类安装器通过 `--source <目录>` 接收新资源，使用与 `assets/` 对应的布局。安装前校验文件、帧数和尺寸，复制后核对哈希并保留 `.import`；修改动画帧数时同步游戏配置。`build_combat_sprites.py` 是通用入口的兼容包装。
 
-2026-09-30：该批现保留11张附魔UI图标已按用户选定的32×32安装，PNG旁保留PXG与PAL。弹跳的配置引用已由SVG改为PNG；未引用的旧SVG已在2026-10-02清理。重建以当前同名PXG为准，不用历史64px候选覆盖已确认稿。接入与验证见[附魔安装记录](../../docs/asset/art_refresh_plan/24_augmentations_sheet_01_installation.md)。
+哥布林安装器接收五张 320×320 RGBA 图，运行表情为 `neutral/downcast/displeased/smile/delighted`，也接受确认稿的别名。当前理财来源在 `artifacts/editable/finance_ui_20261018/`，`align_finance_lamp_glow.py --output <新路径>` 处理背景灯光对齐。
 
-2026-10-02：角色／敌人的唯一高清帧原稿从 `assets/sprites/player/tobe_handled/` 移至 `artifacts/sources/character_frames/`；`prepare_player_picxel_review.py` 与 `picxel_combat_source_masks.py` 已同步。结算离线预览改用当前草地；音效试听工具允许已废弃的旧版音效不存在。最终编辑源和唯一原稿入口分别为 `artifacts/editable/index.json` 与 `artifacts/sources/index.json`。历史录制脚本的截图／日志属于可再生成输出，清理后需先重新录制。
+属性抽屉与地面安装器通过 `current_art_package.py` 校验包；安装新批准资源使用 `--source <包目录> --backup-dir <新目录>`。地表采样图透明像素携带颜色信息，保留其导入设置，具体运行配置见[战场环境](../../docs/asset/battle_environment.md)。
 
-现有通用战斗／Boss 安装器的部分 `--check` 会逐字比较 `.tres`。Godot 保存后的 UID、顺序或布尔序列化差异可能导致检查失败；动画是否可用需结合实际资源解析和 `iron_knight_test.tscn` 判断，不要为消除文本差异覆盖已经确认的正式帧表。
+## 专项工具
+
+- `build_echo_bat_art.py --check`、`install_underworld_wolf_art.py --check` 检查正式图集与元数据；显式重建参数分别为 `--rebuild`、`--rebuild-atlases`，先确认输入仍存在。
+- `build_camp_dagger_art.py`、`build_weapon_trio_art.py` 通过现有 PNG/PXG 检查或显式 `--write` 重建其管理的资源；先核对当前尺寸与输出范围。
+- `build_weapon_block_vfx.py` 保存块状武器特效的绘制源；当前喷焰与其他特效入口见[特效说明](../../docs/asset/combat_effects.md)。
+- 新素材安装后由 Godot 导入，并运行对应场景验证；自动截图使用[后台录制入口](BACKGROUND_CAPTURE.md)。

@@ -118,7 +118,8 @@ func _update_icon(icon_path: String) -> void:
 		return
 	icon = resource as Texture2D
 	var is_augmentation := icon_path.get_base_dir() == "res://assets/ui/icons/augmentations"
-	expand_icon = true
+	# Native 32px inventory art must not shrink with theme padding.
+	expand_icon = not is_augmentation
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_theme_constant_override("icon_max_width", 32 if is_augmentation else INVENTORY_ICON_MAX_WIDTH)
@@ -133,13 +134,13 @@ func _get_drag_data(_position: Vector2) -> Variant:
 		var resource := load(icon_path)
 		if resource is Texture2D:
 			preview.texture = resource as Texture2D
-	preview.custom_minimum_size = INVENTORY_ICON_SIZE
-	preview.size = INVENTORY_ICON_SIZE
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	if icon_path.get_base_dir() == "res://assets/ui/icons/augmentations":
-		preview.custom_minimum_size = Vector2(32, 32)
-		preview.size = Vector2(32, 32)
+	var is_augmentation := icon_path.get_base_dir() == "res://assets/ui/icons/augmentations"
+	var preview_size := Vector2(32, 32) if is_augmentation else INVENTORY_ICON_SIZE
+	# Set the intended minimum once; shrinking a cached 48px minimum can clamp size.
+	preview.custom_minimum_size = preview_size
+	preview.size = preview_size
 	preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_drag_preview(preview)

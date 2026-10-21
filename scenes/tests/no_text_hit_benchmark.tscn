@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://scripts/tests/no_text_hit_benchmark.gd" id="1"]
-
-[node name="NoTextHitBenchmark" type="Node"]
-script = ExtResource("1")

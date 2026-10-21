@@ -27,21 +27,3 @@
 钱包的整数部分随拾取立即到账，小数部分在HUD中显示并累计，成功波末统一向上补整最多1金币；重复结算无效，失败退出不领取向上补整。银行、商店、贷款仍使用整数交易；利息继续使用原有独立的小数结转规则。经验的累计规则保持原样。
 
 例如1金币×1.5×1.2345=1.85175，计为1.85金币；两枚合计3.70，成功波末结算为4金币。普通1金币×1.2345同样计为1.23。
-
-## 正式资源与验证
-
-2026-10-10数量属性接入验证：挑战扩展96项、原有波次挑战84项、三档难度刷怪密度223项，共403项Headless检查通过。覆盖小数累计、营地与挑战加成叠加、拒绝与重复接受、存活奖励和失败不奖励、新波及新局余量清零、场上人数上限、独立精英配额，以及正式中文翻译。编辑器导入、UTF-8与JSON检查、本地化目录校验通过。主场景可正常启动；直接限帧退出时另有BGM Ogg资源释放提示，挑战测试在停播后等待音频线程释放，最终无报错退出。
-
-- 配置：`data_config/wave_challenges.json`。
-- 扩张与金币图标：`assets/ui/finance/challenge_expansion.svg`、`challenge_fortune.svg`。保险箱现使用重绘的128×128透明图标`challenge_vault_painted.png`，战斗使用48×48的`challenge_vault_world.png`，均位于同目录；暗绿铁与旧铜像素风格参考正式遗物、主界面、选人及理财底图。可编辑绘图源与来源记录已归入 `scripts/tools/source_art/challenge_vault.py` 和同名 `.json`；临时审阅目录可清理。
-- 保险箱场景：`scenes/battle/challenge_vault.tscn`。
-- 中英文文本：`localization/catalogs/challenge_expansion.csv`。
-- 实机测试：`scenes/tests/challenge_expansion_test.tscn`，使用正式GameRoot、挑战弹窗、掉落、敌人和结算；仅初始资源及战斗遥测为预设审阅条件。
-- 截图运行通过 `scripts/tools/run_godot_background.py` 的独立Windows桌面，禁止抢占前台。
-- 验证文件位于 `artifacts/previews/challenge_expansion_20261009/`。
-
-本次验证：新增流程53项Headless检查、61项GPU检查通过；加上原有挑战、结息展示及8组经济／战斗回归，共11组、1510项Headless检查全部通过。Bootstrap报告0警告、0错误。GPU日志确认实际运行在独立桌面，`foreground_samples=0`。
-
-截图（位于上述目录的 `captures/`）：`01_expansion_offer.png`、`02_fortune_offer.png`、`04_custody_offer.png`为三项挑战；各有对应`_small.png`小窗口版本。`03_fortune_combat.png`展示1.85金币与过期／有效掉落，`05_vault_defense.png`展示保险箱实际血条与敌人。
-
-汇总结果以 `final_verification.json` 为准；早期调试日志保留了修正前的问题记录。

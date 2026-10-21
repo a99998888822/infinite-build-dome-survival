@@ -7,6 +7,8 @@ const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_p
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const FROST = preload("res://scripts/effects/frost_pattern.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
+const GROUND_AREA = preload("res://scripts/effects/spell_ground_area.gd")
 const DEFAULT_RADIUS := 51.2
 
 var _weapon: WeaponInstance = null
@@ -24,6 +26,7 @@ var _visual_detail := 2
 var _visual_frame := -1
 var _query := PhysicsShapeQueryParameters2D.new()
 var _excluded_bodies: Array[RID] = []
+var _ground_area: Node2D
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
 	if parent == null or weapon == null or damage_event == null:
@@ -49,11 +52,14 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	AudioManager.play_enchantment_sfx("ice")
 	PARTICLE_WORLD_SCRIPT.emit_profile(parent, "ice_burst", hit_position, Vector2.ZERO, 0.6, Color(0.62, 0.80, 0.93, 0.55), {"count_multiplier": 0.3, "size_multiplier": 0.52})
 	effect._damage_enemies()
+	effect._sync_ground_area()
 	AudioManager.end_combat_audio()
 
 
 func _ready() -> void:
 	z_index = -6
+	_ground_area = GROUND_AREA.new()
+	add_child(_ground_area)
 	_query.shape = _ground_shape
 	_query.collision_mask = 2
 	_query.collide_with_bodies = true
@@ -70,6 +76,7 @@ func expand_from_wind(radius_multiplier: float = 1.35) -> void:
 		ELEMENT_REACTION_RESOLVER_SCRIPT.emit_feedback(get_parent(), "ice_expand", global_position, {"from_radius": previous, "radius": _radius})
 		_damage_enemies()
 	queue_redraw()
+	_sync_ground_area()
 
 func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
@@ -84,6 +91,7 @@ func _process(delta: float) -> void:
 	if visual_frame != _visual_frame:
 		_visual_frame = visual_frame
 		queue_redraw()
+		_sync_ground_area()
 	if _elapsed >= _lifetime:
 		queue_free()
 
@@ -92,10 +100,7 @@ func _damage_enemies() -> void:
 	# Query the same projected ellipse that is painted on the tilted ground.
 	# A cached convex outline avoids unsupported non-uniform circle scaling.
 	if not is_equal_approx(_shape_radius, _radius):
-		var outline := PackedVector2Array()
-		for index in 48:
-			outline.append(Vector2.from_angle(index * TAU / 48.0) * Vector2(1.0, FROST.GROUND_FLATTEN) * _radius)
-		_ground_shape.points = outline
+		_ground_shape.points = FOOTPRINT.shape(get_terminal_footprint_axes()).points
 		_shape_radius = _radius
 	_query.transform = Transform2D(0.0, global_position)
 	var results := get_world_2d().direct_space_state.intersect_shape(_query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
@@ -123,6 +128,14 @@ func _damage_enemies() -> void:
 	if _excluded_bodies.size() != previous_excluded_count:
 		_query.exclude = _excluded_bodies
 	AudioManager.end_combat_audio()
+
+func get_terminal_footprint_axes() -> Vector2:
+	return FOOTPRINT.axes(_radius, FOOTPRINT.ICE_FLATTEN)
+
+func _sync_ground_area() -> void:
+	if _ground_area == null: return
+	var fade := 1.0 - smoothstep(0.64, 1.0, clampf(_elapsed / _lifetime, 0.0, 1.0))
+	_ground_area.setup(get_terminal_footprint_axes(), Color(0.37,0.65,0.81,0.14), Color(0.58,0.81,0.92,0.5), smoothstep(0.0,0.6,_elapsed), fade)
 
 func _draw() -> void:
 	BAKED.ALIGNED.begin(self)

@@ -77,8 +77,9 @@ func _process_special_behavior(delta: float) -> bool:
 	if skill_state == "dash":
 		var distance := float(_profile.get("dash_distance", 240))
 		var duration := maxf(float(_profile.get("dash_ms", 160)) / 1000.0, 0.01)
+		var dash_speed := limit_night_speed(distance/duration)
 		if not _dash_blocked:
-			var step := minf(distance - _travelled, distance / duration * delta)
+			var step := minf(distance - _travelled, dash_speed * delta)
 			var previous := _travelled
 			var collision := move_and_collide(_direction * maxf(step, 0.0))
 			_travelled = clampf((global_position - _origin).dot(_direction), 0.0, distance)

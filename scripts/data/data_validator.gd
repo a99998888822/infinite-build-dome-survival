@@ -16,7 +16,7 @@ const REQUIRED_TABLES: Array[String] = [
 ]
 
 const TABLE_REQUIRED_FIELDS: Dictionary = {
-	"weapons": ["id", "display_name", "icon", "rarity", "tags", "weapon_type", "load_cost", "max_level", "attack_interval_ms", "attack_range", "hit_radius", "projectile_speed", "spread_angle", "base_stats", "level_upgrades"],
+	"weapons": ["id", "display_name", "icon", "rarity", "tags", "load_cost", "max_level", "attack_interval_ms", "attack_range", "hit_radius", "projectile_speed", "spread_angle", "base_stats", "level_upgrades"],
 	"relics": ["id", "display_name", "rarity", "tags", "effects"],
 	"bonds": ["id", "name", "bond_tag", "thresholds"],
 	"characters": ["id", "icon", "base_stats", "start_weapons"],
@@ -224,7 +224,7 @@ func _allows_fractional_config_value(path: String) -> bool:
 	) or path.contains("augmentations[") and (
 		path.contains(".effect_parameters.") or path.contains(".instance_parameter_ranges[")
 	) or path.contains("weapons[") and path.ends_with(".plasma_tick_interval") or path.contains("weapons[") and (
-		path.ends_with(".plasma_rotation_speed") or path.ends_with(".plasma_arc_jitter")
+		path.ends_with(".plasma_arc_jitter")
 	) or path.contains("camp_buildings[") and path.contains(".upgrade_options[") and path.ends_with(".value_per_level")
 
 

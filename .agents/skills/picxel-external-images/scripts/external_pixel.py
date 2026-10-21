@@ -104,7 +104,8 @@ def build(args):
             palette = px._palette_from_image(image, 16, anchor)
             (out / f"{name}.pal").write_text("\n".join(palette) + "\n", encoding="utf-8")
             for size in sizes:
-                sheet = px._import_image(image, size, f"{name}-{size}", anchor["kind"], f"{name}.pal", palette)
+                sheet = px._import_image(image, size, f"{name}-{size}", anchor["kind"], f"{name}.pal", palette,
+                                         preserve_canvas=getattr(args, "preserve_canvas", False))
                 sheet.path = out / f"{name}-{size}.pxg"
                 px.smooth_sheet(sheet, 1, "")
                 used = {c for row in sheet.rows for c in row}
@@ -271,14 +272,15 @@ def main():
     p = commands.add_parser("build")
     p.add_argument("refs", type=Path)
     p.add_argument("-o", "--out", type=Path, required=True)
-    p.add_argument("--sizes", type=int, choices=(32, 64, 128), nargs="+", default=[128])
+    p.add_argument("--sizes", type=int, choices=px.SIZES, nargs="+", default=[128])
+    p.add_argument("--preserve-canvas", action="store_true", help="Keep registered animation canvases; source side must be a multiple of target size")
     p.add_argument("--prepared-dir", type=Path)
     p.add_argument("--background", default="none")
     p.add_argument("--only", nargs="+", help="process named assets in a new revision directory")
     p = commands.add_parser("select")
     p.add_argument("out", type=Path)
     p.add_argument("--name", required=True)
-    p.add_argument("--size", type=int, choices=(32, 64, 128), required=True)
+    p.add_argument("--size", type=int, choices=px.SIZES, required=True)
     p.add_argument("--sheet", type=Path, required=True)
     p.add_argument("--note", required=True)
     p = commands.add_parser("review", help="refresh previews without converting images")

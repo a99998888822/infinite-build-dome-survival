@@ -1,0 +1,75 @@
+extends "res://scripts/tests/active_attack_revision_test.gd"
+const ORIGINAL = preload("res://scripts/tests/fixtures/ritual_drawing_original.gd")
+
+func _run() -> void:
+	CampProgression.begin_transient_session()
+	var reference := ORIGINAL.new()
+	var current := RitualDomain.new()
+	var holder := Node2D.new()
+	add_child(holder)
+	holder.add_child(reference)
+	holder.add_child(current)
+	current.set_physics_process(false)
+	for effect in [reference,current]:
+		effect.domain_layer = Node2D.new()
+		effect.add_child(effect.domain_layer)
+		effect._initialize_domain_particles()
+	check(reference.boundary_particles == current.boundary_particles and reference.outer_particles == current.outer_particles,
+		"all 168 original particle parameters including RNG order")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 20261020
+	for i in 160:
+		holder.transform = Transform2D(rng.randf_range(-PI,PI),Vector2(rng.randf_range(.3,2),rng.randf_range(.3,2)),0,
+			Vector2(rng.randf_range(-2000,2000),rng.randf_range(-2000,2000)))
+		var pose := Transform2D(0,Vector2(rng.randf_range(.3,3),rng.randf_range(.3,3)),0,Vector2(rng.randf_range(-20,20),rng.randf_range(-20,20)))
+		var age := rng.randf_range(0,1000)
+		for effect in [reference,current]:
+			effect.domain_layer.transform = pose
+			effect.elapsed = age
+		reference.captured_vertices.clear()
+		reference.captured_colors.clear()
+		reference._draw_domain()
+		current._draw_domain()
+		check(reference.captured_vertices == current._square_vertices,"exact world-snapped corners %d"%i)
+		check(reference.captured_colors == current._square_colors,"exact particle colors %d"%i)
+		check(current._square_cursor == 168 and current._square_indices.size() == 1008,"all quads retained %d"%i)
+	holder.queue_free()
+	await frames()
+	await fixture("weapon_kunyu_ritual_tome",[Vector2(500,0)])
+	weapon.runtime_stats.projectile_count = 3
+	var ritual := domain()
+	check(ritual.marks_remaining == 5,"active mark budget")
+	ritual._physics_process(30)
+	check(ritual.marks_completed == 0 and ritual.marks_remaining == 5,"empty ground retains marks across long frame")
+	player.global_position = Vector2(300,300)
+	ritual._physics_process(.1)
+	check(ritual.global_position == player.global_position,"ring follows player")
+	enemies[0].global_position = player.global_position + Vector2(60,0)
+	var clock_before := ritual.elapsed
+	GameGlobal.set_runtime_flag("battle_runtime_paused",true)
+	ritual._physics_process(5)
+	check(ritual.elapsed == clock_before and ritual.marks_completed == 0,"pause freezes visual clock and damage")
+	GameGlobal.set_runtime_flag("battle_runtime_paused",false)
+	ritual._physics_process(.11)
+	check(ritual.marks_completed == 1 and enemies[0].current_hp < 10000,"new in-range target hit after following")
+	ritual._physics_process(.34)
+	check(ritual.marks_completed == 1,"350ms spacing remains")
+	ritual._physics_process(8)
+	check(ritual.marks_completed == 2,"long frame consumes only one mark")
+	for i in 3: ritual._physics_process(.351)
+	check(ritual.marks_completed == 5 and ritual.is_attacking(),"all marks complete before recovery")
+	ritual._physics_process(.15)
+	check(absf(ritual.domain_layer.modulate.a-.5)<.001,"final seal fades as a whole")
+	ritual._physics_process(.16)
+	check(ritual.cancelled,"final recovery frees seal")
+	await fixture("weapon_kunyu_ritual_tome",[Vector2(60,0)])
+	ritual = domain()
+	player.alive = false
+	ritual._physics_process(.3)
+	check(ritual.cancelled and enemies[0].current_hp == 10000,"death cancels unspent marks")
+	host.queue_free()
+	await frames()
+	AudioManager.stop_combat_sfx()
+	CampProgression.end_transient_session()
+	print("RITUAL_DRAWING_TEST checks=",checks," failures=",failures)
+	get_tree().quit(0 if failures==0 else 1)

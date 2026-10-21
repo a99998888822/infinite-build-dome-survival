@@ -36,9 +36,8 @@ func _physics_process(delta: float) -> void:
 
 
 func paint() -> void:
-	icon.pivot_offset = icon.size * 0.5
-	var factor := lerpf(0.88, 1.10, age / 0.06) if age < 0.06 else lerpf(1.10, 1.0, ease(clampf((age - 0.06) / 0.17, 0, 1), 0.4))
-	icon.scale = Vector2.ONE * factor
+	# Pulse brightness and frame accents without resampling the 36px art.
+	icon.scale = Vector2.ONE
 	icon.modulate = Color(1.25, 1.30, 1.30).lerp(Color.WHITE, clampf(age / 0.14, 0, 1))
 	queue_redraw()
 

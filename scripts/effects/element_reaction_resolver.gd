@@ -25,6 +25,43 @@ const DEFAULT_DARK_DURATION: float = 2.0
 const DEFAULT_STEAM_DAMAGE_MULTIPLIER: float = 1.5
 const DARK_FLAME_DURATION: float = 10.0
 
+enum ElectricContact { NONE = 0, BURNING_DETONATED = 1, EXTRA_TRIGGER = 2 }
+
+
+## Native lightning contacts supply no damage_event to the reaction resolver.
+## They need only these two outcomes, without a generic input/result dictionary.
+## Keep each live state check and audio scope: callbacks can change the enemy.
+static func apply_electric_contact(enemy: EnemyController, parent: Node, hit_position: Vector2,
+		stun_duration: float, control_power: float, detonate_burning: float) -> int:
+	if not is_instance_valid(enemy) or not enemy.is_alive(): return ElectricContact.NONE
+	AudioManager.begin_combat_audio()
+	var was_holy := enemy.has_status("holy_flame")
+	var was_dark_flame := enemy.has_status("dark_flame")
+	var result := _apply_electric_statuses(enemy, parent, hit_position, stun_duration, control_power, detonate_burning)
+	if not was_holy and enemy.has_status("holy_flame"):
+		emit_feedback(parent, "holy", hit_position)
+	if not was_dark_flame and enemy.has_status("dark_flame"):
+		emit_feedback(parent, "dark_flame", hit_position)
+	AudioManager.end_combat_audio()
+	return result
+
+
+static func _apply_electric_statuses(enemy: Node, parent: Node, hit_position: Vector2,
+		stun_duration: float, control_power: float, detonate_burning: float, reaction_data: Variant = null) -> int:
+	enemy.apply_lightning_stun(maxf(stun_duration, 0.1), control_power)
+	# The generic API reads its mutable payload after the stun callback, and
+	# only if burning is present. Native contacts pass an already captured value.
+	if enemy.has_status("burning") and (float(reaction_data.get("detonate_burning", 0.0)) if reaction_data != null else detonate_burning) > 0.0:
+		enemy.clear_burning()
+		return ElectricContact.BURNING_DETONATED
+	if enemy.has_status("wet"):
+		enemy.clear_wet()
+		# A single local cue replaces both the wet outline and stun orbit.
+		if is_instance_valid(enemy._lightning_visual): enemy._lightning_visual.hide()
+		emit_feedback(parent, "conduct", hit_position, {"follow": weakref(enemy)})
+		return ElectricContact.EXTRA_TRIGGER
+	return ElectricContact.NONE
+
 
 static func apply_element(enemy: Node, element_id: String, reaction_data: Dictionary = {}) -> Dictionary:
 	var result := {
@@ -122,18 +159,15 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 					control_power,
 				)
 		ELEMENT_ELECTRIC:
-			enemy.apply_lightning_stun(maxf(float(reaction_data.get("stun_duration", DEFAULT_STUN_DURATION)), 0.1), control_power)
-			if enemy.has_status("burning") and float(reaction_data.get("detonate_burning", 0.0)) > 0.0:
-				enemy.clear_burning()
+			var flags := _apply_electric_statuses(enemy, parent, hit_position,
+				float(reaction_data.get("stun_duration", DEFAULT_STUN_DURATION)), control_power,
+				0.0, reaction_data)
+			if flags & ElectricContact.BURNING_DETONATED:
 				result["burning_detonated"] = true
 				result["reaction_id"] = "thunder_fire_blast"
-			elif enemy.has_status("wet"):
-				enemy.clear_wet()
+			if flags & ElectricContact.EXTRA_TRIGGER:
 				result["extra_trigger"] = true
 				result["wet_consumed"] = true
-				# A single local cue replaces both the wet outline and stun orbit.
-				if is_instance_valid(enemy._lightning_visual): enemy._lightning_visual.hide()
-				emit_feedback(parent, "conduct", hit_position, {"follow": weakref(enemy)})
 		ELEMENT_LIGHT:
 			if enemy.has_status("dark"):
 				enemy.clear_blind()

@@ -6,7 +6,7 @@ signal back_pressed
 const HUD_STYLE = preload("res://scripts/ui/reward_hud_style.gd")
 const PALETTE = HUD_STYLE.PALETTE
 const RELIC_CELL_SIZE: Vector2 = Vector2(96, 96)
-const RELIC_ICON_SCALE := 1.25 # 80px icons inside the enlarged 96px inventory cell.
+const RELIC_ICON_SCALE := 1.0 # 36px source displayed at 72px inside the 96px cell.
 const GRID_EDGE_PADDING := 4
 const MODAL_SAFE_EDGE_MARGIN: float = 16.0
 const MODAL_FALLBACK_TOP: float = 16.0
@@ -116,7 +116,7 @@ func show_overlay() -> void:
 		return
 	center_container.pivot_offset = center_container.size * 0.5
 	center_container.modulate.a = 0.0
-	center_container.scale = Vector2(0.96, 0.96)
+	center_container.scale = Vector2.ONE
 	if weapon_strip != null:
 		weapon_strip.modulate.a = 0.0
 	if _backdrop != null:
@@ -128,7 +128,6 @@ func show_overlay() -> void:
 	if _backdrop != null:
 		_show_tween.tween_property(_backdrop, "modulate:a", 1.0, 0.20)
 	_show_tween.parallel().tween_property(center_container, "modulate:a", 1.0, 0.24)
-	_show_tween.parallel().tween_property(center_container, "scale", Vector2.ONE, 0.32)
 	if weapon_strip != null:
 		_show_tween.parallel().tween_property(weapon_strip, "modulate:a", 1.0, 0.22).set_delay(0.10)
 	if AudioManager != null:
@@ -330,8 +329,8 @@ func _sync_display_sizes() -> void:
 	var next_scale := clampf(minf(viewport.x / 1280.0, viewport.y / 720.0), 0.5, 1.0)
 	if is_equal_approx(next_scale, _display_scale): return
 	_display_scale = next_scale
-	weapon_strip.slot_size = roundi(88 * _display_scale)
-	weapon_strip.icon_size = roundi(76 * _display_scale)
+	weapon_strip.slot_size = 88
+	weapon_strip.icon_size = 72
 	weapon_strip.cast_mode_icon_size = roundf(28 * _display_scale)
 	var strip_margin := weapon_strip.get_node("StripPanel/StripMargin") as MarginContainer
 	strip_margin.add_theme_constant_override("margin_top", roundi(10 * _display_scale))
@@ -346,7 +345,13 @@ func _size_item_card(card: ItemInventoryCard) -> void:
 	card.custom_minimum_size = (RELIC_CELL_SIZE * _display_scale).round()
 	card.size = card.custom_minimum_size
 	var augmentation := str(card.item_instance.get("icon", "")).get_base_dir() == "res://assets/ui/icons/augmentations"
-	card.add_theme_constant_override("icon_max_width", roundi((64 if augmentation else 88) * _display_scale))
+	if augmentation:
+		card.custom_minimum_size = card.custom_minimum_size.max(Vector2(80, 80))
+		card.size = card.custom_minimum_size
+		card.add_theme_constant_override("icon_max_width", 64)
+		ItemIconArt.bind_button(card, FinanceUIStyle.item_icon(str(card.item_instance.get("icon", ""))), 32.0)
+	else:
+		card.add_theme_constant_override("icon_max_width", roundi(88 * _display_scale))
 
 
 func _size_relic_cell(cell: Control) -> void:
@@ -373,7 +378,7 @@ func _update_relic_grid_columns() -> void:
 
 
 func _update_item_grid_columns() -> void:
-	_update_grid_columns(item_grid, item_scroll, roundf(RELIC_CELL_SIZE.x * _display_scale))
+	_update_grid_columns(item_grid, item_scroll, maxf(80.0, roundf(RELIC_CELL_SIZE.x * _display_scale)))
 
 
 func _update_grid_columns(grid: GridContainer, scroll: ScrollContainer, cell_width: float) -> void:
@@ -589,7 +594,8 @@ func _on_relic_cell_hovered(cell: Control, relic_data: Dictionary) -> void:
 	cell.z_index = 30
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(cell, "scale", Vector2(1.08, 1.08), 0.12)
+	cell.scale = Vector2.ONE
+	tween.tween_property(cell, "modulate", Color(1.12, 1.08, 0.94, 1.0), 0.12)
 	_relic_tweens[cell] = tween
 	_show_relic_tooltip(relic_data, cell)
 

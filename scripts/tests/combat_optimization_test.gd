@@ -139,18 +139,23 @@ func test_status_visual(enemy: EnemyController) -> void:
 	var visual = enemy.get_node("EnemyStatusVisual")
 	visual.set_process(false)
 	visual._process(0.1)
+	preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 	var frame: int = visual._draw_frame
 	visual._process(1.0)
+	preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 	check(visual._draw_frame == frame and visual._draw_status_mask == 0, "empty status geometry is not rebuilt")
 	enemy.apply_wet(2.0)
 	visual._process(0.01)
+	preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 	check(visual._draw_status_mask != 0, "new status invalidates immediately")
 	frame = visual._draw_frame
 	var elapsed: float = visual._elapsed
 	visual._process(0.2)
+	preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 	check(visual._draw_frame == frame and visual._elapsed > elapsed, "static status geometry stays cached while the visual clock advances")
 	enemy.clear_wet()
 	visual._process(0.01)
+	preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 	check(visual._draw_status_mask == 0, "status removal clears cached geometry")
 
 

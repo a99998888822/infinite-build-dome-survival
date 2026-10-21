@@ -1,7 +1,8 @@
 """Check production bat artwork, or explicitly rebuild its atlases and effects.
 
 No arguments only validates. Historical pixel-processing directories are unused.
---rebuild uses the current formal frames; --assemble-captures requires --output-gif.
+--rebuild uses the current formal frames; --rebuild-sonic only redraws the three
+native-size effects. --assemble-captures requires --output-gif.
 """
 from pathlib import Path
 import argparse
@@ -13,65 +14,69 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'assets/sprites/enemies/echo_bat'
-SIZE = 128
+SIZE = 96
 
 
-def atlas(frames, name):
+def atlas(frames, name, output=OUT):
     w, h = frames[0].size
     sheet = Image.new('RGBA', (w * len(frames), h))
     for i, frame in enumerate(frames):
         sheet.paste(frame, (i * w, 0))
-    sheet.save(OUT / (name + '.png'))
+    output.mkdir(parents=True, exist_ok=True)
+    sheet.save(output / (name + '.png'))
     return sheet
 
 
-def sonic_art():
-    # Local pixel drawing at native resolution. Runtime only selects PNG frames.
+def sonic_art(output=OUT):
+    # Redraw the existing motifs directly on their final pixel grids. No resize
+    # or runtime coarse-grid sampling: these pixels are displayed at 1x.
     waves = []
     for i in range(8):
-        # Draw at half resolution, then nearest upscale: every visible pixel
-        # occupies a 2x2 block. Two rotating helical strands form a sonic drill.
-        frame = Image.new('RGBA', (24, 16))
+        # Keep a horizontal silhouette inside the square padded canvas.
+        frame = Image.new('RGBA', (32, 32))
         d = ImageDraw.Draw(frame)
         phase = i * math.tau / 8
         strands = []
         for side in (0, math.pi):
             points = []
-            for x in range(3, 22):
-                radius = 2 + 3 * (x - 3) / 18
-                angle = (x - 3) / 18 * math.tau * 1.65 - phase + side
-                points.append((x, round(8 + radius * math.sin(angle))))
+            for x in range(2, 30):
+                progress = (x - 2) / 27
+                radius = 2 + 5.5 * progress
+                angle = progress * math.tau * 1.65 - phase + side
+                points.append((x, round(15.5 + radius * math.sin(angle))))
             strands.append(points)
         for points in strands:
-            d.line(points, fill='#241b43', width=3)
-        d.line(strands[1], fill='#7962b9', width=1)
-        d.line(strands[0], fill='#dfd5ff', width=1)
-        # The front-facing bright sections rotate across a darker back strand.
+            d.line(points, fill='#241b43', width=4, joint='curve')
+        d.line(strands[1], fill='#7962b9', width=2, joint='curve')
+        d.line(strands[0], fill='#dfd5ff', width=2, joint='curve')
+        # Highlights stay on the continuous front strand, never as stray dots.
         for x, y in strands[0]:
-            if math.cos((x-3) / 18 * math.tau * 1.65 - phase) > 0.3:
+            if math.cos((x-2) / 27 * math.tau * 1.65 - phase) > 0.3:
                 d.point((x, y), fill='#ffffff')
-        d.point((1, 8), fill='#7962b9')
-        d.point((22, 8), fill='#dfd5ff')
-        waves.append(frame.resize((48, 32), Image.Resampling.NEAREST))
-    atlas(waves, 'sonic_wave')
+        waves.append(frame)
+    atlas(waves, 'sonic_wave', output)
     charges = []
     hits = []
     for i in range(6):
-        im = Image.new('RGBA', (40, 40))
+        im = Image.new('RGBA', (20, 20))
         d = ImageDraw.Draw(im)
-        radius = 14 - i * 2
-        d.ellipse((20-radius, 20-radius, 20+radius, 20+radius), outline=(177, 149, 246, 220), width=2)
-        d.rectangle((18, 18, 22, 22), fill=(237, 223, 255, 255))
+        radius = 7 - i
+        d.ellipse((9-radius, 9-radius, 10+radius, 10+radius), outline=(177, 149, 246, 220), width=1)
+        d.rectangle((9, 9, 10, 10), fill=(237, 223, 255, 255))
         charges.append(im)
-        im = Image.new('RGBA', (48, 48))
+        im = Image.new('RGBA', (32, 32))
         d = ImageDraw.Draw(im)
-        radius = 5 + i * 3
+        radius = (3, 5, 8, 10, 12, 14)[i]
         color = (213, 198, 255, 255 - i * 35)
-        for a in range(0, 360, 60):
-            d.arc((24-radius, 24-radius, 24+radius, 24+radius), a, a+36, fill=color, width=2)
+        # Merge the old tiny broken arcs into one readable expanding ring.
+        d.ellipse((15-radius, 15-radius, 16+radius, 16+radius), outline=color, width=1)
         hits.append(im)
-    atlas(charges, 'sonic_charge')
-    atlas(hits, 'sonic_hit')
+    atlas(charges, 'sonic_charge', output)
+    atlas(hits, 'sonic_hit', output)
+
+
+def sonic_warning_art():
+    # Existing 1x path warning is independent of the three redrawn effects.
     warning = Image.new('RGBA', (320, 20))
     d = ImageDraw.Draw(warning)
     d.rectangle((0, 0, 319, 19), fill=(255, 68, 58, 31))
@@ -107,8 +112,10 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--check', action='store_true')
     mode.add_argument('--rebuild', action='store_true')
+    mode.add_argument('--rebuild-sonic', action='store_true')
     mode.add_argument('--assemble-captures', type=Path)
     parser.add_argument('--output-gif', type=Path)
+    parser.add_argument('--effects-output', type=Path, default=OUT)
     args = parser.parse_args()
     if args.assemble_captures:
         if not args.output_gif:
@@ -117,6 +124,10 @@ def main():
         return
     if args.output_gif:
         parser.error('--output-gif requires --assemble-captures')
+    if args.rebuild_sonic:
+        sonic_art(args.effects_output)
+        print('BAT_NATIVE_EFFECTS_READY', args.effects_output)
+        return
     manifest = json.loads((OUT/'manifest.json').read_text(encoding='utf-8'))
     records = {}
     for record in manifest['frames']:
@@ -133,7 +144,7 @@ def main():
     groups = {}
     for action,count in (('move',6),('attack',9)):
         sheet = Image.open(OUT/f'{action}.png').convert('RGBA')
-        assert sheet.size == (128*count,128)
+        assert sheet.size == (96*count,96)
         frames = []
         for i in range(1,count+1):
             record = records[action,i-1]
@@ -143,14 +154,14 @@ def main():
                 image = Image.open(path).convert('RGBA')
             else:
                 assert record['atlas'] == (OUT/f'{action}.png').relative_to(ROOT).as_posix()
-                image = sheet.crop((128*(i-1),0,128*i,128))
+                image = sheet.crop((96*(i-1),0,96*i,96))
                 buffer = io.BytesIO()
                 image.save(buffer,format='PNG')
                 encoded = buffer.getvalue()
             assert hashlib.sha256(encoded).hexdigest() == record['frame_sha256'], (action,i)
-            assert image.size == (128,128), (action,i)
+            assert image.size == (96,96), (action,i)
             assert set(image.getchannel('A').tobytes()) == {0,255}, (action,i)
-            colors = {rgba[:3] for _,rgba in image.getcolors(128*128) if rgba[3]}
+            colors = {rgba[:3] for _,rgba in image.getcolors(96*96) if rgba[3]}
             assert len(colors) <= 16 and colors <= palette, (action,i)
             frames.append(image)
         groups[action] = frames
@@ -159,15 +170,16 @@ def main():
             atlas(frames,action)
         groups['move'][0].save(OUT/'idle.png')
         sonic_art()
+        sonic_warning_art()
     for action,frames in groups.items():
         sheet = Image.open(OUT/f'{action}.png').convert('RGBA')
-        assert sheet.size == (128*len(frames),128)
+        assert sheet.size == (96*len(frames),96)
         for i,frame in enumerate(frames):
-            assert sheet.crop((i*128,0,(i+1)*128,128)).tobytes() == frame.tobytes()
+            assert sheet.crop((i*96,0,(i+1)*96,96)).tobytes() == frame.tobytes()
     idle = Image.open(OUT/'idle.png').convert('RGBA')
     assert idle.size == groups['move'][0].size and idle.tobytes() == groups['move'][0].tobytes()
-    for name,size in {'sonic_wave':(384,32),'sonic_charge':(240,40),
-                      'sonic_hit':(288,48),'sonic_warning':(320,20)}.items():
+    for name,size in {'sonic_wave':(256,32),'sonic_charge':(120,20),
+                      'sonic_hit':(192,32),'sonic_warning':(320,20)}.items():
         assert Image.open(OUT/f'{name}.png').size == size
     print('BAT_PRODUCTION_VALID frames=15 atlases=2 effects=4 historical_packages_required=false')
 

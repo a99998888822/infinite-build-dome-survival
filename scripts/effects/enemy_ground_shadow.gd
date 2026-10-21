@@ -11,6 +11,10 @@ var profile: Dictionary
 var kind := ""
 var footprint := Vector2i.ZERO
 var _texture_key := Vector3i(-1, -1, -1)
+var _last_factor := -1.0
+var _last_elevation := -1.0
+var _last_opacity := -1.0
+var _last_flip := false
 
 
 func configure(enemy: Node2D) -> void:
@@ -21,6 +25,7 @@ func configure(enemy: Node2D) -> void:
 	z_index = -2 # Below bodies and existing skill warnings, above the terrain.
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	process_priority = 10
+	_last_factor = -1.0
 	refresh()
 
 
@@ -32,12 +37,23 @@ func refresh() -> void:
 	if not is_instance_valid(source):
 		hide()
 		return
-	visible = source.visible and source.modulate.a * source.self_modulate.a > 0.001
+	var opacity := source.modulate.a * source.self_modulate.a
+	var shown := source.visible and opacity > 0.001
+	if visible != shown: visible = shown
 	if not visible: return
 	var factor := VISUAL_PROFILES.body_factor(body)
 	var elevation := 0.0
 	if kind == "enemy_underworld_wolf":
 		elevation = clampf(float(body.get("air_height")) / 66.0, 0.0, 1.0)
+	# Read live inputs every frame, but unchanged art needs no geometry or
+	# CanvasItem writes. Continuous elevation still drives the leap fade.
+	var flipped := source.flip_h
+	if factor == _last_factor and elevation == _last_elevation and opacity == _last_opacity and flipped == _last_flip:
+		return
+	_last_factor = factor
+	_last_elevation = elevation
+	_last_opacity = opacity
+	_last_flip = flipped
 	var air_step := roundi(elevation * 8.0)
 	var spread := lerpf(1.0, 0.72, air_step / 8.0)
 	var dimensions := Vector2(profile["size"]) * factor * spread
@@ -50,10 +66,12 @@ func refresh() -> void:
 		if not _textures.has(cache_key): _textures[cache_key] = _make_texture(footprint, air_step)
 		texture = _textures[cache_key]
 	var anchor: Vector2 = profile.origin * factor
-	if source.flip_h: anchor.x = -anchor.x
-	position = anchor.round()
+	if flipped: anchor.x = -anchor.x
+	anchor = anchor.round()
+	if position != anchor: position = anchor
 	# Only opacity follows the body fade. Hit flashes and status tints stay on art.
-	modulate = Color(1, 1, 1, source.modulate.a * source.self_modulate.a * lerpf(1.0, 0.50, elevation))
+	var tint := Color(1, 1, 1, opacity * lerpf(1.0, 0.50, elevation))
+	if modulate != tint: modulate = tint
 
 
 func _make_texture(size: Vector2i, air_step: int) -> ImageTexture:

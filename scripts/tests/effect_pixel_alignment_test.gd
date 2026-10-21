@@ -41,14 +41,17 @@ func run() -> void:
 			check(not is_instance_valid(status._foot_frost),"no ice surfaces allocated before an ice status")
 			enemy.apply_slow(2.0,0.6)
 			status._process(0.01)
+			preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 			check(status._foot_frost.visible and not status._body_ice.visible,"slowed draws ground ice only")
 			check(status.z_index+status._foot_frost.z_index<0,"ground frost does not paint over the body")
 			enemy.apply_freeze(1.0)
 			status._process(0.01)
+			preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 			check(status._body_ice.visible and status._body_ice.is_shell and not status._foot_frost.visible,"frozen restores the original shell without an added ice slab")
 			enemy._frozen_remaining=0
 			enemy._slowed_remaining=0
 			status._process(0.01)
+			preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 			check(not status._foot_frost.visible and not status._body_ice.visible,"expired ice leaves no stale surface")
 		enemy.queue_free()
 		await frames()

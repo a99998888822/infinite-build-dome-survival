@@ -20,6 +20,7 @@ const DAMAGE_NUMBER_RISE: float = 42.0
 const DAMAGE_NUMBER_ANIMATION_SECONDS: float = 0.62
 const MAX_DAMAGE_NUMBERS := 160
 const DAMAGE_NUMBER_POOL_META := &"_idle_damage_numbers"
+const DAMAGE_NUMBER_ANIMATOR = preload("res://scripts/effects/damage_number_animator.gd")
 static var active_damage_numbers := 0
 static var _damage_number_themes: Dictionary = {}
 const MAX_MOVE_SPEED_MULTIPLIER: float = 1.3
@@ -54,11 +55,16 @@ var has_contact_damaged: bool = false
 var target_player: PlayerController = null
 var challenge_target: Node2D = null
 var body_scale_multiplier := 1.0
+var night_speed_player_ratio := 0.0
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
 var _knockback_deceleration: float = 0.0
-var status_visual_revision := 0
+var _status_visual: Node
+var status_visual_revision := 0:
+	set(value):
+		status_visual_revision = value
+		if is_instance_valid(_status_visual): _status_visual.request_sync()
 var _burning_remaining: float = 0.0:
 	set(value):
 		if (_burning_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
@@ -119,6 +125,7 @@ var _contact_probe := CircleShape2D.new()
 var _contact_body: CollisionShape2D
 var _contact_player_body: CollisionShape2D
 var _bunker_route := EvacuationBunker.Route.new()
+var _terrain_route := BattleTerrainObstacle.Route.new()
 
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
@@ -137,6 +144,7 @@ func _notification(what: int) -> void:
 func _ready() -> void:
 	add_to_group("enemies")
 	set_collision_mask_value(EvacuationBunker.ENEMY_BARRIER_LAYER, true)
+	set_collision_mask_value(BattleTerrainObstacle.TERRAIN_LAYER, true)
 	_cavern_scenery = get_tree().get_first_node_in_group("battle_cavern") as Node2D
 	EnemyRegistry.register_enemy(self)
 	_spatial_tracking = true
@@ -145,9 +153,9 @@ func _ready() -> void:
 		idle_texture = sprite.texture
 	_set_movement_visual(false, 0.0)
 	_capture_base_sprite_modulate()
-	var status_visual: Node = ENEMY_STATUS_VISUAL_SCRIPT.new()
-	status_visual.name = "EnemyStatusVisual"
-	add_child(status_visual)
+	_status_visual = ENEMY_STATUS_VISUAL_SCRIPT.new()
+	_status_visual.name = "EnemyStatusVisual"
+	add_child(_status_visual)
 	if auto_initialize_on_ready:
 		initialize(enemy_id)
 	var ground_shadow := GROUND_SHADOW.new()
@@ -242,6 +250,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 		return false
 	enemy_id = target_enemy_id
 	enemy_data = data
+	night_speed_player_ratio = 0.0
 	_hit_visual_pending = false
 	if is_instance_valid(_hit_visual): _hit_visual.reset()
 	_reset_super_armor()
@@ -296,7 +305,21 @@ func _apply_runtime_modifiers(modifier_data_list: Array) -> void:
 
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
-	return modifier_stack.get_stat(stat_id, fallback_base_value)
+	var value := modifier_stack.get_stat(stat_id, fallback_base_value)
+	return limit_night_speed(value) if stat_id == "move_speed" else value
+
+
+func limit_night_speed(speed: float) -> float:
+	if night_speed_player_ratio > 0.0 and is_instance_valid(target_player):
+		return minf(speed,maxf(0.0,target_player.get_stat("move_speed"))*night_speed_player_ratio)
+	return speed
+
+
+func get_chase_speed() -> float:
+	var speed := get_stat("move_speed")
+	if night_speed_player_ratio > 0.0: return speed
+	var base_speed := float(enemy_data.get("base_stats", {}).get("move_speed",speed))
+	return minf(speed,base_speed*MAX_MOVE_SPEED_MULTIPLIER)
 
 
 func apply_burning(duration: float, damage_per_tick: float, source_id: String = "", holy_flame: bool = false, dark_flame: bool = false) -> void:
@@ -524,7 +547,7 @@ func _tick_super_armor(delta: float) -> void:
 	_super_armor_remaining = maxf(0.0, _super_armor_remaining - delta)
 	_super_armor_cooldown = maxf(0.0, _super_armor_cooldown - delta)
 	if is_instance_valid(_super_armor_visual):
-		_super_armor_visual.call("_process", 0.0)
+		_super_armor_visual.update_clock()
 
 
 func _reset_super_armor() -> void:
@@ -566,8 +589,8 @@ func apply_lightning_visual(duration: float = 0.65) -> void:
 	if not alive:
 		return
 	if is_instance_valid(_lightning_visual):
-		_lightning_visual.show()
-		_lightning_visual.call("refresh", duration)
+		if not _lightning_visual.visible: _lightning_visual.show()
+		_lightning_visual.refresh(duration)
 		return
 	_lightning_visual = LIGHTNING_STATUS_VISUAL_SCRIPT.attach(self, duration, LIGHTNING_STATUS_VISUAL_SCRIPT)
 
@@ -722,7 +745,7 @@ func _flush_hit_visual() -> void:
 	if is_instance_valid(_hit_visual) and _hit_visual.is_processing():
 		_hit_visual._sync()
 	if is_instance_valid(_super_armor_visual) and _super_armor_visual.visible:
-		_super_armor_visual._sync()
+		_super_armor_visual.request_sync()
 
 
 func _capture_base_sprite_modulate() -> void:
@@ -770,7 +793,6 @@ func _spawn_damage_number(
 	damage_number.size = DAMAGE_NUMBER_SIZE
 
 	active_damage_numbers += 1
-	damage_number.tree_exiting.connect(EnemyController.release_damage_number, CONNECT_ONE_SHOT)
 	damage_number.show()
 	var spread_offset := Vector2(randf_range(-14.0, 14.0), randf_range(-4.0, 4.0))
 	if display_count > 1:
@@ -778,20 +800,7 @@ func _spawn_damage_number(
 		spread_offset.x = centered_index * 30.0
 	damage_number.global_position = global_position + DAMAGE_NUMBER_OFFSET + spread_offset - DAMAGE_NUMBER_SIZE * 0.5
 
-	var target_position := damage_number.global_position + Vector2(0.0, -DAMAGE_NUMBER_RISE)
-	var tween := damage_number.create_tween()
-	tween.set_parallel(true)
-	if is_critical:
-		# One position track combines rise and shake; the label owns the tween even after a lethal hit.
-		tween.tween_method(EnemyController._animate_critical_damage_number.bind(damage_number, damage_number.global_position), 0.0, DAMAGE_NUMBER_ANIMATION_SECONDS, DAMAGE_NUMBER_ANIMATION_SECONDS)
-	else:
-		tween.tween_property(damage_number, "global_position", target_position, DAMAGE_NUMBER_ANIMATION_SECONDS)
-	tween.tween_property(damage_number, "modulate:a", 1.0, 0.10)
-	tween.tween_property(damage_number, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.set_parallel(false)
-	tween.tween_interval(0.10)
-	tween.tween_property(damage_number, "modulate:a", 0.0, 0.28)
-	tween.tween_callback(_queue_recycle_damage_number.bind(damage_number))
+	DAMAGE_NUMBER_ANIMATOR.for_parent(damage_number_parent).animate(damage_number, is_critical)
 
 
 static func _animate_critical_damage_number(elapsed: float, label: Label, origin: Vector2) -> void:
@@ -800,19 +809,19 @@ static func _animate_critical_damage_number(elapsed: float, label: Label, origin
 	label.global_position = origin + Vector2(0.0, -DAMAGE_NUMBER_RISE * elapsed / DAMAGE_NUMBER_ANIMATION_SECONDS) + shake.round()
 
 
-static func _acquire_damage_number(parent: Node, display_text: String, style: Theme) -> Label:
+static func _acquire_damage_number(parent: Node, display_text: String, style: Theme) -> CombatDamageNumber:
 	var idle: Array = parent.get_meta(DAMAGE_NUMBER_POOL_META, [])
 	while not idle.is_empty():
 		var candidate: Variant = idle.pop_back()
 		if not is_instance_valid(candidate) or candidate.is_queued_for_deletion():
 			continue
-		var label := candidate as Label
+		var label := candidate as CombatDamageNumber
 		label.text = display_text
 		label.theme = style
 		# Reused numbers occupy the same painter position as newly added nodes.
 		parent.move_child(label, -1)
 		return label
-	var label := Label.new()
+	var label := CombatDamageNumber.new()
 	# Set text and font before entering the tree, avoiding a default-font layout
 	# immediately followed by a second font/theme propagation for every hit.
 	label.theme = style
@@ -830,6 +839,7 @@ static func _acquire_damage_number(parent: Node, display_text: String, style: Th
 static func prepare_damage_number_pool(parent: Node) -> void:
 	if parent == null or parent.has_meta(DAMAGE_NUMBER_POOL_META):
 		return
+	DAMAGE_NUMBER_ANIMATOR.for_parent(parent)
 	# Battle setup owns the first allocation, before attacks can land. No budget
 	# slots are consumed; the encounter owns and frees these dormant labels.
 	var idle: Array = []
@@ -840,18 +850,11 @@ static func prepare_damage_number_pool(parent: Node) -> void:
 	parent.set_meta(DAMAGE_NUMBER_POOL_META, idle)
 
 
-static func _queue_recycle_damage_number(label: Label) -> void:
-	# Match queue_free's end-of-frame budget release, after tween processing.
-	_recycle_damage_number.call_deferred(label)
-
-
 static func _recycle_damage_number(label: Variant) -> void:
 	if not is_instance_valid(label) or label.is_queued_for_deletion():
 		return
-	if not label.tree_exiting.is_connected(EnemyController.release_damage_number):
-		return
-	label.tree_exiting.disconnect(EnemyController.release_damage_number)
-	release_damage_number()
+	if not label.active: return
+	label.release()
 	label.hide()
 	var parent: Node = label.get_parent()
 	if parent == null or parent.is_queued_for_deletion():
@@ -908,6 +911,10 @@ func get_drop_table_id() -> String:
 	return str(enemy_data.get("drop_table_id", ""))
 
 
+func _chase_direction(destination: Vector2) -> Vector2:
+	return _terrain_route.direction(self, _bunker_route.waypoint(self, destination))
+
+
 func _process_chase() -> void:
 	if target_player == null or not target_player.alive:
 		velocity = Vector2.ZERO
@@ -915,17 +922,16 @@ func _process_chase() -> void:
 		_set_movement_visual(false, get_physics_process_delta_time())
 		return
 	var destination := challenge_target.global_position if _has_challenge_target() else target_player.global_position
-	var direction := _bunker_route.direction(self, destination)
-	# Dictionary.get evaluates its default argument even when the key exists.
-	var resolved_move_speed := get_stat("move_speed")
-	var base_move_speed := float(enemy_data.get("base_stats", {}).get("move_speed", resolved_move_speed))
-	var move_speed := minf(resolved_move_speed, base_move_speed * MAX_MOVE_SPEED_MULTIPLIER)
+	var direction := _chase_direction(destination)
+	var move_speed := get_chase_speed()
 	if _slowed_remaining > 0.0:
 		move_speed *= _slow_multiplier
 	if _wet_remaining > 0.0:
 		move_speed *= _wet_slow_multiplier
 	var target_velocity := direction * move_speed
 	velocity = velocity.move_toward(target_velocity, CHASE_ACCELERATION * get_physics_process_delta_time())
+	# A player speed debuff must also cap momentum left over from the last frame.
+	if night_speed_player_ratio > 0.0: velocity = velocity.limit_length(limit_night_speed(velocity.length()))
 	if sprite != null and not is_zero_approx(direction.x):
 		sprite.flip_h = direction.x < 0.0
 	move_and_slide()

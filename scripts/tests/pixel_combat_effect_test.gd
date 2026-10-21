@@ -74,7 +74,7 @@ func snapshot(label: String) -> void:
 func _run() -> void:
 	# Grubs now use a horizontal capsule with a 50px half-width. Keep the
 	# outside probe fully beyond the circle plus collider, not just its center.
-	await setup([Vector2.ZERO, Vector2(64, 0), Vector2(120, 0)], {"radius": 132.0})
+	await setup([Vector2.ZERO, Vector2(64, 0), Vector2(180, 0)], {"radius": 132.0})
 	var water := spawn_effect("water_wave")
 	await frames()
 	check(enemies[0].current_hp == 9955 and enemies[1].current_hp == 9955 and enemies[2].current_hp == 10000, "water immediate radius and damage")
@@ -90,7 +90,7 @@ func _run() -> void:
 	check(not water.is_queued_for_deletion(), "approved water outlives the old 0.52 second animation")
 	water.call("_process", 0.33)
 	check(water.is_queued_for_deletion(), "water lifetime")
-	await setup([Vector2(100, 0), Vector2(140, 0)], {"radius": 132.0})
+	await setup([Vector2(100, 0), Vector2(220, 0)], {"radius": 132.0})
 	weapon.runtime_stats["damage_area_size"] = 50.0
 	spawn_effect("water_wave")
 	await frames()
@@ -125,7 +125,7 @@ func _run() -> void:
 	snapshot("light_sword")
 	sword.call("_process", 0.55)
 	check(sword.is_queued_for_deletion(), "sword lifetime")
-	await setup([Vector2.ZERO, Vector2(48, 0), Vector2(96, 0), Vector2(48, 40)])
+	await setup([Vector2.ZERO, Vector2(48, 0), Vector2(145, 0), Vector2(48, 80)])
 	var wind := spawn_effect("wind_blade")
 	wind.call("_process", 0.1)
 	check(is_equal_approx(wind.position.x, 48.0), "wind speed")

@@ -1,6 +1,4 @@
 {
-  "source": "Approved R03 dark grassland, installed 2026-10-14",
-  "method": "Dark terrain, layered batched grass, sparse per-battle seeded B/Q and A placement, preserved collisions and contact shadows",
   "surface_texture": "res://assets/sprites/background/meadow/pit-ground.png",
   "surface_context": "res://assets/sprites/background/meadow/pit-ground-context.png",
   "floor_color": [
@@ -18,8 +16,7 @@
       "anchor": [
         16.5,
         24
-      ],
-      "source_sha256": "1424b61359b18c4f98cee9b1882e67245b51d3a02ba21502f8fd71904a5cfa42"
+      ]
     },
     {
       "id": "G10_grass_dense-32",
@@ -27,8 +24,7 @@
       "anchor": [
         16.0,
         26
-      ],
-      "source_sha256": "42a5f51fb18ed71232880809be3baa08e12e3bed33ba8d6efc34a6d8f86e7340"
+      ]
     },
     {
       "id": "G11_grass_long-32",
@@ -36,8 +32,7 @@
       "anchor": [
         16.0,
         25
-      ],
-      "source_sha256": "be49e096cb89fab683d3ac939c156910053ec9861a2746fb49f36d4bc80b7a93"
+      ]
     },
     {
       "id": "G12_grass_dry_mix-32",
@@ -45,8 +40,7 @@
       "anchor": [
         16.0,
         28
-      ],
-      "source_sha256": "e29daf5924ea489df51d40e5e4ac9082f121c46798c72ba0a3ed53596097478e"
+      ]
     }
   ],
   "rubble": [
@@ -74,8 +68,7 @@
       "anchor": [
         32.0,
         46
-      ],
-      "source_sha256": "d8a240e7ad7d7445f5d8b5bc2baeec11096866c31d51e4c8252331dc6c53a56b"
+      ]
     },
     {
       "id": "decal_stacked_bricks",
@@ -83,8 +76,7 @@
       "anchor": [
         32.0,
         43
-      ],
-      "source_sha256": "9d1b89967721d2bf9ee0e8065b2d006ce61b765eee6592a2decad14d2b1786e7"
+      ]
     },
     {
       "id": "decal_brick_fragments",
@@ -92,8 +84,7 @@
       "anchor": [
         32.0,
         43
-      ],
-      "source_sha256": "d0081a385d50b73d0e44558231301e6c8bde3327f46ac0dd69956d4078dc32f3"
+      ]
     },
     {
       "id": "decal_scattered_stones",
@@ -101,8 +92,7 @@
       "anchor": [
         31.5,
         36
-      ],
-      "source_sha256": "f7e2598b03d108932273e4a746bf40cd6fb34f0b583033224b9fd977953f9158"
+      ]
     },
     {
       "id": "decal_high_rubble",
@@ -110,8 +100,7 @@
       "anchor": [
         32.5,
         46
-      ],
-      "source_sha256": "0c99ed704b8f64edc0f99503b7cf69307230ec2495e380db106b0630b7d9cb93"
+      ]
     },
     {
       "id": "decal_low_rubble",
@@ -119,8 +108,7 @@
       "anchor": [
         32.0,
         48
-      ],
-      "source_sha256": "57c8bf8c9083fad74010b3d2b1a8beb680e0f9830884193b28e7b568f3f168c3"
+      ]
     },
     {
       "id": "decal_flat_stones",
@@ -128,8 +116,7 @@
       "anchor": [
         32.5,
         41
-      ],
-      "source_sha256": "a7bd8e64738fd1ed40dc5ae711ce11808441f025aae9f93aa06d7f96928c0f0d"
+      ]
     }
   ],
   "props": [
@@ -152,10 +139,5 @@
       ]
     }
   ],
-  "initial_groups": [],
-  "preserved_depth_config": "res://data_config/cavern_battlefield.json",
-  "surface_texture_sha256": "fa90e4d02aa1288d841955e949c53af874c9b156dcb60937d5e19ddaad5d3a5c",
-  "surface_context_sha256": "51d12d6a27f706cd486e8b5ddc4f67326a50e327783e2fc428f8f810b48d5b8f",
-  "edge_repair_revision": "20261013-local-contours",
-  "approved_review": "ground_reference_r03"
+  "initial_groups": []
 }

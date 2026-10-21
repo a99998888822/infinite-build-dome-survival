@@ -2,7 +2,7 @@ shader_type canvas_item;
 render_mode unshaded;
 uniform sampler2D shape_frames : filter_nearest, repeat_disable;
 uniform float elapsed = 0.0;
-uniform float radius_scale = 1.0;
+uniform vec2 footprint_axes = vec2(30.0,19.7727);
 uniform float fade = 1.0;
 varying flat float direction_frame;
 varying flat float brightness;
@@ -11,8 +11,9 @@ void vertex() {
 	float row_phase = INSTANCE_CUSTOM.x * 1.9;
 	float ratio = INSTANCE_CUSTOM.y;
 	float angle = elapsed * (5.0 + INSTANCE_CUSTOM.x * 0.7) + ratio * TAU + row_phase;
-	float wave = sin(elapsed * 13.0 + ratio * 15.0 + row_phase) * 2.8;
-	vec2 position = vec2(cos(angle) * (23.0 + wave), sin(angle) * (14.0 + wave * 0.45)) * radius_scale;
+	// Decorative particles orbit inside the authoritative terminal ground edge.
+	vec2 orbit = max(footprint_axes - vec2(5.0), vec2(0.0));
+	vec2 position = vec2(cos(angle), sin(angle)) * orbit;
 	VERTEX += round(position);
 	direction_frame = mod(floor((angle + PI * 0.5) / TAU * 256.0 + 0.5), 256.0);
 	brightness = (0.55 + 0.45 * sin(elapsed * 18.0 + ratio * TAU + row_phase)) * fade;

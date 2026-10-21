@@ -7,6 +7,8 @@ const PARTICLES = preload("res://scripts/effects/particle_world.gd")
 const HIT_BURST = preload("res://scripts/effects/lightning_hit_sprite_burst.gd")
 const BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 const REFLECTION = preload("res://scripts/effects/light_reflection_effect.gd")
+const HIT_RENDER_WARMUP = preload("res://scripts/effects/combat_hit_render_warmup.gd")
+const WEAPON_RENDER_WARMUP = preload("res://scripts/effects/weapon_render_warmup.gd")
 var active := false
 var curtain: ColorRect
 var caption: Label
@@ -102,6 +104,15 @@ func _enter(ticket: int, character: String, modifiers: Array, difficulty: String
 	if backdrop == null:
 		_fail()
 		return
+	# First spawns otherwise synchronously read scenes and their dependencies.
+	# Prepare one type per presented frame, including later-wave variants.
+	for enemy_data: Dictionary in DataRegistry.get_table("enemies"):
+		if not bool(enemy_data.get("enabled", true)): continue
+		if not _flow._bound_wave_manager.prepare_enemy_scene(enemy_data):
+			_fail()
+			return
+		await _present_frame()
+		if not _valid(ticket): return
 	# Cache every action's alpha bounds before gameplay; get_image() can stall the GPU.
 	for layout: Dictionary in player.get_combat_frame_layouts():
 		backdrop.cache_player_frame_bounds(layout.texture, layout.grid)
@@ -114,6 +125,7 @@ func _enter(ticket: int, character: String, modifiers: Array, difficulty: String
 	_samples.name = "EntryRenderWarmup"
 	world.add_child(_samples)
 	_samples.global_position = player.global_position
+	HIT_RENDER_WARMUP.prepare(_samples, loadout.weapon_instances, player.sprite.texture)
 	# Draw real materials below the opaque curtain. Hidden/offscreen nodes do not
 	# compile the first-use GPU variants. These samples have no gameplay bodies.
 	for layout: Dictionary in player.get_combat_frame_layouts():
@@ -135,7 +147,10 @@ func _enter(ticket: int, character: String, modifiers: Array, difficulty: String
 	var bolt := BOLT.new()
 	_samples.add_child(bolt)
 	bolt.points = PackedVector2Array([Vector2.ZERO, Vector2(20, -12), Vector2(50, 0)])
-	bolt.build()
+	# Match the native lightning path: an instanced, untextured white core.
+	# The former rimmed ArrayMesh sample did not exercise this draw variant.
+	bolt.rim_enabled = false
+	bolt.build(true)
 	HIT_BURST.spawn(_samples, player.global_position, Vector2.RIGHT, 1.0, {"visual_cap": 2, "skip_lights": true})
 	# Exercise the actual reflection draw paths while the curtain is opaque.
 	# These samples never enter spawn()/damage/audio/visual-budget registration.
@@ -152,6 +167,15 @@ func _enter(ticket: int, character: String, modifiers: Array, difficulty: String
 	if not _valid(ticket): return
 	await _present_frame()
 	if not _valid(ticket): return
+	# Each first-use shader/texture family gets a presented loading frame.
+	# Keep samples onscreen until drawn; merely loading a Shader is insufficient.
+	# Keep launch and loop sources resident before weapon casts can read them.
+	AudioManager.prepare_weapon_launch_sfx()
+	AudioManager.prepare_weapon_loop_sfx()
+	for kind in WEAPON_RENDER_WARMUP.KINDS:
+		WEAPON_RENDER_WARMUP.prepare(_samples, kind)
+		await _present_frame()
+		if not _valid(ticket): return
 	_clear_samples()
 	if not _flow.start_confirmed_battle():
 		_fail()

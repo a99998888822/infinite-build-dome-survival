@@ -43,8 +43,7 @@ func _run() -> void:
 	check(is_equal_approx(drops.calculate_augmentation_chance(1.5, -95), .375), "negative drop bonus has a nonzero floor")
 	check(drops.calculate_augmentation_chance(0, 9999, 9999) == 0, "disabled table never gains chance")
 	var weights := {"drop_basic_enemy": {"common": 10, "uncommon": 60, "rare": 25, "epic": 5},
-		"drop_elite_enemy": {"common": 5, "uncommon": 45, "rare": 40, "epic": 10},
-		"drop_boss_enemy": {"common": 0, "uncommon": 35, "rare": 50, "epic": 15}}
+		"drop_elite_enemy": {"common": 5, "uncommon": 45, "rare": 40, "epic": 10}}
 	for table_id in weights:
 		var table := DataRegistry.get_record("drop_tables", table_id)
 		var entries: Array = table.entries.filter(func(entry): return entry.type == "augmentation")

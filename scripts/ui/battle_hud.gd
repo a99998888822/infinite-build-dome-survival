@@ -395,6 +395,10 @@ func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_mana
 	_set_drawer_locked_open(false)
 	_set_drawer_open(false, false)
 	_set_modal_backdrop_visible(false)
+	# Build and lay out the fixed attribute rows while the battle is prepared.
+	# Opening the first reward must only update values, not create the drawer.
+	if _player != null:
+		_refresh_stats_drawer()
 	_refresh_all()
 
 

@@ -91,8 +91,8 @@ func run() -> void:
 	var valid := true
 	for enemy in EnemyRegistry.get_registered_enemies():
 		enemy.set_physics_process(false)
-		if enemy.get_meta("evacuation_enemy",false): valid = valid and evacuation.spawn_position_valid(enemy.global_position)
-	check(valid,"every reinforcement is behind player and outside escape corridor")
+		if enemy.get_meta("evacuation_enemy",false): valid = valid and evacuation.spawn_position_valid(enemy.global_position,bool(enemy.get_meta("evacuation_flanker",false)))
+	check(valid,"reinforcements use rear pursuit or the rare far-bunker flank sector")
 	var samples_valid := true
 	for i in 100:
 		var sample := evacuation.choose_spawn_position()

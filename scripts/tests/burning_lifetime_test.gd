@@ -17,6 +17,8 @@ func _run() -> void:
 		for step in int((duration + 1.0) * 60):
 			enemy._physics_process(1.0 / 60.0)
 			visual._process(1.0 / 60.0)
+			# Manual simulation must include the idle presentation drain.
+			preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 			if enemy.has_status("burning"):
 				visible_while_active = visible_while_active and is_instance_valid(visual._flame_visual)
 		check(visible_while_active, kind + " burn retains its flame until damage ends")

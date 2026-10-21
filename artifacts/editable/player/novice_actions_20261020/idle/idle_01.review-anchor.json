@@ -1,0 +1,69 @@
+{
+  "subject": "Blond novice adventurer, idle_01",
+  "kind": "sprite",
+  "size": 96,
+  "keep": [
+    "Original action pose and shared source-space registration",
+    "Spiky blond hair and teal image-right gaze",
+    "Dark teal cape silhouette",
+    "Brown gloves and boots",
+    "White shirt and blue-gray trousers"
+  ],
+  "drop": [
+    "Rose backdrop and ground shadow",
+    "Source lettering",
+    "Tiny cloak embroidery and leather speckles"
+  ],
+  "colors": [
+    "blond",
+    "warm skin",
+    "dark teal",
+    "brown leather",
+    "blue gray",
+    "off white"
+  ],
+  "palette": [
+    "#25292a",
+    "#3d2b26",
+    "#604234",
+    "#815b40",
+    "#a28c74",
+    "#cfb69a",
+    "#e8ceb0",
+    "#fff0d7",
+    "#f4caaa",
+    "#cf9b80",
+    "#f4efe6",
+    "#19333a",
+    "#2b4d50",
+    "#486970",
+    "#47565f",
+    "#65737a"
+  ],
+  "regions": [],
+  "faces": [
+    {
+      "box": [
+        0.3527777777777778,
+        0.29750000000000004,
+        0.65,
+        0.43020833333333336
+      ],
+      "complex": true,
+      "expression": "Focused neutral expression, open eyes and small closed mouth",
+      "gaze": "Image-right; iris occupies image-right part of the larger visible eye, pale sclera on its image-left",
+      "reason": "Three-quarter eyes and bangs need inspection at the final 96px grid"
+    }
+  ],
+  "alignment": {
+    "shared_source_crop": [
+      -24,
+      80,
+      744,
+      848
+    ],
+    "source_pixels_per_output_pixel": 8,
+    "per_frame_auto_fit": false
+  },
+  "annotation_note": "Original face and final-grid crop visually inspected; eye edits localized per frame, no post-face smoothing."
+}

@@ -2,7 +2,7 @@ extends PanelContainer
 class_name CursorWeaponIcon
 ## Screen-space display only; never consumes mouse input.
 
-const ICON_SIZE := Vector2(38, 38)
+const ICON_SIZE := Vector2(44, 44)
 const INDICATOR_STYLE = preload("res://scripts/battle/pixel_indicator_style.gd")
 var icon: TextureRect
 var weapon: WeaponInstance
@@ -24,6 +24,7 @@ func _ready() -> void:
 		_frame.set_content_margin(side, 4)
 	add_theme_stylebox_override("panel", _frame)
 	icon = TextureRect.new()
+	icon.custom_minimum_size = Vector2(36, 36)
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -49,4 +50,4 @@ func follow_pointer(point: Vector2, viewport_size: Vector2) -> void:
 		target.x = point.x - size.x - 16
 	if target.y < 4:
 		target.y = point.y + 16
-	position = target.clamp(Vector2(4, 4), (viewport_size - size - Vector2(4,4)).max(Vector2(4,4)))
+	position = target.clamp(Vector2(4, 4), (viewport_size - size - Vector2(4,4)).max(Vector2(4,4))).round()

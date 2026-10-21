@@ -10,10 +10,10 @@ const WARNING := preload("res://assets/sprites/enemies/echo_bat/sonic_warning.pn
 const CHARGE := preload("res://assets/sprites/enemies/echo_bat/sonic_charge.png")
 const SONIC := preload("res://scripts/enemies/echo_bat_sonic.gd")
 const FLAP := [0, 1, 2, 3, 4, 5, 4, 3, 2, 1]
-# Lip opening on the approved 128px release frame. The warning and projectile
+# Lip opening on the registered 96px release frame. The warning and projectile
 # share this socket, so the locked path still starts at the mouth on release.
-const MOUTH_PIXEL := Vector2(83, 60)
-const FRAME_CENTER := Vector2(64, 64)
+const MOUTH_PIXEL := Vector2(60, 46)
+const FRAME_CENTER := Vector2(48, 48)
 
 var skill_state := "move"
 var state_time := 0.0
@@ -40,7 +40,7 @@ func _ready() -> void:
 	charge.texture = CHARGE
 	charge.hframes = 6
 	charge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	charge.scale = Vector2.ONE * 0.52
+	charge.scale = Vector2.ONE
 	charge.hide()
 	add_child(charge)
 	super._ready()
@@ -74,7 +74,8 @@ func _physics_process(delta: float) -> void:
 	if has_status("frozen") or has_status("stunned") or has_status("blinded"): return
 	if skill_state != "move": _process_contact_damage()
 	_animate(delta)
-	if charge.visible: preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(charge,2.0)
+	# Native 20px charge keeps its authored pixels; only the unchanged warning
+	# continues to use the coarse aligned-atlas grid.
 	if warning.visible: preload("res://scripts/effects/aligned_atlas.gd").configure_sprite(warning,2.0)
 
 
@@ -170,7 +171,7 @@ func _process_chase() -> void:
 	elif distance < attack_range() * 0.3: movement = -direction
 	if not movement.is_zero_approx():
 		var destination := target_player.global_position if movement.dot(direction) > 0 else global_position + movement * attack_range()
-		movement = _bunker_route.direction(self, destination)
+		movement = _chase_direction(destination)
 	var speed := minf(get_stat("move_speed"), float(enemy_data.get("base_stats", {}).get("move_speed", 80)) * MAX_MOVE_SPEED_MULTIPLIER)
 	if _slowed_remaining > 0: speed *= _slow_multiplier
 	if _wet_remaining > 0: speed *= _wet_slow_multiplier

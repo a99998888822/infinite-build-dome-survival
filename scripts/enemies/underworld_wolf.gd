@@ -276,10 +276,11 @@ func animate(delta: float) -> void:
 	sprite.texture = FRAMES.get_frame_texture(animation, animation_index)
 	var sequence: Array = SEQUENCES[animation]
 	var record: Dictionary = FRAME_TRANSFORMS[str(sequence[0])+":"+str(int(sequence[1][animation_index]))]
-	# Undo Picxel's per-pose fit in the shared original coordinate system.
 	# Mirroring includes the registered offset; gameplay air height is separate.
-	var visual_scale := BASE_BODY_SCALE * body_scale_multiplier
-	sprite.scale = Vector2.ONE*float(record.sprite_scale) * visual_scale
+	# The 192px source canvases already contain the former visual scale and
+	# registration. Keep gameplay range/collider scaling on BASE_BODY_SCALE.
+	var visual_scale := body_scale_multiplier
+	sprite.scale = Vector2.ONE * float(record.sprite_scale) * visual_scale
 	var offset: Array = record.sprite_offset
 	var pose_origin := Vector2(float(offset[0])*(-1 if sprite.flip_h else 1),float(offset[1])) * visual_scale - Vector2(0, air_height)
 	sprite.position = pose_origin

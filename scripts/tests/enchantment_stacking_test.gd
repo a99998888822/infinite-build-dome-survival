@@ -102,9 +102,8 @@ func _run() -> void:
 		if child is IceFieldEffect: check(is_equal_approx(child._radius, 51.2 * 1.15), "ice area scales exactly once")
 
 	await fixture(BOW, [Vector2.ZERO, Vector2.ZERO], ["scroll_domain", "scroll_wind"])
-	# Authored bow contact radius is configurable; Domain scales the resulting
-	# wind width by 1.15 without changing its 480 px/s, 0.46 s travel.
-	var wind_base_radius := maxf(14.0, StatDefinitions.calculate_attack_radius(float(weapon.weapon_data.hit_radius), weapon.get_stat("area_size")))
+	# Domain scales the spell's own circle, independent of the source weapon.
+	var wind_base_radius := 72.0
 	enemies[0].position = Vector2(wind_base_radius * 1.075, 0)
 	enemies[1].position = Vector2(wind_base_radius * 1.15 + 1.0, 0)
 	await frames()

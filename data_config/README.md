@@ -1,32 +1,38 @@
 ﻿# data_config 配置目录说明
 
-本目录存放游戏的静态配置表，供 `DataRegistry` 在启动时统一加载、缓存和查询。业务模块不应直接读取本目录下的 JSON 文件，而应通过 `DataRegistry` 获取配置。
+本目录存放游戏当前使用的静态配置。`DataRegistry` 统一加载武器、遗物、羁绊、角色、敌人、侵蚀、自适应、营地、波次、掉落和附魔这 11 张数组表；夜间撤离、地表、交易、挑战、专精及结算等对象配置由对应业务模块直接加载。`reviews/` 仅供审阅场景使用。
 
-2026-10-05：正式主战斗采用主动施放。武器新增 `active_cooldown_ms`（动作结束后的冷却）和用户定义的 `combat_tags`；`attack_interval_ms` 保留为升级比例基准。当前敌我与掉落数值见 [正式接入记录](../docs/main/active_combat_implementation.md)，下方早期示例说明不代表当前平衡基准。
+`bonds.json` 当前为空数组，保留注册表接口；遗物自身效果继续生效。图标描述、建筑定位和素材追溯信息保存在[配置参考资料](../docs/asset/config_reference_metadata.json)，当前字段约定以消费代码和校验器为准。
 
-## 第 5 步前你需要预先准备什么
+正式主战斗采用主动施放。武器使用 `active_cooldown_ms`（主动冷却）和 `combat_tags`；`attack_interval_ms` 保留为升级比例基准。施放规则见[当前战斗说明](../docs/main/active_combat_implementation.md)，具体敌我与掉落数值以各 JSON 和消费代码为准。
 
-1. 配置文件本身必须存在：即使只有一条示例数据，也要先创建对应 JSON 文件，避免加载阶段全是“文件不存在”。
-2. JSON 根节点统一为数组：每个文件都是 `[{...}, {...}]`，便于 DataRegistry 建立 ID 索引。
+## 配置维护约定
+
+1. 配置文件必须存在；暂时没有有效记录的注册表使用空数组，不必添加虚构示例。
+2. DataRegistry 注册的表使用数组根节点；业务模块直接加载的配置可以使用对象根节点。
 3. 每条记录必须有稳定 `id`：例如 `weapon_void_blade`、`character_void_hunter`。
 4. 每条记录建议有 `name` 或 `display_name`、`description`、`enabled`、`tags` 等公共展示字段；具体简写表可按模块约定减少字段。
 5. 跨表引用先保持可用：例如角色的 `start_weapons` 必须引用已存在的武器ID。
 6. 素材路径可以暂时不填：基础数据模块不依赖真实图片、音频或场景资源。
-7. 数值不需要平衡：当前示例只为验证加载、查询、索引和后续校验，不代表正式数值。
+7. 数值会影响正式玩法；变更应通过对应配置校验和行为测试。
 
-## 当前示例文件
+## 注册表文件
 
-| 文件 | 用途 | 示例ID |
+| 文件 | 用途 | 记录示例 |
 | ---- | ---- | ---- |
 | `weapons.json` | 武器静态配置 | `weapon_void_blade` |
 | `relics.json` | 遗物静态配置 | `relic_piggy_bank` / `relic_finance_manager` / `relic_dividend_check` |
-| `bonds.json` | 羁绊阈值与额外效果配置 | `bond_mighty` / `bond_sharpshooter` / `bond_chosen` |
+| `bonds.json` | 羁绊阈值与额外效果配置 | 当前为空；不再保留无来源或空奖励分组 |
 | `characters.json` | 角色基础属性、开局武器 | `character_void_hunter` |
-| `enemies.json` | 敌人基础属性、AI类型、掉落表引用 | `enemy_mutated_grub` |
+| `enemies.json` | 敌人基础属性、行为场景、掉落表引用 | `enemy_mutated_grub` |
 | `erosion_pressure_rules.json` | 波初侵蚀对所有怪物生命、攻击、护甲的独立乘区；每100侵蚀增加 +180% / +90% / +135%，超过100继续线性增长 | `erosion_enemy_stats` |
+| `enemy_adaptation_rules.json` | 击杀速度驱动的后续波次生命加成 | `kill_speed_hp` |
 | `camp_buildings.json` | 营地建筑等级效果与升级选项配置 | `camp_armory_workshop` / `camp_relic_archive` / `camp_dome_shelter` |
 | `waves.json` | 波次刷怪配置 | `wave_stage_01` |
-| `drop_tables.json` | 掉落表配置 | `drop_basic_enemy` / `drop_elite_enemy` / `drop_boss_enemy` |
+| `drop_tables.json` | 正式敌人使用的掉落表配置 | `drop_basic_enemy` / `drop_elite_enemy` |
+| `augmentations.json` | 附魔属性、效果和实例参数 | `scroll_fire` |
+
+业务模块直接加载：`battle_specializations.json`、`goblin_loans.json`、`goblin_trades.json`、`inventory_trade_rules.json`、`wave_challenges.json`、`run_settlement.json`、`night_evacuation.json`、`cavern_battlefield.json`、`cavern_meadow_battlefield.json`。两份洞窟配置分别用于远景和地表，不能相互替代。
 
 ## 公共字段约定
 
@@ -53,12 +59,12 @@
 5. 角色场景表现只使用右向基础单帧和右向行走帧表；向左移动时由 Godot 水平翻转。
 6. 当前不配置向上、向下动画资源。
 
-
 ## weapons.json 规则
 
 以下属性说明描述现有正式战斗；主动战斗的 R02 独立审阅通过 `WeaponInstance.use_active_range_rules` 启用新范围规则，详见根目录方案第 17.8—17.9 节。`combat_tags` 单独保存用户指定的中文战斗标签（近战、远程、投射物、扇形、范围、法阵），不要与现有 `tags` 的附魔分类合并；秘仪书为“范围、法阵”。新模式中投射物外观缩放与原生碰撞分离，三把扇形武器按两项加成之和扩大最远距离。
 
 1. `weapons.json` 保留运行与 UI 必要字段；`description` 必填，用于商店和图鉴展示。
+   负载直接使用 `load_cost`；不再配置 `weapon_type`。弹速使用 `projectile_speed`，已删除无读取点的 `projectile_visual_speed` 与 `plasma_rotation_speed`。
 2. 武器基础攻击间隔使用 `attack_interval_ms`，单位为毫秒整数；例如 `700` 表示0.7秒。
 3. 武器稀有度使用 `rarity`，当前白色/普通武器写 `common`。
 4. 武器图标使用 `icon`，素材未完成时可先写占位路径。
@@ -83,7 +89,7 @@
 3. `rarity` 同时用于提示文本、卡片颜色和掉落档位；会心当前为 `rare`（稀有）。
 4. `weapon_bonuses` 保存当前武器的属性附魔加成。巨力为 `all_damage_percent: 20`，致命为 `crit_damage: 50`；暴击率与暴击伤害仍按百分点相加。
 5. `scroll_electric_spark`（落雷）的 `damage_multiplier: 0.6` 直接参与实际落雷伤害结算，不再叠加旧的 `damage × 0.85`。`scroll_lightning`（电火花）基础与掉落实例的麻痹时长均为 0.5 秒。
-6. 当前全部 19 条批准文案与数值说明见 [附魔提示文本清单](../docs/main/enchantment_tooltip_inventory.md)。
+6. 当前 19 种附魔的文案与数值维护入口见[附魔提示与配置](../docs/main/enchantment_tooltip_inventory.md)。
 
 ## bonds.json 简写规则
 
@@ -109,7 +115,6 @@
 2. `max_stack = 1` 或更大时，表示单局最多持有对应数量。
 3. 遗物 `effects` 使用统一 modifier 结构，当前模块会直接读取并叠加到玩家。
 
-
 ## waves.json 简写规则
 
 `waves.json` 只保留刷怪运行必需字段，不写 `display_name`、`description`、`enabled`、`tags`、`mode` 等展示或可推导字段。
@@ -124,8 +129,7 @@
 }
 ```
 
-波次时间规则：每波单独计时，时长使用 `min(15 + 5 * wave_index, 50)`，即第1波20秒，第2波25秒，最高50秒。
-
+波次时间规则：每波单独计时，直接使用对应记录的 `duration_seconds`；不再使用早期文档中的统一时长公式。
 
 ## drop_tables.json 规则
 
@@ -135,7 +139,7 @@
 2. 经验与金币各自独立受到加成影响：经验读取 `exp_gain_percent`，金币读取 `currency_gain_percent`。
 3. 百分比掉落物使用 `chance_percent`，受到 `drop_rate_percent` 影响，最终概率 = 基础概率 * (1 + drop_rate_percent / 100)。
 4. 血包的 `amount` 表示基础恢复量；拾取后的最终恢复量 = 基础恢复量 + `health_pack_heal_plus`，该属性不影响血包掉落概率。
-5. 最终概率必须限制在0到100之间；BOSS遗物掉落通过 `type = relic`、`amount = 1`、`chance_percent = 100` 表达，运行时代码按“有且只有一个遗物”处理。
+5. 最终概率必须限制在0到100之间；遗物掉落使用 `type = relic`。当前正式表只有普通和精英两种，没有单独的 Boss 表。
 6. 拾取经验球时同时获得经验和等额基础金币；波次结束后统一吸取并结算场上所有经验球。配置中不使用 `sync_gold_on_pickup`、`max_drops`、`guaranteed` 等可由规则推导的字段。
 
 ## camp_buildings.json 结构规则
@@ -147,7 +151,6 @@
 3. `unlock_condition`：建筑解锁条件，可用前置建筑等级，也可用局外货币 `currency + cost` 购买解锁。
 
 升级选项的购买进度不写在配置表，写入玩家存档。配置表只定义固定花费、等级上限和每级增量。若升级项需要建筑达到指定等级后才可购买，使用 `required_building_level` 标注。
-
 
 当前营地建筑：
 
@@ -168,13 +171,13 @@
 4. 删除配置前，先检查是否被其他表引用。
 5. 字段含义不确定时，先在对应模块设计文档中补充说明，再修改配置。
 
-## 与后续步骤的关系
+## 加载与校验
 
-- 第 5 步 `DataRegistry`：读取这些文件，建立缓存和ID索引。
-- 第 6 步最小配置表：会继续完善这些示例数据。
-- 第 7 步 `DataValidator`：会校验必填字段、属性ID、operation、stack_rule等。
-- 第 8 步跨表引用校验：会校验 `start_weapons`、`bond_id`、`drop_table_id`、`enemy_id` 等引用是否存在。
+- `DataRegistry`：读取注册的数组表，建立缓存和 ID 索引。
+- `DataValidator`：校验数组表的必填字段、属性 ID、operation、stack_rule 等。
+- 跨表引用校验：检查 `start_weapons`、`bond_id`、`drop_table_id`、`enemy_id` 等引用是否存在。
+- 业务模块直接加载的对象配置由该模块及对应测试验证。
 
 ## 注意
 
-当前配置是“工程测试示例”，不是正式策划表。后续实现武器、遗物、敌人等模块时，可以迁移、扩展或替换这些示例。
+此目录包含正式运行配置。素材来源说明保存在 `docs/asset/config_reference_metadata.json`；审阅专用配置继续放在 `reviews/`。清理字段前应同时检查运行代码、测试、生成工具和跨表引用。
