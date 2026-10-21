@@ -1,0 +1,20 @@
+assets/ui/main_menu/README.md
+  h_ae0329d199c6f5 9-10,23-24
+assets/ui/main_menu/menu_button_theme.tres
+  h_ae0329d199c6f5 10,17
+autoloads/audio_manager.gd
+  h_ae0329d199c6f5 16-21,387-394
+scenes/ui/main_menu/main_menu_ui_controller.tscn
+  h_ae0329d199c6f5 146-162,179-195,212-228,245-261
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "90a903b26e1441a9ed1e551e99299bab94e5b797",
+  "prompts": {},
+  "humans": {
+    "h_ae0329d199c6f5": {
+      "author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
