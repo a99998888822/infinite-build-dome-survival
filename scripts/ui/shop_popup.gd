@@ -18,7 +18,7 @@ const MODAL_TOP_OFFSET: float = 128.0
 const MODAL_BOTTOM_MARGIN: float = 24.0
 const MODAL_SIDE_MARGIN: float = 48.0
 const WEAPON_STRIP_TOP_OFFSET: float = 20.0
-const WEAPON_STRIP_HEIGHT: float = 90.0
+const WEAPON_STRIP_HEIGHT: float = 128.0
 const WEAPON_STRIP_WIDTH: float = 880.0
 const OFFER_LAYOUT_COLUMNS: int = 4
 const OFFER_VISIBLE_ROWS: int = 2
@@ -57,6 +57,8 @@ var _fit_queued := false
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_visual)
 	_apply_hud_style()
+	if weapon_strip != null:
+		weapon_strip.minimum_height_changed.connect(_layout_popup, CONNECT_DEFERRED)
 	if skip_button != null and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
 	if refresh_button != null and not refresh_button.pressed.is_connected(_on_refresh_pressed):
@@ -99,9 +101,6 @@ func _apply_hud_style() -> void:
 		HUD_STYLE.apply_button(button, Vector4(14, 7, 14, 7))
 	if weapon_strip != null:
 		weapon_strip.icon_slot_theme = HUD_STYLE.weapon_slot_theme()
-		var strip_margin := weapon_strip.get_node("StripPanel/StripMargin") as MarginContainer
-		strip_margin.add_theme_constant_override("margin_top", 10)
-		strip_margin.add_theme_constant_override("margin_bottom", 10)
 		weapon_strip.get_node("StripPanel").add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4(2, 2, 2, 2)))
 		weapon_strip.load_label.add_theme_color_override("font_color", PALETTE.TEXT)
 		weapon_strip.weapon_tooltip.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4.ZERO))
@@ -216,8 +215,13 @@ func reset_run() -> void:
 	hide_popup()
 	payload.clear()
 	for card in _card_pool:
+		card.release_offer()
+	# Keep the prepared first page across runs. Clearing the pool here undoes
+	# startup preparation and makes the next combat reward build every card.
+	while _card_pool.size() > OFFER_LAYOUT_COLUMNS:
+		var card := _card_pool.pop_back() as RewardOption
+		offer_grid.remove_child(card)
 		card.queue_free()
-	_card_pool.clear()
 	set_bond_player(null)
 	set_loadout(null)
 
@@ -441,6 +445,8 @@ func _layout_popup() -> void:
 		return
 	var viewport_size := get_viewport().get_visible_rect().size
 	var safe := _get_layout_safe_rect(viewport_size)
+	var strip_height := maxf(WEAPON_STRIP_HEIGHT, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
+	var modal_top := maxf(MODAL_TOP_OFFSET, WEAPON_STRIP_TOP_OFFSET + strip_height + 16.0)
 	center_container.anchor_left = 0.0
 	center_container.anchor_top = 0.0
 	center_container.anchor_right = 0.0
@@ -448,8 +454,8 @@ func _layout_popup() -> void:
 	# A hovered card is intentionally drawn slightly beyond its layout bounds.
 	center_container.clip_contents = false
 	var panel_width := floorf(minf(maxf(safe.size.x - MODAL_SIDE_MARGIN * 2.0, 0.0), MAX_PANEL_SIZE.x))
-	var panel_height := floorf(minf(maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_SIZE.y))
-	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + MODAL_TOP_OFFSET).round()
+	var panel_height := floorf(minf(maxf(safe.size.y - modal_top - MODAL_BOTTOM_MARGIN, 0.0), MAX_PANEL_SIZE.y))
+	center_container.position = Vector2(safe.position.x + (safe.size.x - panel_width) * 0.5, safe.position.y + modal_top).round()
 	_panel_layout_size = Vector2(panel_width, panel_height)
 	center_container.size = _panel_layout_size
 	if offer_scroll != null:
@@ -473,7 +479,7 @@ func _layout_popup() -> void:
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
 		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET).round()
-		weapon_strip.size = Vector2(strip_width, WEAPON_STRIP_HEIGHT)
+		weapon_strip.size = Vector2(strip_width, strip_height)
 	_queue_fit_offer_grid()
 
 
@@ -495,7 +501,7 @@ func _fit_offer_grid() -> void:
 		# Keep the grid inside the panel's content width. Using the current
 		# scroll width alone can create a self-reinforcing oversized minimum.
 		var panel_content_width := maxf(_panel_layout_size.x - PANEL_HORIZONTAL_PADDING, 0.0)
-		scroll_width = panel_content_width if scroll_width <= 0.0 else minf(scroll_width, panel_content_width)
+		scroll_width = panel_content_width if not is_visible_in_tree() or scroll_width <= 0.0 else minf(scroll_width, panel_content_width)
 	if scroll_width <= 0.0:
 		return
 	var cards: Array[RewardOption] = []
@@ -511,6 +517,8 @@ func _fit_offer_grid() -> void:
 	var row_separation := float(offer_grid.get_theme_constant("v_separation"))
 	var slot_width := maxf(floorf((scroll_width - separation * float(OFFER_LAYOUT_COLUMNS - 1)) / float(OFFER_LAYOUT_COLUMNS)), 0.0)
 	var available_height := offer_scroll.size.y
+	if not is_visible_in_tree() or available_height <= 0.0:
+		available_height = _get_prepared_offer_height()
 	var card_height := maxf(floorf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS)), 0.0)
 	for card in cards:
 		card.set_available_size(slot_width, card_height)
@@ -523,6 +531,26 @@ func _fit_offer_grid() -> void:
 	# minimum. Restore the requested bounds after new card minima propagate.
 	center_container.set_deferred("size", _panel_layout_size)
 	center_container.queue_sort()
+
+
+func _get_prepared_offer_height() -> float:
+	# Hidden containers have not settled their rectangles yet. Prepare the
+	# pooled cards from the requested panel bounds and the actual fixed rows,
+	# rather than treating an initial zero-height scroll area as a tiny screen.
+	# Once visible, _fit_offer_grid uses the real container result as before.
+	if main_panel == null or content == null:
+		return 0.0
+	var height := _panel_layout_size.y - main_panel.get_theme_stylebox("panel").get_minimum_size().y
+	var fixed_rows := 0
+	for child in content.get_children():
+		if not child is Control or child == offer_scroll or child == error_label or not child.visible or child.is_set_as_top_level():
+			continue
+		height -= child.get_combined_minimum_size().y
+		fixed_rows += 1
+	# Each fixed row adds one separation alongside the expanding scroll row.
+	# Opening always clears the previous purchase error before fitting.
+	height -= float(content.get_theme_constant("separation") * fixed_rows)
+	return maxf(height, 0.0)
 
 
 func _build_fallback_safe_rect(viewport_size: Vector2) -> Rect2:

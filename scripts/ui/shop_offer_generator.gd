@@ -37,7 +37,6 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 	var unlocked_weapon_ids := _to_string_set(context.get("unlocked_weapon_ids", []))
 	var unlocked_relic_ids := _to_string_set(context.get("unlocked_relic_ids", []))
 	var relic_counts: Dictionary = context.get("owned_relic_counts", {})
-	var shop_price_discounts := _read_shop_price_discounts(context)
 	var load_capacity := int(context.get("load_capacity", 0))
 	var current_load := int(context.get("current_load", 0))
 	var luck := maxi(0, int(context.get("luck", 0)))
@@ -74,7 +73,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"description": str(weapon_data.get("description", "")),
 			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": weapon_tags,
-		}, shop_price_discounts))
+		}))
 
 	for relic_data in DataRegistry.get_table("relics"):
 		var relic_id := str(relic_data.get("id", ""))
@@ -102,7 +101,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"effects": (relic_data.get("effects", []) as Array).duplicate(true),
 			"runtime_effects": (relic_data.get("runtime_effects", []) as Array).duplicate(true),
 			"tags": relic_tags,
-		}, shop_price_discounts))
+		}))
 
 	for weapon_data in _get_equipped_weapon_data(context):
 		var weapon_id := str(weapon_data.get("id", ""))
@@ -131,7 +130,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"effects": (upgrade_entry.get("effects", []) as Array).duplicate(true),
 			"bond_id": str(weapon_data.get("bond_id", "")),
 			"tags": upgrade_tags,
-		}, shop_price_discounts))
+		}))
 
 	for candidate in candidates:
 		ShopPricing.apply(candidate, context)
@@ -207,7 +206,9 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 	var remaining: Array[Dictionary] = []
 	for candidate in _gate_weapon_upgrades(candidate_pool):
 		if candidate is Dictionary:
-			remaining.append(candidate.duplicate(true))
+			# Selection only reads candidates. Keep a private list, and copy the
+			# chosen entries below so callers can edit offers without editing stock.
+			remaining.append(candidate)
 	var offers: Array[Dictionary] = []
 	var upgrade_selected := false
 	var new_weapon_selected := false
@@ -232,7 +233,7 @@ func roll_shop_offers(rarity_weights: Dictionary, type_weights: Dictionary, cand
 		if candidate.get("offer_type", "") == OFFER_NEW_WEAPON:
 			new_weapon_selected = true
 		remaining.erase(candidate)
-		offers.append(candidate)
+		offers.append(candidate.duplicate(true))
 	return offers
 
 
@@ -383,22 +384,11 @@ func _threshold_ramp(luck: float, start: float, duration: float, power: float) -
 	return pow(clampf((luck - start) / duration, 0.0, 1.0), maxf(power, 0.01))
 
 
-func _read_shop_price_discounts(context: Dictionary) -> Array[float]:
-	# shop_price_discounts 为逐层折扣；兼容只提供单个 shop_price_percent 的旧上下文。
-	var raw_layers: Variant = context.get("shop_price_discounts", [])
-	var discounts: Array[float] = []
-	if raw_layers is Array and not (raw_layers as Array).is_empty():
-		for layer in raw_layers:
-			discounts.append(float(layer))
-		return discounts
-	return [float(context.get("shop_price_percent", 0.0))]
-
-
-func _build_candidate_entry(candidate: Dictionary, shop_price_discounts: Array[float]) -> Dictionary:
+func _build_candidate_entry(candidate: Dictionary) -> Dictionary:
 	candidate["weight"] = maxi(1, int(candidate.get("weight", 100)))
 	candidate["shop_base_price"] = int(_calculate_shop_basis(candidate, []))
-	candidate["shop_price_basis"] = _calculate_shop_basis(candidate, shop_price_discounts)
-	candidate["shop_cost"] = _calculate_shop_cost(candidate, shop_price_discounts)
+	# The complete context (wave, purchases, income, discounts and humanity)
+	# prices each entry once at the end of build_shop_candidate_pool().
 	return candidate
 
 

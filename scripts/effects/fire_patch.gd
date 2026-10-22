@@ -190,7 +190,8 @@ func get_terminal_footprint_axes() -> Vector2:
 
 func _sync_ground_area() -> void:
 	if _ground_area != null:
-		_ground_area.setup(get_terminal_footprint_axes(), Color(0.65,0.19,0.04,0.22), Color(1.0,0.42,0.07,0.6))
+		# Flames mark the pool; keep the collision footprint without a painted disc.
+		_ground_area.setup(get_terminal_footprint_axes(), Color.TRANSPARENT, Color.TRANSPARENT)
 
 
 func _refresh_field_light() -> void:

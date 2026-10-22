@@ -72,7 +72,11 @@ func _run() -> void:
 		check(row.tooltip_text.is_empty(), "starting attribute row has no hover tooltip")
 		for label in row.get_children():
 			check(label.tooltip_text.is_empty(), "starting attribute label has no hover tooltip")
-	check(view.background.texture.get_size() == Vector2(2752,1536) and view.canvas.size == Vector2(1920,1080) and view.canvas.scale == Vector2.ONE, "approved art uses the native 1920 canvas")
+	check(view.background.texture.get_size() == Vector2(960,540) and view.canvas.size == Vector2(1920,1080) and view.canvas.scale == Vector2.ONE, "960px background uses the native 1920 canvas")
+	check(view.background.size == view.background.texture.get_size() * 2.0 and view.background.scale == Vector2.ONE, "background displays at exactly 2x on both axes")
+	check(view.canvas.position == (view.size - view.DESIGN_SIZE) * 0.5, "full-height background is centered without the old vertical offset")
+	if not capture_dir.is_empty() and DisplayServer.get_name() != "headless":
+		check(view.background.texture.get_image().save_png(capture_dir.path_join("loaded_background.png")) == OK, "export actual loaded background for pixel comparison")
 	var used := view._idle.get_image().get_used_rect()
 	var foot := view.character_icon.position + Vector2(view.character_icon.size.x * 0.5, used.end.y * view.character_icon.size.y / view._idle.get_height())
 	check(foot.distance_to(view.FOOT_ANCHOR) <= 1.0, "new sprite soles retain the approved platform anchor")

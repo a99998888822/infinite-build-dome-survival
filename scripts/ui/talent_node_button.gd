@@ -11,7 +11,8 @@ var selected := false
 var building := false
 # The circular HUD has a smaller inner face than its rectangular texture bounds.
 const BUILDING_ICON_EXTENT := 64.0
-const UPGRADE_ICON_EXTENT := 52.0
+const UPGRADE_ICON_EXTENT := 64.0
+const NODE_EXTENT := 104.0
 
 func configure(record: Dictionary, is_building: bool, background: Texture2D) -> void:
 	building = is_building
@@ -36,9 +37,11 @@ func _draw() -> void:
 	elif is_hovered():
 		ring = PALETTE.NODE_SELECTED
 	draw_texture_rect(ring, Rect2(Vector2.ZERO, size), false)
+	draw_texture_rect(icon_texture if lit else gray_icon, get_icon_rect(), false)
+
+func get_icon_rect() -> Rect2:
 	var extent := BUILDING_ICON_EXTENT if building else UPGRADE_ICON_EXTENT
-	var icon_rect := Rect2(((size - Vector2.ONE * extent) * 0.5).round(), Vector2.ONE * extent)
-	draw_texture_rect(icon_texture if lit else gray_icon, icon_rect, false)
+	return Rect2(((size - Vector2.ONE * extent) * 0.5).round(), Vector2.ONE * extent)
 
 static func _grayscale(texture: Texture2D) -> Texture2D:
 	var source := texture.get_image()

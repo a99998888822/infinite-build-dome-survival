@@ -159,8 +159,8 @@ func validate() -> void:
 	wolf.leap_cooldown = 0
 	check(wolf.begin_skill("leap"),"leap accepts medium range")
 	var hp := player.current_hp
-	await step(53)
-	check(wolf.state == "leap_charge" and player.current_hp == hp,"0.9 second windup has no damage")
+	await step(17)
+	check(wolf.state == "leap_charge" and player.current_hp == hp,"0.3 second windup has no damage")
 	var locked: Vector2 = wolf.locked_point
 	var time: float = wolf.state_time
 	GameGlobal.set_runtime_flag("battle_runtime_paused",true)
@@ -169,7 +169,7 @@ func validate() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused",false)
 	await step(1)
 	check(wolf.state == "leap","leap starts at configured timing")
-	await step(36,Vector2(0,-260))
+	await step(24,Vector2(0,-260))
 	check(wolf.locked_point.is_equal_approx(locked) and wolf.global_position.distance_to(locked) < 1,"leap lands at locked position without homing")
 	check(wolf.state == "land" and player.current_hp == hp,"sidestep avoids landing damage")
 	await step(44)
@@ -178,7 +178,7 @@ func validate() -> void:
 	wolf.leap_cooldown = 0
 	wolf.begin_skill("leap")
 	hp = player.current_hp
-	await step(89)
+	await step(41)
 	check(player.current_hp == hp,"no air or charge contact damage")
 	await step(1)
 	check(player.current_hp == hp-18 and wolf.damage_events == 1,"landing applies exactly 18 damage once")
@@ -396,7 +396,7 @@ func validate_production() -> void:
 	await reset(Vector2(-200,0),Vector2(60,0))
 	wolf.leap_cooldown = 0
 	wolf.begin_skill("leap")
-	await step(58)
+	await step(22)
 	check(wolf.get_collision_exceptions().has(player),"leap temporarily excludes the player body")
 	wolf.fade_out_and_free()
 	check(not wolf.get_collision_exceptions().has(player) and not wolf.floor_art.visible and not wolf.flame.visible and not wolf.alive,"wave cleanup clears airborne collision exception and every skill visual")
@@ -427,7 +427,7 @@ func validate_production() -> void:
 func capture_storyboard() -> void:
 	await capture_comparison()
 	var captions := ["01 / 正式场景与 192 像素移动循环", "02 / 扑跃：侧移躲避，落地 0.08 秒后回到 idle", "03 / 震地命中：按当前难度结算伤害，并击退玩家", "04 / 幽蓝喷焰：最多 3 次伤害，每次命中均击退", "05 / 喷焰方向锁定：提前侧移可完全躲开"]
-	var names := {"chase":"追击", "leap_charge":"扑跃蓄力 0.9 秒", "leap":"腾空 0.6 秒", "land":"落地冲击", "recover":"idle 收招", "breath_charge":"扇形预警 0.9 秒", "breath":"幽蓝火焰喷吐", "breath_recover":"idle 收招"}
+	var names := {"chase":"追击", "leap_charge":"扑跃蓄力 0.3 秒", "leap":"腾空 0.4 秒", "land":"落地冲击", "recover":"idle 收招", "breath_charge":"扇形预警 0.9 秒", "breath":"幽蓝火焰喷吐", "breath_recover":"idle 收招"}
 	var lengths: Array[int] = [58,55,55,72,72]
 	for chapter in 5:
 		if chapter == 0: await reset(Vector2(-250,0),Vector2(230,0))
@@ -444,7 +444,7 @@ func capture_storyboard() -> void:
 					wolf.breath_cooldown = 0
 					wolf.begin_skill("breath")
 			var movement := Vector2.ZERO
-			if chapter == 1 and time >= .95 and time < 1.75: movement = Vector2(0,-180)
+			if chapter == 1 and time >= .65 and time < 1.25: movement = Vector2(0,-180)
 			if chapter == 4 and time >= .8 and time < 1.5: movement = Vector2(0,-190)
 			await step(3,movement)
 			if chapter > 0 and time > 2.7:

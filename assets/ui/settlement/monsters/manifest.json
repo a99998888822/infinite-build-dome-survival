@@ -1,0 +1,77 @@
+{
+  "method": "720px original references, Picxel palette voting and documented local repairs; combat sprites unchanged",
+  "assets": [
+    {
+      "name": "enemy_echo_bat",
+      "size": [
+        48,
+        48
+      ],
+      "display": [
+        48,
+        48
+      ],
+      "colors": 10,
+      "original": "artifacts/sources/enemies/echo_bat/move/01.png",
+      "original_sha256": "b8091d6aa5592a96c3ca14872fc88d425c823d2cfa31ac8b1615aa9ac11df50b",
+      "original_git": "artifacts/sources/enemies/echo_bat/move/01.png",
+      "original_revision": "02b3ef4",
+      "selected_grid": "enemy_echo_bat-48-clean.pxg",
+      "sha256": "1d117cf1af133d2faea8b4932eac29f45fc2c11451a002fe4232c0a7636ba3d1"
+    },
+    {
+      "name": "enemy_mutated_grub",
+      "size": [
+        48,
+        48
+      ],
+      "display": [
+        48,
+        48
+      ],
+      "colors": 15,
+      "original": "artifacts/sources/enemies/xiaoguai_move/move-01.png",
+      "original_sha256": "d3298c136ade94d35fac85bd0dc76c12cb8922fee7272af4539b93404db07e98",
+      "original_git": "artifacts/sources/enemies/xiaoguai_move/move-01.png",
+      "original_revision": "02b3ef4",
+      "selected_grid": "enemy_mutated_grub-48-clean.pxg",
+      "sha256": "9124659bf1a436ad5d3861b268a19b57903d4ec32062de3aad6d2fc76fbc32b1"
+    },
+    {
+      "name": "enemy_elite_rusher",
+      "size": [
+        48,
+        48
+      ],
+      "display": [
+        48,
+        48
+      ],
+      "colors": 11,
+      "original": "artifacts/sources/enemies/iron_knight/move-01.png",
+      "original_sha256": "9db8e6c7a1c9fc75b1c64b2391526310c90fb403f67179088926d158ab7f7892",
+      "original_git": "artifacts/sources/enemies/iron_knight/move-01.png",
+      "original_revision": "02b3ef4",
+      "selected_grid": "enemy_elite_rusher-48-clean.pxg",
+      "sha256": "0e346a078c600b3092262555a27723938296079a04436aede655048aa5f6ecd3"
+    },
+    {
+      "name": "enemy_underworld_wolf",
+      "size": [
+        48,
+        48
+      ],
+      "display": [
+        48,
+        48
+      ],
+      "colors": 14,
+      "original": "artifacts/sources/enemies/underworld_wolf/attack/01.png",
+      "original_sha256": "e3963ef87c66657b9bafc7ab600c4aa42e9d1a10b9616ba918fd344e1a7e6551",
+      "original_git": "artifacts/sources/enemies/underworld_wolf/attack/01.png",
+      "original_revision": "02b3ef4",
+      "selected_grid": "enemy_underworld_wolf-48.pxg",
+      "sha256": "4be59ac00a4bf7d2c1fe7984a01d2862a8ff372ce579e7f4e1ca5ad996b12bbd"
+    }
+  ]
+}

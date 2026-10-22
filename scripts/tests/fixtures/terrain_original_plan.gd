@@ -1,5 +1,5 @@
 extends CavernSunlightBackdrop
-## Frozen pre-streaming planner; independent regression oracle.
+## Pre-streaming planner structure with the approved 2026-10-22 native scales.
 func _original_population(key: Vector2i) -> Array[Dictionary]:
 	var solids := _solid_plan(key)
 	var rng: RandomNumberGenerator = solids.rng
@@ -39,7 +39,8 @@ func _original_population(key: Vector2i) -> Array[Dictionary]:
 				if not clear: continue
 				grass_points.append(point)
 				var index := rng.randi_range(0,2) if surface.a>.52 else (3 if rng.randf()<.25 else 0)
-				var entry := _placement("grass",index,point,rng.randf_range(.95,1.25),rng.randf()<.5)
+				rng.randf_range(.95,1.25)
+				var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 				entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 				entry.suitability = surface.a
 				plan.append(entry)
@@ -57,17 +58,15 @@ func _original_population(key: Vector2i) -> Array[Dictionary]:
 		if solid.flip: center_x = -center_x
 		var bottom := (bounds.end.y-anchor.y)*factor
 		var count := clampi(ceili(width/24.0),2,6)
-		var tuft_height := clampf(bounds.size.y*factor*.42,10.0,22.0)
 		for i in count:
 			var across := (float(i)+rng.randf_range(.15,.85))/float(count)-.5
 			# Stay just in front of the host's depth boundary, even for padded art.
 			var offset_y := maxf(1.0,bottom+rng.randf_range(1,3))
 			var point: Vector2 = solid.point+Vector2(center_x+across*width*.94,offset_y)
 			var surface := sample_surface(point)
-			var index := rng.randi_range(0,1) if surface.a>=.30 else 3
-			var grass_height := _scenery_bounds(config.grass[index].texture).size.y
-			var scale := tuft_height/grass_height*rng.randf_range(.9,1.1)
-			var entry := _placement("grass",index,point,scale,rng.randf()<.5)
+			var index := rng.randi_range(0,3) if surface.a>=.30 else 3
+			rng.randf_range(.9,1.1)
+			var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 			entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 			entry.suitability = surface.a
 			entry.companion = true
@@ -104,7 +103,9 @@ func original_plan(key: Vector2i) -> Array[Dictionary]:
 					if solid.kind=="prop" and absf(d.x)<66 and d.y>-22 and d.y<7: clear = false
 					if solid.kind=="rubble" and d.length()<16: clear = false
 				if not clear: continue
-				var entry := _placement("grass",rng.randi_range(0,2),point,rng.randf_range(.48,.78),rng.randf()<.5)
+				var index := rng.randi_range(0,2)
+				rng.randf_range(.48,.78)
+				var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 				var shade := rng.randf_range(.93,1.04)
 				entry.tint = Color(.60*shade,.67*shade,.65*shade)
 				entry.suitability = surface.a

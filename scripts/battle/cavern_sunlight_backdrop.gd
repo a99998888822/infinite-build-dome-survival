@@ -4,6 +4,7 @@ class_name CavernSunlightBackdrop
 const SHADERS := "res://shaders/battle/meadow/sunlight/"
 const CLOUD_TEXTURE: Texture2D = preload("res://assets/sprites/background/meadow/sunlight/cloud_noise.png")
 const ROCK_FACE_MASK: Texture2D = preload("res://assets/sprites/background/meadow/sunlight/rock_face_mask.png")
+const ROCK_SHADER: Shader = preload(SHADERS + "rock.gdshader")
 
 var lighting_ready := false
 var lit_objects: Array[Sprite2D] = []
@@ -31,6 +32,27 @@ func _setup() -> void:
 
 func _bind_light(material: ShaderMaterial) -> void:
 	material.set_shader_parameter("cloud_texture", CLOUD_TEXTURE)
+
+func _rock_material(flipped: bool) -> ShaderMaterial:
+	var material := ShaderMaterial.new()
+	material.shader = ROCK_SHADER
+	material.set_shader_parameter("face_mask", ROCK_FACE_MASK)
+	material.set_shader_parameter("mask_flip", flipped)
+	return material
+
+func prepare_render_warmup(parent: Node2D) -> void:
+	# The initial camera can contain no rocks. Draw the real receiver shader
+	# under the loading curtain without adding scenery, colliders or receivers.
+	var sample := Sprite2D.new()
+	sample.name = "EntryRockWarmup"
+	sample.texture = prop_textures[0]
+	sample.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var material := _rock_material(false)
+	_bind_light(material)
+	_set_receiver_view(material, Vector4(horizon.view_size.x, horizon.view_size.y,
+		horizon.far_height() * .62, horizon.ground_fade_end()))
+	sample.material = material
+	parent.add_child(sample)
 
 func _set_receiver_view(material: ShaderMaterial, view: Vector4) -> void:
 	material.set_shader_parameter("view_size", Vector2(view.x, view.y))
@@ -66,9 +88,7 @@ func _light_sprite(sprite: Sprite2D) -> void:
 	if entry.kind == "cast_shadow":
 		material.shader = preload(SHADERS + "shadow.gdshader")
 	elif entry.kind == "prop" and entry.index == 0:
-		material.shader = preload(SHADERS + "rock.gdshader")
-		material.set_shader_parameter("face_mask", ROCK_FACE_MASK)
-		material.set_shader_parameter("mask_flip", sprite.flip_h)
+		material = _rock_material(sprite.flip_h)
 	else:
 		material.shader = preload(SHADERS + "decoration.gdshader")
 	_bind_light(material)

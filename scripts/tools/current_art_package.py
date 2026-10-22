@@ -44,16 +44,4 @@ def run_cli(group):
         for source,target,expected in staged:
             if source.resolve()!=target.resolve():shutil.copy2(source,target)
             assert digest(target)==expected
-        # A changed PNG becomes the authoritative editable raster until new grids
-        # are reviewed. Do not claim that an older grid still matches it.
-        index=ROOT/'artifacts/editable/index.json'
-        if index.exists():
-            data=json.loads(index.read_text(encoding='utf-8'))
-            replaced={target.relative_to(ROOT).as_posix():expected for _,target,expected in staged}
-            for item in data['assets']:
-                if item['asset'] in replaced and item['sha256']!=replaced[item['asset']]:
-                    item.pop('editable_frames',None)
-                    item.update(sha256=replaced[item['asset']],editable=item['asset'],mode='native_png')
-            index.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(f'PASS: {group}: {len(staged)} current native files; historical packages not required')
-

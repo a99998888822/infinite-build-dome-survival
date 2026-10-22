@@ -96,12 +96,12 @@ func _run() -> void:
 	knight._physics_process(1.0)
 	check(knight._state_time == 0.2, "pause freezes windup clock")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	knight._process_special_behavior(0.799)
+	knight._process_special_behavior(0.499)
 	knight._animate(0.0)
-	check(knight.skill_state == "windup" and player.current_hp == 1000, "warning cannot damage or dash before 1000ms")
-	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"windup", 6), "extended warning reaches final windup frame")
+	check(knight.skill_state == "windup" and player.current_hp == 1000, "warning cannot damage or dash before 700ms")
+	check(knight.sprite.texture == EliteRusher.FRAMES.get_frame_texture(&"windup", 6), "700ms warning reaches final windup frame")
 	knight._process_special_behavior(0.0011)
-	check(knight.skill_state == "dash", "1000ms warning precedes dash")
+	check(knight.skill_state == "dash", "700ms warning precedes dash")
 	knight._process_special_behavior(0.08)
 	knight._animate(0.0)
 	check(knight.position.distance_to(Vector2(120, 0)) < 0.01, "half dash travels 120 units in 80ms")
@@ -112,6 +112,31 @@ func _run() -> void:
 	knight._process_special_behavior(0.5)
 	player.position = knight.position + Vector2(100, 0)
 	check(not knight.start_dash() and is_equal_approx(knight._cooldown, 6.0), "recovery retains six-second cooldown")
+	# Production night modifiers must not shorten the telegraphed skill motion.
+	reset_knight()
+	knight.night_speed_player_ratio = 0.6
+	check(knight.get_stat("move_speed") <= player.get_stat("move_speed") * 0.6, "night chase still respects player speed cap")
+	knight.start_dash()
+	player.position = Vector2(0, 400)
+	knight._physics_process(1.0)
+	knight._physics_process(0.08)
+	check(knight.position.distance_to(Vector2(120, 0)) < 0.01, "night dash actually travels 120 units at half swing")
+	knight._physics_process(0.08)
+	check(knight.skill_state == "recover" and knight.position.distance_to(Vector2(240, 0)) < 0.01, "night dash completes its full telegraph in 160ms")
+	# A live player body must take the swept hit without acting like a wall.
+	for target_position in [Vector2(120, -60), Vector2(20, -60)]:
+		reset_knight()
+		player.collision_layer = 1
+		player.position = target_position
+		await get_tree().physics_frame
+		knight.start_dash()
+		var dash_end := knight._direction * 240.0
+		knight._physics_process(1.0)
+		for i in 10: knight._physics_process(0.016)
+		check(knight.position.distance_to(dash_end) < 0.01 and not knight._dash_blocked, "player body cannot stop charge at " + str(target_position))
+		check(player.current_hp < 1000, "charging through live player still applies damage")
+		check(knight.get_collision_exceptions().is_empty(), "charge restores normal player collisions")
+	player.collision_layer = 0
 	# A single low-frame-rate step must hit the swept target, not just the endpoint.
 	var player_body := player.get_node("CollisionShape2D") as CollisionShape2D
 	var circle := player_body.shape as CircleShape2D

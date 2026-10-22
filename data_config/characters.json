@@ -29,7 +29,7 @@
       "divinity"
     ],
     "base_stats": {
-      "max_hp": 30,
+      "max_hp": 10,
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,
@@ -68,7 +68,7 @@
     },
     "display_stats": ["max_hp", "damage_percent", "currency_gain_percent", "load_capacity", "finance", "interest_rate", "humanity"],
     "base_stats": {
-      "max_hp": 42,
+      "max_hp": 15,
       "hp_regen": 0,
       "shield": 0,
       "armor": 0,

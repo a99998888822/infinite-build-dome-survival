@@ -3,6 +3,10 @@ extends Node2D
 const BANK = preload("res://assets/sprites/buildings/goblin_bank/bank.png")
 const SHADOW = preload("res://assets/sprites/buildings/goblin_bank/ground_shadow.png")
 const FONT = preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
+const NIGHT_SHADER = preload("res://shaders/battle/evacuation_night.gdshader")
+const BANK_SHADER = preload("res://shaders/battle/evacuation_bank.gdshader")
+const SHADOW_SHADER = preload("res://shaders/battle/evacuation_shadow.gdshader")
+const LAMP_SHADER = preload("res://shaders/battle/evacuation_lamp.gdshader")
 const RING_PARTICLES := 144
 const RING_COMPANIONS := 18
 var phase: NightEvacuation
@@ -38,7 +42,7 @@ func initialize(owner_phase: NightEvacuation) -> void:
 	night_rect = ColorRect.new()
 	night_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	night_material = ShaderMaterial.new()
-	night_material.shader = preload("res://shaders/battle/evacuation_night.gdshader")
+	night_material.shader = NIGHT_SHADER
 	night_rect.material = night_material
 	night_layer.add_child(night_rect)
 	night_rect.hide()
@@ -74,6 +78,40 @@ func initialize(owner_phase: NightEvacuation) -> void:
 		var strength: Variant = glow_material.get_shader_parameter("strength")
 		if strength != null: saved_glow_strength = float(strength)
 
+func prepare_render_warmup(world_parent: Node2D, ui_parent: CanvasLayer) -> void:
+	# Draw in the real world/UI viewports under the entry curtain. Do not call
+	# begin(): it places a shelter, creates collision bodies and consumes RNG.
+	var layer := CanvasLayer.new()
+	layer.name = "EntryNightWarmup"
+	layer.layer = night_layer.layer
+	layer.custom_viewport = night_layer.custom_viewport
+	ui_parent.add_child(layer)
+	var screen := night_rect.duplicate(0) as ColorRect
+	layer.add_child(screen)
+	screen.size = get_tree().root.get_visible_rect().size
+	screen.show()
+	for entry in [[SHADOW, SHADOW_SHADER], [BANK, BANK_SHADER]]:
+		var sample := Sprite2D.new()
+		sample.texture = entry[0]
+		sample.centered = false
+		sample.position = -NightEvacuation.BANK_ANCHOR
+		sample.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var material := ShaderMaterial.new()
+		material.shader = entry[1]
+		if material.shader == BANK_SHADER:
+			material.set_shader_parameter("cloud_texture", CavernSunlightBackdrop.CLOUD_TEXTURE)
+			material.set_shader_parameter("night", 1.0)
+		sample.material = material
+		world_parent.add_child(sample)
+	var lamp := ColorRect.new()
+	lamp.size = Vector2(144, 176)
+	lamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var light := ShaderMaterial.new()
+	light.shader = LAMP_SHADER
+	light.set_shader_parameter("night", 1.0)
+	lamp.material = light
+	world_parent.add_child(lamp)
+
 func begin() -> void:
 	reset()
 	lit = true
@@ -89,7 +127,7 @@ func begin() -> void:
 	shadow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	shadow.z_index = -1
 	var shadow_material := ShaderMaterial.new()
-	shadow_material.shader = preload("res://shaders/battle/evacuation_shadow.gdshader")
+	shadow_material.shader = SHADOW_SHADER
 	shadow.material = shadow_material
 	building.add_child(shadow)
 	bank = Sprite2D.new()
@@ -98,7 +136,7 @@ func begin() -> void:
 	bank.position = -NightEvacuation.BANK_ANCHOR
 	bank.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	bank_material = ShaderMaterial.new()
-	bank_material.shader = preload("res://shaders/battle/evacuation_bank.gdshader")
+	bank_material.shader = BANK_SHADER
 	bank_material.set_shader_parameter("cloud_texture",CavernSunlightBackdrop.CLOUD_TEXTURE)
 	bank.material = bank_material
 	building.add_child(bank)
@@ -122,7 +160,7 @@ func begin() -> void:
 		lamp.position = center-Vector2(72,88)
 		lamp.size = Vector2(144,176)
 		var light := ShaderMaterial.new()
-		light.shader = preload("res://shaders/battle/evacuation_lamp.gdshader")
+		light.shader = LAMP_SHADER
 		lamp.material = light
 		lamp_materials.append(light)
 		building.add_child(lamp)

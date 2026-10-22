@@ -59,6 +59,7 @@ static func _weapon_slot_skin(warm: bool) -> StyleBoxTexture:
 
 static func apply_button(button: Button, padding := Vector4(10, 0, 10, 0), warm := false) -> void:
 	button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	button.begin_bulk_theme_override()
 	button.add_theme_stylebox_override("normal", skin(false, warm, padding))
 	for state in ["hover", "pressed", "hover_pressed"]:
 		var box := skin(false, true, padding)
@@ -77,3 +78,4 @@ static func apply_button(button: Button, padding := Vector4(10, 0, 10, 0), warm 
 	for state in ["font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 		button.add_theme_color_override(state, PALETTE.WARM_ACTIVE)
 	button.add_theme_color_override("font_disabled_color", PALETTE.MUTED)
+	button.end_bulk_theme_override()

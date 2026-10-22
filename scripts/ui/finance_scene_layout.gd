@@ -30,7 +30,7 @@ static func arrange(ui) -> void:
 	place(ui.main_panel, Rect2(Vector2.ZERO, viewport))
 	ui._compact = false
 	ui._bank_header.hide()
-	var actor_size := Vector2.ONE * roundf(388.8 * minf(sx, sy))
+	var actor_size := Vector2.ONE * BankCounterPortrait.FRAME_SIZE
 	# Align the current portrait's waist with the wooden counter's back edge.
 	# Using its body anchor keeps the torso from floating above the tabletop.
 	var waist := Vector2(326.666667 * sx, 593.333333 * sy)

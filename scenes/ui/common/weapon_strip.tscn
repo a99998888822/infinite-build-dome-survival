@@ -32,10 +32,10 @@ theme_override_styles/panel = SubResource("StripPanelStyle")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="StripBody" type="HBoxContainer" parent="StripPanel/StripMargin"]
 theme_override_constants/separation = 8
@@ -43,10 +43,11 @@ theme_override_constants/separation = 8
 [node name="WeaponScroll" type="ScrollContainer" parent="StripPanel/StripMargin/StripBody"]
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
-vertical_scroll_mode = 3
+vertical_scroll_mode = 0
 script = ExtResource("2_touch_scroll")
 
 [node name="WeaponList" type="HBoxContainer" parent="StripPanel/StripMargin/StripBody/WeaponScroll"]
+size_flags_vertical = 3
 theme_override_constants/separation = 8
 
 [node name="LoadLabel" type="Label" parent="StripPanel/StripMargin/StripBody"]

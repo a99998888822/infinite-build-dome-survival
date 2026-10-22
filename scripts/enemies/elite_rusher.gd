@@ -77,11 +77,18 @@ func _process_special_behavior(delta: float) -> bool:
 	if skill_state == "dash":
 		var distance := float(_profile.get("dash_distance", 240))
 		var duration := maxf(float(_profile.get("dash_ms", 160)) / 1000.0, 0.01)
-		var dash_speed := limit_night_speed(distance/duration)
+		# This timed attack must travel its telegraphed distance even at night.
+		# The night movement cap applies to chasing, not the 160ms skill motion.
+		var dash_speed := distance / duration
 		if not _dash_blocked:
 			var step := minf(distance - _travelled, dash_speed * delta)
 			var previous := _travelled
+			# The sweep handles player damage. A touching player must not pin the
+			# charge in place; keep walls and terrain in the movement query.
+			var ignore_player := not get_collision_exceptions().has(target_player)
+			if ignore_player: add_collision_exception_with(target_player)
 			var collision := move_and_collide(_direction * maxf(step, 0.0))
+			if ignore_player: remove_collision_exception_with(target_player)
 			_travelled = clampf((global_position - _origin).dot(_direction), 0.0, distance)
 			_try_dash_damage(previous, _travelled)
 			_dash_blocked = collision != null

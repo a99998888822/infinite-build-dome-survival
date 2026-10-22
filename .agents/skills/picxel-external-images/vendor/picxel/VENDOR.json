@@ -23,7 +23,7 @@
   "files": [
     {
       "path": "scripts/picxel.py",
-      "sha256": "541b34d145efc4f3f721a78602f429c6ee36123a7bad016a2b47ff68c7e247f4",
+      "sha256": "841f0518af62f99a932634cd0b7ca953308fec168915692018518f2f2289797f",
       "upstream_sha256": "d9a4c463b44c68fc28005ff94ff61366c85baeed938b89c80d71a506ac6f3912"
     },
     {
@@ -32,12 +32,12 @@
     },
     {
       "path": "scripts/panel.py",
-      "sha256": "0b46e7b9fdd809ca902065a911d29c87b31bee2d12414d8d4915978f19b98403",
+      "sha256": "750902a3eeb3244f5a88dc12c311fe8e0c568cd7db77ba4d09f2b357ce9771f3",
       "upstream_sha256": "895b009053be6da098a9e1122ae3979644a1f8e778764e4ee7cb2b1bce141639"
     },
     {
       "path": "scripts/panel.html",
-      "sha256": "0b918454f102cf51aee8d2cef0a8cb535741ee059649fbe0c0e663c73cef4961",
+      "sha256": "f2f3b1180f1fb4300ec07e2c1f1fe43695db38de7a3a957498eaafc0845eb8d8",
       "upstream_sha256": "d5527b9136e1f47aeba282e7cd22b712003ea9c03bc655ae320aadde4bb6471a"
     },
     {
@@ -58,7 +58,7 @@
     },
     {
       "path": "SPEC.md",
-      "sha256": "72d80f6a38f82766271e9194dfa4a550f4b38980832e79b44a2ebc8e76fbd095",
+      "sha256": "945971f140b1d797b90e7856fa4757353f115bb45ac48aab8eedecdaaf72bf70",
       "upstream_sha256": "65f06dbfb30a845f88ef61299ef0f739680196f19484ba177ef795afb8f2e398"
     },
     {
@@ -69,6 +69,9 @@
   "local_changes": [
     "panel.py: use a skill-local job file instead of the global Picxel job; describe external-image processing",
     "panel.html: replace image-generation wording with external-image preparation and pixelization labels",
-    "2026-10-21: project 96/192px support across grid validation, panel and SPEC; optional preserve_canvas imports registered sprite frames without per-pose fitting; default palette target remains 128."
+    "2026-10-21: project 96/192px support across grid validation, panel and SPEC; optional preserve_canvas imports registered sprite frames without per-pose fitting; default palette target remains 128.",
+    "2026-10-22: add 12/24/36 native grids and panel choices; rectangular ground assets use transparent-row cropping after review, without resized delivery.",
+    "2026-10-22: add 372px native portrait grids across import, validation and the project panel; no image-model API used.",
+    "2026-10-22: add independent 48px settlement thumbnail grids across import, validation, delivery and panel sizes; retain direct high-resolution source conversion."
   ]
 }

@@ -209,10 +209,10 @@ func _live() -> void:
 	check(flow.current_battle_summary == report and CampProgression.get_camp_currency() == balance + int(report.camp_currency), "duplicate outcome cannot change frozen result or award again")
 	var ui := game.find_child("BattleResultPanel", true, false) as RunSettlementPanel
 	check(ui != null and ui.visible and not ui.back_button.disabled, "new result UI and return action immediately available")
-	var current_portraits := ["res://assets/sprites/enemies/combat/enemy_gloom_mite_idle.png", "res://assets/sprites/enemies/iron_knight/knight_idle.png"]
+	var current_portraits := ["res://assets/ui/settlement/monsters/enemy_mutated_grub.png", "res://assets/ui/settlement/monsters/enemy_elite_rusher.png"]
 	check(ui._monster_nodes.size() == 2, "both defeated enemy types have portraits")
 	for monster in ui._monster_nodes:
-		check(monster.icon.texture.resource_path in current_portraits, "settlement reuses the current combat idle texture")
+		check(monster.icon.texture.resource_path in current_portraits, "settlement uses its independent source-derived thumbnail")
 	check((ui.get_parent() as CanvasLayer).layer > 31, "result covers combat header and journal overlay")
 	ui.sound_enabled = false
 	ui.set_process(false)
@@ -291,6 +291,8 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 	check((ui._portrait.texture as AtlasTexture).region.position.x == ui.GOBLIN.get_width() / 4.0, "goblin advances at half the previous animation frequency")
 	ui.skip()
 	check(ui._speech.visible and ui._speech_label.visible_characters == -1, "skip retains complete first-wave dialogue")
+	var empty_label := ui._monster_list.get_child(0) as Label
+	check(empty_label.size.x > 0 and empty_label.size.y > 0 and ui._monster_scroll.get_global_rect().encloses(empty_label.get_global_rect()), "no-kills placeholder has visible bounds inside the grid")
 	await _capture(ui, "death_no_advice")
 	var sample := {"kills": 1800, "gold": 2500, "waves": 8, "interest": 1600, "has_advice": true, "monsters": {"enemy_mutated_grub": 1782, "enemy_elite_rusher": 18}}
 	sample.monsters = {"enemy_mutated_grub": 1400, "enemy_echo_bat": 370, "enemy_elite_rusher": 18, "enemy_underworld_wolf": 12}
@@ -312,23 +314,41 @@ func _capture_variants(ui: RunSettlementPanel) -> void:
 		ui.skip()
 		check(ui._heading.text == "结算 ×%d%%" % roundi(float(receipt.reward_multiplier) * 100.0) and ui._total_value.text == "+ " + ui._number(int(receipt.camp_currency)), "each difficulty preview shows its final receipt: " + id)
 		await _capture(ui, "difficulty_" + id)
+	var first_icon: TextureRect = ui._monster_nodes[0].icon
+	var formal_thumbnail := first_icon.texture
+	first_icon.texture = ui._atlas(ui.ICONS, Rect2(0, 0, 32, 32))
+	ui._arrange()
+	check(first_icon.size == Vector2(32, 32), "missing-enemy fallback also uses its native 32px size")
+	first_icon.texture = formal_thumbnail
+	ui._arrange()
+	check(first_icon.size == Vector2(48, 48), "formal enemy thumbnail restores its native 48px size")
 	for bounds in [Vector2i(2560, 1440), Vector2i(1920, 1080), Vector2i(1280, 720), Vector2i(1152, 648), Vector2i(1024, 576), Vector2i(900, 600), Vector2i(640, 360), Vector2i(360, 640)]:
 		get_tree().root.size = bounds
 		get_tree().root.content_scale_size = bounds
 		await frames()
 		check(ui.get_global_rect().encloses(ui.back_button.get_global_rect()) and ui._portrait.visible and ui._scroll.get_global_rect().end.y <= ui.back_button.get_global_rect().position.y, "compact/portrait keeps goblin and navigation, scroll excludes footer " + str(bounds))
-		check(not ui._scroll.get_v_scroll_bar().visible and not ui._scroll.get_h_scroll_bar().visible, "settlement fits one screen without scrolling " + str(bounds))
+		if bounds.x >= 1120 and bounds.y >= 860:
+			check(not ui._scroll.get_v_scroll_bar().visible and not ui._scroll.get_h_scroll_bar().visible, "design canvas fits without scrolling " + str(bounds))
+		check(ui._portrait.size == Vector2(372, 372) and ui._portrait.texture.get_size() == Vector2(372, 372), "goblin source and display stay native in every layout " + str(bounds))
+		check(ui._total_icon.size == Vector2(64, 64), "currency stays exactly 2x in every layout " + str(bounds))
 		for locale in ["en", "zh_CN"]:
 			L10n.set_locale(locale, false)
 			await frames()
 			for monster in ui._monster_nodes:
 				check(ui._monster_scroll.get_global_rect().encloses(monster.tile.get_global_rect()), "all enemy cards fit together " + locale + str(bounds))
 				check(monster.icon.texture.resource_path == str(RunSettlement.configuration().monster_portraits[monster.id]), "enemy uses its own formal portrait " + str(monster.id))
+				check(monster.icon.size == Vector2(48, 48) and monster.icon.texture.get_size() == Vector2(48, 48), "enemy thumbnail stays native " + str(monster.id))
 				var name_width: float = monster.label.get_theme_font("font").get_string_size(monster.label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, monster.label.get_theme_font_size("font_size")).x
 				check(name_width <= monster.label.size.x, "complete enemy name fits " + locale + str(monster.id) + str(bounds))
-		check(ui._scroll.get_global_rect().encloses(ui._total.get_global_rect()) and ui._scroll.get_global_rect().encloses(ui._portrait.get_global_rect()), "total and goblin portrait fit above the footer " + str(bounds))
+		check(ui._content.get_global_rect().encloses(ui._total.get_global_rect()) and ui._content.get_global_rect().encloses(ui._portrait.get_global_rect()), "total and full portrait are contained in reachable scroll content " + str(bounds))
 		for row in ui._rows:
-			check(ui._scroll.get_global_rect().encloses(row.panel.get_global_rect()), "settlement row fits " + str(bounds))
+			check(ui._content.get_global_rect().encloses(row.panel.get_global_rect()) and row.icon.size == Vector2(32, 32), "settlement row fits and its icon stays native " + str(bounds))
+		ui._scroll.scroll_vertical = 10000
+		ui._scroll.scroll_horizontal = 10000
+		await frames()
+		check(ui._content.get_global_rect().end.y <= ui._scroll.get_global_rect().end.y + 1 and ui._content.get_global_rect().end.x <= ui._scroll.get_global_rect().end.x + 1, "scroll can reach the bottom and right of all native art " + str(bounds))
+		ui._scroll.scroll_vertical = 0
+		ui._scroll.scroll_horizontal = 0
 		await _capture(ui, "layout_%dx%d" % [bounds.x, bounds.y])
 	get_tree().root.size = Vector2i(1152, 768)
 	get_tree().root.content_scale_size = Vector2i(1152, 768)

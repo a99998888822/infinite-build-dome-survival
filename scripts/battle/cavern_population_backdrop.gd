@@ -11,6 +11,7 @@ const ENEMY_OCCLUSION = preload("res://scripts/battle/cavern_enemy_occlusion.gd"
 # Zero requests a fresh per-battle seed; explicit seeds reproduce review layouts.
 @export var population_seed: int = 0
 var grass_atlas: ImageTexture
+var _grass_quad: QuadMesh
 var grass_bottoms: Array[float] = []
 var grass_material: ShaderMaterial
 var grass_cells: Dictionary = {}
@@ -102,7 +103,7 @@ func _solid_plan(key: Vector2i) -> Dictionary:
 		var index := rng.randi_range(0,config.rubble.size()-1)
 		if index==previous_index: index = (index+rng.randi_range(1,config.rubble.size()-1))%config.rubble.size()
 		previous_index = index
-		var factor := 1.45 if index<2 else rng.randf_range(.85,1.16)
+		var factor := 1.0 if index<2 else rng.randf_range(.85,1.16)
 		plan.append(_placement("rubble",index,point,factor,rng.randf()<.5))
 	return {"entries":plan,"rng":rng,"nearby":nearby}
 
@@ -162,7 +163,9 @@ func _plan_grass_patch(state: Dictionary, row: int, col: int) -> void:
 		if not clear: continue
 		grass_points.append(point)
 		var index := rng.randi_range(0,2) if surface.a>.52 else (3 if rng.randf()<.25 else 0)
-		var entry := _placement("grass",index,point,rng.randf_range(.95,1.25),rng.randf()<.5)
+		# Consume the old scale draw so unrelated placements keep the same RNG.
+		rng.randf_range(.95,1.25)
+		var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 		entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 		entry.suitability = surface.a
 		plan.append(entry)
@@ -179,17 +182,16 @@ func _plan_companion(state: Dictionary, solid: Dictionary) -> void:
 	if solid.flip: center_x = -center_x
 	var bottom := (bounds.end.y-anchor.y)*factor
 	var count := clampi(ceili(width/24.0),2,6)
-	var tuft_height := clampf(bounds.size.y*factor*.42,10.0,22.0)
+	# Use the same native-size grass variants as the meadow, including tall tufts.
 	for i in count:
 		var across := (float(i)+rng.randf_range(.15,.85))/float(count)-.5
 		# Stay just in front of the host's depth boundary, even for padded art.
 		var offset_y := maxf(1.0,bottom+rng.randf_range(1,3))
 		var point: Vector2 = solid.point+Vector2(center_x+across*width*.94,offset_y)
 		var surface := sample_surface(point)
-		var index := rng.randi_range(0,1) if surface.a>=.30 else 3
-		var grass_height := _scenery_bounds(config.grass[index].texture).size.y
-		var scale := tuft_height/grass_height*rng.randf_range(.9,1.1)
-		var entry := _placement("grass",index,point,scale,rng.randf()<.5)
+		var index := rng.randi_range(0,3) if surface.a>=.30 else 3
+		rng.randf_range(.9,1.1) # Preserve the existing placement RNG sequence.
+		var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 		entry.tint = Color(.74,.80,.77) if index!=3 else Color(.76,.79,.73)
 		entry.suitability = surface.a
 		entry.companion = true
@@ -330,8 +332,12 @@ func _grass_batch(blades: Array[Dictionary], key: Vector2i, reverse: bool) -> Mu
 	var anchor := Node2D.new()
 	anchor.set_meta("scenery",{"kind":"grass_batch","count":blades.size(),"reverse":reverse})
 	roots.add_child(anchor)
-	var mesh := QuadMesh.new()
-	mesh.size = Vector2(32,32)
+	# All batches use the same immutable quad. Creating a new primitive mesh
+	# here can synchronously allocate GPU buffers during terrain streaming.
+	if _grass_quad == null:
+		_grass_quad = QuadMesh.new()
+		_grass_quad.size = Vector2(32,32)
+	var mesh := _grass_quad
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_2D
 	multi.use_colors = true

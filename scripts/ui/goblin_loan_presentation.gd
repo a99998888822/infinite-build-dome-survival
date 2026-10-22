@@ -17,6 +17,8 @@ var wallet := 0
 var elapsed := 0.0
 var _quote: Dictionary = {}
 var _modal: Control
+var _modal_scroll: ScrollContainer
+var _modal_content: Control
 var _box: Panel
 var _dimmer: ColorRect
 var _title: Label
@@ -172,7 +174,20 @@ func _build_modal() -> void:
 	_dimmer.color = Color(FinanceFrameSkin.PALETTE.SHADOW, 0.73)
 	_dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_modal.add_child(_dimmer)
-	_box = _panel(_modal, "232d23", "ad905d")
+	# Keep the portrait native-sized. Small logical viewports scroll the complete
+	# modal; physical window resizing normally scales the project canvas instead.
+	_modal_scroll = ScrollContainer.new()
+	_modal.add_child(_modal_scroll)
+	FinanceUIStyle.scroll(_modal_scroll)
+	_modal_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_modal_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_modal_scroll.follow_focus = true
+	_modal_content = Control.new()
+	_modal_content.custom_minimum_size = Vector2(1160, 552)
+	_modal_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_modal_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_modal_scroll.add_child(_modal_content)
+	_box = _panel(_modal_content, "232d23", "ad905d")
 	var inner := NinePatchRect.new()
 	inner.texture = load("res://assets/ui/finance/trade_panel.png")
 	inner.patch_margin_left = 12
@@ -230,57 +245,38 @@ func _build_modal() -> void:
 func _layout_modal() -> void:
 	if _box == null: return
 	var viewport := get_viewport_rect().size
-	var short := viewport.y < 480
-	var narrow := viewport.x < 520
-	_box.size = Vector2(minf(720, viewport.x - 24), 578 if narrow else (336 if short else 472))
-	_box.position = ((viewport - _box.size) * 0.5).floor()
+	_modal_scroll.position = Vector2(12, 12)
+	_modal_scroll.size = (viewport - Vector2(24, 24)).max(Vector2.ONE)
+	_box.size = Vector2(1160, 552)
+	_box.position = ((_modal_scroll.size - _box.size).max(Vector2.ZERO) * 0.5).floor()
 	var w := _box.size.x
-	_rect(_seal, 20, 14, 24, 28)
-	_text(_title, Rect2(54, 12, w-116, 32), 18 if short or narrow else 24)
-	_rect(_close, w-46, 14, 26, 26)
-	var portrait_size := Vector2(72,72) if narrow else (Vector2(72,63) if short else Vector2(112,98))
-	_portrait.size = portrait_size
-	_portrait.position = Vector2(20, 49 if narrow else (40 if short else 53))
+	_rect(_seal, 24, 20, 24, 24)
+	_text(_title, Rect2(60, 16, w-132, 36), 24)
+	_rect(_close, w-54, 18, 30, 30)
+	_portrait.size = Vector2.ONE * BankCounterPortrait.FRAME_SIZE
+	_portrait.position = Vector2(24, 140)
 	_portrait.set_meta("rest_y", _portrait.position.y)
-	var bubble_x := 100.0 if short or narrow else 146.0
-	_rect(_bubble, bubble_x, 53 if narrow else (51 if short else 68), w-bubble_x-24, 72 if narrow else (42 if short else 66))
-	_text(_speech, Rect2(12, 4, _bubble.size.x-24, _bubble.size.y-8), 14 if short or narrow else 18)
-	_rect(_tail, bubble_x-11, 91 if narrow else (75 if short else 111), 18, 12)
-	var card_top := 143.0 if narrow else (112.0 if short else 164.0)
-	var card_w := w-32 if narrow else floorf((w-48)/3.0)
-	var card_h := 100.0 if narrow else (150.0 if short else 222.0)
+	_rect(_bubble, 24, 68, 372, 64)
+	_text(_speech, Rect2(16, 8, 340, 48), 20)
+	_rect(_tail, 334, 127, 18, 12)
+	var work_x := 420.0
+	var card_w := floorf((w-work_x-24-24)/3.0)
+	var card_h := 300.0
 	for i in _cards.size():
 		var c := _cards[i]
-		_rect(c.panel, 16 if narrow else 16+i*(card_w+8), card_top+i*(card_h+8) if narrow else card_top, card_w, card_h)
-		c.line.visible = not narrow
-		if narrow:
-			_rect(c.icon, 10, 24, 44, 44)
-			_text(c.gain, Rect2(64,7,130,18),12)
-			_text(c.value, Rect2(64,24,98,30),24)
-			_text(c.money, Rect2(163,30,40,22),12)
-			_text(c.caption, Rect2(64,57,68,18),12)
-			_text(c.due, Rect2(132,57,70,18),12)
-			_text(c.rate, Rect2(64,78,144,16),12)
-			_rect(c.button, card_w-86,34,74,32)
-		else:
-			_rect(c.icon, 12, 14, 40 if short else 48, 40 if short else 48)
-			_text(c.gain, Rect2(62 if short else 74,8,card_w-80,20),12)
-			_text(c.value, Rect2(60 if short else 72,28,card_w-80,38),24 if short else 30)
-			_text(c.money, Rect2(card_w-40,37 if short else 40,32,24),12)
-			_rect(c.line,12,66 if short else 82,card_w-24,1)
-			_text(c.caption,Rect2(12,72 if short else 94,70,24),12)
-			_text(c.due,Rect2(74,72 if short else 92,card_w-86,28),16 if short else 18)
-			_text(c.rate,Rect2(12,98 if short else 127,card_w-24,20),12)
-			_rect(c.button,12,120 if short else 174,card_w-24,26 if short else 34)
-	if narrow:
-		_text(_rule,Rect2(20,474,w-40,54),12)
-		_rect(_decline,w-124,534,104,30)
-	elif short:
-		_text(_rule,Rect2(20,270,w-162,50),12)
-		_rect(_decline,w-126,282,106,32)
-	else:
-		_text(_rule,Rect2(22,404,w-174,48),12)
-		_rect(_decline,w-130,414,108,34)
+		_rect(c.panel, work_x+i*(card_w+12), 88, card_w, card_h)
+		c.line.show()
+		_rect(c.icon, 16, 20, 48, 48)
+		_text(c.gain, Rect2(76,16,card_w-92,24),16)
+		_text(c.value, Rect2(74,44,card_w-90,42),30)
+		_text(c.money, Rect2(16,82,card_w-32,24),16)
+		_rect(c.line,16,118,card_w-32,1)
+		_text(c.caption,Rect2(16,132,card_w-32,24),16)
+		_text(c.due,Rect2(16,160,card_w-32,32),24)
+		_text(c.rate,Rect2(16,200,card_w-32,24),16)
+		_rect(c.button,16,248,card_w-32,36)
+	_text(_rule,Rect2(work_x,412,w-work_x-24,64),16)
+	_rect(_decline,w-160,492,136,36)
 
 
 func _build_strip() -> void:

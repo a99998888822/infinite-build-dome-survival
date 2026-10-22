@@ -13,6 +13,8 @@ const PAGE_FRAME = preload("res://scripts/ui/talent_page_frame.gd")
 const TEXT := PALETTE.TEXT
 const GOLD := PALETTE.BRONZE
 const MUTED := PALETTE.MUTED
+# Expand node positions, not textures, to preserve label and arrow clearance.
+const NODE_SPACING := 1.1
 
 var _main_flow_coordinator: MainFlowCoordinator
 var _content: Control
@@ -153,10 +155,10 @@ func _add_node(record: Dictionary, building: bool) -> void:
 	var node := TalentNodeButton.new()
 	node.configure(record, building, NODE_BACKGROUND)
 	node.name = id
-	var extent := 104.0 if building else 84.0
+	var extent := TalentNodeButton.NODE_EXTENT
 	node.size = Vector2.ONE * extent
 	var point: Array = record.get("tree_position", [0, 0])
-	node.position = Vector2(float(point[0]), float(point[1])) - node.size / 2.0
+	node.position = (Vector2(float(point[0]), float(point[1])) * NODE_SPACING - node.size / 2.0).round()
 	node.pressed.connect(select_node.bind(id))
 	node.gui_input.connect(_on_node_input.bind(node))
 	_tree.add_child(node)
@@ -251,7 +253,8 @@ func _layout_content() -> void:
 func _apply_view() -> void:
 	_hide_upgrade_tooltip()
 	_tree.scale = Vector2.ONE * _zoom
-	_tree.position = _content.size * Vector2(0.47, 0.54) + Vector2(-0.733333, 0.133333) + _pan
+	# Leave the newly revealed upper branch below the fixed currency heading.
+	_tree.position = (_content.size * Vector2(0.47, 0.61) + Vector2(-0.733333, 0.133333) + _pan).round()
 
 
 func zoom_at(pointer: Vector2, factor: float) -> void:

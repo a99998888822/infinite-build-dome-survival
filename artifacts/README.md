@@ -1,7 +1,11 @@
 # 工作产物
 
-性能优化当前进度见根目录的[战斗性能优化进度](../battle_performance_optimization_checklist.md)。2026-10-21 已清理性能对照的采样、截图、日志、实验代码和临时工程；这些历史输出不作为运行依赖。
+性能状态统一见根目录的[战斗性能现状](../battle_performance_optimization_checklist.md)。性能过程材料不作为运行依赖或长期档案保留。
 
-其它素材或功能任务的当前产物按原路径保留，包含 `sources/`、`editable/`、`previews/`、`reviews/`、`validation/` 和剩余 `reports/`。不要因目录名或 Git 未跟踪状态将素材源文件当作临时文件删除。
+美术规格统一见根目录的[美术素材分辨率与场景缩放清单](../art_asset_resolution_and_scale_audit.md)。本轮美术处理的旧稿、预览、截图及验证日志已清理。
+
+`sources/` 保存原图，`reference/` 保存外部参考。`editable/` 中的分帧稿、网格、色板及处理记录已删除，不再额外归档；最终画面保存在 `assets/` 的正式 PNG／图集中，正式图标旁已有的网格和色板沿用。来源记录保留原图及正式图集的对应关系。
+
+其它功能任务仍在使用的 `previews/`、`reviews/`、`validation/` 内容按原路径保留。
 
 `.gdignore` 阻止 Godot 将产物目录中的报告、脚本副本与截图导入正式资源。

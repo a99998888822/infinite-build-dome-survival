@@ -54,9 +54,10 @@ func configure_view(size: Vector2, x: float, zoom_scale: float) -> void:
 	for i in config.foreground.size():
 		var row: Dictionary = config.foreground[i]
 		var sprite: Sprite2D = foreground_root.get_child(i)
-		sprite.position = (Vector2(row.corner[0],row.corner[1])*size+Vector2(row.offset[0],row.offset[1])*art_scale).round()
-		var logical: Array = row.get("display_size",[sprite.texture.get_width(),sprite.texture.get_height()])
-		sprite.scale = Vector2(logical[0],logical[1])/sprite.texture.get_size()*art_scale
+		# 128px corner artwork stays at 2x on the design canvas. Offsets are
+		# screen pixels, registered to each texture's visible corner edge.
+		sprite.scale = Vector2.ONE*float(row.display_scale)
+		sprite.position = (Vector2(row.corner[0],row.corner[1])*size+Vector2(row.offset[0],row.offset[1])).round()
 	queue_redraw()
 
 func ruin_display_size(index: int) -> Vector2:

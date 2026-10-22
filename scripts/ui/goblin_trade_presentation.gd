@@ -120,7 +120,7 @@ func get_preferred_height(width: float) -> float:
 		text_height = _relic_body.get_content_height()
 	if not _detail.text.is_empty():
 		text_height += _terms.get_theme_constant("separation") + _text_height(_detail, text_width)
-	return (44 if compact else 60) + ceilf(text_height) + (24 if compact else 28) + (10 if compact else 12) + padding
+	return (50 if compact else 60) + ceilf(text_height) + (40 if _challenge_header else (24 if compact else 28)) + (10 if compact else 12) + padding
 
 
 func _text_height(label: Label, width: float) -> float:
@@ -143,16 +143,16 @@ func arrange(card_rect: Rect2, portrait_rect: Rect2, bounds: Rect2) -> void:
 	var padding := 12.0 if _compact else 16.0
 	var text_button_gap := 10.0 if _compact else 12.0
 	_seal.position = Vector2(padding, 10 if _compact else 12)
-	_seal.size = Vector2(20, 20) if _compact else Vector2(28, 28)
-	_title.position = Vector2(padding + (24 if _compact else 36), 10 if _compact else 12)
+	_seal.size = Vector2(32, 32)
+	_title.position = Vector2(padding + 40, 10 if _compact else 12)
 	FinanceUIStyle.label(_title, 20 if _compact else 30, FinanceUIStyle.GOLD)
 	_title.size = Vector2(w - _title.position.x - padding, 18 if _compact else 26)
 	if _challenge_header:
 		_title.size.y = _seal.size.y
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER if _challenge_header else VERTICAL_ALIGNMENT_TOP
-	_body_scroll.position = Vector2(padding, 44 if _compact else 60)
+	_body_scroll.position = Vector2(padding, 50 if _compact else 60)
 	var button_width := (w - padding * 2 - 10) * 0.5
-	var button_height := 24.0 if _compact else 28.0
+	var button_height := 40.0 if _challenge_header else (24.0 if _compact else 28.0)
 	_body_scroll.size = Vector2(w - padding * 2, maxf(1, h - _body_scroll.position.y - button_height - text_button_gap - padding))
 	_no.position = Vector2(padding, h - button_height - padding)
 	_yes.position = Vector2(padding + button_width + 10, h - button_height - padding)
@@ -292,6 +292,7 @@ func _draw_accents() -> void:
 	if phase < 0.8:
 		var frame := clampi(int(phase * 10), 0, 7)
 		var point := _card_rect.position + Vector2(lerpf(16, _card_rect.size.x - 16, phase / 0.8), 3)
+		if _challenge_header: point = point.round()
 		_accents.draw_texture_rect_region(GLINTS, Rect2(point - Vector2(8, 8), Vector2(16, 16)), Rect2(frame * 16, 0, 16, 16))
 
 

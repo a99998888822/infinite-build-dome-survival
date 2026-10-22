@@ -6,10 +6,8 @@
 
 2026-10-19：前跳和后跳统一使用用户在可见场景中确认的 6 帧动画，共用 `jump.png`，每帧 0.12 秒，总时长 0.72 秒。两种动作仅保留游戏位移与朝向规则上的区别，显示同一套动画。跳跃局部偏移为 (0,3)，与旧动作的脚底基线对齐；退出或被攻击打断时恢复原偏移。
 
-`approved_frames.json` 记录帧像素和图集哈希。跳跃原图保存在 `artifacts/sources/player/novice_jump_20261019/`，确认稿在 `artifacts/editable/player/novice_jump_20261019/`。其余动作的新原图归档在 `artifacts/sources/player/novice_actions_20261020/`，确认 PNG、网格和色板在 `artifacts/editable/player/novice_actions_20261020/`；相邻 `novice_128/` 仅作历史来源。安装逐像素复用审阅稿，没有再次缩放、调色或重画。
+`approved_frames.json` 记录确认过的帧像素和正式图集哈希。跳跃原图保存在 `artifacts/sources/player/novice_jump_20261019/`，其余动作原图在 `artifacts/sources/player/novice_actions_20261020/`。最终画面保存在本目录的7张图集中，来源清单按图集及帧区域定位，不再保留独立分帧PNG、网格和色板归档；相邻 `novice_128/` 仅作历史来源。
 
-运行 `python scripts/tools/build_novice_shared_jump.py` 检查确认稿与正式图集一致；加 `--write` 从保留网格重建共用图集。
-
-运行 `python scripts/tools/build_novice_reviewed_actions.py` 检查其余 41 帧；加 `--write` 重建这 6 张正式图集。
+使用 `python scripts/tools/install_player_picxel_assets.py --check` 检查正式资源接入。旧稿重建脚本已随处理稿清理；逐帧像素可按 `animations.json` 裁切正式图集，与 `approved_frames.json` 中的RGBA哈希核对。
 
 正式入口由 `data_config/characters.json` 引用，选人页与战斗共用。战斗按 1 倍绘制，基础偏移 (0,-6) 加各动作局部偏移 (0,3)，合计 (0,-3)；碰撞、地面投影、光晕和武器挂点保持现行配置。位移距离、速度曲线、武器特效和攻击范围保持原值。

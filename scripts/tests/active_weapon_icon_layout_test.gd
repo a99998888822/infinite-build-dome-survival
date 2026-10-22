@@ -119,8 +119,14 @@ func _run() -> void:
 			child.queue_redraw()
 	if not output.is_empty(): DirAccess.make_dir_recursive_absolute(output)
 	await capture("01_six_weapons_72")
+	for i in bar.weapons.size():
+		bar.update_slot(i, [10.0, 7.5, 5.0, 2.5, 0.5, 0.0][i], 10.0, false, false)
+	await capture("03_cooldown_sectors_72")
 	await configure(14, 1920)
 	await capture("02_fourteen_weapons_36")
+	for i in bar.weapons.size():
+		bar.update_slot(i, float(i % 6) * 2.0, 10.0, false, false)
+	await capture("04_cooldown_sectors_36")
 	if not output.is_empty():
 		var file := FileAccess.open(output.path_join("measurements.json"), FileAccess.WRITE)
 		file.store_string(JSON.stringify(captured, "\t"))

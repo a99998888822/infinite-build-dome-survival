@@ -20,7 +20,7 @@
     picxel.py batch  <DIR> [-o OUT] [--provider P] [--sizes 64,32] [--only NAME ...]
                                                    every <name>.anchor.json + image in DIR -> base sheets + batch-report.json
 
-Only Pillow is required. Project sizes are 32, 64, 96, 128, 192.
+Only Pillow is required. Project sizes are 12, 24, 32, 36, 48, 64, 96, 128, 192, 372.
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(errors="replace")   # paths and notes may be Chinese
 
-SIZES = (32, 64, 96, 128, 192)
+SIZES = (12, 24, 32, 36, 48, 64, 96, 128, 192, 372)
 KINDS = ("tile", "item", "sprite")
 SYMBOLS = "ABCDEFGHIJKLMNOP"
 TRANSPARENT = "."

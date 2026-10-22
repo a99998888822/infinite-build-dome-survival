@@ -3,6 +3,10 @@ class_name MainMenuUIController
 
 const MAIN_MENU_BACKGROUND_TEXTURE_PATH: String = "res://assets/ui/main_menu/bg_main_menu.png"
 const MAIN_MENU_TITLE_TEXTURE_PATH: String = "res://assets/ui/main_menu/title_main_menu.png"
+const MAIN_MENU_TITLE_SCALES := {
+	MAIN_MENU_TITLE_TEXTURE_PATH: 2.0,
+	"res://assets/ui/main_menu/title_main_menu_en.png": 1.0,
+}
 const CHARACTER_SELECT_VIEW: Script = preload("res://scripts/ui/character_select_view.gd")
 
 var character_view: CharacterSelectView
@@ -62,6 +66,8 @@ func _ready() -> void:
 	dungeon_loading.finished.connect(_on_dungeon_entry_finished)
 	_setup_role_select_runtime_ui()
 	_apply_start_page_assets()
+	if title_art != null:
+		title_art.get_parent().resized.connect(_layout_title_art)
 	_create_language_selector()
 	L10n.locale_changed.connect(_on_locale_changed)
 	_create_settings_ui()
@@ -87,13 +93,25 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var time := Time.get_ticks_msec() * 0.001
 	if title_art != null and start_page != null and start_page.visible:
-		var title_offset := sin(time * 1.7) * 4.0
+		var title_offset := roundf(sin(time * 1.7) * 4.0)
 		title_art.position = _title_base_position + Vector2(0.0, title_offset)
 
 
 func _setup_menu_atmosphere() -> void:
-	if title_art != null:
-		_title_base_position = title_art.position
+	_layout_title_art()
+
+
+func _layout_title_art() -> void:
+	if title_art == null or title_art.texture == null:
+		return
+	var title_parent := title_art.get_parent() as Control
+	var display_scale := float(MAIN_MENU_TITLE_SCALES.get(title_art.texture.resource_path, 1.0))
+	title_art.size = title_art.texture.get_size() * display_scale
+	# Center the native-sized art in the existing title area; snap its screen
+	# position without scaling it to fill the available container.
+	var screen_origin := title_parent.global_position + (title_parent.size - title_art.size) * 0.5
+	_title_base_position = screen_origin.round() - title_parent.global_position
+	title_art.position = _title_base_position
 
 
 func _bind_to_main_flow() -> void:
@@ -431,8 +449,9 @@ func _apply_start_page_assets() -> void:
 	if title_art != null:
 		var path := str(L10n.locale_definitions.get(L10n.locale, {}).get("title_texture", MAIN_MENU_TITLE_TEXTURE_PATH))
 		title_art.texture = _load_menu_texture(path)
-		title_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		title_art.stretch_mode = TextureRect.STRETCH_SCALE
 		title_art.visible = title_art.texture != null
+		_layout_title_art()
 
 
 func _create_language_selector() -> void:

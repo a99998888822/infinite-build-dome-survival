@@ -1,6 +1,5 @@
 {
   "revision": "native96_192_20261021",
-  "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
   "originals_revision": "02b3ef4",
   "source": "720px originals restored from Git; hashes verified",
   "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",

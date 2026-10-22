@@ -17,15 +17,6 @@
       "move-07"
     ]
   },
-  "editable": {
-    "move-01": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-01-96.pxg",
-    "move-02": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-02-96.pxg",
-    "move-03": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-03-96.pxg",
-    "move-04": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-04-96.pxg",
-    "move-05": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-05-96.pxg",
-    "move-06": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-06-96.pxg",
-    "move-07": "artifacts/previews/enemies_native_96_192/20261021-r01/mite/work/move-07-96.pxg"
-  },
   "palette": [
     "#000000",
     "#c4b9aa",
@@ -111,7 +102,6 @@
   "source_limitations": [],
   "processing": {
     "revision": "native96_192_20261021",
-    "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
     "originals_revision": "02b3ef4",
     "source": "720px originals restored from Git; hashes verified",
     "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
@@ -127,7 +117,7 @@
     ],
     "folder": "combat"
   },
-  "source": "artifacts/previews/enemies_native_96_192/20261021-r01/sources/mite",
+  "source": "artifacts/sources/enemies/xiaoguai_move",
   "frames": [
     {
       "name": "move-01",

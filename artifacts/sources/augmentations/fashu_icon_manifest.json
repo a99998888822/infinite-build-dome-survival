@@ -1,0 +1,494 @@
+{
+  "installed_on": "2026-10-05",
+  "source": "artifacts/sources/spells/fashu_icon.png",
+  "source_sha256": "6e49212e7e824843fbb0d4815d668d8226202bf7ee72a67c8d1fe9183f8348ad",
+  "approved_package": "artifacts/previews/spell_icons/20261005-all64-r2",
+  "method": "Approved Picxel local conversion and AI-guided pixel cleanup; no model generation.",
+  "ignored_cells_one_based": [
+    [
+      2,
+      4
+    ]
+  ],
+  "size": [
+    64,
+    64
+  ],
+  "items": [
+    {
+      "id": "strength",
+      "name": "巨力",
+      "cell": [
+        1,
+        1
+      ],
+      "png": "png/strength-64.png",
+      "grid": "editable/strength-64-clean.pxg",
+      "palette": "editable/strength.pal",
+      "colors": 5,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "6dba81768543d770bdc842a7bf50c6a470a11b4dea3f72ec1be996940bbcdbdb",
+      "config_id": "scroll_might",
+      "asset": "assets/ui/icons/augmentations/scroll_might.png",
+      "editable": "assets/ui/icons/augmentations/scroll_might.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_might.pal"
+    },
+    {
+      "id": "wisdom",
+      "name": "智慧",
+      "cell": [
+        1,
+        2
+      ],
+      "png": "png/wisdom-64.png",
+      "grid": "editable/wisdom-64-clean.pxg",
+      "palette": "editable/wisdom.pal",
+      "colors": 14,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "fdb95c72bfeb323756703f48d963af8fa86001d542e0d532cd52b7eec923af92",
+      "config_id": "scroll_wisdom",
+      "asset": "assets/ui/icons/augmentations/scroll_wisdom.png",
+      "editable": "assets/ui/icons/augmentations/scroll_wisdom.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_wisdom.pal"
+    },
+    {
+      "id": "multishot",
+      "name": "多投",
+      "cell": [
+        1,
+        3
+      ],
+      "png": "png/multishot-64.png",
+      "grid": "editable/multishot-64-clean.pxg",
+      "palette": "editable/multishot.pal",
+      "colors": 7,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "7106a348754896a9afad4a40df44c3e93e5654ccbc962d9680b084198cd6fb8d",
+      "config_id": "scroll_multishot",
+      "asset": "assets/ui/icons/augmentations/scroll_multishot.png",
+      "editable": "assets/ui/icons/augmentations/scroll_multishot.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_multishot.pal"
+    },
+    {
+      "id": "area",
+      "name": "领域",
+      "cell": [
+        1,
+        4
+      ],
+      "png": "png/area-64.png",
+      "grid": "editable/area-64-clean.pxg",
+      "palette": "editable/area.pal",
+      "colors": 5,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "7e287bfd0b1aa55844012c6ccc8b2b7161f8c06319f6f822c38a72755af97998",
+      "config_id": "scroll_domain",
+      "asset": "assets/ui/icons/augmentations/scroll_domain.png",
+      "editable": "assets/ui/icons/augmentations/scroll_domain.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_domain.pal"
+    },
+    {
+      "id": "critical",
+      "name": "会心",
+      "cell": [
+        2,
+        1
+      ],
+      "png": "png/critical-64.png",
+      "grid": "editable/critical-64-clean.pxg",
+      "palette": "editable/critical.pal",
+      "colors": 8,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "6c30498a77e3b60abae595944a220ced048580b462c4b14fa0a3d2447afa3e41",
+      "config_id": "scroll_precision",
+      "asset": "assets/ui/icons/augmentations/scroll_precision.png",
+      "editable": "assets/ui/icons/augmentations/scroll_precision.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_precision.pal"
+    },
+    {
+      "id": "lethal",
+      "name": "致命",
+      "cell": [
+        2,
+        2
+      ],
+      "png": "png/lethal-64.png",
+      "grid": "editable/lethal-64-clean.pxg",
+      "palette": "editable/lethal.pal",
+      "colors": 8,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a2c7500ea81b7899b8607919deed3e0bc141cc7ec47cc368dbd680c36bf137fd",
+      "config_id": "scroll_lethality",
+      "asset": "assets/ui/icons/augmentations/scroll_lethality.png",
+      "editable": "assets/ui/icons/augmentations/scroll_lethality.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_lethality.pal"
+    },
+    {
+      "id": "swiftness",
+      "name": "迅捷",
+      "cell": [
+        2,
+        3
+      ],
+      "png": "png/swiftness-64.png",
+      "grid": "editable/swiftness-64-clean.pxg",
+      "palette": "editable/swiftness.pal",
+      "colors": 11,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "f903c5535edf88d615335b2ba0bccfa1accbebbef551ee2285da341311a855f5",
+      "config_id": "scroll_haste",
+      "asset": "assets/ui/icons/augmentations/scroll_haste.png",
+      "editable": "assets/ui/icons/augmentations/scroll_haste.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_haste.pal"
+    },
+    {
+      "id": "bounce",
+      "name": "弹跳",
+      "cell": [
+        3,
+        1
+      ],
+      "png": "png/bounce-64.png",
+      "grid": "editable/bounce-64-clean.pxg",
+      "palette": "editable/bounce.pal",
+      "colors": 12,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "110513c88bc334982dfed9b4482b5464686c5925cfbd634fe3bfea53f15b5e7f",
+      "config_id": "scroll_bounce",
+      "asset": "assets/ui/icons/augmentations/scroll_bounce.png",
+      "editable": "assets/ui/icons/augmentations/scroll_bounce.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_bounce.pal"
+    },
+    {
+      "id": "water",
+      "name": "水流",
+      "cell": [
+        3,
+        2
+      ],
+      "png": "png/water-64.png",
+      "grid": "editable/water-64-clean.pxg",
+      "palette": "editable/water.pal",
+      "colors": 9,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "bea96b8e93f3a94039e271390e787b9e081c24f7e054e1e7cbe4126a82494764",
+      "config_id": "scroll_water",
+      "asset": "assets/ui/icons/augmentations/scroll_water.png",
+      "editable": "assets/ui/icons/augmentations/scroll_water.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_water.pal"
+    },
+    {
+      "id": "light-sword",
+      "name": "光辉剑",
+      "cell": [
+        3,
+        3
+      ],
+      "png": "png/light-sword-64.png",
+      "grid": "editable/light-sword-64-clean.pxg",
+      "palette": "editable/light-sword.pal",
+      "colors": 9,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "2a283967a14364008e9b42620cf79dbb7f69b37c9095571fb75aaf37a95f4189",
+      "config_id": "scroll_light_sword",
+      "asset": "assets/ui/icons/augmentations/scroll_light_sword.png",
+      "editable": "assets/ui/icons/augmentations/scroll_light_sword.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_light_sword.pal"
+    },
+    {
+      "id": "black-hole",
+      "name": "黑洞",
+      "cell": [
+        4,
+        1
+      ],
+      "png": "png/black-hole-64.png",
+      "grid": "editable/black-hole-64-clean.pxg",
+      "palette": "editable/black-hole.pal",
+      "colors": 7,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "1c3347a8a408f535bfa613ff9b784ac0aeaa4ea1ead003030936a55c6e754ef0",
+      "config_id": "scroll_black_hole",
+      "asset": "assets/ui/icons/augmentations/scroll_black_hole.png",
+      "editable": "assets/ui/icons/augmentations/scroll_black_hole.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_black_hole.pal"
+    },
+    {
+      "id": "fire",
+      "name": "火焰",
+      "cell": [
+        4,
+        2
+      ],
+      "png": "png/fire-64.png",
+      "grid": "editable/fire-64-clean.pxg",
+      "palette": "editable/fire.pal",
+      "colors": 8,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "0aafb749b52a43939b7de7c910d0dc6cdaa6676816aa5a81826ee166860bf517",
+      "config_id": "scroll_fire",
+      "asset": "assets/ui/icons/augmentations/scroll_fire.png",
+      "editable": "assets/ui/icons/augmentations/scroll_fire.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_fire.pal"
+    },
+    {
+      "id": "shock",
+      "name": "震荡",
+      "cell": [
+        4,
+        3
+      ],
+      "png": "png/shock-64.png",
+      "grid": "editable/shock-64-clean.pxg",
+      "palette": "editable/shock.pal",
+      "colors": 5,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c5b8e127195d29e79a2447ffa900f151c6703d340f8d7babb8d69ccf4c5d899d",
+      "config_id": "scroll_explosion",
+      "asset": "assets/ui/icons/augmentations/scroll_explosion.png",
+      "editable": "assets/ui/icons/augmentations/scroll_explosion.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_explosion.pal"
+    },
+    {
+      "id": "spark",
+      "name": "电火花",
+      "cell": [
+        5,
+        1
+      ],
+      "png": "png/spark-64.png",
+      "grid": "editable/spark-64-clean.pxg",
+      "palette": "editable/spark.pal",
+      "colors": 4,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "e3061eb7e951e5537da30307d208b95bc059903a6f4082ff55574a19c2cc1a9b",
+      "config_id": "scroll_lightning",
+      "asset": "assets/ui/icons/augmentations/scroll_lightning.png",
+      "editable": "assets/ui/icons/augmentations/scroll_lightning.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_lightning.pal"
+    },
+    {
+      "id": "thunder",
+      "name": "落雷",
+      "cell": [
+        5,
+        2
+      ],
+      "png": "png/thunder-64.png",
+      "grid": "editable/thunder-64-clean.pxg",
+      "palette": "editable/thunder.pal",
+      "colors": 12,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "4cbc6037ddcc271090164e740c83677697ca2b0a20ffd97d28f6a0cb340a6ff7",
+      "config_id": "scroll_electric_spark",
+      "asset": "assets/ui/icons/augmentations/scroll_electric_spark.png",
+      "editable": "assets/ui/icons/augmentations/scroll_electric_spark.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_electric_spark.pal"
+    },
+    {
+      "id": "split",
+      "name": "分裂",
+      "cell": [
+        5,
+        3
+      ],
+      "png": "png/split-64.png",
+      "grid": "editable/split-64-clean.pxg",
+      "palette": "editable/split.pal",
+      "colors": 11,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "113df9057fa072114a296391e305fee8ea656d8ef0f0d0114d44e318fa2a9181",
+      "config_id": "scroll_split",
+      "asset": "assets/ui/icons/augmentations/scroll_split.png",
+      "editable": "assets/ui/icons/augmentations/scroll_split.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_split.pal"
+    },
+    {
+      "id": "pierce",
+      "name": "穿透",
+      "cell": [
+        6,
+        1
+      ],
+      "png": "png/pierce-64.png",
+      "grid": "editable/pierce-64-clean.pxg",
+      "palette": "editable/pierce.pal",
+      "colors": 12,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "bde5330d98b48f848549e5b6215b281e4eb97b34b25bcbfd94994ea9467c995e",
+      "config_id": "scroll_pierce",
+      "asset": "assets/ui/icons/augmentations/scroll_pierce.png",
+      "editable": "assets/ui/icons/augmentations/scroll_pierce.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_pierce.pal"
+    },
+    {
+      "id": "frost",
+      "name": "结霜",
+      "cell": [
+        6,
+        2
+      ],
+      "png": "png/frost-64.png",
+      "grid": "editable/frost-64-clean.pxg",
+      "palette": "editable/frost.pal",
+      "colors": 10,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "ff75e33735d3514f2b9cefa121a191224f2808bd63bfe3f409a91b37be8c277c",
+      "config_id": "scroll_ice",
+      "asset": "assets/ui/icons/augmentations/scroll_ice.png",
+      "editable": "assets/ui/icons/augmentations/scroll_ice.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_ice.pal"
+    },
+    {
+      "id": "wind-blade",
+      "name": "风刃",
+      "cell": [
+        6,
+        3
+      ],
+      "png": "png/wind-blade-64.png",
+      "grid": "editable/wind-blade-64-clean.pxg",
+      "palette": "editable/wind-blade.pal",
+      "colors": 5,
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c6f00bc3734ed216ad2b32294f6c9da1a2963f82799f1929bbce2bbd8088605d",
+      "config_id": "scroll_wind",
+      "asset": "assets/ui/icons/augmentations/scroll_wind.png",
+      "editable": "assets/ui/icons/augmentations/scroll_wind.pxg",
+      "installed_palette": "assets/ui/icons/augmentations/scroll_wind.pal"
+    }
+  ]
+}

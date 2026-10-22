@@ -55,7 +55,46 @@ func run() -> void:
 	var count := 0
 	var frozen := true
 	var no_early_enemies := true
+	var modal_prepared := false
+	var modal_covered := true
+	var modal_matches := true
+	var night_prepared := false
+	var night_matches := true
+	var night_rng_recorded := false
+	var night_rng_state := 0
+	var rock_prepared := false
+	var rock_matches := true
 	while loading.active and count < 1200:
+		if flow._bound_wave_manager != null and not night_rng_recorded:
+			night_rng_state = flow._bound_wave_manager.evacuation.rng.state
+			night_rng_recorded = true
+		if is_instance_valid(loading._modal_sample):
+			modal_prepared = true
+			var sample := loading._modal_sample.get_child(0) as ColorRect
+			var live_battle := (game.get_node("SceneDirector") as GameSceneDirector).battle_root
+			var source := live_battle.get_node("ModalBackdrop/Backdrop") as ColorRect
+			modal_covered = modal_covered and loading.visible and loading.curtain.modulate.a == 1.0 and loading._modal_sample.layer < loading.layer
+			modal_matches = modal_matches and sample.is_visible_in_tree() and sample.get_viewport() == source.get_viewport() and sample.material == source.material and not source.visible
+			var rock := loading._samples.get_node_or_null("EntryRockWarmup") as Sprite2D
+			if rock != null:
+				rock_prepared = true
+				var scenery := live_battle.loadout._get_visual_root().get_node("Backdrop") as CavernSunlightBackdrop
+				rock_matches = rock_matches and rock.is_visible_in_tree() and rock.get_viewport() == live_battle.player.get_viewport() and rock.texture == scenery.prop_textures[0] and rock.material.shader == CavernSunlightBackdrop.ROCK_SHADER and rock.material.get_shader_parameter("face_mask") == CavernSunlightBackdrop.ROCK_FACE_MASK and rock.material.get_shader_parameter("cloud_texture") == CavernSunlightBackdrop.CLOUD_TEXTURE
+				rock_matches = rock_matches and not scenery.lit_objects.has(rock) and not scenery.occluding_rocks.has(rock)
+			var night_layer := loading._modal_sample.get_node_or_null("EntryNightWarmup") as CanvasLayer
+			if night_layer != null:
+				night_prepared = true
+				var visual: Node2D = flow._bound_wave_manager.evacuation.visual
+				var night_sample := night_layer.get_child(0) as ColorRect
+				# CanvasLayer redirects drawing; get_viewport() still reports tree ancestry.
+				night_matches = night_matches and night_layer.layer < loading.layer and night_sample.is_visible_in_tree() and night_layer.custom_viewport == visual.night_layer.custom_viewport and night_layer.custom_viewport == get_tree().root and night_sample.material == visual.night_material and not visual.night_rect.visible
+				var shaders := []
+				for child in loading._samples.get_children():
+					if child is CanvasItem and child.material is ShaderMaterial:
+						shaders.append(child.material.shader)
+				for shader in [visual.BANK_SHADER, visual.SHADOW_SHADER, visual.LAMP_SHADER]:
+					night_matches = night_matches and shaders.has(shader)
+				night_matches = night_matches and loading._samples.find_children("*", "CollisionObject2D", true, false).is_empty()
 		frozen = frozen and bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
 		var player := flow.get_bound_player()
 		if player != null:
@@ -68,11 +107,24 @@ func run() -> void:
 	check(not loading.active, "loading completes within frame budget")
 	check(frozen, "player and wave clock remain frozen throughout preparation and fade")
 	check(no_early_enemies, "scene preparation never spawns live enemies under the curtain")
+	check(modal_prepared and modal_covered, "modal shader is drawn only beneath the fully opaque loading curtain")
+	check(modal_matches, "modal warmup shares the live material and UI viewport without opening the backdrop")
+	check(loading._modal_sample == null and loading.get_node_or_null("EntryModalWarmup") == null, "modal warmup is removed before the reveal")
 	check(not loading.visible and not bool(GameGlobal.get_runtime_flag("battle_loading", true)), "loading barrier releases on success")
 	check(flow.current_state == MainFlowCoordinator.STATE_WAVE_COMBAT and not bool(GameGlobal.get_runtime_flag("battle_runtime_paused", true)), "combat starts and resumes after reveal")
 	var battle := (game.get_node("SceneDirector") as GameSceneDirector).battle_root as BattleRoot
+	check(night_prepared and night_matches, "entry draws night and shelter materials in their real viewports without gameplay bodies")
+	check(rock_prepared and rock_matches and modal_covered, "entry draws the rock receiver in the world viewport under black without registering scenery")
+	var evacuation: NightEvacuation = battle.wave_manager.evacuation
+	check(night_rng_recorded and evacuation.rng.state == night_rng_state, "night preparation does not consume shelter placement randomness")
+	check(not evacuation.active and evacuation.spawned_count == 0 and evacuation.visual.building == null and not evacuation.visual.night_rect.visible, "entry leaves night, shelter and pursuit inactive")
 	var lamp_data := DataRegistry.get_record("weapons", "weapon_copper_lamp")
 	var hud := battle.hud as BattleHud
+	var reward_popup := (game.get_node("UiRoot/ShopUIController") as ShopUIController).shop_popup
+	check(not reward_popup.visible and reward_popup._offer_cards.is_empty() and reward_popup.weapon_strip._weapon_buttons.size() == battle.loadout.weapon_instances.size(), "entry prepares the real weapon row without opening rewards")
+	var prepared_buttons := reward_popup.weapon_strip._weapon_buttons.duplicate()
+	reward_popup.set_loadout(battle.loadout)
+	check(reward_popup.weapon_strip._weapon_buttons == prepared_buttons, "first reward binding retains the row prepared under black")
 	check(not hud._stat_value_labels.is_empty() and not hud.is_stats_drawer_open(), "attribute rows are prepared before reveal without opening the drawer")
 	check(is_equal_approx(hud.stats_drawer.offset_left, BattleHud.DRAWER_CLOSED_LEFT), "attribute drawer returns to its closed position before reveal")
 	check(AudioManager._prepared_loop_streams.has(str(lamp_data.spray_loop_sfx)), "entry prepares the spray source even before acquiring the lamp")
@@ -116,6 +168,18 @@ func run() -> void:
 		flow.enter_start_page()
 		await frames(8)
 		check(not loading.active and not loading.visible and (game.get_node("SceneDirector") as GameSceneDirector).battle_root == null, "enemy preparation cancellation cannot resume a stale entry: %d" % stage)
+	menu._on_start_battle_pressed()
+	menu._on_character_confirm_pressed()
+	for attempt in 1200:
+		if is_instance_valid(loading._modal_sample) or not loading.active: break
+		await frames(1)
+	var cancelled_sample := loading._modal_sample
+	var cancelled_night := cancelled_sample.get_node_or_null("EntryNightWarmup") if is_instance_valid(cancelled_sample) else null
+	check(is_instance_valid(cancelled_sample) and is_instance_valid(cancelled_night), "cancellation reaches modal and night preparation")
+	flow.enter_start_page()
+	await frames(8)
+	check(not is_instance_valid(cancelled_sample) and not is_instance_valid(cancelled_night) and loading._modal_sample == null and not loading.active, "cancelling preparation frees modal and night layers and stops entry")
+	check(reward_popup._loadout == null and reward_popup.weapon_strip._loadout == null and reward_popup.weapon_strip._weapon_buttons.is_empty() and reward_popup.weapon_strip._cast_mode_buttons.is_empty(), "cancelling prepared entry releases weapon row and old loadout")
 	loading.begin(flow, "invalid_character", [], "1")
 	await loading.finished
 	await frames(4)

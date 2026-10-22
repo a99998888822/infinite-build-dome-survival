@@ -1,11 +1,12 @@
 """Original pixel artwork authored by the current coding model; no image API.
 
-Draw on a 64px grid, export a 128px RGBA master and a 48px combat sprite.
-Layered geometry and individually placed wear marks are the editable source.
+Keep the original 64px drawing as provenance. Export the reviewed 32px Picxel
+grid for the UI and the unchanged 48px combat sprite.
 """
 from pathlib import Path
 import hashlib
 import json
+import sys
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -180,7 +181,11 @@ rect((32, 44, 32, 44), "rust")
 OUT.mkdir(parents=True, exist_ok=True)
 ASSETS.mkdir(parents=True, exist_ok=True)
 im.save(OUT / "vault_grid_64.png")
-master = im.resize((128, 128), Image.Resampling.NEAREST)
+sys.path.insert(0, str(ROOT / ".agents/skills/picxel-external-images/vendor/picxel/scripts"))
+from picxel import load, render
+native_sheet = ROOT / "scripts/tools/source_art/challenge_vault_32.pxg"
+native_png, _ = render(load(native_sheet), OUT)
+master = Image.open(native_png).convert("RGBA")
 master.save(OUT / "challenge_vault_painted.png")
 master.save(ASSETS / "challenge_vault_painted.png")
 # Re-center the opaque area in an explicit 48px canvas, preserving its ratio.
@@ -199,6 +204,8 @@ preview.save(OUT / "vault_art_preview.png")
 manifest = {
     "provenance": "Original artwork directly authored by the current coding model through local pixel drawing; no external image model or API.",
     "editable_source": "scripts/tools/source_art/challenge_vault.py", "grid": [64, 64], "palette": P,
+    "ui_grid": "scripts/tools/source_art/challenge_vault_32.pxg",
+    "ui_palette": "scripts/tools/source_art/challenge_vault_32.pal",
     "references": ["assets/ui/icons/relics/relic_steel_vault.png",
                    "assets/ui/icons/relics/relic_coin_heart.png",
                    "assets/ui/main_menu/bg_main_menu.png",

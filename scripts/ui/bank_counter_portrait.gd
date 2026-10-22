@@ -3,9 +3,10 @@ class_name BankCounterPortrait
 
 const GOBLIN: Texture2D = preload("res://assets/ui/finance/goblin_banker_states.png")
 const ACTOR_SCALE := 0.60
-# A+++ source anchors (160, 314) and (160, 282), in the 128-unit layout.
-const HAND_CONTACT := Vector2(64, 125.6)
-const WAIST_CONTACT := Vector2(64, 112.8)
+# Registered 372px source anchors, expressed in the existing 128-unit layout.
+const FRAME_SIZE := 372.0
+const HAND_CONTACT := Vector2(186, 365) * (128.0 / FRAME_SIZE)
+const WAIST_CONTACT := Vector2(186, 326) * (128.0 / FRAME_SIZE)
 const HAND_ANCHOR_Y := 24.0
 const LAYOUT_BASE_Y := 56.0
 var expression: int = 0

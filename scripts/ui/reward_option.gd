@@ -45,6 +45,8 @@ var _compact_layout: bool = false
 var _small_layout: bool = false
 var _layout_width: float = 0.0
 var _layout_height: float = 0.0
+var _layout_density_applied := false
+var _interaction_style_state := -1
 
 @onready var top_rarity_line: ColorRect = get_node_or_null("Content/TopRarityLine")
 @onready var content: VBoxContainer = get_node_or_null("Content")
@@ -171,28 +173,35 @@ func set_bond_player(player: PlayerController) -> void:
 
 
 func set_compact(compact: bool) -> void:
-	_compact_layout = compact
-	_small_layout = false
-	_apply_layout_density()
+	_set_layout_density(false, compact, _layout_height)
 
 
 func set_available_height(available_height: float) -> void:
-	_layout_height = maxf(available_height, 0.0)
-	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT
-	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT
-	_apply_layout_density()
+	_set_layout_density(available_height < COMPACT_MINIMUM_HEIGHT,
+		available_height < NORMAL_MINIMUM_HEIGHT, maxf(available_height, 0.0))
 
 
 func set_available_size(available_width: float, available_height: float) -> void:
-	_layout_height = maxf(available_height, 0.0)
-	_small_layout = available_height < COMPACT_MINIMUM_HEIGHT or available_width < 180.0
-	_compact_layout = available_height < NORMAL_MINIMUM_HEIGHT or available_width < 220.0
-	_apply_layout_density()
+	_set_layout_density(available_height < COMPACT_MINIMUM_HEIGHT or available_width < 180.0,
+		available_height < NORMAL_MINIMUM_HEIGHT or available_width < 220.0, maxf(available_height, 0.0))
+
+
+func _set_layout_density(small: bool, compact: bool, height: float) -> void:
+	var density_changed := not _layout_density_applied or _small_layout != small or _compact_layout != compact
+	var height_changed := _layout_height != height
+	_layout_height = height
+	_small_layout = small
+	_compact_layout = compact
+	if density_changed:
+		_apply_layout_density()
+	elif height_changed:
+		# Container settling may change the cell height without changing fonts,
+		# padding or icon density. Only update the minimum in that case.
+		_update_card_minimum_size()
 
 
 func _apply_layout_density() -> void:
-	if not offer_data.is_empty():
-		_update_panel_style()
+	_layout_density_applied = is_node_ready()
 	if content != null:
 		content.add_theme_constant_override("separation", 5 if _small_layout else (8 if _compact_layout else 10))
 	if type_badge != null:
@@ -201,21 +210,10 @@ func _apply_layout_density() -> void:
 		type_label.add_theme_font_size_override("font_size", 9 if _small_layout else 14)
 	if not offer_data.is_empty():
 		var offer_type := str(offer_data.get("offer_type", ""))
-		_update_type_style()
 		_update_type_badge_layout(offer_type)
 	if _rarity_label != null:
 		_rarity_label.add_theme_font_size_override("font_size", 9 if _small_layout else 12)
-	if icon_frame != null:
-		icon_frame.custom_minimum_size.y = 50.0 if _small_layout else (112.0 if _compact_layout else 128.0)
-		if icon_texture != null and FinanceUIStyle.is_native_item_icon(_icon_source):
-			# Reserve space for the displayed icon, not its full source dimensions.
-			var icon_scale := SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(_icon_source) else RELIC_ICON_SCALE
-			var extent := FinanceUIStyle.relic_icon_size(_icon_source, icon_scale)
-			if not icon_texture.size.is_equal_approx(extent):
-				_stop_icon_float()
-				FinanceUIStyle.set_item_icon(icon_texture, _icon_source, icon_scale)
-				call_deferred("_start_icon_float")
-			icon_frame.custom_minimum_size.y = maxf(icon_frame.custom_minimum_size.y, ceilf(extent.y / 0.8) + 4.0)
+	_update_icon_frame_size()
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
@@ -228,6 +226,23 @@ func _apply_layout_density() -> void:
 		select_button.custom_minimum_size = _get_select_button_size()
 		select_button.add_theme_font_size_override("font_size", 10 if _small_layout else 18)
 	_update_card_minimum_size()
+	_update_interaction_style()
+
+
+func _update_icon_frame_size() -> void:
+	if icon_frame == null:
+		return
+	var height := 50.0 if _small_layout else (112.0 if _compact_layout else 128.0)
+	if icon_texture != null and FinanceUIStyle.is_native_item_icon(_icon_source):
+		# New artwork can change the required height without changing typography.
+		var icon_scale := SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(_icon_source) else RELIC_ICON_SCALE
+		var extent := FinanceUIStyle.relic_icon_size(_icon_source, icon_scale)
+		if not icon_texture.size.is_equal_approx(extent):
+			_stop_icon_float()
+			FinanceUIStyle.set_item_icon(icon_texture, _icon_source, icon_scale)
+			call_deferred("_start_icon_float")
+		height = maxf(height, ceilf(extent.y / 0.8) + 4.0)
+	icon_frame.custom_minimum_size.y = height
 
 
 func set_fill_width(fill_width: bool) -> void:
@@ -235,7 +250,10 @@ func set_fill_width(fill_width: bool) -> void:
 
 
 func set_layout_width(width: float) -> void:
-	_layout_width = maxf(width, 0.0)
+	var next_width := maxf(width, 0.0)
+	if _layout_width == next_width:
+		return
+	_layout_width = next_width
 	_update_card_minimum_size()
 
 
@@ -325,7 +343,6 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 	_update_type_badge_layout(offer_type)
 	if name_label != null:
 		name_label.text = L10n.record_text(offer_data, "display_name", str(offer_data.get("target_id", "")))
-		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
 		description_label.text = _build_description_text(offer_data)
 	if select_button != null:
@@ -336,7 +353,6 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 			select_button.add_theme_constant_override("icon_max_width", 11)
 		else:
 			select_button.remove_theme_constant_override("icon_max_width")
-		_update_button_style()
 	_update_icon(str(offer_data.get("icon", "")))
 	_update_interaction_style()
 
@@ -351,11 +367,16 @@ func _is_highlighted() -> bool:
 
 
 func _update_interaction_style() -> void:
-	if offer_data.is_empty(): return
+	if offer_data.is_empty() or content == null: return
+	var warm := _is_highlighted()
+	var next_state := int(warm) + 2 * int(_small_layout)
+	# Theme overrides notify descendants and invalidate text/layout. A pooled
+	# card needs new skins only when its highlight or padding actually changes.
+	if _interaction_style_state == next_state: return
+	_interaction_style_state = next_state
 	_update_panel_style()
 	_update_type_style()
 	_update_button_style()
-	var warm := _is_highlighted()
 	if icon_frame != null: icon_frame.add_theme_stylebox_override("panel", HUD_STYLE.inset(warm))
 	if name_label != null: name_label.add_theme_color_override("font_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
 	if description_label != null: description_label.add_theme_color_override("default_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
@@ -435,7 +456,10 @@ func _update_icon(icon_path: String) -> void:
 		var relic := DataRegistry.get_record("relics", str(offer_data.get("target_id", "")))
 		var rarity := str(relic.get("rarity", offer_data.get("rarity", "common")))
 		_relic_glow.self_modulate = get_color_for_rarity(rarity)
-	_apply_layout_density()
+	if not _layout_density_applied:
+		_apply_layout_density()
+	else:
+		_update_icon_frame_size()
 	if loaded_texture != null:
 		call_deferred("_start_icon_float")
 

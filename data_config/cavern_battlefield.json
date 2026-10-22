@@ -41,13 +41,10 @@
         0
       ],
       "offset": [
-        -6.705882352941177,
-        -12.854237288135593
+        -20,
+        -38
       ],
-      "display_size": [
-        85.83529411764707,
-        85.69491525423729
-      ]
+      "display_scale": 2
     },
     {
       "texture": "res://assets/sprites/background/cavern/foreground_1.png",
@@ -56,13 +53,10 @@
         0
       ],
       "offset": [
-        -84.55401662049861,
-        -6.915254237288136
+        -234,
+        -20
       ],
-      "display_size": [
-        92.18836565096953,
-        92.20338983050848
-      ]
+      "display_scale": 2
     },
     {
       "texture": "res://assets/sprites/background/cavern/foreground_2.png",
@@ -71,13 +65,10 @@
         1
       ],
       "offset": [
-        -5.038461538461538,
-        -115.96273291925466
+        -2,
+        -232
       ],
-      "display_size": [
-        132.92307692307693,
-        132.3726708074534
-      ]
+      "display_scale": 2
     },
     {
       "texture": "res://assets/sprites/background/cavern/foreground_3.png",
@@ -86,13 +77,10 @@
         1
       ],
       "offset": [
-        -138.3290203327172,
-        -117.95215311004785
+        -244,
+        -210
       ],
-      "display_size": [
-        149.0573012939002,
-        148.82296650717706
-      ]
+      "display_scale": 2
     }
   ],
   "panorama_modules": [

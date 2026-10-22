@@ -35,25 +35,6 @@
     "attack-03 has a source-cropped hammer head; retained without inventing missing art.",
     "Recover holds attack-10; no invented return poses."
   ],
-  "editable": {
-    "attack-01": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-01-192-clean.pxg",
-    "attack-02": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-02-192-clean.pxg",
-    "attack-03": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-03-192-clean.pxg",
-    "attack-04": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-04-192-clean.pxg",
-    "attack-05": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-05-192-clean.pxg",
-    "attack-06": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-06-192-clean.pxg",
-    "attack-07": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-07-192-clean.pxg",
-    "attack-08": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-08-192-clean.pxg",
-    "attack-09": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-09-192-clean.pxg",
-    "attack-10": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/attack-10-192-clean.pxg",
-    "move-01": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-01-192-clean.pxg",
-    "move-02": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-02-192-clean.pxg",
-    "move-03": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-03-192-clean.pxg",
-    "move-04": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-04-192-clean.pxg",
-    "move-05": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-05-192-clean.pxg",
-    "move-06": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-06-192-clean.pxg",
-    "move-07": "artifacts/previews/enemies_native_96_192/20261021-r01/knight/work/move-07-192-clean.pxg"
-  },
   "sources": [
     {
       "name": "move-01",
@@ -228,7 +209,6 @@
   ],
   "processing": {
     "revision": "native96_192_20261021",
-    "task": "artifacts/previews/enemies_native_96_192/20261021-r01",
     "originals_revision": "02b3ef4",
     "source": "720px originals restored from Git; hashes verified",
     "method": "Project Picxel source conversion, shared palette and fixed source registration; local contour/engraving repair; no image model",
@@ -244,7 +224,7 @@
     ],
     "folder": "iron_knight"
   },
-  "source": "artifacts/previews/enemies_native_96_192/20261021-r01/sources/knight",
+  "source": "artifacts/sources/enemies/iron_knight",
   "frames": [
     {
       "name": "attack-01",

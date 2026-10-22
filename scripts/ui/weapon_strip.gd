@@ -6,6 +6,7 @@ signal minimum_height_changed
 const WEAPON_SLOT_BUTTON_SCRIPT = preload("res://scripts/ui/weapon_slot_button.gd")
 const CAST_MODE_ICON_SCRIPT = preload("res://scripts/ui/weapon_cast_mode_icon.gd")
 const WEAPON_DRAG_TYPE := "esc_weapon_reorder"
+const ROW_PADDING := 20
 
 @export var slot_size: int = 88
 @export var icon_size: int = 72
@@ -47,6 +48,7 @@ var _attachment_tooltip: Panel
 var _attachment_tooltip_label: Label
 var _hovered_attachment_id := ""
 var _tooltip_mouse_position := Vector2.ZERO
+var _rendered_row_state: Array = []
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -66,10 +68,13 @@ func _ready() -> void:
 	resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
 	if weapon_list != null:
 		weapon_list.minimum_size_changed.connect(func(): minimum_height_changed.emit())
+		weapon_list.minimum_size_changed.connect(_layout_row_padding, CONNECT_DEFERRED)
 		weapon_list.sort_children.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
 		var scroll := weapon_list.get_parent() as ScrollContainer
 		scroll.resized.connect(_layout_cast_mode_icons, CONNECT_DEFERRED)
 		scroll.get_h_scroll_bar().value_changed.connect(func(_value: float): _layout_cast_mode_icons.call_deferred())
+		scroll.get_h_scroll_bar().visibility_changed.connect(_layout_row_padding, CONNECT_DEFERRED)
+		_layout_row_padding.call_deferred()
 	if weapon_tooltip != null:
 		weapon_tooltip.reparent(GameTooltipLayer.for_owner(self), false)
 		weapon_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -81,17 +86,18 @@ func _ready() -> void:
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false, allow_reordering: bool = false) -> void:
-	if _loadout != null and _loadout.loadout_changed.is_connected(_on_loadout_changed):
-		_loadout.loadout_changed.disconnect(_on_loadout_changed)
-	if _loadout != null and _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
-		_loadout.weapon_attachment_changed.disconnect(_on_weapon_attachment_changed)
+	if _loadout != loadout and is_instance_valid(_loadout):
+		if _loadout.loadout_changed.is_connected(_on_loadout_changed):
+			_loadout.loadout_changed.disconnect(_on_loadout_changed)
+		if _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
+			_loadout.weapon_attachment_changed.disconnect(_on_weapon_attachment_changed)
 	_loadout = loadout
 	_attachment_editing_enabled = allow_attachment_editing
 	_automation_editing_enabled = allow_automation_editing
 	_reordering_enabled = allow_reordering or allow_automation_editing
 	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
-	if _loadout != null:
+	if _loadout != null and not _loadout.loadout_changed.is_connected(_on_loadout_changed):
 		_loadout.loadout_changed.connect(_on_loadout_changed)
 	_refresh_load_label()
 	_refresh_weapon_strip()
@@ -227,6 +233,22 @@ func _refresh_load_label() -> void:
 
 func _refresh_weapon_strip() -> void:
 	_hide_weapon_tooltip()
+	if weapon_list == null:
+		return
+	var weapons: Array[WeaponInstance] = []
+	if _loadout != null:
+		weapons = _loadout.get_weapon_instances()
+	# The buttons hold live WeaponInstances. Stats/attachments and cast policy
+	# can change without rebuilding the row; identity, order and layout cannot.
+	var row_state: Array = [slot_size, icon_size, icon_slot_theme, cast_mode_icon_size,
+		_attachment_editing_enabled, _automation_editing_enabled, _reordering_enabled]
+	for weapon in weapons:
+		row_state.append([weapon, str(weapon.weapon_data.get("icon", ""))])
+	if row_state == _rendered_row_state:
+		for mode in _cast_mode_buttons:
+			mode.sync_policy()
+		return
+	_rendered_row_state = row_state
 	if weapon_list != null:
 		for child in weapon_list.get_children():
 			weapon_list.remove_child(child)
@@ -241,7 +263,6 @@ func _refresh_weapon_strip() -> void:
 		return
 	if not _loadout.has_weapon(_selected_weapon_id):
 		_selected_weapon_id = "" if _loadout.weapon_instances.is_empty() else _loadout.weapon_instances[0].weapon_id
-	var weapons := _loadout.get_weapon_instances()
 	for index in weapons.size():
 		var weapon := weapons[index]
 		var button := WEAPON_SLOT_BUTTON_SCRIPT.new() as WeaponSlotButton
@@ -249,7 +270,7 @@ func _refresh_weapon_strip() -> void:
 			continue
 		button.configure(weapon, _attachment_editing_enabled)
 		button.custom_minimum_size = Vector2.ONE * slot_size
-		button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		button.flat = true
 		if icon_slot_theme != null:
 			button.theme = icon_slot_theme
@@ -272,7 +293,7 @@ func _refresh_weapon_strip() -> void:
 			var group := MarginContainer.new()
 			group.name = "Weapon_" + weapon.weapon_id
 			group.custom_minimum_size = Vector2.ONE * slot_size
-			group.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+			group.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			group.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			weapon_list.add_child(group)
 			group.add_child(button)
@@ -306,8 +327,27 @@ func _refresh_weapon_strip() -> void:
 
 
 func get_required_height() -> float:
-	# Panel borders (4) + vertical margins (8), including the complete icon row.
-	return weapon_list.get_combined_minimum_size().y + 12.0 if weapon_list != null else 62.0
+	if weapon_list == null: return float(slot_size)
+	var panel := get_node("StripPanel") as PanelContainer
+	var row_height := maxf(float(slot_size), weapon_list.get_combined_minimum_size().y)
+	return maxf(row_height, load_label.get_combined_minimum_size().y) \
+		+ ROW_PADDING * 2 \
+		+ panel.get_theme_stylebox("panel").get_minimum_size().y
+
+
+func _layout_row_padding() -> void:
+	var scroll := weapon_list.get_parent() as ScrollContainer
+	var bar := scroll.get_h_scroll_bar()
+	var margin := get_node("StripPanel/StripMargin") as MarginContainer
+	# Keep the weapon slots centered in the frame. The scrollbar occupies the
+	# lower padding instead of shifting the row upward when it becomes visible.
+	for side: String in ["left", "top", "right", "bottom"]:
+		var padding := ROW_PADDING
+		if side == "bottom" and bar.visible:
+			padding -= ceili(bar.get_combined_minimum_size().y)
+		var key := "margin_" + side
+		if margin.get_theme_constant(key) != padding:
+			margin.add_theme_constant_override(key, padding)
 
 
 func _layout_cast_mode_icons() -> void:

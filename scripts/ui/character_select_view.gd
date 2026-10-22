@@ -7,7 +7,7 @@ signal difficulty_selected(difficulty_id: String)
 
 const ART := "res://assets/ui/character_select/"
 const DESIGN_SIZE := Vector2(1920, 1080)
-const ART_SIZE := Vector2(1920, 1071.627907)
+const ART_SIZE := Vector2(1920, 1080) # Native 960 x 540 background at exactly 2x.
 const ART_PIXEL_PITCH := 0.697674419
 const INK := Color("#43313d")
 const MUTED := INK
@@ -204,7 +204,7 @@ func _ready() -> void:
 func _fit_composition() -> void:
 	_hide_item_tooltip()
 	if canvas == null: return
-	canvas.position = (size - DESIGN_SIZE) * 0.5 + Vector2(0, 4)
+	canvas.position = (size - DESIGN_SIZE) * 0.5
 	ItemIconArt.refresh_branch(canvas)
 
 

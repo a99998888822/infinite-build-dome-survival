@@ -15,6 +15,10 @@ const SMALL_SLOT_SIZE := 72.0
 const LARGE_GAP := 10.0
 const SMALL_GAP := 8.0
 const ROW_GAP := 20.0
+class PointerInput extends Node:
+	func _input(event: InputEvent) -> void:
+		get_parent()._input(event)
+
 class WeaponHeader extends Control:
 	var number_source: Label
 	var status_source: Label
@@ -47,6 +51,16 @@ var columns := 1
 var preview_page := 0
 var _normal_style: CombatHudFrame
 var _aim_style: CombatHudFrame
+var _pointer_position := Vector2.ZERO
+var _has_pointer_position := false
+
+
+func _ready() -> void:
+	# Track movement during hitstop without advancing the bar's paused effects.
+	var pointer_input := PointerInput.new()
+	pointer_input.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(pointer_input)
+	set_process_input(false)
 
 
 func setup(sources: Array[WeaponInstance]) -> void:
@@ -55,7 +69,8 @@ func setup(sources: Array[WeaponInstance]) -> void:
 	for feedback in feedbacks: feedback.detach()
 	feedbacks.clear()
 	for child in get_children():
-		child.queue_free()
+		if not child is PointerInput:
+			child.queue_free()
 	cards.clear()
 	icons.clear()
 	cooldown_masks.clear()
@@ -80,7 +95,7 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		# A separate disk also covers transparent pixels around narrow weapon art.
 		var mask := ColorRect.new()
 		mask.name = "CooldownMask"
-		mask.color = Color(0.16, 0.17, 0.18, 0.55)
+		mask.color = Color(0.035, 0.05, 0.065, 0.82)
 		mask.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var material := ShaderMaterial.new()
 		material.shader = COOLDOWN_SHADER
@@ -201,10 +216,24 @@ func update_slot(index: int, remaining: float, total: float, executing: bool, se
 	if timers[index].text != text:
 		timers[index].text = text
 		headers[index].queue_redraw()
-	var hovered := cards[index].get_global_rect().has_point(get_global_mouse_position())
+	# Mouse events already carry viewport coordinates. Polling the OS cursor
+	# once per slot can block the combat frame on Windows.
+	var pointer_local := cards[index].get_global_transform_with_canvas().affine_inverse() * _pointer_position
+	var hovered := _has_pointer_position and Rect2(Vector2.ZERO, cards[index].size).has_point(pointer_local)
 	var frame := _style(selected or hovered)
 	if cards[index].get_theme_stylebox("panel") != frame:
 		cards[index].add_theme_stylebox_override("panel", frame)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		_pointer_position = event.position
+		_has_pointer_position = true
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_MOUSE_EXIT:
+		_has_pointer_position = false
 
 
 func _gui_input(event: InputEvent) -> void:

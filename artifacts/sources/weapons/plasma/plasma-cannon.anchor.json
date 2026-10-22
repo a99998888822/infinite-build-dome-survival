@@ -1,0 +1,33 @@
+{
+  "subject": "Electro-plasma pistol tilted upward-right, metal barrel, brown grip and luminous cyan rectangular chamber.",
+  "kind": "item",
+  "size": 36,
+  "palette": [
+    "#0b1012",
+    "#283338",
+    "#4a5559",
+    "#748082",
+    "#abb7b6",
+    "#352920",
+    "#604c38",
+    "#927857",
+    "#15555f",
+    "#258e9a",
+    "#51cbd1",
+    "#a0f3ee"
+  ],
+  "keep": [
+    "barrel muzzle rim",
+    "continuous grip and trigger guard",
+    "cyan chamber with connected rim",
+    "original tilt and proportions"
+  ],
+  "drop": [
+    "sheet background",
+    "tiny screws",
+    "fine scratches",
+    "small mottled metal marks"
+  ],
+  "regions": [],
+  "faces": []
+}

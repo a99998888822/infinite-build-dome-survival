@@ -11,9 +11,9 @@
 | 附魔 | [提示与配置](main/enchantment_tooltip_inventory.md) |
 | 交易与挑战 | [完整交易清单](../goblin_trades_list.md)、[新增交易规则](main/goblin_trade_expansion.md)、[合同](main/goblin_contracts.md)、[挑战](main/challenge_expansion.md) |
 | 界面 | [布局坐标](main/hud_native_1920.md)、[正式样式](asset/hud_style.md) |
-| 素材 | [规则](asset/asset_rules_summary.md)、[资源入口](asset/asset_checklist_summary.md)、[精灵与碰撞](asset/combat_sprite_clarity.md)、[环境](asset/battle_environment.md)、[特效](asset/combat_effects.md) |
-| 性能 | [当前实现与维护边界](performance/README.md) |
+| 素材 | [分辨率与缩放清单](../art_asset_resolution_and_scale_audit.md)、[规则](asset/asset_rules_summary.md)、[精灵与碰撞](asset/combat_sprite_clarity.md)、[环境](asset/battle_environment.md)、[特效](asset/combat_effects.md) |
+| 性能 | [当前状态与维护边界](../battle_performance_optimization_checklist.md) |
 | 数据与语言 | [配置目录](../data_config/README.md)、[本地化维护](../localization/README.md)、[术语表](localization/glossary.md) |
 | 录制 | [战斗录制台](marketing/recording_studio.md) |
 
-具体数值以运行配置及消费代码为准。素材原图与可编辑源放在 `artifacts/sources/`、`artifacts/reference/`、`artifacts/editable/` 和正式素材旁；[图标索引](asset/icon_manifest.json)保留当前文件、哈希和来源裁切信息，[配置参考资料](asset/config_reference_metadata.json)供素材审阅工具使用。
+具体数值以运行配置及消费代码为准。素材原图放在 `artifacts/sources/`、`artifacts/reference/`，最终画面保存在 `assets/`；正式图标的网格和色板保留在PNG旁，不再另存处理稿目录。[图标索引](asset/icon_manifest.json)保留当前文件、哈希和来源裁切信息，[配置参考资料](asset/config_reference_metadata.json)供素材审阅工具使用。

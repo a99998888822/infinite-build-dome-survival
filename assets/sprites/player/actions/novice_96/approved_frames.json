@@ -82,54 +82,7 @@
     "assets/sprites/player/actions/novice_128/attack.png": "4bd1464727f867bece7a98e72cde67394bd71a315fa150d838bea7c9c0cb4880",
     "assets/sprites/player/actions/novice_128/sustain.png": "343ec7d72a2563a20270e335d0b54a3db22c7ae71a97ffecc1db3a8c1f6ebd01",
     "assets/sprites/player/actions/novice_128/move_sustain.png": "3778e75f0974be397cfadd16c3ff346f6d13f571e1e4375a475eeaca73648be6",
-    "assets/sprites/player/actions/novice_128/move_attack.png": "698d04ca371803940dd10bf55d841925a3884e7ab5c8535f29190f5606d8ebde",
-    "artifacts/editable/player/novice_jump_20261019/player_jump1-96-detail-face.png": "008c937035047f2aaf86b4def4e6eb013187ae6f4993ee22b76d3159f79bfea1",
-    "artifacts/editable/player/novice_jump_20261019/player_jump2-96-detail-face.png": "4661b80aab10ddad02e1367e04957ba37e072f889cf428ac03a443b527040139",
-    "artifacts/editable/player/novice_jump_20261019/player_jump3-96-detail-face.png": "e526ed21653928948961168ccbf88a46f75192de11d0a2fb240cc6ac3a506652",
-    "artifacts/editable/player/novice_jump_20261019/player_jump4-96-detail-face.png": "cbe03bc4176d8fdd57e22b6dcb6574108e3f4ab2cd16e96090fb22e3ae176b4b",
-    "artifacts/editable/player/novice_jump_20261019/player_jump5-96-detail-face.png": "854dee564cc80f0a246257ac3ad1d7caa438c754aeeb932941523ed0291afa47",
-    "artifacts/editable/player/novice_jump_20261019/player_jump6-96-detail-face.png": "d7efdeaeccb49b78756440526d9d83d3fa642d8533b9d1dcfca5324354acc25c",
-    "artifacts/editable/player/novice_actions_20261020/idle/idle_01.png": "1dff9df70a053ba00f2cf5acd347c3090446821d90f3e6bbcd931e44d053bb5f",
-    "artifacts/editable/player/novice_actions_20261020/move/move_01.png": "15b4c2bf4fe574b63f48bc12a21bd4046a382f2c31bf6040c292b843fc0b2cea",
-    "artifacts/editable/player/novice_actions_20261020/move/move_02.png": "3c1ce7913dd865cc1b63784c561b550586f5d5ebbe81ba21f0d01c4810599ed1",
-    "artifacts/editable/player/novice_actions_20261020/move/move_03.png": "200e47021681144c38478af7f6ac53b3c7c38589f831f64ee218edc15325c11e",
-    "artifacts/editable/player/novice_actions_20261020/move/move_04.png": "14c3003eee31e59972adaf65d5e143de7d5d74b9d8ff7a46207295c63a0932e8",
-    "artifacts/editable/player/novice_actions_20261020/move/move_05.png": "0fa708d02924bf3b12b6a29f0f755eea5a4ce53a1f34c75a2f835dcaf0ccfdb2",
-    "artifacts/editable/player/novice_actions_20261020/move/move_06.png": "6c210ce99f3bfb78d8464f124117d2ff7c2532d1b423a385230a2843f1337f27",
-    "artifacts/editable/player/novice_actions_20261020/move/move_07.png": "95fb8bd56dac998a244af82426aa7366309b32a3a959c972bbfadc0dfe10b210",
-    "artifacts/editable/player/novice_actions_20261020/move/move_08.png": "db4b9a9a249a3f64527f0d435996b3a8775c3b07f430d08e75501baaf12d4461",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_01.png": "8bfe0ae3ea1d5800279276c4f0532b7e36997c1393208f858732b908a92052f7",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_02.png": "2d69876fc51822565bfa7d4aab87ba1f5443e74bb3b7b8c2a53d8a4fff0d75e1",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_03.png": "bc13de94ead32f0aff5928f961251b63ba978119d5b12bde87f74c9079f3f024",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_04.png": "1918e132a7de205e44744ad739b9fee69b2118e20260e6ce73f5c21dd559b78f",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_05.png": "a5c52a85f3f1fa6625a06aee2310086cb933161229a9f3ab137683a7a166717c",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_06.png": "eefd6b9bd42aa9c0329316a95207bde4d22e3f50f885458291030264cfc08c6b",
-    "artifacts/editable/player/novice_actions_20261020/attack/attack_07.png": "0fba20b0a5cb217e24ee2b28a80e65cc088213f407ac0ddad772d9e3f61d6859",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_01.png": "ee34212267e9832a4b2923e5a9e03998de001ef4d86438d97adeec6587961b5b",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_02.png": "4181f37766f78396a652d897edb9fe6408f3c39973be6655f183dbe802b5efd9",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_03.png": "15892a2db6fed9ef6b7eec942e48498c1408052f21cc35bde73824702384e630",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_04.png": "985c5358f7b0d87dcb3d8507248f7018f267607ea791f40b053b9ae0b424561b",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_05.png": "90e287fec87ed73b71462079d3df39a9cc21b49f9635d809f65a324b8c36c815",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_06.png": "8ed84bcbd84b943dad8e0cd190a28d3449b61787cfdeea8c71df4524fbca3814",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_07.png": "43ebff92d7986585734b64bbbc0535a0ca0a9b2a93a75ecb2af2caedccba69d1",
-    "artifacts/editable/player/novice_actions_20261020/sustain/sustain_08.png": "71d0ebb3db1cfcf9e4fb3f0292a7b851727dd5f31481c28589dd004b4ea8ed8f",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_01.png": "aaf702ddd9fa2e79de293a0c57fdb8223338b53fa3042069d425e8b640d07300",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_02.png": "d9a579a77aea84392cffcb6f811633626074c17a62072f78d3dadbc7d295bdf5",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_03.png": "546809d982cedce2835973b979651d2ce083da7b2204c2d69f21b3e626f3edbc",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_04.png": "3f3cd96f80fba0019cce32fd2d6ff95b3209420a91c0c4257f4fdd1ca0473149",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_05.png": "3365a0e57c18525a6a2cfdf3bebb57eb0b8d6499d275880a7deda8ed2dfefd49",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_06.png": "446a91c1a3114251fc4f1f48292e8000bd7c7f92704a634c775634d04387ca31",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_07.png": "f0e9e380b1eaf86e868404745df2bbb3ce98a5b558d84135a0eec7bff2cda8f5",
-    "artifacts/editable/player/novice_actions_20261020/move_sustain/move_sustain_08.png": "e7543a5d774e9b0716106c5a32ed83060515a167b38ef307ae4fc02ad6677a39",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_01.png": "dd5306e82f3125b2f197bc5537a37b6721a49657b2cb2ad653d01baa3c9e31c4",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_02.png": "279d47e4a3e407468ec56e3b342e64995971683a2a175909fcaa9b90bf82ed8e",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_03.png": "b88d2637442386c8f5d53031d47f4ef2fd88ceb09bdc3269d005fe98f57f2007",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_04.png": "5a607e9e49e3cd2acb906a418ad3f91b8245ab7fca0e6114ab8b227315f1b36e",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_05.png": "014a78cbb617dc6843a383c4f574bc045c74892ae21f63a4cba0feed27d87978",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_06.png": "9e290fc2ef9cb437369b51111f0d42939270bb6d1622b81201f5abf10bf3860a",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_07.png": "238550e4eb3f4efaca5b91149483194c458790ddd97577a5b805dbfa51c68a01",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_08.png": "385197e68ddd368cddc56dafc3c333347b64b5026ef6feaf2fae8cd3125f0165",
-    "artifacts/editable/player/novice_actions_20261020/move_attack/move_attack_09.png": "2ba4c916634945ad708b505df0afbc1cdd314bbc278f113003a8658561e555cd"
+    "assets/sprites/player/actions/novice_128/move_attack.png": "698d04ca371803940dd10bf55d841925a3884e7ab5c8535f29190f5606d8ebde"
   },
   "atlas_sha256": {
     "idle.png": "1dff9df70a053ba00f2cf5acd347c3090446821d90f3e6bbcd931e44d053bb5f",
@@ -139,16 +92,6 @@
     "move_sustain.png": "2b4c728d3b948c192afeb53584de95f53c792c8378d3fdc9bca8bdf1f5fb241c",
     "move_attack.png": "950a0c5b2dab74e7530f1d5b6a33b0912cefdd7b531f37f2379f4ba0d193c982",
     "jump.png": "3ce7c21ed86a3bfb516d4afce801cd1d22377ea1e2c07bd258cea9ea708921c9"
-  },
-  "clip_sources": {
-    "jump_forward": "artifacts/editable/player/novice_jump_20261019",
-    "jump_backward": "artifacts/editable/player/novice_jump_20261019",
-    "idle": "artifacts/editable/player/novice_actions_20261020/idle",
-    "move": "artifacts/editable/player/novice_actions_20261020/move",
-    "attack": "artifacts/editable/player/novice_actions_20261020/attack",
-    "sustain": "artifacts/editable/player/novice_actions_20261020/sustain",
-    "move_sustain": "artifacts/editable/player/novice_actions_20261020/move_sustain",
-    "move_attack": "artifacts/editable/player/novice_actions_20261020/move_attack"
   },
   "shared_jump": {
     "approval": "User approved visible scene preview on 2026-10-19",
@@ -173,7 +116,6 @@
   "other_actions": {
     "approval": "User approved all reviewed frames on 2026-10-20 and explicitly retained move_sustain frame 8.",
     "source_archive": "artifacts/sources/player/novice_actions_20261020",
-    "editable_archive": "artifacts/editable/player/novice_actions_20261020",
     "frames": 41,
     "move_sustain_frames": 8,
     "visual_offset": [
@@ -181,5 +123,15 @@
       3
     ],
     "pixel_changes_during_install": false
+  },
+  "clip_atlases": {
+    "idle": "res://assets/sprites/player/actions/novice_96/idle.png",
+    "move": "res://assets/sprites/player/actions/novice_96/move.png",
+    "attack": "res://assets/sprites/player/actions/novice_96/attack.png",
+    "sustain": "res://assets/sprites/player/actions/novice_96/sustain.png",
+    "move_sustain": "res://assets/sprites/player/actions/novice_96/move_sustain.png",
+    "jump_forward": "res://assets/sprites/player/actions/novice_96/jump.png",
+    "jump_backward": "res://assets/sprites/player/actions/novice_96/jump.png",
+    "move_attack": "res://assets/sprites/player/actions/novice_96/move_attack.png"
   }
 }

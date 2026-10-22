@@ -26,4 +26,4 @@
 - 音频维护于 `assets/audio/`，播放事件由正式音频配置和脚本决定，不套用旧规划中的缺失或停播清单。
 - 素材检查、重建与安装入口见[安装工具](../../scripts/tools/ASSET_INSTALLERS.md)。自动实机验证使用私有桌面后台工具。
 
-原图位于 `artifacts/sources/`、`artifacts/reference/`，可编辑源位于 `artifacts/editable/` 或正式 PNG 旁。配置中迁出的图标描述、建筑定位和地表追溯资料见 [config_reference_metadata.json](config_reference_metadata.json)，素材审阅工具仍读取此文件。
+原图位于 `artifacts/sources/`、`artifacts/reference/`，最终画面位于 `assets/`；正式图标旁已有的网格和色板保留，不再额外归档分帧稿及处理目录。配置中迁出的图标描述、建筑定位和地表追溯资料见 [config_reference_metadata.json](config_reference_metadata.json)，素材审阅工具仍读取此文件。

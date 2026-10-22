@@ -28,4 +28,4 @@ Autoload 的实际列表由 [project.godot](../../project.godot)维护，包含 
 
 行为变更还需运行对应专项场景，检查解析、脚本错误及测试断言。GPU 录制使用 [后台工具说明](../../scripts/tools/BACKGROUND_CAPTURE.md)指定的私有桌面流程，核对实际引擎桌面与 `foreground_samples=0`。
 
-新文本使用 UTF-8，保持已有换行方式。临时副本放在 `temp/`；包含脚本的备份目录添加 `.gdignore`，避免被 Godot 扫描。性能测量的当前限制见[性能说明](../performance/README.md)。
+新文本使用 UTF-8，保持已有换行方式。临时副本放在 `temp/`；包含脚本的备份目录添加 `.gdignore`，避免被 Godot 扫描。性能测量的当前限制见[性能说明](../../battle_performance_optimization_checklist.md)。

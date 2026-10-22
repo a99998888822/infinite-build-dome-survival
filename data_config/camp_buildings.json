@@ -107,8 +107,8 @@
         "required_building_level": 1,
         "icon": "res://assets/ui/talents/speed.png",
         "tree_position": [
-          84,
-          -290
+          94,
+          -304
         ],
         "requires_upgrade": ""
       }
@@ -195,7 +195,7 @@
         "icon": "res://assets/ui/talents/offers.png",
         "tree_position": [
           334,
-          -312
+          -324
         ],
         "required_building_level": 1,
         "requires_upgrade": "camp_upgrade_relic_luck"
@@ -477,7 +477,7 @@
         "icon": "res://assets/ui/talents/armor.png",
         "tree_position": [
           -334,
-          312
+          324
         ],
         "requires_upgrade": "camp_upgrade_max_hp"
       },
@@ -638,8 +638,8 @@
         "value_per_level": 1,
         "icon": "res://assets/ui/talents/bargain.png",
         "tree_position": [
-          -84,
-          290
+          -94,
+          304
         ],
         "required_building_level": 1,
         "requires_upgrade": ""

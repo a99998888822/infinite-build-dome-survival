@@ -169,9 +169,14 @@ func _run() -> void:
 	check(page._node_levels[ids.damage].text == "0/10" and page._node_levels[ids.armory].text == "1/3", "upgrade and building levels appear on node lower edges")
 	check(not page._nodes[ids.damage].lit and not page._nodes[ids.crit].visible, "unbought node gray, successor hidden")
 	var icons_valid := true
+	var native_layout := true
 	for node: TalentNodeButton in page._nodes.values():
 		icons_valid = icons_valid and node.icon_texture.get_size() == Vector2(64, 64) and node.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST
+		var icon_rect := node.get_icon_rect()
+		native_layout = native_layout and icon_rect.size == Vector2(64, 64) and node.size == Vector2(104, 104)
+		native_layout = native_layout and Rect2(Vector2.ZERO, node.size).encloses(icon_rect.grow(20)) and node.position == node.position.round()
 	check(icons_valid, "all 34 production icons are 64px with nearest filtering")
+	check(native_layout and page._zoom == 1.0 and page._tree.position == page._tree.position.round(), "all icons start at native 64px with 20px frame padding and integer positions")
 	await capture("01_initial")
 	var before := CampProgression.get_camp_currency()
 	await click(page._nodes[ids.damage].get_global_rect().get_center())
@@ -190,6 +195,12 @@ func _run() -> void:
 	check(page._node_levels[ids.damage].text == "1/10" and page._detail_effect.text == "已获得：伤害加成+1" and page._detail_next.text == "升级后：伤害加成+2", "purchase updates node level and cumulative benefit preview")
 	check(CampProgression.get_upgrade_cost(ids.damage) == 400, "next cost scales with target level")
 	check(page._upgrade_tooltip.visible and page._upgrade_tooltip_text.text == "花费 400 天赋点升级", "hover cost updates after purchase")
+	var revealed_clear := true
+	for child_id in [ids.crit, ids.crit_damage]:
+		var child: Control = page._nodes[child_id]
+		revealed_clear = revealed_clear and page.get_global_rect().encloses(child.get_global_rect())
+		revealed_clear = revealed_clear and not child.get_global_rect().intersects(page._currency_label.get_global_rect())
+	check(revealed_clear, "new upper nodes fit below the fixed currency label at default zoom")
 	CampProgression.set_camp_currency(0)
 	move_pointer(Vector2(300, 600))
 	check(not page._upgrade_tooltip.visible, "tooltip hides immediately on pointer exit")
@@ -227,11 +238,14 @@ func _run() -> void:
 	check(page._detail_title.text == "商店扩容选项：" and page._detail_effect.text == "已获得：商店选项+0" and page._detail_next.text == "升级后：商店选项+1" and page._detail_cost.text == "升级花费 1200天赋点", "shop detail separates obtained and next totals from node level")
 	check(page._node_levels[ids.offers].text == "0/5" and visible_summary_count() == 27 and not page._summary_values.shop_offer_count_bonus.visible, "unbought shop attribute omitted from compact summary")
 	await capture("03_expanded")
-	for zoom in [0.5, 1.0, 3.0]:
-		page._zoom = zoom
-		page._apply_view()
-		await frames()
-		check_node_clearance()
+	for locale in ["zh_CN", "en"]:
+		L10n.set_locale(locale, false)
+		for zoom in [0.5, 1.0, 3.0]:
+			page._zoom = zoom
+			page._apply_view()
+			await frames()
+			check_node_clearance()
+	L10n.set_locale("zh_CN", false)
 	page.select_node("")
 	page._zoom = 0.766667
 	page._pan = Vector2(-166.666667, -16.666667)

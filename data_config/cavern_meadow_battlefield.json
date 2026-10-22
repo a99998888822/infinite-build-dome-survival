@@ -14,7 +14,7 @@
       "id": "G09_grass_short-32",
       "texture": "res://assets/sprites/background/green_ground/G09_grass_short-32.png",
       "anchor": [
-        16.5,
+        16.0,
         24
       ]
     },
@@ -47,19 +47,19 @@
     {
       "id": "loose_stone_0",
       "texture": "res://assets/sprites/background/cavern/rubble_0.png",
-      "texture_density": 4.0,
+      "texture_density": 1.0,
       "anchor": [
-        50.0,
-        60
+        18.0,
+        24
       ]
     },
     {
       "id": "loose_stone_1",
       "texture": "res://assets/sprites/background/cavern/rubble_1.png",
-      "texture_density": 4.0,
+      "texture_density": 1.0,
       "anchor": [
-        32.0,
-        44
+        12.0,
+        16
       ]
     },
     {

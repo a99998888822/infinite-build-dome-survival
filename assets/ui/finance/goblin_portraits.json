@@ -1,40 +1,78 @@
 {
-  "version": "A+++",
+  "version": "native-372-original-picxel",
   "frame_size": [
-    320,
-    320
+    372,
+    372
   ],
   "states": [
     {
       "index": 0,
       "expression": "neutral",
-      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_neutral.png",
-      "sha256": "1a7090f996d64ce57106c240532bb4b75dd8493220de2554bd56caf90db012f9"
+      "source": "res://assets/ui/finance/goblin_banker_states.png",
+      "region": [
+        0,
+        0,
+        372,
+        372
+      ],
+      "rgba_sha256": "12d3bc8ac6e446704b6cc3a5d3f5902edcda48cb9dcad5c27cfc8a8aa03c8644"
     },
     {
       "index": 1,
       "expression": "downcast",
-      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_worried.png",
-      "sha256": "c956a5123b4a47689da3437b90e91d4a01a8d6509da0705c4818d59617e2fb25"
+      "source": "res://assets/ui/finance/goblin_banker_states.png",
+      "region": [
+        372,
+        0,
+        372,
+        372
+      ],
+      "rgba_sha256": "96cbe197e75790ef200702046752aff0281039eaf64aeb840c80e53459065281"
     },
     {
       "index": 2,
       "expression": "displeased",
-      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_angry.png",
-      "sha256": "1c9428cf7a3cca13a7dd8b6ee94fd094cf009175ef2ed5c5f8e461d9b8eb4645"
+      "source": "res://assets/ui/finance/goblin_banker_states.png",
+      "region": [
+        744,
+        0,
+        372,
+        372
+      ],
+      "rgba_sha256": "2ece3025f42ea736a4ba007512de3213c1685a998d1c526ff3c93edd8f84ce39"
     },
     {
       "index": 3,
       "expression": "smile",
-      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_sly.png",
-      "sha256": "39756936f5a30df9a57f96a415895f202306f2ca1120ca22f04e3c8859344633"
+      "source": "res://assets/ui/finance/goblin_banker_states.png",
+      "region": [
+        1116,
+        0,
+        372,
+        372
+      ],
+      "rgba_sha256": "e2ed354e30132445bcef52123459d579af855ad5e4365537ebf8042b9164820a"
     },
     {
       "index": 4,
       "expression": "delighted",
-      "source": "artifacts/editable/finance_ui_20261018/portraits/goblin_excited.png",
-      "sha256": "0916acedc53681b71c1510d387ce8e1008a5749066ca4aae6689105cd6580490"
+      "source": "res://assets/ui/finance/goblin_banker_states.png",
+      "region": [
+        1488,
+        0,
+        372,
+        372
+      ],
+      "rgba_sha256": "6a33a914d67db5d44137d905df2e27e678fe1ef1b38b17340915c4a4f75e8c5d"
     }
+  ],
+  "waist_anchor": [
+    186,
+    326
+  ],
+  "hand_anchor": [
+    186,
+    365
   ],
   "settlement_rows": [
     4,
@@ -47,5 +85,38 @@
     -2,
     0,
     2
-  ]
+  ],
+  "original_source": {
+    "git": "04ba679^",
+    "path": "artifacts/sources/finance_ui_20261018/gobline_face_shaded_9x16_raw.png",
+    "sha256": "d6d89ae26bd714a29437677369c017c5d84916b44fd4c090929d86562aaea730",
+    "restored_file": "artifacts/sources/finance_ui_20261018/gobline_face_shaded_9x16_raw.png"
+  },
+  "settlement": {
+    "source": "res://assets/ui/finance/goblin_banker_states.png",
+    "path": "res://assets/ui/settlement/goblin_reactions.png",
+    "sha256": "23b789daa8fdc8175f3c8d67dba8c5e49a54e07ff71aa163039ef9806d021fe8",
+    "atlas_size": [
+      1488,
+      1488
+    ],
+    "frame_size": [
+      372,
+      372
+    ],
+    "source_state_indices": [
+      4,
+      2,
+      3,
+      1
+    ],
+    "bob_pixels": [
+      0,
+      -2,
+      0,
+      2
+    ],
+    "method": "Unscaled copies of reviewed bank frames; integer vertical offsets only"
+  },
+  "source_atlas_sha256": "5b8cf50398275f63b09f25dac0d18baf7d3b809318bd5e56f13dac1ef2e51af8"
 }

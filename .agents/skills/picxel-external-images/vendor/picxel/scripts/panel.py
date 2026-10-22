@@ -22,7 +22,7 @@ from urllib.parse import parse_qs, urlparse, urlencode
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(errors="replace")          # notes may be Chinese; a cp936 console must not crash the command
 
-SIZES = (32, 64, 96, 128, 192)
+SIZES = (12, 24, 32, 36, 48, 64, 96, 128, 192, 372)
 BATCH_LIMIT = 20
 IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg", ".webp")
 # Project external-image workflow: do not replace the global Picxel panel job.

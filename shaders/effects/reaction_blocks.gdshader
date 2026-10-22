@@ -54,17 +54,18 @@ vec4 blast(vec2 p,float t,float u) {
     float expansion=smoothstep(0.0,0.66,u);
     float growth=(0.38+0.62*smoothstep(0.0,0.22,u))*(1.0-0.58*smoothstep(0.46,1.0,u));
     vec4 c=vec4(0.0);
-    // Unequal angular slabs overlap at contact, then break apart. There is no
-    // shared radial rim, regular tip spacing or matching outline on each side.
-    for(int i=0;i<9;i++) {
-        if(detail==0 && i>3) continue;
+    // Small, uneven shards fill the burst and scatter at different distances.
+    // Lower tiers limit fragment counts during dense chain reactions.
+    for(int i=0;i<24;i++) {
+        if(detail==0 && i>=6) break;
+        if(detail==1 && i>=14) break;
         float n=float(i);
         float h=blast_hash(n+1.0);
         float h2=blast_hash(n+12.0);
         float angle=n*2.399963+(h-0.5)*1.3+extra*0.21;
         vec2 axis=vec2(cos(angle),sin(angle));
         vec2 side=vec2(-axis.y,axis.x);
-        float travel=(0.06+expansion*(0.42+0.39*h2));
+        float travel=(0.04+expansion*(0.16+0.70*h2));
         vec2 center=axis*travel+side*(h-0.5)*0.17;
         center.y-=u*u*(0.03+0.11*h);
         vec2 relative=q-center;
@@ -72,7 +73,7 @@ vec4 blast(vec2 p,float t,float u) {
         float skew=(h2-0.5)*1.2;
         vec2 v=vec2(dot(relative,axis),dot(relative,side));
         v=mat2(vec2(cos(skew),sin(skew)),vec2(-sin(skew),cos(skew)))*v;
-        v/=vec2(0.26+0.27*h,0.14+0.17*h2)*growth;
+        v/=vec2(0.09+0.10*h,0.055+0.065*h2)*growth;
         float shoulder=-0.28+0.24*h;
         float half_width=v.x<shoulder ? (v.x+0.80)/(shoulder+0.80) : (1.0-v.x)/(1.0-shoulder);
         float cross_section=abs(v.y-v.x*(h2-0.5)*0.55);
@@ -173,7 +174,7 @@ vec4 thaw(vec2 p,float t,float u) {
 
 void fragment() {
     // Quantize before all shape calculations: solid cells, including rotated rays.
-    float grid=kind==7 ? 1.0 : 3.0;
+    float grid=kind==7 ? 1.0 : (kind==1 ? 2.0 : 3.0);
     vec2 p=(floor(point/grid)+0.5)*grid;
     float t=floor(effect_time*18.0)/18.0;
     vec4 c=vec4(0.0);

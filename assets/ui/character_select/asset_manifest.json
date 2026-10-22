@@ -1,13 +1,13 @@
 {
   "background_grid": [
-    688,
-    384
+    960,
+    540
   ],
   "composition_size": [
-    2752,
-    1536
+    1920,
+    1080
   ],
-  "background_source_sha256": "a617cc249f5db2b19dd794687f18fec3b2b00a8b987a76b3beaa02f4870b3216",
+  "background_source_sha256": "115c6673216a2662deefb73c8821e708900534caf09a2df5931da011ac309824",
   "assets": {
     "back_button.png": {
       "size": [
@@ -18,10 +18,10 @@
     },
     "background.png": {
       "size": [
-        2752,
-        1536
+        960,
+        540
       ],
-      "sha256": "a617cc249f5db2b19dd794687f18fec3b2b00a8b987a76b3beaa02f4870b3216"
+      "sha256": "67a4a1d8b8d5b5f86e44e64996b92e544d2621a3d810ab3da2ef85bcb0626378"
     },
     "character_shadow.png": {
       "size": [
@@ -69,5 +69,10 @@
   "legacy_unused": [
     "roster_frame.png",
     "roster_empty.png"
-  ]
+  ],
+  "background_source_git": "4849b4b:artifacts/sources/character_select/character_select_basement.png",
+  "background_display_scale": 2,
+  "background_status": "user_approved",
+  "background_approved_date": "2026-10-22",
+  "background_source": "artifacts/sources/character_select/character_select_basement.png"
 }

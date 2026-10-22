@@ -117,6 +117,10 @@ func verify_receivers() -> void:
 	var complete_grass := true
 	var ordered_chunks := true
 	var complete_bounds := true
+	var shared_meshes := {}
+	var instance_buffers := {}
+	var batch_count := 0
+	var quad_size_matches := true
 	var gpu := DisplayServer.get_name() != "headless"
 	for group: Dictionary in ground.grass_cells.values():
 		var visible_blades := 0
@@ -126,6 +130,10 @@ func verify_receivers() -> void:
 			if offset == 0: next_offset = 0
 			ordered_chunks = ordered_chunks and offset == next_offset
 			for batch: MultiMeshInstance2D in [band.back,band.front]:
+				shared_meshes[batch.multimesh.mesh.get_instance_id()] = true
+				instance_buffers[batch.multimesh.get_instance_id()] = true
+				batch_count += 1
+				quad_size_matches = quad_size_matches and batch.multimesh.mesh is QuadMesh and (batch.multimesh.mesh as QuadMesh).size == Vector2(32,32)
 				var count := batch.multimesh.instance_count
 				bounded_batches = bounded_batches and count > 0 and count <= CavernPopulationBackdrop.MAX_GRASS_BATCH_INSTANCES
 				visible_blades += batch.multimesh.visible_instance_count
@@ -141,6 +149,8 @@ func verify_receivers() -> void:
 			next_offset += band.back.multimesh.instance_count
 		complete_grass = complete_grass and visible_blades == group.blades.size()
 	check(bounded_batches, "grass draw counts stay within the tested ANGLE batch bound")
+	check(batch_count > 1 and shared_meshes.size() == 1 and quad_size_matches, "streamed grass shares one immutable quad with the original dimensions")
+	check(instance_buffers.size() == batch_count, "grass front/back batches keep independent instance buffers and visibility")
 	check(complete_grass and ordered_chunks, "chunked depth bands draw every grass blade exactly once in order")
 	check(complete_bounds, "fixed grass bounds cover every instance including wind sway and hidden prefixes" if gpu else "fixed grass bounds are set (instance transforms require GPU verification)")
 

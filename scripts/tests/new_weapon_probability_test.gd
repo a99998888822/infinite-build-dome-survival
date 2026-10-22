@@ -40,6 +40,7 @@ func _run() -> void:
 	_test_distribution(weapons)
 	_test_independent_filters(pool)
 	_test_constraints()
+	_test_offer_ownership_and_prices()
 	_test_validation()
 	print("NEW_WEAPON_PROBABILITY checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
@@ -110,9 +111,9 @@ func _test_constraints() -> void:
 	var weapons := generator._filter_candidates_by_type(pool, ShopOfferGenerator.OFFER_NEW_WEAPON)
 	check(weapons.size() == 12 and weapons.all(func(c): return c.target_id not in context.owned_weapon_ids), "owned weapons excluded")
 	context.candidate_pool = pool
-	check(generator.get_shop_type_weights(context) == {"new_weapon": 6, "relic": 60, "weapon_upgrade": 8}, "paid type odds unchanged")
+	check(generator.get_shop_type_weights(context) == {"new_weapon": 6, "relic": 60, "weapon_upgrade": 4}, "paid type odds unchanged")
 	context.offer_mode = "free"
-	check(generator.get_shop_type_weights(context) == {"new_weapon": 3, "relic": 60, "weapon_upgrade": 8}, "free type odds unchanged")
+	check(generator.get_shop_type_weights(context) == {"new_weapon": 3, "relic": 60, "weapon_upgrade": 4}, "free type odds unchanged")
 	var previous := ["new_weapon:weapon_camp_dagger"]
 	for index in 32:
 		var offers := generator.roll_paid_offers(generator.get_shop_rarity_weights(0), {"new_weapon": 1}, weapons, 3, index, previous, "", true)
@@ -132,6 +133,42 @@ func _test_constraints() -> void:
 	context.luck = 100
 	upgrades = generator._filter_candidates_by_type(generator.build_shop_candidate_pool(context), ShopOfferGenerator.OFFER_WEAPON_UPGRADE)
 	check(upgrades.any(func(c): return c.target_id == "weapon_void_blade"), "luck still unlocks eligible weapon upgrades")
+
+
+func _test_offer_ownership_and_prices() -> void:
+	var pool := generator.build_shop_candidate_pool({"load_capacity": 100, "luck": 0})
+	var original := pool.duplicate(true)
+	for mode in ["free", "shop"]:
+		seed(221022)
+		var offers := generator.roll_shop_offers({"common": 1}, {"relic": 1}, pool, 3) if mode == "free" else generator.roll_paid_offers({"common": 1}, {"relic": 1}, pool, 3, 1)
+		check(offers.size() == 3 and pool == original, mode + " selection leaves candidate stock unchanged")
+		var untouched := offers[1].duplicate(true)
+		offers[0].effects.append({"id": "ownership_probe"})
+		offers[0].runtime_effects.append({"id": "runtime_probe"})
+		offers[0].tags.append("test_tag")
+		offers[0].price_breakdown.base = -999
+		offers[0].shop_cost = -999
+		check(pool == original and offers[1] == untouched, mode + " returned nested offer data cannot mutate stock or another offer")
+	var rebuilt := generator.build_shop_candidate_pool({"load_capacity": 100, "luck": 0})
+	check(rebuilt == original, "editing returned rewards does not change registry-backed future pools")
+	var contexts: Array[Dictionary] = [
+		{"shop_wave_number": 4, "paid_purchase_count": 2, "wave_gold_earned": 10000, "humanity": 0, "shop_price_discounts": [25.0, 50.0]},
+		{"shop_wave_number": 2, "humanity": 150, "shop_price_percent": -25.0},
+	]
+	for index in contexts.size():
+		var context: Dictionary = contexts[index]
+		var priced := generator.build_shop_candidate_pool(context)
+		var common: Dictionary = priced.filter(func(c): return c.offer_type == "relic" and c.rarity == "common")[0]
+		# Base 15, then wave/purchases/income, then each discount, then humanity.
+		var basis := 9.375 if index == 0 else 21.25
+		check(is_equal_approx(common.shop_price_basis, basis) and common.shop_cost_without_humanity == ceili(basis) and common.shop_cost == (12 if index == 0 else 22), "candidate pool returns complete layered prices: " + str(index))
+		check(common.shop_base_price == 15 and common.price_breakdown.wave == (6 if index == 0 else 2) and common.price_breakdown.income == (2 if index == 0 else 0), "price breakdown keeps its original basis and context: " + str(index))
+		check(HumanityEconomy.purchase_tooltip(common).contains(str(common.shop_cost)), "price tooltip can consume candidates before they are selected")
+	var shared := {"offer_type": "relic", "rarity": "common", "offer_id": "shared", "effects": [{"nested": [1]}]}
+	var repeated := generator.roll_shop_offers({"common": 1}, {"relic": 1}, [shared, shared], 2)
+	check(repeated.size() == 2, "equal entries preserve the original pool multiplicity")
+	repeated[0].effects[0].nested[0] = 2
+	check(repeated[1].effects[0].nested[0] == 1 and shared.effects[0].nested[0] == 1, "separately selected equal candidates own independent nested copies")
 
 
 func _test_validation() -> void:

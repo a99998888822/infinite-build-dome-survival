@@ -204,6 +204,17 @@ class ExternalWorkflowTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Grid changed"):
             workflow.sheet(Namespace(out=self.out, destination=self.out / "stale", columns=4))
 
+    def test_native_sizes_survive_panel_and_delivery(self):
+        self.args.sizes = [12, 24, 36, 48, 372]
+        self.build()
+        self.assertEqual(workflow.panel.load_job()["sizes"], [372, 48, 36, 24, 12])
+        self.select_all()
+        with redirect_stdout(io.StringIO()):
+            workflow.finish(Namespace(out=self.out))
+        for size in self.args.sizes:
+            with Image.open(self.out / workflow.panel.FINISHED_DIR / f"{self.name}-{size}.png") as image:
+                self.assertEqual(image.size, (size, size))
+
     def test_adopt_job_preserves_source_and_protects_active_project(self):
         source_out = self.root / "global-output"
         source_out.mkdir()

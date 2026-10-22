@@ -48,6 +48,8 @@ func _run() -> void:
 	manager.clear_enemies()
 	manager.player.set_physics_process(false)
 	manager.player.add_relic("relic_finance_manager")
+	# Exercise a full two-row shelf through production offer generation.
+	manager.player.modifier_stack.set_base_stat("shop_offer_count_bonus", 5)
 	manager.apply_gold_delta(12345, "layout_review")
 	flow.finish_current_wave()
 	await frames(25)
@@ -58,6 +60,12 @@ func _run() -> void:
 	popup._select_tab("shop")
 	await frames()
 	check(popup.visible, "production finance opens")
+	check(popup.shop_grid.offers.size() == 8 and popup.shop_grid._columns == 4, "eight offers use four columns")
+	check(popup.shop_grid.canvas.size.y <= popup.shop_grid.size.y, "two complete rows fit without vertical scrolling")
+	for card in popup.shop_grid._pool:
+		if not card.visible: continue
+		check(popup.shop_grid.get_global_rect().grow(1).encloses(card.get_global_rect()), "full shelf contains every card")
+		check(card._description.get_content_height() <= card._description.size.y + 1, "full shelf description remains readable")
 	for relic in ["relic_steel_vault", "relic_coin_heart", "relic_golden_rangefinder"]:
 		check(manager.player.add_relic(relic), "add principal-dependent preview: " + relic)
 	for dimensions in [Vector2i(1920, 1080), Vector2i(1280, 720)]:

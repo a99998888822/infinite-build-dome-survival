@@ -40,21 +40,25 @@
     "challenge_vault_painted.png": {
       "path": "assets/ui/finance/challenge_vault_painted.png",
       "size": [
-        128,
-        128
+        32,
+        32
       ],
       "bbox": [
-        10,
-        10,
-        116,
-        122
+        3,
+        3,
+        29,
+        30
       ],
-      "colors": 22,
+      "colors": 14,
       "alpha": [
         0,
         255
       ],
-      "sha256": "6c2b6af6da59c3e96a43601a4c86fcec797eee2d3d2579e661618f6739b14248"
+      "sha256": "4a1425c5009824ca984cf6af83f964174a30fb1916df2a0efa73dc437e4a8183",
+      "editable_grid": "scripts/tools/source_art/challenge_vault_32.pxg",
+      "palette": "scripts/tools/source_art/challenge_vault_32.pal",
+      "processing": "Picxel 32px conversion from the original editable 64px grid, with local lock-rim, handle and hinge repairs; no image model.",
+      "source_sha256": "41784e09610361faea594438475c4529641b47d0717b5bb96f4ddece892c5afb"
     },
     "challenge_vault_world.png": {
       "path": "assets/ui/finance/challenge_vault_world.png",

@@ -14,7 +14,7 @@ const MODAL_FALLBACK_RIGHT: float = 336.0
 const MODAL_TOP_OFFSET: float = 90.0
 const MODAL_BOTTOM_MARGIN: float = 14.0
 const WEAPON_STRIP_TOP_OFFSET: float = 12.0
-const WEAPON_STRIP_HEIGHT: float = 116.0
+const WEAPON_STRIP_HEIGHT: float = 128.0
 const RARITY_ORDER: Array[String] = ["common", "uncommon", "rare", "epic", "mythic", "legendary"]
 const RARITY_COLORS: Dictionary = {
 	"common": Color(0.86, 0.86, 0.86, 1.0),
@@ -278,8 +278,6 @@ func _layout_overlay() -> void:
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return
 	var strip_height := maxf(WEAPON_STRIP_HEIGHT * _display_scale, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
-	if weapon_strip != null:
-		strip_height = maxf(strip_height, weapon_strip.get_node("StripPanel").get_combined_minimum_size().y)
 	var modal_top := maxf(MODAL_TOP_OFFSET, WEAPON_STRIP_TOP_OFFSET + strip_height + 16.0)
 	if center_container != null:
 		center_container.anchor_left = 0.0
@@ -332,9 +330,6 @@ func _sync_display_sizes() -> void:
 	weapon_strip.slot_size = 88
 	weapon_strip.icon_size = 72
 	weapon_strip.cast_mode_icon_size = roundf(28 * _display_scale)
-	var strip_margin := weapon_strip.get_node("StripPanel/StripMargin") as MarginContainer
-	strip_margin.add_theme_constant_override("margin_top", roundi(10 * _display_scale))
-	strip_margin.add_theme_constant_override("margin_bottom", roundi(10 * _display_scale))
 	weapon_strip.load_label.add_theme_font_size_override("font_size", roundi(22 * maxf(0.75, _display_scale)))
 	weapon_strip._refresh_weapon_strip()
 	for cell in _relic_cells: _size_relic_cell(cell)

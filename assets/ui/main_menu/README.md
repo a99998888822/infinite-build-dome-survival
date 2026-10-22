@@ -1,35 +1,5 @@
-# Main Menu UI Assets
+# 主菜单素材
 
-首页场景、主题及脚本从本目录加载以下素材：
+当前资源尺寸、显示倍率及裁切规则统一见根目录的[美术清单](../../../art_asset_resolution_and_scale_audit.md)。背景、中文／英文标题、按钮皮肤和4枚入口图标由主菜单场景及 `scripts/ui/main_menu_ui_controller.gd` 加载。
 
-| 文件名 | 用途 | 推荐尺寸 | 格式要求 |
-| --- | --- | --- | --- |
-| `bg_main_menu.png` | 首页全屏背景 | 当前确认版 1024x572；最近邻等比铺满 | PNG，不透明；不要包含标题、按钮、文字、水印 |
-| `title_main_menu.png` | 标题艺术字 | 当前确认版 240x128；等比显示于高 200 的标题区域 | 透明 PNG；上行“哥布林”，下行向右错位“教你地下城”；最近邻采样 |
-| `button_main_menu.png` | 四个首页按钮共用底图 | 已确认 Picxel 108x28；按按钮尺寸 360x93 最近邻拉伸 | 透明 PNG，14 个可见颜色，二值透明；不包含按钮文字或图标 |
-| `icon_battle.png`、`icon_talent.png`、`icon_settings.png`、`icon_quit.png` | 四个按钮的独立图标 | 原图 24x24，按钮内显示 32x32，距按钮左边缘 56px | 透明 PNG，最近邻采样 |
-| `button_focus.png` | 键盘焦点四角标记 | 原图 240x56，按主题配置显示 | 透明 PNG |
-| `menu_button_theme.tres` | 按钮字体、颜色、状态与内边距 | 文字 18px、描边 1px | Godot Theme，引用正式 PNG 与项目字体 |
-
-Godot 导入建议：
-
-- Texture Filter: Nearest
-- Mipmaps: Disabled
-- Repeat: Disabled
-- 保留透明通道，尤其是标题和按钮底图
-
-2026-10-02 已将用户确认的 108x28 版本及缩小的图标、文字接入正式主界面。按钮之间间隔 8px，标题与按钮列表的布局间距为 32px。四个按钮共用底图，默认文字为浅米色，悬停/焦点时提亮；按下时文字下移 2px，键盘焦点显示浅金四角。按钮保持稳定的尺寸和方向，完整点击区域为 216x56。
-
-2026-10-19 按用户本轮提供的同名素材替换 `button_main_menu.png` 与四个图标。图标不再走 `Button.icon`，改为按钮内的独立 `TextureRect`（Nearest、32x32、忽略鼠标），左边缘固定在按钮左侧 56px（按钮内深色面板左沿约 37px，留约 19px 空隙），垂直居中；按钮文字因此回到水平与垂直正中。为配合居中，主题左右 content margin 统一为 28px，并移除只服务于按钮图标的 `h_separation` 与 `icon_max_width`。
-
-场景通过 `menu_button_theme.tres` 加载按钮样式。唯一的 [1728x448 按钮高清原图](../../../artifacts/sources/originals/263cf9a972-button_copper_oil_hd.png) 已归入原稿目录，迁移路径与哈希记录在 `artifacts/sources/index.json`；正式 PNG 及当前哈希登记在 `artifacts/editable/index.json`。本轮分辨率候选、Picxel 分块网格、绘图/预览脚本、截图及临时备份已清理。
-
-当前标题采用 2026-10-02 确认的 Picxel 240x128 版本，正式文件为本目录的 `title_main_menu.png`。标题为原创楔形字形，油画笔触像素化，使用 15 色和二值透明度。标题与四个按钮保持左侧纵向布局，内容顶部锚点为 0.045；标题上方横线与底部动态文字已移除。
-
-标题高清原稿、原始字形 SVG 与设计 JSON 已归入 `artifacts/sources/originals/`，路径映射见 `artifacts/sources/index.json`。
-
-当前背景于 2026-10-18 按用户确认的 1024 精度审阅版替换，正式文件为本目录的 `bg_main_menu.png`，画布为 1024x572。墙面、漩涡、台阶、洞口、铁链、金属门与柜台均从 2752x1536 高清原图直接处理到最终网格；整理连续轮廓、大色块和零碎纹理。背景使用两个互补的 16 色图层，共 32 色；哥布林、五块浮空符石与金币的既有精修区域原样覆盖，62131 个保护像素核验零变化。洞口保持原图方向，沿用用户最终确认的审阅稿。背景节点继续使用最近邻采样、无 mipmap、等比铺满布局，标题与按钮保持独立资源。
-
-当前分层编辑源、保护遮罩与源图/正式资源哈希记录在 `artifacts/sources/main_menu/background_1024/`。三个 RGBA 图层按清单顺序叠加，可逐像素还原正式背景；本次替换验证记录位于 `artifacts/validation/main_menu_background_1024/`。
-
-2026-10-02 整理后，正式背景与标题的原生 PNG 同时作为无损位图编辑源，高清原稿保留唯一一份；旧候选、备份和历史处理包已移除。编辑入口见 `artifacts/editable/index.json`，清理详情见 `docs/maintenance/art_consolidation_2026-10-02/README.md`。
+`menu_button_theme.tres` 管理字体、颜色、状态与内边距；图标使用按钮内独立 `TextureRect`。标题保留整数像素浮动，语言和布局变化后重新居中。纹理采用最近邻，关闭Mipmaps和Repeat，保留透明通道；不同窗口通过项目全局画布适配。

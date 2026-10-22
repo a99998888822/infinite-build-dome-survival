@@ -78,7 +78,9 @@ func _plan_undergrowth_patch(state: Dictionary, row: int, col: int) -> void:
 			if solid.kind=="prop" and absf(d.x)<66 and d.y>-22 and d.y<7: clear = false
 			if solid.kind=="rubble" and d.length()<16: clear = false
 		if not clear: continue
-		var entry := _placement("grass",rng.randi_range(0,2),point,rng.randf_range(.48,.78),rng.randf()<.5)
+		var index := rng.randi_range(0,2)
+		rng.randf_range(.48,.78) # Keep placement/mirror randomness, not size jitter.
+		var entry := _placement("grass",index,point,1.0,rng.randf()<.5)
 		var shade := rng.randf_range(.93,1.04)
 		entry.tint = Color(.60*shade,.67*shade,.65*shade)
 		entry.suitability = surface.a

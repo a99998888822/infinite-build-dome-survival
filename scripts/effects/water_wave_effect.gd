@@ -59,7 +59,8 @@ static func spawn(
 
 
 func _ready() -> void:
-	z_index = 78
+	z_as_relative = false
+	z_index = -7
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	queue_redraw()
 
