@@ -42,8 +42,7 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	crack_texture = CRACKS
 	crack_clearance = maxf(42.0, AttackFootprint.player_clearance(source) + 8.0)
 	crack_layer = Node2D.new()
-	crack_layer.z_as_relative = false
-	crack_layer.z_index = -1
+	CombatRenderWorld.set_effect_layer(crack_layer, -1)
 	add_child(crack_layer)
 	crack_layer.draw.connect(_draw_ground_cracks)
 	heading = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT

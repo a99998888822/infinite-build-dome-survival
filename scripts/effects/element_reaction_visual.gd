@@ -54,10 +54,9 @@ static func spawn(parent: Node, reaction: String, origin: Vector2, settings: Dic
 	effect.global_position = origin
 	effect.add_to_group(GROUP)
 	effect.detail = PIXEL.register(effect, "reaction_" + reaction)
-	effect.z_index = -5 if reaction in ["ice_expand", "thaw"] else 83
+	CombatRenderWorld.set_effect_layer(effect, -5 if reaction in ["ice_expand", "thaw"] else 83)
 	if reaction == "wet_spread":
-		effect.z_as_relative = false
-		effect.z_index = -7
+		CombatRenderWorld.set_effect_layer(effect, -7)
 
 
 func _process(delta: float) -> void:

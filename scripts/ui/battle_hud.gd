@@ -827,14 +827,16 @@ func _apply_combat_layout() -> void:
 	if economy_panel != null:
 		var wave_right := (viewport_width + timer_size.x) * 0.5
 		var actions_left := viewport_width + actions.offset_left
+		# The finance backing extends 20 pixels beyond the balance content.
+		var economy_right := actions_left - TOP_BAR_GAP - (20.0 if finance_scene else 0.0)
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
 		var economy_width := 280.0
 		if timer_hidden:
-			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(actions_left - TOP_BAR_GAP, 0.0))
-			economy_left = actions_left - TOP_BAR_GAP - economy_width
+			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(economy_right, 0.0))
+			economy_left = economy_right - economy_width
 		else:
-			var available_width := maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
+			var available_width := maxf(economy_right - economy_left, 0.0)
 			economy_width = minf(economy_width, available_width)
 		var economy_size := Vector2(economy_width, 70.0 if finance_scene else 73.333333)
 		economy_panel.anchor_left = 0.0

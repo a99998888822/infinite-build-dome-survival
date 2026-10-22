@@ -25,8 +25,7 @@ static func register(effect: Node2D, kind: String) -> int:
 
 static func layer(owner: Node2D, order: int, draw_callback: Callable) -> Node2D:
 	var result := Node2D.new()
-	result.z_as_relative = false
-	result.z_index = order
+	CombatRenderWorld.set_effect_layer(result, order)
 	owner.add_child(result)
 	result.draw.connect(draw_callback)
 	return result

@@ -442,6 +442,7 @@ var _batch_buffer := PackedFloat32Array()
 
 
 func _ready() -> void:
+	CombatRenderWorld.set_effect_layer(self, 80)
 	add_to_group("particle_worlds")
 	add_to_group("combat_particle_counters")
 	_random.randomize()
@@ -508,7 +509,7 @@ static func emit(parent: Node, event: Variant) -> Node2D:
 		var world_script: Script = load(PARTICLE_WORLD_PATH)
 		world = world_script.new() as Node2D
 		world.name = "ParticleWorld"
-		world.z_index = 80
+		CombatRenderWorld.set_effect_layer(world, 80)
 		parent.add_child(world)
 	world.call("emit_event", event)
 	return world
@@ -527,7 +528,7 @@ static func create_emitter(
 		var world_script: Script = load(PARTICLE_WORLD_PATH)
 		world = world_script.new() as Node2D
 		world.name = "ParticleWorld"
-		world.z_index = 80
+		CombatRenderWorld.set_effect_layer(world, 80)
 		parent.add_child(world)
 	if world.has_method("acquire_emitter"):
 		return world.call("acquire_emitter", parent, profile_id, context, options) as Node2D

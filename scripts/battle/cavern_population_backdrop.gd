@@ -323,12 +323,14 @@ func _make_solid(entry: Dictionary, nodes: Array[Node]) -> void:
 
 func _grass_batch(blades: Array[Dictionary], key: Vector2i, reverse: bool) -> MultiMeshInstance2D:
 	var node := MultiMeshInstance2D.new()
+	node.z_as_relative = false
+	node.z_index = CombatRenderWorld.GRASS_Z
 	node.position = Vector2(key)*CELL
 	node.texture = grass_atlas
 	node.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	node.material = grass_material
-	# Each band lies between prop bases. Its two prefixes also sort correctly
-	# around the moving player, without placing all grass above every object.
+	# Keep the existing band/prefix painter order within the grass layer.
+	# The absolute layer keeps every batch below attacks and actor bodies.
 	var anchor := Node2D.new()
 	anchor.set_meta("scenery",{"kind":"grass_batch","count":blades.size(),"reverse":reverse})
 	roots.add_child(anchor)

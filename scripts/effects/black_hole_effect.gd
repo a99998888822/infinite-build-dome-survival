@@ -57,7 +57,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 
 func _ready() -> void:
-	z_index = 79
+	CombatRenderWorld.set_effect_layer(self, 79)
 	_vortex_back = PIXEL.layer(self, 78, _draw_vortex.bind(false))
 	_vortex_front = PIXEL.layer(self, 80, _draw_vortex.bind(true))
 	queue_redraw()

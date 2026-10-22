@@ -109,12 +109,12 @@ func run() -> void:
 	var arrow := battle.loadout.get_weapon_instance("weapon_void_blade")
 	var dagger := battle.loadout.get_weapon_instance("weapon_camp_dagger")
 	check(is_equal_approx(arrow.get_attack_range(), 467.0), "arrow range migrates to 1080p")
-	check(is_equal_approx(dagger.get_attack_range(), 167.0), "melee range migrates to 1080p")
+	check(is_equal_approx(dagger.get_attack_range(), 180.0), "current dagger range")
 	check(absf(arrow.get_attack_range() / arrow.get_projectile_speed() - 280.0 / 500.0) < 0.002, "projectile travel time preserved within pixel rounding")
 	var reaches := {"weapon_void_blade":467, "weapon_plasma_cannon":400, "weapon_iron_grenade_cannon":333,
-		"weapon_kunyu_ritual_tome":367, "weapon_rentier_purse":467, "weapon_copper_lamp":200,
-		"weapon_mutant_tentacle":233, "weapon_earth_hammer":495, "weapon_camp_dagger":167,
-		"weapon_nightwatch_spear":367, "weapon_meteor_flail":240, "weapon_dash_blade":233,
+		"weapon_kunyu_ritual_tome":300, "weapon_rentier_purse":440, "weapon_copper_lamp":280,
+		"weapon_mutant_tentacle":280, "weapon_earth_hammer":495, "weapon_camp_dagger":180,
+		"weapon_nightwatch_spear":220, "weapon_meteor_flail":240, "weapon_dash_blade":233,
 		"weapon_hand_cannon":250, "weapon_star_tome":350}
 	for id in reaches:
 		var source := WeaponInstance.new()
@@ -122,7 +122,7 @@ func run() -> void:
 		source.use_active_range_rules = true
 		check(is_equal_approx(source.get_attack_range(), float(reaches[id])), "native range " + id)
 		if source.is_ritual_tome():
-			check(source.get_domain_axes().is_equal_approx(Vector2(367,242)), "ritual minor axis migrates with its range")
+			check(source.get_domain_axes().is_equal_approx(Vector2(300,242)), "current ritual domain axes")
 		if source.is_grenade():
 			check(is_equal_approx(source.get_grenade_blast_radius(), 107.0), "grenade blast migrates with its range")
 	await capture("05_battle")

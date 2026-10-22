@@ -21,7 +21,7 @@ var _order: Array[int] = []
 
 
 func _ready() -> void:
-	z_index = 15
+	CombatRenderWorld.set_effect_layer(self, 15)
 	if not is_in_group("particle_light_field"):
 		add_to_group("particle_light_field")
 	queue_redraw()

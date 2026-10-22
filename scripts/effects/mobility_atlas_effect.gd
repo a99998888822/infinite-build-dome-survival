@@ -28,7 +28,7 @@ static func spawn(parent: Node, source: WeaponInstance, key: String, point: Vect
 	effect.offset = effect.clip[1] * 0.5 - effect.clip[4]
 	effect.looping = loop
 	effect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	effect.z_index = -2 if key in ["dash_circle", "star_shockwave", "star_anchor", "recoil_dust"] else 40
+	CombatRenderWorld.set_effect_layer(effect, -2 if key in ["dash_circle", "star_shockwave", "star_anchor", "recoil_dust"] else 40)
 	parent.add_child(effect)
 	effect.add_to_group("weapon_runtime_effects")
 	effect.global_position = point

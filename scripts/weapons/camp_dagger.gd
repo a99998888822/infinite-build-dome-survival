@@ -69,7 +69,7 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	_query.collision_mask = 2
 	_query.collide_with_areas = false
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	z_index = 50
+	CombatRenderWorld.set_effect_layer(self, 50)
 	add_to_group("camp_daggers")
 	add_to_group("weapon_runtime_effects")
 	queue_redraw()

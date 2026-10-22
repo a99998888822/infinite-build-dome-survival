@@ -48,7 +48,7 @@ class FlameClock extends Node2D:
 		for z: int in counts:
 			if not batches.has(z):
 				var node := MultiMeshInstance2D.new()
-				node.z_index = z
+				CombatRenderWorld.set_effect_layer(node, z)
 				node.material = target
 				var multimesh := MultiMesh.new()
 				multimesh.transform_format = MultiMesh.TRANSFORM_2D

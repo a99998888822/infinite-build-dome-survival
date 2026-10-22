@@ -594,7 +594,6 @@ func _spawn_projectile_from(
 	var projectile_id := "%s_%d" % [weapon.weapon_id, _projectile_sequence]
 	projectile.name = "Projectile_%s" % projectile_id
 	projectile.top_level = true
-	projectile.z_index = 50
 	_get_visual_root().add_child(projectile)
 	var initialized := projectile.initialize(
 		weapon,

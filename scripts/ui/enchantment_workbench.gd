@@ -79,7 +79,7 @@ func _ready() -> void:
 	_weapon_name = Label.new()
 	_weapon_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_weapon_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_weapon_name, 23)
+	FinanceUIStyle.label(_weapon_name, EnchantmentInventoryCard.CAPTION_FONT_SIZE)
 	heading.add_child(_weapon_name)
 	_upgrade_weapon = _button("ui.enchantment.principal_upgrade", heading)
 	_upgrade_weapon.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -89,7 +89,7 @@ func _ready() -> void:
 	_sell_weapon = _button("ui.enchantment.sell_weapon", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
-	slot_scroll.custom_minimum_size.y = 64
+	slot_scroll.custom_minimum_size.y = 72
 	FinanceUIStyle.bank_horizontal_scroll(slot_scroll)
 	add_child(slot_scroll)
 	_slots = HBoxContainer.new()
@@ -156,16 +156,15 @@ func refresh() -> void:
 		var button := WeaponSlotButton.new()
 		_weapon_row.add_child(button)
 		button.configure(weapon, true)
-		button.custom_minimum_size = Vector2(120, 46)
-		button.clip_text = true
-		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		button.custom_minimum_size = Vector2(164, 54)
+		button.clip_text = false
 		button.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
 		button.expand_icon = true
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.add_theme_constant_override("icon_max_width", 36)
 		button.focus_mode = Control.FOCUS_ALL
 		FinanceUIStyle.bank_button(button, weapon.weapon_id == selected_weapon_id)
-		button.add_theme_font_size_override("font_size", 10)
+		button.add_theme_font_size_override("font_size", EnchantmentInventoryCard.CAPTION_FONT_SIZE)
 		ItemIconArt.bind_button(button, button.icon, 32.0)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)

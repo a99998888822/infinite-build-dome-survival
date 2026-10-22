@@ -35,7 +35,7 @@ func initialize(source: WeaponInstance, event: DamageEvent, start: Vector2, targ
 	arc_height = maxf(0.0, float(weapon.weapon_data.get("grenade_arc_height", 56)))
 	blast_radius = weapon.get_grenade_blast_radius()
 	global_position = start
-	z_index = 50
+	CombatRenderWorld.set_effect_layer(self, 50)
 	add_to_group("grenade_projectiles")
 	add_to_group("weapon_runtime_effects")
 	queue_redraw()

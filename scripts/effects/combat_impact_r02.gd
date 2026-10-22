@@ -19,7 +19,7 @@ static func spawn(parent: Node, point: Vector2, style: StringName, heading: Vect
 	effect.power = strength
 	parent.add_child(effect)
 	effect.global_position = point
-	effect.z_index = -1
+	CombatRenderWorld.set_effect_layer(effect, -1)
 	effect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	effect.add_to_group(GROUP)
 	# Contact decoration has no weapon snapshot; keep it out of weapon ownership.

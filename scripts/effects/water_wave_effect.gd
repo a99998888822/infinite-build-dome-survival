@@ -59,8 +59,7 @@ static func spawn(
 
 
 func _ready() -> void:
-	z_as_relative = false
-	z_index = -7
+	CombatRenderWorld.set_effect_layer(self, -7)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	queue_redraw()
 

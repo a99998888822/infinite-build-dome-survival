@@ -10,8 +10,7 @@ func _init() -> void:
 	mat.shader = SHADER
 	material = mat
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	z_as_relative = false
-	z_index = -7
+	CombatRenderWorld.set_effect_layer(self, -7)
 
 func setup(dimensions: Vector2, fill: Color, edge: Color, expansion := 1.0, alpha := 1.0) -> void:
 	if not terminal_axes.is_equal_approx(dimensions):

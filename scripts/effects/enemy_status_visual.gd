@@ -44,10 +44,11 @@ func _ensure_frost() -> void:
 	if is_instance_valid(_foot_frost): return
 	_foot_frost = FROST_VISUAL.new()
 	_foot_frost.name = "FootFrost"
-	_foot_frost.z_index = -26 # Status parent is 25: below body, above its shadow.
+	CombatRenderWorld.set_effect_layer(_foot_frost, -1)
 	add_child(_foot_frost)
 	_body_ice = FROST_VISUAL.new()
 	_body_ice.name = "BodyIce"
+	CombatRenderWorld.set_effect_layer(_body_ice, 25)
 	add_child(_body_ice)
 	_foot_frost.hide()
 	_body_ice.hide()

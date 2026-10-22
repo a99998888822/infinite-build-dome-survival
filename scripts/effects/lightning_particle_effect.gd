@@ -422,7 +422,7 @@ func _get_cached_parameter(channel: String, fallback: float = 0.0) -> float:
 
 func _ready() -> void:
 	add_to_group("combat_particle_counters")
-	z_index = 81
+	CombatRenderWorld.set_effect_layer(self, 81)
 	queue_redraw()
 
 

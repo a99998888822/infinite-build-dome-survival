@@ -46,7 +46,7 @@ static func spawn(parent: Node, origin: Vector2, direction: Vector2, damage_even
 		effect._visual_detail = 0
 	else:
 		effect._visual_detail = PIXEL.register(effect, "reflection")
-	effect.z_index = 81
+	CombatRenderWorld.set_effect_layer(effect, 81)
 	effect._damage_event = damage_event
 	effect._radius = maxf(radius, 48.0)
 	effect._damage_multiplier = maxf(damage_multiplier, 1.0)

@@ -11,7 +11,7 @@ var _caption: Label
 func _ready() -> void:
 	super._ready()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	custom_minimum_size = Vector2(68, 53)
+	custom_minimum_size = Vector2(88, 60)
 	focus_mode = Control.FOCUS_ALL
 	var body := VBoxContainer.new()
 	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -41,7 +41,7 @@ func _ready() -> void:
 	_caption = Label.new()
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_caption, 13)
+	FinanceUIStyle.label(_caption, EnchantmentInventoryCard.CAPTION_FONT_SIZE)
 	body.add_child(_caption)
 	for label in [_empty_mark, _caption]: label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -53,6 +53,8 @@ func configure_slot(index: int, item: Dictionary) -> void:
 	ItemIconArt.bind_texture(_art, FinanceUIStyle.item_icon(str(item.get("icon", "")), "augmentations", str(item.get("base_item_id", ""))), false, 32.0, null, 32.0)
 	_empty_mark.visible = not drag_enabled
 	_caption.text = L10n.source(str(item.get("display_name", "ui.enchantment.empty_slot")))
+	var caption_width := _caption.get_theme_font("font").get_string_size(_caption.text, HORIZONTAL_ALIGNMENT_LEFT, -1, EnchantmentInventoryCard.CAPTION_FONT_SIZE).x
+	custom_minimum_size.x = maxf(88, ceilf(caption_width) + 16)
 	tooltip_text = "" if drag_enabled else L10n.text("ui.enchantment.empty_slot_tooltip")
 	set_selected(false)
 

@@ -94,7 +94,7 @@ static func _get_source_weapon_id(context: RefCounted) -> String:
 
 
 func _ready() -> void:
-	z_index = 42
+	CombatRenderWorld.set_effect_layer(self, 42)
 	if not is_in_group("fire_patches"):
 		add_to_group("fire_patches")
 

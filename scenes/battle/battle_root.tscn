@@ -102,14 +102,16 @@ visible = false
 texture_filter = 1
 position = Vector2(0, -24.64)
 scale = Vector2(0.64, 0.64)
-z_index = -100
+z_index = -256
 
 [node name="ParticleLightField" type="Node2D" parent="CombatRenderWorld"]
-z_index = 15
+z_index = -113
+z_as_relative = false
 script = ExtResource("19_particle_light_field")
 
 [node name="ParticleWorld" type="Node2D" parent="CombatRenderWorld"]
-z_index = 80
+z_index = -48
+z_as_relative = false
 script = ExtResource("17_particle_world")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]

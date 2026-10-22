@@ -54,6 +54,7 @@ func initialize(
 ) -> bool:
 	if source_weapon == null or source_damage_event == null:
 		return false
+	CombatRenderWorld.set_effect_layer(self, 50)
 	weapon = source_weapon
 	damage_event = source_damage_event
 	projectile_id = source_projectile_id.strip_edges()

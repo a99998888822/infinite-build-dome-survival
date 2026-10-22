@@ -57,7 +57,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 
 func _ready() -> void:
-	z_index = -6
+	CombatRenderWorld.set_effect_layer(self, -6)
 	_ground_area = GROUND_AREA.new()
 	add_child(_ground_area)
 	_query.shape = _ground_shape

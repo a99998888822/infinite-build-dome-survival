@@ -71,7 +71,7 @@ func _setup() -> void:
 		if ground_image.is_compressed(): ground_image.decompress()
 	ground = ColorRect.new()
 	ground.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ground.z_index = -110
+	ground.z_index = CombatRenderWorld.GROUND_Z
 	ground_material = ShaderMaterial.new()
 	ground_material.shader = GROUND_SHADER
 	var base: Array = config.floor_color
@@ -82,7 +82,7 @@ func _setup() -> void:
 	decoration_material.shader = DECAL_SHADER
 	decals = Node2D.new()
 	decals.name = "GroundFragments"
-	decals.z_index = -100
+	decals.z_index = CombatRenderWorld.GROUND_DECALS_Z
 	decals.y_sort_enabled = true
 	add_child(decals)
 	roots = Node2D.new()
@@ -388,6 +388,8 @@ func _make_cell(key: Vector2i) -> void:
 			roots.add_child(sprite)
 		elif entry.kind == "grass":
 			sprite.texture = grass_textures[entry.index]
+			sprite.z_as_relative = false
+			sprite.z_index = CombatRenderWorld.GRASS_Z
 			sprite.flip_h = entry.flip
 			sprite.offset.y = -sprite.texture.get_height()*.5
 			roots.add_child(sprite)

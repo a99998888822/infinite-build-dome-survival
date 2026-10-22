@@ -18,7 +18,7 @@ var allow_return := true
 func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2, automatic: bool = false) -> void:
 	allow_return = not automatic
 	bind_weapon(source, "mobility_weapon_runtimes")
-	z_index = 0 # Child clips own their authored ground/foreground layers.
+	# Child clips use absolute layers inside the shared effect band.
 	live_source = original
 	original.mobility_runtime = weakref(self)
 	var player := weapon.owner_player
@@ -47,7 +47,6 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 
 func initialize_replay(source: WeaponInstance, point: Vector2, direction: Vector2, contact: EnemyController = null) -> void:
 	bind_weapon(source, "mobility_weapon_runtimes")
-	z_index = 0
 	replay_only = true
 	heading = direction
 	phase = "impact"

@@ -42,7 +42,7 @@ static func spawn_shockwave(parent: Node, point: Vector2, reach: float, tier: in
 	var effect := new()
 	effect.radius = reach
 	effect.detail = maxi(0, 2 - tier)
-	effect.z_index = 78
+	CombatRenderWorld.set_effect_layer(effect, 78)
 	parent.add_child(effect)
 	effect.global_position = point
 	effect.add_to_group("enchantment_block_shockwaves")

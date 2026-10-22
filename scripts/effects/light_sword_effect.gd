@@ -59,11 +59,11 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 
 func _ready() -> void:
-	z_index = 82
+	CombatRenderWorld.set_effect_layer(self, 82)
 	_ground_layer = PIXEL.layer(self, -7, _draw_ground)
 	_ground_area = GROUND_AREA.new()
 	add_child(_ground_area)
-	_ground_area.z_index = -8
+	CombatRenderWorld.set_effect_layer(_ground_area, -8)
 	queue_redraw()
 
 
