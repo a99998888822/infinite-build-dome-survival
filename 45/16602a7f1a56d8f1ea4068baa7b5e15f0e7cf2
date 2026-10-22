@@ -1,0 +1,318 @@
+scripts/ui/active_combat_weapon_bar.gd
+  s_5007a1066db201::t_01a88d99fa2715 98
+  s_fc8b0b3648bc99::t_7ab543b3636a61 18-21,56-63,72-73
+  s_fc8b0b3648bc99::t_dd8f2ae927d96e 54-55,219-222,228-236
+  s_fc8b0b3648bc99::t_a950b5be175c1e 237-238
+shaders/effects/reaction_blocks.gdshader
+  s_5007a1066db201::t_8f4e701ac9f88c 57,59-61,68,76,177
+  s_5007a1066db201::t_b82ff000fa61e5 58
+scripts/enemies/elite_rusher.gd
+  s_5007a1066db201::t_01a88d99fa2715 80-82
+  s_5007a1066db201::t_7af2ff1d9a522d 86-89,91
+scenes/ui/main_menu/main_menu_ui_controller.tscn
+  s_e28735f62fcd16::t_a93a03dae53613 111-113,117,160-163,193-196,226-229,259-262
+  s_e28735f62fcd16::t_16465d04492844 19,37-48,51
+scripts/tests/combat_hitch_regression_test.gd
+  s_fc8b0b3648bc99::t_55a1fcdc4384e0 156-158,160-186,188-192,341
+  s_fc8b0b3648bc99::t_ec7ed9223e08bf 159
+  s_e28735f62fcd16::t_c61f90da714a78 62
+  s_fc8b0b3648bc99::t_ae289b910e5e82 187,194-248
+  s_fc8b0b3648bc99::t_c206279f6a5c67 334-335
+  s_fc8b0b3648bc99::t_4a3841718f99a7 134-136
+  s_fc8b0b3648bc99::t_4114d2efb134af 111-133,137-155
+  s_fc8b0b3648bc99::t_3c4e97972c3c1c 41,193,249-293,310-333,336-340
+  s_fc8b0b3648bc99::t_2624c66132b787 93-96,102-107
+  s_fc8b0b3648bc99::t_b7132b28393c2f 294-309
+scripts/effects/element_reaction_visual.gd
+  s_5007a1066db201::t_8f4e701ac9f88c 58-60
+scripts/ui/bank_counter_portrait.gd
+  s_e28735f62fcd16::t_c62ecef85b648a 6-9
+scripts/tests/new_weapon_probability_test.gd
+  s_fc8b0b3648bc99::t_84cdf912fc8ffd 114,116
+  s_fc8b0b3648bc99::t_955ba0b404eb54 155,163-164
+  s_fc8b0b3648bc99::t_1950056180cdbc 43,138-154,156-162,165-171
+  s_e28735f62fcd16::t_e2f82080d7798b 172-173
+assets/ui/character_select/README.md
+  s_e28735f62fcd16::t_1cde3c618d385f 3
+  s_e28735f62fcd16::t_8f2275deadbd7b 1,5,7
+.agents/skills/picxel-external-images/SKILL.md
+  s_e28735f62fcd16::t_7647def8677cf9 16
+docs/README.md
+  s_e28735f62fcd16::t_8ff637cf020101 14
+  s_fc8b0b3648bc99::t_bae235d6458a4f 15
+  s_e28735f62fcd16::t_1cde3c618d385f 19
+scripts/battle/night_evacuation_visual.gd
+  s_fc8b0b3648bc99::t_c8d1afd03e1882 6-9,45,81-114,130,139,163
+scripts/tools/ASSET_INSTALLERS.md
+  s_e28735f62fcd16::t_1cde3c618d385f 7,25
+assets/sprites/player/actions/novice_96/README.md
+  s_e28735f62fcd16::t_1cde3c618d385f 9,11
+battle_performance_optimization_checklist.md
+  s_fc8b0b3648bc99::t_da4bf15debf97f 1,3,5,7-10,12,14-17,19,21,23,25
+artifacts/README.md
+  s_e28735f62fcd16::t_8ff637cf020101 5-6,8-9
+  s_e28735f62fcd16::t_1cde3c618d385f 7
+  s_fc8b0b3648bc99::t_bae235d6458a4f 3
+scripts/effects/fire_patch.gd
+  s_5007a1066db201::t_8f4e701ac9f88c 193-194
+scripts/tools/source_art/README.md
+  s_e28735f62fcd16::t_1cde3c618d385f 3,16
+assets/ui/main_menu/README.md
+  s_e28735f62fcd16::t_8f2275deadbd7b 1,3,5
+docs/asset/combat_effects.md
+  s_fc8b0b3648bc99::t_bae235d6458a4f 17
+scripts/ui/wave_challenge_popup.gd
+  s_e28735f62fcd16::t_a85932fde265d4 4-7,13-14,25-34,37,43,50,52,61-62,75-107
+scripts/tools/source_art/challenge_vault.py
+  s_e28735f62fcd16::t_9ef615108c52b9 3-4,9,184-188,207-208
+todo.md
+  s_fc8b0b3648bc99::t_1ad33e2402f50b 19-23
+  s_fc8b0b3648bc99::t_94c9247ca9e2c0 16-18
+scripts/ui/weapon_strip.gd
+  s_fc8b0b3648bc99::t_c206279f6a5c67 238-240
+  s_5007a1066db201::t_dd81002ff9ee4b 344
+  s_fc8b0b3648bc99::t_48c1cba1c3535e 51,89-93,100,236-237,241-251
+  s_5007a1066db201::t_7e07f25ee6b69d 9,71,76-77,273,296,334,336-343,345-350
+  s_5007a1066db201::t_01a88d99fa2715 330-333,335
+scripts/ui/main_menu_ui_controller.gd
+  s_e28735f62fcd16::t_a93a03dae53613 6-9,69-70,96,101-114,452,454
+scripts/tests/battle_loading_test.gd
+  s_fc8b0b3648bc99::t_f9b97c208ee9e7 177-178,181
+  s_fc8b0b3648bc99::t_f2871e052b23f2 65-66,78-83,117
+  s_fc8b0b3648bc99::t_55a1fcdc4384e0 58-60,71-77,110-112,171-176,179-180
+  s_fc8b0b3648bc99::t_8a3532f6e85482 87,118
+  s_fc8b0b3648bc99::t_e7fc8fdff04cd8 89-90
+  s_fc8b0b3648bc99::t_c2d5cc2ba9a3eb 61-64,68-70,84-86,88,91-97,116,119-120
+  s_fc8b0b3648bc99::t_3c4e97972c3c1c 123-127,182
+scenes/ui/common/weapon_strip.tscn
+  s_5007a1066db201::t_01a88d99fa2715 46
+  s_5007a1066db201::t_7e07f25ee6b69d 35-38,50
+scenes/tests/weapon_bar_pointer_test.tscn
+  s_fc8b0b3648bc99::t_c4bac8bac304c5 1-6
+scripts/ui/goblin_loan_presentation.gd
+  s_e28735f62fcd16::t_3792c4ca62d92b 183,248-251,253-257,259-264,267-279
+  s_e28735f62fcd16::t_c62ecef85b648a 20-21,177-182,184-190
+scripts/tests/iron_knight_test.gd
+  s_e28735f62fcd16::t_e746bdb71d2b82 126-139
+  s_5007a1066db201::t_01a88d99fa2715 115-125
+  s_e28735f62fcd16::t_539d0ca6394080 99,101-102,104
+scripts/tests/wave_challenge_test.gd
+  s_e28735f62fcd16::t_00aa26ed508bc0 154-155
+scripts/tests/fixtures/terrain_original_plan.gd
+  s_e28735f62fcd16::t_07f1805ddafdf3 67-69
+  s_fc8b0b3648bc99::t_0460a7233cd868 2,42-43,106-108
+scripts/tests/cavern_sunlight_test.gd
+  s_fc8b0b3648bc99::t_c64c6db09e57bc 120-123,133-135,152-153
+  s_fc8b0b3648bc99::t_3441762b9bae62 136
+.agents/skills/picxel-external-images/scripts/test_external_pixel.py
+  s_e28735f62fcd16::t_3e60eccf6605f4 207
+  s_e28735f62fcd16::t_87fdbe6c2a2465 209,211-217
+  s_e28735f62fcd16::t_7647def8677cf9 208,210
+scripts/battle/cavern_sunlight_backdrop.gd
+  s_fc8b0b3648bc99::t_f2871e052b23f2 7,36-56,91
+scripts/ui/shop_offer_generator.gd
+  s_fc8b0b3648bc99::t_1092866780bf28 76,104,133,209-211,236,387,390-391
+scripts/tools/source_art/challenge_vault.json
+  s_e28735f62fcd16::t_6504f9291b3c65 43-44,47-50,52,57-61
+scripts/ui/esc_overlay.gd
+  s_5007a1066db201::t_01a88d99fa2715 17
+docs/main/project_structure.md
+  s_fc8b0b3648bc99::t_bae235d6458a4f 31
+scripts/effects/water_wave_effect.gd
+  s_5007a1066db201::t_8f4e701ac9f88c 62-63
+scripts/tests/talent_tree_test.gd
+  s_e28735f62fcd16::t_1e3f5605238954 198-203
+  s_fc8b0b3648bc99::t_9b564af7d4440b 172,175-177,179,241-248
+art_asset_resolution_and_scale_audit.md
+  s_e28735f62fcd16::t_1cde3c618d385f 120
+  s_e28735f62fcd16::t_7981a43143a0de 3-119,121-122
+assets/ui/finance/goblin_portraits.json
+  s_e28735f62fcd16::t_24a69f82ac9c93 11-18,23-30,35-42,47-54,59-66,120-121
+  s_e28735f62fcd16::t_c473df7aff1163 93
+  s_e28735f62fcd16::t_b68de3f689d180 2,4-5,69-76,88-92
+  s_e28735f62fcd16::t_36fabdb8aefd91 94-119
+artifacts/sources/player/novice_actions_20261020/manifest.json
+  s_e28735f62fcd16::t_24a69f82ac9c93 103-110,121-128,139-146,157-164,175-182,193-200,211-218,229-236,247-254,265-272,283-290,301-308,319-326,337-344,355-362,373-380,391-398,409-416,427-434,445-452,463-470,481-488,499-506,517-524,535-542,553-560,571-578,589-596,607-614,625-632,643-650,661-668,679-686,697-704,715-722,733-740,751-758,769-776,787-794,805-812,823-830
+assets/ui/character_select/asset_manifest.json
+  s_e28735f62fcd16::t_c473df7aff1163 75-76
+  s_e28735f62fcd16::t_24a69f82ac9c93 77
+  s_e28735f62fcd16::t_1c40e01c966767 3-4,7-8,10,21-22,72-74
+  s_e28735f62fcd16::t_817a38940403f3 24
+scripts/tests/active_weapon_icon_layout_test.gd
+  s_5007a1066db201::t_9d3786f009a6b3 122-124,127-129
+scripts/tests/fixtures/README.md
+  s_fc8b0b3648bc99::t_bae235d6458a4f 5
+scripts/battle/cavern_battle_horizon.gd
+  s_e28735f62fcd16::t_3933fefd95df89 57-60
+scripts/ui/dungeon_loading_screen.gd
+  s_fc8b0b3648bc99::t_3c4e97972c3c1c 209-213
+  s_fc8b0b3648bc99::t_2da9abe8dca765 21,131,176,202-208,214-233,235
+  s_fc8b0b3648bc99::t_c8d1afd03e1882 132-133
+  s_fc8b0b3648bc99::t_f2871e052b23f2 129-130
+scripts/ui/run_settlement_panel.gd
+  s_e28735f62fcd16::t_c17e49f337c965 335-338
+  s_e28735f62fcd16::t_aa2a392aba9955 15-18,74
+  s_e28735f62fcd16::t_e6a357aca703c1 344-347
+  s_e28735f62fcd16::t_8a53e8873c9f89 307-308,317-322,325-328,331,348-349,352-360,362-363,368-374,376-383
+scripts/ui/reward_hud_style.gd
+  s_fc8b0b3648bc99::t_f0090d8c1e8ef2 62,81
+scripts/battle/cavern_population_backdrop.gd
+  s_e28735f62fcd16::t_07f1805ddafdf3 168,185,192-194
+  s_fc8b0b3648bc99::t_c64c6db09e57bc 14,335-340
+  s_fc8b0b3648bc99::t_cba00da5420197 106,166-167
+scripts/ui/virtual_shop_grid.gd
+  s_5007a1066db201::t_8f4e701ac9f88c 7-8
+docs/asset/asset_rules_summary.md
+  s_e28735f62fcd16::t_1cde3c618d385f 29
+assets/sprites/enemies/combat/art_source_manifest.json
+  s_e28735f62fcd16::t_c473df7aff1163 120
+docs/asset/asset_checklist_summary.md
+  s_e28735f62fcd16::t_8f2275deadbd7b 1,3
+  s_e28735f62fcd16::t_1cde3c618d385f 5
+scenes/tests/weapon_strip_layout_test.tscn
+  s_5007a1066db201::t_9d3786f009a6b3 1-6
+scripts/ui/reward_option.gd
+  s_fc8b0b3648bc99::t_f0090d8c1e8ef2 49,216,229-245,370-376,459-462
+  s_fc8b0b3648bc99::t_415b73ddcd1b04 48,176,180-181,185-200,204,253-256
+data_config/cavern_battlefield.json
+  s_e28735f62fcd16::t_3933fefd95df89 44-45,47,56-57,59,68-69,71,80-81,83
+data_config/camp_buildings.json
+  s_e28735f62fcd16::t_b2c42f6a0593a9 110-111,198,480,641-642
+assets/ui/settlement/monsters/manifest.json
+  s_e28735f62fcd16::t_c473df7aff1163 15,33,51,69
+  s_e28735f62fcd16::t_dbce60bd11ebba 2-3,5-8,10-12,14,16-20,23-26,28-32,34-50,52-56,59-66,68,70-74,76-77
+assets/sprites/player/actions/novice_96/approved_frames.json
+  s_e28735f62fcd16::t_24a69f82ac9c93 85,126-135
+assets/sprites/enemies/iron_knight/art_source_manifest.json
+  s_e28735f62fcd16::t_c473df7aff1163 227
+scripts/ui/character_select_view.gd
+  s_e28735f62fcd16::t_237c0c7c18897f 10,207
+scripts/tests/character_select_view_test.gd
+  s_e28735f62fcd16::t_237c0c7c18897f 75-79
+scripts/ui/goblin_trade_presentation.gd
+  s_e28735f62fcd16::t_c62ecef85b648a 146-147,153
+  s_e28735f62fcd16::t_a85932fde265d4 123,155,295
+scripts/tests/run_settlement_test.gd
+  s_e28735f62fcd16::t_def65362f06d16 212,215,330-333,340,343,345-351
+  s_e28735f62fcd16::t_c17e49f337c965 294-295
+  s_e28735f62fcd16::t_47019bba8fef28 317-324
+scripts/tools/install_goblin_portraits.py
+  s_e28735f62fcd16::t_a121d6bf812ccf 6,59-87,105,114-115,123,125-127
+  s_e28735f62fcd16::t_36bd0dcd00a74f 4,17,57-58,109-110
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_e28735f62fcd16::t_1e3f5605238954 17,158,161,256-257
+  s_fc8b0b3648bc99::t_763b18a2374443 16
+scenes/tests/wave_challenge_layout_test.tscn
+  s_e28735f62fcd16::t_00aa26ed508bc0 1-6
+data_config/run_settlement.json
+  s_e28735f62fcd16::t_8a53e8873c9f89 14-17
+scripts/ui/shop_popup.gd
+  s_5007a1066db201::t_01a88d99fa2715 21,60-61,448-449,457-458,482
+  s_fc8b0b3648bc99::t_5aeac1711adb6b 504,520-521,536-553
+  s_fc8b0b3648bc99::t_2624c66132b787 218-223
+  s_fc8b0b3648bc99::t_ba9c8da500f95d 554-555
+scripts/tests/weapon_bar_pointer_test.gd.uid
+  s_fc8b0b3648bc99::t_ffbd7729a8996e 1
+scripts/ui/finance_scene_layout.gd
+  s_e28735f62fcd16::t_c62ecef85b648a 33
+docs/asset/combat_sprite_clarity.md
+  s_e28735f62fcd16::t_8ff637cf020101 5-14
+.agents/skills/picxel-external-images/vendor/picxel/SPEC.md
+  s_fc8b0b3648bc99::t_fd702318424646 5
+.agents/skills/picxel-external-images/vendor/picxel/VENDOR.json
+  s_e28735f62fcd16::t_ec44d47911038e 26,35,40,61,72-75
+.agents/skills/picxel-external-images/vendor/picxel/scripts/panel.html
+  s_fc8b0b3648bc99::t_cf27274c5b9f56 116
+.agents/skills/picxel-external-images/vendor/picxel/scripts/panel.py
+  s_fc8b0b3648bc99::t_abe06b2669703a 25
+.agents/skills/picxel-external-images/vendor/picxel/scripts/picxel.py
+  s_fc8b0b3648bc99::t_87e96dbd9a9052 23,43
+artifacts/sources/augmentations/fashu_icon_manifest.json
+  s_e28735f62fcd16::t_f8f8b85270a9ea 2-494
+artifacts/sources/weapons/build_mobility_weapon_art.py
+  s_e28735f62fcd16::t_77697c99e5451a 1,3,5-6,10-12,14,17-76,78-387,391
+artifacts/sources/weapons/plasma/plasma-cannon.anchor.json
+  s_e28735f62fcd16::t_781d5036b0af22 2-18,20-23,26-29,32-33
+assets/ui/settlement/monsters/enemy_mutated_grub.png.import
+  s_e28735f62fcd16::t_b3952b6cbdbccb 1-40
+assets/ui/settlement/monsters/enemy_underworld_wolf.png.import
+  s_e28735f62fcd16::t_982891a9d4fbb9 1-40
+data_config/cavern_meadow_battlefield.json
+  s_a004d956546c62::t_37346f0da9683a 17,50,52-53,59,61-62
+data_config/enemies.json
+  s_e28735f62fcd16::t_4e5833c3964ed0 62,108-109
+scripts/battle/cavern_grassland_backdrop.gd
+  s_20720a497aa272::t_81f00b378c92a6 81-83
+scripts/tests/finance_controls_layout_test.gd
+  s_fc8b0b3648bc99::t_ef07a63c1a7559 51-52,63-68
+scripts/tests/underworld_wolf_review.gd
+  s_e28735f62fcd16::t_6cff4fc430baf2 162-163,172,181,399,430,447
+scripts/tests/wave_challenge_layout_test.gd.uid
+  s_e28735f62fcd16::t_ac9dcbe8c176ce 1
+scripts/tests/weapon_strip_layout_test.gd.uid
+  s_5007a1066db201::t_8e45ab28611894 1
+scripts/tools/source_art/challenge_vault_32.pal
+  s_e28735f62fcd16::t_954ad0608e086d 1-16
+scripts/ui/talent_node_button.gd
+  s_fc8b0b3648bc99::t_3d3b31bab2b472 14-15,40-42,44
+data_config/characters.json
+  s_a7add2aced0840::t_13388d3fd3d6a8 32,71
+scenes/pickups/exp_orb.tscn
+  s_e28735f62fcd16::t_ae56d2280c67b0 17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4516602a7f1a56d8f1ea4068baa7b5e15f0e7cf2",
+  "prompts": {},
+  "sessions": {
+    "s_20720a497aa272": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a13817-ed43-7d72-8b21-6e55c3c2fcca",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_5007a1066db201": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1614c-b893-7161-aaca-f8e64f4e70e2",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a004d956546c62": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1307e-9124-7611-aafd-c66edbb27865",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_a7add2aced0840": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0e84a-1a70-7683-9157-63ed61c953eb",
+        "model": "unknown"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e28735f62fcd16": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15815-f0fd-7fe0-9580-8aee69fc4781",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_fc8b0b3648bc99": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a152fc-a3ca-7fe3-a022-9d62458e5108",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
