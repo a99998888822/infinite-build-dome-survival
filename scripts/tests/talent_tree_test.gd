@@ -100,6 +100,10 @@ func drag_from(point: Vector2, button: MouseButton, delta: Vector2) -> void:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
+	# Exercise retained full-release progression in memory; release_content_test covers the shipped locks.
+	for record in DataRegistry.tables.camp_buildings:
+		record.erase("release_locked")
+		DataRegistry.records_by_id.camp_buildings[str(record.id)].erase("release_locked")
 	L10n.set_locale("zh_CN", false)
 	for b in CampProgression.get_building_records():
 		ids[str(b.icon).get_file().get_basename()] = str(b.id)

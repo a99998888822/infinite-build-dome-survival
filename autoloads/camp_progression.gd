@@ -166,6 +166,10 @@ func is_building_initially_unlocked(building_id: String) -> bool:
 	return bool(record.get("initial_unlocked", false))
 
 
+func is_building_release_locked(building_id: String) -> bool:
+	return bool(get_building_record(building_id).get("release_locked", false))
+
+
 func get_building_level(building_id: String) -> int:
 	return int(state.get("building_levels", {}).get(building_id, 0))
 
@@ -198,6 +202,8 @@ func get_building_display_state(building_id: String) -> String:
 
 
 func can_purchase_building_unlock(building_id: String) -> bool:
+	if is_building_release_locked(building_id):
+		return false
 	if is_building_unlocked(building_id) or is_building_initially_unlocked(building_id):
 		return false
 	var condition := get_building_unlock_condition(building_id)
@@ -250,6 +256,8 @@ func get_building_upgrade_cost(building_id: String, target_level: int = -1) -> i
 
 
 func can_purchase_building_upgrade(building_id: String) -> bool:
+	if is_building_release_locked(building_id):
+		return false
 	var current_level := get_building_level(building_id)
 	var max_level := get_building_max_level(building_id)
 	if current_level <= 0 or current_level >= max_level:
@@ -275,6 +283,8 @@ func set_building_level(building_id: String, level: int) -> bool:
 
 
 func upgrade_building(building_id: String) -> bool:
+	if is_building_release_locked(building_id):
+		return false
 	var current_level := get_building_level(building_id)
 	if current_level <= 0:
 		return false
@@ -327,7 +337,7 @@ func get_upgrade_option_parent_building_id(option_id: String) -> String:
 func is_upgrade_visible(option_id: String) -> bool:
 	# Follow the whole chain defensively: invalid/cyclic data must never unlock a purchase.
 	var owner := get_upgrade_option_parent_building_id(option_id)
-	if owner.is_empty() or not is_building_unlocked(owner):
+	if owner.is_empty() or is_building_release_locked(owner) or not is_building_unlocked(owner):
 		return false
 	var visited: Dictionary = {}
 	var cursor := option_id

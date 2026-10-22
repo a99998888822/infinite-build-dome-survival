@@ -1366,6 +1366,9 @@ func get_offer_unavailable_reason(offer: Dictionary, check_gold: bool = true) ->
 	if bool(offer.get("purchased", false)):
 		return "already_purchased"
 	var target := str(offer.get("target_id", ""))
+	if str(offer.get("offer_type", "")) in [ShopOfferGenerator.OFFER_NEW_WEAPON, ShopOfferGenerator.OFFER_WEAPON_UPGRADE]:
+		if bool(DataRegistry.get_record("weapons", target).get("release_locked", false)):
+			return "release_locked"
 	match str(offer.get("offer_type", "")):
 		ShopOfferGenerator.OFFER_NEW_WEAPON:
 			if _bound_loadout == null or _bound_loadout.has_weapon(target):

@@ -209,6 +209,7 @@
   },
   {
     "id": "camp_blade_arena",
+    "release_locked": true,
     "name": "利刃演武场",
     "initial_unlocked": false,
     "type": "human",
@@ -300,6 +301,7 @@
   },
   {
     "id": "camp_farstar_range",
+    "release_locked": true,
     "name": "远星射靶台",
     "initial_unlocked": false,
     "type": "human",
@@ -407,6 +409,7 @@
   },
   {
     "id": "camp_dome_shelter",
+    "release_locked": true,
     "name": "穹顶庇护所",
     "initial_unlocked": false,
     "type": "human",
@@ -522,6 +525,7 @@
   },
   {
     "id": "camp_council_hall",
+    "release_locked": true,
     "name": "议事大厅",
     "initial_unlocked": false,
     "type": "mixed",

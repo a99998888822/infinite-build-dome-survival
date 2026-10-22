@@ -52,6 +52,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		owned_relic_rarity_counts[owned_relic_rarity] = int(owned_relic_rarity_counts.get(owned_relic_rarity, 0)) + owned_relic_amount
 
 	for weapon_data in DataRegistry.get_table("weapons"):
+		if bool(weapon_data.get("release_locked", false)):
+			continue
 		var weapon_id := str(weapon_data.get("id", ""))
 		if weapon_id.is_empty() or owned_weapon_ids.has(weapon_id):
 			continue
@@ -104,6 +106,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		}))
 
 	for weapon_data in _get_equipped_weapon_data(context):
+		if bool(weapon_data.get("release_locked", false)):
+			continue
 		var weapon_id := str(weapon_data.get("id", ""))
 		var current_level := int(_get_equipped_weapon_level(context, weapon_id))
 		var max_level := int(weapon_data.get("max_level", 1))

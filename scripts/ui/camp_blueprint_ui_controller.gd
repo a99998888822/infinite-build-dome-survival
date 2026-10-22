@@ -39,6 +39,7 @@ var _hint: Label
 var _upgrade_button: TextureButton
 var _upgrade_tooltip: Panel
 var _upgrade_tooltip_text: Label
+var _tooltip_anchor: Control
 var _selected_id := ""
 var _zoom := 1.0
 var _pan := Vector2.ZERO
@@ -161,6 +162,8 @@ func _add_node(record: Dictionary, building: bool) -> void:
 	node.position = (Vector2(float(point[0]), float(point[1])) * NODE_SPACING - node.size / 2.0).round()
 	node.pressed.connect(select_node.bind(id))
 	node.gui_input.connect(_on_node_input.bind(node))
+	node.mouse_entered.connect(_show_release_tooltip.bind(id))
+	node.mouse_exited.connect(_hide_upgrade_tooltip)
 	_tree.add_child(node)
 	_nodes[id] = node
 	_records[id] = record
@@ -323,7 +326,7 @@ func _on_node_input(event: InputEvent, source: Control) -> void:
 
 func select_node(id: String) -> void:
 	_hide_upgrade_tooltip()
-	_selected_id = id if _nodes.has(id) and _nodes[id].visible else ""
+	_selected_id = id if _nodes.has(id) and _nodes[id].visible and not _nodes[id].disabled else ""
 	_refresh_all()
 
 
@@ -332,10 +335,12 @@ func _refresh_all() -> void:
 	_tree.edges.clear()
 	for id in _nodes:
 		var node: TalentNodeButton = _nodes[id]
+		node.disabled = node.building and CampProgression.is_building_release_locked(id)
+		node.mouse_default_cursor_shape = Control.CURSOR_ARROW if node.disabled else Control.CURSOR_POINTING_HAND
 		node.visible = node.building or CampProgression.is_upgrade_visible(id)
 		var level := CampProgression.get_building_level(id) if node.building else CampProgression.get_upgrade_option_level(id)
 		var maximum := CampProgression.get_building_max_level(id) if node.building else int(_records[id].max_level)
-		node.lit = level > 0
+		node.lit = level > 0 and not node.disabled
 		node.selected = id == _selected_id
 		node.queue_redraw()
 		var caption: Label = _node_labels[id]
@@ -344,6 +349,7 @@ func _refresh_all() -> void:
 		caption.position = Vector2(roundf((node.size.x - caption.size.x) / 2.0), node.size.y + 6)
 		caption.add_theme_color_override("font_color", PALETTE.WARM_ACTIVE if node.selected else TEXT if node.lit else MUTED)
 		var badge: Label = _node_levels[id]
+		badge.visible = not node.disabled
 		badge.text = "%d/%d" % [level, maximum]
 		badge.size = badge.get_minimum_size()
 		badge.position = Vector2(roundf((node.size.x - badge.size.x) / 2.0), node.size.y - badge.size.y - 2)
@@ -353,7 +359,7 @@ func _refresh_all() -> void:
 			if parent.is_empty(): parent = CampProgression.get_upgrade_option_parent_building_id(id)
 			var parent_node: TalentNodeButton = _nodes[parent]
 			_tree.edges.append({"from": parent_node.position + parent_node.size / 2.0, "to": node.position + node.size / 2.0, "lit": node.lit})
-	if not _selected_id.is_empty() and not _nodes[_selected_id].visible: _selected_id = ""
+	if not _selected_id.is_empty() and (not _nodes[_selected_id].visible or _nodes[_selected_id].disabled): _selected_id = ""
 	_tree.queue_redraw()
 	_refresh_detail()
 	_refresh_summary()
@@ -418,6 +424,16 @@ func _refresh_detail() -> void:
 
 func _show_upgrade_tooltip() -> void:
 	if _dragging or not is_visible_in_tree() or not _upgrade_button.visible: return
+	_tooltip_anchor = _upgrade_button
+	_refresh_detail()
+	_position_upgrade_tooltip()
+	_upgrade_tooltip.show()
+
+
+func _show_release_tooltip(id: String) -> void:
+	if _dragging or not is_visible_in_tree() or not _nodes[id].disabled: return
+	_tooltip_anchor = _nodes[id]
+	_upgrade_tooltip_text.text = L10n.text("ui.character.release_locked")
 	_position_upgrade_tooltip()
 	_upgrade_tooltip.show()
 
@@ -429,7 +445,8 @@ func _hide_upgrade_tooltip() -> void:
 func _position_upgrade_tooltip() -> void:
 	_upgrade_tooltip_text.size = _upgrade_tooltip_text.get_minimum_size()
 	_upgrade_tooltip.size = _upgrade_tooltip_text.size + Vector2(40, 26.666667)
-	var arrow := _upgrade_button.get_global_rect()
+	var anchor := _tooltip_anchor if is_instance_valid(_tooltip_anchor) else _upgrade_button
+	var arrow := anchor.get_global_rect()
 	var point := _content.get_global_transform().affine_inverse() * Vector2(arrow.end.x, arrow.position.y)
 	point += Vector2(16.666667, 0)
 	if point.x + _upgrade_tooltip.size.x > _content.size.x - 13.333333:
@@ -481,6 +498,7 @@ func _number(value: float) -> String:
 func _purchase_selected() -> void:
 	if _selected_id.is_empty(): return
 	var node: TalentNodeButton = _nodes[_selected_id]
+	if node.disabled: return
 	var success := false
 	if node.building:
 		success = CampProgression.upgrade_building(_selected_id) if node.lit else CampProgression.purchase_building_unlock(_selected_id)

@@ -87,6 +87,7 @@
   },
   {
     "id": "weapon_iron_grenade_cannon",
+    "release_locked": true,
     "shop_weight": 80,
     "combat_tags": ["投射物", "范围"],
     "shop_description": "抛射榴弹炮，延迟后在落点爆炸",
@@ -160,6 +161,7 @@
   },
   {
     "id": "weapon_rentier_purse",
+    "release_locked": true,
     "shop_weight": 90,
     "combat_tags": ["远程", "投射物"],
     "shop_description": "向瞄准方向扇形散射金币，受到远程伤害和本金双加成",
@@ -194,6 +196,7 @@
   },
   {
     "id": "weapon_copper_lamp",
+    "release_locked": true,
     "shop_weight": 90,
     "combat_tags": ["扇形", "范围"],
     "shop_description": "最近的敌人持续喷射火流",
@@ -220,6 +223,7 @@
   },
   {
     "id": "weapon_mutant_tentacle",
+    "release_locked": true,
     "shop_weight": 90,
     "combat_tags": ["近战", "范围"],
     "shop_description": "卷曲展开后瞬间拍地。",
@@ -276,6 +280,7 @@
   },
   {
     "id": "weapon_camp_dagger",
+    "release_locked": true,
     "shop_weight": 100,
     "combat_tags": ["近战", "扇形", "范围"],
     "shop_description": "正反手交替斩击",
@@ -433,6 +438,7 @@
   },
   {
     "id": "weapon_star_tome",
+    "release_locked": true,
     "shop_weight": 80,
     "display_name": "移星秘典",
     "description": "闪现到鼠标位置，震开落点周围敌人并造成伤害。起点留下印记，再次施放返回。",

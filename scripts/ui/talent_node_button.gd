@@ -32,9 +32,9 @@ func configure(record: Dictionary, is_building: bool, background: Texture2D) -> 
 func _draw() -> void:
 	if background_texture == null: return
 	var ring: Texture2D = background_texture if lit else PALETTE.NODE_LOCKED
-	if selected:
+	if selected and not disabled:
 		ring = PALETTE.WARM_NODE
-	elif is_hovered():
+	elif is_hovered() and not disabled:
 		ring = PALETTE.NODE_SELECTED
 	draw_texture_rect(ring, Rect2(Vector2.ZERO, size), false)
 	draw_texture_rect(icon_texture if lit else gray_icon, get_icon_rect(), false)
