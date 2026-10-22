@@ -1,0 +1,49 @@
+scenes/tests/release_content_test.tscn
+  s_3c1add875c38ee::t_1ead826f37b76c 1-6
+data_config/camp_buildings.json
+  s_3c1add875c38ee::t_e6d4187982f6b3 212,304,412,528
+scripts/tests/release_content_test.gd
+  s_3c1add875c38ee::t_1ead826f37b76c 1-141
+autoloads/camp_progression.gd
+  s_3c1add875c38ee::t_e6d4187982f6b3 169-172,205-206,259-260,286-287,340
+scripts/core/main_flow_coordinator.gd
+  s_3c1add875c38ee::t_e6d4187982f6b3 1369-1371
+scripts/tests/talent_tree_test.gd
+  s_3c1add875c38ee::t_1ead826f37b76c 103-106
+scripts/ui/talent_node_button.gd
+  s_3c1add875c38ee::t_e6d4187982f6b3 35,37
+scripts/ui/shop_offer_generator.gd
+  s_3c1add875c38ee::t_e6d4187982f6b3 55-56,109-110
+scripts/tests/new_weapon_probability_test.gd
+  s_3c1add875c38ee::t_1ead826f37b76c 4,6-7,31,36,66,89,111,116,120,122,126,128
+data_config/weapons.json
+  s_3c1add875c38ee::t_e6d4187982f6b3 90,164,199,226,283,441
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_3c1add875c38ee::t_e6d4187982f6b3 42,165-166,329,338-339,343,352,362,427-436,448-449,501
+scripts/tests/release_content_test.gd.uid
+  s_00d956f09deb0c::t_c7d2c823927f77 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "03bf9127e964fa4a5192da6e831c2ad445c0fb74",
+  "prompts": {},
+  "sessions": {
+    "s_00d956f09deb0c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a162ee-b8f6-7c11-a29f-850ccc32adcb",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_3c1add875c38ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a16362-28dc-7a21-9025-c3e3fc12af50",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
