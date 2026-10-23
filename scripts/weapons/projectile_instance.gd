@@ -35,6 +35,7 @@ var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
 var _plasma_contact_hold_left: float = 0.0
 var _plasma_visual: Node2D = null
+var _sorted_visual: Node2D = null
 var _hit_shape: CircleShape2D = null
 var _deferred_contacts: Dictionary = {}
 
@@ -54,7 +55,7 @@ func initialize(
 ) -> bool:
 	if source_weapon == null or source_damage_event == null:
 		return false
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	weapon = source_weapon
 	damage_event = source_damage_event
 	projectile_id = source_projectile_id.strip_edges()
@@ -90,8 +91,9 @@ func initialize(
 	collision_shape.set_deferred("disabled", false)
 
 	if _is_plasma_projectile():
+		_sorted_visual = preload("res://scripts/effects/combat_sorted_visual.gd").attach(self)
 		_plasma_visual = PLASMA_VISUAL_SCRIPT.new()
-		add_child(_plasma_visual)
+		_sorted_visual.add_child(_plasma_visual)
 		_plasma_visual.initialize(weapon, projectile_id)
 	elif texture != null:
 		var sprite := Sprite2D.new()
@@ -131,6 +133,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if _is_plasma_projectile():
 		if _plasma_visual != null:
+			_sorted_visual.sync()
 			_plasma_visual.advance(delta)
 		_process_plasma_contact(delta)
 		if not active:

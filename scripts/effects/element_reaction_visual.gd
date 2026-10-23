@@ -50,11 +50,22 @@ static func spawn(parent: Node, reaction: String, origin: Vector2, settings: Dic
 	if reaction == "freeze": effect.duration = 0.62
 	if reaction == "conduct": effect.duration = 1.1
 	if reaction == "wet_spread": effect.duration = 0.50
-	parent.add_child(effect)
+	var visual_parent := parent
+	if reaction == "conduct" and settings.has("follow"):
+		var target: Node = settings.follow.get_ref()
+		if is_instance_valid(target): visual_parent = target
+	visual_parent.add_child(effect)
 	effect.global_position = origin
 	effect.add_to_group(GROUP)
 	effect.detail = PIXEL.register(effect, "reaction_" + reaction)
 	CombatRenderWorld.set_effect_layer(effect, -5 if reaction in ["ice_expand", "thaw"] else 83)
+	if reaction in ["freeze", "thaw"]:
+		CombatRenderWorld.set_world_layer(effect, CombatRenderWorld.REACTION_Z)
+	elif reaction == "steam":
+		CombatRenderWorld.set_world_layer(effect, CombatRenderWorld.STEAM_Z)
+		effect.modulate.a = 0.65
+	elif reaction == "conduct":
+		CombatRenderWorld.set_actor_local(effect)
 	if reaction == "wet_spread":
 		CombatRenderWorld.set_effect_layer(effect, -7)
 

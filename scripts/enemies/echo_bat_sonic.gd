@@ -18,6 +18,7 @@ var sweep: ShapeCast2D
 
 func _ready() -> void:
 	top_level = true
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	add_to_group("echo_bat_projectiles")
 	visual = Sprite2D.new()
 	visual.texture = WAVE

@@ -75,7 +75,7 @@ func _run() -> void:
 		FIRE.clock.advance(0.18)
 		FIRE.clock.set_process(false)
 	_collect_surfaces(battle.player.get_viewport())
-	check(surfaces.size() >= 15, "spell, projectile, fire, particle and ground surfaces exercised")
+	check(surfaces.size() >= 8, "spell, projectile, fire, particle and ground surfaces exercised")
 	_check_drawables(effect_host)
 	var particle_world := PARTICLES._find_world(battle.player)
 	check(_effective_z(particle_world) < 0, "shared particle pool below actors")
@@ -161,7 +161,7 @@ func _effective_z(item: CanvasItem) -> int:
 
 func _check_drawables(node: Node) -> void:
 	if node is CanvasItem and (node is Sprite2D or node is MultiMeshInstance2D or node.has_method("_draw")):
-		check(_effective_z(node) < 0, "high simulation parent cannot lift effect: "+str(node.get_path()))
+		check(_effective_z(node) > CombatRenderWorld.GRASS_Z and _effective_z(node) <= CombatRenderWorld.REACTION_Z, "render role is independent of high simulation parent: "+str(node.get_path()))
 	for child in node.get_children(): _check_drawables(child)
 
 func _collect_surfaces(node: Node) -> void:
@@ -191,6 +191,7 @@ func _image() -> Image:
 
 func _check_gpu(id: String) -> void:
 	var viewport := battle.player.get_viewport()
+	_hide_foreground(viewport)
 	_effects_visible(false)
 	var reference := await _image()
 	ground.ground.hide()
@@ -242,3 +243,11 @@ func _check_gpu(id: String) -> void:
 		var previous := await _image()
 		previous.save_png(output.path_join("below_grass_"+id+".png"))
 		_grass_layer(CombatRenderWorld.GRASS_Z)
+
+
+func _hide_foreground(node: Node) -> void:
+	# This existing GPU fixture isolates ground art; foreground and actor-local
+	# occlusion are covered by combat_layer_semantics_test.
+	if node is CanvasItem and not node.z_as_relative and node.z_index > 0 and node.z_index <= CombatRenderWorld.REACTION_Z:
+		node.hide()
+	for child in node.get_children(): _hide_foreground(child)

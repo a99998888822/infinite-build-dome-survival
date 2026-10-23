@@ -47,7 +47,6 @@ static func draw_cue(canvas: Node2D) -> bool:
 	return true
 
 static func draw_thaw(canvas: Node2D) -> void:
-	CombatRenderWorld.set_effect_layer(canvas, 83)
 	paint(canvas,7,Rect2(-65,-60,130,90),canvas.elapsed,canvas.elapsed/canvas.duration)
 
 static func draw_reflection(canvas: Node2D, reach: float, age: float, lifetime: float,
@@ -61,7 +60,7 @@ static func spawn_blast(parent: Node, point: Vector2, reach: float, tier: int) -
 	effect.detail = maxi(0,2-tier)
 	# Spatial variation is independent of gameplay randomness and stable in flight.
 	effect.burst_variant = fposmod(point.dot(Vector2(0.173,0.317)),31.0)
-	CombatRenderWorld.set_effect_layer(effect, 78)
+	CombatRenderWorld.set_world_layer(effect, CombatRenderWorld.IMPACT_Z)
 	parent.add_child(effect)
 	effect.global_position = point
 	effect.add_to_group("reaction_block_blasts")

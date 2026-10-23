@@ -51,7 +51,7 @@ func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool) -
 
 
 func _ready() -> void:
-	z_index = -1
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.TELEGRAPH_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	material = STYLE.make_material()
 	queue_redraw()

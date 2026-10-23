@@ -20,7 +20,7 @@ def run(command):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot")
-    parser.add_argument("--output", type=Path, default=Path(tempfile.gettempdir()) / "enchantment_promo_20261022_v2")
+    parser.add_argument("--output", type=Path, default=Path(tempfile.gettempdir()) / "enchantment_promo_20261022_v3")
     parser.add_argument("--encode-only", action="store_true")
     args = parser.parse_args()
     output = args.output.resolve()

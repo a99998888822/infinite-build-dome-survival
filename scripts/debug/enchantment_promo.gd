@@ -4,7 +4,7 @@ extends Node
 
 const FPS := 60
 const INTRO := 30
-const FLIGHT := [33, 33, 36]
+const FLIGHT := [48, 51, 54]
 const OVERLAP := 9
 const LAND := 18
 const END_HOLD := 120

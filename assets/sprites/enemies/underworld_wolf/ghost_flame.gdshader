@@ -6,6 +6,7 @@ uniform float flame_time = 0.0;
 uniform float reach = 240.0;
 uniform float half_angle = 0.5235988;
 uniform float opacity = 0.95;
+uniform int render_part = 0;
 uniform vec2 flame_forward = vec2(1.0, 0.0);
 varying vec2 local_point;
 
@@ -51,5 +52,8 @@ void fragment() {
         }
     }
     if (p.x < 0.0 || abs(p.y) > span || length(p) > reach) result.a = 0.0;
+    bool foreground = (density > 0.0 && density < 0.18 && screen_p.y > 0.0) || density <= 0.0;
+    if ((render_part == 1 && foreground) || (render_part == 2 && !foreground)) result.a = 0.0;
+    if (render_part == 2) result.a *= 0.55;
     COLOR = result * vec4(1.0, 1.0, 1.0, opacity);
 }

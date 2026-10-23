@@ -20,7 +20,7 @@ func _init() -> void:
 	material = flame_material
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	# Keep the player silhouette and each knockback visible inside the fire.
-	z_index = -1
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.BACK_Z)
 
 
 func configure(direction: Vector2, distance: float, degrees: float, time: float) -> void:
@@ -31,6 +31,7 @@ func configure(direction: Vector2, distance: float, degrees: float, time: float)
 	flame_material.set_shader_parameter("half_angle",deg_to_rad(degrees)*0.5)
 	flame_material.set_shader_parameter("flame_time",time)
 	flame_material.set_shader_parameter("opacity",minf(1.0,(1.5-time)/0.15))
+	preload("res://scripts/effects/split_flame_visual.gd").sync(self, flame_material, Rect2(-reach,-reach,reach*2,reach*2))
 	queue_redraw()
 
 

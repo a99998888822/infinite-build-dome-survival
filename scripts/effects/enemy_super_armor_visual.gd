@@ -45,7 +45,7 @@ func _ready() -> void:
 	caption.pivot_offset = caption.size * 0.5
 	caption.scale = Vector2.ONE
 	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	caption.z_index = 20
+	CombatRenderWorld.set_world_layer(caption, CombatRenderWorld.INFO_Z)
 	add_child(caption)
 	clear()
 
@@ -112,7 +112,7 @@ func _sync() -> void:
 	outline.flip_v = body.flip_v
 	outline.centered = body.centered
 	outline.offset = body.offset
-	outline.z_index = body.z_index + 1
+	CombatRenderWorld.set_actor_local(outline)
 	if _last_texture != body.texture:
 		_last_texture = body.texture
 		outline.texture = body.texture

@@ -35,7 +35,7 @@ func initialize(source: WeaponInstance, event: DamageEvent, origin: Vector2, hea
 	volley_hits = shared_hits
 	split_generation = generation
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	add_to_group("coin_projectiles")
 	add_to_group("weapon_runtime_effects")
 

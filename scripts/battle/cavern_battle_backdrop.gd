@@ -87,6 +87,7 @@ func _setup() -> void:
 	add_child(decals)
 	roots = Node2D.new()
 	roots.name = "RootDepthSort"
+	roots.add_to_group("combat_actor_sort_root")
 	roots.y_sort_enabled = true
 	add_child(roots)
 	# Keep the manager's enemy container intact; sort its children with scenery.

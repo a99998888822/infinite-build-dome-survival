@@ -10,7 +10,7 @@ var active := false
 
 
 func _ready() -> void:
-	z_index = -1
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.TELEGRAPH_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	hide()
 

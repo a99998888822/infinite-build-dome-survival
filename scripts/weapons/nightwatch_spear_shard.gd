@@ -6,7 +6,7 @@ var _paused_contacts: Dictionary = {}
 
 
 func _ready() -> void:
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	add_to_group("nightwatch_spear_shards")
 	add_to_group("weapon_runtime_effects")

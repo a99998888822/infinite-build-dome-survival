@@ -46,6 +46,8 @@ func configure(direction: Vector2, distance: float, degrees: float, elapsed: flo
 	flame_material.set_shader_parameter("half_angle", half_angle)
 	flame_material.set_shader_parameter("flame_time", elapsed)
 	flame_material.set_shader_parameter("opacity", 0.55 if child else 0.88)
+	if flame_material.shader == SHADER:
+		preload("res://scripts/effects/split_flame_visual.gd").sync(self, flame_material, Rect2(-reach, -reach, reach * 2, reach * 2))
 
 
 func _draw() -> void:

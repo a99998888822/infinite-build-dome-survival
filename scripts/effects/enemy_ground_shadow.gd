@@ -22,7 +22,7 @@ func configure(enemy: Node2D) -> void:
 	source = body.get_node_or_null("Sprite2D") as Sprite2D
 	kind = str(body.get("enemy_id"))
 	profile = PROFILES.get(kind, PROFILES.enemy_mutated_grub)
-	z_index = -2 # Below bodies and existing skill warnings, above the terrain.
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.SHADOW_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	process_priority = 10
 	_last_factor = -1.0

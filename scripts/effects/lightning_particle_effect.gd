@@ -54,6 +54,7 @@ var _ground_strike_damage_radius: float = 0.0
 var _ground_strike_position: Vector2 = Vector2.ZERO
 var _ground_strike_impact_age: float = -1.0
 var _ground_strike_damage_applied: bool = false
+var _ground_ring: Node2D
 var _audio_impact: RefCounted = null
 var _thunder_fire_text_shown := false
 
@@ -422,8 +423,12 @@ func _get_cached_parameter(channel: String, fallback: float = 0.0) -> float:
 
 func _ready() -> void:
 	add_to_group("combat_particle_counters")
-	CombatRenderWorld.set_effect_layer(self, 81)
-	queue_redraw()
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.BEAM_Z)
+	_ground_ring = Node2D.new()
+	_ground_ring.name = "LightningGroundImpact"
+	CombatRenderWorld.set_effect_layer(_ground_ring, -1)
+	add_child(_ground_ring)
+	_ground_ring.draw.connect(_draw_ground_impact)
 
 
 func _process(delta: float) -> void:
@@ -445,7 +450,7 @@ func _process(delta: float) -> void:
 		pulse.bolt.modulate.a = alpha_at(pulse.age)
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
-		queue_redraw()
+		_ground_ring.queue_redraw()
 	_try_finish_chain()
 
 
@@ -453,12 +458,12 @@ func get_active_particle_count() -> int:
 	return 0
 
 
-func _draw() -> void:
+func _draw_ground_impact() -> void:
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0 and _ground_strike_impact_age < GROUND_STRIKE_IMPACT_RING_LIFETIME:
 		var impact_ratio := clampf(_ground_strike_impact_age / GROUND_STRIKE_IMPACT_RING_LIFETIME, 0.0, 1.0)
 		var impact_center := to_local(_ground_strike_position)
 		# Reach the terminal boundary while visible, then fade without growing it.
 		var impact_radius := lerpf(GROUND_STRIKE_IMPACT_RING_START_RADIUS, _ground_strike_damage_radius, smoothstep(0.0,0.6,impact_ratio))
 		var impact_alpha := (1.0 - impact_ratio) * 0.68
-		GROUND.disk(self, impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
-		GROUND.arc(self, impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)
+		GROUND.disk(_ground_ring, impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
+		GROUND.arc(_ground_ring, impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)

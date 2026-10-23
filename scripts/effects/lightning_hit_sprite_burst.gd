@@ -75,7 +75,7 @@ static func spawn_admitted(parent: Node, point: Vector2, direction: Vector2, int
 	return effect
 
 func _ready() -> void:
-	CombatRenderWorld.set_effect_layer(self, 80)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.IMPACT_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	set_process(false)
 

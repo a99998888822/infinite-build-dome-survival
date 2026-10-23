@@ -135,7 +135,8 @@ func get_terminal_footprint_axes() -> Vector2:
 func _sync_ground_area() -> void:
 	if _ground_area == null: return
 	var fade := 1.0 - smoothstep(0.64, 1.0, clampf(_elapsed / _lifetime, 0.0, 1.0))
-	_ground_area.setup(get_terminal_footprint_axes(), Color(0.37,0.65,0.81,0.14), Color(0.58,0.81,0.92,0.5), smoothstep(0.0,0.6,_elapsed), fade)
+	# Keep the subtle ground fill without an artificial perimeter around the ice.
+	_ground_area.setup(get_terminal_footprint_axes(), Color(0.37,0.65,0.81,0.14), Color(0.37,0.65,0.81,0.14), smoothstep(0.0,0.6,_elapsed), fade)
 
 func _draw() -> void:
 	BAKED.ALIGNED.begin(self)

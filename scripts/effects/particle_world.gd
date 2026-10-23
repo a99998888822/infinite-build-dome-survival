@@ -438,7 +438,10 @@ var _light_field: Node = null
 var _emitter_pool: Array[Node2D] = []
 var _random := RandomNumberGenerator.new()
 var _batch: MultiMeshInstance2D
-var _batch_buffer := PackedFloat32Array()
+var _render_batches: Dictionary = {}
+var _render_buffers: Dictionary = {}
+var _particle_render_layers := PackedInt32Array()
+var _render_dirty := true
 
 
 func _ready() -> void:
@@ -446,8 +449,6 @@ func _ready() -> void:
 	add_to_group("particle_worlds")
 	add_to_group("combat_particle_counters")
 	_random.randomize()
-	_batch = BATCH.create(MAX_PARTICLES)
-	_batch_buffer.resize(MAX_PARTICLES * 16)
 	_gpu_birth.resize(MAX_PARTICLES)
 	_gpu_pending_flags.resize(MAX_PARTICLES)
 	_gpu_image = Image.create(MAX_PARTICLES,9,false,Image.FORMAT_RGBAF)
@@ -457,15 +458,54 @@ func _ready() -> void:
 	_gpu_material.set_shader_parameter("particle_data",_gpu_texture)
 	_gpu_material.set_shader_parameter("square_png",SQUARE_PNG)
 	_gpu_material.set_shader_parameter("circle_png",CIRCLE_PNG)
-	_batch.material = _gpu_material
-	for index in MAX_PARTICLES:
-		_batch_buffer[index*16] = 1.0
-		_batch_buffer[index*16+5] = 1.0
-		_batch_buffer[index*16+12] = float(index)
-	_batch.multimesh.buffer = _batch_buffer
-	_batch.multimesh.custom_aabb = AABB(Vector3(-100000,-100000,-1),Vector3(200000,200000,2))
-	add_child(_batch)
+	_batch = _ensure_render_batch(-129)
 	queue_redraw()
+
+
+func _ensure_render_batch(layer: int) -> MultiMeshInstance2D:
+	if _render_batches.has(layer): return _render_batches[layer]
+	var batch := BATCH.create(MAX_PARTICLES)
+	batch.name = "ParticleLayer%d" % layer
+	batch.material = _gpu_material
+	CombatRenderWorld.set_world_layer(batch, layer)
+	batch.multimesh.custom_aabb = AABB(Vector3(-100000,-100000,-1),Vector3(200000,200000,2))
+	var buffer := PackedFloat32Array()
+	buffer.resize(MAX_PARTICLES * 16)
+	for index in MAX_PARTICLES:
+		buffer[index * 16] = 1.0
+		buffer[index * 16 + 5] = 1.0
+	_render_buffers[layer] = buffer
+	_render_batches[layer] = batch
+	add_child(batch)
+	return batch
+
+
+func _sync_render_batches() -> void:
+	if not _render_dirty: return
+	_render_dirty = false
+	var slots: Dictionary = {}
+	for slot in _particle_order:
+		var layer := _particle_render_layers[slot]
+		if not slots.has(layer): slots[layer] = []
+		slots[layer].append(slot)
+	for layer: int in slots:
+		var batch := _ensure_render_batch(layer)
+		var buffer: PackedFloat32Array = _render_buffers[layer]
+		for index in slots[layer].size():
+			buffer[index * 16 + 12] = float(slots[layer][index])
+		_render_buffers[layer] = buffer
+		batch.multimesh.buffer = buffer
+	for layer: int in _render_batches:
+		_render_batches[layer].multimesh.visible_instance_count = slots.get(layer, []).size()
+
+
+static func profile_render_layer(profile_id: String) -> int:
+	if profile_id == "impact_terrain": return -129
+	if profile_id.begins_with("fire_"): return -86
+	if profile_id == "projectile_trail": return CombatRenderWorld.ATTACK_Z
+	if profile_id == "ice_burst": return CombatRenderWorld.REACTION_Z
+	if profile_id == "steam_burst": return CombatRenderWorld.STEAM_Z
+	return CombatRenderWorld.IMPACT_Z
 
 
 func get_active_particle_count() -> int:
@@ -588,6 +628,7 @@ func emit_event(event: Variant) -> void:
 	if profile_id.is_empty() or not PROFILE_DEFINITIONS.has(profile_id):
 		return
 	var profile: Dictionary = PROFILE_DEFINITIONS[profile_id]
+	var render_layer := profile_render_layer(profile_id)
 	var intensity: float = maxf(float(event.get("intensity")), 0.05)
 	var parameters: Dictionary = event.get("parameters", {})
 	var count_multiplier := maxf(float(parameters.get("count_multiplier", 1.0)), 0.0)
@@ -694,6 +735,8 @@ func emit_event(event: Variant) -> void:
 		if is_fire_particle:
 			particle_velocity.y -= maxf(-particle_velocity.y, 0.0) * (fire_rise_multiplier - 1.0)
 		var slot := _acquire_particle_slot()
+		_particle_render_layers[slot] = render_layer
+		_render_dirty = true
 		_gpu_birth[slot] = _gpu_clock
 		if _gpu_pending_flags[slot] == 0:
 			_gpu_pending.append(slot)
@@ -790,7 +833,6 @@ func _process(delta: float) -> void:
 		return
 	_gpu_clock += delta
 	_gpu_material.set_shader_parameter("clock",_gpu_clock)
-	_batch.multimesh.visible_instance_count = 0 if _particle_order.is_empty() else _particle_positions.size()
 	var expired := false
 	for order_index in range(_particle_order.size() - 1, -1, -1):
 		var slot := _particle_order[order_index]
@@ -807,6 +849,7 @@ func _process(delta: float) -> void:
 				_particle_order[write_index] = slot
 				write_index += 1
 		_particle_order.resize(write_index)
+	_sync_render_batches()
 
 
 
@@ -864,6 +907,7 @@ func _acquire_particle_slot() -> int:
 		_particle_glow_streak_flags.append(0)
 		_particle_circle_flags.append(0)
 		_particle_active.append(0)
+		_particle_render_layers.append(-129)
 	_particle_active[slot] = 1
 	_particle_order.append(slot)
 	return slot
@@ -873,6 +917,7 @@ func _release_particle_slot(slot: int) -> void:
 	if slot < 0 or slot >= _particle_active.size() or _particle_active[slot] == 0:
 		return
 	_particle_active[slot] = 0
+	_render_dirty = true
 	_free_particle_slots.append(slot)
 
 
@@ -895,4 +940,4 @@ func _draw() -> void:
 		_gpu_image.set_pixel(slot,8,Color(_particle_circle_flags[slot],_particle_fire_flags[slot],_particle_glow_streak_flags[slot],0))
 	_gpu_pending.clear()
 	_gpu_texture.update(_gpu_image)
-	_batch.multimesh.visible_instance_count = 0 if _particle_order.is_empty() else _particle_positions.size()
+	_sync_render_batches()

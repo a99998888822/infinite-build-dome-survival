@@ -24,6 +24,7 @@ var hit_target_ids: Array[int] = []
 var split_generation := 0
 # Shared read-only snapshot for siblings, avoiding one copy per child.
 var excluded_target_ids: Dictionary = {}
+var _ground_visual: Node2D
 
 
 func initialize(source: WeaponInstance, event: DamageEvent, start: Vector2, target: Vector2) -> void:
@@ -35,10 +36,16 @@ func initialize(source: WeaponInstance, event: DamageEvent, start: Vector2, targ
 	arc_height = maxf(0.0, float(weapon.weapon_data.get("grenade_arc_height", 56)))
 	blast_radius = weapon.get_grenade_blast_radius()
 	global_position = start
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
+	_ground_visual = Node2D.new()
+	_ground_visual.name = "GrenadeGround"
+	CombatRenderWorld.set_effect_layer(_ground_visual, -1)
+	add_child(_ground_visual)
+	_ground_visual.draw.connect(_draw_ground)
 	add_to_group("grenade_projectiles")
 	add_to_group("weapon_runtime_effects")
 	queue_redraw()
+	if is_instance_valid(_ground_visual): _ground_visual.queue_redraw()
 
 
 func _physics_process(delta: float) -> void:
@@ -55,6 +62,7 @@ func _physics_process(delta: float) -> void:
 	elif elapsed >= flight_seconds + BLAST_LIFETIME:
 		queue_free()
 	queue_redraw()
+	if is_instance_valid(_ground_visual): _ground_visual.queue_redraw()
 
 
 func cancel() -> void:
@@ -84,6 +92,7 @@ func _detonate() -> void:
 	if exploded or cancelled:
 		return
 	exploded = true
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.IMPACT_Z)
 	global_position = target_position
 	damage_event.hit_position = target_position
 	# Snapshot all contacts before damage or reactions can remove a target.
@@ -182,12 +191,6 @@ func _draw() -> void:
 		draw_set_transform(Vector2.ZERO)
 		return
 	var progress := clampf(elapsed / flight_seconds, 0.0, 1.0)
-	var landing := target_position - global_position
-	# Sparse square pixels replace the smooth gold reticle.
-	var mark_radius := lerpf(16.0, 7.0, progress)
-	for index in 4:
-		_draw_pixel(landing + Vector2.RIGHT.rotated(PI * 0.5 * index) * mark_radius, 2, Color(0.79, 0.64, 0.34, 0.5))
-	draw_rect(Rect2(-5, -2, 10, 4), Color(0.02, 0.025, 0.025, 0.55))
 	var height := -4.0 * arc_height * progress * (1.0 - progress)
 	var center := Vector2(0, height).round()
 	_draw_shell(center)
@@ -216,3 +219,20 @@ func _draw_pixel(center: Vector2, size: float, color: Color) -> void:
 	var side := maxf(2.0, snappedf(size, 2.0))
 	var corner := (center - Vector2.ONE * side * 0.5).snapped(Vector2(2, 2))
 	draw_rect(Rect2(corner, Vector2.ONE * side), color)
+
+
+func _draw_ground() -> void:
+	if cancelled or exploded: return
+	var progress := clampf(elapsed / flight_seconds, 0.0, 1.0)
+	var landing := target_position - global_position
+	# Sparse square pixels replace the smooth gold reticle.
+	var mark_radius := lerpf(16.0, 7.0, progress)
+	for index in 4:
+		_draw_ground_pixel(landing + Vector2.RIGHT.rotated(PI * 0.5 * index) * mark_radius, 2, Color(0.79, 0.64, 0.34, 0.5))
+	_ground_visual.draw_rect(Rect2(-5, -2, 10, 4), Color(0.02, 0.025, 0.025, 0.55))
+
+
+func _draw_ground_pixel(center: Vector2, size: float, color: Color) -> void:
+	var side := maxf(2.0, snappedf(size, 2.0))
+	var corner := (center - Vector2.ONE * side * 0.5).snapped(Vector2(2, 2))
+	_ground_visual.draw_rect(Rect2(corner, Vector2.ONE * side), color)

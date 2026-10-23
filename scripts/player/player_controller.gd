@@ -508,7 +508,7 @@ func _start_revive_wings() -> void:
 	if _revive_wings == null:
 		_revive_wings = REVIVE_WINGS_SCRIPT.new()
 		_revive_wings.name = "ReviveAngelWings"
-		add_child(_revive_wings)
+		visual_anchor.add_child(_revive_wings)
 	_revive_wings.restart()
 
 

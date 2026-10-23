@@ -184,5 +184,6 @@ void fragment() {
     else if(kind==5) c=conduct(p,t,progress);
     else if(kind==6) c=reflection(p,t,progress);
     else if(kind==7) c=thaw(p,t,progress);
+    if (kind == 0) c.a *= 0.65;
     COLOR=c;
 }

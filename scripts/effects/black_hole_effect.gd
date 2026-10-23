@@ -28,6 +28,8 @@ var _visual_detail: int = 2
 var _audio_impact: RefCounted = null
 var _vortex_back: Node2D
 var _vortex_front: Node2D
+var _sorted_visual: Node2D
+var _body_visual: Node2D
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
@@ -57,9 +59,15 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 
 
 func _ready() -> void:
-	CombatRenderWorld.set_effect_layer(self, 79)
-	_vortex_back = PIXEL.layer(self, 78, _draw_vortex.bind(false))
-	_vortex_front = PIXEL.layer(self, 80, _draw_vortex.bind(true))
+	_sorted_visual = preload("res://scripts/effects/combat_sorted_visual.gd").attach(self)
+	_vortex_back = Node2D.new()
+	_body_visual = Node2D.new()
+	_vortex_front = Node2D.new()
+	for surface in [_vortex_back, _body_visual, _vortex_front]:
+		_sorted_visual.add_child(surface)
+	_vortex_back.draw.connect(_draw_vortex.bind(false))
+	_body_visual.draw.connect(_draw_body)
+	_vortex_front.draw.connect(_draw_vortex.bind(true))
 	queue_redraw()
 
 
@@ -87,6 +95,7 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	_vortex_back.queue_redraw()
 	_vortex_front.queue_redraw()
+	_body_visual.queue_redraw()
 
 
 func _collect_targets() -> void:
@@ -127,9 +136,9 @@ func _collect_targets() -> void:
 			})
 
 
-func _draw() -> void:
-	BLOCK_VFX.paint(self,2,Rect2(-_visual_reach,-_visual_reach,_visual_reach*2,_visual_reach*2),_visual_reach,_elapsed,_elapsed/_duration,_visual_detail)
-	material.set_shader_parameter("sphere_radius", _sphere_radius)
+func _draw_body() -> void:
+	BLOCK_VFX.paint(_body_visual,2,Rect2(-_visual_reach,-_visual_reach,_visual_reach*2,_visual_reach*2),_visual_reach,_elapsed,_elapsed/_duration,_visual_detail)
+	_body_visual.material.set_shader_parameter("sphere_radius", _sphere_radius)
 
 
 func _draw_vortex(front: bool) -> void:

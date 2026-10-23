@@ -14,7 +14,7 @@ func bind_weapon(source: WeaponInstance, group: String) -> void:
 	weapon = source
 	global_position = source.get_attack_origin()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	add_to_group(group)
 	add_to_group("weapon_runtime_effects")
 

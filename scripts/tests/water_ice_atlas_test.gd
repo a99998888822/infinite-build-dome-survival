@@ -42,6 +42,7 @@ func _run() -> void:
 		var lifetime := 0.62 if kind == "freeze" else 0.72
 		check(is_equal_approx(cue.duration, lifetime), kind + " retains its duration")
 		check(cue.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, kind + " uses nearest sampling")
+		if kind == "freeze": check(not cue.z_as_relative and cue.z_index > 0, "freeze shards render over the enemy even under a different simulation parent")
 		CUE.spawn(host, kind, Vector2.ZERO)
 		check(host.get_child_count() == 1, kind + " retains simultaneous cue merging")
 		GameGlobal.set_runtime_flag("battle_runtime_paused", true)

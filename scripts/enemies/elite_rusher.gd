@@ -16,6 +16,16 @@ var _dash_blocked: bool = false
 var _animation: StringName = &"idle"
 var _animation_time: float = 0.0
 var _profile: Dictionary = {}
+var _telegraph: Node2D
+
+
+func _ready() -> void:
+	_telegraph = Node2D.new()
+	_telegraph.name = "DashTelegraph"
+	CombatRenderWorld.set_world_layer(_telegraph, CombatRenderWorld.TELEGRAPH_Z)
+	add_child(_telegraph)
+	_telegraph.draw.connect(_draw_dash_telegraph)
+	super._ready()
 
 
 func initialize(id: String, player: PlayerController = null, modifiers: Array = []) -> bool:
@@ -53,6 +63,7 @@ func _physics_process(delta: float) -> void:
 	if not has_status("frozen") and not has_status("stunned") and not has_status("blinded"):
 		_animate(delta)
 	queue_redraw()
+	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 
 
 func _process_special_behavior(delta: float) -> bool:
@@ -138,6 +149,7 @@ func start_dash() -> bool:
 	sprite.flip_h = _direction.x < 0.0
 	_set_animation(&"windup")
 	queue_redraw()
+	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 	return true
 
 
@@ -151,6 +163,7 @@ func cancel_skill() -> void:
 	velocity = Vector2.ZERO
 	_set_animation(&"idle")
 	queue_redraw()
+	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 
 
 func _on_control_interrupted() -> void:
@@ -262,6 +275,7 @@ func fade_out_and_free() -> void:
 	skill_state = "dead"
 	velocity = Vector2.ZERO
 	queue_redraw()
+	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 	super.fade_out_and_free()
 
 
@@ -273,6 +287,7 @@ func _die(_source_id: String = "") -> void:
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 	queue_redraw()
+	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 	died.emit(self, get_drop_table_id(), global_position)
 	sprite.modulate = _base_sprite_modulate
 	# No death poses were supplied. Keep the current approved pose and fade it.
@@ -284,8 +299,6 @@ func _die(_source_id: String = "") -> void:
 func _draw() -> void:
 	if not alive or skill_state == "spawn":
 		return
-	if skill_state == "windup":
-		_draw_dash_telegraph()
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE * BODY_SCALE)
 	draw_rect(Rect2(-26, -118, 52, 4), Color("243232"))
 	draw_rect(Rect2(-26, -118, 52 * clampf(float(current_hp) / maxf(get_stat("max_hp"), 1.0), 0.0, 1.0), 4), Color("dbc584"))
@@ -294,6 +307,7 @@ func _draw() -> void:
 
 
 func _draw_dash_telegraph() -> void:
+	if not alive or skill_state != "windup": return
 	var half_width := float(_profile.get("dash_half_width", 35.84))
 	var length := float(_profile.get("dash_distance", 240)) + half_width * 2.0
 	var progress := clampf(_state_time / maxf(float(_profile.get("windup_ms", 1000)) / 1000.0, 0.001), 0.0, 1.0)
@@ -301,16 +315,16 @@ func _draw_dash_telegraph() -> void:
 	var fill_alpha := float(_profile.get("telegraph_fill_percent", 12)) / 100.0
 	var edge_alpha := lerpf(float(_profile.get("telegraph_edge_min_percent", 42)), float(_profile.get("telegraph_edge_max_percent", 55)), pulse) / 100.0
 	var particle_alpha := lerpf(float(_profile.get("telegraph_particle_min_percent", 48)), float(_profile.get("telegraph_particle_max_percent", 60)), pulse) / 100.0
-	draw_set_transform(_origin - global_position, _direction.angle())
-	draw_rect(Rect2(-half_width, -half_width, length, half_width * 2.0), Color(1.0, 59.0 / 255.0, 48.0 / 255.0, fill_alpha))
+	_telegraph.draw_set_transform(_origin - global_position, _direction.angle())
+	_telegraph.draw_rect(Rect2(-half_width, -half_width, length, half_width * 2.0), Color(1.0, 59.0 / 255.0, 48.0 / 255.0, fill_alpha))
 	for side in [-1.0, 1.0]:
 		var y: float = side * half_width
-		draw_line(Vector2(-half_width, y), Vector2(length - half_width, y), Color(1.0, 80.0 / 255.0, 65.0 / 255.0, edge_alpha), 1.0)
-		draw_line(Vector2(-half_width, y - side), Vector2(length - half_width, y - side), Color(1.0, 60.0 / 255.0, 50.0 / 255.0, 0.18), 1.0)
+		_telegraph.draw_line(Vector2(-half_width, y), Vector2(length - half_width, y), Color(1.0, 80.0 / 255.0, 65.0 / 255.0, edge_alpha), 1.0)
+		_telegraph.draw_line(Vector2(-half_width, y - side), Vector2(length - half_width, y - side), Color(1.0, 60.0 / 255.0, 50.0 / 255.0, 0.18), 1.0)
 		for index in ceili(length / 21.0):
 			if (index + int(progress * 8.0)) % 3 != 0:
 				continue
 			var x := -half_width + fposmod(index * 21.0 + progress * 46.0, maxf(length - 3.0, 1.0))
 			var top := y if side < 0.0 else y - 2.0
-			draw_rect(Rect2(x, top, 3.0, 2.0), Color(1.0, 125.0 / 255.0, 99.0 / 255.0, particle_alpha))
-	draw_set_transform(Vector2.ZERO)
+			_telegraph.draw_rect(Rect2(x, top, 3.0, 2.0), Color(1.0, 125.0 / 255.0, 99.0 / 255.0, particle_alpha))
+	_telegraph.draw_set_transform(Vector2.ZERO)

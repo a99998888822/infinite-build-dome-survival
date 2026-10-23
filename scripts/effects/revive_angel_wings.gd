@@ -16,7 +16,8 @@ func _init() -> void:
 	_material.shader = SHADER
 	material = _material
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	z_index = -1
+	CombatRenderWorld.set_actor_local(self)
+	show_behind_parent = true
 	position = Vector2(0, -5)
 	hide()
 

@@ -48,7 +48,7 @@ func run() -> void:
 			status._process(0.01)
 			preload("res://scripts/effects/enemy_status_visual_queue.gd").flush()
 			check(status._body_ice.visible and status._body_ice.is_shell and not status._foot_frost.visible,"frozen restores the original shell without an added ice slab")
-			check(not status._body_ice.z_as_relative and status._body_ice.z_index>CombatRenderWorld.GRASS_Z and status._body_ice.z_index<0,"frozen shell follows the spell layer above grass and below enemies")
+			check(status._body_ice.z_as_relative and status._body_ice.z_index == 0 and status._body_effects.get_parent() == status and status.get_index() > enemy.sprite.get_index(),"frozen shell follows actor sorting after the body, independently of icons")
 			enemy._frozen_remaining=0
 			enemy._slowed_remaining=0
 			status._process(0.01)

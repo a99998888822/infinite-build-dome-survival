@@ -18,7 +18,7 @@ static func spawn(parent: Node, source: WeaponInstance, where: Vector2, is_tome:
 	effect.tome = is_tome
 	parent.add_child(effect)
 	effect.global_position = where
-	CombatRenderWorld.set_effect_layer(effect, 70 if is_tome else 45)
+	CombatRenderWorld.set_world_layer(effect, CombatRenderWorld.IMPACT_Z)
 	effect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	effect.add_to_group("weapon_runtime_effects")
 

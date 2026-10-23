@@ -46,7 +46,7 @@ class GroundArt extends Node2D:
 func _ready() -> void:
 	floor_art = GroundArt.new()
 	floor_art.owner_wolf = self
-	floor_art.z_index = -1
+	CombatRenderWorld.set_world_layer(floor_art, CombatRenderWorld.TELEGRAPH_Z)
 	add_child(floor_art)
 	flame = GHOST_FLAME.new()
 	add_child(flame)

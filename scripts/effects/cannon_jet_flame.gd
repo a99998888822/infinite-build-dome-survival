@@ -16,7 +16,7 @@ static func spawn(parent: Node, source: WeaponInstance, point: Vector2, directio
 	effect.flame_material.set_shader_parameter("flow_noise", flow_texture)
 	parent.add_child(effect)
 	effect.global_position = point
-	CombatRenderWorld.set_effect_layer(effect, 40)
+	CombatRenderWorld.set_world_layer(effect, CombatRenderWorld.IMPACT_Z)
 	effect.add_to_group("weapon_runtime_effects")
 	effect._sync_jet()
 	return effect

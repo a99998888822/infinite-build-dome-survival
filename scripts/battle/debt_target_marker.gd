@@ -7,7 +7,7 @@ var target: EnemyController
 func _ready() -> void:
 	target = get_parent() as EnemyController
 	position = Vector2(0, -155 if target is EliteRusher else -136)
-	z_index = 3
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.INFO_Z)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 

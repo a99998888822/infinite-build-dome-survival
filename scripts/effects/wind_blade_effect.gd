@@ -25,7 +25,7 @@ var _ground_contact := Callable()
 
 func _init() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	CombatRenderWorld.set_effect_layer(self, 78)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.BEAM_Z)
 
 
 static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed: float = DEFAULT_SPEED, lifetime: float = DEFAULT_LIFETIME, weapon: WeaponInstance = null, damage_event: DamageEvent = null, ignored_target_id: int = 0, ground_contact: Callable = Callable(), attachment_item_id: String = "") -> void:

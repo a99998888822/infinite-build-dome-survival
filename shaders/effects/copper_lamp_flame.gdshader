@@ -6,6 +6,7 @@ uniform float flame_time = 0.0;
 uniform float reach = 120.0;
 uniform float half_angle = 0.5235988;
 uniform float opacity = 0.88;
+uniform int render_part = 0;
 uniform vec2 ground_forward = vec2(1.0, 0.0);
 uniform float projection_ratio = 0.6590909;
 varying vec2 local_point;
@@ -53,5 +54,8 @@ void fragment() {
     }
     // The same offset muzzle, angle and radial limit as AttackFootprint.in_lamp_cone.
     if (from_muzzle.x < 0.0 || abs(from_muzzle.y) > span || length(p) > reach) result.a = 0.0;
+    bool foreground = (density > 0.0 && density < 0.18 && screen_p.y > 0.0) || density <= 0.0;
+    if ((render_part == 1 && foreground) || (render_part == 2 && !foreground)) result.a = 0.0;
+    if (render_part == 2) result.a *= 0.55;
     COLOR = result * vec4(1.0, 1.0, 1.0, opacity);
 }

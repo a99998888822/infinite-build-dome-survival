@@ -33,7 +33,7 @@ func _ready() -> void:
 	warning.centered = false
 	warning.top_level = true
 	warning.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	warning.z_index = -1
+	CombatRenderWorld.set_world_layer(warning, CombatRenderWorld.TELEGRAPH_Z)
 	warning.hide()
 	add_child(warning)
 	charge = Sprite2D.new()

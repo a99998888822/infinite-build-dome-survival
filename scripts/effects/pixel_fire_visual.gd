@@ -18,6 +18,9 @@ var _batch_epoch := -1
 var _batch_geometry := -1
 var _batch_world := Transform2D.IDENTITY
 var _batch_tint := Color.TRANSPARENT
+var actor_local := false
+var _local_batch: MultiMeshInstance2D
+var _local_geometry := -1
 
 class FlameClock extends Node2D:
 	var elapsed := 0.0
@@ -41,6 +44,9 @@ class FlameClock extends Node2D:
 	func flush() -> void:
 		counts.clear()
 		for source in sources:
+			if source.actor_local:
+				source._flush_local()
+				continue
 			if not source.is_visible_in_tree():
 				source._batch_slot = -1
 				continue
@@ -71,7 +77,7 @@ class FlameClock extends Node2D:
 			var index := 0
 			var buffer: PackedFloat32Array = buffers[z]
 			for source in sources:
-				if source.layer != z or not source.is_visible_in_tree(): continue
+				if source.actor_local or source.layer != z or not source.is_visible_in_tree(): continue
 				var world := source.global_transform
 				var tint := source.modulate
 				var metadata_dirty: bool = source._batch_slot != index or source._batch_layer != z or source._batch_epoch != epochs[z] or source._batch_geometry != source.build_count or source._batch_tint != tint
@@ -151,6 +157,8 @@ func _exit_tree() -> void:
 		shared_material = null
 
 func setup_field(radius: float, tint := Color.WHITE) -> void:
+	actor_local = false
+	if is_instance_valid(_local_batch): _local_batch.hide()
 	if is_equal_approx(last_radius, radius): return
 	last_radius = radius
 	layer = 42
@@ -165,14 +173,41 @@ func setup_field(radius: float, tint := Color.WHITE) -> void:
 	], 3)
 
 func setup_status(radius: float) -> void:
+	actor_local = true
+	if is_instance_valid(_local_batch): _local_batch.show()
 	layer = 25
 	var width := clampf(radius * 1.4, 14.0, 24.0)
 	var phase := fposmod(global_position.x * 0.017 + global_position.y * 0.013, 0.83)
 	build([{"point": Vector2(0, 16), "size": Vector2(width, 28), "phase": phase + 0.05}], 2)
 
 func setup_single(size: Vector2, grid: int, phase := 0.37) -> void:
-	layer = 43
+	actor_local = false
+	if is_instance_valid(_local_batch): _local_batch.hide()
+	layer = CombatRenderWorld.ATTACK_Z - CombatRenderWorld.EFFECT_BASE_Z
 	build([{"point": Vector2.ZERO, "size": size, "phase": phase}], grid)
+
+
+func _flush_local() -> void:
+	if not is_inside_tree(): return
+	if not is_instance_valid(_local_batch):
+		_local_batch = MultiMeshInstance2D.new()
+		_local_batch.name = "ActorFlame"
+		_local_batch.material = shared_material
+		var instances := MultiMesh.new()
+		instances.transform_format = MultiMesh.TRANSFORM_2D
+		instances.use_colors = true
+		instances.use_custom_data = true
+		instances.mesh = clock.quad
+		_local_batch.multimesh = instances
+		add_child(_local_batch)
+	if _local_geometry == build_count: return
+	_local_geometry = build_count
+	var instances := _local_batch.multimesh
+	instances.instance_count = parts.size()
+	for index in parts.size():
+		instances.set_instance_transform_2d(index, parts[index].transform)
+		instances.set_instance_color(index, Color.WHITE)
+		instances.set_instance_custom_data(index, parts[index].data)
 
 func set_palette(value: int) -> void:
 	if palette == value: return

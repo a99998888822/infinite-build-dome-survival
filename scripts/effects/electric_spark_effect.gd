@@ -75,7 +75,7 @@ func _ready() -> void:
 		add_child(_warning_sprite)
 		_warning_sprite.set_density(_visual_count)
 	add_to_group("combat_particle_counters")
-	CombatRenderWorld.set_effect_layer(self, 81)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.BEAM_Z)
 	_sync_warning()
 
 

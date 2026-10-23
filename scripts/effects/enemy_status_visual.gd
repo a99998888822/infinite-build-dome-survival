@@ -10,6 +10,8 @@ var _flame_visual: Node2D
 var _enemy: Node2D = null
 var _foot_frost: Node2D
 var _body_ice: Node2D
+var _body_effects: Node2D
+var _icons: Node2D
 var _anchor_factor := -1.0
 var _elapsed: float = 0.0
 var _draw_frame: int = -1
@@ -23,8 +25,18 @@ var _flame_radius := -1.0
 
 
 func _ready() -> void:
-	z_index = 25
+	CombatRenderWorld.set_actor_local(self)
 	_enemy = get_parent()
+	_icons = Node2D.new()
+	_icons.name = "StatusIcons"
+	CombatRenderWorld.set_world_layer(_icons, CombatRenderWorld.INFO_Z)
+	add_child(_icons)
+	_icons.draw.connect(_draw_icons)
+	# Both this root and the body group stay in the actor's Y-sorted plane.
+	_body_effects = Node2D.new()
+	_body_effects.name = "BodyStatusEffects"
+	CombatRenderWorld.set_actor_local(_body_effects)
+	add_child(_body_effects)
 	request_sync()
 
 
@@ -48,8 +60,9 @@ func _ensure_frost() -> void:
 	add_child(_foot_frost)
 	_body_ice = FROST_VISUAL.new()
 	_body_ice.name = "BodyIce"
-	CombatRenderWorld.set_effect_layer(_body_ice, 25)
-	add_child(_body_ice)
+	# The frozen shell covers its actor; ground frost remains below actors.
+	CombatRenderWorld.set_actor_local(_body_ice)
+	_body_effects.add_child(_body_ice)
 	_foot_frost.hide()
 	_body_ice.hide()
 
@@ -71,7 +84,7 @@ func _flush_visual() -> void:
 	if changed:
 		_status_revision = _enemy.status_visual_revision
 		_status_mask = _enemy.get_status_visual_mask()
-		queue_redraw()
+		_icons.queue_redraw()
 	# One collider query supplies all radius/position work for this actor.
 	var bounds := ANCHORS.body_bounds(_enemy) if _status_mask != 0 else Rect2()
 	var radius := maxf(4.0, minf(bounds.size.x, bounds.size.y) * 0.5) if _status_mask != 0 else -1.0
@@ -106,7 +119,7 @@ func _flush_visual() -> void:
 		_draw_body_radius = radius
 		_draw_status_mask = mask
 		_anchor_factor = factor
-		queue_redraw()
+		_icons.queue_redraw()
 	set_process(_status_mask != 0)
 
 
@@ -114,7 +127,7 @@ func _sync_flame(radius: float) -> void:
 	var burning := (_status_mask & (128 | 32 | 64)) != 0
 	if burning and not is_instance_valid(_flame_visual):
 		_flame_visual = FIRE_VISUAL.new()
-		add_child(_flame_visual)
+		_body_effects.add_child(_flame_visual)
 	elif not burning and is_instance_valid(_flame_visual):
 		_flame_visual.hide()
 		_flame_visual.queue_free()
@@ -125,7 +138,7 @@ func _sync_flame(radius: float) -> void:
 	VISUAL_QUEUE.request_flame_flush(FIRE_VISUAL.clock)
 
 
-func _draw() -> void:
+func _draw_icons() -> void:
 	if _enemy == null or not is_instance_valid(_enemy):
 		return
 	var icon_index := 0
@@ -162,16 +175,16 @@ func _draw_water_drop(center: Vector2, icon_radius: float) -> void:
 		center + Vector2(-half_width, icon_radius * 0.22),
 	])
 	for index in points.size(): points[index] = points[index].round()
-	draw_colored_polygon(points, Color(0.30, 0.78, 1.0, 0.95))
+	_icons.draw_colored_polygon(points, Color(0.30, 0.78, 1.0, 0.95))
 
 
 func _draw_light_sun(center: Vector2, icon_radius: float) -> void:
-	PIXEL.block(self,center,Vector2(4,4),Color.WHITE)
+	PIXEL.block(_icons,center,Vector2(4,4),Color.WHITE)
 	for index in range(8):
 		var angle := float(index) * TAU / 8.0
 		var inner := center + Vector2.from_angle(angle) * icon_radius * 0.76
 		var outer := center + Vector2.from_angle(angle) * icon_radius * 1.08
-		PIXEL.line(self,inner.round(),outer.round(),Color.WHITE,1)
+		PIXEL.line(_icons,inner.round(),outer.round(),Color.WHITE,1)
 
 
 func _draw_dark_eye(center: Vector2, icon_radius: float) -> void:
@@ -188,6 +201,6 @@ func _draw_dark_eye(center: Vector2, icon_radius: float) -> void:
 		center + Vector2(-eye_width * 0.42, eye_height),
 	])
 	for index in points.size(): points[index] = points[index].round()
-	draw_colored_polygon(points, Color(0.58, 0.60, 0.64, 0.96))
-	draw_circle(center, icon_radius * 0.34, Color(0.20, 0.22, 0.26, 1.0))
-	PIXEL.line(self,center + Vector2(-eye_width * 0.92, eye_height * 1.15), center + Vector2(eye_width * 0.92, -eye_height * 1.15), Color(0.36, 0.38, 0.42, 1.0),1)
+	_icons.draw_colored_polygon(points, Color(0.58, 0.60, 0.64, 0.96))
+	_icons.draw_circle(center, icon_radius * 0.34, Color(0.20, 0.22, 0.26, 1.0))
+	PIXEL.line(_icons,center + Vector2(-eye_width * 0.92, eye_height * 1.15), center + Vector2(eye_width * 0.92, -eye_height * 1.15), Color(0.36, 0.38, 0.42, 1.0),1)

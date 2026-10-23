@@ -101,13 +101,13 @@ func _run() -> void:
 	await frames()
 	FIRE.clock.flush()
 	check(FIRE.clock.get_viewport() == viewport, "shared batch stays inside the owner's battle SubViewport")
-	var batch: MultiMeshInstance2D = FIRE.clock.batches[43]
+	var batch: MultiMeshInstance2D = FIRE.clock.batches[CombatRenderWorld.ATTACK_Z - CombatRenderWorld.EFFECT_BASE_Z]
 	var actual := batch.multimesh.get_instance_transform_2d(0)
 	var expected: Transform2D = flame.global_transform * flame.parts[0].transform
 	# The dummy headless renderer returns identity for MultiMesh getters.
 	# Check its submitted buffer here; the GPU run exercises native readback.
 	if DisplayServer.get_name() == "headless":
-		var submitted: PackedFloat32Array = FIRE.clock.buffers[43]
+		var submitted: PackedFloat32Array = FIRE.clock.buffers[CombatRenderWorld.ATTACK_Z - CombatRenderWorld.EFFECT_BASE_Z]
 		actual = Transform2D(Vector2(submitted[0], submitted[4]), Vector2(submitted[1], submitted[5]), Vector2(submitted[3], submitted[7]))
 	check(actual.is_equal_approx(expected), "batch preserves owner position, rotation, and scale")
 	viewport.queue_free()

@@ -37,7 +37,7 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	time_scale = 1.0 if weapon.use_active_range_rules else weapon.get_actual_attack_interval_seconds() / 1.5
 	global_position = weapon.get_attack_origin()
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	CombatRenderWorld.set_effect_layer(self, 50)
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	split_profiles = weapon.get_split_profiles()
 	var count := maxi(1, int(weapon.get_stat("projectile_count")))
 	for index in count:

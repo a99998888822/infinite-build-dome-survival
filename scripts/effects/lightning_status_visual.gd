@@ -26,7 +26,7 @@ func refresh(duration: float = 0.65) -> void:
 
 
 func _ready() -> void:
-	z_index = 100
+	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.INFO_Z)
 	_enemy = get_parent()
 	position = Vector2.ZERO
 	queue_redraw()
