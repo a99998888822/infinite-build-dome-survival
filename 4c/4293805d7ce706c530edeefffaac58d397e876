@@ -1,0 +1,396 @@
+shaders/battle/evacuation_bank.gdshader
+  s_962fb6e104fb65::t_3518362a3aa207 7-11,15-32,35-37
+scripts/tools/record_kunyu_promo.py
+  s_bb54d2b77462a0::t_9b3a00a821ef2f 66-68
+  s_bb54d2b77462a0::t_05eb666a98073f 1-12,15-39,41-57,70-81
+  s_bb54d2b77462a0::t_69d8842ce57bdb 13,59-62
+  s_bb54d2b77462a0::t_334c8f0931d650 14,40,58,63-65,69
+scripts/tests/spell_terminal_range_test.gd
+  s_962fb6e104fb65::t_cae99341335947 89,91,93
+scenes/debug/ground_lightning_review.tscn
+  s_bb54d2b77462a0::t_80ef60e52f08f3 1-6
+assets/sprites/weapons/candidates/furnace_saber_v1/manifest.json
+  s_e0960b0c984b3f::t_129871a609e1f9 1-16,21-22,27-28,33-34,39-40,43,45-46,51-52,54,57-58,63-64,66,70-77,80-82,87-109,111,113-114,116,118,125-129,131-133,135,137-138,143-146,149-150,155-181,185-187,191-193,197-199,203-205,209-211,215-217,221-223,228-229,233-235,238,240-241,248-249,256-257
+  s_e0960b0c984b3f::t_766499da79a959 17-20,23-26,29-32,35-38,41-42,44,47-48,50,53,56,59,62,65,69,78,110,112,115,117,119-124,130,134,136,139-142,147-148,151-154,182-184,188-190,194-196,200-202,206-208,212-214,218-220,224-227,230-232,236-237,239,242-247,250-255
+  s_e0960b0c984b3f::t_80c3291cdd64aa 49,55,60-61,67-68,79,83-86
+scripts/tests/spell_window_resolution_review.gd
+  s_962fb6e104fb65::t_cae99341335947 129
+scripts/tools/finish_goblin_contracts.py
+  s_bb54d2b77462a0::t_00a9685273fb25 1-99
+scenes/tests/furnace_saber_integration_test.tscn
+  s_e0960b0c984b3f::t_c4318d03f58587 1-6
+scenes/tests/furnace_saber_performance.tscn
+  s_e0960b0c984b3f::t_dce3dec6d75e72 1-6
+scripts/tools/install_furnace_saber_config.py
+  s_e0960b0c984b3f::t_03277b50c4c779 1-82
+assets/ui/icons/weapons/weapon_furnace.svg
+  s_e0960b0c984b3f::t_03277b50c4c779 1-9
+scripts/effects/candidate_weapon_art.gd.uid
+  s_e0960b0c984b3f::t_ffec00f9d1a2b9 1
+data_config/weapons.json
+  s_e0960b0c984b3f::t_f8a7827c29baa5 462-673
+shaders/battle/evacuation_shadow.gdshader
+  s_962fb6e104fb65::t_3518362a3aa207 5
+scripts/tests/log_grass_depth_test.gd
+  s_bb54d2b77462a0::t_2ffee2c906ee70 54
+  s_bb54d2b77462a0::t_4a81f259e5a682 1-53,55-88
+scripts/tools/finish_greed_promo.py
+  s_bb54d2b77462a0::t_8e4ea1ac1ce853 1-73
+scripts/tools/revise_goblin_buyout.py
+  s_bb54d2b77462a0::t_e68ac70935dc84 1-133
+scripts/weapons/furnace_runtime.gd
+  s_e0960b0c984b3f::t_c54928874d4e91 74,83-86,97
+  s_e0960b0c984b3f::t_210c403266779d 41,43,45,48,51,54-55,98,119,125
+  s_e0960b0c984b3f::t_e75e5adf81af87 1-40,42,44,46-47,49-50,52-53,56-73,75-82,87-96,99-118,120-124,126-133
+scripts/effects/ground_lightning_bolt.gd
+  s_bb54d2b77462a0::t_3cdb64dc1434ff 1-59
+shaders/battle/evacuation_night.gdshader
+  s_962fb6e104fb65::t_3518362a3aa207 19-21
+scripts/player/player_controller.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 6,478-479,662-670,916-918,923
+scripts/tools/record_combat_opening.py
+  s_962fb6e104fb65::t_00a9c936b538e6 1
+  s_962fb6e104fb65::t_cae99341335947 23
+scripts/debug/combat_opening_promo.gd
+  s_962fb6e104fb65::t_00a9c936b538e6 4-5,21-29,44,166,171-175,196-203,322-342,348-349,353,365,370-384,386-389,392,399-406,409-410
+  s_962fb6e104fb65::t_045cdc3b118314 141,186,188-190
+  s_962fb6e104fb65::t_8393eb319094ac 232,253,258
+  s_bb54d2b77462a0::t_24fea6b5947d8e 138,147
+  s_962fb6e104fb65::t_4cb12c92943feb 30,48,72-76,191,408
+  s_bb54d2b77462a0::t_0229160d8a77b6 293,407
+scripts/tools/finish_goblin_deaths.py
+  s_bb54d2b77462a0::t_71e2e3a77f77b0 1-62
+docs/marketing/greed_promo_20261024.md
+  s_bb54d2b77462a0::t_4b42acab7800ab 5-14
+  s_bb54d2b77462a0::t_41f486d5f6cc0a 1-4,15-55
+shaders/effects/candidate_saber_cut.gdshader
+  s_e0960b0c984b3f::t_b8543e4803a166 1-6,8-15,22,24-26,28-31
+  s_e0960b0c984b3f::t_e75e5adf81af87 7,20
+  s_e0960b0c984b3f::t_3b9170caa704d5 16-19,21,23,27
+docs/marketing/enchantment_pickups_20261024_v2.md
+  s_bb54d2b77462a0::t_edb0012ff4f3cf 1-38
+scripts/effects/weapon_render_warmup.gd
+  s_e0960b0c984b3f::t_19977cd2175374 9-10,13-21
+scripts/debug/new_weapon_art_review.gd.uid
+  s_e0960b0c984b3f::t_ffec00f9d1a2b9 1
+scripts/weapons/weapon_loadout.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 53-54,62,70-75,310,317,381-384
+scripts/tests/furnace_saber_integration_test.gd
+  s_e0960b0c984b3f::t_f7a0e5787fdde8 144-145,266
+  s_e0960b0c984b3f::t_c54928874d4e91 109
+  s_e0960b0c984b3f::t_c4318d03f58587 1-108,110-143,146-265,267-277
+project.godot
+  s_e0960b0c984b3f::t_f8a7827c29baa5 53
+docs/furnace_saber_integration.md
+  s_e0960b0c984b3f::t_c3a46d9cfaafa7 35-49
+  s_e0960b0c984b3f::t_27d774a04bd300 1-34
+autoloads/combat_settings.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 57
+assets/ui/icons/weapons/weapon_saber.svg
+  s_e0960b0c984b3f::t_03277b50c4c779 1-8
+docs/marketing/enchantment_pickups_20261024.md
+  s_bb54d2b77462a0::t_5a959a197b148d 1-16,18-32
+  s_bb54d2b77462a0::t_80c42eef00b703 17
+scripts/debug/goblin_contracts_promo.gd
+  s_bb54d2b77462a0::t_d3db91e9133443 1-28,30-81,83-279,281-302,304-323,325-384
+  s_bb54d2b77462a0::t_b342ea8328995b 303,324
+  s_bb54d2b77462a0::t_6c6691de45a0bf 29,82,280
+  s_bb54d2b77462a0::t_436f7276f92ccd 385-398
+scripts/tools/record_enchantment_pickups.py
+  s_bb54d2b77462a0::t_f701fad10b745c 1-34,39-64,66-68,71,74-86,88-92,95-115
+  s_bb54d2b77462a0::t_b089dc6168433c 72-73
+  s_bb54d2b77462a0::t_9a53e35257be4a 70,94
+  s_bb54d2b77462a0::t_df283ad874b30f 35-38,65
+  s_bb54d2b77462a0::t_41e3367411923e 87
+  s_bb54d2b77462a0::t_e36a8e5b7ea1bb 69,93
+scenes/debug/goblin_contracts_promo.tscn
+  s_bb54d2b77462a0::t_d3db91e9133443 1-6
+scripts/battle/cavern_population_backdrop.gd
+  s_bb54d2b77462a0::t_df283ad874b30f 302-305
+scripts/tests/lightning_hit_png_test.gd
+  s_bb54d2b77462a0::t_b4a7ab8f2ce691 53-55
+scripts/debug/enchantment_combat_pickups.gd
+  s_bb54d2b77462a0::t_81d49f166bd85e 410-414
+  s_bb54d2b77462a0::t_3075a8ed332d55 63,146
+  s_bb54d2b77462a0::t_1ced281500c39a 125-131,193
+  s_bb54d2b77462a0::t_d5d829a99bb8af 164
+  s_bb54d2b77462a0::t_9a53e35257be4a 37-38,40,49,60,194,254
+  s_bb54d2b77462a0::t_1dfc59a976d694 39,61-62,228-234,236,251,256,266
+  s_bb54d2b77462a0::t_41e3367411923e 311
+  s_bb54d2b77462a0::t_7165b8feab2d1b 29,120,213
+  s_bb54d2b77462a0::t_b20822f1dc52c7 1-27,42-48,50-57,59,64-74,77-119,135-138,140,143-145,147-159,163,165-169,173,175-181,184-186,188-190,192,196-197,199-212,215,221,237-238,245-250,259,272-275,282-283,320-397,399-409,415-424
+  s_bb54d2b77462a0::t_df283ad874b30f 30-36,41,58,75-76,121-124,132-134,139,141-142,174,187,191,195,198,214,216-220,222-227,235,239-244,252-253,255,257-258,260-265,267-271,276-281,284-310,312-319,398
+  s_bb54d2b77462a0::t_b7fa90e91912e1 182-183
+  s_bb54d2b77462a0::t_30d18889dd1aea 28
+  s_bb54d2b77462a0::t_b7e6002b29061d 160-162
+  s_bb54d2b77462a0::t_0390ed2761dee8 170-172
+scripts/ui/weapon_cast_mode_icon.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 64-70,85
+scripts/tools/record_greed_promo.py
+  s_bb54d2b77462a0::t_18825f23696240 44-51
+  s_bb54d2b77462a0::t_c4c9ac11c9bd1c 1-43,52-69
+scripts/tests/lightning_ground_arc_test.gd
+  s_bb54d2b77462a0::t_b07aff225ac81b 29-61
+  s_bb54d2b77462a0::t_3cdb64dc1434ff 65,93
+scripts/tools/record_goblin_contracts.py
+  s_bb54d2b77462a0::t_4f6399d3d0bd44 1-16
+scripts/weapons/bounce_attack.gd
+  s_e0960b0c984b3f::t_03277b50c4c779 20-28
+scenes/debug/enchantment_combat_pickups.tscn
+  s_bb54d2b77462a0::t_b20822f1dc52c7 1-6
+scenes/debug/greed_promo.tscn
+  s_bb54d2b77462a0::t_c6b6fda96b2939 1-6
+docs/asset/furnace_saber_art_review_20261025.md
+  s_e0960b0c984b3f::t_8ed1de21dd1b1d 1-2,4-14,16-20,26-45,47-49
+  s_e0960b0c984b3f::t_27d774a04bd300 3
+  s_e0960b0c984b3f::t_46a5c3d50bc43e 15,24,46
+  s_e0960b0c984b3f::t_25cf2edca3eb4d 21-22,25
+  s_e0960b0c984b3f::t_93fde45948ef71 23
+localization/generated/source_keys.json
+  s_e0960b0c984b3f::t_6c9c4ca893802b 1196-1204
+scripts/battle/mobility_weapon_indicator.gd
+  s_e0960b0c984b3f::t_03277b50c4c779 8,37,91,130-143
+scripts/tools/review_new_weapon_art.py
+  s_e0960b0c984b3f::t_07c6ba2c617499 1-6,8-81,83-95,100-118,122-125,128-137
+  s_e0960b0c984b3f::t_0c9d1a7131359f 7,96-99
+  s_e0960b0c984b3f::t_c5e0a0195ad34f 82
+  s_e0960b0c984b3f::t_46a5c3d50bc43e 119-121,126-127
+scripts/effects/light_sword_effect.gd
+  s_bb54d2b77462a0::t_3ce2e294c72647 204-206
+scripts/debug/kunyu_enchantment_promo.gd
+  s_bb54d2b77462a0::t_05eb666a98073f 1-17
+  s_bb54d2b77462a0::t_3b5f6a5a4c6e46 18
+artifacts/reports/weapon_contact_fix_results.json
+  s_fc8b0b3648bc99::t_430a62f0811ec8 1,4-103,105-114,116-141,143-234
+  s_74d487a60fb6fa::t_605d8fad3acb34 2,104,115,142
+  s_e0960b0c984b3f::t_fdc104b46b42df 3
+scripts/debug/greed_promo.gd
+  s_bb54d2b77462a0::t_04d905bda2dbb2 191-192,198,221-222,227-228
+  s_bb54d2b77462a0::t_a48b0ae2287a2d 225,319,322
+  s_bb54d2b77462a0::t_b85ef211863855 341
+  s_bb54d2b77462a0::t_bf04ca99930fe0 24,155,305-306,308,332-333
+  s_bb54d2b77462a0::t_c2c1aea8cde880 210-211
+  s_bb54d2b77462a0::t_18825f23696240 105-107
+  s_bb54d2b77462a0::t_c6b6fda96b2939 1-23,25-104,108-154,156-188,193-194,197,199-209,212-220,223-224,226,229-304,307,309-318,320-321,323-331,334-340,342-440
+  s_bb54d2b77462a0::t_9e57da580c22bb 189-190,195-196
+scenes/debug/new_weapon_art_review.tscn
+  s_e0960b0c984b3f::t_b8543e4803a166 1-6
+localization/catalogs/furnace_saber.csv
+  s_e0960b0c984b3f::t_f8a7827c29baa5 1-37
+scripts/tests/lightning_pixel_test.gd
+  s_bb54d2b77462a0::t_3cdb64dc1434ff 46
+scripts/debug/ground_lightning_review.gd.uid
+  s_bb54d2b77462a0::t_1e8275dd933b6b 1
+docs/marketing/goblin_contracts_20261024.md
+  s_bb54d2b77462a0::t_f3d6ccc7004dd3 1-35
+scripts/effects/candidate_weapon_art.gd
+  s_e0960b0c984b3f::t_3b9170caa704d5 52-53
+  s_e0960b0c984b3f::t_b8543e4803a166 1,3-12,15-16,18-33,35-41,43-45,47-49,51,54-66,71-73,79-91
+  s_e0960b0c984b3f::t_e75e5adf81af87 2,13-14,17,34,42,46,50,67-70,74-78
+scripts/tools/remove_ice_atlas_fill.py
+  s_962fb6e104fb65::t_cae99341335947 1-36
+scripts/tests/furnace_saber_performance.gd
+  s_e0960b0c984b3f::t_c54928874d4e91 45
+  s_e0960b0c984b3f::t_dce3dec6d75e72 1-12,14-44,46-56,61-115,117-139,141-143,145-156
+  s_e0960b0c984b3f::t_9daf4e92739e9b 13
+  s_e0960b0c984b3f::t_46197cd33668b0 57-60,116,140,144
+shaders/battle/evacuation_lamp.gdshader
+  s_962fb6e104fb65::t_3518362a3aa207 7
+docs/asset/ground_lightning_cloudless_20261024.md
+  s_bb54d2b77462a0::t_843814006adad0 5-6
+  s_bb54d2b77462a0::t_efd38d1f378d74 1-4,7-36
+docs/marketing/combat_opening_promo.md
+  s_962fb6e104fb65::t_6b068c7748cd90 56-57
+  s_962fb6e104fb65::t_2d7949258ca43b 3,5,12,16,21,33,46,51-55,58-60,95
+  s_962fb6e104fb65::t_4d05036e4961b2 65-67
+  s_962fb6e104fb65::t_94c1c859f18a8e 18-19,25-31,61-64,68-69
+scripts/weapons/weapon_instance.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 534-535,603-615,633,888-891
+scripts/debug/fixtures/kunyu_promo_build.gd
+  s_bb54d2b77462a0::t_334c8f0931d650 28-40,43-47
+  s_bb54d2b77462a0::t_3b5f6a5a4c6e46 1-18
+  s_bb54d2b77462a0::t_69d8842ce57bdb 19-27
+  s_bb54d2b77462a0::t_9b3a00a821ef2f 41-42
+scripts/weapons/saber_runtime.gd
+  s_e0960b0c984b3f::t_e75e5adf81af87 1-18,20-73,83-86,89-94,101-119,129-143
+  s_e0960b0c984b3f::t_bd9769eb196381 74-82
+  s_e0960b0c984b3f::t_210c403266779d 19,87-88,95-100,120-128
+scripts/effects/lightning_particle_effect.gd
+  s_bb54d2b77462a0::t_3cdb64dc1434ff 13,310,317,334-337,355-357,366,457-459
+scenes/debug/kunyu_combat_promo.tscn
+  s_bb54d2b77462a0::t_5b3f8096121761 1-6
+scripts/effects/ice_field_effect.gd
+  s_962fb6e104fb65::t_cae99341335947 92,128
+docs/marketing/kunyu_promo_20261024.md
+  s_bb54d2b77462a0::t_0be828badf1664 41-57
+  s_bb54d2b77462a0::t_7af509362aa9dd 58-59
+  s_bb54d2b77462a0::t_3b050c0eb775ac 1-11,13,15,17,25-26,28-33,36-38
+  s_bb54d2b77462a0::t_9151176df2c372 12,14,16,18-24,27,34-35,39-40
+scripts/tools/benchmark_furnace_saber.py
+  s_e0960b0c984b3f::t_bd9769eb196381 1-47
+scripts/debug/kunyu_combat_promo.gd
+  s_bb54d2b77462a0::t_334c8f0931d650 12,20-23,56,73,76,85-91,97-99,102-105,108,136,141-142,162,167,169-170,174-177,206,212,222
+  s_bb54d2b77462a0::t_69d8842ce57bdb 11,17,79-81,168,192-194,201-205,207-211,213-221,224-228
+  s_bb54d2b77462a0::t_9e0445dbedd5aa 195,200
+  s_bb54d2b77462a0::t_106ff88e18e3e8 31,94,96,116
+  s_bb54d2b77462a0::t_5b3f8096121761 1-10,13-16,18-19,24-30,32-55,57-72,74-75,77-78,82-84,92-93,95,106-107,109-113,115,117-135,137,139-140,143-161,163-165,178-191,196-199,229-234
+  s_bb54d2b77462a0::t_596981d945c1e4 114
+  s_bb54d2b77462a0::t_9b3a00a821ef2f 100-101,138,166,171-173,223
+scripts/effects/electric_spark_effect.gd
+  s_bb54d2b77462a0::t_b082375ddadec4 131-133
+scripts/debug/new_weapon_art_review.gd
+  s_e0960b0c984b3f::t_dce3a66b082fab 256,259-262
+  s_e0960b0c984b3f::t_5efc002153c220 316-318,323-326
+  s_e0960b0c984b3f::t_3b9170caa704d5 14,149,170,180,200,207-213,217,242,288
+  s_e0960b0c984b3f::t_4f5bf57a1ba25d 92-93,109,314-315
+  s_e0960b0c984b3f::t_fdcb3b27724bd0 88,110,125,182
+  s_e0960b0c984b3f::t_799669be3cb0cf 1-7,9-13,15-26,28-87,89-91,94-108,111-124,126-148,150-169,181,183-198,202-205,225,227-228,230-234,236-237,241,246-255,257-258,263-287,289-313,319-322,327-329
+  s_e0960b0c984b3f::t_c5e0a0195ad34f 8,171-179,199,201,206,214-216,218-224,226,229,235,238-240,243-245
+  s_e0960b0c984b3f::t_93fde45948ef71 27
+scripts/debug/enchantment_promo.gd
+  s_bb54d2b77462a0::t_05eb666a98073f 89,226-229
+  s_bb54d2b77462a0::t_47a79efe663a71 32-38,45-52,108-110,116,130,166-169,172,176-177,180-182,188,196-197,203-205,209,220,222,254-256,261,269
+  s_524e101a4acc3f::t_680d2baf2b9b8c 230-231
+localization/generated/source_aliases.csv
+  s_e0960b0c984b3f::t_6c9c4ca893802b 1470-1499
+scripts/debug/fixtures/pickup_hammer_health.json
+  s_bb54d2b77462a0::t_1dfc59a976d694 1-8
+scripts/weapons/auto_mobility_planner.gd
+  s_e0960b0c984b3f::t_03277b50c4c779 138-143,165,173-174
+scenes/debug/kunyu_enchantment_promo.tscn
+  s_bb54d2b77462a0::t_05eb666a98073f 1-6
+scenes/debug/goblin_death_promo.tscn
+  s_bb54d2b77462a0::t_60abaf179560df 1-7
+scripts/weapons/active_weapon_casting.gd
+  s_e0960b0c984b3f::t_dd1e6a559f00bb 24,67,69,87,98,112-113,131-143,212
+scripts/tests/spell_terminal_range_review.gd
+  s_962fb6e104fb65::t_cae99341335947 128
+docs/marketing/goblin_death_promo_20261024.md
+  s_bb54d2b77462a0::t_3b074cec667e99 1-6,9-15,19-34
+  s_bb54d2b77462a0::t_f328a95eba89f3 7-8,16-18
+scripts/tools/new_weapon_art_gallery.html
+  s_e0960b0c984b3f::t_46a5c3d50bc43e 37
+  s_e0960b0c984b3f::t_0c9d1a7131359f 1-20,22,24-32,34-35,39-40,43,45-46
+  s_e0960b0c984b3f::t_93fde45948ef71 21,23,33,41-42,44
+  s_e0960b0c984b3f::t_25cf2edca3eb4d 36,38
+scripts/tools/record_goblin_deaths.py
+  s_bb54d2b77462a0::t_6dacfbc8fc23b7 41-46
+  s_bb54d2b77462a0::t_60abaf179560df 1-40,47-64
+docs/asset/effect_outline_audit_20261024.md
+  s_bb54d2b77462a0::t_925e8cc2939a7c 53
+  s_bb54d2b77462a0::t_3ce2e294c72647 19
+  s_bb54d2b77462a0::t_843814006adad0 1-18,20-52
+scripts/tests/new_weapon_probability_test.gd
+  s_e0960b0c984b3f::t_021eadfd206d16 8,32,37,67,90,112,123
+scripts/debug/goblin_death_promo.gd
+  s_bb54d2b77462a0::t_60abaf179560df 1-154
+shaders/effects/candidate_furnace_ring.gdshader
+  s_e0960b0c984b3f::t_e75e5adf81af87 12,45-46
+  s_e0960b0c984b3f::t_3b9170caa704d5 35-37,52-53,55-57
+  s_e0960b0c984b3f::t_b8543e4803a166 1-3,5-11,13-18,22-30,33,38,43-44,47-51,58-65,67,69-71
+  s_e0960b0c984b3f::t_93fde45948ef71 4,19-21
+  s_e0960b0c984b3f::t_c5e0a0195ad34f 31-32,34,39-42,54,66,68
+scripts/debug/ground_lightning_review.gd
+  s_bb54d2b77462a0::t_80ef60e52f08f3 1-91,93-126
+  s_bb54d2b77462a0::t_b082375ddadec4 92
+assets/sprites/weapons/candidates/furnace_saber_v1/furnace_ring.png.import
+  s_e0960b0c984b3f::t_b29e13cc39403e 1-40
+assets/sprites/weapons/candidates/furnace_saber_v1/furnace_split.png.import
+  s_e0960b0c984b3f::t_cbd20cce708bfb 1-40
+assets/sprites/weapons/candidates/furnace_saber_v1/saber_cut.png.import
+  s_e0960b0c984b3f::t_fae05874dba6b5 1-40
+assets/ui/icons/weapons/weapon_furnace.svg.import
+  s_e0960b0c984b3f::t_f36c7045395313 1-43
+assets/ui/icons/weapons/weapon_saber.svg.import
+  s_e0960b0c984b3f::t_b585dba14531db 1-43
+localization/catalogs/furnace_saber.csv.import
+  s_e0960b0c984b3f::t_768cba1f540556 1-19
+scenes/tests/log_grass_depth_test.tscn
+  s_962fb6e104fb65::t_de9a472caffef7 1-6
+scripts/debug/enchantment_combat_pickups.gd.uid
+  s_bb54d2b77462a0::t_fedf3d662fcc00 1
+scripts/debug/fixtures/kunyu_promo_build.gd.uid
+  s_bb54d2b77462a0::t_f8a9852dc76058 1
+scripts/debug/goblin_contracts_promo.gd.uid
+  s_bb54d2b77462a0::t_f9e581ac214d6a 1
+scripts/debug/goblin_death_promo.gd.uid
+  s_bb54d2b77462a0::t_935254b4692177 1
+scripts/debug/greed_promo.gd.uid
+  s_bb54d2b77462a0::t_2e01fd44692bc3 1
+scripts/debug/kunyu_combat_promo.gd.uid
+  s_bb54d2b77462a0::t_067b59e8a04ca2 1
+scripts/debug/kunyu_enchantment_promo.gd.uid
+  s_bb54d2b77462a0::t_e377024b7bf8cb 1
+scripts/tests/furnace_saber_integration_test.gd.uid
+  s_e0960b0c984b3f::t_3c9139da690885 1
+scripts/tests/furnace_saber_performance.gd.uid
+  s_e0960b0c984b3f::t_702e9dab455b96 1
+scripts/tests/log_grass_depth_test.gd.uid
+  s_bb54d2b77462a0::t_7e9540c155b2f5 1
+scripts/weapons/furnace_runtime.gd.uid
+  s_e0960b0c984b3f::t_373521ae96a788 1
+scripts/weapons/saber_runtime.gd.uid
+  s_e0960b0c984b3f::t_fb339c267053ce 1
+scripts/effects/ground_lightning_bolt.gd.uid
+  s_bb54d2b77462a0::t_e1746b9e215583 1
+shaders/effects/candidate_furnace_ring.gdshader.uid
+  s_e0960b0c984b3f::t_bde75db8d7ad0a 1
+shaders/effects/candidate_saber_cut.gdshader.uid
+  s_e0960b0c984b3f::t_2a692a201d8d1f 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4c4293805d7ce706c530edeefffaac58d397e876",
+  "prompts": {},
+  "sessions": {
+    "s_524e101a4acc3f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a163f6-07dc-7043-86da-dfa0cea1bc2c",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_74d487a60fb6fa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15210-bd16-7db1-aa74-224736bff7cd",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_962fb6e104fb65": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a169ba-e3db-7662-bc47-366eaa64fce7",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_bb54d2b77462a0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a166ac-4582-76f1-844c-cd9a4ab291bf",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_e0960b0c984b3f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a16e9a-de5e-7f60-b844-30faa8bf735e",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    },
+    "s_fc8b0b3648bc99": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a152fc-a3ca-7fe3-a022-9d62458e5108",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
