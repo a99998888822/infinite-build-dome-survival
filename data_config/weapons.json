@@ -459,5 +459,217 @@
       "4": {"rarity": "epic", "description": "元素基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.2s[/color]\n附魔槽 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 5}, {"field": "active_cooldown_ms", "value": -200}, {"field": "attachment_slots", "value": 1}]},
       "5": {"rarity": "mythic", "description": "元素基础伤害 [color=#7FD88F]+8[/color]\n震击伤害段数 [color=#7FD88F]+1[/color]", "effects": [{"stat": "element_damage", "value": 8}, {"stat": "projectile_count", "value": 1}]}
     }
+  },
+  {
+    "id": "weapon_furnace",
+    "display_name": "刚焰炉",
+    "description": "受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。",
+    "shop_description": "受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。",
+    "shop_weight": 90,
+    "combat_tags": [
+      "范围"
+    ],
+    "icon": "res://assets/ui/icons/weapons/weapon_furnace.svg",
+    "hit_sfx": "res://assets/audio/sfx/combat/wood_arrow_01.wav",
+    "rarity": "uncommon",
+    "attack_kind": "element",
+    "tags": [
+      "fire"
+    ],
+    "load_cost": 24,
+    "max_level": 5,
+    "attachment_slots": 1,
+    "active_cooldown_ms": 3000,
+    "attack_interval_ms": 3000,
+    "attack_range": 160,
+    "hit_radius": 160,
+    "projectile_speed": 0,
+    "spread_angle": 0,
+    "projectile_behavior": "furnace",
+    "player_damage_coefficient": 0.8,
+    "unsupported_effects": [
+      "pierce"
+    ],
+    "base_stats": {
+      "element_damage": 24,
+      "attack_speed": 0,
+      "crit_chance": 5,
+      "crit_damage": 150,
+      "projectile_count": 1
+    },
+    "level_upgrades": {
+      "2": {
+        "rarity": "uncommon",
+        "description": "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "element_damage",
+            "value": 4
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          },
+          {
+            "field": "attachment_slots",
+            "value": 1
+          }
+        ]
+      },
+      "3": {
+        "rarity": "rare",
+        "description": "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]",
+        "effects": [
+          {
+            "stat": "element_damage",
+            "value": 4
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          }
+        ]
+      },
+      "4": {
+        "rarity": "epic",
+        "description": "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "element_damage",
+            "value": 4
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          },
+          {
+            "field": "attachment_slots",
+            "value": 1
+          }
+        ]
+      },
+      "5": {
+        "rarity": "mythic",
+        "description": "元素基础伤害 [color=#7FD88F]+8[/color]\n火圈数量 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "element_damage",
+            "value": 8
+          },
+          {
+            "stat": "projectile_count",
+            "value": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "weapon_saber",
+    "display_name": "斩马刀",
+    "description": "朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。",
+    "shop_description": "朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。",
+    "shop_weight": 90,
+    "combat_tags": [
+      "近战",
+      "范围",
+      "位移"
+    ],
+    "icon": "res://assets/ui/icons/weapons/weapon_saber.svg",
+    "hit_sfx": "res://assets/audio/sfx/combat/wood_arrow_01.wav",
+    "rarity": "uncommon",
+    "attack_kind": "melee",
+    "tags": [
+      "melee",
+      "heavy"
+    ],
+    "load_cost": 28,
+    "max_level": 5,
+    "attachment_slots": 1,
+    "active_cooldown_ms": 5000,
+    "attack_interval_ms": 5000,
+    "attack_range": 300,
+    "hit_radius": 8,
+    "projectile_speed": 0,
+    "spread_angle": 0,
+    "projectile_behavior": "saber",
+    "player_damage_coefficient": 0.8,
+    "unsupported_effects": [
+      "pierce",
+      "split"
+    ],
+    "base_stats": {
+      "melee_damage": 32,
+      "attack_speed": 0,
+      "crit_chance": 5,
+      "crit_damage": 150,
+      "projectile_count": 1
+    },
+    "level_upgrades": {
+      "2": {
+        "rarity": "uncommon",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "melee_damage",
+            "value": 5
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          },
+          {
+            "field": "attachment_slots",
+            "value": 1
+          }
+        ]
+      },
+      "3": {
+        "rarity": "rare",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]",
+        "effects": [
+          {
+            "stat": "melee_damage",
+            "value": 5
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          }
+        ]
+      },
+      "4": {
+        "rarity": "epic",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "melee_damage",
+            "value": 5
+          },
+          {
+            "field": "active_cooldown_ms",
+            "value": -100
+          },
+          {
+            "field": "attachment_slots",
+            "value": 1
+          }
+        ]
+      },
+      "5": {
+        "rarity": "mythic",
+        "description": "近战基础伤害 [color=#7FD88F]+7[/color]\n刀光次数 [color=#7FD88F]+1[/color]",
+        "effects": [
+          {
+            "stat": "melee_damage",
+            "value": 7
+          },
+          {
+            "stat": "projectile_count",
+            "value": 1
+          }
+        ]
+      }
+    }
   }
 ]

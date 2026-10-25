@@ -1,4 +1,4 @@
-"""Capture the nine-second combat opening on a private Windows desktop."""
+"""Capture the combat opening on a private Windows desktop."""
 
 import argparse
 import json
@@ -20,7 +20,7 @@ def run(command):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot")
-    parser.add_argument("--output", type=Path, default=Path(tempfile.gettempdir()) / "combat_opening_20261023_v2")
+    parser.add_argument("--output", type=Path, default=Path(tempfile.gettempdir()) / "combat_opening_20261024_v4")
     parser.add_argument("--encode-only", action="store_true")
     parser.add_argument("--preview", action="store_true")
     args = parser.parse_args()

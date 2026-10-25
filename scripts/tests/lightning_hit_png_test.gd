@@ -50,7 +50,9 @@ func _run() -> void:
 					return
 				var burst = active_bursts[-1]
 				burst.set_process(false)
-				check(burst.flash_count == roundi(5 * multiplier * intensity * 0.5) and burst.impact_count == roundi(30 * multiplier * intensity * 0.5), "reduced count preserved while pool is full: ground=%s count=%.2f range=%.1f" % [ground, multiplier, intensity])
+				var count_scale := 0.35 if ground else 0.5
+				check(burst.flash_count == roundi(5 * multiplier * intensity * count_scale) and burst.impact_count == roundi(30 * multiplier * intensity * count_scale), "ground sparks tightened; chain counts preserved: ground=%s count=%.2f range=%.1f" % [ground, multiplier, intensity])
+				check(is_equal_approx(burst._parameters.distance_multiplier, intensity * (0.325 if ground else 0.5)), "only ground spark travel is shortened")
 				check(burst.batches.size() == 2 and world.get_active_particle_count() == 900, "PNG batches bypass shared particle slots")
 				var radius := 0.5 if ground else 0.25
 				check(is_equal_approx(field._radii[-1], 200.0 * radius) and is_equal_approx(field._radii[-2], 86.0 * radius), "existing reduced impact light radii preserved")

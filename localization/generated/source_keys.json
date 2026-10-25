@@ -1193,5 +1193,13 @@
   "每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。": "ui.settlement.gold_tooltip",
   "每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。": "ui.settlement.interest_tooltip",
   "每 %d 只敌人折算 1 天赋点。": "ui.settlement.kills_tooltip",
-  "每完整度过一波获得 %d 天赋点。": "ui.settlement.waves_tooltip"
+  "每完整度过一波获得 %d 天赋点。": "ui.settlement.waves_tooltip",
+  "刚焰炉": "content.weapons.weapon_furnace.display_name",
+  "受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。": "content.weapons.weapon_furnace.description",
+  "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]": "content.weapons.weapon_furnace.level_2.description",
+  "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]": "content.weapons.weapon_furnace.level_3.description",
+  "元素基础伤害 [color=#7FD88F]+8[/color]\n火圈数量 [color=#7FD88F]+1[/color]": "content.weapons.weapon_furnace.level_5.description",
+  "斩马刀": "content.weapons.weapon_saber.display_name",
+  "朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。": "content.weapons.weapon_saber.description",
+  "近战基础伤害 [color=#7FD88F]+7[/color]\n刀光次数 [color=#7FD88F]+1[/color]": "content.weapons.weapon_saber.level_5.description"
 }

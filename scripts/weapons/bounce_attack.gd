@@ -17,7 +17,15 @@ func initialize(source: WeaponInstance, point: Vector2, direction: Vector2, body
 	var heading := direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	var scale_time := 1.0 if replay.use_active_range_rules else replay.get_actual_attack_interval_seconds() / maxf(float(replay.attack_interval_ms) / 1000.0, 0.001)
 	lifetime = maxf(8.0, replay.get_actual_attack_interval_seconds() * 3.0)
-	if replay.is_mobility_weapon():
+	if replay.is_furnace():
+		var furnace := FurnaceRuntime.new()
+		add_child(furnace)
+		furnace.initialize(replay)
+	elif replay.is_saber():
+		var saber := SaberRuntime.new()
+		add_child(saber)
+		saber.initialize_replay(replay, point, heading)
+	elif replay.is_mobility_weapon():
 		var mobility := MobilityWeaponRuntime.new()
 		add_child(mobility)
 		mobility.initialize_replay(replay, point, heading, body as EnemyController)

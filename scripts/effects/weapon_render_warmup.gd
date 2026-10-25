@@ -6,9 +6,19 @@ const JET = preload("res://scripts/effects/cannon_jet_flame.gd")
 const PLASMA = preload("res://scripts/effects/plasma_ball_visual.gd")
 const ATLAS = preload("res://scripts/effects/aligned_atlas.gd")
 const COOLDOWN = preload("res://shaders/ui/weapon_cooldown.gdshader")
-const KINDS: Array[String] = ["lamp", "cannon", "plasma", "cooldown"]
+const FURNACE_SABER = preload("res://scripts/effects/candidate_weapon_art.gd")
+const KINDS: Array[String] = ["lamp", "cannon", "plasma", "cooldown", "furnace", "saber"]
 
 static func prepare(parent: Node2D, kind: String) -> void:
+	if kind == "furnace" or kind == "saber":
+		var effect: Node2D
+		if kind == "furnace":
+			effect = FURNACE_SABER.ring(parent, Vector2.ZERO)
+		else:
+			effect = FURNACE_SABER.cut(parent, Vector2(-150, 0), Vector2(150, 0))
+		effect.manual_clock = true
+		effect.sample(0.25 if kind == "furnace" else 0.05)
+		return
 	if kind == "cooldown":
 		# The HUD keeps this material hidden until the first cast. Submit its
 		# real ColorRect path under the curtain without changing weapon state.

@@ -1,0 +1,8 @@
+{
+  "formation_seed": 8247,
+  "candidate_count": 82,
+  "native_hit_damage": 75,
+  "description": "Initial health from a native-hit rehearsal, plus 20 HP. Applied only before filming; damage and deaths use production combat.",
+  "health": [95,320,24,24,95,170,95,245,95,95,95,95,95,24,95,95,95,95,24,95,170,170,95,170,170,95,170,95,95,95,24,170,170,95,170,95,24,95,170,24,95,95,395,95,95,95,95,95,95,95,24,95,95,95,170,170,95,95,245,95,95,95,95,170,95,95,245,95,170,95,245,95,170,170,24,95,24,95,24,95,95,95],
+  "omit": [0,3,12,18,22,28,31,36,43,51,63,70,77,81]
+}

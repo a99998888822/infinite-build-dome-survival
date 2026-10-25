@@ -201,7 +201,9 @@ func _sync_ground_area() -> void:
 	var age := maxf(0.0, _elapsed - _delay - _fall_seconds)
 	var expansion := smoothstep(0.0, 0.18, age) if _landed else 1.0
 	var fade := 1.0 - smoothstep(0.25, 1.0, age / _dissolve_seconds) if _landed else 0.8
-	_ground_area.setup(get_terminal_footprint_axes(), Color(0.76,0.84,0.56,0.15), Color(0.92,1.0,0.77,0.65), expansion, fade)
+	# Match the ground wash at the edge instead of adding an ellipse outline.
+	var fill := Color(0.76, 0.84, 0.56, 0.15)
+	_ground_area.setup(get_terminal_footprint_axes(), fill, fill, expansion, fade)
 
 func _draw_ground() -> void:
 	BAKED.ALIGNED.begin(_ground_layer)

@@ -86,11 +86,11 @@ func _run() -> void:
 			if child is IceFieldEffect: ice=child
 		ice.set_process(false)
 		check_hits("ice " + str(bonus))
-		check_ground(ice,axes,"growing ice")
+		check(ice.get_terminal_footprint_axes().is_equal_approx(axes),"frost-only ice retains its collision footprint")
 		ice._process(0.65)
-		check(is_equal_approx(ice._ground_area.growth,1.0),"ice reaches full ground coverage")
+		check_hits("ice crystal growth does not repeat damage")
 		ice.expand_from_wind()
-		check_ground(ice,axes*1.35,"wind-expanded ice")
+		check(ice.get_terminal_footprint_axes().is_equal_approx(axes*1.35),"wind-expanded frost retains its collision footprint")
 		check(ice._ground_shape.get_rect().size.is_equal_approx(axes*2.7),"expanded ice physics matches terminal visual")
 
 		axes = FOOTPRINT.axes(30.0*multiplier)

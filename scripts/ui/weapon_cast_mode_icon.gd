@@ -61,6 +61,13 @@ func configure(source: WeaponInstance, allow_editing: bool, frame_color: Color =
 
 func sync_policy() -> void:
 	if weapon == null: return
+	if weapon.is_furnace():
+		icon = AUTO_ICON
+		automatic = true
+		disabled = true
+		tooltip_text = L10n.source(str(weapon.weapon_data.description))
+		return
+	disabled = false
 	automatic = CombatSettings.prefers_auto_cast(weapon.weapon_id, weapon.is_mobility_weapon())
 	icon = AUTO_ICON if automatic else MANUAL_ICON
 	var tint := Color("91dcb8") if automatic else Color("ddbe79")
@@ -75,5 +82,5 @@ func sync_policy() -> void:
 
 
 func _toggle() -> void:
-	if editable and weapon != null:
+	if editable and weapon != null and not weapon.is_furnace():
 		CombatSettings.set_weapon_auto_cast(weapon.weapon_id, not automatic)

@@ -50,6 +50,8 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	for previous in weapon_instances:
 		_clear_weapon_runtime(previous)
 	active_casting.states.clear()
+	if is_instance_valid(owner_player) and owner_player.damage_taken.is_connected(_on_player_damaged):
+		owner_player.damage_taken.disconnect(_on_player_damaged)
 	owner_player = player
 	finance_system = bank
 	weapon_instances.clear()
@@ -57,11 +59,18 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	if owner_player == null:
 		push_error("[WeaponLoadout] missing owner player.")
 		return false
+	owner_player.damage_taken.connect(_on_player_damaged)
 
 	for weapon_id in owner_player.get_start_weapon_ids():
 		if not equip_weapon(weapon_id):
 			return false
 	return true
+
+
+func _on_player_damaged(_amount: int, _source_id: String) -> void:
+	for weapon in weapon_instances:
+		if weapon.is_furnace():
+			active_casting.cast(weapon, owner_player.global_position, true, true)
 
 
 func _play_legacy_player_action(weapon_id: String, _count: int) -> void:
@@ -298,13 +307,14 @@ func get_load_capacity() -> int:
 func tick(delta: float) -> void:
 	if not is_instance_valid(owner_player) or not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	active_casting.tick(delta)
 	if active_combat_enabled:
-		active_casting.tick(delta)
 		if str(GameGlobal.get_runtime_flag("main_flow_state", "")) == MainFlowCoordinator.STATE_WAVE_COMBAT:
 			active_casting.auto_attack()
 			active_casting.mobility_planner.tick(active_casting, delta)
 		return
 	for weapon in weapon_instances:
+		if weapon.is_furnace(): continue
 		if weapon.is_ritual_tome():
 			_ensure_ritual_domain(weapon)
 		if weapon.is_copper_lamp() or weapon.is_mutant_tentacle():
@@ -368,6 +378,10 @@ func _perform_weapon_attack(weapon: WeaponInstance) -> bool:
 		return false
 	if not owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return false
+	if weapon.is_furnace(): return false
+	if weapon.is_saber():
+		var target := DirectedWeaponRuntime.nearest(weapon, weapon.get_attack_range())
+		return target != null and active_casting.cast(weapon, weapon.get_auto_target_position(target), true)
 	if weapon.is_copper_lamp():
 		_ensure_directed_runtime(weapon)
 		return false

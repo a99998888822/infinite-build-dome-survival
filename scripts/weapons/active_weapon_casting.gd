@@ -21,6 +21,7 @@ func can_cast(weapon: WeaponInstance) -> bool:
 func auto_attack() -> void:
 	# Use the same snapshots, animation and cooldown as a manual cast.
 	for weapon: WeaponInstance in loadout.weapon_instances:
+		if weapon.is_furnace(): continue
 		if weapon.is_mobility_weapon(): continue # Evaluated by the throttled movement planner.
 		if not CombatSettings.is_weapon_automatic(weapon):
 			continue
@@ -63,9 +64,9 @@ func tick(delta: float) -> void:
 		var state := state_for(weapon)
 		# The tome's first blink starts one clock shared by return availability and HUD.
 		# Returning/interrupting never restarts that clock.
-		if weapon.is_star_tome():
+		if weapon.cooldown_starts_on_cast():
 			state.remaining = maxf(0.0, float(state.remaining) - delta)
-			if float(state.remaining) <= 0.0 and weapon.mobility_runtime != null:
+			if weapon.is_star_tome() and float(state.remaining) <= 0.0 and weapon.mobility_runtime != null:
 				var runtime: Variant = weapon.mobility_runtime.get_ref()
 				if is_instance_valid(runtime) and not runtime.cancelled: runtime.expire_return()
 		if state.executing:
@@ -83,7 +84,7 @@ func tick(delta: float) -> void:
 					playing = body.is_attacking()
 			if not playing and float(state.tail) <= 0:
 				_finish(weapon)
-		elif not weapon.is_star_tome():
+		elif not weapon.cooldown_starts_on_cast():
 			state.remaining = maxf(0, float(state.remaining) - delta)
 		if bool(state.get("feedback_pending", false)) and not state.executing and float(state.remaining) <= 0.0:
 			state.feedback_pending = false
@@ -94,7 +95,7 @@ func _finish(weapon: WeaponInstance) -> void:
 	if not state.executing:
 		return
 	state.executing = false
-	if not weapon.is_star_tome():
+	if not weapon.cooldown_starts_on_cast():
 		state.total = weapon.get_active_cooldown_seconds()
 		state.remaining = state.total
 	var body: Variant = state.body.get_ref() if state.body is WeakRef else null
@@ -108,7 +109,8 @@ func interrupt(weapon: WeaponInstance) -> void:
 		if is_instance_valid(runtime): runtime.cancel()
 	_finish(weapon)
 
-func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bool:
+func cast(source: WeaponInstance, point: Vector2, automatic: bool = false, reactive: bool = false) -> bool:
+	if source.is_furnace() and not reactive: return false
 	if not can_cast(source) or not loadout.weapon_instances.has(source):
 		return false
 	if not is_instance_valid(loadout.owner_player) or not loadout.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
@@ -126,7 +128,19 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 	var root: Node = loadout._get_visual_root()
 	var body: Node2D
 	weapon.begin_attack()
-	if weapon.is_mobility_weapon():
+	if weapon.is_furnace():
+		var furnace := FurnaceRuntime.new()
+		root.add_child(furnace)
+		furnace.initialize(weapon)
+		body = furnace
+	elif weapon.is_saber():
+		var saber := SaberRuntime.new()
+		root.add_child(saber)
+		if not saber.initialize(weapon, source, point):
+			saber.queue_free()
+			return false
+		body = saber
+	elif weapon.is_mobility_weapon():
 		var mobility := MobilityWeaponRuntime.new()
 		root.add_child(mobility)
 		mobility.initialize(weapon, source, point, automatic)
@@ -195,7 +209,7 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bo
 	source.attack_timer = 0
 	var state := state_for(source)
 	state.executing = true
-	if source.is_star_tome():
+	if source.cooldown_starts_on_cast():
 		state.total = weapon.get_active_cooldown_seconds()
 		state.remaining = state.total
 	state.body = weakref(body) if body != null else null

@@ -3,6 +3,7 @@ class_name PlayerController
 
 signal hp_changed(current_hp: int, max_hp: int, current_shield: int)
 signal health_damage_taken(previous_hp: int, remaining_hp: int, maximum_hp: int)
+signal damage_taken(amount: int, source_id: String)
 signal died
 signal revived(remaining_revives: int)
 signal lethal_damage
@@ -474,6 +475,8 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 
 	if current_hp <= 0:
 		_die(source_id)
+	if alive and shield_damage + health_damage > 0:
+		damage_taken.emit(shield_damage + health_damage, source_id)
 	return shield_damage + health_damage
 
 
@@ -654,6 +657,15 @@ func cancel_mobility_motion(source: Node) -> void:
 	if _mobility_owner != null and _mobility_owner.get_ref() == source:
 		_mobility_owner = null
 		velocity = Vector2.ZERO
+
+
+func blink_mobility_hold(source: Node, point: Vector2) -> bool:
+	if _mobility_owner == null or _mobility_owner.get_ref() != source:
+		return false
+	_mobility_start = point
+	_mobility_target = point
+	blink_to(point)
+	return true
 
 
 func blink_to(point: Vector2) -> void:
@@ -901,11 +913,14 @@ func _apply_walk_visual() -> void:
 func play_weapon_action(weapon_id: String, runtime: Node = null, sustain_seconds: float = 0.0, attack_direction: Vector2 = Vector2.ZERO) -> void:
 	if not alive or not action_animator.enabled:
 		return
+	if is_mobility_moving() and _mobility_owner.get_ref().has_method("owns_jump_animation"):
+		return
+	if weapon_id == "weapon_furnace": return
 	# Side-view art keeps its current side for a strictly vertical cast.
 	var direction := attack_direction if not is_zero_approx(attack_direction.x) else (Vector2.RIGHT if facing_right else Vector2.LEFT)
 	if weapon_id in ["weapon_kunyu_ritual_tome", "weapon_copper_lamp"]:
 		action_animator.start_sustain(runtime, sustain_seconds, direction)
-	elif weapon_id not in ["weapon_dash_blade", "weapon_hand_cannon", "weapon_star_tome"]:
+	elif weapon_id not in ["weapon_dash_blade", "weapon_hand_cannon", "weapon_star_tome", "weapon_saber"]:
 		# The new strip depicts forward steps. Retreating casts retain the
 		# planted punch until a dedicated backward-walking attack is available.
 		var advancing := _read_move_input().dot(direction.normalized()) > 0.001

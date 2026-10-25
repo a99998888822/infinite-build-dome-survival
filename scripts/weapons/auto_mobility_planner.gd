@@ -135,6 +135,12 @@ func propose(weapon: WeaponInstance, player: PlayerController, intent: Vector2, 
 			var full := weapon.get_mobility_landing(direction * MAX_TRAVEL)
 			for fraction in [0.75, 1.0]:
 				points.append(origin + full * fraction)
+	elif weapon.is_saber():
+		for threat: Dictionary in context.threats.slice(0, MAX_TARGETS):
+			if not bool(threat.targetable): continue
+			var offset: Vector2 = threat.position - origin
+			if offset.normalized().dot(intent) < ALIGNMENT: continue
+			points.append(Vector2(threat.position) + offset.normalized() * (float(threat.safety) + 24.0))
 	else:
 		for threat: Dictionary in context.threats.slice(0, MAX_TARGETS):
 			if not bool(threat.targetable): continue
@@ -156,7 +162,7 @@ func propose(weapon: WeaponInstance, player: PlayerController, intent: Vector2, 
 			# Do not overshoot the click target and then force a walk back.
 			if displacement.dot(intent) > origin.distance_to(player.move_destination): continue
 		if landing.distance_squared_to(desired) > 4.0: continue
-		if not safe_path(origin, landing, retreat, weapon.is_star_tome(), context): continue
+		if not safe_path(origin, landing, retreat, weapon.is_star_tome() or weapon.is_saber(), context): continue
 		var hits := 0
 		if weapon.is_hand_cannon():
 			var target_path := player.resolve_mobility_destination(point)
@@ -164,7 +170,8 @@ func propose(weapon: WeaponInstance, player: PlayerController, intent: Vector2, 
 			hits = 1
 		else:
 			for threat: Dictionary in context.threats:
-				if bool(threat.targetable) and landing.distance_to(threat.predicted) <= weapon.get_hit_radius():
+				var distance := Geometry2D.get_closest_point_to_segment(threat.predicted, origin, landing).distance_to(threat.predicted) if weapon.is_saber() else landing.distance_to(threat.predicted)
+				if bool(threat.targetable) and distance <= weapon.get_hit_radius():
 					var sight := PhysicsRayQueryParameters2D.create(landing, threat.position, 4)
 					if player.get_world_2d().direct_space_state.intersect_ray(sight).is_empty(): hits += 1
 		if not retreat and hits == 0: continue

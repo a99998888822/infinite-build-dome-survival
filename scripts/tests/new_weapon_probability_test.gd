@@ -5,6 +5,7 @@ const EXPECTED := {
 	"weapon_nightwatch_spear": 90, "weapon_dash_blade": 90,
 	"weapon_plasma_cannon": 80, "weapon_kunyu_ritual_tome": 80,
 	"weapon_earth_hammer": 80, "weapon_meteor_flail": 80, "weapon_hand_cannon": 80,
+	"weapon_furnace": 90, "weapon_saber": 90,
 }
 const SAMPLES := 6000
 var generator := ShopOfferGenerator.new()
@@ -28,12 +29,12 @@ func _run() -> void:
 	var context := {"owned_weapon_ids": [], "equipped_weapons": [], "load_capacity": 1000, "current_load": 0, "luck": 0}
 	var pool := generator.build_shop_candidate_pool(context)
 	var weapons := generator._filter_candidates_by_type(pool, ShopOfferGenerator.OFFER_NEW_WEAPON)
-	check(weapons.size() == EXPECTED.size(), "all eight available weapons covered")
+	check(weapons.size() == EXPECTED.size(), "all ten available weapons covered")
 	var total := 0
 	for weapon in weapons:
 		check(int(weapon.weight) == EXPECTED[weapon.target_id], "configured weight " + str(weapon.target_id))
 		total += int(weapon.weight)
-	check(total == 680, "weights normalized across available individual weapons")
+	check(total == 860, "weights normalized across available individual weapons")
 	for kind in [ShopOfferGenerator.OFFER_RELIC, ShopOfferGenerator.OFFER_WEAPON_UPGRADE]:
 		check(generator._filter_candidates_by_type(pool, kind).all(func(c): return c.weight == 100), "other candidate weights unchanged")
 	_test_distribution(weapons)
@@ -63,7 +64,7 @@ func _test_distribution(weapons: Array[Dictionary]) -> void:
 		check(valid, mode + " always draws exactly one eligible weapon")
 		for id in EXPECTED:
 			var observed := float(counts.get(id, 0)) / SAMPLES
-			check(absf(observed - float(EXPECTED[id]) / 680.0) < 0.015, mode + " per-weapon probability " + id)
+			check(absf(observed - float(EXPECTED[id]) / 860.0) < 0.015, mode + " per-weapon probability " + id)
 		print("NEW_WEAPON_DISTRIBUTION ", mode, " ", JSON.stringify(counts))
 		for index in 64:
 			seed(index)
@@ -86,7 +87,7 @@ func _test_independent_filters(pool: Array[Dictionary]) -> void:
 	var disabled := {"common": 0, "uncommon": 0, "rare": 0, "epic": 0, "mythic": 0, "legendary": 0}
 	var types := {"new_weapon": 1, "relic": 1, "weapon_upgrade": 1}
 	var filtered := generator._filter_candidates_by_rarity_weights(pool, disabled)
-	check(filtered.size() == 8 and filtered.all(func(c): return c.offer_type == "new_weapon"), "only available new weapons bypass the shared rarity filter")
+	check(filtered.size() == EXPECTED.size() and filtered.all(func(c): return c.offer_type == "new_weapon"), "only available new weapons bypass the shared rarity filter")
 	for mode in ["free", "shop"]:
 		var offers := generator.roll_shop_offers(disabled, types, pool, 3) if mode == "free" else generator.roll_paid_offers(disabled, types, pool, 3, 99)
 		check(offers.size() == 1 and offers[0].offer_type == "new_weapon", mode + " new weapon survives zero shared rarity weights and respects one-per-page")
@@ -108,7 +109,7 @@ func _test_constraints() -> void:
 		"load_capacity": 100, "current_load": 42, "luck": 0}
 	var pool := generator.build_shop_candidate_pool(context)
 	var weapons := generator._filter_candidates_by_type(pool, ShopOfferGenerator.OFFER_NEW_WEAPON)
-	check(weapons.size() == 6 and weapons.all(func(c): return c.target_id not in context.owned_weapon_ids), "owned weapons excluded")
+	check(weapons.size() == EXPECTED.size() - 2 and weapons.all(func(c): return c.target_id not in context.owned_weapon_ids), "owned weapons excluded")
 	context.candidate_pool = pool
 	check(generator.get_shop_type_weights(context) == {"new_weapon": 6, "relic": 60, "weapon_upgrade": 4}, "paid type odds unchanged")
 	context.offer_mode = "free"
@@ -119,7 +120,7 @@ func _test_constraints() -> void:
 		check(offers.size() == 1 and offers[0].candidate_id not in previous, "previous-page exclusions and one weapon per shelf retained")
 	context.current_load = 75
 	weapons = generator._filter_candidates_by_type(generator.build_shop_candidate_pool(context), ShopOfferGenerator.OFFER_NEW_WEAPON)
-	check(weapons.size() == 1 and weapons[0].target_id == "weapon_plasma_cannon", "weapon must fit remaining load")
+	check(weapons.size() == 2 and weapons.all(func(c): return c.target_id in ["weapon_plasma_cannon", "weapon_furnace"]), "weapon must fit remaining load")
 	context.current_load = 100
 	check(generator._filter_candidates_by_type(generator.build_shop_candidate_pool(context), ShopOfferGenerator.OFFER_NEW_WEAPON).is_empty(), "full load excludes all new weapons")
 	context.current_load = 42

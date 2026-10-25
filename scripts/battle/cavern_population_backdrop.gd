@@ -299,6 +299,10 @@ func _make_solid(entry: Dictionary, nodes: Array[Node]) -> void:
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.material = decoration_material
 	sprite.set_meta("scenery",entry)
+	# Low fallen logs share the grass depth bands. Their foreground tufts must
+	# cover the wood, while combat art and bodies retain their higher layers.
+	if entry.kind == "prop" and str(config.props[entry.index].get("id", "")) == "log":
+		CombatRenderWorld.set_world_layer(sprite, CombatRenderWorld.GRASS_Z)
 	roots.add_child(sprite)
 	nodes.append(sprite)
 	if entry.kind=="prop":

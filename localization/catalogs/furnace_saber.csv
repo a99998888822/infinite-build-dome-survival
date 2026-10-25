@@ -1,0 +1,37 @@
+keys,zh_CN,en
+content.weapons.weapon_furnace.display_name,刚焰炉,Steel-Flame Furnace
+content.weapons.weapon_furnace.description,受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Taking damage pushes nearby enemies away and releases burning fire rings. Projectiles add rings; Split creates small flares around the outer edge.
+content.weapons.weapon_furnace.level_2.description,"元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]
+Enchantment slots [color=#7FD88F]+1[/color]"
+content.weapons.weapon_furnace.level_3.description,"元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base elemental damage [color=#7FD88F]+4[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]"
+content.weapons.weapon_furnace.level_4.description,"元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]
+Enchantment slots [color=#7FD88F]+1[/color]"
+content.weapons.weapon_furnace.level_5.description,"元素基础伤害 [color=#7FD88F]+8[/color]
+火圈数量 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+8[/color]
+Fire rings [color=#7FD88F]+1[/color]"
+content.weapons.weapon_saber.display_name,斩马刀,Horse-Cleaving Saber
+content.weapons.weapon_saber.description,朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。,"Jump toward your aim, blink halfway through the jump, and slash enemies along the path. Projectiles add slashes and hits; Attack Range extends the blink and Damage Area widens the slash."
+content.weapons.weapon_saber.level_2.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base melee damage [color=#7FD88F]+5[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]
+Enchantment slots [color=#7FD88F]+1[/color]"
+content.weapons.weapon_saber.level_3.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base melee damage [color=#7FD88F]+5[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]"
+content.weapons.weapon_saber.level_4.description,"近战基础伤害 [color=#7FD88F]+5[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base melee damage [color=#7FD88F]+5[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]
+Enchantment slots [color=#7FD88F]+1[/color]"
+content.weapons.weapon_saber.level_5.description,"近战基础伤害 [color=#7FD88F]+7[/color]
+刀光次数 [color=#7FD88F]+1[/color]","Base melee damage [color=#7FD88F]+7[/color]
+Slashes [color=#7FD88F]+1[/color]"

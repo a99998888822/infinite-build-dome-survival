@@ -43,7 +43,7 @@ func timing_test() -> void:
 		check(snapshot.size() == 10, "200px arc uses ten control points instead of dense samples")
 		check(snapshot[0] == Vector2(-13, -7) and snapshot[-1] == Vector2(187, 33), "contact endpoints stay anchored")
 		var times := [0.01, 0.09, 0.17, 0.21, 0.29]
-		var expected := [1.0, 0.6, 0.0, 1.0, 0.6]
+		var expected := [1.0, 0.6, 0.0, 0.42, 0.252] if ground else [1.0, 0.6, 0.0, 1.0, 0.6]
 		var previous := 0.0
 		for i in times.size():
 			effect._process(times[i] - previous)

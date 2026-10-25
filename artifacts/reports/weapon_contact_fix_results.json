@@ -1,0 +1,234 @@
+{
+	"checks": 284,
+	"failures": 0,
+	"records": [
+		{
+			"case": "stationary_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_void_blade"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_plasma_cannon"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9964
+			],
+			"weapon": "weapon_iron_grenade_cannon"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9984
+			],
+			"weapon": "weapon_kunyu_ritual_tome"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_rentier_purse"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_copper_lamp"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9960
+			],
+			"weapon": "weapon_mutant_tentacle"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9970
+			],
+			"weapon": "weapon_earth_hammer"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9984
+			],
+			"weapon": "weapon_camp_dagger"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9974
+			],
+			"weapon": "weapon_nightwatch_spear"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9964
+			],
+			"weapon": "weapon_meteor_flail"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9972
+			],
+			"weapon": "weapon_dash_blade"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_hand_cannon"
+		},
+		{
+			"case": "stationary_control",
+			"hp": [
+				9968
+			],
+			"weapon": "weapon_star_tome"
+		},
+		{
+			"case": "flail_head_edge_contact",
+			"head_radius": 27.0,
+			"hp": [
+				9946
+			],
+			"opaque_pixels_inside_body": 321,
+			"reach": 240.0,
+			"weapon": "weapon_meteor_flail"
+		},
+		{
+			"body_overlaps_cone": true,
+			"case": "lamp_body_edge_contact",
+			"hp": [
+				9992,
+				9992
+			],
+			"weapon": "weapon_copper_lamp"
+		},
+		{
+			"body_overlaps_area": true,
+			"case": "area_root_only_edge",
+			"hp": [
+				9964,
+				9964
+			],
+			"radius_x": 107.0,
+			"weapon": "weapon_iron_grenade_cannon"
+		},
+		{
+			"body_overlaps_area": true,
+			"case": "area_root_only_edge",
+			"hp": [
+				9952
+			],
+			"radius_x": 300.0,
+			"weapon": "weapon_kunyu_ritual_tome"
+		},
+		{
+			"case": "plasma_growth_contact",
+			"core_radius": 30.0,
+			"hit_radius": 30.0,
+			"hp": [
+				9940
+			],
+			"weapon": "weapon_plasma_cannon"
+		},
+		{
+			"case": "tentacle_single_impact_timing",
+			"hit_time": 0.15,
+			"hp": [
+				10000
+			],
+			"motion_duration": 0.33,
+			"weapon": "weapon_mutant_tentacle"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9974
+			],
+			"weapon": "weapon_nightwatch_spear"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9984
+			],
+			"weapon": "weapon_camp_dagger"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_rentier_purse"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9988
+			],
+			"weapon": "weapon_hand_cannon"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9972
+			],
+			"weapon": "weapon_dash_blade"
+		},
+		{
+			"case": "body_edge_positive_control",
+			"hp": [
+				9968
+			],
+			"weapon": "weapon_star_tome"
+		},
+		{
+			"case": "deliberate_160px_step",
+			"hp": [
+				9988
+			],
+			"ordinary_physics_step": false,
+			"weapon": "weapon_void_blade"
+		},
+		{
+			"case": "deliberate_160px_step",
+			"hp": [
+				9988
+			],
+			"ordinary_physics_step": false,
+			"weapon": "weapon_plasma_cannon"
+		},
+		{
+			"case": "deliberate_160px_step",
+			"hp": [
+				9988
+			],
+			"ordinary_physics_step": false,
+			"weapon": "weapon_rentier_purse"
+		},
+		{
+			"case": "deliberate_160px_step",
+			"hp": [
+				9988
+			],
+			"ordinary_physics_step": false,
+			"weapon": "weapon_hand_cannon"
+		}
+	]
+}

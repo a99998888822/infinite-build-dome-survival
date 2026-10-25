@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bgqyed7v2crqc"
+
+[deps]
+
+files=["res://localization/catalogs/furnace_saber.zh_CN.translation", "res://localization/catalogs/furnace_saber.en.translation"]
+
+source_file="res://localization/catalogs/furnace_saber.csv"
+dest_files=["res://localization/catalogs/furnace_saber.zh_CN.translation", "res://localization/catalogs/furnace_saber.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

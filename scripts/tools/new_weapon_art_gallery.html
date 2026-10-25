@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>刚焰炉 / 斩马刀 · 美术审阅</title>
+<style>
+:root{color-scheme:dark;--bg:#101716;--panel:#18211f;--line:#35423e;--text:#e0e8df;--muted:#a3b2a9;--accent:#ffd778}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 "Segoe UI","Microsoft YaHei",sans-serif}
+main{max-width:1440px;margin:auto;padding:32px 36px}header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+.kicker{color:var(--accent);letter-spacing:2px;font-size:12px;margin:0 0 5px}h1{font-size:30px;line-height:1.4;margin:0;font-weight:600}.intro{margin:7px 0 0;color:var(--muted)}
+.badge{border:1px solid var(--line);padding:6px 12px;border-radius:4px;white-space:nowrap;color:var(--muted);font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:20px}.stage{background:#080d0c;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+video{display:block;width:100%;aspect-ratio:16/9;background:#080d0c;image-rendering:pixelated}.tools{display:flex;align-items:center;gap:8px;padding:13px 16px;background:var(--panel);flex-wrap:wrap}.tools span{margin-left:auto;color:var(--muted);font-size:13px}
+button,a.pill{font:inherit;color:var(--text);border:1px solid var(--line);border-radius:4px;background:#222e29;padding:6px 12px;cursor:pointer;text-decoration:none}button:hover,a:hover{border-color:#82998c}button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button.active{border-color:var(--accent);color:var(--accent)}
+.choices{display:grid;gap:10px}.choice{display:flex;text-align:left;gap:11px;align-items:center;padding:9px;background:var(--panel)}.choice img{width:100px;aspect-ratio:16/9;object-fit:cover;border-radius:3px;image-rendering:pixelated}.choice strong{display:block;font-weight:500;font-size:14px}.choice small{display:block;color:var(--muted);font-size:12px}
+.description{margin:17px 2px;color:var(--muted)}.description strong{color:var(--text);font-weight:500}.details{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:28px}.details p{margin:0 0 10px;color:var(--muted)}.links{display:flex;gap:8px;flex-wrap:wrap}.links a{font-size:13px}footer{color:#83988b;margin-top:22px;font-size:12px}
+@media(max-width:950px){main{padding:20px}.layout{grid-template-columns:1fr}.choices{grid-template-columns:repeat(3,1fr)}.choice{display:block}.choice img{width:100%;margin-bottom:5px}.details{grid-template-columns:1fr}header{align-items:start}.badge{display:none}}
+@media(max-width:540px){.choices{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.tools span{width:100%;margin-left:0}}
+</style>
+<main>
+<header><div><p class="kicker">WEAPON ART / V4</p><h1>刚焰炉 & 斩马刀</h1><p class="intro">大色块 + 清晰像素颗粒 · 前三帧起跳 → 闪现 → 后三帧落地</p></div><div class="badge">2026.10.25 · 第四版</div></header>
+<div class="layout"><section>
+<div class="stage"><video id="player" controls loop autoplay muted playsinline preload="auto" poster="furnace_single.png?v=4" src="furnace_single.mp4?v=4"></video>
+<div class="tools"><button id="replay">↺ 重播</button><button class="rate active" data-rate="1">1×</button><button class="rate" data-rate="0.5">0.5×</button><button class="rate" data-rate="0.25">0.25×</button><span id="label">刚焰炉 · 单圈</span></div></div>
+<p class="description" id="description"></p>
+</section><nav class="choices" id="choices" aria-label="选择预览效果"></nav></div>
+<div class="details"><div><p><strong>风格参照</strong><br>火焰沿用赤铜炉灯的暖色分层与像素节奏；刀光参考突进短刃、营地短刀的青白亮边与收尖轮廓。</p><p>三张 RGBA 动画图集，每张 12 帧，4 列 × 3 行。保留可调整尺寸和时序的 Godot 特效源文件。</p></div>
+<div><p><strong>审阅文件</strong></p><div class="links"><a class="pill" href="new_weapon_art_review.mp4" download>完整视频</a><a class="pill" href="overview.png" target="_blank">六项总览</a><a class="pill" href="assets/furnace_ring.png" target="_blank">主火圈图集</a><a class="pill" href="assets/furnace_split.png" target="_blank">分裂火簇图集</a><a class="pill" href="assets/saber_cut.png" target="_blank">刀光图集</a></div></div></div>
+<footer>本轮为美术与演出预览：受击、击退、点燃和命中闪光由审阅场景编排，尚未接入两把新武器的正式战斗逻辑。素材来自本地 Godot 着色器绘制与透明帧导出。</footer>
+</main>
+<script>
+const clips=[
+['furnace_single','刚焰炉 · 单圈','大色块、清晰像素阶梯','保留暗红、橙、金黄、浅黄大色块，采用赤铜炉灯的像素网格；轮廓与色块交界呈清晰的像素阶梯，颗粒随镜头一起放大。'],
+['furnace_multi','刚焰炉 · 三圈','连续三次喷发','三圈以短间隔连续喷发，击退演出只在首次爆发发生。'],
+['furnace_split','刚焰炉 · 分裂','三圈 + 外沿小火簇','外圈由独立的小火簇组成。可用 0.5× 慢放检查主圈与分裂的衔接。'],
+['saber_single','斩马刀 · 单刀','前三帧 → 闪现 → 后三帧','起点完整播放跳跃第 1–3 帧（约 0.36 秒），随后闪现，落点接着播放第 4–6 帧。刀光随闪现出现。'],
+['saber_multi','斩马刀 · 五刀','围绕几何中心旋转','五道刀光依次以 0°、+3°、−3°、+6°、−6° 排布，几何中心重合；玩家仅闪现一次。'],
+['saber_diagonal','斩马刀 · 斜向','斜向五刀、跳跃分半','斜向闪现同样在跳跃动画一半处发生。可用 0.25× 慢放查看起点三帧与落点三帧的衔接。']
+];
+const player=document.getElementById('player'),choices=document.getElementById('choices');
+function select(i){const clip=clips[i];player.src=clip[0]+'.mp4?v=4';player.poster=clip[0]+'.png?v=4';player.playbackRate=Number(document.querySelector('.rate.active').dataset.rate);player.play().catch(()=>{});document.getElementById('label').textContent=clip[1];document.getElementById('description').textContent=clip[3];document.querySelectorAll('.choice').forEach((b,j)=>{b.classList.toggle('active',j===i);b.setAttribute('aria-pressed',String(j===i))})}
+clips.forEach((clip,i)=>{const b=document.createElement('button');b.className='choice'+(i===0?' active':'');b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<img src="${clip[0]}.png?v=4" alt=""><div><strong>${clip[1]}</strong><small>${clip[2]}</small></div>`;b.onclick=()=>select(i);choices.append(b)});
+document.getElementById('description').textContent=clips[0][3];document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play().catch(()=>{})};document.querySelectorAll('.rate').forEach(b=>b.onclick=()=>{document.querySelectorAll('.rate').forEach(x=>x.classList.remove('active'));b.classList.add('active');player.playbackRate=Number(b.dataset.rate)});
+document.querySelectorAll('.links a').forEach(a=>a.href+='?v=4');
+</script>
+</html>

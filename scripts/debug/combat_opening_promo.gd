@@ -1,7 +1,8 @@
 extends Node
 ## A staged take using production movement, casts, AI, collisions and audio.
 const FPS := 60
-const TOTAL := 540
+const TOTAL := 600
+const LANDING_PAUSE := 12
 const BOW := "weapon_void_blade"
 const TOME := "weapon_star_tome"
 var session: RecordingSession
@@ -17,6 +18,16 @@ var report: Dictionary = {"fps": FPS, "frames": TOTAL, "events": [], "samples": 
 var frame := 0
 var blink_frame := -1
 var return_frame := -1
+var blink_landed_frame := -1
+var return_landed_frame := -1
+var kite_shot_frame := -1
+var final_shot_frame := -1
+var pursuit_started := false
+var retreat_started := false
+var return_turn_started := false
+var jump_frames_seen: Dictionary = {"blink": [], "return": []}
+var last_player_pose := ""
+var spacing_pending := false
 var anchor := Vector2.ZERO
 var destination := Vector2.ZERO
 var aim := Vector2.ZERO
@@ -30,10 +41,11 @@ var return_visual_gap := INF
 var sprite_bounds_cache: Dictionary = {}
 var starting_hp := 0
 var preview := false
-var photo_frames := [0, 12, 26, 36, 48, 60, 72, 126, 150, 180, 210, 260, 320, 380, 440, 460, 480, 500, 539]
+var photo_frames := [0, 17, 18, 30, 48, 60, 72, 126, 160, 180, 210, 260, 320, 380, 440, 460, 480, 500, 540, 599]
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	process_priority = 1000
 	WindowSettings._startup_applied = true
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): output_dir = arg.trim_prefix("--capture-dir=")
@@ -56,6 +68,11 @@ func check(ok: bool, message: String) -> void:
 
 func frames(count: int) -> void:
 	for i in count: await get_tree().process_frame
+
+func _process(_delta: float) -> void:
+	if spacing_pending:
+		spacing_pending = false
+		_audit_spacing()
 
 func event(action: String, details: Dictionary = {}) -> void:
 	details.merge({"frame": frame, "seconds": float(frame) / FPS, "action": action}, true)
@@ -118,16 +135,16 @@ func _run() -> void:
 	camera.make_current()
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	var placements := [Vector2(120, -100), Vector2(220, -50), Vector2(240, 50), Vector2(340, -10), Vector2(330, 140),
-		Vector2(-140, 570), Vector2(650, 450), Vector2(-350, 480), Vector2(-290, -240), Vector2(20, -380), Vector2(200, -380)]
+		Vector2(-140, 570), Vector2(650, 450), Vector2(-350, 480), Vector2(-290, -420), Vector2(20, -380), Vector2(200, -380)]
 	for at: Vector2 in placements:
 		battle.wave_manager.spawn_enemy("enemy_mutated_grub", at)
-	for at: Vector2 in [Vector2(-420, 210), Vector2(260, -200), Vector2(-440, -280)]:
+	for at: Vector2 in [Vector2(320, -110), Vector2(260, -200), Vector2(220, -130)]:
 		battle.wave_manager.spawn_enemy("enemy_echo_bat", at)
 	wolf = battle.wave_manager.spawn_enemy("enemy_underworld_wolf", Vector2(-540, -150)) as UnderworldWolf
 	wolf.transition("chase", &"idle")
 	wolf.sprite.show()
 	wolf.leap_cooldown = 2.7
-	wolf.breath_cooldown = 4.0
+	wolf.breath_cooldown = 4.7
 	# Native HUD retains health and weapon/return state; remove unrelated counters.
 	await frames(15)
 	for node in [battle.hud.stats_drawer, battle.hud._weapon_damage_meter, battle.hud._performance_line, battle.hud._economy_log_layer, battle.hud.battle_top_bar, battle.hud.exp_panel, battle.hud._wave_toast]:
@@ -138,7 +155,6 @@ func _run() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	report["controls"] = "right-click movement; number key selection + left-click cast; native number-key return"
 	_move(Vector2(-120, -82))
-	_key(KEY_1)
 	aim = Vector2(200, -65)
 	_point(aim)
 	report["start_frame"] = Engine.get_frames_drawn()
@@ -147,12 +163,17 @@ func _run() -> void:
 		if not is_instance_valid(wolf) or not player.alive:
 			check(false, "Take interrupted at frame " + str(frame))
 			break
+		_audit_jump()
 		_choreograph()
 		_point(aim)
 		controller._update_indicator()
 		controller._update_cursor_icon()
+		if index < 18: check(not controller.indicator.visible, "Opening must not show an aim indicator")
+		var pose := player.action_animator.current_clip + ":" + str(player.action_animator.current_frame)
+		if pose != last_player_pose:
+			event("player_pose", {"pose": pose, "facing_right": player.facing_right, "position": _xy(player.global_position)})
+			last_player_pose = pose
 		_update_bar()
-		_audit_spacing()
 		if wolf.state != last_wolf_state:
 			event("wolf_" + wolf.state, {"position": _xy(wolf.global_position), "target": _xy(wolf.locked_point)})
 			last_wolf_state = wolf.state
@@ -162,11 +183,24 @@ func _run() -> void:
 		if index % 60 == 0: print("TAKE ", index, " player=", player.global_position, " hp=", player.current_hp, " wolf=", wolf.global_position, " ", wolf.state)
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
+			_audit_spacing()
 			if photo_frames.has(frame): get_viewport().get_texture().get_image().save_png(output_dir.path_join("frame_%03d.png" % frame))
+		else:
+			# The cavern updates its detached player visual proxy during _process.
+			# Measure after that update, including the actual return landing frame.
+			spacing_pending = true
 		await get_tree().process_frame
 	check(blink_frame >= 0, "Missing blink")
 	check(return_frame > blink_frame, "Missing return")
 	check(shots >= 4, "Expected four bow volleys")
+	check(kite_shot_frame >= blink_landed_frame + LANDING_PAUSE and blink_landed_frame > blink_frame, "First counterattack must follow the complete jump and landing pause")
+	check(final_shot_frame >= return_landed_frame + LANDING_PAUSE and return_landed_frame > return_frame, "Final counterattack must follow the complete return jump and landing pause")
+	for kind in jump_frames_seen:
+		check(jump_frames_seen[kind].size() == player.action_animator._count("jump_forward"), "Incomplete jump frames: " + kind)
+	report["pacing"] = {"opening_indicator_frame": 18, "landing_pause_frames": LANDING_PAUSE,
+		"blink_frame": blink_frame, "blink_landed_frame": blink_landed_frame, "kite_shot_frame": kite_shot_frame,
+		"return_frame": return_frame, "return_landed_frame": return_landed_frame, "final_shot_frame": final_shot_frame,
+		"jump_frames_seen": jump_frames_seen}
 	check(player.current_hp == starting_hp, "Take must finish without health loss")
 	check(contact_frames.is_empty(), "Player touched an enemy")
 	check(return_clearance >= 20.0, "Return path needs a visible body gap")
@@ -195,6 +229,7 @@ func _audit_spacing() -> void:
 	var nearest_id := ""
 	var visual_gap := INF
 	var nearest_visual := ""
+	var nearest_visual_position := Vector2.ZERO
 	var player_art := _sprite_bounds(player.sprite)
 	for enemy in EnemyRegistry.get_registered_enemies():
 		if not enemy.alive: continue
@@ -215,11 +250,12 @@ func _audit_spacing() -> void:
 		if distance < visual_gap:
 			visual_gap = distance
 			nearest_visual = enemy.enemy_id
+			nearest_visual_position = enemy.global_position
 	if return_frame >= 0:
 		return_clearance = minf(return_clearance, nearest_gap)
 		return_visual_gap = minf(return_visual_gap, visual_gap)
 	if frame % 6 == 0:
-		event("spacing", {"body_gap": nearest_gap, "nearest": nearest_id, "visual_gap": visual_gap, "nearest_visual": nearest_visual})
+		event("spacing", {"body_gap": nearest_gap, "nearest": nearest_id, "visual_gap": visual_gap, "nearest_visual": nearest_visual, "nearest_visual_position": _xy(nearest_visual_position)})
 
 func _sprite_bounds(sprite: Sprite2D) -> Rect2:
 	var extent := sprite.texture.get_size() / Vector2(sprite.hframes, sprite.vframes)
@@ -254,7 +290,7 @@ func _cast(weapon: WeaponInstance, target: Vector2) -> bool:
 		result = result and controller.selected_weapon == null
 	check(result, "Cast failed: " + weapon.weapon_id + " at " + str(frame))
 	if result:
-		event("cast", {"weapon": weapon.weapon_id, "from": _xy(before), "at": _xy(player.global_position), "target": _xy(target)})
+		event("cast", {"weapon": weapon.weapon_id, "from": _xy(before), "at": _xy(player.global_position), "target": _xy(target), "facing_right": player.facing_right})
 		if weapon == bow: shots += 1
 	return result
 
@@ -283,16 +319,38 @@ func _move(target: Vector2) -> void:
 	_point(target)
 	_click(MOUSE_BUTTON_RIGHT)
 
+func _audit_jump() -> void:
+	if blink_frame < 0: return
+	var returning := return_frame >= 0
+	var landed := return_landed_frame if returning else blink_landed_frame
+	if landed >= 0: return
+	var kind := "return" if returning else "blink"
+	var animator := player.action_animator
+	check(not player.has_move_destination, "Movement interrupted the " + kind + " landing")
+	var landing := anchor if returning else destination
+	check(player.global_position.distance_to(landing) < 0.1, "Player drifted during " + kind + " jump")
+	if animator.action in ["jump_forward", "jump_backward"]:
+		if not jump_frames_seen[kind].has(animator.current_frame):
+			jump_frames_seen[kind].append(animator.current_frame)
+			photo_frames.append(frame)
+	else:
+		check(animator.action.is_empty(), "Jump replaced before idle: " + kind)
+		if returning: return_landed_frame = frame
+		else: blink_landed_frame = frame
+		event(kind + "_landed", {"position": _xy(player.global_position)})
+		photo_frames.append(frame)
+
 func _choreograph() -> void:
 	if blink_frame < 0:
 		if frame == 48: _move(Vector2(-34, -18))
 		if frame == 94: _move(Vector2(-34, 99))
 		if frame == 144: _move(Vector2(-78, 99))
-		if frame == 12: _cast(bow, aim)
+		if frame == 18: _key(KEY_1)
+		if frame == 30: _cast(bow, aim)
 		if frame == 116:
 			aim = Vector2(200, 120)
 			_key(KEY_1)
-		if frame == 142: _cast(bow, aim)
+		if frame == 160: _cast(bow, aim)
 		if wolf.state == "leap_charge":
 			aim = player.global_position + Vector2(230, 160)
 			if controller.selected_weapon != tome:
@@ -304,35 +362,52 @@ func _choreograph() -> void:
 				destination = anchor + Vector2(230, 160)
 				if _cast(tome, destination):
 					blink_frame = frame
+					destination = player.global_position
 					event("blink", {"anchor": _xy(anchor), "destination": _xy(player.global_position)})
 					photo_frames.append(frame + 1)
 	else:
 		if return_frame < 0:
-			# Right-click waypoints skirt the pursuit while the wolf recovers.
-			if frame == blink_frame + 1: _move(anchor + Vector2(400, 190))
-			if frame == blink_frame + 93:
-				aim = anchor + Vector2(540, 240)
-				_key(KEY_1)
-			if frame >= blink_frame + 110 and not kite_shot:
-				kite_shot = _cast(bow, aim)
-			if frame == blink_frame + 118: _move(anchor + Vector2(450, 105))
-			if wolf.state == "breath_charge":
+			# Finish the native jump in place, then turn back toward the pursuit.
+			if blink_landed_frame >= 0 and not kite_shot:
+				if frame >= blink_landed_frame + 6:
+					aim = wolf.global_position
+					if controller.selected_weapon != bow: _key(KEY_1)
+				if frame >= blink_landed_frame + LANDING_PAUSE and battle.loadout.active_casting.can_cast(bow):
+					kite_shot = _cast(bow, aim)
+					if kite_shot:
+						kite_shot_frame = frame
+						check(not player.facing_right, "First counterattack must turn left toward the pursuit")
+			if kite_shot and not pursuit_started and player.action_animator.action.is_empty():
+				pursuit_started = true
+				_move(anchor + Vector2(450, 105))
+				event("lure_pursuit")
+			if pursuit_started and wolf.state == "breath_charge":
 				aim = anchor
+				if wolf.state_time >= 0.75 and not return_turn_started:
+					return_turn_started = true
+					_move(anchor)
+					event("turn_for_return")
 				if wolf.state_time >= 0.80:
 					if _cast(tome, anchor):
+						check(not player.facing_right, "Return jump must face toward its landing before turning back to attack")
 						return_frame = frame
 						event("return", {"at": _xy(player.global_position), "wolf": _xy(wolf.global_position)})
 						photo_frames.append(frame + 1)
 						photo_frames.append(frame + 12)
 						photo_frames.append(frame + 24)
 		else:
-			var elapsed := frame - return_frame
-			if elapsed == 1: _move(anchor + Vector2(-220, -50))
-			if elapsed == 16:
-				aim = wolf.global_position + Vector2(60, 0)
-				_key(KEY_1)
-			if elapsed >= 32 and not final_shot and battle.loadout.active_casting.can_cast(bow):
-				final_shot = _cast(bow, aim)
+			if return_landed_frame >= 0 and not final_shot:
+				if frame >= return_landed_frame + 6:
+					aim = wolf.global_position
+					if controller.selected_weapon != bow: _key(KEY_1)
+				if frame >= return_landed_frame + LANDING_PAUSE and battle.loadout.active_casting.can_cast(bow):
+					final_shot = _cast(bow, aim)
+					if final_shot:
+						final_shot_frame = frame
+						check(player.facing_right, "Final counterattack must turn right toward the pursuit")
+			if final_shot and not retreat_started and frame >= final_shot_frame + 12:
+				retreat_started = true
+				_move(anchor + Vector2(-220, -50))
 
 func _update_bar() -> void:
 	for i in battle.loadout.weapon_instances.size():

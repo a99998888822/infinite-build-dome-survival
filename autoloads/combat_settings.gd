@@ -54,6 +54,7 @@ func prefers_auto_cast(id: String, mobility: bool) -> bool:
 	return bool(weapon_auto_cast.get(id, not mobility))
 
 func is_weapon_automatic(weapon: WeaponInstance) -> bool:
+	if weapon.is_furnace(): return true
 	return prefers_auto_cast(weapon.weapon_id, weapon.is_mobility_weapon())
 
 func set_weapon_auto_cast(id: String, value: bool, persist: bool = true) -> void:

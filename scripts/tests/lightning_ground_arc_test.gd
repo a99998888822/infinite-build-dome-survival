@@ -26,10 +26,43 @@ func fixture(multiplier: float = 1.0) -> Node2D:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
+	# Ground accents remain owned, pause with the bolt, and use no extra RNG.
+	var decorated = fixture()
+	var first = decorated._path_pulses[0].bolt
+	var first_fork = first.forks[0]
+	var core = first.impact
+	check(first.forks.size() == 2 and first.cell_size == 2, "initial ground flash has two thin forks")
+	check(core.z_index == CombatRenderWorld.IMPACT_Z and not core.z_as_relative, "small impact core stays above actors")
+	decorated._process(0.06)
+	var fork_alpha: float = first_fork.modulate.a
+	check(fork_alpha > 0.0 and fork_alpha < 1.0, "forks fade before main path")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+	decorated._process(1.0)
+	check(is_equal_approx(first_fork.modulate.a, fork_alpha), "pause freezes fork accents")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+	decorated._process(0.06)
+	check(is_zero_approx(first_fork.modulate.a) and is_zero_approx(core.modulate.a), "accents end before initial main flash")
+	decorated._process(0.09)
+	var echo = decorated._path_pulses[0].bolt
+	check(echo.forks.size() == 1 and echo.cell_size == 1 and echo.impact == null, "echo is thinner with one fork and no impact core")
+	var echo_fork = echo.forks[0]
+	decorated.free()
+	check(not is_instance_valid(first_fork) and not is_instance_valid(core) and not is_instance_valid(echo_fork), "controller cleanup owns every accent")
+	var random_results: Array[int] = []
+	for ground in [false, true]:
+		var rng_fixture := LIGHTNING.new()
+		add_child(rng_fixture)
+		rng_fixture._is_ground_strike = ground
+		seed(10242026)
+		var path := rng_fixture._create_bolt_path(Vector2.ZERO, Vector2(0, 182))
+		rng_fixture._create_bolt_path(Vector2.ZERO, Vector2(0, 182), path.points)
+		random_results.append(randi())
+		rng_fixture.free()
+	check(random_results[0] == random_results[1], "ground-only decoration consumes no additional gameplay RNG")
 	# The ground arc was removed; the main bolt must retain its timing and damage.
 	# Exercise the real controller with wall-clock deltas around every boundary.
 	var samples := [0.0, 0.07999, 0.08001, 0.15999, 0.16001, 0.19999, 0.20001, 0.27999, 0.28001, 0.35999]
-	var alphas := [1.0, 1.0, 0.6, 0.6, 0.0, 0.0, 1.0, 1.0, 0.6, 0.6]
+	var alphas := [1.0, 1.0, 0.6, 0.6, 0.0, 0.0, 0.42, 0.42, 0.252, 0.252]
 	for multiplier in [0.1, 0.5, 1.0, 2.0, 4.0]:
 		var strike = fixture(multiplier)
 		var pulse: Dictionary = strike._path_pulses[0]
@@ -57,7 +90,7 @@ func _run() -> void:
 	var skipped = fixture()
 	skipped._process(0.31)
 	var skipped_bolt = skipped._path_pulses[0].bolt
-	check(skipped._path_pulses[0].echoed and is_equal_approx(skipped_bolt.modulate.a, 0.6), "large delta catches up to echo")
+	check(skipped._path_pulses[0].echoed and is_equal_approx(skipped_bolt.modulate.a, 0.252), "large delta catches up to echo")
 	skipped._process(1.0)
 	check(skipped_bolt.is_queued_for_deletion(), "large delta ends the bolt")
 	skipped.free()

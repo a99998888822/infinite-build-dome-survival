@@ -128,7 +128,9 @@ func _sync_warning() -> void:
 	if _strike_landed:
 		fade = 1.0 - clampf((_elapsed - _ring_fade_start_elapsed) / RING_FADE_SECONDS, 0.0, 1.0)
 	if _ground_area != null:
-		_ground_area.setup(get_terminal_footprint_axes(), Color(0.8,0.56,0.06,0.12), Color(1.0,0.86,0.24,0.7), 1.0, fade)
+		# Keep the warning wash, without a separately painted perimeter.
+		var fill := Color(0.8, 0.56, 0.06, 0.12)
+		_ground_area.setup(get_terminal_footprint_axes(), fill, fill, 1.0, fade)
 	if _warning_sprite != null:
 		_warning_sprite.sync(_elapsed, _radius, fade)
 

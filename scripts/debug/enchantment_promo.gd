@@ -29,12 +29,27 @@ var flyers: Array[TextureRect] = []
 var rendered := 0
 var slot_origins: Array[Vector2] = []
 var photo_frames: Dictionary = {}
+var weapon_id := WEAPON
+var weapon_level := 4
+var item_ids := IDS.duplicate()
+var intro_frames := INTRO
+var flight_frames := FLIGHT.duplicate()
+var landing_frames := LAND
+var end_hold_frames := END_HOLD
 
 
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="): output_dir = arg.trim_prefix("--capture-dir=")
 		if arg == "--stage-only": stage_only = true
+		if arg == "--spear":
+			weapon_id = "weapon_nightwatch_spear"
+			weapon_level = 5
+			item_ids = ["scroll_multishot", "scroll_split", "scroll_lightning"]
+			intro_frames = 12
+			flight_frames = [36, 39, 42]
+			landing_frames = 12
+			end_hold_frames = 33
 	if output_dir.is_empty() or not OS.get_cmdline_user_args().has("--transient-session"):
 		push_error("Use --transient-session --capture-dir=<directory>")
 		get_tree().quit(2)
@@ -71,8 +86,7 @@ func _run() -> void:
 	get_tree().root.content_scale_size = Vector2i(1920, 1080)
 	session = RecordingSession.new()
 	add_child(session)
-	var config := RecordingSession.default_config()
-	config.merge({"entry": "bank", "countdown": 0, "relics": [], "weapons": [{"id": WEAPON, "level": 4, "attachments": []}]}, true)
+	var config := _recording_config()
 	var error := await session.prepare(config)
 	check(error.is_empty(), error)
 	if not failures.is_empty():
@@ -91,15 +105,15 @@ func _run() -> void:
 	popup.configure(session.flow.get_preparation_payload())
 	popup._select_tab("enchant")
 	workbench = popup.workbench
-	workbench._select_weapon(WEAPON)
-	var weapon := session.battle.loadout.get_weapon_instance(WEAPON)
-	check(weapon.level == 4 and weapon.get_attachment_slot_count() == 3, "Expected level 4 and three slots")
+	workbench._select_weapon(weapon_id)
+	var weapon := session.battle.loadout.get_weapon_instance(weapon_id)
+	check(weapon.level == weapon_level and weapon.get_attachment_slot_count() == 3, "Expected configured level and three slots")
 	check(weapon.get_attached_item_instances().is_empty(), "Initial slots must be empty")
 	# Backpack reads wisdom / lightning / multishot, so right-to-left flight
 	# preserves the requested final slot order: multishot / lightning / wisdom.
 	items.resize(3)
 	for i in range(2, -1, -1):
-		items[i] = session.battle.player.item_inventory.add_item_from_base(IDS[i], "recording")
+		items[i] = session.battle.player.item_inventory.add_item_from_base(item_ids[i], "recording")
 	workbench.refresh()
 	await frames(10)
 	# Keep all three cards visible from frame zero. Independent cards retain
@@ -113,7 +127,7 @@ func _run() -> void:
 	layer.add_child(overlay)
 	for i in 3:
 		var source := workbench._inventory.get_child(2 - i) as EnchantmentInventoryCard
-		check(str(source.item_instance.base_item_id) == IDS[i], "Backpack source order mismatch")
+		check(str(source.item_instance.base_item_id) == item_ids[i], "Backpack source order mismatch")
 		var card := EnchantmentInventoryCard.new()
 		overlay.add_child(card)
 		card.configure(items[i], false)
@@ -149,26 +163,29 @@ func _run() -> void:
 		check(cards[i]._art.size == Vector2(32, 32), "Backpack icon must remain 32px")
 		check(cards[i].visible and cards[i].modulate.a == 1.0, "All backpack cards must be visible initially")
 		if i > 0: check(cards[i].position.x < cards[i - 1].position.x, "Flights must start right to left")
-	report["initial_backpack_left_to_right"] = [IDS[2], IDS[1], IDS[0]]
+	report["initial_backpack_left_to_right"] = [item_ids[2], item_ids[1], item_ids[0]]
+	report["weapon"] = weapon_id
+	report["weapon_level"] = weapon_level
+	report["intro_frames"] = intro_frames
 	report["overlap_frames"] = OVERLAP
 	var starts: Array[int] = []
-	var next_start := INTRO
+	var next_start := intro_frames
 	for i in 3:
 		starts.append(next_start)
 		photo_frames[next_start + 3] = "highlight_%d" % i
-		photo_frames[next_start + int(FLIGHT[i] * 0.55)] = "flight_%d" % i
-		photo_frames[next_start + FLIGHT[i] + 3] = "land_%d" % i
+		photo_frames[next_start + int(flight_frames[i] * 0.55)] = "flight_%d" % i
+		photo_frames[next_start + flight_frames[i] + 3] = "land_%d" % i
 		if i > 0:
 			photo_frames[next_start + 5] = "overlap_%d" % i
-			check(next_start < starts[i - 1] + FLIGHT[i - 1], "Flights must overlap before landing")
-		next_start += FLIGHT[i] - OVERLAP
-	var total: int = starts[2] + FLIGHT[2] + LAND + END_HOLD
+			check(next_start < starts[i - 1] + flight_frames[i - 1], "Flights must overlap before landing")
+		next_start += flight_frames[i] - OVERLAP
+	var total: int = starts[2] + flight_frames[2] + landing_frames + end_hold_frames
 	photo_frames[0] = "empty_slots"
 	photo_frames[total - 1] = "final"
 	if stage_only: total = 1
 	report["frames"] = total
 	report["start_frame"] = Engine.get_frames_drawn()
-	report["end_hold_frames"] = END_HOLD
+	report["end_hold_frames"] = end_hold_frames
 	for frame in total:
 		rendered = frame
 		for i in 3:
@@ -176,20 +193,20 @@ func _run() -> void:
 			var ribbon := ribbons[i]
 			var flying := flyers[i]
 			if local == 0: _launch(i)
-			if local >= 0 and local < FLIGHT[i]:
-				var u := float(local) / float(FLIGHT[i])
+			if local >= 0 and local < flight_frames[i]:
+				var u := float(local) / float(flight_frames[i])
 				var eased := u * u * (3.0 - 2.0 * u)
 				ribbon.seek(eased)
 				flying.position = (ribbon.at(eased) - Vector2(16, 16)).round()
 				flying.self_modulate = Color(1.65, 1.65, 1.4).lerp(Color.WHITE, minf(1.0, float(local) / 10.0))
 				cards[i].modulate.a = maxf(0.0, 1.0 - float(local) / 8.0)
-			if local == FLIGHT[i]: _land(i)
-			if local >= FLIGHT[i] and local < FLIGHT[i] + LAND:
-				var u := float(local - FLIGHT[i]) / float(LAND)
+			if local == flight_frames[i]: _land(i)
+			if local >= flight_frames[i] and local < flight_frames[i] + landing_frames:
+				var u := float(local - flight_frames[i]) / float(landing_frames)
 				ribbon.impact = u
 				ribbon.seek(1.0, maxf(0.0, 1.0 - u * 3.0))
 				_slot(i)._art.position = slot_origins[i] + Vector2(0, roundf(-3.0 * sin(u * TAU) * (1.0 - u)))
-			if local == FLIGHT[i] + LAND:
+			if local == flight_frames[i] + landing_frames:
 				ribbon.impact = -1.0
 				ribbon.seek(-1.0)
 				_slot(i)._art.position = slot_origins[i]
@@ -200,9 +217,16 @@ func _run() -> void:
 	if not stage_only:
 		var attached := weapon.get_attached_item_instances()
 		check(attached.size() == 3, "Final attachment count is not three")
-		for i in mini(attached.size(), 3): check(str(attached[i].base_item_id) == IDS[i], "Attachment order mismatch")
+		for i in mini(attached.size(), 3): check(str(attached[i].base_item_id) == item_ids[i], "Attachment order mismatch")
 		report["final_attachments"] = attached.map(func(item): return item.base_item_id)
+		report["projectiles"] = weapon.get_stat("projectile_count")
 	_finish()
+
+
+func _recording_config() -> Dictionary:
+	var config := RecordingSession.default_config()
+	config.merge({"entry": "bank", "wave": 1 if weapon_id != WEAPON else 5, "countdown": 0, "relics": [], "weapons": [{"id": weapon_id, "level": weapon_level, "attachments": []}]}, true)
+	return config
 
 
 func _slot(index: int) -> EnchantmentSlotCard:
@@ -227,14 +251,14 @@ func _launch(index: int) -> void:
 	flying.position = (start - Vector2(16, 16)).round()
 	flying.show()
 	cards[index]._art.modulate.a = 0.0
-	report.paths.append({"item": IDS[index], "points": Array(paths[index]).map(func(p): return [p.x, p.y])})
-	report.events.append({"frame": rendered, "action": "highlight", "item": IDS[index]})
-	report.events.append({"frame": rendered, "action": "flight", "item": IDS[index], "source_column": 3 - index, "target_slot": index + 1})
+	report.paths.append({"item": item_ids[index], "points": Array(paths[index]).map(func(p): return [p.x, p.y])})
+	report.events.append({"frame": rendered, "action": "highlight", "item": item_ids[index]})
+	report.events.append({"frame": rendered, "action": "flight", "item": item_ids[index], "source_column": 3 - index, "target_slot": index + 1})
 	_sound(WIND, -12.0, 1.0 + index * 0.06)
 
 
 func _land(index: int) -> void:
-	var result := session.flow.submit_enchantment_operation("attach", WEAPON, str(items[index].item_instance_id))
+	var result := session.flow.submit_enchantment_operation("attach", weapon_id, str(items[index].item_instance_id))
 	check(bool(result.get("success", false)), "Attachment failed: " + str(result))
 	workbench.refresh()
 	workbench._inventory.modulate.a = 0.0
@@ -242,7 +266,7 @@ func _land(index: int) -> void:
 	cards[index].hide()
 	# Recreated controls settle next frame; use the original stable slot geometry.
 	ribbons[index].target_rect = Rect2(targets[index] - Vector2(34, 19), Vector2(68, 53))
-	report.events.append({"frame": rendered, "action": "land", "item": IDS[index]})
+	report.events.append({"frame": rendered, "action": "land", "item": item_ids[index]})
 	_sound(CLICK, -7.0, 1.0 + index * 0.12)
 	if index == 2: workbench._inventory.modulate.a = 1.0
 

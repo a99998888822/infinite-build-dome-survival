@@ -5,7 +5,7 @@ var _style := STYLE.new()
 var _shape_transform := Transform2D.IDENTITY
 const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
-enum Kind { DASH_BLADE, RECOIL_GUN, STAR_TOME }
+enum Kind { DASH_BLADE, RECOIL_GUN, STAR_TOME, SABER }
 
 var kind := Kind.DASH_BLADE
 var aim_offset := Vector2(140, 0)
@@ -34,6 +34,7 @@ func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool) -
 	if next == _configuration: return
 	_configuration = next
 	kind = Kind.STAR_TOME if source.is_star_tome() else Kind.RECOIL_GUN if source.is_hand_cannon() else Kind.DASH_BLADE
+	if source.is_saber(): kind = Kind.SABER
 	aim_offset = offset
 	movement_distance = float(source.weapon_data.get("retreat_distance", 96)) if source.is_hand_cannon() else source.get_base_attack_range()
 	impact_radius = float(source.weapon_data.hit_radius)
@@ -87,6 +88,7 @@ func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) ->
 
 func get_movement_axes() -> Vector2:
 	var reach := movement_distance if kind == Kind.RECOIL_GUN else StatDefinitions.calculate_attack_radius(movement_distance, attack_range_bonus)
+	if kind == Kind.SABER: return Vector2.ONE * reach
 	return Vector2(reach, reach * FOOTPRINT.ELLIPSE_RATIO)
 
 
@@ -125,6 +127,20 @@ func _draw() -> void:
 	_shape_transform = Transform2D.IDENTITY
 	var direction := aim_offset.normalized() if aim_offset.length_squared() > 0.01 else Vector2.RIGHT
 	match kind:
+		Kind.SABER:
+			var landing := get_landing_offset()
+			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.55)
+			var points := PackedVector2Array()
+			var normal := landing.normalized().orthogonal()
+			for side in [1.0, -1.0]:
+				for i in 25:
+					if side < 0 and (i == 0 or i == 24): continue
+					var u := float(i if side > 0 else 24 - i) / 24.0
+					points.append(landing * u + normal * side * get_impact_radius() * pow(maxf(1.0 - pow(u * 2.0 - 1.0, 2.0), 0.0), 1.4))
+			if landing.length() > 4.0:
+				draw_colored_polygon(points, STYLE.fill_color(available))
+				points.append(points[0])
+				outline(points)
 		Kind.DASH_BLADE:
 			var landing := get_landing_offset()
 			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.70)

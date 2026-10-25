@@ -1,0 +1,257 @@
+[
+  {
+    "columns": 4,
+    "duration": 0.72,
+    "frame_size": [
+      448,
+      320
+    ],
+    "frames": 12,
+    "path": "res://assets/sprites/weapons/candidates/furnace_saber_v1/furnace_ring.png",
+    "rows": 3,
+    "source": "local Godot shader rendering",
+    "mode": "RGBA",
+    "unique_frames": 12,
+    "frame_bounds": [
+      [
+        170,
+        124,
+        276,
+        196
+      ],
+      [
+        152,
+        112,
+        294,
+        206
+      ],
+      [
+        132,
+        100,
+        314,
+        216
+      ],
+      [
+        116,
+        90,
+        332,
+        228
+      ],
+      [
+        100,
+        78,
+        344,
+        238
+      ],
+      [
+        86,
+        70,
+        356,
+        248
+      ],
+      [
+        74,
+        62,
+        370,
+        258
+      ],
+      [
+        64,
+        56,
+        382,
+        266
+      ],
+      [
+        54,
+        50,
+        392,
+        272
+      ],
+      [
+        50,
+        46,
+        396,
+        274
+      ],
+      [
+        50,
+        48,
+        396,
+        276
+      ],
+      [
+        54,
+        52,
+        394,
+        272
+      ]
+    ],
+    "palette_colors": 5,
+    "alpha_verified": true
+  },
+  {
+    "columns": 4,
+    "duration": 0.62,
+    "frame_size": [
+      512,
+      352
+    ],
+    "frames": 12,
+    "path": "res://assets/sprites/weapons/candidates/furnace_saber_v1/furnace_split.png",
+    "rows": 3,
+    "source": "local Godot shader rendering",
+    "mode": "RGBA",
+    "unique_frames": 10,
+    "frame_bounds": [
+      null,
+      null,
+      [
+        64,
+        52,
+        448,
+        300
+      ],
+      [
+        58,
+        46,
+        454,
+        306
+      ],
+      [
+        52,
+        42,
+        460,
+        310
+      ],
+      [
+        48,
+        40,
+        464,
+        312
+      ],
+      [
+        46,
+        40,
+        466,
+        312
+      ],
+      [
+        46,
+        40,
+        466,
+        312
+      ],
+      [
+        50,
+        42,
+        462,
+        310
+      ],
+      [
+        56,
+        46,
+        456,
+        306
+      ],
+      [
+        62,
+        50,
+        450,
+        302
+      ],
+      null
+    ],
+    "palette_colors": 5,
+    "alpha_verified": true
+  },
+  {
+    "columns": 4,
+    "duration": 0.3,
+    "frame_size": [
+      384,
+      96
+    ],
+    "frames": 12,
+    "path": "res://assets/sprites/weapons/candidates/furnace_saber_v1/saber_cut.png",
+    "rows": 3,
+    "source": "local Godot shader rendering",
+    "mode": "RGBA",
+    "unique_frames": 12,
+    "frame_bounds": [
+      [
+        60,
+        40,
+        324,
+        56
+      ],
+      [
+        60,
+        40,
+        324,
+        56
+      ],
+      [
+        60,
+        40,
+        324,
+        56
+      ],
+      [
+        60,
+        40,
+        324,
+        56
+      ],
+      [
+        60,
+        40,
+        324,
+        56
+      ],
+      [
+        62,
+        40,
+        322,
+        56
+      ],
+      [
+        62,
+        40,
+        322,
+        56
+      ],
+      [
+        62,
+        42,
+        322,
+        54
+      ],
+      [
+        66,
+        42,
+        318,
+        54
+      ],
+      [
+        70,
+        44,
+        314,
+        52
+      ],
+      [
+        110,
+        46,
+        274,
+        50
+      ],
+      null
+    ],
+    "palette_colors": 5,
+    "alpha_verified": true,
+    "pivot": [
+      192,
+      48
+    ],
+    "axis_symmetry_verified": true
+  }
+]

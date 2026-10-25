@@ -10,6 +10,7 @@ const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL_BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
+const GROUND_BOLT = preload("res://scripts/effects/ground_lightning_bolt.gd")
 const HIT_SPRITE_BURST = preload("res://scripts/effects/lightning_hit_sprite_burst.gd")
 const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
 const RANGE_QUERY = preload("res://scripts/effects/lightning_range_query.gd")
@@ -306,14 +307,14 @@ func _emit_hit_burst(hit_position: Vector2, burst_direction: Vector2) -> void:
 	var tier := HIT_SPRITE_BURST.claim_tier(_parent_root, hit_position)
 	if tier == HIT_SPRITE_BURST.VISUAL_BUDGET.Tier.SUPPRESSED: return
 	var context_parameters := {
-		"count_multiplier": _get_cached_parameter("count_multiplier", 1.0) * HIT_BURST_COUNT_MULTIPLIER,
+		"count_multiplier": _get_cached_parameter("count_multiplier", 1.0) * HIT_BURST_COUNT_MULTIPLIER * (0.7 if _is_ground_strike else 1.0),
 		"speed_multiplier": _get_cached_parameter("speed_multiplier", 1.0),
 		"size_multiplier": _get_cached_parameter("size_multiplier", 1.0),
 		"lifetime_multiplier": _get_cached_parameter("lifetime_multiplier", 1.0),
 		"glow_multiplier": _get_cached_parameter("glow_multiplier", 1.0),
 		"glow_radius_multiplier": (1.0 if _is_ground_strike else CHAIN_GLOW_RADIUS_MULTIPLIER) * HIT_BURST_GLOW_RADIUS_MULTIPLIER,
 		"alpha_multiplier": _get_cached_parameter("alpha_multiplier", 1.0),
-		"distance_multiplier": _get_cached_parameter("attack_range_multiplier", 1.0) * HIT_BURST_DISTANCE_MULTIPLIER,
+		"distance_multiplier": _get_cached_parameter("attack_range_multiplier", 1.0) * HIT_BURST_DISTANCE_MULTIPLIER * (0.65 if _is_ground_strike else 1.0),
 	}
 	var intensity: float = _get_cached_parameter("attack_range_multiplier", 1.0)
 	HIT_SPRITE_BURST.spawn_admitted(_parent_root, hit_position, burst_direction, intensity, context_parameters, tier)
@@ -328,6 +329,10 @@ static func alpha_at(age: float) -> float:
 	if local_age < STEP_SECONDS:
 		return 1.0
 	return 0.6
+
+
+static func ground_alpha_at(age: float) -> float:
+	return alpha_at(age) * (0.42 if age >= FLASH_SECONDS + DARK_SECONDS else 1.0)
 
 
 func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
@@ -347,7 +352,9 @@ func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_
 	var direction := start_position.direction_to(end_position)
 	var jitter := minf(CONTROL_JITTER_PIXELS, start_position.distance_to(end_position) * 0.3)
 	var controls := _build_bolt_control_points(start_position, end_position, direction, direction.orthogonal(), jitter / CHAIN_CONTROL_POINT_JITTER)
-	var bolt := PIXEL_BOLT.new()
+	var bolt := GROUND_BOLT.new() if _is_ground_strike else PIXEL_BOLT.new()
+	if _is_ground_strike:
+		bolt.echo = not previous_points.is_empty()
 	for point in controls:
 		bolt.points.append(to_local(point).round())
 	# Even a very short, rounded path must not accidentally repeat its first shape.
@@ -356,7 +363,7 @@ func _create_bolt_path(start_position: Vector2, end_position: Vector2, previous_
 		bolt.points[middle] = (bolt.points[middle] + direction.orthogonal() * 6.0).round()
 	bolt.base_alpha = clampf(_get_cached_parameter("alpha_multiplier", 1.0), 0.0, 2.0)
 	bolt.rim_enabled = false
-	bolt.cell_size = 2
+	bolt.cell_size = 1 if _is_ground_strike and not previous_points.is_empty() else 2
 	bolt.grid_origin = to_local(Vector2.ZERO)
 	bolt.build(true)
 	add_child(bolt)
@@ -447,7 +454,9 @@ func _process(delta: float) -> void:
 			pulse.bolt = _create_bolt_path(pulse.start, pulse.end, pulse.initial_points)
 			pulse.echoed = true
 			# New node and new random geometry; no second strike or damage event.
-		pulse.bolt.modulate.a = alpha_at(pulse.age)
+		pulse.bolt.modulate.a = ground_alpha_at(pulse.age) if _is_ground_strike else alpha_at(pulse.age)
+		if _is_ground_strike:
+			pulse.bolt.advance_flash(pulse.age - (FLASH_SECONDS + DARK_SECONDS if pulse.echoed else 0.0))
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
 		_ground_ring.queue_redraw()
@@ -466,4 +475,3 @@ func _draw_ground_impact() -> void:
 		var impact_radius := lerpf(GROUND_STRIKE_IMPACT_RING_START_RADIUS, _ground_strike_damage_radius, smoothstep(0.0,0.6,impact_ratio))
 		var impact_alpha := (1.0 - impact_ratio) * 0.68
 		GROUND.disk(_ground_ring, impact_center, impact_radius, Color(1.0, 0.92, 0.42, impact_alpha * 0.10))
-		GROUND.arc(_ground_ring, impact_center, impact_radius, 0.0, TAU, 32, Color(1.0, 0.96, 0.58, impact_alpha), 2.0, true)

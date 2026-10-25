@@ -126,7 +126,7 @@ func capture_case(bonus: float) -> void:
 		match i:
 			0: effect._elapsed=effect._duration*0.58
 			1: effect._elapsed=effect._duration*0.4
-			3: effect._elapsed=0.7; effect._sync_ground_area()
+			3: effect._elapsed=0.7
 			4: effect._elapsed=0.3; effect._sync_ground_area()
 			5: effect._elapsed=0.3; effect._sync_warning()
 			6: effect._elapsed=0.12

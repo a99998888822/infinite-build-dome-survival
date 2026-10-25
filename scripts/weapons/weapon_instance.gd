@@ -531,6 +531,8 @@ func get_load_cost() -> int:
 
 func get_hit_radius() -> float:
 	var base_radius := float(weapon_data.get("hit_radius", 0))
+	if is_furnace():
+		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 	if is_mobility_weapon():
 		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
 	if use_active_range_rules:
@@ -598,7 +600,19 @@ func is_grenade() -> bool:
 
 
 func is_mobility_weapon() -> bool:
-	return str(weapon_data.get("projectile_behavior", "")) in ["dash_blade", "hand_cannon", "star_tome"]
+	return str(weapon_data.get("projectile_behavior", "")) in ["dash_blade", "hand_cannon", "star_tome", "saber"]
+
+
+func is_furnace() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "furnace"
+
+
+func is_saber() -> bool:
+	return str(weapon_data.get("projectile_behavior", "")) == "saber"
+
+
+func cooldown_starts_on_cast() -> bool:
+	return is_star_tome() or is_furnace()
 
 
 func is_star_tome() -> bool:
@@ -616,6 +630,7 @@ func is_return_ready() -> bool:
 
 func get_mobility_axes() -> Vector2:
 	var reach := StatDefinitions.calculate_attack_radius(get_base_attack_range(), get_stat("area_size"))
+	if is_saber(): return Vector2.ONE * reach
 	return Vector2(reach, reach * AttackFootprint.ELLIPSE_RATIO)
 
 
@@ -870,6 +885,10 @@ func build_full_stats_text() -> String:
 		lines.append(L10n.source(str(weapon_data.description)))
 		if not is_hand_cannon():
 			lines.append(L10n.text("ui.weapon.stats.hit_count") % maxi(1, int(get_stat("projectile_count"))))
+	elif is_furnace():
+		lines.append(L10n.source(str(weapon_data.description)))
+		lines.append(L10n.text("ui.weapon.stats.hit_count") % maxi(1, int(get_stat("projectile_count"))))
+		lines.append(L10n.text("ui.weapon.stats.range") % roundi(get_hit_radius()))
 	elif is_grenade():
 		lines.append(L10n.text("ui.weapon.stats.range_radius") % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
 		lines.append(L10n.text("ui.weapon.behavior.grenade") % float(weapon_data.get("grenade_flight_seconds", 0.45)))
