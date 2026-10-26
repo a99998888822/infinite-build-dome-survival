@@ -9,6 +9,7 @@ var current_frame := 0
 var action := ""
 var facing_direction := Vector2.ZERO
 var _elapsed := 0.0
+var _action_hold_at := -1.0
 var _move_time := 0.0
 var _hold_time := 0.0
 var _moving := false
@@ -69,6 +70,7 @@ func get_frame_layouts() -> Array[Dictionary]:
 
 func reset() -> void:
 	action = ""
+	_action_hold_at = -1.0
 	facing_direction = Vector2.ZERO
 	_elapsed = 0.0
 	_move_time = 0.0
@@ -83,9 +85,18 @@ func play(next: String, direction: Vector2 = Vector2.ZERO) -> void:
 		return
 	# Every new request replaces the prior action, including the same action.
 	action = next
+	_action_hold_at = -1.0
 	facing_direction = direction
 	_elapsed = 0.0
 	_show(next, 0)
+
+
+func hold_action_at(seconds: float) -> void:
+	_action_hold_at = maxf(0.0, seconds)
+
+
+func resume_action() -> void:
+	_action_hold_at = -1.0
 
 
 func start_sustain(source: Node = null, seconds: float = 0.0, direction: Vector2 = Vector2.ZERO) -> void:
@@ -94,6 +105,7 @@ func start_sustain(source: Node = null, seconds: float = 0.0, direction: Vector2
 	_sustains.append({"source": weakref(source) if is_instance_valid(source) else null,
 		"remaining": seconds, "timed": seconds > 0.0, "direction": direction})
 	action = "sustain_enter"
+	_action_hold_at = -1.0
 	facing_direction = direction
 	_elapsed = 0.0
 	_hold_time = 0.0
@@ -107,6 +119,8 @@ func tick(delta: float, moving: bool) -> void:
 	_move_time = _move_time + delta if moving else 0.0
 	_hold_time += delta
 	_elapsed += delta
+	if _action_hold_at >= 0.0:
+		_elapsed = minf(_elapsed, _action_hold_at)
 	for index in range(_sustains.size() - 1, -1, -1):
 		var state := _sustains[index]
 		state.remaining = float(state.remaining) - delta

@@ -2,18 +2,23 @@ extends DirectedWeaponRuntime
 class_name MobilityWeaponRuntime
 ## A cast owns motion, contacts and sprite lifetimes. No floating weapon body.
 const SLASH_SECONDS := 10.0 / 48.0
-const SHOCK_SECONDS := 10.0 / 24.0
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 const CANNON_JET = preload("res://scripts/effects/cannon_jet_flame.gd")
 var live_source: WeaponInstance
 var return_ready := false
 var anchor_position := Vector2.ZERO
 var anchor: MobilityAtlasEffect
-var phase := "moving"
+var phase := "takeoff"
 var phase_age := 0.0
 var replay_only := false
 var hit_count := 0
 var allow_return := true
+var destination := Vector2.ZERO
+var departure := Vector2.ZERO
+var takeoff_seconds := 0.36
+var landing_seconds := 0.36
+var returning_cast := false
+var _jump_active := false
 
 func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2, automatic: bool = false) -> void:
 	allow_return = not automatic
@@ -25,25 +30,79 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	anchor_position = player.global_position
 	heading = anchor_position.direction_to(point)
 	if heading.is_zero_approx(): heading = player.last_move_direction
-	var landing := player.resolve_mobility_destination(anchor_position + weapon.get_mobility_landing(point - anchor_position))
-	player.play_mobility_action(weapon.weapon_id, landing - anchor_position, heading)
-	if weapon.is_star_tome():
-		MobilityAtlasEffect.spawn(self, weapon, "star_depart", anchor_position)
-		if allow_return:
-			anchor = MobilityAtlasEffect.spawn(self, weapon, "star_anchor", anchor_position, 0, Vector2.ONE, true)
-		player.blink_to(landing)
-		MobilityAtlasEffect.spawn(self, weapon, "star_arrive", landing)
-		_impact(landing)
-		phase = "arriving"
+	destination = player.resolve_mobility_destination(anchor_position + weapon.get_mobility_landing(point - anchor_position))
+	_begin_jump(heading)
+
+func _begin_jump(attack_direction: Vector2 = Vector2.ZERO) -> void:
+	var player := weapon.owner_player
+	departure = player.global_position
+	player.play_mobility_action(weapon.weapon_id, destination - departure, attack_direction)
+	var animator := player.action_animator
+	var clip: Dictionary = animator._clips.get(animator.action, {})
+	var times: Array = clip.get("frame_durations", [])
+	var count := maxi(2, int(clip.get("frames", 6)))
+	takeoff_seconds = 0.0
+	landing_seconds = 0.0
+	for i in count:
+		var seconds := maxf(0.001, float(times[i])) if times.size() == count else 1.0 / maxf(0.1, float(clip.get("fps", 1.0 / 0.12)))
+		if i < count / 2: takeoff_seconds += seconds
+		else: landing_seconds += seconds
+	# Own the jump from takeoff through landing, including the airborne transit.
+	if not player.begin_mobility_motion(self, departure, INF):
+		cancel()
+		return
+	_jump_active = true
+	animator.hold_action_at(takeoff_seconds)
+	phase = "takeoff"
+	phase_age = 0.0
+
+func _travel_seconds() -> float:
+	return 0.0 if weapon.is_star_tome() else float(weapon.weapon_data.get("movement_ms", 220)) / 1000.0
+
+func owns_jump_animation() -> bool:
+	return _jump_active
+
+func _start_travel() -> void:
+	var player := weapon.owner_player
+	var landing := player.resolve_mobility_destination(destination)
+	if returning_cast and landing.distance_squared_to(anchor_position) > 1.0:
+		# Terrain may have appeared during takeoff. Land here and keep the mark.
 		return_ready = allow_return
-	else:
-		player.begin_mobility_motion(self, landing, float(weapon.weapon_data.get("movement_ms", 220)) / 1000.0)
-		if weapon.is_hand_cannon():
-			_fire_cannon(anchor_position)
-			MobilityAtlasEffect.spawn(self, weapon, "recoil_dust", anchor_position, heading.angle())
+		_begin_landing()
+		return
+	if weapon.is_star_tome():
+		if not player.blink_mobility_hold(self, landing):
+			cancel()
+			return
+		MobilityAtlasEffect.spawn(self, weapon, "star_depart", departure)
+		MobilityAtlasEffect.spawn(self, weapon, "star_return" if returning_cast else "star_arrive", landing)
+		if returning_cast:
+			if is_instance_valid(anchor): anchor.cancel()
 		else:
-			var trail := MobilityAtlasEffect.spawn(self, weapon, "dash_trail", anchor_position, heading.angle())
+			if allow_return:
+				anchor = MobilityAtlasEffect.spawn(self, weapon, "star_anchor", anchor_position, 0, Vector2.ONE, true)
+			return_ready = allow_return
+			_impact(landing)
+		_begin_landing()
+	else:
+		player.cancel_mobility_motion(self)
+		player.begin_mobility_motion(self, landing, _travel_seconds())
+		phase = "moving"
+		phase_age = 0.0
+		if weapon.is_hand_cannon():
+			_fire_cannon(departure)
+			MobilityAtlasEffect.spawn(self, weapon, "recoil_dust", departure, heading.angle())
+		else:
+			var trail := MobilityAtlasEffect.spawn(self, weapon, "dash_trail", departure, heading.angle())
 			trail.follow = weakref(player)
+
+func _begin_landing() -> void:
+	var player := weapon.owner_player
+	player.cancel_mobility_motion(self)
+	player.begin_mobility_motion(self, player.global_position, landing_seconds)
+	player.action_animator.resume_action()
+	phase = "landing"
+	phase_age = 0.0
 
 func initialize_replay(source: WeaponInstance, point: Vector2, direction: Vector2, contact: EnemyController = null) -> void:
 	bind_weapon(source, "mobility_weapon_runtimes")
@@ -112,36 +171,32 @@ func request_return() -> bool:
 	var landing := player.resolve_mobility_destination(anchor_position)
 	# A blocked return keeps the mark available, instead of consuming it halfway.
 	if landing.distance_squared_to(anchor_position) > 1.0: return false
-	var departure := player.global_position
-	player.play_mobility_action(weapon.weapon_id, landing - departure)
-	player.blink_to(landing)
-	MobilityAtlasEffect.spawn(self, weapon, "star_depart", departure)
-	MobilityAtlasEffect.spawn(self, weapon, "star_return", landing)
-	if is_instance_valid(anchor): anchor.cancel()
+	destination = landing
+	returning_cast = true
 	return_ready = false
-	phase = "returning"
-	phase_age = 0.0
+	_begin_jump()
 	return true
 
 func expire_return() -> void:
 	if not weapon.is_star_tome() or replay_only: return
 	return_ready = false
+	allow_return = false
 	if is_instance_valid(anchor) and not anchor.cancelled: anchor.cancel()
 	# End availability without moving the player; remaining PNGs finish normally.
-	phase = "done"
+	if not _jump_active: phase = "done"
 
 func _physics_process(delta: float) -> void:
 	if not ready_to_tick(): return
 	age += delta
 	phase_age += delta
-	if phase == "moving" and not weapon.owner_player.is_mobility_moving():
-		phase = "impact"
-		phase_age = age if weapon.is_hand_cannon() else 0.0
+	if phase == "takeoff" and phase_age + 0.000001 >= takeoff_seconds:
+		_start_travel()
+	elif phase == "moving" and not weapon.owner_player.is_mobility_moving():
 		if not weapon.is_hand_cannon(): _impact(weapon.owner_player.global_position)
-	elif phase == "arriving" and phase_age >= SHOCK_SECONDS:
-		phase = "anchored" if allow_return else "done"
-	elif phase == "returning" and phase_age >= 8.0 / 24.0:
-		phase = "done"
+		_begin_landing()
+	elif phase == "landing" and not weapon.owner_player.is_mobility_moving():
+		_jump_active = false
+		phase = "anchored" if return_ready else "impact"
 	elif phase == "impact" and phase_age >= (0.28 if weapon.is_hand_cannon() else SLASH_SECONDS):
 		var flying := false
 		for child in get_children():
@@ -154,7 +209,7 @@ func is_attacking() -> bool:
 
 func cancel() -> void:
 	return_ready = false
-	if is_instance_valid(weapon.owner_player): weapon.owner_player.cancel_mobility_motion(self)
+	_release_jump()
 	if live_source != null and live_source.mobility_runtime != null and live_source.mobility_runtime.get_ref() == self:
 		live_source.mobility_runtime = null
 	for child in get_children():
@@ -162,6 +217,14 @@ func cancel() -> void:
 	super.cancel()
 
 func _exit_tree() -> void:
-	if weapon != null and is_instance_valid(weapon.owner_player): weapon.owner_player.cancel_mobility_motion(self)
+	_release_jump()
 	if live_source != null and live_source.mobility_runtime != null and live_source.mobility_runtime.get_ref() == self:
 		live_source.mobility_runtime = null
+
+func _release_jump() -> void:
+	if weapon != null and is_instance_valid(weapon.owner_player):
+		var player := weapon.owner_player
+		player.cancel_mobility_motion(self)
+		if _jump_active and player.action_animator.action in ["jump_forward", "jump_backward"]:
+			player.action_animator.reset()
+	_jump_active = false

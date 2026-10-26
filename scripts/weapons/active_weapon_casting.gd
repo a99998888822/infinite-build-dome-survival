@@ -62,7 +62,7 @@ func tick(delta: float) -> void:
 		return
 	for weapon: WeaponInstance in loadout.weapon_instances:
 		var state := state_for(weapon)
-		# The tome's first blink starts one clock shared by return availability and HUD.
+		# The tome's first cast starts one clock shared by return availability and HUD.
 		# Returning/interrupting never restarts that clock.
 		if weapon.cooldown_starts_on_cast():
 			state.remaining = maxf(0.0, float(state.remaining) - delta)
