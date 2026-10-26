@@ -1,0 +1,33 @@
+scripts/weapons/active_weapon_casting.gd
+  s_48c071d4389a38::t_e754cec1de27a1 65
+scripts/weapons/mobility_weapon_runtime.gd
+  s_48c071d4389a38::t_8ba306676ead44 51
+  s_48c071d4389a38::t_7d00d90962fea7 11,16-21,33-50,52-69,71-86,88-91,93-94,96,99-106,174-175,177,183,186,192-194,196-199,212,220,223-230
+docs/main/mobility_weapons_implementation.md
+  s_48c071d4389a38::t_33f3c33d63e5ec 3,10-12,20,23-24
+scenes/tests/mobility_jump_timing_test.tscn
+  s_48c071d4389a38::t_8ba306676ead44 1-6
+scripts/player/player_action_animator.gd
+  s_48c071d4389a38::t_7d00d90962fea7 12,73,88,94-101,108,122-123
+scripts/tests/mobility_jump_timing_test.gd
+  s_48c071d4389a38::t_8ba306676ead44 1-121,124-186,188-248
+  s_48c071d4389a38::t_33f3c33d63e5ec 122-123,187
+scripts/tests/mobility_jump_timing_test.gd.uid
+  s_48c071d4389a38::t_c44e04c3f57f9a 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "42f98801c064eb528111edf8206c83bc0f508245",
+  "prompts": {},
+  "sessions": {
+    "s_48c071d4389a38": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17776-2d98-7881-87b6-a06a283d577d",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
