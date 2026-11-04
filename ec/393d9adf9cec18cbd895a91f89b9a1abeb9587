@@ -1,0 +1,203 @@
+scripts/weapons/pattern_native_volley.gd
+  s_48c071d4389a38::t_03a014fba221ba 1-59
+scripts/enemies/echo_bat_sonic.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 23,53
+scripts/weapons/weapon_instance.gd
+  s_48c071d4389a38::t_d07316b978fb83 131,184-186,409,420,426-428
+  s_48c071d4389a38::t_e0a8f40b7885d3 906-907,918,920-934,937,940
+  s_48c071d4389a38::t_030553228ffe21 761,979
+  s_48c071d4389a38::t_9031c51026c6e1 965-966
+  s_48c071d4389a38::t_b78a425cf78762 65-68,149-152,422-425,429-430,553-556,600-603,798-801,809-811
+scripts/data/data_validator.gd
+  s_48c071d4389a38::t_39adabcd3b2d02 805
+  s_48c071d4389a38::t_d5b92b586a6ec4 802-804,806-809
+scripts/core/main_flow_coordinator.gd
+  s_48c071d4389a38::t_811d0a5055e65a 32,54,476-498,701,1132,1144,1217-1219,1511,1564
+  s_48c071d4389a38::t_e0a8f40b7885d3 1516
+  s_48c071d4389a38::t_8e71df90ad2ffb 78-79,134-135,755,757-759,764-769,775,786-788,801,810,898,1120-1121,1198,1229
+  s_48c071d4389a38::t_ee01541808b70a 551-556
+scripts/weapons/mobility_weapon_runtime.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 162
+  s_48c071d4389a38::t_030553228ffe21 28-29,121-130
+scripts/weapons/directed_weapon_runtime.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 68
+scripts/weapons/coin_projectile.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 54
+scripts/weapons/earth_hammer.gd
+  s_48c071d4389a38::t_03a014fba221ba 217
+scripts/ui/item_inventory_card.gd
+  s_48c071d4389a38::t_d654de723ce659 34-38
+scripts/weapons/grenade_projectile.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 59
+data_config/camp_buildings.json
+  s_48c071d4389a38::t_39adabcd3b2d02 114-115,118,123,136,676-688
+  s_48c071d4389a38::t_d5b92b586a6ec4 117,124,130,137
+  s_48c071d4389a38::t_a5c4ec0b481051 110
+  s_48c071d4389a38::t_372c4d639741fb 116,119-122,125,127-129,131-135,138-139
+  s_48c071d4389a38::t_93c38aeab7445f 111
+  s_48c071d4389a38::t_513cc678f62f65 113
+scripts/ui/finance_popup.gd
+  s_48c071d4389a38::t_359147ab57be58 71-72,100-103,106-115,261,353-357,365-368,543-545,640,714-729,733,755,987-989
+  s_48c071d4389a38::t_31a9655858f881 358-364
+  s_48c071d4389a38::t_a9ad14577ea8cc 104,713
+  s_48c071d4389a38::t_8e71df90ad2ffb 151-153
+localization/catalogs/content.csv
+  s_48c071d4389a38::t_b5b3740c266616 527-530,535-536,561-562,564-565
+scripts/weapons/nightwatch_spear.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 101
+scripts/battle/attack_footprint.gd
+  s_48c071d4389a38::t_f28f4e3d7bcf57 35-44
+scripts/weapons/attack_pattern_plan.gd
+  s_48c071d4389a38::t_bcd486a9d27699 70-86
+  s_48c071d4389a38::t_b78a425cf78762 1-69,92-99
+  s_48c071d4389a38::t_f28f4e3d7bcf57 87-91
+scripts/weapons/meteor_flail.gd
+  s_48c071d4389a38::t_03a014fba221ba 143-144
+data_config/augmentations.json
+  s_48c071d4389a38::t_4c84355c459402 49,64,107,122,137,152,265
+  s_48c071d4389a38::t_430671717d4ba4 2-3,5-12,14-21,23-30,32-39,41-46
+  s_48c071d4389a38::t_0d7c2b966ad6ed 4,13,22,31,40
+scripts/weapons/furnace_runtime.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 49
+scripts/ui/enchantment_workbench.gd
+  s_48c071d4389a38::t_ad4fd7bd5fc010 348-349
+  s_48c071d4389a38::t_811d0a5055e65a 151,177-181
+scripts/weapons/projectile_instance.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 150
+localization/generated/source_aliases.csv
+  s_48c071d4389a38::t_fceb3c1c5757f9 75,258-268,281-284,291,331,366,394,399,444,464,481-482,485-487,494-495,627,764,798,816,869,871,921,967,979,985,989,998-999,1112-1115,1126,1159,1366-1369,1378,1382,1436,1444,1446-1447,1460-1461,1541,1543
+  s_48c071d4389a38::t_94e5c10438b437 162,412,1015,1237
+  s_48c071d4389a38::t_b5b3740c266616 80,382,522,542,669,674-675,744,865,1013-1014
+  s_48c071d4389a38::t_50b7a3350bf6e7 1520
+  s_48c071d4389a38::t_4d15a8abccdf3b 1505
+scripts/ui/finance_ui_controller.gd
+  s_48c071d4389a38::t_811d0a5055e65a 48,61
+scripts/weapons/weapon_loadout.gd
+  s_48c071d4389a38::t_e659fa12c7f913 20-21,52,60-61,112,118-120,141,147,153,163,260,277-319,351,405-408
+assets/ui/talents/restock.png.import
+  s_48c071d4389a38::t_1cf094a51215ed 1-40
+localization/catalogs/talent_tree.csv
+  s_48c071d4389a38::t_372c4d639741fb 2,5,13-15,19-20,24-26
+  s_48c071d4389a38::t_31a9655858f881 16-18
+  s_48c071d4389a38::t_ad4fd7bd5fc010 21-22
+  s_48c071d4389a38::t_39adabcd3b2d02 6-12,23
+  s_48c071d4389a38::t_74c57ba9228506 3-4
+localization/generated/source_keys.json
+  s_48c071d4389a38::t_32c78b33d522e2 1141-1142
+  s_48c071d4389a38::t_50b7a3350bf6e7 1256
+  s_48c071d4389a38::t_fceb3c1c5757f9 1129-1135,1143
+  s_48c071d4389a38::t_79c58ac047bc9d 1110-1117,1126-1128,1136-1140,1144-1146,1149-1150,1190-1197,1221-1222,1230,1238,1250
+  s_48c071d4389a38::t_94e5c10438b437 1122-1125
+  s_48c071d4389a38::t_4d15a8abccdf3b 1198
+  s_48c071d4389a38::t_b5b3740c266616 1100-1109,1121
+scripts/rewards/drop_reward_system.gd
+  s_48c071d4389a38::t_4c84355c459402 205-209,221,349,437
+scripts/weapons/pattern_flight_runtime.gd
+  s_48c071d4389a38::t_bcd486a9d27699 28,42,111,145-146,207-209
+  s_48c071d4389a38::t_12c4e67fc5c39d 34,38,70-77,85,93-94,98,108,123-126,133-136,203-204,217-220,311,313-314
+  s_48c071d4389a38::t_b3dd01569cd6a5 87-92,127-129,150
+  s_48c071d4389a38::t_738934afb380c2 18,40-41,116
+  s_48c071d4389a38::t_c76becfc9c6ad1 14,117,119,122,244-256,283
+  s_48c071d4389a38::t_030553228ffe21 303
+  s_48c071d4389a38::t_8b6f938b2c3445 1-13,15-17,19-27,29-33,35-37,39,43-69,78-84,86,95-97,99-107,109-110,112-115,118,120-121,130-132,137-144,147-149,151-163,167-202,205-206,210-216,221-243,257-282,284-302,304-310,312,315-325
+  s_48c071d4389a38::t_d654de723ce659 164-166
+scripts/battle/weapon_attack_indicator.gd
+  s_48c071d4389a38::t_4e778d773762e5 164-167
+  s_48c071d4389a38::t_b2a6ac734d502d 15-17,25,31,37-52,63-66,68,107-163,168-212
+scripts/battle/mobility_weapon_indicator.gd
+  s_48c071d4389a38::t_f28f4e3d7bcf57 134-147,157-165
+  s_48c071d4389a38::t_4e778d773762e5 171
+  s_48c071d4389a38::t_4d37264c4b6e43 29-32,34,37-38,41-44,116,173-178
+scripts/ui/battle_hud.gd
+  s_48c071d4389a38::t_f7396a5d4be7cf 45,89,98,107,228-237,782,790,848,865-866,954,978,981
+  s_48c071d4389a38::t_a9ad14577ea8cc 942
+autoloads/combat_settings.gd
+  s_48c071d4389a38::t_ee01541808b70a 8,24-25,39,46,48,75
+scripts/ui/shop_offer_generator.gd
+  s_48c071d4389a38::t_811d0a5055e65a 63
+scripts/weapons/camp_dagger.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 180
+scripts/battle/active_combat_controller.gd
+  s_48c071d4389a38::t_f28f4e3d7bcf57 269-270
+scripts/weapons/active_weapon_casting.gd
+  s_48c071d4389a38::t_738934afb380c2 145
+  s_48c071d4389a38::t_03a014fba221ba 136-144,146-152
+  s_48c071d4389a38::t_24c91665f5b886 15-19,227
+  s_48c071d4389a38::t_e659fa12c7f913 68
+scripts/ui/talent_node_button.gd
+  s_48c071d4389a38::t_1b61e5ce24bb7f 3
+  s_48c071d4389a38::t_a9ad14577ea8cc 31-40
+scripts/weapons/projectile_guard.gd
+  s_48c071d4389a38::t_657f12efc2c8bc 1-42
+localization/catalogs/messages.csv
+  s_48c071d4389a38::t_b5b3740c266616 13,29-30,46,81
+  s_48c071d4389a38::t_e0a8f40b7885d3 47-50
+localization/catalogs/ui.csv
+  s_48c071d4389a38::t_ee01541808b70a 11
+  s_48c071d4389a38::t_9031c51026c6e1 508
+data_config/drop_tables.json
+  s_48c071d4389a38::t_b5b3740c266616 21-25,171-175
+scripts/ui/weapon_strip.gd
+  s_48c071d4389a38::t_85b7b9aea0c97d 328
+  s_48c071d4389a38::t_21a6fd9b91db70 52-53,55,90-91,238-239,248,254,276,293,301,315,324-327,329-338,353-359,361-365,367-413,415-425,643-646
+  s_48c071d4389a38::t_ad4fd7bd5fc010 54,360,366,414
+  s_48c071d4389a38::t_bb9534893c5aec 507
+scripts/weapons/copper_lamp.gd
+  s_48c071d4389a38::t_03a014fba221ba 78-79
+scripts/core/game_root.gd
+  s_48c071d4389a38::t_811d0a5055e65a 64-65
+scripts/weapons/attack_pattern_plan.gd.uid
+  s_48c071d4389a38::t_c20291eef62c30 1
+scripts/weapons/pattern_flight_runtime.gd.uid
+  s_48c071d4389a38::t_c20291eef62c30 1
+scripts/weapons/projectile_guard.gd.uid
+  s_48c071d4389a38::t_c20291eef62c30 1
+scripts/ui/esc_overlay.gd
+  s_48c071d4389a38::t_2319b263650217 303-304
+scripts/ui/game_settings_panel.gd
+  s_48c071d4389a38::t_ee01541808b70a 28,330-335,405
+scripts/weapons/saber_runtime.gd
+  s_48c071d4389a38::t_f28f4e3d7bcf57 93,109
+  s_48c071d4389a38::t_577f2890581a59 46,75,119,142-143
+  s_48c071d4389a38::t_657f12efc2c8bc 129
+  s_48c071d4389a38::t_24c91665f5b886 21,25-27,105-108,111-115,120
+  s_48c071d4389a38::t_a11dc12115914c 144
+autoloads/camp_progression.gd
+  s_48c071d4389a38::t_372c4d639741fb 609-610
+scripts/ui/camp_blueprint_ui_controller.gd
+  s_48c071d4389a38::t_74c57ba9228506 417-423,429
+  s_48c071d4389a38::t_39adabcd3b2d02 424-427,475-476
+  s_48c071d4389a38::t_372c4d639741fb 120,470-474,477
+assets/ui/icons/augmentations/scroll_giant.png.import
+  s_48c071d4389a38::t_ff4f95bb2bc55c 1-40
+assets/ui/icons/augmentations/scroll_guard.png.import
+  s_48c071d4389a38::t_ff4bae779e5324 1-40
+assets/ui/icons/augmentations/scroll_orbit.png.import
+  s_48c071d4389a38::t_f6bc87c2335953 1-40
+assets/ui/icons/augmentations/scroll_radial.png.import
+  s_48c071d4389a38::t_5c3a579bf8cce4 1-40
+assets/ui/icons/augmentations/scroll_satellite.png.import
+  s_48c071d4389a38::t_efd501c8511d5b 1-40
+assets/ui/talents/quick_shop.png.import
+  s_48c071d4389a38::t_90605d4ae35653 1-40
+assets/ui/talents/reserve_weapons.png.import
+  s_48c071d4389a38::t_c2d4f98926fec4 1-40
+scripts/weapons/pattern_native_volley.gd.uid
+  s_48c071d4389a38::t_1f535211e39994 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ec393d9adf9cec18cbd895a91f89b9a1abeb9587",
+  "prompts": {},
+  "sessions": {
+    "s_48c071d4389a38": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17776-2d98-7881-87b6-a06a283d577d",
+        "model": "azure_openai/gpt-6-astra"
+      },
+      "human_author": "fuchengyu <fuchengyu@xiaomi.com>"
+    }
+  }
+}
