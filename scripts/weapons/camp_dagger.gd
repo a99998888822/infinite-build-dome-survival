@@ -177,6 +177,7 @@ func _contact(cut: Dictionary, origin: Vector2, at: float) -> void:
 		points.append(AttackFootprint.project(first + Vector2.from_angle(angle + PI / 2 + PI * i / 16.0) * radius))
 	_shape.points = points
 	_query.transform = Transform2D(0, origin)
+	ProjectileGuard.intercept(self, weapon, _shape, _query.transform)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
 	AudioManager.begin_combat_audio()
 	for result in contacts:

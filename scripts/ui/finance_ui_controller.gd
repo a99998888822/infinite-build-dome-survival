@@ -45,7 +45,7 @@ func _on_modal_requested(state: String, payload: Dictionary) -> void:
 	if state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
 		challenge_popup.present(payload)
 		return
-	if state != MainFlowCoordinator.STATE_FINANCE_POPUP: return
+	if state not in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT]: return
 	_suspended_for_inspection = false
 	_apply_safe_rect(true)
 	finance_popup.configure(payload)
@@ -58,7 +58,7 @@ func _on_preparation_changed(payload: Dictionary) -> void:
 
 func _on_modal_closed(state: String) -> void:
 	if state == MainFlowCoordinator.STATE_WAVE_CHALLENGE: challenge_popup.dismiss()
-	if state == MainFlowCoordinator.STATE_FINANCE_POPUP:
+	if state in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT]:
 		_suspended_for_inspection = false
 		finance_popup.hide_popup()
 

@@ -17,6 +17,8 @@ const ATTACHABLE_ITEM_CATEGORIES: Array[String] = ["enchantment_scroll", "wizard
 var owner_player: PlayerController = null
 var finance_system: BattleFinanceSystem = null
 var weapon_instances: Array[WeaponInstance] = []
+var reserve_weapons: Array[WeaponInstance] = []
+var reserve_capacity := 0
 var targeting_service: TargetingService = null
 var _projectile_sequence: int = 0
 var _weapon_textures: Dictionary = {}
@@ -47,7 +49,7 @@ func _ready() -> void:
 
 func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> bool:
 	active_casting.loadout = self
-	for previous in weapon_instances:
+	for previous in get_owned_weapons():
 		_clear_weapon_runtime(previous)
 	active_casting.states.clear()
 	if is_instance_valid(owner_player) and owner_player.damage_taken.is_connected(_on_player_damaged):
@@ -55,6 +57,8 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	owner_player = player
 	finance_system = bank
 	weapon_instances.clear()
+	reserve_weapons.clear()
+	reserve_capacity = CampProgression.get_upgrade_option_level("camp_upgrade_reserve_weapons")
 	_weapon_textures.clear()
 	if owner_player == null:
 		push_error("[WeaponLoadout] missing owner player.")
@@ -105,11 +109,15 @@ func take_weapon_for_trade(weapon_id: String) -> WeaponInstance:
 	var weapon := get_weapon_instance(weapon_id)
 	if weapon != null:
 		weapon_instances.erase(weapon)
+		reserve_weapons.erase(weapon)
 		_clear_weapon_runtime(weapon)
 	return weapon
 
 
 func restore_traded_weapon(weapon: WeaponInstance, index: int) -> void:
+	if index < 0:
+		reserve_weapons.append(weapon)
+		return
 	weapon_instances.insert(clampi(index, 0, weapon_instances.size()), weapon)
 
 
@@ -130,19 +138,19 @@ func _notify_loadout_changed() -> void:
 
 
 func request_manual_attachment(weapon_id: String, item_instance_id: String) -> bool:
-	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+	if not can_edit_attachments():
 		return false
 	return attach_item_to_weapon(weapon_id, item_instance_id)
 
 
 func request_manual_detachment(weapon_id: String, item_instance_id: String) -> Dictionary:
-	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+	if not can_edit_attachments():
 		return {}
 	return detach_item_from_weapon(weapon_id, item_instance_id)
 
 
 func request_manual_attachment_move(weapon_id: String, item_instance_id: String, target_index: int) -> bool:
-	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+	if not can_edit_attachments():
 		return false
 	var weapon := get_weapon_instance(weapon_id)
 	if weapon == null or not weapon.move_attachment_instance(item_instance_id, target_index):
@@ -152,7 +160,7 @@ func request_manual_attachment_move(weapon_id: String, item_instance_id: String,
 
 
 func request_manual_attachment_replacement(weapon_id: String, item_instance_id: String, target_index: int) -> bool:
-	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != "finance_popup":
+	if not can_edit_attachments():
 		return false
 	if owner_player == null or owner_player.item_inventory == null:
 		return false
@@ -249,7 +257,7 @@ func upgrade_weapon(weapon_id: String, paid_cost: int = -1, payment_source: Stri
 
 
 func get_weapon_instance(weapon_id: String) -> WeaponInstance:
-	for weapon in weapon_instances:
+	for weapon in get_owned_weapons():
 		if weapon.weapon_id == weapon_id:
 			return weapon
 	return null
@@ -264,6 +272,49 @@ func get_weapon_instances() -> Array[WeaponInstance]:
 	for weapon in weapon_instances:
 		result.append(weapon)
 	return result
+
+
+func get_owned_weapons() -> Array[WeaponInstance]:
+	var result := get_weapon_instances()
+	result.append_array(reserve_weapons)
+	return result
+
+
+func is_weapon_equipped(weapon_id: String) -> bool:
+	return weapon_instances.has(get_weapon_instance(weapon_id))
+
+
+func can_edit_attachments() -> bool:
+	var state := str(GameGlobal.get_runtime_flag("main_flow_state", ""))
+	return state == MainFlowCoordinator.STATE_FINANCE_POPUP or (state == MainFlowCoordinator.STATE_QUICK_ENCHANTMENT and CampProgression.get_upgrade_option_level("camp_upgrade_quick_shop") > 0)
+
+
+func can_equip_reserve(weapon_id: String, replace_id: String = "") -> bool:
+	var weapon := get_weapon_instance(weapon_id)
+	if reserve_capacity <= 0 or weapon == null or not reserve_weapons.has(weapon): return false
+	var total := get_total_load_cost() + weapon.get_load_cost()
+	if not replace_id.is_empty():
+		var replaced := get_weapon_instance(replace_id)
+		if replaced == null or not weapon_instances.has(replaced): return false
+		total -= replaced.get_load_cost()
+	return total <= _get_load_capacity()
+
+
+func equip_reserve_weapon(weapon_id: String, replace_id: String = "") -> bool:
+	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != MainFlowCoordinator.STATE_ESC_OVERLAY:
+		return false
+	if not is_instance_valid(owner_player) or not owner_player.alive or not can_equip_reserve(weapon_id, replace_id): return false
+	var weapon := get_weapon_instance(weapon_id)
+	var replaced := get_weapon_instance(replace_id)
+	reserve_weapons.erase(weapon)
+	if replaced != null:
+		_clear_weapon_runtime(replaced)
+		weapon_instances.erase(replaced)
+		reserve_weapons.append(replaced)
+	weapon_instances.append(weapon)
+	weapon_equipped.emit(weapon_id)
+	_notify_loadout_changed()
+	return true
 
 
 func move_weapon(weapon_id: String, direction: int) -> bool:
@@ -297,7 +348,7 @@ func get_total_load_cost() -> int:
 
 
 func can_add_weapon(weapon_id: String) -> bool:
-	return get_total_load_cost() + _get_weapon_load_cost(weapon_id) <= _get_load_capacity()
+	return get_total_load_cost() + _get_weapon_load_cost(weapon_id) <= _get_load_capacity() or reserve_weapons.size() < reserve_capacity
 
 
 func get_load_capacity() -> int:
@@ -351,7 +402,10 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 		for starting_item in owner_player.item_inventory.get_equipped_items_for_weapon(weapon_id):
 			if not weapon.attach_item_instance(starting_item):
 				owner_player.item_inventory.clear_equipped_weapon(str(starting_item.get("item_instance_id", "")))
-	weapon_instances.append(weapon)
+	if get_total_load_cost() + weapon.get_load_cost() <= _get_load_capacity():
+		weapon_instances.append(weapon)
+	else:
+		reserve_weapons.append(weapon)
 	_load_weapon_texture(weapon, "projectile_texture")
 	weapon_equipped.emit(weapon_id)
 	_notify_loadout_changed()

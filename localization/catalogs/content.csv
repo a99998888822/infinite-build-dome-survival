@@ -524,10 +524,16 @@ enchantment.bounce.name,弹跳,Bounce
 enchantment.domain.name,领域,Domain
 enchantment.fire.name,火焰,Fire
 enchantment.freeze.name,冰冻,Freeze
+enchantment.giant.description,将此前形成的投射物融铸为一枚巨弹，合计伤害；数量越多，体积越大。,"Fuse all previously formed projectiles into one giant shot, combining their damage. More projectiles create a larger shot."
+enchantment.giant.name,巨弹,Giant Shot
+enchantment.guard.description,攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。,Attacks destroy hostile projectiles. Interception does not trigger on-hit enchantments or consume piercing hits.
+enchantment.guard.name,格挡,Guard
 enchantment.lethality.name,致命,Lethality
 enchantment.lightning.name,落雷,Lightning
 enchantment.might.name,巨力,Might
 enchantment.multishot.name,多投,Multishot
+enchantment.orbit.description,投射物改为环绕自身飞行。冷却时间决定绕行一圈的时间，攻击距离决定半径，数量决定同时环绕的弹体数。,"Projectiles orbit you. Cooldown determines the time per revolution, attack range sets the radius, and count sets the number of orbiting bodies."
+enchantment.orbit.name,环绕,Orbit
 enchantment.param.area_damage_multiplier,范围伤害倍率,Area Damage Multiplier
 enchantment.param.burn_damage,燃烧伤害,Burn Damage
 enchantment.param.burn_duration,燃烧时间,Burn Duration
@@ -552,7 +558,11 @@ enchantment.param.wet_spread_count,打湿传播数量,Wet Spread Count
 enchantment.param.wet_spread_range,打湿传播范围,Wet Spread Range
 enchantment.pierce.name,穿透,Pierce
 enchantment.precision.name,会心,Precision
+enchantment.radial.description,投射物数量+2，所有投射物向四周均匀发射。与卫星互斥。,Projectile count +2. All projectiles fire evenly in every direction. Incompatible with Satellite.
+enchantment.radial.name,环射,Radial
 enchantment.radiant_sword.name,光辉剑,Radiant Sword
+enchantment.satellite.description,投射物数量+1，保留一枚主弹，其余投射物环绕主弹飞行。新增弹体使用原始单弹伤害和体积。与环射互斥。,Projectile count +1. Keep one main projectile; the others orbit it. The added projectile uses base single-shot damage and size. Incompatible with Radial.
+enchantment.satellite.name,卫星,Satellite
 enchantment.shock.name,震荡,Shockwave
 enchantment.spark.name,电火花,Spark
 enchantment.split.name,分裂,Split

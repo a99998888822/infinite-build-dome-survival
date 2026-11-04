@@ -98,6 +98,7 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 	var direction: Vector2 = thrust.direction
 	_shape.size = Vector2(maxf(length, 1), maxf(weapon.get_hit_radius() * 2.0, 1))
 	_query.transform = Transform2D(direction.angle(), origin + direction * length * 0.5)
+	ProjectileGuard.intercept(self, weapon, _shape, _query.transform)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
 	AudioManager.begin_combat_audio()
 	for contact in contacts:

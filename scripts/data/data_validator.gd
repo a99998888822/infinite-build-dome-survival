@@ -799,7 +799,14 @@ func _validate_camp_building_records(records: Array, records_by_id: Dictionary) 
 			if not (option is Dictionary):
 				errors.append("%s.upgrade_options[%d] must be an object." % [path, option_index])
 				continue
-			_validate_required_fields(option, ["id", "stat", "currency", "cost", "max_level", "value_per_level"], "%s.upgrade_options[%d]" % [path, option_index])
+			var required := ["id", "currency", "cost", "max_level"]
+			if option.has("feature"):
+				required.append("description")
+				if str(option.feature) not in ["quick_shop", "reserve_weapons", "restock"]:
+					errors.append("%s.upgrade_options[%d] has an unknown feature." % [path, option_index])
+			else:
+				required.append_array(["stat", "value_per_level"])
+			_validate_required_fields(option, required, "%s.upgrade_options[%d]" % [path, option_index])
 			_validate_camp_currency_field(option, "%s.upgrade_options[%d]" % [path, option_index])
 			var stat_id := str(option.get("stat", ""))
 			var option_path := "%s.upgrade_options[%d]" % [path, option_index]

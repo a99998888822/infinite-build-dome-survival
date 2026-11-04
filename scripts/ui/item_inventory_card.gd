@@ -31,6 +31,11 @@ const CATEGORY_LABELS: Dictionary = {
 }
 const ENCHANTMENT_TYPE_LABELS := {"buff": "增益", "spell": "法术", "element": "元素"}
 const EFFECT_LABELS: Dictionary = {
+	"radial": "环射",
+	"orbit": "环绕",
+	"giant": "巨弹",
+	"guard": "格挡",
+	"satellite": "卫星",
 	"fire": "火焰",
 	"water": "水",
 	"explosion": "震荡",

@@ -46,6 +46,7 @@ func _contacts(shape: Shape2D, pose: Transform2D, excluded: Array[RID] = []) -> 
 	_query.shape = shape
 	_query.transform = pose
 	_query.exclude = excluded
+	ProjectileGuard.intercept(self, weapon, shape, pose)
 	queries += 1
 	var result: Array[EnemyController] = []
 	var seen := {}

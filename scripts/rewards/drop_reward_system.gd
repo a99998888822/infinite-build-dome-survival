@@ -202,6 +202,11 @@ func _build_augmentation_action(table: Dictionary, drop_rate_bonus: float, luck:
 		"adjusted_chance_percent": chance, "augmentation_roll_id": roll_id, "reward_generation": _reward_generation}
 
 
+func _is_augmentation_available(item_id: String) -> bool:
+	var data := DataRegistry.get_record("augmentations", item_id)
+	return not data.is_empty() and not bool(data.get("release_locked", false))
+
+
 func _pick_augmentation_entry(table: Dictionary) -> Dictionary:
 	var rarity_weights: Dictionary = table.get("augmentation_rarity_weights", DEFAULT_AUGMENTATION_RARITY_WEIGHTS)
 	var candidates_by_rarity: Dictionary = {}
@@ -213,7 +218,7 @@ func _pick_augmentation_entry(table: Dictionary) -> Dictionary:
 			var data := DataRegistry.get_record("augmentations", item_id)
 			var rarity := str(data.get("rarity", ""))
 			var rarity_weight := maxf(0.0, float(rarity_weights.get(rarity, 0)))
-			if weight <= 0.0 or data.is_empty() or rarity_weight <= 0.0:
+			if weight <= 0.0 or data.is_empty() or bool(data.get("release_locked", false)) or rarity_weight <= 0.0:
 				continue
 			if not candidates_by_rarity.has(rarity):
 				candidates_by_rarity[rarity] = []
@@ -341,7 +346,7 @@ func prepare_action(action: Dictionary, pickup_root: Node, player: PlayerControl
 		var entry: Dictionary = action.get("entry", {})
 		var item_id := str(action.get("item_id", entry.get("item_id", entry.get("augmentation_id", ""))))
 		var amount := mini(maxi(0, int(action.get("amount", 0))), get_augmentation_wave_limit() - _augmentations_dropped_this_wave)
-		if _augmentation_wave_finished or amount <= 0 or not DataRegistry.has_record("augmentations", item_id): return {}
+		if _augmentation_wave_finished or amount <= 0 or not _is_augmentation_available(item_id): return {}
 		prepared.amount = amount
 		_augmentations_dropped_this_wave += amount
 		_augmentation_dry_waves = 0
@@ -429,7 +434,7 @@ func spawn_augmentation(
 	snapshot: RewardSnapshot = null,
 	reserved := false
 ) -> AugmentationPickup:
-	if not is_instance_valid(pickup_root) or not is_instance_valid(player) or not DataRegistry.has_record("augmentations", augmentation_id):
+	if not is_instance_valid(pickup_root) or not is_instance_valid(player) or not _is_augmentation_available(augmentation_id):
 		return null
 	if amount <= 0 or (not reserved and (_augmentation_wave_finished or _augmentations_dropped_this_wave >= get_augmentation_wave_limit())):
 		return null

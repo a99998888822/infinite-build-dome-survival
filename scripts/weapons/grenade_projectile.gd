@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		return
 	elapsed += delta
 	if not exploded:
+		ProjectileGuard.intercept_segment(self, weapon, global_position, start_position.lerp(target_position, clampf(elapsed / flight_seconds, 0.0, 1.0)), weapon.get_hit_radius())
 		global_position = start_position.lerp(target_position, clampf(elapsed / flight_seconds, 0.0, 1.0))
 		if elapsed >= flight_seconds:
 			_detonate()

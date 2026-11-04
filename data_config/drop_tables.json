@@ -18,6 +18,11 @@
       "normal"
     ],
     "entries": [
+      {"type": "augmentation", "item_id": "scroll_radial", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_orbit", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_giant", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_guard", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_satellite", "weight": 1, "amount": 1},
       {
         "type": "augmentation",
         "item_id": "scroll_might",
@@ -163,6 +168,11 @@
       "elite"
     ],
     "entries": [
+      {"type": "augmentation", "item_id": "scroll_radial", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_orbit", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_giant", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_guard", "weight": 1, "amount": 1},
+      {"type": "augmentation", "item_id": "scroll_satellite", "weight": 1, "amount": 1},
       {
         "type": "augmentation",
         "item_id": "scroll_might",

@@ -140,6 +140,8 @@ func _sweep_contacts(swing: Dictionary, from: Vector2, to: Vector2, at_time: flo
 			points.append(point - first_origin + offset)
 	_chain_contact.points = Geometry2D.convex_hull(points)
 	_head_contact.radius = head_radius(swing)
+	ProjectileGuard.intercept(self, weapon, _chain_contact, Transform2D(0, first_origin))
+	ProjectileGuard.intercept_segment(self, weapon, from, to, _head_contact.radius)
 	for node in EnemyRegistry.get_registered_enemies():
 		var enemy := node as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or swing.hits.has(enemy.get_instance_id()):

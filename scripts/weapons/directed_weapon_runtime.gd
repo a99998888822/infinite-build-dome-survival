@@ -65,6 +65,7 @@ func rectangle_contacts(origin: Vector2, direction: Vector2, length: float, half
 	query.transform = Transform2D(direction.angle(), origin + direction * length * 0.5)
 	query.collision_mask = 2
 	query.collide_with_areas = false
+	ProjectileGuard.intercept(self, weapon, shape, query.transform)
 	var result: Array[EnemyController] = []
 	for contact in get_world_2d().direct_space_state.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size())):
 		var enemy := contact.collider as EnemyController

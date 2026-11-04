@@ -12,6 +12,11 @@ func state_for(weapon: WeaponInstance) -> Dictionary:
 	return states[weapon.instance_id]
 
 func can_cast(weapon: WeaponInstance) -> bool:
+	if weapon.has_effect("orbit") and loadout.is_inside_tree():
+		for flight in loadout.get_tree().get_nodes_in_group("pattern_flights"):
+			if flight.cancelled or flight.weapon.source_instance_id != weapon.instance_id or not flight.plan.orbit: continue
+			if flight.weapon.get_enchantment_sequence() == weapon.get_enchantment_sequence() and flight.plan.initial_count == maxi(1, int(weapon.get_stat("projectile_count"))) and is_equal_approx(flight.period, weapon.get_active_cooldown_seconds()) and is_equal_approx(flight.reach, weapon.get_attack_range()):
+				return false
 	if weapon.is_mobility_weapon() and is_instance_valid(weapon.owner_player) and weapon.owner_player.is_mobility_moving():
 		return false
 	if weapon.is_return_ready(): return true
@@ -60,7 +65,7 @@ func _auto_target(weapon: WeaponInstance) -> EnemyController:
 func tick(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
-	for weapon: WeaponInstance in loadout.weapon_instances:
+	for weapon: WeaponInstance in loadout.get_owned_weapons():
 		var state := state_for(weapon)
 		# The tome's first cast starts one clock shared by return availability and HUD.
 		# Returning/interrupting never restarts that clock.
@@ -128,7 +133,23 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false, react
 	var root: Node = loadout._get_visual_root()
 	var body: Node2D
 	weapon.begin_attack()
-	if weapon.is_furnace():
+	var pattern := AttackPatternPlan.build(weapon)
+	var shaped := weapon.has_effect("radial") or weapon.has_effect("orbit") or weapon.has_effect("giant") or weapon.has_effect("satellite")
+	if shaped and not weapon.is_mobility_weapon() and not weapon.is_saber():
+		if pattern.orbit:
+			for previous in loadout.get_tree().get_nodes_in_group("pattern_flights"):
+				if previous.weapon.source_instance_id == source.instance_id and previous.plan.orbit: previous.cancel()
+		if pattern.orbit or pattern.satellite or weapon.weapon_id in AttackPatternPlan.FLIGHT:
+			var flight := PatternFlightRuntime.new()
+			root.add_child(flight)
+			flight.initialize(weapon, source, pattern, origin, aim, offset)
+			body = flight
+		else:
+			var volley := PatternNativeVolley.new()
+			root.add_child(volley)
+			volley.initialize(weapon, pattern, aim)
+			body = volley
+	elif weapon.is_furnace():
 		var furnace := FurnaceRuntime.new()
 		root.add_child(furnace)
 		furnace.initialize(weapon)
@@ -203,7 +224,7 @@ func cast(source: WeaponInstance, point: Vector2, automatic: bool = false, react
 		if not loadout._spawn_projectiles(weapon, weapon.calculate_damage_events()[0], origin + aim * weapon.get_attack_range(), weapon.get_attack_range()):
 			return false
 	if not weapon.is_coin_purse():
-		loadout.weapon_fired.emit(weapon.weapon_id, maxi(1, int(weapon.get_stat("projectile_count"))))
+		loadout.weapon_fired.emit(weapon.weapon_id, pattern.units.size() if pattern.changed else maxi(1, int(weapon.get_stat("projectile_count"))))
 	source.volley_index += 1
 	source.attack_context = weapon.attack_context
 	source.attack_timer = 0

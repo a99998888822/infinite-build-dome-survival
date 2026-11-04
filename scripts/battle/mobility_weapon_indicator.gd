@@ -26,13 +26,22 @@ var _ring_fills: Dictionary = {}
 var _fan_key: Array = []
 var _fan_points := PackedVector2Array()
 var _fan_fill := PackedVector2Array()
+var attack_pattern: AttackPatternPlan
+var attack_units: Array[WeaponInstance] = []
+var impact_scale := 1.0
+var shot_shape_suppressed := false
 
-func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool) -> void:
+func configure_weapon(source: WeaponInstance, offset: Vector2, can_cast: bool, pattern: AttackPatternPlan = null, units: Array[WeaponInstance] = []) -> void:
 	var anchor := Vector2.ZERO
 	if source.is_return_ready(): anchor = source.mobility_runtime.get_ref().anchor_position - source.owner_player.global_position
-	var next := [source.instance_id, offset, can_cast, source.get_stat("area_size"), source.get_stat("damage_area_size"), source.is_return_ready(), anchor, source.owner_player.global_position]
+	var next := [source.instance_id, offset, can_cast, source.get_stat("area_size"), source.get_stat("damage_area_size"), source.is_return_ready(), anchor, source.owner_player.global_position,
+		source.get_attack_range(), source.get_hit_radius(), source.get_stat("projectile_count"), source.get_enchantment_sequence()]
 	if next == _configuration: return
 	_configuration = next
+	attack_pattern = pattern
+	attack_units = units
+	impact_scale = float(pattern.units[0].size) if pattern != null and pattern.changes_shape() else 1.0
+	shot_shape_suppressed = source.is_hand_cannon() and pattern != null and pattern.changes_shape()
 	kind = Kind.STAR_TOME if source.is_star_tome() else Kind.RECOIL_GUN if source.is_hand_cannon() else Kind.DASH_BLADE
 	if source.is_saber(): kind = Kind.SABER
 	aim_offset = offset
@@ -104,7 +113,7 @@ func get_landing_offset() -> Vector2:
 
 
 func get_impact_radius() -> float:
-	return StatDefinitions.calculate_damage_area_radius(impact_radius, damage_area_bonus)
+	return StatDefinitions.calculate_damage_area_radius(impact_radius, damage_area_bonus) * impact_scale
 
 
 func dashed(from: Vector2, to: Vector2, strength: float = 0.8) -> void:
@@ -122,6 +131,20 @@ func arrowhead(point: Vector2, heading: Vector2) -> void:
 	outline(PackedVector2Array([point - heading * 9 + normal * 5, point, point - heading * 9 - normal * 5]))
 
 
+func saber_preview_cuts() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var landing := get_landing_offset()
+	var shaped := attack_pattern != null and attack_pattern.changes_shape()
+	for i in (attack_units.size() if shaped else 1):
+		var degrees := attack_pattern.saber_degrees(i) if shaped else 0.0
+		var center := landing * 0.5
+		if shaped and attack_pattern.radial: center = center.rotated(deg_to_rad(degrees))
+		var radius := attack_units[i].get_hit_radius() if shaped else get_impact_radius()
+		result.append({"center": center, "angle": landing.angle() + deg_to_rad(degrees),
+			"points": FOOTPRINT.saber_outline(landing.length(), radius)})
+	return result
+
+
 func _draw() -> void:
 	STYLE.sync_material(self, clearance, available)
 	_shape_transform = Transform2D.IDENTITY
@@ -130,24 +153,29 @@ func _draw() -> void:
 		Kind.SABER:
 			var landing := get_landing_offset()
 			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.55)
-			var points := PackedVector2Array()
-			var normal := landing.normalized().orthogonal()
-			for side in [1.0, -1.0]:
-				for i in 25:
-					if side < 0 and (i == 0 or i == 24): continue
-					var u := float(i if side > 0 else 24 - i) / 24.0
-					points.append(landing * u + normal * side * get_impact_radius() * pow(maxf(1.0 - pow(u * 2.0 - 1.0, 2.0), 0.0), 1.4))
 			if landing.length() > 4.0:
-				draw_colored_polygon(points, STYLE.fill_color(available))
-				points.append(points[0])
-				outline(points)
+				for cut in saber_preview_cuts():
+					_shape_transform = Transform2D(cut.angle, cut.center)
+					draw_colored_polygon(_shape_transform * cut.points, STYLE.fill_color(available))
+					var points: PackedVector2Array = cut.points.duplicate()
+					points.append(points[0])
+					outline(points)
+				_shape_transform = Transform2D.IDENTITY
+				arrowhead(landing, direction)
+				ellipse(landing, GROUND.projected_axes() * 12.0, false)
 		Kind.DASH_BLADE:
 			var landing := get_landing_offset()
 			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.70)
 			dashed(direction * minf(clearance, landing.length()), landing)
 			arrowhead(landing, direction)
-			ellipse(landing, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * get_impact_radius(), true)
+			ellipse(landing, Vector2.ONE * get_impact_radius(), true)
 		Kind.RECOIL_GUN:
+			if shot_shape_suppressed:
+				var retreat := get_landing_offset()
+				dashed(-direction * clearance, retreat)
+				arrowhead(retreat, -direction)
+				ellipse(retreat, GROUND.projected_axes() * 12.0, false)
+				return
 			if _fan_key != [shot_range, shot_angle, clearance]:
 				_fan_key = [shot_range, shot_angle, clearance]
 				_fan_points.clear()

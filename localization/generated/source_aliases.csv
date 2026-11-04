@@ -72,10 +72,12 @@ Innate trait. Starting rewards are granted once and cannot be removed."
 [附魔 %d/%d]","%s
 [Enchantments %d/%d]"
 %s · 利率成长,%s · 利率成长,%s · Rate Growth
+%s · 负载 %d,%s · 负载 %d,%s · Load %d
 %s · 额外结息,%s · 额外结息,%s · Extra Interest
 %s 升至%d级,%s 升至%d级,%s to Lv.%d
 %s 金币,%s 金币,%s gold
 %s·额外结息,%s·额外结息,%s · Extra Interest
+%s与%s不能同时装填,%s与%s不能同时装填,%s and %s cannot be equipped together
 %s：%s %s%s%s,%s：%s %s%s%s,%s: %s %s%s%s
 %s：利息 +%d 金币（本金 %d，利率 %s%%）,%s：利息 +%d 金币（本金 %d，利率 %s%%）,%s: interest +%d gold (principal %d; rate %s%%)
 %s：复活消耗 %d 本金，剩余 %d,%s：复活消耗 %d 本金，剩余 %d,%s: revival cost %d principal; %d remaining
@@ -157,6 +159,7 @@ Gain an extra +100 Principal and +10 Luck."
 丰收的牺牲祭器,丰收的牺牲祭器,Harvest Sacrificial Vessel
 主动,主动,manual
 主动撤离,主动撤离,Expedition Withdrawn
+主弹 1 枚 · 卫星 %d 枚,主弹 1 枚 · 卫星 %d 枚,1 main shot · %d satellites
 也可以使用 WASD 移动,也可以使用 WASD 移动,You can also move with WASD
 交易,交易,Bargain
 交易已接受。,交易已接受。,Bargain accepted.
@@ -252,6 +255,17 @@ Damage ticks [color=#7FD88F]+1[/color]"
 附魔槽 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+3[/color]
 Base Cooldown [color=#7FD88F]−0.1s[/color]
 Enchantment Slots [color=#7FD88F]+1[/color]"
+"元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]","Base elemental damage [color=#7FD88F]+4[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]"
+"元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+4[/color]
+基础冷却 [color=#7FD88F]-0.1s[/color]
+附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]
+Base cooldown [color=#7FD88F]-0.1s[/color]
+Enchantment slots [color=#7FD88F]+1[/color]"
 "元素基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.2s[/color]","元素基础伤害 [color=#7FD88F]+5[/color]
 基础冷却 [color=#7FD88F]-0.2s[/color]","Base Elemental Damage [color=#7FD88F]+5[/color]
@@ -264,12 +278,17 @@ Base Cooldown [color=#7FD88F]−0.2s[/color]"
 Base Cooldown [color=#7FD88F]−0.2s[/color]
 Enchantment Slots [color=#7FD88F]+1[/color]"
 "元素基础伤害 [color=#7FD88F]+8[/color]
+火圈数量 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+8[/color]
+火圈数量 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+8[/color]
+Fire rings [color=#7FD88F]+1[/color]"
+"元素基础伤害 [color=#7FD88F]+8[/color]
 震击伤害段数 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+8[/color]
 震击伤害段数 [color=#7FD88F]+1[/color]","Base Elemental Damage [color=#7FD88F]+8[/color]
 Shockwave hits [color=#7FD88F]+1[/color]"
 元素武器、元素附魔及元素反应造成的固定伤害加成。,元素武器、元素附魔及元素反应造成的固定伤害加成。,"Flat damage bonus for elemental weapons, enchantments and reactions."
 先卸下，再出售,先卸下，再出售,Unequip before selling
 光辉剑,光辉剑,Radiant Sword
+免费刷新（%d）,免费刷新（%d）,Free reroll (%d)
 全屏：,全屏：,Fullscreen:
 全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 9 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 全部,全部,All
@@ -309,6 +328,7 @@ Base resale value %d; Sanity loss %d."
 分裂数量,分裂数量,Split Count
 分裂晶石弹头,分裂晶石弹头,Splitting Crystal Warhead
 分裂角度,分裂角度,Split Angle
+刚焰炉,刚焰炉,Steel-Flame Furnace
 初始利率,初始利率,Starting interest
 初始最大生命 30；每升一级，最大生命 +1，并回复 1 点生命。,初始最大生命 30；每升一级，最大生命 +1，并回复 1 点生命。,Starts with 30 Max HP. Each level grants +1 Max HP and restores 1 HP.
 初始本金,初始本金,Starting Principal
@@ -343,6 +363,7 @@ Base resale value %d; Sanity loss %d."
 医疗削减方案,医疗削减方案,Medical Cutbacks
 升级 · %d本金,升级 · %d本金,Upgrade · %d principal
 升级不增加最大生命值,升级不增加最大生命值,No Max HP from levels
+升级后解锁,升级后解锁,Unlocked after purchase
 升级后：%s,升级后：%s,After upgrade: %s
 升级奖励,升级奖励,Level-Up Reward
 升级完成，本波本金升级次数已使用。,升级完成，本波本金升级次数已使用。,Upgrade complete. This wave's principal upgrade has been used.
@@ -358,6 +379,7 @@ Base resale value %d; Sanity loss %d."
 升级选项,升级选项,Upgrades
 单击显示指示器，再次单击施放,单击显示指示器，再次单击施放,"Click to aim, then click again to cast"
 单击立即施放当前武器,单击立即施放当前武器,Click once to cast the current weapon
+卫星,卫星,Satellite
 卷曲展开后瞬间拍地。,卷曲展开后瞬间拍地。,"Uncoils, then slams the ground."
 卸下附魔,卸下附魔,Unequip
 双腔弹匣,双腔弹匣,Twin-Chamber Magazine
@@ -369,10 +391,12 @@ Base resale value %d; Sanity loss %d."
 取消,取消,Cancel
 取消瞄准并移动至目的地；S 停止移动,取消瞄准并移动至目的地；S 停止移动,Cancel aim and move to the target; S to stop
 取消瞄准；使用方向键 / WASD 移动,取消瞄准；使用方向键 / WASD 移动,Cancel aim; move with arrows / WASD
+受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Taking damage pushes nearby enemies away and releases burning fire rings. Projectiles add rings; Split creates small flares around the outer edge.
 受到伤害百分比,受到伤害百分比,Damage Taken
 受难甲壳,受难甲壳,Carapace of Suffering
 叠加上限：%d,叠加上限：%d,Stack limit: %d
 叠加上限：不限,叠加上限：不限,Stack limit: unlimited
+可以随时打开附魔菜单,可以随时打开附魔菜单,Open the enchantment menu at any time
 可触发（消耗%d本金）,可触发（消耗%d本金）,Ready (cost: %d principal)
 史诗,史诗,Epic
 右列为各项折算的天赋点,右列为各项折算的天赋点,Right column: converted Talent Points
@@ -385,6 +409,7 @@ Base resale value %d; Sanity loss %d."
 这里只是示意，无需实际操作，点击「下一步」继续。","Right-click the ground to move to that spot. Press S to stop immediately.
 This is a static example. Click Next to continue."
 右键移动 · S 停止,右键移动 · S 停止,Right-click to move · S to stop
+各弹体伤害倍率：%s,各弹体伤害倍率：%s,Damage per body: %s
 后移 →,后移 →,Later →
 向前喷射近距散弹，同时向后滑退,向前喷射近距散弹，同时向后滑退,Fires a short-range blast ahead and slides backward.
 向前砸出延伸的地裂。,向前砸出延伸的地裂。,"Smashes the ground, sending a fissure forward."
@@ -416,6 +441,7 @@ Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
 哥布林银行,哥布林银行,Goblin Bank
 商品,商品,Item
 商店,商店,Shop
+商店刷新次数+1,商店刷新次数+1,Shop rerolls +1
 商店扩容选项,商店扩容选项,Shop expansion
 商店折扣,商店折扣,Shop Discount
 商店折扣 +8%；最多持有3件,商店折扣 +8%；最多持有3件,Shop Discount +8%; Maximum 3 copies
@@ -435,6 +461,7 @@ Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
 囤积者戒指,囤积者戒指,Hoarder's Ring
 固定设施与成长入口,固定设施与成长入口,Facilities and progression
 圣质银杯,圣质银杯,Holy Silver Chalice
+地堡 · %d 米,地堡 · %d 米,BUNKER · %d m
 地平线星仪,地平线星仪,Horizon Orrery
 场地扩张,场地扩张,Field Expansion
 坤舆秘仪书,坤舆秘仪书,Tome of Earthly Rites
@@ -451,14 +478,21 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 基础怪物属性 · 常规数量,基础怪物属性 · 常规数量,Base enemy stats · Normal numbers
 基础设置,基础设置,General
 基础负载：%d　最高等级：%d,基础负载：%d　最高等级：%d,Base load: %d   Max level: %d
+增加一件备用武器，可以在战斗期间随时替换,增加一件备用武器，可以在战斗期间随时替换,Gain one reserve weapon slot and swap weapons during combat
+增援 ×%.1f · 新增敌人收益 %d%%,增援 ×%.1f · 新增敌人收益 %d%%,Reinforcements ×%.1f · New enemy rewards %d%%
 增益,增益,Buff
 处理完开局奖励后，将自动显示操作指引。,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
+备用武器位：%d → %d,备用武器位：%d → %d,Reserve weapon slots: %d → %d
+备用武装,备用武装,Reserve weapons
+备用：%d/%d,备用：%d/%d,Reserve: %d/%d
 复利宝典,复利宝典,Tome of Compound Interest
 复活专精,复活专精,Revival
 复活次数,复活次数,Revives
 复活次数升级,复活次数升级,Revive charges
 多投,多投,Multishot
 多来几个大家伙而已，你不会连这点钱都不敢赚吧？,多来几个大家伙而已，你不会连这点钱都不敢赚吧？,Just a few more big ones. Surely you're not afraid of easy money?
+夜幕降临,夜幕降临,NIGHTFALL
+夜幕降临 · 地堡已开放，跟随金色指引避难。,夜幕降临 · 地堡已开放，跟随金色指引避难。,Night falls · Follow the golden arrow to shelter.
 大力,大力,Mighty
 天外幼体,天外幼体,Otherworld Larva
 天赋,天赋,Talents
@@ -485,6 +519,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 密教圣盾,密教圣盾,Cultic Holy Shield
 对 %s 伤害+%s,对 %s 伤害+%s,Damage against %s +%s
 导电,导电,Conduct
+将此前形成的投射物融铸为一枚巨弹，合计伤害；数量越多，体积越大。,将此前形成的投射物融铸为一枚巨弹，合计伤害；数量越多，体积越大。,"Fuse all previously formed projectiles into one giant shot, combining their damage. More projectiles create a larger shot."
 将选中的已装备附魔前移一格,将选中的已装备附魔前移一格,Move the selected equipped enchantment one slot earlier
 将选中的已装备附魔后移一格,将选中的已装备附魔后移一格,Move the selected equipped enchantment one slot later
 小 Boss 遗物奖励,小 Boss 遗物奖励,Miniboss Relic Reward
@@ -504,6 +539,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 屠戮者臂铠,屠戮者臂铠,Executioner's Bracers
 巨力,巨力,Might
 巨型手持火炮,巨型手持火炮,Heavy Hand Cannon
+巨弹,巨弹,Giant Shot
 差 %d,差 %d,Need %d more
 已出售，获得 %d 金币。,已出售，获得 %d 金币。,Sold for %d gold.
 已到底部 · 向上滚动,已到底部 · 向上滚动,End of list · Scroll up
@@ -588,6 +624,7 @@ No partial payment is taken. Unpaid debt compounds at the contract rate."
 影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,影响适用攻击的伤害半径或宽度，并同步对应视觉大小。,Affects the radius or width of supported attacks and their visual size.
 循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,循环切换手动技能，自动技能会跳过；鼠标旁图标同步切换,Cycle manual skills and skip automatic skills; the cursor icon follows the selection
 快捷施法,快捷施法,Quick Cast
+快捷附魔,快捷附魔,Quick enchantment
 急促弹簧扳机,急促弹簧扳机,Hasty Spring Trigger
 怪物密集 · 精英更频繁,怪物密集 · 精英更频繁,Dense waves · More frequent elites
 怪物属性加强20%,怪物属性加强20%,Enemy stats increased by 20%
@@ -629,10 +666,13 @@ Choose the controls you prefer. This guide does not change your settings."
 投射专精,投射专精,Projectiles
 投射物,投射物,Projectiles
 投射物命中目标后仍可继续飞行，额外命中2个敌人,投射物命中目标后仍可继续飞行，额外命中2个敌人,"Projectiles continue after impact, hitting 2 additional enemies."
+投射物改为环绕自身飞行。冷却时间决定绕行一圈的时间，攻击距离决定半径，数量决定同时环绕的弹体数。,投射物改为环绕自身飞行。冷却时间决定绕行一圈的时间，攻击距离决定半径，数量决定同时环绕的弹体数。,"Projectiles orbit you. Cooldown determines the time per revolution, attack range sets the radius, and count sets the number of orbiting bodies."
 投射物数量,投射物数量,Projectile Count
 投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中,投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中,Projectile Count +1; Attack Speed -15%; Affects attacks that support projectile count; some attacks cannot hit the same target repeatedly
 投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件,投射物数量 +1；通用伤害 -15%；多弹可扩大攻击覆盖，部分武器不会对同一目标重复命中；最多持有 1 件,Projectiles +1; All Damage −15%. Extra projectiles increase coverage; some weapons cannot hit the same target repeatedly. Stack limit: 1.
 投射物数量+1,投射物数量+1,Projectiles +1
+投射物数量+1，保留一枚主弹，其余投射物环绕主弹飞行。新增弹体使用原始单弹伤害和体积。与环射互斥。,投射物数量+1，保留一枚主弹，其余投射物环绕主弹飞行。新增弹体使用原始单弹伤害和体积。与环射互斥。,Projectile count +1. Keep one main projectile; the others orbit it. The added projectile uses base single-shot damage and size. Incompatible with Radial.
+投射物数量+2，所有投射物向四周均匀发射。与卫星互斥。,投射物数量+2，所有投射物向四周均匀发射。与卫星互斥。,Projectile count +2. All projectiles fire evenly in every direction. Incompatible with Satellite.
 投射物数量升级,投射物数量升级,Projectile count
 投射物数量训练,投射物数量训练,Projectile Training
 折叠星图,折叠星图,Folded Star Chart
@@ -701,6 +741,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,收纳幸存者带回的奇异物品，随着不断收集外来遗物，幸存者们也逐渐了解敌人。,Stores strange objects brought back by survivors. Each new relic helps them understand their enemies.
 攻击,攻击,Attack
 攻击专精,攻击专精,Attack
+攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。,攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。,Attacks destroy hostile projectiles. Interception does not trigger on-hit enchantments or consume piercing hits.
 攻击距离,攻击距离,Attack Range
 攻击距离 +15，远程伤害 +1。,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
 攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
@@ -720,6 +761,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 效果强化,效果强化,Effect Bonus
 敌潮承压训练,敌潮承压训练,Enemy Wave Endurance Training
 数字键,数字键,Number Keys
+斩马刀,斩马刀,Horse-Cleaving Saber
 新武器,新武器,New Weapon
 方向键 / WASD,方向键 / WASD,Arrows / WASD
 施展法阵，每0.35s点名一次造成伤害,施展法阵，每0.35s点名一次造成伤害,Creates a ritual circle that strikes a target every 0.35s.
@@ -753,6 +795,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 暴击率,暴击率,Crit Chance
 暴击率 +10 个百分点；攻击速度 +5%,暴击率 +10 个百分点；攻击速度 +5%,Critical Chance +10 percentage points; Attack Speed +5%
 暴击率增加25%,暴击率增加25%,Crit Chance +25%
+替换后负载仍不足,替换后负载仍不足,Load capacity still exceeded
 最基础的近战追踪小怪示例。,最基础的近战追踪小怪示例。,A basic melee enemy that pursues the player.
 最大生命,最大生命,Max HP
 最大生命 +4；护甲 +12；近战伤害 +3,最大生命 +4；护甲 +12；近战伤害 +3,Max HP +4; Armor +12; Melee Damage +3
@@ -770,6 +813,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 朝前方位移一小段，然后斩击周围敌人,朝前方位移一小段，然后斩击周围敌人,"Dashes forward, then slashes nearby enemies."
 朝瞄准方向发射近距离散弹，同时向后滑退。,朝瞄准方向发射近距离散弹，同时向后滑退。,Fires a short-range spread toward your aim while sliding backward.
 朝瞄准方向射出木箭,朝瞄准方向射出木箭,Fires a wooden arrow toward your aim.
+朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。,朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。,"Jump toward your aim, blink halfway through the jump, and slash enemies along the path. Projectiles add slashes and hits; Attack Range extends the blink and Damage Area widens the slash."
 朝鼠标位置短冲，抵达后以自身为中心快速圆斩。突进距离受攻击距离加成，圆斩半径受伤害范围加成。,朝鼠标位置短冲，抵达后以自身为中心快速圆斩。突进距离受攻击距离加成，圆斩半径受伤害范围加成。,"Dashes a short distance toward the cursor, then slashes in a circle. Dash distance scales with Attack Range; slash radius scales with Damage Area."
 木质弓箭,木质弓箭,Wooden Bow
 未持有,未持有,Not owned
@@ -818,10 +862,13 @@ Bank actions refresh next wave."
 构筑,构筑,Build
 查看条款,查看条款,View Terms
 标准难度,标准难度,Standard difficulty
+格挡,格挡,Guard
 梦魇治愈圣壶,梦魇治愈圣壶,Nightmare Healing Urn
 正反手交替斩击,正反手交替斩击,Alternates forehand and backhand slashes.
 正在清点…,正在清点…,Counting…
+正在进入地下城,正在进入地下城,Entering the dungeon
 正常开战,正常开战,Fight Normally
+正式版可用,正式版可用,Full release only
 正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,正攻速冷却倍率 = 1 / (1 + log2(1 + attack_speed / 100) / 3)。100 点保留 75% 冷却，300 点保留 60%。负攻速沿用 1 / (1 + attack_speed / 300)。不加快武器动作与喷射频率。,"Positive attack speed: cooldown multiplier = 1 / (1 + log2(1 + attack_speed / 100) / 3). At 100, cooldown is 75%; at 300, 60%. Negative attack speed uses 1 / (1 + attack_speed / 300). Does not speed up attack animations or spray ticks."
 此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,此武器不支持该附魔；铸铁榴弹炮暂不支持穿透。,This weapon cannot use that enchantment. The Cast-Iron Grenade Launcher does not currently support Pierce.
 此武器暂不支持%s附魔,此武器暂不支持%s附魔,This weapon does not support %s enchantments yet
@@ -871,6 +918,7 @@ Pellets [color=#7FD88F]+1[/color]"
 每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,Percentage increase in enemies per spawn group. 20 means 20% more.
 每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
 每次结算利息的时候有20%的概率翻倍,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
+每波免费刷新：%d → %d,每波免费刷新：%d → %d,Free shop rerolls per wave: %d → %d
 每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
 每波初始护盾 +4,每波初始护盾 +4,Starting Shield each wave +4
 每波初始护盾 +6；元素伤害 +2,每波初始护盾 +6；元素伤害 +2,Starting Shield each wave +6; Elemental Damage +2
@@ -916,6 +964,7 @@ Pellets [color=#7FD88F]+1[/color]"
 波末结息,波末结息,Wave-End Interest
 波末结算,波末结算,Wave-End Settlement
 波次,波次,Waves
+注意，有未装备的附魔法术,注意，有未装备的附魔法术,You have unequipped enchantment spells.
 流星摆锤,流星摆锤,Meteor Flail
 流星锤头挥击前方扇面,流星锤头挥击前方扇面,Swings the flail head in a cone ahead.
 浅蓝色,浅蓝色,Light Blue
@@ -927,15 +976,17 @@ Pellets [color=#7FD88F]+1[/color]"
 游戏百科,游戏百科,Encyclopedia
 游戏设置,游戏设置,Settings
 滚轮查看更多,滚轮查看更多,Scroll for more
-滚轮缩放·右键拖动,滚轮缩放·右键拖动,Scroll to zoom · Right-drag to pan
+滚轮缩放 · 鼠标点击拖动,滚轮缩放 · 鼠标点击拖动,Scroll to zoom · Click and drag to pan
 火焰,火焰,Fire
 火焰橙,火焰橙,Flame Orange
 火焰池持续时间,火焰池持续时间,Fire Pool Duration
 灰白色,灰白色,Ash White
 点击 / Esc 关闭,点击 / Esc 关闭,Click / Esc to close
+点击/空格关闭提示,点击/空格关闭提示,Click / Space to dismiss
 点击切换为手动释放,点击切换为手动释放,Click to switch to manual casting
 点击切换为自动释放,点击切换为自动释放,Click to switch to automatic casting
 点击地面移动 · S 停止移动,点击地面移动 · S 停止移动,Click ground to move · S to stop
+点击备用武器可装备；附魔可通过快捷附魔调整；Esc 返回,点击备用武器可装备；附魔可通过快捷附魔调整；Esc 返回,Click a reserve weapon to equip; use Quick enchantment to adjust enchantments; Esc to return
 点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 点击空白处 / 空格快进,点击空白处 / 空格快进,Click an empty area / Space to skip ahead
 点击选择,点击选择,Select
@@ -944,7 +995,8 @@ Pellets [color=#7FD88F]+1[/color]"
 燃烧时间,燃烧时间,Burn Duration
 爆伤升级,爆伤升级,Critical damage
 爆炸范围,爆炸范围,Blast Area
-版本：v.0106.260816,版本：v.0106.260816,Version: v.0106.260816
+版本 v.0106.261018,版本 v.0106.261018,Version v.0106.261018
+版本：v.0106.260816,版本 v.0106.261018,Version v.0106.261018
 物品,物品,Item
 物品已不存在，请重新选择。,物品已不存在，请重新选择。,This item no longer exists. Select again.
 物品或报价已变化，请重新确认。,物品或报价已变化，请重新确认。,The item or quote changed. Please confirm again.
@@ -958,6 +1010,9 @@ Pellets [color=#7FD88F]+1[/color]"
 猩红断头印,猩红断头印,Crimson Execution Seal
 猪猪存钱罐,猪猪存钱罐,Piggy Bank
 玩家可装备武器的总负载上限。,玩家可装备武器的总负载上限。,Maximum combined load of equipped weapons.
+环射,环射,Radial
+环绕,环绕,Orbit
+环绕弹体：%d · %.2f 秒/圈 · 半径 %d,环绕弹体：%d · %.2f 秒/圈 · 半径 %d,Orbiting bodies: %d · %.2f s/revolution · Radius %d
 理智,理智,Sanity
 理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,理智 %s：购买价格 +%s%%，出售收益 −%s%%，利息收益 −%s%%。,"Sanity %s: purchase prices +%s%%, sale proceeds −%s%%, interest income −%s%%."
 理智+%s，本金-%d,理智+%s，本金-%d,"Sanity +%s, principal -%d."
@@ -1054,6 +1109,10 @@ Pellets [color=#7FD88F]+1[/color]"
 继续,继续,Continue
 绯红凝血瓶,绯红凝血瓶,Crimson Coagulation Vial
 羁绊,羁绊,Synergy
+"老板外出
+附魔台自助使用","老板外出
+附魔台自助使用","Owner away
+Self-service enchanting"
 背景音乐,背景音乐,Music
 自动,自动,automatic
 自动吸附经验球、奖励物的半径。,自动吸附经验球、奖励物的半径。,Radius for automatically collecting XP and reward pickups.
@@ -1064,6 +1123,7 @@ Pellets [color=#7FD88F]+1[/color]"
 至少保留一把武器,至少保留一把武器,Keep at least one weapon
 至少保留一把武器，最后一把不可出售。,至少保留一把武器，最后一把不可出售。,Keep at least one weapon. Your last weapon cannot be sold.
 致命,致命,Lethality
+花费 %d 天赋点升级,花费 %d 天赋点升级,Spend %d talent points to upgrade
 苦痛祭皿,苦痛祭皿,Vessel of Pain
 苦难前行之枷锁,苦难前行之枷锁,Shackles of Hardship
 范围,范围,Area
@@ -1096,6 +1156,7 @@ Pellets [color=#7FD88F]+1[/color]"
 裂痕石子弹,裂痕石子弹,Cracked Stone Bullet
 裂纹铜铃,裂纹铜铃,Cracked Bronze Bell
 装备到当前武器,装备到当前武器,Equip on Current Weapon
+装备武器,装备武器,Equip weapon
 装备至此武器,装备至此武器,Equip on This Weapon
 褪色护身符,褪色护身符,Faded Ward Talisman
 观星者的镜片,观星者的镜片,Stargazer's Lens
@@ -1173,6 +1234,7 @@ Brackets show the price before Sanity and the Sanity adjustment.
 赤铜炉灯,赤铜炉灯,Copper Furnace Lamp
 跳过,跳过,Skip
 跳过指引,跳过指引,Skip guide
+轨迹顺序：%s,轨迹顺序：%s,Pattern order: %s
 转移至此武器,转移至此武器,Transfer to This Weapon
 轮回业火之烛,轮回业火之烛,Candle of Rebirth's Hellfire
 辉光强度,辉光强度,Glow Intensity
@@ -1301,6 +1363,10 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 圆斩伤害段数 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+6[/color]
 圆斩伤害段数 [color=#7FD88F]+1[/color]","Base Melee Damage [color=#7FD88F]+6[/color]
 Circular slash hits [color=#7FD88F]+1[/color]"
+"近战基础伤害 [color=#7FD88F]+7[/color]
+刀光次数 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+7[/color]
+刀光次数 [color=#7FD88F]+1[/color]","Base melee damage [color=#7FD88F]+7[/color]
+Slashes [color=#7FD88F]+1[/color]"
 返回,返回,Back
 返回主界面,返回主界面,Main Menu
 返回主菜单,返回主菜单,Main Menu
@@ -1309,9 +1375,11 @@ Circular slash hits [color=#7FD88F]+1[/color]"
 返回银行,返回银行,Return to Bank
 还清,还清,Repay
 还清需要 %d 金币,还清需要 %d 金币,Repayment requires %d gold
+这么快就回来了？下次记得先保住小命！,这么快就回来了？下次记得先保住小命！,Back already? Try staying alive a little longer next time!
 这些零碎有什么好买的？,这些零碎有什么好买的？,Why waste your money on these trinkets?
 这份贷款条款已失效。,这份贷款条款已失效。,These loan terms have expired.
 这笔交易已失效。,这笔交易已失效。,This bargain has expired.
+进入光圈避难,进入光圈避难,ENTER TO TAKE SHELTER
 进入战斗失败，请重试,进入战斗失败，请重试,Could not start battle. Please try again.
 远星射靶台,远星射靶台,Farstar Shooting Range
 远程,远程,Ranged
@@ -1365,6 +1433,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 连续传递,连续传递,Chain Transfers
 连锁范围,连锁范围,Chain Range
 迷途者胫环,迷途者胫环,Lost Wayfarer's Greaves
+追猎者正在逼近 · 前往地堡避难！,追猎者正在逼近 · 前往地堡避难！,Hunters are approaching · Reach the bunker!
 退出,退出,Quit
 选中已装备附魔后，可卸下或调整顺序。,选中已装备附魔后，可卸下或调整顺序。,Select an equipped enchantment to remove or reorder it.
 选中背包附魔后点击，或拖入。新附魔接在已有附魔后。,选中背包附魔后点击，或拖入。新附魔接在已有附魔后。,"Select an inventory enchantment and click, or drag it here. New enchantments trigger after existing ones."
@@ -1372,7 +1441,10 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 选择,选择,Select
 选择一个建筑查看详情,选择一个建筑查看详情,Select a building for details
 选择一张附魔，可装备、转移或出售,选择一张附魔，可装备、转移或出售,"Select an enchantment to equip, transfer or sell"
+选择一张附魔，可装备或转移,选择一张附魔，可装备或转移,Select an enchantment to equip or transfer
 选择一组，直接用本金购买。,选择一组，直接用本金购买。,Select a group to purchase with principal.
+选择要替换的武器,选择要替换的武器,Choose a weapon to replace
+逗留 %ds,逗留 %ds,STAY %ds
 通关！,通关！,Victory!
 通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,通用伤害 + 25%；理智值 - 8；每局最多持有 1 件,All Damage +25%; Sanity −8. Stack limit: 1 per run.
 通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,通用伤害 + 40%；每波结束理智值 - 1，触发前理智低于0时改为 - 2；每局最多持有 1 件,"All Damage +40%. At each wave end, lose 1 Sanity, or 2 if Sanity is already below 0. Stack limit: 1 per run."
@@ -1385,6 +1457,8 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 遗物档案馆,遗物档案馆,Relic Archives
 遗物清单,遗物清单,Relics
 遗物鉴定训练,遗物鉴定训练,Relic Appraisal Training
+重新上货,重新上货,Restock
+重新上货：每波恢复免费刷新次数，用完后可继续付费刷新，未用次数不累积。,重新上货：每波恢复免费刷新次数，用完后可继续付费刷新，未用次数不累积。,Restock: free shop rerolls replenish each wave. Unused rerolls do not carry over. Paid rerolls remain available afterward.
 重看操作指引,重看操作指引,Replay control guide
 重置升级,重置升级,Reset Upgrades
 重置属性升级并返还货币,重置属性升级并返还货币,Reset stat upgrades and refund currency
@@ -1428,6 +1502,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 附魔效果,附魔效果,Enchantment Effect
 附魔背包 · 从左至右触发，可拖动调整顺序,附魔背包 · 从左至右触发，可拖动调整顺序,Enchantments · Trigger left to right; drag to reorder
 附魔配置已更新。,附魔配置已更新。,Enchantment setup updated.
+隐藏新手教程,隐藏新手教程,Hide beginner tutorial
 难度,难度,Difficulty
 雷火爆燃,雷火爆燃,Thunderfire
 需建筑 Lv.%d,需建筑 Lv.%d,Requires building Lv.%d
@@ -1442,6 +1517,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 额外结息,额外结息,Extra Interest
 风刃,风刃,Wind Blade
 风浪越大，鱼越贵！,风浪越大，鱼越贵！,"Rougher seas, richer catches!"
+飞行期间接触时每%.2f秒灼击，持续至弹体消失。,飞行期间接触时每%.2f秒灼击，持续至弹体消失。,Burns enemies on contact every %.2f seconds throughout the orb's flight.
 食利者钱袋,食利者钱袋,Rentier's Purse
 馈赠印记,馈赠印记,Mark of Bounty
 首层升级已开启,首层升级已开启,First upgrades unlocked
@@ -1462,38 +1538,10 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 鼠标左键,鼠标左键,Left Mouse
 鼠标滚轮,鼠标滚轮,Mouse Wheel
 龟壳吊坠,龟壳吊坠,Turtle Shell Pendant
+（备用位：%d）,（备用位：%d）, (Reserve slots: %d)
 （本波未完成）,（本波未完成）, (wave unfinished)
+（每波免费刷新：%d）,（每波免费刷新：%d）, (Free shop rerolls per wave: %d)
 ；分红支票触发 %d 倍结算,；分红支票触发 %d 倍结算,; Dividend Check triggered a %d× payout
 ；利息因理智减少 %s 金币,；利息因理智减少 %s 金币,; Sanity reduced interest by %s gold
 ；收益不足 1 金币，小数留待后续结算,；收益不足 1 金币，小数留待后续结算,"; income below 1 gold, fraction retained for later"
 ；本次无利息收益,；本次无利息收益,; no interest income this time
-刚焰炉,刚焰炉,Steel-Flame Furnace
-受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Taking damage pushes nearby enemies away and releases burning fire rings. Projectiles add rings; Split creates small flares around the outer edge.
-"元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]
-附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]
-附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]
-Base cooldown [color=#7FD88F]-0.1s[/color]
-Enchantment slots [color=#7FD88F]+1[/color]"
-"元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]","元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]","Base elemental damage [color=#7FD88F]+4[/color]
-Base cooldown [color=#7FD88F]-0.1s[/color]"
-"元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]
-附魔槽 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+4[/color]
-基础冷却 [color=#7FD88F]-0.1s[/color]
-附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]
-Base cooldown [color=#7FD88F]-0.1s[/color]
-Enchantment slots [color=#7FD88F]+1[/color]"
-"元素基础伤害 [color=#7FD88F]+8[/color]
-火圈数量 [color=#7FD88F]+1[/color]","元素基础伤害 [color=#7FD88F]+8[/color]
-火圈数量 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+8[/color]
-Fire rings [color=#7FD88F]+1[/color]"
-斩马刀,斩马刀,Horse-Cleaving Saber
-朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。,朝瞄准方向起跳，在跳跃一半时闪现，斩击沿途敌人。投射物数量增加刀光与伤害次数；攻击距离增加闪现长度，伤害范围增加刀光宽度。,"Jump toward your aim, blink halfway through the jump, and slash enemies along the path. Projectiles add slashes and hits; Attack Range extends the blink and Damage Area widens the slash."
-"近战基础伤害 [color=#7FD88F]+7[/color]
-刀光次数 [color=#7FD88F]+1[/color]","近战基础伤害 [color=#7FD88F]+7[/color]
-刀光次数 [color=#7FD88F]+1[/color]","Base melee damage [color=#7FD88F]+7[/color]
-Slashes [color=#7FD88F]+1[/color]"

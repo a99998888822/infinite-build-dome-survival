@@ -214,6 +214,7 @@ func _damage_hammer_heads() -> void:
 		for point: Vector2 in CONTACT_OUTLINE:
 			points.append(grip + ((point - Vector2(30, 43)) * size_scale).rotated(direction.angle()))
 		shape.points = points
+		ProjectileGuard.intercept(self, weapon, shape, Transform2D(0, global_position))
 		for enemy in EnemyRegistry.get_registered_enemies():
 			if AttackFootprint.body_overlaps(shape, Transform2D(0, global_position), enemy) and clear_path(self, global_position, enemy.global_position):
 				_native_hit(enemy, direction, 1.0, ray.hits)

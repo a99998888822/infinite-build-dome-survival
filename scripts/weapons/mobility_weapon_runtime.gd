@@ -25,6 +25,8 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	bind_weapon(source, "mobility_weapon_runtimes")
 	# Child clips use absolute layers inside the shared effect band.
 	live_source = original
+	if source.has_effect("giant") and not source.is_hand_cannon():
+		AttackPatternPlan.build(source).apply_unit(source, 0)
 	original.mobility_runtime = weakref(self)
 	var player := weapon.owner_player
 	anchor_position = player.global_position
@@ -116,6 +118,16 @@ func initialize_replay(source: WeaponInstance, point: Vector2, direction: Vector
 
 func _fire_cannon(point: Vector2, contact: EnemyController = null) -> void:
 	CANNON_JET.spawn(self, weapon, point, heading)
+	if weapon.has_effect("radial") or weapon.has_effect("orbit") or weapon.has_effect("giant") or weapon.has_effect("satellite"):
+		var plan := AttackPatternPlan.build(weapon)
+		if plan.orbit:
+			for previous in get_tree().get_nodes_in_group("pattern_flights"):
+				if previous.weapon.source_instance_id == weapon.source_instance_id and previous.plan.orbit: previous.cancel()
+		var flight := PatternFlightRuntime.new()
+		get_parent().add_child(flight)
+		flight.initialize(weapon, live_source, plan, point, heading)
+		AudioManager.play_sfx_path(str(weapon.weapon_data.get("launch_sfx", "")), 100, "hand_cannon_launch")
+		return
 	for angle in weapon.get_projectile_angles():
 		var pellet := CannonPellet.new()
 		add_child(pellet)
@@ -147,6 +159,7 @@ func _impact(point: Vector2) -> void:
 	query.transform = Transform2D(0.0, point)
 	query.collision_mask = 2
 	query.collide_with_areas = false
+	ProjectileGuard.intercept(self, weapon, shape, query.transform)
 	# Use body overlap, including collider offsets/scale, rather than enemy origins.
 	for contact in get_world_2d().direct_space_state.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size())):
 		var enemy := contact.collider as EnemyController

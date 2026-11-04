@@ -20,6 +20,7 @@ func _ready() -> void:
 	top_level = true
 	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	add_to_group("echo_bat_projectiles")
+	add_to_group("hostile_projectiles")
 	visual = Sprite2D.new()
 	visual.texture = WAVE
 	visual.hframes = 8
@@ -49,6 +50,7 @@ func _physics_process(delta: float) -> void:
 		if age >= 0.25: queue_free()
 		return
 	var distance := minf(speed * delta, maxf(0.0, max_distance - travelled))
+	if ProjectileGuard.blocks_motion(self, global_position, global_position + direction * distance): return
 	sweep.target_position = direction * distance
 	sweep.force_shapecast_update()
 	if sweep.is_colliding():

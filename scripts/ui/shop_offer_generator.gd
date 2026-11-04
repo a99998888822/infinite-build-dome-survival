@@ -60,7 +60,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		if not unlocked_weapon_ids.is_empty() and not unlocked_weapon_ids.has(weapon_id):
 			continue
 		var weapon_load_cost := int(weapon_data.get("load_cost", 0))
-		if load_capacity > 0 and current_load + weapon_load_cost > load_capacity:
+		if load_capacity > 0 and current_load + weapon_load_cost > load_capacity and int(context.get("reserve_slots_available", 0)) <= 0:
 			continue
 		var weapon_tags := _to_string_array(weapon_data.get("tags", []))
 		candidates.append(_build_candidate_entry({

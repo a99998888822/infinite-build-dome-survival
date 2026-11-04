@@ -62,6 +62,10 @@ var _cast_principal := -1.0
 # A replay has its own immutable world origin; the real player never moves.
 var fixed_attack_origin: Variant = null
 var is_bounce_attack := false
+var pattern_damage_scale := 1.0
+var pattern_size_scale := 1.0
+var pattern_radial := false
+var pattern_merged := false
 var grenade_blast_radius: float = 0.0
 var _attack_hit_sfx_played: bool = false
 var _projectile_hit_sfx_played: Dictionary = {}
@@ -124,7 +128,7 @@ func make_cast_copy() -> WeaponInstance:
 	# can still change in a paused reward screen. Each cast owns its proc budget.
 	var copy := WeaponInstance.new()
 	copy.initialize(weapon_id, owner_player)
-	copy.source_instance_id = instance_id
+	copy.source_instance_id = source_instance_id if not source_instance_id.is_empty() else instance_id
 	copy.weapon_data = weapon_data.duplicate(true)
 	copy.use_active_range_rules = use_active_range_rules
 	copy.principal_getter = principal_getter
@@ -142,6 +146,10 @@ func make_cast_copy() -> WeaponInstance:
 		copy._cast_stats[stat] = get_stat(stat)
 		copy._cast_player_stats[stat] = owner_player.get_stat(stat)
 	copy._cast_principal = get_current_principal()
+	copy.pattern_damage_scale = pattern_damage_scale
+	copy.pattern_size_scale = pattern_size_scale
+	copy.pattern_radial = pattern_radial
+	copy.pattern_merged = pattern_merged
 	copy.begin_attack()
 	return copy
 
@@ -173,6 +181,9 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 	copy.grenade_blast_radius = grenade_blast_radius
 	copy.volley_index = volley_index
 	copy.fixed_attack_origin = point
+	copy.pattern_damage_scale = pattern_damage_scale
+	copy.pattern_size_scale = pattern_size_scale
+	copy.pattern_merged = pattern_merged
 	copy.is_bounce_attack = true
 	copy.source_instance_id = source_instance_id
 	copy._cast_stats = _cast_stats.duplicate()
@@ -395,7 +406,7 @@ func replace_attachment_instance(target_index: int, item_instance: Dictionary) -
 	if target_index < 0 or target_index >= _attached_item_instances.size() or item_instance.is_empty():
 		return {}
 	var item_id := str(item_instance.get("item_instance_id", ""))
-	if item_id.is_empty() or not get_attachment_incompatibility(item_instance).is_empty():
+	if item_id.is_empty() or not get_attachment_incompatibility(item_instance, target_index).is_empty():
 		return {}
 	for attached in _attached_item_instances:
 		if str(attached.get("item_instance_id", "")) == item_id:
@@ -406,8 +417,17 @@ func replace_attachment_instance(target_index: int, item_instance: Dictionary) -
 	return replaced
 
 
-func get_attachment_incompatibility(item: Dictionary) -> String:
+func get_attachment_incompatibility(item: Dictionary, replacing_index: int = -1) -> String:
 	for effect_id in item.get("effect_ids", []):
+		if not AttackPatternPlan.supports(weapon_id, str(effect_id)):
+			return L10n.text("error.weapon.enchantment_incompatible") % AttackPatternPlan.effect_name(str(effect_id))
+		if effect_id in ["radial", "satellite"]:
+			var other := "satellite" if effect_id == "radial" else "radial"
+			for index in _attached_item_instances.size():
+				if index == replacing_index: continue
+				var attached := _attached_item_instances[index]
+				if str(attached.get("item_instance_id", "")) != str(item.get("item_instance_id", "")) and other in attached.get("effect_ids", []):
+					return L10n.text("error.weapon.pattern_conflict") % [AttackPatternPlan.effect_name(str(effect_id)), AttackPatternPlan.effect_name(other)]
 		if effect_id in weapon_data.get("unsupported_effects", []):
 			return L10n.text("error.weapon.enchantment_incompatible") % (L10n.text("enchantment.pierce.name") if effect_id == "pierce" else str(effect_id))
 	return ""
@@ -530,6 +550,10 @@ func get_load_cost() -> int:
 
 
 func get_hit_radius() -> float:
+	return _get_unscaled_hit_radius() * pattern_size_scale
+
+
+func _get_unscaled_hit_radius() -> float:
 	var base_radius := float(weapon_data.get("hit_radius", 0))
 	if is_furnace():
 		return StatDefinitions.calculate_damage_area_radius(base_radius, get_stat("damage_area_size"))
@@ -573,6 +597,10 @@ func has_combat_tag(tag: String) -> bool:
 
 
 func get_projectile_visual_scale() -> float:
+	return _get_unscaled_projectile_visual_scale() * pattern_size_scale
+
+
+func _get_unscaled_projectile_visual_scale() -> float:
 	if use_active_range_rules and has_combat_tag(L10n.text("stat.category.projectiles")):
 		return StatDefinitions.calculate_damage_area_multiplier(get_stat("damage_area_size"))
 	return 1.0
@@ -730,7 +758,7 @@ func get_pierce_hit_limit() -> int:
 
 
 func get_grenade_blast_radius() -> float:
-	return maxf(1.0, StatDefinitions.calculate_damage_area_radius(grenade_blast_radius, get_stat("damage_area_size")))
+	return maxf(1.0, StatDefinitions.calculate_damage_area_radius(grenade_blast_radius, get_stat("damage_area_size"))) * pattern_size_scale
 
 
 func get_grenade_split_profiles() -> Array[Dictionary]:
@@ -767,6 +795,10 @@ func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]
 	var events: Array[DamageEvent] = []
 	if get_attack_kind() in [DAMAGE_KIND_RANGED, DAMAGE_KIND_ELEMENT, DAMAGE_KIND_MELEE]:
 		events.append(_build_damage_event(get_attack_kind(), force_critical))
+	for event in events:
+		event.damage = maxi(1, roundi(event.damage * pattern_damage_scale))
+		event.original_damage = maxi(1, roundi(event.original_damage * pattern_damage_scale))
+		event.element_damage_bonus = roundi(event.element_damage_bonus * pattern_damage_scale)
 	return events
 
 
@@ -774,6 +806,9 @@ func get_projectile_angles() -> Array[float]:
 	var projectile_count: int = maxi(1, int(get_stat("projectile_count")))
 	var spread_angle := get_spread_angle()
 	var angles: Array[float] = []
+	if pattern_radial:
+		for index in projectile_count: angles.append(360.0 * index / projectile_count)
+		return angles
 	if weapon_data.has("projectile_spacing_degrees"):
 		var gap := float(weapon_data.projectile_spacing_degrees)
 		for index in projectile_count:
@@ -868,6 +903,8 @@ func _get_tags() -> Array[String]:
 
 func build_full_stats_text() -> String:
 	var lines: Array[String] = []
+	var pattern := AttackPatternPlan.build(self)
+	var final_count := pattern.units.size()
 	var display_name := L10n.source(str(weapon_data.get("display_name", weapon_id)))
 	var max_level := int(weapon_data.get("max_level", 1))
 	lines.append("%s  Lv.%d/%d" % [display_name, level, max_level])
@@ -878,16 +915,29 @@ func build_full_stats_text() -> String:
 	lines.append(L10n.text("ui.weapon.stats.cooldown") % interval)
 	lines.append(L10n.text("ui.weapon.stats.critical") % [int(get_stat("crit_chance")), int(get_stat("crit_damage"))])
 	if is_ritual_tome():
-		lines.append(L10n.text("ui.weapon.stats.targets") % (maxi(1, int(get_stat("projectile_count"))) + 2))
+		lines.append(L10n.text("ui.weapon.stats.targets") % (1 if has_effect("giant") else final_count + 2))
 	elif get_attack_kind() == DAMAGE_KIND_RANGED:
-		lines.append(L10n.text("ui.weapon.stats.projectiles") % maxi(1, int(get_stat("projectile_count"))))
-	if is_mobility_weapon():
+		lines.append(L10n.text("ui.weapon.stats.projectiles") % final_count)
+	if pattern.changed:
+		var names: Array[String] = []
+		for entry in get_enchantment_sequence():
+			if entry.effect_id in AttackPatternPlan.IDS: names.append(AttackPatternPlan.effect_name(entry.effect_id))
+		lines.append(L10n.text("ui.weapon.pattern.order") % " → ".join(names))
+		if has_effect("giant"):
+			var masses: Array[String] = []
+			for unit in pattern.units: masses.append("×%s" % _format_damage_number(float(unit.mass)))
+			lines.append(L10n.text("ui.weapon.pattern.mass") % " / ".join(masses))
+	if pattern.orbit:
+		lines.append(L10n.text("ui.weapon.pattern.orbit") % [final_count, interval, roundi(get_attack_range())])
+	elif pattern.satellite:
+		lines.append(L10n.text("ui.weapon.pattern.satellite") % (final_count - 1))
+	elif is_mobility_weapon():
 		lines.append(L10n.source(str(weapon_data.description)))
 		if not is_hand_cannon():
-			lines.append(L10n.text("ui.weapon.stats.hit_count") % maxi(1, int(get_stat("projectile_count"))))
+			lines.append(L10n.text("ui.weapon.stats.hit_count") % final_count)
 	elif is_furnace():
 		lines.append(L10n.source(str(weapon_data.description)))
-		lines.append(L10n.text("ui.weapon.stats.hit_count") % maxi(1, int(get_stat("projectile_count"))))
+		lines.append(L10n.text("ui.weapon.stats.hit_count") % final_count)
 		lines.append(L10n.text("ui.weapon.stats.range") % roundi(get_hit_radius()))
 	elif is_grenade():
 		lines.append(L10n.text("ui.weapon.stats.range_radius") % [int(get_attack_range()), _format_damage_number(get_grenade_blast_radius())])
@@ -912,7 +962,8 @@ func build_full_stats_text() -> String:
 	if is_coin_purse():
 		lines.append(L10n.text("ui.weapon.behavior.purse"))
 	elif str(weapon_data.get("projectile_behavior", "")) == "plasma":
-		lines.append(L10n.text("ui.weapon.behavior.plasma") % float(weapon_data.get("plasma_tick_interval", 0.1)))
+		var behavior_key := "ui.weapon.behavior.plasma_radial" if pattern.radial and not pattern.orbit else "ui.weapon.behavior.plasma"
+		lines.append(L10n.text(behavior_key) % float(weapon_data.get("plasma_tick_interval", 0.1)))
 	for profile in (get_grenade_split_profiles() if is_grenade() else get_split_profiles()):
 		lines.append(L10n.text("ui.weapon.stats.split") % [int(profile.child_count), roundi(float(profile.damage_multiplier) * 100)])
 	if has_effect("bounce"):
@@ -925,7 +976,7 @@ func build_full_stats_text() -> String:
 
 func get_lamp_cone_degrees() -> float:
 	if use_active_range_rules:
-		return float(weapon_data.get("lamp_cone_degrees", 60))
+		return minf(170.0, float(weapon_data.get("lamp_cone_degrees", 60)) * pattern_size_scale)
 	return minf(float(weapon_data.get("lamp_cone_degrees", 30)) * get_hit_radius() / maxf(float(weapon_data.get("hit_radius", 1)), 0.01), 162.0)
 
 

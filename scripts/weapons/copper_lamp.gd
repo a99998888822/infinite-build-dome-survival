@@ -75,6 +75,8 @@ func _physics_process(delta: float) -> void:
 					heading = Vector2.from_angle(rotate_toward(heading.angle(), relative.angle(), turn))
 			# A started burst burns for its full duration, even with no target.
 			_build_beams()
+			for beam in beams:
+				ProjectileGuard.intercept(self, weapon, AttackFootprint.lamp_shape(beam.direction, beam.reach, weapon.get_lamp_cone_degrees()), Transform2D(0, global_position))
 			var available := maxf(0, (1.0 - heat) * burst_duration)
 			var firing_delta := minf(delta, available)
 			heat = minf(1, heat + firing_delta / burst_duration)

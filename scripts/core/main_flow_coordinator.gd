@@ -29,6 +29,7 @@ const STATE_ESC_OVERLAY: String = "esc_overlay"
 const STATE_BATTLE_UTILITY: String = "battle_utility"
 const STATE_COMBAT_GUIDE: String = "combat_guide"
 const STATE_FINANCE_POPUP: String = "finance_popup"
+const STATE_QUICK_ENCHANTMENT: String = "quick_enchantment"
 const STATE_WAVE_CHALLENGE: String = "wave_challenge"
 const STATE_BATTLE_RESULT: String = "battle_result"
 const STATE_CAMP_ENTRY: String = "camp_entry"
@@ -50,6 +51,7 @@ var battle_resolved: bool = false
 var _pending_death_run_id := ""
 
 var _resume_state_after_modal: String = STATE_START_PAGE
+var _quick_enchantment_return := STATE_WAVE_COMBAT
 var _utility_resume_state: String = STATE_START_PAGE
 var _utility_resume_paused: bool = false
 var _utility_page: String = ""
@@ -73,6 +75,8 @@ var _active_shop_offer_ids: Array[String] = []
 var _active_shop_offers: Dictionary = {}
 var _wave_refresh_count: int = 0
 var _total_refresh_count: int = 0
+var _wave_free_shop_refresh_count: int = 0
+var _total_free_shop_refresh_count: int = 0
 var _shop_generation: int = 0
 var _paid_purchase_count: int = 0
 var _preparation_offers: Array = []
@@ -127,6 +131,8 @@ func reset_flow() -> void:
 	_active_shop_offers.clear()
 	_wave_refresh_count = 0
 	_total_refresh_count = 0
+	_wave_free_shop_refresh_count = 0
+	_total_free_shop_refresh_count = 0
 	_paid_purchase_count = 0
 	_preparation_offers.clear()
 	_transaction_busy = false
@@ -467,6 +473,29 @@ func close_shop_popup() -> void:
 		_set_state(STATE_BATTLE_PREPARE)
 
 
+func can_open_quick_enchantment() -> bool:
+	return current_mode == MODE_BATTLE and not battle_resolved and not _transaction_busy \
+		and current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE] \
+		and CampProgression.get_upgrade_option_level("camp_upgrade_quick_shop") > 0
+
+
+func request_quick_enchantment() -> bool:
+	if not can_open_quick_enchantment(): return false
+	_quick_enchantment_return = current_state
+	clear_stat_preview()
+	_set_battle_runtime_paused(true)
+	_set_state(STATE_QUICK_ENCHANTMENT)
+	modal_requested.emit(STATE_QUICK_ENCHANTMENT, {"quick_enchantment": true, "offers": []})
+	return true
+
+
+func close_quick_enchantment() -> void:
+	if current_state != STATE_QUICK_ENCHANTMENT: return
+	modal_closed.emit(STATE_QUICK_ENCHANTMENT)
+	_set_state(_quick_enchantment_return)
+	_set_battle_runtime_paused(false)
+
+
 func request_esc_overlay() -> void:
 	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
 		return
@@ -519,6 +548,12 @@ func request_combat_guide_replay() -> bool:
 
 
 func _begin_combat_guide() -> void:
+	# Settings may have changed while the player was choosing opening rewards.
+	if _first_guide_pending and not CombatSettings.should_show_combat_guide():
+		_first_guide_pending = false
+		_set_state(STATE_BATTLE_PREPARE)
+		request_next_wave()
+		return
 	_guide_resume_state = current_state
 	_guide_resume_paused = bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false))
 	_set_battle_runtime_paused(true)
@@ -663,7 +698,7 @@ func present_battle_result(victory: bool, summary: Dictionary = {}) -> void:
 		_bound_wave_manager.running = false
 		_bound_wave_manager.clear_battle_entities()
 	current_victory = victory
-	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
+	for modal in [STATE_BATTLE_UTILITY, STATE_SHARED_REWARD_SHOP_POPUP, STATE_SHOP_POPUP, STATE_FINANCE_POPUP, STATE_QUICK_ENCHANTMENT, STATE_INTEREST_SETTLEMENT, STATE_ESC_OVERLAY, STATE_WAVE_CHALLENGE]:
 		modal_closed.emit(modal)
 	_pending_level_up_levels.clear()
 	_pending_relic_choices.clear()
@@ -717,11 +752,19 @@ func get_economy_journal() -> EconomyJournal:
 
 func get_shop_refresh_cost() -> int:
 	if has_strong_refresh() and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP]: return 0
+	if current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP] and get_free_shop_refreshes_remaining() > 0: return 0
 	var wave_number := maxi(current_wave_index + 1, 1)
-	var first_refresh_cost := 3.0 + float(wave_number) * 0.5 + float(_total_refresh_count) * 0.25
-	var in_wave_refresh_count := float(_wave_refresh_count)
+	# Restock rerolls are counted for history but do not advance paid pricing.
+	var first_refresh_cost := 3.0 + float(wave_number) * 0.5 + float(_total_refresh_count - _total_free_shop_refresh_count) * 0.25
+	var in_wave_refresh_count := float(_wave_refresh_count - _wave_free_shop_refresh_count)
 	var in_wave_growth := in_wave_refresh_count * 4.0 + in_wave_refresh_count * in_wave_refresh_count * 2.0
 	return int(ceil(first_refresh_cost + in_wave_growth))
+
+
+func get_free_shop_refreshes_remaining() -> int:
+	if not CampProgression.is_upgrade_visible("camp_upgrade_restock"): return 0
+	var allowance := CampProgression.get_upgrade_option_level("camp_upgrade_restock")
+	return maxi(0, allowance - _wave_free_shop_refresh_count)
 
 
 func request_shop_refresh() -> Dictionary:
@@ -729,6 +772,7 @@ func request_shop_refresh() -> Dictionary:
 	if current_state not in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_SHARED_REWARD_SHOP_POPUP] or _transaction_busy:
 		return {"success": false, "reason": "shop_not_active"}
 	var strong := has_strong_refresh() and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP]
+	var free := not strong and current_state in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP] and get_free_shop_refreshes_remaining() > 0
 	if strong and not _has_epic_trade_candidate(): return {"success": false, "reason": "strong_refresh_unavailable"}
 	var cost := get_shop_refresh_cost()
 	if _bound_wave_manager == null or _bound_wave_manager.get_current_gold() < cost:
@@ -739,6 +783,9 @@ func request_shop_refresh() -> Dictionary:
 		return {"success": false, "reason": "insufficient_gold_for_refresh"}
 	_wave_refresh_count += 1
 	_total_refresh_count += 1
+	if free:
+		_wave_free_shop_refresh_count += 1
+		_total_free_shop_refresh_count += 1
 	var payload: Dictionary = {}
 	if current_state == STATE_SHARED_REWARD_SHOP_POPUP:
 		payload = _build_shared_reward_shop_payload(_active_level_up_level, "refresh", false, _active_shop_offer_ids)
@@ -751,6 +798,7 @@ func request_shop_refresh() -> Dictionary:
 		_bound_wave_manager.goblin_trades.strong_refresh = false
 		_bound_wave_manager.finance_system.record_trade_activity(L10n.text("ui.reward.power_reroll.used_detail"))
 		payload["refresh_cost"] = get_shop_refresh_cost()
+		payload["strong_refresh"] = false
 	cancel_goblin_trade()
 	_transaction_busy = false
 	clear_stat_preview()
@@ -759,7 +807,7 @@ func request_shop_refresh() -> Dictionary:
 		_notify_preparation_changed()
 	else:
 		modal_requested.emit(current_state, payload)
-	return {"success": true, "cost": cost, "strong_refresh": strong, "refresh_count": _wave_refresh_count, "total_refresh_count": _total_refresh_count}
+	return {"success": true, "cost": cost, "strong_refresh": strong, "free_refresh": free, "free_refreshes_remaining": get_free_shop_refreshes_remaining(), "refresh_count": _wave_refresh_count, "total_refresh_count": _total_refresh_count}
 
 
 func get_current_mode() -> String:
@@ -847,6 +895,7 @@ func _on_wave_started(wave_id: String, duration_seconds: int) -> void:
 		return
 	current_wave_index += 1
 	_wave_refresh_count = 0
+	_wave_free_shop_refresh_count = 0
 	current_wave_id = wave_id
 	current_wave_duration_seconds = duration_seconds
 	_pending_finance_payload.clear()
@@ -1068,6 +1117,8 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 		"offer_count": offer_count,
 		"resume_state": _resume_state_after_modal,
 		"refresh_cost": get_shop_refresh_cost(),
+		"free_refreshes_remaining": get_free_shop_refreshes_remaining() if mode == "shop" else 0,
+		"strong_refresh": has_strong_refresh() if mode == "shop" else false,
 		"refresh_count": _wave_refresh_count,
 		"total_refresh_count": _total_refresh_count,
 	}
@@ -1078,7 +1129,7 @@ func _build_shop_context() -> Dictionary:
 		return {}
 	var owned_weapon_ids: Array[String] = []
 	var equipped_weapons: Array[Dictionary] = []
-	for weapon in _bound_loadout.get_weapon_instances():
+	for weapon in _bound_loadout.get_owned_weapons():
 		owned_weapon_ids.append(weapon.weapon_id)
 		equipped_weapons.append({"weapon_id": weapon.weapon_id, "level": weapon.level})
 	var relic_counts := _bound_player.get_relic_counts()
@@ -1090,6 +1141,7 @@ func _build_shop_context() -> Dictionary:
 		"owned_relic_counts": _bound_player.get_relic_counts(),
 		"current_load": _bound_loadout.get_total_load_cost(),
 		"load_capacity": _bound_loadout.get_load_capacity(),
+		"reserve_slots_available": maxi(0, _bound_loadout.reserve_capacity - _bound_loadout.reserve_weapons.size()),
 		"luck": _get_shop_stat("luck"),
 		"weapon_upgrade_miss_count": _weapon_upgrade_miss_count,
 		"shop_price_percent": _get_shop_stat("shop_price_percent"),
@@ -1143,6 +1195,7 @@ func get_preparation_payload() -> Dictionary:
 	payload["offers"] = _preparation_offers
 	payload["offer_generation"] = _shop_generation
 	payload["refresh_cost"] = get_shop_refresh_cost()
+	payload["free_refreshes_remaining"] = get_free_shop_refreshes_remaining()
 	payload["settlement_results"] = _pending_interest_payload.get("settlement_results", [])
 	payload["combat_gold_earned"] = _pending_interest_payload.get("combat_gold_earned", 0)
 	if _bound_wave_manager != null:
@@ -1161,7 +1214,9 @@ func get_preparation_payload() -> Dictionary:
 
 
 func _notify_preparation_changed() -> void:
-	if current_state == STATE_FINANCE_POPUP:
+	if current_state == STATE_QUICK_ENCHANTMENT:
+		preparation_changed.emit({"quick_enchantment": true, "offers": []})
+	elif current_state == STATE_FINANCE_POPUP:
 		preparation_changed.emit(get_preparation_payload())
 	elif current_state == STATE_SHOP_POPUP:
 		var offers: Array = []
@@ -1171,7 +1226,7 @@ func _notify_preparation_changed() -> void:
 				var offer: Dictionary = _active_shop_offers[id]
 				ShopPricing.apply(offer, context)
 				offers.append(offer)
-		modal_requested.emit(STATE_SHOP_POPUP, {"mode": "shop", "offers": offers, "gold": get_current_gold(), "refresh_cost": get_shop_refresh_cost()})
+		modal_requested.emit(STATE_SHOP_POPUP, {"mode": "shop", "offers": offers, "gold": get_current_gold(), "refresh_cost": get_shop_refresh_cost(), "free_refreshes_remaining": get_free_shop_refreshes_remaining(), "strong_refresh": has_strong_refresh()})
 
 
 func _queue_economy_refresh() -> void:
@@ -1453,12 +1508,12 @@ func purchase_principal_weapon_upgrade(weapon_id: String, quote_token: String) -
 
 func submit_enchantment_operation(action: String, weapon_id: String, item_id: String, target_index: int = -1) -> Dictionary:
 	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
-	if current_state != STATE_FINANCE_POPUP or _bound_loadout == null or _transaction_busy:
+	if current_state not in [STATE_FINANCE_POPUP, STATE_QUICK_ENCHANTMENT] or _bound_loadout == null or _transaction_busy:
 		return {"success": false, "reason": "enchantment_page_required"}
 	if action in ["attach", "replace"] and _bound_player != null:
 		var weapon := _bound_loadout.get_weapon_instance(weapon_id)
 		var item := _bound_player.item_inventory.find_item(item_id)
-		if weapon != null and not weapon.get_attachment_incompatibility(item).is_empty():
+		if weapon != null and not weapon.get_attachment_incompatibility(item, target_index if action == "replace" else -1).is_empty():
 			return {"success": false, "reason": "incompatible_enchantment"}
 	_transaction_busy = true
 	var success := false
@@ -1506,7 +1561,7 @@ func get_inventory_sale_quote(kind: String, target_id: String) -> Dictionary:
 		return {"success": false, "reason": "enchantment_page_required"}
 	var quote: Dictionary = {}
 	if kind == "weapon":
-		if _bound_loadout.get_weapon_instances().size() <= 1:
+		if _bound_loadout.is_weapon_equipped(target_id) and _bound_loadout.get_weapon_instances().size() <= 1:
 			return {"success": false, "reason": "last_weapon"}
 		quote = _trade_service.quote_weapon(_bound_loadout.get_weapon_instance(target_id), _bound_player.get_stat("humanity"))
 	elif kind == "enchantment":

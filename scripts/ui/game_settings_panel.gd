@@ -25,6 +25,7 @@ var _mode_titles: Array[Label] = []
 var _mode_descriptions: Array[Label] = []
 var quick_cast: CheckBox
 var show_hints: CheckBox
+var hide_combat_guide: CheckBox
 var volume_controls: Dictionary = {}
 var resolution: OptionButton
 var fullscreen_yes: Button
@@ -326,6 +327,12 @@ func _build_combat(parent: Node) -> void:
 	guide_button.pressed.connect(func(): combat_guide_requested.emit())
 	combat_settings.add_child(guide_button)
 	guide_button.hide()
+	_space(combat_settings, 20)
+	hide_combat_guide = _checkbox("ui.settings.controls.hide_combat_guide", PAPER)
+	hide_combat_guide.name = "HideCombatGuide"
+	hide_combat_guide.custom_minimum_size.y = 46.666667
+	hide_combat_guide.toggled.connect(func(value: bool): CombatSettings.set_option("hide_combat_guide", value))
+	combat_settings.add_child(hide_combat_guide)
 
 
 func _build_footer() -> void:
@@ -395,6 +402,7 @@ func sync_combat() -> void:
 		_mode_descriptions[i].add_theme_color_override("font_color", PALETTE.WARM_MUTED if selected else MUTED)
 	quick_cast.set_pressed_no_signal(CombatSettings.quick_cast)
 	show_hints.set_pressed_no_signal(CombatSettings.show_hints)
+	hide_combat_guide.set_pressed_no_signal(CombatSettings.hide_combat_guide)
 	_key_descriptions[0].text = "ui.settings.skills.manual_quick" if CombatSettings.quick_cast else "ui.settings.skills.manual_select"
 	_key_descriptions[1].text = "ui.settings.controls.no_click_needed" if CombatSettings.quick_cast else "ui.settings.controls.confirm_cast_hint"
 	_key_descriptions[2].text = "ui.settings.controls.cancel_keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.cancel_mouse_hint"

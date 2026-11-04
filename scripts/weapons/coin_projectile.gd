@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	var step := minf(speed * delta, remaining_distance)
 	var end := start + direction * step
 	var radius := get_contact_radius()
+	ProjectileGuard.intercept_segment(self, weapon, start, end, radius)
 	_sweep_shape.radius = radius
 	# Sweep terrain first, so a large frame cannot shoot through a wall or a target.
 	var terrain: Dictionary = {}

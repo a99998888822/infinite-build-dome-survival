@@ -61,6 +61,8 @@ func _handle_android_back_request() -> void:
 			flow.request_esc_overlay()
 		MainFlowCoordinator.STATE_ESC_OVERLAY:
 			flow.close_esc_overlay()
+		MainFlowCoordinator.STATE_QUICK_ENCHANTMENT:
+			flow.close_quick_enchantment()
 		MainFlowCoordinator.STATE_BATTLE_UTILITY:
 			flow.close_battle_utility()
 		MainFlowCoordinator.STATE_SHOP_POPUP:

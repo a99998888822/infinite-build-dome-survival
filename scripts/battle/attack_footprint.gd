@@ -32,6 +32,16 @@ static func projected_disk(radius: float) -> ConvexPolygonShape2D:
 	return ellipse_shape(Vector2(radius, radius * ELLIPSE_RATIO))
 
 
+static func saber_outline(length: float, radius: float) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for side in [1.0, -1.0]:
+		for i in 25:
+			if side < 0 and (i == 0 or i == 24): continue
+			var x := lerpf(-1.0, 1.0, float(i if side > 0 else 24 - i) / 24.0)
+			points.append(Vector2(x * length * 0.5, side * radius * pow(maxf(1.0 - x * x, 0.0), 1.4)))
+	return points
+
+
 static func ellipse_shape(axes: Vector2) -> ConvexPolygonShape2D:
 	var shape := ConvexPolygonShape2D.new()
 	var points := PackedVector2Array()

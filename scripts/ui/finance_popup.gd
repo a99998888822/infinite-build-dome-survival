@@ -68,6 +68,8 @@ var _refresh_glow := FinanceFrameSkin.box("selected", 6)
 var _glow_time := 0.0
 var _last_arrival_id := ""
 var _arrival_pulse: Tween
+var _quick_mode := false
+var _away_sign: PanelContainer
 
 
 func _ready() -> void:
@@ -95,7 +97,22 @@ func bind_flow(coordinator: MainFlowCoordinator) -> void:
 
 func configure(next_payload: Dictionary) -> void:
 	payload = next_payload
+	_quick_mode = bool(payload.get("quick_enchantment", false))
+	_title.text = "ui.talent_tree.quick_shop" if _quick_mode else "ui.bank.title"
+	start_button.text = "ui.quick_shop.back" if _quick_mode else "ui.bank.next_wave"
+	_refresh.visible = not _quick_mode
+	economy_log.show()
 	economy_log.bind_journal(flow.get_economy_journal() if flow != null else null)
+	if _quick_mode:
+		_generation = -1
+		_active_tab = "enchant"
+		shop_grid.set_offers([], true)
+		specialization_panel.configure({}, 0)
+		loan_presentation.configure({})
+		_feedback.text = ""
+		workbench.refresh()
+		_layout()
+		return
 	var generation := int(payload.get("offer_generation", 0))
 	var new_shelf := generation != _generation
 	_generation = generation
@@ -131,7 +148,9 @@ func configure(next_payload: Dictionary) -> void:
 		_refresh.add_theme_stylebox_override("hover", _refresh_glow)
 		_refresh.tooltip_text = "ui.bank.shop.power_reroll_tooltip"
 	else:
-		_refresh.tooltip_text = ""
+		var free_refreshes := int(payload.get("free_refreshes_remaining", 0))
+		if free_refreshes > 0: _refresh.text = L10n.text("ui.shop.free_rerolls") % free_refreshes
+		_refresh.tooltip_text = "ui.shop.free_rerolls_tooltip" if free_refreshes > 0 else ""
 		_refresh.remove_theme_color_override("font_hover_color")
 	workbench.refresh()
 	if new_shelf:
@@ -239,7 +258,7 @@ func hide_popup() -> void:
 
 
 func _sync_loan_visibility() -> void:
-	if loan_presentation != null: loan_presentation.visible = is_visible_in_tree() and main_panel.is_visible_in_tree()
+	if loan_presentation != null: loan_presentation.visible = not _quick_mode and is_visible_in_tree() and main_panel.is_visible_in_tree()
 
 
 func present_trade(speech: String, body: String, detail: String = "") -> void:
@@ -331,6 +350,22 @@ func _build() -> void:
 	portrait = BankCounterPortrait.new()
 	portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	main_panel.add_child(portrait)
+	_away_sign = PanelContainer.new()
+	_away_sign.name = "ShopkeeperAwaySign"
+	_away_sign.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_away_sign.add_theme_stylebox_override("panel", FinanceFrameSkin.box("selected", 16))
+	main_panel.add_child(_away_sign)
+	for side in [0.2, 0.8]:
+		var rope := Line2D.new()
+		rope.width = 3
+		rope.default_color = Color("b69a66")
+		_away_sign.add_child(rope)
+		_away_sign.resized.connect(func():
+			rope.points = PackedVector2Array([Vector2(_away_sign.size.x * side, -36), Vector2(_away_sign.size.x * side, 4)]))
+	var sign_text := _label("ui.quick_shop.away", _away_sign, 27, FinanceUIStyle.GOLD)
+	sign_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sign_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_away_sign.hide()
 	_principal_protection = _label("", bank_body, 20, FinanceUIStyle.GOLD)
 	_principal_protection.name = "PrincipalReviveStatus"
 	_principal_protection.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -505,6 +540,9 @@ func _has_unused_enchantments() -> bool:
 
 
 func _request_next_wave() -> void:
+	if _quick_mode and flow != null:
+		flow.close_quick_enchantment()
+		return
 	if flow == null or _sale_layer.visible or flow.get_current_state() != MainFlowCoordinator.STATE_FINANCE_POPUP: return
 	if not _enchantment_notice_shown and _has_unused_enchantments():
 		_enchantment_notice_shown = true
@@ -599,6 +637,7 @@ func _layout() -> void:
 		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		FinanceSceneLayout.arrange(self)
 		_layout_enchantment_notice()
+		_apply_quick_mode()
 		return
 	main_panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box())
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -671,9 +710,27 @@ func _layout() -> void:
 	_select_tab(_active_tab)
 	if loan_presentation != null: loan_presentation.arrange(main_panel.get_global_rect())
 	_layout_enchantment_notice()
+	_apply_quick_mode()
+
+
+func _apply_quick_mode() -> void:
+	_away_sign.visible = _quick_mode
+	if not _quick_mode: return
+	portrait.hide()
+	_bank.hide()
+	_bank_header.hide()
+	_scene_bank_back.hide()
+	_stock.hide()
+	_refresh.hide()
+	loan_presentation.hide()
+	_tab_buttons["bank"].hide()
+	var actor := portrait.get_rect()
+	var width := minf(300, maxf(112, actor.size.x))
+	_place(_away_sign, Rect2(actor.get_center() - Vector2(width / 2, 40), Vector2(width, 100)))
 
 
 func _select_tab(tab: String) -> void:
+	if _quick_mode and tab not in ["shop", "enchant"]: tab = "enchant"
 	if tab == "specialization" and specialization_panel.offer.is_empty(): tab = "shop"
 	_active_tab = tab
 	_bank.visible = not _compact or tab == "bank"
@@ -695,6 +752,7 @@ func _select_tab(tab: String) -> void:
 		FinanceUIStyle.bank_tab(button, key == tab)
 	if _tooltip != null: _tooltip.hide()
 	if flow != null: flow.clear_stat_preview()
+	_apply_quick_mode()
 
 
 func _refresh_bank() -> void:
@@ -926,6 +984,9 @@ func _feedback_message(message: String, success: bool) -> void:
 
 
 func handle_back_request() -> bool:
+	if visible and _quick_mode and flow != null and flow.current_state == MainFlowCoordinator.STATE_QUICK_ENCHANTMENT:
+		flow.close_quick_enchantment()
+		return true
 	if not visible or flow == null or flow.get_current_state() != MainFlowCoordinator.STATE_FINANCE_POPUP:
 		return false
 	if loan_presentation.is_active():

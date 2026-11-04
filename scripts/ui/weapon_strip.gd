@@ -49,6 +49,10 @@ var _attachment_tooltip_label: Label
 var _hovered_attachment_id := ""
 var _tooltip_mouse_position := Vector2.ZERO
 var _rendered_row_state: Array = []
+var _reserve_dialog: Control
+var _reserve_choices: VBoxContainer
+var _reserve_scroll: ScrollContainer
+var _pending_reserve_id := ""
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -83,6 +87,8 @@ func _ready() -> void:
 		GameTooltipLayer.apply_pixel_text(weapon_tooltip_label)
 		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
 	_build_attachment_tooltip()
+	visibility_changed.connect(func():
+		if not is_visible_in_tree() and _reserve_dialog != null: _reserve_dialog.hide())
 
 
 func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false, allow_reordering: bool = false) -> void:
@@ -229,6 +235,8 @@ func _refresh_load_label() -> void:
 		load_label.text = "ui.weapon.load_empty"
 		return
 	load_label.text = L10n.text("ui.weapon.load") % [_loadout.get_total_load_cost(), _loadout.get_load_capacity()]
+	if _automation_editing_enabled and _loadout.reserve_capacity > 0:
+		load_label.text += "\n" + L10n.text("ui.reserve.slots") % [_loadout.reserve_weapons.size(), _loadout.reserve_capacity]
 
 
 func _refresh_weapon_strip() -> void:
@@ -237,13 +245,13 @@ func _refresh_weapon_strip() -> void:
 		return
 	var weapons: Array[WeaponInstance] = []
 	if _loadout != null:
-		weapons = _loadout.get_weapon_instances()
+		weapons = _loadout.get_owned_weapons() if _automation_editing_enabled else _loadout.get_weapon_instances()
 	# The buttons hold live WeaponInstances. Stats/attachments and cast policy
 	# can change without rebuilding the row; identity, order and layout cannot.
 	var row_state: Array = [slot_size, icon_size, icon_slot_theme, cast_mode_icon_size,
 		_attachment_editing_enabled, _automation_editing_enabled, _reordering_enabled]
 	for weapon in weapons:
-		row_state.append([weapon, str(weapon.weapon_data.get("icon", ""))])
+		row_state.append([weapon, str(weapon.weapon_data.get("icon", "")), _loadout.is_weapon_equipped(weapon.weapon_id)])
 	if row_state == _rendered_row_state:
 		for mode in _cast_mode_buttons:
 			mode.sync_policy()
@@ -265,6 +273,7 @@ func _refresh_weapon_strip() -> void:
 		_selected_weapon_id = "" if _loadout.weapon_instances.is_empty() else _loadout.weapon_instances[0].weapon_id
 	for index in weapons.size():
 		var weapon := weapons[index]
+		var equipped := _loadout.is_weapon_equipped(weapon.weapon_id)
 		var button := WEAPON_SLOT_BUTTON_SCRIPT.new() as WeaponSlotButton
 		if button == null:
 			continue
@@ -281,6 +290,7 @@ func _refresh_weapon_strip() -> void:
 		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
 			var texture := load(icon_path)
 			if texture is Texture2D:
+				if not equipped: texture = TalentNodeButton._grayscale(texture)
 				button.icon = texture
 				button.expand_icon = true
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -288,7 +298,7 @@ func _refresh_weapon_strip() -> void:
 				ItemIconArt.bind_button(button, texture, 32.0)
 		if _attachment_editing_enabled and not button.item_drop_requested.is_connected(_on_item_drop_requested):
 			button.item_drop_requested.connect(_on_item_drop_requested)
-		if _reordering_enabled:
+		if _reordering_enabled and equipped:
 			button.set_drag_forwarding(_get_weapon_drag_data.bind(button), _can_drop_weapon.bind(button), _drop_weapon.bind(button))
 			var group := MarginContainer.new()
 			group.name = "Weapon_" + weapon.weapon_id
@@ -302,7 +312,7 @@ func _refresh_weapon_strip() -> void:
 			if index > 0:
 				arrows.left = _make_reorder_button(weapon.weapon_id, -1)
 				button.add_child(arrows.left)
-			if index < weapons.size() - 1:
+			if index < _loadout.weapon_instances.size() - 1:
 				arrows.right = _make_reorder_button(weapon.weapon_id, 1)
 				button.add_child(arrows.right)
 			_reorder_buttons.append(arrows)
@@ -311,7 +321,21 @@ func _refresh_weapon_strip() -> void:
 			button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		else:
 			weapon_list.add_child(button)
-		if _automation_editing_enabled:
+		if not equipped:
+			var equip_label := Label.new()
+			equip_label.name = "EquipWeaponLabel"
+			equip_label.text = "ui.reserve.equip"
+			equip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			equip_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			equip_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			equip_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			equip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			FinanceUIStyle.label(equip_label, 20, FinanceUIStyle.TEXT)
+			equip_label.add_theme_constant_override("outline_size", 6)
+			equip_label.add_theme_color_override("font_outline_color", Color("111816"))
+			button.add_child(equip_label)
+			button.pressed.connect(_equip_reserve.bind(weapon.weapon_id))
+		if _automation_editing_enabled and equipped:
 			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
 			mode.icon_extent = cast_mode_icon_size
 			mode.theme = icon_slot_theme
@@ -324,6 +348,79 @@ func _refresh_weapon_strip() -> void:
 		button.mouse_entered.connect(_show_weapon_tooltip.bind(weapon, button))
 		_weapon_buttons.append(button)
 	_layout_cast_mode_icons.call_deferred()
+
+
+func _equip_reserve(weapon_id: String) -> void:
+	if _loadout == null: return
+	_hide_weapon_tooltip()
+	if _loadout.equip_reserve_weapon(weapon_id): return
+	if not _loadout.reserve_weapons.has(_loadout.get_weapon_instance(weapon_id)): return
+	_pending_reserve_id = weapon_id
+	if _reserve_dialog == null: _build_reserve_dialog()
+	_reserve_scroll.custom_minimum_size.y = minf(64 * _loadout.weapon_instances.size(), minf(360, get_viewport_rect().size.y - 200))
+	for child in _reserve_choices.get_children():
+		_reserve_choices.remove_child(child)
+		child.queue_free()
+	for weapon in _loadout.weapon_instances:
+		var choice := Button.new()
+		choice.text = L10n.text("ui.reserve.choice") % [L10n.source(str(weapon.weapon_data.display_name)), weapon.get_load_cost()]
+		choice.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
+		choice.expand_icon = true
+		choice.add_theme_constant_override("icon_max_width", 40)
+		choice.custom_minimum_size.y = 60
+		FinanceUIStyle.bank_button(choice)
+		choice.disabled = not _loadout.can_equip_reserve(weapon_id, weapon.weapon_id)
+		if choice.disabled: choice.tooltip_text = "ui.reserve.no_room"
+		choice.pressed.connect(_replace_reserve.bind(weapon.weapon_id))
+		_reserve_choices.add_child(choice)
+	_reserve_dialog.show()
+
+
+func _replace_reserve(replace_id: String) -> void:
+	if _loadout.equip_reserve_weapon(_pending_reserve_id, replace_id):
+		_reserve_dialog.hide()
+	else:
+		_equip_reserve(_pending_reserve_id)
+
+
+func _build_reserve_dialog() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 45
+	add_child(layer)
+	_reserve_dialog = Control.new()
+	_reserve_dialog.name = "ReserveWeaponDialog"
+	_reserve_dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(_reserve_dialog)
+	var backdrop := ColorRect.new()
+	backdrop.color = Color(0.02, 0.03, 0.02, 0.8)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_reserve_dialog.add_child(backdrop)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reserve_dialog.add_child(center)
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 20))
+	center.add_child(panel)
+	var column := VBoxContainer.new()
+	column.custom_minimum_size.x = minf(480, get_viewport_rect().size.x - 80)
+	column.add_theme_constant_override("separation", 16)
+	panel.add_child(column)
+	var title := Label.new()
+	title.text = "ui.reserve.replace"
+	FinanceUIStyle.label(title, 27)
+	column.add_child(title)
+	var scroll := ScrollContainer.new()
+	_reserve_scroll = scroll
+	column.add_child(scroll)
+	_reserve_choices = VBoxContainer.new()
+	_reserve_choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_reserve_choices)
+	var cancel := Button.new()
+	cancel.text = "ui.common.cancel"
+	FinanceUIStyle.bank_button(cancel)
+	cancel.pressed.connect(func(): _reserve_dialog.hide())
+	column.add_child(cancel)
 
 
 func get_required_height() -> float:
@@ -407,6 +504,7 @@ func _process(delta: float) -> void:
 
 
 func _show_weapon_tooltip(weapon: WeaponInstance, anchor_button: Button, preserved_position: Vector2 = Vector2.ZERO, keep_position: bool = false) -> void:
+	if _reserve_dialog != null and _reserve_dialog.visible: return
 	if get_viewport().gui_is_dragging(): return
 	if weapon_tooltip == null or weapon_tooltip_label == null or weapon == null:
 		return
@@ -542,6 +640,10 @@ func _hide_attachment_tooltip() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if _reserve_dialog != null and _reserve_dialog.visible and event.is_action_pressed("ui_cancel"):
+		_reserve_dialog.hide()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouse:
 		# Use the same viewport coordinates as the rendered tooltip layer.
 		_tooltip_mouse_position = event.position

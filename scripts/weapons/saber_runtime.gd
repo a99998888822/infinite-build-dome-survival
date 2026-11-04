@@ -18,9 +18,13 @@ var cut_centers: Array[Vector2] = []
 var cut_angles: Array[float] = []
 var _shapes: Array[ConvexPolygonShape2D] = []
 var _query := PhysicsShapeQueryParameters2D.new()
+var pattern: AttackPatternPlan
 
 func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2) -> bool:
 	bind_weapon(source, "saber_runtimes")
+	pattern = AttackPatternPlan.build(source)
+	if pattern.changed:
+		source._cast_stats["projectile_count"] = pattern.units.size()
 	var player := source.owner_player
 	origin = player.global_position
 	var offset := point - origin
@@ -39,7 +43,7 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	live_source = original
 	original.mobility_runtime = weakref(self)
 	player.play_mobility_action(source.weapon_id, destination - origin)
-	duration = maxf(jump_duration, half_jump + (maxi(1, int(source.get_stat("projectile_count"))) - 1) * CUT_GAP + 0.30)
+	duration = maxf(jump_duration, half_jump + (maxi(1, int(source.get_stat("projectile_count"))) - 1) * _cut_gap() + 0.30)
 	return true
 
 func initialize_replay(source: WeaponInstance, point: Vector2, direction: Vector2) -> void:
@@ -68,7 +72,7 @@ func _physics_process(delta: float) -> void:
 		blinked = true
 		_build_shape()
 	if blinked:
-		while cuts_fired < maxi(1, int(weapon.get_stat("projectile_count"))) and age + 0.000001 >= half_jump + cuts_fired * CUT_GAP:
+		while cuts_fired < maxi(1, int(weapon.get_stat("projectile_count"))) and age + 0.000001 >= half_jump + cuts_fired * _cut_gap():
 			_cut(cuts_fired)
 			cuts_fired += 1
 	for i in range(visuals.size() - 1, -1, -1):
@@ -86,12 +90,7 @@ func _build_shape() -> void:
 	var length := origin.distance_to(destination)
 	_shapes.clear()
 	if length < 4.0: return
-	var points := PackedVector2Array()
-	for side in [1.0, -1.0]:
-		for i in 25:
-			if side < 0 and (i == 0 or i == 24): continue
-			var x := lerpf(-1.0, 1.0, float(i if side > 0 else 24 - i) / 24.0)
-			points.append(Vector2(x * length * 0.5, side * weapon.get_hit_radius() * pow(maxf(1.0 - x * x, 0.0), 1.4)))
+	var points := AttackFootprint.saber_outline(length, weapon.get_hit_radius())
 	# The sharp tips have a shallow concavity. Preserve it with convex pieces,
 	# instead of letting the physics engine replace the blade with its hull.
 	for polygon in Geometry2D.decompose_polygon_in_convex(points):
@@ -103,14 +102,22 @@ func _build_shape() -> void:
 
 func _cut(index: int) -> void:
 	if origin.distance_to(destination) < 4.0: return
-	var step := (index + 1) / 2
-	var degrees := minf(float(step) * 3.0, 15.0) * (1.0 if index % 2 == 1 else -1.0)
+	if pattern != null and pattern.changed:
+		weapon.pattern_damage_scale = float(pattern.units[index].mass)
+		weapon.pattern_size_scale = float(pattern.units[index].size)
+		_build_shape()
+	var degrees := pattern.saber_degrees(index)
 	var center := (origin + destination) * 0.5
+	var visual_end := destination
+	if pattern != null and pattern.radial:
+		degrees = 360.0 * index / pattern.units.size()
+		visual_end = origin + (destination - origin).rotated(deg_to_rad(degrees))
+		center = (origin + visual_end) * 0.5
 	var angle := origin.angle_to_point(destination) + deg_to_rad(degrees)
 	cut_centers.append(center)
 	cut_angles.append(degrees)
-	var start := half_jump + index * CUT_GAP
-	var visual := ART.cut(self, origin, destination, degrees, weapon.get_hit_radius() / 8.0)
+	var start := half_jump + index * _cut_gap()
+	var visual := ART.cut(self, origin, visual_end, 0.0 if pattern != null and pattern.radial else degrees, weapon.get_hit_radius() / 8.0)
 	visual.manual_clock = true
 	visuals.append({"node": visual, "start": start})
 	_query.transform = Transform2D(angle, center)
@@ -119,6 +126,7 @@ func _cut(index: int) -> void:
 	AudioManager.begin_combat_audio()
 	for shape in _shapes:
 		_query.shape = shape
+		ProjectileGuard.intercept(self, weapon, shape, _query.transform)
 		for contact in get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size() * 2)):
 			var enemy := contact.collider as EnemyController
 			if not is_instance_valid(enemy) or not enemy.is_alive() or hit.has(enemy.get_instance_id()): continue
@@ -130,6 +138,9 @@ func _cut(index: int) -> void:
 
 func is_attacking() -> bool:
 	return not cancelled and age < duration
+
+func _cut_gap() -> float:
+	return 0.0 if pattern != null and pattern.radial else CUT_GAP
 
 func cancel() -> void:
 	if is_instance_valid(weapon.owner_player): weapon.owner_player.cancel_mobility_motion(self)

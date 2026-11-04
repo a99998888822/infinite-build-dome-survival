@@ -606,6 +606,8 @@ func _collect_upgrade_option_modifiers(record: Dictionary) -> Array:
 	for option in record.get("upgrade_options", []):
 		if not (option is Dictionary):
 			continue
+		if str(option.get("stat", "")).is_empty():
+			continue
 		var option_id := str(option.get("id", ""))
 		var option_level := get_upgrade_option_level(option_id)
 		if option_level <= 0:

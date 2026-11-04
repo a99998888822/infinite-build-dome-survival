@@ -266,6 +266,7 @@ func _update_indicator() -> void:
 		if target == null:
 			indicator.hide()
 			return
-		offset = target.global_position - selected_weapon.get_attack_origin()
+		if not AttackPatternPlan.build(selected_weapon).changes_shape():
+			offset = target.global_position - selected_weapon.get_attack_origin()
 	indicator.configure(selected_weapon, offset, loadout.active_casting.can_cast(selected_weapon))
 	indicator.show()

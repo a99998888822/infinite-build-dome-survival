@@ -148,7 +148,7 @@ func refresh() -> void:
 	var loadout := flow.get_bound_loadout()
 	var player := flow.get_bound_player()
 	if loadout == null or player == null: return
-	var weapons := loadout.get_weapon_instances()
+	var weapons := loadout.get_owned_weapons()
 	if loadout.get_weapon_instance(selected_weapon_id) == null:
 		selected_weapon_id = weapons[0].weapon_id if not weapons.is_empty() else ""
 	_clear(_weapon_row)
@@ -174,7 +174,11 @@ func refresh() -> void:
 	ItemIconArt.bind_texture(_weapon_icon, FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null, false, 36.0, null, 36.0)
 	_weapon_name.text = "%s · Lv.%d" % [L10n.source(str(current.weapon_data.get("display_name", ""))), current.level] if current != null else "尚无武器"
 	_weapon_name.tooltip_text = ""
-	_sell_weapon.disabled = weapons.size() <= 1
+	var commercial := flow.current_state == MainFlowCoordinator.STATE_FINANCE_POPUP
+	_sell_weapon.visible = commercial
+	_sell_item.visible = commercial
+	_upgrade_weapon.visible = commercial
+	_sell_weapon.disabled = loadout.is_weapon_equipped(selected_weapon_id) and loadout.weapon_instances.size() <= 1
 	_sell_weapon.tooltip_text = "ui.enchantment.keep_one_weapon" if _sell_weapon.disabled else "ui.enchantment.sale_returns_enchantments"
 	_refresh_principal_upgrade()
 	_clear(_slots)
@@ -341,6 +345,8 @@ func _update_selection() -> void:
 	var current := flow.get_bound_loadout().get_weapon_instance(selected_weapon_id)
 	var same_weapon := not equipped.is_empty() and equipped == selected_weapon_id
 	_selection.text = L10n.text("ui.enchantment.selected_prefix") + L10n.source(str(item.get("display_name", ""))) if not item.is_empty() else "ui.enchantment.select_hint"
+	if item.is_empty() and flow.current_state == MainFlowCoordinator.STATE_QUICK_ENCHANTMENT:
+		_selection.text = "ui.quick_shop.select_hint"
 	_apply.text = "ui.enchantment.unequip" if same_weapon else ("ui.enchantment.transfer_here" if not equipped.is_empty() else "ui.enchantment.equip_here")
 	_apply.disabled = item.is_empty() or current == null or (not same_weapon and not current.has_available_attachment_slot())
 	_apply.tooltip_text = "ui.enchantment.no_empty_slots_hint" if current != null and not same_weapon and not current.has_available_attachment_slot() else ""

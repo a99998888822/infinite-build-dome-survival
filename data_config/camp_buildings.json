@@ -107,10 +107,36 @@
         "required_building_level": 1,
         "icon": "res://assets/ui/talents/speed.png",
         "tree_position": [
-          94,
-          -304
+          -348,
+          -446
         ],
+        "requires_upgrade": "camp_upgrade_weapon_damage"
+      },
+      {
+        "id": "camp_upgrade_quick_shop",
+        "feature": "quick_shop",
+        "name": "快捷附魔",
+        "description": "可以随时打开附魔菜单",
+        "currency": "camp_currency",
+        "cost": 500,
+        "max_level": 1,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/quick_shop.png",
+        "tree_position": [94, -304],
         "requires_upgrade": ""
+      },
+      {
+        "id": "camp_upgrade_reserve_weapons",
+        "feature": "reserve_weapons",
+        "name": "备用武装",
+        "description": "增加一件备用武器，可以在战斗期间随时替换",
+        "currency": "camp_currency",
+        "cost": 500,
+        "max_level": 3,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/reserve_weapons.png",
+        "tree_position": [222, -446],
+        "requires_upgrade": "camp_upgrade_quick_shop"
       }
     ],
     "icon": "res://assets/ui/talents/armory.png",
@@ -646,6 +672,19 @@
           304
         ],
         "required_building_level": 1,
+        "requires_upgrade": ""
+      },
+      {
+        "id": "camp_upgrade_restock",
+        "feature": "restock",
+        "name": "重新上货",
+        "description": "商店刷新次数+1",
+        "currency": "camp_currency",
+        "cost": 2000,
+        "max_level": 2,
+        "required_building_level": 1,
+        "icon": "res://assets/ui/talents/restock.png",
+        "tree_position": [242, 352],
         "requires_upgrade": ""
       }
     ],

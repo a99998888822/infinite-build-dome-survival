@@ -300,6 +300,8 @@ func _layout_overlay() -> void:
 		total_label.custom_minimum_size.x = back_button.custom_minimum_size.x
 		var hint := content.get_node("HintLabel") as Label
 		hint.text = "ui.inventory.view_only" if compact else "ui.inventory.edit_in_bank_hint"
+		if CampProgression.get_upgrade_option_level("camp_upgrade_quick_shop") > 0:
+			hint.text = "ui.reserve.inventory_hint"
 		panel.custom_minimum_size = panel_size
 		panel.size = panel_size
 		center_container.size = target_size

@@ -117,6 +117,7 @@ func _build_interface() -> void:
 	var index := 0
 	for building in CampProgression.get_building_records():
 		for option in building.get("upgrade_options", []):
+			if not option.has("stat"): continue
 			var row := _label(20, MUTED)
 			row.position = Vector2(26.666667 + floori(index / 14.0) * 236.666667, 86.666667 + (index % 14) * 33.333333)
 			row.size = Vector2(233.333333, 33.333333)
@@ -413,8 +414,19 @@ func _refresh_detail() -> void:
 		_upgrade_button.disabled = not CampProgression.can_purchase_upgrade(_selected_id)
 	_detail_title.text = L10n.source(str(record.name)) + "："
 	_detail_next.visible = level < maximum
+	var functional := record.has("description") and not node.building
+	_detail_effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART if functional else TextServer.AUTOWRAP_OFF
+	_detail_effect.size = Vector2(470, 90 if functional else 30)
+	_detail_next.position.y = 170 if functional else 106.666667
+	_detail_panel.size.y = 270 if functional else 206.666667
+	if functional:
+		_detail_effect.text = L10n.source(str(record.description))
+		match str(record.get("feature", "")):
+			"reserve_weapons": _detail_next.text = L10n.text("ui.talent_tree.reserve_progress") % [level, next_level]
+			"restock": _detail_next.text = L10n.text("ui.talent_tree.restock_progress") % [level, next_level]
+			_: _detail_next.text = L10n.text("ui.talent_tree.unlock_after_purchase")
 	_detail_cost.text = L10n.source("已升满") if level >= maximum else L10n.text("ui.talent_tree.cost") % cost
-	_detail_cost.position.y = 150 if level < maximum else 113.333333
+	_detail_cost.position.y = (216 if level < maximum else 180) if functional else (150 if level < maximum else 113.333333)
 	_detail_cost.add_theme_color_override("font_color", Color("bd786d") if cost > CampProgression.get_camp_currency() and level < maximum else GOLD)
 	_upgrade_button.position = node.position + Vector2(node.size.x + 6, (node.size.y - _upgrade_button.size.y) / 2)
 	_upgrade_button.move_to_front()
@@ -455,6 +467,14 @@ func _position_upgrade_tooltip() -> void:
 
 
 func _upgrade_benefits(record: Dictionary, level: int) -> String:
+	if record.has("description"):
+		if level == 0: return L10n.text("ui.talent_tree.not_unlocked")
+		var description := L10n.source(str(record.description))
+		if str(record.id) == "camp_upgrade_reserve_weapons":
+			description += L10n.text("ui.talent_tree.reserve_count") % level
+		elif str(record.id) == "camp_upgrade_restock":
+			description += L10n.text("ui.talent_tree.restock_count") % level
+		return description
 	return _stat_name(str(record.stat)) + _signed_number(float(record.value_per_level) * level)
 
 

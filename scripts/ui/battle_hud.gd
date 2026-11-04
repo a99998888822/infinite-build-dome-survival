@@ -42,6 +42,7 @@ var _performance_line: Label
 var _economy_log: EconomyLogPanel
 var _economy_log_layer: CanvasLayer
 var _finance_economy_back: Panel
+var quick_shop_button: Button
 var _drawer_scene_layout := false
 var combat_bar: ActiveCombatWeaponBar
 var combat_hints: Label
@@ -85,6 +86,7 @@ const DRAWER_AUTO_OPEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_QUICK_ENCHANTMENT,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 ]
@@ -93,6 +95,7 @@ const STATUS_HIDDEN_MODAL_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_QUICK_ENCHANTMENT,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 ]
@@ -101,6 +104,7 @@ const TOP_BAR_TIMER_HIDDEN_STATES: Array[String] = [
 	MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP,
 	MainFlowCoordinator.STATE_SHOP_POPUP,
 	MainFlowCoordinator.STATE_FINANCE_POPUP,
+	MainFlowCoordinator.STATE_QUICK_ENCHANTMENT,
 	MainFlowCoordinator.STATE_ESC_OVERLAY,
 	MainFlowCoordinator.STATE_INTEREST_SETTLEMENT,
 ]
@@ -221,6 +225,16 @@ func _ready() -> void:
 	_finance_economy_back.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	battle_top_bar.add_child(_finance_economy_back)
 	battle_top_bar.move_child(_finance_economy_back, economy_panel.get_index())
+	quick_shop_button = Button.new()
+	quick_shop_button.name = "QuickShopButton"
+	quick_shop_button.text = "ui.talent_tree.quick_shop"
+	quick_shop_button.tooltip_text = "ui.talent_tree.quick_shop_description"
+	FinanceUIStyle.bank_button(quick_shop_button)
+	quick_shop_button.add_theme_font_size_override("font_size", 20)
+	quick_shop_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	battle_top_bar.add_child(quick_shop_button)
+	quick_shop_button.pressed.connect(func():
+		if _flow != null: _flow.request_quick_enchantment())
 	_bind_viewport_resize()
 	_apply_combat_layout()
 	if drawer_toggle_button != null and not drawer_toggle_button.pressed.is_connected(_on_drawer_toggle_pressed):
@@ -765,7 +779,7 @@ func _bind_viewport_resize() -> void:
 
 
 func _on_viewport_resized() -> void:
-	if _flow != null and _flow.get_current_state() == MainFlowCoordinator.STATE_FINANCE_POPUP:
+	if _flow != null and _flow.get_current_state() in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT]:
 		var compact := get_viewport().get_visible_rect().size.x < 1000
 		_set_drawer_locked_open(false)
 		_set_drawer_open(not compact, false)
@@ -773,7 +787,7 @@ func _on_viewport_resized() -> void:
 
 
 func _uses_finance_scene_layout() -> bool:
-	return _flow != null and _flow.get_battle_display_state() == MainFlowCoordinator.STATE_FINANCE_POPUP and FinanceSceneLayout.supports(get_viewport().get_visible_rect().size)
+	return _flow != null and _flow.get_battle_display_state() in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT] and FinanceSceneLayout.supports(get_viewport().get_visible_rect().size)
 
 
 func _apply_combat_layout() -> void:
@@ -831,6 +845,7 @@ func _apply_combat_layout() -> void:
 		var economy_right := actions_left - TOP_BAR_GAP - (20.0 if finance_scene else 0.0)
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
+		if _flow != null and _flow.can_open_quick_enchantment(): economy_left += 112
 		var economy_width := 280.0
 		if timer_hidden:
 			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(economy_right, 0.0))
@@ -847,6 +862,8 @@ func _apply_combat_layout() -> void:
 		economy_panel.size = economy_size
 		_finance_economy_back.position = economy_panel.position - Vector2(10, 4)
 		_finance_economy_back.size = economy_size + Vector2(30, 13.333333)
+		quick_shop_button.position = economy_panel.position + Vector2(-112, 12)
+		quick_shop_button.size = Vector2(100, 46)
 	if exp_panel != null:
 		if OS.has_feature("mobile"):
 			exp_panel.anchor_left = 0.28
@@ -922,7 +939,7 @@ func get_modal_safe_rect() -> Rect2:
 
 
 func _refresh_visibility() -> void:
-	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_WAVE_CHALLENGE]
+	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT, MainFlowCoordinator.STATE_WAVE_CHALLENGE]
 	if _flow == null:
 		visible = false
 		if battle_top_bar != null:
@@ -934,6 +951,7 @@ func _refresh_visibility() -> void:
 	var state := _flow.get_battle_display_state()
 	encyclopedia_button.disabled = not _flow.can_open_battle_utility("encyclopedia")
 	settings_button.disabled = not _flow.can_open_battle_utility("settings")
+	quick_shop_button.visible = _flow.can_open_quick_enchantment()
 	if not in_battle or _flow.battle_resolved:
 		visible = false
 	elif state == MainFlowCoordinator.STATE_BATTLE_RESULT:
@@ -957,10 +975,10 @@ func _on_drawer_toggle_pressed() -> void:
 func _on_flow_state_changed(_previous_state: String, current_state: String) -> void:
 	if _flow != null:
 		current_state = _flow.get_battle_display_state()
-	var compact_finance := current_state == MainFlowCoordinator.STATE_FINANCE_POPUP and get_viewport().get_visible_rect().size.x < 1000
+	var compact_finance := current_state in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT] and get_viewport().get_visible_rect().size.x < 1000
 	var lock_drawer_open := DRAWER_LOCKED_OPEN_STATES.has(current_state) and not compact_finance
 	_set_drawer_locked_open(lock_drawer_open)
-	_set_modal_backdrop_visible(lock_drawer_open or current_state == MainFlowCoordinator.STATE_FINANCE_POPUP)
+	_set_modal_backdrop_visible(lock_drawer_open or current_state in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT])
 	if compact_finance:
 		_set_drawer_open(false, false)
 	elif DRAWER_AUTO_OPEN_STATES.has(current_state):

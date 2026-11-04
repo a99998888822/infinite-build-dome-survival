@@ -1,4 +1,29 @@
 keys,zh_CN,en
+ui.talent_tree.not_unlocked,未解锁,Not unlocked
+ui.talent_tree.reserve_progress,备用武器位：%d → %d,Reserve weapon slots: %d → %d
+ui.talent_tree.unlock_after_purchase,升级后解锁,Unlocked after purchase
+ui.talent_tree.reserve_count,（备用位：%d）, (Reserve slots: %d)
+ui.talent_tree.quick_shop,快捷附魔,Quick enchantment
+ui.talent_tree.restock,重新上货,Restock
+ui.talent_tree.restock_description,商店刷新次数+1,Shop rerolls +1
+ui.talent_tree.restock_progress,每波免费刷新：%d → %d,Free shop rerolls per wave: %d → %d
+ui.talent_tree.restock_count,（每波免费刷新：%d）, (Free shop rerolls per wave: %d)
+ui.shop.free_rerolls,免费刷新（%d）,Free reroll (%d)
+ui.shop.free_rerolls_tooltip,重新上货：每波恢复免费刷新次数，用完后可继续付费刷新，未用次数不累积。,Restock: free shop rerolls replenish each wave. Unused rerolls do not carry over. Paid rerolls remain available afterward.
+ui.talent_tree.quick_shop_description,可以随时打开附魔菜单,Open the enchantment menu at any time
+ui.talent_tree.reserve_weapons,备用武装,Reserve weapons
+ui.talent_tree.reserve_weapons_description,增加一件备用武器，可以在战斗期间随时替换,Gain one reserve weapon slot and swap weapons during combat
+ui.quick_shop.away,"老板外出
+附魔台自助使用","Owner away
+Self-service enchanting"
+ui.quick_shop.back,返回战斗,Return to battle
+ui.reserve.equip,装备武器,Equip weapon
+ui.reserve.choice,%s · 负载 %d,%s · Load %d
+ui.quick_shop.select_hint,选择一张附魔，可装备或转移,Select an enchantment to equip or transfer
+ui.reserve.inventory_hint,点击备用武器可装备；附魔可通过快捷附魔调整；Esc 返回,Click a reserve weapon to equip; use Quick enchantment to adjust enchantments; Esc to return
+ui.reserve.replace,选择要替换的武器,Choose a weapon to replace
+ui.reserve.no_room,替换后负载仍不足,Load capacity still exceeded
+ui.reserve.slots,备用：%d/%d,Reserve: %d/%d
 ui.talent_tree.summary,升级属性汇总,Permanent bonuses
 ui.talent_tree.balance,天赋点：%s,Talent points: %s
 ui.talent_tree.navigation,滚轮缩放 · 鼠标点击拖动,Scroll to zoom · Click and drag to pan

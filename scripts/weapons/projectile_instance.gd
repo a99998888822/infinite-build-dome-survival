@@ -147,6 +147,7 @@ func _physics_process(delta: float) -> void:
 
 func _sweep_flight(step: float) -> void:
 	var start := global_position
+	ProjectileGuard.intercept_segment(self, weapon, start, start + direction * step, _hit_shape.radius)
 	var space := get_world_2d().direct_space_state
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = _hit_shape

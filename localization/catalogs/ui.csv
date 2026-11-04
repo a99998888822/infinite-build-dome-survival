@@ -8,6 +8,7 @@ ui.evacuation.distance,地堡 · %d 米,BUNKER · %d m
 ui.evacuation.enter,进入光圈避难,ENTER TO TAKE SHELTER
 ui.evacuation.pressure,增援 ×%.1f · 新增敌人收益 %d%%,Reinforcements ×%.1f · New enemy rewards %d%%
 ui.guide.replay,重看操作指引,Replay control guide
+ui.settings.controls.hide_combat_guide,隐藏新手教程,Hide beginner tutorial
 ui.guide.after_rewards,处理完开局奖励后，将自动显示操作指引。,The control guide will appear after you finish the opening rewards.
 ui.guide.context,操作指引 · 静态示意 · 战斗已暂停,CONTROL GUIDE · STATIC PREVIEW · BATTLE PAUSED
 ui.guide.skip,跳过指引,Skip guide
@@ -504,6 +505,7 @@ ui.weapon.behavior.flail,流星锤头挥击前方扇面,Swings the flail head in
 ui.weapon.behavior.grenade,抛射榴弹，%.2f秒后在落点爆炸。,Lobs a grenade that explodes after %.2f seconds.
 ui.weapon.behavior.lamp,自动喷射%.2fs，每%.2fs灼烧。,"Automatically sprays for %.2fs, burning every %.2fs."
 ui.weapon.behavior.plasma,接触时每%.2f秒灼击，每球最多5次。,"Burns enemies on contact every %.2f seconds, up to 5 times per orb."
+ui.weapon.behavior.plasma_radial,飞行期间接触时每%.2f秒灼击，持续至弹体消失。,Burns enemies on contact every %.2f seconds throughout the orb's flight.
 ui.weapon.behavior.purse,向瞄准方向扇形散射金币，受到远程伤害和本金双加成,Scatters coins in a cone toward your aim. Scales with Ranged Damage and Principal.
 ui.weapon.behavior.ritual,施展法阵，每0.35s点名一次造成伤害,Creates a ritual circle that strikes a target every 0.35s.
 ui.weapon.behavior.spear,刺出长枪，贯穿前方敌人,Thrusts a spear through enemies ahead.
