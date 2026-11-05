@@ -442,7 +442,8 @@ func _refresh_active_combat() -> void:
 	var loadout := _flow.get_bound_loadout()
 	var active := loadout != null and loadout.active_combat_enabled and _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
 	combat_bar.visible = active
-	combat_hints.visible = active and CombatSettings.show_hints
+	# The hint line spells out mouse and keyboard bindings; a phone has neither.
+	combat_hints.visible = active and CombatSettings.show_hints and not MobileProfile.is_mobile()
 	if not active:
 		return
 	if combat_bar.weapons != loadout.weapon_instances:
@@ -798,8 +799,11 @@ func _apply_combat_layout() -> void:
 	var finance_scene := _uses_finance_scene_layout()
 	if finance_scene != _drawer_scene_layout:
 		_drawer_scene_layout = finance_scene
-		stats_drawer.offset_top = 90
-		stats_drawer.offset_bottom = -90
+		# A lifted phone layout is shorter, so its drawer spends less of the page
+		# on empty margins and more on rows.
+		var drawer_margin := 56.0 if MobileProfile.is_mobile() else 90.0
+		stats_drawer.offset_top = drawer_margin
+		stats_drawer.offset_bottom = -drawer_margin
 		drawer_toggle_button.offset_left = 4 if finance_scene else 0
 		drawer_toggle_button.offset_right = 32 if finance_scene else 28
 		_set_drawer_open(_drawer_open, false)
@@ -832,7 +836,8 @@ func _apply_combat_layout() -> void:
 		wave_panel.size = timer_size
 	var actions := encyclopedia_button.get_parent() as Control
 	# Leave room for the corner scenery, reducing the inset on narrow windows.
-	var actions_shift := clampf((viewport_width - 800.0) * 0.25, 0.0, TOP_BAR_ACTIONS_SHIFT)
+	# A phone already lost that width to the UI lift, so it keeps the full margin.
+	var actions_shift := 0.0 if MobileProfile.is_mobile() else clampf((viewport_width - 800.0) * 0.25, 0.0, TOP_BAR_ACTIONS_SHIFT)
 	var actions_margin := TOP_BAR_MARGIN + actions_shift
 	actions.offset_left = -actions_margin - TOP_BAR_ACTIONS_WIDTH
 	actions.offset_right = actions.offset_left + TOP_BAR_ACTIONS_WIDTH
@@ -845,7 +850,9 @@ func _apply_combat_layout() -> void:
 		var economy_right := actions_left - TOP_BAR_GAP - (20.0 if finance_scene else 0.0)
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
-		if _flow != null and _flow.can_open_quick_enchantment(): economy_left += 112
+		# The quick-enchant button sits under the panel on a phone instead of
+		# taking horizontal room the lifted layout no longer has.
+		if _flow != null and _flow.can_open_quick_enchantment() and not MobileProfile.is_mobile(): economy_left += 112
 		var economy_width := 280.0
 		if timer_hidden:
 			economy_width = minf(MODAL_ECONOMY_WIDTH, maxf(economy_right, 0.0))
@@ -862,7 +869,7 @@ func _apply_combat_layout() -> void:
 		economy_panel.size = economy_size
 		_finance_economy_back.position = economy_panel.position - Vector2(10, 4)
 		_finance_economy_back.size = economy_size + Vector2(30, 13.333333)
-		quick_shop_button.position = economy_panel.position + Vector2(-112, 12)
+		quick_shop_button.position = economy_panel.position + (Vector2(0, economy_size.y + 6) if MobileProfile.is_mobile() else Vector2(-112, 12))
 		quick_shop_button.size = Vector2(100, 46)
 	if exp_panel != null:
 		if MobileProfile.is_mobile():

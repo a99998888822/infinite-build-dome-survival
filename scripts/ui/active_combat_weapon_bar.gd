@@ -178,7 +178,7 @@ func apply_layout() -> void:
 	var rows := ceili(float(count) / columns)
 	var width := columns * slot_size + (columns - 1) * slot_gap if count > 0 else 0.0
 	size = Vector2(width, rows * slot_size + maxi(0, rows - 1) * ROW_GAP + ceili(CAST_MODE_SIZE))
-	position = Vector2(floorf((viewport_size.x - size.x) * 0.5), floorf(viewport_size.y - size.y - 38))
+	position = Vector2(floorf((viewport_size.x - size.x) * 0.5), floorf(viewport_size.y - size.y - 38 - MobileProfile.bottom_inset()))
 	for i in cards.size():
 		var row := i / columns
 		var row_count := mini(columns, count - row * columns)

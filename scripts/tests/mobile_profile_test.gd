@@ -8,7 +8,15 @@ var failures := 0
 
 
 func _ready() -> void:
-	_run.call_deferred()
+	_begin.call_deferred()
+
+
+func _begin() -> void:
+	# WindowSettings applies the scale over two deferred hops; the window probe
+	# below has to wait for that before it can see the result.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_run()
 
 
 func check(value: bool, note: String) -> void:
@@ -23,6 +31,9 @@ func _run() -> void:
 	check(MobileProfile.uses_pointer() == not mobile, "pointer model stays desktop-only")
 	check(MobileProfile.ui_scale > 1.0 if mobile else is_equal_approx(MobileProfile.ui_scale, 1.0), "ui scale follows the profile")
 	check(MobileProfile.weapon_available("weapon_void_blade"), "ordinary weapons stay available everywhere")
+	check(MobileProfile.bottom_inset() > 0.0 if mobile else is_equal_approx(MobileProfile.bottom_inset(), 0.0), "bottom inset follows the profile")
+	# The profile reaches the real window, not just the widgets.
+	check(is_equal_approx(get_tree().root.content_scale_factor, MobileProfile.ui_scale), "window content scale follows the profile")
 
 	var mobility_ids := _mobility_weapon_ids()
 	check(not mobility_ids.is_empty(), "mobility behaviours map to real weapons")

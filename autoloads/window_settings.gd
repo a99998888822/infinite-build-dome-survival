@@ -158,6 +158,12 @@ func _apply_queued_settings() -> void:
 
 
 func _apply_window_settings(target_size: Vector2i, target_fullscreen: bool) -> void:
+	var root := get_tree().root if get_tree() != null else null
+	if root != null:
+		# The canvas is a fixed 1920x1080 and a handheld renders it 1:1, so the
+		# phone profile lifts the whole UI instead of every widget chasing its own
+		# font size. Desktop keeps 1.0 and therefore the historical pixels.
+		root.content_scale_factor = MobileProfile.ui_scale
 	var window := _get_main_window()
 	if window == null or window.is_embedded():
 		return

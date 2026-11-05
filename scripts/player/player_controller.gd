@@ -91,6 +91,8 @@ var action_animator := PlayerActionAnimator.new()
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
 @onready var pickup_shape: CollisionShape2D = get_node_or_null("PickupArea/CollisionShape2D")
 @onready var camera_2d: Camera2D = get_node_or_null("Camera2D")
+## Scene-authored zoom, captured once so the phone profile can scale around it.
+var _camera_base_zoom := Vector2(-1, -1)
 
 
 func _init() -> void:
@@ -855,6 +857,14 @@ func _configure_visual_body(visuals: Dictionary) -> void:
 
 func _sync_camera(delta: float = 0.0) -> void:
 	if camera_2d != null:
+		if _camera_base_zoom.x <= 0.0:
+			_camera_base_zoom = camera_2d.zoom
+		# The phone profile lifts the whole canvas for readability. Undo that on
+		# the world camera so a handheld still sees the battlefield the levels
+		# were tuned for, and only the interface grows.
+		var target_zoom := _camera_base_zoom / MobileProfile.ui_scale if MobileProfile.is_mobile() else _camera_base_zoom
+		if not camera_2d.zoom.is_equal_approx(target_zoom):
+			camera_2d.zoom = target_zoom
 		# Viewport-relative composition also survives zoom, resizing and blink drag.
 		var framing_y := get_viewport_rect().size.y * (0.5 - CAMERA_SUBJECT_Y)
 		camera_2d.offset.y = roundf(framing_y) / camera_2d.zoom.y
