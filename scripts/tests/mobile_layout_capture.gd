@@ -70,8 +70,56 @@ func _go() -> void:
 	if flow.has_method("_request_wave_end_finance") and flow._request_wave_end_finance():
 		await frames(30)
 		await _save("03_bank")
+		_dump_region(Vector2(300, 60), Vector2(420, 160), "bank_top_left")
+		_dump_text("金", "bank_money")
+		_dump_text("本金", "bank_principal")
 	print("CAPTURE_DONE dir=%s window=%s mobile=%s" % [capture_dir, window_size, MobileProfile.is_mobile()])
 	get_tree().quit(0)
+
+
+func _dump_region(origin: Vector2, extent: Vector2, tag: String) -> void:
+	## Lists every visible control whose rect touches the probe, for layout triage.
+	var probe := Rect2(origin, extent)
+	var found: Array[String] = []
+	for node in get_tree().root.find_children("*", "Control", true, false):
+		var control := node as Control
+		if control == null or not control.is_visible_in_tree():
+			continue
+		if not probe.intersects(control.get_global_rect()):
+			continue
+		var text := ""
+		if control is Label:
+			text = (control as Label).text
+		elif control is RichTextLabel:
+			text = (control as RichTextLabel).text
+		elif control is Button:
+			text = (control as Button).text
+		if text.is_empty():
+			continue
+		found.append("%s(%s) rect=%s text=%s" % [control.name, control.get_class(), control.get_global_rect(), text.left(40)])
+	print("DUMP %s probe=%s hits=%d" % [tag, probe, found.size()])
+	for line in found:
+		print("DUMP   " + line)
+
+
+func _dump_text(needle: String, tag: String) -> void:
+	## Reports every label whose text contains needle, with the width it needs.
+	for node in get_tree().root.find_children("*", "Control", true, false):
+		var control := node as Control
+		if control == null or not control.is_visible_in_tree():
+			continue
+		var text := ""
+		if control is Label:
+			text = (control as Label).text
+		elif control is RichTextLabel:
+			text = (control as RichTextLabel).text
+		if text.is_empty() or not text.contains(needle):
+			continue
+		print("DUMP %s %s rect=%s min=%s parent=%s(%s) parent_rect=%s text=%s" % [
+			tag, control.name, control.get_global_rect(), control.get_combined_minimum_size(),
+			control.get_parent().name, control.get_parent().get_class(),
+			(control.get_parent() as Control).get_global_rect() if control.get_parent() is Control else Rect2(),
+			text.left(24)])
 
 
 func _save(name: String) -> void:
