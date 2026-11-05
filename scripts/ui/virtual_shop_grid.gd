@@ -37,8 +37,8 @@ func _ready() -> void:
 
 func set_offers(next_offers: Array, reset_scroll: bool = false) -> void:
 	offers = next_offers
-	_card_height = CARD_HEIGHT
-	_card_min_width = CARD_MIN_WIDTH
+	_card_height = 200.0 if MobileProfile.is_mobile() else CARD_HEIGHT
+	_card_min_width = 172.0 if MobileProfile.is_mobile() else CARD_MIN_WIDTH
 	for offer: Dictionary in offers:
 		var texture := FinanceUIStyle.item_icon(str(offer.get("icon", "")), "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
 		if FinanceUIStyle.is_native_relic_icon(texture):
@@ -63,7 +63,7 @@ func _layout() -> void:
 	_card_height = _base_card_height
 	_pending_card_height = 0.0
 	var usable := maxf(100.0, size.x - 16.0)
-	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 4)
+	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 3 if MobileProfile.is_mobile() else 4)
 	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
 	_last_start = -1
 	_refresh_pool(true)

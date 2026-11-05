@@ -43,6 +43,8 @@ func _configure_content_scale() -> void:
 		int(ProjectSettings.get_setting("display/window/size/viewport_width")),
 		int(ProjectSettings.get_setting("display/window/size/viewport_height")),
 	)
+	if MobileProfile.is_mobile():
+		MobileProfile.apply_to_window(window)
 
 
 func _notification(what: int) -> void:
@@ -163,7 +165,21 @@ func _fit_world_viewport() -> void:
 	if not is_instance_valid(_world_viewport_container):
 		return
 	var canvas_size := get_viewport().get_visible_rect().size
-	_world_viewport_container.scale = canvas_size / Vector2(WORLD_RENDER_SIZE)
+	var render_size := WORLD_RENDER_SIZE
+	if MobileProfile.is_mobile() and canvas_size.x > 0.0 and canvas_size.y > 0.0:
+		# A 20:9 phone expands the canvas horizontally. Stretching the 16:9 world
+		# target into it made the container scale x 0.86 / y 0.69, so every sprite
+		# rendered 25% wider (squashed). Matching the world target to the phone
+		# aspect keeps the scale uniform: more battlefield, one world unit still
+		# one physical pixel.
+		render_size = Vector2i(
+			int(round(float(WORLD_RENDER_SIZE.y) * canvas_size.x / canvas_size.y)),
+			WORLD_RENDER_SIZE.y,
+		)
+	if _world_viewport != null and _world_viewport.size != render_size:
+		_world_viewport.size = render_size
+	_world_viewport_container.size = Vector2(render_size)
+	_world_viewport_container.scale = Vector2.ONE * (canvas_size.y / float(render_size.y))
 
 
 

@@ -1108,7 +1108,7 @@
   "投射物数量+1，保留一枚主弹，其余投射物环绕主弹飞行。新增弹体使用原始单弹伤害和体积。与环射互斥。": "enchantment.satellite.description",
   "卫星": "enchantment.satellite.name",
   "刚焰炉": "content.weapons.weapon_furnace.display_name",
-  "受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。": "content.weapons.weapon_furnace.description",
+  "冷却结束时自动弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。": "content.weapons.weapon_furnace.description",
   "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]": "content.weapons.weapon_furnace.level_2.description",
   "元素基础伤害 [color=#7FD88F]+4[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]": "content.weapons.weapon_furnace.level_3.description",
   "元素基础伤害 [color=#7FD88F]+8[/color]\n火圈数量 [color=#7FD88F]+1[/color]": "content.weapons.weapon_furnace.level_5.description",
@@ -1147,6 +1147,7 @@
   "升级属性汇总": "ui.talent_tree.summary",
   "天赋点：%s": "ui.talent_tree.balance",
   "滚轮缩放 · 鼠标点击拖动": "ui.talent_tree.navigation",
+  "点击拖动": "ui.talent_tree.navigation_touch",
   "花费 %d 天赋点升级": "ui.talent_tree.upgrade_tooltip",
   "升级花费 %d天赋点": "ui.talent_tree.cost",
   "已升满": "ui.talent_tree.maxed",
@@ -1234,6 +1235,7 @@
   "  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准": "ui.hud.controls.auto_attack_suffix",
   "  ·  右键 / Esc 取消瞄准": "ui.hud.controls.cancel_aim_suffix",
   "  ·  滚轮切换武器": "ui.hud.controls.wheel_suffix",
+  "暂停 / 背包": "ui.hud.pause",
   "哥布林教你地下城": "ui.main_menu.game_title",
   "版本 v.0106.261018": "ui.main_menu.version",
   "自动攻击": "ui.settings.controls.auto_attack",
@@ -1253,5 +1255,9 @@
   "每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。": "ui.settlement.interest_tooltip",
   "每 %d 只敌人折算 1 天赋点。": "ui.settlement.kills_tooltip",
   "每完整度过一波获得 %d 天赋点。": "ui.settlement.waves_tooltip",
-  "飞行期间接触时每%.2f秒灼击，持续至弹体消失。": "ui.weapon.behavior.plasma_radial"
+  "飞行期间接触时每%.2f秒灼击，持续至弹体消失。": "ui.weapon.behavior.plasma_radial",
+  "摇杆": "ui.settings.mobile.joystick",
+  "攻击方式": "ui.settings.mobile.attack",
+  "全屏显示 · 摇杆移动 · 武器自动攻击": "ui.settings.mobile.fixed_hint",
+  "武器自动攻击；附魔请前往理财页面": "ui.inventory.mobile_hint"
 }

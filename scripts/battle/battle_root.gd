@@ -154,7 +154,8 @@ func _bind_mobile_joystick() -> void:
 		return
 	if not mobile_joystick.direction_changed.is_connected(_on_mobile_joystick_direction_changed):
 		mobile_joystick.direction_changed.connect(_on_mobile_joystick_direction_changed)
-	mobile_joystick.set_touch_blocker_root(hud)
+	# Top-bar actions are siblings of HUD, so reserve their touch regions too.
+	mobile_joystick.set_touch_blocker_root(hud, [get_node("BattleTopBar")])
 	mobile_joystick.set_mobile_input_enabled(false)
 
 

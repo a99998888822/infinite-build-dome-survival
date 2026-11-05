@@ -41,6 +41,11 @@ func apply_to_window(window: Window) -> void:
 	# field of view and lets the extra width show more battlefield instead of
 	# letterboxing 240 px on each side. Desktop keeps the authored aspect.
 	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND if is_mobile() else Window.CONTENT_SCALE_ASPECT_KEEP
+	# The mobile UI owns the whole display. Capture hosts keep their requested
+	# dimensions on a private desktop instead of changing the native window mode.
+	if is_mobile() and DisplayServer.get_name() != "headless" and not window.is_embedded() \
+			and not "--background-capture" in OS.get_cmdline_user_args():
+		window.mode = Window.MODE_FULLSCREEN
 
 
 func is_mobile() -> bool:
@@ -49,8 +54,7 @@ func is_mobile() -> bool:
 
 
 func is_device() -> bool:
-	## Real handheld hardware only. Window and display locks use this so a forced
-	## desktop run keeps its normal resolution settings.
+	## Real handheld hardware only; presentation locks also apply in preview mode.
 	return not _forced and OS.has_feature("mobile")
 
 

@@ -6,11 +6,6 @@ const BANK_FORM_HEIGHT := 200.0
 
 
 static func supports(size: Vector2) -> bool:
-	# The composition scales panels by viewport/1920 while font sizes stay
-	# absolute, so a lifted phone viewport (~1324x745 logical) squeezes panels
-	# under their own labels. Phones use the compact popup instead.
-	if MobileProfile.is_mobile():
-		return false
 	return size.x >= 1000 and size.y >= 540
 
 
@@ -25,8 +20,11 @@ static func arrange(ui) -> void:
 	var sy := viewport.y / 1080.0
 	var bank_x := roundf(57 * sx)
 	var bank_w := 340 * sx
+	var phone := MobileProfile.is_mobile()
+	# Retain the PC counter composition with room for the enlarged phone text.
+	if phone: bank_w = maxf(280.0, bank_w)
 	# Give the bank's former 170 pixels to both workspaces; retain the 80px gap.
-	var work_x := roundf(bank_x + bank_w + 80 * sx)
+	var work_x := roundf(bank_x + bank_w + (28.0 if phone else 80 * sx))
 	var right := minf(1580 * sx, minf(viewport.x - 60, ui._safe_rect.end.x))
 	var work_w := maxf(260, right - work_x)
 	var loan_space: float = ui.loan_presentation.reserved_height()
@@ -36,6 +34,7 @@ static func arrange(ui) -> void:
 	ui._compact = false
 	ui._bank_header.hide()
 	var actor_size := Vector2.ONE * BankCounterPortrait.FRAME_SIZE
+	if phone: actor_size *= sy
 	# Align the current portrait's waist with the wooden counter's back edge.
 	# Using its body anchor keeps the torso from floating above the tabletop.
 	var waist := Vector2(326.666667 * sx, 593.333333 * sy)
@@ -48,9 +47,16 @@ static func arrange(ui) -> void:
 	ui._title.add_theme_constant_override("shadow_offset_x", 0)
 	ui._title.add_theme_constant_override("shadow_offset_y", 0)
 	place(ui._title, Rect2(970 * sx, 187 * sy, 383 * sx, 60 * sy))
+	if phone:
+		FinanceUIStyle.label(ui._title, 32, Color("45352d"))
+		# Centre in the exposed parchment, leaving breathing room by the drawer.
+		var title_left := 960 * sx
+		var title_right := minf(1360 * sx, viewport.x - BattleHud.DRAWER_SKIN.MOBILE_DISPLAY_WIDTH - 24.0)
+		place(ui._title, Rect2(title_left, 160 * sy, title_right - title_left, 88 * sy))
 	ui._summary.hide()
-	place(ui._tabs, Rect2(work_x, 353 * sy, work_w, 50))
-	var content_y := 353 * sy + 63
+	var tabs_y := (313.0 if phone else 353.0) * sy
+	place(ui._tabs, Rect2(work_x, tabs_y, work_w, 50))
+	var content_y := tabs_y + (58.0 if phone else 63.0)
 	var content_h := maxf(80, content_bottom - content_y)
 	place(ui._enchant_scroll, Rect2(work_x + 20, content_y + 20, work_w - 40, maxf(40, content_h - 40)))
 	ui.workbench.custom_minimum_size.y = 460
@@ -81,6 +87,10 @@ static func arrange(ui) -> void:
 	if ui.trade_presentation != null and ui.trade_presentation.is_active():
 		var height: float = minf(ui.trade_presentation.get_preferred_height(bank_w), bank_y - 82)
 		ui.trade_presentation.arrange(Rect2(bank_x, bank_y - height - 12, bank_w, height), ui.portrait.get_rect(), Rect2(Vector2.ZERO, viewport))
+		if phone:
+			# Keep the speech in the bank column instead of over the shop tabs.
+			var speech: Control = ui.trade_presentation._speech
+			speech.position = Vector2(bank_x, maxf(90.0, bank_y - height - speech.size.y - 20.0))
 	var sale_size := Vector2(minf(560, right - 48), minf(440, viewport.y - 112))
 	place(ui._sale_box, Rect2((viewport - sale_size) * 0.5, sale_size))
 	ui.interest_arrival.arrange(viewport, Vector2(88, 56), Rect2(16, 56, viewport.x - 32, viewport.y - 112))

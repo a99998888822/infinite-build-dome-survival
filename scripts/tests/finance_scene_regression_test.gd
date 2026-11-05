@@ -34,10 +34,10 @@ func capture(label: String) -> void:
 
 
 func _run() -> void:
-	# Everything below asserts the 1920x1080 bank composition. Phones run the
-	# compact popup instead, which scenes/tests/mobile_bank_test.tscn covers.
+	# Native desktop coordinates are covered here; mobile_bank_test covers the
+	# same scene composition with the lifted phone viewport and larger captions.
 	if MobileProfile.is_mobile():
-		print("FINANCE_SCENE_REGRESSION skipped: phone uses the compact bank popup")
+		print("FINANCE_SCENE_REGRESSION skipped: phone geometry covered by mobile_bank_test")
 		get_tree().quit(0)
 		return
 	CampProgression.begin_transient_session()

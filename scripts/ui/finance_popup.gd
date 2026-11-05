@@ -386,7 +386,7 @@ func _build() -> void:
 	amount_input.placeholder_text = "ui.bank.amount_placeholder"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-	amount_input.add_theme_font_size_override("font_size", 12)
+	amount_input.add_theme_font_size_override("font_size", 20 if MobileProfile.is_mobile() else 12)
 	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
 	var input_focus := StyleBoxFlat.new()
@@ -634,6 +634,7 @@ func _layout() -> void:
 	for panel in [_scene_bank_back, _scene_enchant_back, _scene_footer_back]:
 		panel.visible = _scene_wide
 	if _scene_wide:
+		scene_background.show()
 		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		FinanceSceneLayout.arrange(self)
 		_layout_enchantment_notice()
@@ -647,21 +648,10 @@ func _layout() -> void:
 	var h := main_panel.size.y
 	var loan_space := loan_presentation.reserved_height() if loan_presentation != null else 0.0
 	var footer_bottom := h-loan_space
-	# The bank set (background art, counter panels, cashier portrait) belongs to
-	# the desktop composition; the phone popup draws only its own panel.
-	if MobileProfile.is_mobile():
-		if scene_background != null: scene_background.visible = false
-		if _scene_bank_back != null: _scene_bank_back.visible = false
-		if _scene_enchant_back != null: _scene_enchant_back.visible = false
-		if _scene_footer_back != null: _scene_footer_back.visible = false
-		if portrait != null: portrait.visible = false
-		if _bank_header != null: _bank_header.visible = false
 	_compact = w < 700
 	var short_window := get_viewport().get_visible_rect().size.y < 480
-	# A lifted phone canvas is narrower, so the same content keeps smaller edges
-	# instead of losing a fifth of its width to outer padding.
-	var edge := 12.0 if MobileProfile.is_mobile() else 20.0
-	var column_gap := 8.0 if MobileProfile.is_mobile() else (12.0 if _compact else 16.0)
+	var edge := 20.0
+	var column_gap := 12.0 if _compact else 16.0
 	FinanceUIStyle.label(_title, 30 if short_window else 37)
 	_place(_title, Rect2(edge, 6 if short_window else 12, w - edge * 2, 26 if short_window else 30))
 	var body_y := 36.0 if short_window else 48.0
@@ -694,7 +684,7 @@ func _layout() -> void:
 		header_h = minf(header_h, maxf(48, body_bottom - body_y - trade_height - reserved_space))
 	# Integer scroll origins keep the last form row fully inside the viewport.
 	header_h = floorf(header_h)
-	portrait.visible = not MobileProfile.is_mobile()
+	portrait.show()
 	_place(_bank_header, Rect2(edge, body_y, bank_width, header_h))
 	_place(portrait, _bank_header.get_rect())
 	var bank_rect := Rect2(work_x, content_y, work_w, content_h) if _compact else Rect2(edge, body_y + header_h + 8, bank_width, maxf(24, body_bottom - body_y - header_h - 8))

@@ -7,6 +7,11 @@ const MAIN_MENU_TITLE_SCALES := {
 	MAIN_MENU_TITLE_TEXTURE_PATH: 2.0,
 	"res://assets/ui/main_menu/title_main_menu_en.png": 1.0,
 }
+## A 1.45x phone only sees 745 design pixels of height. The authored column is
+## 333 (title) + 53 (spacer) + 413 (buttons) = 799, which pushed the Quit button
+## past the bottom edge, so the phone trims the band above the buttons instead.
+const MOBILE_TITLE_HEIGHT := 264.0
+const MOBILE_MIDDLE_SPACER := 24.0
 const CHARACTER_SELECT_VIEW: Script = preload("res://scripts/ui/character_select_view.gd")
 
 var character_view: CharacterSelectView
@@ -72,7 +77,9 @@ func _ready() -> void:
 	L10n.locale_changed.connect(_on_locale_changed)
 	_create_settings_ui()
 	get_viewport().size_changed.connect(_layout_settings)
+	get_viewport().size_changed.connect(_on_viewport_resized)
 	_setup_menu_atmosphere()
+	_apply_mobile_layout()
 	if start_battle_button != null and not start_battle_button.pressed.is_connected(_on_start_battle_pressed):
 		start_battle_button.pressed.connect(_on_start_battle_pressed)
 	if camp_entry_button != null and not camp_entry_button.pressed.is_connected(_on_talents_pressed):
@@ -99,6 +106,51 @@ func _process(_delta: float) -> void:
 
 func _setup_menu_atmosphere() -> void:
 	_layout_title_art()
+
+
+func _on_viewport_resized() -> void:
+	_apply_mobile_background()
+
+
+func _apply_mobile_layout() -> void:
+	if not MobileProfile.is_mobile():
+		return
+	_apply_mobile_menu_metrics()
+	_apply_mobile_background()
+
+
+func _apply_mobile_menu_metrics() -> void:
+	var content_margin := get_node_or_null("StartPage/ContentMargin") as Control
+	var title_area := get_node_or_null("StartPage/ContentMargin/ContentColumn/TitleArea") as Control
+	var middle_spacer := get_node_or_null("StartPage/ContentMargin/ContentColumn/MiddleSpacer") as Control
+	var button_area := get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea") as Control
+	var button_row := get_node_or_null("StartPage/ContentMargin/ContentColumn/ButtonArea/ButtonCenter/ButtonRow") as Control
+	if content_margin == null or title_area == null or middle_spacer == null or button_area == null or button_row == null:
+		return
+	content_margin.anchor_top = 0.035
+	content_margin.anchor_bottom = 0.965
+	title_area.custom_minimum_size.y = MOBILE_TITLE_HEIGHT
+	middle_spacer.custom_minimum_size.y = MOBILE_MIDDLE_SPACER
+	# Keep the authored button height (93) and spacing; only the band above it
+	# shrinks, so all four buttons stay reachable and thumb-sized.
+	button_area.custom_minimum_size.y = button_row.get_combined_minimum_size().y
+
+
+func _apply_mobile_background() -> void:
+	if not MobileProfile.is_mobile() or start_page_background == null:
+		return
+	var source := Vector2(1024.0, 572.0)
+	if start_page_background.texture != null:
+		source = start_page_background.texture.get_size()
+	var viewport_size := get_viewport().get_visible_rect().size
+	# Cover the frame, then pin the right and bottom edges. Centering the 2x art
+	# cropped the goblin's raised arm and the ledger; covering the width keeps
+	# the whole 16:9 scene and only trims the cave ceiling.
+	var cover := maxf(viewport_size.x / source.x, viewport_size.y / source.y)
+	var art_size := (source * cover).round()
+	start_page_background.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	start_page_background.size = art_size
+	start_page_background.position = (viewport_size - art_size).round()
 
 
 func _layout_title_art() -> void:
@@ -457,41 +509,48 @@ func _apply_start_page_assets() -> void:
 func _create_language_selector() -> void:
 	if start_page == null:
 		return
+	var mobile := MobileProfile.is_mobile()
+	# A phone gets a thumb-sized control; the desktop row keeps its authored size.
+	var font_size := 20 if mobile else 16
+	var option_size := Vector2(220, 58) if mobile else Vector2(160, 38)
+	var row_top := 20.0 if mobile else 18.0
 	var row := HBoxContainer.new()
 	row.name = "LanguageSelector"
 	start_page.add_child(row)
 	row.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	row.offset_left = -268
-	row.offset_right = -20
-	row.offset_top = 18
-	row.offset_bottom = 56
-	row.add_theme_constant_override("separation", 8)
+	row.offset_left = -420 if mobile else -268
+	row.offset_right = -24 if mobile else -20
+	row.offset_top = row_top
+	row.offset_bottom = row_top + option_size.y
+	row.add_theme_constant_override("separation", 12 if mobile else 8)
 	var label := Label.new()
 	label.text = "ui.main_menu.language"
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	label.add_theme_font_size_override("font_size", 16)
+	if mobile:
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", Color("dcc795"))
 	row.add_child(label)
 	_language_option = OptionButton.new()
 	_language_option.name = "LanguageOption"
-	_language_option.custom_minimum_size = Vector2(160, 38)
+	_language_option.custom_minimum_size = option_size
 	_language_option.size_flags_horizontal = Control.SIZE_SHRINK_END
 	_language_option.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_language_option.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	for id in L10n.supported_locales:
 		_language_option.add_item(str(L10n.locale_definitions[id].native_name))
-	_language_option.add_theme_font_size_override("font_size", 16)
+	_language_option.add_theme_font_size_override("font_size", font_size)
 	_language_option.add_theme_color_override("font_color", Color("e2d5b3"))
 	for state in ["normal", "hover", "pressed", "focus"]:
-		_language_option.add_theme_stylebox_override(state, _language_style(state in ["hover", "focus"]))
+		_language_option.add_theme_stylebox_override(state, _language_style(state in ["hover", "focus"], mobile))
 	var popup := _language_option.get_popup()
-	popup.add_theme_stylebox_override("panel", _language_style(false))
-	popup.add_theme_stylebox_override("hover", _language_style(true))
+	popup.add_theme_stylebox_override("panel", _language_style(false, mobile))
+	popup.add_theme_stylebox_override("hover", _language_style(true, mobile))
 	popup.add_theme_color_override("font_color", Color("e2d5b3"))
 	popup.add_theme_color_override("font_hover_color", Color("fff0bd"))
-	popup.add_theme_font_size_override("font_size", 16)
-	popup.add_theme_constant_override("v_separation", 12)
+	popup.add_theme_font_size_override("font_size", font_size)
+	popup.add_theme_constant_override("v_separation", 14 if mobile else 12)
 	popup.add_theme_constant_override("start_padding", 12)
 	popup.add_theme_constant_override("end_padding", 12)
 	popup.add_theme_constant_override("indent", 10)
@@ -502,15 +561,15 @@ func _create_language_selector() -> void:
 	_language_option.item_selected.connect(func(index: int): L10n.set_locale(L10n.supported_locales[index]))
 
 
-func _language_style(highlighted: bool) -> StyleBoxFlat:
+func _language_style(highlighted: bool, mobile: bool = false) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("27362b") if highlighted else Color("111d18")
 	style.border_color = Color("d6b476") if highlighted else Color("887647")
 	style.set_border_width_all(2)
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	style.content_margin_top = 7
-	style.content_margin_bottom = 7
+	style.content_margin_left = 18 if mobile else 12
+	style.content_margin_right = 18 if mobile else 12
+	style.content_margin_top = 12 if mobile else 7
+	style.content_margin_bottom = 12 if mobile else 7
 	return style
 
 

@@ -88,9 +88,9 @@ func wall(at: Vector2) -> void:
 	body.global_position = at
 	walls.append(body)
 
-func damage() -> FurnaceRuntime:
-	player._invincibility_timer = 0.0
-	player.take_damage(1, "integration_enemy")
+func automatic_furnace() -> FurnaceRuntime:
+	# Exercise a normal automatic cast without receiving damage.
+	loadout.active_casting.cast(furnace, player.global_position, true)
 	freeze()
 	var list := get_tree().get_nodes_in_group("furnace_runtimes")
 	return list.back() as FurnaceRuntime if not list.is_empty() else null
@@ -162,30 +162,36 @@ func _test_furnace() -> void:
 	var outside := enemy(Vector2(240,0))
 	await frames()
 	check(not loadout.cast_weapon(furnace, Vector2.ZERO), "furnace cannot cast manually")
-	loadout.active_casting.auto_attack()
-	check(fired == 0, "furnace does not auto fire just because enemies exist")
 	player.take_damage(0)
-	check(fired == 0, "zero damage cannot trigger")
+	check(fired == 0, "damage does not trigger furnace")
+	# Isolate the furnace while still exercising the production auto loop.
+	var held_saber := loadout.weapon_instances.pop_back() as WeaponInstance
+	loadout.active_casting.auto_attack()
+	loadout.weapon_instances.append(held_saber)
+	freeze()
+	check(fired == 1 and player.current_hp == 1000, "furnace fires automatically without taking damage")
 	player.current_shield = 10
-	var runtime := damage()
-	check(runtime != null and fired == 1 and player.current_hp == 1000, "shield damage triggers passive")
+	player._invincibility_timer = 0.0
+	player.take_damage(1, "integration_enemy")
+	var runtime := automatic_furnace()
+	check(runtime != null and fired == 1 and player.current_hp == 1000, "shield damage cannot add an extra automatic cast")
 	player.take_damage(1)
 	check(fired == 1, "invulnerability blocks triggers")
-	damage()
-	check(fired == 1, "cooldown blocks repeated damage")
+	automatic_furnace()
+	check(fired == 1, "cooldown blocks repeated automatic calls")
 	await step(48)
 	check(target.current_hp == 9976 and outside.current_hp == 10000, "one ring hits once within reach")
 	check(target.has_status("burning") and is_equal_approx(target._burn_damage_per_tick, 2.4), "native burn uses 10 percent per half second")
-	check(is_equal_approx(float(loadout.active_casting.state_for(furnace).remaining), 2.2), "passive cooldown starts on trigger")
+	check(is_equal_approx(float(loadout.active_casting.state_for(furnace).remaining), 2.2), "automatic cooldown starts on cast")
 	await step(134)
-	damage()
-	check(fired == 2, "passive becomes ready after three seconds")
+	automatic_furnace()
+	check(fired == 2, "automatic furnace becomes ready after three seconds")
 	await reset()
 	furnace.runtime_stats.projectile_count = 3
 	var duplicate := enemy(Vector2(90,0))
 	duplicate.add_child(duplicate.get_node("CollisionShape2D").duplicate())
 	await frames()
-	runtime = damage()
+	runtime = automatic_furnace()
 	check(runtime.knockback_count == 1, "only initial burst knocks back, deduplicated")
 	await step(75)
 	check(duplicate.current_hp == 9928, "three rings give exactly three hits")
@@ -195,7 +201,7 @@ func _test_furnace() -> void:
 	check(furnace.attach_item_instance(split), "furnace supports split")
 	var outer := enemy(Vector2(192,0))
 	await frames()
-	damage()
+	automatic_furnace()
 	await step(80)
 	check(outer.current_hp == 9989 and outer.has_status("burning"), "outer flares deal 45 percent damage once")
 	check(is_equal_approx(outer._burn_damage_per_tick, 1.08), "split burning scales once")
@@ -203,7 +209,7 @@ func _test_furnace() -> void:
 	wall(Vector2(60,0))
 	var blocked := enemy(Vector2(100,0))
 	await frames()
-	damage()
+	automatic_furnace()
 	await step(48)
 	check(blocked.current_hp == 10000, "furnace does not damage through terrain")
 
@@ -271,7 +277,7 @@ func _test_cleanup() -> void:
 	loadout._clear_weapon_runtime(saber)
 	await frames()
 	check(not player.is_mobility_moving() and saber.mobility_runtime == null, "removal cancels jump and releases motion lock")
-	damage()
+	automatic_furnace()
 	player.alive = false
 	await step(1)
 	check(get_tree().get_nodes_in_group("furnace_runtimes").is_empty(), "death releases furnace visuals")

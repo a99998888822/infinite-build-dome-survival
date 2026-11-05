@@ -204,7 +204,12 @@ func _ready() -> void:
 func _fit_composition() -> void:
 	_hide_item_tooltip()
 	if canvas == null: return
-	canvas.position = (size - DESIGN_SIZE) * 0.5
+	# Scale the whole composition and center it. Scaling only the children (as an
+	# earlier phone pass did) left the canvas at 1920x1080, so the screen
+	# collapsed into the top-left corner and the rest showed the matte.
+	var space := _space_scale()
+	canvas.scale = Vector2.ONE * space
+	canvas.position = ((size - DESIGN_SIZE * space) * 0.5).round()
 	ItemIconArt.refresh_branch(canvas)
 
 
@@ -525,12 +530,9 @@ func _process(delta: float) -> void:
 
 func _place(parent: Node, control: Control, rect: Rect2) -> void:
 	parent.add_child(control)
-	# This screen is authored in 1920x1080 coordinates. A lifted phone canvas is
-	# smaller, so every anchor is scaled into the space that actually exists
-	# instead of sliding off the right edge.
-	var space := _space_scale()
-	control.position = rect.position * space
-	control.size = rect.size * space
+	# Design coordinates: _fit_composition scales the whole canvas on phones.
+	control.position = rect.position
+	control.size = rect.size
 
 
 func _space_scale() -> float:

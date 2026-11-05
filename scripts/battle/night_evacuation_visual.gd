@@ -242,8 +242,7 @@ func refresh() -> void:
 	var target := to_screen(phase.ring_center)
 	var hero := to_screen(phase.foot_position())
 	var direction := (target-hero).normalized()
-	var margin := Vector2(86,150)*guide_scale
-	var area := Rect2(margin,size-margin*2.0)
+	var area := guidance_area(size)
 	show_arrow = not area.has_point(target)
 	if show_arrow:
 		var length_to_edge := INF
@@ -258,7 +257,22 @@ func refresh() -> void:
 		distance_label.position = to_screen(phase.ring_center+Vector2(0,phase.ring_axes().y))+Vector2(-110,12)*guide_scale
 	distance_label.size = Vector2(220,36)*guide_scale
 	distance_label.add_theme_font_size_override("font_size",maxi(12,roundi(24*guide_scale)))
+	if MobileProfile.is_mobile():
+		# The on-screen bunker caption must also clear the bar, not just the arrow.
+		distance_label.position.x = clampf(distance_label.position.x, 8, size.x - distance_label.size.x - 8)
+		distance_label.position.y = clampf(distance_label.position.y, 8, area.end.y + 72 * guide_scale - distance_label.size.y)
 	guide.queue_redraw()
+
+func guidance_area(view_size: Vector2) -> Rect2:
+	var margin := Vector2(86,150) * guide_scale
+	var area := Rect2(margin, view_size - margin * 2.0)
+	if MobileProfile.is_mobile():
+		var bar := get_tree().get_first_node_in_group("battle_weapon_bar") as Control
+		if is_instance_valid(bar) and bar.is_visible_in_tree():
+			# Reserve the arrow glow, its distance caption, and a gap above the bar.
+			var bottom := minf(area.end.y, bar.get_global_rect().position.y - 72 * guide_scale - 12)
+			area.size.y = maxf(1, bottom - area.position.y)
+	return area
 
 func _draw_arrow() -> void:
 	if not show_arrow: return

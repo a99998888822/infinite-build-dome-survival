@@ -289,6 +289,7 @@ Shockwave hits [color=#7FD88F]+1[/color]"
 先卸下，再出售,先卸下，再出售,Unequip before selling
 光辉剑,光辉剑,Radiant Sword
 免费刷新（%d）,免费刷新（%d）,Free reroll (%d)
+全屏显示 · 摇杆移动 · 武器自动攻击,全屏显示 · 摇杆移动 · 武器自动攻击,Fullscreen · Joystick movement · Automatic attacks
 全屏：,全屏：,Fullscreen:
 全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,全覆钢甲、持巨盾与单手锤的小Boss，基础生命独立设为600，不再按普通怪生命倍增，护甲2倍。首波不生成；第2波起每波至少1只，基础期望取1与波次/8的较大值，再乘难度倍率；侵蚀最多增加100%，单波最多9只。波初按期望抽取数量，仅前半段生成。与普通怪一起受侵蚀的生命、攻击、护甲加成影响。玩家进入240距离且冷却就绪时蓄力1秒，再用0.16秒冲刺挥锤；无箭头直角矩形预警内部不透明度12%，两侧红色边缘及方粒脉动。遗物选择奖励落地即计入衰减，拾取后通过升级奖励弹窗选择。,"A miniboss in full plate with a greatshield and hammer. Base HP is 600 independently of normal-enemy scaling; armor is doubled. Does not spawn in wave 1. From wave 2 onward, at least 1 appears per wave. The base expected count is the larger of 1 and wave/8, multiplied by the difficulty factor, increased by up to 100% through Corruption, and capped at 9 per wave. The count is rolled at wave start; spawns occur in the first half. Corruption also increases its HP, damage, and armor. When the player is within 240 range and its cooldown is ready, it charges for 1 second, then dashes and swings over 0.16 seconds. Its rectangular warning has no arrow, 12% interior opacity, red edges, and pulsing square particles. Relic rewards count toward diminishing drops as soon as they land; collect them to choose through the reward panel."
 全部,全部,All
@@ -304,6 +305,7 @@ Shockwave hits [color=#7FD88F]+1[/color]"
 军械工坊,军械工坊,Armory Workshop
 冰冻,冰冻,Freeze
 冰蓝色,冰蓝色,Ice Blue
+冷却结束时自动弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,冷却结束时自动弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Automatically pushes nearby enemies away and releases burning fire rings when ready. Projectiles add rings; Split creates small flares around the outer edge.
 冻结时间,冻结时间,Freeze Duration
 准备完成后，点击开始下一波。,准备完成后，点击开始下一波。,"When ready, start the next wave."
 凝时琥珀,凝时琥珀,Stilltime Amber
@@ -391,7 +393,6 @@ Base resale value %d; Sanity loss %d."
 取消,取消,Cancel
 取消瞄准并移动至目的地；S 停止移动,取消瞄准并移动至目的地；S 停止移动,Cancel aim and move to the target; S to stop
 取消瞄准；使用方向键 / WASD 移动,取消瞄准；使用方向键 / WASD 移动,Cancel aim; move with arrows / WASD
-受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Taking damage pushes nearby enemies away and releases burning fire rings. Projectiles add rings; Split creates small flares around the outer edge.
 受到伤害百分比,受到伤害百分比,Damage Taken
 受难甲壳,受难甲壳,Carapace of Suffering
 叠加上限：%d,叠加上限：%d,Stack limit: %d
@@ -732,6 +733,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 控制强度 +4；元素伤害 +2,控制强度 +4；元素伤害 +2,Control Power +4; Elemental Damage +2
 控制强度升级,控制强度升级,Control power
 搜索名称或效果,搜索名称或效果,Search names or effects
+摇杆,摇杆,Joystick
 撤离结算 ×%d%%,撤离结算 ×%d%%,Withdrawal ×%d%%
 操作失败  请重试,操作失败  请重试,Action failed. Please try again.
 操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,操作将使本金归零时，先获得操作前随身金币×2的本金及复活次数 +1，再按原金额执行操作；本次取出的金币不参与奖励计算；每局触发一次，最多持有1件,"Before an operation would empty your Principal, gain Principal equal to twice your carried Gold before that operation and +1 Revive, then perform the operation for its original amount. Gold from that withdrawal is excluded from the reward. Triggers once per run. Stack limit: 1."
@@ -742,6 +744,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 攻击,攻击,Attack
 攻击专精,攻击专精,Attack
 攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。,攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。,Attacks destroy hostile projectiles. Interception does not trigger on-hit enchantments or consume piercing hits.
+攻击方式,攻击方式,Attack mode
 攻击距离,攻击距离,Attack Range
 攻击距离 +15，远程伤害 +1。,攻击距离 +15，远程伤害 +1。,Attack Range +15; Ranged Damage +1.
 攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,攻击距离 +25；伤害范围 +25；通用伤害 +12%；侵蚀度 +22,Attack Range +25; Damage Area +25; All Damage +12%; Corruption +22
@@ -780,6 +783,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 显示操作提示,显示操作提示,Show Control Hints
 普通,普通,Common
 智慧,智慧,Wisdom
+暂停 / 背包,暂停 / 背包,Pause / Inventory
 暂无属性加成,暂无属性加成,No bonuses yet
 暂无附魔,暂无附魔,No enchantments
 暂时不用,暂时不用,Not Now
@@ -888,6 +892,7 @@ Bank actions refresh next wave."
 升级回收：%d","Weapon level: %d
 Base resale: %d
 Upgrade resale: %d"
+武器自动攻击；附魔请前往理财页面,武器自动攻击；附魔请前往理财页面,Weapons attack automatically; visit the bank for enchantments
 武器负载不足,武器负载不足,Insufficient load capacity
 死寂护盾徽章,死寂护盾徽章,Deathly Shield Badge
 残破晶石,残破晶石,Broken Crystal
@@ -987,6 +992,7 @@ Pellets [color=#7FD88F]+1[/color]"
 点击切换为自动释放,点击切换为自动释放,Click to switch to automatic casting
 点击地面移动 · S 停止移动,点击地面移动 · S 停止移动,Click ground to move · S to stop
 点击备用武器可装备；附魔可通过快捷附魔调整；Esc 返回,点击备用武器可装备；附魔可通过快捷附魔调整；Esc 返回,Click a reserve weapon to equip; use Quick enchantment to adjust enchantments; Esc to return
+点击拖动,点击拖动,Tap and drag
 点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,点击武器下方图标切换自动／手动；附魔请前往理财页面；ESC 返回,Weapon icons: Auto/Manual · Bank: enchantments · ESC: back
 点击空白处 / 空格快进,点击空白处 / 空格快进,Click an empty area / Space to skip ahead
 点击选择,点击选择,Select

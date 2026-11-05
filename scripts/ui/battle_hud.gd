@@ -44,6 +44,7 @@ var _economy_log_layer: CanvasLayer
 var _finance_economy_back: Panel
 var quick_shop_button: Button
 var _drawer_scene_layout := false
+var _drawer_layout_initialized := false
 var combat_bar: ActiveCombatWeaponBar
 var combat_hints: Label
 var cleanup_label: Label
@@ -52,6 +53,7 @@ const DRAWER_OPEN_LEFT := -480.0
 const DRAWER_OPEN_RIGHT := 0.0
 const DRAWER_CLOSED_LEFT := -42.0
 const DRAWER_CLOSED_RIGHT := 438.0
+const MOBILE_DRAWER_WIDTH := 28.0 + DRAWER_SKIN.MOBILE_DISPLAY_WIDTH
 const DRAWER_ANIMATION_SECONDS := 0.36
 const DRAWER_CLOSE_SECONDS := 0.32
 const DRAWER_SKIN = preload("res://scripts/ui/stats_drawer_skin.gd")
@@ -307,13 +309,26 @@ func _style_combat_hud() -> void:
 	encyclopedia_button.pressed.connect(_on_encyclopedia_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
 	encyclopedia_button.tooltip_text = "ui.hud.encyclopedia"
+	if MobileProfile.is_mobile():
+		encyclopedia_button.texture_normal = preload("res://assets/ui/icons/mobile_pause.svg")
+		encyclopedia_button.tooltip_text = "ui.hud.pause"
+		encyclopedia_button.gui_input.connect(_on_pause_touch_input)
 	settings_button.tooltip_text = "ui.hud.settings"
 	drawer_toggle_button.tooltip_text = "ui.hud.stats.toggle_tooltip"
+
+func _on_pause_touch_input(event: InputEvent) -> void:
+	# Mouse emulation only follows one finger; ESC must work while steering.
+	if event is InputEventScreenTouch and event.pressed and not encyclopedia_button.disabled:
+		encyclopedia_button.accept_event()
+		_on_encyclopedia_pressed()
 
 
 func _on_encyclopedia_pressed() -> void:
 	if _flow != null:
-		_flow.request_battle_utility("encyclopedia")
+		if MobileProfile.is_mobile():
+			_flow.request_esc_overlay()
+		else:
+			_flow.request_battle_utility("encyclopedia")
 
 
 func _on_settings_pressed() -> void:
@@ -797,28 +812,35 @@ func _apply_combat_layout() -> void:
 	if get_viewport() == null:
 		return
 	var finance_scene := _uses_finance_scene_layout()
-	if finance_scene != _drawer_scene_layout:
+	if not _drawer_layout_initialized or finance_scene != _drawer_scene_layout:
+		_drawer_layout_initialized = true
 		_drawer_scene_layout = finance_scene
-		# A lifted phone canvas hands the drawer almost the whole height, and the
-		# paper keeps only a hairline of margin so its rows reach the metal bar and
-		# the torn paper edges.
-		var drawer_top := 24.0 if MobileProfile.is_mobile() else 90.0
+		# Keep the metal below the balances, but extend the paper to the bottom.
+		# Apply phone margins on the first layout as well as finance transitions.
+		var drawer_top := 90.0
 		var drawer_bottom := 8.0 if MobileProfile.is_mobile() else 90.0
 		stats_drawer.offset_top = drawer_top
 		stats_drawer.offset_bottom = -drawer_bottom
 		if MobileProfile.is_mobile():
 			var margin := stats_drawer.get_node_or_null("DrawerPanel/DrawerBody/ContentMargin") as MarginContainer
 			if margin != null:
-				margin.add_theme_constant_override("margin_left", 10)
-				margin.add_theme_constant_override("margin_right", 6)
-				margin.add_theme_constant_override("margin_top", 4)
-				margin.add_theme_constant_override("margin_bottom", 2)
-		# The toggle hangs on the drawer's left edge; phones nudge it outward so it
-		# does not weld itself to the frame.
-		drawer_toggle_button.offset_left = (4 if finance_scene else 0) - (10.0 if MobileProfile.is_mobile() else 0.0)
-		drawer_toggle_button.offset_right = (32 if finance_scene else 28) - (10.0 if MobileProfile.is_mobile() else 0.0)
+				# Keep the parchment frame at 85%, while the readable text block
+				# uses a little more breathing room inside it (about 90% of the
+				# previous mobile content area).
+				margin.add_theme_constant_override("margin_left", 64)
+				margin.add_theme_constant_override("margin_right", 57)
+				margin.add_theme_constant_override("margin_top", 123)
+				margin.add_theme_constant_override("margin_bottom", 84)
+			_drawer_scroll_hint.offset_top = -58.0
+			_drawer_scroll_hint.offset_bottom = -44.0
+		# The toggle hangs on the drawer's left edge and is the only way back in
+		# once the drawer closes, so it stays inside the drawer width.
 		drawer_toggle_button.offset_left = 4 if finance_scene else 0
 		drawer_toggle_button.offset_right = 32 if finance_scene else 28
+		if MobileProfile.is_mobile():
+			drawer_toggle_button.offset_top = -30.0
+			drawer_toggle_button.offset_bottom = 30.0
+			drawer_toggle_button.add_theme_font_size_override("font_size", 26)
 		_set_drawer_open(_drawer_open, false)
 	_finance_economy_back.visible = finance_scene
 	var viewport_width := get_viewport().get_visible_rect().size.x
@@ -876,6 +898,10 @@ func _apply_combat_layout() -> void:
 		else:
 			var available_width := maxf(economy_right - economy_left, 0.0)
 			economy_width = minf(economy_width, available_width)
+		if MobileProfile.is_mobile():
+			# Align to the frame's open position even while the drawer is closed.
+			economy_left = viewport_width - DRAWER_SKIN.MOBILE_DISPLAY_WIDTH
+			economy_width = maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
 		var economy_size := Vector2(economy_width, 70.0 if finance_scene else 73.333333)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
@@ -945,11 +971,12 @@ func get_modal_safe_rect() -> Rect2:
 	var right := MODAL_FALLBACK_RIGHT_CLOSED
 	var compact_finance := state == MainFlowCoordinator.STATE_FINANCE_POPUP and viewport_size.x < 1000
 	if _drawer_open or (DRAWER_AUTO_OPEN_STATES.has(state) and not compact_finance):
-		right = MODAL_FALLBACK_RIGHT_OPEN
+		right = MOBILE_DRAWER_WIDTH + 4.0 if MobileProfile.is_mobile() else MODAL_FALLBACK_RIGHT_OPEN
 	if stats_drawer != null:
 		var drawer_rect := stats_drawer.get_global_rect()
 		if drawer_rect.size.x > 0.0 and drawer_rect.position.x < viewport_size.x:
-			var drawer_reserved_right := viewport_size.x - drawer_rect.position.x + MODAL_SAFE_EDGE_MARGIN
+			var drawer_gap := 4.0 if MobileProfile.is_mobile() else MODAL_SAFE_EDGE_MARGIN
+			var drawer_reserved_right := viewport_size.x - drawer_rect.position.x + drawer_gap
 			right = maxf(right, drawer_reserved_right)
 	var safe_left := clampf(left, 0.0, viewport_size.x)
 	var safe_top := clampf(top, 0.0, viewport_size.y)
@@ -962,7 +989,7 @@ func get_modal_safe_rect() -> Rect2:
 
 
 func _refresh_visibility() -> void:
-	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT, MainFlowCoordinator.STATE_WAVE_CHALLENGE]
+	_economy_log_layer.visible = _flow != null and _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE and _flow.get_current_state() not in [MainFlowCoordinator.STATE_CHARACTER_SELECT, MainFlowCoordinator.STATE_BATTLE_UTILITY, MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT, MainFlowCoordinator.STATE_WAVE_CHALLENGE, MainFlowCoordinator.STATE_ESC_OVERLAY]
 	if _flow == null:
 		visible = false
 		if battle_top_bar != null:
@@ -972,17 +999,26 @@ func _refresh_visibility() -> void:
 		return
 	var in_battle := _flow.get_current_mode() == MainFlowCoordinator.MODE_BATTLE
 	var state := _flow.get_battle_display_state()
-	encyclopedia_button.disabled = not _flow.can_open_battle_utility("encyclopedia")
+	if MobileProfile.is_mobile():
+		encyclopedia_button.disabled = _flow.battle_resolved or _flow._transaction_busy or _flow.current_state not in [MainFlowCoordinator.STATE_WAVE_COMBAT, MainFlowCoordinator.STATE_BATTLE_PREPARE, MainFlowCoordinator.STATE_FINANCE_POPUP]
+	else:
+		encyclopedia_button.disabled = not _flow.can_open_battle_utility("encyclopedia")
 	settings_button.disabled = not _flow.can_open_battle_utility("settings")
 	quick_shop_button.visible = _flow.can_open_quick_enchantment()
+	# The character select screen is a 16:9 composition centered on a 20:9
+	# phone, so the enlarged phone HUD would sit on the roster header and the
+	# top card. Phones get a clean picker; desktop keeps the authored overlap.
+	var phone_character_select := MobileProfile.is_mobile() and state == MainFlowCoordinator.STATE_CHARACTER_SELECT
 	if not in_battle or _flow.battle_resolved:
 		visible = false
 	elif state == MainFlowCoordinator.STATE_BATTLE_RESULT:
 		visible = false
+	elif phone_character_select:
+		visible = false
 	else:
 		visible = true
 	if battle_top_bar != null:
-		battle_top_bar.visible = in_battle and not _flow.battle_resolved and state != MainFlowCoordinator.STATE_BATTLE_RESULT
+		battle_top_bar.visible = in_battle and not _flow.battle_resolved and state != MainFlowCoordinator.STATE_BATTLE_RESULT and not phone_character_select
 	if wave_panel != null:
 		wave_panel.visible = battle_top_bar != null and battle_top_bar.visible and not TOP_BAR_TIMER_HIDDEN_STATES.has(state)
 	if status_panel != null:
@@ -1037,15 +1073,19 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 		target_left = -470.0 if open else -42.0
 		target_right = -10.0 if open else 418.0
 	# A phone has no room for the peek strip: the drawer is either fully on screen
-	# (open, 400 logical wide) or fully off it, and the toggle button reopens it.
+	# (open, the complete frame width) or leaves only its toggle on screen, and the toggle
+	# button reopens it.
 	if MobileProfile.is_mobile():
-		var drawer_width := 400.0 if not _uses_finance_scene_layout() else 410.0
+		var drawer_width := MOBILE_DRAWER_WIDTH
+		var toggle_width := 28.0
+		if drawer_toggle_button != null:
+			toggle_width = maxf(28.0, drawer_toggle_button.offset_right - drawer_toggle_button.offset_left)
 		if open:
 			target_left = -drawer_width
 			target_right = 0.0
 		else:
-			target_left = 0.0
-			target_right = drawer_width
+			target_left = -toggle_width
+			target_right = drawer_width - toggle_width
 	if _drawer_tween != null:
 		_drawer_tween.kill()
 		_drawer_tween = null

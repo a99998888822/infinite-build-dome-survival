@@ -95,6 +95,10 @@ func _apply_hud_style() -> void:
 	main_panel.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4(24, 24, 24, 24)))
 	title_label.add_theme_color_override("font_color", PALETTE.TEXT)
 	title_label.add_theme_color_override("font_shadow_color", PALETTE.SHADOW)
+	if MobileProfile.is_mobile():
+		title_label.add_theme_font_size_override("font_size", 24)
+		title_label.custom_minimum_size.y = 36
+		title_label.get_parent().custom_minimum_size.y = 36
 	get_node("CenterContainer/MainPanel/Content/Divider").color = PALETTE.BORDER
 	backdrop.color = Color(PALETTE.SHADOW, 0.78)
 	for button in [skip_button, refresh_button]:
@@ -512,14 +516,17 @@ func _fit_offer_grid() -> void:
 		return
 	# Preserve the established four-column, two-row page even with fewer offers.
 	# Empty slots must not enlarge or reposition the remaining reward cards.
-	offer_grid.columns = OFFER_LAYOUT_COLUMNS
+	var columns := mini(3, cards.size()) if MobileProfile.is_mobile() else OFFER_LAYOUT_COLUMNS
+	offer_grid.columns = columns
 	var separation := float(offer_grid.get_theme_constant("h_separation"))
 	var row_separation := float(offer_grid.get_theme_constant("v_separation"))
-	var slot_width := maxf(floorf((scroll_width - separation * float(OFFER_LAYOUT_COLUMNS - 1)) / float(OFFER_LAYOUT_COLUMNS)), 0.0)
+	var slot_width := maxf(floorf((scroll_width - separation * float(columns - 1)) / float(columns)), 0.0)
 	var available_height := offer_scroll.size.y
 	if not is_visible_in_tree() or available_height <= 0.0:
 		available_height = _get_prepared_offer_height()
 	var card_height := maxf(floorf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS)), 0.0)
+	if MobileProfile.is_mobile():
+		card_height = maxf(320.0, available_height)
 	for card in cards:
 		card.set_available_size(slot_width, card_height)
 		card.set_layout_width(slot_width)

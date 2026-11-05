@@ -10,10 +10,6 @@ config_version=5
 
 [accessibility]
 
-; Godot 4.7.2 polls Windows screen-reader state on the main thread each frame.
-; This can block for tens of milliseconds even with no screen reader running.
-; Windows opt-in: launch with --accessibility auto (or always). See the report
-; battle_performance_optimization_checklist.md before removing this workaround.
 general/accessibility_support.windows=2
 
 [application]
@@ -21,7 +17,7 @@ general/accessibility_support.windows=2
 config/name="InfiniteBuild_DomeSurvival"
 run/main_scene="res://scenes/core/game_root.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
 

@@ -6,10 +6,10 @@ uid="uid://bgqyed7v2crqc"
 
 [deps]
 
-files=["res://localization/catalogs/furnace_saber.zh_CN.translation", "res://localization/catalogs/furnace_saber.en.translation"]
+files=["res://tmp/android_slim_review/pack_runtime/localization/catalogs/furnace_saber.zh_CN.translation", "res://tmp/android_slim_review/pack_runtime/localization/catalogs/furnace_saber.en.translation"]
 
 source_file="res://localization/catalogs/furnace_saber.csv"
-dest_files=["res://localization/catalogs/furnace_saber.zh_CN.translation", "res://localization/catalogs/furnace_saber.en.translation"]
+dest_files=["res://tmp/android_slim_review/pack_runtime/localization/catalogs/furnace_saber.zh_CN.translation", "res://tmp/android_slim_review/pack_runtime/localization/catalogs/furnace_saber.en.translation"]
 
 [params]
 

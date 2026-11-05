@@ -79,7 +79,7 @@ func _ready() -> void:
 	_weapon_name = Label.new()
 	_weapon_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_weapon_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_weapon_name, EnchantmentInventoryCard.CAPTION_FONT_SIZE)
+	FinanceUIStyle.label(_weapon_name, EnchantmentInventoryCard.caption_font_size())
 	heading.add_child(_weapon_name)
 	_upgrade_weapon = _button("ui.enchantment.principal_upgrade", heading)
 	_upgrade_weapon.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -138,6 +138,11 @@ func _ready() -> void:
 	_move_right.pressed.connect(_move_selected.bind(1))
 	_sell_item = _button("ui.enchantment.sell", actions)
 	_sell_item.pressed.connect(_sell_selected_item)
+	if MobileProfile.is_mobile():
+		# Leave room for integer scroll rounding at the bottom of the phone pane.
+		var bottom_space := Control.new()
+		bottom_space.custom_minimum_size.y = 4
+		add_child(bottom_space)
 	_inventory_scroll.resized.connect(_layout_inventory)
 
 
@@ -164,7 +169,7 @@ func refresh() -> void:
 		button.add_theme_constant_override("icon_max_width", 36)
 		button.focus_mode = Control.FOCUS_ALL
 		FinanceUIStyle.bank_button(button, weapon.weapon_id == selected_weapon_id)
-		button.add_theme_font_size_override("font_size", EnchantmentInventoryCard.CAPTION_FONT_SIZE)
+		button.add_theme_font_size_override("font_size", EnchantmentInventoryCard.caption_font_size())
 		ItemIconArt.bind_button(button, button.icon, 32.0)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
@@ -439,7 +444,7 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 
 
 func _layout_inventory() -> void:
-	_inventory.columns = 6
+	_inventory.columns = maxi(1, floori((_inventory_scroll.size.x - 16.0) / 188.0)) if MobileProfile.is_mobile() else 6
 
 
 func _item_card(item: Dictionary, parent: Control) -> ItemInventoryCard:

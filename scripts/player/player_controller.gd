@@ -682,6 +682,7 @@ func blink_to(point: Vector2) -> void:
 
 func movement_intent() -> Vector2:
 	# Read the live command, never velocity (which may come from recoil/knockback).
+	if MobileProfile.is_mobile(): return _mobile_move_direction
 	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
 		if has_move_destination and global_position.distance_squared_to(move_destination) > 4.0:
 			return global_position.direction_to(move_destination)
@@ -689,6 +690,7 @@ func movement_intent() -> Vector2:
 	return _keyboard_move_direction()
 
 func _read_move_input() -> Vector2:
+	if MobileProfile.is_mobile(): return _mobile_move_direction
 	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
 		if has_move_destination:
 			if global_position.distance_squared_to(move_destination) <= 4.0:
@@ -761,7 +763,7 @@ func request_move(point: Vector2) -> void:
 
 
 func accept_move_key(event: InputEventKey) -> bool:
-	if not keyboard_movement:
+	if MobileProfile.is_mobile() or not keyboard_movement:
 		return false
 	var code := event.physical_keycode if event.physical_keycode != 0 else event.keycode
 	if code not in [KEY_A, KEY_D, KEY_W, KEY_S, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN]:

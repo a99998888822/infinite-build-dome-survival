@@ -41,10 +41,13 @@ func _invalidate() -> void:
 
 func bind_scroll(scroll: ScrollContainer) -> void:
 	# ScrollContainer caches its content extent in its minimum-size pass.
+	var scroll_ref: WeakRef = weakref(scroll)
 	var refresh := func():
-		scroll.update_minimum_size()
-		scroll.get_minimum_size()
-		scroll.queue_sort()
+		var target := scroll_ref.get_ref() as ScrollContainer
+		if not is_instance_valid(target): return
+		target.update_minimum_size()
+		target.get_minimum_size()
+		target.queue_sort()
 	resized.connect(refresh)
 	minimum_size_changed.connect(refresh)
 	refresh.call_deferred()

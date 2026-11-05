@@ -517,6 +517,8 @@ func close_esc_overlay() -> void:
 
 
 func can_open_battle_utility(page: String) -> bool:
+	if page == "encyclopedia" and MobileProfile.is_mobile():
+		return false
 	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
 		return false
 	if page in ["settings", "encyclopedia"]:

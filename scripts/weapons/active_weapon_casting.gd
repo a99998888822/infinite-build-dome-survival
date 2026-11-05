@@ -26,7 +26,9 @@ func can_cast(weapon: WeaponInstance) -> bool:
 func auto_attack() -> void:
 	# Use the same snapshots, animation and cooldown as a manual cast.
 	for weapon: WeaponInstance in loadout.weapon_instances:
-		if weapon.is_furnace(): continue
+		if weapon.is_furnace():
+			cast(weapon, loadout.owner_player.global_position, true)
+			continue
 		if weapon.is_mobility_weapon(): continue # Evaluated by the throttled movement planner.
 		if not CombatSettings.is_weapon_automatic(weapon):
 			continue
@@ -114,8 +116,8 @@ func interrupt(weapon: WeaponInstance) -> void:
 		if is_instance_valid(runtime): runtime.cancel()
 	_finish(weapon)
 
-func cast(source: WeaponInstance, point: Vector2, automatic: bool = false, reactive: bool = false) -> bool:
-	if source.is_furnace() and not reactive: return false
+func cast(source: WeaponInstance, point: Vector2, automatic: bool = false) -> bool:
+	if source.is_furnace() and not automatic: return false
 	if not can_cast(source) or not loadout.weapon_instances.has(source):
 		return false
 	if not is_instance_valid(loadout.owner_player) or not loadout.owner_player.alive or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):

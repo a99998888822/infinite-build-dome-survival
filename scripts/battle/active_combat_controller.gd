@@ -47,16 +47,16 @@ func _exit_tree() -> void:
 		marker.queue_free()
 
 func _settings_changed() -> void:
-	var movement_changed := player.keyboard_movement != CombatSettings.keyboard_movement
-	player.keyboard_movement = CombatSettings.keyboard_movement
+	var keyboard_movement := MobileProfile.uses_pointer() and CombatSettings.keyboard_movement
+	var movement_changed := player.keyboard_movement != keyboard_movement
+	player.keyboard_movement = keyboard_movement
 	if movement_changed: clear_input()
 	else: cancel_aim()
 	loadout.active_casting.mobility_planner.reset_intent()
 	_sync_current_weapon()
 
 func mouse_weapon_controls() -> bool:
-	## Aiming, the weapon cursor and click-to-cast are pointer features. Phones
-	## cast from the weapon bar and let the auto-target pick the direction.
+	## Aiming, the weapon cursor and click-to-cast belong to desktop input.
 	return MobileProfile.uses_pointer() and CombatSettings.keyboard_movement
 
 func _sync_current_weapon() -> void:
@@ -146,7 +146,7 @@ func _input(event: InputEvent) -> void:
 		right_held = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not can_control():
+	if MobileProfile.is_mobile() or not can_control():
 		return
 	if event is InputEventKey and not event.echo:
 		var code: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
@@ -200,7 +200,7 @@ func _mouse_weapon_click() -> void:
 	_update_cursor_icon()
 
 func select_slot(index: int) -> void:
-	if not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
+	if MobileProfile.is_mobile() or not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
 		return
 	var weapon := loadout.weapon_instances[index]
 	if CombatSettings.is_weapon_automatic(weapon) and not weapon.is_mobility_weapon(): return

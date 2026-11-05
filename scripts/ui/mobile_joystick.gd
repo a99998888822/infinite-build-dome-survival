@@ -18,7 +18,7 @@ var _touch_origin := Vector2.ZERO
 var _joystick_center := Vector2.ZERO
 var _knob_offset := Vector2.ZERO
 var _direction := Vector2.ZERO
-var _touch_blocker_root: Node = null
+var _touch_blocker_roots: Array[Node] = []
 
 
 func _ready() -> void:
@@ -35,8 +35,9 @@ func set_mobile_input_enabled(enabled: bool) -> void:
 		_reset_touch()
 
 
-func set_touch_blocker_root(root: Node) -> void:
-	_touch_blocker_root = root
+func set_touch_blocker_root(root: Node, additional_roots: Array[Node] = []) -> void:
+	_touch_blocker_roots.assign(additional_roots)
+	if is_instance_valid(root): _touch_blocker_roots.append(root)
 
 
 func _input(event: InputEvent) -> void:
@@ -134,14 +135,15 @@ func _get_visual_center(touch_origin: Vector2) -> Vector2:
 
 
 func _is_touch_blocked(screen_position: Vector2) -> bool:
-	if _touch_blocker_root == null or not is_instance_valid(_touch_blocker_root):
-		return false
-	for node in _touch_blocker_root.find_children("*", "Control", true, false):
-		var control := node as Control
-		if control == null or not control.is_visible_in_tree():
-			continue
-		if control.mouse_filter == Control.MOUSE_FILTER_IGNORE:
-			continue
-		if control.get_global_rect().has_point(screen_position):
-			return true
+	for root in _touch_blocker_roots:
+		if not is_instance_valid(root): continue
+		for node in root.find_children("*", "Control", true, false):
+			var control := node as Control
+			if control == null or not control.is_visible_in_tree():
+				continue
+			if control.mouse_filter == Control.MOUSE_FILTER_IGNORE:
+				continue
+			var local_point := control.get_global_transform_with_canvas().affine_inverse() * screen_position
+			if Rect2(Vector2.ZERO, control.size).has_point(local_point):
+				return true
 	return false
