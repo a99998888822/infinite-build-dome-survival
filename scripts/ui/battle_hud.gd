@@ -801,7 +801,7 @@ func _apply_combat_layout() -> void:
 		_drawer_scene_layout = finance_scene
 		# A lifted phone layout is shorter, so its drawer spends less of the page
 		# on empty margins and more on rows.
-		var drawer_margin := 56.0 if MobileProfile.is_mobile() else 90.0
+		var drawer_margin := 40.0 if MobileProfile.is_mobile() else 90.0
 		stats_drawer.offset_top = drawer_margin
 		stats_drawer.offset_bottom = -drawer_margin
 		drawer_toggle_button.offset_left = 4 if finance_scene else 0
@@ -847,7 +847,10 @@ func _apply_combat_layout() -> void:
 		var wave_right := (viewport_width + timer_size.x) * 0.5
 		var actions_left := viewport_width + actions.offset_left
 		# The finance backing extends 20 pixels beyond the balance content.
-		var economy_right := actions_left - TOP_BAR_GAP - (20.0 if finance_scene else 0.0)
+		# A phone keeps extra clearance from the top-right buttons so the balance
+		# panel is never covered by them.
+		var actions_clearance := TOP_BAR_GAP + (56.0 if MobileProfile.is_mobile() else 0.0)
+		var economy_right := actions_left - actions_clearance - (20.0 if finance_scene else 0.0)
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
 		# The quick-enchant button sits under the panel on a phone instead of
@@ -1020,6 +1023,14 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 	if _uses_finance_scene_layout():
 		target_left = -470.0 if open else -42.0
 		target_right = -10.0 if open else 418.0
+	# A lifted phone canvas has less horizontal room, so the drawer keeps its
+	# rows readable but gives the battlefield back 80 logical pixels.
+	if MobileProfile.is_mobile():
+		var narrowed := 80.0 if not _uses_finance_scene_layout() else 60.0
+		if open:
+			target_left += narrowed
+		else:
+			target_right -= narrowed
 	if _drawer_tween != null:
 		_drawer_tween.kill()
 		_drawer_tween = null

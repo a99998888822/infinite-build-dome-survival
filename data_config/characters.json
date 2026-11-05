@@ -41,8 +41,7 @@
     },
     "max_hp_per_level": 1,
     "start_weapons": [
-      "weapon_void_blade",
-      "weapon_dash_blade"
+      "weapon_void_blade"
     ],
     "passive_modifiers": [],
     "start_weapon_attachments": [

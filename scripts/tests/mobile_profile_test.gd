@@ -42,12 +42,13 @@ func _run() -> void:
 	for weapon_id in mobility_ids:
 		check(MobileProfile.weapon_available(weapon_id) == not mobile, "steering weapon follows the profile: " + weapon_id)
 
-	# The novice starter must lose its dash blade on a phone.
+	# The novice no longer ships a steering weapon on this branch; the runtime
+	# filter above still guards every other source.
 	var starter := PlayerController.new()
 	var novice := DataRegistry.get_record("characters", "character_void_hunter")
 	var resolved: Array[String] = starter._resolve_start_weapons(novice, [])
 	check(resolved.has("weapon_void_blade"), "novice keeps the wooden bow")
-	check(resolved.has("weapon_dash_blade") == not mobile, "novice dash blade follows the profile")
+	check(not resolved.has("weapon_dash_blade"), "novice starter has no dash blade")
 	starter.free()
 
 	# The shelf and the level-up rewards must not offer what the phone cannot aim.
