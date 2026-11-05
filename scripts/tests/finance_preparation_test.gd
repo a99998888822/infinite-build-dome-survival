@@ -56,7 +56,7 @@ func _run() -> void:
 	# scenes/tests/mobile_bank_test.tscn covers the phone surfaces instead.
 	if MobileProfile.is_mobile():
 		print("FINANCE_PREPARATION_TEST skipped: desktop-authored canvas")
-		root.quit(0)
+		get_tree().quit(0)
 		return
 	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
