@@ -34,6 +34,8 @@ func _run() -> void:
 	check(MobileProfile.bottom_inset() > 0.0 if mobile else is_equal_approx(MobileProfile.bottom_inset(), 0.0), "bottom inset follows the profile")
 	# The profile reaches the real window, not just the widgets.
 	check(is_equal_approx(get_tree().root.content_scale_factor, MobileProfile.ui_scale), "window content scale follows the profile")
+	var expected_aspect := Window.CONTENT_SCALE_ASPECT_EXPAND if mobile else Window.CONTENT_SCALE_ASPECT_KEEP
+	check(get_tree().root.content_scale_aspect == expected_aspect, "window aspect follows the profile")
 
 	var mobility_ids := _mobility_weapon_ids()
 	check(not mobility_ids.is_empty(), "mobility behaviours map to real weapons")

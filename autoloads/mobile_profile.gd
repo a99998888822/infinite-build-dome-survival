@@ -27,10 +27,20 @@ func _ready() -> void:
 		if arg.begins_with(SCALE_ARG_PREFIX):
 			_scale_override = float(arg.trim_prefix(SCALE_ARG_PREFIX))
 	ui_scale = _scale_override if _scale_override > 0.0 else DEFAULT_UI_SCALE if is_mobile() else 1.0
-	if not is_equal_approx(ui_scale, 1.0) and get_tree() != null and get_tree().root != null:
-		# WindowSettings re-applies this whenever the display settings change; the
-		# profile sets it first so the very first frame is already readable.
-		get_tree().root.content_scale_factor = ui_scale
+	if get_tree() != null and get_tree().root != null:
+		apply_to_window(get_tree().root)
+
+
+func apply_to_window(window: Window) -> void:
+	## WindowSettings re-applies this whenever the display settings change; the
+	## profile sets it first so the very first frame is already readable.
+	if window == null:
+		return
+	window.content_scale_factor = ui_scale
+	# A 20:9 handheld is wider than the 16:9 canvas. Expanding keeps the vertical
+	# field of view and lets the extra width show more battlefield instead of
+	# letterboxing 240 px on each side. Desktop keeps the authored aspect.
+	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND if is_mobile() else Window.CONTENT_SCALE_ASPECT_KEEP
 
 
 func is_mobile() -> bool:
