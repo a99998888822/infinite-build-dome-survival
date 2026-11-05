@@ -52,12 +52,37 @@ python scripts/tools/run_godot_background.py --godot <exe> --log tmp/capture.log
 | goblin_trade_test | 0 | **3** | 交易卡 |
 | interest_arrival_test | 0 | **3** | 利息回执 |
 | wave_challenge_test | 0 | **2** | 波次挑战 |
-| battle_specialization_test | 0 | **1** | 专精面板 |
-| humanity_economy_test | 1 | 3 | |
+| battle_specialization_test | 0 | **1** | 专精面板 || humanity_economy_test | 1 | 3 | |
 | combat_guide_test | 18 | 22 | 桌面基线本就失败 |
 | capitalist_character_test | 33 | 35 | 桌面基线本就失败 |
 | active_combat_integration_test | 6 | 0 | 桌面为既有 headless 时序失败 |
 | window_settings_test | 1 | 1 | 既有 headless 窗口限制（已 stash 复测确认） |
+
+## 剩余移动端失败的性质（已逐条读清单）
+
+这 7 个套件在 `--mobile-ui` 下的失败属于同一类：它们用**模拟鼠标指针**在**由
+1920×1080 画布推导出的坐标**上驱动 UI，并断言该画布的几何；移动端抬升后坐标全部
+偏移，点击落空又连锁引发后续行为断言失败。
+
+| 套件 | 代表失败 | 归类 |
+|---|---|---|
+| battle_settings_test | `production panel retains approved bounds in native coordinates`、`tab changes preserve choices and selected indicators` | 用面板 rect 推导点击坐标 |
+| run_settlement_test | `design canvas fits without scrolling (1920, 1080)`、`return closes result and stops its sounds` | 画布几何 + 坐标点击 |
+| goblin_loan_test | `real disabled mouse clicks are silently counted`、`reopen shows the same three contracts` | 借贷弹窗热区按桌面坐标 |
+| goblin_trade_test | `strong refresh fits complete text without unused vertical space` | 交易卡文字排版 |
+| interest_arrival_test | `compact details scroll without overlapping the footer`、`only the centered receipt intercepts clicks inside its frame` | 回执几何 + 点击拦截 |
+| wave_challenge_test | `normal start declines without extra elites`、`declined offer cannot be accepted later` | 坐标点击 |
+| battle_specialization_test | `purchase fits workspace (640, 360)` | 画布几何 |
+
+结论：这些与 `finance_preparation_test` / `finance_scene_regression_test` 同属**桌面
+画布契约**，移动端应当跳过而不是逐条改断言；手机侧需要独立的触屏断言，模板就是
+`mobile_bank_test`（只断言"控件在视口内 + 没有 Label 溢出 + 关键节点存在"这类与
+画布无关的性质）。
+
+移动端当前真实覆盖：
+- 平台无关套件（两种模式均 0 失败）：economy_flow、localization、principal_relic、
+  item_icon_art、battle_hud_damage、stats_drawer_art、relic_art_install、cavern_sunlight
+- 移动端专用：mobile_profile_test（17）、mobile_bank_test（16，含附魔台）
 
 ## 待办（按收益排序）
 
