@@ -266,7 +266,7 @@ func refresh_gold(current_gold: int) -> void:
 	_update_gold_labels(current_gold)
 	_update_refresh_button()
 	if weapon_strip != null and _loadout != null:
-		weapon_strip.set_loadout(_loadout, false, true)
+		weapon_strip.set_loadout(_loadout, false, not MobileProfile.is_mobile())
 
 
 func remove_offer(offer_id: String) -> void:
@@ -426,7 +426,7 @@ func _create_card() -> RewardOption:
 func set_loadout(loadout: WeaponLoadout) -> void:
 	_loadout = loadout
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout, false, true)
+		weapon_strip.set_loadout(loadout, false, not MobileProfile.is_mobile())
 
 
 func set_bond_player(player: PlayerController) -> void:

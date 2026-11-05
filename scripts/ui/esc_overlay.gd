@@ -172,7 +172,9 @@ func _ensure_backdrop() -> void:
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout, false, true)
+		# Auto/manual cast badges are a desktop refinement; a phone casts from the
+		# weapon bar and has no per-weapon setting to inspect here.
+		weapon_strip.set_loadout(loadout, false, not MobileProfile.is_mobile())
 	if is_instance_valid(_player) and _player.get_item_inventory() != null:
 		var inventory := _player.get_item_inventory()
 		if not inventory.items_changed.is_connected(_on_item_inventory_changed):

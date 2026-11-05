@@ -1217,6 +1217,11 @@ func _get_stat_tooltip_text(stat_id: String) -> String:
 
 
 func _show_stat_tooltip(anchor_control: Control, stat_id: String) -> void:
+	# A finger has no hover, so a second tap on the same row closes the tooltip
+	# instead of leaving it on screen until the next touch elsewhere.
+	if MobileProfile.is_mobile() and _stat_tooltip_id == stat_id and _stat_tooltip_panel != null and _stat_tooltip_panel.is_visible_in_tree():
+		_hide_stat_tooltip()
+		return
 	_hide_stat_tooltip()
 	if not _drawer_open or _get_stat_tooltip_text(stat_id).is_empty():
 		return
