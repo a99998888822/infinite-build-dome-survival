@@ -1023,14 +1023,16 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 	if _uses_finance_scene_layout():
 		target_left = -470.0 if open else -42.0
 		target_right = -10.0 if open else 418.0
-	# A lifted phone canvas has less horizontal room, so the drawer keeps its
-	# rows readable but gives the battlefield back 80 logical pixels.
+	# A phone has no room for the peek strip: the drawer is either fully on screen
+	# (open, 400 logical wide) or fully off it, and the toggle button reopens it.
 	if MobileProfile.is_mobile():
-		var narrowed := 80.0 if not _uses_finance_scene_layout() else 60.0
+		var drawer_width := 400.0 if not _uses_finance_scene_layout() else 410.0
 		if open:
-			target_left += narrowed
+			target_left = -drawer_width
+			target_right = 0.0
 		else:
-			target_right -= narrowed
+			target_left = 0.0
+			target_right = drawer_width
 	if _drawer_tween != null:
 		_drawer_tween.kill()
 		_drawer_tween = null
