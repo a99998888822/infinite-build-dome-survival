@@ -6,6 +6,11 @@ const BANK_FORM_HEIGHT := 200.0
 
 
 static func supports(size: Vector2) -> bool:
+	# The composition scales panels by viewport/1920 while font sizes stay
+	# absolute, so a lifted phone viewport (~1324x745 logical) squeezes panels
+	# under their own labels. Phones use the compact popup instead.
+	if MobileProfile.is_mobile():
+		return false
 	return size.x >= 1000 and size.y >= 540
 
 

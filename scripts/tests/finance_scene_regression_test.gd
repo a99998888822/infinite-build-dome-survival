@@ -34,6 +34,12 @@ func capture(label: String) -> void:
 
 
 func _run() -> void:
+	# Everything below asserts the 1920x1080 bank composition. Phones run the
+	# compact popup instead, which scenes/tests/mobile_bank_test.tscn covers.
+	if MobileProfile.is_mobile():
+		print("FINANCE_SCENE_REGRESSION skipped: phone uses the compact bank popup")
+		get_tree().quit(0)
+		return
 	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
