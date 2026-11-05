@@ -296,6 +296,10 @@ func _layout_overlay() -> void:
 		if MobileProfile.is_mobile():
 			panel_limit = maxf(420.0, safe.size.x - 416.0)
 		var panel_size := Vector2(minf(panel_limit, safe.size.x), target_size.y)
+		# The panel is centred by a CenterContainer, which otherwise shrinks it to
+		# its content and leaves it visibly narrower than the weapon strip above.
+		panel.custom_minimum_size = panel_size
+		panel.size = panel_size
 		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
 		var content := panel.get_node("Content") as VBoxContainer
 		content.add_theme_constant_override("separation", 6 if compact else 10)
