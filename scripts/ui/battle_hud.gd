@@ -799,11 +799,15 @@ func _apply_combat_layout() -> void:
 	var finance_scene := _uses_finance_scene_layout()
 	if finance_scene != _drawer_scene_layout:
 		_drawer_scene_layout = finance_scene
-		# A lifted phone layout is shorter, so its drawer spends less of the page
-		# on empty margins and more on rows.
+		# A lifted phone canvas is shorter, so the drawer keeps only a thin band of
+		# empty margin and hands the rest to its rows.
 		var drawer_margin := 40.0 if MobileProfile.is_mobile() else 90.0
 		stats_drawer.offset_top = drawer_margin
 		stats_drawer.offset_bottom = -drawer_margin
+		# The toggle hangs on the drawer's left edge; phones nudge it outward so it
+		# does not weld itself to the frame.
+		drawer_toggle_button.offset_left = (4 if finance_scene else 0) - (10.0 if MobileProfile.is_mobile() else 0.0)
+		drawer_toggle_button.offset_right = (32 if finance_scene else 28) - (10.0 if MobileProfile.is_mobile() else 0.0)
 		drawer_toggle_button.offset_left = 4 if finance_scene else 0
 		drawer_toggle_button.offset_right = 32 if finance_scene else 28
 		_set_drawer_open(_drawer_open, false)
@@ -847,9 +851,9 @@ func _apply_combat_layout() -> void:
 		var wave_right := (viewport_width + timer_size.x) * 0.5
 		var actions_left := viewport_width + actions.offset_left
 		# The finance backing extends 20 pixels beyond the balance content.
-		# A phone keeps extra clearance from the top-right buttons so the balance
-		# panel is never covered by them.
-		var actions_clearance := TOP_BAR_GAP + (56.0 if MobileProfile.is_mobile() else 0.0)
+		# A phone keeps the panel clear of the weapon strip on its left instead of
+		# pulling it further from the action buttons.
+		var actions_clearance := TOP_BAR_GAP - (56.0 if MobileProfile.is_mobile() else 0.0)
 		var economy_right := actions_left - actions_clearance - (20.0 if finance_scene else 0.0)
 		var timer_hidden := _flow != null and TOP_BAR_TIMER_HIDDEN_STATES.has(_flow.get_current_state())
 		var economy_left := wave_right + TOP_BAR_GAP
