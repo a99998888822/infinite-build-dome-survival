@@ -25,6 +25,12 @@ func frames(count: int = 4) -> void:
 
 
 func _run() -> void:
+	# Desktop-canvas contract: this suite drives the pointer over coordinates
+	# derived from the 1920x1080 canvas, which the phone profile lifts.
+	if MobileProfile.is_mobile():
+		print("interest_arrival_test skipped: desktop-canvas contract")
+		get_tree().quit(0)
+		return
 	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)

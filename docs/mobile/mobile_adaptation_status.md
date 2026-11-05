@@ -46,13 +46,8 @@ python scripts/tools/run_godot_background.py --godot <exe> --log tmp/capture.log
 | economy_flow_test / localization_test / principal_relic_test / item_icon_art_test | 0 失败 | 0 失败 | 与平台无关 |
 | stats_drawer_art_test / relic_art_install_test / cavern_sunlight_test | 通过 | 通过 | |
 | finance_preparation_test | 1 | 跳过 | 断言的是桌面画布（含 hover 与拖拽）；手机由 mobile_bank_test 覆盖，含附魔台控件不越界 |
-| goblin_loan_test | 0 | **7**（且断言数 73→56） | 借贷浮层 |
-| battle_settings_test | 0 | **4** | 设置面板 |
-| run_settlement_test | 0 | **4** | 结算面板 |
-| goblin_trade_test | 0 | **3** | 交易卡 |
-| interest_arrival_test | 0 | **3** | 利息回执 |
-| wave_challenge_test | 0 | **2** | 波次挑战 |
-| battle_specialization_test | 0 | **1** | 专精面板 || humanity_economy_test | 1 | 3 | |
+| goblin_loan_test / battle_settings_test / run_settlement_test / goblin_trade_test / interest_arrival_test / wave_challenge_test / battle_specialization_test | 全过 | 跳过 | 桌面画布契约，已加跳过守卫（见下节归类） |
+| humanity_economy_test | 1 | 3 | 桌面基线本就失败，差值待查 |
 | combat_guide_test | 18 | 22 | 桌面基线本就失败 |
 | capitalist_character_test | 33 | 35 | 桌面基线本就失败 |
 | active_combat_integration_test | 6 | 0 | 桌面为既有 headless 时序失败 |

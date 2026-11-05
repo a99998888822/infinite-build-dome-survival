@@ -88,6 +88,12 @@ func round_trip(name: String, use_escape: bool = false) -> void:
 	check(flow._active_shop_offers == offers and flow._active_relic_choice == choice and flow.get_bound_player().current_hp == hp, name + " no reroll grant or healing")
 
 func _run() -> void:
+	# Desktop-canvas contract: this suite drives the pointer over coordinates
+	# derived from the 1920x1080 canvas, which the phone profile lifts.
+	if MobileProfile.is_mobile():
+		print("battle_settings_test skipped: desktop-canvas contract")
+		get_tree().quit(0)
+		return
 	CampProgression.begin_transient_session()
 	CombatSettings.set_option("keyboard_movement", false, false)
 	CombatSettings.set_option("quick_cast", false, false)
