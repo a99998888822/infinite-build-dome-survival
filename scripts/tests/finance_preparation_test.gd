@@ -50,6 +50,14 @@ func capture(name: String) -> void:
 
 
 func _run() -> void:
+	# Every assertion here measures the authored 1920x1080 bank/enchantment canvas,
+	# including pointer hover and drag. Phones render it at a lifted 1324x745
+	# logical size and use touch, so this suite is desktop-only;
+	# scenes/tests/mobile_bank_test.tscn covers the phone surfaces instead.
+	if MobileProfile.is_mobile():
+		print("FINANCE_PREPARATION_TEST skipped: desktop-authored canvas")
+		root.quit(0)
+		return
 	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	root.add_child(game)

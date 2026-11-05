@@ -71,6 +71,20 @@ func _run() -> void:
 			clipped.append("%s(%s)" % [label.name, label.text.left(12)])
 	check(clipped.is_empty(), "no label overflows its box: " + ", ".join(clipped))
 
+	# The enchantment tab shares the popup; its workbench has to fit as well.
+	popup._select_tab("enchant")
+	await frames(8)
+	check(popup.workbench.is_visible_in_tree(), "workbench visible on the enchant tab")
+	check(viewport.encloses(popup._enchant_scroll.get_global_rect()), "enchantment scroll stays inside the viewport")
+	var enchant_clipped := 0
+	for node in popup.workbench.find_children("*", "Label", true, false):
+		var label := node as Label
+		if label == null or not label.is_visible_in_tree() or label.text.is_empty():
+			continue
+		if label.get_combined_minimum_size().x > label.size.x + 1.0:
+			enchant_clipped += 1
+	check(enchant_clipped == 0, "no workbench label overflows its box (%d)" % enchant_clipped)
+
 	_finish()
 
 

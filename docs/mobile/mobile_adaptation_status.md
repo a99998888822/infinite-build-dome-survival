@@ -41,11 +41,11 @@ python scripts/tools/run_godot_background.py --godot <exe> --log tmp/capture.log
 | 场景 | 桌面 | --mobile-ui | 备注 |
 |---|---|---|---|
 | finance_scene_regression_test | 58/0 | 跳过 | 移动端走弹窗，由 mobile_bank_test 覆盖 |
-| mobile_profile_test / mobile_bank_test | 17/0 · 13/0 | 17/0 · 13/0 | 本分支新增 |
+| mobile_profile_test / mobile_bank_test | 17/0 · 16/0 | 17/0 · 16/0 | 本分支新增，后者含附魔台适配检查 |
 | battle_hud_damage_test | 34/0 | 34/0 | |
 | economy_flow_test / localization_test / principal_relic_test / item_icon_art_test | 0 失败 | 0 失败 | 与平台无关 |
 | stats_drawer_art_test / relic_art_install_test / cavern_sunlight_test | 通过 | 通过 | |
-| finance_preparation_test | 1 | **20** | 备战/银行浮层在 1324×745 下最严重 |
+| finance_preparation_test | 1 | 跳过 | 断言的是桌面画布（含 hover 与拖拽）；手机由 mobile_bank_test 覆盖，含附魔台控件不越界 |
 | goblin_loan_test | 0 | **7**（且断言数 73→56） | 借贷浮层 |
 | battle_settings_test | 0 | **4** | 设置面板 |
 | run_settlement_test | 0 | **4** | 结算面板 |
