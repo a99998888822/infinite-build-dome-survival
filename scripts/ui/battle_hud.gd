@@ -799,11 +799,20 @@ func _apply_combat_layout() -> void:
 	var finance_scene := _uses_finance_scene_layout()
 	if finance_scene != _drawer_scene_layout:
 		_drawer_scene_layout = finance_scene
-		# A lifted phone canvas is shorter, so the drawer keeps only a thin band of
-		# empty margin and hands the rest to its rows.
-		var drawer_margin := 40.0 if MobileProfile.is_mobile() else 90.0
-		stats_drawer.offset_top = drawer_margin
-		stats_drawer.offset_bottom = -drawer_margin
+		# A lifted phone canvas hands the drawer almost the whole height, and the
+		# paper keeps only a hairline of margin so its rows reach the metal bar and
+		# the torn paper edges.
+		var drawer_top := 24.0 if MobileProfile.is_mobile() else 90.0
+		var drawer_bottom := 8.0 if MobileProfile.is_mobile() else 90.0
+		stats_drawer.offset_top = drawer_top
+		stats_drawer.offset_bottom = -drawer_bottom
+		if MobileProfile.is_mobile():
+			var margin := stats_drawer.get_node_or_null("DrawerPanel/DrawerBody/ContentMargin") as MarginContainer
+			if margin != null:
+				margin.add_theme_constant_override("margin_left", 10)
+				margin.add_theme_constant_override("margin_right", 6)
+				margin.add_theme_constant_override("margin_top", 4)
+				margin.add_theme_constant_override("margin_bottom", 2)
 		# The toggle hangs on the drawer's left edge; phones nudge it outward so it
 		# does not weld itself to the frame.
 		drawer_toggle_button.offset_left = (4 if finance_scene else 0) - (10.0 if MobileProfile.is_mobile() else 0.0)
