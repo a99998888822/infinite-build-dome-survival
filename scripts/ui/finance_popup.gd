@@ -647,6 +647,15 @@ func _layout() -> void:
 	var h := main_panel.size.y
 	var loan_space := loan_presentation.reserved_height() if loan_presentation != null else 0.0
 	var footer_bottom := h-loan_space
+	# The bank set (background art, counter panels, cashier portrait) belongs to
+	# the desktop composition; the phone popup draws only its own panel.
+	if MobileProfile.is_mobile():
+		if scene_background != null: scene_background.visible = false
+		if _scene_bank_back != null: _scene_bank_back.visible = false
+		if _scene_enchant_back != null: _scene_enchant_back.visible = false
+		if _scene_footer_back != null: _scene_footer_back.visible = false
+		if portrait != null: portrait.visible = false
+		if _bank_header != null: _bank_header.visible = false
 	_compact = w < 700
 	var short_window := get_viewport().get_visible_rect().size.y < 480
 	# A lifted phone canvas is narrower, so the same content keeps smaller edges
@@ -685,7 +694,7 @@ func _layout() -> void:
 		header_h = minf(header_h, maxf(48, body_bottom - body_y - trade_height - reserved_space))
 	# Integer scroll origins keep the last form row fully inside the viewport.
 	header_h = floorf(header_h)
-	portrait.show()
+	portrait.visible = not MobileProfile.is_mobile()
 	_place(_bank_header, Rect2(edge, body_y, bank_width, header_h))
 	_place(portrait, _bank_header.get_rect())
 	var bank_rect := Rect2(work_x, content_y, work_w, content_h) if _compact else Rect2(edge, body_y + header_h + 8, bank_width, maxf(24, body_bottom - body_y - header_h - 8))

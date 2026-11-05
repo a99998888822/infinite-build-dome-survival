@@ -525,8 +525,21 @@ func _process(delta: float) -> void:
 
 func _place(parent: Node, control: Control, rect: Rect2) -> void:
 	parent.add_child(control)
-	control.position = rect.position
-	control.size = rect.size
+	# This screen is authored in 1920x1080 coordinates. A lifted phone canvas is
+	# smaller, so every anchor is scaled into the space that actually exists
+	# instead of sliding off the right edge.
+	var space := _space_scale()
+	control.position = rect.position * space
+	control.size = rect.size * space
+
+
+func _space_scale() -> float:
+	if not MobileProfile.is_mobile():
+		return 1.0
+	var viewport_size := Vector2(1920, 1080)
+	if is_inside_tree():
+		viewport_size = get_viewport().get_visible_rect().size
+	return minf(viewport_size.x / 1920.0, viewport_size.y / 1080.0)
 
 
 func _image(parent: Node, texture: Texture2D, rect: Rect2, keep_aspect := false) -> TextureRect:
