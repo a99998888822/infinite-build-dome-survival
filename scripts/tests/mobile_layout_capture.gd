@@ -1,7 +1,6 @@
 extends Node
-## Minimal mobile layout capture: boot the production battle, clear the opening
-## rewards, start a wave and save one frame per interesting surface.
-## Usage: --capture-dir=<absolute path> [--window=2400x1080] [--mobile-ui]
+## Layout capture for review: boots the production game and saves one frame per
+## surface. Usage: --capture-dir=<absolute path> [--window=WxH] [--mobile-ui]
 
 var capture_dir := ""
 var window_size := Vector2i(1920, 1080)
@@ -36,90 +35,52 @@ func _go() -> void:
 	game = load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
-	game.get_node("UiRoot/MainMenuUIController").hide()
-	await frames(12)
+	await frames(14)
 	get_tree().root.size = window_size
 	await frames(3)
+	await _save("00_main_menu")
 	var flow := game.get_main_flow_coordinator()
 	flow.enter_battle_selection("character_void_hunter", [])
-	await frames(4)
+	await frames(10)
+	await _save("01_character_select")
 	if not flow.confirm_character_selection():
-		await _save("00_select_failed")
+		push_error("CAPTURE could not enter the battle")
 		get_tree().quit(2)
 		return
 	battle = (game.get_node("SceneDirector") as GameSceneDirector).battle_root as BattleRoot
-	await frames(6)
-	# Two camp opening rewards precede the first wave.
+	await frames(8)
 	var guard := 0
 	while flow.get_current_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP and guard < 4:
 		guard += 1
+		await _save("02_opening_rewards_%d" % guard)
 		flow.close_shared_reward_shop_popup()
-		await frames(4)
-	await _save("00_opening_done")
+		await frames(6)
 	flow.request_next_wave()
 	await frames(150)
-	await _save("01_combat_hud")
+	await _save("03_combat_hud")
 	var hud := battle.get_node_or_null("HUD")
 	if hud != null and hud.has_method("_set_drawer_open"):
 		hud._set_drawer_open(true, false)
 		await frames(14)
-		await _save("02_stats_drawer")
+		await _save("04_stats_drawer")
 		hud._set_drawer_open(false, false)
 		await frames(6)
-	# The bank modal is the densest screen; capture it before quitting.
+	flow.request_esc_overlay()
+	# The drawer animates open over ~0.36s; capture only after it settles.
+	await frames(45)
+	await _save("05_esc_overlay")
+	flow.close_esc_overlay()
+	await frames(10)
 	if flow.has_method("_request_wave_end_finance") and flow._request_wave_end_finance():
 		await frames(30)
-		await _save("03_bank")
-		_dump_region(Vector2(300, 60), Vector2(420, 160), "bank_top_left")
-		_dump_text("金", "bank_money")
-		_dump_text("本金", "bank_principal")
+		await _save("06_bank_shop")
+		var popup := game.find_child("FinancePopup", true, false) as FinancePopup
+		if popup != null and popup.has_method("_select_tab"):
+			popup._select_tab("enchant")
+			await frames(14)
+			await _save("07_enchant_tab")
 	print("CAPTURE_DONE dir=%s window=%s mobile=%s" % [capture_dir, window_size, MobileProfile.is_mobile()])
 	get_tree().quit(0)
-
-
-func _dump_region(origin: Vector2, extent: Vector2, tag: String) -> void:
-	## Lists every visible control whose rect touches the probe, for layout triage.
-	var probe := Rect2(origin, extent)
-	var found: Array[String] = []
-	for node in get_tree().root.find_children("*", "Control", true, false):
-		var control := node as Control
-		if control == null or not control.is_visible_in_tree():
-			continue
-		if not probe.intersects(control.get_global_rect()):
-			continue
-		var text := ""
-		if control is Label:
-			text = (control as Label).text
-		elif control is RichTextLabel:
-			text = (control as RichTextLabel).text
-		elif control is Button:
-			text = (control as Button).text
-		if text.is_empty():
-			continue
-		found.append("%s(%s) rect=%s text=%s" % [control.name, control.get_class(), control.get_global_rect(), text.left(40)])
-	print("DUMP %s probe=%s hits=%d" % [tag, probe, found.size()])
-	for line in found:
-		print("DUMP   " + line)
-
-
-func _dump_text(needle: String, tag: String) -> void:
-	## Reports every label whose text contains needle, with the width it needs.
-	for node in get_tree().root.find_children("*", "Control", true, false):
-		var control := node as Control
-		if control == null or not control.is_visible_in_tree():
-			continue
-		var text := ""
-		if control is Label:
-			text = (control as Label).text
-		elif control is RichTextLabel:
-			text = (control as RichTextLabel).text
-		if text.is_empty() or not text.contains(needle):
-			continue
-		print("DUMP %s %s rect=%s min=%s parent=%s(%s) parent_rect=%s text=%s" % [
-			tag, control.name, control.get_global_rect(), control.get_combined_minimum_size(),
-			control.get_parent().name, control.get_parent().get_class(),
-			(control.get_parent() as Control).get_global_rect() if control.get_parent() is Control else Rect2(),
-			text.left(24)])
 
 
 func _save(name: String) -> void:
