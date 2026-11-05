@@ -43,7 +43,7 @@ func build_config() -> ConfigFile:
 	return config
 
 func should_show_combat_guide() -> bool:
-	if hide_combat_guide or OS.has_feature("mobile"):
+	if hide_combat_guide or MobileProfile.is_mobile():
 		return false
 	# Automated runs opt in explicitly and never alter the player's preferences.
 	var args := OS.get_cmdline_user_args()

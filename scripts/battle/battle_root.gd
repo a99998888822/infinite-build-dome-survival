@@ -159,7 +159,7 @@ func _bind_mobile_joystick() -> void:
 
 
 func _apply_mobile_controls(state: String) -> void:
-	var should_enable := OS.has_feature("mobile") and state == MainFlowCoordinator.STATE_WAVE_COMBAT
+	var should_enable := MobileProfile.is_mobile() and state == MainFlowCoordinator.STATE_WAVE_COMBAT
 	if mobile_joystick != null:
 		mobile_joystick.set_mobile_input_enabled(should_enable)
 	if not should_enable and player != null:

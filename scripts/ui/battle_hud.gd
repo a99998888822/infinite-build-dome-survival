@@ -389,7 +389,7 @@ func _update_drawer_scroll_hint() -> void:
 	elif bar.value >= maximum - 1.0:
 		_drawer_scroll_hint.text = "ui.hud.scroll.at_bottom"
 	else:
-		_drawer_scroll_hint.text = "ui.hud.scroll.drag" if OS.has_feature("mobile") else "ui.hud.scroll.wheel"
+		_drawer_scroll_hint.text = "ui.hud.scroll.drag" if MobileProfile.is_mobile() else "ui.hud.scroll.wheel"
 
 
 func bind_context(flow: MainFlowCoordinator, player: PlayerController, wave_manager: WaveManager) -> void:
@@ -865,7 +865,7 @@ func _apply_combat_layout() -> void:
 		quick_shop_button.position = economy_panel.position + Vector2(-112, 12)
 		quick_shop_button.size = Vector2(100, 46)
 	if exp_panel != null:
-		if OS.has_feature("mobile"):
+		if MobileProfile.is_mobile():
 			exp_panel.anchor_left = 0.28
 		else:
 			exp_panel.anchor_left = 0.10 if viewport_width < 720.0 else 0.15

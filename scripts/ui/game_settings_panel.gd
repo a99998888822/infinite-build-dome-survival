@@ -113,7 +113,7 @@ func _ready() -> void:
 func open_page(in_battle: bool) -> void:
 	return_button.text = "ui.common.return_to_battle" if in_battle else "ui.common.back"
 	menu_button.visible = in_battle
-	guide_button.visible = in_battle and not OS.has_feature("mobile")
+	guide_button.visible = in_battle and not MobileProfile.is_mobile()
 	sync_all()
 	select_page(0)
 	return_button.grab_focus()
@@ -382,13 +382,13 @@ func sync_display() -> void:
 	PIXEL_STYLE.apply_button(fullscreen_no, false, not fullscreen)
 	fullscreen_yes.text = "ui.settings.yes_selected" if fullscreen else "ui.settings.yes_unselected"
 	fullscreen_no.text = "ui.settings.no_unselected" if fullscreen else "ui.settings.no_selected"
-	var native_locked := WindowSettings.is_embedded() or OS.has_feature("mobile")
+	var native_locked := WindowSettings.is_embedded() or MobileProfile.is_device()
 	resolution.disabled = native_locked or fullscreen
 	fullscreen_yes.disabled = native_locked
 	fullscreen_no.disabled = native_locked
 	display_note.text = "ui.settings.autosave_hint"
 	if WindowSettings.is_embedded(): display_note.text = "ui.settings.display.embedded_hint"
-	elif OS.has_feature("mobile"): display_note.text = "ui.settings.display.system_size_hint"
+	elif MobileProfile.is_device(): display_note.text = "ui.settings.display.system_size_hint"
 
 
 func sync_combat() -> void:

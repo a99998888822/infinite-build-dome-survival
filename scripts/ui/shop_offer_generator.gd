@@ -57,6 +57,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		var weapon_id := str(weapon_data.get("id", ""))
 		if weapon_id.is_empty() or owned_weapon_ids.has(weapon_id):
 			continue
+		if not MobileProfile.weapon_available(weapon_id):
+			continue
 		if not unlocked_weapon_ids.is_empty() and not unlocked_weapon_ids.has(weapon_id):
 			continue
 		var weapon_load_cost := int(weapon_data.get("load_cost", 0))

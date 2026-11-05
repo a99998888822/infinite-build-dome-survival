@@ -953,7 +953,8 @@ func _resolve_start_weapons(data: Dictionary, override_weapon_ids: Array[String]
 	var raw_weapon_ids: Array = override_weapon_ids if not override_weapon_ids.is_empty() else data.get("start_weapons", [])
 	for weapon_id in raw_weapon_ids:
 		var text_id := str(weapon_id)
-		if not text_id.is_empty():
+		# Phones cannot steer a mobility weapon, so it is never granted there.
+		if not text_id.is_empty() and MobileProfile.weapon_available(text_id):
 			resolved.append(text_id)
 	return resolved
 

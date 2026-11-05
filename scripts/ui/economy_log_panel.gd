@@ -89,7 +89,7 @@ func apply_layout() -> void:
 	if toggle_button == null:
 		return
 	var viewport_size := get_viewport().get_visible_rect().size
-	var mobile := OS.has_feature("mobile")
+	var mobile := MobileProfile.is_mobile()
 	var button_y := maxf(50, viewport_size.y - (200 if mobile else 82))
 	toggle_button.position = Vector2(LEFT_INSET, button_y)
 	toggle_button.size = Vector2(52, 32)

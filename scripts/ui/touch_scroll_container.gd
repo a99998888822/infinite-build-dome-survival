@@ -18,7 +18,7 @@ var _replaying_mouse_click := false
 func _input(event: InputEvent) -> void:
 	if mouse_drag_enabled and is_visible_in_tree() and not _replaying_mouse_click:
 		_handle_mouse_drag(event)
-	if not touch_drag_enabled or not OS.has_feature("mobile") or not is_visible_in_tree():
+	if not touch_drag_enabled or not MobileProfile.is_mobile() or not is_visible_in_tree():
 		return
 	if event is InputEventScreenTouch:
 		_handle_screen_touch(event as InputEventScreenTouch)
