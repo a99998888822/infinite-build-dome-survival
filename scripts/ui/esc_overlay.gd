@@ -290,7 +290,12 @@ func _layout_overlay() -> void:
 		var base_height := minf(767.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0))
 		var target_size := Vector2(safe.size.x, maxf(0.0, base_height - (modal_top - MODAL_TOP_OFFSET)))
 		var panel := center_container.get_node("RelicPanel") as PanelContainer
-		var panel_size := Vector2(minf(1267.0, safe.size.x), target_size.y)
+		# A phone shows the stats drawer beside this panel, so the overlay stops
+		# short of it instead of running under it and leaving a dead gap.
+		var panel_limit := 1267.0
+		if MobileProfile.is_mobile():
+			panel_limit = maxf(420.0, safe.size.x - 416.0)
+		var panel_size := Vector2(minf(panel_limit, safe.size.x), target_size.y)
 		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
 		var content := panel.get_node("Content") as VBoxContainer
 		content.add_theme_constant_override("separation", 6 if compact else 10)
