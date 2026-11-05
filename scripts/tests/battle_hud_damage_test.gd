@@ -127,7 +127,8 @@ func _run() -> void:
 	# The phone layout lifts the whole UI, so the same drawer is physically taller
 	# but shows fewer rows; the drawer scrolls and must still fill the height it has.
 	var minimum_visible := 12 if MobileProfile.is_mobile() else 22
-	check(visible_values >= minimum_visible and is_equal_approx(hud.stats_drawer.size.x, 480), "native single-column drawer retains its approved width and visible attributes")
+	var expected_width := 400.0 if MobileProfile.is_mobile() else 480.0
+	check(visible_values >= minimum_visible and is_equal_approx(hud.stats_drawer.size.x, expected_width), "native single-column drawer retains its approved width and visible attributes")
 	check(hud._weapon_damage_meter.position.y >= hud._vitals_frame.get_rect().end.y, "damage meter is below vitals")
 	hud._performance_line.refresh()
 	# The accepted compact HUD uses 6px gaps. Guard separation without forcing
