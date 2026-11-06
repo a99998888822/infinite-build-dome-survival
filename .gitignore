@@ -1,6 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+addons/taptap/native/.gradle/
+addons/taptap/native/build/
+addons/taptap/native/local.properties
 artifacts/ui_visual_audit/
 tmp/
 temp/

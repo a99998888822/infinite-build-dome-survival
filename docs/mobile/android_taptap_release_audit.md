@@ -1,5 +1,13 @@
 # Android 导出与 TapTap 发布检查
 
+## 最新状态：TapSDK 与登录
+
+最新联调包为 `tmp/taptap_login_review/goblin-dungeon-taptap-ui-fixes-debug.apk`，54,078,836 字节（51.57 MiB），包含默认勾选隐私政策、点击继续才保存同意并初始化 SDK，以及账号与语言入口同排且不重叠的修正。已检查导出、v2 签名、ZIP 对齐、原生库压缩和隐私配置。
+
+恢复 Gradle 原生库压缩时的包为 `tmp/taptap_login_review/goblin-dungeon-taptap-compact-debug.apk`，54,078,196 字节（51.57 MiB），比上个 106,226,672 字节包减少约 49.1%。原因是接入 SDK 切换 Gradle 后，预设原先的 `compress_native_libraries=false` 导致 Godot 主库未压缩，现已改为 `true`。SDK、四份原生库原始内容及隐私配置保留，签名、包名、中文名称和 ZIP 对齐验证通过；安装后原生库会解压，此次主要减少 APK 下载体积。
+
+现已开始按用户确认的要求接入 TapSDK 4.11.0 的基础 SDK 与登录，启用 Android Gradle 构建、网络权限及 Godot v2 原生桥接；已填入用户提供的 Client ID / Client Token，以及用户提供的隐私政策 URL（正文仍有模板占位待完善）。用户协议暂留空用于开发联调，界面仅要求同意隐私政策；正式用户协议内容待补。实际授权还需后台开通及包名 / 签名匹配验证。实名认证与防沉迷完整流程尚未实现，不能把完成登录视为完成发行合规。维护说明与实际验证范围见 [TapTap Android 接入记录](taptap_android_integration.md)。下方无 SDK / 无网络权限的描述是早期检查记录。
+
 ## 最新状态：精简与改名
 
 按用户要求调整 Android 导出预设，手机显示名称为 **哥布林教你地下城**，包名为 `com.octopus.goblin.dungeon`，版本明确为 `1.0.0` / versionCode `1`。项目内部名称和 Windows 导出预设保持原值。

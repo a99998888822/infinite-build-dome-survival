@@ -76,6 +76,7 @@ func _ready() -> void:
 	_create_language_selector()
 	L10n.locale_changed.connect(_on_locale_changed)
 	_create_settings_ui()
+	_create_taptap_entry()
 	get_viewport().size_changed.connect(_layout_settings)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_setup_menu_atmosphere()
@@ -238,6 +239,8 @@ func _refresh_visibility() -> void:
 
 
 func _on_start_battle_pressed() -> void:
+	if not TapTapSession.require_login():
+		return
 	_selected_character_id = ""
 	_selected_character_record.clear()
 	_selected_difficulty_id = BattleDifficulty.DEFAULT_ID
@@ -249,6 +252,39 @@ func _on_start_battle_pressed() -> void:
 	if character_select_page != null:
 		_rebuild_character_list()
 		character_select_page.visible = true
+
+
+func _create_taptap_entry() -> void:
+	if not TapTapSession.is_required() or start_page == null:
+		return
+	# A shared container keeps the account and language controls apart, including
+	# after the window expands or translated labels change their minimum size.
+	var actions := HBoxContainer.new()
+	actions.name = "TopRightActions"
+	start_page.add_child(actions)
+	actions.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	actions.offset_left = -724
+	actions.offset_right = -24
+	actions.offset_top = 20
+	actions.offset_bottom = 92
+	actions.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	actions.alignment = BoxContainer.ALIGNMENT_END
+	actions.add_theme_constant_override("separation", 24)
+	var button := Button.new()
+	button.name = "TapTapAccountButton"
+	button.text = "TapTap 账号"
+	button.custom_minimum_size = Vector2(280, 72)
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.add_theme_font_override("font", preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf"))
+	button.add_theme_font_size_override("font_size", 30)
+	button.pressed.connect(func(): TapTapSession.login_required.emit())
+	actions.add_child(button)
+	var language_row := start_page.get_node_or_null("LanguageSelector") as Control
+	if language_row != null:
+		language_row.reparent(actions, false)
+		language_row.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		language_row.custom_minimum_size.x = 396 if MobileProfile.is_mobile() else 248
+		language_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 
 func _on_talents_pressed() -> void:
