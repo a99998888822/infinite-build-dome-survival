@@ -7,12 +7,12 @@ var page: CampBlueprintUIController
 var game: GameRoot
 var ids: Dictionary = {}
 const CHAINS := {
-	"armory": {"damage": "", "crit": "damage", "load": "crit", "crit_damage": "damage", "speed": ""},
+	"armory": {"damage": "", "crit": "damage", "load": "crit", "crit_damage": "damage", "speed": "damage", "quick_shop": "", "reserve_weapons": "quick_shop"},
 	"archive": {"luck": "", "offers": "luck", "drop": ""},
 	"blade": {"melee": "", "move": "melee", "frequency": "move", "control": "melee"},
 	"range": {"ranged": "", "reach": "ranged", "projectiles": "reach", "area": "ranged", "element": ""},
 	"shelter": {"hp": "", "armor": "hp", "revive": "armor", "shield": "hp", "regen": ""},
-	"council": {"pickup": "", "exp": "pickup", "principal": "exp", "interest": "exp", "currency": "pickup", "bargain": ""},
+	"council": {"pickup": "", "exp": "pickup", "principal": "exp", "interest": "exp", "currency": "pickup", "bargain": "", "restock": ""},
 }
 
 func _ready() -> void:
@@ -100,15 +100,14 @@ func drag_from(point: Vector2, button: MouseButton, delta: Vector2) -> void:
 
 func _run() -> void:
 	CampProgression.begin_transient_session()
-	# Exercise retained full-release progression in memory; release_content_test covers the shipped locks.
+	# Exercise the shipped configuration directly: every branch is available.
 	for record in DataRegistry.tables.camp_buildings:
-		record.erase("release_locked")
-		DataRegistry.records_by_id.camp_buildings[str(record.id)].erase("release_locked")
+		check(not CampProgression.is_building_release_locked(str(record.id)), "branch is open: " + str(record.id))
 	L10n.set_locale("zh_CN", false)
 	for b in CampProgression.get_building_records():
 		ids[str(b.icon).get_file().get_basename()] = str(b.id)
 		for o in b.upgrade_options: ids[str(o.icon).get_file().get_basename()] = str(o.id)
-	check(ids.size() == 34, "six buildings and twenty-eight unique upgrade icons")
+	check(ids.size() == 37, "six buildings and thirty-one unique upgrade icons")
 	check(DataValidator.new().validate_all(DataRegistry.tables, DataRegistry.records_by_id), "full data validation")
 	for building in CHAINS:
 		for key in CHAINS[building]:

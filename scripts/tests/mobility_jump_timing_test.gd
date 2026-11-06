@@ -97,6 +97,8 @@ func _test_jump(id: String, automatic := false) -> void:
 	var runtime := cast(id, automatic)
 	var destination := runtime.destination
 	var tag := id + ("_auto" if automatic else "")
+	check(is_equal_approx(runtime.takeoff_seconds, 0.06), tag + " takeoff is six times faster at 60 ms")
+	check(is_equal_approx(runtime.landing_seconds, 0.36), tag + " landing keeps its original timing")
 	check(player.global_position == Vector2.ZERO and player.action_animator.current_frame == 0, tag + " starts takeoff at origin")
 	var takeoff_frames := {0: true}
 	var landing_frames := {}
@@ -105,11 +107,13 @@ func _test_jump(id: String, automatic := false) -> void:
 	var airborne := true
 	var landing_still := true
 	var captures := {}
+	var takeoff_ticks := 0
 	for i in 80:
 		if player.is_mobility_moving():
 			player.play_weapon_action("weapon_wood_arrow", null, 0.0, Vector2.RIGHT)
 			protected = protected and player.action_animator.action in ["jump_forward", "jump_backward"]
 		await step()
+		if is_instance_valid(runtime) and runtime.phase == "takeoff": takeoff_ticks += 1
 		var frame := player.action_animator.current_frame
 		if is_instance_valid(runtime) and runtime.phase == "takeoff":
 			takeoff_frames[frame] = true
@@ -128,6 +132,7 @@ func _test_jump(id: String, automatic := false) -> void:
 				await capture(tag + "_" + label)
 		if is_instance_valid(runtime) and runtime.phase == "landing": captures["landing"] = true
 	check(takeoff_still and takeoff_frames.keys() == [0, 1, 2], tag + " first three frames stay at origin without damage")
+	check(takeoff_ticks <= 3, tag + " starts travel within four physics ticks")
 	check(airborne, tag + " continuous travel holds apex pose")
 	check(landing_still and landing_frames.keys() == [3, 4, 5], tag + " final three frames play at destination")
 	check(protected, tag + " other attacks do not overwrite the jump")
@@ -149,31 +154,31 @@ func _test_return() -> void:
 	var hp := target.current_hp
 	var cooldown := float(loadout.active_casting.state_for(tome).remaining)
 	check(loadout.cast_weapon(tome, Vector2.ZERO), "return accepted after landing")
-	await step(20)
+	await step(3)
 	check(player.global_position == Vector2(170, 0) and player.action_animator.current_frame == 2, "return takes off before teleporting")
 	await capture("star_return_takeoff")
-	await step(3)
+	await step(1)
 	check(player.global_position == Vector2.ZERO and player.action_animator.current_frame == 3, "return teleports at apex")
 	await capture("star_return_apex")
 	await step(17)
 	check(player.action_animator.current_frame == 5, "return displays landing frame")
 	await capture("star_return_landing")
-	await step(20)
+	await step(39)
 	check(target.current_hp == hp and not tome.is_return_ready(), "return adds no damage and consumes mark")
 	check(is_equal_approx(float(loadout.active_casting.state_for(tome).remaining), cooldown - 1.0), "return preserves original cooldown")
 	await reset()
 	runtime = cast(IDS[2])
 	await step(60)
 	check(loadout.cast_weapon(tome, Vector2.ZERO), "return starts before a new obstacle appears")
-	await step(10)
+	await step(1)
 	wall(Vector2(85, 0))
 	await frames()
-	await step(50)
+	await step(59)
 	check(player.global_position == Vector2(170, 0) and tome.is_return_ready(), "obstacle during takeoff keeps position and return mark")
 	check(not player.is_mobility_moving() and player.action_animator.action.is_empty(), "blocked return finishes landing")
 	await reset()
 	var original_cooldown := tome.active_cooldown_ms
-	tome.active_cooldown_ms = 150
+	tome.active_cooldown_ms = 30
 	cast(IDS[2])
 	await step(60)
 	check(player.global_position == Vector2(170, 0) and not tome.is_return_ready(), "cooldown expiry during takeoff does not abort blink or restore mark")
@@ -182,7 +187,7 @@ func _test_return() -> void:
 
 func _test_cleanup() -> void:
 	for id in IDS:
-		for interruption_frame in [10, 25, 40]:
+		for interruption_frame in [1, 10, 25, 40]:
 			await reset()
 			cast(id)
 			await step(interruption_frame)
@@ -236,7 +241,7 @@ func _run() -> void:
 	AudioServer.set_bus_mute(0, true)
 	await frames(12)
 	for id in IDS: await _test_jump(id)
-	await _test_jump(IDS[2], true)
+	for id in IDS: await _test_jump(id, true)
 	await _test_return()
 	await _test_cleanup()
 	await reset()

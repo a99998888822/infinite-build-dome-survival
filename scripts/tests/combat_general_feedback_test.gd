@@ -1,5 +1,5 @@
 extends "res://scripts/tests/pixel_combat_effect_test.gd"
-## Spatial/temporal grouping, real hitstop, and restoration on lifecycle changes.
+## Spatial/temporal grouping, uninterrupted shake, and lifecycle restoration.
 var events: Array[Dictionary] = []
 
 class ClockProbe extends Node:
@@ -54,8 +54,8 @@ func _run() -> void:
 		check(CombatHitFeedback.last_local_count == count, "%d unique nearby damaged enemies counted" % count)
 		check(events.size() == (0 if expected == 0 else 1), "%d contacts emit one threshold at most" % count)
 		if expected > 0 and not events.is_empty():
-			check(events[0].tier == expected and events[0].paused, "%d contacts choose correct shake and fixed hitstop" % count)
-			check(events[0].offset.x == [0, 1, 2, 6][expected], "%d contacts use reduced amplitude" % count)
+			check(events[0].tier == expected and not events[0].paused, "%d contacts choose correct shake without pausing" % count)
+			check(events[0].offset.x == [0, 2, 4, 12][expected], "%d contacts use doubled shake amplitude" % count)
 		check(hud_layer.offset == Vector2.ZERO, "HUD remains stable")
 		CombatHitFeedback.clear()
 		check(world_layer.offset == Vector2(7, 11) and sky_layer.offset == Vector2(-2, 4), "presentation layers return to their original offsets")
@@ -82,7 +82,7 @@ func _run() -> void:
 	for index in 2: enemies[index].take_attack_damage(1, event)
 	await settle_damage()
 	check(events.is_empty(), "repeat hits on the same two targets across frames do not inflate count")
-	# A single attack reaches milestones over time; nine adds no extra pause.
+	# A single attack reaches shake milestones over time; nine adds no impulse.
 	CombatHitFeedback.clear()
 	events.clear()
 	for index in 24: enemies[index].position = Vector2(index * 5, 0)
@@ -95,7 +95,7 @@ func _run() -> void:
 	check(CombatHitFeedback.last_local_count == 18, "chain count no longer caps at twelve")
 	var same_attack := event.duplicate_event()
 	check(DamageEvent.feedback_attack_id(same_attack.attack_context) == DamageEvent.feedback_attack_id(event.attack_context), "split/duplicate events share the attack identity")
-	# A gap in active simulation resets the combo, while hitstop consumes no gap.
+	# A gap in active simulation resets the combo.
 	CombatHitFeedback.clear()
 	events.clear()
 	for index in 2: enemies[index].take_attack_damage(1, event)
@@ -140,21 +140,16 @@ func _run() -> void:
 	check(CombatHitFeedback._batches.is_empty(), "rejected damage never counts")
 	check(CombatHitFeedback.local_hit_count([Vector2.ZERO, Vector2(240, 0), Vector2(-240, 0)]) == 3, "radius boundary is inclusive")
 	check(CombatHitFeedback.local_hit_count([Vector2.ZERO, Vector2(241, 0), Vector2(-241, 0)]) == 1, "outside radius is excluded")
-	# Capture the pause before awaiting. Both idle and physics must actually stop.
+	# Every feedback tier keeps both simulation clocks and rendering running.
 	for tier in [1, 2, 3]:
 		CombatHitFeedback.clear()
 		var before := probe.updates
 		var physics_before := probe.physics_updates
-		var started := Time.get_ticks_usec()
 		CombatHitFeedback._play([0, 3, 6, 12][tier])
-		check(get_tree().paused, "hitstop pauses the simulation immediately")
-		await get_tree().create_timer(0.015, true, false, true).timeout
-		check(probe.updates == before and probe.physics_updates == physics_before, "idle and physics clocks freeze during hitstop")
-		while get_tree().paused: await get_tree().process_frame
-		var duration := float(Time.get_ticks_usec() - started) / 1000000.0
-		check(duration >= CombatHitFeedback.HITSTOP_SECONDS[tier] and duration < 0.18, "hitstop restores on wall time: %.4f seconds" % duration)
-		await frames()
-		check(probe.updates > before and probe.physics_updates > physics_before, "simulation resumes after hitstop")
+		check(not get_tree().paused and not CombatHitFeedback._owns_pause and CombatHitFeedback.hitstop_until_usec == 0, "shake never pauses the simulation")
+		check(CombatHitFeedback.screen_offset != Vector2.ZERO, "screen shake remains visible at each tier")
+		await get_tree().create_timer(0.06).timeout
+		check(probe.updates > before and probe.physics_updates > physics_before, "idle and physics clocks advance during shake")
 	CombatHitFeedback.clear()
 	get_tree().paused = true
 	CombatHitFeedback._play(12)
@@ -165,7 +160,7 @@ func _run() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	await get_tree().process_frame
 	await get_tree().process_frame
-	check(not get_tree().paused and bool(GameGlobal.get_runtime_flag("battle_runtime_paused")), "menu cancels hitstop and keeps its own pause flag")
+	check(not get_tree().paused and bool(GameGlobal.get_runtime_flag("battle_runtime_paused")), "menu clears shake and keeps its own pause flag")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	var player := load("res://scenes/player/player_root.tscn").instantiate() as PlayerController
 	player.auto_initialize_on_ready = false
@@ -184,16 +179,17 @@ func _run() -> void:
 	joystick._direction = Vector2.RIGHT
 	CombatHitFeedback.set_input_receivers([player, controller, joystick])
 	CombatHitFeedback._play(12)
+	# Input now reaches gameplay normally; no hitstop forwarding is needed.
 	var key := InputEventKey.new()
 	key.keycode = KEY_D
-	CombatHitFeedback._input(key)
+	player._input(key)
 	var mouse := InputEventMouseButton.new()
 	mouse.button_index = MOUSE_BUTTON_RIGHT
-	CombatHitFeedback._input(mouse)
+	controller._input(mouse)
 	var touch := InputEventScreenTouch.new()
 	touch.index = 2
-	CombatHitFeedback._input(touch)
-	check(not player._held_move_keys[KEY_D] and not controller.right_held and joystick._direction == Vector2.ZERO, "keyboard, mouse and touch releases survive hitstop")
+	joystick._input(touch)
+	check(not player._held_move_keys[KEY_D] and not controller.right_held and joystick._direction == Vector2.ZERO, "keyboard, mouse and touch releases work during shake")
 	CombatHitFeedback.clear()
 	var viewport := SubViewport.new()
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -204,7 +200,7 @@ func _run() -> void:
 	add_child(presentation)
 	CombatHitFeedback.bind_battle(viewport, [world_layer], presentation)
 	CombatHitFeedback._play(12)
-	check(viewport.render_target_update_mode == SubViewport.UPDATE_ONCE, "contact image freezes GPU rendering after its first draw")
+	check(viewport.render_target_update_mode == SubViewport.UPDATE_ALWAYS, "screen shake keeps GPU rendering continuous")
 	check(presentation.material != original_material and presentation.position == Vector2.ZERO, "screen shader shifts presentation without changing layout or aim")
 	remove_child(presentation)
 	CombatHitFeedback.unbind_battle()

@@ -16,12 +16,12 @@ func _run() -> void:
 	check(waves.size() == 16, "campaign has exactly sixteen waves")
 	var total_time := 0
 	for entry in waves: total_time += int(entry.duration_seconds)
-	check(total_time == 935, "campaign combat time is fifteen minutes thirty-five seconds")
+	check(total_time == 670, "campaign combat time is eleven minutes ten seconds")
 	for index in waves.size():
 		manager.set_process(false)
 		manager.clear_enemies()
 		manager.player.set_physics_process(false)
-		check(manager.current_wave_index == index and int(manager.current_wave.duration_seconds) == mini(35 + index * 5, 65), "actual wave and duration " + str(index + 1))
+		check(manager.current_wave_index == index and int(manager.current_wave.duration_seconds) == mini(25 + index * 5, 45), "actual wave and duration " + str(index + 1))
 		if index in [0, 15]: await _capture(null, "01_first_wave" if index == 0 else "02_final_wave")
 		if index == 15: _sample_income(15)
 		flow.finish_current_wave()

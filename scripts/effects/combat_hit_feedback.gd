@@ -6,9 +6,10 @@ signal feedback_started(tier: int, local_count: int)
 const LOCAL_RADIUS := 240.0
 const CHAIN_GAP_SECONDS := 0.20
 const SCREEN_SHADER = preload("res://assets/shaders/combat_screen_shake.gdshader")
-const SHAKE_PIXELS := [0.0, 1.0, 2.0, 6.0]
+const SHAKE_PIXELS := [0.0, 2.0, 4.0, 12.0]
 const SHAKE_SECONDS := [0.0, 0.14, 0.22, 0.32]
-const HITSTOP_SECONDS := [0.0, 0.05, 0.05, 0.05]
+# Keep the feedback tiers and shake, with uninterrupted gameplay at every tier.
+const HITSTOP_SECONDS := [0.0, 0.0, 0.0, 0.0]
 const DIRECTIONS := [Vector2(1, -0.4), Vector2(-0.8, 0.65), Vector2(0.6, -1), Vector2(-1, 0.3)]
 
 var active := false

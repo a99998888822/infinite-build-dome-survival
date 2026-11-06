@@ -1,7 +1,7 @@
 extends Node
-## Default release restrictions, including previously unlocked saves and stale shop entries.
+## Open talent branches and retained weapon restrictions, including existing saves.
 const LOCKED_WEAPONS := ["weapon_iron_grenade_cannon", "weapon_copper_lamp", "weapon_camp_dagger", "weapon_rentier_purse", "weapon_mutant_tentacle", "weapon_star_tome"]
-const LOCKED_BUILDINGS := ["camp_blade_arena", "camp_farstar_range", "camp_dome_shelter", "camp_council_hall"]
+const OPEN_BUILDINGS := ["camp_blade_arena", "camp_farstar_range", "camp_dome_shelter", "camp_council_hall"]
 var checks := 0
 var failures := 0
 var capture_dir := ""
@@ -51,14 +51,16 @@ func _run() -> void:
 	check(DataRegistry.get_load_errors().is_empty(), "configuration validates")
 	_test_weapons()
 	CampProgression.set_camp_currency(100000)
-	for id in LOCKED_BUILDINGS:
-		check(not CampProgression.can_purchase_building_unlock(id) and not CampProgression.purchase_building_unlock(id), "release building cannot unlock: " + id)
-		# Model an older save without changing or deleting its progression.
+	for id in OPEN_BUILDINGS:
+		check(not CampProgression.is_building_release_locked(id), "talent branch is available: " + id)
+		check(CampProgression.can_purchase_building_unlock(id) and CampProgression.purchase_building_unlock(id), "talent branch can unlock: " + id)
+		# Existing progress remains usable after removing the release restriction.
 		CampProgression.state.building_levels[id] = 2
 		for option in CampProgression.get_building_record(id).upgrade_options:
 			CampProgression.state.upgrade_levels[str(option.id)] = 1
-			check(not CampProgression.is_upgrade_visible(str(option.id)) and not CampProgression.purchase_upgrade(str(option.id)), "saved descendant is hidden and cannot upgrade: " + str(option.id))
-		check(not CampProgression.can_purchase_building_upgrade(id) and not CampProgression.upgrade_building(id), "saved building cannot upgrade: " + id)
+		for option in CampProgression.get_building_record(id).upgrade_options:
+			check(CampProgression.is_upgrade_visible(str(option.id)), "saved descendant remains available: " + str(option.id))
+			check(CampProgression.can_purchase_upgrade(str(option.id)) == (int(option.max_level) > 1), "saved descendant respects maximum level: " + str(option.id))
 	var saved := CampProgression.get_state()
 	var window := get_tree().root
 	window.unfocusable = true
@@ -72,19 +74,16 @@ func _run() -> void:
 	flow.enter_talents_flow()
 	await frames(8)
 	var page := game.get_node("UiRoot/CampBlueprintUIController") as CampBlueprintUIController
-	for id in LOCKED_BUILDINGS:
+	for id in OPEN_BUILDINGS:
 		var node: TalentNodeButton = page._nodes[id]
-		check(node.visible and node.disabled and not node.lit and not page._node_levels[id].visible, "root remains gray despite saved level: " + id)
+		check(node.visible and not node.disabled and node.lit and page._node_levels[id].visible, "opened branch reflects saved level: " + id)
 		move_pointer(Vector2(10, 10))
 		move_pointer(node.get_global_rect().get_center())
-		check(page._upgrade_tooltip.visible and page._upgrade_tooltip_text.text == "正式版可用", "real hover shows release hint: " + id)
-		check(page.get_global_rect().encloses(page._upgrade_tooltip.get_global_rect()), "release hint fits viewport: " + id)
+		check(not page._upgrade_tooltip.visible, "opened branch has no release restriction hint: " + id)
 		await capture(id)
 		await click(node.get_global_rect().get_center())
-		page.select_node(id)
-		page._purchase_selected()
-		check(page._selected_id.is_empty() and not page._detail_panel.visible and not page._upgrade_button.visible, "locked root never opens purchasing: " + id)
-	check(CampProgression.get_state() == saved, "locked interactions preserve currency and saved progression")
+		check(page._selected_id == id and page._detail_panel.visible, "opened branch remains selectable: " + id)
+	check(CampProgression.get_state() == saved, "viewing branches preserves currency and progression")
 	for id in ["camp_armory_workshop", "camp_relic_archive"]:
 		check(not page._nodes[id].disabled and page._nodes[id].lit, "initial building stays available: " + id)
 		await click(page._nodes[id].get_global_rect().get_center())
@@ -92,8 +91,8 @@ func _run() -> void:
 	page.select_node("")
 	await capture("overview")
 	L10n.set_locale("en", false)
-	move_pointer(page._nodes[LOCKED_BUILDINGS[0]].get_global_rect().get_center())
-	check(page._upgrade_tooltip_text.text == "Full release only", "release hint follows locale")
+	move_pointer(page._nodes[OPEN_BUILDINGS[0]].get_global_rect().get_center())
+	check(not page._upgrade_tooltip.visible, "opened branch stays available in English")
 	L10n.set_locale("zh_CN", false)
 	page._on_back_pressed()
 	_test_stale_purchases(flow)
@@ -106,7 +105,7 @@ func _run() -> void:
 	get_tree().quit(1 if failures else 0)
 
 func _test_weapons() -> void:
-	check(DataRegistry.get_record_count("weapons") == 14, "all fourteen weapon definitions retained")
+	check(DataRegistry.get_record_count("weapons") == 16, "all sixteen weapon definitions retained")
 	var generator := ShopOfferGenerator.new()
 	var context := {"load_capacity": 1000, "luck": 1000, "unlocked_weapon_ids": LOCKED_WEAPONS}
 	var locked_pool := generator.build_shop_candidate_pool(context)
@@ -118,7 +117,7 @@ func _test_weapons() -> void:
 		check(bool(record.get("release_locked", false)) and ResourceLoader.exists(str(record.icon)) and not record.level_upgrades.is_empty(), "locked weapon keeps art and upgrades: " + id)
 		context.equipped_weapons.append({"weapon_id": id, "level": 1})
 	var pool := generator.build_shop_candidate_pool(context)
-	check(pool.filter(func(c): return c.offer_type == "new_weapon").size() == 8, "exactly eight weapons remain available")
+	check(pool.filter(func(c): return c.offer_type == "new_weapon").size() == 10, "exactly ten weapons remain available")
 	check(not pool.any(func(c): return str(c.target_id) in LOCKED_WEAPONS), "locked weapons and their upgrade offers absent")
 	var valid := true
 	for index in 100:

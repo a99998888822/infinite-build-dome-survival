@@ -1,6 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+# TapTap Android plugin build output and local Gradle caches.
+/addons/taptap/native/build/
+/addons/taptap/native/.gradle/
 artifacts/ui_visual_audit/
 tmp/
 temp/

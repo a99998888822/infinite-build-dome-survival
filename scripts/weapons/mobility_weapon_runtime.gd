@@ -2,6 +2,7 @@ extends DirectedWeaponRuntime
 class_name MobilityWeaponRuntime
 ## A cast owns motion, contacts and sprite lifetimes. No floating weapon body.
 const SLASH_SECONDS := 10.0 / 48.0
+const TAKEOFF_ANIMATION_SPEED := 6.0
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 const CANNON_JET = preload("res://scripts/effects/cannon_jet_flame.gd")
 var live_source: WeaponInstance
@@ -54,7 +55,9 @@ func _begin_jump(attack_direction: Vector2 = Vector2.ZERO) -> void:
 		cancel()
 		return
 	_jump_active = true
-	animator.hold_action_at(takeoff_seconds)
+	var takeoff_speed := maxf(0.01, float(weapon.weapon_data.get("takeoff_animation_speed", TAKEOFF_ANIMATION_SPEED)))
+	animator.hold_action_at(takeoff_seconds, takeoff_speed)
+	takeoff_seconds /= takeoff_speed
 	phase = "takeoff"
 	phase_age = 0.0
 

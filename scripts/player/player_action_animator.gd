@@ -10,6 +10,7 @@ var action := ""
 var facing_direction := Vector2.ZERO
 var _elapsed := 0.0
 var _action_hold_at := -1.0
+var _action_hold_speed := 1.0
 var _move_time := 0.0
 var _hold_time := 0.0
 var _moving := false
@@ -91,8 +92,9 @@ func play(next: String, direction: Vector2 = Vector2.ZERO) -> void:
 	_show(next, 0)
 
 
-func hold_action_at(seconds: float) -> void:
+func hold_action_at(seconds: float, playback_speed: float = 1.0) -> void:
 	_action_hold_at = maxf(0.0, seconds)
+	_action_hold_speed = maxf(0.01, playback_speed)
 
 
 func resume_action() -> void:
@@ -118,7 +120,8 @@ func tick(delta: float, moving: bool) -> void:
 	_moving = moving
 	_move_time = _move_time + delta if moving else 0.0
 	_hold_time += delta
-	_elapsed += delta
+	# Only the approach to a held pose uses this speed; landing resumes normally.
+	_elapsed += delta * (_action_hold_speed if _action_hold_at >= 0.0 else 1.0)
 	if _action_hold_at >= 0.0:
 		_elapsed = minf(_elapsed, _action_hold_at)
 	for index in range(_sustains.size() - 1, -1, -1):

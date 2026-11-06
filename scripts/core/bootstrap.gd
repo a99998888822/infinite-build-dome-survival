@@ -419,7 +419,7 @@ func _run_enemy_wave_checks() -> bool:
 	wave_manager.initialize(player)
 	passed = _print_check_result("enemy config load", DataRegistry.has_record("enemies", "enemy_mutated_grub")) and passed
 	passed = _print_check_result("wave config load", DataRegistry.has_record("waves", "wave_stage_01")) and passed
-	passed = _print_check_result("wave duration configuration", wave_manager.calculate_wave_duration(0) == 35 and wave_manager.calculate_wave_duration(6) == 65 and DataRegistry.get_table("waves").size() == 16) and passed
+	passed = _print_check_result("wave duration configuration", wave_manager.calculate_wave_duration(0) == 25 and wave_manager.calculate_wave_duration(6) == 45 and DataRegistry.get_table("waves").size() == 16) and passed
 
 	var enemy := wave_manager.spawn_enemy("enemy_mutated_grub", player.global_position + Vector2(20, 0))
 	var expected_enemy_hp := roundi(float(DataRegistry.get_record("enemies", "enemy_mutated_grub").get("base_stats", {}).get("max_hp", 0)) * float(BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID).health))

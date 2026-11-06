@@ -214,6 +214,7 @@ func _test_saber() -> void:
 	check(loadout.cast_weapon(saber, Vector2(300,0)), "saber casts")
 	freeze()
 	var runtime := saber.mobility_runtime.get_ref() as SaberRuntime
+	check(is_equal_approx(runtime.half_jump, 0.06) and is_equal_approx(runtime.jump_duration, 0.42), "saber uses fast takeoff and original landing duration")
 	check(not loadout.cast_weapon(saber, Vector2(-300,0)), "one mobility sequence at a time")
 	var before := {}
 	var after := {}
@@ -223,7 +224,8 @@ func _test_saber() -> void:
 		if player.action_animator.current_clip == "jump_forward":
 			if runtime.blinked: after[player.action_animator.current_frame] = true
 			else: before[player.action_animator.current_frame] = true
-		if i == 19: check(player.global_position == Vector2.ZERO and target.current_hp == 10000, "no motion or hit before half jump")
+		if i == 1: check(player.global_position == Vector2.ZERO and target.current_hp == 10000, "no motion or hit before fast takeoff finishes")
+		if i == 3: check(runtime.blinked and player.global_position != Vector2.ZERO, "saber blinks within four physics ticks")
 	check(before.keys() == [0,1,2] and after.keys() == [3,4,5], "jump plays three frames on each side")
 	check(player.global_position.is_equal_approx(Vector2(300,0)) and target.current_hp == 9968 and miss.current_hp == 10000, "blink lands and path deals one narrow hit")
 	await reset()
@@ -237,7 +239,7 @@ func _test_saber() -> void:
 	loadout.cast_weapon(saber, Vector2(300,0))
 	freeze()
 	runtime = saber.mobility_runtime.get_ref()
-	await step(40)
+	await step(25)
 	check(runtime.cuts_fired == 5 and runtime.hit_count == 5, "five cuts settle once per enemy per cut")
 	check(runtime.cut_angles == [0.0,3.0,-3.0,6.0,-6.0] and runtime.cut_centers.all(func(p): return p.is_equal_approx(Vector2(150,0))), "cuts rotate around shared geometric center")
 	check(not get_tree().get_nodes_in_group("ice_fields").is_empty(), "actual saber contacts trigger ice")
@@ -252,16 +254,16 @@ func _test_saber() -> void:
 	await reset()
 	loadout.cast_weapon(saber, Vector2(300,0))
 	freeze()
-	await step(10)
+	await step(1)
 	wall(Vector2(110,0))
 	await frames()
-	await step(34)
+	await step(43)
 	check(player.global_position.x < 100, "new obstacle during windup is rechecked")
 
 func _test_cleanup() -> void:
 	loadout.cast_weapon(saber, Vector2(300,0))
 	freeze()
-	await step(6)
+	await step(1)
 	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
 	var runtime := saber.mobility_runtime.get_ref() as SaberRuntime
 	var saved: float = runtime.age
@@ -270,7 +272,7 @@ func _test_cleanup() -> void:
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
 	loadout._clear_weapon_runtime(saber)
 	await frames()
-	check(not player.is_mobility_moving() and saber.mobility_runtime == null, "removal cancels jump and releases motion lock")
+	check(not player.is_mobility_moving() and saber.mobility_runtime == null and player.action_animator.action.is_empty(), "removal cancels jump and releases motion and animation locks")
 	damage()
 	player.alive = false
 	await step(1)

@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## Git commit authorization
+
+- Do not create Git commits without the user's explicit authorization. Requests to implement, fix, test, or edit files do not authorize committing.
+- Leave changes uncommitted for the user to review unless they explicitly ask for a commit. Do not infer permission from earlier unrelated tasks.
+- Do not push commits or rewrite existing commit history without the user's explicit authorization for those actions.
+
+## Spell VFX art direction
+
+- The user's preferred visual reference is the existing copper lamp's spray flame (`scripts/effects/copper_lamp_flame.gd` and `shaders/effects/copper_lamp_flame.gdshader`). Keep future spell VFX coherent with its pixel-art style: clear stepped silhouettes, broad color clusters, restrained particles, and readable palette steps. Preserve each element's own colors and identity.
+- Adapt pixelfx techniques to the current project's effects. Do not wholesale replace project effects with pixelfx originals. Compare the current effect, candidate references, and proposed adaptation direction on a review page before implementing the corresponding VFX refactor.
+
 ## External-image pixel art workflow
 
 For requests to pixelize supplied high-resolution images, convert references into pixel-art assets, process character expressions, or use Picxel on image files, read `.agents/skills/picxel-external-images/SKILL.md` and use that project workflow. It accepts external files, requires no image-generation tool or image API key, and records AI-guided local pixel repairs honestly. Prefer it over the global Picxel generation workflow for these tasks. Source-code reviews and replacement of already completed assets do not start a new conversion task.

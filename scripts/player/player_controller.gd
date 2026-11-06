@@ -15,7 +15,7 @@ signal stats_changed
 signal blink_completed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
-const DEFAULT_INVINCIBILITY_SECONDS: float = 0.0
+const DEFAULT_INVINCIBILITY_SECONDS: float = 0.1
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const REVIVE_BLINK_STEP_SECONDS: float = 0.1

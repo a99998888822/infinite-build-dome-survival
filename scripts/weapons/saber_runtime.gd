@@ -31,7 +31,7 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	if offset.is_zero_approx(): offset = player.last_move_direction * source.get_attack_range()
 	destination = player.resolve_mobility_destination(origin + source.get_mobility_landing(offset))
 	if origin.distance_to(destination) < 4.0: return false
-	# Read the actual animation timing; both halves keep the source frame durations.
+	# Accelerate takeoff using the shared mobility speed; preserve landing timing.
 	var clip: Dictionary = player.action_animator._clips.get("jump_forward", {})
 	var times: Array = clip.get("frame_durations", [0.12, 0.12, 0.12, 0.12, 0.12, 0.12])
 	half_jump = 0.0
@@ -39,10 +39,15 @@ func initialize(source: WeaponInstance, original: WeaponInstance, point: Vector2
 	for i in times.size():
 		jump_duration += float(times[i])
 		if i < times.size() / 2: half_jump += float(times[i])
+	var apex_time := half_jump
+	var takeoff_speed := maxf(0.01, float(source.weapon_data.get("takeoff_animation_speed", MobilityWeaponRuntime.TAKEOFF_ANIMATION_SPEED)))
+	half_jump /= takeoff_speed
+	jump_duration = jump_duration - apex_time + half_jump
 	if not player.begin_mobility_motion(self, origin, jump_duration): return false
 	live_source = original
 	original.mobility_runtime = weakref(self)
 	player.play_mobility_action(source.weapon_id, destination - origin)
+	player.action_animator.hold_action_at(apex_time, takeoff_speed)
 	duration = maxf(jump_duration, half_jump + (maxi(1, int(source.get_stat("projectile_count"))) - 1) * _cut_gap() + 0.30)
 	return true
 
@@ -70,6 +75,7 @@ func _physics_process(delta: float) -> void:
 			cancel()
 			return
 		blinked = true
+		player.action_animator.resume_action()
 		_build_shape()
 	if blinked:
 		while cuts_fired < maxi(1, int(weapon.get_stat("projectile_count"))) and age + 0.000001 >= half_jump + cuts_fired * _cut_gap():
@@ -143,12 +149,20 @@ func _cut_gap() -> float:
 	return 0.0 if pattern != null and pattern.radial else CUT_GAP
 
 func cancel() -> void:
-	if is_instance_valid(weapon.owner_player): weapon.owner_player.cancel_mobility_motion(self)
+	_release_jump()
 	if live_source != null and live_source.mobility_runtime != null and live_source.mobility_runtime.get_ref() == self:
 		live_source.mobility_runtime = null
 	super.cancel()
 
 func _exit_tree() -> void:
-	if weapon != null and is_instance_valid(weapon.owner_player): weapon.owner_player.cancel_mobility_motion(self)
+	_release_jump()
 	if live_source != null and live_source.mobility_runtime != null and live_source.mobility_runtime.get_ref() == self:
 		live_source.mobility_runtime = null
+
+func _release_jump() -> void:
+	if weapon == null or not is_instance_valid(weapon.owner_player): return
+	var player := weapon.owner_player
+	if player._mobility_owner != null and player._mobility_owner.get_ref() == self:
+		if player.action_animator.action in ["jump_forward", "jump_backward"]:
+			player.action_animator.reset()
+	player.cancel_mobility_motion(self)

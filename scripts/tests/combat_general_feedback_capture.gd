@@ -77,7 +77,7 @@ func _run() -> void:
 	battle.active_controller._pointer_position = Vector2(700, 420)
 	var aim := battle.active_controller.pointer_world()
 	var canvas := player.get_viewport().get_canvas_transform()
-	var cases := [[3, "3 nearby: 1 px + 50 ms hitstop"], [6, "6 nearby: 2 px + 50 ms hitstop"], [12, "12 nearby: 6 px + 50 ms hitstop"]]
+	var cases := [[3, "3 nearby hits: 2 px shake | no hitstop"], [6, "6 nearby hits: 4 px shake | no hitstop"], [12, "12 nearby hits: 12 px shake | no hitstop"]]
 	for row in cases:
 		CombatHitFeedback.clear()
 		for unit in units:
@@ -87,8 +87,9 @@ func _run() -> void:
 		var count: int = row[0]
 		# 12 contacts must fit in one local radius around a hit enemy.
 		var event := DamageEvent.create({"damage": 1, "source_weapon_id": "review"})
-		for index in count: units[index].take_attack_damage(1, event)
-		for index in 32:
+		for index in 90:
+			if index == 30:
+				for target_index in count: units[target_index].take_attack_damage(1, event)
 			await _save("tier_%02d_%02d" % [count, index])
 			var offset := CombatHitFeedback.screen_offset
 			samples.append({"case": count, "frame": index, "time_usec": Time.get_ticks_usec(),

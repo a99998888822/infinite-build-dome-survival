@@ -576,7 +576,7 @@ func _collect_reward_pickups_recursive(node: Node, result: Array[Node]) -> void:
 
 func calculate_wave_duration(wave_index: int) -> int:
 	var waves := DataRegistry.get_table("waves")
-	return int(waves[clampi(wave_index, 0, waves.size() - 1)].duration_seconds) if not waves.is_empty() else 35
+	return int(waves[clampi(wave_index, 0, waves.size() - 1)].duration_seconds) if not waves.is_empty() else 25
 
 
 func get_required_exp_for_next_level() -> int:
