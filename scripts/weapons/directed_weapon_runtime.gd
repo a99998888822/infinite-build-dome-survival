@@ -57,7 +57,7 @@ static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
 	return best
 
 
-func rectangle_contacts(origin: Vector2, direction: Vector2, length: float, half_width: float) -> Array[EnemyController]:
+func rectangle_contacts(origin: Vector2, direction: Vector2, length: float, half_width: float, excluded: Dictionary = {}) -> Array[EnemyController]:
 	var shape := RectangleShape2D.new()
 	shape.size = Vector2(length, half_width * 2)
 	var query := PhysicsShapeQueryParameters2D.new()
@@ -69,6 +69,7 @@ func rectangle_contacts(origin: Vector2, direction: Vector2, length: float, half
 	var result: Array[EnemyController] = []
 	for contact in get_world_2d().direct_space_state.intersect_shape(query, maxi(32, EnemyRegistry.get_registered_enemies().size())):
 		var enemy := contact.collider as EnemyController
+		if is_instance_valid(enemy) and excluded.has(enemy.get_instance_id()): continue
 		if is_instance_valid(enemy) and enemy.is_alive() and not result.has(enemy) and clear_path(self, origin, enemy.global_position):
 			result.append(enemy)
 	return result

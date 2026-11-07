@@ -11,6 +11,7 @@ signal flow_reset
 signal preparation_changed(payload: Dictionary)
 
 var _economy_refresh_queued := false
+var _battle_runtime_pause_requested := false
 
 const MODE_BOOT: String = "boot"
 const MODE_BATTLE: String = "battle"
@@ -157,6 +158,8 @@ func enter_battle_selection(character_id: String = "", start_weapon_ids: Array[S
 
 
 func confirm_character_selection(defer_start: bool = false) -> bool:
+	if not TapTapSession.require_login():
+		return false
 	if _bound_player == null or _bound_loadout == null:
 		push_error("[MainFlowCoordinator] missing battle context before character confirm.")
 		return false
@@ -195,6 +198,8 @@ func confirm_character_selection(defer_start: bool = false) -> bool:
 
 
 func start_confirmed_battle() -> bool:
+	if not TapTapSession.require_login():
+		return false
 	if current_mode != MODE_BATTLE or current_state != STATE_BATTLE_PREPARE or _bound_player == null:
 		return false
 	_first_guide_pending = CombatSettings.should_show_combat_guide()
@@ -517,6 +522,8 @@ func close_esc_overlay() -> void:
 
 
 func can_open_battle_utility(page: String) -> bool:
+	if page == "encyclopedia" and MobileProfile.is_mobile():
+		return false
 	if current_mode != MODE_BATTLE or battle_resolved or _transaction_busy:
 		return false
 	if page in ["settings", "encyclopedia"]:
@@ -976,7 +983,8 @@ func _sync_bgm_for_flow() -> void:
 
 
 func _set_battle_runtime_paused(paused: bool) -> void:
-	GameGlobal.set_runtime_flag("battle_runtime_paused", paused)
+	_battle_runtime_pause_requested = paused
+	GameGlobal.set_runtime_flag("battle_runtime_paused", paused or not TapTapSession.can_enter_game())
 
 
 func _unbind_battle_context() -> void:

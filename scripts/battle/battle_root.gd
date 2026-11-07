@@ -154,12 +154,13 @@ func _bind_mobile_joystick() -> void:
 		return
 	if not mobile_joystick.direction_changed.is_connected(_on_mobile_joystick_direction_changed):
 		mobile_joystick.direction_changed.connect(_on_mobile_joystick_direction_changed)
-	mobile_joystick.set_touch_blocker_root(hud)
+	# Top-bar actions are siblings of HUD, so reserve their touch regions too.
+	mobile_joystick.set_touch_blocker_root(hud, [get_node("BattleTopBar")])
 	mobile_joystick.set_mobile_input_enabled(false)
 
 
 func _apply_mobile_controls(state: String) -> void:
-	var should_enable := OS.has_feature("mobile") and state == MainFlowCoordinator.STATE_WAVE_COMBAT
+	var should_enable := MobileProfile.is_mobile() and state == MainFlowCoordinator.STATE_WAVE_COMBAT
 	if mobile_joystick != null:
 		mobile_joystick.set_mobile_input_enabled(should_enable)
 	if not should_enable and player != null:

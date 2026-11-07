@@ -8,6 +8,7 @@ const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 const WHITE = preload("res://assets/shaders/enemy_hit_white.gdshader")
 
 static func prepare(parent: Node2D, weapons: Array, body_texture: Texture2D) -> void:
+	preload("res://scripts/effects/selected_spell_visual.gd").warmup(parent)
 	# Enchantment seeds/statuses use a separate shader from the lamp's jet.
 	# Loading pauses the shared clock, so explicitly submit the real fire batch.
 	var fire := FIRE.new()

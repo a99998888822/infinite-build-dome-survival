@@ -14,6 +14,7 @@ const GROUND_BOLT = preload("res://scripts/effects/ground_lightning_bolt.gd")
 const HIT_SPRITE_BURST = preload("res://scripts/effects/lightning_hit_sprite_burst.gd")
 const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
 const RANGE_QUERY = preload("res://scripts/effects/lightning_range_query.gd")
+const BAKED_STRIKE = preload("res://scripts/effects/baked_ground_strike.gd")
 
 const STEP_SECONDS := 0.08
 const FLASH_SECONDS := STEP_SECONDS * 2.0
@@ -58,6 +59,10 @@ var _ground_strike_damage_applied: bool = false
 var _ground_ring: Node2D
 var _audio_impact: RefCounted = null
 var _thunder_fire_text_shown := false
+var _baked_strike: Node2D
+var _baked_rng_start := Vector2.ZERO
+var _baked_rng_end := Vector2.ZERO
+var _baked_rng_echoed := false
 
 
 func _exit_tree() -> void:
@@ -174,14 +179,24 @@ func _strike_chain(target_id: int, from_position: Vector2) -> void:
 
 
 func _strike_ground(ground_position: Vector2) -> void:
+	if _baked_strike != null: return
 	if _context == null:
 		queue_free()
 		return
 	var strike_height := maxf(_get_cached_parameter("strike_height", 182.0), 96.0)
 	_ground_strike_position = ground_position
 	_ground_strike_impact_age = 0.0
-	_emit_bolt(ground_position + Vector2.UP * strike_height, ground_position)
-	_emit_hit_burst(ground_position, Vector2.DOWN)
+	# Ground contact uses prebuilt R01 art. Keep gameplay and chain geometry separate.
+	_baked_rng_start = ground_position+Vector2.UP*strike_height
+	_baked_rng_end = ground_position
+	_consume_ground_visual_rng()
+	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(_parent_root,"ground_strike",ground_position)
+	_baked_strike = BAKED_STRIKE.new()
+	add_child(_baked_strike)
+	_baked_strike.position = to_local(ground_position)
+	_baked_strike.setup(strike_height,_ground_strike_damage_radius,
+		clampf(_get_cached_parameter("lifetime_multiplier",1.0),0.5,2.0),
+		clampf(_get_cached_parameter("alpha_multiplier",1.0),0.0,2.0),tier)
 	if not _ground_strike_damage_applied:
 		_ground_strike_damage_applied = true
 		AudioManager.begin_combat_audio()
@@ -212,13 +227,17 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 			candidate_enemies[enemy.get_instance_id()] = enemy
 
 	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
+	# The registry already preserves unflushed contacts. Query a cheap box for
+	# physics-only candidates and exact-test only those not already included.
+	var bounds := RectangleShape2D.new()
+	bounds.size = FOOTPRINT.axes(radius) * 2.0
+	query.shape = bounds
 	query.transform = transform
 	query.collision_mask = 2
 	query.collide_with_bodies = true
 	for result in get_world_2d().direct_space_state.intersect_shape(query, 64):
 		var enemy := result.get("collider") as EnemyController
-		if enemy != null and enemy.is_alive():
+		if enemy != null and enemy.is_alive() and not candidate_enemies.has(enemy.get_instance_id()) and FOOTPRINT.ATTACK.body_overlaps(shape, transform, enemy):
 			candidate_enemies[enemy.get_instance_id()] = enemy
 
 	for enemy_variant in candidate_enemies.values():
@@ -332,7 +351,7 @@ static func alpha_at(age: float) -> float:
 
 
 static func ground_alpha_at(age: float) -> float:
-	return alpha_at(age) * (0.42 if age >= FLASH_SECONDS + DARK_SECONDS else 1.0)
+	return BAKED_STRIKE.flash_alpha_at(age)
 
 
 func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
@@ -377,8 +396,14 @@ func _finish_chain() -> void:
 
 func _try_finish_chain() -> void:
 	var ring_active := _is_ground_strike and _ground_strike_impact_age >= 0.0 and _ground_strike_impact_age < GROUND_STRIKE_IMPACT_RING_LIFETIME
-	if _chain_finished and _path_pulses.is_empty() and not ring_active:
+	var baked_active: bool = is_instance_valid(_baked_strike) and _baked_strike.is_active()
+	if _chain_finished and _path_pulses.is_empty() and not ring_active and not baked_active:
 		queue_free()
+
+func _consume_ground_visual_rng() -> void:
+	# Match old path RNG draws at primary/echo instants without building geometry.
+	var count := maxi(1,int(ceil(_baked_rng_start.distance_to(_baked_rng_end)/GROUND_STRIKE_CONTROL_POINT_SPACING)))
+	for index in range(1,count): randf_range(-CHAIN_CONTROL_POINT_JITTER,CHAIN_CONTROL_POINT_JITTER)
 
 
 func _build_bolt_control_points(
@@ -459,7 +484,13 @@ func _process(delta: float) -> void:
 			pulse.bolt.advance_flash(pulse.age - (FLASH_SECONDS + DARK_SECONDS if pulse.echoed else 0.0))
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0:
 		_ground_strike_impact_age += delta
-		_ground_ring.queue_redraw()
+		if is_instance_valid(_baked_strike):
+			var a: float = _ground_strike_impact_age/_baked_strike.lifetime_scale
+			if not _baked_rng_echoed and a>=0.20 and a<TOTAL_SECONDS:
+				_baked_rng_echoed = true
+				_consume_ground_visual_rng()
+			_baked_strike.advance(_ground_strike_impact_age)
+		else: _ground_ring.queue_redraw()
 	_try_finish_chain()
 
 
@@ -468,6 +499,7 @@ func get_active_particle_count() -> int:
 
 
 func _draw_ground_impact() -> void:
+	if is_instance_valid(_baked_strike): return
 	if _is_ground_strike and _ground_strike_impact_age >= 0.0 and _ground_strike_impact_age < GROUND_STRIKE_IMPACT_RING_LIFETIME:
 		var impact_ratio := clampf(_ground_strike_impact_age / GROUND_STRIKE_IMPACT_RING_LIFETIME, 0.0, 1.0)
 		var impact_center := to_local(_ground_strike_position)

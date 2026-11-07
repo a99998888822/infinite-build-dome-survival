@@ -4,7 +4,7 @@ class_name WaterWaveEffect
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
-const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
+const BAKED = preload("res://scripts/effects/selected_spell_visual.gd")
 const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
@@ -84,7 +84,10 @@ func _apply_wave() -> void:
 	AudioManager.play_enchantment_sfx("water")
 	var shape := FOOTPRINT.shape(get_terminal_footprint_axes())
 	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = shape
+	# Cheap broad phase; the shared exact test below retains the ellipse edge.
+	var bounds := RectangleShape2D.new()
+	bounds.size = get_terminal_footprint_axes() * 2.0
+	query.shape = bounds
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = 2
 	query.collide_with_bodies = true
@@ -97,29 +100,19 @@ func _apply_wave() -> void:
 		var enemy := result.get("collider") as EnemyController
 		if enemy == null or not enemy.is_alive() or handled.has(enemy.get_instance_id()):
 			continue
+		if not FOOTPRINT.ATTACK.body_overlaps(shape, query.transform, enemy): continue
 		handled[enemy.get_instance_id()] = true
-		ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "water", {
-			"parent": get_parent(),
-			"hit_position": enemy.global_position,
-			"source_id": _damage_event.source_weapon_id,
-			"damage": _damage_event.damage,
-			"original_damage": _damage_event.get_elemental_base_damage(),
-			"wet_duration": wet_duration,
-			"wet_slow_multiplier": wet_slow_multiplier,
-			"damage_event": _damage_event,
-		})
+		ELEMENT_REACTION_RESOLVER_SCRIPT.apply_water_contact(enemy, get_parent(), _damage_event, wet_duration, wet_slow_multiplier)
 		enemy.take_attack_damage(damage, _damage_event, false, global_position.direction_to(enemy.global_position))
 	AudioManager.end_combat_audio()
 
 
 func _get_visual_frame() -> int:
-	return int(_elapsed * 18.0)
+	return int(_elapsed * DEFAULT_DURATION / maxf(_duration,0.001) * 18.0)
 
 
 func _draw() -> void:
-	var axes := get_terminal_footprint_axes()
-	BLOCK_VFX.paint(self,1,Rect2(-axes-Vector2.ONE*3.0,axes*2.0+Vector2.ONE*6.0),_radius,_elapsed+_phase,_elapsed/_duration,_visual_detail)
-	material.set_shader_parameter("terminal_axes", axes)
+	BAKED.draw(self,"water_r02",_elapsed*DEFAULT_DURATION/maxf(_duration,0.001),Vector2.ONE*(_radius/75.3984))
 
 func get_terminal_footprint_axes() -> Vector2:
 	return FOOTPRINT.axes(_radius, FOOTPRINT.WATER_FLATTEN)

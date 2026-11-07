@@ -45,6 +45,9 @@ var _zoom := 1.0
 var _pan := Vector2.ZERO
 var _dragging := false
 var _drag_button := MOUSE_BUTTON_NONE
+var _drag_touch_index := -1
+var _drag_touch_position := Vector2.ZERO
+const MOBILE_PAN_SENSITIVITY := 0.55
 var _layout_initialized := false
 
 
@@ -83,6 +86,8 @@ func _build_interface() -> void:
 	_upgrade_button.ignore_texture_size = true
 	_upgrade_button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	_upgrade_button.size = Vector2(16, 17)
+	if MobileProfile.is_mobile():
+		_upgrade_button.size *= 1.6
 	_upgrade_button.focus_mode = Control.FOCUS_NONE
 	_upgrade_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	_upgrade_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -126,7 +131,7 @@ func _build_interface() -> void:
 			index += 1
 	_reset_button = _button("", 20)
 	_reset_button.pressed.connect(_on_reset_pressed)
-	_content.add_child(_reset_button)
+	_summary_panel.add_child(_reset_button)
 	_back_button = _button("", 23)
 	_back_button.pressed.connect(_on_back_pressed)
 	_content.add_child(_back_button)
@@ -240,8 +245,10 @@ func _layout_content() -> void:
 	_summary_panel.size = Vector2(503.333333, 580)
 	_currency_label.position = Vector2(extent.x * 0.47 - 300, 50)
 	_currency_label.size = Vector2(600, 60)
-	_reset_button.position = _summary_panel.position - Vector2(170, 0)
 	_reset_button.size = Vector2(156.666667, 53.333333)
+	_reset_button.position = Vector2(_summary_panel.size.x - _reset_button.size.x - 26.666667, 16.666667)
+	_summary_title.size = Vector2(_reset_button.position.x - _summary_title.position.x - 16, 53.333333)
+	_summary_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_back_button.position = Vector2(53.333333, extent.y - 106.666667)
 	_back_button.size = Vector2(220, 53.333333)
 	_hint.position = Vector2(extent.x - 443.333333, extent.y - 93.333333)
@@ -273,7 +280,18 @@ func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		_stop_drag()
 		return
+	if event is InputEventScreenTouch and event.index == _drag_touch_index and not event.pressed:
+		_stop_drag()
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventScreenDrag and event.index == _drag_touch_index:
+		_pan += (event.position - _drag_touch_position) * MOBILE_PAN_SENSITIVITY
+		_drag_touch_position = event.position
+		_apply_view()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseButton:
+		if _drag_touch_index >= 0: return
 		if not event.pressed and event.button_index == _drag_button:
 			_stop_drag()
 			get_viewport().set_input_as_handled()
@@ -283,13 +301,21 @@ func _input(event: InputEvent) -> void:
 			_start_drag(MOUSE_BUTTON_RIGHT)
 			get_viewport().set_input_as_handled()
 			return
-	if _dragging and event is InputEventMouseMotion:
-		_pan += event.relative
+	if _dragging and _drag_touch_index < 0 and event is InputEventMouseMotion:
+		_pan += event.relative * (MOBILE_PAN_SENSITIVITY if MobileProfile.is_mobile() else 1.0)
 		_apply_view()
 		get_viewport().set_input_as_handled()
 
 
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and event.pressed and _drag_touch_index < 0:
+		select_node("")
+		_drag_touch_index = event.index
+		_drag_touch_position = event.position
+		_dragging = true
+		_hide_upgrade_tooltip()
+		accept_event()
+		return
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			zoom_at(get_local_mouse_position(), 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
@@ -309,6 +335,7 @@ func _start_drag(button: MouseButton) -> void:
 func _stop_drag() -> void:
 	_dragging = false
 	_drag_button = MOUSE_BUTTON_NONE
+	_drag_touch_index = -1
 
 
 func _notification(what: int) -> void:
@@ -387,7 +414,7 @@ func _refresh_summary() -> void:
 	_summary_title.text = L10n.source("升级属性汇总")
 	_reset_button.text = L10n.text("ui.camp.reset_upgrades")
 	_back_button.text = L10n.text("ui.common.return_to_main_menu")
-	_hint.text = L10n.text("ui.talent_tree.navigation")
+	_hint.text = L10n.text("ui.talent_tree.navigation_touch" if MobileProfile.is_mobile() else "ui.talent_tree.navigation")
 
 
 func _refresh_detail() -> void:

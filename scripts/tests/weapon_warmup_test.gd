@@ -1,6 +1,7 @@
 extends Node2D
 const WARMUP = preload("res://scripts/effects/weapon_render_warmup.gd")
 const HIT_WARMUP = preload("res://scripts/effects/combat_hit_render_warmup.gd")
+const FIRE_LAYER := CombatRenderWorld.ATTACK_Z - CombatRenderWorld.EFFECT_BASE_Z
 var checks := 0
 var failures := 0
 
@@ -57,6 +58,12 @@ func run() -> void:
 	expected_random = randf()
 	seed(20261021)
 	HIT_WARMUP.prepare(fire_sample, [], null)
+	var clips := {}
+	for child in fire_sample.get_children():
+		if child.has_meta("selected_spell_clip"):
+			clips[child.get_meta("selected_spell_clip")] = true
+			check(child is Sprite2D and child.texture_filter==CanvasItem.TEXTURE_FILTER_NEAREST and child.region_enabled,"baked spell prewarm submits shared nearest region")
+	check(clips.size()==8,"loading prewarms all selected spell layers")
 	check(randf() == expected_random, "fire prewarm preserves gameplay RNG")
 	var ground_sample := find_ground_sample(fire_sample)
 	check(ground_sample != null and ground_sample.material.shader == HIT_WARMUP.GROUND.SHADER, "entry prepares the native ground-coverage material")
@@ -70,7 +77,7 @@ func run() -> void:
 	var fire_clock: Node = HIT_WARMUP.FIRE.clock
 	check(is_instance_valid(fire_clock) and fire_clock.get_viewport() == fire_sample.get_viewport(), "fire batch belongs to the loading viewport")
 	check(is_zero_approx(fire_clock.elapsed), "paused prewarm does not advance the flame clock")
-	var fire_batch: MultiMeshInstance2D = fire_clock.batches[43]
+	var fire_batch: MultiMeshInstance2D = fire_clock.batches[FIRE_LAYER]
 	check(fire_batch.visible and fire_batch.multimesh.visible_instance_count == 1 and fire_batch.material.shader == HIT_WARMUP.FIRE.FIRE_SHADER, "paused prewarm submits the actual fire shader and batch")
 	check(get_tree().get_nodes_in_group("fire_patches").is_empty() and EnemyRegistry.get_registered_enemies().is_empty(), "fire prewarm creates no damage field or enemy")
 	var new_parent := Node2D.new()
@@ -80,7 +87,7 @@ func run() -> void:
 	fire_clock = HIT_WARMUP.FIRE.clock
 	fire_clock.flush()
 	check(HIT_WARMUP.FIRE.visual_count == 1 and fire_clock.sources.size() == 1, "reparent registers fire exactly once in the replacement clock")
-	var rebound_buffer: PackedFloat32Array = fire_clock.buffers[43]
+	var rebound_buffer: PackedFloat32Array = fire_clock.buffers[FIRE_LAYER]
 	check(rebound_buffer[0] == 14.0 and rebound_buffer[5] == 22.0 and rebound_buffer[11] == 1.0, "replacement clock receives geometry even when slot and epoch numbers repeat")
 	fire_sample.free()
 	new_parent.free()
@@ -119,7 +126,7 @@ func run() -> void:
 				if node.get_script() == loading.BOLT:
 					native_bolt_ready = not node.rim_enabled and node.cached_instances != null and node.cached_mesh == null and node.quad_count > 0
 		check(native_bolt_ready, "entry draws the runtime instanced lightning path %d" % stage)
-		check(is_instance_valid(HIT_WARMUP.FIRE.clock) and HIT_WARMUP.FIRE.clock.batches.has(43) and HIT_WARMUP.FIRE.clock.batches[43].multimesh.visible_instance_count == 1, "entry draws the enchantment fire batch %d" % stage)
+		check(is_instance_valid(HIT_WARMUP.FIRE.clock) and HIT_WARMUP.FIRE.clock.batches.has(FIRE_LAYER) and HIT_WARMUP.FIRE.clock.batches[FIRE_LAYER].multimesh.visible_instance_count == 1, "entry draws the enchantment fire batch %d" % stage)
 		var loading_ground := find_ground_sample(loading._samples)
 		check(loading_ground != null and loading_ground.is_visible_in_tree() and loading.curtain.modulate.a == 1.0, "ground sample stays under the opaque loading curtain %d" % stage)
 		flow.enter_start_page()

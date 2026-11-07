@@ -208,11 +208,13 @@ func _apply_layout_density() -> void:
 		type_badge.custom_minimum_size = Vector2(28.0, 12.0) if _small_layout else Vector2(48.0, 24.0)
 	if type_label != null:
 		type_label.add_theme_font_size_override("font_size", 9 if _small_layout else 14)
+		if MobileProfile.is_mobile(): type_label.add_theme_font_size_override("font_size", 13)
 	if not offer_data.is_empty():
 		var offer_type := str(offer_data.get("offer_type", ""))
 		_update_type_badge_layout(offer_type)
 	if _rarity_label != null:
 		_rarity_label.add_theme_font_size_override("font_size", 9 if _small_layout else 12)
+		if MobileProfile.is_mobile(): _rarity_label.add_theme_font_size_override("font_size", 13)
 	_update_icon_frame_size()
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
@@ -221,10 +223,16 @@ func _apply_layout_density() -> void:
 		# Leave a little more room below the description so the action stays
 		# visually clear while keeping the button higher in the card.
 		description_label.custom_minimum_size.y = 28.0 if _small_layout else (76.0 if _compact_layout else 98.0)
+		if MobileProfile.is_mobile():
+			for font_kind in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size"]:
+				description_label.add_theme_font_size_override(font_kind, 18)
+			description_label.custom_minimum_size.y = 100
+			description_label.fit_content = true
 	if select_button != null:
 		select_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		select_button.custom_minimum_size = _get_select_button_size()
 		select_button.add_theme_font_size_override("font_size", 10 if _small_layout else 18)
+		if MobileProfile.is_mobile(): select_button.add_theme_font_size_override("font_size", 18)
 	_update_card_minimum_size()
 	_update_interaction_style()
 
@@ -233,9 +241,11 @@ func _update_icon_frame_size() -> void:
 	if icon_frame == null:
 		return
 	var height := 50.0 if _small_layout else (112.0 if _compact_layout else 128.0)
+	if MobileProfile.is_mobile(): height = 64.0
 	if icon_texture != null and FinanceUIStyle.is_native_item_icon(_icon_source):
 		# New artwork can change the required height without changing typography.
 		var icon_scale := SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(_icon_source) else RELIC_ICON_SCALE
+		if MobileProfile.is_mobile(): icon_scale = 0.5
 		var extent := FinanceUIStyle.relic_icon_size(_icon_source, icon_scale)
 		if not icon_texture.size.is_equal_approx(extent):
 			_stop_icon_float()
@@ -271,7 +281,7 @@ func _update_card_minimum_size() -> void:
 func _get_select_button_size() -> Vector2:
 	var card_width := _layout_width if _layout_width > 0.0 else (160.0 if _small_layout else (180.0 if _compact_layout else 220.0))
 	var content_width := maxf(card_width - (12.0 if _small_layout else 24.0), 0.0)
-	return Vector2(floorf(content_width * 0.8), 19.2 if _small_layout else 36.0)
+	return Vector2(floorf(content_width * 0.8), 40.0 if MobileProfile.is_mobile() else (19.2 if _small_layout else 36.0))
 
 
 func set_interaction_locked(locked: bool) -> void:
@@ -359,6 +369,7 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 
 func _get_name_font_size() -> int:
 	# Keep relic, new-weapon, and weapon-upgrade titles at the same visual size.
+	if MobileProfile.is_mobile(): return 20
 	return 10 if _small_layout else 18
 
 
@@ -414,6 +425,7 @@ func _update_type_badge_layout(offer_type: String) -> void:
 			badge_width = 80.0
 		elif offer_type == "weapon_upgrade":
 			badge_width = 96.0
+	if MobileProfile.is_mobile(): badge_width = 96.0 if offer_type == "weapon_upgrade" else 72.0
 	type_badge.offset_right = badge_width
 	type_badge.custom_minimum_size.x = badge_width
 
@@ -441,6 +453,7 @@ func _update_icon(icon_path: String) -> void:
 	_icon_source = loaded_texture
 	if icon_texture != null:
 		FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, SMALL_RELIC_ICON_SCALE if _small_layout and not ItemIconArt.is_weapon(loaded_texture) else RELIC_ICON_SCALE)
+		if MobileProfile.is_mobile(): FinanceUIStyle.set_item_icon(icon_texture, loaded_texture, 0.5)
 		if not FinanceUIStyle.is_native_item_icon(loaded_texture):
 			# A reused card must restore the weapon's original inset layout.
 			icon_texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

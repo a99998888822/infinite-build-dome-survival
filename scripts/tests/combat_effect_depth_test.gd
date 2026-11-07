@@ -132,7 +132,9 @@ func _spawn_effects() -> void:
 		if kind == "light_sword":
 			effect._elapsed = 0.76
 			effect._strike_started = true
-		if kind == "black_hole": effect._elapsed = 0.15
+		if kind == "black_hole":
+			effect._elapsed = 0.15
+			effect._body_visual.queue_redraw()
 		effect.queue_redraw()
 	var flame := FIRE.new()
 	effect_host.add_child(flame)
@@ -140,6 +142,11 @@ func _spawn_effects() -> void:
 	flame.setup_field(70)
 	preload("res://scripts/effects/enchantment_block_vfx.gd").spawn_shockwave(effect_host,Vector2(120,30),100,0).set_process(false)
 	var bolt := LightningParticleEffect.new()
+	var baked := preload("res://scripts/effects/baked_ground_strike.gd").new()
+	effect_host.add_child(baked)
+	baked.position = Vector2(120,20)
+	baked.setup(182,30,1,1,0)
+	baked.advance(0.06)
 	effect_host.add_child(bolt)
 	bolt.set_process(false)
 	bolt._create_bolt_path(Vector2(30,-70),Vector2(170,70))

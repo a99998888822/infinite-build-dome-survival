@@ -121,7 +121,7 @@ func _case(spec: Array) -> void:
 			loadout.active_casting.states.clear()
 			if int(spec[1]) > 0:
 				player._invincibility_timer = 0.0
-				player.take_damage(1,"benchmark_enemy")
+				loadout.active_casting.cast(furnace, player.global_position, true)
 			if int(spec[2]) > 0: loadout.cast_weapon(saber,Vector2(300,0))
 			freeze()
 		player._physics_process(1.0/60.0)

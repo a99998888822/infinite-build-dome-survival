@@ -59,6 +59,18 @@ func _run() -> void:
 		random_results.append(randi())
 		rng_fixture.free()
 	check(random_results[0] == random_results[1], "ground-only decoration consumes no additional gameplay RNG")
+	var baked_rng := LIGHTNING.new()
+	add_child(baked_rng)
+	baked_rng.set_process(false)
+	baked_rng._parent_root=self
+	baked_rng._context=RefCounted.new()
+	baked_rng._is_ground_strike=true
+	baked_rng._ground_strike_damage_applied=true
+	seed(10242026)
+	baked_rng._strike_ground(Vector2(0,182))
+	baked_rng._process(0.21)
+	check(randi()==random_results[1],"baked primary and echo preserve combat RNG consumption")
+	baked_rng.free()
 	# The ground arc was removed; the main bolt must retain its timing and damage.
 	# Exercise the real controller with wall-clock deltas around every boundary.
 	var samples := [0.0, 0.07999, 0.08001, 0.15999, 0.16001, 0.19999, 0.20001, 0.27999, 0.28001, 0.35999]
@@ -126,14 +138,23 @@ func _run() -> void:
 	real_strike.ground_strike_landed.connect(func(): landings[0] += 1)
 	real_strike._strike_ground(Vector2(121.2,101.4))
 	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "real landing creates no ground arc")
-	check(real_strike._path_pulses.size() == 1 and real_strike._ground_strike_impact_age == 0.0, "main bolt and impact ring still start")
+	check(real_strike._path_pulses.is_empty() and real_strike._baked_strike != null and real_strike._ground_strike_impact_age == 0.0, "real ground strike plays baked R01 without building paths")
 	check(landings[0] == 1 and enemy.current_hp < 1000, "landing signal and damage still occur")
 	var hp_after := enemy.current_hp
 	check(world.get_active_particle_count() == 900, "landing works with a full particle pool")
 	real_strike._strike_ground(Vector2(121.2,101.4))
 	check(enemy.current_hp == hp_after, "duplicate landing cannot deal damage twice")
 	real_strike._process(0.21)
-	check(enemy.current_hp == hp_after and real_strike._path_pulses[0].echoed, "echo stays visual only")
+	check(enemy.current_hp == hp_after and real_strike._baked_rng_echoed and landings[0] == 1, "echo stays visual only")
+	check(is_equal_approx(real_strike._baked_strike.age,0.21), "duplicate landing does not reset playback")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+	real_strike._process(1.0)
+	check(is_equal_approx(real_strike._baked_strike.age,0.21), "pause freezes baked lightning and sparks")
+	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
+	real_strike._process(0.22)
+	check(real_strike._baked_strike.is_active() and not real_strike.is_queued_for_deletion(), "spark tail survives main flash and ground arcs")
+	real_strike._process(0.13)
+	check(real_strike.is_queued_for_deletion(), "completed spark tail releases controller")
 	check(get_tree().get_nodes_in_group("lightning_ground_arc_bursts").is_empty(), "real echo creates no ground arc")
 	real_strike.free()
 	enemy.free()

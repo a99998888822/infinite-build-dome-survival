@@ -68,7 +68,9 @@ func verify_layout(label: String) -> void:
 	var card_height := (popup.offer_scroll.size.y - gap * (rows - 1)) / rows
 	check(popup.offer_grid.columns == columns, label + " fixed four columns even with three choices")
 	check(popup.center_container.scale == Vector2.ONE and popup.weapon_strip.scale == Vector2.ONE, label + " native layout has no presentation scaling")
-	check(panel.size == Vector2(1312, 896), label + " native panel uses explicit pixel dimensions")
+	# The loadout can grow taller than its minimum; rewards use the space below it.
+	var available_height := floorf(safe.end.y - popup.weapon_strip.get_global_rect().end.y - 16.0 - 24.0)
+	check(panel.size == Vector2(1312, minf(896, available_height)), label + " native panel reserves the current loadout height")
 	check(not popup.offer_scroll.get_v_scroll_bar().visible, label + " up to eight cards need no scrolling")
 	var column_gap := popup.offer_grid.get_theme_constant("h_separation")
 	var card_width := (popup.offer_scroll.size.x - column_gap * (columns - 1)) / columns

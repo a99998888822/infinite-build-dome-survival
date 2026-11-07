@@ -28,6 +28,34 @@ const DARK_FLAME_DURATION: float = 10.0
 enum ElectricContact { NONE = 0, BURNING_DETONATED = 1, EXTRA_TRIGGER = 2 }
 
 
+## Most water contacts only refresh wet. Avoid constructing generic input and
+## result dictionaries for every victim; complex reactions keep the generic API.
+static func apply_water_contact(enemy: EnemyController, parent: Node, event: DamageEvent,
+		wet_duration: float, wet_slow_multiplier: float) -> void:
+	if not is_instance_valid(enemy) or not enemy.is_alive(): return
+	if enemy.has_status("burning") or (enemy.has_status("slowed") and not enemy.has_status("frozen")):
+		apply_element(enemy, "water", {
+			"parent": parent, "hit_position": enemy.global_position,
+			"source_id": event.source_weapon_id, "damage": event.damage,
+			"original_damage": event.get_elemental_base_damage(),
+			"wet_duration": wet_duration, "wet_slow_multiplier": wet_slow_multiplier,
+			"damage_event": event})
+		return
+	AudioManager.begin_combat_audio()
+	var hit_position := enemy.global_position
+	var was_holy := enemy.has_status("holy_flame")
+	var was_dark_flame := enemy.has_status("dark_flame")
+	enemy.apply_wet(maxf(wet_duration, 0.1), clampf(wet_slow_multiplier, 0.05, 1.0), event.control_power)
+	if not was_holy and enemy.has_status("holy_flame"): emit_feedback(parent, "holy", hit_position)
+	if not was_dark_flame and enemy.has_status("dark_flame"): emit_feedback(parent, "dark_flame", hit_position)
+	if enemy.claim_light_reflection():
+		var direction := Vector2.RIGHT
+		if is_instance_valid(event.source_player):
+			direction = event.source_player.global_position.direction_to(enemy.global_position)
+		REFLECTION.spawn(parent, hit_position, direction, event, REFLECTION.DEFAULT_RADIUS * event.damage_area_scale)
+	AudioManager.end_combat_audio()
+
+
 ## Native lightning contacts supply no damage_event to the reaction resolver.
 ## They need only these two outcomes, without a generic input/result dictionary.
 ## Keep each live state check and audio scope: callbacks can change the enemy.

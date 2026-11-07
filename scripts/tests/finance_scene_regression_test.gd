@@ -34,6 +34,12 @@ func capture(label: String) -> void:
 
 
 func _run() -> void:
+	# Native desktop coordinates are covered here; mobile_bank_test covers the
+	# same scene composition with the lifted phone viewport and larger captions.
+	if MobileProfile.is_mobile():
+		print("FINANCE_SCENE_REGRESSION skipped: phone geometry covered by mobile_bank_test")
+		get_tree().quit(0)
+		return
 	CampProgression.begin_transient_session()
 	var game := load("res://scenes/core/game_root.tscn").instantiate() as GameRoot
 	get_tree().root.add_child(game)
@@ -106,10 +112,17 @@ func _run() -> void:
 	for card in popup.shop_grid._pool:
 		check(card.buy_button.tooltip_text.is_empty(), "purchase buttons have no hover tooltip")
 	await verify_tooltips(hud)
+	# The waist assertion only describes the scene composition; the phone compact
+	# popup has no counter portrait to align.
+	var scene_layout := FinanceSceneLayout.supports(get_tree().root.get_visible_rect().size)
+	if not scene_layout:
+		print("FINANCE_SCENE_REGRESSION skips portrait waist: compact popup layout")
 	for resolution in [Vector2i(1152, 648), Vector2i(1536, 864), Vector2i(1000, 540)]:
 		get_tree().root.size = resolution
 		get_tree().root.content_scale_size = Vector2i(1920, 1080)
 		await frames(12)
+		if not scene_layout:
+			continue
 		var actual_waist := popup.portrait.position + BankCounterPortrait.WAIST_CONTACT * (popup.portrait.size.x / 128.0)
 		check(absf(actual_waist.y - 593.333333) < 1.0, "portrait waist follows the native wooden tabletop at " + str(resolution))
 		await capture("counter_%d" % resolution.x)

@@ -216,12 +216,13 @@ func _damage_hammer_heads() -> void:
 		shape.points = points
 		ProjectileGuard.intercept(self, weapon, shape, Transform2D(0, global_position))
 		for enemy in EnemyRegistry.get_registered_enemies():
+			if ray.hits.has(enemy.get_instance_id()): continue
 			if AttackFootprint.body_overlaps(shape, Transform2D(0, global_position), enemy) and clear_path(self, global_position, enemy.global_position):
 				_native_hit(enemy, direction, 1.0, ray.hits)
 
 
 func _native_damage(origin: Vector2, direction: Vector2, length: float, power: float, ray_hits: Dictionary) -> void:
-	for enemy in rectangle_contacts(origin, direction, length, weapon.get_hit_radius()):
+	for enemy in rectangle_contacts(origin, direction, length, weapon.get_hit_radius(), ray_hits):
 		_native_hit(enemy, direction, power, ray_hits)
 
 

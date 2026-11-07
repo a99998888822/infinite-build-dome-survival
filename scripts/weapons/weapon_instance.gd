@@ -14,6 +14,8 @@ const RARITY_COLORS: Dictionary = {
 	"mythic": Color(1.0, 0.54, 0.25, 1.0),
 	"legendary": Color(1.0, 0.82, 0.28, 1.0),
 }
+## Behaviours that move the player; a phone has no aim pointer for them.
+const MOBILITY_BEHAVIORS: Array[String] = ["dash_blade", "hand_cannon", "star_tome", "saber"]
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
 const ATTACHMENT_ICON_SIZE := 32
 const ATTACHMENT_ICON_GAP := " "
@@ -628,7 +630,7 @@ func is_grenade() -> bool:
 
 
 func is_mobility_weapon() -> bool:
-	return str(weapon_data.get("projectile_behavior", "")) in ["dash_blade", "hand_cannon", "star_tome", "saber"]
+	return str(weapon_data.get("projectile_behavior", "")) in MOBILITY_BEHAVIORS
 
 
 func is_furnace() -> bool:

@@ -682,6 +682,7 @@ func blink_to(point: Vector2) -> void:
 
 func movement_intent() -> Vector2:
 	# Read the live command, never velocity (which may come from recoil/knockback).
+	if MobileProfile.is_mobile(): return _mobile_move_direction
 	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
 		if has_move_destination and global_position.distance_squared_to(move_destination) > 4.0:
 			return global_position.direction_to(move_destination)
@@ -689,6 +690,7 @@ func movement_intent() -> Vector2:
 	return _keyboard_move_direction()
 
 func _read_move_input() -> Vector2:
+	if MobileProfile.is_mobile(): return _mobile_move_direction
 	if active_controls and not keyboard_movement and _mobile_move_direction.is_zero_approx():
 		if has_move_destination:
 			if global_position.distance_squared_to(move_destination) <= 4.0:
@@ -761,7 +763,7 @@ func request_move(point: Vector2) -> void:
 
 
 func accept_move_key(event: InputEventKey) -> bool:
-	if not keyboard_movement:
+	if MobileProfile.is_mobile() or not keyboard_movement:
 		return false
 	var code := event.physical_keycode if event.physical_keycode != 0 else event.keycode
 	if code not in [KEY_A, KEY_D, KEY_W, KEY_S, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN]:
@@ -855,6 +857,8 @@ func _configure_visual_body(visuals: Dictionary) -> void:
 
 func _sync_camera(delta: float = 0.0) -> void:
 	if camera_2d != null:
+		# The phone profile lifts the whole canvas, camera included, so the hero
+		# grows together with the interface instead of shrinking beside it.
 		# Viewport-relative composition also survives zoom, resizing and blink drag.
 		var framing_y := get_viewport_rect().size.y * (0.5 - CAMERA_SUBJECT_Y)
 		camera_2d.offset.y = roundf(framing_y) / camera_2d.zoom.y
@@ -953,7 +957,8 @@ func _resolve_start_weapons(data: Dictionary, override_weapon_ids: Array[String]
 	var raw_weapon_ids: Array = override_weapon_ids if not override_weapon_ids.is_empty() else data.get("start_weapons", [])
 	for weapon_id in raw_weapon_ids:
 		var text_id := str(weapon_id)
-		if not text_id.is_empty():
+		# Phones cannot steer a mobility weapon, so it is never granted there.
+		if not text_id.is_empty() and MobileProfile.weapon_available(text_id):
 			resolved.append(text_id)
 	return resolved
 

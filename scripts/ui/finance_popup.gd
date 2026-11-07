@@ -386,7 +386,7 @@ func _build() -> void:
 	amount_input.placeholder_text = "ui.bank.amount_placeholder"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-	amount_input.add_theme_font_size_override("font_size", 12)
+	amount_input.add_theme_font_size_override("font_size", 20 if MobileProfile.is_mobile() else 12)
 	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
 	var input_focus := StyleBoxFlat.new()
@@ -634,6 +634,7 @@ func _layout() -> void:
 	for panel in [_scene_bank_back, _scene_enchant_back, _scene_footer_back]:
 		panel.visible = _scene_wide
 	if _scene_wide:
+		scene_background.show()
 		main_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		FinanceSceneLayout.arrange(self)
 		_layout_enchantment_notice()
@@ -649,16 +650,18 @@ func _layout() -> void:
 	var footer_bottom := h-loan_space
 	_compact = w < 700
 	var short_window := get_viewport().get_visible_rect().size.y < 480
+	var edge := 20.0
+	var column_gap := 12.0 if _compact else 16.0
 	FinanceUIStyle.label(_title, 30 if short_window else 37)
-	_place(_title, Rect2(20, 6 if short_window else 12, w - 40, 26 if short_window else 30))
+	_place(_title, Rect2(edge, 6 if short_window else 12, w - edge * 2, 26 if short_window else 30))
 	var body_y := 36.0 if short_window else 48.0
 	if short_window and loan_space>0 and _compact:
-		_place(_title,Rect2(20,4,w-40,22))
+		_place(_title,Rect2(edge,4,w - edge * 2,22))
 		body_y = 32.0
 	var body_bottom := footer_bottom - (46.0 if short_window else 60.0)
 	var bank_width := clampf(w * 0.23, 112.0, 150.0) if _compact else 226.0
-	var work_x := 20.0 + bank_width + (12.0 if _compact else 16.0)
-	var work_w := w - work_x - 20.0
+	var work_x := edge + bank_width + column_gap
+	var work_w := w - work_x - edge
 	if interest_arrival != null:
 		var screen_rect := get_viewport().get_visible_rect()
 		var center := screen_rect.get_center()
@@ -682,12 +685,12 @@ func _layout() -> void:
 	# Integer scroll origins keep the last form row fully inside the viewport.
 	header_h = floorf(header_h)
 	portrait.show()
-	_place(_bank_header, Rect2(20, body_y, bank_width, header_h))
+	_place(_bank_header, Rect2(edge, body_y, bank_width, header_h))
 	_place(portrait, _bank_header.get_rect())
-	var bank_rect := Rect2(work_x, content_y, work_w, content_h) if _compact else Rect2(20, body_y + header_h + 8, bank_width, maxf(24, body_bottom - body_y - header_h - 8))
+	var bank_rect := Rect2(work_x, content_y, work_w, content_h) if _compact else Rect2(edge, body_y + header_h + 8, bank_width, maxf(24, body_bottom - body_y - header_h - 8))
 	if trade_active:
-		var card_rect := Rect2(20, body_y + header_h + 4, bank_width, trade_height)
-		trade_presentation.arrange(card_rect, Rect2(20, body_y + 24, bank_width, maxf(1, header_h - 24)), Rect2(Vector2.ZERO, main_panel.size))
+		var card_rect := Rect2(edge, body_y + header_h + 4, bank_width, trade_height)
+		trade_presentation.arrange(card_rect, Rect2(edge, body_y + 24, bank_width, maxf(1, header_h - 24)), Rect2(Vector2.ZERO, main_panel.size))
 		if not _compact:
 			bank_rect.position.y = card_rect.end.y + 8
 			bank_rect.size.y = maxf(24, body_bottom - bank_rect.position.y)
@@ -703,7 +706,7 @@ func _layout() -> void:
 	_feedback.visible = not short_window
 	_place(start_button, Rect2(w - 154, footer_bottom - 38 if short_window else footer_bottom - 50, 134, 30 if short_window else 36))
 	_place(economy_log, Rect2(Vector2.ZERO, main_panel.size))
-	economy_log.apply_finance_layout(Rect2(20, body_y, w - 40, body_bottom - body_y), Rect2(20, start_button.position.y, 52, start_button.size.y))
+	economy_log.apply_finance_layout(Rect2(edge, body_y, w - edge * 2, body_bottom - body_y), Rect2(edge, start_button.position.y, 52, start_button.size.y))
 	var sale_size := Vector2(minf(560, w - 32), minf(440, h - 32))
 	_place(_sale_box, Rect2((Vector2(w, h) - sale_size) * 0.5, sale_size))
 	if not _compact and _active_tab == "bank": _active_tab = "shop"

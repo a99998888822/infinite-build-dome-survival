@@ -335,7 +335,7 @@ func _refresh_weapon_strip() -> void:
 			equip_label.add_theme_color_override("font_outline_color", Color("111816"))
 			button.add_child(equip_label)
 			button.pressed.connect(_equip_reserve.bind(weapon.weapon_id))
-		if _automation_editing_enabled and equipped:
+		if _automation_editing_enabled and equipped and not MobileProfile.is_mobile():
 			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
 			mode.icon_extent = cast_mode_icon_size
 			mode.theme = icon_slot_theme
@@ -449,7 +449,7 @@ func _layout_row_padding() -> void:
 
 func _layout_cast_mode_icons() -> void:
 	if _cast_mode_layer == null or weapon_list == null: return
-	_cast_mode_layer.visible = _automation_editing_enabled and not _cast_mode_buttons.is_empty()
+	_cast_mode_layer.visible = not MobileProfile.is_mobile() and _automation_editing_enabled and not _cast_mode_buttons.is_empty()
 	var scroll := weapon_list.get_parent() as ScrollContainer
 	var panel := get_node("StripPanel") as Control
 	# Center the glyph on the bottom border without changing the original frame.

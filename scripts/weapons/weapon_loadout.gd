@@ -52,8 +52,6 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	for previous in get_owned_weapons():
 		_clear_weapon_runtime(previous)
 	active_casting.states.clear()
-	if is_instance_valid(owner_player) and owner_player.damage_taken.is_connected(_on_player_damaged):
-		owner_player.damage_taken.disconnect(_on_player_damaged)
 	owner_player = player
 	finance_system = bank
 	weapon_instances.clear()
@@ -63,18 +61,34 @@ func initialize(player: PlayerController, bank: BattleFinanceSystem = null) -> b
 	if owner_player == null:
 		push_error("[WeaponLoadout] missing owner player.")
 		return false
-	owner_player.damage_taken.connect(_on_player_damaged)
 
 	for weapon_id in owner_player.get_start_weapon_ids():
 		if not equip_weapon(weapon_id):
+			# A phone can never steer these, and callers may hand us an override
+			# list that still contains one. Skip instead of failing the run.
+			if not MobileProfile.weapon_available(weapon_id):
+				continue
 			return false
+	sanitize_for_platform()
 	return true
 
 
-func _on_player_damaged(_amount: int, _source_id: String) -> void:
-	for weapon in weapon_instances:
-		if weapon.is_furnace():
-			active_casting.cast(weapon, owner_player.global_position, true, true)
+func sanitize_for_platform() -> void:
+	## Saves, replays and debug scripts can still carry a steering weapon that
+	## the current platform cannot aim. Drop it before any runtime exists.
+	if not MobileProfile.is_mobile():
+		return
+	var dropped := false
+	for weapon: WeaponInstance in get_owned_weapons().duplicate():
+		if MobileProfile.weapon_available(weapon.weapon_id):
+			continue
+		_clear_weapon_runtime(weapon)
+		weapon_instances.erase(weapon)
+		reserve_weapons.erase(weapon)
+		dropped = true
+		push_warning("[WeaponLoadout] dropped platform-unavailable weapon: %s" % weapon.weapon_id)
+	if dropped:
+		_notify_loadout_changed()
 
 
 func _play_legacy_player_action(weapon_id: String, _count: int) -> void:
@@ -365,7 +379,9 @@ func tick(delta: float) -> void:
 			active_casting.mobility_planner.tick(active_casting, delta)
 		return
 	for weapon in weapon_instances:
-		if weapon.is_furnace(): continue
+		if weapon.is_furnace():
+			active_casting.cast(weapon, owner_player.global_position, true)
+			continue
 		if weapon.is_ritual_tome():
 			_ensure_ritual_domain(weapon)
 		if weapon.is_copper_lamp() or weapon.is_mutant_tentacle():
@@ -386,6 +402,9 @@ func _equip_weapon_internal(weapon_id: String, action: String) -> bool:
 		return false
 	if has_weapon(weapon_id):
 		_fail(weapon_id, "weapon_already_owned")
+		return false
+	if not MobileProfile.weapon_available(weapon_id):
+		_fail(weapon_id, "platform_unavailable")
 		return false
 	if not can_add_weapon(weapon_id):
 		var reason := "load_capacity_exceeded_on_purchase" if action == "purchase" else "load_capacity_exceeded"

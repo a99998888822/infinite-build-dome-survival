@@ -7,6 +7,7 @@ const PARTICLE_COUNT := 24
 static var _quad: QuadMesh
 static var _buffer := PackedFloat32Array()
 var _last_radius := -1.0
+var _last_opacity := -1.0
 
 func _init() -> void:
 	if _quad == null:
@@ -39,7 +40,9 @@ func _init() -> void:
 
 func sync(time: float, radius: float, opacity: float) -> void:
 	material.set_shader_parameter("elapsed",time)
-	material.set_shader_parameter("fade",opacity)
+	if _last_opacity != opacity:
+		_last_opacity = opacity
+		material.set_shader_parameter("fade",opacity)
 	if not is_equal_approx(_last_radius,radius):
 		_last_radius = radius
 		var axes := FOOTPRINT.axes(radius)

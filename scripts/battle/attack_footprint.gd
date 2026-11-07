@@ -4,6 +4,16 @@ class_name AttackFootprint
 
 const ELLIPSE_RATIO := 145.0 / 220.0
 const FLAIL_ARC := 130.0
+static var _contacts: Dictionary = {}
+
+
+static func _forget_contacts() -> void:
+	_contacts.clear()
+
+
+static func _track_shape(shape: Shape2D) -> void:
+	if not shape.changed.is_connected(_forget_contacts):
+		shape.changed.connect(_forget_contacts)
 
 
 static func project(point: Vector2) -> Vector2:
@@ -57,8 +67,32 @@ static func body_overlaps(shape: Shape2D, transform: Transform2D, enemy: EnemyCo
 	var body := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if body == null or body.disabled or body.shape == null or (enemy.collision_layer & 2) == 0:
 		return false
+	# Reject disjoint world bounds before the expensive convex shape test. Ground
+	# spells use 96 vertices and can run this once per enemy for every impact.
+	# Transform both rectangles so offset/scaled/rotated colliders stay covered.
+	var attack_bounds := transform * shape.get_rect()
+	if not motion.is_zero_approx():
+		attack_bounds = attack_bounds.merge(Rect2(attack_bounds.position + motion, attack_bounds.size))
+	if not attack_bounds.grow(0.001).intersects(body.global_transform * body.shape.get_rect(), true):
+		return false
 	if motion.is_zero_approx():
-		return shape.collide(transform, body.shape, body.global_transform)
+		# Cache geometry only. Repeated area procs still resolve live health,
+		# status, damage callbacks and RNG for every original hit.
+		_track_shape(shape)
+		_track_shape(body.shape)
+		# Collision is invariant under a common translation. Dense waves repeatedly
+		# test identical collider shapes at the same offset from different impacts.
+		# Retain both bases (including scale/skew); only remove the shared origin.
+		var local_attack := transform
+		var local_body := body.global_transform
+		local_body.origin -= local_attack.origin
+		local_attack.origin = Vector2.ZERO
+		var key := [shape.get_instance_id(), local_attack, body.shape.get_instance_id(), local_body]
+		if _contacts.has(key): return _contacts[key]
+		var result := shape.collide(transform, body.shape, body.global_transform)
+		if _contacts.size() >= 4096: _contacts.clear()
+		_contacts[key] = result
+		return result
 	return shape.collide_with_motion(transform, motion, body.shape, body.global_transform, Vector2.ZERO)
 
 

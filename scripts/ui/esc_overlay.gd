@@ -172,7 +172,8 @@ func _ensure_backdrop() -> void:
 func configure(player: PlayerController, loadout: WeaponLoadout) -> void:
 	_player = player
 	if weapon_strip != null:
-		weapon_strip.set_loadout(loadout, false, true)
+		# Phones always attack automatically and have no cast policy to edit.
+		weapon_strip.set_loadout(loadout, false, not MobileProfile.is_mobile())
 	if is_instance_valid(_player) and _player.get_item_inventory() != null:
 		var inventory := _player.get_item_inventory()
 		if not inventory.items_changed.is_connected(_on_item_inventory_changed):
@@ -278,6 +279,12 @@ func _layout_overlay() -> void:
 	if safe.size.x <= 0.0 or safe.size.y <= 0.0:
 		return
 	var strip_height := maxf(WEAPON_STRIP_HEIGHT * _display_scale, weapon_strip.get_required_height() if weapon_strip != null else WEAPON_STRIP_HEIGHT)
+	var strip_width := minf(840.0 * _display_scale, maxf(safe.size.x - 32.0, 0.0))
+	var strip_left := safe.position.x + (safe.size.x - strip_width) * 0.5
+	if MobileProfile.is_mobile():
+		# Expand with a wider phone instead of leaving unused space on the left.
+		strip_width = safe.size.x
+		strip_left = safe.position.x
 	var modal_top := maxf(MODAL_TOP_OFFSET, WEAPON_STRIP_TOP_OFFSET + strip_height + 16.0)
 	if center_container != null:
 		center_container.anchor_left = 0.0
@@ -288,7 +295,17 @@ func _layout_overlay() -> void:
 		var base_height := minf(767.0, maxf(safe.size.y - MODAL_TOP_OFFSET - MODAL_BOTTOM_MARGIN, 0.0))
 		var target_size := Vector2(safe.size.x, maxf(0.0, base_height - (modal_top - MODAL_TOP_OFFSET)))
 		var panel := center_container.get_node("RelicPanel") as PanelContainer
-		var panel_size := Vector2(minf(1267.0, safe.size.x), target_size.y)
+		var panel_limit := 1267.0
+		if MobileProfile.is_mobile():
+			# Both frames share their edges and sit beside the stats toggle.
+			panel_limit = strip_width
+			center_container.position.x = strip_left
+			target_size.x = strip_width
+		var panel_size := Vector2(minf(panel_limit, safe.size.x), target_size.y)
+		# The panel is centred by a CenterContainer, which otherwise shrinks it to
+		# its content and leaves it visibly narrower than the weapon strip above.
+		panel.custom_minimum_size = panel_size
+		panel.size = panel_size
 		var compact := panel_size.x < 600.0 or panel_size.y < 360.0
 		var content := panel.get_node("Content") as VBoxContainer
 		content.add_theme_constant_override("separation", 6 if compact else 10)
@@ -297,11 +314,15 @@ func _layout_overlay() -> void:
 		back_button.text = "ui.common.back" if compact else "ui.inventory.back"
 		back_button.add_theme_font_size_override("font_size", 14 if compact else 16)
 		back_button.custom_minimum_size = Vector2(60.0, 28.0) if compact else Vector2(90.0, 34.0)
+		if MobileProfile.is_mobile():
+			back_button.add_theme_font_size_override("font_size", title.get_theme_font_size("font_size"))
+			back_button.custom_minimum_size = Vector2(108.0, 42.0)
 		total_label.custom_minimum_size.x = back_button.custom_minimum_size.x
 		var hint := content.get_node("HintLabel") as Label
 		hint.text = "ui.inventory.view_only" if compact else "ui.inventory.edit_in_bank_hint"
 		if CampProgression.get_upgrade_option_level("camp_upgrade_quick_shop") > 0:
 			hint.text = "ui.reserve.inventory_hint"
+		if MobileProfile.is_mobile(): hint.text = "ui.inventory.mobile_hint"
 		panel.custom_minimum_size = panel_size
 		panel.size = panel_size
 		center_container.size = target_size
@@ -313,12 +334,11 @@ func _layout_overlay() -> void:
 		_backdrop.position = Vector2.ZERO
 		_backdrop.size = Vector2(safe.end.x, get_viewport().get_visible_rect().size.y)
 	if weapon_strip != null:
-		var strip_width := minf(840.0 * _display_scale, maxf(safe.size.x - 32.0, 0.0))
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
 		weapon_strip.anchor_bottom = 0.0
-		weapon_strip.position = Vector2(safe.position.x + (safe.size.x - strip_width) * 0.5, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
+		weapon_strip.position = Vector2(strip_left, safe.position.y + WEAPON_STRIP_TOP_OFFSET)
 		weapon_strip.size = Vector2(strip_width, strip_height)
 	_update_relic_grid_columns()
 	_update_item_grid_columns()

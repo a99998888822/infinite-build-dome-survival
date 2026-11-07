@@ -65,7 +65,7 @@ func get_resolution_label() -> String:
 
 
 func is_fullscreen() -> bool:
-	return _fullscreen
+	return MobileProfile.is_mobile() or _fullscreen
 
 
 func is_embedded() -> bool:
@@ -74,12 +74,16 @@ func is_embedded() -> bool:
 
 
 func set_resolution_index(index: int) -> void:
+	if MobileProfile.is_mobile():
+		return
 	var next_index := clampi(index, 0, RESOLUTION_PRESETS.size() - 1)
 	_resolution_index = next_index
 	_queue_window_settings(true)
 
 
 func set_fullscreen(enabled: bool) -> void:
+	if MobileProfile.is_mobile():
+		return
 	_fullscreen = enabled
 	_queue_window_settings(true)
 
@@ -92,6 +96,10 @@ func _apply_startup_settings() -> void:
 	if _startup_applied:
 		return
 	_startup_applied = true
+	# Never load or overwrite desktop display preferences for a phone session.
+	if MobileProfile.is_mobile():
+		_queue_window_settings(false)
+		return
 	# An explicit choice made before startup settles takes precedence over disk.
 	if _request_id > 0:
 		return
@@ -138,7 +146,7 @@ func _apply_queued_settings() -> void:
 		return
 	var request := _request_id
 	var target_size := get_resolution()
-	var target_fullscreen := _fullscreen
+	var target_fullscreen := is_fullscreen()
 	var persist := _save_pending
 	_apply_pending = false
 	_save_pending = false
@@ -158,6 +166,14 @@ func _apply_queued_settings() -> void:
 
 
 func _apply_window_settings(target_size: Vector2i, target_fullscreen: bool) -> void:
+	var root := get_tree().root if get_tree() != null else null
+	if root != null:
+		# The canvas is a fixed 1920x1080 and a handheld renders it 1:1, so the
+		# phone profile lifts the whole UI instead of every widget chasing its own
+		# font size, and expands a wider phone aspect instead of letterboxing it.
+		MobileProfile.apply_to_window(root)
+	if MobileProfile.is_mobile():
+		return
 	var window := _get_main_window()
 	if window == null or window.is_embedded():
 		return

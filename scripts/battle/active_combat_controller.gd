@@ -47,15 +47,17 @@ func _exit_tree() -> void:
 		marker.queue_free()
 
 func _settings_changed() -> void:
-	var movement_changed := player.keyboard_movement != CombatSettings.keyboard_movement
-	player.keyboard_movement = CombatSettings.keyboard_movement
+	var keyboard_movement := MobileProfile.uses_pointer() and CombatSettings.keyboard_movement
+	var movement_changed := player.keyboard_movement != keyboard_movement
+	player.keyboard_movement = keyboard_movement
 	if movement_changed: clear_input()
 	else: cancel_aim()
 	loadout.active_casting.mobility_planner.reset_intent()
 	_sync_current_weapon()
 
 func mouse_weapon_controls() -> bool:
-	return CombatSettings.keyboard_movement
+	## Aiming, the weapon cursor and click-to-cast belong to desktop input.
+	return MobileProfile.uses_pointer() and CombatSettings.keyboard_movement
 
 func _sync_current_weapon() -> void:
 	var count := mini(10, loadout.weapon_instances.size())
@@ -108,6 +110,33 @@ func pointer_world() -> Vector2:
 	var point := pointer * world.get_visible_rect().size / window.get_visible_rect().size.max(Vector2.ONE)
 	return world.get_canvas_transform().affine_inverse() * point
 
+
+func aim_world(weapon: WeaponInstance) -> Vector2:
+	## Desktop aims at the pointer. A phone has no pointer, so every cast reuses
+	## the auto-attack targeting that already exists, and a cast with nothing in
+	## range simply does not happen (Vector2.INF marks that case).
+	if MobileProfile.uses_pointer():
+		return pointer_world()
+	var target := auto_aim_target(weapon)
+	if target == null:
+		return Vector2.INF
+	return weapon.get_auto_target_position(target)
+
+
+func auto_aim_target(weapon: WeaponInstance) -> EnemyController:
+	## The same acquisition the automatic attacks use, so touch and auto agree.
+	if weapon == null or loadout == null:
+		return null
+	return loadout.active_casting._auto_target(weapon)
+
+
+func _cast_at_aim(weapon: WeaponInstance) -> bool:
+	## Returns true when a cast really started; the caller may then clear its aim.
+	var point := aim_world(weapon)
+	if point == Vector2.INF:
+		return false
+	return loadout.cast_weapon(weapon, point)
+
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseMotion or event is InputEventMouseButton) and get_viewport().get_visible_rect().has_point(event.position):
 		_pointer_position = event.position
@@ -117,7 +146,7 @@ func _input(event: InputEvent) -> void:
 		right_held = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not can_control():
+	if MobileProfile.is_mobile() or not can_control():
 		return
 	if event is InputEventKey and not event.echo:
 		var code: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
@@ -136,7 +165,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif code == KEY_0:
 			select_slot(9)
 			get_viewport().set_input_as_handled()
-	elif event is InputEventMouseButton:
+	elif event is InputEventMouseButton and MobileProfile.uses_pointer():
 		if mouse_weapon_controls() and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			if not _pointer_over_ui():
 				cycle_weapon(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
@@ -153,37 +182,37 @@ func _unhandled_input(event: InputEvent) -> void:
 				_marker_pointer_position = _pointer_position
 			get_viewport().set_input_as_handled()
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed and selected_weapon != null:
-			if loadout.cast_weapon(selected_weapon, pointer_world()):
+			if _cast_at_aim(selected_weapon):
 				cancel_aim()
 			get_viewport().set_input_as_handled()
 
 func _mouse_weapon_click() -> void:
 	_sync_current_weapon()
 	if selected_weapon != null:
-		if loadout.cast_weapon(selected_weapon, pointer_world()): cancel_aim()
+		if _cast_at_aim(selected_weapon): cancel_aim()
 	elif current_weapon == null:
 		return
 	elif CombatSettings.quick_cast or current_weapon.is_return_ready():
-		if loadout.cast_weapon(current_weapon, pointer_world()): cancel_aim()
+		if _cast_at_aim(current_weapon): cancel_aim()
 	else:
 		selected_weapon = current_weapon
 		_update_indicator()
 	_update_cursor_icon()
 
 func select_slot(index: int) -> void:
-	if not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
+	if MobileProfile.is_mobile() or not can_control() or index < 0 or index >= mini(10, loadout.weapon_instances.size()):
 		return
 	var weapon := loadout.weapon_instances[index]
 	if CombatSettings.is_weapon_automatic(weapon) and not weapon.is_mobility_weapon(): return
 	cancel_aim()
 	if weapon.is_return_ready():
-		loadout.cast_weapon(weapon, pointer_world())
+		_cast_at_aim(weapon)
 		return
 	if not CombatSettings.is_weapon_automatic(weapon):
 		current_slot = index
 		current_weapon = weapon
 	if CombatSettings.quick_cast:
-		loadout.cast_weapon(weapon, pointer_world())
+		_cast_at_aim(weapon)
 	else:
 		selected_weapon = weapon
 		_update_indicator()
@@ -260,7 +289,12 @@ func _update_indicator() -> void:
 		cancel_aim()
 		return
 	indicator.global_position = player.global_position
-	var offset := pointer_world() - player.global_position
+	var aim_point := aim_world(selected_weapon)
+	if aim_point == Vector2.INF:
+		# A phone only casts at an auto-target, so there is nothing to preview.
+		indicator.hide()
+		return
+	var offset := aim_point - player.global_position
 	if selected_weapon.is_copper_lamp():
 		var target := loadout.active_casting._auto_target(selected_weapon)
 		if target == null:

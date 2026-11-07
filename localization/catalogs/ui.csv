@@ -272,6 +272,7 @@ ui.hud.controls.wheel_suffix,  ·  滚轮切换武器,  ·  Wheel to switch weap
 ui.hud.corruption.tooltip,影响怪物的数量和强度,Affects the number and strength of enemies.
 ui.hud.dawn,白天到了，暂时安全了...,"Dawn breaks. Safe, for now..."
 ui.hud.encyclopedia,游戏百科,Encyclopedia
+ui.hud.pause,暂停 / 背包,Pause / Inventory
 ui.hud.enemies_remaining,剩余敌人：%d,Enemies left: %d
 ui.hud.final_cleanup,最终清剿,Final Cleanup
 ui.hud.gold,金币：%s,Gold: %s
@@ -531,3 +532,8 @@ ui.weapon.tooltip.enchantment_slots,"%s
 [附魔 %d/%d]","%s
 [Enchantments %d/%d]"
 ui.weapon_bar.casting,施放中,Casting
+ui.settings.mobile.joystick,摇杆,Joystick
+ui.settings.mobile.attack,攻击方式,Attack mode
+ui.settings.mobile.automatic,自动攻击,Automatic
+ui.settings.mobile.fixed_hint,全屏显示 · 摇杆移动 · 武器自动攻击,Fullscreen · Joystick movement · Automatic attacks
+ui.inventory.mobile_hint,武器自动攻击；附魔请前往理财页面,Weapons attack automatically; visit the bank for enchantments

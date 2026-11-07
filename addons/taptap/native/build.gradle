@@ -1,0 +1,31 @@
+plugins {
+    id 'com.android.library' version '8.6.1'
+}
+
+android {
+    namespace 'com.octopus.goblin.taptap'
+    compileSdk 36
+    buildToolsVersion '36.1.0'
+    defaultConfig {
+        minSdk 24
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    compileOnly files('../../../android/build/libs/release/godot-lib.template_release.aar')
+    implementation 'com.taptap.sdk:tap-core:4.11.0'
+    implementation 'com.taptap.sdk:tap-login:4.11.0'
+    implementation 'com.taptap.sdk:tap-compliance:4.11.0'
+}
+
+tasks.register('installBridge', Copy) {
+    dependsOn 'assembleRelease'
+    from layout.buildDirectory.file('outputs/aar/taptap-godot-release.aar')
+    into '../bin'
+    rename { 'taptap-godot.aar' }
+}

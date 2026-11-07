@@ -204,7 +204,12 @@ func _ready() -> void:
 func _fit_composition() -> void:
 	_hide_item_tooltip()
 	if canvas == null: return
-	canvas.position = (size - DESIGN_SIZE) * 0.5
+	# Scale the whole composition and center it. Scaling only the children (as an
+	# earlier phone pass did) left the canvas at 1920x1080, so the screen
+	# collapsed into the top-left corner and the rest showed the matte.
+	var space := _space_scale()
+	canvas.scale = Vector2.ONE * space
+	canvas.position = ((size - DESIGN_SIZE * space) * 0.5).round()
 	ItemIconArt.refresh_branch(canvas)
 
 
@@ -525,8 +530,18 @@ func _process(delta: float) -> void:
 
 func _place(parent: Node, control: Control, rect: Rect2) -> void:
 	parent.add_child(control)
+	# Design coordinates: _fit_composition scales the whole canvas on phones.
 	control.position = rect.position
 	control.size = rect.size
+
+
+func _space_scale() -> float:
+	if not MobileProfile.is_mobile():
+		return 1.0
+	var viewport_size := Vector2(1920, 1080)
+	if is_inside_tree():
+		viewport_size = get_viewport().get_visible_rect().size
+	return minf(viewport_size.x / 1920.0, viewport_size.y / 1080.0)
 
 
 func _image(parent: Node, texture: Texture2D, rect: Rect2, keep_aspect := false) -> TextureRect:

@@ -51,6 +51,7 @@ func _run() -> void:
 				var pose := Transform2D(0, weapon.get_attack_origin())
 				query.place(pose)
 				check(query.overlaps(enemies[0]) == ORIGINAL.body_overlaps(original, pose, enemies[0]), "transformed body contact " + id + " " + str(sample))
+				check(AttackFootprint.body_overlaps(original, pose, enemies[0]) == ORIGINAL.body_overlaps(original, pose, enemies[0]), "cached transformed contact " + id + " " + str(sample))
 	await prepare(LAMP, [Vector2(90, 0), Vector2(-90, 0), Vector2(160, 10), Vector2(410, 0)])
 	wall(Vector2(45, 0))
 	await frames()
@@ -85,6 +86,26 @@ func _run() -> void:
 	query.configure_lamp(Vector2.RIGHT, 360, 60)
 	query.place(Transform2D.IDENTITY)
 	check(query.overlaps(enemies[0]) == ORIGINAL.body_overlaps(query.shape, Transform2D.IDENTITY, enemies[0]), "replacement body shape read immediately")
+	var probe := AttackFootprint.ellipse_shape(Vector2(60, 40))
+	enemies[0].position = Vector2.ZERO
+	body.transform = Transform2D.IDENTITY
+	for radius in [1.0, 1000.0, 1.0]:
+		body.shape.radius = radius
+		for center in [Vector2(80, 0), Vector2.ZERO, Vector2(180, 0)]:
+			var pose := Transform2D(0, center)
+			check(AttackFootprint.body_overlaps(probe, pose, enemies[0]) == ORIGINAL.body_overlaps(probe, pose, enemies[0]), "body resize invalidates cached contact")
+	for extent in [10.0, 300.0, 10.0]:
+		probe.points = ORIGINAL.ellipse_shape(Vector2(extent, extent)).points
+		var pose := Transform2D(0, Vector2(80, 0))
+		check(AttackFootprint.body_overlaps(probe, pose, enemies[0]) == ORIGINAL.body_overlaps(probe, pose, enemies[0]), "attack resize invalidates cached contact")
+		var motion := Vector2(-160, 0)
+		check(AttackFootprint.body_overlaps(probe, pose, enemies[0], motion) == ORIGINAL.body_overlaps(probe, pose, enemies[0], motion), "swept bounds preserve contact")
+	probe.points = ORIGINAL.ellipse_shape(Vector2(60,40)).points
+	for offset in [Vector2.ZERO,Vector2(72,5),Vector2(-48,40),Vector2(300,0)]:
+		for translation in [Vector2.ZERO,Vector2(1000,-300),Vector2(-2000,4000)]:
+			enemies[0].position = translation + offset
+			var pose := Transform2D(0,translation)
+			check(AttackFootprint.body_overlaps(probe,pose,enemies[0]) == ORIGINAL.body_overlaps(probe,pose,enemies[0]), "translated contacts match original geometry")
 	enemies[0].alive = false
 	check(not query.overlaps(enemies[0]), "dead target rejected immediately")
 	host.queue_free()

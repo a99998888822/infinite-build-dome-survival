@@ -1,6 +1,6 @@
 extends DirectedWeaponRuntime
 class_name FurnaceRuntime
-## Reactive pulses. Contacts run at the same 18 Hz as the approved pixel fire.
+## Automatic pulses. Contacts run at the same 18 Hz as the approved pixel fire.
 const ART = preload("res://scripts/effects/candidate_weapon_art.gd")
 const PULSE_GAP := 11.0 / 60.0
 const SPLIT_DELAY := 31.0 / 60.0

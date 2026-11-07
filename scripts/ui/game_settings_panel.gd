@@ -79,10 +79,11 @@ func _ready() -> void:
 		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		tab.add_theme_font_size_override("font_size", 27)
 		_canvas.add_child(tab)
+		tab.visible = i == 0 or not MobileProfile.is_mobile()
 		tab.pressed.connect(select_page.bind(i))
 		tabs.append(tab)
 		_tab_marks.append(_line(tab, GOLD))
-	content_scroll = ScrollContainer.new()
+	content_scroll = TouchScrollContainer.new()
 	content_scroll.name = "Settings"
 	content_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	content_scroll.minimum_size_changed.connect(_layout, CONNECT_DEFERRED)
@@ -113,7 +114,7 @@ func _ready() -> void:
 func open_page(in_battle: bool) -> void:
 	return_button.text = "ui.common.return_to_battle" if in_battle else "ui.common.back"
 	menu_button.visible = in_battle
-	guide_button.visible = in_battle and not OS.has_feature("mobile")
+	guide_button.visible = in_battle and not MobileProfile.is_mobile()
 	sync_all()
 	select_page(0)
 	return_button.grab_focus()
@@ -158,6 +159,7 @@ func _layout() -> void:
 
 
 func select_page(index: int) -> void:
+	if MobileProfile.is_mobile(): index = 0
 	basic_settings.visible = index == 0
 	combat_settings.visible = index == 1
 	show_hints.visible = index != 0
@@ -193,11 +195,16 @@ func _build_basic(parent: Node) -> void:
 		var amount := _label(row, "100%", 23, PAPER)
 		amount.custom_minimum_size.x = 93.333333
 		amount.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		if MobileProfile.is_mobile():
+			var gutter := Control.new()
+			gutter.custom_minimum_size.x = 24.0
+			row.add_child(gutter)
 		volume_controls[spec[2]] = {"slider": slider, "label": amount}
 		slider.value_changed.connect(func(value: float):
 			amount.text = "%d%%" % roundi(value)
 			AudioManager.set_bus_volume(spec[1], roundi(value)))
 	var resolution_row := _basic_row("ui.settings.display.resolution")
+	resolution_row.visible = not MobileProfile.is_mobile()
 	resolution = OptionButton.new()
 	resolution.name = "Resolution"
 	var arrow_image := resolution.get_theme_icon("arrow").get_image()
@@ -222,6 +229,7 @@ func _build_basic(parent: Node) -> void:
 	resolution_row.add_child(resolution_padding)
 	resolution_padding.add_child(resolution)
 	var fullscreen_row := _basic_row("ui.settings.display.fullscreen")
+	fullscreen_row.visible = not MobileProfile.is_mobile()
 	var group := ButtonGroup.new()
 	for enabled in [true, false]:
 		var button := Button.new()
@@ -233,6 +241,9 @@ func _build_basic(parent: Node) -> void:
 		button.pressed.connect(func(): WindowSettings.set_fullscreen(enabled))
 		if enabled: fullscreen_yes = button
 		else: fullscreen_no = button
+	if MobileProfile.is_mobile():
+		_label(_basic_row("ui.settings.movement.mode"), "ui.settings.mobile.joystick", 23, PAPER)
+		_label(_basic_row("ui.settings.mobile.attack"), "ui.settings.mobile.automatic", 23, PAPER)
 	var credit_row := _basic_row("Credit")
 	var credit := PanelContainer.new()
 	credit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -382,13 +393,13 @@ func sync_display() -> void:
 	PIXEL_STYLE.apply_button(fullscreen_no, false, not fullscreen)
 	fullscreen_yes.text = "ui.settings.yes_selected" if fullscreen else "ui.settings.yes_unselected"
 	fullscreen_no.text = "ui.settings.no_unselected" if fullscreen else "ui.settings.no_selected"
-	var native_locked := WindowSettings.is_embedded() or OS.has_feature("mobile")
+	var native_locked := WindowSettings.is_embedded() or MobileProfile.is_mobile()
 	resolution.disabled = native_locked or fullscreen
 	fullscreen_yes.disabled = native_locked
 	fullscreen_no.disabled = native_locked
 	display_note.text = "ui.settings.autosave_hint"
-	if WindowSettings.is_embedded(): display_note.text = "ui.settings.display.embedded_hint"
-	elif OS.has_feature("mobile"): display_note.text = "ui.settings.display.system_size_hint"
+	if MobileProfile.is_mobile(): display_note.text = "ui.settings.mobile.fixed_hint"
+	elif WindowSettings.is_embedded(): display_note.text = "ui.settings.display.embedded_hint"
 
 
 func sync_combat() -> void:

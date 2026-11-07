@@ -31,11 +31,11 @@ func _ready() -> void:
 	body.add_theme_constant_override("separation", 4)
 	add_child(body)
 	var heading := HBoxContainer.new()
-	heading.add_theme_constant_override("separation", 12)
+	heading.add_theme_constant_override("separation", 8 if MobileProfile.is_mobile() else 12)
 	body.add_child(heading)
 	_icon_frame = Panel.new()
 	_icon_frame.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot"))
-	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE
+	_icon_frame.custom_minimum_size = _icon_frame_size()
 	_icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	heading.add_child(_icon_frame)
 	var gradient := Gradient.new()
@@ -110,6 +110,12 @@ func _ready() -> void:
 	buy_button.custom_minimum_size = Vector2(58, 26)
 	buy_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	FinanceUIStyle.bank_button(buy_button)
+	if MobileProfile.is_mobile():
+		# Include the label's height before scaling the original button footprint.
+		var minimum := buy_button.get_combined_minimum_size()
+		var label_height := buy_button.get_theme_font("font").get_height(buy_button.get_theme_font_size("font_size"))
+		minimum.y = maxf(minimum.y, label_height + buy_button.get_theme_stylebox("normal").get_minimum_size().y)
+		buy_button.custom_minimum_size = minimum * 1.6
 	buy_button.mouse_entered.connect(func(): _hovered = true; _update_frame())
 	buy_button.mouse_exited.connect(_update_pointer_frame)
 	buy_button.clip_text = true
@@ -140,9 +146,9 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	var path := str(offer.get("icon", ""))
 	var item_scale := FinanceUIStyle.RELIC_LIST_ICON_SCALE if str(offer.get("offer_type", "")) == "relic" else 1.0
 	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), item_scale)
-	_icon_frame.custom_minimum_size = ICON_FRAME_SIZE.max(_icon.custom_minimum_size)
+	_icon_frame.custom_minimum_size = _icon_frame_size().max(_icon.custom_minimum_size)
 	if ItemIconArt.is_weapon(_icon.texture):
-		ItemIconArt.bind_texture(_icon, _icon.texture, false, 32.0, _icon_frame, ICON_FRAME_SIZE.x)
+		ItemIconArt.bind_texture(_icon, _icon.texture, false, 32.0, _icon_frame, _icon_frame_size().x)
 	var rarity := str(offer.get("rarity", "common"))
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"
@@ -167,6 +173,10 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 		buy_button.text = L10n.text("ui.shop.gold_shortfall") % maxi(0, cost - gold)
 	modulate = Color(0.62, 0.62, 0.62) if bool(offer.get("purchased", false)) else Color.WHITE
 	_queue_description_fit()
+
+
+func _icon_frame_size() -> Vector2:
+	return Vector2(48, 48) if MobileProfile.is_mobile() else ICON_FRAME_SIZE
 
 
 func _update_pointer_frame() -> void:

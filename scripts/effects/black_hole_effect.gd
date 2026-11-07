@@ -1,6 +1,6 @@
 extends Node2D
 class_name BlackHoleEffect
-const BLOCK_VFX = preload("res://scripts/effects/enchantment_block_vfx.gd")
+const BAKED = preload("res://scripts/effects/selected_spell_visual.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -12,6 +12,7 @@ const DEFAULT_PULL_SPEED: float = 150.0
 const DEFAULT_DARK_DURATION: float = 2.0
 const SPHERE_FRACTION := 0.35
 const DAMAGE_TO_SPHERE_RATIO := 3.0
+const VISUAL_SPHERE_SCALE := 0.8
 
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
@@ -30,6 +31,7 @@ var _vortex_back: Node2D
 var _vortex_front: Node2D
 var _sorted_visual: Node2D
 var _body_visual: Node2D
+var _visual_frame := -1
 
 
 static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "") -> void:
@@ -62,12 +64,11 @@ func _ready() -> void:
 	_sorted_visual = preload("res://scripts/effects/combat_sorted_visual.gd").attach(self)
 	_vortex_back = Node2D.new()
 	_body_visual = Node2D.new()
+	_body_visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_vortex_front = Node2D.new()
 	for surface in [_vortex_back, _body_visual, _vortex_front]:
 		_sorted_visual.add_child(surface)
-	_vortex_back.draw.connect(_draw_vortex.bind(false))
 	_body_visual.draw.connect(_draw_body)
-	_vortex_front.draw.connect(_draw_vortex.bind(true))
 	queue_redraw()
 
 
@@ -92,10 +93,10 @@ func _process(delta: float) -> void:
 	if _elapsed >= _duration:
 		queue_free()
 		return
-	queue_redraw()
-	_vortex_back.queue_redraw()
-	_vortex_front.queue_redraw()
-	_body_visual.queue_redraw()
+	var frame := int(_elapsed*18.0)
+	if frame != _visual_frame:
+		_visual_frame = frame
+		_body_visual.queue_redraw()
 
 
 func _collect_targets() -> void:
@@ -137,43 +138,8 @@ func _collect_targets() -> void:
 
 
 func _draw_body() -> void:
-	BLOCK_VFX.paint(_body_visual,2,Rect2(-_visual_reach,-_visual_reach,_visual_reach*2,_visual_reach*2),_visual_reach,_elapsed,_elapsed/_duration,_visual_detail)
-	_body_visual.material.set_shader_parameter("sphere_radius", _sphere_radius)
-
-
-func _draw_vortex(front: bool) -> void:
-	var canvas := _vortex_front if front else _vortex_back
-	var progress := clampf(_elapsed / _duration, 0.0, 1.0)
-	var opening := minf(1.0, progress * 7.0) * (1.0 - smoothstep(0.78, 1.0, progress) * 0.4)
-	var fade := (1.0 - smoothstep(0.80, 1.0, progress)) * minf(1.0, progress * 9.0)
-	if opening <= 0.0 or fade <= 0.0:
-		return
-	# Independent curved streamlines arrive from every direction. Each short
-	# line moves inward along its own fixed path, then disappears at the sphere.
-	var count := 12 if _visual_detail > 0 else 6
-	var clock := floorf(_elapsed * 18.0) / 18.0
-	var center := Vector2(0.0, -_visual_reach * 0.22)
-	for index in count:
-		var base_angle := float(index) / count * TAU + 0.17
-		if (sin(base_angle) >= 0.0) != front:
-			continue
-		var life := fposmod(clock / 0.50 + float(index) * 0.618, 1.0)
-		var head := 0.20 + life * 1.15
-		var start := maxf(0.0, head - 0.50)
-		var end := minf(1.0, head)
-		if end - start < 0.10:
-			continue
-		var points := PackedVector2Array()
-		var outer_radius := _visual_reach * (1.02 + sin(float(index) * 2.4) * 0.08)
-		for step in 25:
-			var ratio := lerpf(start, end, float(step) / 24.0)
-			var angle := base_angle + ratio * 1.15
-			var distance := lerpf(outer_radius, _sphere_radius, ratio) * opening
-			var point := (center + Vector2(cos(angle), sin(angle) * 0.85) * distance).round()
-			if points.is_empty() or points[-1] != point:
-				points.append(point)
-		if points.size() < 2:
-			continue
-		var alpha := fade * minf(1.0, life * 7.0) * (1.0 - smoothstep(0.85, 1.0, life))
-		var color := Color(0.63, 0.47, 0.82, alpha) if front else Color(0.45, 0.32, 0.64, alpha)
-		canvas.draw_polyline(points, color, 1.0, false)
+	var t := BAKED.hole_time(_elapsed,_duration)
+	if t<0.0:
+		BAKED.draw(_body_visual,"hole_steady",fposmod(_elapsed-0.56,2.0),Vector2.ONE*(_visual_reach/DEFAULT_RADIUS))
+	else:
+		BAKED.draw(_body_visual,"hole_r03",t,Vector2.ONE*(_visual_reach/DEFAULT_RADIUS))

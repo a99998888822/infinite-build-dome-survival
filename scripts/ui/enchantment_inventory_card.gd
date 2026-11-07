@@ -4,6 +4,12 @@ class_name EnchantmentInventoryCard
 const CARD_SIZE := Vector2(136, 48)
 const CAPTION_FONT_SIZE := 15
 const INSPECT_ICON: Texture2D = preload("res://assets/ui/finance/inspect_enchantment.svg")
+
+
+static func caption_font_size() -> int:
+	return 20 if MobileProfile.is_mobile() else CAPTION_FONT_SIZE
+
+
 var _art: TextureRect
 var _caption: Label
 var _inspect: TextureRect
@@ -30,7 +36,7 @@ func _ready() -> void:
 	_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FinanceUIStyle.label(_caption, CAPTION_FONT_SIZE)
+	FinanceUIStyle.label(_caption, caption_font_size())
 	body.add_child(_caption)
 	_inspect = TextureRect.new()
 	_inspect.texture = INSPECT_ICON
@@ -53,8 +59,8 @@ func _ready() -> void:
 func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	super.configure(next_item, allow_drag)
 	icon = null
-	custom_minimum_size = CARD_SIZE
-	size = CARD_SIZE
+	custom_minimum_size = Vector2(180, 56) if MobileProfile.is_mobile() else CARD_SIZE
+	size = custom_minimum_size
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_stretch_ratio = 1.0
 	focus_mode = Control.FOCUS_ALL

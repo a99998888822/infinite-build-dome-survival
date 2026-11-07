@@ -70,7 +70,7 @@ func _ready() -> void:
 	_subtitle = _label(_card, "", 23, MUTED)
 	_heading = _label(_card, "ui.settlement.camp_title", 33, TEXT)
 	_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_scroll = ScrollContainer.new()
+	_scroll = TouchScrollContainer.new() if MobileProfile.is_mobile() else ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	var scrollbar := _scroll.get_v_scroll_bar()
@@ -302,6 +302,9 @@ func _input(event: InputEvent) -> void:
 
 func _arrange() -> void:
 	if _card == null: return
+	if MobileProfile.is_mobile():
+		_arrange_mobile()
+		return
 	var compact := size.x < 900 or size.y < 600
 	var margin := 12.0 if compact else 24.0
 	_card.size = Vector2(minf(1120, size.x - margin * 2), minf(812, size.y - margin * 2))
@@ -387,6 +390,76 @@ func _arrange() -> void:
 	back_button.add_theme_font_size_override("font_size", 12 if compact else 16)
 	_place(_skip_hint, Vector2(padding + width * 0.73, back_button.position.y), Vector2(width * 0.27, back_button.size.y), 10 if compact else 12)
 	_skip_hint.visible = width >= 520
+	_effects.size = _content.size
+
+
+func _arrange_mobile() -> void:
+	_card.size = Vector2(minf(1120, size.x - 24), size.y - 24)
+	_card.position = ((size - _card.size) * 0.5).floor()
+	var width := _card.size.x - 32
+	_place(_title, Vector2(16, 8), Vector2(width * 0.58, 30), 24)
+	_place(_subtitle, Vector2(16, 40), Vector2(width * 0.65, 22), 16)
+	_place(_heading, Vector2(16 + width * 0.65, 16), Vector2(width * 0.35, 36), 18)
+	_scroll.position = Vector2(16, 72)
+	_scroll.size = Vector2(width, _card.size.y - 130)
+	var content_width := width - 16
+	var left_width := minf(330, content_width * 0.38)
+	var available_height := _scroll.size.y
+	_left.position = Vector2.ZERO
+	_place(_monster_heading, Vector2.ZERO, Vector2(left_width, 24), 18)
+	_monster_scroll.position = Vector2(0, 28)
+	var tile_height := 64.0
+	var columns := 2
+	var tile_width := floorf((left_width - 6) / columns)
+	var grid_height := maxi(2, ceili(float(_monster_nodes.size()) / columns)) * (tile_height + 6) - 6
+	_monster_scroll.size = Vector2(left_width, grid_height)
+	_monster_list.custom_minimum_size = _monster_scroll.size
+	if _monster_nodes.is_empty() and _monster_list.get_child_count() > 0:
+		_place(_monster_list.get_child(0), Vector2.ZERO, _monster_scroll.size, 16)
+	for index in _monster_nodes.size():
+		var monster: Dictionary = _monster_nodes[index]
+		monster.tile.position = Vector2((index % columns) * (tile_width + 6), floorf(float(index) / columns) * (tile_height + 6))
+		monster.tile.size = Vector2(tile_width, tile_height)
+		monster.icon.position = Vector2(8, 8)
+		monster.icon.size = Vector2(40, 40)
+		_place(monster.label, Vector2(52, 4), Vector2(tile_width - 56, 32), 15)
+		_place(monster.count, Vector2(52, 36), Vector2(tile_width - 56, 24), 17)
+	var speech_y := 28 + grid_height + 8
+	_speech.position = Vector2(0, speech_y)
+	_speech.size = Vector2(left_width, 56)
+	_place(_speech_label, Vector2(10, 6), _speech.size - Vector2(20, 12), 16)
+	var portrait_size := maxf(120, minf(left_width, available_height - speech_y - 64))
+	_portrait.position = Vector2(floorf((left_width - portrait_size) * 0.5), speech_y + 64)
+	_portrait.size = Vector2.ONE * portrait_size
+	_left.size = Vector2(left_width, _portrait.position.y + portrait_size)
+	var rw := content_width - left_width - 20
+	var row_height := clampf((available_height - 150) / 4.0 - 8, 42, 64)
+	var rows_end := 4 * (row_height + 8)
+	_right.position = Vector2(left_width + 20, 0)
+	_right.size = Vector2(rw, rows_end + 136)
+	for index in 4:
+		var row: Dictionary = _rows[index]
+		row.panel.position = Vector2(0, index * (row_height + 8))
+		row.panel.size = Vector2(rw, row_height)
+		row.icon.position = Vector2(10, (row_height - 28) * 0.5)
+		row.icon.size = Vector2(28, 28)
+		_place(row.label, Vector2(48, 0), Vector2(rw * 0.48 - 56, row_height), 18)
+		_place(row.value, Vector2(rw * 0.48, 0), Vector2(rw * 0.28 - 8, row_height), 23)
+		_place(row.points, Vector2(rw * 0.76, 0), Vector2(rw * 0.24 - 10, row_height), 20)
+	_place(_conversion, Vector2(0, rows_end), Vector2(rw, 24), 15)
+	_total.position = Vector2(0, rows_end + 28)
+	_total.size = Vector2(rw, 108)
+	_total_icon.position = Vector2(12, 28)
+	_total_icon.size = Vector2(48, 48)
+	_place(_total_title, Vector2(72, 8), Vector2(rw - 84, 24), 20)
+	_place(_total_value, Vector2(72, 32), Vector2(rw - 84, 48), 36)
+	_place(_status, Vector2(12, 82), Vector2(rw - 24, 20), 14)
+	_content.custom_minimum_size = Vector2(content_width, maxf(_left.size.y, _right.size.y))
+	_content.size = _content.custom_minimum_size
+	back_button.position = Vector2((_card.size.x - 240) * 0.5, _card.size.y - 48)
+	back_button.size = Vector2(240, 40)
+	back_button.add_theme_font_size_override("font_size", 18)
+	_skip_hint.visible = false
 	_effects.size = _content.size
 
 

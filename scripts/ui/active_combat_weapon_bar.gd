@@ -15,6 +15,7 @@ const SMALL_SLOT_SIZE := 72.0
 const LARGE_GAP := 10.0
 const SMALL_GAP := 8.0
 const ROW_GAP := 20.0
+const MOBILE_DISPLAY_SCALE := 0.8
 class PointerInput extends Node:
 	func _input(event: InputEvent) -> void:
 		get_parent()._input(event)
@@ -56,6 +57,7 @@ var _has_pointer_position := false
 
 
 func _ready() -> void:
+	add_to_group("battle_weapon_bar")
 	# Track movement during hitstop without advancing the bar's paused effects.
 	var pointer_input := PointerInput.new()
 	pointer_input.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -124,12 +126,14 @@ func setup(sources: Array[WeaponInstance]) -> void:
 		card.add_child(feedback)
 		feedback.configure(weapons[i])
 		feedbacks.append(feedback)
-		var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
-		mode.icon_extent = CAST_MODE_SIZE
-		mode.mask_padding = 1.666667
-		mode.configure(weapons[i], false, _style(false).bg_color)
-		add_child(mode)
-		cast_mode_icons.append(mode)
+		# Auto/manual cast badges are a desktop setting, not a phone affordance.
+		if not MobileProfile.is_mobile():
+			var mode := CAST_MODE_ICON_SCRIPT.new() as WeaponCastModeIcon
+			mode.icon_extent = CAST_MODE_SIZE
+			mode.mask_padding = 1.666667
+			mode.configure(weapons[i], false, _style(false).bg_color)
+			add_child(mode)
+			cast_mode_icons.append(mode)
 	apply_layout()
 
 
@@ -168,7 +172,9 @@ static func combat_icon(source: Texture2D) -> Texture2D:
 
 func apply_layout() -> void:
 	var viewport_size := get_viewport_rect().size
-	var available := maxf(1.0, floorf(minf(viewport_size.x * 0.8, viewport_size.x - 32.0)))
+	var display_scale := MOBILE_DISPLAY_SCALE if MobileProfile.is_mobile() else 1.0
+	scale = Vector2.ONE * display_scale
+	var available := maxf(1.0, floorf(minf(viewport_size.x * 0.8, viewport_size.x - 32.0) / display_scale))
 	var count := weapons.size()
 	var compact := count * LARGE_SLOT_SIZE + maxi(0, count - 1) * LARGE_GAP > available
 	icon_size = SMALL_ICON_SIZE if compact else LARGE_ICON_SIZE
@@ -177,8 +183,9 @@ func apply_layout() -> void:
 	columns = maxi(1, mini(count, floori((available + slot_gap) / (slot_size + slot_gap))))
 	var rows := ceili(float(count) / columns)
 	var width := columns * slot_size + (columns - 1) * slot_gap if count > 0 else 0.0
-	size = Vector2(width, rows * slot_size + maxi(0, rows - 1) * ROW_GAP + ceili(CAST_MODE_SIZE))
-	position = Vector2(floorf((viewport_size.x - size.x) * 0.5), floorf(viewport_size.y - size.y - 38))
+	var badge_lift: float = 0.0 if cast_mode_icons.is_empty() else float(ceili(CAST_MODE_SIZE))
+	size = Vector2(width, rows * slot_size + maxi(0, rows - 1) * ROW_GAP + badge_lift)
+	position = Vector2(floorf((viewport_size.x - size.x * display_scale) * 0.5), floorf(viewport_size.y - size.y * display_scale - 38 - MobileProfile.bottom_inset()))
 	for i in cards.size():
 		var row := i / columns
 		var row_count := mini(columns, count - row * columns)
@@ -196,8 +203,9 @@ func apply_layout() -> void:
 		headers[i].size = Vector2(slot_size, 24)
 		headers[i].compact = compact
 		headers[i].queue_redraw()
-		cast_mode_icons[i].position = cards[i].position + Vector2((slot_size - CAST_MODE_SIZE) * 0.5, slot_size - 1 - CAST_MODE_SIZE * 0.5)
-		cast_mode_icons[i].size = Vector2.ONE * CAST_MODE_SIZE
+		if i < cast_mode_icons.size():
+			cast_mode_icons[i].position = cards[i].position + Vector2((slot_size - CAST_MODE_SIZE) * 0.5, slot_size - 1 - CAST_MODE_SIZE * 0.5)
+			cast_mode_icons[i].size = Vector2.ONE * CAST_MODE_SIZE
 
 
 func update_slot(index: int, remaining: float, total: float, executing: bool, selected: bool) -> void:
@@ -240,7 +248,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		for i in cards.size():
 			# The display badge overlaps the card; clicking it must not select/cast.
-			if cast_mode_icons[i].get_rect().has_point(event.position):
+			if i < cast_mode_icons.size() and cast_mode_icons[i].get_rect().has_point(event.position):
 				accept_event()
 				return
 			var manual_entry := weapons[i].is_mobility_weapon() or not CombatSettings.is_weapon_automatic(weapons[i])
@@ -251,7 +259,11 @@ func _gui_input(event: InputEvent) -> void:
 
 
 func _get_tooltip(at_position: Vector2) -> String:
+	if cast_mode_icons.is_empty():
+		return ""
 	for i in cards.size():
+		if i >= cast_mode_icons.size():
+			return ""
 		if cards[i].get_rect().grow_individual(0, 0, 0, CAST_MODE_SIZE * 0.5).has_point(at_position):
 			return cast_mode_icons[i].tooltip_text
 	return ""

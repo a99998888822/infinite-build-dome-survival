@@ -1,6 +1,6 @@
 keys,zh_CN,en
 content.weapons.weapon_furnace.display_name,刚焰炉,Steel-Flame Furnace
-content.weapons.weapon_furnace.description,受到伤害时弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Taking damage pushes nearby enemies away and releases burning fire rings. Projectiles add rings; Split creates small flares around the outer edge.
+content.weapons.weapon_furnace.description,冷却结束时自动弹开周围敌人，喷出火圈并点燃。投射物数量增加火圈数；分裂在外沿生成小火簇。,Automatically pushes nearby enemies away and releases burning fire rings when ready. Projectiles add rings; Split creates small flares around the outer edge.
 content.weapons.weapon_furnace.level_2.description,"元素基础伤害 [color=#7FD88F]+4[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]
 附魔槽 [color=#7FD88F]+1[/color]","Base elemental damage [color=#7FD88F]+4[/color]

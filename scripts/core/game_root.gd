@@ -13,6 +13,9 @@ var _world_viewport_layer: CanvasLayer = null
 var _world_viewport_container: SubViewportContainer = null
 var _world_viewport: SubViewport = null
 var _world_viewport_root: Node2D = null
+var _taptap_account_panel: CanvasLayer
+var _taptap_blocked := false
+var _paused_before_taptap := false
 
 
 func _enter_tree() -> void:
@@ -27,9 +30,30 @@ func _ready() -> void:
 	debug_root = _ensure_child("DebugRoot", Node.new())
 	_setup_world_viewport()
 	_ensure_main_flow_coordinator()
+	if TapTapSession.is_required():
+		_taptap_account_panel = preload("res://scripts/ui/taptap_account_panel.gd").new()
+		add_child(_taptap_account_panel)
+		TapTapSession.state_changed.connect(_on_taptap_state_changed)
+		_on_taptap_state_changed()
 	GameGlobal.set_game_mode("game")
 	GameGlobal.set_runtime_flag("game_root_ready", true)
 	GameGlobal.log_debug("game root ready")
+
+
+func _on_taptap_state_changed() -> void:
+	var blocked := not TapTapSession.can_enter_game()
+	if blocked == _taptap_blocked:
+		return
+	_taptap_blocked = blocked
+	if blocked:
+		_paused_before_taptap = _main_flow_coordinator._battle_runtime_pause_requested
+		GameGlobal.set_runtime_flag("battle_runtime_paused", true)
+		# Disable gameplay/input without competing with hitstop's SceneTree pause.
+		# The account panel uses PROCESS_MODE_ALWAYS and remains interactive.
+		process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		process_mode = Node.PROCESS_MODE_INHERIT
+		GameGlobal.set_runtime_flag("battle_runtime_paused", _paused_before_taptap)
 
 
 func _configure_content_scale() -> void:
@@ -43,6 +67,8 @@ func _configure_content_scale() -> void:
 		int(ProjectSettings.get_setting("display/window/size/viewport_width")),
 		int(ProjectSettings.get_setting("display/window/size/viewport_height")),
 	)
+	if MobileProfile.is_mobile():
+		MobileProfile.apply_to_window(window)
 
 
 func _notification(what: int) -> void:
@@ -51,6 +77,9 @@ func _notification(what: int) -> void:
 
 
 func _handle_android_back_request() -> void:
+	if _taptap_account_panel != null and _taptap_account_panel.is_open():
+		_taptap_account_panel.handle_back()
+		return
 	if bool(GameGlobal.get_runtime_flag("battle_loading", false)):
 		return
 	var flow := get_main_flow_coordinator()
@@ -163,7 +192,21 @@ func _fit_world_viewport() -> void:
 	if not is_instance_valid(_world_viewport_container):
 		return
 	var canvas_size := get_viewport().get_visible_rect().size
-	_world_viewport_container.scale = canvas_size / Vector2(WORLD_RENDER_SIZE)
+	var render_size := WORLD_RENDER_SIZE
+	if MobileProfile.is_mobile() and canvas_size.x > 0.0 and canvas_size.y > 0.0:
+		# A 20:9 phone expands the canvas horizontally. Stretching the 16:9 world
+		# target into it made the container scale x 0.86 / y 0.69, so every sprite
+		# rendered 25% wider (squashed). Matching the world target to the phone
+		# aspect keeps the scale uniform: more battlefield, one world unit still
+		# one physical pixel.
+		render_size = Vector2i(
+			int(round(float(WORLD_RENDER_SIZE.y) * canvas_size.x / canvas_size.y)),
+			WORLD_RENDER_SIZE.y,
+		)
+	if _world_viewport != null and _world_viewport.size != render_size:
+		_world_viewport.size = render_size
+	_world_viewport_container.size = Vector2(render_size)
+	_world_viewport_container.scale = Vector2.ONE * (canvas_size.y / float(render_size.y))
 
 
 

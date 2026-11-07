@@ -27,6 +27,7 @@ ui.reserve.slots,备用：%d/%d,Reserve: %d/%d
 ui.talent_tree.summary,升级属性汇总,Permanent bonuses
 ui.talent_tree.balance,天赋点：%s,Talent points: %s
 ui.talent_tree.navigation,滚轮缩放 · 鼠标点击拖动,Scroll to zoom · Click and drag to pan
+ui.talent_tree.navigation_touch,点击拖动,Tap and drag
 ui.talent_tree.upgrade_tooltip,花费 %d 天赋点升级,Spend %d talent points to upgrade
 ui.talent_tree.cost,升级花费 %d天赋点,Upgrade cost %d talent points
 ui.talent_tree.maxed,已升满,Max level

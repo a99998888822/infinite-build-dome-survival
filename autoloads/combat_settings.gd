@@ -43,7 +43,7 @@ func build_config() -> ConfigFile:
 	return config
 
 func should_show_combat_guide() -> bool:
-	if hide_combat_guide or OS.has_feature("mobile"):
+	if hide_combat_guide or MobileProfile.is_mobile():
 		return false
 	# Automated runs opt in explicitly and never alter the player's preferences.
 	var args := OS.get_cmdline_user_args()
@@ -54,6 +54,8 @@ func complete_combat_guide() -> void:
 	_save(true)
 
 func prefers_auto_cast(id: String, mobility: bool) -> bool:
+	# A saved desktop manual policy must never stop a phone weapon from firing.
+	if MobileProfile.is_mobile(): return true
 	return bool(weapon_auto_cast.get(id, not mobility))
 
 func is_weapon_automatic(weapon: WeaponInstance) -> bool:
@@ -61,6 +63,7 @@ func is_weapon_automatic(weapon: WeaponInstance) -> bool:
 	return prefers_auto_cast(weapon.weapon_id, weapon.is_mobility_weapon())
 
 func set_weapon_auto_cast(id: String, value: bool, persist: bool = true) -> void:
+	if MobileProfile.is_mobile(): return
 	if not DataRegistry.has_record("weapons", id): return
 	weapon_auto_cast[id] = value
 	_save(persist)
@@ -72,6 +75,7 @@ func reset_weapon_auto_cast(persist: bool = true) -> void:
 	settings_changed.emit()
 
 func set_option(key: String, value: bool, persist: bool = true) -> void:
+	if MobileProfile.is_mobile(): return
 	if key not in ["keyboard_movement", "quick_cast", "show_hints", "hide_combat_guide"]:
 		return
 	set(key, value)
